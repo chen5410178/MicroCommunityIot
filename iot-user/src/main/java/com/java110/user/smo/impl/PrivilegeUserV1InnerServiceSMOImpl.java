@@ -46,26 +46,26 @@ public class PrivilegeUserV1InnerServiceSMOImpl implements IPrivilegeUserV1Inner
 
 
     @Override
-    public int savePrivilegeUser(@RequestBody  PrivilegeUserPo privilegeUserPo) {
+    public int savePrivilegeUser(@RequestBody PrivilegeUserPo privilegeUserPo) {
         int saveFlag = privilegeUserV1ServiceDaoImpl.savePrivilegeUserInfo(BeanConvertUtil.beanCovertMap(privilegeUserPo));
         return saveFlag;
     }
 
-     @Override
-    public int updatePrivilegeUser(@RequestBody  PrivilegeUserPo privilegeUserPo) {
+    @Override
+    public int updatePrivilegeUser(@RequestBody PrivilegeUserPo privilegeUserPo) {
         int saveFlag = privilegeUserV1ServiceDaoImpl.updatePrivilegeUserInfo(BeanConvertUtil.beanCovertMap(privilegeUserPo));
         return saveFlag;
     }
 
-     @Override
-    public int deletePrivilegeUser(@RequestBody  PrivilegeUserPo privilegeUserPo) {
-       privilegeUserPo.setStatusCd("1");
-       int saveFlag = privilegeUserV1ServiceDaoImpl.updatePrivilegeUserInfo(BeanConvertUtil.beanCovertMap(privilegeUserPo));
-       return saveFlag;
+    @Override
+    public int deletePrivilegeUser(@RequestBody PrivilegeUserPo privilegeUserPo) {
+        privilegeUserPo.setStatusCd("1");
+        int saveFlag = privilegeUserV1ServiceDaoImpl.updatePrivilegeUserInfo(BeanConvertUtil.beanCovertMap(privilegeUserPo));
+        return saveFlag;
     }
 
     @Override
-    public List<PrivilegeUserDto> queryPrivilegeUsers(@RequestBody  PrivilegeUserDto privilegeUserDto) {
+    public List<PrivilegeUserDto> queryPrivilegeUsers(@RequestBody PrivilegeUserDto privilegeUserDto) {
 
         //校验是否传了 分页信息
 
@@ -83,6 +83,13 @@ public class PrivilegeUserV1InnerServiceSMOImpl implements IPrivilegeUserV1Inner
 
     @Override
     public int queryPrivilegeUsersCount(@RequestBody PrivilegeUserDto privilegeUserDto) {
-        return privilegeUserV1ServiceDaoImpl.queryPrivilegeUsersCount(BeanConvertUtil.beanCovertMap(privilegeUserDto));    }
+        return privilegeUserV1ServiceDaoImpl.queryPrivilegeUsersCount(BeanConvertUtil.beanCovertMap(privilegeUserDto));
+    }
+
+    @Override
+    public List<PrivilegeUserDto> getUserPrivileges(@RequestBody PrivilegeUserDto privilegeUserDto) {
+        return BeanConvertUtil.covertBeanList(privilegeUserV1ServiceDaoImpl.getUserPrivileges(BeanConvertUtil.beanCovertMap(privilegeUserDto)),PrivilegeUserDto.class);
+    }
+
 
 }

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menuV1ServiceDaoImpl">
+
+
+    <!-- 保存菜单信息 add by wuxw 2018-07-03 -->
+    <insert id="saveMenuInfo" parameterType="Map">
+        insert into m_menu(
+        g_id,name,m_id,description,p_id,url,seq,is_show
+        ) values (
+        #{gId},#{name},#{mId},#{description},#{pId},#{url},#{seq},#{isShow}
+        )
+    </insert>
+
+
+    <!-- 查询菜单信息 add by wuxw 2018-07-03 -->
+    <select id="getMenuInfo" parameterType="Map" resultType="Map">
+        select t.g_id,t.g_id gId,t.name,t.m_id,t.m_id mId,t.description,t.p_id,t.p_id pId,t.status_cd,t.status_cd
+        statusCd,t.url,t.seq,t.is_show,t.is_show isShow
+        from m_menu t
+        where 1 =1
+        <if test="gId !=null and gId != ''">
+            and t.g_id= #{gId}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="mId !=null and mId != ''">
+            and t.m_id= #{mId}
+        </if>
+        <if test="description !=null and description != ''">
+            and t.description= #{description}
+        </if>
+        <if test="pId !=null and pId != ''">
+            and t.p_id= #{pId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="url !=null and url != ''">
+            and t.url= #{url}
+        </if>
+        <if test="seq !=null and seq != ''">
+            and t.seq= #{seq}
+        </if>
+        <if test="isShow !=null and isShow != ''">
+            and t.is_show= #{isShow}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改菜单信息 add by wuxw 2018-07-03 -->
+    <update id="updateMenuInfo" parameterType="Map">
+        update m_menu t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="gId !=null and gId != ''">
+            , t.g_id= #{gId}
+        </if>
+        <if test="name !=null and name != ''">
+            , t.name= #{name}
+        </if>
+        <if test="description !=null and description != ''">
+            , t.description= #{description}
+        </if>
+        <if test="pId !=null and pId != ''">
+            , t.p_id= #{pId}
+        </if>
+        <if test="url !=null and url != ''">
+            , t.url= #{url}
+        </if>
+        <if test="seq !=null and seq != ''">
+            , t.seq= #{seq}
+        </if>
+        <if test="isShow !=null and isShow != ''">
+            , t.is_show= #{isShow}
+        </if>
+        where 1=1
+        <if test="mId !=null and mId != ''">
+            and t.m_id= #{mId}
+        </if>
+
+    </update>
+
+    <!-- 查询菜单数量 add by wuxw 2018-07-03 -->
+    <select id="queryMenusCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from m_menu t
+        where 1 =1
+        <if test="gId !=null and gId != ''">
+            and t.g_id= #{gId}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="mId !=null and mId != ''">
+            and t.m_id= #{mId}
+        </if>
+        <if test="description !=null and description != ''">
+            and t.description= #{description}
+        </if>
+        <if test="pId !=null and pId != ''">
+            and t.p_id= #{pId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="url !=null and url != ''">
+            and t.url= #{url}
+        </if>
+        <if test="seq !=null and seq != ''">
+            and t.seq= #{seq}
+        </if>
+        <if test="isShow !=null and isShow != ''">
+            and t.is_show= #{isShow}
+        </if>
+
+
+    </select>
+
+    <select id="checkUserHasResource" parameterType="Map" resultType="Map">
+        SELECT pp.*,'-1' AS pg_id,'' AS pg_name FROM p_privilege_user ppu,p_privilege pp
+        WHERE ppu.`p_id` = pp.`p_id`
+        <if test="resource != null and resource != ''">
+            AND pp.`resource` = #{resource}
+        </if>
+        AND ppu.`privilege_flag` = '0'
+        AND ppu.`user_id` = #{userId}
+        AND ppu.`status_cd` = '0'
+        AND pp.`status_cd` = '0'
+        UNION
+        SELECT pp.*,ppg.pg_id,ppg.name pg_name FROM p_privilege_user ppu,p_privilege_group ppg,p_privilege
+        pp,p_privilege_rel ppr
+        WHERE ppu.`p_id` = ppr.pg_id
+        AND ppr.pg_id = ppg.pg_id
+        AND ppr.p_id = pp.`p_id`
+        <if test="resource != null and resource != ''">
+            AND pp.`resource` = #{resource}
+        </if>
+        AND ppu.`privilege_flag` = '1'
+        AND ppu.`user_id` = #{userId}
+        AND ppu.`status_cd` = '0'
+        AND pp.`status_cd` = '0'
+        AND ppg.status_cd = '0'
+        AND ppr.status_cd = '0'
+    </select>
+
+</mapper>

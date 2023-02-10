@@ -1,6 +1,7 @@
 package com.java110.dto.storeStaff;
 
 import com.java110.bean.dto.PageDto;
+import com.java110.dto.store.StoreDto;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,7 +14,7 @@ import java.util.Date;
  * @Version 1.0
  * add by wuxw 2019/4/24
  **/
-public class StoreStaffDto extends PageDto implements Serializable {
+public class StoreStaffDto extends StoreDto implements Serializable {
 
     private String staffName;
     private String tel;

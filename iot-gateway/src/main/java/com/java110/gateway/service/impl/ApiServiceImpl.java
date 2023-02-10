@@ -1,5 +1,6 @@
 package com.java110.gateway.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.utils.StringUtils;
 import com.java110.bean.ResultVo;
@@ -8,10 +9,16 @@ import com.java110.bean.dto.app.AppService;
 import com.java110.core.client.RestTemplate;
 import com.java110.core.constant.CommonConstant;
 import com.java110.core.factory.LoggerFactory;
+import com.java110.core.utils.Assert;
 import com.java110.core.utils.RequestUtils;
 import com.java110.core.utils.StringUtil;
+import com.java110.dto.communityMember.CommunityMemberDto;
+import com.java110.dto.store.StoreDto;
+import com.java110.dto.storeStaff.StoreStaffDto;
 import com.java110.gateway.service.IApiService;
 import com.java110.gateway.service.IAppServiceCheck;
+import com.java110.gateway.service.IGetCommunityStoreInfoSMO;
+import com.java110.gateway.service.IPrivilegeSMO;
 import jdk.nashorn.internal.ir.RuntimeNode;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +42,12 @@ public class ApiServiceImpl implements IApiService {
     @Autowired
     private IAppServiceCheck appServiceCheckImpl;
 
+    @Autowired
+    private IGetCommunityStoreInfoSMO getCommunityStoreInfoSMOImpl;
+
+    @Autowired
+    private IPrivilegeSMO privilegeSMOImpl;
+
     @Override
     public ResponseEntity<String> post(String service, String postInfo, HttpServletRequest request) throws Exception {
         ResponseEntity<String> responseEntity = null;
@@ -44,7 +57,7 @@ public class ApiServiceImpl implements IApiService {
         headers.put(CommonConstant.HTTP_SERVICE, service);
         headers.put(CommonConstant.HTTP_METHOD, CommonConstant.HTTP_METHOD_POST);
         logger.debug("api：{} 请求报文为：{},header信息为：{}", service, postInfo, headers);
-        //privilegeSMOImpl.hasPrivilege(restTemplate, pd, "/app/" + service);
+        privilegeSMOImpl.hasPrivilege("/iot/api/" + service, headers.get("user-id"));
         responseEntity = doService(postInfo, headers, request);
 
         logger.debug("api：{} 返回信息为：{}", service, responseEntity);
@@ -200,37 +213,55 @@ public class ApiServiceImpl implements IApiService {
 
     protected ValidateResult validateStoreStaffCommunityRelationship(String body, Map<String, String> headers) {
         // 校验 员工和商户是否有关系
-//        ResponseEntity responseEntity = getStoreInfo(pd, restTemplate);
-//        if (responseEntity.getStatusCode() != HttpStatus.OK) {
-//            return new ValidateResult("", "", "", pd.getUserId(), pd.getUserName());
-//        }
-//
-//        JSONObject storeInfo = JSONObject.parseObject(responseEntity.getBody().toString());
-//        if (!storeInfo.containsKey("storeId")) {
-//            return new ValidateResult("", "", "", pd.getUserId(), pd.getUserName());
-//        }
-//
-//        Assert.jsonObjectHaveKey(responseEntity.getBody().toString(), "storeId", "根据用户ID查询商户ID失败，未包含storeId节点");
-//        Assert.jsonObjectHaveKey(responseEntity.getBody().toString(), "storeTypeCd", "根据用户ID查询商户类型失败，未包含storeTypeCd节点");
-//
-//        String storeId = JSONObject.parseObject(responseEntity.getBody().toString()).getString("storeId");
-//        String storeTypeCd = JSONObject.parseObject(responseEntity.getBody().toString()).getString("storeTypeCd");
-//
-//        JSONObject paramIn = JSONObject.parseObject(pd.getReqData());
-//
-//        //开发者和运营不校验小区
-//        if(StoreDto.STORE_TYPE_ADMIN.equals(storeTypeCd) || StoreDto.STORE_TYPE_DEV.equals(storeTypeCd)){
-//            return new ValidateResult(storeId, storeTypeCd, "", pd.getUserId(), pd.getUserName());
-//        }
-//
-//        String communityId = "";
-//        if (paramIn != null && paramIn.containsKey("communityId")
-//                && !StringUtil.isEmpty(paramIn.getString("communityId"))
-//                && !"-1".equals(paramIn.getString("communityId"))) {
-//            communityId = paramIn.getString("communityId");
-//            checkStoreEnterCommunity(pd, storeId, storeTypeCd, communityId, restTemplate);
-//        }
-//        return new ValidateResult(storeId, storeTypeCd, communityId, pd.getUserId(), pd.getUserName());
+        String userId = headers.get("user-id");
+        StoreStaffDto storeStaffDto = getCommunityStoreInfoSMOImpl.getStoreInfo(userId);
+
+        if (storeStaffDto == null) {
+            throw new IllegalArgumentException("商户不存在");
+        }
+
+        Assert.hasLength(storeStaffDto.getStoreId(), "根据用户ID查询商户ID失败，未包含storeId节点");
+        Assert.hasLength(storeStaffDto.getStoreTypeCd(), "根据用户ID查询商户类型失败，未包含storeTypeCd节点");
+
+        //开发者和运营不校验小区
+        if (StoreDto.STORE_TYPE_ADMIN.equals(storeStaffDto.getStoreTypeCd()) || StoreDto.STORE_TYPE_DEV.equals(storeStaffDto.getStoreTypeCd())) {
+            return new ValidateResult(storeStaffDto.getStoreId(), storeStaffDto.getStoreTypeCd(), "", userId, "-");
+        }
+
+        JSONObject paramIn = JSONObject.parseObject(body);
+
+        String communityId = "";
+        if (paramIn != null && paramIn.containsKey("communityId")
+                && !StringUtil.isEmpty(paramIn.getString("communityId"))
+                && !"-1".equals(paramIn.getString("communityId"))) {
+            communityId = paramIn.getString("communityId");
+            checkStoreEnterCommunity(storeStaffDto.getStoreId(), storeStaffDto.getStoreTypeCd(), communityId, userId);
+        }
+        return new ValidateResult(storeStaffDto.getStoreId(), storeStaffDto.getStoreTypeCd(), communityId, userId, "-");
+    }
+
+    protected void checkStoreEnterCommunity(String storeId, String storeTypeCd, String communityId, String userId) {
+        Assert.hasLength(userId, "用户未登录请先登录");
+        List<CommunityMemberDto> communityMemberDtos = getCommunityStoreInfoSMOImpl.getStoreEnterCommunitys(storeId, storeTypeCd);
+        if (communityMemberDtos == null || communityMemberDtos.size() < 1) {
+            throw new IllegalArgumentException("还未入驻小区，请先入驻小区");
+        }
+
+        CommunityMemberDto currentCommunity = getCurrentCommunity(communityMemberDtos, communityId);
+
+        if (currentCommunity == null) {
+            throw new IllegalArgumentException("传入小区ID非法，请正常操作");
+        }
+
+    }
+
+    private CommunityMemberDto getCurrentCommunity(List<CommunityMemberDto> communityMemberDtos, String communityId) {
+        for (CommunityMemberDto communityMemberDto : communityMemberDtos) {
+            if (communityId.equals(communityMemberDto.getCommunityId())) {
+                return communityMemberDto;
+            }
+        }
+
         return null;
     }
 

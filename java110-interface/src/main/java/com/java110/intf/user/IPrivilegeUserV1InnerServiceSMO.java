@@ -65,4 +65,7 @@ public interface IPrivilegeUserV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryPrivilegeUsersCount", method = RequestMethod.POST)
     int queryPrivilegeUsersCount(@RequestBody PrivilegeUserDto privilegeUserDto);
+
+    @RequestMapping(value = "/getUserPrivileges", method = RequestMethod.POST)
+    List<PrivilegeUserDto> getUserPrivileges(@RequestBody PrivilegeUserDto privilegeUserDto);
 }

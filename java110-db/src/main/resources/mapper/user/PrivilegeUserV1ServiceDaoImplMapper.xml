@@ -5,102 +5,123 @@
 <mapper namespace="privilegeUserV1ServiceDaoImpl">
 
 
-
-
-
     <!-- 保存角色员工信息 add by wuxw 2018-07-03 -->
     <insert id="savePrivilegeUserInfo" parameterType="Map">
         insert into p_privilege_user(
-privilege_flag,pu_id,p_id,store_id,user_id
-) values (
-#{privilegeFlag},#{puId},#{pId},#{storeId},#{userId}
-)
+        privilege_flag,pu_id,p_id,store_id,user_id
+        ) values (
+        #{privilegeFlag},#{puId},#{pId},#{storeId},#{userId}
+        )
     </insert>
-
 
 
     <!-- 查询角色员工信息 add by wuxw 2018-07-03 -->
     <select id="getPrivilegeUserInfo" parameterType="Map" resultType="Map">
-        select  t.privilege_flag,t.privilege_flag privilegeFlag,t.pu_id,t.pu_id puId,t.p_id,t.p_id pId,t.status_cd,t.status_cd statusCd,t.store_id,t.store_id storeId,t.user_id,t.user_id userId 
-from p_privilege_user t 
-where 1 =1 
-<if test="privilegeFlag !=null and privilegeFlag != ''">
-   and t.privilege_flag= #{privilegeFlag}
-</if> 
-<if test="puId !=null and puId != ''">
-   and t.pu_id= #{puId}
-</if> 
-<if test="pId !=null and pId != ''">
-   and t.p_id= #{pId}
-</if> 
-<if test="statusCd !=null and statusCd != ''">
-   and t.status_cd= #{statusCd}
-</if> 
-<if test="storeId !=null and storeId != ''">
-   and t.store_id= #{storeId}
-</if> 
-<if test="userId !=null and userId != ''">
-   and t.user_id= #{userId}
-</if> 
-order by t.create_time desc
-<if test="page != -1 and page != null ">
-   limit #{page}, #{row}
-</if> 
+        select t.privilege_flag,t.privilege_flag privilegeFlag,t.pu_id,t.pu_id puId,t.p_id,t.p_id
+        pId,t.status_cd,t.status_cd statusCd,t.store_id,t.store_id storeId,t.user_id,t.user_id userId
+        from p_privilege_user t
+        where 1 =1
+        <if test="privilegeFlag !=null and privilegeFlag != ''">
+            and t.privilege_flag= #{privilegeFlag}
+        </if>
+        <if test="puId !=null and puId != ''">
+            and t.pu_id= #{puId}
+        </if>
+        <if test="pId !=null and pId != ''">
+            and t.p_id= #{pId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="storeId !=null and storeId != ''">
+            and t.store_id= #{storeId}
+        </if>
+        <if test="userId !=null and userId != ''">
+            and t.user_id= #{userId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改角色员工信息 add by wuxw 2018-07-03 -->
+    <update id="updatePrivilegeUserInfo" parameterType="Map">
+        update p_privilege_user t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="privilegeFlag !=null and privilegeFlag != ''">
+            , t.privilege_flag= #{privilegeFlag}
+        </if>
+        <if test="pId !=null and pId != ''">
+            , t.p_id= #{pId}
+        </if>
+        <if test="storeId !=null and storeId != ''">
+            , t.store_id= #{storeId}
+        </if>
+        <if test="userId !=null and userId != ''">
+            , t.user_id= #{userId}
+        </if>
+        where 1=1
+        <if test="puId !=null and puId != ''">
+            and t.pu_id= #{puId}
+        </if>
+
+    </update>
+
+    <!-- 查询角色员工数量 add by wuxw 2018-07-03 -->
+    <select id="queryPrivilegeUsersCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from p_privilege_user t
+        where 1 =1
+        <if test="privilegeFlag !=null and privilegeFlag != ''">
+            and t.privilege_flag= #{privilegeFlag}
+        </if>
+        <if test="puId !=null and puId != ''">
+            and t.pu_id= #{puId}
+        </if>
+        <if test="pId !=null and pId != ''">
+            and t.p_id= #{pId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="storeId !=null and storeId != ''">
+            and t.store_id= #{storeId}
+        </if>
+        <if test="userId !=null and userId != ''">
+            and t.user_id= #{userId}
+        </if>
+
 
     </select>
 
 
 
-
-    <!-- 修改角色员工信息 add by wuxw 2018-07-03 -->
-    <update id="updatePrivilegeUserInfo" parameterType="Map">
-        update  p_privilege_user t set t.status_cd = #{statusCd}
-<if test="newBId != null and newBId != ''">
-,t.b_id = #{newBId}
-</if> 
-<if test="privilegeFlag !=null and privilegeFlag != ''">
-, t.privilege_flag= #{privilegeFlag}
-</if> 
-<if test="pId !=null and pId != ''">
-, t.p_id= #{pId}
-</if> 
-<if test="storeId !=null and storeId != ''">
-, t.store_id= #{storeId}
-</if> 
-<if test="userId !=null and userId != ''">
-, t.user_id= #{userId}
-</if> 
- where 1=1 <if test="puId !=null and puId != ''">
-and t.pu_id= #{puId}
-</if> 
-
-    </update>
-
-    <!-- 查询角色员工数量 add by wuxw 2018-07-03 -->
-     <select id="queryPrivilegeUsersCount" parameterType="Map" resultType="Map">
-        select  count(1) count 
-from p_privilege_user t 
-where 1 =1 
-<if test="privilegeFlag !=null and privilegeFlag != ''">
-   and t.privilege_flag= #{privilegeFlag}
-</if> 
-<if test="puId !=null and puId != ''">
-   and t.pu_id= #{puId}
-</if> 
-<if test="pId !=null and pId != ''">
-   and t.p_id= #{pId}
-</if> 
-<if test="statusCd !=null and statusCd != ''">
-   and t.status_cd= #{statusCd}
-</if> 
-<if test="storeId !=null and storeId != ''">
-   and t.store_id= #{storeId}
-</if> 
-<if test="userId !=null and userId != ''">
-   and t.user_id= #{userId}
-</if> 
+    <select id="getUserPrivileges" parameterType="Map" resultType="Map">
+        SELECT  DISTINCT  tt.gName,tt.gId,tt.mName,tt.mId,tt.pName,tt.pId, tt.pgId,tt.pgName,tt.seq  FROM (
+        select mmg.`name` gName,mmg.g_id gId,m.`name` mName,m.m_id mId,p.`name` pName,p.p_id pId, ppg.pg_id pgId,ppg.name pgName,mmg.seq
+        from m_menu_group mmg
+        INNER JOIN m_menu m on mmg.g_id = m.g_id and m.status_cd = '0'
+        inner join p_privilege p on m.m_id = p.m_id and p.status_cd = '0' and p.domain in (#{domain},'9999')
+        inner join p_privilege_rel ppr on ppr.p_id = p.p_id and ppr.status_cd = '0'
+        inner join p_privilege_group ppg on ppr.pg_id = ppg.pg_id and ppg.status_cd = '0'
+        inner join p_privilege_user ppu on ppu.p_id  = ppg.pg_id and ppu.privilege_flag = '1' and ppu.status_cd = '0' and ppu.user_id = #{userId}
+        where mmg.status_cd = '0'
+        union
+        select mmg.`name` gName,mmg.g_id gId,m.`name` mName,m.m_id mId,p.`name` pName,p.p_id pId, '-1' pgId,'' pgName,mmg.seq
+        from m_menu_group mmg
+        INNER JOIN m_menu m on mmg.g_id = m.g_id and m.status_cd = '0'
+        inner join p_privilege p on m.m_id = p.m_id and p.status_cd = '0' and p.domain in (#{domain},'9999')
+        inner join p_privilege_user ppu on ppu.p_id  = p.p_id and ppu.privilege_flag = '0' and ppu.status_cd = '0' and ppu.user_id = #{userId}
+        where mmg.status_cd = '0'
+        ) tt
+        order by tt.seq asc
 
 
-     </select>
+    </select>
 
 </mapper>

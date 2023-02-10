@@ -106,5 +106,15 @@ public class PrivilegeUserV1ServiceDaoImpl extends BaseServiceDao implements IPr
         return Integer.parseInt(businessPrivilegeUserInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> getUserPrivileges(Map info) {
+        logger.debug("查询 getUserPrivileges 入参 info : {}",info);
+
+        List<Map> businessPrivilegeUserInfos = sqlSessionTemplate.selectList("privilegeUserV1ServiceDaoImpl.getUserPrivileges", info);
+
+
+        return businessPrivilegeUserInfos;
+    }
+
 
 }

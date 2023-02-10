@@ -19,6 +19,7 @@ package com.java110.user.dao;
 
 
 import com.java110.core.exception.DAOException;
+import com.java110.dto.privilegeUser.PrivilegeUserDto;
 
 import java.util.List;
 import java.util.Map;
@@ -71,4 +72,5 @@ public interface IPrivilegeUserV1ServiceDao {
      */
     int queryPrivilegeUsersCount(Map info);
 
+    List<Map> getUserPrivileges(Map info);
 }

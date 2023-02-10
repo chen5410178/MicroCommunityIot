@@ -16,48 +16,65 @@ import java.util.Date;
 public class PrivilegeUserDto extends PageDto implements Serializable {
 
     private String privilegeFlag;
-private String puId;
-private String pId;
-private String storeId;
-private String userId;
+    private String puId;
+    private String pId;
+    private String storeId;
+    private String userId;
 
 
     private Date createTime;
 
     private String statusCd = "0";
 
+    private String domain;
+    private String gName;
+    private String mName;
+    private String mId;
+    private String pName;
+    private String pgId;
+    private String pgName;
+    private String seq;
+
 
     public String getPrivilegeFlag() {
         return privilegeFlag;
     }
-public void setPrivilegeFlag(String privilegeFlag) {
+
+    public void setPrivilegeFlag(String privilegeFlag) {
         this.privilegeFlag = privilegeFlag;
     }
-public String getPuId() {
+
+    public String getPuId() {
         return puId;
     }
-public void setPuId(String puId) {
+
+    public void setPuId(String puId) {
         this.puId = puId;
     }
-public String getPId() {
+
+    public String getpId() {
         return pId;
     }
-public void setPId(String pId) {
+
+    public void setpId(String pId) {
         this.pId = pId;
     }
-public String getStoreId() {
+
+    public String getStoreId() {
         return storeId;
     }
-public void setStoreId(String storeId) {
+
+    public void setStoreId(String storeId) {
         this.storeId = storeId;
     }
-public String getUserId() {
+
+    public String getUserId() {
         return userId;
     }
-public void setUserId(String userId) {
+
+    public void setUserId(String userId) {
         this.userId = userId;
     }
-
 
     public Date getCreateTime() {
         return createTime;
@@ -73,5 +90,69 @@ public void setUserId(String userId) {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    public String getgName() {
+        return gName;
+    }
+
+    public void setgName(String gName) {
+        this.gName = gName;
+    }
+
+    public String getmName() {
+        return mName;
+    }
+
+    public void setmName(String mName) {
+        this.mName = mName;
+    }
+
+    public String getmId() {
+        return mId;
+    }
+
+    public void setmId(String mId) {
+        this.mId = mId;
+    }
+
+    public String getpName() {
+        return pName;
+    }
+
+    public void setpName(String pName) {
+        this.pName = pName;
+    }
+
+    public String getPgId() {
+        return pgId;
+    }
+
+    public void setPgId(String pgId) {
+        this.pgId = pgId;
+    }
+
+    public String getPgName() {
+        return pgName;
+    }
+
+    public void setPgName(String pgName) {
+        this.pgName = pgName;
+    }
+
+    public String getSeq() {
+        return seq;
+    }
+
+    public void setSeq(String seq) {
+        this.seq = seq;
     }
 }
