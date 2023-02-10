@@ -1,0 +1,49 @@
+package com.java110.core.init;
+
+import com.java110.bean.dto.system.SystemLogDto;
+import com.java110.core.constant.EnvironmentConstant;
+import com.java110.core.factory.ApplicationContextFactory;
+import com.java110.core.factory.LoggerFactory;
+import com.java110.core.utils.StringUtil;
+import org.slf4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.Environment;
+
+/**
+ * Created by wuxw on 2018/5/7.
+ */
+public class ServiceStartInit {
+
+    private final static Logger logger = LoggerFactory.getLogger(ServiceStartInit.class);
+
+    private static Environment env;
+
+    public static void initSystemConfig(ApplicationContext context) {
+        //加载配置文件，注册订单处理侦听
+        try {
+            ApplicationContextFactory.setApplicationContext(context);
+            env = context.getEnvironment();
+
+            String logSwitch = env.getProperty(EnvironmentConstant.LOG_SWITCH);
+            //String logSwitch = "ON";
+            if (!StringUtil.isEmpty(logSwitch)) {
+                //设置日志级别
+                SystemLogDto.setLogSwatch(logSwitch);
+            }
+        } catch (Exception ex) {
+            throw new IllegalStateException("系统初始化失败", ex);
+        }
+    }
+
+
+    public static void preInitSystemConfig() {
+        //加载配置文件，注册订单处理侦听
+        String logSwitch = System.getenv(EnvironmentConstant.LOG_SWITCH);
+        if (!StringUtil.isEmpty(logSwitch)) {
+            //设置日志级别
+            SystemLogDto.setLogSwatch(logSwitch);
+        }
+    }
+
+
+}
