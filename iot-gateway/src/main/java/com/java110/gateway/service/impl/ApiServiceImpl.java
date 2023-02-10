@@ -2,6 +2,7 @@ package com.java110.gateway.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.utils.StringUtils;
+import com.java110.bean.ResultVo;
 import com.java110.bean.dto.ValidateResult;
 import com.java110.bean.dto.app.AppService;
 import com.java110.core.client.RestTemplate;
@@ -158,10 +159,10 @@ public class ApiServiceImpl implements IApiService {
         logger.debug("API 服务调用下游服务请求：{}，返回为：{}", httpEntity, responseEntity);
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
-            responseEntity = com.java110.vo.ResultVo.createResponseEntity(com.java110.vo.ResultVo.CODE_ERROR, String.valueOf(responseEntity.getBody()));
+            responseEntity = ResultVo.createResponseEntity(ResultVo.CODE_ERROR, String.valueOf(responseEntity.getBody()));
         }
         if (StringUtils.isEmpty(responseEntity.getBody() + "")) {
-            responseEntity = com.java110.vo.ResultVo.createResponseEntity(com.java110.vo.ResultVo.CODE_ERROR, "处理失败");
+            responseEntity = ResultVo.createResponseEntity(ResultVo.CODE_ERROR, "处理失败");
         }
         return responseEntity;
     }

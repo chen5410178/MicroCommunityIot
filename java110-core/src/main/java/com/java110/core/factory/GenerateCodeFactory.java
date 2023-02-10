@@ -1,14 +1,11 @@
 package com.java110.core.factory;
 
 import com.alibaba.fastjson.JSONObject;
-import com.java110.dto.idSeq.IdSeqDto;
-import com.java110.intf.code.ICodeApi;
-import com.java110.intf.order.IIdSeqInnerServiceSMO;
-import com.java110.utils.cache.MappingCache;
-import com.java110.utils.constant.MappingConstant;
-import com.java110.utils.exception.GenerateCodeException;
-import com.java110.utils.factory.ApplicationContextFactory;
-import com.java110.utils.util.DateUtil;
+import com.java110.bean.dto.idSeq.IdSeqDto;
+import com.java110.core.cache.MappingCache;
+import com.java110.core.constant.MappingConstant;
+import com.java110.core.utils.DateUtil;
+import com.java110.intf.gateway.IIdSeqInnerServiceSMO;
 import org.springframework.web.client.RestTemplate;
 
 import java.rmi.NoSuchObjectException;
@@ -318,7 +315,7 @@ public class GenerateCodeFactory {
      * @throws NoSuchObjectException
      */
     public static String getInnerTransactionId() throws Exception {
-        return codeApi().generateCode(prefixMap.get("transactionId"));
+        return getGeneratorId(prefixMap.get("transactionId"));
     }
 
     /**
@@ -337,9 +334,9 @@ public class GenerateCodeFactory {
      * pgId生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getGeneratorId(String prefix) throws GenerateCodeException {
+    public static String getGeneratorId(String prefix)  {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefix + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -351,9 +348,9 @@ public class GenerateCodeFactory {
      * 获取车位ID
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getPsId(String prefix) throws GenerateCodeException {
+    public static String getPsId(String prefix) throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefix + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -365,9 +362,9 @@ public class GenerateCodeFactory {
      * 获取资源ID
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getResId(String prefix) throws GenerateCodeException {
+    public static String getResId(String prefix) throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefix + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -379,9 +376,9 @@ public class GenerateCodeFactory {
      * 生成费用id
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getFeeId(String prefix) throws GenerateCodeException {
+    public static String getFeeId(String prefix) throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefix + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -393,13 +390,13 @@ public class GenerateCodeFactory {
      * 规格ID
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getSpecCd() throws GenerateCodeException {
+    public static String getSpecCd() throws Exception {
         return nextId("%06d");
     }
 
-    public static String getOId() throws GenerateCodeException {
+    public static String getOId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("oId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -412,9 +409,9 @@ public class GenerateCodeFactory {
      *
      * @param prefix
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    private static String getCode(String prefix) throws GenerateCodeException {
+    private static String getCode(String prefix) {
         //调用服务
         IIdSeqInnerServiceSMO idSeqInnerServiceSMOImpl = ApplicationContextFactory.getBean(IIdSeqInnerServiceSMO.class.getName(), IIdSeqInnerServiceSMO.class);
         IdSeqDto idSeqDto = new IdSeqDto(prefix);
@@ -423,7 +420,7 @@ public class GenerateCodeFactory {
         return idSeqDto.getId();
     }
 
-    public static String getBId() throws GenerateCodeException {
+    public static String getBId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("bId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -431,7 +428,7 @@ public class GenerateCodeFactory {
         return getCode(prefixMap.get("bId"));
     }
 
-    public static String getAttrId() throws GenerateCodeException {
+    public static String getAttrId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("attrId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -443,15 +440,15 @@ public class GenerateCodeFactory {
      * 生成dataFlowId
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getDataFlowId() throws GenerateCodeException {
+    public static String getDataFlowId() throws Exception {
 
         return UUID.randomUUID().toString().replace("-", "").toLowerCase();
 
     }
 
-    public static String getUserId() throws GenerateCodeException {
+    public static String getUserId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("userId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -460,7 +457,7 @@ public class GenerateCodeFactory {
     }
 
 
-    public static String getStoreId() throws GenerateCodeException {
+    public static String getStoreId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("storeId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -468,7 +465,7 @@ public class GenerateCodeFactory {
         return getCode(prefixMap.get("storeId"));
     }
 
-    public static String getMemberStoreId() throws GenerateCodeException {
+    public static String getMemberStoreId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("memberStoreId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -477,7 +474,7 @@ public class GenerateCodeFactory {
     }
 
 
-    public static String getStorePhotoId() throws GenerateCodeException {
+    public static String getStorePhotoId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("storePhotoId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -487,9 +484,9 @@ public class GenerateCodeFactory {
 
     /**
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getStoreCerdentialsId() throws GenerateCodeException {
+    public static String getStoreCerdentialsId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("storeCerdentialsId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -500,9 +497,9 @@ public class GenerateCodeFactory {
 
     /**
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getStoreUserId() throws GenerateCodeException {
+    public static String getStoreUserId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("storeUserId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -515,9 +512,9 @@ public class GenerateCodeFactory {
      * 获取小区ID
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getCommunityId() throws GenerateCodeException {
+    public static String getCommunityId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("communityId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -530,9 +527,9 @@ public class GenerateCodeFactory {
      * 获取小区照片ID
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getCommunityPhotoId() throws GenerateCodeException {
+    public static String getCommunityPhotoId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("communityPhotoId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -544,9 +541,9 @@ public class GenerateCodeFactory {
      * 生成小区成员ID
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getCommunityMemberId() throws GenerateCodeException {
+    public static String getCommunityMemberId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("communityMemberId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -558,9 +555,9 @@ public class GenerateCodeFactory {
      * 获取小区ID
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getAgentId() throws GenerateCodeException {
+    public static String getAgentId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("agentId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -572,9 +569,9 @@ public class GenerateCodeFactory {
      * 获取小区照片ID
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getAgentPhotoId() throws GenerateCodeException {
+    public static String getAgentPhotoId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("agentPhotoId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -584,9 +581,9 @@ public class GenerateCodeFactory {
 
     /**
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getAgentCerdentialsId() throws GenerateCodeException {
+    public static String getAgentCerdentialsId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("agentCerdentialsId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -597,9 +594,9 @@ public class GenerateCodeFactory {
 
     /**
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getAgentUserId() throws GenerateCodeException {
+    public static String getAgentUserId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("agentUserId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -612,9 +609,9 @@ public class GenerateCodeFactory {
      * 获取小区ID
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getPropertyId() throws GenerateCodeException {
+    public static String getPropertyId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("propertyId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -627,9 +624,9 @@ public class GenerateCodeFactory {
      * 获取小区照片ID
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getPropertyPhotoId() throws GenerateCodeException {
+    public static String getPropertyPhotoId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("propertyPhotoId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -639,9 +636,9 @@ public class GenerateCodeFactory {
 
     /**
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getPropertyCerdentialsId() throws GenerateCodeException {
+    public static String getPropertyCerdentialsId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("propertyCerdentialsId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -652,9 +649,9 @@ public class GenerateCodeFactory {
 
     /**
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getPropertyUserId() throws GenerateCodeException {
+    public static String getPropertyUserId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("propertyUserId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -666,9 +663,9 @@ public class GenerateCodeFactory {
      * 物业费用ID生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getPropertyFeeId() throws GenerateCodeException {
+    public static String getPropertyFeeId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("propertyFeeId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H + nextId("%04d"));
         }
@@ -680,9 +677,9 @@ public class GenerateCodeFactory {
      * 住户ID生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getHouseId() throws GenerateCodeException {
+    public static String getHouseId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("houseId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H + nextId("%04d"));
         }
@@ -695,9 +692,9 @@ public class GenerateCodeFactory {
      * 商品ID生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getShopId() throws GenerateCodeException {
+    public static String getShopId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("shopId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -709,9 +706,9 @@ public class GenerateCodeFactory {
      * 商品属性ID生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getShopAttrId() throws GenerateCodeException {
+    public static String getShopAttrId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("shopAttrId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -723,9 +720,9 @@ public class GenerateCodeFactory {
      * 商品优惠ID生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getShopPreferentialId() throws GenerateCodeException {
+    public static String getShopPreferentialId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("shopPreferentialId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -738,9 +735,9 @@ public class GenerateCodeFactory {
      * 商品属性参数ID生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getShopAttrParamId() throws GenerateCodeException {
+    public static String getShopAttrParamId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("shopAttrParamId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -752,9 +749,9 @@ public class GenerateCodeFactory {
      * 商品属性参数ID生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getCommentPhotoId() throws GenerateCodeException {
+    public static String getCommentPhotoId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("commentPhotoId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -767,9 +764,9 @@ public class GenerateCodeFactory {
      * 商品属性ID生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getShopPhotoId() throws GenerateCodeException {
+    public static String getShopPhotoId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("shopPhotoId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -781,9 +778,9 @@ public class GenerateCodeFactory {
      * 商品描述ID生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getShopDescId() throws GenerateCodeException {
+    public static String getShopDescId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("shopDescId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -795,9 +792,9 @@ public class GenerateCodeFactory {
      * 商品目录ID生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getShopCatalogId() throws GenerateCodeException {
+    public static String getShopCatalogId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("shopCatalogId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -809,9 +806,9 @@ public class GenerateCodeFactory {
      * 商品buyID生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getShopBuyId() throws GenerateCodeException {
+    public static String getShopBuyId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("buyId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -823,9 +820,9 @@ public class GenerateCodeFactory {
      * 商品buyAttrID生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getShopBuyAttrId() throws GenerateCodeException {
+    public static String getShopBuyAttrId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("buyAttrId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -837,9 +834,9 @@ public class GenerateCodeFactory {
      * 评论ID生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getCommentId() throws GenerateCodeException {
+    public static String getCommentId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("commentId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -851,9 +848,9 @@ public class GenerateCodeFactory {
      * 评论ID生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getSubCommentId() throws GenerateCodeException {
+    public static String getSubCommentId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("subCommentId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -865,9 +862,9 @@ public class GenerateCodeFactory {
      * 评论ID生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getSubCommentAttrId() throws GenerateCodeException {
+    public static String getSubCommentAttrId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("subCommentAttrId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -879,9 +876,9 @@ public class GenerateCodeFactory {
      * commentScoreId生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getCommentScoreId() throws GenerateCodeException {
+    public static String getCommentScoreId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("commentScoreId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -893,9 +890,9 @@ public class GenerateCodeFactory {
      * pgId生成
      *
      * @return
-     * @throws GenerateCodeException
+     * @throws Exception
      */
-    public static String getPgId() throws GenerateCodeException {
+    public static String getPgId() throws Exception {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("pgId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -919,23 +916,7 @@ public class GenerateCodeFactory {
 
         return (RestTemplate) bean;
     }
-
-    /**
-     * 获取codeApi
-     *
-     * @return
-     * @throws NoSuchObjectException
-     */
-    private static ICodeApi codeApi() throws NoSuchObjectException {
-
-        Object bean = ApplicationContextFactory.getBean(ICodeApi.class.getName());
-
-        if (bean == null) {
-            throw new NoSuchObjectException("codeApi，请核实");
-        }
-
-        return (ICodeApi) bean;
-    }
+    
 
 
     /**

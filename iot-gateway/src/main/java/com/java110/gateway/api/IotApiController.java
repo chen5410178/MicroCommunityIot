@@ -1,6 +1,7 @@
 package com.java110.gateway.api;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.gateway.service.IApiService;
 import org.slf4j.Logger;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.java110.vo.ResultVo;
 
 @RestController
 @RequestMapping(path = "/iot/api")

@@ -1,18 +1,14 @@
 package com.java110.core.cmd;
 
-import com.java110.core.base.controller.BaseController;
-import com.java110.core.factory.DataTransactionFactory;
-import com.java110.core.log.LoggerFactory;
+import com.java110.bean.ResultVo;
+import com.java110.core.constant.CommonConstant;
+import com.java110.core.context.DataQuery;
+import com.java110.core.factory.DataQueryFactory;
+import com.java110.core.factory.LoggerFactory;
+import com.java110.core.smo.IQueryServiceSMO;
 import com.java110.core.trace.Java110TraceLog;
-import com.java110.service.context.DataQuery;
-import com.java110.service.context.DataQueryFactory;
-import com.java110.service.smo.IQueryServiceSMO;
-import com.java110.utils.constant.CommonConstant;
-import com.java110.utils.constant.ResponseConstant;
-import com.java110.utils.util.Assert;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
+import com.java110.core.utils.Assert;
+import com.java110.core.utils.RequestUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,8 +30,7 @@ import java.util.Map;
  * @version 1.1
  */
 @RestController
-@Api(value = "查询业务统一提供服务")
-public class BusinessApi extends BaseController {
+public class BusinessApi {
 
     private final static Logger logger = LoggerFactory.getLogger(BusinessApi.class);
 
@@ -44,8 +39,6 @@ public class BusinessApi extends BaseController {
 
 
     @RequestMapping(path = "/businessApi/query", method = RequestMethod.GET)
-    @ApiOperation(value = "业务查询get请求", notes = "test: 返回 2XX 表示服务正常")
-    @ApiImplicitParam(paramType = "query", name = "method", value = "用户编号", required = true, dataType = "String")
     @Deprecated
     @Java110TraceLog
     public ResponseEntity<String> service(HttpServletRequest request) {
@@ -54,7 +47,7 @@ public class BusinessApi extends BaseController {
             this.getRequestInfo(request, headers);
             Assert.isNotNull(headers, CommonConstant.HTTP_SERVICE.toLowerCase(), "请求信息中没有包含service信息");
             //Assert.isNotNull(headers, CommonConstant.HTTP_PARAM,"请求信息中没有包含参数（params）信息");
-            Map readOnlyMap = super.getParameterStringMap(request);
+            Map readOnlyMap = RequestUtils.getParameterStringMap(request);
             headers.put("params", readOnlyMap);
             DataQuery dataQuery = DataQueryFactory.newInstance().builder(headers);
             initConfig(dataQuery);
@@ -86,8 +79,6 @@ public class BusinessApi extends BaseController {
      * @return
      */
     @RequestMapping(path = "/businessApi/query", method = RequestMethod.POST)
-    @ApiOperation(value = "业务查询post请求", notes = "test: 返回 2XX 表示服务正常")
-    @ApiImplicitParam(paramType = "query", name = "method", value = "用户编号", required = true, dataType = "String")
     @Deprecated
     @Java110TraceLog
     public ResponseEntity<String> queryPost(@RequestBody String businessInfo) {
@@ -108,7 +99,7 @@ public class BusinessApi extends BaseController {
     @RequestMapping(path = "/businessApi/do", method = RequestMethod.GET)
     @Java110TraceLog
     public String doGet(HttpServletRequest request) {
-        return DataTransactionFactory.createBusinessResponseJson(ResponseConstant.RESULT_CODE_ERROR, "不支持Get方法请求").toJSONString();
+        return ResultVo.error("GET 不支持").getBody();
     }
 
     /**
@@ -140,7 +131,7 @@ public class BusinessApi extends BaseController {
             return dataQuery.getResponseInfo().toJSONString();
         } catch (Exception e) {
             logger.error("请求订单异常", e);
-            return DataTransactionFactory.createBusinessResponseJson(ResponseConstant.RESULT_CODE_ERROR, e.getMessage() + e).toJSONString();
+            return ResultVo.error(e.getMessage() + e).getBody();
         }
     }
 
@@ -163,8 +154,8 @@ public class BusinessApi extends BaseController {
      */
     private void getRequestInfo(HttpServletRequest request, Map headers) throws Exception {
         try {
-            super.initHeadParam(request, headers);
-            super.initUrlParam(request, headers);
+            RequestUtils.initHeadParam(request, headers);
+            RequestUtils.initUrlParam(request, headers);
         } catch (Exception e) {
             logger.error("加载头信息失败", e);
             throw e;

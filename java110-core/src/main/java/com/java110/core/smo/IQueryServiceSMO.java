@@ -1,8 +1,7 @@
 package com.java110.core.smo;
 
 import com.alibaba.fastjson.JSONObject;
-import com.java110.service.context.DataQuery;
-import com.java110.utils.exception.BusinessException;
+import com.java110.core.context.DataQuery;
 import org.springframework.http.ResponseEntity;
 
 /**
@@ -15,27 +14,26 @@ public interface IQueryServiceSMO {
      * c_common_sql
      * 公共查询服务
      * @return
-     * @throws BusinessException
      */
-    public void commonQueryService(DataQuery dataQuery) throws BusinessException;
+    public void commonQueryService(DataQuery dataQuery) throws Exception;
 
 
     /**
      * c_common_sql
      * 公共受理服务
      * @return
-     * @throws BusinessException
+     * @throws Exception
      */
-    public void commonDoService(DataQuery dataQuery) throws BusinessException;
+    public void commonDoService(DataQuery dataQuery) throws Exception;
 
 
     /**
      * c_common_sql
      * 公共受理服务
      * @return
-     * @throws BusinessException
+     * @throws Exception
      */
-    public ResponseEntity<String> fallBack(String fallBackInfo) throws BusinessException;
+    public ResponseEntity<String> fallBack(String fallBackInfo) throws Exception;
 
     /**
      * 执行查询sql
@@ -46,13 +44,13 @@ public interface IQueryServiceSMO {
      *     td:[{}]
      * }
      */
-    JSONObject execQuerySql(JSONObject param, String sql) throws BusinessException;
+    JSONObject execQuerySql(JSONObject param, String sql) throws Exception;
 
     /**
      * 执行java脚本
      *
      * @param javaCode
-     * @throws BusinessException
+     * @throws Exception
      */
-    JSONObject execJava(JSONObject params, String javaCode);
+    JSONObject execJava(JSONObject params, String javaCode) throws Exception;
 }

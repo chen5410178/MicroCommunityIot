@@ -1,28 +1,24 @@
 package com.java110.core.smo.impl;
 
-import bsh.Interpreter;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import com.alibaba.fastjson.parser.Feature;
-import com.java110.core.factory.DataTransactionFactory;
+import com.java110.bean.ResultVo;
+import com.java110.bean.dto.logSystemError.LogSystemErrorDto;
+import com.java110.bean.dto.service.ServiceSql;
+import com.java110.bean.po.logSystemError.LogSystemErrorPo;
+import com.java110.core.cache.ServiceSqlCache;
+import com.java110.core.constant.CommonConstant;
+import com.java110.core.context.DataQuery;
+import com.java110.core.db.dao.IQueryServiceDAO;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.log.LoggerFactory;
-import com.java110.db.dao.IQueryServiceDAO;
-import com.java110.dto.logSystemError.LogSystemErrorDto;
-import com.java110.entity.service.ServiceSql;
-import com.java110.po.logSystemError.LogSystemErrorPo;
-import com.java110.service.context.DataQuery;
-import com.java110.service.smo.IQueryServiceSMO;
-import com.java110.service.smo.ISaveSystemErrorSMO;
-import com.java110.utils.cache.ServiceSqlCache;
-import com.java110.utils.constant.CommonConstant;
-import com.java110.utils.constant.ResponseConstant;
-import com.java110.utils.exception.BusinessException;
-import com.java110.utils.log.LoggerEngine;
-import com.java110.utils.util.Assert;
-import com.java110.utils.util.ExceptionUtil;
-import com.java110.utils.util.StringUtil;
+import com.java110.core.factory.LoggerFactory;
+import com.java110.core.smo.IQueryServiceSMO;
+import com.java110.core.smo.ISaveSystemErrorSMO;
+import com.java110.core.utils.Assert;
+import com.java110.core.utils.ExceptionUtil;
+import com.java110.core.utils.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.ognl.Ognl;
 import org.apache.ibatis.ognl.OgnlContext;
@@ -47,7 +43,7 @@ import java.util.TreeMap;
  */
 @Service("queryServiceSMOImpl")
 @Transactional
-public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSMO {
+public class QueryServiceSMOImpl implements IQueryServiceSMO {
 
 
     private static Logger logger = LoggerFactory.getLogger(QueryServiceSMOImpl.class);
@@ -60,16 +56,16 @@ public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSM
     private ISaveSystemErrorSMO saveSystemErrorSMOImpl;
 
     @Override
-    public void commonQueryService(DataQuery dataQuery) throws BusinessException {
+    public void commonQueryService(DataQuery dataQuery) throws Exception {
         //查询缓存查询 对应处理的ServiceSql
         ResponseEntity<String> responseEntity = null;
         try {
             ServiceSql currentServiceSql = ServiceSqlCache.getServiceSql(dataQuery.getServiceCode());
             if (currentServiceSql == null) {
-                throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "未提供该服务 serviceCode = " + dataQuery.getServiceCode());
+                throw new IllegalArgumentException("未提供该服务 serviceCode = " + dataQuery.getServiceCode());
             }
             if ("".equals(currentServiceSql.getQueryModel())) {
-                throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "配置服务 serviceCode = " + dataQuery.getServiceCode() + " 错误，未配置QueryModel,请联系管理员");
+                throw new IllegalArgumentException("配置服务 serviceCode = " + dataQuery.getServiceCode() + " 错误，未配置QueryModel,请联系管理员");
             }
             //请求参数校验
             List<String> sysParams = currentServiceSql.getParamList();
@@ -89,7 +85,7 @@ public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSM
                 doExecuteProc(dataQuery);
             }
             responseEntity = new ResponseEntity<String>(dataQuery.getResponseInfo().toJSONString(), HttpStatus.OK);
-        } catch (BusinessException e) {
+        } catch (Exception e) {
             logger.error("公用查询异常：", e);
             /*dataQuery.setResponseInfo(DataTransactionFactory.createBusinessResponseJson(ResponseConstant.RESULT_PARAM_ERROR,
                     e.getMessage()));*/
@@ -102,15 +98,15 @@ public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSM
     }
 
     @Override
-    public void commonDoService(DataQuery dataQuery) throws BusinessException {
+    public void commonDoService(DataQuery dataQuery) throws Exception {
         //查询缓存查询 对应处理的ServiceSql
         try {
             ServiceSql currentServiceSql = ServiceSqlCache.getServiceSql(dataQuery.getServiceCode());
             if (currentServiceSql == null) {
-                throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "未提供该服务 serviceCode = " + dataQuery.getServiceCode());
+                throw new IllegalArgumentException("未提供该服务 serviceCode = " + dataQuery.getServiceCode());
             }
             if ("".equals(currentServiceSql.getQueryModel())) {
-                throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "配置服务 serviceCode = " + dataQuery.getServiceCode() + " 错误，未配置QueryModel,请联系管理员");
+                throw new IllegalArgumentException("配置服务 serviceCode = " + dataQuery.getServiceCode() + " 错误，未配置QueryModel,请联系管理员");
             }
             dataQuery.setServiceSql(currentServiceSql);
             if (CommonConstant.QUERY_MODEL_SQL.equals(currentServiceSql.getQueryModel())) {
@@ -121,32 +117,31 @@ public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSM
                 return;
             }
             doExecuteUpdateProc(dataQuery);
-        } catch (BusinessException e) {
+        } catch (Exception e) {
             logger.error("公用查询异常：", e);
-            dataQuery.setResponseInfo(DataTransactionFactory.createBusinessResponseJson(ResponseConstant.RESULT_PARAM_ERROR,
-                    e.getMessage()));
+            dataQuery.setResponseInfo(JSONObject.parseObject(new ResultVo(ResultVo.CODE_ERROR, e.getMessage()).toString()));
         }
 
     }
 
     @Override
-    public ResponseEntity<String> fallBack(String fallBackInfo) throws BusinessException {
+    public ResponseEntity<String> fallBack(String fallBackInfo) throws Exception {
 
         JSONArray params = JSONArray.parseArray(fallBackInfo);
         String sql = "";
         for (int paramIndex = 0; paramIndex < params.size(); paramIndex++) {
             try {
                 JSONObject param = params.getJSONObject(paramIndex);
-                sql =  param.getString("fallBackSql");
+                sql = param.getString("fallBackSql");
                 if (StringUtil.isEmpty(sql)) {
                     return new ResponseEntity<String>("未包含sql信息", HttpStatus.BAD_REQUEST);
                 }
                 int flag = queryServiceDAOImpl.updateSql(sql, null);
-            }catch (Exception e){
+            } catch (Exception e) {
                 LogSystemErrorPo logSystemErrorPo = new LogSystemErrorPo();
                 logSystemErrorPo.setErrId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_errId));
                 logSystemErrorPo.setErrType(LogSystemErrorDto.ERR_TYPE_JOB);
-                logSystemErrorPo.setMsg(sql+ExceptionUtil.getStackTrace(e));
+                logSystemErrorPo.setMsg(sql + ExceptionUtil.getStackTrace(e));
                 saveSystemErrorSMOImpl.saveLog(logSystemErrorPo);
             }
 
@@ -167,7 +162,7 @@ public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSM
      *
      * @param dataQuery
      */
-    private void doExecuteUpdateSql(DataQuery dataQuery) throws BusinessException {
+    private void doExecuteUpdateSql(DataQuery dataQuery) throws Exception {
         JSONObject business = null;
         try {
             JSONObject params = dataQuery.getRequestParams();
@@ -193,39 +188,38 @@ public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSM
                 int flag = queryServiceDAOImpl.updateSql(currentSqlNew, currentParams.toArray());
 
                 if (flag < 1) {
-                    throw new BusinessException(ResponseConstant.RESULT_PARAM_ERROR, "数据交互失败");
+                    throw new IllegalArgumentException( "数据交互失败");
                 }
             }
 
         } catch (Exception e) {
             logger.error("数据交互异常：", e);
-            throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "数据交互异常。。。");
+            throw new IllegalArgumentException( "数据交互异常。。。");
         }
+        dataQuery.setResponseInfo(JSONObject.parseObject(new ResultVo(ResultVo.CODE_OK, "成功", business).toString()));
 
-        dataQuery.setResponseInfo(DataTransactionFactory.createBusinessResponseJson(ResponseConstant.RESULT_CODE_SUCCESS,
-                "成功", business));
     }
 
     /**
      * 执行java脚本
      *
      * @param dataQuery
-     * @throws BusinessException
+     * @throws Exception
      */
-    private void doExecuteJava(DataQuery dataQuery) throws BusinessException {
-        try {
-            //JSONObject params = dataQuery.getRequestParams();
-            String javaCode = dataQuery.getServiceSql().getJavaScript();
-
-            Interpreter interpreter = new Interpreter();
-            interpreter.eval(javaCode);
-            interpreter.set("dataQuery", dataQuery);
-            dataQuery.setResponseInfo(DataTransactionFactory.createBusinessResponseJson(ResponseConstant.RESULT_CODE_SUCCESS,
-                    "成功", JSONObject.parseObject(interpreter.eval("execute(dataQuery)").toString())));
-        } catch (Exception e) {
-            logger.error("数据交互异常：", e);
-            throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "数据交互异常," + e.getMessage());
-        }
+    private void doExecuteJava(DataQuery dataQuery) throws Exception {
+//        try {
+//            //JSONObject params = dataQuery.getRequestParams();
+//            String javaCode = dataQuery.getServiceSql().getJavaScript();
+//
+//            Interpreter interpreter = new Interpreter();
+//            interpreter.eval(javaCode);
+//            interpreter.set("dataQuery", dataQuery);
+//            dataQuery.setResponseInfo(DataTransactionFactory.createBusinessResponseJson(ResponseConstant.RESULT_CODE_SUCCESS,
+//                    "成功", JSONObject.parseObject(interpreter.eval("execute(dataQuery)").toString())));
+//        } catch (Exception e) {
+//            logger.error("数据交互异常：", e);
+//            throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "数据交互异常," + e.getMessage());
+//        }
     }
 
     /**
@@ -239,7 +233,7 @@ public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSM
      *
      * @param dataQuery
      */
-    private void doExecuteSql(DataQuery dataQuery) throws BusinessException {
+    private void doExecuteSql(DataQuery dataQuery) throws Exception {
 
         JSONObject templateObj = JSONObject.parseObject(dataQuery.getServiceSql().getTemplate());
         JSONObject templateParams = templateObj.getJSONObject("PARAM");
@@ -263,12 +257,12 @@ public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSM
                 currentJsonArr = (JSONArray) o;
                 doJsonArray(currentJsonArr, dataQuery, values);
             } else {
-                throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "template 配置 不正确，value 值 和 TEMPLATE 配置不一致");
+                throw new IllegalArgumentException( "template 配置 不正确，value 值 和 TEMPLATE 配置不一致");
             }
         }
 
-        dataQuery.setResponseInfo(DataTransactionFactory.createBusinessResponseJson(ResponseConstant.RESULT_CODE_SUCCESS,
-                "成功", business));
+        dataQuery.setResponseInfo(JSONObject.parseObject(new ResultVo(ResultVo.CODE_OK, "成功", business).toString()));
+
     }
 
     /**
@@ -356,7 +350,7 @@ public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSM
             }
         } catch (Exception e) {
             logger.error("数据交互异常：", e);
-            throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "数据交互异常。。。");
+            throw new IllegalArgumentException( "数据交互异常。。。"+e.getMessage());
         }
     }
 
@@ -364,45 +358,46 @@ public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSM
      * 执行java脚本
      *
      * @param javaCode
-     * @throws BusinessException
+     * @throws Exception
      */
-    public JSONObject execJava(JSONObject params, String javaCode) throws BusinessException {
-        try {
-            //JSONObject params = dataQuery.getRequestParams();
-            List<String> columns = new ArrayList<>();
-            Interpreter interpreter = new Interpreter();
-            interpreter.eval(javaCode);
-            interpreter.set("params", params);
-            interpreter.set("queryServiceDAOImpl",queryServiceDAOImpl);
-            JSONObject results = JSONObject.parseObject(interpreter.eval("execute(params,queryServiceDAOImpl)").toString(), Feature.OrderedField);
-
-            JSONArray data = null;
-            if (results == null || results.size() < 1) {
-                data = new JSONArray();
-            } else {
-                data = results.getJSONArray("data");
-            }
-
-            JSONArray th = new JSONArray();
-            if(data.size()>0) {
-                for (String key : data.getJSONObject(0).keySet()) {
-                    th.add(key);
-                }
-            }
-            JSONObject paramOut = new JSONObject();
-            paramOut.put("th", th);
-            paramOut.put("td", data);
-            paramOut.put("total",results.getString("total"));
-
-            return paramOut;
-        } catch (Exception e) {
-            logger.error("数据交互异常：", e);
-            throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "数据交互异常," + e.getMessage());
-        }
+    public JSONObject execJava(JSONObject params, String javaCode) throws Exception {
+//        try {
+//            //JSONObject params = dataQuery.getRequestParams();
+//            List<String> columns = new ArrayList<>();
+//            Interpreter interpreter = new Interpreter();
+//            interpreter.eval(javaCode);
+//            interpreter.set("params", params);
+//            interpreter.set("queryServiceDAOImpl", queryServiceDAOImpl);
+//            JSONObject results = JSONObject.parseObject(interpreter.eval("execute(params,queryServiceDAOImpl)").toString(), Feature.OrderedField);
+//
+//            JSONArray data = null;
+//            if (results == null || results.size() < 1) {
+//                data = new JSONArray();
+//            } else {
+//                data = results.getJSONArray("data");
+//            }
+//
+//            JSONArray th = new JSONArray();
+//            if (data.size() > 0) {
+//                for (String key : data.getJSONObject(0).keySet()) {
+//                    th.add(key);
+//                }
+//            }
+//            JSONObject paramOut = new JSONObject();
+//            paramOut.put("th", th);
+//            paramOut.put("td", data);
+//            paramOut.put("total", results.getString("total"));
+//
+//            return paramOut;
+//        } catch (Exception e) {
+//            logger.error("数据交互异常：", e);
+//            throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "数据交互异常," + e.getMessage());
+//        }
+        return null;
     }
 
     @Override
-    public JSONObject execQuerySql(JSONObject params, String currentSql) throws BusinessException {
+    public JSONObject execQuerySql(JSONObject params, String currentSql) throws Exception {
         List<Map<String, Object>> results = null;
         List<String> columns = new ArrayList<>();
         try {
@@ -432,7 +427,7 @@ public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSM
             results = queryServiceDAOImpl.executeSql(currentSqlNew, currentParams.toArray(), columns);
         } catch (Exception e) {
             logger.error("解析sql 异常", e);
-            throw new BusinessException("1999", e.getLocalizedMessage());
+            throw  e;
         }
         JSONArray data = null;
         if (results == null || results.size() < 1) {
@@ -490,14 +485,14 @@ public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSM
 
             Object condObj = Ognl.parseExpression(condition);
 
-            OgnlContext context = new OgnlContext(null,null,new DefaultMemberAccess(true));
+            OgnlContext context = new OgnlContext(null, null, new DefaultMemberAccess(true));
 
-            Object value = Ognl.getValue(condObj,context, requestParams);
+            Object value = Ognl.getValue(condObj, context, requestParams);
 
             if (value instanceof Boolean) {
                 conditionResult = (Boolean) value;
             } else {
-                throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "配置错误，if语句配置错误 " + condition);
+                throw new IllegalArgumentException("配置错误，if语句配置错误 " + condition);
             }
 
             if (conditionResult) {
@@ -541,11 +536,11 @@ public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSM
         String jsonStr = queryServiceDAOImpl.updateProc(info);
 
         if (!Assert.isJsonObject(jsonStr)) {
-            throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "存储过程 procName = " + dataQuery.getServiceSql().getProc() + " 返回结果不是Json格式");
+            throw new IllegalArgumentException( "存储过程 procName = " + dataQuery.getServiceSql().getProc() + " 返回结果不是Json格式");
         }
 
-        dataQuery.setResponseInfo(DataTransactionFactory.createBusinessResponseJson(ResponseConstant.RESULT_CODE_SUCCESS,
-                "成功", JSONObject.parseObject(jsonStr)));
+        dataQuery.setResponseInfo(JSONObject.parseObject(new ResultVo(ResultVo.CODE_OK, "成功").toString()));
+
     }
 
 
@@ -554,23 +549,23 @@ public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSM
      *
      * @param template
      * @return
-     * @throws BusinessException
+     * @throws Exception
      */
-    private String[] judgeResponseTemplate(String template) throws BusinessException {
+    private String[] judgeResponseTemplate(String template) throws Exception {
 
 
         if (!template.startsWith("$.")) {
-            throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "template 配置 不正确，value 必须以$.开头");
+            throw new IllegalArgumentException( "template 配置 不正确，value 必须以$.开头");
         }
 
         String[] values = template.split("#");
 
         if (values == null || values.length != 3) {
-            throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "template 配置 不正确，value 必须有两个#号");
+            throw new IllegalArgumentException( "template 配置 不正确，value 必须有两个#号");
         }
 
         if (StringUtil.isNullOrNone(values[1]) && !"$.##Object".equals(template) && !"$.##Array".equals(template)) {
-            throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "template 配置 不正确，目前只支持 $.##Object 和 $.##Array ");
+            throw new IllegalArgumentException( "template 配置 不正确，目前只支持 $.##Object 和 $.##Array ");
         }
 
         return values;
@@ -591,11 +586,11 @@ public class QueryServiceSMOImpl extends LoggerEngine implements IQueryServiceSM
         String jsonStr = queryServiceDAOImpl.executeProc(info);
 
         if (!Assert.isJsonObject(jsonStr)) {
-            throw new BusinessException(ResponseConstant.RESULT_CODE_INNER_ERROR, "存储过程 procName = " + dataQuery.getServiceSql().getProc() + " 返回结果不是Json格式");
+            throw new IllegalArgumentException( "存储过程 procName = " + dataQuery.getServiceSql().getProc() + " 返回结果不是Json格式");
         }
 
-        dataQuery.setResponseInfo(DataTransactionFactory.createBusinessResponseJson(ResponseConstant.RESULT_CODE_SUCCESS,
-                "成功", JSONObject.parseObject(jsonStr)));
+        dataQuery.setResponseInfo(JSONObject.parseObject(new ResultVo(ResultVo.CODE_OK, "成功",JSONObject.parseObject(jsonStr)).toString()));
+
     }
 
 
