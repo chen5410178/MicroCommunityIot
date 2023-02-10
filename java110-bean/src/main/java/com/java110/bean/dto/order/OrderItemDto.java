@@ -1,7 +1,7 @@
 package com.java110.bean.dto.order;
 
 import com.alibaba.fastjson.JSONObject;
-import com.java110.dto.PageDto;
+import com.java110.bean.dto.PageDto;
 
 import java.io.Serializable;
 

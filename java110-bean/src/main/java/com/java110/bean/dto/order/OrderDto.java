@@ -1,11 +1,11 @@
 package com.java110.bean.dto.order;
 
-import com.java110.dto.PageDto;
+
+import com.java110.bean.dto.PageDto;
 
 import java.io.Serializable;
 
 public class OrderDto extends PageDto implements Serializable {
-
 
 
     public static final String O_ID = "o-id";
@@ -31,7 +31,6 @@ public class OrderDto extends PageDto implements Serializable {
     private String businessTypeCd;
 
     private String[] businessTypeCds;
-
 
 
     public String getoId() {

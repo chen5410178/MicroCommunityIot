@@ -1,0 +1,20 @@
+package com.java110.core.smo;
+
+import org.springframework.http.ResponseEntity;
+
+import java.util.Map;
+
+/**
+ * 公用查询处理
+ * Created by wuxw on 2018/4/19.
+ */
+public interface ICmdServiceSMO {
+
+    /**
+     * 业务统一处理服务方法
+     * @param reqJson 请求报文json
+     * @return
+     */
+    ResponseEntity<String> cmd(String reqJson, Map<String, String> headers) throws Exception;
+
+}

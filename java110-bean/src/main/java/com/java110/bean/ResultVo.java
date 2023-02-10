@@ -1,4 +1,4 @@
-package com.java110.vo;
+package com.java110.bean;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;

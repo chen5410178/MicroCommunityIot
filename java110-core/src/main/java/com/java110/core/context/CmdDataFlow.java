@@ -18,6 +18,7 @@ import java.util.UUID;
  */
 public class CmdDataFlow extends AbstractCmdDataFlowContext {
 
+
     public CmdDataFlow() {
     }
 
@@ -78,11 +79,52 @@ public class CmdDataFlow extends AbstractCmdDataFlowContext {
         this.serviceCode = serviceCode;
     }
 
+    @Override
+    public String getReqData() {
+        return null;
+    }
+
     public ResponseEntity getResponseEntity() {
         return responseEntity;
     }
 
     public void setResponseEntity(ResponseEntity responseEntity) {
         this.responseEntity = responseEntity;
+    }
+
+
+    @Override
+    public String getDataFlowId() {
+        return null;
+    }
+
+    @Override
+    public Map<String, String> getReqHeaders() {
+        return null;
+    }
+
+    @Override
+    public JSONObject getReqJson() {
+        return null;
+    }
+
+    @Override
+    public void setResHeaders(Map<String, String> resHeaders) {
+
+    }
+
+    @Override
+    public void setResJson(JSONObject resJson) {
+
+    }
+
+    @Override
+    public Map<String, String> getResHeaders() {
+        return null;
+    }
+
+    @Override
+    public JSONObject getResJson() {
+        return null;
     }
 }

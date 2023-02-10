@@ -24,5 +24,5 @@ public interface IApiService {
      * @return
      */
     ResponseEntity<String> get(String service,
-                               HttpServletRequest request);
+                               HttpServletRequest request) throws Exception;
 }
