@@ -67,30 +67,34 @@ public class JwtFilter implements Filter {
         } catch (IllegalArgumentException e) {
             logger.error("业务处理失败", e);
             if ("POST".equals(request.getMethod())) {
-                writeJson(response, ResultVo.error(ResultVo.MSG_UNAUTHORIZED,e.getMessage()).getBody(),
+                writeJson(response, ResultVo.error(ResultVo.MSG_UNAUTHORIZED, e.getMessage()).getBody(),
                         "UTF-8");
             } else {
                 //response.sendRedirect("/flow/login");
-                noLogin(request,response);
+                noLogin(request, response);
             }
 
         } catch (Exception e) {
             //response.sendRedirect("/flow/login");
-            noLogin(request,response);
+            noLogin(request, response);
         }
     }
 
     public void noLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String type = request.getHeader("X-Requested-With");// XMLHttpRequest     HttpServletRequest -> request
+        String unauthorizedUrl = request.getHeader("unauthorized-url");
+        if (StringUtil.isEmpty(unauthorizedUrl)) {
+            unauthorizedUrl = "/user.html#/pages/frame/login";
+        }
         if ("XMLHttpRequest".equals(type)) {
             //是ajax请求
             // 异步请求下的重定向
-            response.setHeader("CONTEXTPATH", "/user.html#/pages/frame/login");//重定向目标地址
-            response.setHeader("location", "/user.html#/pages/frame/login");//重定向目标地址
+            response.setHeader("CONTEXTPATH", unauthorizedUrl);//重定向目标地址
+            response.setHeader("location", unauthorizedUrl);//重定向目标地址
             response.setStatus(401);
         } else {
             //非ajax请求，直接使用重定向
-            response.sendRedirect("/user.html#/pages/frame/login");
+            response.sendRedirect(unauthorizedUrl);
         }
     }
 

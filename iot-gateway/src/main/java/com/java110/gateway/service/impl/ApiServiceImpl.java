@@ -36,6 +36,8 @@ public class ApiServiceImpl implements IApiService {
 
     public static final String CMD = "CMD";
 
+    private static final String LOGIN_URL = "login.pcUserLogin";
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -60,9 +62,36 @@ public class ApiServiceImpl implements IApiService {
         privilegeSMOImpl.hasPrivilege("/iot/api/" + service, headers.get("user-id"));
         responseEntity = doService(postInfo, headers, request);
 
+
         logger.debug("api：{} 返回信息为：{}", service, responseEntity);
 
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            return responseEntity;
+        }
+
+        //这里写token 到cookies
+        wirteToken(service, responseEntity.getBody(), request);
+
         return responseEntity;
+    }
+
+    private void wirteToken(String service, String body,HttpServletRequest request) {
+        if (!LOGIN_URL.equals(service)) {
+            return;
+        }
+
+        JSONObject result = JSONObject.parseObject(body);
+
+        if (result.getIntValue("code") != 0) {
+            return;
+        }
+        String token = result.getString("token");
+        if(StringUtil.isEmpty(token)){
+            return;
+        }
+
+        request.setAttribute(CommonConstant.COOKIE_AUTH_TOKEN,token);
+
     }
 
     /**

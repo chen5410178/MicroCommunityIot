@@ -14,7 +14,10 @@ import java.util.Date;
  * add by wuxw 2019/4/24
  **/
 public class UserDto extends PageDto implements Serializable {
-
+    public static final String LEVEL_CD_MALL = "03";//商城用户
+    public static final String LEVEL_CD_ADMIN = "00";//系统管理员
+    public static final String LEVEL_CD_STAFF = "01";//员工
+    public static final String LEVEL_CD_USER = "02";//普通用户
     private String password;
     private String address;
     private String sex;
@@ -22,6 +25,7 @@ public class UserDto extends PageDto implements Serializable {
     private String tel;
     private String userId;
     private String levelCd;
+    private String[] levelCds;
     private String email;
 
 
@@ -109,5 +113,13 @@ public class UserDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String[] getLevelCds() {
+        return levelCds;
+    }
+
+    public void setLevelCds(String[] levelCds) {
+        this.levelCds = levelCds;
     }
 }

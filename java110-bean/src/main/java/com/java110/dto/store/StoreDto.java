@@ -40,6 +40,8 @@ public class StoreDto extends PageDto implements Serializable {
     private String tel;
     private String storeId;
 
+    private String state;
+
 
     private Date createTime;
 
@@ -109,5 +111,13 @@ public class StoreDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

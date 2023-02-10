@@ -14,7 +14,7 @@ public class ServiceConfiguration {
     public FilterRegistrationBean jwtFilter() {
         StringBuffer exclusions = new StringBuffer();
 
-        exclusions.append("/flow/login,");
+        exclusions.append("/iot/api/login.pcUserLogin,");
 
         final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(new JwtFilter());

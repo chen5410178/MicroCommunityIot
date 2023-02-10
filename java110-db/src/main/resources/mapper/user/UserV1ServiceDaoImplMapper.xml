@@ -5,129 +5,137 @@
 <mapper namespace="userV1ServiceDaoImpl">
 
 
-
-
-
     <!-- 保存用户信息 add by wuxw 2018-07-03 -->
     <insert id="saveUserInfo" parameterType="Map">
         insert into u_user(
-password,address,sex,name,tel,user_id,level_cd,email
-) values (
-#{password},#{address},#{sex},#{name},#{tel},#{userId},#{levelCd},#{email}
-)
+        password,address,sex,name,tel,user_id,level_cd,email
+        ) values (
+        #{password},#{address},#{sex},#{name},#{tel},#{userId},#{levelCd},#{email}
+        )
     </insert>
-
 
 
     <!-- 查询用户信息 add by wuxw 2018-07-03 -->
     <select id="getUserInfo" parameterType="Map" resultType="Map">
-        select  t.password,t.address,t.sex,t.name,t.tel,t.status_cd,t.status_cd statusCd,t.user_id,t.user_id userId,t.level_cd,t.level_cd levelCd,t.email 
-from u_user t 
-where 1 =1 
-<if test="password !=null and password != ''">
-   and t.password= #{password}
-</if> 
-<if test="address !=null and address != ''">
-   and t.address= #{address}
-</if> 
-<if test="sex !=null and sex != ''">
-   and t.sex= #{sex}
-</if> 
-<if test="name !=null and name != ''">
-   and t.name= #{name}
-</if> 
-<if test="tel !=null and tel != ''">
-   and t.tel= #{tel}
-</if> 
-<if test="statusCd !=null and statusCd != ''">
-   and t.status_cd= #{statusCd}
-</if> 
-<if test="userId !=null and userId != ''">
-   and t.user_id= #{userId}
-</if> 
-<if test="levelCd !=null and levelCd != ''">
-   and t.level_cd= #{levelCd}
-</if> 
-<if test="email !=null and email != ''">
-   and t.email= #{email}
-</if> 
-order by t.create_time desc
-<if test="page != -1 and page != null ">
-   limit #{page}, #{row}
-</if> 
+        select t.password,t.address,t.sex,t.name,t.tel,t.status_cd,t.status_cd statusCd,t.user_id,t.user_id
+        userId,t.level_cd,t.level_cd levelCd,t.email
+        from u_user t
+        where 1 =1
+        <if test="password !=null and password != ''">
+            and t.password= #{password}
+        </if>
+        <if test="address !=null and address != ''">
+            and t.address= #{address}
+        </if>
+        <if test="sex !=null and sex != ''">
+            and t.sex= #{sex}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="userId !=null and userId != ''">
+            and t.user_id= #{userId}
+        </if>
+        <if test="levelCd !=null and levelCd != ''">
+            and t.level_cd= #{levelCd}
+        </if>
+        <if test="levelCds != null">
+            and t.level_cd in
+            <foreach collection="levelCds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="email !=null and email != ''">
+            and t.email= #{email}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
 
     </select>
 
 
-
-
     <!-- 修改用户信息 add by wuxw 2018-07-03 -->
     <update id="updateUserInfo" parameterType="Map">
-        update  u_user t set t.status_cd = #{statusCd}
-<if test="newBId != null and newBId != ''">
-,t.b_id = #{newBId}
-</if> 
-<if test="password !=null and password != ''">
-, t.password= #{password}
-</if> 
-<if test="address !=null and address != ''">
-, t.address= #{address}
-</if> 
-<if test="sex !=null and sex != ''">
-, t.sex= #{sex}
-</if> 
-<if test="name !=null and name != ''">
-, t.name= #{name}
-</if> 
-<if test="tel !=null and tel != ''">
-, t.tel= #{tel}
-</if> 
-<if test="levelCd !=null and levelCd != ''">
-, t.level_cd= #{levelCd}
-</if> 
-<if test="email !=null and email != ''">
-, t.email= #{email}
-</if> 
- where 1=1 <if test="userId !=null and userId != ''">
-and t.user_id= #{userId}
-</if> 
+        update u_user t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="password !=null and password != ''">
+            , t.password= #{password}
+        </if>
+        <if test="address !=null and address != ''">
+            , t.address= #{address}
+        </if>
+        <if test="sex !=null and sex != ''">
+            , t.sex= #{sex}
+        </if>
+        <if test="name !=null and name != ''">
+            , t.name= #{name}
+        </if>
+        <if test="tel !=null and tel != ''">
+            , t.tel= #{tel}
+        </if>
+        <if test="levelCd !=null and levelCd != ''">
+            , t.level_cd= #{levelCd}
+        </if>
+        <if test="email !=null and email != ''">
+            , t.email= #{email}
+        </if>
+        where 1=1
+        <if test="userId !=null and userId != ''">
+            and t.user_id= #{userId}
+        </if>
 
     </update>
 
     <!-- 查询用户数量 add by wuxw 2018-07-03 -->
-     <select id="queryUsersCount" parameterType="Map" resultType="Map">
-        select  count(1) count 
-from u_user t 
-where 1 =1 
-<if test="password !=null and password != ''">
-   and t.password= #{password}
-</if> 
-<if test="address !=null and address != ''">
-   and t.address= #{address}
-</if> 
-<if test="sex !=null and sex != ''">
-   and t.sex= #{sex}
-</if> 
-<if test="name !=null and name != ''">
-   and t.name= #{name}
-</if> 
-<if test="tel !=null and tel != ''">
-   and t.tel= #{tel}
-</if> 
-<if test="statusCd !=null and statusCd != ''">
-   and t.status_cd= #{statusCd}
-</if> 
-<if test="userId !=null and userId != ''">
-   and t.user_id= #{userId}
-</if> 
-<if test="levelCd !=null and levelCd != ''">
-   and t.level_cd= #{levelCd}
-</if> 
-<if test="email !=null and email != ''">
-   and t.email= #{email}
-</if> 
+    <select id="queryUsersCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from u_user t
+        where 1 =1
+        <if test="password !=null and password != ''">
+            and t.password= #{password}
+        </if>
+        <if test="address !=null and address != ''">
+            and t.address= #{address}
+        </if>
+        <if test="sex !=null and sex != ''">
+            and t.sex= #{sex}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="userId !=null and userId != ''">
+            and t.user_id= #{userId}
+        </if>
+        <if test="levelCd !=null and levelCd != ''">
+            and t.level_cd= #{levelCd}
+        </if>
+        <if test="levelCds != null">
+            and t.level_cd in
+            <foreach collection="levelCds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="email !=null and email != ''">
+            and t.email= #{email}
+        </if>
 
 
-     </select>
+    </select>
 
 </mapper>
