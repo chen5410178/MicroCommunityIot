@@ -24,5 +24,9 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.java110</groupId>
+            <artifactId>java110-core</artifactId>
+        </dependency>
     </dependencies>
 </project>

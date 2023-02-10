@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="storeV1ServiceDaoImpl">
+
+
+    <!-- 保存商户信息 add by wuxw 2018-07-03 -->
+    <insert id="saveStoreInfo" parameterType="Map">
+        insert into s_store(
+        create_user_id,address,store_type_cd,name,tel,store_id
+        ) values (
+        #{createUserId},#{address},#{storeTypeCd},#{name},#{tel},#{storeId}
+        )
+    </insert>
+
+
+    <!-- 查询商户信息 add by wuxw 2018-07-03 -->
+    <select id="getStoreInfo" parameterType="Map" resultType="Map">
+        select t.create_user_id,t.create_user_id createUserId,t.address,t.store_type_cd,t.store_type_cd
+        storeTypeCd,t.name,t.tel,t.status_cd,t.status_cd statusCd,t.store_id,t.store_id storeId
+        from s_store t
+        where 1 =1
+        <if test="createUserId !=null and createUserId != ''">
+            and t.create_user_id= #{createUserId}
+        </if>
+        <if test="address !=null and address != ''">
+            and t.address= #{address}
+        </if>
+        <if test="storeTypeCd !=null and storeTypeCd != ''">
+            and t.store_type_cd= #{storeTypeCd}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="storeId !=null and storeId != ''">
+            and t.store_id= #{storeId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改商户信息 add by wuxw 2018-07-03 -->
+    <update id="updateStoreInfo" parameterType="Map">
+        update s_store t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="createUserId !=null and createUserId != ''">
+            , t.create_user_id= #{createUserId}
+        </if>
+        <if test="address !=null and address != ''">
+            , t.address= #{address}
+        </if>
+        <if test="storeTypeCd !=null and storeTypeCd != ''">
+            , t.store_type_cd= #{storeTypeCd}
+        </if>
+        <if test="name !=null and name != ''">
+            , t.name= #{name}
+        </if>
+        <if test="tel !=null and tel != ''">
+            , t.tel= #{tel}
+        </if>
+        where 1=1
+        <if test="storeId !=null and storeId != ''">
+            and t.store_id= #{storeId}
+        </if>
+
+    </update>
+
+    <!-- 查询商户数量 add by wuxw 2018-07-03 -->
+    <select id="queryStoresCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from s_store t
+        where 1 =1
+        <if test="createUserId !=null and createUserId != ''">
+            and t.create_user_id= #{createUserId}
+        </if>
+        <if test="address !=null and address != ''">
+            and t.address= #{address}
+        </if>
+        <if test="storeTypeCd !=null and storeTypeCd != ''">
+            and t.store_type_cd= #{storeTypeCd}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="storeId !=null and storeId != ''">
+            and t.store_id= #{storeId}
+        </if>
+
+
+    </select>
+
+</mapper>
