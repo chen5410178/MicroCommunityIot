@@ -1,0 +1,53 @@
+package com.java110.dev.dao;
+
+
+import com.java110.bean.dto.basePrivilege.BasePrivilegeDto;
+import com.java110.bean.dto.businessDatabus.BusinessDatabusDto;
+import com.java110.bean.dto.businessTableHis.BusinessTableHisDto;
+import com.java110.bean.dto.mapping.MappingDto;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by wuxw on 2018/4/14.
+ */
+public interface IDevServiceDAO {
+
+    /**
+     * 查询所有组件
+     *
+     * @return
+     */
+    public List<Map> getAppRouteAndServiceInfoAll();
+
+    /**
+     * 查询映射表
+     *
+     * @return
+     */
+    public List<MappingDto> getMappingInfoAll();
+
+    /**
+     * 查询映射表
+     *
+     * @return
+     */
+    public List<BasePrivilegeDto> getPrivilegeAll();
+    /**
+     * 查询映射表
+     *
+     * @return
+     */
+    public List<BusinessDatabusDto> getDatabusAll();
+    /**
+     * 查询映射表
+     *
+     * @return
+     */
+    public List<BusinessTableHisDto> getBusinessTableHisAll();
+
+
+
+
+}

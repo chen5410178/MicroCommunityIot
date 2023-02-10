@@ -1,4 +1,4 @@
-package com.java110.dto.mapping;
+package com.java110.bean.dto.mapping;
 
 import com.java110.bean.dto.PageDto;
 

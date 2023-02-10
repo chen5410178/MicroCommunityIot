@@ -20,14 +20,12 @@ import com.java110.bean.dto.PageDto;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dev.dao.IMappingV1ServiceDao;
 import com.java110.intf.dev.IMappingV1InnerServiceSMO;
-import com.java110.dto.mapping.MappingDto;
+import com.java110.bean.dto.mapping.MappingDto;
 import com.java110.po.mapping.MappingPo;
-import com.java110.dto.user.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

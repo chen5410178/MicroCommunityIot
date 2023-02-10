@@ -1,9 +1,9 @@
 package com.java110.core.cache;
 
-import com.java110.bean.dto.mapping.Mapping;
 import com.java110.core.constant.DomainContant;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.SerializeUtil;
+import com.java110.bean.dto.mapping.MappingDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
@@ -43,7 +43,7 @@ public class MappingCache extends BaseCache {
                 return null;
             }
 
-            Mapping mapping = (Mapping) object;
+            MappingDto mapping = (MappingDto) object;
             return mapping.getValue();
         } finally {
             if (redis != null) {
@@ -61,19 +61,19 @@ public class MappingCache extends BaseCache {
      * @return
      */
     public static String getValue(String key) {
-        Mapping mapping = getMapping(key);
+        MappingDto mapping = getMappingDto(key);
         return mapping == null ? "" : mapping.getValue();
     }
 
-    public static Mapping getMapping(String key) {
+    public static MappingDto getMappingDto(String key) {
         Jedis redis = null;
         long startTime = DateUtil.getCurrentDate().getTime();
 
         try {
             redis = getJedis();
             Object obj = SerializeUtil.unserialize(redis.get((DomainContant.COMMON_DOMAIN + key + _SUFFIX_MAPPING).getBytes()));
-            if (obj instanceof Mapping) {
-                return (Mapping) obj;
+            if (obj instanceof MappingDto) {
+                return (MappingDto) obj;
             }
         } finally {
             if (redis != null) {
@@ -91,11 +91,11 @@ public class MappingCache extends BaseCache {
      * @param domain
      * @return
      */
-    public static List<Mapping> getValueByDomain(String domain) {
+    public static List<MappingDto> getValueByDomain(String domain) {
         Jedis redis = null;
         try {
             redis = getJedis();
-            return SerializeUtil.unserializeList(redis.get((domain + _SUFFIX_MAPPING).getBytes()), Mapping.class);
+            return SerializeUtil.unserializeList(redis.get((domain + _SUFFIX_MAPPING).getBytes()), MappingDto.class);
         } finally {
             if (redis != null) {
                 redis.close();
@@ -108,11 +108,11 @@ public class MappingCache extends BaseCache {
      *
      * @param mapping
      */
-    public static void setVaule(Mapping mapping) {
+    public static void setVaule(MappingDto mapping) {
         Jedis redis = null;
         try {
             redis = getJedis();
-            redis.set((mapping.getDomain() + mapping.getKey() + _SUFFIX_MAPPING).getBytes(), SerializeUtil.serialize(mapping));
+            redis.set((mapping.getDomain() + mapping.getMappingKey() + _SUFFIX_MAPPING).getBytes(), SerializeUtil.serialize(mapping));
         } finally {
             if (redis != null) {
                 redis.close();
@@ -125,7 +125,7 @@ public class MappingCache extends BaseCache {
      *
      * @param mappings
      */
-    public static void setValue(List<Mapping> mappings) {
+    public static void setValue(List<MappingDto> mappings) {
         Jedis redis = null;
         try {
             redis = getJedis();
@@ -153,7 +153,7 @@ public class MappingCache extends BaseCache {
                 return null;
             }
 
-            Mapping mapping = (Mapping) object;
+            MappingDto mapping = (MappingDto) object;
             return mapping.getRemark();
         } finally {
             if (redis != null) {

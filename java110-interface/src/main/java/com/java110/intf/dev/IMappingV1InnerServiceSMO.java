@@ -15,7 +15,7 @@
  */
 package com.java110.intf.dev;
 
-import com.java110.dto.mapping.MappingDto;
+import com.java110.bean.dto.mapping.MappingDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.mapping.MappingPo;
 import org.springframework.cloud.openfeign.FeignClient;
