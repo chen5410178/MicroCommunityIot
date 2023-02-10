@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="storeStaffV1ServiceDaoImpl">
+
+
+    <!-- 保存员工表信息 add by wuxw 2018-07-03 -->
+    <insert id="saveStoreStaffInfo" parameterType="Map">
+        insert into s_store_staff(
+        staff_name,tel,store_id,admin_flag,store_staff_id,staff_id
+        ) values (
+        #{staffName},#{tel},#{storeId},#{adminFlag},#{storeStaffId},#{staffId}
+        )
+    </insert>
+
+
+    <!-- 查询员工表信息 add by wuxw 2018-07-03 -->
+    <select id="getStoreStaffInfo" parameterType="Map" resultType="Map">
+        select t.staff_name,t.staff_name staffName,t.tel,t.status_cd,t.status_cd statusCd,t.store_id,t.store_id
+        storeId,t.admin_flag,t.admin_flag adminFlag,t.store_staff_id,t.store_staff_id storeStaffId,t.staff_id,t.staff_id
+        staffId
+        from s_store_staff t
+        where 1 =1
+        <if test="staffName !=null and staffName != ''">
+            and t.staff_name= #{staffName}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="storeId !=null and storeId != ''">
+            and t.store_id= #{storeId}
+        </if>
+        <if test="adminFlag !=null and adminFlag != ''">
+            and t.admin_flag= #{adminFlag}
+        </if>
+        <if test="storeStaffId !=null and storeStaffId != ''">
+            and t.store_staff_id= #{storeStaffId}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改员工表信息 add by wuxw 2018-07-03 -->
+    <update id="updateStoreStaffInfo" parameterType="Map">
+        update s_store_staff t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            , t.staff_name= #{staffName}
+        </if>
+        <if test="tel !=null and tel != ''">
+            , t.tel= #{tel}
+        </if>
+        <if test="storeId !=null and storeId != ''">
+            , t.store_id= #{storeId}
+        </if>
+        <if test="adminFlag !=null and adminFlag != ''">
+            , t.admin_flag= #{adminFlag}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            , t.staff_id= #{staffId}
+        </if>
+        where 1=1
+        <if test="storeStaffId !=null and storeStaffId != ''">
+            and t.store_staff_id= #{storeStaffId}
+        </if>
+
+    </update>
+
+    <!-- 查询员工表数量 add by wuxw 2018-07-03 -->
+    <select id="queryStoreStaffsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from s_store_staff t
+        where 1 =1
+        <if test="staffName !=null and staffName != ''">
+            and t.staff_name= #{staffName}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="storeId !=null and storeId != ''">
+            and t.store_id= #{storeId}
+        </if>
+        <if test="adminFlag !=null and adminFlag != ''">
+            and t.admin_flag= #{adminFlag}
+        </if>
+        <if test="storeStaffId !=null and storeStaffId != ''">
+            and t.store_staff_id= #{storeStaffId}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+
+
+    </select>
+
+</mapper>

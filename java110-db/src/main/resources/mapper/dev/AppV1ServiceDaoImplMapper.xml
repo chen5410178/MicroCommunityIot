@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="appV1ServiceDaoImpl">
+
+
+    <!-- 保存应用信息 add by wuxw 2018-07-03 -->
+    <insert id="saveAppInfo" parameterType="Map">
+        insert into c_app(
+        app_id,black_list_ip,name,security_code,remark,while_list_ip
+        ) values (
+        #{appId},#{blackListIp},#{name},#{securityCode},#{remark},#{whileListIp}
+        )
+    </insert>
+
+
+    <!-- 查询应用信息 add by wuxw 2018-07-03 -->
+    <select id="getAppInfo" parameterType="Map" resultType="Map">
+        select t.app_id,t.app_id appId,t.black_list_ip,t.black_list_ip
+        blackListIp,t.name,t.security_code,t.security_code securityCode,t.remark,t.status_cd,t.status_cd
+        statusCd,t.while_list_ip,t.while_list_ip whileListIp
+        from c_app t
+        where 1 =1
+        <if test="appId !=null and appId != ''">
+            and t.app_id= #{appId}
+        </if>
+        <if test="blackListIp !=null and blackListIp != ''">
+            and t.black_list_ip= #{blackListIp}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="securityCode !=null and securityCode != ''">
+            and t.security_code= #{securityCode}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="whileListIp !=null and whileListIp != ''">
+            and t.while_list_ip= #{whileListIp}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改应用信息 add by wuxw 2018-07-03 -->
+    <update id="updateAppInfo" parameterType="Map">
+        update c_app t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="blackListIp !=null and blackListIp != ''">
+            , t.black_list_ip= #{blackListIp}
+        </if>
+        <if test="name !=null and name != ''">
+            , t.name= #{name}
+        </if>
+        <if test="securityCode !=null and securityCode != ''">
+            , t.security_code= #{securityCode}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="whileListIp !=null and whileListIp != ''">
+            , t.while_list_ip= #{whileListIp}
+        </if>
+        where 1=1
+        <if test="appId !=null and appId != ''">
+            and t.app_id= #{appId}
+        </if>
+
+    </update>
+
+    <!-- 查询应用数量 add by wuxw 2018-07-03 -->
+    <select id="queryAppsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from c_app t
+        where 1 =1
+        <if test="appId !=null and appId != ''">
+            and t.app_id= #{appId}
+        </if>
+        <if test="blackListIp !=null and blackListIp != ''">
+            and t.black_list_ip= #{blackListIp}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="securityCode !=null and securityCode != ''">
+            and t.security_code= #{securityCode}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="whileListIp !=null and whileListIp != ''">
+            and t.while_list_ip= #{whileListIp}
+        </if>
+
+
+    </select>
+
+</mapper>
