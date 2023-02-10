@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="privilegeV1ServiceDaoImpl">
+
+
+
+
+
+    <!-- 保存权限信息 add by wuxw 2018-07-03 -->
+    <insert id="savePrivilegeInfo" parameterType="Map">
+        insert into p_privilege(
+resource,domain,name,description,m_id,p_id
+) values (
+#{resource},#{domain},#{name},#{description},#{mId},#{pId}
+)
+    </insert>
+
+
+
+    <!-- 查询权限信息 add by wuxw 2018-07-03 -->
+    <select id="getPrivilegeInfo" parameterType="Map" resultType="Map">
+        select  t.resource,t.domain,t.name,t.description,t.m_id,t.m_id mId,t.p_id,t.p_id pId,t.status_cd,t.status_cd statusCd 
+from p_privilege t 
+where 1 =1 
+<if test="resource !=null and resource != ''">
+   and t.resource= #{resource}
+</if> 
+<if test="domain !=null and domain != ''">
+   and t.domain= #{domain}
+</if> 
+<if test="name !=null and name != ''">
+   and t.name= #{name}
+</if> 
+<if test="description !=null and description != ''">
+   and t.description= #{description}
+</if> 
+<if test="mId !=null and mId != ''">
+   and t.m_id= #{mId}
+</if> 
+<if test="pId !=null and pId != ''">
+   and t.p_id= #{pId}
+</if> 
+<if test="statusCd !=null and statusCd != ''">
+   and t.status_cd= #{statusCd}
+</if> 
+order by t.create_time desc
+<if test="page != -1 and page != null ">
+   limit #{page}, #{row}
+</if> 
+
+    </select>
+
+
+
+
+    <!-- 修改权限信息 add by wuxw 2018-07-03 -->
+    <update id="updatePrivilegeInfo" parameterType="Map">
+        update  p_privilege t set t.status_cd = #{statusCd}
+<if test="newBId != null and newBId != ''">
+,t.b_id = #{newBId}
+</if> 
+<if test="resource !=null and resource != ''">
+, t.resource= #{resource}
+</if> 
+<if test="domain !=null and domain != ''">
+, t.domain= #{domain}
+</if> 
+<if test="name !=null and name != ''">
+, t.name= #{name}
+</if> 
+<if test="description !=null and description != ''">
+, t.description= #{description}
+</if> 
+<if test="mId !=null and mId != ''">
+, t.m_id= #{mId}
+</if> 
+ where 1=1 <if test="pId !=null and pId != ''">
+and t.p_id= #{pId}
+</if> 
+
+    </update>
+
+    <!-- 查询权限数量 add by wuxw 2018-07-03 -->
+     <select id="queryPrivilegesCount" parameterType="Map" resultType="Map">
+        select  count(1) count 
+from p_privilege t 
+where 1 =1 
+<if test="resource !=null and resource != ''">
+   and t.resource= #{resource}
+</if> 
+<if test="domain !=null and domain != ''">
+   and t.domain= #{domain}
+</if> 
+<if test="name !=null and name != ''">
+   and t.name= #{name}
+</if> 
+<if test="description !=null and description != ''">
+   and t.description= #{description}
+</if> 
+<if test="mId !=null and mId != ''">
+   and t.m_id= #{mId}
+</if> 
+<if test="pId !=null and pId != ''">
+   and t.p_id= #{pId}
+</if> 
+<if test="statusCd !=null and statusCd != ''">
+   and t.status_cd= #{statusCd}
+</if> 
+
+
+     </select>
+
+</mapper>
