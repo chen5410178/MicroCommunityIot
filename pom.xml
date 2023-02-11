@@ -435,6 +435,11 @@
                 <artifactId>java110-core</artifactId>
                 <version>${microcommunity.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.java110</groupId>
+                <artifactId>java110-db</artifactId>
+                <version>${microcommunity.version}</version>
+            </dependency>
 
 
         </dependencies>

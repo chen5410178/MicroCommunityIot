@@ -83,6 +83,7 @@ public class BusinessTableHisCache extends BaseCache {
         Jedis redis = null;
         try {
             redis = getJedis();
+
             redis.set((DEFAULT_BUSINESS_TABLE_HIS).getBytes(), SerializeUtil.serializeList(businessTableHisDtoDtoDtos));
         } finally {
             if (redis != null) {

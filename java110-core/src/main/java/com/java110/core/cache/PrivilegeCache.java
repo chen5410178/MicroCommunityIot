@@ -42,6 +42,9 @@ public class PrivilegeCache extends BaseCache {
         Jedis redis = null;
         try {
             redis = getJedis();
+            if (basePrivilegeDtos == null || basePrivilegeDtos.size() < 1) {
+                return;
+            }
             redis.set((DEFAULT_PRIVILEGE).getBytes(), SerializeUtil.serializeList(basePrivilegeDtos));
         } finally {
             if (redis != null) {

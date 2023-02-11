@@ -37,17 +37,21 @@ public class Java110RedisConfig extends CachingConfigurerSupport  {
     @Autowired
     private RedisTemplate redisTemplate;
 
+
+
     @Bean(name= "jedisPool")
     @Autowired
     public JedisPool jedisPool(@Qualifier("jedis.pool.config") JedisPoolConfig config,
-                               @Value("${jedis.pool.host}")String host,
-                               @Value("${jedis.pool.port}")int port,
-                               @Value("${jedis.pool.timeout}")int timeout,
-                               @Value("${jedis.pool.password}") String password) {
+                               @Value("${spring.redis.host}")String host,
+                               @Value("${spring.redis.port}")int port,
+                               @Value("${spring.redis.pool.timeout}")int timeout,
+                               @Value("${spring.redis.password}") String password) {
         //没有配置改为默认值
         if(timeout == 0){
             timeout = 2000;
         }
+
+
 
         if(StringUtils.isEmpty(password)) {
             return new JedisPool(config, host, port,timeout);
@@ -57,9 +61,9 @@ public class Java110RedisConfig extends CachingConfigurerSupport  {
     }
 
     @Bean(name= "jedis.pool.config")
-    public JedisPoolConfig jedisPoolConfig (@Value("${jedis.pool.config.maxTotal}")int maxTotal,
-                                            @Value("${jedis.pool.config.maxIdle}")int maxIdle,
-                                            @Value("${jedis.pool.config.maxWaitMillis}")int maxWaitMillis) {
+    public JedisPoolConfig jedisPoolConfig (@Value("${spring.redis.pool.max-active}")int maxTotal,
+                                            @Value("${spring.redis.pool.max-idle}")int maxIdle,
+                                            @Value("${spring.redis.pool.maxWaitMillis}")int maxWaitMillis) {
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxTotal(maxTotal);
         config.setMaxIdle(maxIdle);

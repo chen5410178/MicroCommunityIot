@@ -129,6 +129,9 @@ public class MappingCache extends BaseCache {
         Jedis redis = null;
         try {
             redis = getJedis();
+            if (mappings == null || mappings.size() < 1) {
+                return;
+            }
             redis.set((mappings.get(0).getDomain() + _SUFFIX_MAPPING).getBytes(), SerializeUtil.serializeList(mappings));
         } finally {
             if (redis != null) {

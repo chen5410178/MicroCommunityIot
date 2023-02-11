@@ -33,6 +33,14 @@ public class ServiceStartInit {
         } catch (Exception ex) {
             throw new IllegalStateException("系统初始化失败", ex);
         }
+
+        System.out.println("=================================================================================================");
+        System.out.println("=                                                                                               =");
+        System.out.println("=                                              服务启动成功!!                                     =");
+        System.out.println("=                                          service start success !!                             =");
+        System.out.println("=                                                                                               =");
+        System.out.println("=================================================================================================");
+
     }
 
 

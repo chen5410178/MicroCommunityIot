@@ -35,14 +35,14 @@ import java.nio.charset.Charset;
  * @tag
  */
 @SpringBootApplication(scanBasePackages = { "com.java110.dev",
-        "com.java110.core",  "com.java110.db", "com.java110.doc"},
+        "com.java110.core",  "com.java110.doc"},
         exclude = {LiquibaseAutoConfiguration.class,
                 org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class})
 @EnableDiscoveryClient
 @Java110CmdDiscovery(cmdPublishClass = ServiceCmdEventPublishing.class,
         basePackages = {"com.java110.dev.cmd"})
 @EnableFeignClients(basePackages = {"com.java110.intf.user",
-        "com.java110.intf.job"})
+        "com.java110.intf.community"})
 public class DevApplicationStart {
 
     private static Logger logger = LoggerFactory.getLogger(DevApplicationStart.class);

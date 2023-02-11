@@ -18,7 +18,6 @@ public class ServiceConfiguration {
 
         final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(new JwtFilter());
-        registrationBean.addUrlPatterns("/");
         registrationBean.addUrlPatterns("/iot/api/*");
         registrationBean.addInitParameter("excludedUri",exclusions.toString());
 

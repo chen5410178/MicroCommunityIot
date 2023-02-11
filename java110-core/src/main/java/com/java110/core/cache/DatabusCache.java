@@ -61,6 +61,9 @@ public class DatabusCache extends BaseCache {
         Jedis redis = null;
         try {
             redis = getJedis();
+            if (businessDatabusDtos == null || businessDatabusDtos.size() < 1) {
+                return;
+            }
             redis.set((DEFAULT_DATABUS).getBytes(), SerializeUtil.serializeList(businessDatabusDtos));
         } finally {
             if (redis != null) {

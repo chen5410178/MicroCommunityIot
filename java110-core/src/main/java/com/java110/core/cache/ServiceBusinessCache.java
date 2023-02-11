@@ -45,6 +45,9 @@ public class ServiceBusinessCache extends BaseCache {
         Jedis redis = null;
         try {
             redis = getJedis();
+            if (serviceBusinesses == null || serviceBusinesses.size() < 1) {
+                return;
+            }
             redis.set((_KEY_SERVICE_BUSINESS).getBytes(), SerializeUtil.serializeList(serviceBusinesses));
         }finally {
             if(redis != null){
