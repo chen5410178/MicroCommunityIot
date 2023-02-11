@@ -17,6 +17,7 @@ package com.java110.po.menuGroupCommunity;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-02-11 02:07:21 mail: 928255095@qq.com
@@ -28,48 +29,57 @@ import java.util.Date;
 public class MenuGroupCommunityPo implements Serializable {
 
     private String gId;
-private String gcId;
-private String name;
-private String communityName;
-private String statusCd = "0";
-private String communityId;
-public String getGId() {
+    private String gcId;
+    private String name;
+    private String communityName;
+    private String statusCd = "0";
+    private String communityId;
+
+    public String getgId() {
         return gId;
     }
-public void setGId(String gId) {
+
+    public void setgId(String gId) {
         this.gId = gId;
     }
-public String getGcId() {
+
+    public String getGcId() {
         return gcId;
     }
-public void setGcId(String gcId) {
+
+    public void setGcId(String gcId) {
         this.gcId = gcId;
     }
-public String getName() {
+
+    public String getName() {
         return name;
     }
-public void setName(String name) {
+
+    public void setName(String name) {
         this.name = name;
     }
-public String getCommunityName() {
+
+    public String getCommunityName() {
         return communityName;
     }
-public void setCommunityName(String communityName) {
+
+    public void setCommunityName(String communityName) {
         this.communityName = communityName;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-
-
-
 }

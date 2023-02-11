@@ -15,29 +15,38 @@
  */
 package com.java110.user.cmd.menuGroupCommunity;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.context.Environment;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.community.CommunityDto;
+import com.java110.dto.menuGroup.MenuGroupDto;
+import com.java110.dto.store.StoreDto;
+import com.java110.intf.community.ICommunityV1InnerServiceSMO;
 import com.java110.intf.user.IMenuGroupCommunityV1InnerServiceSMO;
+import com.java110.intf.user.IMenuGroupV1InnerServiceSMO;
 import com.java110.po.menuGroupCommunity.MenuGroupCommunityPo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * 类表述：更新
  * 服务编码：menuGroupCommunity.updateMenuGroupCommunity
  * 请求路劲：/app/menuGroupCommunity.UpdateMenuGroupCommunity
- * add by 吴学文 at 2023-02-11 02:07:21 mail: 928255095@qq.com
+ * add by 吴学文 at 2022-02-28 18:49:04 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
@@ -52,10 +61,23 @@ public class UpdateMenuGroupCommunityCmd extends Cmd {
     @Autowired
     private IMenuGroupCommunityV1InnerServiceSMO menuGroupCommunityV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IMenuGroupV1InnerServiceSMO menuGroupV1InnerServiceSMOImpl;
+
+    @Autowired
+    private ICommunityV1InnerServiceSMO communityV1InnerServiceSMOImpl;
+    public static final String CODE_PREFIX_ID = "10";
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
-        Assert.hasKeyAndValue(reqJson, "gcId", "gcId不能为空");
-        Assert.hasKeyAndValue(reqJson, "gcId", "gcId不能为空");
+        Environment.isDevEnv();
+        Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
+
+
+        // 判断是否包含了小区信息
+        if (!reqJson.containsKey("groupIds") || reqJson.getJSONArray("groupIds").size() < 1) {
+            throw new CmdException("未包含小区开通功能");
+        }
 
     }
 
@@ -63,11 +85,59 @@ public class UpdateMenuGroupCommunityCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        MenuGroupCommunityPo menuGroupCommunityPo = BeanConvertUtil.covertBean(reqJson, MenuGroupCommunityPo.class);
-        int flag = menuGroupCommunityV1InnerServiceSMOImpl.updateMenuGroupCommunity(menuGroupCommunityPo);
 
+        //查询小区是否存在
+        CommunityDto communityDto = new CommunityDto();
+        communityDto.setCommunityId(reqJson.getString("communityId"));
+        List<CommunityDto> communityDtos = communityV1InnerServiceSMOImpl.queryCommunitys(communityDto);
+
+        Assert.listOnlyOne(communityDtos, "小区不存在");
+
+
+        MenuGroupCommunityPo menuGroupCommunityPo = new MenuGroupCommunityPo();
+        menuGroupCommunityPo.setCommunityId(reqJson.getString("communityId"));
+        int flag = menuGroupCommunityV1InnerServiceSMOImpl.deleteMenuGroupCommunity(menuGroupCommunityPo);
         if (flag < 1) {
-            throw new CmdException("更新数据失败");
+            //throw new CmdException("删除数据失败"); //有可能 已经上线的客户 没有 这个数据 所以不需判断
+        }
+
+        List<MenuGroupDto> menuGroupDtos = null;
+        MenuGroupDto menuGroupDto = null;
+        if (!reqJson.containsKey("groupIds") || reqJson.getJSONArray("groupIds").size() < 1) {
+            menuGroupDto = new MenuGroupDto();
+            menuGroupDto.setStoreType(StoreDto.STORE_TYPE_PROPERTY);
+            menuGroupDtos = menuGroupV1InnerServiceSMOImpl.queryMenuGroups(menuGroupDto);
+        } else {
+            menuGroupDto = new MenuGroupDto();
+            JSONArray groupIds = reqJson.getJSONArray("groupIds");
+            String groupId;
+            List<String> gIds = new ArrayList<>();
+            for (int groupIndex = 0; groupIndex < groupIds.size(); groupIndex++) {
+                groupId = groupIds.getString(groupIndex);
+                gIds.add(groupId);
+            }
+            menuGroupDto.setgIds(gIds.toArray(new String[gIds.size()]));
+            menuGroupDtos = menuGroupV1InnerServiceSMOImpl.queryMenuGroups(menuGroupDto);
+        }
+
+        if (menuGroupDtos == null || menuGroupDtos.size() < 1) {
+            throw new IllegalArgumentException("没有分配任何功能");
+        }
+
+        List<MenuGroupCommunityPo> menuGroupCommunityPos = new ArrayList<>();
+        MenuGroupCommunityPo tmpMenuGroupCommunityPo = null;
+        for (MenuGroupDto menuGroupDto1 : menuGroupDtos) {
+            tmpMenuGroupCommunityPo = new MenuGroupCommunityPo();
+            tmpMenuGroupCommunityPo.setCommunityId(reqJson.getString("communityId"));
+            tmpMenuGroupCommunityPo.setCommunityName(communityDtos.get(0).getName());
+            tmpMenuGroupCommunityPo.setGcId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+            tmpMenuGroupCommunityPo.setgId(menuGroupDto1.getgId());
+            tmpMenuGroupCommunityPo.setName(menuGroupDto1.getName());
+            menuGroupCommunityPos.add(tmpMenuGroupCommunityPo);
+        }
+        flag = menuGroupCommunityV1InnerServiceSMOImpl.saveMenuGroupCommunitys(menuGroupCommunityPos);
+        if (flag < 1) {
+            throw new CmdException("注册失败");
         }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());

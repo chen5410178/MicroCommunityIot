@@ -29,12 +29,11 @@ public class MenuDto extends PageDto implements Serializable {
 
     private String statusCd = "0";
 
-
-    public String getGId() {
+    public String getgId() {
         return gId;
     }
 
-    public void setGId(String gId) {
+    public void setgId(String gId) {
         this.gId = gId;
     }
 
@@ -46,11 +45,11 @@ public class MenuDto extends PageDto implements Serializable {
         this.name = name;
     }
 
-    public String getMId() {
+    public String getmId() {
         return mId;
     }
 
-    public void setMId(String mId) {
+    public void setmId(String mId) {
         this.mId = mId;
     }
 
@@ -62,11 +61,11 @@ public class MenuDto extends PageDto implements Serializable {
         this.description = description;
     }
 
-    public String getPId() {
+    public String getpId() {
         return pId;
     }
 
-    public void setPId(String pId) {
+    public void setpId(String pId) {
         this.pId = pId;
     }
 
@@ -93,7 +92,6 @@ public class MenuDto extends PageDto implements Serializable {
     public void setIsShow(String isShow) {
         this.isShow = isShow;
     }
-
 
     public Date getCreateTime() {
         return createTime;

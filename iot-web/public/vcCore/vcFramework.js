@@ -1013,7 +1013,7 @@
             Vue.http.headers.common['SIGN'] = '';
             Vue.http.headers.common['USER-ID'] = '-1';
 
-            
+
             if (vcFramework.hasOwnProperty('loading')) {
                 vcFramework.loading('open');
             }
@@ -1024,7 +1024,7 @@
 
                         successCallback(res.bodyText, res);
 
-                        if (vcFramework.constant.GET_CACHE_URL.includes(_getPath) && res.status == 200) {
+                        if (vcFramework.constant.GET_CACHE_URL.includes(_api) && res.status == 200) {
                             vcFramework.saveData('/nav/getUserInfo', JSON.parse(res.bodyText));
                         }
                     } catch (e) {

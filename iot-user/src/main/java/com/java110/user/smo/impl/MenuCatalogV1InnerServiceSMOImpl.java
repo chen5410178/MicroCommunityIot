@@ -18,6 +18,7 @@ package com.java110.user.smo.impl;
 
 import com.java110.bean.dto.PageDto;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.menuGroup.MenuGroupDto;
 import com.java110.user.dao.IMenuCatalogV1ServiceDao;
 import com.java110.intf.user.IMenuCatalogV1InnerServiceSMO;
 import com.java110.dto.menuCatalog.MenuCatalogDto;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类表述： 服务之前调用的接口实现类，不对外提供接口能力 只用于接口建调用
@@ -84,5 +86,10 @@ public class MenuCatalogV1InnerServiceSMOImpl implements IMenuCatalogV1InnerServ
     @Override
     public int queryMenuCatalogsCount(@RequestBody MenuCatalogDto menuCatalogDto) {
         return menuCatalogV1ServiceDaoImpl.queryMenuCatalogsCount(BeanConvertUtil.beanCovertMap(menuCatalogDto));    }
+    @Override
+    public List<Map> queryMenus(@RequestBody MenuGroupDto menuGroupDto) {
+        List<Map> menus = menuCatalogV1ServiceDaoImpl.queryMenus(BeanConvertUtil.beanCovertMap(menuGroupDto));
 
+        return menus;
+    }
 }

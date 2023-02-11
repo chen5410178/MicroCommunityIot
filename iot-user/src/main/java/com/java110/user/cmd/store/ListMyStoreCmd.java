@@ -82,7 +82,7 @@ public class ListMyStoreCmd extends Cmd {
             storeDtos = new ArrayList<>();
         }
 
-        ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, storeDtos);
+        ResultVo resultVo = new ResultVo(storeDtos);
 
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 

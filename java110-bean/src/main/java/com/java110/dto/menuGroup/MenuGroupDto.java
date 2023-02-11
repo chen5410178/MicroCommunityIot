@@ -15,42 +15,29 @@ import java.util.Date;
  **/
 public class MenuGroupDto extends PageDto implements Serializable {
 
-    private String groupType;
-    private String storeType;
+    public static final String GROUP_TYPE_PC = "P_WEB";
+
     private String gId;
+    private String[] gIds;
     private String name;
     private String icon;
-    private String description;
     private String label;
     private String seq;
+    private String description;
+    private String statusCd;
+    private String groupType;
+    private String storeType;
+    private String userId;
+    private String domain;
+    private String caId;
+    private String communityId;
 
 
-    private Date createTime;
-
-    private String statusCd = "0";
-
-
-    public String getGroupType() {
-        return groupType;
-    }
-
-    public void setGroupType(String groupType) {
-        this.groupType = groupType;
-    }
-
-    public String getStoreType() {
-        return storeType;
-    }
-
-    public void setStoreType(String storeType) {
-        this.storeType = storeType;
-    }
-
-    public String getGId() {
+    public String getgId() {
         return gId;
     }
 
-    public void setGId(String gId) {
+    public void setgId(String gId) {
         this.gId = gId;
     }
 
@@ -70,14 +57,6 @@ public class MenuGroupDto extends PageDto implements Serializable {
         this.icon = icon;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getLabel() {
         return label;
     }
@@ -94,13 +73,12 @@ public class MenuGroupDto extends PageDto implements Serializable {
         this.seq = seq;
     }
 
-
-    public Date getCreateTime() {
-        return createTime;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getStatusCd() {
@@ -109,5 +87,61 @@ public class MenuGroupDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getGroupType() {
+        return groupType;
+    }
+
+    public void setGroupType(String groupType) {
+        this.groupType = groupType;
+    }
+
+    public String getStoreType() {
+        return storeType;
+    }
+
+    public void setStoreType(String storeType) {
+        this.storeType = storeType;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    public String getCaId() {
+        return caId;
+    }
+
+    public void setCaId(String caId) {
+        this.caId = caId;
+    }
+
+    public String[] getgIds() {
+        return gIds;
+    }
+
+    public void setgIds(String[] gIds) {
+        this.gIds = gIds;
+    }
+
+    public String getCommunityId() {
+        return communityId;
+    }
+
+    public void setCommunityId(String communityId) {
+        this.communityId = communityId;
     }
 }

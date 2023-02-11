@@ -65,4 +65,7 @@ public interface IMenuGroupCommunityV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryMenuGroupCommunitysCount", method = RequestMethod.POST)
     int queryMenuGroupCommunitysCount(@RequestBody MenuGroupCommunityDto menuGroupCommunityDto);
+
+    @RequestMapping(value = "/saveMenuGroupCommunitys", method = RequestMethod.POST)
+    int saveMenuGroupCommunitys(@RequestBody List<MenuGroupCommunityPo> menuGroupCommunityPos);
 }

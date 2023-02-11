@@ -71,4 +71,6 @@ public interface IMenuGroupCommunityV1ServiceDao {
      */
     int queryMenuGroupCommunitysCount(Map info);
 
+
+    int saveMenuGroupCommunitys(Map info);
 }

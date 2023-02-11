@@ -15,6 +15,7 @@ public class BaseCache {
 
     protected static Jedis getJedis() {
         JedisPool jedisPool = (JedisPool) ApplicationContextFactory.getBean("jedisPool");
+        jedisPool.getResource().select(3);
         return jedisPool.getResource();
     }
 

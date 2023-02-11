@@ -107,4 +107,11 @@ public class MenuGroupCommunityV1ServiceDaoImpl extends BaseServiceDao implement
     }
 
 
+    @Override
+    public int saveMenuGroupCommunitys(Map info) {
+        int saveFlag = sqlSessionTemplate.insert("menuGroupCommunityV1ServiceDaoImpl.saveMenuGroupCommunitys",info);
+
+        return saveFlag;
+    }
+
 }

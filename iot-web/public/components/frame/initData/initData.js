@@ -25,7 +25,7 @@
                     param,
                     function(json, res) {
                         if (res.status == 200) {
-                            var _communityInfos = JSON.parse(json).communitys;
+                            var _communityInfos = JSON.parse(json).data;
                             if (_communityInfos != null && _communityInfos.length > 0) {
                                 vc.setCurrentCommunity(_communityInfos[0]);
                                 vc.setCommunitys(_communityInfos);
