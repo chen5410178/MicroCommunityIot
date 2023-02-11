@@ -15,21 +15,19 @@
  */
 package com.java110.dev.dao.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.java110.core.db.dao.BaseServiceDao;
 import com.java110.core.exception.DAOException;
 import com.java110.dev.dao.IDictV1ServiceDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
 /**
  * 类表述：
- * add by 吴学文 at 2023-02-11 01:21:52 mail: 928255095@qq.com
+ * add by 吴学文 at 2022-07-06 20:03:58 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
@@ -45,7 +43,7 @@ public class DictV1ServiceDaoImpl extends BaseServiceDao implements IDictV1Servi
 
 
     /**
-     * 保存字典信息 到 instance
+     * 保存字典表信息 到 instance
      * @param info   bId 信息
      * @throws DAOException DAO异常
      */
@@ -60,7 +58,7 @@ public class DictV1ServiceDaoImpl extends BaseServiceDao implements IDictV1Servi
 
 
     /**
-     * 查询字典信息（instance）
+     * 查询字典表信息（instance）
      * @param info bId 信息
      * @return List<Map>
      * @throws DAOException DAO异常
@@ -76,7 +74,7 @@ public class DictV1ServiceDaoImpl extends BaseServiceDao implements IDictV1Servi
 
 
     /**
-     * 修改字典信息
+     * 修改字典表信息
      * @param info 修改信息
      * @throws DAOException DAO异常
      */
@@ -89,10 +87,23 @@ public class DictV1ServiceDaoImpl extends BaseServiceDao implements IDictV1Servi
         return saveFlag;
     }
 
+    /**
+     * 修改字典表信息
+     * @param info 修改信息
+     * @throws DAOException DAO异常
+     */
+    @Override
+    public int deleteDictInfo(Map info) throws DAOException {
+        logger.debug("修改 deleteDictInfo 入参 info : {}",info);
+
+        int saveFlag = sqlSessionTemplate.update("dictV1ServiceDaoImpl.deleteDictInfo",info);
+
+        return saveFlag;
+    }
      /**
-     * 查询字典数量
-     * @param info 字典信息
-     * @return 字典数量
+     * 查询字典表数量
+     * @param info 字典表信息
+     * @return 字典表数量
      */
     @Override
     public int queryDictsCount(Map info) {
@@ -107,4 +118,36 @@ public class DictV1ServiceDaoImpl extends BaseServiceDao implements IDictV1Servi
     }
 
 
+    /**
+     * 查询字典表数量
+     * @param info 字典表信息
+     * @return 字典表数量
+     */
+    @Override
+    public int queryDictsAndSpecCount(Map info) {
+        logger.debug("查询 queryDictsCount 入参 info : {}",info);
+
+        List<Map> businessDictInfos = sqlSessionTemplate.selectList("dictV1ServiceDaoImpl.queryDictsAndSpecCount", info);
+        if (businessDictInfos.size() < 1) {
+            return 0;
+        }
+
+        return Integer.parseInt(businessDictInfos.get(0).get("count").toString());
+    }
+
+
+    /**
+     * 查询字典表信息（instance）
+     * @param info bId 信息
+     * @return List<Map>
+     * @throws DAOException DAO异常
+     */
+    @Override
+    public List<Map> getDictAndSpecInfo(Map info) throws DAOException {
+        logger.debug("查询 getDictInfo 入参 info : {}",info);
+
+        List<Map> businessDictInfos = sqlSessionTemplate.selectList("dictV1ServiceDaoImpl.getDictAndSpecInfo",info);
+
+        return businessDictInfos;
+    }
 }

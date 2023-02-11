@@ -22,6 +22,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -65,4 +66,15 @@ public interface IUserV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryUsersCount", method = RequestMethod.POST)
     int queryUsersCount(@RequestBody UserDto userDto);
+
+    /**
+     * 查询用户信息
+     *
+     * @param userIds 用户ID
+     *                支持 多个查询
+     * @return 用户封装信息
+     */
+    @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
+    List<UserDto> getUserInfo(@RequestParam("userIds") String[] userIds);
+
 }

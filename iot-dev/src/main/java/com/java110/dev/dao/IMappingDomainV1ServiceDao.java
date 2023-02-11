@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * 类表述：
- * add by 吴学文 at 2023-02-11 01:41:19 mail: 928255095@qq.com
+ * add by 吴学文 at 2023-01-29 14:09:04 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
@@ -34,7 +34,7 @@ public interface IMappingDomainV1ServiceDao {
 
 
     /**
-     * 保存 映射域信息
+     * 保存 配置项信息
      * @param info
      * @throws DAOException DAO异常
      */
@@ -44,10 +44,10 @@ public interface IMappingDomainV1ServiceDao {
 
 
     /**
-     * 查询映射域信息（instance过程）
-     * 根据bId 查询映射域信息
+     * 查询配置项信息（instance过程）
+     * 根据bId 查询配置项信息
      * @param info bId 信息
-     * @return 映射域信息
+     * @return 配置项信息
      * @throws DAOException DAO异常
      */
     List<Map> getMappingDomainInfo(Map info) throws DAOException;
@@ -55,7 +55,7 @@ public interface IMappingDomainV1ServiceDao {
 
 
     /**
-     * 修改映射域信息
+     * 修改配置项信息
      * @param info 修改信息
      * @throws DAOException DAO异常
      */
@@ -63,10 +63,10 @@ public interface IMappingDomainV1ServiceDao {
 
 
     /**
-     * 查询映射域总数
+     * 查询配置项总数
      *
-     * @param info 映射域信息
-     * @return 映射域数量
+     * @param info 配置项信息
+     * @return 配置项数量
      */
     int queryMappingDomainsCount(Map info);
 

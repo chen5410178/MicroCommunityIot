@@ -153,4 +153,107 @@
         AND ppr.status_cd = '0'
     </select>
 
+
+    <!-- 保存路由信息至 instance表中 add by wuxw 2018-07-03 -->
+    <insert id="saveBasePrivilegeRelInfo" parameterType="Map">
+        insert into p_privilege_rel(p_id, pg_id)
+        values (#{pId}, #{pgId})
+    </insert>
+
+    <!-- 保存路由信息至 instance表中 add by wuxw 2018-07-03 -->
+    <insert id="saveBasePrivilegeInfo" parameterType="Map">
+        insert into p_privilege(p_id, name, resource, domain, description, m_id)
+        values (#{pId}, #{name}, #{resource}, #{domain}, #{description}, #{mId})
+    </insert>
+
+    <!-- 查询路由信息 add by wuxw 2018-07-03 -->
+    <select id="getBasePrivilegeInfo" parameterType="Map" resultType="Map">
+        select t.p_id,t.name,t.domain,t.resource,t.description,t.p_id pId,t.create_time createTime,st.name stName
+        from p_privilege t
+        left join store_type st on t.domain=st.store_type_cd
+        where t.status_cd= '0'
+        <if test="pId !=null and pId != ''">
+            and t.p_id= #{pId}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name like concat('%',#{name},'%')
+        </if>
+        <if test="resource !=null and resource != ''">
+            and t.resource = #{resource}
+        </if>
+        <if test="domain !=null and domain != ''">
+            and t.domain= #{domain}
+        </if>
+        <if test="mId !=null and mId != ''">
+            and t.m_id= #{mId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <!-- 修改路由信息 add by wuxw 2018-07-03 -->
+    <update id="updateBasePrivilegeInfo" parameterType="Map">
+        update p_privilege t
+        <set>
+            <if test="statusCd !=null and statusCd != ''">
+                t.status_cd = #{statusCd},
+            </if>
+            <if test="name !=null and name != ''">
+                t.name= #{name},
+            </if>
+            <if test="resource !=null and resource != ''">
+                t.resource= #{resource},
+            </if>
+            <if test="domain !=null and domain != ''">
+                t.domain= #{domain},
+            </if>
+            <if test="description !=null and description != ''">
+                t.description= #{description}
+            </if>
+        </set>
+        where t.p_id= #{pId}
+    </update>
+
+    <!-- 修改路由信息 add by wuxw 2018-07-03 -->
+    <update id="updateBasePrivilegeRelInfo" parameterType="Map">
+        update p_privilege_rel t
+        <set>
+            <if test="statusCd !=null and statusCd != ''">
+                t.status_cd = #{statusCd},
+            </if>
+            <if test="pgId !=null and pgId != ''">
+                t.pg_id= #{pgId},
+            </if>
+
+        </set>
+        where t.p_id= #{pId}
+    </update>
+
+    <!-- 查询路由数量 add by wuxw 2018-07-03 -->
+    <select id="queryBasePrivilegesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from p_privilege t
+        where 1 =1
+        <if test="pId !=null and pId != ''">
+            and t.p_id= #{pId}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name like concat('%',#{name},'%')
+        </if>
+        <if test="resource !=null and resource != ''">
+            and t.resource = #{resource}
+        </if>
+        <if test="domain !=null and domain != ''">
+            and t.domain= #{domain}
+        </if>
+        <if test="mId !=null and mId != ''">
+            and t.m_id= #{mId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+    </select>
+
 </mapper>

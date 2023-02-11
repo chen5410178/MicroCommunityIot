@@ -16,30 +16,29 @@
 package com.java110.dev.smo.impl;
 
 
-import com.java110.bean.dto.PageDto;
-import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.base.smo.BaseServiceSMO;
 import com.java110.dev.dao.IBusinessTableHisV1ServiceDao;
-import com.java110.intf.dev.IBusinessTableHisV1InnerServiceSMO;
+import com.java110.dto.PageDto;
 import com.java110.dto.businessTableHis.BusinessTableHisDto;
+import com.java110.intf.dev.IBusinessTableHisV1InnerServiceSMO;
 import com.java110.po.businessTableHis.BusinessTableHisPo;
-import com.java110.dto.user.UserDto;
+import com.java110.utils.util.BeanConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 类表述： 服务之前调用的接口实现类，不对外提供接口能力 只用于接口建调用
- * add by 吴学文 at 2023-02-11 03:27:36 mail: 928255095@qq.com
+ * add by 吴学文 at 2021-09-12 13:58:05 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
 @RestController
-public class BusinessTableHisV1InnerServiceSMOImpl implements IBusinessTableHisV1InnerServiceSMO {
+public class BusinessTableHisV1InnerServiceSMOImpl extends BaseServiceSMO implements IBusinessTableHisV1InnerServiceSMO {
 
     @Autowired
     private IBusinessTableHisV1ServiceDao businessTableHisV1ServiceDaoImpl;

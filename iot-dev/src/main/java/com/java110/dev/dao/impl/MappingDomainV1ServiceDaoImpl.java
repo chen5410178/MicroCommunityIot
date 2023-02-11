@@ -15,21 +15,19 @@
  */
 package com.java110.dev.dao.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.java110.core.db.dao.BaseServiceDao;
 import com.java110.core.exception.DAOException;
 import com.java110.dev.dao.IMappingDomainV1ServiceDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
 /**
  * 类表述：
- * add by 吴学文 at 2023-02-11 01:41:19 mail: 928255095@qq.com
+ * add by 吴学文 at 2023-01-29 14:09:04 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
@@ -41,63 +39,62 @@ public class MappingDomainV1ServiceDaoImpl extends BaseServiceDao implements IMa
     private static Logger logger = LoggerFactory.getLogger(MappingDomainV1ServiceDaoImpl.class);
 
 
+
+
+
     /**
-     * 保存映射域信息 到 instance
-     *
-     * @param info bId 信息
+     * 保存配置项信息 到 instance
+     * @param info   bId 信息
      * @throws DAOException DAO异常
      */
     @Override
     public int saveMappingDomainInfo(Map info) throws DAOException {
-        logger.debug("保存 saveMappingDomainInfo 入参 info : {}", info);
+        logger.debug("保存 saveMappingDomainInfo 入参 info : {}",info);
 
-        int saveFlag = sqlSessionTemplate.insert("mappingDomainV1ServiceDaoImpl.saveMappingDomainInfo", info);
+        int saveFlag = sqlSessionTemplate.insert("mappingDomainV1ServiceDaoImpl.saveMappingDomainInfo",info);
 
         return saveFlag;
     }
 
 
     /**
-     * 查询映射域信息（instance）
-     *
+     * 查询配置项信息（instance）
      * @param info bId 信息
      * @return List<Map>
      * @throws DAOException DAO异常
      */
     @Override
     public List<Map> getMappingDomainInfo(Map info) throws DAOException {
-        logger.debug("查询 getMappingDomainInfo 入参 info : {}", info);
+        logger.debug("查询 getMappingDomainInfo 入参 info : {}",info);
 
-        List<Map> businessMappingDomainInfos = sqlSessionTemplate.selectList("mappingDomainV1ServiceDaoImpl.getMappingDomainInfo", info);
+        List<Map> businessMappingDomainInfos = sqlSessionTemplate.selectList("mappingDomainV1ServiceDaoImpl.getMappingDomainInfo",info);
 
         return businessMappingDomainInfos;
     }
 
 
     /**
-     * 修改映射域信息
-     *
+     * 修改配置项信息
      * @param info 修改信息
      * @throws DAOException DAO异常
      */
     @Override
     public int updateMappingDomainInfo(Map info) throws DAOException {
-        logger.debug("修改 updateMappingDomainInfo 入参 info : {}", info);
+        logger.debug("修改 updateMappingDomainInfo 入参 info : {}",info);
 
-        int saveFlag = sqlSessionTemplate.update("mappingDomainV1ServiceDaoImpl.updateMappingDomainInfo", info);
+        int saveFlag = sqlSessionTemplate.update("mappingDomainV1ServiceDaoImpl.updateMappingDomainInfo",info);
 
         return saveFlag;
     }
 
-    /**
-     * 查询映射域数量
-     *
-     * @param info 映射域信息
-     * @return 映射域数量
+     /**
+     * 查询配置项数量
+     * @param info 配置项信息
+     * @return 配置项数量
      */
     @Override
     public int queryMappingDomainsCount(Map info) {
-        logger.debug("查询 queryMappingDomainsCount 入参 info : {}", info);
+        logger.debug("查询 queryMappingDomainsCount 入参 info : {}",info);
 
         List<Map> businessMappingDomainInfos = sqlSessionTemplate.selectList("mappingDomainV1ServiceDaoImpl.queryMappingDomainsCount", info);
         if (businessMappingDomainInfos.size() < 1) {

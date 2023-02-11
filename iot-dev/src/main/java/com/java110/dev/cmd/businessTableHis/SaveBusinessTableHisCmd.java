@@ -16,27 +16,27 @@
 package com.java110.dev.cmd.businessTableHis;
 
 import com.alibaba.fastjson.JSONObject;
-import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
-import com.java110.core.cmd.Cmd;
-import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
-import com.java110.core.exception.CmdException;
+import com.java110.core.event.cmd.Cmd;
+import com.java110.core.event.cmd.CmdEvent;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.log.LoggerFactory;
 import com.java110.intf.dev.IBusinessTableHisV1InnerServiceSMO;
 import com.java110.po.businessTableHis.BusinessTableHisPo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.java110.utils.exception.CmdException;
+import com.java110.utils.util.Assert;
+import com.java110.utils.util.BeanConvertUtil;
+import com.java110.vo.ResultVo;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 类表述：保存
- * 服务编码：businessTableHis.saveBusinessTableHis
+ * 服务编码：businessTableHis.SaveBusinessTableHis
  * 请求路劲：/app/businessTableHis.SaveBusinessTableHis
- * add by 吴学文 at 2023-02-11 03:27:36 mail: 928255095@qq.com
+ * add by 吴学文 at 2021-09-12 13:58:05 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
@@ -54,9 +54,10 @@ public class SaveBusinessTableHisCmd extends Cmd {
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
-        Assert.hasKeyAndValue(reqJson, "actionObj", "请求报文中未包含actionObj");
-        Assert.hasKeyAndValue(reqJson, "actionObjHis", "请求报文中未包含actionObjHis");
-        Assert.hasKeyAndValue(reqJson, "businessTypeCd", "请求报文中未包含businessTypeCd");
+        Assert.hasKeyAndValue(reqJson, "action", "请求报文中未包含action");
+Assert.hasKeyAndValue(reqJson, "actionObj", "请求报文中未包含actionObj");
+Assert.hasKeyAndValue(reqJson, "actionObjHis", "请求报文中未包含actionObjHis");
+Assert.hasKeyAndValue(reqJson, "businessTypeCd", "请求报文中未包含businessTypeCd");
 
     }
 
@@ -64,7 +65,7 @@ public class SaveBusinessTableHisCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        BusinessTableHisPo businessTableHisPo = BeanConvertUtil.covertBean(reqJson, BusinessTableHisPo.class);
+       BusinessTableHisPo businessTableHisPo = BeanConvertUtil.covertBean(reqJson, BusinessTableHisPo.class);
         businessTableHisPo.setHisId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         int flag = businessTableHisV1InnerServiceSMOImpl.saveBusinessTableHis(businessTableHisPo);
 

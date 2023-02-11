@@ -25,6 +25,7 @@ public class AppRouteCache extends BaseCache {
         Jedis redis = null;
         try {
             redis = getJedis();
+
             appRoutes = SerializeUtil.unserializeList(redis.get((appId+_SUFFIX_APP_ROUTE).getBytes()),AppRoute.class);
             if(appRoutes == null || appRoutes.size() ==0) {
                 return null;

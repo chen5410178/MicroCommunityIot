@@ -71,4 +71,42 @@ public interface IMenuV1ServiceDao {
     int queryMenusCount(Map info);
 
     List<Map> checkUserHasResource(Map info);
+
+
+    /**
+     * 保存 路由信息 Business数据到 Instance中
+     *
+     * @param info
+     * @throws DAOException DAO异常
+     */
+    int saveBasePrivilegeInfo(Map info) throws DAOException;
+
+
+    /**
+     * 查询路由信息（instance过程）
+     * 根据bId 查询路由信息
+     *
+     * @param info bId 信息
+     * @return 路由信息
+     * @throws DAOException DAO异常
+     */
+    List<Map> getBasePrivilegeInfo(Map info) throws DAOException;
+
+
+    /**
+     * 修改路由信息
+     *
+     * @param info 修改信息
+     * @throws DAOException DAO异常
+     */
+    int updateBasePrivilegeInfo(Map info) throws DAOException;
+
+
+    /**
+     * 查询菜单总数
+     *
+     * @param info 菜单信息
+     * @return 菜单数量
+     */
+    int queryBasePrivilegesCount(Map info);
 }

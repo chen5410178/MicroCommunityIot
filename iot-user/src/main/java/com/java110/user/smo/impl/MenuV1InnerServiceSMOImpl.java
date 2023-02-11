@@ -102,4 +102,43 @@ public class MenuV1InnerServiceSMOImpl  implements IMenuV1InnerServiceSMO {
         return menuV1ServiceDaoImpl.checkUserHasResource(BeanConvertUtil.beanCovertMap(basePrivilegeDto));
     }
 
+
+    @Override
+    public List<BasePrivilegeDto> queryBasePrivileges(@RequestBody BasePrivilegeDto basePrivilegeDto) {
+
+        //校验是否传了 分页信息
+
+        int page = basePrivilegeDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            basePrivilegeDto.setPage((page - 1) * basePrivilegeDto.getRow());
+        }
+
+        List<BasePrivilegeDto> basePrivileges = BeanConvertUtil.covertBeanList(menuV1ServiceDaoImpl.getBasePrivilegeInfo(BeanConvertUtil.beanCovertMap(basePrivilegeDto)), BasePrivilegeDto.class);
+
+
+        return basePrivileges;
+    }
+
+    @Override
+    public int updateBasePrivilege(@RequestBody BasePrivilegeDto basePrivilegeDto) {
+        return menuV1ServiceDaoImpl.updateBasePrivilegeInfo(BeanConvertUtil.beanCovertMap(basePrivilegeDto));
+    }
+
+    @Override
+    public int saveBasePrivilege(@RequestBody BasePrivilegeDto basePrivilegeDto) {
+        return menuV1ServiceDaoImpl.saveBasePrivilegeInfo(BeanConvertUtil.beanCovertMap(basePrivilegeDto));
+    }
+
+    @Override
+    public int deleteBasePrivilege(@RequestBody BasePrivilegeDto basePrivilegeDto) {
+        basePrivilegeDto.setStatusCd("1");
+        return menuV1ServiceDaoImpl.updateBasePrivilegeInfo(BeanConvertUtil.beanCovertMap(basePrivilegeDto));
+    }
+
+    @Override
+    public int queryBasePrivilegesCount(@RequestBody BasePrivilegeDto basePrivilegeDto) {
+        return menuV1ServiceDaoImpl.queryBasePrivilegesCount(BeanConvertUtil.beanCovertMap(basePrivilegeDto));
+    }
+
 }

@@ -17,6 +17,7 @@ package com.java110.user.smo.impl;
 
 
 import com.java110.bean.dto.PageDto;
+import com.java110.core.constant.StatusConstant;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.user.dao.IUserV1ServiceDao;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
@@ -28,7 +29,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类表述： 服务之前调用的接口实现类，不对外提供接口能力 只用于接口建调用
@@ -84,5 +87,21 @@ public class UserV1InnerServiceSMOImpl  implements IUserV1InnerServiceSMO {
     @Override
     public int queryUsersCount(@RequestBody UserDto userDto) {
         return userV1ServiceDaoImpl.queryUsersCount(BeanConvertUtil.beanCovertMap(userDto));    }
+
+    /**
+     * 查询用户信息
+     *
+     * @param userIds 用户ID
+     *                支持 多个查询
+     * @return
+     */
+    @Override
+    public List<UserDto> getUserInfo(String[] userIds) {
+        Map userInfo = new HashMap();
+        userInfo.put("statusCd", StatusConstant.STATUS_CD_VALID);
+        userInfo.put("userIds", userIds);
+        return BeanConvertUtil.covertBeanList(userV1ServiceDaoImpl.queryUsersInfo(userInfo), UserDto.class);
+    }
+
 
 }

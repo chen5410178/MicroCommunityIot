@@ -15,21 +15,19 @@
  */
 package com.java110.dev.dao.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.java110.core.db.dao.BaseServiceDao;
 import com.java110.core.exception.DAOException;
+import com.java110.core.factory.LoggerFactory;
 import com.java110.dev.dao.IBusinessTableHisV1ServiceDao;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
 /**
  * 类表述：
- * add by 吴学文 at 2023-02-11 03:27:36 mail: 928255095@qq.com
+ * add by 吴学文 at 2021-09-12 13:58:05 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
@@ -45,7 +43,7 @@ public class BusinessTableHisV1ServiceDaoImpl extends BaseServiceDao implements 
 
 
     /**
-     * 保存轨迹信息 到 instance
+     * 保存订单轨迹信息 到 instance
      * @param info   bId 信息
      * @throws DAOException DAO异常
      */
@@ -60,7 +58,7 @@ public class BusinessTableHisV1ServiceDaoImpl extends BaseServiceDao implements 
 
 
     /**
-     * 查询轨迹信息（instance）
+     * 查询订单轨迹信息（instance）
      * @param info bId 信息
      * @return List<Map>
      * @throws DAOException DAO异常
@@ -76,7 +74,7 @@ public class BusinessTableHisV1ServiceDaoImpl extends BaseServiceDao implements 
 
 
     /**
-     * 修改轨迹信息
+     * 修改订单轨迹信息
      * @param info 修改信息
      * @throws DAOException DAO异常
      */
@@ -90,9 +88,9 @@ public class BusinessTableHisV1ServiceDaoImpl extends BaseServiceDao implements 
     }
 
      /**
-     * 查询轨迹数量
-     * @param info 轨迹信息
-     * @return 轨迹数量
+     * 查询订单轨迹数量
+     * @param info 订单轨迹信息
+     * @return 订单轨迹数量
      */
     @Override
     public int queryBusinessTableHissCount(Map info) {

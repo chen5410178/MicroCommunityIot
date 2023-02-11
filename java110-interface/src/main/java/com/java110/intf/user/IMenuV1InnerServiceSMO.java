@@ -76,4 +76,51 @@ public interface IMenuV1InnerServiceSMO {
      */
     @RequestMapping(value = "/checkUserHasResource", method = RequestMethod.POST)
     List<Map> checkUserHasResource(@RequestBody BasePrivilegeDto routeDto);
+
+
+    /**
+     * <p>查询小区楼信息</p>
+     *
+     * @param routeDto 数据对象分享
+     * @return MenuGroupDto 对象数据
+     */
+    @RequestMapping(value = "/queryBasePrivileges", method = RequestMethod.POST)
+    List<BasePrivilegeDto> queryBasePrivileges(@RequestBody BasePrivilegeDto routeDto);
+
+    /**
+     * 查询<p>小区楼</p>总记录数
+     *
+     * @param routeDto 数据对象分享
+     * @return 小区下的小区楼记录数
+     */
+    @RequestMapping(value = "/queryBasePrivilegesCount", method = RequestMethod.POST)
+    int queryBasePrivilegesCount(@RequestBody BasePrivilegeDto routeDto);
+
+    /**
+     * <p>修改APP信息</p>
+     *
+     * @param routeDto 数据对象分享
+     * @return ServiceDto 对象数据
+     */
+    @RequestMapping(value = "/updateBasePrivilege", method = RequestMethod.POST)
+    int updateBasePrivilege(@RequestBody BasePrivilegeDto routeDto);
+
+
+    /**
+     * <p>添加APP信息</p>
+     *
+     * @param routeDto 数据对象分享
+     * @return BasePrivilegeDto 对象数据
+     */
+    @RequestMapping(value = "/saveBasePrivilege", method = RequestMethod.POST)
+    int saveBasePrivilege(@RequestBody BasePrivilegeDto routeDto);
+
+    /**
+     * <p>删除APP信息</p>
+     *
+     * @param routeDto 数据对象分享
+     * @return BasePrivilegeDto 对象数据
+     */
+    @RequestMapping(value = "/deleteBasePrivilege", method = RequestMethod.POST)
+    int deleteBasePrivilege(@RequestBody BasePrivilegeDto routeDto);
 }

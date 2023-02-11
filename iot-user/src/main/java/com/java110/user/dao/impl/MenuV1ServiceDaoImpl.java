@@ -16,6 +16,9 @@
 package com.java110.user.dao.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.core.cache.MappingCache;
+import com.java110.core.constant.DomainContant;
+import com.java110.core.constant.StatusConstant;
 import com.java110.core.db.dao.BaseServiceDao;
 import com.java110.core.exception.DAOException;
 import com.java110.user.dao.IMenuV1ServiceDao;
@@ -113,6 +116,98 @@ public class MenuV1ServiceDaoImpl extends BaseServiceDao implements IMenuV1Servi
         List<Map> businessBasePrivilegeInfos = sqlSessionTemplate.selectList("menuV1ServiceDaoImpl.checkUserHasResource", info);
 
         return businessBasePrivilegeInfos;
+    }
+
+
+    /**
+     * 保存路由信息 到 instance
+     *
+     * @param info bId 信息
+     * @throws DAOException DAO异常
+     */
+    @Override
+    public int saveBasePrivilegeInfo(Map info) throws DAOException {
+        logger.debug("保存路由信息Instance 入参 info : {}", info);
+
+        int saveFlag = sqlSessionTemplate.insert("menuV1ServiceDaoImpl.saveBasePrivilegeInfo", info);
+
+        if (saveFlag < 1) {
+            return saveFlag;
+        }
+
+
+        // 将权限组分配给对应商户类型管理员
+        info.put("pgId", MappingCache.getValue(DomainContant.DEFAULT_PRIVILEGE_ADMIN, info.get("domain").toString()));
+
+        saveFlag = sqlSessionTemplate.insert("menuV1ServiceDaoImpl.saveBasePrivilegeRelInfo", info);
+
+
+        return saveFlag;
+    }
+
+
+    /**
+     * 查询路由信息（instance）
+     *
+     * @param info bId 信息
+     * @return List<Map>
+     * @throws DAOException DAO异常
+     */
+    @Override
+    public List<Map> getBasePrivilegeInfo(Map info) throws DAOException {
+        logger.debug("查询路由信息 入参 info : {}", info);
+
+        List<Map> businessBasePrivilegeInfos = sqlSessionTemplate.selectList("menuV1ServiceDaoImpl.getBasePrivilegeInfo", info);
+
+        return businessBasePrivilegeInfos;
+    }
+
+
+    /**
+     * 修改路由信息
+     *
+     * @param info 修改信息
+     * @throws DAOException DAO异常
+     */
+    @Override
+    public int updateBasePrivilegeInfo(Map info) throws DAOException {
+        logger.debug("修改路由信息Instance 入参 info : {}", info);
+        int saveFlag = 0;
+        //判断是否为删除
+        if (info.containsKey("statusCd") && StatusConstant.STATUS_CD_INVALID.equals(info.get("statusCd"))) {
+            //做查询
+            List<Map> basePrivileges = getBasePrivilegeInfo(info);
+
+            if (basePrivileges != null && basePrivileges.size() > 0) {
+                saveFlag = sqlSessionTemplate.update("menuV1ServiceDaoImpl.updateBasePrivilegeRelInfo", info);
+
+                if (saveFlag < 1) {
+                    return saveFlag;
+                }
+            }
+
+        }
+
+        saveFlag = sqlSessionTemplate.update("menuV1ServiceDaoImpl.updateBasePrivilegeInfo", info);
+        return saveFlag;
+    }
+
+    /**
+     * 查询路由数量
+     *
+     * @param info 路由信息
+     * @return 路由数量
+     */
+    @Override
+    public int queryBasePrivilegesCount(Map info) {
+        logger.debug("查询路由数据 入参 info : {}", info);
+
+        List<Map> businessBasePrivilegeInfos = sqlSessionTemplate.selectList("menuV1ServiceDaoImpl.queryBasePrivilegesCount", info);
+        if (businessBasePrivilegeInfos.size() < 1) {
+            return 0;
+        }
+
+        return Integer.parseInt(businessBasePrivilegeInfos.get(0).get("count").toString());
     }
 
 

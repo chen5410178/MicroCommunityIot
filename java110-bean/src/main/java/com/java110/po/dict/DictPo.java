@@ -32,6 +32,7 @@ private String description;
 private String statusCd = "0";
 private String id;
 private String tableName;
+private String tableColumns;
 public String getName() {
         return name;
     }
@@ -63,6 +64,11 @@ public void setTableName(String tableName) {
         this.tableName = tableName;
     }
 
+    public String getTableColumns() {
+        return tableColumns;
+    }
 
-
+    public void setTableColumns(String tableColumns) {
+        this.tableColumns = tableColumns;
+    }
 }

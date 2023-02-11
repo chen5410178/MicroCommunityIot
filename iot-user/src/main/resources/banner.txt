@@ -6,4 +6,4 @@ ${AnsiColor.BRIGHT_RED}
 /\__|  (____  /\_/  (____  /___||___|\_____  /
 \______|    \/           \/                \/
 
- java110 iot-gateway starting, more information scan http://www.homecommunity.cn
+ java110 iot-user starting, more information scan http://www.homecommunity.cn

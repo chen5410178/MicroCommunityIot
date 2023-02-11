@@ -18,6 +18,7 @@ package com.java110.user.dao.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.db.dao.BaseServiceDao;
 import com.java110.core.exception.DAOException;
+import com.java110.core.utils.Assert;
 import com.java110.user.dao.IUserV1ServiceDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,5 +107,20 @@ public class UserV1ServiceDaoImpl extends BaseServiceDao implements IUserV1Servi
         return Integer.parseInt(businessUserInfos.get(0).get("count").toString());
     }
 
+    /**
+     * 查询用户信息
+     *
+     * @param info
+     * @return
+     * @throws DAOException
+     */
+    @Override
+    public List<Map> queryUsersInfo(Map info) throws DAOException {
+        Assert.notNull(info, "queryUserInfo 的参数不能为空");
+        logger.debug("----【userServiceDaoImpl.queryUserInfo】保存数据入参 : " + JSONObject.toJSONString(info));
+        List<Map> users = sqlSessionTemplate.selectList("userV1ServiceDaoImpl.queryUserInfo", info);
+
+        return users;
+    }
 
 }

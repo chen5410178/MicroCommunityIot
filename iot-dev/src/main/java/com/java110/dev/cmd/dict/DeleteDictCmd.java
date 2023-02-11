@@ -23,20 +23,18 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
-import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.dev.IDictV1InnerServiceSMO;
 import com.java110.po.dict.DictPo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 /**
  * 类表述：删除
  * 服务编码：dict.deleteDict
  * 请求路劲：/app/dict.DeleteDict
- * add by 吴学文 at 2023-02-11 01:21:52 mail: 928255095@qq.com
+ * add by 吴学文 at 2022-07-06 20:03:58 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
@@ -44,14 +42,13 @@ import org.slf4j.LoggerFactory;
  */
 @Java110Cmd(serviceCode = "dict.deleteDict")
 public class DeleteDictCmd extends Cmd {
-    private static Logger logger = LoggerFactory.getLogger(DeleteDictCmd.class);
+  private static Logger logger = LoggerFactory.getLogger(DeleteDictCmd.class);
 
     @Autowired
     private IDictV1InnerServiceSMO dictV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
-        Assert.hasKeyAndValue(reqJson, "id", "id不能为空");
         Assert.hasKeyAndValue(reqJson, "id", "id不能为空");
 
     }
@@ -60,7 +57,7 @@ public class DeleteDictCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        DictPo dictPo = BeanConvertUtil.covertBean(reqJson, DictPo.class);
+       DictPo dictPo = BeanConvertUtil.covertBean(reqJson, DictPo.class);
         int flag = dictV1InnerServiceSMOImpl.deleteDict(dictPo);
 
         if (flag < 1) {

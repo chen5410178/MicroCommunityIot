@@ -15,6 +15,7 @@
  */
 package com.java110.intf.dev;
 
+
 import com.java110.dto.dictSpec.DictSpecDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.dictSpec.DictSpecPo;
@@ -27,7 +28,7 @@ import java.util.List;
 
 /**
  * 类表述： 服务之前调用的接口类，不对外提供接口能力 只用于接口建调用
- * add by 吴学文 at 2023-02-11 01:27:44 mail: 928255095@qq.com
+ * add by 吴学文 at 2022-07-07 09:00:30 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
@@ -39,16 +40,17 @@ public interface IDictSpecV1InnerServiceSMO {
 
 
     @RequestMapping(value = "/saveDictSpec", method = RequestMethod.POST)
-    public int saveDictSpec(@RequestBody DictSpecPo dictSpecPo);
+    public int saveDictSpec(@RequestBody  DictSpecPo dictSpecPo);
 
     @RequestMapping(value = "/updateDictSpec", method = RequestMethod.POST)
-    public int updateDictSpec(@RequestBody DictSpecPo dictSpecPo);
+    public int updateDictSpec(@RequestBody  DictSpecPo dictSpecPo);
 
     @RequestMapping(value = "/deleteDictSpec", method = RequestMethod.POST)
-    public int deleteDictSpec(@RequestBody DictSpecPo dictSpecPo);
+    public int deleteDictSpec(@RequestBody  DictSpecPo dictSpecPo);
 
     /**
      * <p>查询小区楼信息</p>
+     *
      *
      * @param dictSpecDto 数据对象分享
      * @return DictSpecDto 对象数据

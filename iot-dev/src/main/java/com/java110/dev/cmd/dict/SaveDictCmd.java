@@ -23,20 +23,23 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
-import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.dictSpec.DictSpecDto;
+import com.java110.intf.dev.IDictSpecV1InnerServiceSMO;
 import com.java110.intf.dev.IDictV1InnerServiceSMO;
 import com.java110.po.dict.DictPo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * 类表述：保存
  * 服务编码：dict.saveDict
  * 请求路劲：/app/dict.SaveDict
- * add by 吴学文 at 2023-02-11 01:21:52 mail: 928255095@qq.com
+ * add by 吴学文 at 2022-07-06 20:03:58 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
@@ -52,10 +55,14 @@ public class SaveDictCmd extends Cmd {
     @Autowired
     private IDictV1InnerServiceSMO dictV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IDictSpecV1InnerServiceSMO dictSpecV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "statusCd", "请求报文中未包含statusCd");
         Assert.hasKeyAndValue(reqJson, "name", "请求报文中未包含name");
+        Assert.hasKeyAndValue(reqJson, "specId", "请求报文中未包含类型");
 
     }
 
@@ -63,8 +70,15 @@ public class SaveDictCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
+        DictSpecDto dictSpecDto  = new DictSpecDto();
+        dictSpecDto.setSpecId(reqJson.getString("specId"));
+        List<DictSpecDto> dictSpecDtos = dictSpecV1InnerServiceSMOImpl.queryDictSpecs(dictSpecDto);
+
+        Assert.listOnlyOne(dictSpecDtos,"未查询到类型");
+
         DictPo dictPo = BeanConvertUtil.covertBean(reqJson, DictPo.class);
-        dictPo.setId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        dictPo.setTableName(dictSpecDtos.get(0).getTableName());
+        dictPo.setTableColumns(dictSpecDtos.get(0).getTableColumns());
         int flag = dictV1InnerServiceSMOImpl.saveDict(dictPo);
 
         if (flag < 1) {

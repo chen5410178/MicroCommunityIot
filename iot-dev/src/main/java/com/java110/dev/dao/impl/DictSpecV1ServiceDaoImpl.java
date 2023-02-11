@@ -15,21 +15,19 @@
  */
 package com.java110.dev.dao.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.java110.core.db.dao.BaseServiceDao;
 import com.java110.core.exception.DAOException;
 import com.java110.dev.dao.IDictSpecV1ServiceDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
 /**
  * 类表述：
- * add by 吴学文 at 2023-02-11 01:27:44 mail: 928255095@qq.com
+ * add by 吴学文 at 2022-07-07 09:00:30 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
@@ -41,63 +39,62 @@ public class DictSpecV1ServiceDaoImpl extends BaseServiceDao implements IDictSpe
     private static Logger logger = LoggerFactory.getLogger(DictSpecV1ServiceDaoImpl.class);
 
 
+
+
+
     /**
-     * 保存字典信息 到 instance
-     *
-     * @param info bId 信息
+     * 保存物品类型信息 到 instance
+     * @param info   bId 信息
      * @throws DAOException DAO异常
      */
     @Override
     public int saveDictSpecInfo(Map info) throws DAOException {
-        logger.debug("保存 saveDictSpecInfo 入参 info : {}", info);
+        logger.debug("保存 saveDictSpecInfo 入参 info : {}",info);
 
-        int saveFlag = sqlSessionTemplate.insert("dictSpecV1ServiceDaoImpl.saveDictSpecInfo", info);
+        int saveFlag = sqlSessionTemplate.insert("dictSpecV1ServiceDaoImpl.saveDictSpecInfo",info);
 
         return saveFlag;
     }
 
 
     /**
-     * 查询字典信息（instance）
-     *
+     * 查询物品类型信息（instance）
      * @param info bId 信息
      * @return List<Map>
      * @throws DAOException DAO异常
      */
     @Override
     public List<Map> getDictSpecInfo(Map info) throws DAOException {
-        logger.debug("查询 getDictSpecInfo 入参 info : {}", info);
+        logger.debug("查询 getDictSpecInfo 入参 info : {}",info);
 
-        List<Map> businessDictSpecInfos = sqlSessionTemplate.selectList("dictSpecV1ServiceDaoImpl.getDictSpecInfo", info);
+        List<Map> businessDictSpecInfos = sqlSessionTemplate.selectList("dictSpecV1ServiceDaoImpl.getDictSpecInfo",info);
 
         return businessDictSpecInfos;
     }
 
 
     /**
-     * 修改字典信息
-     *
+     * 修改物品类型信息
      * @param info 修改信息
      * @throws DAOException DAO异常
      */
     @Override
     public int updateDictSpecInfo(Map info) throws DAOException {
-        logger.debug("修改 updateDictSpecInfo 入参 info : {}", info);
+        logger.debug("修改 updateDictSpecInfo 入参 info : {}",info);
 
-        int saveFlag = sqlSessionTemplate.update("dictSpecV1ServiceDaoImpl.updateDictSpecInfo", info);
+        int saveFlag = sqlSessionTemplate.update("dictSpecV1ServiceDaoImpl.updateDictSpecInfo",info);
 
         return saveFlag;
     }
 
-    /**
-     * 查询字典数量
-     *
-     * @param info 字典信息
-     * @return 字典数量
+     /**
+     * 查询物品类型数量
+     * @param info 物品类型信息
+     * @return 物品类型数量
      */
     @Override
     public int queryDictSpecsCount(Map info) {
-        logger.debug("查询 queryDictSpecsCount 入参 info : {}", info);
+        logger.debug("查询 queryDictSpecsCount 入参 info : {}",info);
 
         List<Map> businessDictSpecInfos = sqlSessionTemplate.selectList("dictSpecV1ServiceDaoImpl.queryDictSpecsCount", info);
         if (businessDictSpecInfos.size() < 1) {

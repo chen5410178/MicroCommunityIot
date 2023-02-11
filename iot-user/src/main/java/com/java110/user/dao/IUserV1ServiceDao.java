@@ -70,4 +70,13 @@ public interface IUserV1ServiceDao {
      */
     int queryUsersCount(Map info);
 
+    /**
+     * 查询用户信息
+     *
+     * @param info 信息
+     * @return
+     * @throws DAOException
+     */
+    List<Map> queryUsersInfo(Map info) throws DAOException;
+
 }

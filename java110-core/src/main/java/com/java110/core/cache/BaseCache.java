@@ -13,10 +13,13 @@ import java.util.Set;
  */
 public class BaseCache {
 
+    public static final int DEFAULT_DB = 3;
+
     protected static Jedis getJedis() {
         JedisPool jedisPool = (JedisPool) ApplicationContextFactory.getBean("jedisPool");
-        jedisPool.getResource().select(3);
-        return jedisPool.getResource();
+        Jedis redis = jedisPool.getResource();
+        redis.select(DEFAULT_DB);
+        return redis;
     }
 
     /**
