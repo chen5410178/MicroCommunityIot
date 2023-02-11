@@ -30,7 +30,7 @@ public class DataFlowFactory {
         }
         //DateUtil.getCurrentDate(), ResponseConstant.RESULT_CODE_SUCCESS
         try {
-            return clazz.getConstructor(Date.class,String.class).newInstance(DateUtil.getCurrentDate(), ResultVo.CODE_OK);
+            return clazz.getConstructor(Date.class,String.class).newInstance(DateUtil.getCurrentDate(), ResultVo.CODE_OK+"");
         }
         catch (InstantiationException ex) {
             throw new BeanInstantiationException(clazz, "是一个抽象类?", ex);

@@ -5,111 +5,119 @@
 <mapper namespace="communityV1ServiceDaoImpl">
 
 
-
-
-
     <!-- 保存小区信息 add by wuxw 2018-07-03 -->
     <insert id="saveCommunityInfo" parameterType="Map">
         insert into s_community(
-address,city_code,name,tel,community_id,ext_community_id
-) values (
-#{address},#{cityCode},#{name},#{tel},#{communityId},#{extCommunityId}
-)
+        address,city_code,name,tel,community_id,ext_community_id
+        ) values (
+        #{address},#{cityCode},#{name},#{tel},#{communityId},#{extCommunityId}
+        )
     </insert>
-
 
 
     <!-- 查询小区信息 add by wuxw 2018-07-03 -->
     <select id="getCommunityInfo" parameterType="Map" resultType="Map">
-        select  t.address,t.city_code,t.city_code cityCode,t.name,t.tel,t.status_cd,t.status_cd statusCd,t.community_id,t.community_id communityId,t.ext_community_id,t.ext_community_id extCommunityId 
-from s_community t 
-where 1 =1 
-<if test="address !=null and address != ''">
-   and t.address= #{address}
-</if> 
-<if test="cityCode !=null and cityCode != ''">
-   and t.city_code= #{cityCode}
-</if> 
-<if test="name !=null and name != ''">
-   and t.name= #{name}
-</if> 
-<if test="tel !=null and tel != ''">
-   and t.tel= #{tel}
-</if> 
-<if test="statusCd !=null and statusCd != ''">
-   and t.status_cd= #{statusCd}
-</if> 
-<if test="communityId !=null and communityId != ''">
-   and t.community_id= #{communityId}
-</if> 
-<if test="extCommunityId !=null and extCommunityId != ''">
-   and t.ext_community_id= #{extCommunityId}
-</if> 
-order by t.create_time desc
-<if test="page != -1 and page != null ">
-   limit #{page}, #{row}
-</if> 
+        select t.address,t.city_code,t.city_code cityCode,t.name,t.tel,t.status_cd,t.status_cd
+        statusCd,t.community_id,t.community_id communityId,t.ext_community_id,t.ext_community_id extCommunityId
+        from s_community t
+        where 1 =1
+        <if test="address !=null and address != ''">
+            and t.address= #{address}
+        </if>
+        <if test="cityCode !=null and cityCode != ''">
+            and t.city_code= #{cityCode}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="communityIds != null">
+            and t.community_id in
+            <foreach collection="communityIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="extCommunityId !=null and extCommunityId != ''">
+            and t.ext_community_id= #{extCommunityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
 
     </select>
 
 
-
-
     <!-- 修改小区信息 add by wuxw 2018-07-03 -->
     <update id="updateCommunityInfo" parameterType="Map">
-        update  s_community t set t.status_cd = #{statusCd}
-<if test="newBId != null and newBId != ''">
-,t.b_id = #{newBId}
-</if> 
-<if test="address !=null and address != ''">
-, t.address= #{address}
-</if> 
-<if test="cityCode !=null and cityCode != ''">
-, t.city_code= #{cityCode}
-</if> 
-<if test="name !=null and name != ''">
-, t.name= #{name}
-</if> 
-<if test="tel !=null and tel != ''">
-, t.tel= #{tel}
-</if> 
-<if test="extCommunityId !=null and extCommunityId != ''">
-, t.ext_community_id= #{extCommunityId}
-</if> 
- where 1=1 <if test="communityId !=null and communityId != ''">
-and t.community_id= #{communityId}
-</if> 
+        update s_community t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="address !=null and address != ''">
+            , t.address= #{address}
+        </if>
+        <if test="cityCode !=null and cityCode != ''">
+            , t.city_code= #{cityCode}
+        </if>
+        <if test="name !=null and name != ''">
+            , t.name= #{name}
+        </if>
+        <if test="tel !=null and tel != ''">
+            , t.tel= #{tel}
+        </if>
+        <if test="extCommunityId !=null and extCommunityId != ''">
+            , t.ext_community_id= #{extCommunityId}
+        </if>
+        where 1=1
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
 
     </update>
 
     <!-- 查询小区数量 add by wuxw 2018-07-03 -->
-     <select id="queryCommunitysCount" parameterType="Map" resultType="Map">
-        select  count(1) count 
-from s_community t 
-where 1 =1 
-<if test="address !=null and address != ''">
-   and t.address= #{address}
-</if> 
-<if test="cityCode !=null and cityCode != ''">
-   and t.city_code= #{cityCode}
-</if> 
-<if test="name !=null and name != ''">
-   and t.name= #{name}
-</if> 
-<if test="tel !=null and tel != ''">
-   and t.tel= #{tel}
-</if> 
-<if test="statusCd !=null and statusCd != ''">
-   and t.status_cd= #{statusCd}
-</if> 
-<if test="communityId !=null and communityId != ''">
-   and t.community_id= #{communityId}
-</if> 
-<if test="extCommunityId !=null and extCommunityId != ''">
-   and t.ext_community_id= #{extCommunityId}
-</if> 
+    <select id="queryCommunitysCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from s_community t
+        where 1 =1
+        <if test="address !=null and address != ''">
+            and t.address= #{address}
+        </if>
+        <if test="cityCode !=null and cityCode != ''">
+            and t.city_code= #{cityCode}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="communityIds != null">
+            and t.community_id in
+            <foreach collection="communityIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="extCommunityId !=null and extCommunityId != ''">
+            and t.ext_community_id= #{extCommunityId}
+        </if>
 
 
-     </select>
+    </select>
 
 </mapper>

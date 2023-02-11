@@ -24,7 +24,7 @@ spring:
   application:
     name: iot-gateway
   redis:
-    database: 0
+    database: 4
     host: 192.168.100.108
     port: 6379
     password: hc12345678

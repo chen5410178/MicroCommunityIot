@@ -22,10 +22,14 @@ public class CommunityDto extends PageDto implements Serializable {
     private String communityId;
     private String extCommunityId;
 
+    private String memberId;
+
 
     private Date createTime;
 
     private String statusCd = "0";
+
+    private String[] communityIds;
 
 
     public String getAddress() {
@@ -91,5 +95,21 @@ public class CommunityDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+    }
+
+    public String[] getCommunityIds() {
+        return communityIds;
+    }
+
+    public void setCommunityIds(String[] communityIds) {
+        this.communityIds = communityIds;
     }
 }

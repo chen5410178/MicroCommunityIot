@@ -6,7 +6,9 @@ import com.java110.bean.dto.basePrivilege.BasePrivilegeDto;
 import com.java110.core.cache.PrivilegeCache;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
+import com.java110.core.utils.RequestUtils;
 import com.java110.core.utils.StringUtil;
+import com.java110.gateway.configuration.ServiceConfiguration;
 import com.java110.gateway.service.IPrivilegeSMO;
 import com.java110.intf.user.IMenuV1InnerServiceSMO;
 import org.slf4j.Logger;
@@ -33,8 +35,14 @@ public class PrivilegeSMOImpl implements IPrivilegeSMO {
     private IMenuV1InnerServiceSMO menuV1InnerServiceSMOImpl;
 
 
-    public void hasPrivilege( String resource,String userId) {
-        ResponseEntity<String> responseEntity = null;
+    public void hasPrivilege(String resource, String userId) {
+
+        //如果不需要登录的 跳过
+        String[] ignorePath = ServiceConfiguration.exclusions.toString().split(",");
+        if (RequestUtils.isExcludedUri(ignorePath, resource)) {
+            return;
+        }
+
         //没有用户的情况下不做权限判断
         if (StringUtil.isEmpty(userId)) {
             return;

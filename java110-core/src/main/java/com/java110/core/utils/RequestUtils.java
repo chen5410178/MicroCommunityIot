@@ -172,4 +172,17 @@ public class RequestUtils {
         }
         return returnMap;
     }
+
+    public static  boolean isExcludedUri(String[] excludedUris, String uri) {
+        if (excludedUris == null || excludedUris.length <= 0) {
+            return false;
+        }
+        for (String ex : excludedUris) {
+            uri = uri.trim();
+            ex = ex.trim();
+            if (uri.toLowerCase().matches(ex.toLowerCase().replace("*", ".*")))
+                return true;
+        }
+        return false;
+    }
 }

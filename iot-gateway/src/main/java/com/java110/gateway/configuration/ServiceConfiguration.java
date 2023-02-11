@@ -10,11 +10,15 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class ServiceConfiguration {
+
+    public static final  StringBuffer exclusions = new StringBuffer();
+
+    static {
+        exclusions.append("/iot/api/login.pcUserLogin,");
+        exclusions.append("/iot/api/login.generatorValidateCode,");
+    }
     @Bean
     public FilterRegistrationBean jwtFilter() {
-        StringBuffer exclusions = new StringBuffer();
-
-        exclusions.append("/iot/api/login.pcUserLogin,");
 
         final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(new JwtFilter());

@@ -15,6 +15,7 @@ import com.java110.core.utils.StringUtil;
 import com.java110.dto.communityMember.CommunityMemberDto;
 import com.java110.dto.store.StoreDto;
 import com.java110.dto.storeStaff.StoreStaffDto;
+import com.java110.gateway.configuration.ServiceConfiguration;
 import com.java110.gateway.service.IApiService;
 import com.java110.gateway.service.IAppServiceCheck;
 import com.java110.gateway.service.IGetCommunityStoreInfoSMO;
@@ -134,13 +135,22 @@ public class ApiServiceImpl implements IApiService {
      */
     private ResponseEntity<String> doService(String body, Map<String, String> headers, HttpServletRequest request) {
         ResponseEntity<String> responseEntity = null;
-        //1.0 校验商户员工小区关系
-        ValidateResult result = this.validateStoreStaffCommunityRelationship(body, headers);
+        //如果不需要登录的 跳过
+        String[] ignorePath = ServiceConfiguration.exclusions.toString().split(",");
+        if (!RequestUtils.isExcludedUri(ignorePath, "/iot/api/" + headers.get(CommonConstant.HTTP_SERVICE))) {
+            //1.0 校验商户员工小区关系
+            ValidateResult result = this.validateStoreStaffCommunityRelationship(body, headers);
 
-        // header 中写入数据
-        headers.put(CommonConstant.STORE_ID, result.getStoreId());
-        headers.put("community-id", result.getCommunityId());
-        headers.put(CommonConstant.LOGIN_U_ID, result.getLoginUserId());
+            // header 中写入数据
+            headers.put(CommonConstant.STORE_ID, result.getStoreId());
+            headers.put("community-id", result.getCommunityId());
+            headers.put(CommonConstant.LOGIN_U_ID, result.getLoginUserId());
+        }else{
+            // header 中写入数据
+            headers.put(CommonConstant.STORE_ID, "-");
+            headers.put("community-id", "-");
+            headers.put(CommonConstant.LOGIN_U_ID, "-");
+        }
 
         //2.0 接口权限校验处理 并且获取到APPService
         AppService appService = appServiceCheckImpl.checkAndGetAppService(body, headers);

@@ -45,7 +45,7 @@ import java.util.concurrent.TimeUnit;
         "com.java110.intf.community",
 })
 @Java110CmdDiscovery(cmdPublishClass = ServiceCmdEventPublishing.class,
-        basePackages = {"com.java110.report.cmd"})
+        basePackages = {"com.java110.user.cmd"})
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 @EnableDiscoveryClient
 public class UserApplicationStart {
