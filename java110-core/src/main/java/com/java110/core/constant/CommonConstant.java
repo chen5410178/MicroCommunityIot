@@ -161,6 +161,8 @@ public class CommonConstant {
     public static final String LOGIN_U_ID = "login-user-id";
     public static final String STORE_ID = "store-id";
 
+
+
     public final static String HTTP_SERVICE_API = "API";
     public final static String HTTP_SERVICE = "SERVICE";
     public final static String HTTP_SUB_SERVICE = "SUB_SERVICE"; //微服务
@@ -177,6 +179,7 @@ public class CommonConstant {
     public final static String HTTP_PARAM = "params";
     public final static String HTTP_ORDER_TYPE_CD = "order_type_cd";
     public final static String HTTP_USER_ID = "user-id";
+    public final static String HTTP_SESSION_ID = "session-id";
     public final static String ORDER_PROCESS = "order_process";
     public final static String O_ID = "o_id";
 

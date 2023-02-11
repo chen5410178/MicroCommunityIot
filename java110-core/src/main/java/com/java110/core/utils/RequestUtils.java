@@ -1,5 +1,7 @@
 package com.java110.core.utils;
 
+import com.java110.core.constant.CommonConstant;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -43,6 +45,9 @@ public class RequestUtils {
         if (headers.containsKey("user-id") && !"-1".equals(headers.get("user-id"))) {
             headers.put("user_id", headers.get("user-id"));
         }
+
+        String sessionId = request.getSession().getId();
+        headers.put(CommonConstant.HTTP_SESSION_ID, sessionId);
 
     }
 

@@ -138,9 +138,9 @@ public class ApiServiceImpl implements IApiService {
         ValidateResult result = this.validateStoreStaffCommunityRelationship(body, headers);
 
         // header 中写入数据
-        headers.put("store-id", result.getStoreId());
+        headers.put(CommonConstant.STORE_ID, result.getStoreId());
         headers.put("community-id", result.getCommunityId());
-        headers.put("login-user-id", result.getLoginUserId());
+        headers.put(CommonConstant.LOGIN_U_ID, result.getLoginUserId());
 
         //2.0 接口权限校验处理 并且获取到APPService
         AppService appService = appServiceCheckImpl.checkAndGetAppService(body, headers);
