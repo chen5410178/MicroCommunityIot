@@ -2,6 +2,7 @@ package com.java110.user.cmd.login;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cache.CommonCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.constant.CommonConstant;
@@ -12,6 +13,8 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
+import com.java110.dto.app.AppDto;
 import com.java110.dto.store.StoreDto;
 import com.java110.dto.storeStaff.StoreStaffDto;
 import com.java110.dto.user.UserDto;
@@ -52,6 +55,17 @@ public class PcUserLoginCmd extends Cmd {
 
         Assert.hasKeyAndValue(reqJson, "username", "用户登录，未包含username节点，请检查");
         Assert.hasKeyAndValue(reqJson, "passwd", "用户登录，未包含passwd节点，请检查");
+
+        String appId = CmdContextUtils.getAppId(cmdDataFlowContext);
+
+        // web端需要 图片验证码校验
+        if (AppDto.WEB_APP_ID.equals(appId)) {
+            Assert.hasKeyAndValue(reqJson, "code", "未包含图片验证码");
+            String code = CommonCache.getValue(CmdContextUtils.getSessionId(cmdDataFlowContext) + "_validateCode");
+            if (!reqJson.getString("code").equals(code)) {
+                throw new IllegalArgumentException("验证码错误");
+            }
+        }
     }
 
     @Override
@@ -61,7 +75,7 @@ public class PcUserLoginCmd extends Cmd {
         //根据AppId 查询 是否有登录的服务，查询登录地址调用
         UserDto userDto = new UserDto();
         userDto.setName(reqJson.getString("username"));
-        userDto.setPassword(reqJson.getString("passwd"));
+        userDto.setPassword(AuthenticationFactory.passwdMd5(reqJson.getString("passwd")));
         userDto.setLevelCds(new String[]{UserDto.LEVEL_CD_ADMIN, UserDto.LEVEL_CD_STAFF});
         List<UserDto> userDtos = userV1InnerServiceSMO.queryUsers(userDto);
         if (userDtos == null || userDtos.size() < 1) {
@@ -98,8 +112,8 @@ public class PcUserLoginCmd extends Cmd {
             JSONObject userInfo = BeanConvertUtil.beanCovertJson(userDtos.get(0));
             userInfo.remove("userPwd");
             userInfo.put("token", token);
-            userInfo.put("code","0");
-            userInfo.put("msg","成功");
+            userInfo.put("code", "0");
+            userInfo.put("msg", "成功");
             //记录登录日志
 //            UserLoginPo userLoginPo = new UserLoginPo();
 //            userLoginPo.setLoginId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_loginId));
