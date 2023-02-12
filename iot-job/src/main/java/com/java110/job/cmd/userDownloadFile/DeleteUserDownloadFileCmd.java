@@ -16,17 +16,17 @@
 package com.java110.job.cmd.userDownloadFile;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
+import com.java110.bean.po.userDownloadFile.UserDownloadFilePo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
+import com.java110.core.cmd.Cmd;
+import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
-import com.java110.core.event.cmd.Cmd;
-import com.java110.core.event.cmd.CmdEvent;
+import com.java110.core.exception.CmdException;
+import com.java110.core.utils.Assert;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.job.IUserDownloadFileV1InnerServiceSMO;
-import com.java110.po.userDownloadFile.UserDownloadFilePo;
-import com.java110.utils.exception.CmdException;
-import com.java110.utils.util.Assert;
-import com.java110.utils.util.BeanConvertUtil;
-import com.java110.vo.ResultVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

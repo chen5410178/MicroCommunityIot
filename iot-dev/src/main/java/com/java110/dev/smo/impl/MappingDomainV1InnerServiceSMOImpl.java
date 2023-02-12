@@ -16,13 +16,12 @@
 package com.java110.dev.smo.impl;
 
 
-import com.java110.core.base.smo.BaseServiceSMO;
+import com.java110.bean.dto.PageDto;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dev.dao.IMappingDomainV1ServiceDao;
-import com.java110.dto.PageDto;
 import com.java110.dto.mappingDomain.MappingDomainDto;
 import com.java110.intf.dev.IMappingDomainV1InnerServiceSMO;
 import com.java110.po.mappingDomain.MappingDomainPo;
-import com.java110.utils.util.BeanConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +37,7 @@ import java.util.List;
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
 @RestController
-public class MappingDomainV1InnerServiceSMOImpl extends BaseServiceSMO implements IMappingDomainV1InnerServiceSMO {
+public class MappingDomainV1InnerServiceSMOImpl implements IMappingDomainV1InnerServiceSMO {
 
     @Autowired
     private IMappingDomainV1ServiceDao mappingDomainV1ServiceDaoImpl;

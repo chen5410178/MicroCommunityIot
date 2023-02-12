@@ -1,5 +1,6 @@
 package com.java110.core.db.dao;
 
+import com.java110.bean.dto.order.ServiceBusiness;
 import com.java110.bean.dto.service.ServiceSql;
 
 import java.util.List;
@@ -43,5 +44,10 @@ public interface IQueryServiceDAO {
 
     public List<ServiceSql> qureyServiceSqlAll();
 
+    /**
+     * 查询服务业务信息
+     * @return
+     */
+    public List<ServiceBusiness> qureyServiceBusiness();
 
 }

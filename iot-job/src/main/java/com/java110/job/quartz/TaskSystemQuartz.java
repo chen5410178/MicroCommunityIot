@@ -1,18 +1,18 @@
 package com.java110.job.quartz;
 
+import com.java110.bean.dto.logSystemError.LogSystemErrorDto;
+import com.java110.bean.dto.task.TaskDto;
+import com.java110.bean.dto.taskAttr.TaskAttrDto;
+import com.java110.bean.po.logSystemError.LogSystemErrorPo;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.log.LoggerFactory;
+import com.java110.core.factory.LoggerFactory;
+import com.java110.core.smo.ISaveSystemErrorSMO;
+import com.java110.core.utils.ExceptionUtil;
 import com.java110.dto.community.CommunityDto;
-import com.java110.dto.logSystemError.LogSystemErrorDto;
 import com.java110.dto.store.StoreDto;
-import com.java110.dto.task.TaskDto;
-import com.java110.dto.taskAttr.TaskAttrDto;
-import com.java110.intf.community.ICommunityInnerServiceSMO;
-import com.java110.intf.store.IStoreInnerServiceSMO;
+import com.java110.intf.community.ICommunityV1InnerServiceSMO;
+import com.java110.intf.user.IStoreV1InnerServiceSMO;
 import com.java110.job.dao.ITaskServiceDao;
-import com.java110.po.logSystemError.LogSystemErrorPo;
-import com.java110.service.smo.ISaveSystemErrorSMO;
-import com.java110.utils.util.ExceptionUtil;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,10 +31,10 @@ public abstract class TaskSystemQuartz {
     private ITaskServiceDao taskServiceDaoImpl;
 
     @Autowired
-    private ICommunityInnerServiceSMO communityInnerServiceSMOImpl;
+    private ICommunityV1InnerServiceSMO communityInnerServiceSMOImpl;
 
     @Autowired
-    private IStoreInnerServiceSMO storeInnerServiceSMOImpl;
+    private IStoreV1InnerServiceSMO storeInnerServiceSMOImpl;
 
     @Autowired
     private ISaveSystemErrorSMO saveSystemErrorSMOImpl;
@@ -124,7 +124,7 @@ public abstract class TaskSystemQuartz {
      */
     protected List<CommunityDto> getAllCommunity() {
         CommunityDto communityDto = new CommunityDto();
-        communityDto.setState("1100"); //审核过的小区
+        //communityDto.setState("1100"); //审核过的小区
         List<CommunityDto> communityDtos = communityInnerServiceSMOImpl.queryCommunitys(communityDto);
         return communityDtos;
     }
@@ -137,7 +137,7 @@ public abstract class TaskSystemQuartz {
     protected List<StoreDto> getAllStore(String storeTypeCd) {
         StoreDto storeDto = new StoreDto();
         storeDto.setStoreTypeCd(storeTypeCd);
-        List<StoreDto> storeDtos = storeInnerServiceSMOImpl.getStores(storeDto);
+        List<StoreDto> storeDtos = storeInnerServiceSMOImpl.queryStores(storeDto);
         return storeDtos;
     }
 

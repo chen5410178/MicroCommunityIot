@@ -1,24 +1,23 @@
 package com.java110.dev.smo.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.java110.core.factory.DataTransactionFactory;
-import com.java110.core.log.LoggerFactory;
-import com.java110.db.dao.IQueryServiceDAO;
+import com.java110.bean.ResultVo;
+import com.java110.bean.dto.app.AppRoute;
+import com.java110.bean.dto.basePrivilege.BasePrivilegeDto;
+import com.java110.bean.dto.mapping.MappingDto;
+import com.java110.bean.dto.order.ServiceBusiness;
+import com.java110.bean.dto.service.ServiceSql;
+import com.java110.core.cache.*;
+import com.java110.core.constant.CommonConstant;
+import com.java110.core.constant.ResponseConstant;
+import com.java110.core.context.DataQuery;
+import com.java110.core.db.dao.IQueryServiceDAO;
+import com.java110.core.factory.LoggerFactory;
+import com.java110.core.utils.Assert;
 import com.java110.dev.dao.IDevServiceDAO;
 import com.java110.dev.smo.IDevServiceCacheSMO;
-import com.java110.dto.basePrivilege.BasePrivilegeDto;
-import com.java110.dto.businessDatabus.BusinessDatabusDto;
-import com.java110.dto.businessTableHis.BusinessTableHisDto;
-import com.java110.entity.center.AppRoute;
-import com.java110.entity.mapping.Mapping;
-import com.java110.entity.order.ServiceBusiness;
-import com.java110.entity.service.ServiceSql;
-import com.java110.service.context.DataQuery;
-import com.java110.utils.cache.*;
-import com.java110.utils.constant.CommonConstant;
-import com.java110.utils.constant.ResponseConstant;
-import com.java110.utils.exception.SMOException;
-import com.java110.utils.util.Assert;
+import com.java110.bean.dto.businessDatabus.BusinessDatabusDto;
+import com.java110.bean.dto.businessTableHis.BusinessTableHisDto;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,7 +43,7 @@ public class DevServiceCacheSMOImpl implements IDevServiceCacheSMO {
     IQueryServiceDAO queryServiceDAOImpl;
 
     @Override
-    public void flush(DataQuery dataQuery) throws SMOException {
+    public void flush(DataQuery dataQuery) {
 
 
         //1.0 封装 AppRoute
@@ -68,7 +67,7 @@ public class DevServiceCacheSMOImpl implements IDevServiceCacheSMO {
 //刷新BusinessTableHis
         flushBusinessTableHis(dataQuery);
 
-        dataQuery.setResponseInfo(DataTransactionFactory.createBusinessResponseJson(ResponseConstant.RESULT_CODE_SUCCESS, "刷新成功"));
+        dataQuery.setResponseInfo(JSONObject.parseObject(ResultVo.success().getBody()));
     }
 
     /**
@@ -76,7 +75,7 @@ public class DevServiceCacheSMOImpl implements IDevServiceCacheSMO {
      *
      * @param headers 缓存类别
      */
-    public void flush(Map<String, String> headers) throws SMOException {
+    public void flush(Map<String, String> headers) {
 
         flushAppRoute(headers);
 
@@ -123,10 +122,10 @@ public class DevServiceCacheSMOImpl implements IDevServiceCacheSMO {
     }
 
 
-    private void checkCacheParam(DataQuery dataQuery) throws SMOException {
+    private void checkCacheParam(DataQuery dataQuery)  {
         JSONObject params = dataQuery.getRequestParams();
         if (params == null || !params.containsKey(CommonConstant.CACHE_PARAM_NAME)) {
-            throw new SMOException(ResponseConstant.RESULT_PARAM_ERROR, "请求报文错误，未包含字段 " + CommonConstant.CACHE_PARAM_NAME);
+            throw new IllegalArgumentException("请求报文错误，未包含字段 " + CommonConstant.CACHE_PARAM_NAME);
         }
     }
 
@@ -333,21 +332,21 @@ public class DevServiceCacheSMOImpl implements IDevServiceCacheSMO {
 
     private void doFlushMapping() {
         logger.debug("开始刷新 Mapping数据到redis数据库中");
-        List<Mapping> mappings = devServiceDAOImpl.getMappingInfoAll();
+        List<MappingDto> mappings = devServiceDAOImpl.getMappingInfoAll();
         //删除原始数据
         MappingCache.removeData(MappingCache._SUFFIX_MAPPING);
-        for (Mapping mapping : mappings) {
+        for (MappingDto mapping : mappings) {
             MappingCache.setVaule(mapping);
         }
 
-        Map<String, List<Mapping>> mappingMap = new HashMap<String, List<Mapping>>();
-        List<Mapping> mappingsNew = null;
-        for (Mapping mapping : mappings) {
+        Map<String, List<MappingDto>> mappingMap = new HashMap<String, List<MappingDto>>();
+        List<MappingDto> mappingsNew = null;
+        for (MappingDto mapping : mappings) {
             if (mappingMap.containsKey(mapping.getDomain())) {
                 mappingsNew = mappingMap.get(mapping.getDomain());
                 mappingsNew.add(mapping);
             } else {
-                mappingsNew = new ArrayList<Mapping>();
+                mappingsNew = new ArrayList<MappingDto>();
                 mappingsNew.add(mapping);
                 mappingMap.put(mapping.getDomain(), mappingsNew);
             }

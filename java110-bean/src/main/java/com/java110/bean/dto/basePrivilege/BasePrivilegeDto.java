@@ -41,12 +41,29 @@ public class BasePrivilegeDto extends PageDto implements Serializable {
     private String createTime;
     private String communityId;
 
-    public String getPId() {
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getpId() {
         return pId;
     }
 
-    public void setPId(String pId) {
+    public void setpId(String pId) {
         this.pId = pId;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 
     public String getName() {
@@ -55,6 +72,14 @@ public class BasePrivilegeDto extends PageDto implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getResource() {
+        return resource;
+    }
+
+    public void setResource(String resource) {
+        this.resource = resource;
     }
 
     public String getDomain() {
@@ -73,44 +98,12 @@ public class BasePrivilegeDto extends PageDto implements Serializable {
         this.description = description;
     }
 
-    public String getpId() {
-        return pId;
-    }
-
-    public void setpId(String pId) {
-        this.pId = pId;
-    }
-
     public String getStatusCd() {
         return statusCd;
     }
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getResource() {
-        return resource;
-    }
-
-    public void setResource(String resource) {
-        this.resource = resource;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getmId() {
@@ -121,20 +114,20 @@ public class BasePrivilegeDto extends PageDto implements Serializable {
         this.mId = mId;
     }
 
-    public String getStoreId() {
-        return storeId;
-    }
-
-    public void setStoreId(String storeId) {
-        this.storeId = storeId;
-    }
-
     public String getStName() {
         return stName;
     }
 
     public void setStName(String stName) {
         this.stName = stName;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public String getCommunityId() {

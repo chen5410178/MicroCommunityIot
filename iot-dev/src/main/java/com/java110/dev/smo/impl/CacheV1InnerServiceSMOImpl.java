@@ -16,7 +16,6 @@
 package com.java110.dev.smo.impl;
 
 
-import com.java110.core.base.smo.BaseServiceSMO;
 import com.java110.dev.smo.IDevServiceCacheSMO;
 import com.java110.intf.dev.ICacheV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
 @RestController
-public class CacheV1InnerServiceSMOImpl extends BaseServiceSMO implements ICacheV1InnerServiceSMO {
+public class CacheV1InnerServiceSMOImpl implements ICacheV1InnerServiceSMO {
 
     @Autowired
     private IDevServiceCacheSMO devServiceCacheSMOImpl;

@@ -16,13 +16,12 @@
 package com.java110.dev.smo.impl;
 
 
-import com.java110.core.base.smo.BaseServiceSMO;
+import com.java110.bean.dto.PageDto;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dev.dao.IBusinessTableHisV1ServiceDao;
-import com.java110.dto.PageDto;
 import com.java110.dto.businessTableHis.BusinessTableHisDto;
 import com.java110.intf.dev.IBusinessTableHisV1InnerServiceSMO;
 import com.java110.po.businessTableHis.BusinessTableHisPo;
-import com.java110.utils.util.BeanConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +37,7 @@ import java.util.List;
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
 @RestController
-public class BusinessTableHisV1InnerServiceSMOImpl extends BaseServiceSMO implements IBusinessTableHisV1InnerServiceSMO {
+public class BusinessTableHisV1InnerServiceSMOImpl  implements IBusinessTableHisV1InnerServiceSMO {
 
     @Autowired
     private IBusinessTableHisV1ServiceDao businessTableHisV1ServiceDaoImpl;

@@ -15,14 +15,12 @@
  */
 package com.java110.dev.smo.impl;
 
-
-import com.java110.core.base.smo.BaseServiceSMO;
+import com.java110.bean.dto.PageDto;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dev.dao.IDictSpecV1ServiceDao;
-import com.java110.dto.PageDto;
 import com.java110.dto.dictSpec.DictSpecDto;
 import com.java110.intf.dev.IDictSpecV1InnerServiceSMO;
 import com.java110.po.dictSpec.DictSpecPo;
-import com.java110.utils.util.BeanConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +36,7 @@ import java.util.List;
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
 @RestController
-public class DictSpecV1InnerServiceSMOImpl extends BaseServiceSMO implements IDictSpecV1InnerServiceSMO {
+public class DictSpecV1InnerServiceSMOImpl implements IDictSpecV1InnerServiceSMO {
 
     @Autowired
     private IDictSpecV1ServiceDao dictSpecV1ServiceDaoImpl;

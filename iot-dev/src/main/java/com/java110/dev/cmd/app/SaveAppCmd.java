@@ -2,17 +2,17 @@ package com.java110.dev.cmd.app;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cmd.Cmd;
+import com.java110.core.cmd.CmdEvent;
+import com.java110.core.constant.ResponseConstant;
 import com.java110.core.context.ICmdDataFlowContext;
-import com.java110.core.event.cmd.Cmd;
-import com.java110.core.event.cmd.CmdEvent;
+import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.utils.Assert;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.app.AppDto;
-import com.java110.intf.community.IAppInnerServiceSMO;
-import com.java110.utils.constant.ResponseConstant;
-import com.java110.utils.exception.CmdException;
-import com.java110.utils.exception.ListenerExecuteException;
-import com.java110.utils.util.Assert;
-import com.java110.utils.util.BeanConvertUtil;
+import com.java110.intf.dev.IAppV1InnerServiceSMO;
+import com.java110.po.app.AppPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 public class SaveAppCmd extends Cmd {
 
     @Autowired
-    private IAppInnerServiceSMO appInnerServiceSMOImpl;
+    private IAppV1InnerServiceSMO appInnerServiceSMOImpl;
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
         Assert.hasKeyAndValue(reqJson, "name", "必填，请填写应用名称");
@@ -29,7 +29,7 @@ public class SaveAppCmd extends Cmd {
 
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
-        AppDto appDto = BeanConvertUtil.covertBean(reqJson, AppDto.class);
+        AppPo appDto = BeanConvertUtil.covertBean(reqJson, AppPo.class);
 
         appDto.setAppId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_id));
 
@@ -38,7 +38,7 @@ public class SaveAppCmd extends Cmd {
 
 
         if (count < 1) {
-            throw new ListenerExecuteException(ResponseConstant.RESULT_CODE_ERROR, "保存数据失败");
+            throw new CmdException(ResponseConstant.RESULT_CODE_ERROR, "保存数据失败");
         }
 
         ResponseEntity<String> responseEntity = new ResponseEntity<String>("", HttpStatus.OK);

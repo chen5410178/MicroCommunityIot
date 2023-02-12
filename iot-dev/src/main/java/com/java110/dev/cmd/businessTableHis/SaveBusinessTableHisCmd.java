@@ -16,19 +16,19 @@
 package com.java110.dev.cmd.businessTableHis;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
+import com.java110.core.cmd.Cmd;
+import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
-import com.java110.core.event.cmd.Cmd;
-import com.java110.core.event.cmd.CmdEvent;
+import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.log.LoggerFactory;
+import com.java110.core.factory.LoggerFactory;
+import com.java110.core.utils.Assert;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.dev.IBusinessTableHisV1InnerServiceSMO;
 import com.java110.po.businessTableHis.BusinessTableHisPo;
-import com.java110.utils.exception.CmdException;
-import com.java110.utils.util.Assert;
-import com.java110.utils.util.BeanConvertUtil;
-import com.java110.vo.ResultVo;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -55,9 +55,9 @@ public class SaveBusinessTableHisCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "action", "请求报文中未包含action");
-Assert.hasKeyAndValue(reqJson, "actionObj", "请求报文中未包含actionObj");
-Assert.hasKeyAndValue(reqJson, "actionObjHis", "请求报文中未包含actionObjHis");
-Assert.hasKeyAndValue(reqJson, "businessTypeCd", "请求报文中未包含businessTypeCd");
+        Assert.hasKeyAndValue(reqJson, "actionObj", "请求报文中未包含actionObj");
+        Assert.hasKeyAndValue(reqJson, "actionObjHis", "请求报文中未包含actionObjHis");
+        Assert.hasKeyAndValue(reqJson, "businessTypeCd", "请求报文中未包含businessTypeCd");
 
     }
 
@@ -65,7 +65,7 @@ Assert.hasKeyAndValue(reqJson, "businessTypeCd", "请求报文中未包含busine
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-       BusinessTableHisPo businessTableHisPo = BeanConvertUtil.covertBean(reqJson, BusinessTableHisPo.class);
+        BusinessTableHisPo businessTableHisPo = BeanConvertUtil.covertBean(reqJson, BusinessTableHisPo.class);
         businessTableHisPo.setHisId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         int flag = businessTableHisV1InnerServiceSMOImpl.saveBusinessTableHis(businessTableHisPo);
 

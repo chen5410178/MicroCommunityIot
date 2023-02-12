@@ -1,13 +1,12 @@
 package com.java110.job.smo.impl;
 
 
-import com.java110.core.base.smo.BaseServiceSMO;
-import com.java110.dto.PageDto;
+import com.java110.bean.dto.PageDto;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.businessDatabus.BusinessDatabusDto;
 import com.java110.intf.job.IBusinessDatabusInnerServiceSMO;
 import com.java110.job.dao.IBusinessDatabusServiceDao;
 import com.java110.po.businessDatabus.BusinessDatabusPo;
-import com.java110.utils.util.BeanConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +22,7 @@ import java.util.List;
  * add by wuxw 2019/4/24
  **/
 @RestController
-public class BusinessDatabusInnerServiceSMOImpl extends BaseServiceSMO implements IBusinessDatabusInnerServiceSMO {
+public class BusinessDatabusInnerServiceSMOImpl implements IBusinessDatabusInnerServiceSMO {
 
     @Autowired
     private IBusinessDatabusServiceDao businessDatabusServiceDaoImpl;

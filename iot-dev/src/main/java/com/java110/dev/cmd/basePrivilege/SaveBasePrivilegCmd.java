@@ -1,26 +1,26 @@
 package com.java110.dev.cmd.basePrivilege;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.dto.basePrivilege.BasePrivilegeDto;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cmd.Cmd;
+import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
-import com.java110.core.event.cmd.Cmd;
-import com.java110.core.event.cmd.CmdEvent;
+import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.dto.basePrivilege.BasePrivilegeDto;
-import com.java110.intf.community.IMenuInnerServiceSMO;
-import com.java110.utils.exception.CmdException;
-import com.java110.utils.util.Assert;
-import com.java110.utils.util.BeanConvertUtil;
+import com.java110.core.utils.Assert;
+import com.java110.core.utils.BeanConvertUtil;
+import com.java110.intf.user.IMenuV1InnerServiceSMO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Java110Cmd(serviceCode = "basePrivilege.saveBasePrivilege")
-public class SaveBasePrivilegCmd extends Cmd{
+public class SaveBasePrivilegCmd extends Cmd {
 
     @Autowired
-    private IMenuInnerServiceSMO menuInnerServiceSMOImpl;
+    private IMenuV1InnerServiceSMO menuInnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
@@ -52,10 +52,10 @@ public class SaveBasePrivilegCmd extends Cmd{
      */
     private void freshPId(BasePrivilegeDto basePrivilegeDto) {
 
-        if(!StringUtils.isEmpty(basePrivilegeDto.getPId())){
+        if(!StringUtils.isEmpty(basePrivilegeDto.getpId())){
             return ;
         }
         //生成流水
-        basePrivilegeDto.setPId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.BASE_PRIVILEGE));
+        basePrivilegeDto.setpId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.BASE_PRIVILEGE));
     }
 }

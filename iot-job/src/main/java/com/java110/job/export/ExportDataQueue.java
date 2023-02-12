@@ -1,7 +1,7 @@
 package com.java110.job.export;
 
-import com.java110.core.log.LoggerFactory;
-import com.java110.dto.data.ExportDataDto;
+import com.java110.bean.dto.data.ExportDataDto;
+import com.java110.core.factory.LoggerFactory;
 import org.slf4j.Logger;
 
 import java.util.concurrent.BlockingQueue;

@@ -1,13 +1,10 @@
 package com.java110.intf.job;
 
 import com.alibaba.fastjson.JSONObject;
-import com.java110.config.feign.FeignConfiguration;
-import com.java110.dto.businessDatabus.CustomBusinessDatabusDto;
-import com.java110.dto.machine.CarInoutDto;
-import com.java110.dto.machine.MachineDto;
-import com.java110.dto.tempCarFeeConfig.TempCarPayOrderDto;
-import com.java110.entity.order.Business;
-import com.java110.vo.ResultVo;
+import com.java110.bean.ResultVo;
+import com.java110.bean.dto.businessDatabus.CustomBusinessDatabusDto;
+import com.java110.bean.dto.order.BusinessDto;
+import com.java110.intf.FeignConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +20,7 @@ import java.util.List;
  * @Version 1.0
  * add by wuxw 2019/4/24
  **/
-@FeignClient(name = "${java110.job-service}", configuration = {FeignConfiguration.class})
+@FeignClient(name = "iot-job", configuration = {FeignConfiguration.class})
 @RequestMapping("/dataBusApi")
 public interface IDataBusInnerServiceSMO {
 
@@ -34,7 +31,7 @@ public interface IDataBusInnerServiceSMO {
      * @return TaskDto 对象数据
      */
     @RequestMapping(value = "/exchange", method = RequestMethod.POST)
-    boolean exchange(@RequestBody List<Business> businesses);
+    boolean exchange(@RequestBody List<BusinessDto> businesses);
 
 
     /**
@@ -72,18 +69,6 @@ public interface IDataBusInnerServiceSMO {
     @RequestMapping(value = "/resendIot", method = RequestMethod.POST)
     ResultVo resendIot(@RequestBody JSONObject reqJson);
 
-    /**
-     * <p>查询待支付订单</p>
-     *
-     * @param tempCarPayOrderDto 请求信息
-     * @return TaskDto 对象数据
-     */
-    @RequestMapping(value = "/getTempCarFeeOrder", method = RequestMethod.POST)
-    ResultVo getTempCarFeeOrder(@RequestBody TempCarPayOrderDto tempCarPayOrderDto);
-
-    @RequestMapping(value = "/notifyTempCarFeeOrder", method = RequestMethod.POST)
-    ResultVo notifyTempCarFeeOrder(@RequestBody TempCarPayOrderDto tempCarPayOrderDto);
-
 
     /**
      * 自定义databus 数据 传输
@@ -99,14 +84,4 @@ public interface IDataBusInnerServiceSMO {
     @RequestMapping(value = "/customCarInOut", method = RequestMethod.POST)
     ResultVo customCarInOut(@RequestBody JSONObject reqJson);
 
-    @RequestMapping(value = "/payVideo", method = RequestMethod.POST)
-    ResultVo payVideo(@RequestBody MachineDto machineDto);
-
-    @RequestMapping(value = "/heartbeatVideo", method = RequestMethod.POST)
-    ResultVo heartbeatVideo(@RequestBody JSONObject reqJson);
-    @RequestMapping(value = "/updateCarInoutCarNum", method = RequestMethod.POST)
-    ResultVo updateCarInoutCarNum(@RequestBody CarInoutDto carInoutDto);
-
-    @RequestMapping(value = "/getManualOpenDoorLogs", method = RequestMethod.POST)
-    ResultVo getManualOpenDoorLogs(@RequestBody JSONObject reqJson);
 }

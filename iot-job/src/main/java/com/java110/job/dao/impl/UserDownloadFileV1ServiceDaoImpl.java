@@ -15,9 +15,9 @@
  */
 package com.java110.job.dao.impl;
 
-import com.java110.core.base.dao.BaseServiceDao;
+import com.java110.core.db.dao.BaseServiceDao;
+import com.java110.core.exception.DAOException;
 import com.java110.job.dao.IUserDownloadFileV1ServiceDao;
-import com.java110.utils.exception.DAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

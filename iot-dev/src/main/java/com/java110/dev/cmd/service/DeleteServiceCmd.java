@@ -2,17 +2,16 @@ package com.java110.dev.cmd.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cmd.Cmd;
+import com.java110.core.cmd.CmdEvent;
+import com.java110.core.constant.ResponseConstant;
+import com.java110.core.constant.StatusConstant;
 import com.java110.core.context.ICmdDataFlowContext;
-import com.java110.core.event.cmd.Cmd;
-import com.java110.core.event.cmd.CmdEvent;
+import com.java110.core.exception.CmdException;
+import com.java110.core.utils.Assert;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.service.ServiceDto;
-import com.java110.intf.community.IServiceInnerServiceSMO;
-import com.java110.utils.constant.ResponseConstant;
-import com.java110.utils.constant.StatusConstant;
-import com.java110.utils.exception.CmdException;
-import com.java110.utils.exception.ListenerExecuteException;
-import com.java110.utils.util.Assert;
-import com.java110.utils.util.BeanConvertUtil;
+import com.java110.intf.dev.IServiceInnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +40,7 @@ public class DeleteServiceCmd extends Cmd {
 
 
         if (count < 1) {
-            throw new ListenerExecuteException(ResponseConstant.RESULT_CODE_ERROR, "删除数据失败");
+            throw new CmdException(ResponseConstant.RESULT_CODE_ERROR, "删除数据失败");
         }
 
         ResponseEntity<String> responseEntity = new ResponseEntity<String>("", HttpStatus.OK);

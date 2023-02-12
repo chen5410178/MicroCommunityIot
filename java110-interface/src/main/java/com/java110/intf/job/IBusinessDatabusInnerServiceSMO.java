@@ -1,7 +1,7 @@
 package com.java110.intf.job;
 
-import com.java110.config.feign.FeignConfiguration;
 import com.java110.dto.businessDatabus.BusinessDatabusDto;
+import com.java110.intf.FeignConfiguration;
 import com.java110.po.businessDatabus.BusinessDatabusPo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +18,7 @@ import java.util.List;
  * @Version 1.0
  * add by wuxw 2019/4/24
  **/
-@FeignClient(name = "${java110.job-service}", configuration = {FeignConfiguration.class})
+@FeignClient(name = "iot-job", configuration = {FeignConfiguration.class})
 @RequestMapping("/businessDatabusApi")
 public interface IBusinessDatabusInnerServiceSMO {
 

@@ -67,7 +67,7 @@ Assert.hasKeyAndValue(reqJson, "groupType", "请求报文中未包含groupType")
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
        MenuGroupPo menuGroupPo = BeanConvertUtil.covertBean(reqJson, MenuGroupPo.class);
-        menuGroupPo.setGId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        menuGroupPo.setgId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         int flag = menuGroupV1InnerServiceSMOImpl.saveMenuGroup(menuGroupPo);
 
         if (flag < 1) {
