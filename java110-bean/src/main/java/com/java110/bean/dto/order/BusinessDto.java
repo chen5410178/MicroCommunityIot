@@ -1,6 +1,7 @@
 package com.java110.bean.dto.order;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.dto.PageDto;
 
 import java.io.Serializable;
@@ -20,6 +21,9 @@ public class BusinessDto  extends PageDto implements Serializable {
     private String finishTime;
 
     private String statusCd;
+
+
+    private JSONObject data;
 
 
     public String getoId() {
@@ -68,5 +72,13 @@ public class BusinessDto  extends PageDto implements Serializable {
 
     public void setbIds(String[] bIds) {
         this.bIds = bIds;
+    }
+
+    public JSONObject getData() {
+        return data;
+    }
+
+    public void setData(JSONObject data) {
+        this.data = data;
     }
 }

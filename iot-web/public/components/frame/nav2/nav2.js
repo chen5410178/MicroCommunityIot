@@ -42,7 +42,7 @@
             _initSysInfo: function() {
                 let sysInfo = vc.getData("java110SystemInfo");
                 if (!sysInfo) {
-                    this.logo = "HC";
+                    this.logo = "HCIOT";
                     return;
                 }
                 this.logo = sysInfo.systemSimpleTitle;
@@ -67,8 +67,7 @@
                     msg: 123
                 };
                 //发送get请求
-                vc.http.post('nav',
-                    'logout',
+                vc.http.apiPost('/login.userLogout',
                     JSON.stringify(param), {
                         emulateJSON: true
                     },

@@ -8,6 +8,7 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.constant.ResponseConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
+import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.dev.IMappingV1InnerServiceSMO;
@@ -24,7 +25,7 @@ public class SaveMappingCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
         Assert.hasKeyAndValue(reqJson, "domain", "必填，请填写域");
         Assert.hasKeyAndValue(reqJson, "name", "必填，请填写名称");
-        Assert.hasKeyAndValue(reqJson, "key", "必填，请填写键");
+        Assert.hasKeyAndValue(reqJson, "mappingKey", "必填，请填写键");
         Assert.hasKeyAndValue(reqJson, "value", "必填，请填写值");
     }
 
@@ -32,6 +33,7 @@ public class SaveMappingCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
 
         MappingPo mappingDto = BeanConvertUtil.covertBean(reqJson, MappingPo.class);
+        mappingDto.setId(GenerateCodeFactory.getGeneratorId("10"));
 
         int count = mappingInnerServiceSMOImpl.saveMapping(mappingDto);
 

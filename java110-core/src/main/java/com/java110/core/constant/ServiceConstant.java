@@ -14,7 +14,7 @@ public class ServiceConstant {
     /**
      * API中心服务
      */
-    public static final  String SERVICE_ORDER_URL = "http://order-service";
+    public static final  String SERVICE_ORDER_URL = "http://iot-gateway";
 
     /**
      * boot api

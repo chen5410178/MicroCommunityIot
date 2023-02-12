@@ -5,6 +5,7 @@ import com.java110.core.constant.CommonConstant;
 import com.java110.core.factory.AuthenticationFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.RequestUtils;
+import com.java110.core.utils.SessionTokenUtil;
 import com.java110.core.utils.StringUtil;
 import org.slf4j.Logger;
 
@@ -51,7 +52,7 @@ public class JwtFilter implements Filter {
         String token = "";
         try {
             //获取token
-            token = this.getToken(request);
+            token = SessionTokenUtil.getToken(request);
             try {
                 long tokenStartTime = new Date().getTime();
                 Map<String, String> claims = AuthenticationFactory.verifyToken(token);
@@ -99,25 +100,7 @@ public class JwtFilter implements Filter {
         }
     }
 
-    /**
-     * 获取TOKEN
-     *
-     * @param request
-     * @return
-     */
-    private String getToken(HttpServletRequest request) throws IllegalArgumentException {
-        String token = "";
-        for (Cookie cookie : request.getCookies()) {
-            if (CommonConstant.COOKIE_AUTH_TOKEN.equals(cookie.getName())) {
-                token = cookie.getValue();
-            }
-        }
 
-        if (StringUtil.isNullOrNone(token)) {
-            throw new IllegalArgumentException("您还没有登录，请先登录");
-        }
-        return token;
-    }
 
     private void writeJson(HttpServletResponse response, String data, String encoding) {
         //设置编码格式

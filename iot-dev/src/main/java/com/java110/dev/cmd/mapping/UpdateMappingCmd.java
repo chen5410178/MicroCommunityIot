@@ -27,7 +27,7 @@ public class UpdateMappingCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "id", "编码ID不能为空");
         Assert.hasKeyAndValue(reqJson, "domain", "必填，请填写域");
         Assert.hasKeyAndValue(reqJson, "name", "必填，请填写名称");
-        Assert.hasKeyAndValue(reqJson, "key", "必填，请填写键");
+        Assert.hasKeyAndValue(reqJson, "mappingKey", "必填，请填写键");
         Assert.hasKeyAndValue(reqJson, "value", "必填，请填写值");
     }
 

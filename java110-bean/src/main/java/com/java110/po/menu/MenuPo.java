@@ -36,61 +36,76 @@ private String statusCd = "0";
 private String url;
 private String seq;
 private String isShow;
-public String getGId() {
+
+    public String getgId() {
         return gId;
     }
-public void setGId(String gId) {
+
+    public void setgId(String gId) {
         this.gId = gId;
     }
-public String getName() {
+
+    public String getName() {
         return name;
     }
-public void setName(String name) {
+
+    public void setName(String name) {
         this.name = name;
     }
-public String getMId() {
+
+    public String getmId() {
         return mId;
     }
-public void setMId(String mId) {
+
+    public void setmId(String mId) {
         this.mId = mId;
     }
-public String getDescription() {
+
+    public String getDescription() {
         return description;
     }
-public void setDescription(String description) {
+
+    public void setDescription(String description) {
         this.description = description;
     }
-public String getPId() {
+
+    public String getpId() {
         return pId;
     }
-public void setPId(String pId) {
+
+    public void setpId(String pId) {
         this.pId = pId;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getUrl() {
+
+    public String getUrl() {
         return url;
     }
-public void setUrl(String url) {
+
+    public void setUrl(String url) {
         this.url = url;
     }
-public String getSeq() {
+
+    public String getSeq() {
         return seq;
     }
-public void setSeq(String seq) {
+
+    public void setSeq(String seq) {
         this.seq = seq;
     }
-public String getIsShow() {
+
+    public String getIsShow() {
         return isShow;
     }
-public void setIsShow(String isShow) {
+
+    public void setIsShow(String isShow) {
         this.isShow = isShow;
     }
-
-
-
 }

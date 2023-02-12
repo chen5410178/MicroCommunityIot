@@ -80,6 +80,7 @@ public class BindingServiceCmd extends Cmd {
         RoutePo routeDto = BeanConvertUtil.covertBean(addRouteView, RoutePo.class);
         routeDto.setAppId(viewAppInfo.getString("appId"));
         routeDto.setServiceId(viewServiceInfo.getString("serviceId"));
+        routeDto.setId(GenerateCodeFactory.getGeneratorId("10"));
 
         int count = routeInnerServiceSMOImpl.saveRoute(routeDto);
 

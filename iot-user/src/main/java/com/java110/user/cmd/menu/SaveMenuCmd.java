@@ -68,7 +68,7 @@ public class SaveMenuCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
         MenuPo menuPo = BeanConvertUtil.covertBean(reqJson, MenuPo.class);
-        menuPo.setMId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        menuPo.setmId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         int flag = menuV1InnerServiceSMOImpl.saveMenu(menuPo);
 
         if (flag < 1) {

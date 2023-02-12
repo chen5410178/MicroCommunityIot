@@ -20,37 +20,50 @@ private String gId;
 private String gcId;
 private String caId;
 
-
+    private String mgName;
     private Date createTime;
 
     private String statusCd = "0";
 
-
     public String getStoreType() {
         return storeType;
     }
-public void setStoreType(String storeType) {
+
+    public void setStoreType(String storeType) {
         this.storeType = storeType;
     }
-public String getGId() {
+
+    public String getgId() {
         return gId;
     }
-public void setGId(String gId) {
+
+    public void setgId(String gId) {
         this.gId = gId;
     }
-public String getGcId() {
+
+    public String getGcId() {
         return gcId;
     }
-public void setGcId(String gcId) {
+
+    public void setGcId(String gcId) {
         this.gcId = gcId;
     }
-public String getCaId() {
+
+    public String getCaId() {
         return caId;
     }
-public void setCaId(String caId) {
+
+    public void setCaId(String caId) {
         this.caId = caId;
     }
 
+    public String getMgName() {
+        return mgName;
+    }
+
+    public void setMgName(String mgName) {
+        this.mgName = mgName;
+    }
 
     public Date getCreateTime() {
         return createTime;

@@ -396,7 +396,7 @@ public class GenerateCodeFactory {
         return nextId("%06d");
     }
 
-    public static String getOId() throws Exception {
+    public static String getOId()  {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("oId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }
@@ -420,7 +420,7 @@ public class GenerateCodeFactory {
         return idSeqDto.getId();
     }
 
-    public static String getBId() throws Exception {
+    public static String getBId()  {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("bId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }

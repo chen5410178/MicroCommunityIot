@@ -146,7 +146,7 @@
         WHERE ppu.`p_id` = pp.`p_id`
         and pp.domain in (#{domain},'9999')
         AND ppu.`privilege_flag` = '0'
-        AND ppu.`user_id` = #{userdI}
+        AND ppu.`user_id` = #{userId}
         AND ppu.`status_cd` = '0'
         AND pp.`status_cd` = '0'
         UNION

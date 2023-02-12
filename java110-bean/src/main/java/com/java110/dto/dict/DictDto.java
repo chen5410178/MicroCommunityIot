@@ -20,6 +20,8 @@ public class DictDto extends PageDto implements Serializable {
     private String id;
     private String tableName;
 
+    private String tableColumns;
+
 
     private Date createTime;
 
@@ -73,5 +75,13 @@ public class DictDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getTableColumns() {
+        return tableColumns;
+    }
+
+    public void setTableColumns(String tableColumns) {
+        this.tableColumns = tableColumns;
     }
 }

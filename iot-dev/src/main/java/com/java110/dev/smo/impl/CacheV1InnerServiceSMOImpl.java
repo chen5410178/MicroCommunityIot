@@ -16,31 +16,72 @@
 package com.java110.dev.smo.impl;
 
 
-import com.java110.dev.smo.IDevServiceCacheSMO;
+import com.java110.bean.dto.PageDto;
+import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dev.dao.ICacheV1ServiceDao;
 import com.java110.intf.dev.ICacheV1InnerServiceSMO;
+import com.java110.dto.cache.CacheDto;
+import com.java110.po.cache.CachePo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 类表述： 服务之前调用的接口实现类，不对外提供接口能力 只用于接口建调用
- * add by 吴学文 at 2022-07-06 20:03:58 mail: 928255095@qq.com
+ * add by 吴学文 at 2023-02-12 13:38:59 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
 @RestController
-public class CacheV1InnerServiceSMOImpl implements ICacheV1InnerServiceSMO {
+public class CacheV1InnerServiceSMOImpl  implements ICacheV1InnerServiceSMO {
 
     @Autowired
-    private IDevServiceCacheSMO devServiceCacheSMOImpl;
+    private ICacheV1ServiceDao cacheV1ServiceDaoImpl;
 
 
     @Override
-    public void startFlush() {
-        devServiceCacheSMOImpl.startFlush();
-
+    public int saveCache(@RequestBody  CachePo cachePo) {
+        int saveFlag = cacheV1ServiceDaoImpl.saveCacheInfo(BeanConvertUtil.beanCovertMap(cachePo));
+        return saveFlag;
     }
 
+     @Override
+    public int updateCache(@RequestBody  CachePo cachePo) {
+        int saveFlag = cacheV1ServiceDaoImpl.updateCacheInfo(BeanConvertUtil.beanCovertMap(cachePo));
+        return saveFlag;
+    }
+
+     @Override
+    public int deleteCache(@RequestBody  CachePo cachePo) {
+       cachePo.setStatusCd("1");
+       int saveFlag = cacheV1ServiceDaoImpl.updateCacheInfo(BeanConvertUtil.beanCovertMap(cachePo));
+       return saveFlag;
+    }
+
+    @Override
+    public List<CacheDto> queryCaches(@RequestBody  CacheDto cacheDto) {
+
+        //校验是否传了 分页信息
+
+        int page = cacheDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            cacheDto.setPage((page - 1) * cacheDto.getRow());
+        }
+
+        List<CacheDto> caches = BeanConvertUtil.covertBeanList(cacheV1ServiceDaoImpl.getCacheInfo(BeanConvertUtil.beanCovertMap(cacheDto)), CacheDto.class);
+
+        return caches;
+    }
+
+
+    @Override
+    public int queryCachesCount(@RequestBody CacheDto cacheDto) {
+        return cacheV1ServiceDaoImpl.queryCachesCount(BeanConvertUtil.beanCovertMap(cacheDto));    }
 
 }

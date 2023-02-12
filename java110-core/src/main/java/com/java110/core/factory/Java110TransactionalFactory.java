@@ -29,7 +29,7 @@ public class Java110TransactionalFactory {
     //订单服务
     private static final String URL_API = ServiceConstant.SERVICE_ORDER_URL + "/order/oIdApi";
 
-    private static final String BOOT_URL_API = "http://127.0.0.1:8008/order/oIdApi";
+    private static final String BOOT_URL_API = "http://127.0.0.1:9999/order/oIdApi";
 
     /**
      * 创建事务ID

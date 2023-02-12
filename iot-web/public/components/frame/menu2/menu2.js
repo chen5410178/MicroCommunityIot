@@ -24,7 +24,7 @@
             _initSysInfo: function() {
                 let sysInfo = vc.getData("_sysInfo");
                 if (sysInfo == null) {
-                    this.logo = "HC";
+                    this.logo = "HCIOT";
                     return;
                 }
                 this.logo = sysInfo.logo;

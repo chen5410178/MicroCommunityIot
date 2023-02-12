@@ -11,6 +11,7 @@ import com.java110.core.constant.CommonConstant;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.RequestUtils;
+import com.java110.core.utils.SessionTokenUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.communityMember.CommunityMemberDto;
 import com.java110.dto.store.StoreDto;
@@ -38,7 +39,7 @@ public class ApiServiceImpl implements IApiService {
     public static final String CMD = "CMD";
 
     private static final String LOGIN_URL = "login.pcUserLogin";
-
+    private static final String LOGOUT_URL = "login.userLogout";
     @Autowired
     private RestTemplate restTemplate;
 
@@ -59,6 +60,10 @@ public class ApiServiceImpl implements IApiService {
         this.getRequestInfo(request, headers);
         headers.put(CommonConstant.HTTP_SERVICE, service);
         headers.put(CommonConstant.HTTP_METHOD, CommonConstant.HTTP_METHOD_POST);
+
+        //这里写token 到cookies
+        putTokenToHeader(service, headers, request);
+
         logger.debug("api：{} 请求报文为：{},header信息为：{}", service, postInfo, headers);
         privilegeSMOImpl.hasPrivilege("/iot/api/" + service, headers.get("user-id"));
         responseEntity = doService(postInfo, headers, request);
@@ -74,6 +79,27 @@ public class ApiServiceImpl implements IApiService {
         wirteToken(service, responseEntity.getBody(), request);
 
         return responseEntity;
+    }
+
+    /**
+     * token 放到 头部
+     * @param service
+     * @param headers
+     * @param request
+     */
+    private void putTokenToHeader(String service, Map<String, String> headers, HttpServletRequest request) {
+        if (!LOGOUT_URL.equals(service)) {
+            return;
+        }
+
+        String token = SessionTokenUtil.getToken(request);
+
+        if(StringUtil.isEmpty(token)){
+            return ;
+        }
+
+        headers.put(CommonConstant.COOKIE_AUTH_TOKEN,token);
+
     }
 
     private void wirteToken(String service, String body,HttpServletRequest request) {

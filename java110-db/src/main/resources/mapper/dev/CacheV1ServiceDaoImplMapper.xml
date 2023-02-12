@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cacheV1ServiceDaoImpl">
+
+
+
+
+
+    <!-- 保存缓存信息 add by wuxw 2018-07-03 -->
+    <insert id="saveCacheInfo" parameterType="Map">
+        insert into c_cache(
+service_code,cache_code,name,id,seq,url,group
+) values (
+#{serviceCode},#{cacheCode},#{name},#{id},#{seq},#{url},#{group}
+)
+    </insert>
+
+
+
+    <!-- 查询缓存信息 add by wuxw 2018-07-03 -->
+    <select id="getCacheInfo" parameterType="Map" resultType="Map">
+        select  t.service_code,t.service_code serviceCode,t.cache_code,t.cache_code cacheCode,t.name,t.status_cd,t.status_cd statusCd,t.id,t.seq,t.url,t.group 
+from c_cache t 
+where 1 =1 
+<if test="serviceCode !=null and serviceCode != ''">
+   and t.service_code= #{serviceCode}
+</if> 
+<if test="cacheCode !=null and cacheCode != ''">
+   and t.cache_code= #{cacheCode}
+</if> 
+<if test="name !=null and name != ''">
+   and t.name= #{name}
+</if> 
+<if test="statusCd !=null and statusCd != ''">
+   and t.status_cd= #{statusCd}
+</if> 
+<if test="id !=null and id != ''">
+   and t.id= #{id}
+</if> 
+<if test="seq !=null and seq != ''">
+   and t.seq= #{seq}
+</if> 
+<if test="url !=null and url != ''">
+   and t.url= #{url}
+</if> 
+<if test="group !=null and group != ''">
+   and t.group= #{group}
+</if> 
+order by t.create_time desc
+<if test="page != -1 and page != null ">
+   limit #{page}, #{row}
+</if> 
+
+    </select>
+
+
+
+
+    <!-- 修改缓存信息 add by wuxw 2018-07-03 -->
+    <update id="updateCacheInfo" parameterType="Map">
+        update  c_cache t set t.status_cd = #{statusCd}
+<if test="newBId != null and newBId != ''">
+,t.b_id = #{newBId}
+</if> 
+<if test="serviceCode !=null and serviceCode != ''">
+, t.service_code= #{serviceCode}
+</if> 
+<if test="cacheCode !=null and cacheCode != ''">
+, t.cache_code= #{cacheCode}
+</if> 
+<if test="name !=null and name != ''">
+, t.name= #{name}
+</if> 
+<if test="seq !=null and seq != ''">
+, t.seq= #{seq}
+</if> 
+<if test="url !=null and url != ''">
+, t.url= #{url}
+</if> 
+<if test="group !=null and group != ''">
+, t.group= #{group}
+</if> 
+ where 1=1 <if test="id !=null and id != ''">
+and t.id= #{id}
+</if> 
+
+    </update>
+
+    <!-- 查询缓存数量 add by wuxw 2018-07-03 -->
+     <select id="queryCachesCount" parameterType="Map" resultType="Map">
+        select  count(1) count 
+from c_cache t 
+where 1 =1 
+<if test="serviceCode !=null and serviceCode != ''">
+   and t.service_code= #{serviceCode}
+</if> 
+<if test="cacheCode !=null and cacheCode != ''">
+   and t.cache_code= #{cacheCode}
+</if> 
+<if test="name !=null and name != ''">
+   and t.name= #{name}
+</if> 
+<if test="statusCd !=null and statusCd != ''">
+   and t.status_cd= #{statusCd}
+</if> 
+<if test="id !=null and id != ''">
+   and t.id= #{id}
+</if> 
+<if test="seq !=null and seq != ''">
+   and t.seq= #{seq}
+</if> 
+<if test="url !=null and url != ''">
+   and t.url= #{url}
+</if> 
+<if test="group !=null and group != ''">
+   and t.group= #{group}
+</if> 
+
+
+     </select>
+
+</mapper>

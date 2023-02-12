@@ -1,9 +1,11 @@
 package com.java110.dev.cmd.menuGroup;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.constant.ResponseConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
@@ -38,8 +40,11 @@ public class DeleteMenuGroupCmd extends Cmd {
 
         int saveFlag = menuInnerServiceSMOImpl.deleteMenuGroup(menuGroupDto);
 
-        responseEntity = new ResponseEntity<String>(saveFlag > 0 ? "成功" : "失败", saveFlag > 0 ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+        if (saveFlag < 1) {
+            throw new CmdException(ResponseConstant.RESULT_CODE_ERROR, "删除数据失败");
+        }
 
-        context.setResponseEntity(responseEntity);
+
+        context.setResponseEntity(ResultVo.success());
     }
 }

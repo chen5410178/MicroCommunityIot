@@ -989,8 +989,8 @@
             } else {
                 _api = '/iot/api/' + api;
             }
-            if (vcFramework.constant.GET_CACHE_URL.includes(_api)) {
-                let _cacheData = vcFramework.getData(_api);
+            if (vcFramework.constant.GET_CACHE_URL.includes(api)) {
+                let _cacheData = vcFramework.getData(api);
                 //浏览器缓存中能获取到
                 if (_cacheData != null && _cacheData != undefined) {
                     successCallback(JSON.stringify(_cacheData), { status: 200 });
@@ -1024,7 +1024,7 @@
 
                         successCallback(res.bodyText, res);
 
-                        if (vcFramework.constant.GET_CACHE_URL.includes(_api) && res.status == 200) {
+                        if (vcFramework.constant.GET_CACHE_URL.includes(api) && res.status == 200) {
                             vcFramework.saveData('/nav/getUserInfo', JSON.parse(res.bodyText));
                         }
                     } catch (e) {
@@ -1051,7 +1051,11 @@
                     } catch (e) {
                         console.error(e);
                     } finally {
-                        vcFramework.loading('close');
+                        
+                        if (vcFramework.hasOwnProperty('loading')) {
+                            vcFramework.loading('close');
+                        }
+                      
                     }
                 });
         },
@@ -1436,16 +1440,19 @@
     vcFramework.getDict = function(_name, _type, _callFun) {
         let param = {
             params: {
-                name: _name,
-                type: _type
+                tableName: _name,
+                tableColumns: _type,
+                page:1,
+                row:500
             }
         };
 
         //发送get请求
-        vcFramework.http.get('core', 'list', param,
+        vcFramework.http.apiGet('/dict.listDict', param,
             function(json, res) {
-                if (res.status == 200) {
-                    let _dictInfo = JSON.parse(json);
+                let _json = JSON.parse(json)
+                if (_json.code == 0) {
+                    let _dictInfo = _json.data;
                     _callFun(_dictInfo);
                     return;
                 }

@@ -25,6 +25,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
 import com.java110.dto.menuGroup.MenuGroupDto;
 import com.java110.dto.store.StoreDto;
 import com.java110.intf.user.IMenuCatalogV1InnerServiceSMO;
@@ -61,7 +62,12 @@ public class ListCatalogMenusCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         //super.validatePageInfo(reqJson);
-
+        if(!reqJson.containsKey("userId")){
+            reqJson.put("userId", CmdContextUtils.getLoginUserId(cmdDataFlowContext));
+        }
+        if(!reqJson.containsKey("storeId")){
+            reqJson.put("storeId", CmdContextUtils.getStoreId(cmdDataFlowContext));
+        }
         Assert.hasKeyAndValue(reqJson, "userId", "未包含用户信息");
         Assert.hasKeyAndValue(reqJson, "storeId", "未包含商户信息");
         //Assert.hasKeyAndValue(reqJson, "caId", "未包含目录信息");

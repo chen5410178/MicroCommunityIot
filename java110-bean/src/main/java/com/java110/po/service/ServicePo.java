@@ -17,6 +17,7 @@ package com.java110.po.service;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-02-11 01:08:41 mail: 928255095@qq.com
@@ -28,76 +29,103 @@ import java.util.Date;
 public class ServicePo implements Serializable {
 
     private String businessTypeCd;
-private String isInstance;
-private String method;
-private String serviceCode;
-private String retryCount;
-private String statusCd = "0";
-private String serviceId;
-private String seq;
-private String url;
-private String timeout;
-public String getBusinessTypeCd() {
+    private String isInstance;
+    private String method;
+    private String serviceCode;
+    private String retryCount;
+    private String statusCd = "0";
+    private String serviceId;
+    private String seq;
+    private String url;
+    private String timeout;
+
+    private String name;
+
+    public String getBusinessTypeCd() {
         return businessTypeCd;
     }
-public void setBusinessTypeCd(String businessTypeCd) {
+
+    public void setBusinessTypeCd(String businessTypeCd) {
         this.businessTypeCd = businessTypeCd;
     }
-public String getIsInstance() {
+
+    public String getIsInstance() {
         return isInstance;
     }
-public void setIsInstance(String isInstance) {
+
+    public void setIsInstance(String isInstance) {
         this.isInstance = isInstance;
     }
-public String getMethod() {
+
+    public String getMethod() {
         return method;
     }
-public void setMethod(String method) {
+
+    public void setMethod(String method) {
         this.method = method;
     }
-public String getServiceCode() {
+
+    public String getServiceCode() {
         return serviceCode;
     }
-public void setServiceCode(String serviceCode) {
+
+    public void setServiceCode(String serviceCode) {
         this.serviceCode = serviceCode;
     }
-public String getRetryCount() {
+
+    public String getRetryCount() {
         return retryCount;
     }
-public void setRetryCount(String retryCount) {
+
+    public void setRetryCount(String retryCount) {
         this.retryCount = retryCount;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getServiceId() {
+
+    public String getServiceId() {
         return serviceId;
     }
-public void setServiceId(String serviceId) {
+
+    public void setServiceId(String serviceId) {
         this.serviceId = serviceId;
     }
-public String getSeq() {
+
+    public String getSeq() {
         return seq;
     }
-public void setSeq(String seq) {
+
+    public void setSeq(String seq) {
         this.seq = seq;
     }
-public String getUrl() {
+
+    public String getUrl() {
         return url;
     }
-public void setUrl(String url) {
+
+    public void setUrl(String url) {
         this.url = url;
     }
-public String getTimeout() {
+
+    public String getTimeout() {
         return timeout;
     }
-public void setTimeout(String timeout) {
+
+    public void setTimeout(String timeout) {
         this.timeout = timeout;
     }
 
+    public String getName() {
+        return name;
+    }
 
-
+    public void setName(String name) {
+        this.name = name;
+    }
 }

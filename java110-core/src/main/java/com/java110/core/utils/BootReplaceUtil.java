@@ -35,11 +35,11 @@ public class BootReplaceUtil {
         }
 
         if(requestUrl.contains("http://store-service")){
-            requestUrl = requestUrl.replace("store-service","127.0.0.1:8008");
+            requestUrl = requestUrl.replace("store-service","127.0.0.1:9999");
         }
 
-        if(requestUrl.contains("http://order-service")){
-            requestUrl = requestUrl.replace("order-service","127.0.0.1:8008");
+        if(requestUrl.contains("http://iot-gateway")){
+            requestUrl = requestUrl.replace("iot-gateway","127.0.0.1:8008");
         }
 
         if(requestUrl.contains("http://report-service")){

@@ -21,6 +21,7 @@ import com.java110.core.constant.DomainContant;
 import com.java110.core.constant.StatusConstant;
 import com.java110.core.db.dao.BaseServiceDao;
 import com.java110.core.exception.DAOException;
+import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.user.dao.IMenuV1ServiceDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,6 +139,8 @@ public class MenuV1ServiceDaoImpl extends BaseServiceDao implements IMenuV1Servi
 
         // 将权限组分配给对应商户类型管理员
         info.put("pgId", MappingCache.getValue(DomainContant.DEFAULT_PRIVILEGE_ADMIN, info.get("domain").toString()));
+        info.put("relId", GenerateCodeFactory.getGeneratorId("10"));
+        info.put("levelCd","1001");
 
         saveFlag = sqlSessionTemplate.insert("menuV1ServiceDaoImpl.saveBasePrivilegeRelInfo", info);
 

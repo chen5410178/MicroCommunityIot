@@ -15,97 +15,157 @@ import java.util.Date;
  **/
 public class MenuDto extends PageDto implements Serializable {
 
-    private String gId;
-    private String name;
-    private String mId;
-    private String description;
-    private String pId;
-    private String url;
-    private String seq;
-    private String isShow;
+        private String mId;
+        private String mName;
+        private String name;
+        private String url;
+        private String seq;
+        private String isShow;
+        private String description;
+        private String statusCd;
+        private String gId;
+        private String gName;
+        private String pId;
+        private String pName;
+        private String isShowName;
+        private String domain;
+        private String uName;
+        private String menuGroupName;
+        private String storeTypeName;
 
+        public String getmId() {
+            return mId;
+        }
 
-    private Date createTime;
+        public void setmId(String mId) {
+            this.mId = mId;
+        }
 
-    private String statusCd = "0";
+        public String getName() {
+            return name;
+        }
 
-    public String getgId() {
-        return gId;
-    }
+        public void setName(String name) {
+            this.name = name;
+        }
 
-    public void setgId(String gId) {
-        this.gId = gId;
-    }
+        public String getUrl() {
+            return url;
+        }
 
-    public String getName() {
-        return name;
-    }
+        public void setUrl(String url) {
+            this.url = url;
+        }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+        public String getSeq() {
+            return seq;
+        }
 
-    public String getmId() {
-        return mId;
-    }
+        public void setSeq(String seq) {
+            this.seq = seq;
+        }
 
-    public void setmId(String mId) {
-        this.mId = mId;
-    }
+        public String getIsShow() {
+            return isShow;
+        }
 
-    public String getDescription() {
-        return description;
-    }
+        public void setIsShow(String isShow) {
+            this.isShow = isShow;
+        }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+        public String getDescription() {
+            return description;
+        }
 
-    public String getpId() {
-        return pId;
-    }
+        public void setDescription(String description) {
+            this.description = description;
+        }
 
-    public void setpId(String pId) {
-        this.pId = pId;
-    }
+        public String getStatusCd() {
+            return statusCd;
+        }
 
-    public String getUrl() {
-        return url;
-    }
+        public void setStatusCd(String statusCd) {
+            this.statusCd = statusCd;
+        }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+        public String getgId() {
+            return gId;
+        }
 
-    public String getSeq() {
-        return seq;
-    }
+        public void setgId(String gId) {
+            this.gId = gId;
+        }
 
-    public void setSeq(String seq) {
-        this.seq = seq;
-    }
+        public String getpId() {
+            return pId;
+        }
 
-    public String getIsShow() {
-        return isShow;
-    }
+        public void setpId(String pId) {
+            this.pId = pId;
+        }
 
-    public void setIsShow(String isShow) {
-        this.isShow = isShow;
-    }
+        public String getpName() {
+            return pName;
+        }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+        public void setpName(String pName) {
+            this.pName = pName;
+        }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+        public String getIsShowName() {
+            return isShowName;
+        }
 
-    public String getStatusCd() {
-        return statusCd;
-    }
+        public void setIsShowName(String isShowName) {
+            this.isShowName = isShowName;
+        }
 
-    public void setStatusCd(String statusCd) {
-        this.statusCd = statusCd;
-    }
+        public String getDomain() {
+            return domain;
+        }
+
+        public void setDomain(String domain) {
+            this.domain = domain;
+        }
+
+        public String getuName() {
+            return uName;
+        }
+
+        public void setuName(String uName) {
+            this.uName = uName;
+        }
+
+        public String getmName() {
+            return mName;
+        }
+
+        public void setmName(String mName) {
+            this.mName = mName;
+        }
+
+        public String getMenuGroupName() {
+            return menuGroupName;
+        }
+
+        public void setMenuGroupName(String menuGroupName) {
+            this.menuGroupName = menuGroupName;
+        }
+
+        public String getStoreTypeName() {
+            return storeTypeName;
+        }
+
+        public void setStoreTypeName(String storeTypeName) {
+            this.storeTypeName = storeTypeName;
+        }
+
+        public String getgName() {
+            return gName;
+        }
+
+        public void setgName(String gName) {
+            this.gName = gName;
+        }
 }

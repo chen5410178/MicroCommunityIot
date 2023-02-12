@@ -13,9 +13,9 @@
 
     <!-- 查询服务信息（Business） add by wuxw 2018-07-03 -->
     <select id="getBusinessServiceInfo" parameterType="Map" resultType="Map">
-        select t.business_type_cd,t.business_type_cd businessTypeCd,t.method,t.provide_app_id,t.provide_app_id
-        provideAppId,t.service_code,t.service_code serviceCode,t.retry_count,t.retry_count
-        retryCount,t.messageQueueName,t.url,t.timeout,t.is_instance,t.is_instance
+        select t.business_type_cd,t.business_type_cd businessTypeCd,t.method,
+        t.service_code,t.service_code serviceCode,t.retry_count,t.retry_count
+        retryCount,t.url,t.timeout,t.is_instance,t.is_instance
         isInstance,t.operate,t.name,t.service_id,t.service_id serviceId,t.seq
         from business_service t
         where 1 =1
@@ -63,9 +63,9 @@
     <!-- 保存服务信息至 instance表中 add by wuxw 2018-07-03 -->
     <insert id="saveServiceInfoInstance" parameterType="Map">
         insert into c_service(
-        business_type_cd,method,service_code,retry_count,status_cd,messageQueueName,url,timeout,is_instance,name,service_id,seq
+        business_type_cd,method,service_code,retry_count,status_cd,url,timeout,is_instance,name,service_id,seq
         ) select
-        t.business_type_cd,t.method,t.service_code,t.retry_count,'0',t.messageQueueName,t.url,t.timeout,t.is_instance,t.name,t.service_id,t.seq
+        t.business_type_cd,t.method,t.service_code,t.retry_count,'0',t.url,t.timeout,t.is_instance,t.name,t.service_id,t.seq
         from business_service t where 1=1
         <if test="businessTypeCd !=null and businessTypeCd != ''">
             and t.business_type_cd= #{businessTypeCd}
@@ -73,17 +73,11 @@
         <if test="method !=null and method != ''">
             and t.method= #{method}
         </if>
-        <if test="provideAppId !=null and provideAppId != ''">
-            and t.provide_app_id= #{provideAppId}
-        </if>
         <if test="serviceCode !=null and serviceCode != ''">
             and t.service_code= #{serviceCode}
         </if>
         <if test="retryCount !=null and retryCount != ''">
             and t.retry_count= #{retryCount}
-        </if>
-        <if test="messageQueueName !=null and messageQueueName != ''">
-            and t.messageQueueName= #{messageQueueName}
         </if>
         <if test="url !=null and url != ''">
             and t.url= #{url}
@@ -108,9 +102,9 @@
 
     <!-- 查询服务信息 add by wuxw 2018-07-03 -->
     <select id="getServiceInfo" parameterType="Map" resultType="Map">
-        select t.business_type_cd,t.business_type_cd businessTypeCd,t.method,t.provide_app_id,t.provide_app_id
-        provideAppId,t.service_code,t.service_code serviceCode,t.retry_count,t.retry_count
-        retryCount,t.status_cd,t.status_cd statusCd,t.messageQueueName,t.url,t.timeout,t.is_instance,t.is_instance
+        select t.business_type_cd,t.business_type_cd businessTypeCd,t.method,t.service_code,
+        t.service_code serviceCode,t.retry_count,t.retry_count
+        retryCount,t.status_cd,t.status_cd statusCd,t.url,t.timeout,t.is_instance,t.is_instance
         isInstance,t.name,t.service_id,t.service_id serviceId,t.seq
         from c_service t
         <if test="appId != null and appId != ''">
@@ -131,9 +125,6 @@
         <if test="method !=null and method != ''">
             and t.method= #{method}
         </if>
-        <if test="provideAppId !=null and provideAppId != ''">
-            and t.provide_app_id= #{provideAppId}
-        </if>
         <if test="serviceCode !=null and serviceCode != ''">
             and t.service_code= #{serviceCode}
         </if>
@@ -142,9 +133,6 @@
         </if>
         <if test="statusCd !=null and statusCd != ''">
             and t.status_cd= #{statusCd}
-        </if>
-        <if test="messageQueueName !=null and messageQueueName != ''">
-            and t.messageQueueName= #{messageQueueName}
         </if>
         <if test="url !=null and url != ''">
             and t.url= #{url}
@@ -185,17 +173,11 @@
         <if test="method !=null and method != ''">
             , t.method= #{method}
         </if>
-        <if test="provideAppId !=null and provideAppId != ''">
-            , t.provide_app_id= #{provideAppId}
-        </if>
         <if test="serviceCode !=null and serviceCode != ''">
             , t.service_code= #{serviceCode}
         </if>
         <if test="retryCount !=null and retryCount != ''">
             , t.retry_count= #{retryCount}
-        </if>
-        <if test="messageQueueName !=null and messageQueueName != ''">
-            , t.messageQueueName= #{messageQueueName}
         </if>
         <if test="url !=null and url != ''">
             , t.url= #{url}
@@ -240,9 +222,6 @@
         <if test="method !=null and method != ''">
             and t.method= #{method}
         </if>
-        <if test="provideAppId !=null and provideAppId != ''">
-            and t.provide_app_id= #{provideAppId}
-        </if>
         <if test="serviceCode !=null and serviceCode != ''">
             and t.service_code= #{serviceCode}
         </if>
@@ -251,9 +230,6 @@
         </if>
         <if test="statusCd !=null and statusCd != ''">
             and t.status_cd= #{statusCd}
-        </if>
-        <if test="messageQueueName !=null and messageQueueName != ''">
-            and t.messageQueueName= #{messageQueueName}
         </if>
         <if test="url !=null and url != ''">
             and t.url= #{url}

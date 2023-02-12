@@ -1,6 +1,7 @@
 package com.java110.dev.cmd.app;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
@@ -37,7 +38,6 @@ public class DeleteAppCmd extends Cmd {
         if (count < 1) {
             throw new CmdException(ResponseConstant.RESULT_CODE_ERROR, "删除数据失败");
         }
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>("", HttpStatus.OK);
-        cmdDataFlowContext.setResponseEntity(responseEntity);
+        cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }
 }

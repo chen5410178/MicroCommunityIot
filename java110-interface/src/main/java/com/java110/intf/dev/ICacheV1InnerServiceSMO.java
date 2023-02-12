@@ -15,14 +15,19 @@
  */
 package com.java110.intf.dev;
 
+import com.java110.dto.cache.CacheDto;
 import com.java110.intf.FeignConfiguration;
+import com.java110.po.cache.CachePo;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
+
 /**
  * 类表述： 服务之前调用的接口类，不对外提供接口能力 只用于接口建调用
- * add by 吴学文 at 2022-07-06 20:03:58 mail: 928255095@qq.com
+ * add by 吴学文 at 2023-02-12 13:38:59 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
@@ -33,6 +38,31 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface ICacheV1InnerServiceSMO {
 
 
-    @RequestMapping(value = "/startFlush", method = RequestMethod.POST)
-    public void startFlush();
+    @RequestMapping(value = "/saveCache", method = RequestMethod.POST)
+    public int saveCache(@RequestBody  CachePo cachePo);
+
+    @RequestMapping(value = "/updateCache", method = RequestMethod.POST)
+    public int updateCache(@RequestBody  CachePo cachePo);
+
+    @RequestMapping(value = "/deleteCache", method = RequestMethod.POST)
+    public int deleteCache(@RequestBody  CachePo cachePo);
+
+    /**
+     * <p>查询小区楼信息</p>
+     *
+     *
+     * @param cacheDto 数据对象分享
+     * @return CacheDto 对象数据
+     */
+    @RequestMapping(value = "/queryCaches", method = RequestMethod.POST)
+    List<CacheDto> queryCaches(@RequestBody CacheDto cacheDto);
+
+    /**
+     * 查询<p>小区楼</p>总记录数
+     *
+     * @param cacheDto 数据对象分享
+     * @return 小区下的小区楼记录数
+     */
+    @RequestMapping(value = "/queryCachesCount", method = RequestMethod.POST)
+    int queryCachesCount(@RequestBody CacheDto cacheDto);
 }

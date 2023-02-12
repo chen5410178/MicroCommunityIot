@@ -42,6 +42,7 @@ import java.util.concurrent.TimeUnit;
 @EnableFeignClients(basePackages = {
         "com.java110.intf.user",
         "com.java110.intf.community",
+        "com.java110.intf.job",
 })
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 @EnableDiscoveryClient

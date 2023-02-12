@@ -17,42 +17,79 @@
 
     <!-- 查询菜单信息 add by wuxw 2018-07-03 -->
     <select id="getMenuInfo" parameterType="Map" resultType="Map">
-        select t.g_id,t.g_id gId,t.name,t.m_id,t.m_id mId,t.description,t.p_id,t.p_id pId,t.status_cd,t.status_cd
-        statusCd,t.url,t.seq,t.is_show,t.is_show isShow
-        from m_menu t
-        where 1 =1
+        select DISTINCT t.m_id mId,t.name,t.g_id gId,t.url,t.seq,t.p_id pId,t.description,t.is_show isShow,
+        if(t.is_show='Y','显示','不显示') isShowName,
+        t.m_id pId,t.name pName,mg.name gName,mg.store_type,st.name storeTypeName
+        from m_menu t,p_privilege p,m_menu_group mg,store_type st
+        where t.status_cd= '0'
+        and p.status_cd= '0'
+        and t.m_id = p.m_id
+        and t.g_id = mg.g_id
+        and mg.store_type = st.store_type_cd
         <if test="gId !=null and gId != ''">
             and t.g_id= #{gId}
         </if>
+        <if test="gName !=null and gName != ''">
+            and mg.name= #{gName}
+        </if>
         <if test="name !=null and name != ''">
-            and t.name= #{name}
+            and t.name like concat('%',#{name},'%')
+        </if>
+        <if test="mName !=null and mName != ''">
+            and t.name like concat('%',#{mName},'%')
+        </if>
+        <if test="domain !=null and domain != ''">
+            and p.domain= #{domain}
+        </if>
+        <if test="pName !=null and pName != ''">
+            and p.name like concat('%',#{pName},'%')
         </if>
         <if test="mId !=null and mId != ''">
             and t.m_id= #{mId}
         </if>
-        <if test="description !=null and description != ''">
-            and t.description= #{description}
-        </if>
         <if test="pId !=null and pId != ''">
-            and t.p_id= #{pId}
-        </if>
-        <if test="statusCd !=null and statusCd != ''">
-            and t.status_cd= #{statusCd}
-        </if>
-        <if test="url !=null and url != ''">
-            and t.url= #{url}
-        </if>
-        <if test="seq !=null and seq != ''">
-            and t.seq= #{seq}
+            and p.p_id= #{pId}
         </if>
         <if test="isShow !=null and isShow != ''">
             and t.is_show= #{isShow}
         </if>
-        order by t.create_time desc
+        <if test="url !=null and url != ''">
+            and t.url like concat('%',#{url},'%')
+        </if>
+        <if test="seq !=null">
+            and t.seq= #{seq}
+        </if>
+        <if test="description !=null and description != ''">
+            and t.description= #{description}
+        </if>
+        <if test="uName != null and uName != ''">
+            and exists(
+            SELECT 1
+            FROM p_privilege_user ppu,u_user u
+            WHERE ppu.`p_id` = p.`p_id`
+            AND ppu.`privilege_flag` = '0'
+            and ppu.user_id = u.user_id
+            AND u.`name` = #{uName}
+            AND ppu.`status_cd` = '0'
+            UNION
+            SELECT 1
+            FROM p_privilege_user ppu,
+            p_privilege_group ppg,p_privilege_rel ppr,u_user u
+            WHERE ppu.`p_id` = ppr.pg_id
+            AND ppr.pg_id = ppg.pg_id
+            AND ppr.p_id = p.`p_id`
+            AND ppu.`privilege_flag` = '1'
+            and ppu.user_id = u.user_id
+            AND u.`name` = #{uName}
+            AND ppu.`status_cd` = '0'
+            AND ppg.status_cd = '0'
+            AND ppr.status_cd = '0'
+            )
+        </if>
+        order by t.seq
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
         </if>
-
     </select>
 
 
@@ -91,39 +128,75 @@
     </update>
 
     <!-- 查询菜单数量 add by wuxw 2018-07-03 -->
+    <!-- 查询路由数量 add by wuxw 2018-07-03 -->
     <select id="queryMenusCount" parameterType="Map" resultType="Map">
-        select count(1) count
-        from m_menu t
-        where 1 =1
+        select count(DISTINCT(t.m_id)) count
+        from m_menu t,p_privilege p,m_menu_group mg,store_type st
+        where t.status_cd= '0'
+        and p.status_cd= '0'
+        and t.m_id = p.m_id
+        and t.g_id = mg.g_id
+        and mg.store_type = st.store_type_cd
         <if test="gId !=null and gId != ''">
             and t.g_id= #{gId}
         </if>
+        <if test="gName !=null and gName != ''">
+            and mg.name= #{gName}
+        </if>
         <if test="name !=null and name != ''">
-            and t.name= #{name}
+            and t.name like concat('%',#{name},'%')
         </if>
-        <if test="mId !=null and mId != ''">
-            and t.m_id= #{mId}
-        </if>
-        <if test="description !=null and description != ''">
-            and t.description= #{description}
+        <if test="mName !=null and mName != ''">
+            and t.name like concat('%',#{mName},'%')
         </if>
         <if test="pId !=null and pId != ''">
-            and t.p_id= #{pId}
+            and p.p_id= #{pId}
         </if>
-        <if test="statusCd !=null and statusCd != ''">
-            and t.status_cd= #{statusCd}
+        <if test="domain !=null and domain != ''">
+            and p.domain= #{domain}
         </if>
-        <if test="url !=null and url != ''">
-            and t.url= #{url}
+        <if test="pName !=null and pName != ''">
+            and p.name like concat('%',#{pName},'%')
         </if>
-        <if test="seq !=null and seq != ''">
-            and t.seq= #{seq}
+        <if test="mId !=null and mId != ''">
+            and p.m_id= #{mId}
         </if>
         <if test="isShow !=null and isShow != ''">
             and t.is_show= #{isShow}
         </if>
-
-
+        <if test="url !=null and url != ''">
+            and t.url like concat('%',#{url},'%')
+        </if>
+        <if test="seq !=null">
+            and t.seq= #{seq}
+        </if>
+        <if test="description !=null and description != ''">
+            and t.description= #{description}
+        </if>
+        <if test="uName != null and uName != ''">
+            and exists(
+            SELECT 1
+            FROM p_privilege_user ppu,u_user u
+            WHERE ppu.`p_id` = p.`p_id`
+            AND ppu.`privilege_flag` = '0'
+            and ppu.user_id = u.user_id
+            AND u.`name` = #{uName}
+            AND ppu.`status_cd` = '0'
+            UNION
+            SELECT 1
+            FROM p_privilege_user ppu,
+            p_privilege_group ppg,p_privilege_rel ppr,u_user u
+            WHERE ppu.`p_id` = ppr.pg_id
+            AND ppr.pg_id = ppg.pg_id
+            AND ppr.p_id = p.`p_id`
+            AND ppu.`privilege_flag` = '1'
+            and ppu.user_id = u.user_id
+            AND u.`name` = #{uName}
+            AND ppu.`status_cd` = '0'
+            AND ppg.status_cd = '0'
+            AND ppr.status_cd = '0'
+            )
+        </if>
     </select>
 
     <select id="checkUserHasResource" parameterType="Map" resultType="Map">
@@ -156,8 +229,8 @@
 
     <!-- 保存路由信息至 instance表中 add by wuxw 2018-07-03 -->
     <insert id="saveBasePrivilegeRelInfo" parameterType="Map">
-        insert into p_privilege_rel(p_id, pg_id)
-        values (#{pId}, #{pgId})
+        insert into p_privilege_rel(rel_id,p_id, pg_id,level_cd)
+        values (#{relId},#{pId}, #{pgId},#{levelCd})
     </insert>
 
     <!-- 保存路由信息至 instance表中 add by wuxw 2018-07-03 -->

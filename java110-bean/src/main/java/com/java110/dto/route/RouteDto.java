@@ -14,19 +14,20 @@ import java.util.Date;
  * add by wuxw 2019/4/24
  **/
 public class RouteDto extends PageDto implements Serializable {
-
     private String invokeLimitTimes;
     private String orderTypeCd;
     private String appId;
     private String id;
     private String serviceId;
     private String invokeModel;
-
+    private String appName;
+    private String serviceName;
+    private String serviceCode;
+    private String serviceUrl;
 
     private Date createTime;
 
     private String statusCd = "0";
-
 
     public String getInvokeLimitTimes() {
         return invokeLimitTimes;
@@ -76,7 +77,6 @@ public class RouteDto extends PageDto implements Serializable {
         this.invokeModel = invokeModel;
     }
 
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -91,5 +91,37 @@ public class RouteDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public String getServiceCode() {
+        return serviceCode;
+    }
+
+    public void setServiceCode(String serviceCode) {
+        this.serviceCode = serviceCode;
+    }
+
+    public String getServiceUrl() {
+        return serviceUrl;
+    }
+
+    public void setServiceUrl(String serviceUrl) {
+        this.serviceUrl = serviceUrl;
     }
 }

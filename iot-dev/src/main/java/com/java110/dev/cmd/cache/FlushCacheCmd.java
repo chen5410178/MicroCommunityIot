@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * 保存编码映射处理类
  */
-@Java110Cmd(serviceCode = "flush.center.cache")
+@Java110Cmd(serviceCode = "cache.flushCache")
 public class FlushCacheCmd extends Cmd {
 
     @Autowired
