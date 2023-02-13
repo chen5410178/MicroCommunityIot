@@ -13,15 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.store.dao;
+package com.java110.user.dao;
 
 
-import com.java110.utils.exception.DAOException;
-import com.java110.entity.merchant.BoMerchant;
-import com.java110.entity.merchant.BoMerchantAttr;
-import com.java110.entity.merchant.Merchant;
-import com.java110.entity.merchant.MerchantAttr;
 
+import com.java110.core.exception.DAOException;
 
 import java.util.List;
 import java.util.Map;

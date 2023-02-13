@@ -17,6 +17,7 @@ package com.java110.po.community;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-02-11 02:44:15 mail: 928255095@qq.com
@@ -28,55 +29,68 @@ import java.util.Date;
 public class CommunityPo implements Serializable {
 
     private String address;
-private String cityCode;
-private String name;
-private String tel;
-private String statusCd = "0";
-private String communityId;
-private String extCommunityId;
-public String getAddress() {
+    private String cityCode;
+    private String name;
+    private String tel;
+    private String statusCd = "0";
+    private String communityId;
+    private String extCommunityId;
+
+    public String getAddress() {
         return address;
     }
-public void setAddress(String address) {
+
+    public void setAddress(String address) {
         this.address = address;
     }
-public String getCityCode() {
+
+    public String getCityCode() {
         return cityCode;
     }
-public void setCityCode(String cityCode) {
+
+    public void setCityCode(String cityCode) {
         this.cityCode = cityCode;
     }
-public String getName() {
+
+    public String getName() {
         return name;
     }
-public void setName(String name) {
+
+    public void setName(String name) {
         this.name = name;
     }
-public String getTel() {
+
+    public String getTel() {
         return tel;
     }
-public void setTel(String tel) {
+
+    public void setTel(String tel) {
         this.tel = tel;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-public String getExtCommunityId() {
+
+    public String getExtCommunityId() {
         return extCommunityId;
     }
-public void setExtCommunityId(String extCommunityId) {
+
+    public void setExtCommunityId(String extCommunityId) {
         this.extCommunityId = extCommunityId;
     }
-
 
 
 }

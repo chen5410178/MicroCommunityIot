@@ -70,4 +70,7 @@ public interface ICommunityV1ServiceDao {
      */
     int queryCommunitysCount(Map info);
 
+    int queryFreeCommunitysCount(Map info);
+
+    List<Map> queryFreeCommunitys(Map info);
 }

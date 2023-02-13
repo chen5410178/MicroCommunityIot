@@ -47,6 +47,12 @@ public class StoreDto extends PageDto implements Serializable {
 
     private String statusCd = "0";
 
+    private String userId;
+
+    private String storeTypeName;
+    private String corporation;
+    private String foundingTime;
+
 
     public String getCreateUserId() {
         return createUserId;
@@ -119,5 +125,37 @@ public class StoreDto extends PageDto implements Serializable {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getStoreTypeName() {
+        return storeTypeName;
+    }
+
+    public void setStoreTypeName(String storeTypeName) {
+        this.storeTypeName = storeTypeName;
+    }
+
+    public String getCorporation() {
+        return corporation;
+    }
+
+    public void setCorporation(String corporation) {
+        this.corporation = corporation;
+    }
+
+    public String getFoundingTime() {
+        return foundingTime;
+    }
+
+    public void setFoundingTime(String foundingTime) {
+        this.foundingTime = foundingTime;
     }
 }

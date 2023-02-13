@@ -13,32 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.store.cmd.property;
+package com.java110.user.cmd.property;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
+import com.java110.core.cmd.Cmd;
+import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.Environment;
 import com.java110.core.context.ICmdDataFlowContext;
-import com.java110.core.event.cmd.Cmd;
-import com.java110.core.event.cmd.CmdEvent;
+import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.utils.Assert;
 import com.java110.dto.menuGroup.MenuGroupDto;
 import com.java110.dto.store.StoreDto;
-import com.java110.intf.common.IWorkflowV1InnerServiceSMO;
 import com.java110.intf.community.ICommunityMemberV1InnerServiceSMO;
 import com.java110.intf.community.ICommunityV1InnerServiceSMO;
-import com.java110.intf.store.IOrgStaffRelV1InnerServiceSMO;
-import com.java110.intf.store.IStoreAttrV1InnerServiceSMO;
-import com.java110.intf.store.IStoreUserV1InnerServiceSMO;
-import com.java110.intf.store.IStoreV1InnerServiceSMO;
 import com.java110.intf.user.*;
-import com.java110.po.community.CommunityMemberPo;
+import com.java110.po.communityMember.CommunityMemberPo;
 import com.java110.po.menuGroupCommunity.MenuGroupCommunityPo;
-import com.java110.utils.exception.CmdException;
-import com.java110.utils.util.Assert;
-import com.java110.vo.ResultVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,22 +62,15 @@ public class MemberQuitCommunityCmd extends Cmd {
     private IStoreV1InnerServiceSMO storeV1InnerServiceSMOImpl;
 
     @Autowired
-    private IStoreAttrV1InnerServiceSMO storeAttrV1InnerServiceSMOImpl;
-
-    @Autowired
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
 
     @Autowired
-    private IStoreUserV1InnerServiceSMO storeUserV1InnerServiceSMOImpl;
+    private IStoreStaffV1InnerServiceSMO storeUserV1InnerServiceSMOImpl;
 
     @Autowired
     private IOrgV1InnerServiceSMO orgV1InnerServiceSMOImpl;
 
-    @Autowired
-    private IOrgStaffRelV1InnerServiceSMO orgStaffRelV1InnerServiceSMOImpl;
 
-    @Autowired
-    private IWorkflowV1InnerServiceSMO workflowV1InnerServiceSMOImpl;
 
     @Autowired
     private IPrivilegeUserV1InnerServiceSMO privilegeUserV1InnerServiceSMOImpl;

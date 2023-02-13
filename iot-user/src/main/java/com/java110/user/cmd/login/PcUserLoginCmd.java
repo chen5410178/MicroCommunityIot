@@ -5,6 +5,7 @@ import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cache.CommonCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.configuration.Java110RedisConfig;
 import com.java110.core.constant.CommonConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
@@ -14,6 +15,7 @@ import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.CmdContextUtils;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.app.AppDto;
 import com.java110.dto.store.StoreDto;
 import com.java110.dto.storeStaff.StoreStaffDto;
@@ -103,6 +105,8 @@ public class PcUserLoginCmd extends Cmd {
             }
         }
 
+        clearUserCache(userDtos.get(0).getUserId(),storeUserDtos.get(0).getStoreId());
+
 
         try {
             Map userMap = new HashMap();
@@ -130,6 +134,25 @@ public class PcUserLoginCmd extends Cmd {
             logger.error("登录异常：", e);
             throw new IllegalArgumentException("系统内部错误，请联系管理员");
         }
+    }
+
+    /**
+     * 清理用户缓存
+     *
+     * @param userId
+     */
+    private void clearUserCache(String userId,String storeId) {
+        //员工商户缓存 getStoreInfo
+
+        String storeInfo = CommonCache.getValue("getStoreInfo" + Java110RedisConfig.GET_STORE_INFO_EXPIRE_TIME_KEY + "::" + userId);
+        if(!StringUtil.isEmpty(storeInfo)){
+            CommonCache.removeValue("getStoreInfo" + Java110RedisConfig.GET_STORE_INFO_EXPIRE_TIME_KEY + "::" + userId);
+//            JSONObject storeObj = JSONObject.parseObject(storeInfo);
+//            storeId = storeObj.getJSONObject("msg").getString("storeId");
+        }
+        CommonCache.removeValue("getStoreEnterCommunitys" + Java110RedisConfig.GET_STORE_ENTER_COMMUNITYS_EXPIRE_TIME_KEY + "::" + storeId);
+        //员工权限
+        CommonCache.removeValue("getUserPrivileges" + Java110RedisConfig.DEFAULT_EXPIRE_TIME_KEY + "::" + userId);
     }
 
 }

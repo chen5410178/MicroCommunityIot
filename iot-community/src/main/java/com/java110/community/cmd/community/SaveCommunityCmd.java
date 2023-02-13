@@ -57,7 +57,7 @@ public class SaveCommunityCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "name", "请求报文中未包含name");
         Assert.hasKeyAndValue(reqJson, "address", "请求报文中未包含address");
         Assert.hasKeyAndValue(reqJson, "cityCode", "请求报文中未包含cityCode");
-        Assert.hasKeyAndValue(reqJson, "extCommunityId", "请求报文中未包含extCommunityId");
+       // Assert.hasKeyAndValue(reqJson, "extCommunityId", "请求报文中未包含extCommunityId");
 
     }
 

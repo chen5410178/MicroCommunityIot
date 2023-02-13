@@ -49,7 +49,7 @@
                         var _communityManageInfo = JSON.parse(json);
                         vc.component.communityManageInfo.total = _communityManageInfo.total;
                         vc.component.communityManageInfo.records = _communityManageInfo.records;
-                        vc.component.communityManageInfo.communitys = _communityManageInfo.communitys;
+                        vc.component.communityManageInfo.communitys = _communityManageInfo.data;
                         $that.dealCommunityAttr(_communityManageInfo.communitys);
                         vc.emit('pagination', 'init', {
                             total: vc.component.communityManageInfo.records,

@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.store.smo.impl;
+package com.java110.user.smo.impl;
 
 
-import com.java110.core.base.smo.BaseServiceSMO;
-import com.java110.dto.PageDto;
+import com.java110.bean.dto.PageDto;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.store.StoreAttrDto;
-import com.java110.intf.store.IStoreAttrV1InnerServiceSMO;
+import com.java110.intf.user.IStoreAttrV1InnerServiceSMO;
 import com.java110.po.store.StoreAttrPo;
-import com.java110.store.dao.IStoreAttrV1ServiceDao;
-import com.java110.utils.util.BeanConvertUtil;
+import com.java110.user.dao.IStoreAttrV1ServiceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +37,7 @@ import java.util.List;
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
 @RestController
-public class StoreAttrV1InnerServiceSMOImpl extends BaseServiceSMO implements IStoreAttrV1InnerServiceSMO {
+public class StoreAttrV1InnerServiceSMOImpl  implements IStoreAttrV1InnerServiceSMO {
 
     @Autowired
     private IStoreAttrV1ServiceDao storeAttrV1ServiceDaoImpl;

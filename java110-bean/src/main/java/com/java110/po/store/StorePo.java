@@ -17,6 +17,7 @@ package com.java110.po.store;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-02-11 00:02:27 mail: 928255095@qq.com
@@ -28,55 +29,76 @@ import java.util.Date;
 public class StorePo implements Serializable {
 
     private String createUserId;
-private String address;
-private String storeTypeCd;
-private String name;
-private String tel;
-private String statusCd = "0";
-private String storeId;
-public String getCreateUserId() {
+    private String address;
+    private String storeTypeCd;
+    private String name;
+    private String tel;
+    private String statusCd = "0";
+    private String storeId;
+
+    private String state;
+
+    public String getCreateUserId() {
         return createUserId;
     }
-public void setCreateUserId(String createUserId) {
+
+    public void setCreateUserId(String createUserId) {
         this.createUserId = createUserId;
     }
-public String getAddress() {
+
+    public String getAddress() {
         return address;
     }
-public void setAddress(String address) {
+
+    public void setAddress(String address) {
         this.address = address;
     }
-public String getStoreTypeCd() {
+
+    public String getStoreTypeCd() {
         return storeTypeCd;
     }
-public void setStoreTypeCd(String storeTypeCd) {
+
+    public void setStoreTypeCd(String storeTypeCd) {
         this.storeTypeCd = storeTypeCd;
     }
-public String getName() {
+
+    public String getName() {
         return name;
     }
-public void setName(String name) {
+
+    public void setName(String name) {
         this.name = name;
     }
-public String getTel() {
+
+    public String getTel() {
         return tel;
     }
-public void setTel(String tel) {
+
+    public void setTel(String tel) {
         this.tel = tel;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getStoreId() {
+
+    public String getStoreId() {
         return storeId;
     }
-public void setStoreId(String storeId) {
+
+    public void setStoreId(String storeId) {
         this.storeId = storeId;
     }
 
+    public String getState() {
+        return state;
+    }
 
-
+    public void setState(String state) {
+        this.state = state;
+    }
 }

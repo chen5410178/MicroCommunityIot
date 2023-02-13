@@ -21,6 +21,7 @@ import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.context.Environment;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
@@ -39,23 +40,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 
-@Java110CmdDoc(title = "修改物业公司",
+@Java110CmdDoc(title = "修改商户状态",
         description = "主要提供给外系统修改物业公司",
         httpMethod = "post",
-        url = "http://{ip}:{port}/app/property.updateProperty",
+        url = "http://{ip}:{port}/app/property.updatePropertyState",
         resource = "storeDoc",
         author = "吴学文",
-        serviceCode = "property.updateProperty"
+        serviceCode = "property.updatePropertyState"
 )
 
 @Java110ParamsDoc(params = {
         @Java110ParamDoc(name = "storeId", length = 30, remark = "物业编号"),
-        @Java110ParamDoc(name = "name", length = 64, remark = "物业名称"),
-        @Java110ParamDoc(name = "nearbyLandmarks", length = 64, remark = "地标，如xx 公园旁"),
-        @Java110ParamDoc(name = "tel", length = 11, remark = "物业管理员电话 作为管理员账号密码 添加后请及时修改密码"),
-        @Java110ParamDoc(name = "address", length = 11, remark = "公司地址"),
-        @Java110ParamDoc(name = "corporation", length = 11, remark = "法人"),
-        @Java110ParamDoc(name = "foundingTime", length = 11, remark = "成立日期"),
+        @Java110ParamDoc(name = "state", length = 64, remark = "状态"),
 })
 
 @Java110ResponseDoc(
@@ -79,10 +75,10 @@ import java.util.List;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
-@Java110Cmd(serviceCode = "property.updateProperty")
-public class UpdatePropertyCmd extends Cmd {
+@Java110Cmd(serviceCode = "property.updatePropertyState")
+public class UpdatePropertyStateCmd extends Cmd {
 
-    private static Logger logger = LoggerFactory.getLogger(UpdatePropertyCmd.class);
+    private static Logger logger = LoggerFactory.getLogger(UpdatePropertyStateCmd.class);
 
 
     @Autowired
@@ -94,68 +90,22 @@ public class UpdatePropertyCmd extends Cmd {
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
-        Assert.hasKeyAndValue(reqJson, "storeId", "storeId不能为空");
-
+        Assert.hasKeyAndValue(reqJson, "storeId", "未包含商户信息");
+        Assert.hasKeyAndValue(reqJson, "state", "未包含商户状态");
+        Environment.isDevEnv();
     }
 
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        StorePo storePo = BeanConvertUtil.covertBean(reqJson, StorePo.class);
+        StorePo storePo = new StorePo();
+        storePo.setStoreId(reqJson.getString("storeId"));
+        storePo.setState(reqJson.getString("state"));
         int flag = storeV1InnerServiceSMOImpl.updateStore(storePo);
 
         if (flag < 1) {
             throw new CmdException("更新数据失败");
-        }
-
-        if (reqJson.containsKey("corporation")) {
-
-            StoreAttrDto storeAttrDto = new StoreAttrDto();
-            storeAttrDto.setStoreId(reqJson.getString("storeId"));
-            storeAttrDto.setSpecCd(StoreAttrDto.SPEC_CD_CORPORATION);
-            List<StoreAttrDto> storeAttrDtos = storeAttrV1InnerServiceSMOImpl.queryStoreAttrs(storeAttrDto);
-            if (storeAttrDtos == null || storeAttrDtos.size() < 1) {
-                StoreAttrPo storeAttrPo = new StoreAttrPo();
-                storeAttrPo.setAttrId(GenerateCodeFactory.getAttrId());
-                storeAttrPo.setSpecCd(StoreAttrDto.SPEC_CD_CORPORATION);
-                storeAttrPo.setStoreId(storePo.getStoreId());
-                storeAttrPo.setValue(reqJson.getString("corporation"));
-                flag = storeAttrV1InnerServiceSMOImpl.saveStoreAttr(storeAttrPo);
-            } else {
-                StoreAttrPo storeAttrPo = new StoreAttrPo();
-                storeAttrPo.setAttrId(storeAttrDtos.get(0).getAttrId());
-                storeAttrPo.setSpecCd(StoreAttrDto.SPEC_CD_CORPORATION);
-                storeAttrPo.setValue(reqJson.getString("corporation"));
-                flag = storeAttrV1InnerServiceSMOImpl.updateStoreAttr(storeAttrPo);
-            }
-
-            if (flag < 1) {
-                throw new CmdException("保存数据失败");
-            }
-        }
-        if (reqJson.containsKey("foundingTime")) {
-            StoreAttrDto storeAttrDto = new StoreAttrDto();
-            storeAttrDto.setStoreId(reqJson.getString("storeId"));
-            storeAttrDto.setSpecCd(StoreAttrDto.SPEC_CD_FOUNDINGTIME);
-            List<StoreAttrDto> storeAttrDtos = storeAttrV1InnerServiceSMOImpl.queryStoreAttrs(storeAttrDto);
-            if (storeAttrDtos == null || storeAttrDtos.size() < 1) {
-                StoreAttrPo storeAttrPo = new StoreAttrPo();
-                storeAttrPo.setAttrId(GenerateCodeFactory.getAttrId());
-                storeAttrPo.setSpecCd(StoreAttrDto.SPEC_CD_FOUNDINGTIME);
-                storeAttrPo.setStoreId(storePo.getStoreId());
-                storeAttrPo.setValue(reqJson.getString("foundingTime"));
-                flag = storeAttrV1InnerServiceSMOImpl.saveStoreAttr(storeAttrPo);
-            } else {
-                StoreAttrPo storeAttrPo = new StoreAttrPo();
-                storeAttrPo.setAttrId(storeAttrDtos.get(0).getAttrId());
-                storeAttrPo.setSpecCd(StoreAttrDto.SPEC_CD_FOUNDINGTIME);
-                storeAttrPo.setValue(reqJson.getString("foundingTime"));
-                flag = storeAttrV1InnerServiceSMOImpl.updateStoreAttr(storeAttrPo);
-            }
-            if (flag < 1) {
-                throw new CmdException("保存数据失败");
-            }
         }
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }

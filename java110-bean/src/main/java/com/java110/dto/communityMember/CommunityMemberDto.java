@@ -15,6 +15,11 @@ import java.util.Date;
  **/
 public class CommunityMemberDto extends PageDto implements Serializable {
 
+
+    public static final String AUDIT_STATUS_NORMAL = "1100"; // 审核通过
+
+    public static final String MEMBER_TYPE_PROPERTY = "800900000003";
+
     private String memberTypeCd;
     private String memberName;
     private String startTime;

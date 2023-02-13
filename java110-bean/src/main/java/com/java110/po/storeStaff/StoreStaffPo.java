@@ -17,6 +17,7 @@ package com.java110.po.storeStaff;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-02-11 00:50:50 mail: 928255095@qq.com
@@ -28,55 +29,68 @@ import java.util.Date;
 public class StoreStaffPo implements Serializable {
 
     private String staffName;
-private String tel;
-private String statusCd = "0";
-private String storeId;
-private String adminFlag;
-private String storeStaffId;
-private String staffId;
-public String getStaffName() {
+    private String tel;
+    private String statusCd = "0";
+    private String storeId;
+    private String adminFlag;
+    private String storeStaffId;
+    private String staffId;
+
+    public String getStaffName() {
         return staffName;
     }
-public void setStaffName(String staffName) {
+
+    public void setStaffName(String staffName) {
         this.staffName = staffName;
     }
-public String getTel() {
+
+    public String getTel() {
         return tel;
     }
-public void setTel(String tel) {
+
+    public void setTel(String tel) {
         this.tel = tel;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getStoreId() {
+
+    public String getStoreId() {
         return storeId;
     }
-public void setStoreId(String storeId) {
+
+    public void setStoreId(String storeId) {
         this.storeId = storeId;
     }
-public String getAdminFlag() {
+
+    public String getAdminFlag() {
         return adminFlag;
     }
-public void setAdminFlag(String adminFlag) {
+
+    public void setAdminFlag(String adminFlag) {
         this.adminFlag = adminFlag;
     }
-public String getStoreStaffId() {
+
+    public String getStoreStaffId() {
         return storeStaffId;
     }
-public void setStoreStaffId(String storeStaffId) {
+
+    public void setStoreStaffId(String storeStaffId) {
         this.storeStaffId = storeStaffId;
     }
-public String getStaffId() {
+
+    public String getStaffId() {
         return staffId;
     }
-public void setStaffId(String staffId) {
+
+    public void setStaffId(String staffId) {
         this.staffId = staffId;
     }
-
 
 
 }

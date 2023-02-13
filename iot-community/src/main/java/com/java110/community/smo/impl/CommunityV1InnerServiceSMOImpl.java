@@ -84,5 +84,23 @@ public class CommunityV1InnerServiceSMOImpl  implements ICommunityV1InnerService
     @Override
     public int queryCommunitysCount(@RequestBody CommunityDto communityDto) {
         return communityV1ServiceDaoImpl.queryCommunitysCount(BeanConvertUtil.beanCovertMap(communityDto));    }
+    @Override
+    public int queryFreeCommunitysCount(@RequestBody CommunityDto communityDto) {
+        return communityV1ServiceDaoImpl.queryFreeCommunitysCount(BeanConvertUtil.beanCovertMap(communityDto));    }
 
+    @Override
+    public List<CommunityDto> queryFreeCommunitys(@RequestBody  CommunityDto communityDto) {
+
+        //校验是否传了 分页信息
+
+        int page = communityDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            communityDto.setPage((page - 1) * communityDto.getRow());
+        }
+
+        List<CommunityDto> communitys = BeanConvertUtil.covertBeanList(communityV1ServiceDaoImpl.queryFreeCommunitys(BeanConvertUtil.beanCovertMap(communityDto)), CommunityDto.class);
+
+        return communitys;
+    }
 }

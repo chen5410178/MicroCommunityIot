@@ -2,24 +2,23 @@ package com.java110.user.cmd.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cmd.Cmd;
+import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.Environment;
 import com.java110.core.context.ICmdDataFlowContext;
-import com.java110.core.event.cmd.Cmd;
-import com.java110.core.event.cmd.CmdEvent;
+import com.java110.core.exception.CmdException;
 import com.java110.core.factory.AuthenticationFactory;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.utils.Assert;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.doc.annotation.*;
 import com.java110.dto.store.StoreDto;
-import com.java110.dto.store.StoreUserDto;
+import com.java110.dto.storeStaff.StoreStaffDto;
 import com.java110.dto.user.UserDto;
-import com.java110.intf.store.IStoreUserV1InnerServiceSMO;
-import com.java110.intf.store.IStoreV1InnerServiceSMO;
-import com.java110.intf.user.IUserInnerServiceSMO;
+import com.java110.intf.user.IStoreStaffV1InnerServiceSMO;
+import com.java110.intf.user.IStoreV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.user.UserPo;
-import com.java110.utils.exception.CmdException;
-import com.java110.utils.util.Assert;
-import com.java110.utils.util.BeanConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,13 +56,11 @@ import java.util.List;
 public class ResetStaffPwdCmd extends Cmd {
 
     @Autowired
-    private IStoreUserV1InnerServiceSMO storeUserV1InnerServiceSMOImpl;
+    private IStoreStaffV1InnerServiceSMO storeUserV1InnerServiceSMOImpl;
 
     @Autowired
     private IStoreV1InnerServiceSMO storeV1InnerServiceSMOImpl;
 
-    @Autowired
-    private IUserInnerServiceSMO userInnerServiceSMOImpl;
 
     @Autowired
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
@@ -83,9 +80,9 @@ public class ResetStaffPwdCmd extends Cmd {
 
         Assert.jsonObjectHaveKey(reqJson, "staffId", "请求参数中未包含staffId 节点，请确认");
 
-        StoreUserDto storeUserDt = new StoreUserDto();
-        storeUserDt.setUserId(reqJson.getString("userId"));
-        List<StoreUserDto> storeUserDts = storeUserV1InnerServiceSMOImpl.queryStoreUsers(storeUserDt);
+        StoreStaffDto storeUserDto = new StoreStaffDto();
+        storeUserDto.setStaffId(reqJson.getString("staffId"));
+        List<StoreStaffDto> storeUserDts = storeUserV1InnerServiceSMOImpl.queryStoreStaffs(storeUserDto);
         Assert.listOnlyOne(storeUserDts, "查询员工商户错误！");
 
         //首先判断是否为 运营或者开发
@@ -105,10 +102,10 @@ public class ResetStaffPwdCmd extends Cmd {
         }
 
         //校验 staff 和 store 之间是否有 关系 防止 攻击
-        StoreUserDto storeUserDto = new StoreUserDto();
-        storeUserDto.setUserId(reqJson.getString("userId"));
+         storeUserDto = new StoreStaffDto();
+        storeUserDto.setStaffId(reqJson.getString("staffId"));
         storeUserDto.setStoreId(reqJson.getString("storeId"));
-        List<StoreUserDto> storeUserDtos = storeUserV1InnerServiceSMOImpl.queryStoreUsers(storeUserDto);
+        List<StoreStaffDto> storeUserDtos = storeUserV1InnerServiceSMOImpl.queryStoreStaffs(storeUserDto);
 
         Assert.listOnlyOne(storeUserDtos, "非法操作");
     }
@@ -133,7 +130,7 @@ public class ResetStaffPwdCmd extends Cmd {
         UserDto userDto = new UserDto();
         userDto.setStatusCd("0");
         userDto.setUserId(paramObj.getString("staffId"));
-        List<UserDto> userDtos = userInnerServiceSMOImpl.getUserHasPwd(userDto);
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
 
         Assert.listOnlyOne(userDtos, "数据错误查询到多条用户信息或单条");
 

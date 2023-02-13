@@ -65,4 +65,8 @@ public interface ICommunityV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryCommunitysCount", method = RequestMethod.POST)
     int queryCommunitysCount(@RequestBody CommunityDto communityDto);
+    @RequestMapping(value = "/queryFreeCommunitysCount", method = RequestMethod.POST)
+    int queryFreeCommunitysCount(@RequestBody CommunityDto communityDto);
+    @RequestMapping(value = "/queryFreeCommunitys", method = RequestMethod.POST)
+    List<CommunityDto> queryFreeCommunitys(@RequestBody CommunityDto communityDto);
 }

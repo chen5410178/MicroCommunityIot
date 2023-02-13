@@ -32,6 +32,10 @@
             <groupId>com.java110</groupId>
             <artifactId>java110-db</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.java110</groupId>
+            <artifactId>java110-doc</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

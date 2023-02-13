@@ -48,7 +48,7 @@
                         var _propertyCommunityInfo = JSON.parse(json);
                         vc.component.propertyCommunityInfo.total = _propertyCommunityInfo.total;
                         vc.component.propertyCommunityInfo.records = _propertyCommunityInfo.records;
-                        vc.component.propertyCommunityInfo.communitys = _propertyCommunityInfo.communitys;
+                        vc.component.propertyCommunityInfo.communitys = _propertyCommunityInfo.data;
                         vc.emit('pagination', 'init', {
                             total: vc.component.propertyCommunityInfo.records,
                             dataCount: vc.component.propertyCommunityInfo.total,

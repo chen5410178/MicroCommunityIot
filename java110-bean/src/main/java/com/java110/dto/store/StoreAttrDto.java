@@ -1,6 +1,7 @@
 package com.java110.dto.store;
 
-import com.java110.dto.PageDto;
+
+import com.java110.bean.dto.PageDto;
 
 import java.io.Serializable;
 import java.util.Date;

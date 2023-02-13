@@ -6,14 +6,15 @@
                 address: '',
                 tmpAddress: '',
                 areaAddress: '',
-                nearbyLandmarks: '',
+                nearbyLandmarks: '无',
                 tel: '',
                 cityCode: '',
                 mapX: '101.33',
                 mapY: '101.33',
                 attrs: [],
                 payFeeMonth: 12,
-                feePrice: 0
+                feePrice: 0,
+                extCommunityId:''
             },
             areas: [],
             provs: [],
@@ -134,13 +135,14 @@
                     address: '',
                     tmpAddress: '',
                     areaAddress: '',
-                    nearbyLandmarks: '',
+                    nearbyLandmarks: '无',
                     cityCode: '',
                     mapX: '101.33',
                     mapY: '101.33',
                     attrs: [],
                     payFeeMonth: 12,
-                    feePrice: 0
+                    feePrice: 0,
+                    extCommunityId:''
                 };
                 $that.selectProv = '';
                 $that.selectCity = '';

@@ -120,4 +120,36 @@
 
     </select>
 
+
+    <!-- 查询小区数量 add by wuxw 2018-07-03 -->
+    <select id="queryFreeCommunitysCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        FROM
+        s_community sc
+        LEFT JOIN s_community_member scm ON sc.community_id = scm.community_id
+        AND scm.member_type_cd = '800900000003'
+        and scm.status_cd = '0'
+        WHERE
+        sc.status_cd = '0'
+        AND scm.community_id IS NULL
+    </select>
+
+    <select id="queryFreeCommunitys" parameterType="Map" resultType="Map">
+        SELECT sc.community_id communityId, sc.name, sc.address,sc.city_code cityCode
+        FROM
+        s_community sc
+        LEFT JOIN s_community_member scm ON sc.community_id = scm.community_id
+        AND scm.member_type_cd = '800900000003'
+        and scm.status_cd = '0'
+        WHERE
+        sc.status_cd = '0'
+        AND scm.community_id IS NULL
+        order by sc.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
 </mapper>

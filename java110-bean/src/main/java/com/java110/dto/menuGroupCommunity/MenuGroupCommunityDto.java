@@ -27,11 +27,11 @@ public class MenuGroupCommunityDto extends PageDto implements Serializable {
     private String statusCd = "0";
 
 
-    public String getGId() {
+    public String getgId() {
         return gId;
     }
 
-    public void setGId(String gId) {
+    public void setgId(String gId) {
         this.gId = gId;
     }
 
@@ -66,7 +66,6 @@ public class MenuGroupCommunityDto extends PageDto implements Serializable {
     public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-
 
     public Date getCreateTime() {
         return createTime;

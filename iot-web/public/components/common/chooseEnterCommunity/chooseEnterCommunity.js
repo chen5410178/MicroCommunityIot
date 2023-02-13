@@ -38,7 +38,7 @@
                     function (json, res) {
                         if (res.status == 200) {
                             let _data = JSON.parse(json);
-                            $that.navCommunityInfo.communityInfo = _data.communitys;
+                            $that.navCommunityInfo.communityInfo = _data.data;
                             vc.emit('chooseEnterCommunity', 'paginationPlus', 'init', {
                                 total: _data.records,
                                 dataCount: _data.total,

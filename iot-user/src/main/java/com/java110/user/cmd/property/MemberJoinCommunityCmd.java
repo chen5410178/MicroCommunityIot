@@ -13,36 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.store.cmd.property;
+package com.java110.user.cmd.property;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.java110.po.communityMember.CommunityMemberPo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
+import com.java110.core.cmd.Cmd;
+import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
-import com.java110.core.event.cmd.Cmd;
-import com.java110.core.event.cmd.CmdEvent;
+import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.dto.CommunityMemberDto;
+import com.java110.core.utils.Assert;
+import com.java110.core.utils.DateUtil;
 import com.java110.dto.community.CommunityDto;
+import com.java110.dto.communityMember.CommunityMemberDto;
 import com.java110.dto.menuGroup.MenuGroupDto;
 import com.java110.dto.store.StoreDto;
-import com.java110.dto.workflow.WorkflowDto;
-import com.java110.intf.common.IWorkflowV1InnerServiceSMO;
 import com.java110.intf.community.ICommunityMemberV1InnerServiceSMO;
 import com.java110.intf.community.ICommunityV1InnerServiceSMO;
-import com.java110.intf.store.IOrgStaffRelV1InnerServiceSMO;
-import com.java110.intf.store.IStoreAttrV1InnerServiceSMO;
-import com.java110.intf.store.IStoreUserV1InnerServiceSMO;
-import com.java110.intf.store.IStoreV1InnerServiceSMO;
 import com.java110.intf.user.*;
-import com.java110.po.community.CommunityMemberPo;
 import com.java110.po.menuGroupCommunity.MenuGroupCommunityPo;
-import com.java110.po.workflow.WorkflowPo;
-import com.java110.utils.constant.StateConstant;
-import com.java110.utils.exception.CmdException;
-import com.java110.utils.util.Assert;
-import com.java110.utils.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,23 +63,16 @@ public class MemberJoinCommunityCmd extends Cmd {
     @Autowired
     private IStoreV1InnerServiceSMO storeV1InnerServiceSMOImpl;
 
-    @Autowired
-    private IStoreAttrV1InnerServiceSMO storeAttrV1InnerServiceSMOImpl;
 
     @Autowired
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
 
     @Autowired
-    private IStoreUserV1InnerServiceSMO storeUserV1InnerServiceSMOImpl;
+    private IStoreStaffV1InnerServiceSMO storeUserV1InnerServiceSMOImpl;
 
     @Autowired
     private IOrgV1InnerServiceSMO orgV1InnerServiceSMOImpl;
 
-    @Autowired
-    private IOrgStaffRelV1InnerServiceSMO orgStaffRelV1InnerServiceSMOImpl;
-
-    @Autowired
-    private IWorkflowV1InnerServiceSMO workflowV1InnerServiceSMOImpl;
 
     @Autowired
     private IPrivilegeUserV1InnerServiceSMO privilegeUserV1InnerServiceSMOImpl;
@@ -153,42 +138,23 @@ public class MemberJoinCommunityCmd extends Cmd {
 
             Assert.listOnlyOne(communityDtos, "小区不存在");
 
-            Calendar endTime = Calendar.getInstance();
-            endTime.add(Calendar.MONTH, Integer.parseInt(communityDtos.get(0).getPayFeeMonth()));
             CommunityMemberPo communityMemberPo = new CommunityMemberPo();
             communityMemberPo.setCommunityMemberId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
-            communityMemberPo.setEndTime(DateUtil.getFormatTimeString(endTime.getTime(), DateUtil.DATE_FORMATE_STRING_A));
+            communityMemberPo.setEndTime(DateUtil.getLastTime());
             communityMemberPo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
-            communityMemberPo.setAuditStatusCd(StateConstant.AGREE_AUDIT);
             communityMemberPo.setCommunityId(communityId);
             communityMemberPo.setMemberId(storeDtos.get(0).getStoreId());
+            communityMemberPo.setMemberName(storeDtos.get(0).getName());
             communityMemberPo.setMemberTypeCd(CommunityMemberDto.MEMBER_TYPE_PROPERTY);
+
             flag = communityMemberV1InnerServiceSMOImpl.saveCommunityMember(communityMemberPo);
             if (flag < 1) {
                 throw new CmdException("注册失败");
             }
 
             //保存小区开放功能
-
             saveMenuGroupCommunity(reqJson, communityId, communityDtos.get(0).getName());
 
-            // 修改投诉建议
-            flag = updateWorkflow(WorkflowDto.FLOW_TYPE_COMPLAINT, communityId, storeDtos.get(0).getStoreId());
-            if (flag < 1) {
-                continue;
-            }
-
-            // 修改物品领用
-            flag = updateWorkflow(WorkflowDto.FLOW_TYPE_COLLECTION, communityId, storeDtos.get(0).getStoreId());
-            if (flag < 1) {
-                continue;
-            }
-
-            // 修改
-            flag = updateWorkflow(WorkflowDto.FLOW_TYPE_ALLOCATION_STOREHOUSE_GO, communityId, storeDtos.get(0).getStoreId());
-            if (flag < 1) {
-                continue;
-            }
         }
 
 
@@ -235,25 +201,5 @@ public class MemberJoinCommunityCmd extends Cmd {
         }
     }
 
-    /**
-     * 刷入小区ID
-     *
-     * @param flowType 接口请求数据封装
-     * @return 封装好的 data数据
-     */
-    public int updateWorkflow(String flowType, String communityId, String storeId) {
-        WorkflowDto workflowDto = new WorkflowDto();
-        workflowDto.setCommunityId(communityId);
-        workflowDto.setFlowType(flowType);
-        List<WorkflowDto> workflowDtos = workflowV1InnerServiceSMOImpl.queryWorkflows(workflowDto);
 
-        if (workflowDtos == null || workflowDtos.size() < 1) {
-            return 0;
-        }
-        WorkflowPo workflowPo = new WorkflowPo();
-        workflowPo.setFlowId(workflowDtos.get(0).getFlowId());
-        workflowPo.setCommunityId(communityId);
-        workflowPo.setStoreId(storeId);
-        return workflowV1InnerServiceSMOImpl.updateWorkflow(workflowPo);
-    }
 }

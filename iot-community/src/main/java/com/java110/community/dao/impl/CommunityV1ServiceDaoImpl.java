@@ -108,4 +108,39 @@ public class CommunityV1ServiceDaoImpl extends BaseServiceDao implements ICommun
     }
 
 
+    /**
+     * 查询小区数量
+     *
+     * @param info 小区信息
+     * @return 小区数量
+     */
+    @Override
+    public int queryFreeCommunitysCount(Map info) {
+        logger.debug("查询 queryFreeCommunitysCount 入参 info : {}", info);
+
+        List<Map> businessCommunityInfos = sqlSessionTemplate.selectList("communityV1ServiceDaoImpl.queryFreeCommunitysCount", info);
+        if (businessCommunityInfos.size() < 1) {
+            return 0;
+        }
+
+        return Integer.parseInt(businessCommunityInfos.get(0).get("count").toString());
+    }
+
+    /**
+     * 查询小区信息（instance）
+     *
+     * @param info bId 信息
+     * @return List<Map>
+     * @throws DAOException DAO异常
+     */
+    @Override
+    public List<Map> queryFreeCommunitys(Map info) throws DAOException {
+        logger.debug("查询 queryFreeCommunitys 入参 info : {}", info);
+
+        List<Map> businessCommunityInfos = sqlSessionTemplate.selectList("communityV1ServiceDaoImpl.queryFreeCommunitys", info);
+
+        return businessCommunityInfos;
+    }
+
+
 }

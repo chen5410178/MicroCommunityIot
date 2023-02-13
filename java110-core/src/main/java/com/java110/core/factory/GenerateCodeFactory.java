@@ -428,7 +428,7 @@ public class GenerateCodeFactory {
         return getCode(prefixMap.get("bId"));
     }
 
-    public static String getAttrId() throws Exception {
+    public static String getAttrId()  {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("attrId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }

@@ -6,14 +6,15 @@
                 communityId: '',
                 name: '',
                 address: '',
-                nearbyLandmarks: '',
+                nearbyLandmarks: '无',
                 cityCode: '',
                 mapX: '101.33',
                 mapY: '101.33',
                 payFeeMonth: 12,
                 feePrice: 0,
                 tel: '',
-                attrs: []
+                attrs: [],
+                extCommunityId:''
             }
         },
         _initMethod: function() {
@@ -130,14 +131,15 @@
                     communityId: '',
                     name: '',
                     address: '',
-                    nearbyLandmarks: '',
+                    nearbyLandmarks: '无',
                     cityCode: '',
                     mapX: '101.33',
                     mapY: '101.33',
                     payFeeMonth: 12,
                     feePrice: 0,
                     tel: '',
-                    attrs: _attrs
+                    attrs: _attrs,
+                    extCommunityId:''
                 }
             },
             _loadEditCommunityAttrSpec: function() {

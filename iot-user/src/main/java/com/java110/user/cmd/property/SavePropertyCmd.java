@@ -13,52 +13,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.store.cmd.property;
+package com.java110.user.cmd.property;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
+import com.java110.bean.dto.org.OrgStaffRelDto;
+import com.java110.bean.po.org.OrgPo;
+import com.java110.bean.po.org.OrgStaffRelPo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
+import com.java110.core.cache.MappingCache;
+import com.java110.core.cmd.Cmd;
+import com.java110.core.cmd.CmdEvent;
+import com.java110.core.constant.MappingConstant;
 import com.java110.core.context.ICmdDataFlowContext;
-import com.java110.core.event.cmd.Cmd;
-import com.java110.core.event.cmd.CmdEvent;
+import com.java110.core.exception.CmdException;
 import com.java110.core.factory.AuthenticationFactory;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.utils.Assert;
+import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
+import com.java110.core.utils.DateUtil;
 import com.java110.doc.annotation.*;
-import com.java110.dto.CommunityMemberDto;
 import com.java110.dto.community.CommunityDto;
+import com.java110.dto.communityMember.CommunityMemberDto;
 import com.java110.dto.menuGroup.MenuGroupDto;
 import com.java110.dto.store.StoreAttrDto;
 import com.java110.dto.store.StoreDto;
-import com.java110.dto.workflow.WorkflowDto;
-import com.java110.intf.common.IWorkflowV1InnerServiceSMO;
+import com.java110.dto.storeStaff.StoreStaffDto;
+import com.java110.dto.user.UserDto;
 import com.java110.intf.community.ICommunityMemberV1InnerServiceSMO;
 import com.java110.intf.community.ICommunityV1InnerServiceSMO;
-import com.java110.intf.store.IOrgStaffRelV1InnerServiceSMO;
-import com.java110.intf.store.IStoreAttrV1InnerServiceSMO;
-import com.java110.intf.store.IStoreUserV1InnerServiceSMO;
-import com.java110.intf.store.IStoreV1InnerServiceSMO;
 import com.java110.intf.user.*;
-import com.java110.po.community.CommunityMemberPo;
+import com.java110.po.communityMember.CommunityMemberPo;
 import com.java110.po.menuGroupCommunity.MenuGroupCommunityPo;
-import com.java110.po.org.OrgPo;
-import com.java110.po.org.OrgStaffRelPo;
 import com.java110.po.privilegeUser.PrivilegeUserPo;
 import com.java110.po.store.StoreAttrPo;
 import com.java110.po.store.StorePo;
-import com.java110.po.store.StoreUserPo;
+import com.java110.po.storeStaff.StoreStaffPo;
 import com.java110.po.user.UserPo;
-import com.java110.po.workflow.WorkflowPo;
-import com.java110.utils.cache.MappingCache;
-import com.java110.utils.constant.MappingConstant;
-import com.java110.utils.constant.StateConstant;
-import com.java110.utils.constant.StoreUserRelConstant;
-import com.java110.utils.constant.UserLevelConstant;
-import com.java110.utils.exception.CmdException;
-import com.java110.utils.util.Assert;
-import com.java110.utils.util.BeanConvertUtil;
-import com.java110.utils.util.DateUtil;
-import com.java110.vo.ResultVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,10 +78,10 @@ import java.util.List;
         @Java110ParamDoc(name = "address", length = 11, remark = "公司地址"),
         @Java110ParamDoc(name = "corporation", length = 11, remark = "法人"),
         @Java110ParamDoc(name = "foundingTime", length = 11, remark = "成立日期"),
-        @Java110ParamDoc(name = "communityIds", type = "Array" ,length = 0, remark = "分配小区"),
-        @Java110ParamDoc(parentNodeName = "communityIds",name = "-", type = "String" ,length = 0, remark = "小区ID"),
-        @Java110ParamDoc(name = "groupIds", type = "Array" ,length = 0, remark = "分配菜单组"),
-        @Java110ParamDoc(parentNodeName = "groupIds",name = "-", type = "String" ,length = 0, remark = "菜单组ID"),
+        @Java110ParamDoc(name = "communityIds", type = "Array", length = 0, remark = "分配小区"),
+        @Java110ParamDoc(parentNodeName = "communityIds", name = "-", type = "String", length = 0, remark = "小区ID"),
+        @Java110ParamDoc(name = "groupIds", type = "Array", length = 0, remark = "分配菜单组"),
+        @Java110ParamDoc(parentNodeName = "groupIds", name = "-", type = "String", length = 0, remark = "菜单组ID"),
 })
 
 @Java110ResponseDoc(
@@ -98,8 +92,8 @@ import java.util.List;
 )
 
 @Java110ExampleDoc(
-        reqBody="{\"name\":\"api物业\",\"address\":\"api物业\",\"tel\":\"18909711449\",\"corporation\":\"无\",\"foundingTime\":\"2022-09-01\",\"nearbyLandmarks\":\"国投广场\",\"groupIds\":[\"802021080609660006\",\"802021012591650002\",\"802020101628950105\",\"802020092468300217\",\"802020091723050020\",\"802020020977260001\",\"802020012374230001\",\"802019110855900043\",\"802019103010680005\",\"802019102057730004\",\"802019091604450001\",\"800201907017\",\"800201906011\",\"800201904009\",\"800201904008\",\"800201904007\",\"800201904006\",\"800201904005\",\"800201904004\",\"800201906010\",\"800201904002\",\"800201904001\",\"802022052412780003\",\"802021080609660006\",\"802021012591650002\",\"802020101628950105\",\"802020092468300217\",\"802020091723050020\",\"802020020977260001\",\"802020012374230001\",\"802019110855900043\",\"802019103010680005\",\"802019102057730004\",\"802019091604450001\",\"800201907017\",\"800201906011\",\"800201904009\",\"800201904008\",\"800201904007\",\"800201904006\",\"800201904005\",\"800201904004\",\"800201906010\",\"800201904002\",\"800201904001\"],\"communityIds\":[\"2022092200930358\"]}",
-        resBody="{'code':0,'msg':'成功'}"
+        reqBody = "{\"name\":\"api物业\",\"address\":\"api物业\",\"tel\":\"18909711449\",\"corporation\":\"无\",\"foundingTime\":\"2022-09-01\",\"nearbyLandmarks\":\"国投广场\",\"groupIds\":[\"802021080609660006\",\"802021012591650002\",\"802020101628950105\",\"802020092468300217\",\"802020091723050020\",\"802020020977260001\",\"802020012374230001\",\"802019110855900043\",\"802019103010680005\",\"802019102057730004\",\"802019091604450001\",\"800201907017\",\"800201906011\",\"800201904009\",\"800201904008\",\"800201904007\",\"800201904006\",\"800201904005\",\"800201904004\",\"800201906010\",\"800201904002\",\"800201904001\",\"802022052412780003\",\"802021080609660006\",\"802021012591650002\",\"802020101628950105\",\"802020092468300217\",\"802020091723050020\",\"802020020977260001\",\"802020012374230001\",\"802019110855900043\",\"802019103010680005\",\"802019102057730004\",\"802019091604450001\",\"800201907017\",\"800201906011\",\"800201904009\",\"800201904008\",\"800201904007\",\"800201904006\",\"800201904005\",\"800201904004\",\"800201906010\",\"800201904002\",\"800201904001\"],\"communityIds\":[\"2022092200930358\"]}",
+        resBody = "{'code':0,'msg':'成功'}"
 )
 /**
  * 类表述：保存
@@ -128,7 +122,7 @@ public class SavePropertyCmd extends Cmd {
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
 
     @Autowired
-    private IStoreUserV1InnerServiceSMO storeUserV1InnerServiceSMOImpl;
+    private IStoreStaffV1InnerServiceSMO storeUserV1InnerServiceSMOImpl;
 
     @Autowired
     private IOrgV1InnerServiceSMO orgV1InnerServiceSMOImpl;
@@ -136,8 +130,6 @@ public class SavePropertyCmd extends Cmd {
     @Autowired
     private IOrgStaffRelV1InnerServiceSMO orgStaffRelV1InnerServiceSMOImpl;
 
-    @Autowired
-    private IWorkflowV1InnerServiceSMO workflowV1InnerServiceSMOImpl;
 
     @Autowired
     private IPrivilegeUserV1InnerServiceSMO privilegeUserV1InnerServiceSMOImpl;
@@ -182,13 +174,7 @@ public class SavePropertyCmd extends Cmd {
         StorePo storePo = BeanConvertUtil.covertBean(reqJson, StorePo.class);
         storePo.setStoreId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         storePo.setStoreTypeCd(StoreDto.STORE_TYPE_PROPERTY);
-        storePo.setState(StoreDto.STATE_NORMAL);
-        if(!reqJson.containsKey("mapY")){
-            storePo.setMapY("1");
-        }
-        if(!reqJson.containsKey("mapX")){
-            storePo.setMapX("1");
-        }
+        storePo.setCreateUserId(CmdContextUtils.getLoginUserId(cmdDataFlowContext));
         int flag = storeV1InnerServiceSMOImpl.saveStore(storePo);
 
         if (flag < 1) {
@@ -222,25 +208,25 @@ public class SavePropertyCmd extends Cmd {
         userPo.setName(reqJson.getString("name"));
         userPo.setAddress(reqJson.getString("address"));
         userPo.setUserId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_userId));
-        userPo.setScore("0");
-        userPo.setAge("1");
         userPo.setEmail("无");
-        userPo.setLevelCd(UserLevelConstant.USER_LEVEL_ADMIN);
+        userPo.setLevelCd(UserDto.LEVEL_CD_ADMIN);
         userPo.setSex("1");
         userPo.setPassword(AuthenticationFactory.passwdMd5(reqJson.getString("tel")));
-        userPo.setbId("-1");
         flag = userV1InnerServiceSMOImpl.saveUser(userPo);
         if (flag < 1) {
             throw new CmdException("注册失败");
         }
 
         //保存 商户和用户的关系
-        StoreUserPo storeUserPo = new StoreUserPo();
-        storeUserPo.setStoreUserId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
-        storeUserPo.setRelCd(StoreUserRelConstant.REL_ADMIN);
+        StoreStaffPo storeUserPo = new StoreStaffPo();
+        storeUserPo.setStoreStaffId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        storeUserPo.setAdminFlag(StoreStaffDto.ADMIN_FLAG_Y);
+
         storeUserPo.setStoreId(storePo.getStoreId());
-        storeUserPo.setUserId(userPo.getUserId());
-        flag = storeUserV1InnerServiceSMOImpl.saveStoreUser(storeUserPo);
+        storeUserPo.setStaffId(userPo.getUserId());
+        storeUserPo.setTel(reqJson.getString("tel"));
+        storeUserPo.setStaffName(reqJson.getString("name"));
+        flag = storeUserV1InnerServiceSMOImpl.saveStoreStaff(storeUserPo);
         if (flag < 1) {
             throw new CmdException("注册失败");
         }
@@ -260,95 +246,15 @@ public class SavePropertyCmd extends Cmd {
             throw new CmdException("注册失败");
         }
 
-        //保存分公司
-//        OrgPo orgHeadPo = new OrgPo();
-//        orgHeadPo.setOrgName("公司总部");
-//        orgHeadPo.setOrgLevel("2");
-//        orgHeadPo.setOrgId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_orgId));
-//        orgHeadPo.setAllowOperation("F");
-//        orgHeadPo.setBelongCommunityId("9999");
-//        orgHeadPo.setParentOrgId(orgPo.getOrgId());
-//        orgHeadPo.setStoreId(storePo.getStoreId());
-//        flag = orgV1InnerServiceSMOImpl.saveOrg(orgHeadPo);
-//        if (flag < 1) {
-//            throw new CmdException("注册失败");
-//        }
-
-//        //保存部门
-//        OrgPo orgHeadPartPo = new OrgPo();
-//        orgHeadPartPo.setOrgName("总部办公室");
-//        orgHeadPartPo.setOrgLevel("3");
-//        orgHeadPartPo.setOrgId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_orgId));
-//        orgHeadPartPo.setAllowOperation("F");
-//        orgHeadPartPo.setBelongCommunityId("9999");
-//        orgHeadPartPo.setParentOrgId(orgHeadPo.getOrgId());
-//        orgHeadPartPo.setStoreId(storePo.getStoreId());
-//        flag = orgV1InnerServiceSMOImpl.saveOrg(orgHeadPartPo);
-//        if (flag < 1) {
-//            throw new CmdException("注册失败");
-//        }
-
 
         //添加组织 员工关系
         OrgStaffRelPo orgStaffRelPo = new OrgStaffRelPo();
         orgStaffRelPo.setOrgId(orgPo.getOrgId());
         orgStaffRelPo.setStaffId(userPo.getUserId());
         orgStaffRelPo.setRelId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
-        orgStaffRelPo.setRelCd(StoreUserRelConstant.REL_ADMIN);
+        orgStaffRelPo.setRelCd(OrgStaffRelDto.REL_CD_ADMIN);
         orgStaffRelPo.setStoreId(storePo.getStoreId());
         flag = orgStaffRelV1InnerServiceSMOImpl.saveOrgStaffRel(orgStaffRelPo);
-        if (flag < 1) {
-            throw new CmdException("注册失败");
-        }
-
-        //采购流程
-        WorkflowPo workflowPo = new WorkflowPo();
-        workflowPo.setCommunityId("9999"); //所有小区
-        workflowPo.setFlowId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
-        workflowPo.setFlowName("采购流程");
-        workflowPo.setFlowType(WorkflowDto.FLOW_TYPE_PURCHASE);
-        workflowPo.setSkipLevel(WorkflowDto.DEFAULT_SKIP_LEVEL);
-        workflowPo.setStoreId(storePo.getStoreId());
-        flag = workflowV1InnerServiceSMOImpl.saveWorkflow(workflowPo);
-        if (flag < 1) {
-            throw new CmdException("注册失败");
-        }
-
-        //合同申请续签
-        workflowPo = new WorkflowPo();
-        workflowPo.setCommunityId("9999"); //所有小区
-        workflowPo.setFlowId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
-        workflowPo.setFlowName("合同申请续签");
-        workflowPo.setFlowType(WorkflowDto.FLOW_TYPE_CONTRACT_APPLY);
-        workflowPo.setSkipLevel(WorkflowDto.DEFAULT_SKIP_LEVEL);
-        workflowPo.setStoreId(storePo.getStoreId());
-        flag = workflowV1InnerServiceSMOImpl.saveWorkflow(workflowPo);
-        if (flag < 1) {
-            throw new CmdException("注册失败");
-        }
-
-        //合同变更
-        workflowPo = new WorkflowPo();
-        workflowPo.setCommunityId("9999"); //所有小区
-        workflowPo.setFlowId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
-        workflowPo.setFlowName("合同变更");
-        workflowPo.setFlowType(WorkflowDto.FLOW_TYPE_CONTRACT_CHANGE);
-        workflowPo.setSkipLevel(WorkflowDto.DEFAULT_SKIP_LEVEL);
-        workflowPo.setStoreId(storePo.getStoreId());
-        flag = workflowV1InnerServiceSMOImpl.saveWorkflow(workflowPo);
-        if (flag < 1) {
-            throw new CmdException("注册失败");
-        }
-
-        //物品调拨
-        workflowPo = new WorkflowPo();
-        workflowPo.setCommunityId("9999"); //所有小区
-        workflowPo.setFlowId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
-        workflowPo.setFlowName("物品调拨");
-        workflowPo.setFlowType(WorkflowDto.FLOW_TYPE_ALLOCATION_STOREHOUSE);
-        workflowPo.setSkipLevel(WorkflowDto.DEFAULT_SKIP_LEVEL);
-        workflowPo.setStoreId(storePo.getStoreId());
-        flag = workflowV1InnerServiceSMOImpl.saveWorkflow(workflowPo);
         if (flag < 1) {
             throw new CmdException("注册失败");
         }
@@ -397,15 +303,13 @@ public class SavePropertyCmd extends Cmd {
 
             Assert.listOnlyOne(communityDtos, "小区不存在");
 
-            Calendar endTime = Calendar.getInstance();
-            endTime.add(Calendar.MONTH, Integer.parseInt(communityDtos.get(0).getPayFeeMonth()));
             CommunityMemberPo communityMemberPo = new CommunityMemberPo();
             communityMemberPo.setCommunityMemberId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
-            communityMemberPo.setEndTime(DateUtil.getFormatTimeString(endTime.getTime(), DateUtil.DATE_FORMATE_STRING_A));
+            communityMemberPo.setEndTime(DateUtil.getLastTime());
             communityMemberPo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
-            communityMemberPo.setAuditStatusCd(StateConstant.AGREE_AUDIT);
             communityMemberPo.setCommunityId(communityId);
             communityMemberPo.setMemberId(storePo.getStoreId());
+            communityMemberPo.setMemberName(storePo.getName());
             communityMemberPo.setMemberTypeCd(CommunityMemberDto.MEMBER_TYPE_PROPERTY);
             flag = communityMemberV1InnerServiceSMOImpl.saveCommunityMember(communityMemberPo);
             if (flag < 1) {
@@ -416,27 +320,9 @@ public class SavePropertyCmd extends Cmd {
 
             saveMenuGroupCommunity(reqJson, communityId, communityDtos.get(0).getName());
 
-            // 修改投诉建议
-            flag = updateWorkflow(WorkflowDto.FLOW_TYPE_COMPLAINT, communityId, storePo.getStoreId());
-            if (flag < 1) {
-                continue;
-            }
-
-            // 修改物品领用
-            flag = updateWorkflow(WorkflowDto.FLOW_TYPE_COLLECTION, communityId, storePo.getStoreId());
-            if (flag < 1) {
-                continue;
-            }
-
-            // 修改
-            flag = updateWorkflow(WorkflowDto.FLOW_TYPE_ALLOCATION_STOREHOUSE_GO, communityId, storePo.getStoreId());
-            if (flag < 1) {
-                continue;
-            }
         }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
-
 
 
     }
@@ -480,27 +366,5 @@ public class SavePropertyCmd extends Cmd {
         if (flag < 1) {
             throw new CmdException("注册失败");
         }
-    }
-
-    /**
-     * 刷入小区ID
-     *
-     * @param flowType 接口请求数据封装
-     * @return 封装好的 data数据
-     */
-    public int updateWorkflow(String flowType, String communityId, String storeId) {
-        WorkflowDto workflowDto = new WorkflowDto();
-        workflowDto.setCommunityId(communityId);
-        workflowDto.setFlowType(flowType);
-        List<WorkflowDto> workflowDtos = workflowV1InnerServiceSMOImpl.queryWorkflows(workflowDto);
-
-        if (workflowDtos == null || workflowDtos.size() < 1) {
-            return 0;
-        }
-        WorkflowPo workflowPo = new WorkflowPo();
-        workflowPo.setFlowId(workflowDtos.get(0).getFlowId());
-        workflowPo.setCommunityId(communityId);
-        workflowPo.setStoreId(storeId);
-        return workflowV1InnerServiceSMOImpl.updateWorkflow(workflowPo);
     }
 }

@@ -24,6 +24,8 @@ public class CommunityDto extends PageDto implements Serializable {
     private String name;
     private String nameLike;
     private String communityId;
+
+    private String extCommunityId;
     private String[] notInCommunityId;
     private String mapY;
     private String mapX;
@@ -297,5 +299,13 @@ public class CommunityDto extends PageDto implements Serializable {
 
     public void setQrCode(String qrCode) {
         this.qrCode = qrCode;
+    }
+
+    public String getExtCommunityId() {
+        return extCommunityId;
+    }
+
+    public void setExtCommunityId(String extCommunityId) {
+        this.extCommunityId = extCommunityId;
     }
 }

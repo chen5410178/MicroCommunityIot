@@ -1,18 +1,16 @@
 package com.java110.community.smo.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.dto.PageDto;
+import com.java110.bean.dto.community.CommunityAttrDto;
+import com.java110.bean.po.community.CommunityAttrPo;
 import com.java110.community.dao.ICommunityServiceDao;
-import com.java110.core.base.smo.BaseServiceSMO;
-import com.java110.dto.CommunityMemberDto;
-import com.java110.dto.PageDto;
-import com.java110.dto.community.CommunityAttrDto;
+import com.java110.core.factory.LoggerFactory;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.community.CommunityDto;
+import com.java110.dto.communityMember.CommunityMemberDto;
 import com.java110.intf.community.ICommunityInnerServiceSMO;
-import com.java110.po.community.CommunityAttrPo;
-import com.java110.po.community.CommunityPo;
-import com.java110.utils.util.BeanConvertUtil;
 import org.slf4j.Logger;
-import com.java110.core.log.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,8 +24,8 @@ import java.util.Map;
  * 小区服务内部类
  */
 @RestController
-public class CommunityInnerServiceSMOImpl extends BaseServiceSMO implements ICommunityInnerServiceSMO {
-    private static Logger logger = LoggerFactory.getLogger(CommunityServiceSMOImpl.class);
+public class CommunityInnerServiceSMOImpl implements ICommunityInnerServiceSMO {
+    private static Logger logger = LoggerFactory.getLogger(CommunityInnerServiceSMOImpl.class);
 
 
     @Autowired
