@@ -128,7 +128,7 @@
                     return;
                 }
                 vc.http.apiPost(
-                    '/attrSpec/updateAttrSpec',
+                    '/attrSpec.updateAttrSpec',
                     JSON.stringify(vc.component.editAttrSpecInfo), {
                         emulateJSON: true
                     },

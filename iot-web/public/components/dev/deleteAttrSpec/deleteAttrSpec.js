@@ -14,7 +14,7 @@
         methods: {
             deleteAttrSpec: function () {
                 vc.http.apiPost(
-                    '/attrSpec/deleteAttrSpec',
+                    '/attrSpec.deleteAttrSpec',
                     JSON.stringify(vc.component.deleteAttrSpecInfo),
                     {
                         emulateJSON: true

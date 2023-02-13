@@ -47,7 +47,7 @@
                 param.params.value = param.params.value.trim();
                 param.params.valueName = param.params.valueName.trim();
                 //发送get请求
-                vc.http.apiGet('/attrValue/queryAttrValue',
+                vc.http.apiGet('/attrValue.listAttrValue',
                     param,
                     function(json, res) {
                         var _attrValueManageInfo = JSON.parse(json);

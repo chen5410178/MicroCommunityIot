@@ -14,6 +14,7 @@
         <module>java110-interface</module>
         <module>java110-core</module>
         <module>java110-db</module>
+        <module>java110-doc</module>
         <module>iot-access-control</module>
         <module>iot-gateway</module>
         <module>iot-attendance</module>
@@ -440,7 +441,11 @@
                 <artifactId>java110-db</artifactId>
                 <version>${microcommunity.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.java110</groupId>
+                <artifactId>java110-doc</artifactId>
+                <version>${microcommunity.version}</version>
+            </dependency>
 
         </dependencies>
 

@@ -69,7 +69,7 @@
                     return;
                 }
                 vc.http.apiPost(
-                    '/attrValue/updateAttrValue',
+                    '/attrValue.updateAttrValue',
                     JSON.stringify(vc.component.editAttrValueInfo), {
                         emulateJSON: true
                     },

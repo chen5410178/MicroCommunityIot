@@ -42,7 +42,7 @@
                 param.params.specName = param.params.specName.trim();
                 param.params.domain = param.params.domain.trim();
                 //发送get请求
-                vc.http.apiGet('/attrSpec/queryAttrSpec',
+                vc.http.apiGet('/attrSpec.listAttrSpec',
                     param,
                     function (json, res) {
                         var _attrSpecManageInfo = JSON.parse(json);

@@ -39,7 +39,7 @@
             _listCommunitys: function(_page, _rows) {
                 vc.component.communityManageInfo.conditions.page = _page;
                 vc.component.communityManageInfo.conditions.row = _rows;
-                var _param = {
+                let _param = {
                         params: vc.component.communityManageInfo.conditions
                     }
                     //发送get请求

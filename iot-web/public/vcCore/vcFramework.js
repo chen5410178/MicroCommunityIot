@@ -972,7 +972,7 @@
                             return;
                         }
                         if (res.status == 404) {
-                            window.location.href = '/user.html#/pages/frame/login';
+                           // window.location.href = '/user.html#/pages/frame/login';
                             return;
                         }
                         errorCallback(res.bodyText, res);
@@ -1044,7 +1044,7 @@
 
                         }
                         if (res.status == 404) {
-                            window.location.href = '/user.html#/pages/frame/login';
+                           // window.location.href = '/user.html#/pages/frame/login';
                             return;
                         }
                         errorCallback(res.bodyText, res);
@@ -1473,7 +1473,7 @@
         };
 
         //发送get请求
-        vcFramework.http.apiGet('/attrSpec/queryAttrSpec', param,
+        vcFramework.http.apiGet('/attrSpec.listAttrSpec', param,
             function(json, res) {
                 let _attrSpecInfo = JSON.parse(json);
 
