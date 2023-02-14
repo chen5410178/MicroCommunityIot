@@ -158,7 +158,7 @@
         select t.privilege_flag,t.privilege_flag privilegeFlag,t.pu_id,t.pu_id puId,t.p_id,t.p_id
         pId,t.status_cd,t.status_cd statusCd,t.store_id,t.store_id storeId,t.user_id,t.user_id userId,
         uu.address,uu.sex,uu.user_id,uu.user_id userId,uu.level_cd,uu.level_cd
-        levelCd,uu.location_cd,uu.location_cd locationCd,uu.score,uu.name,uu.tel,uu.email,uu.age
+        levelCd,uu.name,uu.tel,uu.email
         from p_privilege_user t
         inner JOIN u_user uu on t.user_id = uu.user_id and uu.status_cd = '0'
         where 1 =1
@@ -196,7 +196,7 @@
         </if>
         select count(1) count
         from u_user t
-        inner join s_store_user su on t.user_id = su.user_id and su.status_cd = '0'
+        inner join s_store_staff su on t.user_id = su.staff_id and su.status_cd = '0'
         left join p_privilege_user pu on t.user_id = pu.user_id and pu.status_cd = '0' and pu.privilege_flag = '1' and pu.p_id = #{pId}
         <if test="orgIds != null and orgIds.length > 0">
             LEFT JOIN u_org_staff_rel uosr on t.user_id=uosr.staff_id
@@ -225,9 +225,9 @@
         select
         t.user_id,t.user_id userId,
         t.address,t.sex,t.user_id,t.user_id userId,t.level_cd,t.level_cd
-        levelCd,t.location_cd,t.location_cd locationCd,t.score,t.name,t.tel,t.email,t.age
+        levelCd,t.name,t.tel,t.email
         from u_user t
-        inner join s_store_user su on t.user_id = su.user_id and su.status_cd = '0'
+        inner join s_store_staff su on t.user_id = su.staff_id and su.status_cd = '0'
         left join p_privilege_user pu on t.user_id = pu.user_id and pu.status_cd = '0' and pu.privilege_flag = '1' and pu.p_id = #{pId}
         <if test="orgIds != null and orgIds.length > 0">
             LEFT JOIN u_org_staff_rel uosr on t.user_id=uosr.staff_id
