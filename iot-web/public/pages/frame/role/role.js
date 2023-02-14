@@ -12,13 +12,13 @@
         _initEvent: function() {
             vc.on('role', 'switchRole', function(_param) {
                 $that.roleInfo.curRole = _param;
-                if (vc.hasPrivilege('502022082955280007,502022101897180196')) {
-                    $that._changeRoleTab('privilege')
-                } else if (vc.hasPrivilege('502022082965160008,502022101832650197')) {
-                    $that._changeRoleTab('community')
-                } else if (vc.hasPrivilege('502022082961190009,502022101840200199')) {
-                    $that._changeRoleTab('staff')
-                }
+                // if (vc.hasPrivilege('502022082955280007,502022101897180196')) {
+                $that._changeRoleTab('privilege')
+                    // } else if (vc.hasPrivilege('502022082965160008,502022101832650197')) {
+                    //     $that._changeRoleTab('community')
+                    // } else if (vc.hasPrivilege('502022082961190009,502022101840200199')) {
+                    //     $that._changeRoleTab('staff')
+                    // }
             })
         },
         methods: {

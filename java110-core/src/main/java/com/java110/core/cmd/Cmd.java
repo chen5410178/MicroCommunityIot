@@ -67,7 +67,7 @@ public abstract class Cmd implements ServiceCmdListener {
      * @return
      */
     protected StoreDto getStoreDto(ICmdDataFlowContext context) {
-        String storeId = CmdContextUtils.getLoginUserId(context);
+        String storeId = CmdContextUtils.getStoreId(context);
         Assert.hasLength(storeId, "未查询到商户");
         if (storeId.startsWith("-")) {
             throw new IllegalArgumentException("未查询到商户");

@@ -16,6 +16,7 @@
 package com.java110.intf.user;
 
 import com.java110.dto.privilegeUser.PrivilegeUserDto;
+import com.java110.dto.user.UserDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.privilegeUser.PrivilegeUserPo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -68,4 +69,16 @@ public interface IPrivilegeUserV1InnerServiceSMO {
 
     @RequestMapping(value = "/getUserPrivileges", method = RequestMethod.POST)
     List<PrivilegeUserDto> getUserPrivileges(@RequestBody PrivilegeUserDto privilegeUserDto);
+
+    @RequestMapping(value = "/queryPrivilegeUserInfoCount", method = RequestMethod.POST)
+    int queryPrivilegeUserInfoCount(@RequestBody PrivilegeUserDto privilegeUserDto);
+
+    @RequestMapping(value = "/queryPrivilegeUserInfos", method = RequestMethod.POST)
+    List<UserDto> queryPrivilegeUserInfos(@RequestBody PrivilegeUserDto privilegeUserDto);
+
+    @RequestMapping(value = "/queryStaffsNoRoleCount", method = RequestMethod.POST)
+    int queryStaffsNoRoleCount(@RequestBody PrivilegeUserDto privilegeUserDto);
+
+    @RequestMapping(value = "/queryStaffsNoRoleInfos", method = RequestMethod.POST)
+    List<UserDto> queryStaffsNoRoleInfos(@RequestBody PrivilegeUserDto privilegeUserDto);
 }

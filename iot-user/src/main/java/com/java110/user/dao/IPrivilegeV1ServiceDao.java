@@ -71,4 +71,5 @@ public interface IPrivilegeV1ServiceDao {
      */
     int queryPrivilegesCount(Map info);
 
+    List<Map> queryPrivilegesNoInPrivilegeGroup(Map info);
 }

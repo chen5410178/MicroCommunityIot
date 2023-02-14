@@ -90,7 +90,7 @@
                     function(json) {
                         let _staffInfo = JSON.parse(json);
                         // 员工列表 和 岗位列表匹配
-                        let staffList = _staffInfo.staffs;
+                        let staffList = _staffInfo.data;
                         let relCdsList = vc.component.staffInfo.relCds;
                         staffList.forEach((staff) => {
                             relCdsList.forEach((rel) => {

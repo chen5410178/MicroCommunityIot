@@ -448,7 +448,7 @@ public class GenerateCodeFactory {
 
     }
 
-    public static String getUserId() throws Exception {
+    public static String getUserId()  {
         if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefixMap.get("userId") + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
         }

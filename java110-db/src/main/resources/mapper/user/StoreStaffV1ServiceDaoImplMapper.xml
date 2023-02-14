@@ -65,18 +65,20 @@
         <if test="tel !=null and tel != ''">
             , t.tel= #{tel}
         </if>
-        <if test="storeId !=null and storeId != ''">
-            , t.store_id= #{storeId}
-        </if>
+
         <if test="adminFlag !=null and adminFlag != ''">
             , t.admin_flag= #{adminFlag}
         </if>
-        <if test="staffId !=null and staffId != ''">
-            , t.staff_id= #{staffId}
-        </if>
+
         where 1=1
         <if test="storeStaffId !=null and storeStaffId != ''">
             and t.store_staff_id= #{storeStaffId}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+        <if test="storeId !=null and storeId != ''">
+            and t.store_id= #{storeId}
         </if>
 
     </update>

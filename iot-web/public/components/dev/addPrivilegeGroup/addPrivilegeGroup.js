@@ -1,4 +1,4 @@
-(function (vc) {
+(function(vc) {
     vc.extends({
         data: {
             addPrivilegeGroupInfo: {
@@ -7,10 +7,9 @@
                 errorInfo: ''
             }
         },
-        _initMethod: function () {
-        },
-        _initEvent: function () {
-            vc.component.$on('addPrivilegeGroup_openPrivilegeGroupModel', function (_params) {
+        _initMethod: function() {},
+        _initEvent: function() {
+            vc.component.$on('addPrivilegeGroup_openPrivilegeGroupModel', function(_params) {
                 $('#addPrivilegeGroupModel').modal('show');
             });
         },
@@ -19,8 +18,7 @@
                 return vc.validate.validate({
                     addPrivilegeGroupInfo: vc.component.addPrivilegeGroupInfo
                 }, {
-                    'addPrivilegeGroupInfo.name': [
-                        {
+                    'addPrivilegeGroupInfo.name': [{
                             limit: "required",
                             param: "",
                             errInfo: "角色名称不能为空"
@@ -31,28 +29,25 @@
                             errInfo: "角色名称长度必须在2位至10位"
                         },
                     ],
-                    'addPrivilegeGroupInfo.description': [
-                        {
-                            limit: "maxLength",
-                            param: "200",
-                            errInfo: "角色描述长度不能超过200位"
-                        },
-                    ]
+                    'addPrivilegeGroupInfo.description': [{
+                        limit: "maxLength",
+                        param: "200",
+                        errInfo: "角色描述长度不能超过200位"
+                    }, ]
                 });
             },
-            saveAddPrivilegeGroup: function () {
+            saveAddPrivilegeGroup: function() {
                 if (!vc.component.addPrivilegeGroupValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
                 vc.component.addPrivilegeGroupInfo.errorInfo = "";
                 vc.http.apiPost(
-                    '/save.privilegeGroup.info',
-                    JSON.stringify(vc.component.addPrivilegeGroupInfo),
-                    {
+                    '/privilegeGroup.savePrivilegeGroup',
+                    JSON.stringify(vc.component.addPrivilegeGroupInfo), {
                         emulateJSON: true
                     },
-                    function (json, res) {
+                    function(json, res) {
                         let _json = JSON.parse(json);
                         if (_json.code == 0) {
                             //关闭model
@@ -67,12 +62,12 @@
                         }
                         vc.component.addPrivilegeGroupInfo.errorInfo = json;
                     },
-                    function (errInfo, error) {
+                    function(errInfo, error) {
                         console.log('请求失败处理');
                         vc.component.addPrivilegeGroupInfo.errorInfo = errInfo;
                     });
             },
-            clearAddPrivilegeGroupInfo: function () {
+            clearAddPrivilegeGroupInfo: function() {
                 vc.component.addPrivilegeGroupInfo = {
                     name: '',
                     description: '',

@@ -26,6 +26,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.store.StoreDto;
 import com.java110.intf.user.IPrivilegeGroupV1InnerServiceSMO;
 import com.java110.po.privilegeGroup.PrivilegeGroupPo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,18 +56,19 @@ public class SavePrivilegeGroupCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "name", "请求报文中未包含name");
-        Assert.hasKeyAndValue(reqJson, "storeId", "请求报文中未包含storeId");
-        Assert.hasKeyAndValue(reqJson, "domain", "请求报文中未包含domain");
-        Assert.hasKeyAndValue(reqJson, "roleType", "请求报文中未包含roleType");
 
     }
 
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
+        StoreDto storeDto = super.getStoreDto(cmdDataFlowContext);
 
         PrivilegeGroupPo privilegeGroupPo = BeanConvertUtil.covertBean(reqJson, PrivilegeGroupPo.class);
         privilegeGroupPo.setPgId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        privilegeGroupPo.setRoleType("USER");
+        privilegeGroupPo.setDomain(storeDto.getStoreTypeCd());
+        privilegeGroupPo.setStoreId(storeDto.getStoreId());
         int flag = privilegeGroupV1InnerServiceSMOImpl.savePrivilegeGroup(privilegeGroupPo);
 
         if (flag < 1) {

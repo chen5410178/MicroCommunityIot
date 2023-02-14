@@ -1,7 +1,7 @@
 /**
  编辑员工
  **/
-(function (vc) {
+(function(vc) {
     var _fileUrl = '/callComponent/download/getFile/fileByObjId';
     vc.extends({
         data: {
@@ -27,13 +27,13 @@
                 orgId: ''
             }
         },
-        _initMethod: function () {
-            vc.getDict('u_org_staff_rel', "rel_cd", function (_data) {
+        _initMethod: function() {
+            vc.getDict('u_org_staff_rel', "rel_cd", function(_data) {
                 vc.component.editStaffInfo.relCds = _data;
             });
         },
-        _initEvent: function () {
-            vc.component.$on('edit_staff_event', function (_staffInfo) {
+        _initEvent: function() {
+            vc.component.$on('edit_staff_event', function(_staffInfo) {
                 vc.component.refreshEditStaffInfo(_staffInfo);
                 vc.component._editGetOrgsByOrgLevelStaff(1, 100, 2, _staffInfo.parentOrgId);
                 $('#editStaffModel').modal('show');
@@ -43,19 +43,19 @@
             refreshEditStaffInfo(_staffInfo) {
                 vc.copyObject(_staffInfo, vc.component.editStaffInfo);
                 vc.component.editStaffInfo.username = _staffInfo.name;
-                vc.component.editStaffInfo.photo = _staffInfo.urls && _staffInfo.urls.length > 0 ? _staffInfo.urls[0] : '';
-                vc.component.editStaffInfo.photoUrl = _fileUrl + "?objId=" +
-                    vc.component.editStaffInfo.userId + "&communityId=" + vc.getCurrentCommunity().communityId + "&fileTypeCd=12000&time=" + new Date();
+                // vc.component.editStaffInfo.photo = _staffInfo.urls && _staffInfo.urls.length > 0 ? _staffInfo.urls[0] : '';
+                // vc.component.editStaffInfo.photoUrl = _fileUrl + "?objId=" +
+                //     vc.component.editStaffInfo.userId + "&communityId=" + vc.getCurrentCommunity().communityId + "&fileTypeCd=12000&time=" + new Date();
             },
             editStaffValidate() {
                 return vc.validate.validate({
                     editStaffInfo: vc.component.editStaffInfo
                 }, {
                     'editStaffInfo.username': [{
-                        limit: "required",
-                        param: "",
-                        errInfo: "用户名不能为空"
-                    },
+                            limit: "required",
+                            param: "",
+                            errInfo: "用户名不能为空"
+                        },
                         {
                             limit: "maxin",
                             param: "2,10",
@@ -73,10 +73,10 @@
                         errInfo: "性别不能为空"
                     }],
                     'editStaffInfo.address': [{
-                        limit: "required",
-                        param: "",
-                        errInfo: "地址不能为空"
-                    },
+                            limit: "required",
+                            param: "",
+                            errInfo: "地址不能为空"
+                        },
                         {
                             limit: "maxLength",
                             param: "200",
@@ -85,7 +85,7 @@
                     ]
                 });
             },
-            editStaffSubmit: function () {
+            editStaffSubmit: function() {
                 if (!vc.component.editStaffValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
@@ -98,7 +98,7 @@
                     JSON.stringify(vc.component.editStaffInfo), {
                         emulateJSON: true
                     },
-                    function (json, res) {
+                    function(json, res) {
                         let _json = JSON.parse(json);
                         //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
                         if (_json.code == 0) {
@@ -112,17 +112,17 @@
                         }
                         $that.editStaffInfo.photoUrl = $that.editStaffInfo.photo;
                     },
-                    function (errInfo, error) {
+                    function(errInfo, error) {
                         console.log('请求失败处理');
                         // vc.component.editStaffInfo.errorInfo = errInfo;
                         $that.editStaffInfo.photoUrl = $that.editStaffInfo.photo;
                         vc.toast(errInfo)
                     });
             },
-            _uploadEditPhoto: function (event) {
+            _uploadEditPhoto: function(event) {
                 $("#uploadEditStaffPhoto").trigger("click")
             },
-            _chooseEditPhoto: function (event) {
+            _chooseEditPhoto: function(event) {
                 var photoFiles = event.target.files;
                 if (photoFiles && photoFiles.length > 0) {
                     // 获取目前上传的文件
@@ -141,7 +141,7 @@
                     // }
                 }
             },
-            _doUploadImageEditStaff: function (_file) {
+            _doUploadImageEditStaff: function(_file) {
                 var param = new FormData();
                 param.append("uploadFile", _file);
                 param.append('communityId', vc.getCurrentCommunity().communityId);
@@ -155,7 +155,7 @@
                             "Content-Type": "multipart/form-data"
                         }
                     },
-                    function (json, res) {
+                    function(json, res) {
                         if (res.status != 200) {
                             vc.toast("上传文件失败");
                             return;
@@ -164,13 +164,13 @@
                         vc.component.editStaffInfo.photo = data.fileId;
                         vc.component.editStaffInfo.photoUrl = data.url;
                     },
-                    function (errInfo, error) {
+                    function(errInfo, error) {
                         console.log('请求失败处理');
                         vc.toast(errInfo);
                     }
                 );
             },
-            _editGetOrgsByOrgLevelStaff: function (_page, _rows, _orgLevel, _parentOrgId) {
+            _editGetOrgsByOrgLevelStaff: function(_page, _rows, _orgLevel, _parentOrgId) {
                 let param = {
                     params: {
                         page: _page,
@@ -180,24 +180,23 @@
                     }
                 };
                 //发送get请求
-                vc.http.get('staff',
-                    'list',
+                vc.http.apiGet('/org.listOrgs',
                     param,
-                    function (json, res) {
+                    function(json, res) {
                         var _orgInfo = JSON.parse(json);
                         if (_orgLevel == 2) {
-                            vc.component.editStaffInfo.branchOrgs = _orgInfo.orgs;
+                            vc.component.editStaffInfo.branchOrgs = _orgInfo.data;
                             vc.component._editGetOrgsByOrgLevelStaff(1, 100, 3, $that.editStaffInfo.parentTwoOrgId);
                         } else {
                             vc.component.editStaffInfo.departmentOrgs = _orgInfo.orgs;
                         }
                     },
-                    function (errInfo, error) {
+                    function(errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );
             },
-            _editChangeBrach: function () {
+            _editChangeBrach: function() {
                 vc.component._editGetOrgsByOrgLevelStaff(1, 100, 3, $that.editStaffInfo.parentTwoOrgId);
             }
         },

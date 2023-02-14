@@ -1,4 +1,4 @@
-(function (vc) {
+(function(vc) {
     var DEFAULT_ROWS = 10
     vc.extends({
         propTypes: {
@@ -26,21 +26,20 @@
                 deep: true // 深度监视
             }
         },
-        _initMethod: function () {
-        },
-        _initEvent: function () {
-            vc.on('addRoleCommunity', 'openAddRoleCommunityModal', function (_param) {
+        _initMethod: function() {},
+        _initEvent: function() {
+            vc.on('addRoleCommunity', 'openAddRoleCommunityModal', function(_param) {
                 vc.component._refreshChooseOrgInfo();
                 $('#addRoleCommunityModel').modal('show');
                 vc.copyObject(_param, vc.component.addRoleCommunityInfo);
                 vc.component._loadAllCommunityInfo(1, 10, '');
             });
-            vc.on('addRoleCommunity', 'paginationPlus', 'page_event', function (_currentPage) {
+            vc.on('addRoleCommunity', 'paginationPlus', 'page_event', function(_currentPage) {
                 vc.component._loadAllCommunityInfo(_currentPage, DEFAULT_ROWS);
             });
         },
         methods: {
-            _loadAllCommunityInfo: function (_page, _row, _name) {
+            _loadAllCommunityInfo: function(_page, _row, _name) {
                 var param = {
                     params: {
                         page: _page,
@@ -52,20 +51,21 @@
                 //发送get请求
                 vc.http.apiGet('/org.listOrgNoCommunitys',
                     param,
-                    function (json) {
+                    function(json) {
                         var _communityInfo = JSON.parse(json);
-                        vc.component.addRoleCommunityInfo.communitys = _communityInfo.communitys;
+                        vc.component.addRoleCommunityInfo.communitys = _communityInfo.data;
                         vc.emit('addRoleCommunity', 'paginationPlus', 'init', {
                             total: _communityInfo.records,
                             dataCount: _communityInfo.total,
                             currentPage: _page
                         });
-                    }, function () {
+                    },
+                    function() {
                         console.log('请求失败处理');
                     }
                 );
             },
-            addRoleCommunity: function (_org) {
+            addRoleCommunity: function(_org) {
                 var _selectCommunitys = vc.component.addRoleCommunityInfo.selectCommunitys;
                 var _tmpCommunitys = vc.component.addRoleCommunityInfo.communitys;
                 if (_selectCommunitys.length < 1) {
@@ -83,17 +83,16 @@
                         }
                     }
                 }
-                var _objData = {
+                let _objData = {
                     roleId: vc.component.addRoleCommunityInfo.roleId,
                     orgName: vc.component.addRoleCommunityInfo.orgName,
                     communitys: _communitys
                 }
                 vc.http.apiPost('/roleCommunity.saveRoleCommunity',
-                    JSON.stringify(_objData),
-                    {
+                    JSON.stringify(_objData), {
                         emulateJSON: true
                     },
-                    function (json, res) {
+                    function(json, res) {
                         $('#addRoleCommunityModel').modal('hide');
                         let _json = JSON.parse(json)
                         if (_json.code == 0) {
@@ -104,16 +103,17 @@
                         } else {
                             vc.toast(_json.msg);
                         }
-                    }, function () {
+                    },
+                    function() {
                         console.log('请求失败处理');
                     }
                 );
                 // $('#addRoleCommunityModel').modal('hide');
             },
-            queryCommunitys: function () {
+            queryCommunitys: function() {
                 vc.component._loadAllCommunityInfo(1, 10, vc.component.addRoleCommunityInfo.communityName);
             },
-            _refreshChooseOrgInfo: function () {
+            _refreshChooseOrgInfo: function() {
                 vc.component.addRoleCommunityInfo = {
                     communitys: [],
                     communityName: '',
@@ -122,7 +122,7 @@
                     selectCommunitys: []
                 };
             },
-            checkAll: function (e) {
+            checkAll: function(e) {
                 var checkObj = document.querySelectorAll('.checkItem'); // 获取所有checkbox项
                 console.log(checkObj)
                 if (e.target.checked) { // 判定全选checkbox的勾选状态

@@ -107,4 +107,19 @@ public class PrivilegeV1ServiceDaoImpl extends BaseServiceDao implements IPrivil
     }
 
 
+    /**
+     * 查询权限信息（instance）
+     * @param info bId 信息
+     * @return List<Map>
+     * @throws DAOException DAO异常
+     */
+    @Override
+    public List<Map> queryPrivilegesNoInPrivilegeGroup(Map info) throws DAOException {
+        logger.debug("查询 getPrivilegeInfo 入参 info : {}",info);
+
+        List<Map> businessPrivilegeInfos = sqlSessionTemplate.selectList("privilegeV1ServiceDaoImpl.queryPrivilegesNoInPrivilegeGroup",info);
+
+        return businessPrivilegeInfos;
+    }
+
 }

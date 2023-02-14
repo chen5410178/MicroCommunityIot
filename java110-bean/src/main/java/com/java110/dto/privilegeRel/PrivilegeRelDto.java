@@ -16,41 +16,46 @@ import java.util.Date;
 public class PrivilegeRelDto extends PageDto implements Serializable {
 
     private String relId;
-private String pgId;
-private String pId;
-private String levelCd;
+    private String pgId;
+    private String pId;
+    private String levelCd;
 
 
     private Date createTime;
 
     private String statusCd = "0";
 
-
     public String getRelId() {
         return relId;
     }
-public void setRelId(String relId) {
+
+    public void setRelId(String relId) {
         this.relId = relId;
     }
-public String getPgId() {
+
+    public String getPgId() {
         return pgId;
     }
-public void setPgId(String pgId) {
+
+    public void setPgId(String pgId) {
         this.pgId = pgId;
     }
-public String getPId() {
+
+    public String getpId() {
         return pId;
     }
-public void setPId(String pId) {
+
+    public void setpId(String pId) {
         this.pId = pId;
     }
-public String getLevelCd() {
+
+    public String getLevelCd() {
         return levelCd;
     }
-public void setLevelCd(String levelCd) {
+
+    public void setLevelCd(String levelCd) {
         this.levelCd = levelCd;
     }
-
 
     public Date getCreateTime() {
         return createTime;

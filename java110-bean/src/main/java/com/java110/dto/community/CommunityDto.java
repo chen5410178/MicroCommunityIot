@@ -22,6 +22,7 @@ public class CommunityDto extends PageDto implements Serializable {
     private String nearbyLandmarks;
     private String cityCode;
     private String name;
+    private String communityName;
     private String nameLike;
     private String communityId;
 
@@ -307,5 +308,13 @@ public class CommunityDto extends PageDto implements Serializable {
 
     public void setExtCommunityId(String extCommunityId) {
         this.extCommunityId = extCommunityId;
+    }
+
+    public String getCommunityName() {
+        return communityName;
+    }
+
+    public void setCommunityName(String communityName) {
+        this.communityName = communityName;
     }
 }

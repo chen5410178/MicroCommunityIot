@@ -79,4 +79,25 @@ public interface IUserV1ServiceDao {
      */
     List<Map> queryUsersInfo(Map info) throws DAOException;
 
+    /**
+     * 查询员工总量
+     * @param businessUser
+     * @return
+     * @throws DAOException
+     */
+    public int getStaffCount(Map businessUser) throws DAOException;
+
+
+    /**
+     * 查询组织信息（instance过程）
+     * 根据bId 查询组织信息
+     * @param info bId 信息
+     * @return 组织信息
+     * @throws DAOException DAO异常
+     */
+    List<Map> getStaffs(Map info) throws DAOException;
+
+    int queryStaffsNoInOrgCount(Map beanCovertMap);
+
+    List<Map> queryStaffsNoInOrg(Map beanCovertMap);
 }

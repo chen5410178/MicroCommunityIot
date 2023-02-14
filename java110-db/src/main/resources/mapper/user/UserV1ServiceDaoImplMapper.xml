@@ -161,4 +161,164 @@
         </if>
     </select>
 
+    <select id="getStaffCount" parameterType="Map" resultType="Map">
+        <if test="orgIds != null and orgIds.length > 0">
+            select count(*) count from(
+        </if>
+        select count(1) count
+        from u_user u
+        inner join s_store_staff su on su.staff_id = u.user_id
+        <if test="(orgId !=null and orgId != '')||(orgIds != null and orgIds.length > 0)">
+            left join u_org_staff_rel uosr on u.user_id = uosr.staff_id and uosr.status_cd = '0'
+            left join u_org uo on uosr.org_id = uo.org_id and uo.status_cd = '0'
+        </if>
+        where u.level_cd = '01'
+        <if test="storeId !=null and storeId != ''">
+            and su.store_id = #{storeId}
+        </if>
+        <if test="orgId !=null and orgId != ''">
+            and uosr.org_id = #{orgId}
+        </if>
+        and u.status_cd = '0'
+        <if test="tel !=null and tel != ''">
+            and u.tel= #{tel}
+        </if>
+        <if test="name !=null and name != ''">
+            and u.name like concat('%',#{name},'%')
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            and u.name like concat('%',#{staffName},'%')
+        </if>
+        <if test="staffId != null and staffId !=''">
+            and u.user_id = #{staffId}
+        </if>
+        <if test="orgId !=null and orgId != ''">
+            and uo.org_id = #{orgId}
+        </if>
+        <if test="bId != null and bId !=''">
+            and u.b_id = #{bId}
+        </if>
+        <if test="userIds != null and userIds != null">
+            and u.user_id in
+            <foreach collection="userIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="orgIds != null and orgIds.length > 0">
+            and uosr.org_id in
+            <foreach collection="orgIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+            and uosr.status_cd =0
+            GROUP BY u.user_id
+        </if>
+        <if test="orgIds != null and orgIds.length > 0">
+            )a
+        </if>
+    </select>
+
+    <!-- 查询员工总量 -->
+    <select id="getStaffs" parameterType="Map" resultType="Map">
+        select u.user_id, u.user_id userId,u.name,u.name
+        userName,u.email,u.address,u.sex,u.tel,u.level_cd levelCd
+        <if test="orgId !=null and orgId != ''">
+            ,uo.org_id orgId,uo.org_name,uo.org_name orgName,uosr.store_id storeId,uosr.rel_id relId
+        </if>
+        from
+        u_user u
+        inner join s_store_staff su on su.staff_id = u.user_id
+        <if test="(orgId !=null and orgId != '')||(orgIds != null and orgIds.length > 0)">
+            left join u_org_staff_rel uosr on u.user_id = uosr.staff_id and uosr.status_cd = '0'
+            left join u_org uo on uosr.org_id = uo.org_id and uo.status_cd = '0'
+        </if>
+        where u.level_cd = '01'
+        <if test="storeId !=null and storeId != ''">
+            and su.store_id = #{storeId}
+        </if>
+        <if test="orgId !=null and orgId != ''">
+            and uosr.org_id = #{orgId}
+        </if>
+        and u.status_cd = '0'
+        <if test="tel !=null and tel != ''">
+            and u.tel= #{tel}
+        </if>
+        <if test="name !=null and name != ''">
+            and u.name like concat('%',#{name},'%')
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            and u.name like concat('%',#{staffName},'%')
+        </if>
+        <if test="staffId != null and staffId !=''">
+            and u.user_id = #{staffId}
+        </if>
+        <if test="orgId !=null and orgId != ''">
+            and uo.org_id = #{orgId}
+        </if>
+
+        <if test="userIds != null and userIds != null">
+            and u.user_id in
+            <foreach collection="userIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="orgIds != null and orgIds.length > 0">
+            and uosr.org_id in
+            <foreach collection="orgIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+            and uosr.status_cd =0
+            GROUP BY u.user_id u.name,u.email,u.address,
+            u.sex,u.tel,u.level_cd ,u.b_id,td.name
+        </if>
+        order by u.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+
+    <select id="queryStaffsNoInOrgCount" parameterType="Map" resultType="Map">
+        select count(DISTINCT t.user_id) count
+        from u_user t
+        inner join s_store_staff su on t.user_id = su.staff_id and su.status_cd = '0'
+        LEFT JOIN u_org_staff_rel osr on su.staff_id = osr.staff_id and osr.status_cd = '0'
+        where t.level_cd = '01'
+        and su.store_id = #{storeId}
+        and (osr.org_id != #{orgId} or osr.org_id is null)
+        <if test="staffName !=null and staffName != ''">
+            and t.name like concat('%', #{staffName},'%')
+        </if>
+        <if test="orgIds != null and orgIds.length > 0">
+            and osr.org_id in
+            <foreach collection="orgIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+
+    </select>
+
+    <select id="queryStaffsNoInOrg" parameterType="Map" resultType="Map">
+        select DISTINCT t.address,t.sex,t.status_cd,t.status_cd statusCd,t.user_id,t.user_id userId,t.level_cd,t.level_cd
+        levelCd,t.name,t.tel,t.email,t.create_time createTime
+        from u_user t
+        inner join s_store_user su on t.user_id = su.staff_id and su.status_cd = '0'
+        LEFT JOIN u_org_staff_rel osr on su.staff_id = osr.staff_id and osr.status_cd = '0'
+        where t.level_cd = '01'
+        and su.store_id = #{storeId}
+        and (osr.org_id != #{orgId} or osr.org_id is null)
+        <if test="staffName !=null and staffName != ''">
+            and t.name like concat('%', #{staffName},'%')
+        </if>
+        <if test="orgIds != null and orgIds.length > 0">
+            and osr.org_id in
+            <foreach collection="orgIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
 </mapper>

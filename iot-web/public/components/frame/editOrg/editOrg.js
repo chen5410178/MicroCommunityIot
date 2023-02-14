@@ -1,4 +1,4 @@
-(function (vc, vm) {
+(function(vc, vm) {
     vc.extends({
         data: {
             editOrgInfo: {
@@ -13,11 +13,11 @@
                 belongCommunitys: []
             }
         },
-        _initMethod: function () {
+        _initMethod: function() {
             vc.component._editOrgListParentOrgInfo();
         },
-        _initEvent: function () {
-            vc.on('editOrg', 'openEditOrgModal', function (_params) {
+        _initEvent: function() {
+            vc.on('editOrg', 'openEditOrgModal', function(_params) {
                 vc.component.refreshEditOrgInfo();
                 $('#editOrgModel').modal('show');
                 vc.copyObject(_params, vc.component.editOrgInfo);
@@ -27,15 +27,15 @@
             });
         },
         methods: {
-            editOrgValidate: function () {
+            editOrgValidate: function() {
                 return vc.validate.validate({
                     editOrgInfo: vc.component.editOrgInfo
                 }, {
                     'editOrgInfo.orgName': [{
-                        limit: "required",
-                        param: "",
-                        errInfo: "组织名称不能为空"
-                    },
+                            limit: "required",
+                            param: "",
+                            errInfo: "组织名称不能为空"
+                        },
                         {
                             limit: "maxin",
                             param: "2,50",
@@ -43,10 +43,10 @@
                         },
                     ],
                     'editOrgInfo.parentOrgId': [{
-                        limit: "required",
-                        param: "",
-                        errInfo: "上级ID不能为空"
-                    },
+                            limit: "required",
+                            param: "",
+                            errInfo: "上级ID不能为空"
+                        },
                         {
                             limit: "num",
                             param: "",
@@ -68,7 +68,7 @@
                     }]
                 });
             },
-            editOrg: function () {
+            editOrg: function() {
                 if (!vc.component.editOrgValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
@@ -78,7 +78,7 @@
                     JSON.stringify(vc.component.editOrgInfo), {
                         emulateJSON: true
                     },
-                    function (json, res) {
+                    function(json, res) {
                         let _json = JSON.parse(json);
                         if (_json.code == 0) {
                             //关闭model
@@ -90,12 +90,12 @@
                             vc.toast(_json.msg);
                         }
                     },
-                    function (errInfo, error) {
+                    function(errInfo, error) {
                         console.log('请求失败处理');
                         vc.toast(errInfo);
                     });
             },
-            refreshEditOrgInfo: function () {
+            refreshEditOrgInfo: function() {
                 vc.component.editOrgInfo = {
                     orgId: '',
                     orgName: '',
@@ -109,7 +109,7 @@
                     belongCommunitys: []
                 }
             },
-            _editOrgListParentOrgInfo: function () {
+            _editOrgListParentOrgInfo: function() {
                 var _tmpOrgLevel = vc.component.editOrgInfo.orgLevel;
                 if (_tmpOrgLevel > 1) {
                     _tmpOrgLevel = _tmpOrgLevel - 1;
@@ -124,16 +124,16 @@
                 //发送get请求
                 vc.http.apiGet('/org.listOrgs',
                     param,
-                    function (json, res) {
+                    function(json, res) {
                         var _orgManageInfo = JSON.parse(json);
-                        vc.component.editOrgInfo.parentOrg = _orgManageInfo.orgs;
+                        vc.component.editOrgInfo.parentOrg = _orgManageInfo.data[0];
                     },
-                    function (errInfo, error) {
+                    function(errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );
             },
-            _listEditOrgs: function (_page, _rows) {
+            _listEditOrgs: function(_page, _rows) {
                 let param = {
                     params: {
                         page: 1,
@@ -144,11 +144,11 @@
                 //发送get请求
                 vc.http.apiGet('/org.listOrgs',
                     param,
-                    function (json, res) {
+                    function(json, res) {
                         let _orgManageInfo = JSON.parse(json);
-                        vc.copyObject(_orgManageInfo.orgs[0], vc.component.editOrgInfo)
+                        vc.copyObject(_orgManageInfo.data[0], vc.component.editOrgInfo)
                     },
-                    function (errInfo, error) {
+                    function(errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );

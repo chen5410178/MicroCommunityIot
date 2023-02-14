@@ -17,6 +17,7 @@ public class PrivilegeGroupDto extends PageDto implements Serializable {
 
     private String pgId;
     private String domain;
+    private String storeTypeCd;
     private String name;
     private String description;
     private String storeId;
@@ -91,5 +92,13 @@ public class PrivilegeGroupDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getStoreTypeCd() {
+        return storeTypeCd;
+    }
+
+    public void setStoreTypeCd(String storeTypeCd) {
+        this.storeTypeCd = storeTypeCd;
     }
 }

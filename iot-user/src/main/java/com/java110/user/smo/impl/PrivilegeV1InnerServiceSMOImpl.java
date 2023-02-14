@@ -85,4 +85,18 @@ public class PrivilegeV1InnerServiceSMOImpl  implements IPrivilegeV1InnerService
     public int queryPrivilegesCount(@RequestBody PrivilegeDto privilegeDto) {
         return privilegeV1ServiceDaoImpl.queryPrivilegesCount(BeanConvertUtil.beanCovertMap(privilegeDto));    }
 
+    @Override
+    public List<PrivilegeDto> queryPrivilegesNoInPrivilegeGroup(@RequestBody PrivilegeDto privilegeDto) {
+        //校验是否传了 分页信息
+
+        int page = privilegeDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            privilegeDto.setPage((page - 1) * privilegeDto.getRow());
+        }
+
+        List<PrivilegeDto> privileges = BeanConvertUtil.covertBeanList(privilegeV1ServiceDaoImpl.queryPrivilegesNoInPrivilegeGroup(BeanConvertUtil.beanCovertMap(privilegeDto)), PrivilegeDto.class);
+
+        return privileges;    }
+
 }

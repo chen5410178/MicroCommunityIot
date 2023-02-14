@@ -1,9 +1,11 @@
 package com.java110.dto.privilegeUser;
 
 import com.java110.bean.dto.PageDto;
+import com.java110.bean.dto.roleCommunity.RoleCommunityDto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName FloorDto
@@ -14,13 +16,15 @@ import java.util.Date;
  * add by wuxw 2019/4/24
  **/
 public class PrivilegeUserDto extends PageDto implements Serializable {
-
+    public static final String PRIVILEGE_FLAG_GROUP = "1";
     private String privilegeFlag;
     private String puId;
     private String pId;
     private String storeId;
     private String userId;
 
+    private String userName;
+    private String roleName;
 
     private Date createTime;
 
@@ -35,6 +39,8 @@ public class PrivilegeUserDto extends PageDto implements Serializable {
     private String pgName;
     private String seq;
 
+    private String[] orgIds;
+    private List<RoleCommunityDto> roleCommunityDtoList;
 
     public String getPrivilegeFlag() {
         return privilegeFlag;
@@ -154,5 +160,37 @@ public class PrivilegeUserDto extends PageDto implements Serializable {
 
     public void setSeq(String seq) {
         this.seq = seq;
+    }
+
+    public List<RoleCommunityDto> getRoleCommunityDtoList() {
+        return roleCommunityDtoList;
+    }
+
+    public void setRoleCommunityDtoList(List<RoleCommunityDto> roleCommunityDtoList) {
+        this.roleCommunityDtoList = roleCommunityDtoList;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String[] getOrgIds() {
+        return orgIds;
+    }
+
+    public void setOrgIds(String[] orgIds) {
+        this.orgIds = orgIds;
     }
 }

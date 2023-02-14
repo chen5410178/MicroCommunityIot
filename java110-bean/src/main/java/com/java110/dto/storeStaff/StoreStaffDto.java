@@ -17,6 +17,7 @@ import java.util.Date;
 public class StoreStaffDto extends StoreDto implements Serializable {
 
     public static final String ADMIN_FLAG_Y = "Y";
+    public static final String ADMIN_FLAG_N = "N";
 
     private String staffName;
     private String tel;

@@ -77,4 +77,37 @@ public interface IUserV1InnerServiceSMO {
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
     List<UserDto> getUserInfo(@RequestParam("userIds") String[] userIds);
 
+    /**
+     * 查询员工总数
+     *
+     * @param userDto 用户ID
+     *                支持 多个查询
+     * @return 用户封装信息
+     */
+    @RequestMapping(value = "/getStaffCount", method = RequestMethod.POST)
+    int getStaffCount(@RequestBody UserDto userDto);
+
+    /**
+     * 查询员工信息
+     *
+     * @param userDto 用户ID
+     *                支持 多个查询
+     * @return 用户封装信息
+     */
+    @RequestMapping(value = "/getStaffs", method = RequestMethod.POST)
+    List<UserDto> getStaffs(@RequestBody UserDto userDto);
+
+    @RequestMapping(value = "/queryStaffsNoInOrgCount", method = RequestMethod.POST)
+    int queryStaffsNoInOrgCount(@RequestBody UserDto userDto);
+
+    /**
+     * <p>查询小区楼信息</p>
+     *
+     *
+     * @param userDto 数据对象分享
+     * @return UserDto 对象数据
+     */
+    @RequestMapping(value = "/queryStaffsNoInOrg", method = RequestMethod.POST)
+    List<UserDto> queryStaffsNoInOrg(@RequestBody UserDto userDto);
+
 }

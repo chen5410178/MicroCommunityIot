@@ -14,8 +14,7 @@
             <div class="ibox-content">
                 <div class="row">
                     <div class="col-sm-2">
-                        <image width="120px" class="border-radius" height="140px" v-bind:src="staffDetailInfo.photo"
-                               @error="errorLoadImg"/>
+                        <image width="120px" class="border-radius" height="140px" v-bind:src="staffDetailInfo.photo" @error="errorLoadImg" />
                     </div>
                     <div class="col-sm-9">
                         <div class="row">
@@ -81,7 +80,7 @@
             <div class="ibox-content">
                 <div class="row" v-for="(item,index) in staffDetailInfo.orgs">
                     <div class="col-md-6">组织：{{item.orgName}}</div>
-                    <div class="col-md-6">岗位：{{item.relCdName}}</div>
+                    <!-- <div class="col-md-6">岗位：{{item.relCdName}}</div> -->
                 </div>
             </div>
             <div class="ibox-title margin-top">
@@ -93,25 +92,23 @@
                 <div class="row" v-for="(item,index) in staffDetailInfo.roles">
                     <div class="col-md-12">
                         <p v-if="item.roleCommunityDtoList.length>0">
-                        {{item.roleName}}
-                        (
-                        <span  v-for="(item1,index1) in item.roleCommunityDtoList">
+                            {{item.roleName}} (
+                            <span v-for="(item1,index1) in item.roleCommunityDtoList">
                             {{item1.communityName}}
                             {{index1 === item.roleCommunityDtoList.length-1 ? " ":" 、 "}}
-                        </span>
-                        )
+                        </span> )
                         </p>
                     </div>
                 </div>
             </div>
-            <div class="ibox-title margin-top">
+            <!-- <div class="ibox-title margin-top">
                 <h5>
                     <span><vc:i18n name="排班" namespace="staffDetailInfo"></vc:i18n></span>
                 </h5>
             </div>
             <div class="ibox-content">
                 <vc:create path="property/staffScheduleClasses"></vc:create>
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="col-lg-3">

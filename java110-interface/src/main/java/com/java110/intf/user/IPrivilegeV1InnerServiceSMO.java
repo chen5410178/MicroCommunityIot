@@ -65,4 +65,6 @@ public interface IPrivilegeV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryPrivilegesCount", method = RequestMethod.POST)
     int queryPrivilegesCount(@RequestBody PrivilegeDto privilegeDto);
+    @RequestMapping(value = "/queryPrivilegesNoInPrivilegeGroup", method = RequestMethod.POST)
+    List<PrivilegeDto> queryPrivilegesNoInPrivilegeGroup(@RequestBody PrivilegeDto privilegeDto);
 }

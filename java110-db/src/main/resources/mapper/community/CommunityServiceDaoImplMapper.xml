@@ -461,7 +461,7 @@
     <!-- 查询小区信息 add by wuxw 2018-07-03 -->
     <select id="getCommunityInfoNew" parameterType="Map" resultType="Map">
         select t.address,
-        t.city_code,t.city_code cityCode,t.name,t.status_cd,t.status_cd statusCd,t.tel,
+        t.city_code,t.city_code cityCode,t.name,t.name communityName,t.status_cd,t.status_cd statusCd,t.tel,
         t.community_id,t.community_id communityId,ca.area_code areaCode,ca.area_name areaName,
         ca.parent_area_code parentAreaCode,ca.parent_area_name parentAreaName,t.ext_community_id extCommunityId
         from s_community t,city_area ca

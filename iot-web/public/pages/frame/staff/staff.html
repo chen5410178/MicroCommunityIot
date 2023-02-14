@@ -52,7 +52,7 @@
                         <span><vc:i18n name="员工管理" namespace="staff"></vc:i18n></span>
                     </h5>
                     <div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddStaffStepPage()" v-if="vc.hasPrivilege('502022082992310001') || vc.hasPrivilege('502022101889270183')">
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddStaffStepPage()">
                             <i class="fa fa-plus"></i>
                             <span><vc:i18n name="添加" namespace="staff"></vc:i18n></span>
                         </button>
@@ -74,9 +74,9 @@
                                 <th class="text-center">
                                     <span><vc:i18n name="关联组织" namespace="staff"></vc:i18n></span>
                                 </th>
-                                <th class="text-center">
+                                <!-- <th class="text-center">
                                     <span><vc:i18n name="岗位" namespace="staff"></vc:i18n></span>
-                                </th>
+                                </th> -->
                                 <th class="text-center">
                                     <span><vc:i18n name="邮箱" namespace="staff"></vc:i18n></span>
                                 </th>
@@ -97,13 +97,13 @@
                                 <td class="text-center">{{staff.name}}</td>
                                 <td class="text-center">{{staff.tel}}</td>
                                 <td class="text-center">{{staff.orgName}}</td>
-                                <td class="text-center">{{staff.relCdName}}</td>
+                                <!-- <td class="text-center">{{staff.relCdName}}</td> -->
                                 <td class="text-center">{{staff.email}}</td>
                                 <td class="text-center">{{staff.address}}</td>
                                 <td class="text-center">{{staff.sex == 0 ? '男' : '女'}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button class="btn-white btn btn-xs" v-on:click="openEditStaff(staff)" v-if="vc.hasPrivilege('502022082992300002,502022101832220184')">
+                                        <button class="btn-white btn btn-xs" v-on:click="openEditStaff(staff)">
                                         <span><vc:i18n name="修改" namespace="staff"></vc:i18n></span>
                                     </button>
                                     </div>
@@ -112,8 +112,8 @@
                                         <span><vc:i18n name="重置密码" namespace="staff"></vc:i18n></span>
                                     </button>
                                     </div>
-                                    <div v-if="staff.relCd != 600311000001" class="btn-group">
-                                        <button class="btn-white btn btn-xs" v-on:click="openDeleteStaff(staff)" v-if="vc.hasPrivilege('502022082920350003,502022101887680185')">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="openDeleteStaff(staff)">
                                         <span><vc:i18n name="删除" namespace="staff"></vc:i18n></span>
                                     </button>
                                     </div>

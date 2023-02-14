@@ -104,4 +104,46 @@ public class UserV1InnerServiceSMOImpl  implements IUserV1InnerServiceSMO {
     }
 
 
+    @Override
+    public int getStaffCount(@RequestBody UserDto userDto) {
+
+        return userV1ServiceDaoImpl.getStaffCount(BeanConvertUtil.beanCovertMap(userDto));
+    }
+
+    @Override
+    public List<UserDto> getStaffs(@RequestBody UserDto userDto) {
+        //校验是否传了 分页信息
+
+        int page = userDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            userDto.setPage((page - 1) * userDto.getRow());
+        }
+
+        List<UserDto> staffs = BeanConvertUtil.covertBeanList(userV1ServiceDaoImpl.getStaffs(BeanConvertUtil.beanCovertMap(userDto)), UserDto.class);
+
+
+        return staffs;
+    }
+
+    @Override
+    public int queryStaffsNoInOrgCount(@RequestBody  UserDto userDto) {
+        return userV1ServiceDaoImpl.queryStaffsNoInOrgCount(BeanConvertUtil.beanCovertMap(userDto));
+    }
+
+    @Override
+    public List<UserDto> queryStaffsNoInOrg(@RequestBody UserDto userDto) {
+        //校验是否传了 分页信息
+
+        int page = userDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            userDto.setPage((page - 1) * userDto.getRow());
+        }
+
+        List<UserDto> users = BeanConvertUtil.covertBeanList(userV1ServiceDaoImpl.queryStaffsNoInOrg(BeanConvertUtil.beanCovertMap(userDto)), UserDto.class);
+
+        return users;    }
+
+
 }

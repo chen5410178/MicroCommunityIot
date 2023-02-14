@@ -1,4 +1,4 @@
-(function (vc) {
+(function(vc) {
     vc.extends({
         data: {
             addStaffInfo: {
@@ -11,21 +11,22 @@
                 address: '',
                 relCd: '',
                 relCds: [],
-                photo: ''
+                photo: '',
+                adminFlag: 'N'
             }
         },
-        _initMethod: function () {
-            vc.getDict('u_org_staff_rel', "rel_cd", function (_data) {
+        _initMethod: function() {
+            vc.getDict('u_org_staff_rel', "rel_cd", function(_data) {
                 vc.component.addStaffInfo.relCds = _data;
             });
         },
-        _initEvent: function () {
-            vc.on('addStaff', 'notifyUploadCoverImage', function (data) {
+        _initEvent: function() {
+            vc.on('addStaff', 'notifyUploadCoverImage', function(data) {
                 if (data.length > 0) {
                     $that.addStaffInfo.photo = data[0].fileId;
                 }
             });
-            vc.on('addStaff', 'switchOrg', function (_org) {
+            vc.on('addStaff', 'switchOrg', function(_org) {
                 $that.addStaffInfo.orgId = _org.orgId;
                 $that.addStaffInfo.orgName = _org.allOrgName;
             });
@@ -36,10 +37,10 @@
                     addStaffInfo: vc.component.addStaffInfo
                 }, {
                     'addStaffInfo.username': [{
-                        limit: "required",
-                        param: "",
-                        errInfo: "员工名称不能为空"
-                    },
+                            limit: "required",
+                            param: "",
+                            errInfo: "员工名称不能为空"
+                        },
                         {
                             limit: "maxin",
                             param: "2,10",
@@ -51,27 +52,27 @@
                         param: "",
                         errInfo: "员工性别不能为空"
                     }],
-                    'addStaffInfo.relCd': [{
-                        limit: "required",
-                        param: "",
-                        errInfo: "员工岗位不能为空"
-                    },
-                        {
-                            limit: "num",
-                            param: "",
-                            errInfo: "员工岗位错误"
-                        },
-                    ],
+                    // 'addStaffInfo.relCd': [{
+                    //     limit: "required",
+                    //     param: "",
+                    //     errInfo: "员工岗位不能为空"
+                    // },
+                    //     {
+                    //         limit: "num",
+                    //         param: "",
+                    //         errInfo: "员工岗位错误"
+                    //     },
+                    // ],
                     'addStaffInfo.tel': [{
                         limit: "required",
                         param: "",
                         errInfo: "联系方式不能为空"
                     }],
                     'addStaffInfo.address': [{
-                        limit: "required",
-                        param: "",
-                        errInfo: "家庭住址不能为空"
-                    },
+                            limit: "required",
+                            param: "",
+                            errInfo: "家庭住址不能为空"
+                        },
                         {
                             limit: "maxLength",
                             param: "200",
@@ -82,11 +83,10 @@
                         limit: "required",
                         param: "",
                         errInfo: "关联组织不能为空"
-                    }
-                    ]
+                    }]
                 });
             },
-            saveStaffInfo: function () {
+            saveStaffInfo: function() {
                 if (!vc.component.addStaffValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
@@ -97,7 +97,7 @@
                     JSON.stringify(vc.component.addStaffInfo), {
                         emulateJSON: true
                     },
-                    function (json, res) {
+                    function(json, res) {
                         //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
                         let _json = JSON.parse(json)
                         if (_json.code == 0) {
@@ -111,11 +111,11 @@
                             vc.toast(_json.msg);
                         }
                     },
-                    function (errInfo, error) {
+                    function(errInfo, error) {
                         vc.toast(errInfo);
                     });
             },
-            clearAddStaffInfo: function () {
+            clearAddStaffInfo: function() {
                 let _relCds = $that.addStaffInfo.relCds;
                 vc.component.addStaffInfo = {
                     orgId: '',
@@ -127,10 +127,11 @@
                     address: '',
                     relCd: '',
                     relCds: _relCds,
-                    photo: ''
+                    photo: '',
+                    adminFlag: 'N'
                 };
             },
-            _addStaffChangeOrg: function () {
+            _addStaffChangeOrg: function() {
                 vc.emit('chooseOrgTree', 'openOrgModal', {});
             }
         }
