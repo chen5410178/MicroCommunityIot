@@ -15,18 +15,20 @@
         <module>java110-core</module>
         <module>java110-db</module>
         <module>java110-doc</module>
+        <module>java110-boot</module>
         <module>iot-access-control</module>
         <module>iot-gateway</module>
         <module>iot-attendance</module>
         <module>iot-barrier</module>
         <module>iot-monitor</module>
-        <module>springboot</module>
         <module>iot-user</module>
         <module>iot-community</module>
         <module>iot-car</module>
         <module>iot-dev</module>
         <module>iot-eureka</module>
         <module>iot-job</module>
+        <module>iot-system</module>
+        <module>springboot</module>
     </modules>
 
     <parent>
