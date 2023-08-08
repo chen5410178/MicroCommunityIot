@@ -9,7 +9,7 @@ eureka:
       defaultZone: http://dev.java110.com:8761/eureka/
       #defaultZone: http://localhost:8761/eureka/
 server:
-  port: 9998
+  port: 9996
   tomcat:
     uri-encoding: UTF-8
 
