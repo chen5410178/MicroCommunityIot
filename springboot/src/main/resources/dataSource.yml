@@ -1,0 +1,23 @@
+dataSources:
+  ds0: !!com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://39.99.234.36:3306/hc_industry?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: hc_iot
+    password: hc_iot12345678
+    minIdle: 5
+    validationQuery: SELECT 1 FROM DUAL
+    initialSize: 5
+    maxWait: 60000
+    filters: stat,wall,log4j
+    poolPreparedStatements: true
+
+shardingRule:
+  defaultDataSourceName: ds0
+  defaultDatabaseStrategy:
+    none:
+  defaultTableStrategy:
+    none:
+
+
+props:
+  sql.show: true

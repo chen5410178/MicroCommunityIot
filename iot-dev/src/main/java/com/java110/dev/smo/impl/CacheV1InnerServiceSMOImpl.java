@@ -19,6 +19,7 @@ package com.java110.dev.smo.impl;
 import com.java110.bean.dto.PageDto;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dev.dao.ICacheV1ServiceDao;
+import com.java110.dev.smo.IDevServiceCacheSMO;
 import com.java110.intf.dev.ICacheV1InnerServiceSMO;
 import com.java110.dto.cache.CacheDto;
 import com.java110.po.cache.CachePo;
@@ -42,6 +43,10 @@ public class CacheV1InnerServiceSMOImpl  implements ICacheV1InnerServiceSMO {
 
     @Autowired
     private ICacheV1ServiceDao cacheV1ServiceDaoImpl;
+    @Autowired
+    private IDevServiceCacheSMO devServiceCacheSMOImpl;
+
+
 
 
     @Override
@@ -84,4 +89,9 @@ public class CacheV1InnerServiceSMOImpl  implements ICacheV1InnerServiceSMO {
     public int queryCachesCount(@RequestBody CacheDto cacheDto) {
         return cacheV1ServiceDaoImpl.queryCachesCount(BeanConvertUtil.beanCovertMap(cacheDto));    }
 
+    @Override
+    public void startFlush() {
+        devServiceCacheSMOImpl.startFlush();
+
+    }
 }

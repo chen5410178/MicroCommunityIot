@@ -65,4 +65,7 @@ public interface ICacheV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryCachesCount", method = RequestMethod.POST)
     int queryCachesCount(@RequestBody CacheDto cacheDto);
+
+    @RequestMapping(value = "/startFlush", method = RequestMethod.POST)
+    public void startFlush();
 }
