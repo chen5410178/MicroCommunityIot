@@ -35,6 +35,8 @@ public class Environment {
     public final static String SPRING_CLOUD = "CLOUD"; // 环境是spring boot cloud
     public final static String SPRING_BOOT = "BOOT"; // 环境是spring boot cloud
 
+    public static final String BOOT_PATH = "http://127.0.0.1:9999";
+
     private static String systemStartWay = "CLOUD"; // 环境是spring boot cloud
 
     /**
@@ -65,7 +67,7 @@ public class Environment {
     /**
      * 判断是否为手机开发模式
      *
-     * @param java110Properties
+     * @param
      * @return
      */
 //    public static boolean isOwnerPhone(Java110Properties java110Properties) {

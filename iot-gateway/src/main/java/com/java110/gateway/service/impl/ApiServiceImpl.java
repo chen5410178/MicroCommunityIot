@@ -8,6 +8,8 @@ import com.java110.bean.dto.ValidateResult;
 import com.java110.bean.dto.app.AppService;
 import com.java110.core.client.RestTemplate;
 import com.java110.core.constant.CommonConstant;
+import com.java110.core.context.Environment;
+import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.RequestUtils;
@@ -214,7 +216,8 @@ public class ApiServiceImpl implements IApiService {
 
         serviceCode = serviceCode.startsWith("/") ? serviceCode : ("/" + serviceCode);
 
-        String requestUrl = appService.getUrl() + "/cmd" + serviceCode;
+        //String requestUrl = appService.getUrl() + "/cmd" + serviceCode;
+        String requestUrl = "/cmd" + serviceCode;
         //
         ResponseEntity responseEntity = null;
         if (!StringUtil.isNullOrNone(orgRequestUrl)) {
@@ -222,8 +225,16 @@ public class ApiServiceImpl implements IApiService {
             requestUrl += ("?" + param);
         }
         try {
-            responseEntity = restTemplate.exchange(requestUrl, HttpMethod.POST, httpEntity, String.class);
-
+            if (Environment.isStartBootWay()) {
+                requestUrl = Environment.BOOT_PATH + requestUrl;
+                restTemplate = ApplicationContextFactory.getBean("outRestTemplate", RestTemplate.class);
+                responseEntity = restTemplate.exchange(requestUrl, HttpMethod.POST, httpEntity, String.class);
+            } else {
+                requestUrl = appService.getUrl() + requestUrl;
+                restTemplate = ApplicationContextFactory.getBean("restTemplate", RestTemplate.class);
+                responseEntity = restTemplate.exchange(requestUrl, HttpMethod.POST, httpEntity, String.class);
+            }
+            //responseEntity = restTemplate.exchange(requestUrl, HttpMethod.POST, httpEntity, String.class);
         } catch (HttpStatusCodeException e) { //这里spring 框架 在4XX 或 5XX 时抛出 HttpServerErrorException 异常，需要重新封装一下
             logger.error("请求下游服务【" + requestUrl + "】异常，参数为" + httpEntity + e.getResponseBodyAsString(), e);
             body = e.getResponseBodyAsString();
