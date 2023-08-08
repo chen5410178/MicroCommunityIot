@@ -171,7 +171,7 @@ public class BootApplicationStart {
         //这里改成强制刷新 因为好多 小伙伴 教不会 如何清理redis 干脆后面就说重启dev 就会刷新缓存 二开的兄弟们根据自己的情况 是否强制
         String mapping = "";
         if (StringUtil.isEmpty(mapping)) {
-            ICacheV1InnerServiceSMO devServiceCacheSMOImpl = (ICacheV1InnerServiceSMO) ApplicationContextFactory.getBean("devServiceCacheSMOImpl");
+            ICacheV1InnerServiceSMO devServiceCacheSMOImpl = (ICacheV1InnerServiceSMO) ApplicationContextFactory.getBean("cacheV1InnerServiceSMOImpl");
             devServiceCacheSMOImpl.startFlush();
             return;
         }
@@ -182,7 +182,7 @@ public class BootApplicationStart {
         for (int i = 0; i < args.length; i++) {
             if (args[i].equalsIgnoreCase("-Dcache")) {
                 logger.debug("开始刷新日志，入参为：{}", args[i]);
-                ICacheV1InnerServiceSMO devServiceCacheSMOImpl = (ICacheV1InnerServiceSMO) ApplicationContextFactory.getBean("devServiceCacheSMOImpl");
+                ICacheV1InnerServiceSMO devServiceCacheSMOImpl = (ICacheV1InnerServiceSMO) ApplicationContextFactory.getBean("cacheV1InnerServiceSMOImpl");
                 devServiceCacheSMOImpl.startFlush();
             }
         }

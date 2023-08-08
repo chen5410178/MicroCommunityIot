@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class BaseCache {
 
-    public static final int DEFAULT_DB = 3;
+    public static final int DEFAULT_DB = 6;
 
     protected static Jedis getJedis() {
         JedisPool jedisPool = (JedisPool) ApplicationContextFactory.getBean("jedisPool");
