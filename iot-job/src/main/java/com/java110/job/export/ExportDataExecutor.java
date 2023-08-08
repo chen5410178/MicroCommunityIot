@@ -1,5 +1,6 @@
 package com.java110.job.export;
 
+import com.java110.bean.dto.data.ExportDataDto;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.intf.job.IUserDownloadFileV1InnerServiceSMO;
@@ -39,7 +40,7 @@ public class ExportDataExecutor implements Runnable {
         while (isRun) {
             log.debug("导出数据线程开始处理");
             try {
-//                doExportData();
+                doExportData();
             } catch (Throwable e) {
                 log.error("处理消息异常", e);
                 e.printStackTrace();
@@ -50,9 +51,9 @@ public class ExportDataExecutor implements Runnable {
 
     }
 
-//    private void doExportData() throws Exception {
-//
-//        ExportDataDto exportDataDto = ExportDataQueue.getData();
+    private void doExportData() throws Exception {
+
+        ExportDataDto exportDataDto = ExportDataQueue.getData();
 //
 //        this.userDownloadFileV1InnerServiceSMOImpl = ApplicationContextFactory.getBean("userDownloadFileV1InnerServiceSMOImpl", IUserDownloadFileV1InnerServiceSMO.class);
 //        this.fileUploadTemplate = ApplicationContextFactory.getBean("fileUploadTemplate", FileUploadTemplate.class);
@@ -107,7 +108,7 @@ public class ExportDataExecutor implements Runnable {
 //            }
 //
 //        }
-//    }
+    }
 //
 //    private void updateUserDownloadFile(ExportDataDto exportDataDto, String state,String url, String remark) {
 //        UserDownloadFilePo userDownloadFilePo = new UserDownloadFilePo();
