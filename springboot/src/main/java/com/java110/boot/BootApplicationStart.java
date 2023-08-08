@@ -59,32 +59,32 @@ import java.util.concurrent.TimeUnit;
 )
 @Java110CmdDiscovery(cmdPublishClass = ServiceCmdEventPublishing.class,
         basePackages = {
-                "com.java110.gateway.cmd",
+                "com.java110.accessControl.cmd",
+                "com.java110.attendance.cmd",
+                "com.java110.barrier.cmd",
+                "com.java110.car.cmd",
+                "com.java110.community.cmd",
                 "com.java110.dev.cmd",
+                "com.java110.gateway.cmd",
                 "com.java110.job.cmd",
-                "com.java110.supplier.cmd",
-                "com.java110.user.cmd",
-                "com.java110.goods.cmd",
+                "com.java110.monitor.cmd",
                 "com.java110.system.cmd",
-                "com.java110.cart.cmd",
-                "com.java110.system.cmd",
-                "com.java110.acct.cmd",
-                "com.java110.common.cmd"
+                "com.java110.user.cmd"
         })
 @EnableAsync
 @Java110ApiDocDiscovery(basePackages = {"com.java110.boot.rest"}, apiDocClass = ApiDocPublishing.class)
 @Java110CmdDocDiscovery(basePackages = {
-        "com.java110.gateway.cmd",
+        "com.java110.accessControl.cmd",
+        "com.java110.attendance.cmd",
+        "com.java110.barrier.cmd",
+        "com.java110.car.cmd",
+        "com.java110.community.cmd",
         "com.java110.dev.cmd",
+        "com.java110.gateway.cmd",
         "com.java110.job.cmd",
-        "com.java110.supplier.cmd",
-        "com.java110.user.cmd",
-        "com.java110.goods.cmd",
+        "com.java110.monitor.cmd",
         "com.java110.system.cmd",
-        "com.java110.cart.cmd",
-        "com.java110.system.cmd",
-        "com.java110.acct.cmd",
-        "com.java110.common.cmd"
+        "com.java110.user.cmd"
 },
         cmdDocClass = ApiDocCmdPublishing.class)
 public class BootApplicationStart {
