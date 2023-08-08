@@ -12,22 +12,12 @@ dataSources:
     poolPreparedStatements: true
 
 shardingRule:
-  tables:
-    business_xxx:
-      actualDataNodes: ds${0..1}.business_community
-      databaseStrategy:
-        inline:
-          shardingColumn: community_id
-          algorithmExpression: ds${Long.parseLong(community_id) % 2}
-
-  bindingTables:
-    - business_xxx
-
   defaultDataSourceName: ds0
   defaultDatabaseStrategy:
     none:
   defaultTableStrategy:
     none:
+
 
 props:
   sql.show: true
