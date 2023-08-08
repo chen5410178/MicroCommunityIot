@@ -1,21 +1,19 @@
 package com.java110.community.cmd.room;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
+import com.java110.bean.dto.floor.FloorDto;
+import com.java110.bean.dto.room.RoomDto;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cmd.Cmd;
+import com.java110.core.cmd.CmdEvent;
+import com.java110.core.constant.ResponseConstant;
 import com.java110.core.context.ICmdDataFlowContext;
-import com.java110.core.event.cmd.Cmd;
-import com.java110.core.event.cmd.CmdEvent;
-import com.java110.dto.FloorDto;
-import com.java110.dto.RoomDto;
+import com.java110.core.exception.CmdException;
+import com.java110.core.utils.Assert;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.community.IFloorInnerServiceSMO;
 import com.java110.intf.community.IRoomInnerServiceSMO;
-import com.java110.utils.constant.ResponseConstant;
-import com.java110.utils.exception.CmdException;
-import com.java110.utils.exception.SMOException;
-import com.java110.utils.util.Assert;
-import com.java110.utils.util.BeanConvertUtil;
-import com.java110.vo.api.ApiRoomDataVo;
-import com.java110.vo.api.ApiRoomVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +42,7 @@ public class QueryRoomsWithSellCmd extends Cmd {
 
 
         if (row > MAX_ROW) {
-            throw new SMOException(ResponseConstant.RESULT_CODE_ERROR, "row 数量不能大于50");
+            throw new IllegalArgumentException("row 数量不能大于50");
         }
     }
 
@@ -55,25 +53,21 @@ public class QueryRoomsWithSellCmd extends Cmd {
 
         RoomDto roomDto = BeanConvertUtil.covertBean(reqJson, RoomDto.class);
 
-        ApiRoomVo apiRoomVo = new ApiRoomVo();
         //查询总记录数
         int total = roomInnerServiceSMOImpl.queryRoomsWithSellCount(BeanConvertUtil.covertBean(reqJson, RoomDto.class));
-        apiRoomVo.setTotal(total);
+        List<RoomDto> roomDtoList = null;
         if (total > 0) {
-            List<RoomDto> roomDtoList = roomInnerServiceSMOImpl.queryRoomsWithSell(roomDto);
-            List<RoomDto> rooms = new ArrayList<>();
+            roomDtoList = roomInnerServiceSMOImpl.queryRoomsWithSell(roomDto);
             for (RoomDto room : roomDtoList) {
                 room.setFloorId(reqJson.getString("floorId"));
                 room.setFloorNum(reqJson.getString("floorNum"));
-                rooms.add(room);
             }
-            apiRoomVo.setRooms(BeanConvertUtil.covertBeanList(rooms, ApiRoomDataVo.class));
+        }else{
+            roomDtoList = new ArrayList<>();
         }
-        int row = reqJson.getInteger("row");
-        apiRoomVo.setRecords((int) Math.ceil((double) total / (double) row));
+        ResultVo resultVo = new ResultVo((int) Math.ceil((double) total / (double) reqJson.getInteger("row")), total, roomDtoList);
 
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(JSONObject.toJSONString(apiRoomVo), HttpStatus.OK);
-        context.setResponseEntity(responseEntity);
+        context.setResponseEntity(ResultVo.createResponseEntity(resultVo));
     }
 
     /**

@@ -1,20 +1,17 @@
 package com.java110.community.cmd.unit;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.dto.unit.UnitDto;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cmd.Cmd;
+import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
-import com.java110.core.event.cmd.Cmd;
-import com.java110.core.event.cmd.CmdEvent;
+import com.java110.core.exception.CmdException;
+import com.java110.core.utils.Assert;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.doc.annotation.*;
-import com.java110.dto.UnitDto;
-import com.java110.dto.dataPrivilegeStaff.DataPrivilegeStaffDto;
-import com.java110.intf.community.IDataPrivilegeUnitV1InnerServiceSMO;
 import com.java110.intf.community.IFloorInnerServiceSMO;
 import com.java110.intf.community.IUnitInnerServiceSMO;
-import com.java110.utils.exception.CmdException;
-import com.java110.utils.util.Assert;
-import com.java110.utils.util.BeanConvertUtil;
-import com.java110.vo.api.ApiUnitVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,8 +56,7 @@ public class QueryUnitsCmd extends Cmd {
     @Autowired
     private IFloorInnerServiceSMO floorInnerServiceSMOImpl;
 
-    @Autowired
-    private IDataPrivilegeUnitV1InnerServiceSMO dataPrivilegeUnitV1InnerServiceSMOImpl;
+
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
@@ -79,18 +75,9 @@ public class QueryUnitsCmd extends Cmd {
         UnitDto unitDto = BeanConvertUtil.covertBean(reqJson, UnitDto.class);
         unitDto.setUserId("");
 
-        String staffId = cmdDataFlowContext.getReqHeaders().get("user-id");
-        DataPrivilegeStaffDto dataPrivilegeStaffDto = new DataPrivilegeStaffDto();
-        dataPrivilegeStaffDto.setStaffId(staffId);
-        String[] unitIds = dataPrivilegeUnitV1InnerServiceSMOImpl.queryDataPrivilegeUnitsByStaff(dataPrivilegeStaffDto);
-
-        if(unitIds != null && unitIds.length>0){
-            unitDto.setUnitIds(unitIds);
-        }
-
         List<UnitDto> unitDtoList = unitInnerServiceSMOImpl.queryUnits(unitDto);
 
-        List<ApiUnitVo> apiUnitVos = BeanConvertUtil.covertBeanList(unitDtoList, ApiUnitVo.class);
+        List<UnitDto> apiUnitVos = BeanConvertUtil.covertBeanList(unitDtoList, UnitDto.class);
 
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(JSONObject.toJSONString(apiUnitVos), HttpStatus.OK);
         cmdDataFlowContext.setResponseEntity(responseEntity);
