@@ -46,21 +46,6 @@ app.use('/iot/api', proxy('http://127.0.0.1:9999', opts));
 //     ws: true
 // }));
 
-
-
-// app.use('/callComponent', proxy('http://127.0.0.1:8008', opts));
-// app.use('/app', proxy('http://127.0.0.1:8008', opts));
-// app.use('/ws', proxy('http://127.0.0.1:8008', opts));
-// app.use('/callComponent',proxy('http://192.168.1.106:8012',opts));
-// app.use('/app',proxy('http://192.168.1.106:8012',opts));
-
-// app.use('/callComponent', proxy('http://47.106.15.126:8088', opts));
-// app.use('/app', proxy('http://47.106.15.126:8088', opts));
-
-// app.use('/callComponent',proxy('http://192.168.100.108:8008',opts));
-// app.use('/app',proxy('http://192.168.100.108:8008',opts));
-
-//app.listen(3000);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
