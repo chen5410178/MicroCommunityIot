@@ -1,0 +1,17 @@
+version: "2"
+services:
+    - MicroIndustryPlatform:
+        image: registry.cn-qingdao.aliyuncs.com/homecommunity/microCommunityIot:V20230627002916
+        volumes: []
+        ports:
+            - 9999:9999
+        extra_hosts:
+            - dev.db.java110.com:192.168.1.88
+            - dev.redis.java110.com:192.168.1.88
+        environment:
+            - LogSwitch:ON
+            - redispwd:hc12345678
+            - mysqlpwd:hc_iot12345678
+            - ACTIVE:zihao
+            - MIN_MEM:-Xms1024m
+            - MAX_MEM:-Xmx1024m
