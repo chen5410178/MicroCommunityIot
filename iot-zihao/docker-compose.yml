@@ -1,6 +1,6 @@
 version: "2"
 services:
-    - MicroIndustryPlatform:
+    - iotboot:
         image: registry.cn-qingdao.aliyuncs.com/homecommunity/microCommunityIot:V20230627002916
         volumes: []
         ports:
