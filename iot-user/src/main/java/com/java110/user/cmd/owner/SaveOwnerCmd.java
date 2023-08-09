@@ -17,6 +17,7 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.smo.IPhotoSMO;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
 import com.java110.core.utils.StringUtil;
 import com.java110.doc.annotation.*;
 import com.java110.intf.community.ICommunityInnerServiceSMO;
@@ -115,7 +116,6 @@ public class SaveOwnerCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
         Assert.jsonObjectHaveKey(reqJson, "name", "请求报文中未包含name");
-        Assert.jsonObjectHaveKey(reqJson, "userId", "请求报文中未包含userId");
         Assert.jsonObjectHaveKey(reqJson, "age", "请求报文中未包含age");
         Assert.jsonObjectHaveKey(reqJson, "link", "请求报文中未包含link");
         Assert.jsonObjectHaveKey(reqJson, "sex", "请求报文中未包含sex");
@@ -163,6 +163,7 @@ public class SaveOwnerCmd extends Cmd {
         businessOwner.putAll(reqJson);
         businessOwner.put("state", "2000");
         OwnerPo ownerPo = BeanConvertUtil.covertBean(businessOwner, OwnerPo.class);
+        ownerPo.setUserId(CmdContextUtils.getUserId(cmdDataFlowContext));
         if (reqJson.containsKey("age") && StringUtil.isEmpty(reqJson.getString("age"))) {
             ownerPo.setAge(null);
         }

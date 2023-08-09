@@ -1,4 +1,4 @@
-(function (vc) {
+(function(vc) {
     var DEFAULT_PAGE = 1;
     var DEFAULT_ROWS = 10;
     vc.extends({
@@ -11,7 +11,7 @@
                 _currentOwnerId: '',
                 _eventName: '',
                 conditions: {
-                    ownerTypeCd: '1001',
+                    ownerTypeCd: '',
                     ownerId: '',
                     name: '',
                     link: '',
@@ -28,35 +28,35 @@
                 listColumns: []
             }
         },
-        _initMethod: function () {
+        _initMethod: function() {
             //加载 业主信息
             var _ownerId = vc.getParam('ownerId')
             if (vc.notNull(_ownerId)) {
                 //vc.component.listOwnerInfo.conditions.ownerId = _ownerId;
             }
-            $that._getColumns(function () {
+            $that._getColumns(function() {
                 vc.component._listOwnerData($that.listOwnerInfo.currentPage, DEFAULT_ROWS);
             });
         },
-        _initEvent: function () {
-            vc.on('listOwner', 'listOwnerData', function () {
+        _initEvent: function() {
+            vc.on('listOwner', 'listOwnerData', function() {
                 vc.component._listOwnerData($that.listOwnerInfo.currentPage, DEFAULT_ROWS);
             });
-            vc.on('pagination', 'page_event', function (_currentPage) {
+            vc.on('pagination', 'page_event', function(_currentPage) {
                 $that.listOwnerInfo.currentPage = _currentPage;
                 vc.component._listOwnerData(_currentPage, DEFAULT_ROWS);
             });
-            vc.on('listOwner', 'chooseRoom', function (_room) {
+            vc.on('listOwner', 'chooseRoom', function(_room) {
                 if (vc.component.listOwnerInfo._eventName == 'PayPropertyFee') {
                     vc.jumpToPage("/#/pages/property/listRoomFee?" + vc.objToGetParam(_room));
                 } else {
                     vc.jumpToPage("/#/pages/property/ownerRepairManage?ownerId=" + vc.component.listOwnerInfo._currentOwnerId + "&roomId=" + _room.roomId);
                 }
             });
-            vc.on('listOwner', 'chooseParkingSpace', function (_parkingSpace) {
+            vc.on('listOwner', 'chooseParkingSpace', function(_parkingSpace) {
                 vc.jumpToPage("/#/pages/property/listParkingSpaceFee?" + vc.objToGetParam(_parkingSpace));
             });
-            vc.on("listOwner", "notify", function (_param) {
+            vc.on("listOwner", "notify", function(_param) {
                 if (_param.hasOwnProperty("floorId")) {
                     vc.component.listOwnerInfo.conditions.floorId = _param.floorId;
                 }
@@ -70,7 +70,7 @@
             });
         },
         methods: {
-            _listOwnerData: function (_page, _row) {
+            _listOwnerData: function(_page, _row) {
                 vc.component.listOwnerInfo.conditions.page = _page;
                 vc.component.listOwnerInfo.conditions.row = _row;
                 vc.component.listOwnerInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
@@ -85,11 +85,11 @@
                 //发送get请求
                 vc.http.apiGet('/owner.queryOwners',
                     param,
-                    function (json, res) {
+                    function(json, res) {
                         var listOwnerData = JSON.parse(json);
                         vc.component.listOwnerInfo.total = listOwnerData.total;
                         vc.component.listOwnerInfo.records = listOwnerData.records;
-                        vc.component.listOwnerInfo.owners = listOwnerData.owners;
+                        vc.component.listOwnerInfo.owners = listOwnerData.data;
                         $that.dealOwnerAttr(listOwnerData.owners);
                         vc.emit('pagination', 'init', {
                             total: vc.component.listOwnerInfo.records,
@@ -97,29 +97,29 @@
                             currentPage: _page
                         });
                     },
-                    function (errInfo, error) {
+                    function(errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );
             },
-            _openAddOwnerModal: function () { //打开添加框
+            _openAddOwnerModal: function() { //打开添加框
                 vc.emit('addOwner', 'openAddOwnerModal', -1);
                 vc.component.listOwnerInfo.moreCondition = false;
             },
-            _openDelOwnerModel: function (_owner) { // 打开删除对话框
+            _openDelOwnerModel: function(_owner) { // 打开删除对话框
                 vc.emit('deleteOwner', 'openOwnerModel', _owner);
                 vc.component.listOwnerInfo.moreCondition = false;
             },
-            _openEditOwnerModel: function (_owner) {
+            _openEditOwnerModel: function(_owner) {
                 vc.emit('editOwner', 'openEditOwnerModal', _owner);
                 vc.component.listOwnerInfo.moreCondition = false;
             },
             //查询
-            _queryOwnerMethod: function () {
+            _queryOwnerMethod: function() {
                 vc.component._listOwnerData(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             //重置
-            _resetOwnerMethod: function () {
+            _resetOwnerMethod: function() {
                 vc.component.listOwnerInfo.conditions.name = "";
                 vc.component.listOwnerInfo.conditions.roomName = "";
                 vc.component.listOwnerInfo.conditions.link = "";
@@ -127,115 +127,29 @@
                 vc.component.listOwnerInfo.conditions.idCard = "";
                 vc.component._listOwnerData(DEFAULT_PAGE, DEFAULT_ROWS);
             },
-            _openAddOwnerRoom: function (_owner) {
+            _openAddOwnerRoom: function(_owner) {
                 vc.jumpToPage("/#/pages/property/addOwnerRoomBinding?ownerId=" + _owner.ownerId);
             },
-            _openHireParkingSpace: function (_owner) {
+            _openHireParkingSpace: function(_owner) {
                 vc.jumpToPage("/#/pages/property/hireParkingSpace?ownerId=" + _owner.ownerId);
             },
-            _openSellParkingSpace: function (_owner) {
+            _openSellParkingSpace: function(_owner) {
                 vc.jumpToPage("/#/pages/property/sellParkingSpace?ownerId=" + _owner.ownerId);
             },
-            _openOwnerDetailModel: function (_owner) {
-                vc.jumpToPage("/#/pages/owner/ownerDetail?ownerId=" + _owner.ownerId + "&ownerName=" + _owner.name+"&needBack=true");
+            _openOwnerDetailModel: function(_owner) {
+                vc.jumpToPage("/#/pages/owner/ownerDetail?ownerId=" + _owner.ownerId + "&ownerName=" + _owner.name + "&needBack=true");
             },
-            _openDeleteOwnerRoom: function (_owner) {
+            _openDeleteOwnerRoom: function(_owner) {
                 vc.jumpToPage("/#/pages/property/deleteOwnerRoom?ownerId=" + _owner.ownerId);
             },
-            _openOwnerRepair: function (_owner) {
-                //查看 业主是否有多套房屋，如果有多套房屋，则提示对话框选择，只有一套房屋则直接跳转至交费页面缴费
-                vc.component.listOwnerInfo._eventName = "OwnerRepair";
-                vc.component.listOwnerInfo._currentOwnerId = _owner.ownerId; // 暂存如果有多个房屋是回调回来时 ownerId 会丢掉
-                var param = {
-                    params: {
-                        communityId: vc.getCurrentCommunity().communityId,
-                        ownerId: _owner.ownerId
-                    }
-                }
-                vc.http.apiGet('/room.queryRoomsByOwner',
-                    param,
-                    function (json, res) {
-                        var listRoomData = JSON.parse(json);
-                        var rooms = listRoomData.rooms;
-                        if (rooms.length == 1) {
-                            vc.jumpToPage("/#/pages/property/ownerRepairManage?ownerId=" + _owner.ownerId + "&roomId=" + rooms[0].roomId);
-                        } else if (rooms.length == 0) {
-                            //vc.toast("当前业主未查询到房屋信息");
-                            vc.toast("当前业主未查询到房屋信息");
-                        } else {
-                            vc.emit('searchRoom', 'showOwnerRooms', rooms);
-                        }
-                    },
-                    function (errInfo, error) {
-                        console.log('请求失败处理');
-                    }
-                );
-            },
-            _openPayPropertyFee: function (_owner) {
-                //查看 业主是否有多套房屋，如果有多套房屋，则提示对话框选择，只有一套房屋则直接跳转至交费页面缴费
-                vc.component.listOwnerInfo._eventName = "PayPropertyFee";
-                vc.component.listOwnerInfo._currentOwnerId = _owner.ownerId; // 暂存如果有多个房屋是回调回来时 ownerId 会丢掉
-                var param = {
-                    params: {
-                        communityId: vc.getCurrentCommunity().communityId,
-                        ownerId: _owner.ownerId
-                    }
-                }
-                vc.http.apiGet('/room.queryRoomsByOwner',
-                    param,
-                    function (json, res) {
-                        var listRoomData = JSON.parse(json);
-                        var rooms = listRoomData.rooms;
-                        if (rooms.length == 1) {
-                            vc.jumpToPage("/#/pages/property/listRoomFee?" + vc.objToGetParam(rooms[0]));
-                        } else if (rooms.length == 0) {
-                            //vc.toast("当前业主未查询到房屋信息");
-                            vc.toast("当前业主未查询到房屋信息");
-                        } else {
-                            vc.emit('searchRoom', 'showOwnerRooms', rooms);
-                        }
-                    },
-                    function (errInfo, error) {
-                        console.log('请求失败处理');
-                    }
-                );
-            },
-            _openPayParkingSpaceFee: function (_owner) {
-                //查看 业主是否有多套停车位，如果有多套停车位，则提示对话框选择，只有一套停车位则直接跳转至交费页面缴费
-                vc.component.listOwnerInfo._currentOwnerId = _owner.ownerId; // 暂存如果有多个停车位是回调回来时 ownerId 会丢掉
-                var param = {
-                    params: {
-                        communityId: vc.getCurrentCommunity().communityId,
-                        ownerId: _owner.ownerId
-                    }
-                }
-                vc.http.apiGet('/parkingSpace.queryParkingSpacesByOwner',
-                    param,
-                    function (json, res) {
-                        var listParkingSpaceData = JSON.parse(json);
-                        var parkingSpaces = listParkingSpaceData.parkingSpaces;
-                        if (parkingSpaces.length == 1) {
-                            vc.jumpToPage("/#/pages/property/listParkingSpaceFee?" + vc.objToGetParam(parkingSpaces[0]));
-                        } else if (parkingSpaces.length == 0) {
-                            //vc.toast("当前业主未查询到车位信息");
-                            vc.toast("当前业主未查询到车位信息");
-                        } else {
-                            vc.emit('searchParkingSpace', 'showOwnerParkingSpaces', parkingSpaces);
-                        }
-                    },
-                    function (errInfo, error) {
-                        console.log('请求失败处理');
-                    }
-                );
-            },
-            _moreCondition: function () {
+            _moreCondition: function() {
                 if (vc.component.listOwnerInfo.moreCondition) {
                     vc.component.listOwnerInfo.moreCondition = false;
                 } else {
                     vc.component.listOwnerInfo.moreCondition = true;
                 }
             },
-            dealOwnerAttr: function (owners) {
+            dealOwnerAttr: function(owners) {
                 if (!owners) {
                     return;
                 }
@@ -243,7 +157,7 @@
                     $that._getColumnsValue(item);
                 });
             },
-            _getColumnsValue: function (_owner) {
+            _getColumnsValue: function(_owner) {
                 _owner.listValues = [];
                 if (!_owner.hasOwnProperty('ownerAttrDtos') || _owner.ownerAttrDtos.length < 1) {
                     $that.listOwnerInfo.listColumns.forEach(_value => {
@@ -262,9 +176,9 @@
                     _owner.listValues.push(_tmpValue);
                 })
             },
-            _getColumns: function (_call) {
+            _getColumns: function(_call) {
                 $that.listOwnerInfo.listColumns = [];
-                vc.getAttrSpec('building_owner_attr', function (data) {
+                vc.getAttrSpec('building_owner_attr', function(data) {
                     $that.listOwnerInfo.listColumns = [];
                     data.forEach(item => {
                         if (item.listShow == 'Y') {
@@ -274,29 +188,29 @@
                     _call();
                 });
             },
-            _viewOwnerRooms: function (_owner) {
+            _viewOwnerRooms: function(_owner) {
                 vc.emit('ownerRooms', 'openOwnerRoomModel', _owner);
             },
-            _viewOwnerMembers: function (_owner) {
+            _viewOwnerMembers: function(_owner) {
                 vc.emit('ownerMembers', 'openOwnerMemberModel', _owner);
             },
 
-            _viewOwnerCars: function (_owner) {
+            _viewOwnerCars: function(_owner) {
                 vc.emit('ownerCars', 'openOwnerCarModel', _owner);
             },
-            _viewComplaints: function (_owner) {
+            _viewComplaints: function(_owner) {
                 vc.emit('ownerComplaints', 'openOwnerComplaintModel', _owner);
             },
-            _viewRepairs: function (_owner) {
+            _viewRepairs: function(_owner) {
                 vc.emit('ownerRepairs', 'openOwnerRepairModel', _owner);
             },
-            _viewOweFees: function (_owner) {
+            _viewOweFees: function(_owner) {
                 vc.emit('ownerOweFees', 'openOwnerOweFeeModel', _owner);
             },
-            _viewRoomContracts: function (_owner) {
+            _viewRoomContracts: function(_owner) {
                 vc.emit('roomContracts', 'openRoomContractModel', _owner);
             },
-            _viewOwnerFace: function (_url) {
+            _viewOwnerFace: function(_url) {
                 vc.emit('viewImage', 'showImage', {
                     url: _url
                 });
