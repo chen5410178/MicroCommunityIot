@@ -13,6 +13,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
 import com.java110.doc.annotation.*;
 import com.java110.intf.community.IFloorInnerServiceSMO;
 import com.java110.intf.community.IUnitInnerServiceSMO;
@@ -100,6 +101,8 @@ public class UpdateUnitCmd extends Cmd {
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
+        String userId = CmdContextUtils.getUserId(cmdDataFlowContext);
+
         JSONObject businessUnit = new JSONObject();
         businessUnit.put("floorId", reqJson.getString("floorId"));
         businessUnit.put("layerCount", reqJson.getString("layerCount"));
@@ -108,7 +111,7 @@ public class UpdateUnitCmd extends Cmd {
         businessUnit.put("lift", reqJson.getString("lift"));
         businessUnit.put("remark", reqJson.getString("remark"));
         businessUnit.put("unitArea", reqJson.getString("unitArea"));
-        businessUnit.put("userId", reqJson.getString("userId"));
+        businessUnit.put("userId", userId);
         UnitPo unitPo = BeanConvertUtil.covertBean(businessUnit, UnitPo.class);
         int flag = unitV1InnerServiceSMOImpl.updateUnit(unitPo);
 

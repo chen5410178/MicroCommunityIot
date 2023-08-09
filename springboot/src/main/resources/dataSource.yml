@@ -1,7 +1,7 @@
 dataSources:
   ds0: !!com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.100.108:3306/hc_iot?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://192.168.1.108:3306/hc_iot?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: hc_iot
     password: hc_iot12345678
     minIdle: 5

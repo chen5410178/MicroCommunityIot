@@ -34,8 +34,8 @@
                 vc.http.apiGet('/floor.queryFloorAndUnits',
                     param,
                     function(json) {
-                        let _unitInfo = JSON.parse(json);
-                        $that.floorUnitTreeInfo.units = _unitInfo;
+                        let _data = JSON.parse(json);
+                        $that.floorUnitTreeInfo.units = _data.data;
                         $that._initJsTreeFloorUnit();
                     },
                     function() {
@@ -46,13 +46,13 @@
                 let _data = $that._doJsTreeData();
                 let _unitId = '';
                 $that.floorUnitTreeInfo.units.forEach(item => {
-                    if ($that.floorUnitTreeInfo.floorId && item.floorId == $that.floorUnitTreeInfo.floorId) {
-                        _unitId = item.unitId;
-                    }
-                })
-                // _data = _data.sort(function(a, b) {
-                //     return a.seq - b.seq
-                // });
+                        if ($that.floorUnitTreeInfo.floorId && item.floorId == $that.floorUnitTreeInfo.floorId) {
+                            _unitId = item.unitId;
+                        }
+                    })
+                    // _data = _data.sort(function(a, b) {
+                    //     return a.seq - b.seq
+                    // });
                 $.jstree.destroy()
                 $("#jstree_floorUnit").jstree({
                     "checkbox": {

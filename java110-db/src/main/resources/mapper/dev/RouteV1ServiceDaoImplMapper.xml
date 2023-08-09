@@ -43,6 +43,9 @@
         <if test="serviceId !=null and serviceId != ''">
             and t.service_id= #{serviceId}
         </if>
+        <if test="serviceCode !=null and serviceCode != ''">
+            and s.service_code= #{serviceCode}
+        </if>
         <if test="invokeModel !=null and invokeModel != ''">
             and t.invoke_model= #{invokeModel}
         </if>
@@ -85,8 +88,10 @@
     <!-- 查询接口权限数量 add by wuxw 2018-07-03 -->
     <select id="queryRoutesCount" parameterType="Map" resultType="Map">
         select count(1) count
-        from c_route t
+        from c_route t,c_service s, c_app a
         where 1 =1
+        and t.app_id = a.app_id
+        and t.service_id = s.service_id
         <if test="invokeLimitTimes !=null and invokeLimitTimes != ''">
             and t.invoke_limit_times= #{invokeLimitTimes}
         </if>
@@ -104,6 +109,9 @@
         </if>
         <if test="serviceId !=null and serviceId != ''">
             and t.service_id= #{serviceId}
+        </if>
+        <if test="serviceCode !=null and serviceCode != ''">
+            and s.service_code= #{serviceCode}
         </if>
         <if test="invokeModel !=null and invokeModel != ''">
             and t.invoke_model= #{invokeModel}

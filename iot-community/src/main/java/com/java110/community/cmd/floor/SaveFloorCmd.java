@@ -14,6 +14,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
 import com.java110.doc.annotation.*;
 import com.java110.intf.community.IFloorInnerServiceSMO;
 import com.java110.intf.community.IFloorV1InnerServiceSMO;
@@ -61,7 +62,6 @@ public class SaveFloorCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.jsonObjectHaveKey(reqJson, "name", "请求报文中未包含name");
-        Assert.jsonObjectHaveKey(reqJson, "userId", "请求报文中未包含userId");
         Assert.jsonObjectHaveKey(reqJson, "floorNum", "请求报文中未包含floorNum");
         Assert.jsonObjectHaveKey(reqJson, "communityId", "请求报文中未包含communityId");
         FloorDto floorDto = new FloorDto();
@@ -89,12 +89,13 @@ public class SaveFloorCmd extends Cmd {
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
+        String userId = CmdContextUtils.getUserId(cmdDataFlowContext);
         String floorId = GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_floorId);
         JSONObject businessFloor = new JSONObject();
         businessFloor.put("floorId", floorId);
         businessFloor.put("name", reqJson.getString("name"));
         businessFloor.put("remark", reqJson.getString("remark"));
-        businessFloor.put("userId", reqJson.getString("userId"));
+        businessFloor.put("userId", userId);
         businessFloor.put("floorNum", reqJson.getString("floorNum"));
         businessFloor.put("communityId", reqJson.getString("communityId"));
         businessFloor.put("floorArea", reqJson.getString("floorArea"));

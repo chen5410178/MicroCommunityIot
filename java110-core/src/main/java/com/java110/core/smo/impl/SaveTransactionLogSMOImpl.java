@@ -43,7 +43,7 @@ public class SaveTransactionLogSMOImpl implements ISaveTransactionLogSMO {
 //        String apiUrl = "http://api-service/api/assetImportLog/saveAssetImportLog";
 //        RestTemplate tmpRestTemplate = restTemplate;
 //        if (Environment.isStartBootWay()) {
-//            apiUrl = "http://127.0.0.1:8008/api/assetImportLog/saveAssetImportLog";
+//            apiUrl = "http://127.0.0.1:9999/api/assetImportLog/saveAssetImportLog";
 //            tmpRestTemplate = outRestTemplate;
 //        }
 //        IPageData newPd = PageData.newInstance().builder("-1", "批量日志", "", "",

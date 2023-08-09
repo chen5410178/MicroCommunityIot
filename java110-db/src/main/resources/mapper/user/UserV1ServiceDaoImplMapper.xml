@@ -141,8 +141,8 @@
     <!-- 查询用户信息 -->
     <select id="queryUserInfo" parameterType="map" resultType="map">
         select u.user_id, u.user_id userId,u.name,u.name
-        userName,u.email,u.address,u.password,u.location_cd,u.location_cd locationCd,
-        u.age,u.sex,u.tel,u.level_cd,u.b_id
+        userName,u.email,u.address,u.password,
+        u.sex,u.tel,u.level_cd levelCd
         from u_user u where 1= 1
         <if test="bId != null and bId !=''">
             and u.b_id = #{bId}

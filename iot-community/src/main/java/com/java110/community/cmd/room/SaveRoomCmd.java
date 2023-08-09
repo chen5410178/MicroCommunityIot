@@ -3,6 +3,7 @@ package com.java110.community.cmd.room;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.dto.room.RoomDto;
 import com.java110.bean.dto.unit.UnitDto;
+import com.java110.bean.po.owner.OwnerRoomRelPo;
 import com.java110.bean.po.room.RoomPo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
@@ -14,9 +15,12 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
+import com.java110.core.utils.DateUtil;
 import com.java110.doc.annotation.*;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.community.IUnitInnerServiceSMO;
+import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -84,6 +88,9 @@ public class SaveRoomCmd extends Cmd {
     @Autowired
     private IRoomV1InnerServiceSMO roomV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IOwnerRoomRelV1InnerServiceSMO ownerRoomRelV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
         Assert.jsonObjectHaveKey(reqJson, "communityId", "请求报文中未包含communityId节点");
@@ -147,8 +154,35 @@ public class SaveRoomCmd extends Cmd {
 
 
         reqJson.put("roomId", GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_roomId));
-        reqJson.put("userId", context.getReqHeaders().get(CommonConstant.HTTP_USER_ID));
+        reqJson.put("userId", CmdContextUtils.getUserId(context));
         RoomPo roomPo = BeanConvertUtil.covertBean(reqJson, RoomPo.class);
         roomV1InnerServiceSMOImpl.saveRoom(roomPo);
+
+        if (RoomDto.STATE_FREE.equals(roomPo.getState())) {
+            return;
+        }
+
+
+        if (!reqJson.containsKey("startTime")) {
+            reqJson.put("startTime", DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        }
+        if (!reqJson.containsKey("endTime")) {
+            reqJson.put("endTime", "2037-01-01 00:00:00");
+        }
+        OwnerRoomRelPo ownerRoomRelPo = new OwnerRoomRelPo();
+        ownerRoomRelPo.setRelId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_relId));
+        ownerRoomRelPo.setRoomId(roomPo.getRoomId());
+        ownerRoomRelPo.setOwnerId(reqJson.getString("ownerId"));
+        ownerRoomRelPo.setStartTime(reqJson.getString("startTime"));
+        ownerRoomRelPo.setEndTime(reqJson.getString("endTime"));
+        ownerRoomRelPo.setState("2001");
+        ownerRoomRelPo.setRemark("添加房屋直接绑定");
+        ownerRoomRelPo.setOperate("ADD");
+        ownerRoomRelPo.setUserId("-1");
+        int flag = ownerRoomRelV1InnerServiceSMOImpl.saveOwnerRoomRel(ownerRoomRelPo);
+
+        if (flag < 1) {
+            throw new CmdException("添加业主房屋关系");
+        }
     }
 }

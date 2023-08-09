@@ -52,7 +52,7 @@
             vcFramework.eleResize.on(_menuDiv, function() {
                 $that.$forceUpdate()
             });
-           
+
         },
         _initEvent: function() {
             vc.on('room', 'switchFloor', function(_param) {
@@ -112,10 +112,10 @@
                 vc.http.apiGet('/room.queryRooms',
                     param,
                     function(json, res) {
-                        var listRoomData = JSON.parse(json);
+                        let listRoomData = JSON.parse(json);
                         vc.component.roomInfo.total = listRoomData.total;
                         vc.component.roomInfo.records = listRoomData.records;
-                        vc.component.roomInfo.rooms = listRoomData.rooms;
+                        vc.component.roomInfo.rooms = listRoomData.data;
                         $that.dealRoomAttr(listRoomData.rooms);
                         vc.emit('pagination', 'init', {
                             total: vc.component.roomInfo.records,
@@ -129,7 +129,7 @@
                 );
             },
             _openAddRoom: function() {
-                vc.jumpToPage("/#/pages/property/addRoomBinding");
+                vc.jumpToPage("/#/pages/property/addRoomView");
             },
             _openEditRoomModel: function(_room) {
                 vc.emit('editRoom', 'openEditRoomModal', _room);
@@ -197,7 +197,7 @@
                     function(json, res) {
                         let _json = JSON.parse(json);
                         if (_json.total > 0) {
-                            callBack(_json.apiFloorDataVoList[0]);
+                            callBack(_json.data[0]);
                         }
                     },
                     function(errInfo, error) {
@@ -323,18 +323,6 @@
                 }
                 vc.emit('room', 'listRoom', {});
             },
-            _toSimplifyAcceptance: function(_room) {
-                let _date = new Date();
-                vc.saveData("JAVA110_IS_BACK", _date.getTime());
-                vc.saveData('simplifyAcceptanceSearch', {
-                    searchType: '1',
-                    searchValue: _room.floorNum + "-" + _room.unitNum + "-" + _room.roomNum,
-                    searchPlaceholder: '请输入房屋编号 楼栋-单元-房屋 如1-1-1',
-                })
-
-                vc.jumpToPage('/#/pages/property/simplifyAcceptance?tab=业务受理');
-
-            },
             _viewOwner: function(_room) {
                 let param = {
                     params: {
@@ -374,41 +362,41 @@
                 );
 
             },
-            _computeTableDivWidth:function(){
+            _computeTableDivWidth: function() {
                 let mainWidth = document.getElementsByTagName('body')[0].clientWidth - document.getElementById('menu-nav').offsetWidth;
                 let treeWidth = document.getElementsByClassName('room-floor-unit-tree')[0].offsetWidth;
-                mainWidth = mainWidth - 20 - treeWidth -15 - 20;
+                mainWidth = mainWidth - 20 - treeWidth - 15 - 20;
                 //document.getElementsByClassName('hc-table-div')[0].style.width=mainWidth+'px';
-                return mainWidth+'px';
+                return mainWidth + 'px';
             },
 
-            _viewOwnerRooms:function(_room){
-                vc.emit('ownerRooms', 'openOwnerRoomModel',_room);
+            _viewOwnerRooms: function(_room) {
+                vc.emit('ownerRooms', 'openOwnerRoomModel', _room);
             },
-            _viewOwnerMembers:function(_room){
-                vc.emit('ownerMembers', 'openOwnerMemberModel',_room);
-            },
-
-            _viewOwnerCars:function(_room){
-                vc.emit('ownerCars', 'openOwnerCarModel',_room);
-            },
-            _viewComplaints:function(_room){
-                vc.emit('ownerComplaints', 'openOwnerComplaintModel',_room);
-            },
-            _viewRepairs:function(_room){
-                vc.emit('ownerRepairs', 'openOwnerRepairModel',_room);
-            },
-            _viewOweFees:function(_room){
-                vc.emit('ownerOweFees', 'openOwnerOweFeeModel',_room);
-            },
-            _viewRoomOweFees:function(_room){
-                vc.emit('roomOweFees', 'openRoomOweFeeModel',_room);
+            _viewOwnerMembers: function(_room) {
+                vc.emit('ownerMembers', 'openOwnerMemberModel', _room);
             },
 
-            _viewRoomContracts:function(_room){
-                vc.emit('roomContracts', 'openRoomContractModel',_room);
+            _viewOwnerCars: function(_room) {
+                vc.emit('ownerCars', 'openOwnerCarModel', _room);
             },
-            
+            _viewComplaints: function(_room) {
+                vc.emit('ownerComplaints', 'openOwnerComplaintModel', _room);
+            },
+            _viewRepairs: function(_room) {
+                vc.emit('ownerRepairs', 'openOwnerRepairModel', _room);
+            },
+            _viewOweFees: function(_room) {
+                vc.emit('ownerOweFees', 'openOwnerOweFeeModel', _room);
+            },
+            _viewRoomOweFees: function(_room) {
+                vc.emit('roomOweFees', 'openRoomOweFeeModel', _room);
+            },
+
+            _viewRoomContracts: function(_room) {
+                vc.emit('roomContracts', 'openRoomContractModel', _room);
+            },
+
         }
     });
 })(window.vc);
