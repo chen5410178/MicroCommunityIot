@@ -19,7 +19,7 @@
             删除单元
         </button>
         <button type="button" class="btn btn-white btn-sm margin-left-sm" v-on:click="_openAddRoom()">
-                <vc:i18n name="添加房屋" namespace="room"></vc:i18n>
+            <vc:i18n name="添加房屋" namespace="room"></vc:i18n>
         </button>
     </div>
     <div class="flex justify-start">
@@ -43,11 +43,13 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请填写房屋编号  格式 楼栋-单元-房屋','room')" class="form-control form-control-sm" v-model="roomInfo.conditions.roomId">
+                                <input type="text" :placeholder="vc.i18n('请填写房屋编号  格式 楼栋-单元-房屋','room')"
+                                    class="form-control form-control-sm" v-model="roomInfo.conditions.roomId">
                             </div>
                         </div>
                         <div class="col-sm-3">
-                            <select class="form-control-sm form-control input-s-sm inline" v-model="roomInfo.conditions.state">
+                            <select class="form-control-sm form-control input-s-sm inline"
+                                v-model="roomInfo.conditions.state">
                                 <option selected value="">{{vc.i18n('请选择状态','room')}}</option>
                                 <option v-for="(item,index) in roomInfo.states" :key="index" :value="item.statusCd">
                                     {{item.name}}
@@ -55,7 +57,8 @@
                             </select>
                         </div>
                         <div class="col-sm-3">
-                            <select class="form-control-sm form-control input-s-sm inline" v-model="roomInfo.conditions.roomSubType">
+                            <select class="form-control-sm form-control input-s-sm inline"
+                                v-model="roomInfo.conditions.roomSubType">
                                 <option selected value="">{{vc.i18n('必填，请选择房屋类型','room')}}</option>
                                 <option :value="item.statusCd" v-for="(item,index) in roomInfo.roomSubTypes">
                                     {{item.name}}
@@ -70,13 +73,14 @@
                                 </span>
                             </button>
                             <button type="button" class="btn btn-info btn-sm" v-on:click="_resetRoomInfo()">
-                                    <vc:i18n name="重置" namespace="room"></vc:i18n>
+                                <vc:i18n name="重置" namespace="room"></vc:i18n>
                             </button>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-4">
-                            <select class="form-control-sm form-control input-s-sm inline" v-model="roomInfo.isAll" @change="_changeIsAll()">
+                            <select class="form-control-sm form-control input-s-sm inline" v-model="roomInfo.isAll"
+                                @change="_changeIsAll()">
                                 <option value="N">当前楼栋单元</option>
                                 <option value="Y">全部楼栋单元</option>
                             </select>
@@ -212,7 +216,8 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="hc-td">
-                                            <a href="javascript:void(0)" @click="_viewOwnerMembers(room)">{{room.memberCount || 0}}</a>
+                                            <a href="javascript:void(0)"
+                                                @click="_viewOwnerMembers(room)">{{room.memberCount || 0}}</a>
                                         </div>
                                     </td>
                                     <td class="text-center">
@@ -242,6 +247,16 @@
                                         <div class="btn-group">
                                             <button class="btn-white btn btn-xs" v-on:click="_openDelRoomModel(room)">
                                                 <vc:i18n name="删除" namespace="room"></vc:i18n>
+                                            </button>
+                                        </div>
+                                        <div class="btn-group" v-if="room.state == '2002'">
+                                            <button class="btn-white btn btn-xs" v-on:click="_toRoomBindOwner(room)">
+                                                <vc:i18n name="绑定人员" namespace="room"></vc:i18n>
+                                            </button>
+                                        </div>
+                                        <div class="btn-group" v-if="room.state != '2002' && room.ownerId ">
+                                            <button class="btn-white btn btn-xs" v-on:click="_toRoomUnBindOwner(room)">
+                                                <vc:i18n name="解绑人员" namespace="room"></vc:i18n>
                                             </button>
                                         </div>
                                     </td>

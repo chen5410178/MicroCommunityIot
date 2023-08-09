@@ -35,19 +35,19 @@
             }
         },
         _initMethod: function() {
-            vc.component.roomInfo.conditions.floorId = vc.getParam("floorId");
-            vc.component.roomInfo.conditions.floorName = vc.getParam("floorName");
-            //vc.component.listRoom(DEFAULT_PAGE, DEFAULT_ROW);
+            $that.roomInfo.conditions.floorId = vc.getParam("floorId");
+            $that.roomInfo.conditions.floorName = vc.getParam("floorName");
+            //$that.listRoom(DEFAULT_PAGE, DEFAULT_ROW);
             //与字典表关联
             vc.getDict('building_room', "state", function(_data) {
-                vc.component.roomInfo.states = _data;
+                $that.roomInfo.states = _data;
             });
             //与字典表关联
             vc.getDict('building_room', "room_sub_type", function(_data) {
-                vc.component.roomInfo.roomSubTypes = _data;
+                $that.roomInfo.roomSubTypes = _data;
             });
             //根据 参数查询相应数据
-            //vc.component._loadDataByParam();
+            //$that._loadDataByParam();
             let _menuDiv = document.getElementById('menu-nav');
             vcFramework.eleResize.on(_menuDiv, function() {
                 $that.$forceUpdate()
@@ -56,37 +56,37 @@
         },
         _initEvent: function() {
             vc.on('room', 'switchFloor', function(_param) {
-                vc.component.roomInfo.conditions.floorId = _param.floorId;
-                vc.component.roomInfo.conditions.unitId = '';
-                vc.component.roomInfo.conditions.flag = 1;
+                $that.roomInfo.conditions.floorId = _param.floorId;
+                $that.roomInfo.conditions.unitId = '';
+                $that.roomInfo.conditions.flag = 1;
                 $that.roomInfo.isAll = 'N';
-                vc.component.listRoom(DEFAULT_PAGE, DEFAULT_ROW);
+                $that.listRoom(DEFAULT_PAGE, DEFAULT_ROW);
             });
             vc.on('room', 'switchUnit', function(_param) {
-                vc.component.roomInfo.conditions.floorId = '';
-                vc.component.roomInfo.conditions.unitId = _param.unitId;
-                vc.component.roomInfo.conditions.flag = 1;
+                $that.roomInfo.conditions.floorId = '';
+                $that.roomInfo.conditions.unitId = _param.unitId;
+                $that.roomInfo.conditions.flag = 1;
                 $that.roomInfo.isAll = 'N';
-                vc.component.listRoom(DEFAULT_PAGE, DEFAULT_ROW);
+                $that.listRoom(DEFAULT_PAGE, DEFAULT_ROW);
             });
             vc.on('room', 'listRoom', function(_param) {
-                vc.component.listRoom($that.roomInfo.currentPage, DEFAULT_ROW);
+                $that.listRoom($that.roomInfo.currentPage, DEFAULT_ROW);
             });
             vc.on('room', 'loadData', function(_param) {
-                vc.component.listRoom($that.roomInfo.currentPage, DEFAULT_ROW);
+                $that.listRoom($that.roomInfo.currentPage, DEFAULT_ROW);
             });
             vc.on('pagination', 'page_event', function(_currentPage) {
                 $that.roomInfo.currentPage = _currentPage;
-                vc.component.listRoom(_currentPage, DEFAULT_ROW);
+                $that.listRoom(_currentPage, DEFAULT_ROW);
             });
         },
         methods: {
             listRoom: function(_page, _row) {
-                vc.component.roomInfo.conditions.page = _page;
-                vc.component.roomInfo.conditions.row = _row;
-                vc.component.roomInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
+                $that.roomInfo.conditions.page = _page;
+                $that.roomInfo.conditions.row = _row;
+                $that.roomInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
                 var param = {
-                    params: JSON.parse(JSON.stringify(vc.component.roomInfo.conditions))
+                    params: JSON.parse(JSON.stringify($that.roomInfo.conditions))
                 };
                 let _allNum = $that.roomInfo.conditions.roomId;
                 let _allNums = _allNum.split('-')
@@ -113,13 +113,13 @@
                     param,
                     function(json, res) {
                         let listRoomData = JSON.parse(json);
-                        vc.component.roomInfo.total = listRoomData.total;
-                        vc.component.roomInfo.records = listRoomData.records;
-                        vc.component.roomInfo.rooms = listRoomData.data;
+                        $that.roomInfo.total = listRoomData.total;
+                        $that.roomInfo.records = listRoomData.records;
+                        $that.roomInfo.rooms = listRoomData.data;
                         $that.dealRoomAttr(listRoomData.rooms);
                         vc.emit('pagination', 'init', {
-                            total: vc.component.roomInfo.records,
-                            dataCount: vc.component.roomInfo.total,
+                            total: $that.roomInfo.records,
+                            dataCount: $that.roomInfo.total,
                             currentPage: _page
                         });
                     },
@@ -141,7 +141,7 @@
              根据楼ID加载房屋
              **/
             loadUnits: function(_unitId, callBack) {
-                vc.component.addRoomUnits = [];
+                $that.addRoomUnits = [];
                 let param = {
                     params: {
                         unitId: _unitId,
@@ -166,8 +166,8 @@
                     });
             },
             _queryRoomMethod: function() {
-                vc.component.roomInfo.conditions.flag = 0;
-                vc.component.listRoom(DEFAULT_PAGE, DEFAULT_ROW);
+                $that.roomInfo.conditions.flag = 0;
+                $that.listRoom(DEFAULT_PAGE, DEFAULT_ROW);
             },
             showState: function(_state) {
                 if (_state == '2001') {
@@ -206,10 +206,10 @@
                     });
             },
             _moreCondition: function() {
-                if (vc.component.roomInfo.moreCondition) {
-                    vc.component.roomInfo.moreCondition = false;
+                if ($that.roomInfo.moreCondition) {
+                    $that.roomInfo.moreCondition = false;
                 } else {
-                    vc.component.roomInfo.moreCondition = true;
+                    $that.roomInfo.moreCondition = true;
                 }
             },
             _openChooseFloorMethod: function() {
@@ -261,7 +261,7 @@
             _resetRoomInfo: function() {
                 vc.resetObject($that.roomInfo.conditions);
                 $that.roomInfo.conditions.roomType = '1010301';
-                vc.component.listRoom(DEFAULT_PAGE, DEFAULT_ROW);
+                $that.listRoom(DEFAULT_PAGE, DEFAULT_ROW);
             },
             _openAddRoomFloorModal: function() {
                 vc.emit('addFloor', 'openAddFloorModal', {});
@@ -290,7 +290,7 @@
                     return;
                 }
                 vc.emit('addUnit', 'addUnitModel', {
-                    floorId: vc.component.roomInfo.conditions.floorId
+                    floorId: $that.roomInfo.conditions.floorId
                 });
             },
             _openUpdateRoomUnitModal: function() {
@@ -380,22 +380,12 @@
             _viewOwnerCars: function(_room) {
                 vc.emit('ownerCars', 'openOwnerCarModel', _room);
             },
-            _viewComplaints: function(_room) {
-                vc.emit('ownerComplaints', 'openOwnerComplaintModel', _room);
+            _toRoomBindOwner: function (_room) {
+                vc.jumpToPage('/#/pages/owner/roomBindOwner?roomId=' + _room.roomId);
             },
-            _viewRepairs: function(_room) {
-                vc.emit('ownerRepairs', 'openOwnerRepairModel', _room);
-            },
-            _viewOweFees: function(_room) {
-                vc.emit('ownerOweFees', 'openOwnerOweFeeModel', _room);
-            },
-            _viewRoomOweFees: function(_room) {
-                vc.emit('roomOweFees', 'openRoomOweFeeModel', _room);
-            },
-
-            _viewRoomContracts: function(_room) {
-                vc.emit('roomContracts', 'openRoomContractModel', _room);
-            },
+            _toRoomUnBindOwner: function (_room) {
+                vc.jumpToPage('/#/pages/property/deleteOwnerRoom?ownerId=' + _room.ownerId);
+            }
 
         }
     });

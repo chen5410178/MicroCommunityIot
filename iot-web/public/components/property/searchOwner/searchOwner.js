@@ -16,11 +16,11 @@
         _initEvent: function () {
             vc.on('searchOwner', 'openSearchOwnerModel', function (_param) {
                 $('#searchOwnerModel').modal('show');
-                vc.component._refreshSearchOwnerData();
-                vc.component._loadAllOwnerInfo(1, 10);
+                $that._refreshSearchOwnerData();
+                $that._loadAllOwnerInfo(1, 10);
             });
             vc.on('searchOwner', 'paginationPlus', 'page_event', function (_currentPage) {
-                vc.component._loadAllOwnerInfo(_currentPage, 10);
+                $that._loadAllOwnerInfo(_currentPage, 10);
             });
         },
         methods: {
@@ -30,17 +30,16 @@
                         page: _page,
                         row: _row,
                         communityId: vc.getCurrentCommunity().communityId,
-                        name: vc.component.searchOwnerInfo._currentOwnerName,
-                        roomName: vc.component.searchOwnerInfo.roomName,
-                        ownerTypeCd: '1001'
+                        name: $that.searchOwnerInfo._currentOwnerName,
+                        roomName: $that.searchOwnerInfo.roomName,
                     }
                 };
                 //发送get请求
                 vc.http.apiGet('/owner.queryOwners',
                     param,
                     function (json) {
-                        var _ownerInfo = JSON.parse(json);
-                        vc.component.searchOwnerInfo.owners = _ownerInfo.owners;
+                        let _ownerInfo = JSON.parse(json);
+                        $that.searchOwnerInfo.owners = _ownerInfo.data;
                         vc.emit('searchOwner', 'paginationPlus', 'init', {
                             total: _ownerInfo.records,
                             currentPage: _page
@@ -59,10 +58,10 @@
                 $('#searchOwnerModel').modal('hide');
             },
             searchOwners: function () {
-                vc.component._loadAllOwnerInfo(1, 10, vc.component.searchOwnerInfo._currentOwnerName);
+                $that._loadAllOwnerInfo(1, 10, $that.searchOwnerInfo._currentOwnerName);
             },
             _refreshSearchOwnerData: function () {
-                vc.component.searchOwnerInfo._currentOwnerName = "";
+                $that.searchOwnerInfo._currentOwnerName = "";
             }
         }
     });
