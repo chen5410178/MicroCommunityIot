@@ -1,4 +1,4 @@
-(function (vc) {
+(function(vc) {
     vc.extends({
         propTypes: {
             notifyLoadDataComponentName: vc.propTypes.string,
@@ -23,11 +23,11 @@
                 attrs: []
             }
         },
-        _initMethod: function () {
+        _initMethod: function() {
             $that._loadOwnerAttrSpec();
         },
-        _initEvent: function () {
-            vc.on('addOwner', 'openAddOwnerModal', function (_ownerId) {
+        _initEvent: function() {
+            vc.on('addOwner', 'openAddOwnerModal', function(_ownerId) {
                 if (_ownerId != null || _ownerId != -1) {
                     vc.component.addOwnerInfo.ownerId = _ownerId;
                 }
@@ -36,23 +36,22 @@
             });
         },
         methods: {
-            addOwnerValidate: function () {
+            addOwnerValidate: function() {
                 return vc.validate.validate({
                     addOwnerInfo: vc.component.addOwnerInfo
                 }, {
                     'addOwnerInfo.name': [{
-                        limit: "required",
-                        param: "",
-                        errInfo: "姓名不能为空"
-                    },
+                            limit: "required",
+                            param: "",
+                            errInfo: "姓名不能为空"
+                        },
                         {
                             limit: "maxin",
                             param: "2,10",
                             errInfo: "姓名长度必须在2位至10位"
                         },
                     ],
-                    'addOwnerInfo.link': [
-                        {
+                    'addOwnerInfo.link': [{
                             limit: "required",
                             param: "",
                             errInfo: "手机号不能为空"
@@ -63,8 +62,7 @@
                             errInfo: "手机号格式错误"
                         }
                     ],
-                    'addOwnerInfo.idCard': [
-                        {
+                    'addOwnerInfo.idCard': [{
                             limit: "maxLength",
                             param: "64",
                             errInfo: "身份证格式不对"
@@ -94,24 +92,17 @@
                     }]
                 });
             },
-            saveOwnerInfo: function () {
+            saveOwnerInfo: function() {
                 if (!vc.component.addOwnerValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
-                }
-                if (vc.component.addOwnerInfo.componentTitle == '成员' && vc.component.addOwnerInfo.ownerTypeCd == '') {
-                    vc.toast("人员类型不能为空");
-                    return;
-                }
-                if (vc.component.addOwnerInfo.componentTitle == '业主') {
-                    vc.component.addOwnerInfo.ownerTypeCd = '1001';
                 }
                 vc.component.addOwnerInfo.communityId = vc.getCurrentCommunity().communityId;
                 vc.http.apiPost('/owner.saveOwner',
                     JSON.stringify(vc.component.addOwnerInfo), {
                         emulateJSON: true
                     },
-                    function (json, res) {
+                    function(json, res) {
                         //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
                         let _json = JSON.parse(json);
                         if (_json.code == 0) {
@@ -125,12 +116,12 @@
                             vc.toast(_json.msg);
                         }
                     },
-                    function (errInfo, error) {
+                    function(errInfo, error) {
                         console.log('请求失败处理');
                         vc.toast(errInfo);
                     });
             },
-            clearAddOwnerInfo: function () {
+            clearAddOwnerInfo: function() {
                 let _componentTitle = $that.addOwnerInfo.componentTitle;
                 vc.component.addOwnerInfo = {
                     componentTitle: _componentTitle,
@@ -151,21 +142,21 @@
                 };
                 this._loadOwnerAttrSpec();
             },
-            _addUserMedia: function () {
+            _addUserMedia: function() {
                 return navigator.getUserMedia = navigator.getUserMedia ||
                     navigator.webkitGetUserMedia ||
                     navigator.mozGetUserMedia ||
                     navigator.msGetUserMedia || null;
             },
-            _initAddOwnerMedia: function () {
+            _initAddOwnerMedia: function() {
                 if (vc.component._addUserMedia()) {
-                    var constraints = {
+                    let constraints = {
                         video: true,
                         audio: false
                     };
-                    var video = document.getElementById('ownerPhoto');
-                    var media = navigator.getUserMedia(constraints, function (stream) {
-                        var url = window.URL || window.webkitURL;
+                    let video = document.getElementById('ownerPhoto');
+                    let media = navigator.getUserMedia(constraints, function(stream) {
+                        let url = window.URL || window.webkitURL;
                         $that.addOwnerInfo.mediaStreamTrack = typeof stream.stop === 'function' ? stream : stream.getTracks()[0];
                         try {
                             video.src = url ? url.createObjectURL(stream) : stream;
@@ -174,7 +165,7 @@
                         }
                         video.play();
                         vc.component.addOwnerInfo.videoPlaying = true;
-                    }, function (error) {
+                    }, function(error) {
                         vc.component.addOwnerInfo.videoPlaying = false;
                     });
                 } else {
@@ -182,10 +173,10 @@
                     console.log("初始化视频失败");
                 }
             },
-            _takePhoto: function () {
+            _takePhoto: function() {
                 if (vc.component.addOwnerInfo.videoPlaying) {
-                    var canvas = document.getElementById('canvas');
-                    var video = document.getElementById('ownerPhoto');
+                    let canvas = document.getElementById('canvas');
+                    let video = document.getElementById('ownerPhoto');
                     let w = video.videoWidth;
                     // 默认按比例压缩
                     let h = video.videoHeight;
@@ -215,11 +206,11 @@
                     vc.toast('未检测到摄像头');
                 }
             },
-            _uploadPhoto: function (event) {
+            _uploadPhoto: function(event) {
                 //vc.component.addOwnerInfo.ownerPhoto = "";
                 $("#uploadOwnerPhoto").trigger("click")
             },
-            _choosePhoto: function (event) {
+            _choosePhoto: function(event) {
                 var photoFiles = event.target.files;
                 if (photoFiles && photoFiles.length > 0) {
                     // 获取目前上传的文件
@@ -230,17 +221,11 @@
                     }
                     // 改为异步上传图片
                     $that._doUploadImageAddOwner(file);
-                    // var reader = new FileReader(); //新建FileReader对象
-                    // reader.readAsDataURL(file); //读取为base64
-                    // reader.onloadend = function (e) {
-                    //     vc.translate(reader.result, function (_data) {
-                    //         vc.component.addOwnerInfo.ownerPhoto = _data;
-                    //     })
-                    // }
+
                 }
             },
             // 异步上传图片
-            _doUploadImageAddOwner: function (_file) {
+            _doUploadImageAddOwner: function(_file) {
                 var param = new FormData();
                 param.append("uploadFile", _file);
                 param.append('communityId', vc.getCurrentCommunity().communityId);
@@ -254,7 +239,7 @@
                             "Content-Type": "multipart/form-data"
                         }
                     },
-                    function (json, res) {
+                    function(json, res) {
                         console.log(res);
                         // if (res.status != 200) {
                         //     vc.toast("上传文件失败");
@@ -266,25 +251,25 @@
                         vc.component.addOwnerInfo.ownerPhotoUrl = data.url;
                         console.log(vc.component.addOwnerInfo.ownerPhotoUrl)
                     },
-                    function (errInfo, error) {
+                    function(errInfo, error) {
                         console.log('请求失败处理');
                         vc.toast(errInfo);
                     }
                 );
             },
-            _reOpenVedio: function () {
+            _reOpenVedio: function() {
                 vc.component.addOwnerInfo.ownerPhoto = "";
                 vc.component.addOwnerInfo.ownerPhotoUrl = "";
                 vc.component._initAddOwnerMedia();
             },
-            _closeVedio: function () {
+            _closeVedio: function() {
                 if (vc.component.addOwnerInfo.mediaStreamTrack != null) {
                     vc.component.addOwnerInfo.mediaStreamTrack.stop();
                 }
             },
-            _loadOwnerAttrSpec: function () {
+            _loadOwnerAttrSpec: function() {
                 $that.addOwnerInfo.attrs = [];
-                vc.getAttrSpec('building_owner_attr', function (data) {
+                vc.getAttrSpec('building_owner_attr', function(data) {
                     data.forEach(item => {
                         item.value = '';
                         if (item.specShow == 'Y') {
@@ -295,8 +280,8 @@
                     });
                 });
             },
-            _loadAttrValue: function (_specCd, _values) {
-                vc.getAttrValue(_specCd, function (data) {
+            _loadAttrValue: function(_specCd, _values) {
+                vc.getAttrValue(_specCd, function(data) {
                     data.forEach(item => {
                         if (item.valueShow == 'Y') {
                             _values.push(item);
@@ -304,11 +289,11 @@
                     });
                 });
             },
-            _closeSaveOwnerModal: function () {
+            _closeSaveOwnerModal: function() {
                 $that._closeVedio();
                 $('#addOwnerModel').modal('hide');
             },
-            addOwnerIDCardChange: function () {
+            addOwnerIDCardChange: function() {
                 let idCard = $that.addOwnerInfo.idCard;
                 // 1 "验证通过!", 0 //校验不通过
                 var format = /^(([1][1-5])|([2][1-3])|([3][1-7])|([4][1-6])|([5][0-4])|([6][1-5])|([7][1])|([8][1-2]))\d{4}(([1][9]\d{2})|([2]\d{3}))(([0][1-9])|([1][0-2]))(([0][1-9])|([1-2][0-9])|([3][0-1]))\d{3}[0-9xX]$/;
@@ -320,20 +305,20 @@
                 }
                 //区位码校验
                 //出生年月日校验   前正则限制起始年份为1900;
-                var year = idCard.substr(6, 4),//身份证年
-                    month = idCard.substr(10, 2),//身份证月
-                    date = idCard.substr(12, 2),//身份证日
-                    time = Date.parse(month + '-' + date + '-' + year),//身份证日期时间戳date
-                    now_time = Date.parse(new Date()),//当前时间戳
-                    dates = (new Date(year, month, 0)).getDate();//身份证当月天数
+                var year = idCard.substr(6, 4), //身份证年
+                    month = idCard.substr(10, 2), //身份证月
+                    date = idCard.substr(12, 2), //身份证日
+                    time = Date.parse(month + '-' + date + '-' + year), //身份证日期时间戳date
+                    now_time = Date.parse(new Date()), //当前时间戳
+                    dates = (new Date(year, month, 0)).getDate(); //身份证当月天数
                 if (time > now_time || date > dates) {
                     vc.toast("身份证号码不合规");
                     $that.addOwnerInfo.idCard = "";
                     return;
                 }
                 //校验码判断
-                var c = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);   //系数
-                var b = new Array('1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2');  //校验码对照表
+                var c = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2); //系数
+                var b = new Array('1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'); //校验码对照表
                 var id_array = idCard.split("");
                 var sum = 0;
                 for (var k = 0; k < 17; k++) {

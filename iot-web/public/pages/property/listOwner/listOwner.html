@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请输入业主名称','listOwner')" v-model="listOwnerInfo.conditions.name" class=" form-control">
+                                <input type="text" :placeholder="vc.i18n('请输入人员名称','listOwner')" v-model="listOwnerInfo.conditions.name" class=" form-control">
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -48,12 +48,12 @@
                     <div class="row" v-if="listOwnerInfo.moreCondition == true">
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请输入业主ID','listOwner')" v-model="listOwnerInfo.conditions.ownerId" class=" form-control">
+                                <input type="text" :placeholder="vc.i18n('请输入人员ID','listOwner')" v-model="listOwnerInfo.conditions.ownerId" class=" form-control">
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请输入业主身份证号','listOwner')" v-model="listOwnerInfo.conditions.idCard" class=" form-control">
+                                <input type="text" :placeholder="vc.i18n('请输入人员身份证号','listOwner')" v-model="listOwnerInfo.conditions.idCard" class=" form-control">
                             </div>
                         </div>
                     </div>
@@ -66,12 +66,10 @@
             <div class="ibox">
                 <div class="ibox-title">
                     <h5>
-                        <vc:i18n name="业主信息" namespace="listOwner"></vc:i18n>
+                        <vc:i18n name="人员信息" namespace="listOwner"></vc:i18n>
                     </h5>
                     <div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddOwnerModal(-1)" v-if="vc.hasPrivilege('502023032885101706')">
-                            <i class="fa fa-plus"></i>
-                                <span><vc:i18n name="添加业主" namespace="listOwner"></vc:i18n></span>
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddOwnerModal(-1)"><vc:i18n name="添加人员" namespace="listOwner"></vc:i18n>
                         </button>
                     </div>
                 </div>
@@ -80,7 +78,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <vc:i18n name="业主人脸" namespace="listOwner"></vc:i18n>
+                                    <vc:i18n name="人员人脸" namespace="listOwner"></vc:i18n>
                                 </th>
                                 <th data-hide="phone" class="text-center">
                                     <vc:i18n name="姓名" namespace="listOwner"></vc:i18n>
@@ -98,7 +96,7 @@
                                     <vc:i18n name="房屋数" namespace="listOwner"></vc:i18n>
                                 </th>
                                 <th data-hide="phone" class="text-center">
-                                    <vc:i18n name="业主成员" namespace="listOwner"></vc:i18n>
+                                    <vc:i18n name="人员成员" namespace="listOwner"></vc:i18n>
                                 </th>
                                 <th data-hide="phone" class="text-center">
                                     <vc:i18n name="车辆数" namespace="listOwner"></vc:i18n>
@@ -142,50 +140,22 @@
                                     {{owner.carCount || 0}}
                                 </a>
                                 </td>
-                                <td class="text-center">
-                                    <a href="javascript:void(0)" @click="_viewComplaints(owner)">
-                                    {{owner.complaintCount || 0}}
-                                </a>
-                                </td>
-                                <td class="text-center">
-                                    <a href="javascript:void(0)" @click="_viewRepairs(owner)">
-                                    {{owner.repairCount || 0}}
-                                </a>
-                                </td>
-                                <td class="text-center">
-                                    <a href="javascript:void(0)" @click="_viewOweFees(owner)">
-                                    {{owner.oweFee || '0.00'}}
-                                </a>
-                                </td>
-                                <td class="text-center">
-                                    <a href="javascript:void(0)" @click="_viewRoomContracts(owner)">
-                                    {{owner.contractCount || 0}}
-                                </a>
-                                </td>
                                 <td v-for="item in owner.listValues" class="text-center">
                                     {{item || '-'}}
                                 </td>
                                 <td class="text-center">
-                                    <!--<div class="btn-group">
-                                    <button class="btn-white btn btn-xs "
-                                            v-on:click="_openEditOwnerModel(owner)">
-                                    <span>
-                                       <span><vc:i18n name="修改" namespace="listOwner"></vc:i18n></span>
-                                    </span>
-                                    </button>
-                                </div>-->
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <vc:i18n name="变更" namespace="listOwner"></vc:i18n>
                                     </button>
                                         <div class="dropdown-menu p-4 text-muted" style="max-width: 200px;">
                                             <p style="margin:10px 0;">
-                                                <a href="javascript:void(0)" v-on:click="_openEditOwnerModel(owner)" v-if="vc.hasPrivilege('502023032899781711')">
-                                                    <vc:i18n name="修改业主" namespace="listOwner"></vc:i18n>
+                                                <a href="javascript:void(0)" v-on:click="_openEditOwnerModel(owner)">
+                                                    <vc:i18n name="修改人员" namespace="listOwner"></vc:i18n>
                                                 </a>
                                                 <span>|</span>
-                                                <a href="javascript:void(0)" v-on:click="_openDelOwnerModel(owner)" v-if="vc.hasPrivilege('502023032818941714')">
-                                                    <vc:i18n name="删除业主" namespace="listOwner"></vc:i18n>
+                                                <a href="javascript:void(0)" v-on:click="_openDelOwnerModel(owner)">
+                                                    <vc:i18n name="删除人员" namespace="listOwner"></vc:i18n>
                                                 </a>
                                             </p>
                                             <p style="margin:10px 0;">
@@ -201,8 +171,8 @@
                                     </div>
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs " v-on:click="_openOwnerDetailModel(owner)">
-                                        <vc:i18n name="详情" namespace="listOwner"></vc:i18n>
-                                    </button>
+                                            <vc:i18n name="详情" namespace="listOwner"></vc:i18n>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -221,8 +191,8 @@
             </div>
         </div>
     </div>
-    <vc:create path="property/addOwner" notifyLoadDataComponentName="listOwner" componentTitle="业主"></vc:create>
-    <vc:create path="property/editOwner" notifyLoadDataComponentName="listOwner" componentTitle="业主"></vc:create>
+    <vc:create path="property/addOwner" notifyLoadDataComponentName="listOwner" componentTitle="人员"></vc:create>
+    <vc:create path="property/editOwner" notifyLoadDataComponentName="listOwner" componentTitle="人员"></vc:create>
     <vc:create path="property/deleteOwner" notifyLoadDataComponentName="listOwner"></vc:create>
     <!-- <vc:create path="owner/ownerRooms"></vc:create>
     <vc:create path="owner/ownerMembers"></vc:create>
