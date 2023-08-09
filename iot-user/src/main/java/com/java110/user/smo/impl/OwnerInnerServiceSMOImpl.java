@@ -57,7 +57,6 @@ public class OwnerInnerServiceSMOImpl  implements IOwnerInnerServiceSMO {
 
         Map ownerInfo = BeanConvertUtil.beanCovertMap(ownerDto);
         ownerInfo.put("communityId", ownerDto.getCommunityId());
-        ownerInfo.put("ownerTypeCd", OwnerDto.OWNER_TYPE_CD_OWNER);
         // ownerInfo.put("ownerIds", getOwnerIds(communityMemberDtos));
         //ownerInfo.put("ownerTypeCd", ownerDto.getOwnerTypeCd());
         // ownerInfo.put("statusCd", StatusConstant.STATUS_CD_VALID);
@@ -224,7 +223,6 @@ public class OwnerInnerServiceSMOImpl  implements IOwnerInnerServiceSMO {
 
         Map ownerInfo = BeanConvertUtil.beanCovertMap(ownerDto);
         ownerInfo.put("communityId", ownerDto.getCommunityId());
-        ownerInfo.put("ownerTypeCd", OwnerDto.OWNER_TYPE_CD_OWNER);
         // ownerInfo.put("ownerIds", getOwnerIds(communityMemberDtos));
         //ownerInfo.put("ownerTypeCd", ownerDto.getOwnerTypeCd());
         ownerInfo.put("statusCd", StatusConstant.STATUS_CD_VALID);

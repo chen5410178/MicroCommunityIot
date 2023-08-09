@@ -96,7 +96,7 @@
                                     <vc:i18n name="房屋数" namespace="listOwner"></vc:i18n>
                                 </th>
                                 <th data-hide="phone" class="text-center">
-                                    <vc:i18n name="人员成员" namespace="listOwner"></vc:i18n>
+                                    <vc:i18n name="人员类型" namespace="listOwner"></vc:i18n>
                                 </th>
                                 <th data-hide="phone" class="text-center">
                                     <vc:i18n name="车辆数" namespace="listOwner"></vc:i18n>
@@ -131,9 +131,7 @@
                                 </a>
                                 </td>
                                 <td class="text-center">
-                                    <a href="javascript:void(0)" @click="_viewOwnerMembers(owner)">
-                                    {{owner.memberCount || 0}}
-                                </a>
+                                    {{owner.ownerTypeName }}
                                 </td>
                                 <td class="text-center">
                                     <a href="javascript:void(0)" @click="_viewOwnerCars(owner)">
@@ -144,36 +142,22 @@
                                     {{item || '-'}}
                                 </td>
                                 <td class="text-center">
+
                                     <div class="btn-group">
-                                        <button class="btn-white btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <vc:i18n name="变更" namespace="listOwner"></vc:i18n>
-                                    </button>
-                                        <div class="dropdown-menu p-4 text-muted" style="max-width: 200px;">
-                                            <p style="margin:10px 0;">
-                                                <a href="javascript:void(0)" v-on:click="_openEditOwnerModel(owner)">
-                                                    <vc:i18n name="修改人员" namespace="listOwner"></vc:i18n>
-                                                </a>
-                                                <span>|</span>
-                                                <a href="javascript:void(0)" v-on:click="_openDelOwnerModel(owner)">
-                                                    <vc:i18n name="删除人员" namespace="listOwner"></vc:i18n>
-                                                </a>
-                                            </p>
-                                            <p style="margin:10px 0;">
-                                                <a href="javascript:void(0)" v-on:click="_openAddOwnerRoom(owner)">
-                                                    <vc:i18n name="入住房屋" namespace="listOwner"></vc:i18n>
-                                                </a>
-                                                <span>|</span>
-                                                <a href="javascript:void(0)" v-on:click="_openDeleteOwnerRoom(owner)">
-                                                    <vc:i18n name="房屋解绑" namespace="listOwner"></vc:i18n>
-                                                </a>
-                                            </p>
-                                        </div>
+                                        <button class="btn-white btn btn-xs " v-on:click="_openEditOwnerModel(owner)">
+                                            <vc:i18n name="修改" namespace="listOwner"></vc:i18n>
+                                        </button>
                                     </div>
                                     <div class="btn-group">
+                                        <button class="btn-white btn btn-xs " v-on:click="_openDelOwnerModel(owner)">
+                                            <vc:i18n name="删除" namespace="listOwner"></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <!-- <div class="btn-group">
                                         <button class="btn-white btn btn-xs " v-on:click="_openOwnerDetailModel(owner)">
                                             <vc:i18n name="详情" namespace="listOwner"></vc:i18n>
                                         </button>
-                                    </div>
+                                    </div> -->
                                 </td>
                             </tr>
                         </tbody>
