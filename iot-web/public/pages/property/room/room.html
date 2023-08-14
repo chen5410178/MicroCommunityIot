@@ -161,13 +161,12 @@
                                             </span>
                                         </div>
                                     </td>
-                                    <td class="text-center hand" v-if="room.ownerName" @click="_viewOwner(room)">
+                                    <td class="text-center hand" v-if="room.ownerName">
                                         <div class="hc-td">
                                             {{room.ownerName}}({{room.link}})
-                                            <span class="fa fa-info-circle"></span>
                                         </div>
                                     </td>
-                                    <td class="text-center hand" v-else @click="_viewOwner(room)">
+                                    <td class="text-center hand" v-else>
                                         <div class="hc-td textAuto">
                                             {{room.ownerName}}
                                         </div>
