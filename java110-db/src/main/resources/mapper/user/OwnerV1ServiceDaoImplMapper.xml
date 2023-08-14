@@ -190,16 +190,16 @@
     </select>
 
     <select id="queryOwnerMembersCount" parameterType="Map" resultType="Map">
-        select t.owner_id ownerId,count(1) memberCount
+        select borr.room_id roomId,count(1) memberCount
         from
         building_owner t
+        INNER JOIN building_owner_room_rel borr on t.member_id = borr.owner_id and borr.status_cd = '0'
         where t.status_cd = '0'
-        and t.owner_type_cd != '1001'
-        and t.owner_id in
-        <foreach collection="ownerIds" item="item" open="(" close=")" separator=",">
+        and borr.room_id in
+        <foreach collection="roomIds" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
-        group by t.owner_id
+        group by t.room_id
     </select>
 
     <select id="queryRoomOwners" parameterType="Map" resultType="Map">

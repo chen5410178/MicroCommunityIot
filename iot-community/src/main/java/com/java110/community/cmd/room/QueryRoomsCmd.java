@@ -23,6 +23,7 @@ import com.java110.intf.community.IUnitInnerServiceSMO;
 import com.java110.intf.user.IMenuV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerInnerServiceSMO;
 import com.java110.intf.user.IOwnerRoomRelInnerServiceSMO;
+import com.java110.intf.user.IOwnerV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,6 +85,9 @@ public class QueryRoomsCmd extends Cmd {
 
     @Autowired
     private IMenuV1InnerServiceSMO menuInnerServiceSMOImpl;
+
+    @Autowired
+    private IOwnerV1InnerServiceSMO ownerV1InnerServiceSMOImpl;
 
 
     protected static final int MAX_ROW = 10000;
@@ -163,7 +167,8 @@ public class QueryRoomsCmd extends Cmd {
         if (total > 0) {
             roomDtoList = roomInnerServiceSMOImpl.queryRooms(roomDto);
             refreshRoomOwners(reqJson.getString("loginUserId"), reqJson.getString("communityId"), roomDtoList);
-
+            // todo 计算房屋人员
+            queryOwnerMemberCount(roomDtoList);
         } else {
             roomDtoList = new ArrayList<>();
         }
@@ -267,4 +272,32 @@ public class QueryRoomsCmd extends Cmd {
         }
     }
 
+
+    /**
+     * 查询 业主成员数
+     *
+     * @param roomDtos
+     */
+    private void queryOwnerMemberCount(List<RoomDto> roomDtos) {
+        if (roomDtos == null || roomDtos.size() < 1) {
+            return;
+        }
+        List<String> roomIds = new ArrayList<>();
+        for(RoomDto roomDto : roomDtos){
+            roomIds.add(roomDto.getRoomId());
+        }
+
+        List<Map> memberCounts = ownerV1InnerServiceSMOImpl.queryOwnerMembersCount(roomIds);
+
+        for (RoomDto roomDto : roomDtos) {
+            if(StringUtil.isEmpty(roomDto.getOwnerId())){
+                continue;
+            }
+            for (Map count : memberCounts) {
+                if (roomDto.getRoomId().equals(count.get("roomId"))) {
+                    roomDto.setMemberCount(count.get("memberCount").toString());
+                }
+            }
+        }
+    }
 }

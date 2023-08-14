@@ -96,10 +96,10 @@ public class OwnerV1InnerServiceSMOImpl  implements IOwnerV1InnerServiceSMO {
     }
 
     @Override
-    public List<Map> queryOwnerMembersCount(@RequestBody List<String> ownerIds) {
+    public List<Map> queryOwnerMembersCount(@RequestBody List<String> roomIds) {
 
         Map info = new HashMap();
-        info.put("ownerIds", ownerIds.toArray(new String[ownerIds.size()]));
+        info.put("roomIds", roomIds.toArray(new String[roomIds.size()]));
         List<Map> result = ownerV1ServiceDaoImpl.queryOwnerMembersCount(info);
         return result;
     }
