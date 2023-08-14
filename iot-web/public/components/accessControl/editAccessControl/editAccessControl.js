@@ -1,0 +1,185 @@
+(function(vc,vm){
+
+    vc.extends({
+        data:{
+            editAccessControlInfo:{
+                machineId:'',
+machineCode:'',
+machineName:'',
+machineIp:'',
+machineMac:'',
+direction:'',
+implBean:'',
+locationId:'',
+locationName:'',
+
+            }
+        },
+         _initMethod:function(){
+
+         },
+         _initEvent:function(){
+             vc.on('editAccessControl','openEditAccessControlModal',function(_params){
+                vc.component.refreshEditAccessControlInfo();
+                $('#editAccessControlModel').modal('show');
+                vc.copyObject(_params, vc.component.editAccessControlInfo );
+                vc.component.editAccessControlInfo.communityId = vc.getCurrentCommunity().communityId;
+            });
+        },
+        methods:{
+            editAccessControlValidate:function(){
+                        return vc.validate.validate({
+                            editAccessControlInfo:vc.component.editAccessControlInfo
+                        },{
+                            'editAccessControlInfo.machineCode':[
+{
+                            limit:"required",
+                            param:"",
+                            errInfo:"设备编码不能为空"
+                        },
+ {
+                            limit:"maxLength",
+                            param:"30",
+                            errInfo:"设备编码不能超过30"
+                        },
+                    ],
+'editAccessControlInfo.machineName':[
+{
+                            limit:"required",
+                            param:"",
+                            errInfo:"设备名称不能为空"
+                        },
+ {
+                            limit:"maxLength",
+                            param:"200",
+                            errInfo:"设备名称不能超过200"
+                        },
+                    ],
+'editAccessControlInfo.machineIp':[
+{
+                            limit:"required",
+                            param:"",
+                            errInfo:"设备IP不能为空"
+                        },
+ {
+                            limit:"maxLength",
+                            param:"64",
+                            errInfo:"设备IP不能超过64"
+                        },
+                    ],
+'editAccessControlInfo.machineMac':[
+{
+                            limit:"required",
+                            param:"",
+                            errInfo:"设备mac不能为空"
+                        },
+ {
+                            limit:"maxLength",
+                            param:"64",
+                            errInfo:"设备mac不能超过64"
+                        },
+                    ],
+'editAccessControlInfo.direction':[
+{
+                            limit:"required",
+                            param:"",
+                            errInfo:"设备方向进出不能为空"
+                        },
+ {
+                            limit:"maxLength",
+                            param:"12",
+                            errInfo:"设备方向进出不能超过12"
+                        },
+                    ],
+'editAccessControlInfo.implBean':[
+{
+                            limit:"required",
+                            param:"",
+                            errInfo:"门禁厂家不能为空"
+                        },
+ {
+                            limit:"maxLength",
+                            param:"30",
+                            errInfo:"门禁厂家不能超过30"
+                        },
+                    ],
+'editAccessControlInfo.locationId':[
+{
+                            limit:"required",
+                            param:"",
+                            errInfo:"位置ID不能为空"
+                        },
+ {
+                            limit:"maxLength",
+                            param:"30",
+                            errInfo:"位置ID不能超过30"
+                        },
+                    ],
+'editAccessControlInfo.locationName':[
+{
+                            limit:"required",
+                            param:"",
+                            errInfo:"位置名称'不能为空"
+                        },
+ {
+                            limit:"maxLength",
+                            param:"30",
+                            errInfo:"位置名称'不能超过30"
+                        },
+                    ],
+'editAccessControlInfo.machineId':[
+{
+                            limit:"required",
+                            param:"",
+                            errInfo:"编号不能为空"
+                        }]
+
+                        });
+             },
+            editAccessControl:function(){
+                if(!vc.component.editAccessControlValidate()){
+                    vc.toast(vc.validate.errInfo);
+                    return ;
+                }
+
+                vc.http.apiPost(
+                    'accessControl.updateAccessControl',
+                    JSON.stringify(vc.component.editAccessControlInfo),
+                    {
+                        emulateJSON:true
+                     },
+                     function(json,res){
+                        //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
+                        let _json = JSON.parse(json);
+                        if (_json.code == 0) {
+                            //关闭model
+                            $('#editAccessControlModel').modal('hide');
+                             vc.emit('accessControlManage','listAccessControl',{});
+                            return ;
+                        }
+                        vc.message(_json.msg);
+                     },
+                     function(errInfo,error){
+                        console.log('请求失败处理');
+
+                        vc.message(errInfo);
+                     });
+            },
+            refreshEditAccessControlInfo:function(){
+                vc.component.editAccessControlInfo= {
+                  machineId:'',
+machineCode:'',
+machineName:'',
+machineIp:'',
+machineMac:'',
+direction:'',
+implBean:'',
+locationId:'',
+locationName:'',
+
+                }
+            }
+        }
+    });
+
+})(window.vc,window.vc.component);
