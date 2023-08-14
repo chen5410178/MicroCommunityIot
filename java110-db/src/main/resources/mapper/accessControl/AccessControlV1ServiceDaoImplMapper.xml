@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="accessControlV1ServiceDaoImpl">
+
+
+    <!-- 保存门禁信息 add by wuxw 2018-07-03 -->
+    <insert id="saveAccessControlInfo" parameterType="Map">
+        insert into access_control(
+        machine_mac,heartbeat_time,impl_bean,machine_id,machine_code,location_name,location_id,community_id,machine_name,machine_ip,direction
+        ) values (
+        #{machineMac},#{heartbeatTime},#{implBean},#{machineId},#{machineCode},#{locationName},#{locationId},#{communityId},#{machineName},#{machineIp},#{direction}
+        )
+    </insert>
+
+
+    <!-- 查询门禁信息 add by wuxw 2018-07-03 -->
+    <select id="getAccessControlInfo" parameterType="Map" resultType="Map">
+        select t.machine_mac,t.machine_mac machineMac,t.heartbeat_time,t.heartbeat_time
+        heartbeatTime,t.impl_bean,t.impl_bean implBean,t.machine_id,t.machine_id machineId,t.machine_code,t.machine_code
+        machineCode,t.location_name,t.location_name locationName,t.location_id,t.location_id
+        locationId,t.status_cd,t.status_cd statusCd,t.community_id,t.community_id
+        communityId,t.machine_name,t.machine_name machineName,t.machine_ip,t.machine_ip machineIp,t.direction
+        from access_control t
+        where 1 =1
+        <if test="machineMac !=null and machineMac != ''">
+            and t.machine_mac= #{machineMac}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            and t.location_name= #{locationName}
+        </if>
+        <if test="locationId !=null and locationId != ''">
+            and t.location_id= #{locationId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="machineIp !=null and machineIp != ''">
+            and t.machine_ip= #{machineIp}
+        </if>
+        <if test="direction !=null and direction != ''">
+            and t.direction= #{direction}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改门禁信息 add by wuxw 2018-07-03 -->
+    <update id="updateAccessControlInfo" parameterType="Map">
+        update access_control t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="machineMac !=null and machineMac != ''">
+            , t.machine_mac= #{machineMac}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            , t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            , t.impl_bean= #{implBean}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            , t.location_name= #{locationName}
+        </if>
+        <if test="locationId !=null and locationId != ''">
+            , t.location_id= #{locationId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            , t.machine_name= #{machineName}
+        </if>
+        <if test="machineIp !=null and machineIp != ''">
+            , t.machine_ip= #{machineIp}
+        </if>
+        <if test="direction !=null and direction != ''">
+            , t.direction= #{direction}
+        </if>
+        where 1=1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+
+    </update>
+
+    <!-- 查询门禁数量 add by wuxw 2018-07-03 -->
+    <select id="queryAccessControlsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from access_control t
+        where 1 =1
+        <if test="machineMac !=null and machineMac != ''">
+            and t.machine_mac= #{machineMac}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            and t.location_name= #{locationName}
+        </if>
+        <if test="locationId !=null and locationId != ''">
+            and t.location_id= #{locationId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="machineIp !=null and machineIp != ''">
+            and t.machine_ip= #{machineIp}
+        </if>
+        <if test="direction !=null and direction != ''">
+            and t.direction= #{direction}
+        </if>
+
+
+    </select>
+
+</mapper>
