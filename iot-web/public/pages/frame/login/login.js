@@ -3,33 +3,33 @@
         data: {
             loginInfo: {
                 logo: '',
-                username: '',
-                passwd: '',
+                username: '18909715555',
+                passwd: '123456',
                 validateCode: '',
                 errorInfo: '',
                 codeImage: '',
             }
         },
         _initMethod: function() {
-            vc.component.clearCacheData();
-            vc.component._loadSysInfo();
+            $that.clearCacheData();
+            $that._loadSysInfo();
             $that.generateCode();
 
         },
         _initEvent: function() {
-            vc.component.$on('errorInfoEvent', function(_errorInfo) {
-                vc.component.loginInfo.errorInfo = _errorInfo;
+            $that.$on('errorInfoEvent', function(_errorInfo) {
+                $that.loginInfo.errorInfo = _errorInfo;
                 console.log('errorInfoEvent 事件被监听', _errorInfo)
             });
 
-            vc.component.$on('validate_code_component_param_change_event', function(params) {
+            $that.$on('validate_code_component_param_change_event', function(params) {
                 for (var tmpAttr in params) {
-                    vc.component.loginInfo[tmpAttr] = params[tmpAttr];
+                    $that.loginInfo[tmpAttr] = params[tmpAttr];
                 }
                 console.log('errorInfoEvent 事件被监听', params)
             });
             vc.on('login', 'doLogin', function() {
-                vc.component.doLogin();
+                $that.doLogin();
             })
         },
         methods: {
@@ -50,36 +50,36 @@
                         if (res.status != 200) {
                             console.log("加载系统信息失败");
                             vc.saveData("_sysInfo", { logo: 'HC' });
-                            vc.copyObject(json, vc.component.loginInfo);
+                            vc.copyObject(json, $that.loginInfo);
                             return;
                         }
-                        vc.copyObject(JSON.parse(json), vc.component.loginInfo);
+                        vc.copyObject(JSON.parse(json), $that.loginInfo);
                         //保存到浏览器
                         vc.saveData("_sysInfo", JSON.parse(json));
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');
                         vc.saveData("_sysInfo", { logo: 'HC' });
-                        vc.copyObject(json, vc.component.loginInfo);
-                        vc.component.loginInfo.errorInfo = errInfo;
+                        vc.copyObject(json, $that.loginInfo);
+                        $that.loginInfo.errorInfo = errInfo;
                     });
             },
             doLogin: function() {
-                if (!vc.notNull(vc.component.loginInfo.username)) {
+                if (!vc.notNull($that.loginInfo.username)) {
                     vc.toast('用户名不能为空');
                     return;
                 }
-                if (!vc.notNull(vc.component.loginInfo.passwd)) {
+                if (!vc.notNull($that.loginInfo.passwd)) {
                     vc.toast('密码不能为空');
                     return;
                 }
-                if (!vc.notNull(vc.component.loginInfo.validateCode)) {
+                if (!vc.notNull($that.loginInfo.validateCode)) {
                     vc.toast('验证码不能为空');
                     return;
                 }
                 vc.http.apiPost(
                     '/login.pcUserLogin',
-                    JSON.stringify(vc.component.loginInfo), {
+                    JSON.stringify($that.loginInfo), {
                         emulateJSON: true
                     },
                     function(json, res) {
@@ -96,12 +96,12 @@
                             return;
                         }
                         vc.toast(json);
-                        vc.component.loginInfo.errorInfo = json;
+                        $that.loginInfo.errorInfo = json;
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');
                         vc.toast(errInfo);
-                        vc.component.loginInfo.errorInfo = errInfo;
+                        $that.loginInfo.errorInfo = errInfo;
                     });
 
             },
@@ -119,7 +119,7 @@
                     function(json, res) {
                         //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
                         if (res.status == 200) {
-                            vc.component.loginInfo.codeImage = json;
+                            $that.loginInfo.codeImage = json;
                             return;
                         }
                     },
