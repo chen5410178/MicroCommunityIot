@@ -199,7 +199,7 @@
         <foreach collection="roomIds" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
-        group by t.room_id
+        group by borr.room_id
     </select>
 
     <select id="queryRoomOwners" parameterType="Map" resultType="Map">
