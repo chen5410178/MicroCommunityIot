@@ -23,7 +23,7 @@ spring:
       enabled: true
       force: true
   application:
-    name: iot-access-control
+    name: iot-accessControl
   redis:
     database: 0
     host: dev.redis.java110.com

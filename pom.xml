@@ -16,7 +16,7 @@
         <module>java110-db</module>
         <module>java110-doc</module>
         <module>java110-boot</module>
-        <module>iot-access-control</module>
+        <module>iot-accessControl</module>
         <module>iot-gateway</module>
         <module>iot-attendance</module>
         <module>iot-barrier</module>

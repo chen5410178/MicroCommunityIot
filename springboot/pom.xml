@@ -86,7 +86,7 @@
         </dependency>
         <dependency>
             <groupId>com.java110</groupId>
-            <artifactId>iot-access-control</artifactId>
+            <artifactId>iot-accessControl</artifactId>
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>

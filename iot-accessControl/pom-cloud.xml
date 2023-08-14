@@ -7,10 +7,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>iot-access-control</artifactId>
+    <artifactId>iot-accessControl</artifactId>
     <packaging>jar</packaging>
 
-    <name>iot-access-control</name>
+    <name>iot-accessControl</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -39,7 +39,7 @@
     </dependencies>
 
     <build>
-        <finalName>iot-access-control</finalName>
+        <finalName>iot-accessControl</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
