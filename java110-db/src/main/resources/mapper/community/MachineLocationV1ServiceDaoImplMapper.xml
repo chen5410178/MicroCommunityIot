@@ -20,8 +20,9 @@
         select t.location_name,t.location_name locationName,t.location_id,t.location_id
         locationId,t.location_type,t.location_type locationType,t.status_cd,t.status_cd
         statusCd,t.location_obj_name,t.location_obj_name locationObjName,t.community_id,t.community_id
-        communityId,t.location_obj_id,t.location_obj_id locationObjId
+        communityId,t.location_obj_id,t.location_obj_id locationObjId,t.create_time createTime,td.name locationTypeName
         from machine_location t
+        left join t_dict td on td.table_name = 'machine_location' and td.table_columns = 'location_type' and t.location_type = td.status_cd
         where 1 =1
         <if test="locationName !=null and locationName != ''">
             and t.location_name= #{locationName}

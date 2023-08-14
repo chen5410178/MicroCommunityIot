@@ -55,16 +55,16 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <vc:i18n name='编号' namespace='machineLocation'></vc:i18n>
-                                </th>
-                                <th class="text-center">
                                     <vc:i18n name='位置名称' namespace='machineLocation'></vc:i18n>
                                 </th>
                                 <th class="text-center">
                                     <vc:i18n name='位置类型' namespace='machineLocation'></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <vc:i18n name='对象ID' namespace='machineLocation'></vc:i18n>
+                                    <vc:i18n name='位置对象' namespace='machineLocation'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='machineLocation'></vc:i18n>
                                 </th>
                                 <th class="text-center">
                                     <vc:i18n name='操作'></vc:i18n>
@@ -73,10 +73,10 @@
                         </thead>
                         <tbody>
                             <tr v-for="machineLocation in machineLocationInfo.machineLocations">
-                                <td class="text-center">{{machineLocation.locationId}}</td>
                                 <td class="text-center">{{machineLocation.locationName}}</td>
-                                <td class="text-center">{{machineLocation.locationType}}</td>
+                                <td class="text-center">{{machineLocation.locationTypeName}}</td>
                                 <td class="text-center">{{machineLocation.locationObjName}}</td>
+                                <td class="text-center">{{machineLocation.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs"

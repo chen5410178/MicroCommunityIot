@@ -4,14 +4,14 @@
         <div class="modal-content">
             <div class="modal-body">
                 <h3 class="m-t-none m-b ">
-                        <vc:i18n name="添加" namespace="addMachineLocation"></vc:i18n>
+                    <vc:i18n name="添加" namespace="addMachineLocation"></vc:i18n>
                 </h3>
                 <div class="ibox-content">
                     <div>
                         <div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">
-                                        <vc:i18n name='位置名称' namespace='addMachineLocation'></vc:i18n>
+                                    <vc:i18n name='位置名称' namespace='addMachineLocation'></vc:i18n>
                                 </label>
                                 <div class="col-sm-10">
                                     <input v-model="addMachineLocationInfo.locationName" type="text"
@@ -20,23 +20,45 @@
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">
-                                        <vc:i18n name='位置类型' namespace='addMachineLocation'></vc:i18n>
+                                    <span><vc:i18n name="位置类型" namespace="addMachineLocation"></vc:i18n></span>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input v-model="addMachineLocationInfo.locationType" type="text"
-                                        :placeholder="vc.i18n('必填，请填写位置类型','addMachineLocation')" class="form-control">
+                                    <select class="custom-select" v-model="addMachineLocationInfo.locationType"
+                                            >
+                                        <option selected disabled value="">
+                                            {{vc.i18n('必填，请选择位置类型','addMachineLocation')}}
+                                        </option>
+                                        <option value="1000">{{vc.i18n('小区','addMachineLocation')}}</option>
+                                        <option value="6000">{{vc.i18n('楼栋','addMachineLocation')}}</option>
+                                        <option value="2000">{{vc.i18n('单元','addMachineLocation')}}</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <div class="form-group row" v-if="addMachineLocationInfo.locationType == '2000' || addMachineLocationInfo.locationType == '6000' ">
                                 <label class="col-sm-2 col-form-label">
-                                        <vc:i18n name='对象ID' namespace='addMachineLocation'></vc:i18n>
+                                    <vc:i18n name="楼栋" namespace="addMachineLocation"></vc:i18n>
                                 </label>
-                                <div class="col-sm-10">
-                                    <input v-model="addMachineLocationInfo.locationObjName" type="text"
-                                        :placeholder="vc.i18n('必填，请填写对象ID','addMachineLocation')" class="form-control">
+                                <div class="col-sm-4">
+                                    <select class="custom-select" v-model="addMachineLocationInfo.floorId"
+                                            @change="_loadUnits()">
+                                        <option selected disabled value="">
+                                            {{vc.i18n('必填，请选择楼栋','addMachineLocation')}}
+                                        </option>
+                                        <option :value="item.floorId" v-for="(item,index) in addMachineLocationInfo.floors">{{item.floorName}}</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 col-form-label text-right" v-if="addMachineLocationInfo.locationType == '2000'">
+                                    <vc:i18n name="单元" namespace="addMachineLocation"></vc:i18n>
+                                </label>
+                                <div class="col-sm-4" v-if="addMachineLocationInfo.locationType == '2000'">
+                                    <select class="custom-select" v-model="addMachineLocationInfo.unitId">
+                                        <option selected disabled value="">
+                                            {{vc.i18n('必填，请选择单元','addMachineLocation')}}
+                                        </option>
+                                        <option :value="item.unitId" v-for="(item,index) in addMachineLocationInfo.units">{{item.unitNum}}</option>
+                                    </select>
                                 </div>
                             </div>
-
                             <div class="ibox-content">
                                 <button class="btn btn-primary float-right" type="button"
                                     v-on:click="saveMachineLocationInfo()"><i class="fa fa-check"></i>&nbsp;
@@ -46,9 +68,7 @@
                                 </button>
                                 <button type="button" class="btn btn-warning float-right" style="margin-right:20px;"
                                     data-dismiss="modal">
-                                    <span>
-                                        <vc:i18n name="取消"></vc:i18n>
-                                    </span>
+                                    <vc:i18n name="取消"></vc:i18n>
                                 </button>
                             </div>
                         </div>

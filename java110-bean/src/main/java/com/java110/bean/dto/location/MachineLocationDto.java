@@ -18,6 +18,8 @@ public class MachineLocationDto extends PageDto implements Serializable {
     private String locationName;
     private String locationId;
     private String locationType;
+
+    private String locationTypeName;
     private String locationObjName;
     private String communityId;
     private String locationObjId;
@@ -91,5 +93,13 @@ public class MachineLocationDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getLocationTypeName() {
+        return locationTypeName;
+    }
+
+    public void setLocationTypeName(String locationTypeName) {
+        this.locationTypeName = locationTypeName;
     }
 }

@@ -12,17 +12,17 @@
          _initEvent:function(){
              vc.on('deleteMachineLocation','openDeleteMachineLocationModal',function(_params){
 
-                vc.component.deleteMachineLocationInfo = _params;
+                $that.deleteMachineLocationInfo = _params;
                 $('#deleteMachineLocationModel').modal('show');
 
             });
         },
         methods:{
             deleteMachineLocation:function(){
-                vc.component.deleteMachineLocationInfo.communityId=vc.getCurrentCommunity().communityId;
+                $that.deleteMachineLocationInfo.communityId=vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
-                    'machineLocation.deleteMachineLocation',
-                    JSON.stringify(vc.component.deleteMachineLocationInfo),
+                    '/location.deleteMachineLocation',
+                    JSON.stringify($that.deleteMachineLocationInfo),
                     {
                         emulateJSON:true
                      },
@@ -32,14 +32,14 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#deleteMachineLocationModel').modal('hide');
-                            vc.emit('machineLocationManage','listMachineLocation',{});
+                            vc.emit('machineLocation','listMachineLocation',{});
                             return ;
                         }
-                        vc.message(_json.msg);
+                        vc.toast(_json.msg);
                      },
                      function(errInfo,error){
                         console.log('请求失败处理');
-                        vc.message(json);
+                        vc.toast(json);
 
                      });
             },
@@ -49,4 +49,4 @@
         }
     });
 
-})(window.vc,window.vc.component);
+})(window.vc,window.$that);
