@@ -23,7 +23,7 @@ import java.util.List;
 @Java110CmdDoc(title = "查询小区",
         description = "查询系统中的所有小区信息",
         httpMethod = "get",
-        url = "http://{ip}:{port}/app/community.listCommunitys",
+        url = "http://{ip}:{port}/iot/api/community.listCommunitys",
         resource = "communityDoc",
         author = "吴学文",
         serviceCode = "community.listCommunitys"

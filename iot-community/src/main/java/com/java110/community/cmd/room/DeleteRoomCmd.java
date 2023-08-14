@@ -21,7 +21,7 @@ import java.util.List;
 @Java110CmdDoc(title = "删除房屋",
         description = "对应后台 删除房屋功能，这里需要先解绑业主和房屋关系 才能做删除",
         httpMethod = "post",
-        url = "http://{ip}:{port}/app/room.deleteRoom",
+        url = "http://{ip}:{port}/iot/api/room.deleteRoom",
         resource = "communityDoc",
         author = "吴学文",
         serviceCode = "room.deleteRoom"

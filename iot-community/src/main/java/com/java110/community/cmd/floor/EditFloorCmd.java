@@ -25,7 +25,7 @@ import java.util.List;
 @Java110CmdDoc(title = "编辑楼栋",
         description = "用于外系统编辑楼栋信息功能",
         httpMethod = "post",
-        url = "http://{ip}:{port}/app/floor.editFloor",
+        url = "http://{ip}:{port}/iot/api/floor.editFloor",
         resource = "communityDoc",
         author = "吴学文",
         serviceCode = "floor.editFloor"

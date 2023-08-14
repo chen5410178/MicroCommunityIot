@@ -29,7 +29,7 @@ import java.util.List;
 @Java110CmdDoc(title = "添加房屋",
         description = "对应后台 添加房屋功能",
         httpMethod = "post",
-        url = "http://{ip}:{port}/app/room.saveRoom",
+        url = "http://{ip}:{port}/iot/api/room.saveRoom",
         resource = "communityDoc",
         author = "吴学文",
         serviceCode = "room.saveRoom"

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
         title = "HC物联网管理系统api接口文档",
         description = "HC物联网管理系统api接口文档",
         company = "Java110工作室",
-        version = "v1.5"
+        version = "v1.6"
 )
 
 @Java110RequestMappingsDoc(

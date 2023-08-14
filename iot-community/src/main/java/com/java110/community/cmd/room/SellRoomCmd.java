@@ -25,7 +25,7 @@ import java.text.ParseException;
 @Java110CmdDoc(title = "业主房屋关系绑定",
         description = "对应后台 业主入驻房屋功能",
         httpMethod = "post",
-        url = "http://{ip}:{port}/app/room.sellRoom",
+        url = "http://{ip}:{port}/iot/api/room.sellRoom",
         resource = "communityDoc",
         author = "吴学文",
         serviceCode = "room.sellRoom"

@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Java110CmdDoc(title = "删除单元",
         description = "用于外系统删除单元信息功能",
         httpMethod = "post",
-        url = "http://{ip}:{port}/app/unit.deleteUnit",
+        url = "http://{ip}:{port}/iot/api/unit.deleteUnit",
         resource = "communityDoc",
         author = "吴学文",
         serviceCode = "unit.deleteUnit"

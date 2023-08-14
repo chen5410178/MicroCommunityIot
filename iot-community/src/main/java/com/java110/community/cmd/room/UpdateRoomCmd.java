@@ -30,7 +30,7 @@ import java.util.List;
 @Java110CmdDoc(title = "修改房屋",
         description = "对应后台 修改房屋功能",
         httpMethod = "post",
-        url = "http://{ip}:{port}/app/room.updateRoom",
+        url = "http://{ip}:{port}/iot/api/room.updateRoom",
         resource = "communityDoc",
         author = "吴学文",
         serviceCode = "room.updateRoom"

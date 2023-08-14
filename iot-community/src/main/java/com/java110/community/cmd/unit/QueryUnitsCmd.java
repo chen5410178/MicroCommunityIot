@@ -22,7 +22,7 @@ import java.util.List;
 @Java110CmdDoc(title = "查询单元",
         description = "用于外系统查询单元信息功能",
         httpMethod = "get",
-        url = "http://{ip}:{port}/app/unit.queryUnits",
+        url = "http://{ip}:{port}/iot/api/unit.queryUnits",
         resource = "communityDoc",
         author = "吴学文",
         serviceCode = "unit.queryUnits"

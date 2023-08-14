@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Java110CmdDoc(title = "添加楼栋",
         description = "用于外系统添加楼栋信息功能",
         httpMethod = "post",
-        url = "http://{ip}:{port}/app/floor.saveFloor",
+        url = "http://{ip}:{port}/iot/api/floor.saveFloor",
         resource = "communityDoc",
         author = "吴学文",
         serviceCode = "floor.saveFloor"

@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Java110CmdDoc(title = "添加单元",
         description = "用于外系统添加单元信息功能",
         httpMethod = "post",
-        url = "http://{ip}:{port}/app/unit.saveUnit",
+        url = "http://{ip}:{port}/iot/api/unit.saveUnit",
         resource = "communityDoc",
         author = "吴学文",
         serviceCode = "unit.saveUnit"

@@ -27,7 +27,7 @@ import java.util.List;
 @Java110CmdDoc(title = "业主房屋关系解绑",
         description = "对应后台 业主退房房屋功能",
         httpMethod = "post",
-        url = "http://{ip}:{port}/app/room.exitRoom",
+        url = "http://{ip}:{port}/iot/api/room.exitRoom",
         resource = "communityDoc",
         author = "吴学文",
         serviceCode = "room.exitRoom"

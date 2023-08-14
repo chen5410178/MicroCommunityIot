@@ -34,7 +34,7 @@ import java.util.Map;
 @Java110CmdDoc(title = "查询房屋",
         description = "查询房屋信息",
         httpMethod = "get",
-        url = "http://{ip}:{port}/app/room.queryRooms",
+        url = "http://{ip}:{port}/iot/api/room.queryRooms",
         resource = "communityDoc",
         author = "吴学文",
         serviceCode = "room.queryRooms"

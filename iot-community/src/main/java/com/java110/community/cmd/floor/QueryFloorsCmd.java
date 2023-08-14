@@ -22,7 +22,7 @@ import java.util.List;
 @Java110CmdDoc(title = "查询楼栋",
         description = "用于外系统查询楼栋信息功能",
         httpMethod = "get",
-        url = "http://{ip}:{port}/app/floor.queryFloors",
+        url = "http://{ip}:{port}/iot/api/floor.queryFloors",
         resource = "communityDoc",
         author = "吴学文",
         serviceCode = "floor.queryFloors"

@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Java110CmdDoc(title = "删除楼栋",
         description = "用于外系统删除楼栋信息功能",
         httpMethod = "post",
-        url = "http://{ip}:{port}/app/floor.deleteFloor",
+        url = "http://{ip}:{port}/iot/api/floor.deleteFloor",
         resource = "communityDoc",
         author = "吴学文",
         serviceCode = "floor.deleteFloor"
