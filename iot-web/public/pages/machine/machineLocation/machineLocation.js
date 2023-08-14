@@ -41,7 +41,7 @@
                 };
 
                 //发送get请求
-                vc.http.apiGet('machineLocation.listMachineLocations',
+                vc.http.apiGet('/location.listMachineLocation',
                     param,
                     function (json, res) {
                         let _json = JSON.parse(json);
@@ -69,13 +69,6 @@
             _queryMachineLocationMethod: function () {
                 $that._listMachineLocations(DEFAULT_PAGE, DEFAULT_ROWS);
 
-            },
-            _moreCondition: function () {
-                if ($that.machineLocationInfo.moreCondition) {
-                    $that.machineLocationInfo.moreCondition = false;
-                } else {
-                    $that.machineLocationInfo.moreCondition = true;
-                }
             }
 
 

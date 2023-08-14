@@ -26,6 +26,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.doc.annotation.*;
 import com.java110.intf.community.IMachineLocationV1InnerServiceSMO;
 import com.java110.bean.po.location.MachineLocationPo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,37 @@ import org.slf4j.LoggerFactory;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
+
+
+@Java110CmdDoc(title = "添加设备位置",
+        description = "用于外系统添加设备位置功能",
+        httpMethod = "post",
+        url = "http://{ip}:{port}/iot/api/location.saveMachineLocation",
+        resource = "communityDoc",
+        author = "吴学文",
+        serviceCode = "location.saveMachineLocation"
+)
+
+@Java110ParamsDoc(params = {
+        @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
+        @Java110ParamDoc(name = "locationName", length = 64, remark = "名称"),
+        @Java110ParamDoc(name = "locationType", length = 64, remark = "类型"),
+        @Java110ParamDoc(name = "locationObjId", length = 64, remark = "位置ID"),
+        @Java110ParamDoc(name = "locationObjName",  length = 64, remark = "位置名称"),
+})
+
+@Java110ResponseDoc(
+        params = {
+                @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
+                @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
+        }
+)
+
+@Java110ExampleDoc(
+        reqBody = "{\"locationName\":\"\",\"locationType\":\"2号楼\",\"locationObjId\":\"\",\"locationObjName\":\"22\",\"communityId\":\"2022081539020475\"}",
+        resBody = "{'code':0,'msg':'成功'}"
+)
+
 @Java110Cmd(serviceCode = "location.saveMachineLocation")
 public class SaveMachineLocationCmd extends Cmd {
 
