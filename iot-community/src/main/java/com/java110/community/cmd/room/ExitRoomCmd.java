@@ -47,12 +47,12 @@ import java.util.List;
 )
 
 @Java110ExampleDoc(
-        reqBody="{\n" +
+        reqBody = "{\n" +
                 "\t\"ownerId\": 121231,\n" +
                 "\t\"roomId\": \"123123\",\n" +
                 "\t\"communityId\": \"2022121921870161\"\n" +
                 "}",
-        resBody="{\"code\":0,\"msg\":\"成功\"}"
+        resBody = "{\"code\":0,\"msg\":\"成功\"}"
 )
 @Java110Cmd(serviceCode = "room.exitRoom")
 public class ExitRoomCmd extends Cmd {
@@ -63,7 +63,6 @@ public class ExitRoomCmd extends Cmd {
 
     @Autowired
     private IRoomInnerServiceSMO roomInnerServiceSMOImpl;
-
 
 
     @Autowired
@@ -96,11 +95,11 @@ public class ExitRoomCmd extends Cmd {
         OwnerRoomRelDto ownerRoomRelDto = BeanConvertUtil.covertBean(reqJson, OwnerRoomRelDto.class);
         List<OwnerRoomRelDto> ownerRoomRelDtos = ownerRoomRelInnerServiceSMOImpl.queryOwnerRoomRels(ownerRoomRelDto);
 
-        if (ownerRoomRelDtos == null || ownerRoomRelDtos.size() != 1) {
+        if (ownerRoomRelDtos == null || ownerRoomRelDtos.size() < 1) {
             throw new CmdException(ResponseConstant.RESULT_CODE_ERROR, "数据存在问题，业主和房屋对应关系不是一条");
         }
 
-        if(StringUtil.isEmpty(ownerRoomRelDtos.get(0).getRelId())){
+        if (StringUtil.isEmpty(ownerRoomRelDtos.get(0).getRelId())) {
             throw new CmdException("未包含关系");
         }
 
@@ -117,12 +116,22 @@ public class ExitRoomCmd extends Cmd {
             throw new IllegalArgumentException("删除业主房屋关系失败");
         }
 
+        //todo 查询房屋是否存在人员，如果存在返回 如果不存在 则修改为空闲
+        OwnerRoomRelDto tmpOwnerRoomRelDto = new OwnerRoomRelDto();
+        tmpOwnerRoomRelDto.setRoomId(ownerRoomRelDtos.get(0).getRoomId());
+        long count = ownerRoomRelInnerServiceSMOImpl.queryOwnerRoomRelsCount(ownerRoomRelDto);
+
+        if (count > 0) {
+            return;
+        }
+
         RoomDto roomDto = new RoomDto();
         roomDto.setRoomId(reqJson.getString("roomId"));
         roomDto.setCommunityId(reqJson.getString("communityId"));
         List<RoomDto> roomDtos = roomInnerServiceSMOImpl.queryRooms(roomDto);
-
         Assert.listOnlyOne(roomDtos, "房屋或商铺不存在");
+
+
         if (RoomDto.ROOM_TYPE_SHOPS.equals(roomDtos.get(0).getRoomType())) {
             reqJson.put("state", RoomDto.STATE_SHOP_FREE);
         } else {

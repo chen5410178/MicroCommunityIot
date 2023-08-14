@@ -1,6 +1,7 @@
 package com.java110.community.cmd.room;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.dto.owner.OwnerRoomRelDto;
 import com.java110.bean.po.owner.OwnerRoomRelPo;
 import com.java110.bean.po.room.RoomPo;
 import com.java110.core.annotation.Java110Cmd;
@@ -20,6 +21,7 @@ import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
+
 @Java110CmdDoc(title = "业主房屋关系绑定",
         description = "对应后台 业主入驻房屋功能",
         httpMethod = "post",
@@ -49,13 +51,13 @@ import java.text.ParseException;
 )
 
 @Java110ExampleDoc(
-        reqBody="{\n" +
+        reqBody = "{\n" +
                 "\t\"ownerId\": 121231,\n" +
                 "\t\"state\": \"2001\",\n" +
                 "\t\"roomId\": \"123123\",\n" +
                 "\t\"communityId\": \"2022121921870161\"\n" +
                 "}",
-        resBody="{\"code\":0,\"msg\":\"成功\"}"
+        resBody = "{\"code\":0,\"msg\":\"成功\"}"
 )
 @Java110Cmd(serviceCode = "room.sellRoom")
 public class SellRoomCmd extends Cmd {
@@ -79,12 +81,21 @@ public class SellRoomCmd extends Cmd {
         Assert.jsonObjectHaveKey(reqJson, "ownerId", "请求报文中未包含ownerId节点");
         Assert.jsonObjectHaveKey(reqJson, "roomId", "请求报文中未包含roomId节点");
         Assert.jsonObjectHaveKey(reqJson, "state", "请求报文中未包含state节点");
-      //  Assert.jsonObjectHaveKey(reqJson, "storeId", "请求报文中未包含storeId节点");
+        //  Assert.jsonObjectHaveKey(reqJson, "storeId", "请求报文中未包含storeId节点");
 
         Assert.hasLength(reqJson.getString("communityId"), "小区ID不能为空");
         Assert.hasLength(reqJson.getString("ownerId"), "ownerId不能为空");
         Assert.hasLength(reqJson.getString("roomId"), "roomId不能为空");
         Assert.hasLength(reqJson.getString("state"), "state不能为空");
+
+        // todo 校验 房屋和人员之间是否存在关系
+        OwnerRoomRelDto ownerRoomRelDto = new OwnerRoomRelDto();
+        ownerRoomRelDto.setRoomId(reqJson.getString("roomId"));
+        ownerRoomRelDto.setOwnerId(reqJson.getString("ownerId"));
+        int count = ownerRoomRelV1InnerServiceSMOImpl.queryOwnerRoomRelsCount(ownerRoomRelDto);
+        if (count > 0) {
+            throw new CmdException("房屋和人员已经绑定，请勿重复绑定");
+        }
     }
 
     @Override

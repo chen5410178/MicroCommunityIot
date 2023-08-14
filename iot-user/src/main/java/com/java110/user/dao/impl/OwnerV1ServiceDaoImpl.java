@@ -124,5 +124,13 @@ public class OwnerV1ServiceDaoImpl extends BaseServiceDao implements IOwnerV1Ser
         return result;
     }
 
+    @Override
+    public List<Map> queryRoomOwners(Map info) {
+        logger.debug("查询 queryRoomOwners 入参 info : {}",info);
+
+        List<Map> result = sqlSessionTemplate.selectList("ownerV1ServiceDaoImpl.queryRoomOwners", info);
+        return result;
+    }
+
 
 }

@@ -380,11 +380,12 @@
             _viewOwnerCars: function(_room) {
                 vc.emit('ownerCars', 'openOwnerCarModel', _room);
             },
-            _toRoomBindOwner: function (_room) {
+            _toRoomBindOwner: function(_room) {
                 vc.jumpToPage('/#/pages/owner/roomBindOwner?roomId=' + _room.roomId);
             },
-            _toRoomUnBindOwner: function (_room) {
-                vc.jumpToPage('/#/pages/property/deleteOwnerRoom?ownerId=' + _room.ownerId);
+            _toRoomUnBindOwner: function(_room) {
+                let _roomName = _room.floorNum + "-" + _room.unitNum + "-" + _room.roomNum;
+                vc.jumpToPage('/#/pages/owner/roomUnBindOwner?roomId=' + _room.roomId + "&roomName=" + _roomName);
             }
 
         }

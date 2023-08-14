@@ -72,4 +72,11 @@ public interface IOwnerV1ServiceDao {
     int queryOwnersBindCount(Map map);
 
     List<Map> queryOwnerMembersCount(Map info);
+
+    /**
+     * 查询房屋人员
+     * @param info
+     * @return
+     */
+    List<Map> queryRoomOwners(Map info);
 }

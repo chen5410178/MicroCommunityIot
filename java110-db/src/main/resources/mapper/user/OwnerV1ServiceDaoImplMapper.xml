@@ -202,5 +202,19 @@
         group by t.owner_id
     </select>
 
+    <select id="queryRoomOwners" parameterType="Map" resultType="Map">
+        select t.id_card,t.id_card idCard,t.sex,t.link,t.owner_type_cd,t.owner_type_cd
+        ownerTypeCd,t.remark,t.status_cd,t.status_cd statusCd,t.owner_id,t.owner_id ownerId,t.user_id,t.user_id
+        userId,t.name,t.state,t.community_id,t.community_id communityId,t.age,t.member_id,t.member_id memberId,
+        t.address,td.name ownerTypeName
+        from building_owner t
+        left join building_owner_room_rel borr on t.member_id = borr.owner_id and borr.status_cd = '0'
+        left join t_dict td on td.table_name = 'building_owner' and td.`table_columns` = 'owner_type_cd' and td.status_cd = t.owner_type_cd
+        where 1 =1
+        and borr.room_id = #{roomId}
+        and t.community_id = #{communityId}
+    </select>
+
+
 
 </mapper>

@@ -104,4 +104,16 @@ public class OwnerV1InnerServiceSMOImpl  implements IOwnerV1InnerServiceSMO {
         return result;
     }
 
+    /**
+     * 查询房屋人员
+     * @param ownerDto
+     * @return
+     */
+    @Override
+    public List<OwnerDto> queryRoomOwners(@RequestBody OwnerDto ownerDto) {
+        List<OwnerDto> owners = BeanConvertUtil.covertBeanList(ownerV1ServiceDaoImpl.queryRoomOwners(BeanConvertUtil.beanCovertMap(ownerDto)), OwnerDto.class);
+
+        return owners;
+    }
+
 }

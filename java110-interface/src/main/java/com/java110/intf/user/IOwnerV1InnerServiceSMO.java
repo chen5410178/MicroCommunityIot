@@ -77,4 +77,7 @@ public interface IOwnerV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryOwnerMembersCount", method = RequestMethod.POST)
     List<Map> queryOwnerMembersCount(@RequestBody List<String> ownerIds);
+
+    @RequestMapping(value = "/queryRoomOwners", method = RequestMethod.POST)
+    List<OwnerDto> queryRoomOwners(@RequestBody OwnerDto ownerDto);
 }
