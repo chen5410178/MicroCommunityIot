@@ -9,9 +9,7 @@
             accessControlFloorInfo: {
                 accessControls: [],
                 total: 0,
-                records: 1,
-                floorId: '',
-                unitId: '',
+                records: 0,
                 moreCondition: false,
                 conditions: {
                     floorId: '',
@@ -77,15 +75,14 @@
                 );
             },
 
-            _openAddAccessControlFloorModel: function(_accessControlFloor) {
-                vc.emit('editAccessControlFloor', 'openEditAccessControlFloorModal', _accessControlFloor);
+            _openAuthorizeAccessControlModel: function(_accessControlFloor) {
+                vc.emit('authorizeAccessControl', 'openAddAccessControlModal', _accessControlFloor);
             },
             _openDelAccessControlFloorModel: function(_accessControlFloor) {
                 vc.emit('deleteAccessControlFloor', 'openAccessControlFloorModel', _accessControlFloor);
             },
 
             _queryAccessControlFloorMethod: function() {
-                $that.accessControlFloorInfo.conditions.flag = 0;
                 $that.listAccessControlFloor(DEFAULT_PAGE, DEFAULT_ROW);
             },
 
@@ -97,6 +94,16 @@
                     $that.accessControlFloorInfo.moreCondition = true;
                 }
             },
+
+            _authorizeAccessControl: function() {
+                let _floorId = $that.accessControlFloorInfo.conditions.floorId;
+                let _unitId = $that.accessControlFloorInfo.conditions.unitId;
+
+                if (!_floorId && !_unitId) {
+                    vc.toast('请选择左边需要授权的楼栋或者单元');
+                    return;
+                }
+            }
 
         }
     });
