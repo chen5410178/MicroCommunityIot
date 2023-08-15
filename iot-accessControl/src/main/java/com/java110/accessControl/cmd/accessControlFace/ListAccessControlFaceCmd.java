@@ -24,6 +24,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.doc.annotation.*;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
@@ -45,6 +46,36 @@ import org.slf4j.LoggerFactory;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
+@Java110CmdDoc(title = "查询门禁人员",
+        description = "用于外系统门禁人员",
+        httpMethod = "get",
+        url = "http://{ip}:{port}/iot/api/accessControlFace.listAccessControlFace",
+        resource = "accessControlDoc",
+        author = "吴学文",
+        serviceCode = "accessControlFace.listAccessControlFace",
+        seq = 8
+)
+
+@Java110ParamsDoc(params = {
+        @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
+        @Java110ParamDoc(name = "page", type = "int", length = 11, remark = "页数"),
+        @Java110ParamDoc(name = "row", type = "int", length = 11, remark = "行数"),
+})
+
+@Java110ResponseDoc(
+        params = {
+                @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
+                @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
+                @Java110ParamDoc(name = "data", type = "Array", remark = "有效数据"),
+                @Java110ParamDoc(parentNodeName = "data", name = "machineId", type = "String", remark = "编号"),
+                @Java110ParamDoc(parentNodeName = "data", name = "userId", type = "String", remark = "人员ID"),
+        }
+)
+
+@Java110ExampleDoc(
+        reqBody = "http://{ip}:{port}/iot/api/accessControlFace.listAccessControlFace?page=1&row=10&communityId=123123",
+        resBody = "{'code':0,'msg':'成功','data':[{'machineId':'123123','userId':'123213'}]}"
+)
 @Java110Cmd(serviceCode = "accessControlFace.listAccessControlFace")
 public class ListAccessControlFaceCmd extends Cmd {
 

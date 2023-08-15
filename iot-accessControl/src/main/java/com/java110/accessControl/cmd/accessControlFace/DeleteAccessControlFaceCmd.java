@@ -25,6 +25,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.doc.annotation.*;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,32 @@ import org.slf4j.LoggerFactory;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
+@Java110CmdDoc(title = "删除门禁人员",
+        description = "用于外系统删除门禁人员功能",
+        httpMethod = "post",
+        url = "http://{ip}:{port}/iot/api/accessControlFace.deleteAccessControlFace",
+        resource = "accessControlDoc",
+        author = "吴学文",
+        serviceCode = "accessControlFace.deleteAccessControlFace",
+        seq = 9
+)
+
+@Java110ParamsDoc(params = {
+        @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
+        @Java110ParamDoc(name = "mfId",  length = 64, remark = "人员"),
+})
+
+@Java110ResponseDoc(
+        params = {
+                @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
+                @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
+        }
+)
+
+@Java110ExampleDoc(
+        reqBody = "{\"machineId\":\"22\",\"communityId\":\"2022081539020475\"}",
+        resBody = "{'code':0,'msg':'成功'}"
+)
 @Java110Cmd(serviceCode = "accessControlFace.deleteAccessControlFace")
 public class DeleteAccessControlFaceCmd extends Cmd {
     private static Logger logger = LoggerFactory.getLogger(DeleteAccessControlFaceCmd.class);
