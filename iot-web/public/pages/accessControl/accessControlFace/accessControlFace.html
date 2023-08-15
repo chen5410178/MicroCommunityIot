@@ -123,7 +123,7 @@
                                 <tbody>
                                     <tr v-for="accessControlFace in accessControlFaceInfo.accessControlFaces">
                                         <td class="text-center" style="white-space: nowrap;">
-                                            <img style="width: 60px; height: 60px;" class="border-radius" v-if="accessControlFace.facePath" v-bind:src="owner.url" v-on:click="_viewOwnerFace(accessControlFace.facePath)" />
+                                            <img style="width: 60px; height: 60px;" class="border-radius" v-if="accessControlFace.facePath" v-bind:src="accessControlFace.facePath" v-on:click="_viewOwnerFace(accessControlFace.facePath)" />
                                             <img style="width: 60px; height: 60px;" class="border-radius" v-else src="/img/noPhoto.jpg" />
                                         </td>
                                         <td class="text-center">{{accessControlFace.machineName}}</td>
@@ -131,7 +131,6 @@
                                         <td class="text-center">{{accessControlFace.name}}</td>
                                         <td class="text-center">{{accessControlFace.startTime}}</td>
                                         <td class="text-center">{{accessControlFace.endTime}}</td>
-                                        <td class="text-center">{{accessControlFace.facePath}}</td>
                                         <td class="text-center">{{accessControlFace.idNumber || '-'}}</td>
                                         <td class="text-center">{{accessControlFace.stateName}}</td>
                                         <td class="text-center">{{accessControlFace.message}}</td>

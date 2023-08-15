@@ -40,6 +40,7 @@
 
                 $that.accessControlFaceInfo.conditions.page = _page;
                 $that.accessControlFaceInfo.conditions.row = _rows;
+                $that.accessControlFaceInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
                 var param = {
                     params: $that.accessControlFaceInfo.conditions
                 };
