@@ -23,6 +23,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import javax.annotation.Resource;
 import java.nio.charset.Charset;
@@ -48,6 +49,7 @@ import java.util.concurrent.TimeUnit;
         basePackages = {"com.java110.user.cmd"})
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 @EnableDiscoveryClient
+@EnableAsync
 public class AccessControlApplicationStart {
 
     private static Logger logger = LoggerFactory.getLogger(AccessControlApplicationStart.class);

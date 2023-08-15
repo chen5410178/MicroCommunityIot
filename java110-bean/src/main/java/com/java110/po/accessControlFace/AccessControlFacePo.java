@@ -17,6 +17,7 @@ package com.java110.po.accessControlFace;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-08-15 11:48:56 mail: 928255095@qq.com
@@ -28,118 +29,157 @@ import java.util.Date;
 public class AccessControlFacePo implements Serializable {
 
     private String comeId;
-private String comeType;
-private String mfId;
-private String statusCd = "0";
-private String idNumber;
-private String message;
-private String machineId;
-private String name;
-private String personId;
-private String startTime;
-private String endTime;
-private String facePath;
-private String state;
-private String personType;
-private String communityId;
-private String cardNumber;
-public String getComeId() {
+    private String comeType;
+    private String mfId;
+    private String statusCd = "0";
+    private String idNumber;
+    private String message;
+    private String machineId;
+    private String name;
+    private String personId;
+    private String startTime;
+    private String endTime;
+    private String facePath;
+    private String state;
+    private String personType;
+    private String communityId;
+    private String cardNumber;
+
+    private String roomName;
+
+    public String getComeId() {
         return comeId;
     }
-public void setComeId(String comeId) {
+
+    public void setComeId(String comeId) {
         this.comeId = comeId;
     }
-public String getComeType() {
+
+    public String getComeType() {
         return comeType;
     }
-public void setComeType(String comeType) {
+
+    public void setComeType(String comeType) {
         this.comeType = comeType;
     }
-public String getMfId() {
+
+    public String getMfId() {
         return mfId;
     }
-public void setMfId(String mfId) {
+
+    public void setMfId(String mfId) {
         this.mfId = mfId;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getIdNumber() {
+
+    public String getIdNumber() {
         return idNumber;
     }
-public void setIdNumber(String idNumber) {
+
+    public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
     }
-public String getMessage() {
+
+    public String getMessage() {
         return message;
     }
-public void setMessage(String message) {
+
+    public void setMessage(String message) {
         this.message = message;
     }
-public String getMachineId() {
+
+    public String getMachineId() {
         return machineId;
     }
-public void setMachineId(String machineId) {
+
+    public void setMachineId(String machineId) {
         this.machineId = machineId;
     }
-public String getName() {
+
+    public String getName() {
         return name;
     }
-public void setName(String name) {
+
+    public void setName(String name) {
         this.name = name;
     }
-public String getPersonId() {
+
+    public String getPersonId() {
         return personId;
     }
-public void setPersonId(String personId) {
+
+    public void setPersonId(String personId) {
         this.personId = personId;
     }
-public String getStartTime() {
+
+    public String getStartTime() {
         return startTime;
     }
-public void setStartTime(String startTime) {
+
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
-public String getEndTime() {
+
+    public String getEndTime() {
         return endTime;
     }
-public void setEndTime(String endTime) {
+
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
-public String getFacePath() {
+
+    public String getFacePath() {
         return facePath;
     }
-public void setFacePath(String facePath) {
+
+    public void setFacePath(String facePath) {
         this.facePath = facePath;
     }
-public String getState() {
+
+    public String getState() {
         return state;
     }
-public void setState(String state) {
+
+    public void setState(String state) {
         this.state = state;
     }
-public String getPersonType() {
+
+    public String getPersonType() {
         return personType;
     }
-public void setPersonType(String personType) {
+
+    public void setPersonType(String personType) {
         this.personType = personType;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-public String getCardNumber() {
+
+    public String getCardNumber() {
         return cardNumber;
     }
-public void setCardNumber(String cardNumber) {
+
+    public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 
+    public String getRoomName() {
+        return roomName;
+    }
 
-
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
 }

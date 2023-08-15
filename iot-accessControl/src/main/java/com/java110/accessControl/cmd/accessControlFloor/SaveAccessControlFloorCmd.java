@@ -17,7 +17,10 @@ package com.java110.accessControl.cmd.accessControlFloor;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.java110.accessControl.bmo.ISaveAccessControlFaceBMO;
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.floor.FloorDto;
+import com.java110.bean.dto.unit.UnitDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.cmd.Cmd;
@@ -30,10 +33,14 @@ import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.doc.annotation.*;
 import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
+import com.java110.intf.community.IFloorV1InnerServiceSMO;
+import com.java110.intf.community.IUnitV1InnerServiceSMO;
 import com.java110.po.accessControlFloor.AccessControlFloorPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -57,7 +64,7 @@ import org.slf4j.LoggerFactory;
 
 @Java110ParamsDoc(params = {
         @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
-        @Java110ParamDoc(name = "machineIds", length = 64,type="Array", remark = "设备编号"),
+        @Java110ParamDoc(name = "machineIds", length = 64, type = "Array", remark = "设备编号"),
         @Java110ParamDoc(name = "unitId", length = 64, remark = "单元编号"),
         @Java110ParamDoc(name = "floorId", length = 64, remark = "楼栋编号"),
 
@@ -84,6 +91,15 @@ public class SaveAccessControlFloorCmd extends Cmd {
     @Autowired
     private IAccessControlFloorV1InnerServiceSMO accessControlFloorV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IUnitV1InnerServiceSMO unitV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IFloorV1InnerServiceSMO floorV1InnerServiceSMOImpl;
+
+    @Autowired
+    private ISaveAccessControlFaceBMO saveAccessControlFaceBMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
@@ -107,16 +123,67 @@ public class SaveAccessControlFloorCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
 
+        UnitDto unitDto = new UnitDto();
+        unitDto.setFloorId(reqJson.getString("floorId"));
+        unitDto.setUnitId(reqJson.getString("unitId"));
+        unitDto.setCommunityId(reqJson.getString("communityId"));
+        List<UnitDto> unitDtos = unitV1InnerServiceSMOImpl.queryUnits(unitDto);
+
+        if (unitDtos == null || unitDtos.size() < 1) {
+            throw new CmdException("未包含楼栋单元");
+        }
+
+        JSONArray machineIds = reqJson.getJSONArray("machineIds");
+
+        //todo unit
+
+        for (UnitDto tmpUnitDto : unitDtos) {
+            doComputeUnit(tmpUnitDto, reqJson, machineIds);
+        }
 
 
-        AccessControlFloorPo accessControlFloorPo = BeanConvertUtil.covertBean(reqJson, AccessControlFloorPo.class);
+        cmdDataFlowContext.setResponseEntity(ResultVo.success());
+    }
+
+    private void doComputeUnit(UnitDto tmpUnitDto, JSONObject reqJson, JSONArray machineIds) {
+
+        FloorDto floorDto = new FloorDto();
+        floorDto.setFloorId(tmpUnitDto.getFloorId());
+        floorDto.setCommunityId(tmpUnitDto.getCommunityId());
+        List<FloorDto> floorDtos = floorV1InnerServiceSMOImpl.queryFloors(floorDto);
+
+        Assert.listOnlyOne(floorDtos, "楼栋不存在");
+
+        //todo 保存 楼栋授权
+        for (int machineIndex = 0; machineIndex < machineIds.size(); machineIndex++) {
+            doComputeAccessControl(tmpUnitDto, machineIds.getString(machineIndex), floorDtos);
+        }
+
+    }
+
+    /**
+     * 计算 门禁授权
+     *
+     * @param tmpUnitDto
+     * @param floorDtos
+     * @param machineId
+     */
+    private void doComputeAccessControl(UnitDto tmpUnitDto, String machineId, List<FloorDto> floorDtos) {
+        AccessControlFloorPo accessControlFloorPo = new AccessControlFloorPo();
         accessControlFloorPo.setAcfId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        accessControlFloorPo.setFloorId(floorDtos.get(0).getFloorId());
+        accessControlFloorPo.setFloorNum(floorDtos.get(0).getFloorNum());
+        accessControlFloorPo.setUnitId(tmpUnitDto.getUnitId());
+        accessControlFloorPo.setUnitNum(tmpUnitDto.getUnitNum());
+        accessControlFloorPo.setCommunityId(tmpUnitDto.getCommunityId());
+        accessControlFloorPo.setMachineId(machineId);
         int flag = accessControlFloorV1InnerServiceSMOImpl.saveAccessControlFloor(accessControlFloorPo);
 
         if (flag < 1) {
             throw new CmdException("保存数据失败");
         }
 
-        cmdDataFlowContext.setResponseEntity(ResultVo.success());
+        //todo  查询房屋人员信息
+        saveAccessControlFaceBMOImpl.save(accessControlFloorPo, machineId);
     }
 }

@@ -17,6 +17,7 @@ package com.java110.po.accessControlFloor;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-08-15 11:22:51 mail: 928255095@qq.com
@@ -28,62 +29,77 @@ import java.util.Date;
 public class AccessControlFloorPo implements Serializable {
 
     private String floorId;
-private String machineId;
-private String unitId;
-private String unitNum;
-private String acfId;
-private String statusCd = "0";
-private String communityId;
-private String floorNum;
-public String getFloorId() {
+    private String machineId;
+    private String unitId;
+    private String unitNum;
+    private String acfId;
+    private String statusCd = "0";
+    private String communityId;
+    private String floorNum;
+
+    public String getFloorId() {
         return floorId;
     }
-public void setFloorId(String floorId) {
+
+    public void setFloorId(String floorId) {
         this.floorId = floorId;
     }
-public String getMachineId() {
+
+    public String getMachineId() {
         return machineId;
     }
-public void setMachineId(String machineId) {
+
+    public void setMachineId(String machineId) {
         this.machineId = machineId;
     }
-public String getUnitId() {
+
+    public String getUnitId() {
         return unitId;
     }
-public void setUnitId(String unitId) {
+
+    public void setUnitId(String unitId) {
         this.unitId = unitId;
     }
-public String getUnitNum() {
+
+    public String getUnitNum() {
         return unitNum;
     }
-public void setUnitNum(String unitNum) {
+
+    public void setUnitNum(String unitNum) {
         this.unitNum = unitNum;
     }
-public String getAcfId() {
+
+    public String getAcfId() {
         return acfId;
     }
-public void setAcfId(String acfId) {
+
+    public void setAcfId(String acfId) {
         this.acfId = acfId;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-public String getFloorNum() {
+
+    public String getFloorNum() {
         return floorNum;
     }
-public void setFloorNum(String floorNum) {
+
+    public void setFloorNum(String floorNum) {
         this.floorNum = floorNum;
     }
-
 
 
 }

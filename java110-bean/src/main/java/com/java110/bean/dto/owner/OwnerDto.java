@@ -99,6 +99,8 @@ public class OwnerDto extends PageDto implements Serializable {
     private String oweFee;
     private String contractCount;
 
+    private String cardNumber;
+
     public String getSex() {
         return sex;
     }
@@ -500,5 +502,13 @@ public class OwnerDto extends PageDto implements Serializable {
 
     public void setContractCount(String contractCount) {
         this.contractCount = contractCount;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 }

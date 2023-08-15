@@ -15,6 +15,14 @@ import java.util.Date;
  **/
 public class AccessControlFaceDto extends PageDto implements Serializable {
 
+    public static final String COME_TYPE_FLOOR = "FLOOR"; //来自类型 FLOOR 楼栋授权 OWNER 人员授权 STAFF 员工授权
+    public static final String COME_TYPE_OWNER = "OWNER"; //来自类型 FLOOR 楼栋授权 OWNER 人员授权 STAFF 员工授权
+    public static final String COME_TYPE_STAFF = "STAFF"; //来自类型 FLOOR 楼栋授权 OWNER 人员授权 STAFF 员工授权
+
+    public static final String PERSON_TYPE_OWNER = "OWNER"; //OWNER 业主 STAFF
+    public static final String PERSON_TYPE_STAFF = "STAFF"; //OWNER 业主 STAFF
+
+
     private String comeId;
     private String comeType;
     private String mfId;
@@ -35,6 +43,8 @@ public class AccessControlFaceDto extends PageDto implements Serializable {
     private Date createTime;
 
     private String statusCd = "0";
+
+    private String roomName;
 
 
     public String getComeId() {
@@ -172,5 +182,13 @@ public class AccessControlFaceDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 }
