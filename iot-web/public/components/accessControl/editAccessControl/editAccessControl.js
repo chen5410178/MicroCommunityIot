@@ -1,185 +1,191 @@
-(function(vc,vm){
+(function(vc, vm) {
 
     vc.extends({
-        data:{
-            editAccessControlInfo:{
-                machineId:'',
-machineCode:'',
-machineName:'',
-machineIp:'',
-machineMac:'',
-direction:'',
-implBean:'',
-locationId:'',
-locationName:'',
-
+        data: {
+            editAccessControlInfo: {
+                machineId: '',
+                machineCode: '',
+                machineName: '',
+                machineIp: '',
+                machineMac: '',
+                direction: '',
+                implBean: '',
+                locationId: '',
+                locationName: '',
+                locations: [],
+                hms: []
             }
         },
-         _initMethod:function(){
+        _initMethod: function() {
 
-         },
-         _initEvent:function(){
-             vc.on('editAccessControl','openEditAccessControlModal',function(_params){
-                vc.component.refreshEditAccessControlInfo();
+        },
+        _initEvent: function() {
+            vc.on('editAccessControl', 'openEditAccessControlModal', function(_params) {
+                $that.refreshEditAccessControlInfo();
                 $('#editAccessControlModel').modal('show');
-                vc.copyObject(_params, vc.component.editAccessControlInfo );
-                vc.component.editAccessControlInfo.communityId = vc.getCurrentCommunity().communityId;
+                vc.copyObject(_params, $that.editAccessControlInfo);
+                $that._listEditMachineLocations();
+                $that._listEditHms();
+                $that.editAccessControlInfo.communityId = vc.getCurrentCommunity().communityId;
             });
         },
-        methods:{
-            editAccessControlValidate:function(){
-                        return vc.validate.validate({
-                            editAccessControlInfo:vc.component.editAccessControlInfo
-                        },{
-                            'editAccessControlInfo.machineCode':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"设备编码不能为空"
+        methods: {
+            editAccessControlValidate: function() {
+                return vc.validate.validate({
+                    editAccessControlInfo: $that.editAccessControlInfo
+                }, {
+                    'editAccessControlInfo.machineCode': [{
+                            limit: "required",
+                            param: "",
+                            errInfo: "设备编码不能为空"
                         },
- {
-                            limit:"maxLength",
-                            param:"30",
-                            errInfo:"设备编码不能超过30"
-                        },
-                    ],
-'editAccessControlInfo.machineName':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"设备名称不能为空"
-                        },
- {
-                            limit:"maxLength",
-                            param:"200",
-                            errInfo:"设备名称不能超过200"
+                        {
+                            limit: "maxLength",
+                            param: "64",
+                            errInfo: "设备编码不能超过30"
                         },
                     ],
-'editAccessControlInfo.machineIp':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"设备IP不能为空"
+                    'editAccessControlInfo.machineName': [{
+                            limit: "required",
+                            param: "",
+                            errInfo: "设备名称不能为空"
                         },
- {
-                            limit:"maxLength",
-                            param:"64",
-                            errInfo:"设备IP不能超过64"
-                        },
-                    ],
-'editAccessControlInfo.machineMac':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"设备mac不能为空"
-                        },
- {
-                            limit:"maxLength",
-                            param:"64",
-                            errInfo:"设备mac不能超过64"
+                        {
+                            limit: "maxLength",
+                            param: "200",
+                            errInfo: "设备名称不能超过200"
                         },
                     ],
-'editAccessControlInfo.direction':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"设备方向进出不能为空"
+                    'editAccessControlInfo.machineIp': [{
+                        limit: "maxLength",
+                        param: "64",
+                        errInfo: "设备IP不能超过64"
+                    }, ],
+                    'editAccessControlInfo.machineMac': [{
+                        limit: "maxLength",
+                        param: "64",
+                        errInfo: "设备mac不能超过64"
+                    }, ],
+                    'editAccessControlInfo.direction': [{
+                        limit: "required",
+                        param: "",
+                        errInfo: "设备方向进出不能为空"
+                    }, ],
+                    'editAccessControlInfo.implBean': [{
+                            limit: "required",
+                            param: "",
+                            errInfo: "门禁厂家不能为空"
                         },
- {
-                            limit:"maxLength",
-                            param:"12",
-                            errInfo:"设备方向进出不能超过12"
-                        },
-                    ],
-'editAccessControlInfo.implBean':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"门禁厂家不能为空"
-                        },
- {
-                            limit:"maxLength",
-                            param:"30",
-                            errInfo:"门禁厂家不能超过30"
-                        },
-                    ],
-'editAccessControlInfo.locationId':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"位置ID不能为空"
-                        },
- {
-                            limit:"maxLength",
-                            param:"30",
-                            errInfo:"位置ID不能超过30"
+                        {
+                            limit: "maxLength",
+                            param: "30",
+                            errInfo: "门禁厂家不能超过30"
                         },
                     ],
-'editAccessControlInfo.locationName':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"位置名称'不能为空"
-                        },
- {
-                            limit:"maxLength",
-                            param:"30",
-                            errInfo:"位置名称'不能超过30"
-                        },
-                    ],
-'editAccessControlInfo.machineId':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"编号不能为空"
-                        }]
+                    'editAccessControlInfo.locationId': [{
+                        limit: "required",
+                        param: "",
+                        errInfo: "位置ID不能为空"
+                    }],
+                    'editAccessControlInfo.machineId': [{
+                        limit: "required",
+                        param: "",
+                        errInfo: "编号不能为空"
+                    }]
 
-                        });
-             },
-            editAccessControl:function(){
-                if(!vc.component.editAccessControlValidate()){
+                });
+            },
+            _editAccessControl: function() {
+                if (!$that.editAccessControlValidate()) {
                     vc.toast(vc.validate.errInfo);
-                    return ;
+                    return;
                 }
 
                 vc.http.apiPost(
-                    'accessControl.updateAccessControl',
-                    JSON.stringify(vc.component.editAccessControlInfo),
-                    {
-                        emulateJSON:true
-                     },
-                     function(json,res){
+                    '/accessControl.updateAccessControl',
+                    JSON.stringify($that.editAccessControlInfo), {
+                        emulateJSON: true
+                    },
+                    function(json, res) {
                         //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
                         let _json = JSON.parse(json);
                         if (_json.code == 0) {
                             //关闭model
                             $('#editAccessControlModel').modal('hide');
-                             vc.emit('accessControlManage','listAccessControl',{});
-                            return ;
+                            vc.emit('accessControlManage', 'listAccessControl', {});
+                            return;
                         }
-                        vc.message(_json.msg);
-                     },
-                     function(errInfo,error){
+                        vc.toast(_json.msg);
+                    },
+                    function(errInfo, error) {
                         console.log('请求失败处理');
 
-                        vc.message(errInfo);
-                     });
+                        vc.toast(errInfo);
+                    });
             },
-            refreshEditAccessControlInfo:function(){
-                vc.component.editAccessControlInfo= {
-                  machineId:'',
-machineCode:'',
-machineName:'',
-machineIp:'',
-machineMac:'',
-direction:'',
-implBean:'',
-locationId:'',
-locationName:'',
-
+            refreshEditAccessControlInfo: function() {
+                $that.editAccessControlInfo = {
+                    machineId: '',
+                    machineCode: '',
+                    machineName: '',
+                    machineIp: '',
+                    machineMac: '',
+                    direction: '',
+                    implBean: '',
+                    locationId: '',
+                    locationName: '',
+                    locations: [],
+                    hms: []
                 }
-            }
+            },
+            _listEditMachineLocations: function(_page, _rows) {
+
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        communityId: vc.getCurrentCommunity().communityId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/location.listMachineLocation',
+                    param,
+                    function(json, res) {
+                        let _json = JSON.parse(json);
+                        $that.editAccessControlInfo.locations = _json.data;
+
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+
+            _listEditHms: function(_page, _rows) {
+
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        hmType: '1001'
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/hm.listHardwareManufacturer',
+                    param,
+                    function(json, res) {
+                        let _json = JSON.parse(json);
+                        $that.editAccessControlInfo.hms = _json.data;
+
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
         }
     });
 
-})(window.vc,window.vc.component);
+})(window.vc, window.$that);

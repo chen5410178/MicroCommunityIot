@@ -1,194 +1,178 @@
-(function(vc){
+(function(vc) {
 
     vc.extends({
-        propTypes: {
-               callBackListener:vc.propTypes.string, //父组件名称
-               callBackFunction:vc.propTypes.string //父组件监听方法
-        },
-        data:{
-            addAccessControlInfo:{
-                machineId:'',
-                machineCode:'',
-machineName:'',
-machineIp:'',
-machineMac:'',
-direction:'',
-implBean:'',
-locationId:'',
-locationName:'',
-
+        data: {
+            addAccessControlInfo: {
+                machineId: '',
+                machineCode: '',
+                machineName: '',
+                machineIp: '',
+                machineMac: '',
+                direction: '',
+                implBean: '',
+                locationId: '',
+                locationName: '',
+                locations: [],
+                hms: []
             }
         },
-         _initMethod:function(){
+        _initMethod: function() {
 
-         },
-         _initEvent:function(){
-            vc.on('addAccessControl','openAddAccessControlModal',function(){
+        },
+        _initEvent: function() {
+            vc.on('addAccessControl', 'openAddAccessControlModal', function() {
+                $that._listAddMachineLocations();
+                $that._listAddHms();
                 $('#addAccessControlModel').modal('show');
             });
         },
-        methods:{
-            addAccessControlValidate(){
+        methods: {
+            addAccessControlValidate() {
                 return vc.validate.validate({
-                    addAccessControlInfo:vc.component.addAccessControlInfo
-                },{
-                    'addAccessControlInfo.machineCode':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"设备编码不能为空"
+                    addAccessControlInfo: $that.addAccessControlInfo
+                }, {
+                    'addAccessControlInfo.machineCode': [{
+                            limit: "required",
+                            param: "",
+                            errInfo: "设备编码不能为空"
                         },
- {
-                            limit:"maxLength",
-                            param:"30",
-                            errInfo:"设备编码不能超过30"
-                        },
-                    ],
-'addAccessControlInfo.machineName':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"设备名称不能为空"
-                        },
- {
-                            limit:"maxLength",
-                            param:"200",
-                            errInfo:"设备名称不能超过200"
+                        {
+                            limit: "maxLength",
+                            param: "64",
+                            errInfo: "设备编码不能超过30"
                         },
                     ],
-'addAccessControlInfo.machineIp':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"设备IP不能为空"
+                    'addAccessControlInfo.machineName': [{
+                            limit: "required",
+                            param: "",
+                            errInfo: "设备名称不能为空"
                         },
- {
-                            limit:"maxLength",
-                            param:"64",
-                            errInfo:"设备IP不能超过64"
-                        },
-                    ],
-'addAccessControlInfo.machineMac':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"设备mac不能为空"
-                        },
- {
-                            limit:"maxLength",
-                            param:"64",
-                            errInfo:"设备mac不能超过64"
+                        {
+                            limit: "maxLength",
+                            param: "200",
+                            errInfo: "设备名称不能超过200"
                         },
                     ],
-'addAccessControlInfo.direction':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"设备方向进出不能为空"
-                        },
- {
-                            limit:"maxLength",
-                            param:"12",
-                            errInfo:"设备方向进出不能超过12"
-                        },
-                    ],
-'addAccessControlInfo.implBean':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"门禁厂家不能为空"
-                        },
- {
-                            limit:"maxLength",
-                            param:"30",
-                            errInfo:"门禁厂家不能超过30"
-                        },
-                    ],
-'addAccessControlInfo.locationId':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"位置ID不能为空"
-                        },
- {
-                            limit:"maxLength",
-                            param:"30",
-                            errInfo:"位置ID不能超过30"
-                        },
-                    ],
-'addAccessControlInfo.locationName':[
-{
-                            limit:"required",
-                            param:"",
-                            errInfo:"位置名称'不能为空"
-                        },
- {
-                            limit:"maxLength",
-                            param:"30",
-                            errInfo:"位置名称'不能超过30"
-                        },
-                    ],
-
-
-
-
+                    'addAccessControlInfo.machineIp': [{
+                        limit: "maxLength",
+                        param: "64",
+                        errInfo: "设备IP不能超过64"
+                    }, ],
+                    'addAccessControlInfo.machineMac': [{
+                        limit: "maxLength",
+                        param: "64",
+                        errInfo: "设备mac不能超过64"
+                    }, ],
+                    'addAccessControlInfo.direction': [{
+                        limit: "required",
+                        param: "",
+                        errInfo: "设备方向不能为空"
+                    }, ],
+                    'addAccessControlInfo.implBean': [{
+                        limit: "required",
+                        param: "",
+                        errInfo: "门禁厂家不能为空"
+                    }, ],
+                    'addAccessControlInfo.locationId': [{
+                        limit: "required",
+                        param: "",
+                        errInfo: "位置不能为空"
+                    }, ],
                 });
             },
-            saveAccessControlInfo:function(){
-                if(!vc.component.addAccessControlValidate()){
+            saveAccessControlInfo: function() {
+                if (!$that.addAccessControlValidate()) {
                     vc.toast(vc.validate.errInfo);
-
-                    return ;
+                    return;
                 }
-
-                vc.component.addAccessControlInfo.communityId = vc.getCurrentCommunity().communityId;
-                //不提交数据将数据 回调给侦听处理
-                if(vc.notNull($props.callBackListener)){
-                    vc.emit($props.callBackListener,$props.callBackFunction,vc.component.addAccessControlInfo);
-                    $('#addAccessControlModel').modal('hide');
-                    return ;
-                }
-
+                $that.addAccessControlInfo.communityId = vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
-                    'accessControl.saveAccessControl',
-                    JSON.stringify(vc.component.addAccessControlInfo),
-                    {
-                        emulateJSON:true
-                     },
-                     function(json,res){
+                    '/accessControl.saveAccessControl',
+                    JSON.stringify($that.addAccessControlInfo), {
+                        emulateJSON: true
+                    },
+                    function(json, res) {
                         //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
                         let _json = JSON.parse(json);
                         if (_json.code == 0) {
                             //关闭model
                             $('#addAccessControlModel').modal('hide');
-                            vc.component.clearAddAccessControlInfo();
-                            vc.emit('accessControlManage','listAccessControl',{});
+                            $that.clearAddAccessControlInfo();
+                            vc.emit('accessControlManage', 'listAccessControl', {});
 
-                            return ;
+                            return;
                         }
-                        vc.message(_json.msg);
+                        vc.toast(_json.msg);
 
-                     },
-                     function(errInfo,error){
+                    },
+                    function(errInfo, error) {
                         console.log('请求失败处理');
 
-                        vc.message(errInfo);
+                        vc.toast(errInfo);
 
-                     });
+                    });
             },
-            clearAddAccessControlInfo:function(){
-                vc.component.addAccessControlInfo = {
-                                            machineCode:'',
-machineName:'',
-machineIp:'',
-machineMac:'',
-direction:'',
-implBean:'',
-locationId:'',
-locationName:'',
+            clearAddAccessControlInfo: function() {
+                $that.addAccessControlInfo = {
+                    machineCode: '',
+                    machineName: '',
+                    machineIp: '',
+                    machineMac: '',
+                    direction: '',
+                    implBean: '',
+                    locationId: '',
+                    locationName: '',
+                    locations: [],
+                    hms: []
+                };
+            },
+            _listAddMachineLocations: function(_page, _rows) {
 
-                                        };
-            }
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        communityId: vc.getCurrentCommunity().communityId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/location.listMachineLocation',
+                    param,
+                    function(json, res) {
+                        let _json = JSON.parse(json);
+                        $that.addAccessControlInfo.locations = _json.data;
+
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+
+            _listAddHms: function(_page, _rows) {
+
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        hmType: '1001'
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/hm.listHardwareManufacturer',
+                    param,
+                    function(json, res) {
+                        let _json = JSON.parse(json);
+                        $that.addAccessControlInfo.hms = _json.data;
+
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
         }
     });
 

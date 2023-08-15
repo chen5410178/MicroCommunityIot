@@ -28,6 +28,8 @@ public class AccessControlDto extends PageDto implements Serializable {
     private String machineIp;
     private String direction;
 
+    private String stateName;
+
 
     private Date createTime;
 
@@ -137,5 +139,13 @@ public class AccessControlDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
     }
 }

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hardwareManufacturerV1ServiceDaoImpl">
+
+
+    <!-- 保存厂家信息 add by wuxw 2018-07-03 -->
+    <insert id="saveHardwareManufacturerInfo" parameterType="Map">
+        insert into hardware_manufacturer(
+        hm_id,license,prod_url,author,link,default_protocol,hm_name,protocol_impl,version,hm_type
+        ) values (
+        #{hmId},#{license},#{prodUrl},#{author},#{link},#{defaultProtocol},#{hmName},#{protocolImpl},#{version},#{hmType}
+        )
+    </insert>
+
+
+    <!-- 查询厂家信息 add by wuxw 2018-07-03 -->
+    <select id="getHardwareManufacturerInfo" parameterType="Map" resultType="Map">
+        select t.hm_id,t.hm_id hmId,t.license,t.prod_url,t.prod_url prodUrl,t.author,t.link,t.status_cd,t.status_cd
+        statusCd,t.default_protocol,t.default_protocol defaultProtocol,t.hm_name,t.hm_name
+        hmName,t.protocol_impl,t.protocol_impl protocolImpl,t.version,t.hm_type,t.hm_type hmType
+        from hardware_manufacturer t
+        where 1 =1
+        <if test="hmId !=null and hmId != ''">
+            and t.hm_id= #{hmId}
+        </if>
+        <if test="license !=null and license != ''">
+            and t.license= #{license}
+        </if>
+        <if test="prodUrl !=null and prodUrl != ''">
+            and t.prod_url= #{prodUrl}
+        </if>
+        <if test="author !=null and author != ''">
+            and t.author= #{author}
+        </if>
+        <if test="link !=null and link != ''">
+            and t.link= #{link}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="defaultProtocol !=null and defaultProtocol != ''">
+            and t.default_protocol= #{defaultProtocol}
+        </if>
+        <if test="hmName !=null and hmName != ''">
+            and t.hm_name= #{hmName}
+        </if>
+        <if test="protocolImpl !=null and protocolImpl != ''">
+            and t.protocol_impl= #{protocolImpl}
+        </if>
+        <if test="version !=null and version != ''">
+            and t.version= #{version}
+        </if>
+        <if test="hmType !=null and hmType != ''">
+            and t.hm_type= #{hmType}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改厂家信息 add by wuxw 2018-07-03 -->
+    <update id="updateHardwareManufacturerInfo" parameterType="Map">
+        update hardware_manufacturer t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="license !=null and license != ''">
+            , t.license= #{license}
+        </if>
+        <if test="prodUrl !=null and prodUrl != ''">
+            , t.prod_url= #{prodUrl}
+        </if>
+        <if test="author !=null and author != ''">
+            , t.author= #{author}
+        </if>
+        <if test="link !=null and link != ''">
+            , t.link= #{link}
+        </if>
+        <if test="defaultProtocol !=null and defaultProtocol != ''">
+            , t.default_protocol= #{defaultProtocol}
+        </if>
+        <if test="hmName !=null and hmName != ''">
+            , t.hm_name= #{hmName}
+        </if>
+        <if test="protocolImpl !=null and protocolImpl != ''">
+            , t.protocol_impl= #{protocolImpl}
+        </if>
+        <if test="version !=null and version != ''">
+            , t.version= #{version}
+        </if>
+        <if test="hmType !=null and hmType != ''">
+            , t.hm_type= #{hmType}
+        </if>
+        where 1=1
+        <if test="hmId !=null and hmId != ''">
+            and t.hm_id= #{hmId}
+        </if>
+
+    </update>
+
+    <!-- 查询厂家数量 add by wuxw 2018-07-03 -->
+    <select id="queryHardwareManufacturersCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from hardware_manufacturer t
+        where 1 =1
+        <if test="hmId !=null and hmId != ''">
+            and t.hm_id= #{hmId}
+        </if>
+        <if test="license !=null and license != ''">
+            and t.license= #{license}
+        </if>
+        <if test="prodUrl !=null and prodUrl != ''">
+            and t.prod_url= #{prodUrl}
+        </if>
+        <if test="author !=null and author != ''">
+            and t.author= #{author}
+        </if>
+        <if test="link !=null and link != ''">
+            and t.link= #{link}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="defaultProtocol !=null and defaultProtocol != ''">
+            and t.default_protocol= #{defaultProtocol}
+        </if>
+        <if test="hmName !=null and hmName != ''">
+            and t.hm_name= #{hmName}
+        </if>
+        <if test="protocolImpl !=null and protocolImpl != ''">
+            and t.protocol_impl= #{protocolImpl}
+        </if>
+        <if test="version !=null and version != ''">
+            and t.version= #{version}
+        </if>
+        <if test="hmType !=null and hmType != ''">
+            and t.hm_type= #{hmType}
+        </if>
+
+
+    </select>
+
+</mapper>

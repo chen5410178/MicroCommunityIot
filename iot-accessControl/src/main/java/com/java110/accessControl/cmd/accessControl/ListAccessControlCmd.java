@@ -24,12 +24,18 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.doc.annotation.*;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.accessControl.AccessControlDto;
+
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ArrayList;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
@@ -50,9 +56,10 @@ import org.slf4j.LoggerFactory;
         description = "用于外系统查询门禁",
         httpMethod = "get",
         url = "http://{ip}:{port}/iot/api/accessControl.listAccessControl",
-        resource = "communityDoc",
+        resource = "accessControlDoc",
         author = "吴学文",
-        serviceCode = "accessControl.listAccessControl"
+        serviceCode = "accessControl.listAccessControl",
+        seq = 1
 )
 
 @Java110ParamsDoc(params = {
@@ -78,7 +85,7 @@ import org.slf4j.LoggerFactory;
 @Java110Cmd(serviceCode = "accessControl.listAccessControl")
 public class ListAccessControlCmd extends Cmd {
 
-  private static Logger logger = LoggerFactory.getLogger(ListAccessControlCmd.class);
+    private static Logger logger = LoggerFactory.getLogger(ListAccessControlCmd.class);
     @Autowired
     private IAccessControlV1InnerServiceSMO accessControlV1InnerServiceSMOImpl;
 
@@ -92,22 +99,50 @@ public class ListAccessControlCmd extends Cmd {
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-           AccessControlDto accessControlDto = BeanConvertUtil.covertBean(reqJson, AccessControlDto.class);
+        AccessControlDto accessControlDto = BeanConvertUtil.covertBean(reqJson, AccessControlDto.class);
 
-           int count = accessControlV1InnerServiceSMOImpl.queryAccessControlsCount(accessControlDto);
+        int count = accessControlV1InnerServiceSMOImpl.queryAccessControlsCount(accessControlDto);
 
-           List<AccessControlDto> accessControlDtos = null;
+        List<AccessControlDto> accessControlDtos = null;
 
-           if (count > 0) {
-               accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
-           } else {
-               accessControlDtos = new ArrayList<>();
-           }
+        if (count > 0) {
+            accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+            freshMachineStateName(accessControlDtos);
+        } else {
+            accessControlDtos = new ArrayList<>();
+        }
 
-           ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, accessControlDtos);
+        ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, accessControlDtos);
 
-           ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
+        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
-           cmdDataFlowContext.setResponseEntity(responseEntity);
+        cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void freshMachineStateName(List<AccessControlDto> accessControlDtos) {
+
+        if (accessControlDtos == null || accessControlDtos.size() < 1) {
+            return;
+        }
+        for (AccessControlDto accessControlDto : accessControlDtos) {
+            String heartbeatTime = accessControlDto.getHeartbeatTime();
+            try {
+                if (StringUtil.isEmpty(heartbeatTime)) {
+                    accessControlDto.setStateName("设备离线");
+                } else {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(DateUtil.getDateFromString(heartbeatTime, DateUtil.DATE_FORMATE_STRING_A));
+                    calendar.add(Calendar.MINUTE, 2);
+                    if (calendar.getTime().getTime() <= DateUtil.getCurrentDate().getTime()) {
+                        accessControlDto.setStateName("设备离线");
+                    } else {
+                        accessControlDto.setStateName("设备在线");
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+                accessControlDto.setStateName("设备离线");
+            }
+        }
     }
 }

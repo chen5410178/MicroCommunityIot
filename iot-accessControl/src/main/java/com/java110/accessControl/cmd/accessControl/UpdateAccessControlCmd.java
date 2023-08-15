@@ -17,6 +17,7 @@ package com.java110.accessControl.cmd.accessControl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.location.MachineLocationDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.cmd.Cmd;
@@ -25,12 +26,16 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.doc.annotation.*;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
+import com.java110.intf.community.IMachineLocationV1InnerServiceSMO;
 import com.java110.po.accessControl.AccessControlPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 
 /**
@@ -47,9 +52,10 @@ import org.slf4j.LoggerFactory;
         description = "用于外系统修改门禁功能",
         httpMethod = "post",
         url = "http://{ip}:{port}/iot/api/accessControl.updateAccessControl",
-        resource = "communityDoc",
+        resource = "accessControlDoc",
         author = "吴学文",
-        serviceCode = "accessControl.updateAccessControl"
+        serviceCode = "accessControl.updateAccessControl",
+        seq = 3
 )
 
 @Java110ParamsDoc(params = {
@@ -77,11 +83,27 @@ public class UpdateAccessControlCmd extends Cmd {
     @Autowired
     private IAccessControlV1InnerServiceSMO accessControlV1InnerServiceSMOImpl;
 
+
+    @Autowired
+    private IMachineLocationV1InnerServiceSMO machineLocationV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
 
+        if(!reqJson.containsKey("locationId") || StringUtil.isEmpty(reqJson.getString("locationId"))){
+            return;
+        }
+
+        MachineLocationDto machineLocationDto = new MachineLocationDto();
+        machineLocationDto.setLocationId(reqJson.getString("locationId"));
+        machineLocationDto.setCommunityId(reqJson.getString("communityId"));
+        List<MachineLocationDto> machineLocationDtos = machineLocationV1InnerServiceSMOImpl.queryMachineLocations(machineLocationDto);
+
+        Assert.listOnlyOne(machineLocationDtos, "设备位置不存在");
+
+        reqJson.put("locationName", machineLocationDtos.get(0).getLocationName());
     }
 
     @Override

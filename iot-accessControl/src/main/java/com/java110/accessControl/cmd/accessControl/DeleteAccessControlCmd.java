@@ -48,9 +48,10 @@ import org.slf4j.LoggerFactory;
         description = "用于外系统删除门禁功能",
         httpMethod = "post",
         url = "http://{ip}:{port}/iot/api/accessControl.deleteAccessControl",
-        resource = "communityDoc",
+        resource = "accessControlDoc",
         author = "吴学文",
-        serviceCode = "accessControl.deleteAccessControl"
+        serviceCode = "accessControl.deleteAccessControl",
+        seq = 4
 )
 
 @Java110ParamsDoc(params = {

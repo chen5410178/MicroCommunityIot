@@ -17,6 +17,7 @@ package com.java110.accessControl.cmd.accessControl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.location.MachineLocationDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.cmd.Cmd;
@@ -26,12 +27,16 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.DateUtil;
 import com.java110.doc.annotation.*;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
+import com.java110.intf.community.IMachineLocationV1InnerServiceSMO;
 import com.java110.po.accessControl.AccessControlPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -47,14 +52,15 @@ import org.slf4j.LoggerFactory;
         description = "用于外系统添加门禁功能",
         httpMethod = "post",
         url = "http://{ip}:{port}/iot/api/accessControl.saveAccessControl",
-        resource = "communityDoc",
+        resource = "accessControlDoc",
         author = "吴学文",
-        serviceCode = "accessControl.saveAccessControl"
+        serviceCode = "accessControl.saveAccessControl",
+        seq = 2
 )
 
 @Java110ParamsDoc(params = {
         @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
-        @Java110ParamDoc(name = "machineName",  length = 64, remark = "设备名称"),
+        @Java110ParamDoc(name = "machineName", length = 64, remark = "设备名称"),
 })
 
 @Java110ResponseDoc(
@@ -78,14 +84,26 @@ public class SaveAccessControlCmd extends Cmd {
     @Autowired
     private IAccessControlV1InnerServiceSMO accessControlV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IMachineLocationV1InnerServiceSMO machineLocationV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineCode", "请求报文中未包含machineCode");
         Assert.hasKeyAndValue(reqJson, "machineName", "请求报文中未包含machineName");
         Assert.hasKeyAndValue(reqJson, "implBean", "请求报文中未包含implBean");
-        Assert.hasKeyAndValue(reqJson, "locationName", "请求报文中未包含locationName");
+        Assert.hasKeyAndValue(reqJson, "locationId", "请求报文中未包含locationId");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
 
+
+        MachineLocationDto machineLocationDto = new MachineLocationDto();
+        machineLocationDto.setLocationId(reqJson.getString("locationId"));
+        machineLocationDto.setCommunityId(reqJson.getString("communityId"));
+        List<MachineLocationDto> machineLocationDtos = machineLocationV1InnerServiceSMOImpl.queryMachineLocations(machineLocationDto);
+
+        Assert.listOnlyOne(machineLocationDtos, "设备位置不存在");
+
+        reqJson.put("locationName", machineLocationDtos.get(0).getLocationName());
     }
 
     @Override
@@ -94,6 +112,7 @@ public class SaveAccessControlCmd extends Cmd {
 
         AccessControlPo accessControlPo = BeanConvertUtil.covertBean(reqJson, AccessControlPo.class);
         accessControlPo.setMachineId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        accessControlPo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         int flag = accessControlV1InnerServiceSMOImpl.saveAccessControl(accessControlPo);
 
         if (flag < 1) {
