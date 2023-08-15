@@ -175,7 +175,7 @@ public class SaveAccessControlFloorCmd extends Cmd {
         accessControlFloorPo.setFloorNum(floorDtos.get(0).getFloorNum());
         accessControlFloorPo.setUnitId(tmpUnitDto.getUnitId());
         accessControlFloorPo.setUnitNum(tmpUnitDto.getUnitNum());
-        accessControlFloorPo.setCommunityId(tmpUnitDto.getCommunityId());
+        accessControlFloorPo.setCommunityId(floorDtos.get(0).getCommunityId());
         accessControlFloorPo.setMachineId(machineId);
         int flag = accessControlFloorV1InnerServiceSMOImpl.saveAccessControlFloor(accessControlFloorPo);
 
