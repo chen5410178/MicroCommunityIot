@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="accessControlFloorV1ServiceDaoImpl">
+
+
+    <!-- 保存楼栋授权信息 add by wuxw 2018-07-03 -->
+    <insert id="saveAccessControlFloorInfo" parameterType="Map">
+        insert into access_control_floor(
+        floor_id,machine_id,unit_id,unit_num,acf_id,community_id,floor_num
+        ) values (
+        #{floorId},#{machineId},#{unitId},#{unitNum},#{acfId},#{communityId},#{floorNum}
+        )
+    </insert>
+
+
+    <!-- 查询楼栋授权信息 add by wuxw 2018-07-03 -->
+    <select id="getAccessControlFloorInfo" parameterType="Map" resultType="Map">
+        select t.floor_id,t.floor_id floorId,t.machine_id,t.machine_id machineId,t.unit_id,t.unit_id
+        unitId,t.unit_num,t.unit_num unitNum,t.acf_id,t.acf_id acfId,t.status_cd,t.status_cd
+        statusCd,t.community_id,t.community_id communityId,t.floor_num,t.floor_num floorNum
+        from access_control_floor t
+        where 1 =1
+        <if test="floorId !=null and floorId != ''">
+            and t.floor_id= #{floorId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="unitId !=null and unitId != ''">
+            and t.unit_id= #{unitId}
+        </if>
+        <if test="unitNum !=null and unitNum != ''">
+            and t.unit_num= #{unitNum}
+        </if>
+        <if test="acfId !=null and acfId != ''">
+            and t.acf_id= #{acfId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="floorNum !=null and floorNum != ''">
+            and t.floor_num= #{floorNum}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改楼栋授权信息 add by wuxw 2018-07-03 -->
+    <update id="updateAccessControlFloorInfo" parameterType="Map">
+        update access_control_floor t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="floorId !=null and floorId != ''">
+            , t.floor_id= #{floorId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="unitId !=null and unitId != ''">
+            , t.unit_id= #{unitId}
+        </if>
+        <if test="unitNum !=null and unitNum != ''">
+            , t.unit_num= #{unitNum}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="floorNum !=null and floorNum != ''">
+            , t.floor_num= #{floorNum}
+        </if>
+        where 1=1
+        <if test="acfId !=null and acfId != ''">
+            and t.acf_id= #{acfId}
+        </if>
+
+    </update>
+
+    <!-- 查询楼栋授权数量 add by wuxw 2018-07-03 -->
+    <select id="queryAccessControlFloorsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from access_control_floor t
+        where 1 =1
+        <if test="floorId !=null and floorId != ''">
+            and t.floor_id= #{floorId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="unitId !=null and unitId != ''">
+            and t.unit_id= #{unitId}
+        </if>
+        <if test="unitNum !=null and unitNum != ''">
+            and t.unit_num= #{unitNum}
+        </if>
+        <if test="acfId !=null and acfId != ''">
+            and t.acf_id= #{acfId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="floorNum !=null and floorNum != ''">
+            and t.floor_num= #{floorNum}
+        </if>
+
+
+    </select>
+
+</mapper>

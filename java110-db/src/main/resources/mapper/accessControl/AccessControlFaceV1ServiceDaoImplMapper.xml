@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="accessControlFaceV1ServiceDaoImpl">
+
+
+    <!-- 保存门禁人员信息 add by wuxw 2018-07-03 -->
+    <insert id="saveAccessControlFaceInfo" parameterType="Map">
+        insert into access_control_face(
+        come_id,come_type,mf_id,id_number,message,machine_id,name,person_id,start_time,end_time,face_path,state,person_type,community_id,card_number
+        ) values (
+        #{comeId},#{comeType},#{mfId},#{idNumber},#{message},#{machineId},#{name},#{personId},#{startTime},#{endTime},#{facePath},#{state},#{personType},#{communityId},#{cardNumber}
+        )
+    </insert>
+
+
+    <!-- 查询门禁人员信息 add by wuxw 2018-07-03 -->
+    <select id="getAccessControlFaceInfo" parameterType="Map" resultType="Map">
+        select t.come_id,t.come_id comeId,t.come_type,t.come_type comeType,t.mf_id,t.mf_id mfId,t.status_cd,t.status_cd
+        statusCd,t.id_number,t.id_number idNumber,t.message,t.machine_id,t.machine_id
+        machineId,t.name,t.person_id,t.person_id personId,t.start_time,t.start_time startTime,t.end_time,t.end_time
+        endTime,t.face_path,t.face_path facePath,t.state,t.person_type,t.person_type
+        personType,t.community_id,t.community_id communityId,t.card_number,t.card_number cardNumber
+        from access_control_face t
+        where 1 =1
+        <if test="comeId !=null and comeId != ''">
+            and t.come_id= #{comeId}
+        </if>
+        <if test="comeType !=null and comeType != ''">
+            and t.come_type= #{comeType}
+        </if>
+        <if test="mfId !=null and mfId != ''">
+            and t.mf_id= #{mfId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="idNumber !=null and idNumber != ''">
+            and t.id_number= #{idNumber}
+        </if>
+        <if test="message !=null and message != ''">
+            and t.message= #{message}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="personId !=null and personId != ''">
+            and t.person_id= #{personId}
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            and t.start_time= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            and t.end_time= #{endTime}
+        </if>
+        <if test="facePath !=null and facePath != ''">
+            and t.face_path= #{facePath}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="personType !=null and personType != ''">
+            and t.person_type= #{personType}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="cardNumber !=null and cardNumber != ''">
+            and t.card_number= #{cardNumber}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改门禁人员信息 add by wuxw 2018-07-03 -->
+    <update id="updateAccessControlFaceInfo" parameterType="Map">
+        update access_control_face t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="comeId !=null and comeId != ''">
+            , t.come_id= #{comeId}
+        </if>
+        <if test="comeType !=null and comeType != ''">
+            , t.come_type= #{comeType}
+        </if>
+        <if test="idNumber !=null and idNumber != ''">
+            , t.id_number= #{idNumber}
+        </if>
+        <if test="message !=null and message != ''">
+            , t.message= #{message}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="name !=null and name != ''">
+            , t.name= #{name}
+        </if>
+        <if test="personId !=null and personId != ''">
+            , t.person_id= #{personId}
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            , t.start_time= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            , t.end_time= #{endTime}
+        </if>
+        <if test="facePath !=null and facePath != ''">
+            , t.face_path= #{facePath}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="personType !=null and personType != ''">
+            , t.person_type= #{personType}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="cardNumber !=null and cardNumber != ''">
+            , t.card_number= #{cardNumber}
+        </if>
+        where 1=1
+        <if test="mfId !=null and mfId != ''">
+            and t.mf_id= #{mfId}
+        </if>
+
+    </update>
+
+    <!-- 查询门禁人员数量 add by wuxw 2018-07-03 -->
+    <select id="queryAccessControlFacesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from access_control_face t
+        where 1 =1
+        <if test="comeId !=null and comeId != ''">
+            and t.come_id= #{comeId}
+        </if>
+        <if test="comeType !=null and comeType != ''">
+            and t.come_type= #{comeType}
+        </if>
+        <if test="mfId !=null and mfId != ''">
+            and t.mf_id= #{mfId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="idNumber !=null and idNumber != ''">
+            and t.id_number= #{idNumber}
+        </if>
+        <if test="message !=null and message != ''">
+            and t.message= #{message}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="personId !=null and personId != ''">
+            and t.person_id= #{personId}
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            and t.start_time= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            and t.end_time= #{endTime}
+        </if>
+        <if test="facePath !=null and facePath != ''">
+            and t.face_path= #{facePath}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="personType !=null and personType != ''">
+            and t.person_type= #{personType}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="cardNumber !=null and cardNumber != ''">
+            and t.card_number= #{cardNumber}
+        </if>
+
+
+    </select>
+
+</mapper>
