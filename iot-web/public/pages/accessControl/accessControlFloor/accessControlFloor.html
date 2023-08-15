@@ -1,0 +1,115 @@
+<div>
+    <div class="flex justify-start">
+        <div style="padding-right:0px;width: 200px;" class="room-floor-unit-tree">
+            <vc:create path="property/floorUnitTree" callBackListener="room"></vc:create>
+        </div>
+        <div class="margin-top-xs margin-left-sm" style="flex-grow: 1;">
+
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件" namespace="room"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请填写门禁名称','room')" class="form-control form-control-sm" v-model="accessControlFloorInfo.conditions.machineName">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryRoomMethod()">
+                                    <vc:i18n name="查询" namespace="room"></vc:i18n>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="授权门禁" namespace="accessControlFace"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddRoomFloorModal()">
+                            授权门禁
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content border-radius ">
+                    <div class="">
+                        <table class="table table-stripped table-condensed" data-page-size="10">
+                            <thead>
+                                <tr>
+                                    <th data-hide="phone" class="text-center ">
+                                        <vc:i18n name="楼栋" namespace="room"></vc:i18n>
+                                    </th>
+                                    <th data-hide="phone" class="text-center ">
+                                        <vc:i18n name="单元" namespace="room"></vc:i18n>
+                                    </th>
+                                    <th data-hide="phone" class="text-center ">
+                                        <vc:i18n name="门禁名称" namespace="room"></vc:i18n>
+                                    </th>
+                                    <th data-hide="phone" class="text-center">
+                                        <vc:i18n name="门禁编号" namespace="room"></vc:i18n>
+                                    </th>
+                                    <th data-hide="phone" class="text-center">
+                                        <vc:i18n name="人员数" namespace="room"></vc:i18n>
+                                    </th>
+                                    <th class="text-center ">
+                                        <vc:i18n name="操作" namespace="room"></vc:i18n>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="accessControl in accessControlFloorInfo.accessControls">
+                                    <!-- <td>{{room.roomId}}</td> -->
+                                    <td class="text-center">
+                                        {{accessControl.floorNum}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{accessControl.unitNum}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{accessControl.machineName}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{accessControl.machineCode}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{accessControl.ownerCount}}
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <button class="btn-white btn btn-xs" v-on:click="_openDelRoomModel(room)">
+                                                <vc:i18n name="取消授权" namespace="room"></vc:i18n>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row margin-top-xs">
+                        <div class="col-sm-7">
+
+                        </div>
+                        <div class="col-sm-5 float-right">
+                            <vc:create path="frame/pagination"></vc:create>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- 删除员工权限 -->
+    <!-- <vc:create path="property/deleteRoom"></vc:create> -->
+
+</div>
