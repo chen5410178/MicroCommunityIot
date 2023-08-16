@@ -7,10 +7,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>iot-community</artifactId>
+    <artifactId>iot-charge</artifactId>
     <packaging>jar</packaging>
 
-    <name>iot-community</name>
+    <name>iot-charge</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -39,7 +39,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>iot-community</finalName>
+        <finalName>iot-charge</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -71,7 +71,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.java110.community.CommunityApplicationStart</mainClass>
+                    <mainClass>com.java110.charge.ChargeApplicationStart</mainClass>
                 </configuration>
             </plugin>
         </plugins>
