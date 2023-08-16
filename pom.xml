@@ -29,6 +29,7 @@
         <module>iot-job</module>
         <module>iot-system</module>
         <module>springboot</module>
+        <module>iot-charge</module>
     </modules>
 
     <parent>

@@ -26,11 +26,17 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.doc.annotation.*;
+import com.java110.dto.accessControlFloor.AccessControlFloorDto;
+import com.java110.dto.accessControlOrg.AccessControlOrgDto;
+import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlOrgV1InnerServiceSMO;
+import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.accessControlOrg.AccessControlOrgPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：删除
@@ -77,6 +83,9 @@ public class DeleteAccessControlOrgCmd extends Cmd {
     @Autowired
     private IAccessControlOrgV1InnerServiceSMO accessControlOrgV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "acoId", "acoId不能为空");
@@ -88,12 +97,24 @@ public class DeleteAccessControlOrgCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
+        AccessControlOrgDto accessControlOrgDto = new AccessControlOrgDto();
+        accessControlOrgDto.setAcoId(reqJson.getString("acoId"));
+        accessControlOrgDto.setCommunityId(reqJson.getString("communityId"));
+        List<AccessControlOrgDto> accessControlOrgs = accessControlOrgV1InnerServiceSMOImpl.queryAccessControlOrgs(accessControlOrgDto);
+        Assert.listOnlyOne(accessControlOrgs, "部门授权不存在");
+
         AccessControlOrgPo accessControlOrgPo = BeanConvertUtil.covertBean(reqJson, AccessControlOrgPo.class);
         int flag = accessControlOrgV1InnerServiceSMOImpl.deleteAccessControlOrg(accessControlOrgPo);
 
         if (flag < 1) {
             throw new CmdException("删除数据失败");
         }
+
+        //todo 删除员工授权
+        AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
+        accessControlFacePo.setComeId(accessControlOrgs.get(0).getOrgId());
+        accessControlFacePo.setCommunityId(accessControlOrgs.get(0).getCommunityId());
+        accessControlFaceV1InnerServiceSMOImpl.deleteAccessControlFace(accessControlFacePo);
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }

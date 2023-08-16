@@ -74,7 +74,7 @@
                                 <vc:i18n name="门禁人员" namespace="accessControlFace"></vc:i18n>
                             </h5>
                             <div class="ibox-tools" style="top:10px;">
-
+                                <button class="btn-primary btn btn-xs" v-if="accessControlFaceInfo.conditions.machineId" @click="_openAccessControlPerson(accessControlFace)"><vc:i18n name='人员授权'></vc:i18n></button>
                             </div>
                         </div>
                         <div class="ibox-content">

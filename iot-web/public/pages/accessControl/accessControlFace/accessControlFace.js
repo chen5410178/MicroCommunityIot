@@ -113,6 +113,9 @@
                     url: _url
                 });
             },
+            _openAccessControlPerson: function() {
+
+            }
         }
     });
 })(window.vc);
