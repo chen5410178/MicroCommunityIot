@@ -23,10 +23,16 @@ public class AccessControlFloorDto extends PageDto implements Serializable {
     private String communityId;
     private String floorNum;
 
+    private String machineName;
+
+    private String machineCode;
+
 
     private Date createTime;
 
     private String statusCd = "0";
+
+    private String personCount;
 
 
     public String getFloorId() {
@@ -100,5 +106,30 @@ public class AccessControlFloorDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+
+    public String getMachineName() {
+        return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
+    }
+
+    public String getMachineCode() {
+        return machineCode;
+    }
+
+    public void setMachineCode(String machineCode) {
+        this.machineCode = machineCode;
+    }
+
+    public String getPersonCount() {
+        return personCount;
+    }
+
+    public void setPersonCount(String personCount) {
+        this.personCount = personCount;
     }
 }

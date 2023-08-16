@@ -22,9 +22,16 @@ public class AccessControlFaceDto extends PageDto implements Serializable {
     public static final String PERSON_TYPE_OWNER = "OWNER"; //OWNER 业主 STAFF
     public static final String PERSON_TYPE_STAFF = "STAFF"; //OWNER 业主 STAFF
 
+    public static final String STATE_WAIT = "W";//待下发
+    public static final String STATE_FAIL = "F";//下发失败
+    public static final String STATE_COMPLETE = "C";//待下发
+
 
     private String comeId;
+    private String[] comeIds;
     private String comeType;
+
+    private String comeTypeName;
     private String mfId;
     private String idNumber;
     private String message;
@@ -35,6 +42,7 @@ public class AccessControlFaceDto extends PageDto implements Serializable {
     private String endTime;
     private String facePath;
     private String state;
+    private String stateName;
     private String personType;
     private String communityId;
     private String cardNumber;
@@ -45,6 +53,12 @@ public class AccessControlFaceDto extends PageDto implements Serializable {
     private String statusCd = "0";
 
     private String roomName;
+
+    private String personCount;
+
+    private String machineName;
+
+    private String machineCode;
 
 
     public String getComeId() {
@@ -190,5 +204,53 @@ public class AccessControlFaceDto extends PageDto implements Serializable {
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+
+    public String[] getComeIds() {
+        return comeIds;
+    }
+
+    public void setComeIds(String[] comeIds) {
+        this.comeIds = comeIds;
+    }
+
+    public String getPersonCount() {
+        return personCount;
+    }
+
+    public void setPersonCount(String personCount) {
+        this.personCount = personCount;
+    }
+
+    public String getMachineName() {
+        return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
+    }
+
+    public String getMachineCode() {
+        return machineCode;
+    }
+
+    public void setMachineCode(String machineCode) {
+        this.machineCode = machineCode;
+    }
+
+    public String getComeTypeName() {
+        return comeTypeName;
+    }
+
+    public void setComeTypeName(String comeTypeName) {
+        this.comeTypeName = comeTypeName;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
     }
 }

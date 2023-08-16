@@ -83,4 +83,11 @@ public class AccessControlFaceV1InnerServiceSMOImpl  implements IAccessControlFa
     public int queryAccessControlFacesCount(@RequestBody AccessControlFaceDto accessControlFaceDto) {
         return accessControlFaceV1ServiceDaoImpl.queryAccessControlFacesCount(BeanConvertUtil.beanCovertMap(accessControlFaceDto));    }
 
+    @Override
+    public List<AccessControlFaceDto> queryAccessControlFacesByComeId(@RequestBody AccessControlFaceDto accessControlFaceDto) {
+        List<AccessControlFaceDto> accessControlFaces = BeanConvertUtil.covertBeanList(accessControlFaceV1ServiceDaoImpl.queryAccessControlFacesByComeId(BeanConvertUtil.beanCovertMap(accessControlFaceDto)), AccessControlFaceDto.class);
+
+        return accessControlFaces;
+    }
+
 }

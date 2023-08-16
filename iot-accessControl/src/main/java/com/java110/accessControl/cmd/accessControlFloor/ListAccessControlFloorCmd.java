@@ -22,8 +22,11 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
+import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.doc.annotation.*;
+import com.java110.dto.accessControlFace.AccessControlFaceDto;
+import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.accessControlFloor.AccessControlFloorDto;
@@ -84,9 +87,13 @@ public class ListAccessControlFloorCmd extends Cmd {
     @Autowired
     private IAccessControlFloorV1InnerServiceSMO accessControlFloorV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
+        Assert.hasKeyAndValue(reqJson, "communityId", "未包含小区");
     }
 
     @Override
@@ -100,6 +107,9 @@ public class ListAccessControlFloorCmd extends Cmd {
 
         if (count > 0) {
             accessControlFloorDtos = accessControlFloorV1InnerServiceSMOImpl.queryAccessControlFloors(accessControlFloorDto);
+
+            //todo 查询授权人员
+            queryFloorAuthOwner(accessControlFloorDtos);
         } else {
             accessControlFloorDtos = new ArrayList<>();
         }
@@ -109,5 +119,44 @@ public class ListAccessControlFloorCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    /**
+     * 计算单元授权人员
+     *
+     * @param accessControlFloorDtos
+     */
+    private void queryFloorAuthOwner(List<AccessControlFloorDto> accessControlFloorDtos) {
+
+        if (accessControlFloorDtos == null || accessControlFloorDtos.size() < 1) {
+            return;
+        }
+        List<String> unitIds = new ArrayList<>();
+        for (AccessControlFloorDto accessControlFloorDto : accessControlFloorDtos) {
+            unitIds.add(accessControlFloorDto.getUnitId());
+        }
+
+
+        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
+        accessControlFaceDto.setComeIds(unitIds.toArray(new String[unitIds.size()]));
+        accessControlFaceDto.setCommunityId(accessControlFloorDtos.get(0).getCommunityId());
+        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFacesByComeId(accessControlFaceDto);
+
+        if (accessControlFloorDtos == null || accessControlFloorDtos.size() < 1) {
+            return;
+        }
+
+        for (AccessControlFloorDto accessControlFloorDto : accessControlFloorDtos) {
+            for (AccessControlFaceDto tAccessControlFaceDto : accessControlFaceDtos) {
+                if (!tAccessControlFaceDto.getComeId().equals(accessControlFloorDto.getUnitId())) {
+                    continue;
+                }
+
+                accessControlFloorDto.setPersonCount(tAccessControlFaceDto.getPersonCount());
+            }
+
+        }
+
+
     }
 }

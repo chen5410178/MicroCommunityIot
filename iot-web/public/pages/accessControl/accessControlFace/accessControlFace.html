@@ -127,15 +127,15 @@
                                             <img style="width: 60px; height: 60px;" class="border-radius" v-else src="/img/noPhoto.jpg" />
                                         </td>
                                         <td class="text-center">{{accessControlFace.machineName}}</td>
-                                        <td class="text-center">{{accessControlFace.personType}}</td>
+                                        <td class="text-center">{{accessControlFace.personType == 'OWNER'?'人员':'员工'}}</td>
                                         <td class="text-center">{{accessControlFace.name}}</td>
                                         <td class="text-center">{{accessControlFace.startTime}}</td>
                                         <td class="text-center">{{accessControlFace.endTime}}</td>
                                         <td class="text-center">{{accessControlFace.idNumber || '-'}}</td>
                                         <td class="text-center">{{accessControlFace.stateName}}</td>
                                         <td class="text-center">{{accessControlFace.message}}</td>
-                                        <td class="text-center">{{accessControlFace.cardNumber}}</td>
-                                        <td class="text-center">{{accessControlFace.comeType}}</td>
+                                        <td class="text-center">{{accessControlFace.cardNumber || '-'}}</td>
+                                        <td class="text-center">{{accessControlFace.comeTypeName}}</td>
                                         <td class="text-center">
                                             <div class="btn-group">
                                                 <button class="btn-white btn btn-xs" v-on:click="_openDeleteAccessControlFaceModel(accessControlFace)"><vc:i18n name='重新下发'></vc:i18n></button>

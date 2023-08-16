@@ -26,11 +26,16 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.doc.annotation.*;
+import com.java110.dto.accessControlFloor.AccessControlFloorDto;
+import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
+import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.accessControlFloor.AccessControlFloorPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：删除
@@ -77,6 +82,9 @@ public class DeleteAccessControlFloorCmd extends Cmd {
     @Autowired
     private IAccessControlFloorV1InnerServiceSMO accessControlFloorV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "acfId", "acfId不能为空");
@@ -88,12 +96,25 @@ public class DeleteAccessControlFloorCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
+        // todo 查询 楼栋授权是否存在
+        AccessControlFloorDto accessControlFloorDto = new AccessControlFloorDto();
+        accessControlFloorDto.setAcfId(reqJson.getString("acfId"));
+        accessControlFloorDto.setCommunityId(reqJson.getString("communityId"));
+        List<AccessControlFloorDto> accessControlFloorDtos = accessControlFloorV1InnerServiceSMOImpl.queryAccessControlFloors(accessControlFloorDto);
+        Assert.listOnlyOne(accessControlFloorDtos, "楼栋授权不存在");
+
         AccessControlFloorPo accessControlFloorPo = BeanConvertUtil.covertBean(reqJson, AccessControlFloorPo.class);
         int flag = accessControlFloorV1InnerServiceSMOImpl.deleteAccessControlFloor(accessControlFloorPo);
 
         if (flag < 1) {
             throw new CmdException("删除数据失败");
         }
+
+        //todo 删除员工授权
+        AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
+        accessControlFacePo.setComeId(accessControlFloorDtos.get(0).getUnitId());
+        accessControlFacePo.setCommunityId(accessControlFloorDtos.get(0).getCommunityId());
+        accessControlFaceV1InnerServiceSMOImpl.deleteAccessControlFace(accessControlFacePo);
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }

@@ -83,11 +83,11 @@
                                         {{accessControl.machineCode}}
                                     </td>
                                     <td class="text-center">
-                                        {{accessControl.ownerCount}}
+                                        {{accessControl.personCount}}
                                     </td>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <button class="btn-white btn btn-xs" v-on:click="_openDelRoomModel(room)">
+                                            <button class="btn-white btn btn-xs" v-on:click="_openDelAccessControlFloorModel(accessControl)">
                                                 <vc:i18n name="取消授权" namespace="accessControlFloor"></vc:i18n>
                                             </button>
                                         </div>
@@ -111,6 +111,7 @@
     </div>
     <!-- 删除员工权限 -->
     <!-- <vc:create path="property/deleteRoom"></vc:create> -->
+    <vc:create path="accessControl/deleteAccessControlFloor"></vc:create>
 
     <vc:create path="accessControl/authorizeAccessControl"></vc:create>
 </div>

@@ -16,8 +16,6 @@
 package com.java110.accessControl.dao;
 
 
-
-
 import com.java110.core.exception.DAOException;
 
 import java.util.List;
@@ -36,17 +34,17 @@ public interface IAccessControlFaceV1ServiceDao {
 
     /**
      * 保存 门禁人员信息
+     *
      * @param info
      * @throws DAOException DAO异常
      */
     int saveAccessControlFaceInfo(Map info) throws DAOException;
 
 
-
-
     /**
      * 查询门禁人员信息（instance过程）
      * 根据bId 查询门禁人员信息
+     *
      * @param info bId 信息
      * @return 门禁人员信息
      * @throws DAOException DAO异常
@@ -54,9 +52,9 @@ public interface IAccessControlFaceV1ServiceDao {
     List<Map> getAccessControlFaceInfo(Map info) throws DAOException;
 
 
-
     /**
      * 修改门禁人员信息
+     *
      * @param info 修改信息
      * @throws DAOException DAO异常
      */
@@ -71,4 +69,11 @@ public interface IAccessControlFaceV1ServiceDao {
      */
     int queryAccessControlFacesCount(Map info);
 
+    /**
+     * 根据 comeId 获取人员信息
+     *
+     * @param info
+     * @return
+     */
+    List<Map> queryAccessControlFacesByComeId(Map info);
 }

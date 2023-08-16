@@ -39,17 +39,16 @@ public interface IAccessControlFaceV1InnerServiceSMO {
 
 
     @RequestMapping(value = "/saveAccessControlFace", method = RequestMethod.POST)
-    public int saveAccessControlFace(@RequestBody  AccessControlFacePo accessControlFacePo);
+    public int saveAccessControlFace(@RequestBody AccessControlFacePo accessControlFacePo);
 
     @RequestMapping(value = "/updateAccessControlFace", method = RequestMethod.POST)
-    public int updateAccessControlFace(@RequestBody  AccessControlFacePo accessControlFacePo);
+    public int updateAccessControlFace(@RequestBody AccessControlFacePo accessControlFacePo);
 
     @RequestMapping(value = "/deleteAccessControlFace", method = RequestMethod.POST)
-    public int deleteAccessControlFace(@RequestBody  AccessControlFacePo accessControlFacePo);
+    public int deleteAccessControlFace(@RequestBody AccessControlFacePo accessControlFacePo);
 
     /**
      * <p>查询小区楼信息</p>
-     *
      *
      * @param accessControlFaceDto 数据对象分享
      * @return AccessControlFaceDto 对象数据
@@ -65,4 +64,13 @@ public interface IAccessControlFaceV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryAccessControlFacesCount", method = RequestMethod.POST)
     int queryAccessControlFacesCount(@RequestBody AccessControlFaceDto accessControlFaceDto);
+
+    /**
+     * 根据comeId 查询
+     *
+     * @param accessControlFaceDto
+     * @return
+     */
+    @RequestMapping(value = "/queryAccessControlFacesByComeId", method = RequestMethod.POST)
+    List<AccessControlFaceDto> queryAccessControlFacesByComeId(@RequestBody AccessControlFaceDto accessControlFaceDto);
 }

@@ -85,12 +85,12 @@
                 }
 
                 vc.emit('authorizeAccessControl', 'openAddAccessControlModal', {
-                    floorId:_floorId,
-                    unitId:_unitId,
+                    floorId: _floorId,
+                    unitId: _unitId,
                 });
             },
             _openDelAccessControlFloorModel: function(_accessControlFloor) {
-                vc.emit('deleteAccessControlFloor', 'openAccessControlFloorModel', _accessControlFloor);
+                vc.emit('deleteAccessControlFloor', 'openDeleteAccessControlFloorModal', _accessControlFloor);
             },
 
             _queryAccessControlFloorMethod: function() {
