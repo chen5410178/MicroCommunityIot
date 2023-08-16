@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="accessControlOrgV1ServiceDaoImpl">
+
+
+    <!-- 保存门禁部门授权信息 add by wuxw 2018-07-03 -->
+    <insert id="saveAccessControlOrgInfo" parameterType="Map">
+        insert into access_control_org(
+        machine_id,org_name,community_id,aco_id,org_id
+        ) values (
+        #{machineId},#{orgName},#{communityId},#{acoId},#{orgId}
+        )
+    </insert>
+
+
+    <!-- 查询门禁部门授权信息 add by wuxw 2018-07-03 -->
+    <select id="getAccessControlOrgInfo" parameterType="Map" resultType="Map">
+        select t.machine_id,t.machine_id machineId,t.org_name,t.org_name orgName,t.status_cd,t.status_cd
+        statusCd,t.community_id,t.community_id communityId,t.aco_id,t.aco_id acoId,t.org_id,t.org_id orgId,
+        ac.machine_code machineCode,ac.machine_name machineName
+        from access_control_org t
+        left join access_control ac on ac.machine_id = t.machine_id and ac.status_cd = '0'
+        where 1 =1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="orgName !=null and orgName != ''">
+            and t.org_name= #{orgName}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="acoId !=null and acoId != ''">
+            and t.aco_id= #{acoId}
+        </if>
+        <if test="orgId !=null and orgId != ''">
+            and t.org_id= #{orgId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改门禁部门授权信息 add by wuxw 2018-07-03 -->
+    <update id="updateAccessControlOrgInfo" parameterType="Map">
+        update access_control_org t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="orgName !=null and orgName != ''">
+            , t.org_name= #{orgName}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="orgId !=null and orgId != ''">
+            , t.org_id= #{orgId}
+        </if>
+        where 1=1
+        <if test="acoId !=null and acoId != ''">
+            and t.aco_id= #{acoId}
+        </if>
+
+    </update>
+
+    <!-- 查询门禁部门授权数量 add by wuxw 2018-07-03 -->
+    <select id="queryAccessControlOrgsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from access_control_org t
+        where 1 =1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="orgName !=null and orgName != ''">
+            and t.org_name= #{orgName}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="acoId !=null and acoId != ''">
+            and t.aco_id= #{acoId}
+        </if>
+        <if test="orgId !=null and orgId != ''">
+            and t.org_id= #{orgId}
+        </if>
+
+
+    </select>
+
+</mapper>

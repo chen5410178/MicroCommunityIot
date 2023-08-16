@@ -26,13 +26,13 @@ public class AccessControlFloorDto extends PageDto implements Serializable {
     private String machineName;
 
     private String machineCode;
-
+    private String personCount;
 
     private Date createTime;
 
     private String statusCd = "0";
 
-    private String personCount;
+
 
 
     public String getFloorId() {

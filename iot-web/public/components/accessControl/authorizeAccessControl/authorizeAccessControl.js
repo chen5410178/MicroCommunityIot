@@ -5,6 +5,7 @@
             authorizeAccessControlInfo: {
                 floorId: '',
                 unitId: '',
+                orgId: '',
                 machines: [],
                 machineIds: [],
                 communityId: '',
@@ -15,7 +16,9 @@
         },
         _initEvent: function() {
             vc.on('authorizeAccessControl', 'openAddAccessControlModal', function(_accessControl) {
+                $that.clearAuthAccessControlInfo();
                 $that._listMachines();
+
                 vc.copyObject(_accessControl, $that.authorizeAccessControlInfo);
                 $('#authorizeAccessControlModel').modal('show');
             });
@@ -30,8 +33,14 @@
                     return;
                 }
 
+                let _orgId = $that.authorizeAccessControlInfo.orgId;
+                let _url = "/accessControlFloor.saveAccessControlFloor";
+                if (_orgId) {
+                    _url = "/accessControlOrg.saveAccessControlOrg";
+                }
+
                 vc.http.apiPost(
-                    '/accessControlFloor.saveAccessControlFloor',
+                    _url,
                     JSON.stringify($that.authorizeAccessControlInfo), {
                         emulateJSON: true
                     },
@@ -43,6 +52,7 @@
                             $('#authorizeAccessControlModel').modal('hide');
                             $that.clearAuthAccessControlInfo();
                             vc.emit('accessControlFloor', 'listAccessControlFloor', {});
+                            vc.emit('accessControlOrg', 'listAccessControlOrg', {});
                             return;
                         }
                         vc.toast(_json.msg);
@@ -57,6 +67,7 @@
                 $that.authorizeAccessControlInfo = {
                     floorId: '',
                     unitId: '',
+                    orgId: '',
                     machines: [],
                     machineIds: [],
                     communityId: '',

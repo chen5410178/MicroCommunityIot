@@ -142,7 +142,7 @@ public class ListAccessControlFloorCmd extends Cmd {
         accessControlFaceDto.setCommunityId(accessControlFloorDtos.get(0).getCommunityId());
         List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFacesByComeId(accessControlFaceDto);
 
-        if (accessControlFloorDtos == null || accessControlFloorDtos.size() < 1) {
+        if (accessControlFaceDtos == null || accessControlFaceDtos.size() < 1) {
             return;
         }
 
