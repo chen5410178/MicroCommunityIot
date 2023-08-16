@@ -103,6 +103,8 @@ public class SaveAccessControlFloorCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
+        Assert.hasKeyAndValue(reqJson, "startDate", "请求报文中未包含startDate");
+        Assert.hasKeyAndValue(reqJson, "endDate", "请求报文中未包含endDate");
 
         String floorId = reqJson.getString("floorId");
         String unitId = reqJson.getString("unitId");
@@ -156,7 +158,7 @@ public class SaveAccessControlFloorCmd extends Cmd {
 
         //todo 保存 楼栋授权
         for (int machineIndex = 0; machineIndex < machineIds.size(); machineIndex++) {
-            doComputeAccessControl(tmpUnitDto, machineIds.getString(machineIndex), floorDtos);
+            doComputeAccessControl(tmpUnitDto, machineIds.getString(machineIndex), floorDtos,reqJson);
         }
 
     }
@@ -168,7 +170,7 @@ public class SaveAccessControlFloorCmd extends Cmd {
      * @param floorDtos
      * @param machineId
      */
-    private void doComputeAccessControl(UnitDto tmpUnitDto, String machineId, List<FloorDto> floorDtos) {
+    private void doComputeAccessControl(UnitDto tmpUnitDto, String machineId, List<FloorDto> floorDtos,JSONObject reqJson) {
         AccessControlFloorPo accessControlFloorPo = new AccessControlFloorPo();
         accessControlFloorPo.setAcfId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         accessControlFloorPo.setFloorId(floorDtos.get(0).getFloorId());
@@ -184,6 +186,6 @@ public class SaveAccessControlFloorCmd extends Cmd {
         }
 
         //todo  查询房屋人员信息
-        saveAccessControlFaceBMOImpl.save(accessControlFloorPo, machineId);
+        saveAccessControlFaceBMOImpl.save(accessControlFloorPo, machineId,reqJson.getString("startDate"),reqJson.getString("endDate"));
     }
 }

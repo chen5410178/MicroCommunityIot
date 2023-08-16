@@ -102,7 +102,8 @@ public class SaveAccessControlOrgCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
         Assert.hasKeyAndValue(reqJson, "orgId", "请求报文中未包含orgId");
-
+        Assert.hasKeyAndValue(reqJson, "startDate", "请求报文中未包含startDate");
+        Assert.hasKeyAndValue(reqJson, "endDate", "请求报文中未包含endDate");
         JSONArray machineIds = reqJson.getJSONArray("machineIds");
         if (machineIds == null || machineIds.size() < 1) {
             throw new CmdException("未包含门禁");
@@ -148,6 +149,6 @@ public class SaveAccessControlOrgCmd extends Cmd {
         }
 
         //todo  查询房屋人员信息
-        saveAccessControlFaceBMOImpl.saveOrgStaff(accessControlOrgPo, machineId);
+        saveAccessControlFaceBMOImpl.saveOrgStaff(accessControlOrgPo, machineId,reqJson.getString("startDate"),reqJson.getString("endDate"));
     }
 }

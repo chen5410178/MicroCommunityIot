@@ -35,6 +35,8 @@ import org.springframework.web.bind.annotation.*;
                 @Java110RequestMappingDoc(name = "监控中心", resource = "monitorDoc", url = "http://127.0.0.1:9999", seq = 8, startWay = "boot"),
                 @Java110RequestMappingDoc(name = "平台中心", resource = "systemDoc", url = "http://127.0.0.1:9999", seq = 9, startWay = "boot"),
                 @Java110RequestMappingDoc(name = "用户中心", resource = "userDoc", url = "http://127.0.0.1:9999", seq = 10, startWay = "boot"),
+                @Java110RequestMappingDoc(name = "充电桩中心", resource = "chargeDoc", url = "http://127.0.0.1:9999", seq = 11, startWay = "boot"),
+
         }
 )
 public class RestApi {

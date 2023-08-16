@@ -12,12 +12,12 @@ public interface ISaveAccessControlFaceBMO {
      * @param accessControlFloorPo
      * @param machineId
      */
-    void save(AccessControlFloorPo accessControlFloorPo, String machineId);
+    void save(AccessControlFloorPo accessControlFloorPo, String machineId,String startDate,String endDate);
 
     /**
      * 组织员工 下发门禁
      * @param accessControlOrgPo
      * @param machineId
      */
-    void saveOrgStaff(AccessControlOrgPo accessControlOrgPo, String machineId);
+    void saveOrgStaff(AccessControlOrgPo accessControlOrgPo, String machineId,String startDate,String endDate);
 }

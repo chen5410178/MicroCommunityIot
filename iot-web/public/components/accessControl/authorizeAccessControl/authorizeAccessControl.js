@@ -9,6 +9,8 @@
                 machines: [],
                 machineIds: [],
                 communityId: '',
+                startDate: '',
+                endDate: ''
             }
         },
         _initMethod: function() {
@@ -16,11 +18,12 @@
         },
         _initEvent: function() {
             vc.on('authorizeAccessControl', 'openAddAccessControlModal', function(_accessControl) {
+                $('#authorizeAccessControlModel').modal('show');
                 $that.clearAuthAccessControlInfo();
                 $that._listMachines();
 
                 vc.copyObject(_accessControl, $that.authorizeAccessControlInfo);
-                $('#authorizeAccessControlModel').modal('show');
+
             });
         },
         methods: {
@@ -71,7 +74,20 @@
                     machines: [],
                     machineIds: [],
                     communityId: '',
+                    startDate: '',
+                    endDate: ''
                 };
+
+                setTimeout(function() {
+                    vc.initDate('startDate', function(_value) {
+                        $that.authorizeAccessControlInfo.startDate = _value;
+                    });
+                    vc.initDate('endDate', function(_value) {
+                        $that.authorizeAccessControlInfo.endDate = _value;
+                    })
+                }, 500)
+
+
             },
             _listMachines: function(_page, _rows) {
                 let param = {

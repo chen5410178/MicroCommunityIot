@@ -53,7 +53,7 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
      */
     @Override
     @Async
-    public void save(AccessControlFloorPo accessControlFloorPo, String machineId) {
+    public void save(AccessControlFloorPo accessControlFloorPo, String machineId,String startDate,String endDate) {
 
         RoomDto roomDto = new RoomDto();
         roomDto.setUnitId(accessControlFloorPo.getUnitId());
@@ -66,7 +66,7 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
 
         for (RoomDto tmpRoomDto : roomDtos) {
             try {
-                doRoomOwner(accessControlFloorPo, tmpRoomDto, machineId);
+                doRoomOwner(accessControlFloorPo, tmpRoomDto, machineId,startDate,endDate);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -76,7 +76,7 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
 
     @Override
     @Async
-    public void saveOrgStaff(AccessControlOrgPo accessControlOrgPo, String machineId) {
+    public void saveOrgStaff(AccessControlOrgPo accessControlOrgPo, String machineId,String startDate,String endDate) {
 
         OrgStaffRelDto orgStaffRelDto = new OrgStaffRelDto();
         orgStaffRelDto.setOrgId(accessControlOrgPo.getOrgId());
@@ -88,7 +88,7 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
 
         for (OrgStaffRelDto tmpOrgStaffRelDto : orgStaffRelDtos) {
             try {
-                doOrgStaff(accessControlOrgPo, tmpOrgStaffRelDto, machineId);
+                doOrgStaff(accessControlOrgPo, tmpOrgStaffRelDto, machineId,startDate,endDate);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -96,7 +96,7 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
 
     }
 
-    private void doOrgStaff(AccessControlOrgPo accessControlOrgPo, OrgStaffRelDto tmpOrgStaffRelDto, String machineId) {
+    private void doOrgStaff(AccessControlOrgPo accessControlOrgPo, OrgStaffRelDto tmpOrgStaffRelDto, String machineId,String startDate,String endDate) {
         UserDto userDto = new UserDto();
         userDto.setUserId(tmpOrgStaffRelDto.getStaffId());
         List<UserDto> staffDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
@@ -108,8 +108,8 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
         accessControlFacePo.setIdNumber("");
         accessControlFacePo.setComeId(tmpOrgStaffRelDto.getOrgId());
         accessControlFacePo.setComeType(AccessControlFaceDto.COME_TYPE_STAFF);
-        accessControlFacePo.setEndTime(DateUtil.getLastTime());
-        accessControlFacePo.setStartTime(DateUtil.getFormatTimeString(DateUtil.getCurrentDate(), DateUtil.DATE_FORMATE_STRING_B));
+        accessControlFacePo.setEndTime(endDate);
+        accessControlFacePo.setStartTime(startDate);
         accessControlFacePo.setCardNumber("");
         accessControlFacePo.setMachineId(machineId);
         accessControlFacePo.setMessage("待下发到门禁");
@@ -122,7 +122,7 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
         accessControlFaceV1InnerServiceSMOImpl.saveAccessControlFace(accessControlFacePo);
     }
 
-    private void doRoomOwner(AccessControlFloorPo accessControlFloorPo, RoomDto tmpRoomDto, String machineId) {
+    private void doRoomOwner(AccessControlFloorPo accessControlFloorPo, RoomDto tmpRoomDto, String machineId,String startDate,String endDate) {
 
         OwnerDto ownerDto = new OwnerDto();
         ownerDto.setRoomId(tmpRoomDto.getRoomId());
@@ -139,8 +139,8 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
             accessControlFacePo.setIdNumber(tmpOwnerDto.getIdCard());
             accessControlFacePo.setComeId(accessControlFloorPo.getUnitId());
             accessControlFacePo.setComeType(AccessControlFaceDto.COME_TYPE_FLOOR);
-            accessControlFacePo.setEndTime(tmpOwnerDto.getEndTime());
-            accessControlFacePo.setStartTime(tmpOwnerDto.getStartTime());
+            accessControlFacePo.setEndTime(endDate);
+            accessControlFacePo.setStartTime(startDate);
             accessControlFacePo.setCardNumber(tmpOwnerDto.getCardNumber());
             accessControlFacePo.setMachineId(machineId);
             accessControlFacePo.setMessage("待下发到门禁");

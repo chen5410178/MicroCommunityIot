@@ -114,7 +114,7 @@
                 });
             },
             _openAccessControlPerson: function() {
-
+                vc.jumpToPage('/#/pages/accessControl/accessControlPerson')
             }
         }
     });
