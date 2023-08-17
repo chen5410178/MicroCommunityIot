@@ -17,10 +17,13 @@
 
     <!-- 查询门禁日志信息 add by wuxw 2018-07-03 -->
     <select id="getAccessControlLogInfo" parameterType="Map" resultType="Map">
-        select t.res_param,t.res_param resParam,t.machine_id,t.machine_id machineId,t.log_id,t.log_id
-        logId,t.req_param,t.req_param reqParam,t.state,t.community_id,t.community_id communityId,t.user_name,t.user_name
-        userName,t.log_action,t.log_action logAction,t.user_id,t.user_id userId
+        select t.machine_id,t.machine_id machineId,t.log_id,t.log_id
+        logId,t.state,t.community_id,t.community_id communityId,t.user_name,t.user_name
+        userName,t.log_action,t.log_action logAction,t.user_id,t.user_id userId,
+        ac.machine_code machineCode,ac.machine_name machineName,td.name stateName
         from access_control_log t
+        left join access_control ac on ac.machine_id = t.machine_id and ac.status_cd = '0'
+        left join t_dict td on t.state = td.status_cd and td.table_name = 'access_control_log' and td.table_columns = 'state'
         where 1 =1
         <if test="resParam !=null and resParam != ''">
             and t.res_param= #{resParam}
@@ -56,6 +59,13 @@
 
     </select>
 
+    <select id="queryAccessControlLogParams" parameterType="Map" resultType="Map">
+        select t.log_id logId, t.res_param resParam,t.req_param reqParam
+        from access_control_log t
+        where 1 =1
+        and t.log_id= #{logId}
+        and t.community_id= #{communityId}
+    </select>
 
     <!-- 修改门禁日志信息 add by wuxw 2018-07-03 -->
     <update id="updateAccessControlLogInfo" parameterType="Map">

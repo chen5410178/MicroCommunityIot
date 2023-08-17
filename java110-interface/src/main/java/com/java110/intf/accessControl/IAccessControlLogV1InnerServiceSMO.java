@@ -65,4 +65,7 @@ public interface IAccessControlLogV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryAccessControlLogsCount", method = RequestMethod.POST)
     int queryAccessControlLogsCount(@RequestBody AccessControlLogDto accessControlLogDto);
+
+    @RequestMapping(value = "/queryAccessControlLogParams", method = RequestMethod.POST)
+    List<AccessControlLogDto> queryAccessControlLogParams(@RequestBody AccessControlLogDto accessControlLogDto);
 }

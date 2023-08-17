@@ -84,4 +84,11 @@ public class AccessControlLogV1InnerServiceSMOImpl implements IAccessControlLogV
         return accessControlLogV1ServiceDaoImpl.queryAccessControlLogsCount(BeanConvertUtil.beanCovertMap(accessControlLogDto));
     }
 
+    @Override
+    public List<AccessControlLogDto> queryAccessControlLogParams(@RequestBody AccessControlLogDto accessControlLogDto) {
+        List<AccessControlLogDto> accessControlLogs = BeanConvertUtil.covertBeanList(
+                accessControlLogV1ServiceDaoImpl.queryAccessControlLogParams(BeanConvertUtil.beanCovertMap(accessControlLogDto)), AccessControlLogDto.class);
+
+        return accessControlLogs;    }
+
 }

@@ -105,5 +105,14 @@ public class AccessControlLogV1ServiceDaoImpl extends BaseServiceDao implements 
         return Integer.parseInt(businessAccessControlLogInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> queryAccessControlLogParams(Map info) {
+        logger.debug("查询 queryAccessControlLogParams 入参 info : {}",info);
+
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlLogV1ServiceDaoImpl.queryAccessControlLogParams",info);
+
+        return infos;
+    }
+
 
 }

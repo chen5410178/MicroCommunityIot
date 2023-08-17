@@ -18,6 +18,7 @@ package com.java110.accessControl.dao;
 
 
 import com.java110.core.exception.DAOException;
+import com.java110.dto.accessControlLog.AccessControlLogDto;
 
 import java.util.List;
 import java.util.Map;
@@ -70,4 +71,5 @@ public interface IAccessControlLogV1ServiceDao {
      */
     int queryAccessControlLogsCount(Map info);
 
+    List<Map> queryAccessControlLogParams(Map info);
 }

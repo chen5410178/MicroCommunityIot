@@ -149,6 +149,11 @@ public class BootApplicationStart {
         return ClientBuilder.build();
     }
 
+    /**
+     * spring boot 版的启动方法
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         try {
             ServiceStartInit.preInitSystemConfig();

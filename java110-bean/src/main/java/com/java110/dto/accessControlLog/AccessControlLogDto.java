@@ -15,74 +15,101 @@ import java.util.Date;
  **/
 public class AccessControlLogDto extends PageDto implements Serializable {
 
+    public static final String STATE_REQ = "10001";//请求成功 10001
+    public static final String STATE_RES = "10002";//返回成功10002
+    public static final String STATE_FAIL = "10003";//操作失败 10003
+
     private String resParam;
-private String machineId;
-private String logId;
-private String reqParam;
-private String state;
-private String communityId;
-private String userName;
-private String logAction;
-private String userId;
+    private String machineId;
+    private String logId;
+    private String reqParam;
+    private String state;
+    private String communityId;
+    private String userName;
+    private String logAction;
+    private String userId;
 
 
     private Date createTime;
 
     private String statusCd = "0";
 
+    private String machineName;
+
+    private String machineCode;
+
+    private String stateName;
+
 
     public String getResParam() {
         return resParam;
     }
-public void setResParam(String resParam) {
+
+    public void setResParam(String resParam) {
         this.resParam = resParam;
     }
-public String getMachineId() {
+
+    public String getMachineId() {
         return machineId;
     }
-public void setMachineId(String machineId) {
+
+    public void setMachineId(String machineId) {
         this.machineId = machineId;
     }
-public String getLogId() {
+
+    public String getLogId() {
         return logId;
     }
-public void setLogId(String logId) {
+
+    public void setLogId(String logId) {
         this.logId = logId;
     }
-public String getReqParam() {
+
+    public String getReqParam() {
         return reqParam;
     }
-public void setReqParam(String reqParam) {
+
+    public void setReqParam(String reqParam) {
         this.reqParam = reqParam;
     }
-public String getState() {
+
+    public String getState() {
         return state;
     }
-public void setState(String state) {
+
+    public void setState(String state) {
         this.state = state;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-public String getUserName() {
+
+    public String getUserName() {
         return userName;
     }
-public void setUserName(String userName) {
+
+    public void setUserName(String userName) {
         this.userName = userName;
     }
-public String getLogAction() {
+
+    public String getLogAction() {
         return logAction;
     }
-public void setLogAction(String logAction) {
+
+    public void setLogAction(String logAction) {
         this.logAction = logAction;
     }
-public String getUserId() {
+
+    public String getUserId() {
         return userId;
     }
-public void setUserId(String userId) {
+
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -101,5 +128,29 @@ public void setUserId(String userId) {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getMachineName() {
+        return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
+    }
+
+    public String getMachineCode() {
+        return machineCode;
+    }
+
+    public void setMachineCode(String machineCode) {
+        this.machineCode = machineCode;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
     }
 }
