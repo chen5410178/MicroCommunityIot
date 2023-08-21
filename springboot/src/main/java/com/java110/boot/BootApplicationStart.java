@@ -50,6 +50,7 @@ import java.util.concurrent.TimeUnit;
         "com.java110.system",
         "com.java110.user",
         "com.java110.charge",
+        "com.java110.hal",
         "com.java110.doc",
         "com.java110.boot",
 },
