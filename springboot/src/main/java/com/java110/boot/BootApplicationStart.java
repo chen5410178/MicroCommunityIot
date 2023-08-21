@@ -16,6 +16,7 @@ import com.java110.doc.annotation.Java110ApiDocDiscovery;
 import com.java110.doc.annotation.Java110CmdDocDiscovery;
 import com.java110.doc.registrar.ApiDocCmdPublishing;
 import com.java110.doc.registrar.ApiDocPublishing;
+import com.java110.hal.start.StartHeartbeat;
 import com.java110.intf.dev.ICacheV1InnerServiceSMO;
 import okhttp3.ConnectionPool;
 import org.slf4j.Logger;
@@ -159,14 +160,18 @@ public class BootApplicationStart {
         try {
             ServiceStartInit.preInitSystemConfig();
             ApplicationContext context = SpringApplication.run(BootApplicationStart.class, args);
-            //服务启动加载
+            //todo 服务启动加载
             ServiceStartInit.initSystemConfig(context);
 
             Environment.setSystemStartWay(Environment.SPRING_BOOT);
 
 
-            //刷新缓存
+            //todo 刷新缓存
             flushMainCache(args);
+
+            //todo 启动线程
+            StartHeartbeat startHeartbeat = new StartHeartbeat();
+            startHeartbeat.start();
         } catch (Throwable e) {
             logger.error("系统启动失败", e);
         }

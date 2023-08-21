@@ -36,6 +36,17 @@ spring:
       min-idle: 0
       timeout: 0
       maxWaitMillis: 20000
+  mqtt:
+    client:
+      id: java110-client-id8
+    completionTimeout: 10
+    default:
+      topic: topic
+    password: wuxw2015
+    url: tcp://mqtt.homecommunity.cn:1883
+    username: wuxw
+    keepalive: 20
+    poolSize: 20
 
 feign:
   client:

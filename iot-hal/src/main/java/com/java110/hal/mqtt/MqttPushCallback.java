@@ -3,11 +3,10 @@ package com.java110.hal.mqtt;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.StringUtil;
+import com.java110.hal.mqtt.subscribe.MqttClientSubscribeFactory;
 import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 /**
  * MQTT 推送回调

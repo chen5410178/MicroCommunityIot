@@ -7,6 +7,7 @@ import com.java110.core.cmd.ServiceCmdEventPublishing;
 import com.java110.core.init.ServiceStartInit;
 import com.java110.core.trace.Java110FeignClientInterceptor;
 import com.java110.core.trace.Java110RestTemplateInterceptor;
+import com.java110.hal.start.StartHeartbeat;
 import okhttp3.ConnectionPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,6 +97,10 @@ public class HalApplicationStart {
             ApplicationContext context = SpringApplication.run(HalApplicationStart.class, args);
             //服务启动加载
             ServiceStartInit.initSystemConfig(context);
+
+            //todo 启动线程
+            StartHeartbeat startHeartbeat = new StartHeartbeat();
+            startHeartbeat.start();
         } catch (Throwable e) {
             logger.error("系统启动失败", e);
         }

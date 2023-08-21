@@ -1,5 +1,6 @@
-package com.java110.hal.mqtt;
+package com.java110.hal.mqtt.init;
 
+import com.java110.hal.mqtt.MqttPushCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
@@ -18,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
  * @IntegrationComponentScan add by wuxw 2020/5/20
  **/
 @Configuration
-@AutoConfigureAfter(name = "manufacturerServiceImpl")
 public class MqttConfig {
 
     @Value("${spring.mqtt.username}")

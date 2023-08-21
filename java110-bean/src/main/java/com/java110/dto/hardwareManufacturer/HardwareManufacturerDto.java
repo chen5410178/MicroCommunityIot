@@ -15,6 +15,9 @@ import java.util.Date;
  **/
 public class HardwareManufacturerDto extends PageDto implements Serializable {
 
+    // 门禁
+    public static final String HM_TYPE_ACCESS_CONTROL = "1001";
+
     private String hmId;
     private String license;
     private String prodUrl;

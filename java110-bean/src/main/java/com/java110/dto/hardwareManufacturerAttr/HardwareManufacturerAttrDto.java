@@ -15,10 +15,16 @@ import java.util.Date;
  **/
 public class HardwareManufacturerAttrDto extends PageDto implements Serializable {
 
+    public static final String SPEC_TOPIC = "95001"; //topic
+
     private String hmId;
     private String attrId;
     private String specCd;
     private String value;
+    private String hmName;
+    private String protocolImpl;
+    private String hmType;
+
 
 
     private Date createTime;
@@ -73,5 +79,29 @@ public class HardwareManufacturerAttrDto extends PageDto implements Serializable
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getHmName() {
+        return hmName;
+    }
+
+    public void setHmName(String hmName) {
+        this.hmName = hmName;
+    }
+
+    public String getProtocolImpl() {
+        return protocolImpl;
+    }
+
+    public void setProtocolImpl(String protocolImpl) {
+        this.protocolImpl = protocolImpl;
+    }
+
+    public String getHmType() {
+        return hmType;
+    }
+
+    public void setHmType(String hmType) {
+        this.hmType = hmType;
     }
 }
