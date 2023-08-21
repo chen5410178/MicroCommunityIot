@@ -47,6 +47,8 @@ public class AccessControlFacePo implements Serializable {
 
     private String roomName;
 
+    private String faceBase64;
+
     public String getComeId() {
         return comeId;
     }
@@ -181,5 +183,13 @@ public class AccessControlFacePo implements Serializable {
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+
+    public String getFaceBase64() {
+        return faceBase64;
+    }
+
+    public void setFaceBase64(String faceBase64) {
+        this.faceBase64 = faceBase64;
     }
 }
