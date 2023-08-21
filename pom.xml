@@ -30,6 +30,7 @@
         <module>iot-system</module>
         <module>springboot</module>
         <module>iot-charge</module>
+        <module>iot-hal</module>
     </modules>
 
     <parent>
@@ -130,6 +131,11 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>1.7.25</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.integration</groupId>
+                <artifactId>spring-integration-mqtt</artifactId>
+                <version>5.5.14</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
