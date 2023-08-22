@@ -52,6 +52,8 @@ import java.util.concurrent.TimeUnit;
         "com.java110.user",
         "com.java110.charge",
         "com.java110.hal",
+        "com.java110.acct",
+        "com.java110.hal",
         "com.java110.doc",
         "com.java110.boot",
 },
@@ -73,6 +75,7 @@ import java.util.concurrent.TimeUnit;
                 "com.java110.monitor.cmd",
                 "com.java110.system.cmd",
                 "com.java110.charge.cmd",
+                "com.java110.acct.cmd",
                 "com.java110.user.cmd"
         })
 @EnableAsync
@@ -89,6 +92,7 @@ import java.util.concurrent.TimeUnit;
         "com.java110.monitor.cmd",
         "com.java110.system.cmd",
         "com.java110.charge.cmd",
+        "com.java110.acct.cmd",
         "com.java110.user.cmd"
 },
         cmdDocClass = ApiDocCmdPublishing.class)

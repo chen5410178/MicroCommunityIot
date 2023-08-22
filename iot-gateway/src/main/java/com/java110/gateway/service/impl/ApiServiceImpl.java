@@ -23,7 +23,7 @@ import com.java110.gateway.service.IApiService;
 import com.java110.gateway.service.IAppServiceCheck;
 import com.java110.gateway.service.IGetCommunityStoreInfoSMO;
 import com.java110.gateway.service.IPrivilegeSMO;
-import jdk.nashorn.internal.ir.RuntimeNode;
+//import jdk.nashorn.internal.ir.RuntimeNode;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;

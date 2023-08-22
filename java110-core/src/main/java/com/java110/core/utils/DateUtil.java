@@ -5,10 +5,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by wuxw on 2017/7/24.
@@ -17,7 +14,7 @@ public class DateUtil {
 
     private static DateFormat dateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
 
-    public static final String LAST_TIME = "2050-01-01 00:00:00";
+    public static final String LAST_TIME = "2038-01-01 00:00:00";
 
     private static Map<String, SimpleDateFormat> formats = new HashMap();
     public static final String DATE_FORMATE_STRING_DEFAULT = "yyyyMMddHHmmss";
@@ -35,6 +32,9 @@ public class DateUtil {
     public static final String DATE_FORMATE_STRING_L = "MMdd";
     public static final String DATE_FORMATE_STRING_M = "yyyyMM";
     public static final String DATE_FORMATE_STRING_N = "HHmmss";
+    public static final String DATE_FORMATE_STRING_O = "yyyyMMddHHmm";
+    public static final String DATE_FORMATE_STRING_Q = "yyyy-MM";
+
 
     static {
         formats.put("yyyyMMddHHmmss", new SimpleDateFormat("yyyyMMddHHmmss"));
@@ -52,6 +52,9 @@ public class DateUtil {
         formats.put("MMdd", new SimpleDateFormat("MMdd"));
         formats.put("yyyyMM", new SimpleDateFormat("yyyyMM"));
         formats.put("HHmmss", new SimpleDateFormat("HHmmss"));
+        formats.put("yyyyMMddHHmm", new SimpleDateFormat("yyyyMMddHHmm"));
+        formats.put("yyyy-MM", new SimpleDateFormat("yyyy-MM"));
+
     }
 
 
@@ -114,6 +117,22 @@ public class DateUtil {
 
     public static String getFormatTimeString(Date date, String pattern) {
         SimpleDateFormat sDateFormat = getDateFormat(pattern);
+
+        synchronized (sDateFormat) {
+            return sDateFormat.format(date);
+        }
+    }
+
+    public static String getFormatTimeStringA(Date date) {
+        SimpleDateFormat sDateFormat = getDateFormat(DateUtil.DATE_FORMATE_STRING_A);
+
+        synchronized (sDateFormat) {
+            return sDateFormat.format(date);
+        }
+    }
+
+    public static String getFormatTimeStringB(Date date) {
+        SimpleDateFormat sDateFormat = getDateFormat(DateUtil.DATE_FORMATE_STRING_B);
 
         synchronized (sDateFormat) {
             return sDateFormat.format(date);
@@ -386,6 +405,19 @@ public class DateUtil {
         return calendar.getTime();
     }
 
+    public static Date getNextMonthFirstDate(String curDate) {
+        Date date = DateUtil.getDateFromStringB(curDate);
+        Calendar curDateCal = Calendar.getInstance();
+        curDateCal.setTime(date);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.add(Calendar.MONTH, 1);
+        return calendar.getTime();
+    }
+
     public static Date getFirstDate() {
         Calendar curDateCal = Calendar.getInstance();
         curDateCal.set(Calendar.DAY_OF_MONTH, 1);
@@ -394,6 +426,27 @@ public class DateUtil {
         curDateCal.set(Calendar.SECOND, 0);
         Date curDate = curDateCal.getTime();
         return curDate;
+    }
+
+    public static Date getFirstDate(Date curDate) {
+        Calendar curDateCal = Calendar.getInstance();
+        curDateCal.setTime(curDate);
+        curDateCal.set(Calendar.DAY_OF_MONTH, 1);
+        curDateCal.set(Calendar.HOUR_OF_DAY, 0);
+        curDateCal.set(Calendar.MINUTE, 0);
+        curDateCal.set(Calendar.SECOND, 0);
+        return curDateCal.getTime();
+    }
+
+    public static Date getFirstDate(String curDate) {
+        Date date = DateUtil.getDateFromStringB(curDate);
+        Calendar curDateCal = Calendar.getInstance();
+        curDateCal.setTime(date);
+        curDateCal.set(Calendar.DAY_OF_MONTH, 1);
+        curDateCal.set(Calendar.HOUR_OF_DAY, 0);
+        curDateCal.set(Calendar.MINUTE, 0);
+        curDateCal.set(Calendar.SECOND, 0);
+        return curDateCal.getTime();
     }
 
 
@@ -473,6 +526,15 @@ public class DateUtil {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.DAY_OF_MONTH, days);
+        return sf.format(c.getTime());
+    }
+
+
+    public static String getAddHoursStringA(Date date, int hours) {
+        SimpleDateFormat sf = new SimpleDateFormat(DATE_FORMATE_STRING_A);
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.HOUR_OF_DAY, hours);
         return sf.format(c.getTime());
     }
 
@@ -593,7 +655,6 @@ public class DateUtil {
 
     /**
      * 　　 *字符串的日期格式的计算
-     *
      */
     public static int daysBetween(String smdate, String bdate) {
         long between_days = 0;
@@ -669,14 +730,76 @@ public class DateUtil {
 
     /**
      * 通过时间秒毫秒数判断两个时间的间隔
+     *
      * @param date1
      * @param date2
      * @return
      */
-    public static int differentDaysUp(Date date1,Date date2)
-    {
-        double days = ((date2.getTime() - date1.getTime()) / (1000*3600*24*1.00));
+    public static int differentDaysUp(Date date1, Date date2) {
+        double days = ((date2.getTime() - date1.getTime()) / (1000 * 3600 * 24 * 1.00));
         return new Double(Math.ceil(days)).intValue();
+    }
+
+    /**
+     * 获取两个日期之间的所有月份 (年月)
+     *
+     * @param startTime
+     * @param endTime
+     * @return：list
+     */
+    public static List<String> getMonthBetweenDate(Date startTime, Date endTime) {
+        return getMonthBetweenDate(DateUtil.getFormatTimeStringA(startTime), DateUtil.getFormatTimeStringA(endTime));
+    }
+
+    /**
+     * 获取两个日期之间的所有月份 (年月)
+     *
+     * @param startTime
+     * @param endTime
+     * @return：list
+     */
+    public static List<String> getMonthBetweenDate(String startTime, String endTime) {
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMATE_STRING_Q);
+        // 声明保存日期集合
+        List<String> list = new ArrayList<>();
+        try {
+            // 转化成日期类型
+            Date startDate = sdf.parse(startTime);
+            Date endDate = sdf.parse(endTime);
+
+            //用Calendar 进行日期比较判断
+            Calendar calendar = Calendar.getInstance();
+            while (startDate.getTime() <= endDate.getTime()) {
+
+                // 把日期添加到集合
+                list.add(sdf.format(startDate));
+
+                // 设置日期
+                calendar.setTime(startDate);
+
+                //把月数增加 1
+                calendar.add(Calendar.MONTH, 1);
+
+                // 获取增加后的日期
+                startDate = calendar.getTime();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * 除去 小时 分 秒
+     *
+     * @param time
+     * @return
+     */
+    public static Date timeToDate(Date time) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(time);
+        setTimeToMidnight(calendar);
+        return calendar.getTime();
     }
 
 }

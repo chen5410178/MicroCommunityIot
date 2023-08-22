@@ -30,6 +30,7 @@
         <module>iot-system</module>
         <module>springboot</module>
         <module>iot-charge</module>
+        <module>iot-acct</module>
         <module>iot-hal</module>
     </modules>
 
