@@ -17,6 +17,7 @@
                 specs: [],
                 rules:[],
                 portCount:'',
+                chargeType: ''
             }
         },
         _initMethod: function () {
@@ -89,6 +90,13 @@
                             errInfo: "用量电价不能超过12"
                         },
                     ],
+                    'addChargeMachineInfo.chargeType': [
+                        {
+                            limit: "required",
+                            param: "",
+                            errInfo: "充电类型不能为空"
+                        }
+                    ],
 
                 });
             },
@@ -138,6 +146,7 @@
                     specs: [],
                     rules:[],
                     portCount:'',
+                    chargeType: ''
                 };
             },
             _listFactorys: function(_page, _rows) {

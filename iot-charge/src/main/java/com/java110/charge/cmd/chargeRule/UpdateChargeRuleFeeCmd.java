@@ -31,6 +31,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 
 /**
  * 类表述：更新
@@ -61,8 +65,21 @@ public class UpdateChargeRuleFeeCmd extends Cmd {
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
+        String startTime = reqJson.getString("startTime");
+        reqJson.remove("startTime");
+        String endTime = reqJson.getString("endTime");
+        reqJson.remove("endTime");
 
         ChargeRuleFeePo chargeRuleFeePo = BeanConvertUtil.covertBean(reqJson, ChargeRuleFeePo.class);
+        if (startTime != null && endTime != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+            try {
+                chargeRuleFeePo.setStartTime(new Time(sdf.parse(startTime).getTime()));
+                chargeRuleFeePo.setEndTime(new Time(sdf.parse(endTime).getTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         int flag = chargeRuleFeeV1InnerServiceSMOImpl.updateChargeRuleFee(chargeRuleFeePo);
 
         if (flag < 1) {

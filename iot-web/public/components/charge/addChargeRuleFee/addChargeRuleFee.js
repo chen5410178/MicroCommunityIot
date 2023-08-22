@@ -211,7 +211,9 @@
                     maxEnergyPrice: '',
                     durationPrice: '',
                     remark: '',
-                    chargeType: ''
+                    chargeType: '',
+                    startTime: '',
+                    endTime: ''
                 };
             }
         }

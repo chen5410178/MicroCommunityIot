@@ -38,6 +38,7 @@
                 });
             vc.on('chargeType', 'switchChargeType', function (_param) {
                 $that.chargeRuleFeeInfo.conditions.chargeType = _param.statusCd;
+                $that._listChargeRuleFees(DEFAULT_PAGE, DEFAULT_ROWS);
             });
         },
         methods: {

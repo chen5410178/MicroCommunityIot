@@ -67,6 +67,9 @@
                                 <th class="text-center"><span>
                                         <vc:i18n name='充电规则' namespace='chargeMachineManage'></vc:i18n>
                                     </span></th>
+                                <th class="text-center"><span>
+                                        <vc:i18n name='充电类型' namespace='chargeMachineManage'></vc:i18n>
+                                    </span></th>
                                     <th class="text-center"><span>
                                         <vc:i18n name='状态' namespace='chargeMachineManage'></vc:i18n>
                                     </span></th>
@@ -85,6 +88,7 @@
                                 <td class="text-center">{{chargeMachine.factoryName}}</td>
                                 <td class="text-center">{{chargeMachine.portCount || 0}}(<a href="javascript:void(0)" @click="_viewPort(chargeMachine)">查看</a>)</td>
                                 <td class="text-center">{{chargeMachine.ruleName}}</td>
+                                <td class="text-center">{{chargeMachine.chargeTypeName}}</td>
                                 <td class="text-center">{{chargeMachine.stateName}}</td>
 
                                 <!-- <td class="text-center">{{chargeMachine.energyPrice}}</td> -->

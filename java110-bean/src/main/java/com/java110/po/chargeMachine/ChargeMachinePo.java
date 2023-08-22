@@ -36,6 +36,15 @@ public class ChargeMachinePo implements Serializable {
     private String statusCd = "0";
     private String communityId;
     private String machineName;
+    private String chargeType;
+
+    public String getChargeType() {
+        return chargeType;
+    }
+
+    public void setChargeType(String chargeType) {
+        this.chargeType = chargeType;
+    }
 
     public String getHeartbeatTime() {
         return heartbeatTime;

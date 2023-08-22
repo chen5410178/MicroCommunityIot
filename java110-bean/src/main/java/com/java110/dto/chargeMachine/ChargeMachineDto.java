@@ -29,7 +29,8 @@ public class ChargeMachineDto extends PageDto implements Serializable {
     private String ruleName;
     private String communityId;
     private String machineName;
-
+    private String chargeType;
+    private String chargeTypeName;
 
     private Date createTime;
 
@@ -46,6 +47,22 @@ public class ChargeMachineDto extends PageDto implements Serializable {
     private String stateName;
 
     private List<ChargeRuleFeeDto> fees;
+
+    public String getChargeType() {
+        return chargeType;
+    }
+
+    public void setChargeType(String chargeType) {
+        this.chargeType = chargeType;
+    }
+
+    public String getChargeTypeName() {
+        return chargeTypeName;
+    }
+
+    public void setChargeTypeName(String chargeTypeName) {
+        this.chargeTypeName = chargeTypeName;
+    }
 
     public String getHeartbeatTime() {
         return heartbeatTime;

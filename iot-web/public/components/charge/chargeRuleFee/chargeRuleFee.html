@@ -21,8 +21,11 @@
                             <vc:i18n name='编号' namespace='chargeRuleFee'></vc:i18n>
                         </span>
                     </th>
-                    <th class="text-center">
+                    <th v-if="chargeRuleFeeInfo.conditions.chargeType == '1001'" class="text-center">
                             <vc:i18n name='功率' namespace='chargeRuleFee'></vc:i18n>
+                    </th>
+                    <th v-if="chargeRuleFeeInfo.conditions.chargeType == '1002'" class="text-center">
+                             <vc:i18n name='时段' namespace='chargeRuleFee'></vc:i18n>
                     </th>
                     <th class="text-center">
                             <vc:i18n name='小时电价' namespace='chargeRuleFee'></vc:i18n>
@@ -39,8 +42,11 @@
             <tbody>
                 <tr v-for="chargeRuleFee in chargeRuleFeeInfo.chargeRuleFees">
                     <td class="text-center">{{chargeRuleFee.crfId}}</td>
-                    <td class="text-center">{{chargeRuleFee.minEnergyPrice}}~<br/>
+                    <td v-if="chargeRuleFeeInfo.conditions.chargeType == '1001'" class="text-center">{{chargeRuleFee.minEnergyPrice}}~<br/>
                         {{chargeRuleFee.maxEnergyPrice}}
+                    </td>
+                    <td v-if="chargeRuleFeeInfo.conditions.chargeType == '1002'" class="text-center">{{chargeRuleFee.startTime}}~<br/>
+                        {{chargeRuleFee.endTime}}
                     </td>
                     <td class="text-center">{{chargeRuleFee.durationPrice}}</td>
                     <td class="text-center">{{chargeRuleFee.remark}}</td>

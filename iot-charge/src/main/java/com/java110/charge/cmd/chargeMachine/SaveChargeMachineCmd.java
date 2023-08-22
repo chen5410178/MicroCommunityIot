@@ -74,6 +74,7 @@ public class SaveChargeMachineCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "ruleId", "请求报文中未包含ruleId");
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
         Assert.hasKeyAndValue(reqJson, "portCount", "请求报文中未包含portCount");
+        Assert.hasKeyAndValue(reqJson, "chargeType", "请求报文中未包含chargeType");
 
         ChargeMachineDto chargeMachineDto = new ChargeMachineDto();
         chargeMachineDto.setMachineCode(reqJson.getString("machineCode"));
