@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mqttLogV1ServiceDaoImpl">
+
+
+    <!-- 保存mqtt日志信息 add by wuxw 2018-07-03 -->
+    <insert id="saveMqttLogInfo" parameterType="Map">
+        insert into mqtt_log(
+        mqtt_id,business_id,context,business_key,topic,remark
+        ) values (
+        #{mqttId},#{businessId},#{context},#{businessKey},#{topic},#{remark}
+        )
+    </insert>
+
+
+    <!-- 查询mqtt日志信息 add by wuxw 2018-07-03 -->
+    <select id="getMqttLogInfo" parameterType="Map" resultType="Map">
+        select t.mqtt_id,t.mqtt_id mqttId,t.business_id,t.business_id businessId,t.context,t.business_key,t.business_key
+        businessKey,t.topic,t.remark
+        from mqtt_log t
+        where 1 =1
+        <if test="mqttId !=null and mqttId != ''">
+            and t.mqtt_id= #{mqttId}
+        </if>
+        <if test="businessId !=null and businessId != ''">
+            and t.business_id= #{businessId}
+        </if>
+        <if test="context !=null and context != ''">
+            and t.context= #{context}
+        </if>
+        <if test="businessKey !=null and businessKey != ''">
+            and t.business_key= #{businessKey}
+        </if>
+        <if test="topic !=null and topic != ''">
+            and t.topic= #{topic}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改mqtt日志信息 add by wuxw 2018-07-03 -->
+    <update id="updateMqttLogInfo" parameterType="Map">
+        update mqtt_log t
+        <set>
+            <if test="businessId !=null and businessId != ''">
+                 t.business_id= #{businessId},
+            </if>
+            <if test="context !=null and context != ''">
+                 t.context= #{context},
+            </if>
+            <if test="businessKey !=null and businessKey != ''">
+                 t.business_key= #{businessKey},
+            </if>
+            <if test="topic !=null and topic != ''">
+                 t.topic= #{topic},
+            </if>
+            <if test="remark !=null and remark != ''">
+                t.remark= #{remark}
+            </if>
+        </set>
+        where 1=1
+        <if test="mqttId !=null and mqttId != ''">
+            and t.mqtt_id= #{mqttId}
+        </if>
+
+    </update>
+
+    <!-- 查询mqtt日志数量 add by wuxw 2018-07-03 -->
+    <select id="queryMqttLogsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from mqtt_log t
+        where 1 =1
+        <if test="mqttId !=null and mqttId != ''">
+            and t.mqtt_id= #{mqttId}
+        </if>
+        <if test="businessId !=null and businessId != ''">
+            and t.business_id= #{businessId}
+        </if>
+        <if test="context !=null and context != ''">
+            and t.context= #{context}
+        </if>
+        <if test="businessKey !=null and businessKey != ''">
+            and t.business_key= #{businessKey}
+        </if>
+        <if test="topic !=null and topic != ''">
+            and t.topic= #{topic}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+
+
+    </select>
+
+</mapper>

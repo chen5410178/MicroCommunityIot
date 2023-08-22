@@ -3,6 +3,9 @@ package com.java110.core.factory;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.cache.MappingCache;
 import com.java110.core.utils.StringUtil;
+import com.java110.dto.mqttLog.MqttLogDto;
+import com.java110.intf.system.IMqttLogV1InnerServiceSMO;
+import com.java110.po.mqttLog.MqttLogPo;
 
 public class MqttLogFactory {
 
@@ -10,37 +13,41 @@ public class MqttLogFactory {
 
         String mqttLogSwitch = MappingCache.getValue("MQTT_LOG_SWITCH");
 
-        if(!"ON".equals(mqttLogSwitch)){
-            return ;
+        if (!"ON".equals(mqttLogSwitch)) {
+            return;
         }
 
-        ISaveMqttLogService saveMqttLogServiceImpl = ApplicationContextFactory.getBean("saveMqttLogServiceImpl", ISaveMqttLogService.class);
+        IMqttLogV1InnerServiceSMO saveMqttLogServiceImpl = ApplicationContextFactory.getBean("mqttLogV1InnerServiceSMOImpl", IMqttLogV1InnerServiceSMO.class);
+        if (saveMqttLogServiceImpl == null) {
+            saveMqttLogServiceImpl = ApplicationContextFactory.getBean(IMqttLogV1InnerServiceSMO.class.getName(), IMqttLogV1InnerServiceSMO.class);
+        }
 
-        MqttLogDto mqttLogDto = new MqttLogDto();
-        mqttLogDto.setMqttId(SeqUtil.getId());
-        mqttLogDto.setBusinessId(taskId);
-        mqttLogDto.setBusinessKey(getBusinessKey(topic, param));
-        mqttLogDto.setContext(param);
-        mqttLogDto.setTopic(topic);
-        mqttLogDto.setRemark("接受");
-        saveMqttLogServiceImpl.saveMqttLog(mqttLogDto);
+        MqttLogPo mqttLogPo = new MqttLogPo();
+        mqttLogPo.setMqttId(GenerateCodeFactory.getGeneratorId("10"));
+        mqttLogPo.setBusinessId(taskId);
+        mqttLogPo.setBusinessKey(getBusinessKey(topic, param));
+        mqttLogPo.setContext(param);
+        mqttLogPo.setTopic(topic);
+        mqttLogPo.setRemark("接受");
+        saveMqttLogServiceImpl.saveMqttLog(mqttLogPo);
 
     }
 
     /**
      * {
-     * 	"AlarmInfoPlate": {
-     * 		"serialno": "69ee31dd-462720e8",
-     * 		"result": {
-     * 			"PlateResult": {
-     * 				"isoffline": 0,
-     * 				"plateid": 1624,
-     * 				"license": "粤S7Y12C",
-     * 					"type": 0
-     *                },
-     * 				"imagePath": "picture/0/69ee31dd-462720e8/20220912/04/20220912_041503_361.jpg"* 			}
-     *        }* 	}
+     * "AlarmInfoPlate": {
+     * "serialno": "69ee31dd-462720e8",
+     * "result": {
+     * "PlateResult": {
+     * "isoffline": 0,
+     * "plateid": 1624,
+     * "license": "粤S7Y12C",
+     * "type": 0
+     * },
+     * "imagePath": "picture/0/69ee31dd-462720e8/20220912/04/20220912_041503_361.jpg"* 			}
+     * }* 	}
      * }
+     *
      * @param topic
      * @param param
      * @return
@@ -62,13 +69,13 @@ public class MqttLogFactory {
             return "心跳";
         }
 
-        if(!alarmInfoPlateObj.containsKey("result")){
+        if (!alarmInfoPlateObj.containsKey("result")) {
             return "其他业务";
         }
 
         JSONObject result = alarmInfoPlateObj.getJSONObject("result");
 
-        if(!result.containsKey("PlateResult")){
+        if (!result.containsKey("PlateResult")) {
             return "其他业务";
         }
 
@@ -80,12 +87,12 @@ public class MqttLogFactory {
         }
 
 
-
         return serialno;
     }
 
     /**
      * 保存发送数据
+     *
      * @param taskId
      * @param carNum
      * @param topic
@@ -95,20 +102,22 @@ public class MqttLogFactory {
 
         String mqttLogSwitch = MappingCache.getValue("MQTT_LOG_SWITCH");
 
-        if(!"ON".equals(mqttLogSwitch)){
-            return ;
+        if (!"ON".equals(mqttLogSwitch)) {
+            return;
+        }
+        IMqttLogV1InnerServiceSMO saveMqttLogServiceImpl = ApplicationContextFactory.getBean("mqttLogV1InnerServiceSMOImpl", IMqttLogV1InnerServiceSMO.class);
+        if (saveMqttLogServiceImpl == null) {
+            saveMqttLogServiceImpl = ApplicationContextFactory.getBean(IMqttLogV1InnerServiceSMO.class.getName(), IMqttLogV1InnerServiceSMO.class);
         }
 
-        ISaveMqttLogService saveMqttLogServiceImpl = ApplicationContextFactory.getBean("saveMqttLogServiceImpl", ISaveMqttLogService.class);
-
-        MqttLogDto mqttLogDto = new MqttLogDto();
-        mqttLogDto.setMqttId(SeqUtil.getId());
-        mqttLogDto.setBusinessId(taskId);
-        mqttLogDto.setBusinessKey(carNum);
-        mqttLogDto.setContext(param);
-        mqttLogDto.setTopic(topic);
-        mqttLogDto.setRemark("发送");
-        saveMqttLogServiceImpl.saveMqttLog(mqttLogDto);
+        MqttLogPo mqttLogPo = new MqttLogPo();
+        mqttLogPo.setMqttId(GenerateCodeFactory.getGeneratorId("10"));
+        mqttLogPo.setBusinessId(taskId);
+        mqttLogPo.setBusinessKey(getBusinessKey(topic, param));
+        mqttLogPo.setContext(param);
+        mqttLogPo.setTopic(topic);
+        mqttLogPo.setRemark("发送");
+        saveMqttLogServiceImpl.saveMqttLog(mqttLogPo);
 
     }
 }
