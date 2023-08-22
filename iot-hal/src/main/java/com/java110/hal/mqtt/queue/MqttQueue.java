@@ -1,4 +1,4 @@
-package com.java110.hal.mqtt;
+package com.java110.hal.mqtt.queue;
 
 import com.java110.dto.mqtt.MqttMsgDto;
 import org.slf4j.Logger;

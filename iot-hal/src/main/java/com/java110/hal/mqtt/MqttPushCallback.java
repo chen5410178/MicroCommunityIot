@@ -1,8 +1,11 @@
 package com.java110.hal.mqtt;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.factory.MqttLogFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.StringUtil;
+import com.java110.hal.mqtt.queue.MqttQueue;
 import com.java110.hal.mqtt.subscribe.MqttClientSubscribeFactory;
 import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
@@ -44,7 +47,6 @@ public class MqttPushCallback implements MqttCallbackExtended {
                 log.debug("MqttPushCallback:==========================>mqtt connect error, try reconnect<=============================================");
                 // 重新连接
                 client.reconnect();
-                //client.reconnect();
                 //重新订阅消息
                 MqttClientSubscribeFactory.subscribe();
                 Thread.sleep(3000);
@@ -72,40 +74,10 @@ public class MqttPushCallback implements MqttCallbackExtended {
         try {
             log.debug("====================================>Topic: " + topic);
             log.debug("=====================================>Message: " + new String(message.getPayload()));
-//            MqttQueue.addMsg(topic,new String(message.getPayload()));
-//            String taskId = SeqUtil.getId();
-//            MqttLogFactory.saveReceiveLog(taskId, topic, new String(message.getPayload()));
-//
-//            //先去 topic 表中查询
-//            IManufacturerService manufacturerServiceImpl = ApplicationContextFactory.getBean("manufacturerServiceImpl", IManufacturerService.class);
-//            ManufacturerAttrDto tmpManufacturerDto = new ManufacturerAttrDto();
-//            tmpManufacturerDto.setSpecCd(ManufacturerAttrDto.SPEC_TOPIC);
-//            tmpManufacturerDto.setValue(topic);
-//            List<ManufacturerAttrDto> manufacturerAttrDtos = manufacturerServiceImpl.getManufacturerAttr(tmpManufacturerDto);
-//
-//            if (manufacturerAttrDtos == null || manufacturerAttrDtos.size() < 1) {
-//                if ("/device/push/result".equals(topic)) { //臻识的摄像头
-//                    CarMachineProcessFactory.getCarImpl("17").mqttMessageArrived(taskId,topic, new String(message.getPayload()));
-//                } else {
-//                    String hmId = getHmId(topic, message);
-//                    if ("18".contains(hmId) || "21".contains(hmId)) {
-//                        AttendanceProcessFactory.getAttendanceProcessImpl(hmId).mqttMessageArrived(taskId,topic, new String(message.getPayload()));
-//                    }else {
-//                        AccessControlProcessFactory.getAssessControlProcessImpl(getHmId(topic, message)).mqttMessageArrived(taskId,topic, new String(message.getPayload()));
-//                    }
-//                }
-//                return;
-//            }
-//
-//            for (ManufacturerAttrDto manufacturerAttrDto : manufacturerAttrDtos) {
-//                if (ManufacturerDto.HM_TYPE_ACCESS_CONTROL.equals(manufacturerAttrDto.getHmType())) {
-//                    AccessControlProcessFactory.getAssessControlProcessImpl(manufacturerAttrDto.getHmId()).mqttMessageArrived(taskId,topic, new String(message.getPayload()));
-//                } else if (ManufacturerDto.HM_TYPE_CAR.equals(manufacturerAttrDto.getHmType())) {
-//                    CarMachineProcessFactory.getCarImpl(manufacturerAttrDto.getHmId()).mqttMessageArrived(taskId,topic, new String(message.getPayload()));
-//                } else if (ManufacturerDto.HM_TYPE_ATTENDANCE.equals(manufacturerAttrDto.getHmType())) {
-//                    AttendanceProcessFactory.getAttendanceProcessImpl(manufacturerAttrDto.getHmId()).mqttMessageArrived(taskId,topic, new String(message.getPayload()));
-//                }
-//            }
+            //todo  写入到消息队列中
+            MqttQueue.addMsg(topic, new String(message.getPayload()));
+            String taskId = GenerateCodeFactory.getUUID();
+            MqttLogFactory.saveReceiveLog(taskId, topic, new String(message.getPayload()));
 
         } catch (Exception e) {
             log.error("处理订阅消息失败", e);

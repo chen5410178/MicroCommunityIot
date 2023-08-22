@@ -1,6 +1,6 @@
 package com.java110.hal.mqtt.heartbeat;
 
-import com.java110.hal.mqtt.MqttFactory;
+import com.java110.core.factory.MqttFactory;
 import com.java110.hal.mqtt.subscribe.MqttClientSubscribeFactory;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ public class MqttClientHeartbeat implements Runnable {
 
     Logger logger = LoggerFactory.getLogger(MqttClientHeartbeat.class);
 
-    public static final long DEFAULT_WAIT_SECOND = 15 * 1000; // 默认15秒执行一次
+    public static final long DEFAULT_WAIT_SECOND = 60 * 1000; // 默认15秒执行一次
 
     @Override
     public void run() {

@@ -30,12 +30,12 @@ spring:
       maxWaitMillis: 20000
   mqtt:
     client:
-      id: java110-client-id8
+      id: java110-client-id1
     completionTimeout: 10
     default:
       topic: topic
     password: wuxw2015
-    url: tcp://mqtt.homecommunity.cn:1883
+    url: tcp://192.168.1.108:1883
     username: wuxw
     keepalive: 20
     poolSize: 20

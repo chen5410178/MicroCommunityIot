@@ -1,6 +1,5 @@
-package com.java110.hal.mqtt;
+package com.java110.core.factory;
 
-import com.java110.core.factory.ApplicationContextFactory;
 import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

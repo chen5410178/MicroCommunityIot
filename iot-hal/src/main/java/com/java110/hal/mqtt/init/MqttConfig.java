@@ -47,7 +47,6 @@ public class MqttConfig {
 
 
     @Bean
-    @ConditionalOnBean(name = "manufacturerServiceImpl")
     public MqttClient mqttClient() {
         MqttClient client = null;
         //clientId = SeqUtil.getId();

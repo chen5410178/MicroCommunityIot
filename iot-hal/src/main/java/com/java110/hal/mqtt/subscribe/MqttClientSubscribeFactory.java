@@ -4,7 +4,7 @@ import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.dto.hardwareManufacturerAttr.HardwareManufacturerAttrDto;
-import com.java110.hal.mqtt.MqttFactory;
+import com.java110.core.factory.MqttFactory;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.intf.system.IHardwareManufacturerAttrV1InnerServiceSMO;
 
