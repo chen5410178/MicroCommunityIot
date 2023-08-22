@@ -244,10 +244,10 @@
                         //     vc.toast("上传文件失败");
                         //     return;
                         // }
-                        var data = JSON.parse(json);
-                        console.log(data);
-                        $that.addOwnerInfo.ownerPhoto = data.fileId;
-                        $that.addOwnerInfo.ownerPhotoUrl = data.url;
+                        let _json = JSON.parse(json);
+                        console.log(_json);
+                        $that.addOwnerInfo.ownerPhoto = _json.data.fileId;
+                        $that.addOwnerInfo.ownerPhotoUrl = _json.data.url;
                         console.log($that.addOwnerInfo.ownerPhotoUrl)
                     },
                     function(errInfo, error) {
