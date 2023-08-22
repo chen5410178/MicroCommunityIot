@@ -17,11 +17,16 @@ package com.java110.accessControl.smo.impl;
 
 
 import com.java110.accessControl.dao.IAccessControlV1ServiceDao;
+import com.java110.accessControl.manufactor.IAccessControlManufactor;
 import com.java110.bean.dto.PageDto;
+import com.java110.core.factory.ApplicationContextFactory;
+import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.accessControl.MachineHeartbeatDto;
+import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.intf.system.IHardwareManufacturerV1InnerServiceSMO;
 import com.java110.po.accessControl.AccessControlPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,21 +49,83 @@ public class AccessControlV1InnerServiceSMOImpl implements IAccessControlV1Inner
     @Autowired
     private IAccessControlV1ServiceDao accessControlV1ServiceDaoImpl;
 
+    @Autowired
+    private IHardwareManufacturerV1InnerServiceSMO hardwareManufacturerV1InnerServiceSMOImpl;
+
 
     @Override
     public int saveAccessControl(@RequestBody AccessControlPo accessControlPo) {
+
+        //todo 通知适配器 添加人脸
+        HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
+        hardwareManufacturerDto.setHmId(accessControlPo.getImplBean());
+        List<HardwareManufacturerDto> hardwareManufacturerDtos = hardwareManufacturerV1InnerServiceSMOImpl.queryHardwareManufacturers(hardwareManufacturerDto);
+
+        Assert.listOnlyOne(hardwareManufacturerDtos, "协议不存在");
+
+        IAccessControlManufactor accessControlManufactor = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
+        boolean saveMachine = accessControlManufactor.addMachine(accessControlPo);
+
+        if (!saveMachine) {
+            throw new IllegalArgumentException("通知三方平台失败，对端未返回失败原因");
+        }
+
         int saveFlag = accessControlV1ServiceDaoImpl.saveAccessControlInfo(BeanConvertUtil.beanCovertMap(accessControlPo));
         return saveFlag;
     }
 
     @Override
     public int updateAccessControl(@RequestBody AccessControlPo accessControlPo) {
+
+        AccessControlDto accessControlDto = new AccessControlDto();
+        accessControlDto.setMachineId(accessControlPo.getMachineId());
+        accessControlDto.setCommunityId(accessControlPo.getCommunityId());
+        List<AccessControlDto> accessControlDtos = queryAccessControls(accessControlDto);
+
+        Assert.listOnlyOne(accessControlDtos, "门禁不存在");
+
+        //todo 通知适配器 添加人脸
+        HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
+        hardwareManufacturerDto.setHmId(accessControlPo.getImplBean());
+        List<HardwareManufacturerDto> hardwareManufacturerDtos = hardwareManufacturerV1InnerServiceSMOImpl.queryHardwareManufacturers(hardwareManufacturerDto);
+
+        Assert.listOnlyOne(hardwareManufacturerDtos, "协议不存在");
+
+        IAccessControlManufactor accessControlManufactor = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
+        boolean updateMachine = accessControlManufactor.updateMachine(accessControlPo);
+
+        if (!updateMachine) {
+            throw new IllegalArgumentException("通知三方平台失败，对端未返回失败原因");
+        }
+
         int saveFlag = accessControlV1ServiceDaoImpl.updateAccessControlInfo(BeanConvertUtil.beanCovertMap(accessControlPo));
         return saveFlag;
     }
 
     @Override
     public int deleteAccessControl(@RequestBody AccessControlPo accessControlPo) {
+
+        AccessControlDto accessControlDto = new AccessControlDto();
+        accessControlDto.setMachineId(accessControlPo.getMachineId());
+        accessControlDto.setCommunityId(accessControlPo.getCommunityId());
+        List<AccessControlDto> accessControlDtos = queryAccessControls(accessControlDto);
+
+        Assert.listOnlyOne(accessControlDtos, "门禁不存在");
+
+        //todo 通知适配器 添加人脸
+        HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
+        hardwareManufacturerDto.setHmId(accessControlPo.getImplBean());
+        List<HardwareManufacturerDto> hardwareManufacturerDtos = hardwareManufacturerV1InnerServiceSMOImpl.queryHardwareManufacturers(hardwareManufacturerDto);
+
+        Assert.listOnlyOne(hardwareManufacturerDtos, "协议不存在");
+
+        IAccessControlManufactor accessControlManufactor = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
+        boolean deleteMachine = accessControlManufactor.deleteMachine(accessControlPo);
+
+        if (!deleteMachine) {
+            throw new IllegalArgumentException("通知三方平台失败，对端未返回失败原因");
+        }
+
         accessControlPo.setStatusCd("1");
         int saveFlag = accessControlV1ServiceDaoImpl.updateAccessControlInfo(BeanConvertUtil.beanCovertMap(accessControlPo));
         return saveFlag;

@@ -59,7 +59,7 @@ public interface IAccessControlManufactor {
      * 修改用户
      *
      * @param accessControlDto 门禁信息
-     * @param userDto          人员信息
+     * @param accessControlFacePo          人员信息
      * @return
      */
     boolean updateUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo);
@@ -68,7 +68,7 @@ public interface IAccessControlManufactor {
      * 删除用户
      *
      * @param accessControlDto 门禁信息
-     * @param userDto          人员信息
+     * @param accessControlFacePo          人员信息
      * @return
      */
     boolean deleteUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo);
