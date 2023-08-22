@@ -29,16 +29,16 @@
         _initEvent: function() {
             vc.on('addOwner', 'openAddOwnerModal', function(_ownerId) {
                 if (_ownerId != null || _ownerId != -1) {
-                    vc.component.addOwnerInfo.ownerId = _ownerId;
+                    $that.addOwnerInfo.ownerId = _ownerId;
                 }
                 $('#addOwnerModel').modal('show');
-                vc.component._initAddOwnerMedia();
+                $that._initAddOwnerMedia();
             });
         },
         methods: {
             addOwnerValidate: function() {
                 return vc.validate.validate({
-                    addOwnerInfo: vc.component.addOwnerInfo
+                    addOwnerInfo: $that.addOwnerInfo
                 }, {
                     'addOwnerInfo.name': [{
                             limit: "required",
@@ -93,13 +93,13 @@
                 });
             },
             saveOwnerInfo: function() {
-                if (!vc.component.addOwnerValidate()) {
+                if (!$that.addOwnerValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
-                vc.component.addOwnerInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.addOwnerInfo.communityId = vc.getCurrentCommunity().communityId;
                 vc.http.apiPost('/owner.saveOwner',
-                    JSON.stringify(vc.component.addOwnerInfo), {
+                    JSON.stringify($that.addOwnerInfo), {
                         emulateJSON: true
                     },
                     function(json, res) {
@@ -108,7 +108,7 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#addOwnerModel').modal('hide');
-                            vc.component.clearAddOwnerInfo();
+                            $that.clearAddOwnerInfo();
                             vc.toast("添加成功");
                             vc.emit($props.notifyLoadDataComponentName, 'listOwnerData', {});
                             return;
@@ -123,7 +123,7 @@
             },
             clearAddOwnerInfo: function() {
                 let _componentTitle = $that.addOwnerInfo.componentTitle;
-                vc.component.addOwnerInfo = {
+                $that.addOwnerInfo = {
                     componentTitle: _componentTitle,
                     name: '',
                     age: '',
@@ -149,7 +149,7 @@
                     navigator.msGetUserMedia || null;
             },
             _initAddOwnerMedia: function() {
-                if (vc.component._addUserMedia()) {
+                if ($that._addUserMedia()) {
                     let constraints = {
                         video: true,
                         audio: false
@@ -164,17 +164,17 @@
                             video.srcObject = stream;
                         }
                         video.play();
-                        vc.component.addOwnerInfo.videoPlaying = true;
+                        $that.addOwnerInfo.videoPlaying = true;
                     }, function(error) {
-                        vc.component.addOwnerInfo.videoPlaying = false;
+                        $that.addOwnerInfo.videoPlaying = false;
                     });
                 } else {
-                    vc.component.addOwnerInfo.videoPlaying = false;
+                    $that.addOwnerInfo.videoPlaying = false;
                     console.log("初始化视频失败");
                 }
             },
             _takePhoto: function() {
-                if (vc.component.addOwnerInfo.videoPlaying) {
+                if ($that.addOwnerInfo.videoPlaying) {
                     let canvas = document.getElementById('canvas');
                     let video = document.getElementById('ownerPhoto');
                     let w = video.videoWidth;
@@ -198,7 +198,7 @@
                     var data = canvas.toDataURL('image/jpeg', 0.3);
                     // 改为异步上传图片
                     this._doUploadImageAddOwner(data);
-                    // vc.component.addOwnerInfo.ownerPhoto = data;
+                    // $that.addOwnerInfo.ownerPhoto = data;
                     //document.getElementById('photo').setAttribute('src', data);
                     //关闭拍照摄像头
                     $that._closeVedio();
@@ -207,7 +207,7 @@
                 }
             },
             _uploadPhoto: function(event) {
-                //vc.component.addOwnerInfo.ownerPhoto = "";
+                //$that.addOwnerInfo.ownerPhoto = "";
                 $("#uploadOwnerPhoto").trigger("click")
             },
             _choosePhoto: function(event) {
@@ -230,8 +230,7 @@
                 param.append("uploadFile", _file);
                 param.append('communityId', vc.getCurrentCommunity().communityId);
                 //发送get请求
-                vc.http.upload('uploadFile',
-                    'uploadImage',
+                vc.http.upload('/upload/uploadFile',
                     param, {
                         emulateJSON: true,
                         //添加请求头
@@ -247,9 +246,9 @@
                         // }
                         var data = JSON.parse(json);
                         console.log(data);
-                        vc.component.addOwnerInfo.ownerPhoto = data.fileId;
-                        vc.component.addOwnerInfo.ownerPhotoUrl = data.url;
-                        console.log(vc.component.addOwnerInfo.ownerPhotoUrl)
+                        $that.addOwnerInfo.ownerPhoto = data.fileId;
+                        $that.addOwnerInfo.ownerPhotoUrl = data.url;
+                        console.log($that.addOwnerInfo.ownerPhotoUrl)
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');
@@ -258,13 +257,13 @@
                 );
             },
             _reOpenVedio: function() {
-                vc.component.addOwnerInfo.ownerPhoto = "";
-                vc.component.addOwnerInfo.ownerPhotoUrl = "";
-                vc.component._initAddOwnerMedia();
+                $that.addOwnerInfo.ownerPhoto = "";
+                $that.addOwnerInfo.ownerPhotoUrl = "";
+                $that._initAddOwnerMedia();
             },
             _closeVedio: function() {
-                if (vc.component.addOwnerInfo.mediaStreamTrack != null) {
-                    vc.component.addOwnerInfo.mediaStreamTrack.stop();
+                if ($that.addOwnerInfo.mediaStreamTrack != null) {
+                    $that.addOwnerInfo.mediaStreamTrack.stop();
                 }
             },
             _loadOwnerAttrSpec: function() {

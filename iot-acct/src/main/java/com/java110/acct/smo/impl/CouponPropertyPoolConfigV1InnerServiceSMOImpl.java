@@ -18,10 +18,10 @@ package com.java110.acct.smo.impl;
 
 import com.java110.acct.dao.ICouponPropertyPoolConfigV1ServiceDao;
 import com.java110.bean.dto.PageDto;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.couponPool.CouponPropertyPoolConfigDto;
 import com.java110.intf.acct.ICouponPropertyPoolConfigV1InnerServiceSMO;
 import com.java110.po.couponPropertyPoolConfig.CouponPropertyPoolConfigPo;
-import com.java110.utils.util.BeanConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

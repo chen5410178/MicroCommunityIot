@@ -972,7 +972,7 @@
                             return;
                         }
                         if (res.status == 404) {
-                           // window.location.href = '/user.html#/pages/frame/login';
+                            // window.location.href = '/user.html#/pages/frame/login';
                             return;
                         }
                         errorCallback(res.bodyText, res);
@@ -998,7 +998,7 @@
                 }
             }
 
-           
+
             let _lang = vcFramework.getData('JAVA110-LANG');
             if (!_lang) {
                 _lang = {
@@ -1044,24 +1044,29 @@
 
                         }
                         if (res.status == 404) {
-                           // window.location.href = '/user.html#/pages/frame/login';
+                            // window.location.href = '/user.html#/pages/frame/login';
                             return;
                         }
                         errorCallback(res.bodyText, res);
                     } catch (e) {
                         console.error(e);
                     } finally {
-                        
+
                         if (vcFramework.hasOwnProperty('loading')) {
                             vcFramework.loading('close');
                         }
-                      
+
                     }
                 });
         },
-        upload: function(componentCode, componentMethod, param, options, successCallback, errorCallback) {
+        upload: function(api, param, options, successCallback, errorCallback) {
             vcFramework.loading('open');
-            Vue.http.post('/callComponent/upload/' + componentCode + "/" + componentMethod, param, options)
+            if (api.indexOf('/') >= 0) {
+                _api = '/iot/api' + api;
+            } else {
+                _api = '/iot/api/' + api;
+            }
+            Vue.http.post(_api, param, options)
                 .then(function(res) {
                     try {
                         successCallback(res.bodyText, res);
@@ -1442,8 +1447,8 @@
             params: {
                 tableName: _name,
                 tableColumns: _type,
-                page:1,
-                row:500
+                page: 1,
+                row: 500
             }
         };
 

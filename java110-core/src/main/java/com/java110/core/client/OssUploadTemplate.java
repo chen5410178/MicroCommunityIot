@@ -84,8 +84,7 @@ public class OssUploadTemplate {
     /*
      *文件上传工具方法
      */
-    public String upload(MultipartFile uploadFile, String server, int port,
-                         String userName, String userPassword, String ftpPath) {
+    public String upload(MultipartFile uploadFile, String ftpPath) {
         String fileName = "";
         OSSClient ossClient = null;
         InputStream is = null;
@@ -96,7 +95,7 @@ public class OssUploadTemplate {
             is = uploadFile.getInputStream();
             OSSUtil.uploadByInputStream(ossClient, is, ftpPath + fileName);
         } catch (Exception e) {
-            // logger.error("上传文件失败", e);
+             logger.error("上传文件失败", e);
             throw new IllegalArgumentException("上传文件失败");
         } finally {
             if (is != null) {

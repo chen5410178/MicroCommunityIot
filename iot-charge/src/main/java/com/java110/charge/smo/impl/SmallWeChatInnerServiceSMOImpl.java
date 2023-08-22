@@ -3,9 +3,9 @@ package com.java110.charge.smo.impl;
 
 import com.java110.bean.dto.PageDto;
 import com.java110.charge.dao.ISmallWeChatServiceDao;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.smallWeChat.SmallWeChatDto;
 import com.java110.intf.charge.ISmallWeChatInnerServiceSMO;
-import com.java110.utils.util.BeanConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
