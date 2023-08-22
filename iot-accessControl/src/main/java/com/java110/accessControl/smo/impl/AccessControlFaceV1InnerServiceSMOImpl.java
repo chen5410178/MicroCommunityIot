@@ -21,6 +21,7 @@ import com.java110.bean.dto.PageDto;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
+import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,33 +38,40 @@ import java.util.List;
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
 @RestController
-public class AccessControlFaceV1InnerServiceSMOImpl  implements IAccessControlFaceV1InnerServiceSMO {
+public class AccessControlFaceV1InnerServiceSMOImpl implements IAccessControlFaceV1InnerServiceSMO {
 
     @Autowired
     private IAccessControlFaceV1ServiceDao accessControlFaceV1ServiceDaoImpl;
 
+    @Autowired
+    private IAccessControlV1InnerServiceSMO accessControlV1InnerServiceSMOImpl;
+
 
     @Override
-    public int saveAccessControlFace(@RequestBody  AccessControlFacePo accessControlFacePo) {
+    public int saveAccessControlFace(@RequestBody AccessControlFacePo accessControlFacePo) {
+
+        //todo 通知适配器 添加人脸
+
+
         int saveFlag = accessControlFaceV1ServiceDaoImpl.saveAccessControlFaceInfo(BeanConvertUtil.beanCovertMap(accessControlFacePo));
         return saveFlag;
     }
 
-     @Override
-    public int updateAccessControlFace(@RequestBody  AccessControlFacePo accessControlFacePo) {
+    @Override
+    public int updateAccessControlFace(@RequestBody AccessControlFacePo accessControlFacePo) {
         int saveFlag = accessControlFaceV1ServiceDaoImpl.updateAccessControlFaceInfo(BeanConvertUtil.beanCovertMap(accessControlFacePo));
         return saveFlag;
     }
 
-     @Override
-    public int deleteAccessControlFace(@RequestBody  AccessControlFacePo accessControlFacePo) {
-       accessControlFacePo.setStatusCd("1");
-       int saveFlag = accessControlFaceV1ServiceDaoImpl.updateAccessControlFaceInfo(BeanConvertUtil.beanCovertMap(accessControlFacePo));
-       return saveFlag;
+    @Override
+    public int deleteAccessControlFace(@RequestBody AccessControlFacePo accessControlFacePo) {
+        accessControlFacePo.setStatusCd("1");
+        int saveFlag = accessControlFaceV1ServiceDaoImpl.updateAccessControlFaceInfo(BeanConvertUtil.beanCovertMap(accessControlFacePo));
+        return saveFlag;
     }
 
     @Override
-    public List<AccessControlFaceDto> queryAccessControlFaces(@RequestBody  AccessControlFaceDto accessControlFaceDto) {
+    public List<AccessControlFaceDto> queryAccessControlFaces(@RequestBody AccessControlFaceDto accessControlFaceDto) {
 
         //校验是否传了 分页信息
 
@@ -81,7 +89,8 @@ public class AccessControlFaceV1InnerServiceSMOImpl  implements IAccessControlFa
 
     @Override
     public int queryAccessControlFacesCount(@RequestBody AccessControlFaceDto accessControlFaceDto) {
-        return accessControlFaceV1ServiceDaoImpl.queryAccessControlFacesCount(BeanConvertUtil.beanCovertMap(accessControlFaceDto));    }
+        return accessControlFaceV1ServiceDaoImpl.queryAccessControlFacesCount(BeanConvertUtil.beanCovertMap(accessControlFaceDto));
+    }
 
     @Override
     public List<AccessControlFaceDto> queryAccessControlFacesByComeId(@RequestBody AccessControlFaceDto accessControlFaceDto) {

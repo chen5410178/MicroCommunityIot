@@ -17,6 +17,7 @@ package com.java110.po.accessControlLog;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-08-16 17:22:49 mail: 928255095@qq.com
@@ -28,69 +29,86 @@ import java.util.Date;
 public class AccessControlLogPo implements Serializable {
 
     private String resParam;
-private String machineId;
-private String logId;
-private String reqParam;
-private String state;
-private String communityId;
-private String userName;
-private String logAction;
-private String userId;
-public String getResParam() {
+    private String machineId;
+    private String logId;
+    private String reqParam;
+    private String state;
+    private String communityId;
+    private String userName;
+    private String logAction;
+    private String userId;
+
+    public String getResParam() {
         return resParam;
     }
-public void setResParam(String resParam) {
+
+    public void setResParam(String resParam) {
         this.resParam = resParam;
     }
-public String getMachineId() {
+
+    public String getMachineId() {
         return machineId;
     }
-public void setMachineId(String machineId) {
+
+    public void setMachineId(String machineId) {
         this.machineId = machineId;
     }
-public String getLogId() {
+
+    public String getLogId() {
         return logId;
     }
-public void setLogId(String logId) {
+
+    public void setLogId(String logId) {
         this.logId = logId;
     }
-public String getReqParam() {
+
+    public String getReqParam() {
         return reqParam;
     }
-public void setReqParam(String reqParam) {
+
+    public void setReqParam(String reqParam) {
         this.reqParam = reqParam;
     }
-public String getState() {
+
+    public String getState() {
         return state;
     }
-public void setState(String state) {
+
+    public void setState(String state) {
         this.state = state;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-public String getUserName() {
+
+    public String getUserName() {
         return userName;
     }
-public void setUserName(String userName) {
+
+    public void setUserName(String userName) {
         this.userName = userName;
     }
-public String getLogAction() {
+
+    public String getLogAction() {
         return logAction;
     }
-public void setLogAction(String logAction) {
+
+    public void setLogAction(String logAction) {
         this.logAction = logAction;
     }
-public String getUserId() {
+
+    public String getUserId() {
         return userId;
     }
-public void setUserId(String userId) {
+
+    public void setUserId(String userId) {
         this.userId = userId;
     }
-
 
 
 }

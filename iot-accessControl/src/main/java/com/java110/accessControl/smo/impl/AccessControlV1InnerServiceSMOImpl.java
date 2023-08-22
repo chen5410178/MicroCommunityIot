@@ -19,6 +19,7 @@ package com.java110.accessControl.smo.impl;
 import com.java110.accessControl.dao.IAccessControlV1ServiceDao;
 import com.java110.bean.dto.PageDto;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.accessControl.MachineHeartbeatDto;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.po.accessControl.AccessControlPo;
@@ -38,33 +39,33 @@ import java.util.List;
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
 @RestController
-public class AccessControlV1InnerServiceSMOImpl  implements IAccessControlV1InnerServiceSMO {
+public class AccessControlV1InnerServiceSMOImpl implements IAccessControlV1InnerServiceSMO {
 
     @Autowired
     private IAccessControlV1ServiceDao accessControlV1ServiceDaoImpl;
 
 
     @Override
-    public int saveAccessControl(@RequestBody  AccessControlPo accessControlPo) {
+    public int saveAccessControl(@RequestBody AccessControlPo accessControlPo) {
         int saveFlag = accessControlV1ServiceDaoImpl.saveAccessControlInfo(BeanConvertUtil.beanCovertMap(accessControlPo));
         return saveFlag;
     }
 
-     @Override
-    public int updateAccessControl(@RequestBody  AccessControlPo accessControlPo) {
+    @Override
+    public int updateAccessControl(@RequestBody AccessControlPo accessControlPo) {
         int saveFlag = accessControlV1ServiceDaoImpl.updateAccessControlInfo(BeanConvertUtil.beanCovertMap(accessControlPo));
         return saveFlag;
     }
 
-     @Override
-    public int deleteAccessControl(@RequestBody  AccessControlPo accessControlPo) {
-       accessControlPo.setStatusCd("1");
-       int saveFlag = accessControlV1ServiceDaoImpl.updateAccessControlInfo(BeanConvertUtil.beanCovertMap(accessControlPo));
-       return saveFlag;
+    @Override
+    public int deleteAccessControl(@RequestBody AccessControlPo accessControlPo) {
+        accessControlPo.setStatusCd("1");
+        int saveFlag = accessControlV1ServiceDaoImpl.updateAccessControlInfo(BeanConvertUtil.beanCovertMap(accessControlPo));
+        return saveFlag;
     }
 
     @Override
-    public List<AccessControlDto> queryAccessControls(@RequestBody  AccessControlDto accessControlDto) {
+    public List<AccessControlDto> queryAccessControls(@RequestBody AccessControlDto accessControlDto) {
 
         //校验是否传了 分页信息
 
@@ -82,6 +83,32 @@ public class AccessControlV1InnerServiceSMOImpl  implements IAccessControlV1Inne
 
     @Override
     public int queryAccessControlsCount(@RequestBody AccessControlDto accessControlDto) {
-        return accessControlV1ServiceDaoImpl.queryAccessControlsCount(BeanConvertUtil.beanCovertMap(accessControlDto));    }
+        return accessControlV1ServiceDaoImpl.queryAccessControlsCount(BeanConvertUtil.beanCovertMap(accessControlDto));
+    }
+
+    @Override
+    public int accessControlHeartbeat(@RequestBody MachineHeartbeatDto machineHeartbeatDto) {
+
+        AccessControlDto accessControlDto = new AccessControlDto();
+        accessControlDto.setMachineCode(machineHeartbeatDto.getMachineCode());
+        List<AccessControlDto> accessControlDtos = queryAccessControls(accessControlDto);
+
+        if (accessControlDtos == null || accessControlDtos.size() < 1) {
+            return 0;
+        }
+
+        AccessControlPo accessControlPo = null;
+        for (AccessControlDto tmpAccessControlDto : accessControlDtos) {
+            try {
+                accessControlPo = new AccessControlPo();
+                accessControlPo.setMachineId(tmpAccessControlDto.getMachineId());
+                accessControlPo.setHeartbeatTime(machineHeartbeatDto.getHeartbeatTime());
+                updateAccessControl(accessControlPo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return 1;
+    }
 
 }

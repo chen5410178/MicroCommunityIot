@@ -91,6 +91,13 @@ public interface IAccessControlManufactor {
     boolean openDoor(AccessControlDto accessControlDto);
 
     /**
+     * 重启门禁
+     * @param accessControlDto 门禁信息
+     * @return
+     */
+    boolean restartMachine(AccessControlDto accessControlDto);
+
+    /**
      * 获取二维码
      *
      * @param userDto 用户

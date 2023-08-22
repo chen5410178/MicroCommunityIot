@@ -16,6 +16,7 @@
 package com.java110.intf.accessControl;
 
 import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.accessControl.MachineHeartbeatDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.accessControl.AccessControlPo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -39,17 +40,16 @@ public interface IAccessControlV1InnerServiceSMO {
 
 
     @RequestMapping(value = "/saveAccessControl", method = RequestMethod.POST)
-    public int saveAccessControl(@RequestBody  AccessControlPo accessControlPo);
+    public int saveAccessControl(@RequestBody AccessControlPo accessControlPo);
 
     @RequestMapping(value = "/updateAccessControl", method = RequestMethod.POST)
-    public int updateAccessControl(@RequestBody  AccessControlPo accessControlPo);
+    public int updateAccessControl(@RequestBody AccessControlPo accessControlPo);
 
     @RequestMapping(value = "/deleteAccessControl", method = RequestMethod.POST)
-    public int deleteAccessControl(@RequestBody  AccessControlPo accessControlPo);
+    public int deleteAccessControl(@RequestBody AccessControlPo accessControlPo);
 
     /**
      * <p>查询小区楼信息</p>
-     *
      *
      * @param accessControlDto 数据对象分享
      * @return AccessControlDto 对象数据
@@ -65,4 +65,13 @@ public interface IAccessControlV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryAccessControlsCount", method = RequestMethod.POST)
     int queryAccessControlsCount(@RequestBody AccessControlDto accessControlDto);
+
+    /**
+     * 门禁心跳
+     *
+     * @param machineHeartbeatDto 心跳信息
+     * @return
+     */
+    @RequestMapping(value = "/accessControlHeartbeat", method = RequestMethod.POST)
+    int accessControlHeartbeat(@RequestBody MachineHeartbeatDto machineHeartbeatDto);
 }

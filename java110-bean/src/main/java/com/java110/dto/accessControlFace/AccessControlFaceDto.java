@@ -60,6 +60,8 @@ public class AccessControlFaceDto extends PageDto implements Serializable {
 
     private String machineCode;
 
+    private String tel;
+
 
     public String getComeId() {
         return comeId;
@@ -252,5 +254,13 @@ public class AccessControlFaceDto extends PageDto implements Serializable {
 
     public void setStateName(String stateName) {
         this.stateName = stateName;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 }
