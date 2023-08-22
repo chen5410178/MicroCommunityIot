@@ -30,8 +30,8 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
     /**
      * 添加用户
      *
-     * @param accessControlDto 门禁信息
-     * @param accessControlFacePo          人员信息
+     * @param accessControlDto    门禁信息
+     * @param accessControlFacePo 人员信息
      * @return
      */
     @Override
@@ -40,8 +40,8 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
     /**
      * 修改用户
      *
-     * @param accessControlDto 门禁信息
-     * @param accessControlFacePo          人员信息
+     * @param accessControlDto    门禁信息
+     * @param accessControlFacePo 人员信息
      * @return
      */
     @Override
@@ -50,8 +50,8 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
     /**
      * 删除用户
      *
-     * @param accessControlDto 门禁信息
-     * @param accessControlFacePo          人员信息
+     * @param accessControlDto    门禁信息
+     * @param accessControlFacePo 人员信息
      * @return
      */
     @Override
@@ -84,10 +84,10 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
     /**
      * 门禁记录上报
      *
-     * @param accessControlDto 门禁
-     * @param param            上报参数
+     * @param topic 回话
+     * @param param 上报参数
      * @return
      */
     @Override
-    public abstract String accessControlResult(AccessControlDto accessControlDto, String param);
+    public abstract String accessControlResult(String topic, String param);
 }

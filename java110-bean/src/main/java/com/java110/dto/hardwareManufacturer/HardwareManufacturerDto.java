@@ -18,6 +18,9 @@ public class HardwareManufacturerDto extends PageDto implements Serializable {
     // 门禁
     public static final String HM_TYPE_ACCESS_CONTROL = "1001";
 
+    // 道闸
+    public static final String HM_TYPE_BARRIER = "2002";
+
     private String hmId;
     private String license;
     private String prodUrl;

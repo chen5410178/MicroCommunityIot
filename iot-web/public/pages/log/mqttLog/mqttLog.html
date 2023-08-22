@@ -54,6 +54,9 @@
                                     <vc:i18n name='业务ID' namespace='mqttLog'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='业务' namespace='mqttLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='topic' namespace='mqttLog'></vc:i18n>
                                 </th>
                                 <th class="text-center">
@@ -62,21 +65,19 @@
                                 <th class="text-center">
                                     <vc:i18n name='备注' namespace='mqttLog'></vc:i18n>
                                 </th>
-                                <th class="text-center">
-                                    <vc:i18n name='业务key' namespace='mqttLog'></vc:i18n>
-                                </th>
+
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="mqttLog in mqttLogInfo.mqttLogs">
                                 <td class="text-center">{{mqttLog.mqttId}}</td>
                                 <td class="text-center">{{mqttLog.businessId}}</td>
+                                <td class="text-center">{{mqttLog.businessKey}}</td>
                                 <td class="text-center">{{mqttLog.topic}}</td>
                                 <td class="text-center">
                                     <div class="textAuto" style="max-width: 200px;">{{mqttLog.context}}</div>
                                 </td>
                                 <td class="text-center">{{mqttLog.remark}}</td>
-                                <td class="text-center">{{mqttLog.businessKey}}</td>
                             </tr>
                         </tbody>
                         <tfoot>

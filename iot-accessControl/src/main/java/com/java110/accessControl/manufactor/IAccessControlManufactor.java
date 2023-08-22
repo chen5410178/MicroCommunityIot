@@ -110,10 +110,10 @@ public interface IAccessControlManufactor {
     /**
      * 结果上报
      *
-     * @param accessControlDto
+     * @param topic 回话
      * @param param
      * @return
      */
-    String accessControlResult(AccessControlDto accessControlDto, String param);
+    String accessControlResult(String topic, String param);
 
 }
