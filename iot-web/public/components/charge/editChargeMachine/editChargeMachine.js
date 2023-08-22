@@ -12,6 +12,7 @@
                 factorys:[],
                 rules:[],
                 specs: [],
+                chargeType: ''
             }
         },
         _initMethod: function () {
@@ -92,7 +93,14 @@
                             limit: "required",
                             param: "",
                             errInfo: "编号不能为空"
-                        }]
+                        }],
+                    'editChargeMachineInfo.chargeType': [
+                        {
+                            limit: "required",
+                            param: "",
+                            errInfo: "充电类型不能为空"
+                        }
+                    ],
 
                 });
             },
@@ -136,6 +144,7 @@
                     factorys:[],
                     rules:[],
                     specs: [],
+                    chargeType: ''
                 }
             },
             _listEditFactorys: function(_page, _rows) {

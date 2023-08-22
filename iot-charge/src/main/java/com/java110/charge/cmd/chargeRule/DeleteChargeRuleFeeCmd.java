@@ -52,7 +52,8 @@ public class DeleteChargeRuleFeeCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "crfId", "crfId不能为空");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
-
+        reqJson.remove("startTime");
+        reqJson.remove("endTime");
     }
 
     @Override

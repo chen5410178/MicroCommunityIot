@@ -111,6 +111,7 @@ public class ListChargeMachineCmd extends Cmd {
         ChargeRuleFeeDto chargeRuleFeeDto = new ChargeRuleFeeDto();
         chargeRuleFeeDto.setRuleId(chargeMachineDtos.get(0).getRuleId());
         chargeRuleFeeDto.setCommunityId(chargeMachineDtos.get(0).getCommunityId());
+        chargeRuleFeeDto.setChargeType(chargeMachineDtos.get(0).getChargeType());
         List<ChargeRuleFeeDto> fees = chargeRuleFeeV1InnerServiceSMOImpl.queryChargeRuleFees(chargeRuleFeeDto);
 
         chargeMachineDtos.get(0).setFees(fees);
