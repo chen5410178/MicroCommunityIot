@@ -1,0 +1,142 @@
+<div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5><span><vc:i18n name="查询条件"></vc:i18n></span></h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;" v-on:click="_moreCondition()">{{parkingSpaceInfo.moreCondition == true?'隐藏':'更多'}}</button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择车位编号','parkingSpace')" v-model="parkingSpaceInfo.conditions.num" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="custom-select" v-model="parkingSpaceInfo.conditions.paId">
+                                <option selected  value="">请选择停车场</option>
+                                <option  :value="item.paId" v-for="(item,index) in  parkingSpaceInfo.parkingAreas">{{item.num}}</option>
+                        </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <select class="custom-select" v-model="parkingSpaceInfo.conditions.state">
+                                    <option selected  value="">请选择车位状态</option>
+                                    <option  value="S">出售</option>
+                                    <option  value="H">出租</option>
+                                    <option  value="F">空闲</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryParkingSpaceMethod()">
+                                    <i class="glyphicon glyphicon-search"></i> <span><vc:i18n name="查询"></vc:i18n></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4" v-if="parkingSpaceInfo.moreCondition == true">
+                            <select class="custom-select" v-model="parkingSpaceInfo.conditions.parkingType">
+                                <option selected  value="">请选择车位类型</option>
+                                <option  value="1">普通车位</option>
+                                <option  value="2">子母车位</option>
+                                <option  value="3">豪华车位</option>
+                        </select>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="停车位" namespace="parkingSpace"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddParkingSpaceModal()">
+                           <vc:i18n name="添加"  namespace="parkingSpace"></vc:i18n>
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='编号' namespace='parkingSpace'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='停车场' namespace='parkingSpace'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='车位编号' namespace='parkingSpace'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='车位状态' namespace='parkingSpace'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='备注' namespace='parkingSpace'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='车位类型' namespace='parkingSpace'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='parkingSpace'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="parkingSpace in parkingSpaceInfo.parkingSpaces">
+                                <td class="text-center">{{parkingSpace.psId}}</td>
+                                <td class="text-center">{{parkingSpace.paNum}}</td>
+                                <td class="text-center">{{parkingSpace.num}}</td>
+                                <td class="text-center" v-if="parkingSpace.state == 'F'">空闲</td>
+                                <td class="text-center" v-else-if="parkingSpace.state == 'S'">出售</td>
+                                <td class="text-center" v-else="parkingSpace.state == 'H'">出租</td>
+                                <td class="text-center">{{parkingSpace.remark}}</td>
+                                <td class="text-center" v-if="parkingSpace.parkingType == '1'">普通车位</td>
+                                <td class="text-center" v-else-if="parkingSpace.parkingType == '2'">子母车位</td>
+                                <td class="text-center" v-else="parkingSpace.parkingType == '3'">豪华车位</td>
+                                <td class="text-center">{{parkingSpace.createTime}}</td>
+
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openEditParkingSpaceModel(parkingSpace)"><vc:i18n name='修改'></vc:i18n></button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openDeleteParkingSpaceModel(parkingSpace)"><vc:i18n name='删除'></vc:i18n></button>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7">
+                                    <ul class="pagination float-right"></ul>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <vc:create path="car/addParkingSpace"></vc:create>
+    <vc:create path="car/editParkingSpace"></vc:create>
+    <vc:create path="car/deleteParkingSpace"></vc:create>
+
+</div>

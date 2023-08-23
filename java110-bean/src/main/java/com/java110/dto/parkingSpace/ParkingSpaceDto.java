@@ -23,6 +23,8 @@ public class ParkingSpaceDto extends PageDto implements Serializable {
     private String state;
     private String communityId;
 
+    private String paNum;
+
 
     private Date createTime;
 
@@ -100,5 +102,13 @@ public class ParkingSpaceDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getPaNum() {
+        return paNum;
+    }
+
+    public void setPaNum(String paNum) {
+        this.paNum = paNum;
     }
 }

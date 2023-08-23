@@ -17,9 +17,12 @@
 
     <!-- 查询停车位信息 add by wuxw 2018-07-03 -->
     <select id="getParkingSpaceInfo" parameterType="Map" resultType="Map">
+
         select t.parking_type,t.parking_type parkingType,t.num,t.pa_id,t.pa_id paId,t.ps_id,t.ps_id
-        psId,t.remark,t.status_cd,t.status_cd statusCd,t.state,t.community_id,t.community_id communityId
+        psId,t.remark,t.status_cd,t.status_cd statusCd,t.state,t.community_id,t.community_id communityId,
+        t.create_time createTime,pa.num paNum
         from parking_space t
+        left join parking_area pa on t.pa_id = pa.pa_id and pa.status_cd = '0'
         where 1 =1
         <if test="parkingType !=null and parkingType != ''">
             and t.parking_type= #{parkingType}
