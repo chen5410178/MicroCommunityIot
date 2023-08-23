@@ -26,6 +26,8 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.DateUtil;
+import com.java110.doc.annotation.*;
 import com.java110.intf.charge.IChargeRuleFeeV1InnerServiceSMO;
 import com.java110.po.chargeRuleFee.ChargeRuleFeePo;
 import org.slf4j.Logger;
@@ -46,6 +48,33 @@ import java.text.SimpleDateFormat;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
+
+@Java110CmdDoc(title = "添加充电规则",
+        description = "用于外系统添加充电规则",
+        httpMethod = "post",
+        url = "http://{ip}:{port}/iot/api/chargeRule.saveChargeRule",
+        resource = "chargeDoc",
+        author = "吴学文",
+        serviceCode = "chargeRule.saveChargeRule",
+        seq = 2
+)
+
+@Java110ParamsDoc(params = {
+        @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
+        @Java110ParamDoc(name = "ruleName", length = 64, remark = "规则名称"),
+})
+
+@Java110ResponseDoc(
+        params = {
+                @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
+                @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
+        }
+)
+
+@Java110ExampleDoc(
+        reqBody = "{\"ruleName\":\"规则\",\"communityId\":\"2022081539020475\"}",
+        resBody = "{'code':0,'msg':'成功'}"
+)
 @Java110Cmd(serviceCode = "chargeRule.saveChargeRuleFee")
 public class SaveChargeRuleFeeCmd extends Cmd {
 
@@ -82,7 +111,7 @@ public class SaveChargeRuleFeeCmd extends Cmd {
         ChargeRuleFeePo chargeRuleFeePo = BeanConvertUtil.covertBean(reqJson, ChargeRuleFeePo.class);
 
         if (startTime != null && endTime != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             try {
                 chargeRuleFeePo.setStartTime(new Time(sdf.parse(startTime).getTime()));
                 chargeRuleFeePo.setEndTime(new Time(sdf.parse(endTime).getTime()));

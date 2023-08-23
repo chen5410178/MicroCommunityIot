@@ -124,11 +124,13 @@ public class StartChargeCmd extends Cmd {
         ChargeRuleFeeDto chargeRuleFeeDto = new ChargeRuleFeeDto();
         chargeRuleFeeDto.setRuleId(chargeMachineDtos.get(0).getRuleId());
         chargeRuleFeeDto.setCommunityId(chargeMachineDtos.get(0).getCommunityId());
+        chargeMachineDto.setChargeType(chargeMachineDtos.get(0).getChargeType());
         List<ChargeRuleFeeDto> chargeRuleFeeDtos = chargeRuleFeeV1InnerServiceSMOImpl.queryChargeRuleFees(chargeRuleFeeDto);
 
         if (chargeRuleFeeDtos == null || chargeRuleFeeDtos.size() < 1) {
             throw new CmdException("未设置充值收费");
         }
+        //todo: 电动摩托按充电桩功率计算,电动汽车按时段收费
         reqJson.put("durationPrice", chargeRuleFeeDtos.get(chargeRuleFeeDtos.size() - 1).getDurationPrice());
 
         BigDecimal payMoneyDec = new BigDecimal(Double.parseDouble(chargeRuleFeeDtos.get(chargeRuleFeeDtos.size() - 1).getDurationPrice()));

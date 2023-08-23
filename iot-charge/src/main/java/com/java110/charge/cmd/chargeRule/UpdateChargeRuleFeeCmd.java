@@ -72,7 +72,7 @@ public class UpdateChargeRuleFeeCmd extends Cmd {
 
         ChargeRuleFeePo chargeRuleFeePo = BeanConvertUtil.covertBean(reqJson, ChargeRuleFeePo.class);
         if (startTime != null && endTime != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             try {
                 chargeRuleFeePo.setStartTime(new Time(sdf.parse(startTime).getTime()));
                 chargeRuleFeePo.setEndTime(new Time(sdf.parse(endTime).getTime()));

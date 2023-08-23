@@ -55,11 +55,13 @@ import java.util.List;
         resource = "chargeDoc",
         author = "吴学文",
         serviceCode = "chargeRule.listChargeRuleFee",
-        seq = 1
+        seq = 5
 )
 
 @Java110ParamsDoc(params = {
         @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
+        @Java110ParamDoc(name = "ruleId", length = 30, remark = "规则ID"),
+        @Java110ParamDoc(name = "chargeType", length = 8, remark = "充电类型"),
         @Java110ParamDoc(name = "page", type = "int", length = 11, remark = "页数"),
         @Java110ParamDoc(name = "row", type = "int", length = 11, remark = "行数"),
 })
@@ -69,14 +71,16 @@ import java.util.List;
                 @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
                 @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
                 @Java110ParamDoc(name = "data", type = "Array", remark = "有效数据"),
+                @Java110ParamDoc(parentNodeName = "data", name = "crfId", type = "String", remark = "计费规则id"),
                 @Java110ParamDoc(parentNodeName = "data", name = "ruleId", type = "String", remark = "规则id"),
-                @Java110ParamDoc(parentNodeName = "data", name = "ruleName", type = "String", remark = "规则名称"),
+                @Java110ParamDoc(parentNodeName = "data", name = "durationPrice", type = "String", remark = "小时电价"),
+                @Java110ParamDoc(parentNodeName = "data", name = "chargeType", type = "String", remark = "充电类型"),
         }
 )
 
 @Java110ExampleDoc(
-        reqBody = "http://{ip}:{port}/iot/api/chargeRule.listChargeRuleFee?page=1&row=10&communityId=123123",
-        resBody = "{'code':0,'msg':'成功','data':[{'ruleId':'123123','ruleName':'123213'}]}"
+        reqBody = "http://{ip}:{port}/iot/api/chargeRule.listChargeRuleFee?page=1&row=10&communityId=123123&chargeType=1001&ruleId=102023082",
+        resBody = "{'code':0,'msg':'成功','data':[{'crfId':'123123','ruleId':'123213','durationPrice':'1.00','chargeType':'1001'}]}"
 )
 @Java110Cmd(serviceCode = "chargeRule.listChargeRuleFee")
 public class ListChargeRuleFeeCmd extends Cmd {

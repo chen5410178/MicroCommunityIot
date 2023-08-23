@@ -81,7 +81,7 @@
                         communityId: vc.getCurrentCommunity().communityId,
                     }
                 }
-                vc.http.apiGet('/account/queryOwnerAccount',
+                vc.http.apiGet('/account.queryOwnerAccount',
                     param,
                     function(json, res) {
                         let _acct = JSON.parse(json).data[0];
