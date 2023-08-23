@@ -25,6 +25,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.doc.annotation.*;
 import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.parkingSpace.ParkingSpaceDto;
@@ -46,6 +47,58 @@ import org.slf4j.LoggerFactory;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
+@Java110CmdDoc(title = "查询停车位",
+        description = "用于外系统查询停车位",
+        httpMethod = "get",
+        url = "http://{ip}:{port}/iot/api/parkingSpace.listParkingSpace",
+        resource = "carDoc",
+        author = "吴学文",
+        serviceCode = "parkingSpace.listParkingSpace",
+        seq = 5
+)
+
+@Java110ParamsDoc(params = {
+        @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
+        @Java110ParamDoc(name = "page", type = "int", length = 11, remark = "页数"),
+        @Java110ParamDoc(name = "row", type = "int", length = 11, remark = "行数"),
+})
+
+@Java110ResponseDoc(
+        params = {
+                @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
+                @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
+                @Java110ParamDoc(name = "data", type = "Array", remark = "有效数据"),
+                @Java110ParamDoc(parentNodeName = "data", name = "psId", type = "String", remark = "编号"),
+                @Java110ParamDoc(parentNodeName = "data", name = "num", type = "String", remark = "名称"),
+        }
+)
+
+@Java110ExampleDoc(
+        reqBody = "http://{ip}:{port}/iot/api/parkingArea.listParkingArea?page=1&row=10&communityId=123123",
+        resBody = "{\n" +
+                "    \"code\": 0,\n" +
+                "    \"data\": [\n" +
+                "        {\n" +
+                "            \"communityId\": \"102023021386560001\",\n" +
+                "            \"createTime\": \"2023-08-23 09:07:59\",\n" +
+                "            \"num\": \"2\",\n" +
+                "            \"psId\": \"102023082384250002\",\n" +
+                "            \"page\": -1,\n" +
+                "            \"records\": 0,\n" +
+                "            \"remark\": \"1\",\n" +
+                "            \"row\": 0,\n" +
+                "            \"statusCd\": \"0\",\n" +
+                "            \"total\": 0,\n" +
+                "            \"typeCd\": \"1001\"\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"msg\": \"成功\",\n" +
+                "    \"page\": 0,\n" +
+                "    \"records\": 1,\n" +
+                "    \"rows\": 0,\n" +
+                "    \"total\": 1\n" +
+                "}"
+)
 @Java110Cmd(serviceCode = "parkingSpace.listParkingSpace")
 public class ListParkingSpaceCmd extends Cmd {
 
