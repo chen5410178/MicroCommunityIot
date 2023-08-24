@@ -41,6 +41,8 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.java110.dto.chargeMachine.ChargeRuleFeeDto.CHARGE_TYPE_MOTORCYCLE;
+
 /**
  * 充电桩开始充电 处理类
  * <p>
@@ -131,11 +133,19 @@ public class StartChargeCmd extends Cmd {
             throw new CmdException("未设置充值收费");
         }
         //todo: 电动摩托按充电桩功率计算,电动汽车按时段收费
-        reqJson.put("durationPrice", chargeRuleFeeDtos.get(chargeRuleFeeDtos.size() - 1).getDurationPrice());
+        double payMoney = 0;
+        if (CHARGE_TYPE_MOTORCYCLE.equals(chargeRuleFeeDtos.get(0).getChargeType())) {
+            reqJson.put("durationPrice", chargeRuleFeeDtos.get(0).getDurationPrice());
 
-        BigDecimal payMoneyDec = new BigDecimal(Double.parseDouble(chargeRuleFeeDtos.get(chargeRuleFeeDtos.size() - 1).getDurationPrice()));
+            BigDecimal payMoneyDec = new BigDecimal(Double.parseDouble(chargeRuleFeeDtos.get(0).getDurationPrice()));
 
-        double payMoney = payMoneyDec.multiply(new BigDecimal(duration)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            payMoney = payMoneyDec.multiply(new BigDecimal(duration)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        }
+//        reqJson.put("durationPrice", chargeRuleFeeDtos.get(chargeRuleFeeDtos.size() - 1).getDurationPrice());
+//
+//        BigDecimal payMoneyDec = new BigDecimal(Double.parseDouble(chargeRuleFeeDtos.get(chargeRuleFeeDtos.size() - 1).getDurationPrice()));
+//
+//        double payMoney = payMoneyDec.multiply(new BigDecimal(duration)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
 
         UserDto userDto = new UserDto();
@@ -144,8 +154,8 @@ public class StartChargeCmd extends Cmd {
 
         Assert.listOnlyOne(userDtos, "用户不存在");
 
-        //todo 如果是 月卡充值 ，后面不做校验
-        if (chargeCoreImpl.ifMonthCard(userDtos.get(0).getTel(), chargeMachinePortDtos.get(0).getCommunityId())) {
+        //todo 如果是 月卡充值 ，后面不做校验  暂时只有电动摩托有月卡
+        if (chargeCoreImpl.ifMonthCard(userDtos.get(0).getTel(), chargeMachinePortDtos.get(0).getCommunityId()) && CHARGE_TYPE_MOTORCYCLE.equals(chargeRuleFeeDtos.get(0).getChargeType())) {
             return;
         }
 
@@ -218,7 +228,7 @@ public class StartChargeCmd extends Cmd {
         List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
 
         String orderId = GenerateCodeFactory.getGeneratorId("11");
-        //调用充电桩充电
+        //调用充电桩充电 todo: 汽车开始充电不能取到充电时长
         ResultVo resultVo = chargeCoreImpl.startCharge(chargeMachineDtos.get(0), chargeMachinePortDtos.get(0), durationType, durationHours, orderId);
 
         if (resultVo.getCode() != ResultVo.CODE_OK) {

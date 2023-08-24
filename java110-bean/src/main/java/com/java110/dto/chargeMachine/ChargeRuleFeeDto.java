@@ -15,6 +15,8 @@ import java.util.Date;
  * add by wuxw 2019/4/24
  **/
 public class ChargeRuleFeeDto extends PageDto implements Serializable {
+    public static final String CHARGE_TYPE_MOTORCYCLE = "1001";
+    public static final String CHARGE_TYPE_CAR = "1002";
 
     private String maxEnergyPrice;
     private String durationPrice;
