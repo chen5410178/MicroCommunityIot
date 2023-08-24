@@ -49,19 +49,21 @@ import java.text.SimpleDateFormat;
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
 
-@Java110CmdDoc(title = "添加充电规则",
-        description = "用于外系统添加充电规则",
+@Java110CmdDoc(title = "添加充电计费规则",
+        description = "用于外系统添加充电计费规则",
         httpMethod = "post",
-        url = "http://{ip}:{port}/iot/api/chargeRule.saveChargeRule",
+        url = "http://{ip}:{port}/iot/api/chargeRule.saveChargeRuleFee",
         resource = "chargeDoc",
         author = "吴学文",
-        serviceCode = "chargeRule.saveChargeRule",
-        seq = 2
+        serviceCode = "chargeRule.saveChargeRuleFee",
+        seq = 6
 )
 
 @Java110ParamsDoc(params = {
         @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
-        @Java110ParamDoc(name = "ruleName", length = 64, remark = "规则名称"),
+        @Java110ParamDoc(name = "ruleId", length = 64, remark = "规则ID"),
+        @Java110ParamDoc(name = "chargeType", length = 8, remark = "充电类型"),
+        @Java110ParamDoc(name = "durationPrice", length = 10, remark = "小时电价"),
 })
 
 @Java110ResponseDoc(
@@ -72,7 +74,7 @@ import java.text.SimpleDateFormat;
 )
 
 @Java110ExampleDoc(
-        reqBody = "{\"ruleName\":\"规则\",\"communityId\":\"2022081539020475\"}",
+        reqBody = "{\"ruleId\":\"123\",\"communityId\":\"2022081539020475\",\"chargeType\":\"1001\",\"durationPrice\":\"1.00\"}",
         resBody = "{'code':0,'msg':'成功'}"
 )
 @Java110Cmd(serviceCode = "chargeRule.saveChargeRuleFee")

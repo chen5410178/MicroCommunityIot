@@ -48,8 +48,8 @@ import java.util.List;
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
 
-@Java110CmdDoc(title = "查询充电规则",
-        description = "用于外系统查询充电规则",
+@Java110CmdDoc(title = "查询充电计费规则",
+        description = "用于外系统查询充电计费规则",
         httpMethod = "get",
         url = "http://{ip}:{port}/iot/api/chargeRule.listChargeRuleFee",
         resource = "chargeDoc",
@@ -71,8 +71,8 @@ import java.util.List;
                 @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
                 @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
                 @Java110ParamDoc(name = "data", type = "Array", remark = "有效数据"),
-                @Java110ParamDoc(parentNodeName = "data", name = "crfId", type = "String", remark = "计费规则id"),
-                @Java110ParamDoc(parentNodeName = "data", name = "ruleId", type = "String", remark = "规则id"),
+                @Java110ParamDoc(parentNodeName = "data", name = "crfId", type = "String", remark = "计费规则ID"),
+                @Java110ParamDoc(parentNodeName = "data", name = "ruleId", type = "String", remark = "规则ID"),
                 @Java110ParamDoc(parentNodeName = "data", name = "durationPrice", type = "String", remark = "小时电价"),
                 @Java110ParamDoc(parentNodeName = "data", name = "chargeType", type = "String", remark = "充电类型"),
         }

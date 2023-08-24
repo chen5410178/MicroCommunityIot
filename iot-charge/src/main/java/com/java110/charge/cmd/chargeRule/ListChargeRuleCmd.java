@@ -69,7 +69,7 @@ import java.util.List;
                 @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
                 @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
                 @Java110ParamDoc(name = "data", type = "Array", remark = "有效数据"),
-                @Java110ParamDoc(parentNodeName = "data", name = "ruleId", type = "String", remark = "规则id"),
+                @Java110ParamDoc(parentNodeName = "data", name = "ruleId", type = "String", remark = "规则ID"),
                 @Java110ParamDoc(parentNodeName = "data", name = "ruleName", type = "String", remark = "规则名称"),
         }
 )
