@@ -32,6 +32,13 @@ private String factoryName;
 private String remark;
 private String statusCd = "0";
 private String beanImpl;
+private String machineModel;
+public String getMachineModel() {
+        return machineModel;
+    }
+public void setMachineModel(String machineModel) {
+        this.machineModel = machineModel;
+    }
 public String getFactoryId() {
         return factoryId;
     }

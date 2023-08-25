@@ -20,6 +20,7 @@ public class MeterMachineFactoryDto extends PageDto implements Serializable {
     private String factoryName;
     private String remark;
     private String beanImpl;
+    private String machineModel;
 
     private List<MeterMachineFactorySpecDto> specs;
 
@@ -61,6 +62,13 @@ public class MeterMachineFactoryDto extends PageDto implements Serializable {
         this.beanImpl = beanImpl;
     }
 
+    public String getMachineModel() {
+        return machineModel;
+    }
+
+    public void setMachineModel(String machineModel) {
+        this.machineModel = machineModel;
+    }
 
     public Date getCreateTime() {
         return createTime;

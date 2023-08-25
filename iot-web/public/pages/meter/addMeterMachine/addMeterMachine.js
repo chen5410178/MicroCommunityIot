@@ -10,7 +10,7 @@
                 machineModel: '',
                 roomId: '',
                 roomName: '',
-                feeConfigId: '',
+                //feeConfigId: '',
                 implBean: '',
                 meterTypes: [],
                 feeConfigs: [],
@@ -94,7 +94,7 @@
                             errInfo: "房屋不能超过30"
                         },
                     ],
-                    'addMeterMachineInfo.feeConfigId': [{
+                    /*'addMeterMachineInfo.feeConfigId': [{
                             limit: "required",
                             param: "",
                             errInfo: "费用项不能为空"
@@ -104,17 +104,23 @@
                             param: "30",
                             errInfo: "费用项ID,充值模式时不能超过30"
                         },
-                    ],
+                    ],*/
                     'addMeterMachineInfo.implBean': [{
                             limit: "required",
                             param: "",
-                            errInfo: "门禁厂家不能为空"
+                            errInfo: "设备厂家不能为空"
                         },
                         {
                             limit: "maxLength",
                             param: "30",
-                            errInfo: "门禁厂家不能超过30"
+                            errInfo: "设备厂家不能超过30"
                         },
+                    ],
+                    'addMeterMachineInfo.specs': [{
+                        limit: "required",
+                        param: "",
+                        errInfo: "采集器ID不能为空"
+                    }
                     ],
                 });
             },

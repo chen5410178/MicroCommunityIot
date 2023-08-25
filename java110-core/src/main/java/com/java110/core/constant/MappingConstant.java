@@ -36,6 +36,8 @@ public final class MappingConstant {
     //环境配置
     public static final String ENV_DOMAIN = "ENV_DOMAIN";
 
+    //拓强智能电表 域
+    public static final String TDDIANBIAO_DOMAIN = "TDDIANBIAO_DOMAIN";
 
     public  static final String KEY_LOG_ON_OFF = "LOG_ON_OFF";
 

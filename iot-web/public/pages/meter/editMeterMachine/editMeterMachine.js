@@ -10,7 +10,7 @@
                 machineModel: '',
                 roomId: '',
                 roomName: '',
-                feeConfigId: '',
+                //feeConfigId: '',
                 implBean: '',
                 readDay: '',
                 readHours: '',
@@ -24,7 +24,7 @@
             $that.editMeterMachineInfo.machineId = vc.getParam('machineId');
             $that._listMeterMachines();
             $that._listMeterType();
-            $that._listFeeConfigs();
+            //$that._listFeeConfigs();
             $that._listFactorys();
 
         },
@@ -93,7 +93,7 @@
                             errInfo: "房屋不能超过30"
                         },
                     ],
-                    'editMeterMachineInfo.feeConfigId': [{
+                    /*'editMeterMachineInfo.feeConfigId': [{
                             limit: "required",
                             param: "",
                             errInfo: "费用项不能为空"
@@ -103,7 +103,7 @@
                             param: "30",
                             errInfo: "费用项ID,充值模式时不能超过30"
                         },
-                    ],
+                    ],*/
                     'editMeterMachineInfo.implBean': [{
                             limit: "required",
                             param: "",
@@ -239,6 +239,7 @@
                     param,
                     function(json, res) {
                         let _meterMachineManageInfo = JSON.parse(json);
+                        debugger
                         vc.copyObject(_meterMachineManageInfo.data[0], $that.editMeterMachineInfo);
                     },
                     function(errInfo, error) {

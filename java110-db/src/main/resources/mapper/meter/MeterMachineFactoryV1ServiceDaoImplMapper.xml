@@ -11,9 +11,9 @@
     <!-- 保存电表厂家信息 add by wuxw 2018-07-03 -->
     <insert id="saveMeterMachineFactoryInfo" parameterType="Map">
         insert into meter_machine_factory(
-factory_id,factory_name,remark,bean_impl
+factory_id,factory_name,remark,bean_impl,machine_model
 ) values (
-#{factoryId},#{factoryName},#{remark},#{beanImpl}
+#{factoryId},#{factoryName},#{remark},#{beanImpl},#{machineModel}
 )
     </insert>
 
@@ -21,7 +21,7 @@ factory_id,factory_name,remark,bean_impl
 
     <!-- 查询电表厂家信息 add by wuxw 2018-07-03 -->
     <select id="getMeterMachineFactoryInfo" parameterType="Map" resultType="Map">
-        select  t.factory_id,t.factory_id factoryId,t.factory_name,t.factory_name factoryName,t.remark,t.status_cd,t.status_cd statusCd,t.bean_impl,t.bean_impl beanImpl 
+        select  t.factory_id,t.factory_id factoryId,t.factory_name,t.factory_name factoryName,t.remark,t.status_cd,t.status_cd statusCd,t.bean_impl,t.bean_impl beanImpl,t.machine_model,t.machine_model machineModel
 from meter_machine_factory t 
 where 1 =1 
 <if test="factoryId !=null and factoryId != ''">
@@ -63,7 +63,10 @@ order by t.create_time desc
 </if> 
 <if test="beanImpl !=null and beanImpl != ''">
 , t.bean_impl= #{beanImpl}
-</if> 
+</if>
+<if test="machineModel !=null and machineModel != ''">
+    , t.machine_model= #{machineModel}
+</if>
  where 1=1 <if test="factoryId !=null and factoryId != ''">
 and t.factory_id= #{factoryId}
 </if> 
