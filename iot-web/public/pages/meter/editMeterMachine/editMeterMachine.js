@@ -239,7 +239,6 @@
                     param,
                     function(json, res) {
                         let _meterMachineManageInfo = JSON.parse(json);
-                        debugger
                         vc.copyObject(_meterMachineManageInfo.data[0], $that.editMeterMachineInfo);
                     },
                     function(errInfo, error) {

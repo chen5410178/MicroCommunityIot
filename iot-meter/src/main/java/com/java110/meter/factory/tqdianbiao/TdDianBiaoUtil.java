@@ -45,6 +45,29 @@ public class TdDianBiaoUtil {
         return "";
     }
 
+    public static String requestAsync(String url, String request_content){
+        // 时间戳
+        String timestamp = String.valueOf(new Date().getTime()/1000);
+
+        // 用于签名的内容
+        Map<String, String> data = new HashMap<>();
+        data.put("timestamp", timestamp);
+        data.put("auth_code", MappingCache.getValue(MappingConstant.TDDIANBIAO_DOMAIN,"auth_code"));
+        data.put("request_content", request_content);
+
+        // 获取签名
+        String sign = getSign(data);
+
+        data.put("sign", sign);
+
+        try {
+            return sendHttpRequest(url, data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     private static String sendHttpRequest(String url, Map<String, String> bodyMap) throws Exception {
         System.out.println("请求地址：" + url);
         System.out.println("发送参数：" + bodyMap.toString());

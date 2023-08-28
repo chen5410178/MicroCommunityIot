@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.core.cache.UrlCache;
+import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.dto.meter.MeterMachineDetailDto;
 import com.java110.dto.meter.MeterMachineDto;
@@ -34,6 +35,8 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
     private static final String RECHARGE_URL = "http://api2.tqdianbiao.com/Api_v2/ele_security/recharge";
 
     private static final String NOTIFY_URL = "/app/smartMeter/notify/tqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl/992020051967020024";
+
+    private static final String ELE_METER_QUERY_URL = "http://api2.tqdianbiao.com/Api_v2/ele_meter/query";//电能表档案查询
     @Autowired
     private IMeterMachineSpecV1InnerServiceSMO meterMachineSpecV1InnerServiceSMOImpl;
 
@@ -280,6 +283,50 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         }
 
         return new ResultVo(ResultVo.CODE_OK, "成功");
+    }
+
+    @Override
+    public void queryMeterMachineState(MeterMachineDto meterMachineDto) {
+        List<Map<String, Object>> req = new ArrayList<>();
+
+        MeterMachineSpecDto meterMachineSpecDto = new MeterMachineSpecDto();
+        meterMachineSpecDto.setMachineId(meterMachineDto.getMachineId());
+        meterMachineSpecDto.setCommunityId(meterMachineDto.getCommunityId());
+        meterMachineSpecDto.setSpecId("120102");
+        List<MeterMachineSpecDto> meterMachineSpecDtos = meterMachineSpecV1InnerServiceSMOImpl.queryMeterMachineSpecs(meterMachineSpecDto);
+        if (meterMachineSpecDtos == null || meterMachineSpecDtos.size() < 1) {
+            throw new CmdException(ResultVo.CODE_ERROR, "未配置采集器ID");
+        }
+
+        Map<String, Object> item = new HashMap<>();
+
+        item.put("cid", meterMachineSpecDtos.get(0).getSpecValue());
+        req.add(item);
+
+        String request_content = JSON.toJSONString(req);
+
+        String resStr = TdDianBiaoUtil.requestAsync(ELE_METER_QUERY_URL, request_content);
+
+        JSONObject paramOut = JSONObject.parseObject(resStr);
+
+        if (!"SUCCESS".equals(paramOut.getString("status"))) {
+            throw new CmdException(ResultVo.CODE_ERROR, paramOut.getString("error_msg"));
+        }
+
+        JSONArray responseContent = paramOut.getJSONArray("response_content");
+
+        for (int resIndex = 0; resIndex < responseContent.size(); resIndex++) {
+            String status = responseContent.getJSONObject(resIndex).getString("status");
+            if ("SUCCESS".equals(status)) {
+                meterMachineDto.setState(MeterMachineDto.STATE_ONLINE);
+                meterMachineDto.setStateName("在线");
+            } else {
+                throw new CmdException(ResultVo.CODE_ERROR, responseContent.getJSONObject(resIndex).getString("error_msg"));
+            }
+        }
+
+        meterMachineDto.setState(MeterMachineDto.STATE_OFFLINE);
+        meterMachineDto.setStateName("离线");
     }
 
     private void doBusiness(JSONObject contentObject, String batchId) {

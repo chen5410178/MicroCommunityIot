@@ -33,4 +33,9 @@ public class CommonFactoryAdaptImpl implements ISmartMeterFactoryAdapt {
     public ResultVo notifyReadData(String readData) {
         return null;
     }
+
+    @Override
+    public void queryMeterMachineState(MeterMachineDto meterMachineDto) {
+        return;
+    }
 }

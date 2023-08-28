@@ -94,11 +94,11 @@
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label text-right"><span>
-              <vc:i18n name='设备厂家' namespace='addMeterMachine'></vc:i18n>
+              <vc:i18n name='厂家设备' namespace='addMeterMachine'></vc:i18n>
             </span></label>
                     <div class="col-sm-4">
                         <select class="custom-select" v-model="addMeterMachineInfo.implBean" @change="_changeFactory()">
-                          <option selected disabled value="">{{vc.i18n('必填，请选择设备厂家','addMeterMachine')}}</option>
+                          <option selected disabled value="">{{vc.i18n('必填，请选择厂家设备','addMeterMachine')}}</option>
                           <option :value="item.factoryId" v-for="(item,index) in addMeterMachineInfo.factorys">{{item.factoryName}}</option>
                         </select>
                     </div>

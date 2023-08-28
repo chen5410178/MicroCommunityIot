@@ -116,12 +116,6 @@
                             errInfo: "设备厂家不能超过30"
                         },
                     ],
-                    'addMeterMachineInfo.specs': [{
-                        limit: "required",
-                        param: "",
-                        errInfo: "采集器ID不能为空"
-                    }
-                    ],
                 });
             },
             saveMeterMachineInfo: function() {

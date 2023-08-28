@@ -264,4 +264,26 @@ public class SmartMeterCoreReadImpl implements ISmartMeterCoreRead {
         return Double.parseDouble(resultVo.getData().toString());
     }
 
+    @Override
+    public void queryMeterMachineState(List<MeterMachineDto> meterMachineDtos) {
+        for (MeterMachineDto meterMachineDto : meterMachineDtos) {
+            try {
+                MeterMachineFactoryDto meterMachineFactoryDto = new MeterMachineFactoryDto();
+                meterMachineFactoryDto.setFactoryId(meterMachineDto.getImplBean());
+                List<MeterMachineFactoryDto> meterMachineFactoryDtos = meterMachineFactoryV1InnerServiceSMOImpl.queryMeterMachineFactorys(meterMachineFactoryDto);
+                Assert.listOnlyOne(meterMachineFactoryDtos, "智能水电表厂家不存在");
+
+                ISmartMeterFactoryAdapt smartMeterFactoryAdapt = ApplicationContextFactory.getBean(meterMachineFactoryDtos.get(0).getBeanImpl(), ISmartMeterFactoryAdapt.class);
+                if (smartMeterFactoryAdapt == null) {
+                    throw new CmdException("厂家接口未实现");
+                }
+
+                smartMeterFactoryAdapt.queryMeterMachineState(meterMachineDto);
+            } catch (CmdException e) {
+                e.printStackTrace();
+                meterMachineDto.setState(MeterMachineDto.STATE_OFFLINE);
+                meterMachineDto.setStateName("离线");
+            }
+        }
+    }
 }

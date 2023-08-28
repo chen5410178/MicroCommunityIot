@@ -125,10 +125,10 @@
                                         <vc:i18n name='门禁厂家' namespace='meterMachineManage'></vc:i18n>
                                     </span></th>
                                 <th class="text-center"><span>
-                                        <vc:i18n name='剩余读数' namespace='meterMachineManage'></vc:i18n>
+                                        <vc:i18n name='剩余度数' namespace='meterMachineManage'></vc:i18n>
                                     </span></th>
                                 <th class="text-center"><span>
-                                        <vc:i18n name='当前读数' namespace='meterMachineManage'></vc:i18n>
+                                        <vc:i18n name='当前度数' namespace='meterMachineManage'></vc:i18n>
                                     </span></th>
                                 <th class="text-center"><span>
                                         <vc:i18n name='读表时间' namespace='meterMachineManage'></vc:i18n>
@@ -156,7 +156,7 @@
                                 <td class="text-center" v-if="meterMachine.machineModel == '1001'">-</td>
                                 <td class="text-center" v-else>{{meterMachine.curDegrees}}(每月{{meterMachine.readDay}}日{{meterMachine.readHours}}时抄表)</td>
                                 <td class="text-center">{{meterMachine.curReadingTime}}</td>
-                                <td class="text-center">{{meterMachine.state}}</td>
+                                <td class="text-center">{{meterMachine.stateName}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs" v-on:click="_openEditMeterMachineModel(meterMachine)">

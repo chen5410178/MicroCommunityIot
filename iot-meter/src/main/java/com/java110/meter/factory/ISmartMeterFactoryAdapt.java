@@ -41,4 +41,10 @@ public interface ISmartMeterFactoryAdapt {
      * @return
      */
     ResultVo notifyReadData(String readData);
+
+    /**
+     * 查询设备状态
+     * @param meterMachineDto
+     */
+    void queryMeterMachineState(MeterMachineDto meterMachineDto);
 }

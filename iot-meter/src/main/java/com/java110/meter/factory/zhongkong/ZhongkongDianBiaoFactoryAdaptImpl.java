@@ -175,4 +175,9 @@ public class ZhongkongDianBiaoFactoryAdaptImpl implements ISmartMeterFactoryAdap
 
         smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree + "", batchId);
     }
+
+    @Override
+    public void queryMeterMachineState(MeterMachineDto meterMachineDto) {
+        return;
+    }
 }

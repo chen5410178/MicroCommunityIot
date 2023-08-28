@@ -81,6 +81,7 @@ public class ListMeterMachineCmd extends Cmd {
             meterMachineDtos = meterMachineV1InnerServiceSMOImpl.queryMeterMachines(meterMachineDto);
             freshSpecs(meterMachineDtos);
             queryMeterMachineDegree(meterMachineDtos);
+            queryMachineState(meterMachineDtos);
         } else {
             meterMachineDtos = new ArrayList<>();
         }
@@ -90,6 +91,13 @@ public class ListMeterMachineCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void queryMachineState(List<MeterMachineDto> meterMachineDtos) {
+        if(meterMachineDtos == null || meterMachineDtos.size() < 1) {
+            return;
+        }
+        smartMeterCoreReadImpl.queryMeterMachineState(meterMachineDtos);
     }
 
     private void queryMeterMachineDegree(List<MeterMachineDto> meterMachineDtos) {

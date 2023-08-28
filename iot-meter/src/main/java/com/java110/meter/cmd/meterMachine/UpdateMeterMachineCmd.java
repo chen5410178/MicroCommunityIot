@@ -26,6 +26,9 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.StringUtil;
+import com.java110.dto.meter.MeterMachineFactoryDto;
+import com.java110.intf.meter.IMeterMachineFactoryV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterMachineSpecV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterMachineV1InnerServiceSMO;
 import com.java110.po.meter.MeterMachinePo;
@@ -33,6 +36,8 @@ import com.java110.po.meter.MeterMachineSpecPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 
 /**
@@ -57,10 +62,21 @@ public class UpdateMeterMachineCmd extends Cmd {
     @Autowired
     private IMeterMachineSpecV1InnerServiceSMO meterMachineSpecV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IMeterMachineFactoryV1InnerServiceSMO meterMachineFactoryV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
+        Assert.hasKeyAndValue(reqJson, "implBean", "请求报文中未包含implBean");
+
+        MeterMachineFactoryDto meterMachineFactoryDto = new MeterMachineFactoryDto();
+        meterMachineFactoryDto.setFactoryId(reqJson.getString("implBean"));
+        List<MeterMachineFactoryDto> meterMachineFactoryDtos = meterMachineFactoryV1InnerServiceSMOImpl.queryMeterMachineFactorys(meterMachineFactoryDto);
+        if (!StringUtil.isEmpty(meterMachineFactoryDtos.get(0).getMachineModel()) && !reqJson.getString("machineModel").equals(meterMachineFactoryDtos.get(0).getMachineModel())) {
+            throw new CmdException("厂家设备不支持该模式，请重新选择");
+        }
 
         if (!reqJson.containsKey("specs")) {
             cmdDataFlowContext.setResponseEntity(ResultVo.success());
