@@ -70,4 +70,7 @@ public interface IMeterMachineDetailV1ServiceDao {
     int queryMeterMachineDetailsCount(Map info);
 
 
+    int queryMeterMachineReadOrRechargeDetailsCount(Map info);
+
+    List<Map> queryMeterMachineReadOrRechargeDetails(Map info);
 }

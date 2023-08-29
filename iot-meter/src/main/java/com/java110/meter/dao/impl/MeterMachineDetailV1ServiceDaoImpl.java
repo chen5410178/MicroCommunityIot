@@ -121,5 +121,24 @@ public class MeterMachineDetailV1ServiceDaoImpl extends BaseServiceDao implement
         return Integer.parseInt(businessMeterMachineDetailInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public int queryMeterMachineReadOrRechargeDetailsCount(Map info) {
+        logger.debug("查询 queryMeterMachineReadOrRechargeDetailsCount 入参 info : {}", info);
 
+        List<Map> meterMachineReadOrRechargeDetailInfos = sqlSessionTemplate.selectList("meterMachineDetailV1ServiceDaoImpl.queryMeterMachineReadOrRechargeDetailsCount", info);
+        if (meterMachineReadOrRechargeDetailInfos.size() < 1) {
+            return 0;
+        }
+
+        return Integer.parseInt(meterMachineReadOrRechargeDetailInfos.get(0).get("count").toString());
+    }
+
+    @Override
+    public List<Map> queryMeterMachineReadOrRechargeDetails(Map info) {
+        logger.debug("查询 queryMeterMachineReadOrRechargeDetails 入参 info : {}", info);
+
+        List<Map> meterMachineReadOrRechargeDetailInfos = sqlSessionTemplate.selectList("meterMachineDetailV1ServiceDaoImpl.queryMeterMachineReadOrRechargeDetails", info);
+
+        return meterMachineReadOrRechargeDetailInfos;
+    }
 }

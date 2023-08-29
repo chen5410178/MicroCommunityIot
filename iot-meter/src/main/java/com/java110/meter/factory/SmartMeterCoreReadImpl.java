@@ -1,23 +1,29 @@
 package com.java110.meter.factory;
 
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.StringUtil;
+import com.java110.dto.communityMember.CommunityMemberDto;
 import com.java110.dto.fee.FeeAttrDto;
 import com.java110.dto.fee.FeeDto;
 import com.java110.dto.meter.MeterMachineDetailDto;
 import com.java110.dto.meter.MeterMachineDto;
 import com.java110.dto.meter.MeterMachineFactoryDto;
+import com.java110.dto.payFeeBatch.PayFeeBatchDto;
 import com.java110.intf.community.ICommunityMemberV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterMachineDetailV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterMachineFactoryV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterMachineV1InnerServiceSMO;
+import com.java110.intf.meter.IPayFeeBatchV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerInnerServiceSMO;
 import com.java110.po.meter.MeterMachineDetailPo;
 import com.java110.po.meter.MeterMachinePo;
+import com.java110.po.payFeeBatch.PayFeeBatchPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,8 +58,8 @@ public class SmartMeterCoreReadImpl implements ISmartMeterCoreRead {
     @Autowired
     private ICommunityMemberV1InnerServiceSMO communityMemberV1InnerServiceSMOImpl;
 
-//    @Autowired
-//    private IPayFeeBatchV1InnerServiceSMO payFeeBatchV1InnerServiceSMOImpl;
+    @Autowired
+    private IPayFeeBatchV1InnerServiceSMO payFeeBatchV1InnerServiceSMOImpl;
 //
 //    @Autowired
 //    private IPayFeeConfigV1InnerServiceSMO payFeeConfigV1InnerServiceSMOImpl;
@@ -227,7 +233,7 @@ public class SmartMeterCoreReadImpl implements ISmartMeterCoreRead {
      * @param communityId
      */
     public String generatorBatch(String communityId) {
-        /*PayFeeBatchPo payFeeBatchPo = new PayFeeBatchPo();
+        PayFeeBatchPo payFeeBatchPo = new PayFeeBatchPo();
         payFeeBatchPo.setBatchId(GenerateCodeFactory.getGeneratorId("12"));
         payFeeBatchPo.setCommunityId(communityId);
         payFeeBatchPo.setCreateUserId("-1");
@@ -240,8 +246,7 @@ public class SmartMeterCoreReadImpl implements ISmartMeterCoreRead {
             throw new IllegalArgumentException("生成批次失败");
         }
 
-        return payFeeBatchPo.getBatchId();*/
-        return null;
+        return payFeeBatchPo.getBatchId();
     }
 
     @Override

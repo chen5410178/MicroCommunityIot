@@ -146,4 +146,97 @@
 
     </select>
 
+    <select id="queryMeterMachineReadOrRechargeDetailsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from meter_machine_detail mmd
+        left join meter_machine mm on mmd.machine_id = mm.machine_id and mm.status_cd = '0'
+        left join meter_type mt on mm.meter_type = mt.type_id and mt.status_cd = '0'
+        where mmd.status_cd = '0'
+        <if test="detailType !=null and detailType != ''">
+            and mmd.detail_type= #{detailType}
+        </if>
+        <if test="curDegrees !=null and curDegrees != ''">
+            and mmd.cur_degrees= #{curDegrees}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and mmd.machine_id= #{machineId}
+        </if>
+        <if test="prestoreDegrees !=null and prestoreDegrees != ''">
+            and mmd.prestore_degrees= #{prestoreDegrees}
+        </if>
+        <if test="detailId !=null and detailId != ''">
+            and mmd.detail_id= #{detailId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and mmd.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and mmd.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and mmd.community_id= #{communityId}
+        </if>
+        <if test="curReadingTime !=null and curReadingTime != ''">
+            and mmd.cur_reading_time= #{curReadingTime}
+        </if>
+        <if test="state !=null and state != ''">
+            and mmd.state= #{state}
+        </if>
+    </select>
+
+    <select id="queryMeterMachineReadOrRechargeDetails" parameterType="Map" resultType="Map">
+        select mmd.detail_id, mmd.detail_id detailId,
+               mmd.machine_id, mmd.machine_id machineId,
+               mmd.detail_type, mmd.detail_type detailType,
+               mmd.prestore_degrees, mmd.prestore_degrees prestoreDegrees,
+               mmd.cur_degrees, mmd.cur_degrees curDegrees,
+               mmd.cur_reading_time, mmd.cur_reading_time curReadingTime,
+               mmd.community_id, mmd.community_id communityId, mmd.remark,
+               mmd.create_time, mmd.create_time createTime,
+               mmd.status_cd, mmd.status_cd statusCd, mmd.state,
+               mm.machine_name, mm.machine_name machineName, mm.address,
+               mm.room_name, mm.room_name roomName,
+               mm.room_id, mm.room_id roomId,
+               mt.type_name, mt.type_name typeName,
+               mt.type_id, mt.type_id typeId
+        from meter_machine_detail mmd
+        left join meter_machine mm on mmd.machine_id = mm.machine_id and mm.status_cd = '0'
+        left join meter_type mt on mm.meter_type = mt.type_id and mt.status_cd = '0'
+        where mmd.status_cd = '0'
+        <if test="detailType !=null and detailType != ''">
+            and mmd.detail_type= #{detailType}
+        </if>
+        <if test="curDegrees !=null and curDegrees != ''">
+            and mmd.cur_degrees= #{curDegrees}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and mmd.machine_id= #{machineId}
+        </if>
+        <if test="prestoreDegrees !=null and prestoreDegrees != ''">
+            and mmd.prestore_degrees= #{prestoreDegrees}
+        </if>
+        <if test="detailId !=null and detailId != ''">
+            and mmd.detail_id= #{detailId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and mmd.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and mmd.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and mmd.community_id= #{communityId}
+        </if>
+        <if test="curReadingTime !=null and curReadingTime != ''">
+            and mmd.cur_reading_time= #{curReadingTime}
+        </if>
+        <if test="state !=null and state != ''">
+            and mmd.state= #{state}
+        </if>
+        order by mmd.create_time desc, mm.room_name, mm.meter_type, mm.address
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
 </mapper>

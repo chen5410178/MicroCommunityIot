@@ -30,4 +30,6 @@ public interface ISmartMeterCoreRead {
      * @param meterMachineDtos
      */
     void queryMeterMachineState(List<MeterMachineDto> meterMachineDtos);
+
+
 }

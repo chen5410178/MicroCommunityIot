@@ -18,6 +18,7 @@ package com.java110.meter.smo.impl;
 import com.java110.bean.dto.PageDto;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.meter.MeterMachineDetailDto;
+import com.java110.dto.meter.MeterMachineReadOrRechargeDetailDto;
 import com.java110.intf.meter.IMeterMachineDetailV1InnerServiceSMO;
 import com.java110.meter.dao.IMeterMachineDetailV1ServiceDao;
 import com.java110.po.meter.MeterMachineDetailPo;
@@ -93,5 +94,20 @@ public class MeterMachineDetailV1InnerServiceSMOImpl implements IMeterMachineDet
         return meterMachineDetailV1ServiceDaoImpl.queryMeterMachineDetailsCount(BeanConvertUtil.beanCovertMap(meterMachineDetailDto));    }
 
 
+    @Override
+    public int queryMeterMachineReadOrRechargeDetailsCount(MeterMachineReadOrRechargeDetailDto meterMachineReadOrRechargeDetailDto) {
+        return meterMachineDetailV1ServiceDaoImpl.queryMeterMachineReadOrRechargeDetailsCount(BeanConvertUtil.beanCovertMap(meterMachineReadOrRechargeDetailDto));
+    }
 
+    @Override
+    public List<MeterMachineReadOrRechargeDetailDto> queryMeterMachineReadOrRechargeDetails(MeterMachineReadOrRechargeDetailDto meterMachineReadOrRechargeDetailDto) {
+        int page = meterMachineReadOrRechargeDetailDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            meterMachineReadOrRechargeDetailDto.setPage((page - 1) * meterMachineReadOrRechargeDetailDto.getRow());
+        }
+
+        List<MeterMachineReadOrRechargeDetailDto> meterMachineReadOrRechargeDetails = BeanConvertUtil.covertBeanList(meterMachineDetailV1ServiceDaoImpl.queryMeterMachineReadOrRechargeDetails(BeanConvertUtil.beanCovertMap(meterMachineReadOrRechargeDetailDto)), MeterMachineReadOrRechargeDetailDto.class);
+        return meterMachineReadOrRechargeDetails;
+    }
 }
