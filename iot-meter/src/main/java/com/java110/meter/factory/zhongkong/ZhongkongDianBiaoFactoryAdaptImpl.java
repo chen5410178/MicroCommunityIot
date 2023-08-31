@@ -180,4 +180,9 @@ public class ZhongkongDianBiaoFactoryAdaptImpl implements ISmartMeterFactoryAdap
     public void queryMeterMachineState(MeterMachineDto meterMachineDto) {
         return;
     }
+
+    @Override
+    public ResultVo switchControl(MeterMachineDto meterMachineDto, String controlType) {
+        return null;
+    }
 }

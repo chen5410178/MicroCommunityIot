@@ -27,6 +27,7 @@
         machineId,t.meter_type,t.meter_type meterType,t.fee_config_name,t.fee_config_name
         feeConfigName,t.community_id,t.community_id communityId,t.fee_config_id,t.fee_config_id feeConfigId,
         mmf.factory_name implBeanName,t.create_time createTime,t.read_day readDay,t.read_hours readHours
+        ,t.control_type,t.control_type controlType
         from meter_machine t
         left join meter_machine_factory mmf on t.impl_bean = mmf.factory_id and mmf.status_cd='0'
         where 1 =1
@@ -149,6 +150,9 @@
         </if>
         <if test="readHours !=null ">
             , t.read_hours = #{readHours}
+        </if>
+        <if test="controlType !=null and controlType != ''">
+            , t.control_type= #{controlType}
         </if>
         where 1=1
         <if test="machineId !=null and machineId != ''">

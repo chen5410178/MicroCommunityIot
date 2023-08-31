@@ -28,6 +28,7 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DateUtil;
+import com.java110.doc.annotation.*;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
 import com.java110.dto.chargeMachine.ChargeMachinePortDto;
 import com.java110.intf.charge.IChargeMachinePortV1InnerServiceSMO;
@@ -50,6 +51,37 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
+@Java110CmdDoc(title = "添加充电桩",
+        description = "用于外系统添加充电桩",
+        httpMethod = "post",
+        url = "http://{ip}:{port}/iot/api/chargeMachine.saveChargeMachine",
+        resource = "chargeDoc",
+        author = "吴学文",
+        serviceCode = "chargeMachine.saveChargeMachine",
+        seq = 10
+)
+
+@Java110ParamsDoc(params = {
+        @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
+        @Java110ParamDoc(name = "chargeType", length = 8, remark = "充电类型"),
+        @Java110ParamDoc(name = "portCount", type = "int", length = 11, remark = "插槽个数"),
+        @Java110ParamDoc(name = "machineName", length = 30, remark = "名称"),
+        @Java110ParamDoc(name = "machineCode", length = 30, remark = "设备编号"),
+        @Java110ParamDoc(name = "implBean", length = 30, remark = "厂家"),
+        @Java110ParamDoc(name = "energyPrice", length = 10, remark = "小时电价"),
+})
+
+@Java110ResponseDoc(
+        params = {
+                @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
+                @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
+        }
+)
+
+@Java110ExampleDoc(
+        reqBody = "{\"communityId\":\"2022081539020475\",\"chargeType\":\"1001\",\"portCount\":\"3\",\"machineName\":\"汽车充电桩1\",\"machineCode\":\"1\",\"implBean\":\"1\",\"energyPrice\":\"1.1\"}",
+        resBody = "{'code':0,'msg':'成功'}"
+)
 @Java110Cmd(serviceCode = "chargeMachine.saveChargeMachine")
 public class SaveChargeMachineCmd extends Cmd {
 

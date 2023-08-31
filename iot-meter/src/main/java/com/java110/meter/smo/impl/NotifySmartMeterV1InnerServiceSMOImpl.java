@@ -16,17 +16,28 @@
 package com.java110.meter.smo.impl;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.meter.MeterMachineDetailDto;
+import com.java110.dto.meter.MeterMachineDto;
 import com.java110.dto.meter.MeterMachineFactoryDto;
 import com.java110.dto.meter.NotifyMeterWaterOrderDto;
+import com.java110.intf.meter.IMeterMachineDetailV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterMachineFactoryV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterMachineV1InnerServiceSMO;
 import com.java110.intf.meter.INotifySmartMeterV1InnerServiceSMO;
 import com.java110.meter.factory.ISmartMeterFactoryAdapt;
+import com.java110.meter.factory.tqdianbiao.TdDianBiaoUtil;
+import com.java110.po.meter.MeterMachineDetailPo;
+import com.java110.po.meter.MeterMachinePo;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +68,8 @@ public class NotifySmartMeterV1InnerServiceSMOImpl implements INotifySmartMeterV
     @Autowired
     private IMeterMachineFactoryV1InnerServiceSMO meterMachineFactoryV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IMeterMachineDetailV1InnerServiceSMO meterMachineDetailV1InnerServiceSMOImpl;
 
     /**
      * 通知类
@@ -87,4 +100,53 @@ public class NotifySmartMeterV1InnerServiceSMOImpl implements INotifySmartMeterV
         }
     }
 
+    @Override
+    @Java110Transactional
+    public ResponseEntity<String> switchControlNotify(String implBean, String postInfo) {
+        JSONObject data = JSONObject.parseObject(postInfo);
+
+        String response_content = data.getString("response_content");
+        String timestamp = data.getString("timestamp");
+        String sign = data.getString("sign");
+
+        if (!TdDianBiaoUtil.checkSign(response_content, timestamp, sign)) {
+            System.out.println("sign check failed");
+            return ResultVo.createResponseEntity(new ResultVo(ResultVo.CODE_ERROR, "鉴权失败"));
+        }
+
+        JSONArray contentArray = JSON.parseArray(response_content);
+
+        if (contentArray == null || contentArray.size() < 1) {
+            return ResultVo.createResponseEntity(new ResultVo(ResultVo.CODE_ERROR, "没有数据"));
+        }
+
+        MeterMachineDetailDto meterMachineDetailDto = new MeterMachineDetailDto();
+        meterMachineDetailDto.setDetailId(contentArray.getJSONObject(0).getString("opr_id"));
+        meterMachineDetailDto.setState(MeterMachineDetailDto.STATE_W);
+        List<MeterMachineDetailDto> meterMachineDetailDtos = meterMachineDetailV1InnerServiceSMOImpl.queryMeterMachineDetails(meterMachineDetailDto);
+        if (meterMachineDetailDtos == null || meterMachineDetailDtos.size() < 1) {
+            return ResultVo.createResponseEntity(new ResultVo(ResultVo.CODE_ERROR, "没有数据"));
+        }
+
+        if (!"SUCCESS".equals(contentArray.getJSONObject(0).getString("status"))) {
+            meterMachineDetailDtos.get(0).setState(MeterMachineDetailDto.STATE_F);
+            MeterMachineDetailPo meterMachineDetailPo = BeanConvertUtil.covertBean(meterMachineDetailDtos.get(0), MeterMachineDetailPo.class);
+            meterMachineDetailV1InnerServiceSMOImpl.updateMeterMachineDetail(meterMachineDetailPo);
+            return ResultVo.createResponseEntity(new ResultVo(ResultVo.CODE_ERROR, "拉合闸失败"));
+        }
+
+        meterMachineDetailDtos.get(0).setState(MeterMachineDetailDto.STATE_C);
+        MeterMachineDetailPo meterMachineDetailPo = BeanConvertUtil.covertBean(meterMachineDetailDtos.get(0), MeterMachineDetailPo.class);
+        meterMachineDetailV1InnerServiceSMOImpl.updateMeterMachineDetail(meterMachineDetailPo);
+
+        MeterMachineDto meterMachineDto = new MeterMachineDto();
+        meterMachineDto.setMachineId(meterMachineDetailDtos.get(0).getMachineId());
+        List<MeterMachineDto> meterMachineDtos = meterMachineV1InnerServiceSMOImpl.queryMeterMachines(meterMachineDto);
+        Assert.listOnlyOne(meterMachineDtos, "拉合闸失败");
+        meterMachineDtos.get(0).setControlType(meterMachineDetailDtos.get(0).getDetailType());
+        MeterMachinePo meterMachinePo = BeanConvertUtil.covertBean(meterMachineDtos.get(0), MeterMachinePo.class);
+        meterMachineV1InnerServiceSMOImpl.updateMeterMachine(meterMachinePo);
+
+        return ResultVo.createResponseEntity(new ResultVo(ResultVo.CODE_OK, "成功"));
+    }
 }

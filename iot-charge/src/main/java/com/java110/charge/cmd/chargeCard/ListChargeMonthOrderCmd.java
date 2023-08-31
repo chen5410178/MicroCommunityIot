@@ -24,6 +24,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.doc.annotation.*;
 import com.java110.dto.chargeMonthOrder.ChargeMonthOrderDto;
 import com.java110.intf.charge.IChargeMonthOrderV1InnerServiceSMO;
 import org.slf4j.Logger;
@@ -46,6 +47,42 @@ import java.util.List;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
+
+@Java110CmdDoc(title = "查询充电月卡订单",
+        description = "用于外系统查询充电月卡订单",
+        httpMethod = "get",
+        url = "http://{ip}:{port}/iot/api/chargeCard.listChargeMonthOrder",
+        resource = "chargeDoc",
+        author = "吴学文",
+        serviceCode = "chargeCard.listChargeMonthOrder",
+        seq = 23
+)
+
+@Java110ParamsDoc(params = {
+        @Java110ParamDoc(name = "page", type = "int", length = 11, remark = "页数"),
+        @Java110ParamDoc(name = "row", type = "int", length = 11, remark = "行数"),
+        @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
+})
+
+@Java110ResponseDoc(
+        params = {
+                @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
+                @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
+                @Java110ParamDoc(name = "data", type = "Array", remark = "有效数据"),
+                @Java110ParamDoc(parentNodeName = "data", name = "orderId", type = "String", remark = "订单ID"),
+                @Java110ParamDoc(parentNodeName = "data", name = "cardName", type = "String", remark = "月卡名称"),
+                @Java110ParamDoc(parentNodeName = "data", name = "cardMonth", type = "int", remark = "月卡有限时间(月)"),
+                @Java110ParamDoc(parentNodeName = "data", name = "cardPrice", type = "String", remark = "月卡价格"),
+                @Java110ParamDoc(parentNodeName = "data", name = "dayHours", type = "String", remark = "每日充电时间"),
+                @Java110ParamDoc(parentNodeName = "data", name = "receivableAmount", type = "String", remark = "应收金额"),
+                @Java110ParamDoc(parentNodeName = "data", name = "receivedAmount", type = "String", remark = "实收金额"),
+        }
+)
+
+@Java110ExampleDoc(
+        reqBody = "http://{ip}:{port}/iot/api/chargeCard.listChargeMonthOrder?page=1&row=10&communityId=123123",
+        resBody = "{'code':0,'msg':'成功','data':[{'orderId':'123123','cardMonth':'1','cardName':'月卡套餐一','cardPrice':'30.00','dayHours':'8','receivableAmount':'60.00','receivedAmount':'10.00'}]}"
+)
 @Java110Cmd(serviceCode = "chargeCard.listChargeMonthOrder")
 public class ListChargeMonthOrderCmd extends Cmd {
 

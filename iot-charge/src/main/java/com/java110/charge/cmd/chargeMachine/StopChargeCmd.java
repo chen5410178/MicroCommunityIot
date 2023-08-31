@@ -9,6 +9,7 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
+import com.java110.doc.annotation.*;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
 import com.java110.dto.chargeMachine.ChargeMachinePortDto;
 import com.java110.intf.acct.IAccountInnerServiceSMO;
@@ -26,6 +27,40 @@ import java.util.List;
  * <p>
  * add by wuxw 2023-03-09
  */
+
+@Java110CmdDoc(title = "停止充电",
+        description = "用于外系统停止充电",
+        httpMethod = "post",
+        url = "http://{ip}:{port}/iot/api/chargeMachine.stopCharge",
+        resource = "chargeDoc",
+        author = "吴学文",
+        serviceCode = "chargeMachine.stopCharge",
+        seq = 25
+)
+
+@Java110ParamsDoc(params = {
+        @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
+        @Java110ParamDoc(name = "machineId", length = 30, remark = "充电桩ID"),
+        @Java110ParamDoc(name = "machineCode", length = 11, remark = "充电桩编号"),
+        @Java110ParamDoc(name = "portId", length = 30, remark = "插槽ID"),
+        @Java110ParamDoc(name = "portCode", length = 30, remark = "插槽编号"),
+        @Java110ParamDoc(name = "orderId", length = 30, remark = "订单ID"),
+        @Java110ParamDoc(name = "state", length = 12, remark = "插槽状态"),
+        @Java110ParamDoc(name = "amount", length = 30, remark = "扣款金额"),
+        @Java110ParamDoc(name = "personId", length = 30, remark = "用户ID"),
+})
+
+@Java110ResponseDoc(
+        params = {
+                @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
+                @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
+        }
+)
+
+@Java110ExampleDoc(
+        reqBody = "{\"communityId\":\"2022081539020475\",\"machineId\":\"123123\",\"machineCode\":\"123123\",\"portId\":\"123123\",\"portCode\":\"123123\",\"orderId\":\"123123\",\"state\":\"1001\",\"amount\":\"2.70\",\"personId\":\"123123\"}",
+        resBody = "{'code':0,'msg':'成功'}"
+)
 @Java110Cmd(serviceCode = "chargeMachine.stopCharge")
 public class StopChargeCmd extends Cmd {
 

@@ -24,6 +24,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.doc.annotation.*;
 import com.java110.dto.meter.MeterMachineDetailDto;
 import com.java110.dto.meter.MeterMachineReadOrRechargeDetailDto;
 import com.java110.intf.meter.IMeterMachineDetailV1InnerServiceSMO;
@@ -47,6 +48,40 @@ import java.util.List;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
+
+@Java110CmdDoc(title = "查询抄表/充值记录",
+        description = "用于外系统查询抄表/充值记录",
+        httpMethod = "get",
+        url = "http://{ip}:{port}/iot/api/meterMachine.listMeterMachineReadOrRechargeDetail",
+        resource = "meterDoc",
+        author = "吴学文",
+        serviceCode = "meterMachine.listMeterMachineReadOrRechargeDetail",
+        seq = 13
+)
+
+@Java110ParamsDoc(params = {
+        @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
+        @Java110ParamDoc(name = "detailType", length = 30, remark = "记录类型"),
+        @Java110ParamDoc(name = "page", type = "int", length = 11, remark = "页数"),
+        @Java110ParamDoc(name = "row", type = "int", length = 11, remark = "行数"),
+})
+
+@Java110ResponseDoc(
+        params = {
+                @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
+                @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
+                @Java110ParamDoc(name = "data", type = "Array", remark = "有效数据"),
+                @Java110ParamDoc(parentNodeName = "data", name = "roomName", type = "String", remark = "房屋名称"),
+                @Java110ParamDoc(parentNodeName = "data", name = "machineName", type = "String", remark = "设备名称"),
+                @Java110ParamDoc(parentNodeName = "data", name = "typeName", type = "String", remark = "类型名称"),
+                @Java110ParamDoc(parentNodeName = "data", name = "address", type = "String", remark = "设备编号"),
+        }
+)
+
+@Java110ExampleDoc(
+        reqBody = "http://{ip}:{port}/iot/api/meterMachine.listMeterMachineReadOrRechargeDetail?page=1&row=10&communityId=123123&detailType=2002",
+        resBody = "{'code':0,'msg':'成功','data':[{'roomName':'1-1-1001','machineName':'1-1-1001电表','typeName':'电表','address':'1'}]}"
+)
 @Java110Cmd(serviceCode = "meterMachine.listMeterMachineReadOrRechargeDetail")
 public class ListMeterMachineReadOrRechargeDetailCmd extends Cmd {
 

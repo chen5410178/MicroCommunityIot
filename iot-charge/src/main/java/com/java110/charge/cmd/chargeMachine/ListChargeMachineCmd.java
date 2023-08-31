@@ -83,7 +83,7 @@ import java.util.List;
 )
 
 @Java110ExampleDoc(
-        reqBody = "http://{ip}:{port}/iot/api/chargeRule.listChargeRule?page=1&row=10&communityId=123123",
+        reqBody = "http://{ip}:{port}/iot/api/chargeMachine.listChargeMachine?page=1&row=10&communityId=123123",
         resBody = "{'code':0,'msg':'成功','data':[{'machineId':'123123','machineName':'123213','machineCode':'123213','chargeType':'1001'}]}"
 )
 @Java110Cmd(serviceCode = "chargeMachine.listChargeMachine")

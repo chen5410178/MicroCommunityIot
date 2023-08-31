@@ -47,6 +47,7 @@ public class MeterMachinePo implements Serializable {
     private int readDay ;
 
     private int readHours;
+    private String controlType;
 
     public String getHeartbeatTime() {
         return heartbeatTime;
@@ -190,5 +191,13 @@ public class MeterMachinePo implements Serializable {
 
     public void setReadHours(int readHours) {
         this.readHours = readHours;
+    }
+
+    public String getControlType() {
+        return controlType;
+    }
+
+    public void setControlType(String controlType) {
+        this.controlType = controlType;
     }
 }

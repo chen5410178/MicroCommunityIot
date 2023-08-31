@@ -27,6 +27,7 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.doc.annotation.*;
 import com.java110.intf.meter.IMeterTypeV1InnerServiceSMO;
 import com.java110.po.meter.MeterTypePo;
 import org.slf4j.Logger;
@@ -42,6 +43,35 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
+
+@Java110CmdDoc(title = "添加抄表类型",
+        description = "用于外系统添加抄表类型",
+        httpMethod = "post",
+        url = "http://{ip}:{port}/iot/api/meterType.saveMeterType",
+        resource = "meterDoc",
+        author = "吴学文",
+        serviceCode = "meterType.saveMeterType",
+        seq = 2
+)
+
+@Java110ParamsDoc(params = {
+        @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
+        @Java110ParamDoc(name = "typeName", length = 12, remark = "类型名称"),
+        @Java110ParamDoc(name = "price", length = 10, remark = "单价"),
+        @Java110ParamDoc(name = "remark", length = 10, remark = "说明"),
+})
+
+@Java110ResponseDoc(
+        params = {
+                @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
+                @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
+        }
+)
+
+@Java110ExampleDoc(
+        reqBody = "{\"communityId\":\"2022081539020475\",\"typeName\":\"tq-水表\",\"price\":\"1\",\"remark\":\"水表\"}",
+        resBody = "{'code':0,'msg':'成功'}"
+)
 @Java110Cmd(serviceCode = "meterType.saveMeterType")
 public class SaveMeterTypeCmd extends Cmd {
 

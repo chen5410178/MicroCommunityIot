@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.*;
                 @Java110RequestMappingDoc(name = "平台中心", resource = "systemDoc", url = "http://127.0.0.1:9999", seq = 9, startWay = "boot"),
                 @Java110RequestMappingDoc(name = "用户中心", resource = "userDoc", url = "http://127.0.0.1:9999", seq = 10, startWay = "boot"),
                 @Java110RequestMappingDoc(name = "充电桩中心", resource = "chargeDoc", url = "http://127.0.0.1:9999", seq = 11, startWay = "boot"),
+                @Java110RequestMappingDoc(name = "水电表中心", resource = "meterDoc", url = "http://127.0.0.1:9999", seq = 12, startWay = "boot"),
 
         }
 )

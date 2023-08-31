@@ -1,5 +1,6 @@
 package com.java110.meter.factory;
 
+import com.java110.bean.ResultVo;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
 import com.java110.dto.meter.MeterMachineDetailDto;
 import com.java110.dto.meter.MeterMachineDto;
@@ -31,5 +32,10 @@ public interface ISmartMeterCoreRead {
      */
     void queryMeterMachineState(List<MeterMachineDto> meterMachineDtos);
 
-
+    /**
+     * 表开关阀
+     * @param meterMachineDto
+     * @return
+     */
+    ResultVo switchControl(MeterMachineDto meterMachineDto, String controlType);
 }

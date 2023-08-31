@@ -26,6 +26,8 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.meter.MeterMachineDto;
 import com.java110.intf.meter.IMeterMachineV1InnerServiceSMO;
+import com.java110.meter.factory.ISmartMeterCoreRead;
+import com.java110.meter.factory.ISmartMeterFactoryAdapt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,11 +56,13 @@ public class MeterMachineControlSwitchCmd extends Cmd {
     @Autowired
     private IMeterMachineV1InnerServiceSMO meterMachineV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ISmartMeterCoreRead smartMeterCoreReadImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
-        Assert.hasKeyAndValue(reqJson, "controlType", "controlType不能为空");
+        Assert.hasKeyAndValue(reqJson, "type", "type不能为空");
         Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
     }
 
@@ -67,9 +71,11 @@ public class MeterMachineControlSwitchCmd extends Cmd {
 
         MeterMachineDto meterMachineDto = BeanConvertUtil.covertBean(reqJson, MeterMachineDto.class);
 
+        List<MeterMachineDto> meterMachineDtos = meterMachineV1InnerServiceSMOImpl.queryMeterMachines(meterMachineDto);
 
-        ResultVo resultVo =  null;
+        Assert.listOnlyOne(meterMachineDtos, "表设备不存在!");
 
+        ResultVo resultVo = smartMeterCoreReadImpl.switchControl(meterMachineDto, reqJson.getString("type"));
 
         cmdDataFlowContext.setResponseEntity(ResultVo.createResponseEntity(resultVo));
     }

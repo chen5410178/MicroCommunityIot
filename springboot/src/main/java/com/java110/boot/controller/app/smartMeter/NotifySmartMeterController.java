@@ -17,7 +17,7 @@ public class NotifySmartMeterController {
     private final static Logger logger = LoggerFactory.getLogger(NotifySmartMeterController.class);
 
     @Autowired
-    private INotifySmartMeterV1InnerServiceSMO notifySmartWeterV1InnerServiceSMOImpl;
+    private INotifySmartMeterV1InnerServiceSMO notifySmartMeterV1InnerServiceSMOImpl;
 
     /**
      * <p>支付回调Api</p>
@@ -32,7 +32,13 @@ public class NotifySmartMeterController {
                                           @RequestBody String postInfo,
                                           HttpServletRequest request) {
 
-        return notifySmartWeterV1InnerServiceSMOImpl.notifySmartMater(new NotifyMeterWaterOrderDto(appId,postInfo,implBean));
+        return notifySmartMeterV1InnerServiceSMOImpl.notifySmartMater(new NotifyMeterWaterOrderDto(appId,postInfo,implBean));
     }
 
+    @RequestMapping("/{implBean}/switchControl")
+    public ResponseEntity<String> switchControlNotify(@PathVariable String implBean,
+                                                      @RequestBody String postInfo,
+                                                      HttpServletRequest request) {
+        return notifySmartMeterV1InnerServiceSMOImpl.switchControlNotify(implBean, postInfo);
+    }
 }

@@ -174,10 +174,10 @@
                                             </span></button>
                                     </div>
                                     <div class="btn-group">
-                                        <button class="btn-white btn btn-xs" v-on:click="_controlSwitch(meterMachine)"><span>
+                                        <button v-if="!meterMachine.controlType || meterMachine.controlType == 'OFF'" class="btn-white btn btn-xs" v-on:click="_controlSwitch(meterMachine,'ON')"><span>
                                                 <vc:i18n name='开闸'></vc:i18n>
                                             </span></button>
-                                        <button class="btn-white btn btn-xs" v-on:click="_controlSwitch(meterMachine)"><span>
+                                        <button v-if="meterMachine.controlType == 'ON'" class="btn-white btn btn-xs" v-on:click="_controlSwitch(meterMachine,'OFF')"><span>
                                                 <vc:i18n name='关闸'></vc:i18n>
                                             </span></button>
                                     </div>

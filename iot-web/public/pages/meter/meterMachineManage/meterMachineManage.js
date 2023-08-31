@@ -147,8 +147,8 @@
                 }
                 return _meterTypeName;
             },
-            _controlSwitch: function (_meterMachine) {
-
+            _controlSwitch: function (_meterMachine, _type) {
+                _meterMachine.type = _type;
                 vc.http.apiPost(
                     '/meterMachine.meterMachineControlSwitch',
                     JSON.stringify(_meterMachine), {

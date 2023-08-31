@@ -44,7 +44,15 @@ public interface ISmartMeterFactoryAdapt {
 
     /**
      * 查询设备状态
+     *
      * @param meterMachineDto
      */
     void queryMeterMachineState(MeterMachineDto meterMachineDto);
+
+    /**
+     * 表开关阀
+     *
+     * @param meterMachineDto
+     */
+    ResultVo switchControl(MeterMachineDto meterMachineDto, String controlType);
 }

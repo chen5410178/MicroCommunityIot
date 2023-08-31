@@ -28,6 +28,7 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DateUtil;
+import com.java110.doc.annotation.*;
 import com.java110.dto.chargeMonthCard.ChargeMonthCardDto;
 import com.java110.dto.chargeMonthOrder.ChargeMonthOrderDto;
 import com.java110.dto.user.UserDto;
@@ -53,6 +54,36 @@ import java.util.List;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
+
+@Java110CmdDoc(title = "添加充电月卡购买订单",
+        description = "用于外系统添加充电月卡购买订单",
+        httpMethod = "post",
+        url = "http://{ip}:{port}/iot/api/chargeCard.saveChargeMonthOrder",
+        resource = "chargeDoc",
+        author = "吴学文",
+        serviceCode = "chargeCard.saveChargeMonthOrder",
+        seq = 24
+)
+
+@Java110ParamsDoc(params = {
+        @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
+        @Java110ParamDoc(name = "personTel", length = 11, remark = "用户电话"),
+        @Java110ParamDoc(name = "cardId", length = 30, remark = "月卡ID"),
+        @Java110ParamDoc(name = "primeRate", length = 30, remark = "支付方式"),
+        @Java110ParamDoc(name = "receivedAmount", length = 30, remark = "实收金额"),
+})
+
+@Java110ResponseDoc(
+        params = {
+                @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
+                @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
+        }
+)
+
+@Java110ExampleDoc(
+        reqBody = "{\"communityId\":\"2022081539020475\",\"personTel\":\"13345674567\",\"cardId\":\"123123\",\"primeRate\":\"7\",\"receivedAmount\":\"30.00\"}",
+        resBody = "{'code':0,'msg':'成功'}"
+)
 @Java110Cmd(serviceCode = "chargeCard.saveChargeMonthOrder")
 public class SaveChargeMonthOrderCmd extends Cmd {
 

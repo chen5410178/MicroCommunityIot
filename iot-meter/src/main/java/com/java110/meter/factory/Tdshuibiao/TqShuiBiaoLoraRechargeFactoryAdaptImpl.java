@@ -359,5 +359,8 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
         smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree + "", batchId);
     }
 
-
+    @Override
+    public ResultVo switchControl(MeterMachineDto meterMachineDto, String controlType) {
+        return null;
+    }
 }

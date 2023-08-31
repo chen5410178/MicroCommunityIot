@@ -23,6 +23,7 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
+import com.java110.doc.annotation.*;
 import com.java110.dto.meter.MeterMachineDto;
 import com.java110.intf.meter.IMeterMachineV1InnerServiceSMO;
 import org.slf4j.Logger;
@@ -44,6 +45,32 @@ import java.util.List;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
+
+@Java110CmdDoc(title = "手工抄表",
+        description = "用于外系统手工抄表",
+        httpMethod = "post",
+        url = "http://{ip}:{port}/iot/api/meterMachine.customMeterMachineRead",
+        resource = "meterDoc",
+        author = "吴学文",
+        serviceCode = "meterMachine.customMeterMachineRead",
+        seq = 9
+)
+
+@Java110ParamsDoc(params = {
+        @Java110ParamDoc(name = "communityId", length = 30, remark = "小区ID"),
+})
+
+@Java110ResponseDoc(
+        params = {
+                @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
+                @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
+        }
+)
+
+@Java110ExampleDoc(
+        reqBody = "{\"communityId\":\"2022081539020475\"}",
+        resBody = "{'code':0,'msg':'成功'}"
+)
 @Java110Cmd(serviceCode = "meterMachine.customMeterMachineRead")
 public class CustomMeterMachineReadCmd extends Cmd {
 

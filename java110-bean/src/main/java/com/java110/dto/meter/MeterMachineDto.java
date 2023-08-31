@@ -58,6 +58,7 @@ public class MeterMachineDto extends PageDto implements Serializable {
     private int readHours;
     private String state;
     private String stateName;
+    private String controlType;
 
     public String getHeartbeatTime() {
         return heartbeatTime;
@@ -290,5 +291,13 @@ public class MeterMachineDto extends PageDto implements Serializable {
 
     public void setStateName(String stateName) {
         this.stateName = stateName;
+    }
+
+    public String getControlType() {
+        return controlType;
+    }
+
+    public void setControlType(String controlType) {
+        this.controlType = controlType;
     }
 }
