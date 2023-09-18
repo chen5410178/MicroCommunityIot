@@ -48,6 +48,29 @@
                             return;
                         }
                         let _menus = _menuData.data;
+
+                        if (_catalog.caId === '1') {
+                            _menus = [
+                                {
+                                    childs: [
+                                        {
+                                            description: '',
+                                            href: '/#/pages/mall/product',
+                                            isShow: 'Y',
+                                            mId: '1',
+                                            name: '商品信息',
+                                            seq: '1',
+                                        }
+                                    ],
+                                    icon: 'fa fa-th-large',
+                                    id: '',
+                                    label: '',
+                                    name: '商品',
+                                    seq: '1',
+                                }
+                            ]
+                        }
+
                         if (_menus == null || _menus.length == 0) {
                             return;
                         }

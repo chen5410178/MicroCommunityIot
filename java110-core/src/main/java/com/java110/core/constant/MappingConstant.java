@@ -147,8 +147,10 @@ public final class MappingConstant {
      */
     public static final String DOMAIN_COMMUNITY_MEMBER_AUDIT = "COMMUNITY_MEMBER_AUDIT";
 
-    
-
+    /**
+     * 供应链商城
+     */
+    public static final String MICRO_INDUSTRY_PLATFORM_MALL = "MICROINDUSTRYPLATFORM_MALL";
 
 
 

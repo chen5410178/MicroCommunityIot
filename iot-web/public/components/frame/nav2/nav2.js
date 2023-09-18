@@ -29,7 +29,16 @@
                 catalogs: [],
             },
             logo: '',
-            userName: ""
+            userName: "",
+            mallCatalog: {
+                active: '0',
+                caId: '1',
+                icon: 'fa fa-shopping-cart',
+                isShow: 'Y',
+                name: '商城',
+                seq: '9',
+                url: "#"
+            },
         },
         mounted: function() {
             this._initSysInfo();
@@ -225,6 +234,7 @@
                 vc.emit('document', 'openDocument', {});
             },
             _settingActiveCatalog: function(_catalog) {
+                this.mallCatalog.active = '0';
                 let _catalogs = this.nav.catalogs;
                 _catalogs.forEach(item => {
                     item.active = '0'
@@ -232,11 +242,16 @@
                         item.active = '1';
                     }
                 });
+                if (_catalog.caId === '1')
+                    _catalog.active = '1';
                 //this.nav.catalogs = _catalogs;
                 this.$forceUpdate();
             },
             _changeMenuCatalog: function(_catalog) {
                 //_showModelDiv(item)
+                if (_catalog.caId === '1') {
+                    vc.jumpToPage('/#/pages/mall/product');
+                }
                 if (vm._showModelDiv(_catalog)) {
                     return;
                 }
