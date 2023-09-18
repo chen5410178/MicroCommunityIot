@@ -33,6 +33,7 @@
         <module>iot-acct</module>
         <module>iot-hal</module>
         <module>iot-meter</module>
+        <module>iot-lift</module>
     </modules>
 
     <parent>
