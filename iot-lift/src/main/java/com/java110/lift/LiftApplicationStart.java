@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
         "com.java110.doc",
 })
 @EnableFeignClients(basePackages = {
-        "com.java110.intf.user",
+        "com.java110.intf.lift",
 })
 @Java110CmdDiscovery(cmdPublishClass = ServiceCmdEventPublishing.class,
         basePackages = {"com.java110.lift.cmd"})
