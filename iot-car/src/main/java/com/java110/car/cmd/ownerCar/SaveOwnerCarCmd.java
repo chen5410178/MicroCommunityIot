@@ -15,10 +15,13 @@
  */
 package com.java110.car.cmd.ownerCar;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.owner.OwnerCarDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
+import com.java110.core.cache.MappingCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
@@ -26,11 +29,20 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.StringUtil;
+import com.java110.dto.parkingSpace.ParkingSpaceDto;
 import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
+import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
+import com.java110.intf.user.IOwnerCarInnerServiceSMO;
 import com.java110.po.ownerCar.OwnerCarPo;
+import com.java110.po.parkingSpace.ParkingSpacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -47,38 +59,140 @@ public class SaveOwnerCarCmd extends Cmd {
 
     private static Logger logger = LoggerFactory.getLogger(SaveOwnerCarCmd.class);
 
-    public static final String CODE_PREFIX_ID = "10";
+    @Autowired
+    private IParkingSpaceV1InnerServiceSMO parkingSpaceInnerServiceSMOImpl;
+
+    @Autowired
+    private IOwnerCarInnerServiceSMO ownerCarInnerServiceSMOImpl;
+
 
     @Autowired
     private IOwnerCarV1InnerServiceSMO ownerCarV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IParkingSpaceV1InnerServiceSMO parkingSpaceV1InnerServiceSMOImpl;
+
+
     @Override
-    public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
+    public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
+        Assert.hasKeyAndValue(reqJson, "communityId", "未包含小区ID");
         Assert.hasKeyAndValue(reqJson, "ownerId", "请求报文中未包含ownerId");
         Assert.hasKeyAndValue(reqJson, "carNum", "请求报文中未包含carNum");
         Assert.hasKeyAndValue(reqJson, "carType", "请求报文中未包含carType");
-        Assert.hasKeyAndValue(reqJson, "psId", "请求报文中未包含psId");
-        Assert.hasKeyAndValue(reqJson, "carTypeCd", "请求报文中未包含carTypeCd");
-        Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
-        Assert.hasKeyAndValue(reqJson, "startTime", "请求报文中未包含startTime");
-        Assert.hasKeyAndValue(reqJson, "endTime", "请求报文中未包含endTime");
-        Assert.hasKeyAndValue(reqJson, "state", "请求报文中未包含state");
-        Assert.hasKeyAndValue(reqJson, "leaseType", "请求报文中未包含leaseType");
+        Assert.hasKeyAndValue(reqJson, "psId", "未包含psId");
 
+        if (OwnerCarDto.LEASE_TYPE_MONTH.equals(reqJson.getString("leaseType"))) {
+            Assert.hasKeyAndValue(reqJson, "startTime", "请求报文中未包含开始时间");
+            Assert.hasKeyAndValue(reqJson, "endTime", "请求报文中未包含结束时间");
+            Assert.isDate(reqJson.getString("startTime"), DateUtil.DATE_FORMATE_STRING_B,"开始时间格式错误");
+            Assert.isDate(reqJson.getString("endTime"),DateUtil.DATE_FORMATE_STRING_B,"结束时间格式错误");
+        }
+
+        //检查车位是否是空闲状态
+        ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
+        parkingSpaceDto.setPsId(reqJson.getString("psId"));
+        List<ParkingSpaceDto> parkingSpaceDtos = parkingSpaceInnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
+        Assert.listOnlyOne(parkingSpaceDtos, "查询车位错误！");
+        //获取车位状态
+        String state = parkingSpaceDtos.get(0).getState();
+        if (StringUtil.isEmpty(state) || !state.equals("F")) {
+            throw new IllegalArgumentException("该车位不是空闲状态！");
+        }
+
+        //校验车牌号是否存在
+        OwnerCarDto ownerCarDto = new OwnerCarDto();
+        ownerCarDto.setCommunityId(reqJson.getString("communityId"));
+        ownerCarDto.setCarNum(reqJson.getString("carNum"));
+        ownerCarDto.setPaIds(new String[]{parkingSpaceDtos.get(0).getPaId()});
+        ownerCarDto.setCarTypeCds(new String[]{OwnerCarDto.CAR_TYPE_PRIMARY, OwnerCarDto.CAR_TYPE_MEMBER}); // 临时车除外
+        int count = ownerCarInnerServiceSMOImpl.queryOwnerCarsCount(ownerCarDto);
+
+        if (count > 0) {
+            throw new IllegalArgumentException("车辆已存在");
+        }
+
+        //判断临时车 是否在场
+        String parkingIn = MappingCache.getValue("TEMP_CAR_IN_PARKING");
+
+        if (!"ON".equals(parkingIn)) {
+            return;
+        }
+
+        ownerCarDto = new OwnerCarDto();
+        ownerCarDto.setCommunityId(reqJson.getString("communityId"));
+        ownerCarDto.setCarNum(reqJson.getString("carNum"));
+        ownerCarDto.setCarTypeCds(new String[]{OwnerCarDto.CAR_TYPE_TEMP}); // 临时车除外
+        count = ownerCarInnerServiceSMOImpl.queryOwnerCarsCount(ownerCarDto);
+        if (count < 1) {
+            return;
+        }
+
+//        CarInoutDto carInoutDto = new CarInoutDto();
+//        carInoutDto.setCarNum(reqJson.getString("carNum"));
+//        carInoutDto.setStates(new String[]{CarInoutDto.STATE_PAY, CarInoutDto.STATE_IN, CarInoutDto.STATE_REPAY});
+//        List<CarInoutDto> carInoutDtos = carInoutInnerServiceSMOImpl.queryCarInouts(carInoutDto);
+//        if (carInoutDtos != null && carInoutDtos.size() > 0) {
+//            throw new CmdException("车辆在场，请出场后再办理月租车");
+//        }
     }
 
     @Override
     @Java110Transactional
-    public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
-
-        OwnerCarPo ownerCarPo = BeanConvertUtil.covertBean(reqJson, OwnerCarPo.class);
-        ownerCarPo.setMemberId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
-        int flag = ownerCarV1InnerServiceSMOImpl.saveOwnerCar(ownerCarPo);
-
-        if (flag < 1) {
-            throw new CmdException("保存数据失败");
+    public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
+        if (!reqJson.containsKey("leaseType")) {
+            reqJson.put("leaseType", OwnerCarDto.LEASE_TYPE_MONTH);
         }
 
-        cmdDataFlowContext.setResponseEntity(ResultVo.success());
+        if (!OwnerCarDto.LEASE_TYPE_MONTH.equals(reqJson.getString("leaseType"))) {
+            reqJson.put("startTime", DateUtil.getFormatTimeString(new Date(), DateUtil.DATE_FORMATE_STRING_B));
+            reqJson.put("endTime", "2050-01-01");
+        }
+        JSONObject businessOwnerCar = new JSONObject();
+        businessOwnerCar.putAll(reqJson);
+        businessOwnerCar.put("memberId", GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_carId));
+        if (!reqJson.containsKey("carId") || reqJson.getString("carId").startsWith("-")) {
+            businessOwnerCar.put("carId", businessOwnerCar.getString("memberId"));
+        }
+        OwnerCarPo ownerCarPo = BeanConvertUtil.covertBean(businessOwnerCar, OwnerCarPo.class);
+        ownerCarPo.setState(OwnerCarDto.STATE_NORMAL);
+
+        //没有指定时为主要车辆
+        if (!reqJson.containsKey("carTypeCd") || StringUtil.isEmpty(reqJson.getString("carTypeCd"))) {
+            ownerCarPo.setCarTypeCd(OwnerCarDto.CAR_TYPE_PRIMARY);
+        }
+        //添加车辆属性
+        //dealOwnerCarAttr(reqJson, ownerCarPo);
+
+
+        int flag = ownerCarV1InnerServiceSMOImpl.saveOwnerCar(ownerCarPo);
+        if (flag < 1) {
+            throw new CmdException("保存车辆属性失败");
+        }
+
+        ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
+        parkingSpaceDto.setCommunityId(reqJson.getString("communityId"));
+        parkingSpaceDto.setPsId(reqJson.getString("psId"));
+        List<ParkingSpaceDto> parkingSpaceDtos = parkingSpaceInnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
+
+        if (parkingSpaceDtos == null || parkingSpaceDtos.size() != 1) {
+            //throw new ListenerExecuteException(ResponseConstant.RESULT_CODE_ERROR, "未查询到停车位信息" + JSONObject.toJSONString(parkingSpaceDto));
+            return;
+        }
+
+        parkingSpaceDto = parkingSpaceDtos.get(0);
+
+        JSONObject businessParkingSpace = new JSONObject();
+
+        businessParkingSpace.putAll(BeanConvertUtil.beanCovertMap(parkingSpaceDto));
+        ParkingSpacePo parkingSpacePo = BeanConvertUtil.covertBean(businessParkingSpace, ParkingSpacePo.class);
+        parkingSpacePo.setState("H"); //S 出售  H 出租  F 空闲
+        flag = parkingSpaceV1InnerServiceSMOImpl.updateParkingSpace(parkingSpacePo);
+        if (flag < 1) {
+            throw new CmdException("修改车位状态失败");
+        }
+
     }
+
+
+
 }
