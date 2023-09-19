@@ -15,9 +15,7 @@
  */
 package com.java110.car.cmd.ownerCar;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.java110.bean.ResultVo;
 import com.java110.bean.dto.owner.OwnerCarDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
@@ -34,7 +32,7 @@ import com.java110.core.utils.StringUtil;
 import com.java110.dto.parkingSpace.ParkingSpaceDto;
 import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
-import com.java110.intf.user.IOwnerCarInnerServiceSMO;
+import com.java110.intf.car.IOwnerCarInnerServiceSMO;
 import com.java110.po.ownerCar.OwnerCarPo;
 import com.java110.po.parkingSpace.ParkingSpacePo;
 import org.springframework.beans.factory.annotation.Autowired;

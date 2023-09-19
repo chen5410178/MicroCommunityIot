@@ -7,7 +7,7 @@
     <!-- 保存车辆管理信息 add by wuxw 2018-07-03 -->
     <insert id="saveBusinessOwnerCarInfo" parameterType="Map">
         insert into business_owner_car(
-        car_color,car_brand,car_type,operate,car_num,ps_id,remark,owner_id,b_id,user_id,car_id,community_id,start_time,
+        car_color,car_type,operate,car_num,ps_id,remark,owner_id,b_id,user_id,car_id,community_id,start_time,
         end_time,state,car_type_cd,member_id
         ) values (
         #{carColor},#{carBrand},#{carType},#{operate},#{carNum},#{psId},#{remark},#{ownerId},#{bId},#{userId},#{carId},#{communityId},
@@ -17,19 +17,14 @@
 
     <!-- 查询车辆管理信息（Business） add by wuxw 2018-07-03 -->
     <select id="getBusinessOwnerCarInfo" parameterType="Map" resultType="Map">
-        select t.car_color,t.car_color carColor,t.car_brand,t.car_brand carBrand,t.car_type,t.car_type
+        select t.car_type,t.car_type
         carType,t.operate,t.car_num,t.car_num carNum,t.ps_id,t.ps_id psId,t.remark,t.owner_id,t.owner_id
         ownerId,t.b_id,t.b_id bId,t.user_id,t.user_id userId,t.car_id,t.car_id carId,t.community_id,t.community_id
         communityId,t.start_time,t.end_time,t.state,t.start_time startTime,t.end_time endTime,t.car_type_cd,
         t.car_type_cd carTypeCd,t.member_id,t.member_id memberId,t.lease_type leaseType
         from business_owner_car t
         where 1 =1
-        <if test="carColor !=null and carColor != ''">
-            and t.car_color= #{carColor}
-        </if>
-        <if test="carBrand !=null and carBrand != ''">
-            and t.car_brand= #{carBrand}
-        </if>
+
         <if test="carType !=null and carType != ''">
             and t.car_type= #{carType}
         </if>
@@ -74,18 +69,13 @@
     <!-- 保存车辆管理信息至 instance表中 add by wuxw 2018-07-03 -->
     <insert id="saveOwnerCarInfoInstance" parameterType="Map">
         insert into owner_car(
-        car_color,car_brand,car_type,car_num,ps_id,remark,status_cd,owner_id,b_id,user_id,car_id,community_id,
+        car_color,car_type,car_num,ps_id,remark,status_cd,owner_id,b_id,user_id,car_id,community_id,
         start_time,end_time,state,car_type_cd,member_id
         ) select
-        t.car_color,t.car_brand,t.car_type,t.car_num,t.ps_id,t.remark,'0',t.owner_id,t.b_id,t.user_id,t.car_id,t.community_id,
+       t.car_type,t.car_num,t.ps_id,t.remark,'0',t.owner_id,t.b_id,t.user_id,t.car_id,t.community_id,
         t.start_time,t.end_time,t.state,  t.car_type_cd,t.member_id
         from business_owner_car t where 1=1
-        <if test="carColor !=null and carColor != ''">
-            and t.car_color= #{carColor}
-        </if>
-        <if test="carBrand !=null and carBrand != ''">
-            and t.car_brand= #{carBrand}
-        </if>
+
         <if test="carType !=null and carType != ''">
             and t.car_type= #{carType}
         </if>
@@ -125,7 +115,7 @@
 
     <!-- 查询车辆管理信息 add by wuxw 2018-07-03 -->
     <select id="getOwnerCarInfo" parameterType="Map" resultType="Map">
-        select t.car_color,t.car_color carColor,t.car_brand,t.car_brand carBrand,t.car_type,t.car_type carType,t1.name
+        select t.car_type,t.car_type carType,t1.name
         carTypeName,
         t.car_num,t.car_num carNum,t.ps_id,t.ps_id psId,t.remark,t.status_cd,t.status_cd statusCd,t.owner_id,
         t.owner_id ownerId,t.b_id,t.b_id bId,t.user_id,t.user_id userId,t.car_id,t.car_id carId ,t.create_time
@@ -152,12 +142,7 @@
         <if test="statusCd !=null and statusCd != ''">
             and t.status_cd = #{statusCd}
         </if>
-        <if test="carColor !=null and carColor != ''">
-            and t.car_color= #{carColor}
-        </if>
-        <if test="carBrand !=null and carBrand != ''">
-            and t.car_brand= #{carBrand}
-        </if>
+
         <if test="carType !=null and carType != ''">
             and t.car_type= #{carType}
         </if>
@@ -258,7 +243,7 @@
             and t.ps_id= '-1'
         </if>
         <if test="carTypeCd != '1003'">
-        GROUP BY t.car_color,t.car_brand,t.car_type,t1.name,
+        GROUP BY t.car_type,t1.name,
         t.car_num,t.ps_id,t.remark,t.status_cd,t.owner_id,
         t.b_id,t.user_id,t.car_id,t.create_time
         ,t.community_id ,bow.name,bow.id_card ,bow.link,t2.name,t.start_time,t.end_time,t.state,
@@ -277,12 +262,7 @@
         <if test="newBId != null and newBId != ''">
             ,t.b_id = #{newBId}
         </if>
-        <if test="carColor !=null and carColor != ''">
-            , t.car_color= #{carColor}
-        </if>
-        <if test="carBrand !=null and carBrand != ''">
-            , t.car_brand= #{carBrand}
-        </if>
+
         <if test="carType !=null and carType != ''">
             , t.car_type= #{carType}
         </if>
@@ -345,12 +325,8 @@
         <if test="statusCd !=null and statusCd != ''">
             and t.status_cd = #{statusCd}
         </if>
-        <if test="carColor !=null and carColor != ''">
-            and t.car_color= #{carColor}
-        </if>
-        <if test="carBrand !=null and carBrand != ''">
-            and t.car_brand= #{carBrand}
-        </if>
+
+
         <if test="carType !=null and carType != ''">
             and t.car_type= #{carType}
         </if>

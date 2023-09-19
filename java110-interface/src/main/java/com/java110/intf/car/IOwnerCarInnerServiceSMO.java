@@ -1,4 +1,4 @@
-package com.java110.intf.user;
+package com.java110.intf.car;
 
 import com.java110.bean.dto.owner.OwnerCarDto;
 import com.java110.entity.assetImport.ImportCustomCreateFeeDto;
@@ -19,7 +19,7 @@ import java.util.List;
  * @Version 1.0
  * add by wuxw 2019/4/24
  **/
-@FeignClient(name = "user-service", configuration = {FeignConfiguration.class})
+@FeignClient(name = "iot-car", configuration = {FeignConfiguration.class})
 @RequestMapping("/ownerCarApi")
 public interface IOwnerCarInnerServiceSMO {
 

@@ -1,17 +1,17 @@
-package com.java110.user.smo.impl;
+package com.java110.car.smo.impl;
 
 import com.java110.bean.dto.PageDto;
 import com.java110.bean.dto.owner.OwnerCarDto;
 import com.java110.bean.dto.ownerCarAttr.OwnerCarAttrDto;
+import com.java110.car.dao.IOwnerCarAttrServiceDao;
+import com.java110.car.dao.IOwnerCarServiceDao;
 import com.java110.core.constant.StatusConstant;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.user.UserDto;
 import com.java110.entity.assetImport.ImportCustomCreateFeeDto;
 import com.java110.entity.assetImport.ImportRoomFee;
-import com.java110.intf.user.IOwnerCarInnerServiceSMO;
-import com.java110.user.dao.IOwnerCarAttrServiceDao;
-import com.java110.user.dao.IOwnerCarServiceDao;
+import com.java110.intf.car.IOwnerCarInnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

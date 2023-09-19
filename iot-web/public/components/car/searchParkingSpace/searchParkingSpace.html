@@ -21,7 +21,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="input-group">
-                                        <select class="custom-select custom-select-sm" v-model="searchParkingSpaceInfo.areaNum">
+                                        <select class="custom-select custom-select-sm" v-model="searchParkingSpaceInfo.paNum">
                                             <option selected value="">{{vc.i18n('请选择停车场','searchParkingSpace')}}</option>
                                             <option v-for="(item,index) in searchParkingSpaceInfo.parkingAreas"
                                                     :key="index" v-bind:value="item.num">

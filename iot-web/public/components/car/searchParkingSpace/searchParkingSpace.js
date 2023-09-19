@@ -12,7 +12,7 @@
                 total: 0,
                 records: 1,
                 num: '',
-                areaNum: '',
+                paNum: '',
                 carNum: '',
                 parkingAreas: [],
                 psFlag: $props.parkingSpaceFlag,
@@ -99,7 +99,7 @@
                     }
                 };
                 //发送get请求
-                vc.http.apiGet('/parkingArea.listParkingAreas', param,
+                vc.http.apiGet('/parkingArea.listParkingArea', param,
                     function(json, res) {
                         let _parkingAreaManageInfo = JSON.parse(json);
                         $that.searchParkingSpaceInfo.parkingAreas = _parkingAreaManageInfo.parkingAreas;

@@ -60,7 +60,7 @@
             });
             vc.on('hireParkingSpace', 'chooseParkingSpace', function(_parkingSpace) {
                 vc.copyObject(_parkingSpace, $that.hireParkingSpaceInfo);
-                $that.hireParkingSpaceInfo.psName = _parkingSpace.areaNum + "-" + _parkingSpace.num;
+                $that.hireParkingSpaceInfo.psName = _parkingSpace.paNum + "-" + _parkingSpace.num;
             });
         },
         methods: {

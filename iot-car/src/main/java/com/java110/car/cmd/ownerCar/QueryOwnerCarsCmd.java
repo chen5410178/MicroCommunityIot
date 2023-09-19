@@ -17,14 +17,13 @@ import com.java110.core.utils.StringUtil;
 import com.java110.dto.parkingSpace.ParkingSpaceDto;
 import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
 import com.java110.intf.community.IRoomInnerServiceSMO;
-import com.java110.intf.user.IOwnerCarInnerServiceSMO;
+import com.java110.intf.car.IOwnerCarInnerServiceSMO;
 import com.java110.intf.user.IOwnerRoomRelInnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Java110Cmd(serviceCode = "ownerCar.queryOwnerCars")
 public class QueryOwnerCarsCmd extends Cmd {

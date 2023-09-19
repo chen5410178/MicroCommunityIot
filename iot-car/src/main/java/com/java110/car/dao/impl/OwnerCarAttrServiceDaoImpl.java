@@ -1,12 +1,12 @@
-package com.java110.user.dao.impl;
+package com.java110.car.dao.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.car.dao.IOwnerCarAttrServiceDao;
 import com.java110.core.constant.ResponseConstant;
 import com.java110.core.db.dao.BaseServiceDao;
 import com.java110.core.exception.DAOException;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.DateUtil;
-import com.java110.user.dao.IOwnerCarAttrServiceDao;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
