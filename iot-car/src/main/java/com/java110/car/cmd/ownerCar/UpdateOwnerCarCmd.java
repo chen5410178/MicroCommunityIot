@@ -17,6 +17,7 @@ package com.java110.car.cmd.ownerCar;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.owner.OwnerCarDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.cmd.Cmd;
@@ -25,11 +26,16 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.po.ownerCar.OwnerCarPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -53,8 +59,26 @@ public class UpdateOwnerCarCmd extends Cmd {
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
-        Assert.hasKeyAndValue(reqJson, "memberId", "memberId不能为空");
-Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
+        Assert.jsonObjectHaveKey(reqJson, "communityId", "未包含小区ID");
+        Assert.jsonObjectHaveKey(reqJson, "carNum", "请求报文中未包含carNum");
+        Assert.jsonObjectHaveKey(reqJson, "carId", "请求报文中未包含carId");
+        Assert.jsonObjectHaveKey(reqJson, "memberId", "请求报文中未包含memberId");
+        Assert.jsonObjectHaveKey(reqJson, "carType", "请求报文中未包含carType");
+        Assert.hasLength(reqJson.getString("communityId"), "小区ID不能为空");
+
+        OwnerCarDto ownerCarDto = new OwnerCarDto();
+        ownerCarDto.setMemberId(reqJson.getString("memberId"));
+        ownerCarDto.setCommunityId(reqJson.getString("communityId"));
+        ownerCarDto.setCarId(reqJson.getString("carId"));
+        List<OwnerCarDto> ownerCarDtos = ownerCarV1InnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
+
+        Assert.listOnlyOne(ownerCarDtos, "未找到车辆信息");
+
+        String psId = ownerCarDtos.get(0).getPsId();
+
+        if (StringUtil.isEmpty(psId) || "-1".equals(psId)) {
+            throw new IllegalArgumentException("车位已经被释放，不允许修改车辆信息");
+        }
 
     }
 
@@ -62,11 +86,20 @@ Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-       OwnerCarPo ownerCarPo = BeanConvertUtil.covertBean(reqJson, OwnerCarPo.class);
+        if (!reqJson.containsKey("leaseType")) {
+            reqJson.put("leaseType", OwnerCarDto.LEASE_TYPE_MONTH);
+        }
+
+        if (!OwnerCarDto.LEASE_TYPE_MONTH.equals(reqJson.getString("leaseType"))) {
+            reqJson.put("startTime", DateUtil.getFormatTimeString(new Date(), DateUtil.DATE_FORMATE_STRING_B));
+            reqJson.put("endTime", "2037-01-01");
+        }
+
+        OwnerCarPo ownerCarPo = BeanConvertUtil.covertBean(reqJson, OwnerCarPo.class);
         int flag = ownerCarV1InnerServiceSMOImpl.updateOwnerCar(ownerCarPo);
 
         if (flag < 1) {
-            throw new CmdException("更新数据失败");
+            throw new CmdException("修改数据失败");
         }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());

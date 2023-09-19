@@ -128,7 +128,7 @@
             },
             _deleteCarParkingSpace: function(_car) {
                 vc.http.apiPost(
-                    '/owner.deleteCarParkingSpace',
+                    '/ownerCar.deleteCarParkingSpace',
                     JSON.stringify(_car), {
                         emulateJSON: true
                     },

@@ -147,7 +147,7 @@
                                 <tbody>
                                     <tr v-for="car in listOwnerCarInfo.ownerCars" :class="{ 'table-danger' : _getCarState(car) == '到期'}">
                                         <td class="text-center">
-                                            <a :href="'/#/pages/car/carDetail?memberId='+car.memberId" target="_blank">{{car.carNum}}</a>
+                                            {{car.carNum}}
                                         </td>
                                         <td class="text-center">
                                             <a href="javascript:void(0)" @click="_toCarMember(car)">{{car.memberCarCount

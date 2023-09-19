@@ -34,33 +34,27 @@
         _initMethod: function() {
 
             vc.getDict('owner_car', "car_type", function(_data) {
-                vc.component.carTypes = _data;
+                $that.carTypes = _data;
             });
-            //vc.component._initEditCarDateInfo();
+            //$that._initEditCarDateInfo();
         },
         _initEvent: function() {
             vc.on('editCar', 'openEditCar', function(_carInfo) {
                 vc.copyObject(_carInfo, $that.editCarInfo);
                 $('#editCarModal').modal('show');
-                vc.component._initEditCarDateInfo();
+                $that._initEditCarDateInfo();
             });
         },
         methods: {
             editCarValidate: function() {
                 return vc.validate.validate({
-                    editCarInfo: vc.component.editCarInfo
+                    editCarInfo: $that.editCarInfo
                 }, {
 
                     'editCarInfo.carNum': [{
-                            limit: "required",
-                            param: "",
-                            errInfo: "车牌号不能为空"
-                        }
-                    ],
-                    'editCarInfo.carBrand': [{
-                        limit: "maxLength",
-                        param: "50",
-                        errInfo: "车品牌超出限制"
+                        limit: "required",
+                        param: "",
+                        errInfo: "车牌号不能为空"
                     }],
                     'editCarInfo.carType': [{
                         limit: "required",
@@ -82,11 +76,6 @@
                         param: "",
                         errInfo: "结租时间不能为空"
                     }],
-                    'editCarInfo.carColor': [{
-                        limit: "maxLength",
-                        param: "12",
-                        errInfo: "车颜色超出限制"
-                    }],
                     'editCarInfo.memberId': [{
                         limit: "required",
                         param: "",
@@ -95,14 +84,14 @@
                 });
             },
             _submitEditCarInfo: function() {
-                if (!vc.component.editCarValidate()) {
+                if (!$that.editCarValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
-                vc.component.editCarInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.editCarInfo.communityId = vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
-                    '/owner.editOwnerCar',
-                    JSON.stringify(vc.component.editCarInfo), {
+                    '/ownerCar.updateOwnerCar',
+                    JSON.stringify($that.editCarInfo), {
                         emulateJSON: true
                     },
                     function(json, res) {
@@ -115,7 +104,7 @@
                             vc.emit('simplifyOwnerCar', 'listOwnerCarData', {});
                             vc.emit('ownerDetailCar', 'notify', {});
                             vc.emit('listOwnerCarMember', 'listOwnerCarData', {});
-                            vc.emit('carDetail', 'listCarData',{})
+                            vc.emit('carDetail', 'listCarData', {})
                             for (let key in $that.editCarInfo) {
                                 $that.editCarInfo[key] = '';
                             }
@@ -131,7 +120,7 @@
                     });
             },
             _initEditCarDateInfo: function() {
-                //vc.component.editCarInfo.startTime = vc.dateTimeFormat(new Date().getTime());
+                //$that.editCarInfo.startTime = vc.dateTimeFormat(new Date().getTime());
                 $('.editCarStartTime').datetimepicker({
                     language: 'zh-CN',
                     fontAwesome: 'fa',
@@ -145,7 +134,7 @@
                 $('.editCarStartTime').datetimepicker()
                     .on('changeDate', function(ev) {
                         var value = $(".editCarStartTime").val();
-                        vc.component.editCarInfo.startTime = value;
+                        $that.editCarInfo.startTime = value;
                     });
                 $('.editCarEndTime').datetimepicker({
                     language: 'zh-CN',
@@ -159,13 +148,13 @@
                 $('.editCarEndTime').datetimepicker()
                     .on('changeDate', function(ev) {
                         var value = $(".editCarEndTime").val();
-                        var start = Date.parse(new Date(vc.component.editCarInfo.startTime))
+                        var start = Date.parse(new Date($that.editCarInfo.startTime))
                         var end = Date.parse(new Date(value))
                         if (start - end >= 0) {
                             vc.toast("结租时间必须大于起租时间")
                             $(".editCarEndTime").val('')
                         } else {
-                            vc.component.editCarInfo.endTime = value;
+                            $that.editCarInfo.endTime = value;
                         }
                     });
             },
