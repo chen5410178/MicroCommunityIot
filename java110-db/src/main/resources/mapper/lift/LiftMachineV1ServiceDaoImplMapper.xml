@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="liftMachineV1ServiceDaoImpl">
+
+
+    <!-- 保存电梯管理信息 add by wuxw 2018-07-03 -->
+    <insert id="saveLiftMachineInfo" parameterType="Map">
+        insert into lift_machine(heartbeat_time, machine_code, location_name, use_unit, maintenance_unit,
+                                 factory_id, machine_name, machine_id, rescue_link, registration_unit, state,
+                                 community_id, brand)
+        values (#{heartbeatTime}, #{machineCode}, #{locationName}, #{useUnit}, #{maintenanceUnit},
+                #{factoryId}, #{machineName}, #{machineId}, #{rescueLink}, #{registrationUnit}, #{state},
+                #{communityId}, #{brand})
+    </insert>
+
+
+    <!-- 查询电梯管理信息 add by wuxw 2018-07-03 -->
+    <select id="getLiftMachineInfo" parameterType="Map" resultType="Map">
+        select t.heartbeat_time,t.heartbeat_time heartbeatTime,t.machine_code,t.machine_code
+        machineCode,t.location_name,t.location_name locationName,t.cur_layer,t.cur_layer curLayer,t.use_unit,t.use_unit
+        useUnit,t.maintenance_unit,t.maintenance_unit maintenanceUnit,t.factory_id,t.factory_id
+        factoryId,t.status_cd,t.status_cd statusCd,t.machine_name,t.machine_name machineName,t.machine_id,t.machine_id
+        machineId,t.rescue_link,t.rescue_link rescueLink,t.registration_unit,t.registration_unit
+        registrationUnit,t.state,t.community_id,t.community_id communityId,t.brand,t.create_time createTime,lmf.factory_name factoryName,
+        sc.name communityName, td.name stateName
+        from lift_machine t
+        left join lift_machine_factory lmf on t.factory_id = lmf.factory_id
+        left join s_community sc on t.community_id = sc.community_id
+        left join t_dict td on t.state = td.status_cd and td.table_name = 'lift_machine' and td.table_columns = 'state'
+        where 1 =1
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            and t.location_name= #{locationName}
+        </if>
+        <if test="curLayer !=null and curLayer != ''">
+            and t.cur_layer= #{curLayer}
+        </if>
+        <if test="useUnit !=null and useUnit != ''">
+            and t.use_unit= #{useUnit}
+        </if>
+        <if test="maintenanceUnit !=null and maintenanceUnit != ''">
+            and t.maintenance_unit= #{maintenanceUnit}
+        </if>
+        <if test="factoryId !=null and factoryId != ''">
+            and t.factory_id= #{factoryId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="rescueLink !=null and rescueLink != ''">
+            and t.rescue_link= #{rescueLink}
+        </if>
+        <if test="registrationUnit !=null and registrationUnit != ''">
+            and t.registration_unit= #{registrationUnit}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="brand !=null and brand != ''">
+            and t.brand= #{brand}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改电梯管理信息 add by wuxw 2018-07-03 -->
+    <update id="updateLiftMachineInfo" parameterType="Map">
+        update lift_machine t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            , t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            , t.location_name= #{locationName}
+        </if>
+        <if test="curLayer !=null and curLayer != ''">
+            , t.cur_layer= #{curLayer}
+        </if>
+        <if test="useUnit !=null and useUnit != ''">
+            , t.use_unit= #{useUnit}
+        </if>
+        <if test="maintenanceUnit !=null and maintenanceUnit != ''">
+            , t.maintenance_unit= #{maintenanceUnit}
+        </if>
+        <if test="factoryId !=null and factoryId != ''">
+            , t.factory_id= #{factoryId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            , t.machine_name= #{machineName}
+        </if>
+        <if test="rescueLink !=null and rescueLink != ''">
+            , t.rescue_link= #{rescueLink}
+        </if>
+        <if test="registrationUnit !=null and registrationUnit != ''">
+            , t.registration_unit= #{registrationUnit}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="brand !=null and brand != ''">
+            , t.brand= #{brand}
+        </if>
+        where 1=1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+
+    </update>
+
+    <!-- 查询电梯管理数量 add by wuxw 2018-07-03 -->
+    <select id="queryLiftMachinesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from lift_machine t
+        where 1 =1
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            and t.location_name= #{locationName}
+        </if>
+        <if test="curLayer !=null and curLayer != ''">
+            and t.cur_layer= #{curLayer}
+        </if>
+        <if test="useUnit !=null and useUnit != ''">
+            and t.use_unit= #{useUnit}
+        </if>
+        <if test="maintenanceUnit !=null and maintenanceUnit != ''">
+            and t.maintenance_unit= #{maintenanceUnit}
+        </if>
+        <if test="factoryId !=null and factoryId != ''">
+            and t.factory_id= #{factoryId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="rescueLink !=null and rescueLink != ''">
+            and t.rescue_link= #{rescueLink}
+        </if>
+        <if test="registrationUnit !=null and registrationUnit != ''">
+            and t.registration_unit= #{registrationUnit}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="brand !=null and brand != ''">
+            and t.brand= #{brand}
+        </if>
+
+
+    </select>
+
+</mapper>

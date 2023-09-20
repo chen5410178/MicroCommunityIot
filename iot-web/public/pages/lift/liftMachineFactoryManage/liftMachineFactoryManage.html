@@ -4,52 +4,40 @@
             <div class="ibox ">
                 <div class="ibox-title">
                     <h5><span><vc:i18n name="查询条件"></vc:i18n></span></h5>
-                    <div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;"
-                                v-on:click="_moreCondition()">{{liftMachineFactoryManageInfo.moreCondition ==
-                            true?'隐藏':'更多'}}
-                        </button>
-                    </div>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择厂家ID','liftMachineFactoryManage')"
+                                <input type="text" :placeholder="vc.i18n('请输入厂家ID','liftMachineFactoryManage')"
                                        v-model="liftMachineFactoryManageInfo.conditions.factoryId"
                                        class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择厂家名称','liftMachineFactoryManage')"
+                                <input type="text" :placeholder="vc.i18n('请输入厂家名称','liftMachineFactoryManage')"
                                        v-model="liftMachineFactoryManageInfo.conditions.factoryName"
                                        class=" form-control">
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择厂家处理类','liftMachineFactoryManage')"
+                                <input type="text" :placeholder="vc.i18n('请输入厂家处理类','liftMachineFactoryManage')"
                                        v-model="liftMachineFactoryManageInfo.conditions.beanImpl" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-1">
-                            <button type="button" class="btn btn-primary btn-sm"
-                                    v-on:click="_queryLiftMachineFactoryMethod()">
-                                <i class="glyphicon glyphicon-search"></i> <span><vc:i18n name="查询"></vc:i18n></span>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryLiftMachineFactoryMethod()">
+                                <i class="fa fa-search"></i>
+                                <span><vc:i18n name="查询" namespace="liftMachineFactoryManage"></vc:i18n></span>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetLiftMachineFactoryMethod()">
+                                <i class="fa fa-repeat"></i>
+                                <span><vc:i18n name="重置" namespace="liftMachineFactoryManage"></vc:i18n></span>
                             </button>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-4" v-if="liftMachineFactoryManageInfo.moreCondition == true">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择数据状态','liftMachineFactoryManage')"
-                                       v-model="liftMachineFactoryManageInfo.conditions.statusCd" class=" form-control">
-                            </div>
-                        </div>
-                    </div>
-
-
                 </div>
             </div>
         </div>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="liftMachineReservationV1ServiceDaoImpl">
+
+
+    <!-- 保存电梯预约记录信息 add by wuxw 2018-07-03 -->
+    <insert id="saveLiftMachineReservationInfo" parameterType="Map">
+        insert into lift_machine_reservation(person_name, person_way, res_way, machine_id, org_layer, lmr_id, person_id,
+                                             target_layer, room_id, room_name)
+        values (#{personName}, #{personWay}, #{resWay}, #{machineId}, #{orgLayer}, #{lmrId}, #{personId},
+                #{targetLayer}, #{roomId}, #{roomName})
+    </insert>
+
+
+    <!-- 查询电梯预约记录信息 add by wuxw 2018-07-03 -->
+    <select id="getLiftMachineReservationInfo" parameterType="Map" resultType="Map">
+        select t.person_name,t.person_name personName,t.person_way,t.person_way personWay,t.res_way,t.res_way
+        resWay,t.machine_id,t.machine_id machineId,t.org_layer,t.org_layer orgLayer,t.lmr_id,t.lmr_id
+        lmrId,t.person_id,t.person_id personId,t.status_cd,t.status_cd statusCd,t.target_layer,t.target_layer
+        targetLayer,t.room_id,t.room_id roomId,t.room_name,t.room_name roomName, t.create_time createTime,
+        td.name resWayName, td1.name personWayName
+        from lift_machine_reservation t
+        left join t_dict td on t.res_way = td.status_cd and td.table_name = 'lift_machine_reservation' and td.table_columns = 'res_way'
+        left join t_dict td1 on t.person_way = td1.status_cd and td1.table_name = 'lift_machine_reservation' and td1.table_columns = 'person_way'
+        where 1 =1
+        <if test="personName !=null and personName != ''">
+            and t.person_name= #{personName}
+        </if>
+        <if test="personWay !=null and personWay != ''">
+            and t.person_way= #{personWay}
+        </if>
+        <if test="resWay !=null and resWay != ''">
+            and t.res_way= #{resWay}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="orgLayer !=null and orgLayer != ''">
+            and t.org_layer= #{orgLayer}
+        </if>
+        <if test="lmrId !=null and lmrId != ''">
+            and t.lmr_id= #{lmrId}
+        </if>
+        <if test="personId !=null and personId != ''">
+            and t.person_id= #{personId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="targetLayer !=null and targetLayer != ''">
+            and t.target_layer= #{targetLayer}
+        </if>
+        <if test="roomId !=null and roomId != ''">
+            and t.room_id= #{roomId}
+        </if>
+        <if test="roomName !=null and roomName != ''">
+            and t.room_name= #{roomName}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改电梯预约记录信息 add by wuxw 2018-07-03 -->
+    <update id="updateLiftMachineReservationInfo" parameterType="Map">
+        update lift_machine_reservation t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="personName !=null and personName != ''">
+            , t.person_name= #{personName}
+        </if>
+        <if test="personWay !=null and personWay != ''">
+            , t.person_way= #{personWay}
+        </if>
+        <if test="resWay !=null and resWay != ''">
+            , t.res_way= #{resWay}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="orgLayer !=null and orgLayer != ''">
+            , t.org_layer= #{orgLayer}
+        </if>
+        <if test="personId !=null and personId != ''">
+            , t.person_id= #{personId}
+        </if>
+        <if test="targetLayer !=null and targetLayer != ''">
+            , t.target_layer= #{targetLayer}
+        </if>
+        <if test="roomId !=null and roomId != ''">
+            , t.room_id= #{roomId}
+        </if>
+        <if test="roomName !=null and roomName != ''">
+            , t.room_name= #{roomName}
+        </if>
+        where 1=1
+        <if test="lmrId !=null and lmrId != ''">
+            and t.lmr_id= #{lmrId}
+        </if>
+
+    </update>
+
+    <!-- 查询电梯预约记录数量 add by wuxw 2018-07-03 -->
+    <select id="queryLiftMachineReservationsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from lift_machine_reservation t
+        where 1 =1
+        <if test="personName !=null and personName != ''">
+            and t.person_name= #{personName}
+        </if>
+        <if test="personWay !=null and personWay != ''">
+            and t.person_way= #{personWay}
+        </if>
+        <if test="resWay !=null and resWay != ''">
+            and t.res_way= #{resWay}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="orgLayer !=null and orgLayer != ''">
+            and t.org_layer= #{orgLayer}
+        </if>
+        <if test="lmrId !=null and lmrId != ''">
+            and t.lmr_id= #{lmrId}
+        </if>
+        <if test="personId !=null and personId != ''">
+            and t.person_id= #{personId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="targetLayer !=null and targetLayer != ''">
+            and t.target_layer= #{targetLayer}
+        </if>
+        <if test="roomId !=null and roomId != ''">
+            and t.room_id= #{roomId}
+        </if>
+        <if test="roomName !=null and roomName != ''">
+            and t.room_name= #{roomName}
+        </if>
+
+
+    </select>
+
+</mapper>

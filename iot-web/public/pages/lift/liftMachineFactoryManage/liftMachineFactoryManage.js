@@ -73,15 +73,12 @@
                 vc.component._listLiftMachineFactorys(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
-            _moreCondition: function () {
-                if (vc.component.liftMachineFactoryManageInfo.moreCondition) {
-                    vc.component.liftMachineFactoryManageInfo.moreCondition = false;
-                } else {
-                    vc.component.liftMachineFactoryManageInfo.moreCondition = true;
-                }
+            _resetLiftMachineFactoryMethod: function () {
+                $that.liftMachineFactoryManageInfo.conditions.factoryName = '';
+                $that.liftMachineFactoryManageInfo.conditions.factoryId = '';
+                $that.liftMachineFactoryManageInfo.conditions.beanImpl = '';
+                $that._listLiftMachineFactorys(DEFAULT_PAGE, DEFAULT_ROWS);
             }
-
-
         }
     });
 })(window.vc);

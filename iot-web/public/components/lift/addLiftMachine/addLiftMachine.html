@@ -1,0 +1,94 @@
+<div id="addLiftMachineModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="m-t-none m-b "><span><vc:i18n name="添加电梯" namespace="addLiftMachine"></vc:i18n></span></h3>
+                <div class="ibox-content">
+                    <div>
+                        <div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='名称'
+                                                                                      namespace='addLiftMachine'></vc:i18n></span></label>
+                                <div class="col-sm-4">
+                                    <input v-model="addLiftMachineInfo.machineName" type="text"
+                                           :placeholder="vc.i18n('必填，请填写名称','addLiftMachine')" class="form-control">
+                                </div>
+                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='设备编号'
+                                                                                      namespace='addLiftMachine'></vc:i18n></span></label>
+                                <div class="col-sm-4">
+                                    <input v-model="addLiftMachineInfo.machineCode" type="text"
+                                           :placeholder="vc.i18n('必填，请填写设备编号','addLiftMachine')" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='品牌'
+                                                                                      namespace='addLiftMachine'></vc:i18n></span></label>
+                                <div class="col-sm-4">
+                                    <input v-model="addLiftMachineInfo.brand" type="text"
+                                           :placeholder="vc.i18n('必填，请填写品牌','addLiftMachine')" class="form-control">
+                                </div>
+                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='位置'
+                                                                                      namespace='addLiftMachine'></vc:i18n></span></label>
+                                <div class="col-sm-4">
+                                    <input v-model="addLiftMachineInfo.locationName" type="text"
+                                           :placeholder="vc.i18n('必填，请填写位置','addLiftMachine')" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='登记单位'
+                                                                                      namespace='addLiftMachine'></vc:i18n></span></label>
+                                <div class="col-sm-4">
+                                    <input v-model="addLiftMachineInfo.registrationUnit" type="text"
+                                           :placeholder="vc.i18n('选填，请填写登记单位','addLiftMachine')" class="form-control">
+                                </div>
+                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='使用单位'
+                                                                                      namespace='addLiftMachine'></vc:i18n></span></label>
+                                <div class="col-sm-4">
+                                    <input v-model="addLiftMachineInfo.useUnit" type="text"
+                                           :placeholder="vc.i18n('选填，请填写使用单位','addLiftMachine')" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='维保单位'
+                                                                                      namespace='addLiftMachine'></vc:i18n></span></label>
+                                <div class="col-sm-4">
+                                    <input v-model="addLiftMachineInfo.maintenanceUnit" type="text"
+                                           :placeholder="vc.i18n('选填，请填写维保单位','addLiftMachine')" class="form-control">
+                                </div>
+                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='救援电话'
+                                                                                      namespace='addLiftMachine'></vc:i18n></span></label>
+                                <div class="col-sm-4">
+                                    <input v-model="addLiftMachineInfo.rescueLink" type="text"
+                                           :placeholder="vc.i18n('选填，请填写救援电话','addLiftMachine')" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='厂家'
+                                                                                      namespace='addLiftMachine'></vc:i18n></span></label>
+                                <div class="col-sm-4">
+                                    <select class="custom-select" v-model="addLiftMachineInfo.factoryId">
+                                        <option value="" disabled selected>{{vc.i18n('请选择','addLiftMachine')}}</option>
+                                        <option v-for="(item, index) in liftMachineFactoryList" :key="index" :value="item.factoryId">
+                                            {{item.factoryName}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <button class="btn btn-primary float-right" type="button"
+                                        v-on:click="saveLiftMachineInfo()"><i class="fa fa-check"></i>&nbsp;
+                                    <span><vc:i18n name="保存"></vc:i18n></span>
+                                </button>
+                                <button type="button" class="btn btn-warning float-right" style="margin-right:20px;"
+                                        data-dismiss="modal">
+                                    <span><vc:i18n name="取消"></vc:i18n></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

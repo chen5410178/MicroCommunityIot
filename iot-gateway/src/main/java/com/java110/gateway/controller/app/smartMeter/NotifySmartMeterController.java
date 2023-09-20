@@ -1,4 +1,4 @@
-package com.java110.boot.controller.app.smartMeter;
+package com.java110.gateway.controller.app.smartMeter;
 
 import com.java110.core.factory.LoggerFactory;
 import com.java110.dto.meter.NotifyMeterWaterOrderDto;

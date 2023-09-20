@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="liftMachineLogV1ServiceDaoImpl">
+
+
+    <!-- 保存电梯日志信息 add by wuxw 2018-07-03 -->
+    <insert id="saveLiftMachineLogInfo" parameterType="Map">
+        insert into lift_machine_log(person_name, res_param, machine_id, log_id, person_id, req_param, state,
+                                     community_id, log_action)
+        values (#{personName}, #{resParam}, #{machineId}, #{logId}, #{personId}, #{reqParam}, #{state}, #{communityId},
+                #{logAction})
+    </insert>
+
+
+    <!-- 查询电梯日志信息 add by wuxw 2018-07-03 -->
+    <select id="getLiftMachineLogInfo" parameterType="Map" resultType="Map">
+        select t.person_name,t.person_name personName,t.res_param,t.res_param resParam,t.machine_id,t.machine_id
+        machineId,t.log_id,t.log_id logId,t.person_id,t.person_id personId,t.req_param,t.req_param
+        reqParam,t.state,t.community_id,t.community_id communityId,t.log_action,t.log_action logAction,
+        t.create_time createTime, lm.machine_name machineName, lm.machine_code machineCode, sm.name communityName, td.name stateName,
+        td1.name logActionName
+        from lift_machine_log t
+        left join lift_machine lm on t.machine_id = lm.machine_id
+        left join s_community sm on t.community_id = sm.community_id
+        left join t_dict td on t.state = td.status_cd and td.table_name = 'lift_machine_log' and td.table_columns = 'state'
+        left join t_dict td1 on t.log_action = td1.status_cd and td1.table_name = 'lift_machine_log' and td1.table_columns = 'log_action'
+        where 1 =1
+        <if test="personName !=null and personName != ''">
+            and t.person_name= #{personName}
+        </if>
+        <if test="resParam !=null and resParam != ''">
+            and t.res_param= #{resParam}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="logId !=null and logId != ''">
+            and t.log_id= #{logId}
+        </if>
+        <if test="personId !=null and personId != ''">
+            and t.person_id= #{personId}
+        </if>
+        <if test="reqParam !=null and reqParam != ''">
+            and t.req_param= #{reqParam}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="logAction !=null and logAction != ''">
+            and t.log_action= #{logAction}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改电梯日志信息 add by wuxw 2018-07-03 -->
+    <update id="updateLiftMachineLogInfo" parameterType="Map">
+        update lift_machine_log t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="personName !=null and personName != ''">
+            , t.person_name= #{personName}
+        </if>
+        <if test="resParam !=null and resParam != ''">
+            , t.res_param= #{resParam}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="personId !=null and personId != ''">
+            , t.person_id= #{personId}
+        </if>
+        <if test="reqParam !=null and reqParam != ''">
+            , t.req_param= #{reqParam}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="logAction !=null and logAction != ''">
+            , t.log_action= #{logAction}
+        </if>
+        where 1=1
+        <if test="logId !=null and logId != ''">
+            and t.log_id= #{logId}
+        </if>
+
+    </update>
+
+    <!-- 查询电梯日志数量 add by wuxw 2018-07-03 -->
+    <select id="queryLiftMachineLogsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from lift_machine_log t
+        where 1 =1
+        <if test="personName !=null and personName != ''">
+            and t.person_name= #{personName}
+        </if>
+        <if test="resParam !=null and resParam != ''">
+            and t.res_param= #{resParam}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="logId !=null and logId != ''">
+            and t.log_id= #{logId}
+        </if>
+        <if test="personId !=null and personId != ''">
+            and t.person_id= #{personId}
+        </if>
+        <if test="reqParam !=null and reqParam != ''">
+            and t.req_param= #{reqParam}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="logAction !=null and logAction != ''">
+            and t.log_action= #{logAction}
+        </if>
+
+
+    </select>
+
+</mapper>

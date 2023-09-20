@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.lift.cmd.liftMachineFactorySpec;
+package com.java110.lift.cmd.liftMachine;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
@@ -26,47 +26,57 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
-import com.java110.intf.lift.ILiftMachineFactorySpecV1InnerServiceSMO;
-import com.java110.po.lift.LiftMachineFactorySpecPo;
+import com.java110.core.utils.DateUtil;
+import com.java110.intf.lift.ILiftMachineV1InnerServiceSMO;
+import com.java110.po.lift.LiftMachinePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.java110.dto.lift.LiftMachineDto.LIFT_STOPPING_STATE;
 
 /**
- * 类表述：更新
- * 服务编码：liftMachineFactorySpec.updateLiftMachineFactorySpec
- * 请求路劲：/app/liftMachineFactorySpec.UpdateLiftMachineFactorySpec
- * add by 吴学文 at 2023-09-18 17:15:36 mail: 928255095@qq.com
+ * 类表述：保存
+ * 服务编码：liftMachine.saveLiftMachine
+ * 请求路劲：/app/liftMachine.SaveLiftMachine
+ * add by 吴学文 at 2023-09-19 08:42:49 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
-@Java110Cmd(serviceCode = "liftMachineFactorySpec.updateLiftMachineFactorySpec")
-public class UpdateLiftMachineFactorySpecCmd extends Cmd {
+@Java110Cmd(serviceCode = "liftMachine.saveLiftMachine")
+public class SaveLiftMachineCmd extends Cmd {
 
-    private static Logger logger = LoggerFactory.getLogger(UpdateLiftMachineFactorySpecCmd.class);
+    private static Logger logger = LoggerFactory.getLogger(SaveLiftMachineCmd.class);
 
+    public static final String CODE_PREFIX_ID = "10";
 
     @Autowired
-    private ILiftMachineFactorySpecV1InnerServiceSMO liftMachineFactorySpecV1InnerServiceSMOImpl;
+    private ILiftMachineV1InnerServiceSMO liftMachineV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
-        Assert.hasKeyAndValue(reqJson, "specId", "specId不能为空");
-
+        Assert.hasKeyAndValue(reqJson, "machineName", "请求报文中未包含machineName");
+        Assert.hasKeyAndValue(reqJson, "machineCode", "请求报文中未包含machineCode");
+        Assert.hasKeyAndValue(reqJson, "brand", "请求报文中未包含brand");
+        Assert.hasKeyAndValue(reqJson, "locationName", "请求报文中未包含locationName");
+        Assert.hasKeyAndValue(reqJson, "factoryId", "请求报文中未包含factoryId");
+        Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
     }
 
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        LiftMachineFactorySpecPo liftMachineFactorySpecPo = BeanConvertUtil.covertBean(reqJson, LiftMachineFactorySpecPo.class);
-        int flag = liftMachineFactorySpecV1InnerServiceSMOImpl.updateLiftMachineFactorySpec(liftMachineFactorySpecPo);
+        LiftMachinePo liftMachinePo = BeanConvertUtil.covertBean(reqJson, LiftMachinePo.class);
+        liftMachinePo.setMachineId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        liftMachinePo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        liftMachinePo.setState(LIFT_STOPPING_STATE);
+        int flag = liftMachineV1InnerServiceSMOImpl.saveLiftMachine(liftMachinePo);
 
         if (flag < 1) {
-            throw new CmdException("更新数据失败");
+            throw new CmdException("保存数据失败");
         }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());

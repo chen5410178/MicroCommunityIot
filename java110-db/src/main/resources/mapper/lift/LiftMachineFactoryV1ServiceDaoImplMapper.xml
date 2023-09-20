@@ -19,10 +19,10 @@
         from lift_machine_factory t
         where 1 =1
         <if test="factoryId !=null and factoryId != ''">
-            and t.factory_id= #{factoryId}
+            and t.factory_id like concat('%', #{factoryId}, '%')
         </if>
         <if test="factoryName !=null and factoryName != ''">
-            and t.factory_name= #{factoryName}
+            and t.factory_name like concat('%', #{factoryName}, '%')
         </if>
         <if test="remark !=null and remark != ''">
             and t.remark= #{remark}
@@ -31,7 +31,7 @@
             and t.status_cd= #{statusCd}
         </if>
         <if test="beanImpl !=null and beanImpl != ''">
-            and t.bean_impl= #{beanImpl}
+            and t.bean_impl like concat('%', #{beanImpl}, '%')
         </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
@@ -69,10 +69,10 @@
         from lift_machine_factory t
         where 1 =1
         <if test="factoryId !=null and factoryId != ''">
-            and t.factory_id= #{factoryId}
+            and t.factory_id like concat('%', #{factoryId}, '%')
         </if>
         <if test="factoryName !=null and factoryName != ''">
-            and t.factory_name= #{factoryName}
+            and t.factory_name like concat('%', #{factoryName}, '%')
         </if>
         <if test="remark !=null and remark != ''">
             and t.remark= #{remark}
@@ -81,7 +81,7 @@
             and t.status_cd= #{statusCd}
         </if>
         <if test="beanImpl !=null and beanImpl != ''">
-            and t.bean_impl= #{beanImpl}
+            and t.bean_impl like concat('%', #{beanImpl}, '%')
         </if>
 
 
