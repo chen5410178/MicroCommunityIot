@@ -8,6 +8,7 @@
         data: {
             barrierInfo: {
                 barriers: [],
+                parkingBoxs:[],
                 total: 0,
                 records: 1,
                 moreCondition: false,
@@ -21,6 +22,7 @@
             }
         },
         _initMethod: function () {
+            $that._listParkingBoxs();
             $that._listBarriers(DEFAULT_PAGE, DEFAULT_ROWS);
         },
         _initEvent: function () {
@@ -78,6 +80,37 @@
                 } else {
                     $that.barrierInfo.moreCondition = true;
                 }
+            },
+            _listParkingBoxs: function(_page, _rows) {
+                let param = {
+                    params: {
+                        page:1,
+                        row:50,
+                        communityId:vc.getCurrentCommunity().communityId
+                    }
+                };
+                $that.barrierInfo.parkingBoxs = [{
+                    boxId:'',
+                    boxName:'全部'
+                }]
+                //发送get请求
+                vc.http.apiGet('/parkingBox.listParkingBox',
+                    param,
+                    function(json, res) {
+                        var _parkingBoxInfo = JSON.parse(json);
+                        _parkingBoxInfo.data.forEach(item => {
+                            $that.barrierInfo.parkingBoxs.push(item);
+                        });
+                      
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+            swatchParkingBox:function(_box){
+                $that.barrierInfo.conditions.boxId = _box.boxId;
+                $that._listBarriers(DEFAULT_PAGE, DEFAULT_ROWS);
             }
 
         }
