@@ -1,0 +1,86 @@
+<div id="addBarrierModel" class="modal fade" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h3 class="m-t-none m-b ">
+          <vc:i18n name="添加" namespace="addBarrier"></vc:i18n>
+        </h3>
+        <div class="ibox-content">
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+              <vc:i18n name='设备名称' namespace='addBarrier'></vc:i18n>
+            </label>
+            <div class="col-sm-10">
+              <input v-model="addBarrierInfo.machineName" type="text" :placeholder="vc.i18n('必填，请填写设备名称','addBarrier')"
+                class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+              <vc:i18n name='设备编码' namespace='addBarrier'></vc:i18n>
+            </label>
+            <div class="col-sm-10">
+              <input v-model="addBarrierInfo.machineCode" type="text" :placeholder="vc.i18n('必填，请填写设备编码','addBarrier')"
+                class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                <vc:i18n name='设备IP' namespace='addBarrier'></vc:i18n>
+            </label>
+            <div class="col-sm-10">
+              <input v-model="addBarrierInfo.machineIp" type="text" :placeholder="vc.i18n('必填，请填写设备IP','addBarrier')"
+                class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                <vc:i18n name='设备方向' namespace='addBarrier'></vc:i18n>
+            </label>
+            <div class="col-sm-10">
+              <select class="custom-select" v-model="addBarrierInfo.direction">
+                <option selected disabled value="">{{vc.i18n('必填，请选择设备方向','addBarrier')}}</option>
+                <option value="3306">{{vc.i18n('进','addBarrier')}}</option>
+                <option value="3307">{{vc.i18n('出','addBarrier')}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                <vc:i18n name='道闸厂家' namespace='addBarrier'></vc:i18n>
+            </label>
+            <div class="col-sm-10">
+              <select class="custom-select" v-model="addBarrierInfo.implBean">
+                <option selected disabled value="">{{vc.i18n('必填，请选择道闸厂家','addBarrier')}}</option>
+                <option value="3306">{{vc.i18n('进','addBarrier')}}</option>
+                <option value="3307">{{vc.i18n('出','addBarrier')}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                <vc:i18n name='岗亭ID' namespace='addBarrier'></vc:i18n>
+            </label>
+            <div class="col-sm-10">
+              <select class="custom-select" v-model="addBarrierInfo.boxId">
+                <option selected disabled value="">{{vc.i18n('必填，请选择岗亭ID','addBarrier')}}</option>
+                <option value="3306">{{vc.i18n('进','addBarrier')}}</option>
+                <option value="3307">{{vc.i18n('出','addBarrier')}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ibox-content">
+            <button class="btn btn-primary float-right" type="button" v-on:click="saveBarrierInfo()">
+                <vc:i18n name="保存"></vc:i18n>
+            </button>
+            <button type="button" class="btn btn-warning float-right" style="margin-right:20px;" data-dismiss="modal">
+                <vc:i18n name="取消"></vc:i18n>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
