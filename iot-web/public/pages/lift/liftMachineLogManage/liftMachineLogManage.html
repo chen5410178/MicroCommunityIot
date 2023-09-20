@@ -3,51 +3,51 @@
         <div class="col-lg-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5><span><vc:i18n name="查询条件"></vc:i18n></span></h5>
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
                     <div class="ibox-tools" style="top:10px;">
                         <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;"
-                                v-on:click="_moreCondition()">{{liftMachineLogManageInfo.moreCondition ==
+                            v-on:click="_moreCondition()">{{liftMachineLogManageInfo.moreCondition ==
                             true?'隐藏':'更多'}}
                         </button>
                     </div>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请选择设备ID','liftMachineLogManage')"
-                                       v-model="liftMachineLogManageInfo.conditions.machineId" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择日志动作','liftMachineLogManage')"
-                                       v-model="liftMachineLogManageInfo.conditions.logAction" class=" form-control">
+                                    v-model="liftMachineLogManageInfo.conditions.machineId" class=" form-control">
                             </div>
                         </div>
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryLiftMachineLogMethod()">
-                                <i class="fa fa-search"></i>
-                                <span><vc:i18n name="查询" namespace="liftMachineLogManage"></vc:i18n></span>
-                            </button>
-                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetLiftMachineLogMethod()">
-                                <i class="fa fa-repeat"></i>
-                                <span><vc:i18n name="重置" namespace="liftMachineLogManage"></vc:i18n></span>
-                            </button>
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择日志动作','liftMachineLogManage')"
+                                    v-model="liftMachineLogManageInfo.conditions.logAction" class=" form-control">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请选择状态','liftMachineLogManage')"
-                                       v-model="liftMachineLogManageInfo.conditions.state" class=" form-control">
+                                    v-model="liftMachineLogManageInfo.conditions.state" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请选择创建时间','liftMachineLogManage')"
-                                       v-model="liftMachineLogManageInfo.conditions.createTime" class=" form-control">
+                                    v-model="liftMachineLogManageInfo.conditions.createTime" class=" form-control">
                             </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-sm"
+                                v-on:click="_queryLiftMachineLogMethod()">
+                                <vc:i18n name="查询" namespace="liftMachineLogManage"></vc:i18n>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm"
+                                v-on:click="_resetLiftMachineLogMethod()">
+                                <vc:i18n name="重置" namespace="liftMachineLogManage"></vc:i18n>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -58,65 +58,62 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5><span><vc:i18n name="电梯日志信息" namespace="liftMachineLogManage"></vc:i18n></span></h5>
-                    <!--<div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddLiftMachineLogModal()">
-                            <i class="glyphicon glyphicon-plus"></i>
-                            <span><vc:i18n name="添加电梯日志" namespace="liftMachineLogManage"></vc:i18n></span>
-                        </button>
-                    </div>-->
+                    <h5>
+                        <vc:i18n name="电梯日志" namespace="liftMachineLogManage"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+
+                    </div>
                 </div>
                 <div class="ibox-content">
 
-                    <table class="footable table table-stripped toggle-arrow-tiny"
-                           data-page-size="15"
-                    >
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
                         <thead>
-                        <tr>
-                            <th class="text-center"><span><vc:i18n name='日志ID'
-                                                                   namespace='liftMachineLogManage'></vc:i18n></span>
-                            </th>
-                            <th class="text-center"><span><vc:i18n name='设备名称'
-                                                                   namespace='liftMachineLogManage'></vc:i18n></span>
-                            </th>
-                            <th class="text-center"><span><vc:i18n name='设备编号'
-                                                                   namespace='liftMachineLogManage'></vc:i18n></span>
-                            </th>
-                            <th class="text-center"><span><vc:i18n name='小区'
-                                                                   namespace='liftMachineLogManage'></vc:i18n></span>
-                            </th>
-                            <th class="text-center"><span><vc:i18n name='日志动作'
-                                                                   namespace='liftMachineLogManage'></vc:i18n></span>
-                            </th>
-                            <th class="text-center"><span><vc:i18n name='操作人'
-                                                                   namespace='liftMachineLogManage'></vc:i18n></span>
-                            </th>
-                            <th class="text-center"><span><vc:i18n name='状态'
-                                                                   namespace='liftMachineLogManage'></vc:i18n></span>
-                            </th>
-                            <th class="text-center"><span><vc:i18n name='创建时间'
-                                                                   namespace='liftMachineLogManage'></vc:i18n></span>
-                            </th>
-                        </tr>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='日志ID' namespace='liftMachineLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='设备名称' namespace='liftMachineLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='设备编号' namespace='liftMachineLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='小区' namespace='liftMachineLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='日志动作' namespace='liftMachineLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作人' namespace='liftMachineLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='状态' namespace='liftMachineLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='liftMachineLogManage'></vc:i18n>
+                                </th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="liftMachineLog in liftMachineLogManageInfo.liftMachineLogs">
-                            <td class="text-center">{{liftMachineLog.logId}}</td>
-                            <td class="text-center">{{liftMachineLog.machineName}}</td>
-                            <td class="text-center">{{liftMachineLog.machineCode}}</td>
-                            <td class="text-center">{{liftMachineLog.communityName}}</td>
-                            <td class="text-center">{{liftMachineLog.logActionName}}</td>
-                            <td class="text-center">{{liftMachineLog.personName}}</td>
-                            <td class="text-center">{{liftMachineLog.stateName}}</td>
-                            <td class="text-center">{{liftMachineLog.createTime}}</td>
-                        </tr>
+                            <tr v-for="liftMachineLog in liftMachineLogManageInfo.liftMachineLogs">
+                                <td class="text-center">{{liftMachineLog.logId}}</td>
+                                <td class="text-center">{{liftMachineLog.machineName}}</td>
+                                <td class="text-center">{{liftMachineLog.machineCode}}</td>
+                                <td class="text-center">{{liftMachineLog.communityName}}</td>
+                                <td class="text-center">{{liftMachineLog.logActionName}}</td>
+                                <td class="text-center">{{liftMachineLog.personName}}</td>
+                                <td class="text-center">{{liftMachineLog.stateName}}</td>
+                                <td class="text-center">{{liftMachineLog.createTime}}</td>
+                            </tr>
                         </tbody>
                         <tfoot>
-                        <tr>
-                            <td colspan="8">
-                                <ul class="pagination float-right"></ul>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td colspan="8">
+                                    <ul class="pagination float-right"></ul>
+                                </td>
+                            </tr>
                         </tfoot>
                     </table>
                     <!-- 分页 -->
@@ -126,12 +123,5 @@
         </div>
     </div>
 
-
-    <!--<vc:create path="lift/addLiftMachineLog"
-               callBackListener=""
-               callBackFunction=""
-    ></vc:create>
-    <vc:create path="lift/editLiftMachineLog"></vc:create>
-    <vc:create path="lift/deleteLiftMachineLog"></vc:create>-->
 
 </div>

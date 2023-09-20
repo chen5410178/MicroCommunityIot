@@ -20,36 +20,36 @@
             }
         },
         _initMethod: function () {
-            vc.component._listLiftMachineFactorys(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._listLiftMachineFactorys(DEFAULT_PAGE, DEFAULT_ROWS);
         },
         _initEvent: function () {
 
             vc.on('liftMachineFactoryManage', 'listLiftMachineFactory', function (_param) {
-                vc.component._listLiftMachineFactorys(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listLiftMachineFactorys(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('pagination', 'page_event', function (_currentPage) {
-                vc.component._listLiftMachineFactorys(_currentPage, DEFAULT_ROWS);
+                $that._listLiftMachineFactorys(_currentPage, DEFAULT_ROWS);
             });
         },
         methods: {
             _listLiftMachineFactorys: function (_page, _rows) {
 
-                vc.component.liftMachineFactoryManageInfo.conditions.page = _page;
-                vc.component.liftMachineFactoryManageInfo.conditions.row = _rows;
-                var param = {
-                    params: vc.component.liftMachineFactoryManageInfo.conditions
+                $that.liftMachineFactoryManageInfo.conditions.page = _page;
+                $that.liftMachineFactoryManageInfo.conditions.row = _rows;
+                let param = {
+                    params: $that.liftMachineFactoryManageInfo.conditions
                 };
 
                 //发送get请求
-                vc.http.apiGet('liftMachineFactory.listLiftMachineFactory',
+                vc.http.apiGet('/liftMachineFactory.listLiftMachineFactory',
                     param,
                     function (json, res) {
-                        var _liftMachineFactoryManageInfo = JSON.parse(json);
-                        vc.component.liftMachineFactoryManageInfo.total = _liftMachineFactoryManageInfo.total;
-                        vc.component.liftMachineFactoryManageInfo.records = _liftMachineFactoryManageInfo.records;
-                        vc.component.liftMachineFactoryManageInfo.liftMachineFactorys = _liftMachineFactoryManageInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.liftMachineFactoryManageInfo.total = _json.total;
+                        $that.liftMachineFactoryManageInfo.records = _json.records;
+                        $that.liftMachineFactoryManageInfo.liftMachineFactorys = _json.data;
                         vc.emit('pagination', 'init', {
-                            total: vc.component.liftMachineFactoryManageInfo.records,
+                            total: $that.liftMachineFactoryManageInfo.records,
                             currentPage: _page
                         });
                     }, function (errInfo, error) {
@@ -70,7 +70,7 @@
                 vc.jumpToPage('/#/pages/lift/liftMachineFactorySpecManage?factoryId=' + _liftMachineFactory.factoryId);
             },
             _queryLiftMachineFactoryMethod: function () {
-                vc.component._listLiftMachineFactorys(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listLiftMachineFactorys(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
             _resetLiftMachineFactoryMethod: function () {

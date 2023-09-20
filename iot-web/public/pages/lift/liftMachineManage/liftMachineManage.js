@@ -27,38 +27,38 @@
             liftMachineFactoryList: [],
         },
         _initMethod: function () {
-            vc.component._listLiftMachines(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._listLiftMachines(DEFAULT_PAGE, DEFAULT_ROWS);
             $that._listLiftMachineFactorys();
         },
         _initEvent: function () {
 
             vc.on('liftMachineManage', 'listLiftMachine', function (_param) {
-                vc.component._listLiftMachines(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listLiftMachines(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('pagination', 'page_event', function (_currentPage) {
-                vc.component._listLiftMachines(_currentPage, DEFAULT_ROWS);
+                $that._listLiftMachines(_currentPage, DEFAULT_ROWS);
             });
         },
         methods: {
             _listLiftMachines: function (_page, _rows) {
 
-                vc.component.liftMachineManageInfo.conditions.page = _page;
-                vc.component.liftMachineManageInfo.conditions.row = _rows;
-                vc.component.liftMachineManageInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
-                var param = {
-                    params: vc.component.liftMachineManageInfo.conditions
+                $that.liftMachineManageInfo.conditions.page = _page;
+                $that.liftMachineManageInfo.conditions.row = _rows;
+                $that.liftMachineManageInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
+                let param = {
+                    params: $that.liftMachineManageInfo.conditions
                 };
 
                 //发送get请求
-                vc.http.apiGet('liftMachine.listLiftMachine',
+                vc.http.apiGet('/liftMachine.listLiftMachine',
                     param,
                     function (json, res) {
-                        var _liftMachineManageInfo = JSON.parse(json);
-                        vc.component.liftMachineManageInfo.total = _liftMachineManageInfo.total;
-                        vc.component.liftMachineManageInfo.records = _liftMachineManageInfo.records;
-                        vc.component.liftMachineManageInfo.liftMachines = _liftMachineManageInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.liftMachineManageInfo.total = _json.total;
+                        $that.liftMachineManageInfo.records = _json.records;
+                        $that.liftMachineManageInfo.liftMachines = _json.data;
                         vc.emit('pagination', 'init', {
-                            total: vc.component.liftMachineManageInfo.records,
+                            total: $that.liftMachineManageInfo.records,
                             currentPage: _page
                         });
                     }, function (errInfo, error) {
@@ -74,11 +74,11 @@
                     }
                 };
                 //发送get请求
-                vc.http.apiGet('liftMachineFactory.listLiftMachineFactory',
+                vc.http.apiGet('/liftMachineFactory.listLiftMachineFactory',
                     param,
                     function (json, res) {
                         var _liftMachineFactoryManageInfo = JSON.parse(json);
-                        vc.component.liftMachineFactoryList = _liftMachineFactoryManageInfo.data;
+                        $that.liftMachineFactoryList = _liftMachineFactoryManageInfo.data;
                     }, function (errInfo, error) {
                         console.log('请求失败处理');
                     }
@@ -98,7 +98,7 @@
                 }
 
                 vc.http.apiPost(
-                    'liftMachine.switchLiftState',
+                    '/liftMachine.switchLiftState',
                     JSON.stringify(_liftMachine), {
                         emulateJSON: true
                     },
@@ -125,14 +125,14 @@
                 vc.emit('deleteLiftMachine', 'openDeleteLiftMachineModal', _liftMachine);
             },
             _queryLiftMachineMethod: function () {
-                vc.component._listLiftMachines(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listLiftMachines(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
             _moreCondition: function () {
-                if (vc.component.liftMachineManageInfo.moreCondition) {
-                    vc.component.liftMachineManageInfo.moreCondition = false;
+                if ($that.liftMachineManageInfo.moreCondition) {
+                    $that.liftMachineManageInfo.moreCondition = false;
                 } else {
-                    vc.component.liftMachineManageInfo.moreCondition = true;
+                    $that.liftMachineManageInfo.moreCondition = true;
                 }
             }
         }

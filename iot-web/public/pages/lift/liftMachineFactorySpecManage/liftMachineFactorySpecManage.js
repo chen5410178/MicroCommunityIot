@@ -21,36 +21,36 @@
         },
         _initMethod: function () {
             $that.liftMachineFactorySpecManageInfo.conditions.factoryId = vc.getParam('factoryId');
-            vc.component._listLiftMachineFactorySpecs(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._listLiftMachineFactorySpecs(DEFAULT_PAGE, DEFAULT_ROWS);
         },
         _initEvent: function () {
 
             vc.on('liftMachineFactorySpecManage', 'listLiftMachineFactorySpec', function (_param) {
-                vc.component._listLiftMachineFactorySpecs(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listLiftMachineFactorySpecs(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('pagination', 'page_event', function (_currentPage) {
-                vc.component._listLiftMachineFactorySpecs(_currentPage, DEFAULT_ROWS);
+                $that._listLiftMachineFactorySpecs(_currentPage, DEFAULT_ROWS);
             });
         },
         methods: {
             _listLiftMachineFactorySpecs: function (_page, _rows) {
 
-                vc.component.liftMachineFactorySpecManageInfo.conditions.page = _page;
-                vc.component.liftMachineFactorySpecManageInfo.conditions.row = _rows;
-                var param = {
-                    params: vc.component.liftMachineFactorySpecManageInfo.conditions
+                $that.liftMachineFactorySpecManageInfo.conditions.page = _page;
+                $that.liftMachineFactorySpecManageInfo.conditions.row = _rows;
+                let param = {
+                    params: $that.liftMachineFactorySpecManageInfo.conditions
                 };
 
                 //发送get请求
                 vc.http.apiGet('liftMachineFactorySpec.listLiftMachineFactorySpec',
                     param,
                     function (json, res) {
-                        var _liftMachineFactorySpecManageInfo = JSON.parse(json);
-                        vc.component.liftMachineFactorySpecManageInfo.total = _liftMachineFactorySpecManageInfo.total;
-                        vc.component.liftMachineFactorySpecManageInfo.records = _liftMachineFactorySpecManageInfo.records;
-                        vc.component.liftMachineFactorySpecManageInfo.liftMachineFactorySpecs = _liftMachineFactorySpecManageInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.liftMachineFactorySpecManageInfo.total = _json.total;
+                        $that.liftMachineFactorySpecManageInfo.records = _json.records;
+                        $that.liftMachineFactorySpecManageInfo.liftMachineFactorySpecs = _json.data;
                         vc.emit('pagination', 'init', {
-                            total: vc.component.liftMachineFactorySpecManageInfo.records,
+                            total: $that.liftMachineFactorySpecManageInfo.records,
                             currentPage: _page
                         });
                     }, function (errInfo, error) {
@@ -68,14 +68,14 @@
                 vc.emit('deleteLiftMachineFactorySpec', 'openDeleteLiftMachineFactorySpecModal', _liftMachineFactorySpec);
             },
             _queryLiftMachineFactorySpecMethod: function () {
-                vc.component._listLiftMachineFactorySpecs(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listLiftMachineFactorySpecs(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
             _moreCondition: function () {
-                if (vc.component.liftMachineFactorySpecManageInfo.moreCondition) {
-                    vc.component.liftMachineFactorySpecManageInfo.moreCondition = false;
+                if ($that.liftMachineFactorySpecManageInfo.moreCondition) {
+                    $that.liftMachineFactorySpecManageInfo.moreCondition = false;
                 } else {
-                    vc.component.liftMachineFactorySpecManageInfo.moreCondition = true;
+                    $that.liftMachineFactorySpecManageInfo.moreCondition = true;
                 }
             }
 

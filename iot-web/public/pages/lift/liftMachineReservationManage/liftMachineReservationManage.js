@@ -23,36 +23,36 @@
             }
         },
         _initMethod: function () {
-            vc.component._listLiftMachineReservations(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._listLiftMachineReservations(DEFAULT_PAGE, DEFAULT_ROWS);
         },
         _initEvent: function () {
 
             vc.on('liftMachineReservationManage', 'listLiftMachineReservation', function (_param) {
-                vc.component._listLiftMachineReservations(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listLiftMachineReservations(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('pagination', 'page_event', function (_currentPage) {
-                vc.component._listLiftMachineReservations(_currentPage, DEFAULT_ROWS);
+                $that._listLiftMachineReservations(_currentPage, DEFAULT_ROWS);
             });
         },
         methods: {
             _listLiftMachineReservations: function (_page, _rows) {
 
-                vc.component.liftMachineReservationManageInfo.conditions.page = _page;
-                vc.component.liftMachineReservationManageInfo.conditions.row = _rows;
-                var param = {
-                    params: vc.component.liftMachineReservationManageInfo.conditions
+                $that.liftMachineReservationManageInfo.conditions.page = _page;
+                $that.liftMachineReservationManageInfo.conditions.row = _rows;
+                let param = {
+                    params: $that.liftMachineReservationManageInfo.conditions
                 };
 
                 //发送get请求
-                vc.http.apiGet('liftMachineReservation.listLiftMachineReservation',
+                vc.http.apiGet('/liftMachineReservation.listLiftMachineReservation',
                     param,
                     function (json, res) {
-                        var _liftMachineReservationManageInfo = JSON.parse(json);
-                        vc.component.liftMachineReservationManageInfo.total = _liftMachineReservationManageInfo.total;
-                        vc.component.liftMachineReservationManageInfo.records = _liftMachineReservationManageInfo.records;
-                        vc.component.liftMachineReservationManageInfo.liftMachineReservations = _liftMachineReservationManageInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.liftMachineReservationManageInfo.total = _json.total;
+                        $that.liftMachineReservationManageInfo.records = _json.records;
+                        $that.liftMachineReservationManageInfo.liftMachineReservations = _json.data;
                         vc.emit('pagination', 'init', {
-                            total: vc.component.liftMachineReservationManageInfo.records,
+                            total: $that.liftMachineReservationManageInfo.records,
                             currentPage: _page
                         });
                     }, function (errInfo, error) {
@@ -70,7 +70,7 @@
                 vc.emit('deleteLiftMachineReservation', 'openDeleteLiftMachineReservationModal', _liftMachineReservation);
             },*/
             _queryLiftMachineReservationMethod: function () {
-                vc.component._listLiftMachineReservations(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listLiftMachineReservations(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
             liftMachineReservationManage: function () {
@@ -83,10 +83,10 @@
                 $that._listLiftMachineReservations(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _moreCondition: function () {
-                if (vc.component.liftMachineReservationManageInfo.moreCondition) {
-                    vc.component.liftMachineReservationManageInfo.moreCondition = false;
+                if ($that.liftMachineReservationManageInfo.moreCondition) {
+                    $that.liftMachineReservationManageInfo.moreCondition = false;
                 } else {
-                    vc.component.liftMachineReservationManageInfo.moreCondition = true;
+                    $that.liftMachineReservationManageInfo.moreCondition = true;
                 }
             }
 
