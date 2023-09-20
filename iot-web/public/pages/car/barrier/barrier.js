@@ -37,6 +37,7 @@
 
                 $that.barrierInfo.conditions.page = _page;
                 $that.barrierInfo.conditions.row = _rows;
+                $that.barrierInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
                 let param = {
                     params: $that.barrierInfo.conditions
                 };

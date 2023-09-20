@@ -10,7 +10,8 @@
                 direction: '',
                 implBean: '',
                 boxId: '',
-
+                hms: [],
+                parkingBoxs:[]
             }
         },
         _initMethod: function () {
@@ -19,6 +20,8 @@
         _initEvent: function () {
             vc.on('editBarrier', 'openEditBarrierModal', function (_params) {
                 $that.refreshEditBarrierInfo();
+                $that._listEditHms();
+                $that._listEditParkingBoxs();
                 $('#editBarrierModel').modal('show');
                 vc.copyObject(_params, $that.editBarrierInfo);
                 $that.editBarrierInfo.communityId = vc.getCurrentCommunity().communityId;
@@ -147,9 +150,53 @@
                     direction: '',
                     implBean: '',
                     boxId: '',
-
+                    hms: [],
+                    parkingBoxs:[]
                 }
-            }
+            },
+            _listEditHms: function(_page, _rows) {
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        hmType: '2002'
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/hm.listHardwareManufacturer',
+                    param,
+                    function(json, res) {
+                        let _json = JSON.parse(json);
+                        $that.editBarrierInfo.hms = _json.data;
+
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+            _listEditParkingBoxs: function(_page, _rows) {
+                let param = {
+                    params: {
+                        page:1,
+                        row:50,
+                        communityId:vc.getCurrentCommunity().communityId
+                    }
+                };
+                //发送get请求
+                vc.http.apiGet('/parkingBox.listParkingBox',
+                    param,
+                    function(json, res) {
+                        var _parkingBoxInfo = JSON.parse(json);
+                        $that.editBarrierInfo.parkingBoxs = _parkingBoxInfo.data;
+                      
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
         }
     });
 

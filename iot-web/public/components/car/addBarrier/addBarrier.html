@@ -52,20 +52,18 @@
             <div class="col-sm-10">
               <select class="custom-select" v-model="addBarrierInfo.implBean">
                 <option selected disabled value="">{{vc.i18n('必填，请选择道闸厂家','addBarrier')}}</option>
-                <option value="3306">{{vc.i18n('进','addBarrier')}}</option>
-                <option value="3307">{{vc.i18n('出','addBarrier')}}</option>
+                <option  :value="item.hmId" v-for="(item,index) in  addBarrierInfo.hms">{{item.hmName}}</option>
               </select>
             </div>
           </div>
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">
-                <vc:i18n name='岗亭ID' namespace='addBarrier'></vc:i18n>
+                <vc:i18n name='岗亭' namespace='addBarrier'></vc:i18n>
             </label>
             <div class="col-sm-10">
               <select class="custom-select" v-model="addBarrierInfo.boxId">
-                <option selected disabled value="">{{vc.i18n('必填，请选择岗亭ID','addBarrier')}}</option>
-                <option value="3306">{{vc.i18n('进','addBarrier')}}</option>
-                <option value="3307">{{vc.i18n('出','addBarrier')}}</option>
+                <option selected disabled value="">{{vc.i18n('必填，请选择岗亭','addBarrier')}}</option>
+                <option  :value="item.boxId" v-for="(item,index) in  addBarrierInfo.parkingBoxs">{{item.boxName}}</option>
               </select>
             </div>
           </div>

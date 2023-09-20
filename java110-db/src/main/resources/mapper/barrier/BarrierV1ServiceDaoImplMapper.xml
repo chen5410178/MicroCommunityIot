@@ -19,8 +19,10 @@
         select t.heartbeat_time,t.heartbeat_time heartbeatTime,t.impl_bean,t.impl_bean
         implBean,t.machine_id,t.machine_id machineId,t.machine_code,t.machine_code machineCode,t.status_cd,t.status_cd
         statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name
-        machineName,t.machine_ip,t.machine_ip machineIp,t.direction,t.box_id,t.box_id boxId
+        machineName,t.machine_ip,t.machine_ip machineIp,t.direction,t.box_id,t.box_id boxId,pb.box_name boxName,t.create_time createTime,hm.hm_name implBeanName
         from barrier t
+        left join parking_box pb on t.box_id = pb.box_id and pb.status_cd = '0'
+        left join hardware_manufacturer hm on t.impl_bean = hm.hm_id and hm.status_cd = '0'
         where 1 =1
         <if test="heartbeatTime !=null and heartbeatTime != ''">
             and t.heartbeat_time= #{heartbeatTime}
