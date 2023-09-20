@@ -27,7 +27,7 @@ import com.java110.core.utils.BeanConvertUtil;
 import com.java110.doc.annotation.*;
 import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.java110.dto.parkingArea.ParkingAreaDto;
+import com.java110.dto.parking.ParkingAreaDto;
 import java.util.List;
 import java.util.ArrayList;
 import org.springframework.http.ResponseEntity;

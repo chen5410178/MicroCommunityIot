@@ -20,13 +20,12 @@ import com.java110.bean.dto.PageDto;
 import com.java110.car.dao.IParkingAreaV1ServiceDao;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
-import com.java110.dto.parkingArea.ParkingAreaDto;
-import com.java110.po.parkingArea.ParkingAreaPo;
+import com.java110.dto.parking.ParkingAreaDto;
+import com.java110.po.parking.ParkingAreaPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

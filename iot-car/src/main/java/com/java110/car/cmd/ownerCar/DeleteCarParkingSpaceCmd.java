@@ -10,13 +10,12 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.StringUtil;
-import com.java110.dto.fee.FeeDto;
-import com.java110.dto.parkingSpace.ParkingSpaceDto;
+import com.java110.dto.parking.ParkingSpaceDto;
 import com.java110.intf.car.IOwnerCarInnerServiceSMO;
 import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
 import com.java110.po.ownerCar.OwnerCarPo;
-import com.java110.po.parkingSpace.ParkingSpacePo;
+import com.java110.po.parking.ParkingSpacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

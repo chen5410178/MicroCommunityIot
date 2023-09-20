@@ -13,32 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.po.parkingArea;
+package com.java110.po.parking;
 
 import java.io.Serializable;
 import java.util.Date;
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
- * add by 吴学文 at 2023-08-23 08:44:07 mail: 928255095@qq.com
+ * add by 吴学文 at 2023-08-23 10:01:12 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
-public class ParkingAreaPo implements Serializable {
+public class ParkingSpacePo implements Serializable {
 
-    private String typeCd;
+    private String parkingType;
 private String num;
 private String paId;
+private String psId;
 private String remark;
 private String statusCd = "0";
+private String state;
 private String communityId;
-private String extPaId;
-public String getTypeCd() {
-        return typeCd;
+public String getParkingType() {
+        return parkingType;
     }
-public void setTypeCd(String typeCd) {
-        this.typeCd = typeCd;
+public void setParkingType(String parkingType) {
+        this.parkingType = parkingType;
     }
 public String getNum() {
         return num;
@@ -52,6 +53,12 @@ public String getPaId() {
 public void setPaId(String paId) {
         this.paId = paId;
     }
+public String getPsId() {
+        return psId;
+    }
+public void setPsId(String psId) {
+        this.psId = psId;
+    }
 public String getRemark() {
         return remark;
     }
@@ -64,17 +71,17 @@ public String getStatusCd() {
 public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
+public String getState() {
+        return state;
+    }
+public void setState(String state) {
+        this.state = state;
+    }
 public String getCommunityId() {
         return communityId;
     }
 public void setCommunityId(String communityId) {
         this.communityId = communityId;
-    }
-public String getExtPaId() {
-        return extPaId;
-    }
-public void setExtPaId(String extPaId) {
-        this.extPaId = extPaId;
     }
 
 

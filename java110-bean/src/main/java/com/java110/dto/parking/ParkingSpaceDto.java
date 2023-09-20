@@ -1,4 +1,4 @@
-package com.java110.dto.parkingSpace;
+package com.java110.dto.parking;
 
 import com.java110.bean.dto.PageDto;
 

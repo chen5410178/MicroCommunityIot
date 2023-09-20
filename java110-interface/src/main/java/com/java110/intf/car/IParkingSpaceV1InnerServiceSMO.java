@@ -15,9 +15,9 @@
  */
 package com.java110.intf.car;
 
-import com.java110.dto.parkingSpace.ParkingSpaceDto;
+import com.java110.dto.parking.ParkingSpaceDto;
 import com.java110.intf.FeignConfiguration;
-import com.java110.po.parkingSpace.ParkingSpacePo;
+import com.java110.po.parking.ParkingSpacePo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

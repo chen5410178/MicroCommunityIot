@@ -27,7 +27,7 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.doc.annotation.*;
 import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
-import com.java110.po.parkingArea.ParkingAreaPo;
+import com.java110.po.parking.ParkingAreaPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -13,77 +13,83 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.po.parkingSpace;
+package com.java110.po.parking;
 
 import java.io.Serializable;
-import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
- * add by 吴学文 at 2023-08-23 10:01:12 mail: 928255095@qq.com
+ * add by 吴学文 at 2021-10-18 00:15:30 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
-public class ParkingSpacePo implements Serializable {
+public class ParkingBoxAreaPo implements Serializable {
 
-    private String parkingType;
-private String num;
-private String paId;
-private String psId;
-private String remark;
-private String statusCd = "0";
-private String state;
-private String communityId;
-public String getParkingType() {
-        return parkingType;
+    private String defaultArea;
+    private String baId;
+    private String paId;
+    private String remark;
+    private String statusCd = "0";
+    private String communityId;
+    private String boxId;
+
+    public String getDefaultArea() {
+        return defaultArea;
     }
-public void setParkingType(String parkingType) {
-        this.parkingType = parkingType;
+
+    public void setDefaultArea(String defaultArea) {
+        this.defaultArea = defaultArea;
     }
-public String getNum() {
-        return num;
+
+    public String getBaId() {
+        return baId;
     }
-public void setNum(String num) {
-        this.num = num;
+
+    public void setBaId(String baId) {
+        this.baId = baId;
     }
-public String getPaId() {
+
+    public String getPaId() {
         return paId;
     }
-public void setPaId(String paId) {
+
+    public void setPaId(String paId) {
         this.paId = paId;
     }
-public String getPsId() {
-        return psId;
-    }
-public void setPsId(String psId) {
-        this.psId = psId;
-    }
-public String getRemark() {
+
+    public String getRemark() {
         return remark;
     }
-public void setRemark(String remark) {
+
+    public void setRemark(String remark) {
         this.remark = remark;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getState() {
-        return state;
-    }
-public void setState(String state) {
-        this.state = state;
-    }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
 
+    public String getBoxId() {
+        return boxId;
+    }
+
+    public void setBoxId(String boxId) {
+        this.boxId = boxId;
+    }
 
 
 }
