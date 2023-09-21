@@ -51,19 +51,18 @@
             _listMachines: function() {
                 let param = {
                         params: {
-                            locationObjId: $that.parkingAreaControlVideoInfo.boxId,
+                            boxId: $that.parkingAreaControlVideoInfo.boxId,
                             page: 1,
                             row: 100,
-                            machineTypeCd: '9996',
                             communityId: vc.getCurrentCommunity().communityId
                         }
                     }
                     //发送get请求
-                vc.http.apiGet('/machine.listMachines',
+                vc.http.apiGet('/barrier.listBarrier',
                     param,
                     function(json, res) {
                         let _machineManageInfo = JSON.parse(json);
-                        let _machines = _machineManageInfo.machines;
+                        let _machines = _machineManageInfo.data;
                         $that.parkingAreaControlVideoInfo.inMachines = [];
                         $that.parkingAreaControlVideoInfo.outMachines = [];
                         _machines.forEach(item => {
@@ -100,13 +99,13 @@
 
                 wsUrl = wsUrl.replace(':8131', ':9080');
                 let _protocol = window.location.protocol;
-                // if (_protocol.startsWith('https')) {
-                //     wsUrl =
-                //         "wss://" + wsUrl;
-                // } else {
+
+                if (wsUrl.indexOf(":") < 0) {
+                    wsUrl = wsUrl + ":9080";
+                }
+
                 wsUrl =
                     "ws://" + wsUrl;
-                // }
                 let image = document.getElementById("receiver1");
                 if (wsUrl.endsWith(".flv")) {
                     image = document.getElementById("receiver1Div");
@@ -171,13 +170,12 @@
                 });
                 wsUrl = wsUrl.replace(':8131', ':9080')
                 let _protocol = window.location.protocol;
-                // if (_protocol.startsWith('https')) {
-                //     wsUrl =
-                //         "wss://" + wsUrl;
-                // } else {
+
+                if (wsUrl.indexOf(":") < 0) {
+                    wsUrl = wsUrl + ":9080";
+                }
                 wsUrl =
                     "ws://" + wsUrl;
-                // }
 
                 let image = document.getElementById("receiver2");
                 if (wsUrl.endsWith(".flv")) {

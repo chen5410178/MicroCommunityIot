@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="carInoutV1ServiceDaoImpl">
+
+
+    <!-- 保存出入场明细信息 add by wuxw 2018-07-03 -->
+    <insert id="saveCarInoutInfo" parameterType="Map">
+        insert into car_inout(
+        pa_num,machine_code,car_inout,photo_jpg,car_num,remark,ci_id,inout_id,machine_id,car_type,pa_id,state,community_id,open_time,car_type_name
+        ) values (
+        #{paNum},#{machineCode},#{carInout},#{photoJpg},#{carNum},#{remark},#{ciId},#{inoutId},#{machineId},#{carType},#{paId},#{state},#{communityId},#{openTime},#{carTypeName}
+        )
+    </insert>
+
+
+    <!-- 查询出入场明细信息 add by wuxw 2018-07-03 -->
+    <select id="getCarInoutInfo" parameterType="Map" resultType="Map">
+        select t.pa_num,t.pa_num paNum,t.machine_code,t.machine_code machineCode,t.car_inout,t.car_inout
+        carInout,t.photo_jpg,t.photo_jpg photoJpg,t.car_num,t.car_num carNum,t.remark,t.status_cd,t.status_cd
+        statusCd,t.ci_id,t.ci_id ciId,t.inout_id,t.inout_id inoutId,t.machine_id,t.machine_id
+        machineId,t.car_type,t.car_type carType,t.pa_id,t.pa_id paId,t.state,t.community_id,t.community_id
+        communityId,t.open_time,t.open_time openTime,t.car_type_name,t.car_type_name carTypeName
+        from car_inout t
+        where 1 =1
+        <if test="paNum !=null and paNum != ''">
+            and t.pa_num= #{paNum}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="carInout !=null and carInout != ''">
+            and t.car_inout= #{carInout}
+        </if>
+        <if test="photoJpg !=null and photoJpg != ''">
+            and t.photo_jpg= #{photoJpg}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            and t.car_num= #{carNum}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="ciId !=null and ciId != ''">
+            and t.ci_id= #{ciId}
+        </if>
+        <if test="inoutId !=null and inoutId != ''">
+            and t.inout_id= #{inoutId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="carType !=null and carType != ''">
+            and t.car_type= #{carType}
+        </if>
+        <if test="paId !=null and paId != ''">
+            and t.pa_id= #{paId}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="openTime !=null and openTime != ''">
+            and t.open_time= #{openTime}
+        </if>
+        <if test="carTypeName !=null and carTypeName != ''">
+            and t.car_type_name= #{carTypeName}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改出入场明细信息 add by wuxw 2018-07-03 -->
+    <update id="updateCarInoutInfo" parameterType="Map">
+        update car_inout t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="paNum !=null and paNum != ''">
+            , t.pa_num= #{paNum}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="carInout !=null and carInout != ''">
+            , t.car_inout= #{carInout}
+        </if>
+        <if test="photoJpg !=null and photoJpg != ''">
+            , t.photo_jpg= #{photoJpg}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            , t.car_num= #{carNum}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="inoutId !=null and inoutId != ''">
+            , t.inout_id= #{inoutId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="carType !=null and carType != ''">
+            , t.car_type= #{carType}
+        </if>
+        <if test="paId !=null and paId != ''">
+            , t.pa_id= #{paId}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="openTime !=null and openTime != ''">
+            , t.open_time= #{openTime}
+        </if>
+        <if test="carTypeName !=null and carTypeName != ''">
+            , t.car_type_name= #{carTypeName}
+        </if>
+        where 1=1
+        <if test="ciId !=null and ciId != ''">
+            and t.ci_id= #{ciId}
+        </if>
+
+    </update>
+
+    <!-- 查询出入场明细数量 add by wuxw 2018-07-03 -->
+    <select id="queryCarInoutsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from car_inout t
+        where 1 =1
+        <if test="paNum !=null and paNum != ''">
+            and t.pa_num= #{paNum}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="carInout !=null and carInout != ''">
+            and t.car_inout= #{carInout}
+        </if>
+        <if test="photoJpg !=null and photoJpg != ''">
+            and t.photo_jpg= #{photoJpg}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            and t.car_num= #{carNum}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="ciId !=null and ciId != ''">
+            and t.ci_id= #{ciId}
+        </if>
+        <if test="inoutId !=null and inoutId != ''">
+            and t.inout_id= #{inoutId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="carType !=null and carType != ''">
+            and t.car_type= #{carType}
+        </if>
+        <if test="paId !=null and paId != ''">
+            and t.pa_id= #{paId}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="openTime !=null and openTime != ''">
+            and t.open_time= #{openTime}
+        </if>
+        <if test="carTypeName !=null and carTypeName != ''">
+            and t.car_type_name= #{carTypeName}
+        </if>
+
+
+    </select>
+
+</mapper>
