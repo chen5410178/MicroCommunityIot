@@ -25,10 +25,14 @@
                 }
             },
             liftMachineFactoryList: [],
+            liftStates: [],
         },
         _initMethod: function () {
             $that._listLiftMachines(DEFAULT_PAGE, DEFAULT_ROWS);
             $that._listLiftMachineFactorys();
+            vc.getDict('lift_machine', 'state', function (_param) {
+                $that.liftStates = _param;
+            })
         },
         _initEvent: function () {
 
@@ -126,7 +130,20 @@
             },
             _queryLiftMachineMethod: function () {
                 $that._listLiftMachines(DEFAULT_PAGE, DEFAULT_ROWS);
-
+            },
+            _resetLiftMachineMethod: function () {
+                $that.liftMachineManageInfo.conditions = {
+                    machineId: '',
+                    machineName: '',
+                    machineCode: '',
+                    brand: '',
+                    locationName: '',
+                    factoryId: '',
+                    communityId: '',
+                    state: '',
+                    curLayer: '',
+                };
+                $that._listLiftMachines(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _moreCondition: function () {
                 if ($that.liftMachineManageInfo.moreCondition) {

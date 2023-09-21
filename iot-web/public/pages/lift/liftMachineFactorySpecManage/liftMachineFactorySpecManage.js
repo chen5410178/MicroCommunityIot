@@ -71,15 +71,6 @@
                 $that._listLiftMachineFactorySpecs(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
-            _moreCondition: function () {
-                if ($that.liftMachineFactorySpecManageInfo.moreCondition) {
-                    $that.liftMachineFactorySpecManageInfo.moreCondition = false;
-                } else {
-                    $that.liftMachineFactorySpecManageInfo.moreCondition = true;
-                }
-            }
-
-
         }
     });
 })(window.vc);

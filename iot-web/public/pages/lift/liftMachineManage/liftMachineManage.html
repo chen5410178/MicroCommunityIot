@@ -14,81 +14,74 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择设备ID','liftMachineManage')"
-                                    v-model="liftMachineManageInfo.conditions.machineId" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择名称','liftMachineManage')"
+                                <input type="text" :placeholder="vc.i18n('请输入名称','liftMachineManage')"
                                     v-model="liftMachineManageInfo.conditions.machineName" class=" form-control">
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择设备编号','liftMachineManage')"
+                                <input type="text" :placeholder="vc.i18n('请输入设备编号','liftMachineManage')"
                                     v-model="liftMachineManageInfo.conditions.machineCode" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-1">
-                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryLiftMachineMethod()">
-                                <i class="glyphicon glyphicon-search"></i> <span>
-                                    <vc:i18n name="查询"></vc:i18n>
-                                </span>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="liftMachineManageInfo.conditions.factoryId">
+                                    <option selected disabled value="">{{vc.i18n('选择设备厂家','liftMachineManage')}}</option>
+                                    <option v-for="(item, index) in liftMachineFactoryList" :key="index" :value="item.factoryId">
+                                        {{item.factoryName}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-sm"
+                                    v-on:click="_queryLiftMachineMethod()">
+                                <vc:i18n name="查询" namespace="liftMachineManage"></vc:i18n>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm"
+                                    v-on:click="_resetLiftMachineMethod()">
+                                <vc:i18n name="重置" namespace="liftMachineManage"></vc:i18n>
                             </button>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4" v-if="liftMachineManageInfo.moreCondition == true">
+                        <div class="col-sm-3" v-if="liftMachineManageInfo.moreCondition == true">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择品牌','liftMachineManage')"
-                                    v-model="liftMachineManageInfo.conditions.brand" class=" form-control">
+                                <select class="custom-select" v-model="liftMachineManageInfo.conditions.state">
+                                    <option selected disabled value="">{{vc.i18n('选择电梯状态','liftMachineManage')}}</option>
+                                    <option v-for="(item, index) in liftStates" :key="index" :value="item.statusCd">
+                                        {{item.name}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-sm-4" v-if="liftMachineManageInfo.moreCondition == true">
+                        <div class="col-sm-3" v-if="liftMachineManageInfo.moreCondition == true">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择位置','liftMachineManage')"
+                                <input type="text" :placeholder="vc.i18n('请输入设备ID','liftMachineManage')"
+                                       v-model="liftMachineManageInfo.conditions.machineId" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="liftMachineManageInfo.moreCondition == true">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入位置','liftMachineManage')"
                                     v-model="liftMachineManageInfo.conditions.locationName" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3" v-if="liftMachineManageInfo.moreCondition == true">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择厂家','liftMachineManage')"
-                                    v-model="liftMachineManageInfo.conditions.factoryId" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-1">
-                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4" v-if="liftMachineManageInfo.moreCondition == true">
+                        <div class="col-sm-3" v-if="liftMachineManageInfo.moreCondition == true">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择小区ID','liftMachineManage')"
-                                    v-model="liftMachineManageInfo.conditions.communityId" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-4" v-if="liftMachineManageInfo.moreCondition == true">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择电梯类型','liftMachineManage')"
-                                    v-model="liftMachineManageInfo.conditions.state" class=" form-control">
+                                <input type="text" :placeholder="vc.i18n('请输入品牌','liftMachineManage')"
+                                       v-model="liftMachineManageInfo.conditions.brand" class=" form-control">
                             </div>
                         </div>
                         <div class="col-sm-3" v-if="liftMachineManageInfo.moreCondition == true">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择当前楼层','liftMachineManage')"
+                                <input type="text" :placeholder="vc.i18n('请输入当前楼层','liftMachineManage')"
                                     v-model="liftMachineManageInfo.conditions.curLayer" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-1">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-4" v-if="liftMachineManageInfo.moreCondition == true">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择数据状态','liftMachineManage')"
-                                    v-model="liftMachineManageInfo.conditions.statusCd" class=" form-control">
                             </div>
                         </div>
                     </div>

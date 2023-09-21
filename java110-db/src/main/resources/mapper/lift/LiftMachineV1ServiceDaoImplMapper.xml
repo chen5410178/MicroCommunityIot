@@ -34,10 +34,10 @@
             and t.heartbeat_time= #{heartbeatTime}
         </if>
         <if test="machineCode !=null and machineCode != ''">
-            and t.machine_code= #{machineCode}
+            and t.machine_code like concat('%', #{machineCode}, '%')
         </if>
         <if test="locationName !=null and locationName != ''">
-            and t.location_name= #{locationName}
+            and t.location_name like concat('%', #{locationName}, '%')
         </if>
         <if test="curLayer !=null and curLayer != ''">
             and t.cur_layer= #{curLayer}
@@ -55,10 +55,10 @@
             and t.status_cd= #{statusCd}
         </if>
         <if test="machineName !=null and machineName != ''">
-            and t.machine_name= #{machineName}
+            and t.machine_name like concat('%', #{machineName}, '%')
         </if>
         <if test="machineId !=null and machineId != ''">
-            and t.machine_id= #{machineId}
+            and t.machine_id like concat('%', #{machineId}, '%')
         </if>
         <if test="rescueLink !=null and rescueLink != ''">
             and t.rescue_link= #{rescueLink}
@@ -73,7 +73,7 @@
             and t.community_id= #{communityId}
         </if>
         <if test="brand !=null and brand != ''">
-            and t.brand= #{brand}
+            and t.brand like concat('%', #{brand}, '%')
         </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
@@ -144,10 +144,10 @@
             and t.heartbeat_time= #{heartbeatTime}
         </if>
         <if test="machineCode !=null and machineCode != ''">
-            and t.machine_code= #{machineCode}
+            and t.machine_code like concat('%', #{machineCode}, '%')
         </if>
         <if test="locationName !=null and locationName != ''">
-            and t.location_name= #{locationName}
+            and t.location_name like concat('%', #{locationName}, '%')
         </if>
         <if test="curLayer !=null and curLayer != ''">
             and t.cur_layer= #{curLayer}
@@ -165,10 +165,10 @@
             and t.status_cd= #{statusCd}
         </if>
         <if test="machineName !=null and machineName != ''">
-            and t.machine_name= #{machineName}
+            and t.machine_name like concat('%', #{machineName}, '%')
         </if>
         <if test="machineId !=null and machineId != ''">
-            and t.machine_id= #{machineId}
+            and t.machine_id like concat('%', #{machineId}, '%')
         </if>
         <if test="rescueLink !=null and rescueLink != ''">
             and t.rescue_link= #{rescueLink}
@@ -183,7 +183,7 @@
             and t.community_id= #{communityId}
         </if>
         <if test="brand !=null and brand != ''">
-            and t.brand= #{brand}
+            and t.brand like concat('%', #{brand}, '%')
         </if>
 
 
