@@ -36,9 +36,6 @@
         <if test="photoJpg !=null and photoJpg != ''">
             and t.photo_jpg= #{photoJpg}
         </if>
-        <if test="carNum !=null and carNum != ''">
-            and t.car_num= #{carNum}
-        </if>
         <if test="remark !=null and remark != ''">
             and t.remark= #{remark}
         </if>
@@ -60,8 +57,23 @@
         <if test="paId !=null and paId != ''">
             and t.pa_id= #{paId}
         </if>
+        <if test="paIds !=null">
+            and t.pa_id in
+            <foreach collection="paIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            and t.car_num like concat('%',#{carNum},'%')
+        </if>
         <if test="state !=null and state != ''">
             and t.state= #{state}
+        </if>
+        <if test="states !=null">
+            and t.state in
+            <foreach collection="states" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}

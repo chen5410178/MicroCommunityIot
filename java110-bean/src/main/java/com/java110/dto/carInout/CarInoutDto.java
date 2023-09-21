@@ -15,6 +15,17 @@ import java.util.Date;
  **/
 public class CarInoutDto extends PageDto implements Serializable {
 
+
+    //状态，100300 进场状态 100400 支付完成 100500 离场状态 100600 支付超时重新支付
+    public static final String STATE_IN = "100300";
+    public static final String STATE_PAY = "100400";
+    public static final String STATE_OUT = "100500";
+    public static final String STATE_REPAY = "100600";
+
+    public static final String STATE_IN_FAIL = "100301";
+    public static final String CAR_TYPE_MONTH = "1001";
+    public static final String CAR_TYPE_TEMP = "1003";
+
     private String paNum;
     private String machineCode;
     private String carInout;
@@ -26,7 +37,9 @@ public class CarInoutDto extends PageDto implements Serializable {
     private String machineId;
     private String carType;
     private String paId;
+    private String[] paIds;
     private String state;
+    private String[] states;
     private String communityId;
     private String openTime;
     private String carTypeName;
@@ -35,6 +48,8 @@ public class CarInoutDto extends PageDto implements Serializable {
     private Date createTime;
 
     private String statusCd = "0";
+
+    private String payTime;
 
 
     public String getPaNum() {
@@ -172,5 +187,29 @@ public class CarInoutDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String[] getStates() {
+        return states;
+    }
+
+    public void setStates(String[] states) {
+        this.states = states;
+    }
+
+    public String[] getPaIds() {
+        return paIds;
+    }
+
+    public void setPaIds(String[] paIds) {
+        this.paIds = paIds;
+    }
+
+    public String getPayTime() {
+        return payTime;
+    }
+
+    public void setPayTime(String payTime) {
+        this.payTime = payTime;
     }
 }

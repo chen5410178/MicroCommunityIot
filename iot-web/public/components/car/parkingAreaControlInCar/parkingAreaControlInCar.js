@@ -113,7 +113,7 @@
                 };
                 param.params.carNum = param.params.carNum.trim();
                 //发送get请求
-                vc.http.apiGet('/carInout.listCarInParkingAreaCmd',
+                vc.http.apiGet('/carInout.listCarInParkingArea',
                     param,
                     function(json) {
                         let _feeConfigInfo = JSON.parse(json);
