@@ -90,7 +90,7 @@
                 vc.jumpToPage('/#/pages/car/parkingBoxArea?boxId=' + _parkingBox.boxId + "&boxName=" + _parkingBox.boxName);
             },
             _openParkingAreaControl: function(_parkingBox) {
-                vc.jumpToPage('/#/pages/property/parkingAreaControl?boxId=' + _parkingBox.boxId + "&paId=" + _parkingBox.paId);
+                vc.jumpToPage('/#/pages/car/parkingAreaControl?boxId=' + _parkingBox.boxId + "&paId=" + _parkingBox.paId);
             }
         }
     });
