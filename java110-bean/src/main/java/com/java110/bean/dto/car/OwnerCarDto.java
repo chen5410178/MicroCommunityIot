@@ -1,4 +1,4 @@
-package com.java110.bean.dto.owner;
+package com.java110.bean.dto.car;
 
 
 import com.java110.bean.dto.PageDto;

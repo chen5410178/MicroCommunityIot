@@ -1,7 +1,7 @@
 package com.java110.car.smo.impl;
 
 import com.java110.bean.dto.PageDto;
-import com.java110.bean.dto.owner.OwnerCarDto;
+import com.java110.bean.dto.car.OwnerCarDto;
 import com.java110.bean.dto.ownerCarAttr.OwnerCarAttrDto;
 import com.java110.car.dao.IOwnerCarAttrServiceDao;
 import com.java110.car.dao.IOwnerCarServiceDao;

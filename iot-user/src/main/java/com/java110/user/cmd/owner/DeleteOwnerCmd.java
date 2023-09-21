@@ -2,7 +2,6 @@ package com.java110.user.cmd.owner;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.java110.bean.dto.owner.OwnerCarDto;
 import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.bean.dto.room.RoomDto;
 import com.java110.bean.po.owner.OwnerPo;

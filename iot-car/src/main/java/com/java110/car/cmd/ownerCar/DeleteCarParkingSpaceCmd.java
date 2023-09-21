@@ -1,7 +1,7 @@
 package com.java110.car.cmd.ownerCar;
 
 import com.alibaba.fastjson.JSONObject;
-import com.java110.bean.dto.owner.OwnerCarDto;
+import com.java110.bean.dto.car.OwnerCarDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;

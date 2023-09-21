@@ -15,7 +15,7 @@
  */
 package com.java110.intf.car;
 
-import com.java110.bean.dto.owner.OwnerCarDto;
+import com.java110.bean.dto.car.OwnerCarDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.ownerCar.OwnerCarPo;
 import org.springframework.cloud.openfeign.FeignClient;

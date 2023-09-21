@@ -17,7 +17,7 @@ package com.java110.car.smo.impl;
 
 
 import com.java110.bean.dto.PageDto;
-import com.java110.bean.dto.owner.OwnerCarDto;
+import com.java110.bean.dto.car.OwnerCarDto;
 import com.java110.car.dao.IOwnerCarV1ServiceDao;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
