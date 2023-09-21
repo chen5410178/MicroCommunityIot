@@ -13,11 +13,14 @@
                 moreCondition: false,
                 carNum: '',
                 conditions: {
-                    blackWhite: '2222',
+                    blackWhite: '',
                     carNum: '',
                     bwId: ''
                 },
                 blackWhites: [{
+                        name: '全部',
+                        statusCd: ''
+                    }, {
                         name: '白名单',
                         statusCd: '2222'
                     },
