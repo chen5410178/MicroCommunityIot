@@ -34,6 +34,7 @@
         <module>iot-hal</module>
         <module>iot-meter</module>
         <module>iot-lift</module>
+        <module>iot-lamp</module>
     </modules>
 
     <parent>
