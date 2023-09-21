@@ -5,10 +5,10 @@
 
     <!-- 保存车辆黑白名单信息 add by wuxw 2018-07-03 -->
     <insert id="saveCarBlackWhiteInfo" parameterType="Map">
-        insert into car_black_white(black_white, pa_id, car_num, start_time, end_time, community_id, bw_id, b_id,
-                                    create_time)
-        values (#{blackWhite}, #{paId}, #{carNum}, #{startTime}, #{endTime}, #{communityId}, #{bwId}, #{bId},
-                #{createTime})
+        insert into car_black_white(black_white, pa_id, car_num, start_time, end_time, community_id, bw_id, b_id
+                                    )
+        values (#{blackWhite}, #{paId}, #{carNum}, #{startTime}, #{endTime}, #{communityId}, #{bwId}, #{bId}
+                )
     </insert>
 
     <!-- 查询车辆黑白名单信息 add by wuxw 2018-07-03 -->

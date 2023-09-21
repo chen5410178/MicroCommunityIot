@@ -1,5 +1,6 @@
 package com.java110.hal.mqtt.init;
 
+import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.hal.mqtt.MqttPushCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -49,7 +50,7 @@ public class MqttConfig {
     @Bean
     public MqttClient mqttClient() {
         MqttClient client = null;
-        //clientId = SeqUtil.getId();
+        clientId = "java110_"+GenerateCodeFactory.getUUID();
         try {
             client = new MqttClient(hostUrl, clientId, new MemoryPersistence());
             //client = new MqttClient(hostUrl, clientId, new MemoryPersistence(), Executors.newScheduledThreadPool(poolSize));

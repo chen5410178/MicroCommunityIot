@@ -15,7 +15,7 @@ spring:
     name: iot-boot
   redis:
     database: 6
-    host: 192.168.100.108
+    host: 192.168.1.108
     port: 6379
     password: hc12345678
     #    host: localhost
@@ -30,12 +30,12 @@ spring:
       maxWaitMillis: 20000
   mqtt:
     client:
-      id: java110-client-id1
+      id: java110-client-id2
     completionTimeout: 10
     default:
       topic: topic
     password: wuxw2015
-    url: tcp://192.168.100.108:1883
+    url: tcp://192.168.1.108:1883
     username: wuxw
     keepalive: 20
     poolSize: 20
