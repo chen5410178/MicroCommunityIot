@@ -10,6 +10,11 @@
                     <vc:i18n name="查询"></vc:i18n>
                 </span>
             </button>
+            <button type="button" class="form-control btn btn-primary" @click="_doReset()">
+                <span>
+                    <vc:i18n name="重置"></vc:i18n>
+                </span>
+            </button>
         </div>
     </div>
     <div class="row margin-top-xs margin-bottom-sm">
@@ -33,11 +38,11 @@
     <div class="row " style="margin:15px auto">
         <div v-for="(item,index) in productInfo.products" class="coupon margin padding-xs" :key="index">
             <!-- <img :src="item.url" class="border-radius"/> -->
-            <a target="_blank" :href="'http://ssh.homecommunity.cn:9089/page.html#/pages/plateform/productDetail?productId=' + item.productId">
+            <a target="_blank" :href="domainName + prodDetailUri + item.productId">
                 <img :src="item.coverPhoto" class="border-radius" style="width: 215px; height: 120px" />
             </a>
             <div class="title padding-xs">
-                <a target="_blank" :href="'http://ssh.homecommunity.cn:9089/page.html#/pages/plateform/productDetail?productId=' + item.productId">
+                <a target="_blank" :href="domainName + prodDetailUri + item.productId">
                     <span style="display: inline-block; width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{item.prodName}}</span>
                 </a>
             </div>
@@ -46,7 +51,7 @@
                     售价：<span style="color: #ff0036">￥{{item.price}}</span>
                 </div>
                 <div class="col-md-4 text-right">
-                    <a target="_blank" :href="'http://ssh.homecommunity.cn:9089/page.html#/pages/plateform/productDetail?productId=' + item.productId">购买</a>
+                    <a target="_blank" :href="domainName + prodDetailUri + item.productId">购买</a>
                 </div>
             </div>
         </div>

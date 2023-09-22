@@ -13,34 +13,31 @@
             conditions: {
                 prodName: '',
                 categoryId: '',
-            }
+            },
+            domainName: '',
+            prodDetailUri: '/page.html#/pages/plateform/productDetail?productId=',
         },
         _initMethod: function () {
-            vc.component._queryProduct(DEFAULT_PAGE, DEFAULT_ROWS);
-            vc.component._queryGoodsClass();
+            vc.getDict('microIndustry_platform', 'domain_name', function (_data) {
+                $that.domainName = _data[0].statusCd;
+            });
+            $that._queryProduct(DEFAULT_PAGE, DEFAULT_ROWS);
+            //$that._queryGoodsClass();
             vc.getDict('product','category',function (_data) {
-                vc.component.productCategorys = _data;
+                $that.productCategorys = _data;
             })
         },
         _initEvent: function () {
             vc.on('pagination', 'page_event', function(_currentPage) {
-                vc.component._queryProduct(_currentPage, DEFAULT_ROWS);
+                $that._queryProduct(_currentPage, DEFAULT_ROWS);
             });
         },
         methods: {
             _queryProduct: function (_page, _rows) {
-                /*let param = {
-                    params: {
-                        page: _page,
-                        row: _rows,
-                        prodName: _prodName,
-                    }
-                };*/
-
-                vc.component.conditions.page = _page;
-                vc.component.conditions.row = _rows;
+                $that.conditions.page = _page;
+                $that.conditions.row = _rows;
                 let param = {
-                    params: vc.component.conditions
+                    params: $that.conditions
                 };
 
                 vc.http.apiGet(
@@ -52,7 +49,7 @@
                         $that.productInfo.records = _productInfo.records;
 
                         vc.emit('pagination', 'init', {
-                            total: vc.component.productInfo.records,
+                            total: $that.productInfo.records,
                             currentPage: _page,
                             totalItem: _productInfo.total
                         });
@@ -64,6 +61,13 @@
                 );
             },
             _doSearch:function(){
+                $that._queryProduct(DEFAULT_PAGE, DEFAULT_ROWS);
+            },
+            _doReset:function () {
+                $that.conditions = {
+                    prodName: '',
+                    categoryId: '',
+                };
                 $that._queryProduct(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _queryGoodsClass: function (_page, _rows) {
@@ -85,8 +89,8 @@
                 );
             },
             _queryProductByCategoryId(_categoryId) {
-                vc.component.conditions.categoryId = _categoryId;
-                vc.component._queryProduct(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that.conditions.categoryId = _categoryId;
+                $that._queryProduct(DEFAULT_PAGE, DEFAULT_ROWS);
             },
         },
     });
