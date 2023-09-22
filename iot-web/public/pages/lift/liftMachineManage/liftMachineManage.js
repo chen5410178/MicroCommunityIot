@@ -30,8 +30,8 @@
         _initMethod: function () {
             $that._listLiftMachines(DEFAULT_PAGE, DEFAULT_ROWS);
             $that._listLiftMachineFactorys();
-            vc.getDict('lift_machine', 'state', function (_param) {
-                $that.liftStates = _param;
+            vc.getDict('lift_machine', 'state', function (_data) {
+                $that.liftStates = _data;
             })
         },
         _initEvent: function () {

@@ -18,11 +18,11 @@
             personWayList: [],
         },
         _initMethod: function () {
-            vc.getDict('lift_machine_reservation', 'res_way', function (_param) {
-                $that.resWayList = _param;
+            vc.getDict('lift_machine_reservation', 'res_way', function (_data) {
+                $that.resWayList = _data;
             });
-            vc.getDict('lift_machine_reservation', 'person_way', function (_param) {
-                $that.personWayList = _param;
+            vc.getDict('lift_machine_reservation', 'person_way', function (_data) {
+                $that.personWayList = _data;
             });
         },
         _initEvent: function () {
