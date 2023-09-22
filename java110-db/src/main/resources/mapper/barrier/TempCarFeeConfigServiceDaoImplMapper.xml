@@ -103,7 +103,6 @@
         ruleId,t.community_id,t.community_id communityId,tcfr.rule_name ruleName,td.name carTypeName,t.fee_config_id,t.fee_config_id feeConfigId
         from temp_car_fee_config t
         left join temp_car_fee_rule tcfr on t.rule_id = tcfr.rule_id and tcfr.status_cd = '0'
-        inner join pay_fee_config pfc on t.fee_config_id = pfc.config_id and pfc.status_cd = '0'
         left join t_dict td on t.car_type = td.status_cd and td.table_name = 'temp_car_fee_config' and td.table_columns = 'car_type'
         where 1 = 1
         <if test="carType !=null and carType != ''">
