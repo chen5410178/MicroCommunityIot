@@ -8,9 +8,9 @@
     <!-- 保存临时费用配置信息 add by wuxw 2018-07-03 -->
     <insert id="saveTempCarFeeConfigInfo" parameterType="Map">
         insert into temp_car_fee_config(
-        car_type,config_id,fee_name,pa_id,area_num,start_time,end_time,rule_id,community_id,fee_config_id
+        car_type,config_id,fee_name,pa_id,area_num,start_time,end_time,rule_id,community_id
         ) values (
-        #{carType},#{configId},#{feeName},#{paId},#{areaNum},#{startTime},#{endTime},#{ruleId},#{communityId},#{feeConfigId}
+        #{carType},#{configId},#{feeName},#{paId},#{areaNum},#{startTime},#{endTime},#{ruleId},#{communityId}
         )
     </insert>
 
@@ -20,7 +20,7 @@
         select t.car_type,t.car_type carType,t.config_id,t.config_id configId,t.fee_name,t.fee_name
         feeName,t.pa_id,t.pa_id paId,t.area_num,t.area_num areaNum,t.start_time,t.start_time
         startTime,t.status_cd,t.status_cd statusCd,t.end_time,t.end_time endTime,t.rule_id,t.rule_id
-        ruleId,t.community_id,t.community_id communityId,t.fee_config_id,t.fee_config_id feeConfigId
+        ruleId,t.community_id,t.community_id communityId
         from temp_car_fee_config t
         where 1 =1
         <if test="carType !=null and carType != ''">
@@ -91,15 +91,14 @@
         <if test="ruleId !=null and ruleId != ''">
             , t.rule_id= #{ruleId}
         </if>
-        <if test="communityId !=null and communityId != ''">
-            , t.community_id= #{communityId}
-        </if>
-        <if test="feeConfigId !=null and feeConfigId != ''">
-            , t.fee_config_id= #{feeConfigId}
-        </if>
+
+
         where 1=1
         <if test="configId !=null and configId != ''">
             and t.config_id= #{configId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
         </if>
 
     </update>
@@ -139,10 +138,6 @@
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
         </if>
-        <if test="feeConfigId !=null and feeConfigId != ''">
-            and t.fee_config_id= #{feeConfigId}
-        </if>
-
 
     </select>
 
