@@ -23,6 +23,7 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.LoggerFactory;
+import com.java110.core.smo.IComputeFeeSMO;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DateUtil;
@@ -61,6 +62,9 @@ public class ListCarInParkingAreaCmd extends Cmd {
 
     @Autowired
     private IParkingBoxAreaV1InnerServiceSMO parkingBoxAreaV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IComputeFeeSMO computeFeeSMOImpl;
 
 
 
@@ -152,7 +156,6 @@ public class ListCarInParkingAreaCmd extends Cmd {
     }
 
     private List<CarInoutDto> computeCarInouts(List<CarInoutDto> carInoutDtos) {
-        //return computeFeeSMOImpl.computeTempCarStopTimeAndFee(carInoutDtos);
-        return carInoutDtos;
+        return computeFeeSMOImpl.computeTempCarStopTimeAndFee(carInoutDtos);
     }
 }

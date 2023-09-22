@@ -69,4 +69,7 @@ public interface ICarInoutV1ServiceDao {
      */
     int queryCarInoutsCount(Map info);
 
+    List<Map> getCarInoutDetailInfo(Map info);
+
+    int queryCarInoutDetailsCount(Map info);
 }

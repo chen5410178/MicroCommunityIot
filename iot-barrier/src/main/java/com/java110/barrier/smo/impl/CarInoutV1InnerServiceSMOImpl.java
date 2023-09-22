@@ -84,4 +84,25 @@ public class CarInoutV1InnerServiceSMOImpl implements ICarInoutV1InnerServiceSMO
     public int queryCarInoutsCount(@RequestBody CarInoutDto carInoutDto) {
         return carInoutV1ServiceDaoImpl.queryCarInoutsCount(BeanConvertUtil.beanCovertMap(carInoutDto));    }
 
+    @Override
+    public List<CarInoutDto> queryCarInoutDetails(@RequestBody  CarInoutDto carInoutDetailDto) {
+
+        //校验是否传了 分页信息
+
+        int page = carInoutDetailDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            carInoutDetailDto.setPage((page - 1) * carInoutDetailDto.getRow());
+        }
+
+        List<CarInoutDto> carInoutDetails = BeanConvertUtil.covertBeanList(carInoutV1ServiceDaoImpl.getCarInoutDetailInfo(BeanConvertUtil.beanCovertMap(carInoutDetailDto)), CarInoutDto.class);
+
+        return carInoutDetails;
+    }
+
+
+    @Override
+    public int queryCarInoutDetailsCount(@RequestBody CarInoutDto carInoutDetailDto) {
+        return carInoutV1ServiceDaoImpl.queryCarInoutDetailsCount(BeanConvertUtil.beanCovertMap(carInoutDetailDto));    }
+
 }

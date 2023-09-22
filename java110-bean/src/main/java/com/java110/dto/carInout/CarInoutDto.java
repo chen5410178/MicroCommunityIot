@@ -1,6 +1,7 @@
 package com.java110.dto.carInout;
 
 import com.java110.bean.dto.PageDto;
+import com.java110.dto.payment.CarInoutPaymentDto;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,8 +14,9 @@ import java.util.Date;
  * @Version 1.0
  * add by wuxw 2019/4/24
  **/
-public class CarInoutDto extends PageDto implements Serializable {
-
+public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
+    public static final String CAR_INOUT_IN = "3306";
+    public static final String CAR_INOUT_OUT = "3307";
 
     //状态，100300 进场状态 100400 支付完成 100500 离场状态 100600 支付超时重新支付
     public static final String STATE_IN = "100300";
@@ -50,6 +52,11 @@ public class CarInoutDto extends PageDto implements Serializable {
     private String statusCd = "0";
 
     private String payTime;
+
+    private String inTime;
+
+    private long hours;
+    private long min;
 
 
     public String getPaNum() {
@@ -211,5 +218,29 @@ public class CarInoutDto extends PageDto implements Serializable {
 
     public void setPayTime(String payTime) {
         this.payTime = payTime;
+    }
+
+    public String getInTime() {
+        return inTime;
+    }
+
+    public void setInTime(String inTime) {
+        this.inTime = inTime;
+    }
+
+    public long getHours() {
+        return hours;
+    }
+
+    public void setHours(long hours) {
+        this.hours = hours;
+    }
+
+    public long getMin() {
+        return min;
+    }
+
+    public void setMin(long min) {
+        this.min = min;
     }
 }
