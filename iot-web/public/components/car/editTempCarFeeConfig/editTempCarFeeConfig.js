@@ -266,7 +266,7 @@
                     }
                 };
                 //发送get请求
-                vc.http.apiGet('/tempCarFee/queryTempCarFeeRules',
+                vc.http.apiGet('/tempCarFee.queryTempCarFeeRules',
                     param,
                     function (json, res) {
                         let _feeDiscountManageInfo = JSON.parse(json);
