@@ -1,0 +1,109 @@
+<div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="lampMachineOperationManageInfo.conditions.machineId">
+                                    <option selected disabled value="">{{vc.i18n('请选择路灯设备','lampMachineOperationManage')}}</option>
+                                    <option v-for="(item, index) in lampMachineOperationManageInfo.lampMachineList" :key="index" :value="item.machineId">
+                                        {{item.machineName}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="lampMachineOperationManageInfo.conditions.personId">
+                                    <option selected disabled value="">{{vc.i18n('请选择操作人员','lampMachineOperationManage')}}</option>
+                                    <option v-for="(item, index) in lampMachineOperationManageInfo.operatePersonList" :key="index" :value="item.userId">
+                                        {{item.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="lampMachineOperationManageInfo.conditions.type">
+                                    <option selected disabled value="">{{vc.i18n('请选择操作类型','lampMachineOperationManage')}}</option>
+                                    <option v-for="(item, index) in lampMachineOperationManageInfo.operateTypes" :key="index" :value="item.statusCd">
+                                        {{item.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-sm"
+                                    v-on:click="_queryLampMachineOperationMethod()">
+                                <vc:i18n name="查询" namespace="lampMachineOperationManage"></vc:i18n>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm"
+                                    v-on:click="_resetLampMachineOperationMethod()">
+                                <vc:i18n name="重置" namespace="lampMachineFactoryManage"></vc:i18n>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="操作日志" namespace="lampMachineOperationManage"></vc:i18n>
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='操作日志ID' namespace='lampMachineOperationManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='设备名称' namespace='lampMachineOperationManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作人员' namespace='lampMachineOperationManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作类型' namespace='lampMachineOperationManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作时间' namespace='lampMachineOperationManage'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="lampMachineOperation in lampMachineOperationManageInfo.lampMachineOperations">
+                                <td class="text-center">{{lampMachineOperation.lmoId}}</td>
+                                <td class="text-center">{{lampMachineOperation.machineId}}</td>
+                                <td class="text-center">{{lampMachineOperation.personName}}</td>
+                                <td class="text-center">{{lampMachineOperation.typeName}}</td>
+                                <td class="text-center">{{lampMachineOperation.createTime}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7">
+                                    <ul class="pagination float-right"></ul>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

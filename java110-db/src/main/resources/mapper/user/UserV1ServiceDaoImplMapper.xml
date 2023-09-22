@@ -321,4 +321,18 @@
         </if>
     </select>
 
+    <!--根据 communityId 查询物业员工信息-->
+    <select id="queryCommunityStaffsByCommunityId" parameterType="Map" resultType="Map">
+        select uu.user_id userId, uu.name, uu.email, uu.address, uu.sex, uu.tel, uu.level_cd levelCd
+        from u_user uu
+        left join s_store_staff sss on uu.user_id = sss.staff_id and sss.status_cd = '0'
+        left join s_store ss on sss.store_id = ss.store_id and ss.status_cd = '0'
+        left join s_community_member scm on ss.store_id = scm.member_id and scm.status_cd = '0'
+        left join s_community sc on scm.community_id = sc.community_id and sc.status_cd = '0'
+        where uu.status_cd = '0'
+        <if test="communityId !=null and communityId != ''">
+            and sc.community_id = #{communityId}
+        </if>
+        order by uu.create_time desc
+    </select>
 </mapper>

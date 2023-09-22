@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类表述： 服务之前调用的接口类，不对外提供接口能力 只用于接口建调用
@@ -110,4 +111,5 @@ public interface IUserV1InnerServiceSMO {
     @RequestMapping(value = "/queryStaffsNoInOrg", method = RequestMethod.POST)
     List<UserDto> queryStaffsNoInOrg(@RequestBody UserDto userDto);
 
+    List<UserDto> queryCommunityStaffsByCommunityId(Map map);
 }

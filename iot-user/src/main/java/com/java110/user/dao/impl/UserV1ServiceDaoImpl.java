@@ -165,5 +165,12 @@ public class UserV1ServiceDaoImpl extends BaseServiceDao implements IUserV1Servi
         return businessUserInfos;
     }
 
+    @Override
+    public List<Map> queryCommunityStaffsByCommunityId(Map info) {
+        logger.debug("查询 queryCommunityStaffsByCommunityId 入参 info : {}",info);
+
+        return sqlSessionTemplate.selectList("userV1ServiceDaoImpl.queryCommunityStaffsByCommunityId",info);
+    }
+
 
 }

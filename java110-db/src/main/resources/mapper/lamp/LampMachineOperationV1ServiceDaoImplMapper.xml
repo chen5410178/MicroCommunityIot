@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lampMachineOperationV1ServiceDaoImpl">
+
+
+    <!-- 保存操作日志信息 add by wuxw 2018-07-03 -->
+    <insert id="saveLampMachineOperationInfo" parameterType="Map">
+        insert into lamp_machine_operation(person_name, machine_id, person_id, lmo_id, type, operation_time)
+        values (#{personName}, #{machineId}, #{personId}, #{lmoId}, #{type}, #{operationTime})
+    </insert>
+
+
+    <!-- 查询操作日志信息 add by wuxw 2018-07-03 -->
+    <select id="getLampMachineOperationInfo" parameterType="Map" resultType="Map">
+        select t.person_name,t.person_name personName,t.machine_id,t.machine_id machineId,t.person_id,t.person_id
+        personId,t.status_cd,t.status_cd statusCd,t.lmo_id,t.lmo_id lmoId,t.type,t.operation_time,t.operation_time
+        operationTime, t.create_time createTime, lm.machine_name machineName, td.name typeName
+        from lamp_machine_operation t
+        left join lamp_machine lm on t.machine_id = lm.machine_id and lm.status_cd = '0'
+        left join t_dict td on t.type = td.status_cd and td.table_name = 'lamp_machine_operation' and td.table_columns = 'type'
+        where 1 =1
+        <if test="personName !=null and personName != ''">
+            and t.person_name= #{personName}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="personId !=null and personId != ''">
+            and t.person_id= #{personId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="lmoId !=null and lmoId != ''">
+            and t.lmo_id= #{lmoId}
+        </if>
+        <if test="type !=null and type != ''">
+            and t.type= #{type}
+        </if>
+        <if test="operationTime !=null and operationTime != ''">
+            and t.operation_time= #{operationTime}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改操作日志信息 add by wuxw 2018-07-03 -->
+    <update id="updateLampMachineOperationInfo" parameterType="Map">
+        update lamp_machine_operation t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="personName !=null and personName != ''">
+            , t.person_name= #{personName}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="personId !=null and personId != ''">
+            , t.person_id= #{personId}
+        </if>
+        <if test="type !=null and type != ''">
+            , t.type= #{type}
+        </if>
+        <if test="operationTime !=null and operationTime != ''">
+            , t.operation_time= #{operationTime}
+        </if>
+        where 1=1
+        <if test="lmoId !=null and lmoId != ''">
+            and t.lmo_id= #{lmoId}
+        </if>
+
+    </update>
+
+    <!-- 查询操作日志数量 add by wuxw 2018-07-03 -->
+    <select id="queryLampMachineOperationsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from lamp_machine_operation t
+        where 1 =1
+        <if test="personName !=null and personName != ''">
+            and t.person_name= #{personName}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="personId !=null and personId != ''">
+            and t.person_id= #{personId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="lmoId !=null and lmoId != ''">
+            and t.lmo_id= #{lmoId}
+        </if>
+        <if test="type !=null and type != ''">
+            and t.type= #{type}
+        </if>
+        <if test="operationTime !=null and operationTime != ''">
+            and t.operation_time= #{operationTime}
+        </if>
+
+
+    </select>
+
+</mapper>

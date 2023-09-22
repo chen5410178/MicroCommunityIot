@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lampMachineV1ServiceDaoImpl">
+
+
+    <!-- 保存路灯管理信息 add by wuxw 2018-07-03 -->
+    <insert id="saveLampMachineInfo" parameterType="Map">
+        insert into lamp_machine(heartbeat_time, machine_id, machine_code, location_name, factory_id, state,
+                                 community_id, machine_name)
+        values (#{heartbeatTime}, #{machineId}, #{machineCode}, #{locationName}, #{factoryId}, #{state}, #{communityId},
+                #{machineName})
+    </insert>
+
+
+    <!-- 查询路灯管理信息 add by wuxw 2018-07-03 -->
+    <select id="getLampMachineInfo" parameterType="Map" resultType="Map">
+        select t.heartbeat_time,t.heartbeat_time heartbeatTime,t.machine_id,t.machine_id
+        machineId,t.machine_code,t.machine_code machineCode,t.location_name,t.location_name
+        locationName,t.factory_id,t.factory_id factoryId,t.status_cd,t.status_cd
+        statusCd,t.state,t.community_id,t.community_id communityId,t.machine_name,t.machine_name machineName
+        from lamp_machine t
+        where 1 =1
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            and t.location_name= #{locationName}
+        </if>
+        <if test="factoryId !=null and factoryId != ''">
+            and t.factory_id= #{factoryId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改路灯管理信息 add by wuxw 2018-07-03 -->
+    <update id="updateLampMachineInfo" parameterType="Map">
+        update lamp_machine t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            , t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            , t.location_name= #{locationName}
+        </if>
+        <if test="factoryId !=null and factoryId != ''">
+            , t.factory_id= #{factoryId}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            , t.machine_name= #{machineName}
+        </if>
+        where 1=1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+
+    </update>
+
+    <!-- 查询路灯管理数量 add by wuxw 2018-07-03 -->
+    <select id="queryLampMachinesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from lamp_machine t
+        where 1 =1
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            and t.location_name= #{locationName}
+        </if>
+        <if test="factoryId !=null and factoryId != ''">
+            and t.factory_id= #{factoryId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+
+
+    </select>
+
+</mapper>

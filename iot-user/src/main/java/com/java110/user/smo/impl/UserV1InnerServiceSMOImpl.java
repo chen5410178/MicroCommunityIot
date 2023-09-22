@@ -145,5 +145,10 @@ public class UserV1InnerServiceSMOImpl  implements IUserV1InnerServiceSMO {
 
         return users;    }
 
+    @Override
+    public List<UserDto> queryCommunityStaffsByCommunityId(Map map) {
+        return BeanConvertUtil.covertBeanList(userV1ServiceDaoImpl.queryCommunityStaffsByCommunityId(map), UserDto.class);
+    }
+
 
 }

@@ -100,4 +100,6 @@ public interface IUserV1ServiceDao {
     int queryStaffsNoInOrgCount(Map beanCovertMap);
 
     List<Map> queryStaffsNoInOrg(Map beanCovertMap);
+
+    List<Map> queryCommunityStaffsByCommunityId(Map beanCovertMap);
 }
