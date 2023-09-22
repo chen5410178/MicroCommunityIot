@@ -70,6 +70,6 @@ public interface ICarInoutV1InnerServiceSMO {
     @RequestMapping(value = "/queryCarInoutDetailsCount", method = RequestMethod.POST)
     int queryCarInoutDetailsCount(@RequestBody CarInoutDto carInoutDetailDto);
 
-    @RequestMapping(value = "/queryCarInoutDetailsCount", method = RequestMethod.POST)
+    @RequestMapping(value = "/queryCarInoutDetails", method = RequestMethod.POST)
     List<CarInoutDto> queryCarInoutDetails(@RequestBody CarInoutDto carInoutDetailDto);
 }
