@@ -22,8 +22,8 @@
         t.create_time createTime, lm.machine_name machineName, lm.machine_code machineCode, sm.name communityName, td.name stateName,
         td1.name logActionName
         from lift_machine_log t
-        left join lift_machine lm on t.machine_id = lm.machine_id
-        left join s_community sm on t.community_id = sm.community_id
+        left join lift_machine lm on t.machine_id = lm.machine_id and lm.status_cd = '0'
+        left join s_community sm on t.community_id = sm.community_id and sm.status_cd = '0'
         left join t_dict td on t.state = td.status_cd and td.table_name = 'lift_machine_log' and td.table_columns = 'state'
         left join t_dict td1 on t.log_action = td1.status_cd and td1.table_name = 'lift_machine_log' and td1.table_columns = 'log_action'
         where 1 =1

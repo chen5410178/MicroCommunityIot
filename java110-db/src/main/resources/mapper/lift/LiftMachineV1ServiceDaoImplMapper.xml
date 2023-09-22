@@ -26,8 +26,8 @@
         registrationUnit,t.state,t.community_id,t.community_id communityId,t.brand,t.create_time createTime,lmf.factory_name factoryName,
         sc.name communityName, td.name stateName
         from lift_machine t
-        left join lift_machine_factory lmf on t.factory_id = lmf.factory_id
-        left join s_community sc on t.community_id = sc.community_id
+        left join lift_machine_factory lmf on t.factory_id = lmf.factory_id and lmf.status_cd = '0'
+        left join s_community sc on t.community_id = sc.community_id and sc.status_cd = '0'
         left join t_dict td on t.state = td.status_cd and td.table_name = 'lift_machine' and td.table_columns = 'state'
         where 1 =1
         <if test="heartbeatTime !=null and heartbeatTime != ''">
