@@ -91,8 +91,6 @@
         <if test="ruleId !=null and ruleId != ''">
             , t.rule_id= #{ruleId}
         </if>
-
-
         where 1=1
         <if test="configId !=null and configId != ''">
             and t.config_id= #{configId}
