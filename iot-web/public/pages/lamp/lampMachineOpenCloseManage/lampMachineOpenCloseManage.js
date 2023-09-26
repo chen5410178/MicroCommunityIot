@@ -13,13 +13,17 @@
                 moreCondition: false,
                 lmoId: '',
                 conditions: {
-                    lmoId: '',
-                    machineId: '',
+                    machineCode: '',
+                    machineName: '',
                     type: '',
-                }
+                },
+                typeList: [],
             }
         },
         _initMethod: function () {
+            vc.getDict('lamp_machine_operation', 'type', function (_data) {
+                $that.lampMachineOpenCloseManageInfo.typeList = _data
+            })
             $that._listLampMachineOpenCloses(DEFAULT_PAGE, DEFAULT_ROWS);
         },
         _initEvent: function () {
@@ -62,13 +66,14 @@
             _queryLampMachineOpenCloseMethod: function () {
                 $that._listLampMachineOpenCloses(DEFAULT_PAGE, DEFAULT_ROWS);
             },
-            _moreCondition: function () {
-                if ($that.lampMachineOpenCloseManageInfo.moreCondition) {
-                    $that.lampMachineOpenCloseManageInfo.moreCondition = false;
-                } else {
-                    $that.lampMachineOpenCloseManageInfo.moreCondition = true;
-                }
-            }
+            _resetLampMachineOpenCloseMethod: function () {
+                $that.lampMachineOpenCloseManageInfo.conditions = {
+                    machineCode: '',
+                    machineName: '',
+                    type: '',
+                };
+                $that._listLampMachineOpenCloses(DEFAULT_PAGE, DEFAULT_ROWS);
+            },
         }
     });
 })(window.vc);

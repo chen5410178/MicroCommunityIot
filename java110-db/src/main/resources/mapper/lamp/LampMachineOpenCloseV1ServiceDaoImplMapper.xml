@@ -38,6 +38,12 @@
         <if test="type !=null and type != ''">
             and t.type= #{type}
         </if>
+        <if test="machineName !=null and machineName != ''">
+            and lm.machine_name like concat('%', #{machineName}, '%')
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and lm.machine_code like concat('%', #{machineCode}, '%')
+        </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
@@ -80,6 +86,7 @@
     <select id="queryLampMachineOpenClosesCount" parameterType="Map" resultType="Map">
         select count(1) count
         from lamp_machine_open_close t
+        left join lamp_machine lm on t.machine_id = lm.machine_id and lm.status_cd = '0'
         where 1 =1
         <if test="hours !=null and hours != ''">
             and t.hours= #{hours}
@@ -98,6 +105,12 @@
         </if>
         <if test="type !=null and type != ''">
             and t.type= #{type}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and lm.machine_name like concat('%', #{machineName}, '%')
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and lm.machine_code like concat('%', #{machineCode}, '%')
         </if>
 
 
