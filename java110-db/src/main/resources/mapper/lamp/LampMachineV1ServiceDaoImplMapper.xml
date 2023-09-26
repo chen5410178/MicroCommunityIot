@@ -19,8 +19,11 @@
         select t.heartbeat_time,t.heartbeat_time heartbeatTime,t.machine_id,t.machine_id
         machineId,t.machine_code,t.machine_code machineCode,t.location_name,t.location_name
         locationName,t.factory_id,t.factory_id factoryId,t.status_cd,t.status_cd
-        statusCd,t.state,t.community_id,t.community_id communityId,t.machine_name,t.machine_name machineName
+        statusCd,t.state,t.community_id,t.community_id communityId,t.machine_name,t.machine_name machineName,
+        lmf.factory_name factoryName, td.name stateName
         from lamp_machine t
+        left join lamp_machine_factory lmf on t.factory_id = lmf.factory_id and lmf.status_cd = '0'
+        left join t_dict td on t.state = td.status_cd and td.table_name = 'lamp_machine' and td.table_columns = 'state'
         where 1 =1
         <if test="heartbeatTime !=null and heartbeatTime != ''">
             and t.heartbeat_time= #{heartbeatTime}
@@ -29,10 +32,10 @@
             and t.machine_id= #{machineId}
         </if>
         <if test="machineCode !=null and machineCode != ''">
-            and t.machine_code= #{machineCode}
+            and t.machine_code like concat('%', #{machineCode}, '%')
         </if>
         <if test="locationName !=null and locationName != ''">
-            and t.location_name= #{locationName}
+            and t.location_name like concat('%', #{locationName}, '%')
         </if>
         <if test="factoryId !=null and factoryId != ''">
             and t.factory_id= #{factoryId}
@@ -47,7 +50,7 @@
             and t.community_id= #{communityId}
         </if>
         <if test="machineName !=null and machineName != ''">
-            and t.machine_name= #{machineName}
+            and t.machine_name like concat('%', #{machineName}, '%')
         </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
@@ -103,10 +106,10 @@
             and t.machine_id= #{machineId}
         </if>
         <if test="machineCode !=null and machineCode != ''">
-            and t.machine_code= #{machineCode}
+            and t.machine_code like concat('%', #{machineCode}, '%')
         </if>
         <if test="locationName !=null and locationName != ''">
-            and t.location_name= #{locationName}
+            and t.location_name like concat('%', #{locationName}, '%')
         </if>
         <if test="factoryId !=null and factoryId != ''">
             and t.factory_id= #{factoryId}
@@ -121,7 +124,7 @@
             and t.community_id= #{communityId}
         </if>
         <if test="machineName !=null and machineName != ''">
-            and t.machine_name= #{machineName}
+            and t.machine_name like concat('%', #{machineName}, '%')
         </if>
 
 

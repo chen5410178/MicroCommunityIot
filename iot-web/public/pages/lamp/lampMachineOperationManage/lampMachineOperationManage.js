@@ -17,9 +17,9 @@
                     machineId: '',
                     personId: '',
                     type: '',
+                    curCommunityId: vc.getCurrentCommunity().communityId,
                 },
                 operateTypes: [],
-                curCommunityId: vc.getCurrentCommunity().communityId,
                 lampMachineList: [],
                 operatePersonList: [],
             }
@@ -74,13 +74,14 @@
                     machineId: '',
                     personId: '',
                     type: '',
+                    curCommunityId: vc.getCurrentCommunity().communityId,
                 };
                 $that._listLampMachineOperations(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _listLampMachine: function () {
                 let param = {
                     params: {
-                        communityId: $that.lampMachineOperationManageInfo.curCommunityId,
+                        communityId: $that.lampMachineOperationManageInfo.conditions.curCommunityId,
                         page: -1,
                         row: 100
                     }
@@ -98,7 +99,7 @@
             _listOperatePerson: function () {
                 let param = {
                     params: {
-                        communityId: $that.lampMachineOperationManageInfo.curCommunityId
+                        communityId: $that.lampMachineOperationManageInfo.conditions.curCommunityId
                     }
                 }
                 vc.http.apiGet('/user.listCommunityStaffsByCommunityId',

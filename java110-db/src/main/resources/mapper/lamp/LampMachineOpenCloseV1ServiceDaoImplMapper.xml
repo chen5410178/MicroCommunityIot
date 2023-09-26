@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lampMachineOpenCloseV1ServiceDaoImpl">
+
+
+    <!-- 保存路灯控制信息 add by wuxw 2018-07-03 -->
+    <insert id="saveLampMachineOpenCloseInfo" parameterType="Map">
+        insert into lamp_machine_open_close(hours, machine_id, min, lmo_id, type)
+        values (#{hours}, #{machineId}, #{min}, #{lmoId}, #{type})
+    </insert>
+
+
+    <!-- 查询路灯控制信息 add by wuxw 2018-07-03 -->
+    <select id="getLampMachineOpenCloseInfo" parameterType="Map" resultType="Map">
+        select t.hours,t.machine_id,t.machine_id machineId,t.min,t.status_cd,t.status_cd statusCd,t.lmo_id,t.lmo_id
+        lmoId,t.type, lm.machine_code machineCode, lm.machine_name machineName, td.name typeName
+        from lamp_machine_open_close t
+        left join lamp_machine lm on t.machine_id = lm.machine_id and lm.status_cd = '0'
+        left join t_dict td on t.type = td.status_cd and td.table_name = 'lamp_machine_operation' and td.table_columns = 'type'
+        where 1 =1
+        <if test="hours !=null and hours != ''">
+            and t.hours= #{hours}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="min !=null and min != ''">
+            and t.min= #{min}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="lmoId !=null and lmoId != ''">
+            and t.lmo_id= #{lmoId}
+        </if>
+        <if test="type !=null and type != ''">
+            and t.type= #{type}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改路灯控制信息 add by wuxw 2018-07-03 -->
+    <update id="updateLampMachineOpenCloseInfo" parameterType="Map">
+        update lamp_machine_open_close t set t.status_cd = #{statusCd}
+        <if test="hours !=null and hours != ''">
+            , t.hours= #{hours}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="min !=null and min != ''">
+            , t.min= #{min}
+        </if>
+        <if test="type !=null and type != ''">
+            , t.type= #{type}
+        </if>
+        where 1=1 and t.status_cd = '0'
+        <if test="lmoId !=null and lmoId != ''">
+            and t.lmo_id= #{lmoId}
+        </if>
+        <if test="type !=null and type != ''">
+            and t.type= #{type}
+        </if>
+        <if test="machineIdList !=null and machineIdList != ''">
+            and t.machine_id in
+              <foreach item="machineId" collection="machineIdList" open="(" separator="," close=")">
+                  #{machineId}
+              </foreach>
+        </if>
+    </update>
+
+    <!-- 查询路灯控制数量 add by wuxw 2018-07-03 -->
+    <select id="queryLampMachineOpenClosesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from lamp_machine_open_close t
+        where 1 =1
+        <if test="hours !=null and hours != ''">
+            and t.hours= #{hours}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="min !=null and min != ''">
+            and t.min= #{min}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="lmoId !=null and lmoId != ''">
+            and t.lmo_id= #{lmoId}
+        </if>
+        <if test="type !=null and type != ''">
+            and t.type= #{type}
+        </if>
+
+
+    </select>
+
+    <insert id="saveLampMachineOpenCloseList" parameterType="Map">
+        insert into lamp_machine_open_close(hours, machine_id, min, lmo_id, type)
+        values
+        <foreach collection="list" separator="," item="item">
+            (#{item.hours}, #{item.machineId}, #{item.min}, #{item.lmoId}, #{item.type})
+        </foreach>
+    </insert>
+
+</mapper>

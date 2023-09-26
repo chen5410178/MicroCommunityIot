@@ -10,7 +10,7 @@ public class LampMachinePo implements Serializable {
     private String locationName;
     private String factoryId;
     private String communityId;
-    private Date heartbeatTime;
+    private String heartbeatTime;
     private String state;
     private String statusCd = "0";
 
@@ -62,11 +62,11 @@ public class LampMachinePo implements Serializable {
         this.communityId = communityId;
     }
 
-    public Date getHeartbeatTime() {
+    public String getHeartbeatTime() {
         return heartbeatTime;
     }
 
-    public void setHeartbeatTime(Date heartbeatTime) {
+    public void setHeartbeatTime(String heartbeatTime) {
         this.heartbeatTime = heartbeatTime;
     }
 

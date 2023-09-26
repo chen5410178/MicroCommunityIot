@@ -1,0 +1,166 @@
+<div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;" v-on:click="_moreCondition()">
+                            {{lampMachineManageInfo.moreCondition == true?'隐藏':'更多'}}
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入名称','lampMachineManage')"
+                                    v-model="lampMachineManageInfo.conditions.machineName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入设备编号','lampMachineManage')"
+                                    v-model="lampMachineManageInfo.conditions.machineCode" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入位置','lampMachineManage')"
+                                       v-model="lampMachineManageInfo.conditions.locationName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-sm"
+                                v-on:click="_queryLampMachineMethod()">
+                                <vc:i18n name="查询" namespace="lampMachineManage"></vc:i18n>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm"
+                                v-on:click="_resetLampMachineMethod()">
+                                <vc:i18n name="重置" namespace="lampMachineManage"></vc:i18n>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" v-if="lampMachineManageInfo.moreCondition == true">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="lampMachineManageInfo.conditions.factoryId">
+                                    <option selected disabled value="">{{vc.i18n('请选择厂家','lampMachineManage')}}</option>
+                                    <option v-for="(item, index) in lampMachineManageInfo.lampMachineFactoryList" :key="index" :value="item.factoryId">
+                                        {{item.factoryName}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="lampMachineManageInfo.moreCondition == true">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="lampMachineManageInfo.conditions.state">
+                                    <option selected disabled value="">{{vc.i18n('请选择设备状态','lampMachineManage')}}</option>
+                                    <option v-for="(item, index) in lampMachineManageInfo.lampMachineStateList" :key="index" :value="item.statusCd">
+                                        {{item.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="路灯管理" namespace="lampMachineManage"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openSetLampMachineUsageTimeModal()">
+                            <vc:i18n name="设置开关灯时间" namespace="lampMachineManage"></vc:i18n>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddLampMachineModal()">
+                            <vc:i18n name="添加" namespace="lampMachineManage"></vc:i18n>
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='设备ID' namespace='lampMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='名称' namespace='lampMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='设备编号' namespace='lampMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='位置' namespace='lampMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='厂家' namespace='lampMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='状态' namespace='lampMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="lampMachine in lampMachineManageInfo.lampMachines">
+                                <td class="text-center">{{lampMachine.machineId}}</td>
+                                <td class="text-center">{{lampMachine.machineName}}</td>
+                                <td class="text-center">{{lampMachine.machineCode}}</td>
+                                <td class="text-center">{{lampMachine.locationName}}</td>
+                                <td class="text-center">{{lampMachine.factoryName}}</td>
+                                <td class="text-center">
+                                    {{lampMachine.stateName}}
+                                    <span v-if="lampMachine.state == '1001'">
+                                        (<a href="javascript:void(0)" @click="_switchLampState(lampMachine)">关灯</a>)
+                                    </span>
+                                    <span v-if="lampMachine.state == '1002'">
+                                        (<a href="javascript:void(0)" @click="_switchLampState(lampMachine)">开灯</a>)
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs"
+                                            v-on:click="_openEditLampMachineModel(lampMachine)">
+                                            <vc:i18n name='修改'></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs"
+                                            v-on:click="_openDeleteLampMachineModel(lampMachine)">
+                                            <vc:i18n name='删除'></vc:i18n>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7">
+                                    <ul class="pagination float-right"></ul>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <vc:create path="lamp/addLampMachine" callBackListener="" callBackFunction=""></vc:create>
+    <vc:create path="lamp/editLampMachine"></vc:create>
+    <vc:create path="lamp/deleteLampMachine"></vc:create>
+
+</div>
