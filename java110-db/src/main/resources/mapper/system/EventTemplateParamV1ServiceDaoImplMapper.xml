@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eventTemplateParamV1ServiceDaoImpl">
+
+
+    <!-- 保存通知模板参数信息 add by wuxw 2018-07-03 -->
+    <insert id="saveEventTemplateParamInfo" parameterType="Map">
+        insert into event_template_param(spec_cd, param_id, template_id, community_id, param_value)
+        values (#{specCd}, #{paramId}, #{templateId}, #{communityId}, #{paramValue})
+    </insert>
+
+
+    <!-- 查询通知模板参数信息 add by wuxw 2018-07-03 -->
+    <select id="getEventTemplateParamInfo" parameterType="Map" resultType="Map">
+        select t.spec_cd,t.spec_cd specCd,t.status_cd,t.status_cd statusCd,t.param_id,t.param_id
+        paramId,t.template_id,t.template_id templateId,t.community_id,t.community_id
+        communityId,t.param_value,t.param_value paramValue
+        from event_template_param t
+        where 1 =1
+        <if test="specCd !=null and specCd != ''">
+            and t.spec_cd= #{specCd}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="paramId !=null and paramId != ''">
+            and t.param_id= #{paramId}
+        </if>
+        <if test="templateId !=null and templateId != ''">
+            and t.template_id= #{templateId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="paramValue !=null and paramValue != ''">
+            and t.param_value= #{paramValue}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改通知模板参数信息 add by wuxw 2018-07-03 -->
+    <update id="updateEventTemplateParamInfo" parameterType="Map">
+        update event_template_param t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="specCd !=null and specCd != ''">
+            , t.spec_cd= #{specCd}
+        </if>
+        <if test="templateId !=null and templateId != ''">
+            , t.template_id= #{templateId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="paramValue !=null and paramValue != ''">
+            , t.param_value= #{paramValue}
+        </if>
+        where 1=1
+        <if test="paramId !=null and paramId != ''">
+            and t.param_id= #{paramId}
+        </if>
+
+    </update>
+
+    <!-- 查询通知模板参数数量 add by wuxw 2018-07-03 -->
+    <select id="queryEventTemplateParamsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from event_template_param t
+        where 1 =1
+        <if test="specCd !=null and specCd != ''">
+            and t.spec_cd= #{specCd}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="paramId !=null and paramId != ''">
+            and t.param_id= #{paramId}
+        </if>
+        <if test="templateId !=null and templateId != ''">
+            and t.template_id= #{templateId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="paramValue !=null and paramValue != ''">
+            and t.param_value= #{paramValue}
+        </if>
+
+
+    </select>
+
+</mapper>
