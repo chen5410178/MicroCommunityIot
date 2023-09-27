@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="carInoutTempAuthV1ServiceDaoImpl">
+
+
+    <!-- 保存临时车审核信息 add by wuxw 2018-07-03 -->
+    <insert id="saveCarInoutTempAuthInfo" parameterType="Map">
+        insert into car_inout_temp_auth(
+        msg,phone_jpg,pa_num,machine_code,car_num,remark,auth_id,machine_name,car_type,machine_id,pa_id,state,community_id
+        ) values (
+        #{msg},#{phoneJpg},#{paNum},#{machineCode},#{carNum},#{remark},#{authId},#{machineName},#{carType},#{machineId},#{paId},#{state},#{communityId}
+        )
+    </insert>
+
+
+    <!-- 查询临时车审核信息 add by wuxw 2018-07-03 -->
+    <select id="getCarInoutTempAuthInfo" parameterType="Map" resultType="Map">
+        select t.msg,t.phone_jpg,t.phone_jpg phoneJpg,t.pa_num,t.pa_num paNum,t.machine_code,t.machine_code
+        machineCode,t.car_num,t.car_num carNum,t.remark,t.status_cd,t.status_cd statusCd,t.auth_id,t.auth_id
+        authId,t.machine_name,t.machine_name machineName,t.car_type,t.car_type carType,t.machine_id,t.machine_id
+        machineId,t.pa_id,t.pa_id paId,t.state,t.community_id,t.community_id communityId
+        from car_inout_temp_auth t
+        where 1 =1
+        <if test="msg !=null and msg != ''">
+            and t.msg= #{msg}
+        </if>
+        <if test="phoneJpg !=null and phoneJpg != ''">
+            and t.phone_jpg= #{phoneJpg}
+        </if>
+        <if test="paNum !=null and paNum != ''">
+            and t.pa_num= #{paNum}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            and t.car_num= #{carNum}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="authId !=null and authId != ''">
+            and t.auth_id= #{authId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="carType !=null and carType != ''">
+            and t.car_type= #{carType}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="paId !=null and paId != ''">
+            and t.pa_id= #{paId}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改临时车审核信息 add by wuxw 2018-07-03 -->
+    <update id="updateCarInoutTempAuthInfo" parameterType="Map">
+        update car_inout_temp_auth t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="msg !=null and msg != ''">
+            , t.msg= #{msg}
+        </if>
+        <if test="phoneJpg !=null and phoneJpg != ''">
+            , t.phone_jpg= #{phoneJpg}
+        </if>
+        <if test="paNum !=null and paNum != ''">
+            , t.pa_num= #{paNum}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            , t.car_num= #{carNum}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            , t.machine_name= #{machineName}
+        </if>
+        <if test="carType !=null and carType != ''">
+            , t.car_type= #{carType}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="paId !=null and paId != ''">
+            , t.pa_id= #{paId}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="authId !=null and authId != ''">
+            and t.auth_id= #{authId}
+        </if>
+
+    </update>
+
+    <!-- 查询临时车审核数量 add by wuxw 2018-07-03 -->
+    <select id="queryCarInoutTempAuthsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from car_inout_temp_auth t
+        where 1 =1
+        <if test="msg !=null and msg != ''">
+            and t.msg= #{msg}
+        </if>
+        <if test="phoneJpg !=null and phoneJpg != ''">
+            and t.phone_jpg= #{phoneJpg}
+        </if>
+        <if test="paNum !=null and paNum != ''">
+            and t.pa_num= #{paNum}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            and t.car_num= #{carNum}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="authId !=null and authId != ''">
+            and t.auth_id= #{authId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="carType !=null and carType != ''">
+            and t.car_type= #{carType}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="paId !=null and paId != ''">
+            and t.pa_id= #{paId}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+
+    </select>
+
+</mapper>

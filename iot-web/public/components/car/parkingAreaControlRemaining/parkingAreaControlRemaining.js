@@ -23,7 +23,7 @@
             });
             vc.on('parkingAreaControlRemaining', 'paginationPlus', 'page_event',
                 function(_currentPage) {
-                    vc.component._loadParkingAreaControlRemaining(_currentPage, DEFAULT_ROWS);
+                    $that._loadParkingAreaControlRemaining(_currentPage, DEFAULT_ROWS);
                 });
         },
         methods: {
@@ -36,14 +36,13 @@
                     }
                 };
                 //发送get请求
-                vc.http.apiGet('/machineTranslate.machineGetFreeParkingSpace',
+                vc.http.apiGet('/carInout.getFreeParkingSpace',
                     param,
                     function(json, res) {
                         let listParkingSpaceData = JSON.parse(json).data;
-
-                        vc.component.parkingAreaControlRemaining.total = listParkingSpaceData.total;
-                        vc.component.parkingAreaControlRemaining.freeCount = listParkingSpaceData.freeCount;
-                        vc.component.parkingAreaControlRemaining.createTime = vc.dateTimeFormat(new Date().getTime());
+                        $that.parkingAreaControlRemaining.total = listParkingSpaceData.total;
+                        $that.parkingAreaControlRemaining.freeCount = listParkingSpaceData.freeCount;
+                        $that.parkingAreaControlRemaining.createTime = vc.dateTimeFormat(new Date().getTime());
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');

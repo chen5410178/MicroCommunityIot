@@ -22,7 +22,7 @@
             });
             vc.on('parkingAreaControlManualOpenDoorLog', 'paginationPlus', 'page_event',
                 function(_currentPage) {
-                    vc.component._loadParkingAreaControlManualOpenDoorLogs(_currentPage, DEFAULT_ROWS);
+                    $that._loadParkingAreaControlManualOpenDoorLogs(_currentPage, DEFAULT_ROWS);
                 });
         },
         methods: {
@@ -38,7 +38,7 @@
                     }
                 };
                 //发送get请求
-                vc.http.apiGet('/machine.getManualOpenDoorLogs',
+                vc.http.apiGet('/carInout.listManualOpenDoorLog',
                     param,
                     function(json, res) {
                         var _json = JSON.parse(json);

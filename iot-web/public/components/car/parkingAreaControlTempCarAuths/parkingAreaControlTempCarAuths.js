@@ -56,7 +56,7 @@
                     }
                 };
                 //发送get请求
-                vc.http.apiGet('/machine.getTempCarAuths',
+                vc.http.apiGet('/carInout.listCarInoutTempAuth',
                     param,
                     function(json, res) {
                         var _json = JSON.parse(json);

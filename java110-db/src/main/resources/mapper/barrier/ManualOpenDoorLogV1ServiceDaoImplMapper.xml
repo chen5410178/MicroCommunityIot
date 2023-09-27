@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="manualOpenDoorLogV1ServiceDaoImpl">
+
+
+    <!-- 保存开闸日志信息 add by wuxw 2018-07-03 -->
+    <insert id="saveManualOpenDoorLogInfo" parameterType="Map">
+        insert into manual_open_door_log(
+        machine_id,photo_jpg,ext_machine_id,staff_name,log_id,community_id,staff_id,ext_staff_id,machine_name
+        ) values (
+        #{machineId},#{photoJpg},#{extMachineId},#{staffName},#{logId},#{communityId},#{staffId},#{extStaffId},#{machineName}
+        )
+    </insert>
+
+
+    <!-- 查询开闸日志信息 add by wuxw 2018-07-03 -->
+    <select id="getManualOpenDoorLogInfo" parameterType="Map" resultType="Map">
+        select t.machine_id,t.machine_id machineId,t.photo_jpg,t.photo_jpg photoJpg,t.ext_machine_id,t.ext_machine_id
+        extMachineId,t.staff_name,t.staff_name staffName,t.log_id,t.log_id logId,t.community_id,t.community_id
+        communityId,t.staff_id,t.staff_id staffId,t.ext_staff_id,t.ext_staff_id extStaffId,t.machine_name,t.machine_name
+        machineName
+        from manual_open_door_log t
+        where 1 =1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="photoJpg !=null and photoJpg != ''">
+            and t.photo_jpg= #{photoJpg}
+        </if>
+        <if test="extMachineId !=null and extMachineId != ''">
+            and t.ext_machine_id= #{extMachineId}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            and t.staff_name= #{staffName}
+        </if>
+        <if test="logId !=null and logId != ''">
+            and t.log_id= #{logId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+        <if test="extStaffId !=null and extStaffId != ''">
+            and t.ext_staff_id= #{extStaffId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改开闸日志信息 add by wuxw 2018-07-03 -->
+    <update id="updateManualOpenDoorLogInfo" parameterType="Map">
+        update manual_open_door_log t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="photoJpg !=null and photoJpg != ''">
+            , t.photo_jpg= #{photoJpg}
+        </if>
+        <if test="extMachineId !=null and extMachineId != ''">
+            , t.ext_machine_id= #{extMachineId}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            , t.staff_name= #{staffName}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            , t.staff_id= #{staffId}
+        </if>
+        <if test="extStaffId !=null and extStaffId != ''">
+            , t.ext_staff_id= #{extStaffId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            , t.machine_name= #{machineName}
+        </if>
+        where 1=1
+        <if test="logId !=null and logId != ''">
+            and t.log_id= #{logId}
+        </if>
+
+    </update>
+
+    <!-- 查询开闸日志数量 add by wuxw 2018-07-03 -->
+    <select id="queryManualOpenDoorLogsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from manual_open_door_log t
+        where 1 =1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="photoJpg !=null and photoJpg != ''">
+            and t.photo_jpg= #{photoJpg}
+        </if>
+        <if test="extMachineId !=null and extMachineId != ''">
+            and t.ext_machine_id= #{extMachineId}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            and t.staff_name= #{staffName}
+        </if>
+        <if test="logId !=null and logId != ''">
+            and t.log_id= #{logId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+        <if test="extStaffId !=null and extStaffId != ''">
+            and t.ext_staff_id= #{extStaffId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+
+
+    </select>
+
+</mapper>
