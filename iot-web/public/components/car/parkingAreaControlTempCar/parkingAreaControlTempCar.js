@@ -1,7 +1,7 @@
 /**
  入驻小区
  **/
-(function (vc) {
+(function(vc) {
     var DEFAULT_PAGE = 1;
     var DEFAULT_ROWS = 10;
     vc.extends({
@@ -9,39 +9,39 @@
             parkingAreaControlTempCar: {
                 cars: [],
                 boxId: '',
-                carNum:''
+                carNum: ''
             }
         },
-        _initMethod: function () {
+        _initMethod: function() {
 
         },
-        _initEvent: function () {
-            vc.on('parkingAreaControlTempCar', 'switch', function (_data) {
+        _initEvent: function() {
+            vc.on('parkingAreaControlTempCar', 'switch', function(_data) {
                 $that.parkingAreaControlTempCar.boxId = _data.boxId;
                 $that._loadParkingAreaControlTempCars(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('parkingAreaControlTempCar', 'paginationPlus', 'page_event',
-                function (_currentPage) {
-                    vc.component._loadParkingAreaControlTempCars(_currentPage, DEFAULT_ROWS);
+                function(_currentPage) {
+                    $that._loadParkingAreaControlTempCars(_currentPage, DEFAULT_ROWS);
                 });
         },
         methods: {
 
-            _loadParkingAreaControlTempCars: function (_page, _row) {
+            _loadParkingAreaControlTempCars: function(_page, _row) {
                 let param = {
                     params: {
                         page: _page,
                         row: _row,
                         communityId: vc.getCurrentCommunity().communityId,
                         boxId: $that.parkingAreaControlTempCar.boxId,
-                        carTypeCd:'1003',
-                        carNum:$that.parkingAreaControlTempCar.carNum,
+                        carTypeCd: '1003',
+                        carNum: $that.parkingAreaControlTempCar.carNum,
                     }
                 };
                 //发送get请求
-                vc.http.apiGet('owner.queryOwnerCars',
+                vc.http.apiGet('/ownerCar.queryOwnerCars',
                     param,
-                    function (json, res) {
+                    function(json, res) {
                         var _json = JSON.parse(json);
                         $that.parkingAreaControlTempCar.total = _json.total;
                         $that.parkingAreaControlTempCar.records = _json.records;
@@ -51,12 +51,13 @@
                             dataCount: $that.parkingAreaControlTempCar.total,
                             currentPage: _page
                         });
-                    }, function (errInfo, error) {
+                    },
+                    function(errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );
             },
-            _qureyParkingAreaControlTempCar: function () {
+            _qureyParkingAreaControlTempCar: function() {
                 $that._loadParkingAreaControlTempCars(DEFAULT_PAGE, DEFAULT_ROWS);
             }
 

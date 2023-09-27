@@ -45,7 +45,7 @@
                     }
                 };
                 //发送get请求
-                vc.http.apiGet('owner.queryOwnerCars',
+                vc.http.apiGet('/ownerCar.queryOwnerCars',
                     param,
                     function(json, res) {
                         var _json = JSON.parse(json);
