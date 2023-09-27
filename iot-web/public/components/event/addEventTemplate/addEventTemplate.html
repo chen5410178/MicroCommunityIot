@@ -1,0 +1,56 @@
+<div id="addEventTemplateModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="m-t-none m-b ">
+                    <vc:i18n name="添加" namespace="addEventTemplate"></vc:i18n>
+                </h3>
+                <div class="ibox-content">
+                    <div>
+                        <div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">
+                                    <vc:i18n name='模板名称' namespace='addEventTemplate'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input v-model="addEventTemplateInfo.templateName" type="text"
+                                        :placeholder="vc.i18n('必填，请填写模板名称','addEventTemplate')" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">
+                                    <vc:i18n name='通知方式' namespace='addEventTemplate'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <select class="custom-select" v-model="addEventTemplateInfo.eventWay">
+                                        <option selected disabled value="">{{vc.i18n('必填，请选择通知方式','addEventTemplate')}}</option>
+                                        <option v-for="(item, index) in eventWayList" :key="index" :value="item.statusCd">
+                                            {{item.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">
+                                    <vc:i18n name='备注' namespace='addEventTemplate'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input v-model="addEventTemplateInfo.remark" type="text"
+                                        :placeholder="vc.i18n('必填，请填写备注','addEventTemplate')" class="form-control">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <button class="btn btn-primary float-right" type="button" v-on:click="saveEventTemplateInfo()"><i class="fa fa-check"></i>&nbsp;
+                                    <vc:i18n name="保存"></vc:i18n>
+                                </button>
+                                <button type="button" class="btn btn-warning float-right" style="margin-right:20px;" data-dismiss="modal">
+                                    <vc:i18n name="取消"></vc:i18n>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

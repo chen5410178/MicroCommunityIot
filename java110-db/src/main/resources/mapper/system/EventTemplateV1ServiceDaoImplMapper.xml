@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eventTemplateV1ServiceDaoImpl">
+
+
+    <!-- 保存事件模板信息 add by wuxw 2018-07-03 -->
+    <insert id="saveEventTemplateInfo" parameterType="Map">
+        insert into event_template(template_name, event_way, remark, template_id, community_id)
+        values (#{templateName}, #{eventWay}, #{remark}, #{templateId}, #{communityId})
+    </insert>
+
+
+    <!-- 查询事件模板信息 add by wuxw 2018-07-03 -->
+    <select id="getEventTemplateInfo" parameterType="Map" resultType="Map">
+        select t.template_name,t.template_name templateName,t.event_way,t.event_way
+        eventWay,t.remark,t.status_cd,t.status_cd statusCd,t.template_id,t.template_id
+        templateId,t.community_id,t.community_id communityId
+        from event_template t
+        where 1 =1
+        <if test="templateName !=null and templateName != ''">
+            and t.template_name= #{templateName}
+        </if>
+        <if test="eventWay !=null and eventWay != ''">
+            and t.event_way= #{eventWay}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="templateId !=null and templateId != ''">
+            and t.template_id= #{templateId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改事件模板信息 add by wuxw 2018-07-03 -->
+    <update id="updateEventTemplateInfo" parameterType="Map">
+        update event_template t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="templateName !=null and templateName != ''">
+            , t.template_name= #{templateName}
+        </if>
+        <if test="eventWay !=null and eventWay != ''">
+            , t.event_way= #{eventWay}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="templateId !=null and templateId != ''">
+            and t.template_id= #{templateId}
+        </if>
+
+    </update>
+
+    <!-- 查询事件模板数量 add by wuxw 2018-07-03 -->
+    <select id="queryEventTemplatesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from event_template t
+        where 1 =1
+        <if test="templateName !=null and templateName != ''">
+            and t.template_name= #{templateName}
+        </if>
+        <if test="eventWay !=null and eventWay != ''">
+            and t.event_way= #{eventWay}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="templateId !=null and templateId != ''">
+            and t.template_id= #{templateId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+
+    </select>
+
+</mapper>
