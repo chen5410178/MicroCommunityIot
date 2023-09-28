@@ -39,7 +39,7 @@ public class ImageUtils {
             Image image = Toolkit.getDefaultToolkit().getImage(urls);
             BufferedImage biOut = toBufferedImage(image);
             ImageIO.write(biOut, suffix, baos);
-            String base64Str = Base64Convert.byteToBase64(baos.toByteArray());
+            String base64Str = Base64Convert.byteTobase64(baos.toByteArray());
             return base64Str;
         } catch (Exception e) {
             return "";

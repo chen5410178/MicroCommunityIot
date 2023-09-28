@@ -15,6 +15,11 @@ import java.util.Date;
  **/
 public class CarInoutTempAuthDto extends PageDto implements Serializable {
 
+
+    public static final String STATE_W = "W";// 待审核
+    public static final String STATE_C = "C";// 审核完成
+    public static final String STATE_F = "F";// 审核决绝
+
     private String msg;
     private String phoneJpg;
     private String paNum;

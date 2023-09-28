@@ -100,6 +100,8 @@ public class OwnerCarDto extends PageDto implements Serializable {
 
     private String memberCarCount;
 
+    private String primaryCarId;
+
     private List<OwnerCarAttrDto> ownerCarAttrDto;
 
     public String getCarColor() {
@@ -500,5 +502,13 @@ public class OwnerCarDto extends PageDto implements Serializable {
 
     public void setMemberCarNumLike(String memberCarNumLike) {
         this.memberCarNumLike = memberCarNumLike;
+    }
+
+    public String getPrimaryCarId() {
+        return primaryCarId;
+    }
+
+    public void setPrimaryCarId(String primaryCarId) {
+        this.primaryCarId = primaryCarId;
     }
 }

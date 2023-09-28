@@ -1,4 +1,4 @@
-package com.java110.barrier.cmd.bmo;/*
+package com.java110.barrier.bmo;/*
  * Copyright 2017-2020 吴学文 and java110 team.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

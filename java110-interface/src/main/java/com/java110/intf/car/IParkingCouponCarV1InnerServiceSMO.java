@@ -65,4 +65,5 @@ public interface IParkingCouponCarV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryParkingCouponCarsCount", method = RequestMethod.POST)
     int queryParkingCouponCarsCount(@RequestBody ParkingCouponCarDto parkingCouponCarDto);
+
 }

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.barrier.cmd.bmo.impl;
+package com.java110.barrier.bmo.impl;
 
-import com.java110.barrier.cmd.bmo.IGetTempCarFeeRules;
+import com.java110.barrier.bmo.IGetTempCarFeeRules;
 import com.java110.bean.ResultVo;
 import com.java110.dto.fee.TempCarFeeRuleDto;
 import com.java110.dto.fee.TempCarPayOrderDto;

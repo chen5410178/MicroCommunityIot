@@ -43,6 +43,7 @@
             and t.end_time &gt; now()
             and t.start_time &lt; now()
         </if>
+
         <if test="bwId !=null and bwId != ''">
             and t.bw_id= #{bwId}
         </if>

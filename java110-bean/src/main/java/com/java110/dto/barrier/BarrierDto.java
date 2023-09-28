@@ -15,6 +15,9 @@ import java.util.Date;
  **/
 public class BarrierDto extends PageDto implements Serializable {
 
+    public static final String MACHINE_DIRECTION_ENTER = "3306"; // 进场
+    public static final String MACHINE_DIRECTION_OUT = "3307"; // 出场
+
     private String heartbeatTime;
     private String implBean;
     private String machineId;
@@ -33,6 +36,10 @@ public class BarrierDto extends PageDto implements Serializable {
     private Date createTime;
 
     private String statusCd = "0";
+
+    private String photoJpg;
+
+    private String hmId;
 
 
     public String getHeartbeatTime() {
@@ -146,5 +153,21 @@ public class BarrierDto extends PageDto implements Serializable {
 
     public void setStateName(String stateName) {
         this.stateName = stateName;
+    }
+
+    public String getPhotoJpg() {
+        return photoJpg;
+    }
+
+    public void setPhotoJpg(String photoJpg) {
+        this.photoJpg = photoJpg;
+    }
+
+    public String getHmId() {
+        return hmId;
+    }
+
+    public void setHmId(String hmId) {
+        this.hmId = hmId;
     }
 }

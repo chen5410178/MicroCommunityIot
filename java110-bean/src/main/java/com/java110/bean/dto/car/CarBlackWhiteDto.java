@@ -32,6 +32,8 @@ public class CarBlackWhiteDto extends PageDto implements Serializable {
     private Date createTime;
     private String statusCd = "0";
 
+    private String hasValid;
+
     public String getBlackWhite() {
         return blackWhite;
     }
@@ -136,4 +138,11 @@ public class CarBlackWhiteDto extends PageDto implements Serializable {
         this.validity = validity;
     }
 
+    public String getHasValid() {
+        return hasValid;
+    }
+
+    public void setHasValid(String hasValid) {
+        this.hasValid = hasValid;
+    }
 }

@@ -19,8 +19,17 @@
     <select id="getParkingAreaInfo" parameterType="Map" resultType="Map">
         select t.type_cd,t.type_cd typeCd,t.num,t.pa_id,t.pa_id paId,t.remark,t.status_cd,t.status_cd
         statusCd,t.community_id,t.community_id communityId,t.ext_pa_id,t.ext_pa_id extPaId,t.create_time createTime
+        <if test="boxId != null and boxId != ''">
+            ,pba.default_area defaultArea
+        </if>
         from parking_area t
+        <if test="boxId != null and boxId != ''">
+            left join parking_box_area pba on t.pa_id = pba.pa_id and pba.status_cd = '0'
+        </if>
         where 1 =1
+        <if test="boxId != null and boxId != ''">
+            pba.box_id = #{boxId}
+        </if>
         <if test="typeCd !=null and typeCd != ''">
             and t.type_cd= #{typeCd}
         </if>

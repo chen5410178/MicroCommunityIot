@@ -1,9 +1,11 @@
 package com.java110.barrier.factory;
 
 
+import com.java110.bean.dto.coupon.ParkingCouponCarDto;
 import com.java110.core.utils.DateUtil;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.fee.TempCarFeeConfigAttrDto;
+
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -28,11 +30,9 @@ public class TempCarFeeFactory {
 
         //支付时间是否超过15分钟
         Date payTime = null;
-        try {
-            payTime = DateUtil.getDateFromString(carInoutDto.getPayTime(), DateUtil.DATE_FORMATE_STRING_A);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+        payTime = carInoutDto.getPayTime();
+
         Date nowTime = DateUtil.getCurrentDate();
         //支付完成超过15分钟
         if (nowTime.getTime() - payTime.getTime() > 15 * 60 * 1000) {
@@ -47,33 +47,61 @@ public class TempCarFeeFactory {
      * @param carInoutDto
      * @return
      */
-    public static long getTempCarCeilMin(CarInoutDto carInoutDto) {
+    public static long getTempCarCeilMin(CarInoutDto carInoutDto, List<ParkingCouponCarDto> parkingCouponCarDtos) {
 
         //支付时间是否超过15分钟
         Date payTime = null;
         double min = 0.0;
+        long minLong = 0;
         try {
             //不是支付完成 状态
-            if (CarInoutDto.STATE_PAY.equals(carInoutDto.getState()) || CarInoutDto.STATE_REPAY.equals(carInoutDto.getState())) {
-
-                try {
-                    payTime = DateUtil.getDateFromString(carInoutDto.getPayTime(), DateUtil.DATE_FORMATE_STRING_A);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+            if (CarInoutDto.STATE_PAY.equals(carInoutDto.getState())) {
+                payTime = carInoutDto.getPayTime();
             } else {
-                payTime = DateUtil.getDateFromString(carInoutDto.getInTime(), DateUtil.DATE_FORMATE_STRING_A);
+                payTime = DateUtil.getDateFromString(carInoutDto.getOpenTime(), DateUtil.DATE_FORMATE_STRING_A);
             }
             Date nowTime = DateUtil.getCurrentDate();
             //支付完成超过15分钟
-            min = (nowTime.getTime() - payTime.getTime()) / (60 * 1000* 1.00);
 
-            return new Double(Math.ceil(min)).longValue();
-            //return (nowTime.getTime() - payTime.getTime()) / (60 * 1000);
+            min = (nowTime.getTime() - payTime.getTime()) / (60 * 1000 * 1.00);
+
+            minLong = new Double(Math.ceil(min)).longValue();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return 0;
+
+        if (parkingCouponCarDtos == null || parkingCouponCarDtos.size() < 1) {
+            return minLong;
+        }
+
+        long couponMin = 0;
+        for (ParkingCouponCarDto parkingCouponCarDto : parkingCouponCarDtos) {
+            if (!ParkingCouponCarDto.TYPE_CD_HOURS.equals(parkingCouponCarDto.getTypeCd())
+                    && !ParkingCouponCarDto.TYPE_CD_FREE.equals(parkingCouponCarDto.getTypeCd())) {
+                continue;
+            }
+
+            double value = Math.ceil(Double.parseDouble(parkingCouponCarDto.getValue()));
+
+            couponMin = new Double(value).longValue();
+
+            if (ParkingCouponCarDto.TYPE_CD_FREE.equals(parkingCouponCarDto.getTypeCd())) {
+                couponMin = 24 * 60;
+            }
+
+            if (minLong == 0) {
+                break;
+            }
+            parkingCouponCarDto.setHasUser(true);
+            if (minLong > couponMin) {
+                minLong = minLong - couponMin;
+            } else {
+                minLong = 0;
+                break;
+            }
+        }
+
+        return minLong;
     }
 
     /**
@@ -90,12 +118,7 @@ public class TempCarFeeFactory {
         try {
             //不是支付完成 状态
             if (CarInoutDto.STATE_PAY.equals(carInoutDto.getState())) {
-
-                try {
-                    payTime = DateUtil.getDateFromString(carInoutDto.getPayTime(), DateUtil.DATE_FORMATE_STRING_A);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                    payTime = carInoutDto.getPayTime();
             } else {
                 payTime = DateUtil.getDateFromString(carInoutDto.getInTime(), DateUtil.DATE_FORMATE_STRING_A);
             }

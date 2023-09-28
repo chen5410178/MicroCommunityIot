@@ -2,7 +2,7 @@ package com.java110.barrier.smo.impl;
 
 
 import com.java110.barrier.dao.ITempCarFeeConfigServiceDao;
-import com.java110.barrier.smo.IComputeTempCarFee;
+import com.java110.barrier.engine.IComputeTempCarFee;
 import com.java110.bean.dto.PageDto;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.LoggerFactory;
@@ -125,7 +125,7 @@ public class TempCarFeeConfigInnerServiceSMOImpl implements ITempCarFeeConfigInn
                 IComputeTempCarFee computeTempCarFee = ApplicationContextFactory.getBean(tempCarFeeConfigDtos.get(0).getRuleId(), IComputeTempCarFee.class);
 
 
-                TempCarFeeResult result = computeTempCarFee.computeTempCarFee(carInoutDto, tempCarFeeConfigDtos.get(0), tempCarFeeConfigAttrDtos);
+                TempCarFeeResult result = computeTempCarFee.computeTempCarFee(carInoutDto, tempCarFeeConfigDtos.get(0), null);
                 carInoutDto.setMin(result.getMin());
                 carInoutDto.setHours(result.getHours());
                 if (CarInoutDto.CAR_TYPE_MONTH.equals(carInoutDto.getCarType())) {
@@ -169,7 +169,7 @@ public class TempCarFeeConfigInnerServiceSMOImpl implements ITempCarFeeConfigInn
                         carInoutDto.setPayCharge(0 + "");
                         continue;
                     }
-                    TempCarFeeResult result = computeTempCarFee.computeTempCarFee(carInoutDto, tempCarFeeConfigDtos.get(0), tempCarFeeConfigAttrDtos);
+                    TempCarFeeResult result = computeTempCarFee.computeTempCarFee(carInoutDto, tempCarFeeConfigDtos.get(0), null);
                     carInoutDto.setMin(result.getMin());
                     carInoutDto.setHours(result.getHours());
                     carInoutDto.setPayCharge(result.getPayCharge() + "");

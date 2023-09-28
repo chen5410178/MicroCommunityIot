@@ -1,7 +1,7 @@
 package com.java110.barrier.cmd.tempCarFee;
 
 import com.alibaba.fastjson.JSONObject;
-import com.java110.barrier.cmd.bmo.IGetTempCarFeeRules;
+import com.java110.barrier.bmo.IGetTempCarFeeRules;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;

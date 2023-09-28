@@ -317,7 +317,7 @@ public class FtpUploadTemplate {
             if (offset != buffer.length) {
                 throw new IOException("Could not completely read file ");
             }
-            return Base64Convert.byteToBase64(buffer);
+            return Base64Convert.byteTobase64(buffer);
         } catch (Exception e) {
             logger.error("ftp通过文件名称获取远程文件流", e);
         } finally {

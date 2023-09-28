@@ -17,6 +17,7 @@ package com.java110.po.carInoutTempAuth;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-09-27 13:22:09 mail: 928255095@qq.com
@@ -27,105 +28,133 @@ import java.util.Date;
  */
 public class CarInoutTempAuthPo implements Serializable {
 
+
     private String msg;
-private String phoneJpg;
-private String paNum;
-private String machineCode;
-private String carNum;
-private String remark;
-private String statusCd = "0";
-private String authId;
-private String machineName;
-private String carType;
-private String machineId;
-private String paId;
-private String state;
-private String communityId;
-public String getMsg() {
+    private String phoneJpg;
+    private String paNum;
+    private String machineCode;
+    private String carNum;
+    private String remark;
+    private String statusCd = "0";
+    private String authId;
+    private String machineName;
+    private String carType;
+    private String machineId;
+    private String paId;
+    private String state;
+    private String communityId;
+
+    public String getMsg() {
         return msg;
     }
-public void setMsg(String msg) {
+
+    public void setMsg(String msg) {
         this.msg = msg;
     }
-public String getPhoneJpg() {
+
+    public String getPhoneJpg() {
         return phoneJpg;
     }
-public void setPhoneJpg(String phoneJpg) {
+
+    public void setPhoneJpg(String phoneJpg) {
         this.phoneJpg = phoneJpg;
     }
-public String getPaNum() {
+
+    public String getPaNum() {
         return paNum;
     }
-public void setPaNum(String paNum) {
+
+    public void setPaNum(String paNum) {
         this.paNum = paNum;
     }
-public String getMachineCode() {
+
+    public String getMachineCode() {
         return machineCode;
     }
-public void setMachineCode(String machineCode) {
+
+    public void setMachineCode(String machineCode) {
         this.machineCode = machineCode;
     }
-public String getCarNum() {
+
+    public String getCarNum() {
         return carNum;
     }
-public void setCarNum(String carNum) {
+
+    public void setCarNum(String carNum) {
         this.carNum = carNum;
     }
-public String getRemark() {
+
+    public String getRemark() {
         return remark;
     }
-public void setRemark(String remark) {
+
+    public void setRemark(String remark) {
         this.remark = remark;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getAuthId() {
+
+    public String getAuthId() {
         return authId;
     }
-public void setAuthId(String authId) {
+
+    public void setAuthId(String authId) {
         this.authId = authId;
     }
-public String getMachineName() {
+
+    public String getMachineName() {
         return machineName;
     }
-public void setMachineName(String machineName) {
+
+    public void setMachineName(String machineName) {
         this.machineName = machineName;
     }
-public String getCarType() {
+
+    public String getCarType() {
         return carType;
     }
-public void setCarType(String carType) {
+
+    public void setCarType(String carType) {
         this.carType = carType;
     }
-public String getMachineId() {
+
+    public String getMachineId() {
         return machineId;
     }
-public void setMachineId(String machineId) {
+
+    public void setMachineId(String machineId) {
         this.machineId = machineId;
     }
-public String getPaId() {
+
+    public String getPaId() {
         return paId;
     }
-public void setPaId(String paId) {
+
+    public void setPaId(String paId) {
         this.paId = paId;
     }
-public String getState() {
+
+    public String getState() {
         return state;
     }
-public void setState(String state) {
+
+    public void setState(String state) {
         this.state = state;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-
 
 
 }

@@ -30,7 +30,7 @@ public class CarInoutPaymentDto extends PageDto implements Serializable {
     private String communityId;
     private String payCharge;
     private String payChargeTotal;
-    private String payTime;
+    private Date payTime;
     private String carNum;
     private String payTypeName;
     private String stateName;
@@ -127,13 +127,7 @@ public class CarInoutPaymentDto extends PageDto implements Serializable {
         this.statusCd = statusCd;
     }
 
-    public String getPayTime() {
-        return payTime;
-    }
 
-    public void setPayTime(String payTime) {
-        this.payTime = payTime;
-    }
 
     public String getCarNum() {
         return carNum;
@@ -205,5 +199,13 @@ public class CarInoutPaymentDto extends PageDto implements Serializable {
 
     public void setPayChargeTotal(String payChargeTotal) {
         this.payChargeTotal = payChargeTotal;
+    }
+
+    public Date getPayTime() {
+        return payTime;
+    }
+
+    public void setPayTime(Date payTime) {
+        this.payTime = payTime;
     }
 }

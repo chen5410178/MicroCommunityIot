@@ -20,6 +20,15 @@ public class ParkingCouponCarDto extends PageDto implements Serializable {
     public static final String STATE_WAIT = "1001";
     public static final String STATE_FINISH = "2002";
 
+
+    public static final String STATE_W = "1001";
+    public static final String STATE_F = "2002";
+
+    public static final String TYPE_CD_HOURS = "1001";
+    public static final String TYPE_CD_MONEY = "2002";
+    public static final String TYPE_CD_DISCOUNT = "3003";
+    public static final String TYPE_CD_FREE = "4004";
+
     private String giveWay;
     private String giveWayName;
 
@@ -48,6 +57,10 @@ public class ParkingCouponCarDto extends PageDto implements Serializable {
     private Date createTime;
 
     private String statusCd = "0";
+
+    private boolean hasUser =false;
+
+    private String[] extPccIds;
 
 
     public String getGiveWay() {
@@ -241,5 +254,21 @@ public class ParkingCouponCarDto extends PageDto implements Serializable {
 
     public void setGiveWayName(String giveWayName) {
         this.giveWayName = giveWayName;
+    }
+
+    public boolean isHasUser() {
+        return hasUser;
+    }
+
+    public void setHasUser(boolean hasUser) {
+        this.hasUser = hasUser;
+    }
+
+    public String[] getExtPccIds() {
+        return extPccIds;
+    }
+
+    public void setExtPccIds(String[] extPccIds) {
+        this.extPccIds = extPccIds;
     }
 }

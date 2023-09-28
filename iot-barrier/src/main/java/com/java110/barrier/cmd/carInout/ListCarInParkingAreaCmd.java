@@ -126,7 +126,7 @@ public class ListCarInParkingAreaCmd extends Cmd {
                List<CarInoutPaymentDto> carInoutPaymentDtos =  carInoutPaymentV1InnerServiceSMOImpl.queryCarInoutPayments(carInoutPaymentDto);
 
                if(carInoutPaymentDtos == null || carInoutPaymentDtos.size() < 1){
-                   carInoutDto.setPayTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+                   carInoutDto.setPayTime(DateUtil.getCurrentDate());
                    continue;
                }
 

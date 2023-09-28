@@ -1,0 +1,110 @@
+package com.java110.barrier.engine.inout;
+
+import com.java110.bean.dto.coupon.ParkingCouponCarDto;
+import com.java110.bean.po.coupon.ParkingCouponCarPo;
+import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.utils.DateUtil;
+import com.java110.dto.barrier.BarrierDto;
+import com.java110.dto.carInout.CarInoutDto;
+import com.java110.dto.parking.ParkingAreaDto;
+import com.java110.intf.barrier.ICarInoutV1InnerServiceSMO;
+import com.java110.intf.car.IParkingCouponCarV1InnerServiceSMO;
+import com.java110.po.carInout.CarInoutPo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class CarOutLogEngine extends CarEngine{
+
+
+    @Autowired
+    private ICarInoutV1InnerServiceSMO carInoutServiceImpl;
+
+    @Autowired
+    private IParkingCouponCarV1InnerServiceSMO parkingCouponCarServiceImpl;
+
+    public void saveCarOutLog(String carNum,
+                              BarrierDto machineDto,
+                              List<ParkingAreaDto> parkingAreaDtos,
+                              String state,
+                              String remark) throws Exception {
+        saveCarOutLog(carNum,machineDto,parkingAreaDtos,state,remark,null);
+    }
+
+    public void saveCarOutLog(String carNum,
+                              BarrierDto machineDto,
+                              List<ParkingAreaDto> parkingAreaDtos,
+                              String state,
+                              String remark,
+                              List<ParkingCouponCarDto> parkingCouponCarDtos) throws Exception {
+
+        //查询是否有入场数据
+        CarInoutDto carInoutDto = new CarInoutDto();
+        carInoutDto.setCarNum(carNum);
+        carInoutDto.setPaId(getDefaultPaId(parkingAreaDtos));
+        carInoutDto.setStates(new String[]{CarInoutDto.STATE_IN, CarInoutDto.STATE_PAY});
+        carInoutDto.setCarInout(CarInoutDto.CAR_INOUT_IN);
+        List<CarInoutDto> carInoutDtos = carInoutServiceImpl.queryCarInouts(carInoutDto);
+
+
+        CarInoutPo carInoutPo = new CarInoutPo();
+        carInoutPo.setCarNum(carNum);
+        carInoutPo.setCarType("1");
+        carInoutPo.setCommunityId(machineDto.getCommunityId());
+        carInoutPo.setCiId(GenerateCodeFactory.getGeneratorId("11"));
+        carInoutPo.setCarInout(CarInoutDto.CAR_INOUT_OUT);
+        carInoutPo.setMachineCode(machineDto.getMachineCode());
+        carInoutPo.setMachineId(machineDto.getMachineId());
+        carInoutPo.setOpenTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        carInoutPo.setPaId(getDefaultPaId(parkingAreaDtos));
+        carInoutPo.setPaNum(getDefaultPaNum(parkingAreaDtos));
+        carInoutPo.setState(state);
+        carInoutPo.setRemark(remark);
+        carInoutPo.setPhotoJpg(machineDto.getPhotoJpg());
+        if (carInoutDtos != null && carInoutDtos.size() > 0) {
+//            carInoutPo.setPayCharge(carInoutDtos.get(0).getPayCharge());
+//            carInoutPo.setRealCharge(carInoutDtos.get(0).getRealCharge());
+//            carInoutPo.setPayType(carInoutDtos.get(0).getPayType());
+            carInoutPo.setInTime(carInoutDtos.get(0).getOpenTime());
+            carInoutPo.setInoutId(carInoutDtos.get(0).getInoutId());
+        } else {
+            carInoutPo.setInTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+//            carInoutPo.setPayCharge("0");
+//            carInoutPo.setRealCharge("0");
+//            carInoutPo.setPayType("1");
+        }
+        carInoutDto.setMachineCode(machineDto.getMachineCode());
+        //carInoutDto.setParkingCouponCarDtos(parkingCouponCarDtos);
+        carInoutServiceImpl.saveCarInout(carInoutPo);
+
+        if (CarInoutDto.STATE_IN_FAIL.equals(state)) {
+            return;
+        }
+
+        if (carInoutDtos != null && carInoutDtos.size() > 0) {
+            CarInoutDto tmpCarInoutDto = new CarInoutDto();
+            tmpCarInoutDto.setInoutId(carInoutDtos.get(0).getInoutId());
+            tmpCarInoutDto.setState(CarInoutDto.STATE_OUT);
+            carInoutServiceImpl.updateCarInout(carInoutPo);
+        }
+
+        if(parkingCouponCarDtos == null || parkingCouponCarDtos.size() < 1){
+            return ;
+        }
+        //停车劵核销
+        ParkingCouponCarPo tmpParkingCouponCarPo = null;
+        for(ParkingCouponCarDto parkingCouponCarDto : parkingCouponCarDtos) {
+            tmpParkingCouponCarPo = new ParkingCouponCarPo();
+            tmpParkingCouponCarPo.setPccId(parkingCouponCarDto.getPccId());
+            tmpParkingCouponCarPo.setState(ParkingCouponCarDto.STATE_F);
+            tmpParkingCouponCarPo.setRemark("车辆出场核销");
+            parkingCouponCarServiceImpl.updateParkingCouponCar(tmpParkingCouponCarPo);
+        }
+
+
+//        //异步上报HC小区管理系统
+//        carCallHcServiceImpl.carInout(carInoutDto);
+    }
+}

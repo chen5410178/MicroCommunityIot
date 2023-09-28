@@ -1,10 +1,12 @@
 package com.java110.dto.carInout;
 
 import com.java110.bean.dto.PageDto;
+import com.java110.bean.dto.coupon.ParkingCouponCarDto;
 import com.java110.dto.payment.CarInoutPaymentDto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName FloorDto
@@ -51,12 +53,14 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
 
     private String statusCd = "0";
 
-    private String payTime;
+    private Date payTime;
 
     private String inTime;
 
     private long hours;
     private long min;
+
+    private List<ParkingCouponCarDto> parkingCouponCarDtos;
 
 
     public String getPaNum() {
@@ -212,13 +216,7 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
         this.paIds = paIds;
     }
 
-    public String getPayTime() {
-        return payTime;
-    }
 
-    public void setPayTime(String payTime) {
-        this.payTime = payTime;
-    }
 
     public String getInTime() {
         return inTime;
@@ -242,5 +240,22 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
 
     public void setMin(long min) {
         this.min = min;
+    }
+
+    @Override
+    public Date getPayTime() {
+        return payTime;
+    }
+
+    public void setPayTime(Date payTime) {
+        this.payTime = payTime;
+    }
+
+    public List<ParkingCouponCarDto> getParkingCouponCarDtos() {
+        return parkingCouponCarDtos;
+    }
+
+    public void setParkingCouponCarDtos(List<ParkingCouponCarDto> parkingCouponCarDtos) {
+        this.parkingCouponCarDtos = parkingCouponCarDtos;
     }
 }

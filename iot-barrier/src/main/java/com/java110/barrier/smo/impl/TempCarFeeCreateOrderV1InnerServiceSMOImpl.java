@@ -1,7 +1,7 @@
 package com.java110.barrier.smo.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.java110.barrier.cmd.bmo.IGetTempCarFeeRules;
+import com.java110.barrier.bmo.IGetTempCarFeeRules;
 import com.java110.core.cache.CommonCache;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;

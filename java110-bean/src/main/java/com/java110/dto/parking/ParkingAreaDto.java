@@ -23,10 +23,21 @@ public class ParkingAreaDto extends PageDto implements Serializable {
     private String communityId;
     private String extPaId;
 
+    private String defaultArea;
+
+    private String tempCarIn;
+    private String fee;
+    private String blueCarIn;
+    private String yelowCarIn;
+
+    private String tempAuth;
+
 
     private Date createTime;
 
     private String statusCd = "0";
+
+    private String boxId;
 
 
     public String getTypeCd() {
@@ -100,5 +111,61 @@ public class ParkingAreaDto extends PageDto implements Serializable {
 
     public void setPaIds(String[] paIds) {
         this.paIds = paIds;
+    }
+
+    public String getDefaultArea() {
+        return defaultArea;
+    }
+
+    public void setDefaultArea(String defaultArea) {
+        this.defaultArea = defaultArea;
+    }
+
+    public String getTempCarIn() {
+        return tempCarIn;
+    }
+
+    public void setTempCarIn(String tempCarIn) {
+        this.tempCarIn = tempCarIn;
+    }
+
+    public String getFee() {
+        return fee;
+    }
+
+    public void setFee(String fee) {
+        this.fee = fee;
+    }
+
+    public String getBlueCarIn() {
+        return blueCarIn;
+    }
+
+    public void setBlueCarIn(String blueCarIn) {
+        this.blueCarIn = blueCarIn;
+    }
+
+    public String getYelowCarIn() {
+        return yelowCarIn;
+    }
+
+    public void setYelowCarIn(String yelowCarIn) {
+        this.yelowCarIn = yelowCarIn;
+    }
+
+    public String getTempAuth() {
+        return tempAuth;
+    }
+
+    public void setTempAuth(String tempAuth) {
+        this.tempAuth = tempAuth;
+    }
+
+    public String getBoxId() {
+        return boxId;
+    }
+
+    public void setBoxId(String boxId) {
+        this.boxId = boxId;
     }
 }
