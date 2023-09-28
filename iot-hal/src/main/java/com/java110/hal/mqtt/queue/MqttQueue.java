@@ -21,12 +21,13 @@ public class MqttQueue {
      * @param topic
      * @param msg
      */
-    public static void addMsg(String topic, String msg) {
+    public static void addMsg(String topic, String msg,String taskId) {
         try {
             MqttMsgDto mqttMsgDto = new MqttMsgDto();
             mqttMsgDto.setTopic(topic);
             mqttMsgDto.setMsg(msg);
-            msgs.offer(mqttMsgDto,3, TimeUnit.MILLISECONDS);
+            mqttMsgDto.setTaskId(taskId);
+            msgs.offer(mqttMsgDto,3, TimeUnit.SECONDS);
         } catch (Exception e) {
             log.error("写入队列失败", e);
             e.printStackTrace();

@@ -2,11 +2,13 @@ package com.java110.hal.mqtt.heartbeat;
 
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.dto.accessControl.AccessControlResultDto;
+import com.java110.dto.barrier.BarrierResultDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.dto.hardwareManufacturerAttr.HardwareManufacturerAttrDto;
 import com.java110.dto.mqtt.MqttMsgDto;
 import com.java110.hal.mqtt.queue.MqttQueue;
 import com.java110.intf.accessControl.IAccessControlResultV1InnerServiceSMO;
+import com.java110.intf.barrier.IMqttNotifyBarrierV1InnerServiceSMO;
 import com.java110.intf.system.IHardwareManufacturerAttrV1InnerServiceSMO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +65,7 @@ public class CustomMqttMsgThread implements Runnable {
             notifyAccessControlMsg(manufacturerAttrDto, mqttMsgDto);
 
             //todo 通知道闸
-            notifyBarrierMsg(manufacturerAttrDto,mqttMsgDto);
+            notifyBarrierMsg(manufacturerAttrDto, mqttMsgDto);
 
 
 //            if (ManufacturerDto.HM_TYPE_ACCESS_CONTROL.equals(manufacturerAttrDto.getHmType())) {
@@ -77,9 +79,9 @@ public class CustomMqttMsgThread implements Runnable {
     }
 
 
-
     /**
      * 通知门禁信息
+     *
      * @param manufacturerAttrDto
      * @param mqttMsgDto
      */
@@ -123,6 +125,7 @@ public class CustomMqttMsgThread implements Runnable {
 
     /**
      * 通知道闸消息
+     *
      * @param manufacturerAttrDto
      * @param mqttMsgDto
      */
@@ -130,6 +133,18 @@ public class CustomMqttMsgThread implements Runnable {
         if (!HardwareManufacturerDto.HM_TYPE_BARRIER.equals(manufacturerAttrDto.getHmType())) {
             return;
         }
+
+        IMqttNotifyBarrierV1InnerServiceSMO mqttNotifyBarrierV1InnerServiceSMOImpl =
+                ApplicationContextFactory.getBean("mqttNotifyBarrierV1InnerServiceSMOImpl",
+                        IMqttNotifyBarrierV1InnerServiceSMO.class);
+        if (mqttNotifyBarrierV1InnerServiceSMOImpl == null) {
+            mqttNotifyBarrierV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(IMqttNotifyBarrierV1InnerServiceSMO.class.getName(),
+                    IMqttNotifyBarrierV1InnerServiceSMO.class);
+        }
+
+        mqttNotifyBarrierV1InnerServiceSMOImpl.mqttMessageArrived(new BarrierResultDto(manufacturerAttrDto.getHmId(), mqttMsgDto.getTopic(), mqttMsgDto.getMsg(), mqttMsgDto.getTaskId()));
+
+
     }
 
 

@@ -74,9 +74,9 @@ public class MqttPushCallback implements MqttCallbackExtended {
         try {
             log.debug("====================================>Topic: " + topic);
             log.debug("=====================================>Message: " + new String(message.getPayload()));
-            //todo  写入到消息队列中
-            MqttQueue.addMsg(topic, new String(message.getPayload()));
             String taskId = GenerateCodeFactory.getUUID();
+            //todo  写入到消息队列中
+            MqttQueue.addMsg(topic, new String(message.getPayload()),taskId);
             MqttLogFactory.saveReceiveLog(taskId, topic, new String(message.getPayload()));
 
         } catch (Exception e) {
