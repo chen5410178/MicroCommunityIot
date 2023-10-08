@@ -66,5 +66,5 @@ public interface IEventObjectV1InnerServiceSMO {
     int queryEventObjectsCount(@RequestBody EventObjectDto eventObjectDto);
 
     @RequestMapping(value = "/saveEventObjectList", method = RequestMethod.POST)
-    int saveEventObjectList(List<EventObjectPo> eventObjectPoList);
+    int saveEventObjectList(@RequestBody List<EventObjectPo> eventObjectPoList);
 }

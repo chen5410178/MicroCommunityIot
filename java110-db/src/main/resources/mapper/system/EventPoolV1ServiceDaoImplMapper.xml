@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eventPoolV1ServiceDaoImpl">
+
+
+    <!-- 保存事件信息 add by wuxw 2018-07-03 -->
+    <insert id="saveEventPoolInfo" parameterType="Map">
+        insert into event_pool(event_id, remark, event_type, event_msg, from_type, from_name, object_name, state,
+                               rule_id, community_id, obj_type, object_id)
+        values (#{eventId}, #{remark}, #{eventType}, #{eventMsg}, #{fromType}, #{fromName}, #{objectName}, #{state},
+                #{ruleId}, #{communityId}, #{objType}, #{objectId})
+    </insert>
+
+
+    <!-- 查询事件信息 add by wuxw 2018-07-03 -->
+    <select id="getEventPoolInfo" parameterType="Map" resultType="Map">
+        select t.event_id,t.event_id eventId,t.remark,t.status_cd,t.status_cd statusCd,t.event_type,t.event_type
+        eventType,t.event_msg,t.event_msg eventMsg,t.from_type,t.from_type fromType,t.from_name,t.from_name
+        fromName,t.object_name,t.object_name objectName,t.state,t.rule_id,t.rule_id ruleId,t.community_id,t.community_id
+        communityId,t.obj_type,t.obj_type objType,t.object_id,t.object_id objectId,er.rule_name ruleName,
+        td.name eventTypeName, td1.name objTypeName
+        from event_pool t
+        left join event_rule er on t.rule_id = er.rule_id
+        left join t_dict td on t.event_type = td.status_cd and td.table_name = 'event_pool' and td.table_columns = 'event_type'
+        left join t_dict td1 on t.obj_type = td1.status_cd and td1.table_name = 'event_object' and td1.table_columns = 'obj_type'
+        where 1 =1 and er.status_cd = '0'
+        <if test="eventId !=null and eventId != ''">
+            and t.event_id= #{eventId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="eventType !=null and eventType != ''">
+            and t.event_type= #{eventType}
+        </if>
+        <if test="eventMsg !=null and eventMsg != ''">
+            and t.event_msg= #{eventMsg}
+        </if>
+        <if test="fromType !=null and fromType != ''">
+            and t.from_type= #{fromType}
+        </if>
+        <if test="fromName !=null and fromName != ''">
+            and t.from_name= #{fromName}
+        </if>
+        <if test="objectName !=null and objectName != ''">
+            and t.object_name= #{objectName}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="ruleId !=null and ruleId != ''">
+            and t.rule_id= #{ruleId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="objType !=null and objType != ''">
+            and t.obj_type= #{objType}
+        </if>
+        <if test="objectId !=null and objectId != ''">
+            and t.object_id= #{objectId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改事件信息 add by wuxw 2018-07-03 -->
+    <update id="updateEventPoolInfo" parameterType="Map">
+        update event_pool t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="eventType !=null and eventType != ''">
+            , t.event_type= #{eventType}
+        </if>
+        <if test="eventMsg !=null and eventMsg != ''">
+            , t.event_msg= #{eventMsg}
+        </if>
+        <if test="fromType !=null and fromType != ''">
+            , t.from_type= #{fromType}
+        </if>
+        <if test="fromName !=null and fromName != ''">
+            , t.from_name= #{fromName}
+        </if>
+        <if test="objectName !=null and objectName != ''">
+            , t.object_name= #{objectName}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="ruleId !=null and ruleId != ''">
+            , t.rule_id= #{ruleId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="objType !=null and objType != ''">
+            , t.obj_type= #{objType}
+        </if>
+        <if test="objectId !=null and objectId != ''">
+            , t.object_id= #{objectId}
+        </if>
+        where 1=1
+        <if test="eventId !=null and eventId != ''">
+            and t.event_id= #{eventId}
+        </if>
+
+    </update>
+
+    <!-- 查询事件数量 add by wuxw 2018-07-03 -->
+    <select id="queryEventPoolsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from event_pool t
+        where 1 =1
+        <if test="eventId !=null and eventId != ''">
+            and t.event_id= #{eventId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="eventType !=null and eventType != ''">
+            and t.event_type= #{eventType}
+        </if>
+        <if test="eventMsg !=null and eventMsg != ''">
+            and t.event_msg= #{eventMsg}
+        </if>
+        <if test="fromType !=null and fromType != ''">
+            and t.from_type= #{fromType}
+        </if>
+        <if test="fromName !=null and fromName != ''">
+            and t.from_name= #{fromName}
+        </if>
+        <if test="objectName !=null and objectName != ''">
+            and t.object_name= #{objectName}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="ruleId !=null and ruleId != ''">
+            and t.rule_id= #{ruleId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="objType !=null and objType != ''">
+            and t.obj_type= #{objType}
+        </if>
+        <if test="objectId !=null and objectId != ''">
+            and t.object_id= #{objectId}
+        </if>
+
+
+    </select>
+
+    <insert id="saveEventPoolInfoList" parameterType="Map">
+        insert into event_pool(event_id, remark, event_type, event_msg, from_type, from_name, object_name, state,
+                               rule_id, community_id, obj_type, object_id)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.eventId}, #{item.remark}, #{item.eventType}, #{item.eventMsg}, #{item.fromType}, #{item.fromName}, #{item.objectName}, #{item.state},
+            #{item.ruleId}, #{item.communityId}, #{item.objType}, #{item.objectId})
+        </foreach>
+    </insert>
+
+</mapper>

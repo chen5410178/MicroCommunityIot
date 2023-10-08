@@ -66,5 +66,5 @@ public interface IEventStaffV1InnerServiceSMO {
     int queryEventStaffsCount(@RequestBody EventStaffDto eventStaffDto);
 
     @RequestMapping(value = "/saveEventStaffList", method = RequestMethod.POST)
-    int saveEventStaffList(List<EventStaffPo> eventStaffPoList);
+    int saveEventStaffList(@RequestBody List<EventStaffPo> eventStaffPoList);
 }

@@ -26,6 +26,15 @@
             vc.on('eventObject', 'listMachine', function () {
                 $that._listEventObjects($that.addEventObjectInfo.ruleId);
             });
+            vc.on('eventPoolManage', 'listMachine', function(_objType){
+                for (var index = 0; index < $that.objTypeList.length; index++) {
+                    if (_objType === $that.objTypeList[index].statusCd) {
+                        $that.serviceCode = $that.objTypeList[index].description;
+                        $that._listIotMachineList();
+                        break;
+                    }
+                }
+            });
         },
         methods:{
             /*_listIotMachineListByMachineName:function(_page,_row){
@@ -111,8 +120,11 @@
                                 $that.iotMachineList.push(_json.data[i]);
                             }
                         }
-                        if ($that.iotMachineList.length === 0) {
-                            vc.toast('该对象类型暂无对应设备或设备已全部绑定该规则');
+                        if ($that.iotMachineList.length === 0 && $that.eventObjectList.length !== 0) {
+                            vc.toast('该对象类型设备已全部绑定该规则');
+                        }
+                        if ($that.iotMachineList.length === 0 && $that.eventObjectList.length === 0) {
+                            vc.toast('该对象类型暂无对应设备,请先添加');
                         }
                     }, function (errInfo, error) {
                         console.log('请求失败处理');
