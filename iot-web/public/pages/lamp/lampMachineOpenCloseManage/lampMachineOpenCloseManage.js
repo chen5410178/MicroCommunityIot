@@ -60,7 +60,6 @@
                 );
             },
             _openAddLampMachineOpenCloseModal: function () {
-                //vc.emit('addLampMachineOpenClose', 'openAddLampMachineOpenCloseModal', {});
                 vc.jumpToPage('/#/pages/lamp/addLampMachineOpenClose');
             },
             _queryLampMachineOpenCloseMethod: function () {

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eventObjectV1ServiceDaoImpl">
+
+
+    <!-- 保存事件对象信息 add by wuxw 2018-07-03 -->
+    <insert id="saveEventObjectInfo" parameterType="Map">
+        insert into event_object(object_name, eo_id, remark, state, rule_id, community_id, obj_type, object_id)
+        values (#{objectName}, #{eoId}, #{remark}, #{state}, #{ruleId}, #{communityId}, #{objType}, #{objectId})
+    </insert>
+
+
+    <!-- 查询事件对象信息 add by wuxw 2018-07-03 -->
+    <select id="getEventObjectInfo" parameterType="Map" resultType="Map">
+        select t.object_name,t.object_name objectName,t.eo_id,t.eo_id eoId,t.remark,t.status_cd,t.status_cd
+        statusCd,t.state,t.rule_id,t.rule_id ruleId,t.community_id,t.community_id communityId,t.obj_type,t.obj_type
+        objType,t.object_id,t.object_id objectId,td.name objTypeName
+        from event_object t
+        left join t_dict td on t.obj_type = td.status_cd and td.table_name = 'event_object' and td.table_columns = 'obj_type'
+        where 1 =1
+        <if test="objectName !=null and objectName != ''">
+            and t.object_name= #{objectName}
+        </if>
+        <if test="eoId !=null and eoId != ''">
+            and t.eo_id= #{eoId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="ruleId !=null and ruleId != ''">
+            and t.rule_id= #{ruleId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="objType !=null and objType != ''">
+            and t.obj_type= #{objType}
+        </if>
+        <if test="objectId !=null and objectId != ''">
+            and t.object_id= #{objectId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改事件对象信息 add by wuxw 2018-07-03 -->
+    <update id="updateEventObjectInfo" parameterType="Map">
+        update event_object t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="objectName !=null and objectName != ''">
+            , t.object_name= #{objectName}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="ruleId !=null and ruleId != ''">
+            , t.rule_id= #{ruleId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="objType !=null and objType != ''">
+            , t.obj_type= #{objType}
+        </if>
+        <if test="objectId !=null and objectId != ''">
+            , t.object_id= #{objectId}
+        </if>
+        where 1=1
+        <if test="eoId !=null and eoId != ''">
+            and t.eo_id= #{eoId}
+        </if>
+
+    </update>
+
+    <!-- 查询事件对象数量 add by wuxw 2018-07-03 -->
+    <select id="queryEventObjectsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from event_object t
+        where 1 =1
+        <if test="objectName !=null and objectName != ''">
+            and t.object_name= #{objectName}
+        </if>
+        <if test="eoId !=null and eoId != ''">
+            and t.eo_id= #{eoId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="ruleId !=null and ruleId != ''">
+            and t.rule_id= #{ruleId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="objType !=null and objType != ''">
+            and t.obj_type= #{objType}
+        </if>
+        <if test="objectId !=null and objectId != ''">
+            and t.object_id= #{objectId}
+        </if>
+    </select>
+
+    <insert id="saveEventObjectList" parameterType="Map">
+        insert into event_object(object_name, eo_id, remark, state, rule_id, community_id, obj_type, object_id)
+        values
+        <foreach collection="list" separator="," item="item">
+            (#{item.objectName}, #{item.eoId}, #{item.remark}, #{item.state}, #{item.ruleId}, #{item.communityId}, #{item.objType}, #{item.objectId})
+        </foreach>
+    </insert>
+
+</mapper>

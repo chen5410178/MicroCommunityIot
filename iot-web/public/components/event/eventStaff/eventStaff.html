@@ -1,0 +1,88 @@
+<div class="margin-top">
+    <div class="row margin-top-lg">
+        <div class="col-lg-12 padding-right-xs padding-right-xl ">
+            <div class="row">
+                <div class="col-sm-3">
+                    <input type="text" :placeholder="vc.i18n('请输入员工名称','eventStaffManage')" v-model="eventStaffInfo.conditions.staffName" class=" form-control">
+                </div>
+                <div class="col-sm-3">
+                    <select class="custom-select" v-model="eventStaffInfo.conditions.state">
+                        <option selected disabled value="">{{vc.i18n('请选择状态','eventStaffManage')}}</option>
+                        <option value="ON">{{vc.i18n('生效','eventStaffManage')}}</option>
+                        <option value="OFF">{{vc.i18n('失效','eventStaffManage')}}</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-primary btn-sm" style="margin-left:10px" v-on:click="_queryEventStaffMethod()">
+                        <vc:i18n name="查询" namespace="eventStaffManage"></vc:i18n>
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetEventStaffMethod()">
+                        <vc:i18n name="重置" namespace="eventStaffManage"></vc:i18n>
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" style="margin-left:10px" v-on:click="_openAddEventStaffModal()">
+                        <vc:i18n name="添加" namespace="eventStaffManage"></vc:i18n>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="margin-top">
+        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <vc:i18n name='编号' namespace='eventStaffManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='员工名称' namespace='eventStaffManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='状态' namespace='eventStaffManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='备注' namespace='eventStaffManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='操作'></vc:i18n>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="eventStaff in eventStaffInfo.eventStaffs">
+                    <td class="text-center">{{eventStaff.esId}}</td>
+                    <td class="text-center">{{eventStaff.staffName}}</td>
+                    <td class="text-center">
+                        <label v-if="eventStaff.state === 'ON'">
+                            {{vc.i18n('已生效','eventStaffManage')}}
+                            (<a href="javascript:void(0)" @click="_changeEventStaffState(eventStaff)">失效</a>)
+                        </label>
+                        <label v-if="eventStaff.state === 'OFF'">
+                            {{vc.i18n('已失效','eventStaffManage')}}
+                            (<a href="javascript:void(0)" @click="_changeEventStaffState(eventStaff)">生效</a>)
+                        </label>
+                    </td>
+                    <td class="text-center">{{eventStaff.remark}}</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <button class="btn-white btn btn-xs" v-on:click="_openDeleteEventStaffModel(eventStaff)">
+                                <vc:i18n name='删除'></vc:i18n>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="7">
+                        <ul class="pagination float-right"></ul>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <!-- 分页 -->
+        <vc:create path="frame/paginationPlus" namespace="eventStaff"></vc:create>
+    </div>
+
+    <vc:create path="event/deleteEventStaff"></vc:create>
+</div>
