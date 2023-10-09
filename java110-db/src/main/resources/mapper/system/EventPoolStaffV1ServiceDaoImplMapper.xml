@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eventPoolStaffV1ServiceDaoImpl">
+
+
+    <!-- 保存事件处理信息 add by wuxw 2018-07-03 -->
+    <insert id="saveEventPoolStaffInfo" parameterType="Map">
+        insert into event_pool_staff(eps_id, event_hours, event_id, staff_name, state, event_result, community_id,
+                                     event_reason, staff_id)
+        values (#{epsId}, #{eventHours}, #{eventId}, #{staffName}, #{state}, #{eventResult}, #{communityId},
+                #{eventReason}, #{staffId})
+    </insert>
+
+
+    <!-- 查询事件处理信息 add by wuxw 2018-07-03 -->
+    <select id="getEventPoolStaffInfo" parameterType="Map" resultType="Map">
+        select t.eps_id,t.eps_id epsId,t.event_hours,t.event_hours eventHours,t.event_id,t.event_id
+        eventId,t.staff_name,t.staff_name staffName,t.status_cd,t.status_cd
+        statusCd,t.state,t.event_result,t.event_result eventResult,t.community_id,t.community_id
+        communityId,t.event_reason,t.event_reason eventReason,t.staff_id,t.staff_id staffId,t.create_time createTime
+        from event_pool_staff t
+        where 1 =1
+        <if test="epsId !=null and epsId != ''">
+            and t.eps_id= #{epsId}
+        </if>
+        <if test="eventHours !=null and eventHours != ''">
+            and t.event_hours= #{eventHours}
+        </if>
+        <if test="eventId !=null and eventId != ''">
+            and t.event_id= #{eventId}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            and t.staff_name= #{staffName}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="eventResult !=null and eventResult != ''">
+            and t.event_result= #{eventResult}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="eventReason !=null and eventReason != ''">
+            and t.event_reason= #{eventReason}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改事件处理信息 add by wuxw 2018-07-03 -->
+    <update id="updateEventPoolStaffInfo" parameterType="Map">
+        update event_pool_staff t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="eventHours !=null and eventHours != ''">
+            , t.event_hours= #{eventHours}
+        </if>
+        <if test="eventId !=null and eventId != ''">
+            , t.event_id= #{eventId}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            , t.staff_name= #{staffName}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="eventResult !=null and eventResult != ''">
+            , t.event_result= #{eventResult}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="eventReason !=null and eventReason != ''">
+            , t.event_reason= #{eventReason}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            , t.staff_id= #{staffId}
+        </if>
+        where 1=1
+        <if test="epsId !=null and epsId != ''">
+            and t.eps_id= #{epsId}
+        </if>
+
+    </update>
+
+    <!-- 查询事件处理数量 add by wuxw 2018-07-03 -->
+    <select id="queryEventPoolStaffsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from event_pool_staff t
+        where 1 =1
+        <if test="epsId !=null and epsId != ''">
+            and t.eps_id= #{epsId}
+        </if>
+        <if test="eventHours !=null and eventHours != ''">
+            and t.event_hours= #{eventHours}
+        </if>
+        <if test="eventId !=null and eventId != ''">
+            and t.event_id= #{eventId}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            and t.staff_name= #{staffName}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="eventResult !=null and eventResult != ''">
+            and t.event_result= #{eventResult}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="eventReason !=null and eventReason != ''">
+            and t.event_reason= #{eventReason}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+
+
+    </select>
+
+</mapper>

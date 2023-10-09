@@ -42,6 +42,10 @@
             vc.on('pagination', 'page_event', function (_currentPage) {
                 $that._listEventPools(_currentPage, DEFAULT_ROWS);
             });
+            vc.on('eventPoolManage', 'addEventPoolStaffSuccess', function (_eventId) {
+                debugger
+                $that._updateEventState(_eventId);
+            });
         },
         methods: {
             _listEventPools: function (_page, _rows) {
@@ -72,6 +76,9 @@
             },
             _openAddEventPoolModal: function () {
                 vc.jumpToPage('/#/pages/event/addEventPoolManage');
+            },
+            _openAddEventPoolStaffModal: function (_eventPool) {
+                vc.emit('addEventPoolStaff', 'openAddEventPoolStaffModal', _eventPool);
             },
             _openDeleteEventPoolModel: function (_eventPool) {
                 vc.emit('deleteEventPool', 'openDeleteEventPoolModal', _eventPool);
@@ -115,6 +122,31 @@
                         console.log('请求失败处理');
                     }
                 );
+            },
+            _updateEventState: function (_eventId) {
+                var event = {
+                    eventId: _eventId,
+                    state: 'D'
+                }
+                vc.http.apiPost(
+                    '/eventPool.updateEventPool',
+                    JSON.stringify(event),
+                    {
+                        emulateJSON:true
+                    },
+                    function(json,res){
+                        let _json = JSON.parse(json);
+                        if (_json.code === 0) {
+                            vc.toast("分配成功,事件正在处理中");
+                            $that._listEventPools(DEFAULT_PAGE, DEFAULT_ROWS);
+                            return ;
+                        }
+                        vc.toast(_json.msg);
+                    },
+                    function(errInfo,error){
+                        console.log('请求失败处理');
+                        vc.toast(errInfo);
+                    });
             },
         }
     });
