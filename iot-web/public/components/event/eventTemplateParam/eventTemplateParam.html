@@ -32,7 +32,11 @@
                 <tr v-for="eventTemplateParam in eventTemplateParamInfo.eventTemplateParams">
                     <td class="text-center">{{eventTemplateParam.paramId}}</td>
                     <td class="text-center">{{eventTemplateParam.specCd}}</td>
-                    <td class="text-center">{{eventTemplateParam.paramValue}}</td>
+                    <td class="text-center">
+                        <button class="btn-white btn btn-xs" v-on:click="_openModel(eventTemplateParam.paramValue, '参数值')">
+                            <vc:i18n name='查看'></vc:i18n>
+                        </button>
+                    </td>
                     <td class="text-center">
                         <div class="btn-group">
                             <button class="btn-white btn btn-xs"
@@ -64,4 +68,5 @@
     <vc:create path="event/addEventTemplateParam" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="event/editEventTemplateParam"></vc:create>
     <vc:create path="event/deleteEventTemplateParam"></vc:create>
+    <vc:create path="event/viewData"></vc:create>
 </div>

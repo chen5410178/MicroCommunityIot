@@ -53,7 +53,7 @@
                     <td class="text-center">{{eventStaff.staffName}}</td>
                     <td class="text-center">
                         <label v-if="eventStaff.state === 'ON'">
-                            {{vc.i18n('已生效','eventStaffManage')}}
+                            {{vc.i18n('生效中','eventStaffManage')}}
                             (<a href="javascript:void(0)" @click="_changeEventStaffState(eventStaff)">失效</a>)
                         </label>
                         <label v-if="eventStaff.state === 'OFF'">
@@ -61,7 +61,11 @@
                             (<a href="javascript:void(0)" @click="_changeEventStaffState(eventStaff)">生效</a>)
                         </label>
                     </td>
-                    <td class="text-center">{{eventStaff.remark}}</td>
+                    <td class="text-center">
+                        <button class="btn-white btn btn-xs" v-on:click="_openModel(eventStaff.remark, '备注')">
+                            <vc:i18n name='查看'></vc:i18n>
+                        </button>
+                    </td>
                     <td class="text-center">
                         <div class="btn-group">
                             <button class="btn-white btn btn-xs" v-on:click="_openDeleteEventStaffModel(eventStaff)">
@@ -85,4 +89,5 @@
     </div>
 
     <vc:create path="event/deleteEventStaff"></vc:create>
+    <vc:create path="event/viewData"></vc:create>
 </div>

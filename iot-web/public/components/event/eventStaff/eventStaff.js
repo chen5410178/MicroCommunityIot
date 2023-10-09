@@ -97,6 +97,12 @@
                         vc.toast(errInfo);
                     });
             },
+            _openModel: function (_data, _title) {
+                vc.emit('viewData', 'openEventViewDataModal', {
+                    title: _title,
+                    data: _data
+                });
+            },
         }
     });
 })(window.vc);

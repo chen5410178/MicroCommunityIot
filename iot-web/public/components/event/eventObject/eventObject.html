@@ -73,7 +73,11 @@
                             (<a href="javascript:void(0)" @click="_changeEventObjectState(eventObject)">生效</a>)
                         </label>
                     </td>
-                    <td class="text-center">{{eventObject.remark}}</td>
+                    <td class="text-center">
+                        <button class="btn-white btn btn-xs" v-on:click="_openModel(eventObject.remark, '备注')">
+                            <vc:i18n name='查看'></vc:i18n>
+                        </button>
+                    </td>
                     <td class="text-center">
                         <div class="btn-group">
                             <button class="btn-white btn btn-xs" v-on:click="_openDeleteEventObjectModel(eventObject)">
@@ -97,4 +101,5 @@
     </div>
 
     <vc:create path="event/deleteEventObject"></vc:create>
+    <vc:create path="event/viewData"></vc:create>
 </div>

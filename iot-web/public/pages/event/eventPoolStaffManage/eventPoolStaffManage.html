@@ -75,8 +75,16 @@
                             <tr v-for="eventPoolStaff in eventPoolStaffManageInfo.eventPoolStaffs">
                                 <td class="text-center">{{eventPoolStaff.epsId}}</td>
                                 <td class="text-center">{{eventPoolStaff.eventId}}</td>
-                                <td class="text-center">{{eventPoolStaff.eventReason}}</td>
-                                <td class="text-center">{{eventPoolStaff.eventResult}}</td>
+                                <td class="text-center">
+                                    <button class="btn-white btn btn-xs" v-on:click="_openModel(eventPoolStaff.eventReason, '事故原因')">
+                                        <vc:i18n name='查看'></vc:i18n>
+                                    </button>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn-white btn btn-xs" v-on:click="_openModel(eventPoolStaff.eventResult, '处理方案')">
+                                        <vc:i18n name='查看'></vc:i18n>
+                                    </button>
+                                </td>
                                 <td class="text-center">{{eventPoolStaff.eventHours}}h</td>
                                 <td class="text-center">{{eventPoolStaff.createTime}}</td>
                                 <td class="text-center">
@@ -108,4 +116,7 @@
             </div>
         </div>
     </div>
+
+    <vc:create path="event/viewData"></vc:create>
+
 </div>

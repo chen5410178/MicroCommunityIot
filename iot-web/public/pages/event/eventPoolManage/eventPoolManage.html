@@ -143,7 +143,11 @@
                                 <td class="text-center">{{eventPool.eventId}}</td>
                                 <td class="text-center">{{eventPool.ruleName}}</td>
                                 <td class="text-center">{{eventPool.eventTypeName}}</td>
-                                <td class="text-center">{{eventPool.eventMsg}}</td>
+                                <td class="text-center">
+                                    <button class="btn-white btn btn-xs" v-on:click="_openModel(eventPool.eventMsg, '事件描述')">
+                                        <vc:i18n name='查看'></vc:i18n>
+                                    </button>
+                                </td>
                                 <td class="text-center">{{eventPool.objTypeName}}</td>
                                 <td class="text-center">{{eventPool.objectName}}</td>
                                 <td class="text-center">
@@ -157,7 +161,11 @@
                                     <label v-if="eventPool.state === 'TC'">{{vc.i18n('超时处理完成','eventPoolManage')}}</label>
                                     <label v-if="eventPool.state === 'D'">{{vc.i18n('处理中','eventPoolManage')}}</label>
                                 </td>
-                                <td class="text-center">{{eventPool.remark}}</td>
+                                <td class="text-center">
+                                    <button class="btn-white btn btn-xs" v-on:click="_openModel(eventPool.remark, '备注')">
+                                        <vc:i18n name='查看'></vc:i18n>
+                                    </button>
+                                </td>
                                 <td class="text-center">
                                     <div class="btn-group" v-if="eventPool.state === 'W'">
                                         <button class="btn-white btn btn-xs" v-on:click="_openAddEventPoolStaffModal(eventPool)">
@@ -189,5 +197,6 @@
 
     <vc:create path="event/deleteEventPool"></vc:create>
     <vc:create path="event/addEventPoolStaff" callBackListener="" callBackFunction=""></vc:create>
+    <vc:create path="event/viewData"></vc:create>
 
 </div>

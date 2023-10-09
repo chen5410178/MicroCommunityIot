@@ -35,8 +35,7 @@
                                     <vc:i18n name='备注' namespace='addEventTemplate'></vc:i18n>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input v-model="addEventTemplateInfo.remark" type="text"
-                                        :placeholder="vc.i18n('选填，请填写备注','addEventTemplate')" class="form-control">
+                                    <textarea v-model="addEventTemplateInfo.remark" :placeholder="vc.i18n('选填，请填写备注','addEventTemplate')" class="form-control" rows="3"></textarea>
                                 </div>
                             </div>
                             <div class="ibox-content">
