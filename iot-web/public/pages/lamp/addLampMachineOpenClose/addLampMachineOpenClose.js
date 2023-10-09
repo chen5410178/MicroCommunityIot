@@ -10,6 +10,7 @@
                 min: '',
             },
             typeList: [],
+            lampNameOnlyView: '',
         },
         _initMethod: function () {
             vc.getDict('lamp_machine_operation', 'type', function (_data) {
@@ -21,7 +22,11 @@
                 $('#addLampMachineOpenCloseModel').modal('show');
             });
             vc.on('', 'listLampMachineData', function (_data) {
-                $that.addLampMachineOpenCloseInfo.machineIdList = _data;
+                _data.map(lampMachine =>{
+                    $that.addLampMachineOpenCloseInfo.machineIdList.push(lampMachine.machineId);
+                    $that.lampNameOnlyView += lampMachine.machineName + '\r\n';
+                })
+                //$that.addLampMachineOpenCloseInfo.machineIdList = _data;
             })
         },
         methods: {
@@ -34,26 +39,51 @@
                             limit: "required",
                             param: "",
                             errInfo: "类型不能为空"
-                        },
-                        {
-                            limit: "maxLength",
-                            param: "12",
-                            errInfo: "类型不能超过12"
-                        },
+                        }
                     ],
                     'addLampMachineOpenCloseInfo.hours': [
                         {
                             limit: "required",
                             param: "",
                             errInfo: "小时不能为空"
-                        }
+                        },
+                        {
+                            limit: "max",
+                            param: "23",
+                            errInfo: "小时不能超过23"
+                        },
+                        {
+                            limit: "min",
+                            param: "0",
+                            errInfo: "小时不能低于0"
+                        },
+                        {
+                            limit: "num",
+                            param: "",
+                            errInfo: "小时必须为整数"
+                        },
                     ],
                     'addLampMachineOpenCloseInfo.min': [
                         {
                             limit: "required",
                             param: "",
                             errInfo: "分钟不能为空"
-                        }
+                        },
+                        {
+                            limit: "max",
+                            param: "59",
+                            errInfo: "分钟不能超过59"
+                        },
+                        {
+                            limit: "min",
+                            param: "0",
+                            errInfo: "分钟不能低于0"
+                        },
+                        {
+                            limit: "num",
+                            param: "",
+                            errInfo: "分钟必须为整数"
+                        },
                     ],
                     'addLampMachineOpenCloseInfo.machineIdList': [
                         {
@@ -100,6 +130,8 @@
                 };
             },
             selectLampMachine: function () {
+                $that.lampNameOnlyView = '';
+                $that.addLampMachineOpenCloseInfo.machineIdList = [];
                 vc.emit('chooseLampMachine', 'openChooseLampMachineModel', {});
             },
         }

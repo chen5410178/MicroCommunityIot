@@ -83,13 +83,9 @@ public class SaveLampMachineOpenCloseCmd extends Cmd {
             lampMachineOpenClosePo.setLmoId(GenerateCodeFactory.getGeneratorId("10"));
             lampMachineOpenClosePo.setMachineId(machineId);
             lampMachineOpenClosePoList.add(lampMachineOpenClosePo);
-            /*int flag = lampMachineOpenCloseV1InnerServiceSMOImpl.saveLampMachineOpenClose(lampMachineOpenClosePo);
-            if (flag < 1) {
-                throw new CmdException("保存数据失败");
-            }*/
         }
         int flag = lampMachineOpenCloseV1InnerServiceSMOImpl.saveLampMachineOpenCloseList(lampMachineOpenClosePoList);
-        if (flag < lampMachineOpenClosePoList.size()) {
+        if (flag != lampMachineOpenClosePoList.size()) {
             throw new CmdException("保存数据失败");
         }
 

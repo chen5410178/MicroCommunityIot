@@ -62,8 +62,8 @@
                                     <tbody>
                                         <tr v-for="lampMachine in chooseLampMachineInfo.lampMachines">
                                             <td class="text-center">
-                                                <input type="checkbox" class="i-checks checkItem" v-bind:value="lampMachine.machineId"
-                                                    v-model="chooseLampMachineInfo.selectLampMachineIdList">
+                                                <input type="checkbox" class="i-checks checkItem" v-bind:value="lampMachine"
+                                                    v-model="chooseLampMachineInfo.selectLampMachineList">
                                             </td>
                                             <td class="text-center">{{lampMachine.machineName}}</td>
                                             <td class="text-center">{{lampMachine.machineCode}}</td>

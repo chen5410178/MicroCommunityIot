@@ -7,7 +7,7 @@
         data:{
             chooseLampMachineInfo:{
                 lampMachines:[],
-                selectLampMachineIdList: [],
+                selectLampMachineList: [],
                 _currentLampMachineName:'',
                 _currentLampMachineCode:'',
                 _currentLampLocationName:'',
@@ -59,20 +59,20 @@
                 $that.chooseLampMachineInfo._currentLampLocationName = "";
             },
             selectAll: function (e) {
-                var _selectLampMachineIdList = $that.chooseLampMachineInfo.selectLampMachineIdList;
+                var _selectLampMachineList = $that.chooseLampMachineInfo.selectLampMachineList;
                 var checkObj = document.querySelectorAll('.checkItem'); // 获取所有checkbox项
                 if (e.target.checked) { // 判定全选checkbox的勾选状态
                     for (var i = 0; i < checkObj.length; i++) {
                         if (!checkObj[i].checked) { // 将未勾选的checkbox选项push到绑定数组中
-                            $that.chooseLampMachineInfo.selectLampMachineIdList.push(checkObj[i].value);
+                            $that.chooseLampMachineInfo.selectLampMachineList.push(checkObj[i]._value);
                         }
                     }
                 } else { // 如果是去掉全选则清空checkbox选项绑定数组
-                    $that.chooseLampMachineInfo.selectLampMachineIdList = [];
+                    $that.chooseLampMachineInfo.selectLampMachineList = [];
                 }
             },
             _submitSelectLampMachine: function () {
-                vc.emit($props.emitLoadData,'listLampMachineData', $that.chooseLampMachineInfo.selectLampMachineIdList);
+                vc.emit($props.emitLoadData,'listLampMachineData', $that.chooseLampMachineInfo.selectLampMachineList);
                 $('#chooseLampMachineModel').modal('hide');
             },
         }
