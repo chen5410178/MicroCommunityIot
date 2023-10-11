@@ -21,6 +21,7 @@ public class LiftMachineReservationDto extends PageDto implements Serializable {
 
     private String resWayName;
     private String personWayName;
+    private String machineName;
 
     public String getLmrId() {
         return lmrId;
@@ -132,5 +133,13 @@ public class LiftMachineReservationDto extends PageDto implements Serializable {
 
     public void setPersonWayName(String personWayName) {
         this.personWayName = personWayName;
+    }
+
+    public String getMachineName() {
+        return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
     }
 }

@@ -84,7 +84,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <vc:i18n name='设备ID' namespace='liftMachineReservationManage'></vc:i18n>
+                                    <vc:i18n name='设备名称' namespace='liftMachineReservationManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
                                     <vc:i18n name='预约方式' namespace='liftMachineReservationManage'></vc:i18n>
@@ -112,7 +112,7 @@
                         <tbody>
                             <tr
                                 v-for="liftMachineReservation in liftMachineReservationManageInfo.liftMachineReservations">
-                                <td class="text-center">{{liftMachineReservation.machineId}}</td>
+                                <td class="text-center">{{liftMachineReservation.machineName}}</td>
                                 <td class="text-center">{{liftMachineReservation.resWayName}}</td>
                                 <td class="text-center">{{liftMachineReservation.roomName}}</td>
                                 <td class="text-center">{{liftMachineReservation.personName}}</td>
