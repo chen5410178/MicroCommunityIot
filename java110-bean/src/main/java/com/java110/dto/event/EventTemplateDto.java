@@ -4,6 +4,7 @@ import com.java110.bean.dto.PageDto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class EventTemplateDto extends PageDto implements Serializable {
     private String templateId;
@@ -13,6 +14,9 @@ public class EventTemplateDto extends PageDto implements Serializable {
     private String remark;
     private Date createTime;
     private String statusCd = "0";
+
+    private String eventWayName;
+    private List<EventTemplateParamDto> eventTemplateParamDtoList;
 
     public String getTemplateId() {
         return templateId;
@@ -68,5 +72,21 @@ public class EventTemplateDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getEventWayName() {
+        return eventWayName;
+    }
+
+    public void setEventWayName(String eventWayName) {
+        this.eventWayName = eventWayName;
+    }
+
+    public List<EventTemplateParamDto> getEventTemplateParamDtoList() {
+        return eventTemplateParamDtoList;
+    }
+
+    public void setEventTemplateParamDtoList(List<EventTemplateParamDto> eventTemplateParamDtoList) {
+        this.eventTemplateParamDtoList = eventTemplateParamDtoList;
     }
 }

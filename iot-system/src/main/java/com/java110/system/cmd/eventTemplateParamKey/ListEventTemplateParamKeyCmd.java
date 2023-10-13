@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.system.cmd.eventTemplateParam;
+package com.java110.system.cmd.eventTemplateParamKey;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
-import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
-import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BeanConvertUtil;
-import com.java110.dto.event.EventTemplateParamDto;
-import com.java110.intf.system.IEventTemplateParamV1InnerServiceSMO;
+import com.java110.dto.event.EventTemplateParamKeyDto;
+import com.java110.intf.system.IEventTemplateParamKeyV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -40,20 +38,20 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 类表述：查询
- * 服务编码：eventTemplateParam.listEventTemplateParam
- * 请求路劲：/app/eventTemplateParam.ListEventTemplateParam
- * add by 吴学文 at 2023-09-27 10:09:26 mail: 928255095@qq.com
+ * 服务编码：eventTemplateParamKey.listEventTemplateParamKey
+ * 请求路劲：/app/eventTemplateParamKey.ListEventTemplateParamKey
+ * add by 吴学文 at 2023-10-12 09:37:58 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
-@Java110Cmd(serviceCode = "eventTemplateParam.listEventTemplateParam")
-public class ListEventTemplateParamCmd extends Cmd {
+@Java110Cmd(serviceCode = "eventTemplateParamKey.listEventTemplateParamKey")
+public class ListEventTemplateParamKeyCmd extends Cmd {
 
-    private static Logger logger = LoggerFactory.getLogger(ListEventTemplateParamCmd.class);
+    private static Logger logger = LoggerFactory.getLogger(ListEventTemplateParamKeyCmd.class);
     @Autowired
-    private IEventTemplateParamV1InnerServiceSMO eventTemplateParamV1InnerServiceSMOImpl;
+    private IEventTemplateParamKeyV1InnerServiceSMO eventTemplateParamKeyV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
@@ -63,19 +61,19 @@ public class ListEventTemplateParamCmd extends Cmd {
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        EventTemplateParamDto eventTemplateParamDto = BeanConvertUtil.covertBean(reqJson, EventTemplateParamDto.class);
+        EventTemplateParamKeyDto eventTemplateParamKeyDto = BeanConvertUtil.covertBean(reqJson, EventTemplateParamKeyDto.class);
 
-        int count = eventTemplateParamV1InnerServiceSMOImpl.queryEventTemplateParamsCount(eventTemplateParamDto);
+        int count = eventTemplateParamKeyV1InnerServiceSMOImpl.queryEventTemplateParamKeysCount(eventTemplateParamKeyDto);
 
-        List<EventTemplateParamDto> eventTemplateParamDtos = null;
+        List<EventTemplateParamKeyDto> eventTemplateParamKeyDtos = null;
 
         if (count > 0) {
-            eventTemplateParamDtos = eventTemplateParamV1InnerServiceSMOImpl.queryEventTemplateParams(eventTemplateParamDto);
+            eventTemplateParamKeyDtos = eventTemplateParamKeyV1InnerServiceSMOImpl.queryEventTemplateParamKeys(eventTemplateParamKeyDto);
         } else {
-            eventTemplateParamDtos = new ArrayList<>();
+            eventTemplateParamKeyDtos = new ArrayList<>();
         }
 
-        ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, eventTemplateParamDtos);
+        ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, eventTemplateParamKeyDtos);
 
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 

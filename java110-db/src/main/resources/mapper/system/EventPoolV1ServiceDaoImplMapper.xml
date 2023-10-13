@@ -19,13 +19,14 @@
         select t.event_id,t.event_id eventId,t.remark,t.status_cd,t.status_cd statusCd,t.event_type,t.event_type
         eventType,t.event_msg,t.event_msg eventMsg,t.from_type,t.from_type fromType,t.from_name,t.from_name
         fromName,t.object_name,t.object_name objectName,t.state,t.rule_id,t.rule_id ruleId,t.community_id,t.community_id
-        communityId,t.obj_type,t.obj_type objType,t.object_id,t.object_id objectId,er.rule_name ruleName,
+        communityId,t.obj_type,t.obj_type objType,t.object_id,t.object_id objectId,t.create_time createTime,er.rule_name ruleName,
         td.name eventTypeName, td1.name objTypeName
         from event_pool t
         left join event_rule er on t.rule_id = er.rule_id
+        left join event_template et on er.template_id = et.template_id
         left join t_dict td on t.event_type = td.status_cd and td.table_name = 'event_pool' and td.table_columns = 'event_type'
         left join t_dict td1 on t.obj_type = td1.status_cd and td1.table_name = 'event_object' and td1.table_columns = 'obj_type'
-        where 1 =1 and er.status_cd = '0'
+        where 1 =1 and er.status_cd = '0' and et.status_cd = '0'
         <if test="eventId !=null and eventId != ''">
             and t.event_id= #{eventId}
         </if>

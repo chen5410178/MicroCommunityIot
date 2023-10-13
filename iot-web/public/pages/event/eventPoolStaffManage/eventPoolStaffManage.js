@@ -72,27 +72,7 @@
                 $that._listEventPoolStaffs(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _acceptEvent: function (_eventPoolStaff) {
-                _eventPoolStaff.state = 'D';
-
-                vc.http.apiPost(
-                    '/eventPoolStaff.updateEventPoolStaff',
-                    JSON.stringify(_eventPoolStaff),
-                    {
-                        emulateJSON:true
-                    },
-                    function(json,res){
-                        let _json = JSON.parse(json);
-                        if (_json.code === 0) {
-                            $that._listEventPoolStaffs(DEFAULT_PAGE, DEFAULT_ROWS);
-                            vc.toast('已接受分配事件,请尽快处理');
-                            return ;
-                        }
-                        vc.toast(_json.msg);
-                    },
-                    function(errInfo,error){
-                        console.log('请求失败处理');
-                        vc.toast(errInfo);
-                    });
+                vc.emit('editEventPoolStaff', 'openEditEventPoolStaffModal', _eventPoolStaff);
             },
             _openModel: function (_data, _title) {
                 vc.emit('viewData', 'openEventViewDataModal', {

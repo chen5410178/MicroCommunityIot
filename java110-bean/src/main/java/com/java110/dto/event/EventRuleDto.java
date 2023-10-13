@@ -8,6 +8,7 @@ import java.util.Date;
 public class EventRuleDto extends PageDto implements Serializable {
     private String ruleId;
     private String ruleName;
+    private Integer limitTime;
     private String templateId;
     private String communityId;
     private String remark;
@@ -68,5 +69,13 @@ public class EventRuleDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public Integer getLimitTime() {
+        return limitTime;
+    }
+
+    public void setLimitTime(Integer limitTime) {
+        this.limitTime = limitTime;
     }
 }

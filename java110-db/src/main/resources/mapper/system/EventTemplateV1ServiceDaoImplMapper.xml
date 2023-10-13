@@ -11,16 +11,51 @@
         values (#{templateName}, #{eventWay}, #{remark}, #{templateId}, #{communityId})
     </insert>
 
+    <resultMap id="resultMap" type="com.java110.dto.event.EventTemplateDto">
+        <id column="templateId" property="templateId"/>
+        <result column="templateName" property="templateName"/>
+        <result column="eventWay" property="eventWay"/>
+        <result column="communityId" property="communityId"/>
+        <result column="remark" property="remark"/>
+        <result column="createTime" property="createTime"/>
+        <result column="statusCd" property="statusCd"/>
+        <result column="eventWayName" property="eventWayName"/>
+        <collection property="eventTemplateParamDtoList"
+                    ofType="com.java110.dto.event.EventTemplateParamDto"
+                    javaType="java.util.ArrayList">
+            <id column="paramId" property="paramId"/>
+            <result column="templateId" property="templateId"/>
+            <result column="specCd" property="specCd"/>
+            <result column="paramValue" property="paramValue"/>
+            <result column="communityId" property="communityId"/>
+            <result column="createTime" property="createTime"/>
+            <result column="statusCd" property="statusCd"/>
+        </collection>
+    </resultMap>
 
-    <!-- 查询事件模板信息 add by wuxw 2018-07-03 -->
-    <select id="getEventTemplateInfo" parameterType="Map" resultType="Map">
-        select t.template_name,t.template_name templateName,t.event_way,t.event_way
-        eventWay,t.remark,t.status_cd,t.status_cd statusCd,t.template_id,t.template_id
-        templateId,t.community_id,t.community_id communityId
+    <select id="getEventTemplateInfo" parameterType="Map" resultMap="resultMap">
+        select
+        t.template_id templateId,
+        t.template_name templateName,
+        t.event_way eventWay,
+        t.community_id communityId,
+        t.remark,
+        t.create_time createTime,
+        t.status_cd statusCd,
+        etp.param_id paramId,
+        etp.template_id templateId,
+        etp.spec_cd specCd,
+        etp.param_value paramValue,
+        etp.community_id communityId,
+        etp.create_time createTime,
+        etp.status_cd statusCd,
+        td.name eventWayName
         from event_template t
-        where 1 =1
+        left join t_dict td on t.event_way = td.status_cd and td.table_name = 'event_template' and td.table_columns = 'event_way'
+        left join event_template_param etp on t.template_id = etp.template_id
+        where 1 =1 and etp.status_cd = '0'
         <if test="templateName !=null and templateName != ''">
-            and t.template_name= #{templateName}
+            and t.template_name like concat('%', #{templateName}, '%')
         </if>
         <if test="eventWay !=null and eventWay != ''">
             and t.event_way= #{eventWay}
@@ -76,7 +111,7 @@
         from event_template t
         where 1 =1
         <if test="templateName !=null and templateName != ''">
-            and t.template_name= #{templateName}
+            and t.template_name like concat('%', #{templateName}, '%')
         </if>
         <if test="eventWay !=null and eventWay != ''">
             and t.event_way= #{eventWay}

@@ -25,11 +25,17 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.event.EventPoolDto;
+import com.java110.dto.event.EventRuleDto;
 import com.java110.intf.system.IEventPoolV1InnerServiceSMO;
+import com.java110.intf.system.IEventRuleV1InnerServiceSMO;
 import com.java110.po.event.EventPoolPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -51,9 +57,25 @@ public class UpdateEventPoolCmd extends Cmd {
     @Autowired
     private IEventPoolV1InnerServiceSMO eventPoolV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IEventRuleV1InnerServiceSMO eventRuleV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "eventId", "eventId不能为空");
+        Assert.hasKeyAndValue(reqJson, "ruleId", "ruleId不能为空");
+        if (EventPoolDto.EVENT_STATE_DOING.equals(reqJson.getString("state"))) {
+            EventRuleDto eventRuleDto = new EventRuleDto();
+            eventRuleDto.setRuleId(reqJson.getString("ruleId"));
+            List<EventRuleDto> eventRuleDtoList = eventRuleV1InnerServiceSMOImpl.queryEventRules(eventRuleDto);
+
+            long dealTime = (new Date().getTime() - reqJson.getDate("createTime").getTime()) / (1000 * 60);
+            if (eventRuleDtoList.get(0).getLimitTime() < dealTime) {
+                reqJson.put("state", "TC");
+            } else {
+                reqJson.put("state", "NC");
+            }
+        }
     }
 
     @Override

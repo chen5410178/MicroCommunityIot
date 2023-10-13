@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eventTemplateParamKeyV1ServiceDaoImpl">
+
+
+    <!-- 保存通知模板参数规格信息 add by wuxw 2018-07-03 -->
+    <insert id="saveEventTemplateParamKeyInfo" parameterType="Map">
+        insert into event_template_param_key(spec_name, event_way, key_id, spec_cd, remark)
+        values (#{specName}, #{eventWay}, #{keyId}, #{specCd}, #{remark})
+    </insert>
+
+
+    <!-- 查询通知模板参数规格信息 add by wuxw 2018-07-03 -->
+    <select id="getEventTemplateParamKeyInfo" parameterType="Map" resultType="Map">
+        select t.spec_name,t.spec_name specName,t.event_way,t.event_way eventWay,t.key_id,t.key_id
+        keyId,t.spec_cd,t.spec_cd specCd,t.remark,t.status_cd,t.status_cd statusCd
+        from event_template_param_key t
+        where 1 =1
+        <if test="specName !=null and specName != ''">
+            and t.spec_name= #{specName}
+        </if>
+        <if test="eventWay !=null and eventWay != ''">
+            and t.event_way= #{eventWay}
+        </if>
+        <if test="keyId !=null and keyId != ''">
+            and t.key_id= #{keyId}
+        </if>
+        <if test="specCd !=null and specCd != ''">
+            and t.spec_cd= #{specCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改通知模板参数规格信息 add by wuxw 2018-07-03 -->
+    <update id="updateEventTemplateParamKeyInfo" parameterType="Map">
+        update event_template_param_key t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="specName !=null and specName != ''">
+            , t.spec_name= #{specName}
+        </if>
+        <if test="eventWay !=null and eventWay != ''">
+            , t.event_way= #{eventWay}
+        </if>
+        <if test="specCd !=null and specCd != ''">
+            , t.spec_cd= #{specCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        where 1=1
+        <if test="keyId !=null and keyId != ''">
+            and t.key_id= #{keyId}
+        </if>
+
+    </update>
+
+    <!-- 查询通知模板参数规格数量 add by wuxw 2018-07-03 -->
+    <select id="queryEventTemplateParamKeysCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from event_template_param_key t
+        where 1 =1
+        <if test="specName !=null and specName != ''">
+            and t.spec_name= #{specName}
+        </if>
+        <if test="eventWay !=null and eventWay != ''">
+            and t.event_way= #{eventWay}
+        </if>
+        <if test="keyId !=null and keyId != ''">
+            and t.key_id= #{keyId}
+        </if>
+        <if test="specCd !=null and specCd != ''">
+            and t.spec_cd= #{specCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+
+
+    </select>
+
+</mapper>

@@ -107,5 +107,27 @@ public class EventTemplateParamV1ServiceDaoImpl extends BaseServiceDao implement
         return Integer.parseInt(businessEventTemplateParamInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public int saveEventTemplateParamList(List<Map<String, Object>> info) throws DAOException {
+        logger.debug("保存 saveEventTemplateParamList 入参 info : {}", info);
+
+        int saveFlag = sqlSessionTemplate.insert("eventTemplateParamV1ServiceDaoImpl.saveEventTemplateParamList", info);
+
+        return saveFlag;
+    }
+
+    @Override
+    public int updateEventTemplateParamList(List<Map<String, Object>> info) throws DAOException {
+        logger.debug("修改 updateEventTemplateParamList 入参 info : {}", info);
+
+        int saveFlag = 0;
+
+        for (Map<String, Object> map : info) {
+            sqlSessionTemplate.update("eventTemplateParamV1ServiceDaoImpl.updateEventTemplateParamInfo", map);
+            saveFlag ++;
+        }
+
+        return saveFlag;
+    }
 
 }

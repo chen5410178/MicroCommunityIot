@@ -76,16 +76,18 @@
                                 <td class="text-center">{{eventPoolStaff.epsId}}</td>
                                 <td class="text-center">{{eventPoolStaff.eventId}}</td>
                                 <td class="text-center">
-                                    <button class="btn-white btn btn-xs" v-on:click="_openModel(eventPoolStaff.eventReason, '事故原因')">
+                                    <button class="btn-white btn btn-xs" v-on:click="_openModel(eventPoolStaff.eventReason, '事故原因')"  v-if="eventPoolStaff.eventReason">
                                         <vc:i18n name='查看'></vc:i18n>
                                     </button>
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn-white btn btn-xs" v-on:click="_openModel(eventPoolStaff.eventResult, '处理方案')">
+                                    <button class="btn-white btn btn-xs" v-on:click="_openModel(eventPoolStaff.eventResult, '处理方案')" v-if="eventPoolStaff.eventResult">
                                         <vc:i18n name='查看'></vc:i18n>
                                     </button>
                                 </td>
-                                <td class="text-center">{{eventPoolStaff.eventHours}}h</td>
+                                <td class="text-center">
+                                    <label v-if="eventPoolStaff.eventHours">{{eventPoolStaff.eventHours}}h</label>
+                                </td>
                                 <td class="text-center">{{eventPoolStaff.createTime}}</td>
                                 <td class="text-center">
                                     <label v-if="eventPoolStaff.state === 'W'">{{vc.i18n('待处理','eventPoolStaffManage')}}</label>
@@ -104,7 +106,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="7">
+                                <td colspan="8">
                                     <ul class="pagination float-right"></ul>
                                 </td>
                             </tr>
@@ -117,6 +119,7 @@
         </div>
     </div>
 
+    <vc:create path="event/editEventPoolStaff"></vc:create>
     <vc:create path="event/viewData"></vc:create>
 
 </div>

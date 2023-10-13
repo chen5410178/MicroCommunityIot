@@ -15,6 +15,7 @@
  */
 package com.java110.system.cmd.eventTemplate;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
@@ -26,11 +27,17 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.StringUtil;
+import com.java110.intf.system.IEventTemplateParamV1InnerServiceSMO;
 import com.java110.intf.system.IEventTemplateV1InnerServiceSMO;
+import com.java110.po.event.EventTemplateParamPo;
 import com.java110.po.event.EventTemplatePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -52,9 +59,20 @@ public class UpdateEventTemplateCmd extends Cmd {
     @Autowired
     private IEventTemplateV1InnerServiceSMO eventTemplateV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IEventTemplateParamV1InnerServiceSMO eventTemplateParamV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "templateId", "templateId不能为空");
+
+        JSONArray eventTemplateParamKetList = reqJson.getJSONArray("eventTemplateParamKetList");
+
+        for (int typeIndex = 0; typeIndex < eventTemplateParamKetList.size(); typeIndex++) {
+            if (StringUtil.isEmpty(eventTemplateParamKetList.getJSONObject(typeIndex).getString("paramValue"))) {
+                throw new CmdException("未填写" + eventTemplateParamKetList.getJSONObject(typeIndex).getString("specName"));
+            }
+        }
     }
 
     @Override
@@ -66,6 +84,19 @@ public class UpdateEventTemplateCmd extends Cmd {
 
         if (flag < 1) {
             throw new CmdException("更新数据失败");
+        }
+
+        JSONArray eventTemplateParamKetList = reqJson.getJSONArray("eventTemplateParamKetList");
+        List<EventTemplateParamPo> eventTemplateParamPoList = new ArrayList<>();
+        for (int i = 0; i < eventTemplateParamKetList.size(); i++) {
+            EventTemplateParamPo eventTemplateParamPo = BeanConvertUtil.covertBean(eventTemplateParamKetList.getJSONObject(i), EventTemplateParamPo.class);
+            eventTemplateParamPoList.add(eventTemplateParamPo);
+        }
+
+        flag = eventTemplateParamV1InnerServiceSMOImpl.updateEventTemplateParamList(eventTemplateParamPoList);
+
+        if (flag != eventTemplateParamPoList.size()) {
+            throw new CmdException("保存数据失败");
         }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());

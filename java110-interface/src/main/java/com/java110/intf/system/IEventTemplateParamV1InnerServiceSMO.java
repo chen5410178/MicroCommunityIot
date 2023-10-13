@@ -65,4 +65,10 @@ public interface IEventTemplateParamV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryEventTemplateParamsCount", method = RequestMethod.POST)
     int queryEventTemplateParamsCount(@RequestBody EventTemplateParamDto eventTemplateParamDto);
+
+    @RequestMapping(value = "/saveEventTemplateParamList", method = RequestMethod.POST)
+    int saveEventTemplateParamList(List<EventTemplateParamPo> eventTemplateParamPoList);
+
+    @RequestMapping(value = "/updateEventTemplateParamList", method = RequestMethod.POST)
+    int updateEventTemplateParamList(List<EventTemplateParamPo> eventTemplateParamPoList);
 }

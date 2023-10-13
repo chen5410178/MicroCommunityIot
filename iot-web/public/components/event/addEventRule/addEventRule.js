@@ -9,6 +9,7 @@
             addEventRuleInfo: {
                 ruleId: '',
                 ruleName: '',
+                limitTime: '',
                 templateId: '',
                 communityId: '',
                 remark: '',
@@ -39,11 +40,23 @@
                             errInfo: "规则名称不能超过64"
                         },
                     ],
+                    'addEventRuleInfo.limitTime': [
+                        {
+                            limit: "required",
+                            param: "",
+                            errInfo: "超时时间不能为空"
+                        },
+                        {
+                            limit: "num",
+                            param: "",
+                            errInfo: "超时时间必须为整数"
+                        },
+                    ],
                     'addEventRuleInfo.templateId': [
                         {
                             limit: "required",
                             param: "",
-                            errInfo: "模板ID不能为空"
+                            errInfo: "通知模板不能为空"
                         },
                     ],
                     'addEventRuleInfo.communityId': [
@@ -103,6 +116,7 @@
                 $that.addEventRuleInfo = {
                     ruleId: '',
                     ruleName: '',
+                    limitTime: '',
                     templateId: '',
                     communityId: '',
                     remark: '',

@@ -19,7 +19,8 @@
                     objectName: '',
                     fromType: '',
                     state: '',
-                }
+                },
+                objTypeList: [],
             },
             eventRuleList: [],
             eventTypeList: [],
@@ -31,6 +32,13 @@
                 $that.eventTypeList = _data;
             });
             vc.getDict('event_object', 'obj_type', function (_data) {
+                $that.eventPoolManageInfo.objTypeList = [{
+                    name: '对象类型',
+                    statusCd: ''
+                }];
+                _data.forEach(item => {
+                    $that.eventPoolManageInfo.objTypeList.push(item);
+                });
                 $that.objTypeList = _data;
             });
             $that._listEventPools(DEFAULT_PAGE, DEFAULT_ROWS);
@@ -43,7 +51,6 @@
                 $that._listEventPools(_currentPage, DEFAULT_ROWS);
             });
             vc.on('eventPoolManage', 'addEventPoolStaffSuccess', function (_eventId) {
-                debugger
                 $that._updateEventState(_eventId);
             });
         },
@@ -90,11 +97,15 @@
                 $that.eventPoolManageInfo.conditions = {
                     ruleId: '',
                     eventType: '',
-                    objType: '',
+                    objType: $that.eventPoolManageInfo.conditions.objType,
                     objectName: '',
                     fromType: '',
                     state: '',
                 };
+                $that._listEventPools(DEFAULT_PAGE, DEFAULT_ROWS);
+            },
+            switchObjType: function(_objTypt) {
+                $that.eventPoolManageInfo.conditions.objType = _objTypt.statusCd;
                 $that._listEventPools(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _moreCondition: function () {
@@ -146,13 +157,81 @@
                     function(errInfo,error){
                         console.log('请求失败处理');
                         vc.toast(errInfo);
-                    });
+                    }
+                );
             },
             _openModel: function (_data, _title) {
                 vc.emit('viewData', 'openEventViewDataModal', {
                     title: _title,
                     data: _data
                 });
+            },
+            _completeEvent: function (_eventPool) {
+
+                vc.http.apiPost(
+                    '/eventPool.updateEventPool',
+                    JSON.stringify(_eventPool),
+                    {
+                        emulateJSON:true
+                    },
+                    function(json,res){
+                        let _json = JSON.parse(json);
+                        if (_json.code === 0) {
+                            $that._completeEventStaff(_eventPool);
+                            vc.toast("成功");
+                            $that._listEventPools(DEFAULT_PAGE, DEFAULT_ROWS);
+                            return ;
+                        }
+                        vc.toast(_json.msg);
+                    },
+                    function(errInfo,error){
+                        console.log('请求失败处理');
+                        vc.toast(errInfo);
+                    }
+                );
+            },
+            _completeEventStaff: function (_eventPool) {
+
+                var param = {
+                    params: {
+                        page: -1,
+                        row: 10,
+                        eventId: _eventPool.eventId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/eventPoolStaff.listEventPoolStaff',
+                    param,
+                    function (json, res) {
+                        var _eventPoolStaffManageInfo = JSON.parse(json);
+                        _eventPoolStaff = _eventPoolStaffManageInfo.data[0];
+
+                        vc.http.apiPost(
+                            '/eventPoolStaff.updateEventPoolStaff',
+                            JSON.stringify(_eventPoolStaff),
+                            {
+                                emulateJSON: true
+                            },
+                            function (json, res) {
+                                let _json = JSON.parse(json);
+                                if (_json.code === 0) {
+                                    return;
+                                }
+                                vc.toast(_json.msg);
+                            },
+                            function (errInfo, error) {
+                                console.log('请求失败处理');
+                                vc.toast(errInfo);
+                            });
+
+                    }, function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+
+
+
             },
         }
     });

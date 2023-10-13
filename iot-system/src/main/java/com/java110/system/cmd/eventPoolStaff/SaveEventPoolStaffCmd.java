@@ -57,7 +57,6 @@ public class SaveEventPoolStaffCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "eventId", "请求报文中未包含eventId");
         Assert.hasKeyAndValue(reqJson, "staffId", "请求报文中未包含staffId");
         Assert.hasKeyAndValue(reqJson, "staffName", "请求报文中未包含staffName");
-        Assert.hasKeyAndValue(reqJson, "eventHours", "请求报文中未包含eventHours");
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
         Assert.hasKeyAndValue(reqJson, "state", "请求报文中未包含state");
     }

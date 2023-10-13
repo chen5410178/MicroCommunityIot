@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.system.cmd.eventTemplateParam;
+package com.java110.system.cmd.eventTemplateParamKey;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
@@ -26,43 +26,49 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
-import com.java110.intf.system.IEventTemplateParamV1InnerServiceSMO;
-import com.java110.po.event.EventTemplateParamPo;
+import com.java110.intf.system.IEventTemplateParamKeyV1InnerServiceSMO;
+import com.java110.po.event.EventTemplateParamKeyPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 类表述：删除
- * 服务编码：eventTemplateParam.deleteEventTemplateParam
- * 请求路劲：/app/eventTemplateParam.DeleteEventTemplateParam
- * add by 吴学文 at 2023-09-27 10:09:26 mail: 928255095@qq.com
+ * 类表述：保存
+ * 服务编码：eventTemplateParamKey.saveEventTemplateParamKey
+ * 请求路劲：/app/eventTemplateParamKey.SaveEventTemplateParamKey
+ * add by 吴学文 at 2023-10-12 09:37:58 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
-@Java110Cmd(serviceCode = "eventTemplateParam.deleteEventTemplateParam")
-public class DeleteEventTemplateParamCmd extends Cmd {
-    private static Logger logger = LoggerFactory.getLogger(DeleteEventTemplateParamCmd.class);
+@Java110Cmd(serviceCode = "eventTemplateParamKey.saveEventTemplateParamKey")
+public class SaveEventTemplateParamKeyCmd extends Cmd {
+
+    private static Logger logger = LoggerFactory.getLogger(SaveEventTemplateParamKeyCmd.class);
+
+    public static final String CODE_PREFIX_ID = "10";
 
     @Autowired
-    private IEventTemplateParamV1InnerServiceSMO eventTemplateParamV1InnerServiceSMOImpl;
+    private IEventTemplateParamKeyV1InnerServiceSMO eventTemplateParamKeyV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
-        Assert.hasKeyAndValue(reqJson, "paramId", "paramId不能为空");
+        Assert.hasKeyAndValue(reqJson, "eventWay", "请求报文中未包含eventWay");
+        Assert.hasKeyAndValue(reqJson, "specName", "请求报文中未包含specName");
+        Assert.hasKeyAndValue(reqJson, "specCd", "请求报文中未包含specCd");
     }
 
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        EventTemplateParamPo eventTemplateParamPo = BeanConvertUtil.covertBean(reqJson, EventTemplateParamPo.class);
-        int flag = eventTemplateParamV1InnerServiceSMOImpl.deleteEventTemplateParam(eventTemplateParamPo);
+        EventTemplateParamKeyPo eventTemplateParamKeyPo = BeanConvertUtil.covertBean(reqJson, EventTemplateParamKeyPo.class);
+        eventTemplateParamKeyPo.setKeyId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        int flag = eventTemplateParamKeyV1InnerServiceSMOImpl.saveEventTemplateParamKey(eventTemplateParamKeyPo);
 
         if (flag < 1) {
-            throw new CmdException("删除数据失败");
+            throw new CmdException("保存数据失败");
         }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());

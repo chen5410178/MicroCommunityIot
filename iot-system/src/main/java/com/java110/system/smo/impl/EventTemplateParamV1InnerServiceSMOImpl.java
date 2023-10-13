@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 类表述： 服务之前调用的接口实现类，不对外提供接口能力 只用于接口建调用
@@ -83,6 +84,18 @@ public class EventTemplateParamV1InnerServiceSMOImpl implements IEventTemplatePa
     @Override
     public int queryEventTemplateParamsCount(@RequestBody EventTemplateParamDto eventTemplateParamDto) {
         return eventTemplateParamV1ServiceDaoImpl.queryEventTemplateParamsCount(BeanConvertUtil.beanCovertMap(eventTemplateParamDto));
+    }
+
+    @Override
+    public int saveEventTemplateParamList(List<EventTemplateParamPo> eventTemplateParamPoList) {
+        List<Object> temp = eventTemplateParamPoList.stream().map(eventTemplateParamPo -> (Object) eventTemplateParamPo).collect(Collectors.toList());
+        return eventTemplateParamV1ServiceDaoImpl.saveEventTemplateParamList(BeanConvertUtil.beanCovertMapList(temp));
+    }
+
+    @Override
+    public int updateEventTemplateParamList(List<EventTemplateParamPo> eventTemplateParamPoList) {
+        List<Object> temp = eventTemplateParamPoList.stream().map(eventTemplateParamPo -> (Object) eventTemplateParamPo).collect(Collectors.toList());
+        return eventTemplateParamV1ServiceDaoImpl.updateEventTemplateParamList(BeanConvertUtil.beanCovertMapList(temp));
     }
 
 }

@@ -12,6 +12,7 @@
                 eventWay: '',
                 communityId: '',
                 remark: '',
+                eventTemplateParamKetList: [],
             },
         },
         _initMethod: function () {
@@ -106,9 +107,33 @@
                     eventWay: '',
                     communityId: '',
                     remark: '',
+                    eventTemplateParamKetList: [],
                 };
-            }
+            },
+            _addChangeEventWay: function () {
+                if (!$that.addEventTemplateInfo.eventWay) {
+                    return;
+                }
+
+                let _param = {
+                    params:{
+                        eventWay: $that.addEventTemplateInfo.eventWay,
+                        page: -1,
+                        row: 100
+                    }
+
+                }
+                //发送get请求
+                vc.http.apiGet('/eventTemplateParamKey.listEventTemplateParamKey',
+                    _param,
+                    function (json, res) {
+                        let _eventTemplateParamKeyManageInfo = JSON.parse(json);
+                        $that.addEventTemplateInfo.eventTemplateParamKetList = _eventTemplateParamKeyManageInfo.data;
+                    }, function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
         }
     });
-
 })(window.vc);

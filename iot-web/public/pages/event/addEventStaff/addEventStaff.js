@@ -20,7 +20,6 @@
                 $('#addEventStaffModel').modal('show');
             });
             vc.on('', 'listStaffData', function (_data) {
-                debugger
                 _data.map(staff =>{
                     $that.addEventStaffInfo.staffIdAndNameList.push(
                         {

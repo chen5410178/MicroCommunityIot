@@ -21,7 +21,10 @@
         statusCd,t.state,t.event_result,t.event_result eventResult,t.community_id,t.community_id
         communityId,t.event_reason,t.event_reason eventReason,t.staff_id,t.staff_id staffId,t.create_time createTime
         from event_pool_staff t
-        where 1 =1
+        left join event_pool ep on t.event_id = ep.event_id
+        left join event_rule er on ep.rule_id = er.rule_id
+        left join event_template et on er.template_id = et.template_id
+        where 1 =1 and ep.status_cd = '0' and er.status_cd = '0' and et.status_cd = '0'
         <if test="epsId !=null and epsId != ''">
             and t.eps_id= #{epsId}
         </if>

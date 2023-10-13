@@ -5,6 +5,7 @@
             editEventRuleInfo: {
                 ruleId: '',
                 ruleName: '',
+                limitTime: '',
                 templateId: '',
                 communityId: '',
                 remark: '',
@@ -44,11 +45,23 @@
                             errInfo: "规则名称不能超过64"
                         },
                     ],
+                    'editEventRuleInfo.limitTime': [
+                        {
+                            limit: "required",
+                            param: "",
+                            errInfo: "规则名称不能为空"
+                        },
+                        {
+                            limit: "num",
+                            param: "",
+                            errInfo: "超时时间必须为整数"
+                        },
+                    ],
                     'editEventRuleInfo.templateId': [
                         {
                             limit: "required",
                             param: "",
-                            errInfo: "模板ID不能为空"
+                            errInfo: "通知模板不能为空"
                         },
                     ],
                     'editEventRuleInfo.communityId': [
@@ -98,6 +111,7 @@
                 $that.editEventRuleInfo = {
                     ruleId: '',
                     ruleName: '',
+                    limitTime: '',
                     templateId: '',
                     communityId: '',
                     remark: '',

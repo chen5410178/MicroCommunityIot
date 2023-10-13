@@ -70,4 +70,7 @@ public interface IEventTemplateParamV1ServiceDao {
      */
     int queryEventTemplateParamsCount(Map info);
 
+    int saveEventTemplateParamList(List<Map<String, Object>> info) throws DAOException;
+
+    int updateEventTemplateParamList(List<Map<String, Object>> info) throws DAOException;
 }

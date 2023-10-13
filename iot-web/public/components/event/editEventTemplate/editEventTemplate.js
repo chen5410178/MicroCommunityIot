@@ -8,6 +8,7 @@
                 eventWay: '',
                 communityId: '',
                 remark: '',
+                eventTemplateParamKetList: [],
             }
         },
         _initMethod: function () {
@@ -15,10 +16,10 @@
         },
         _initEvent: function () {
             vc.on('editEventTemplate', 'openEditEventTemplateModal', function (_params) {
+                $that.listEventTemplateParamKey(_params);
                 $that.refreshEditEventTemplateInfo();
-                $('#editEventTemplateModel').modal('show');
                 vc.copyObject(_params, $that.editEventTemplateInfo);
-                $that.editEventTemplateInfo.communityId = vc.getCurrentCommunity().communityId;
+                $('#editEventTemplateModel').modal('show');
             });
         },
         methods: {
@@ -102,8 +103,42 @@
                     eventWay: '',
                     communityId: '',
                     remark: '',
+                    eventTemplateParamKetList: [],
                 }
-            }
+            },
+            listEventTemplateParamKey: function (_params) {
+                if (!_params.eventWay) {
+                    vc.toast('错误,缺少通知方式');
+                    return;
+                }
+
+                let _param = {
+                    params:{
+                        eventWay: _params.eventWay,
+                        page: -1,
+                        row: 100
+                    }
+
+                }
+                //发送get请求
+                vc.http.apiGet('/eventTemplateParamKey.listEventTemplateParamKey',
+                    _param,
+                    function (json, res) {
+                        let _eventTemplateParamKeyManageInfo = JSON.parse(json);
+                        for (let i = 0; i < _eventTemplateParamKeyManageInfo.data.length; i++) {
+                            for (let j = 0; j < _params.eventTemplateParamDtoList.length; j++) {
+                                if (_eventTemplateParamKeyManageInfo.data[i].specCd === _params.eventTemplateParamDtoList[j].specCd) {
+                                    _params.eventTemplateParamDtoList[j].specName = _eventTemplateParamKeyManageInfo.data[i].specName;
+                                    break;
+                                }
+                            }
+                        }
+                        $that.editEventTemplateInfo.eventTemplateParamKetList = _params.eventTemplateParamDtoList;
+                    }, function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
         }
     });
 })(window.vc, window.$that);

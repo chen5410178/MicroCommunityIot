@@ -6,6 +6,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class EventPoolDto extends PageDto implements Serializable {
+    public static final String EVENT_STATE_WAITTING = "W";
+    public static final String EVENT_STATE_DOING = "D";
+    public static final String EVENT_STATE_NORMAL_COMPLETE = "NC";
+    public static final String EVENT_STATE_TIMEOUT_COMPLETE = "TC";
     private String eventId;
     private String ruleId;
     private String eventType;

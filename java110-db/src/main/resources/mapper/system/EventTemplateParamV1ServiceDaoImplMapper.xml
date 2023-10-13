@@ -97,4 +97,11 @@
 
     </select>
 
+    <insert id="saveEventTemplateParamList" parameterType="Map">
+        insert into event_template_param(spec_cd, param_id, template_id, community_id, param_value)
+        values
+        <foreach collection="list" separator="," item="item">
+            (#{item.specCd}, #{item.paramId}, #{item.templateId}, #{item.communityId}, #{item.paramValue})
+        </foreach>
+    </insert>
 </mapper>

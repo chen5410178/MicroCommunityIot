@@ -11,8 +11,6 @@
                 eventId: '',
                 staffId: '',
                 staffName: '',
-                eventReason: '',
-                eventResult: '',
                 communityId: '',
                 state: 'W',
             },
@@ -52,32 +50,6 @@
                             limit: "required",
                             param: "",
                             errInfo: "处理员工不能为空"
-                        },
-                    ],
-                    'addEventPoolStaffInfo.eventReason': [
-                        {
-                            limit: "maxLength",
-                            param: "512",
-                            errInfo: "事故原因不能超过512"
-                        },
-                    ],
-                    'addEventPoolStaffInfo.eventResult': [
-                        {
-                            limit: "maxLength",
-                            param: "512",
-                            errInfo: "处理方案不能超过512"
-                        },
-                    ],
-                    'addEventPoolStaffInfo.eventHours': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "处理时长不能为空"
-                        },
-                        {
-                            limit: "num",
-                            param: "",
-                            errInfo: "处理时长必须为整数"
                         },
                     ],
                     'addEventPoolStaffInfo.communityId': [
@@ -145,8 +117,6 @@
                     eventId: '',
                     staffId: '',
                     staffName: '',
-                    eventReason: '',
-                    eventResult: '',
                     communityId: '',
                     state: 'W',
                 };

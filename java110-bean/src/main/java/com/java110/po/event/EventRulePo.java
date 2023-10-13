@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class EventRulePo implements Serializable {
     private String ruleId;
     private String ruleName;
+    private String limitTime;
     private String templateId;
     private String communityId;
     private String remark;
@@ -56,5 +57,13 @@ public class EventRulePo implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getLimitTime() {
+        return limitTime;
+    }
+
+    public void setLimitTime(String limitTime) {
+        this.limitTime = limitTime;
     }
 }
