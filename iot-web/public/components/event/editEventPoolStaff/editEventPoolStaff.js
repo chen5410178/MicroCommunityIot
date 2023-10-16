@@ -18,9 +18,10 @@
         },
         _initEvent: function () {
             vc.on('editEventPoolStaff', 'openEditEventPoolStaffModal', function (_params) {
+                $that.queryEvent(_params.eventId);
                 $that.refreshEditEventPoolStaffInfo();
-                $('#editEventPoolStaffModel').modal('show');
                 vc.copyObject(_params, $that.editEventPoolStaffInfo);
+                $('#editEventPoolStaffModel').modal('show');
             });
         },
         methods: {
@@ -97,7 +98,6 @@
                 });
             },
             editEventPoolStaff: function () {
-                $that.editEventPoolStaffInfo.state = 'D';
                 
                 if (!$that.editEventPoolStaffValidate()) {
                     vc.toast(vc.validate.errInfo);
@@ -137,6 +137,25 @@
                     communityId: '',
                     state: '',
                 }
+            },
+            queryEvent: function (_eventId) {
+                var param = {
+                    params: {
+                        page: -1,
+                        row: 1,
+                        eventId: _eventId
+                    }
+                }
+
+                vc.http.apiGet('/eventPool.listEventPool',
+                    param,
+                    function (json, res) {
+                        var _eventPoolManageInfo = JSON.parse(json);
+                        $that.event = _eventPoolManageInfo.data[0];
+                    }, function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
             }
         }
     });

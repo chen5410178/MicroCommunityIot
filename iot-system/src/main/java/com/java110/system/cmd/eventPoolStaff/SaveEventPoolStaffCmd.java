@@ -26,11 +26,16 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.event.EventPoolDto;
 import com.java110.intf.system.IEventPoolStaffV1InnerServiceSMO;
+import com.java110.intf.system.IEventPoolV1InnerServiceSMO;
+import com.java110.po.event.EventPoolPo;
 import com.java110.po.event.EventPoolStaffPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -52,6 +57,9 @@ public class SaveEventPoolStaffCmd extends Cmd {
     @Autowired
     private IEventPoolStaffV1InnerServiceSMO eventPoolStaffV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IEventPoolV1InnerServiceSMO eventPoolV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "eventId", "请求报文中未包含eventId");
@@ -69,6 +77,16 @@ public class SaveEventPoolStaffCmd extends Cmd {
         eventPoolStaffPo.setEpsId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         int flag = eventPoolStaffV1InnerServiceSMOImpl.saveEventPoolStaff(eventPoolStaffPo);
 
+        if (flag < 1) {
+            throw new CmdException("保存数据失败");
+        }
+
+        EventPoolDto eventPoolDto = new EventPoolDto();
+        eventPoolDto.setEventId(eventPoolStaffPo.getEventId());
+        List<EventPoolDto> eventPoolDtoList = eventPoolV1InnerServiceSMOImpl.queryEventPools(eventPoolDto);
+        EventPoolPo eventPoolPo = BeanConvertUtil.covertBean(eventPoolDtoList.get(0), EventPoolPo.class);
+        eventPoolPo.setState(EventPoolDto.EVENT_STATE_DOING);
+        flag = eventPoolV1InnerServiceSMOImpl.updateEventPool(eventPoolPo);
         if (flag < 1) {
             throw new CmdException("保存数据失败");
         }

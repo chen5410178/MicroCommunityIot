@@ -137,6 +137,9 @@
                                             <vc:i18n name='备注' namespace='eventPoolManage'></vc:i18n>
                                         </th>
                                         <th class="text-center">
+                                            <vc:i18n name='添加时间' namespace='eventPoolManage'></vc:i18n>
+                                        </th>
+                                        <th class="text-center">
                                             <vc:i18n name='操作'></vc:i18n>
                                         </th>
                                     </tr>
@@ -169,13 +172,19 @@
                                                 <vc:i18n name='查看'></vc:i18n>
                                             </button>
                                         </td>
+                                        <td class="text-center">{{eventPool.createTime}}</td>
                                         <td class="text-center">
                                             <div class="btn-group" v-if="eventPool.state === 'W'">
                                                 <button class="btn-white btn btn-xs" v-on:click="_openAddEventPoolStaffModal(eventPool)">
                                                     <vc:i18n name='分配'></vc:i18n>
                                                 </button>
                                             </div>
-                                            <div class="btn-group" v-if="eventPool.state === 'D'">
+                                            <div class="btn-group" v-if="eventPool.state !== 'W'">
+                                                <button class="btn-white btn btn-xs" v-on:click="_openEventPoolStaffModal(eventPool)">
+                                                    <vc:i18n name='查看分配'></vc:i18n>
+                                                </button>
+                                            </div>
+                                            <div class="btn-group" v-if="eventPool.state === 'D' && eventPool.eventPoolStaffList[0].state === 'D'">
                                                 <button class="btn-white btn btn-xs" v-on:click="_completeEvent(eventPool)">
                                                     <vc:i18n name='完成(模拟)'></vc:i18n>
                                                 </button>
@@ -190,7 +199,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="7">
+                                        <td colspan="11">
                                             <ul class="pagination float-right"></ul>
                                         </td>
                                     </tr>
@@ -207,5 +216,6 @@
     <vc:create path="event/deleteEventPool"></vc:create>
     <vc:create path="event/addEventPoolStaff" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="event/viewData"></vc:create>
+    <vc:create path="event/viewEventPoolStaffInfo"></vc:create>
 
 </div>

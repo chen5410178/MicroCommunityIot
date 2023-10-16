@@ -4,7 +4,41 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="eventPoolV1ServiceDaoImpl">
 
-
+    <resultMap id="resultMap" type="com.java110.dto.event.EventPoolDto">
+        <id column="eventId" property="eventId"/>
+        <result column="ruleId" property="ruleId"/>
+        <result column="eventType" property="eventType"/>
+        <result column="eventMsg" property="eventMsg"/>
+        <result column="objType" property="objType"/>
+        <result column="objectId" property="objectId"/>
+        <result column="objectName" property="objectName"/>
+        <result column="fromType" property="fromType"/>
+        <result column="fromName" property="fromName"/>
+        <result column="communityId" property="communityId"/>
+        <result column="state" property="state"/>
+        <result column="remark" property="remark"/>
+        <result column="createTime" property="createTime"/>
+        <result column="statusCd" property="statusCd"/>
+        <result column="ruleName" property="ruleName"/>
+        <result column="eventTypeName" property="eventTypeName"/>
+        <result column="objTypeName" property="objTypeName"/>
+        <collection property="eventPoolStaffList"
+                    ofType="com.java110.dto.event.EventPoolStaffDto"
+                    javaType="java.util.ArrayList">
+            <id column="epsId" property="epsId"/>
+            <result column="eventId" property="eventId"/>
+            <result column="staffId" property="staffId"/>
+            <result column="staffName" property="staffName"/>
+            <result column="eventReason" property="eventReason"/>
+            <result column="eventResult" property="eventResult"/>
+            <result column="eventHours" property="eventHours"/>
+            <result column="communityId" property="communityId"/>
+            <result column="state1" property="state"/>
+            <result column="createTime1" property="createTime"/>
+            <result column="statusCd1" property="statusCd"/>
+        </collection>
+    </resultMap>
+    
     <!-- 保存事件信息 add by wuxw 2018-07-03 -->
     <insert id="saveEventPoolInfo" parameterType="Map">
         insert into event_pool(event_id, remark, event_type, event_msg, from_type, from_name, object_name, state,
@@ -15,17 +49,42 @@
 
 
     <!-- 查询事件信息 add by wuxw 2018-07-03 -->
-    <select id="getEventPoolInfo" parameterType="Map" resultType="Map">
-        select t.event_id,t.event_id eventId,t.remark,t.status_cd,t.status_cd statusCd,t.event_type,t.event_type
-        eventType,t.event_msg,t.event_msg eventMsg,t.from_type,t.from_type fromType,t.from_name,t.from_name
-        fromName,t.object_name,t.object_name objectName,t.state,t.rule_id,t.rule_id ruleId,t.community_id,t.community_id
-        communityId,t.obj_type,t.obj_type objType,t.object_id,t.object_id objectId,t.create_time createTime,er.rule_name ruleName,
-        td.name eventTypeName, td1.name objTypeName
+    <select id="getEventPoolInfo" parameterType="Map" resultMap="resultMap">
+        select
+        t.event_id eventId,
+        t.rule_id ruleId,
+        t.event_type eventType,
+        t.event_msg eventMsg,
+        t.obj_type objType,
+        t.object_id objectId,
+        t.object_name objectName,
+        t.from_type fromType,
+        t.from_name fromName,
+        t.community_id communityId,
+        t.state,
+        t.remark,
+        t.create_time createTime,
+        t.status_cd statusCd,
+        er.rule_name ruleName,
+        td.name eventTypeName,
+        td1.name objTypeName,
+        eps.eps_id epsId,
+        eps.event_id eventId,
+        eps.staff_id staffId,
+        eps.staff_name staffName,
+        eps.event_reason eventReason,
+        eps.event_result eventResult,
+        eps.event_hours eventHours,
+        eps.community_id communityId,
+        eps.state state1,
+        eps.create_time createTime1,
+        eps.status_cd statusCd1
         from event_pool t
         left join event_rule er on t.rule_id = er.rule_id
         left join event_template et on er.template_id = et.template_id
         left join t_dict td on t.event_type = td.status_cd and td.table_name = 'event_pool' and td.table_columns = 'event_type'
         left join t_dict td1 on t.obj_type = td1.status_cd and td1.table_name = 'event_object' and td1.table_columns = 'obj_type'
+        left join event_pool_staff eps on t.event_id = eps.event_id and eps.status_cd = '0'
         where 1 =1 and er.status_cd = '0' and et.status_cd = '0'
         <if test="eventId !=null and eventId != ''">
             and t.event_id= #{eventId}

@@ -23,21 +23,14 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
-import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.event.EventPoolDto;
-import com.java110.dto.event.EventRuleDto;
 import com.java110.intf.system.IEventPoolStaffV1InnerServiceSMO;
-import com.java110.intf.system.IEventPoolV1InnerServiceSMO;
-import com.java110.intf.system.IEventRuleV1InnerServiceSMO;
 import com.java110.po.event.EventPoolStaffPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -59,31 +52,13 @@ public class UpdateEventPoolStaffCmd extends Cmd {
     @Autowired
     private IEventPoolStaffV1InnerServiceSMO eventPoolStaffV1InnerServiceSMOImpl;
 
-    @Autowired
-    private IEventPoolV1InnerServiceSMO eventPoolV1InnerServiceSMOImpl;
-
-    @Autowired
-    private IEventRuleV1InnerServiceSMO eventRuleV1InnerServiceSMOImpl;
-
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "epsId", "epsId不能为空");
         Assert.hasKeyAndValue(reqJson, "eventId", "eventId不能为空");
-        if (EventPoolDto.EVENT_STATE_DOING.equals(reqJson.getString("state"))) {
-            EventPoolDto eventPoolDto = new EventPoolDto();
-            eventPoolDto.setEventId(reqJson.getString("eventId"));
-            List<EventPoolDto> eventPoolDtoList = eventPoolV1InnerServiceSMOImpl.queryEventPools(eventPoolDto);
-
-            EventRuleDto eventRuleDto = new EventRuleDto();
-            eventRuleDto.setRuleId(eventPoolDtoList.get(0).getRuleId());
-            List<EventRuleDto> eventRuleDtoList = eventRuleV1InnerServiceSMOImpl.queryEventRules(eventRuleDto);
-
-            long dealTime = (new Date().getTime() - reqJson.getDate("createTime").getTime()) / (1000 * 60);
-            if (eventRuleDtoList.get(0).getLimitTime() < dealTime) {
-                reqJson.put("state", "TC");
-            } else {
-                reqJson.put("state", "NC");
-            }
+        if (EventPoolDto.EVENT_STATE_WAITTING.equals(reqJson.getString("state"))) {
+            reqJson.put("state", "D");
+            return ;
         }
     }
 

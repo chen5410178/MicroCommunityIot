@@ -26,14 +26,18 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.event.EventPoolDto;
+import com.java110.dto.event.EventPoolStaffDto;
 import com.java110.dto.event.EventRuleDto;
+import com.java110.intf.system.IEventPoolStaffV1InnerServiceSMO;
 import com.java110.intf.system.IEventPoolV1InnerServiceSMO;
 import com.java110.intf.system.IEventRuleV1InnerServiceSMO;
 import com.java110.po.event.EventPoolPo;
+import com.java110.po.event.EventPoolStaffPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -60,6 +64,9 @@ public class UpdateEventPoolCmd extends Cmd {
     @Autowired
     private IEventRuleV1InnerServiceSMO eventRuleV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IEventPoolStaffV1InnerServiceSMO eventPoolStaffV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "eventId", "eventId不能为空");
@@ -68,9 +75,11 @@ public class UpdateEventPoolCmd extends Cmd {
             EventRuleDto eventRuleDto = new EventRuleDto();
             eventRuleDto.setRuleId(reqJson.getString("ruleId"));
             List<EventRuleDto> eventRuleDtoList = eventRuleV1InnerServiceSMOImpl.queryEventRules(eventRuleDto);
+            reqJson.put("limitTime", eventRuleDtoList.get(0).getLimitTime());
 
-            long dealTime = (new Date().getTime() - reqJson.getDate("createTime").getTime()) / (1000 * 60);
-            if (eventRuleDtoList.get(0).getLimitTime() < dealTime) {
+            BigDecimal dealTime = new BigDecimal(new Date().getTime() - reqJson.getDate("createTime").getTime()).divide(new BigDecimal(1000 * 60), BigDecimal.ROUND_HALF_UP);
+
+            if (eventRuleDtoList.get(0).getLimitTime() < dealTime.intValue()) {
                 reqJson.put("state", "TC");
             } else {
                 reqJson.put("state", "NC");
@@ -87,6 +96,29 @@ public class UpdateEventPoolCmd extends Cmd {
 
         if (flag < 1) {
             throw new CmdException("更新数据失败");
+        }
+
+        if (EventPoolDto.EVENT_STATE_NORMAL_COMPLETE.equals(eventPoolPo.getState()) || EventPoolDto.EVENT_STATE_TIMEOUT_COMPLETE.equals(eventPoolPo.getState())) {
+            EventPoolStaffDto eventPoolStaffDto = new EventPoolStaffDto();
+            eventPoolStaffDto.setEventId(eventPoolPo.getEventId());
+            eventPoolStaffDto.setState(EventPoolDto.EVENT_STATE_DOING);
+            List<EventPoolStaffDto> eventPoolStaffDtoList = eventPoolStaffV1InnerServiceSMOImpl.queryEventPoolStaffs(eventPoolStaffDto);
+            EventPoolStaffPo eventPoolStaffPo = BeanConvertUtil.covertBean(eventPoolStaffDtoList.get(0), EventPoolStaffPo.class);
+
+            int limitTime = reqJson.getInteger("limitTime");
+            BigDecimal dealTime = new BigDecimal(new Date().getTime() - eventPoolStaffDtoList.get(0).getCreateTime().getTime()).divide(new BigDecimal(1000 * 60), BigDecimal.ROUND_HALF_UP);
+
+            if (limitTime < dealTime.intValue()) {
+                eventPoolStaffPo.setState(EventPoolDto.EVENT_STATE_TIMEOUT_COMPLETE);
+            } else {
+                eventPoolStaffPo.setState(EventPoolDto.EVENT_STATE_NORMAL_COMPLETE);
+            }
+            eventPoolStaffPo.setEventHours(dealTime.intValue());
+
+            flag = eventPoolStaffV1InnerServiceSMOImpl.updateEventPoolStaff(eventPoolStaffPo);
+            if (flag < 1) {
+                throw new CmdException("更新数据失败");
+            }
         }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());

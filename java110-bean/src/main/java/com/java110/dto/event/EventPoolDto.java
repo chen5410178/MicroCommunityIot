@@ -4,6 +4,7 @@ import com.java110.bean.dto.PageDto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class EventPoolDto extends PageDto implements Serializable {
     public static final String EVENT_STATE_WAITTING = "W";
@@ -28,6 +29,8 @@ public class EventPoolDto extends PageDto implements Serializable {
     private String ruleName;
     private String eventTypeName;
     private String objTypeName;
+
+    private List<EventPoolStaffDto> eventPoolStaffList;
 
     public String getEventId() {
         return eventId;
@@ -163,5 +166,13 @@ public class EventPoolDto extends PageDto implements Serializable {
 
     public void setObjTypeName(String objTypeName) {
         this.objTypeName = objTypeName;
+    }
+
+    public List<EventPoolStaffDto> getEventPoolStaffList() {
+        return eventPoolStaffList;
+    }
+
+    public void setEventPoolStaffList(List<EventPoolStaffDto> eventPoolStaffList) {
+        this.eventPoolStaffList = eventPoolStaffList;
     }
 }

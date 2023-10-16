@@ -16,7 +16,8 @@
                     eventId: '',
                     state: '',
                 }
-            }
+            },
+            event: {}
         },
         _initMethod: function () {
             $that._listEventPoolStaffs(DEFAULT_PAGE, DEFAULT_ROWS);
@@ -80,6 +81,9 @@
                     data: _data
                 });
             },
+            _detail: function (_eventPoolStaff) {
+                vc.emit('eventDetail', 'openEventDetailModal', _eventPoolStaff);
+            }
         }
     });
 })(window.vc);

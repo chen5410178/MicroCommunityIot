@@ -51,7 +51,8 @@
                 $that._listEventPools(_currentPage, DEFAULT_ROWS);
             });
             vc.on('eventPoolManage', 'addEventPoolStaffSuccess', function (_eventId) {
-                $that._updateEventState(_eventId);
+                vc.toast("分配成功,事件正在处理中");
+                $that._listEventPools(DEFAULT_PAGE, DEFAULT_ROWS);
             });
         },
         methods: {
@@ -134,32 +135,6 @@
                     }
                 );
             },
-            _updateEventState: function (_eventId) {
-                var event = {
-                    eventId: _eventId,
-                    state: 'D'
-                }
-                vc.http.apiPost(
-                    '/eventPool.updateEventPool',
-                    JSON.stringify(event),
-                    {
-                        emulateJSON:true
-                    },
-                    function(json,res){
-                        let _json = JSON.parse(json);
-                        if (_json.code === 0) {
-                            vc.toast("分配成功,事件正在处理中");
-                            $that._listEventPools(DEFAULT_PAGE, DEFAULT_ROWS);
-                            return ;
-                        }
-                        vc.toast(_json.msg);
-                    },
-                    function(errInfo,error){
-                        console.log('请求失败处理');
-                        vc.toast(errInfo);
-                    }
-                );
-            },
             _openModel: function (_data, _title) {
                 vc.emit('viewData', 'openEventViewDataModal', {
                     title: _title,
@@ -177,7 +152,6 @@
                     function(json,res){
                         let _json = JSON.parse(json);
                         if (_json.code === 0) {
-                            $that._completeEventStaff(_eventPool);
                             vc.toast("成功");
                             $that._listEventPools(DEFAULT_PAGE, DEFAULT_ROWS);
                             return ;
@@ -190,49 +164,9 @@
                     }
                 );
             },
-            _completeEventStaff: function (_eventPool) {
-
-                var param = {
-                    params: {
-                        page: -1,
-                        row: 10,
-                        eventId: _eventPool.eventId
-                    }
-                };
-
-                //发送get请求
-                vc.http.apiGet('/eventPoolStaff.listEventPoolStaff',
-                    param,
-                    function (json, res) {
-                        var _eventPoolStaffManageInfo = JSON.parse(json);
-                        _eventPoolStaff = _eventPoolStaffManageInfo.data[0];
-
-                        vc.http.apiPost(
-                            '/eventPoolStaff.updateEventPoolStaff',
-                            JSON.stringify(_eventPoolStaff),
-                            {
-                                emulateJSON: true
-                            },
-                            function (json, res) {
-                                let _json = JSON.parse(json);
-                                if (_json.code === 0) {
-                                    return;
-                                }
-                                vc.toast(_json.msg);
-                            },
-                            function (errInfo, error) {
-                                console.log('请求失败处理');
-                                vc.toast(errInfo);
-                            });
-
-                    }, function (errInfo, error) {
-                        console.log('请求失败处理');
-                    }
-                );
-
-
-
-            },
+            _openEventPoolStaffModal: function (_eventPool) {
+                vc.emit('viewEventPoolStaffInfo', 'chooseEventPoolStaff', _eventPool)
+            }
         }
     });
 })(window.vc);

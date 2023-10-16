@@ -86,7 +86,7 @@
                                     </button>
                                 </td>
                                 <td class="text-center">
-                                    <label v-if="eventPoolStaff.eventHours">{{eventPoolStaff.eventHours}}h</label>
+                                    <label v-if="eventPoolStaff.eventHours">{{eventPoolStaff.eventHours}}min</label>
                                 </td>
                                 <td class="text-center">{{eventPoolStaff.createTime}}</td>
                                 <td class="text-center">
@@ -99,6 +99,11 @@
                                     <div class="btn-group" v-if="eventPoolStaff.state === 'W'">
                                         <button class="btn-white btn btn-xs" v-on:click="_acceptEvent(eventPoolStaff)">
                                             <vc:i18n name='接受分配'></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group" v-if="eventPoolStaff.state !== 'W'">
+                                        <button class="btn-white btn btn-xs" v-on:click="_detail(eventPoolStaff)">
+                                            <vc:i18n name='查看详情'></vc:i18n>
                                         </button>
                                     </div>
                                 </td>
@@ -121,5 +126,6 @@
 
     <vc:create path="event/editEventPoolStaff"></vc:create>
     <vc:create path="event/viewData"></vc:create>
+    <vc:create path="event/eventDetail"></vc:create>
 
 </div>
