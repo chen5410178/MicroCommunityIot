@@ -1,0 +1,106 @@
+<div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入模型名称','monitorModelManage')"
+                                    v-model="monitorModelManageInfo.conditions.modelName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入模型处理类','monitorModelManage')"
+                                    v-model="monitorModelManageInfo.conditions.modelAdapt" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryMonitorModelMethod()">
+                                <vc:i18n name="查询" namespace="monitorModelManage"></vc:i18n>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetMonitorModelMethod()">
+                                <vc:i18n name="重置" namespace="monitorModelManage"></vc:i18n>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="监控模型" namespace="monitorModelManage"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddMonitorModelModal()">
+                            <vc:i18n name="添加" namespace="monitorModelManage"></vc:i18n>
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='模型编号' namespace='monitorModelManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='模型名称' namespace='monitorModelManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='模型处理类' namespace='monitorModelManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="monitorModel in monitorModelManageInfo.monitorModels">
+                                <td class="text-center">{{monitorModel.modelId}}</td>
+                                <td class="text-center">{{monitorModel.modelName}}</td>
+                                <td class="text-center">{{monitorModel.modelAdapt}}</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openEditMonitorModelModel(monitorModel)">
+                                            <vc:i18n name='修改'></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openDeleteMonitorModelModel(monitorModel)">
+                                            <vc:i18n name='删除'></vc:i18n>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7">
+                                    <ul class="pagination float-right"></ul>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <vc:create path="monitor/addMonitorModel" callBackListener="" callBackFunction=""></vc:create>
+    <vc:create path="monitor/editMonitorModel"></vc:create>
+    <vc:create path="monitor/deleteMonitorModel"></vc:create>
+
+</div>

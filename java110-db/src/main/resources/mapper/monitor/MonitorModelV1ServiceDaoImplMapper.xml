@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="monitorModelV1ServiceDaoImpl">
+
+
+    <!-- 保存监控模型信息 add by wuxw 2018-07-03 -->
+    <insert id="saveMonitorModelInfo" parameterType="Map">
+        insert into monitor_model(model_name, model_adapt, model_id)
+        values (#{modelName}, #{modelAdapt}, #{modelId})
+    </insert>
+
+
+    <!-- 查询监控模型信息 add by wuxw 2018-07-03 -->
+    <select id="getMonitorModelInfo" parameterType="Map" resultType="Map">
+        select t.model_name,t.model_name modelName,t.model_adapt,t.model_adapt modelAdapt,t.model_id,t.model_id
+        modelId,t.status_cd,t.status_cd statusCd
+        from monitor_model t
+        where 1 =1
+        <if test="modelName !=null and modelName != ''">
+            and t.model_name like concat('%', #{modelName}, '%')
+        </if>
+        <if test="modelAdapt !=null and modelAdapt != ''">
+            and t.model_adapt like concat('%', #{modelAdapt}, '%')
+        </if>
+        <if test="modelId !=null and modelId != ''">
+            and t.model_id= #{modelId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+
+    <!-- 修改监控模型信息 add by wuxw 2018-07-03 -->
+    <update id="updateMonitorModelInfo" parameterType="Map">
+        update monitor_model t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="modelName !=null and modelName != ''">
+            , t.model_name= #{modelName}
+        </if>
+        <if test="modelAdapt !=null and modelAdapt != ''">
+            , t.model_adapt= #{modelAdapt}
+        </if>
+        where 1=1
+        <if test="modelId !=null and modelId != ''">
+            and t.model_id= #{modelId}
+        </if>
+    </update>
+
+    <!-- 查询监控模型数量 add by wuxw 2018-07-03 -->
+    <select id="queryMonitorModelsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from monitor_model t
+        where 1 =1
+        <if test="modelName !=null and modelName != ''">
+            and t.model_name like concat('%', #{modelName}, '%')
+        </if>
+        <if test="modelAdapt !=null and modelAdapt != ''">
+            and t.model_adapt like concat('%', #{modelAdapt}, '%')
+        </if>
+        <if test="modelId !=null and modelId != ''">
+            and t.model_id= #{modelId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+    </select>
+
+</mapper>
