@@ -138,9 +138,6 @@
                                     <vc:i18n name='厂家' namespace='liftMachineManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <vc:i18n name='小区' namespace='liftMachineManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
                                     <vc:i18n name='电梯状态' namespace='liftMachineManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
@@ -163,7 +160,6 @@
                                 <td class="text-center">{{liftMachine.maintenanceUnit}}</td>
                                 <td class="text-center">{{liftMachine.rescueLink}}</td>
                                 <td class="text-center">{{liftMachine.factoryName}}</td>
-                                <td class="text-center">{{liftMachine.communityName}}</td>
                                 <td class="text-center">
                                     {{liftMachine.stateName}}
                                     <span v-if="liftMachine.state == '1001'">

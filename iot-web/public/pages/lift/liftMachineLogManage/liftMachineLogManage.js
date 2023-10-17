@@ -14,6 +14,8 @@
                 logId: '',
                 conditions: {
                     machineId: '',
+                    machineName: '',
+                    machineCode: '',
                     communityId: '',
                     logAction: '',
                     state: '',
@@ -77,9 +79,10 @@
                 } else {
                     $that.liftMachineLogManageInfo.moreCondition = true;
                 }
+            },
+            _openViewLiftMachineLogModel: function (_log) {
+                vc.emit('showLiftMachineLog', 'openShowLiftMachineLogModal', _log);
             }
-
-
         }
     });
 })(window.vc);
