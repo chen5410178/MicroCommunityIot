@@ -155,7 +155,7 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
     }
 
     @Override
-    public void triggerImage(BarrierDto machineDto, ManualOpenDoorLogDto manualOpenDoorLogDto) {
+    public void triggerImage(BarrierDto machineDto, ManualOpenDoorLogPo manualOpenDoorLogDto) {
         JSONObject data = JSONObject.parseObject("{\n" +
                 "\"Response_AlarmInfoPlate\": \n" +
                 "    {\n" +

@@ -3,6 +3,7 @@ package com.java110.barrier.engine;
 import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.manualOpenDoorLog.ManualOpenDoorLogDto;
 import com.java110.dto.parking.ParkingAreaTextDto;
+import com.java110.po.manualOpenDoorLog.ManualOpenDoorLogPo;
 
 /**
  * 道闸对接设备 适配器类
@@ -65,7 +66,7 @@ public interface ICarMachineProcess {
 
     /**
      * 摄像头抓拍
-     * @param manualOpenDoorLogDto
+     * @param manualOpenDoorLogPo
      */
-    void triggerImage(BarrierDto machineDto, ManualOpenDoorLogDto manualOpenDoorLogDto);
+    void triggerImage(BarrierDto machineDto, ManualOpenDoorLogPo manualOpenDoorLogPo);
 }

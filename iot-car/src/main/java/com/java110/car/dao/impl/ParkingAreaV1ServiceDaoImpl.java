@@ -105,5 +105,14 @@ public class ParkingAreaV1ServiceDaoImpl extends BaseServiceDao implements IPark
         return Integer.parseInt(businessParkingAreaInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> queryParkingAreasByBox(Map info) {
+        logger.debug("查询 getParkingAreaInfo 入参 info : {}",info);
+
+        List<Map> infos = sqlSessionTemplate.selectList("parkingAreaV1ServiceDaoImpl.queryParkingAreasByBox",info);
+
+        return infos;
+    }
+
 
 }

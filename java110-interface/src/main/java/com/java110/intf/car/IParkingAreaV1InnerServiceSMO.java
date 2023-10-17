@@ -16,6 +16,7 @@
 package com.java110.intf.car;
 
 import com.java110.dto.parking.ParkingAreaDto;
+import com.java110.dto.parking.ParkingBoxDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.parking.ParkingAreaPo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -65,4 +66,7 @@ public interface IParkingAreaV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryParkingAreasCount", method = RequestMethod.POST)
     int queryParkingAreasCount(@RequestBody ParkingAreaDto parkingAreaDto);
+
+    @RequestMapping(value = "/queryParkingAreasByBox", method = RequestMethod.POST)
+    List<ParkingAreaDto> queryParkingAreasByBox(@RequestBody ParkingBoxDto parkingBoxDto);
 }

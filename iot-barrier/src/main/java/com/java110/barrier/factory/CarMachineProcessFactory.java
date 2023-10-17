@@ -24,7 +24,7 @@ public class CarMachineProcessFactory {
      *
      * @return
      */
-    public static ICarMachineProcess getCarImpl(String hmId) throws Exception {
+    public static ICarMachineProcess getCarImpl(String hmId)  {
         /**
          * 访问硬件接口
          */

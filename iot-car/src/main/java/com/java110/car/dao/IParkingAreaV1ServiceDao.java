@@ -71,4 +71,5 @@ public interface IParkingAreaV1ServiceDao {
      */
     int queryParkingAreasCount(Map info);
 
+    List<Map> queryParkingAreasByBox(Map info);
 }

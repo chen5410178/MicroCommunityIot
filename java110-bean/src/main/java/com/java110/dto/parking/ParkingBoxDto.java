@@ -32,6 +32,8 @@ public class ParkingBoxDto extends PageDto implements Serializable {
 
     private String statusCd = "0";
 
+    private String defaultArea;
+
 
     public String getYelowCarIn() {
         return yelowCarIn;
@@ -136,5 +138,13 @@ public class ParkingBoxDto extends PageDto implements Serializable {
 
     public void setTempAuth(String tempAuth) {
         this.tempAuth = tempAuth;
+    }
+
+    public String getDefaultArea() {
+        return defaultArea;
+    }
+
+    public void setDefaultArea(String defaultArea) {
+        this.defaultArea = defaultArea;
     }
 }

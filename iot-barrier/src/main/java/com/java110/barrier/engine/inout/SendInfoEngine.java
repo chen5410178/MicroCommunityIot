@@ -14,7 +14,7 @@ public class SendInfoEngine {
 //    @Autowired
     //private ICarCallHcService carCallHcServiceImpl;
 
-    public void sendInfo(BarrierGateControlDto barrierGateControlDto, String extBoxId, BarrierDto machineDto) throws Exception {
+    public void sendInfo(BarrierGateControlDto barrierGateControlDto, String extBoxId, BarrierDto machineDto) {
 
         // apiInnerServiceImpl.barrierGateControlWebSocketServerSendInfo(barrierGateControlDto.toString(), extBoxId);
 

@@ -19,6 +19,7 @@ package com.java110.car.smo.impl;
 import com.java110.bean.dto.PageDto;
 import com.java110.car.dao.IParkingAreaV1ServiceDao;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.parking.ParkingBoxDto;
 import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
 import com.java110.dto.parking.ParkingAreaDto;
 import com.java110.po.parking.ParkingAreaPo;
@@ -82,5 +83,11 @@ public class ParkingAreaV1InnerServiceSMOImpl  implements IParkingAreaV1InnerSer
     @Override
     public int queryParkingAreasCount(@RequestBody ParkingAreaDto parkingAreaDto) {
         return parkingAreaV1ServiceDaoImpl.queryParkingAreasCount(BeanConvertUtil.beanCovertMap(parkingAreaDto));    }
+
+    @Override
+    public List<ParkingAreaDto> queryParkingAreasByBox(@RequestBody ParkingBoxDto parkingBoxDto) {
+        List<ParkingAreaDto> parkingAreas = BeanConvertUtil.covertBeanList(parkingAreaV1ServiceDaoImpl.queryParkingAreasByBox(BeanConvertUtil.beanCovertMap(parkingBoxDto)), ParkingAreaDto.class);
+        return parkingAreas;
+    }
 
 }
