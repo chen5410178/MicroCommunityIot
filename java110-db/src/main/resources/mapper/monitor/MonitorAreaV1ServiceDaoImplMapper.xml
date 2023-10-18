@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="monitorAreaV1ServiceDaoImpl">
+
+
+    <!-- 保存监控区域信息 add by wuxw 2018-07-03 -->
+    <insert id="saveMonitorAreaInfo" parameterType="Map">
+        insert into monitor_area(ma_name, remark, ma_id, community_id)
+        values (#{maName}, #{remark}, #{maId}, #{communityId})
+    </insert>
+
+
+    <!-- 查询监控区域信息 add by wuxw 2018-07-03 -->
+    <select id="getMonitorAreaInfo" parameterType="Map" resultType="Map">
+        select t.ma_name,t.ma_name maName,t.remark,t.status_cd,t.status_cd statusCd,t.ma_id,t.ma_id
+        maId,t.community_id,t.community_id communityId
+        from monitor_area t
+        where 1 =1
+        <if test="maName !=null and maName != ''">
+            and t.ma_name like concat('%', #{maName}, '%')
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="maId !=null and maId != ''">
+            and t.ma_id= #{maId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改监控区域信息 add by wuxw 2018-07-03 -->
+    <update id="updateMonitorAreaInfo" parameterType="Map">
+        update monitor_area t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="maName !=null and maName != ''">
+            , t.ma_name= #{maName}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="maId !=null and maId != ''">
+            and t.ma_id= #{maId}
+        </if>
+
+    </update>
+
+    <!-- 查询监控区域数量 add by wuxw 2018-07-03 -->
+    <select id="queryMonitorAreasCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from monitor_area t
+        where 1 =1
+        <if test="maName !=null and maName != ''">
+            and t.ma_name like concat('%', #{maName}, '%')
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="maId !=null and maId != ''">
+            and t.ma_id= #{maId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+
+    </select>
+
+</mapper>
