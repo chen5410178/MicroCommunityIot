@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="monitorMachineV1ServiceDaoImpl">
+
+
+    <!-- 保存监控设备信息 add by wuxw 2018-07-03 -->
+    <insert id="saveMonitorMachineInfo" parameterType="Map">
+        insert into monitor_machine(heartbeat_time, protocol, machine_id, machine_code, location_name, state, ma_id,
+                                    community_id, machine_name)
+        values (#{heartbeatTime}, #{protocol}, #{machineId}, #{machineCode}, #{locationName}, #{state}, #{maId},
+                #{communityId}, #{machineName})
+    </insert>
+
+    <resultMap id="resultMap" type="com.java110.dto.monitor.MonitorMachineDto">
+        <id column="machineId" property="machineId"/>
+        <result column="machineName" property="machineName"/>
+        <result column="machineCode" property="machineCode"/>
+        <result column="locationName" property="locationName"/>
+        <result column="maId" property="maId"/>
+        <result column="protocol" property="protocol"/>
+        <result column="communityId" property="communityId"/>
+        <result column="heartbeatTime" property="heartbeatTime"/>
+        <result column="state" property="state"/>
+        <result column="createTime" property="createTime"/>
+        <result column="statusCd" property="statusCd"/>
+        <result column="maName" property="maName"/>
+        <collection property="monitorMachineAttrsList"
+                    ofType="com.java110.dto.monitor.MonitorMachineAttrsDto"
+                    javaType="java.util.ArrayList">
+            <id column="attrId" property="attrId"/>
+            <result column="machineId1" property="machineId"/>
+            <result column="communityId1" property="communityId"/>
+            <result column="specCd" property="specCd"/>
+            <result column="value" property="value"/>
+            <result column="statusCd1" property="statusCd"/>
+        </collection>
+    </resultMap>
+
+    <!-- 查询监控设备信息 add by wuxw 2018-07-03 -->
+    <select id="getMonitorMachineInfo" parameterType="Map" resultMap="resultMap">
+        select
+        t.machine_id machineId,
+        t.machine_name machineName,
+        t.machine_code machineCode,
+        t.location_name locationName,
+        t.ma_id maId,
+        t.protocol,
+        t.community_id communityId,
+        t.heartbeat_time heartbeatTime,
+        t.state,
+        t.create_time createTime,
+        t.status_cd statusCd,
+        ma.ma_name maName,
+        mma.attr_id attrId,
+        mma.machine_id machineId1,
+        mma.community_id communityId1,
+        mma.spec_cd specCd,
+        mma.value,
+        mma.status_cd statusCd
+        from monitor_machine t
+        left join monitor_area ma on t.ma_id = ma.ma_id
+        left join monitor_machine_attrs mma on mma.machine_id = t.machine_id
+        where 1 =1 and ma.status_cd = '0' and mma.status_cd = '0'
+        <if test="heartbeatTime !=null">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="protocol !=null and protocol != ''">
+            and t.protocol= #{protocol}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            and t.location_name= #{locationName}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="maId !=null and maId != ''">
+            and t.ma_id= #{maId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改监控设备信息 add by wuxw 2018-07-03 -->
+    <update id="updateMonitorMachineInfo" parameterType="Map">
+        update monitor_machine t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="heartbeatTime !=null">
+            , t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="protocol !=null and protocol != ''">
+            , t.protocol= #{protocol}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            , t.location_name= #{locationName}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="maId !=null and maId != ''">
+            , t.ma_id= #{maId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            , t.machine_name= #{machineName}
+        </if>
+        where 1=1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+
+    </update>
+
+    <!-- 查询监控设备数量 add by wuxw 2018-07-03 -->
+    <select id="queryMonitorMachinesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from monitor_machine t
+        where 1 =1
+        <if test="heartbeatTime !=null">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="protocol !=null and protocol != ''">
+            and t.protocol= #{protocol}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            and t.location_name= #{locationName}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="maId !=null and maId != ''">
+            and t.ma_id= #{maId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+
+
+    </select>
+
+</mapper>

@@ -1,0 +1,85 @@
+<div id="editMonitorMachineModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="m-t-none m-b ">
+                    <vc:i18n name="修改" namespace="editMonitorMachine"></vc:i18n>
+                </h3>
+                <div class="ibox-content">
+                    <div>
+                        <div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label text-right">
+                                    <vc:i18n name='监控名称' namespace='editMonitorMachine'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input v-model="editMonitorMachineInfo.machineName" type="text"
+                                        :placeholder="vc.i18n('必填，请填写监控名称','editMonitorMachine')" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label text-right">
+                                    <vc:i18n name='监控编号' namespace='editMonitorMachine'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input v-model="editMonitorMachineInfo.machineCode" type="text"
+                                        :placeholder="vc.i18n('必填，请填写监控编号','editMonitorMachine')" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label text-right">
+                                    <vc:i18n name='监控位置' namespace='editMonitorMachine'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input v-model="editMonitorMachineInfo.locationName" type="text"
+                                        :placeholder="vc.i18n('必填，请填写监控位置','editMonitorMachine')" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label text-right">
+                                    <vc:i18n name='监控区域' namespace='editMonitorMachine'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <select class="custom-select" v-model="editMonitorMachineInfo.maId">
+                                        <option selected disabled value="">{{vc.i18n('必填，请选择监控区域','editMonitorMachine')}}</option>
+                                        <option v-for="(item, index) in monitorAreaList" :key="index" :value="item.maId">
+                                            {{item.maName}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label text-right">
+                                    <vc:i18n name='监控协议' namespace='editMonitorMachine'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <select class="custom-select" v-model="editMonitorMachineInfo.protocol" @change="_listAttrSpec()">
+                                        <option selected disabled value="">{{vc.i18n('必填，请选择监控协议','editMonitorMachine')}}</option>
+                                        <option v-for="(item, index) in protocolList" :key="index" :value="item.statusCd">
+                                            {{item.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" v-for="(item, index) in editMonitorMachineInfo.attrSpecList" :key="index">
+                                <label class="col-sm-2 col-form-label text-right">{{item.specName}}</label>
+                                <div class="col-sm-10">
+                                    <input v-model="item.value" :placeholder="item.specHoldplace" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <button class="btn btn-primary float-right" type="button" v-on:click="editMonitorMachine()">
+                                    <i class="fa fa-check"></i>
+                                    <vc:i18n name="保存"></vc:i18n>
+                                </button>
+                                <button type="button" class="btn btn-warning float-right" style="margin-right:20px;" data-dismiss="modal">
+                                    <vc:i18n name="取消"></vc:i18n>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

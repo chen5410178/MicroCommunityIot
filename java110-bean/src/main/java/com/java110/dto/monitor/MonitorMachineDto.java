@@ -4,8 +4,12 @@ import com.java110.bean.dto.PageDto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class MonitorMachineDto extends PageDto implements Serializable {
+    public static final String MONITOR_OPENING = "1001";
+    public static final String MONITOR_CLOSING = "1002";
+
     private String machineId;
     private String machineName;
     private String machineCode;
@@ -17,6 +21,9 @@ public class MonitorMachineDto extends PageDto implements Serializable {
     private String state;
     private Date createTime;
     private String statusCd = "0";
+
+    private String maName;
+    private List<MonitorMachineAttrsDto> monitorMachineAttrsList;
 
     public String getMachineId() {
         return machineId;
@@ -104,5 +111,21 @@ public class MonitorMachineDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getMaName() {
+        return maName;
+    }
+
+    public void setMaName(String maName) {
+        this.maName = maName;
+    }
+
+    public List<MonitorMachineAttrsDto> getMonitorMachineAttrsList() {
+        return monitorMachineAttrsList;
+    }
+
+    public void setMonitorMachineAttrsList(List<MonitorMachineAttrsDto> monitorMachineAttrsList) {
+        this.monitorMachineAttrsList = monitorMachineAttrsList;
     }
 }

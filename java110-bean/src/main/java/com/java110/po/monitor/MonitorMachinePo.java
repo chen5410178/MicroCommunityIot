@@ -1,6 +1,7 @@
 package com.java110.po.monitor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class MonitorMachinePo implements Serializable {
     private String machineId;
@@ -10,7 +11,7 @@ public class MonitorMachinePo implements Serializable {
     private String maId;
     private String protocol;
     private String communityId;
-    private String heartbeatTime;
+    private Date heartbeatTime;
     private String state;
     private String statusCd = "0";
 
@@ -70,11 +71,11 @@ public class MonitorMachinePo implements Serializable {
         this.communityId = communityId;
     }
 
-    public String getHeartbeatTime() {
+    public Date getHeartbeatTime() {
         return heartbeatTime;
     }
 
-    public void setHeartbeatTime(String heartbeatTime) {
+    public void setHeartbeatTime(Date heartbeatTime) {
         this.heartbeatTime = heartbeatTime;
     }
 
