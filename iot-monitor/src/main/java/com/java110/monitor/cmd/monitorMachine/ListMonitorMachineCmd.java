@@ -22,6 +22,7 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
+import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.monitor.MonitorMachineDto;
 import com.java110.intf.monitor.IMonitorMachineV1InnerServiceSMO;
@@ -56,6 +57,8 @@ public class ListMonitorMachineCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
+        Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
+
     }
 
     @Override

@@ -51,6 +51,8 @@ public class DeleteMonitorAreaCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "maId", "maId不能为空");
+        Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
+
     }
 
     @Override
