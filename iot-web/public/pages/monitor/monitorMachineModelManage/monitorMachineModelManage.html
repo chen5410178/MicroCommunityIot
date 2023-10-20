@@ -1,0 +1,131 @@
+<div>
+    <div class="row">
+        <div class="col-md-1 padding-r-0">
+            <div class=" border-radius ">
+                <div class="margin-xs-r  treeview ">
+                    <ul class="list-group text-center border-radius">
+                        <li class="list-group-item node-orgTree " v-for="(item, index) in monitorModelList" :key="index" @click="switchMonitorModel(item)" :class="{'vc-node-selected':monitorMachineModelManageInfo.conditions.modelId == item.modelId}">
+                            {{item.modelName}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-11">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox ">
+                        <div class="ibox-title">
+                            <h5>
+                                <vc:i18n name="查询条件"></vc:i18n>
+                            </h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <input type="text" :placeholder="vc.i18n('请输入监控名称','monitorMachineModelManage')"
+                                            v-model="monitorMachineModelManageInfo.conditions.machineName" class=" form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <input type="text" :placeholder="vc.i18n('请输入监控位置','monitorMachineModelManage')"
+                                            v-model="monitorMachineModelManageInfo.conditions.locationName" class=" form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <select class="custom-select" v-model="monitorMachineModelManageInfo.conditions.maId">
+                                            <option selected disabled value="">{{vc.i18n('请选择监控区域','monitorMachineModelManage')}}</option>
+                                            <option v-for="(item, index) in monitorAreaList" :key="index" :value="item.maId">
+                                                {{item.maName}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryMonitorMachineModelMethod()">
+                                        <vc:i18n name="查询" namespace="monitorMachineModelManage"></vc:i18n>
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetMonitorMachineModelMethod()">
+                                        <vc:i18n name="重置" namespace="monitorMachineModelManage"></vc:i18n>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>
+                                <vc:i18n name="监控分析" namespace="monitorMachineModelManage"></vc:i18n>
+                            </h5>
+                            <div class="ibox-tools" style="top:10px;">
+                                <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddMonitorMachineModelModal()">
+                                    <vc:i18n name="添加" namespace="monitorMachineModelManage"></vc:i18n>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">
+                                            <vc:i18n name='监控模型' namespace='monitorMachineModelManage'></vc:i18n>
+                                        </th>
+                                        <th class="text-center">
+                                            <vc:i18n name='监控名称' namespace='monitorMachineModelManage'></vc:i18n>
+                                        </th>
+                                        <th class="text-center">
+                                            <vc:i18n name='监控编号' namespace='monitorMachineModelManage'></vc:i18n>
+                                        </th>
+                                        <th class="text-center">
+                                            <vc:i18n name='监控位置' namespace='monitorMachineModelManage'></vc:i18n>
+                                        </th>
+                                        <th class="text-center">
+                                            <vc:i18n name='监控区域' namespace='monitorMachineModelManage'></vc:i18n>
+                                        </th>
+                                        <th class="text-center">
+                                            <vc:i18n name='操作'></vc:i18n>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="monitorMachineModel in monitorMachineModelManageInfo.monitorMachineModels">
+                                        <td class="text-center">{{monitorMachineModel.modelName}}</td>
+                                        <td class="text-center">{{monitorMachineModel.machineName}}</td>
+                                        <td class="text-center">{{monitorMachineModel.machineCode}}</td>
+                                        <td class="text-center">{{monitorMachineModel.locationName}}</td>
+                                        <td class="text-center">{{monitorMachineModel.maName}}</td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button class="btn-white btn btn-xs" v-on:click="_openDeleteMonitorMachineModelModel(monitorMachineModel)">
+                                                    <vc:i18n name='删除'></vc:i18n>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="7">
+                                            <ul class="pagination float-right"></ul>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <!-- 分页 -->
+                            <vc:create path="frame/pagination"></vc:create>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <vc:create path="monitor/deleteMonitorMachineModel"></vc:create>
+
+</div>

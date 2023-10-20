@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>
+                    <vc:i18n name="添加" namespace="addMonitorMachineModel"></vc:i18n>
+                </h5>
+                <div class="ibox-tools" style="top:10px;">
+                    <button type="button" class="btn btn-white btn-sm" v-on:click="vc.goBack()">
+                        <i class="fa fa-close"></i>返回
+                    </button>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label text-right">
+                        <vc:i18n name='监控模型' namespace='addMonitorMachineModel'></vc:i18n>
+                    </label>
+                    <div class="col-sm-10">
+                        <select class="custom-select" v-model="addMonitorMachineModelInfo.modelId">
+                            <option selected disabled value="">{{vc.i18n('必填，请选择监控模型','addMonitorMachineModel')}}</option>
+                            <option v-for="(item, index) in monitorModelList" :key="index" :value="item.modelId">
+                                {{item.modelName}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label text-right">
+                        <vc:i18n name='监控设备' namespace='addMonitorMachineModel'></vc:i18n>
+                    </label>
+                    <div class="col-sm-9">
+                        <textarea v-model="monitorMachineNameOnlyView" type="text" disabled rows="10"
+                            :placeholder="vc.i18n('必填，请选择监控设备','addMonitorMachineModel')" class="form-control">
+                        </textarea>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="selectMonitorMachine()">选择</button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <button class="btn btn-primary float-right" type="button" v-on:click="saveMonitorMachineModelInfo()">
+                        <i class="fa fa-check"></i>
+                        <vc:i18n name="保存"></vc:i18n>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <vc:create path="monitor/chooseMonitorMachine" emitChooseMonitorMachine="" emitLoadData=""></vc:create>

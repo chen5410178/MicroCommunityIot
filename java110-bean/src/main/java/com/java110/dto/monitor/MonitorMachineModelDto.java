@@ -13,6 +13,13 @@ public class MonitorMachineModelDto extends PageDto implements Serializable {
     private Date createTime;
     private String statusCd = "0";
 
+    private String machineName;
+    private String machineCode;
+    private String locationName;
+    private String maId;
+    private String maName;
+    private String modelName;
+
     public String getMmmId() {
         return mmmId;
     }
@@ -59,5 +66,53 @@ public class MonitorMachineModelDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getMachineName() {
+        return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
+    }
+
+    public String getMachineCode() {
+        return machineCode;
+    }
+
+    public void setMachineCode(String machineCode) {
+        this.machineCode = machineCode;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
+    public String getMaId() {
+        return maId;
+    }
+
+    public void setMaId(String maId) {
+        this.maId = maId;
+    }
+
+    public String getMaName() {
+        return maName;
+    }
+
+    public void setMaName(String maName) {
+        this.maName = maName;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
     }
 }

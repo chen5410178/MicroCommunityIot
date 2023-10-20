@@ -1,0 +1,91 @@
+<div id="chooseMonitorMachineModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="chooseMonitorMachineModelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="chooseMonitorMachineModelLabel">
+                    <vc:i18n name="选择" namespace="chooseMonitorMachine"></vc:i18n>
+                </h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class=" row">
+                    <div class="col-lg-12">
+                        <div class="ibox ">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_submitSelectMonitorMachineList()">
+                                        <vc:i18n name="确定" namespace="chooseMonitorMachine"></vc:i18n>
+                                    </button>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <input :placeholder="vc.i18n('请输入监控名称','chooseMonitorMachine')" type="text"
+                                               v-model="chooseMonitorMachineInfo.machineName" class="form-control form-control-sm">
+                                        &nbsp;
+                                        <input :placeholder="vc.i18n('请输入监控位置','chooseMonitorMachine')" type="text"
+                                               v-model="chooseMonitorMachineInfo.locationName" class="form-control form-control-sm">
+                                        &nbsp;
+                                        <select class="form-control form-control-sm" v-model="chooseMonitorMachineInfo.maId">
+                                            <option selected disabled value="">{{vc.i18n('请选择监控区域','chooseMonitorMachine')}}</option>
+                                            <option v-for="(item, index) in monitorAreaList" :key="index" :value="item.maId">
+                                                {{item.maName}}
+                                            </option>
+                                        </select>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span class="input-group-append">
+                                            <button type="button" class="btn btn-sm btn-primary"
+                                                    v-on:click="_queryMonitorMachines()">
+                                                <vc:i18n name="查询"></vc:i18n>
+                                            </button>
+                                            &nbsp;
+                                            <button type="button" class="btn btn-sm btn-primary"
+                                                    v-on:click="_resetConditions()">
+                                                <vc:i18n name="重置"></vc:i18n>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive" style="margin-top:15px">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">
+                                                <input type="checkbox" class="i-checks" @click="selectAll($event)">
+                                            </th>
+                                            <th class="text-center">
+                                                <vc:i18n name='监控名称' namespace='chooseMonitorMachine'></vc:i18n>
+                                            </th>
+                                            <th class="text-center">
+                                                <vc:i18n name='监控编号' namespace='chooseMonitorMachine'></vc:i18n>
+                                            </th>
+                                            <th class="text-center">
+                                                <vc:i18n name='监控位置' namespace='chooseMonitorMachine'></vc:i18n>
+                                            </th>
+                                            <th class="text-center">
+                                                <vc:i18n name='监控区域' namespace='chooseMonitorMachine'></vc:i18n>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="monitorMachine in monitorMachineList">
+                                            <td class="text-center">
+                                                <input type="checkbox" class="i-checks checkItem" v-bind:value="monitorMachine" v-model="chooseMonitorMachineInfo.selectMonitorMachineList">
+                                            </td>
+                                            <td class="text-center">{{monitorMachine.machineName}}</td>
+                                            <td class="text-center">{{monitorMachine.machineCode}}</td>
+                                            <td class="text-center">{{monitorMachine.locationName}}</td>
+                                            <td class="text-center">{{monitorMachine.maName}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

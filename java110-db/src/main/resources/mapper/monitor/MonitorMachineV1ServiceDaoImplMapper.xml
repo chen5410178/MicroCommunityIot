@@ -73,10 +73,10 @@
             and t.machine_id= #{machineId}
         </if>
         <if test="machineCode !=null and machineCode != ''">
-            and t.machine_code= #{machineCode}
+            and t.machine_code like concat('%', #{machineCode}, '%')
         </if>
         <if test="locationName !=null and locationName != ''">
-            and t.location_name= #{locationName}
+            and t.location_name like concat('%', #{locationName}, '%')
         </if>
         <if test="state !=null and state != ''">
             and t.state= #{state}
@@ -88,7 +88,7 @@
             and t.community_id= #{communityId}
         </if>
         <if test="machineName !=null and machineName != ''">
-            and t.machine_name= #{machineName}
+            and t.machine_name like concat('%', #{machineName}, '%')
         </if>
         <if test="statusCd !=null and statusCd != ''">
             and t.status_cd= #{statusCd}
@@ -153,10 +153,10 @@
             and t.machine_id= #{machineId}
         </if>
         <if test="machineCode !=null and machineCode != ''">
-            and t.machine_code= #{machineCode}
+            and t.machine_code like concat('%', #{machineCode}, '%')
         </if>
         <if test="locationName !=null and locationName != ''">
-            and t.location_name= #{locationName}
+            and t.location_name like concat('%', #{locationName}, '%')
         </if>
         <if test="state !=null and state != ''">
             and t.state= #{state}
@@ -168,7 +168,7 @@
             and t.community_id= #{communityId}
         </if>
         <if test="machineName !=null and machineName != ''">
-            and t.machine_name= #{machineName}
+            and t.machine_name like concat('%', #{machineName}, '%')
         </if>
         <if test="statusCd !=null and statusCd != ''">
             and t.status_cd= #{statusCd}

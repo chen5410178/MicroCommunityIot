@@ -1,6 +1,7 @@
 package com.java110.po.monitor;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class MonitorMachineModelPo implements Serializable {
     private String mmmId;
@@ -8,6 +9,8 @@ public class MonitorMachineModelPo implements Serializable {
     private String modelId;
     private String communityId;
     private String statusCd = "0";
+
+    private List<String> machineIdList;
 
     public String getMmmId() {
         return mmmId;
@@ -47,5 +50,13 @@ public class MonitorMachineModelPo implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public List<String> getMachineIdList() {
+        return machineIdList;
+    }
+
+    public void setMachineIdList(List<String> machineIdList) {
+        this.machineIdList = machineIdList;
     }
 }

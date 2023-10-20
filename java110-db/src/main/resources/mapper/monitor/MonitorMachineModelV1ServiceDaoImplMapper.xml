@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="monitorMachineModelV1ServiceDaoImpl">
+
+
+    <!-- 保存监控分析信息 add by wuxw 2018-07-03 -->
+    <insert id="saveMonitorMachineModelInfo" parameterType="Map">
+        insert into monitor_machine_model(machine_id, model_id, mmm_id, community_id)
+        values (#{machineId}, #{modelId}, #{mmmId}, #{communityId})
+    </insert>
+
+
+    <!-- 查询监控分析信息 add by wuxw 2018-07-03 -->
+    <select id="getMonitorMachineModelInfo" parameterType="Map" resultType="Map">
+        select t.machine_id,t.machine_id machineId,t.model_id,t.model_id modelId,t.mmm_id,t.mmm_id
+        mmmId,t.community_id,t.community_id communityId,mma.machine_name machineName,
+        mma.machine_code machineCode,mma.location_name locationName,ma.ma_name maName,
+        mm.model_name modelName
+        from monitor_machine_model t
+        left join monitor_model mm on t.model_id = mm.model_id
+        left join monitor_machine mma on t.machine_id = mma.machine_id
+        left join monitor_area ma on mma.ma_id = ma.ma_id
+        where 1 =1 and mm.status_cd = '0' and mma.status_cd = '0' and ma.status_cd = '0'
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="modelId !=null and modelId != ''">
+            and t.model_id= #{modelId}
+        </if>
+        <if test="mmmId !=null and mmmId != ''">
+            and t.mmm_id= #{mmmId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and mma.machine_name like concat('%', #{machineName}, '%')
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            and mma.location_name like concat('%', #{locationName}, '%')
+        </if>
+        <if test="maId !=null and maId != ''">
+            and ma.ma_id= #{maId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改监控分析信息 add by wuxw 2018-07-03 -->
+    <update id="updateMonitorMachineModelInfo" parameterType="Map">
+        update monitor_machine_model t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="modelId !=null and modelId != ''">
+            , t.model_id= #{modelId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="modelId !=null and modelId != ''">
+            and t.model_id= #{modelId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="mmmId !=null and mmmId != ''">
+            and t.mmm_id= #{mmmId}
+        </if>
+        <if test="machineIdList !=null and machineIdList != ''">
+            and t.machine_id in
+            <foreach item="machineId" collection="machineIdList" open="(" separator="," close=")">
+                #{machineId}
+            </foreach>
+        </if>
+
+    </update>
+
+    <!-- 查询监控分析数量 add by wuxw 2018-07-03 -->
+    <select id="queryMonitorMachineModelsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from monitor_machine_model t
+        left join monitor_model mm on t.model_id = mm.model_id
+        left join monitor_machine mma on t.machine_id = mma.machine_id
+        left join monitor_area ma on mma.ma_id = ma.ma_id
+        where 1 =1 and mm.status_cd = '0' and mma.status_cd = '0' and ma.status_cd = '0'
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="modelId !=null and modelId != ''">
+            and t.model_id= #{modelId}
+        </if>
+        <if test="mmmId !=null and mmmId != ''">
+            and t.mmm_id= #{mmmId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and mma.machine_name like concat('%', #{machineName}, '%')
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            and mma.location_name like concat('%', #{locationName}, '%')
+        </if>
+        <if test="maId !=null and maId != ''">
+            and ma.ma_id= #{maId}
+        </if>
+    </select>
+
+    <insert id="saveMonitorMachineModelList" parameterType="Map">
+        insert into monitor_machine_model(machine_id, model_id, mmm_id, community_id)
+        values
+        <foreach collection="list" separator="," item="item">
+            (#{item.machineId}, #{item.modelId}, #{item.mmmId}, #{item.communityId})
+        </foreach>
+    </insert>
+
+</mapper>
