@@ -118,6 +118,9 @@
                                     <vc:i18n name='心跳时间' namespace='monitorMachineManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='monitorMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='操作'></vc:i18n>
                                 </th>
                             </tr>
@@ -135,6 +138,7 @@
                                     <label v-if="monitorMachine.state === '1002'">{{vc.i18n('关闭中','monitorMachineManage')}}</label>
                                 </td>
                                 <td class="text-center">{{monitorMachine.heartbeatTime}}</td>
+                                <td class="text-center">{{monitorMachine.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs" v-on:click="_openEditMonitorMachineModel(monitorMachine)">
