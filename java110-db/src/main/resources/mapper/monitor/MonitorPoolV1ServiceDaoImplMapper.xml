@@ -23,8 +23,9 @@
         from monitor_pool t
         left join monitor_model mm on t.model_id = mm.model_id
         left join monitor_machine mma on t.machine_id = mma.machine_id
+        left join monitor_area ma on mma.ma_id = ma.ma_id
         left join t_dict td on t.monitor_type = td.status_cd and td.table_name = 'monitor_pool' and td.table_columns = 'monitor_type'
-        where 1 =1 and mm.status_cd = '0' and mma.status_cd = '0'
+        where 1 =1 and mm.status_cd = '0' and mma.status_cd = '0' and ma.status_cd = '0'
         <if test="monitorPhoto !=null and monitorPhoto != ''">
             and t.monitor_photo= #{monitorPhoto}
         </if>
