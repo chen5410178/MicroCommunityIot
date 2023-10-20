@@ -16,7 +16,7 @@
                     mmmId: '',
                     machineId: '',
                     modelId: '',
-                    communityId: '',
+                    communityId: vc.getCurrentCommunity().communityId,
                     maId: '',
                     machineName: '',
                     locationName: ''
@@ -78,7 +78,7 @@
                     mmmId: '',
                     machineId: '',
                     modelId: $that.monitorMachineModelManageInfo.conditions.modelId,
-                    communityId: '',
+                    communityId: vc.getCurrentCommunity().communityId,
                     maId: '',
                     machineName: '',
                     locationName: ''

@@ -17,6 +17,10 @@ public class MonitorPoolDto extends PageDto implements Serializable {
     private Date createTime;
     private String statusCd = "0";
 
+    private String modelName;
+    private String machineName;
+    private String monitorTypeName;
+
     public String getMpId() {
         return mpId;
     }
@@ -95,5 +99,29 @@ public class MonitorPoolDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public String getMachineName() {
+        return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
+    }
+
+    public String getMonitorTypeName() {
+        return monitorTypeName;
+    }
+
+    public void setMonitorTypeName(String monitorTypeName) {
+        this.monitorTypeName = monitorTypeName;
     }
 }

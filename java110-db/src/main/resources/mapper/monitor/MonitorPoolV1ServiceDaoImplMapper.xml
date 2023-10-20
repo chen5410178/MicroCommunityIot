@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="monitorPoolV1ServiceDaoImpl">
+
+
+    <!-- 保存监控告警信息 add by wuxw 2018-07-03 -->
+    <insert id="saveMonitorPoolInfo" parameterType="Map">
+        insert into monitor_pool(monitor_photo, monitor_type, machine_id, machine_code, model_id, remark, community_id,
+                                 mp_id)
+        values (#{monitorPhoto}, #{monitorType}, #{machineId}, #{machineCode}, #{modelId}, #{remark}, #{communityId},
+                #{mpId})
+    </insert>
+
+
+    <!-- 查询监控告警信息 add by wuxw 2018-07-03 -->
+    <select id="getMonitorPoolInfo" parameterType="Map" resultType="Map">
+        select t.monitor_photo,t.monitor_photo monitorPhoto,t.monitor_type,t.monitor_type
+        monitorType,t.machine_id,t.machine_id machineId,t.machine_code,t.machine_code machineCode,t.model_id,t.model_id
+        modelId,t.remark,t.community_id,t.community_id communityId,t.mp_id,t.mp_id mpId,mm.model_name modelName,
+        mma.machine_name machineName,td.name monitorTypeName
+        from monitor_pool t
+        left join monitor_model mm on t.model_id = mm.model_id
+        left join monitor_machine mma on t.machine_id = mma.machine_id
+        left join t_dict td on t.monitor_type = td.status_cd and td.table_name = 'monitor_pool' and td.table_columns = 'monitor_type'
+        where 1 =1 and mm.status_cd = '0' and mma.status_cd = '0'
+        <if test="monitorPhoto !=null and monitorPhoto != ''">
+            and t.monitor_photo= #{monitorPhoto}
+        </if>
+        <if test="monitorType !=null and monitorType != ''">
+            and t.monitor_type= #{monitorType}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="modelId !=null and modelId != ''">
+            and t.model_id= #{modelId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="mpId !=null and mpId != ''">
+            and t.mp_id= #{mpId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改监控告警信息 add by wuxw 2018-07-03 -->
+    <update id="updateMonitorPoolInfo" parameterType="Map">
+        update monitor_pool t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="monitorPhoto !=null and monitorPhoto != ''">
+            , t.monitor_photo= #{monitorPhoto}
+        </if>
+        <if test="monitorType !=null and monitorType != ''">
+            , t.monitor_type= #{monitorType}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="modelId !=null and modelId != ''">
+            , t.model_id= #{modelId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="mpId !=null and mpId != ''">
+            and t.mp_id= #{mpId}
+        </if>
+
+    </update>
+
+    <!-- 查询监控告警数量 add by wuxw 2018-07-03 -->
+    <select id="queryMonitorPoolsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from monitor_pool t
+        where 1 =1
+        <if test="monitorPhoto !=null and monitorPhoto != ''">
+            and t.monitor_photo= #{monitorPhoto}
+        </if>
+        <if test="monitorType !=null and monitorType != ''">
+            and t.monitor_type= #{monitorType}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="modelId !=null and modelId != ''">
+            and t.model_id= #{modelId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="mpId !=null and mpId != ''">
+            and t.mp_id= #{mpId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+
+
+    </select>
+
+</mapper>
