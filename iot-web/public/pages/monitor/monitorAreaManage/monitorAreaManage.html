@@ -55,6 +55,9 @@
                                     <vc:i18n name='备注' namespace='monitorAreaManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='monitorAreaManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='操作'></vc:i18n>
                                 </th>
                             </tr>
@@ -68,6 +71,7 @@
                                         <vc:i18n name='查看'></vc:i18n>
                                     </button>
                                 </td>
+                                <td class="text-center">{{monitorArea.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs" v-on:click="_openEditMonitorAreaModel(monitorArea)">

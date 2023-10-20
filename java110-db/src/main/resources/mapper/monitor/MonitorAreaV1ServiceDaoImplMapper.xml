@@ -15,7 +15,7 @@
     <!-- 查询监控区域信息 add by wuxw 2018-07-03 -->
     <select id="getMonitorAreaInfo" parameterType="Map" resultType="Map">
         select t.ma_name,t.ma_name maName,t.remark,t.status_cd,t.status_cd statusCd,t.ma_id,t.ma_id
-        maId,t.community_id,t.community_id communityId
+        maId,t.community_id,t.community_id communityId,t.create_time createTime
         from monitor_area t
         where 1 =1
         <if test="maName !=null and maName != ''">

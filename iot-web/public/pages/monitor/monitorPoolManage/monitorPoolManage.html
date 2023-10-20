@@ -83,6 +83,9 @@
                                     <vc:i18n name='监控图片' namespace='monitorPoolManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='monitorPoolManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='描述' namespace='monitorPoolManage'></vc:i18n>
                                 </th>
                             </tr>
@@ -100,6 +103,7 @@
                                              onerror="this.src='/img/noPhoto.jpg';">
                                     </div>
                                 </td>
+                                <td class="text-center">{{monitorPool.createTime}}</td>
                                 <td class="text-center">
                                     <button class="btn-white btn btn-xs" v-on:click="_openModel(monitorPool.remark, '备注')">
                                         <vc:i18n name='查看'></vc:i18n>
