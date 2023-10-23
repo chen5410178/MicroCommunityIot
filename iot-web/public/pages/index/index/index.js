@@ -3,7 +3,8 @@
         data: {
             indexInfo: {
                 
-            }
+            },
+            storeTypeCd: vc.getData('/nav/getUserInfo').storeTypeCd,
         },
         _initMethod: function() {
           

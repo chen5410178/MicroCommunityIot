@@ -1,0 +1,22 @@
+<div class="index-1-right-1">
+    <div class="index-title"><span>监控告警</span></div>
+    <ul id="pool" style="overflow-y: scroll;height: 100%;">
+        <li class="flex justify-between padding-top-sm" v-if="!indexMonitorAlarmInfo.monitorAlarms || indexMonitorAlarmInfo.monitorAlarms.length < 1">
+            <div class="vc-index-notice-title">
+                当前没有告警
+            </div>
+            <div class="vc-index-notice-time">
+
+            </div>
+        </li>
+        <li class="flex justify-between padding-top-sm" v-for="(item,index) in indexMonitorAlarmInfo.monitorAlarms" v-else>
+            <div class="vc-index-notice-title">
+                {{item.machineName}}({{item.maName}}-{{item.locationName}})发生{{item.monitorTypeName}}
+            </div>
+            <div class="vc-index-notice-time">
+                {{item.createTime}}
+            </div>
+        </li>
+
+    </ul>
+</div>

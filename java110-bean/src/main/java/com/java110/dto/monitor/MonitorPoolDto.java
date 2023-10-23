@@ -20,6 +20,8 @@ public class MonitorPoolDto extends PageDto implements Serializable {
     private String modelName;
     private String machineName;
     private String monitorTypeName;
+    private String maName;
+    private String locationName;
 
     public String getMpId() {
         return mpId;
@@ -123,5 +125,21 @@ public class MonitorPoolDto extends PageDto implements Serializable {
 
     public void setMonitorTypeName(String monitorTypeName) {
         this.monitorTypeName = monitorTypeName;
+    }
+
+    public String getMaName() {
+        return maName;
+    }
+
+    public void setMaName(String maName) {
+        this.maName = maName;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
     }
 }

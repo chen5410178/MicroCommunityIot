@@ -19,7 +19,7 @@
         select t.monitor_photo,t.monitor_photo monitorPhoto,t.monitor_type,t.monitor_type
         monitorType,t.machine_id,t.machine_id machineId,t.machine_code,t.machine_code machineCode,t.model_id,t.model_id
         modelId,t.remark,t.community_id,t.community_id communityId,t.mp_id,t.mp_id mpId,t.create_time createTime,
-        mm.model_name modelName,mma.machine_name machineName,td.name monitorTypeName
+        mm.model_name modelName,mma.machine_name machineName,td.name monitorTypeName,ma.ma_name maName,mma.location_name locationName
         from monitor_pool t
         left join monitor_model mm on t.model_id = mm.model_id
         left join monitor_machine mma on t.machine_id = mma.machine_id
