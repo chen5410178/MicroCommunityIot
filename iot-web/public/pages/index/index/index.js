@@ -8,7 +8,9 @@
         },
         _initMethod: function() {
             let _getUserInfo = vc.getData('/nav/getUserInfo')
-          $that.indexInfo.storeTypeCd = _getUserInfo.storeTypeCd
+            if(_getUserInfo){
+                $that.indexInfo.storeTypeCd = _getUserInfo.storeTypeCd
+            }
 
         },
         _initEvent: function() {
