@@ -17,9 +17,12 @@
             }
         },
         _initMethod: function () {
-            $that._loadPropertyIndexMachines();
+           
         },
         _initEvent: function () {
+            vc.on('indexMachineView','initData',function(){
+                $that._loadPropertyIndexMachines();
+            })
         },
         methods: {
             _loadPropertyIndexMachines: function () {

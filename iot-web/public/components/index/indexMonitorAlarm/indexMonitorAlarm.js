@@ -9,9 +9,13 @@
             }
         },
         _initMethod: function () {
-            $that._loadPropertyIndexMonitorAlarms();
+           
         },
-        _initMonitorAlarm: function() {},
+        _initMonitorAlarm: function() {
+            vc.on('indexMonitorAlarm','initData',function(){
+                $that._loadPropertyIndexMonitorAlarms();
+            })
+        },
         methods: {
             _loadPropertyIndexMonitorAlarms: function() {
                 let param = {
