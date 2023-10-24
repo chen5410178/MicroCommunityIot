@@ -25,7 +25,7 @@
         left join lamp_machine_factory lmf on t.factory_id = lmf.factory_id and lmf.status_cd = '0'
         left join t_dict td on t.state = td.status_cd and td.table_name = 'lamp_machine' and td.table_columns = 'state'
         where 1 =1
-        <if test="heartbeatTime !=null and heartbeatTime != ''">
+        <if test="heartbeatTime !=null">
             and t.heartbeat_time= #{heartbeatTime}
         </if>
         <if test="machineId !=null and machineId != ''">
@@ -66,7 +66,7 @@
         <if test="newBId != null and newBId != ''">
             ,t.b_id = #{newBId}
         </if>
-        <if test="heartbeatTime !=null and heartbeatTime != ''">
+        <if test="heartbeatTime !=null">
             , t.heartbeat_time= #{heartbeatTime}
         </if>
         <if test="machineCode !=null and machineCode != ''">
@@ -99,8 +99,8 @@
         select count(1) count
         from lamp_machine t
         where 1 =1
-        <if test="heartbeatTime !=null and heartbeatTime != ''">
-            and t.heartbeat_time= #{heartbeatTime}
+        <if test="heartbeatTime !=null">
+            and DATE_ADD(t.heartbeat_time, INTERVAL 2 MINUTE) &lt; #{heartbeatTime}
         </if>
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}

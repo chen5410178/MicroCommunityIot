@@ -120,7 +120,7 @@
             and t.machine_mac= #{machineMac}
         </if>
         <if test="heartbeatTime !=null and heartbeatTime != ''">
-            and t.heartbeat_time= #{heartbeatTime}
+            and DATE_ADD(t.heartbeat_time, INTERVAL 2 MINUTE) &lt; #{heartbeatTime}
         </if>
         <if test="implBean !=null and implBean != ''">
             and t.impl_bean= #{implBean}

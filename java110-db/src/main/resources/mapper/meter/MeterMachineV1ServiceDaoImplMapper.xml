@@ -31,7 +31,7 @@
         from meter_machine t
         left join meter_machine_factory mmf on t.impl_bean = mmf.factory_id and mmf.status_cd='0'
         where 1 =1
-        <if test="heartbeatTime !=null and heartbeatTime != ''">
+        <if test="heartbeatTime !=null">
             and t.heartbeat_time= #{heartbeatTime}
         </if>
         <if test="implBean !=null and implBean != ''">
@@ -105,7 +105,7 @@
         <if test="newBId != null and newBId != ''">
             ,t.b_id = #{newBId}
         </if>
-        <if test="heartbeatTime !=null and heartbeatTime != ''">
+        <if test="heartbeatTime !=null">
             , t.heartbeat_time= #{heartbeatTime}
         </if>
         <if test="implBean !=null and implBean != ''">
@@ -169,8 +169,8 @@
         select count(1) count
         from meter_machine t
         where 1 =1
-        <if test="heartbeatTime !=null and heartbeatTime != ''">
-            and t.heartbeat_time= #{heartbeatTime}
+        <if test="heartbeatTime !=null">
+            and DATE_ADD(t.heartbeat_time, INTERVAL 2 MINUTE) &lt; #{heartbeatTime}
         </if>
         <if test="implBean !=null and implBean != ''">
             and t.impl_bean= #{implBean}

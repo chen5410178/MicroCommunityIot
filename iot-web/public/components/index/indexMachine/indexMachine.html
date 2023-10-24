@@ -8,7 +8,10 @@
                 <i class="fa fa-building-o"></i>
             </div>
             <div>
-                <div class="index-number">{{indexMachineViewInfo.accessControlCount}}<span style="font-size: 16px">（离线 {{indexMachineViewInfo.accessControlOffLineCount}}）</span></div>
+                <div class="index-number">{{indexMachineViewInfo.accessControlCount}}
+                    <span class="index-number-unit">个</span>
+                    <span style="font-size: 16px">（离线 {{indexMachineViewInfo.accessControlOfflineCount}}）</span>
+                </div>
                 <div class="index-number-describe">门禁</div>
             </div>
         </div>
@@ -17,7 +20,10 @@
                 <i class="fa fa-home"></i>
             </div>
             <div>
-                <div class="index-number">{{indexMachineViewInfo.barrierCount}}</div>
+                <div class="index-number">{{indexMachineViewInfo.barrierCount}}
+                    <span class="index-number-unit">个</span>
+                    <span style="font-size: 16px">（离线 {{indexMachineViewInfo.barrierOfflineCount}}）</span>
+                </div>
                 <div class="index-number-describe">道闸</div>
             </div>
         </div>
@@ -26,7 +32,10 @@
                 <i class="fa fa-cube"></i>
             </div>
             <div>
-                <div class="index-number">{{indexMachineViewInfo.chargeCount}}</div>
+                <div class="index-number">{{indexMachineViewInfo.chargeCount}}
+                    <span class="index-number-unit">个</span>
+                    <span style="font-size: 16px">（离线 {{indexMachineViewInfo.chargeOfflineCount}}）</span>
+                </div>
                 <div class="index-number-describe">充电桩</div>
             </div>
         </div>
@@ -35,7 +44,10 @@
                 <i class="fa fa-truck"></i>
             </div>
             <div>
-                <div class="index-number">{{indexMachineViewInfo.meterCount}}</div>
+                <div class="index-number">{{indexMachineViewInfo.meterCount}}
+                    <span class="index-number-unit">个</span>
+                    <span style="font-size: 16px">（离线 {{indexMachineViewInfo.meterOfflineCount}}）</span>
+                </div>
                 <div class="index-number-describe">水电表</div>
             </div>
         </div>
@@ -51,6 +63,7 @@
             <div class="text-center">
                 <div class="index-number">{{indexMachineViewInfo.liftCount}}
                     <span class="index-number-unit">个</span>
+                    <span style="font-size: 16px">（离线 {{indexMachineViewInfo.liftOfflineCount}}）</span>
                 </div>
                 <div class="index-number-describe margin-top-sm" @click="_toLift()">查看电梯></div>
             </div>
@@ -65,6 +78,7 @@
             <div class="text-center">
                 <div class="index-number">{{indexMachineViewInfo.lampCount}}
                     <span class="index-number-unit">个</span>
+                    <span style="font-size: 16px">（离线 {{indexMachineViewInfo.lampOfflineCount}}）</span>
                 </div>
                 <div class="index-number-describe margin-top-sm" @click="_toLamp()">查看路灯></div>
             </div>

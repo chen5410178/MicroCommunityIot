@@ -3,12 +3,17 @@
         data: {
             indexMachineViewInfo: {
                 accessControlCount:0,
-                accessControlOffLineCount:0,
+                accessControlOfflineCount:0,
                 barrierCount:0,
+                barrierOfflineCount:0,
                 chargeCount:0,
+                chargeOfflineCount:0,
                 meterCount:0,
+                meterOfflineCount:0,
                 liftCount:0,
+                liftOfflineCount:0,
                 lampCount:0,
+                lampOfflineCount:0,
             }
         },
         _initMethod: function () {

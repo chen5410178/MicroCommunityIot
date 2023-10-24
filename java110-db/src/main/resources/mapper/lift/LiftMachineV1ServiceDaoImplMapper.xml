@@ -30,7 +30,7 @@
         left join s_community sc on t.community_id = sc.community_id
         left join t_dict td on t.state = td.status_cd and td.table_name = 'lift_machine' and td.table_columns = 'state'
         where 1 =1 and lmf.status_cd = '0' and sc.status_cd = '0'
-        <if test="heartbeatTime !=null and heartbeatTime != ''">
+        <if test="heartbeatTime !=null">
             and t.heartbeat_time= #{heartbeatTime}
         </if>
         <if test="machineCode !=null and machineCode != ''">
@@ -89,7 +89,7 @@
         <if test="newBId != null and newBId != ''">
             ,t.b_id = #{newBId}
         </if>
-        <if test="heartbeatTime !=null and heartbeatTime != ''">
+        <if test="heartbeatTime !=null">
             , t.heartbeat_time= #{heartbeatTime}
         </if>
         <if test="machineCode !=null and machineCode != ''">
@@ -140,8 +140,8 @@
         select count(1) count
         from lift_machine t
         where 1 =1
-        <if test="heartbeatTime !=null and heartbeatTime != ''">
-            and t.heartbeat_time= #{heartbeatTime}
+        <if test="heartbeatTime !=null">
+            and DATE_ADD(t.heartbeat_time, INTERVAL 2 MINUTE) &lt; #{heartbeatTime}
         </if>
         <if test="machineCode !=null and machineCode != ''">
             and t.machine_code like concat('%', #{machineCode}, '%')
