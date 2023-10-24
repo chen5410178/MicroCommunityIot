@@ -1,8 +1,9 @@
 <div class="vc-index">
-    <div class="vc-index-nav" v-if="storeTypeCd === '800900000003'">
+    <div v-if="indexInfo.storeTypeCd === '800900000003'"></div>
+    <div class="vc-index-nav" >
         <span><i class="fa fa-home margin-right-sm"></i>首页</span><span class="margin-left-sm margin-right-sm">/</span><span>控制台</span>
     </div>
-    <div class="vc-index-1 flex justify-start" v-if="storeTypeCd === '800900000003'">
+    <div class="vc-index-1 flex justify-start" >
         <div class="index-1-left">
             <vc:create path="index/indexCommunity"></vc:create>
         </div>
@@ -10,7 +11,7 @@
             <vc:create path="index/indexEvent"></vc:create>
         </div>
     </div>
-    <div class="vc-index-1  flex justify-start" v-if="storeTypeCd === '800900000003'">
+    <div class="vc-index-1  flex justify-start" >
         <div class="index-1-left">
             <vc:create path="index/indexMachine"></vc:create>
         </div>

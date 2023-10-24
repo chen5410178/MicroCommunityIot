@@ -2,12 +2,13 @@
     vc.extends({
         data: {
             indexInfo: {
-                
+                storeTypeCd: '', 
             },
-            storeTypeCd: vc.getData('/nav/getUserInfo').storeTypeCd,
+          
         },
         _initMethod: function() {
-          
+            let _getUserInfo = vc.getData('/nav/getUserInfo')
+          $that.indexInfo.storeTypeCd = _getUserInfo.storeTypeCd
 
         },
         _initEvent: function() {
