@@ -26,4 +26,9 @@ public class StartHeartbeat {
         executorService.execute(new CustomMqttMsgThread());
 
     }
+
+    public static void main(String[] args) {
+        StartHeartbeat startHeartbeat = new StartHeartbeat();
+        startHeartbeat.start();
+    }
 }

@@ -53,22 +53,22 @@ public class TempCarFeeFactory {
         Date payTime = null;
         double min = 0.0;
         long minLong = 0;
-        try {
-            //不是支付完成 状态
-            if (CarInoutDto.STATE_PAY.equals(carInoutDto.getState())) {
-                payTime = carInoutDto.getPayTime();
-            } else {
-                payTime = DateUtil.getDateFromString(carInoutDto.getOpenTime(), DateUtil.DATE_FORMATE_STRING_A);
-            }
-            Date nowTime = DateUtil.getCurrentDate();
-            //支付完成超过15分钟
 
-            min = (nowTime.getTime() - payTime.getTime()) / (60 * 1000 * 1.00);
-
-            minLong = new Double(Math.ceil(min)).longValue();
-        } catch (ParseException e) {
-            e.printStackTrace();
+        //不是支付完成 状态
+        if (CarInoutDto.STATE_PAY.equals(carInoutDto.getState())) {
+            payTime = carInoutDto.getPayTime();
         }
+
+        if (payTime == null) {
+            payTime = DateUtil.getDateFromStringA(carInoutDto.getOpenTime());
+        }
+        Date nowTime = DateUtil.getCurrentDate();
+        //支付完成超过15分钟
+
+        min = (nowTime.getTime() - payTime.getTime()) / (60 * 1000 * 1.00);
+
+        minLong = new Double(Math.ceil(min)).longValue();
+
 
         if (parkingCouponCarDtos == null || parkingCouponCarDtos.size() < 1) {
             return minLong;
@@ -118,7 +118,7 @@ public class TempCarFeeFactory {
         try {
             //不是支付完成 状态
             if (CarInoutDto.STATE_PAY.equals(carInoutDto.getState())) {
-                    payTime = carInoutDto.getPayTime();
+                payTime = carInoutDto.getPayTime();
             } else {
                 payTime = DateUtil.getDateFromString(carInoutDto.getInTime(), DateUtil.DATE_FORMATE_STRING_A);
             }

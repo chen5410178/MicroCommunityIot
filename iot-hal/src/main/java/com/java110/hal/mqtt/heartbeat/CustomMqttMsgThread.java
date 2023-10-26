@@ -37,6 +37,8 @@ public class CustomMqttMsgThread implements Runnable {
 
         MqttMsgDto mqttMsgDto = MqttQueue.getMqttMsg();
 
+        log.debug("----- mqtt 消息处理------");
+
         if (mqttMsgDto == null) {
             return;
         }
@@ -55,7 +57,7 @@ public class CustomMqttMsgThread implements Runnable {
         //tmpManufacturerDto.setValue(mqttMsgDto.getTopic());
         List<HardwareManufacturerAttrDto> manufacturerAttrDtos = hardwareManufacturerAttrV1InnerServiceSMOImpl.queryHardwareManufacturerAttrs(tmpManufacturerDto);
 
-        if (manufacturerAttrDtos == null || manufacturerAttrDtos.size() < 1) {
+        if (manufacturerAttrDtos == null || manufacturerAttrDtos.isEmpty()) {
             return;
         }
 
