@@ -1,6 +1,7 @@
 package com.java110.hal.mqtt.subscribe;
 
 import com.java110.core.factory.ApplicationContextFactory;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.dto.hardwareManufacturerAttr.HardwareManufacturerAttrDto;
@@ -24,7 +25,7 @@ public class MqttClientSubscribeFactory {
         hardwareManufacturerAttrDto.setSpecCd(HardwareManufacturerAttrDto.SPEC_TOPIC);
         List<HardwareManufacturerAttrDto> manufacturerAttrDtos = hardwareManufacturerAttrV1InnerServiceSMOImpl.queryHardwareManufacturerAttrs(hardwareManufacturerAttrDto);
 
-        if (manufacturerAttrDtos == null || manufacturerAttrDtos.size() < 1) {
+        if (manufacturerAttrDtos == null || manufacturerAttrDtos.isEmpty()) {
             return;
         }
 
@@ -43,22 +44,34 @@ public class MqttClientSubscribeFactory {
     }
 
     private static void subscribeBarrierHardwareTopic(HardwareManufacturerAttrDto manufacturerAttrDto) {
+
+        if (!HardwareManufacturerDto.HM_TYPE_BARRIER.equals(manufacturerAttrDto.getHmType())) {
+            return;
+        }
+
+        String topic = manufacturerAttrDto.getValue();
+        if (StringUtil.isEmpty(topic)) {
+            return;
+        }
+
+        MqttFactory.subscribe(topic);
     }
 
     /**
      * 门禁topic订阅
+     *
      * @param manufacturerAttrDto
      * @return
      */
     private static void subscribeAccessControlHardwareTopic(HardwareManufacturerAttrDto manufacturerAttrDto) {
 
-        if(!HardwareManufacturerDto.HM_TYPE_ACCESS_CONTROL.equals(manufacturerAttrDto.getHmType())){
+        if (!HardwareManufacturerDto.HM_TYPE_ACCESS_CONTROL.equals(manufacturerAttrDto.getHmType())) {
             return;
         }
 
         String topic = manufacturerAttrDto.getValue();
 
-        if(!topic.contains("SN")){
+        if (!topic.contains("SN")) {
             MqttFactory.subscribe(topic.trim());
             return;
         }
@@ -73,12 +86,12 @@ public class MqttClientSubscribeFactory {
         accessControlDto.setImplBean(manufacturerAttrDto.getHmId());
         List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
 
-        if(accessControlDtos == null || accessControlDtos.size() < 1){
-            return ;
+        if (accessControlDtos == null || accessControlDtos.isEmpty()) {
+            return;
 
         }
 
-        for(AccessControlDto tmpAccessControlDto: accessControlDtos) {
+        for (AccessControlDto tmpAccessControlDto : accessControlDtos) {
             topic = topic.replace("SN", tmpAccessControlDto.getMachineCode());
             MqttFactory.subscribe(topic);
         }
