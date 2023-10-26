@@ -268,7 +268,7 @@
         t.in_time inTime,t.open_time openTime,
         (select max(cip.real_charge) from car_inout_payment cip where cip.inout_id = t.inout_id and cip.community_id = t.community_id)  realCharge,
         t.pa_id paId,td.name stateName,t.remark,t.car_type carType
-        ,pa.num areaNum,tcfc.fee_name feeName,tcfc.config_id configId,t.car_type_name carTypeName,t.state inState,t.photo_jpg photoJpg
+        ,t.pa_num paNum,tcfc.fee_name feeName,tcfc.config_id configId,t.car_type_name carTypeName,t.state inState,t.photo_jpg photoJpg
         from car_inout t
         left join car_inout_payment cip on cip.inout_id = t.inout_id and cip.community_id = t.community_id
         left join t_dict td on t.state = td.status_cd and td.table_columns='state' and td.table_name = 'car_inout'
