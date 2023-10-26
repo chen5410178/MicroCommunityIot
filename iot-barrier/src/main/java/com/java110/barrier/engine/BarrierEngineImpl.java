@@ -19,6 +19,7 @@ import com.java110.dto.parking.*;
 import com.java110.intf.barrier.IBarrierV1InnerServiceSMO;
 import com.java110.intf.barrier.ICarInoutV1InnerServiceSMO;
 import com.java110.intf.barrier.IManualOpenDoorLogV1InnerServiceSMO;
+import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
 import com.java110.po.carInout.CarInoutPo;
 import com.java110.po.manualOpenDoorLog.ManualOpenDoorLogPo;
@@ -45,6 +46,9 @@ public class BarrierEngineImpl implements IBarrierEngine {
 
     @Autowired
     private IManualOpenDoorLogV1InnerServiceSMO manualOpenDoorLogV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IOwnerCarV1InnerServiceSMO ownerCarV1InnerServiceSMOImpl;
 
     @Override
     public ResultVo getTempCarFeeOrder(TempCarPayOrderDto tempCarPayOrderDto) {
@@ -108,18 +112,27 @@ public class BarrierEngineImpl implements IBarrierEngine {
 
         paId = parkingAreaDtos.get(0).getPaId();
 
+
         //2.0 手工进场
         CarInoutPo carInoutPo = new CarInoutPo();
         carInoutPo.setCarNum(acceptJson.getString("carNum"));
-        carInoutPo.setCarType("1");
+        carInoutPo.setCarType(CarInoutDto.CAR_TYPE_MONTH);
+        carInoutPo.setCarTypeName("月租车");
         carInoutPo.setCommunityId(machineDto.getCommunityId());
         carInoutPo.setInoutId(GenerateCodeFactory.getGeneratorId("11"));
         carInoutPo.setMachineCode(machineDto.getMachineCode());
+        carInoutPo.setMachineId(machineDto.getMachineId());
         carInoutPo.setOpenTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         carInoutPo.setPaId(paId);
         carInoutPo.setPaNum(parkingAreaDtos.get(0).getNum());
-        carInoutPo.setState("1");
+        carInoutPo.setCarInout(CarInoutDto.CAR_INOUT_IN);
+        carInoutPo.setState(CarInoutDto.STATE_IN);
         carInoutPo.setRemark("手工进场");
+        carInoutPo.setCiId(GenerateCodeFactory.getGeneratorId("11"));
+        carInoutPo.setInTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+
+
+
         carInoutV1InnerServiceSMOImpl.saveCarInout(carInoutPo);
 
         BarrierGateControlDto barrierGateControlDto
@@ -158,6 +171,8 @@ public class BarrierEngineImpl implements IBarrierEngine {
         //carInoutDto.setCarType(CarInoutDto.);
         List<CarInoutDto> carInoutDtos = carInoutV1InnerServiceSMOImpl.queryCarInouts(carInoutDto);
 
+        String inoutId = "";
+        String inTime = "";
         if (carInoutDtos != null && !carInoutDtos.isEmpty()) {
             carInoutDto.setState(CarInoutDto.STATE_OUT);
             carInoutDto.setPayType(acceptJson.containsKey("payType") ? acceptJson.getString("payType") : CarInoutDto.PAY_TYPE_CRASH);
@@ -165,18 +180,31 @@ public class BarrierEngineImpl implements IBarrierEngine {
             carInoutDto.setRealCharge(acceptJson.getString("amount"));
             carInoutDto.setPayTime(DateUtil.getCurrentDate());
             carInoutV1InnerServiceSMOImpl.updateCarInout(BeanConvertUtil.covertBean(carInoutDto, CarInoutPo.class));
+
+            inoutId = carInoutDtos.get(0).getInoutId();
+            inTime = carInoutDtos.get(0).getInTime();
+        }else{
+            inoutId = GenerateCodeFactory.getGeneratorId("11");
+            inTime = DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A);
         }
         CarInoutPo carInoutPo = new CarInoutPo();
         carInoutPo.setCarNum(acceptJson.getString("carNum"));
-        carInoutPo.setCarType("1");
+        carInoutPo.setCarType(CarInoutDto.CAR_TYPE_MONTH);
+        carInoutPo.setCarTypeName("月租车");
         carInoutPo.setCommunityId(machineDto.getCommunityId());
-        carInoutPo.setInoutId(GenerateCodeFactory.getGeneratorId("11"));
+        carInoutPo.setInoutId(inoutId);
         carInoutPo.setMachineCode(machineDto.getMachineCode());
+        carInoutPo.setMachineId(machineDto.getMachineId());
         carInoutPo.setOpenTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         carInoutPo.setPaId(paId);
         carInoutPo.setPaNum(parkingAreaDtos.get(0).getNum());
-        carInoutPo.setState("3");
+        carInoutPo.setCarInout(CarInoutDto.CAR_INOUT_OUT);
+        carInoutPo.setState(CarInoutDto.STATE_OUT);
         carInoutPo.setRemark("手工出场");
+        carInoutPo.setCiId(GenerateCodeFactory.getGeneratorId("11"));
+        carInoutPo.setInTime(inTime);
+
+
 //        carInoutPo.setCarType(CarInoutDto.C);
 //        if (acceptJson.containsKey("payCharge")) {
 //            carInoutPo.setPayCharge(acceptJson.getString("payCharge"));
