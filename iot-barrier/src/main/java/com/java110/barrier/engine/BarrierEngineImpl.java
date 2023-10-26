@@ -503,6 +503,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
         carInoutPaymentPo.setPaId(carInoutDtos.get(0).getPaId());
         carInoutPaymentPo.setPayType(tempCarPayOrderDto.getPayType());
         carInoutPaymentPo.setRealCharge(tempCarPayOrderDto.getAmount() + "");
+        carInoutPaymentPo.setPaymentId(GenerateCodeFactory.getGeneratorId("9"));
         if (tempCarPayOrderDto.getPayCharge() != 0) {
             carInoutPaymentPo.setPayCharge(tempCarPayOrderDto.getPayCharge() + "");
         }
