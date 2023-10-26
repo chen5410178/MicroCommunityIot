@@ -70,4 +70,5 @@ public interface IBarrierV1ServiceDao {
      */
     int queryBarriersCount(Map info);
 
+    List<Map> queryBoxMachines(Map info);
 }

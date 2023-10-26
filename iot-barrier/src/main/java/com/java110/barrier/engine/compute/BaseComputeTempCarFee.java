@@ -25,7 +25,7 @@ public abstract class BaseComputeTempCarFee implements IComputeTempCarFee {
     @Override
     public TempCarFeeResult computeTempCarFee(CarInoutDto carInoutDto,
                                               TempCarFeeConfigDto tempCarFeeConfigDto,
-                                              List<ParkingCouponCarDto> parkingCouponCarDtos) throws Exception {
+                                              List<ParkingCouponCarDto> parkingCouponCarDtos)  {
         TempCarFeeConfigAttrDto tempCarFeeConfigAttrDto = new TempCarFeeConfigAttrDto();
         tempCarFeeConfigAttrDto.setConfigId(tempCarFeeConfigDto.getConfigId());
         tempCarFeeConfigAttrDto.setCommunityId(tempCarFeeConfigDto.getCommunityId());

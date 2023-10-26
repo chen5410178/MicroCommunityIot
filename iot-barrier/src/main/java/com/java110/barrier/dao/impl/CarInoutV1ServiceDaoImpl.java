@@ -137,4 +137,11 @@ public class CarInoutV1ServiceDaoImpl extends BaseServiceDao implements ICarInou
         return Integer.parseInt(businessCarInoutDetailInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> hasOpenDoorError(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("carInoutV1ServiceDaoImpl.hasOpenDoorError",info);
+
+        return infos;
+    }
+
 }

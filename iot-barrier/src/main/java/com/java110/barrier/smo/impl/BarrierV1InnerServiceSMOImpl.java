@@ -84,4 +84,11 @@ public class BarrierV1InnerServiceSMOImpl  implements IBarrierV1InnerServiceSMO 
     public int queryBarriersCount(@RequestBody BarrierDto barrierDto) {
         return barrierV1ServiceDaoImpl.queryBarriersCount(BeanConvertUtil.beanCovertMap(barrierDto));    }
 
+    @Override
+    public List<BarrierDto> queryBoxMachines(@RequestBody BarrierDto machineDto) {
+        List<BarrierDto> barriers = BeanConvertUtil.covertBeanList(barrierV1ServiceDaoImpl.queryBoxMachines(BeanConvertUtil.beanCovertMap(machineDto)), BarrierDto.class);
+
+        return barriers;
+    }
+
 }

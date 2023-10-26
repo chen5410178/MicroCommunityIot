@@ -36,5 +36,5 @@ public interface IComputeTempCarFee {
      * @return
      */
     TempCarFeeResult computeTempCarFee(CarInoutDto carInoutDto, TempCarFeeConfigDto tempCarFeeConfigDto,
-                                       List<ParkingCouponCarDto> parkingCouponCarDtos) throws Exception;
+                                       List<ParkingCouponCarDto> parkingCouponCarDtos) ;
 }

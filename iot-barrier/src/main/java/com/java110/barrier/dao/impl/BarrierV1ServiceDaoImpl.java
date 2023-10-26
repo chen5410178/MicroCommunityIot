@@ -105,5 +105,12 @@ public class BarrierV1ServiceDaoImpl extends BaseServiceDao implements IBarrierV
         return Integer.parseInt(businessBarrierInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> queryBoxMachines(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("barrierV1ServiceDaoImpl.queryBoxMachines",info);
+
+        return infos;
+    }
+
 
 }

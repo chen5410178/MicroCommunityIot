@@ -19,7 +19,8 @@
         select t.heartbeat_time,t.heartbeat_time heartbeatTime,t.impl_bean,t.impl_bean
         implBean,t.machine_id,t.machine_id machineId,t.machine_code,t.machine_code machineCode,t.status_cd,t.status_cd
         statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name
-        machineName,t.machine_ip,t.machine_ip machineIp,t.direction,t.box_id,t.box_id boxId,pb.box_name boxName,t.create_time createTime,hm.hm_name implBeanName,
+        machineName,t.machine_ip,t.machine_ip machineIp,t.direction,t.box_id,t.box_id boxId,pb.box_name
+        boxName,t.create_time createTime,hm.hm_name implBeanName,
         hm.hm_id hmId
         from barrier t
         left join parking_box pb on t.box_id = pb.box_id and pb.status_cd = '0'
@@ -137,6 +138,54 @@
         </if>
 
 
+    </select>
+
+    <select id="queryBoxMachines" parameterType="Map" resultType="Map">
+        select t.heartbeat_time,t.heartbeat_time heartbeatTime,t.impl_bean,t.impl_bean
+        implBean,t.machine_id,t.machine_id machineId,t.machine_code,t.machine_code machineCode,t.status_cd,t.status_cd
+        statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name
+        machineName,t.machine_ip,t.machine_ip machineIp,t.direction,t.box_id,t.box_id boxId,pb.box_name
+        boxName,t.create_time createTime
+        from barrier t
+        left join parking_box pb on t.box_id = pb.box_id and pb.status_cd = '0'
+        left join parking_box_area pba on pb.box_id = pba.box_id and pba.status_cd = '0'
+        left join parking_area pa on pba.pa_id = pa.pa_id and pa.status_cd = '0'
+        where t.status_cd = '0'
+        and pa.pa_id = #{paId}
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="machineIp !=null and machineIp != ''">
+            and t.machine_ip= #{machineIp}
+        </if>
+        <if test="direction !=null and direction != ''">
+            and t.direction= #{direction}
+        </if>
+        <if test="boxId !=null and boxId != ''">
+            and t.box_id= #{boxId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
     </select>
 
 </mapper>

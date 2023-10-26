@@ -65,4 +65,7 @@ public interface IBarrierV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryBarriersCount", method = RequestMethod.POST)
     int queryBarriersCount(@RequestBody BarrierDto barrierDto);
+
+    @RequestMapping(value = "/queryBoxMachines", method = RequestMethod.POST)
+    List<BarrierDto> queryBoxMachines(@RequestBody BarrierDto machineDto);
 }

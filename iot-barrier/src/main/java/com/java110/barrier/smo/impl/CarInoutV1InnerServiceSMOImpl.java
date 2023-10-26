@@ -100,6 +100,13 @@ public class CarInoutV1InnerServiceSMOImpl implements ICarInoutV1InnerServiceSMO
         return carInoutDetails;
     }
 
+    @Override
+    public List<CarInoutDto> hasOpenDoorError(@RequestBody CarInoutDto tmpCarInoutDto) {
+        List<CarInoutDto> carInoutDetails = BeanConvertUtil.covertBeanList(carInoutV1ServiceDaoImpl.hasOpenDoorError(BeanConvertUtil.beanCovertMap(tmpCarInoutDto)), CarInoutDto.class);
+
+        return carInoutDetails;
+    }
+
 
     @Override
     public int queryCarInoutDetailsCount(@RequestBody CarInoutDto carInoutDetailDto) {

@@ -74,5 +74,6 @@ public interface ICarInoutV1InnerServiceSMO {
     List<CarInoutDto> queryCarInoutDetails(@RequestBody CarInoutDto carInoutDetailDto);
 
 
-
+    @RequestMapping(value = "/hasOpenDoorError", method = RequestMethod.POST)
+    List<CarInoutDto> hasOpenDoorError(@RequestBody CarInoutDto tmpCarInoutDto);
 }

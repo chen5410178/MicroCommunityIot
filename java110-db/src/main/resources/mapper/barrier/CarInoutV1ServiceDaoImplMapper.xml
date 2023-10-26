@@ -328,4 +328,33 @@
 
     </select>
 
+
+    <select id="hasOpenDoorError" parameterType="Map" resultType="Map">
+        select
+        t.ci_id ciId,
+        t.inout_id inoutId,
+        t.community_id communityId,
+        t.car_num carNum,
+        t.car_type carType,
+        t.open_time openTime,
+        t.machine_code machineCode,
+        cip.pay_charge payCharge,
+        cip.real_charge realCharge,
+        cip.pay_type payType,
+        t.remark,
+        t.car_inout carInout,
+        t.pa_id paId,
+        t.state,
+        cip.create_time payTime
+        from car_inout t
+        left join car_inout_payment cip on t.inout_id = cip.inout_id and cip.status_cd = '0'
+        inner join car_inout ci on t.car_num = ci.car_num and ci.car_inout = '3306' and ci.state in ('100300','100400','100600') and t.pa_id =  ci.pa_id
+        where t.car_num = #{carNum}
+        and t.car_inout = '3307'
+        and t.state = '100500'
+        and t.open_time &gt; #{openTime}
+        and t.pa_id = #{paId}
+
+    </select>
+
 </mapper>

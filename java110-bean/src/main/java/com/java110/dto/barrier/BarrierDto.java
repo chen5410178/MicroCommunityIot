@@ -41,6 +41,8 @@ public class BarrierDto extends PageDto implements Serializable {
 
     private String hmId;
 
+    private String paId;
+
 
     public String getHeartbeatTime() {
         return heartbeatTime;
@@ -169,5 +171,13 @@ public class BarrierDto extends PageDto implements Serializable {
 
     public void setHmId(String hmId) {
         this.hmId = hmId;
+    }
+
+    public String getPaId() {
+        return paId;
+    }
+
+    public void setPaId(String paId) {
+        this.paId = paId;
     }
 }
