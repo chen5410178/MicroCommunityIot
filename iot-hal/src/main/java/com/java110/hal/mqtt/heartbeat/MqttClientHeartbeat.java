@@ -15,15 +15,15 @@ public class MqttClientHeartbeat implements Runnable {
 
     Logger logger = LoggerFactory.getLogger(MqttClientHeartbeat.class);
 
-    public static final long DEFAULT_WAIT_SECOND = 60 * 1000; // 默认15秒执行一次
+    public static final long DEFAULT_WAIT_SECOND = 5*60 * 1000; // 默认15秒执行一次
 
     @Override
     public void run() {
 
         while (true) {
             try {
-                Thread.sleep(DEFAULT_WAIT_SECOND);
                 executeTask();
+                Thread.sleep(DEFAULT_WAIT_SECOND);
             } catch (Throwable e) {
                 logger.error("连接mqtt 失败", e);
             }
