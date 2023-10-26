@@ -117,6 +117,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
         carInoutPo.setMachineCode(machineDto.getMachineCode());
         carInoutPo.setOpenTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         carInoutPo.setPaId(paId);
+        carInoutPo.setPaNum(parkingAreaDtos.get(0).getNum());
         carInoutPo.setState("1");
         carInoutPo.setRemark("手工进场");
         carInoutV1InnerServiceSMOImpl.saveCarInout(carInoutPo);
@@ -157,7 +158,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
         //carInoutDto.setCarType(CarInoutDto.);
         List<CarInoutDto> carInoutDtos = carInoutV1InnerServiceSMOImpl.queryCarInouts(carInoutDto);
 
-        if (carInoutDtos != null && carInoutDtos.size() > 0) {
+        if (carInoutDtos != null && !carInoutDtos.isEmpty()) {
             carInoutDto.setState(CarInoutDto.STATE_OUT);
             carInoutDto.setPayType(acceptJson.containsKey("payType") ? acceptJson.getString("payType") : CarInoutDto.PAY_TYPE_CRASH);
             carInoutDto.setPayCharge(acceptJson.getString("amount"));
@@ -173,6 +174,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
         carInoutPo.setMachineCode(machineDto.getMachineCode());
         carInoutPo.setOpenTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         carInoutPo.setPaId(paId);
+        carInoutPo.setPaNum(parkingAreaDtos.get(0).getNum());
         carInoutPo.setState("3");
         carInoutPo.setRemark("手工出场");
 //        carInoutPo.setCarType(CarInoutDto.C);
