@@ -25,11 +25,13 @@ public class CustomMqttMsgThread implements Runnable {
 
     @Override
     public void run() {
-        try {
-            doDealMqttMsg();
-        } catch (Exception e) {
-            log.error("处理消息异常", e);
-            e.printStackTrace();
+        while (true) {
+            try {
+                doDealMqttMsg();
+            } catch (Exception e) {
+                log.error("处理消息异常", e);
+                e.printStackTrace();
+            }
         }
     }
 
