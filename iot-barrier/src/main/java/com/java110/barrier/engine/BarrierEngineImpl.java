@@ -103,11 +103,11 @@ public class BarrierEngineImpl implements IBarrierEngine {
 
         //这里预留 调用自己的 算费系统算费 暂不实现
         BarrierDto machineDto = new BarrierDto();
-        machineDto.setPaId(tempCarPayOrderDto.getExtPaId());
+        machineDto.setPaId(tempCarPayOrderDto.getPaId());
         //
         List<BarrierDto> machineDtos = barrierV1InnerServiceSMOImpl.queryBoxMachines(machineDto);
 
-        if (machineDtos == null && machineDtos.isEmpty()) {
+        if (machineDtos == null || machineDtos.isEmpty()) {
             return new ResultVo(ResultVo.CODE_ERROR, "未找到设备信息");
         }
 
