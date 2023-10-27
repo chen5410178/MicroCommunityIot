@@ -21,6 +21,7 @@ import com.java110.barrier.engine.ICarMachineProcess;
 import com.java110.barrier.engine.IInOutCarTextEngine;
 import com.java110.barrier.engine.adapt.BaseMachineAdapt;
 import com.java110.core.cache.MappingCache;
+import com.java110.core.constant.MappingConstant;
 import com.java110.core.constant.ResponseConstant;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.GenerateCodeFactory;
@@ -107,7 +108,7 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
         if (paramIn.containsKey("cmd") && "TriggerImage".equals(paramIn.getString("cmd"))) {
             ManualOpenDoorLogPo manualOpenDoorLogPo = new ManualOpenDoorLogPo();
             manualOpenDoorLogPo.setLogId(paramIn.getString("msgId"));
-            manualOpenDoorLogPo.setPhotoJpg(MappingCache.getValue("OSS_URL") + paramIn.getString("oss_path"));
+            manualOpenDoorLogPo.setPhotoJpg(MappingCache.getValue(MappingConstant.FILE_DOMAIN,"OSS_URL") + paramIn.getString("oss_path"));
             manualOpenDoorLogServiceImpl.updateManualOpenDoorLog(manualOpenDoorLogPo);
             return;
         }
@@ -198,7 +199,7 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
             String license = plateResult.getString("license");
             if (plateResult.containsKey("imagePath")) {
                 //String imagePath = ImageFactory.getBase64ByImgUrl(MappingCacheFactory.getValue("OSS_URL") + plateResult.getString("imagePath"));
-                machineDto.setPhotoJpg(MappingCache.getValue("OSS_URL") + plateResult.getString("imagePath"));
+                machineDto.setPhotoJpg(MappingCache.getValue(MappingConstant.FILE_DOMAIN,"OSS_URL") + plateResult.getString("imagePath"));
             }
 
             IInOutCarTextEngine inOutCarTextEngine = ApplicationContextFactory.getBean("zhenshiMqttInOutCarTextEngine", IInOutCarTextEngine.class);
