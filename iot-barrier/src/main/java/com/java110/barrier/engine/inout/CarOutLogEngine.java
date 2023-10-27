@@ -98,7 +98,7 @@ public class CarOutLogEngine extends CarEngine{
 
         if (carInoutDtos != null && carInoutDtos.size() > 0) {
             CarInoutDto tmpCarInoutDto = new CarInoutDto();
-            tmpCarInoutDto.setInoutId(carInoutDtos.get(0).getInoutId());
+            tmpCarInoutDto.setCiId(carInoutDtos.get(0).getCiId());
             tmpCarInoutDto.setState(CarInoutDto.STATE_OUT);
             carInoutServiceImpl.updateCarInout(carInoutPo);
         }
