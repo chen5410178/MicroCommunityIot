@@ -60,37 +60,37 @@
 
     <!-- 修改开闸日志信息 add by wuxw 2018-07-03 -->
     <update id="updateManualOpenDoorLogInfo" parameterType="Map">
-        update manual_open_door_log t set t.status_cd = #{statusCd}
-        <if test="newBId != null and newBId != ''">
-            ,t.b_id = #{newBId}
-        </if>
+        update manual_open_door_log t set
+        <set>
         <if test="machineId !=null and machineId != ''">
-            , t.machine_id= #{machineId}
+             t.machine_id= #{machineId},
         </if>
         <if test="photoJpg !=null and photoJpg != ''">
-            , t.photo_jpg= #{photoJpg}
+             t.photo_jpg= #{photoJpg},
         </if>
         <if test="extMachineId !=null and extMachineId != ''">
-            , t.ext_machine_id= #{extMachineId}
+             t.ext_machine_id= #{extMachineId},
         </if>
         <if test="staffName !=null and staffName != ''">
-            , t.staff_name= #{staffName}
+             t.staff_name= #{staffName},
         </if>
-        <if test="communityId !=null and communityId != ''">
-            , t.community_id= #{communityId}
-        </if>
+
         <if test="staffId !=null and staffId != ''">
-            , t.staff_id= #{staffId}
+             t.staff_id= #{staffId},
         </if>
         <if test="extStaffId !=null and extStaffId != ''">
-            , t.ext_staff_id= #{extStaffId}
+             t.ext_staff_id= #{extStaffId},
         </if>
         <if test="machineName !=null and machineName != ''">
-            , t.machine_name= #{machineName}
+             t.machine_name= #{machineName}
         </if>
+        </set>
         where 1=1
         <if test="logId !=null and logId != ''">
             and t.log_id= #{logId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+           and t.community_id= #{communityId}
         </if>
 
     </update>
