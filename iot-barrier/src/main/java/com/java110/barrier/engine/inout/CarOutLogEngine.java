@@ -103,7 +103,7 @@ public class CarOutLogEngine extends CarEngine{
             carInoutServiceImpl.updateCarInout(carInoutPo);
         }
 
-        if(parkingCouponCarDtos == null || parkingCouponCarDtos.size() < 1){
+        if(parkingCouponCarDtos == null || parkingCouponCarDtos.isEmpty()){
             return ;
         }
         //停车劵核销
