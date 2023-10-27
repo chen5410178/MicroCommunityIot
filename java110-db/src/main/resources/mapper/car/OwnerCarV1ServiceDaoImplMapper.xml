@@ -23,7 +23,15 @@
         startTime,t.end_time,t.end_time endTime,t.state,t.community_id,t.community_id
         communityId,t.member_id,t.member_id memberId
         from owner_car t
+        left join parking_space ps on t.ps_id = ps.ps_id and ps.status_cd = '0'
         where 1 =1
+        <if test="paIds != null ">
+            and ps.pa_id in
+            <foreach collection="paIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+
         <if test="carNum !=null and carNum != ''">
             and t.car_num= #{carNum}
         </if>

@@ -1,11 +1,13 @@
 package com.java110.barrier.engine.inout;
 
+import com.java110.bean.dto.car.OwnerCarDto;
 import com.java110.bean.dto.coupon.ParkingCouponCarDto;
 import com.java110.bean.po.coupon.ParkingCouponCarPo;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.DateUtil;
 import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.carInout.CarInoutDto;
+import com.java110.dto.parking.CarDayDto;
 import com.java110.dto.parking.ParkingAreaDto;
 import com.java110.intf.barrier.ICarInoutV1InnerServiceSMO;
 import com.java110.intf.car.IParkingCouponCarV1InnerServiceSMO;
@@ -25,6 +27,10 @@ public class CarOutLogEngine extends CarEngine{
     @Autowired
     private IParkingCouponCarV1InnerServiceSMO parkingCouponCarServiceImpl;
 
+    @Autowired
+    private JudgeOwnerCarEngine judgeOwnerCarEngine;
+
+
     public void saveCarOutLog(String carNum,
                               BarrierDto machineDto,
                               List<ParkingAreaDto> parkingAreaDtos,
@@ -39,6 +45,7 @@ public class CarOutLogEngine extends CarEngine{
                               String state,
                               String remark,
                               List<ParkingCouponCarDto> parkingCouponCarDtos) throws Exception {
+        CarDayDto carDayDto = judgeOwnerCarEngine.judgeOwnerCar(machineDto, carNum, parkingAreaDtos);
 
         //查询是否有入场数据
         CarInoutDto carInoutDto = new CarInoutDto();
@@ -51,7 +58,13 @@ public class CarOutLogEngine extends CarEngine{
 
         CarInoutPo carInoutPo = new CarInoutPo();
         carInoutPo.setCarNum(carNum);
-        carInoutPo.setCarType("1");
+        if (OwnerCarDto.LEASE_TYPE_TEMP.equals(carDayDto.getLeaseType())) {
+            carInoutPo.setCarType(CarInoutDto.CAR_TYPE_TEMP);
+            carInoutPo.setCarTypeName("临时车");
+        } else {
+            carInoutPo.setCarType(CarInoutDto.CAR_TYPE_MONTH);
+            carInoutPo.setCarTypeName("月租车");
+        }
         carInoutPo.setCommunityId(machineDto.getCommunityId());
         carInoutPo.setCiId(GenerateCodeFactory.getGeneratorId("11"));
         carInoutPo.setCarInout(CarInoutDto.CAR_INOUT_OUT);
