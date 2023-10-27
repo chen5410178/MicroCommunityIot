@@ -28,7 +28,7 @@
         </if>
         where 1 =1
         <if test="boxId != null and boxId != ''">
-            pba.box_id = #{boxId}
+            and pba.box_id = #{boxId}
         </if>
         <if test="typeCd !=null and typeCd != ''">
             and t.type_cd= #{typeCd}
