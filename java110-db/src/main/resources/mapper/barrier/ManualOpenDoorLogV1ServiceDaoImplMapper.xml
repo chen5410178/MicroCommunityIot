@@ -20,7 +20,7 @@
         select t.machine_id,t.machine_id machineId,t.photo_jpg,t.photo_jpg photoJpg,t.ext_machine_id,t.ext_machine_id
         extMachineId,t.staff_name,t.staff_name staffName,t.log_id,t.log_id logId,t.community_id,t.community_id
         communityId,t.staff_id,t.staff_id staffId,t.ext_staff_id,t.ext_staff_id extStaffId,t.machine_name,t.machine_name
-        machineName
+        machineName,t.create_time createTime
         from manual_open_door_log t
         where 1 =1
         <if test="machineId !=null and machineId != ''">
