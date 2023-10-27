@@ -43,6 +43,8 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
     private String paId;
     private String[] paIds;
     private String state;
+
+    private String stateName;
     private String[] states;
     private String communityId;
     private String openTime;
@@ -277,5 +279,15 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
 
     public void setConfigId(String configId) {
         this.configId = configId;
+    }
+
+    @Override
+    public String getStateName() {
+        return stateName;
+    }
+
+    @Override
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
     }
 }
