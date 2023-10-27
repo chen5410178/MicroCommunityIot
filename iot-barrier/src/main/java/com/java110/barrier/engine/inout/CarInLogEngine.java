@@ -87,11 +87,16 @@ public class CarInLogEngine extends CarEngine {
         CarInoutPo carInoutPo = new CarInoutPo();
         carInoutPo.setCarNum(carNum);
         carInoutPo.setCarType(type);
+        if(CarInoutDto.CAR_TYPE_MONTH.equals(type)){
+            carInoutPo.setCarTypeName("月租车");
+        }else{
+            carInoutPo.setCarTypeName("临时车");
+        }
         carInoutPo.setCommunityId(machineDto.getCommunityId());
         carInoutPo.setMachineId(machineDto.getMachineId());
         carInoutPo.setMachineCode(machineDto.getMachineCode());
         carInoutPo.setInoutId(GenerateCodeFactory.getGeneratorId("11"));
-        carInoutPo.setCarInout(CarInoutDto.CAR_INOUT_IN);
+        carInoutPo.setCarInout(CarInoutDto.CAR_INOUT_OUT);
         carInoutPo.setMachineCode(machineDto.getMachineCode());
         carInoutPo.setOpenTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         carInoutPo.setPaId(paId);

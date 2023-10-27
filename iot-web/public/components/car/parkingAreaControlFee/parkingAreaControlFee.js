@@ -37,7 +37,7 @@
 
                 //出场摄像头
                 let _inoutType = "2002";
-                if (_machineId == _data.extMachineId) {
+                if (_machineId == _data.machineId) {
                     vc.emit('parkingAreaControlVideo', 'carOut', _data);
                     $that.parkingAreaControlFeeInfo.feeCarNum = _data.carNum;
                     $that.parkingAreaControlFeeInfo.costMin = _data.hours + "小时" + _data.min + "分钟"
