@@ -60,7 +60,7 @@
 
     <!-- 修改开闸日志信息 add by wuxw 2018-07-03 -->
     <update id="updateManualOpenDoorLogInfo" parameterType="Map">
-        update manual_open_door_log t set
+        update manual_open_door_log t
         <set>
         <if test="machineId !=null and machineId != ''">
              t.machine_id= #{machineId},
