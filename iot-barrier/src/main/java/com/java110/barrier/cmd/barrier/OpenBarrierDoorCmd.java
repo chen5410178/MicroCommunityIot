@@ -39,7 +39,7 @@ public class OpenBarrierDoorCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
 
-        Assert.hasKeyAndValue(reqJson, "machineId", "未包含设备");
+        Assert.hasKeyAndValue(reqJson, "machineCode", "未包含设备");
         Assert.hasKeyAndValue(reqJson, "state", "未包含状态");
 
     }
@@ -58,7 +58,8 @@ public class OpenBarrierDoorCmd extends Cmd {
         reqJson.put("staffName",userDtos.get(0).getName());
 
         BarrierDto barrierDto = new BarrierDto();
-        barrierDto.setMachineId(reqJson.getString("machineId"));
+        barrierDto.setMachineCode(reqJson.getString("machineCode"));
+        barrierDto.setCommunityId(reqJson.getString("communityId"));
         List<BarrierDto> barrierDtos = barrierV1InnerServiceSMOImpl.queryBarriers(barrierDto);
 
         Assert.listOnlyOne(barrierDtos, "摄像头不存在");

@@ -229,11 +229,11 @@
                     "machineCode": _machineCode,
                     "stateName": "开门",
                     "state": "1500",
-                    "url": "/machine/openDoor",
+                    "url": "/barrier.openBarrierDoor",
                     "userRole": "staff",
                     "communityId": vc.getCurrentCommunity().communityId
                 };
-                vc.http.apiPost('/machine/openDoor',
+                vc.http.apiPost('/barrier.openBarrierDoor',
                     JSON.stringify(_data), {
                         emulateJSON: true
                     },
@@ -275,11 +275,11 @@
                     "machineCode": _machineCode,
                     "stateName": "关门",
                     "state": "1500",
-                    "url": "/machine/closeDoor",
+                    "url": "/barrier.closeBarrierDoor",
                     "userRole": "staff",
                     "communityId": vc.getCurrentCommunity().communityId
                 };
-                vc.http.apiPost('/machine/closeDoor',
+                vc.http.apiPost('/barrier.closeBarrierDoor',
                     JSON.stringify(_data), {
                         emulateJSON: true
                     },
