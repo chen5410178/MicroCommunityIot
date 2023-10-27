@@ -150,7 +150,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
         CarMachineProcessFactory.getCarImpl(machineDto.getHmId()).openDoor(machineDto, parkingAreaTextDto);
 
 
-        if (paramObj.containsKey("staffId")) {
+        if (paramObj != null && paramObj.containsKey("staffId")) {
             ManualOpenDoorLogPo manualOpenDoorLogPo = new ManualOpenDoorLogPo();
             manualOpenDoorLogPo.setLogId(GenerateCodeFactory.getGeneratorId("11"));
             manualOpenDoorLogPo.setMachineName(machineDto.getMachineName());
@@ -171,6 +171,13 @@ public class BarrierEngineImpl implements IBarrierEngine {
 //        if (StringUtil.isEmpty(machineDto.getTaskId())) {
 //            data.put("taskId", machineDto.getTaskId());
 //        }
+        return new ResultVo(ResultVo.CODE_OK, ResultVo.MSG_OK);
+    }
+
+    @Override
+    public ResultVo closeDoor(BarrierDto barrierDto, ParkingAreaTextDto parkingAreaTextDto, JSONObject reqJson) {
+        CarMachineProcessFactory.getCarImpl(barrierDto.getHmId()).closeDoor(barrierDto, parkingAreaTextDto);
+
         return new ResultVo(ResultVo.CODE_OK, ResultVo.MSG_OK);
     }
 

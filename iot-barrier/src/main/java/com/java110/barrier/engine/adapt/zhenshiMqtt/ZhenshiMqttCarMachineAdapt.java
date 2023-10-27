@@ -341,16 +341,6 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
         String taskId = GenerateCodeFactory.getUUID();
         ZhenshiMqttSend.sendCmd(taskId, "手动关门", machineDto, triggerCmd);
 
-//        if (parkingAreaTextDto == null) {
-//            JinjieScreenMqttFactory.pay(machineDto, "欢迎光临");
-//            JinjieScreenMqttFactory.downloadTempTexts(machineDto, 0, "欢迎光临");
-//            return;
-//        }
-//        JinjieScreenMqttFactory.pay(machineDto, parkingAreaTextDto.getVoice());
-//        JinjieScreenMqttFactory.downloadTempTexts(machineDto, 0, parkingAreaTextDto.getText1());
-//        JinjieScreenMqttFactory.downloadTempTexts(machineDto, 1, parkingAreaTextDto.getText2());
-//        JinjieScreenMqttFactory.downloadTempTexts(machineDto, 2, parkingAreaTextDto.getText3());
-//        JinjieScreenMqttFactory.downloadTempTexts(machineDto, 3, parkingAreaTextDto.getText4());
     }
 
     @Override
