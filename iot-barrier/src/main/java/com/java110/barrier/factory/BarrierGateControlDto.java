@@ -31,8 +31,8 @@ public class BarrierGateControlDto implements Serializable {
     private String remark;
     private String open;
     private String extCommunityId;
-    private String extPaId;
-    private String extBoxId;
+    private String paId;
+    private String boxId;
 
     private Object body;
 
@@ -201,20 +201,20 @@ public class BarrierGateControlDto implements Serializable {
         this.extCommunityId = extCommunityId;
     }
 
-    public String getExtPaId() {
-        return extPaId;
+    public String getPaId() {
+        return paId;
     }
 
-    public void setExtPaId(String extPaId) {
-        this.extPaId = extPaId;
+    public void setPaId(String paId) {
+        this.paId = paId;
     }
 
-    public String getExtBoxId() {
-        return extBoxId;
+    public String getBoxId() {
+        return boxId;
     }
 
-    public void setExtBoxId(String extBoxId) {
-        this.extBoxId = extBoxId;
+    public void setBoxId(String boxId) {
+        this.boxId = boxId;
     }
 
     public Object getBody() {
