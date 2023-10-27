@@ -24,6 +24,10 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.java110</groupId>
@@ -72,6 +76,7 @@
                     <mainClass>com.java110.gateway.GatewayApplicationStart</mainClass>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 </project>

@@ -89,11 +89,6 @@
                 $that.parkingAreaControlVideoInfo.inMachines.forEach((item) => {
                     if (item.machineId == _enterMachineId) {
                         wsUrl = item.machineIp;
-                        if (item.machineVersion.indexOf('300') > -1) {
-                            wsUrl += "/ws.flv"
-                        } else {
-                            wsUrl += "/ws"
-                        }
                     }
                 });
 
@@ -104,6 +99,7 @@
                     wsUrl = wsUrl + ":9080";
                 }
 
+                wsUrl += "/ws.flv";
                 wsUrl =
                     "ws://" + wsUrl;
                 let image = document.getElementById("receiver1");
@@ -161,11 +157,11 @@
                     if (item.machineId == _outMachineId) {
                         wsUrl = item.machineIp;
                         paId = item.locationObjId;
-                        if (item.machineVersion.indexOf('300') > -1) {
-                            wsUrl += "/ws.flv"
-                        } else {
-                            wsUrl += "/ws"
-                        }
+                        // if (item.machineVersion.indexOf('300') > -1) {
+                        //     wsUrl += "/ws.flv"
+                        // } else {
+                        //     wsUrl += "/ws"
+                        // }
                     }
                 });
                 wsUrl = wsUrl.replace(':8131', ':9080')
@@ -174,6 +170,7 @@
                 if (wsUrl.indexOf(":") < 0) {
                     wsUrl = wsUrl + ":9080";
                 }
+                 wsUrl += "/ws.flv"; 
                 wsUrl =
                     "ws://" + wsUrl;
 
