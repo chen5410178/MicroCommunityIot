@@ -60,6 +60,10 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
     private long hours;
     private long min;
 
+    private String feeName;
+
+    private String configId;
+
     private List<ParkingCouponCarDto> parkingCouponCarDtos;
 
 
@@ -257,5 +261,21 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
 
     public void setParkingCouponCarDtos(List<ParkingCouponCarDto> parkingCouponCarDtos) {
         this.parkingCouponCarDtos = parkingCouponCarDtos;
+    }
+
+    public String getFeeName() {
+        return feeName;
+    }
+
+    public void setFeeName(String feeName) {
+        this.feeName = feeName;
+    }
+
+    public String getConfigId() {
+        return configId;
+    }
+
+    public void setConfigId(String configId) {
+        this.configId = configId;
     }
 }
