@@ -34,6 +34,7 @@ public class DateUtil {
     public static final String DATE_FORMATE_STRING_N = "HHmmss";
     public static final String DATE_FORMATE_STRING_O = "yyyyMMddHHmm";
     public static final String DATE_FORMATE_STRING_Q = "yyyy-MM";
+    public static final String DATE_FORMATE_STRING_P = "HH:mm";
 
 
     static {

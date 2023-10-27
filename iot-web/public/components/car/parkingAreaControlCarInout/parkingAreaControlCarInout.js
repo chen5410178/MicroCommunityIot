@@ -18,13 +18,13 @@
                 if (_data.action != 'IN_OUT') {
                     return;
                 }
-                if (_parkingAreaControl.inMachineId == _data.extMachineId) {
+                if (_parkingAreaControl.inMachineId == _data.machineId) {
                     //$that.parkingAreaControlCarInoutInfo.inImg = _data.img;
                     setTimeout(function () {
                         $that.parkingAreaControlCarInoutInfo.inImg = _data.img;
                     }, 1500)
                 }
-                if (_parkingAreaControl.outMachineId == _data.extMachineId) {
+                if (_parkingAreaControl.outMachineId == _data.machineId) {
                     //$that.parkingAreaControlCarInoutInfo.outImg = _data.img;
                     setTimeout(function () {
                         $that.parkingAreaControlCarInoutInfo.outImg = _data.img;

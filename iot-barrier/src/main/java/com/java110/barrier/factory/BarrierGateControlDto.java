@@ -49,7 +49,7 @@ public class BarrierGateControlDto implements Serializable {
     public BarrierGateControlDto(String action, String carNum, BarrierDto machineDto) {
         this.action = action;
         this.carNum = carNum;
-        this.inOutTime = DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_L);
+        this.inOutTime = DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_P);
         this.img = machineDto.getPhotoJpg();
         this.machineId = machineDto.getMachineId();
     }
@@ -59,7 +59,7 @@ public class BarrierGateControlDto implements Serializable {
     public BarrierGateControlDto(String action, String carNum, BarrierDto machineDto, String remark, String open) {
         this.action = action;
         this.carNum = carNum;
-        this.inOutTime = DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_L);
+        this.inOutTime = DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_P);
         this.img = machineDto.getPhotoJpg();
         this.machineId = machineDto.getMachineId();
         this.payCharge = 0.0;
@@ -72,7 +72,7 @@ public class BarrierGateControlDto implements Serializable {
     public BarrierGateControlDto(String action, String carNum, BarrierDto machineDto, double payCharge, CarInoutDto carInoutDto, String remark, String open) {
         this.action = action;
         this.carNum = carNum;
-        this.inOutTime = DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_L);
+        this.inOutTime = DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_P);
         this.img = machineDto.getPhotoJpg();
         this.machineId = machineDto.getMachineId();
         this.payCharge = payCharge;
@@ -96,7 +96,7 @@ public class BarrierGateControlDto implements Serializable {
     public BarrierGateControlDto(String action, String carNum, String img) {
         this.action = action;
         this.carNum = carNum;
-        this.inOutTime = DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_L);
+        this.inOutTime = DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_P);
         this.img = img;
     }
 
