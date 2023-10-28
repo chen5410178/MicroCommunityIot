@@ -25,7 +25,7 @@
                     }
                 };
                 //发送get请求
-                vc.http.apiGet('/machine.getCarMachineQrCodeUrl',
+                vc.http.apiGet('/barrier.getCarMachineQrCodeUrl',
                     param,
                     function(json, res) {
                         let _info = JSON.parse(json);
