@@ -15,7 +15,7 @@
                 startTime: '',
                 endTime: '',
                 updateCarNum: '',
-                updateInoutId: '',
+                ciId: '',
                 carType: '',
                 machineId: ''
             }
@@ -178,7 +178,7 @@
             },
             editCarInfoCarNum: function(_inout) {
                 $that.parkingAreaControlInCarInfo.updateCarNum = _inout.carNum;
-                $that.parkingAreaControlInCarInfo.updateInoutId = _inout.inoutId;
+                $that.parkingAreaControlInCarInfo.ciId = _inout.ciId;
                 $('#editCarInfoCarNumModel').modal('show');
             },
             _doUpdateCarInfoCarNum: function() {
@@ -188,7 +188,7 @@
                 }
                 let _data = {
                     carNum: $that.parkingAreaControlInCarInfo.updateCarNum,
-                    inoutId: $that.parkingAreaControlInCarInfo.updateInoutId,
+                    ciId: $that.parkingAreaControlInCarInfo.ciId,
                     communityId: vc.getCurrentCommunity().communityId
                 }
                 vc.http.apiPost(

@@ -39,13 +39,13 @@ public interface ICarInoutV1InnerServiceSMO {
 
 
     @RequestMapping(value = "/saveCarInout", method = RequestMethod.POST)
-    public int saveCarInout(@RequestBody  CarInoutPo carInoutPo);
+     int saveCarInout(@RequestBody  CarInoutPo carInoutPo);
 
     @RequestMapping(value = "/updateCarInout", method = RequestMethod.POST)
-    public int updateCarInout(@RequestBody  CarInoutPo carInoutPo);
+     int updateCarInout(@RequestBody  CarInoutPo carInoutPo);
 
     @RequestMapping(value = "/deleteCarInout", method = RequestMethod.POST)
-    public int deleteCarInout(@RequestBody  CarInoutPo carInoutPo);
+     int deleteCarInout(@RequestBody  CarInoutPo carInoutPo);
 
     /**
      * <p>查询小区楼信息</p>
