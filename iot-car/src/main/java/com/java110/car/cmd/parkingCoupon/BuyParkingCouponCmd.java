@@ -17,10 +17,13 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.DateUtil;
 import com.java110.doc.annotation.*;
 import com.java110.dto.community.CommunityDto;
+import com.java110.dto.shop.ShopDto;
+import com.java110.dto.shop.StoreShopDto;
 import com.java110.intf.car.IParkingCouponOrderV1InnerServiceSMO;
 import com.java110.intf.car.IParkingCouponShopV1InnerServiceSMO;
 import com.java110.intf.car.IParkingCouponV1InnerServiceSMO;
 import com.java110.intf.community.ICommunityV1InnerServiceSMO;
+import com.java110.intf.user.IStoreShopV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -75,8 +78,8 @@ public class BuyParkingCouponCmd extends Cmd {
 //    @Autowired(required = false)
 //    private IShopInnerServiceSMO shopInnerServiceSMOImpl;
 
-//    @Autowired
-//    private IStoreShopV1InnerServiceSMO storeShopV1InnerServiceSMOImpl;
+    @Autowired
+    private IStoreShopV1InnerServiceSMO storeShopV1InnerServiceSMOImpl;
 
     @Autowired
     private ICommunityV1InnerServiceSMO communityV1InnerServiceSMOImpl;
@@ -104,18 +107,18 @@ public class BuyParkingCouponCmd extends Cmd {
         Assert.listOnlyOne(parkingCouponDtos, "停车卷不存在");
 
         // 查询商户信息
-//        List<ShopDto> storeShopDtos = null;
-//        if ("ON".equals(MappingCache.getValue("HAS_HC_MALL"))) {
-//            ShopDto storeShopDto = new ShopDto();
-//            storeShopDto.setShopId(reqJson.getString("shopId"));
-//            storeShopDtos = shopInnerServiceSMOImpl.queryShops(storeShopDto);
-//        } else {
-//            StoreShopDto storeShopDto = new StoreShopDto();
-//            storeShopDto.setShopId(reqJson.getString("shopId"));
-//            storeShopDtos = storeShopV1InnerServiceSMOImpl.queryStoreShops(storeShopDto);
-//        }
+        List<ShopDto> storeShopDtos = null;
+        if ("ON".equals(MappingCache.getValue("HAS_HC_MALL"))) {
+            ShopDto storeShopDto = new ShopDto();
+            storeShopDto.setShopId(reqJson.getString("shopId"));
+            //storeShopDtos = shopInnerServiceSMOImpl.queryShops(storeShopDto);
+        } else {
+            StoreShopDto storeShopDto = new StoreShopDto();
+            storeShopDto.setShopId(reqJson.getString("shopId"));
+            storeShopDtos = storeShopV1InnerServiceSMOImpl.queryStoreShops(storeShopDto);
+        }
 
-        //Assert.listOnlyOne(storeShopDtos, "商家店铺不存在");
+        Assert.listOnlyOne(storeShopDtos, "商家店铺不存在");
 
         CommunityDto communityDto = new CommunityDto();
         communityDto.setCommunityId(reqJson.getString("communityId"));
@@ -135,7 +138,7 @@ public class BuyParkingCouponCmd extends Cmd {
             parkingCouponShopPo.setCommunityId(reqJson.getString("communityId"));
             parkingCouponShopPo.setCouponShopId(GenerateCodeFactory.getGeneratorId("10"));
             parkingCouponShopPo.setShopId(reqJson.getString("shopId"));
-            //parkingCouponShopPo.setShopName(storeShopDtos.get(0).getShopName());
+            parkingCouponShopPo.setShopName(storeShopDtos.get(0).getShopName());
             parkingCouponShopPo.setEndTime("2050-01-01");
             parkingCouponShopPo.setCommunityName(communityDtos.get(0).getName());
             parkingCouponShopPo.setCouponId(reqJson.getString("couponId"));
@@ -175,7 +178,7 @@ public class BuyParkingCouponCmd extends Cmd {
         parkingCouponOrderPo.setReceivedAmount(reqJson.getString("receivedAmount"));
         parkingCouponOrderPo.setRemark(reqJson.getString("remark"));
         parkingCouponOrderPo.setShopId(reqJson.getString("shopId"));
-        //parkingCouponOrderPo.setShopName(storeShopDtos.get(0).getShopName());
+        parkingCouponOrderPo.setShopName(storeShopDtos.get(0).getShopName());
         parkingCouponOrderPo.setPayType(reqJson.getString("payType"));
 
         flag = parkingCouponOrderV1InnerServiceSMOImpl.saveParkingCouponOrder(parkingCouponOrderPo);
