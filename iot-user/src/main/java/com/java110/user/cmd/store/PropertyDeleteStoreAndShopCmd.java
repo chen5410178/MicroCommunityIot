@@ -3,12 +3,14 @@ package com.java110.user.cmd.store;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
+import com.java110.core.cache.MappingCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
-import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.exception.CmdException;
+import com.java110.core.utils.Assert;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.doc.annotation.*;
-import com.java110.dto.account.AccountDto;
 import com.java110.dto.shop.ShopCommunityDto;
 import com.java110.dto.shop.ShopDto;
 import com.java110.dto.shop.StoreShopCommunityDto;
@@ -17,16 +19,10 @@ import com.java110.dto.storeStaff.StoreStaffDto;
 import com.java110.intf.acct.IAccountInnerServiceSMO;
 import com.java110.intf.community.ICommunityV1InnerServiceSMO;
 import com.java110.intf.user.*;
-import com.java110.po.account.AccountPo;
 import com.java110.po.shop.StoreShopCommunityPo;
 import com.java110.po.shop.StoreShopPo;
 import com.java110.po.store.StorePo;
 import com.java110.po.user.UserPo;
-import com.java110.utils.cache.MappingCache;
-import com.java110.utils.exception.CmdException;
-import com.java110.utils.util.Assert;
-import com.java110.utils.util.BeanConvertUtil;
-import com.java110.utils.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -36,7 +32,7 @@ import java.util.List;
         description = "此接口目前主要计划用于停车卷相关使用",
         httpMethod = "post",
         url = "http://{ip}:{port}/app/store.propertyDeleteStoreAndShop",
-        resource = "storeDoc",
+        resource = "userDoc",
         author = "吴学文",
         serviceCode = "store.propertyDeleteStoreAndShop",
         seq = 6
