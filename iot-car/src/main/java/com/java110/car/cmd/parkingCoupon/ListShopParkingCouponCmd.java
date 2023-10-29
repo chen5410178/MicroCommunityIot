@@ -41,7 +41,7 @@ import java.util.List;
         description = "根据商户ID 查询商户停车劵",
         httpMethod = "get",
         url = "http://{ip}:{port}/app/parkingCoupon.listShopParkingCoupon",
-        resource = "acctDoc",
+        resource = "carDoc",
         author = "吴学文",
         serviceCode = "parkingCoupon.listShopParkingCoupon"
 )
