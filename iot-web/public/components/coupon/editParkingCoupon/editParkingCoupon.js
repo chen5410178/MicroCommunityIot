@@ -146,7 +146,7 @@
                 vc.http.apiGet('/parkingArea.listParkingArea', param,
                     function(json, res) {
                         var _parkingAreaManageInfo = JSON.parse(json);
-                        $that.editParkingCouponInfo.parkingAreas = _parkingAreaManageInfo.parkingAreas;
+                        $that.editParkingCouponInfo.parkingAreas = _parkingAreaManageInfo.data;
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');
