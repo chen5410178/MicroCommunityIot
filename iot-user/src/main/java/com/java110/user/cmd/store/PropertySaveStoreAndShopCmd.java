@@ -16,6 +16,7 @@ import com.java110.core.factory.AuthenticationFactory;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
 import com.java110.core.utils.DateUtil;
 import com.java110.doc.annotation.*;
 import com.java110.dto.account.AccountDto;
@@ -125,6 +126,7 @@ public class PropertySaveStoreAndShopCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
+        String loginUserId = CmdContextUtils.getUserId(cmdDataFlowContext);
 
         CommunityDto communityDto = new CommunityDto();
         communityDto.setCommunityId(reqJson.getString("communityId"));
@@ -149,6 +151,7 @@ public class PropertySaveStoreAndShopCmd extends Cmd {
         storePo.setName(reqJson.getString("shopName"));
         storePo.setAddress("无");
         storePo.setTel(reqJson.getString("link"));
+        storePo.setCreateUserId(loginUserId);
 
         int flag = storeV1InnerServiceSMOImpl.saveStore(storePo);
 
