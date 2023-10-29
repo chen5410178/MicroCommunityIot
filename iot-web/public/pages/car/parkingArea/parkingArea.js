@@ -16,7 +16,6 @@
                     paId: '',
                     num: '',
                     typeCd: '',
-
                 }
             }
         },
@@ -80,8 +79,10 @@
                 } else {
                     $that.parkingAreaInfo.moreCondition = true;
                 }
+            },
+            _openParkingAreaTotalControl: function (_parkingArea) {
+                vc.jumpToPage('/#/pages/car/parkingAreaTotalControl?paId=' + _parkingArea.paId);
             }
-
 
         }
     });

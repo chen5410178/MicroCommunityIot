@@ -21,6 +21,7 @@
                     params: {
                         communityId: vc.getCurrentCommunity().communityId,
                         boxId: _param.boxId,
+                        paId:_param.paId,
                         machineId: _param.machineId,
                     }
                 };

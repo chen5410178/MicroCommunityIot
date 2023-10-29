@@ -62,7 +62,9 @@ public class GetCarMachineQrCodeUrl extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含小区信息");
-        Assert.hasKeyAndValue(reqJson, "boxId", "请求报文中未包含岗亭");
+        if(!reqJson.containsKey("paId")) {
+            Assert.hasKeyAndValue(reqJson, "boxId", "请求报文中未包含岗亭");
+        }
 
     }
 
@@ -106,6 +108,6 @@ public class GetCarMachineQrCodeUrl extends Cmd {
 
             return parkingBoxAreaDtos.get(0).getPaId();
         }
-        return "";
+        return reqJson.getString("paId");
     }
 }
