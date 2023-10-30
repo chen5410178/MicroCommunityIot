@@ -32,6 +32,9 @@
                                     <vc:i18n name='描述' namespace='liftMachineFactorySpecManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='liftMachineFactorySpecManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='操作'></vc:i18n>
                                 </th>
                             </tr>
@@ -41,7 +44,12 @@
                                 v-for="liftMachineFactorySpec in liftMachineFactorySpecManageInfo.liftMachineFactorySpecs">
                                 <td class="text-center">{{liftMachineFactorySpec.specId}}</td>
                                 <td class="text-center">{{liftMachineFactorySpec.specName}}</td>
-                                <td class="text-center">{{liftMachineFactorySpec.remark}}</td>
+                                <td class="text-center">
+                                    <button class="btn-white btn btn-xs" v-on:click="_openModel(liftMachineFactorySpec.remark, '描述')">
+                                        <vc:i18n name='查看'></vc:i18n>
+                                    </button>
+                                </td>
+                                <td class="text-center">{{liftMachineFactorySpec.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs"
@@ -71,5 +79,6 @@
 
     <vc:create path="lift/addLiftMachineFactorySpec" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="lift/deleteLiftMachineFactorySpec"></vc:create>
+    <vc:create path="event/viewData"></vc:create>
 
 </div>

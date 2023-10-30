@@ -82,7 +82,11 @@
                                 <td class="text-center">{{lockMachineFactory.factoryId}}</td>
                                 <td class="text-center">{{lockMachineFactory.factoryName}}</td>
                                 <td class="text-center">{{lockMachineFactory.beanImpl}}</td>
-                                <td class="text-center">{{lockMachineFactory.remark}}</td>
+                                <td class="text-center">
+                                    <button class="btn-white btn btn-xs" v-on:click="_openModel(lockMachineFactory.remark, '备注')">
+                                        <vc:i18n name='查看'></vc:i18n>
+                                    </button>
+                                </td>
                                 <td class="text-center">{{lockMachineFactory.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -121,5 +125,6 @@
     <vc:create path="lock/addLockMachineFactory" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="lock/editLockMachineFactory"></vc:create>
     <vc:create path="lock/deleteLockMachineFactory"></vc:create>
+    <vc:create path="event/viewData"></vc:create>
 
 </div>

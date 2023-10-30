@@ -64,6 +64,12 @@
             _openDeleteLampMachineFactorySpecModel: function (_lampMachineFactorySpec) {
                 vc.emit('deleteLampMachineFactorySpec', 'openDeleteLampMachineFactorySpecModal', _lampMachineFactorySpec);
             },
+            _openModel: function (_data, _title) {
+                vc.emit('viewData', 'openEventViewDataModal', {
+                    title: _title,
+                    data: _data
+                });
+            },
         }
     });
 })(window.vc);

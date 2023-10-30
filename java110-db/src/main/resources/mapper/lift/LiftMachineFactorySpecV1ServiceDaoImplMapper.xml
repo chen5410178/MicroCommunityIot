@@ -15,7 +15,7 @@
     <!-- 查询电梯厂家参数信息 add by wuxw 2018-07-03 -->
     <select id="getLiftMachineFactorySpecInfo" parameterType="Map" resultType="Map">
         select t.spec_id,t.spec_id specId,t.spec_name,t.spec_name specName,t.factory_id,t.factory_id
-        factoryId,t.status_cd,t.status_cd statusCd,t.remark
+        factoryId,t.status_cd,t.status_cd statusCd,t.remark,t.create_time createTime
         from lift_machine_factory_spec t
         where 1 =1
         <if test="specId !=null and specId != ''">

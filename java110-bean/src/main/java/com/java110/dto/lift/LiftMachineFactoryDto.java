@@ -4,6 +4,7 @@ import com.java110.bean.dto.PageDto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class LiftMachineFactoryDto extends PageDto implements Serializable {
     private String factoryId;
@@ -12,6 +13,8 @@ public class LiftMachineFactoryDto extends PageDto implements Serializable {
     private String remark;
     private Date createTime;
     private String statusCd = "0";
+
+    private List<LiftMachineFactorySpecDto> liftMachineFactorySpecList;
 
     public String getFactoryId() {
         return factoryId;
@@ -59,5 +62,13 @@ public class LiftMachineFactoryDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public List<LiftMachineFactorySpecDto> getLiftMachineFactorySpecList() {
+        return liftMachineFactorySpecList;
+    }
+
+    public void setLiftMachineFactorySpecList(List<LiftMachineFactorySpecDto> liftMachineFactorySpecList) {
+        this.liftMachineFactorySpecList = liftMachineFactorySpecList;
     }
 }

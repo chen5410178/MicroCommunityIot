@@ -77,6 +77,12 @@
                 };
                 $that._listLockMachineFactorys(DEFAULT_PAGE, DEFAULT_ROWS);
             },
+            _openModel: function (_data, _title) {
+                vc.emit('viewData', 'openEventViewDataModal', {
+                    title: _title,
+                    data: _data
+                });
+            },
         }
     });
 })(window.vc);

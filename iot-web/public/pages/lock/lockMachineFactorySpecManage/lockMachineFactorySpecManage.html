@@ -40,7 +40,11 @@
                             <tr v-for="lockMachineFactorySpec in lockMachineFactorySpecManageInfo.lockMachineFactorySpecs">
                                 <td class="text-center">{{lockMachineFactorySpec.specId}}</td>
                                 <td class="text-center">{{lockMachineFactorySpec.specName}}</td>
-                                <td class="text-center">{{lockMachineFactorySpec.remark}}</td>
+                                <td class="text-center">
+                                    <button class="btn-white btn btn-xs" v-on:click="_openModel(lockMachineFactorySpec.remark, '描述')">
+                                        <vc:i18n name='查看'></vc:i18n>
+                                    </button>
+                                </td>
                                 <td class="text-center">{{lockMachineFactorySpec.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
@@ -68,5 +72,6 @@
 
     <vc:create path="lock/addLockMachineFactorySpec" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="lock/deleteLockMachineFactorySpec"></vc:create>
+    <vc:create path="event/viewData"></vc:create>
 
 </div>

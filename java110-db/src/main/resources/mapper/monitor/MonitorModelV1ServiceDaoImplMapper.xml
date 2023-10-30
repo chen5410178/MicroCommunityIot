@@ -15,7 +15,7 @@
     <!-- 查询监控模型信息 add by wuxw 2018-07-03 -->
     <select id="getMonitorModelInfo" parameterType="Map" resultType="Map">
         select t.model_name,t.model_name modelName,t.model_adapt,t.model_adapt modelAdapt,t.model_id,t.model_id
-        modelId,t.status_cd,t.status_cd statusCd
+        modelId,t.status_cd,t.status_cd statusCd,t.create_time createTime
         from monitor_model t
         where 1 =1
         <if test="modelName !=null and modelName != ''">

@@ -11,12 +11,42 @@
         values (#{factoryId}, #{factoryName}, #{remark}, #{beanImpl})
     </insert>
 
+    <resultMap id="resultMap" type="com.java110.dto.lift.LiftMachineFactoryDto">
+        <id column="factoryId" property="factoryId"/>
+        <result column="factoryName" property="factoryName"/>
+        <result column="beanImpl" property="beanImpl"/>
+        <result column="remark" property="remark"/>
+        <result column="createTime" property="createTime"/>
+        <result column="statusCd" property="statusCd"/>
+        <collection property="liftMachineFactorySpecList"
+                    ofType="com.java110.dto.lift.LiftMachineFactorySpecDto"
+                    javaType="java.util.ArrayList">
+            <id column="specId" property="specId"/>
+            <result column="factoryId1" property="factoryId"/>
+            <result column="specName" property="specName"/>
+            <result column="remark1" property="remark"/>
+            <result column="createTime1" property="createTime"/>
+            <result column="statusCd1" property="statusCd"/>
+        </collection>
+    </resultMap>
 
     <!-- 查询电梯厂家信息 add by wuxw 2018-07-03 -->
-    <select id="getLiftMachineFactoryInfo" parameterType="Map" resultType="Map">
-        select t.factory_id,t.factory_id factoryId,t.factory_name,t.factory_name
-        factoryName,t.remark,t.status_cd,t.status_cd statusCd,t.bean_impl,t.bean_impl beanImpl
+    <select id="getLiftMachineFactoryInfo" parameterType="Map" resultMap="resultMap">
+        select
+        t.factory_id factoryId,
+        t.factory_name factoryName,
+        t.bean_impl beanImpl,
+        t.remark,
+        t.create_time createTime,
+        t.status_cd,t.status_cd statusCd,
+        lmfs.spec_id specId,
+        lmfs.factory_id factoryId1,
+        lmfs.spec_name specName,
+        lmfs.create_time createTime1,
+        lmfs.status_cd statusCd1,
+        lmfs.remark remark1
         from lift_machine_factory t
+        left join lift_machine_factory_spec lmfs on t.factory_id = lmfs.factory_id and lmfs.status_cd = '0'
         where 1 =1
         <if test="factoryId !=null and factoryId != ''">
             and t.factory_id like concat('%', #{factoryId}, '%')

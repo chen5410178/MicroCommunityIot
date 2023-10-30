@@ -31,6 +31,9 @@
                                     <vc:i18n name='描述' namespace='lampMachineFactorySpecManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='lampMachineFactorySpecManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='操作'></vc:i18n>
                                 </th>
                             </tr>
@@ -39,7 +42,12 @@
                             <tr v-for="lampMachineFactorySpec in lampMachineFactorySpecManageInfo.lampMachineFactorySpecs">
                                 <td class="text-center">{{lampMachineFactorySpec.specId}}</td>
                                 <td class="text-center">{{lampMachineFactorySpec.specName}}</td>
-                                <td class="text-center">{{lampMachineFactorySpec.remark}}</td>
+                                <td class="text-center">
+                                    <button class="btn-white btn btn-xs" v-on:click="_openModel(lampMachineFactorySpec.remark, '描述')">
+                                        <vc:i18n name='查看'></vc:i18n>
+                                    </button>
+                                </td>
+                                <td class="text-center">{{lampMachineFactorySpec.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs"
@@ -67,5 +75,6 @@
 
     <vc:create path="lamp/addLampMachineFactorySpec" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="lamp/deleteLampMachineFactorySpec"></vc:create>
+    <vc:create path="event/viewData"></vc:create>
 
 </div>

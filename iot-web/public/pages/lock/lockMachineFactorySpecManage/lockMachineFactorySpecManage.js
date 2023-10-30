@@ -63,6 +63,12 @@
             _openDeleteLockMachineFactorySpecModel: function (_lockMachineFactorySpec) {
                 vc.emit('deleteLockMachineFactorySpec', 'openDeleteLockMachineFactorySpecModal', _lockMachineFactorySpec);
             },
+            _openModel: function (_data, _title) {
+                vc.emit('viewData', 'openEventViewDataModal', {
+                    title: _title,
+                    data: _data
+                });
+            },
         }
     });
 })(window.vc);

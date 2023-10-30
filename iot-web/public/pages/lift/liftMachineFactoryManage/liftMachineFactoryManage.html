@@ -9,7 +9,7 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请输入厂家ID','liftMachineFactoryManage')"
                                     v-model="liftMachineFactoryManageInfo.conditions.factoryId" class=" form-control">
@@ -74,6 +74,9 @@
                                     <vc:i18n name='备注' namespace='liftMachineFactoryManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='liftMachineFactoryManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='操作'></vc:i18n>
                                 </th>
                             </tr>
@@ -83,7 +86,12 @@
                                 <td class="text-center">{{liftMachineFactory.factoryId}}</td>
                                 <td class="text-center">{{liftMachineFactory.factoryName}}</td>
                                 <td class="text-center">{{liftMachineFactory.beanImpl}}</td>
-                                <td class="text-center">{{liftMachineFactory.remark}}</td>
+                                <td class="text-center">
+                                    <button class="btn-white btn btn-xs" v-on:click="_openModel(liftMachineFactory.remark, '备注')">
+                                        <vc:i18n name='查看'></vc:i18n>
+                                    </button>
+                                </td>
+                                <td class="text-center">{{liftMachineFactory.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs"
@@ -126,5 +134,6 @@
     <vc:create path="lift/addLiftMachineFactory" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="lift/editLiftMachineFactory"></vc:create>
     <vc:create path="lift/deleteLiftMachineFactory"></vc:create>
+    <vc:create path="event/viewData"></vc:create>
 
 </div>
