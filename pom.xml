@@ -35,6 +35,7 @@
         <module>iot-meter</module>
         <module>iot-lift</module>
         <module>iot-lamp</module>
+        <module>iot-lock</module>
     </modules>
 
     <parent>
