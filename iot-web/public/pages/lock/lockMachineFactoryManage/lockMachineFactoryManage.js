@@ -69,7 +69,7 @@
             _queryLockMachineFactoryMethod: function () {
                 $that._listLockMachineFactorys(DEFAULT_PAGE, DEFAULT_ROWS);
             },
-            _resetLockMachineMethod: function () {
+            _resetLockMachineFactoryMethod: function () {
                 $that.lockMachineFactoryManageInfo.conditions = {
                     factoryId: '',
                     factoryName: '',
