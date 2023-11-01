@@ -15,8 +15,8 @@
         _initEvent: function () {
             vc.on('adminIndex', 'initData', function (_param) {
                 $that._loadViewAdminData();
-                $that._loadCommunityFee();
-                $that._loadCommunityRepair();
+                $that._loadCommunityEvent();
+                $that._loadCommunityMonitor();
             });
         },
         methods: {
@@ -58,7 +58,7 @@
                     }
                 );
             },
-            _loadCommunityFee: function () {
+            _loadCommunityEvent: function () {
                 //获取主机访问token
                 let param = {
                     params: {
@@ -66,7 +66,7 @@
                     }
                 };
                 //发送get请求
-                vc.http.apiGet('/admin.queryCommunityFee',
+                vc.http.apiGet('/admin.queryCommunityEvent',
                     param,
                     function (json, res) {
                         let _json = JSON.parse(json);
@@ -75,24 +75,23 @@
                             return;
                         }
                        
-                        $that._initAdminIndexCommunityFeeCharts(_json.data);
+                        $that._initAdminIndexCommunityEventCharts(_json.data);
                     },
                     function (errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );
             },
-            _initAdminIndexCommunityFeeCharts: function (_data) {
-                let dom = document.getElementById('communityFeeCharts');
+            _initAdminIndexCommunityEventCharts: function (_data) {
+                let dom = document.getElementById('communityEvent');
                 let _source = [
-                    ['product', '缴费数', '缴费金额'],
+                    ['product', '今日小区事件数'],
                 ];
 
                 _data.forEach(item => {
                     _source.push([
                         item.communityName,
                         item.count,
-                        item.receivedAmount
                     ])
                 });
 
@@ -103,7 +102,7 @@
                     tooltip: {},
                     title: {
                         show: "true",
-                        text: '小区缴费统计'
+                        text: '小区事件数'
                     },
                     color: ['#FFDAB9', '#66CDAA'],
                     dataset: {
@@ -122,7 +121,7 @@
                 }
 
             },
-            _loadCommunityRepair: function () {
+            _loadCommunityMonitor: function () {
                 //获取主机访问token
                 let param = {
                     params: {
@@ -130,7 +129,7 @@
                     }
                 };
                 //发送get请求
-                vc.http.apiGet('/admin.queryCommunityRepair',
+                vc.http.apiGet('/admin.queryCommunityMonitorPool',
                     param,
                     function (json, res) {
                         let _json = JSON.parse(json);
@@ -139,17 +138,17 @@
                             return;
                         }
                        
-                        $that._initAdminIndexCommunityRepairCharts(_json.data);
+                        $that._initAdminIndexCommunityMonitorPoolCharts(_json.data);
                     },
                     function (errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );
             },
-            _initAdminIndexCommunityRepairCharts: function (_data) {
-                let dom = document.getElementById('communityRepairCharts');
+            _initAdminIndexCommunityMonitorPoolCharts: function (_data) {
+                let dom = document.getElementById('communityMonitorPool');
                 let _source = [
-                    ['product', '报修单数'],
+                    ['product', '今日监控告警数'],
                 ];
 
                 _data.forEach(item => {
@@ -166,7 +165,7 @@
                     tooltip: {},
                     title: {
                         show: "true",
-                        text: '小区报修统计'
+                        text: '小区监控告警数'
                     },
                     color: ['#FFDAB9', '#66CDAA'],
                     dataset: {
