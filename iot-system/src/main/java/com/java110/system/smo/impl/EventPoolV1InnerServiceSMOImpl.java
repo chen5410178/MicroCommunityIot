@@ -16,6 +16,7 @@
 package com.java110.system.smo.impl;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.dto.PageDto;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.event.EventPoolDto;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -86,9 +88,16 @@ public class EventPoolV1InnerServiceSMOImpl implements IEventPoolV1InnerServiceS
     }
 
     @Override
-    public int saveEventPoolList(List<EventPoolPo> eventPoolPoList) {
+    public int saveEventPoolList(@RequestBody List<EventPoolPo> eventPoolPoList) {
         List<Object> temp = eventPoolPoList.stream().map(eventPoolPo -> (Object) eventPoolPo).collect(Collectors.toList());
         return eventPoolV1ServiceDaoImpl.saveEventPoolInfoList(BeanConvertUtil.beanCovertMapList(temp));
+    }
+
+    @Override
+    public List<Map> getCommunityEventCount(@RequestBody Map info) {
+        List<Map> eventPools = eventPoolV1ServiceDaoImpl.getCommunityEventCount(info);
+
+        return eventPools;
     }
 
 }

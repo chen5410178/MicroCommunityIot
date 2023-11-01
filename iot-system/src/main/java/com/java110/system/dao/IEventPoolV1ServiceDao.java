@@ -71,4 +71,6 @@ public interface IEventPoolV1ServiceDao {
     int queryEventPoolsCount(Map info);
 
     int saveEventPoolInfoList(List<Map<String, Object>> info);
+
+    List<Map> getCommunityEventCount(Map info);
 }

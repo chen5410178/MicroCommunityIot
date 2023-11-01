@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类表述： 服务之前调用的接口实现类，不对外提供接口能力 只用于接口建调用
@@ -82,6 +83,13 @@ public class MonitorPoolV1InnerServiceSMOImpl implements IMonitorPoolV1InnerServ
     @Override
     public int queryMonitorPoolsCount(@RequestBody MonitorPoolDto monitorPoolDto) {
         return monitorPoolV1ServiceDaoImpl.queryMonitorPoolsCount(BeanConvertUtil.beanCovertMap(monitorPoolDto));
+    }
+
+    @Override
+    public List<Map> getCommunityMonitorPoolCount(@RequestBody Map info) {
+        List<Map> monitorPools = monitorPoolV1ServiceDaoImpl.getCommunityMonitorPoolCount(info);
+
+        return monitorPools;
     }
 
 }

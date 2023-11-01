@@ -70,4 +70,5 @@ public interface IMonitorPoolV1ServiceDao {
      */
     int queryMonitorPoolsCount(Map info);
 
+    List<Map> getCommunityMonitorPoolCount(Map info);
 }

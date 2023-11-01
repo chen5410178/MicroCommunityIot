@@ -15,6 +15,7 @@
  */
 package com.java110.intf.monitor;
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.dto.monitor.MonitorPoolDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.monitor.MonitorPoolPo;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类表述： 服务之前调用的接口类，不对外提供接口能力 只用于接口建调用
@@ -64,4 +66,7 @@ public interface IMonitorPoolV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryMonitorPoolsCount", method = RequestMethod.POST)
     int queryMonitorPoolsCount(@RequestBody MonitorPoolDto monitorPoolDto);
+
+    @RequestMapping(value = "/getCommunityMonitorPoolCount", method = RequestMethod.POST)
+    List<Map> getCommunityMonitorPoolCount(@RequestBody Map info);
 }

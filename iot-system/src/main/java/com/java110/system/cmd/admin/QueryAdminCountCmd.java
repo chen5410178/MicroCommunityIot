@@ -16,7 +16,9 @@ import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
 import com.java110.dto.community.CommunityDto;
 import com.java110.dto.lift.LiftMachineDto;
+import com.java110.dto.lock.LockMachineDto;
 import com.java110.dto.meter.MeterMachineDto;
+import com.java110.dto.monitor.MonitorMachineDto;
 import com.java110.dto.shop.ShopDto;
 import com.java110.dto.store.StoreDto;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
@@ -26,7 +28,11 @@ import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
 import com.java110.intf.community.ICommunityInnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.lift.ILiftMachineV1InnerServiceSMO;
+import com.java110.intf.lock.ILockMachineFactorySpecV1InnerServiceSMO;
+import com.java110.intf.lock.ILockMachineV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterMachineV1InnerServiceSMO;
+import com.java110.intf.monitor.IMonitorAreaV1InnerServiceSMO;
+import com.java110.intf.monitor.IMonitorMachineV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerV1InnerServiceSMO;
 import com.java110.intf.user.IStoreV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +52,6 @@ public class QueryAdminCountCmd extends Cmd {
 
     @Autowired
     private ICommunityInnerServiceSMO communityInnerServiceSMOImpl;
-
 
 
     @Autowired
@@ -72,6 +77,12 @@ public class QueryAdminCountCmd extends Cmd {
 
     @Autowired
     private ILiftMachineV1InnerServiceSMO liftMachineV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IMonitorMachineV1InnerServiceSMO monitorMachineV1InnerServiceSMOImpl;
+
+    @Autowired
+    private ILockMachineV1InnerServiceSMO lockMachineV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
@@ -153,6 +164,15 @@ public class QueryAdminCountCmd extends Cmd {
         LiftMachineDto liftMachineDto = new LiftMachineDto();
         int liftCount = liftMachineV1InnerServiceSMOImpl.queryLiftMachinesCount(liftMachineDto);
         setDatas(datas, "电梯数", liftCount);
+
+        //todo 监控数量
+        MonitorMachineDto monitorMachineDto = new MonitorMachineDto();
+        int monitorCount = monitorMachineV1InnerServiceSMOImpl.queryMonitorMachinesCount(monitorMachineDto);
+        setDatas(datas, "监控数", monitorCount);
+        //todo 监控数量
+        LockMachineDto lockMachineDto = new LockMachineDto();
+        int lockCount = lockMachineV1InnerServiceSMOImpl.queryLockMachinesCount(lockMachineDto);
+        setDatas(datas, "门锁数", lockCount);
 
 
         context.setResponseEntity(ResultVo.createResponseEntity(datas));

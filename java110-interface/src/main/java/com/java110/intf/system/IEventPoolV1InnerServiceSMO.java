@@ -15,6 +15,7 @@
  */
 package com.java110.intf.system;
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.dto.event.EventPoolDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.event.EventPoolPo;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类表述： 服务之前调用的接口类，不对外提供接口能力 只用于接口建调用
@@ -67,4 +69,7 @@ public interface IEventPoolV1InnerServiceSMO {
 
     @RequestMapping(value = "/saveEventPoolList", method = RequestMethod.POST)
     int saveEventPoolList(@RequestBody List<EventPoolPo> eventPoolPoList);
+
+    @RequestMapping(value = "/getCommunityEventCount", method = RequestMethod.POST)
+    List<Map> getCommunityEventCount(@RequestBody Map info);
 }

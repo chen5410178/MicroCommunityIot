@@ -105,5 +105,12 @@ public class MonitorPoolV1ServiceDaoImpl extends BaseServiceDao implements IMoni
         return Integer.parseInt(businessMonitorPoolInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> getCommunityMonitorPoolCount(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("monitorPoolV1ServiceDaoImpl.getCommunityMonitorPoolCount", info);
+
+        return infos;
+    }
+
 
 }

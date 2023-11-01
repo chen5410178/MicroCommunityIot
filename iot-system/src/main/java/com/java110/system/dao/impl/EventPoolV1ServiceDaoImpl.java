@@ -114,5 +114,12 @@ public class EventPoolV1ServiceDaoImpl extends BaseServiceDao implements IEventP
         return saveFlag;
     }
 
+    @Override
+    public List<Map> getCommunityEventCount(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("eventPoolV1ServiceDaoImpl.getCommunityEventCount", info);
+
+        return infos;
+    }
+
 
 }
