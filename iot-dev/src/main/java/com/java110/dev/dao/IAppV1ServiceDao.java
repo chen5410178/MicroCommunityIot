@@ -71,4 +71,5 @@ public interface IAppV1ServiceDao {
      */
     int queryAppsCount(Map info);
 
+    List<Map> queryAppsServiceData(Map info);
 }

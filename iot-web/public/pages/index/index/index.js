@@ -30,8 +30,14 @@
                     vc.emit('indexEvent','initData',{});
                     vc.emit('indexMachineView','initData',{});
                     vc.emit('indexMonitorAlarm','initData',{});
-                    
-                    
+                }
+
+                if($that.indexInfo.storeTypeCd == '800900000001'){
+                    vc.emit('adminIndex', 'initData',{})
+                }
+
+                if($that.indexInfo.storeTypeCd == '800900000000'){
+                    vc.emit('devIndex', 'initData',{})
                 }
             }
         }

@@ -25,6 +25,7 @@ public class AppDto extends PageDto implements Serializable {
     private String remark;
     private String whileListIp;
 
+    private long serviceCount;
 
     private Date createTime;
 
@@ -94,5 +95,13 @@ public class AppDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public long getServiceCount() {
+        return serviceCount;
+    }
+
+    public void setServiceCount(long serviceCount) {
+        this.serviceCount = serviceCount;
     }
 }

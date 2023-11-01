@@ -65,4 +65,7 @@ public interface IAppV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryAppsCount", method = RequestMethod.POST)
     int queryAppsCount(@RequestBody AppDto appDto);
+
+    @RequestMapping(value = "/queryAppsServiceData", method = RequestMethod.POST)
+    List<AppDto> queryAppsServiceData(@RequestBody AppDto appDto);
 }

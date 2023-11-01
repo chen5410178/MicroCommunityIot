@@ -106,5 +106,13 @@ public class AppV1ServiceDaoImpl extends BaseServiceDao implements IAppV1Service
         return Integer.parseInt(businessAppInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> queryAppsServiceData(Map info) {
+
+        List<Map> infos = sqlSessionTemplate.selectList("appV1ServiceDaoImpl.queryAppsServiceData",info);
+
+        return infos;
+    }
+
 
 }

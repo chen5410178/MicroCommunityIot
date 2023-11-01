@@ -85,4 +85,11 @@ public class AppV1InnerServiceSMOImpl  implements IAppV1InnerServiceSMO {
     public int queryAppsCount(@RequestBody AppDto appDto) {
         return appV1ServiceDaoImpl.queryAppsCount(BeanConvertUtil.beanCovertMap(appDto));    }
 
+    @Override
+    public List<AppDto> queryAppsServiceData(@RequestBody AppDto appDto) {
+        List<AppDto> apps = BeanConvertUtil.covertBeanList(appV1ServiceDaoImpl.queryAppsServiceData(BeanConvertUtil.beanCovertMap(appDto)), AppDto.class);
+
+        return apps;
+    }
+
 }

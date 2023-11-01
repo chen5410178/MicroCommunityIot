@@ -21,4 +21,11 @@
             </div>
         </div>
     </div>
+    <div v-if="indexInfo.storeTypeCd == '800900000001'">
+        <vc:create path="admin/adminIndex"></vc:create>
+    </div>
+
+    <div v-if="indexInfo.storeTypeCd == '800900000000'">
+        <vc:create path="admin/devIndex"></vc:create>
+    </div>
 </div>
