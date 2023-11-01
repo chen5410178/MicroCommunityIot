@@ -6,7 +6,9 @@ import com.java110.core.cache.MappingCache;
 import com.java110.core.client.OssUploadTemplate;
 import com.java110.core.constant.MappingConstant;
 import com.java110.core.factory.LoggerFactory;
+import com.java110.core.utils.Assert;
 import com.java110.gateway.service.IApiService;
+import com.java110.gateway.smo.IAssetImportSMO;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,9 @@ public class IotApiController {
 
     @Autowired
     private OssUploadTemplate ossUploadTemplate;
+
+    @Autowired
+    private IAssetImportSMO assetImportSMOImpl;
 
 
     /**
@@ -88,8 +93,8 @@ public class IotApiController {
      */
     @RequestMapping(path = "/upload/uploadFile", method = RequestMethod.POST)
     public ResponseEntity<String> uploadFile(@RequestParam("uploadFile") MultipartFile uploadFile,
-                                              //@RequestBody String info,
-                                              HttpServletRequest request) {
+                                             //@RequestBody String info,
+                                             HttpServletRequest request) {
         ResponseEntity<String> responseEntity = null;
 
         String fileName = ossUploadTemplate.upload(uploadFile, ROOT_PATH);
@@ -102,5 +107,25 @@ public class IotApiController {
         return ResultVo.createResponseEntity(outParam);
     }
 
+
+    /**
+     * get 入口类
+     *
+     * @param uploadFile 上传文件
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/assetImport", method = RequestMethod.POST)
+    public ResponseEntity<String> assetImport(@RequestParam("uploadFile") MultipartFile uploadFile,
+                                              @RequestBody String postInfo,
+                                              HttpServletRequest request) {
+        ResponseEntity<String> responseEntity = null;
+
+
+        responseEntity = assetImportSMOImpl.importData(postInfo, uploadFile, request);
+
+
+        return responseEntity;
+    }
 
 }
