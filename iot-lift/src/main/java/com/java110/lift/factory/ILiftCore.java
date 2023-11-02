@@ -4,6 +4,8 @@ import com.java110.bean.ResultVo;
 import com.java110.dto.lift.LiftMachineDto;
 import com.java110.dto.lift.LiftMachineReservationDto;
 
+import java.util.List;
+
 public interface ILiftCore {
 
     /**
@@ -19,4 +21,10 @@ public interface ILiftCore {
      * @return
      */
     ResultVo reservationLiftMachine(LiftMachineReservationDto liftMachineReservationDto);
+
+    /**
+     * 查询设备在线状态
+     * @param liftMachineDtos
+     */
+    void queryLiftMachineState(List<LiftMachineDto> liftMachineDtos);
 }

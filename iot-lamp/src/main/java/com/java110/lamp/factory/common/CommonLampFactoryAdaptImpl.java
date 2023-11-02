@@ -59,6 +59,12 @@ public class CommonLampFactoryAdaptImpl implements ILampFactoryAdapt {
         return new ResultVo(ResultVo.CODE_ERROR, "未知操作");
     }
 
+    @Override
+    public void queryLampMachineState(LampMachineDto lampMachineDto) {
+        lampMachineDto.setIsOnlineState(LampMachineDto.STATE_ONLINE);
+        lampMachineDto.setIsOnlineStateName("在线");
+    }
+
     private LampMachineLogPo createLampMachineLog(LampMachineDto lampMachineDto, String logId, String reqParam, String state) {
         LampMachineLogPo lampMachineLogPo = new LampMachineLogPo();
         lampMachineLogPo.setLogId(logId);

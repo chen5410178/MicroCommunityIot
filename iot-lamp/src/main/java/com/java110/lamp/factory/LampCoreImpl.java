@@ -58,4 +58,27 @@ public class LampCoreImpl implements ILampCore {
 
         return resultVo;
     }
+
+    @Override
+    public void queryLampMachineState(List<LampMachineDto> lampMachineDtos) {
+        for (LampMachineDto lampMachineDto : lampMachineDtos) {
+            try {
+                LampMachineFactoryDto lampMachineFactoryDto = new LampMachineFactoryDto();
+                lampMachineFactoryDto.setFactoryId(lampMachineDto.getFactoryId());
+                List<LampMachineFactoryDto> lampMachineFactoryDtos = lampMachineFactoryV1InnerServiceSMOImpl.queryLampMachineFactorys(lampMachineFactoryDto);
+
+                Assert.listOnlyOne(lampMachineFactoryDtos, "路灯厂家不存在");
+
+                ILampFactoryAdapt lampFactoryAdapt = ApplicationContextFactory.getBean(lampMachineFactoryDtos.get(0).getBeanImpl(), ILampFactoryAdapt.class);
+                if (lampFactoryAdapt == null) {
+                    throw new CmdException("厂家接口未实现");
+                }
+                lampFactoryAdapt.queryLampMachineState(lampMachineDto);
+            } catch (Exception e) {
+                e.printStackTrace();
+                lampMachineDto.setIsOnlineState(LampMachineDto.STATE_OFFLINE);
+                lampMachineDto.setIsOnlineStateName("离线");
+            }
+        }
+    }
 }

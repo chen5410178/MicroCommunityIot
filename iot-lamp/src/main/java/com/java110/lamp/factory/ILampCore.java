@@ -2,8 +2,8 @@ package com.java110.lamp.factory;
 
 import com.java110.bean.ResultVo;
 import com.java110.dto.lamp.LampMachineDto;
-import com.java110.dto.lift.LiftMachineDto;
-import com.java110.dto.lift.LiftMachineReservationDto;
+
+import java.util.List;
 
 public interface ILampCore {
 
@@ -13,4 +13,10 @@ public interface ILampCore {
      * @return
      */
     ResultVo switchLampState(LampMachineDto lampMachineDto);
+
+    /**
+     * 查询设备在线状态
+     * @param lampMachineDtos
+     */
+    void queryLampMachineState(List<LampMachineDto> lampMachineDtos);
 }

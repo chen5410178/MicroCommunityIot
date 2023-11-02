@@ -26,6 +26,7 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.lock.LockMachineDto;
 import com.java110.intf.lock.ILockMachineV1InnerServiceSMO;
+import com.java110.lock.factory.ILockCore;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -54,10 +55,13 @@ public class ListLockMachineCmd extends Cmd {
     @Autowired
     private ILockMachineV1InnerServiceSMO lockMachineV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ILockCore lockCoreImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
-        Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
+        Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
     }
 
     @Override
@@ -71,6 +75,8 @@ public class ListLockMachineCmd extends Cmd {
 
         if (count > 0) {
             lockMachineDtos = lockMachineV1InnerServiceSMOImpl.queryLockMachines(lockMachineDto);
+            // todo  查询设备是否在线
+            queryMachineState(lockMachineDtos);
         } else {
             lockMachineDtos = new ArrayList<>();
         }
@@ -80,5 +86,13 @@ public class ListLockMachineCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void queryMachineState(List<LockMachineDto> lockMachineDtos) {
+        if (lockMachineDtos == null || lockMachineDtos.size() < 1 || lockMachineDtos.size() > 10) {
+            return;
+        }
+
+        lockCoreImpl.queryLockMachineState(lockMachineDtos);
     }
 }

@@ -82,4 +82,27 @@ public class LiftCoreImpl implements ILiftCore {
 
         return liftFactoryAdaptImpl.reservationLiftMachine(liftMachineReservationDto);
     }
+
+    @Override
+    public void queryLiftMachineState(List<LiftMachineDto> liftMachineDtos) {
+        for (LiftMachineDto liftMachineDto : liftMachineDtos) {
+            try {
+                LiftMachineFactoryDto liftMachineFactoryDto = new LiftMachineFactoryDto();
+                liftMachineFactoryDto.setFactoryId(liftMachineDto.getFactoryId());
+                List<LiftMachineFactoryDto> liftMachineFactoryDtos = liftMachineFactoryV1InnerServiceSMOImpl.queryLiftMachineFactorys(liftMachineFactoryDto);
+
+                Assert.listOnlyOne(liftMachineFactoryDtos, "电梯厂家不存在");
+
+                ILiftFactoryAdapt liftFactoryAdapt = ApplicationContextFactory.getBean(liftMachineFactoryDtos.get(0).getBeanImpl(), ILiftFactoryAdapt.class);
+                if (liftFactoryAdapt == null) {
+                    throw new CmdException("厂家接口未实现");
+                }
+                liftFactoryAdapt.queryLiftMachineState(liftMachineDto);
+            } catch (Exception e) {
+                e.printStackTrace();
+                liftMachineDto.setIsOnlineState(LiftMachineDto.STATE_OFFLINE);
+                liftMachineDto.setIsOnlineStateName("离线");
+            }
+        }
+    }
 }

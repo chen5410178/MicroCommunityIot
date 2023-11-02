@@ -33,4 +33,10 @@ public interface ILampFactoryAdapt {
      * @return
      */
     ResultVo unknownLampOperate(LampMachineDto lampMachineDto);
+
+    /**
+     * 查询设备在线状态
+     * @param lampMachineDto
+     */
+    void queryLampMachineState(LampMachineDto lampMachineDto);
 }

@@ -9,6 +9,9 @@ public class LampMachineDto extends PageDto implements Serializable {
     public static final String LAMP_TURN_ON_STATE = "1001";
     public static final String LAMP_TURN_OFF_STATE = "1002";
 
+    public static final String STATE_ONLINE = "ONLINE";
+    public static final String STATE_OFFLINE = "OFFLINE";
+
     private String machineId;
     private String machineName;
     private String machineCode;
@@ -27,6 +30,8 @@ public class LampMachineDto extends PageDto implements Serializable {
     private String userId;
     private String userName;
     private Date operationTime;
+    private String isOnlineState;
+    private String isOnlineStateName;
 
     public String getMachineId() {
         return machineId;
@@ -154,5 +159,21 @@ public class LampMachineDto extends PageDto implements Serializable {
 
     public void setOperationTime(Date operationTime) {
         this.operationTime = operationTime;
+    }
+
+    public String getIsOnlineState() {
+        return isOnlineState;
+    }
+
+    public void setIsOnlineState(String isOnlineState) {
+        this.isOnlineState = isOnlineState;
+    }
+
+    public String getIsOnlineStateName() {
+        return isOnlineStateName;
+    }
+
+    public void setIsOnlineStateName(String isOnlineStateName) {
+        this.isOnlineStateName = isOnlineStateName;
     }
 }

@@ -26,6 +26,7 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.monitor.MonitorMachineDto;
 import com.java110.intf.monitor.IMonitorMachineV1InnerServiceSMO;
+import com.java110.monitor.factory.IMonitorCore;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -54,6 +55,9 @@ public class ListMonitorMachineCmd extends Cmd {
     @Autowired
     private IMonitorMachineV1InnerServiceSMO monitorMachineV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IMonitorCore monitorCoreImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -72,6 +76,8 @@ public class ListMonitorMachineCmd extends Cmd {
 
         if (count > 0) {
             monitorMachineDtos = monitorMachineV1InnerServiceSMOImpl.queryMonitorMachines(monitorMachineDto);
+            // todo  查询设备是否在线
+            queryMachineState(monitorMachineDtos);
         } else {
             monitorMachineDtos = new ArrayList<>();
         }
@@ -81,5 +87,13 @@ public class ListMonitorMachineCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void queryMachineState(List<MonitorMachineDto> monitorMachineDtos) {
+        if (monitorMachineDtos == null || monitorMachineDtos.size() < 1 || monitorMachineDtos.size() > 10) {
+            return;
+        }
+
+        monitorCoreImpl.queryMonitorMachineState(monitorMachineDtos);
     }
 }

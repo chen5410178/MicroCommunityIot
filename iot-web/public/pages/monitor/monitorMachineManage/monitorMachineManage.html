@@ -115,6 +115,9 @@
                                     <vc:i18n name='状态' namespace='monitorMachineManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='在线状态' namespace='monitorMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='心跳时间' namespace='monitorMachineManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
@@ -137,6 +140,7 @@
                                     <label v-if="monitorMachine.state === '1001'">{{vc.i18n('打开中','monitorMachineManage')}}</label>
                                     <label v-if="monitorMachine.state === '1002'">{{vc.i18n('关闭中','monitorMachineManage')}}</label>
                                 </td>
+                                <td class="text-center">{{monitorMachine.isOnlineStateName}}</td>
                                 <td class="text-center">{{monitorMachine.heartbeatTime}}</td>
                                 <td class="text-center">{{monitorMachine.createTime}}</td>
                                 <td class="text-center">

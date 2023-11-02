@@ -108,6 +108,12 @@
                                     <vc:i18n name='状态' namespace='lampMachineManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='在线状态' namespace='lampMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='心跳时间' namespace='lampMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='操作'></vc:i18n>
                                 </th>
                             </tr>
@@ -128,6 +134,8 @@
                                         (<a href="javascript:void(0)" @click="_switchLampState(lampMachine)">开灯</a>)
                                     </span>
                                 </td>
+                                <td class="text-center">{{lampMachine.isOnlineStateName}}</td>
+                                <td class="text-center">{{lampMachine.heartbeatTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs"

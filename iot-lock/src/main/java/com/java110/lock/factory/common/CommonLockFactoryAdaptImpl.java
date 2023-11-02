@@ -4,14 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BeanConvertUtil;
-import com.java110.dto.lamp.LampMachineLogDto;
 import com.java110.dto.lock.LockInoutDto;
 import com.java110.dto.lock.LockLogDto;
+import com.java110.dto.lock.LockMachineDto;
 import com.java110.intf.lock.ILockInoutV1InnerServiceSMO;
 import com.java110.intf.lock.ILockLogV1InnerServiceSMO;
 import com.java110.lock.factory.ILockFactoryAdapt;
-import com.java110.po.lamp.LampMachineLogPo;
-import com.java110.po.lamp.LampMachineOperationPo;
 import com.java110.po.lock.LockInoutPo;
 import com.java110.po.lock.LockLogPo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +46,11 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
         lockInoutV1InnerServiceSMOImpl.saveLockInout(lockInoutPo);
 
         return new ResultVo(ResultVo.CODE_OK, "请求已发送，等待电梯反馈数据");
+    }
+
+    @Override
+    public void queryLockMachineState(LockMachineDto lockMachineDto) {
+        lockMachineDto.setState(LockMachineDto.STATE_ONLINE);
+        lockMachineDto.setStateName("在线");
     }
 }

@@ -27,6 +27,7 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.lamp.LampMachineDto;
 import com.java110.intf.lamp.ILampMachineV1InnerServiceSMO;
+import com.java110.lamp.factory.ILampCore;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.ArrayList;
@@ -53,6 +54,9 @@ public class ListLampMachineCmd extends Cmd {
     @Autowired
     private ILampMachineV1InnerServiceSMO lampMachineV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ILampCore lampCoreImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -69,6 +73,8 @@ public class ListLampMachineCmd extends Cmd {
 
            if (count > 0) {
                lampMachineDtos = lampMachineV1InnerServiceSMOImpl.queryLampMachines(lampMachineDto);
+               // todo  查询设备是否在线
+               queryMachineState(lampMachineDtos);
            } else {
                lampMachineDtos = new ArrayList<>();
            }
@@ -78,5 +84,13 @@ public class ListLampMachineCmd extends Cmd {
            ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
            cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void queryMachineState(List<LampMachineDto> lampMachineDtos) {
+        if (lampMachineDtos == null || lampMachineDtos.size() < 1 || lampMachineDtos.size() > 10) {
+            return;
+        }
+
+        lampCoreImpl.queryLampMachineState(lampMachineDtos);
     }
 }

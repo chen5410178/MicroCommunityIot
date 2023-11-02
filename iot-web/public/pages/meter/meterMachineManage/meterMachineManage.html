@@ -144,6 +144,9 @@
                                     <vc:i18n name='状态' namespace='meterMachineManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='心跳时间' namespace='meterMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='操作'></vc:i18n>
                                 </th>
                             </tr>
@@ -167,6 +170,7 @@
                                 </td>
                                 <td class="text-center">{{meterMachine.curReadingTime}}</td>
                                 <td class="text-center">{{meterMachine.stateName}}</td>
+                                <td class="text-center">{{meterMachine.heartbeatTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs"

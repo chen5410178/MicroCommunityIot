@@ -86,4 +86,10 @@ public class CommonLiftFactoryAdaptImpl implements ILiftFactoryAdapt {
 
         return new ResultVo(ResultVo.CODE_OK, "请求已发送，等待电梯反馈数据");
     }
+
+    @Override
+    public void queryLiftMachineState(LiftMachineDto liftMachineDto) {
+        liftMachineDto.setIsOnlineState(LiftMachineDto.STATE_ONLINE);
+        liftMachineDto.setIsOnlineStateName("在线");
+    }
 }

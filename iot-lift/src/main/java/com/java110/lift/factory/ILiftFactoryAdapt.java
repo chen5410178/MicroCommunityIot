@@ -40,4 +40,10 @@ public interface ILiftFactoryAdapt {
      * @return
      */
     ResultVo reservationLiftMachine(LiftMachineReservationDto liftMachineReservationDto);
+
+    /**
+     * 查询设备在线状态
+     * @param liftMachineDto
+     */
+    void queryLiftMachineState(LiftMachineDto liftMachineDto);
 }

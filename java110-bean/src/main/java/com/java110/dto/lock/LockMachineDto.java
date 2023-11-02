@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class LockMachineDto extends PageDto implements Serializable {
+    public static final String STATE_ONLINE = "ONLINE";
+    public static final String STATE_OFFLINE = "OFFLINE";
+
     private String machineId;
     private String machineName;
     private String machineCode;
@@ -19,6 +22,8 @@ public class LockMachineDto extends PageDto implements Serializable {
     private String statusCd = "0";
 
     private String factoryName;
+    private String state;
+    private String stateName;
 
     public String getMachineId() {
         return machineId;
@@ -114,5 +119,21 @@ public class LockMachineDto extends PageDto implements Serializable {
 
     public void setFactoryName(String factoryName) {
         this.factoryName = factoryName;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
     }
 }

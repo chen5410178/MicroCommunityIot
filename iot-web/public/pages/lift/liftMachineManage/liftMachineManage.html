@@ -144,6 +144,12 @@
                                     <vc:i18n name='当前楼层' namespace='liftMachineManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='在线状态' namespace='liftMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='心跳时间' namespace='liftMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='操作'></vc:i18n>
                                 </th>
                             </tr>
@@ -170,6 +176,8 @@
                                     </span>
                                 </td>
                                 <td class="text-center">{{liftMachine.curLayer}}(层)</td>
+                                <td class="text-center">{{liftMachine.isOnlineStateName}}</td>
+                                <td class="text-center">{{liftMachine.heartbeatTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs"

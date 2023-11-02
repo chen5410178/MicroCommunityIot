@@ -10,6 +10,9 @@ public class LiftMachineDto extends PageDto implements Serializable {
     public static final String LIFT_RUNNING_STATE = "1001";
     public static final String LIFT_STOPPING_STATE = "2002";
 
+    public static final String STATE_ONLINE = "ONLINE";
+    public static final String STATE_OFFLINE = "OFFLINE";
+
     private String machineId;
     private String machineName;
     private String machineCode;
@@ -33,6 +36,8 @@ public class LiftMachineDto extends PageDto implements Serializable {
     private String userName;
     private String userId;
     private String logAction;
+    private String isOnlineState;
+    private String isOnlineStateName;
 
     public String getMachineId() {
         return machineId;
@@ -208,5 +213,21 @@ public class LiftMachineDto extends PageDto implements Serializable {
 
     public void setLogAction(String logAction) {
         this.logAction = logAction;
+    }
+
+    public String getIsOnlineState() {
+        return isOnlineState;
+    }
+
+    public void setIsOnlineState(String isOnlineState) {
+        this.isOnlineState = isOnlineState;
+    }
+
+    public String getIsOnlineStateName() {
+        return isOnlineStateName;
+    }
+
+    public void setIsOnlineStateName(String isOnlineStateName) {
+        this.isOnlineStateName = isOnlineStateName;
     }
 }

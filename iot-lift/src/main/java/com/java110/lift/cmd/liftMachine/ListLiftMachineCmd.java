@@ -27,6 +27,7 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.lift.LiftMachineDto;
 import com.java110.intf.lift.ILiftMachineV1InnerServiceSMO;
+import com.java110.lift.factory.ILiftCore;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -55,6 +56,9 @@ public class ListLiftMachineCmd extends Cmd {
     @Autowired
     private ILiftMachineV1InnerServiceSMO liftMachineV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ILiftCore liftCoreImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -71,6 +75,8 @@ public class ListLiftMachineCmd extends Cmd {
 
         if (count > 0) {
             liftMachineDtos = liftMachineV1InnerServiceSMOImpl.queryLiftMachines(liftMachineDto);
+            // todo  查询设备是否在线
+            queryMachineState(liftMachineDtos);
         } else {
             liftMachineDtos = new ArrayList<>();
         }
@@ -80,5 +86,13 @@ public class ListLiftMachineCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void queryMachineState(List<LiftMachineDto> liftMachineDtos) {
+        if (liftMachineDtos == null || liftMachineDtos.size() < 1 || liftMachineDtos.size() > 10) {
+            return;
+        }
+
+        liftCoreImpl.queryLiftMachineState(liftMachineDtos);
     }
 }

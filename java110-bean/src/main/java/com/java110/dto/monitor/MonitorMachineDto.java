@@ -10,6 +10,9 @@ public class MonitorMachineDto extends PageDto implements Serializable {
     public static final String MONITOR_OPENING = "1001";
     public static final String MONITOR_CLOSING = "1002";
 
+    public static final String STATE_ONLINE = "ONLINE";
+    public static final String STATE_OFFLINE = "OFFLINE";
+
     private String machineId;
     private String machineName;
     private String machineCode;
@@ -24,6 +27,8 @@ public class MonitorMachineDto extends PageDto implements Serializable {
 
     private String maName;
     private List<MonitorMachineAttrsDto> monitorMachineAttrsList;
+    private String isOnlineState;
+    private String isOnlineStateName;
 
     public String getMachineId() {
         return machineId;
@@ -127,5 +132,21 @@ public class MonitorMachineDto extends PageDto implements Serializable {
 
     public void setMonitorMachineAttrsList(List<MonitorMachineAttrsDto> monitorMachineAttrsList) {
         this.monitorMachineAttrsList = monitorMachineAttrsList;
+    }
+
+    public String getIsOnlineState() {
+        return isOnlineState;
+    }
+
+    public void setIsOnlineState(String isOnlineState) {
+        this.isOnlineState = isOnlineState;
+    }
+
+    public String getIsOnlineStateName() {
+        return isOnlineStateName;
+    }
+
+    public void setIsOnlineStateName(String isOnlineStateName) {
+        this.isOnlineStateName = isOnlineStateName;
     }
 }
