@@ -1,0 +1,147 @@
+<div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;" v-on:click="_moreCondition()">
+                            {{lockInoutManageInfo.moreCondition == true?'隐藏':'更多'}}
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group input-group">
+                                <input type="text" :placeholder="vc.i18n('请选择业主','lockInoutManage')"
+                                    v-model="lockInoutManageInfo.conditions.userName" class=" form-control">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_openChooseOwner()">
+                                        <i class="fa fa-search"></i>
+                                        <vc:i18n name="选择" namespace="lockInoutManage"></vc:i18n>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="lockInoutManageInfo.conditions.openTypeCd">
+                                    <option selected disabled value="">{{vc.i18n('请选择开门方式','lockInoutManage')}}</option>
+                                    <option value="1001">{{vc.i18n('密码开锁','lockInoutManage')}}</option>
+                                    <option value="2002">{{vc.i18n('蓝牙开锁','lockInoutManage')}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="lockInoutManageInfo.conditions.state">
+                                    <option selected disabled value="">{{vc.i18n('请选择状态','lockInoutManage')}}</option>
+                                    <option value="C">{{vc.i18n('开门成功','lockInoutManage')}}</option>
+                                    <option value="F">{{vc.i18n('开门失败','lockInoutManage')}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryLockInoutMethod()">
+                                <vc:i18n name="查询" namespace="lockInoutManage"></vc:i18n>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetLockInoutMethod()">
+                                <vc:i18n name="重置" namespace="lockInoutManage"></vc:i18n>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" v-if="lockInoutManageInfo.moreCondition == true">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入门锁编号','lockInoutManage')"
+                                    v-model="lockInoutManageInfo.conditions.machineCode" class=" form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="进出记录" namespace="lockInoutManage"></vc:i18n>
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='进出编号' namespace='lockInoutManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='门锁名称' namespace='lockInoutManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='门锁编码' namespace='lockInoutManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='业主名称' namespace='lockInoutManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='业主手机号' namespace='lockInoutManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='开门方式' namespace='lockInoutManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='开门状态' namespace='lockInoutManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='lockInoutManage'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="lockInout in lockInoutManageInfo.lockInouts">
+                                <td class="text-center">{{lockInout.inoutId}}</td>
+                                <td class="text-center">{{lockInout.machineName}}</td>
+                                <td class="text-center">{{lockInout.machineCode}}</td>
+                                <td class="text-center">{{lockInout.userName}}</td>
+                                <td class="text-center">{{lockInout.tel}}</td>
+                                <td class="text-center">
+                                    <label v-if="lockInout.openTypeCd === '1001'">
+                                        {{vc.i18n('密码开锁','lockInoutManage')}}
+                                    </label>
+                                    <label v-if="lockInout.openTypeCd === '2002'">
+                                        {{vc.i18n('蓝牙开锁','lockInoutManage')}}
+                                    </label>
+                                </td>
+                                <td class="text-center">
+                                    <label v-if="lockInout.state === 'C'">
+                                        {{vc.i18n('开门成功','lockInoutManage')}}
+                                    </label>
+                                    <label v-if="lockInout.state === 'F'">
+                                        {{vc.i18n('开门失败','lockInoutManage')}}
+                                    </label>
+                                </td>
+                                <td class="text-center">{{lockInout.createTime}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="8">
+                                    <ul class="pagination float-right"></ul>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+        </div>
+    </div>
+    <vc:create path="property/searchOwner" emitChooseOwner="lockInoutManage" emitLoadData="lockInoutManage"></vc:create>
+</div>

@@ -42,31 +42,31 @@
                         {
                             limit: "required",
                             param: "",
-                            errInfo: "设备ID不能为空"
+                            errInfo: "门锁ID不能为空"
                         },
                     ],
                     'editLockMachineInfo.machineName': [
                         {
                             limit: "required",
                             param: "",
-                            errInfo: "设备名称不能为空"
+                            errInfo: "门锁名称不能为空"
                         },
                         {
                             limit: "maxLength",
                             param: "200",
-                            errInfo: "设备名称不能超过200"
+                            errInfo: "门锁名称不能超过200"
                         },
                     ],
                     'editLockMachineInfo.machineCode': [
                         {
                             limit: "required",
                             param: "",
-                            errInfo: "设备编号不能为空"
+                            errInfo: "门锁编号不能为空"
                         },
                         {
                             limit: "maxLength",
                             param: "64",
-                            errInfo: "设备编号不能超过64"
+                            errInfo: "门锁编号不能超过64"
                         },
                     ],
                     'editLockMachineInfo.roomId': [

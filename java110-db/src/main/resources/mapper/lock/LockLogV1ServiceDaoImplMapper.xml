@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lockLogV1ServiceDaoImpl">
+
+
+    <!-- 保存下发记录信息 add by wuxw 2018-07-03 -->
+    <insert id="saveLockLogInfo" parameterType="Map">
+        insert into lock_log(res_param, machine_id, log_id, req_param, state, community_id, user_name, log_action,
+                             user_id)
+        values (#{resParam}, #{machineId}, #{logId}, #{reqParam}, #{state}, #{communityId}, #{userName}, #{logAction},
+                #{userId})
+    </insert>
+
+
+    <!-- 查询下发记录信息 add by wuxw 2018-07-03 -->
+    <select id="getLockLogInfo" parameterType="Map" resultType="Map">
+        select t.res_param,t.res_param resParam,t.machine_id,t.machine_id machineId,t.log_id,t.log_id
+        logId,t.req_param,t.req_param reqParam,t.state,t.community_id,t.community_id communityId,t.user_name,t.user_name
+        userName,t.log_action,t.log_action logAction,t.user_id,t.user_id userId,t.create_time createTime,lm.machine_name
+        machineName,lm.machine_code machineCode
+        from lock_log t
+        left join lock_machine lm on t.machine_id = lm.machine_id
+        where 1 =1 and lm.status_cd = '0'
+        <if test="resParam !=null and resParam != ''">
+            and t.res_param= #{resParam}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="logId !=null and logId != ''">
+            and t.log_id= #{logId}
+        </if>
+        <if test="reqParam !=null and reqParam != ''">
+            and t.req_param= #{reqParam}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="userName !=null and userName != ''">
+            and t.user_name= #{userName}
+        </if>
+        <if test="logAction !=null and logAction != ''">
+            and t.log_action= #{logAction}
+        </if>
+        <if test="userId !=null and userId != ''">
+            and t.user_id= #{userId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and lm.machine_code like concat('%', #{machineCode}, '%')
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改下发记录信息 add by wuxw 2018-07-03 -->
+    <update id="updateLockLogInfo" parameterType="Map">
+        update lock_log t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="resParam !=null and resParam != ''">
+            , t.res_param= #{resParam}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="reqParam !=null and reqParam != ''">
+            , t.req_param= #{reqParam}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="userName !=null and userName != ''">
+            , t.user_name= #{userName}
+        </if>
+        <if test="logAction !=null and logAction != ''">
+            , t.log_action= #{logAction}
+        </if>
+        <if test="userId !=null and userId != ''">
+            , t.user_id= #{userId}
+        </if>
+        where 1=1
+        <if test="logId !=null and logId != ''">
+            and t.log_id= #{logId}
+        </if>
+
+    </update>
+
+    <!-- 查询下发记录数量 add by wuxw 2018-07-03 -->
+    <select id="queryLockLogsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from lock_log t
+        where 1 =1
+        <if test="resParam !=null and resParam != ''">
+            and t.res_param= #{resParam}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="logId !=null and logId != ''">
+            and t.log_id= #{logId}
+        </if>
+        <if test="reqParam !=null and reqParam != ''">
+            and t.req_param= #{reqParam}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="userName !=null and userName != ''">
+            and t.user_name= #{userName}
+        </if>
+        <if test="logAction !=null and logAction != ''">
+            and t.log_action= #{logAction}
+        </if>
+        <if test="userId !=null and userId != ''">
+            and t.user_id= #{userId}
+        </if>
+
+
+    </select>
+
+</mapper>

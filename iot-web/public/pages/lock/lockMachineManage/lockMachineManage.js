@@ -123,6 +123,9 @@
                     callName: 'lockMachineManage'
                 })
             },
+            _unlock: function (_lockMachine) {
+                vc.emit('unlockMachine', 'openUnlockMachineModal', _lockMachine);
+            }
         }
     });
 })(window.vc);

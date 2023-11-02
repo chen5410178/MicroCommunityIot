@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lockInoutV1ServiceDaoImpl">
+
+
+    <!-- 保存进出记录信息 add by wuxw 2018-07-03 -->
+    <insert id="saveLockInoutInfo" parameterType="Map">
+        insert into lock_inout(inout_id, machine_id, machine_code, open_type_cd, user_name, user_id, tel, state, community_id)
+        values (#{inoutId}, #{machineId}, #{machineCode}, #{openTypeCd}, #{userName}, #{userId}, #{tel}, #{state}, #{communityId})
+    </insert>
+
+
+    <!-- 查询进出记录信息 add by wuxw 2018-07-03 -->
+    <select id="getLockInoutInfo" parameterType="Map" resultType="Map">
+        select t.inout_id,t.inout_id inoutId,t.machine_id,t.machine_id machineId,t.machine_code,t.machine_code
+        machineCode,t.open_type_cd,t.open_type_cd openTypeCd,t.user_name userName,t.user_id userId,t.tel,
+        t.status_cd,t.status_cd statusCd,t.state,t.community_id,t.community_id communityId,t.create_time createTime,
+        lm.machine_name machineName
+        from lock_inout t
+        left join lock_machine lm on t.machine_id = lm.machine_id
+        where 1 =1 and lm.status_cd = '0'
+        <if test="inoutId !=null and inoutId != ''">
+            and t.inout_id= #{inoutId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code like concat('%', #{machineCode}, '%')
+        </if>
+        <if test="openTypeCd !=null and openTypeCd != ''">
+            and t.open_type_cd= #{openTypeCd}
+        </if>
+        <if test="userName !=null and userName != ''">
+            and t.user_name= #{userName}
+        </if>
+        <if test="userId !=null and userId != ''">
+            and t.user_id= #{userId}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改进出记录信息 add by wuxw 2018-07-03 -->
+    <update id="updateLockInoutInfo" parameterType="Map">
+        update lock_inout t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="openTypeCd !=null and openTypeCd != ''">
+            , t.open_type_cd= #{openTypeCd}
+        </if>
+        <if test="userName !=null and userName != ''">
+            , t.user_name= #{userName}
+        </if>
+        <if test="tel !=null and tel != ''">
+            , t.tel= #{tel}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="inoutId !=null and inoutId != ''">
+            and t.inout_id= #{inoutId}
+        </if>
+
+    </update>
+
+    <!-- 查询进出记录数量 add by wuxw 2018-07-03 -->
+    <select id="queryLockInoutsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from lock_inout t
+        where 1 =1
+        <if test="inoutId !=null and inoutId != ''">
+            and t.inout_id= #{inoutId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code like concat('%', #{machineCode}, '%')
+        </if>
+        <if test="openTypeCd !=null and openTypeCd != ''">
+            and t.open_type_cd= #{openTypeCd}
+        </if>
+        <if test="userName !=null and userName != ''">
+            and t.user_name= #{userName}
+        </if>
+        <if test="userId !=null and userId != ''">
+            and t.user_id= #{userId}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+
+    </select>
+
+</mapper>

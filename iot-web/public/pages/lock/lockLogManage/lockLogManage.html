@@ -1,0 +1,139 @@
+<div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入门锁编号','lockLogManage')"
+                                    v-model="lockLogManageInfo.conditions.machineCode" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group input-group">
+                                <input type="text" :placeholder="vc.i18n('请选择业主','lockLogManage')"
+                                    v-model="lockLogManageInfo.conditions.userName" class=" form-control">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_openChooseOwner()">
+                                        <i class="fa fa-search"></i>
+                                        <vc:i18n name="选择" namespace="lockLogManage"></vc:i18n>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="lockLogManageInfo.conditions.state">
+                                    <option selected disabled value="">{{vc.i18n('请选择状态','lockLogManage')}}</option>
+                                    <option value="10001">{{vc.i18n('请求成功','lockLogManage')}}</option>
+                                    <option value="10002">{{vc.i18n('返回成功','lockLogManage')}}</option>
+                                    <option value="10003">{{vc.i18n('操作失败','lockLogManage')}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryLockLogMethod()">
+                                <vc:i18n name="查询" namespace="lockLogManage"></vc:i18n>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetLockLogMethod()">
+                                <vc:i18n name="重置" namespace="lockLogManage"></vc:i18n>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="下发记录" namespace="lockLogManage"></vc:i18n>
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='日志编号' namespace='lockLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='门锁名称' namespace='lockLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='门锁编号' namespace='lockLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='业主名称' namespace='lockLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='日志动作' namespace='lockLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='状态' namespace='lockLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='lockLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="lockLog in lockLogManageInfo.lockLogs">
+                                <td class="text-center">{{lockLog.logId}}</td>
+                                <td class="text-center">{{lockLog.machineName}}</td>
+                                <td class="text-center">{{lockLog.machineCode}}</td>
+                                <td class="text-center">{{lockLog.userName}}</td>
+                                <td class="text-center">
+                                    <label v-if="lockLog.logAction === 'unlock'">
+                                        {{vc.i18n('开锁','lockLogManage')}}
+                                    </label>
+                                </td>
+                                <td class="text-center">
+                                    <label v-if="lockLog.state === '10001'">
+                                        {{vc.i18n('请求成功','lockLogManage')}}
+                                    </label>
+                                    <label v-if="lockLog.state === '10002'">
+                                        {{vc.i18n('返回成功','lockLogManage')}}
+                                    </label>
+                                    <label v-if="lockLog.state === '10003'">
+                                        {{vc.i18n('操作失败','lockLogManage')}}
+                                    </label>
+                                </td>
+                                <td class="text-center">{{lockLog.createTime}}</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openViewLockLogModel(lockLog)">
+                                            <vc:i18n name='报文'></vc:i18n>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="8">
+                                    <ul class="pagination float-right"></ul>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+        </div>
+    </div>
+    <vc:create path="lock/showLockLog"></vc:create>
+    <vc:create path="property/searchOwner" emitChooseOwner="lockLogManage" emitLoadData="lockLogManage"></vc:create>
+</div>

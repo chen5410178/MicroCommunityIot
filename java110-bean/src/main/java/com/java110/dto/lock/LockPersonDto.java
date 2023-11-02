@@ -28,6 +28,7 @@ public class LockPersonDto extends PageDto implements Serializable {
     private String machineName;
     private String machineCode;
     private String queryTime;
+    private String tel;
 
     public String getLpId() {
         return lpId;
@@ -147,5 +148,13 @@ public class LockPersonDto extends PageDto implements Serializable {
 
     public void setQueryTime(String queryTime) {
         this.queryTime = queryTime;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 }
