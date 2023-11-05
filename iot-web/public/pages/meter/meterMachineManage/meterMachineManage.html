@@ -126,9 +126,6 @@
                                     <vc:i18n name='房屋' namespace='meterMachineManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <vc:i18n name='费用项' namespace='meterMachineManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
                                     <vc:i18n name='设备厂家' namespace='meterMachineManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
@@ -159,7 +156,6 @@
                                 <td class="text-center">{{_getMeterTypeName(meterMachine.meterType)}}</td>
                                 <td class="text-center">{{meterMachine.machineModel == '1001'?'充值模式':'抄表模式'}}</td>
                                 <td class="text-center">{{meterMachine.roomName}}</td>
-                                <td class="text-center">{{meterMachine.feeConfigName}}</td>
                                 <td class="text-center">{{meterMachine.implBeanName}}</td>
                                 <td class="text-center" v-if="meterMachine.machineModel == '1001'">
                                     {{meterMachine.degree?meterMachine.degree:meterMachine.prestoreDegrees}}</td>
