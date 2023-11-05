@@ -111,9 +111,6 @@ public class ImportMeterMachineDataCleaningAdapt extends DefaultImportDataAdapt 
             if (StringUtil.isEmpty(importOwnerRoomDto.getMachineModel())) {
                 throw new IllegalArgumentException((roomIndex + 1) + "行模式不能为空");
             }
-            if (StringUtil.isEmpty(importOwnerRoomDto.getFeeName())) {
-                throw new IllegalArgumentException((roomIndex + 1) + "行费用项不能为空");
-            }
             if (StringUtil.isEmpty(importOwnerRoomDto.getMeterType())) {
                 throw new IllegalArgumentException((roomIndex + 1) + "行表类型不能为空");
             }
