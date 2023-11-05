@@ -117,12 +117,26 @@ public class IotApiController {
      */
     @RequestMapping(path = "/assetImport", method = RequestMethod.POST)
     public ResponseEntity<String> assetImport(@RequestParam("uploadFile") MultipartFile uploadFile,
-                                              @RequestBody String postInfo,
+
                                               HttpServletRequest request) {
         ResponseEntity<String> responseEntity = null;
 
+        Map<String, String[]> params = request.getParameterMap();
+        JSONObject paramObj = new JSONObject();
+        if (params != null && !params.isEmpty()) {
+            for (String key : params.keySet()) {
+                if (params.get(key).length > 0) {
+                    String value = "";
+                    for (int paramIndex = 0; paramIndex < params.get(key).length; paramIndex++) {
+                        value = params.get(key)[paramIndex] + ",";
+                    }
+                    value = value.endsWith(",") ? value.substring(0, value.length() - 1) : value;
+                    paramObj.put(key, value);
+                }
+            }
+        }
 
-        responseEntity = assetImportSMOImpl.importData(postInfo, uploadFile, request);
+        responseEntity = assetImportSMOImpl.importData(paramObj.toJSONString(), uploadFile, request);
 
 
         return responseEntity;
