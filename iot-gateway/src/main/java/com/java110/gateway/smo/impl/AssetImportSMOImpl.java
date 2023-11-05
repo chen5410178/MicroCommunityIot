@@ -88,7 +88,7 @@ public class AssetImportSMOImpl implements IAssetImportSMO {
             workbook = ImportExcelUtils.createWorkbook(uploadFile);
 
             // todo 适配器封装数据
-            List datas = importDataCleaningAdapt.analysisExcel(workbook, paramIn, null);
+            List datas = importDataCleaningAdapt.analysisExcel(workbook, paramIn, result);
 
             if (datas == null || datas.size() > MAX_LINE) {
                 throw new IllegalArgumentException("数据为空，或者数据行数大于" + MAX_LINE);
