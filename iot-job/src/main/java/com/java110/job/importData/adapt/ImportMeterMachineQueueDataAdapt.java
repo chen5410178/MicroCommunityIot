@@ -81,7 +81,7 @@ public class ImportMeterMachineQueueDataAdapt extends DefaultImportData implemen
         meterTypeDto.setTypeName(importMeterMachineDto.getMeterType());
         List<MeterTypeDto> meterTypeDtos = meterTypeV1InnerServiceSMOImpl.queryMeterTypes(meterTypeDto);
 
-        Assert.listOnlyOne(meterTypeDtos, "房屋不存在");
+        Assert.listOnlyOne(meterTypeDtos, "电表类型不存在");
 
 
         MeterMachinePo meterMachinePo = BeanConvertUtil.covertBean(importMeterMachineDto, MeterMachinePo.class);
@@ -100,7 +100,7 @@ public class ImportMeterMachineQueueDataAdapt extends DefaultImportData implemen
         if (flag < 1) {
             throw new CmdException("保存数据失败");
         }
-        if (!StringUtil.isEmpty(importMeterMachineDto.getValue1())) {
+        if (StringUtil.isEmpty(importMeterMachineDto.getValue1())) {
             return;
         }
 

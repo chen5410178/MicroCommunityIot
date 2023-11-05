@@ -73,8 +73,8 @@ public class ImportMeterMachineDataCleaningAdapt extends DefaultImportDataAdapt 
             importMeterMachineDto.setMachineModel(os[3].toString().trim());
             importMeterMachineDto.setRoomName(os[4].toString().trim());
             importMeterMachineDto.setImplBean(os[5].toString().trim());
-            if (os.length > 7 && !StringUtil.isNullOrNone(os[7])) {
-                importMeterMachineDto.setValue1(os[7].toString().trim());
+            if (os.length > 6 && !StringUtil.isNullOrNone(os[6])) {
+                importMeterMachineDto.setValue1(os[6].toString().trim());
 
             }
 
