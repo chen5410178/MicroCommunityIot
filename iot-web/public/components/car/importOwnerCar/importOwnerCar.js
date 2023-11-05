@@ -76,7 +76,7 @@
                             //关闭model
                             // vc.toast(_json.data);
                             $('#importOwnerRoomModel').modal('hide');
-                            $that.clearImportRoomDataInfo();
+                            $that.clearImportCarDataInfo();
 
                             vc.jumpToPage('/#/pages/log/assetImportLogDetail?logId=' + _json.data.logId + '&logType=importRoomOwner');
                             return;
@@ -91,7 +91,7 @@
             _exportRoomFeeTemplate: function() {
                 vc.jumpToPage('/callComponent/importOwnerCar/exportData?communityId=' + vc.getCurrentCommunity().communityId);
             },
-            clearAddFeeConfigInfo: function() {
+            clearImportCarDataInfo: function() {
                 // var _feeTypeCds = $that.importRoomFeeInfo.feeTypeCds;
                 $that.importOwnerCarInfo = {
                     communityId: vc.getCurrentCommunity().communityId,

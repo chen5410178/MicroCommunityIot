@@ -69,6 +69,9 @@ public class OwnerCarDto extends PageDto implements Serializable {
 
     private Date startTime;
     private Date endTime;
+
+    private String startTimeStr;
+    private String endTimeStr;
     private String state;
     private String stateName;
 
@@ -510,5 +513,21 @@ public class OwnerCarDto extends PageDto implements Serializable {
 
     public void setPrimaryCarId(String primaryCarId) {
         this.primaryCarId = primaryCarId;
+    }
+
+    public String getStartTimeStr() {
+        return startTimeStr;
+    }
+
+    public void setStartTimeStr(String startTimeStr) {
+        this.startTimeStr = startTimeStr;
+    }
+
+    public String getEndTimeStr() {
+        return endTimeStr;
+    }
+
+    public void setEndTimeStr(String endTimeStr) {
+        this.endTimeStr = endTimeStr;
     }
 }

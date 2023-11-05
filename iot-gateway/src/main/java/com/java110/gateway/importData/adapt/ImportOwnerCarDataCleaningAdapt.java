@@ -89,8 +89,8 @@ public class ImportOwnerCarDataCleaningAdapt extends DefaultImportDataAdapt impl
             String parkingLot = os[7].toString();
             importOwnerCar.setNum(parkingLot);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            importOwnerCar.setStartTime(simpleDateFormat.parse(startTime));
-            importOwnerCar.setEndTime(simpleDateFormat.parse(endTime));
+            importOwnerCar.setStartTimeStr(startTime);
+            importOwnerCar.setEndTimeStr(endTime);
             importOwnerCar.setTypeCd(os[10].toString());
             importOwnerCar.setSpaceSate(os[11].toString());
             importOwnerCar.setCommunityId(result.getCommunityId());

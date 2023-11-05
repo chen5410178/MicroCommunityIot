@@ -88,6 +88,8 @@ public class ImportOwnerCarQueueDataAdapt extends DefaultImportData implements I
         OwnerCarDto ownerCarDto = BeanConvertUtil.covertBean(data, OwnerCarDto.class);
 
         OwnerCarPo ownerCarPo = BeanConvertUtil.covertBean(ownerCarDto, OwnerCarPo.class);
+        ownerCarPo.setStartTime(ownerCarDto.getStartTimeStr());
+        ownerCarPo.setEndTime(ownerCarDto.getEndTimeStr());
         //获取房屋名称
         ownerCarPo.setCarTypeCd("1001"); //主车辆
         ParkingAreaDto parkingAreaDto = new ParkingAreaDto();
