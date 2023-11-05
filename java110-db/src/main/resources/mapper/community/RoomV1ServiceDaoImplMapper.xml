@@ -44,6 +44,12 @@
                 #{item}
             </foreach>
         </if>
+        <if test="unitNum !=null and unitNum != ''">
+            and bu.unit_num= #{unitNum}
+        </if>
+        <if test="floorNum !=null and floorNum != ''">
+            and f.floor_num= #{floorNum}
+        </if>
         <if test="statusCd !=null and statusCd != ''">
             and t.status_cd= #{statusCd}
         </if>
@@ -136,9 +142,7 @@
         <if test="state !=null and state != ''">
             , t.state= #{state}
         </if>
-        <if test="communityId !=null and communityId != ''">
-            , t.community_id= #{communityId}
-        </if>
+
         <if test="apartment !=null and apartment != ''">
             , t.apartment= #{apartment}
         </if>
@@ -151,6 +155,9 @@
         where 1=1
         <if test="roomId !=null and roomId != ''">
             and t.room_id= #{roomId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
         </if>
 
     </update>
@@ -173,6 +180,12 @@
             <foreach collection="floorIds" item="item" index="index" open="(" close=")" separator=",">
                 #{item}
             </foreach>
+        </if>
+        <if test="unitNum !=null and unitNum != ''">
+            and bu.unit_num= #{unitNum}
+        </if>
+        <if test="floorNum !=null and floorNum != ''">
+            and f.floor_num= #{floorNum}
         </if>
         <if test="section !=null and section != ''">
             and t.section= #{section}
