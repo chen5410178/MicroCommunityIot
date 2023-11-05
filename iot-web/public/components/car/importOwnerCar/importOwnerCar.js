@@ -75,10 +75,10 @@
                         if (_json.code == 0) {
                             //关闭model
                             // vc.toast(_json.data);
-                            $('#importOwnerRoomModel').modal('hide');
+                            $('#importOwnerCarModel').modal('hide');
                             $that.clearImportCarDataInfo();
 
-                            vc.jumpToPage('/#/pages/log/assetImportLogDetail?logId=' + _json.data.logId + '&logType=importRoomOwner');
+                            vc.jumpToPage('/#/pages/log/assetImportLogDetail?logId=' + _json.data.logId + '&logType=importOwnerCar');
                             return;
                         }
                         vc.toast(_json.msg, 10000);

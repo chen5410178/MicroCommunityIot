@@ -150,8 +150,10 @@
                                             {{car.carNum}}
                                         </td>
                                         <td class="text-center">
-                                            <a href="javascript:void(0)" @click="_toCarMember(car)">{{car.memberCarCount
-                                                || 0}}</a>
+                                            <!-- <a href="javascript:void(0)" @click="_toCarMember(car)">{{car.memberCarCount
+                                                || 0}}</a> -->
+                                                {{car.memberCarCount
+                                                    || 0}}
                                         </td>
                                         <td class="text-center">
                                             <div style="width: 150px;">
@@ -171,9 +173,10 @@
                                             {{car.carColor || '-'}}
                                         </td>
                                         <td class="text-center hand">
-                                            <div class="">
+                                            <!-- <div class="">
                                                 <a target="_blank" :href="'/#/pages/owner/ownerDetail?ownerId='+car.ownerId">{{car.ownerName}}({{car.link}})</a>
-                                            </div>
+                                            </div> -->
+                                            {{car.ownerName}}({{car.link}})
                                         </td>
                                         <td v-if="car.areaNum && car.state == '1001'" class="text-center">
                                             {{car.areaNum}}-{{car.num}}
