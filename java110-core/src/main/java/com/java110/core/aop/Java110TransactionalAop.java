@@ -73,8 +73,9 @@ public class Java110TransactionalAop {
         Object o = null;
         // 接收到请求，记录请求内容
         String curOId = Java110TransactionalFactory.getOId();
-        if (StringUtil.isEmpty(curOId)) {
-            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        // todo attributes 为空判断主要原因时 通过消息队列处理的数据是没有 attributes 对象的
+        if (StringUtil.isEmpty(curOId) && attributes != null) {
             HttpServletRequest request = attributes.getRequest();
             Enumeration<String> headerNames = request.getHeaderNames();
             OrderDto orderDto = new OrderDto();
@@ -112,14 +113,14 @@ public class Java110TransactionalAop {
                 return o;
             }
             //完成事务
-            if (StringUtil.isEmpty(curOId)) {
+            if (StringUtil.isEmpty(curOId)  && attributes != null) {
                 Java110TransactionalFactory.finishOId();
             }
             return o;
         } catch (Throwable e) {
             logger.error("执行方法异常", e);
             //回退事务
-            if (StringUtil.isEmpty(curOId)) {
+            if (StringUtil.isEmpty(curOId)  && attributes != null) {
                 Java110TransactionalFactory.fallbackOId();
             }
             //return new BusinessDto(BusinessDto.CODE_ERROR, "内部异常" + e.getLocalizedMessage());
