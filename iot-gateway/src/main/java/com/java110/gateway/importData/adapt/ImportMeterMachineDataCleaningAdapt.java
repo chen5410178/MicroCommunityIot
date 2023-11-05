@@ -62,8 +62,7 @@ public class ImportMeterMachineDataCleaningAdapt extends DefaultImportDataAdapt 
             Assert.hasValue(os[2], (osIndex + 1) + "行表类型不能为空");
             Assert.hasValue(os[3], (osIndex + 1) + "行模式不能为空");
             Assert.hasValue(os[4], (osIndex + 1) + "行房屋不能为空");
-            Assert.hasValue(os[5], (osIndex + 1) + "行费用项不能为空");
-            Assert.hasValue(os[6], (osIndex + 1) + "行厂家不能为空");
+            Assert.hasValue(os[5], (osIndex + 1) + "行厂家不能为空");
 
             importMeterMachineDto = new ImportMeterMachineDto();
             importMeterMachineDto.setCommunityId(result.getCommunityId());
@@ -73,8 +72,7 @@ public class ImportMeterMachineDataCleaningAdapt extends DefaultImportDataAdapt 
             importMeterMachineDto.setMeterType(os[2].toString().trim());
             importMeterMachineDto.setMachineModel(os[3].toString().trim());
             importMeterMachineDto.setRoomName(os[4].toString().trim());
-            importMeterMachineDto.setFeeName(os[5].toString().trim());
-            importMeterMachineDto.setImplBean(os[6].toString().trim());
+            importMeterMachineDto.setImplBean(os[5].toString().trim());
             if (os.length > 7 && !StringUtil.isNullOrNone(os[7])) {
                 importMeterMachineDto.setValue1(os[7].toString().trim());
 

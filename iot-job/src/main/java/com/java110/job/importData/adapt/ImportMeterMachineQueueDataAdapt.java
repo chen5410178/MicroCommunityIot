@@ -64,11 +64,7 @@ public class ImportMeterMachineQueueDataAdapt extends DefaultImportData implemen
     private void doImportData(AssetImportLogDetailDto assetImportLogDetailDto) {
         JSONObject data = JSONObject.parseObject(assetImportLogDetailDto.getContent());
         ImportMeterMachineDto importMeterMachineDto = BeanConvertUtil.covertBean(data, ImportMeterMachineDto.class);
-//        FeeConfigDto feeConfigDto = new FeeConfigDto();
-//        feeConfigDto.setFeeName(importMeterMachineDto.getFeeName());
-//        feeConfigDto.setCommunityId(importMeterMachineDto.getCommunityId());
-//        List<FeeConfigDto> feeConfigDtos = feeConfigInnerServiceSMOImpl.queryFeeConfigs(feeConfigDto);
-//        Assert.listOnlyOne(feeConfigDtos, "费用项不存在或存在多条");
+
 
         String[] roomItems = importMeterMachineDto.getRoomName().split("-", 3);
         //查询房屋
@@ -90,12 +86,10 @@ public class ImportMeterMachineQueueDataAdapt extends DefaultImportData implemen
 
         MeterMachinePo meterMachinePo = BeanConvertUtil.covertBean(importMeterMachineDto, MeterMachinePo.class);
         meterMachinePo.setMachineId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
-        //meterMachinePo.setFeeConfigName(feeConfigDtos.get(0).getFeeName());
         meterMachinePo.setCurDegrees("0");
         meterMachinePo.setCurReadingTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         meterMachinePo.setPrestoreDegrees("0");
         meterMachinePo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
-       // meterMachinePo.setFeeConfigId(feeConfigDtos.get(0).getConfigId());
         meterMachinePo.setReadDay(1);
         meterMachinePo.setReadHours(1);
         meterMachinePo.setRoomId(roomDtos.get(0).getRoomId());
