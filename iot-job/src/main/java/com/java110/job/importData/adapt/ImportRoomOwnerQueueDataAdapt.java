@@ -303,7 +303,7 @@ public class ImportRoomOwnerQueueDataAdapt extends DefaultImportData implements 
             roomPo.setLayer(importOwnerRoomDto.getLayer());
             roomPo.setRoomArea(importOwnerRoomDto.getRoomArea());
             roomPo.setRoomNum(importOwnerRoomDto.getRoomNum());
-            roomPo.setRoomRent(importOwnerRoomDto.getRoomRent());
+            roomPo.setRoomRent("0");
             roomPo.setRoomSubType(importOwnerRoomDto.getRoomSubType());
             roomPo.setRoomType("0".equals(importOwnerRoomDto.getUnitNum()) ? RoomDto.ROOM_TYPE_SHOPS : RoomDto.ROOM_TYPE_ROOM);
             roomPo.setUnitId(unitId);
