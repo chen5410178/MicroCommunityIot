@@ -66,7 +66,7 @@
                             $('#importMeterMachineModel').modal('hide');
                             $that.clearImportMeterMachinenfo();
 
-                            vc.jumpToPage('/#/pages/property/assetImportLogDetail?logId=' + _json.data.logId + '&logType=importMeterMachine');
+                            vc.jumpToPage('/#/pages/log/assetImportLogDetail?logId=' + _json.data.logId + '&logType=importMeterMachine');
                             return;
                         }
                         vc.toast(_json.msg, 10000);
