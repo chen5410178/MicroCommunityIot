@@ -3,13 +3,16 @@ package com.java110.gateway.smo.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.bean.dto.ValidateResult;
+import com.java110.core.constant.CommonConstant;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.ImportExcelUtils;
+import com.java110.core.utils.*;
+import com.java110.dto.communityMember.CommunityMemberDto;
 import com.java110.dto.log.AssetImportLogDetailDto;
+import com.java110.dto.store.StoreDto;
+import com.java110.dto.storeStaff.StoreStaffDto;
+import com.java110.gateway.service.IGetCommunityStoreInfoSMO;
 import com.java110.intf.job.IUserImportDataV1InnerServiceSMO;
 import com.java110.intf.system.IAssetImportLogDetailInnerServiceSMO;
 import com.java110.intf.system.IAssetImportLogInnerServiceSMO;
@@ -26,9 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AssetImportSMOImpl implements IAssetImportSMO {
@@ -55,6 +56,9 @@ public class AssetImportSMOImpl implements IAssetImportSMO {
     @Autowired
     private IUserImportDataV1InnerServiceSMO userImportDataV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IGetCommunityStoreInfoSMO getCommunityStoreInfoSMOImpl;
+
 
     @Override
     public ResponseEntity<String> importData(String data, MultipartFile uploadFile, HttpServletRequest request) {
@@ -63,17 +67,24 @@ public class AssetImportSMOImpl implements IAssetImportSMO {
         Assert.hasKeyAndValue(paramIn, "importAdapt", "未包含模板");
         String importAdapt = paramIn.getString("importAdapt") + "DataCleaning";
 
+
+
         IImportDataCleaningAdapt importDataCleaningAdapt = ApplicationContextFactory.getBean(importAdapt, IImportDataCleaningAdapt.class);
         if (importDataCleaningAdapt == null) {
             throw new IllegalArgumentException("适配器没有实现" + importAdapt);
         }
         try {
-            ValidateResult result = null;//this.validateStoreStaffCommunityRelationship(pd, restTemplate);
+
+            Map<String, String> headers = new HashMap<String, String>();
+            this.getRequestInfo(request, headers);
+            headers.put(CommonConstant.HTTP_SERVICE, "assetImport");
+            headers.put(CommonConstant.HTTP_METHOD, CommonConstant.HTTP_METHOD_POST);
+
+            ValidateResult result = this.validateStoreStaffCommunityRelationship(data, headers);
             paramIn.put("storeId", result.getStoreId());
 
             Workbook workbook = null;  //工作簿
-            //工作表
-            String[] headers = null;   //表头信息
+
             workbook = ImportExcelUtils.createWorkbook(uploadFile);
 
             // todo 适配器封装数据
@@ -90,6 +101,93 @@ public class AssetImportSMOImpl implements IAssetImportSMO {
             return new ResponseEntity<String>("非常抱歉，您填写的模板数据有误：" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    protected ValidateResult validateStoreStaffCommunityRelationship(String body, Map<String, String> headers) {
+        // 校验 员工和商户是否有关系
+        String userId = headers.get("user-id");
+        StoreStaffDto storeStaffDto = getCommunityStoreInfoSMOImpl.getStoreInfo(userId);
+
+        if (storeStaffDto == null) {
+            throw new IllegalArgumentException("商户不存在");
+        }
+
+        Assert.hasLength(storeStaffDto.getStoreId(), "根据用户ID查询商户ID失败，未包含storeId节点");
+        Assert.hasLength(storeStaffDto.getStoreTypeCd(), "根据用户ID查询商户类型失败，未包含storeTypeCd节点");
+
+        //开发者和运营不校验小区
+        if (StoreDto.STORE_TYPE_ADMIN.equals(storeStaffDto.getStoreTypeCd()) || StoreDto.STORE_TYPE_DEV.equals(storeStaffDto.getStoreTypeCd())) {
+            return new ValidateResult(storeStaffDto.getStoreId(), storeStaffDto.getStoreTypeCd(), "", userId, "-");
+        }
+
+        JSONObject paramIn = JSONObject.parseObject(body);
+
+        String communityId = "";
+        if (paramIn != null && paramIn.containsKey("communityId")
+                && !StringUtil.isEmpty(paramIn.getString("communityId"))
+                && !"-1".equals(paramIn.getString("communityId"))) {
+            communityId = paramIn.getString("communityId");
+            checkStoreEnterCommunity(storeStaffDto.getStoreId(), storeStaffDto.getStoreTypeCd(), communityId, userId);
+        }
+        return new ValidateResult(storeStaffDto.getStoreId(), storeStaffDto.getStoreTypeCd(), communityId, userId, "-");
+    }
+
+
+    protected void checkStoreEnterCommunity(String storeId, String storeTypeCd, String communityId, String userId) {
+        Assert.hasLength(userId, "用户未登录请先登录");
+        List<CommunityMemberDto> communityMemberDtos = getCommunityStoreInfoSMOImpl.getStoreEnterCommunitys(storeId, storeTypeCd);
+        if (communityMemberDtos == null || communityMemberDtos.size() < 1) {
+            throw new IllegalArgumentException("还未入驻小区，请先入驻小区");
+        }
+
+        CommunityMemberDto currentCommunity = getCurrentCommunity(communityMemberDtos, communityId);
+
+        if (currentCommunity == null) {
+            throw new IllegalArgumentException("传入小区ID非法，请正常操作");
+        }
+
+    }
+
+
+    private CommunityMemberDto getCurrentCommunity(List<CommunityMemberDto> communityMemberDtos, String communityId) {
+        for (CommunityMemberDto communityMemberDto : communityMemberDtos) {
+            if (communityId.equals(communityMemberDto.getCommunityId())) {
+                return communityMemberDto;
+            }
+        }
+
+        return null;
+    }
+
+    private void getRequestInfo(HttpServletRequest request, Map headers) throws Exception {
+        try {
+            RequestUtils.initHeadParam(request, headers);
+            RequestUtils.initUrlParam(request, headers);
+            this.getUserInfo(request, headers);
+
+        } catch (Exception e) {
+            logger.error("加载头信息失败", e);
+            throw e;
+        }
+    }
+
+
+    private void getUserInfo(HttpServletRequest request, Map headers) throws Exception {
+        Object claimsObj = request.getAttribute("claims");
+        if (claimsObj == null) {
+            return;
+        }
+        Map<String, String> claims = (Map<String, String>) claimsObj;
+
+        for (String key : claims.keySet()) {
+
+            if ("userId".equals(key)) {
+                headers.put("user-id", claims.get(key));
+            }
+            headers.put(key, claims.get(key));
+        }
+    }
+
+
 
     /**
      * 处理ExcelData数据
