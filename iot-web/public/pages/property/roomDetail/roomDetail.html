@@ -169,7 +169,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:roomDetailInfo._currentTab == 'roomDetailComplaint'}" v-on:click="changeTab('roomDetailComplaint')">
+                <a class="nav-link" v-bind:class="{active:roomDetailInfo._currentTab == 'roomDetailLockInout'}" v-on:click="changeTab('roomDetailLockInout')">
                     <vc:i18n name="门锁进出" namespace="roomDetail"></vc:i18n>
                 </a>
             </li>
@@ -208,6 +208,10 @@
     <div v-if="roomDetailInfo._currentTab == 'roomDetailLockLog'">
         <vc:create path="property/roomDetailLockLog"></vc:create>
     </div>
+    <div v-if="roomDetailInfo._currentTab == 'roomDetailLockInout'">
+        <vc:create path="property/roomDetailLockInout"></vc:create>
+    </div>  
+
     
     
 </div>

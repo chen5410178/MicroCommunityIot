@@ -1,0 +1,88 @@
+<div class="margin-top">
+    <!-- <div class="row margin-top-lg">
+        <div class="col-lg-2 padding-right-xs padding-left-xl">
+            <input v-model="roomDetailLockInoutInfo.roomNum" type="text" :placeholder="vc.i18n('请填写房屋编号','roomDetailLockInout')"
+                class="form-control">
+        </div>
+        <div class="col-lg-2 padding-right-xs padding-right-xl">
+            <button type="button" class="btn btn-primary btn-sm" style="margin-left:10px"
+                v-on:click="_qureyRoomDetailAccessControl()">
+                <i class="fa fa-search"></i>查询
+            </button>
+        </div>
+
+        <div class="col-lg-8 text-right">
+             <button type="button" class="btn btn-primary btn-sm" style="margin-left:10px" v-if="vc.hasPrivilege('502023021978930012')" v-on:click="_openAddOwnerRoom()">
+                <vc:i18n name="交房" namespace="simplifyRoomFee"></vc:i18n>
+            </button> 
+
+        </div>
+    </div> -->
+    <div class="margin-top">
+        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <vc:i18n name='进出编号' namespace='roomDetailLockInout'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='门锁名称' namespace='roomDetailLockInout'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='门锁编码' namespace='roomDetailLockInout'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='业主名称' namespace='roomDetailLockInout'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='业主手机号' namespace='roomDetailLockInout'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='开门方式' namespace='roomDetailLockInout'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='开门状态' namespace='roomDetailLockInout'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='创建时间' namespace='roomDetailLockInout'></vc:i18n>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="lockInout in roomDetailLockInoutInfo.inouts">
+                    <td class="text-center">{{lockInout.inoutId}}</td>
+                    <td class="text-center">{{lockInout.machineName}}</td>
+                    <td class="text-center">{{lockInout.machineCode}}</td>
+                    <td class="text-center">{{lockInout.userName}}</td>
+                    <td class="text-center">{{lockInout.tel}}</td>
+                    <td class="text-center">
+                        <label v-if="lockInout.openTypeCd === '1001'">
+                            {{vc.i18n('密码开锁','roomDetailLockInout')}}
+                        </label>
+                        <label v-if="lockInout.openTypeCd === '2002'">
+                            {{vc.i18n('蓝牙开锁','roomDetailLockInout')}}
+                        </label>
+                    </td>
+                    <td class="text-center">
+                        <label v-if="lockInout.state === 'C'">
+                            {{vc.i18n('开门成功','roomDetailLockInout')}}
+                        </label>
+                        <label v-if="lockInout.state === 'F'">
+                            {{vc.i18n('开门失败','roomDetailLockInout')}}
+                        </label>
+                    </td>
+                    <td class="text-center">{{lockInout.createTime}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="row">
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-sm-8">
+                <vc:create namespace="roomDetailLockInout" path="frame/paginationPlus"></vc:create>
+            </div>
+        </div>
+    </div>
+</div>
