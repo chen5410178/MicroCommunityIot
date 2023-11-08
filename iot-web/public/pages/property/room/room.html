@@ -206,7 +206,6 @@
                                         </div>
                                     </td>
                                     <td class="text-center hc-table-fix-right-td">
-
                                         <div class="btn-group">
                                             <button class="btn-white btn btn-xs" v-on:click="_openEditRoomModel(room)">
                                                 <vc:i18n name="修改" namespace="room"></vc:i18n>
@@ -225,6 +224,11 @@
                                         <div class="btn-group" v-if="room.state != '2002' && room.ownerId ">
                                             <button class="btn-white btn btn-xs" v-on:click="_toRoomUnBindOwner(room)">
                                                 <vc:i18n name="解绑人员" namespace="room"></vc:i18n>
+                                            </button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button class="btn-white btn btn-xs" v-on:click="_toRoomDetail(room)">
+                                                <vc:i18n name="详情" namespace="room"></vc:i18n>
                                             </button>
                                         </div>
                                     </td>
