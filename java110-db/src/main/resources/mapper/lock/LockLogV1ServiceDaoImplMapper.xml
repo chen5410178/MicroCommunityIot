@@ -21,8 +21,8 @@
         userName,t.log_action,t.log_action logAction,t.user_id,t.user_id userId,t.create_time createTime,lm.machine_name
         machineName,lm.machine_code machineCode
         from lock_log t
-        left join lock_machine lm on t.machine_id = lm.machine_id
-        where 1 =1 and lm.status_cd = '0'
+        left join lock_machine lm on t.machine_id = lm.machine_id and lm.status_cd = '0'
+        where 1 =1
         <if test="resParam !=null and resParam != ''">
             and t.res_param= #{resParam}
         </if>
@@ -40,6 +40,9 @@
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
+        </if>
+        <if test="roomId !=null and roomId != ''">
+            and lm.room_id= #{roomId}
         </if>
         <if test="userName !=null and userName != ''">
             and t.user_name= #{userName}
@@ -120,6 +123,9 @@
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
+        </if>
+        <if test="roomId !=null and roomId != ''">
+            and lm.room_id= #{roomId}
         </if>
         <if test="userName !=null and userName != ''">
             and t.user_name= #{userName}

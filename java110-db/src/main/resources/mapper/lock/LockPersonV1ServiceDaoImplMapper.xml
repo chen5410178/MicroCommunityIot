@@ -21,9 +21,9 @@
         endTime,t.state,t.community_id,t.community_id communityId,t.lp_id,t.lp_id lpId,t.card_number,t.card_number
         cardNumber,t.create_time createTime,lm.machine_name machineName,lm.machine_code machineCode,bo.link tel
         from lock_person t
-        left join lock_machine lm on t.machine_id = lm.machine_id
-        left join building_owner bo on t.person_id = bo.member_id
-        where 1 =1 and lm.status_cd = '0' and bo.status_cd = '0'
+        left join lock_machine lm on t.machine_id = lm.machine_id  and lm.status_cd = '0'
+        left join building_owner bo on t.person_id = bo.member_id and bo.status_cd = '0'
+        where 1 =1
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}
         </if>
@@ -56,7 +56,7 @@
             and t.community_id= #{communityId}
         </if>
         <if test="roomId !=null and roomId != ''">
-            and t.room_id= #{roomId}
+            and lm.room_id= #{roomId}
         </if>
         <if test="lpId !=null and lpId != ''">
             and t.lp_id= #{lpId}
@@ -155,7 +155,7 @@
             and t.community_id= #{communityId}
         </if>
         <if test="roomId !=null and roomId != ''">
-            and t.room_id= #{roomId}
+            and lm.room_id= #{roomId}
         </if>
         <if test="lpId !=null and lpId != ''">
             and t.lp_id= #{lpId}

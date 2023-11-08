@@ -23,6 +23,7 @@ public class LockLogDto extends PageDto implements Serializable {
 
     private String machineName;
     private String machineCode;
+    private String roomId;
 
     public String getLogId() {
         return logId;
@@ -118,5 +119,13 @@ public class LockLogDto extends PageDto implements Serializable {
 
     public void setMachineCode(String machineCode) {
         this.machineCode = machineCode;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
     }
 }
