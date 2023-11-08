@@ -36,6 +36,7 @@ public class MeterMachineDto extends PageDto implements Serializable {
     private String curDegrees;
     private String machineId;
     private String meterType;
+    private String meterTypeName;
     private String feeConfigName;
     private String feeConfigNameLike;
     private String communityId;
@@ -299,5 +300,13 @@ public class MeterMachineDto extends PageDto implements Serializable {
 
     public void setControlType(String controlType) {
         this.controlType = controlType;
+    }
+
+    public String getMeterTypeName() {
+        return meterTypeName;
+    }
+
+    public void setMeterTypeName(String meterTypeName) {
+        this.meterTypeName = meterTypeName;
     }
 }

@@ -47,6 +47,12 @@
         <if test="tel !=null and tel != ''">
             and t.tel= #{tel}
         </if>
+        <if test="tels !=null ">
+            and t.tel in
+            <foreach collection="tels" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
         <if test="statusCd !=null and statusCd != ''">
             and t.status_cd= #{statusCd}
         </if>
@@ -138,6 +144,12 @@
         </if>
         <if test="tel !=null and tel != ''">
             and t.tel= #{tel}
+        </if>
+        <if test="tels !=null ">
+            and t.tel in
+            <foreach collection="tels" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
         </if>
         <if test="statusCd !=null and statusCd != ''">
             and t.status_cd= #{statusCd}

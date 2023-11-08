@@ -138,12 +138,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:roomDetailInfo._currentTab == 'roomDetailAccount'}" v-on:click="changeTab('roomDetailAccount')">
+                <a class="nav-link" v-bind:class="{active:roomDetailInfo._currentTab == 'roomDetailAccessControlInout'}" v-on:click="changeTab('roomDetailAccessControlInout')">
                     <vc:i18n name="门禁开门" namespace="roomDetail"></vc:i18n>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:roomDetailInfo._currentTab == 'roomDetailHis'}" v-on:click="changeTab('roomDetailHis')">
+                <a class="nav-link" v-bind:class="{active:roomDetailInfo._currentTab == 'roomDetailMeter'}" v-on:click="changeTab('roomDetailMeter')">
                     <vc:i18n name="水电表" namespace="roomDetail"></vc:i18n>
                 </a>
             </li>
@@ -188,6 +188,14 @@
         <vc:create path="property/roomDetailAccessControlLog"></vc:create>
     </div>
 
+    <div v-if="roomDetailInfo._currentTab == 'roomDetailAccessControlInout'">
+        <vc:create path="property/roomDetailAccessControlInout"></vc:create>
+    </div>
+    
+    <div v-if="roomDetailInfo._currentTab == 'roomDetailMeter'">
+        <vc:create path="property/roomDetailMeter"></vc:create>
+    </div>
+    
     
     
 

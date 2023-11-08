@@ -1,0 +1,87 @@
+<div class="margin-top">
+    <!-- <div class="row margin-top-lg">
+        <div class="col-lg-2 padding-right-xs padding-left-xl">
+            <input v-model="roomDetailAccessControlInoutInfo.roomNum" type="text" :placeholder="vc.i18n('请填写房屋编号','roomDetailAccessControlInout')"
+                class="form-control">
+        </div>
+        <div class="col-lg-2 padding-right-xs padding-right-xl">
+            <button type="button" class="btn btn-primary btn-sm" style="margin-left:10px"
+                v-on:click="_qureyRoomDetailAccessControl()">
+                <i class="fa fa-search"></i>查询
+            </button>
+        </div>
+
+        <div class="col-lg-8 text-right">
+             <button type="button" class="btn btn-primary btn-sm" style="margin-left:10px" v-if="vc.hasPrivilege('502023021978930012')" v-on:click="_openAddOwnerRoom()">
+                <vc:i18n name="交房" namespace="simplifyRoomFee"></vc:i18n>
+            </button> 
+
+        </div>
+    </div> -->
+    <div class="margin-top">
+        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <vc:i18n name='人脸' namespace='roomDetailAccessControlInout'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='编号' namespace='roomDetailAccessControlInout'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='设备名称' namespace='roomDetailAccessControlInout'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='设备编码' namespace='roomDetailAccessControlInout'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='用户名称' namespace='roomDetailAccessControlInout'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='开门方式' namespace='roomDetailAccessControlInout'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='手机号' namespace='roomDetailAccessControlInout'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='用户身份证' namespace='roomDetailAccessControlInout'></vc:i18n>
+                    </th>
+
+                    <th class="text-center">
+                        <vc:i18n name='相似度' namespace='roomDetailAccessControlInout'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='开门状态' namespace='roomDetailAccessControlInout'></vc:i18n>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="inout in roomDetailAccessControlInoutInfo.inouts">
+                    <td class="text-center" style="white-space: nowrap;">
+                        <img style="width: 60px; height: 60px;" class="border-radius" v-if="inout.facePath" v-bind:src="inout.facePath" v-on:click="_viewOwnerFace(inout.facePath)" />
+                        <img style="width: 60px; height: 60px;" class="border-radius" v-else src="/img/noPhoto.jpg" />
+                    </td>
+                    <td class="text-center">{{inout.inoutId}}</td>
+                    <td class="text-center">{{inout.machineName}}</td>
+                    <td class="text-center">{{inout.machineCode}}</td>
+                    <td class="text-center">{{inout.name}}</td>
+                    <td class="text-center">{{inout.openTypeCd}}</td>
+                    <td class="text-center">{{inout.tel || '-'}}</td>
+                    <td class="text-center">{{inout.idCard || '-'}}</td>
+                    <td class="text-center">{{inout.similar}}</td>
+                    <td class="text-center">{{inout.state == 'C'?'开门成功':'开门失败'}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="row">
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-sm-8">
+                <vc:create namespace="roomDetailAccessControlInout" path="frame/paginationPlus"></vc:create>
+            </div>
+        </div>
+    </div>
+
+</div>

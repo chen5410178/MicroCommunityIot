@@ -23,6 +23,7 @@ public class AccessControlInoutDto extends PageDto implements Serializable {
     private String idCard;
     private String name;
     private String tel;
+    private String[] tels;
     private String facePath;
     private String state;
     private String communityId;
@@ -136,5 +137,13 @@ public class AccessControlInoutDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String[] getTels() {
+        return tels;
+    }
+
+    public void setTels(String[] tels) {
+        this.tels = tels;
     }
 }
