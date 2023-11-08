@@ -24,6 +24,7 @@
             <id column="specId" property="specId"/>
             <result column="factoryId1" property="factoryId"/>
             <result column="specName" property="specName"/>
+            <result column="specCd" property="specCd"/>
             <result column="remark1" property="remark"/>
             <result column="createTime1" property="createTime"/>
             <result column="statusCd1" property="statusCd"/>
@@ -42,6 +43,7 @@
         lmfs.spec_id specId,
         lmfs.factory_id factoryId1,
         lmfs.spec_name specName,
+        lmfs.spec_cd specCd,
         lmfs.create_time createTime1,
         lmfs.status_cd statusCd1,
         lmfs.remark remark1

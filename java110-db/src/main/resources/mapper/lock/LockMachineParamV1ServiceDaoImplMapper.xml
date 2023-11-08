@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lockMachineParamV1ServiceDaoImpl">
+
+
+    <!-- 保存门锁设备参数信息 add by wuxw 2018-07-03 -->
+    <insert id="saveLockMachineParamInfo" parameterType="Map">
+        insert into lock_machine_param(machine_id, spec_cd, param_id, community_id, value)
+        values (#{machineId}, #{specCd}, #{paramId}, #{communityId}, #{value})
+    </insert>
+
+    <insert id="saveLockMachineParamList" parameterType="Map">
+        insert into lock_machine_param(machine_id, spec_cd, param_id, community_id, value)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.machineId}, #{item.specCd}, #{item.paramId}, #{item.communityId}, #{item.value})
+        </foreach>
+    </insert>
+
+
+    <!-- 查询门锁设备参数信息 add by wuxw 2018-07-03 -->
+    <select id="getLockMachineParamInfo" parameterType="Map" resultType="Map">
+        select t.machine_id,t.machine_id machineId,t.spec_cd,t.spec_cd specCd,t.status_cd,t.status_cd
+        statusCd,t.param_id,t.param_id paramId,t.community_id,t.community_id communityId,t.value
+        from lock_machine_param t
+        where 1 =1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="specCd !=null and specCd != ''">
+            and t.spec_cd= #{specCd}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="paramId !=null and paramId != ''">
+            and t.param_id= #{paramId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="value !=null and value != ''">
+            and t.value= #{value}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改门锁设备参数信息 add by wuxw 2018-07-03 -->
+    <update id="updateLockMachineParamInfo" parameterType="Map">
+        update lock_machine_param t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="specCd !=null and specCd != ''">
+            , t.spec_cd= #{specCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="value !=null and value != ''">
+            , t.value= #{value}
+        </if>
+        where 1=1
+        <if test="paramId !=null and paramId != ''">
+            and t.param_id= #{paramId}
+        </if>
+
+    </update>
+
+    <!-- 查询门锁设备参数数量 add by wuxw 2018-07-03 -->
+    <select id="queryLockMachineParamsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from lock_machine_param t
+        where 1 =1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="specCd !=null and specCd != ''">
+            and t.spec_cd= #{specCd}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="paramId !=null and paramId != ''">
+            and t.param_id= #{paramId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="value !=null and value != ''">
+            and t.value= #{value}
+        </if>
+
+
+    </select>
+
+</mapper>

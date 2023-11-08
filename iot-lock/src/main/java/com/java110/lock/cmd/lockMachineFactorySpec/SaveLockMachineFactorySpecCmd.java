@@ -26,6 +26,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.lock.LockMachineFactorySpecDto;
 import com.java110.intf.lock.ILockMachineFactorySpecV1InnerServiceSMO;
 import com.java110.po.lock.LockMachineFactorySpecPo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,14 @@ public class SaveLockMachineFactorySpecCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "factoryId", "请求报文中未包含factoryId");
         Assert.hasKeyAndValue(reqJson, "specName", "请求报文中未包含specName");
+        Assert.hasKeyAndValue(reqJson, "specCd", "请求报文中未包含specCd");
+
+        LockMachineFactorySpecDto lockMachineFactorySpecDto = new LockMachineFactorySpecDto();
+        lockMachineFactorySpecDto.setSpecCd(reqJson.getString("specCd"));
+        int i = lockMachineFactorySpecV1InnerServiceSMOImpl.queryLockMachineFactorySpecsCount(lockMachineFactorySpecDto);
+        if (i > 0) {
+            throw new CmdException("规则编号已存在");
+        }
     }
 
     @Override

@@ -14,6 +14,7 @@
                 roomName: '',
                 implBean: '',
                 communityId: '',
+                lockMachineFactorySpecList: [],
             }
         },
         _initMethod: function () {
@@ -138,6 +139,17 @@
                     callName: 'addLockMachine'
                 })
             },
+            _selectLockMachineFactory: function () {
+                if (!$that.addLockMachineInfo.implBean) {
+                    vc.toast('未选择门锁厂家');
+                    return ;
+                }
+                $that.lockMachineFactoryList.map(lockMachineFactory => {
+                    if (lockMachineFactory.factoryId === $that.addLockMachineInfo.implBean) {
+                        $that.addLockMachineInfo.lockMachineFactorySpecList = lockMachineFactory.lockMachineFactorySpecList;
+                    }
+                })
+            }
         }
     });
 })(window.vc);

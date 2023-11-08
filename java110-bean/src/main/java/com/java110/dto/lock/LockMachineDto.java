@@ -4,6 +4,7 @@ import com.java110.bean.dto.PageDto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class LockMachineDto extends PageDto implements Serializable {
     public static final String STATE_ONLINE = "ONLINE";
@@ -24,6 +25,7 @@ public class LockMachineDto extends PageDto implements Serializable {
     private String factoryName;
     private String state;
     private String stateName;
+    private List<LockMachineParamDto> lockMachineParamDtoList;
 
     public String getMachineId() {
         return machineId;
@@ -135,5 +137,13 @@ public class LockMachineDto extends PageDto implements Serializable {
 
     public void setStateName(String stateName) {
         this.stateName = stateName;
+    }
+
+    public List<LockMachineParamDto> getLockMachineParamDtoList() {
+        return lockMachineParamDtoList;
+    }
+
+    public void setLockMachineParamDtoList(List<LockMachineParamDto> lockMachineParamDtoList) {
+        this.lockMachineParamDtoList = lockMachineParamDtoList;
     }
 }

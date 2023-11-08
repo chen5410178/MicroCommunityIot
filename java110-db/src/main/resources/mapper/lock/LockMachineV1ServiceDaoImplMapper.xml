@@ -13,9 +13,35 @@
                 #{roomId}, #{roomName})
     </insert>
 
+    <resultMap id="resultMap" type="com.java110.dto.lock.LockMachineDto">
+        <result column="machineId" property="machineId"/>
+        <result column="machineName" property="machineName"/>
+        <result column="machineCode" property="machineCode"/>
+        <result column="roomId" property="roomId"/>
+        <result column="roomName" property="roomName"/>
+        <result column="charge" property="charge"/>
+        <result column="implBean" property="implBean"/>
+        <result column="communityId" property="communityId"/>
+        <result column="heartbeatTime" property="heartbeatTime"/>
+        <result column="createTime" property="createTime"/>
+        <result column="statusCd" property="statusCd"/>
+        <result column="factoryName" property="factoryName"/>
+        <collection property="lockMachineParamDtoList"
+                    ofType="com.java110.dto.lock.LockMachineParamDto"
+                    javaType="java.util.ArrayList">
+            <id column="paramId" property="paramId"/>
+            <result column="machineId1" property="machineId"/>
+            <result column="communityId1" property="communityId"/>
+            <result column="specCd" property="specCd"/>
+            <result column="specName" property="specName"/>
+            <result column="value" property="value"/>
+            <result column="createTime1" property="createTime"/>
+            <result column="statusCd1" property="statusCd"/>
+        </collection>
+    </resultMap>
 
     <!-- 查询门锁设备信息 add by wuxw 2018-07-03 -->
-    <select id="getLockMachineInfo" parameterType="Map" resultType="Map">
+    <select id="getLockMachineInfo" parameterType="Map" resultMap="resultMap">
         select
         t.heartbeat_time heartbeatTime,
         t.impl_bean implBean,
@@ -28,10 +54,20 @@
         t.room_id roomId,
         t.room_name roomName,
         t.create_time createTime,
-        lmf.factory_name factoryName
+        lmf.factory_name factoryName,
+        lmp.param_id paramId,
+        lmp.machine_id machineId1,
+        lmp.community_id communityId1,
+        lmp.spec_cd specCd,
+        lmp.value value,
+        lmp.create_time createTime1,
+        lmp.status_cd statusCd1,
+        lmfs.spec_name specName
         from lock_machine t
         left join lock_machine_factory lmf on t.impl_bean = lmf.factory_id
-        where 1 =1 and lmf.status_cd = '0'
+        left join lock_machine_param lmp on t.machine_id = lmp.machine_id
+        left join lock_machine_factory_spec lmfs on lmp.spec_cd = lmfs.spec_cd
+        where 1 =1 and lmf.status_cd = '0' and lmp.status_cd = '0' and lmfs.status_cd = '0'
         <if test="heartbeatTime !=null">
             and t.heartbeat_time= #{heartbeatTime}
         </if>

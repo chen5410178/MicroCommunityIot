@@ -72,11 +72,11 @@
             _openAddLockMachineModal: function () {
                 vc.emit('addLockMachine', 'openAddLockMachineModal', {});
             },
-            _openEditLockMachineModel: function (_lockMachine) {
-                vc.emit('editLockMachine', 'openEditLockMachineModal', _lockMachine);
-            },
             _openDeleteLockMachineModel: function (_lockMachine) {
                 vc.emit('deleteLockMachine', 'openDeleteLockMachineModal', _lockMachine);
+            },
+            _openViewLockMachineParamInfoModel: function (_lockMachine) {
+                vc.emit('viewLockMachineParamInfo', 'openViewLockMachineParamInfoModal', _lockMachine);
             },
             _queryLockMachineMethod: function () {
                 $that._listLockMachines(DEFAULT_PAGE, DEFAULT_ROWS);

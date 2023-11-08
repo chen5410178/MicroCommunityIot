@@ -10,6 +10,7 @@
                 specId: '',
                 factoryId: '',
                 specName: '',
+                specCd: '',
                 remark: '',
             }
         },
@@ -48,6 +49,18 @@
                             limit: "maxLength",
                             param: "64",
                             errInfo: "规格名称不能超过64"
+                        },
+                    ],
+                    'addLockMachineFactorySpecInfo.specCd': [
+                        {
+                            limit: "required",
+                            param: "",
+                            errInfo: "规格编号不能为空"
+                        },
+                        {
+                            limit: "maxLength",
+                            param: "64",
+                            errInfo: "规格编号不能超过64"
                         },
                     ],
                     'addLockMachineFactorySpecInfo.remark': [
@@ -99,6 +112,7 @@
                     specId: '',
                     factoryId: '',
                     specName: '',
+                    specCd: '',
                     remark: '',
                 };
             }

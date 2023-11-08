@@ -26,6 +26,9 @@
                                     <vc:i18n name='规格名称' namespace='lockMachineFactorySpecManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='规格编号' namespace='lockMachineFactorySpecManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='描述' namespace='lockMachineFactorySpecManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
@@ -40,6 +43,7 @@
                             <tr v-for="lockMachineFactorySpec in lockMachineFactorySpecManageInfo.lockMachineFactorySpecs">
                                 <td class="text-center">{{lockMachineFactorySpec.specId}}</td>
                                 <td class="text-center">{{lockMachineFactorySpec.specName}}</td>
+                                <td class="text-center">{{lockMachineFactorySpec.specCd}}</td>
                                 <td class="text-center">
                                     <button class="btn-white btn btn-xs" v-on:click="_openModel(lockMachineFactorySpec.remark, '描述')">
                                         <vc:i18n name='查看'></vc:i18n>

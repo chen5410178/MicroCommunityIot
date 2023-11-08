@@ -7,15 +7,15 @@
 
     <!-- 保存厂家规格信息 add by wuxw 2018-07-03 -->
     <insert id="saveLockMachineFactorySpecInfo" parameterType="Map">
-        insert into lock_machine_factory_spec(spec_id, spec_name, factory_id, remark)
-        values (#{specId}, #{specName}, #{factoryId}, #{remark})
+        insert into lock_machine_factory_spec(spec_id, spec_name, spec_cd, factory_id, remark)
+        values (#{specId}, #{specName}, #{specCd}, #{factoryId}, #{remark})
     </insert>
 
 
     <!-- 查询厂家规格信息 add by wuxw 2018-07-03 -->
     <select id="getLockMachineFactorySpecInfo" parameterType="Map" resultType="Map">
         select t.spec_id,t.spec_id specId,t.spec_name,t.spec_name specName,t.factory_id,t.factory_id
-        factoryId,t.status_cd,t.status_cd statusCd,t.remark,t.create_time createTime
+        factoryId,t.status_cd,t.status_cd statusCd,t.remark,t.create_time createTime,t.spec_cd specCd
         from lock_machine_factory_spec t
         where 1 =1
         <if test="specId !=null and specId != ''">

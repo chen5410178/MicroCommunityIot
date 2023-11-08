@@ -15,6 +15,7 @@
  */
 package com.java110.lock.cmd.lockMachine;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
@@ -26,13 +27,20 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.StringUtil;
+import com.java110.dto.lock.LockMachineFactorySpecDto;
+import com.java110.intf.lock.ILockMachineFactorySpecV1InnerServiceSMO;
+import com.java110.intf.lock.ILockMachineParamV1InnerServiceSMO;
 import com.java110.intf.lock.ILockMachineV1InnerServiceSMO;
+import com.java110.po.lock.LockMachineParamPo;
 import com.java110.po.lock.LockMachinePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -54,14 +62,36 @@ public class SaveLockMachineCmd extends Cmd {
     @Autowired
     private ILockMachineV1InnerServiceSMO lockMachineV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ILockMachineParamV1InnerServiceSMO lockMachineParamV1InnerServiceSMOImpl;
+
+    @Autowired
+    private ILockMachineFactorySpecV1InnerServiceSMO lockMachineFactorySpecV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
-        Assert.hasKeyAndValue(reqJson, "machineName", "请求报文中未包含machineName");
-        Assert.hasKeyAndValue(reqJson, "machineCode", "请求报文中未包含machineCode");
-        Assert.hasKeyAndValue(reqJson, "roomId", "请求报文中未包含roomId");
-        Assert.hasKeyAndValue(reqJson, "roomName", "请求报文中未包含roomName");
-        Assert.hasKeyAndValue(reqJson, "implBean", "请求报文中未包含implBean");
-        Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
+        Assert.hasKeyAndValue(reqJson, "machineName", "machineName不能为空");
+        Assert.hasKeyAndValue(reqJson, "machineCode", "machineCode不能为空");
+        Assert.hasKeyAndValue(reqJson, "roomId", "roomId不能为空");
+        Assert.hasKeyAndValue(reqJson, "roomName", "roomName不能为空");
+        Assert.hasKeyAndValue(reqJson, "implBean", "implBean不能为空");
+        Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
+        Assert.hasKeyAndValue(reqJson, "lockMachineFactorySpecList", "lockMachineFactorySpecList不能为空");
+        JSONArray lockMachineFactorySpecList = reqJson.getJSONArray("lockMachineFactorySpecList");
+
+        LockMachineFactorySpecDto lockMachineFactorySpecDto = new LockMachineFactorySpecDto();
+        lockMachineFactorySpecDto.setFactoryId(reqJson.getString("implBean"));
+        int row = lockMachineFactorySpecV1InnerServiceSMOImpl.queryLockMachineFactorySpecsCount(lockMachineFactorySpecDto);
+        if (row < 1) {
+            throw new CmdException("厂家规格未添加");
+        }
+
+        for (int i = 0; i < lockMachineFactorySpecList.size(); i++) {
+            lockMachineFactorySpecDto = BeanConvertUtil.covertBean(lockMachineFactorySpecList.getJSONObject(i), LockMachineFactorySpecDto.class);
+            if (StringUtil.isEmpty(lockMachineFactorySpecDto.getValue())) {
+                throw new CmdException("请将厂家规格值填写完整");
+            }
+        }
     }
 
     @Override
@@ -74,6 +104,24 @@ public class SaveLockMachineCmd extends Cmd {
         int flag = lockMachineV1InnerServiceSMOImpl.saveLockMachine(lockMachinePo);
 
         if (flag < 1) {
+            throw new CmdException("保存数据失败");
+        }
+
+        JSONArray lockMachineFactorySpecList = reqJson.getJSONArray("lockMachineFactorySpecList");
+        List<LockMachineParamPo> lockMachineParamPos = new ArrayList<>();
+        lockMachineFactorySpecList.forEach(lockMachineFactorySpec -> {
+            LockMachineFactorySpecDto lockMachineFactorySpecDto = BeanConvertUtil.covertBean(lockMachineFactorySpec, LockMachineFactorySpecDto.class);
+            LockMachineParamPo lockMachineParamPo = new LockMachineParamPo();
+            lockMachineParamPo.setParamId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+            lockMachineParamPo.setMachineId(lockMachinePo.getMachineId());
+            lockMachineParamPo.setCommunityId(reqJson.getString("communityId"));
+            lockMachineParamPo.setSpecCd(lockMachineFactorySpecDto.getSpecCd());
+            lockMachineParamPo.setValue(lockMachineFactorySpecDto.getValue());
+            lockMachineParamPos.add(lockMachineParamPo);
+        });
+
+        flag = lockMachineParamV1InnerServiceSMOImpl.saveLockMachineParamList(lockMachineParamPos);
+        if (flag != lockMachineParamPos.size()) {
             throw new CmdException("保存数据失败");
         }
 

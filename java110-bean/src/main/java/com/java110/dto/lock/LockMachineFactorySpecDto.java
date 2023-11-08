@@ -9,6 +9,8 @@ public class LockMachineFactorySpecDto extends PageDto implements Serializable {
     private String specId;
     private String factoryId;
     private String specName;
+    private String specCd;
+    private String value;
     private Date createTime;
     private String statusCd = "0";
     private String remark;
@@ -35,6 +37,22 @@ public class LockMachineFactorySpecDto extends PageDto implements Serializable {
 
     public void setSpecName(String specName) {
         this.specName = specName;
+    }
+
+    public String getSpecCd() {
+        return specCd;
+    }
+
+    public void setSpecCd(String specCd) {
+        this.specCd = specCd;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public Date getCreateTime() {

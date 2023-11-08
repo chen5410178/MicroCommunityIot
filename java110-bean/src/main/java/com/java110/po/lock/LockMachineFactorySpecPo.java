@@ -6,6 +6,7 @@ public class LockMachineFactorySpecPo implements Serializable {
     private String specId;
     private String factoryId;
     private String specName;
+    private String specCd;
     private String statusCd = "0";
     private String remark;
 
@@ -31,6 +32,14 @@ public class LockMachineFactorySpecPo implements Serializable {
 
     public void setSpecName(String specName) {
         this.specName = specName;
+    }
+
+    public String getSpecCd() {
+        return specCd;
+    }
+
+    public void setSpecCd(String specCd) {
+        this.specCd = specCd;
     }
 
     public String getStatusCd() {

@@ -130,8 +130,8 @@
                                         </button>
                                     </div>
                                     <div class="btn-group">
-                                        <button class="btn-white btn btn-xs" v-on:click="_openEditLockMachineModel(lockMachine)">
-                                            <vc:i18n name='修改'></vc:i18n>
+                                        <button class="btn-white btn btn-xs" v-on:click="_openViewLockMachineParamInfoModel(lockMachine)">
+                                            <vc:i18n name='查看参数'></vc:i18n>
                                         </button>
                                     </div>
                                     <div class="btn-group">
@@ -144,7 +144,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="9">
+                                <td colspan="10">
                                     <ul class="pagination float-right"></ul>
                                 </td>
                             </tr>
@@ -158,8 +158,8 @@
     </div>
 
     <vc:create path="lock/addLockMachine" callBackListener="" callBackFunction=""></vc:create>
-    <vc:create path="lock/editLockMachine"></vc:create>
     <vc:create path="lock/deleteLockMachine"></vc:create>
     <vc:create path="lock/unlockMachine"></vc:create>
+    <vc:create path="lock/viewLockMachineParamInfo"></vc:create>
 
 </div>
