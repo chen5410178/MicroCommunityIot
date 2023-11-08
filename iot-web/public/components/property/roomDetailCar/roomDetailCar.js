@@ -6,8 +6,8 @@
     var DEFAULT_ROWS = 10;
     vc.extends({
         data: {
-            roomDetailOwnerInfo: {
-                owners: [],
+            roomDetailCarInfo: {
+                cars: [],
                 ownerId:'',
                 roomNum: '',
                 allOweFeeAmount:'0'
@@ -16,24 +16,24 @@
         _initMethod: function () {
         },
         _initEvent: function () {
-            vc.on('roomDetailOwner', 'switch', function (_data) {
-                $that.roomDetailOwnerInfo.roomId = _data.roomId;
-                $that._loadRoomDetailOwnerData(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.on('roomDetailCar', 'switch', function (_data) {
+                $that.roomDetailCarInfo.roomId = _data.roomId;
+                $that._loadRoomDetailCarData(DEFAULT_PAGE, DEFAULT_ROWS);
             });
-            vc.on('roomDetailOwner', 'paginationPlus', 'page_event',
+            vc.on('roomDetailCar', 'paginationPlus', 'page_event',
                 function (_currentPage) {
-                    $that._loadRoomDetailOwnerData(_currentPage, DEFAULT_ROWS);
+                    $that._loadRoomDetailCarData(_currentPage, DEFAULT_ROWS);
                 });
-            vc.on('roomDetailOwner', 'notify', function (_data) {
-                $that._loadRoomDetailOwnerData(DEFAULT_PAGE,DEFAULT_ROWS);
+            vc.on('roomDetailCar', 'notify', function (_data) {
+                $that._loadRoomDetailCarData(DEFAULT_PAGE,DEFAULT_ROWS);
             })
         },
         methods: {
-            _loadRoomDetailOwnerData: function (_page, _row) {
+            _loadRoomDetailCarData: function (_page, _row) {
                 let param = {
                     params: {
                         communityId: vc.getCurrentCommunity().communityId,
-                        roomId:$that.roomDetailOwnerInfo.roomId,
+                        roomId:$that.roomDetailCarInfo.roomId,
                         page:_page,
                         row:_row
                     }
@@ -44,8 +44,8 @@
                     param,
                     function (json) {
                         let _roomInfo = JSON.parse(json);
-                        $that.roomDetailOwnerInfo.owners = _roomInfo.data;
-                        vc.emit('roomDetailOwner', 'paginationPlus', 'init', {
+                        $that.roomDetailCarInfo.owners = _roomInfo.data;
+                        vc.emit('roomDetailCar', 'paginationPlus', 'init', {
                             total: _roomInfo.records,
                             dataCount: _roomInfo.total,
                             currentPage: _page
@@ -57,14 +57,14 @@
                 );
             },
             //查询
-            _qureyRoomDetailOwner: function () {
-                $that._loadRoomDetailOwnerData(DEFAULT_PAGE, DEFAULT_ROWS);
+            _qureyRoomDetailCar: function () {
+                $that._loadRoomDetailCarData(DEFAULT_PAGE, DEFAULT_ROWS);
             },
 
             
             ownerExitRoomModel: function(_room) {
                 vc.emit('ownerExitRoom', 'openExitRoomModel', {
-                    ownerId:  $that.roomDetailOwnerInfo.ownerId,
+                    ownerId:  $that.roomDetailCarInfo.ownerId,
                     roomId: _room.roomId
                 });
             },

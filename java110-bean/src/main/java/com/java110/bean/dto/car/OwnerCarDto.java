@@ -53,6 +53,7 @@ public class OwnerCarDto extends PageDto implements Serializable {
     private String[] paIds;
     private String remark;
     private String ownerId;
+    private String[] ownerIds;
     private String userId;
     private String carId;
     private String[] carIds;
@@ -529,5 +530,13 @@ public class OwnerCarDto extends PageDto implements Serializable {
 
     public void setEndTimeStr(String endTimeStr) {
         this.endTimeStr = endTimeStr;
+    }
+
+    public String[] getOwnerIds() {
+        return ownerIds;
+    }
+
+    public void setOwnerIds(String[] ownerIds) {
+        this.ownerIds = ownerIds;
     }
 }

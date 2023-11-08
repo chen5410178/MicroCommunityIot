@@ -55,15 +55,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="owner in roomDetailOwnerInfo.owners">
+                <tr v-for="car in roomDetailOwnerInfo.cars">
                     <td class="text-center">
                         {{car.carNum}}
                     </td>
                     <td class="text-center">
                         <!-- <a href="javascript:void(0)" @click="_toCarMember(car)">{{car.memberCarCount
                             || 0}}</a> -->
-                            {{car.memberCarCount
-                                || 0}}
+                            {{car.memberCarCount || 0}}
                     </td>
                     <td class="text-center">
                         <div style="width: 150px;">
@@ -102,10 +101,6 @@
                     </td>
                     <td class="text-center">
                         {{_getCarState(car)}}
-                        <span v-if="car.iotStateName">
-                            (<a href="javascript:void(0)"
-                                @click="_viewIotStateRemark(car)">{{car.iotStateName}}</a>)
-                        </span>
                     </td>
                 </tr>
             </tbody>

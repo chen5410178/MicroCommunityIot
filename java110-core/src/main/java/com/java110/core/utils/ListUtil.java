@@ -21,7 +21,7 @@ public class ListUtil {
             return true;
         }
 
-        if (values.size() < 1) {
+        if (values.isEmpty()) {
             return true;
         }
 
