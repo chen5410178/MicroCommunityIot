@@ -148,17 +148,17 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:roomDetailInfo._currentTab == 'roomDetailHis'}" v-on:click="changeTab('roomDetailHis')">
+                <a class="nav-link" v-bind:class="{active:roomDetailInfo._currentTab == 'roomDetailMeterRecharge'}" v-on:click="changeTab('roomDetailMeterRecharge')">
                     <vc:i18n name="水电充值" namespace="roomDetail"></vc:i18n>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:roomDetailInfo._currentTab == 'roomDetailRoomFee'}" v-on:click="changeTab('roomDetailRoomFee')">
+                <a class="nav-link" v-bind:class="{active:roomDetailInfo._currentTab == 'roomDetailLock'}" v-on:click="changeTab('roomDetailLock')">
                     <vc:i18n name="门锁" namespace="roomDetail"></vc:i18n>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:roomDetailInfo._currentTab == 'roomDetailCoupon'}" v-on:click="changeTab('roomDetailCoupon')">
+                <a class="nav-link" v-bind:class="{active:roomDetailInfo._currentTab == 'roomDetailLockPerson'}" v-on:click="changeTab('roomDetailLockPerson')">
                     <vc:i18n name="门锁授权" namespace="roomDetail"></vc:i18n>
                 </a>
             </li>
@@ -196,7 +196,15 @@
         <vc:create path="property/roomDetailMeter"></vc:create>
     </div>
     
-    
+    <div v-if="roomDetailInfo._currentTab == 'roomDetailMeterRecharge'">
+        <vc:create path="property/roomDetailMeterRecharge"></vc:create>
+    </div>
+    <div v-if="roomDetailInfo._currentTab == 'roomDetailLock'">
+        <vc:create path="property/roomDetailLock"></vc:create>
+    </div>
+    <div v-if="roomDetailInfo._currentTab == 'roomDetailLockPerson'">
+        <vc:create path="property/roomDetailLockPerson"></vc:create>
+    </div>
     
 
     

@@ -1,0 +1,94 @@
+<div class="margin-top">
+    <!-- <div class="row margin-top-lg">
+        <div class="col-lg-2 padding-right-xs padding-left-xl">
+            <input v-model="roomDetailLockPersonInfo.roomNum" type="text" :placeholder="vc.i18n('请填写房屋编号','roomDetailLockPerson')"
+                class="form-control">
+        </div>
+        <div class="col-lg-2 padding-right-xs padding-right-xl">
+            <button type="button" class="btn btn-primary btn-sm" style="margin-left:10px"
+                v-on:click="_qureyRoomDetailAccessControl()">
+                <i class="fa fa-search"></i>查询
+            </button>
+        </div>
+
+        <div class="col-lg-8 text-right">
+             <button type="button" class="btn btn-primary btn-sm" style="margin-left:10px" v-if="vc.hasPrivilege('502023021978930012')" v-on:click="_openAddOwnerRoom()">
+                <vc:i18n name="交房" namespace="simplifyRoomFee"></vc:i18n>
+            </button> 
+
+        </div>
+    </div> -->
+    <div class="margin-top">
+        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <vc:i18n name='授权编号' namespace='roomDetailLockPerson'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='门锁名称' namespace='roomDetailLockPerson'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='门锁编码' namespace='roomDetailLockPerson'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='业主名称' namespace='roomDetailLockPerson'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='开锁方式' namespace='roomDetailLockPerson'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='授权状态' namespace='roomDetailLockPerson'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='授权开始时间' namespace='roomDetailLockPerson'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='授权结束时间' namespace='roomDetailLockPerson'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='创建时间' namespace='roomDetailLockPerson'></vc:i18n>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="lockPerson in roomDetailLockPersonInfo.lockPersons">
+                    <td class="text-center">{{lockPerson.lpId}}</td>
+                    <td class="text-center">{{lockPerson.machineName}}</td>
+                    <td class="text-center">{{lockPerson.machineCode}}</td>
+                    <td class="text-center">{{lockPerson.name}}</td>
+                    <td class="text-center">
+                        <label v-if="lockPerson.openModel === '1001'">
+                            {{vc.i18n('密码开锁','roomDetailLockPerson')}}
+                        </label>
+                        <label v-if="lockPerson.openModel === '2002'">
+                            {{vc.i18n('蓝牙开锁','roomDetailLockPerson')}}
+                        </label>
+                    </td>
+                    <td class="text-center">
+                        <label v-if="lockPerson.state === '1001'">
+                            {{vc.i18n('可用','roomDetailLockPerson')}}
+                            (<a href="javascript:void(0)" @click="_switchState(lockPerson)">冻结</a>)
+                        </label>
+                        <label v-if="lockPerson.state === '2002'">
+                            {{vc.i18n('冻结','roomDetailLockPerson')}}
+                            (<a href="javascript:void(0)" @click="_switchState(lockPerson)">解结</a>)
+                        </label>
+                    </td>
+                    <td class="text-center">{{lockPerson.startTime}}</td>
+                    <td class="text-center">{{lockPerson.endTime}}</td>
+                    <td class="text-center">{{lockPerson.createTime}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="row">
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-sm-8">
+                <vc:create namespace="roomDetailLockPerson" path="frame/paginationPlus"></vc:create>
+            </div>
+        </div>
+    </div>
+</div>
