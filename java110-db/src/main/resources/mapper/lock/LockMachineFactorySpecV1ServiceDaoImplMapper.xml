@@ -24,6 +24,9 @@
         <if test="specName !=null and specName != ''">
             and t.spec_name= #{specName}
         </if>
+        <if test="specCd !=null and specCd != ''">
+            and t.spec_cd= #{specCd}
+        </if>
         <if test="factoryId !=null and factoryId != ''">
             and t.factory_id= #{factoryId}
         </if>
@@ -73,6 +76,9 @@
         </if>
         <if test="specName !=null and specName != ''">
             and t.spec_name= #{specName}
+        </if>
+        <if test="specCd !=null and specCd != ''">
+            and t.spec_cd= #{specCd}
         </if>
         <if test="factoryId !=null and factoryId != ''">
             and t.factory_id= #{factoryId}
