@@ -137,8 +137,8 @@ public class MeterMachineDetailV1ServiceDaoImpl extends BaseServiceDao implement
     public List<Map> queryMeterMachineReadOrRechargeDetails(Map info) {
         logger.debug("查询 queryMeterMachineReadOrRechargeDetails 入参 info : {}", info);
 
-        List<Map> meterMachineReadOrRechargeDetailInfos = sqlSessionTemplate.selectList("meterMachineDetailV1ServiceDaoImpl.queryMeterMachineReadOrRechargeDetails", info);
+        List<Map> infos = sqlSessionTemplate.selectList("meterMachineDetailV1ServiceDaoImpl.queryMeterMachineReadOrRechargeDetails", info);
 
-        return meterMachineReadOrRechargeDetailInfos;
+        return infos;
     }
 }

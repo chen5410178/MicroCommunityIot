@@ -7,8 +7,9 @@
                             <vc:i18n name="充值明细" namespace="meterMachineDetail"></vc:i18n>
                         </span></h5>
                     <div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-white btn-sm" v-on:click="_queryMeterMachineDetailMethod()">
-                                <vc:i18n name="刷新" namespace="meterMachineDetail"></vc:i18n>
+                        <button type="button" class="btn btn-white btn-sm"
+                            v-on:click="_queryMeterMachineDetailMethod()">
+                            <vc:i18n name="刷新" namespace="meterMachineDetail"></vc:i18n>
                         </button>
                     </div>
                 </div>
@@ -16,27 +17,27 @@
                     <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
                         <thead>
                             <tr>
-                                <th class="text-center"><span>
-                                        <vc:i18n name='房屋'jia namespace='meterMachineDetail'></vc:i18n>
-                                    </span></th>
-                                <th class="text-center"><span>
-                                        <vc:i18n name='表类型'jia namespace='meterMachineDetail'></vc:i18n>
-                                    </span></th>
-                                <th class="text-center"><span>
-                                        <vc:i18n name='表名称'jia namespace='meterMachineDetail'></vc:i18n>
-                                    </span></th>
-                                <th class="text-center"><span>
-                                        <vc:i18n name='表号'jia namespace='meterMachineDetail'></vc:i18n>
-                                    </span></th>
-                                <th class="text-center"><span>
-                                        <vc:i18n name='剩余读数' namespace='meterMachineDetail'></vc:i18n>
-                                    </span></th>
-                                <th class="text-center"><span>
-                                        <vc:i18n name='充值时间' namespace='meterMachineDetail'></vc:i18n>
-                                    </span></th>
-                                    <th class="text-center"><span>
-                                        <vc:i18n name='说明' namespace='meterMachineDetail'></vc:i18n>
-                                    </span></th>
+                                <th class="text-center">
+                                    <vc:i18n name='房屋' namespace='meterMachineDetail'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='表类型' namespace='meterMachineDetail'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='表名称' namespace='meterMachineDetail'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='表号' namespace='meterMachineDetail'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='剩余读数' namespace='meterMachineDetail'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='充值时间' namespace='meterMachineDetail'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='说明' namespace='meterMachineDetail'></vc:i18n>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,7 +46,7 @@
                                 <td class="text-center">{{detail.machineName}}</td>
                                 <td class="text-center">{{detail.typeName}}</td>
                                 <td class="text-center">{{detail.address}}</td>
-                                <td class="text-center" >{{detail.prestoreDegrees}}</td>
+                                <td class="text-center">{{detail.prestoreDegrees}}</td>
                                 <td class="text-center">{{detail.createTime}}</td>
                                 <td class="text-center">{{detail.remark}}</td>
                             </tr>

@@ -107,7 +107,7 @@ public class MeterMachineDetailV1InnerServiceSMOImpl implements IMeterMachineDet
             meterMachineReadOrRechargeDetailDto.setPage((page - 1) * meterMachineReadOrRechargeDetailDto.getRow());
         }
 
-        List<MeterMachineReadOrRechargeDetailDto> meterMachineReadOrRechargeDetails = BeanConvertUtil.covertBeanList(meterMachineDetailV1ServiceDaoImpl.queryMeterMachineReadOrRechargeDetails(BeanConvertUtil.beanCovertMap(meterMachineReadOrRechargeDetailDto)), MeterMachineReadOrRechargeDetailDto.class);
-        return meterMachineReadOrRechargeDetails;
+        List<MeterMachineReadOrRechargeDetailDto> infos = BeanConvertUtil.covertBeanList(meterMachineDetailV1ServiceDaoImpl.queryMeterMachineReadOrRechargeDetails(BeanConvertUtil.beanCovertMap(meterMachineReadOrRechargeDetailDto)), MeterMachineReadOrRechargeDetailDto.class);
+        return infos;
     }
 }
