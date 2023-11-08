@@ -133,7 +133,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:roomDetailInfo._currentTab == 'roomDetailHisFee'}" v-on:click="changeTab('roomDetailHisFee')">
+                <a class="nav-link" v-bind:class="{active:roomDetailInfo._currentTab == 'roomDetailAccessControlLog'}" v-on:click="changeTab('roomDetailAccessControlLog')">
                     <vc:i18n name="人脸下发" namespace="roomDetail"></vc:i18n>
                 </a>
             </li>
@@ -184,7 +184,11 @@
     <div v-if="roomDetailInfo._currentTab == 'roomDetailAccessControl'">
         <vc:create path="property/roomDetailAccessControl"></vc:create>
     </div>
+    <div v-if="roomDetailInfo._currentTab == 'roomDetailAccessControlLog'">
+        <vc:create path="property/roomDetailAccessControlLog"></vc:create>
+    </div>
 
+    
     
 
     

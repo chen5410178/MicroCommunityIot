@@ -29,6 +29,8 @@ public class AccessControlLogDto extends PageDto implements Serializable {
     private String logAction;
     private String userId;
 
+    private String[] userIds;
+
 
     private Date createTime;
 
@@ -152,5 +154,13 @@ public class AccessControlLogDto extends PageDto implements Serializable {
 
     public void setStateName(String stateName) {
         this.stateName = stateName;
+    }
+
+    public String[] getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(String[] userIds) {
+        this.userIds = userIds;
     }
 }

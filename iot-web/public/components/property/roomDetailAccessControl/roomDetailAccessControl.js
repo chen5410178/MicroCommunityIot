@@ -42,7 +42,7 @@
                     param,
                     function (json) {
                         let _roomInfo = JSON.parse(json);
-                        $that.roomDetailAccessControlInfo.cars = _roomInfo.data;
+                        $that.roomDetailAccessControlInfo.machines = _roomInfo.data;
                         vc.emit('roomDetailAccessControl', 'paginationPlus', 'init', {
                             total: _roomInfo.records,
                             dataCount: _roomInfo.total,

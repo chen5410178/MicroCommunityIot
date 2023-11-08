@@ -17,6 +17,7 @@ package com.java110.accessControl.cmd.accessControlLog;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.owner.OwnerRoomRelDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
@@ -24,8 +25,11 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControlLog.AccessControlLogDto;
 import com.java110.intf.accessControl.IAccessControlLogV1InnerServiceSMO;
+import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +53,12 @@ import java.util.List;
 @Java110Cmd(serviceCode = "accessControlLog.listAccessControlLog")
 public class ListAccessControlLogCmd extends Cmd {
 
-  private static Logger logger = LoggerFactory.getLogger(ListAccessControlLogCmd.class);
+    private static Logger logger = LoggerFactory.getLogger(ListAccessControlLogCmd.class);
     @Autowired
     private IAccessControlLogV1InnerServiceSMO accessControlLogV1InnerServiceSMOImpl;
 
-
+    @Autowired
+    private IOwnerRoomRelV1InnerServiceSMO ownerRoomRelV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
@@ -65,22 +70,52 @@ public class ListAccessControlLogCmd extends Cmd {
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-           AccessControlLogDto accessControlLogDto = BeanConvertUtil.covertBean(reqJson, AccessControlLogDto.class);
 
-           int count = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogsCount(accessControlLogDto);
+        AccessControlLogDto accessControlLogDto = BeanConvertUtil.covertBean(reqJson, AccessControlLogDto.class);
 
-           List<AccessControlLogDto> accessControlLogDtos = null;
+        //todo 如果包含房屋信息
+        ifHasRoomId(reqJson, accessControlLogDto);
 
-           if (count > 0) {
-               accessControlLogDtos = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogs(accessControlLogDto);
-           } else {
-               accessControlLogDtos = new ArrayList<>();
-           }
 
-           ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, accessControlLogDtos);
+        int count = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogsCount(accessControlLogDto);
 
-           ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
+        List<AccessControlLogDto> accessControlLogDtos = null;
 
-           cmdDataFlowContext.setResponseEntity(responseEntity);
+        if (count > 0) {
+            accessControlLogDtos = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogs(accessControlLogDto);
+        } else {
+            accessControlLogDtos = new ArrayList<>();
+        }
+
+        ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, accessControlLogDtos);
+
+        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
+
+        cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void ifHasRoomId(JSONObject reqJson, AccessControlLogDto accessControlLogDto) {
+        if (!reqJson.containsKey("roomId") || StringUtil.isEmpty(reqJson.getString("roomId"))) {
+            return;
+        }
+
+        //todo 根据房屋ID查询房屋人员信息
+
+        OwnerRoomRelDto ownerRoomRelDto = new OwnerRoomRelDto();
+        ownerRoomRelDto.setRoomId(reqJson.getString("roomId"));
+        ownerRoomRelDto.setCommunityId(reqJson.getString("communityId"));
+        List<OwnerRoomRelDto> ownerRoomRelDtos = ownerRoomRelV1InnerServiceSMOImpl.queryOwnerRoomRels(ownerRoomRelDto);
+
+        if (ListUtil.isNull(ownerRoomRelDtos)) {
+            return;
+        }
+
+        List<String> ownerIds = new ArrayList<>();
+        for (OwnerRoomRelDto tOwnerRoomRelDto : ownerRoomRelDtos) {
+            ownerIds.add(tOwnerRoomRelDto.getOwnerId());
+        }
+
+        accessControlLogDto.setUserIds(ownerIds.toArray(new String[ownerIds.size()]));
+
     }
 }
