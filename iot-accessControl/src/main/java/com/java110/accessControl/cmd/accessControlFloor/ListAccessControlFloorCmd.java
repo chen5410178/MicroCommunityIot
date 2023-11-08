@@ -17,6 +17,7 @@ package com.java110.accessControl.cmd.accessControlFloor;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.room.RoomDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
@@ -24,10 +25,13 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.doc.annotation.*;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
+import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.accessControlFloor.AccessControlFloorDto;
 
@@ -90,10 +94,16 @@ public class ListAccessControlFloorCmd extends Cmd {
     @Autowired
     private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IRoomV1InnerServiceSMO roomV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
         Assert.hasKeyAndValue(reqJson, "communityId", "未包含小区");
+
+        //todo 如果根据房屋查询设备信息
+        ifHasRoomId(reqJson);
     }
 
     @Override
@@ -156,7 +166,24 @@ public class ListAccessControlFloorCmd extends Cmd {
             }
 
         }
-
-
     }
+
+
+    private void ifHasRoomId(JSONObject reqJson) {
+        if(!reqJson.containsKey("roomId") || StringUtil.isEmpty(reqJson.getString("roomId"))){
+            return ;
+        }
+
+        RoomDto roomDto = new RoomDto();
+        roomDto.setRoomId(reqJson.getString("roomId"));
+        roomDto.setCommunityId(reqJson.getString("communityId"));
+        List<RoomDto> roomDtos = roomV1InnerServiceSMOImpl.queryRooms(roomDto);
+
+        if(ListUtil.isNull(roomDtos)){
+            return;
+        }
+
+        reqJson.put("unitId",roomDtos.get(0).getUnitId());
+    }
+
 }

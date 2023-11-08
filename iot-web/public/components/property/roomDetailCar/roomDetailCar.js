@@ -8,9 +8,7 @@
         data: {
             roomDetailCarInfo: {
                 cars: [],
-                ownerId:'',
-                roomNum: '',
-                allOweFeeAmount:'0'
+                roomId:'',
             }
         },
         _initMethod: function () {
@@ -40,11 +38,11 @@
                 };
                
                 //发送get请求
-                vc.http.apiGet('/owner.queryOwners',
+                vc.http.apiGet('/ownerCar.queryRoomCars',
                     param,
                     function (json) {
                         let _roomInfo = JSON.parse(json);
-                        $that.roomDetailCarInfo.owners = _roomInfo.data;
+                        $that.roomDetailCarInfo.cars = _roomInfo.data;
                         vc.emit('roomDetailCar', 'paginationPlus', 'init', {
                             total: _roomInfo.records,
                             dataCount: _roomInfo.total,
@@ -59,14 +57,6 @@
             //查询
             _qureyRoomDetailCar: function () {
                 $that._loadRoomDetailCarData(DEFAULT_PAGE, DEFAULT_ROWS);
-            },
-
-            
-            ownerExitRoomModel: function(_room) {
-                vc.emit('ownerExitRoom', 'openExitRoomModel', {
-                    ownerId:  $that.roomDetailCarInfo.ownerId,
-                    roomId: _room.roomId
-                });
             },
         }
     });
