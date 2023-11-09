@@ -86,7 +86,7 @@ public class AccessControlV1InnerServiceSMOImpl implements IAccessControlV1Inner
 
         //todo 通知适配器 添加人脸
         HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
-        hardwareManufacturerDto.setHmId(accessControlPo.getImplBean());
+        hardwareManufacturerDto.setHmId(accessControlDtos.get(0).getImplBean());
         List<HardwareManufacturerDto> hardwareManufacturerDtos = hardwareManufacturerV1InnerServiceSMOImpl.queryHardwareManufacturers(hardwareManufacturerDto);
 
         Assert.listOnlyOne(hardwareManufacturerDtos, "协议不存在");
