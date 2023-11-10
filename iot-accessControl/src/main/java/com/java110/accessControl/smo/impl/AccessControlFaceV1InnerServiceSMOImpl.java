@@ -22,6 +22,7 @@ import com.java110.bean.dto.PageDto;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
@@ -122,18 +123,19 @@ public class AccessControlFaceV1InnerServiceSMOImpl implements IAccessControlFac
         accessControlDto.setCommunityId(accessControlFacePo.getCommunityId());
         List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
 
-        Assert.listOnlyOne(accessControlDtos, "门禁不存在");
-        HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
-        hardwareManufacturerDto.setHmId(accessControlDtos.get(0).getImplBean());
-        List<HardwareManufacturerDto> hardwareManufacturerDtos = hardwareManufacturerV1InnerServiceSMOImpl.queryHardwareManufacturers(hardwareManufacturerDto);
+        if(!ListUtil.isNull(accessControlDtos)) {
+            HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
+            hardwareManufacturerDto.setHmId(accessControlDtos.get(0).getImplBean());
+            List<HardwareManufacturerDto> hardwareManufacturerDtos = hardwareManufacturerV1InnerServiceSMOImpl.queryHardwareManufacturers(hardwareManufacturerDto);
 
-        Assert.listOnlyOne(hardwareManufacturerDtos, "协议不存在");
+            Assert.listOnlyOne(hardwareManufacturerDtos, "协议不存在");
 
-        IAccessControlManufactor accessControlManufactor = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
-        boolean saveUser = accessControlManufactor.deleteUser(accessControlDtos.get(0), accessControlFacePo);
+            IAccessControlManufactor accessControlManufactor = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
+            boolean saveUser = accessControlManufactor.deleteUser(accessControlDtos.get(0), accessControlFacePo);
 
-        if (!saveUser) {
-            throw new IllegalArgumentException("下发设备失败，失败原因厂家未返回");
+            if (!saveUser) {
+                throw new IllegalArgumentException("下发设备失败，失败原因厂家未返回");
+            }
         }
         accessControlFacePo.setStatusCd("1");
         int saveFlag = accessControlFaceV1ServiceDaoImpl.updateAccessControlFaceInfo(BeanConvertUtil.beanCovertMap(accessControlFacePo));
