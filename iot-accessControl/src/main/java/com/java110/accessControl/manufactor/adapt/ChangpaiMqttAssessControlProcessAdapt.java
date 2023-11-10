@@ -6,6 +6,7 @@ import com.java110.core.cache.CommonCache;
 import com.java110.core.constant.ResponseConstant;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.MqttFactory;
+import com.java110.core.utils.ImageUtils;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;

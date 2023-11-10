@@ -2,6 +2,9 @@ package com.java110.accessControl.manufactor;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.file.FileDto;
+import com.java110.core.cache.MappingCache;
+import com.java110.core.constant.MappingConstant;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.DateUtil;
@@ -16,6 +19,7 @@ import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlInoutV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlLogV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
+import com.java110.intf.system.IFileInnerServiceSMO;
 import com.java110.po.accessControl.AccessControlPo;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.accessControlInout.AccessControlInoutPo;
@@ -48,6 +52,9 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
 
     @Autowired
     private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IFileInnerServiceSMO fileInnerServiceSMOImpl;
 
     @Override
     public boolean initMachine(AccessControlDto accessControlDto) {
@@ -220,6 +227,22 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
 
         if (accessControlDtos == null || accessControlDtos.size() < 1) {
             throw new IllegalArgumentException("门禁不存在" + machineCode);
+        }
+
+        if(!StringUtil.isEmpty(facePath)){
+
+        }
+        if (!StringUtil.isEmpty(facePath) && facePath.length() > 512) { //说明是图片
+            FileDto fileDto = new FileDto();
+            fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
+            fileDto.setFileName(fileDto.getFileId());
+            fileDto.setContext(facePath);
+            fileDto.setSuffix("jpeg");
+            fileDto.setCommunityId(accessControlDtos.get(0).getCommunityId());
+            String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
+            String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN,"IMG_PATH");
+
+            facePath = imgUrl+fileName;
         }
 
         AccessControlFaceDto accessControlFaceDto = queryAccessControlFace(personId, accessControlDtos);
