@@ -259,7 +259,7 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
                 "       \"ctrl_mode\": \"force\",\n" +
                 "     }");
         MqttFactory.publish(REQUEST_FACE.replace(SN, machineDto.getMachineCode()), param.toJSONString());
-        saveLog(GenerateCodeFactory.getGeneratorId("11"), machineDto.getMachineId(), REQUEST_FACE.replace(SN, machineDto.getMachineCode()) + "/openDoor", param.toJSONString(), "-1", "无");
+        saveLog(GenerateCodeFactory.getGeneratorId("11"), machineDto.getMachineId(), REQUEST_FACE.replace(SN, machineDto.getMachineCode()) + "/openDoor", param.toJSONString(), machineDto.getUserId(), machineDto.getUserName());
         return true;
     }
 

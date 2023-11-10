@@ -103,6 +103,9 @@
                                 <td class="text-center">{{accessControl.heartbeatTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openDoor(accessControl)"><vc:i18n name='开门'></vc:i18n></button>
+                                    </div>
+                                    <div class="btn-group">
                                         <button class="btn-white btn btn-xs" v-on:click="_openEditAccessControlModel(accessControl)"><vc:i18n name='修改'></vc:i18n></button>
                                     </div>
                                     <div class="btn-group">

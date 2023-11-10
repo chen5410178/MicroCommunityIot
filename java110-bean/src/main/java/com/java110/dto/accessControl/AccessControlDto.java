@@ -35,6 +35,9 @@ public class AccessControlDto extends PageDto implements Serializable {
 
     private String statusCd = "0";
 
+    private String userId;
+    private String userName;
+
 
     public String getMachineMac() {
         return machineMac;
@@ -147,5 +150,21 @@ public class AccessControlDto extends PageDto implements Serializable {
 
     public void setStateName(String stateName) {
         this.stateName = stateName;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
