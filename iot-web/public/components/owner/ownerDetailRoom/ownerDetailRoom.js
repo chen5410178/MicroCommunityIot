@@ -61,6 +61,10 @@
                 $that._loadOwnerDetailRoomData(DEFAULT_PAGE, DEFAULT_ROWS);
             },
 
+            _toRoomDetail:function(_room){
+                vc.jumpToPage('/#/pages/property/roomDetail?roomId=' + _room.roomId);
+            },
+
             
             ownerExitRoomModel: function(_room) {
                 vc.emit('ownerExitRoom', 'openExitRoomModel', {
