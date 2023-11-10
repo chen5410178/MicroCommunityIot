@@ -253,6 +253,8 @@ public class QueryRoomsCmd extends Cmd {
         String ownerName = "";
         String ownerId = "";
         for (RoomDto roomDto : roomDtos) {
+            ownerName = "";
+            ownerId = "";
             for (OwnerDto tmpOwnerDto : ownerDtos) {
                 if (!roomDto.getRoomId().equals(tmpOwnerDto.getRoomId())) {
                     continue;

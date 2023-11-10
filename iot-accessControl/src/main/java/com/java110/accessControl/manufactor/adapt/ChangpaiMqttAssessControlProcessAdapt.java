@@ -113,7 +113,7 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
 
         MqttFactory.publish(REQUEST_FACE.replace(SN, accessControlDto.getMachineCode()), param.toJSONString());
 
-        saveLog(accessControlFacePo.getMfId(), accessControlDto.getMachineId(), REQUEST_FACE.replace(SN, accessControlDto.getMachineCode()) + "/uploadperson",
+        saveLog("", accessControlDto.getMachineId(), REQUEST_FACE.replace(SN, accessControlDto.getMachineCode()) + "/uploadperson",
                 accessControlDto.getCommunityId(),
                 param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 
@@ -134,7 +134,7 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
         param.put("id", accessControlFacePo.getPersonId());
 
         MqttFactory.publish(REQUEST_FACE.replace(SN, accessControlDto.getMachineCode()), param.toJSONString());
-        saveLog(accessControlFacePo.getMfId(), accessControlDto.getMachineId(), REQUEST_FACE.replace(SN, accessControlDto.getMachineCode()) + "/deleteperson",
+        saveLog("", accessControlDto.getMachineId(), REQUEST_FACE.replace(SN, accessControlDto.getMachineCode()) + "/deleteperson",
                 accessControlDto.getCommunityId(), param.toJSONString(),
                 accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 

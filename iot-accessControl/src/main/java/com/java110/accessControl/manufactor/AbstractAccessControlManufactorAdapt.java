@@ -173,7 +173,11 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
      */
     protected void saveLog(String logId, String machineId, String cmd,String communityId, String reqParam, String resParam, String state, String userId, String userName) {
         AccessControlLogPo accessControlLogPo = new AccessControlLogPo();
+        if(StringUtil.isEmpty(logId)){
+            logId = GenerateCodeFactory.getGeneratorId("11");
+        }
         accessControlLogPo.setLogId(logId);
+
         accessControlLogPo.setMachineId(machineId);
         accessControlLogPo.setLogAction(cmd);
         accessControlLogPo.setReqParam(reqParam);
