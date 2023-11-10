@@ -19,6 +19,7 @@ public class AccessControlInoutDto extends PageDto implements Serializable {
     private String inoutId;
     private String machineId;
     private String machineCode;
+    private String machineName;
     private String openTypeCd;
     private String idCard;
     private String name;
@@ -145,5 +146,13 @@ public class AccessControlInoutDto extends PageDto implements Serializable {
 
     public void setTels(String[] tels) {
         this.tels = tels;
+    }
+
+    public String getMachineName() {
+        return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
     }
 }
