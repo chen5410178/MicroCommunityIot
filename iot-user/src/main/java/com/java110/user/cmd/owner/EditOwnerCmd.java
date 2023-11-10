@@ -212,6 +212,9 @@ public class EditOwnerCmd extends Cmd {
         //todo 修改 业主信息
         editOwner(reqJson);
 
+        //todo 人员同步门禁
+        synchronousAccessControl(reqJson);
+
         JSONArray attrs = reqJson.getJSONArray("attrs");
         if (attrs == null || attrs.size() < 1) {
             return;
@@ -238,8 +241,7 @@ public class EditOwnerCmd extends Cmd {
             }
         }
 
-        //todo 人员同步门禁
-        synchronousAccessControl(reqJson);
+
 
 
     }
