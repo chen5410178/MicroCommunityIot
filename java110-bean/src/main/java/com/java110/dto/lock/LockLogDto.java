@@ -10,6 +10,10 @@ public class LockLogDto extends PageDto implements Serializable {
     public static final String RETURN_SUCCESS = "10002";
     public static final String OPERATE_FAILED = "10003";
 
+    public static final String LOG_ACTION_GET_ACCESS_TOKEN = "1001";
+    public static final String LOG_ACTION_REFRESH_ACCESS_TOKEN = "1002";
+    public static final String LOG_ACTION_ADD_PWD_TO_CLOUD = "1003";
+
     private String logId;
     private String machineId;
     private String communityId;

@@ -1,8 +1,10 @@
 package com.java110.po.lock;
 
+import com.java110.bean.po.BasePo;
+
 import java.io.Serializable;
 
-public class LockPersonPo implements Serializable {
+public class LockPersonPo extends BasePo implements Serializable {
     private String lpId;
     private String machineId;
     private String personId;

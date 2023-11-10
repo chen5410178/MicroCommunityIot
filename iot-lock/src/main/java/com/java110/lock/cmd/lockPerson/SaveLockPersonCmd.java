@@ -29,13 +29,17 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DateUtil;
 import com.java110.dto.lock.LockPersonDto;
+import com.java110.dto.user.UserDto;
 import com.java110.intf.lock.ILockPersonV1InnerServiceSMO;
+import com.java110.intf.user.IUserV1InnerServiceSMO;
+import com.java110.lock.factory.ILockCore;
 import com.java110.po.lock.LockPersonPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -56,6 +60,12 @@ public class SaveLockPersonCmd extends Cmd {
 
     @Autowired
     private ILockPersonV1InnerServiceSMO lockPersonV1InnerServiceSMOImpl;
+
+    @Autowired
+    private ILockCore lockCoreImpl;
+
+    @Autowired
+    private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
@@ -105,6 +115,15 @@ public class SaveLockPersonCmd extends Cmd {
         }
 
 
+
+        //todo: 暂时只考虑将物业下发密码推向厂家服务端
+        lockPersonPo.setCardNumber(reqJson.getString("cardNumber"));
+        lockPersonPo.setOprUserId(cmdDataFlowContext.getReqHeaders().get("user_id"));
+        UserDto userDto = new UserDto();
+        userDto.setUserId(cmdDataFlowContext.getReqHeaders().get("user_id"));
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+        lockPersonPo.setOprUserName(userDtos.get(0).getName());
+        lockCoreImpl.addPasswordToCloud(lockPersonPo);
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }
