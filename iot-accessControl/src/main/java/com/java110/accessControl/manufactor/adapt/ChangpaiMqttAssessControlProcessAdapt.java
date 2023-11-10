@@ -203,6 +203,10 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
             logAction = REQUEST_FACE.replace(SN, machineCode) + "/deleteperson";
         } else if (cmd.startsWith("upload")) {
             logAction = REQUEST_FACE.replace(SN, machineCode) + "/uploadperson";
+        } else if(cmd.startsWith("gpio")){
+            logAction = REQUEST_FACE.replace(SN, machineCode) + "/openDoor";
+        }else if(cmd.startsWith("reboot")){
+            logAction = REQUEST_FACE.replace(SN, machineCode) + "/reboot";
         }
         System.out.println("logAction=" + logAction + ",cmd=" + cmd + ",machineCode=" + machineCode);
         if (StringUtil.isEmpty(logAction)) {
