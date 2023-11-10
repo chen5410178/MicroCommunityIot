@@ -334,7 +334,9 @@ public class EditOwnerCmd extends Cmd {
                 accessControlFacePo = BeanConvertUtil.covertBean(tmpAccessControlFaceDto, AccessControlFacePo.class);
                 accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
                 accessControlFacePo.setMessage("待下发到门禁");
-                accessControlFacePo.setFacePath(reqJson.getString("ownerPhoto"));
+                String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN,"IMG_PATH");
+
+                accessControlFacePo.setFacePath(imgUrl+reqJson.getString("ownerPhoto"));
             }
             accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
             return;
