@@ -1,6 +1,9 @@
 package com.java110.user.cmd.user;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.dto.file.FileRelDto;
+import com.java110.bean.dto.owner.OwnerDto;
+import com.java110.bean.dto.room.RoomDto;
 import com.java110.bean.po.org.OrgStaffRelPo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
@@ -12,20 +15,25 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.AuthenticationFactory;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.utils.*;
 import com.java110.doc.annotation.*;
+import com.java110.dto.accessControlFace.AccessControlFaceDto;
+import com.java110.dto.accessControlFloor.AccessControlFloorDto;
+import com.java110.dto.accessControlOrg.AccessControlOrgDto;
 import com.java110.dto.storeStaff.StoreStaffDto;
 import com.java110.dto.user.UserDto;
+import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
+import com.java110.intf.accessControl.IAccessControlOrgV1InnerServiceSMO;
 import com.java110.intf.user.IOrgStaffRelV1InnerServiceSMO;
 import com.java110.intf.user.IStoreStaffV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
+import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.storeStaff.StoreStaffPo;
 import com.java110.po.user.UserPo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -78,8 +86,11 @@ public class UserStaffAddCmd extends Cmd {
     @Autowired
     private IOrgStaffRelV1InnerServiceSMO orgStaffRelV1InnerServiceSMOImpl;
 
-//    @Autowired
-//    private IFileRelInnerServiceSMO fileRelInnerServiceSMOImpl;
+    @Autowired
+    private IAccessControlOrgV1InnerServiceSMO accessControlOrgV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
@@ -107,30 +118,19 @@ public class UserStaffAddCmd extends Cmd {
 
         userId = GenerateCodeFactory.getUserId();
         reqJson.put("userId", userId);
-        //添加用户
+        //todo 添加用户
         addUser(reqJson);
         reqJson.put("userId", userId);
 
-
+        //todo 添加商户员工关系
         addStaff(reqJson);
-        //重写 员工岗位
+        //todo 添加员工组织关系
         //reqJson.put("relCd", relCd);
         addStaffOrg(reqJson);
-//        int flag = 0;
-//        if (reqJson.containsKey("photo") && !StringUtils.isEmpty(reqJson.getString("photo"))) {
-//            JSONObject businessUnit = new JSONObject();
-//            businessUnit.put("fileRelId", GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_fileRelId));
-//            businessUnit.put("relTypeCd", "12000");
-//            businessUnit.put("saveWay", "table");
-//            businessUnit.put("objId", userId);
-//            businessUnit.put("fileRealName", reqJson.getString("photo"));
-//            businessUnit.put("fileSaveName", reqJson.getString("photo"));
-//            FileRelPo fileRelPo = BeanConvertUtil.covertBean(businessUnit, FileRelPo.class);
-//            flag = fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
-//            if (flag < 1) {
-//                throw new CmdException("保存图片异常");
-//            }
-//        }
+
+        //todo 同步人脸至 门禁
+        synchronousAccessControl(reqJson);
+
     }
 
     /**
@@ -154,6 +154,7 @@ public class UserStaffAddCmd extends Cmd {
 
 
         UserPo userPo = BeanConvertUtil.covertBean(refreshParamIn(paramObj), UserPo.class);
+        userPo.setFaceUrl(paramObj.getString("photo"));
         int flag = userV1InnerServiceSMOImpl.saveUser(userPo);
 
         if (flag < 1) {
@@ -218,5 +219,57 @@ public class UserStaffAddCmd extends Cmd {
         if (flag < 1) {
             throw new CmdException("保存员工 失败");
         }
+    }
+
+    private void synchronousAccessControl(JSONObject reqJson) {
+
+        if (!reqJson.containsKey("orgId") || StringUtil.isEmpty(reqJson.getString("orgId"))) {
+            return;
+        }
+
+
+        AccessControlOrgDto accessControlOrgDto = new AccessControlOrgDto();
+        accessControlOrgDto.setOrgId(reqJson.getString("orgId"));
+        List<AccessControlOrgDto> accessControlOrgDtos = accessControlOrgV1InnerServiceSMOImpl.queryAccessControlOrgs(accessControlOrgDto);
+        if (ListUtil.isNull(accessControlOrgDtos)) {
+            return;
+        }
+
+        //todo 查询人员信息
+        UserDto userDto = new UserDto();
+        userDto.setUserId(reqJson.getString("userId"));
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+        if (ListUtil.isNull(userDtos)) {
+            return;
+        }
+        userDto = userDtos.get(0);
+
+        //todo 查询业主照片
+        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
+
+
+        AccessControlFacePo accessControlFacePo = null;
+        for (AccessControlOrgDto tmpAccessControlOrgDto : accessControlOrgDtos) {
+            accessControlFacePo = new AccessControlFacePo();
+            accessControlFacePo.setFacePath(imgUrl + userDto.getFaceUrl());
+            accessControlFacePo.setCommunityId(tmpAccessControlOrgDto.getCommunityId());
+            accessControlFacePo.setIdNumber("");
+            accessControlFacePo.setComeId(tmpAccessControlOrgDto.getAcoId());
+            accessControlFacePo.setComeType(AccessControlFaceDto.COME_TYPE_STAFF);
+            accessControlFacePo.setEndTime(DateUtil.getLastTime());
+            accessControlFacePo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_B));
+            accessControlFacePo.setCardNumber("");
+            accessControlFacePo.setMachineId(tmpAccessControlOrgDto.getMachineId());
+            accessControlFacePo.setMessage("待下发到门禁");
+            accessControlFacePo.setMfId(GenerateCodeFactory.getGeneratorId("11"));
+            accessControlFacePo.setName(userDto.getName());
+            accessControlFacePo.setPersonId(userDto.getUserId());
+            accessControlFacePo.setPersonType(AccessControlFaceDto.PERSON_TYPE_STAFF);
+            accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
+            accessControlFacePo.setRoomName("无");
+            accessControlFaceV1InnerServiceSMOImpl.saveAccessControlFace(accessControlFacePo);
+        }
+
+
     }
 }

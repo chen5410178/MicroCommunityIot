@@ -8,9 +8,9 @@
     <!-- 保存用户信息 add by wuxw 2018-07-03 -->
     <insert id="saveUserInfo" parameterType="Map">
         insert into u_user(
-        password,address,sex,name,tel,user_id,level_cd,email
+        password,address,sex,name,tel,user_id,level_cd,email,face_url
         ) values (
-        #{password},#{address},#{sex},#{name},#{tel},#{userId},#{levelCd},#{email}
+        #{password},#{address},#{sex},#{name},#{tel},#{userId},#{levelCd},#{email},#{faceUrl}
         )
     </insert>
 
@@ -18,7 +18,7 @@
     <!-- 查询用户信息 add by wuxw 2018-07-03 -->
     <select id="getUserInfo" parameterType="Map" resultType="Map">
         select t.password,t.address,t.sex,t.name,t.tel,t.status_cd,t.status_cd statusCd,t.user_id,t.user_id
-        userId,t.level_cd,t.level_cd levelCd,t.email
+        userId,t.level_cd,t.level_cd levelCd,t.email,t.face_url faceUrl
         from u_user t
         where 1 =1
         <if test="password !=null and password != ''">
@@ -88,6 +88,9 @@
         </if>
         <if test="email !=null and email != ''">
             , t.email= #{email}
+        </if>
+        <if test="faceUrl !=null and faceUrl != ''">
+            , t.face_url= #{faceUrl}
         </if>
         where 1=1
         <if test="userId !=null and userId != ''">

@@ -5,20 +5,26 @@ import com.java110.bean.dto.org.OrgStaffRelDto;
 import com.java110.bean.po.org.OrgStaffRelPo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
+import com.java110.core.cache.MappingCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.constant.MappingConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.*;
 import com.java110.doc.annotation.*;
+import com.java110.dto.accessControlFace.AccessControlFaceDto;
+import com.java110.dto.accessControlOrg.AccessControlOrgDto;
 import com.java110.dto.storeStaff.StoreStaffDto;
 import com.java110.dto.user.UserDto;
+import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
+import com.java110.intf.accessControl.IAccessControlOrgV1InnerServiceSMO;
 import com.java110.intf.user.IOrgStaffRelInnerServiceSMO;
 import com.java110.intf.user.IOrgStaffRelV1InnerServiceSMO;
 import com.java110.intf.user.IStoreStaffV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
+import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.storeStaff.StoreStaffPo;
 import com.java110.po.user.UserPo;
 import org.apache.commons.lang3.StringUtils;
@@ -84,6 +90,12 @@ public class UserStaffModifyCmd extends Cmd {
     @Autowired
     private IStoreStaffV1InnerServiceSMO storeUserV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAccessControlOrgV1InnerServiceSMO accessControlOrgV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
         Assert.jsonObjectHaveKey(reqJson, "staffId", "请求参数中未包含员工 节点，请确认");
@@ -94,12 +106,7 @@ public class UserStaffModifyCmd extends Cmd {
 
     @Override
     @Java110Transactional
-    public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
-        modifyStaff(reqJson);
-
-    }
-
-    private void modifyStaff(JSONObject paramObj) {
+    public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject paramObj) throws CmdException {
         UserPo userPo = BeanConvertUtil.covertBean(paramObj, UserPo.class);
         //根据手机号查询用户
         UserDto userDto = new UserDto();
@@ -114,7 +121,11 @@ public class UserStaffModifyCmd extends Cmd {
                 }
             }
         }
+        userPo.setFaceUrl(paramObj.getString("photo"));
         int flag = userV1InnerServiceSMOImpl.updateUser(userPo);
+
+        //todo 同步门禁
+        synchronousAccessControl(paramObj);
 
         if (flag < 1) {
             throw new CmdException("保存用户异常");
@@ -154,5 +165,75 @@ public class UserStaffModifyCmd extends Cmd {
         }
     }
 
+    private void synchronousAccessControl(JSONObject reqJson) {
+
+
+        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
+        accessControlFaceDto.setPersonId(reqJson.getString("userId"));
+        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
+        AccessControlFacePo accessControlFacePo = null;
+        if (!ListUtil.isNull(accessControlFaceDtos)) {
+            for (AccessControlFaceDto tmpAccessControlFaceDto : accessControlFaceDtos) {
+                accessControlFacePo = BeanConvertUtil.covertBean(tmpAccessControlFaceDto, AccessControlFacePo.class);
+                accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
+                accessControlFacePo.setMessage("待下发到门禁");
+                String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN,"IMG_PATH");
+
+                accessControlFacePo.setFacePath(imgUrl+reqJson.getString("photo"));
+            }
+            accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
+            return;
+        }
+
+        OrgStaffRelDto orgStaffRelDto = new OrgStaffRelDto();
+        orgStaffRelDto.setStaffId(reqJson.getString("userId"));
+        List<OrgStaffRelDto> orgStaffRelDtoList = orgStaffRelInnerServiceSMOImpl.queryOrgInfoByStaffIds(orgStaffRelDto);
+
+        if (ListUtil.isNull(orgStaffRelDtoList)) {
+            return;
+        }
+
+        AccessControlOrgDto accessControlOrgDto = new AccessControlOrgDto();
+        accessControlOrgDto.setOrgId(orgStaffRelDtoList.get(0).getOrgId());
+        List<AccessControlOrgDto> accessControlOrgDtos = accessControlOrgV1InnerServiceSMOImpl.queryAccessControlOrgs(accessControlOrgDto);
+        if (ListUtil.isNull(accessControlOrgDtos)) {
+            return;
+        }
+
+        //todo 查询人员信息
+        UserDto userDto = new UserDto();
+        userDto.setUserId(reqJson.getString("userId"));
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+        if (ListUtil.isNull(userDtos)) {
+            return;
+        }
+        userDto = userDtos.get(0);
+
+        //todo 查询业主照片
+        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
+
+        for (AccessControlOrgDto tmpAccessControlOrgDto : accessControlOrgDtos) {
+            accessControlFacePo = new AccessControlFacePo();
+            accessControlFacePo.setFacePath(imgUrl + userDto.getFaceUrl());
+            accessControlFacePo.setCommunityId(tmpAccessControlOrgDto.getCommunityId());
+            accessControlFacePo.setIdNumber("");
+            accessControlFacePo.setComeId(tmpAccessControlOrgDto.getAcoId());
+            accessControlFacePo.setComeType(AccessControlFaceDto.COME_TYPE_STAFF);
+            accessControlFacePo.setEndTime(DateUtil.getLastTime());
+            accessControlFacePo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_B));
+            accessControlFacePo.setCardNumber("");
+            accessControlFacePo.setMachineId(tmpAccessControlOrgDto.getMachineId());
+            accessControlFacePo.setMessage("待下发到门禁");
+            accessControlFacePo.setMfId(GenerateCodeFactory.getGeneratorId("11"));
+            accessControlFacePo.setName(userDto.getName());
+            accessControlFacePo.setPersonId(userDto.getUserId());
+            accessControlFacePo.setPersonType(AccessControlFaceDto.PERSON_TYPE_STAFF);
+            accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
+            accessControlFacePo.setRoomName("无");
+            accessControlFaceV1InnerServiceSMOImpl.saveAccessControlFace(accessControlFacePo);
+        }
+
+
+    }
 
 }

@@ -17,6 +17,7 @@ package com.java110.po.user;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-02-11 00:34:41 mail: 928255095@qq.com
@@ -28,69 +29,96 @@ import java.util.Date;
 public class UserPo implements Serializable {
 
     private String password;
-private String address;
-private String sex;
-private String name;
-private String tel;
-private String statusCd = "0";
-private String userId;
-private String levelCd;
-private String email;
-public String getPassword() {
+    private String address;
+    private String sex;
+    private String name;
+    private String tel;
+    private String statusCd = "0";
+    private String userId;
+    private String levelCd;
+    private String email;
+
+    private String faceUrl;
+
+    public String getPassword() {
         return password;
     }
-public void setPassword(String password) {
+
+    public void setPassword(String password) {
         this.password = password;
     }
-public String getAddress() {
+
+    public String getAddress() {
         return address;
     }
-public void setAddress(String address) {
+
+    public void setAddress(String address) {
         this.address = address;
     }
-public String getSex() {
+
+    public String getSex() {
         return sex;
     }
-public void setSex(String sex) {
+
+    public void setSex(String sex) {
         this.sex = sex;
     }
-public String getName() {
+
+    public String getName() {
         return name;
     }
-public void setName(String name) {
+
+    public void setName(String name) {
         this.name = name;
     }
-public String getTel() {
+
+    public String getTel() {
         return tel;
     }
-public void setTel(String tel) {
+
+    public void setTel(String tel) {
         this.tel = tel;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getUserId() {
+
+    public String getUserId() {
         return userId;
     }
-public void setUserId(String userId) {
+
+    public void setUserId(String userId) {
         this.userId = userId;
     }
-public String getLevelCd() {
+
+    public String getLevelCd() {
         return levelCd;
     }
-public void setLevelCd(String levelCd) {
+
+    public void setLevelCd(String levelCd) {
         this.levelCd = levelCd;
     }
-public String getEmail() {
+
+    public String getEmail() {
         return email;
     }
-public void setEmail(String email) {
+
+    public void setEmail(String email) {
         this.email = email;
     }
 
+    public String getFaceUrl() {
+        return faceUrl;
+    }
+
+    public void setFaceUrl(String faceUrl) {
+        this.faceUrl = faceUrl;
+    }
 
 
 }

@@ -29,27 +29,27 @@
         },
         _initMethod: function() {
             vc.getDict('u_org_staff_rel', "rel_cd", function(_data) {
-                vc.component.editStaffInfo.relCds = _data;
+                $that.editStaffInfo.relCds = _data;
             });
         },
         _initEvent: function() {
-            vc.component.$on('edit_staff_event', function(_staffInfo) {
-                vc.component.refreshEditStaffInfo(_staffInfo);
-                vc.component._editGetOrgsByOrgLevelStaff(1, 100, 2, _staffInfo.parentOrgId);
+            $that.$on('edit_staff_event', function(_staffInfo) {
+                $that.refreshEditStaffInfo(_staffInfo);
+                $that._editGetOrgsByOrgLevelStaff(1, 100, 2, _staffInfo.parentOrgId);
                 $('#editStaffModel').modal('show');
             });
         },
         methods: {
             refreshEditStaffInfo(_staffInfo) {
-                vc.copyObject(_staffInfo, vc.component.editStaffInfo);
-                vc.component.editStaffInfo.username = _staffInfo.name;
-                // vc.component.editStaffInfo.photo = _staffInfo.urls && _staffInfo.urls.length > 0 ? _staffInfo.urls[0] : '';
-                // vc.component.editStaffInfo.photoUrl = _fileUrl + "?objId=" +
-                //     vc.component.editStaffInfo.userId + "&communityId=" + vc.getCurrentCommunity().communityId + "&fileTypeCd=12000&time=" + new Date();
+                vc.copyObject(_staffInfo, $that.editStaffInfo);
+                $that.editStaffInfo.username = _staffInfo.name;
+                // $that.editStaffInfo.photo = _staffInfo.urls && _staffInfo.urls.length > 0 ? _staffInfo.urls[0] : '';
+                // $that.editStaffInfo.photoUrl = _fileUrl + "?objId=" +
+                //     $that.editStaffInfo.userId + "&communityId=" + vc.getCurrentCommunity().communityId + "&fileTypeCd=12000&time=" + new Date();
             },
             editStaffValidate() {
                 return vc.validate.validate({
-                    editStaffInfo: vc.component.editStaffInfo
+                    editStaffInfo: $that.editStaffInfo
                 }, {
                     'editStaffInfo.username': [{
                             limit: "required",
@@ -86,7 +86,7 @@
                 });
             },
             editStaffSubmit: function() {
-                if (!vc.component.editStaffValidate()) {
+                if (!$that.editStaffValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
@@ -95,7 +95,7 @@
                 $that.editStaffInfo.photoUrl = "";
                 vc.http.apiPost(
                     '/user.staff.modify',
-                    JSON.stringify(vc.component.editStaffInfo), {
+                    JSON.stringify($that.editStaffInfo), {
                         emulateJSON: true
                     },
                     function(json, res) {
@@ -114,7 +114,7 @@
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');
-                        // vc.component.editStaffInfo.errorInfo = errInfo;
+                        // $that.editStaffInfo.errorInfo = errInfo;
                         $that.editStaffInfo.photoUrl = $that.editStaffInfo.photo;
                         vc.toast(errInfo)
                     });
@@ -136,8 +136,8 @@
                     // let reader = new FileReader(); //新建FileReader对象
                     // reader.readAsDataURL(file); //读取为base64
                     // reader.onloadend = function (e) {
-                    //     vc.component.editStaffInfo.photo = reader.result;
-                    //     vc.component.editStaffInfo.photoUrl = reader.result;
+                    //     $that.editStaffInfo.photo = reader.result;
+                    //     $that.editStaffInfo.photoUrl = reader.result;
                     // }
                 }
             },
@@ -145,10 +145,9 @@
                 var param = new FormData();
                 param.append("uploadFile", _file);
                 param.append('communityId', vc.getCurrentCommunity().communityId);
-                //发送get请求
-                vc.http.upload('uploadFile',
-                    'uploadImage',
-                    param, {
+ 
+               vc.http.upload('/upload/uploadFile',
+               param, {
                         emulateJSON: true,
                         //添加请求头
                         headers: {
@@ -160,9 +159,9 @@
                             vc.toast("上传文件失败");
                             return;
                         }
-                        var data = JSON.parse(json);
-                        vc.component.editStaffInfo.photo = data.fileId;
-                        vc.component.editStaffInfo.photoUrl = data.url;
+                        var _json = JSON.parse(json);
+                        $that.editStaffInfo.photo = _json.data.fileId;
+                        $that.editStaffInfo.photoUrl = _json.data.url;
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');
@@ -185,10 +184,10 @@
                     function(json, res) {
                         var _orgInfo = JSON.parse(json);
                         if (_orgLevel == 2) {
-                            vc.component.editStaffInfo.branchOrgs = _orgInfo.data;
-                            vc.component._editGetOrgsByOrgLevelStaff(1, 100, 3, $that.editStaffInfo.parentTwoOrgId);
+                            $that.editStaffInfo.branchOrgs = _orgInfo.data;
+                            $that._editGetOrgsByOrgLevelStaff(1, 100, 3, $that.editStaffInfo.parentTwoOrgId);
                         } else {
-                            vc.component.editStaffInfo.departmentOrgs = _orgInfo.orgs;
+                            $that.editStaffInfo.departmentOrgs = _orgInfo.orgs;
                         }
                     },
                     function(errInfo, error) {
@@ -197,7 +196,7 @@
                 );
             },
             _editChangeBrach: function() {
-                vc.component._editGetOrgsByOrgLevelStaff(1, 100, 3, $that.editStaffInfo.parentTwoOrgId);
+                $that._editGetOrgsByOrgLevelStaff(1, 100, 3, $that.editStaffInfo.parentTwoOrgId);
             }
         },
     });

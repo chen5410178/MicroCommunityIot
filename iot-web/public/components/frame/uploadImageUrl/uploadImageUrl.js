@@ -127,9 +127,8 @@
                 param.append("uploadFile", _file);
                 param.append('communityId', vc.getCurrentCommunity().communityId);
                 //发送get请求
-                vc.http.upload('uploadFile',
-                    'uploadImage',
-                    param, {
+                vc.http.upload('/upload/uploadFile',
+                param, {
                         emulateJSON: true,
                         //添加请求头
                         headers: {
@@ -141,8 +140,8 @@
                             vc.toast("上传文件失败");
                             return;
                         }
-                        var data = JSON.parse(json);
-                        this.uploadImageUrlInfo.photosUrl.push(data);
+                        let _json = JSON.parse(json);
+                        this.uploadImageUrlInfo.photosUrl.push(_json.data);
                     },
                     function (errInfo, error) {
                         console.log('请求失败处理');

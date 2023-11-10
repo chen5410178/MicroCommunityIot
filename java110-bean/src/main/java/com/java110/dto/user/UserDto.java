@@ -96,6 +96,9 @@ public class UserDto extends PageDto implements Serializable {
     private String parentTwoOrgId;
 
     private String orgLevel;
+
+    private String faceUrl;
+
     public String getUserId() {
         return userId;
     }
@@ -407,5 +410,13 @@ public class UserDto extends PageDto implements Serializable {
 
     public void setOrgLevel(String orgLevel) {
         this.orgLevel = orgLevel;
+    }
+
+    public String getFaceUrl() {
+        return faceUrl;
+    }
+
+    public void setFaceUrl(String faceUrl) {
+        this.faceUrl = faceUrl;
     }
 }
