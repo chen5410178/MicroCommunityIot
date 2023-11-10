@@ -129,7 +129,7 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
     @Override
     public boolean deleteUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
         JSONObject param = new JSONObject();
-        param.put("cmd", "delete person");
+        param.put("cmd", "delete person(s)");
         param.put("flag", -1);
         param.put("id", accessControlFacePo.getPersonId());
 
