@@ -222,9 +222,8 @@ public class OwnerInnerServiceSMOImpl  implements IOwnerInnerServiceSMO {
         List<OwnerAttrDto> ownerAttrDtos = ownerAttrInnerServiceSMOImpl.queryOwnerAttrs(ownerAttrDto);
 
         for (OwnerDto owner : owners) {
-            refreshOwner(owner, users, ownerAttrDtos);
+            refreshOwner(owner, ownerAttrDtos);
         }
-        updateOwnerPhone(owners);
         return owners;
     }
 
