@@ -110,6 +110,7 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
         MqttFactory.publish(REQUEST_FACE.replace(SN, accessControlDto.getMachineCode()), param.toJSONString());
 
         saveLog(accessControlFacePo.getMfId(), accessControlDto.getMachineId(), REQUEST_FACE.replace(SN, accessControlDto.getMachineCode()) + "/uploadperson",
+                accessControlDto.getCommunityId(),
                 param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 
         return true;
@@ -129,7 +130,8 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
         param.put("id", accessControlFacePo.getPersonId());
 
         MqttFactory.publish(REQUEST_FACE.replace(SN, accessControlDto.getMachineCode()), param.toJSONString());
-        saveLog(accessControlFacePo.getMfId(), accessControlDto.getMachineId(), REQUEST_FACE.replace(SN, accessControlDto.getMachineCode()) + "/deleteperson", param.toJSONString(),
+        saveLog(accessControlFacePo.getMfId(), accessControlDto.getMachineId(), REQUEST_FACE.replace(SN, accessControlDto.getMachineCode()) + "/deleteperson",
+                accessControlDto.getCommunityId(), param.toJSONString(),
                 accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 
         return true;
@@ -225,7 +227,7 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
                 "}");
         MqttFactory.publish(REQUEST_FACE.replace(SN, machineDto.getMachineCode()), param.toJSONString());
         saveLog(GenerateCodeFactory.getGeneratorId("11"), machineDto.getMachineId(), REQUEST_FACE.replace(SN, machineDto.getMachineCode()) + "/reboot",
-                param.toJSONString(), machineDto.getUserId(), machineDto.getUserName());
+                machineDto.getCommunityId(), param.toJSONString(), machineDto.getUserId(), machineDto.getUserName());
         return true;
     }
 
@@ -260,7 +262,8 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
                 "       \"ctrl_mode\": \"force\",\n" +
                 "     }");
         MqttFactory.publish(REQUEST_FACE.replace(SN, machineDto.getMachineCode()), param.toJSONString());
-        saveLog(GenerateCodeFactory.getGeneratorId("11"), machineDto.getMachineId(), REQUEST_FACE.replace(SN, machineDto.getMachineCode()) + "/openDoor", param.toJSONString(), machineDto.getUserId(), machineDto.getUserName());
+        saveLog(GenerateCodeFactory.getGeneratorId("11"), machineDto.getMachineId(), REQUEST_FACE.replace(SN, machineDto.getMachineCode()) + "/openDoor",
+                machineDto.getCommunityId(),param.toJSONString(), machineDto.getUserId(), machineDto.getUserName());
         return true;
     }
 

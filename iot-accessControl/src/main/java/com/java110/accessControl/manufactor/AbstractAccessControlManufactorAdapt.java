@@ -155,8 +155,8 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
      * @param userId    业主ID
      * @param userName  业主名称
      */
-    protected void saveLog(String logId, String machineId, String cmd, String reqParam, String userId, String userName) {
-        saveLog(logId, machineId, cmd, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName);
+    protected void saveLog(String logId, String machineId, String cmd,String communityId, String reqParam, String userId, String userName) {
+        saveLog(logId, machineId, cmd,communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName);
     }
 
     /**
@@ -171,7 +171,7 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
      * @param userId    业主ID
      * @param userName  业主名称
      */
-    protected void saveLog(String logId, String machineId, String cmd, String reqParam, String resParam, String state, String userId, String userName) {
+    protected void saveLog(String logId, String machineId, String cmd,String communityId, String reqParam, String resParam, String state, String userId, String userName) {
         AccessControlLogPo accessControlLogPo = new AccessControlLogPo();
         accessControlLogPo.setLogId(logId);
         accessControlLogPo.setMachineId(machineId);
@@ -181,6 +181,7 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         accessControlLogPo.setState(state);
         accessControlLogPo.setUserId(userId);
         accessControlLogPo.setUserName(userName);
+        accessControlLogPo.setCommunityId(communityId);
         accessControlLogV1InnerServiceSMOImpl.saveAccessControlLog(accessControlLogPo);
     }
 
