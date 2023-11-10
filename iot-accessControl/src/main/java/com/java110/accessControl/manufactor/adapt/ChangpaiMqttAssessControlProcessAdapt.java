@@ -213,7 +213,7 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
             code = resultCmd.getIntValue("code");
         }
         String msg = resultCmd.getString("reply") + "说明：" + resultInfo.get(code + "") + "," + resultCmd.getString("desc");
-        cmdResult(code, msg, logAction,machineCode, personId);
+        cmdResult(code, msg, logAction, machineCode, personId);
 
     }
 
@@ -224,7 +224,8 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
                 "  \"cmd\": \"reboot\"\n" +
                 "}");
         MqttFactory.publish(REQUEST_FACE.replace(SN, machineDto.getMachineCode()), param.toJSONString());
-        saveLog(GenerateCodeFactory.getGeneratorId("11"), machineDto.getMachineId(), REQUEST_FACE.replace(SN, machineDto.getMachineCode()) + "/reboot", param.toJSONString(), "-1", "无");
+        saveLog(GenerateCodeFactory.getGeneratorId("11"), machineDto.getMachineId(), REQUEST_FACE.replace(SN, machineDto.getMachineCode()) + "/reboot",
+                param.toJSONString(), machineDto.getUserId(), machineDto.getUserName());
         return true;
     }
 
