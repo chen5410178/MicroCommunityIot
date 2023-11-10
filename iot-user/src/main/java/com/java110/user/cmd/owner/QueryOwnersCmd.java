@@ -6,8 +6,10 @@ import com.java110.bean.dto.file.FileRelDto;
 import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.bean.dto.room.RoomDto;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cache.MappingCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.constant.MappingConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
@@ -117,6 +119,7 @@ public class QueryOwnersCmd extends Cmd {
         List<OwnerDto> ownerDtos = null;
         if (total > 0) {
             ownerDtos = ownerInnerServiceSMOImpl.queryOwners(BeanConvertUtil.covertBean(reqJson, OwnerDto.class));
+            String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN,"IMG_PATH");
 
             for (OwnerDto ownerDto : ownerDtos) {
                 //查询照片
@@ -124,10 +127,11 @@ public class QueryOwnersCmd extends Cmd {
                 fileRelDto.setObjId(ownerDto.getMemberId());
                 fileRelDto.setRelTypeCd("10000"); //人员照片
                 List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
-                if (fileRelDtos != null && fileRelDtos.size() > 0) {
+                if (fileRelDtos != null && !fileRelDtos.isEmpty()) {
                     List<String> urls = new ArrayList<>();
                     for (FileRelDto fileRel : fileRelDtos) {
-                        urls.add(fileRel.getFileRealName());
+                        urls.add(imgUrl+fileRel.getFileRealName());
+                        ownerDto.setUrl(imgUrl+fileRel.getFileRealName());
                     }
                     ownerDto.setUrls(urls);
                 }

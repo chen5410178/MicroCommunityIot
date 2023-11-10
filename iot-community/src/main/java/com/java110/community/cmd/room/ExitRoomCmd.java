@@ -13,13 +13,19 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.doc.annotation.*;
+import com.java110.dto.accessControlFace.AccessControlFaceDto;
+import com.java110.dto.accessControlFloor.AccessControlFloorDto;
+import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
+import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
 import com.java110.intf.community.ICommunityInnerServiceSMO;
 import com.java110.intf.community.IRoomInnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerRoomRelInnerServiceSMO;
 import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
+import com.java110.po.accessControlFace.AccessControlFacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -73,6 +79,13 @@ public class ExitRoomCmd extends Cmd {
 
     @Autowired
     private IRoomV1InnerServiceSMO roomV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAccessControlFloorV1InnerServiceSMO accessControlFloorV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
+
 
 
     @Override
@@ -150,6 +163,56 @@ public class ExitRoomCmd extends Cmd {
         if (flag < 1) {
             throw new IllegalArgumentException("更新房屋状态");
         }
+
+        //todo 人员同步门禁
+        synchronousAccessControl(reqJson);
+
+    }
+
+    private void synchronousAccessControl(JSONObject reqJson) {
+
+        String roomId = reqJson.getString("roomId");
+
+        RoomDto roomDto = new RoomDto();
+        roomDto.setRoomId(roomId);
+        roomDto.setCommunityId(reqJson.getString("communityId"));
+        List<RoomDto> roomDtos = roomV1InnerServiceSMOImpl.queryRooms(roomDto);
+        if (ListUtil.isNull(roomDtos)) {
+            return;
+        }
+        String unitId = roomDtos.get(0).getUnitId();
+        if (StringUtil.isEmpty(unitId)) {
+            return;
+        }
+
+
+        AccessControlFloorDto accessControlFloorDto = new AccessControlFloorDto();
+        accessControlFloorDto.setUnitId(unitId);
+        accessControlFloorDto.setCommunityId(reqJson.getString("communityId"));
+        List<AccessControlFloorDto> accessControlFloorDtos = accessControlFloorV1InnerServiceSMOImpl.queryAccessControlFloors(accessControlFloorDto);
+        if (ListUtil.isNull(accessControlFloorDtos)) {
+            return;
+        }
+
+        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
+        accessControlFaceDto.setComeType(AccessControlFaceDto.COME_TYPE_FLOOR);
+        accessControlFaceDto.setComeId(accessControlFloorDtos.get(0).getAcfId());
+        accessControlFaceDto.setPersonId(reqJson.getString("ownerId"));
+        accessControlFaceDto.setCommunityId(accessControlFloorDtos.get(0).getCommunityId());
+        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
+        if(ListUtil.isNull(accessControlFaceDtos)){
+            return;
+        }
+
+        AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
+        accessControlFacePo.setMfId(accessControlFaceDtos.get(0).getMfId());
+        accessControlFacePo.setMachineId(accessControlFaceDtos.get(0).getMachineId());
+        accessControlFacePo.setCommunityId(accessControlFaceDtos.get(0).getCommunityId());
+       // accessControlFacePo.
+        accessControlFaceV1InnerServiceSMOImpl.deleteAccessControlFace(accessControlFacePo);
+
+
+
 
     }
 }

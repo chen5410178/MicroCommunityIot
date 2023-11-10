@@ -1,26 +1,39 @@
 package com.java110.community.cmd.room;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.java110.bean.dto.file.FileRelDto;
+import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.bean.dto.owner.OwnerRoomRelDto;
+import com.java110.bean.dto.room.RoomDto;
 import com.java110.bean.po.owner.OwnerRoomRelPo;
 import com.java110.bean.po.room.RoomPo;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cache.MappingCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.constant.MappingConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.*;
 import com.java110.doc.annotation.*;
+import com.java110.dto.accessControlFace.AccessControlFaceDto;
+import com.java110.dto.accessControlFloor.AccessControlFloorDto;
+import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
+import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
 import com.java110.intf.community.ICommunityInnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.community.IUnitInnerServiceSMO;
+import com.java110.intf.system.IFileRelInnerServiceSMO;
 import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
+import com.java110.intf.user.IOwnerV1InnerServiceSMO;
+import com.java110.po.accessControlFace.AccessControlFacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Java110CmdDoc(title = "业主房屋关系绑定",
         description = "对应后台 业主入驻房屋功能",
@@ -74,6 +87,18 @@ public class SellRoomCmd extends Cmd {
     @Autowired
     private IRoomV1InnerServiceSMO roomV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IOwnerV1InnerServiceSMO ownerV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAccessControlFloorV1InnerServiceSMO accessControlFloorV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IFileRelInnerServiceSMO fileRelInnerServiceSMOImpl;
+
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
@@ -107,12 +132,16 @@ public class SellRoomCmd extends Cmd {
         if (!reqJson.containsKey("endTime")) {
             reqJson.put("endTime", "2037-01-01 00:00:00");
         }
-        //添加单元信息
+        //todo 绑定人员 房屋关系
         sellRoom(reqJson);
 
-        //更新房屋信息为售出
+        //todo 更新房屋信息为售出
         updateShellRoom(reqJson);
+
+        //todo 人员同步门禁
+        synchronousAccessControl(reqJson);
     }
+
 
     /**
      * 售卖房屋信息
@@ -152,4 +181,84 @@ public class SellRoomCmd extends Cmd {
             throw new CmdException("添加业主房屋关系");
         }
     }
+
+    /**
+     * 人员同步门禁
+     *
+     * @param reqJson
+     */
+    private void synchronousAccessControl(JSONObject reqJson) {
+        String roomId = reqJson.getString("roomId");
+
+        RoomDto roomDto = new RoomDto();
+        roomDto.setRoomId(roomId);
+        roomDto.setCommunityId(reqJson.getString("communityId"));
+        List<RoomDto> roomDtos = roomV1InnerServiceSMOImpl.queryRooms(roomDto);
+        if (ListUtil.isNull(roomDtos)) {
+            return;
+        }
+
+        String unitId = roomDtos.get(0).getUnitId();
+        if (StringUtil.isEmpty(unitId)) {
+            return;
+        }
+
+
+        AccessControlFloorDto accessControlFloorDto = new AccessControlFloorDto();
+        accessControlFloorDto.setUnitId(unitId);
+        accessControlFloorDto.setCommunityId(reqJson.getString("communityId"));
+        List<AccessControlFloorDto> accessControlFloorDtos = accessControlFloorV1InnerServiceSMOImpl.queryAccessControlFloors(accessControlFloorDto);
+        if (ListUtil.isNull(accessControlFloorDtos)) {
+            return;
+        }
+
+        //todo 查询人员信息
+        OwnerDto ownerDto = new OwnerDto();
+        ownerDto.setMemberId(reqJson.getString("ownerId"));
+        List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
+        if (ListUtil.isNull(ownerDtos)) {
+            return;
+        }
+        ownerDto = ownerDtos.get(0);
+
+        //todo 查询业主照片
+        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
+        FileRelDto fileRelDto = new FileRelDto();
+        fileRelDto.setObjId(ownerDto.getMemberId());
+        fileRelDto.setRelTypeCd("10000"); //人员照片
+        List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
+        if (!ListUtil.isNull(fileRelDtos)) {
+            List<String> urls = new ArrayList<>();
+            for (FileRelDto fileRel : fileRelDtos) {
+                urls.add(imgUrl + fileRel.getFileRealName());
+                ownerDto.setUrl(imgUrl + fileRel.getFileRealName());
+            }
+            ownerDto.setUrls(urls);
+        }
+
+        AccessControlFacePo accessControlFacePo = null;
+        for (AccessControlFloorDto tmpAccessControlFloorDto : accessControlFloorDtos) {
+            accessControlFacePo = new AccessControlFacePo();
+            accessControlFacePo.setFacePath(ownerDto.getUrl());
+            accessControlFacePo.setCommunityId(tmpAccessControlFloorDto.getCommunityId());
+            accessControlFacePo.setIdNumber(ownerDto.getIdCard());
+            accessControlFacePo.setComeId(tmpAccessControlFloorDto.getAcfId());
+            accessControlFacePo.setComeType(AccessControlFaceDto.COME_TYPE_FLOOR);
+            accessControlFacePo.setEndTime(reqJson.getString("endTime"));
+            accessControlFacePo.setStartTime(reqJson.getString("endTime"));
+            accessControlFacePo.setCardNumber("");
+            accessControlFacePo.setMachineId(tmpAccessControlFloorDto.getMachineId());
+            accessControlFacePo.setMessage("待下发到门禁");
+            accessControlFacePo.setMfId(GenerateCodeFactory.getGeneratorId("11"));
+            accessControlFacePo.setName(ownerDto.getName());
+            accessControlFacePo.setPersonId(ownerDto.getMemberId());
+            accessControlFacePo.setPersonType(AccessControlFaceDto.PERSON_TYPE_OWNER);
+            accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
+            accessControlFacePo.setRoomName(roomDtos.get(0).getFloorNum() + "-" + roomDtos.get(0).getUnitNum() + "-" + roomDtos.get(0).getRoomNum());
+            accessControlFaceV1InnerServiceSMOImpl.saveAccessControlFace(accessControlFacePo);
+        }
+
+
+    }
+
 }

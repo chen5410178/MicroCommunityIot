@@ -67,9 +67,9 @@ public class OwnerInnerServiceSMOImpl  implements IOwnerInnerServiceSMO {
             return owners;
         }
 
-        String[] userIds = getUserIds(owners);
-        //根据 userId 查询用户信息
-        List<UserDto> users = userInnerServiceSMOImpl.getUserInfo(userIds);
+//        String[] userIds = getUserIds(owners);
+//        //根据 userId 查询用户信息
+//        List<UserDto> users = userInnerServiceSMOImpl.getUserInfo(userIds);
         String[] memberIds = getMemberIds(owners);
         OwnerAttrDto ownerAttrDto = new OwnerAttrDto();
         ownerAttrDto.setMemberIds(memberIds);
@@ -77,51 +77,12 @@ public class OwnerInnerServiceSMOImpl  implements IOwnerInnerServiceSMO {
         List<OwnerAttrDto> ownerAttrDtos = ownerAttrInnerServiceSMOImpl.queryOwnerAttrs(ownerAttrDto);
 
         for (OwnerDto owner : owners) {
-            refreshOwner(owner, users, ownerAttrDtos);
+            refreshOwner(owner, ownerAttrDtos);
         }
-
-        updateOwnerPhone(owners);
         return owners;
     }
 
-    private boolean updateOwnerPhone(List<OwnerDto> owners) {
-        if (owners.size() > 15) {
-            return true;
-        }
 
-        List<String> memberIds = new ArrayList<>();
-
-        for (OwnerDto tmpOwnerDto : owners) {
-            memberIds.add(tmpOwnerDto.getMemberId());
-        }
-
-//        FileRelDto fileRelDto = new FileRelDto();
-//        //fileRelDto.setObjId(owners.get(0).getMemberId());
-//        fileRelDto.setObjIds(memberIds.toArray(new String[memberIds.size()]));
-//        List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
-//
-//        if (fileRelDtos == null || fileRelDtos.size() < 1) {
-//            return true;
-//        }
-//
-//        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN,"IMG_PATH");
-//
-//        for (OwnerDto tmpOwnerDto : owners) {
-//            for (FileRelDto tmpFileRelDto : fileRelDtos) {
-//                if (!tmpOwnerDto.getMemberId().equals(tmpFileRelDto.getObjId())) {
-//                    continue;
-//                }
-//
-//                if (fileRelDtos.get(0).getFileSaveName().startsWith("http")) {
-//                    tmpOwnerDto.setUrl(fileRelDtos.get(0).getFileSaveName());
-//                } else {
-//                    tmpOwnerDto.setUrl(imgUrl + fileRelDtos.get(0).getFileSaveName());
-//                }
-//            }
-//        }
-
-        return false;
-    }
 
     @Override
     public List<OwnerDto> queryOwnerMembers(@RequestBody OwnerDto ownerDto) {
@@ -140,10 +101,9 @@ public class OwnerInnerServiceSMOImpl  implements IOwnerInnerServiceSMO {
         List<OwnerAttrDto> ownerAttrDtos = ownerAttrInnerServiceSMOImpl.queryOwnerAttrs(ownerAttrDto);
 
         for (OwnerDto owner : owners) {
-            refreshOwner(owner, users, ownerAttrDtos);
+            refreshOwner(owner, ownerAttrDtos);
         }
 
-        updateOwnerPhone(owners);
         return owners;
     }
 
@@ -151,16 +111,8 @@ public class OwnerInnerServiceSMOImpl  implements IOwnerInnerServiceSMO {
      * 从用户列表中查询用户，将用户中的信息 刷新到 floor对象中
      *
      * @param owner 小区业主信息
-     * @param users 用户列表
      */
-    private void refreshOwner(OwnerDto owner, List<UserDto> users, List<OwnerAttrDto> ownerAttrDtos) {
-        for (UserDto user : users) {
-            if (owner.getUserId().equals(user.getUserId())) {
-                //BeanConvertUtil.covertBean(user, owner);
-                owner.setUserName(user.getName());
-                break;
-            }
-        }
+    private void refreshOwner(OwnerDto owner, List<OwnerAttrDto> ownerAttrDtos) {
 
         if (ownerAttrDtos == null || ownerAttrDtos.size() < 1) {
             return;
