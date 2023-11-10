@@ -46,7 +46,7 @@
                 };
 
                 //发送get请求
-                vc.http.apiGet('accessControlFace.listAccessControlFace',
+                vc.http.apiGet('/accessControlFace.listAccessControlFace',
                     param,
                     function(json, res) {
                         var _accessControlFaceInfo = JSON.parse(json);

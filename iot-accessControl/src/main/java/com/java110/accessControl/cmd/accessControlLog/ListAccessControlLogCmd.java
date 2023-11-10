@@ -73,6 +73,8 @@ public class ListAccessControlLogCmd extends Cmd {
 
         AccessControlLogDto accessControlLogDto = BeanConvertUtil.covertBean(reqJson, AccessControlLogDto.class);
 
+        accessControlLogDto.setUserId(reqJson.getString("personId"));
+
         //todo 如果包含房屋信息
         ifHasRoomId(reqJson, accessControlLogDto);
 

@@ -26,6 +26,7 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.lock.LockLogDto;
 import com.java110.intf.lock.ILockLogV1InnerServiceSMO;
+import net.sf.ehcache.constructs.blocking.BlockingCache;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -64,6 +65,8 @@ public class ListLockLogCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
         LockLogDto lockLogDto = BeanConvertUtil.covertBean(reqJson, LockLogDto.class);
+
+        lockLogDto.setUserId(reqJson.getString("personId"));
 
         int count = lockLogV1InnerServiceSMOImpl.queryLockLogsCount(lockLogDto);
 

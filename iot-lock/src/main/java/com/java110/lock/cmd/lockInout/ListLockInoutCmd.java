@@ -64,6 +64,7 @@ public class ListLockInoutCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
         LockInoutDto lockInoutDto = BeanConvertUtil.covertBean(reqJson, LockInoutDto.class);
+        lockInoutDto.setUserId(reqJson.getString("personId"));
 
         int count = lockInoutV1InnerServiceSMOImpl.queryLockInoutsCount(lockInoutDto);
 

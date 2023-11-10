@@ -32,25 +32,25 @@
             //加载 业主信息
             var _ownerId = vc.getParam('ownerId')
             if (vc.notNull(_ownerId)) {
-                //vc.component.listOwnerInfo.conditions.ownerId = _ownerId;
+                //$that.listOwnerInfo.conditions.ownerId = _ownerId;
             }
             $that._getColumns(function() {
-                vc.component._listOwnerData($that.listOwnerInfo.currentPage, DEFAULT_ROWS);
+                $that._listOwnerData($that.listOwnerInfo.currentPage, DEFAULT_ROWS);
             });
         },
         _initEvent: function() {
             vc.on('listOwner', 'listOwnerData', function() {
-                vc.component._listOwnerData($that.listOwnerInfo.currentPage, DEFAULT_ROWS);
+                $that._listOwnerData($that.listOwnerInfo.currentPage, DEFAULT_ROWS);
             });
             vc.on('pagination', 'page_event', function(_currentPage) {
                 $that.listOwnerInfo.currentPage = _currentPage;
-                vc.component._listOwnerData(_currentPage, DEFAULT_ROWS);
+                $that._listOwnerData(_currentPage, DEFAULT_ROWS);
             });
             vc.on('listOwner', 'chooseRoom', function(_room) {
-                if (vc.component.listOwnerInfo._eventName == 'PayPropertyFee') {
+                if ($that.listOwnerInfo._eventName == 'PayPropertyFee') {
                     vc.jumpToPage("/#/pages/property/listRoomFee?" + vc.objToGetParam(_room));
                 } else {
-                    vc.jumpToPage("/#/pages/property/ownerRepairManage?ownerId=" + vc.component.listOwnerInfo._currentOwnerId + "&roomId=" + _room.roomId);
+                    vc.jumpToPage("/#/pages/property/ownerRepairManage?ownerId=" + $that.listOwnerInfo._currentOwnerId + "&roomId=" + _room.roomId);
                 }
             });
             vc.on('listOwner', 'chooseParkingSpace', function(_parkingSpace) {
@@ -58,24 +58,24 @@
             });
             vc.on("listOwner", "notify", function(_param) {
                 if (_param.hasOwnProperty("floorId")) {
-                    vc.component.listOwnerInfo.conditions.floorId = _param.floorId;
+                    $that.listOwnerInfo.conditions.floorId = _param.floorId;
                 }
                 if (_param.hasOwnProperty("unitId")) {
-                    vc.component.listOwnerInfo.conditions.unitId = _param.unitId;
+                    $that.listOwnerInfo.conditions.unitId = _param.unitId;
                 }
                 if (_param.hasOwnProperty("roomId")) {
-                    vc.component.listOwnerInfo.conditions.roomId = _param.roomId;
-                    vc.component._listOwnerData(DEFAULT_PAGE, DEFAULT_ROWS);
+                    $that.listOwnerInfo.conditions.roomId = _param.roomId;
+                    $that._listOwnerData(DEFAULT_PAGE, DEFAULT_ROWS);
                 }
             });
         },
         methods: {
             _listOwnerData: function(_page, _row) {
-                vc.component.listOwnerInfo.conditions.page = _page;
-                vc.component.listOwnerInfo.conditions.row = _row;
-                vc.component.listOwnerInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
+                $that.listOwnerInfo.conditions.page = _page;
+                $that.listOwnerInfo.conditions.row = _row;
+                $that.listOwnerInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
                 var param = {
-                    params: vc.component.listOwnerInfo.conditions
+                    params: $that.listOwnerInfo.conditions
                 }
                 param.params.name = param.params.name.trim();
                 param.params.roomName = param.params.roomName.trim();
@@ -87,13 +87,13 @@
                     param,
                     function(json, res) {
                         var listOwnerData = JSON.parse(json);
-                        vc.component.listOwnerInfo.total = listOwnerData.total;
-                        vc.component.listOwnerInfo.records = listOwnerData.records;
-                        vc.component.listOwnerInfo.owners = listOwnerData.data;
+                        $that.listOwnerInfo.total = listOwnerData.total;
+                        $that.listOwnerInfo.records = listOwnerData.records;
+                        $that.listOwnerInfo.owners = listOwnerData.data;
                         $that.dealOwnerAttr(listOwnerData.owners);
                         vc.emit('pagination', 'init', {
-                            total: vc.component.listOwnerInfo.records,
-                            dataCount: vc.component.listOwnerInfo.total,
+                            total: $that.listOwnerInfo.records,
+                            dataCount: $that.listOwnerInfo.total,
                             currentPage: _page
                         });
                     },
@@ -104,28 +104,28 @@
             },
             _openAddOwnerModal: function() { //打开添加框
                 vc.emit('addOwner', 'openAddOwnerModal', -1);
-                vc.component.listOwnerInfo.moreCondition = false;
+                $that.listOwnerInfo.moreCondition = false;
             },
             _openDelOwnerModel: function(_owner) { // 打开删除对话框
                 vc.emit('deleteOwner', 'openOwnerModel', _owner);
-                vc.component.listOwnerInfo.moreCondition = false;
+                $that.listOwnerInfo.moreCondition = false;
             },
             _openEditOwnerModel: function(_owner) {
                 vc.emit('editOwner', 'openEditOwnerModal', _owner);
-                vc.component.listOwnerInfo.moreCondition = false;
+                $that.listOwnerInfo.moreCondition = false;
             },
             //查询
             _queryOwnerMethod: function() {
-                vc.component._listOwnerData(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listOwnerData(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             //重置
             _resetOwnerMethod: function() {
-                vc.component.listOwnerInfo.conditions.name = "";
-                vc.component.listOwnerInfo.conditions.roomName = "";
-                vc.component.listOwnerInfo.conditions.link = "";
-                vc.component.listOwnerInfo.conditions.ownerId = "";
-                vc.component.listOwnerInfo.conditions.idCard = "";
-                vc.component._listOwnerData(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that.listOwnerInfo.conditions.name = "";
+                $that.listOwnerInfo.conditions.roomName = "";
+                $that.listOwnerInfo.conditions.link = "";
+                $that.listOwnerInfo.conditions.ownerId = "";
+                $that.listOwnerInfo.conditions.idCard = "";
+                $that._listOwnerData(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _openAddOwnerRoom: function(_owner) {
                 vc.jumpToPage("/#/pages/property/addOwnerRoomBinding?ownerId=" + _owner.ownerId);
@@ -137,16 +137,16 @@
                 vc.jumpToPage("/#/pages/property/sellParkingSpace?ownerId=" + _owner.ownerId);
             },
             _openOwnerDetailModel: function(_owner) {
-                vc.jumpToPage("/#/pages/owner/ownerDetail?ownerId=" + _owner.ownerId + "&ownerName=" + _owner.name + "&needBack=true");
+                vc.jumpToPage("/#/pages/owner/ownerDetail?memberId=" + _owner.memberId +"&ownerId="+_owner.ownerId+ "&ownerName=" + _owner.name + "&needBack=true");
             },
             _openDeleteOwnerRoom: function(_owner) {
                 vc.jumpToPage("/#/pages/property/deleteOwnerRoom?ownerId=" + _owner.ownerId);
             },
             _moreCondition: function() {
-                if (vc.component.listOwnerInfo.moreCondition) {
-                    vc.component.listOwnerInfo.moreCondition = false;
+                if ($that.listOwnerInfo.moreCondition) {
+                    $that.listOwnerInfo.moreCondition = false;
                 } else {
-                    vc.component.listOwnerInfo.moreCondition = true;
+                    $that.listOwnerInfo.moreCondition = true;
                 }
             },
             dealOwnerAttr: function(owners) {

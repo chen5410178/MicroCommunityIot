@@ -5,27 +5,26 @@
     vc.extends({
         data: {
             ownerDetailInfo: {
-                viewRoomFlag: '',
+                viewOwnerFlag: '',
+                memberId:'',
                 ownerId: "",
-                floorNum: '',
-                unitNum: "",
-                roomNum: "",
-                layer: "",
-                roomSubTypeName: "",
-                builtUpArea: "",
-                roomArea: "",
-                stateName: "",
-                startTime: "",
-                roomAttrDtos: [],
+                name: '',
+                link: "",
+                sex: "",
+                idCard: "",
+                address: "",
+                ownerTypeName: "",
+                ownerAttrDtos: [],
                 url: '',
-                _currentTab: 'ownerDetailOwner',
+                _currentTab: 'ownerDetailRoom',
                 needBack: false,
             }
         },
         _initMethod: function() {
+            $that.ownerDetailInfo.memberId = vc.getParam('memberId');
             $that.ownerDetailInfo.ownerId = vc.getParam('ownerId');
             $that.ownerDetailInfo.needBack = vc.getParam('needBack');
-            if (!vc.notNull($that.ownerDetailInfo.ownerId)) {
+            if (!vc.notNull($that.ownerDetailInfo.memberId)) {
                 return;
             }
 
@@ -34,12 +33,12 @@
                 $that.ownerDetailInfo._currentTab = _currentTab;
             }
 
-            $that._loadRoomInfo();
+            $that._loadOwnerInfo();
             $that.changeTab($that.ownerDetailInfo._currentTab);
         },
         _initEvent: function() {
             vc.on('ownerDetail', 'listRoomData', function(_info) {
-                $that._loadRoomInfo();
+                $that._loadOwnerInfo();
                 $that.changeTab($that.ownerDetailInfo._currentTab);
             });
         },
@@ -47,19 +46,19 @@
             _loadOwnerInfo: function() {
                 let param = {
                         params: {
-                            ownerId: $that.ownerDetailInfo.ownerId,
+                            memberId: $that.ownerDetailInfo.memberId,
                             page: 1,
                             row: 1,
                             communityId: vc.getCurrentCommunity().communityId,
                         }
                     }
                     //发送get请求
-                vc.http.apiGet('/room.queryRooms',
+                vc.http.apiGet('/owner.queryOwners',
                     param,
                     function(json, res) {
                         let _json = JSON.parse(json);
                         vc.copyObject(_json.data[0], $that.ownerDetailInfo);
-                        $that.ownerDetailInfo.roomAttrDtos = _json.data[0].roomAttrDtos
+                        $that.ownerDetailInfo.ownerAttrDtos = _json.data[0].ownerAttrDtos
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');
@@ -70,6 +69,7 @@
                 $that.ownerDetailInfo._currentTab = _tab;
                 vc.emit(_tab, 'switch', {
                     ownerId: $that.ownerDetailInfo.ownerId,
+                    memberId: $that.ownerDetailInfo.memberId,
                     ownerName: $that.ownerDetailInfo.name,
                     link: $that.ownerDetailInfo.link,
                 })

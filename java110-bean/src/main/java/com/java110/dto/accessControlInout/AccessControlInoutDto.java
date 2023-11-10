@@ -29,6 +29,8 @@ public class AccessControlInoutDto extends PageDto implements Serializable {
     private String state;
     private String communityId;
 
+    private String personId;
+
 
     private Date createTime;
 
@@ -154,5 +156,13 @@ public class AccessControlInoutDto extends PageDto implements Serializable {
 
     public void setMachineName(String machineName) {
         this.machineName = machineName;
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
     }
 }

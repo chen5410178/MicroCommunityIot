@@ -11,7 +11,13 @@
     </div>
     <!-- 业主信息 -->
     <div class="margin-top">
-        <div class="row" >
+        <div class="text-center vc-float-left" style="width: 150px;" v-if="ownerDetailInfo.url">
+            <image width="120px" height="140px" class="border-radius" v-bind:src="ownerDetailInfo.url" @error="errorLoadImg" />
+        </div>
+        <div class="text-center vc-float-left" style="width: 150px;" v-else>
+            <image width="120px" height="140px" class="border-radius" src="/img/noPhoto.jpg" />
+        </div>
+        <div class="row" style="min-height: 160px;">
             <div class="col-sm-12">
                 <div class="row">
                     <div class="col-sm-3">
@@ -19,7 +25,7 @@
                             <label class="col-form-label">
                                     <vc:i18n name="人员ID：" namespace="ownerDetailInfo"></vc:i18n>
                             </label>
-                            <label class="">{{ownerDetailInfo.roomId}}</label>
+                            <label class="">{{ownerDetailInfo.memberId}}</label>
                         </div>
                     </div>
                     <div class="col-sm-3">
@@ -27,25 +33,25 @@
                             <label class="col-form-label">
                                     <vc:i18n name="名称：" namespace="ownerDetailInfo"></vc:i18n>
                             </label>
-                            <label class="">{{ownerDetailInfo.floorNum}}-{{ownerDetailInfo.unitNum}}-{{ownerDetailInfo.roomNum}}</label>
+                            <label class="">{{ownerDetailInfo.name}}</label>
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label class="col-form-label">
-                                    <vc:i18n name="楼层：" namespace="ownerDetailInfo"></vc:i18n>
+                                    <vc:i18n name="电话：" namespace="ownerDetailInfo"></vc:i18n>
                             </label>
                             <label class="">
-                                {{ownerDetailInfo.layer}}
+                                {{ownerDetailInfo.link}}
                             </label>
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label class="col-form-label">
-                                <vc:i18n name="房屋类型:" namespace="ownerDetailInfo"></vc:i18n>
+                                <vc:i18n name="性别:" namespace="ownerDetailInfo"></vc:i18n>
                             </label>
-                            <label class="">{{ownerDetailInfo.roomSubTypeName}}</label>
+                            <label class="">{{ownerDetailInfo.sex == 0 ? '男' : '女'}}</label>
                         </div>
                     </div>
                 </div>
@@ -53,37 +59,29 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label class="col-form-label">
-                                    <vc:i18n name="建筑面积:" namespace="ownerDetailInfo"></vc:i18n>
+                                    <vc:i18n name="身份证:" namespace="ownerDetailInfo"></vc:i18n>
                             </label>
-                            <label class="">{{ownerDetailInfo.builtUpArea}}</label>
+                            <label class="">{{ownerDetailInfo.idCard}}</label>
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label class="col-form-label">
-                                    <vc:i18n name="室内面积：" namespace="ownerDetailInfo"></vc:i18n>
+                                    <vc:i18n name="家庭住址：" namespace="ownerDetailInfo"></vc:i18n>
                             </label>
-                            <label class="">{{ownerDetailInfo.roomArea}}</label>
+                            <label class="">{{ownerDetailInfo.address}}</label>
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label class="col-form-label">
-                                    <vc:i18n name="房屋状态" namespace="ownerDetailInfo"></vc:i18n>
+                                    <vc:i18n name="人员类型:" namespace="ownerDetailInfo"></vc:i18n>
                             </label>
-                            <label class=""> {{ownerDetailInfo.stateName}}</label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                    <vc:i18n name="交房时间" namespace="ownerDetailInfo"></vc:i18n>
-                            </label>
-                            <label class=""> {{ownerDetailInfo.startTime}}</label>
+                            <label class=""> {{ownerDetailInfo.ownerTypeName}}</label>
                         </div>
                     </div>
                 </div>
-                <div v-for="(item,index) in ownerDetailInfo.roomAttrDtos">
+                <div v-for="(item,index) in ownerDetailInfo.ownerAttrDtos">
                     <div class="row" v-if="index % 4 == 0">
                         <div class="col-sm-3">
                             <div class="form-group">
@@ -118,12 +116,12 @@
     <div class="margin-top-sm">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:ownerDetailInfo._currentTab == 'ownerDetailOwner'}" v-on:click="changeTab('ownerDetailOwner')">
+                <a class="nav-link" v-bind:class="{active:ownerDetailInfo._currentTab == 'ownerDetailRoom'}" v-on:click="changeTab('ownerDetailRoom')">
                     <vc:i18n name="房屋" namespace="ownerDetail"></vc:i18n>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:ownerDetailInfo._currentTab == 'ownerDetailCar'}" v-on:click="changeTab('ownerDetailCar')">
+                <a class="nav-link" v-bind:class="{active:ownerDetailInfo._currentTab == 'ownerDetailMember'}" v-on:click="changeTab('ownerDetailMember')">
                     <vc:i18n name="家庭人员" namespace="ownerDetail"></vc:i18n>
                 </a>
             </li>
@@ -133,7 +131,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:ownerDetailInfo._currentTab == 'ownerDetailAccessControl'}" v-on:click="changeTab('ownerDetailAccessControl')">
+                <a class="nav-link" v-bind:class="{active:ownerDetailInfo._currentTab == 'ownerDetailAccessControlFace'}" v-on:click="changeTab('ownerDetailAccessControlFace')">
                     <vc:i18n name="授权门禁" namespace="ownerDetail"></vc:i18n>
                 </a>
             </li>
@@ -165,16 +163,43 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:ownerDetailInfo._currentTab == 'ownerDetailLockInout'}" v-on:click="changeTab('ownerDetailLockInout')">
+                <a class="nav-link" v-bind:class="{active:ownerDetailInfo._currentTab == 'ownerDetailChargeOrder'}" v-on:click="changeTab('ownerDetailChargeOrder')">
                     <vc:i18n name="充电订单" namespace="ownerDetail"></vc:i18n>
                 </a>
             </li>
         </ul>
     </div>
-    <div v-if="ownerDetailInfo._currentTab == 'ownerDetailOwner'">
-        <!-- <vc:create path="property/ownerDetailOwner"></vc:create> -->
+    <div v-if="ownerDetailInfo._currentTab == 'ownerDetailRoom'">
+        <vc:create path="owner/ownerDetailRoom"></vc:create>
+    </div>
+    <div v-if="ownerDetailInfo._currentTab == 'ownerDetailMember'">
+        <vc:create path="owner/ownerDetailMember"></vc:create>
     </div>
     
+    <div v-if="ownerDetailInfo._currentTab == 'ownerDetailCar'">
+        <vc:create path="owner/ownerDetailCar"></vc:create>
+    </div>
+    <div v-if="ownerDetailInfo._currentTab == 'ownerDetailAccessControlFace'">
+        <vc:create path="owner/ownerDetailAccessControlFace"></vc:create>
+    </div>
+    <div v-if="ownerDetailInfo._currentTab == 'ownerDetailAccessControlLog'">
+        <vc:create path="owner/ownerDetailAccessControlLog"></vc:create>
+    </div>
+    <div v-if="ownerDetailInfo._currentTab == 'ownerDetailAccessControlInout'">
+        <vc:create path="owner/ownerDetailAccessControlInout"></vc:create>
+    </div> 
+    <div v-if="ownerDetailInfo._currentTab == 'ownerDetailLockPerson'">
+        <vc:create path="owner/ownerDetailLockPerson"></vc:create>
+    </div>
+    <div v-if="ownerDetailInfo._currentTab == 'ownerDetailLockLog'">
+        <vc:create path="owner/ownerDetailLockLog"></vc:create>
+    </div>
+    <div v-if="ownerDetailInfo._currentTab == 'ownerDetailLockInout'">
+        <vc:create path="owner/ownerDetailLockInout"></vc:create>
+    </div>
+    <div v-if="ownerDetailInfo._currentTab == 'ownerDetailChargeOrder'">
+        <vc:create path="owner/ownerDetailChargeOrder"></vc:create>
+    </div>
     
     
 </div>
