@@ -31,8 +31,10 @@ import com.java110.intf.accessControl.IAccessControlInoutV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.accessControlInout.AccessControlInoutDto;
+
 import java.util.List;
 import java.util.ArrayList;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
@@ -52,7 +54,7 @@ import org.slf4j.LoggerFactory;
 @Java110Cmd(serviceCode = "accessControlInout.listAccessControlInout")
 public class ListAccessControlInoutCmd extends Cmd {
 
-  private static Logger logger = LoggerFactory.getLogger(ListAccessControlInoutCmd.class);
+    private static Logger logger = LoggerFactory.getLogger(ListAccessControlInoutCmd.class);
     @Autowired
     private IAccessControlInoutV1InnerServiceSMO accessControlInoutV1InnerServiceSMOImpl;
 
@@ -70,26 +72,26 @@ public class ListAccessControlInoutCmd extends Cmd {
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-           AccessControlInoutDto accessControlInoutDto = BeanConvertUtil.covertBean(reqJson, AccessControlInoutDto.class);
+        AccessControlInoutDto accessControlInoutDto = BeanConvertUtil.covertBean(reqJson, AccessControlInoutDto.class);
 
         //todo 如果包含房屋信息
         ifHasRoomId(reqJson, accessControlInoutDto);
 
-           int count = accessControlInoutV1InnerServiceSMOImpl.queryAccessControlInoutsCount(accessControlInoutDto);
+        int count = accessControlInoutV1InnerServiceSMOImpl.queryAccessControlInoutsCount(accessControlInoutDto);
 
-           List<AccessControlInoutDto> accessControlInoutDtos = null;
+        List<AccessControlInoutDto> accessControlInoutDtos = null;
 
-           if (count > 0) {
-               accessControlInoutDtos = accessControlInoutV1InnerServiceSMOImpl.queryAccessControlInouts(accessControlInoutDto);
-           } else {
-               accessControlInoutDtos = new ArrayList<>();
-           }
+        if (count > 0) {
+            accessControlInoutDtos = accessControlInoutV1InnerServiceSMOImpl.queryAccessControlInouts(accessControlInoutDto);
+        } else {
+            accessControlInoutDtos = new ArrayList<>();
+        }
 
-           ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, accessControlInoutDtos);
+        ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, accessControlInoutDtos);
 
-           ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
+        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
-           cmdDataFlowContext.setResponseEntity(responseEntity);
+        cmdDataFlowContext.setResponseEntity(responseEntity);
     }
 
     private void ifHasRoomId(JSONObject reqJson, AccessControlInoutDto accessControlInoutDto) {

@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 public class FileInnerServiceSMOImpl  implements IFileInnerServiceSMO {
 
-    private static final String ROOT_PATH = "hc/";
+    private static final String ROOT_PATH = "hc/iot/";
 
 
     @Autowired

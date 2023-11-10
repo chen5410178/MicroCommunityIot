@@ -106,6 +106,9 @@
                                         <th class="text-center">
                                             <vc:i18n name='开门状态' namespace='accessControlInout'></vc:i18n>
                                         </th>
+                                        <th class="text-center">
+                                            <vc:i18n name='开门时间' namespace='accessControlInout'></vc:i18n>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -118,11 +121,13 @@
                                         <td class="text-center">{{accessControlInout.machineName}}</td>
                                         <td class="text-center">{{accessControlInout.machineCode}}</td>
                                         <td class="text-center">{{accessControlInout.name}}</td>
-                                        <td class="text-center">{{accessControlInout.openTypeCd}}</td>
+                                        <td class="text-center">{{accessControlInout.openTypeCd == '1000'?'人脸':'其他'}}</td>
                                         <td class="text-center">{{accessControlInout.tel || '-'}}</td>
                                         <td class="text-center">{{accessControlInout.idCard || '-'}}</td>
                                         <td class="text-center">{{accessControlInout.similar}}</td>
                                         <td class="text-center">{{accessControlInout.state == 'C'?'开门成功':'开门失败'}}</td>
+                                        <td class="text-center">{{accessControlInout.createTime}}</td>
+
                                     </tr>
                                 </tbody>
                                 <tfoot>
