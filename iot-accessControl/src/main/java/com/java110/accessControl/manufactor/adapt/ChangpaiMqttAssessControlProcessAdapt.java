@@ -105,7 +105,11 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
 //        if(!StringUtil.isEmpty(userFaceDto.getStartTime())){
 //            param.put("term_start", userFaceDto.getStartTime());
 //        }
-        param.put("reg_image", accessControlFacePo.getFaceBase64().replaceAll("\n", ""));
+        String faceData = accessControlFacePo.getFaceBase64();
+        if (!StringUtil.isEmpty(faceData)) {
+            faceData = faceData.replaceAll("\n", "");
+        }
+        param.put("reg_image", faceData);
 
         MqttFactory.publish(REQUEST_FACE.replace(SN, accessControlDto.getMachineCode()), param.toJSONString());
 
@@ -203,10 +207,10 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
             logAction = REQUEST_FACE.replace(SN, machineCode) + "/deleteperson";
         } else if (cmd.startsWith("upload")) {
             logAction = REQUEST_FACE.replace(SN, machineCode) + "/uploadperson";
-        } else if(cmd.startsWith("gpio")){
+        } else if (cmd.startsWith("gpio")) {
             //{"cmd":"gpio control","code":0,"device_sn":"0123E0-9EED8D-E9D0EE","reply":"ACK"}
             logAction = REQUEST_FACE.replace(SN, machineCode) + "/openDoor";
-        }else if(cmd.startsWith("reboot")){
+        } else if (cmd.startsWith("reboot")) {
             logAction = REQUEST_FACE.replace(SN, machineCode) + "/reboot";
         }
         System.out.println("logAction=" + logAction + ",cmd=" + cmd + ",machineCode=" + machineCode);
@@ -268,7 +272,7 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
                 "     }");
         MqttFactory.publish(REQUEST_FACE.replace(SN, machineDto.getMachineCode()), param.toJSONString());
         saveLog(GenerateCodeFactory.getGeneratorId("11"), machineDto.getMachineId(), REQUEST_FACE.replace(SN, machineDto.getMachineCode()) + "/openDoor",
-                machineDto.getCommunityId(),param.toJSONString(), machineDto.getUserId(), machineDto.getUserName());
+                machineDto.getCommunityId(), param.toJSONString(), machineDto.getUserId(), machineDto.getUserName());
         return true;
     }
 

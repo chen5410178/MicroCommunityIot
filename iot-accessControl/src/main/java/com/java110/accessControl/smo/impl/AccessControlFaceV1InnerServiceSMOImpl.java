@@ -20,9 +20,7 @@ import com.java110.accessControl.dao.IAccessControlFaceV1ServiceDao;
 import com.java110.accessControl.manufactor.IAccessControlManufactor;
 import com.java110.bean.dto.PageDto;
 import com.java110.core.factory.ApplicationContextFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.*;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
@@ -60,6 +58,14 @@ public class AccessControlFaceV1InnerServiceSMOImpl implements IAccessControlFac
     @Override
     public int saveAccessControlFace(@RequestBody AccessControlFacePo accessControlFacePo) {
 
+
+
+        int saveFlag = accessControlFaceV1ServiceDaoImpl.saveAccessControlFaceInfo(BeanConvertUtil.beanCovertMap(accessControlFacePo));
+
+        if(!StringUtil.isEmpty(accessControlFacePo.getFacePath())) {
+            accessControlFacePo.setFaceBase64(ImageUtils.getBase64ByImgUrl(accessControlFacePo.getFacePath()));
+        }
+
         //todo 通知适配器 添加人脸
 
         AccessControlDto accessControlDto = new AccessControlDto();
@@ -80,16 +86,22 @@ public class AccessControlFaceV1InnerServiceSMOImpl implements IAccessControlFac
         if (!saveUser) {
             throw new IllegalArgumentException("下发设备失败，失败原因厂家未返回");
         }
-
-        int saveFlag = accessControlFaceV1ServiceDaoImpl.saveAccessControlFaceInfo(BeanConvertUtil.beanCovertMap(accessControlFacePo));
         return saveFlag;
+
     }
 
     @Override
     public int updateAccessControlFace(@RequestBody AccessControlFacePo accessControlFacePo) {
 
+        int saveFlag = accessControlFaceV1ServiceDaoImpl.updateAccessControlFaceInfo(BeanConvertUtil.beanCovertMap(accessControlFacePo));
+
         //todo 通知适配器 添加人脸
         if(AccessControlFaceDto.STATE_WAIT.equals(accessControlFacePo.getState())) {
+
+            if(!StringUtil.isEmpty(accessControlFacePo.getFacePath())) {
+                accessControlFacePo.setFaceBase64(ImageUtils.getBase64ByImgUrl(accessControlFacePo.getFacePath()));
+            }
+
             AccessControlDto accessControlDto = new AccessControlDto();
             accessControlDto.setMachineId(accessControlFacePo.getMachineId());
             accessControlDto.setCommunityId(accessControlFacePo.getCommunityId());
@@ -110,7 +122,6 @@ public class AccessControlFaceV1InnerServiceSMOImpl implements IAccessControlFac
             }
         }
 
-        int saveFlag = accessControlFaceV1ServiceDaoImpl.updateAccessControlFaceInfo(BeanConvertUtil.beanCovertMap(accessControlFacePo));
         return saveFlag;
     }
 
