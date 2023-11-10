@@ -23,7 +23,8 @@
         ac.machine_code machineCode,ac.machine_name machineName,td.name stateName
         from access_control_log t
         left join access_control ac on ac.machine_id = t.machine_id and ac.status_cd = '0'
-        left join t_dict td on t.state = td.status_cd and td.table_name = 'access_control_log' and td.table_columns = 'state'
+        left join t_dict td on t.state = td.status_cd and td.table_name = 'access_control_log' and td.table_columns =
+        'state'
         where 1 =1
         <if test="resParam !=null and resParam != ''">
             and t.res_param= #{resParam}
@@ -75,34 +76,36 @@
 
     <!-- 修改门禁日志信息 add by wuxw 2018-07-03 -->
     <update id="updateAccessControlLogInfo" parameterType="Map">
-        update access_control_log t set t.status_cd = #{statusCd}
-        <if test="newBId != null and newBId != ''">
-            ,t.b_id = #{newBId}
-        </if>
-        <if test="resParam !=null and resParam != ''">
-            , t.res_param= #{resParam}
-        </if>
-        <if test="machineId !=null and machineId != ''">
-            , t.machine_id= #{machineId}
-        </if>
-        <if test="reqParam !=null and reqParam != ''">
-            , t.req_param= #{reqParam}
-        </if>
-        <if test="state !=null and state != ''">
-            , t.state= #{state}
-        </if>
-        <if test="communityId !=null and communityId != ''">
-            , t.community_id= #{communityId}
-        </if>
-        <if test="userName !=null and userName != ''">
-            , t.user_name= #{userName}
-        </if>
-        <if test="logAction !=null and logAction != ''">
-            , t.log_action= #{logAction}
-        </if>
-        <if test="userId !=null and userId != ''">
-            , t.user_id= #{userId}
-        </if>
+        update access_control_log t
+        <set>
+            <if test="newBId != null and newBId != ''">
+                t.b_id = #{newBId},
+            </if>
+            <if test="resParam !=null and resParam != ''">
+                t.res_param= #{resParam},
+            </if>
+            <if test="machineId !=null and machineId != ''">
+                t.machine_id= #{machineId},
+            </if>
+            <if test="reqParam !=null and reqParam != ''">
+                t.req_param= #{reqParam},
+            </if>
+            <if test="state !=null and state != ''">
+                t.state= #{state},
+            </if>
+            <if test="communityId !=null and communityId != ''">
+                t.community_id= #{communityId},
+            </if>
+            <if test="userName !=null and userName != ''">
+                 t.user_name= #{userName},
+            </if>
+            <if test="logAction !=null and logAction != ''">
+                 t.log_action= #{logAction},
+            </if>
+            <if test="userId !=null and userId != ''">
+                 t.user_id= #{userId}
+            </if>
+        </set>
         where 1=1
         <if test="logId !=null and logId != ''">
             and t.log_id= #{logId}
