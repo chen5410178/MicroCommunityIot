@@ -223,7 +223,7 @@
     <!-- 查询员工总量 -->
     <select id="getStaffs" parameterType="Map" resultType="Map">
         select u.user_id, u.user_id userId,u.name,u.name
-        userName,u.email,u.address,u.sex,u.tel,u.level_cd levelCd
+        userName,u.email,u.address,u.sex,u.tel,u.level_cd levelCd,t.face_url faceUrl
         <if test="orgId !=null and orgId != ''">
             ,uo.org_id orgId,uo.org_name,uo.org_name orgName,uosr.store_id storeId,uosr.rel_id relId
         </if>

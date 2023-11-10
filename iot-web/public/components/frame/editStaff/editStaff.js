@@ -35,6 +35,8 @@
         _initEvent: function() {
             $that.$on('edit_staff_event', function(_staffInfo) {
                 $that.refreshEditStaffInfo(_staffInfo);
+                $that.editStaffInfo.photo = _staffInfo.faceUrl;
+                $that.editStaffInfo.photoUrl = _staffInfo.faceUrl;
                 $that._editGetOrgsByOrgLevelStaff(1, 100, 2, _staffInfo.parentOrgId);
                 $('#editStaffModel').modal('show');
             });
@@ -43,9 +45,6 @@
             refreshEditStaffInfo(_staffInfo) {
                 vc.copyObject(_staffInfo, $that.editStaffInfo);
                 $that.editStaffInfo.username = _staffInfo.name;
-                // $that.editStaffInfo.photo = _staffInfo.urls && _staffInfo.urls.length > 0 ? _staffInfo.urls[0] : '';
-                // $that.editStaffInfo.photoUrl = _fileUrl + "?objId=" +
-                //     $that.editStaffInfo.userId + "&communityId=" + vc.getCurrentCommunity().communityId + "&fileTypeCd=12000&time=" + new Date();
             },
             editStaffValidate() {
                 return vc.validate.validate({
@@ -133,12 +132,6 @@
                     }
                     // 改为异步上传图片
                     this._doUploadImageEditStaff(file);
-                    // let reader = new FileReader(); //新建FileReader对象
-                    // reader.readAsDataURL(file); //读取为base64
-                    // reader.onloadend = function (e) {
-                    //     $that.editStaffInfo.photo = reader.result;
-                    //     $that.editStaffInfo.photoUrl = reader.result;
-                    // }
                 }
             },
             _doUploadImageEditStaff: function(_file) {

@@ -6,8 +6,10 @@ import com.java110.bean.dto.basePrivilege.BasePrivilegeDto;
 import com.java110.bean.dto.org.OrgDto;
 import com.java110.bean.dto.org.OrgStaffRelDto;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cache.MappingCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.constant.MappingConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
@@ -44,19 +46,19 @@ import java.util.Map;
                 @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
                 @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
                 @Java110ParamDoc(name = "staffs", type = "Object", remark = "有效数据"),
-                @Java110ParamDoc(parentNodeName = "staffs",name = "userId", type = "String", remark = "员工ID"),
-                @Java110ParamDoc(parentNodeName = "staffs",name = "name", type = "String", remark = "员工名称"),
-                @Java110ParamDoc(parentNodeName = "staffs",name = "orgName", type = "String", remark = "组织"),
-                @Java110ParamDoc(parentNodeName = "staffs",name = "orgId", type = "String", remark = "组织ID"),
-                @Java110ParamDoc(parentNodeName = "staffs",name = "relCdName", type = "String", remark = "岗位"),
-                @Java110ParamDoc(parentNodeName = "staffs",name = "tel", type = "String", remark = "手机号"),
-                @Java110ParamDoc(parentNodeName = "staffs",name = "address", type = "String", remark = "地址"),
+                @Java110ParamDoc(parentNodeName = "staffs", name = "userId", type = "String", remark = "员工ID"),
+                @Java110ParamDoc(parentNodeName = "staffs", name = "name", type = "String", remark = "员工名称"),
+                @Java110ParamDoc(parentNodeName = "staffs", name = "orgName", type = "String", remark = "组织"),
+                @Java110ParamDoc(parentNodeName = "staffs", name = "orgId", type = "String", remark = "组织ID"),
+                @Java110ParamDoc(parentNodeName = "staffs", name = "relCdName", type = "String", remark = "岗位"),
+                @Java110ParamDoc(parentNodeName = "staffs", name = "tel", type = "String", remark = "手机号"),
+                @Java110ParamDoc(parentNodeName = "staffs", name = "address", type = "String", remark = "地址"),
         }
 )
 
 @Java110ExampleDoc(
-        reqBody="http://{ip}:{port}/app/query.staff.infos?page=1&row=10&orgId=102022091983800014&staffName=",
-        resBody="{\"page\":0,\"records\":1,\"rows\":0,\"staffs\":[{\"address\":\"changzhi\",\"age\":0,\"email\":\"123@126.com\",\"initials\":\"H\",\"levelCd\":\"01\",\"name\":\"韩余\",\"orgId\":\"842022090369280030\",\"orgLevel\":\"1\",\"orgName\":\"晋邻通智慧社区 / 安保部\",\"parentOrgId\":\"-1\",\"parentTwoOrgId\":\"-1\",\"relCd\":\"1000\",\"relCdName\":\"普通员工\",\"relId\":\"842022091914570040\",\"sex\":\"1\",\"storeId\":\"102022090382820025\",\"tel\":\"15033304901\",\"urls\":[\"img/20220919/5d258a09-0cea-407b-9da5-93da98a93760.jpg\"],\"userId\":\"302022091908980026\",\"userName\":\"韩余\"},{\"address\":\"长治\",\"age\":0,\"email\":\"sxjltwy@163.com\",\"initials\":\"H\",\"levelCd\":\"01\",\"name\":\"韩俞\",\"orgId\":\"842022090369280030\",\"orgLevel\":\"1\",\"orgName\":\"晋邻通智慧社区 / 安保部\",\"parentOrgId\":\"-1\",\"parentTwoOrgId\":\"-1\",\"relCd\":\"4000\",\"relCdName\":\"部门组长\",\"relId\":\"842022091910820017\",\"sex\":\"0\",\"storeId\":\"102022090382820025\",\"tel\":\"17633305226\",\"urls\":[\"img/20220906/98ff9c83-606e-4f1a-8f40-fbcdbb00c784.jpg\"],\"userId\":\"302022090609300172\",\"userName\":\"韩俞\"},{\"address\":\"长治\",\"age\":0,\"email\":\"sxjltwy@163.com\",\"initials\":\"L\",\"levelCd\":\"01\",\"name\":\"李瑶\",\"orgId\":\"842022090369280030\",\"orgLevel\":\"1\",\"orgName\":\"晋邻通智慧社区 / 安保部\",\"parentOrgId\":\"-1\",\"parentTwoOrgId\":\"-1\",\"relCd\":\"1000\",\"relCdName\":\"普通员工\",\"relId\":\"842022091967800024\",\"sex\":\"1\",\"storeId\":\"102022090382820025\",\"tel\":\"13032266195\",\"urls\":[\"img/20220916/b7acab38-e72e-4e20-8804-9a1d5fc5d18f.jpg\"],\"userId\":\"302022090656600168\",\"userName\":\"李瑶\"},{\"address\":\"长治\",\"age\":0,\"email\":\"sxjltwy@163.com\",\"initials\":\"W\",\"levelCd\":\"01\",\"name\":\"王勇\",\"orgId\":\"842022090369280030\",\"orgLevel\":\"1\",\"orgName\":\"晋邻通智慧社区 / 安保部\",\"parentOrgId\":\"-1\",\"parentTwoOrgId\":\"-1\",\"relCd\":\"8000\",\"relCdName\":\"总公司总经理\",\"relId\":\"842022091936110033\",\"sex\":\"0\",\"storeId\":\"102022090382820025\",\"tel\":\"15034504949\",\"urls\":[\"img/20220906/1dff150d-4f59-40b3-a9be-d437026e1b00.jpg\"],\"userId\":\"302022090645120164\",\"userName\":\"王勇\"}],\"total\":1}"
+        reqBody = "http://{ip}:{port}/app/query.staff.infos?page=1&row=10&orgId=102022091983800014&staffName=",
+        resBody = "{\"page\":0,\"records\":1,\"rows\":0,\"staffs\":[{\"address\":\"changzhi\",\"age\":0,\"email\":\"123@126.com\",\"initials\":\"H\",\"levelCd\":\"01\",\"name\":\"韩余\",\"orgId\":\"842022090369280030\",\"orgLevel\":\"1\",\"orgName\":\"晋邻通智慧社区 / 安保部\",\"parentOrgId\":\"-1\",\"parentTwoOrgId\":\"-1\",\"relCd\":\"1000\",\"relCdName\":\"普通员工\",\"relId\":\"842022091914570040\",\"sex\":\"1\",\"storeId\":\"102022090382820025\",\"tel\":\"15033304901\",\"urls\":[\"img/20220919/5d258a09-0cea-407b-9da5-93da98a93760.jpg\"],\"userId\":\"302022091908980026\",\"userName\":\"韩余\"},{\"address\":\"长治\",\"age\":0,\"email\":\"sxjltwy@163.com\",\"initials\":\"H\",\"levelCd\":\"01\",\"name\":\"韩俞\",\"orgId\":\"842022090369280030\",\"orgLevel\":\"1\",\"orgName\":\"晋邻通智慧社区 / 安保部\",\"parentOrgId\":\"-1\",\"parentTwoOrgId\":\"-1\",\"relCd\":\"4000\",\"relCdName\":\"部门组长\",\"relId\":\"842022091910820017\",\"sex\":\"0\",\"storeId\":\"102022090382820025\",\"tel\":\"17633305226\",\"urls\":[\"img/20220906/98ff9c83-606e-4f1a-8f40-fbcdbb00c784.jpg\"],\"userId\":\"302022090609300172\",\"userName\":\"韩俞\"},{\"address\":\"长治\",\"age\":0,\"email\":\"sxjltwy@163.com\",\"initials\":\"L\",\"levelCd\":\"01\",\"name\":\"李瑶\",\"orgId\":\"842022090369280030\",\"orgLevel\":\"1\",\"orgName\":\"晋邻通智慧社区 / 安保部\",\"parentOrgId\":\"-1\",\"parentTwoOrgId\":\"-1\",\"relCd\":\"1000\",\"relCdName\":\"普通员工\",\"relId\":\"842022091967800024\",\"sex\":\"1\",\"storeId\":\"102022090382820025\",\"tel\":\"13032266195\",\"urls\":[\"img/20220916/b7acab38-e72e-4e20-8804-9a1d5fc5d18f.jpg\"],\"userId\":\"302022090656600168\",\"userName\":\"李瑶\"},{\"address\":\"长治\",\"age\":0,\"email\":\"sxjltwy@163.com\",\"initials\":\"W\",\"levelCd\":\"01\",\"name\":\"王勇\",\"orgId\":\"842022090369280030\",\"orgLevel\":\"1\",\"orgName\":\"晋邻通智慧社区 / 安保部\",\"parentOrgId\":\"-1\",\"parentTwoOrgId\":\"-1\",\"relCd\":\"8000\",\"relCdName\":\"总公司总经理\",\"relId\":\"842022091936110033\",\"sex\":\"0\",\"storeId\":\"102022090382820025\",\"tel\":\"15034504949\",\"urls\":[\"img/20220906/1dff150d-4f59-40b3-a9be-d437026e1b00.jpg\"],\"userId\":\"302022090645120164\",\"userName\":\"王勇\"}],\"total\":1}"
 )
 @Java110Cmd(serviceCode = "query.staff.infos")
 public class QueryStaffInfosCmd extends Cmd {
@@ -75,7 +77,6 @@ public class QueryStaffInfosCmd extends Cmd {
 
     @Autowired
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
-
 
 
     @Autowired
@@ -133,21 +134,6 @@ public class QueryStaffInfosCmd extends Cmd {
         List<UserDto> staffs = new ArrayList<>();
         if (count > 0) {
             staffs = userInnerServiceSMOImpl.getStaffs(userDto);
-//            for (UserDto apiStaffDataVo : staffs) {
-//                FileRelDto fileRelDto = new FileRelDto();
-//                fileRelDto.setObjId(apiStaffDataVo.getUserId());
-//                fileRelDto.setRelTypeCd("12000"); //员工图片
-//                List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
-//                if (fileRelDtos != null && fileRelDtos.size() > 0) {
-//                    List<String> urls = new ArrayList<>();
-//                    for (FileRelDto fileRel : fileRelDtos) {
-//                        urls.add(fileRel.getFileRealName());
-//                    }
-//                    apiStaffDataVo.setUrls(urls);
-//                }
-//                staffs.add(apiStaffDataVo);
-//            }
-   //         refreshInitials(staffs);
             refreshOrgs(staffs, reqJson.getString("storeId"));
         } else {
             staffs = new ArrayList<>();
@@ -159,12 +145,15 @@ public class QueryStaffInfosCmd extends Cmd {
         context.setResponseEntity(responseEntity);
     }
 
-    private void refreshOrgs( List<UserDto> staffs, String storeId) {
+    private void refreshOrgs(List<UserDto> staffs, String storeId) {
         if (staffs == null || staffs.size() < 1) {
             return;
         }
         List<String> staffIds = new ArrayList<>();
+        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
+
         for (UserDto apiStaffDataVo : staffs) {
+            apiStaffDataVo.setFaceUrl(imgUrl + apiStaffDataVo.getFaceUrl());
             staffIds.add(apiStaffDataVo.getUserId());
         }
         OrgDto orgDto = new OrgDto();
@@ -188,7 +177,7 @@ public class QueryStaffInfosCmd extends Cmd {
                 OrgDto org = new OrgDto();
                 org.setOrgId(tmpOrgStaffRelDto.getOrgId());
                 List<OrgDto> orgs = orgV1InnerServiceSMOImpl.queryOrgs(org);
-                if(orgs == null || orgs.size() < 1){
+                if (orgs == null || orgs.size() < 1) {
                     continue;
                 }
                 apiStaffDataVo.setOrgId(tmpOrgStaffRelDto.getOrgId());
@@ -240,8 +229,8 @@ public class QueryStaffInfosCmd extends Cmd {
 
     /**
      * 刷入首字母
-     *
- //    * @param staffs
+     * <p>
+     * //    * @param staffs
      */
 //    private void refreshInitials(List<UserDto> staffs) {
 //        for (UserDto staffDataVo : staffs) {
@@ -251,7 +240,6 @@ public class QueryStaffInfosCmd extends Cmd {
 //            staffDataVo.setInitials(PinYinUtil.getFirstSpell(staffDataVo.getName()).toUpperCase().charAt(0) + "");
 //        }
 //    }
-
     private void findCompany(List<String> haveOrgList, List<OrgDto> orgDtoList) {
         for (OrgDto orgDto : orgDtoList) {
             haveOrgList.add(orgDto.getOrgId());
