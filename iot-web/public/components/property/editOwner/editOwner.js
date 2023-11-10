@@ -1,6 +1,5 @@
 (function (vc) {
     //var _fileUrl = 'https://hc.demo.winqi.cn/callComponent/download/getFile/fileByObjId';
-    var _fileUrl = '/callComponent/download/getFile/fileByObjId';
     vc.extends({
         propTypes: {
             notifyLoadDataComponentName: vc.propTypes.string,
@@ -34,15 +33,14 @@
         _initEvent: function () {
             vc.on('editOwner', 'openEditOwnerModal', function (_owner) {
                 if (_owner.address == null || _owner.address == undefined || _owner.address == '') {
-                    vc.component.editOwnerInfo.address = "";
+                    $that.editOwnerInfo.address = "";
                 }
-                vc.copyObject(_owner, vc.component.editOwnerInfo);
+                vc.copyObject(_owner, $that.editOwnerInfo);
                 //根据memberId 查询 照片信息
-                vc.component.editOwnerInfo.ownerPhoto = _owner.urls && _owner.urls.length > 0 ? _owner.urls[0] : '';
-                vc.component.editOwnerInfo.ownerPhotoUrl = _fileUrl + "?objId=" +
-                    vc.component.editOwnerInfo.memberId + "&communityId=" + vc.getCurrentCommunity().communityId + "&fileTypeCd=10000&time=" + new Date();
+                $that.editOwnerInfo.ownerPhoto = _owner.urls && _owner.urls.length > 0 ? _owner.urls[0] : '';
+                $that.editOwnerInfo.ownerPhotoUrl = _owner.url;
                 $('#editOwnerModel').modal('show');
-                vc.component._initAddOwnerMediaForEdit();
+                $that._initAddOwnerMediaForEdit();
                 if (_owner.hasOwnProperty('ownerAttrDtos')) {
                     let _ownerAttrDtos = _owner.ownerAttrDtos;
                     _ownerAttrDtos.forEach(item => {
@@ -59,18 +57,18 @@
         methods: {
             editOwnerValidate: function () {
                 return vc.validate.validate({
-                    editOwnerInfo: vc.component.editOwnerInfo
+                    editOwnerInfo: $that.editOwnerInfo
                 }, {
                     'editOwnerInfo.name': [{
                         limit: "required",
                         param: "",
                         errInfo: "名称不能为空"
                     },
-                        {
-                            limit: "maxin",
-                            param: "2,64",
-                            errInfo: "名称长度必须在2位至64位"
-                        },
+                    {
+                        limit: "maxin",
+                        param: "2,64",
+                        errInfo: "名称长度必须在2位至64位"
+                    },
                     ],
                     'editOwnerInfo.sex': [{
                         limit: "required",
@@ -102,38 +100,30 @@
                 });
             },
             editOwnerMethod: function () {
-                if (!vc.component.editOwnerValidate()) {
+                if (!$that.editOwnerValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
-                if (vc.component.editOwnerInfo.idCard != null && vc.component.editOwnerInfo.idCard != '' &&
-                    vc.component.editOwnerInfo.idCard != undefined) {
-                    $that.obtainEditAge();
-                    // if ($that.editOwnerInfo.flag != null && $that.editOwnerInfo.flag != '' &&
-                    //     $that.editOwnerInfo.flag != undefined && $that.editOwnerInfo.flag == 1) {
-                    //     vc.component.editOwnerInfo.idCard = vc.component.editOwnerInfo.card;
-                    //     // vc.toast("身份证格式不对，请重新填写");
-                    //     return;
-                    // }
-                    // return;
+                if ($that.editOwnerInfo.idCard != null && $that.editOwnerInfo.idCard != '' &&
+                    $that.editOwnerInfo.idCard != undefined) {
                 }
-                vc.component.editOwnerInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.editOwnerInfo.communityId = vc.getCurrentCommunity().communityId;
                 //编辑时 ownerPhoto 中内容不是照片内容，则清空
-                if (vc.component.editOwnerInfo.ownerPhotoUrl.indexOf(_fileUrl) != -1) {
-                    vc.component.editOwnerInfo.ownerPhotoUrl = "";
+                if ($that.editOwnerInfo.ownerPhotoUrl.indexOf("http") != -1) {
+                    $that.editOwnerInfo.ownerPhotoUrl = "";
                 }
                 vc.http.apiPost(
                     '/owner.editOwner',
-                    JSON.stringify(vc.component.editOwnerInfo), {
-                        emulateJSON: true
-                    },
+                    JSON.stringify($that.editOwnerInfo), {
+                    emulateJSON: true
+                },
                     function (json, res) {
                         //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
                         let _json = JSON.parse(json);
                         if (_json.code == 0) {
                             //关闭model
                             $('#editOwnerModel').modal('hide');
-                            vc.component.clearEditOwnerInfo();
+                            $that.clearEditOwnerInfo();
                             vc.emit($props.notifyLoadDataComponentName, 'listOwnerData', {});
                             vc.toast("修改成功");
                             return;
@@ -149,7 +139,7 @@
             clearEditOwnerInfo: function () {
                 let _componentTitle = $that.editOwnerInfo.componentTitle;
                 let _attrs = $that.editOwnerInfo.attrs;
-                vc.component.editOwnerInfo = {
+                $that.editOwnerInfo = {
                     componentTitle: _componentTitle,
                     ownerId: '',
                     memberId: '',
@@ -175,8 +165,8 @@
                     navigator.msGetUserMedia || null;
             },
             _initAddOwnerMediaForEdit: function () {
-                if (vc.component._editUserMedia()) {
-                    vc.component.editOwnerInfo.videoPlaying = false;
+                if ($that._editUserMedia()) {
+                    $that.editOwnerInfo.videoPlaying = false;
                     var constraints = {
                         video: {
                             width: 208,
@@ -195,17 +185,17 @@
                             video.srcObject = stream;
                         }
                         video.play();
-                        vc.component.editOwnerInfo.videoPlaying = true;
+                        $that.editOwnerInfo.videoPlaying = true;
                     }, function (error) {
-                        vc.component.editOwnerInfo.videoPlaying = false;
+                        $that.editOwnerInfo.videoPlaying = false;
                     });
                 } else {
-                    vc.component.editOwnerInfo.videoPlaying = false;
+                    $that.editOwnerInfo.videoPlaying = false;
                     console.log("初始化视频失败");
                 }
             },
             _takePhotoForEdit: function () {
-                if (vc.component.editOwnerInfo.videoPlaying) {
+                if ($that.editOwnerInfo.videoPlaying) {
                     var canvas = document.getElementById('canvasForEdit');
                     var video = document.getElementById('ownerPhotoForEdit');
                     let w = video.videoWidth;
@@ -227,7 +217,7 @@
                     var data = canvas.toDataURL('image/jpeg', 0.3);
                     // 改为异步上传图片
                     this._doUploadImageEditOwner(data);
-                    // vc.component.editOwnerInfo.ownerPhoto = data;
+                    // $that.editOwnerInfo.ownerPhoto = data;
                     //document.getElementById('photo').setAttribute('src', data);
                 } else {
                     vc.toast('未检测到摄像头');
@@ -247,38 +237,30 @@
                     }
                     // 改为异步上传图片
                     this._doUploadImageEditOwner(file);
-                    // var reader = new FileReader(); //新建FileReader对象
-                    // reader.readAsDataURL(file); //读取为base64
-                    // reader.onloadend = function (e) {
-                    //     vc.translate(reader.result, function (_data) {
-                    //         vc.component.editOwnerInfo.ownerPhoto = _data;
-                    //     })
-                    // }
                 }
             },
             // 异步上传图片
             _doUploadImageEditOwner: function (_file) {
-                var param = new FormData();
+                let param = new FormData();
                 param.append("uploadFile", _file);
                 param.append('communityId', vc.getCurrentCommunity().communityId);
                 //发送get请求
-                vc.http.upload('uploadFile',
-                    'uploadImage',
+                vc.http.upload('/upload/uploadFile',
                     param, {
-                        emulateJSON: true,
-                        //添加请求头
-                        headers: {
-                            "Content-Type": "multipart/form-data"
-                        }
-                    },
+                    emulateJSON: true,
+                    //添加请求头
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                },
                     function (json, res) {
                         if (res.status != 200) {
                             vc.toast("上传文件失败");
                             return;
                         }
-                        var data = JSON.parse(json);
-                        vc.component.editOwnerInfo.ownerPhoto = data.fileId;
-                        vc.component.editOwnerInfo.ownerPhotoUrl = data.url;
+                        var _json = JSON.parse(json);
+                        $that.editOwnerInfo.ownerPhoto = _json.data.fileId;
+                        $that.editOwnerInfo.ownerPhotoUrl = _json.data.url;
                     },
                     function (errInfo, error) {
                         console.log('请求失败处理');
@@ -287,13 +269,13 @@
                 );
             },
             _reOpenVedioForEdit: function () {
-                vc.component.editOwnerInfo.ownerPhoto = "";
-                vc.component.editOwnerInfo.ownerPhotoUrl = "";
-                vc.component._initAddOwnerMediaForEdit();
+                $that.editOwnerInfo.ownerPhoto = "";
+                $that.editOwnerInfo.ownerPhotoUrl = "";
+                $that._initAddOwnerMediaForEdit();
             },
             _closeVedioForEdit: function () {
-                if (vc.component.editOwnerInfo.mediaStreamTrack != null) {
-                    vc.component.editOwnerInfo.mediaStreamTrack.stop();
+                if ($that.editOwnerInfo.mediaStreamTrack != null) {
+                    $that.editOwnerInfo.mediaStreamTrack.stop();
                 }
             },
             _loadEditOwnerAttrSpec: function () {
@@ -325,7 +307,7 @@
             obtainEditAge: function () {
                 // $that.checkIdCard($that.editOwnerInfo.idCard);
                 // let param = {
-                //     idCard: vc.component.editOwnerInfo.idCard,
+                //     idCard: $that.editOwnerInfo.idCard,
                 //     communityId: vc.getCurrentCommunity().communityId
                 // };
                 // //发送get请求
@@ -337,7 +319,7 @@
                 //         //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
                 //         let _json = JSON.parse(json);
                 //         if (res.status == 200) {
-                //             vc.component.editOwnerInfo.age = _json.age;
+                //             $that.editOwnerInfo.age = _json.age;
                 //         } else {
                 //             vc.toast(_json.msg);
                 //         }

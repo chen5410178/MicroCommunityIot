@@ -123,6 +123,11 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
     @Override
     public boolean updateUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
         deleteUser(accessControlDto, accessControlFacePo);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return addUser(accessControlDto, accessControlFacePo);
     }
 
