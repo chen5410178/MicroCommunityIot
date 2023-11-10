@@ -2,18 +2,24 @@ package com.java110.user.cmd.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cache.MappingCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.constant.MappingConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.CmdContextUtils;
+import com.java110.core.utils.ListUtil;
 import com.java110.doc.annotation.*;
+import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.privilegeUser.PrivilegeUserDto;
+import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.intf.user.IPrivilegeUserV1InnerServiceSMO;
 import com.java110.intf.user.IStoreStaffV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
+import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.privilegeUser.PrivilegeUserPo;
 import com.java110.po.storeStaff.StoreStaffPo;
 import com.java110.po.user.UserPo;
@@ -44,14 +50,12 @@ import java.util.List;
 )
 
 @Java110ExampleDoc(
-        reqBody="{\"userId\":\"123123\"}",
-        resBody="{'code':0,'msg':'成功'"
+        reqBody = "{\"userId\":\"123123\"}",
+        resBody = "{'code':0,'msg':'成功'"
 )
 
 @Java110Cmd(serviceCode = "user.staff.delete")
 public class UserStaffDeleteCmd extends Cmd {
-
-
 
 
     @Autowired
@@ -63,12 +67,14 @@ public class UserStaffDeleteCmd extends Cmd {
     @Autowired
     private IPrivilegeUserV1InnerServiceSMO privilegeUserV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
 
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
 
-        if(!reqJson.containsKey("storeId")){
+        if (!reqJson.containsKey("storeId")) {
             reqJson.put("storeId", CmdContextUtils.getStoreId(context));
         }
         Assert.jsonObjectHaveKey(reqJson, "storeId", "请求参数中未包含storeId 节点，请确认");
@@ -80,12 +86,17 @@ public class UserStaffDeleteCmd extends Cmd {
 
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
+
+        //todo 同步门禁
+        synchronousAccessControl(reqJson);
+
+        //todo 删除员工
         deleteStaff(reqJson);
 
-        //删除用户
+        //todo 删除用户
         deleteUser(reqJson);
 
-        //赋权
+        //todo 赋权
         deleteUserPrivilege(reqJson);
     }
 
@@ -155,5 +166,21 @@ public class UserStaffDeleteCmd extends Cmd {
         }
     }
 
+
+    private void synchronousAccessControl(JSONObject reqJson) {
+        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
+        accessControlFaceDto.setPersonId(reqJson.getString("userId"));
+        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
+        AccessControlFacePo accessControlFacePo = null;
+        if (ListUtil.isNull(accessControlFaceDtos)) {
+            return;
+        }
+        for (AccessControlFaceDto tmpAccessControlFaceDto : accessControlFaceDtos) {
+            accessControlFacePo = BeanConvertUtil.covertBean(tmpAccessControlFaceDto, AccessControlFacePo.class);
+            accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
+            accessControlFacePo.setMessage("待下发到门禁");
+        }
+        accessControlFaceV1InnerServiceSMOImpl.deleteAccessControlFace(accessControlFacePo);
+    }
 
 }
