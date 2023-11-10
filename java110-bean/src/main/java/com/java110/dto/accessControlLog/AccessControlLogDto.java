@@ -43,6 +43,7 @@ public class AccessControlLogDto extends PageDto implements Serializable {
     private String stateName;
 
 
+
     public String getResParam() {
         return resParam;
     }

@@ -32,6 +32,9 @@
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}
         </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and ac.machine_code= #{machineCode}
+        </if>
         <if test="logId !=null and logId != ''">
             and t.log_id= #{logId}
         </if>

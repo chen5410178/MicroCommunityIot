@@ -88,24 +88,25 @@ public class AccessControlFaceV1InnerServiceSMOImpl implements IAccessControlFac
     public int updateAccessControlFace(@RequestBody AccessControlFacePo accessControlFacePo) {
 
         //todo 通知适配器 添加人脸
+        if(AccessControlFaceDto.STATE_WAIT.equals(accessControlFacePo.getState())) {
+            AccessControlDto accessControlDto = new AccessControlDto();
+            accessControlDto.setMachineId(accessControlFacePo.getMachineId());
+            accessControlDto.setCommunityId(accessControlFacePo.getCommunityId());
+            List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
 
-        AccessControlDto accessControlDto = new AccessControlDto();
-        accessControlDto.setMachineId(accessControlFacePo.getMachineId());
-        accessControlDto.setCommunityId(accessControlFacePo.getCommunityId());
-        List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+            Assert.listOnlyOne(accessControlDtos, "门禁不存在");
+            HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
+            hardwareManufacturerDto.setHmId(accessControlDtos.get(0).getImplBean());
+            List<HardwareManufacturerDto> hardwareManufacturerDtos = hardwareManufacturerV1InnerServiceSMOImpl.queryHardwareManufacturers(hardwareManufacturerDto);
 
-        Assert.listOnlyOne(accessControlDtos, "门禁不存在");
-        HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
-        hardwareManufacturerDto.setHmId(accessControlDtos.get(0).getImplBean());
-        List<HardwareManufacturerDto> hardwareManufacturerDtos = hardwareManufacturerV1InnerServiceSMOImpl.queryHardwareManufacturers(hardwareManufacturerDto);
+            Assert.listOnlyOne(hardwareManufacturerDtos, "协议不存在");
 
-        Assert.listOnlyOne(hardwareManufacturerDtos, "协议不存在");
+            IAccessControlManufactor accessControlManufactor = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
+            boolean saveUser = accessControlManufactor.updateUser(accessControlDtos.get(0), accessControlFacePo);
 
-        IAccessControlManufactor accessControlManufactor = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
-        boolean saveUser = accessControlManufactor.updateUser(accessControlDtos.get(0), accessControlFacePo);
-
-        if (!saveUser) {
-            throw new IllegalArgumentException("下发设备失败，失败原因厂家未返回");
+            if (!saveUser) {
+                throw new IllegalArgumentException("下发设备失败，失败原因厂家未返回");
+            }
         }
 
         int saveFlag = accessControlFaceV1ServiceDaoImpl.updateAccessControlFaceInfo(BeanConvertUtil.beanCovertMap(accessControlFacePo));

@@ -204,6 +204,7 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
         } else if (cmd.startsWith("upload")) {
             logAction = REQUEST_FACE.replace(SN, machineCode) + "/uploadperson";
         } else if(cmd.startsWith("gpio")){
+            //{"cmd":"gpio control","code":0,"device_sn":"0123E0-9EED8D-E9D0EE","reply":"ACK"}
             logAction = REQUEST_FACE.replace(SN, machineCode) + "/openDoor";
         }else if(cmd.startsWith("reboot")){
             logAction = REQUEST_FACE.replace(SN, machineCode) + "/reboot";
