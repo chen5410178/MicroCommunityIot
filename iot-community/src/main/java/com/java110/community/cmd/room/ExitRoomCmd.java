@@ -208,6 +208,7 @@ public class ExitRoomCmd extends Cmd {
         accessControlFacePo.setMfId(accessControlFaceDtos.get(0).getMfId());
         accessControlFacePo.setMachineId(accessControlFaceDtos.get(0).getMachineId());
         accessControlFacePo.setCommunityId(accessControlFaceDtos.get(0).getCommunityId());
+        accessControlFacePo.setPersonId(accessControlFaceDtos.get(0).getPersonId());
        // accessControlFacePo.
         accessControlFaceV1InnerServiceSMOImpl.deleteAccessControlFace(accessControlFacePo);
 
