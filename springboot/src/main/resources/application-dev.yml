@@ -3,6 +3,10 @@ server:
   tomcat:
     uri-encoding: UTF-8
 
+netty:
+  server:
+    port: 20011
+
 spring:
   profiles:
     active: share
@@ -39,6 +43,8 @@ spring:
     username: wuxw
     keepalive: 20
     poolSize: 20
+
+
 
 feign:
   client:

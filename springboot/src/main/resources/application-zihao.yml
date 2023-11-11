@@ -3,6 +3,10 @@ server:
   tomcat:
     uri-encoding: UTF-8
 
+netty:
+  server:
+    port: 20011
+
 spring:
   profiles:
     active: share
