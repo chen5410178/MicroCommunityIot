@@ -122,6 +122,8 @@
     <select id="queryLockPersonsCount" parameterType="Map" resultType="Map">
         select count(1) count
         from lock_person t
+        left join lock_machine lm on t.machine_id = lm.machine_id  and lm.status_cd = '0'
+        left join building_owner bo on t.person_id = bo.member_id and bo.status_cd = '0'
         where 1 =1
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}

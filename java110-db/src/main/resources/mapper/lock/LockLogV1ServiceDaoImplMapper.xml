@@ -108,6 +108,8 @@
     <select id="queryLockLogsCount" parameterType="Map" resultType="Map">
         select count(1) count
         from lock_log t
+        left join lock_machine lm on t.machine_id = lm.machine_id and lm.status_cd = '0'
+        left join t_dict td on t.log_action = td.status_cd and td.table_name = 'lock_log' and td.table_columns = 'log_action'
         where 1 =1
         <if test="resParam !=null and resParam != ''">
             and t.res_param= #{resParam}

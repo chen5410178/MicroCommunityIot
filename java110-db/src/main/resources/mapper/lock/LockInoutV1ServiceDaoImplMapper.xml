@@ -100,6 +100,7 @@
     <select id="queryLockInoutsCount" parameterType="Map" resultType="Map">
         select count(1) count
         from lock_inout t
+        left join lock_machine lm on t.machine_id = lm.machine_id and lm.status_cd = '0'
         where 1 =1
         <if test="inoutId !=null and inoutId != ''">
             and t.inout_id= #{inoutId}
