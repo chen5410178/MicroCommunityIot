@@ -19,9 +19,10 @@
         select t.res_param,t.res_param resParam,t.machine_id,t.machine_id machineId,t.log_id,t.log_id
         logId,t.req_param,t.req_param reqParam,t.state,t.community_id,t.community_id communityId,t.user_name,t.user_name
         userName,t.log_action,t.log_action logAction,t.user_id,t.user_id userId,t.create_time createTime,lm.machine_name
-        machineName,lm.machine_code machineCode
+        machineName,lm.machine_code machineCode,td.name lockActionName
         from lock_log t
         left join lock_machine lm on t.machine_id = lm.machine_id and lm.status_cd = '0'
+        left join t_dict td on t.log_action = td.status_cd and td.table_name = 'lock_log' and td.table_columns = 'log_action'
         where 1 =1
         <if test="resParam !=null and resParam != ''">
             and t.res_param= #{resParam}

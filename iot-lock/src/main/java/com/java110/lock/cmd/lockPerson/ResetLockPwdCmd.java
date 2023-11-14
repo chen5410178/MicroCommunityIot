@@ -29,7 +29,10 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DateUtil;
 import com.java110.dto.lock.LockPersonDto;
+import com.java110.dto.user.UserDto;
 import com.java110.intf.lock.ILockPersonV1InnerServiceSMO;
+import com.java110.intf.user.IUserV1InnerServiceSMO;
+import com.java110.lock.factory.ILockCore;
 import com.java110.po.lock.LockPersonPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +63,12 @@ public class ResetLockPwdCmd extends Cmd {
     @Autowired
     private ILockPersonV1InnerServiceSMO lockPersonV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ILockCore lockCoreImpl;
+
+    @Autowired
+    private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "lpId", "lpId不能为空");
@@ -67,6 +76,7 @@ public class ResetLockPwdCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
         Assert.hasKeyAndValue(reqJson, "personId", "personId不能为空");
         Assert.hasKeyAndValue(reqJson, "openModel", "openModel不能为空");
+        Assert.hasKeyAndValue(reqJson, "cardNumber", "cardNumber不能为空");
 
         if (!LockPersonDto.OPEN_MODEL_PW.equals(reqJson.getString("openModel"))) {
             throw new CmdException("非密码开锁方式授权,不能重置密码");
@@ -77,7 +87,7 @@ public class ResetLockPwdCmd extends Cmd {
         lockPersonDto.setPersonId(reqJson.getString("personId"));
         lockPersonDto.setOpenModel(reqJson.getString("openModel"));
         List<LockPersonDto> lockPersonDtos = lockPersonV1InnerServiceSMOImpl.queryLockPersons(lockPersonDto);
-        Assert.listOnlyOne(lockPersonDtos, "该业主对应门锁的密码开锁方式授权错误");
+        Assert.listOnlyOne(lockPersonDtos, "该业主对应门锁未授权密码开锁方式");
 
         if (LockPersonDto.STATE_FREEZE.equals(lockPersonDtos.get(0).getState())) {
             throw new CmdException("授权已冻结,不能重置密码");
@@ -93,19 +103,19 @@ public class ResetLockPwdCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
         LockPersonPo lockPersonPo = BeanConvertUtil.covertBean(reqJson, LockPersonPo.class);
-        String pwd = GenerateCodeFactory.getRandomCode(6);
-        lockPersonPo.setCardNumber(AuthenticationFactory.passwdMd5(pwd));
         int flag = lockPersonV1InnerServiceSMOImpl.updateLockPerson(lockPersonPo);
+
+        lockPersonPo.setOprUserId(cmdDataFlowContext.getReqHeaders().get("user_id"));
+        UserDto userDto = new UserDto();
+        userDto.setUserId(cmdDataFlowContext.getReqHeaders().get("user_id"));
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+        lockPersonPo.setOprUserName(userDtos.get(0).getName());
+        lockCoreImpl.updatePasswordToCloud(lockPersonPo);
 
         if (flag < 1) {
             throw new CmdException("更新数据失败");
         }
 
-        JSONObject paramOut = new JSONObject();
-        paramOut.put("pwd", pwd);
-        paramOut.put("code",0);
-        paramOut.put("msg","成功");
-        ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
-        cmdDataFlowContext.setResponseEntity(responseEntity);
+        cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }
 }

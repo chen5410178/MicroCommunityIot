@@ -72,7 +72,7 @@
                                     <vc:i18n name='门锁编号' namespace='lockLogManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <vc:i18n name='业主名称' namespace='lockLogManage'></vc:i18n>
+                                    <vc:i18n name='操作人名称' namespace='lockLogManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
                                     <vc:i18n name='日志动作' namespace='lockLogManage'></vc:i18n>
@@ -94,11 +94,7 @@
                                 <td class="text-center">{{lockLog.machineName}}</td>
                                 <td class="text-center">{{lockLog.machineCode}}</td>
                                 <td class="text-center">{{lockLog.userName}}</td>
-                                <td class="text-center">
-                                    <label v-if="lockLog.logAction === 'unlock'">
-                                        {{vc.i18n('开锁','lockLogManage')}}
-                                    </label>
-                                </td>
+                                <td class="text-center">{{lockLog.lockActionName}}</td>
                                 <td class="text-center">
                                     <label v-if="lockLog.state === '10001'">
                                         {{vc.i18n('请求成功','lockLogManage')}}

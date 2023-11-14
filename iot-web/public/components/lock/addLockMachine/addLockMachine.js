@@ -40,6 +40,18 @@
                             errInfo: "门禁厂家不能为空"
                         },
                     ],
+                    'addLockMachineInfo.machineId': [
+                        {
+                            limit: "required",
+                            param: "",
+                            errInfo: "门锁ID不能为空"
+                        },
+                        {
+                            limit: "maxLength",
+                            param: "30",
+                            errInfo: "门锁ID不能超过30"
+                        },
+                    ],
                     'addLockMachineInfo.machineName': [
                         {
                             limit: "required",

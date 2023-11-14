@@ -125,13 +125,13 @@
                                 <td class="text-center">{{lockMachine.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button class="btn-white btn btn-xs" v-on:click="_unlock(lockMachine)">
-                                            <vc:i18n name='开锁'></vc:i18n>
+                                        <button class="btn-white btn btn-xs" v-on:click="_toLockDetail(lockMachine)">
+                                            <vc:i18n name='详情'></vc:i18n>
                                         </button>
                                     </div>
                                     <div class="btn-group">
-                                        <button class="btn-white btn btn-xs" v-on:click="_openViewLockMachineParamInfoModel(lockMachine)">
-                                            <vc:i18n name='查看参数'></vc:i18n>
+                                        <button class="btn-white btn btn-xs" v-on:click="_unlock(lockMachine)">
+                                            <vc:i18n name='开锁'></vc:i18n>
                                         </button>
                                     </div>
                                     <div class="btn-group">
@@ -159,7 +159,5 @@
 
     <vc:create path="lock/addLockMachine" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="lock/deleteLockMachine"></vc:create>
-    <vc:create path="lock/unlockMachine"></vc:create>
-    <vc:create path="lock/viewLockMachineParamInfo"></vc:create>
 
 </div>

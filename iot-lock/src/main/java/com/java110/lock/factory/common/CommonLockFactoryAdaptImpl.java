@@ -15,6 +15,7 @@ import com.java110.intf.lock.ILockLogV1InnerServiceSMO;
 import com.java110.lock.factory.ILockFactoryAdapt;
 import com.java110.po.lock.LockInoutPo;
 import com.java110.po.lock.LockLogPo;
+import com.java110.po.lock.LockMachinePo;
 import com.java110.po.lock.LockPersonPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -46,6 +46,14 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
     public static final String ACCESS_TOKEN_URL = "https://cnapi.sciener.com/oauth2/token";
     //添加自定义密码
     public static final String ADD_PASSWORD_URL = "https://cnapi.sciener.com/v3/keyboardPwd/add";
+    //修改密码
+    public static final String CHANGE_PASSWORD_URL = "https://cnapi.sciener.com/v3/keyboardPwd/change";
+    //远程开锁
+    public static final String UNLOCK_URL = "https://cnapi.sciener.com/v3/lock/unlock";
+    //获取wifi锁信息
+    public static final String GET_WIFI_LOCK_DETAIL_URL = "https://cnapi.sciener.com/v3/wifiLock/detail";
+    //查询锁电量
+    public static final String QUERY_ELECTRIC_QUANTITY_URL = "https://cnapi.sciener.com/v3/lock/queryElectricQuantity";
 
     @Autowired
     private RestTemplate outRestTemplate;
@@ -57,45 +65,113 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
     private ILockInoutV1InnerServiceSMO lockInoutV1InnerServiceSMOImpl;
 
     @Override
-    public ResultVo unlock(JSONObject reqJson) {
-        String logId = GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_logId);
+    public void unlock(LockMachinePo lockMachinePo, List<LockMachineParamDto> lockMachineParamDtos) {
+        String accessToken = getAccessToken(/*lockMachinePo.getOprUserId(), lockMachinePo.getOprUserName(), */lockMachineParamDtos);
 
-        //todo: 组装请求报文
-        String reqParam = "{msg:\"这是一条请求报文,上线请替换\"}";
-        //todo: 发送请求接收同步返回   如果同步成功要修改日志记录的状态,异步在接收回调通知后修改日志记录的状态,
+        StringBuilder params = new StringBuilder();
+        List<LockMachineParamDto> client = lockMachineParamDtos.stream().filter(lockMachineParam -> "clientId".equals(lockMachineParam.getSpecName())).collect(Collectors.toList());
+        params.append("clientId=" + client.get(0).getValue());
+        params.append("&accessToken=" + accessToken);
+        params.append("&lockId=" + lockMachinePo.getMachineId());
+        params.append("&date=" + new Date().getTime());
 
-        //请求报文发送成功 记录日志
-        LockLogPo lockLogPo = BeanConvertUtil.covertBean(reqJson, LockLogPo.class);
-        lockLogPo.setLogId(logId);
-        lockLogPo.setReqParam(reqParam);
+        LockLogPo lockLogPo = new LockLogPo();
+        lockLogPo.setLogId(GenerateCodeFactory.getGeneratorId("10"));
+        lockLogPo.setMachineId(lockMachineParamDtos.get(0).getMachineId());
+        lockLogPo.setCommunityId(lockMachineParamDtos.get(0).getCommunityId());
+        lockLogPo.setLogAction(LockLogDto.LOG_ACTION_UNLOCK);
+        lockLogPo.setUserId(lockMachinePo.getOprUserId());
+        lockLogPo.setUserName(lockMachinePo.getOprUserName());
+        String url = UNLOCK_URL + "?" + params;
+        lockLogPo.setReqParam(url);
+
+        LockInoutPo lockInoutPo = new LockInoutPo();
+        lockInoutPo.setInoutId(GenerateCodeFactory.getGeneratorId("10"));
+        lockInoutPo.setMachineId(lockMachinePo.getMachineId());
+        lockInoutPo.setMachineCode(lockMachinePo.getMachineCode());
+        lockInoutPo.setUserId(lockMachinePo.getOprUserId());
+        lockInoutPo.setUserName(lockMachinePo.getOprUserName());
+        lockInoutPo.setOpenTypeCd(LockInoutDto.OPEN_TYPE_REMOTE);
+        lockInoutPo.setCommunityId(lockMachinePo.getCommunityId());
+        lockInoutPo.setTel(lockMachinePo.getTel());
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-Type", "application/x-www-form-urlencoded");
+        HttpEntity httpEntity = new HttpEntity("", httpHeaders);
+        ResponseEntity<String> responseEntity = null;
+        try {
+            responseEntity = outRestTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
+        } catch (HttpStatusCodeException e) {
+            logger.error("请求异常", e.getResponseBodyAsString());
+            throw new CmdException("开锁失败," + e.getResponseBodyAsString());
+        }
         lockLogPo.setState(LockLogDto.REQUEST_SUCCESS);
         lockLogV1InnerServiceSMOImpl.saveLockLog(lockLogPo);
 
-        //模拟请求报文同步回调成功,记录操作日志 todo: 异步回调成功要记录操作日志
-        LockInoutPo lockInoutPo = BeanConvertUtil.covertBean(reqJson, LockInoutPo.class);
-        lockInoutPo.setInoutId(GenerateCodeFactory.getGeneratorId("10"));
-        lockInoutPo.setState(LockInoutDto.UNLOCK_SUCCESS);
-        lockInoutV1InnerServiceSMOImpl.saveLockInout(lockInoutPo);
+        JSONObject res = JSONObject.parseObject(responseEntity.getBody());
+        if (CommonLockFactoryAdaptUtil.errorMap.containsKey(res.getInteger("errcode"))) {
+            logger.error("开锁失败，错误码：" + res.getInteger("errcode") + "，错误信息：" + res.getString("errmsg") + "，错误描述：" + res.getString("description"));
+            throw new CmdException(CommonLockFactoryAdaptUtil.errorMap.get(res.getInteger("errcode")));
+        }
+        if (res.getInteger("errcode") == 0) {
+            lockLogPo.setState(LockLogDto.RETURN_SUCCESS);
+            lockLogPo.setResParam(responseEntity.getBody());
+            lockLogV1InnerServiceSMOImpl.updateLockLog(lockLogPo);
 
-        return new ResultVo(ResultVo.CODE_OK, "请求已发送，等待电梯反馈数据");
+            lockInoutPo.setState(LockInoutDto.UNLOCK_SUCCESS);
+            lockInoutV1InnerServiceSMOImpl.saveLockInout(lockInoutPo);
+            logger.info("开锁成功");
+        }
     }
 
     @Override
-    public void queryLockMachineState(LockMachineDto lockMachineDto) {
-        lockMachineDto.setState(LockMachineDto.STATE_ONLINE);
-        lockMachineDto.setStateName("在线");
+    public void queryLockMachineState(LockMachineDto lockMachineDto, List<LockMachineParamDto> lockMachineParamDtos) {
+        String accessToken = getAccessToken(lockMachineParamDtos);
+
+        StringBuilder params = new StringBuilder();
+        List<LockMachineParamDto> client = lockMachineParamDtos.stream().filter(lockMachineParam -> "clientId".equals(lockMachineParam.getSpecName())).collect(Collectors.toList());
+        params.append("clientId=" + client.get(0).getValue());
+        params.append("&accessToken=" + accessToken);
+        params.append("&lockId=" + lockMachineDto.getMachineId());
+        params.append("&date=" + new Date().getTime());
+        String url = GET_WIFI_LOCK_DETAIL_URL + "?" + params;
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-Type", "application/x-www-form-urlencoded");
+        HttpEntity httpEntity = new HttpEntity("", httpHeaders);
+        ResponseEntity<String> responseEntity = null;
+        try {
+            responseEntity = outRestTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+        } catch (HttpStatusCodeException e) {
+            logger.error("请求异常", e.getResponseBodyAsString());
+            throw new CmdException("查询失败," + e.getResponseBodyAsString());
+        }
+
+        JSONObject res = JSONObject.parseObject(responseEntity.getBody());
+        if (CommonLockFactoryAdaptUtil.errorMap.containsKey(res.getInteger("errcode"))) {
+            logger.error("修改密码失败，错误码：" + res.getInteger("errcode") + "，错误信息：" + res.getString("errmsg") + "，错误描述：" + res.getString("description"));
+            throw new CmdException(CommonLockFactoryAdaptUtil.errorMap.get(res.getInteger("errcode")));
+        }
+
+        if (1 == res.getInteger("isOnline")) {
+            lockMachineDto.setState(LockMachineDto.STATE_ONLINE);
+            lockMachineDto.setStateName("在线");
+        } else {
+            lockMachineDto.setState(LockMachineDto.STATE_OFFLINE);
+            lockMachineDto.setStateName("离线");
+        }
     }
 
     @Override
-    public void addPasswordToCloud(LockPersonPo lockPersonPo, List<LockMachineParamDto> lockMachineParamDtos) {
+    public String addPasswordToCloud(LockPersonPo lockPersonPo, List<LockMachineParamDto> lockMachineParamDtos) {
         //获取令牌,如果令牌失效,刷新令牌
-        String accessToken = getAccessToken(lockPersonPo, lockMachineParamDtos);
+        String accessToken = getAccessToken(/*lockPersonPo.getOprUserId(), lockPersonPo.getOprUserName(), */lockMachineParamDtos);
         //添加自定义密码
         StringBuilder params = new StringBuilder();
         List<LockMachineParamDto> client = lockMachineParamDtos.stream().filter(lockMachineParam -> "clientId".equals(lockMachineParam.getSpecName())).collect(Collectors.toList());
         params.append("clientId=" + client.get(0).getValue());
         params.append("&accessToken=" + accessToken);
-        params.append("&lockId=" + lockPersonPo.getMachineId()); // todo: 初始化锁的id
+        params.append("&lockId=" + lockPersonPo.getMachineId());
         params.append("&keyboardPwd=" + lockPersonPo.getCardNumber());
         params.append("&keyboardPwdType=" + KEYBOARD_PWD_TYPE_TERM);
         params.append("&startDate=" + DateUtil.getDateFromStringB(lockPersonPo.getStartTime()).getTime());
@@ -125,19 +201,111 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
         }
         lockLogPo.setState(LockLogDto.REQUEST_SUCCESS);
         lockLogV1InnerServiceSMOImpl.saveLockLog(lockLogPo);
+
         JSONObject res = JSONObject.parseObject(responseEntity.getBody());
+        if (CommonLockFactoryAdaptUtil.errorMap.containsKey(res.getInteger("errcode"))) {
+            logger.error("添加自定义密码失败，错误码：" + res.getInteger("errcode") + "，错误信息：" + res.getString("errmsg") + "，错误描述：" + res.getString("description"));
+            throw new CmdException(CommonLockFactoryAdaptUtil.errorMap.get(res.getInteger("errcode")));
+        }
+
         Integer keyboardPwdId = res.getInteger("keyboardPwdId");
         if (keyboardPwdId != null) {
             lockLogPo.setState(LockLogDto.RETURN_SUCCESS);
             lockLogPo.setResParam(responseEntity.getBody());
             lockLogV1InnerServiceSMOImpl.updateLockLog(lockLogPo);
+
             logger.info("添加自定义密码成功,返回密码ID:" + keyboardPwdId);
-            return ;
+            return keyboardPwdId.toString();
         }
-        logger.error("添加自定义密码失败，错误码：" + res.getInteger("errcode") + "，错误信息：" + res.getString("errmsg") + "，错误描述：" + res.getString("description"));
+        return keyboardPwdId.toString();
     }
 
-    private String getAccessToken(LockPersonPo lockPersonPo, List<LockMachineParamDto> lockMachineParamDtos) {
+    @Override
+    public void updatePasswordToCloud(LockPersonPo lockPersonPo, List<LockMachineParamDto> lockMachineParamDtos) {
+        String accessToken = getAccessToken(/*lockPersonPo.getOprUserId(), lockPersonPo.getOprUserName(), */lockMachineParamDtos);
+
+        StringBuilder params = new StringBuilder();
+        List<LockMachineParamDto> client = lockMachineParamDtos.stream().filter(lockMachineParam -> "clientId".equals(lockMachineParam.getSpecName())).collect(Collectors.toList());
+        params.append("clientId=" + client.get(0).getValue());
+        params.append("&accessToken=" + accessToken);
+        params.append("&lockId=" + lockPersonPo.getMachineId());
+        params.append("&keyboardPwdId=" + lockPersonPo.getLpId());
+        params.append("&newKeyboardPwd=" + lockPersonPo.getCardNumber());
+        params.append("&startDate=" + DateUtil.getDateFromStringB(lockPersonPo.getStartTime()).getTime());
+        params.append("&endDate=" + DateUtil.getDateFromStringB(lockPersonPo.getEndTime()).getTime());
+        params.append("&changeType=" + ADD_TYPE_WIFI);
+        params.append("&date=" + new Date().getTime());
+
+        LockLogPo lockLogPo = new LockLogPo();
+        lockLogPo.setLogId(GenerateCodeFactory.getGeneratorId("10"));
+        lockLogPo.setMachineId(lockMachineParamDtos.get(0).getMachineId());
+        lockLogPo.setCommunityId(lockMachineParamDtos.get(0).getCommunityId());
+        lockLogPo.setLogAction(LockLogDto.LOG_ACTION_CHANGE_PWD_TO_CLOUD);
+        lockLogPo.setUserId(lockPersonPo.getOprUserId());
+        lockLogPo.setUserName(lockPersonPo.getOprUserName());
+        String url = CHANGE_PASSWORD_URL + "?" + params;
+        lockLogPo.setReqParam(url);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-Type", "application/x-www-form-urlencoded");
+        HttpEntity httpEntity = new HttpEntity("", httpHeaders);
+        ResponseEntity<String> responseEntity = null;
+        try {
+            responseEntity = outRestTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
+        } catch (HttpStatusCodeException e) {
+            logger.error("请求异常", e.getResponseBodyAsString());
+            throw new CmdException("操作失败," + e.getResponseBodyAsString());
+        }
+        lockLogPo.setState(LockLogDto.REQUEST_SUCCESS);
+        lockLogV1InnerServiceSMOImpl.saveLockLog(lockLogPo);
+
+        JSONObject res = JSONObject.parseObject(responseEntity.getBody());
+        if (CommonLockFactoryAdaptUtil.errorMap.containsKey(res.getInteger("errcode"))) {
+            logger.error("修改密码失败，错误码：" + res.getInteger("errcode") + "，错误信息：" + res.getString("errmsg") + "，错误描述：" + res.getString("description"));
+            throw new CmdException(CommonLockFactoryAdaptUtil.errorMap.get(res.getInteger("errcode")));
+        }
+
+        if (res.getInteger("errcode") == 0) {
+            lockLogPo.setState(LockLogDto.RETURN_SUCCESS);
+            lockLogPo.setResParam(responseEntity.getBody());
+            lockLogV1InnerServiceSMOImpl.updateLockLog(lockLogPo);
+            logger.info("操作成功");
+        }
+    }
+
+    @Override
+    public Integer queryElectricQuantity(LockMachineDto lockMachineDto, List<LockMachineParamDto> lockMachineParamDtos) {
+        String accessToken = getAccessToken(lockMachineParamDtos);
+
+        StringBuilder params = new StringBuilder();
+        List<LockMachineParamDto> client = lockMachineParamDtos.stream().filter(lockMachineParam -> "clientId".equals(lockMachineParam.getSpecName())).collect(Collectors.toList());
+        params.append("clientId=" + client.get(0).getValue());
+        params.append("&accessToken=" + accessToken);
+        params.append("&lockId=" + lockMachineDto.getMachineId());
+        params.append("&date=" + new Date().getTime());
+        String url = QUERY_ELECTRIC_QUANTITY_URL + "?" + params;
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-Type", "application/x-www-form-urlencoded");
+        HttpEntity httpEntity = new HttpEntity("", httpHeaders);
+        ResponseEntity<String> responseEntity = null;
+        try {
+            responseEntity = outRestTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+        } catch (HttpStatusCodeException e) {
+            logger.error("请求异常", e.getResponseBodyAsString());
+            throw new CmdException("查询失败," + e.getResponseBodyAsString());
+        }
+
+        JSONObject res = JSONObject.parseObject(responseEntity.getBody());
+        if (CommonLockFactoryAdaptUtil.errorMap.containsKey(res.getInteger("errcode"))) {
+            logger.error("修改密码失败，错误码：" + res.getInteger("errcode") + "，错误信息：" + res.getString("errmsg") + "，错误描述：" + res.getString("description"));
+            throw new CmdException(CommonLockFactoryAdaptUtil.errorMap.get(res.getInteger("errcode")));
+        }
+
+        return res.getInteger("electricQuantity");
+    }
+
+    private String getAccessToken(/*String oprUserId, String oprUserName, */List<LockMachineParamDto> lockMachineParamDtos) {
         StringBuilder params = new StringBuilder();
         List<String> paramList = new ArrayList<>();
         for (int i = 0; i < lockMachineParamDtos.size(); i++) {
@@ -161,20 +329,15 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
             params.append("&" + paramList.get(i));
         }
 
-        /*params.append(lockMachineParamDtos.get(0).getSpecName() + "=" + lockMachineParamDtos.get(0).getValue());
-        for (int i = 1; i < lockMachineParamDtos.size(); i++) {
-            params.append("&" + lockMachineParamDtos.get(i).getSpecName() + "=" + lockMachineParamDtos.get(i).getValue());
-        }*/
-
-        LockLogPo lockLogPo = new LockLogPo();
+        /*LockLogPo lockLogPo = new LockLogPo();
         lockLogPo.setLogId(GenerateCodeFactory.getGeneratorId("10"));
         lockLogPo.setMachineId(lockMachineParamDtos.get(0).getMachineId());
         lockLogPo.setCommunityId(lockMachineParamDtos.get(0).getCommunityId());
         lockLogPo.setLogAction(LockLogDto.LOG_ACTION_GET_ACCESS_TOKEN);
-        lockLogPo.setUserId(lockPersonPo.getOprUserId());
-        lockLogPo.setUserName(lockPersonPo.getOprUserName());
+        lockLogPo.setUserId(oprUserId);
+        lockLogPo.setUserName(oprUserName);*/
         String url = ACCESS_TOKEN_URL + "?" + params;
-        lockLogPo.setReqParam(url);
+        /*lockLogPo.setReqParam(url);*/
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-Type", "application/x-www-form-urlencoded");
@@ -186,26 +349,29 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
             logger.error("请求异常", e.getResponseBodyAsString());
         }
 
-        lockLogPo.setState(LockLogDto.REQUEST_SUCCESS);
-        lockLogV1InnerServiceSMOImpl.saveLockLog(lockLogPo);
+        /*lockLogPo.setState(LockLogDto.REQUEST_SUCCESS);
+        lockLogV1InnerServiceSMOImpl.saveLockLog(lockLogPo);*/
         JSONObject res = JSONObject.parseObject(responseEntity.getBody());
 
         String accessToken = res.getString("access_token");
         if (accessToken != null) {
-            lockLogPo.setState(LockLogDto.RETURN_SUCCESS);
+            /*lockLogPo.setState(LockLogDto.RETURN_SUCCESS);
             lockLogPo.setResParam(responseEntity.getBody());
-            lockLogV1InnerServiceSMOImpl.updateLockLog(lockLogPo);
+            lockLogV1InnerServiceSMOImpl.updateLockLog(lockLogPo);*/
             logger.info("获取访问令牌为:" + accessToken);
             return accessToken;
         }
         if (res.getInteger("errcode") == CommonLockFactoryAdaptUtil.ERRCODE_INVALID_ACCESS_TOKEN) {
-            return refreshAccessToken(lockPersonPo, lockMachineParamDtos);
+            return refreshAccessToken(/*oprUserId, oprUserName, */lockMachineParamDtos);
         }
         logger.error("令牌获取失败，错误码：" + res.getInteger("errcode") + "，错误信息：" + res.getString("errmsg") + "，错误描述：" + res.getString("description"));
-        throw new CmdException("授权失败");
+        if (CommonLockFactoryAdaptUtil.errorMap.containsKey(res.getInteger("errcode"))) {
+            throw new CmdException(CommonLockFactoryAdaptUtil.errorMap.get(res.getInteger("errcode")));
+        }
+        throw new CmdException("令牌获取失败");
     }
 
-    private String refreshAccessToken(LockPersonPo lockPersonPo, List<LockMachineParamDto> lockMachineParamDtos) {
+    private String refreshAccessToken(/*String oprUserId, String oprUserName, */List<LockMachineParamDto> lockMachineParamDtos) {
         StringBuilder params = new StringBuilder();
         List<String> paramList = new ArrayList<>();
         for (int i = 0; i < lockMachineParamDtos.size(); i++) {
@@ -216,6 +382,9 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
                 case "clientSecret":
                     paramList.add("clientSecret=" + lockMachineParamDtos.get(i).getValue());
                     break;
+                case "refreshToken":
+                    paramList.add("refresh_token=" + lockMachineParamDtos.get(i).getValue());
+                    break;
             }
         }
         params.append("grant_type=refresh_token");
@@ -223,15 +392,15 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
             params.append("&" + paramList.get(i));
         }
 
-        LockLogPo lockLogPo = new LockLogPo();
+        /*LockLogPo lockLogPo = new LockLogPo();
         lockLogPo.setLogId(GenerateCodeFactory.getGeneratorId("10"));
         lockLogPo.setMachineId(lockMachineParamDtos.get(0).getMachineId());
         lockLogPo.setCommunityId(lockMachineParamDtos.get(0).getCommunityId());
         lockLogPo.setLogAction(LockLogDto.LOG_ACTION_REFRESH_ACCESS_TOKEN);
-        lockLogPo.setUserId(lockPersonPo.getOprUserId());
-        lockLogPo.setUserName(lockPersonPo.getOprUserName());
+        lockLogPo.setUserId(oprUserId);
+        lockLogPo.setUserName(oprUserName);*/
         String url = ACCESS_TOKEN_URL + "?" + params;
-        lockLogPo.setReqParam(url);
+        /*lockLogPo.setReqParam(url);*/
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-Type", "application/x-www-form-urlencoded");
@@ -242,17 +411,21 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
         } catch (HttpStatusCodeException e) {
             logger.error("请求异常", e.getResponseBodyAsString());
         }
-        lockLogPo.setState(LockLogDto.REQUEST_SUCCESS);
-        lockLogV1InnerServiceSMOImpl.saveLockLog(lockLogPo);
+        /*lockLogPo.setState(LockLogDto.REQUEST_SUCCESS);
+        lockLogV1InnerServiceSMOImpl.saveLockLog(lockLogPo);*/
         JSONObject res = JSONObject.parseObject(responseEntity.getBody());
+        if (CommonLockFactoryAdaptUtil.errorMap.containsKey(res.getInteger("errcode"))) {
+            throw new CmdException(CommonLockFactoryAdaptUtil.errorMap.get(res.getInteger("errcode")));
+        }
+
         String accessToken = res.getString("access_token");
         if (accessToken != null) {
-            lockLogPo.setState(LockLogDto.RETURN_SUCCESS);
+            /*lockLogPo.setState(LockLogDto.RETURN_SUCCESS);
             lockLogPo.setResParam(responseEntity.getBody());
-            lockLogV1InnerServiceSMOImpl.updateLockLog(lockLogPo);
+            lockLogV1InnerServiceSMOImpl.updateLockLog(lockLogPo);*/
             return accessToken;
         }
         logger.error("令牌刷新失败，错误码：" + res.getInteger("errcode") + "，错误信息：" + res.getString("errmsg") + "，错误描述：" + res.getString("description"));
-        throw new CmdException("授权失败");
+        throw new CmdException("令牌刷新失败");
     }
 }

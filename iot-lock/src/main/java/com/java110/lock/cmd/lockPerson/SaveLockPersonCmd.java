@@ -104,26 +104,22 @@ public class SaveLockPersonCmd extends Cmd {
             throw new CmdException("该业主对应门锁的此种开锁方式已授权,不可重复授权!");
         }
 
-        lockPersonPo.setLpId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         if (LockPersonDto.OPEN_MODEL_PW.equals(reqJson.getString("openModel"))) {
-            lockPersonPo.setCardNumber(AuthenticationFactory.passwdMd5(reqJson.getString("cardNumber")));
+            //todo : 暂时只考虑将物业下发密码推向厂家服务端
+            lockPersonPo.setOprUserId(cmdDataFlowContext.getReqHeaders().get("user_id"));
+            UserDto userDto = new UserDto();
+            userDto.setUserId(cmdDataFlowContext.getReqHeaders().get("user_id"));
+            List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+            lockPersonPo.setOprUserName(userDtos.get(0).getName());
+            String lpId = lockCoreImpl.addPasswordToCloud(lockPersonPo);
+            lockPersonPo.setLpId(lpId);
         }
+
         int flag = lockPersonV1InnerServiceSMOImpl.saveLockPerson(lockPersonPo);
 
         if (flag < 1) {
             throw new CmdException("保存数据失败");
         }
-
-
-
-        //todo: 暂时只考虑将物业下发密码推向厂家服务端
-        lockPersonPo.setCardNumber(reqJson.getString("cardNumber"));
-        lockPersonPo.setOprUserId(cmdDataFlowContext.getReqHeaders().get("user_id"));
-        UserDto userDto = new UserDto();
-        userDto.setUserId(cmdDataFlowContext.getReqHeaders().get("user_id"));
-        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
-        lockPersonPo.setOprUserName(userDtos.get(0).getName());
-        lockCoreImpl.addPasswordToCloud(lockPersonPo);
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }

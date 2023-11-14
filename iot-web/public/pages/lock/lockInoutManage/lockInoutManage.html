@@ -32,6 +32,7 @@
                                     <option selected disabled value="">{{vc.i18n('请选择开门方式','lockInoutManage')}}</option>
                                     <option value="1001">{{vc.i18n('密码开锁','lockInoutManage')}}</option>
                                     <option value="2002">{{vc.i18n('蓝牙开锁','lockInoutManage')}}</option>
+                                    <option value="3003">{{vc.i18n('远程开锁','lockInoutManage')}}</option>
                                 </select>
                             </div>
                         </div>
@@ -87,10 +88,10 @@
                                     <vc:i18n name='门锁编码' namespace='lockInoutManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <vc:i18n name='业主名称' namespace='lockInoutManage'></vc:i18n>
+                                    <vc:i18n name='操作人名称' namespace='lockInoutManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <vc:i18n name='业主手机号' namespace='lockInoutManage'></vc:i18n>
+                                    <vc:i18n name='操作人手机号' namespace='lockInoutManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
                                     <vc:i18n name='开门方式' namespace='lockInoutManage'></vc:i18n>
@@ -116,6 +117,9 @@
                                     </label>
                                     <label v-if="lockInout.openTypeCd === '2002'">
                                         {{vc.i18n('蓝牙开锁','lockInoutManage')}}
+                                    </label>
+                                    <label v-if="lockInout.openTypeCd === '3003'">
+                                        {{vc.i18n('远程开锁','lockInoutManage')}}
                                     </label>
                                 </td>
                                 <td class="text-center">

@@ -28,13 +28,17 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DateUtil;
 import com.java110.dto.lock.LockPersonDto;
+import com.java110.dto.user.UserDto;
 import com.java110.intf.lock.ILockPersonV1InnerServiceSMO;
+import com.java110.intf.user.IUserV1InnerServiceSMO;
+import com.java110.lock.factory.ILockCore;
 import com.java110.po.lock.LockPersonPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -56,23 +60,36 @@ public class RenewalLockPersonCmd extends Cmd {
     @Autowired
     private ILockPersonV1InnerServiceSMO lockPersonV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ILockCore lockCoreImpl;
+
+    @Autowired
+    private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
-        if (LockPersonDto.STATE_FREEZE.equals(reqJson.getString("state"))) {
-            throw new CmdException("授权已冻结,不可续期!");
-        }
 
         Assert.hasKeyAndValue(reqJson, "lpId", "lpId不能为空");
         Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
         Assert.hasKeyAndValue(reqJson, "personId", "personId不能为空");
         Assert.hasKeyAndValue(reqJson, "name", "name不能为空");
+        Assert.hasKeyAndValue(reqJson, "startTime", "startTime不能为空");
         Assert.hasKeyAndValue(reqJson, "endTime", "endTime不能为空");
         Assert.hasKeyAndValue(reqJson, "openModel", "openModel不能为空");
         Assert.hasKeyAndValue(reqJson, "state", "state不能为空");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
 
+        if (LockPersonDto.STATE_FREEZE.equals(reqJson.getString("state"))) {
+            throw new CmdException("授权已冻结,不可续期!");
+        }
+
         if (LockPersonDto.OPEN_MODEL_PW.equals(reqJson.getString("openModel"))) {
             Assert.hasKeyAndValue(reqJson, "cardNumber", "cardNumber不能为空");
+        }
+        Date startTime = DateUtil.getDateFromStringB(reqJson.getString("startTime"));
+        Date endTime = DateUtil.getDateFromStringB(reqJson.getString("endTime"));
+        if (startTime.after(endTime) || reqJson.getString("startTime").equals(reqJson.getString("endTime"))) {
+            throw new CmdException("结束时间不能早于开始时间");
         }
     }
 
@@ -80,17 +97,16 @@ public class RenewalLockPersonCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        LockPersonPo lockPersonPo = new LockPersonPo();
-        lockPersonPo.setLpId(reqJson.getString("lpId"));
-        int flag = lockPersonV1InnerServiceSMOImpl.deleteLockPerson(lockPersonPo);
-        if (flag < 1) {
-            throw new CmdException("更新数据失败");
-        }
+        LockPersonPo lockPersonPo = BeanConvertUtil.covertBean(reqJson, LockPersonPo.class);
 
-        lockPersonPo = BeanConvertUtil.covertBean(reqJson, LockPersonPo.class);
-        lockPersonPo.setLpId(GenerateCodeFactory.getGeneratorId("10"));
-        lockPersonPo.setStartTime(DateUtil.getFormatTimeStringB(new Date()));
-        flag = lockPersonV1InnerServiceSMOImpl.saveLockPerson(lockPersonPo);
+        lockPersonPo.setOprUserId(cmdDataFlowContext.getReqHeaders().get("user_id"));
+        UserDto userDto = new UserDto();
+        userDto.setUserId(cmdDataFlowContext.getReqHeaders().get("user_id"));
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+        lockPersonPo.setOprUserName(userDtos.get(0).getName());
+        lockCoreImpl.updatePasswordToCloud(lockPersonPo);
+
+        int flag = lockPersonV1InnerServiceSMOImpl.updateLockPerson(lockPersonPo);
 
         if (flag < 1) {
             throw new CmdException("更新数据失败");

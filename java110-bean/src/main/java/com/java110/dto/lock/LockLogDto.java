@@ -13,6 +13,8 @@ public class LockLogDto extends PageDto implements Serializable {
     public static final String LOG_ACTION_GET_ACCESS_TOKEN = "1001";
     public static final String LOG_ACTION_REFRESH_ACCESS_TOKEN = "1002";
     public static final String LOG_ACTION_ADD_PWD_TO_CLOUD = "1003";
+    public static final String LOG_ACTION_CHANGE_PWD_TO_CLOUD = "1004";
+    public static final String LOG_ACTION_UNLOCK = "1005";
 
     private String logId;
     private String machineId;
@@ -28,6 +30,7 @@ public class LockLogDto extends PageDto implements Serializable {
     private String machineName;
     private String machineCode;
     private String roomId;
+    private String lockActionName;
 
     public String getLogId() {
         return logId;
@@ -131,5 +134,13 @@ public class LockLogDto extends PageDto implements Serializable {
 
     public void setRoomId(String roomId) {
         this.roomId = roomId;
+    }
+
+    public String getLockActionName() {
+        return lockActionName;
+    }
+
+    public void setLockActionName(String lockActionName) {
+        this.lockActionName = lockActionName;
     }
 }

@@ -25,11 +25,16 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.lock.LockPersonDto;
 import com.java110.intf.lock.ILockPersonV1InnerServiceSMO;
+import com.java110.lock.factory.ILockCore;
 import com.java110.po.lock.LockPersonPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -51,10 +56,19 @@ public class UpdateLockPersonCmd extends Cmd {
     @Autowired
     private ILockPersonV1InnerServiceSMO lockPersonV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ILockCore lockCoreImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "lpId", "lpId不能为空");
+        Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
+        Assert.hasKeyAndValue(reqJson, "personId", "personId不能为空");
+        Assert.hasKeyAndValue(reqJson, "openModel", "openModel不能为空");
+        Assert.hasKeyAndValue(reqJson, "cardNumber", "cardNumber不能为空");
+        Assert.hasKeyAndValue(reqJson, "state", "state不能为空");
+        Assert.hasKeyAndValue(reqJson, "startTime", "startTime不能为空");
     }
 
     @Override
@@ -62,11 +76,24 @@ public class UpdateLockPersonCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
         LockPersonPo lockPersonPo = BeanConvertUtil.covertBean(reqJson, LockPersonPo.class);
+
+        if (LockPersonDto.STATE_AVAILABLE.equals(lockPersonPo.getState())) {//解冻
+            String endTime = new SimpleDateFormat("yyyy-MM-dd").format(new Date(new Date().getTime() + 10 * 365 * 24 * 60 * 60 * 1000L));
+            lockPersonPo.setEndTime(endTime);
+        } else if (LockPersonDto.STATE_FREEZE.equals(lockPersonPo.getState())) {//冻结
+            String endTime = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            lockPersonPo.setEndTime(endTime);
+        } else {
+            throw new CmdException("授权状态修改错误");
+        }
+
         int flag = lockPersonV1InnerServiceSMOImpl.updateLockPerson(lockPersonPo);
 
         if (flag < 1) {
             throw new CmdException("更新数据失败");
         }
+
+        lockCoreImpl.updatePasswordToCloud(lockPersonPo);
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }

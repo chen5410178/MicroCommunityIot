@@ -8,6 +8,9 @@ import java.util.Date;
 public class LockInoutDto extends PageDto implements Serializable {
     public static final String UNLOCK_SUCCESS = "C";
     public static final String UNLOCK_FAIL = "F";
+    public static final String OPEN_TYPE_PW = "1001";
+    public static final String OPEN_TYPE_BT = "2002";
+    public static final String OPEN_TYPE_REMOTE = "3003";
 
     private String inoutId;
     private String machineId;

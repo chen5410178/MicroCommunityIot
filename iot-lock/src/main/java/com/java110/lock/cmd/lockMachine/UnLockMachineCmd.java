@@ -25,11 +25,15 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.AuthenticationFactory;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.lock.LockMachineDto;
 import com.java110.dto.lock.LockPersonDto;
+import com.java110.dto.user.UserDto;
 import com.java110.intf.lock.ILockMachineV1InnerServiceSMO;
 import com.java110.intf.lock.ILockPersonV1InnerServiceSMO;
+import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.lock.factory.ILockCore;
+import com.java110.po.lock.LockMachinePo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,45 +64,29 @@ public class UnLockMachineCmd extends Cmd {
     @Autowired
     private ILockCore lockCoreImpl;
 
+    @Autowired
+    private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
         Assert.hasKeyAndValue(reqJson, "machineCode", "machineCode不能为空");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
-        Assert.hasKeyAndValue(reqJson, "logAction", "logAction不能为空");
-        Assert.hasKeyAndValue(reqJson, "openTypeCd", "openTypeCd不能为空");
 
-        LockMachineDto lockMachineDto = new LockMachineDto();
-        lockMachineDto.setMachineId(reqJson.getString("machineId"));
-        lockMachineDto.setCommunityId(reqJson.getString("communityId"));
-        List<LockMachineDto> lockMachineDtos = lockMachineV1InnerServiceSMOImpl.queryLockMachines(lockMachineDto);
-        Assert.listOnlyOne(lockMachineDtos, "门锁不存在");
-
-        LockPersonDto lockPersonDto = new LockPersonDto();
-        lockPersonDto.setMachineId(reqJson.getString("machineId"));
-        lockPersonDto.setCommunityId(reqJson.getString("communityId"));
-        lockPersonDto.setOpenModel(reqJson.getString("openTypeCd"));
-        List<LockPersonDto> lockPersonDtos = lockPersonV1InnerServiceSMOImpl.queryLockPersons(lockPersonDto);
-        if (CollectionUtils.isEmpty(lockPersonDtos)) {
-            throw new CmdException("门锁暂未授权");
-        }
-        reqJson.put("userId", lockPersonDtos.get(0).getPersonId());
-        reqJson.put("userName", lockPersonDtos.get(0).getName());
-        reqJson.put("tel", lockPersonDtos.get(0).getTel());
-
-        if (LockPersonDto.OPEN_MODEL_PW.equals(reqJson.getString("openTypeCd"))) {
-            Assert.hasKeyAndValue(reqJson, "password", "password不能为空");
-            if (!lockPersonDtos.get(0).getCardNumber().equals(AuthenticationFactory.passwdMd5(reqJson.getString("password")))) {
-                throw new CmdException("密码错误");
-            }
-        }
     }
 
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        ResultVo resultVo = lockCoreImpl.unlock(reqJson);
-        cmdDataFlowContext.setResponseEntity(ResultVo.createResponseEntity(resultVo));
+        LockMachinePo lockMachinePo = BeanConvertUtil.covertBean(reqJson, LockMachinePo.class);
+        lockMachinePo.setOprUserId(cmdDataFlowContext.getReqHeaders().get("user_id"));
+        UserDto userDto = new UserDto();
+        userDto.setUserId(cmdDataFlowContext.getReqHeaders().get("user_id"));
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+        lockMachinePo.setOprUserName(userDtos.get(0).getName());
+        lockMachinePo.setTel(userDtos.get(0).getTel());
+        lockCoreImpl.unlock(lockMachinePo);
+        cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }
 }

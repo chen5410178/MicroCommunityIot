@@ -70,6 +70,7 @@ public class SaveLockMachineCmd extends Cmd {
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
+        Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
         Assert.hasKeyAndValue(reqJson, "machineName", "machineName不能为空");
         Assert.hasKeyAndValue(reqJson, "machineCode", "machineCode不能为空");
         Assert.hasKeyAndValue(reqJson, "roomId", "roomId不能为空");
@@ -99,7 +100,6 @@ public class SaveLockMachineCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
         LockMachinePo lockMachinePo = BeanConvertUtil.covertBean(reqJson, LockMachinePo.class);
-        lockMachinePo.setMachineId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         lockMachinePo.setHeartbeatTime(new Date());
         int flag = lockMachineV1InnerServiceSMOImpl.saveLockMachine(lockMachinePo);
 

@@ -1,11 +1,12 @@
 package com.java110.po.lock;
 
 import com.java110.bean.dto.PageDto;
+import com.java110.bean.po.BasePo;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class LockMachinePo implements Serializable {
+public class LockMachinePo extends BasePo implements Serializable {
     private String machineId;
     private String machineName;
     private String machineCode;

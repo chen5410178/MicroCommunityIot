@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.dto.lock.LockMachineDto;
 import com.java110.dto.lock.LockMachineParamDto;
+import com.java110.po.lock.LockMachinePo;
 import com.java110.po.lock.LockPersonPo;
 
 import java.util.List;
@@ -11,21 +12,37 @@ import java.util.List;
 public interface ILockFactoryAdapt {
     /**
      * 开门
-     * @param reqJson
+     * @param lockMachinePo
+     * @param lockMachineParamDtos
      * @return
      */
-    ResultVo unlock(JSONObject reqJson);
+    void unlock(LockMachinePo lockMachinePo, List<LockMachineParamDto> lockMachineParamDtos);
 
     /**
-     * 查询设备状态
+     * 查询门锁在线状态
      * @param lockMachineDto
      */
-    void queryLockMachineState(LockMachineDto lockMachineDto);
+    void queryLockMachineState(LockMachineDto lockMachineDto, List<LockMachineParamDto> lockMachineParamDtos);
 
     /**
      * 将自定义密码推向厂家云端
      * @param lockPersonPo
      * @param lockMachineParamDtos
+     * @return
      */
-    void addPasswordToCloud(LockPersonPo lockPersonPo, List<LockMachineParamDto> lockMachineParamDtos);
+    String addPasswordToCloud(LockPersonPo lockPersonPo, List<LockMachineParamDto> lockMachineParamDtos);
+
+    /**
+     * 修改锁密码
+     * @param lockPersonPo
+     * @param lockMachineParamDtos
+     */
+    void updatePasswordToCloud(LockPersonPo lockPersonPo, List<LockMachineParamDto> lockMachineParamDtos);
+
+    /**
+     * 查询门锁电量
+     * @param lockMachineDto
+     * @param lockMachineParamDtos
+     */
+    Integer queryElectricQuantity(LockMachineDto lockMachineDto, List<LockMachineParamDto> lockMachineParamDtos);
 }

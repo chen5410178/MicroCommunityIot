@@ -21,11 +21,14 @@
                     userId: '',
                     userName: '',
                 }
-            }
+            },
+            logAction: [],
         },
         _initMethod: function () {
+            vc.getDict('lock_log', 'log_action', function (_data) {
+                $that.logAction = _data;
+            })
             $that._listLockLogs(DEFAULT_PAGE, DEFAULT_ROWS);
-            $that._listOwner
         },
         _initEvent: function () {
             vc.on('pagination', 'page_event', function (_currentPage) {

@@ -75,9 +75,6 @@
             _openDeleteLockMachineModel: function (_lockMachine) {
                 vc.emit('deleteLockMachine', 'openDeleteLockMachineModal', _lockMachine);
             },
-            _openViewLockMachineParamInfoModel: function (_lockMachine) {
-                vc.emit('viewLockMachineParamInfo', 'openViewLockMachineParamInfoModal', _lockMachine);
-            },
             _queryLockMachineMethod: function () {
                 $that._listLockMachines(DEFAULT_PAGE, DEFAULT_ROWS);
             },
@@ -124,7 +121,28 @@
                 })
             },
             _unlock: function (_lockMachine) {
-                vc.emit('unlockMachine', 'openUnlockMachineModal', _lockMachine);
+                vc.http.apiPost(
+                    '/lockMachine.unLockMachine',
+                    JSON.stringify(_lockMachine),
+                    {
+                        emulateJSON: true
+                    },
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        if (_json.code === 0) {
+                            vc.emit('lockPersonManage', 'listLockPerson', {});
+                            vc.toast("开锁成功");
+                            return;
+                        }
+                        vc.toast(_json.msg);
+                    },
+                    function (errInfo, error) {
+                        console.log('请求失败处理');
+                        vc.toast(errInfo);
+                    });
+            },
+            _toLockDetail: function (_machine) {
+                vc.jumpToPage('/#/pages/lock/lockMachineDetail?machineId=' + _machine.machineId);
             }
         }
     });

@@ -72,7 +72,7 @@
                         </label>
                         <label v-if="lockPerson.state === '2002'">
                             {{vc.i18n('冻结','roomDetailLockPerson')}}
-                            (<a href="javascript:void(0)" @click="_switchState(lockPerson)">解结</a>)
+                            (<a href="javascript:void(0)" @click="_switchState(lockPerson)">解冻</a>)
                         </label>
                     </td>
                     <td class="text-center">{{lockPerson.startTime}}</td>

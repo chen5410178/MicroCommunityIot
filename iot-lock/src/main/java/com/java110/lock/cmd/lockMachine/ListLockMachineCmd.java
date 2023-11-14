@@ -75,8 +75,8 @@ public class ListLockMachineCmd extends Cmd {
 
         if (count > 0) {
             lockMachineDtos = lockMachineV1InnerServiceSMOImpl.queryLockMachines(lockMachineDto);
-            // todo  查询设备是否在线
-            queryMachineState(lockMachineDtos);
+            //查询设备是否在线 刷新电量
+            queryMachineStateAndElectricQuantity(lockMachineDtos);
         } else {
             lockMachineDtos = new ArrayList<>();
         }
@@ -88,11 +88,11 @@ public class ListLockMachineCmd extends Cmd {
         cmdDataFlowContext.setResponseEntity(responseEntity);
     }
 
-    private void queryMachineState(List<LockMachineDto> lockMachineDtos) {
+    private void queryMachineStateAndElectricQuantity(List<LockMachineDto> lockMachineDtos) {
         if (lockMachineDtos == null || lockMachineDtos.size() < 1 || lockMachineDtos.size() > 10) {
             return;
         }
 
-        lockCoreImpl.queryLockMachineState(lockMachineDtos);
+        lockCoreImpl.queryMachineStateAndElectricQuantity(lockMachineDtos);
     }
 }

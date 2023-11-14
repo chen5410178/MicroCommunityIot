@@ -14,7 +14,10 @@
             }
         },
         _initMethod: function () {
-            vc.initDate('renewalTime', function(_value) {
+            vc.initDate('renewalStartTime', function(_value) {
+                $that.renewalLockPersonInfo.startTime = _value;
+            });
+            vc.initDate('renewalEndTime', function(_value) {
                 $that.renewalLockPersonInfo.endTime = _value;
             });
         },
@@ -78,6 +81,13 @@
                             limit: "required",
                             param: "",
                             errInfo: "小区不能为空"
+                        },
+                    ],
+                    'renewalLockPersonInfo.startTime': [
+                        {
+                            limit: "required",
+                            param: "",
+                            errInfo: "续期开始时间不能为空"
                         },
                     ],
                     'renewalLockPersonInfo.endTime': [

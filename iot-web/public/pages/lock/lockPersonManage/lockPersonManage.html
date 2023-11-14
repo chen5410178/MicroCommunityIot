@@ -147,19 +147,19 @@
                                     </label>
                                     <label v-if="lockPerson.state === '2002'">
                                         {{vc.i18n('冻结','lockPersonManage')}}
-                                        (<a href="javascript:void(0)" @click="_switchState(lockPerson)">解结</a>)
+                                        (<a href="javascript:void(0)" @click="_switchState(lockPerson)">解冻</a>)
                                     </label>
                                 </td>
                                 <td class="text-center">{{lockPerson.startTime}}</td>
                                 <td class="text-center">{{lockPerson.endTime}}</td>
                                 <td class="text-center">{{lockPerson.createTime}}</td>
                                 <td class="text-center">
-                                    <div class="btn-group" v-if="new Date(lockPerson.endTime) < new Date">
+                                    <div class="btn-group">
                                         <button class="btn-white btn btn-xs" v-on:click="_openRenewalLockPersonModel(lockPerson)">
                                             <vc:i18n name='续期'></vc:i18n>
                                         </button>
                                     </div>
-                                    <div class="btn-group" v-if="lockPerson.openModel === '1001'">
+                                    <div class="btn-group">
                                         <button class="btn-white btn btn-xs" v-on:click="_resetLockPwd(lockPerson)">
                                             <vc:i18n name='重置密码'></vc:i18n>
                                         </button>
