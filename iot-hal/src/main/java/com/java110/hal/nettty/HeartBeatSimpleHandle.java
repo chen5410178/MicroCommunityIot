@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,18 +25,12 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-//        InetSocketAddress ipSocket = (InetSocketAddress) ctx.channel().remoteAddress();
-//        int port = ipSocket.getPort();
-//        String host = ipSocket.getHostString();
-//
-//        IMachineService machineService = ApplicationContextFactory.getBean("machineServiceImpl", IMachineService.class);
-//        MachineDto machineDto = new MachineDto();
-//        machineDto.setMachineIp(host);
-//        List<MachineDto> machineDtos = machineService.queryMachines(machineDto);
-//        if (machineDtos == null || machineDtos.size() < 1) {
-//            return;
-//        }
-//        initMachineToCache(ctx, machineDtos.get(0), true);
+        super.channelActive(ctx);
+        InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
+        String ip = address.toString();
+
+        LOGGER.debug("channelActive -->  RamoteAddress : " + ip + " connected ");
+
     }
 
 
