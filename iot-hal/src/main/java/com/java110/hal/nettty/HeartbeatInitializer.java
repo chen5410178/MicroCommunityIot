@@ -5,7 +5,11 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.bytes.ByteArrayDecoder;
+import io.netty.handler.codec.bytes.ByteArrayEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
+
+import java.util.concurrent.TimeUnit;
 
 public class HeartbeatInitializer extends ChannelInitializer<Channel> {
     @Override
@@ -13,10 +17,12 @@ public class HeartbeatInitializer extends ChannelInitializer<Channel> {
         ByteBuf delimiter = Unpooled.copiedBuffer("}".getBytes());
 
         channel.pipeline()
-                //五秒没有收到消息 将IdleStateHandler 添加到 ChannelPipeline 中
-                .addLast(new IdleStateHandler(5, 0, 0))
-                .addLast(new DelimiterBasedFrameDecoder(1024 * 1024,delimiter))
-                //.addLast(new HeartbeatDecoder())
-                .addLast(new HeartBeatSimpleHandle());
+
+        .addLast("decoder",new ByteArrayDecoder())
+        .addLast("encoder",new ByteArrayEncoder())
+        //IdleStateHandler心跳机制,如果超时触发Handle中userEventTrigger()方法
+        .addLast("idleStateHandler", new IdleStateHandler(15,0,0, TimeUnit.MINUTES))
+        .addLast(new CustomDecoder())
+        .addLast("serverChannelHandler",new HeartBeatSimpleHandle());
     }
 }
