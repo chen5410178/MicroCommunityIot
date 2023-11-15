@@ -17,7 +17,10 @@ public class CustomDecoder  extends MessageToMessageDecoder<byte[]> {
     @Override
     protected void decode(ChannelHandlerContext ctx, byte[] msg, List<Object> out) throws Exception {
 
-        LOGGER.debug("-------------解码器接收到数据：{}",BytesUtil.bytesToHex(msg));
+        LOGGER.debug("-------------解码器接收到数据：{}",msg);
+        LOGGER.debug("-------------解码器接收到数据16：{}",BytesUtil.bytesToHex(msg));
+        LOGGER.debug("-------------解码器接收到数据string：{}",new String(msg));
+
         try {
             out.add(msg);
            // if (IcojooUtil.isYunKuaiChong(msg)) {

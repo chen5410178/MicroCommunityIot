@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 public class HeartbeatInitializer extends ChannelInitializer<Channel> {
     @Override
     protected void initChannel(Channel channel) throws Exception {
-        ByteBuf delimiter = Unpooled.copiedBuffer("}".getBytes());
 
         channel.pipeline()
 
