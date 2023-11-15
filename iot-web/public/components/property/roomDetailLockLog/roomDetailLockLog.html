@@ -51,11 +51,7 @@
                     <td class="text-center">{{lockLog.machineName}}</td>
                     <td class="text-center">{{lockLog.machineCode}}</td>
                     <td class="text-center">{{lockLog.userName}}</td>
-                    <td class="text-center">
-                        <label v-if="lockLog.logAction === 'unlock'">
-                            {{vc.i18n('开锁','lockLogManage')}}
-                        </label>
-                    </td>
+                    <td class="text-center">{{lockLog.lockActionName}}</td>
                     <td class="text-center">
                         <label v-if="lockLog.state === '10001'">
                             {{vc.i18n('请求成功','lockLogManage')}}
@@ -85,6 +81,7 @@
             </div>
             <div class="col-sm-8">
                 <vc:create namespace="roomDetailLockLog" path="frame/paginationPlus"></vc:create>
+                <vc:create namespace="machineDetailLockLog" path="frame/paginationPlus"></vc:create>
             </div>
         </div>
     </div>

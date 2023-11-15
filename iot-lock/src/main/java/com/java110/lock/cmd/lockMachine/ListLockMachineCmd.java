@@ -75,7 +75,7 @@ public class ListLockMachineCmd extends Cmd {
 
         if (count > 0) {
             lockMachineDtos = lockMachineV1InnerServiceSMOImpl.queryLockMachines(lockMachineDto);
-            //查询设备是否在线 刷新电量
+            //查询设备是否在线 刷新电量 todo: 改成定时任务获取电量再修改,查询不用刷新
             queryMachineStateAndElectricQuantity(lockMachineDtos);
         } else {
             lockMachineDtos = new ArrayList<>();

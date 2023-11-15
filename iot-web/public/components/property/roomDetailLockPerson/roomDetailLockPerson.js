@@ -9,6 +9,7 @@
             roomDetailLockPersonInfo: {
                 lockPersons: [],
                 roomId:'',
+                machineId:'',
             }
         },
         _initMethod: function () {
@@ -24,7 +25,14 @@
                 });
             vc.on('roomDetailLockPerson', 'notify', function (_data) {
                 $that._loadRoomDetailLockPersonData(DEFAULT_PAGE,DEFAULT_ROWS);
-            })
+            });
+            vc.on('machineDetailLockPerson', 'switch', function (_data) {
+                $that.roomDetailLockPersonInfo.machineId = _data.machineId;
+                $that._loadMachineDetailLockPersonData(DEFAULT_PAGE, DEFAULT_ROWS);
+            });
+            vc.on('machineDetailLockPerson', 'paginationPlus', 'page_event', function (_currentPage) {
+                $that._loadMachineDetailLockPersonData(_currentPage, DEFAULT_ROWS);
+            });
         },
         methods: {
             _loadRoomDetailLockPersonData: function (_page, _row) {
@@ -57,6 +65,33 @@
             //查询
             _qureyRoomDetailLockPerson: function () {
                 $that._loadRoomDetailLockPersonData(DEFAULT_PAGE, DEFAULT_ROWS);
+            },
+            _loadMachineDetailLockPersonData: function (_page, _row) {
+                let param = {
+                    params: {
+                        communityId: vc.getCurrentCommunity().communityId,
+                        machineId:$that.roomDetailLockPersonInfo.machineId,
+                        page:_page,
+                        row:_row
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/lockPerson.listLockPerson',
+                    param,
+                    function (json) {
+                        let _machineInfo = JSON.parse(json);
+                        $that.roomDetailLockPersonInfo.lockPersons = _machineInfo.data;
+                        vc.emit('machineDetailLockPerson', 'paginationPlus', 'init', {
+                            total: _machineInfo.records,
+                            dataCount: _machineInfo.total,
+                            currentPage: _page
+                        });
+                    },
+                    function () {
+                        console.log('请求失败处理');
+                    }
+                );
             },
         }
     });

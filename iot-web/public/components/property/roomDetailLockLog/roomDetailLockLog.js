@@ -9,6 +9,7 @@
             roomDetailLockLogInfo: {
                 logs: [],
                 roomId:'',
+                machine:'',
             }
         },
         _initMethod: function () {
@@ -24,7 +25,14 @@
                 });
             vc.on('roomDetailLockLog', 'notify', function (_data) {
                 $that._loadRoomDetailLockLogData(DEFAULT_PAGE,DEFAULT_ROWS);
-            })
+            });
+            vc.on('machineDetailLockLog', 'switch', function (_data) {
+                $that.roomDetailLockLogInfo.machineId = _data.machineId;
+                $that._loadMachineDetailLockLogData(DEFAULT_PAGE, DEFAULT_ROWS);
+            });
+            vc.on('machineDetailLockLog', 'paginationPlus', 'page_event', function (_currentPage) {
+                $that._loadMachineDetailLockLogData(_currentPage, DEFAULT_ROWS);
+            });
         },
         methods: {
             _loadRoomDetailLockLogData: function (_page, _row) {
@@ -60,6 +68,33 @@
             },
             _openViewLockLogModel: function (_log) {
                 vc.emit('showLockLog', 'openShowLockLogModal', _log);
+            },
+            _loadMachineDetailLockLogData: function (_page, _row) {
+                let param = {
+                    params: {
+                        communityId: vc.getCurrentCommunity().communityId,
+                        machineId:$that.roomDetailLockLogInfo.machineId,
+                        page:_page,
+                        row:_row
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/lockLog.listLockLog',
+                    param,
+                    function (json) {
+                        let _machineInfo = JSON.parse(json);
+                        $that.roomDetailLockLogInfo.logs = _machineInfo.data;
+                        vc.emit('machineDetailLockLog', 'paginationPlus', 'init', {
+                            total: _machineInfo.records,
+                            dataCount: _machineInfo.total,
+                            currentPage: _page
+                        });
+                    },
+                    function () {
+                        console.log('请求失败处理');
+                    }
+                );
             },
         }
     });

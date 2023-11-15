@@ -142,7 +142,7 @@
                     });
             },
             _toLockDetail: function (_machine) {
-                vc.jumpToPage('/#/pages/lock/lockMachineDetail?machineId=' + _machine.machineId);
+                vc.jumpToPage('/#/pages/lock/lockMachineDetail?machineId=' + _machine.machineId + "&roomId=" + _machine.roomId);
             }
         }
     });
