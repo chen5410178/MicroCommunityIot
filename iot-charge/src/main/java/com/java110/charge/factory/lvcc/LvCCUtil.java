@@ -128,9 +128,9 @@ public class LvCCUtil {
 
         String machineCodeHex = BytesUtil.bytesToHex(mcBytes);
 
-        String machineCodeLen = String.format("%2x",machineCodeHex.length()/2);
+        String machineCodeLen = String.format("%02x",machineCodeHex.length()/2);
 
         String rs = LV_VERSION + "01" + machineCodeLen + machineCodeHex + getLvCCMsgId(data) + getCmd(data) + rsData;
-        return LV_CHONG_CHONG_HEAD + String.format("%4x", (rs.length() / 2)) + rs+xOrCheckSum(BytesUtil.hexStringToByteArray(rs));
+        return LV_CHONG_CHONG_HEAD + String.format("%04x", (rs.length() / 2)) + rs+xOrCheckSum(BytesUtil.hexStringToByteArray(rs));
     }
 }
