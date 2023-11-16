@@ -3,6 +3,8 @@ package com.java110.hal.nettty;
 import com.java110.core.utils.BytesUtil;
 import com.java110.core.utils.StringUtil;
 
+import java.io.UnsupportedEncodingException;
+
 public class DataHeader {
 
     public static final String LV_CHONG_CHONG_HEAD = "7e5d7d7f";// 驴充充 针头
@@ -50,6 +52,7 @@ public class DataHeader {
         String data = BytesUtil.bytesToHex(msg);
         data = data.substring(18, 20);
         return Integer.parseInt(data, 16);
+
     }
 
     /**
@@ -61,6 +64,12 @@ public class DataHeader {
     public static String getLvCCMachineCode(byte[] msg) {
         String data = BytesUtil.bytesToHex(msg);
         data = data.substring(20, 20 + getLvCCMachineCodeLength(msg)*2);
-        return data;
+        String bb = null;
+        try {
+            bb = new String(BytesUtil.hexStringToByteArray(data), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        return bb;
     }
 }
