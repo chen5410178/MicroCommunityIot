@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 
 /**
  * Unit test for simple App.
@@ -33,30 +34,30 @@ public class AppTest
      * Rigourous Test :-)
      */
     public void testApp() {
-        String aa = "7e5d7d7f00220001100f383631353531303537303035363936000100011b012400010001021d010e";
+        //7e5d7d7f0022  0e
+        String aa = "0001100f383631353531303537303035363936000100011b012400010001021d01";
 
-        String cmdContext = getCmdContext(BytesUtil.hexStringToByteArray(aa));
+        String cmdContext = xOrCheckSum(BytesUtil.hexStringToByteArray(aa));
         System.out.println(cmdContext);
 
-        String bb = null;
-        try {
-            bb = new String(BytesUtil.hexStringToByteArray(cmdContext), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
 
-        System.out.println(bb);
     }
 
     public void testApp1() {
 
-        String aa = "61e0dc1d";
+        String aa = "65562fc1";
 
         String bb = null;
         bb = new String(BytesUtil.hexStringToByteArray(aa));
 
-        System.out.println(bb);
+        long curUnit = new Date().getTime()/1000;
+
+        System.out.println(String.format("%x", curUnit));
+        ;
+
+        System.out.println(Integer.parseInt(aa,16));
     }
+
 
 
     /**
@@ -65,12 +66,17 @@ public class AppTest
      * @param msg
      * @return
      */
-    public static String getCmdContext(byte[] msg) {
-        String data = BytesUtil.bytesToHex(msg);
+    public static String xOrCheckSum(byte[] data) {
+        byte checksum = 0;
+        for (byte b : data) {
+            checksum ^= b;
+        }
 
-        int startPos = 28 + DataHeader.getLvCCMachineCodeLength(msg) * 2;
-        data = data.substring(startPos, data.length() - 2);
+        String hex = Integer.toHexString(checksum & 0xFF);
+        if (hex.length() < 2) {
+            hex = "0"+hex;
+        }
+        return hex;
 
-        return data;
     }
 }

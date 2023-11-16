@@ -33,6 +33,14 @@ public class NettySocketHolder {
         MAP.entrySet().stream().filter(entry -> entry.getValue() == nioSocketChannel).forEach(entry -> MAP.remove(entry.getKey()));
     }
 
+    public static void sendData(String machineCode, byte[] data) {
+        NioSocketChannel channel = get(machineCode);
+        if (channel == null) {
+            throw new IllegalArgumentException("设备未连接");
+        }
+
+        channel.writeAndFlush(data);
+    }
 
 
 }

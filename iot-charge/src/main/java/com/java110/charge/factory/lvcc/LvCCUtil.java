@@ -6,6 +6,10 @@ public class LvCCUtil {
 
     public static final String LV_CHONG_CHONG_HEAD = "7e5d7d7f";// 驴充充 针头
 
+    public static final String LV_VERSION = "0001"; // 协议版本号
+
+    public static final String CMD_REGISTER = "0001"; // todo 注册
+
 
     /**
      * 获取设备ID长度
@@ -17,6 +21,31 @@ public class LvCCUtil {
         String data = BytesUtil.bytesToHex(msg);
         data = data.substring(18, 20);
         return Integer.parseInt(data, 16);
+    }
+
+    /**
+     * 获取设备ID
+     *
+     * @param msg
+     * @return
+     */
+    public static String getLvCCMachineCode(byte[] msg) {
+        String data = BytesUtil.bytesToHex(msg);
+        data = data.substring(20, 20 + getLvCCMachineCodeLength(msg) * 2);
+        return data;
+    }
+
+    /**
+     * 获取设备ID
+     *
+     * @param msg
+     * @return
+     */
+    public static String getLvCCMsgId(byte[] msg) {
+        String data = BytesUtil.bytesToHex(msg);
+        int startPos = 20 + getLvCCMachineCodeLength(msg) * 2;
+        data = data.substring(startPos, startPos + 4);
+        return data;
     }
 
     /**
@@ -44,8 +73,43 @@ public class LvCCUtil {
         String data = BytesUtil.bytesToHex(msg);
 
         int startPos = 28 + getLvCCMachineCodeLength(msg) * 2;
-        data = data.substring(startPos, data.length()-2);
+        data = data.substring(startPos, data.length() - 2);
 
         return data;
+    }
+
+    public static String xOrCheckSum(byte[] data) {
+        byte checksum = 0;
+        for (byte b : data) {
+            checksum ^= b;
+        }
+
+        String hex = Integer.toHexString(checksum & 0xFF);
+        if (hex.length() < 2) {
+            hex = "0"+hex;
+        }
+        return hex;
+
+    }
+
+    /**
+     * 计算返回内容
+     *
+     * @param data
+     * @param rsData
+     * @return
+     */
+    public static String computeResultDate(byte[] data, String rsData) {
+        //7e 5d 7d 7f
+        // 00 1c
+        // 00 01
+        // 01
+        // 0f
+        // 38 36 38 30 38 39 30 35 37 36 37 32 34 39 39
+        // 00 01
+        // 00 01
+        // 61 e0 dc 1d 7d
+        String rs = LV_VERSION + "01" + getLvCCMachineCodeLength(data) + getLvCCMachineCode(data) + getLvCCMsgId(data) + getCmd(data) + rsData;
+        return LV_CHONG_CHONG_HEAD + String.format("%x", (rs.length() / 2)) + rs+xOrCheckSum(BytesUtil.hexStringToByteArray(rs));
     }
 }
