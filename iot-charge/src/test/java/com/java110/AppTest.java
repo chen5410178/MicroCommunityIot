@@ -43,4 +43,9 @@ public class AppTest
         String param = LvCCUtil.computeResultDate(BytesUtil.hexStringToByteArray(aa),"861551057005696",paramOut);
         System.out.println(param);
     }
+
+    public void testByte(){
+        byte[] aa = new byte[]{0, 1, 2, 29, 1, 12};
+        System.out.println(BytesUtil.bytesToHex(aa));
+    }
 }
