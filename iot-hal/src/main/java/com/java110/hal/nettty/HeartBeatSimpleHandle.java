@@ -75,11 +75,9 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
 
     private void doChannelRead(ChannelHandlerContext ctx, Object msg) {
         LOGGER.info("收到ByteBuf={}", msg);
-
-        ByteBuf byteBuf = (ByteBuf) msg;
-        byte[] bytes = new byte[byteBuf.readableBytes()];
-        byteBuf.readBytes(bytes);
+        byte[] bytes = (byte[]) msg;
         LOGGER.info("收到字节={}", Arrays.toString(bytes));
+
         String machineCode = "";
         if (DataHeader.isLvChongChong(bytes)) {
             machineCode = DataHeader.getLvCCMachineCode(bytes);
