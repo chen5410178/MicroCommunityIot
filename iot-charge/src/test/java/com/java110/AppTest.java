@@ -45,7 +45,6 @@ public class AppTest
     }
 
     public void testByte(){
-        byte[] aa = new byte[]{0, 1, 2, 29, 1, 12};
-        System.out.println(BytesUtil.bytesToHex(aa));
+        System.out.println(LvCCUtil.generatorMsgId());
     }
 }

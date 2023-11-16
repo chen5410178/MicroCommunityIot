@@ -3,6 +3,7 @@ package com.java110.charge.factory.lvcc;
 import com.java110.core.utils.BytesUtil;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Random;
 
 public class LvCCUtil {
 
@@ -12,6 +13,13 @@ public class LvCCUtil {
 
     public static final String CMD_REGISTER = "0001"; // todo 注册
     public static final String CMD_HEARTBEAT = "0002"; // todo 心跳
+    public static final String CMD_START_CHARGE = "0005"; // todo 开启充电
+
+    public static final String CMD_CHARGE_END = "0010"; // todo 充电结束
+    public static final String CMD_UPLOAD_CHARGE_DATA = "0030"; // todo 充电过程中 上报充电功率
+
+
+
 
     /**
      * 获取设备ID长度
@@ -133,4 +141,31 @@ public class LvCCUtil {
         String rs = LV_VERSION + "01" + machineCodeLen + machineCodeHex + getLvCCMsgId(data) + getCmd(data) + rsData;
         return LV_CHONG_CHONG_HEAD + String.format("%04x", (rs.length() / 2+1)) + rs+xOrCheckSum(BytesUtil.hexStringToByteArray(rs));
     }
+
+    public static String requestMachineData(String cmd, String machineCode, String data) {
+
+        byte[] mcBytes = null;
+        try {
+            mcBytes = machineCode.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
+        String machineCodeHex = BytesUtil.bytesToHex(mcBytes);
+
+        String machineCodeLen = String.format("%02x",machineCodeHex.length()/2);
+
+        String rs = LV_VERSION + "10" + machineCodeLen + machineCodeHex + generatorMsgId() + cmd + data;
+        return LV_CHONG_CHONG_HEAD + String.format("%04x", (rs.length() / 2+1)) + rs+xOrCheckSum(BytesUtil.hexStringToByteArray(rs));
+    }
+
+    public static String generatorMsgId() {
+
+        Random random = new Random();
+        int msgId = random.nextInt(256);
+
+        return String.format("%04x",msgId);
+    }
+
+
 }
