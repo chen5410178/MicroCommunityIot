@@ -1,6 +1,7 @@
 package com.java110.hal.nettty;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.core.utils.BytesUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.CharsetUtil;
@@ -38,6 +39,10 @@ public class NettySocketHolder {
         if (channel == null) {
             throw new IllegalArgumentException("设备未连接");
         }
+
+        // todo 发送数据
+        logger.debug("向 {} 设备发送数据，{}", machineCode, data);
+        logger.debug("向 {} 设备发送数据Hex，{}", machineCode, BytesUtil.bytesToHex(data));
 
         channel.writeAndFlush(data);
     }
