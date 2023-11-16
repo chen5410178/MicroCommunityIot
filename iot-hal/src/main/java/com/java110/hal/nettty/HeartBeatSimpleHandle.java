@@ -2,15 +2,17 @@ package com.java110.hal.nettty;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.factory.ApplicationContextFactory;
+import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
+import com.java110.dto.chargeMachine.ChargeMachineByteDataDto;
+import com.java110.dto.chargeMachine.ChargeMachineDto;
+import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
+import com.java110.intf.charge.INotifyChargeV1InnerServiceSMO;
+import com.java110.intf.system.IHardwareManufacturerV1InnerServiceSMO;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.timeout.IdleState;
-import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +34,6 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
         LOGGER.debug("channelActive -->  RamoteAddress : " + ip + " connected ");
 
     }
-
 
 
     /**
@@ -62,39 +63,81 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        try {
+            doChannelRead(ctx, msg);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error("设备数据处理异常", e);
+        }
+
+
+    }
+
+    private void doChannelRead(ChannelHandlerContext ctx, Object msg) {
         LOGGER.info("收到ByteBuf={}", msg);
 
         ByteBuf byteBuf = (ByteBuf) msg;
         byte[] bytes = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(bytes);
         LOGGER.info("收到字节={}", Arrays.toString(bytes));
-        String content = new String(bytes, "utf-8");
-        LOGGER.info("收到customProtocol={}", content);
-
-        if (!content.endsWith("}")) {
-            content += "}";
+        String machineCode = "";
+        if (DataHeader.isLvChongChong(bytes)) {
+            machineCode = DataHeader.getLvCCMachineCode(bytes);
         }
 
-        //分析厂家
-        String parkId = analyseMachine(content);
+        if (StringUtil.isEmpty(machineCode)) {
+            return;
+        }
 
-//        IMachineService machineService = ApplicationContextFactory.getBean("machineServiceImpl", IMachineService.class);
-//        MachineDto machineDto = new MachineDto();
-//        //machineDto.setLocationType(MachineDto.LOCATION_TYPE_PARKING_AREA);
-//        machineDto.setLocationObjId(parkId);
-//        List<MachineDto> machineDtos = machineService.queryMachines(machineDto);
-//        if (machineDtos == null || machineDtos.size() < 1) {
-//            return;
-//        }
-//
-//        initMachineToCache(ctx, machineDtos.get(0), false);
-//
-//        judgeSyncQuery(content);
-//
-//        Java110CarProtocol java110CarProtocol = CarProcessFactory.getCarImpl(machineDtos.get(0).getHmId()).accept(machineDtos.get(0), content);
-    //    ctx.channel().writeAndFlush(Unpooled.unreleasableBuffer(Unpooled.copiedBuffer(java110CarProtocol.getContent(), CharsetUtil.UTF_8)));
+        //todo 保存设备和连接的关系
+        initMachineToCache(ctx, machineCode, false);
+
+        //todo 通知充电桩数据给适配器
+        if (toNotifyCharge(machineCode, bytes)) {
+            return;
+        }
+        //todo 通知 水电表
+        if (toNotifyMeter(machineCode, bytes)) {
+            return;
+        }
+    }
+
+    private boolean toNotifyMeter(String machineCode, byte[] bytes) {
+        return false;
+    }
+
+    /**
+     * 通知 充电桩
+     *
+     * @param machineCode
+     * @param bytes
+     * @return
+     */
+    private boolean toNotifyCharge(String machineCode, byte[] bytes) {
+
+        IChargeMachineV1InnerServiceSMO chargeMachineV1InnerServiceSMO = ApplicationContextFactory.getBean("chargeMachineV1InnerServiceSMOImpl", IChargeMachineV1InnerServiceSMO.class);
+
+        if (chargeMachineV1InnerServiceSMO == null) {
+            chargeMachineV1InnerServiceSMO = ApplicationContextFactory.getBean(IChargeMachineV1InnerServiceSMO.class.getName(), IChargeMachineV1InnerServiceSMO.class);
+        }
+
+        ChargeMachineDto chargeMachineDto = new ChargeMachineDto();
+        chargeMachineDto.setMachineCode(machineCode);
+        List<ChargeMachineDto> machineDtos = chargeMachineV1InnerServiceSMO.queryChargeMachines(chargeMachineDto);
+        if (ListUtil.isNull(machineDtos)) {
+            return false;
+        }
+
+        INotifyChargeV1InnerServiceSMO notifyChargeV1InnerServiceSMOImpl = ApplicationContextFactory.getBean("notifyChargeV1InnerServiceSMOImpl", INotifyChargeV1InnerServiceSMO.class);
+
+        if (notifyChargeV1InnerServiceSMOImpl == null) {
+            notifyChargeV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(INotifyChargeV1InnerServiceSMO.class.getName(), INotifyChargeV1InnerServiceSMO.class);
+        }
+
+        notifyChargeV1InnerServiceSMOImpl.machineResult(new ChargeMachineByteDataDto(machineDtos.get(0), bytes));
 
 
+        return true;
     }
 
     private String analyseMachine(String content) {
@@ -112,6 +155,22 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         ctx.flush();
+    }
+
+
+    /**
+     * 保存 设备和连接的关系
+     *
+     * @param ctx
+     * @param machineCode
+     * @param force
+     */
+    private void initMachineToCache(ChannelHandlerContext ctx, String machineCode, boolean force) {
+        //保存客户端与 Channel 之间的关系
+        Object channel = NettySocketHolder.get(machineCode);
+        if (channel == null || force) {
+            NettySocketHolder.put(machineCode, (NioSocketChannel) ctx.channel());
+        }
     }
 
 }

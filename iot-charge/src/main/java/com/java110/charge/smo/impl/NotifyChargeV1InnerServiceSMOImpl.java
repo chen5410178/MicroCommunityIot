@@ -18,13 +18,22 @@ package com.java110.charge.smo.impl;
 
 import com.java110.bean.ResultVo;
 import com.java110.charge.factory.IChargeCore;
+import com.java110.charge.factory.IChargeFactoryAdapt;
+import com.java110.core.exception.CmdException;
+import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.LoggerFactory;
+import com.java110.core.utils.Assert;
+import com.java110.dto.chargeMachine.ChargeMachineByteDataDto;
+import com.java110.dto.chargeMachine.ChargeMachineFactoryDto;
 import com.java110.dto.chargeMachine.NotifyChargeOrderDto;
+import com.java110.intf.charge.IChargeMachineFactoryV1InnerServiceSMO;
 import com.java110.intf.charge.INotifyChargeV1InnerServiceSMO;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 类表述： 服务之前调用的接口实现类，不对外提供接口能力 只用于接口建调用
@@ -42,6 +51,9 @@ public class NotifyChargeV1InnerServiceSMOImpl implements INotifyChargeV1InnerSe
 
     @Autowired
     private IChargeCore chargeCoreImpl;
+
+    @Autowired
+    private IChargeMachineFactoryV1InnerServiceSMO chargeMachineFactoryV1InnerServiceSMOImpl;
 
 
     @Override
@@ -61,6 +73,26 @@ public class NotifyChargeV1InnerServiceSMOImpl implements INotifyChargeV1InnerSe
     @Override
     public ResultVo workHeartbeat(@RequestBody NotifyChargeOrderDto notifyChargeOrderDto) {
         return chargeCoreImpl.workHeartbeat(notifyChargeOrderDto);
+    }
+
+    @Override
+    public ResultVo machineResult(@RequestBody ChargeMachineByteDataDto chargeMachineByteDataDto) {
+
+
+        ChargeMachineFactoryDto chargeMachineFactoryDto = new ChargeMachineFactoryDto();
+        chargeMachineFactoryDto.setFactoryId(chargeMachineByteDataDto.getChargeMachineDto().getImplBean());
+        List<ChargeMachineFactoryDto> chargeMachineFactoryDtos = chargeMachineFactoryV1InnerServiceSMOImpl.queryChargeMachineFactorys(chargeMachineFactoryDto);
+
+        Assert.listOnlyOne(chargeMachineFactoryDtos, "充电桩厂家不存在");
+
+        IChargeFactoryAdapt chargeFactoryAdapt = ApplicationContextFactory.getBean(chargeMachineFactoryDtos.get(0).getBeanImpl(), IChargeFactoryAdapt.class);
+        if (chargeFactoryAdapt == null) {
+            throw new CmdException("厂家接口未实现");
+        }
+
+        chargeFactoryAdapt.chargeResult(chargeMachineByteDataDto.getChargeMachineDto(), chargeMachineByteDataDto.getData());
+
+        return new ResultVo(ResultVo.CODE_OK, "成功");
     }
 
 

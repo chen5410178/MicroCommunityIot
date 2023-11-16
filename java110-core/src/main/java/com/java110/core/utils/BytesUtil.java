@@ -2,6 +2,7 @@ package com.java110.core.utils;
 
 public class BytesUtil {
     public static int toInt2(byte[] msg, int i) {
+        String data = bytesToHex(msg);
         return 0;
     }
 

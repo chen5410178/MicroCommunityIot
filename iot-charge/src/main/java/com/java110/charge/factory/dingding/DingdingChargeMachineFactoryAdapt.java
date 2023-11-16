@@ -175,6 +175,7 @@ public class DingdingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     }
 
 
+
     /**
      * 工作心跳
      * @param chargeMachineDto
@@ -190,4 +191,12 @@ public class DingdingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
         chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
     }
+
+    @Override
+    public void chargeResult(ChargeMachineDto chargeMachineDto, byte[] data) {
+
+
+
+    }
+
 }

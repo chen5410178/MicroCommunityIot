@@ -16,6 +16,7 @@
 package com.java110.intf.charge;
 
 import com.java110.bean.ResultVo;
+import com.java110.dto.chargeMachine.ChargeMachineByteDataDto;
 import com.java110.dto.chargeMachine.NotifyChargeOrderDto;
 import com.java110.intf.FeignConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -53,6 +54,9 @@ public interface INotifyChargeV1InnerServiceSMO {
      */
     @RequestMapping(value = "/workHeartbeat", method = RequestMethod.POST)
     ResultVo workHeartbeat(@RequestBody NotifyChargeOrderDto notifyChargeOrderDto);
+
+    @RequestMapping(value = "/machineResult", method = RequestMethod.POST)
+    ResultVo machineResult(@RequestBody ChargeMachineByteDataDto chargeMachineByteDataDto);
 
 
 }

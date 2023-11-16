@@ -60,4 +60,11 @@ public interface IChargeFactoryAdapt {
      * @param bodyParam
      */
     void workHeartbeat(ChargeMachineDto chargeMachineDto, String bodyParam);
+
+    /**
+     * 充电设备数据上报
+     * @param chargeMachineDto
+     * @param data
+     */
+    void chargeResult(ChargeMachineDto chargeMachineDto,byte[] data);
 }
