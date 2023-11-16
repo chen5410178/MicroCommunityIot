@@ -2,6 +2,8 @@ package com.java110.charge.factory.lvcc;
 
 import com.java110.core.utils.BytesUtil;
 
+import java.io.UnsupportedEncodingException;
+
 public class LvCCUtil {
 
     public static final String LV_CHONG_CHONG_HEAD = "7e5d7d7f";// 驴充充 针头
@@ -31,8 +33,14 @@ public class LvCCUtil {
      */
     public static String getLvCCMachineCode(byte[] msg) {
         String data = BytesUtil.bytesToHex(msg);
-        data = data.substring(20, 20 + getLvCCMachineCodeLength(msg) * 2);
-        return data;
+        data = data.substring(20, 20 + getLvCCMachineCodeLength(msg)*2);
+        String bb = null;
+        try {
+            bb = new String(BytesUtil.hexStringToByteArray(data), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        return bb;
     }
 
     /**
@@ -99,7 +107,7 @@ public class LvCCUtil {
      * @param rsData
      * @return
      */
-    public static String computeResultDate(byte[] data, String rsData) {
+    public static String computeResultDate(byte[] data,String machineCode, String rsData) {
         //7e 5d 7d 7f
         // 00 1c
         // 00 01
@@ -109,7 +117,20 @@ public class LvCCUtil {
         // 00 01
         // 00 01
         // 61 e0 dc 1d 7d
-        String rs = LV_VERSION + "01" + getLvCCMachineCodeLength(data) + getLvCCMachineCode(data) + getLvCCMsgId(data) + getCmd(data) + rsData;
-        return LV_CHONG_CHONG_HEAD + String.format("%x", (rs.length() / 2)) + rs+xOrCheckSum(BytesUtil.hexStringToByteArray(rs));
+
+        //todo 计算设备编号 长度
+        byte[] mcBytes = null;
+        try {
+            mcBytes = machineCode.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
+        String machineCodeHex = BytesUtil.bytesToHex(mcBytes);
+
+        String machineCodeLen = String.format("%2x",machineCodeHex.length()/2);
+
+        String rs = LV_VERSION + "01" + machineCodeLen + machineCodeHex + getLvCCMsgId(data) + getCmd(data) + rsData;
+        return LV_CHONG_CHONG_HEAD + String.format("%4x", (rs.length() / 2)) + rs+xOrCheckSum(BytesUtil.hexStringToByteArray(rs));
     }
 }

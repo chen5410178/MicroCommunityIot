@@ -84,7 +84,7 @@ public class LvCCChargeMachineFactoryAdapt  implements IChargeFactoryAdapt {
 
         String paramOut = String.format("%x", curUnit);
 
-        paramOut = LvCCUtil.computeResultDate(data,paramOut);
+        paramOut = LvCCUtil.computeResultDate(data,chargeMachineDto.getMachineCode(),paramOut);
 
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(),BytesUtil.hexStringToByteArray(paramOut)));
     }
