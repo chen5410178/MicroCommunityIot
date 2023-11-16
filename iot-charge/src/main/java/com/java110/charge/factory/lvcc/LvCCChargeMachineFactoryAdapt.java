@@ -11,10 +11,12 @@ import com.java110.dto.chargeMachine.NotifyChargePortDto;
 import com.java110.dto.data.NettyReplyDataDto;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
+@Service("lvCCChargeMachineFactory")
 public class LvCCChargeMachineFactoryAdapt  implements IChargeFactoryAdapt {
 
     @Autowired
