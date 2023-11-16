@@ -26,7 +26,10 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.doc.annotation.*;
+import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
 import com.java110.dto.chargeMachine.ChargeRuleFeeDto;
 import com.java110.dto.smallWeChat.SmallWeChatDto;
@@ -39,7 +42,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -154,11 +159,35 @@ public class ListChargeMachineCmd extends Cmd {
 
     private void queryMachineState(List<ChargeMachineDto> chargeMachineDtos) {
 
-        if (chargeMachineDtos == null || chargeMachineDtos.size() < 1 || chargeMachineDtos.size() > 10) {
+//        if (chargeMachineDtos == null || chargeMachineDtos.size() < 1 || chargeMachineDtos.size() > 10) {
+//            return;
+//        }
+//
+//        chargeCoreImpl.queryChargeMachineState(chargeMachineDtos);
+
+        if (chargeMachineDtos == null || chargeMachineDtos.size() < 1) {
             return;
         }
-
-        chargeCoreImpl.queryChargeMachineState(chargeMachineDtos);
+        for (ChargeMachineDto chargeMachineDto : chargeMachineDtos) {
+            String heartbeatTime = chargeMachineDto.getHeartbeatTime();
+            try {
+                if (StringUtil.isEmpty(heartbeatTime)) {
+                    chargeMachineDto.setStateName("设备离线");
+                } else {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(DateUtil.getDateFromString(heartbeatTime, DateUtil.DATE_FORMATE_STRING_A));
+                    calendar.add(Calendar.MINUTE, 2);
+                    if (calendar.getTime().getTime() <= DateUtil.getCurrentDate().getTime()) {
+                        chargeMachineDto.setStateName("设备离线");
+                    } else {
+                        chargeMachineDto.setStateName("设备在线");
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+                chargeMachineDto.setStateName("设备离线");
+            }
+        }
     }
 
     /**
