@@ -11,7 +11,7 @@ public class LvCCUtil {
     public static final String LV_VERSION = "0001"; // 协议版本号
 
     public static final String CMD_REGISTER = "0001"; // todo 注册
-
+    public static final String CMD_HEARTBEAT = "0002"; // todo 心跳
 
     /**
      * 获取设备ID长度

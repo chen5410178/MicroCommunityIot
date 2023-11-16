@@ -9,7 +9,9 @@ import com.java110.dto.chargeMachine.ChargeMachinePortDto;
 import com.java110.dto.chargeMachine.NotifyChargeOrderDto;
 import com.java110.dto.chargeMachine.NotifyChargePortDto;
 import com.java110.dto.data.NettyReplyDataDto;
+import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
+import com.java110.po.chargeMachine.ChargeMachinePo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class LvCCChargeMachineFactoryAdapt  implements IChargeFactoryAdapt {
 
     @Autowired
     private INotifyNettyDataV1InnerServiceSMO notifyNettyDataV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IChargeMachineV1InnerServiceSMO chargeMachineV1InnerServiceSMOImpl;
 
     @Override
     public ResultVo startCharge(ChargeMachineDto chargeMachineDto, ChargeMachinePortDto chargeMachinePortDto, String chargeType, double duration, String orderId) {
@@ -67,9 +72,35 @@ public class LvCCChargeMachineFactoryAdapt  implements IChargeFactoryAdapt {
             case LvCCUtil.CMD_REGISTER:
                 machineRegister(chargeMachineDto,data,LvCCUtil.getCmdContext(data));
                 break;
+            case LvCCUtil.CMD_HEARTBEAT:
+                machineHeartbeat(chargeMachineDto,data);
+                break;
         }
 
 
+    }
+
+    /**
+     * 心跳
+     * @param chargeMachineDto
+     * @param data
+     */
+    private void machineHeartbeat(ChargeMachineDto chargeMachineDto, byte[] data) {
+
+
+        ChargeMachinePo chargeMachinePo = new ChargeMachinePo();
+        chargeMachinePo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        chargeMachinePo.setMachineId(chargeMachineDto.getMachineId());
+        chargeMachinePo.setMachineCode(chargeMachineDto.getMachineCode());
+        chargeMachineV1InnerServiceSMOImpl.updateChargeMachine(chargeMachinePo);
+
+        long curUnit = new Date().getTime()/1000;
+
+        String paramOut = String.format("%x", curUnit);
+
+        paramOut = LvCCUtil.computeResultDate(data,chargeMachineDto.getMachineCode(),paramOut);
+
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(),BytesUtil.hexStringToByteArray(paramOut)));
     }
 
     /**

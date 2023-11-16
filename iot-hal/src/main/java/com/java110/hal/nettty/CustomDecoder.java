@@ -40,7 +40,7 @@ public class CustomDecoder  extends MessageToMessageDecoder<byte[]> {
      */
     private void unpackSH(byte[] msg, List<Object> out) {
         // 获取报文的长度帧，并转化10进制字节，在加上起始帧1个字节+长度帧1个字节+效验帧2个字节，所以+4，
-        int len = DataHeader.getLvChongChongLength(msg);
+        int len = DataHeader.getLvChongChongLength(msg)+6;
         if (msg.length <= len) { // 一个整包
             out.add(msg);
 

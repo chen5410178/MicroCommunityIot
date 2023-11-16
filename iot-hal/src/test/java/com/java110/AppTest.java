@@ -33,19 +33,11 @@ public class AppTest
      * Rigourous Test :-)
      */
     public void testApp() {
-        String aa = "7e5d7d7f00220001100f383631353531303537303035363936000100011b012400010001021d010e";
+        String aa = "7e5d7d7f00180001120f383631353531303537303035363936000500022b";
 
         String cmdContext = DataHeader.getLvCCMachineCode(BytesUtil.hexStringToByteArray(aa));
         System.out.println(cmdContext);
 
-        String bb = null;
-        try {
-            bb = new String(BytesUtil.hexStringToByteArray(cmdContext), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-
-        System.out.println(bb);
     }
 
     public void testApp1() {
