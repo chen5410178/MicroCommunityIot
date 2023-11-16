@@ -10,6 +10,8 @@ import com.java110.dto.chargeMachine.NotifyChargeOrderDto;
 import com.java110.dto.chargeMachine.NotifyChargePortDto;
 import com.java110.dto.data.NettyReplyDataDto;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import java.util.List;
 
 @Service("lvCCChargeMachineFactory")
 public class LvCCChargeMachineFactoryAdapt  implements IChargeFactoryAdapt {
+    private static Logger logger = LoggerFactory.getLogger(LvCCChargeMachineFactoryAdapt.class);
 
     @Autowired
     private INotifyNettyDataV1InnerServiceSMO notifyNettyDataV1InnerServiceSMOImpl;
@@ -57,6 +60,8 @@ public class LvCCChargeMachineFactoryAdapt  implements IChargeFactoryAdapt {
 
         //todo 解析指令
         String cmd = LvCCUtil.getCmd(data);
+
+        logger.debug("设备 {} ，解析到 指令为 ：{}",chargeMachineDto.getMachineCode(),cmd);
 
         switch (cmd){
             case LvCCUtil.CMD_REGISTER:
