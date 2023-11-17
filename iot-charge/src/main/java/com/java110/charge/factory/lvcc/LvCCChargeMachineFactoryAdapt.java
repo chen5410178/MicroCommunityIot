@@ -4,20 +4,20 @@ import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.charge.factory.IChargeFactoryAdapt;
 import com.java110.charge.factory.dingding.DingdingChargeUtils;
+import com.java110.core.exception.CmdException;
 import com.java110.core.utils.BytesUtil;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
-import com.java110.dto.chargeMachine.ChargeMachineDto;
-import com.java110.dto.chargeMachine.ChargeMachinePortDto;
-import com.java110.dto.chargeMachine.NotifyChargeOrderDto;
-import com.java110.dto.chargeMachine.NotifyChargePortDto;
+import com.java110.dto.chargeMachine.*;
 import com.java110.dto.data.NettyReplyDataDto;
+import com.java110.intf.charge.IChargeMachineOrderV1InnerServiceSMO;
 import com.java110.intf.charge.IChargeMachinePortV1InnerServiceSMO;
 import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
 import com.java110.intf.charge.INotifyChargeV1InnerServiceSMO;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
 import com.java110.po.chargeMachine.ChargeMachinePo;
+import com.java110.po.chargeMachineOrder.ChargeMachineOrderPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +43,9 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
     @Autowired
     private IChargeMachinePortV1InnerServiceSMO chargeMachinePortV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IChargeMachineOrderV1InnerServiceSMO chargeMachineOrderV1InnerServiceSMOImpl;
 
     public static final Map<String, String> resultMap = new HashMap<>();
 
@@ -205,20 +208,68 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
     private void machineUploadChargeData(ChargeMachineDto chargeMachineDto, byte[] data) {
 
-        ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
-        chargeMachinePortDto.setMachineId(chargeMachineDto.getMachineId());
-        chargeMachinePortDto.setCommunityId(chargeMachineDto.getCommunityId());
-        List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
+//        ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
+//        chargeMachinePortDto.setMachineId(chargeMachineDto.getMachineId());
+//        chargeMachinePortDto.setCommunityId(chargeMachineDto.getCommunityId());
+//        List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
+//
+//        if(ListUtil.isNull(chargeMachinePortDtos)){
+//            return;
+//        }
 
-        if(ListUtil.isNull(chargeMachinePortDtos)){
-            return;
+        String param = LvCCUtil.getCmdContext(data);
+
+        //todo 设备当前信号值 丢弃
+        param = param.substring(2);
+
+
+        List<String> portWs = new ArrayList<>();
+        String w = "";
+        for (int port = 0; port < param.length(); port++) {
+            w += param.charAt(port);
+            if (w.length() == 4) {
+                portWs.add(w);
+                w = "";
+            }
         }
 
-        for(int port = 0;port < chargeMachinePortDtos.size() ; port++){
+        int energy = 0;
+        for (int port = 0; port < portWs.size(); port++) {
 
+            energy = Integer.parseInt(portWs.get(port), 16);
+            if (energy <= 0) {
+                continue;
+            }
+
+            ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
+            chargeMachinePortDto.setMachineId(chargeMachineDto.getMachineId());
+            chargeMachinePortDto.setPortCode((port + 1) + "");
+            List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
+            if (ListUtil.isNull(chargeMachinePortDtos)) {
+                continue;
+            }
+
+            ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
+            chargeMachineOrderDto.setMachineId(chargeMachineDto.getMachineId());
+            chargeMachineOrderDto.setPortId(chargeMachinePortDtos.get(0).getPortId());
+            chargeMachineOrderDto.setState(ChargeMachineOrderDto.STATE_DOING);
+            List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
+            if (ListUtil.isNull(chargeMachineOrderDtos)) {
+                continue;
+            }
+
+            ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
+            chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
+            chargeMachineOrderPo.setEnergy(energy + "");
+            chargeMachineOrderPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
+            chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
         }
 
+        String paramOut = String.format("%02x", 1);
 
+        paramOut = LvCCUtil.computeResultDate(data, chargeMachineDto.getMachineCode(), paramOut);
+
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
 
     }
 
