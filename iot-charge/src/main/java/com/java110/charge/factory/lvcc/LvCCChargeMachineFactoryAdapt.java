@@ -6,12 +6,14 @@ import com.java110.charge.factory.IChargeFactoryAdapt;
 import com.java110.charge.factory.dingding.DingdingChargeUtils;
 import com.java110.core.utils.BytesUtil;
 import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
 import com.java110.dto.chargeMachine.ChargeMachinePortDto;
 import com.java110.dto.chargeMachine.NotifyChargeOrderDto;
 import com.java110.dto.chargeMachine.NotifyChargePortDto;
 import com.java110.dto.data.NettyReplyDataDto;
+import com.java110.intf.charge.IChargeMachinePortV1InnerServiceSMO;
 import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
 import com.java110.intf.charge.INotifyChargeV1InnerServiceSMO;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
@@ -38,6 +40,9 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
     @Autowired
     private INotifyChargeV1InnerServiceSMO notifyChargeV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IChargeMachinePortV1InnerServiceSMO chargeMachinePortV1InnerServiceSMOImpl;
 
     public static final Map<String, String> resultMap = new HashMap<>();
 
@@ -105,7 +110,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     public ResultVo stopCharge(ChargeMachineDto chargeMachineDto, ChargeMachinePortDto chargeMachinePortDto) {
         //todo 插座
         int port = Integer.parseInt(chargeMachinePortDto.getPortCode()) - 1;
-        String portHex = String.format("%x", port);
+        String portHex = String.format("%02x", port);
 
         String data = portHex;
 
@@ -188,6 +193,22 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     }
 
     private void machineUploadChargeData(ChargeMachineDto chargeMachineDto, byte[] data) {
+
+        ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
+        chargeMachinePortDto.setMachineId(chargeMachineDto.getMachineId());
+        chargeMachinePortDto.setCommunityId(chargeMachineDto.getCommunityId());
+        List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
+
+        if(ListUtil.isNull(chargeMachinePortDtos)){
+            return;
+        }
+
+        for(int port = 0;port < chargeMachinePortDtos.size() ; port++){
+
+        }
+
+
+
     }
 
     /**
