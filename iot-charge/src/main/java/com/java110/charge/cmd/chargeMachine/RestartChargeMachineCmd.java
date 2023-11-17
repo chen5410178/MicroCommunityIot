@@ -48,7 +48,7 @@ public class RestartChargeMachineCmd extends Cmd {
         Assert.listOnlyOne(chargeMachineDtos, "充电桩 不存在");
 
         ChargeMachineFactoryDto chargeMachineFactoryDto = new ChargeMachineFactoryDto();
-        chargeMachineFactoryDto.setFactoryId(chargeMachineDto.getImplBean());
+        chargeMachineFactoryDto.setFactoryId(chargeMachineDtos.get(0).getImplBean());
         List<ChargeMachineFactoryDto> chargeMachineFactoryDtos = chargeMachineFactoryV1InnerServiceSMOImpl.queryChargeMachineFactorys(chargeMachineFactoryDto);
 
         Assert.listOnlyOne(chargeMachineFactoryDtos, "充电桩厂家不存在");
