@@ -58,7 +58,7 @@ public class RestartChargeMachineCmd extends Cmd {
             throw new CmdException("厂家接口未实现");
         }
 
-        ResultVo resultVo = chargeFactoryAdapt.restartMachine(chargeMachineDto);
+        ResultVo resultVo = chargeFactoryAdapt.restartMachine(chargeMachineDtos.get(0));
         context.setResponseEntity(ResultVo.createResponseEntity(resultVo));
 
     }
