@@ -20,6 +20,8 @@ public class LvCCUtil {
     public static final String CMD_RESTART = "0017"; // todo 成功设备
 
 
+    public static final String CMD_CHANGE_PORT_STATE = "0021"; // todo 插座状态改变
+
 
 
     /**

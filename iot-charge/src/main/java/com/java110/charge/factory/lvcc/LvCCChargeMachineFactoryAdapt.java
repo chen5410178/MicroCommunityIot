@@ -18,6 +18,7 @@ import com.java110.intf.charge.INotifyChargeV1InnerServiceSMO;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
 import com.java110.po.chargeMachine.ChargeMachinePo;
 import com.java110.po.chargeMachineOrder.ChargeMachineOrderPo;
+import com.java110.po.chargeMachinePort.ChargeMachinePortPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -200,22 +201,60 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
             case LvCCUtil.CMD_UPLOAD_CHARGE_DATA:// todo 充电过程中上报 功率
                 machineUploadChargeData(chargeMachineDto, data);
                 break;
+            case LvCCUtil.CMD_CHANGE_PORT_STATE:// todo 充电过程中上报 功率
+                machineChangePortState(chargeMachineDto, data);
+                break;
+
 
         }
 
 
     }
 
-    private void machineUploadChargeData(ChargeMachineDto chargeMachineDto, byte[] data) {
+    /**
+     * 插座状态改变上报
+     * @param chargeMachineDto
+     * @param data
+     */
+    private void machineChangePortState(ChargeMachineDto chargeMachineDto, byte[] data) {
+        String dataHex = LvCCUtil.getCmdContext(data);
 
-//        ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
-//        chargeMachinePortDto.setMachineId(chargeMachineDto.getMachineId());
-//        chargeMachinePortDto.setCommunityId(chargeMachineDto.getCommunityId());
-//        List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
-//
-//        if(ListUtil.isNull(chargeMachinePortDtos)){
-//            return;
-//        }
+        // todo 插座
+        int port = Integer.parseInt(dataHex.substring(0, 2), 16) + 1;
+
+        // todo 状态
+        int state = Integer.parseInt(dataHex.substring(2, 4), 16) ;
+
+        ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
+        chargeMachinePortDto.setMachineId(chargeMachineDto.getMachineId());
+        chargeMachinePortDto.setPortCode((port + 1) + "");
+        List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
+        if (!ListUtil.isNull(chargeMachinePortDtos)) {
+            ChargeMachinePortPo chargeMachinePortPo = new ChargeMachinePortPo();
+            chargeMachinePortPo.setPortId(chargeMachinePortDtos.get(0).getPortId());
+            chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_FREE);
+            if(state == 1){
+                chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_WORKING);
+            }
+            if(state == 2){
+                chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_BREAKDOWN);
+            }
+            chargeMachinePortV1InnerServiceSMOImpl.updateChargeMachinePort(chargeMachinePortPo);
+        }
+
+        String paramOut = String.format("%02x", 1);
+
+        paramOut = LvCCUtil.computeResultDate(data, chargeMachineDto.getMachineCode(), paramOut);
+
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+    }
+
+    /**
+     * 充电数据上报
+     * @param chargeMachineDto
+     * @param data
+     */
+    private void machineUploadChargeData(ChargeMachineDto chargeMachineDto, byte[] data) {
 
         String param = LvCCUtil.getCmdContext(data);
 
