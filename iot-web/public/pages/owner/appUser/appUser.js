@@ -16,7 +16,7 @@
                     ownerName: '',
                     link: '',
                     roomName: '',
-                    state: '',
+                    state: '10000',
 
                 }
             }
@@ -75,6 +75,10 @@
                 } else {
                     $that.appUserInfo.moreCondition = true;
                 }
+            },
+            _switchState:function(_state){
+                $that.appUserInfo.conditions.state = _state;
+                $that._listAppUsers(DEFAULT_PAGE, DEFAULT_ROWS);
             }
 
 
