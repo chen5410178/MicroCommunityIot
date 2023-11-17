@@ -1,10 +1,7 @@
 package com.java110.charge.factory.lvcc;
 
-import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.charge.factory.IChargeFactoryAdapt;
-import com.java110.charge.factory.dingding.DingdingChargeUtils;
-import com.java110.core.exception.CmdException;
 import com.java110.core.utils.BytesUtil;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
@@ -22,7 +19,6 @@ import com.java110.po.chargeMachinePort.ChargeMachinePortPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -127,7 +123,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
     @Override
     public ChargeMachinePortDto getChargePortState(ChargeMachineDto chargeMachineDto, ChargeMachinePortDto chargeMachinePortDto) {
-        return null;
+        return chargeMachinePortDto;
     }
 
     @Override
