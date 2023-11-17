@@ -22,7 +22,7 @@
             }
         },
         _initMethod: function () {
-            vc.component._listChargeRuleFees(DEFAULT_PAGE, DEFAULT_ROWS);
+            //$that._listChargeRuleFees(DEFAULT_PAGE, DEFAULT_ROWS);
         },
         _initEvent: function () {
             vc.on('chargeRuleFee', 'switch', function (_data) {
@@ -30,11 +30,11 @@
                 $that._listChargeRuleFees(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('chargeRuleFee', 'listChargeRuleFee', function (_param) {
-                vc.component._listChargeRuleFees(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listChargeRuleFees(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('chargeRuleFee', 'paginationPlus', 'page_event',
                 function (_currentPage) {
-                    vc.component._listChargeRuleFees(_currentPage, DEFAULT_ROWS);
+                    $that._listChargeRuleFees(_currentPage, DEFAULT_ROWS);
                 });
             vc.on('chargeType', 'switchChargeType', function (_param) {
                 $that.chargeRuleFeeInfo.conditions.chargeType = _param.statusCd;
@@ -44,10 +44,14 @@
         methods: {
             _listChargeRuleFees: function (_page, _rows) {
 
-                vc.component.chargeRuleFeeInfo.conditions.page = _page;
-                vc.component.chargeRuleFeeInfo.conditions.row = _rows;
-                var param = {
-                    params: vc.component.chargeRuleFeeInfo.conditions
+                if(!$that.chargeRuleFeeInfo.conditions.ruleId){
+                    return;
+                }
+
+                $that.chargeRuleFeeInfo.conditions.page = _page;
+                $that.chargeRuleFeeInfo.conditions.row = _rows;
+                let param = {
+                    params: $that.chargeRuleFeeInfo.conditions
                 };
 
                 //发送get请求
@@ -55,11 +59,11 @@
                     param,
                     function (json, res) {
                         var _chargeRuleFeeInfo = JSON.parse(json);
-                        vc.component.chargeRuleFeeInfo.total = _chargeRuleFeeInfo.total;
-                        vc.component.chargeRuleFeeInfo.records = _chargeRuleFeeInfo.records;
-                        vc.component.chargeRuleFeeInfo.chargeRuleFees = _chargeRuleFeeInfo.data;
+                        $that.chargeRuleFeeInfo.total = _chargeRuleFeeInfo.total;
+                        $that.chargeRuleFeeInfo.records = _chargeRuleFeeInfo.records;
+                        $that.chargeRuleFeeInfo.chargeRuleFees = _chargeRuleFeeInfo.data;
                         vc.emit('chargeRuleFee', 'paginationPlus', 'init', {
-                            total: vc.component.chargeRuleFeeInfo.records,
+                            total: $that.chargeRuleFeeInfo.records,
                             currentPage: _page
                         });
                     }, function (errInfo, error) {
@@ -88,14 +92,14 @@
                     vc.toast('未选择充电类型');
                     return;
                 }
-                vc.component._listChargeRuleFees(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listChargeRuleFees(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
             _moreCondition: function () {
-                if (vc.component.chargeRuleFeeInfo.moreCondition) {
-                    vc.component.chargeRuleFeeInfo.moreCondition = false;
+                if ($that.chargeRuleFeeInfo.moreCondition) {
+                    $that.chargeRuleFeeInfo.moreCondition = false;
                 } else {
-                    vc.component.chargeRuleFeeInfo.moreCondition = true;
+                    $that.chargeRuleFeeInfo.moreCondition = true;
                 }
             }
         }

@@ -166,6 +166,17 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     }
 
     @Override
+    public ResultVo restartMachine(ChargeMachineDto chargeMachineDto) {
+
+
+        String paramOut = LvCCUtil.requestMachineData(LvCCUtil.CMD_RESTART, chargeMachineDto.getMachineCode(), "");
+
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+
+        return new ResultVo(ResultVo.CODE_OK, "重启");
+    }
+
+    @Override
     public void chargeResult(ChargeMachineDto chargeMachineDto, byte[] data) {
 
         //todo 解析指令

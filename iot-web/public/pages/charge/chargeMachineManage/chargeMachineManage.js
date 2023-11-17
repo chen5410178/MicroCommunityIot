@@ -25,24 +25,24 @@
             vc.getDict('','charge_type',function (_data) {
                 $that.chargeMachineManageInfo.chargeTypes = _data;
             })
-            vc.component._listChargeMachines(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._listChargeMachines(DEFAULT_PAGE, DEFAULT_ROWS);
         },
         _initEvent: function() {
 
             vc.on('chargeMachineManage', 'listChargeMachine', function(_param) {
-                vc.component._listChargeMachines(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listChargeMachines(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('pagination', 'page_event', function(_currentPage) {
-                vc.component._listChargeMachines(_currentPage, DEFAULT_ROWS);
+                $that._listChargeMachines(_currentPage, DEFAULT_ROWS);
             });
         },
         methods: {
             _listChargeMachines: function(_page, _rows) {
 
-                vc.component.chargeMachineManageInfo.conditions.page = _page;
-                vc.component.chargeMachineManageInfo.conditions.row = _rows;
+                $that.chargeMachineManageInfo.conditions.page = _page;
+                $that.chargeMachineManageInfo.conditions.row = _rows;
                 var param = {
-                    params: vc.component.chargeMachineManageInfo.conditions
+                    params: $that.chargeMachineManageInfo.conditions
                 };
 
                 //发送get请求
@@ -50,11 +50,11 @@
                     param,
                     function(json, res) {
                         var _chargeMachineManageInfo = JSON.parse(json);
-                        vc.component.chargeMachineManageInfo.total = _chargeMachineManageInfo.total;
-                        vc.component.chargeMachineManageInfo.records = _chargeMachineManageInfo.records;
-                        vc.component.chargeMachineManageInfo.chargeMachines = _chargeMachineManageInfo.data;
+                        $that.chargeMachineManageInfo.total = _chargeMachineManageInfo.total;
+                        $that.chargeMachineManageInfo.records = _chargeMachineManageInfo.records;
+                        $that.chargeMachineManageInfo.chargeMachines = _chargeMachineManageInfo.data;
                         vc.emit('pagination', 'init', {
-                            total: vc.component.chargeMachineManageInfo.records,
+                            total: $that.chargeMachineManageInfo.records,
                             currentPage: _page
                         });
                     },
@@ -72,15 +72,18 @@
             _openDeleteChargeMachineModel: function(_chargeMachine) {
                 vc.emit('deleteChargeMachine', 'openDeleteChargeMachineModal', _chargeMachine);
             },
+            _openRestartChargeMachineModel: function(_chargeMachine) {
+                vc.emit('restartChargeMachine','openRestartChargeMachineModal', _chargeMachine);
+            },
             _queryChargeMachineMethod: function() {
-                vc.component._listChargeMachines(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listChargeMachines(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
             _moreCondition: function() {
-                if (vc.component.chargeMachineManageInfo.moreCondition) {
-                    vc.component.chargeMachineManageInfo.moreCondition = false;
+                if ($that.chargeMachineManageInfo.moreCondition) {
+                    $that.chargeMachineManageInfo.moreCondition = false;
                 } else {
-                    vc.component.chargeMachineManageInfo.moreCondition = true;
+                    $that.chargeMachineManageInfo.moreCondition = true;
                 }
             },
             _viewPort: function(_chargeMachine) {

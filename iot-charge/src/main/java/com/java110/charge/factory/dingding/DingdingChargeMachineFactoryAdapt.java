@@ -199,4 +199,9 @@ public class DingdingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
     }
 
+    @Override
+    public ResultVo restartMachine(ChargeMachineDto chargeMachineDto) {
+        return new ResultVo(ResultVo.CODE_OK,ResultVo.MSG_OK);
+    }
+
 }

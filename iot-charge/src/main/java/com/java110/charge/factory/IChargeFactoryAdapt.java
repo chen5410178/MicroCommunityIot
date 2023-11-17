@@ -67,4 +67,11 @@ public interface IChargeFactoryAdapt {
      * @param data
      */
     void chargeResult(ChargeMachineDto chargeMachineDto,byte[] data);
+
+    /**
+     * 重启设备
+     * @param chargeMachineDto
+     * @return
+     */
+    ResultVo restartMachine(ChargeMachineDto chargeMachineDto);
 }
