@@ -15,28 +15,23 @@ const baseUrl = '/';
 
 // #ifndef H5
 //服务器域名 小程序 或者 app 时 后端地址
-const baseUrl = 'http://192.168.100.108:8088/';
+const baseUrl = 'http://192.168.100.108:9999/';
 // #endif
 
 let commonBaseUrl = 'http://demo.homecommunity.cn/';
-
-
 
 const logLevel = "DEBUG"; // 日志级别
 
 let systemName="业主版";
 
 if(_systemConfig){
-	mallUrl = _systemConfig.mallUrl;
 	commonBaseUrl = _systemConfig.imgUrl;
 	systemName = _systemConfig.ownerTitle;
-	DEFAULT_COMMUNITY_ID = _systemConfig.defaultCommunityId;
 }
 
 export default {
 	baseUrl: baseUrl,
 	commonBaseUrl: commonBaseUrl,
-	wAppId: wAppId,
 	logLevel: logLevel,
 	imgUrl:commonBaseUrl,
 	systemName:systemName

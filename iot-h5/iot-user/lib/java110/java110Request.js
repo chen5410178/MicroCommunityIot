@@ -1,10 +1,10 @@
 import coreUtil from './utils/CoreUtil.js'
 
-import app from '../../constant/AppConstant.js'
+import app from '../../conf/AppConstant.js'
 
 import {getDateYYYYMMDDHHMISS} from './utils/DateUtil.js'
 
-import url from '../../constant/url.js'
+import url from '../../conf/url.js'
 
 
 import {getToken} from './utils/StorageUtil.js';
@@ -17,7 +17,6 @@ import {debug,warn,info,error} from './utils/LogUtil.js'
  * add by 吴学文 QQ：928255095
  **/
 export function getHeaders() {
-	let _wAppId = uni.getStorageSync(mapping.W_APP_ID);
 	let _token = getToken();
 	if(!_token){
 		_token = "no login";
@@ -30,7 +29,6 @@ export function getHeaders() {
 		"user-id": '-1',
 		//"cookie": '_java110_token_=' + getToken(),
 		"Accept": '*/*',
-		"w-app-id": _wAppId,
 		"Authorization":"Bearer "+_token
 	};
 }

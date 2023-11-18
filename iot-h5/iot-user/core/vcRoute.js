@@ -4,7 +4,7 @@
  * add by 吴学文 QQ 928255095
  */
 
-import url from '../constant/url.js'
+import url from '../conf/url.js'
 
 import {
 	debug

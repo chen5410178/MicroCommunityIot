@@ -9,8 +9,11 @@ class AppConstant {
   static wAppId= conf.wAppId; //微信AppId
   /**
   * 应用信息，主要是用来和后端服务交互时的时候用
+  * 这个不需要修改
+  * 这个不需要修改
+  * 这个不需要修改
   */
-  static appId = "992020061452450002";
+  static appId = "992023111817510002";
   static appSecurity = "";
 }
 

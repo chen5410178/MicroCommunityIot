@@ -1,16 +1,12 @@
 <script>
 	//app.js
-	import context from './lib/java110/Java110Context.js'
-	const loginFactory = context.factory.login;
-	const userFactory = context.factory.user;
-
 
 	import {
 		requestNoAuth
 	} from './lib/java110/java110Request.js';
 
 
-	import url from './constant/url.js'
+	import url from './conf/url.js'
 
 	export default {
 		// 小程序启动生命周期

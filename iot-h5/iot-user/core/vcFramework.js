@@ -39,13 +39,8 @@ export default{
 	info:info,
 	error:error,
 	warn:warn,
-	getCurCommunity:getCurCommunity,
-	recoveryCommunityInfo:recoveryCommunityInfo,//将小区输入相应对象
-	onLoad:onLoad,
 	navigateTo:navigateTo,
 	navigateBack:navigateBack,
 	isEmpty:isEmpty,
-	hasLogin:hasLogin,
-	getWAppId:getWAppId,
 	navigateToMall:navigateToMall
 }
