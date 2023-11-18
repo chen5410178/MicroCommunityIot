@@ -2,8 +2,10 @@ package com.java110.user.cmd.login;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cache.MappingCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.constant.MappingConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.AuthenticationFactory;
@@ -14,9 +16,6 @@ import com.java110.dto.user.UserDto;
 import com.java110.intf.system.ISmsInnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.user.UserPo;
-import com.java110.utils.cache.MappingCache;
-import com.java110.utils.constant.MappingConstant;
-import com.java110.utils.util.BeanConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
@@ -59,7 +58,7 @@ public class AppUserRegisterCmd extends Cmd {
         userPo.setPassword(AuthenticationFactory.passwdMd5(reqJson.getString("password")));
         int flag = userV1InnerServiceSMOImpl.saveUser(userPo);
         if (flag < 1) {
-            throw new com.java110.utils.exception.CmdException("注册失败");
+            throw new CmdException("注册失败");
         }
     }
 }
