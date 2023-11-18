@@ -79,11 +79,17 @@ export function sendSmsCode(_tel, _that) {
 export function ownerLogin(_tel) {
 	return new Promise((resolve, reject) => {
 		requestNoAuth({
-			url: url.customCarInOut,
+			url: url.appUserLogin,
 			method: "POST",
 			data: _objData,
 			success: function(res) {
 				//将业主信息和房屋信息一起返回
+				let _json = res.data;
+				if (_json.code != 0) {
+					reject(_json.msg);
+					return;
+				}
+				uni.setStorageSync("userInfo",_json.data);
 				resolve(res);
 			},
 			fail: function(res) {
@@ -113,7 +119,7 @@ export function userRegister(_data) {
 					reject(_json.msg);
 					return;
 				}
-				resolve(res);
+				resolve(res.data);
 			},
 			fail: function(res) {
 				reject(res);

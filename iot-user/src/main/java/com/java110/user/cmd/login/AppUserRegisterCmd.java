@@ -12,6 +12,7 @@ import com.java110.core.factory.AuthenticationFactory;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.SendSmsFactory;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.msg.SmsDto;
 import com.java110.dto.user.UserDto;
 import com.java110.intf.system.ISmsInnerServiceSMO;
@@ -20,6 +21,7 @@ import com.java110.po.user.UserPo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * 用户注册
@@ -38,6 +40,16 @@ public class AppUserRegisterCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson,"link","手机号不能为空");
         Assert.hasKeyAndValue(reqJson,"password","密码不能为空");
         Assert.hasKeyAndValue(reqJson,"msgCode","验证码不能为空");
+
+
+        UserDto userDto = new UserDto();
+        userDto.setTel(reqJson.getString("link"));
+        userDto.setLevelCd(UserDto.LEVEL_CD_PHONE);
+       List<UserDto> userDtos =  userV1InnerServiceSMOImpl.queryUsers(userDto);
+
+       if(!ListUtil.isNull(userDtos)){
+           throw new CmdException("手机号已存在");
+       }
 
         SmsDto smsDto = new SmsDto();
         smsDto.setTel(reqJson.getString("link"));

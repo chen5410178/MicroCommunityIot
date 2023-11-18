@@ -103,7 +103,6 @@
 				userRegister(obj)
 				.then(_data=>{
 					if (_data.code == 0) {
-						wx.hideLoading();
 						wx.redirectTo({
 							url: "/pages/user/login"
 						});

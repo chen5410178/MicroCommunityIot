@@ -44,7 +44,7 @@
 	import {
 		sendSmsCode,
 		ownerLogin,
-	} from '../../api/user/userApi.js';
+	} from '@/api/user/userApi.js';
 	
 	import url from '@/conf/config.js';
 
@@ -53,7 +53,9 @@
 		saveUserLoginInfo,
 		removeUserLoginInfo,
 		getLoginFlag
-	} from '@/lib/java110/utils/StorageUtil.js'
+	} from '@/lib/java110/utils/StorageUtil.js';
+	
+	
 
 	const login = 1; //1标识登录页面 请下发code 不要下发key
 	export default {
@@ -98,10 +100,8 @@
 					return;
 				}
 				let _obj = {
-					username: this.username,
-					password: this.password,
-					code: _that.code,
-					appId: this.vc.getWAppId(),
+					link: this.username,
+					passwd: this.password,
 					loginByPhone: this.loginByPhone
 				};
 				ownerLogin(this,_obj)
