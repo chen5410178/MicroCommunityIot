@@ -9,6 +9,7 @@ import com.java110.core.constant.MappingConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.AuthenticationFactory;
+import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.SendSmsFactory;
 import com.java110.core.utils.Assert;
 import com.java110.dto.msg.SmsDto;
@@ -52,6 +53,7 @@ public class AppUserRegisterCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
 
         UserPo userPo = new UserPo();
+        userPo.setUserId(GenerateCodeFactory.getGeneratorId("30"));
         userPo.setName(reqJson.getString("link"));
         userPo.setTel(reqJson.getString("link"));
         userPo.setLevelCd(UserDto.LEVEL_CD_PHONE);
