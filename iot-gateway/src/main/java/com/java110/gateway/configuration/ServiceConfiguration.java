@@ -16,10 +16,14 @@ public class ServiceConfiguration {
     static {
         exclusions.append("/iot/api/login.pcUserLogin,");
         exclusions.append("/iot/api/login.getSysInfo,");
+        exclusions.append("/iot/api/login.appUserRegister,");
+        exclusions.append("/iot/api/login.appUserLogin,");
+
+
 
         exclusions.append("/iot/api/login.generatorValidateCode,");
-        exclusions.append("/app/chargeMachine.listChargeMachine,");//查询充电桩
-        exclusions.append("/app/chargeMachine.listChargeMachinePort,");//查询充电桩插槽
+        exclusions.append("/iot/api/chargeMachine.listChargeMachine,");//查询充电桩
+        exclusions.append("/iot/api/chargeMachine.listChargeMachinePort,");//查询充电桩插槽
         exclusions.append("/app/charge/*,");// 通用充电桩通知放开
         exclusions.append("/app/equipments/*,");// 叮叮充电桩通知放开
         exclusions.append("/app/charge/kehang/*,");// 科航充电桩通知放开

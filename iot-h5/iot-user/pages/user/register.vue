@@ -36,7 +36,7 @@
 <script>
 	import conf from '@/conf/config';
 	
-	import {sendSmsCode} from '@/api/user/userApi.js';
+	import {sendSmsCode,userRegister} from '@/api/user/userApi.js';
 
 	export default {
 		data() {
@@ -76,14 +76,14 @@
 					"msgCode": this.msgCode,
 					"password": this.password,
 				}
-				if(!this.readme){
-					wx.showToast({
-						title: '未选择我已阅读《用户须知》',
-						icon: 'none',
-						duration: 2000
-					})
-					return;
-				}
+				// if(!this.readme){
+				// 	wx.showToast({
+				// 		title: '未选择我已阅读《用户须知》',
+				// 		icon: 'none',
+				// 		duration: 2000
+				// 	})
+				// 	return;
+				// }
 				let msg = "";
 				if (!this.password || this.password != this.rePassword) {
 					msg = "密码和重置密码不一致";
@@ -100,41 +100,16 @@
 					})
 					return;
 				}
-				uni.showLoading({
-					title: '加载中',
-					mask: true
-				});
-				uni.request({
-					url: url.ownerRegiter,
-					header: context.getHeaders(),
-					method: "POST",
-					data: obj, //动态数据
-					success: function(res) {
-						let _data = res.data;
-						//成功情况下跳转
+				userRegister(obj)
+				.then(_data=>{
+					if (_data.code == 0) {
 						wx.hideLoading();
-						if (_data.code == 0) {
-							wx.hideLoading();
-							wx.redirectTo({
-								url: "/pages/user/login"
-							});
-							return;
-						}
-						wx.showToast({
-							title: _data.msg,
-							icon: 'none',
-							duration: 2000
+						wx.redirectTo({
+							url: "/pages/user/login"
 						});
-					},
-					fail: function(e) {
-						wx.hideLoading();
-						wx.showToast({
-							title: "服务器异常了",
-							icon: 'none',
-							duration: 2000
-						})
+						return;
 					}
-				});
+				})
 			},
 			_readMe:function(){
 				uni.navigateTo({
