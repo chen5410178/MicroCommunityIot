@@ -90,7 +90,7 @@ export function ownerLogin(_objData) {
 					return;
 				}
 				uni.setStorageSync("userInfo",_json.data);
-				resolve(res);
+				resolve(_json.data);
 			},
 			fail: function(res) {
 				reject(res);
@@ -126,4 +126,8 @@ export function userRegister(_data) {
 			}
 		});
 	})
+}
+
+export function getUserId(){
+	
 }

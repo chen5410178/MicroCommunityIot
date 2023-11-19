@@ -56,6 +56,8 @@
 		getCouponUsers
 	} from '@/api/fee/feeApi.js';
 	
+	import {hasLogin} from '@/api/user/sessionApi.js'
+	
 	import {getCommunityId,getCommunityName}  from '@/api/community/communityApi.js';
 	
 	import {loadLoginOwner,getMemberId} from '@/api/owner/ownerApi.js';
@@ -92,6 +94,10 @@
 					_that.login = false;
 					return;
 				}
+				
+				_that.userName = _data.name;
+				_that.userPhone = _data.link;
+				
 				_that.communityName = getCommunityName();
 				_that.login = true;
 				_that.loadOwenrInfo();
@@ -101,7 +107,7 @@
 				this.loadOwnerCoupon();
 			},
 			ckeckUserInfo: function() {
-				//return context.checkLoginStatus();
+				return hasLogin();
 			},
 			loadOwenrInfo: function() {
 				let _that = this;

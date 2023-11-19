@@ -106,9 +106,10 @@
 				};
 				ownerLogin(_obj)
 					.then((_user) => {
+						console.log(_user)
 						//todo 保存登录信息
 						saveUserLoginInfo(_user.userId, _user.token, _user.key);
-						uni.navigateTo({
+						uni.switchTab({
 							url:'/pages/index/index'
 						})
 					},err=>{
