@@ -76,7 +76,7 @@ export function sendSmsCode(_tel, _that) {
 
  * @param {Object} _tel
  */
-export function ownerLogin(_tel) {
+export function ownerLogin(_objData) {
 	return new Promise((resolve, reject) => {
 		requestNoAuth({
 			url: url.appUserLogin,

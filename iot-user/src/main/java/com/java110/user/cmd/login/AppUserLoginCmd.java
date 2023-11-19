@@ -1,6 +1,7 @@
 package com.java110.user.cmd.login;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
@@ -72,8 +73,7 @@ public class AppUserLoginCmd extends Cmd {
             userInfo.put("token", token);
             userInfo.put("code", "0");
             userInfo.put("msg", "成功");
-            responseEntity = new ResponseEntity<String>(userInfo.toJSONString(), HttpStatus.OK);
-            context.setResponseEntity(responseEntity);
+            context.setResponseEntity(ResultVo.createResponseEntity(userInfo));
         } catch (Exception e) {
             logger.error("登录异常：", e);
             throw new IllegalArgumentException("系统内部错误，请联系管理员");

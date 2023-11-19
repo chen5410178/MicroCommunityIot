@@ -104,7 +104,7 @@
 					passwd: this.password,
 					loginByPhone: this.loginByPhone
 				};
-				ownerLogin(this,_obj)
+				ownerLogin(_obj)
 					.then((_user) => {
 						//todo 保存登录信息
 						saveUserLoginInfo(_user.userId, _user.token, _user.key);
