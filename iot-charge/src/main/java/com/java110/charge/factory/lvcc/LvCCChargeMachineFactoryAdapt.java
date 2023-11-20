@@ -244,7 +244,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
         ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
         chargeMachinePortDto.setMachineId(chargeMachineDto.getMachineId());
-        chargeMachinePortDto.setPortCode((port + 1) + "");
+        chargeMachinePortDto.setPortCode(port + "");
         List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
         if (!ListUtil.isNull(chargeMachinePortDtos)) {
             ChargeMachinePortPo chargeMachinePortPo = new ChargeMachinePortPo();
