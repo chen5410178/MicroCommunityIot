@@ -84,7 +84,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         String fullWaitTime = String.format("%04x", 1800);
 
         //todo 充电时间
-        String chargeTime = String.format("%04x", (int)Math.round(duration * 60));
+        String chargeTime = String.format("%04x", (int) Math.round(duration * 60));
 
         //todo 充电订单,必须为20位,orderId 为18为
         String orderNum = BytesUtil.bytesToHex(("HC" + orderId).getBytes());
@@ -117,6 +117,26 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         String paramOut = LvCCUtil.requestMachineData(LvCCUtil.CMD_STOP_CHARGE, chargeMachineDto.getMachineCode(), data);
 
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+
+        ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
+        chargeMachineOrderDto.setPortId(chargeMachinePortDto.getPortId());
+        chargeMachineOrderDto.setCommunityId(chargeMachinePortDto.getCommunityId());
+        chargeMachineOrderDto.setMachineId(chargeMachinePortDto.getMachineId());
+        List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
+
+        if (ListUtil.isNull(chargeMachineOrderDtos)) {
+            return new ResultVo(ResultVo.CODE_OK, "启动成功");
+        }
+        //todo 设备不上传结束的指令上来 所以需要 自己手工结束下
+        NotifyChargeOrderDto notifyChargeOrderDto = new NotifyChargeOrderDto();
+        notifyChargeOrderDto.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
+        notifyChargeOrderDto.setMachineCode(chargeMachineDto.getMachineCode());
+        notifyChargeOrderDto.setPortCode(port + "");
+        notifyChargeOrderDto.setBodyParam("");
+        notifyChargeOrderDto.setReason("手工结束");
+        notifyChargeOrderDto.setEnergy(chargeMachineOrderDtos.get(0).getEnergy());
+
+        notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);
 
         return new ResultVo(ResultVo.CODE_OK, "启动成功");
     }
@@ -209,6 +229,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
     /**
      * 插座状态改变上报
+     *
      * @param chargeMachineDto
      * @param data
      */
@@ -219,7 +240,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         int port = Integer.parseInt(dataHex.substring(0, 2), 16) + 1;
 
         // todo 状态
-        int state = Integer.parseInt(dataHex.substring(2, 4), 16) ;
+        int state = Integer.parseInt(dataHex.substring(2, 4), 16);
 
         ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
         chargeMachinePortDto.setMachineId(chargeMachineDto.getMachineId());
@@ -229,10 +250,10 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
             ChargeMachinePortPo chargeMachinePortPo = new ChargeMachinePortPo();
             chargeMachinePortPo.setPortId(chargeMachinePortDtos.get(0).getPortId());
             chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_FREE);
-            if(state == 1){
+            if (state == 1) {
                 chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_WORKING);
             }
-            if(state == 2){
+            if (state == 2) {
                 chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_BREAKDOWN);
             }
             chargeMachinePortV1InnerServiceSMOImpl.updateChargeMachinePort(chargeMachinePortPo);
@@ -247,6 +268,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
     /**
      * 充电数据上报
+     *
      * @param chargeMachineDto
      * @param data
      */
@@ -311,6 +333,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     /**
      * 充电结束
      * 例如 ： 7e5d7d7f00360001110f38363135353130353730303536393601ca00100500484331313230323331313230353832313030303500000000655b08ca0c
+     *
      * @param chargeMachineDto
      * @param data
      */
