@@ -114,7 +114,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
         String data = portHex;
 
-        String paramOut = LvCCUtil.requestMachineData(LvCCUtil.CMD_START_CHARGE, chargeMachineDto.getMachineCode(), data);
+        String paramOut = LvCCUtil.requestMachineData(LvCCUtil.CMD_CHARGE_END, chargeMachineDto.getMachineCode(), data);
 
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
 
@@ -188,7 +188,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
             case LvCCUtil.CMD_REGISTER: //todo 注册
                 machineRegister(chargeMachineDto, data, LvCCUtil.getCmdContext(data));
                 break;
-            case LvCCUtil.CMD_HEARTBEAT: // todo 结束
+            case LvCCUtil.CMD_HEARTBEAT: // todo 心跳
                 machineHeartbeat(chargeMachineDto, data);
                 break;
             case LvCCUtil.CMD_CHARGE_END:// todo 充电结束

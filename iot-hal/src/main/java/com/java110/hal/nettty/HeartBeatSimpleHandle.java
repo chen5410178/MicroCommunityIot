@@ -165,8 +165,12 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
      */
     private void initMachineToCache(ChannelHandlerContext ctx, String machineCode, boolean force) {
         //保存客户端与 Channel 之间的关系
-        Object channel = NettySocketHolder.get(machineCode);
+        NioSocketChannel channel = NettySocketHolder.get(machineCode);
         if (channel == null || force) {
+            NettySocketHolder.put(machineCode, (NioSocketChannel) ctx.channel());
+        }
+
+        if(channel != null && channel.isShutdown()){
             NettySocketHolder.put(machineCode, (NioSocketChannel) ctx.channel());
         }
     }
