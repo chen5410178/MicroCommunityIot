@@ -11,7 +11,9 @@ export default {
 	queryAppUserAccount:baseUrl + "iot/api/account.queryAppUserAccount", // 查询用户账户
 	
 	startCharge:baseUrl + "iot/api/chargeMachine.startCharge", // 开始充电
+	stopCharge:baseUrl + "iot/api/chargeMachine.stopCharge", // 结束充电
 	
+	listChargeMachineOrder:baseUrl + "iot/api/chargeMachine.listChargeMachineOrder", // 查询充电订单
 	
 	
 	

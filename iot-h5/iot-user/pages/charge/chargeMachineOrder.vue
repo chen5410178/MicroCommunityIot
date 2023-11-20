@@ -95,13 +95,14 @@
 		},
 		onLoad(options) {
 			this.orderId = options.orderId;
+			this.communityId = options.communityId;
 			this._loadChargeMachineOrder();
 		},
 		methods: {
 			_loadChargeMachineOrder:function(){
 				let _that = this;
 				getChargeMachineOrder({
-					communityId:getCommunityId(),
+					communityId:this.communityId,
 					page:1,
 					row:1,
 					orderId:this.orderId
@@ -129,7 +130,7 @@
 					orderId: this.orderId,
 					machineId:this.machineId,
 					portId:this.portId,
-					communityId:getCommunityId()
+					communityId:this.communityId
 				}).then(_data => {
 					if(_data.code != 0){
 						uni.showToast({

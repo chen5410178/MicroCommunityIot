@@ -93,7 +93,7 @@
 					}
 					
 					uni.navigateTo({
-						url:'/pages/charge/chargeMachineOrder?orderId='+_data.data 
+						url:'/pages/charge/chargeMachineOrder?orderId='+_data.data +'&communityId='+this.machineId
 					})
 				})
 				
