@@ -16,7 +16,7 @@
 package com.java110.user.dao.impl;
 
 import com.java110.core.db.dao.BaseServiceDao;
-import com.java110.utils.exception.DAOException;
+import com.java110.core.exception.DAOException;
 import com.java110.user.dao.IUserAttrV1ServiceDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

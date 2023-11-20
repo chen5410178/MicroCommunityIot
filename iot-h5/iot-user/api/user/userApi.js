@@ -143,7 +143,7 @@ export function getUserTel(){
 	return _userInfo.tel;
 }
 
-export function getCommunityWechatAppId(){
+export function getCommunityWechatAppId(_objData){
 	return new Promise((resolve, reject) => {
 		requestNoAuth({
 			url: url.getCommunityWechatAppId,

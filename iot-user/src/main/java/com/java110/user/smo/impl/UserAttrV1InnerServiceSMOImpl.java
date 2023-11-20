@@ -17,11 +17,11 @@ package com.java110.user.smo.impl;
 
 
 import com.java110.bean.dto.PageDto;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.user.dao.IUserAttrV1ServiceDao;
 import com.java110.intf.user.IUserAttrV1InnerServiceSMO;
 import com.java110.dto.userAttr.UserAttrDto;
 import com.java110.po.userAttr.UserAttrPo;
-import com.java110.utils.util.BeanConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
