@@ -145,6 +145,11 @@
                                 <td class="text-center">{{monitorMachine.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_toMonitorDetail(monitorMachine)">
+                                            <vc:i18n name='详情'></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
                                         <button class="btn-white btn btn-xs" v-on:click="_openEditMonitorMachineModel(monitorMachine)">
                                             <vc:i18n name='修改'></vc:i18n>
                                         </button>

@@ -151,6 +151,9 @@
                 } else {
                     $that.liftMachineManageInfo.moreCondition = true;
                 }
+            },
+            _toLiftDetail: function (_liftMachine) {
+                vc.jumpToPage('/#/pages/lift/liftMachineDetail?machineId=' + _liftMachine.machineId);
             }
         }
     });

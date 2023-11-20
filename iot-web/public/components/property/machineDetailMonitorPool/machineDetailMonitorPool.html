@@ -1,0 +1,84 @@
+<div class="margin-top">
+    <!-- <div class="row margin-top-lg">
+        <div class="col-lg-2 padding-right-xs padding-left-xl">
+            <input v-model="roomDetailLockLogInfo.roomNum" type="text" :placeholder="vc.i18n('请填写房屋编号','roomDetailLockLog')"
+                class="form-control">
+        </div>
+        <div class="col-lg-2 padding-right-xs padding-right-xl">
+            <button type="button" class="btn btn-primary btn-sm" style="margin-left:10px"
+                v-on:click="_qureyRoomDetailAccessControl()">
+                <i class="fa fa-search"></i>查询
+            </button>
+        </div>
+
+        <div class="col-lg-8 text-right">
+             <button type="button" class="btn btn-primary btn-sm" style="margin-left:10px" v-if="vc.hasPrivilege('502023021978930012')" v-on:click="_openAddOwnerRoom()">
+                <vc:i18n name="交房" namespace="simplifyRoomFee"></vc:i18n>
+            </button> 
+
+        </div>
+    </div> -->
+    <div class="margin-top">
+        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <vc:i18n name='编号' namespace='monitorPoolManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='监控名称' namespace='monitorPoolManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='监控编码' namespace='monitorPoolManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='监控模型' namespace='monitorPoolManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='监控类型' namespace='monitorPoolManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='监控图片' namespace='monitorPoolManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='创建时间' namespace='monitorPoolManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='描述' namespace='monitorPoolManage'></vc:i18n>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="monitorPool in machineDetailMonitorPoolInfo.pools">
+                    <td class="text-center">{{monitorPool.mpId}}</td>
+                    <td class="text-center">{{monitorPool.machineName}}</td>
+                    <td class="text-center">{{monitorPool.machineCode}}</td>
+                    <td class="text-center">{{monitorPool.modelName}}</td>
+                    <td class="text-center">{{monitorPool.monitorTypeName}}</td>
+                    <td class="text-center">
+                        <div style="position: relative; display: inline-block;">
+                            <img width="50" height="50" style="border-radius: 10px;" v-bind:src="monitorPool.monitorPhoto"
+                                 onerror="this.src='/img/noPhoto.jpg';">
+                        </div>
+                    </td>
+                    <td class="text-center">{{monitorPool.createTime}}</td>
+                    <td class="text-center">
+                        <button class="btn-white btn btn-xs" v-on:click="_openModel(monitorPool.remark, '备注')">
+                            <vc:i18n name='查看'></vc:i18n>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="row">
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-sm-8">
+                <vc:create namespace="machineDetailMonitorArea" path="frame/paginationPlus"></vc:create>
+            </div>
+        </div>
+    </div>
+    <vc:create path="event/viewData"></vc:create>
+</div>
