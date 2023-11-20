@@ -114,7 +114,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
         String data = portHex;
 
-        String paramOut = LvCCUtil.requestMachineData(LvCCUtil.CMD_CHARGE_END, chargeMachineDto.getMachineCode(), data);
+        String paramOut = LvCCUtil.requestMachineData(LvCCUtil.CMD_STOP_CHARGE, chargeMachineDto.getMachineCode(), data);
 
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
 

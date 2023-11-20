@@ -15,6 +15,9 @@ public class LvCCUtil {
     public static final String CMD_HEARTBEAT = "0002"; // todo 心跳
     public static final String CMD_START_CHARGE = "0005"; // todo 开启充电
 
+    public static final String CMD_STOP_CHARGE = "0007"; // todo 停止充电
+
+
     public static final String CMD_CHARGE_END = "0010"; // todo 充电结束
     public static final String CMD_UPLOAD_CHARGE_DATA = "0030"; // todo 充电过程中 上报充电功率
     public static final String CMD_RESTART = "0017"; // todo 成功设备
