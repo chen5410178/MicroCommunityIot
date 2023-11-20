@@ -6,6 +6,7 @@ import com.java110.bean.ResultVo;
 import com.java110.bean.dto.basePrivilege.BasePrivilegeDto;
 import com.java110.core.configuration.Java110RedisConfig;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.communityMember.CommunityMemberDto;
 import com.java110.dto.privilegeUser.PrivilegeUserDto;
 import com.java110.dto.storeStaff.StoreStaffDto;
@@ -52,8 +53,8 @@ public class GetCommunityStoreInfoSMOImpl implements IGetCommunityStoreInfoSMO {
         storeStaffDto.setStaffId(userId);
         List<StoreStaffDto> storeStaffDtos = storeStaffV1InnerServiceSMOImpl.queryStoreStaffs(storeStaffDto);
 
-        if (storeStaffDtos == null || storeStaffDtos.size() < 1) {
-            throw new IllegalArgumentException("员工未包含商户信息");
+        if (ListUtil.isNull(storeStaffDtos)) {
+            return null;
         }
 
         return storeStaffDtos.get(0);

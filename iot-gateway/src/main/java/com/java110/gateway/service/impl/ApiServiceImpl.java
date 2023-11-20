@@ -296,7 +296,7 @@ public class ApiServiceImpl implements IApiService {
         StoreStaffDto storeStaffDto = getCommunityStoreInfoSMOImpl.getStoreInfo(userId);
 
         if (storeStaffDto == null) {
-            throw new IllegalArgumentException("商户不存在");
+            return new ValidateResult("-1", StoreStaffDto.STORE_TYPE_APP_USER, "", userId, "-");
         }
 
         Assert.hasLength(storeStaffDto.getStoreId(), "根据用户ID查询商户ID失败，未包含storeId节点");

@@ -27,6 +27,9 @@ public class StoreDto extends PageDto implements Serializable {
     public static final String STORE_TYPE_DEV = "800900000000";
     //物业商户
     public static final String STORE_TYPE_PROPERTY = "800900000003";
+
+    //用户
+    public static final String STORE_TYPE_APP_USER = "800900000006";
     //商家
     public static final String STORE_TYPE_MALL = "800900000005";
 
