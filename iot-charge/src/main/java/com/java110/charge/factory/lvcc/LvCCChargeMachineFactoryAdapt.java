@@ -84,7 +84,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         String fullWaitTime = String.format("%04x", 1800);
 
         //todo 充电时间
-        String chargeTime = String.format("%04x", duration * 60);
+        String chargeTime = String.format("%04x", (int)Math.round(duration * 60));
 
         //todo 充电订单,必须为20位,orderId 为18为
         String orderNum = BytesUtil.bytesToHex(("HC" + orderId).getBytes());

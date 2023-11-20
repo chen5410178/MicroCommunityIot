@@ -22,13 +22,16 @@
 	import {
 		getChargeMonthOrder
 	} from '@/api/machine/machineApi.js';
-	import {formatDate} from '../../lib/java110/utils/DateUtil.js'
+	import {
+		formatDate
+	} from '../../lib/java110/utils/DateUtil.js';
+	import {getUserTel} from '../../api/user/userApi.js'
 	export default {
 		name: "charge",
 		data() {
 			return {
-				chargeOrders:[],
-				communityId:''
+				chargeOrders: [],
+				communityId: ''
 			};
 		},
 		created() {
@@ -38,34 +41,29 @@
 			loadChargeMonthOrder: function(_communityId) {
 				this.communityId = _communityId;
 				let _that = this;
-				context.getOwner(function(_ownerInfo) {
-					if (_ownerInfo) {
-						if(!_that.communityId){
-							_that.communityId = _ownerInfo.communityId
-						}
-						
-						getChargeMonthOrder({
-							page: 1,
-							row: 20,
-							personTel: _ownerInfo.link,
-							communityId: _communityId,
-							queryTime:formatDate(new Date())
-						}).then((data) => {
-							if (!data) {
-								_that.chargeOrders = [];
-								return;
-							}
-							_that.chargeOrders = data;
-						})
+
+				getChargeMonthOrder({
+					page: 1,
+					row: 20,
+					personTel: getUserTel(),
+					communityId: _communityId,
+					queryTime: formatDate(new Date())
+				}).then((data) => {
+					if (!data) {
+						_that.chargeOrders = [];
+						return;
 					}
-				});
-			},
-			_toPrestoreAccount:function(){
-				uni.navigateTo({
-					url:'/pages/machine/chargeCard?communityId='+this.communityId
+					_that.chargeOrders = data;
 				})
 			}
+
+		},
+		_toPrestoreAccount: function() {
+			uni.navigateTo({
+				url: '/pages/machine/chargeCard?communityId=' + this.communityId
+			})
 		}
+	
 	}
 </script>
 

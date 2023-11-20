@@ -39,7 +39,6 @@
 			loadOwnerAccount: function(_communityId) {
 				this.communityId = _communityId;
 				let _that = this;
-
 				queryOwnerAccount({
 					page: 1,
 					row: 20,
@@ -54,13 +53,14 @@
 					}
 					_that.account = data[0];
 				})
+			},
+			_toPrestoreAccount: function() {
+				uni.navigateTo({
+					url: '/pages/account/preStoreAccount?communityId=' + this.communityId
+				})
 			}
 		},
-		_toPrestoreAccount: function() {
-			uni.navigateTo({
-				url: '/pages/account/preStoreAccount?communityId=' + this.communityId
-			})
-		}
+		
 	}
 </script>
 

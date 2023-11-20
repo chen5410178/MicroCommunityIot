@@ -10,6 +10,8 @@ export default {
 	getCommunityWechatAppId:baseUrl + "iot/api/wechat.getCommunityWechatAppId", // 用户注册
 	queryAppUserAccount:baseUrl + "iot/api/account.queryAppUserAccount", // 查询用户账户
 	
+	startCharge:baseUrl + "iot/api/chargeMachine.startCharge", // 开始充电
+	
 	
 	
 	

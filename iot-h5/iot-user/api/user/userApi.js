@@ -176,7 +176,6 @@ export function queryOwnerAccount(_objData){
 					reject(_json.msg);
 					return;
 				}
-				uni.setStorageSync("userInfo",_json.data);
 				resolve(_json.data);
 			},
 			fail: function(res) {

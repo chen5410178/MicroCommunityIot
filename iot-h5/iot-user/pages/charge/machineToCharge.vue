@@ -171,7 +171,7 @@
 			_toCharge: function() {
 
 				uni.navigateTo({
-					url: '/pages/machine/chargeConfirm?machineId=' + this.machineId +
+					url: '/pages/charge/chargeConfirm?machineId=' + this.machineId +
 						"&communityId=" + this.communityId +
 						"&portId=" + this.curPort.portId +
 						"&duration=" + this.curHours.duration +
