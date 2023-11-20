@@ -125,7 +125,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
 
         if (ListUtil.isNull(chargeMachineOrderDtos)) {
-            return new ResultVo(ResultVo.CODE_OK, "启动成功");
+            return new ResultVo(ResultVo.CODE_OK, "停止成功");
         }
         //todo 设备不上传结束的指令上来 所以需要 自己手工结束下
         NotifyChargeOrderDto notifyChargeOrderDto = new NotifyChargeOrderDto();
@@ -133,7 +133,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         notifyChargeOrderDto.setMachineCode(chargeMachineDto.getMachineCode());
         notifyChargeOrderDto.setPortCode(chargeMachinePortDto.getPortCode());
         notifyChargeOrderDto.setBodyParam("");
-        notifyChargeOrderDto.setReason("手工结束");
+        notifyChargeOrderDto.setReason("停止成功");
         notifyChargeOrderDto.setEnergy(chargeMachineOrderDtos.get(0).getEnergy());
 
         notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);
