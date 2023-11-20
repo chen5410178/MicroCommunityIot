@@ -129,5 +129,16 @@ export function userRegister(_data) {
 }
 
 export function getUserId(){
-	
+	let _userInfo = uni.getStorageSync('userInfo');
+	return _userInfo.userId;
+}
+
+export function getUserName(){
+	let _userInfo = uni.getStorageSync('userInfo');
+	return _userInfo.name;
+}
+
+export function getUserTel(){
+	let _userInfo = uni.getStorageSync('userInfo');
+	return _userInfo.tel;
 }

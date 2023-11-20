@@ -36,9 +36,9 @@
 			mySystem
 		},
 		onLoad: function(options) {
-			this.vc.onLoad(options, () => {
-				this.loadOwnerAccount();
-			});
+			// this.vc.onLoad(options, () => {
+			// 	this.loadOwnerAccount();
+			// });
 		},
 		onShow: function() {
 			let _that = this; //查询用户信息

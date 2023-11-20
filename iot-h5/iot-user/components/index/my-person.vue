@@ -8,11 +8,11 @@
 					<view class="userinfo-nickname margin-top">
 						<text class="username">{{ userName }}</text>
 						<text class="userphone">{{ userPhone }}</text>
-						<text class="userarea" @tap="_changeCommunity()">{{ communityName }} <text class="cuIcon-settings text-white margin-left-sm"></text></text>
+						<text class="userarea" @tap="_changeCommunity()" v-if="communityName">{{ communityName }} <text class="cuIcon-settings text-white margin-left-sm"></text></text>
 					</view>
-					<view class="text-right" @click="_viewUserQrCode">
+					<!-- <view class="text-right" @click="_viewUserQrCode">
 						<text class="cuIcon-qrcode text-white margin-left" ></text>
-					</view>
+					</view> -->
 				</view>
 				<view class="wait" v-else @tap="showLongModel">
 					<!-- #ifdef MP-WEIXIN -->
@@ -51,7 +51,7 @@
 
 <script>
 	import conf from '@/conf/config.js';
-	import {queryOwnerAccount} from '@/api/user/userApi.js';
+	import {queryOwnerAccount,getUserId,getUserName,getUserTel} from '@/api/user/userApi.js';
 	import {
 		getCouponUsers
 	} from '@/api/fee/feeApi.js';
@@ -95,8 +95,8 @@
 					return;
 				}
 				
-				_that.userName = _data.name;
-				_that.userPhone = _data.link;
+				_that.userName = getUserName();
+				_that.userPhone = getUserTel();
 				
 				_that.communityName = getCommunityName();
 				_that.login = true;

@@ -18,16 +18,74 @@
 			"navigationBarTitleText": "用户注册",
 			"enablePullDownRefresh": false
 		}
-	}    ,{
-            "path" : "pages/index/my",
+	}, {
+		"path": "pages/index/my",
+		"style": {
+			"navigationBarTitleText": "个人中心",
+			"enablePullDownRefresh": false
+		}
+	},
+	{
+	    "path" : "pages/charge/chargeMachines",
+	    "style" :                                                                                    
+	    {
+	        "navigationBarTitleText": "智能充电",
+	        "enablePullDownRefresh": false
+	    }
+	    
+	}
+	,{
+	    "path" : "pages/charge/machineToCharge",
+	    "style" :                                                                                    
+	    {
+	        "navigationBarTitleText": "智能充电",
+	        "enablePullDownRefresh": false
+	    }
+	    
+	}
+	,{
+	    "path" : "pages/charge/chargeConfirm",
+	    "style" :                                                                                    
+	    {
+	        "navigationBarTitleText": "充电确认",
+	        "enablePullDownRefresh": false
+	    }
+	    
+	},{
+            "path" : "pages/charge/chargeMachineOrder",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "个人中心",
+                "navigationBarTitleText": "充电订单详情",
+                "enablePullDownRefresh": false
+            }
+            
+        },{
+            "path" : "pages/charge/chargeMachineOrders",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "充电订单",
+                "enablePullDownRefresh": false
+            }
+            
+        },{
+            "path" : "pages/charge/chargeCard",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
             
         }
-    ],
+        ,{
+            "path" : "pages/charge/prestoreChargeCard",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+	],
 	"tabBar": {
 		"color": "#272636",
 		"selectedColor": "#00AA00",

@@ -36,9 +36,8 @@
 </template>
 
 <script>
-	import context from '@/lib/java110/Java110Context.js';
-	const factory = context.factory; //获取app实例
-	const constant = context.constant;
+
+import {hasLogin} from '../../api/user/sessionApi.js'
 	export default {
 		name: "my-system",
 		data() {
@@ -60,13 +59,13 @@
 				_that.login = true;
 			},
 			ckeckUserInfo: function() {
-				return context.checkLoginStatus();
+				return hasLogin();
 			},
 			// 设置
 			mySettings: function() {
 				if (!this.ckeckUserInfo()) {
 					this.vc.navigateTo({
-						url: '/pages/login/showlogin'
+						url: '/pages/user/login'
 					}, () => {
 						this.refreshPageLoginInfo();
 					});

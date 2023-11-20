@@ -190,7 +190,7 @@ public class ListChargeMachineCmd extends Cmd {
         String ownerUrl = UrlCache.getOwnerUrl();
 
         for (ChargeMachineDto chargeMachineDto : chargeMachineDtos) {
-            chargeMachineDto.setQrCode(ownerUrl + "/#/pages/machine/machineToCharge?machineId="
+            chargeMachineDto.setQrCode(ownerUrl + "/#/pages/charge/machineToCharge?machineId="
                     + chargeMachineDto.getMachineId()
                     + "&communityId=" + chargeMachineDto.getCommunityId()
                     + "&wAppId=" + appId
