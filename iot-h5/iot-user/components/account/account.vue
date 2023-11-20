@@ -21,8 +21,9 @@
 <script>
 	// pages/account/myAccount.js
 	import {
-		queryOwnerAccount
-	} from '@/api/user/userApi.js'
+		queryOwnerAccount,
+		getUserTel
+	} from '@/api/user/userApi.js';
 	export default {
 		name: "account",
 		data() {
@@ -42,8 +43,8 @@
 				queryOwnerAccount({
 					page: 1,
 					row: 20,
-					idCard: _ownerInfo.idCard,
-					link: _ownerInfo.link,
+					idCard: '',
+					link: getUserTel(),
 					communityId: _communityId,
 					acctType: '2003'
 				}).then((data) => {

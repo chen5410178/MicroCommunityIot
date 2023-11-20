@@ -201,7 +201,7 @@
 					uni.setStorageSync("DEFAULT_COMMUNITY_ID",this.communityId);
 				}
 				uni.navigateTo({
-					url: '/pages/login/login'
+					url: '/pages/user/login'
 				})
 			}
 		}

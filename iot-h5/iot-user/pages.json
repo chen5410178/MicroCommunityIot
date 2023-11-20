@@ -84,6 +84,27 @@
                 "enablePullDownRefresh": false
             }
             
+        },{
+			"path": "pages/account/myAccount",
+			"style": {
+				"navigationBarTitleText": "我的账户",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/account/myAccountDetail",
+			"style": {
+				"navigationBarTitleText": "账户明细",
+				"enablePullDownRefresh": false
+			}
+		},{
+            "path" : "pages/account/preStoreAccount",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "账户充值",
+                "enablePullDownRefresh": false
+            }
+            
         }
 	],
 	"tabBar": {

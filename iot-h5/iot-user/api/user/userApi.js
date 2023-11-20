@@ -162,3 +162,27 @@ export function getCommunityWechatAppId(_objData){
 		});
 	})
 }
+
+export function queryOwnerAccount(_dataObj){
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.queryAppUserAccount,
+			method: "GET",
+			data: _objData,
+			success: function(res) {
+				//将业主信息和房屋信息一起返回
+				let _json = res.data;
+				if (_json.code != 0) {
+					reject(_json.msg);
+					return;
+				}
+				uni.setStorageSync("userInfo",_json.data);
+				resolve(_json.data);
+			},
+			fail: function(res) {
+				reject(res);
+			}
+		});
+	
+	})
+}
