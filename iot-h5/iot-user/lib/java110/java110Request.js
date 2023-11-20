@@ -9,6 +9,8 @@ import url from '../../conf/url.js'
 
 import {getToken} from './utils/StorageUtil.js';
 
+import {hasLogin} from '@/api/user/sessionApi.js'
+
 
 
 import {debug,warn,info,error} from './utils/LogUtil.js'

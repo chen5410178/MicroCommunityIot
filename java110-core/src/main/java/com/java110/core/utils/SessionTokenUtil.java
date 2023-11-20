@@ -25,6 +25,12 @@ public class SessionTokenUtil {
             }
         }
 
+        String authorization = request.getHeader("Authorization");
+
+        if(StringUtil.isEmpty(token) && !StringUtil.isEmpty(authorization)){
+            token = authorization.substring("Bearer ".length());
+        }
+
         if (StringUtil.isNullOrNone(token)) {
             throw new IllegalArgumentException("您还没有登录，请先登录");
         }

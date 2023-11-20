@@ -163,7 +163,7 @@ export function getCommunityWechatAppId(_objData){
 	})
 }
 
-export function queryOwnerAccount(_dataObj){
+export function queryOwnerAccount(_objData){
 	return new Promise((resolve, reject) => {
 		request({
 			url: url.queryAppUserAccount,

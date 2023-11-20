@@ -7,7 +7,8 @@
 		</view>
 		<view class="flex justify-start mtc-machine-port">
 			<view v-for="(item,index) in  ports" :key="index" class="port-item">
-				<view class="item-1" :class="{'item-1-active':curPort.portId == item.portId || item.state=='WORKING'}" @click="_switchPort(item)">
+				<view class="item-1" :class="{'item-1-active':curPort.portId == item.portId || item.state=='WORKING'}"
+					@click="_switchPort(item)">
 					<view class="port-name">
 						{{item.portName}}
 					</view>
@@ -20,14 +21,15 @@
 		</view>
 		<view class="flex justify-start mtc-machine-hours">
 			<view v-for="(item,index) in  hours" :key="index" class="hours-item">
-				<view class="item-1" :class="{'item-1-active':curHours.duration == item.duration}" @click="_switchHours(item)">
+				<view class="item-1" :class="{'item-1-active':curHours.duration == item.duration}"
+					@click="_switchHours(item)">
 					<view class="port-name">
 						{{item.name}}
 					</view>
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="cu-list menu margin-sm" @click="_selectCoupons" v-if="curHours.duration && curPort.portId">
 			<view class="cu-item arrow">
 				<view class="content padding-tb-sm">
@@ -45,15 +47,14 @@
 		<view class="margin-sm" v-if="login">
 			<charge ref="chargeRef"></charge>
 		</view>
-		
+
 		<view class="plat-btn-black"></view>
 		<view class="cu-bar btn-group" style="margin-top: 30px;" v-if="login">
 			<button @click="_toCharge" :disabled="!curHours.duration || !curPort.portId"
 				class="cu-btn bg-green shadow-blur round lg">去充电</button>
 		</view>
 		<view class="cu-bar btn-group" style="margin-top: 30px;" v-else>
-			<button @click="_toLogin" 
-				class="cu-btn bg-green shadow-blur round lg">请先登录</button>
+			<button @click="_toLogin" class="cu-btn bg-green shadow-blur round lg">请先登录</button>
 		</view>
 
 	</view>
@@ -66,7 +67,10 @@
 	} from '@/api/machine/machineApi.js';
 	import account from '@/components/account/account.vue';
 	import charge from '@/components/charge/charge.vue';
-	import {autoLogin,hasLogin} from '@/api/user/sessionApi.js';
+	import {
+		autoLogin,
+		hasLogin
+	} from '@/api/user/sessionApi.js';
 	export default {
 		data() {
 			return {
@@ -77,60 +81,65 @@
 				portCount: '',
 				durationPrice: '',
 				ports: [],
-				curPort:{},
-				curHours:{},
-				couponList:[],
-				couponCount:0,
-				login:false,
-				hours:[{
-					name:'充满自停',
-					duration:999,
-				},{
-					name:'2小时',
-					duration:2,
-				},{
-					name:'4小时',
-					duration:4,
-				},{
-					name:'6小时',
-					duration:6,
-				},{
-					name:'8小时',
-					duration:8,
-				},{
-					name:'10小时',
-					duration:10,
+				curPort: {},
+				curHours: {},
+				couponList: [],
+				couponCount: 0,
+				login: false,
+				hours: [{
+					name: '充满自停',
+					duration: 999,
+				}, {
+					name: '2小时',
+					duration: 2,
+				}, {
+					name: '4小时',
+					duration: 4,
+				}, {
+					name: '6小时',
+					duration: 6,
+				}, {
+					name: '8小时',
+					duration: 8,
+				}, {
+					name: '10小时',
+					duration: 10,
 				}]
 			}
 		},
-		components:{
+		components: {
 			charge,
 			account,
 		},
 		onLoad(options) {
-			
+
 			autoLogin(options);
 			this.machineId = options.machineId;
 			this.communityId = options.communityId;
-			this.login= hasLogin();
+			this.login = hasLogin();
 			this._loadChargeMachines();
 			this._loadChargeMachinePorts();
 			let _that = this;
-			setTimeout(function(){
-				_that.$refs.accRef.loadOwnerAccount(_that.communityId);
-				_that.$refs.chargeRef.loadChargeMonthOrder(_that.communityId);
-			},1000);
+
+			setTimeout(function() {
+				if (_that.$refs.accRef) {
+					_that.$refs.accRef.loadOwnerAccount(_that.communityId);
+				}
+				if (_that.$refs.chargeRef) {
+					_that.$refs.chargeRef.loadChargeMonthOrder(_that.communityId);
+				}
+			}, 1000);
 		},
 		onShow: function(options) {
 			this._dealChargeCoupons();
-		
-			if(this.$refs.accRef){
+
+			if (this.$refs.accRef) {
 				this.$refs.accRef.loadOwnerAccount(this.communityId);
 			}
-			if(this.$refs.chargeRef){
+			if (this.$refs.chargeRef) {
 				this.$refs.chargeRef.loadChargeMonthOrder(this.communityId);
 			}
-			
+
 		},
 		methods: {
 			_loadChargeMachines: function() {
@@ -159,25 +168,25 @@
 					_that.ports = _data.data;
 				})
 			},
-			_toCharge:function(){
-				
+			_toCharge: function() {
+
 				uni.navigateTo({
-					url:'/pages/machine/chargeConfirm?machineId='+this.machineId+
-					"&communityId="+this.communityId
-					+"&portId="+this.curPort.portId
-					+"&duration="+this.curHours.duration
-					+"&couponIds="+this.couponList.join(",")
+					url: '/pages/machine/chargeConfirm?machineId=' + this.machineId +
+						"&communityId=" + this.communityId +
+						"&portId=" + this.curPort.portId +
+						"&duration=" + this.curHours.duration +
+						"&couponIds=" + this.couponList.join(",")
 				});
-				
+
 			},
-			
-			_switchPort:function(_port){
-				if(_port.state != 'FREE'){
+
+			_switchPort: function(_port) {
+				if (_port.state != 'FREE') {
 					return;
 				}
 				this.curPort = _port;
 			},
-			_switchHours:function(_hours){
+			_switchHours: function(_hours) {
 				this.curHours = _hours;
 			},
 			_selectCoupons: function(_item) {
@@ -186,19 +195,19 @@
 					url: '/pages/coupon/chargeCoupon'
 				})
 			},
-			
+
 			_dealChargeCoupons: function() {
 				let chargeCoupons = uni.getStorageSync('COUPON_USER_CHARGE');
-				if(!chargeCoupons){
-					return ;
+				if (!chargeCoupons) {
+					return;
 				}
 				uni.removeStorageSync('COUPON_USER_CHARGE');
 				this.couponList = chargeCoupons;
-				this.couponCount = chargeCoupons.length;	
+				this.couponCount = chargeCoupons.length;
 			},
-			_toLogin:function(){
-				if(this.communityId){
-					uni.setStorageSync("DEFAULT_COMMUNITY_ID",this.communityId);
+			_toLogin: function() {
+				if (this.communityId) {
+					uni.setStorageSync("DEFAULT_COMMUNITY_ID", this.communityId);
 				}
 				uni.navigateTo({
 					url: '/pages/user/login'
@@ -209,88 +218,98 @@
 </script>
 
 <style lang="scss">
-	.mtc-machine{
+	.mtc-machine {
 		background-color: #fff;
 		font-size: 28upx;
 		color: #000;
 		padding-left: 20upx;
 		padding-right: 20upx;
-		margin:20upx 20upx 0upx 20upx;
+		margin: 20upx 20upx 0upx 20upx;
 		border-top-left-radius: 20upx;
 		border-top-right-radius: 20upx;
 		height: 60upx;
 		line-height: 60upx;
 		border-bottom: 2upx;
 	}
-	.mtc-machine-port{
+
+	.mtc-machine-port {
 		background-color: #fff;
 		padding-left: 20upx;
 		padding-right: 20upx;
 		padding-bottom: 20upx;
-		margin:2upx 20upx 0upx 20upx;
-		
+		margin: 2upx 20upx 0upx 20upx;
+
 		flex-wrap: wrap;
-		.port-item{
+
+		.port-item {
 			width: 33.33%;
 			text-align: center;
-			.item-1{
+
+			.item-1 {
 				background-color: #B1E8DA;
 				width: 90%;
-				margin:0upx auto;
+				margin: 0upx auto;
 				margin-top: 20upx;
 				border-radius: 10upx;
 				color: #fff;
-				.port-name{
+
+				.port-name {
 					font-size: 28upx;
 				}
-				.port-state{
+
+				.port-state {
 					font-size: 24upx;
 				}
 			}
-			.item-1-active{
+
+			.item-1-active {
 				background-color: #0FBA82;
 			}
 		}
 	}
-	
-	.mtc-hours-title{
+
+	.mtc-hours-title {
 		background-color: #fff;
 		font-size: 28upx;
 		color: #000;
 		padding-left: 20upx;
 		padding-right: 20upx;
-		margin:20upx 20upx 0upx 20upx;
+		margin: 20upx 20upx 0upx 20upx;
 		border-top-left-radius: 20upx;
 		border-top-right-radius: 20upx;
 		height: 60upx;
 		line-height: 60upx;
 		border-bottom: 2upx;
 	}
-	.mtc-machine-hours{
+
+	.mtc-machine-hours {
 		background-color: #fff;
 		padding-left: 20upx;
 		padding-right: 20upx;
 		padding-bottom: 20upx;
-		margin:2upx 20upx 0upx 20upx;
-		
+		margin: 2upx 20upx 0upx 20upx;
+
 		flex-wrap: wrap;
-		
-		.hours-item{
+
+		.hours-item {
 			width: 33.33%;
 			text-align: center;
-			.item-1{
-				border:1px solid #000 ;
+
+			.item-1 {
+				border: 1px solid #000;
 				width: 90%;
-				margin:0upx auto;
+				margin: 0upx auto;
 				margin-top: 20upx;
 				border-radius: 10upx;
 				color: #000;
-				.port-name{
+
+				.port-name {
 					font-size: 28upx;
 				}
 			}
-			.item-1-active{
-				border:1px solid #0FBA82 ;
+
+			.item-1-active {
+				border: 1px solid #0FBA82;
 				background-color: #0FBA82;
 				color: #fff;
 			}
