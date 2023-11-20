@@ -310,7 +310,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
     /**
      * 充电结束
-     *
+     * 例如 ： 7e5d7d7f00360001110f38363135353130353730303536393601ca00100500484331313230323331313230353832313030303500000000655b08ca0c
      * @param chargeMachineDto
      * @param data
      */
@@ -334,7 +334,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
             throw new RuntimeException(e);
         }
         //todo 结束时功率
-        int w = Integer.parseInt(dataHex.substring(48, 100), 16);
+        int w = Integer.parseInt(dataHex.substring(48, 52), 16);
 
 
         String remark = resultMap.containsKey(reason + "") ? resultMap.get(reason + "") : "未知原因";

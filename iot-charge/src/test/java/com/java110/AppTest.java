@@ -6,6 +6,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 /**
@@ -36,12 +37,24 @@ public class AppTest
      * Rigourous Test :-)
      */
     public void testApp(){
-        String aa = "7e5d7d7f00220001100f3836313535313035373030353639360001000117012400010001021d0102";
-        long curUnit = new Date().getTime()/1000;
+        String dataHex = "0500484331313230323331313230353832313030303500000000655b08ca";
+        // todo 结束原因
+        int reason = Integer.parseInt(dataHex.substring(0, 2), 16);
 
-        String paramOut = String.format("%x", curUnit);
-        String param = LvCCUtil.computeResultDate(BytesUtil.hexStringToByteArray(aa),"861551057005696",paramOut);
-        System.out.println(param);
+        // todo 插座
+        int port = Integer.parseInt(dataHex.substring(2, 4), 16) + 1;
+
+        //todo 订单号
+        String orderHex = dataHex.substring(4, 44);
+
+        String orderNum = null;
+        try {
+            orderNum = new String(BytesUtil.hexStringToByteArray(orderHex), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        //todo 结束时功率
+        int w = Integer.parseInt(dataHex.substring(48, 52), 16);
     }
 
     public void testByte(){
