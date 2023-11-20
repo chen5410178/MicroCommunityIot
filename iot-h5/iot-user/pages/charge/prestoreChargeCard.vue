@@ -9,7 +9,7 @@
 				<view class="action">
 					<picker  :value="cardIndex" :range="cards" :range-key="'cardName'" @change="cardChange">
 						<view class="picker">
-							{{cards[cardIndex].cardName}}
+							{{cards[cardIndex] && cards[cardIndex].cardName}}
 						</view>
 					</picker>
 				</view>
@@ -59,7 +59,6 @@
 
 <script>
 	// pages/account/myAccount.js
-	import context from '../../lib/java110/Java110Context.js';
 	import {
 		getChargeMonthCard
 	} from '../../api/machine/machineApi.js';
@@ -79,7 +78,7 @@
 				cardId:'',
 				cardPrice:'',
 				cardMonth:'',
-				dayHours:''
+				dayHours:'',
 			}
 		},
 		onLoad(options) {

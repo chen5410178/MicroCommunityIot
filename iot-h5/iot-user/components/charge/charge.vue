@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="cu-list menu">
-			<view class="cu-item arrow" @click="_toPrestoreAccount()">
+			<view class="cu-item arrow" @click="_toChargeCard()">
 				<view class="content padding-tb-sm">
 					<view>
 						<text class="cuIcon-rechargefill text-green margin-right-xs"></text> 充电月卡
@@ -25,7 +25,9 @@
 	import {
 		formatDate
 	} from '../../lib/java110/utils/DateUtil.js';
-	import {getUserTel} from '../../api/user/userApi.js'
+	import {
+		getUserTel
+	} from '../../api/user/userApi.js'
 	export default {
 		name: "charge",
 		data() {
@@ -55,15 +57,13 @@
 					}
 					_that.chargeOrders = data;
 				})
+			},
+			_toChargeCard: function() {
+				uni.navigateTo({
+					url: '/pages/charge/chargeCard?communityId=' + this.communityId
+				})
 			}
-
 		},
-		_toPrestoreAccount: function() {
-			uni.navigateTo({
-				url: '/pages/machine/chargeCard?communityId=' + this.communityId
-			})
-		}
-	
 	}
 </script>
 

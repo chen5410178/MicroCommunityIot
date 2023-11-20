@@ -1,5 +1,6 @@
 package com.java110.gateway.controller.app.smartMeter;
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.dto.meter.NotifyMeterWaterOrderDto;
 import com.java110.intf.meter.INotifySmartMeterV1InnerServiceSMO;
@@ -19,6 +20,50 @@ public class NotifySmartMeterController {
     @Autowired
     private INotifySmartMeterV1InnerServiceSMO notifySmartMeterV1InnerServiceSMOImpl;
 
+
+    /**
+     * <p>支付回调Api</p>
+     *
+     * @param request
+     * @throws Exception
+     */
+    @RequestMapping(path = "/{implBean}", method = RequestMethod.POST)
+    public ResponseEntity<String> notifyTq(
+            @PathVariable String implBean,
+            @RequestBody String postInfo,
+            HttpServletRequest request) {
+        String appId = "992020051967020024";
+
+        JSONObject paramIn = new JSONObject();
+        for (String key : request.getParameterMap().keySet()) {
+            paramIn.put(key, request.getParameter(key));
+            logger.debug("拓强回调报文form" + key + ":: " + request.getParameter(key));
+        }
+        logger.debug("拓强回调报文" + paramIn.toJSONString());
+
+        //todo 为啥写的这么挫 因为拓强的电表 回调路径太长 他会失败
+        switch (implBean) {
+            case "a":
+                implBean = "tqDianBiaoDanxiangDanFeiLvFactoryAdaptImpl";
+                break;
+            case "b":
+                implBean = "tqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl";
+                break;
+            case "c":
+                implBean = "tqShuiBiaoLoraReadFactoryAdaptImpl";
+                break;
+            case "d":
+                implBean = "tqShuiBiaoLoraRechargeFactoryAdaptImpl";
+                break;
+
+            default:
+        }
+
+
+        return notifySmartMeterV1InnerServiceSMOImpl.notifySmartMater(new NotifyMeterWaterOrderDto(appId, paramIn.toJSONString(), implBean));
+
+    }
+
     /**
      * <p>支付回调Api</p>
      *
@@ -35,10 +80,22 @@ public class NotifySmartMeterController {
         return notifySmartMeterV1InnerServiceSMOImpl.notifySmartMater(new NotifyMeterWaterOrderDto(appId,postInfo,implBean));
     }
 
+
+
     @RequestMapping("/{implBean}/switchControl")
     public ResponseEntity<String> switchControlNotify(@PathVariable String implBean,
                                                       @RequestBody String postInfo,
                                                       HttpServletRequest request) {
+
+        switch (implBean) {
+            case "e":
+                implBean ="tqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl";
+                break;
+            case "f":
+                implBean = "tqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl";
+            default:
+        }
+
         return notifySmartMeterV1InnerServiceSMOImpl.switchControlNotify(implBean, postInfo);
     }
 }
