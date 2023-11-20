@@ -33,7 +33,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类表述： 服务之前调用的接口实现类，不对外提供接口能力 只用于接口建调用
@@ -47,6 +49,8 @@ import java.util.List;
 public class NotifyChargeV1InnerServiceSMOImpl implements INotifyChargeV1InnerServiceSMO {
 
     private static final Logger logger = LoggerFactory.getLogger(NotifyChargeV1InnerServiceSMOImpl.class);
+
+    private static final Map<String, ChargeMachineFactoryDto> factoryCache = new HashMap<>();
 
 
     @Autowired
@@ -78,14 +82,20 @@ public class NotifyChargeV1InnerServiceSMOImpl implements INotifyChargeV1InnerSe
     @Override
     public ResultVo machineResult(@RequestBody ChargeMachineByteDataDto chargeMachineByteDataDto) {
 
+        ChargeMachineFactoryDto chargeMachineFactoryDto = null;
+        if (!factoryCache.containsKey(chargeMachineByteDataDto.getChargeMachineDto().getImplBean())) {
+            chargeMachineFactoryDto = new ChargeMachineFactoryDto();
+            chargeMachineFactoryDto.setFactoryId(chargeMachineByteDataDto.getChargeMachineDto().getImplBean());
+            List<ChargeMachineFactoryDto> chargeMachineFactoryDtos = chargeMachineFactoryV1InnerServiceSMOImpl.queryChargeMachineFactorys(chargeMachineFactoryDto);
 
-        ChargeMachineFactoryDto chargeMachineFactoryDto = new ChargeMachineFactoryDto();
-        chargeMachineFactoryDto.setFactoryId(chargeMachineByteDataDto.getChargeMachineDto().getImplBean());
-        List<ChargeMachineFactoryDto> chargeMachineFactoryDtos = chargeMachineFactoryV1InnerServiceSMOImpl.queryChargeMachineFactorys(chargeMachineFactoryDto);
+            Assert.listOnlyOne(chargeMachineFactoryDtos, "充电桩厂家不存在");
 
-        Assert.listOnlyOne(chargeMachineFactoryDtos, "充电桩厂家不存在");
+            factoryCache.put(chargeMachineByteDataDto.getChargeMachineDto().getImplBean(), chargeMachineFactoryDtos.get(0));
+        }
 
-        IChargeFactoryAdapt chargeFactoryAdapt = ApplicationContextFactory.getBean(chargeMachineFactoryDtos.get(0).getBeanImpl(), IChargeFactoryAdapt.class);
+        chargeMachineFactoryDto = factoryCache.get(chargeMachineByteDataDto.getChargeMachineDto().getImplBean());
+
+        IChargeFactoryAdapt chargeFactoryAdapt = ApplicationContextFactory.getBean(chargeMachineFactoryDto.getBeanImpl(), IChargeFactoryAdapt.class);
         if (chargeFactoryAdapt == null) {
             throw new CmdException("厂家接口未实现");
         }

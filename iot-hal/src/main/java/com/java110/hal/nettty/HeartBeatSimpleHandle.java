@@ -19,11 +19,15 @@ import org.slf4j.LoggerFactory;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(HeartBeatSimpleHandle.class);
+
+    private final static Map<String,ChargeMachineDto> chargeCache = new HashMap<>();
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -113,18 +117,23 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
      */
     private boolean toNotifyCharge(String machineCode, byte[] bytes) {
 
-        IChargeMachineV1InnerServiceSMO chargeMachineV1InnerServiceSMO = ApplicationContextFactory.getBean("chargeMachineV1InnerServiceSMOImpl", IChargeMachineV1InnerServiceSMO.class);
 
-        if (chargeMachineV1InnerServiceSMO == null) {
-            chargeMachineV1InnerServiceSMO = ApplicationContextFactory.getBean(IChargeMachineV1InnerServiceSMO.class.getName(), IChargeMachineV1InnerServiceSMO.class);
+        ChargeMachineDto chargeMachineDto = null;
+        if(!chargeCache.containsKey(machineCode)) {
+            IChargeMachineV1InnerServiceSMO chargeMachineV1InnerServiceSMO = ApplicationContextFactory.getBean("chargeMachineV1InnerServiceSMOImpl", IChargeMachineV1InnerServiceSMO.class);
+            if (chargeMachineV1InnerServiceSMO == null) {
+                chargeMachineV1InnerServiceSMO = ApplicationContextFactory.getBean(IChargeMachineV1InnerServiceSMO.class.getName(), IChargeMachineV1InnerServiceSMO.class);
+            }
+            chargeMachineDto = new ChargeMachineDto();
+            chargeMachineDto.setMachineCode(machineCode);
+            List<ChargeMachineDto> machineDtos = chargeMachineV1InnerServiceSMO.queryChargeMachines(chargeMachineDto);
+            if (ListUtil.isNull(machineDtos)) {
+                return false;
+            }
+            chargeCache.put(machineCode,machineDtos.get(0));
         }
 
-        ChargeMachineDto chargeMachineDto = new ChargeMachineDto();
-        chargeMachineDto.setMachineCode(machineCode);
-        List<ChargeMachineDto> machineDtos = chargeMachineV1InnerServiceSMO.queryChargeMachines(chargeMachineDto);
-        if (ListUtil.isNull(machineDtos)) {
-            return false;
-        }
+        chargeMachineDto = chargeCache.get(machineCode);
 
         INotifyChargeV1InnerServiceSMO notifyChargeV1InnerServiceSMOImpl = ApplicationContextFactory.getBean("notifyChargeV1InnerServiceSMOImpl", INotifyChargeV1InnerServiceSMO.class);
 
@@ -132,7 +141,7 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
             notifyChargeV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(INotifyChargeV1InnerServiceSMO.class.getName(), INotifyChargeV1InnerServiceSMO.class);
         }
 
-        notifyChargeV1InnerServiceSMOImpl.machineResult(new ChargeMachineByteDataDto(machineDtos.get(0), bytes));
+        notifyChargeV1InnerServiceSMOImpl.machineResult(new ChargeMachineByteDataDto(chargeMachineDto, bytes));
 
 
         return true;
