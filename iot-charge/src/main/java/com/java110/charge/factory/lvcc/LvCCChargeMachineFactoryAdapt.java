@@ -131,7 +131,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         NotifyChargeOrderDto notifyChargeOrderDto = new NotifyChargeOrderDto();
         notifyChargeOrderDto.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
         notifyChargeOrderDto.setMachineCode(chargeMachineDto.getMachineCode());
-        notifyChargeOrderDto.setPortCode(port + "");
+        notifyChargeOrderDto.setPortCode(chargeMachinePortDto.getPortCode());
         notifyChargeOrderDto.setBodyParam("");
         notifyChargeOrderDto.setReason("手工结束");
         notifyChargeOrderDto.setEnergy(chargeMachineOrderDtos.get(0).getEnergy());
