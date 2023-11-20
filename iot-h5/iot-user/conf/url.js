@@ -5,6 +5,13 @@ export default {
 	wechatRefrashToken: baseUrl + "iot/api/refreshToken", // 公众号刷新token
 	appUserRegister: baseUrl + "iot/api/login.appUserRegister", // 用户注册
 	appUserLogin: baseUrl + "iot/api/login.appUserLogin", // 用户注册
+	listChargeMachine: baseUrl + "iot/api/chargeMachine.listChargeMachine", // 用户注册
+	listChargeMachinePort:baseUrl + "iot/api/chargeMachine.listChargeMachinePort", // 用户注册
+	getCommunityWechatAppId:baseUrl + "iot/api/wechat.getCommunityWechatAppId", // 用户注册
+	
+	
+	
+	
 
 	NEED_NOT_LOGIN_PAGE: [
 		'pages/user/login',

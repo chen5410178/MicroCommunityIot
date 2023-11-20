@@ -142,3 +142,23 @@ export function getUserTel(){
 	let _userInfo = uni.getStorageSync('userInfo');
 	return _userInfo.tel;
 }
+
+export function getCommunityWechatAppId(){
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.getCommunityWechatAppId,
+			method: "GET",
+			data: _objData, //动态数据
+			success: function(res) {
+				if (res.statusCode == 200) {
+					resolve(res.data);
+					return;
+				}
+				reject();
+			},
+			fail: function(e) {
+				reject();
+			}
+		});
+	})
+}

@@ -63,11 +63,10 @@
 	import {
 		getChargeMachines,
 		getChargeMachinePort
-	} from '../../api/machine/machineApi.js';
-	import context from '../../lib/java110/Java110Context.js';
+	} from '@/api/machine/machineApi.js';
 	import account from '@/components/account/account.vue';
 	import charge from '@/components/charge/charge.vue';
-	import {autoLogin} from '@/api/user/sessionApi.js';
+	import {autoLogin,hasLogin} from '@/api/user/sessionApi.js';
 	export default {
 		data() {
 			return {
@@ -109,11 +108,11 @@
 			account,
 		},
 		onLoad(options) {
-			context.onLoad(options);
+			
 			autoLogin(options);
 			this.machineId = options.machineId;
 			this.communityId = options.communityId;
-			this.login= context.checkLoginStatus();
+			this.login= hasLogin();
 			this._loadChargeMachines();
 			this._loadChargeMachinePorts();
 			let _that = this;
