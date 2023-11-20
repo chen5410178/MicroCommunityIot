@@ -1,0 +1,75 @@
+<div class="margin-top">
+    <!-- <div class="row margin-top-lg">
+        <div class="col-lg-2 padding-right-xs padding-left-xl">
+            <input v-model="roomDetailLockLogInfo.roomNum" type="text" :placeholder="vc.i18n('请填写房屋编号','roomDetailLockLog')"
+                class="form-control">
+        </div>
+        <div class="col-lg-2 padding-right-xs padding-right-xl">
+            <button type="button" class="btn btn-primary btn-sm" style="margin-left:10px"
+                v-on:click="_qureyRoomDetailAccessControl()">
+                <i class="fa fa-search"></i>查询
+            </button>
+        </div>
+
+        <div class="col-lg-8 text-right">
+             <button type="button" class="btn btn-primary btn-sm" style="margin-left:10px" v-if="vc.hasPrivilege('502023021978930012')" v-on:click="_openAddOwnerRoom()">
+                <vc:i18n name="交房" namespace="simplifyRoomFee"></vc:i18n>
+            </button> 
+
+        </div>
+    </div> -->
+    <div class="margin-top">
+        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <vc:i18n name='编号' namespace='lampMachineLogManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='设备名称' namespace='lampMachineLogManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='日志动作' namespace='lampMachineLogManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='操作人' namespace='lampMachineLogManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='操作状态' namespace='lampMachineLogManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='操作时间' namespace='lampMachineLogManage'></vc:i18n>
+                    </th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="lampMachineLog in machineDetailLampLogInfo.logs">
+                    <td class="text-center">{{lampMachineLog.logId}}</td>
+                    <td class="text-center">{{lampMachineLog.machineName}}</td>
+                    <td class="text-center">{{lampMachineLog.logActionName}}</td>
+                    <td class="text-center">{{lampMachineLog.personName}}</td>
+                    <td class="text-center">{{lampMachineLog.stateName}}</td>
+                    <td class="text-center">{{lampMachineLog.createTime}}</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <button class="btn-white btn btn-xs" v-on:click="_openViewLampMachineLogModel(lampMachineLog)">
+                                <vc:i18n name='报文'></vc:i18n>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="row">
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-sm-8">
+                <vc:create namespace="machineDetailLampLog" path="frame/paginationPlus"></vc:create>
+            </div>
+        </div>
+    </div>
+    <vc:create path="lamp/showLampMachineLog"></vc:create>
+</div>

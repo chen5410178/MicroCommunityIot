@@ -148,6 +148,9 @@
             _openSetLampMachineUsageTimeModal: function () {
                 vc.jumpToPage('/#/pages/lamp/lampMachineOpenCloseManage');
             },
+            _toLampDetail: function (_machine) {
+                vc.jumpToPage('/#/pages/lamp/lampMachineDetail?machineId=' + _machine.machineId);
+            }
         }
     });
 })(window.vc);

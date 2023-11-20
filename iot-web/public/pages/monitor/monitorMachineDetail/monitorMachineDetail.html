@@ -1,0 +1,163 @@
+<div class="white-bg padding-lg padding-top border-radius">
+    <div class="flex justify-between">
+        <div class="text-title">
+            监控信息
+        </div>
+        <div>
+            <button type="button" class="btn btn-white btn-sm" style="margin-left:10px"  v-on:click="vc.goBack()">
+                返回
+            </button>
+        </div>
+    </div>
+    <!-- 业主信息 -->
+    <div class="margin-top">
+        <div class="row" >
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="监控ID：" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{machineDetailInfo.machineId}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="监控名称：" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{machineDetailInfo.machineName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="监控编号：" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{machineDetailInfo.machineCode}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="监控协议:" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{machineDetailInfo.protocol}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="位置:" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{machineDetailInfo.locationName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="区域:" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{machineDetailInfo.maName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="监控状态:" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{machineDetailInfo.stateName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="在线状态:" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{machineDetailInfo.isOnlineStateName}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="心跳时间" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class=""> {{machineDetailInfo.heartbeatTime}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="添加时间" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class=""> {{machineDetailInfo.createTime}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div v-for="(item,index) in machineDetailInfo.lockMachineParamDtoList">
+                    <div class="row" v-if="index % 4 == 0">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="col-form-label">{{item.specName}}：</label>
+                                <label class="">{{item.value}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="index < machineDetailInfo.lockMachineParamDtoList.length-1">
+                            <div class="form-group">
+                                <label class="col-form-label">{{machineDetailInfo.lockMachineParamDtoList[index+1].specName}}：</label>
+                                <label class="">{{machineDetailInfo.lockMachineParamDtoList[index+1].value}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="index < machineDetailInfo.lockMachineParamDtoList.length-2">
+                            <div class="form-group">
+                                <label class="col-form-label">{{machineDetailInfo.lockMachineParamDtoList[index+2].specName}}：</label>
+                                <label class="">{{machineDetailInfo.lockMachineParamDtoList[index+2].value}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="index < machineDetailInfo.lockMachineParamDtoList.length-3">
+                            <div class="form-group">
+                                <label class="col-form-label">{{machineDetailInfo.lockMachineParamDtoList[index+3].specName}}：</label>
+                                <label class="">{{machineDetailInfo.lockMachineParamDtoList[index+3].value}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="vc-line-primary margin-top"></div>
+    <div class="margin-top-sm">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailMonitorArea'}" v-on:click="changeTab('machineDetailMonitorArea')">
+                    <vc:i18n name="监控区域" namespace="machineDetail"></vc:i18n>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailMonitorModel'}" v-on:click="changeTab('machineDetailMonitorModel')">
+                    <vc:i18n name="监控模型" namespace="machineDetail"></vc:i18n>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailMonitorPool'}" v-on:click="changeTab('machineDetailMonitorPool')">
+                    <vc:i18n name="监控告警" namespace="machineDetail"></vc:i18n>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div v-if="machineDetailInfo._currentTab == 'machineDetailMonitorArea'">
+        <vc:create path="property/machineDetailMonitorArea"></vc:create>
+    </div>
+    <div v-if="machineDetailInfo._currentTab == 'machineDetailMonitorModel'">
+        <vc:create path="property/machineDetailMonitorModel"></vc:create>
+    </div>
+    <div v-if="machineDetailInfo._currentTab == 'machineDetailMonitorPool'">
+        <vc:create path="property/machineDetailMonitorPool"></vc:create>
+    </div>
+</div>

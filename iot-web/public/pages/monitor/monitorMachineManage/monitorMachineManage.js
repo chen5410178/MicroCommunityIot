@@ -116,6 +116,9 @@
                     }
                 );
             },
+            _toMonitorDetail: function (_machine) {
+                vc.jumpToPage('/#/pages/monitor/monitorMachineDetail?machineId=' + _machine.machineId + "&maId=" + _machine.maId);
+            }
         }
     });
 })(window.vc);

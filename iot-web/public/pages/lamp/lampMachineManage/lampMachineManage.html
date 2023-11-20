@@ -138,6 +138,11 @@
                                 <td class="text-center">{{lampMachine.heartbeatTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_toLampDetail(lampMachine)">
+                                            <vc:i18n name='详情'></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
                                         <button class="btn-white btn btn-xs"
                                             v-on:click="_openEditLampMachineModel(lampMachine)">
                                             <vc:i18n name='修改'></vc:i18n>
