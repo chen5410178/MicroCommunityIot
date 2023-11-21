@@ -63,8 +63,7 @@ public class ChargeMeterMoneyCmd extends Cmd {
 
     public static final String CODE_PREFIX_ID = "10";
 
-    @Autowired
-    private IMeterMachineChargeV1InnerServiceSMO meterMachineChargeV1InnerServiceSMOImpl;
+
 
     @Autowired
     private IMeterMachineV1InnerServiceSMO meterMachineV1InnerServiceSMOImpl;
@@ -150,16 +149,7 @@ public class ChargeMeterMoneyCmd extends Cmd {
             throw new CmdException(resultVo.getMsg());
         }
 
-        MeterMachineChargePo meterMachineChargePo = BeanConvertUtil.covertBean(reqJson, MeterMachineChargePo.class);
-        meterMachineChargePo.setChargeId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
-        meterMachineChargePo.setChargeMoney(chargeMoney + "");
-        meterMachineChargePo.setChargeDegrees(degree.doubleValue() + "");
-        meterMachineChargePo.setState("C");
-        int flag = meterMachineChargeV1InnerServiceSMOImpl.saveMeterMachineCharge(meterMachineChargePo);
 
-        if (flag < 1) {
-            throw new CmdException("保存数据失败");
-        }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }

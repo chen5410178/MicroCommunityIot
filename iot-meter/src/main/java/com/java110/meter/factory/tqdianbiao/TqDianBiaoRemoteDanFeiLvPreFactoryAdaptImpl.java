@@ -7,15 +7,18 @@ import com.java110.bean.ResultVo;
 import com.java110.core.cache.UrlCache;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.meter.MeterMachineDetailDto;
 import com.java110.dto.meter.MeterMachineDto;
 import com.java110.dto.meter.MeterMachineSpecDto;
+import com.java110.intf.meter.IMeterMachineChargeV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterMachineDetailV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterMachineSpecV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterMachineV1InnerServiceSMO;
 import com.java110.meter.factory.ISmartMeterCoreRead;
 import com.java110.meter.factory.ISmartMeterFactoryAdapt;
 import com.java110.po.meter.MeterMachineDetailPo;
+import com.java110.po.meterMachineCharge.MeterMachineChargePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +54,9 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
 
     @Autowired
     private ISmartMeterCoreRead smartMeterCoreReadImpl;
+
+    @Autowired
+    private IMeterMachineChargeV1InnerServiceSMO meterMachineChargeV1InnerServiceSMOImpl;
 
 
     @Override
@@ -102,21 +108,19 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
             }
         }
 
-//        List<MeterMachineDetailPo> meterMachineDetailPos = new ArrayList<>();
-//        MeterMachineDetailPo meterMachineDetailPo = new MeterMachineDetailPo();
-//        meterMachineDetailPo.setCommunityId(meterMachineDto.getCommunityId());
-//        meterMachineDetailPo.setDetailId(detailId);
-//        meterMachineDetailPo.setMachineId(meterMachineDto.getMachineId());
-//        meterMachineDetailPo.setDetailType(meterMachineDto.getMachineModel()); // 抄表
-//        meterMachineDetailPo.setCurDegrees((Double.parseDouble(meterMachineDto.getCurDegrees()) + degree) + "");
-//        meterMachineDetailPo.setCurReadingTime(meterMachineDto.getCurReadingTime());
-//        meterMachineDetailPo.setPrestoreDegrees((Double.parseDouble(meterMachineDto.getCurDegrees()) + degree) + "");
-//        meterMachineDetailPo.setState(MeterMachineDetailDto.STATE_C);
-//        meterMachineDetailPos.add(meterMachineDetailPo);
-//
-//        if (meterMachineDetailPos.size() > 0) {
-//            meterMachineDetailV1InnerServiceSMOImpl.saveMeterMachineDetails(meterMachineDetailPos);
-//        }
+        MeterMachineChargePo meterMachineChargePo = new MeterMachineChargePo();
+        meterMachineChargePo.setChargeId(GenerateCodeFactory.getGeneratorId("11"));
+        meterMachineChargePo.setMachineId(meterMachineDto.getMachineId());
+        meterMachineChargePo.setCommunityId(meterMachineDto.getCommunityId());
+        meterMachineChargePo.setChargeMoney(money + "");
+        meterMachineChargePo.setChargeDegrees(degree + "");
+        meterMachineChargePo.setState("C");
+        int flag = meterMachineChargeV1InnerServiceSMOImpl.saveMeterMachineCharge(meterMachineChargePo);
+
+        if (flag < 1) {
+            throw new CmdException("保存数据失败");
+        }
+
         return new ResultVo(ResultVo.CODE_OK, "请求已发送，等待电表反馈数据");
     }
 
