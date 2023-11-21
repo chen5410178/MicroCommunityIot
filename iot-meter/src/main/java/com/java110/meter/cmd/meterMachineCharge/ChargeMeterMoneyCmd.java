@@ -129,9 +129,9 @@ public class ChargeMeterMoneyCmd extends Cmd {
 
         String priceStr = meterTypeDtos.get(0).getPrice();
 
-        if (!StringUtil.isNumber(priceStr)) {
-            throw new CmdException("单价不是数字");
-        }
+//        if (!StringUtil.isNumber(priceStr)) {
+//            throw new CmdException("单价不是数字");
+//        }
 
         double price = Double.parseDouble(priceStr);
 
