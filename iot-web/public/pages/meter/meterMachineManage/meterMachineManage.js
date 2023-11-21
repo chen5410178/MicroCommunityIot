@@ -84,6 +84,9 @@
             _openImportMeterMachine(){
                 vc.emit('importMeterMachine', 'openImportMeterMachineModal',{})
             },
+            _toChargeMoney:function(_meterMachine){
+
+            },
 
             _toDetail: function(_meterMachine) {
                 vc.jumpToPage('/#/pages/meter/meterMachineDetail?machineId=' + _meterMachine.machineId)

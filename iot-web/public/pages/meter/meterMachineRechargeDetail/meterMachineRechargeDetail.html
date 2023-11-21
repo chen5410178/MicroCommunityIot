@@ -3,9 +3,9 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5><span>
-                            <vc:i18n name="充值明细" namespace="meterMachineDetail"></vc:i18n>
-                        </span></h5>
+                    <h5>
+                        <vc:i18n name="充值明细" namespace="meterMachineDetail"></vc:i18n>
+                    </h5>
                     <div class="ibox-tools" style="top:10px;">
                         <button type="button" class="btn btn-white btn-sm"
                             v-on:click="_queryMeterMachineDetailMethod()">
@@ -30,7 +30,10 @@
                                     <vc:i18n name='表号' namespace='meterMachineDetail'></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <vc:i18n name='剩余读数' namespace='meterMachineDetail'></vc:i18n>
+                                    <vc:i18n name='充值金额' namespace='meterMachineDetail'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='充值度数' namespace='meterMachineDetail'></vc:i18n>
                                 </th>
                                 <th class="text-center">
                                     <vc:i18n name='充值时间' namespace='meterMachineDetail'></vc:i18n>
@@ -46,18 +49,12 @@
                                 <td class="text-center">{{detail.machineName}}</td>
                                 <td class="text-center">{{detail.typeName}}</td>
                                 <td class="text-center">{{detail.address}}</td>
-                                <td class="text-center">{{detail.prestoreDegrees}}</td>
+                                <td class="text-center">{{detail.chargeMoney}}</td>
+                                <td class="text-center">{{detail.chargeDegrees}}</td>
                                 <td class="text-center">{{detail.createTime}}</td>
                                 <td class="text-center">{{detail.remark}}</td>
                             </tr>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="7">
-                                    <ul class="pagination float-right"></ul>
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
                     <!-- 分页 -->
                     <vc:create path="frame/pagination"></vc:create>

@@ -16,12 +16,12 @@
             }
         },
         _initMethod: function () {
-            vc.component._listMeterMachineDetails(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._listMeterMachineDetails(DEFAULT_PAGE, DEFAULT_ROWS);
             
         },
         _initEvent: function () {
             vc.on('pagination', 'page_event', function (_currentPage) {
-                vc.component._listMeterMachineDetails(_currentPage, DEFAULT_ROWS);
+                $that._listMeterMachineDetails(_currentPage, DEFAULT_ROWS);
             });
         },
         methods: {
@@ -37,15 +37,15 @@
                 };
 
                 //发送get请求
-                vc.http.apiGet('/meterMachine.listMeterMachineReadOrRechargeDetail',
+                vc.http.apiGet('/meterMachineCharge.listMeterMachineCharge',
                     param,
                     function (json, res) {
-                        var _meterMachineDetailInfo = JSON.parse(json);
-                        vc.component.meterMachineDetailInfo.total = _meterMachineDetailInfo.total;
-                        vc.component.meterMachineDetailInfo.records = _meterMachineDetailInfo.records;
-                        vc.component.meterMachineDetailInfo.details = _meterMachineDetailInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.meterMachineDetailInfo.total = _json.total;
+                        $that.meterMachineDetailInfo.records = _json.records;
+                        $that.meterMachineDetailInfo.details = _json.data;
                         vc.emit('pagination', 'init', {
-                            total: vc.component.meterMachineDetailInfo.records,
+                            total: $that.meterMachineDetailInfo.records,
                             currentPage: _page
                         });
                     }, function (errInfo, error) {
@@ -55,7 +55,7 @@
             },
          
             _queryMeterMachineDetailMethod: function () {
-                vc.component._listMeterMachineDetails(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listMeterMachineDetails(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
         }
