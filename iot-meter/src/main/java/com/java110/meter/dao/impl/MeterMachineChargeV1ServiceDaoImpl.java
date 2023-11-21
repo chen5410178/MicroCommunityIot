@@ -68,9 +68,9 @@ public class MeterMachineChargeV1ServiceDaoImpl extends BaseServiceDao implement
     public List<Map> getMeterMachineChargeInfo(Map info) throws DAOException {
         logger.debug("查询 getMeterMachineChargeInfo 入参 info : {}",info);
 
-        List<Map> businessMeterMachineChargeInfos = sqlSessionTemplate.selectList("meterMachineChargeV1ServiceDaoImpl.getMeterMachineChargeInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("meterMachineChargeV1ServiceDaoImpl.getMeterMachineChargeInfo",info);
 
-        return businessMeterMachineChargeInfos;
+        return infos;
     }
 
 

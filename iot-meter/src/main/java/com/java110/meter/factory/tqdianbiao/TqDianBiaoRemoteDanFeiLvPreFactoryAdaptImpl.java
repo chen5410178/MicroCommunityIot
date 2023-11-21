@@ -102,21 +102,21 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
             }
         }
 
-        List<MeterMachineDetailPo> meterMachineDetailPos = new ArrayList<>();
-        MeterMachineDetailPo meterMachineDetailPo = new MeterMachineDetailPo();
-        meterMachineDetailPo.setCommunityId(meterMachineDto.getCommunityId());
-        meterMachineDetailPo.setDetailId(detailId);
-        meterMachineDetailPo.setMachineId(meterMachineDto.getMachineId());
-        meterMachineDetailPo.setDetailType(meterMachineDto.getMachineModel()); // 抄表
-        meterMachineDetailPo.setCurDegrees((Double.parseDouble(meterMachineDto.getCurDegrees()) + degree) + "");
-        meterMachineDetailPo.setCurReadingTime(meterMachineDto.getCurReadingTime());
-        meterMachineDetailPo.setPrestoreDegrees((Double.parseDouble(meterMachineDto.getCurDegrees()) + degree) + "");
-        meterMachineDetailPo.setState(MeterMachineDetailDto.STATE_C);
-        meterMachineDetailPos.add(meterMachineDetailPo);
-
-        if (meterMachineDetailPos.size() > 0) {
-            meterMachineDetailV1InnerServiceSMOImpl.saveMeterMachineDetails(meterMachineDetailPos);
-        }
+//        List<MeterMachineDetailPo> meterMachineDetailPos = new ArrayList<>();
+//        MeterMachineDetailPo meterMachineDetailPo = new MeterMachineDetailPo();
+//        meterMachineDetailPo.setCommunityId(meterMachineDto.getCommunityId());
+//        meterMachineDetailPo.setDetailId(detailId);
+//        meterMachineDetailPo.setMachineId(meterMachineDto.getMachineId());
+//        meterMachineDetailPo.setDetailType(meterMachineDto.getMachineModel()); // 抄表
+//        meterMachineDetailPo.setCurDegrees((Double.parseDouble(meterMachineDto.getCurDegrees()) + degree) + "");
+//        meterMachineDetailPo.setCurReadingTime(meterMachineDto.getCurReadingTime());
+//        meterMachineDetailPo.setPrestoreDegrees((Double.parseDouble(meterMachineDto.getCurDegrees()) + degree) + "");
+//        meterMachineDetailPo.setState(MeterMachineDetailDto.STATE_C);
+//        meterMachineDetailPos.add(meterMachineDetailPo);
+//
+//        if (meterMachineDetailPos.size() > 0) {
+//            meterMachineDetailV1InnerServiceSMOImpl.saveMeterMachineDetails(meterMachineDetailPos);
+//        }
         return new ResultVo(ResultVo.CODE_OK, "请求已发送，等待电表反馈数据");
     }
 

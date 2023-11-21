@@ -19,8 +19,11 @@
     <select id="getMeterMachineChargeInfo" parameterType="Map" resultType="Map">
         select t.machine_id,t.machine_id machineId,t.charge_id,t.charge_id chargeId,t.charge_degrees,t.charge_degrees
         chargeDegrees,t.remark,t.status_cd,t.status_cd statusCd,t.charge_money,t.charge_money
-        chargeMoney,t.state,t.community_id,t.community_id communityId
+        chargeMoney,t.state,t.community_id,t.community_id communityId,mm.address,mm.room_name roomName,
+        mm.machine_name machineName,mt.type_name typeName
         from meter_machine_charge t
+        left join meter_machine mm on t.machine_id = mm.machine_id and mm.status_cd = '0'
+        left join meter_type mt on mm.meter_type = mt.type_id and mt.status_cd = '0'
         where 1 =1
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}

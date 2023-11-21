@@ -52,10 +52,10 @@
                 vc.http.apiGet('/meterMachine.listMeterMachine',
                     param,
                     function(json, res) {
-                        var _meterMachineManageInfo = JSON.parse(json);
-                        $that.meterMachineManageInfo.total = _meterMachineManageInfo.total;
-                        $that.meterMachineManageInfo.records = _meterMachineManageInfo.records;
-                        $that.meterMachineManageInfo.meterMachines = _meterMachineManageInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.meterMachineManageInfo.total = _json.total;
+                        $that.meterMachineManageInfo.records = _json.records;
+                        $that.meterMachineManageInfo.meterMachines = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.meterMachineManageInfo.records,
                             currentPage: _page
@@ -85,7 +85,7 @@
                 vc.emit('importMeterMachine', 'openImportMeterMachineModal',{})
             },
             _toChargeMoney:function(_meterMachine){
-
+                 vc.emit('chargeMeter', 'openChargeMeterModal',_meterMachine);
             },
 
             _toDetail: function(_meterMachine) {

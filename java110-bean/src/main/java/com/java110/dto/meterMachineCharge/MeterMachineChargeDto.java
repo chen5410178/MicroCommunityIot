@@ -23,6 +23,10 @@ public class MeterMachineChargeDto extends PageDto implements Serializable {
     private String state;
     private String communityId;
 
+    private String address;
+    private String roomName;
+    private String machineName;
+    private String typeName;
 
     private Date createTime;
 
@@ -100,5 +104,37 @@ public class MeterMachineChargeDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
+    public String getMachineName() {
+        return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }
