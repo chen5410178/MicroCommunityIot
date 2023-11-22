@@ -16,6 +16,7 @@
 package com.java110.barrier.bmo.impl;
 
 import com.java110.barrier.bmo.IGetTempCarFeeRules;
+import com.java110.barrier.engine.IBarrierEngine;
 import com.java110.bean.ResultVo;
 import com.java110.dto.fee.TempCarFeeRuleDto;
 import com.java110.dto.fee.TempCarPayOrderDto;
@@ -39,6 +40,9 @@ public class GetTempCarFeeRulesImpl implements IGetTempCarFeeRules {
     @Autowired
     private IDataBusInnerServiceSMO dataBusInnerServiceSMOImpl;
 
+    @Autowired
+    private IBarrierEngine barrierEngineImpl;
+
     @Override
     public ResponseEntity<String> queryRules(TempCarFeeRuleDto tempCarFeeRuleDto) {
 
@@ -56,13 +60,13 @@ public class GetTempCarFeeRulesImpl implements IGetTempCarFeeRules {
     @Override
     public ResponseEntity<String> getTempCarFeeOrder(TempCarPayOrderDto tempCarPayOrderDto) {
 
-        ResultVo resultVo = null;//dataBusInnerServiceSMOImpl.getTempCarFeeOrder(tempCarPayOrderDto);
+        ResultVo resultVo = barrierEngineImpl.getTempCarFeeOrder(tempCarPayOrderDto);//dataBusInnerServiceSMOImpl.getTempCarFeeOrder(tempCarPayOrderDto);
         return ResultVo.createResponseEntity(resultVo);
     }
 
     @Override
     public ResponseEntity<String> notifyTempCarFeeOrder(TempCarPayOrderDto tempCarPayOrderDto) {
-        ResultVo resultVo = null;//dataBusInnerServiceSMOImpl.notifyTempCarFeeOrder(tempCarPayOrderDto);
+        ResultVo resultVo = barrierEngineImpl.notifyTempCarFeeOrder(tempCarPayOrderDto);//dataBusInnerServiceSMOImpl.notifyTempCarFeeOrder(tempCarPayOrderDto);
         return ResultVo.createResponseEntity(resultVo);
     }
 }

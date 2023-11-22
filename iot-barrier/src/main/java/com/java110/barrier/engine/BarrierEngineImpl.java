@@ -12,10 +12,7 @@ import com.java110.core.constant.ResponseConstant;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.utils.*;
 import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.fee.TempCarFeeConfigDto;
@@ -80,7 +77,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
         //machineDto.setLocationType(MachineDto.LOCATION_TYPE_PARKING_AREA);
         List<BarrierDto> machineDtos = barrierV1InnerServiceSMOImpl.queryBoxMachines(machineDto);
 
-        if (machineDtos == null && machineDtos.size() < 1) {
+        if (ListUtil.isNull(machineDtos)) {
             return new ResultVo(ResultVo.CODE_ERROR, "未找到设备信息");
         }
 
