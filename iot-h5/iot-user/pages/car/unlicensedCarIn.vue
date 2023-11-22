@@ -125,9 +125,11 @@
 				},
 				carNum: '',
 				communityId: '',
+				communityName:'',
 				appId: '',
 				machineId: '',
 				showToastFlag: false,
+				carNumBtn:'',
 				showFlag: 'phone',
 			}
 		},

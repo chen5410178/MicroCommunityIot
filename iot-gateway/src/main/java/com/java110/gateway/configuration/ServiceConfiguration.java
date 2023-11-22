@@ -26,6 +26,9 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/chargeMachine.listChargeMachinePort,");//查询充电桩插槽
 
         exclusions.append("/iot/api/wechat.getCommunityWechatAppId,");//根据小区查询appId
+        // todo 道闸相关
+        exclusions.append("/iot/api/barrier.customCarInOut,");//根据小区查询appId
+
 
         exclusions.append("/app/charge/*,");// 通用充电桩通知放开
         exclusions.append("/app/equipments/*,");// 叮叮充电桩通知放开

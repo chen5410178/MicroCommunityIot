@@ -16,7 +16,7 @@ export default {
 	listChargeMachineOrder:baseUrl + "iot/api/chargeMachine.listChargeMachineOrder", // 查询充电订单
 	listChargeMonthOrder:baseUrl + "iot/api/chargeCard.listChargeMonthOrder", // 查询充电订单
 	listChargeMonthCard:baseUrl + "iot/api/chargeCard.listChargeMonthCard", // 查询月卡
-	
+	customCarInOut: baseUrl + "iot/api/barrier.customCarInOut", //手工保存车牌号
 	
 
 	NEED_NOT_LOGIN_PAGE: [
