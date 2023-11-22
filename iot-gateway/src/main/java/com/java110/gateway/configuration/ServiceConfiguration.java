@@ -18,6 +18,9 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/login.getSysInfo,");
         exclusions.append("/iot/api/login.appUserRegister,");
         exclusions.append("/iot/api/login.appUserLogin,");
+        exclusions.append("/iot/api/wechat.wechatRefreshOpenId,");
+        exclusions.append("/iot/api/wechat.wechatNotifyOpenId,");
+
 
 
 

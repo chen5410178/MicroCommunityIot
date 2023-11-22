@@ -25,4 +25,13 @@ public interface IApiService {
      */
     ResponseEntity<String> get(String service,
                                HttpServletRequest request) throws Exception;
+
+    /**
+     *  带参数APPID
+     * @param service
+     * @param request
+     * @param appId
+     * @return
+     */
+    ResponseEntity<String> getHasParam(String service, HttpServletRequest request, String appId) throws Exception;
 }

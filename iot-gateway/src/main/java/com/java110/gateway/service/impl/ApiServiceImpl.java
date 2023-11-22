@@ -10,11 +10,9 @@ import com.java110.core.client.RestTemplate;
 import com.java110.core.constant.CommonConstant;
 import com.java110.core.context.Environment;
 import com.java110.core.factory.ApplicationContextFactory;
+import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.RequestUtils;
-import com.java110.core.utils.SessionTokenUtil;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.utils.*;
 import com.java110.dto.communityMember.CommunityMemberDto;
 import com.java110.dto.store.StoreDto;
 import com.java110.dto.storeStaff.StoreStaffDto;
@@ -88,26 +86,27 @@ public class ApiServiceImpl implements IApiService {
 
     /**
      * token 放到 头部
+     *
      * @param service
      * @param headers
      * @param request
      */
     private void putTokenToHeader(String service, Map<String, String> headers, HttpServletRequest request) {
-        if (!LOGOUT_URL.equals(service) ) {
+        if (!LOGOUT_URL.equals(service)) {
             return;
         }
 
         String token = SessionTokenUtil.getToken(request);
 
-        if(StringUtil.isEmpty(token)){
-            return ;
+        if (StringUtil.isEmpty(token)) {
+            return;
         }
 
-        headers.put(CommonConstant.COOKIE_AUTH_TOKEN,token);
+        headers.put(CommonConstant.COOKIE_AUTH_TOKEN, token);
 
     }
 
-    private void wirteToken(String service, String body,HttpServletRequest request) {
+    private void wirteToken(String service, String body, HttpServletRequest request) {
         if (!LOGIN_URL.equals(service) && !ADMIN_LOGIN_PROPERTY_URL.equals(service)) {
             return;
         }
@@ -118,11 +117,11 @@ public class ApiServiceImpl implements IApiService {
             return;
         }
         String token = result.getString("token");
-        if(StringUtil.isEmpty(token)){
+        if (StringUtil.isEmpty(token)) {
             return;
         }
 
-        request.setAttribute(CommonConstant.COOKIE_AUTH_TOKEN,token);
+        request.setAttribute(CommonConstant.COOKIE_AUTH_TOKEN, token);
 
     }
 
@@ -157,6 +156,35 @@ public class ApiServiceImpl implements IApiService {
         return responseEntity;
     }
 
+    @Override
+    public ResponseEntity<String> getHasParam(String service, HttpServletRequest request, String appId) throws Exception {
+        ResponseEntity<String> responseEntity = null;
+        Map<String, String> headers = new HashMap<String, String>();
+        this.getRequestInfo(request, headers);
+        headers.put(CommonConstant.HTTP_SERVICE, service);
+        headers.put(CommonConstant.HTTP_METHOD, CommonConstant.HTTP_METHOD_GET);
+        headers.put("app_id", appId);
+        headers.put("app-id", appId);
+        headers.put("transaction_id", GenerateCodeFactory.getUUID());
+        headers.put("transaction-id", headers.get("transaction_id"));
+
+        headers.put("req-time", DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_DEFAULT));
+        headers.put("req_time", headers.get("req-time"));
+
+        if (!headers.containsKey("user-id")) {
+            headers.put("user-id", "-1");
+            headers.put("user_id", "-1");
+        }
+        String postInfo = JSONObject.toJSONString(RequestUtils.getParameterStringMap(request));
+        logger.debug("api：{} 请求报文为：{},header信息为：{}", service, postInfo, headers);
+        //privilegeSMOImpl.hasPrivilege(restTemplate, pd, "/app/" + service);
+        responseEntity = doService(postInfo, headers, request);
+
+        logger.debug("api：{} 返回信息为：{}", service, responseEntity);
+
+        return responseEntity;
+    }
+
     /**
      * 业主处理方法
      *
@@ -176,7 +204,7 @@ public class ApiServiceImpl implements IApiService {
             headers.put(CommonConstant.STORE_ID, result.getStoreId());
             headers.put("community-id", result.getCommunityId());
             headers.put(CommonConstant.LOGIN_U_ID, result.getLoginUserId());
-        }else{
+        } else {
             // header 中写入数据
             headers.put(CommonConstant.STORE_ID, "-");
             headers.put("community-id", "-");

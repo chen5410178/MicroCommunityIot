@@ -87,6 +87,32 @@ public class IotApiController {
     /**
      * get 入口类
      *
+     * @param service
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/{service:.+}/{appId}", method = RequestMethod.GET)
+    public ResponseEntity<String> serviceGetParamAppId(@PathVariable String service,
+                                             @PathVariable String appId,
+                                             HttpServletRequest request) {
+        ResponseEntity<String> responseEntity = null;
+        try {
+
+            responseEntity = apiServiceImpl.getHasParam(service, request, appId);
+        } catch (Throwable e) {
+            logger.error("请求get 方法[" + service + "]失败：", e);
+            responseEntity = ResultVo.error("请求发生异常，" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        logger.debug("api：{} 返回信息为：{}", service, responseEntity);
+
+        return responseEntity;
+    }
+
+
+
+    /**
+     * get 入口类
+     *
      * @param uploadFile 上传文件
      * @param request
      * @return

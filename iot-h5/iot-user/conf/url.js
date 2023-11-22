@@ -18,7 +18,7 @@ export default {
 	listChargeMonthCard:baseUrl + "iot/api/chargeCard.listChargeMonthCard", // 查询月卡
 	customCarInOut: baseUrl + "iot/api/barrier.customCarInOut", //手工保存车牌号
 	getTempCarFeeOrder: baseUrl + "iot/api/tempCarFee.getTempCarFeeOrder",
-
+	refreshOpenId: baseUrl + "iot/api/wechat.wechatRefreshOpenId", // 公众号刷新token
 	NEED_NOT_LOGIN_PAGE: [
 		'pages/user/login',
 		'pages/user/register',
