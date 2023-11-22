@@ -31,6 +31,7 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/wechat.getCommunityWechatAppId,");//根据小区查询appId
         // todo 道闸相关
         exclusions.append("/iot/api/barrier.customCarInOut,");//根据小区查询appId
+        exclusions.append("/iot/api/tempCarFee.getTempCarFeeOrder,");//根据小区查询appId
 
 
         exclusions.append("/app/charge/*,");// 通用充电桩通知放开
