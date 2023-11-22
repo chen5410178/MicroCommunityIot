@@ -61,7 +61,7 @@ public class UnlicensedCarMachineQrCodeUrlCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
         String ownerUrl = UrlCache.getOwnerUrl();
-        ownerUrl += ("/#/pages/unlicensedCarIn/unlicensedCarIn?communityId=" +
+        ownerUrl += ("/#/pages/car/unlicensedCarIn?communityId=" +
                 reqJson.getString("communityId") + "&machineId=" +
                 reqJson.getString("machineId"));
         reqJson.put("url", ownerUrl);
