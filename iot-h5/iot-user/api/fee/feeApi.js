@@ -98,3 +98,25 @@ export function toAliPayTempCarFee(_objData) {
 		});
 	})
 }
+// 查询停车劵
+export function getParkingCarCoupon(_objData) {
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.listParkingCouponCar,
+			method: "GET",
+			data: _objData, //动态数据
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code == 0) {
+					//成功情况下跳转
+					resolve(_json.data);
+					return;
+				}
+				reject(_json.msg);
+			},
+			fail: function(e) {
+				reject();
+			}
+		});
+	})
+}

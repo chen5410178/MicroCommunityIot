@@ -32,6 +32,9 @@ public class ServiceConfiguration {
         // todo 道闸相关
         exclusions.append("/iot/api/barrier.customCarInOut,");//根据小区查询appId
         exclusions.append("/iot/api/tempCarFee.getTempCarFeeOrder,");//根据小区查询appId
+        exclusions.append("/iot/api/parkingCoupon.listParkingCouponCar,");//根据小区查询appId
+        exclusions.append("/iot/api/payment.cashier,");//支付
+
 
 
         exclusions.append("/app/charge/*,");// 通用充电桩通知放开
