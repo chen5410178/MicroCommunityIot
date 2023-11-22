@@ -29,3 +29,72 @@ export function getCouponUsers(_objData, _couponUsers) {
 		});
 	})
 }
+
+
+/**
+ * 查询停车费
+ * @param {Object} _objData 费用
+ */
+export function getTempCarFeeOrder(_objData) {
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.getTempCarFeeOrder,
+			method: "GET",
+			data: _objData, //动态数据
+			success: function(res) {
+				if (res.statusCode == 200) {
+					//成功情况下跳转
+					resolve(res.data);
+					return;
+				}
+				reject();
+			},
+			fail: function(e) {
+				reject();
+			}
+		});
+	})
+}
+
+export function toPayTempCarFee(_objData) {
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.cashier,
+			method: "POST",
+			data: JSON.stringify(_objData), //动态数据
+			success: function(res) {
+				if (res.statusCode == 200) {
+					//成功情况下跳转
+					resolve(res.data);
+					return;
+				}
+				reject();
+			},
+			fail: function(e) {
+				reject();
+			}
+		});
+	})
+}
+
+
+export function toAliPayTempCarFee(_objData) {
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.alipayPayTempCarFee,
+			method: "POST",
+			data: JSON.stringify(_objData), //动态数据
+			success: function(res) {
+				if (res.statusCode == 200) {
+					//成功情况下跳转
+					resolve(res.data);
+					return;
+				}
+				reject();
+			},
+			fail: function(e) {
+				reject();
+			}
+		});
+	})
+}

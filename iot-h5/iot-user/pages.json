@@ -113,6 +113,20 @@
                 "enablePullDownRefresh": false
             }
             
+        },{
+            "path" : "pages/fee/tempCarFee",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "临时停车费",
+                "enablePullDownRefresh": false
+            } 
+        },{
+            "path" : "pages/fee/tempParkingFee",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "临时停车费",
+                "enablePullDownRefresh": false
+            } 
         }
 	],
 	"tabBar": {

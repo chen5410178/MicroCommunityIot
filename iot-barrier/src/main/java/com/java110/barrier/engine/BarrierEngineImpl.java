@@ -208,8 +208,8 @@ public class BarrierEngineImpl implements IBarrierEngine {
         //2.0 手工进场
         CarInoutPo carInoutPo = new CarInoutPo();
         carInoutPo.setCarNum(acceptJson.getString("carNum"));
-        carInoutPo.setCarType(CarInoutDto.CAR_TYPE_MONTH);
-        carInoutPo.setCarTypeName("月租车");
+        carInoutPo.setCarType(CarInoutDto.CAR_TYPE_TEMP);
+        carInoutPo.setCarTypeName("临时车");
         carInoutPo.setCommunityId(machineDto.getCommunityId());
         carInoutPo.setInoutId(GenerateCodeFactory.getGeneratorId("11"));
         carInoutPo.setMachineCode(machineDto.getMachineCode());

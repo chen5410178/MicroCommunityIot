@@ -17,7 +17,7 @@ export default {
 	listChargeMonthOrder:baseUrl + "iot/api/chargeCard.listChargeMonthOrder", // 查询充电订单
 	listChargeMonthCard:baseUrl + "iot/api/chargeCard.listChargeMonthCard", // 查询月卡
 	customCarInOut: baseUrl + "iot/api/barrier.customCarInOut", //手工保存车牌号
-	
+	getTempCarFeeOrder: baseUrl + "iot/api/tempCarFee.getTempCarFeeOrder",
 
 	NEED_NOT_LOGIN_PAGE: [
 		'pages/user/login',
