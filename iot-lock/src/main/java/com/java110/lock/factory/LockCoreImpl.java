@@ -13,6 +13,7 @@ import com.java110.intf.lock.ILockMachineParamV1InnerServiceSMO;
 import com.java110.intf.lock.ILockMachineV1InnerServiceSMO;
 import com.java110.po.lock.LockMachinePo;
 import com.java110.po.lock.LockPersonPo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -96,6 +97,9 @@ public class LockCoreImpl implements ILockCore{
                 lockMachineDto.setStateName("离线");
             }
             lockMachineDto.setCharge(lockFactoryAdapt.queryElectricQuantity(lockMachineDto, lockMachineDtos.get(0).getLockMachineParamDtoList()).toString());
+            LockMachinePo lockMachinePo = new LockMachinePo();
+            BeanUtils.copyProperties(lockMachineDto, lockMachinePo);
+            lockMachineV1InnerServiceSMOImpl.updateLockMachine(lockMachinePo);
         }
     }
 

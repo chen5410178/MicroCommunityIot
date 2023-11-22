@@ -28,6 +28,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -299,7 +300,8 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
         JSONObject res = JSONObject.parseObject(responseEntity.getBody());
         if (CommonLockFactoryAdaptUtil.errorMap.containsKey(res.getInteger("errcode"))) {
             logger.error("修改密码失败，错误码：" + res.getInteger("errcode") + "，错误信息：" + res.getString("errmsg") + "，错误描述：" + res.getString("description"));
-            throw new CmdException(CommonLockFactoryAdaptUtil.errorMap.get(res.getInteger("errcode")));
+            return new BigDecimal(lockMachineDto.getCharge()).intValue();
+            //throw new CmdException(CommonLockFactoryAdaptUtil.errorMap.get(res.getInteger("errcode")));
         }
 
         return res.getInteger("electricQuantity");
