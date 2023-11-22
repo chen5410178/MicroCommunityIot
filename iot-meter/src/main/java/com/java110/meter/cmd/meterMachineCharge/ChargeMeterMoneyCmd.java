@@ -143,7 +143,7 @@ public class ChargeMeterMoneyCmd extends Cmd {
         BigDecimal degree = chargeMoneyDec.divide(new BigDecimal(price), 2, BigDecimal.ROUND_HALF_UP);
 
 
-        ResultVo resultVo = smartMeterFactoryAdapt.requestRecharge(meterMachineDto, degree.doubleValue(), chargeMoney);
+        ResultVo resultVo = smartMeterFactoryAdapt.requestRecharge(machineDtos.get(0), degree.doubleValue(), chargeMoney);
 
         if (ResultVo.CODE_OK != resultVo.getCode()) {
             throw new CmdException(resultVo.getMsg());
