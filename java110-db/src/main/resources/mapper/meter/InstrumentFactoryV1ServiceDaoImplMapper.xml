@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="instrumentFactoryV1ServiceDaoImpl">
+
+
+    <!-- 保存仪表厂家信息 add by wuxw 2018-07-03 -->
+    <insert id="saveInstrumentFactoryInfo" parameterType="Map">
+        insert into instrument_factory(factory_id, factory_name, remark, bean_impl)
+        values (#{factoryId}, #{factoryName}, #{remark}, #{beanImpl})
+    </insert>
+
+    <resultMap id="resultMap" type="com.java110.dto.instrument.InstrumentFactoryDto">
+        <id column="factoryId" property="factoryId"/>
+        <result column="factoryName" property="factoryName"/>
+        <result column="beanImpl" property="beanImpl"/>
+        <result column="remark" property="remark"/>
+        <result column="createTime" property="createTime"/>
+        <result column="statusCd" property="statusCd"/>
+        <collection property="instrumentFactorySpecList"
+                    ofType="com.java110.dto.instrument.InstrumentFactorySpecDto"
+                    javaType="java.util.ArrayList">
+            <id column="specId" property="specId"/>
+            <result column="factoryId1" property="factoryId"/>
+            <result column="specName" property="specName"/>
+            <result column="specCd" property="specCd"/>
+            <result column="remark1" property="remark"/>
+            <result column="createTime1" property="createTime"/>
+            <result column="statusCd1" property="statusCd"/>
+        </collection>
+    </resultMap>
+
+    <!-- 查询仪表厂家信息 add by wuxw 2018-07-03 -->
+    <select id="getInstrumentFactoryInfo" parameterType="Map" resultMap="resultMap">
+        select
+        t.factory_id factoryId,
+        t.factory_name factoryName,
+        t.bean_impl beanImpl,
+        t.remark,
+        t.create_time createTime,
+        t.status_cd statusCd,
+        ifs.spec_id specId,
+        ifs.factory_id factoryId1,
+        ifs.spec_name specName,
+        ifs.spec_cd specCd,
+        ifs.remark remark1,
+        ifs.create_time createTime1,
+        ifs.status_cd statusCd1
+        from instrument_factory t
+        left join instrument_factory_spec ifs on t.factory_id = ifs.factory_id and ifs.status_cd = '0'
+        where 1 =1
+        <if test="factoryId !=null and factoryId != ''">
+            and t.factory_id like concat('%', #{factoryId}, '%')
+        </if>
+        <if test="factoryName !=null and factoryName != ''">
+            and t.factory_name like concat('%', #{factoryName}, '%')
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="beanImpl !=null and beanImpl != ''">
+            and t.bean_impl like concat('%', #{beanImpl}, '%')
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改仪表厂家信息 add by wuxw 2018-07-03 -->
+    <update id="updateInstrumentFactoryInfo" parameterType="Map">
+        update instrument_factory t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="factoryName !=null and factoryName != ''">
+            , t.factory_name= #{factoryName}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="beanImpl !=null and beanImpl != ''">
+            , t.bean_impl= #{beanImpl}
+        </if>
+        where 1=1
+        <if test="factoryId !=null and factoryId != ''">
+            and t.factory_id= #{factoryId}
+        </if>
+
+    </update>
+
+    <!-- 查询仪表厂家数量 add by wuxw 2018-07-03 -->
+    <select id="queryInstrumentFactorysCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from instrument_factory t
+        where 1 =1
+        <if test="factoryId !=null and factoryId != ''">
+            and t.factory_id like concat('%', #{factoryId}, '%')
+        </if>
+        <if test="factoryName !=null and factoryName != ''">
+            and t.factory_name like concat('%', #{factoryName}, '%')
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="beanImpl !=null and beanImpl != ''">
+            and t.bean_impl like concat('%', #{beanImpl}, '%')
+        </if>
+
+
+    </select>
+
+</mapper>
