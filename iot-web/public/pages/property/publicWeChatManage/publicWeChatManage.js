@@ -33,21 +33,15 @@
                 $that.smallWeChatManageInfo.conditions.page = _page;
                 $that.smallWeChatManageInfo.conditions.row = _rows;
                 $that.smallWeChatManageInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
-                var param = {
+                let param = {
                     params: $that.smallWeChatManageInfo.conditions
                 };
                 //发送get请求
-                vc.http.apiGet('smallWeChat.listSmallWeChats',
+                vc.http.apiGet('/smallWeChat.listSmallWeChats',
                     param,
                     function (json, res) {
-                        var _smallWeChatManageInfo = JSON.parse(json);
-                        $that.smallWeChatManageInfo.smallWeChats = _smallWeChatManageInfo.smallWeChats;
-                        if (_smallWeChatManageInfo.smallWeChats.length > 0) {
-                            vc.emit('wechatAttrInfo', 'getWechatAttrInfo', {
-                                wechatId: _smallWeChatManageInfo.smallWeChats[0].wechatId,
-                                wId: _smallWeChatManageInfo.smallWeChats[0].wId
-                            });
-                        }
+                        let _json = JSON.parse(json);
+                        $that.smallWeChatManageInfo.smallWeChats = _json.data;
                     },
                     function (errInfo, error) {
                         console.log('请求失败处理');

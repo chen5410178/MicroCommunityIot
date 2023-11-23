@@ -11,13 +11,6 @@
                             class="btn btn-primary btn-sm" v-on:click="_openAddSmallWeChatModal(1100)">
                             <i class="fa fa-plus"></i>添加
                         </button>
-                        <button type="button" class="btn btn-primary btn-sm"
-                            v-on:click="vc.showMarkdown('/pages/property/publicWeChatManage')">
-                            <i class="fa fa-file"></i>
-                            <span>
-                                <vc:i18n name="文档"></vc:i18n>
-                            </span>
-                        </button>
                     </div>
                 </div>
                 <div class="ibox-content">
@@ -29,20 +22,13 @@
                                 </th>
                                 <th class="text-center">APPID</th>
                                 <th class="text-center">
-                                    <span>
-                                        <vc:i18n name="应用密钥" namespace="publicWeChatManage"></vc:i18n>
-                                    </span>
-                                </th>
-
-                                <th class="text-center">
-                                    <span>
-                                        <vc:i18n name="描述" namespace="publicWeChatManage"></vc:i18n>
-                                    </span>
+                                    <vc:i18n name="应用密钥" namespace="publicWeChatManage"></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <span>
-                                        <vc:i18n name="操作" namespace="publicWeChatManage"></vc:i18n>
-                                    </span>
+                                    <vc:i18n name="描述" namespace="publicWeChatManage"></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name="操作" namespace="publicWeChatManage"></vc:i18n>
                                 </th>
                             </tr>
                         </thead>
@@ -50,7 +36,7 @@
                             <tr v-for="smallWeChat in smallWeChatManageInfo.smallWeChats">
                                 <td class="text-center">{{smallWeChat.name}}</td>
                                 <td class="text-center">{{smallWeChat.appId}}</td>
-                                <td class="text-center">********</td>
+                                <td class="text-center">{{smallWeChat.appsecret}}</td>
                                 <td class="text-center">{{smallWeChat.remarks}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
