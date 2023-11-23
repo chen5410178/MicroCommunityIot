@@ -26,6 +26,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.smallWeChat.SmallWeChatDto;
 import com.java110.intf.system.ISmallWechatV1InnerServiceSMO;
@@ -72,12 +73,14 @@ public class SaveSmallWechatCmd extends Cmd {
         if (StringUtil.isEmpty(appId)) {
             appId = cmdDataFlowContext.getReqHeaders().get("app-id");
         }
+        String storeId = CmdContextUtils.getStoreId(cmdDataFlowContext);
 
         String wechatId = GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_weChatId);
         reqJson.put("wechatId", wechatId);
         reqJson.put("objType", SmallWeChatDto.OBJ_TYPE_COMMUNITY);
         SmallWechatPo smallWechatPo = BeanConvertUtil.covertBean(reqJson, SmallWechatPo.class);
         smallWechatPo.setWechatId(wechatId);
+        smallWechatPo.setStoreId(storeId);
         smallWechatPo.setWechatType(reqJson.getString("weChatType"));
         int flag = smallWechatV1InnerServiceSMOImpl.saveSmallWechat(smallWechatPo);
 
