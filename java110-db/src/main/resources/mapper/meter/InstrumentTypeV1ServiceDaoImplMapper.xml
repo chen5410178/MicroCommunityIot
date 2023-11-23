@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="instrumentTypeV1ServiceDaoImpl">
+
+
+    <!-- 保存仪表组信息 add by wuxw 2018-07-03 -->
+    <insert id="saveInstrumentTypeInfo" parameterType="Map">
+        insert into instrument_type(name, type_id, remark, community_id)
+        values (#{name}, #{typeId}, #{remark}, #{communityId})
+    </insert>
+
+
+    <!-- 查询仪表组信息 add by wuxw 2018-07-03 -->
+    <select id="getInstrumentTypeInfo" parameterType="Map" resultType="Map">
+        select t.name,t.type_id,t.type_id typeId,t.status_cd,t.status_cd statusCd,t.remark,t.community_id,t.community_id
+        communityId,t.create_time createTime
+        from instrument_type t
+        where 1 =1
+        <if test="name !=null and name != ''">
+            and t.name like concat('%', #{name}, '%')
+        </if>
+        <if test="typeId !=null and typeId != ''">
+            and t.type_id like concat('%', #{typeId}, '%')
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改仪表组信息 add by wuxw 2018-07-03 -->
+    <update id="updateInstrumentTypeInfo" parameterType="Map">
+        update instrument_type t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="name !=null and name != ''">
+            , t.name= #{name}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="typeId !=null and typeId != ''">
+            and t.type_id= #{typeId}
+        </if>
+
+    </update>
+
+    <!-- 查询仪表组数量 add by wuxw 2018-07-03 -->
+    <select id="queryInstrumentTypesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from instrument_type t
+        where 1 =1
+        <if test="name !=null and name != ''">
+            and t.name like concat('%', #{name}, '%')
+        </if>
+        <if test="typeId !=null and typeId != ''">
+            and t.type_id like concat('%', #{typeId}, '%')
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+
+    </select>
+
+</mapper>
