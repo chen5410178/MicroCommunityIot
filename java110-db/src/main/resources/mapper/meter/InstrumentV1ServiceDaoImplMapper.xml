@@ -103,10 +103,10 @@
             and t.impl_bean= #{implBean}
         </if>
         <if test="machineId !=null and machineId != ''">
-            and t.machine_id= #{machineId}
+            and t.machine_id like concat('%', #{machineId}, '%')
         </if>
         <if test="machineCode !=null and machineCode != ''">
-            and t.machine_code= #{machineCode}
+            and t.machine_code like concat('%', #{machineCode}, '%')
         </if>
         <if test="charge !=null and charge != ''">
             and t.charge= #{charge}
@@ -130,7 +130,7 @@
             and t.community_id= #{communityId}
         </if>
         <if test="machineName !=null and machineName != ''">
-            and t.machine_name= #{machineName}
+            and t.machine_name like concat('%', #{machineName}, '%')
         </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
@@ -189,10 +189,10 @@
             and t.impl_bean= #{implBean}
         </if>
         <if test="machineId !=null and machineId != ''">
-            and t.machine_id= #{machineId}
+            and t.machine_id like concat('%', #{machineId}, '%')
         </if>
         <if test="machineCode !=null and machineCode != ''">
-            and t.machine_code= #{machineCode}
+            and t.machine_code like concat('%', #{machineCode}, '%')
         </if>
         <if test="charge !=null and charge != ''">
             and t.charge= #{charge}
@@ -216,7 +216,7 @@
             and t.community_id= #{communityId}
         </if>
         <if test="machineName !=null and machineName != ''">
-            and t.machine_name= #{machineName}
+            and t.machine_name like concat('%', #{machineName}, '%')
         </if>
 
 

@@ -14,76 +14,55 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择设备ID','instrumentManage')"
+                                <input type="text" :placeholder="vc.i18n('请输入仪表ID','instrumentManage')"
                                        v-model="instrumentManageInfo.conditions.machineId" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择设备编码','instrumentManage')"
+                                <input type="text" :placeholder="vc.i18n('请输入仪表编码','instrumentManage')"
                                        v-model="instrumentManageInfo.conditions.machineCode" class=" form-control">
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择设备名称','instrumentManage')"
+                                <input type="text" :placeholder="vc.i18n('请输入仪表名称','instrumentManage')"
                                        v-model="instrumentManageInfo.conditions.machineName" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-1">
+                        <div class="col-sm-2">
                             <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryInstrumentMethod()">
-                                <i class="glyphicon glyphicon-search"></i> <span><vc:i18n name="查询"></vc:i18n></span>
+                                <vc:i18n name="查询" namespace="instrumentManage"></vc:i18n>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetInstrumentMethod()">
+                                <vc:i18n name="重置" namespace="instrumentManage"></vc:i18n>
                             </button>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4" v-if="instrumentManageInfo.moreCondition == true">
+                        <div class="col-sm-3" v-if="instrumentManageInfo.moreCondition == true">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择小区ID','instrumentManage')"
-                                       v-model="instrumentManageInfo.conditions.communityId" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-4" v-if="instrumentManageInfo.moreCondition == true">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择仪表类型','instrumentManage')"
-                                       v-model="instrumentManageInfo.conditions.typeId" class=" form-control">
+                                <select class="custom-select" v-model="instrumentManageInfo.conditions.typeId">
+                                    <option disabled selected value="">{{vc.i18n('请选择仪表类型','instrumentManage')}}</option>
+                                    <option v-for="(item, index) in instrumentTypeList" :value="item.typeId">
+                                        {{item.name}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-sm-3" v-if="instrumentManageInfo.moreCondition == true">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择剩余电量','instrumentManage')"
-                                       v-model="instrumentManageInfo.conditions.charge" class=" form-control">
+                                <select class="custom-select" v-model="instrumentManageInfo.conditions.implBean">
+                                    <option disabled selected value="">{{vc.i18n('请选择仪表厂家','instrumentManage')}}</option>
+                                    <option v-for="(item, index) in factoryList" :value="item.factoryId">
+                                        {{item.factoryName}}
+                                    </option>
+                                </select>
                             </div>
-                        </div>
-                        <div class="col-sm-1">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-4" v-if="instrumentManageInfo.moreCondition == true">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择信号强度','instrumentManage')"
-                                       v-model="instrumentManageInfo.conditions.sign" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-4" v-if="instrumentManageInfo.moreCondition == true">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择仪表厂家','instrumentManage')"
-                                       v-model="instrumentManageInfo.conditions.implBean" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-3" v-if="instrumentManageInfo.moreCondition == true">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择数据状态','instrumentManage')"
-                                       v-model="instrumentManageInfo.conditions.statusCd" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-1">
-                        </div>
-                    </div>
-
-
                 </div>
             </div>
         </div>

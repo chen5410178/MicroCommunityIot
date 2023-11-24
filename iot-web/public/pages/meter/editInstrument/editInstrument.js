@@ -41,6 +41,12 @@
                 return vc.validate.validate({
                     editInstrumentInfo: $that.editInstrumentInfo
                 }, {
+                    'editInstrumentInfo.machineId': [{
+                        limit: "required",
+                        param: "",
+                        errInfo: "仪表ID不能为空"
+                        },
+                    ],
                     'editInstrumentInfo.machineCode': [{
                         limit: "required",
                         param: "",

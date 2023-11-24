@@ -22,10 +22,15 @@
                     sign: '',
                     implBean: '',
                 }
-            }
+            },
+            instrumentTypeList: [],
+            factoryList: [],
         },
         _initMethod: function () {
+            $that._listInstrumentType();
+            $that._listFactorys();
             $that._listInstruments(DEFAULT_PAGE, DEFAULT_ROWS);
+
         },
         _initEvent: function () {
             vc.on('instrumentManage', 'listInstrument', function (_param) {
@@ -74,13 +79,65 @@
                 $that._listInstruments(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
+            _resetInstrumentMethod: function () {
+                $that.instrumentManageInfo.conditions = {
+                    machineId: '',
+                    machineCode: '',
+                    machineName: '',
+                    communityId: '',
+                    typeId: '',
+                    charge: '',
+                    sign: '',
+                    implBean: '',
+                }
+                $that._listInstruments(DEFAULT_PAGE, DEFAULT_ROWS);
+            },
             _moreCondition: function () {
                 if ($that.instrumentManageInfo.moreCondition) {
                     $that.instrumentManageInfo.moreCondition = false;
                 } else {
                     $that.instrumentManageInfo.moreCondition = true;
                 }
-            }
+            },
+            _listInstrumentType: function() {
+                let param = {
+                    params: {
+                        page: -1,
+                        row: 500,
+                        communityId: vc.getCurrentCommunity().communityId,
+                    }
+                };
+                //发送get请求
+                vc.http.apiGet('/instrumentType.listInstrumentType',
+                    param,
+                    function(json, res) {
+                        let _instrumentTypeManageInfo = JSON.parse(json);
+                        $that.instrumentTypeList = _instrumentTypeManageInfo.data;
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+            _listFactorys: function() {
+                let param = {
+                    params: {
+                        page: -1,
+                        row: 500,
+                    }
+                };
+                //发送get请求
+                vc.http.apiGet('/instrumentFactory.listInstrumentFactory',
+                    param,
+                    function(json, res) {
+                        let _instrumentFactoryManageInfo = JSON.parse(json);
+                        $that.factoryList = _instrumentFactoryManageInfo.data;
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
         }
     });
 })(window.vc);
