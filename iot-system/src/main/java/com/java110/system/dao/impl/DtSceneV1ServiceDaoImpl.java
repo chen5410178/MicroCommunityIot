@@ -68,9 +68,9 @@ public class DtSceneV1ServiceDaoImpl extends BaseServiceDao implements IDtSceneV
     public List<Map> getDtSceneInfo(Map info) throws DAOException {
         logger.debug("查询 getDtSceneInfo 入参 info : {}",info);
 
-        List<Map> businessDtSceneInfos = sqlSessionTemplate.selectList("dtSceneV1ServiceDaoImpl.getDtSceneInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("dtSceneV1ServiceDaoImpl.getDtSceneInfo",info);
 
-        return businessDtSceneInfos;
+        return infos;
     }
 
 
@@ -97,12 +97,12 @@ public class DtSceneV1ServiceDaoImpl extends BaseServiceDao implements IDtSceneV
     public int queryDtScenesCount(Map info) {
         logger.debug("查询 queryDtScenesCount 入参 info : {}",info);
 
-        List<Map> businessDtSceneInfos = sqlSessionTemplate.selectList("dtSceneV1ServiceDaoImpl.queryDtScenesCount", info);
-        if (businessDtSceneInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("dtSceneV1ServiceDaoImpl.queryDtScenesCount", info);
+        if (infos.size() < 1) {
             return 0;
         }
 
-        return Integer.parseInt(businessDtSceneInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
 

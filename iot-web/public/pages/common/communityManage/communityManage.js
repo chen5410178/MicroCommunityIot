@@ -21,39 +21,39 @@
         },
         _initMethod: function() {
             $that._getColumns(function() {
-                vc.component._listCommunitys(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listCommunitys(DEFAULT_PAGE, DEFAULT_ROWS);
             });
         },
         _initEvent: function() {
             vc.on('communityManage', 'listCommunity', function(_param) {
-                vc.component._listCommunitys(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listCommunitys(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on("communityManage", "communityManage", "notifyArea", function(_param) {
-                vc.component.communityManageInfo.conditions.cityCode = _param.selectArea;
+                $that.communityManageInfo.conditions.cityCode = _param.selectArea;
             });
             vc.on('pagination', 'page_event', function(_currentPage) {
-                vc.component._listCommunitys(_currentPage, DEFAULT_ROWS);
+                $that._listCommunitys(_currentPage, DEFAULT_ROWS);
             });
         },
         methods: {
             _listCommunitys: function(_page, _rows) {
-                vc.component.communityManageInfo.conditions.page = _page;
-                vc.component.communityManageInfo.conditions.row = _rows;
+                $that.communityManageInfo.conditions.page = _page;
+                $that.communityManageInfo.conditions.row = _rows;
                 let _param = {
-                        params: vc.component.communityManageInfo.conditions
+                        params: $that.communityManageInfo.conditions
                     }
                     //发送get请求
                 vc.http.apiGet('/community.listCommunitys',
                     _param,
                     function(json, res) {
                         var _communityManageInfo = JSON.parse(json);
-                        vc.component.communityManageInfo.total = _communityManageInfo.total;
-                        vc.component.communityManageInfo.records = _communityManageInfo.records;
-                        vc.component.communityManageInfo.communitys = _communityManageInfo.data;
+                        $that.communityManageInfo.total = _communityManageInfo.total;
+                        $that.communityManageInfo.records = _communityManageInfo.records;
+                        $that.communityManageInfo.communitys = _communityManageInfo.data;
                         $that.dealCommunityAttr(_communityManageInfo.communitys);
                         vc.emit('pagination', 'init', {
-                            total: vc.component.communityManageInfo.records,
-                            dataCount: vc.component.communityManageInfo.total,
+                            total: $that.communityManageInfo.records,
+                            dataCount: $that.communityManageInfo.total,
                             currentPage: _page
                         });
                     },
@@ -75,7 +75,7 @@
                 vc.emit('recallAuditFinishCommunity', 'openRecallAuditFinishCommunityModal', _community);
             },
             _queryCommunityMethod: function() {
-                vc.component._listCommunitys(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listCommunitys(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _openDeleteCommunityModel(_community) {
                 vc.emit('deleteCommunity', 'openDeleteCommunityModal', _community);

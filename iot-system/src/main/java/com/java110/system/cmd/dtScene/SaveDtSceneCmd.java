@@ -55,16 +55,16 @@ public class SaveDtSceneCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "sceneName", "请求报文中未包含sceneName");
-Assert.hasKeyAndValue(reqJson, "state", "请求报文中未包含state");
-Assert.hasKeyAndValue(reqJson, "seq", "请求报文中未包含seq");
-
+        Assert.hasKeyAndValue(reqJson, "state", "请求报文中未包含state");
+        Assert.hasKeyAndValue(reqJson, "seq", "请求报文中未包含seq");
+        Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含小区");
     }
 
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-       DtScenePo dtScenePo = BeanConvertUtil.covertBean(reqJson, DtScenePo.class);
+        DtScenePo dtScenePo = BeanConvertUtil.covertBean(reqJson, DtScenePo.class);
         dtScenePo.setSceneId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         int flag = dtSceneV1InnerServiceSMOImpl.saveDtScene(dtScenePo);
 

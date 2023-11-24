@@ -18,7 +18,7 @@
     <!-- 查询3d场景信息 add by wuxw 2018-07-03 -->
     <select id="getDtSceneInfo" parameterType="Map" resultType="Map">
         select t.modal_json,t.modal_json modalJson,t.scene_name,t.scene_name sceneName,t.scene_id,t.scene_id
-        sceneId,t.status_cd,t.status_cd statusCd,t.state,t.community_id,t.community_id communityId,t.seq
+        sceneId,t.status_cd,t.status_cd statusCd,t.state,t.community_id,t.community_id communityId,t.seq,t.create_time createTime
         from dt_scene t
         where 1 =1
         <if test="modalJson !=null and modalJson != ''">
