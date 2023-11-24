@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="instrumentSensorV1ServiceDaoImpl">
+
+
+    <!-- 保存仪表传感器信息 add by wuxw 2018-07-03 -->
+    <insert id="saveInstrumentSensorInfo" parameterType="Map">
+        insert into instrument_sensor(min_value, machine_id, max_value, sensor_type, units, community_id, sensor_id)
+        values (#{minValue}, #{machineId}, #{maxValue}, #{sensorType}, #{units}, #{communityId}, #{sensorId})
+    </insert>
+
+    <insert id="saveInstrumentSensorList" parameterType="Map">
+        insert into instrument_sensor(min_value, machine_id, max_value, sensor_type, units, community_id, sensor_id)
+        values
+        <foreach collection="list" separator="," item="item">
+            (#{item.minValue}, #{item.machineId}, #{item.maxValue}, #{item.sensorType}, #{item.units}, #{item.communityId}, #{item.sensorId})
+        </foreach>
+    </insert>
+
+    <!-- 查询仪表传感器信息 add by wuxw 2018-07-03 -->
+    <select id="getInstrumentSensorInfo" parameterType="Map" resultType="Map">
+        select t.min_value,t.min_value minValue,t.machine_id,t.machine_id machineId,t.max_value,t.max_value
+        maxValue,t.sensor_type,t.sensor_type sensorType,t.status_cd,t.status_cd
+        statusCd,t.units,t.community_id,t.community_id communityId,t.sensor_id,t.sensor_id sensorId
+        from instrument_sensor t
+        where 1 =1
+        <if test="minValue !=null and minValue != ''">
+            and t.min_value= #{minValue}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="maxValue !=null and maxValue != ''">
+            and t.max_value= #{maxValue}
+        </if>
+        <if test="sensorType !=null and sensorType != ''">
+            and t.sensor_type= #{sensorType}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="units !=null and units != ''">
+            and t.units= #{units}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="sensorId !=null and sensorId != ''">
+            and t.sensor_id= #{sensorId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改仪表传感器信息 add by wuxw 2018-07-03 -->
+    <update id="updateInstrumentSensorInfo" parameterType="Map">
+        update instrument_sensor t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="minValue !=null and minValue != ''">
+            , t.min_value= #{minValue}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="maxValue !=null and maxValue != ''">
+            , t.max_value= #{maxValue}
+        </if>
+        <if test="sensorType !=null and sensorType != ''">
+            , t.sensor_type= #{sensorType}
+        </if>
+        <if test="units !=null and units != ''">
+            , t.units= #{units}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="sensorId !=null and sensorId != ''">
+            and t.sensor_id= #{sensorId}
+        </if>
+
+    </update>
+
+    <!-- 查询仪表传感器数量 add by wuxw 2018-07-03 -->
+    <select id="queryInstrumentSensorsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from instrument_sensor t
+        where 1 =1
+        <if test="minValue !=null and minValue != ''">
+            and t.min_value= #{minValue}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="maxValue !=null and maxValue != ''">
+            and t.max_value= #{maxValue}
+        </if>
+        <if test="sensorType !=null and sensorType != ''">
+            and t.sensor_type= #{sensorType}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="units !=null and units != ''">
+            and t.units= #{units}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="sensorId !=null and sensorId != ''">
+            and t.sensor_id= #{sensorId}
+        </if>
+
+
+    </select>
+
+</mapper>

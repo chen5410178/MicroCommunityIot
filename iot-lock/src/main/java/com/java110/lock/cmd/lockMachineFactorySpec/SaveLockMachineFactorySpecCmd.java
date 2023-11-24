@@ -63,7 +63,7 @@ public class SaveLockMachineFactorySpecCmd extends Cmd {
         lockMachineFactorySpecDto.setSpecCd(reqJson.getString("specCd"));
         int i = lockMachineFactorySpecV1InnerServiceSMOImpl.queryLockMachineFactorySpecsCount(lockMachineFactorySpecDto);
         if (i > 0) {
-            throw new CmdException("规则编号已存在");
+            throw new CmdException("规格编号已存在");
         }
     }
 

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="instrumentV1ServiceDaoImpl">
+
+
+    <!-- 保存仪表设备信息 add by wuxw 2018-07-03 -->
+    <insert id="saveInstrumentInfo" parameterType="Map">
+        insert into instrument(impl_bean, machine_id, machine_code, charge, up_min, check_sec, sign, type_id,
+                               community_id, machine_name)
+        values (#{implBean}, #{machineId}, #{machineCode}, #{charge}, #{upMin}, #{checkSec}, #{sign}, #{typeId},
+                #{communityId}, #{machineName})
+    </insert>
+
+    <resultMap id="resultMap" type="com.java110.dto.instrument.InstrumentDto">
+        <result column="machineId" property="machineId"/>
+        <result column="machineName" property="machineName"/>
+        <result column="machineCode" property="machineCode"/>
+        <result column="communityId" property="communityId"/>
+        <result column="typeId" property="typeId"/>
+        <result column="typeName" property="typeName"/>
+        <result column="charge" property="charge"/>
+        <result column="sign" property="sign"/>
+        <result column="upMin" property="upMin"/>
+        <result column="checkSec" property="checkSec"/>
+        <result column="implBean" property="implBean"/>
+        <result column="factoryName" property="factoryName"/>
+        <result column="createTime" property="createTime"/>
+        <result column="statusCd" property="statusCd"/>
+        <collection property="instrumentParamList"
+                    ofType="com.java110.dto.instrument.InstrumentParamDto"
+                    javaType="java.util.ArrayList">
+            <id column="paramId" property="paramId"/>
+            <result column="machineId1" property="machineId"/>
+            <result column="communityId1" property="communityId"/>
+            <result column="specCd" property="specCd"/>
+            <result column="specName" property="specName"/>
+            <result column="value" property="value"/>
+            <result column="createTime1" property="createTime"/>
+            <result column="statusCd1" property="statusCd"/>
+        </collection>
+        <collection property="instrumentSensorList"
+                    ofType="com.java110.dto.instrument.InstrumentSensorDto"
+                    javaType="java.util.ArrayList">
+            <id column="sensorId" property="sensorId"/>
+            <result column="machineId2" property="machineId"/>
+            <result column="sensorType" property="sensorType"/>
+            <result column="sensorTypeName" property="sensorTypeName"/>
+            <result column="communityId2" property="communityId"/>
+            <result column="minValue" property="minValue"/>
+            <result column="maxValue1" property="maxValue"/>
+            <result column="units" property="units"/>
+            <result column="createTime2" property="createTime"/>
+            <result column="statusCd2" property="statusCd"/>
+        </collection>
+    </resultMap>
+
+    <!-- 查询仪表设备信息 add by wuxw 2018-07-03 -->
+    <select id="getInstrumentInfo" parameterType="Map" resultMap="resultMap">
+        select
+        t.machine_id machineId,
+        t.machine_code machineCode,
+        t.machine_name machineName,
+        t.community_id communityId,
+        t.type_id typeId,
+        t.charge,
+        t.sign,
+        t.up_min upMin,
+        t.check_sec checkSec,
+        t.impl_bean implBean,
+        t.create_time createTime,
+        t.status_cd,t.status_cd statusCd,
+        it.name typeName,
+        ifa.factory_name factoryName,
+        ip.param_id paramId,
+        ip.machine_id machineId1,
+        ip.community_id communityId1,
+        ip.spec_cd specCd,
+        ifs.spec_name specName,
+        ip.value,
+        ip.create_time createTime1,
+        ip.status_cd statusCd1,
+        ise.sensor_id sensorId,
+        ise.machine_id machineId2,
+        ise.sensor_type sensorType,
+        ise.community_id communityId2,
+        ise.min_value minValue,
+        ise.max_value maxValue1,
+        ise.units,
+        ise.create_time createTime2,
+        ise.status_cd statusCd2,
+        td.name sensorTypeName
+        from instrument t
+        left join instrument_type it on t.type_id = it.type_id and it.status_cd = '0'
+        left join instrument_factory ifa on t.impl_bean = ifa.factory_id and ifa.status_cd = '0'
+        left join instrument_param ip on t.machine_id = ip.machine_id and t.community_id = ip.community_id and ip.status_cd = '0'
+        left join instrument_factory_spec ifs on t.impl_bean = ifa.factory_id and ifa.factory_id = ifs.factory_id and ifs.spec_cd = ip.spec_cd and ifs.status_cd = '0'
+        left join instrument_sensor ise on t.machine_id = ise.machine_id and ise.status_cd = '0'
+        left join t_dict td on ise.sensor_type = td.status_cd and td.table_name = 'instrument_sensor' and td.table_columns = 'sensor_type'
+        where 1 =1
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="charge !=null and charge != ''">
+            and t.charge= #{charge}
+        </if>
+        <if test="upMin !=null and upMin != ''">
+            and t.up_min= #{upMin}
+        </if>
+        <if test="checkSec !=null and checkSec != ''">
+            and t.check_sec= #{checkSec}
+        </if>
+        <if test="sign !=null and sign != ''">
+            and t.sign= #{sign}
+        </if>
+        <if test="typeId !=null and typeId != ''">
+            and t.type_id= #{typeId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改仪表设备信息 add by wuxw 2018-07-03 -->
+    <update id="updateInstrumentInfo" parameterType="Map">
+        update instrument t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            , t.impl_bean= #{implBean}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="charge !=null and charge != ''">
+            , t.charge= #{charge}
+        </if>
+        <if test="upMin !=null and upMin != ''">
+            , t.up_min= #{upMin}
+        </if>
+        <if test="checkSec !=null and checkSec != ''">
+            , t.check_sec= #{checkSec}
+        </if>
+        <if test="sign !=null and sign != ''">
+            , t.sign= #{sign}
+        </if>
+        <if test="typeId !=null and typeId != ''">
+            , t.type_id= #{typeId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            , t.machine_name= #{machineName}
+        </if>
+        where 1=1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+
+    </update>
+
+    <!-- 查询仪表设备数量 add by wuxw 2018-07-03 -->
+    <select id="queryInstrumentsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from instrument t
+        where 1 =1
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="charge !=null and charge != ''">
+            and t.charge= #{charge}
+        </if>
+        <if test="upMin !=null and upMin != ''">
+            and t.up_min= #{upMin}
+        </if>
+        <if test="checkSec !=null and checkSec != ''">
+            and t.check_sec= #{checkSec}
+        </if>
+        <if test="sign !=null and sign != ''">
+            and t.sign= #{sign}
+        </if>
+        <if test="typeId !=null and typeId != ''">
+            and t.type_id= #{typeId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+
+
+    </select>
+
+</mapper>
