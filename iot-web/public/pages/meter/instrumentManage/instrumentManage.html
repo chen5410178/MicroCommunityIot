@@ -1,0 +1,165 @@
+<div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;"
+                            v-on:click="_moreCondition()">{{instrumentManageInfo.moreCondition == true?'隐藏':'更多'}}
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入仪表ID','instrumentManage')"
+                                       v-model="instrumentManageInfo.conditions.machineId" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入仪表编码','instrumentManage')"
+                                       v-model="instrumentManageInfo.conditions.machineCode" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入仪表名称','instrumentManage')"
+                                       v-model="instrumentManageInfo.conditions.machineName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryInstrumentMethod()">
+                                <vc:i18n name="查询" namespace="instrumentManage"></vc:i18n>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetInstrumentMethod()">
+                                <vc:i18n name="重置" namespace="instrumentManage"></vc:i18n>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" v-if="instrumentManageInfo.moreCondition == true">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="instrumentManageInfo.conditions.typeId">
+                                    <option disabled selected value="">{{vc.i18n('请选择仪表类型','instrumentManage')}}</option>
+                                    <option v-for="(item, index) in instrumentTypeList" :value="item.typeId">
+                                        {{item.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="instrumentManageInfo.moreCondition == true">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="instrumentManageInfo.conditions.implBean">
+                                    <option disabled selected value="">{{vc.i18n('请选择仪表厂家','instrumentManage')}}</option>
+                                    <option v-for="(item, index) in factoryList" :value="item.factoryId">
+                                        {{item.factoryName}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="仪表设备" namespace="instrumentManage"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddInstrumentModal()">
+                            <vc:i18n name="添加" namespace="instrumentManage"></vc:i18n>
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='仪表ID' namespace='instrumentManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='仪表编码' namespace='instrumentManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='仪表名称' namespace='instrumentManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='仪表类型' namespace='instrumentManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='剩余电量' namespace='instrumentManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='信号强度' namespace='instrumentManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='仪表厂家' namespace='instrumentManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='上报时间' namespace='instrumentManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='采样时间' namespace='instrumentManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='instrumentManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="instrument in instrumentManageInfo.instruments">
+                                <td class="text-center">{{instrument.machineId}}</td>
+                                <td class="text-center">{{instrument.machineCode}}</td>
+                                <td class="text-center">{{instrument.machineName}}</td>
+                                <td class="text-center">{{instrument.typeName}}</td>
+                                <td class="text-center">{{instrument.charge}}</td>
+                                <td class="text-center">{{instrument.sign}}</td>
+                                <td class="text-center">{{instrument.factoryName}}</td>
+                                <td class="text-center">{{instrument.upMin}}</td>
+                                <td class="text-center">{{instrument.checkSec}}</td>
+                                <td class="text-center">{{instrument.createTime}}</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openEditInstrumentModel(instrument)">
+                                            <vc:i18n name='修改'></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openDeleteInstrumentModel(instrument)">
+                                            <vc:i18n name='删除'></vc:i18n>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="11">
+                                    <ul class="pagination float-right"></ul>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <vc:create path="meter/deleteInstrument"></vc:create>
+
+</div>

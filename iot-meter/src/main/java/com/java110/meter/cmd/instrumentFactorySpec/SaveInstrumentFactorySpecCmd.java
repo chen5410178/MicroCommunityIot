@@ -26,6 +26,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.instrument.InstrumentFactorySpecDto;
 import com.java110.intf.meter.IInstrumentFactorySpecV1InnerServiceSMO;
 import com.java110.po.instrument.InstrumentFactorySpecPo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,13 @@ public class SaveInstrumentFactorySpecCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "factoryId", "factoryId不能为空");
         Assert.hasKeyAndValue(reqJson, "specName", "specName不能为空");
+        Assert.hasKeyAndValue(reqJson, "specCd", "specCd不能为空");
+        InstrumentFactorySpecDto instrumentFactorySpecDto = new InstrumentFactorySpecDto();
+        instrumentFactorySpecDto.setSpecCd(reqJson.getString("specCd"));
+        int count = instrumentFactorySpecV1InnerServiceSMOImpl.queryInstrumentFactorySpecsCount(instrumentFactorySpecDto);
+        if (count > 0) {
+            throw new CmdException("规格编号已存在");
+        }
     }
 
     @Override

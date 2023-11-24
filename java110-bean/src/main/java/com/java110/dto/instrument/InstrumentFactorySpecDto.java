@@ -4,15 +4,19 @@ import com.java110.bean.dto.PageDto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class InstrumentFactorySpecDto extends PageDto implements Serializable {
     private String specId;
     private String factoryId;
     private String specName;
     private String specCd;
+    private String value;
     private Date createTime;
     private String statusCd = "0";
     private String remark;
+
+    private List<InstrumentFactorySpecDto> instrumentFactorySpecList;
 
     public String getSpecId() {
         return specId;
@@ -46,6 +50,14 @@ public class InstrumentFactorySpecDto extends PageDto implements Serializable {
         this.specCd = specCd;
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -68,5 +80,13 @@ public class InstrumentFactorySpecDto extends PageDto implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public List<InstrumentFactorySpecDto> getInstrumentFactorySpecList() {
+        return instrumentFactorySpecList;
+    }
+
+    public void setInstrumentFactorySpecList(List<InstrumentFactorySpecDto> instrumentFactorySpecList) {
+        this.instrumentFactorySpecList = instrumentFactorySpecList;
     }
 }
