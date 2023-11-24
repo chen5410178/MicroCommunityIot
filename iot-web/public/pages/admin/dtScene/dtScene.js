@@ -37,7 +37,7 @@
 
                 $that.dtSceneInfo.conditions.page = _page;
                 $that.dtSceneInfo.conditions.row = _rows;
-                var param = {
+                let param = {
                     params: $that.dtSceneInfo.conditions
                 };
 
@@ -70,6 +70,9 @@
             _queryDtSceneMethod: function () {
                 $that._listDtScenes(DEFAULT_PAGE, DEFAULT_ROWS);
             },
+            _openSettingScene:function(_dtScene){
+                window.open('/3d.html#/pages/3d/dtSceneSetting?sceneId='+_dtScene.sceneId+"&communityId="+_dtScene.communityId);
+            },
             _moreCondition: function () {
                 if ($that.dtSceneInfo.moreCondition) {
                     $that.dtSceneInfo.moreCondition = false;
@@ -100,7 +103,7 @@
                 );
             },
             swatchCommunity: function (_community) {
-                $that.dtSceneInfo.communityId = _community.communityId;
+                $that.dtSceneInfo.conditions.communityId = _community.communityId;
                 $that._listDtScenes(DEFAULT_PAGE, DEFAULT_ROWS);
             }
 

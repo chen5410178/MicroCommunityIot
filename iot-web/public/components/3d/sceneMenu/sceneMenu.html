@@ -1,0 +1,17 @@
+<div class="vc-menu flex justify-start" style="height:100vh;">
+    <div class="vc-menu-main">
+        <ul>
+            <li v-for="menu in sceneMenuInfo.menus" v-bind:class="{ active: menu.active }" v-on:click="switchMenu(menu)">
+                <span class="margin-left-xs">{{menu.name}}</span>
+            </li>
+        </ul>
+    </div>
+    <div class="vc-menu-sub" style="height: 100%;">
+        <ul>
+            <li class="title">{{sceneMenuInfo.curMenuName}}</li>
+            <li v-for="subMenu in sceneMenuInfo.subMenus" v-bind:class="{ active: subMenu.active }" v-on:click="_switchSubMenu(subMenu)">
+                {{subMenu.name}}
+            </li>
+        </ul>
+    </div>
+</div>

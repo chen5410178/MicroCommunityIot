@@ -97,10 +97,16 @@
                                     <tr v-for="dtScene in dtSceneInfo.dtScenes">
                                         <td class="text-center">{{dtScene.sceneId}}</td>
                                         <td class="text-center">{{dtScene.sceneName}}</td>
-                                        <td class="text-center">{{dtScene.state}}</td>
+                                        <td class="text-center">{{dtScene.state == 'Y'?'启用中':'停用中'}}</td>
                                         <td class="text-center">{{dtScene.seq}}</td>
                                         <td class="text-center">{{dtScene.createTime}}</td>
                                         <td class="text-center">
+                                            <div class="btn-group">
+                                                <button class="btn-white btn btn-xs"
+                                                    v-on:click="_openSettingScene(dtScene)">
+                                                    <vc:i18n name='设计'></vc:i18n>
+                                                </button>
+                                            </div>
                                             <div class="btn-group">
                                                 <button class="btn-white btn btn-xs"
                                                     v-on:click="_openEditDtSceneModel(dtScene)">

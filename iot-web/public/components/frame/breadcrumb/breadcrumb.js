@@ -48,7 +48,7 @@
                     if (_path.indexOf('?') != -1) {
                         _path = _path.substring(0, _path.indexOf('?'));
                     }
-                    _tmpBreadCrumbInf = {
+                    let _tmpBreadCrumbInf = {
                         href: item.url,
                         pageName: item.name,
                         active: '0'

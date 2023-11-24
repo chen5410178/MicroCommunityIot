@@ -325,6 +325,7 @@
             //     "ws://demo.homecommunity.cn/ws/message/" +
             //     _userId;
         }
+        let websocket = null;
         if ("WebSocket" in window) {
             websocket = new WebSocket(url);
         } else if ("MozWebSocket" in window) {
