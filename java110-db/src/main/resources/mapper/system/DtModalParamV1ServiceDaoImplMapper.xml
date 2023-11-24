@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dtModalParamV1ServiceDaoImpl">
+
+
+    <!-- 保存3d模型参数信息 add by wuxw 2018-07-03 -->
+    <insert id="saveDtModalParamInfo" parameterType="Map">
+        insert into dt_modal_param(
+        require_value,spec_name,modal_id,spec_cd,param_id
+        ) values (
+        #{requireValue},#{specName},#{modalId},#{specCd},#{paramId}
+        )
+    </insert>
+
+
+    <!-- 查询3d模型参数信息 add by wuxw 2018-07-03 -->
+    <select id="getDtModalParamInfo" parameterType="Map" resultType="Map">
+        select t.require_value,t.require_value requireValue,t.spec_name,t.spec_name specName,t.modal_id,t.modal_id
+        modalId,t.spec_cd,t.spec_cd specCd,t.status_cd,t.status_cd statusCd,t.param_id,t.param_id paramId
+        from dt_modal_param t
+        where 1 =1
+        <if test="requireValue !=null and requireValue != ''">
+            and t.require_value= #{requireValue}
+        </if>
+        <if test="specName !=null and specName != ''">
+            and t.spec_name= #{specName}
+        </if>
+        <if test="modalId !=null and modalId != ''">
+            and t.modal_id= #{modalId}
+        </if>
+        <if test="specCd !=null and specCd != ''">
+            and t.spec_cd= #{specCd}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="paramId !=null and paramId != ''">
+            and t.param_id= #{paramId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改3d模型参数信息 add by wuxw 2018-07-03 -->
+    <update id="updateDtModalParamInfo" parameterType="Map">
+        update dt_modal_param t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="requireValue !=null and requireValue != ''">
+            , t.require_value= #{requireValue}
+        </if>
+        <if test="specName !=null and specName != ''">
+            , t.spec_name= #{specName}
+        </if>
+        <if test="modalId !=null and modalId != ''">
+            , t.modal_id= #{modalId}
+        </if>
+        <if test="specCd !=null and specCd != ''">
+            , t.spec_cd= #{specCd}
+        </if>
+        where 1=1
+        <if test="paramId !=null and paramId != ''">
+            and t.param_id= #{paramId}
+        </if>
+
+    </update>
+
+    <!-- 查询3d模型参数数量 add by wuxw 2018-07-03 -->
+    <select id="queryDtModalParamsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from dt_modal_param t
+        where 1 =1
+        <if test="requireValue !=null and requireValue != ''">
+            and t.require_value= #{requireValue}
+        </if>
+        <if test="specName !=null and specName != ''">
+            and t.spec_name= #{specName}
+        </if>
+        <if test="modalId !=null and modalId != ''">
+            and t.modal_id= #{modalId}
+        </if>
+        <if test="specCd !=null and specCd != ''">
+            and t.spec_cd= #{specCd}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="paramId !=null and paramId != ''">
+            and t.param_id= #{paramId}
+        </if>
+
+
+    </select>
+
+</mapper>

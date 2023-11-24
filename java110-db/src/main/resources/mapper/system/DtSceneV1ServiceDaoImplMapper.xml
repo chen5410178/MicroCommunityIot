@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dtSceneV1ServiceDaoImpl">
+
+
+    <!-- 保存3d场景信息 add by wuxw 2018-07-03 -->
+    <insert id="saveDtSceneInfo" parameterType="Map">
+        insert into dt_scene(
+        modal_json,scene_name,scene_id,state,community_id,seq
+        ) values (
+        #{modalJson},#{sceneName},#{sceneId},#{state},#{communityId},#{seq}
+        )
+    </insert>
+
+
+    <!-- 查询3d场景信息 add by wuxw 2018-07-03 -->
+    <select id="getDtSceneInfo" parameterType="Map" resultType="Map">
+        select t.modal_json,t.modal_json modalJson,t.scene_name,t.scene_name sceneName,t.scene_id,t.scene_id
+        sceneId,t.status_cd,t.status_cd statusCd,t.state,t.community_id,t.community_id communityId,t.seq
+        from dt_scene t
+        where 1 =1
+        <if test="modalJson !=null and modalJson != ''">
+            and t.modal_json= #{modalJson}
+        </if>
+        <if test="sceneName !=null and sceneName != ''">
+            and t.scene_name= #{sceneName}
+        </if>
+        <if test="sceneId !=null and sceneId != ''">
+            and t.scene_id= #{sceneId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="seq !=null and seq != ''">
+            and t.seq= #{seq}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改3d场景信息 add by wuxw 2018-07-03 -->
+    <update id="updateDtSceneInfo" parameterType="Map">
+        update dt_scene t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="modalJson !=null and modalJson != ''">
+            , t.modal_json= #{modalJson}
+        </if>
+        <if test="sceneName !=null and sceneName != ''">
+            , t.scene_name= #{sceneName}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="seq !=null and seq != ''">
+            , t.seq= #{seq}
+        </if>
+        where 1=1
+        <if test="sceneId !=null and sceneId != ''">
+            and t.scene_id= #{sceneId}
+        </if>
+
+    </update>
+
+    <!-- 查询3d场景数量 add by wuxw 2018-07-03 -->
+    <select id="queryDtScenesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from dt_scene t
+        where 1 =1
+        <if test="modalJson !=null and modalJson != ''">
+            and t.modal_json= #{modalJson}
+        </if>
+        <if test="sceneName !=null and sceneName != ''">
+            and t.scene_name= #{sceneName}
+        </if>
+        <if test="sceneId !=null and sceneId != ''">
+            and t.scene_id= #{sceneId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="seq !=null and seq != ''">
+            and t.seq= #{seq}
+        </if>
+
+
+    </select>
+
+</mapper>
