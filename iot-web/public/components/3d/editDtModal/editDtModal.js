@@ -23,7 +23,13 @@
                 $that.refreshEditDtModalInfo();
                 $('#editDtModalModel').modal('show');
                 vc.copyObject(_params, $that.editDtModalInfo);
+                if ($that.editDtModalInfo.path) {
+                    vc.emit('editDtModal', 'uploadFile', 'notifyVedio', $that.editDtModalInfo.path)
+                }
             });
+            vc.on('editDtModal', 'notifyModal', function (_param) {
+                $that.editDtModalInfo.path = _param.realFileName;
+            })
         },
         methods: {
             editDtModalValidate: function () {
@@ -128,6 +134,7 @@
                     path: '',
 
                 }
+                vc.emit('editDtModal', 'uploadFile', 'clearVedio', {});
             }
         }
     });

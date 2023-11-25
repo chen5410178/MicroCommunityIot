@@ -6,28 +6,30 @@
     vc.extends({
         data: {
             sceneMenuInfo: {
-                menus: [{
-                    name: '模版',
-                    active: false,
-                    id: 1,
-                },
-                {
-                    name: '灯光',
-                    active: false,
-                    id: 2,
-                },
-                {
-                    name: '模型',
-                    active: false,
-                    id: 3,
-                }],
+                menus: [],
                 subMenus: [],
                 curMenuName: '',
             }
         },
         _initMethod: function () {
-            $that.switchMenu($that.sceneMenuInfo.menus[0]);
-
+            let _menus = [
+                {
+                    name: '灯光',
+                    active: false,
+                    id: 1,
+                }
+            ];
+            vc.getDict('dt_modal', 'modal_type', function (_data) {
+                _data.forEach(_item => {
+                    _menus.push({
+                        name: _item.name,
+                        active: false,
+                        id: _item.statusCd,
+                    })
+                })
+                $that.sceneMenuInfo.menus = _menus;
+                $that.switchMenu($that.sceneMenuInfo.menus[0]);
+            })
         },
         _initEvent: function () {
 
@@ -46,34 +48,19 @@
                 $that.sceneMenuInfo.curMenuName = _menu.name;
                 let _subMenu = [];
                 if (_menu.id == '1') {
-                    _subMenu = [{
-                        subId: '1',
-                        name: '草地',
-                        active: false,
-                    },
-                    {
-                        subId: '2',
-                        name: '水泥地',
-                        active: false,
-                    }];
-                    $that.sceneMenuInfo.subMenus = _subMenu;
-                }
-
-                if (_menu.id == '2') {
                     _subMenu = [
                         {
-                            subId: '3',
+                            subId: '1',
                             name: '环境光',
                             active: false,
                         }];
                     $that.sceneMenuInfo.subMenus = _subMenu;
+                    return;
                 }
+                $that._load3dModal(_menu.id);
 
-                if (_menu.id == '3') {
-                    $that._load3dModal();
-                }
             },
-            _switchSubMenu:function(subMenu){
+            _switchSubMenu: function (subMenu) {
                 let _subMenus = $that.sceneMenuInfo.subMenus;
                 _subMenus.forEach(item => {
                     item.active = false;
@@ -82,11 +69,12 @@
                     }
                 });
             },
-            _load3dModal: function () {
+            _load3dModal: function (_modalType) {
                 let param = {
                     params: {
                         page: 1,
                         row: 100,
+                        modalType:_modalType
                     }
                 };
                 let _subMenu = [];
