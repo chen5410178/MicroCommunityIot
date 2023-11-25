@@ -62,8 +62,7 @@
                 param.append("uploadFile", _file);
 
                 //发送get请求
-                vc.http.upload('uploadVedio',
-                    'upload',
+                vc.http.upload('/upload/uploadFile',
                     param, {
                         emulateJSON: true,
                         //添加请求头
@@ -90,10 +89,10 @@
                         var _json = JSON.parse(json);
                         this.uploadFileInfo.progress = 100.00;
                         vc.toast("文件上传成功");
-
-                        this.uploadFileInfo.fileName = _json.fileName;
-                        this.uploadFileInfo.realFileName = _json.realFileName;
-                        vc.emit($props.callBackListener, $props.callBackFunction, _json);
+                        _json = _json.data;
+                        this.uploadFileInfo.fileName = _json.fileId;
+                        this.uploadFileInfo.realFileName = _json.url;
+                        vc.emit($props.callBackListener, $props.callBackFunction, this.uploadFileInfo);
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理', error);

@@ -17,8 +17,11 @@ public class DtModalDto extends PageDto implements Serializable {
 
     private String modalBean;
     private String modalType;
+    private String modalTypeName;
     private String modalId;
     private String modalName;
+
+    private String path;
 
 
     private Date createTime;
@@ -73,5 +76,21 @@ public class DtModalDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getModalTypeName() {
+        return modalTypeName;
+    }
+
+    public void setModalTypeName(String modalTypeName) {
+        this.modalTypeName = modalTypeName;
     }
 }

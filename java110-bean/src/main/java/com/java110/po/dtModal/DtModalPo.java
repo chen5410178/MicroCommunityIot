@@ -17,6 +17,7 @@ package com.java110.po.dtModal;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-11-24 16:36:02 mail: 928255095@qq.com
@@ -28,41 +29,59 @@ import java.util.Date;
 public class DtModalPo implements Serializable {
 
     private String modalBean;
-private String modalType;
-private String modalId;
-private String modalName;
-private String statusCd = "0";
-public String getModalBean() {
+    private String modalType;
+    private String modalId;
+    private String modalName;
+
+    private String path;
+
+    private String statusCd = "0";
+
+    public String getModalBean() {
         return modalBean;
     }
-public void setModalBean(String modalBean) {
+
+    public void setModalBean(String modalBean) {
         this.modalBean = modalBean;
     }
-public String getModalType() {
+
+    public String getModalType() {
         return modalType;
     }
-public void setModalType(String modalType) {
+
+    public void setModalType(String modalType) {
         this.modalType = modalType;
     }
-public String getModalId() {
+
+    public String getModalId() {
         return modalId;
     }
-public void setModalId(String modalId) {
+
+    public void setModalId(String modalId) {
         this.modalId = modalId;
     }
-public String getModalName() {
+
+    public String getModalName() {
         return modalName;
     }
-public void setModalName(String modalName) {
+
+    public void setModalName(String modalName) {
         this.modalName = modalName;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
 
+    public String getPath() {
+        return path;
+    }
 
-
+    public void setPath(String path) {
+        this.path = path;
+    }
 }
