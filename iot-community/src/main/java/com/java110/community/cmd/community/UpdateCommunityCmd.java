@@ -21,6 +21,7 @@ import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.context.Environment;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
@@ -56,7 +57,7 @@ public class UpdateCommunityCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
-
+        Environment.isDevEnv();
     }
 
     @Override

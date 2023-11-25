@@ -20,7 +20,7 @@
         select t.modal_bean,t.modal_bean modalBean,t.modal_type,t.modal_type modalType,t.modal_id,t.modal_id
         modalId,t.modal_name,t.modal_name modalName,t.status_cd,t.status_cd statusCd,t.path,t.create_time createTime,td1.name modalTypeName
         from dt_modal t
-        LEFT JOIN t_dict td1 on t.state = td1.status_cd and td1.table_name = 'dt_modal' and td1.table_columns = 'modal_type'
+        LEFT JOIN t_dict td1 on t.modal_type = td1.status_cd and td1.table_name = 'dt_modal' and td1.table_columns = 'modal_type'
         where 1 =1
         <if test="modalBean !=null and modalBean != ''">
             and t.modal_bean= #{modalBean}

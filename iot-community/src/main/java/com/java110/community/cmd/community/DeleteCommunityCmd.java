@@ -21,6 +21,7 @@ import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.context.Environment;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
@@ -31,6 +32,7 @@ import com.java110.po.community.CommunityPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * 类表述：删除
  * 服务编码：community.deleteCommunity
@@ -43,7 +45,7 @@ import org.slf4j.LoggerFactory;
  */
 @Java110Cmd(serviceCode = "community.deleteCommunity")
 public class DeleteCommunityCmd extends Cmd {
-  private static Logger logger = LoggerFactory.getLogger(DeleteCommunityCmd.class);
+    private static Logger logger = LoggerFactory.getLogger(DeleteCommunityCmd.class);
 
     @Autowired
     private ICommunityV1InnerServiceSMO communityV1InnerServiceSMOImpl;
@@ -51,15 +53,15 @@ public class DeleteCommunityCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
-Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
-
+        Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
+        Environment.isDevEnv();
     }
 
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-       CommunityPo communityPo = BeanConvertUtil.covertBean(reqJson, CommunityPo.class);
+        CommunityPo communityPo = BeanConvertUtil.covertBean(reqJson, CommunityPo.class);
         int flag = communityV1InnerServiceSMOImpl.deleteCommunity(communityPo);
 
         if (flag < 1) {
