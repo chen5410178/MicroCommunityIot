@@ -53,6 +53,8 @@
                             subId: '1',
                             name: '环境光',
                             active: false,
+                            path:'1',
+                            modalType:'light'
                         }];
                     $that.sceneMenuInfo.subMenus = _subMenu;
                     return;
@@ -68,6 +70,8 @@
                         item.active = true;
                     }
                 });
+
+                vc.emit('sceneModal','setModal',subMenu);
             },
             _load3dModal: function (_modalType) {
                 let param = {
@@ -89,6 +93,8 @@
                                 subId: _item.modalId,
                                 name: _item.modalName,
                                 active: false,
+                                path:_item.path,
+                                modalType:_item.modalType
                             });
                         })
                         $that.sceneMenuInfo.subMenus = _subMenu;

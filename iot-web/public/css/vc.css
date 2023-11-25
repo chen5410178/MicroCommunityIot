@@ -590,6 +590,11 @@ body,
     color: var(--vc-menu-main-active-font-color);
 }
 
+.modal-active{
+    background-color: #47240d;
+    color: #ff6c0d;
+}
+
 .vc-menu-main ul li {
     height: 45px;
     line-height: 45px;

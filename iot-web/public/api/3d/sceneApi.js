@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { DragControls } from 'three/addons/controls/DragControls.js';
 import Stats from 'three/addons/libs/stats.module.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 /**
  *  初始化场景
  * @param {元素} _elementName 
@@ -48,40 +49,7 @@ export function initScene(_elementName, _that) {
     _that.camera = camera;
     _that.scene = scene;
     _that.renderer = renderer;
-
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-
-    _that.scene.add(cube);
-
-    const geometryP = new THREE.PlaneGeometry(10, 10, 10);
-    const materialP = new THREE.MeshPhongMaterial({
-        color: 0xffffff
-    });
-    const plane = new THREE.Mesh(geometryP, materialP);
-    plane.position.set(0, 0, 0);
-    plane.rotation.x = -Math.PI / 2;
-    scene.add(plane);
-
-    let moveObjectsMeshArray = [];
-    moveObjectsMeshArray.push(cube);
-    moveObjectsMeshArray.push(plane);
-
-
-    let dragControls = new DragControls(moveObjectsMeshArray, camera, renderer.domElement);
-    // 拖拽事件监听
-    dragControls.addEventListener('dragstart', () => {
-        // 设置控制器不可操作
-        controls.enabled = false
-    })
-    dragControls.addEventListener('dragend', () => {
-        controls.enabled = true
-    })
-
-
-
+    _that.controls = controls;
     // 实现每一帧渲染一次场景和相机
     function render(time) {
         // 每一帧执行一次render函数
@@ -95,29 +63,51 @@ export function initScene(_elementName, _that) {
 }
 
 /**
- * 添加
+ * 导入模型
  */
-export function addBoxGeometry(_elementName, _that) {
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    _that.scene.add(cube);
+export function add3DObject(_that, _modal) {
 
-    let moveObjectsMeshArray = [];
-    moveObjectsMeshArray.push(cube);
-    let container = document.getElementById(_elementName);
-    let mRayCasterMoveObjectsWrapper =
-        new RayCasterMoveObjectsWrapper(moveObjectsMeshArray, container, [], () => {
-            // 移动开始的时候，停止OrbitControls轨道控制器功能
-            controls.enabled = false;
+    const loader = new OBJLoader();
+
+    loader.load(
+        // resource URL
+        _modal.path,
+        // called when resource is loaded
+        function (object) {
+            object.position.set(0, 0, 0);
+            _that.scene.add(object);
+
+            control(_that);
         },
-            () => {
-                // 移动结束的时候，使能OrbitControls轨道控制器功能 
-                controls.enabled = true;
-            });
+        // called when loading is in progresses
+        function (xhr) {
+            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        },
+        // called when loading has errors
+        function (error) {
+            console.log('An error happened', error);
+        }
+    );
 
-    // 使能点击移动功能
-    mRayCasterMoveObjectsWrapper.enableMouseMoveObjs();
 
+
+}
+
+export function control(_that) {
+    let moveObjects = [];
+    _that.scene.traverse(function (child) {
+        if (child instanceof THREE.Mesh) {
+            moveObjects.push(child);
+        }
+    });
+    let dragControls = new DragControls(moveObjects, _that.camera, _that.renderer.domElement);
+    // 拖拽事件监听
+    dragControls.addEventListener('dragstart', () => {
+        // 设置控制器不可操作
+        _that.controls.enabled = false
+    })
+    dragControls.addEventListener('dragend', () => {
+        _that.controls.enabled = true
+    })
 }
 

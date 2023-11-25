@@ -1,16 +1,10 @@
 <div style="width: 200px;background-color: #1F2339;color: #FFF;height: 100vh;">
     <div class="padding">当前数据</div>
     <ul>
-        <li class="padding" style="background-color: #47240d;
-        color: #ff6c0d;">一号楼</li>
-        <li class="padding">一号楼</li>
-        <li class="padding">一号楼</li>
-        <li class="padding">一号楼</li>
-        <li class="padding">一号楼</li>
-        <li class="padding">一号楼</li>
-        <li class="padding">一号楼</li>
-        <li class="padding">一号楼</li>
-        <li class="padding">一号楼</li>
-        <li class="padding">一号楼</li>
+        <li class="padding flex justify-between"  v-for="(item,index) in sceneModalInfo.modalData">
+            <div>{{item.name}}</div>
+            <div><a href="javascript:void(0)" @click="_addModalInSence(item)">添加</a></div>
+           
+        </li>
     </ul>
 </div>
