@@ -77,7 +77,7 @@ export function add3DObject(_that, _modal) {
             object.position.set(0, 0, 0);
             _that.scene.add(object);
 
-            control(_that);
+            //control(_that);
         },
         // called when loading is in progresses
         function (xhr) {
