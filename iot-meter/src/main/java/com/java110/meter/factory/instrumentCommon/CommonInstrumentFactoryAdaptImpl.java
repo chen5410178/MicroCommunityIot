@@ -7,8 +7,8 @@ import com.java110.dto.instrument.InstrumentDto;
 import com.java110.meter.factory.AbstractInstrumentFactoryAdapt;
 import org.springframework.stereotype.Service;
 
-@Service("commonFactoryAdaptImpl")
-public class CommonFactoryAdaptImpl extends AbstractInstrumentFactoryAdapt {
+@Service("commonInstrumentFactoryAdaptImpl")
+public class CommonInstrumentFactoryAdaptImpl extends AbstractInstrumentFactoryAdapt {
 
     @Override
     public boolean initMachine(InstrumentDto instrumentDto) {
