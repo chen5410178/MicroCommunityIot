@@ -79,6 +79,9 @@
                 $that._listInstruments(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
+            _toInstrumentDetail: function (_instrument) {
+                vc.jumpToPage('/#/pages/meter/instrumentDetail?machineId=' + _instrument.machineId);
+            },
             _resetInstrumentMethod: function () {
                 $that.instrumentManageInfo.conditions = {
                     machineId: '',

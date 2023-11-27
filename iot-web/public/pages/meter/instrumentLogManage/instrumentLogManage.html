@@ -1,0 +1,112 @@
+<div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="instrumentLogManageInfo.conditions.action">
+                                    <option selected disabled value="">{{vc.i18n('请选择上报级别','instrumentLogManage')}}</option>
+                                    <option value="1001">{{vc.i18n('实时数据','instrumentLogManage')}}</option>
+                                    <option value="2002">{{vc.i18n('事件数据','instrumentLogManage')}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入设备编码','instrumentLogManage')"
+                                    v-model="instrumentLogManageInfo.conditions.machineCode" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入设备名称','instrumentLogManage')"
+                                    v-model="instrumentLogManageInfo.conditions.machineName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryInstrumentLogMethod()">
+                                <vc:i18n name="查询" namespace="instrumentLogManage"></vc:i18n>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetInstrumentLogMethod()">
+                                <vc:i18n name="重置" namespace="instrumentLogManage"></vc:i18n>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="上报数据" namespace="instrumentLogManage"></vc:i18n>
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='日志ID' namespace='instrumentLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='上报级别' namespace='instrumentLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='仪表ID' namespace='instrumentLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='仪表编码' namespace='instrumentLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='仪表名称' namespace='instrumentLogManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="instrumentLog in instrumentLogManageInfo.instrumentLogs">
+                                <td class="text-center">{{instrumentLog.logId}}</td>
+                                <td class="text-center">
+                                    <label v-if="instrumentLog.action === '1001'">{{vc.i18n('实时数据','instrumentLogManage')}}</label>
+                                    <label v-if="instrumentLog.action === '2002'">{{vc.i18n('事件数据','instrumentLogManage')}}</label>
+                                </td>
+                                <td class="text-center">{{instrumentLog.machineId}}</td>
+                                <td class="text-center">{{instrumentLog.machineCode}}</td>
+                                <td class="text-center">{{instrumentLog.machineName}}</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openViewInstrumentLogSensorModel(instrumentLog)">
+                                            <vc:i18n name='报文'></vc:i18n>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7">
+                                    <ul class="pagination float-right"></ul>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+        </div>
+    </div>
+    <vc:create path="meter/showInstrumentLogSensor"></vc:create>
+</div>
