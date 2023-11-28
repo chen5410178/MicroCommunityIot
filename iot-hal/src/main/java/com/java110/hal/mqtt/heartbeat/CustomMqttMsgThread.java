@@ -6,9 +6,11 @@ import com.java110.dto.barrier.BarrierResultDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.dto.hardwareManufacturerAttr.HardwareManufacturerAttrDto;
 import com.java110.dto.mqtt.MqttMsgDto;
+import com.java110.dto.mqtt.MqttResultDto;
 import com.java110.hal.mqtt.queue.MqttQueue;
 import com.java110.intf.accessControl.IAccessControlResultV1InnerServiceSMO;
 import com.java110.intf.barrier.IMqttNotifyBarrierV1InnerServiceSMO;
+import com.java110.intf.meter.IInstrumentV1InnerServiceSMO;
 import com.java110.intf.system.IHardwareManufacturerAttrV1InnerServiceSMO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,6 +73,8 @@ public class CustomMqttMsgThread implements Runnable {
             //todo 通知道闸
             notifyBarrierMsg(manufacturerAttrDto, mqttMsgDto);
 
+            notifyInstrumentMsg(manufacturerAttrDto, mqttMsgDto);
+
 
 //            if (ManufacturerDto.HM_TYPE_ACCESS_CONTROL.equals(manufacturerAttrDto.getHmType())) {
 //                AccessControlProcessFactory.getAssessControlProcessImpl(manufacturerAttrDto.getHmId()).mqttMessageArrived(taskId, mqttMsgDto.getTopic(), mqttMsgDto.getMsg());
@@ -79,6 +83,30 @@ public class CustomMqttMsgThread implements Runnable {
 //            } else if (ManufacturerDto.HM_TYPE_ATTENDANCE.equals(manufacturerAttrDto.getHmType())) {
 //                AttendanceProcessFactory.getAttendanceProcessImpl(manufacturerAttrDto.getHmId()).mqttMessageArrived(taskId, mqttMsgDto.getTopic(), mqttMsgDto.getMsg());
 //            }
+        }
+    }
+
+    private void notifyInstrumentMsg(HardwareManufacturerAttrDto manufacturerAttrDto, MqttMsgDto mqttMsgDto) {
+
+        if (!HardwareManufacturerDto.HM_TYPE_INSTRUMENT.equals(manufacturerAttrDto.getHmType())) {
+            return;
+        }
+
+        IInstrumentV1InnerServiceSMO instrumentV1InnerServiceSMO = ApplicationContextFactory.getBean("instrumentV1InnerServiceSMOImpl", IInstrumentV1InnerServiceSMO.class);
+        if (instrumentV1InnerServiceSMO == null) {
+            instrumentV1InnerServiceSMO = ApplicationContextFactory.getBean(IInstrumentV1InnerServiceSMO.class.getName(), IInstrumentV1InnerServiceSMO.class);
+        }
+
+        if (!manufacturerAttrDto.getValue().contains("SN") && manufacturerAttrDto.getValue().equals(mqttMsgDto.getTopic())) {
+            instrumentV1InnerServiceSMO.instrumentResult(new MqttResultDto(manufacturerAttrDto.getHmId(), mqttMsgDto.getTopic(), mqttMsgDto.getMsg()));
+            return;
+        }
+
+        String[] values = manufacturerAttrDto.getValue().split("SN");
+
+        if (values.length == 1 && mqttMsgDto.getTopic().contains(values[0])) {
+            instrumentV1InnerServiceSMO.instrumentResult(new MqttResultDto(manufacturerAttrDto.getHmId(), mqttMsgDto.getTopic(), mqttMsgDto.getMsg()));
+            return;
         }
     }
 

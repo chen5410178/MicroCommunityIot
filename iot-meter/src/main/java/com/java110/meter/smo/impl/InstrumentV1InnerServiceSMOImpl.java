@@ -17,10 +17,16 @@ package com.java110.meter.smo.impl;
 
 
 import com.java110.bean.dto.PageDto;
+import com.java110.core.factory.ApplicationContextFactory;
+import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
+import com.java110.dto.mqtt.MqttResultDto;
+import com.java110.intf.system.IHardwareManufacturerV1InnerServiceSMO;
 import com.java110.meter.dao.IInstrumentV1ServiceDao;
 import com.java110.intf.meter.IInstrumentV1InnerServiceSMO;
 import com.java110.dto.instrument.InstrumentDto;
+import com.java110.meter.factory.IInstrumentFactoryAdapt;
 import com.java110.po.instrument.InstrumentPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +47,11 @@ public class InstrumentV1InnerServiceSMOImpl implements IInstrumentV1InnerServic
 
     @Autowired
     private IInstrumentV1ServiceDao instrumentV1ServiceDaoImpl;
+
+    @Autowired
+    private IHardwareManufacturerV1InnerServiceSMO hardwareManufacturerV1InnerServiceSMOImpl;
+
+    private IInstrumentFactoryAdapt instrumentFactoryAdaptImpl;
 
 
     @Override
@@ -82,6 +93,18 @@ public class InstrumentV1InnerServiceSMOImpl implements IInstrumentV1InnerServic
     @Override
     public int queryInstrumentsCount(@RequestBody InstrumentDto instrumentDto) {
         return instrumentV1ServiceDaoImpl.queryInstrumentsCount(BeanConvertUtil.beanCovertMap(instrumentDto));
+    }
+
+    @Override
+    public String instrumentResult(MqttResultDto mqttResultDto) {
+        HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
+        hardwareManufacturerDto.setHmId(mqttResultDto.getHmId());
+        hardwareManufacturerDto.setHmType(HardwareManufacturerDto.HM_TYPE_INSTRUMENT);
+        List<HardwareManufacturerDto> hardwareManufacturerDtos = hardwareManufacturerV1InnerServiceSMOImpl.queryHardwareManufacturers(hardwareManufacturerDto);
+        Assert.listOnlyOne(hardwareManufacturerDtos, "未找到门禁接口协议");
+        instrumentFactoryAdaptImpl = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IInstrumentFactoryAdapt.class);
+
+        return instrumentFactoryAdaptImpl.instrumentResult(mqttResultDto.getTopic(), mqttResultDto.getData());
     }
 
 }

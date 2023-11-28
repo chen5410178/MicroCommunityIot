@@ -15,7 +15,9 @@
  */
 package com.java110.intf.meter;
 
+import com.java110.dto.accessControl.AccessControlResultDto;
 import com.java110.dto.instrument.InstrumentDto;
+import com.java110.dto.mqtt.MqttResultDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.instrument.InstrumentPo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -64,4 +66,6 @@ public interface IInstrumentV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryInstrumentsCount", method = RequestMethod.POST)
     int queryInstrumentsCount(@RequestBody InstrumentDto instrumentDto);
+
+    String instrumentResult(MqttResultDto mqttResultDto);
 }
