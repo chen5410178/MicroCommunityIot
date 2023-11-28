@@ -48,7 +48,7 @@ public abstract class AbstractInstrumentFactoryAdapt implements IInstrumentFacto
     }
 
     @Override
-    public String instrumentSensorReport(String topic, String param) {
+    public String instrumentResult(String topic, String data) {
         return null;
     }
 }

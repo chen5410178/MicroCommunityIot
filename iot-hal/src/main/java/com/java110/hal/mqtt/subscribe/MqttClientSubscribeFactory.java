@@ -6,8 +6,11 @@ import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.dto.hardwareManufacturerAttr.HardwareManufacturerAttrDto;
 import com.java110.core.factory.MqttFactory;
+import com.java110.dto.instrument.InstrumentDto;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
+import com.java110.intf.meter.IInstrumentV1InnerServiceSMO;
 import com.java110.intf.system.IHardwareManufacturerAttrV1InnerServiceSMO;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -38,9 +41,42 @@ public class MqttClientSubscribeFactory {
             //todo 订阅道闸topic
             subscribeBarrierHardwareTopic(manufacturerAttrDto);
 
+            //订阅仪表topic
+            subscribeInstrumentHardwareTopic(manufacturerAttrDto);
+
         }
 
 
+    }
+
+    private static void subscribeInstrumentHardwareTopic(HardwareManufacturerAttrDto manufacturerAttrDto) {
+        if (!HardwareManufacturerDto.HM_TYPE_INSTRUMENT.equals(manufacturerAttrDto.getHmType())) {
+            return;
+        }
+
+        String topic = manufacturerAttrDto.getValue();
+
+        if (!topic.contains("SN")) {
+            MqttFactory.subscribe(topic.trim());
+            return;
+        }
+
+        IInstrumentV1InnerServiceSMO instrumentV1InnerServiceSMOImpl = ApplicationContextFactory.getBean("instrumentV1InnerServiceSMOImpl", IInstrumentV1InnerServiceSMO.class);
+        if (instrumentV1InnerServiceSMOImpl == null) {
+            instrumentV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(IInstrumentV1InnerServiceSMO.class.getName(), IInstrumentV1InnerServiceSMO.class);
+        }
+
+        InstrumentDto instrumentDto = new InstrumentDto();
+        instrumentDto.setImplBean(manufacturerAttrDto.getHmId());
+        List<InstrumentDto> instrumentDtos = instrumentV1InnerServiceSMOImpl.queryInstruments(instrumentDto);
+        if (CollectionUtils.isEmpty(instrumentDtos)) {
+            return;
+        }
+
+        for (InstrumentDto dto : instrumentDtos) {
+            topic = topic.replace("SN", dto.getMachineCode());
+            MqttFactory.subscribe(topic);
+        }
     }
 
     private static void subscribeBarrierHardwareTopic(HardwareManufacturerAttrDto manufacturerAttrDto) {

@@ -13,5 +13,5 @@ public interface IInstrumentFactoryAdapt {
 
     boolean deleteMachine(InstrumentPo instrumentpo);
 
-    String instrumentSensorReport(String topic, String param);
+    String instrumentResult(String topic, String data);
 }
