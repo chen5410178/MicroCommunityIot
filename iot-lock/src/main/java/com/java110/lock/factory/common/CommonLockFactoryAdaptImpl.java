@@ -55,6 +55,8 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
     public static final String GET_WIFI_LOCK_DETAIL_URL = "https://cnapi.sciener.com/v3/wifiLock/detail";
     //查询锁电量
     public static final String QUERY_ELECTRIC_QUANTITY_URL = "https://cnapi.sciener.com/v3/lock/queryElectricQuantity";
+    //获取锁详细信息
+    public static final String QUERY_LOCK_DETAIL_URL = "https://cnapi.sciener.com/v3/lock/detail";
 
     @Autowired
     private RestTemplate outRestTemplate;
@@ -150,7 +152,7 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
 
         JSONObject res = JSONObject.parseObject(responseEntity.getBody());
         if (CommonLockFactoryAdaptUtil.errorMap.containsKey(res.getInteger("errcode"))) {
-            logger.error("修改密码失败，错误码：" + res.getInteger("errcode") + "，错误信息：" + res.getString("errmsg") + "，错误描述：" + res.getString("description"));
+            logger.error("查询锁在线状态失败，错误码：" + res.getInteger("errcode") + "，错误信息：" + res.getString("errmsg") + "，错误描述：" + res.getString("description"));
             throw new CmdException(CommonLockFactoryAdaptUtil.errorMap.get(res.getInteger("errcode")));
         }
 
@@ -299,12 +301,43 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
 
         JSONObject res = JSONObject.parseObject(responseEntity.getBody());
         if (CommonLockFactoryAdaptUtil.errorMap.containsKey(res.getInteger("errcode"))) {
-            logger.error("修改密码失败，错误码：" + res.getInteger("errcode") + "，错误信息：" + res.getString("errmsg") + "，错误描述：" + res.getString("description"));
-            return new BigDecimal(lockMachineDto.getCharge()).intValue();
+            logger.error("查询锁实时电量失败，错误码：" + res.getInteger("errcode") + "，错误信息：" + res.getString("errmsg") + "，错误描述：" + res.getString("description"));
+            //todo: 查询锁状态获取电量
+            JSONObject lockDetail = queryLockDetail(lockMachineDto, lockMachineParamDtos);
+            return lockDetail.getInteger("electricQuantity");
             //throw new CmdException(CommonLockFactoryAdaptUtil.errorMap.get(res.getInteger("errcode")));
         }
 
         return res.getInteger("electricQuantity");
+    }
+
+    private JSONObject queryLockDetail(LockMachineDto lockMachineDto, List<LockMachineParamDto> lockMachineParamDtos) {
+        String accessToken = getAccessToken(lockMachineParamDtos);
+
+        StringBuilder params = new StringBuilder();
+        List<LockMachineParamDto> client = lockMachineParamDtos.stream().filter(lockMachineParam -> "clientId".equals(lockMachineParam.getSpecName())).collect(Collectors.toList());
+        params.append("clientId=" + client.get(0).getValue());
+        params.append("&accessToken=" + accessToken);
+        params.append("&lockId=" + lockMachineDto.getMachineId());
+        params.append("&date=" + new Date().getTime());
+        String url = QUERY_LOCK_DETAIL_URL + "?" + params;
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-Type", "application/x-www-form-urlencoded");
+        HttpEntity httpEntity = new HttpEntity("", httpHeaders);
+        ResponseEntity<String> responseEntity = null;
+        try {
+            responseEntity = outRestTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+        } catch (HttpStatusCodeException e) {
+            logger.error("请求异常", e.getResponseBodyAsString());
+            throw new CmdException("查询失败," + e.getResponseBodyAsString());
+        }
+
+        JSONObject res = JSONObject.parseObject(responseEntity.getBody());
+        if (CommonLockFactoryAdaptUtil.errorMap.containsKey(res.getInteger("errcode"))) {
+            logger.error("查询锁详细信息失败，错误码：" + res.getInteger("errcode") + "，错误信息：" + res.getString("errmsg") + "，错误描述：" + res.getString("description"));
+        }
+        return res;
     }
 
     private String getAccessToken(/*String oprUserId, String oprUserName, */List<LockMachineParamDto> lockMachineParamDtos) {
