@@ -1,4 +1,4 @@
-<div style="width: 200px;background-color: #1F2339;color: #FFF;height: 60vh">
+<div style="width: 200px;background-color: #1F2339;color: #FFF;height: 50vh">
     <div class="padding flex justify-between">
         <button class="btn  btn-xs"
             :class="{'btn-primary':sceneModalInfo._currentTab == 'modalData','btn-secondary':sceneModalInfo._currentTab != 'modalData'}"
@@ -11,16 +11,17 @@
             <vc:i18n name="场景模型"></vc:i18n>
         </button>
     </div>
-    <div style="overflow-y: auto; height: 50vh; " class="padding">
+    <div style="overflow-y: auto; height: 50vh; " class="padding-lr">
         <ul v-if="sceneModalInfo._currentTab == 'modalData'">
-            <li class=" margin-top-sm flex justify-between" v-for="(item,index) in sceneModalInfo.modalData">
+            <li class=" margin-bottom-sm flex justify-between" v-for="(item,index) in sceneModalInfo.modalData">
                 <div>{{item.name}}</div>
                 <div><a href="javascript:void(0)" @click="_addModalInSence(item)">添加</a></div>
             </li>
         </ul>
         <ul v-if="sceneModalInfo._currentTab == 'modals'">
-            <li class="margin-top-sm flex justify-between" v-for="(item,index) in sceneModalInfo.objects">
-                <div @click="_controlObject(item)">{{item.name}}</div>
+            <li class="margin-bottom-sm flex justify-between" v-for="(item,index) in sceneModalInfo.objects">
+                <div @click="_controlObject(item)">{{item.name || '未命名'}}</div>
+                <div><a href="javascript:void(0)" @click="_deleteModalInSence(item)">删除</a></div>
             </li>
         </ul>
     </div>

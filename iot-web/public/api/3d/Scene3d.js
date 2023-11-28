@@ -74,7 +74,7 @@ export default class Scene3d {
         this.light.position.set(-300, 600, -400);
         this.light.castShadow = true;
         this.scene.add(this.light);
-        this.scene.add(new THREE.AmbientLight(0x5C5C5C));
+        this.scene.add(new THREE.AmbientLight(0x404040));
     }
 
     update() {
@@ -108,10 +108,10 @@ export default class Scene3d {
             //console.log(intersects[0].object.material.color);
             for (let _index = 0; _index < intersects.length; _index++) {
                 _name = intersects[_index].object.name;
-                if (_name == 'X' || _name == 'Y' || _name == 'Z' 
-                || _name == 'XY' || _name == 'XZ' || _name == 'YZ' 
-                || _name == 'XYZ'|| _name == 'E' || _name == 'XYZE'
-                || _name == 'START' || _name == 'END') {
+                if (_name == 'X' || _name == 'Y' || _name == 'Z'
+                    || _name == 'XY' || _name == 'XZ' || _name == 'YZ'
+                    || _name == 'XYZ' || _name == 'E' || _name == 'XYZE'
+                    || _name == 'START' || _name == 'END') {
                     continue
                 }
                 if (intersects[_index].object.type === 'Mesh') {
@@ -285,21 +285,47 @@ export default class Scene3d {
         this.scene.add(cube);
     }
 
-    getAllObject(){
+    deleteObject(_object) {
+        this.transformControls.detach ();
+        _object.removeFromParent();
+        // if (_object) {
+        //     _object.traverse(function (item) {
+        //         if (item instanceof THREE.Mesh) {
+        //             if (Array.isArray(item.material)) {
+        //                 item.material.forEach(a => {
+        //                     a.dispose()
+        //                 })
+        //             } else {
+        //                 item.material.dispose() // 删除材质
+        //             }
+        //             item.geometry.dispose() // 删除几何体
+        //         }
+        //         item = null
+        //     })
+        //     // 删除场景对象scene的子对象group
+        //     this.scene.remove(_object);
+        // }
+    }
+
+    getAllObject() {
         let _objects = [];
         let _name = '';
         this.scene.traverse(function (child) {
             if (child instanceof THREE.Mesh) {
                 _name = child.name;
-                if (_name == 'X' || _name == 'Y' || _name == 'Z' 
-                || _name == 'XY' || _name == 'XZ' || _name == 'YZ' 
-                || _name == 'XYZ'|| _name == 'E' || _name == 'XYZE'
-                || _name == 'START' || _name == 'END') {
+                if (_name == 'X' || _name == 'Y' || _name == 'Z'
+                    || _name == 'XY' || _name == 'XZ' || _name == 'YZ'
+                    || _name == 'XYZ' || _name == 'E' || _name == 'XYZE'
+                    || _name == 'START' || _name == 'END') {
                     return;
                 }
                 _objects.push(child);
             }
         });
         return _objects;
+    }
+
+    exportScene(){
+        return JSON.stringify(this.scene.toJSON());
     }
 }

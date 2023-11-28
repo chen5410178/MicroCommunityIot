@@ -59,6 +59,9 @@
             },
             _submitScale:function(){
                 $that.curModalInfo.object.scale.set($that.curModalInfo.scaleX, $that.curModalInfo.scaleY, $that.curModalInfo.scaleZ);
+            },
+            _submitScene:function(){
+                vc.emit('dtSceneSetting', 'saveScene',{});
             }
            
         }

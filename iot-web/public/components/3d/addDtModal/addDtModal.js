@@ -21,7 +21,8 @@
             })
         },
         _initEvent: function () {
-            vc.on('addDtModal', 'openAddDtModalModal', function () {
+            vc.on('addDtModal', 'openAddDtModalModal', function (_data) {
+                $that.addDtModalInfo.modalType = _data.modalType;
                 $('#addDtModalModel').modal('show');
             });
             vc.on('addDtModal', 'notifyModal', function (_param) {

@@ -1,92 +1,104 @@
-<div style="width: 200px;background-color: #1F2339;color: #FFF;height: 40vh;" class="padding">
-    <div class=" flex justify-between">
-        <div>当前模型</div>
-        <div>{{curModalInfo.name ||'未选中'}}</div>
-    </div>
-    <div class="margin-top-sm flex justify-between">
-        <div>动作</div>
-        <div>
-            <button class="btn  btn-xs"
-                :class="{'btn-primary':curModalInfo.action == 'translate','btn-secondary':curModalInfo.action != 'translate'}"
-                type="button" v-on:click="_curModalMove()">
-                <vc:i18n name="移动"></vc:i18n>
-            </button>
-            <button class="btn  btn-xs"
-                :class="{'btn-primary':curModalInfo.action == 'rotate','btn-secondary':curModalInfo.action != 'rotate'}"
-                type="button" v-on:click="_curModalRotate()">
-                <vc:i18n name="旋转"></vc:i18n>
-            </button>
-            <button class="btn btn-xs"
-                :class="{'btn-primary':curModalInfo.action == 'scale','btn-secondary':curModalInfo.action != 'scale'}"
-                type="button" v-on:click="_curModalScale()">
-                <vc:i18n name="缩放"></vc:i18n>
-            </button>
+<div style="width: 200px;background-color: #1F2339;color: #FFF;" class="padding">
+    <div style="height: 40vh;">
+        <div class=" flex justify-between">
+            <div>当前模型</div>
+            <div>{{curModalInfo.name ||'未选中'}}</div>
         </div>
-    </div>
-
-    <div class="margin-top" v-if="curModalInfo.action == 'translate'">
-        <div class="flex justify-between">
-            <div>X:</div>
-            <div style="width: 60%;"><input v-model="curModalInfo.position.x" type="text"
-                    class="form-control form-control-sm"></div>
-        </div>
-        <div class="flex justify-between margin-top-sm">
-            <div>Y:</div>
-            <div style="width: 60%;"><input v-model="curModalInfo.position.y" type="text"
-                    class="form-control form-control-sm"></div>
-        </div>
-        <div class="flex justify-between margin-top-sm">
-            <div>Z:</div>
-            <div style="width: 60%;"><input v-model="curModalInfo.position.z" type="text"
-                    class="form-control form-control-sm"></div>
-        </div>
-    </div>
-    <div class="margin-top" v-if="curModalInfo.action == 'rotate'">
-        <div class="flex justify-between">
-            <div>X:</div>
-            <div style="width: 60%;"><input v-model="curModalInfo.rotateX" type="text"
-                    class="form-control form-control-sm"></div>
-        </div>
-        <div class="flex justify-between margin-top-sm">
-            <div>Y:</div>
-            <div style="width: 60%;"><input v-model="curModalInfo.rotateY" type="text"
-                    class="form-control form-control-sm"></div>
-        </div>
-        <div class="flex justify-between margin-top-sm">
-            <div>Z:</div>
-            <div style="width: 60%;"><input v-model="curModalInfo.rotateZ" type="text"
-                    class="form-control form-control-sm"></div>
-        </div>
-        <div class="flex justify-between margin-top-sm">
-            <div></div>
-            <div style="width: 60%;">
-                <button class="btn btn-xs btn-primary" type="button" v-on:click="_submitRotate()">
-                    <vc:i18n name="确认"></vc:i18n>
+        <div class="margin-top-sm flex justify-between">
+            <div>动作</div>
+            <div>
+                <button class="btn  btn-xs"
+                    :class="{'btn-primary':curModalInfo.action == 'translate','btn-secondary':curModalInfo.action != 'translate'}"
+                    type="button" v-on:click="_curModalMove()">
+                    <vc:i18n name="移动"></vc:i18n>
+                </button>
+                <button class="btn  btn-xs"
+                    :class="{'btn-primary':curModalInfo.action == 'rotate','btn-secondary':curModalInfo.action != 'rotate'}"
+                    type="button" v-on:click="_curModalRotate()">
+                    <vc:i18n name="旋转"></vc:i18n>
+                </button>
+                <button class="btn btn-xs"
+                    :class="{'btn-primary':curModalInfo.action == 'scale','btn-secondary':curModalInfo.action != 'scale'}"
+                    type="button" v-on:click="_curModalScale()">
+                    <vc:i18n name="缩放"></vc:i18n>
                 </button>
             </div>
         </div>
+
+        <div class="margin-top" v-if="curModalInfo.action == 'translate'">
+            <div class="flex justify-between">
+                <div>X:</div>
+                <div style="width: 60%;"><input v-model="curModalInfo.position.x" type="text"
+                        class="form-control form-control-sm"></div>
+            </div>
+            <div class="flex justify-between margin-top-sm">
+                <div>Y:</div>
+                <div style="width: 60%;"><input v-model="curModalInfo.position.y" type="text"
+                        class="form-control form-control-sm"></div>
+            </div>
+            <div class="flex justify-between margin-top-sm">
+                <div>Z:</div>
+                <div style="width: 60%;"><input v-model="curModalInfo.position.z" type="text"
+                        class="form-control form-control-sm"></div>
+            </div>
+        </div>
+        <div class="margin-top" v-if="curModalInfo.action == 'rotate'">
+            <div class="flex justify-between">
+                <div>X:</div>
+                <div style="width: 60%;"><input v-model="curModalInfo.rotateX" type="text"
+                        class="form-control form-control-sm"></div>
+            </div>
+            <div class="flex justify-between margin-top-sm">
+                <div>Y:</div>
+                <div style="width: 60%;"><input v-model="curModalInfo.rotateY" type="text"
+                        class="form-control form-control-sm"></div>
+            </div>
+            <div class="flex justify-between margin-top-sm">
+                <div>Z:</div>
+                <div style="width: 60%;"><input v-model="curModalInfo.rotateZ" type="text"
+                        class="form-control form-control-sm"></div>
+            </div>
+            <div class="flex justify-between margin-top-sm">
+                <div></div>
+                <div style="width: 60%;">
+                    <button class="btn btn-xs btn-primary" type="button" v-on:click="_submitRotate()">
+                        <vc:i18n name="确认"></vc:i18n>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="margin-top" v-if="curModalInfo.action == 'scale'">
+            <div class="flex justify-between">
+                <div>X:</div>
+                <div style="width: 60%;"><input v-model="curModalInfo.scaleX" type="text"
+                        class="form-control form-control-sm"></div>
+            </div>
+            <div class="flex justify-between margin-top-sm">
+                <div>Y:</div>
+                <div style="width: 60%;"><input v-model="curModalInfo.scaleY" type="text"
+                        class="form-control form-control-sm"></div>
+            </div>
+            <div class="flex justify-between margin-top-sm">
+                <div>Z:</div>
+                <div style="width: 60%;"><input v-model="curModalInfo.scaleZ" type="text"
+                        class="form-control form-control-sm"></div>
+            </div>
+            <div class="flex justify-between margin-top-sm">
+                <div></div>
+                <div style="width: 60%;">
+                    <button class="btn btn-xs btn-primary" type="button" v-on:click="_submitScale()">
+                        <vc:i18n name="确认"></vc:i18n>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="margin-top" v-if="curModalInfo.action == 'scale'">
-        <div class="flex justify-between">
-            <div>X:</div>
-            <div style="width: 60%;"><input v-model="curModalInfo.scaleX" type="text"
-                    class="form-control form-control-sm"></div>
-        </div>
-        <div class="flex justify-between margin-top-sm">
-            <div>Y:</div>
-            <div style="width: 60%;"><input v-model="curModalInfo.scaleY" type="text"
-                    class="form-control form-control-sm"></div>
-        </div>
-        <div class="flex justify-between margin-top-sm">
-            <div>Z:</div>
-            <div style="width: 60%;"><input v-model="curModalInfo.scaleZ" type="text"
-                    class="form-control form-control-sm"></div>
-        </div>
+    <div style="height: 5vh;">
         <div class="flex justify-between margin-top-sm">
             <div></div>
             <div style="width: 60%;">
-                <button class="btn btn-xs btn-primary" type="button" v-on:click="_submitScale()">
-                    <vc:i18n name="确认"></vc:i18n>
+                <button class="btn  btn-primary" type="button" v-on:click="_submitScene()">
+                    <vc:i18n name="保存场景"></vc:i18n>
                 </button>
             </div>
         </div>

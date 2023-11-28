@@ -69,7 +69,9 @@
                 );
             },
             _openAddDtModalModal: function () {
-                vc.emit('addDtModal', 'openAddDtModalModal', {});
+                vc.emit('addDtModal', 'openAddDtModalModal', {
+                    modalType:$that.dtModalInfo.conditions.modalType
+                });
             },
             _openEditDtModalModel: function (_dtModal) {
                 vc.emit('editDtModal', 'openEditDtModalModal', _dtModal);

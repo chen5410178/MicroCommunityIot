@@ -1,7 +1,7 @@
 /**
     入驻小区
 **/
-import {loadFloorData} from 'api/modal/modalDataApi.js'
+import {loadModalData} from 'api/modal/modalDataApi.js'
 (function (vc) {
 
     vc.extends({
@@ -20,6 +20,7 @@ import {loadFloorData} from 'api/modal/modalDataApi.js'
         },
         _initEvent: function () {
             vc.on('sceneModal','setModal',function(_data){
+                _data.communityId = vc.getParam('communityId');
                 $that.sceneModalInfo.modal = _data;
                 $that.sceneModalInfo._currentTab = 'modalData';
                 $that._loadModalData();
@@ -38,26 +39,15 @@ import {loadFloorData} from 'api/modal/modalDataApi.js'
 
             _loadModalData:function(){
                 $that.sceneModalInfo.modalData =  [];
-                if($that.sceneModalInfo.modal.modalType == 'floor'){
-                    loadFloorData({
-                        communityId:vc.getParam('communityId'),
-                        page:1,
-                        row:100
-                    }).then(_data=>{
-                        _data.forEach(item => {
-                            $that.sceneModalInfo.modalData.push({
-                                name:item.floorName,
-                                dataId:item.floorId,
-                                modalType:'floor',
-                                path:$that.sceneModalInfo.modal.path
-                            })
-                        })
-                    })
-                }
                 
+                loadModalData($that.sceneModalInfo.modal,$that.sceneModalInfo.modalData);
             },
             _addModalInSence:function(_modal){
                 vc.emit('dtSceneSetting','addModal',_modal);
+            },
+            _deleteModalInSence:function(_modal){
+                vc.emit('dtSceneSetting','deleteModal',_modal);
+                $that._changeCurrentTab('modals');
             },
             _controlObject:function(_obj){
                 vc.emit('dtSceneSetting','controlObject',_obj);

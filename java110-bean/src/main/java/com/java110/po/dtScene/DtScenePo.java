@@ -17,6 +17,7 @@ package com.java110.po.dtScene;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-11-24 17:02:23 mail: 928255095@qq.com
@@ -28,55 +29,68 @@ import java.util.Date;
 public class DtScenePo implements Serializable {
 
     private String modalJson;
-private String sceneName;
-private String sceneId;
-private String statusCd = "0";
-private String state;
-private String communityId;
-private String seq;
-public String getModalJson() {
+    private String sceneName;
+    private String sceneId;
+    private String statusCd = "0";
+    private String state;
+    private String communityId;
+    private String seq;
+
+    public String getModalJson() {
         return modalJson;
     }
-public void setModalJson(String modalJson) {
+
+    public void setModalJson(String modalJson) {
         this.modalJson = modalJson;
     }
-public String getSceneName() {
+
+    public String getSceneName() {
         return sceneName;
     }
-public void setSceneName(String sceneName) {
+
+    public void setSceneName(String sceneName) {
         this.sceneName = sceneName;
     }
-public String getSceneId() {
+
+    public String getSceneId() {
         return sceneId;
     }
-public void setSceneId(String sceneId) {
+
+    public void setSceneId(String sceneId) {
         this.sceneId = sceneId;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getState() {
+
+    public String getState() {
         return state;
     }
-public void setState(String state) {
+
+    public void setState(String state) {
         this.state = state;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-public String getSeq() {
+
+    public String getSeq() {
         return seq;
     }
-public void setSeq(String seq) {
+
+    public void setSeq(String seq) {
         this.seq = seq;
     }
-
 
 
 }
