@@ -108,7 +108,10 @@ export default class Scene3d {
             //console.log(intersects[0].object.material.color);
             for (let _index = 0; _index < intersects.length; _index++) {
                 _name = intersects[_index].object.name;
-                if (_name == 'X' || _name == 'Y' || _name == 'Z' || _name == 'XY' || _name == 'XZ' || _name == 'YZ' || _name == 'XYZ') {
+                if (_name == 'X' || _name == 'Y' || _name == 'Z' 
+                || _name == 'XY' || _name == 'XZ' || _name == 'YZ' 
+                || _name == 'XYZ'|| _name == 'E' || _name == 'XYZE'
+                || _name == 'START' || _name == 'END') {
                     continue
                 }
                 if (intersects[_index].object.type === 'Mesh') {
@@ -236,9 +239,7 @@ export default class Scene3d {
         this.transformControls.setMode(_modal);
     }
 
-
-    move3dObject(_object) {
-        this.transformControls.setMode('translate');
+    controlObject(_object) {
         this.transformControls.attach(_object)
     }
 
@@ -282,5 +283,23 @@ export default class Scene3d {
         const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
         const cube = new THREE.Mesh(geometry, material);
         this.scene.add(cube);
+    }
+
+    getAllObject(){
+        let _objects = [];
+        let _name = '';
+        this.scene.traverse(function (child) {
+            if (child instanceof THREE.Mesh) {
+                _name = child.name;
+                if (_name == 'X' || _name == 'Y' || _name == 'Z' 
+                || _name == 'XY' || _name == 'XZ' || _name == 'YZ' 
+                || _name == 'XYZ'|| _name == 'E' || _name == 'XYZE'
+                || _name == 'START' || _name == 'END') {
+                    return;
+                }
+                _objects.push(child);
+            }
+        });
+        return _objects;
     }
 }

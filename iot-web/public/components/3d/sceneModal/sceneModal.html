@@ -1,10 +1,27 @@
-<div style="width: 200px;background-color: #1F2339;color: #FFF;height: 100vh;">
-    <div class="padding">当前数据</div>
-    <ul>
-        <li class="padding flex justify-between"  v-for="(item,index) in sceneModalInfo.modalData">
-            <div>{{item.name}}</div>
-            <div><a href="javascript:void(0)" @click="_addModalInSence(item)">添加</a></div>
-           
-        </li>
-    </ul>
+<div style="width: 200px;background-color: #1F2339;color: #FFF;height: 60vh">
+    <div class="padding flex justify-between">
+        <button class="btn  btn-xs"
+            :class="{'btn-primary':sceneModalInfo._currentTab == 'modalData','btn-secondary':sceneModalInfo._currentTab != 'modalData'}"
+            type="button" v-on:click="_changeCurrentTab('modalData')">
+            {{sceneModalInfo.modal.name || '相关模型'}}
+        </button>
+        <button class="btn  btn-xs"
+            :class="{'btn-primary':sceneModalInfo._currentTab == 'modals','btn-secondary':sceneModalInfo._currentTab != 'modals'}"
+            type="button" v-on:click="_changeCurrentTab('modals')">
+            <vc:i18n name="场景模型"></vc:i18n>
+        </button>
+    </div>
+    <div style="overflow-y: auto; height: 50vh; " class="padding">
+        <ul v-if="sceneModalInfo._currentTab == 'modalData'">
+            <li class=" margin-top-sm flex justify-between" v-for="(item,index) in sceneModalInfo.modalData">
+                <div>{{item.name}}</div>
+                <div><a href="javascript:void(0)" @click="_addModalInSence(item)">添加</a></div>
+            </li>
+        </ul>
+        <ul v-if="sceneModalInfo._currentTab == 'modals'">
+            <li class="margin-top-sm flex justify-between" v-for="(item,index) in sceneModalInfo.objects">
+                <div @click="_controlObject(item)">{{item.name}}</div>
+            </li>
+        </ul>
+    </div>
 </div>

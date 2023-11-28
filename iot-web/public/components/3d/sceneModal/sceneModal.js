@@ -7,9 +7,11 @@ import {loadFloorData} from 'api/modal/modalDataApi.js'
     vc.extends({
         data: {
             sceneModalInfo: {
+                _currentTab:'modalData',
                 modal:{},
                 modalData:[],
-                curData:{}
+                curData:{},
+                objects:[]
             }
         },
         _initMethod: function () {
@@ -19,11 +21,20 @@ import {loadFloorData} from 'api/modal/modalDataApi.js'
         _initEvent: function () {
             vc.on('sceneModal','setModal',function(_data){
                 $that.sceneModalInfo.modal = _data;
+                $that.sceneModalInfo._currentTab = 'modalData';
                 $that._loadModalData();
             })
 
         },
         methods: {
+
+            _changeCurrentTab:function(_tab){
+                $that.sceneModalInfo._currentTab = _tab;
+                if(_tab == 'modals'){
+                    $that.sceneModalInfo.objects = [];
+                    vc.emit('dtSceneSetting','getAllObject',$that.sceneModalInfo.objects);
+                }
+            },
 
             _loadModalData:function(){
                 $that.sceneModalInfo.modalData =  [];
@@ -47,6 +58,9 @@ import {loadFloorData} from 'api/modal/modalDataApi.js'
             },
             _addModalInSence:function(_modal){
                 vc.emit('dtSceneSetting','addModal',_modal);
+            },
+            _controlObject:function(_obj){
+                vc.emit('dtSceneSetting','controlObject',_obj);
             }
 
             
