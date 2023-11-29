@@ -18,7 +18,7 @@ var app = express();
 // app.use(bodyParser.json({
 //     limit: '50mb'
 // }));
-// app.use(express.urlencoded({ limit: '50mb', extended: true }));
+//app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,6 +29,7 @@ app.use(logger('dev'));
 let opts = {
     preserveHostHdr: true,
     reqAsBuffer: true,
+    limit:"50mb",
     //转发之前触发该方法
     proxyReqPathResolver: function(req, res) {
         //这个代理会把匹配到的url（下面的 ‘/api’等）去掉，转发过去直接404，这里手动加回来，
