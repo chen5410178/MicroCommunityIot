@@ -1,5 +1,6 @@
 package com.java110.meter.factory.instrumentCommon;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.factory.GenerateCodeFactory;
@@ -34,6 +35,10 @@ import java.util.Map;
 @Service("commonInstrumentFactoryAdapt")
 public class CommonInstrumentFactoryAdapt extends AbstractInstrumentFactoryAdapt {
     public static final String INSTRUMENT_REPORT = "instrument/topic/report/response/SN";
+
+    public static final String SEND_PARAM_SIGNAL = "getParam";
+
+    public static final String SN = "SN";
 
     @Autowired
     private IInstrumentSensorV1InnerServiceSMO instrumentSensorV1InnerServiceSMOImpl;
@@ -70,6 +75,10 @@ public class CommonInstrumentFactoryAdapt extends AbstractInstrumentFactoryAdapt
 
         JSONObject jsonObject = JSONObject.parseObject(data);
         JSONArray sensorDatas = jsonObject.getJSONArray("sensorDatas");
+        if (data.contains(SEND_PARAM_SIGNAL)) {
+            sendParam(instrumentSensorDtos.get(0), instrumentDtos.get(0));
+            return SUCCESS;
+        }
         if (data.contains("ID") && data.contains("ACTION")) {
             eventReport(instrumentSensorDtos.get(0), instrumentDtos.get(0), sensorDatas);
         } else {
@@ -90,6 +99,58 @@ public class CommonInstrumentFactoryAdapt extends AbstractInstrumentFactoryAdapt
         }
 
         return SUCCESS;
+    }
+
+    private void sendParam(InstrumentSensorDto instrumentSensorDto, InstrumentDto instrumentDto) {
+        Map<String, String> paramMap = new HashMap();
+        switch (instrumentSensorDto.getSensorType()) {
+            case InstrumentSensorDto.PRESSURE_SENSOR:
+                paramMap.put("FH", instrumentSensorDto.getMaxValue());
+                paramMap.put("FL", instrumentSensorDto.getMinValue());
+                paramMap.put("AT", instrumentDto.getUpMin());
+                paramMap.put("CT", instrumentDto.getCheckSec());
+                break;
+            case InstrumentSensorDto.LIQUID_LEVEL_SENSOR:
+                paramMap.put("FH", instrumentSensorDto.getMaxValue());
+                paramMap.put("FL", instrumentSensorDto.getMinValue());
+                paramMap.put("AT", instrumentDto.getUpMin());
+                paramMap.put("CT", instrumentDto.getCheckSec());
+                break;
+            case InstrumentSensorDto.TEMPERATURE_AND_HUMIDITY_SENSOR:
+                paramMap.put("FH", instrumentSensorDto.getMaxValue());
+                paramMap.put("FL", instrumentSensorDto.getMinValue());
+                paramMap.put("AT", instrumentDto.getUpMin());
+                paramMap.put("CT", instrumentDto.getCheckSec());
+                break;
+            case InstrumentSensorDto.TEMPERATURE_SENSOR:
+                paramMap.put("TH", instrumentSensorDto.getMaxValue());
+                paramMap.put("TL", instrumentSensorDto.getMinValue());
+                paramMap.put("AT", instrumentDto.getUpMin());
+                paramMap.put("CT", instrumentDto.getCheckSec());
+                break;
+            case InstrumentSensorDto.WATER_QUALITY_SENSOR:
+                paramMap.put("FH", instrumentSensorDto.getMaxValue());
+                paramMap.put("FL", instrumentSensorDto.getMinValue());
+                paramMap.put("AT", instrumentDto.getUpMin());
+                paramMap.put("CT", instrumentDto.getCheckSec());
+                break;
+            case InstrumentSensorDto.COMBUSTIBLE_GAS_SENSOR:
+                paramMap.put("TH", instrumentSensorDto.getMaxValue());
+                paramMap.put("TL", instrumentSensorDto.getMinValue());
+                paramMap.put("AT", instrumentDto.getUpMin());
+                paramMap.put("CT", instrumentDto.getCheckSec());
+                break;
+            case InstrumentSensorDto.WATERLOGGING_SENSOR:
+                paramMap.put("FH", instrumentSensorDto.getMaxValue());
+                paramMap.put("FL", instrumentSensorDto.getMinValue());
+                paramMap.put("AT", instrumentDto.getUpMin());
+                paramMap.put("CT", instrumentDto.getCheckSec());
+                break;
+            default:
+                break;
+        }
+        String sendParam = JSON.toJSONString(paramMap);
+        MqttFactory.publish(INSTRUMENT_REPORT.replace(SN, instrumentSensorDto.getSensorId()), sendParam);
     }
 
     private void realTimeReport(InstrumentSensorDto instrumentSensorDto, InstrumentDto instrumentDto, JSONArray sensorDatas) {
