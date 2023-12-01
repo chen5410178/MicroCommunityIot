@@ -84,12 +84,7 @@ public class CommonInstrumentFactoryAdapt extends AbstractInstrumentFactoryAdapt
         } else {
             String times = jsonObject.getString("times");
             if (!ObjectUtils.isEmpty(sensorDatas) && !StringUtils.isEmpty(times)) {
-                Date upTime = null;
-                try {
-                    upTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(times);
-                } catch (ParseException e) {
-                    throw new IllegalArgumentException("仪表数据上报时间解析错误!");
-                }
+                Date upTime = DateUtil.getDateFromStringA(times);
                 if (DateUtil.getCurrentDate().before(new Date(upTime.getTime() + 5 * 60 * 1000))) {// 实时上报(上报时间不超过五分钟)
                     realTimeReport(instrumentSensorDtos.get(0), instrumentDtos.get(0), sensorDatas);
                 }

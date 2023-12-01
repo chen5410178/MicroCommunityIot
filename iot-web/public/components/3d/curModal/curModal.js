@@ -8,7 +8,7 @@
         data: {
             curModalInfo: {
                 name:'',
-                action:'translate',
+                action:'',
                 position:{},
                 object:{},
                 rotateX:0,
@@ -28,7 +28,10 @@
                 $that.curModalInfo.name = _data.name;
                 $that.curModalInfo.position = _data.position;
                 $that.curModalInfo.object = _data.object;
-                console.log(_data.position)
+
+                if(!$that.curModalInfo.action){
+                    $that.curModalInfo.action = 'translate';
+                }
             })
 
         },
@@ -48,6 +51,12 @@
                 vc.emit('dtSceneSetting','setModal',$that.curModalInfo.action)
 
             },
+            _deleteCurModal:function(){
+                vc.emit('dtSceneSetting','deleteModal',$that.curModalInfo.object);
+                $that.curModalInfo.name = '';
+                $that.curModalInfo.action = '';
+                vc.emit('sceneModal','_reloadTab',{});
+            },
             _submitRotate:function(){
 
                 let _data = {
@@ -62,6 +71,7 @@
             },
             _submitScene:function(){
                 vc.emit('dtSceneSetting', 'saveScene',{});
+
             }
            
         }

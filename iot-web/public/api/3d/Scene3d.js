@@ -7,7 +7,8 @@ import { TransformControls } from 'three/addons/controls/TransformControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js'
 import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
-import { RGBELoader } from 'three/addons/loaders/RGBELoader.js'
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js'
 
 
 export default class Scene3d {
@@ -50,11 +51,11 @@ export default class Scene3d {
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setClearColor(new THREE.Color(0x87CEEB));
         this.renderer.setSize(window.innerWidth - 390, window.innerHeight);
-        this.renderer.antialias=true;
+        this.renderer.antialias = true;
 
-        this.renderer.alpha=true;
-    
-        this.renderer.precision='mediump'
+        this.renderer.alpha = true;
+
+        this.renderer.precision = 'mediump'
         // add the output of the renderer to the html element
         this.container = document.getElementById(_element);
         this.container.appendChild(this.renderer.domElement);
@@ -74,6 +75,8 @@ export default class Scene3d {
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         // 设置控制器阻尼，让控制器更有真是效果，必须在动画循环里调用update（）
         //this.controls.enableDamping = true;
+        this.controls.minPolarAngle = 0;
+        this.controls.maxPolarAngle = 75 / 180 * Math.PI;
     }
 
     /**
@@ -308,7 +311,6 @@ export default class Scene3d {
                     }
                 });
                 _that.scene.add(gltf.scene);
-                console.log(gltf.scene)
                 //_that.scene.add(_that.merge(gltf.scene));
 
                 // gltf.animations; // Array<THREE.AnimationClip>
@@ -329,7 +331,7 @@ export default class Scene3d {
         );
     }
     addJpgBackgroup(_modal) {
-        const texture = new THREE.TextureLoader().load( _modal.path );
+        const texture = new THREE.TextureLoader().load(_modal.path);
         texture.mapping = THREE.EquirectangularReflectionMapping;
         texture.magFilter = THREE.LinearFilter;//③
         texture.minFilter = THREE.LinearMipmapLinearFilter;//④
@@ -406,6 +408,30 @@ export default class Scene3d {
         // }
     }
 
+
+    getObjectTree() {
+        let _children = this.scene.children;
+        let _objects = [];
+        _children.forEach(_item => {
+            if (_item instanceof THREE.AxesHelper) {
+                return;
+            }
+            if (_item instanceof THREE.GridHelper) {
+                return;
+            }
+            if (_item instanceof THREE.SpotLight) {
+                return;
+            }
+            if (_item instanceof THREE.AmbientLight) {
+                return;
+            }
+            if (_item instanceof TransformControls) {
+                return;
+            }
+            _objects.push(_item)
+        })
+        return _objects;
+    }
     getAllObject() {
         let _objects = [];
         let _name = '';
@@ -424,7 +450,71 @@ export default class Scene3d {
         return _objects;
     }
 
+    getObject(_uuid) {
+        return this.scene.getObjectById(_uuid);
+    }
+
     exportScene() {
         return JSON.stringify(this.scene.toJSON());
+    }
+
+    /**
+ * gltf和glb导出器
+ * @param option
+ */
+    exporterGlb() {
+        const gltfExporter = new GLTFExporter();
+        const options = {
+            trs: false, //导出位置、旋转和缩放，而不是每个节点的矩阵 默认是false
+            onlyVisible: true, //只导出可见的对象 默认是true
+            truncateDrawRange: true,
+            binary: true, //binary==true 导出glb | binary==false 导出gltf
+            forceindices: false, //为非索引几何图形生成索引并导出它们 默认false
+            maxTextureSize: 4096, //限制图像的最大尺寸（宽度、高度）为给定值。默认是无限
+        };
+
+        let _children = this.scene.children;
+        let _objects = [];
+        _children.forEach(_item => {
+            if (_item instanceof THREE.AxesHelper) {
+                return;
+            }
+            if (_item instanceof THREE.GridHelper) {
+                return;
+            }
+            if (_item instanceof THREE.SpotLight) {
+                return;
+            }
+            if (_item instanceof THREE.AmbientLight) {
+                return;
+            }
+            if (_item instanceof TransformControls) {
+                return;
+            }
+            _objects.push(_item)
+        })
+
+        return new Promise((resolve, reject) => {
+            gltfExporter.parse(
+                _objects, //这是个数组
+                function (result) {
+                    let _data = '';
+                    //if (result instanceof ArrayBuffer) {
+                    _data = new Blob([result], { type: 'application/octet-stream' }, 'hc_scene.glb');
+                    // } else {
+                    //     const output = JSON.stringify(result, null, 2);
+                    //     save(new Blob([output], { type: 'text/plain' }), 'scene.gltf');
+                    // }
+                    resolve(_data)
+                },
+                function (error) {
+                    console.error(err);
+                    reject(error)
+                },
+                options
+            );
+        })
+
+
     }
 }

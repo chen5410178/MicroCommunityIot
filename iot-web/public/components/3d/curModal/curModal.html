@@ -4,15 +4,15 @@
             <div>当前模型</div>
             <div>{{curModalInfo.name ||'未选中'}}</div>
         </div>
-        <div class="margin-top-sm flex justify-between">
+        <div class="margin-top-sm flex justify-between" v-if="curModalInfo.name">
             <div>动作</div>
-            <div>
-                <button class="btn  btn-xs"
+            <div class="text-right " style="width: 60%;">
+                <button class="btn  btn-xs margin-bottom-xs"
                     :class="{'btn-primary':curModalInfo.action == 'translate','btn-secondary':curModalInfo.action != 'translate'}"
                     type="button" v-on:click="_curModalMove()">
                     <vc:i18n name="移动"></vc:i18n>
                 </button>
-                <button class="btn  btn-xs"
+                <button class="btn  btn-xs  margin-bottom-xs"
                     :class="{'btn-primary':curModalInfo.action == 'rotate','btn-secondary':curModalInfo.action != 'rotate'}"
                     type="button" v-on:click="_curModalRotate()">
                     <vc:i18n name="旋转"></vc:i18n>
@@ -21,6 +21,10 @@
                     :class="{'btn-primary':curModalInfo.action == 'scale','btn-secondary':curModalInfo.action != 'scale'}"
                     type="button" v-on:click="_curModalScale()">
                     <vc:i18n name="缩放"></vc:i18n>
+                </button>
+                <button class="btn btn-xs btn-danger" 
+                    type="button" v-on:click="_deleteCurModal()">
+                    <vc:i18n name="删除"></vc:i18n>
                 </button>
             </div>
         </div>

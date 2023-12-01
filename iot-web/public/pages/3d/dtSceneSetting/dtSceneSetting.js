@@ -10,20 +10,22 @@ import Scene3d from 'api/3d/Scene3d.js'
             dtSceneSettingInfo: {
                 scene: {},
                 modal: 'translate',
-                object: {}
+                object: {},
+                sceneId: '',
+                communityId: '',
             }
         },
         _initMethod: function () {
-            //$that.dtSceneSettingInfo.scene = initScene("webgl-scene",$that.dtSceneSettingInfo);
-            //addBoxGeometry("webgl-scene",$that.dtSceneSettingInfo);
+            $that.dtSceneSettingInfo.sceneId = vc.getParam('sceneId');
+            $that.dtSceneSettingInfo.communityId = vc.getParam('communityId');
 
             let _scene = new Scene3d('webgl-scene');
             $that.dtSceneSettingInfo.scene = _scene;
 
             _scene.setSelect3DObject(function (_object) {
-                console.log('选中objetc', _object);
                 vc.emit('dtSceneSetting', 'controlObject', _object);
-            })
+            });
+            $that._listDtScenes();
         },
         _initEvent: function () {
             vc.on('dtSceneSetting', 'addModal', function (_modal) {
@@ -31,11 +33,11 @@ import Scene3d from 'api/3d/Scene3d.js'
                     $that.dtSceneSettingInfo.scene.initLight();
                     return;
                 }
-                if(_modal.path.indexOf('.hdr')>0){
+                if (_modal.path.indexOf('.hdr') > 0) {
                     $that.dtSceneSettingInfo.scene.addHdrBackgroup(_modal);
                     return;
                 }
-                if(_modal.path.indexOf('.jpg')>0){
+                if (_modal.path.indexOf('.jpg') > 0) {
                     $that.dtSceneSettingInfo.scene.addJpgBackgroup(_modal);
                     return;
                 }
@@ -55,9 +57,11 @@ import Scene3d from 'api/3d/Scene3d.js'
                 _objs.forEach(_o => {
                     _objects.push(_o);
                 });
+                vc.emit('sceneModal', 'notifyObjects', $that.dtSceneSettingInfo.scene.getObjectTree());
             });
 
             vc.on('dtSceneSetting', 'controlObject', function (_object) {
+                _object = $that.dtSceneSettingInfo.scene.getObject(_object.id);
                 $that.dtSceneSettingInfo.object = _object;
                 vc.emit('curModal', 'setModalData', {
                     name: _object.name,
@@ -68,18 +72,48 @@ import Scene3d from 'api/3d/Scene3d.js'
                 $that.dtSceneSettingInfo.scene.controlObject(_object);
             });
             vc.on('dtSceneSetting', 'saveScene', function () {
-                let _sceneJson = $that.dtSceneSettingInfo.scene.exportScene();
-                $that._saveSceneJson(_sceneJson);
+                $that.dtSceneSettingInfo.scene.exporterGlb().then(_obj => {
+                    $that._saveSceneJson(_obj);
+                })
             });
-
-
         },
         methods: {
-            _saveSceneJson: function (_sceneJson) {
+            _saveSceneJson: function (blob) {
+                let param = new FormData();
+                param.append("uploadFile", blob);
+                //发送get请求
+                vc.http.upload('/upload/uploadFile',
+                    param, {
+                    emulateJSON: true,
+                    //添加请求头
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    },
+                    progress: function (event) {
+                        let rate = event.loaded / event.total; //已上传的比例
+                        if (rate < 0.9) {
+                            //this.uploadFileInfo.progress = (rate * 100).toFixed(2);
+                        }
+                    }
+                },
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        _json = _json.data;
+                        $that._updateScene(_json.url);
+                    },
+                    function (errInfo, error) {
+                        console.log('请求失败处理', error);
+                        vc.toast("上传文件失败");
+                    });
+            },
+            _updateScene: function (_url) {
+                if (!_url) {
+                    return;
+                }
                 let _data = {
-                    sceneId:vc.getParam('sceneId'),
-                    communityId:vc.getParam('communityId'),
-                    modalJson:_sceneJson
+                    sceneId: vc.getParam('sceneId'),
+                    communityId: vc.getParam('communityId'),
+                    modalJson: _url
                 }
                 vc.http.apiPost(
                     '/dtScene.updateDtScene',
@@ -88,7 +122,6 @@ import Scene3d from 'api/3d/Scene3d.js'
                         emulateJSON: true
                     },
                     function (json, res) {
-                        //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
                         let _json = JSON.parse(json);
                         vc.toast(_json.msg);
                         if (_json.code == 0) {
@@ -101,7 +134,36 @@ import Scene3d from 'api/3d/Scene3d.js'
                         console.log('请求失败处理');
                         vc.toast(errInfo);
                     });
-            }
+            },
+            _listDtScenes: function () {
+                let _scene = $that.dtSceneSettingInfo.scene;
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 1,
+                        communityId: $that.dtSceneSettingInfo.communityId,
+                        sceneId: $that.dtSceneSettingInfo.sceneId,
+                    }
+                };
+                let _url = "";
+                //发送get请求
+                vc.http.apiGet('/dtScene.listDtScene',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        _url = _json.data[0].modalJson;
+                        if (_url.indexOf('http') < 0) {
+                            return;
+                        }
+                        _scene.addGltfObject({
+                            path: _url
+                        })
+
+                    }, function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
         }
     });
 })(window.vc);
