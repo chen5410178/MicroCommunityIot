@@ -17,6 +17,7 @@ package com.java110.meter.smo.impl;
 
 
 import com.java110.bean.dto.PageDto;
+import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
@@ -96,12 +97,13 @@ public class InstrumentV1InnerServiceSMOImpl implements IInstrumentV1InnerServic
     }
 
     @Override
+    @Java110Transactional
     public String instrumentResult(MqttResultDto mqttResultDto) {
         HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
         hardwareManufacturerDto.setHmId(mqttResultDto.getHmId());
         hardwareManufacturerDto.setHmType(HardwareManufacturerDto.HM_TYPE_INSTRUMENT);
         List<HardwareManufacturerDto> hardwareManufacturerDtos = hardwareManufacturerV1InnerServiceSMOImpl.queryHardwareManufacturers(hardwareManufacturerDto);
-        Assert.listOnlyOne(hardwareManufacturerDtos, "未找到门禁接口协议");
+        Assert.listOnlyOne(hardwareManufacturerDtos, "未找到仪表接口协议");
         instrumentFactoryAdaptImpl = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IInstrumentFactoryAdapt.class);
 
         return instrumentFactoryAdaptImpl.instrumentResult(mqttResultDto.getTopic(), mqttResultDto.getData());

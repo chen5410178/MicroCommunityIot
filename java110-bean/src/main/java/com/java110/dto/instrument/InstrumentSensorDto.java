@@ -6,6 +6,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class InstrumentSensorDto extends PageDto implements Serializable {
+    public static final String PRESSURE_SENSOR = "1001";
+    public static final String LIQUID_LEVEL_SENSOR = "2002";
+    public static final String TEMPERATURE_AND_HUMIDITY_SENSOR = "3003";
+    public static final String TEMPERATURE_SENSOR = "4004";
+    public static final String WATER_QUALITY_SENSOR = "5005";
+    public static final String COMBUSTIBLE_GAS_SENSOR = "6006";
+    public static final String WATERLOGGING_SENSOR = "7007";
+
     private String sensorId;
     private String machineId;
     private String sensorType;

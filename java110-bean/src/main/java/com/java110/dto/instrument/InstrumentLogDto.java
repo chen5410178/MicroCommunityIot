@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class InstrumentLogDto extends PageDto implements Serializable {
+    public static final String REAL_TIME_REPORT = "1001";
+    public static final String EVENT_REPORT = "2002";
+
     private String logId;
     private String action;
     private String machineId;

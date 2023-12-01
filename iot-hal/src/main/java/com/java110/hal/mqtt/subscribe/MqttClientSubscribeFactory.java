@@ -7,6 +7,7 @@ import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.dto.hardwareManufacturerAttr.HardwareManufacturerAttrDto;
 import com.java110.core.factory.MqttFactory;
 import com.java110.dto.instrument.InstrumentDto;
+import com.java110.dto.instrument.InstrumentSensorDto;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.intf.meter.IInstrumentV1InnerServiceSMO;
 import com.java110.intf.system.IHardwareManufacturerAttrV1InnerServiceSMO;
@@ -74,8 +75,11 @@ public class MqttClientSubscribeFactory {
         }
 
         for (InstrumentDto dto : instrumentDtos) {
-            topic = topic.replace("SN", dto.getMachineCode());
-            MqttFactory.subscribe(topic);
+            List<InstrumentSensorDto> sensorList = dto.getInstrumentSensorList();
+            for (InstrumentSensorDto sensorDto : sensorList) {
+                String newTopic = topic.replace("SN", sensorDto.getSensorId() + "*");
+                MqttFactory.subscribe(newTopic);
+            }
         }
     }
 

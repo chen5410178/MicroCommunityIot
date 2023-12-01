@@ -19,11 +19,30 @@
         </foreach>
     </insert>
 
+    <resultMap id="resultMap" type="com.java110.dto.instrument.InstrumentSensorDto">
+        <result column="sensorId" property="sensorId"/>
+        <result column="machineId" property="machineId"/>
+        <result column="sensorType" property="sensorType"/>
+        <result column="communityId" property="communityId"/>
+        <result column="minValue" property="minValue"/>
+        <result column="maxValue1" property="maxValue"/>
+        <result column="units" property="units"/>
+        <result column="createTime" property="createTime"/>
+        <result column="statusCd" property="statusCd"/>
+    </resultMap>
+
     <!-- 查询仪表传感器信息 add by wuxw 2018-07-03 -->
-    <select id="getInstrumentSensorInfo" parameterType="Map" resultType="Map">
-        select t.min_value,t.min_value minValue,t.machine_id,t.machine_id machineId,t.max_value,t.max_value
-        maxValue,t.sensor_type,t.sensor_type sensorType,t.status_cd,t.status_cd
-        statusCd,t.units,t.community_id,t.community_id communityId,t.sensor_id,t.sensor_id sensorId
+    <select id="getInstrumentSensorInfo" parameterType="Map" resultMap="resultMap">
+        select
+        t.sensor_id sensorId,
+        t.machine_id machineId,
+        t.sensor_type sensorType,
+        t.community_id communityId,
+        t.min_value minValue,
+        t.max_value maxValue1,
+        t.units,
+        t.create_time createTime,
+        t.status_cd statusCd
         from instrument_sensor t
         where 1 =1
         <if test="minValue !=null and minValue != ''">
