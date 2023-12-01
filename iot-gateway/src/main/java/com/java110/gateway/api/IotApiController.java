@@ -125,6 +125,7 @@ public class IotApiController {
 
         String fileName = ossUploadTemplate.upload(uploadFile, ROOT_PATH);
 
+
         JSONObject outParam = new JSONObject();
         outParam.put("fileId", fileName);
         String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");

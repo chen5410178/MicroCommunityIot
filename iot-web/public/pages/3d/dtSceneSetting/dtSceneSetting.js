@@ -31,7 +31,15 @@ import Scene3d from 'api/3d/Scene3d.js'
                     $that.dtSceneSettingInfo.scene.initLight();
                     return;
                 }
-                $that.dtSceneSettingInfo.scene.add3DObject(_modal);
+                if(_modal.path.indexOf('.hdr')>0){
+                    $that.dtSceneSettingInfo.scene.addHdrBackgroup(_modal);
+                    return;
+                }
+                if(_modal.path.indexOf('.jpg')>0){
+                    $that.dtSceneSettingInfo.scene.addJpgBackgroup(_modal);
+                    return;
+                }
+                $that.dtSceneSettingInfo.scene.addGltfObject(_modal);
                 //$that.dtSceneSettingInfo.scene.add3DBox(_modal);
             });
             vc.on('dtSceneSetting', 'deleteModal', function (_object) {

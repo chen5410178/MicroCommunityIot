@@ -105,6 +105,7 @@ public class OssUploadTemplate {
                     e.printStackTrace();
                 }
             }
+
         }
         return fileName;
     }

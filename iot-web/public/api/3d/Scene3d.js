@@ -4,6 +4,11 @@ import { DragControls } from 'three/addons/controls/DragControls.js';
 import Stats from 'three/addons/libs/stats.module.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js'
+import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js'
+
 
 export default class Scene3d {
 
@@ -45,6 +50,11 @@ export default class Scene3d {
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setClearColor(new THREE.Color(0x87CEEB));
         this.renderer.setSize(window.innerWidth - 390, window.innerHeight);
+        this.renderer.antialias=true;
+
+        this.renderer.alpha=true;
+    
+        this.renderer.precision='mediump'
         // add the output of the renderer to the html element
         this.container = document.getElementById(_element);
         this.container.appendChild(this.renderer.domElement);
@@ -278,6 +288,95 @@ export default class Scene3d {
         );
     }
 
+    addGltfObject(_modal) {
+        const loader = new GLTFLoader();
+        const dracoLoader = new DRACOLoader();
+        dracoLoader.setDecoderPath('/js/three/examples/jsm/libs/draco/');
+        loader.setDRACOLoader(dracoLoader);
+        let _that = this;
+        loader.load(
+            // resource URL
+            _modal.path,
+            // called when the resource is loaded
+            function (gltf) {
+
+                //需要添加的部分
+                gltf.scene.traverse(function (child) {
+                    if (child.isMesh) {
+                        child.material.emissive = child.material.color;
+                        child.material.emissiveMap = child.material.map;
+                    }
+                });
+                _that.scene.add(gltf.scene);
+                console.log(gltf.scene)
+                //_that.scene.add(_that.merge(gltf.scene));
+
+                // gltf.animations; // Array<THREE.AnimationClip>
+                // gltf.scene; // THREE.Group
+                // gltf.scenes; // Array<THREE.Group>
+                // gltf.cameras; // Array<THREE.Camera>
+                // gltf.asset; // Object
+
+            },
+            // called while loading is progressing
+            function (xhr) {
+                console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+            },
+            // called when loading has errors
+            function (error) {
+                console.log('An error happened', error);
+            }
+        );
+    }
+    addJpgBackgroup(_modal) {
+        const texture = new THREE.TextureLoader().load( _modal.path );
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        texture.magFilter = THREE.LinearFilter;//③
+        texture.minFilter = THREE.LinearMipmapLinearFilter;//④
+        texture.encoding = THREE.sRGBEncoding;
+        //texture.repeat.set( 4, 4 );
+        this.scene.background = texture;
+        this.scene.environment = texture;
+    }
+    addHdrBackgroup(_modal) {
+        const rgbeLoader = new RGBELoader();
+        //资源较大，使用异步加载
+        let _that = this;
+        rgbeLoader.loadAsync(_modal.path).then((texture) => {
+            texture.mapping = THREE.EquirectangularReflectionMapping;
+            //将加载的材质texture设置给背景和环境
+            _that.scene.background = texture;
+            _that.scene.environment = texture;
+        });
+    }
+
+    merge(object) {
+        const geometries = [];
+        const materialArr = [];
+        object.traverse((obj) => {
+            const child = obj;
+            if (child.isMesh) {
+                const geo = child.geometry.clone();
+                if (Array.isArray(child.material)) {
+                    child.material = child.material[0];
+                }
+                materialArr.push(child.material);
+                geo.index = null;
+                child.updateWorldMatrix(true, true);
+                geo.applyMatrix4(child.matrixWorld);
+                geometries.push(geo);
+            }
+        });
+        // console.log(geometries);
+        const buffergeo = BufferGeometryUtils.mergeBufferGeometries(
+            geometries,
+            true
+        );
+        // console.log(buffergeo);
+        const mesh = new THREE.Mesh(buffergeo, materialArr);
+
+        return mesh;
+    }
     add3DBox(_modal) {
         const geometry = new THREE.BoxGeometry(1, 1, 1);
         const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
@@ -286,7 +385,7 @@ export default class Scene3d {
     }
 
     deleteObject(_object) {
-        this.transformControls.detach ();
+        this.transformControls.detach();
         _object.removeFromParent();
         // if (_object) {
         //     _object.traverse(function (item) {
@@ -325,7 +424,7 @@ export default class Scene3d {
         return _objects;
     }
 
-    exportScene(){
+    exportScene() {
         return JSON.stringify(this.scene.toJSON());
     }
 }

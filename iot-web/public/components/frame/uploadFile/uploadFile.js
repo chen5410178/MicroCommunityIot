@@ -49,8 +49,8 @@
                 if (photoFiles && photoFiles.length > 0) {
                     // 获取目前上传的文件
                     var file = photoFiles[0]; // 文件大小校验的动作
-                    if (file.size > 1024 * 1024 * 20) {
-                        vc.toast("文件大小不能超过 20MB!")
+                    if (file.size > 1024 * 1024 * 50) {
+                        vc.toast("文件大小不能超过 50MB!")
                         return false;
                     }
                     this.uploadFileInfo.fileName = file.name;
