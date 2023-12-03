@@ -1,8 +1,9 @@
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
-
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
 export default class Cockpit3d {
 
@@ -52,6 +53,8 @@ export default class Cockpit3d {
         //this.controls.enableDamping = true;
         this.controls.minPolarAngle = 0;
         this.controls.maxPolarAngle = 75 / 180 * Math.PI;
+        this.controls.minDistance = 200;
+        this.controls.maxDistance = 500; // 相机位置与观察目标点最大值
     }
 
     /**
@@ -85,6 +88,8 @@ export default class Cockpit3d {
             _that.update(_that);
         }
         animate();
+
+        
     }
 
     addGltfObject(_modal) {
@@ -103,6 +108,7 @@ export default class Cockpit3d {
                         child.material.emissiveMap = child.material.map;
                     }
                 });
+                gltf.scene.scale.set(1, 1, 1);
                 _that.scene.add(gltf.scene);
             },
             // called while loading is progressing
@@ -135,5 +141,30 @@ export default class Cockpit3d {
             _that.scene.background = texture;
             _that.scene.environment = texture;
         });
+    }
+
+   
+
+    clearThree(obj) {
+        while (obj.children.length > 0) {
+            this.clearThree(obj.children[0])
+            obj.remove(obj.children[0]);
+        }
+        if (obj.geometry) obj.geometry.dispose()
+
+        if (obj.material) {
+            //in case of map, bumpMap, normalMap, envMap ...
+            Object.keys(obj.material).forEach(prop => {
+                if (!obj.material[prop])
+                    return
+                if (typeof obj.material[prop].dispose === 'function')
+                    obj.material[prop].dispose()
+            })
+            obj.material.dispose()
+        }
+    }
+
+    resetScene(){
+        this.clearThree(this.scene);
     }
 }

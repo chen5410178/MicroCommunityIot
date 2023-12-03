@@ -1033,6 +1033,7 @@ nav-link nav-link-breadcrumb active:active {
 }
 
 .cockpit-header {
+    
     position: absolute;
     left: 0;
     top: 0;
@@ -1046,4 +1047,77 @@ nav-link nav-link-breadcrumb active:active {
     font-size: 32px;
     font-weight: bold;
     color: #FFFFFF;
+    letter-spacing: 0.2em;
+}
+
+.cockpit-left {
+    width: 20.8vw;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    box-sizing: border-box;
+    padding: 6vh 0 6vh 1.2vw;
+    transition: all 1s ease;
+    background: linear-gradient(90deg, rgba(3, 17, 23, 1), rgba(3, 17, 23, 0));
+}
+
+.cockpit-right {
+    width: 20.8vw;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 2;
+    box-sizing: border-box;
+    padding: 6vh 1.2vw 6vh 0;
+    transition: all 1s ease;
+    background: linear-gradient(270deg, rgba(3, 17, 23, 1), rgba(3, 17, 23, 0));
+}
+
+.cockpit-menu {
+    width: 80%;
+    height: 6.575rem;
+    margin-left: 30px;
+    margin-top: 30px;
+    z-index: 9;
+    color: #838A9B;
+}
+
+.cockpit-menu .c-menu-item {
+    height: 90px;
+}
+
+
+.cockpit-menu .active {
+    color: #c17e14;
+    /* width: 0.6875rem;
+    height: 0.6875rem; */
+}
+
+.cockpit-menu .active .bg-a{
+    background: url('/img/3d/active.png');
+    background-size: 100% 100%;
+  
+}
+
+.cockpit-menu .title {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;  
+}
+
+.cockpit-menu .title .bg {
+    width: 120px;
+    height: 60px; 
+    padding: 9px 0px 15px 25px;
+    font-size: 24px;
+}
+
+
+.cockpit-menu .title .t-text{
+    position: relative;
+    top: 15px;
+    left: -58px;
 }
