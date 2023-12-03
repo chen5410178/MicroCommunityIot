@@ -590,7 +590,7 @@ body,
     color: var(--vc-menu-main-active-font-color);
 }
 
-.modal-active{
+.modal-active {
     background-color: #47240d;
     color: #ff6c0d;
 }
@@ -1030,4 +1030,20 @@ nav-link nav-link-breadcrumb active:active {
 
 .no_display {
     display: none;
+}
+
+.cockpit-header {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    width: 100%;
+    height: 7.6vh;
+    background: url('../img/bg-top.png') no-repeat;
+    background-size: 100% 100%;
+    text-align: center;
+    line-height: 7.6vh;
+    font-size: 32px;
+    font-weight: bold;
+    color: #FFFFFF;
 }

@@ -1,12 +1,11 @@
 /**
     入驻小区
 **/
-
-import Scene3d from 'api/3d/Scene3d.js'
+import Cockpit3d from 'api/3d/Cockpit3d.js'
 (function (vc) {
     vc.extends({
         data: {
-            dtSceneSettingInfo: {
+            cockpitInfo: {
                 scene: {},
                 modal: 'translate',
                 object: {},
@@ -15,12 +14,8 @@ import Scene3d from 'api/3d/Scene3d.js'
             }
         },
         _initMethod: function () {
-            // let _scene = new Scene3d('webgl-scene');
-            // $that.dtSceneSettingInfo.scene = _scene;
-            // _scene.setSelect3DObject(function (_object) {
-            //     vc.emit('dtSceneSetting', 'controlObject', _object);
-            // });
-            // $that._listDtScenes();
+            let _scene = new Cockpit3d('webgl-scene');
+            $that.cockpitInfo.scene = _scene;
         },
         _initEvent: function () {
            
