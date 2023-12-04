@@ -60,9 +60,6 @@
             _openAddMeterMachineFactorySpecModal: function () {
                 vc.emit('addMeterMachineFactorySpec', 'openAddMeterMachineFactorySpecModal', $that.meterMachineFactorySpecManageInfo.conditions.factoryId);
             },
-            _openEditMeterMachineFactorySpecModel: function (_meterMachineFactorySpec) {
-                vc.emit('editMeterMachineFactorySpec', 'openEditMeterMachineFactorySpecModal', _meterMachineFactorySpec);
-            },
             _openDeleteMeterMachineFactorySpecModel: function (_meterMachineFactorySpec) {
                 vc.emit('deleteMeterMachineFactorySpec', 'openDeleteMeterMachineFactorySpecModal', _meterMachineFactorySpec);
             },

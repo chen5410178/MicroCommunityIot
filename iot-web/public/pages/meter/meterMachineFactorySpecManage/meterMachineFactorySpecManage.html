@@ -30,6 +30,9 @@
                                     <vc:i18n name='描述' namespace='meterMachineFactorySpecManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='meterMachineFactorySpecManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='操作'></vc:i18n>
                                 </th>
                             </tr>
@@ -39,12 +42,8 @@
                                 <td class="text-center">{{meterMachineFactorySpec.specId}}</td>
                                 <td class="text-center">{{meterMachineFactorySpec.specName}}</td>
                                 <td class="text-center">{{meterMachineFactorySpec.remark}}</td>
+                                <td class="text-center">{{meterMachineFactorySpec.createTime}}</td>
                                 <td class="text-center">
-                                    <div class="btn-group">
-                                        <button class="btn-white btn btn-xs" v-on:click="_openEditMeterMachineFactorySpecModel(meterMachineFactorySpec)">
-                                            <vc:i18n name='修改'></vc:i18n>
-                                        </button>
-                                    </div>
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs" v-on:click="_openDeleteMeterMachineFactorySpecModel(meterMachineFactorySpec)">
                                             <vc:i18n name='删除'></vc:i18n>
@@ -69,7 +68,6 @@
     </div>
 
     <vc:create path="meter/addMeterMachineFactorySpec" callBackListener="" callBackFunction=""></vc:create>
-    <vc:create path="meter/editMeterMachineFactorySpec"></vc:create>
     <vc:create path="meter/deleteMeterMachineFactorySpec"></vc:create>
 
 </div>

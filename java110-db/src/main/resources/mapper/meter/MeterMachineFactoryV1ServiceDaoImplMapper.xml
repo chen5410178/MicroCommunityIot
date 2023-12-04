@@ -21,7 +21,7 @@ factory_id,factory_name,remark,bean_impl,machine_model
 
     <!-- 查询电表厂家信息 add by wuxw 2018-07-03 -->
     <select id="getMeterMachineFactoryInfo" parameterType="Map" resultType="Map">
-        select  t.factory_id,t.factory_id factoryId,t.factory_name,t.factory_name factoryName,t.remark,t.status_cd,t.status_cd statusCd,t.bean_impl,t.bean_impl beanImpl,t.machine_model,t.machine_model machineModel
+        select  t.factory_id,t.factory_id factoryId,t.factory_name,t.factory_name factoryName,t.remark,t.status_cd,t.status_cd statusCd,t.bean_impl,t.bean_impl beanImpl,t.machine_model,t.machine_model machineModel,t.create_time createTime
 from meter_machine_factory t 
 where 1 =1 
 <if test="factoryId !=null and factoryId != ''">
