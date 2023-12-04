@@ -38,7 +38,10 @@ where 1 =1
 </if> 
 <if test="beanImpl !=null and beanImpl != ''">
    and t.bean_impl= #{beanImpl}
-</if> 
+</if>
+<if test="machineModel !=null and machineModel != ''">
+   and t.machine_model= #{machineModel}
+</if>
 order by t.create_time desc
 <if test="page != -1 and page != null ">
    limit #{page}, #{row}
@@ -92,7 +95,10 @@ where 1 =1
 </if> 
 <if test="beanImpl !=null and beanImpl != ''">
    and t.bean_impl= #{beanImpl}
-</if> 
+</if>
+ <if test="machineModel !=null and machineModel != ''">
+   and t.machine_model= #{machineModel}
+ </if>
 
 
      </select>

@@ -111,9 +111,13 @@ public class ChargeMeterMoneyCmd extends Cmd {
         List<MeterMachineFactoryDto> meterMachineFactoryDtos = meterMachineFactoryV1InnerServiceSMOImpl.queryMeterMachineFactorys(meterMachineFactoryDto);
         Assert.listOnlyOne(meterMachineFactoryDtos, "智能水电表厂家不存在");
 
-        ISmartMeterFactoryAdapt smartMeterFactoryAdapt = ApplicationContextFactory.getBean(meterMachineFactoryDtos.get(0).getBeanImpl(), ISmartMeterFactoryAdapt.class);
-        if (smartMeterFactoryAdapt == null) {
-            throw new CmdException("厂家接口未实现");
+        ISmartMeterFactoryAdapt smartMeterFactoryAdapt = null;
+        try {
+            smartMeterFactoryAdapt = ApplicationContextFactory.getBean(meterMachineFactoryDtos.get(0).getBeanImpl(), ISmartMeterFactoryAdapt.class);
+        } finally {
+            if (smartMeterFactoryAdapt == null) {
+                throw new CmdException("厂家接口未实现");
+            }
         }
 
         double chargeMoney = reqJson.getDouble("chargeMoney");

@@ -53,13 +53,17 @@
                     param,
                     function(json, res) {
                         let _json = JSON.parse(json);
-                        $that.meterMachineManageInfo.total = _json.total;
-                        $that.meterMachineManageInfo.records = _json.records;
-                        $that.meterMachineManageInfo.meterMachines = _json.data;
-                        vc.emit('pagination', 'init', {
-                            total: $that.meterMachineManageInfo.records,
-                            currentPage: _page
-                        });
+                        if (_json.code === 0) {
+                            $that.meterMachineManageInfo.total = _json.total;
+                            $that.meterMachineManageInfo.records = _json.records;
+                            $that.meterMachineManageInfo.meterMachines = _json.data;
+                            vc.emit('pagination', 'init', {
+                                total: $that.meterMachineManageInfo.records,
+                                currentPage: _page
+                            });
+                        } else {
+                            vc.toast(_json.msg);
+                        }
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');

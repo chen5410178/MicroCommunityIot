@@ -108,7 +108,7 @@ public class UpdateMeterMachineCmd extends Cmd {
         MeterMachineFactoryDto meterMachineFactoryDto = new MeterMachineFactoryDto();
         meterMachineFactoryDto.setFactoryId(reqJson.getString("implBean"));
         List<MeterMachineFactoryDto> meterMachineFactoryDtos = meterMachineFactoryV1InnerServiceSMOImpl.queryMeterMachineFactorys(meterMachineFactoryDto);
-        if (!StringUtil.isEmpty(meterMachineFactoryDtos.get(0).getMachineModel()) && !reqJson.getString("machineModel").equals(meterMachineFactoryDtos.get(0).getMachineModel())) {
+        if (!"3003".equals(meterMachineFactoryDtos.get(0).getMachineModel()) && !reqJson.getString("machineModel").equals(meterMachineFactoryDtos.get(0).getMachineModel())) {
             throw new CmdException("厂家设备不支持该模式，请重新选择");
         }
 
