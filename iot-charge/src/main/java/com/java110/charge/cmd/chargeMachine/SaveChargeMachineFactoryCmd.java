@@ -54,9 +54,8 @@ public class SaveChargeMachineFactoryCmd extends Cmd {
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
-        Assert.hasKeyAndValue(reqJson, "factoryName", "请求报文中未包含factoryName");
-Assert.hasKeyAndValue(reqJson, "beanImpl", "请求报文中未包含beanImpl");
-
+        Assert.hasKeyAndValue(reqJson, "factoryName", "factoryName不能为空");
+        Assert.hasKeyAndValue(reqJson, "beanImpl", "beanImpl不能为空");
     }
 
     @Override

@@ -21,7 +21,7 @@ factory_id,factory_name,remark,bean_impl
 
     <!-- 查询充电桩厂家信息 add by wuxw 2018-07-03 -->
     <select id="getChargeMachineFactoryInfo" parameterType="Map" resultType="Map">
-        select  t.factory_id,t.factory_id factoryId,t.factory_name,t.factory_name factoryName,t.remark,t.status_cd,t.status_cd statusCd,t.bean_impl,t.bean_impl beanImpl 
+        select  t.factory_id,t.factory_id factoryId,t.factory_name,t.factory_name factoryName,t.remark,t.status_cd,t.status_cd statusCd,t.bean_impl,t.bean_impl beanImpl,t.create_time createTime
 from charge_machine_factory t 
 where 1 =1 
 <if test="factoryId !=null and factoryId != ''">
