@@ -7,7 +7,7 @@
                 scriptName: '',
                 scriptType: '',
                 jsContent: '',
-
+                scriptTypes:[],
             }
         },
         _initMethod: function () {
@@ -16,6 +16,9 @@
         _initEvent: function () {
             vc.on('editDtScript', 'openEditDtScriptModal', function (_params) {
                 $that.refreshEditDtScriptInfo();
+                vc.getDict('dt_modal', 'modal_type', function (_data) {
+                    $that.editDtScriptInfo.scriptTypes = _data;
+                })
                 $('#editDtScriptModel').modal('show');
                 vc.copyObject(_params, $that.editDtScriptInfo);
             });
@@ -93,7 +96,7 @@
                     scriptName: '',
                     scriptType: '',
                     jsContent: '',
-
+                    scriptTypes:[],
                 }
             }
         }

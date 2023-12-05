@@ -18,8 +18,9 @@
     <!-- 查询3d场景信息 add by wuxw 2018-07-03 -->
     <select id="getDtScriptInfo" parameterType="Map" resultType="Map">
         select t.script_id,t.script_id scriptId,t.script_type,t.script_type scriptType,t.script_name,t.script_name
-        scriptName,t.status_cd,t.status_cd statusCd,t.js_content,t.js_content jsContent,t.create_time createTime
+        scriptName,t.status_cd,t.status_cd statusCd,t.js_content,t.js_content jsContent,t.create_time createTime,td1.name scriptTypeName
         from dt_script t
+        LEFT JOIN t_dict td1 on t.script_type = td1.status_cd and td1.table_name = 'dt_modal' and td1.table_columns = 'script_type'
         where 1 =1
         <if test="scriptId !=null and scriptId != ''">
             and t.script_id= #{scriptId}

@@ -17,6 +17,8 @@ public class DtScriptDto extends PageDto implements Serializable {
 
     private String scriptId;
     private String scriptType;
+
+    private String scriptTypeName;
     private String scriptName;
     private String jsContent;
 
@@ -73,5 +75,13 @@ public class DtScriptDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getScriptTypeName() {
+        return scriptTypeName;
+    }
+
+    public void setScriptTypeName(String scriptTypeName) {
+        this.scriptTypeName = scriptTypeName;
     }
 }

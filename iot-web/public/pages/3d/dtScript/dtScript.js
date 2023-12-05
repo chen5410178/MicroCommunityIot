@@ -8,6 +8,7 @@
         data: {
             dtScriptInfo: {
                 dtScripts: [],
+                scriptTypes:[],
                 total: 0,
                 records: 1,
                 moreCondition: false,
@@ -22,6 +23,15 @@
         },
         _initMethod: function () {
             $that._listDtScripts(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that.dtScriptInfo.scriptTypes = [{
+                name:'全部类型',
+                statusCd:''
+            }]
+            vc.getDict('dt_modal', 'modal_type', function (_data) {
+                _data.forEach(_item=>{
+                    $that.dtScriptInfo.scriptTypes.push(_item);
+                })
+            })
         },
         _initEvent: function () {
 
@@ -58,7 +68,9 @@
                 );
             },
             _openAddDtScriptModal: function () {
-                vc.emit('addDtScript', 'openAddDtScriptModal', {});
+                vc.emit('addDtScript', 'openAddDtScriptModal', {
+                    scriptType:$that.dtScriptInfo.conditions.scriptType,
+                });
             },
             _openEditDtScriptModel: function (_dtScript) {
                 vc.emit('editDtScript', 'openEditDtScriptModal', _dtScript);
@@ -69,6 +81,10 @@
             _queryDtScriptMethod: function () {
                 $that._listDtScripts(DEFAULT_PAGE, DEFAULT_ROWS);
 
+            },
+            swatchScriptType:function(_dict){
+                $that.dtScriptInfo.conditions.scriptType = _dict.statusCd;
+                $that._listDtScripts(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _moreCondition: function () {
                 if ($that.dtScriptInfo.moreCondition) {

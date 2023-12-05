@@ -7,14 +7,18 @@
                 scriptName: '',
                 scriptType: '',
                 jsContent: '',
-
+                scriptTypes:[]
             }
         },
         _initMethod: function () {
-
+            
         },
         _initEvent: function () {
-            vc.on('addDtScript', 'openAddDtScriptModal', function () {
+            vc.on('addDtScript', 'openAddDtScriptModal', function (_data) {
+                $that.addDtScriptInfo.scriptType = _data.scriptType;
+                vc.getDict('dt_modal', 'modal_type', function (_data) {
+                    $that.addDtScriptInfo.scriptTypes = _data;
+                })
                 $('#addDtScriptModel').modal('show');
             });
         },
@@ -86,7 +90,7 @@
                     scriptName: '',
                     scriptType: '',
                     jsContent: '',
-
+                    scriptTypes:[]
                 };
             }
         }
