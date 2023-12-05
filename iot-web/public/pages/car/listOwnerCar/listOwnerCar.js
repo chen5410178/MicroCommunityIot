@@ -256,7 +256,6 @@
                 });
             },
             _exportExcel: function() {
-                //vc.jumpToPage('/callComponent/exportReportFee/exportData?pagePath=reportFeeSummary&' + vc.objToGetParam($that.reportFeeSummaryInfo.conditions));
                 $that.listOwnerCarInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
                 $that.listOwnerCarInfo.conditions.pagePath = 'exportOwnerCar';
                 let param = {
