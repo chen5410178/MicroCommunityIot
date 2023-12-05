@@ -73,6 +73,12 @@
         <if test="paramId !=null and paramId != ''">
             and t.param_id= #{paramId}
         </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
 
     </update>
 

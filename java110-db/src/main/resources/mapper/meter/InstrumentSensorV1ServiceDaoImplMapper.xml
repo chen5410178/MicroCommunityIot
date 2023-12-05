@@ -105,6 +105,12 @@
         <if test="sensorId !=null and sensorId != ''">
             and t.sensor_id= #{sensorId}
         </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
 
     </update>
 

@@ -16,12 +16,6 @@
                     <div class="row">
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请输入仪表ID','instrumentManage')"
-                                       v-model="instrumentManageInfo.conditions.machineId" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请输入仪表编码','instrumentManage')"
                                        v-model="instrumentManageInfo.conditions.machineCode" class=" form-control">
                             </div>
@@ -30,6 +24,16 @@
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请输入仪表名称','instrumentManage')"
                                        v-model="instrumentManageInfo.conditions.machineName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="instrumentManageInfo.conditions.typeId">
+                                    <option disabled selected value="">{{vc.i18n('请选择仪表类型','instrumentManage')}}</option>
+                                    <option v-for="(item, index) in instrumentTypeList" :value="item.typeId">
+                                        {{item.name}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-sm-2">
@@ -42,16 +46,6 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-3" v-if="instrumentManageInfo.moreCondition == true">
-                            <div class="form-group">
-                                <select class="custom-select" v-model="instrumentManageInfo.conditions.typeId">
-                                    <option disabled selected value="">{{vc.i18n('请选择仪表类型','instrumentManage')}}</option>
-                                    <option v-for="(item, index) in instrumentTypeList" :value="item.typeId">
-                                        {{item.name}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
                         <div class="col-sm-3" v-if="instrumentManageInfo.moreCondition == true">
                             <div class="form-group">
                                 <select class="custom-select" v-model="instrumentManageInfo.conditions.implBean">
@@ -84,9 +78,6 @@
                     <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
                         <thead>
                             <tr>
-                                <th class="text-center">
-                                    <vc:i18n name='仪表ID' namespace='instrumentManage'></vc:i18n>
-                                </th>
                                 <th class="text-center">
                                     <vc:i18n name='仪表编码' namespace='instrumentManage'></vc:i18n>
                                 </th>
@@ -121,15 +112,14 @@
                         </thead>
                         <tbody>
                             <tr v-for="instrument in instrumentManageInfo.instruments">
-                                <td class="text-center">{{instrument.machineId}}</td>
                                 <td class="text-center">{{instrument.machineCode}}</td>
                                 <td class="text-center">{{instrument.machineName}}</td>
                                 <td class="text-center">{{instrument.typeName}}</td>
-                                <td class="text-center">{{instrument.charge}}</td>
-                                <td class="text-center">{{instrument.sign}}</td>
+                                <td class="text-center">{{instrument.charge}}%</td>
+                                <td class="text-center">{{instrument.sign}}dbm</td>
                                 <td class="text-center">{{instrument.factoryName}}</td>
-                                <td class="text-center">{{instrument.upMin}}</td>
-                                <td class="text-center">{{instrument.checkSec}}</td>
+                                <td class="text-center">{{instrument.upMin}}min</td>
+                                <td class="text-center">{{instrument.checkSec}}sec</td>
                                 <td class="text-center">{{instrument.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">

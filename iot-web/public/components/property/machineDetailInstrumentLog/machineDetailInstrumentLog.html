@@ -29,6 +29,9 @@
                         <vc:i18n name='上报级别' namespace='instrumentLogManage'></vc:i18n>
                     </th>
                     <th class="text-center">
+                        <vc:i18n name='上报数据' namespace='instrumentLogManage'></vc:i18n>
+                    </th>
+                    <th class="text-center">
                         <vc:i18n name='仪表ID' namespace='instrumentLogManage'></vc:i18n>
                     </th>
                     <th class="text-center">
@@ -36,9 +39,6 @@
                     </th>
                     <th class="text-center">
                         <vc:i18n name='仪表名称' namespace='instrumentLogManage'></vc:i18n>
-                    </th>
-                    <th class="text-center">
-                        <vc:i18n name='操作'></vc:i18n>
                     </th>
                 </tr>
             </thead>
@@ -49,16 +49,10 @@
                         <label v-if="instrumentLog.action === '1001'">{{vc.i18n('实时数据','instrumentLogManage')}}</label>
                         <label v-if="instrumentLog.action === '2002'">{{vc.i18n('事件数据','instrumentLogManage')}}</label>
                     </td>
+                    <td class="text-center">{{instrumentLog.sensorValue}}</td>
                     <td class="text-center">{{instrumentLog.machineId}}</td>
                     <td class="text-center">{{instrumentLog.machineCode}}</td>
                     <td class="text-center">{{instrumentLog.machineName}}</td>
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <button class="btn-white btn btn-xs" v-on:click="_openViewInstrumentLogSensorModel(instrumentLog)">
-                                <vc:i18n name='报文'></vc:i18n>
-                            </button>
-                        </div>
-                    </td>
                 </tr>
             </tbody>
         </table>

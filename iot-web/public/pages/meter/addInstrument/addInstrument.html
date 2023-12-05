@@ -31,15 +31,21 @@
                     <label class="col-sm-2 col-form-label text-right">
                         <vc:i18n name='上报时间' namespace='addInstrument'></vc:i18n>
                     </label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <input v-model="addInstrumentInfo.upMin" type="number" :placeholder="vc.i18n('必填，请填写上报时间','addInstrument')" class="form-control">
                     </div>
+                    <label class="col-sm-1 col-form-label text-left">
+                        <vc:i18n name='min' namespace='addInstrument'></vc:i18n>
+                    </label>
                     <label class="col-sm-2 col-form-label text-right">
                         <vc:i18n name='采样时间' namespace='addInstrument'></vc:i18n>
                     </label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <input v-model="addInstrumentInfo.checkSec" type="number" :placeholder="vc.i18n('必填，请填写采样时间','addInstrument')" class="form-control">
                     </div>
+                    <label class="col-sm-1 col-form-label text-left">
+                        <vc:i18n name='sec' namespace='addInstrument'></vc:i18n>
+                    </label>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label text-right">
