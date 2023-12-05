@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dtSceneObjScriptV1ServiceDaoImpl">
+
+
+    <!-- 保存对象脚本信息 add by wuxw 2018-07-03 -->
+    <insert id="saveDtSceneObjScriptInfo" parameterType="Map">
+        insert into dt_scene_obj_script(
+        script_id,scene_id,obj_name,dsms_id,community_id
+        ) values (
+        #{scriptId},#{sceneId},#{objName},#{dsmsId},#{communityId}
+        )
+    </insert>
+
+
+    <!-- 查询对象脚本信息 add by wuxw 2018-07-03 -->
+    <select id="getDtSceneObjScriptInfo" parameterType="Map" resultType="Map">
+        select t.script_id,t.script_id scriptId,t.scene_id,t.scene_id sceneId,t.status_cd,t.status_cd
+        statusCd,t.obj_name,t.obj_name objName,t.dsms_id,t.dsms_id dsmsId,t.community_id,t.community_id communityId
+        from dt_scene_obj_script t
+        where 1 =1
+        <if test="scriptId !=null and scriptId != ''">
+            and t.script_id= #{scriptId}
+        </if>
+        <if test="sceneId !=null and sceneId != ''">
+            and t.scene_id= #{sceneId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="objName !=null and objName != ''">
+            and t.obj_name= #{objName}
+        </if>
+        <if test="dsmsId !=null and dsmsId != ''">
+            and t.dsms_id= #{dsmsId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改对象脚本信息 add by wuxw 2018-07-03 -->
+    <update id="updateDtSceneObjScriptInfo" parameterType="Map">
+        update dt_scene_obj_script t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="scriptId !=null and scriptId != ''">
+            , t.script_id= #{scriptId}
+        </if>
+        <if test="sceneId !=null and sceneId != ''">
+            , t.scene_id= #{sceneId}
+        </if>
+        <if test="objName !=null and objName != ''">
+            , t.obj_name= #{objName}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="dsmsId !=null and dsmsId != ''">
+            and t.dsms_id= #{dsmsId}
+        </if>
+
+    </update>
+
+    <!-- 查询对象脚本数量 add by wuxw 2018-07-03 -->
+    <select id="queryDtSceneObjScriptsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from dt_scene_obj_script t
+        where 1 =1
+        <if test="scriptId !=null and scriptId != ''">
+            and t.script_id= #{scriptId}
+        </if>
+        <if test="sceneId !=null and sceneId != ''">
+            and t.scene_id= #{sceneId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="objName !=null and objName != ''">
+            and t.obj_name= #{objName}
+        </if>
+        <if test="dsmsId !=null and dsmsId != ''">
+            and t.dsms_id= #{dsmsId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+
+    </select>
+
+</mapper>
