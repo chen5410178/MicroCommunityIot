@@ -19,7 +19,7 @@
     <select id="getHardwareManufacturerInfo" parameterType="Map" resultType="Map">
         select t.hm_id,t.hm_id hmId,t.license,t.prod_url,t.prod_url prodUrl,t.author,t.link,t.status_cd,t.status_cd
         statusCd,t.default_protocol,t.default_protocol defaultProtocol,t.hm_name,t.hm_name
-        hmName,t.protocol_impl,t.protocol_impl protocolImpl,t.version,t.hm_type,t.hm_type hmType
+        hmName,t.protocol_impl,t.protocol_impl protocolImpl,t.version,t.hm_type,t.hm_type hmType,t.create_time createTime
         from hardware_manufacturer t
         where 1 =1
         <if test="hmId !=null and hmId != ''">

@@ -1,0 +1,219 @@
+<div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;" v-on:click="_moreCondition()">
+                            {{hardwareManufacturerManageInfo.moreCondition == true?'隐藏':'更多'}}
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择厂商ID','hardwareManufacturerManage')"
+                                       v-model="hardwareManufacturerManageInfo.conditions.hmId" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择厂商名称','hardwareManufacturerManage')"
+                                       v-model="hardwareManufacturerManageInfo.conditions.hmName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择厂商协议版本号','hardwareManufacturerManage')"
+                                       v-model="hardwareManufacturerManageInfo.conditions.version"
+                                       class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-sm"
+                                    v-on:click="_queryHardwareManufacturerMethod()">
+                                <i class="glyphicon glyphicon-search"></i> <span><vc:i18n name="查询"></vc:i18n></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4" v-if="hardwareManufacturerManageInfo.moreCondition == true">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择协议实现','hardwareManufacturerManage')"
+                                       v-model="hardwareManufacturerManageInfo.conditions.protocolImpl"
+                                       class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-4" v-if="hardwareManufacturerManageInfo.moreCondition == true">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择数据状态','hardwareManufacturerManage')"
+                                       v-model="hardwareManufacturerManageInfo.conditions.statusCd"
+                                       class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="hardwareManufacturerManageInfo.moreCondition == true">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择商户类型','hardwareManufacturerManage')"
+                                       v-model="hardwareManufacturerManageInfo.conditions.hmType" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4" v-if="hardwareManufacturerManageInfo.moreCondition == true">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择该协议开发者','hardwareManufacturerManage')"
+                                       v-model="hardwareManufacturerManageInfo.conditions.author" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-4" v-if="hardwareManufacturerManageInfo.moreCondition == true">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择开发者联系方式','hardwareManufacturerManage')"
+                                       v-model="hardwareManufacturerManageInfo.conditions.link" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="hardwareManufacturerManageInfo.moreCondition == true">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择产品官网','hardwareManufacturerManage')"
+                                       v-model="hardwareManufacturerManageInfo.conditions.prodUrl"
+                                       class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4" v-if="hardwareManufacturerManageInfo.moreCondition == true">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择是否启用该协议','hardwareManufacturerManage')"
+                                       v-model="hardwareManufacturerManageInfo.conditions.defaultProtocol"
+                                       class=" form-control">
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="门禁厂家" namespace="hardwareManufacturerManage"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddHardwareManufacturerModal()">
+                            <vc:i18n name="添加" namespace="hardwareManufacturerManage"></vc:i18n>
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='厂商ID' namespace='hardwareManufacturerManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='厂商名称' namespace='hardwareManufacturerManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='厂商协议版本号' namespace='hardwareManufacturerManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='协议实现' namespace='hardwareManufacturerManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='该协议开发者' namespace='hardwareManufacturerManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='开发者联系方式' namespace='hardwareManufacturerManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='该协议许可' namespace='hardwareManufacturerManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='产品官网' namespace='hardwareManufacturerManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='是否启用该协议' namespace='hardwareManufacturerManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='hardwareManufacturerManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="hardwareManufacturer in hardwareManufacturerManageInfo.hardwareManufacturers">
+                                <td class="text-center">{{hardwareManufacturer.hmId}}</td>
+                                <td class="text-center">{{hardwareManufacturer.hmName}}</td>
+                                <td class="text-center">{{hardwareManufacturer.version}}</td>
+                                <td class="text-center">{{hardwareManufacturer.protocolImpl}}</td>
+                                <td class="text-center">{{hardwareManufacturer.author}}</td>
+                                <td class="text-center">{{hardwareManufacturer.link}}</td>
+                                <td class="text-center">
+                                    <button class="btn-white btn btn-xs" v-on:click="_openModel(hardwareManufacturer.license, '该协议许可')">
+                                        <vc:i18n name='查看'></vc:i18n>
+                                    </button>
+                                </td>
+                                <td class="text-center">{{hardwareManufacturer.prodUrl}}</td>
+                                <td class="text-center">
+                                    <label v-if="hardwareManufacturer.defaultProtocol == 'T'">
+                                        {{vc.i18n('是','hardwareManufacturerManage')}}
+                                    </label>
+                                    <label v-if="hardwareManufacturer.defaultProtocol == 'F'">
+                                        {{vc.i18n('否','hardwareManufacturerManage')}}
+                                    </label>
+                                </td>
+                                <td class="text-center">{{hardwareManufacturer.createTime}}</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openHardwareManufacturerAttr(hardwareManufacturer)">
+                                            <vc:i18n name='厂家规格'></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openEditHardwareManufacturerModel(hardwareManufacturer)">
+                                            <vc:i18n name='修改'></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openDeleteHardwareManufacturerModel(hardwareManufacturer)">
+                                            <vc:i18n name='删除'></vc:i18n>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7">
+                                    <ul class="pagination float-right"></ul>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <vc:create path="accessControl/addHardwareManufacturer" callBackListener="" callBackFunction=""></vc:create>
+    <vc:create path="accessControl/editHardwareManufacturer"></vc:create>
+    <vc:create path="accessControl/deleteHardwareManufacturer"></vc:create>
+    <vc:create path="event/viewData"></vc:create>
+
+</div>
