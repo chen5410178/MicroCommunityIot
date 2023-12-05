@@ -426,27 +426,50 @@
     /**
      * 手工执行js 脚本
      */
+    // execScript = function (_tree, _componentScript) {
+
+    //     let _jsBody = "";
+    //     for (let i = 0; i < _componentScript.length; i++) {
+    //         //一段一段执行script 
+    //         // try {
+    //         //     eval(_componentScript[i]);
+    //         // } catch (e) {
+    //         //     console.log('js脚本错误', _componentScript[i]);
+    //         //     console.error(e);
+    //         // }
+    //         _jsBody += (_componentScript[i]+';');
+    //     }
+    //     //let _tmpJsBody = '<script type="text/javascript">//<![CDATA[\n' + _jsBody + '//]]>\n</script>';
+
+    //     _jsBody +="vcFramework.initVue();vcFramework.initVcComponent();"
+    //     let script = document.createElement('script');
+    //    // script.type="module";
+    //     script.setAttribute("type", "module"); 
+    //     script.innerHTML = _jsBody; // 替换为你的JavaScript代码
+    //     document.body.appendChild(script);
+    //     //初始化vue 对象
+    //     // vcFramework.initVue();
+
+    //     // vcFramework.initVcComponent();
+    // }
+
     execScript = function (_tree, _componentScript) {
 
         let _jsBody = "";
         for (let i = 0; i < _componentScript.length; i++) {
-            //一段一段执行script 
-            // try {
-            //     eval(_componentScript[i]);
-            // } catch (e) {
-            //     console.log('js脚本错误', _componentScript[i]);
-            //     console.error(e);
-            // }
-            _jsBody += (_componentScript[i]+';');
+            _jsBody = (_componentScript[i] + ';');
+            let script = document.createElement('script');
+            script.setAttribute("type", "module");
+            script.innerHTML = _jsBody; // 替换为你的JavaScript代码
+            document.body.appendChild(script);
         }
         //let _tmpJsBody = '<script type="text/javascript">//<![CDATA[\n' + _jsBody + '//]]>\n</script>';
 
-        _jsBody +="vcFramework.initVue();vcFramework.initVcComponent();"
-        let script = document.createElement('script');
-       // script.type="module";
-        script.setAttribute("type", "module"); 
-        script.innerHTML = _jsBody; // 替换为你的JavaScript代码
-        document.body.appendChild(script);
+        setTimeout(function(){
+            vcFramework.initVue();
+            vcFramework.initVcComponent();
+        },100)
+       
         //初始化vue 对象
         // vcFramework.initVue();
 
@@ -631,8 +654,8 @@
         } else {
             namespace = _componentVcCreate.getAttribute("namespace");
         }
-    //     let propsJs = "\nlet $namespace='" + namespace.trim() + "';\n";
-    //    let newJs = _js.replace('vc.extends',propsJs+"vc.extends");
+        //     let propsJs = "\nlet $namespace='" + namespace.trim() + "';\n";
+        //    let newJs = _js.replace('vc.extends',propsJs+"vc.extends");
 
         // //js对象中插入namespace 值
         // if(namespace == 'chooseEnterCommunity'){
@@ -644,17 +667,17 @@
         let pos = tmpProTypes.indexOf("{") + 1;
         _js = _js.substring(0, extPos) + tmpProTypes.substring(0, pos).trim() +
             "\nnamespace:'" + namespace.trim() + "',\n" + tmpProTypes.substring(pos, tmpProTypes.length);
-           
-        
-       let propsJs = "\nlet $namespace='" + namespace.trim() + "';\n";
-       let newJs = _js.replace('vc.extends',propsJs+"vc.extends");
+
+
+        let propsJs = "\nlet $namespace='" + namespace.trim() + "';\n";
+        let newJs = _js.replace('vc.extends', propsJs + "vc.extends");
         // let position = _js.indexOf("{");
         // let propsJs = "\nlet $namespace='" + namespace.trim() + "';\n";
 
         // let newJs = _js.substring(0, position + 1);
         // newJs = newJs + propsJs;
         // newJs = newJs + _js.substring(position + 1, _js.length);
-       
+
         return newJs;
     };
 

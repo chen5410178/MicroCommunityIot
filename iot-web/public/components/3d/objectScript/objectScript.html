@@ -1,0 +1,70 @@
+<div id="objectScriptModel" class="modal fade" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="m-t-none m-b ">
+                   选择脚本
+                </h3>
+                <div class="ibox-content">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">
+                            对象名称
+                        </label>
+                        <div class="col-sm-10">
+                            <input v-model="objectScriptInfo.objName" type="text" disabled
+                                :placeholder="vc.i18n('必填，请填写对象名称','objectScript')" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">
+                            脚本类型
+                        </label>
+                        <div class="col-sm-10">
+                            <select class="custom-select" v-model="objectScriptInfo.objType" @change="_chanageType">
+                                <option selected disabled value="">{{vc.i18n('必填，请选择脚本类型','objectScript')}}
+                                </option>
+                                <option :value="item.statusCd" v-for="(item,index) in objectScriptInfo.objTypes">
+                                    {{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">
+                            脚本
+                        </label>
+                        <div class="col-sm-10">
+                            <select class="custom-select" v-model="objectScriptInfo.scriptId">
+                                <option selected disabled value="">{{vc.i18n('必填，请选择脚本','objectScript')}}
+                                </option>
+                                <option :value="item.scriptId" v-for="(item,index) in objectScriptInfo.dtScripts">
+                                    {{item.scriptName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">
+                            对象
+                        </label>
+                        <div class="col-sm-10">
+                            <select class="custom-select" v-model="objectScriptInfo.objId">
+                                <option selected disabled value="">{{vc.i18n('必填，请选择对象','objectScript')}}
+                                </option>
+                                <option :value="item.dataId" v-for="(item,index) in objectScriptInfo.modalData">
+                                    {{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <button class="btn btn-primary float-right" type="button" v-on:click="saveDtScriptInfo()">
+                            保存
+                        </button>
+                        <button type="button" class="btn btn-warning float-right" style="margin-right:20px;"
+                            data-dismiss="modal">
+                            取消
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

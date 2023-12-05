@@ -72,6 +72,13 @@
             _submitScene:function(){
                 vc.emit('dtSceneSetting', 'saveScene',{});
 
+            },
+            _addCurObjectScript:function(){
+                vc.emit('objectScript', 'openModal',{
+                    communityId:vc.getParam('communityId'),
+                    sceneId:vc.getParam('sceneId'),
+                    objName:$that.curModalInfo.name
+                });
             }
            
         }
