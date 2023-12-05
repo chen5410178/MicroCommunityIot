@@ -145,9 +145,18 @@ export default class Scene3d {
 
     //获取与射线相交的对象数组
     getIntersects(event, _that) {
+        
+        if(event.clientX < 190){
+            return [];
+        }
+
+        if(event.clientX > window.innerWidth - 200){
+            return [];
+        }
+
         event.preventDefault();// 阻止默认的点击事件执行, https://developer.mozilla.org/zh-CN/docs/Web/API/Event/preventDefault
-        //console.log("event.clientX:" + event.clientX);
-        //console.log("event.clientY:" + event.clientY);
+        // console.log("event.clientX:" + event.clientX);
+        // console.log("event.clientY:" + event.clientY);
 
         //声明 rayCaster 和 mouse 变量
         let rayCaster = new THREE.Raycaster();
