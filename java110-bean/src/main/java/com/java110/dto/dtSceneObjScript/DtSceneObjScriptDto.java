@@ -21,7 +21,8 @@ public class DtSceneObjScriptDto extends PageDto implements Serializable {
     private String dsmsId;
     private String communityId;
 
-
+    private String objId;
+    private String objType;
     private Date createTime;
 
     private String statusCd = "0";
@@ -82,5 +83,21 @@ public class DtSceneObjScriptDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getObjId() {
+        return objId;
+    }
+
+    public void setObjId(String objId) {
+        this.objId = objId;
+    }
+
+    public String getObjType() {
+        return objType;
+    }
+
+    public void setObjType(String objType) {
+        this.objType = objType;
     }
 }

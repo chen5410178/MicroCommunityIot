@@ -17,6 +17,7 @@ package com.java110.po.dtSceneObjScript;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-12-05 14:50:08 mail: 928255095@qq.com
@@ -28,48 +29,76 @@ import java.util.Date;
 public class DtSceneObjScriptPo implements Serializable {
 
     private String scriptId;
-private String sceneId;
-private String statusCd = "0";
-private String objName;
-private String dsmsId;
-private String communityId;
-public String getScriptId() {
+    private String sceneId;
+    private String statusCd = "0";
+    private String objName;
+    private String dsmsId;
+    private String communityId;
+
+    private String objId;
+    private String objType;
+
+    public String getScriptId() {
         return scriptId;
     }
-public void setScriptId(String scriptId) {
+
+    public void setScriptId(String scriptId) {
         this.scriptId = scriptId;
     }
-public String getSceneId() {
+
+    public String getSceneId() {
         return sceneId;
     }
-public void setSceneId(String sceneId) {
+
+    public void setSceneId(String sceneId) {
         this.sceneId = sceneId;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getObjName() {
+
+    public String getObjName() {
         return objName;
     }
-public void setObjName(String objName) {
+
+    public void setObjName(String objName) {
         this.objName = objName;
     }
-public String getDsmsId() {
+
+    public String getDsmsId() {
         return dsmsId;
     }
-public void setDsmsId(String dsmsId) {
+
+    public void setDsmsId(String dsmsId) {
         this.dsmsId = dsmsId;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
 
+    public String getObjId() {
+        return objId;
+    }
 
+    public void setObjId(String objId) {
+        this.objId = objId;
+    }
 
+    public String getObjType() {
+        return objType;
+    }
+
+    public void setObjType(String objType) {
+        this.objType = objType;
+    }
 }

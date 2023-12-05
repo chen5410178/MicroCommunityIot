@@ -8,9 +8,9 @@
     <!-- 保存对象脚本信息 add by wuxw 2018-07-03 -->
     <insert id="saveDtSceneObjScriptInfo" parameterType="Map">
         insert into dt_scene_obj_script(
-        script_id,scene_id,obj_name,dsms_id,community_id
+        script_id,scene_id,obj_name,dsms_id,community_id,obj_id,obj_type
         ) values (
-        #{scriptId},#{sceneId},#{objName},#{dsmsId},#{communityId}
+        #{scriptId},#{sceneId},#{objName},#{dsmsId},#{communityId},#{objId},#{objType}
         )
     </insert>
 
@@ -19,7 +19,7 @@
     <select id="getDtSceneObjScriptInfo" parameterType="Map" resultType="Map">
         select t.script_id,t.script_id scriptId,t.scene_id,t.scene_id sceneId,t.status_cd,t.status_cd
         statusCd,t.obj_name,t.obj_name objName,t.dsms_id,t.dsms_id dsmsId,t.community_id,t.community_id communityId,
-        t.create_time createTime,ds.js_content jsContent
+        t.create_time createTime,ds.js_content jsContent,t.obj_id objId,t.obj_type objType
         from dt_scene_obj_script t
         left join dt_script ds on t.script_id = ds.script_id
         where 1 =1
@@ -34,6 +34,12 @@
         </if>
         <if test="objName !=null and objName != ''">
             and t.obj_name= #{objName}
+        </if>
+        <if test="objId !=null and objId != ''">
+            and t.obj_id = #{objId}
+        </if>
+        <if test="objType !=null and objType != ''">
+            and t.obj_type= #{objType}
         </if>
         <if test="dsmsId !=null and dsmsId != ''">
             and t.dsms_id= #{dsmsId}
@@ -64,14 +70,19 @@
         <if test="objName !=null and objName != ''">
             , t.obj_name= #{objName}
         </if>
-        <if test="communityId !=null and communityId != ''">
-            , t.community_id= #{communityId}
+        <if test="objId !=null and objId != ''">
+            , t.obj_id = #{objId}
+        </if>
+        <if test="objType !=null and objType != ''">
+            , t.obj_type= #{objType}
         </if>
         where 1=1
         <if test="dsmsId !=null and dsmsId != ''">
             and t.dsms_id= #{dsmsId}
         </if>
-
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
     </update>
 
     <!-- 查询对象脚本数量 add by wuxw 2018-07-03 -->
@@ -90,6 +101,12 @@
         </if>
         <if test="objName !=null and objName != ''">
             and t.obj_name= #{objName}
+        </if>
+        <if test="objId !=null and objId != ''">
+            and t.obj_id = #{objId}
+        </if>
+        <if test="objType !=null and objType != ''">
+            and t.obj_type= #{objType}
         </if>
         <if test="dsmsId !=null and dsmsId != ''">
             and t.dsms_id= #{dsmsId}
