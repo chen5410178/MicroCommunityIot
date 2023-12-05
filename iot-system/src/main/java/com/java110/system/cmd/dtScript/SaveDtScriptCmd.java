@@ -21,6 +21,7 @@ import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.context.Environment;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
@@ -57,7 +58,7 @@ public class SaveDtScriptCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "scriptName", "请求报文中未包含scriptName");
         Assert.hasKeyAndValue(reqJson, "scriptType", "请求报文中未包含scriptType");
         Assert.hasKeyAndValue(reqJson, "jsContent", "请求报文中未包含jsContent");
-
+        Environment.isDevEnv();
     }
 
     @Override
