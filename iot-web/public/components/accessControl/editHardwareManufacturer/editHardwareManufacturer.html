@@ -1,0 +1,101 @@
+<div id="editHardwareManufacturerModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="m-t-none m-b ">
+                    <vc:i18n name="修改" namespace="editHardwareManufacturer"></vc:i18n>
+                </h3>
+                <div class="ibox-content">
+                    <div>
+                        <div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label text-right">
+                                    <vc:i18n name='厂商名称' namespace='editHardwareManufacturer'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input v-model="editHardwareManufacturerInfo.hmName" type="text"
+                                        :placeholder="vc.i18n('必填，请填写厂商名称','editHardwareManufacturer')" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label text-right">
+                                    <vc:i18n name='厂商协议版本号' namespace='editHardwareManufacturer'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input v-model="editHardwareManufacturerInfo.version" type="text"
+                                        :placeholder="vc.i18n('必填，请填写厂商协议版本号','editHardwareManufacturer')" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label text-right">
+                                    <vc:i18n name='协议实现' namespace='editHardwareManufacturer'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input v-model="editHardwareManufacturerInfo.protocolImpl" type="text"
+                                        :placeholder="vc.i18n('必填，请填写协议实现','editHardwareManufacturer')" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label text-right">
+                                    <vc:i18n name='该协议开发者' namespace='editHardwareManufacturer'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input v-model="editHardwareManufacturerInfo.author" type="text"
+                                        :placeholder="vc.i18n('必填，请填写该协议开发者','editHardwareManufacturer')" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label text-right">
+                                    <vc:i18n name='开发者联系方式' namespace='editHardwareManufacturer'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input v-model="editHardwareManufacturerInfo.link" type="text"
+                                        :placeholder="vc.i18n('必填，请填写开发者联系方式','editHardwareManufacturer')" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label text-right">
+                                    <vc:i18n name='该协议许可' namespace='editHardwareManufacturer'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <textarea v-model="editHardwareManufacturerInfo.license" :placeholder="vc.i18n('必填，请填写该协议许可','editHardwareManufacturer')"
+                                        class="form-control" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label text-right">
+                                    <vc:i18n name='产品官网' namespace='editHardwareManufacturer'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input v-model="editHardwareManufacturerInfo.prodUrl" type="text"
+                                        :placeholder="vc.i18n('必填，请填写产品官网','editHardwareManufacturer')" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label text-right">
+                                    <vc:i18n name='是否启用该协议' namespace='editHardwareManufacturer'></vc:i18n>
+                                </label>
+                                <div class="col-sm-10">
+                                    <select class="custom-select" v-model="editHardwareManufacturerInfo.defaultProtocol">
+                                        <option disabled selected value="">{{vc.i18n('必填，请选择是否启用该协议','editHardwareManufacturer')}}</option>
+                                        <option value="T">{{vc.i18n('是','editHardwareManufacturer')}}</option>
+                                        <option value="F">{{vc.i18n('否','editHardwareManufacturer')}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <button class="btn btn-primary float-right" type="button" v-on:click="editHardwareManufacturer()">
+                                    <i class="fa fa-check"></i>&nbsp;
+                                    <vc:i18n name="保存"></vc:i18n>
+                                </button>
+                                <button type="button" class="btn btn-warning float-right" style="margin-right:20px;" data-dismiss="modal">
+                                    <vc:i18n name="取消"></vc:i18n>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

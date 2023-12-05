@@ -1,0 +1,73 @@
+<div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="门禁规格" namespace="hardwareManufacturerAttrManage"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-white btn-sm" v-on:click="vc.goBack()">
+                            <vc:i18n name="返回" namespace="hardwareManufacturerAttrManage"></vc:i18n>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddHardwareManufacturerAttrModal()">
+                            <vc:i18n name="添加" namespace="hardwareManufacturerAttrManage"></vc:i18n>
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='主键' namespace='hardwareManufacturerAttrManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='规格' namespace='hardwareManufacturerAttrManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='规格值' namespace='hardwareManufacturerAttrManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='hardwareManufacturerAttrManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="hardwareManufacturerAttr in hardwareManufacturerAttrManageInfo.hardwareManufacturerAttrs">
+                                <td class="text-center">{{hardwareManufacturerAttr.attrId}}</td>
+                                <td class="text-center">{{hardwareManufacturerAttr.specCd}}</td>
+                                <td class="text-center">{{hardwareManufacturerAttr.value}}</td>
+                                <td class="text-center">{{hardwareManufacturerAttr.createTime}}</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openDeleteHardwareManufacturerAttrModel(hardwareManufacturerAttr)">
+                                            <vc:i18n name='删除'></vc:i18n>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7">
+                                    <ul class="pagination float-right"></ul>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <vc:create path="accessControl/addHardwareManufacturerAttr" callBackListener="" callBackFunction=""></vc:create>
+    <vc:create path="accessControl/deleteHardwareManufacturerAttr"></vc:create>
+
+</div>
