@@ -57,6 +57,7 @@ public class SaveDtSceneObjScriptCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "sceneId", "请求报文中未包含sceneId");
         Assert.hasKeyAndValue(reqJson, "scriptId", "请求报文中未包含scriptId");
         Assert.hasKeyAndValue(reqJson, "objName", "请求报文中未包含objName");
+        Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
 
     }
 

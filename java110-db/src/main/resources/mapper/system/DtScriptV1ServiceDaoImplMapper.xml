@@ -5,93 +5,89 @@
 <mapper namespace="dtScriptV1ServiceDaoImpl">
 
 
-
-
-
     <!-- 保存3d场景信息 add by wuxw 2018-07-03 -->
     <insert id="saveDtScriptInfo" parameterType="Map">
         insert into dt_script(
-script_id,script_type,script_name,js_content
-) values (
-#{scriptId},#{scriptType},#{scriptName},#{jsContent}
-)
+        script_id,script_type,script_name,js_content
+        ) values (
+        #{scriptId},#{scriptType},#{scriptName},#{jsContent}
+        )
     </insert>
-
 
 
     <!-- 查询3d场景信息 add by wuxw 2018-07-03 -->
     <select id="getDtScriptInfo" parameterType="Map" resultType="Map">
-        select  t.script_id,t.script_id scriptId,t.script_type,t.script_type scriptType,t.script_name,t.script_name scriptName,t.status_cd,t.status_cd statusCd,t.js_content,t.js_content jsContent 
-from dt_script t 
-where 1 =1 
-<if test="scriptId !=null and scriptId != ''">
-   and t.script_id= #{scriptId}
-</if> 
-<if test="scriptType !=null and scriptType != ''">
-   and t.script_type= #{scriptType}
-</if> 
-<if test="scriptName !=null and scriptName != ''">
-   and t.script_name= #{scriptName}
-</if> 
-<if test="statusCd !=null and statusCd != ''">
-   and t.status_cd= #{statusCd}
-</if> 
-<if test="jsContent !=null and jsContent != ''">
-   and t.js_content= #{jsContent}
-</if> 
-order by t.create_time desc
-<if test="page != -1 and page != null ">
-   limit #{page}, #{row}
-</if> 
+        select t.script_id,t.script_id scriptId,t.script_type,t.script_type scriptType,t.script_name,t.script_name
+        scriptName,t.status_cd,t.status_cd statusCd,t.js_content,t.js_content jsContent,t.create_time createTime
+        from dt_script t
+        where 1 =1
+        <if test="scriptId !=null and scriptId != ''">
+            and t.script_id= #{scriptId}
+        </if>
+        <if test="scriptType !=null and scriptType != ''">
+            and t.script_type= #{scriptType}
+        </if>
+        <if test="scriptName !=null and scriptName != ''">
+            and t.script_name= #{scriptName}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="jsContent !=null and jsContent != ''">
+            and t.js_content= #{jsContent}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
 
     </select>
 
 
-
-
     <!-- 修改3d场景信息 add by wuxw 2018-07-03 -->
     <update id="updateDtScriptInfo" parameterType="Map">
-        update  dt_script t set t.status_cd = #{statusCd}
-<if test="newBId != null and newBId != ''">
-,t.b_id = #{newBId}
-</if> 
-<if test="scriptType !=null and scriptType != ''">
-, t.script_type= #{scriptType}
-</if> 
-<if test="scriptName !=null and scriptName != ''">
-, t.script_name= #{scriptName}
-</if> 
-<if test="jsContent !=null and jsContent != ''">
-, t.js_content= #{jsContent}
-</if> 
- where 1=1 <if test="scriptId !=null and scriptId != ''">
-and t.script_id= #{scriptId}
-</if> 
+        update dt_script t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="scriptType !=null and scriptType != ''">
+            , t.script_type= #{scriptType}
+        </if>
+        <if test="scriptName !=null and scriptName != ''">
+            , t.script_name= #{scriptName}
+        </if>
+        <if test="jsContent !=null and jsContent != ''">
+            , t.js_content= #{jsContent}
+        </if>
+        where 1=1
+        <if test="scriptId !=null and scriptId != ''">
+            and t.script_id= #{scriptId}
+        </if>
 
     </update>
 
     <!-- 查询3d场景数量 add by wuxw 2018-07-03 -->
-     <select id="queryDtScriptsCount" parameterType="Map" resultType="Map">
-        select  count(1) count 
-from dt_script t 
-where 1 =1 
-<if test="scriptId !=null and scriptId != ''">
-   and t.script_id= #{scriptId}
-</if> 
-<if test="scriptType !=null and scriptType != ''">
-   and t.script_type= #{scriptType}
-</if> 
-<if test="scriptName !=null and scriptName != ''">
-   and t.script_name= #{scriptName}
-</if> 
-<if test="statusCd !=null and statusCd != ''">
-   and t.status_cd= #{statusCd}
-</if> 
-<if test="jsContent !=null and jsContent != ''">
-   and t.js_content= #{jsContent}
-</if> 
+    <select id="queryDtScriptsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from dt_script t
+        where 1 =1
+        <if test="scriptId !=null and scriptId != ''">
+            and t.script_id= #{scriptId}
+        </if>
+        <if test="scriptType !=null and scriptType != ''">
+            and t.script_type= #{scriptType}
+        </if>
+        <if test="scriptName !=null and scriptName != ''">
+            and t.script_name= #{scriptName}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="jsContent !=null and jsContent != ''">
+            and t.js_content= #{jsContent}
+        </if>
 
 
-     </select>
+    </select>
 
 </mapper>
