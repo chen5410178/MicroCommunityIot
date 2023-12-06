@@ -468,7 +468,7 @@
         setTimeout(function(){
             vcFramework.initVue();
             vcFramework.initVcComponent();
-        },100)
+        },500)
        
         //初始化vue 对象
         // vcFramework.initVue();
