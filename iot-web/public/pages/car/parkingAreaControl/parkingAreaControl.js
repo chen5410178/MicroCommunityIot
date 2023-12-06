@@ -79,6 +79,7 @@
                     //     "ws://demo.homecommunity.cn:8008/ws/parkingArea/" +
                     //     $that.parkingAreaControlInfo.boxId + "/" + clientId;
                 }
+                let websocket = null;
                 if ("WebSocket" in window) {
                     websocket = new WebSocket(url);
                 } else if ("MozWebSocket" in window) {
