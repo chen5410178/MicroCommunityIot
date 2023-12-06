@@ -2,6 +2,7 @@
  分页组件
  **/
 (function (vc) {
+
     vc.extends({
         data: {
             paginationInfo: {

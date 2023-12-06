@@ -461,19 +461,17 @@
             let script = document.createElement('script');
             script.setAttribute("type", "module");
             script.innerHTML = _jsBody; // 替换为你的JavaScript代码
-            document.body.appendChild(script);
+            try {
+                document.body.appendChild(script);
+            }catch(err){
+                console.log(err,_jsBody);
+            }
         }
-        //let _tmpJsBody = '<script type="text/javascript">//<![CDATA[\n' + _jsBody + '//]]>\n</script>';
 
-        setTimeout(function(){
+        setTimeout(function () {
             vcFramework.initVue();
             vcFramework.initVcComponent();
-        },500)
-       
-        //初始化vue 对象
-        // vcFramework.initVue();
-
-        // vcFramework.initVcComponent();
+        }, 500)
     }
 
     /**
