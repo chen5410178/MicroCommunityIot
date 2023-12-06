@@ -70,4 +70,5 @@ public interface ILockMachineFactoryV1ServiceDao {
      */
     int queryLockMachineFactorysCount(Map info);
 
+    List<Map> getLockMachineFactoryInfo1(Map info) throws DAOException;
 }

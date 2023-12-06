@@ -84,4 +84,19 @@ public class LockMachineV1InnerServiceSMOImpl implements ILockMachineV1InnerServ
         return lockMachineV1ServiceDaoImpl.queryLockMachinesCount(BeanConvertUtil.beanCovertMap(lockMachineDto));
     }
 
+    @Override
+    public List<LockMachineDto> queryLockMachineList(LockMachineDto lockMachineDto) {
+        //校验是否传了 分页信息
+
+        int page = lockMachineDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            lockMachineDto.setPage((page - 1) * lockMachineDto.getRow());
+        }
+
+        List<LockMachineDto> lockMachines = BeanConvertUtil.covertBeanList(lockMachineV1ServiceDaoImpl.getLockMachineInfo1(BeanConvertUtil.beanCovertMap(lockMachineDto)), LockMachineDto.class);
+
+        return lockMachines;
+    }
+
 }

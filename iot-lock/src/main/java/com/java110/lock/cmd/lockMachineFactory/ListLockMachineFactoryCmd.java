@@ -24,6 +24,8 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.lock.LockMachineFactoryDto;
+import com.java110.dto.lock.LockMachineFactorySpecDto;
+import com.java110.intf.lock.ILockMachineFactorySpecV1InnerServiceSMO;
 import com.java110.intf.lock.ILockMachineFactoryV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,6 +36,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 
 /**
@@ -53,6 +56,9 @@ public class ListLockMachineFactoryCmd extends Cmd {
     @Autowired
     private ILockMachineFactoryV1InnerServiceSMO lockMachineFactoryV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ILockMachineFactorySpecV1InnerServiceSMO lockMachineFactorySpecV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -68,7 +74,8 @@ public class ListLockMachineFactoryCmd extends Cmd {
         List<LockMachineFactoryDto> lockMachineFactoryDtos = null;
 
         if (count > 0) {
-            lockMachineFactoryDtos = lockMachineFactoryV1InnerServiceSMOImpl.queryLockMachineFactorys(lockMachineFactoryDto);
+            lockMachineFactoryDtos = lockMachineFactoryV1InnerServiceSMOImpl.queryLockMachineFactoryList(lockMachineFactoryDto);
+            refreshSpec(lockMachineFactoryDtos);
         } else {
             lockMachineFactoryDtos = new ArrayList<>();
         }
@@ -78,5 +85,17 @@ public class ListLockMachineFactoryCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void refreshSpec(List<LockMachineFactoryDto> lockMachineFactoryDtos) {
+        if (CollectionUtils.isEmpty(lockMachineFactoryDtos)) {
+            return;
+        }
+        for (LockMachineFactoryDto lockMachineFactoryDto : lockMachineFactoryDtos) {
+            LockMachineFactorySpecDto lockMachineFactorySpecDto = new LockMachineFactorySpecDto();
+            lockMachineFactorySpecDto.setFactoryId(lockMachineFactoryDto.getFactoryId());
+            List<LockMachineFactorySpecDto> lockMachineFactorySpecDtos = lockMachineFactorySpecV1InnerServiceSMOImpl.queryLockMachineFactorySpecs(lockMachineFactorySpecDto);
+            lockMachineFactoryDto.setLockMachineFactorySpecList(lockMachineFactorySpecDtos);
+        }
     }
 }

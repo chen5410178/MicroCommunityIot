@@ -51,6 +51,34 @@
 
     </select>
 
+    <select id="getLockMachineParamInfo1" parameterType="Map" resultType="Map">
+        select t.machine_id,t.machine_id machineId,t.spec_cd,t.spec_cd specCd,t.status_cd,t.status_cd
+        statusCd,t.param_id,t.param_id paramId,t.community_id,t.community_id communityId,t.value,lmfs.spec_name specName
+        from lock_machine_param t
+        left join lock_machine_factory_spec lmfs on t.spec_cd = lmfs.spec_cd and lmfs.status_cd = '0'
+        where 1 =1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="specCd !=null and specCd != ''">
+            and t.spec_cd= #{specCd}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="paramId !=null and paramId != ''">
+            and t.param_id= #{paramId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="value !=null and value != ''">
+            and t.value= #{value}
+        </if>
+        order by t.create_time desc
+
+    </select>
+
 
     <!-- 修改门锁设备参数信息 add by wuxw 2018-07-03 -->
     <update id="updateLockMachineParamInfo" parameterType="Map">
@@ -73,6 +101,12 @@
         where 1=1
         <if test="paramId !=null and paramId != ''">
             and t.param_id= #{paramId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
         </if>
 
     </update>

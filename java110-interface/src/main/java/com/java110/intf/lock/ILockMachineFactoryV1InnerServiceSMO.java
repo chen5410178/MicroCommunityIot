@@ -64,4 +64,7 @@ public interface ILockMachineFactoryV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryLockMachineFactorysCount", method = RequestMethod.POST)
     int queryLockMachineFactorysCount(@RequestBody LockMachineFactoryDto lockMachineFactoryDto);
+
+    @RequestMapping(value = "/queryLockMachineFactoryList", method = RequestMethod.POST)
+    List<LockMachineFactoryDto> queryLockMachineFactoryList(LockMachineFactoryDto lockMachineFactoryDto);
 }

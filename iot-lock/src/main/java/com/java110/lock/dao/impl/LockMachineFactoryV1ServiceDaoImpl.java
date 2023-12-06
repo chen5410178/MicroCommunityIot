@@ -105,5 +105,14 @@ public class LockMachineFactoryV1ServiceDaoImpl extends BaseServiceDao implement
         return Integer.parseInt(businessLockMachineFactoryInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> getLockMachineFactoryInfo1(Map info) throws DAOException {
+        logger.debug("查询 getLockMachineFactoryInfo1 入参 info : {}", info);
+
+        List<Map> businessLockMachineFactoryInfos = sqlSessionTemplate.selectList("lockMachineFactoryV1ServiceDaoImpl.getLockMachineFactoryInfo1", info);
+
+        return businessLockMachineFactoryInfos;
+    }
+
 
 }
