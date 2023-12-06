@@ -85,4 +85,17 @@ public class LockMachineFactoryV1InnerServiceSMOImpl implements ILockMachineFact
         return lockMachineFactoryV1ServiceDaoImpl.queryLockMachineFactorysCount(BeanConvertUtil.beanCovertMap(lockMachineFactoryDto));
     }
 
+    @Override
+    public List<LockMachineFactoryDto> queryLockMachineFactoryList(LockMachineFactoryDto lockMachineFactoryDto) {
+        int page = lockMachineFactoryDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            lockMachineFactoryDto.setPage((page - 1) * lockMachineFactoryDto.getRow());
+        }
+
+        List<LockMachineFactoryDto> lockMachineFactorys = BeanConvertUtil.covertBeanList(lockMachineFactoryV1ServiceDaoImpl.getLockMachineFactoryInfo1(BeanConvertUtil.beanCovertMap(lockMachineFactoryDto)), LockMachineFactoryDto.class);
+
+        return lockMachineFactorys;
+    }
+
 }

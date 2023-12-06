@@ -105,5 +105,14 @@ public class LockMachineV1ServiceDaoImpl extends BaseServiceDao implements ILock
         return Integer.parseInt(businessLockMachineInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> getLockMachineInfo1(Map info) throws DAOException {
+        logger.debug("查询 getLockMachineInfo1 入参 info : {}", info);
+
+        List<Map> businessLockMachineInfos = sqlSessionTemplate.selectList("lockMachineV1ServiceDaoImpl.getLockMachineInfo1", info);
+
+        return businessLockMachineInfos;
+    }
+
 
 }

@@ -33,13 +33,6 @@
                 return vc.validate.validate({
                     addLockMachineInfo: $that.addLockMachineInfo
                 }, {
-                    'addLockMachineInfo.implBean': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "门禁厂家不能为空"
-                        },
-                    ],
                     'addLockMachineInfo.machineId': [
                         {
                             limit: "required",
@@ -88,6 +81,13 @@
                             limit: "required",
                             param: "",
                             errInfo: "房屋不能为空"
+                        },
+                    ],
+                    'addLockMachineInfo.implBean': [
+                        {
+                            limit: "required",
+                            param: "",
+                            errInfo: "门禁厂家不能为空"
                         },
                     ],
                     'addLockMachineInfo.communityId': [
@@ -144,14 +144,15 @@
                     roomName: '',
                     implBean: '',
                     communityId: '',
+                    lockMachineFactorySpecList: [],
                 };
             },
-            _selectRoom: function() {
+            _addLockMachineSelectRoom: function() {
                 vc.emit('roomTree', 'openRoomTree', {
                     callName: 'addLockMachine'
                 })
             },
-            _selectLockMachineFactory: function () {
+            _addSelectLockMachineFactory: function () {
                 if (!$that.addLockMachineInfo.implBean) {
                     vc.toast('未选择门锁厂家');
                     return ;

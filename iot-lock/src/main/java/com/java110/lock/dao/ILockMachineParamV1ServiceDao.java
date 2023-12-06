@@ -71,4 +71,6 @@ public interface ILockMachineParamV1ServiceDao {
     int queryLockMachineParamsCount(Map info);
 
     int saveLockMachineParamList(List<Map<String, Object>> info);
+
+    List<Map> getLockMachineParamInfo1(Map info) throws DAOException;
 }

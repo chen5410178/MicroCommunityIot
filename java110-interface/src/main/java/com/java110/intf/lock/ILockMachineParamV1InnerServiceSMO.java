@@ -67,4 +67,7 @@ public interface ILockMachineParamV1InnerServiceSMO {
 
     @RequestMapping(value = "/saveLockMachineParamList", method = RequestMethod.POST)
     int saveLockMachineParamList(List<LockMachineParamPo> lockMachineParamPos);
+
+    @RequestMapping(value = "/queryLockMachineParamList", method = RequestMethod.POST)
+    List<LockMachineParamDto> queryLockMachineParamList(LockMachineParamDto lockMachineParamDto);
 }

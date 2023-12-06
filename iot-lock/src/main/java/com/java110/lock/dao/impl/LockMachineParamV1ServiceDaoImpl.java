@@ -114,5 +114,14 @@ public class LockMachineParamV1ServiceDaoImpl extends BaseServiceDao implements 
         return saveFlag;
     }
 
+    @Override
+    public List<Map> getLockMachineParamInfo1(Map info) throws DAOException {
+        logger.debug("查询 getLockMachineParamInfo1 入参 info : {}", info);
+
+        List<Map> businessLockMachineParamInfos = sqlSessionTemplate.selectList("lockMachineParamV1ServiceDaoImpl.getLockMachineParamInfo1", info);
+
+        return businessLockMachineParamInfos;
+    }
+
 
 }

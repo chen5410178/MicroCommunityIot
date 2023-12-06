@@ -25,6 +25,10 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.lock.LockMachineDto;
+import com.java110.dto.lock.LockMachineFactorySpecDto;
+import com.java110.dto.lock.LockMachineParamDto;
+import com.java110.intf.lock.ILockMachineFactorySpecV1InnerServiceSMO;
+import com.java110.intf.lock.ILockMachineParamV1InnerServiceSMO;
 import com.java110.intf.lock.ILockMachineV1InnerServiceSMO;
 import com.java110.lock.factory.ILockCore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +40,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 
 /**
@@ -58,6 +63,12 @@ public class ListLockMachineCmd extends Cmd {
     @Autowired
     private ILockCore lockCoreImpl;
 
+    @Autowired
+    private ILockMachineParamV1InnerServiceSMO lockMachineParamV1InnerServiceSMOImpl;
+
+    @Autowired
+    private ILockMachineFactorySpecV1InnerServiceSMO lockMachineFactorySpecV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -74,7 +85,8 @@ public class ListLockMachineCmd extends Cmd {
         List<LockMachineDto> lockMachineDtos = null;
 
         if (count > 0) {
-            lockMachineDtos = lockMachineV1InnerServiceSMOImpl.queryLockMachines(lockMachineDto);
+            lockMachineDtos = lockMachineV1InnerServiceSMOImpl.queryLockMachineList(lockMachineDto);
+            freshParam(lockMachineDtos);
             //查询设备是否在线 刷新电量 todo: 改成定时任务获取电量再修改,查询不用刷新
             queryMachineStateAndElectricQuantity(lockMachineDtos,reqJson);
         } else {
@@ -86,6 +98,20 @@ public class ListLockMachineCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void freshParam(List<LockMachineDto> lockMachineDtos) {
+        if (CollectionUtils.isEmpty(lockMachineDtos)) {
+            return;
+        }
+
+        for (LockMachineDto lockMachineDto : lockMachineDtos) {
+            LockMachineParamDto lockMachineParamDto = new LockMachineParamDto();
+            lockMachineParamDto.setMachineId(lockMachineDto.getMachineId());
+            lockMachineParamDto.setCommunityId(lockMachineDto.getCommunityId());
+            List<LockMachineParamDto> lockMachineParamDtos = lockMachineParamV1InnerServiceSMOImpl.queryLockMachineParamList(lockMachineParamDto);
+            lockMachineDto.setLockMachineParamDtoList(lockMachineParamDtos);
+        }
     }
 
     private void queryMachineStateAndElectricQuantity(List<LockMachineDto> lockMachineDtos,JSONObject reqJson) {

@@ -93,4 +93,12 @@ public class LockMachineParamV1InnerServiceSMOImpl implements ILockMachineParamV
         return lockMachineParamV1ServiceDaoImpl.saveLockMachineParamList(BeanConvertUtil.beanCovertMapList(temp));
     }
 
+    @Override
+    public List<LockMachineParamDto> queryLockMachineParamList(LockMachineParamDto lockMachineParamDto) {
+
+        List<LockMachineParamDto> lockMachineParams = BeanConvertUtil.covertBeanList(lockMachineParamV1ServiceDaoImpl.getLockMachineParamInfo1(BeanConvertUtil.beanCovertMap(lockMachineParamDto)), LockMachineParamDto.class);
+
+        return lockMachineParams;
+    }
+
 }

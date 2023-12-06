@@ -72,6 +72,9 @@
             _openAddLockMachineModal: function () {
                 vc.emit('addLockMachine', 'openAddLockMachineModal', {});
             },
+            _openEditLockMachineModel:function(_lockMachine){
+                vc.emit('editLockMachine','openEditLockMachineModal',_lockMachine);
+            },
             _openDeleteLockMachineModel: function (_lockMachine) {
                 vc.emit('deleteLockMachine', 'openDeleteLockMachineModal', _lockMachine);
             },

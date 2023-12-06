@@ -105,6 +105,60 @@
 
     </select>
 
+    <select id="getLockMachineInfo1" parameterType="Map" resultType="Map">
+        select
+        t.heartbeat_time heartbeatTime,
+        t.impl_bean implBean,
+        t.machine_id machineId,
+        t.machine_code machineCode,
+        t.charge,
+        t.status_cd statusCd,
+        t.community_id communityId,
+        t.machine_name machineName,
+        t.room_id roomId,
+        t.room_name roomName,
+        t.create_time createTime,
+        lmf.factory_name factoryName
+        from lock_machine t
+        left join lock_machine_factory lmf on t.impl_bean = lmf.factory_id and lmf.status_cd = '0'
+        where 1 =1
+        <if test="heartbeatTime !=null">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code like concat('%', #{machineCode}, '%')
+        </if>
+        <if test="charge !=null and charge != ''">
+            and t.charge= #{charge}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name like concat('%', #{machineName}, '%')
+        </if>
+        <if test="roomId !=null and roomId != ''">
+            and t.room_id= #{roomId}
+        </if>
+        <if test="roomName !=null and roomName != ''">
+            and t.room_name= #{roomName}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
 
     <!-- 修改门锁设备信息 add by wuxw 2018-07-03 -->
     <update id="updateLockMachineInfo" parameterType="Map">
