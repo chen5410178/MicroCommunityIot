@@ -179,8 +179,10 @@
                         vc.toast(json);
 
                     });
+            },
+            _toMeterDetail: function (_meterMachine) {
+                vc.jumpToPage('/#/pages/meter/meterDetail?machineId=' + _meterMachine.machineId + "&roomId=" + _meterMachine.roomId);
             }
-
 
         }
     });
