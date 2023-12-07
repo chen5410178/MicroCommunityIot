@@ -185,6 +185,15 @@
         <if test="state !=null and state != ''">
             and mmd.state= #{state}
         </if>
+        <if test="machineNameLike !=null and machineNameLike != ''">
+            and mm.machine_name like concat('%', #{machineNameLike}, '%')
+        </if>
+        <if test="addressLike !=null and addressLike != ''">
+            and mm.address like concat('%', #{addressLike}, '%')
+        </if>
+        <if test="roomNameLike !=null and roomNameLike != ''">
+            and mm.room_name like concat('%', #{roomNameLike}, '%')
+        </if>
     </select>
 
     <select id="queryMeterMachineReadOrRechargeDetails" parameterType="Map" resultType="Map">
@@ -238,6 +247,15 @@
         </if>
         <if test="state !=null and state != ''">
             and mmd.state= #{state}
+        </if>
+        <if test="machineNameLike !=null and machineNameLike != ''">
+            and mm.machine_name like concat('%', #{machineNameLike}, '%')
+        </if>
+        <if test="addressLike !=null and addressLike != ''">
+            and mm.address like concat('%', #{addressLike}, '%')
+        </if>
+        <if test="roomNameLike !=null and roomNameLike != ''">
+            and mm.room_name like concat('%', #{roomNameLike}, '%')
         </if>
         order by mmd.create_time desc, mm.room_name, mm.meter_type, mm.address
         <if test="page != -1 and page != null ">

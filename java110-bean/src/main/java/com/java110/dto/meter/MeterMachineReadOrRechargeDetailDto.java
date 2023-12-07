@@ -34,6 +34,9 @@ public class MeterMachineReadOrRechargeDetailDto extends PageDto implements Seri
     private String roomId;
     private String typeName;
     private String typeId;
+    private String machineNameLike;
+    private String addressLike;
+    private String roomNameLike;
 
     public String getMachineName() {
         return machineName;
@@ -170,5 +173,29 @@ public class MeterMachineReadOrRechargeDetailDto extends PageDto implements Seri
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getMachineNameLike() {
+        return machineNameLike;
+    }
+
+    public void setMachineNameLike(String machineNameLike) {
+        this.machineNameLike = machineNameLike;
+    }
+
+    public String getAddressLike() {
+        return addressLike;
+    }
+
+    public void setAddressLike(String addressLike) {
+        this.addressLike = addressLike;
+    }
+
+    public String getRoomNameLike() {
+        return roomNameLike;
+    }
+
+    public void setRoomNameLike(String roomNameLike) {
+        this.roomNameLike = roomNameLike;
     }
 }

@@ -12,27 +12,33 @@
                 records: 1,
                 moreCondition: false,
                 machineId: '',
+                conditions: {
+                    machineNameLike: "",
+                    addressLike: "",
+                    state: "",
+                    roomNameLike: "",
+                    communityId: "",
+                    detailType: "2002"
+                }
             }
         },
         _initMethod: function () {
-            vc.component._listMeterMachineDetails(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._listMeterMachineDetails(DEFAULT_PAGE, DEFAULT_ROWS);
             
         },
         _initEvent: function () {
             vc.on('pagination', 'page_event', function (_currentPage) {
-                vc.component._listMeterMachineDetails(_currentPage, DEFAULT_ROWS);
+                $that._listMeterMachineDetails(_currentPage, DEFAULT_ROWS);
             });
         },
         methods: {
             _listMeterMachineDetails: function (_page, _rows) {
 
+                $that.meterMachineDetailInfo.conditions.page = _page;
+                $that.meterMachineDetailInfo.conditions.row = _rows;
+                $that.meterMachineDetailInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
                 let param = {
-                    params: {
-                        page:_page,
-                        row:_rows,
-                        communityId:vc.getCurrentCommunity().communityId,
-                        detailType: '2002'
-                    }
+                    params: $that.meterMachineDetailInfo.conditions
                 };
 
                 //发送get请求
@@ -40,11 +46,11 @@
                     param,
                     function (json, res) {
                         var _meterMachineDetailInfo = JSON.parse(json);
-                        vc.component.meterMachineDetailInfo.total = _meterMachineDetailInfo.total;
-                        vc.component.meterMachineDetailInfo.records = _meterMachineDetailInfo.records;
-                        vc.component.meterMachineDetailInfo.details = _meterMachineDetailInfo.data;
+                        $that.meterMachineDetailInfo.total = _meterMachineDetailInfo.total;
+                        $that.meterMachineDetailInfo.records = _meterMachineDetailInfo.records;
+                        $that.meterMachineDetailInfo.details = _meterMachineDetailInfo.data;
                         vc.emit('pagination', 'init', {
-                            total: vc.component.meterMachineDetailInfo.records,
+                            total: $that.meterMachineDetailInfo.records,
                             currentPage: _page
                         });
                     }, function (errInfo, error) {
@@ -54,9 +60,26 @@
             },
          
             _queryMeterMachineDetailMethod: function () {
-                vc.component._listMeterMachineDetails(DEFAULT_PAGE, DEFAULT_ROWS);
-
+                $that._listMeterMachineDetails(DEFAULT_PAGE, DEFAULT_ROWS);
             },
+            _resetMeterMachineDetailMethod: function () {
+                $that.meterMachineDetailInfo.conditions = {
+                    machineNameLike: "",
+                    addressLike: "",
+                    state: "",
+                    roomNameLike: "",
+                    communityId: "",
+                    detailType: "2002"
+                }
+                $that._listMeterMachineDetails(DEFAULT_PAGE, DEFAULT_ROWS);
+            },
+            _moreCondition: function () {
+                if ($that.meterMachineDetailInfo.moreCondition) {
+                    $that.meterMachineDetailInfo.moreCondition = false;
+                } else {
+                    $that.meterMachineDetailInfo.moreCondition = true;
+                }
+            }
         }
     });
 })(window.vc);
