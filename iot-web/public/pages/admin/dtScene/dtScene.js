@@ -70,8 +70,11 @@
             _queryDtSceneMethod: function () {
                 $that._listDtScenes(DEFAULT_PAGE, DEFAULT_ROWS);
             },
-            _openSettingScene:function(_dtScene){
-                window.open('/3d.html#/pages/3d/dtSceneSetting?sceneId='+_dtScene.sceneId+"&communityId="+_dtScene.communityId);
+            _openSettingScene: function (_dtScene) {
+                window.open('/3d.html#/pages/3d/dtSceneSetting?sceneId=' + _dtScene.sceneId + "&communityId=" + _dtScene.communityId);
+            },
+            _openObjectScript: function (_dtScene) {
+                vc.jumpToPage('/#/pages/3d/dtSceneObjScript?communityId=' + _dtScene.communityId + "&sceneId=" + _dtScene.sceneId);
             },
             _moreCondition: function () {
                 if ($that.dtSceneInfo.moreCondition) {

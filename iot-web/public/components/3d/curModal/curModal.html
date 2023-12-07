@@ -99,10 +99,17 @@
 
         <div class="margin-top-sm flex justify-between" v-if="curModalInfo.name">
             <div>脚本</div>
-            <div class="text-right " style="width: 60%;">
+            <div class="text-right " style="width: 60%;" v-if="!curModalInfo.scriptName">
                 <button class="btn btn-link btn-xs margin-bottom-xs"
                     type="button" v-on:click="_addCurObjectScript()">
                     <vc:i18n name="添加"></vc:i18n>
+                </button>
+            </div>
+            <div class="text-right " style="width: 60%;" v-else>
+                <span>{{curModalInfo.scriptName}}</span>
+                <button class="btn btn-link btn-xs margin-bottom-xs"
+                    type="button" v-on:click="_deleteCurObjectScript()">
+                    <vc:i18n name="删除"></vc:i18n>
                 </button>
             </div>
         </div>
@@ -119,4 +126,5 @@
     </div>
 
     <vc:create path="3d/objectScript"></vc:create>
+    <vc:create path="3d/deleteObjectScript"></vc:create>
 </div>

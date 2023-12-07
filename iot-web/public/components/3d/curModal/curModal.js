@@ -17,7 +17,7 @@
                 scaleX: 0,
                 scaleY: 0,
                 scaleZ: 0,
-                scriptId:'',
+                dsmsId:'',
                 scriptName:'',
             }
         },
@@ -87,6 +87,12 @@
                     objName: $that.curModalInfo.name
                 });
             },
+            _deleteCurObjectScript:function(){
+                vc.emit('deleteObjectScript','openDeleteModal',{
+                    dsmsId:$that.curModalInfo.dsmsId,
+                    communityId: vc.getParam('communityId'),
+                });
+            },
             _loadObjScript: function () {
                 let param = {
                     params: {
@@ -97,7 +103,7 @@
                         objName: $that.curModalInfo.name
                     }
                 };
-                $that.curModalInfo.scriptId = '';
+                $that.curModalInfo.dsmsId = '';
                 $that.curModalInfo.scriptName = '';
                 //发送get请求
                 vc.http.apiGet('/dtScript.listDtSceneObjScript',
@@ -105,7 +111,7 @@
                     function (json, res) {
                         let _json = JSON.parse(json);
                         if(_json.data.length>0){
-                            $that.curModalInfo.scriptId = _json.data[0].scriptId;
+                            $that.curModalInfo.dsmsId = _json.data[0].dsmsId;
                             $that.curModalInfo.scriptName = _json.data[0].scriptName;
                         }
                        

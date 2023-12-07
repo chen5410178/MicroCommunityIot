@@ -75,7 +75,7 @@ import {loadModalData} from 'api/modal/modalDataApi.js';
                             //关闭model
                             $('#objectScriptModel').modal('hide');
                             $that.clearAddDtScriptInfo();
-                            vc.emit('dtScript', 'listDtScript', {});
+                            vc.emit('curModal', 'loadObjScript', {});
                             return;
                         }
                         vc.toast(_json.msg);
