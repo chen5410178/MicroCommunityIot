@@ -19,7 +19,7 @@
     <select id="getDtSceneObjScriptInfo" parameterType="Map" resultType="Map">
         select t.script_id,t.script_id scriptId,t.scene_id,t.scene_id sceneId,t.status_cd,t.status_cd
         statusCd,t.obj_name,t.obj_name objName,t.dsms_id,t.dsms_id dsmsId,t.community_id,t.community_id communityId,
-        t.create_time createTime,ds.js_content jsContent,t.obj_id objId,t.obj_type objType
+        t.create_time createTime,ds.js_content jsContent,ds.script_name scriptName,t.obj_id objId,t.obj_type objType
         from dt_scene_obj_script t
         left join dt_script ds on t.script_id = ds.script_id
         where 1 =1

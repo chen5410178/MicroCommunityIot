@@ -145,12 +145,18 @@ export default class Scene3d {
 
     //获取与射线相交的对象数组
     getIntersects(event, _that) {
+
+        console.log('target = ',event.target.tagName );
         
         if(event.clientX < 190){
             return [];
         }
 
         if(event.clientX > window.innerWidth - 200){
+            return [];
+        }
+
+        if(event.target.tagName != 'CANVAS'){
             return [];
         }
 

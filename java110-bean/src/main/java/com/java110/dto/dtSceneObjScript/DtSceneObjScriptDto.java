@@ -25,6 +25,10 @@ public class DtSceneObjScriptDto extends PageDto implements Serializable {
     private String objType;
     private Date createTime;
 
+    private String scriptName;
+
+    private String jsContent;
+
     private String statusCd = "0";
 
 
@@ -99,5 +103,21 @@ public class DtSceneObjScriptDto extends PageDto implements Serializable {
 
     public void setObjType(String objType) {
         this.objType = objType;
+    }
+
+    public String getScriptName() {
+        return scriptName;
+    }
+
+    public void setScriptName(String scriptName) {
+        this.scriptName = scriptName;
+    }
+
+    public String getJsContent() {
+        return jsContent;
+    }
+
+    public void setJsContent(String jsContent) {
+        this.jsContent = jsContent;
     }
 }
