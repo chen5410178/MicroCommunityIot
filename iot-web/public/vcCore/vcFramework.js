@@ -453,21 +453,48 @@
     //     // vcFramework.initVcComponent();
     // }
 
+    appendModules = function (_modules) {
+        _modules.forEach(_paramJs => {
+            let script = document.createElement('script');
+            script.setAttribute("type", "module");
+            script.innerHTML = _paramJs; // 替换为你的JavaScript代码
+            try {
+                document.body.appendChild(script);
+            } catch (err) {
+                console.log(err, _paramJs);
+            }
+        })
+    }
+
     execScript = function (_tree, _componentScript) {
 
         let _jsBody = "";
         for (let i = 0; i < _componentScript.length; i++) {
+            if (_componentScript[i].indexOf(';;;;;;;;;;') > -1) {
+                appendModules(_componentScript[i].split(';;;;;;;;;;'));
+                continue;
+            }
             _jsBody = (_componentScript[i] + ';');
             let script = document.createElement('script');
             script.setAttribute("type", "module");
+            script.setAttribute('name','custom')
             script.innerHTML = _jsBody; // 替换为你的JavaScript代码
             try {
                 document.body.appendChild(script);
-            }catch(err){
-                console.log(err,_jsBody);
+            } catch (err) {
+                console.log(err, _jsBody);
             }
         }
+        // let _initScript = "vcFramework.initVue();vcFramework.initVcComponent();";
+        // let script = document.createElement('script');
+        // script.setAttribute("type", "module");
+        // script.innerHTML = _initScript; // 替换为你的JavaScript代码
 
+        // try {
+        //     document.body.appendChild(script);
+        // } catch (err) {
+        //     console.log(err, _jsBody);
+        // }
         setTimeout(function () {
             vcFramework.initVue();
             vcFramework.initVcComponent();

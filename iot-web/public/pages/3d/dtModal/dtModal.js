@@ -1,6 +1,7 @@
 /**
     入驻小区
 **/
+
 (function (vc) {
     var DEFAULT_PAGE = 1;
     var DEFAULT_ROWS = 10;

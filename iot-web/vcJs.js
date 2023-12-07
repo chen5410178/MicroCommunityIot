@@ -42,7 +42,7 @@ function readDir(dir, _extname) {
     });
 }
 
-function readTemplateHtml(dir, _extname){
+function readTemplateHtml(dir, _extname) {
     fs.readdir(config.src, (err, files) => {
         if (err) {
             console.error('无法读取文件夹:', err);
@@ -55,7 +55,7 @@ function readTemplateHtml(dir, _extname){
                     console.error('无法获取文件状态:', err);
                     return;
                 }
-    
+
                 if (stats.isDirectory()) {
                 } else if (path.extname(file).toLowerCase() === _extname) {
                     fs.readFile(filePath, 'utf8', (err, data) => {
@@ -63,7 +63,7 @@ function readTemplateHtml(dir, _extname){
                         document = dom.window.document;
                         let _pageData = parseTempateVcCreate(filePath);
                         _pageData.then(_div => {
-                            createFile(filePath, _div);
+                            createFile(filePath.replaceAll("public\\", ""), _div);
                         })
                     });
                 }
@@ -95,7 +95,7 @@ function copyDirectory(source, destination) {
     if (destination.indexOf('pages') > 0) {
         return;
     }
-    // if(destination.indexOf('components') >0){
+    // if (destination.indexOf('components') > 0) {
     //     return;
     // }
     // 创建目标目录
@@ -316,8 +316,8 @@ dealJs = function (_tree, _js) {
     let newJs = _js.substring(0, position + 1);
     newJs = newJs + propsJs;
     newJs = newJs + _js.substring(position + 1, _js.length);
-    newJs = newJs.replace('propTypes','pTypes');
-    newJs = newJs.replaceAll('vc.propTypes.string','""');
+    newJs = newJs.replace('propTypes', 'pTypes');
+    newJs = newJs.replaceAll('vc.propTypes.string', '""');
     return newJs;
 };
 
@@ -456,14 +456,16 @@ async function parseVcCreate(filePath) {
     }
     reader(treeList, _componentScript);
 
-    let _js = "";
-    _componentScript.forEach(_jsScript=>{
-        _js += (_jsScript+";");
+    // let _js = "";
+    // _componentScript.forEach(_jsScript => {
+    //     _js += (_jsScript + ";");
+    // })
+
+
+    let _js =""
+    _componentScript.forEach(_sItem => {
+        _js +=  (_sItem +"\n;;;;;;;;;;");
     })
-
-    //_js += "vcFramework.initVue();vcFramework.initVcComponent();"
-
-    // let _js = "let componentsJs=" + JSON.stringify(_componentScript).replaceAll('\n','')+";";
 
     // _js += `componentsJs.forEach(_js => {
     //     let script = document.createElement('script');
@@ -478,12 +480,24 @@ async function parseVcCreate(filePath) {
     vcChildElements = document.getElementsByTagName('vc:create');
 
     if (vcChildElements.length > 0) {
+        // for (let _vcChildIndex = 0; _vcChildIndex < vcChildElements.length; _vcChildIndex++) {
+        //     //console.log('vcChildElements', vcChildElements);
+        //     let _tmpChildElement = vcChildElements[_vcChildIndex];
+        //     // 删除元素
+        //     _tmpChildElement.parentNode.removeChild(_tmpChildElement);
+        // }
+
+        let _eles = [];
         for (let _vcChildIndex = 0; _vcChildIndex < vcChildElements.length; _vcChildIndex++) {
             //console.log('vcChildElements', vcChildElements);
             let _tmpChildElement = vcChildElements[_vcChildIndex];
-            // 删除元素
-            _tmpChildElement.parentNode.removeChild(_tmpChildElement);
+            _eles.push(_tmpChildElement);
+
         }
+
+        _eles.forEach(_tmpChildElement => {
+            _tmpChildElement.parentNode.removeChild(_tmpChildElement);
+        })
     }
 
     const documentString = document.documentElement.querySelector('body');
@@ -512,7 +526,7 @@ async function parseTempateVcCreate(filePath) {
     //todo 将本身的js 导入
     reader(treeList, _componentScript);
 
-    _componentScript.forEach(_jsScript=>{
+    _componentScript.forEach(_jsScript => {
         let script = document.createElement('script');
         script.setAttribute("type", "module");
         script.innerHTML = _jsScript + ';'; // 替换为你的JavaScript代码
@@ -520,18 +534,23 @@ async function parseTempateVcCreate(filePath) {
     })
 
     vcChildElements = document.getElementsByTagName('vc:create');
-
-    if (vcChildElements.length > 0) {
-        for (let _vcChildIndex = 0; _vcChildIndex < vcChildElements.length; _vcChildIndex++) {
+    const size = vcChildElements.length;
+    if (size > 0) {
+        let _eles = [];
+        for (let _vcChildIndex = 0; _vcChildIndex < size; _vcChildIndex++) {
             //console.log('vcChildElements', vcChildElements);
             let _tmpChildElement = vcChildElements[_vcChildIndex];
-            // 删除元素
-            _tmpChildElement.parentNode.removeChild(_tmpChildElement);
+            _eles.push(_tmpChildElement);
+
         }
+
+        _eles.forEach(_tmpChildElement => {
+            _tmpChildElement.parentNode.removeChild(_tmpChildElement);
+        })
     }
 
-    const documentString = document.documentElement.querySelector('body');
-    return documentString.innerHTML;
+    const documentString = document.documentElement;
+    return '<!DOCTYPE html><html lang="en">' + documentString.innerHTML + '</html>';
 }
 reader = function (_treeList, _componentScript) {
     //console.log('_treeList', _treeList);
@@ -541,9 +560,14 @@ reader = function (_treeList, _componentScript) {
 
         console.log('_tree.html.documentElement', _tree.html.documentElement)
 
-        if (_tree.html.documentElement && _vcCreateEl && _vcCreateEl.parentNode) {
-            _vcCreateEl.parentNode.insertBefore(_tree.html.documentElement.querySelector('body').childNodes[0], _vcCreateEl)
+        try {
+            if (_tree.html.documentElement && _vcCreateEl && _vcCreateEl.parentNode) {
+                _vcCreateEl.parentNode.insertBefore(_tree.html.documentElement.querySelector('body').childNodes[0], _vcCreateEl)
+            }
+        } catch (err) {
+            console.error(err)
         }
+
 
         //将js 脚本放到 组件 脚本中
         if (_tree.js) {
@@ -582,7 +606,7 @@ copyDirectory(config.src, config.dist);
 //todo 处理pages 
 readDir(config.src + "/pages", ".html");
 
-readTemplateHtml(config.src,".html");
+readTemplateHtml(config.src, ".html");
 
 
 

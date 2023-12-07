@@ -47,7 +47,15 @@
     <!-- QQMap 腾讯地图KEY-->
     <script src="/js/webrtc/adapter-7.4.0.min.js"></script>
     <script src="/js/webrtc/srs.sdk.js"></script>
-
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "/js/three/build/three.module.js",
+            "three/addons/": "/js/three/examples/jsm/",
+            "api/": "/api/"
+          }
+        }
+      </script>
 </head>
 
 <body>
