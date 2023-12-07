@@ -26,13 +26,13 @@
                     ofType="com.java110.dto.event.EventPoolStaffDto"
                     javaType="java.util.ArrayList">
             <id column="epsId" property="epsId"/>
-            <result column="eventId" property="eventId"/>
+            <result column="eventId1" property="eventId"/>
             <result column="staffId" property="staffId"/>
             <result column="staffName" property="staffName"/>
             <result column="eventReason" property="eventReason"/>
             <result column="eventResult" property="eventResult"/>
             <result column="eventHours" property="eventHours"/>
-            <result column="communityId" property="communityId"/>
+            <result column="communityId1" property="communityId"/>
             <result column="state1" property="state"/>
             <result column="createTime1" property="createTime"/>
             <result column="statusCd1" property="statusCd"/>
@@ -69,13 +69,13 @@
         td.name eventTypeName,
         td1.name objTypeName,
         eps.eps_id epsId,
-        eps.event_id eventId,
+        eps.event_id eventId1,
         eps.staff_id staffId,
         eps.staff_name staffName,
         eps.event_reason eventReason,
         eps.event_result eventResult,
         eps.event_hours eventHours,
-        eps.community_id communityId,
+        eps.community_id communityId1,
         eps.state state1,
         eps.create_time createTime1,
         eps.status_cd statusCd1

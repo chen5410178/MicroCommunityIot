@@ -85,4 +85,17 @@ public class EventTemplateV1InnerServiceSMOImpl implements IEventTemplateV1Inner
         return eventTemplateV1ServiceDaoImpl.queryEventTemplatesCount(BeanConvertUtil.beanCovertMap(eventTemplateDto));
     }
 
+    @Override
+    public List<EventTemplateDto> queryEventTemplateList(EventTemplateDto eventTemplateDto) {
+        int page = eventTemplateDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            eventTemplateDto.setPage((page - 1) * eventTemplateDto.getRow());
+        }
+
+        List<EventTemplateDto> eventTemplates = BeanConvertUtil.covertBeanList(eventTemplateV1ServiceDaoImpl.getEventTemplateInfo1(BeanConvertUtil.beanCovertMap(eventTemplateDto)), EventTemplateDto.class);
+
+        return eventTemplates;
+    }
+
 }

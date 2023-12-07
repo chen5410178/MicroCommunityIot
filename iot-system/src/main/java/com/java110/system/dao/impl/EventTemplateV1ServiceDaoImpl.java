@@ -107,5 +107,14 @@ public class EventTemplateV1ServiceDaoImpl extends BaseServiceDao implements IEv
         return Integer.parseInt(businessEventTemplateInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> getEventTemplateInfo1(Map info) throws DAOException {
+        logger.debug("查询 getEventTemplateInfo1 入参 info : {}", info);
+
+        List<Map> businessEventTemplateInfos = sqlSessionTemplate.selectList("eventTemplateV1ServiceDaoImpl.getEventTemplateInfo1", info);
+
+        return businessEventTemplateInfos;
+    }
+
 
 }

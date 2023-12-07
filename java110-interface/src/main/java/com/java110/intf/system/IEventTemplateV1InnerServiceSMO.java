@@ -65,4 +65,7 @@ public interface IEventTemplateV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryEventTemplatesCount", method = RequestMethod.POST)
     int queryEventTemplatesCount(@RequestBody EventTemplateDto eventTemplateDto);
+
+    @RequestMapping(value = "/queryEventTemplateList", method = RequestMethod.POST)
+    List<EventTemplateDto> queryEventTemplateList(EventTemplateDto eventTemplateDto);
 }
