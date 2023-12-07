@@ -26,6 +26,8 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.event.EventTemplateDto;
+import com.java110.dto.event.EventTemplateParamDto;
+import com.java110.intf.system.IEventTemplateParamV1InnerServiceSMO;
 import com.java110.intf.system.IEventTemplateV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,6 +38,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 
 /**
@@ -55,6 +58,9 @@ public class ListEventTemplateCmd extends Cmd {
     @Autowired
     private IEventTemplateV1InnerServiceSMO eventTemplateV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IEventTemplateParamV1InnerServiceSMO eventTemplateParamV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -70,7 +76,8 @@ public class ListEventTemplateCmd extends Cmd {
         List<EventTemplateDto> eventTemplateDtos = null;
 
         if (count > 0) {
-            eventTemplateDtos = eventTemplateV1InnerServiceSMOImpl.queryEventTemplates(eventTemplateDto);
+            eventTemplateDtos = eventTemplateV1InnerServiceSMOImpl.queryEventTemplateList(eventTemplateDto);
+            refreshParam(eventTemplateDtos);
         } else {
             eventTemplateDtos = new ArrayList<>();
         }
@@ -80,5 +87,18 @@ public class ListEventTemplateCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void refreshParam(List<EventTemplateDto> eventTemplateDtos) {
+        if (CollectionUtils.isEmpty(eventTemplateDtos)) {
+            return;
+        }
+        for (EventTemplateDto eventTemplateDto : eventTemplateDtos) {
+            EventTemplateParamDto eventTemplateParamDto = new EventTemplateParamDto();
+            eventTemplateParamDto.setTemplateId(eventTemplateDto.getTemplateId());
+            eventTemplateParamDto.setCommunityId(eventTemplateDto.getCommunityId());
+            List<EventTemplateParamDto> eventTemplateParamDtos = eventTemplateParamV1InnerServiceSMOImpl.queryEventTemplateParams(eventTemplateParamDto);
+            eventTemplateDto.setEventTemplateParamDtoList(eventTemplateParamDtos);
+        }
     }
 }

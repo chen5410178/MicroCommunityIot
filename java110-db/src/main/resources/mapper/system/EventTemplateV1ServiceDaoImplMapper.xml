@@ -79,6 +79,44 @@
 
     </select>
 
+    <select id="getEventTemplateInfo1" parameterType="Map" resultType="Map">
+        select
+        t.template_id templateId,
+        t.template_name templateName,
+        t.event_way eventWay,
+        t.community_id communityId,
+        t.remark,
+        t.create_time createTime,
+        t.status_cd statusCd,
+        td.name eventWayName
+        from event_template t
+        left join t_dict td on t.event_way = td.status_cd and td.table_name = 'event_template' and td.table_columns = 'event_way'
+        where 1 =1
+        <if test="templateName !=null and templateName != ''">
+            and t.template_name like concat('%', #{templateName}, '%')
+        </if>
+        <if test="eventWay !=null and eventWay != ''">
+            and t.event_way= #{eventWay}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="templateId !=null and templateId != ''">
+            and t.template_id= #{templateId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
 
     <!-- 修改事件模板信息 add by wuxw 2018-07-03 -->
     <update id="updateEventTemplateInfo" parameterType="Map">

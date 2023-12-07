@@ -69,4 +69,5 @@ public interface IEventTemplateV1ServiceDao {
      */
     int queryEventTemplatesCount(Map info);
 
+    List<Map> getEventTemplateInfo1(Map info) throws DAOException;
 }
