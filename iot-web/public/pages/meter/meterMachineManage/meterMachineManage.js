@@ -119,7 +119,13 @@
                     param,
                     function(json, res) {
                         let _json = JSON.parse(json);
-                        $that.meterMachineManageInfo.meterTypes = _json.data;
+                        $that.meterMachineManageInfo.meterTypes = [{
+                            typeName: '水电类型',
+                            typeId: ''
+                        }];
+                        _json.data.forEach(item => {
+                            $that.meterMachineManageInfo.meterTypes.push(item);
+                        });
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');
@@ -182,6 +188,10 @@
             },
             _toMeterDetail: function (_meterMachine) {
                 vc.jumpToPage('/#/pages/meter/meterDetail?machineId=' + _meterMachine.machineId + "&roomId=" + _meterMachine.roomId);
+            },
+            switchMeterType: function (_meterType) {
+                $that.meterMachineManageInfo.conditions.meterType = _meterType.typeId;
+                $that._listMeterMachines(DEFAULT_PAGE, DEFAULT_ROWS);
             }
 
         }
