@@ -42,6 +42,36 @@ function readDir(dir, _extname) {
     });
 }
 
+function readTemplateHtml(dir, _extname){
+    fs.readdir(config.src, (err, files) => {
+        if (err) {
+            console.error('无法读取文件夹:', err);
+            return;
+        }
+        files.forEach(file => {
+            const filePath = path.join(dir, file);
+            fs.stat(filePath, (err, stats) => {
+                if (err) {
+                    console.error('无法获取文件状态:', err);
+                    return;
+                }
+    
+                if (stats.isDirectory()) {
+                } else if (path.extname(file).toLowerCase() === _extname) {
+                    fs.readFile(filePath, 'utf8', (err, data) => {
+                        const dom = new JSDOM(data);
+                        document = dom.window.document;
+                        let _pageData = parseTempateVcCreate(filePath);
+                        _pageData.then(_div => {
+                            createFile(filePath, _div);
+                        })
+                    });
+                }
+            });
+        });
+    });
+}
+
 function createFile(fileName, content) {
     const fullPath = path.join(config.dist, fileName);
 
@@ -460,6 +490,49 @@ async function parseVcCreate(filePath) {
     return documentString.innerHTML;
 }
 
+async function parseTempateVcCreate(filePath) {
+
+    let vcChildElements = document.getElementsByTagName('vc:create');
+    //console.log('vcCreate', vcChildElements.length);
+    let treeList = [];
+    let _componentScript = [];
+    if (vcChildElements.length > 0) {
+        let _vcDiv = document.createElement('div');
+        for (let _vcChildIndex = 0; _vcChildIndex < vcChildElements.length; _vcChildIndex++) {
+            //console.log('vcChildElements', vcChildElements);
+            let _tmpChildElement = vcChildElements[_vcChildIndex];
+            let _subtree = new VcTree(_tmpChildElement, '', 2);
+            let _vcCreateAttr = document.createAttribute('id');
+            _vcCreateAttr.value = _subtree.treeId;
+            _tmpChildElement.setAttributeNode(_vcCreateAttr);
+            treeList.push(_subtree);
+            await findVcLabel(_subtree);
+        }
+    }
+    //todo 将本身的js 导入
+    reader(treeList, _componentScript);
+
+    _componentScript.forEach(_jsScript=>{
+        let script = document.createElement('script');
+        script.setAttribute("type", "module");
+        script.innerHTML = _jsScript + ';'; // 替换为你的JavaScript代码
+        document.body.appendChild(script);
+    })
+
+    vcChildElements = document.getElementsByTagName('vc:create');
+
+    if (vcChildElements.length > 0) {
+        for (let _vcChildIndex = 0; _vcChildIndex < vcChildElements.length; _vcChildIndex++) {
+            //console.log('vcChildElements', vcChildElements);
+            let _tmpChildElement = vcChildElements[_vcChildIndex];
+            // 删除元素
+            _tmpChildElement.parentNode.removeChild(_tmpChildElement);
+        }
+    }
+
+    const documentString = document.documentElement.querySelector('body');
+    return documentString.innerHTML;
+}
 reader = function (_treeList, _componentScript) {
     //console.log('_treeList', _treeList);
     for (let _treeIndex = 0; _treeIndex < _treeList.length; _treeIndex++) {
@@ -509,6 +582,7 @@ copyDirectory(config.src, config.dist);
 //todo 处理pages 
 readDir(config.src + "/pages", ".html");
 
+readTemplateHtml(config.src,".html");
 
 
 

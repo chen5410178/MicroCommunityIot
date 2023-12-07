@@ -471,7 +471,7 @@
         setTimeout(function () {
             vcFramework.initVue();
             vcFramework.initVcComponent();
-        }, 500)
+        }, 100)
     }
 
     /**
