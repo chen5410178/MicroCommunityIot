@@ -1,7 +1,8 @@
 /**
     入驻小区
 **/
-import Cockpit3d from 'api/3d/Cockpit3d.js'
+import Cockpit3d from 'api/3d/Cockpit3d.js';
+import { computeSceneObject } from 'api/3d/CockpitCore.js';
 (function (vc) {
     vc.extends({
         data: {
@@ -17,7 +18,7 @@ import Cockpit3d from 'api/3d/Cockpit3d.js'
             $that.cockpitInfo.communityId = vc.getCurrentCommunity().communityId;
             let _scene = new Cockpit3d('webgl-scene');
             _scene.addJpgBackgroup({
-                path:'/img/3d_bg.jpg'
+                path: '/img/3d_bg.jpg'
             })
             $that.cockpitInfo.scene = _scene;
             $that._listDtScenes();
@@ -52,17 +53,24 @@ import Cockpit3d from 'api/3d/Cockpit3d.js'
             },
             _changeScene: function (_data) {
                 $that.cockpitInfo.sceneId = _data.sceneId;
-                if(!_data.modalJson){
+                if (!_data.modalJson) {
                     return;
                 }
                 let _scene = $that.cockpitInfo.scene;
                 _scene.resetScene();
                 _scene.addGltfObject({
-                    path:_data.modalJson
-                });
+                    path: _data.modalJson
+                }).then(() => { // todo 加载场景完成 执行
+                    //todo 计算object 对象
+                    computeSceneObject(_scene, {
+                        sceneId: _data.sceneId,
+                        communityId: $that.cockpitInfo.communityId
+                    });
+                })
 
 
-            }
+
+            },
         }
     });
 })(window.vc);

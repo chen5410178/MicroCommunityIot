@@ -1,4 +1,4 @@
-import {loadModalData} from 'api/modal/modalDataApi.js';
+import {loadModalObjectData} from 'api/modal/modalDataApi.js';
 (function (vc) {
     vc.extends({
         data: {
@@ -120,7 +120,7 @@ import {loadModalData} from 'api/modal/modalDataApi.js';
 
                 $that.objectScriptInfo.modalData =  [];
                 
-                loadModalData({
+                loadModalObjectData({
                     modalType:$that.objectScriptInfo.objType,
                     communityId: $that.objectScriptInfo.communityId
                 },$that.objectScriptInfo.modalData);

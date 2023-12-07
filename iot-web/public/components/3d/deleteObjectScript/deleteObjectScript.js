@@ -29,6 +29,8 @@
                             //关闭model
                             $('#deleteObjectScriptModel').modal('hide');
                             vc.emit('curModal', 'loadObjScript', {});
+                            vc.emit('dtSceneObjScript', 'listDtSceneObjScript', {});
+                            
                             return ;
                         }
                         vc.toast(_json.msg);

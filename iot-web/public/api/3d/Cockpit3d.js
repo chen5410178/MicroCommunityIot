@@ -9,6 +9,7 @@ export default class Cockpit3d {
 
     constructor(_element) {
         this._initScene(_element);
+        this.shapes = [];
     }
 
 
@@ -71,6 +72,7 @@ export default class Cockpit3d {
     update() {
         this.controls.update();
 
+        this.upDownShap();
     }
 
     _initScene(_element) {
@@ -89,7 +91,7 @@ export default class Cockpit3d {
         }
         animate();
 
-        
+
     }
 
     addGltfObject(_modal) {
@@ -98,28 +100,33 @@ export default class Cockpit3d {
         dracoLoader.setDecoderPath('/js/three/examples/jsm/libs/draco/');
         loader.setDRACOLoader(dracoLoader);
         let _that = this;
-        loader.load(
-            _modal.path,
-            function (gltf) {
-                //需要添加的部分
-                gltf.scene.traverse(function (child) {
-                    if (child.isMesh) {
-                        child.material.emissive = child.material.color;
-                        child.material.emissiveMap = child.material.map;
-                    }
-                });
-                gltf.scene.scale.set(1, 1, 1);
-                _that.scene.add(gltf.scene);
-            },
-            // called while loading is progressing
-            function (xhr) {
-                console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-            },
-            // called when loading has errors
-            function (error) {
-                console.log('An error happened', error);
-            }
-        );
+        return new Promise((resolve, reject) => {
+            loader.load(
+                _modal.path,
+                function (gltf) {
+                    //需要添加的部分
+                    gltf.scene.traverse(function (child) {
+                        if (child.isMesh) {
+                            child.material.emissive = child.material.color;
+                            child.material.emissiveMap = child.material.map;
+                        }
+                    });
+                    gltf.scene.scale.set(1, 1, 1);
+                    _that.scene.add(gltf.scene);
+                    resolve();
+                },
+                // called while loading is progressing
+                function (xhr) {
+                    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                },
+                // called when loading has errors
+                function (error) {
+                    console.log('An error happened', error);
+                    reject(error);
+                }
+            );
+        })
+
     }
     addJpgBackgroup(_modal) {
         const texture = new THREE.TextureLoader().load(_modal.path);
@@ -143,7 +150,7 @@ export default class Cockpit3d {
         });
     }
 
-   
+
 
     clearThree(obj) {
         while (obj.children.length > 0) {
@@ -164,7 +171,67 @@ export default class Cockpit3d {
         }
     }
 
-    resetScene(){
+    resetScene() {
         this.clearThree(this.scene);
+    }
+
+    getObjectByName(_objName) {
+        return this.scene.getObjectByName(_objName);
+    }
+
+    addConicalShape(_objName) {
+        let geometry = new THREE.ConeGeometry(8, 15, 20); // 第三个参数是分段数，可以根据需要调整  
+
+        // 创建材质  
+        let material = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.7 }); // 绿色  
+
+        // 创建锥形对象  
+        let cone = new THREE.Mesh(geometry, material);
+        cone.name = _objName;
+        cone.rotation.x = Math.PI;
+        this.scene.add(cone); // 将锥形对象添加到场景中  
+    }
+
+    getObjectPosition(targetObject) {
+        let targetCenter = new THREE.Vector3();
+        // targetObject.updateMatrixWorld(true); // 确保目标物体的世界矩阵是最新的  
+        // targetObject.getWorldPosition(targetCenter); // 将目标物体的世界位置存储到 targetCenter 中  
+        // // 将源物体的位置设置为目标物体的中心位置  
+        // console.log(targetCenter);
+        let box = new THREE.Box3().setFromObject(targetObject);
+        targetCenter.x = (box.max.x + box.min.x) / 2;
+        targetCenter.y = box.min.y;
+        targetCenter.z = (box.max.z + box.min.z) / 2;
+
+        return { x: targetCenter.x, y: targetCenter.y, z: targetCenter.z };
+    }
+
+    getObjectHeight(targetObject) {
+        let box = new THREE.Box3().setFromObject(targetObject);
+        // 获取包围盒的高度  
+        let height = box.max.y - box.min.y;
+        return height;
+    }
+
+    addShap(_object) {
+
+        this.shapes.push({
+            object: _object,
+            y: _object.position.y
+        });
+    }
+
+    upDownShap() {
+        if (!this.shapes || this.shapes.length < 1) {
+            return;
+        }
+        // 设置移动的速度和幅度  
+        let speed = 1.5; // 移动速度  
+        let amplitude = 5; // 移动幅度  
+        this.shapes.forEach(shape => {
+            let newYPosition = shape.y + amplitude * Math.sin(speed * Date.now() / 1000);
+            shape.object.position.y = newYPosition;
+
+        })
     }
 }
