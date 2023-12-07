@@ -7,6 +7,8 @@ const jsdom = require("jsdom");
 const { error } = require('console');
 const { JSDOM } = jsdom;
 
+const Terser = require("terser");
+
 let document = null;
 /**
  * 读取src 下的html文件
@@ -81,9 +83,42 @@ function createFile(fileName, content) {
     if (!fs.existsSync(directoryPath)) {
         fs.mkdirSync(directoryPath, { recursive: true });
     }
-
     // 创建文件
     fs.writeFileSync(fullPath, content);
+}
+
+function doMinJs(_dir) {
+    fs.readdir(_dir, (err, files) => {
+        if (err) {
+            console.error('无法读取文件夹:', err);
+            return;
+        }
+        files.forEach(file => {
+            const filePath = path.join(_dir, file);
+            fs.stat(filePath, (err, stats) => {
+                if (err) {
+                    console.error('无法获取文件状态:', err);
+                    return;
+                }
+                if (stats.isDirectory()) {
+                    doMinJs(filePath)
+                } else if (path.extname(file).toLowerCase() === ".js") {
+                    fs.readFile(filePath, 'utf8', (err, data) => {
+                        Terser.minify(data,{ mangle: false }).then(result => {
+                            console.log(filePath)
+                            createFile(filePath.replaceAll("dist\\", ""), result.code);
+                        })
+                    });
+                }
+            });
+        });
+    });
+}
+
+function minJs() {
+    config.minJs.forEach(_dir => {
+        doMinJs(_dir)
+    })
 }
 
 /**
@@ -456,37 +491,16 @@ async function parseVcCreate(filePath) {
     }
     reader(treeList, _componentScript);
 
-    // let _js = "";
-    // _componentScript.forEach(_jsScript => {
-    //     _js += (_jsScript + ";");
-    // })
-
-
-    let _js =""
+    let _js = ""
     _componentScript.forEach(_sItem => {
-        _js +=  (_sItem +"\n;;;;;;;;;;");
+        _js += (_sItem + "\n;;;;;;;;;;");
     })
-
-    // _js += `componentsJs.forEach(_js => {
-    //     let script = document.createElement('script');
-    //     script.setAttribute("type", "module");
-    //     script.innerHTML = _js + ';'; // 替换为你的JavaScript代码
-    //     document.body.appendChild(script);
-    // });`
-
 
     createFile(_jsFilePath.replaceAll("public\\", ""), _js);
 
     vcChildElements = document.getElementsByTagName('vc:create');
 
     if (vcChildElements.length > 0) {
-        // for (let _vcChildIndex = 0; _vcChildIndex < vcChildElements.length; _vcChildIndex++) {
-        //     //console.log('vcChildElements', vcChildElements);
-        //     let _tmpChildElement = vcChildElements[_vcChildIndex];
-        //     // 删除元素
-        //     _tmpChildElement.parentNode.removeChild(_tmpChildElement);
-        // }
-
         let _eles = [];
         for (let _vcChildIndex = 0; _vcChildIndex < vcChildElements.length; _vcChildIndex++) {
             //console.log('vcChildElements', vcChildElements);
@@ -494,7 +508,6 @@ async function parseVcCreate(filePath) {
             _eles.push(_tmpChildElement);
 
         }
-
         _eles.forEach(_tmpChildElement => {
             _tmpChildElement.parentNode.removeChild(_tmpChildElement);
         })
@@ -608,5 +621,5 @@ readDir(config.src + "/pages", ".html");
 
 readTemplateHtml(config.src, ".html");
 
-
+minJs();
 
