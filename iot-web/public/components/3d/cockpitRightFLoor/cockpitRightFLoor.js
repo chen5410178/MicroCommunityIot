@@ -7,7 +7,7 @@
         data: {
             cockpitRightFLoorInfo: {
                 floorId:'',
-                layer:33,
+                layer:0,
                 curLayer:'',
                 floorName:'',
                 floorNum:'',
