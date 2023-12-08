@@ -31,6 +31,9 @@ public class MeterMachineChargeDto extends PageDto implements Serializable {
     private Date createTime;
 
     private String statusCd = "0";
+    private String machineNameLike;
+    private String addressLike;
+    private String roomNameLike;
 
 
     public String getMachineId() {
@@ -136,5 +139,29 @@ public class MeterMachineChargeDto extends PageDto implements Serializable {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    public String getMachineNameLike() {
+        return machineNameLike;
+    }
+
+    public void setMachineNameLike(String machineNameLike) {
+        this.machineNameLike = machineNameLike;
+    }
+
+    public String getAddressLike() {
+        return addressLike;
+    }
+
+    public void setAddressLike(String addressLike) {
+        this.addressLike = addressLike;
+    }
+
+    public String getRoomNameLike() {
+        return roomNameLike;
+    }
+
+    public void setRoomNameLike(String roomNameLike) {
+        this.roomNameLike = roomNameLike;
     }
 }
