@@ -35,6 +35,7 @@ public class ChargeRuleFeeDto extends PageDto implements Serializable {
     private String chargeType;
     private Time startTime;
     private Time endTime;
+    private String ruleName;
 
     public String getChargeType() {
         return chargeType;
@@ -139,5 +140,13 @@ public class ChargeRuleFeeDto extends PageDto implements Serializable {
 
     public void setEnergy(String energy) {
         this.energy = energy;
+    }
+
+    public String getRuleName() {
+        return ruleName;
+    }
+
+    public void setRuleName(String ruleName) {
+        this.ruleName = ruleName;
     }
 }

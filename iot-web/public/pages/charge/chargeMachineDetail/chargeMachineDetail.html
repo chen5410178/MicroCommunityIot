@@ -1,0 +1,166 @@
+<div class="white-bg padding-lg padding-top border-radius">
+    <div class="flex justify-between">
+        <div class="text-title">
+            充电桩信息
+        </div>
+        <div>
+            <button type="button" class="btn btn-white btn-sm" style="margin-left:10px"  v-on:click="vc.goBack()">
+                返回
+            </button>
+        </div>
+    </div>
+    <!-- 业主信息 -->
+    <div class="margin-top">
+        <div class="row" >
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="充电桩ID：" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{machineDetailInfo.machineId}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="充电桩名称：" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{machineDetailInfo.machineName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="充电桩编号：" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{machineDetailInfo.machineCode}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="厂家名称:" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{machineDetailInfo.factoryName}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="充电类型:" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{machineDetailInfo.chargeTypeName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="插槽个数:" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{machineDetailInfo.portCount}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="充电规则" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class=""> {{machineDetailInfo.ruleName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="状态" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class=""> {{machineDetailInfo.stateName}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="心跳时间" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class=""> {{machineDetailInfo.heartbeatTime}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="添加时间" namespace="machineDetailInfo"></vc:i18n>
+                            </label>
+                            <label class=""> {{machineDetailInfo.createTime}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div v-for="(item,index) in machineDetailInfo.lockMachineParamDtoList">
+                    <div class="row" v-if="index % 4 == 0">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="col-form-label">{{item.specName}}：</label>
+                                <label class="">{{item.value}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="index < machineDetailInfo.lockMachineParamDtoList.length-1">
+                            <div class="form-group">
+                                <label class="col-form-label">{{machineDetailInfo.lockMachineParamDtoList[index+1].specName}}：</label>
+                                <label class="">{{machineDetailInfo.lockMachineParamDtoList[index+1].value}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="index < machineDetailInfo.lockMachineParamDtoList.length-2">
+                            <div class="form-group">
+                                <label class="col-form-label">{{machineDetailInfo.lockMachineParamDtoList[index+2].specName}}：</label>
+                                <label class="">{{machineDetailInfo.lockMachineParamDtoList[index+2].value}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="index < machineDetailInfo.lockMachineParamDtoList.length-3">
+                            <div class="form-group">
+                                <label class="col-form-label">{{machineDetailInfo.lockMachineParamDtoList[index+3].specName}}：</label>
+                                <label class="">{{machineDetailInfo.lockMachineParamDtoList[index+3].value}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="vc-line-primary margin-top"></div>
+    <div class="margin-top-sm">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailChargePort'}" v-on:click="changeTab('machineDetailChargePort')">
+                    <vc:i18n name="插槽" namespace="machineDetail"></vc:i18n>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailChargeRule'}" v-on:click="changeTab('machineDetailChargeRule')">
+                    <vc:i18n name="充电规则" namespace="machineDetail"></vc:i18n>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailChargeOrder'}" v-on:click="changeTab('machineDetailChargeOrder')">
+                    <vc:i18n name="充电订单" namespace="machineDetail"></vc:i18n>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div v-if="machineDetailInfo._currentTab == 'machineDetailChargePort'">
+        <vc:create path="property/machineDetailChargePort"></vc:create>
+    </div>
+    <div v-if="machineDetailInfo._currentTab == 'machineDetailChargeRule'">
+        <vc:create path="property/machineDetailChargeRule"></vc:create>
+    </div>
+    <div v-if="machineDetailInfo._currentTab == 'machineDetailChargeOrder'">
+        <vc:create path="property/machineDetailChargeOrder"></vc:create>
+    </div>
+
+
+    
+    
+</div>

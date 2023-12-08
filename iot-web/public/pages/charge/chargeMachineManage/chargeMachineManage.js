@@ -91,8 +91,10 @@
             },
             _chargeMachineQrCode: function(_chargeMachine) {
                 vc.emit('chargeMachineQrCode', 'openChargeMachineQrCodeModal', _chargeMachine);
+            },
+            _toChargeMachineDetail: function (_chargeMachine) {
+                vc.jumpToPage('/#/pages/charge/chargeMachineDetail?machineId=' + _chargeMachine.machineId);
             }
-
 
         }
     });
