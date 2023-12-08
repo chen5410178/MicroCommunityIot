@@ -51,6 +51,12 @@ public class FloorDto extends PageDto implements Serializable {
 
     private int seq;
 
+    private int roomCount;
+
+    private int freeRoomCount;
+
+    private int layer;
+
     private List<FloorAttrDto> floorAttrDto;
 
     public String getFloorId() {
@@ -155,5 +161,29 @@ public class FloorDto extends PageDto implements Serializable {
 
     public void setSeq(int seq) {
         this.seq = seq;
+    }
+
+    public int getRoomCount() {
+        return roomCount;
+    }
+
+    public void setRoomCount(int roomCount) {
+        this.roomCount = roomCount;
+    }
+
+    public int getFreeRoomCount() {
+        return freeRoomCount;
+    }
+
+    public void setFreeRoomCount(int freeRoomCount) {
+        this.freeRoomCount = freeRoomCount;
+    }
+
+    public int getLayer() {
+        return layer;
+    }
+
+    public void setLayer(int layer) {
+        this.layer = layer;
     }
 }

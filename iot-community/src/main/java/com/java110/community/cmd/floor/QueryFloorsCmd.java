@@ -3,6 +3,8 @@ package com.java110.community.cmd.floor;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.bean.dto.floor.FloorDto;
+import com.java110.bean.dto.room.RoomDto;
+import com.java110.bean.dto.unit.UnitDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
@@ -10,8 +12,11 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.doc.annotation.*;
 import com.java110.intf.community.IFloorInnerServiceSMO;
+import com.java110.intf.community.IRoomV1InnerServiceSMO;
+import com.java110.intf.community.IUnitV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +60,12 @@ public class QueryFloorsCmd extends Cmd {
     @Autowired
     private IFloorInnerServiceSMO floorInnerServiceSMOImpl;
 
+    @Autowired
+    private IRoomV1InnerServiceSMO roomV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IUnitV1InnerServiceSMO unitV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.jsonObjectHaveKey(reqJson, "page", "请求中未包含page信息");
@@ -76,10 +87,52 @@ public class QueryFloorsCmd extends Cmd {
         if (total > 0) {
             floorDtos = floorInnerServiceSMOImpl.queryFloors(BeanConvertUtil.covertBean(reqJson, FloorDto.class));
         }
+
+        //todo 查询房屋数
+        computeRoomCount(floorDtos);
+
         ResultVo resultVo = new ResultVo((int) Math.ceil((double) total / (double) reqJson.getInteger("row")), total, floorDtos);
 
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void computeRoomCount(List<FloorDto> floorDtos) {
+
+        if (ListUtil.isNull(floorDtos)) {
+            return;
+        }
+
+        if (floorDtos.size() != 1) {
+            return;
+        }
+
+        RoomDto roomDto = new RoomDto();
+        roomDto.setFloorId(floorDtos.get(0).getFloorId());
+        roomDto.setCommunityId(floorDtos.get(0).getCommunityId());
+        int roomCount = roomV1InnerServiceSMOImpl.queryRoomsCount(roomDto);
+
+        floorDtos.get(0).setRoomCount(roomCount);
+
+        roomDto = new RoomDto();
+        roomDto.setFloorId(floorDtos.get(0).getFloorId());
+        roomDto.setCommunityId(floorDtos.get(0).getCommunityId());
+        roomDto.setState(RoomDto.STATE_FREE);
+        int feeRoomCount = roomV1InnerServiceSMOImpl.queryRoomsCount(roomDto);
+
+        floorDtos.get(0).setFreeRoomCount(feeRoomCount);
+
+        UnitDto unitDto = new UnitDto();
+        unitDto.setFloorId(floorDtos.get(0).getFloorId());
+        unitDto.setCommunityId(floorDtos.get(0).getCommunityId());
+        List<UnitDto> unitDtos = unitV1InnerServiceSMOImpl.queryUnits(unitDto);
+
+        if (ListUtil.isNull(unitDtos)) {
+            floorDtos.get(0).setLayer(1);
+            return;
+        }
+
+        floorDtos.get(0).setLayer(Integer.parseInt(unitDtos.get(0).getLayerCount()));
     }
 }
