@@ -32,12 +32,12 @@
         </dependency>
         <dependency>
             <groupId>com.java110</groupId>
-            <artifactId>java110-service</artifactId>
+            <artifactId>java110-interface</artifactId>
             <version>${hc.version}</version>
         </dependency>
         <dependency>
             <groupId>com.java110</groupId>
-            <artifactId>java110-interface</artifactId>
+            <artifactId>java110-core</artifactId>
             <version>${hc.version}</version>
         </dependency>
         <dependency>
@@ -46,7 +46,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -57,7 +57,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -68,7 +68,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -79,7 +79,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -90,7 +90,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -101,7 +101,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -112,7 +112,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -123,7 +123,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -135,7 +135,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -147,7 +147,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -159,7 +159,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -170,7 +170,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -181,7 +181,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -192,7 +192,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -203,7 +203,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -214,7 +214,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -225,7 +225,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>
@@ -236,7 +236,7 @@
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
+                    <artifactId>java110-core</artifactId>
                     <groupId>com.java110</groupId>
                 </exclusion>
             </exclusions>

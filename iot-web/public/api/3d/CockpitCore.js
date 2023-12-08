@@ -16,7 +16,12 @@ export function computeSceneObject(_scene, _param) {
     sceneId = _param.sceneId;
     communityId = _param.communityId;
     //todo 
-    loadSceneObjectScript()
+    loadSceneObjectScript({
+            page: 1,
+            row: 100,
+            communityId: communityId,
+            sceneId: sceneId,
+        })
         .then((scripts) => {
             scripts.forEach(_script => {
                 try {
@@ -26,7 +31,55 @@ export function computeSceneObject(_scene, _param) {
                 }
             });
 
+        });
+    _scene.setSelect3DObject((_object) => {
+        console.log('selectObjName=', _object.name)
+
+        if (!_object.name.endsWith('_focus')) {
+            return;
+        }
+
+        loadSceneObjectScript({
+            page: 1,
+            row: 1,
+            communityId: communityId,
+            sceneId: sceneId,
+            objName:_object.name.replace('_focus','')
         })
+        .then((scripts) => {
+            if(scripts[0].objType == 'floor'){
+                scene.lookAtObject(scene.getObjectByName(_object.name));
+                vc.emit('cockpit','curType',{
+                    curType:'floor',
+                    data:scripts[0]
+                })
+                return;
+            }
+
+        });
+    })
+}
+
+function laodModal(_params){
+    let param = {
+        params: _params
+    };
+    return new Promise((resolve, reject) => {
+        //发送get请求
+        vc.http.apiGet('/dtModal.listDtModal',
+            param,
+            function (json, res) {
+                let _json = JSON.parse(json);
+                if (!_json.data || _json.data.length < 1) {
+                    reject('未包含数据');
+                    return;
+                }
+                resolve(_json.data)
+            }, function (errInfo, error) {
+                console.log('请求失败处理');
+            }
+        );
+    })
 }
 
 /**
@@ -48,12 +101,12 @@ function doScript(_script) {
 
     // 计算目标物体的中心位置  
     let _objectTarget = scene.getObjectPosition(object);
-    let _height = scene.getObjectHeight(object)+15;
+    let _height = scene.getObjectHeight(object) + 15;
 
     scene.addConicalShape(objName + "_focus");
     let objectFocus = scene.getObjectByName(objName + "_focus");
 
-    objectFocus.position.set(_objectTarget.x, _objectTarget.y+_height, _objectTarget.z);
+    objectFocus.position.set(_objectTarget.x, _objectTarget.y + _height, _objectTarget.z);
 
     scene.addShap(objectFocus);
 
@@ -64,14 +117,9 @@ function doScript(_script) {
  * 加载脚本对象
  * @returns 对象绑定脚本
  */
-function loadSceneObjectScript() {
+function loadSceneObjectScript(_params) {
     let param = {
-        params: {
-            page: 1,
-            row: 100,
-            communityId: communityId,
-            sceneId: sceneId,
-        }
+        params: _params
     };
     return new Promise((resolve, reject) => {
         //发送get请求

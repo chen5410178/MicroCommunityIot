@@ -4,8 +4,6 @@ import com.java110.core.factory.LoggerFactory;
 import com.java110.doc.annotation.Java110ApiDoc;
 import com.java110.doc.annotation.Java110RequestMappingDoc;
 import com.java110.doc.annotation.Java110RequestMappingsDoc;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping(path = "/api")
-@Api(value = "对外统一提供服务接口服务")
 @Java110ApiDoc(
         title = "HC物联网管理系统api接口文档",
         description = "HC物联网管理系统api接口文档",
@@ -54,7 +51,6 @@ public class RestApi {
      * @return
      */
     @RequestMapping(path = "/version", method = RequestMethod.GET)
-    @ApiOperation(value = "版本", notes = "test: 返回 2XX 表示服务正常")
     public String version() {
         return VERSION_2;
     }

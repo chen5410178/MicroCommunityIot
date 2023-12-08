@@ -91,6 +91,13 @@ export default class Cockpit3d {
         }
         animate();
 
+        addEventListener('click', function (event) {
+            _that.onMouseDblclick(event, _that)
+        }, false);
+        window.addEventListener('mousemove', function (event) {
+            _that.onMouseMove(event, _that)
+        }, false);
+
 
     }
 
@@ -175,6 +182,91 @@ export default class Cockpit3d {
         this.clearThree(this.scene);
     }
 
+    setSelect3DObject(_callback) {
+        this.selectCallBack = _callback;
+    }
+
+    onMouseMove(event, _that) {
+        let intersects = _that.getIntersects(event, _that);
+        if (!intersects || intersects.length === 0) {
+            return;
+        }
+        let _name = "";
+        document.body.style.cursor = 'default';
+        for (let _index = 0; _index < intersects.length; _index++) {
+            _name = intersects[_index].object.name;
+            if (_name.endsWith('_focus')) {
+                document.body.style.cursor = 'pointer'; // 将鼠标状态设置为小手  
+                break;
+            }
+        }
+    }
+
+    onMouseDblclick(event, _that) {
+        //alert("a");
+        //获取raycaster和所有模型相交的数组，其中的元素按照距离排序，越近的越靠前
+        let intersects = _that.getIntersects(event, _that);
+        // console.log(intersects[0].object);
+
+        //获取选中最近的Mesh对象
+        //instance坐标是对象，右边是类，判断对象是不是属于这个类的
+        let _name = ''; //&& intersects[0].object.type === 'Mesh'
+        if (intersects.length !== 0) {
+            //intersects[0].object.material.color.set(0x00FF00);
+            //console.log(intersects[0].object.material.color);
+            for (let _index = 0; _index < intersects.length; _index++) {
+                _name = intersects[_index].object.name;
+                if (_name == 'X' || _name == 'Y' || _name == 'Z'
+                    || _name == 'XY' || _name == 'XZ' || _name == 'YZ'
+                    || _name == 'XYZ' || _name == 'E' || _name == 'XYZE'
+                    || _name == 'START' || _name == 'END') {
+                    continue
+                }
+                if (intersects[_index].object.type === 'Mesh') {
+                    _that.selectObject = intersects[_index].object;
+                    if (_that.selectCallBack) {
+                        _that.selectCallBack(_that.selectObject);
+                    }
+                    break;
+                }
+            }
+
+            //changeMaterial(selectObject)
+
+        } else {
+            console.log('未选中 Mesh!');
+        }
+    }
+
+    getIntersects(event, _that) {
+
+        if (event.target.tagName != 'CANVAS') {
+            return [];
+        }
+
+        event.preventDefault();// 阻止默认的点击事件执行, https://developer.mozilla.org/zh-CN/docs/Web/API/Event/preventDefault
+        // console.log("event.clientX:" + event.clientX);
+        // console.log("event.clientY:" + event.clientY);
+
+        //声明 rayCaster 和 mouse 变量
+        let rayCaster = new THREE.Raycaster();
+        let mouse = new THREE.Vector2();
+
+        //通过鼠标点击位置，计算出raycaster所需点的位置，以屏幕为中心点，范围-1到1
+        mouse.x = ((event.clientX - _that.container.getBoundingClientRect().left) / _that.container.offsetWidth) * 2 - 1;
+        mouse.y = -((event.clientY - _that.container.getBoundingClientRect().top) / _that.container.offsetHeight) * 2 + 1; //这里为什么是-号，没有就无法点中
+
+        //通过鼠标点击的位置(二维坐标)和当前相机的矩阵计算出射线位置
+        rayCaster.setFromCamera(mouse, _that.camera);
+
+        //获取与射线相交的对象数组， 其中的元素按照距离排序，越近的越靠前。
+        //+true，是对其后代进行查找，这个在这里必须加，因为模型是由很多部分组成的，后代非常多。
+        let intersects = rayCaster.intersectObjects(_that.scene.children, true);
+
+        //返回选中的对象
+        return intersects;
+    }
+
     getObjectByName(_objName) {
         return this.scene.getObjectByName(_objName);
     }
@@ -233,5 +325,12 @@ export default class Cockpit3d {
             shape.object.position.y = newYPosition;
 
         })
+    }
+
+    lookAtObject(_object) {
+        // 将相机移动到物体位置并面对物体  
+        let _pos = this.getObjectPosition(_object);
+        this.camera.position.set(_pos.x,_pos.y,_pos.z);
+        this.camera.lookAt(_object.position);
     }
 }

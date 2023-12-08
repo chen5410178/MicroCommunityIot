@@ -1230,7 +1230,12 @@
             return;
         }
         //保存路由信息
-        vcFramework.saveComponentToPageRoute();
+        try{
+            vcFramework.saveComponentToPageRoute();
+        }catch(err){
+            console.error(err)
+        }
+        
         let _targetUrl = url.substring(0, url.indexOf('#'));
         if (location.pathname != _targetUrl) {
             window.location.href = url;

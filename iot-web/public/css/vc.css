@@ -1076,6 +1076,33 @@ nav-link nav-link-breadcrumb active:active {
     background: linear-gradient(270deg, rgba(3, 17, 23, 1), rgba(3, 17, 23, 0));
 }
 
+.cockpit-right .view-box{
+    position: absolute;
+    width: 24rem;
+    height: 91.14vh;
+    background: url('/img/3d/bg-right.png') no-repeat;
+    background-size: 100% 100%;
+    right: 0.175rem;
+    top: 8.036vh;
+    padding-top: 0.1rem;
+    box-sizing: border-box;
+    z-index: 9;
+    transition: all 1.5s;
+}
+
+.cockpit-right .view-box .vb-c{
+    color:#fff;
+}
+.cockpit-right .view-box .vb-c .r-title{
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.cockpit-right .view-box .vb-c .r-body{
+    font-size: 14px;
+}
+
+
 .cockpit-menu {
     width: 80%;
     height: 6.575rem;
@@ -1121,3 +1148,4 @@ nav-link nav-link-breadcrumb active:active {
     top: 15px;
     left: -58px;
 }
+

@@ -1,0 +1,52 @@
+<div class="view-box ">
+    <div class="vb-c padding">
+        <div class="r-title flex justify-between">
+            <span>楼栋信息</span>
+            <span></span>
+        </div>
+        <div class="r-body flex justify-between margin-top-sm ">
+            <div>
+                <div>编号</div>
+                <div style="color: #c17e14;">1000</div>
+            </div>
+            <div>
+                <div>名称</div>
+                <div style="color: #c17e14;">1000</div>
+            </div>
+            <div>
+                <div>面积</div>
+                <div style="color: #c17e14;">1000</div>
+            </div>
+        </div>
+
+        <div class="r-body flex justify-between  margin-top-sm ">
+            <div>
+                <div>房屋数</div>
+                <div style="color: #c17e14;">1000</div>
+            </div>
+            <div>
+                <div>人员数</div>
+                <div style="color: #c17e14;">1000</div>
+            </div>
+            <div>
+                <div>备注</div>
+                <div style="color: #c17e14;">1000</div>
+            </div>
+        </div>
+        <div class="r-title flex justify-between margin-top">
+            <span>楼层</span>
+            <span></span>
+        </div>
+        <div class="flex justify-between flex-wrap text-center margin-top-sm">
+            <div class="margin-bottom" style="width: 25%;" v-for="index in cockpitRightFLoorInfo.layer" :key="index">
+                <div @click="_changeLayer(index)">
+                    <div v-if="index == cockpitRightFLoorInfo.curLayer"><img src="/img/3d/lift_active.png" width="30px">
+                    </div>
+                    <div v-else><img src="/img/3d/lift_default.png" width="30px"></div>
+                    <div>{{index}}F</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

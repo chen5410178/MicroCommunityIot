@@ -11,6 +11,7 @@ import { computeSceneObject } from 'api/3d/CockpitCore.js';
                 sceneId: '',
                 communityId: '',
                 datas: [],
+                curType:'',
 
             }
         },
@@ -24,6 +25,14 @@ import { computeSceneObject } from 'api/3d/CockpitCore.js';
             $that._listDtScenes();
         },
         _initEvent: function () {
+
+            vc.on('cockpit','curType',function(_param){
+                $that.cockpitInfo.curType = _param.curType;
+                let _data = _param.data;
+                if(_param.curType == 'floor'){
+                    vc.emit('cockpitRightFLoor','notify',_data)
+                }
+            })
 
         },
         methods: {
@@ -67,9 +76,6 @@ import { computeSceneObject } from 'api/3d/CockpitCore.js';
                         communityId: $that.cockpitInfo.communityId
                     });
                 })
-
-
-
             },
         }
     });
