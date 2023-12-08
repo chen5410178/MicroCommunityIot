@@ -20,8 +20,10 @@
         select t.max_energy_price,t.max_energy_price maxEnergyPrice,t.duration_price,t.duration_price
         durationPrice,t.crf_id,t.crf_id crfId,t.remark,t.status_cd,t.status_cd statusCd,t.rule_id,t.rule_id
         ruleId,t.min_energy_price,t.min_energy_price minEnergyPrice,t.community_id,t.community_id communityId,
-        t.charge_type,t.charge_type chargeType,t.start_time,t.start_time startTime,t.end_time,t.end_time endTime
+        t.charge_type,t.charge_type chargeType,t.start_time,t.start_time startTime,t.end_time,t.end_time endTime,
+        cr.rule_name ruleName
         from charge_rule_fee t
+        left join charge_rule cr on t.rule_id = cr.rule_id and cr.status_cd = '0'
         where 1 =1
         <if test="maxEnergyPrice !=null and maxEnergyPrice != ''">
             and t.max_energy_price= #{maxEnergyPrice}

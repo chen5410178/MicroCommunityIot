@@ -12,7 +12,14 @@
                 records: 1,
                 moreCondition: false,
                 machineId: '',
-               
+                conditions: {
+                    machineNameLike: "",
+                    addressLike: "",
+                    state: "",
+                    roomNameLike: "",
+                    communityId: "",
+                    detailType: "1001"
+                }
             }
         },
         _initMethod: function () {
@@ -27,13 +34,11 @@
         methods: {
             _listMeterMachineDetails: function (_page, _rows) {
 
+                $that.meterMachineDetailInfo.conditions.page = _page;
+                $that.meterMachineDetailInfo.conditions.row = _rows;
+                $that.meterMachineDetailInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
                 let param = {
-                    params: {
-                        page:_page,
-                        row:_rows,
-                        communityId:vc.getCurrentCommunity().communityId,
-                        detailType: '1001'
-                    }
+                    params: $that.meterMachineDetailInfo.conditions
                 };
 
                 //发送get请求
@@ -56,8 +61,25 @@
          
             _queryMeterMachineDetailMethod: function () {
                 $that._listMeterMachineDetails(DEFAULT_PAGE, DEFAULT_ROWS);
-
             },
+            _resetMeterMachineDetailMethod: function () {
+                $that.meterMachineDetailInfo.conditions = {
+                    machineNameLike: "",
+                    addressLike: "",
+                    state: "",
+                    roomNameLike: "",
+                    communityId: "",
+                    detailType: "1001"
+                }
+                $that._listMeterMachineDetails(DEFAULT_PAGE, DEFAULT_ROWS);
+            },
+            _moreCondition: function () {
+                if ($that.meterMachineDetailInfo.moreCondition) {
+                    $that.meterMachineDetailInfo.moreCondition = false;
+                } else {
+                    $that.meterMachineDetailInfo.moreCondition = true;
+                }
+            }
         }
     });
 })(window.vc);
