@@ -18,11 +18,7 @@
                 <tr v-for="chargeMachinePort in machineDetailChargePortInfo.ports">
                     <td class="text-center">{{chargeMachinePort.portName}}</td>
                     <td class="text-center">{{chargeMachinePort.portCode}}</td>
-                    <td class="text-center">{{chargeMachinePort.stateName}}
-                        <span v-if="chargeMachinePort.state == 'WORKING'">
-                            (<a href="javascript:void(0)" @click="_showStopCharge(chargeMachinePort)">停止充电</a>)
-                        </span>
-                    </td>
+                    <td class="text-center">{{chargeMachinePort.stateName}}</td>
                 </tr>
             </tbody>
         </table>

@@ -9,6 +9,7 @@
             machineDetailChargePortInfo: {
                 ports: [],
                 machineId:'',
+                portId:'',
             }
         },
         _initMethod: function () {
@@ -16,6 +17,7 @@
         _initEvent: function () {
             vc.on('machineDetailChargePort', 'switch', function (_data) {
                 $that.machineDetailChargePortInfo.machineId = _data.machineId;
+                $that.machineDetailChargePortInfo.portId = _data.portId;
                 $that._loadMachineDetailChargePortData(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('machineDetailChargePort', 'paginationPlus', 'page_event', function (_currentPage) {
@@ -28,6 +30,7 @@
                     params: {
                         communityId: vc.getCurrentCommunity().communityId,
                         machineId:$that.machineDetailChargePortInfo.machineId,
+                        portId:$that.machineDetailChargePortInfo.portId,
                         page:_page,
                         row:_row
                     }

@@ -17,12 +17,18 @@
                 stateName: "",
                 heartbeatTime: "",
                 createTime: "",
+                orderId: "",
+                portId: "",
+                acctId: "",
                 _currentTab: 'machineDetailChargePort',
                 needBack: false,
             }
         },
         _initMethod: function() {
             $that.machineDetailInfo.machineId = vc.getParam('machineId');
+            $that.machineDetailInfo.orderId = vc.getParam('orderId');
+            $that.machineDetailInfo.portId = vc.getParam('portId');
+            $that.machineDetailInfo.acctId = vc.getParam('acctId');
             if (!vc.notNull($that.machineDetailInfo.machineId)) {
                 return;
             }
@@ -70,6 +76,9 @@
                     machineName: $that.machineDetailInfo.machineName,
                     ruleId: $that.machineDetailInfo.ruleId,
                     chargeType: $that.machineDetailInfo.chargeType,
+                    orderId: $that.machineDetailInfo.orderId,
+                    portId: $that.machineDetailInfo.portId,
+                    acctId: $that.machineDetailInfo.acctId,
                 })
             },
         }

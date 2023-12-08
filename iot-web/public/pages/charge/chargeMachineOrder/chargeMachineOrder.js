@@ -103,7 +103,12 @@
                 );
 
             },
-
+            _toChargeMachineDetail: function (_chargeMachineOrder) {
+                vc.jumpToPage('/#/pages/charge/chargeMachineDetail?machineId=' + _chargeMachineOrder.machineId +
+                    "&orderId=" + _chargeMachineOrder.orderId + "&portId=" + _chargeMachineOrder.portId + "&acctId=" +
+                    _chargeMachineOrder.acctDetailId
+                );
+            }
         }
     });
 })(window.vc);

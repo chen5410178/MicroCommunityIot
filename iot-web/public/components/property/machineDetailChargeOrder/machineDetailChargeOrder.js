@@ -9,6 +9,7 @@
             machineDetailChargeOrderInfo: {
                 orders: [],
                 machineId:'',
+                orderId:'',
             }
         },
         _initMethod: function () {
@@ -16,6 +17,7 @@
         _initEvent: function () {
             vc.on('machineDetailChargeOrder', 'switch', function (_data) {
                 $that.machineDetailChargeOrderInfo.machineId = _data.machineId;
+                $that.machineDetailChargeOrderInfo.orderId = _data.orderId;
                 $that._loadMachineDetailChargeOrderData(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('machineDetailChargeOrder', 'paginationPlus', 'page_event', function (_currentPage) {
@@ -28,6 +30,7 @@
                     params: {
                         communityId: vc.getCurrentCommunity().communityId,
                         machineId:$that.machineDetailChargeOrderInfo.machineId,
+                        orderId:$that.machineDetailChargeOrderInfo.orderId,
                         page:_page,
                         row:_row
                     }

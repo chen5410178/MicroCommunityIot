@@ -1,0 +1,39 @@
+<div class="margin-top">
+    <div class="margin-top">
+        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <vc:i18n name='账户编号' namespace='machineDetailChargeAcct'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='账户' namespace='machineDetailChargeAcct'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='账户类型' namespace='machineDetailChargeAcct'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='账户余额' namespace='machineDetailChargeAcct'></vc:i18n>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="account in machineDetailChargeAcctInfo.accounts">
+                    <td class="text-center">{{account.acctId}}</td>
+                    <td class="text-center">{{account.acctName}}</td>
+                    <td class="text-center">{{account.acctTypeName}}</td>
+                    <td class="text-center">{{account.amount}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="row">
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-sm-8">
+                <vc:create namespace="machineDetailChargeAcct" path="frame/paginationPlus"></vc:create>
+            </div>
+        </div>
+    </div>
+</div>

@@ -99,34 +99,6 @@
                         </div>
                     </div>
                 </div>
-                <div v-for="(item,index) in machineDetailInfo.lockMachineParamDtoList">
-                    <div class="row" v-if="index % 4 == 0">
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label class="col-form-label">{{item.specName}}：</label>
-                                <label class="">{{item.value}}</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-3" v-if="index < machineDetailInfo.lockMachineParamDtoList.length-1">
-                            <div class="form-group">
-                                <label class="col-form-label">{{machineDetailInfo.lockMachineParamDtoList[index+1].specName}}：</label>
-                                <label class="">{{machineDetailInfo.lockMachineParamDtoList[index+1].value}}</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-3" v-if="index < machineDetailInfo.lockMachineParamDtoList.length-2">
-                            <div class="form-group">
-                                <label class="col-form-label">{{machineDetailInfo.lockMachineParamDtoList[index+2].specName}}：</label>
-                                <label class="">{{machineDetailInfo.lockMachineParamDtoList[index+2].value}}</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-3" v-if="index < machineDetailInfo.lockMachineParamDtoList.length-3">
-                            <div class="form-group">
-                                <label class="col-form-label">{{machineDetailInfo.lockMachineParamDtoList[index+3].specName}}：</label>
-                                <label class="">{{machineDetailInfo.lockMachineParamDtoList[index+3].value}}</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -148,6 +120,16 @@
                     <vc:i18n name="充电订单" namespace="machineDetail"></vc:i18n>
                 </a>
             </li>
+            <li class="nav-item" v-if="machineDetailInfo.acctId">
+                <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailChargeAcct'}" v-on:click="changeTab('machineDetailChargeAcct')">
+                    <vc:i18n name="账户详情" namespace="machineDetail"></vc:i18n>
+                </a>
+            </li>
+            <li class="nav-item" v-if="machineDetailInfo.orderId">
+                <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailChargeOrderAccts'}" v-on:click="changeTab('machineDetailChargeOrderAccts')">
+                    <vc:i18n name="扣款明细" namespace="machineDetail"></vc:i18n>
+                </a>
+            </li>
         </ul>
     </div>
     <div v-if="machineDetailInfo._currentTab == 'machineDetailChargePort'">
@@ -159,8 +141,12 @@
     <div v-if="machineDetailInfo._currentTab == 'machineDetailChargeOrder'">
         <vc:create path="property/machineDetailChargeOrder"></vc:create>
     </div>
-
-
+    <div v-if="machineDetailInfo._currentTab == 'machineDetailChargeAcct'">
+        <vc:create path="property/machineDetailChargeAcct"></vc:create>
+    </div>
+    <div v-if="machineDetailInfo._currentTab == 'machineDetailChargeOrderAccts'">
+        <vc:create path="property/machineDetailChargeOrderAccts"></vc:create>
+    </div>
     
     
 </div>

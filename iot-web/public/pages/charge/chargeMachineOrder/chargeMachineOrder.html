@@ -127,6 +127,9 @@
                                 <th class="text-center">
                                     <vc:i18n name='说明' namespace='chargeMachineOrder'></vc:i18n>
                                 </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作' namespace='chargeMachineOrder'></vc:i18n>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -154,7 +157,15 @@
                                     </span>
                                 </td>
                                 <td class="text-center">
-                                    <div style="width: 200px;">{{chargeMachineOrder.remark || '-'}}</div>
+                                    <div style="width: 100px;">{{chargeMachineOrder.remark || '-'}}</div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs"
+                                            v-on:click="_toChargeMachineDetail(chargeMachineOrder)">
+                                            <vc:i18n name='详情'></vc:i18n>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
