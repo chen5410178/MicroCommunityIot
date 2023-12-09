@@ -21,7 +21,7 @@ import java.util.Map;
  * Created by wuxw on 2018/4/20.
  */
 @Service("queryServiceDAOImpl")
-@Transactional
+//@Transactional
 public class QueryServiceDAOImpl extends BaseServiceDao implements IQueryServiceDAO {
 
     private final static Logger logger = LoggerFactory.getLogger(QueryServiceDAOImpl.class);
@@ -86,6 +86,9 @@ public class QueryServiceDAOImpl extends BaseServiceDao implements IQueryService
             return null;
         } finally {
             try {
+                if(conn != null){
+                    conn.close();
+                }
                 //conn.close();
                 if (ps != null) {
                     ps.close();
