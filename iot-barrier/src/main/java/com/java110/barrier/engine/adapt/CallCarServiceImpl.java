@@ -82,10 +82,10 @@ public class CallCarServiceImpl implements ICallCarService {
         String machineDirection = machineDto.getDirection();
         ResultParkingAreaTextDto resultParkingAreaTextDto = null;
         //查询 岗亭
-        ParkingAreaDto parkingAreaDto = new ParkingAreaDto();
-        parkingAreaDto.setBoxId(machineDto.getBoxId());
-        parkingAreaDto.setCommunityId(machineDto.getCommunityId());
-        List<ParkingAreaDto> parkingAreaDtos = parkingAreaServiceImpl.queryParkingAreas(parkingAreaDto);
+        ParkingBoxDto parkingBoxDto = new ParkingBoxDto();
+        parkingBoxDto.setBoxId(machineDto.getBoxId());
+        parkingBoxDto.setCommunityId(machineDto.getCommunityId());
+        List<ParkingAreaDto> parkingAreaDtos = parkingAreaServiceImpl.queryParkingAreasByBox(parkingBoxDto);
         //Assert.listOnlyOne(parkingAreaDtos, "停车场不存在");
         if (parkingAreaDtos == null || parkingAreaDtos.size() < 1) {
             throw new IllegalArgumentException("停车场不存在");
