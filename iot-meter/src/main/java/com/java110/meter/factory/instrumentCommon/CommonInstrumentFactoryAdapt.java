@@ -59,7 +59,7 @@ public class CommonInstrumentFactoryAdapt extends AbstractInstrumentFactoryAdapt
     }
 
     @Override
-    @Transactional
+   // @Transactional
     public String instrumentResult(String topic, String data) {
         String sensorId = topic.substring(topic.lastIndexOf("/") + 1, topic.length() - 1);
 

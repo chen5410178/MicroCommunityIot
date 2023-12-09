@@ -19,7 +19,7 @@ import java.util.Map;
  * Created by wuxw on 2018/4/14.
  */
 @Service("devServiceDAOImpl")
-@Transactional
+//@Transactional
 public class DevServiceDAOImpl extends BaseServiceDao implements IDevServiceDAO {
 
     protected final static Logger logger = LoggerFactory.getLogger(DevServiceDAOImpl.class);

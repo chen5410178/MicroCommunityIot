@@ -20,7 +20,7 @@ import java.util.Map;
  * Created by wuxw on 2017/4/5.
  */
 @Service("serviceBusinessServiceDaoImpl")
-@Transactional
+//@Transactional
 public class ServiceBusinessServiceDaoImpl extends BaseServiceDao implements IServiceBusinessServiceDao {
 
     private static Logger logger = LoggerFactory.getLogger(ServiceBusinessServiceDaoImpl.class);

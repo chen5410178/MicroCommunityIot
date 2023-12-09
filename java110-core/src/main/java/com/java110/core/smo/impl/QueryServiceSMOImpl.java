@@ -42,7 +42,7 @@ import java.util.TreeMap;
  * Created by wuxw on 2018/4/19.
  */
 @Service("queryServiceSMOImpl")
-@Transactional
+//@Transactional
 public class QueryServiceSMOImpl implements IQueryServiceSMO {
 
 

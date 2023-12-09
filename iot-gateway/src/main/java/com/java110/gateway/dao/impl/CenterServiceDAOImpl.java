@@ -23,7 +23,7 @@ import java.util.Map;
  * Created by wuxw on 2018/4/14.
  */
 @Service("centerServiceDAOImpl")
-@Transactional
+//@Transactional
 public class CenterServiceDAOImpl extends BaseServiceDao implements ICenterServiceDAO {
 
     protected final static Logger logger = LoggerFactory.getLogger(CenterServiceDAOImpl.class);
