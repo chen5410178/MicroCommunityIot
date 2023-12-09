@@ -278,7 +278,7 @@ public class ApiServiceImpl implements IApiService {
 
         logger.debug("API 服务调用下游服务请求：{}，返回为：{}", httpEntity, responseEntity);
 
-        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+        if (responseEntity.getStatusCode() != HttpStatus.OK && responseEntity.getStatusCode() != HttpStatus.FOUND) {
             responseEntity = ResultVo.createResponseEntity(ResultVo.CODE_ERROR, String.valueOf(responseEntity.getBody()));
         }
         if (StringUtils.isEmpty(responseEntity.getBody() + "")) {

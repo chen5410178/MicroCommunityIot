@@ -62,12 +62,14 @@ public class WechatNotifyOpenIdCmd extends Cmd {
         String redirectUrl = param.getString("redirectUrl");
         String wId =  param.getString("wAppId");
         SmallWeChatDto smallWeChatDto = new SmallWeChatDto();
-        smallWeChatDto.setAppId(reqJson.getString("wAppId"));
+        smallWeChatDto.setAppId(param.getString("wAppId"));
         smallWeChatDto.setObjId(reqJson.getString("communityId"));
         List<SmallWeChatDto> smallWeChatDtos = smallWeChatInnerServiceSMOImpl.querySmallWeChats(smallWeChatDto);
         if (ListUtil.isNull(smallWeChatDtos)) {
             throw new CmdException("未配置公众号信息");
         }
+
+        smallWeChatDto = smallWeChatDtos.get(0);
 
         String url = WechatConstant.APP_GET_ACCESS_TOKEN_URL.replace("APPID", smallWeChatDto.getAppId())
                 .replace("SECRET", smallWeChatDto.getAppSecret())
