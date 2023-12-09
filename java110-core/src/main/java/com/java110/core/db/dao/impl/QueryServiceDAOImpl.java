@@ -8,6 +8,7 @@ import com.java110.core.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.Map;
  * Created by wuxw on 2018/4/20.
  */
 @Service("queryServiceDAOImpl")
+@Transactional
 public class QueryServiceDAOImpl extends BaseServiceDao implements IQueryServiceDAO {
 
     private final static Logger logger = LoggerFactory.getLogger(QueryServiceDAOImpl.class);
