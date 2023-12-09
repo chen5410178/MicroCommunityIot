@@ -48,7 +48,7 @@ public class UpdateTempCarFeeConfigCmd extends Cmd {
     }
 
     @Override
-    @Java110Transactional
+    //@Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
 
         TempCarFeeConfigDto tempCarFeeConfigDto = new TempCarFeeConfigDto();
