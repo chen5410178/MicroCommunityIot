@@ -23,9 +23,14 @@ public class MqttClientHeartbeat implements Runnable {
         while (true) {
             try {
                 executeTask();
-                Thread.sleep(DEFAULT_WAIT_SECOND);
+
             } catch (Throwable e) {
                 logger.error("连接mqtt 失败", e);
+            }
+            try {
+                Thread.sleep(DEFAULT_WAIT_SECOND);
+            }catch (Exception e){
+                logger.error("超时终端", e);
             }
         }
     }
