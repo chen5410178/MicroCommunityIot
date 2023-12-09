@@ -48,7 +48,7 @@ public class UpdateTempCarFeeConfigCmd extends Cmd {
     }
 
     @Override
-    //@Java110Transactional
+    @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
 
         TempCarFeeConfigDto tempCarFeeConfigDto = new TempCarFeeConfigDto();
@@ -57,7 +57,7 @@ public class UpdateTempCarFeeConfigCmd extends Cmd {
         List<TempCarFeeConfigDto> tempCarFeeConfigDtos = tempCarFeeConfigInnerServiceSMOImpl.queryTempCarFeeConfigs(tempCarFeeConfigDto);
         Assert.listOnlyOne(tempCarFeeConfigDtos, "临时车收费标准不存在");
         TempCarFeeConfigPo tempCarFeeConfigPo = BeanConvertUtil.covertBean(reqJson, TempCarFeeConfigPo.class);
-        updateAttr(reqJson);
+        //updateAttr(reqJson);
         int flag = tempCarFeeConfigV1InnerServiceSMOImpl.updateTempCarFeeConfig(tempCarFeeConfigPo);
         if (flag < 1) {
             throw new CmdException("修改临时车费用配置失败");
