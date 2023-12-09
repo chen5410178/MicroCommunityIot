@@ -30,6 +30,7 @@ public class CenterServiceDAOImpl extends BaseServiceDao implements ICenterServi
 
     @Override
     public Map getOrder(Map order) throws DAOException {
+        logger.debug("查询订单信息，{}",order);
         List<Map> orders = sqlSessionTemplate.selectList("centerServiceDAOImpl.getOrder", order);
         if (orders != null && orders.size() > 0) {
             return orders.get(0);
