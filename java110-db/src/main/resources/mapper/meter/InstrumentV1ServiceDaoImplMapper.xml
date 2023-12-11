@@ -139,6 +139,65 @@
 
     </select>
 
+    <select id="getInstrumentInfo1" parameterType="Map" resultType="Map">
+        select
+        t.machine_id machineId,
+        t.machine_code machineCode,
+        t.machine_name machineName,
+        t.community_id communityId,
+        t.type_id typeId,
+        t.charge,
+        t.sign,
+        t.up_min upMin,
+        t.check_sec checkSec,
+        t.impl_bean implBean,
+        t.create_time createTime,
+        t.status_cd,t.status_cd statusCd,
+        it.name typeName,
+        ifa.factory_name factoryName
+        from instrument t
+        left join instrument_type it on t.type_id = it.type_id and it.status_cd = '0'
+        left join instrument_factory ifa on t.impl_bean = ifa.factory_id and ifa.status_cd = '0'
+        where 1 =1
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id like concat('%', #{machineId}, '%')
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code like concat('%', #{machineCode}, '%')
+        </if>
+        <if test="charge !=null and charge != ''">
+            and t.charge= #{charge}
+        </if>
+        <if test="upMin !=null and upMin != ''">
+            and t.up_min= #{upMin}
+        </if>
+        <if test="checkSec !=null and checkSec != ''">
+            and t.check_sec= #{checkSec}
+        </if>
+        <if test="sign !=null and sign != ''">
+            and t.sign= #{sign}
+        </if>
+        <if test="typeId !=null and typeId != ''">
+            and t.type_id= #{typeId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name like concat('%', #{machineName}, '%')
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
 
     <!-- 修改仪表设备信息 add by wuxw 2018-07-03 -->
     <update id="updateInstrumentInfo" parameterType="Map">

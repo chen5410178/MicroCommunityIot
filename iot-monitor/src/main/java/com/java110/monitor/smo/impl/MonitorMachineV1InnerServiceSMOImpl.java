@@ -84,4 +84,17 @@ public class MonitorMachineV1InnerServiceSMOImpl implements IMonitorMachineV1Inn
         return monitorMachineV1ServiceDaoImpl.queryMonitorMachinesCount(BeanConvertUtil.beanCovertMap(monitorMachineDto));
     }
 
+    @Override
+    public List<MonitorMachineDto> queryMonitorMachineList(MonitorMachineDto monitorMachineDto) {
+        int page = monitorMachineDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            monitorMachineDto.setPage((page - 1) * monitorMachineDto.getRow());
+        }
+
+        List<MonitorMachineDto> monitorMachines = BeanConvertUtil.covertBeanList(monitorMachineV1ServiceDaoImpl.getMonitorMachineInfo1(BeanConvertUtil.beanCovertMap(monitorMachineDto)), MonitorMachineDto.class);
+
+        return monitorMachines;
+    }
+
 }

@@ -84,4 +84,17 @@ public class LiftMachineFactoryV1InnerServiceSMOImpl implements ILiftMachineFact
     public int queryLiftMachineFactorysCount(@RequestBody LiftMachineFactoryDto liftMachineFactoryDto) {
         return liftMachineFactoryV1ServiceDaoImpl.queryLiftMachineFactorysCount(BeanConvertUtil.beanCovertMap(liftMachineFactoryDto));    }
 
+    @Override
+    public List<LiftMachineFactoryDto> queryLiftMachineFactoryList(LiftMachineFactoryDto liftMachineFactoryDto) {
+        int page = liftMachineFactoryDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            liftMachineFactoryDto.setPage((page - 1) * liftMachineFactoryDto.getRow());
+        }
+
+        List<LiftMachineFactoryDto> liftMachineFactorys = BeanConvertUtil.covertBeanList(liftMachineFactoryV1ServiceDaoImpl.getLiftMachineFactoryInfo1(BeanConvertUtil.beanCovertMap(liftMachineFactoryDto)), LiftMachineFactoryDto.class);
+
+        return liftMachineFactorys;
+    }
+
 }

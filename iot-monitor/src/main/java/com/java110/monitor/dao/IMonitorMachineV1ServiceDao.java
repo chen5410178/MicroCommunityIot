@@ -70,4 +70,5 @@ public interface IMonitorMachineV1ServiceDao {
      */
     int queryMonitorMachinesCount(Map info);
 
+    List<Map> getMonitorMachineInfo1(Map info) throws DAOException;
 }

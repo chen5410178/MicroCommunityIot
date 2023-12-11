@@ -70,6 +70,37 @@
 
     </select>
 
+    <select id="getLiftMachineFactoryInfo1" parameterType="Map" resultType="Map">
+        select
+        t.factory_id factoryId,
+        t.factory_name factoryName,
+        t.bean_impl beanImpl,
+        t.remark,
+        t.create_time createTime,
+        t.status_cd,t.status_cd statusCd
+        from lift_machine_factory t
+        where 1 =1
+        <if test="factoryId !=null and factoryId != ''">
+            and t.factory_id like concat('%', #{factoryId}, '%')
+        </if>
+        <if test="factoryName !=null and factoryName != ''">
+            and t.factory_name like concat('%', #{factoryName}, '%')
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="beanImpl !=null and beanImpl != ''">
+            and t.bean_impl like concat('%', #{beanImpl}, '%')
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
 
     <!-- 修改电梯厂家信息 add by wuxw 2018-07-03 -->
     <update id="updateLiftMachineFactoryInfo" parameterType="Map">

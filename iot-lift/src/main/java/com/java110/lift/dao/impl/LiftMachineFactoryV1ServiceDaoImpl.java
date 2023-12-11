@@ -107,5 +107,14 @@ public class LiftMachineFactoryV1ServiceDaoImpl extends BaseServiceDao implement
         return Integer.parseInt(businessLiftMachineFactoryInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> getLiftMachineFactoryInfo1(Map info) throws DAOException {
+        logger.debug("查询 getLiftMachineFactoryInfo1 入参 info : {}", info);
+
+        List<Map> businessLiftMachineFactoryInfos = sqlSessionTemplate.selectList("liftMachineFactoryV1ServiceDaoImpl.getLiftMachineFactoryInfo1", info);
+
+        return businessLiftMachineFactoryInfos;
+    }
+
 
 }

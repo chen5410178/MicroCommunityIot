@@ -64,4 +64,7 @@ public interface IInstrumentFactoryV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryInstrumentFactorysCount", method = RequestMethod.POST)
     int queryInstrumentFactorysCount(@RequestBody InstrumentFactoryDto instrumentFactoryDto);
+
+    @RequestMapping(value = "/queryInstrumentFactoryList", method = RequestMethod.POST)
+    List<InstrumentFactoryDto> queryInstrumentFactoryList(InstrumentFactoryDto instrumentFactoryDto);
 }

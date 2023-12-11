@@ -105,5 +105,14 @@ public class InstrumentFactoryV1ServiceDaoImpl extends BaseServiceDao implements
         return Integer.parseInt(businessInstrumentFactoryInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> getInstrumentFactoryInfo1(Map info) throws DAOException {
+        logger.debug("查询 getInstrumentFactoryInfo1 入参 info : {}", info);
+
+        List<Map> businessInstrumentFactoryInfos = sqlSessionTemplate.selectList("instrumentFactoryV1ServiceDaoImpl.getInstrumentFactoryInfo1", info);
+
+        return businessInstrumentFactoryInfos;
+    }
+
 
 }

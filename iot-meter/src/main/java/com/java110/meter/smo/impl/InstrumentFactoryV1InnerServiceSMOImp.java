@@ -83,4 +83,17 @@ public class InstrumentFactoryV1InnerServiceSMOImp implements IInstrumentFactory
     public int queryInstrumentFactorysCount(@RequestBody InstrumentFactoryDto instrumentFactoryDto) {
         return instrumentFactoryV1ServiceDaoImpl.queryInstrumentFactorysCount(BeanConvertUtil.beanCovertMap(instrumentFactoryDto));    }
 
+    @Override
+    public List<InstrumentFactoryDto> queryInstrumentFactoryList(InstrumentFactoryDto instrumentFactoryDto) {
+        int page = instrumentFactoryDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            instrumentFactoryDto.setPage((page - 1) * instrumentFactoryDto.getRow());
+        }
+
+        List<InstrumentFactoryDto> instrumentFactorys = BeanConvertUtil.covertBeanList(instrumentFactoryV1ServiceDaoImpl.getInstrumentFactoryInfo1(BeanConvertUtil.beanCovertMap(instrumentFactoryDto)), InstrumentFactoryDto.class);
+
+        return instrumentFactorys;
+    }
+
 }

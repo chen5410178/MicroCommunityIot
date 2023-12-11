@@ -24,6 +24,8 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.instrument.InstrumentFactoryDto;
+import com.java110.dto.instrument.InstrumentFactorySpecDto;
+import com.java110.intf.meter.IInstrumentFactorySpecV1InnerServiceSMO;
 import com.java110.intf.meter.IInstrumentFactoryV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
@@ -32,6 +34,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 
 /**
@@ -51,6 +54,9 @@ public class ListInstrumentFactoryCmd extends Cmd {
     @Autowired
     private IInstrumentFactoryV1InnerServiceSMO instrumentFactoryV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IInstrumentFactorySpecV1InnerServiceSMO instrumentFactorySpecV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -66,7 +72,8 @@ public class ListInstrumentFactoryCmd extends Cmd {
            List<InstrumentFactoryDto> instrumentFactoryDtos = null;
 
            if (count > 0) {
-               instrumentFactoryDtos = instrumentFactoryV1InnerServiceSMOImpl.queryInstrumentFactorys(instrumentFactoryDto);
+               instrumentFactoryDtos = instrumentFactoryV1InnerServiceSMOImpl.queryInstrumentFactoryList(instrumentFactoryDto);
+               refreshSpec(instrumentFactoryDtos);
            } else {
                instrumentFactoryDtos = new ArrayList<>();
            }
@@ -76,5 +83,17 @@ public class ListInstrumentFactoryCmd extends Cmd {
            ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
            cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void refreshSpec(List<InstrumentFactoryDto> instrumentFactoryDtos) {
+        if (CollectionUtils.isEmpty(instrumentFactoryDtos)) {
+            return;
+        }
+        for (InstrumentFactoryDto instrumentFactoryDto : instrumentFactoryDtos) {
+            InstrumentFactorySpecDto instrumentFactorySpecDto = new InstrumentFactorySpecDto();
+            instrumentFactorySpecDto.setFactoryId(instrumentFactoryDto.getFactoryId());
+            List<InstrumentFactorySpecDto> instrumentFactorySpecDtos = instrumentFactorySpecV1InnerServiceSMOImpl.queryInstrumentFactorySpecs(instrumentFactorySpecDto);
+            instrumentFactoryDto.setInstrumentFactorySpecList(instrumentFactorySpecDtos);
+        }
     }
 }

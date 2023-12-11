@@ -70,4 +70,5 @@ public interface IInstrumentFactoryV1ServiceDao {
      */
     int queryInstrumentFactorysCount(Map info);
 
+    List<Map> getInstrumentFactoryInfo1(Map info) throws DAOException;
 }

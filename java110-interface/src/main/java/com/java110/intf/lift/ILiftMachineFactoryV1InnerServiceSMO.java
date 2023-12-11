@@ -65,4 +65,7 @@ public interface ILiftMachineFactoryV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryLiftMachineFactorysCount", method = RequestMethod.POST)
     int queryLiftMachineFactorysCount(@RequestBody LiftMachineFactoryDto liftMachineFactoryDto);
+
+    @RequestMapping(value = "/queryLiftMachineFactoryList", method = RequestMethod.POST)
+    List<LiftMachineFactoryDto> queryLiftMachineFactoryList(LiftMachineFactoryDto liftMachineFactoryDto);
 }

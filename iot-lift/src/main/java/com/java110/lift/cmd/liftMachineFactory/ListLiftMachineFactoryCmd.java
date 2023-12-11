@@ -26,6 +26,8 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.lift.LiftMachineFactoryDto;
+import com.java110.dto.lift.LiftMachineFactorySpecDto;
+import com.java110.intf.lift.ILiftMachineFactorySpecV1InnerServiceSMO;
 import com.java110.intf.lift.ILiftMachineFactoryV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,6 +38,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 
 /**
@@ -55,6 +58,9 @@ public class ListLiftMachineFactoryCmd extends Cmd {
     @Autowired
     private ILiftMachineFactoryV1InnerServiceSMO liftMachineFactoryV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ILiftMachineFactorySpecV1InnerServiceSMO liftMachineFactorySpecV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -70,7 +76,8 @@ public class ListLiftMachineFactoryCmd extends Cmd {
         List<LiftMachineFactoryDto> liftMachineFactoryDtos = null;
 
         if (count > 0) {
-            liftMachineFactoryDtos = liftMachineFactoryV1InnerServiceSMOImpl.queryLiftMachineFactorys(liftMachineFactoryDto);
+            liftMachineFactoryDtos = liftMachineFactoryV1InnerServiceSMOImpl.queryLiftMachineFactoryList(liftMachineFactoryDto);
+            refreshSpec(liftMachineFactoryDtos);
         } else {
             liftMachineFactoryDtos = new ArrayList<>();
         }
@@ -80,5 +87,17 @@ public class ListLiftMachineFactoryCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void refreshSpec(List<LiftMachineFactoryDto> liftMachineFactoryDtos) {
+        if (CollectionUtils.isEmpty(liftMachineFactoryDtos)) {
+            return;
+        }
+        for (LiftMachineFactoryDto liftMachineFactoryDto : liftMachineFactoryDtos) {
+            LiftMachineFactorySpecDto liftMachineFactorySpecDto = new LiftMachineFactorySpecDto();
+            liftMachineFactorySpecDto.setFactoryId(liftMachineFactoryDto.getFactoryId());
+            List<LiftMachineFactorySpecDto> liftMachineFactorySpecDtos = liftMachineFactorySpecV1InnerServiceSMOImpl.queryLiftMachineFactorySpecs(liftMachineFactorySpecDto);
+            liftMachineFactoryDto.setLiftMachineFactorySpecList(liftMachineFactorySpecDtos);
+        }
     }
 }
