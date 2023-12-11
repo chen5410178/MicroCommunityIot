@@ -22,8 +22,9 @@
     <!-- 查询仪表参数信息 add by wuxw 2018-07-03 -->
     <select id="getInstrumentParamInfo" parameterType="Map" resultType="Map">
         select t.machine_id,t.machine_id machineId,t.spec_cd,t.spec_cd specCd,t.status_cd,t.status_cd
-        statusCd,t.param_id,t.param_id paramId,t.community_id,t.community_id communityId,t.value
+        statusCd,t.param_id,t.param_id paramId,t.community_id,t.community_id communityId,t.value,ifs.spec_name specName
         from instrument_param t
+        left join instrument_factory_spec ifs on t.spec_cd = ifs.spec_cd and ifs.status_cd = '0'
         where 1 =1
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}

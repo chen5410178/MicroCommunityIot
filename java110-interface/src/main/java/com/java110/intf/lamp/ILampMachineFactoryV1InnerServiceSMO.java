@@ -64,4 +64,7 @@ public interface ILampMachineFactoryV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryLampMachineFactorysCount", method = RequestMethod.POST)
     int queryLampMachineFactorysCount(@RequestBody LampMachineFactoryDto lampMachineFactoryDto);
+
+    @RequestMapping(value = "/queryLampMachineFactoryList", method = RequestMethod.POST)
+    List<LampMachineFactoryDto> queryLampMachineFactoryList(LampMachineFactoryDto lampMachineFactoryDto);
 }

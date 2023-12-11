@@ -100,6 +100,57 @@
 
     </select>
 
+    <select id="getMonitorMachineInfo1" parameterType="Map" resultType="Map">
+        select
+        t.machine_id machineId,
+        t.machine_name machineName,
+        t.machine_code machineCode,
+        t.location_name locationName,
+        t.ma_id maId,
+        t.protocol,
+        t.community_id communityId,
+        t.heartbeat_time heartbeatTime,
+        t.state,
+        t.create_time createTime,
+        t.status_cd statusCd
+        from monitor_machine t
+        where 1 =1
+        <if test="heartbeatTime !=null">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="protocol !=null and protocol != ''">
+            and t.protocol= #{protocol}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code like concat('%', #{machineCode}, '%')
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            and t.location_name like concat('%', #{locationName}, '%')
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="maId !=null and maId != ''">
+            and t.ma_id= #{maId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name like concat('%', #{machineName}, '%')
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
 
     <!-- 修改监控设备信息 add by wuxw 2018-07-03 -->
     <update id="updateMonitorMachineInfo" parameterType="Map">

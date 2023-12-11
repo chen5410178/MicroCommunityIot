@@ -70,4 +70,5 @@ public interface ILampMachineFactoryV1ServiceDao {
      */
     int queryLampMachineFactorysCount(Map info);
 
+    List<Map> getLampMachineFactoryInfo1(Map info) throws DAOException;
 }

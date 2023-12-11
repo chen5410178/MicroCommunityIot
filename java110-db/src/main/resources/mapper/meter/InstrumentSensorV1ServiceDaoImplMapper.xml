@@ -42,8 +42,10 @@
         t.max_value maxValue1,
         t.units,
         t.create_time createTime,
-        t.status_cd statusCd
+        t.status_cd statusCd,
+        td.name sensorTypeName
         from instrument_sensor t
+        left join t_dict td on t.sensor_type = td.status_cd and td.table_name = 'instrument_sensor' and td.table_columns = 'sensor_type'
         where 1 =1
         <if test="minValue !=null and minValue != ''">
             and t.min_value= #{minValue}

@@ -26,6 +26,8 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.lamp.LampMachineFactoryDto;
+import com.java110.dto.lamp.LampMachineFactorySpecDto;
+import com.java110.intf.lamp.ILampMachineFactorySpecV1InnerServiceSMO;
 import com.java110.intf.lamp.ILampMachineFactoryV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,6 +38,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 
 /**
@@ -55,6 +58,9 @@ public class ListLampMachineFactoryCmd extends Cmd {
     @Autowired
     private ILampMachineFactoryV1InnerServiceSMO lampMachineFactoryV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ILampMachineFactorySpecV1InnerServiceSMO lampMachineFactorySpecV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -70,7 +76,8 @@ public class ListLampMachineFactoryCmd extends Cmd {
         List<LampMachineFactoryDto> lampMachineFactoryDtos = null;
 
         if (count > 0) {
-            lampMachineFactoryDtos = lampMachineFactoryV1InnerServiceSMOImpl.queryLampMachineFactorys(lampMachineFactoryDto);
+            lampMachineFactoryDtos = lampMachineFactoryV1InnerServiceSMOImpl.queryLampMachineFactoryList(lampMachineFactoryDto);
+            refreshSpec(lampMachineFactoryDtos);
         } else {
             lampMachineFactoryDtos = new ArrayList<>();
         }
@@ -80,5 +87,17 @@ public class ListLampMachineFactoryCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void refreshSpec(List<LampMachineFactoryDto> lampMachineFactoryDtos) {
+        if (CollectionUtils.isEmpty(lampMachineFactoryDtos)) {
+            return;
+        }
+        for (LampMachineFactoryDto lampMachineFactoryDto : lampMachineFactoryDtos) {
+            LampMachineFactorySpecDto lampMachineFactorySpecDto = new LampMachineFactorySpecDto();
+            lampMachineFactorySpecDto.setFactoryId(lampMachineFactoryDto.getFactoryId());
+            List<LampMachineFactorySpecDto> lampMachineFactorySpecDtos = lampMachineFactorySpecV1InnerServiceSMOImpl.queryLampMachineFactorySpecs(lampMachineFactorySpecDto);
+            lampMachineFactoryDto.setLampMachineFactorySpecList(lampMachineFactorySpecDtos);
+        }
     }
 }

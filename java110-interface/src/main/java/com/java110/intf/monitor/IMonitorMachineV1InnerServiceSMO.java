@@ -64,4 +64,7 @@ public interface IMonitorMachineV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryMonitorMachinesCount", method = RequestMethod.POST)
     int queryMonitorMachinesCount(@RequestBody MonitorMachineDto monitorMachineDto);
+
+    @RequestMapping(value = "/queryMonitorMachineList", method = RequestMethod.POST)
+    List<MonitorMachineDto> queryMonitorMachineList(MonitorMachineDto monitorMachineDto);
 }

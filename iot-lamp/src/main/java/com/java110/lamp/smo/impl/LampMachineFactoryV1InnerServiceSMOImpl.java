@@ -84,4 +84,17 @@ public class LampMachineFactoryV1InnerServiceSMOImpl implements ILampMachineFact
     public int queryLampMachineFactorysCount(@RequestBody LampMachineFactoryDto lampMachineFactoryDto) {
         return lampMachineFactoryV1ServiceDaoImpl.queryLampMachineFactorysCount(BeanConvertUtil.beanCovertMap(lampMachineFactoryDto));    }
 
+    @Override
+    public List<LampMachineFactoryDto> queryLampMachineFactoryList(LampMachineFactoryDto lampMachineFactoryDto) {
+        int page = lampMachineFactoryDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            lampMachineFactoryDto.setPage((page - 1) * lampMachineFactoryDto.getRow());
+        }
+
+        List<LampMachineFactoryDto> lampMachineFactorys = BeanConvertUtil.covertBeanList(lampMachineFactoryV1ServiceDaoImpl.getLampMachineFactoryInfo1(BeanConvertUtil.beanCovertMap(lampMachineFactoryDto)), LampMachineFactoryDto.class);
+
+        return lampMachineFactorys;
+    }
+
 }

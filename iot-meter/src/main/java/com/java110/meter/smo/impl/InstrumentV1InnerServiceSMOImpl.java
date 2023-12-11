@@ -109,4 +109,17 @@ public class InstrumentV1InnerServiceSMOImpl implements IInstrumentV1InnerServic
         return instrumentFactoryAdaptImpl.instrumentResult(mqttResultDto.getTopic(), mqttResultDto.getData());
     }
 
+    @Override
+    public List<InstrumentDto> queryInstrumentList(InstrumentDto instrumentDto) {
+        int page = instrumentDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            instrumentDto.setPage((page - 1) * instrumentDto.getRow());
+        }
+
+        List<InstrumentDto> instruments = BeanConvertUtil.covertBeanList(instrumentV1ServiceDaoImpl.getInstrumentInfo1(BeanConvertUtil.beanCovertMap(instrumentDto)), InstrumentDto.class);
+
+        return instruments;
+    }
+
 }

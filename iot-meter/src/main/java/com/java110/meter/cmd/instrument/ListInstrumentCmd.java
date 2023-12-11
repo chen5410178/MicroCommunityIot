@@ -23,6 +23,10 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.instrument.InstrumentParamDto;
+import com.java110.dto.instrument.InstrumentSensorDto;
+import com.java110.intf.meter.IInstrumentParamV1InnerServiceSMO;
+import com.java110.intf.meter.IInstrumentSensorV1InnerServiceSMO;
 import com.java110.intf.meter.IInstrumentV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.instrument.InstrumentDto;
@@ -34,6 +38,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 
 /**
@@ -53,6 +58,12 @@ public class ListInstrumentCmd extends Cmd {
     @Autowired
     private IInstrumentV1InnerServiceSMO instrumentV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IInstrumentParamV1InnerServiceSMO instrumentParamV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IInstrumentSensorV1InnerServiceSMO instrumentSensorV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -68,7 +79,8 @@ public class ListInstrumentCmd extends Cmd {
         List<InstrumentDto> instrumentDtos = null;
 
         if (count > 0) {
-            instrumentDtos = instrumentV1InnerServiceSMOImpl.queryInstruments(instrumentDto);
+            instrumentDtos = instrumentV1InnerServiceSMOImpl.queryInstrumentList(instrumentDto);
+            refreshParamAndSensor(instrumentDtos);
         } else {
             instrumentDtos = new ArrayList<>();
         }
@@ -78,5 +90,24 @@ public class ListInstrumentCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void refreshParamAndSensor(List<InstrumentDto> instrumentDtos) {
+        if (CollectionUtils.isEmpty(instrumentDtos)) {
+            return;
+        }
+        for (InstrumentDto instrumentDto : instrumentDtos) {
+            InstrumentParamDto instrumentParamDto = new InstrumentParamDto();
+            instrumentParamDto.setMachineId(instrumentDto.getMachineId());
+            instrumentParamDto.setCommunityId(instrumentDto.getCommunityId());
+            List<InstrumentParamDto> instrumentParamDtos = instrumentParamV1InnerServiceSMOImpl.queryInstrumentParams(instrumentParamDto);
+            instrumentDto.setInstrumentParamList(instrumentParamDtos);
+
+            InstrumentSensorDto instrumentSensorDto = new InstrumentSensorDto();
+            instrumentSensorDto.setMachineId(instrumentDto.getMachineId());
+            instrumentSensorDto.setCommunityId(instrumentDto.getCommunityId());
+            List<InstrumentSensorDto> instrumentSensorDtos = instrumentSensorV1InnerServiceSMOImpl.queryInstrumentSensors(instrumentSensorDto);
+            instrumentDto.setInstrumentSensorList(instrumentSensorDtos);
+        }
     }
 }

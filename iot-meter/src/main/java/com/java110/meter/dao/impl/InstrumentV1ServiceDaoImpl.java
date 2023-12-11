@@ -105,5 +105,14 @@ public class InstrumentV1ServiceDaoImpl extends BaseServiceDao implements IInstr
         return Integer.parseInt(businessInstrumentInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> getInstrumentInfo1(Map info) throws DAOException {
+        logger.debug("查询 getInstrumentInfo1 入参 info : {}", info);
+
+        List<Map> businessInstrumentInfos = sqlSessionTemplate.selectList("instrumentV1ServiceDaoImpl.getInstrumentInfo1", info);
+
+        return businessInstrumentInfos;
+    }
+
 
 }

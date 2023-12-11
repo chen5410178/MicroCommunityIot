@@ -24,7 +24,9 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.monitor.MonitorMachineAttrsDto;
 import com.java110.dto.monitor.MonitorMachineDto;
+import com.java110.intf.monitor.IMonitorMachineAttrsV1InnerServiceSMO;
 import com.java110.intf.monitor.IMonitorMachineV1InnerServiceSMO;
 import com.java110.monitor.factory.IMonitorCore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 
 /**
@@ -54,6 +57,9 @@ public class ListMonitorMachineCmd extends Cmd {
     private static Logger logger = LoggerFactory.getLogger(ListMonitorMachineCmd.class);
     @Autowired
     private IMonitorMachineV1InnerServiceSMO monitorMachineV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IMonitorMachineAttrsV1InnerServiceSMO monitorMachineAttrsV1InnerServiceSMOImpl;
 
     @Autowired
     private IMonitorCore monitorCoreImpl;
@@ -75,7 +81,8 @@ public class ListMonitorMachineCmd extends Cmd {
         List<MonitorMachineDto> monitorMachineDtos = null;
 
         if (count > 0) {
-            monitorMachineDtos = monitorMachineV1InnerServiceSMOImpl.queryMonitorMachines(monitorMachineDto);
+            monitorMachineDtos = monitorMachineV1InnerServiceSMOImpl.queryMonitorMachineList(monitorMachineDto);
+            refreshAttr(monitorMachineDtos);
             // todo  查询设备是否在线
             queryMachineState(monitorMachineDtos);
         } else {
@@ -87,6 +94,19 @@ public class ListMonitorMachineCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void refreshAttr(List<MonitorMachineDto> monitorMachineDtos) {
+        if (CollectionUtils.isEmpty(monitorMachineDtos)) {
+            return;
+        }
+        for (MonitorMachineDto monitorMachineDto : monitorMachineDtos) {
+            MonitorMachineAttrsDto monitorMachineAttrsDto = new MonitorMachineAttrsDto();
+            monitorMachineAttrsDto.setMachineId(monitorMachineDto.getMachineId());
+            monitorMachineAttrsDto.setCommunityId(monitorMachineDto.getCommunityId());
+            List<MonitorMachineAttrsDto> monitorMachineAttrsDtos = monitorMachineAttrsV1InnerServiceSMOImpl.queryMonitorMachineAttrss(monitorMachineAttrsDto);
+            monitorMachineDto.setMonitorMachineAttrsList(monitorMachineAttrsDtos);
+        }
     }
 
     private void queryMachineState(List<MonitorMachineDto> monitorMachineDtos) {

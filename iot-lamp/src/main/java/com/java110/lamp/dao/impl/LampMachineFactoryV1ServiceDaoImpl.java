@@ -107,5 +107,14 @@ public class LampMachineFactoryV1ServiceDaoImpl extends BaseServiceDao implement
         return Integer.parseInt(businessLampMachineFactoryInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> getLampMachineFactoryInfo1(Map info) throws DAOException {
+        logger.debug("查询 getLampMachineFactoryInfo1 入参 info : {}", info);
+
+        List<Map> businessLampMachineFactoryInfos = sqlSessionTemplate.selectList("lampMachineFactoryV1ServiceDaoImpl.getLampMachineFactoryInfo1", info);
+
+        return businessLampMachineFactoryInfos;
+    }
+
 
 }
