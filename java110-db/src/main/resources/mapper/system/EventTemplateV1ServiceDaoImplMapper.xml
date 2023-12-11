@@ -26,6 +26,7 @@
             <id column="paramId" property="paramId"/>
             <result column="templateId" property="templateId"/>
             <result column="specCd" property="specCd"/>
+            <result column="specName" property="specName"/>
             <result column="paramValue" property="paramValue"/>
             <result column="communityId" property="communityId"/>
             <result column="createTime" property="createTime"/>
@@ -49,11 +50,13 @@
         etp.community_id communityId,
         etp.create_time createTime,
         etp.status_cd statusCd,
-        td.name eventWayName
+        td.name eventWayName,
+        etpk.spec_name specName
         from event_template t
         left join t_dict td on t.event_way = td.status_cd and td.table_name = 'event_template' and td.table_columns = 'event_way'
-        left join event_template_param etp on t.template_id = etp.template_id
-        where 1 =1 and etp.status_cd = '0'
+        left join event_template_param etp on t.template_id = etp.template_id and etp.status_cd = '0'
+        left join event_template_param_key etpk on etp.spec_cd = etpk.spec_cd and t.event_way = etpk.event_way and etpk.status_cd = '0'
+        where 1 =1
         <if test="templateName !=null and templateName != ''">
             and t.template_name like concat('%', #{templateName}, '%')
         </if>

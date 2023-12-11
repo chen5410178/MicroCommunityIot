@@ -14,6 +14,8 @@ public class EventTemplateParamDto extends PageDto implements Serializable {
     private Date createTime;
     private String statusCd = "0";
 
+    private String specName;
+
     public String getParamId() {
         return paramId;
     }
@@ -68,5 +70,13 @@ public class EventTemplateParamDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getSpecName() {
+        return specName;
+    }
+
+    public void setSpecName(String specName) {
+        this.specName = specName;
     }
 }

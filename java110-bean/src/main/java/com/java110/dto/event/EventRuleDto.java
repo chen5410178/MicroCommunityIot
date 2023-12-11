@@ -14,6 +14,7 @@ public class EventRuleDto extends PageDto implements Serializable {
     private String remark;
     private Date createTime;
     private String statusCd = "0";
+    private EventTemplateDto eventTemplate;
 
     public String getRuleId() {
         return ruleId;
@@ -77,5 +78,13 @@ public class EventRuleDto extends PageDto implements Serializable {
 
     public void setLimitTime(Integer limitTime) {
         this.limitTime = limitTime;
+    }
+
+    public EventTemplateDto getEventTemplate() {
+        return eventTemplate;
+    }
+
+    public void setEventTemplate(EventTemplateDto eventTemplate) {
+        this.eventTemplate = eventTemplate;
     }
 }

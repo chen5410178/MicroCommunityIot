@@ -1,0 +1,136 @@
+<div class="white-bg padding-lg padding-top border-radius">
+    <div class="flex justify-between">
+        <div class="text-title">
+            事件信息
+        </div>
+        <div>
+            <button type="button" class="btn btn-white btn-sm" style="margin-left:10px"  v-on:click="vc.goBack()">
+                返回
+            </button>
+        </div>
+    </div>
+    <!-- 业主信息 -->
+    <div class="margin-top">
+        <div class="row" >
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="事件ID：" namespace="eventDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{eventDetailInfo.eventId}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="事件类型：" namespace="eventDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{eventDetailInfo.eventTypeName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="事件描述：" namespace="eventDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{eventDetailInfo.eventMsg}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="规则名称:" namespace="eventDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{eventDetailInfo.ruleName}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="对象类型:" namespace="eventDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{eventDetailInfo.objTypeName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="创建人员/平台:" namespace="eventDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{eventDetailInfo.fromName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="事件状态:" namespace="eventDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{eventDetailInfo.stateName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="添加时间:" namespace="eventDetailInfo"></vc:i18n>
+                            </label>
+                            <label class=""> {{eventDetailInfo.createTime}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div v-for="(item,index) in eventDetailInfo.liftMachineParamDtoList">
+                    <div class="row" v-if="index % 4 == 0">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="col-form-label">{{item.specName}}：</label>
+                                <label class="">{{item.value}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="index < eventDetailInfo.liftMachineParamDtoList.length-1">
+                            <div class="form-group">
+                                <label class="col-form-label">{{eventDetailInfo.liftMachineParamDtoList[index+1].specName}}：</label>
+                                <label class="">{{eventDetailInfo.liftMachineParamDtoList[index+1].value}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="index < eventDetailInfo.liftMachineParamDtoList.length-2">
+                            <div class="form-group">
+                                <label class="col-form-label">{{eventDetailInfo.liftMachineParamDtoList[index+2].specName}}：</label>
+                                <label class="">{{eventDetailInfo.liftMachineParamDtoList[index+2].value}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="index < eventDetailInfo.liftMachineParamDtoList.length-3">
+                            <div class="form-group">
+                                <label class="col-form-label">{{eventDetailInfo.liftMachineParamDtoList[index+3].specName}}：</label>
+                                <label class="">{{eventDetailInfo.liftMachineParamDtoList[index+3].value}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="vc-line-primary margin-top"></div>
+    <div class="margin-top-sm">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" v-bind:class="{active:eventDetailInfo._currentTab == 'eventDetailEventRule'}" v-on:click="changeTab('eventDetailEventRule')">
+                    <vc:i18n name="事件规则" namespace="eventDetail"></vc:i18n>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" v-bind:class="{active:eventDetailInfo._currentTab == 'eventDetailEventTemplate'}" v-on:click="changeTab('eventDetailEventTemplate')">
+                    <vc:i18n name="事件模板" namespace="eventDetail"></vc:i18n>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div v-if="eventDetailInfo._currentTab == 'eventDetailEventRule'">
+        <vc:create path="property/eventDetailEventRule"></vc:create>
+    </div>
+    <div v-if="eventDetailInfo._currentTab == 'eventDetailEventTemplate'">
+        <vc:create path="property/eventDetailEventTemplate"></vc:create>
+    </div>
+</div>

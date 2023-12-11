@@ -15,7 +15,8 @@
     <!-- 查询事件规则信息 add by wuxw 2018-07-03 -->
     <select id="getEventRuleInfo" parameterType="Map" resultType="Map">
         select t.rule_name,t.rule_name ruleName,t.remark,t.status_cd,t.status_cd statusCd,t.rule_id,t.rule_id
-        ruleId,t.template_id,t.template_id templateId,t.community_id,t.community_id communityId,t.limit_time limitTime
+        ruleId,t.template_id,t.template_id templateId,t.community_id,t.community_id communityId,t.limit_time limitTime,
+        t.create_time createTime
         from event_rule t
         left join event_template et on t.template_id = et.template_id
         where 1 =1 and et.status_cd = '0'

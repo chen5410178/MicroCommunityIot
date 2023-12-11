@@ -166,6 +166,9 @@
             },
             _openEventPoolStaffModal: function (_eventPool) {
                 vc.emit('viewEventPoolStaffInfo', 'chooseEventPoolStaff', _eventPool)
+            },
+            _toEventDetail: function (_eventPool) {
+                vc.jumpToPage('/#/pages/event/eventDetail?eventId=' + _eventPool.eventId + "&ruleId=" + _eventPool.ruleId);
             }
         }
     });

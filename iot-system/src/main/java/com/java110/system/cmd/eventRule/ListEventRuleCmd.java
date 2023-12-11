@@ -24,9 +24,12 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.event.EventRuleDto;
+import com.java110.dto.event.EventTemplateDto;
 import com.java110.intf.system.IEventRuleV1InnerServiceSMO;
+import com.java110.intf.system.IEventTemplateV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -36,6 +39,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 
 /**
@@ -55,6 +59,9 @@ public class ListEventRuleCmd extends Cmd {
     @Autowired
     private IEventRuleV1InnerServiceSMO eventRuleV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IEventTemplateV1InnerServiceSMO eventTemplateV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -71,6 +78,7 @@ public class ListEventRuleCmd extends Cmd {
 
         if (count > 0) {
             eventRuleDtos = eventRuleV1InnerServiceSMOImpl.queryEventRules(eventRuleDto);
+            refreshTemplate(eventRuleDtos);
         } else {
             eventRuleDtos = new ArrayList<>();
         }
@@ -80,5 +88,20 @@ public class ListEventRuleCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void refreshTemplate(List<EventRuleDto> eventRuleDtos) {
+        if (CollectionUtils.isEmpty(eventRuleDtos)) {
+            return;
+        }
+
+        for (EventRuleDto eventRuleDto : eventRuleDtos) {
+            EventTemplateDto eventTemplateDto = new EventTemplateDto();
+            eventTemplateDto.setTemplateId(eventRuleDto.getTemplateId());
+            eventTemplateDto.setCommunityId(eventRuleDto.getCommunityId());
+            List<EventTemplateDto> eventTemplateDtos = eventTemplateV1InnerServiceSMOImpl.queryEventTemplates(eventTemplateDto);
+            Assert.listOnlyOne(eventTemplateDtos, "请检查事件规则模板分配是否正确");
+            eventRuleDto.setEventTemplate(eventTemplateDtos.get(0));
+        }
     }
 }
