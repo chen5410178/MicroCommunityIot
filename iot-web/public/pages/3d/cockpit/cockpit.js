@@ -2,7 +2,7 @@
     入驻小区
 **/
 import Cockpit3d from 'api/3d/Cockpit3d.js';
-import { computeSceneObject } from 'api/3d/CockpitCore.js';
+import { initEvent,computeSceneObject } from 'api/3d/CockpitCore.js';
 (function (vc) {
     vc.extends({
         data: {
@@ -25,6 +25,9 @@ import { computeSceneObject } from 'api/3d/CockpitCore.js';
             $that._listDtScenes();
         },
         _initEvent: function () {
+
+            // todo 初始化 cockpitCore 事件
+            initEvent();
 
             vc.on('cockpit','curType',function(_param){
                 $that.cockpitInfo.curType = _param.curType;

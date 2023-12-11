@@ -6,6 +6,12 @@ var scene = null;
 var sceneId = null;
 var communityId = null;
 
+export function initEvent(){
+    vc.on('cockpitCore','loadRoomModal',function(_data){
+        loadRooms(_data);
+    })
+}
+
 /**
  * 计算引擎
  * @param {场景} _scene 
@@ -138,4 +144,42 @@ function loadSceneObjectScript(_params) {
         );
     })
 
+}
+
+function loadData(_params,_url){
+    let param = {
+        params: _params
+    };
+    return new Promise((resolve, reject) => {
+        //发送get请求
+        vc.http.apiGet(_url,
+            param,
+            function (json, res) {
+                let _json = JSON.parse(json);
+                if (!_json.data || _json.data.length < 1) {
+                    reject('未包含数据');
+                    return;
+                }
+                resolve(_json.data)
+            }, function (errInfo, error) {
+                console.log('请求失败处理');
+            }
+        );
+    })
+}
+
+/**
+ * 查询房屋
+ */
+function loadRooms(_data){
+    
+    loadData({
+        page:1,
+        row:100,
+        floorId:_data.floorId,
+        layer:_data.layer
+    },'/room.queryRooms')
+    .then((_rooms) =>{
+        
+    })
 }

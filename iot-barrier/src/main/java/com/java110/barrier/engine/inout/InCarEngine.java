@@ -231,6 +231,20 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
         carInoutTempAuthPo.setRemark(inOutCarTextDto.getRemark());
         carInoutTempAuthPo.setCarNum(carNum);
         carInoutTempAuthServiceImpl.saveCarInoutTempAuth(carInoutTempAuthPo);
+
+
+        BarrierGateControlDto barrierGateControlDto
+                = new BarrierGateControlDto();
+        barrierGateControlDto.setAction(BarrierGateControlDto.ACTION_TEMP_CAR_AUTH);
+        barrierGateControlDto.setMachineId(carInoutTempAuthPo.getMachineId());
+        barrierGateControlDto.setBody(carInoutTempAuthPo);
+
+        try {
+            sendInfoEngine.sendInfo(barrierGateControlDto, machineDto.getBoxId(), machineDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 

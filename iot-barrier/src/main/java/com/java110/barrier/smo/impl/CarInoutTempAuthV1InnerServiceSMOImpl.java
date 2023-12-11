@@ -47,6 +47,8 @@ public class CarInoutTempAuthV1InnerServiceSMOImpl implements ICarInoutTempAuthV
     @Override
     public int saveCarInoutTempAuth(@RequestBody  CarInoutTempAuthPo carInoutTempAuthPo) {
         int saveFlag = carInoutTempAuthV1ServiceDaoImpl.saveCarInoutTempAuthInfo(BeanConvertUtil.beanCovertMap(carInoutTempAuthPo));
+
+
         return saveFlag;
     }
 
