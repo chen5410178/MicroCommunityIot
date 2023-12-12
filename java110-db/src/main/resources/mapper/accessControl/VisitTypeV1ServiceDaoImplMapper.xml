@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="visitTypeV1ServiceDaoImpl">
+
+
+    <!-- 保存访客类型信息 add by wuxw 2018-07-03 -->
+    <insert id="saveVisitTypeInfo" parameterType="Map">
+        insert into visit_type(visit_day, visit_way, name, audit_way, type_id, remark, community_id)
+        values (#{visitDay}, #{visitWay}, #{name}, #{auditWay}, #{typeId}, #{remark}, #{communityId})
+    </insert>
+
+
+    <!-- 查询访客类型信息 add by wuxw 2018-07-03 -->
+    <select id="getVisitTypeInfo" parameterType="Map" resultType="Map">
+        select t.visit_day,t.visit_day visitDay,t.visit_way,t.visit_way visitWay,t.name,t.audit_way,t.audit_way
+        auditWay,t.type_id,t.type_id typeId,t.remark,t.status_cd,t.status_cd statusCd,t.community_id,t.community_id
+        communityId,t.create_time createTime,td1.name visitWayName,td2.name auditWayName
+        from visit_type t
+        left join t_dict td1 on t.visit_way = td1.status_cd and td1.table_name = 'visit_type' and td1.table_columns = 'visit_way'
+        left join t_dict td2 on t.audit_way = td2.status_cd and td2.table_name = 'visit_type' and td2.table_columns = 'audit_way'
+        where 1 =1
+        <if test="visitDay !=null and visitDay != ''">
+            and t.visit_day= #{visitDay}
+        </if>
+        <if test="visitWay !=null and visitWay != ''">
+            and t.visit_way= #{visitWay}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="nameLike !=null and nameLike != ''">
+            and t.name like concat('%', #{nameLike}, '%')
+        </if>
+        <if test="auditWay !=null and auditWay != ''">
+            and t.audit_way= #{auditWay}
+        </if>
+        <if test="typeId !=null and typeId != ''">
+            and t.type_id= #{typeId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改访客类型信息 add by wuxw 2018-07-03 -->
+    <update id="updateVisitTypeInfo" parameterType="Map">
+        update visit_type t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="visitDay !=null and visitDay != ''">
+            , t.visit_day= #{visitDay}
+        </if>
+        <if test="visitWay !=null and visitWay != ''">
+            , t.visit_way= #{visitWay}
+        </if>
+        <if test="name !=null and name != ''">
+            , t.name= #{name}
+        </if>
+        <if test="auditWay !=null and auditWay != ''">
+            , t.audit_way= #{auditWay}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="typeId !=null and typeId != ''">
+            and t.type_id= #{typeId}
+        </if>
+
+    </update>
+
+    <!-- 查询访客类型数量 add by wuxw 2018-07-03 -->
+    <select id="queryVisitTypesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from visit_type t
+        where 1 =1
+        <if test="visitDay !=null and visitDay != ''">
+            and t.visit_day= #{visitDay}
+        </if>
+        <if test="visitWay !=null and visitWay != ''">
+            and t.visit_way= #{visitWay}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="nameLike !=null and nameLike != ''">
+            and t.name like concat('%', #{nameLike}, '%')
+        </if>
+        <if test="auditWay !=null and auditWay != ''">
+            and t.audit_way= #{auditWay}
+        </if>
+        <if test="typeId !=null and typeId != ''">
+            and t.type_id= #{typeId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+
+    </select>
+
+</mapper>
