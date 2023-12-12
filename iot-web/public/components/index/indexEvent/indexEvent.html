@@ -1,7 +1,8 @@
 <div class="index-1-right-1">
     <div class="index-title"><span>事件</span></div>
     <ul id="pool" style="overflow-y: scroll;height: 100%;">
-        <li class="flex justify-between padding-top-sm" v-if="!indexEventInfo.events || indexEventInfo.events.length < 1">
+        <li class="flex justify-between padding-top-sm"
+            v-if="!indexEventInfo.events || indexEventInfo.events.length < 1">
             <div class="vc-index-notice-title">
                 当前没有事件发生
             </div>
@@ -12,7 +13,9 @@
         <li class="flex justify-between padding-top-sm" v-for="(item,index) in indexEventInfo.events" v-else>
             <div class="vc-index-notice-title">
                 {{item.objTypeName}}({{item.objectName}}){{item.eventTypeName}}({{item.fromType==='PERSON'?'人员创建':'平台创建'}})
-                {{item.eventPoolStaffList[0].staffName?item.eventPoolStaffList[0].staffName:'暂未分配'}}
+                <span v-if="item.eventPoolStaffList && item.eventPoolStaffList.length>0">
+                    {{item.eventPoolStaffList[0].staffName?item.eventPoolStaffList[0].staffName:'暂未分配'}}
+                </span>
                 (<span v-if="item.state === 'W'">待处理</span>
                 <span v-if="item.state === 'D'">处理中</span>
                 <span v-if="item.state === 'TC'">正常处理完成</span>

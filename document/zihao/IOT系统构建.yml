@@ -7,7 +7,7 @@ job:
   work_dir: /home/hc/iot
   job_shell: |
     rm -rf /home/data/web/iotWeb
-    cp -r web/public /home/data/web/
+    cp -r iot-web/public /home/data/web/
     mv /home/data/web/public /home/data/web/iotWeb
     mvn clean install
   plans:
