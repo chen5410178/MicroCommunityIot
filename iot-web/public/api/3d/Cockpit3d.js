@@ -4,7 +4,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
-
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 export default class Cockpit3d {
 
     constructor(_element) {
@@ -284,6 +285,31 @@ export default class Cockpit3d {
         this.scene.add(cone); // 将锥形对象添加到场景中  
     }
 
+    addText(_objName, _text, _position) {
+        let _that = this;
+        const loader = new FontLoader();
+        loader.load('/js/three/examples/fonts/helvetiker_regular.typeface.json', function (font) {
+            const geometry = new TextGeometry(_text, {
+                font: font,
+                size: 6,
+                height: 1,
+                curveSegments: 8,
+                bevelEnabled: true,
+                bevelThickness: 1,
+                bevelSize: 0.1,
+                bevelSegments: 2
+            });
+           
+            let material = new THREE.MeshBasicMaterial({ color: 0xc17e14, transparent: true, opacity: 0.8}); // 创建材质  
+            let mesh = new THREE.Mesh(geometry, material); // 创建网格并添加到场景中  
+            mesh.name = _objName;
+            //mesh.scale.set(10, 10, 10)
+            mesh.position.set(_position.x, _position.y, _position.z);
+            mesh.rotateX(270/180 * Math.PI)
+            _that.scene.add(mesh); // 将锥形对象添加到场景中 
+        });
+    }
+
     getObjectPosition(targetObject) {
         let targetCenter = new THREE.Vector3();
         // targetObject.updateMatrixWorld(true); // 确保目标物体的世界矩阵是最新的  
@@ -330,7 +356,7 @@ export default class Cockpit3d {
     lookAtObject(_object) {
         // 将相机移动到物体位置并面对物体  
         let _pos = this.getObjectPosition(_object);
-        this.camera.position.set(_pos.x,_pos.y,_pos.z);
+        this.camera.position.set(_pos.x, _pos.y, _pos.z);
         this.camera.lookAt(_object.position);
     }
 }

@@ -83,7 +83,6 @@
             saveDtModalInfo: function () {
                 if (!$that.addDtModalValidate()) {
                     vc.toast(vc.validate.errInfo);
-
                     return;
                 }
 

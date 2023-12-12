@@ -6,8 +6,8 @@ var scene = null;
 var sceneId = null;
 var communityId = null;
 
-export function initEvent(){
-    vc.on('cockpitCore','loadRoomModal',function(_data){
+export function initEvent() {
+    vc.on('cockpitCore', 'loadRoomModal', function (_data) {
         loadRooms(_data);
     })
 }
@@ -23,11 +23,11 @@ export function computeSceneObject(_scene, _param) {
     communityId = _param.communityId;
     //todo 
     loadSceneObjectScript({
-            page: 1,
-            row: 100,
-            communityId: communityId,
-            sceneId: sceneId,
-        })
+        page: 1,
+        row: 100,
+        communityId: communityId,
+        sceneId: sceneId,
+    })
         .then((scripts) => {
             scripts.forEach(_script => {
                 try {
@@ -50,23 +50,23 @@ export function computeSceneObject(_scene, _param) {
             row: 1,
             communityId: communityId,
             sceneId: sceneId,
-            objName:_object.name.replace('_focus','')
+            objName: _object.name.replace('_focus', '')
         })
-        .then((scripts) => {
-            if(scripts[0].objType == 'floor'){
-                scene.lookAtObject(scene.getObjectByName(_object.name));
-                vc.emit('cockpit','curType',{
-                    curType:'floor',
-                    data:scripts[0]
-                })
-                return;
-            }
+            .then((scripts) => {
+                if (scripts[0].objType == 'floor') {
+                    scene.lookAtObject(scene.getObjectByName(_object.name));
+                    vc.emit('cockpit', 'curType', {
+                        curType: 'floor',
+                        data: scripts[0]
+                    })
+                    return;
+                }
 
-        });
+            });
     })
 }
 
-function laodModal(_params){
+function laodModal(_params) {
     let param = {
         params: _params
     };
@@ -146,7 +146,7 @@ function loadSceneObjectScript(_params) {
 
 }
 
-function loadData(_params,_url){
+function loadData(_params, _url) {
     let param = {
         params: _params
     };
@@ -171,15 +171,67 @@ function loadData(_params,_url){
 /**
  * 查询房屋
  */
-function loadRooms(_data){
-    
+function loadRooms(_data) {
+
+    let rooms = [];
+
     loadData({
-        page:1,
-        row:100,
-        floorId:_data.floorId,
-        layer:_data.layer
-    },'/room.queryRooms')
-    .then((_rooms) =>{
-        
+        page: 1,
+        row: 100,
+        floorId: _data.floorId,
+        layer: _data.layer,
+        communityId: vc.getCurrentCommunity().communityId
+    }, '/room.queryRooms')
+        .then((_rooms) => {
+            rooms = _rooms;
+            return laodModal({
+                page: 1,
+                row: 1,
+                modalType: 'floor',
+                modalCode: 'layer_' + rooms.length
+            })
+        }).then((_modal) => {
+            changeRoomModal(rooms, _modal[0])
+        })
+}
+
+function changeRoomModal(_rooms, _modal) {
+    scene.resetScene();
+    scene.addGltfObject({
+        path: _modal.path
+    }).then(() => { // todo 加载场景完成 执行
+        for (let _roomIndex = 1; _roomIndex < _rooms.length + 1; _roomIndex++) {
+            try {
+                computeRoomObject(_rooms[_roomIndex-1],'room_'+_roomIndex);
+            } catch (err) {
+                console.log('处理房屋对象失败', err);
+            }
+        }
+
     })
+}
+
+function computeRoomObject(_room,_objName) {
+
+   
+    let object = scene.getObjectByName(_objName);
+    console.log(_room,object.name)
+    if (!object) {
+        return;
+    }
+
+     // 计算目标物体的中心位置  
+     let _objectTarget = scene.getObjectPosition(object);
+     let _height = scene.getObjectHeight(object) ;
+     _objectTarget.y =  _objectTarget.y + _height
+     _objectTarget.x = _objectTarget.x -20;
+    scene.addText(_objName+"_text",_room.roomName,_objectTarget)
+
+   
+
+
+    // let objectFocus = scene.getObjectByName(_objName+"_text");
+
+    // objectFocus.position.set(_objectTarget.x, _objectTarget.y + _height, _objectTarget.z);
+
 }

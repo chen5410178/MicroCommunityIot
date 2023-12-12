@@ -44,7 +44,7 @@
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
         </if>
-        order by t.port_code
+        order by CAST(t.port_code AS SIGNED)
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
         </if>
