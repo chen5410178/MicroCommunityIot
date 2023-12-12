@@ -1,17 +1,13 @@
 (function (vc) {
 
     vc.extends({
-        propTypes: {
-            callBackListener: vc.propTypes.string, //父组件名称
-            callBackFunction: vc.propTypes.string //父组件监听方法
-        },
         data: {
             addDtModalInfo: {
                 modalTypes: [],
                 modalId: '',
                 modalName: '',
                 modalType: '',
-                modalBean: '',
+                modalCode: '',
                 path: '',
             }
         },
@@ -58,16 +54,16 @@
                             errInfo: "模型类型不能超过30"
                         },
                     ],
-                    'addDtModalInfo.modalBean': [
+                    'addDtModalInfo.modalCode': [
                         {
                             limit: "required",
                             param: "",
-                            errInfo: "模型实现不能为空"
+                            errInfo: "模型编码不能为空"
                         },
                         {
                             limit: "maxLength",
                             param: "64",
-                            errInfo: "模型实现不能超过64"
+                            errInfo: "模型编码不能超过64"
                         },
                     ],
                     'addDtModalInfo.path': [
@@ -121,7 +117,7 @@
                     modalTypes: _modalTypes,
                     modalName: '',
                     modalType: '',
-                    modalBean: '',
+                    modalCode: '',
                     path: '',
                 };
                 vc.emit('addDtModal', 'uploadFile', 'clearVedio', {})

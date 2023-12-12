@@ -70,11 +70,12 @@
                                             <vc:i18n name='模型名称' namespace='dtModal'></vc:i18n>
                                         </th>
                                         <th class="text-center">
-                                            <vc:i18n name='模型类型' namespace='dtModal'></vc:i18n>
+                                            <vc:i18n name='模型编码' namespace='dtModal'></vc:i18n>
                                         </th>
                                         <th class="text-center">
-                                            <vc:i18n name='模型实现' namespace='dtModal'></vc:i18n>
+                                            <vc:i18n name='模型类型' namespace='dtModal'></vc:i18n>
                                         </th>
+                                        
                                         <th class="text-center">
                                             <vc:i18n name='创建时间' namespace='dtModal'></vc:i18n>
                                         </th>
@@ -87,8 +88,8 @@
                                     <tr v-for="dtModal in dtModalInfo.dtModals">
                                         <td class="text-center">{{dtModal.modalId}}</td>
                                         <td class="text-center">{{dtModal.modalName}}</td>
+                                        <td class="text-center">{{dtModal.modalCode}}</td>
                                         <td class="text-center">{{dtModal.modalTypeName}}</td>
-                                        <td class="text-center">{{dtModal.modalBean}}</td>
                                         <td class="text-center">{{dtModal.createTime}}</td>
                                         <td class="text-center">
                                             <div class="btn-group">

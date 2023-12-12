@@ -28,7 +28,7 @@ import java.util.Date;
  */
 public class DtModalPo implements Serializable {
 
-    private String modalBean;
+    private String modalCode;
     private String modalType;
     private String modalId;
     private String modalName;
@@ -37,12 +37,12 @@ public class DtModalPo implements Serializable {
 
     private String statusCd = "0";
 
-    public String getModalBean() {
-        return modalBean;
+    public String getModalCode() {
+        return modalCode;
     }
 
-    public void setModalBean(String modalBean) {
-        this.modalBean = modalBean;
+    public void setModalCode(String modalCode) {
+        this.modalCode = modalCode;
     }
 
     public String getModalType() {

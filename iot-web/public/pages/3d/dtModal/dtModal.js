@@ -17,7 +17,7 @@
                 conditions: {
                     modalName: '',
                     modalType: '',
-                    modalBean: '',
+                    modalCode: '',
 
                 }
             }

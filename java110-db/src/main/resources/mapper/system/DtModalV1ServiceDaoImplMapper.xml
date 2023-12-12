@@ -8,22 +8,22 @@
     <!-- 保存3d模型信息 add by wuxw 2018-07-03 -->
     <insert id="saveDtModalInfo" parameterType="Map">
         insert into dt_modal(
-        modal_bean,modal_type,modal_id,modal_name,path
+        modal_code,modal_type,modal_id,modal_name,path
         ) values (
-        #{modalBean},#{modalType},#{modalId},#{modalName},#{path}
+        #{modalCode},#{modalType},#{modalId},#{modalName},#{path}
         )
     </insert>
 
 
     <!-- 查询3d模型信息 add by wuxw 2018-07-03 -->
     <select id="getDtModalInfo" parameterType="Map" resultType="Map">
-        select t.modal_bean,t.modal_bean modalBean,t.modal_type,t.modal_type modalType,t.modal_id,t.modal_id
+        select t.modal_code,t.modal_code modalCode,t.modal_type,t.modal_type modalType,t.modal_id,t.modal_id
         modalId,t.modal_name,t.modal_name modalName,t.status_cd,t.status_cd statusCd,t.path,t.create_time createTime,td1.name modalTypeName
         from dt_modal t
         LEFT JOIN t_dict td1 on t.modal_type = td1.status_cd and td1.table_name = 'dt_modal' and td1.table_columns = 'modal_type'
         where 1 =1
-        <if test="modalBean !=null and modalBean != ''">
-            and t.modal_bean= #{modalBean}
+        <if test="modalCode !=null and modalCode != ''">
+            and t.modal_code= #{modalCode}
         </if>
         <if test="modalType !=null and modalType != ''">
             and t.modal_type= #{modalType}
@@ -51,8 +51,8 @@
         <if test="newBId != null and newBId != ''">
             ,t.b_id = #{newBId}
         </if>
-        <if test="modalBean !=null and modalBean != ''">
-            , t.modal_bean= #{modalBean}
+        <if test="modalCode !=null and modalCode != ''">
+            , t.modal_code= #{modalCode}
         </if>
         <if test="modalType !=null and modalType != ''">
             , t.modal_type= #{modalType}
@@ -75,8 +75,8 @@
         select count(1) count
         from dt_modal t
         where 1 =1
-        <if test="modalBean !=null and modalBean != ''">
-            and t.modal_bean= #{modalBean}
+        <if test="modalCode !=null and modalCode != ''">
+            and t.modal_code= #{modalCode}
         </if>
         <if test="modalType !=null and modalType != ''">
             and t.modal_type= #{modalType}

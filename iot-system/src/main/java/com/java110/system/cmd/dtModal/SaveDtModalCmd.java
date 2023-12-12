@@ -26,6 +26,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.dtModal.DtModalDto;
 import com.java110.intf.system.IDtModalV1InnerServiceSMO;
 import com.java110.po.dtModal.DtModalPo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,15 @@ public class SaveDtModalCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "modalName", "请求报文中未包含modalName");
         Assert.hasKeyAndValue(reqJson, "modalType", "请求报文中未包含modalType");
-        Assert.hasKeyAndValue(reqJson, "modalBean", "请求报文中未包含modalBean");
+        Assert.hasKeyAndValue(reqJson, "modalCode", "请求报文中未包含modalCode");
+
+        DtModalDto dtModalDto = new DtModalDto();
+        dtModalDto.setModalCode(reqJson.getString("modalCode"));
+        int count = dtModalV1InnerServiceSMOImpl.queryDtModalsCount(dtModalDto);
+
+        if (count > 0) {
+            throw new CmdException("模型编号已经存在，请更换");
+        }
 
     }
 

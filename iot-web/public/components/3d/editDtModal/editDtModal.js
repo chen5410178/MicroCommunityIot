@@ -8,7 +8,7 @@
                 modalId: '',
                 modalName: '',
                 modalType: '',
-                modalBean: '',
+                modalCode: '',
                 path: '',
 
             }
@@ -60,16 +60,16 @@
                             errInfo: "模型类型不能超过30"
                         },
                     ],
-                    'editDtModalInfo.modalBean': [
+                    'editDtModalInfo.modalCode': [
                         {
                             limit: "required",
                             param: "",
-                            errInfo: "模型实现不能为空"
+                            errInfo: "模型编码不能为空"
                         },
                         {
                             limit: "maxLength",
                             param: "64",
-                            errInfo: "模型实现不能超过64"
+                            errInfo: "模型编码不能超过64"
                         },
                     ],
                     'editDtModalInfo.path': [
@@ -130,7 +130,7 @@
                     modalId: '',
                     modalName: '',
                     modalType: '',
-                    modalBean: '',
+                    modalCode: '',
                     path: '',
 
                 }
