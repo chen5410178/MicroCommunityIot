@@ -40,6 +40,10 @@ public class NettySocketHolder {
             throw new IllegalArgumentException("设备未连接");
         }
 
+        if(!channel.isActive()){
+            throw new IllegalArgumentException("设备未连接");
+        }
+
         // todo 发送数据
         logger.debug("向 {} 设备发送数据，{}", machineCode, data);
         logger.debug("向 {} 设备发送数据Hex，{}", machineCode, BytesUtil.bytesToHex(data));
