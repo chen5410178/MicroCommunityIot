@@ -71,6 +71,7 @@
         destroyedMethod: _destroyedMethod,
         debug: false,
         timers: _timers,
+        waitLoadCount:0,
         _map: {},
         pageRoutes: _routes, //路由
     };
@@ -463,17 +464,25 @@
             } catch (err) {
                 console.log(err, _paramJs);
             }
+
+            if(_jsBody.indexOf('vc.extends') > -1){
+                vcFramework.waitLoadCount +=1;
+            }
         })
     }
 
     execScript = function (_tree, _componentScript) {
 
         let _jsBody = "";
+        vcFramework.waitLoadCount = 0;
         for (let i = 0; i < _componentScript.length; i++) {
             if (_componentScript[i].indexOf(';;;;;;;;;;') > -1) {
                 appendModules(_componentScript[i].split(';;;;;;;;;;'));
+               
                 continue;
             }
+
+           
             _jsBody = (_componentScript[i] + ';');
             let script = document.createElement('script');
             script.setAttribute("type", "module");
@@ -483,6 +492,9 @@
                 document.body.appendChild(script);
             } catch (err) {
                 console.log(err, _jsBody);
+            }
+            if(_jsBody.indexOf('vc.extends')>-1){
+                vcFramework.waitLoadCount +=1;
             }
         }
         // let _initScript = "vcFramework.initVue();vcFramework.initVcComponent();";
@@ -495,10 +507,10 @@
         // } catch (err) {
         //     console.log(err, _jsBody);
         // }
-        setTimeout(function () {
-            vcFramework.initVue();
-            vcFramework.initVcComponent();
-        }, 100)
+        // setTimeout(function () {
+        //     vcFramework.initVue();
+        //     vcFramework.initVcComponent();
+        // }, 100)
     }
 
     /**
@@ -1158,6 +1170,7 @@
     //继承方法,合并 _vmOptions 的数据到 vmOptions中
     vcFramework.extends = function (_vmOptions) {
         let vmOptions = vcFramework.vmOptions;
+        
         if (typeof _vmOptions !== "object") {
             throw "_vmOptions is not Object";
         }
@@ -1217,6 +1230,12 @@
         //处理_initEvent_destroyedMethod
         if (_vmOptions.hasOwnProperty('_destroyedMethod')) {
             vcFramework.destroyedMethod.push(_vmOptions._destroyedMethod);
+        }
+
+        vcFramework.waitLoadCount -= 1;
+        if(vcFramework.waitLoadCount == 0){
+            vcFramework.initVue();
+            vcFramework.initVcComponent();
         }
 
 
