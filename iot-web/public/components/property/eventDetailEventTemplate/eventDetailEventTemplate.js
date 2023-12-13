@@ -38,6 +38,7 @@
                     param,
                     function (json) {
                         let _eventInfo = JSON.parse(json);
+                        $that.eventDetailEventTemplateInfo.templates = [];
                         $that.eventDetailEventTemplateInfo.templates.push(_eventInfo.data[0].eventTemplate);
                         vc.emit('eventDetailEventTemplate', 'paginationPlus', 'init', {
                             total: _eventInfo.records,
