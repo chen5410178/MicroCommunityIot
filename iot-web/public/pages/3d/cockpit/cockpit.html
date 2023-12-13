@@ -20,6 +20,9 @@
         <div v-if="cockpitInfo.curType == 'floor'">
             <vc:create path="3d/cockpitRightFLoor"></vc:create>
         </div>
+        <div v-if="cockpitInfo.curType == 'room'">
+            <vc:create path="3d/cockpitRightRoom"></vc:create>
+        </div>
         
     </div>
     <div class="cockpit-bottom"></div>

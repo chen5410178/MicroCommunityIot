@@ -39,22 +39,20 @@ export function computeSceneObject(_scene, _param) {
 
         });
     _scene.setSelect3DObject((_object) => {
-        console.log('selectObjName=', _object.name)
+        console.log('selectObjName=', _object.name);
 
-        if (!_object.name.endsWith('_focus')) {
-            return;
-        }
+        let _objName = _object.name;
 
-        loadSceneObjectScript({
-            page: 1,
-            row: 1,
-            communityId: communityId,
-            sceneId: sceneId,
-            objName: _object.name.replace('_focus', '')
-        })
-            .then((scripts) => {
+        if (_objName.endsWith('_focus')) {
+            loadSceneObjectScript({
+                page: 1,
+                row: 1,
+                communityId: communityId,
+                sceneId: sceneId,
+                objName: _objName.replace('_focus', '')
+            }).then((scripts) => {
                 if (scripts[0].objType == 'floor') {
-                    scene.lookAtObject(scene.getObjectByName(_object.name));
+                    scene.lookAtObject(scene.getObjectByName(_objName));
                     vc.emit('cockpit', 'curType', {
                         curType: 'floor',
                         data: scripts[0]
@@ -63,6 +61,23 @@ export function computeSceneObject(_scene, _param) {
                 }
 
             });
+            return;
+        }
+
+        if (_objName.endsWith('_text')) {
+            scene.lookAtObject(scene.getObjectByName(_objName));
+            let _roomId = _objName.split('_')[2];
+
+            vc.emit('cockpit', 'curType',{
+                curType: 'room',
+                data: {
+                    roomId:_roomId
+                }
+            })
+
+        }
+
+
     })
 }
 
@@ -146,7 +161,7 @@ function loadSceneObjectScript(_params) {
 
 }
 
-function loadData(_params, _url) {
+export function loadData(_params, _url) {
     let param = {
         params: _params
     };
@@ -202,7 +217,7 @@ function changeRoomModal(_rooms, _modal) {
     }).then(() => { // todo 加载场景完成 执行
         for (let _roomIndex = 1; _roomIndex < _rooms.length + 1; _roomIndex++) {
             try {
-                computeRoomObject(_rooms[_roomIndex-1],'room_'+_roomIndex);
+                computeRoomObject(_rooms[_roomIndex - 1], 'room_' + _roomIndex);
             } catch (err) {
                 console.log('处理房屋对象失败', err);
             }
@@ -211,23 +226,23 @@ function changeRoomModal(_rooms, _modal) {
     })
 }
 
-function computeRoomObject(_room,_objName) {
+function computeRoomObject(_room, _objName) {
 
-   
+
     let object = scene.getObjectByName(_objName);
-    console.log(_room,object.name)
+
     if (!object) {
         return;
     }
 
-     // 计算目标物体的中心位置  
-     let _objectTarget = scene.getObjectPosition(object);
-     let _height = scene.getObjectHeight(object) ;
-     _objectTarget.y =  _objectTarget.y + _height
-     _objectTarget.x = _objectTarget.x -20;
-    scene.addText(_objName+"_text",_room.roomName,_objectTarget)
+    // 计算目标物体的中心位置  
+    let _objectTarget = scene.getObjectPosition(object);
+    let _height = scene.getObjectHeight(object);
+    _objectTarget.y = _objectTarget.y + _height
+    _objectTarget.x = _objectTarget.x - 20;
+    scene.addText(_objName + "_" + _room.roomId + "_text", _room.roomName, _objectTarget)
 
-   
+
 
 
     // let objectFocus = scene.getObjectByName(_objName+"_text");

@@ -196,7 +196,7 @@ export default class Cockpit3d {
         document.body.style.cursor = 'default';
         for (let _index = 0; _index < intersects.length; _index++) {
             _name = intersects[_index].object.name;
-            if (_name.endsWith('_focus')) {
+            if (_name.endsWith('_focus') || _name.endsWith('_text')) {
                 document.body.style.cursor = 'pointer'; // 将鼠标状态设置为小手  
                 break;
             }

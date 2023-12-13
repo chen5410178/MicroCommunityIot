@@ -34,6 +34,8 @@ import { initEvent,computeSceneObject } from 'api/3d/CockpitCore.js';
                 let _data = _param.data;
                 if(_param.curType == 'floor'){
                     vc.emit('cockpitRightFLoor','notify',_data)
+                }else if(_param.curType == 'room'){
+                    vc.emit('cockpitRightRoom','notify',_data)
                 }
             })
 

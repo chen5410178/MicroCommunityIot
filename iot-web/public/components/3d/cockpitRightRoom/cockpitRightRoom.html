@@ -1,0 +1,131 @@
+<div class="view-box ">
+    
+    <div class="vb-c padding">
+        <div></div>
+        <div>
+            <div class="r-title flex justify-between">
+                <span>房屋信息</span>
+                <span></span>
+            </div>
+            <div class="r-body flex justify-between margin-top-sm ">
+                <div>
+                    <div>编号</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.roomName}}</div>
+                </div>
+                <div>
+                    <div>楼层</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.layer}}</div>
+                </div>
+                <div>
+                    <div>房屋类型</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.roomSubTypeName}}</div>
+                </div>
+            </div>
+            <div class="r-body flex justify-between  margin-top-sm ">
+                <div>
+                    <div>建筑面积</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.builtUpArea}}</div>
+                </div>
+                <div>
+                    <div>室内面积</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.roomArea}}</div>
+                </div>
+                <div>
+                    <div>房屋状态</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.stateName}}</div>
+                </div>
+            </div>
+            <div class="r-body flex justify-between  margin-top-sm ">
+                <div>
+                    <div>交房时间</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.startTime}}</div>
+                </div>
+                <div>
+                    <div>业主</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.ownerName}}</div>
+                </div>
+                <div>
+                    <div>人员数量</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.memberCount}}</div>
+                </div>
+            </div>
+            <div class="r-body flex justify-between  margin-top-sm ">
+                <div>
+                    <div>说明</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.remark || '无'}}</div>
+                </div>
+                <div class="text-center">
+                    <div>房屋ID</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.roomId}}</div>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+        <div v-if="cockpitRightRoomInfo.ownerId">
+            <div class="r-title flex justify-between margin-top">
+                <span>人员信息</span>
+                <span></span>
+            </div>
+            <div class="r-body flex justify-between  margin-top-sm ">
+                <div>
+                    <div>名称</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.name}}</div>
+                </div>
+                <div>
+                    <div>电话</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.link}}</div>
+                </div>
+                <div>
+                    <div>性别</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.sex == 0 ? '男' : '女'}}</div>
+                </div>
+            </div>
+            <div class="r-body flex justify-between  margin-top-sm ">
+                <div>
+                    <div>身份证</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.idCard}}</div>
+                </div>
+                <div>
+                    <div>家庭住址</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.address}}</div>
+                </div>
+                <div>
+                    <div>人员类型</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.ownerTypeName}}</div>
+                </div>
+            </div>
+            <div class="r-body flex justify-between  margin-top-sm ">
+                <div>
+                    <div>人员ID</div>
+                    <div style="color: #c17e14;">{{cockpitRightRoomInfo.ownerId}}</div>
+                </div>
+
+            </div>
+        </div>
+        <div v-if="cockpitRightRoomInfo.cars && cockpitRightRoomInfo.cars.length>0">
+            <div class="r-title flex justify-between margin-top">
+                <span>房屋车辆</span>
+                <span></span>
+            </div>
+            <div class="r-body flex justify-between  margin-top-sm " v-for="(item,index) in cockpitRightRoomInfo.cars">
+                <div>
+                    <div>车牌号</div>
+                    <div style="color: #c17e14;">{{item.carNum}}</div>
+                </div>
+                <div>
+                    <div>车位</div>
+                    <div style="color: #c17e14;">{{item.num}}</div>
+                </div>
+                <div>
+                    <div>有效期</div>
+                    <div style="color: #c17e14;">
+                        {{item.startTime}}</br>
+                        {{item.endTime}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

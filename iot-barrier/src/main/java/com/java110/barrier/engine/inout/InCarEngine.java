@@ -106,7 +106,7 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
         CarInoutDto inoutDto = new CarInoutDto();
         inoutDto.setCarNum(carNum);
         inoutDto.setPaIds(paIds.toArray(new String[paIds.size()]));
-        inoutDto.setState("1");
+        inoutDto.setState(CarInoutDto.STATE_IN);
         List<CarInoutDto> carInoutDtos = carInoutServiceImpl.queryCarInouts(inoutDto);
         // 临时车再场内 不让进 需要工作人员处理 手工出场
         if (carInoutDtos != null && carInoutDtos.size() > 0 && "N".equals(parkingAreaDtos.get(0).getBlueCarIn())) {
