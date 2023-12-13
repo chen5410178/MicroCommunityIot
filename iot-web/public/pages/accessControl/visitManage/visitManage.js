@@ -118,12 +118,25 @@
                     param,
                     function (json, res) {
                         var _visitTypeInfo = JSON.parse(json);
-                        $that.visitTypeList = _visitTypeInfo.data;
+                        $that.visitTypeList = [{
+                            name: '访客类型',
+                            typeId: ''
+                        }];
+                        _visitTypeInfo.data.forEach(item => {
+                            $that.visitTypeList.push(item);
+                        });
                     }, function (errInfo, error) {
                         console.log('请求失败处理');
                     }
                 )
             },
+            switchVisitType: function(_visitTypt) {
+                $that.visitManageInfo.conditions.typeId = _visitTypt.typeId;
+                $that._listVisits(DEFAULT_PAGE, DEFAULT_ROWS);
+            },
+            _toVisitDetail: function (_visit) {
+                vc.jumpToPage('/#/pages/accessControl/visitDetail?visitId=' + _visit.visitId + "&phoneNumber=" + _visit.phoneNumber);
+            }
         }
     });
 })(window.vc);

@@ -17,6 +17,7 @@ package com.java110.accessControl.cmd.visit;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.room.RoomDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.cmd.Cmd;
@@ -30,11 +31,14 @@ import com.java110.core.utils.StringUtil;
 import com.java110.dto.visit.VisitTypeDto;
 import com.java110.intf.accessControl.IVisitTypeV1InnerServiceSMO;
 import com.java110.intf.accessControl.IVisitV1InnerServiceSMO;
+import com.java110.intf.community.IRoomsTreeInnerServiceSMO;
 import com.java110.po.visit.VisitPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -62,6 +66,9 @@ public class UpdateVisitCmd extends Cmd {
     @Autowired
     private IVisitTypeV1InnerServiceSMO visitTypeV1InnerServiceSMOImpl;
 
+    @Resource
+    private IRoomsTreeInnerServiceSMO roomsTreeInnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "visitId", "visitId不能为空");
@@ -82,6 +89,7 @@ public class UpdateVisitCmd extends Cmd {
         visitTypeDto.setTypeId(reqJson.getString("typeId"));
         List<VisitTypeDto> visitTypeDtos = visitTypeV1InnerServiceSMOImpl.queryVisitTypes(visitTypeDto);
         Assert.listOnlyOne(visitTypeDtos, "访客类型不存在");
+
         switch (visitTypeDtos.get(0).getVisitWay()) {
             case VisitTypeDto.VISIT_WAY_FACE: // todo: 先不做
                 break;
@@ -93,6 +101,7 @@ public class UpdateVisitCmd extends Cmd {
             default:
                 break;
         }
+
         if (reqJson.getDate("visitTime") != null) {
             Date visitTime = reqJson.getDate("visitTime");
             Calendar calendar = Calendar.getInstance();
@@ -100,6 +109,15 @@ public class UpdateVisitCmd extends Cmd {
             calendar.add(Calendar.DAY_OF_YEAR, Integer.valueOf(visitTypeDtos.get(0).getVisitDay()));
             reqJson.put("departureTime", calendar.getTime());
         }
+
+        RoomDto roomDto = new RoomDto();
+        roomDto.setRoomId(reqJson.getString("roomId"));
+        List<RoomDto> roomDtos = roomsTreeInnerServiceSMOImpl.queryRoomsTree(roomDto);
+        if (!CollectionUtils.isEmpty(roomDtos)) {
+            reqJson.put("ownerId", roomDtos.get(0).getOwnerId());
+            reqJson.put("ownerName", roomDtos.get(0).getOwnerName());
+        }
+
         VisitPo visitPo = BeanConvertUtil.covertBean(reqJson, VisitPo.class);
         int flag = visitV1InnerServiceSMOImpl.updateVisit(visitPo);
 
