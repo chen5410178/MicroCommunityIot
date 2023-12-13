@@ -156,6 +156,22 @@
                 "enablePullDownRefresh": false
             }
             
+        },{
+            "path" : "pages/fee/cashier",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "支付订单",
+                "enablePullDownRefresh": false
+            }
+            
+        },{
+            "path" : "pages/successPage/successPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "支付成功",
+                "enablePullDownRefresh": false
+            }
+            
         }
 	],
 	"tabBar": {

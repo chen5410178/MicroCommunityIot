@@ -1,4 +1,4 @@
-package com.java110.gateway.controller.app.file;
+package com.java110.gateway.app.file;
 
 import com.java110.bean.dto.userDownloadFile.UserDownloadFileDto;
 import com.java110.core.client.FileUploadTemplate;

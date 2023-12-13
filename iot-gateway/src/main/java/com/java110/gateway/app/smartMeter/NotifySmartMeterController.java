@@ -1,4 +1,4 @@
-package com.java110.gateway.controller.app.smartMeter;
+package com.java110.gateway.app.smartMeter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.factory.LoggerFactory;

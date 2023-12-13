@@ -86,35 +86,36 @@
 					}
 					_that.account = data[0];
 				})
-			}
-		},
-		onPayFee: function() {
-			if (!this.amount) {
-				uni.showToast({
-					icon: 'none',
-					title: '未填写金额'
-				});
-				return;
-			}
-			let _receivedAmount = this.amount;
-			let _tradeType = 'JSAPI';
 
-			let _objData = {
-				business: "preStoreOnline",
-				communityId: this.communityId,
-				acctId: this.account.acctId,
-				feeName: '账户充值',
-				receivedAmount: _receivedAmount,
-				tradeType: _tradeType,
-			};
+			},
+			onPayFee: function() {
+				if (!this.amount) {
+					uni.showToast({
+						icon: 'none',
+						title: '未填写金额'
+					});
+					return;
+				}
+				let _receivedAmount = this.amount;
+				let _tradeType = 'JSAPI';
 
-			uni.setStorageSync('doing_cashier', _objData);
-			uni.navigateTo({
-				url: '/pages/fee/cashier?money=' + _receivedAmount + "&business=preStoreOnline&communityId=" +
-					this.communityId + "&cashierUserId=" + getUserId()
-			})
+				let _objData = {
+					business: "preStoreOnline",
+					communityId: this.communityId,
+					acctId: this.account.acctId,
+					feeName: '账户充值',
+					receivedAmount: _receivedAmount,
+					tradeType: _tradeType,
+				};
+
+				uni.setStorageSync('doing_cashier', _objData);
+				uni.navigateTo({
+					url: '/pages/fee/cashier?money=' + _receivedAmount +
+						"&business=preStoreOnline&communityId=" +
+						this.communityId + "&cashierUserId=" + getUserId()
+				})
+			}
 		}
-
 	}
 </script>
 

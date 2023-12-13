@@ -1,4 +1,4 @@
-package com.java110.gateway.controller.app.charge;
+package com.java110.gateway.app.charge;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
