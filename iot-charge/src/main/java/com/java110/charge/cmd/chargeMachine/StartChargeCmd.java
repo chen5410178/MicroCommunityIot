@@ -156,6 +156,7 @@ public class StartChargeCmd extends Cmd {
 
         //todo 如果是 月卡充值 ，后面不做校验  暂时只有电动摩托有月卡
         if (chargeCoreImpl.ifMonthCard(userDtos.get(0).getTel(), chargeMachinePortDtos.get(0).getCommunityId()) && CHARGE_TYPE_MOTORCYCLE.equals(chargeRuleFeeDtos.get(0).getChargeType())) {
+            reqJson.put("acctId", "-1");
             return;
         }
 
