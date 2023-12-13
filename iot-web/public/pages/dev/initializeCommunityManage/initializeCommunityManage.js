@@ -22,25 +22,25 @@
             }
         },
         _initMethod: function () {
-            vc.component._listCommunitys(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._listCommunitys(DEFAULT_PAGE, DEFAULT_ROWS);
         },
         _initEvent: function () {
             vc.on('initializeCommunityManage', 'listCommunity', function (_param) {
-                vc.component._listCommunitys(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listCommunitys(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on("chooseinitializeCommunity", "chooseinitializeCommunity", function (_param) {
                 $that._initializeCommunity(_param);
             });
             vc.on('pagination', 'page_event', function (_currentPage) {
-                vc.component._listCommunitys(_currentPage, DEFAULT_ROWS);
+                $that._listCommunitys(_currentPage, DEFAULT_ROWS);
             });
         },
         methods: {
             _listCommunitys: function (_page, _rows) {
-                vc.component.initializeCommunityManageInfo.conditions.page = _page;
-                vc.component.initializeCommunityManageInfo.conditions.row = _rows;
+                $that.initializeCommunityManageInfo.conditions.page = _page;
+                $that.initializeCommunityManageInfo.conditions.row = _rows;
                 let _param = {
-                    params: vc.component.initializeCommunityManageInfo.conditions
+                    params: $that.initializeCommunityManageInfo.conditions
                 }
                 _param.params.name = _param.params.name.trim();
                 _param.params.communityId = _param.params.communityId.trim();
@@ -49,12 +49,12 @@
                     _param,
                     function (json, res) {
                         var _initializeCommunityManageInfo = JSON.parse(json);
-                        vc.component.initializeCommunityManageInfo.total = _initializeCommunityManageInfo.total;
-                        vc.component.initializeCommunityManageInfo.records = _initializeCommunityManageInfo.records;
-                        vc.component.initializeCommunityManageInfo.initializeCommunitys = _initializeCommunityManageInfo.communitys;
+                        $that.initializeCommunityManageInfo.total = _initializeCommunityManageInfo.total;
+                        $that.initializeCommunityManageInfo.records = _initializeCommunityManageInfo.records;
+                        $that.initializeCommunityManageInfo.initializeCommunitys = _initializeCommunityManageInfo.data;
                         vc.emit('pagination', 'init', {
-                            total: vc.component.initializeCommunityManageInfo.records,
-                            dataCount: vc.component.initializeCommunityManageInfo.total,
+                            total: $that.initializeCommunityManageInfo.records,
+                            dataCount: $that.initializeCommunityManageInfo.total,
                             currentPage: _page
                         });
                     },
@@ -77,7 +77,7 @@
                         //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
                         let _json = JSON.parse(json);
                         if (_json.code == 0) {
-                            vc.component.initializeCommunityManageInfo.msgData = _json.data;
+                            $that.initializeCommunityManageInfo.msgData = _json.data;
                             //关闭model
                             vc.emit('initializeCommunityManage', 'listCommunity', {});
                             vc.toast("删除成功");
@@ -93,13 +93,13 @@
             },
             //查询
             _queryCommunitys: function () {
-                vc.component._listCommunitys(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listCommunitys(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             //重置
             _resetCommunitys: function () {
-                vc.component.initializeCommunityManageInfo.conditions.communityId = ""
-                vc.component.initializeCommunityManageInfo.conditions.name = ""
-                vc.component._listCommunitys(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that.initializeCommunityManageInfo.conditions.communityId = ""
+                $that.initializeCommunityManageInfo.conditions.name = ""
+                $that._listCommunitys(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _openChooseinInitializeCommunity: function (_initializeCommunity) {
                 vc.emit('chooseinitializeCommunity', 'openChooseinitializeCommunityModel', {_initializeCommunity});
