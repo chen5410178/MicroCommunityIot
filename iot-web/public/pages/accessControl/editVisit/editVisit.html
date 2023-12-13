@@ -63,19 +63,6 @@
                         <button type="button" class="btn btn-primary btn-sm" v-on:click="_selectRoom()">选择</button>
                     </div>
                     <label class="col-sm-2 col-form-label text-right">
-                        <vc:i18n name='拜访业主' namespace='editVisit'></vc:i18n>
-                    </label>
-                    <div class="col-sm-3">
-                        <input v-model="editVisitInfo.ownerName" disabled type="text"
-                            :placeholder="vc.i18n('选填，请选择业主','editVisit')" class="form-control">
-                    </div>
-                    <div class="col-sm-1">
-                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openChooseOwner()">选择业主</button>
-                        <a target="_blank" href="/#/pages/property/listOwner?tab=业主信息" class="margin-left-xs">添加</a>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-1 col-form-label text-right">
                         <vc:i18n name='拜访时间' namespace='editVisit'></vc:i18n>
                     </label>
                     <div class="col-sm-4">
