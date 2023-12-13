@@ -465,7 +465,7 @@
                 console.log(err, _paramJs);
             }
 
-            if(_jsBody.indexOf('vc.extends') > -1){
+            if(_paramJs.indexOf('vc.extends') > -1){
                 vcFramework.waitLoadCount +=1;
             }
         })

@@ -87,6 +87,8 @@ function createFile(fileName, content) {
     fs.writeFileSync(fullPath, content);
 }
 
+
+
 function doMinJs(_dir) {
     fs.readdir(_dir, (err, files) => {
         if (err) {
@@ -104,7 +106,7 @@ function doMinJs(_dir) {
                     doMinJs(filePath)
                 } else if (path.extname(file).toLowerCase() === ".js") {
                     fs.readFile(filePath, 'utf8', (err, data) => {
-                        Terser.minify(data,{ mangle: false }).then(result => {
+                        Terser.minify(data, { mangle: false }).then(result => {
                             console.log(filePath)
                             createFile(filePath.replaceAll("dist\\", ""), result.code);
                         })
@@ -460,7 +462,21 @@ findVcLabel = async function (_tree) {
 
     }
 };
-
+async function minJsString(_js) {
+    try{
+        let result = await Terser.minify(_js, { mangle: false });
+        return result.code;
+    }catch(err){
+        return _js;
+    }
+    
+    /**
+     * .then(result => {
+        retJs += result.code;
+    })
+     */
+   
+}
 async function parseVcCreate(filePath) {
 
     let vcChildElements = document.getElementsByTagName('vc:create');
@@ -491,10 +507,13 @@ async function parseVcCreate(filePath) {
     }
     reader(treeList, _componentScript);
 
-    let _js = ""
-    _componentScript.forEach(_sItem => {
+    let _js = "";
+    let _sItem= "";
+    for (let _vcChildIndex = 0; _vcChildIndex < _componentScript.length; _vcChildIndex++) {
+        _sItem = _componentScript[_vcChildIndex];
+        _sItem = await minJsString(_sItem);
         _js += (_sItem + "\n;;;;;;;;;;");
-    })
+    }
 
     createFile(_jsFilePath.replaceAll("public\\", ""), _js);
 
