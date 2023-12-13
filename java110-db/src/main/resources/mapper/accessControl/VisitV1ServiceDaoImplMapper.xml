@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="visitV1ServiceDaoImpl">
+
+
+    <!-- 保存访客菜单信息 add by wuxw 2018-07-03 -->
+    <insert id="saveVisitInfo" parameterType="Map">
+        insert into visit(departure_time, msg, qrcode, visit_gender, owner_id, room_name, room_id, visit_time,
+                          phone_number, visit_id, owner_name, name, visit_case, type_id, face_path, state, community_id,
+                          status_cd)
+        values (#{departureTime}, #{msg}, #{qrcode}, #{visitGender}, #{ownerId}, #{roomName}, #{roomId}, #{visitTime},
+                #{phoneNumber}, #{visitId}, #{ownerName}, #{name}, #{visitCase}, #{typeId}, #{facePath}, #{state},
+                #{communityId}, #{statusCd})
+    </insert>
+
+
+    <!-- 查询访客菜单信息 add by wuxw 2018-07-03 -->
+    <select id="getVisitInfo" parameterType="Map" resultType="Map">
+        select t.departure_time,t.departure_time departureTime,t.msg,t.qrcode,t.status_cd,t.status_cd
+        statusCd,t.visit_gender,t.visit_gender visitGender,t.owner_id,t.owner_id ownerId,t.room_name,t.room_name
+        roomName,t.room_id,t.room_id roomId,t.visit_time,t.visit_time visitTime,t.phone_number,t.phone_number
+        phoneNumber,t.visit_id,t.visit_id visitId,t.owner_name,t.owner_name ownerName,t.name,t.visit_case,t.visit_case
+        visitCase,t.type_id,t.type_id typeId,t.face_path,t.face_path facePath,t.state,t.community_id,t.community_id
+        communityId,t.create_time createTime,vt.name visitTypeName,td.name stateName
+        from visit t
+        left join visit_type vt on t.type_id = vt.type_id and vt.status_cd = '0'
+        left join t_dict td on t.state = td.status_cd and td.table_name = 'visit' and td.table_columns = 'state'
+        where 1 =1
+        <if test="departureTime !=null">
+            and t.departure_time= #{departureTime}
+        </if>
+        <if test="msg !=null and msg != ''">
+            and t.msg= #{msg}
+        </if>
+        <if test="qrcode !=null and qrcode != ''">
+            and t.qrcode= #{qrcode}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="visitGender !=null and visitGender != ''">
+            and t.visit_gender= #{visitGender}
+        </if>
+        <if test="ownerId !=null and ownerId != ''">
+            and t.owner_id= #{ownerId}
+        </if>
+        <if test="roomName !=null and roomName != ''">
+            and t.room_name= #{roomName}
+        </if>
+        <if test="roomId !=null and roomId != ''">
+            and t.room_id= #{roomId}
+        </if>
+        <if test="visitTime !=null">
+            and t.visit_time= #{visitTime}
+        </if>
+        <if test="phoneNumber !=null and phoneNumber != ''">
+            and t.phone_number= #{phoneNumber}
+        </if>
+        <if test="visitId !=null and visitId != ''">
+            and t.visit_id= #{visitId}
+        </if>
+        <if test="ownerName !=null and ownerName != ''">
+            and t.owner_name= #{ownerName}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="visitCase !=null and visitCase != ''">
+            and t.visit_case= #{visitCase}
+        </if>
+        <if test="typeId !=null and typeId != ''">
+            and t.type_id= #{typeId}
+        </if>
+        <if test="facePath !=null and facePath != ''">
+            and t.face_path= #{facePath}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="nameLike !=null and nameLike != ''">
+            and t.name like concat('%', #{nameLike}, '%')
+        </if>
+        <if test="phoneNumberLike !=null and phoneNumberLike != ''">
+            and t.phone_number like concat('%', #{phoneNumberLike}, '%')
+        </if>
+        <if test="roomNameLike !=null and roomNameLike != ''">
+            and t.room_name like concat('%', #{roomNameLike}, '%')
+        </if>
+        <if test="ownerNameLike !=null and ownerNameLike != ''">
+            and t.owner_name like concat('%', #{ownerNameLike}, '%')
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改访客菜单信息 add by wuxw 2018-07-03 -->
+    <update id="updateVisitInfo" parameterType="Map">
+        update visit t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="departureTime !=null">
+            , t.departure_time= #{departureTime}
+        </if>
+        <if test="msg !=null and msg != ''">
+            , t.msg= #{msg}
+        </if>
+        <if test="qrcode !=null and qrcode != ''">
+            , t.qrcode= #{qrcode}
+        </if>
+        <if test="visitGender !=null and visitGender != ''">
+            , t.visit_gender= #{visitGender}
+        </if>
+        <if test="ownerId !=null and ownerId != ''">
+            , t.owner_id= #{ownerId}
+        </if>
+        <if test="roomName !=null and roomName != ''">
+            , t.room_name= #{roomName}
+        </if>
+        <if test="roomId !=null and roomId != ''">
+            , t.room_id= #{roomId}
+        </if>
+        <if test="visitTime !=null">
+            , t.visit_time= #{visitTime}
+        </if>
+        <if test="phoneNumber !=null and phoneNumber != ''">
+            , t.phone_number= #{phoneNumber}
+        </if>
+        <if test="ownerName !=null and ownerName != ''">
+            , t.owner_name= #{ownerName}
+        </if>
+        <if test="name !=null and name != ''">
+            , t.name= #{name}
+        </if>
+        <if test="visitCase !=null and visitCase != ''">
+            , t.visit_case= #{visitCase}
+        </if>
+        <if test="typeId !=null and typeId != ''">
+            , t.type_id= #{typeId}
+        </if>
+        <if test="facePath !=null and facePath != ''">
+            , t.face_path= #{facePath}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="visitId !=null and visitId != ''">
+            and t.visit_id= #{visitId}
+        </if>
+
+    </update>
+
+    <!-- 查询访客菜单数量 add by wuxw 2018-07-03 -->
+    <select id="queryVisitsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from visit t
+        where 1 =1
+        <if test="departureTime !=null">
+            and t.departure_time= #{departureTime}
+        </if>
+        <if test="msg !=null and msg != ''">
+            and t.msg= #{msg}
+        </if>
+        <if test="qrcode !=null and qrcode != ''">
+            and t.qrcode= #{qrcode}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="visitGender !=null and visitGender != ''">
+            and t.visit_gender= #{visitGender}
+        </if>
+        <if test="ownerId !=null and ownerId != ''">
+            and t.owner_id= #{ownerId}
+        </if>
+        <if test="roomName !=null and roomName != ''">
+            and t.room_name= #{roomName}
+        </if>
+        <if test="roomId !=null and roomId != ''">
+            and t.room_id= #{roomId}
+        </if>
+        <if test="visitTime !=null">
+            and t.visit_time= #{visitTime}
+        </if>
+        <if test="phoneNumber !=null and phoneNumber != ''">
+            and t.phone_number= #{phoneNumber}
+        </if>
+        <if test="visitId !=null and visitId != ''">
+            and t.visit_id= #{visitId}
+        </if>
+        <if test="ownerName !=null and ownerName != ''">
+            and t.owner_name= #{ownerName}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="visitCase !=null and visitCase != ''">
+            and t.visit_case= #{visitCase}
+        </if>
+        <if test="typeId !=null and typeId != ''">
+            and t.type_id= #{typeId}
+        </if>
+        <if test="facePath !=null and facePath != ''">
+            and t.face_path= #{facePath}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="nameLike !=null and nameLike != ''">
+            and t.name like concat('%', #{nameLike}, '%')
+        </if>
+        <if test="phoneNumberLike !=null and phoneNumberLike != ''">
+            and t.phone_number like concat('%', #{phoneNumberLike}, '%')
+        </if>
+        <if test="roomNameLike !=null and roomNameLike != ''">
+            and t.room_name like concat('%', #{roomNameLike}, '%')
+        </if>
+        <if test="ownerNameLike !=null and ownerNameLike != ''">
+            and t.owner_name like concat('%', #{ownerNameLike}, '%')
+        </if>
+
+
+    </select>
+
+</mapper>

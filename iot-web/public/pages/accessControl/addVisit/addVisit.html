@@ -1,0 +1,109 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>
+                    <vc:i18n name="添加" namespace="addVisit"></vc:i18n>
+                </h5>
+                <div class="ibox-tools" style="top:10px;">
+                    <button type="button" class="btn btn-white btn-sm" v-on:click="vc.goBack()">
+                        <i class="fa fa-close"></i>返回
+                    </button>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label text-right">
+                        <vc:i18n name='姓名' namespace='addVisit'></vc:i18n>
+                    </label>
+                    <div class="col-sm-4">
+                        <input v-model="addVisitInfo.name" type="text"
+                            :placeholder="vc.i18n('必填，请填写姓名','addVisit')" class="form-control">
+                    </div>
+                    <label class="col-sm-2 col-form-label text-right">
+                        <vc:i18n name='性别' namespace='addVisit'></vc:i18n>
+                    </label>
+                    <div class="col-sm-4">
+                        <select class="custom-select" v-model="addVisitInfo.visitGender">
+                            <option selected disabled value="">{{vc.i18n('必填，请选择性别','addVisit')}}</option>
+                            <option value="0">男</option>
+                            <option value="1">女</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label text-right">
+                        <vc:i18n name='电话号码' namespace='addVisit'></vc:i18n>
+                    </label>
+                    <div class="col-sm-4">
+                        <input v-model="addVisitInfo.phoneNumber" type="text"
+                            :placeholder="vc.i18n('必填，请填写电话号码','addVisit')" class="form-control">
+                    </div>
+                    <label class="col-sm-2 col-form-label text-right">
+                        <vc:i18n name='访客类型' namespace='addVisit'></vc:i18n>
+                    </label>
+                    <div class="col-sm-4">
+                        <select class="custom-select" v-model="addVisitInfo.typeId">
+                            <option selected disabled value="">{{vc.i18n('必填，请选择访客类型','addVisit')}}</option>
+                            <option v-for="(item, index) in visitTypeList" :key="index" :value="item.typeId">
+                                {{item.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label text-right">
+                        <vc:i18n name='拜访房屋' namespace='addVisit'></vc:i18n>
+                    </label>
+                    <div class="col-sm-3">
+                        <input v-model="addVisitInfo.roomName" type="text"
+                            disabled :placeholder="vc.i18n('必填，请选择拜访房屋','addVisit')" class="form-control">
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_selectRoom()">选择</button>
+                    </div>
+                    <label class="col-sm-2 col-form-label text-right">
+                        <vc:i18n name='拜访业主' namespace='addVisit'></vc:i18n>
+                    </label>
+                    <div class="col-sm-3">
+                        <input v-model="addVisitInfo.ownerName" disabled type="text"
+                            :placeholder="vc.i18n('选填，请选择业主','addVisit')" class="form-control">
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openChooseOwner()">选择业主</button>
+                        <a target="_blank" href="/#/pages/property/listOwner?tab=业主信息" class="margin-left-xs">添加</a>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label text-right">
+                        <vc:i18n name='拜访时间' namespace='addVisit'></vc:i18n>
+                    </label>
+                    <div class="col-sm-4">
+                        <input v-model="addVisitInfo.visitTime" type="text"
+                            :placeholder="vc.i18n('选填，请选择开始时间','addVisit')" class="form-control addVisitTime">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label text-right">
+                        <vc:i18n name='拜访事由' namespace='addVisit'></vc:i18n>
+                    </label>
+                    <div class="col-sm-10">
+                        <textarea v-model="addVisitInfo.visitCase" type="text" rows="5"
+                            :placeholder="vc.i18n('选填，请填写拜访事由','addVisit')" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <button class="btn btn-primary float-right" type="button" v-on:click="saveVisitInfo()">
+                        <i class="fa fa-check"></i>&nbsp;
+                        <vc:i18n name="保存"></vc:i18n>
+                    </button>
+                    <button type="button" class="btn btn-warning float-right" style="margin-right:20px;" v-on:click="vc.goBack()">
+                        <vc:i18n name="取消"></vc:i18n>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<vc:create path="property/searchOwner" emitChooseOwner="addVisit" emitLoadData="addVisit"></vc:create>
+
