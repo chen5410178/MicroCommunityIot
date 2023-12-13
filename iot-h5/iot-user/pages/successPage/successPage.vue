@@ -49,7 +49,7 @@
 		methods: {
 			_indexPage:function(){
 				uni.switchTab({
-					url: "/pages/homemaking/homemaking?wAppId=" + this.vc.getWAppId()
+					url: "/pages/index/index"
 				});
 			}
 		}
