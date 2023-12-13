@@ -279,6 +279,7 @@ public class StartChargeCmd extends Cmd {
         //todo 如果是 月卡充值 ，后面不做校验
         if (chargeCoreImpl.ifMonthCard(userDtos.get(0).getTel(), chargeMachinePortDtos.get(0).getCommunityId())) {
             monthCardOrder(reqJson, chargeMachineDtos, orderId, durationHours);
+            context.setResponseEntity(ResultVo.createResponseEntity(resultVo));
             return;
         }
 

@@ -66,6 +66,7 @@
 	import {getWAppId} from '../../lib/java110/utils/StorageUtil.js'
 	
 	import {payFeeApp,payFeeWechat} from '@/api/fee/feeApi.js';
+	import {getUserId} from '../../api/user/userApi.js';
 	export default {
 		data() {
 			return {
@@ -136,7 +137,18 @@
 				let _receivedAmount = this.cardPrice;
 				let _tradeType = 'JSAPI';
 				
-				payFeeWechat(this,{
+				// payFeeWechat(this,{
+				// 	business: "preStoreChargeCard",
+				// 	communityId: this.communityId,
+				// 	personTel: this.personTel,
+				// 	feeName: '月卡充值',
+				// 	receivedAmount: _receivedAmount,
+				// 	cardId:this.cardId,
+				// 	tradeType: _tradeType,
+				// 	appId: this.appId,
+				// });
+				
+				let _objData = {
 					business: "preStoreChargeCard",
 					communityId: this.communityId,
 					personTel: this.personTel,
@@ -145,6 +157,13 @@
 					cardId:this.cardId,
 					tradeType: _tradeType,
 					appId: this.appId,
+				}
+				
+				uni.setStorageSync('doing_cashier', _objData);
+				uni.navigateTo({
+					url: '/pages/fee/cashier?money=' + _receivedAmount +
+						"&business=preStoreChargeCard&communityId=" +
+						this.communityId + "&cashierUserId=" + getUserId()
 				})
 			}
 		}
