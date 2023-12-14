@@ -17,6 +17,7 @@ package com.java110.po.carMonthOrder;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-12-14 12:05:19 mail: 928255095@qq.com
@@ -28,118 +29,149 @@ import java.util.Date;
 public class CarMonthOrderPo implements Serializable {
 
     private String primeRate;
-private String orderId;
-private String carNum;
-private String receivableAmount;
-private String psId;
-private String statusCd = "0";
-private String remark;
-private String receivedAmount;
-private String carId;
-private String cardId;
-private String startTime;
-private String cashierId;
-private String endTime;
-private String state;
-private String communityId;
-private String cashierName;
-public String getPrimeRate() {
+    private String orderId;
+    private String carNum;
+    private String receivableAmount;
+    private String psId;
+    private String statusCd = "0";
+    private String remark;
+    private String receivedAmount;
+    private String carId;
+    private String cardId;
+    private String startTime;
+    private String cashierId;
+    private String endTime;
+    private String state;
+    private String communityId;
+    private String cashierName;
+
+    public String getPrimeRate() {
         return primeRate;
     }
-public void setPrimeRate(String primeRate) {
+
+    public void setPrimeRate(String primeRate) {
         this.primeRate = primeRate;
     }
-public String getOrderId() {
+
+    public String getOrderId() {
         return orderId;
     }
-public void setOrderId(String orderId) {
+
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
-public String getCarNum() {
+
+    public String getCarNum() {
         return carNum;
     }
-public void setCarNum(String carNum) {
+
+    public void setCarNum(String carNum) {
         this.carNum = carNum;
     }
-public String getReceivableAmount() {
+
+    public String getReceivableAmount() {
         return receivableAmount;
     }
-public void setReceivableAmount(String receivableAmount) {
+
+    public void setReceivableAmount(String receivableAmount) {
         this.receivableAmount = receivableAmount;
     }
-public String getPsId() {
+
+    public String getPsId() {
         return psId;
     }
-public void setPsId(String psId) {
+
+    public void setPsId(String psId) {
         this.psId = psId;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getRemark() {
+
+    public String getRemark() {
         return remark;
     }
-public void setRemark(String remark) {
+
+    public void setRemark(String remark) {
         this.remark = remark;
     }
-public String getReceivedAmount() {
+
+    public String getReceivedAmount() {
         return receivedAmount;
     }
-public void setReceivedAmount(String receivedAmount) {
+
+    public void setReceivedAmount(String receivedAmount) {
         this.receivedAmount = receivedAmount;
     }
-public String getCarId() {
+
+    public String getCarId() {
         return carId;
     }
-public void setCarId(String carId) {
+
+    public void setCarId(String carId) {
         this.carId = carId;
     }
-public String getCardId() {
+
+    public String getCardId() {
         return cardId;
     }
-public void setCardId(String cardId) {
+
+    public void setCardId(String cardId) {
         this.cardId = cardId;
     }
-public String getStartTime() {
+
+    public String getStartTime() {
         return startTime;
     }
-public void setStartTime(String startTime) {
+
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
-public String getCashierId() {
+
+    public String getCashierId() {
         return cashierId;
     }
-public void setCashierId(String cashierId) {
+
+    public void setCashierId(String cashierId) {
         this.cashierId = cashierId;
     }
-public String getEndTime() {
+
+    public String getEndTime() {
         return endTime;
     }
-public void setEndTime(String endTime) {
+
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
-public String getState() {
+
+    public String getState() {
         return state;
     }
-public void setState(String state) {
+
+    public void setState(String state) {
         this.state = state;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-public String getCashierName() {
+
+    public String getCashierName() {
         return cashierName;
     }
-public void setCashierName(String cashierName) {
+
+    public void setCashierName(String cashierName) {
         this.cashierName = cashierName;
     }
-
 
 
 }

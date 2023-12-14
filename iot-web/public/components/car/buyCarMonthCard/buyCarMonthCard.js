@@ -22,6 +22,7 @@
         },
         _initEvent: function () {
             vc.on('buyCarMonthCard', 'openBuyCarMonthCardModal', function () {
+                $that.clearBuyCarMonthCardInfo();
                 $('#buyCarMonthCardModel').modal('show');
             });
         },
@@ -63,14 +64,6 @@
                             errInfo: "实收金额不能为空"
                         }
                     ],
-
-                    'buyCarMonthCardInfo.remark': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "备注不能为空"
-                        }
-                    ],
                 });
             },
             saveCarMonthOrderInfo: function () {
@@ -93,7 +86,7 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#buyCarMonthCardModel').modal('hide');
-                            $that.clearBuyCarMonthCardInfo();
+                         
                             vc.emit('carMonthOrder', 'listCarMonthOrder', {});
 
                             return;
@@ -147,15 +140,50 @@
                             vc.toast('月租车不存在,请先添加为月租车');
                             return;
                         }
+                        if(!_json.data[0].paId){
+                            vc.toast('月租车没有绑定车位');
+                            return;
+                        }
 
                         $that.buyCarMonthCardInfo.carId = _json.data[0].carId;
                         $that.buyCarMonthCardInfo.paId = _json.data[0].paId;
+                        $that._listBuyMonthCards();
                  
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );
+            },
+            _listBuyMonthCards: function () {
+
+                let param = {
+                    params:{
+                        page:1,
+                        row:100,
+                        communityId:vc.getCurrentCommunity().communityId,
+                        paId: $that.buyCarMonthCardInfo.paId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/carMonth.listCarMonthCard',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        $that.buyCarMonthCardInfo.cards = _json.data;
+                    }, function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+            _changeCard:function(){
+                $that.buyCarMonthCardInfo.cards.forEach(item => {
+                    if (item.cardId == item.cardId) {
+                        $that.buyCarMonthCardInfo.receivableAmount = item.cardPrice;
+                        $that.buyCarMonthCardInfo.receivedAmount = item.cardPrice;
+                    }
+                });
             }
         }
     });
