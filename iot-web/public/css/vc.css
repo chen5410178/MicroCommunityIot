@@ -1148,4 +1148,7 @@ nav-link nav-link-breadcrumb active:active {
     top: 15px;
     left: -58px;
 }
+.cockpit-right .lift::-webkit-scrollbar {
+    display: none;
+}
 

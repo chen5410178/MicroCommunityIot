@@ -1,8 +1,15 @@
 <div class="flex justify-start">
-    <div>
-        sdfsdf
+    <div class="flex justify-start flex-wrap lift" style="width: 60px;height: 90vh;overflow-y: auto;">
+        <div class="margin-bottom text-center hand" style="width: 50%;" v-for="index in cockpitRightRoomInfo.allLayer" :key="index">
+            <div @click="_changeRoomLayer(index)">
+                <div v-if="index == cockpitRightRoomInfo.curLayer"><img src="/img/3d/lift_active.png" width="30px">
+                </div>
+                <div v-else><img src="/img/3d/lift_default.png" width="30px"></div>
+                <div>{{index}}F</div>
+            </div>
+        </div>
     </div>
-    <div class="view-box " style="width: 22rem;">
+    <div class="view-box " style="width: 20rem;">
         <div class="vb-c padding">
             <div></div>
             <div>

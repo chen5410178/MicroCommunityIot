@@ -27,7 +27,10 @@ import { loadData } from '/api/3d/CockpitCore.js';
                 idCard: "",
                 address: "",
                 ownerTypeName: "",
-                cars: []
+                cars: [],
+                floorId: '',
+                allLayer: 1,
+                curLayer: 1
             }
         },
         _initMethod: function () {
@@ -37,7 +40,10 @@ import { loadData } from '/api/3d/CockpitCore.js';
             vc.on('cockpitRightRoom', 'notify', function (_room) {
                 $that.clearCockpitRightRoom();
                 $that.cockpitRightRoomInfo.roomId = _room.roomId;
+                $that.cockpitRightRoomInfo.floorId = _room.floorId;
+                $that.cockpitRightRoomInfo.curLayer = _room.layer
                 $that._loadRoom();
+                $that._loadRoomFloor();
             })
         },
         methods: {
@@ -80,6 +86,16 @@ import { loadData } from '/api/3d/CockpitCore.js';
                     $that.cockpitRightRoomInfo.cars = data;
                 });
             },
+            _loadRoomFloor:function(){
+                loadData({
+                    page:1,
+                    row:1,
+                    communityId:vc.getCurrentCommunity().communityId,
+                    floorId:$that.cockpitRightRoomInfo.floorId
+                },'floor.queryFloors').then((_floors)=>{
+                    $that.cockpitRightRoomInfo.allLayer = _floors[0].layer;
+                })
+            },
             clearCockpitRightRoom: function () {
                 $that.cockpitRightRoomInfo = {
                     roomId: '',
@@ -102,8 +118,15 @@ import { loadData } from '/api/3d/CockpitCore.js';
                     idCard: "",
                     address: "",
                     ownerTypeName: "",
-                    cars: []
+                    cars: [],
+                    floorId: '',
+                    allLayer: 1,
+                    curLayer: 1
                 }
+            },
+            _changeRoomLayer: function (_curLayer) {
+                $that.cockpitRightRoomInfo.curLayer = _curLayer;
+                vc.emit('cockpitCore', 'loadRoomModal', { floorId: $that.cockpitRightRoomInfo.floorId, layer: _curLayer });
             }
         }
     });

@@ -5,6 +5,8 @@
 var scene = null;
 var sceneId = null;
 var communityId = null;
+var floorId=null;
+var layer = null;
 
 export function initEvent() {
     vc.on('cockpitCore', 'loadRoomModal', function (_data) {
@@ -71,7 +73,9 @@ export function computeSceneObject(_scene, _param) {
             vc.emit('cockpit', 'curType',{
                 curType: 'room',
                 data: {
-                    roomId:_roomId
+                    roomId:_roomId,
+                    floorId:floorId,
+                    layer:layer
                 }
             })
 
@@ -189,6 +193,8 @@ export function loadData(_params, _url) {
 function loadRooms(_data) {
 
     let rooms = [];
+    floorId = _data.floorId;
+    layer = _data.layer;
 
     loadData({
         page: 1,
@@ -205,6 +211,9 @@ function loadRooms(_data) {
                 modalType: 'floor',
                 modalCode: 'layer_' + rooms.length
             })
+        },(err)=>{
+            vc.toast('未查询到房屋');
+            throw new Error('未查询到房屋');
         }).then((_modal) => {
             changeRoomModal(rooms, _modal[0])
         })
