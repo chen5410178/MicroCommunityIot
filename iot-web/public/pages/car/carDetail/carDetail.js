@@ -17,7 +17,7 @@
                 endTime: '',
                 leaseType:'',
                 leaseTypeName: '',    
-                areaNum: '',
+                paNum: '',
                 num:'',
                 remark:'',
                 stateName:'',

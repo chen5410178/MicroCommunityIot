@@ -84,17 +84,9 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label class="col-form-label">
-                                    <vc:i18n name="停车场：" namespace="carDetailInfo"></vc:i18n>
-                                </label>
-                                <label class="">{{carDetailInfo.paNum}}</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label class="col-form-label">
                                     <vc:i18n name="车位：" namespace="carDetailInfo"></vc:i18n>
                                 </label>
-                                <label class="">{{carDetailInfo.num}}</label>
+                                <label class="">{{carDetailInfo.paNum}}-{{carDetailInfo.num}}</label>
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -153,6 +145,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" v-bind:class="{active:carDetailInfo._currentTab == 'carDetailMonthOrder'}"
+                        v-on:click="changeTab('carDetailMonthOrder')">
+                        <vc:i18n name="月卡订单" namespace="carDetail"></vc:i18n>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" v-bind:class="{active:carDetailInfo._currentTab == 'carDetailCoupon'}"
                         v-on:click="changeTab('carDetailCoupon')">
                         <vc:i18n name="优惠券" namespace="carDetail"></vc:i18n>
@@ -185,6 +183,10 @@
         <div v-if="carDetailInfo._currentTab == 'carDetailCarInout'">
             <vc:create path="car/carDetailCarInout"></vc:create>
         </div>
+        <div v-if="carDetailInfo._currentTab == 'carDetailMonthOrder'">
+            <vc:create path="car/carDetailMonthOrder"></vc:create>
+        </div>
+        
         <div v-if="carDetailInfo._currentTab == 'carDetailCoupon'">
             <vc:create path="car/carDetailCoupon"></vc:create>
         </div>

@@ -32,7 +32,7 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#deleteMemberCarModel').modal('hide');
-                            vc.emit('memberCarManage','listMemberCar',{});
+                            vc.emit('carDetailMember', 'notify', {});
                             return ;
                         }
                         vc.message(_json.msg);

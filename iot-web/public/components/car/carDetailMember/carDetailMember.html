@@ -17,15 +17,15 @@
                     <th class="text-center">
                         <vc:i18n name="房屋号" namespace="carDetailMember"></vc:i18n>
                     </th>
-                    <th class="text-center">
+                    <!-- <th class="text-center">
                         <vc:i18n name="车辆品牌" namespace="carDetailMember"></vc:i18n>
-                    </th>
+                    </th> -->
                     <th class="text-center">
                         <vc:i18n name="车辆类型" namespace="carDetailMember"></vc:i18n>
                     </th>
-                    <th class="text-center">
+                    <!-- <th class="text-center">
                         <vc:i18n name="颜色" namespace="carDetailMember"></vc:i18n>
-                    </th>
+                    </th> -->
                     <th class="text-center">
                         <vc:i18n name="业主" namespace="carDetailMember"></vc:i18n>
                     </th>
@@ -42,6 +42,9 @@
                         <vc:i18n name="状态" namespace="carDetailMember"></vc:i18n>
                     </th>
                     <th class="text-center">
+                        <vc:i18n name="说明" namespace="carDetailMember"></vc:i18n>
+                    </th>
+                    <th class="text-center">
                         <vc:i18n name="操作" namespace="carDetailMember"></vc:i18n>
                     </th>
                 </tr>
@@ -54,15 +57,15 @@
                     <td class="text-center">
                         {{car.roomName}}
                     </td>
-                    <td class="text-center">
+                    <!-- <td class="text-center">
                         {{car.carBrand}}
-                    </td>
+                    </td> -->
                     <td class="text-center">
                         {{car.carTypeName}}
                     </td>
-                    <td class="text-center">
+                    <!-- <td class="text-center">
                         {{car.carColor}}
-                    </td>
+                    </td> -->
                     <td class="text-center">
                         {{car.ownerName}}({{car.link}})
                     </td>
@@ -84,9 +87,9 @@
                     </td>
                     <td class="text-center">
                         {{car.stateName}}
-                        <span v-if="car.iotStateName">
-                            ({{car.iotStateName}})
-                        </span>
+                    </td>
+                    <td class="text-center">
+                        {{car.remark}}
                     </td>
                     <td class="text-center">
                         <div class="btn-group">
