@@ -6,7 +6,7 @@
                 carNum: '',
                 authId: '',
                 machineName: '',
-                areaNum: '',
+                paNum: '',
                 remark: '',
                 msg: '',
                 state: '',
@@ -47,7 +47,7 @@
                 }
                 
                 vc.http.apiPost(
-                    '/machine.tempCarAuth',
+                    '/tempCarFee.tempCarAuth',
                     JSON.stringify($that.parkingAreaControlTempCarAuthConfirmInfo), {
                         emulateJSON: true
                     },
@@ -74,7 +74,7 @@
                     carNum: '',
                     authId: '',
                     machineName: '',
-                    areaNum: '',
+                    paNum: '',
                     remark: '',
                     msg: '',
                     state: '',

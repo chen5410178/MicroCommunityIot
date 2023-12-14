@@ -20,7 +20,7 @@
         select t.msg,t.phone_jpg,t.phone_jpg phoneJpg,t.pa_num,t.pa_num paNum,t.machine_code,t.machine_code
         machineCode,t.car_num,t.car_num carNum,t.remark,t.status_cd,t.status_cd statusCd,t.auth_id,t.auth_id
         authId,t.machine_name,t.machine_name machineName,t.car_type,t.car_type carType,t.machine_id,t.machine_id
-        machineId,t.pa_id,t.pa_id paId,t.state,t.community_id,t.community_id communityId
+        machineId,t.pa_id,t.pa_id paId,t.state,t.community_id,t.community_id communityId,t.create_time createTime
         from car_inout_temp_auth t
         where 1 =1
         <if test="msg !=null and msg != ''">
@@ -64,6 +64,12 @@
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            and t.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            and t.create_time &lt;= #{endTime}
         </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
@@ -168,6 +174,13 @@
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
+        </if>
+
+        <if test="startTime !=null and startTime != ''">
+            and t.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            and t.create_time &lt;= #{endTime}
         </if>
 
 
