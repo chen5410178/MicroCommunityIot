@@ -1,4 +1,4 @@
-import url from '../../constant/url.js';
+import url from '../../conf/url.js';
 import {
 	request,
 	requestNoAuth

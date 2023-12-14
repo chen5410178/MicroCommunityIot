@@ -2,7 +2,7 @@ import {
 	getDateYYYYMMDDHHMISS
 } from './utils/DateUtil.js'
 
-import url from '../../constant/url.js'
+import url from '../../conf/url.js'
 import {
 	generatorSeq
 } from './utils/SeqUtil.js'

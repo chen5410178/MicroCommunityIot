@@ -25,7 +25,7 @@
 
 <script>
 	import {isNull} from '../../lib/java110/utils/StringUtil.js'
-	import url from '../../constant/url.js'
+	import url from '../../conf/url.js'
 	export default {
 		data() {
 			return {

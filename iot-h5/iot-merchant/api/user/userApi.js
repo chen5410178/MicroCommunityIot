@@ -3,7 +3,7 @@ import {
 	request,
 	requestNoAuth
 } from '../../lib/java110/java110Request.js';
-import url from '../../constant/url.js';
+import url from '../../conf/url.js';
 import {saveLoginFlag } from './sessionApi.js'
 const LOGIN_FLAG = 'loginFlag'; //登录标识
 export function login(userName, passwd) {

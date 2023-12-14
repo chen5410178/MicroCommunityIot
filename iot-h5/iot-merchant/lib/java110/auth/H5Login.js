@@ -1,12 +1,11 @@
-import url from '../../../constant/url.js'
+import url from '../../../conf/url.js'
 import {
 	requestNoAuth
 } from '../java110Request.js'
 import {
 	isNull
 } from '../utils/StringUtil.js'
-// import {getWAppId} from '../api/init/initApi.js'
-import mapping from '../java110Mapping.js'
+
 
 
 /**

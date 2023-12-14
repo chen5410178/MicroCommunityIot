@@ -30,7 +30,8 @@
 	
 	import customCoupon from '../../components/coupon/custom-coupon.vue';
 	
-	import couponCar from '../../components/coupon/coupon-car.vue'
+	import couponCar from '../../components/coupon/coupon-car.vue';
+	import {hasSession} from '../../api/user/sessionApi.js';
 	export default {
 		data() {
 			return {
@@ -44,6 +45,9 @@
 			qrCodeReceive,
 			customCoupon,
 			couponCar
+		},
+		onShow() {
+			hasSession();
 		},
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作

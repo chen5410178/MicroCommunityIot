@@ -12,7 +12,8 @@
 
 <script>
 	const qrCode = require('@/lib/weapp-qrcode.js');
-	import {getCurrentShop,applyShopCode} from '../../api/shop/shop.js'
+	import {getCurrentShop,applyShopCode} from '../../api/shop/shop.js';
+	import {hasSession} from '../../api/user/sessionApi.js';
 	export default {
 		data() {
 			return {
@@ -29,6 +30,9 @@
 			this.shopId = options.shopId;
 			this._applyShopCode();
 			
+		},
+		onShow() {
+			hasSession();
 		},
 		methods: {
 			_generatorQrCode: function() {

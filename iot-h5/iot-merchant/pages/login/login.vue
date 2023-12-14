@@ -36,7 +36,6 @@
 	import conf from '../../conf/config.js'
 	import {initShop,getShop} from '../../api/shop/shop.js';
 	import {isNull} from '../../lib/java110/utils/StringUtil.js'
-	import mapping from '../../constant/mapping.js';
 	
 	import {login} from '@/api/user/userApi.js';
 	

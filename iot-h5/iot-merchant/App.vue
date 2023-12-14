@@ -7,7 +7,7 @@
 	import {
 		hasSession
 	} from 'api/user/sessionApi.js';
-	import url from './constant/url.js'
+	import url from './conf/url.js'
 	export default {
 		onLaunch: function() {
 			uni.getSystemInfo({
@@ -54,7 +54,7 @@
 			});
 		},
 		onShow: function() {
-			hasSession();
+			// hasSession();
 		},
 		onHide: function() {
 			console.log('App Hide')

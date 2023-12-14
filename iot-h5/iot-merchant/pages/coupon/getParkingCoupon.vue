@@ -1,10 +1,8 @@
 <template>
 	<view>
 		<view class="plate-context">
-			<view class="ak_row_black">
-			</view>
-			<view class="ak_row_title">
-				<text>领取停车劵</text>
+			<view class="text-center" style="margin-top:80upx">
+				<text style="font-size: 42upx;font-weight: bold;">领取停车劵</text>
 			</view>
 
 			<view class="tips_block">

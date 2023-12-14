@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import Java110Context from './lib/java110/Java110Context.js'
 
-import url from './constant/url.js'
+import url from './conf/url.js'
 import factory from './lib/java110/factory/factory.js'
 import util from './lib/java110/utils/util.js'
 import date from './lib/java110/utils/date.js'
