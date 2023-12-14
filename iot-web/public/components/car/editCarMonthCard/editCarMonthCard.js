@@ -9,6 +9,8 @@
                 cardPrice: '',
                 communityId: '',
                 remark: '',
+                paId:'',
+                parkingAreas:[]
             }
         },
         _initMethod: function () {
@@ -17,6 +19,7 @@
         _initEvent: function () {
             vc.on('editCarMonthCard', 'openEditCarMonthCardModal', function (_params) {
                 $that.refreshEditCarMonthCardInfo();
+                $that._loadEditParkingAreas();
                 $('#editCarMonthCardModel').modal('show');
                 vc.copyObject(_params, $that.editCarMonthCardInfo);
                 $that.editCarMonthCardInfo.communityId = vc.getCurrentCommunity().communityId;
@@ -116,9 +119,28 @@
                     cardPrice: '',
                     communityId: '',
                     remark: '',
-
+                    paId:'',
+                    parkingAreas:[]
                 }
-            }
+            },
+            _loadEditParkingAreas: function() {
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        communityId: vc.getCurrentCommunity().communityId
+                    }
+                };
+                //发送get请求
+                vc.http.apiGet('/parkingArea.listParkingArea', param,
+                    function(json, res) {
+                        let _json = JSON.parse(json);
+                        $that.editCarMonthCardInfo.parkingAreas = _json.data;
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    });
+            },
         }
     });
 

@@ -22,10 +22,16 @@ public class CarMonthCardDto extends PageDto implements Serializable {
     private String remark;
     private String communityId;
 
+    private String paId;
+
+    private String areaNum;
+
 
     private Date createTime;
 
     private String statusCd = "0";
+
+
 
 
     public String getCardName() {
@@ -91,5 +97,21 @@ public class CarMonthCardDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getPaId() {
+        return paId;
+    }
+
+    public void setPaId(String paId) {
+        this.paId = paId;
+    }
+
+    public String getAreaNum() {
+        return areaNum;
+    }
+
+    public void setAreaNum(String areaNum) {
+        this.areaNum = areaNum;
     }
 }

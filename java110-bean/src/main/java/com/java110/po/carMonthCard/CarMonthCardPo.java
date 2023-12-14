@@ -17,6 +17,7 @@ package com.java110.po.carMonthCard;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-12-14 11:54:28 mail: 928255095@qq.com
@@ -28,55 +29,76 @@ import java.util.Date;
 public class CarMonthCardPo implements Serializable {
 
     private String cardName;
-private String cardMonth;
-private String cardId;
-private String cardPrice;
-private String statusCd = "0";
-private String remark;
-private String communityId;
-public String getCardName() {
+    private String cardMonth;
+    private String cardId;
+    private String cardPrice;
+    private String statusCd = "0";
+    private String remark;
+    private String communityId;
+
+    private String paId;
+
+    public String getCardName() {
         return cardName;
     }
-public void setCardName(String cardName) {
+
+    public void setCardName(String cardName) {
         this.cardName = cardName;
     }
-public String getCardMonth() {
+
+    public String getCardMonth() {
         return cardMonth;
     }
-public void setCardMonth(String cardMonth) {
+
+    public void setCardMonth(String cardMonth) {
         this.cardMonth = cardMonth;
     }
-public String getCardId() {
+
+    public String getCardId() {
         return cardId;
     }
-public void setCardId(String cardId) {
+
+    public void setCardId(String cardId) {
         this.cardId = cardId;
     }
-public String getCardPrice() {
+
+    public String getCardPrice() {
         return cardPrice;
     }
-public void setCardPrice(String cardPrice) {
+
+    public void setCardPrice(String cardPrice) {
         this.cardPrice = cardPrice;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getRemark() {
+
+    public String getRemark() {
         return remark;
     }
-public void setRemark(String remark) {
+
+    public void setRemark(String remark) {
         this.remark = remark;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
 
+    public String getPaId() {
+        return paId;
+    }
 
-
+    public void setPaId(String paId) {
+        this.paId = paId;
+    }
 }

@@ -7,7 +7,6 @@
                         <vc:i18n name="查询条件"></vc:i18n>
                     </h5>
                     <div class="ibox-tools" style="top:10px;">
-
                     </div>
                 </div>
                 <div class="ibox-content">
@@ -18,7 +17,6 @@
                                     v-model="carMonthCardInfo.conditions.cardName" class=" form-control">
                             </div>
                         </div>
-
                         <div class="col-sm-1">
                             <button type="button" class="btn btn-primary btn-sm"
                                 v-on:click="_queryCarMonthCardMethod()">
@@ -28,8 +26,6 @@
                             </button>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -53,10 +49,10 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <vc:i18n name='编号' namespace='carMonthCard'></vc:i18n>
+                                    <vc:i18n name='名称' namespace='carMonthCard'></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <vc:i18n name='名称' namespace='carMonthCard'></vc:i18n>
+                                    <vc:i18n name='停车场' namespace='carMonthCard'></vc:i18n>
                                 </th>
                                 <th class="text-center">
                                     <vc:i18n name='月' namespace='carMonthCard'></vc:i18n>
@@ -77,8 +73,8 @@
                         </thead>
                         <tbody>
                             <tr v-for="carMonthCard in carMonthCardInfo.carMonthCards">
-                                <td class="text-center">{{carMonthCard.cardId}}</td>
                                 <td class="text-center">{{carMonthCard.cardName}}</td>
+                                <td class="text-center">{{carMonthCard.areaNum}}</td>
                                 <td class="text-center">{{carMonthCard.cardMonth}}</td>
                                 <td class="text-center">{{carMonthCard.cardPrice}}</td>
                                 <td class="text-center">{{carMonthCard.createTime}}</td>

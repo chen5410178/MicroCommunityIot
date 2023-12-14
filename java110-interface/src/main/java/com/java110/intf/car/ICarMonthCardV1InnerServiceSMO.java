@@ -39,17 +39,16 @@ public interface ICarMonthCardV1InnerServiceSMO {
 
 
     @RequestMapping(value = "/saveCarMonthCard", method = RequestMethod.POST)
-    public int saveCarMonthCard(@RequestBody  CarMonthCardPo carMonthCardPo);
+    int saveCarMonthCard(@RequestBody CarMonthCardPo carMonthCardPo);
 
     @RequestMapping(value = "/updateCarMonthCard", method = RequestMethod.POST)
-    public int updateCarMonthCard(@RequestBody  CarMonthCardPo carMonthCardPo);
+    int updateCarMonthCard(@RequestBody CarMonthCardPo carMonthCardPo);
 
     @RequestMapping(value = "/deleteCarMonthCard", method = RequestMethod.POST)
-    public int deleteCarMonthCard(@RequestBody  CarMonthCardPo carMonthCardPo);
+    int deleteCarMonthCard(@RequestBody CarMonthCardPo carMonthCardPo);
 
     /**
      * <p>查询小区楼信息</p>
-     *
      *
      * @param carMonthCardDto 数据对象分享
      * @return CarMonthCardDto 对象数据

@@ -9,6 +9,8 @@
                 cardPrice: '',
                 communityId: '',
                 remark: '',
+                paId:'',
+                parkingAreas:[],
             }
         },
         _initMethod: function () {
@@ -16,6 +18,7 @@
         },
         _initEvent: function () {
             vc.on('addCarMonthCard', 'openAddCarMonthCardModal', function () {
+                $that._loadAddParkingAreas();
                 $('#addCarMonthCardModel').modal('show');
             });
         },
@@ -106,9 +109,28 @@
                     cardPrice: '',
                     communityId: '',
                     remark: '',
-
+                    paId:'',
+                    parkingAreas:[],
                 };
-            }
+            },
+            _loadAddParkingAreas: function() {
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        communityId: vc.getCurrentCommunity().communityId
+                    }
+                };
+                //发送get请求
+                vc.http.apiGet('/parkingArea.listParkingArea', param,
+                    function(json, res) {
+                        let _json = JSON.parse(json);
+                        $that.addCarMonthCardInfo.parkingAreas = _json.data;
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    });
+            },
         }
     });
 

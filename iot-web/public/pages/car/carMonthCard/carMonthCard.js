@@ -37,6 +37,7 @@
 
                 $that.carMonthCardInfo.conditions.page = _page;
                 $that.carMonthCardInfo.conditions.row = _rows;
+                $that.carMonthCardInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
                 let param = {
                     params: $that.carMonthCardInfo.conditions
                 };

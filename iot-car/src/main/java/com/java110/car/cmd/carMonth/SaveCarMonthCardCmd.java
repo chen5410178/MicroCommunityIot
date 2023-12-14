@@ -58,6 +58,7 @@ public class SaveCarMonthCardCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "cardMonth", "请求报文中未包含cardMonth");
         Assert.hasKeyAndValue(reqJson, "cardPrice", "请求报文中未包含cardPrice");
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
+        Assert.hasKeyAndValue(reqJson, "paId", "请求报文中未包含paId");
 
     }
 

@@ -8,9 +8,9 @@
     <!-- 保存车辆月卡信息 add by wuxw 2018-07-03 -->
     <insert id="saveCarMonthCardInfo" parameterType="Map">
         insert into car_month_card(
-        card_name,card_month,card_id,card_price,remark,community_id
+        card_name,card_month,card_id,card_price,remark,community_id,pa_id
         ) values (
-        #{cardName},#{cardMonth},#{cardId},#{cardPrice},#{remark},#{communityId}
+        #{cardName},#{cardMonth},#{cardId},#{cardPrice},#{remark},#{communityId},#{paId}
         )
     </insert>
 
@@ -19,8 +19,9 @@
     <select id="getCarMonthCardInfo" parameterType="Map" resultType="Map">
         select t.card_name,t.card_name cardName,t.card_month,t.card_month cardMonth,t.card_id,t.card_id
         cardId,t.card_price,t.card_price cardPrice,t.status_cd,t.status_cd
-        statusCd,t.remark,t.community_id,t.community_id communityId,t.create_time createTime
+        statusCd,t.remark,t.community_id,t.community_id communityId,t.create_time createTime,t.pa_id paId,pa.num areaNum
         from car_month_card t
+        left join parking_area pa on t.pa_id = pa.pa_id
         where 1 =1
         <if test="cardName !=null and cardName != ''">
             and t.card_name= #{cardName}
@@ -42,6 +43,9 @@
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
+        </if>
+        <if test="paId !=null and paId != ''">
+            and t.pa_id= #{paId}
         </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
@@ -69,12 +73,16 @@
         <if test="remark !=null and remark != ''">
             , t.remark= #{remark}
         </if>
-        <if test="communityId !=null and communityId != ''">
-            , t.community_id= #{communityId}
+
+        <if test="paId !=null and paId != ''">
+            , t.pa_id= #{paId}
         </if>
         where 1=1
         <if test="cardId !=null and cardId != ''">
             and t.card_id= #{cardId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
         </if>
 
     </update>
@@ -104,6 +112,9 @@
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
+        </if>
+        <if test="paId !=null and paId != ''">
+            and t.pa_id= #{paId}
         </if>
 
 
