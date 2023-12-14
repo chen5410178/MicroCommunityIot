@@ -1634,12 +1634,13 @@
                 document.title = _data.systemTitle;
                 let _logoImg = document.getElementsByClassName('java110-logo');
                 if (_logoImg && _logoImg.length > 0) {
-                    let _image = document.createElement('img')
-                    _image.src = _data.logoUrl;
-                    _image.style.width = "300px";
-                    _image.style.height = "80px";
+                    // let _image = document.createElement('img')
+                    // _image.src = _data.logoUrl;
+                    // _image.style.width = "300px";
+                    // _image.style.height = "80px";
 
-                    _logoImg[0].appendChild(_image);
+                    // _logoImg[0].appendChild(_image);
+                    _logoImg[0].innerHTML = _data.systemTitle;
                 }
 
                 let _subSystemName = document.getElementsByClassName('java110-sub-system-name');

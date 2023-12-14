@@ -8,6 +8,7 @@
                 validateCode: '',
                 errorInfo: '',
                 codeImage: '',
+                systemTitle:'',
             }
         },
         _initMethod: function() {
