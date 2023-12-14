@@ -1,0 +1,23 @@
+{
+  "name": "hcmallstore",
+  "version": "1.0.0",
+  "description": "mall",
+  "main": "main.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@192.168.7.21:hongrui/HcCommunityMallApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "image-tools": "^1.4.0",
+    "jweixin-module": "^1.6.0",
+    "vue-jsonp": "^2.0.0"
+  }
+}

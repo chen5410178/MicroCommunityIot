@@ -42,6 +42,7 @@ public class StoreDto extends PageDto implements Serializable {
     private String name;
     private String tel;
     private String storeId;
+    private String[] storeIds;
 
     private String state;
 
@@ -160,5 +161,13 @@ public class StoreDto extends PageDto implements Serializable {
 
     public void setFoundingTime(String foundingTime) {
         this.foundingTime = foundingTime;
+    }
+
+    public String[] getStoreIds() {
+        return storeIds;
+    }
+
+    public void setStoreIds(String[] storeIds) {
+        this.storeIds = storeIds;
     }
 }

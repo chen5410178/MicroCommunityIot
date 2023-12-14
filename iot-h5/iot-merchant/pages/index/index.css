@@ -1,0 +1,128 @@
+@import "../../style/iconfont.css";
+
+.index-top {
+	background-color: #60A2F6;
+	height: 320upx;
+}
+
+.index-top .index-top-sm-menu{
+	width: 85%;
+	margin:0 auto;
+	font-size: 40upx;
+}
+
+.index-menu-top {
+	height: 36upx;
+}
+
+
+
+.font-white {
+	color: #FFF;
+}
+
+.order-count {
+	font-size: 120upx;
+	
+}
+
+.order-split {
+	font-size: 36upx;
+	line-height: 120upx;
+	color: #FFF;
+}
+
+.order-count-text {
+	margin-top: 5upx;
+	font-size: 28upx;
+}
+
+.index-menu {}
+
+.category-image {
+	width: 70upx;
+	height: 70upx;
+}
+
+.category-text {
+	font-size: 24upx;
+	width: 100%;
+}
+
+.category-info {
+	display: inline-block;
+	text-align: center;
+	position: relative;
+	height: 150upx;
+	width: 25%;
+}
+
+.noticesList-list{
+  font-size: 25rpx;
+  display: flex;
+  width: 100%;
+  padding: 10rpx 0;   
+  border-bottom: 1rpx solid #ECECEC;
+  color: #6D6D6D;
+  justify-content: space-between;
+}
+
+.noticesList-list{
+  font-size: 25rpx;
+  display: flex;
+  width: 100%;
+  padding: 10rpx 0;   
+  border-bottom: 1rpx solid #ECECEC;
+  color: #6D6D6D;
+  justify-content: space-between;
+}
+.notices-info-name{
+  margin-top: 10rpx;
+  color: black;
+  font-size: 30rpx;
+  display: -webkit-box;  /*设置为弹性盒子*/
+  -webkit-line-clamp: 2;  /*最多显示5行*/
+  overflow: hidden;  /*超出隐藏*/
+  text-overflow: ellipsis;  /*超出显示为省略号*/
+  -webkit-box-orient: vertical;
+  word-break: break-all;  /*强制英文单词自动换行*/
+}
+.notices-info-image{
+  width: 200rpx;
+  margin: 10rpx 20rpx 0rpx 20rpx;
+  border-radius: 10rpx;
+}
+.notices-info{
+  margin: 10rpx 0rpx 0rpx 20rpx;
+  flex-direction: column;
+  display: flex;
+  justify-content: space-between;
+}
+.notice-bottom{
+  display: flex;
+  text-align: left;
+}
+.notice-bottom view{
+  margin-right: 20rpx;
+}
+
+.notice-bottom icon{
+  color: #8a8a8a;
+  display: inline-block;
+  width: 40rpx;
+  height: 40rpx;
+}
+.notice-bottom view text{
+  font-size: 25rpx;
+  line-height: 40rpx;
+}
+.today-order-title{
+	color:#60A2F6;
+}
+.margin-top-1{
+	margin-top: 2upx;
+}
+
+.noData{
+	min-height: 400upx;
+}
