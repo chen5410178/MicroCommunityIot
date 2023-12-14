@@ -67,9 +67,9 @@ public class ChargeMonthOrderV1ServiceDaoImpl extends BaseServiceDao implements 
     public List<Map> getChargeMonthOrderInfo(Map info) throws DAOException {
         logger.debug("查询 getChargeMonthOrderInfo 入参 info : {}",info);
 
-        List<Map> businessChargeMonthOrderInfos = sqlSessionTemplate.selectList("chargeMonthOrderV1ServiceDaoImpl.getChargeMonthOrderInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("chargeMonthOrderV1ServiceDaoImpl.getChargeMonthOrderInfo",info);
 
-        return businessChargeMonthOrderInfos;
+        return infos;
     }
 
 

@@ -20,12 +20,21 @@
                     primeRate: '',
                     receivableAmount: '',
                     receivedAmount: '',
-                    communityId: vc.getCurrentCommunity().communityId
+                    communityId: vc.getCurrentCommunity().communityId,
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
             }
         },
         _initMethod: function() {
             $that._listChargeMonthOrders(DEFAULT_PAGE, DEFAULT_ROWS);
+
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.chargeMonthOrderManageInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.chargeMonthOrderManageInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function() {
 

@@ -12,12 +12,7 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请输入订单编号','carMonthOrder')"
-                                    v-model="carMonthOrderInfo.conditions.orderId" class=" form-control">
-                            </div>
-                        </div>
+
                         <div class="col-sm-2">
                             <div class="form-group">
                                 <select class="custom-select" v-model="carMonthOrderInfo.conditions.cardId">
@@ -56,6 +51,12 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入订单编号','carMonthOrder')"
+                                    v-model="carMonthOrderInfo.conditions.orderId" class=" form-control">
+                            </div>
+                        </div>
                         <div class="col-sm-1">
                             <button type="button" class="btn btn-primary btn-sm"
                                 v-on:click="_queryCarMonthOrderMethod()">
@@ -63,6 +64,22 @@
                                     <vc:i18n name="查询"></vc:i18n>
                                 </span>
                             </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入开始时间','carMonthOrder')"
+                                    v-model="carMonthOrderInfo.conditions.queryStartTime"
+                                    class=" form-control queryStartTime">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入结束时间','carMonthOrder')"
+                                    v-model="carMonthOrderInfo.conditions.queryEndTime"
+                                    class=" form-control queryEndTime">
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -20,6 +20,8 @@
                     carNum: '',
                     primeRate: '',
                     state: '',
+                    queryStartTime:'',
+                    queryEndTime:'',
                 }
             }
         },
@@ -28,6 +30,13 @@
             $that._listMonthCards();
             vc.getDict('pay_fee_detail', "prime_rate", function(_data) {
                 $that.carMonthOrderInfo.primeRates = _data;
+            });
+
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.carMonthOrderInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.carMonthOrderInfo.conditions.queryEndTime = _value;
             });
         },
         _initEvent: function () {

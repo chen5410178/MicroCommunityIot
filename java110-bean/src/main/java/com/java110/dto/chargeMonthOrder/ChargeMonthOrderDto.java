@@ -37,6 +37,11 @@ public class ChargeMonthOrderDto extends ChargeMonthCardDto implements Serializa
 
     private String statusCd = "0";
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
+
 
     public String getPersonName() {
         return personName;
@@ -157,5 +162,21 @@ public class ChargeMonthOrderDto extends ChargeMonthCardDto implements Serializa
 
     public void setPrimeRateName(String primeRateName) {
         this.primeRateName = primeRateName;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

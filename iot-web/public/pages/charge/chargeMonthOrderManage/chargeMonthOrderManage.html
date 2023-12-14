@@ -11,14 +11,28 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请选择充电人','chargeMonthOrderManage')" v-model="chargeMonthOrderManageInfo.conditions.personName" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请选择充电电话','chargeMonthOrderManage')" v-model="chargeMonthOrderManageInfo.conditions.personTel" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入开始时间','chargeMonthOrderManage')"
+                                    v-model="chargeMonthOrderManageInfo.conditions.queryStartTime"
+                                    class=" form-control queryStartTime">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入结束时间','chargeMonthOrderManage')"
+                                    v-model="chargeMonthOrderManageInfo.conditions.queryEndTime"
+                                    class=" form-control queryEndTime">
                             </div>
                         </div>
                         <div class="col-sm-1">
@@ -82,10 +96,10 @@
                                     <vc:i18n name='实收金额' namespace='chargeMonthOrderManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <vc:i18n name='开始时间' namespace='chargeMonthOrderManage'></vc:i18n>
+                                    <vc:i18n name='有效期' namespace='chargeMonthOrderManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <vc:i18n name='结束时间' namespace='chargeMonthOrderManage'></vc:i18n>
+                                    <vc:i18n name='购买时间' namespace='chargeMonthOrderManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
                                     <vc:i18n name='备注' namespace='chargeMonthOrderManage'></vc:i18n>
@@ -104,8 +118,11 @@
                                 <td class="text-center">{{chargeMonthOrder.primeRateName}}</td>
                                 <td class="text-center">{{chargeMonthOrder.receivableAmount}}</td>
                                 <td class="text-center">{{chargeMonthOrder.receivedAmount}}</td>
-                                <td class="text-center">{{chargeMonthOrder.startTime}}</td>
-                                <td class="text-center">{{chargeMonthOrder.endTime}}</td>
+                                <td class="text-center">{{chargeMonthOrder.startTime}}</br>
+                                ~{{chargeMonthOrder.endTime}}
+                                </td>
+                                <td class="text-center">{{chargeMonthOrder.createTime}}</td>
+
                                 <td class="text-center">{{chargeMonthOrder.remark}}</td>
                             </tr>
                         </tbody>
