@@ -117,16 +117,16 @@
                         <tbody>
                             <tr v-for="carMonthOrder in carMonthOrderInfo.carMonthOrders">
                                 <td class="text-center">{{carMonthOrder.orderId}}</td>
-                                <td class="text-center">{{carMonthOrder.cardId}}</td>
+                                <td class="text-center">{{carMonthOrder.cardName}}</td>
                                 <td class="text-center">{{carMonthOrder.carNum}}</td>
-                                <td class="text-center">{{carMonthOrder.psId}}</td>
-                                <td class="text-center">{{carMonthOrder.primeRate}}</td>
+                                <td class="text-center">{{carMonthOrder.psNum}}</td>
+                                <td class="text-center">{{carMonthOrder.primeRateName}}</td>
                                 <td class="text-center">{{carMonthOrder.receivableAmount}}</td>
                                 <td class="text-center">{{carMonthOrder.receivedAmount}}</td>
                                 <td class="text-center">{{carMonthOrder.startTime}}</br>
                                     ~{{carMonthOrder.endTime}}
                                 </td>
-                                <td class="text-center">{{carMonthOrder.stateName}}</td>
+                                <td class="text-center">{{carMonthOrder.state == '1001'?'正常':'已退费'}}</td>
                                 <td class="text-center">{{carMonthOrder.cashierName}}</td>
                                 <td class="text-center">{{carMonthOrder.createTime}}</td>
                                 <td class="text-center">{{carMonthOrder.remark}}</td>

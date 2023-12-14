@@ -24,6 +24,15 @@ public class CarMonthOrderDto extends PageDto implements Serializable {
     private String receivedAmount;
     private String carId;
     private String cardId;
+
+    private String cardName;
+
+    private String psNum;
+
+    private String primeRateName;
+
+    private String stateName;
+
     private String startTime;
     private String cashierId;
     private String endTime;
@@ -172,5 +181,37 @@ public class CarMonthOrderDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
+    }
+
+    public String getPsNum() {
+        return psNum;
+    }
+
+    public void setPsNum(String psNum) {
+        this.psNum = psNum;
+    }
+
+    public String getPrimeRateName() {
+        return primeRateName;
+    }
+
+    public void setPrimeRateName(String primeRateName) {
+        this.primeRateName = primeRateName;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
     }
 }
