@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="carMonthOrderV1ServiceDaoImpl">
+
+
+
+
+
+    <!-- 保存车辆月卡订单信息 add by wuxw 2018-07-03 -->
+    <insert id="saveCarMonthOrderInfo" parameterType="Map">
+        insert into car_month_order(
+prime_rate,order_id,car_num,receivable_amount,ps_id,remark,received_amount,car_id,card_id,start_time,cashier_id,end_time,state,community_id,cashier_name
+) values (
+#{primeRate},#{orderId},#{carNum},#{receivableAmount},#{psId},#{remark},#{receivedAmount},#{carId},#{cardId},#{startTime},#{cashierId},#{endTime},#{state},#{communityId},#{cashierName}
+)
+    </insert>
+
+
+
+    <!-- 查询车辆月卡订单信息 add by wuxw 2018-07-03 -->
+    <select id="getCarMonthOrderInfo" parameterType="Map" resultType="Map">
+        select  t.prime_rate,t.prime_rate primeRate,t.order_id,t.order_id orderId,t.car_num,t.car_num carNum,t.receivable_amount,t.receivable_amount receivableAmount,t.ps_id,t.ps_id psId,t.status_cd,t.status_cd statusCd,t.remark,t.received_amount,t.received_amount receivedAmount,t.car_id,t.car_id carId,t.card_id,t.card_id cardId,t.start_time,t.start_time startTime,t.cashier_id,t.cashier_id cashierId,t.end_time,t.end_time endTime,t.state,t.community_id,t.community_id communityId,t.cashier_name,t.cashier_name cashierName 
+from car_month_order t 
+where 1 =1 
+<if test="primeRate !=null and primeRate != ''">
+   and t.prime_rate= #{primeRate}
+</if> 
+<if test="orderId !=null and orderId != ''">
+   and t.order_id= #{orderId}
+</if> 
+<if test="carNum !=null and carNum != ''">
+   and t.car_num= #{carNum}
+</if> 
+<if test="receivableAmount !=null and receivableAmount != ''">
+   and t.receivable_amount= #{receivableAmount}
+</if> 
+<if test="psId !=null and psId != ''">
+   and t.ps_id= #{psId}
+</if> 
+<if test="statusCd !=null and statusCd != ''">
+   and t.status_cd= #{statusCd}
+</if> 
+<if test="remark !=null and remark != ''">
+   and t.remark= #{remark}
+</if> 
+<if test="receivedAmount !=null and receivedAmount != ''">
+   and t.received_amount= #{receivedAmount}
+</if> 
+<if test="carId !=null and carId != ''">
+   and t.car_id= #{carId}
+</if> 
+<if test="cardId !=null and cardId != ''">
+   and t.card_id= #{cardId}
+</if> 
+<if test="startTime !=null and startTime != ''">
+   and t.start_time= #{startTime}
+</if> 
+<if test="cashierId !=null and cashierId != ''">
+   and t.cashier_id= #{cashierId}
+</if> 
+<if test="endTime !=null and endTime != ''">
+   and t.end_time= #{endTime}
+</if> 
+<if test="state !=null and state != ''">
+   and t.state= #{state}
+</if> 
+<if test="communityId !=null and communityId != ''">
+   and t.community_id= #{communityId}
+</if> 
+<if test="cashierName !=null and cashierName != ''">
+   and t.cashier_name= #{cashierName}
+</if> 
+order by t.create_time desc
+<if test="page != -1 and page != null ">
+   limit #{page}, #{row}
+</if> 
+
+    </select>
+
+
+
+
+    <!-- 修改车辆月卡订单信息 add by wuxw 2018-07-03 -->
+    <update id="updateCarMonthOrderInfo" parameterType="Map">
+        update  car_month_order t set t.status_cd = #{statusCd}
+<if test="newBId != null and newBId != ''">
+,t.b_id = #{newBId}
+</if> 
+<if test="primeRate !=null and primeRate != ''">
+, t.prime_rate= #{primeRate}
+</if> 
+<if test="carNum !=null and carNum != ''">
+, t.car_num= #{carNum}
+</if> 
+<if test="receivableAmount !=null and receivableAmount != ''">
+, t.receivable_amount= #{receivableAmount}
+</if> 
+<if test="psId !=null and psId != ''">
+, t.ps_id= #{psId}
+</if> 
+<if test="remark !=null and remark != ''">
+, t.remark= #{remark}
+</if> 
+<if test="receivedAmount !=null and receivedAmount != ''">
+, t.received_amount= #{receivedAmount}
+</if> 
+<if test="carId !=null and carId != ''">
+, t.car_id= #{carId}
+</if> 
+<if test="cardId !=null and cardId != ''">
+, t.card_id= #{cardId}
+</if> 
+<if test="startTime !=null and startTime != ''">
+, t.start_time= #{startTime}
+</if> 
+<if test="cashierId !=null and cashierId != ''">
+, t.cashier_id= #{cashierId}
+</if> 
+<if test="endTime !=null and endTime != ''">
+, t.end_time= #{endTime}
+</if> 
+<if test="state !=null and state != ''">
+, t.state= #{state}
+</if> 
+<if test="communityId !=null and communityId != ''">
+, t.community_id= #{communityId}
+</if> 
+<if test="cashierName !=null and cashierName != ''">
+, t.cashier_name= #{cashierName}
+</if> 
+ where 1=1 <if test="orderId !=null and orderId != ''">
+and t.order_id= #{orderId}
+</if> 
+
+    </update>
+
+    <!-- 查询车辆月卡订单数量 add by wuxw 2018-07-03 -->
+     <select id="queryCarMonthOrdersCount" parameterType="Map" resultType="Map">
+        select  count(1) count 
+from car_month_order t 
+where 1 =1 
+<if test="primeRate !=null and primeRate != ''">
+   and t.prime_rate= #{primeRate}
+</if> 
+<if test="orderId !=null and orderId != ''">
+   and t.order_id= #{orderId}
+</if> 
+<if test="carNum !=null and carNum != ''">
+   and t.car_num= #{carNum}
+</if> 
+<if test="receivableAmount !=null and receivableAmount != ''">
+   and t.receivable_amount= #{receivableAmount}
+</if> 
+<if test="psId !=null and psId != ''">
+   and t.ps_id= #{psId}
+</if> 
+<if test="statusCd !=null and statusCd != ''">
+   and t.status_cd= #{statusCd}
+</if> 
+<if test="remark !=null and remark != ''">
+   and t.remark= #{remark}
+</if> 
+<if test="receivedAmount !=null and receivedAmount != ''">
+   and t.received_amount= #{receivedAmount}
+</if> 
+<if test="carId !=null and carId != ''">
+   and t.car_id= #{carId}
+</if> 
+<if test="cardId !=null and cardId != ''">
+   and t.card_id= #{cardId}
+</if> 
+<if test="startTime !=null and startTime != ''">
+   and t.start_time= #{startTime}
+</if> 
+<if test="cashierId !=null and cashierId != ''">
+   and t.cashier_id= #{cashierId}
+</if> 
+<if test="endTime !=null and endTime != ''">
+   and t.end_time= #{endTime}
+</if> 
+<if test="state !=null and state != ''">
+   and t.state= #{state}
+</if> 
+<if test="communityId !=null and communityId != ''">
+   and t.community_id= #{communityId}
+</if> 
+<if test="cashierName !=null and cashierName != ''">
+   and t.cashier_name= #{cashierName}
+</if> 
+
+
+     </select>
+
+</mapper>
