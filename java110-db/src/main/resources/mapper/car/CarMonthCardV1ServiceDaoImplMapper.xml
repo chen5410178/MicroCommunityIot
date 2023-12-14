@@ -19,7 +19,7 @@
     <select id="getCarMonthCardInfo" parameterType="Map" resultType="Map">
         select t.card_name,t.card_name cardName,t.card_month,t.card_month cardMonth,t.card_id,t.card_id
         cardId,t.card_price,t.card_price cardPrice,t.status_cd,t.status_cd
-        statusCd,t.remark,t.community_id,t.community_id communityId
+        statusCd,t.remark,t.community_id,t.community_id communityId,t.create_time createTime
         from car_month_card t
         where 1 =1
         <if test="cardName !=null and cardName != ''">
