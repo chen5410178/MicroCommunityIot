@@ -27,6 +27,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.*;
 import com.java110.dto.carMonthCard.CarMonthCardDto;
+import com.java110.dto.carMonthOrder.CarMonthOrderDto;
 import com.java110.dto.user.UserDto;
 import com.java110.intf.car.ICarMonthCardV1InnerServiceSMO;
 import com.java110.intf.car.ICarMonthOrderV1InnerServiceSMO;
@@ -138,7 +139,7 @@ public class BuyCarMonthOrderCmd extends Cmd {
         carMonthOrderPo.setCashierName(userDtos.get(0).getName());
         carMonthOrderPo.setStartTime(DateUtil.getFormatTimeStringA(startTime));
         carMonthOrderPo.setEndTime(endTime);
-        carMonthOrderPo.setState(CarMonthCardDto.STATE_NORMAL);
+        carMonthOrderPo.setState(CarMonthOrderDto.STATE_NORMAL);
         int flag = carMonthOrderV1InnerServiceSMOImpl.saveCarMonthOrder(carMonthOrderPo);
 
         if (flag < 1) {

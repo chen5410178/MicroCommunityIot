@@ -15,6 +15,10 @@ import java.util.Date;
  **/
 public class CarMonthOrderDto extends PageDto implements Serializable {
 
+
+    public static final String STATE_NORMAL = "1001"; //todo 正常
+    public static final String STATE_REFUND = "2002"; // 退费
+
     private String primeRate;
     private String orderId;
     private String carNum;

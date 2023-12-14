@@ -22,7 +22,7 @@
         statusCd,t.remark,t.received_amount,t.received_amount receivedAmount,t.car_id,t.car_id carId,t.card_id,t.card_id
         cardId,t.start_time,t.start_time startTime,t.cashier_id,t.cashier_id cashierId,t.end_time,t.end_time
         endTime,t.state,t.community_id,t.community_id communityId,t.cashier_name,t.cashier_name cashierName,
-        cmc.card_name cardName,ps.num psNum,td.`name` primeRateName
+        cmc.card_name cardName,ps.num psNum,td.`name` primeRateName,t.create_time createTime
         from car_month_order t
         left join car_month_card cmc on t.card_id = cmc.card_id
         left join parking_space ps on t.ps_id = ps.ps_id

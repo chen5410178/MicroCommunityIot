@@ -131,7 +131,7 @@
                                 <td class="text-center">{{carMonthOrder.createTime}}</td>
                                 <td class="text-center">{{carMonthOrder.remark}}</td>
                                 <td class="text-center">
-                                    <div class="btn-group">
+                                    <div class="btn-group" v-if="carMonthOrder.state == '1001'">
                                         <button class="btn-white btn btn-xs"
                                             v-on:click="_openRetundModel(carMonthOrder)">
                                             <vc:i18n name='退款'></vc:i18n>
