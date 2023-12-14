@@ -179,8 +179,8 @@
                                             </div> -->
                                             {{car.ownerName}}({{car.link}})
                                         </td>
-                                        <td v-if="car.areaNum && car.state == '1001'" class="text-center">
-                                            {{car.areaNum}}-{{car.num}}
+                                        <td v-if="car.state == '1001'" class="text-center">
+                                            {{car.paNum}}-{{car.num}}
                                         </td>
                                         <td v-else class="text-center">
                                             车位已释放
@@ -199,7 +199,7 @@
                                             </span>
                                         </td>
                                         <td class="text-center">
-                                            <div class="btn-group" v-if="car.state != '3003' ">
+                                            <div class="btn-group" v-if="car.psId != '-1' ">
                                                 <button class="btn-white btn btn-xs" v-on:click="_deleteCarParkingSpace(car)">
                                                     <vc:i18n name="释放" namespace="listOwnerCar"></vc:i18n>
                                                 </button>

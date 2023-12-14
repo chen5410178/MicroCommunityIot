@@ -114,7 +114,9 @@ public class QueryOwnerCarsCmd extends Cmd {
             for (OwnerCarDto ownerCarDto : ownerCarDtoList) {
                 if (tmpParkingSpaceDto.getPsId().equals(ownerCarDto.getPsId())) {
                     ownerCarDto.setAreaNum(tmpParkingSpaceDto.getAreaNum());
+                    ownerCarDto.setPaNum(tmpParkingSpaceDto.getPaNum());
                     ownerCarDto.setNum(tmpParkingSpaceDto.getNum());
+                    ownerCarDto.setPaId(tmpParkingSpaceDto.getPaId());
                     ownerCarDto.setParkingType(tmpParkingSpaceDto.getParkingType());
                 }
             }

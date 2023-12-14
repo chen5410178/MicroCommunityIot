@@ -8,6 +8,7 @@
         data: {
             carMonthCardInfo: {
                 carMonthCards: [],
+                parkingAreas: [],
                 total: 0,
                 records: 1,
                 moreCondition: false,
@@ -16,12 +17,13 @@
                     cardId: '',
                     cardName: '',
                     cardMonth: '',
-
+                    paId: '',
                 }
             }
         },
         _initMethod: function () {
             $that._listCarMonthCards(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._loadParkingAreas();
         },
         _initEvent: function () {
 
@@ -78,7 +80,36 @@
                 } else {
                     $that.carMonthCardInfo.moreCondition = true;
                 }
-            }
+            },
+            swatchParkingArea: function (_parkingArea) {
+                $that.carMonthCardInfo.conditions.paId = _parkingArea.paId;
+                $that._listCarMonthCards(DEFAULT_PAGE, DEFAULT_ROWS);
+            },
+            _loadParkingAreas: function () {
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        communityId: vc.getCurrentCommunity().communityId
+                    }
+                };
+                let _parkingAreas = [{
+                    paId: '',
+                    num: '全部'
+                }]
+                //发送get请求
+                vc.http.apiGet('/parkingArea.listParkingArea', param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        _json.data.forEach(pa => {
+                            _parkingAreas.push(pa);
+                        });
+                        $that.carMonthCardInfo.parkingAreas = _parkingAreas;
+                    },
+                    function (errInfo, error) {
+                        console.log('请求失败处理');
+                    });
+            },
 
 
         }
