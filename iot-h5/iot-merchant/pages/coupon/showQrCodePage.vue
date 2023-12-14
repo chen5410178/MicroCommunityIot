@@ -34,7 +34,7 @@
 			_generatorQrCode: function() {
 				let _that = this;
 				let _config = uni.getStorageSync('java110SystemConfig');
-				this.qrCode = _config.ownerUrl+"/#/pages/coupon/getParkingCoupon?code="+this.code+"&couponShopId="+this.couponShopId+"&shopId="+this.shopId
+				this.qrCode = _config.mallUrl+"/#/pages/coupon/getParkingCoupon?code="+this.code+"&couponShopId="+this.couponShopId+"&shopId="+this.shopId
 				console.log(_that.qrCode)
 				setTimeout(function() {
 					new qrCode('couponQrcode', {

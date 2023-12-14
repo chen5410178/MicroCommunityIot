@@ -66,3 +66,24 @@ export function queryShopCouponCars(_that,_data){
 		})
 	});
 }
+
+export function receiveParkingCoupon(_objData) {
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.saveParkingCouponCar,
+			method: "POST",
+			data: JSON.stringify(_objData), //动态数据
+			success: function(res) {
+				if (res.statusCode == 200) {
+					//成功情况下跳转
+					resolve(res.data);
+					return;
+				}
+				reject();
+			},
+			fail: function(e) {
+				reject();
+			}
+		});
+	})
+}

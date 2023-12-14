@@ -37,6 +37,7 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/barrier.customCarInOut,");//根据小区查询appId
         exclusions.append("/iot/api/tempCarFee.getTempCarFeeOrder,");//根据小区查询appId
         exclusions.append("/iot/api/parkingCoupon.listParkingCouponCar,");//根据小区查询appId
+        exclusions.append("/iot/api/parkingCoupon.saveParkingCouponCar,");//根据小区查询appId
 
 
         // todo 支付

@@ -19,12 +19,6 @@
 			"style": {
 				"navigationBarTitleText": "首页"
 			}
-		},
-		{
-			"path": "pages/my/my",
-			"style": {
-				"navigationBarTitleText": "我的"
-			}
 		}, {
 			"path": "pages/login/login",
 			"style": {
@@ -36,40 +30,18 @@
 				"navigationStyle": "custom"
 			}
 		}, {
-			"path": "pages/userInfo/userInfo",
-			"style": {
-				"navigationBarTitleText": "个人信息"
-			}
-		}, {
 			"path": "pages/changePwd/changePwd",
 			"style": {
 				"navigationBarTitleText": "修改密码"
 			}
+		},
+		{
+			"path": "pages/coupon/getParkingCoupon",
+			"style": {
+				"navigationBarTitleText": "领取优惠券",
+				"enablePullDownRefresh": false
+			}
 		}
-
-		, {
-			"path": "pages/shop/shop",
-			"style": {
-				"navigationBarTitleText": "商家信息",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/shop/shopQrCode",
-			"style": {
-				"navigationBarTitleText": "店铺二维码",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/settings/settings",
-			"style": {
-				"navigationBarTitleText": "系统设置",
-				"enablePullDownRefresh": false
-			}
-
-		}
-
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
