@@ -9,8 +9,8 @@
             carDetailMemberInfo: {
                 ownerCars: [],
                 carId: '',
-                carNum:'',
-                memberId:''
+                carNum: '',
+                memberId: ''
             }
         },
         _initMethod: function () {
@@ -28,7 +28,7 @@
                 });
             vc.on('carDetailMember', 'paginationPlus', 'page_event',
                 function (_currentPage) {
-                    vc.component._loadCarDetailMemberData(_currentPage, DEFAULT_ROWS);
+                    $that._loadCarDetailMemberData(_currentPage, DEFAULT_ROWS);
                 });
         },
         methods: {
@@ -48,7 +48,7 @@
                     param,
                     function (json) {
                         let _roomInfo = JSON.parse(json);
-                        vc.component.carDetailMemberInfo.ownerCars = _roomInfo.data;
+                        $that.carDetailMemberInfo.ownerCars = _roomInfo.data;
                         vc.emit('carDetailMember', 'paginationPlus', 'init', {
                             total: _roomInfo.records,
                             dataCount: _roomInfo.total,
@@ -64,18 +64,18 @@
             _qureyCarDetailMember: function () {
                 $that._loadCarDetailMemberData(DEFAULT_PAGE, DEFAULT_ROWS);
             },
-            _addOwnerCarMember: function () {
-                vc.emit('addCarModal', 'openAddCarModel', {
+            _openAddMemberCarModal: function () {
+                vc.emit('addMemberCar', 'openAddMemberCarModal', {
                     carId: $that.carDetailMemberInfo.carId
                 });
             },
-            _openEditOwnerCar: function (_car) {
-                vc.emit('editMemberCar', 'openEditCar', _car);
+            _openEditMemberCarModel: function (_memberCar) {
+                vc.emit('editMemberCar', 'openEditMemberCarModal', _memberCar);
             },
-            _openDelOwnerCarModel: function (_car) {
-                vc.emit('deleteOwnerCar', 'openOwnerCarModel', _car);
+            _openDeleteMemberCarModel: function (_memberCar) {
+                vc.emit('deleteMemberCar', 'openDeleteMemberCarModal', _memberCar);
             },
-            _viewIotStateRemark:function(_car){
+            _viewIotStateRemark: function (_car) {
                 let _data = {
                     "同步说明": _car.iotRemark
                 };

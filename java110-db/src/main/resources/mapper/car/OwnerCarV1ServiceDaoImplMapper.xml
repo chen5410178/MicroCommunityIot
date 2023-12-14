@@ -74,6 +74,12 @@
         <if test="memberId !=null and memberId != ''">
             and t.member_id= #{memberId}
         </if>
+        <if test="carTypeCds !=null">
+            and t.car_type_cd in
+            <foreach collection="carTypeCds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
@@ -178,7 +184,12 @@
         <if test="memberId !=null and memberId != ''">
             and t.member_id= #{memberId}
         </if>
-
+        <if test="carTypeCds !=null">
+            and t.car_type_cd in
+            <foreach collection="carTypeCds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
 
     </select>
 

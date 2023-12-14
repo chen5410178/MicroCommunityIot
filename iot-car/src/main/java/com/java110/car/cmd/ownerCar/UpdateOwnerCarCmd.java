@@ -53,7 +53,6 @@ public class UpdateOwnerCarCmd extends Cmd {
 
   private static Logger logger = LoggerFactory.getLogger(UpdateOwnerCarCmd.class);
 
-
     @Autowired
     private IOwnerCarV1InnerServiceSMO ownerCarV1InnerServiceSMOImpl;
 
@@ -75,6 +74,10 @@ public class UpdateOwnerCarCmd extends Cmd {
         Assert.listOnlyOne(ownerCarDtos, "未找到车辆信息");
 
         String psId = ownerCarDtos.get(0).getPsId();
+
+        if(OwnerCarDto.CAR_TYPE_MEMBER.equals(ownerCarDtos.get(0).getCarTypeCd())){
+            return;
+        }
 
         if (StringUtil.isEmpty(psId) || "-1".equals(psId)) {
             throw new IllegalArgumentException("车位已经被释放，不允许修改车辆信息");

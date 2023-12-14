@@ -26,6 +26,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.parking.ParkingSpaceDto;
 import com.java110.intf.car.IOwnerCarInnerServiceSMO;
@@ -73,7 +74,6 @@ public class DeleteOwnerCarCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "communityId", "小区ID不能为空");
 
 
-
         OwnerCarDto ownerCarDto = new OwnerCarDto();
         ownerCarDto.setCarId(reqJson.getString("carId"));
         ownerCarDto.setMemberId(reqJson.getString("memberId"));
@@ -82,30 +82,47 @@ public class DeleteOwnerCarCmd extends Cmd {
         List<OwnerCarDto> ownerCarDtos = ownerCarInnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
 
         Assert.listOnlyOne(ownerCarDtos, "当前未找到需要删除车辆");
+        reqJson.put("carTypeCd",ownerCarDtos.get(0).getCarTypeCd());
+        if (OwnerCarDto.CAR_TYPE_MEMBER.equals(ownerCarDtos.get(0).getCarTypeCd())) {
+            return;
+        }
+
         reqJson.put("psId", ownerCarDtos.get(0).getPsId());
+
+        ownerCarDto = new OwnerCarDto();
+        ownerCarDto.setCarId(reqJson.getString("memberId"));
+        ownerCarDto.setCarTypeCd(OwnerCarDto.CAR_TYPE_MEMBER);
+        ownerCarDtos = ownerCarInnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
+
+        if (!ListUtil.isNull(ownerCarDtos)) {
+            throw new CmdException("存在成员车辆，请先删除成员车辆");
+        }
+
+
+
     }
 
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
-        if (reqJson.containsKey("psId") && !StringUtil.isEmpty(reqJson.getString("psId"))) {
-            ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
-            parkingSpaceDto.setPsId(reqJson.getString("psId"));
-            List<ParkingSpaceDto> parkingSpaceDtos = parkingSpaceV1InnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
-            if (parkingSpaceDtos != null && parkingSpaceDtos.size() > 0 &&
-                    "2".equals(parkingSpaceDtos.get(0).getParkingType())
-                    && "1001".equals(reqJson.getString("carTypeCd"))) { //子母车位
-                OwnerCarDto ownerCarDto = new OwnerCarDto();
-                ownerCarDto.setCarId(reqJson.getString("carId"));
-                ownerCarDto.setPsId(reqJson.getString("psId"));
-                ownerCarDto.setOwnerId(reqJson.getString("ownerId"));
-                ownerCarDto.setCarTypeCd("1002"); //成员车辆
-                List<OwnerCarDto> ownerCarDtos = ownerCarInnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
-                if (ownerCarDtos != null && ownerCarDtos.size() > 0) {
-                    throw new IllegalArgumentException("该车位下含有子车辆，请先删除子车辆后再进行操作！");
-                }
-            }
-        }
+//        if (reqJson.containsKey("psId") && !StringUtil.isEmpty(reqJson.getString("psId"))) {
+//            ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
+//            parkingSpaceDto.setPsId(reqJson.getString("psId"));
+//            List<ParkingSpaceDto> parkingSpaceDtos = parkingSpaceV1InnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
+//            if (parkingSpaceDtos != null && parkingSpaceDtos.size() > 0 &&
+//                    "2".equals(parkingSpaceDtos.get(0).getParkingType())
+//                    && "1001".equals(reqJson.getString("carTypeCd"))) { //子母车位
+//                OwnerCarDto ownerCarDto = new OwnerCarDto();
+//                ownerCarDto.setCarId(reqJson.getString("carId"));
+//                ownerCarDto.setPsId(reqJson.getString("psId"));
+//                ownerCarDto.setOwnerId(reqJson.getString("ownerId"));
+//                ownerCarDto.setCarTypeCd("1002"); //成员车辆
+//                List<OwnerCarDto> ownerCarDtos = ownerCarInnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
+//                if (ownerCarDtos != null && ownerCarDtos.size() > 0) {
+//                    throw new IllegalArgumentException("该车位下含有子车辆，请先删除子车辆后再进行操作！");
+//                }
+//            }
+//        }
         OwnerCarPo ownerCarPo = new OwnerCarPo();
         ownerCarPo.setCommunityId(reqJson.getString("communityId"));
         ownerCarPo.setCarId(reqJson.getString("carId"));
@@ -117,11 +134,16 @@ public class DeleteOwnerCarCmd extends Cmd {
         if (StringUtil.isEmpty(reqJson.getString("psId")) || "-1".equals(reqJson.getString("psId"))) {
             return;
         }
+
+
+        if (OwnerCarDto.CAR_TYPE_MEMBER.equals(reqJson.getString("carTypeCd"))) {
+            return;
+        }
+
         // todo 释放车位
         releaseParkSpace(reqJson);
 
-        // todo 删除车辆费用
-        //deleteCarFee(reqJson);
+
     }
 
     /**
