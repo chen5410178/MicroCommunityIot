@@ -94,7 +94,7 @@ export default {
 	//赠送店铺停车劵
 	saveParkingCouponCar: baseUrl + 'iot/api/parkingCoupon.saveParkingCouponCar',
 	listParkingCouponCar: baseUrl + 'iot/api/parkingCoupon.listParkingCouponCar',
-	applyShopCode: baseUrl + 'iot/api/shop.applyShopCode',
+	applyShopCode: baseUrl + 'iot/api/store.applyShopCode',
 	listSystemInfo:baseUrl+"iot/api/system.listSystemInfo",
 	queryShop:baseUrl+"iot/api/store.queryShop",
 	

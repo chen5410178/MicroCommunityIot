@@ -1,9 +1,14 @@
-import url from '../../constant/url.js'
+import url from '../../constant/url.js';
+import {
+	request,
+	requestNoAuth
+} from '../../lib/java110/java110Request.js';
 
 export function queryShopCoupons(_that,_data){
 	return new Promise(function(reslove,reject){
-		_that.context.get({
+		request({
 			url: url.listShopParkingCoupon,
+			method: "GET",
 			data:_data,
 			success: function(res) {
 				reslove(res.data);
@@ -21,8 +26,9 @@ export function queryShopCoupons(_that,_data){
 
 export function saveCustomCoupon(_data,_that){
 	return new Promise(function(reslove,reject){
-		_that.context.post({
+		request({
 			url: url.saveParkingCouponCar,
+			method: "POST",
 			data:_data,
 			success: function(res) {
 				if(res.data.code == 0){
@@ -43,8 +49,9 @@ export function saveCustomCoupon(_data,_that){
 
 export function queryShopCouponCars(_that,_data){
 	return new Promise(function(reslove,reject){
-		_that.context.get({
+		request({
 			url: url.listParkingCouponCar,
+			method: "GET",
 			data:_data,
 			success: function(res) {
 				reslove(res.data);

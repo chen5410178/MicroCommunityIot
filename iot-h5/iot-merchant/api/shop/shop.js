@@ -89,8 +89,9 @@ export function initShop(){
 
 export function applyShopCode(_data,_that){
 	return new Promise(function(reslove,reject){
-		_that.context.post({
+		request({
 			url: url.applyShopCode,
+			method: "POST",
 			data:_data,
 			success: function(res) {
 				if(res.data.code == 0){

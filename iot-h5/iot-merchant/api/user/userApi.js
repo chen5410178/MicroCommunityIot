@@ -2,7 +2,7 @@ import util from '../../lib/java110/utils/util.js';
 import {
 	request,
 	requestNoAuth
-} from '../../lib/java110/java110Request.js'
+} from '../../lib/java110/java110Request.js';
 import url from '../../constant/url.js';
 import {saveLoginFlag } from './sessionApi.js'
 const LOGIN_FLAG = 'loginFlag'; //登录标识

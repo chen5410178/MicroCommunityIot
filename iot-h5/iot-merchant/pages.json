@@ -21,12 +21,6 @@
 			}
 		},
 		{
-			"path": "pages/register/register",
-			"style": {
-				"navigationBarTitleText": "商户注册"
-			}
-		},
-		{
 			"path": "pages/my/my",
 			"style": {
 				"navigationBarTitleText": "我的"
