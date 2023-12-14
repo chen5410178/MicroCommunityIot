@@ -18,7 +18,7 @@
             retundCarMonthOrder:function(){
                 $that.retundCarMonthOrderInfo.communityId=vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
-                    'carMonthOrder.retundCarMonthOrder',
+                    '/carMonth.refundCarMonthOrder',
                     JSON.stringify($that.retundCarMonthOrderInfo),
                     {
                         emulateJSON:true
@@ -29,7 +29,7 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#retundCarMonthOrderModel').modal('hide');
-                            vc.emit('carMonthOrderManage','listCarMonthOrder',{});
+                            vc.emit('carMonthOrder','listCarMonthOrder',{});
                             return ;
                         }
                         vc.message(_json.msg);

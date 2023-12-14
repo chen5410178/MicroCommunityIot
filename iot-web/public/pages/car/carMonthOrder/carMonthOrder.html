@@ -7,21 +7,25 @@
                         <vc:i18n name="查询条件"></vc:i18n>
                     </h5>
                     <div class="ibox-tools" style="top:10px;">
-                        
+
                     </div>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-2">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择订单ID','carMonthOrder')"
+                                <input type="text" :placeholder="vc.i18n('请输入订单编号','carMonthOrder')"
                                     v-model="carMonthOrderInfo.conditions.orderId" class=" form-control">
                             </div>
                         </div>
                         <div class="col-sm-2">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择卡ID','carMonthOrder')"
-                                    v-model="carMonthOrderInfo.conditions.cardId" class=" form-control">
+                                <select class="custom-select" v-model="carMonthOrderInfo.conditions.cardId">
+                                    <option selected value="">{{vc.i18n('请选择月卡','carMonthOrder')}}
+                                    </option>
+                                    <option v-for="(item,index) in carMonthOrderInfo.cards" :key="index"
+                                        :value="item.cardId">{{item.cardName}}</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-sm-2">
@@ -32,14 +36,24 @@
                         </div>
                         <div class="col-sm-2">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择支付方式','carMonthOrder')"
-                                    v-model="carMonthOrderInfo.conditions.primeRate" class=" form-control">
+                                <select class="custom-select" v-model="carMonthOrderInfo.conditions.primeRate">
+                                    <option selected value="">{{vc.i18n('请选择支付方式','carMonthOrder')}}
+                                    </option>
+                                    <option v-for="(item,index) in carMonthOrderInfo.primeRates" :key="index"
+                                        v-if="item.statusCd != '5' && item.statusCd != '6'" :value="item.statusCd">
+                                        {{item.name}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-sm-2">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择状态','carMonthOrder')"
-                                    v-model="carMonthOrderInfo.conditions.state" class=" form-control">
+                                <select class="custom-select" v-model="carMonthOrderInfo.conditions.state">
+                                    <option selected value="">{{vc.i18n('请选择状态','carMonthOrder')}}
+                                    </option>
+                                    <option value="1001">正常</option>
+                                    <option value="2002">退费</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-sm-1">
@@ -73,7 +87,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <vc:i18n name='编号' namespace='carMonthOrder'></vc:i18n>
+                                    <vc:i18n name='订单编号' namespace='carMonthOrder'></vc:i18n>
                                 </th>
                                 <th class="text-center">
                                     <vc:i18n name='月卡' namespace='carMonthOrder'></vc:i18n>

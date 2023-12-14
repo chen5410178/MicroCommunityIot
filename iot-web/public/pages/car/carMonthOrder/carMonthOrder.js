@@ -8,6 +8,8 @@
         data: {
             carMonthOrderInfo: {
                 carMonthOrders: [],
+                primeRates:[],
+                cards:[],
                 total: 0,
                 records: 1,
                 moreCondition: false,
@@ -23,6 +25,10 @@
         },
         _initMethod: function () {
             $that._listCarMonthOrders(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._listMonthCards();
+            vc.getDict('pay_fee_detail', "prime_rate", function(_data) {
+                $that.carMonthOrderInfo.primeRates = _data;
+            });
         },
         _initEvent: function () {
 
@@ -76,7 +82,28 @@
                 } else {
                     $that.carMonthOrderInfo.moreCondition = true;
                 }
-            }
+            },
+            _listMonthCards: function () {
+
+                let param = {
+                    params:{
+                        page:1,
+                        row:100,
+                        communityId:vc.getCurrentCommunity().communityId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/carMonth.listCarMonthCard',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        $that.carMonthOrderInfo.cards = _json.data;
+                    }, function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
         }
     });
 })(window.vc);
