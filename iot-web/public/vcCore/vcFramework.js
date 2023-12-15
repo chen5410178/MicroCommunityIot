@@ -1244,6 +1244,8 @@
     vcFramework.jumpToPage = function (url) {
         //判断 url 的模板是否 和当前url 模板一个
         console.log('jumpToPage', url);
+        //todo 通知释放socket 资源
+        vcFramework.emit('parkingWebSocket', 'release',{});
         if (url.indexOf('#') < 0) {
             window.location.href = url;
             return;
