@@ -22,6 +22,7 @@ export default {
 	cashier: baseUrl + "iot/api/payment.cashier",
 	listParkingCouponCar: baseUrl + "iot/api/parkingCoupon.listParkingCouponCar",
 	queryMonthCardByCarNum: baseUrl + "iot/api/carMonth.queryMonthCardByCarNum",
+	queryWaitPayFeeTempCar: baseUrl + "iot/api/car.queryWaitPayFeeTempCar",
 	NEED_NOT_LOGIN_PAGE: [
 		'pages/user/login',
 		'pages/user/register',

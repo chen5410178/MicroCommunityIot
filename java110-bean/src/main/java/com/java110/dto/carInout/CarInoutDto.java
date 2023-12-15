@@ -66,6 +66,7 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
 
     private String configId;
 
+
     private List<ParkingCouponCarDto> parkingCouponCarDtos;
 
 
@@ -290,4 +291,5 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
     public void setStateName(String stateName) {
         this.stateName = stateName;
     }
+
 }
