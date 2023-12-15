@@ -254,20 +254,18 @@ public class BarrierEngineImpl implements IBarrierEngine {
         //查询是否有入场数据
         CarInoutDto carInoutDto = new CarInoutDto();
         carInoutDto.setCarNum(acceptJson.getString("carNum"));
+        carInoutDto.setCarInout(CarInoutDto.CAR_INOUT_IN);
         carInoutDto.setPaId(paId);
         carInoutDto.setStates(new String[]{CarInoutDto.STATE_IN, CarInoutDto.STATE_PAY});
-        //carInoutDto.setCarType(CarInoutDto.);
         List<CarInoutDto> carInoutDtos = carInoutV1InnerServiceSMOImpl.queryCarInouts(carInoutDto);
 
         String inoutId = "";
         String inTime = "";
         if (carInoutDtos != null && !carInoutDtos.isEmpty()) {
-            carInoutDto.setState(CarInoutDto.STATE_OUT);
-            carInoutDto.setPayType(acceptJson.containsKey("payType") ? acceptJson.getString("payType") : CarInoutDto.PAY_TYPE_CRASH);
-            carInoutDto.setPayCharge(acceptJson.getString("amount"));
-            carInoutDto.setRealCharge(acceptJson.getString("amount"));
-            carInoutDto.setPayTime(DateUtil.getCurrentDate());
-            carInoutV1InnerServiceSMOImpl.updateCarInout(BeanConvertUtil.covertBean(carInoutDto, CarInoutPo.class));
+            CarInoutPo carInoutPo = new CarInoutPo();
+            carInoutPo.setCiId(carInoutDtos.get(0).getCiId());
+            carInoutPo.setState(CarInoutDto.STATE_OUT);
+            carInoutV1InnerServiceSMOImpl.updateCarInout(carInoutPo);
 
             inoutId = carInoutDtos.get(0).getInoutId();
             inTime = carInoutDtos.get(0).getInTime();
