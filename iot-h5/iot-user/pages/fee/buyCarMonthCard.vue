@@ -44,11 +44,13 @@
 </template>
 
 <script>
-	
+	import {queryMonthCardByCarNum} from '../../api/car/carApi.js';
 	export default {
 		data() {
 			return {
 				carNum: '',
+				startTime:'',
+				endTime:'',
 				communityId:'',
 				paId:'',
 				cards: [],
@@ -69,7 +71,17 @@
 		},
 		methods: {
 			_queryCarCards:function(){
-				
+				if(!this.carNum){
+					return;
+				}
+				let _that =this;
+				queryMonthCardByCarNum({
+					carNum:this.carNum,
+					communityId:this.communityId
+				}).then(_data=>{
+					_that.startTime = _data.startTime;
+					_that.endTime = _data.endTime;
+				})
 			},
 			onPayFee:function(){
 				let _receivedAmount = this.receivableAmount;

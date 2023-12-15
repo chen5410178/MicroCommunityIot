@@ -84,7 +84,7 @@ public class QueryMonthCardByCarNumCmd extends Cmd {
         data.put("startTime",reqJson.getDate("startTime"));
         data.put("endTime",reqJson.getDate("endTime"));
         data.put("cards",carMonthCardDtos);
-        ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, data);
+        ResultVo resultVo = new ResultVo(1, count, data);
 
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 

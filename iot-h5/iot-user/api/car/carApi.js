@@ -83,3 +83,25 @@ export function customCarInOut(_objData) {
 	});
 };
 
+export function queryMonthCardByCarNum(_objData) {
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.queryMonthCardByCarNum,
+			method: "GET",
+			data:_objData,
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code == 0) {
+					//将业主信息和房屋信息一起返回
+					resolve(_json.data);
+				} else {
+					reject("查询车辆失败");
+				}
+			},
+			fail: function(res) {
+				reject(res);
+			}
+		});
+	});
+};
+

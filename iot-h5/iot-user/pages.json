@@ -179,6 +179,15 @@
                 "enablePullDownRefresh": false
             }
         }
+        ,{
+            "path" : "pages/fee/queryBuyCardCar",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "购买月卡",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"tabBar": {
 		"color": "#272636",

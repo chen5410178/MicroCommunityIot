@@ -21,6 +21,7 @@ export default {
 	refreshOpenId: baseUrl + "iot/api/wechat.wechatRefreshOpenId", // 公众号刷新token
 	cashier: baseUrl + "iot/api/payment.cashier",
 	listParkingCouponCar: baseUrl + "iot/api/parkingCoupon.listParkingCouponCar",
+	queryMonthCardByCarNum: baseUrl + "iot/api/carMonth.queryMonthCardByCarNum",
 	NEED_NOT_LOGIN_PAGE: [
 		'pages/user/login',
 		'pages/user/register',
