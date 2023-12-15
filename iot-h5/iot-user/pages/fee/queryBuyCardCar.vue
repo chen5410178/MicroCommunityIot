@@ -3,7 +3,7 @@
 		<view class="plate-context">
 			<view class="ak_row_black">
 			</view>
-			<view class="ak_row_title">
+			<view class="ak_row_title text-center">
 				<text>停车月卡购买</text>
 			</view>
 
@@ -225,6 +225,12 @@
 <style>
 	@import "./tempParkingFee.css";
 
+.ak_row_black{
+	height: 80upx;
+}
+.ak_row_title{
+	font-size: 42upx;
+}
 	.input-ui {
 		border: 1px solid #ccc;
 		padding: 12upx 18upx;
