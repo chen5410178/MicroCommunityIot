@@ -130,7 +130,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
                     = new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_IN_SUCCESS, reqJson.getString("carNum"),
                     "欢迎光临", "", "", reqJson.getString("carNum") + ",欢迎光临", reqJson.getString("carNum"));
         } else {
-            uploadcarout(machineDto, reqJson);
+            uploadcarout(machineDto, reqJson,"手工出场");
             parkingAreaTextDto
                     = new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_OUT_SUCCESS, reqJson.getString("carNum"),
                     "一路平安", "", "", reqJson.getString("carNum") + ",一路平安", reqJson.getString("carNum"));
@@ -234,7 +234,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
     }
 
 
-    private JSONObject uploadcarout(BarrierDto machineDto, JSONObject acceptJson) {
+    private JSONObject uploadcarout(BarrierDto machineDto, JSONObject acceptJson,String remark) {
 
         String paId = "";
 
@@ -277,8 +277,8 @@ public class BarrierEngineImpl implements IBarrierEngine {
         }
         CarInoutPo carInoutPo = new CarInoutPo();
         carInoutPo.setCarNum(acceptJson.getString("carNum"));
-        carInoutPo.setCarType(CarInoutDto.CAR_TYPE_MONTH);
-        carInoutPo.setCarTypeName("月租车");
+        carInoutPo.setCarType(CarInoutDto.CAR_TYPE_TEMP);
+        carInoutPo.setCarTypeName("临时车");
         carInoutPo.setCommunityId(machineDto.getCommunityId());
         carInoutPo.setInoutId(inoutId);
         carInoutPo.setMachineCode(machineDto.getMachineCode());
@@ -288,7 +288,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
         carInoutPo.setPaNum(parkingAreaDtos.get(0).getNum());
         carInoutPo.setCarInout(CarInoutDto.CAR_INOUT_OUT);
         carInoutPo.setState(CarInoutDto.STATE_OUT);
-        carInoutPo.setRemark("手工出场");
+        carInoutPo.setRemark(remark);
         carInoutPo.setCiId(GenerateCodeFactory.getGeneratorId("11"));
         carInoutPo.setInTime(inTime);
 
@@ -547,7 +547,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
         param.put("payCharge", tempCarPayOrderDto.getPayCharge());
         param.put("amount", tempCarPayOrderDto.getAmount());
         param.put("payType", tempCarPayOrderDto.getPayType());
-        uploadcarout(machineDto, param);
+        uploadcarout(machineDto, param,"岗亭口扫码");
         ResultParkingAreaTextDto parkingAreaTextDto
                 = new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_OUT_SUCCESS, carInoutDtos.get(0).getCarNum(),
                 "一路平安", "", "", carInoutDtos.get(0).getCarNum() + ",一路平安", carInoutDtos.get(0).getCarNum());
