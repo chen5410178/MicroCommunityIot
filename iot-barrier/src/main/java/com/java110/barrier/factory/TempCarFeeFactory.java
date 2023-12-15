@@ -33,6 +33,10 @@ public class TempCarFeeFactory {
 
         payTime = carInoutDto.getPayTime();
 
+        if(payTime == null){
+            return false;
+        }
+
         Date nowTime = DateUtil.getCurrentDate();
         //支付完成超过15分钟
         if (nowTime.getTime() - payTime.getTime() > 15 * 60 * 1000) {
