@@ -32,7 +32,7 @@
 		<view>
 			<radio-group class="block" @change="radioChange($event)">
 				<view class="cu-form-group" v-for="(item,valueIndex) in cards" :key="valueIndex">
-					<view class="title">{{item.cardName}}-{{item.cardPrice}}</view>
+					<view class="title">{{item.cardName}}({{item.cardMonth}}个月)-{{item.cardPrice}}</view>
 					<radio :class="cardId ==item.cardId?'checked':''" :checked="cardId==item.cardId?true:false"
 						:value="item.cardId">
 					</radio>
