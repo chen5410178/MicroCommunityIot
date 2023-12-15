@@ -84,6 +84,8 @@ public class CarOutLogEngine extends CarEngine{
             carInoutPo.setInoutId(carInoutDtos.get(0).getInoutId());
         } else {
             carInoutPo.setInTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+            carInoutPo.setInoutId(GenerateCodeFactory.getGeneratorId("11"));
+
 //            carInoutPo.setPayCharge("0");
 //            carInoutPo.setRealCharge("0");
 //            carInoutPo.setPayType("1");
