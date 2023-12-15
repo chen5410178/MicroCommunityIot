@@ -4,56 +4,56 @@
 			<view class="ak_row_black">
 			</view>
 			<view class="ak_row_title">
-				<text>{{communityName}}</text>
+				<text>停车月卡购买</text>
 			</view>
 
 			<view class="tips_block">
 			</view>
-	
-				<view class='tips'>
-					<text>点击方框输入车牌号</text>
-				</view>
-				<view class="plate-input-body">
-					<view class="plate-input-content" @click="showCarNumberKeyboard">
-						<view bindtap="showCarNumberKeyboard" data-id="0"
-							:class="inputOnFocusIndex=='0'?'plate-nums-foc':'plate-nums-first'">
-							<text class="plate-num-text">{{inputPlates.index0}}</text>
-						</view>
-						<view bindtap="inputClick" data-id="1"
-							:class="inputOnFocusIndex=='1'?'plate-nums-foc':'plate-nums-first'">
-							<text class="plate-num-text">{{inputPlates.index1}}</text>
-						</view>
-						<view bindtap="inputClick" data-id="2"
-							:class="inputOnFocusIndex=='2'?'plate-nums-foc':'plate-nums-first'">
-							<text class="plate-num-text">{{inputPlates.index2}}</text>
-						</view>
-						<view bindtap="inputClick" data-id="3"
-							:class="inputOnFocusIndex=='3'?'plate-nums-foc':'plate-nums-first'">
-							<text class="plate-num-text">{{inputPlates.index3}}</text>
-						</view>
-						<view bindtap="inputClick" data-id="4"
-							:class="inputOnFocusIndex=='4'?'plate-nums-foc':'plate-nums-first'">
-							<text class="plate-num-text">{{inputPlates.index4}}</text>
-						</view>
-						<view bindtap="inputClick" data-id="5"
-							:class="inputOnFocusIndex=='5'?'plate-nums-foc':'plate-nums-first'">
-							<text class="plate-num-text">{{inputPlates.index5}}</text>
-						</view>
-						<view bindtap="inputClick" data-id="6"
-							:class="inputOnFocusIndex=='6'?'plate-nums-foc':'plate-nums-first'">
-							<text class="plate-num-text">{{inputPlates.index6}}</text>
-						</view>
-						<view bindtap="inputClick" data-id="7" class="green-border"
-							:class="inputOnFocusIndex=='7'?'plate-nums-foc':'plate-nums-first'">
-							<text class="plate-num-text">{{inputPlates.index7}}</text>
-						</view>
+
+			<view class='tips'>
+				<text>点击方框输入车牌号</text>
+			</view>
+			<view class="plate-input-body">
+				<view class="plate-input-content" @click="showCarNumberKeyboard">
+					<view bindtap="showCarNumberKeyboard" data-id="0"
+						:class="inputOnFocusIndex=='0'?'plate-nums-foc':'plate-nums-first'">
+						<text class="plate-num-text">{{inputPlates.index0}}</text>
+					</view>
+					<view bindtap="inputClick" data-id="1"
+						:class="inputOnFocusIndex=='1'?'plate-nums-foc':'plate-nums-first'">
+						<text class="plate-num-text">{{inputPlates.index1}}</text>
+					</view>
+					<view bindtap="inputClick" data-id="2"
+						:class="inputOnFocusIndex=='2'?'plate-nums-foc':'plate-nums-first'">
+						<text class="plate-num-text">{{inputPlates.index2}}</text>
+					</view>
+					<view bindtap="inputClick" data-id="3"
+						:class="inputOnFocusIndex=='3'?'plate-nums-foc':'plate-nums-first'">
+						<text class="plate-num-text">{{inputPlates.index3}}</text>
+					</view>
+					<view bindtap="inputClick" data-id="4"
+						:class="inputOnFocusIndex=='4'?'plate-nums-foc':'plate-nums-first'">
+						<text class="plate-num-text">{{inputPlates.index4}}</text>
+					</view>
+					<view bindtap="inputClick" data-id="5"
+						:class="inputOnFocusIndex=='5'?'plate-nums-foc':'plate-nums-first'">
+						<text class="plate-num-text">{{inputPlates.index5}}</text>
+					</view>
+					<view bindtap="inputClick" data-id="6"
+						:class="inputOnFocusIndex=='6'?'plate-nums-foc':'plate-nums-first'">
+						<text class="plate-num-text">{{inputPlates.index6}}</text>
+					</view>
+					<view bindtap="inputClick" data-id="7" class="green-border"
+						:class="inputOnFocusIndex=='7'?'plate-nums-foc':'plate-nums-first'">
+						<text class="plate-num-text">{{inputPlates.index7}}</text>
 					</view>
 				</view>
+			</view>
 
-				
-				<view class='plate-input-flag' bindtap='changeplate'>
-					<text>{{carNumBtn}}</text>
-				</view>
+
+			<view class='plate-input-flag' bindtap='changeplate'>
+				<text>{{carNumBtn}}</text>
+			</view>
 
 			<view class="plat-btn-black"></view>
 			<view class="cu-bar btn-group" style="margin-top: 30px;">
@@ -80,8 +80,10 @@
 	import {
 		isNotNull
 	} from '../../lib/java110/utils/StringUtil.js'
-	import {queryMonthCardByCarNum} from '../../api/car/carApi.js';
-	
+	import {
+		queryMonthCardByCarNum
+	} from '../../api/car/carApi.js';
+
 	export default {
 		data() {
 			return {
@@ -98,24 +100,25 @@
 				},
 				carNum: '',
 				communityId: '',
-				communityName:'',
-				carNumBtn:'',
+				communityName: '',
+				carNumBtn: '',
 				carNums: [],
-				inputOnFocusIndex:''
+				inputOnFocusIndex: '',
+				createUserId: ''
 			}
 		},
 		components: {
 			selectCarNum
 		},
 		onLoad(options) {
-			this.machineId = options.machineId;
 			this.communityId = options.communityId;
+			this.createUserId = options.createUserId;
 		},
 		methods: {
 			showCarNumberKeyboard() {
 				this.$refs.popupCarNumber.open()
 			},
-			
+
 			// 车牌号选择键盘
 			confirmCarNumber(value) {
 				this.car_number = value
@@ -163,11 +166,11 @@
 			_queryCarNum: function() {
 				let _that = this;
 				queryMonthCardByCarNum({
-					carNum:this.carNum,
-					communityId:this.communityId
+					carNum: this.carNum,
+					communityId: this.communityId
 				}).then(_data => {
-					
-					if(!_data.cards || _data.cards.length<1){
+
+					if (!_data.cards || _data.cards.length < 1) {
 						uni.showToast({
 							icon: 'none',
 							title: '未查到月卡'
@@ -176,9 +179,10 @@
 					}
 
 					uni.navigateTo({
-						url: '/pages/fee/buyCarMonthCard?carNum=' + _that.carNum + "&communityId=" + _that.communityId
+						url: '/pages/fee/buyCarMonthCard?carNum=' + _that.carNum + "&communityId=" +
+							_that.communityId +"&createUserId="+_that.createUserId
 					})
-				},err=>{
+				}, err => {
 					uni.showToast({
 						icon: 'none',
 						title: '未查到车辆'
@@ -220,12 +224,13 @@
 
 <style>
 	@import "./tempParkingFee.css";
-	.input-ui{
-				border: 1px solid #ccc;
-				padding: 12upx 18upx;
-				border-radius: 8upx;
-				color: rgb(48, 49, 51);
-				width: 100%;
-				height: 100%;
-			}
+
+	.input-ui {
+		border: 1px solid #ccc;
+		padding: 12upx 18upx;
+		border-radius: 8upx;
+		color: rgb(48, 49, 51);
+		width: 100%;
+		height: 100%;
+	}
 </style>

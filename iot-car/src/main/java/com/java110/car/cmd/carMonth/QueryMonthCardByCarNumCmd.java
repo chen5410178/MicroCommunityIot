@@ -59,6 +59,7 @@ public class QueryMonthCardByCarNumCmd extends Cmd {
         reqJson.put("paId",ownerCarDtos.get(0).getPaId());
         reqJson.put("startTime",ownerCarDtos.get(0).getStartTime());
         reqJson.put("endTime",ownerCarDtos.get(0).getEndTime());
+        reqJson.put("carId",ownerCarDtos.get(0).getCarId());
     }
 
     @Override
@@ -83,6 +84,7 @@ public class QueryMonthCardByCarNumCmd extends Cmd {
         data.put("paId",reqJson.getString("paId"));
         data.put("startTime",reqJson.getDate("startTime"));
         data.put("endTime",reqJson.getDate("endTime"));
+        data.put("carId",reqJson.getDate("carId"));
         data.put("cards",carMonthCardDtos);
         ResultVo resultVo = new ResultVo(1, count, data);
 

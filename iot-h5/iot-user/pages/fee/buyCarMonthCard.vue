@@ -1,63 +1,85 @@
 <template>
 	<view>
-		<scroll-view scroll-y>
-			<view class="block__title">停车月卡</view>
-			
-			<view class="cu-form-group">
-				<view class="title">车牌号</view>
-				<input v-model="carNum" placeholder="请输入车牌号" @blur="_queryCarCards" class="text-right"></input>
-			</view>
-			
-			<view class="cu-form-group" v-if = "cards.length>0">
-				<view class="title">停车月卡</view>
-				<picker id="complaintType" bindchange="PickerChange" 
-				:value="cardIndex" 
-				:range-key="'cardName'" 
-				:range="cards" 
-				 @change="cardsChange">
-					<view class="picker">
-						{{cards.length==0 ? "请选择" : cards[cardIndex].cardName}}
-					</view>
-				</picker>
-			</view>
-			
-			<view class="cu-form-group" v-if="cardId">
-				<view class="title">应收金额</view>
-				<input disabled="disable" v-model="receivableAmount" class="text-right"></input>
-			</view>
 
-				<view class="cu-bar btn-group" style="margin-top: 20upx;">
-					<button @click="onPayFee" v-if="receivableAmount > 0"
-						class="cu-btn bg-green shadow-blur round lg">确认缴费</button>
+		<view class="block__title">车辆信息</view>
+		<view class="cu-list menu ">
+			<view class="cu-item">
+				<view class="content">
+					<text class="text-grey">车辆</text>
 				</view>
-				
-	
-			<view class="temp-remark">
-				<view>停车月卡提示</view>
-				<view>1、请确保车辆已经申请过车位，如果还没有申请，请先到前台申请车位；</view>
-				<view>2、输入正确车牌，前后不要有空格；</view>
+				<view class="action">
+					<text class="text-grey text-sm">{{carNum }}</text>
+				</view>
 			</view>
-		</scroll-view>
-		
+			<view class="cu-item">
+				<view class="content">
+					<text class="text-grey">起租时间</text>
+				</view>
+				<view class="action">
+					<text class="text-grey text-sm">{{startTime }}</text>
+				</view>
+			</view>
+			<view class="cu-item">
+				<view class="content">
+					<text class="text-grey">结租时间</text>
+				</view>
+				<view class="action">
+					<text class="text-grey text-sm">{{endTime }}</text>
+				</view>
+			</view>
+		</view>
+		<view class="block__title">选择月卡</view>
+		<view>
+			<radio-group class="block" @change="radioChange($event)">
+				<view class="cu-form-group" v-for="(item,valueIndex) in cards" :key="valueIndex">
+					<view class="title">{{item.cardName}}-{{item.cardPrice}}</view>
+					<radio :class="cardId ==item.cardId?'checked':''" :checked="cardId==item.cardId?true:false"
+						:value="item.cardId">
+					</radio>
+				</view>
+			</radio-group>
+		</view>
+		<view class="cu-list menu fee-last margin-top" v-if="receivableAmount>0">
+			<view class="cu-item">
+				<view class="content">
+					<text class="text-grey">应缴费用</text>
+				</view>
+				<view class="action">
+					<text class="text-grey text-sm">{{receivableAmount }}</text>
+				</view>
+			</view>
+		</view>
+
+		<view class="" style="margin-top: 80upx;">
+			<view class="cu-bar btn-group" v-if="cardId">
+				<button @click="onPayFee" class="cu-btn bg-green shadow-blur round lg">确认缴费</button>
+			</view>
+			<view class="cu-bar btn-group" style="margin-top: 20upx;">
+				<button @click="onReQuery()" class="cu-btn bg-grey shadow-blur round lg">重新查询</button>
+			</view>
+		</view>
 	</view>
-	
+
 </template>
 
 <script>
-	import {queryMonthCardByCarNum} from '../../api/car/carApi.js';
+	import {
+		queryMonthCardByCarNum
+	} from '../../api/car/carApi.js';
+
 	export default {
 		data() {
 			return {
+				paId: '',
 				carNum: '',
-				startTime:'',
-				endTime:'',
-				communityId:'',
-				paId:'',
+				startTime: '',
+				endTime: '',
+				cardId: 0.0,
 				cards: [],
-				cardIndex: 0,
-				receivableAmount:'',
-				receivedAmount:'',
-				cardId:'',
+				receivableAmount: 0.0, // 抵扣金额
+				communityId: '',
+				createUserId: '',
+				carId: '',
 			};
 		},
 		/**
@@ -66,46 +88,60 @@
 		onLoad: function(options) {
 			this.carNum = options.carNum;
 			this.communityId = options.communityId;
-			
-			//this._loadTempCarFee();
+			this._loadMonthCards();
 		},
 		methods: {
-			_queryCarCards:function(){
-				if(!this.carNum){
-					return;
-				}
-				let _that =this;
+			_loadMonthCards: function() {
+				let _that = this;
 				queryMonthCardByCarNum({
-					carNum:this.carNum,
-					communityId:this.communityId
-				}).then(_data=>{
+					carNum: this.carNum,
+					communityId: this.communityId
+				}).then(_data => {
+					_that.paId = _data.paId;
+					_that.cards = _data.cards;
 					_that.startTime = _data.startTime;
 					_that.endTime = _data.endTime;
+					_that.carId = _data.carId;
 				})
 			},
-			onPayFee:function(){
+			onPayFee: function() {
 				let _receivedAmount = this.receivableAmount;
-				wx.showLoading({
-					title: '支付中'
-				});
 				let _tradeType = 'JSAPI';
 				let _objData = {
-					business: "tempCarFee",
+					business: "buyCarMonthCard",
 					carNum: this.carNum,
-					openId: this.openId,
-					paId: this.paId,
-					feeName: '停车费',
+					carId: this.carId,
+					cardId: this.cardId,
+					feeName: '停车月卡费',
 					tradeType: _tradeType,
-					appId: this.appId,
-					inoutId: this.inoutId,
-					couponList: this.couponList,
-					cashierUserId:'-1',
-					machineId:this.machineId,
-					communityId:this.communityId,
+					communityId: this.communityId,
+					receivedAmount: this.receivableAmount,
+					cashierUserId: this.createUserId,
 				};
-				
+
+				uni.setStorageSync('doing_cashier', _objData);
+				uni.navigateTo({
+					url: '/pages/fee/cashier?money=' + _receivedAmount +
+						"&business=buyCarMonthCard&communityId=" +
+						this.communityId + "&cashierUserId=" + this.createUserId
+				})
 			},
-			
+			onReQuery: function() {
+				uni.navigateBack({
+					delta: 1
+				})
+			},
+			radioChange: function(e) {
+				console.log(e)
+				this.cardId = e.detail.value;
+				let _that = this;
+				this.cards.forEach(_item => {
+					if (_item.cardId == _that.cardId) {
+						_that.receivableAmount = _item.cardPrice;
+					}
+				})
+			},
+
 		}
 	};
 </script>
@@ -148,8 +184,9 @@
 	.line-height {
 		line-height: 100upx;
 	}
-	.temp-remark{
+
+	.temp-remark {
 		color: #888888;
-		padding:10upx;
+		padding: 10upx;
 	}
 </style>

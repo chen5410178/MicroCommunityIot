@@ -78,6 +78,9 @@
             _openBuyMonthCardModal: function () {
                 vc.emit('buyCarMonthCard', 'openBuyCarMonthCardModal', {});
             },
+            _openQrcodeBuyModal:function(){
+                vc.emit('buyMonthCardQrCode', 'openQrCodeModal',{});
+            },
             _openRetundModel: function (_carMonthOrder) {
                 vc.emit('retundCarMonthOrder','openRetundOrderModal', _carMonthOrder);
             },
