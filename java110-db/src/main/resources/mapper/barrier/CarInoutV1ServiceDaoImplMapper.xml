@@ -370,7 +370,7 @@
         inner join car_inout ci on t.car_num = ci.car_num and ci.car_inout = '3306' and ci.state in ('100300','100400','100600') and t.pa_id =  ci.pa_id
         where t.car_num = #{carNum}
         and t.car_inout = '3307'
-        and t.state = '100500'
+        and t.state = '100301'
         and t.open_time &gt; #{openTime}
         and t.pa_id = #{paId}
 

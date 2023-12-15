@@ -97,6 +97,7 @@ public class CustomCarInOutCmd extends Cmd {
 
         CarInoutDto carInoutDto = new CarInoutDto();
         carInoutDto.setCarNum(reqJson.getString("carNum"));
+        carInoutDto.setCommunityId(reqJson.getString("communityId"));
         carInoutDto.setStates(new String[]{
                 CarInoutDto.STATE_IN,
                 CarInoutDto.STATE_REPAY
