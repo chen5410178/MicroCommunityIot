@@ -4,7 +4,7 @@
         propTypes: {
             callBackListener: vc.propTypes.string, //父组件名称
             callBackFunction: vc.propTypes.string, //父组件监听方法
-            imageCount: vc.propTypes.string = '99' // -1 不限制
+            imageCount: vc.propTypes.string // -1 不限制
         },
         data: {
             uploadImageUrlInfo: {
