@@ -137,17 +137,6 @@
 				let _receivedAmount = this.cardPrice;
 				let _tradeType = 'JSAPI';
 				
-				// payFeeWechat(this,{
-				// 	business: "preStoreChargeCard",
-				// 	communityId: this.communityId,
-				// 	personTel: this.personTel,
-				// 	feeName: '月卡充值',
-				// 	receivedAmount: _receivedAmount,
-				// 	cardId:this.cardId,
-				// 	tradeType: _tradeType,
-				// 	appId: this.appId,
-				// });
-				
 				let _objData = {
 					business: "preStoreChargeCard",
 					communityId: this.communityId,

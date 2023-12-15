@@ -133,8 +133,7 @@
             {
                 "navigationBarTitleText": "充电优惠券",
                 "enablePullDownRefresh": false
-            }
-            
+            }  
         },
 		{
 			"path": "pages/coupon/tempCarCoupon",
@@ -155,7 +154,6 @@
                 "navigationBarTitleText": "送停车券",
                 "enablePullDownRefresh": false
             }
-            
         },{
             "path" : "pages/fee/cashier",
             "style" :                                                                                    
@@ -173,7 +171,15 @@
             }
             
         }
-	],
+	    ,{
+            "path" : "pages/fee/buyCarMonthCard",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "购买月卡",
+                "enablePullDownRefresh": false
+            }
+        }
+    ],
 	"tabBar": {
 		"color": "#272636",
 		"selectedColor": "#00AA00",
