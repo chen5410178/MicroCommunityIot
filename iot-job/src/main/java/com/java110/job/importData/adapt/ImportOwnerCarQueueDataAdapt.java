@@ -15,6 +15,7 @@ import com.java110.bean.po.unit.UnitPo;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.importData.ImportOwnerRoomDto;
 import com.java110.dto.log.AssetImportLogDetailDto;
@@ -49,6 +50,9 @@ public class ImportOwnerCarQueueDataAdapt extends DefaultImportData implements I
 
     @Autowired
     private IOwnerCarV1InnerServiceSMO ownerCarV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IOwnerV1InnerServiceSMO ownerV1InnerServiceSMOImpl;
 
 
     @Autowired
@@ -87,6 +91,9 @@ public class ImportOwnerCarQueueDataAdapt extends DefaultImportData implements I
         JSONObject data = JSONObject.parseObject(assetImportLogDetailDto.getContent());
         OwnerCarDto ownerCarDto = BeanConvertUtil.covertBean(data, OwnerCarDto.class);
 
+        //todo 导入业主信息
+        importOwnerData(ownerCarDto);
+
         OwnerCarPo ownerCarPo = BeanConvertUtil.covertBean(ownerCarDto, OwnerCarPo.class);
         ownerCarPo.setStartTime(ownerCarDto.getStartTimeStr());
         ownerCarPo.setEndTime(ownerCarDto.getEndTimeStr());
@@ -118,7 +125,7 @@ public class ImportOwnerCarQueueDataAdapt extends DefaultImportData implements I
         List<ParkingSpaceDto> parkingSpaceDtos = parkingSpaceV1InnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
         String state = "";
         String psId = "";
-        if (parkingSpaceDtos == null || parkingSpaceDtos.size() < 1) {
+        if (ListUtil.isNull(parkingSpaceDtos)) {
             psId = GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_psId);
             ParkingSpacePo parkingSpacePo = new ParkingSpacePo();
             parkingSpacePo.setCommunityId(ownerCarDto.getCommunityId());
@@ -151,6 +158,42 @@ public class ImportOwnerCarQueueDataAdapt extends DefaultImportData implements I
         parkingSpacePo.setPsId(psId); //车位id
         parkingSpacePo.setState(ownerCarDto.getSpaceSate());
         parkingSpaceV1InnerServiceSMOImpl.updateParkingSpace(parkingSpacePo);
+    }
+
+    private void importOwnerData(OwnerCarDto ownerCarDto) {
+
+        OwnerDto ownerDto = new OwnerDto();
+        ownerDto.setName(ownerCarDto.getOwnerName());
+        ownerDto.setLink(ownerCarDto.getLink());
+        ownerDto.setCommunityId(ownerCarDto.getCommunityId());
+        //查询业主
+        List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
+        //Assert.listOnlyOne(ownerDtos, ownerCarDto.getCarNum() + "查询业主信息错误！");
+        if (ListUtil.isNull(ownerDtos)) {
+            OwnerPo ownerPo = new OwnerPo();
+            ownerPo.setUserId("-1");
+            ownerPo.setAge("1");
+            ownerPo.setCommunityId(ownerCarDto.getCommunityId());
+            ownerPo.setIdCard("");
+            ownerPo.setLink(ownerCarDto.getLink());
+            ownerPo.setSex("1");
+            ownerPo.setMemberId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_ownerId));
+            ownerPo.setName(ownerCarDto.getOwnerName());
+            ownerPo.setOwnerId(ownerPo.getMemberId()); //业主 所以和成员ID需要一样
+            ownerPo.setOwnerTypeCd(OwnerDto.OWNER_TYPE_CD_OWNER);
+            ownerPo.setRemark("导入车辆导入");
+            ownerPo.setState("2000");
+            ownerPo.setAddress("无");
+            ownerPo.setOwnerFlag(OwnerDto.OWNER_FLAG_TRUE);
+            int flag = ownerV1InnerServiceSMOImpl.saveOwner(ownerPo);
+            if (flag < 1) {
+                throw new IllegalArgumentException("保存业主失败");
+            }
+            ownerCarDto.setOwnerId(ownerPo.getOwnerId());
+        }else{
+            ownerCarDto.setOwnerId(ownerDtos.get(0).getOwnerId());
+        }
+
     }
 
 

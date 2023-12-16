@@ -36,7 +36,7 @@ public class ImportOwnerCarDataCleaningAdapt extends DefaultImportDataAdapt impl
         //封装对象
         getOwnerCars(workbook, ownerCars, result);
         //数据格式校验
-        validateRoomInfo(ownerCars);
+        validateCarInfo(ownerCars);
 
 
         return ownerCars;
@@ -107,7 +107,7 @@ public class ImportOwnerCarDataCleaningAdapt extends DefaultImportDataAdapt impl
      *
      * @param ownerCars
      */
-    private void validateRoomInfo(List<OwnerCarDto> ownerCars) {
+    private void validateCarInfo(List<OwnerCarDto> ownerCars) {
         for (OwnerCarDto ownerCarDto : ownerCars) {
 
             if (!"1001".equals(ownerCarDto.getTypeCd()) && !"2001".equals(ownerCarDto.getTypeCd())) {
@@ -117,17 +117,7 @@ public class ImportOwnerCarDataCleaningAdapt extends DefaultImportDataAdapt impl
                 throw new IllegalArgumentException(ownerCarDto.getCarNum() + "车位状态应填写 S（出售）或者 H （出租）");
             }
 
-            OwnerDto ownerDto = new OwnerDto();
-            ownerDto.setName(ownerCarDto.getOwnerName());
-            ownerDto.setLink(ownerCarDto.getLink());
-            ownerDto.setCommunityId(ownerCarDto.getCommunityId());
-            //查询业主
-            List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
-            //Assert.listOnlyOne(ownerDtos, ownerCarDto.getCarNum() + "查询业主信息错误！");
-            if (ownerDtos == null || ownerDtos.size() < 1) {
-                throw new IllegalArgumentException(ownerCarDto.getCarNum() + "的业主不存在");
-            }
-            ownerCarDto.setOwnerId(ownerDtos.get(0).getOwnerId());
+
         }
     }
 }
