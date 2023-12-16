@@ -48,25 +48,29 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
+        String ip = address.toString();
+        LOGGER.debug("channelActive -->  RamoteAddress : " + ip + " channelInactive ");
+
         NettySocketHolder.remove((NioSocketChannel) ctx.channel());
     }
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-//        ByteBuf heartbeat = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer(new Java110CarProtocol("1", "http://www.homecommunity.cn").toString(), CharsetUtil.UTF_8));
-//        if (evt instanceof IdleStateEvent) {
-//            IdleStateEvent idleStateEvent = (IdleStateEvent) evt;
-//            if (idleStateEvent.state() == IdleState.READER_IDLE) {
-//                LOGGER.info("已经5秒没有收到信息！");
-//                //向客户端发送消息
-//                ctx.writeAndFlush(heartbeat).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
-//            }
-//        }
+        InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
+        String ip = address.toString();
+        LOGGER.debug("channelActive -->  RamoteAddress : " + ip + " userEventTriggered ");
+
         super.userEventTriggered(ctx, evt);
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+
+        InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
+        String ip = address.toString();
+        LOGGER.debug("channelActive -->  RamoteAddress : " + ip + " channelRead ");
+
         try {
             doChannelRead(ctx, msg);
         } catch (Exception e) {
@@ -161,6 +165,10 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
+        String ip = address.toString();
+        LOGGER.debug("channelActive -->  RamoteAddress : " + ip + " channelReadComplete ");
+
         ctx.flush();
     }
 
