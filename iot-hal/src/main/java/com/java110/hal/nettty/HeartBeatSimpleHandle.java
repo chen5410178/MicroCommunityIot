@@ -50,7 +50,7 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
         String ip = address.toString();
-        LOGGER.debug("channelActive -->  RamoteAddress : " + ip + " channelInactive ");
+        LOGGER.debug("channelInactive -->  RamoteAddress : " + ip + " channelInactive ");
 
         NettySocketHolder.remove((NioSocketChannel) ctx.channel());
     }
@@ -151,17 +151,6 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
         return true;
     }
 
-    private String analyseMachine(String content) {
-        JSONObject paramIn = JSONObject.parseObject(content);
-        String parkId = paramIn.getString("parkid");
-        return parkId;
-    }
-
-    public static void main(String[] args) throws UnsupportedEncodingException {
-        String servcie = "whitelist_sync";
-
-        System.out.printf("query_price,whitelist_sync".contains(servcie) + "");
-    }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
@@ -182,13 +171,15 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
      */
     private void initMachineToCache(ChannelHandlerContext ctx, String machineCode, boolean force) {
         //保存客户端与 Channel 之间的关系
-        NioSocketChannel channel = NettySocketHolder.get(machineCode);
+        InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
+        String ip = address.toString();
+        NioSocketChannel channel = NettySocketHolder.get(machineCode,ip);
         if (channel == null || force) {
-            NettySocketHolder.put(machineCode, (NioSocketChannel) ctx.channel());
+            NettySocketHolder.put(machineCode,ip, (NioSocketChannel) ctx.channel());
         }
 
         if(channel != null && channel.isShutdown()){
-            NettySocketHolder.put(machineCode, (NioSocketChannel) ctx.channel());
+            NettySocketHolder.put(machineCode,ip, (NioSocketChannel) ctx.channel());
         }
     }
 

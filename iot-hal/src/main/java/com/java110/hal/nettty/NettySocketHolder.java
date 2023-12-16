@@ -18,11 +18,34 @@ public class NettySocketHolder {
 
     private static final Map<String, NioSocketChannel> MAP = new ConcurrentHashMap<>();
 
+    public static void put(String machineCode,String ip,NioSocketChannel socketChannel){
+
+        for (String key : MAP.keySet()) {
+            if (key.startsWith(machineCode)) {
+                MAP.remove(key);
+            }
+        }
+        put(machineCode+"@@"+ip,socketChannel);
+    }
+
     public static void put(String id, NioSocketChannel socketChannel) {
         MAP.put(id, socketChannel);
     }
 
+    public static NioSocketChannel get(String id,String ip) {
+        return MAP.get(id+"@@"+ip);
+    }
+
     public static NioSocketChannel get(String id) {
+        for (String key : MAP.keySet()) {
+            if (key.startsWith(id+"@@")) {
+                return MAP.get(key);
+            }
+        }
+        return null;
+    }
+
+    public static NioSocketChannel getByMachineCode(String id) {
         return MAP.get(id);
     }
 
