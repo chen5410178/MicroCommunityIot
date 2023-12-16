@@ -84,7 +84,7 @@ public class QueryMonthCardByCarNumCmd extends Cmd {
         data.put("paId",reqJson.getString("paId"));
         data.put("startTime",reqJson.getDate("startTime"));
         data.put("endTime",reqJson.getDate("endTime"));
-        data.put("carId",reqJson.getDate("carId"));
+        data.put("carId",reqJson.getString("carId"));
         data.put("cards",carMonthCardDtos);
         ResultVo resultVo = new ResultVo(1, count, data);
 

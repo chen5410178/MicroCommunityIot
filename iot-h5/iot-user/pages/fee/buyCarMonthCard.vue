@@ -88,6 +88,7 @@
 		onLoad: function(options) {
 			this.carNum = options.carNum;
 			this.communityId = options.communityId;
+			this.createUserId = options.createUserId;
 			this._loadMonthCards();
 		},
 		methods: {
