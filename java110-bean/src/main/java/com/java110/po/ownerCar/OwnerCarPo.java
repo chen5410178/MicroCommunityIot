@@ -17,6 +17,7 @@ package com.java110.po.ownerCar;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-08-23 15:16:36 mail: 928255095@qq.com
@@ -28,104 +29,131 @@ import java.util.Date;
 public class OwnerCarPo implements Serializable {
 
     private String carNum;
-private String psId;
-private String remark;
-private String statusCd = "0";
-private String ownerId;
-private String carTypeCd;
-private String carId;
-private String leaseType;
-private String carType;
-private String startTime;
-private String endTime;
-private String state;
-private String communityId;
-private String memberId;
-public String getCarNum() {
+    private String psId;
+    private String remark;
+    private String statusCd = "0";
+    private String ownerId;
+    private String carTypeCd;
+    private String carId;
+    private String leaseType;
+    private String carType;
+    private String startTime;
+    private String endTime;
+    private String state;
+    private String communityId;
+    private String memberId;
+
+    public String getCarNum() {
         return carNum;
     }
-public void setCarNum(String carNum) {
+
+    public void setCarNum(String carNum) {
         this.carNum = carNum;
     }
-public String getPsId() {
+
+    public String getPsId() {
         return psId;
     }
-public void setPsId(String psId) {
+
+    public void setPsId(String psId) {
         this.psId = psId;
     }
-public String getRemark() {
+
+    public String getRemark() {
         return remark;
     }
-public void setRemark(String remark) {
+
+    public void setRemark(String remark) {
         this.remark = remark;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getOwnerId() {
+
+    public String getOwnerId() {
         return ownerId;
     }
-public void setOwnerId(String ownerId) {
+
+    public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
     }
-public String getCarTypeCd() {
+
+    public String getCarTypeCd() {
         return carTypeCd;
     }
-public void setCarTypeCd(String carTypeCd) {
+
+    public void setCarTypeCd(String carTypeCd) {
         this.carTypeCd = carTypeCd;
     }
-public String getCarId() {
+
+    public String getCarId() {
         return carId;
     }
-public void setCarId(String carId) {
+
+    public void setCarId(String carId) {
         this.carId = carId;
     }
-public String getLeaseType() {
+
+    public String getLeaseType() {
         return leaseType;
     }
-public void setLeaseType(String leaseType) {
+
+    public void setLeaseType(String leaseType) {
         this.leaseType = leaseType;
     }
-public String getCarType() {
+
+    public String getCarType() {
         return carType;
     }
-public void setCarType(String carType) {
+
+    public void setCarType(String carType) {
         this.carType = carType;
     }
-public String getStartTime() {
+
+    public String getStartTime() {
         return startTime;
     }
-public void setStartTime(String startTime) {
+
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
-public String getEndTime() {
+
+    public String getEndTime() {
         return endTime;
     }
-public void setEndTime(String endTime) {
+
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
-public String getState() {
+
+    public String getState() {
         return state;
     }
-public void setState(String state) {
+
+    public void setState(String state) {
         this.state = state;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-public String getMemberId() {
+
+    public String getMemberId() {
         return memberId;
     }
-public void setMemberId(String memberId) {
+
+    public void setMemberId(String memberId) {
         this.memberId = memberId;
     }
-
 
 
 }
