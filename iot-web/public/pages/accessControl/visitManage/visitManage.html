@@ -161,6 +161,11 @@
                                                     <vc:i18n name='修改'></vc:i18n>
                                                 </button>
                                             </div>
+                                            <div class="btn-group" v-if="visit.state == 1">
+                                                <button class="btn-white btn btn-xs" v-on:click="_showVisitQrCode(visit)">
+                                                    <vc:i18n name='访客二维码'></vc:i18n>
+                                                </button>
+                                            </div>
                                             <div class="btn-group">
                                                 <button class="btn-white btn btn-xs" v-on:click="_openDeleteVisitModel(visit)">
                                                     <vc:i18n name='删除'></vc:i18n>
@@ -192,5 +197,6 @@
     </div>
     <vc:create path="accessControl/deleteVisit"></vc:create>
     <vc:create path="accessControl/visitAuth"></vc:create>
+    <vc:create path="accessControl/visitQrCode"></vc:create>
 
 </div>
