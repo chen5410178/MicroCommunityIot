@@ -26,11 +26,16 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
+import com.java110.dto.user.UserDto;
 import com.java110.intf.user.IPersonFaceQrcodeV1InnerServiceSMO;
+import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.personFaceQrcode.PersonFaceQrcodePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -52,6 +57,9 @@ public class SavePersonFaceQrcodeCmd extends Cmd {
     @Autowired
     private IPersonFaceQrcodeV1InnerServiceSMO personFaceQrcodeV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "qrcodeName", "请求报文中未包含qrcodeName");
@@ -68,8 +76,18 @@ public class SavePersonFaceQrcodeCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
+        String userId = CmdContextUtils.getUserId(cmdDataFlowContext);
+
+        UserDto userDto = new UserDto();
+        userDto.setUserId(userId);
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+
+        Assert.listOnlyOne(userDtos, "用户未登录");
+
         PersonFaceQrcodePo personFaceQrcodePo = BeanConvertUtil.covertBean(reqJson, PersonFaceQrcodePo.class);
         personFaceQrcodePo.setPfqId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        personFaceQrcodePo.setCreateStaffId(userDtos.get(0).getUserId());
+        personFaceQrcodePo.setCreateStaffName(userDtos.get(0).getName());
         int flag = personFaceQrcodeV1InnerServiceSMOImpl.savePersonFaceQrcode(personFaceQrcodePo);
 
         if (flag < 1) {

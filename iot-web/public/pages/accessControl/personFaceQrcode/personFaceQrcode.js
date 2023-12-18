@@ -43,8 +43,8 @@
                     param,
                     function (json, res) {
                         let _json = JSON.parse(json);
-                        $that.personFaceQrcodeInfo.total = _personFaceQrcodeInfo.total;
-                        $that.personFaceQrcodeInfo.records = _personFaceQrcodeInfo.records;
+                        $that.personFaceQrcodeInfo.total = _json.total;
+                        $that.personFaceQrcodeInfo.records = _json.records;
                         $that.personFaceQrcodeInfo.personFaceQrcodes = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.personFaceQrcodeInfo.records,

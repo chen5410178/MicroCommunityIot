@@ -17,6 +17,7 @@ package com.java110.po.personFaceQrcode;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-12-18 18:37:12 mail: 928255095@qq.com
@@ -28,97 +29,122 @@ import java.util.Date;
 public class PersonFaceQrcodePo implements Serializable {
 
     private String statusCd = "0";
-private String remark;
-private String pfqId;
-private String smsValidate;
-private String telValidate;
-private String createStaffName;
-private String createStaffId;
-private String audit;
-private String inviteCode;
-private String invite;
-private String state;
-private String qrcodeName;
-private String communityId;
-public String getStatusCd() {
+    private String remark;
+    private String pfqId;
+    private String smsValidate;
+    private String telValidate;
+    private String createStaffName;
+    private String createStaffId;
+    private String audit;
+    private String inviteCode;
+    private String invite;
+    private String state;
+    private String qrcodeName;
+    private String communityId;
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getRemark() {
+
+    public String getRemark() {
         return remark;
     }
-public void setRemark(String remark) {
+
+    public void setRemark(String remark) {
         this.remark = remark;
     }
-public String getPfqId() {
+
+    public String getPfqId() {
         return pfqId;
     }
-public void setPfqId(String pfqId) {
+
+    public void setPfqId(String pfqId) {
         this.pfqId = pfqId;
     }
-public String getSmsValidate() {
+
+    public String getSmsValidate() {
         return smsValidate;
     }
-public void setSmsValidate(String smsValidate) {
+
+    public void setSmsValidate(String smsValidate) {
         this.smsValidate = smsValidate;
     }
-public String getTelValidate() {
+
+    public String getTelValidate() {
         return telValidate;
     }
-public void setTelValidate(String telValidate) {
+
+    public void setTelValidate(String telValidate) {
         this.telValidate = telValidate;
     }
-public String getCreateStaffName() {
+
+    public String getCreateStaffName() {
         return createStaffName;
     }
-public void setCreateStaffName(String createStaffName) {
+
+    public void setCreateStaffName(String createStaffName) {
         this.createStaffName = createStaffName;
     }
-public String getCreateStaffId() {
+
+    public String getCreateStaffId() {
         return createStaffId;
     }
-public void setCreateStaffId(String createStaffId) {
+
+    public void setCreateStaffId(String createStaffId) {
         this.createStaffId = createStaffId;
     }
-public String getAudit() {
+
+    public String getAudit() {
         return audit;
     }
-public void setAudit(String audit) {
+
+    public void setAudit(String audit) {
         this.audit = audit;
     }
-public String getInviteCode() {
+
+    public String getInviteCode() {
         return inviteCode;
     }
-public void setInviteCode(String inviteCode) {
+
+    public void setInviteCode(String inviteCode) {
         this.inviteCode = inviteCode;
     }
-public String getInvite() {
+
+    public String getInvite() {
         return invite;
     }
-public void setInvite(String invite) {
+
+    public void setInvite(String invite) {
         this.invite = invite;
     }
-public String getState() {
+
+    public String getState() {
         return state;
     }
-public void setState(String state) {
+
+    public void setState(String state) {
         this.state = state;
     }
-public String getQrcodeName() {
+
+    public String getQrcodeName() {
         return qrcodeName;
     }
-public void setQrcodeName(String qrcodeName) {
+
+    public void setQrcodeName(String qrcodeName) {
         this.qrcodeName = qrcodeName;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-
 
 
 }
