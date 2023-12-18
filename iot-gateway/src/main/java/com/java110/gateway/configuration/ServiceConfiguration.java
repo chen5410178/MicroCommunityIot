@@ -51,6 +51,10 @@ public class ServiceConfiguration {
         exclusions.append("/app/equipments/*,");// 叮叮充电桩通知放开
         exclusions.append("/app/charge/kehang/*,");// 科航充电桩通知放开
         exclusions.append("/app/smartMeter/notify/*,");// 水电表通知放开
+
+        exclusions.append("/iot/api/visit.saveVisit,");// 访客登记
+        exclusions.append("/iot/api/visitType.listVisitType,");// 访客类型
+        exclusions.append("/iot/api/visit.listVisit,");// 访客人员
     }
     @Bean
     public FilterRegistrationBean jwtFilter() {

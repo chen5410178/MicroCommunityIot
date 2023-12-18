@@ -23,6 +23,10 @@ export default {
 	listParkingCouponCar: baseUrl + "iot/api/parkingCoupon.listParkingCouponCar",
 	queryMonthCardByCarNum: baseUrl + "iot/api/carMonth.queryMonthCardByCarNum",
 	queryWaitPayFeeTempCar: baseUrl + "iot/api/car.queryWaitPayFeeTempCar",
+	listVisitType: baseUrl + "iot/api/visitType.listVisitType",
+	saveAddVisit: baseUrl + "iot/api/visit.saveVisit",
+	listOwnerVisit: baseUrl + "iot/api/visit.listVisit",
+
 	NEED_NOT_LOGIN_PAGE: [
 		'pages/user/login',
 		'pages/user/register',
