@@ -70,7 +70,7 @@
                     _realChargeTotals.push(item.realChargeTotal);
                 });
                 var app = {};
-                option = null;
+                let option = null;
                 option = {
                     title: {
                         text: '每日收费统计'
