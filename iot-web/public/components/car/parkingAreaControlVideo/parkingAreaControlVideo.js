@@ -34,6 +34,9 @@
             });
 
             vc.on('parkingAreaControlVideo', 'carIn', function(param) {
+                if($that.parkingAreaControlVideoInfo.inMachineId != param.machineId){
+                    return;
+                }
                 $that.parkingAreaControlVideoInfo.inMachineCarNum = param.carNum;
                 $that.parkingAreaControlVideoInfo.inMachineInOutTime = param.inOutTime;
                 $that.parkingAreaControlVideoInfo.inMachineOpen = param.open;
@@ -41,6 +44,9 @@
             });
 
             vc.on('parkingAreaControlVideo', 'carOut', function(param) {
+                if($that.parkingAreaControlVideoInfo.outMachineId != param.machineId){
+                    return;
+                }
                 $that.parkingAreaControlVideoInfo.outMachineCarNum = param.carNum;
                 $that.parkingAreaControlVideoInfo.outMachineInOutTime = param.inOutTime;
                 $that.parkingAreaControlVideoInfo.outMachineOpen = param.open;
