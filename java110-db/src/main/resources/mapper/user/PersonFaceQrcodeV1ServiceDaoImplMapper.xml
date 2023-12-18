@@ -20,7 +20,8 @@
         select t.status_cd,t.status_cd statusCd,t.remark,t.pfq_id,t.pfq_id pfqId,t.sms_validate,t.sms_validate
         smsValidate,t.tel_validate,t.tel_validate telValidate,t.create_staff_name,t.create_staff_name
         createStaffName,t.create_staff_id,t.create_staff_id createStaffId,t.audit,t.invite_code,t.invite_code
-        inviteCode,t.invite,t.state,t.qrcode_name,t.qrcode_name qrcodeName,t.community_id,t.community_id communityId
+        inviteCode,t.invite,t.state,t.qrcode_name,t.qrcode_name qrcodeName,t.community_id,t.community_id communityId,
+        t.create_time createTime
         from person_face_qrcode t
         where 1 =1
         <if test="statusCd !=null and statusCd != ''">

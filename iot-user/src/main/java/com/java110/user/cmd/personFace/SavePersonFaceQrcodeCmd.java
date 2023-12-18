@@ -27,6 +27,7 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.CmdContextUtils;
+import com.java110.dto.personFaceQrcode.PersonFaceQrcodeDto;
 import com.java110.dto.user.UserDto;
 import com.java110.intf.user.IPersonFaceQrcodeV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
@@ -88,6 +89,10 @@ public class SavePersonFaceQrcodeCmd extends Cmd {
         personFaceQrcodePo.setPfqId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         personFaceQrcodePo.setCreateStaffId(userDtos.get(0).getUserId());
         personFaceQrcodePo.setCreateStaffName(userDtos.get(0).getName());
+
+        if(PersonFaceQrcodeDto.OFF.equals(personFaceQrcodePo.getInvite())){
+            personFaceQrcodePo.setInviteCode("");
+        }
         int flag = personFaceQrcodeV1InnerServiceSMOImpl.savePersonFaceQrcode(personFaceQrcodePo);
 
         if (flag < 1) {

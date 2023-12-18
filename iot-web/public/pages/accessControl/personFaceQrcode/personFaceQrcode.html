@@ -76,7 +76,10 @@
                                     <vc:i18n name='状态' namespace='personFaceQrcode'></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <vc:i18n name='说明' namespace='personFaceQrcode'></vc:i18n>
+                                    <vc:i18n name='创建时间' namespace='personFaceQrcode'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='创建人员' namespace='personFaceQrcode'></vc:i18n>
                                 </th>
                                 <th class="text-center">
                                     <vc:i18n name='操作'></vc:i18n>
@@ -87,13 +90,15 @@
                             <tr v-for="personFaceQrcode in personFaceQrcodeInfo.personFaceQrcodes">
                                 <td class="text-center">{{personFaceQrcode.pfqId}}</td>
                                 <td class="text-center">{{personFaceQrcode.qrcodeName}}</td>
-                                <td class="text-center">{{personFaceQrcode.smsValidate}}</td>
-                                <td class="text-center">{{personFaceQrcode.telValidate}}</td>
-                                <td class="text-center">{{personFaceQrcode.audit}}</td>
-                                <td class="text-center">{{personFaceQrcode.invite}}</td>
-                                <td class="text-center">{{personFaceQrcode.inviteCode}}</td>
-                                <td class="text-center">{{personFaceQrcode.state}}</td>
-                                <td class="text-center">{{personFaceQrcode.remark}}</td>
+                                <td class="text-center">{{personFaceQrcode.smsValidate == 'ON'?'是':'否'}}</td>
+                                <td class="text-center">{{personFaceQrcode.telValidate == 'ON'?'是':'否'}}</td>
+                                <td class="text-center">{{personFaceQrcode.audit == 'ON'?'是':'否'}}</td>
+                                <td class="text-center">{{personFaceQrcode.invite == 'ON'?'是':'否'}}</td>
+                                <td class="text-center" >{{personFaceQrcode.invite == 'ON'?personFaceQrcode.inviteCode : '-'}}</td>
+                                <td class="text-center">{{personFaceQrcode.state == 'ON'?'是':'否'}}</td>
+                                <td class="text-center">{{personFaceQrcode.createTime}}</td>
+                                <td class="text-center">{{personFaceQrcode.createStaffName}}</td>
+
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs"
