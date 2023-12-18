@@ -45,11 +45,11 @@
 		</view>
 
 		<view class="button_up_blank"></view>
-		<view class="noti">
+		<!-- <view class="noti">
 			<view class="text-red text-sm margin-left-sm">*预计来访时和预计离开时间间隔不能超过24小时</view>
 			<view class="text-red text-sm margin-left-sm">*预约车辆自开始时间起计算，免费停放{{freeInfo.freeTime}}分钟  </view>
 			<view class="text-red text-sm margin-left-sm" v-show="freeInfo.freeTimes > 0">*预约车辆每天限制{{freeInfo.freeTimes}}次登记，超过次数系统不会审核</view>
-		</view>
+		</view> -->
 
 		<view class="flex flex-direction">
 			<button class="cu-btn bg-green margin-tb-sm lg" @click="submitVisit()">提交</button>
