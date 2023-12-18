@@ -52,6 +52,8 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/visit.listVisit,");// 访客人员
 
         exclusions.append("/iot/api/personFace.savePersonFace,");// 人脸审核
+        exclusions.append("/iot/api/personFace.listPersonFace,");// 人脸审核
+
 
     }
 

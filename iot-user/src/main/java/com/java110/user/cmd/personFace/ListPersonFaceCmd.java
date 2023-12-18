@@ -24,6 +24,8 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
+import com.java110.dto.app.AppDto;
 import com.java110.intf.user.IPersonFaceV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.personFace.PersonFaceDto;
@@ -56,6 +58,11 @@ public class ListPersonFaceCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
+
+        String appId = CmdContextUtils.getAppId(cmdDataFlowContext);
+        if(AppDto.USER_APP_ID.equals(appId)){
+            Assert.hasKeyAndValue(reqJson, "openId", "未包含openId");
+        }
 
     }
 

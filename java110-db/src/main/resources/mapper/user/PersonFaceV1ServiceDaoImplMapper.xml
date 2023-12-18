@@ -20,8 +20,11 @@
         select t.pf_id,t.pf_id pfId,t.open_id,t.open_id openId,t.owner_type_cd,t.owner_type_cd
         ownerTypeCd,t.remark,t.status_cd,t.status_cd statusCd,t.pfq_id,t.pfq_id pfqId,t.room_id,t.room_id
         roomId,t.room_name,t.room_name roomName,t.person_name,t.person_name personName,t.face_url,t.face_url
-        faceUrl,t.state,t.community_id,t.community_id communityId,t.person_tel,t.person_tel personTel
+        faceUrl,t.state,t.community_id,t.community_id communityId,t.person_tel,t.person_tel personTel,
+        t.create_time createTime,pfq.qrcode_name qrcodeName,td.`name` stateName
         from person_face t
+        left join person_face_qrcode pfq on t.pfq_id = pfq.pfq_id
+        left join t_dict td on t.state = td.status_cd and td.table_name = 'person_face' and td.table_columns = 'state'
         where 1 =1
         <if test="pfId !=null and pfId != ''">
             and t.pf_id= #{pfId}

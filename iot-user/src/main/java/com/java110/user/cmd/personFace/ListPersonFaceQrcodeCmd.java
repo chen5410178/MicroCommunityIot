@@ -18,12 +18,14 @@ package com.java110.user.cmd.personFace;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cache.UrlCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.intf.user.IPersonFaceQrcodeV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.personFaceQrcode.PersonFaceQrcodeDto;
@@ -76,10 +78,29 @@ public class ListPersonFaceQrcodeCmd extends Cmd {
             personFaceQrcodeDtos = new ArrayList<>();
         }
 
+        //todo 生成二维码
+        generatorQrcode(personFaceQrcodeDtos);
+
         ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, personFaceQrcodeDtos);
 
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    /**
+     * 生成二维码
+     *
+     * @param personFaceQrcodeDtos
+     */
+    private void generatorQrcode(List<PersonFaceQrcodeDto> personFaceQrcodeDtos) {
+        if (ListUtil.isNull(personFaceQrcodeDtos)) {
+            return;
+        }
+
+        String ownerUrl = UrlCache.getOwnerUrl() + "/#/pages/user/personFace?communityId=" + personFaceQrcodeDtos.get(0).getCommunityId() + "&=pfqId";
+        for (PersonFaceQrcodeDto personFaceQrcodeDto : personFaceQrcodeDtos) {
+            personFaceQrcodeDto.setQrCodeUrl(ownerUrl + personFaceQrcodeDto.getPfqId());
+        }
     }
 }

@@ -212,6 +212,15 @@
 				"enablePullDownRefresh": false
 			}
 		}
+        ,{
+            "path" : "pages/user/personFace",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"tabBar": {
 		"color": "#272636",

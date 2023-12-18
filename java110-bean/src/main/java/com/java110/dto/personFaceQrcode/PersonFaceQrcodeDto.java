@@ -29,6 +29,8 @@ public class PersonFaceQrcodeDto extends PageDto implements Serializable {
     private String qrcodeName;
     private String communityId;
 
+    private String qrCodeUrl;
+
 
     private Date createTime;
 
@@ -146,5 +148,13 @@ public class PersonFaceQrcodeDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getQrCodeUrl() {
+        return qrCodeUrl;
+    }
+
+    public void setQrCodeUrl(String qrCodeUrl) {
+        this.qrCodeUrl = qrCodeUrl;
     }
 }

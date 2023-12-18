@@ -1,6 +1,7 @@
 package com.java110.dto.personFace;
 
 import com.java110.bean.dto.PageDto;
+import com.java110.dto.personFaceQrcode.PersonFaceQrcodeDto;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,7 +14,7 @@ import java.util.Date;
  * @Version 1.0
  * add by wuxw 2019/4/24
  **/
-public class PersonFaceDto extends PageDto implements Serializable {
+public class PersonFaceDto extends PersonFaceQrcodeDto implements Serializable {
 
     private String pfId;
     private String openId;
@@ -25,6 +26,9 @@ public class PersonFaceDto extends PageDto implements Serializable {
     private String personName;
     private String faceUrl;
     private String state;
+    private String stateName;
+
+
     private String communityId;
     private String personTel;
 
@@ -145,5 +149,13 @@ public class PersonFaceDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
     }
 }
