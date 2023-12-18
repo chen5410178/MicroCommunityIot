@@ -68,6 +68,13 @@
                 $that._listPersonFaceQrcodes(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
+            showPersonFaceQrCode:function(_personFaceQrcode){
+                vc.emit('viewQrCode', 'openQrCodeModal',{
+                    title:'人脸申请二维码',
+                    url:_personFaceQrcode.qrCodeUrl,
+                    remark:'请将二维码贴在门禁机附近'
+                })
+            },
             _moreCondition: function () {
                 if ($that.personFaceQrcodeInfo.moreCondition) {
                     $that.personFaceQrcodeInfo.moreCondition = false;
