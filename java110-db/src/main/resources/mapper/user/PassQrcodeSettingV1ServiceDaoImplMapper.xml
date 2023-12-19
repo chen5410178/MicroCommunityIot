@@ -20,7 +20,7 @@
         select t.create_staff_name,t.create_staff_name createStaffName,t.pqs_id,t.pqs_id
         pqsId,t.expired,t.create_staff_id,t.create_staff_id createStaffId,t.audit,t.status_cd,t.status_cd
         statusCd,t.remark,t.state,t.qrcode_name,t.qrcode_name qrcodeName,t.community_id,t.community_id
-        communityId,t.sms_validate,t.sms_validate smsValidate
+        communityId,t.sms_validate,t.sms_validate smsValidate,t.create_time createTime
         from pass_qrcode_setting t
         where 1 =1
         <if test="createStaffName !=null and createStaffName != ''">
