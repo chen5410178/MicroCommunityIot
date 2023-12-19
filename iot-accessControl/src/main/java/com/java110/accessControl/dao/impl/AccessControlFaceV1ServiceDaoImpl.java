@@ -116,9 +116,9 @@ public class AccessControlFaceV1ServiceDaoImpl extends BaseServiceDao implements
     public List<Map> queryAccessControlFacesByComeId(Map info) throws DAOException {
         logger.debug("查询 queryAccessControlFacesByComeId 入参 info : {}",info);
 
-        List<Map> businessAccessControlFaceInfos = sqlSessionTemplate.selectList("accessControlFaceV1ServiceDaoImpl.queryAccessControlFacesByComeId",info);
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlFaceV1ServiceDaoImpl.queryAccessControlFacesByComeId",info);
 
-        return businessAccessControlFaceInfos;
+        return infos;
     }
 
 }

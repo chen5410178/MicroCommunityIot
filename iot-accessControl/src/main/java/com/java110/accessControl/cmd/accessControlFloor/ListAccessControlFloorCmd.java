@@ -138,27 +138,27 @@ public class ListAccessControlFloorCmd extends Cmd {
      */
     private void queryFloorAuthOwner(List<AccessControlFloorDto> accessControlFloorDtos) {
 
-        if (accessControlFloorDtos == null || accessControlFloorDtos.size() < 1) {
+        if (ListUtil.isNull(accessControlFloorDtos)) {
             return;
         }
-        List<String> unitIds = new ArrayList<>();
+        List<String> acfIds = new ArrayList<>();
         for (AccessControlFloorDto accessControlFloorDto : accessControlFloorDtos) {
-            unitIds.add(accessControlFloorDto.getUnitId());
+            acfIds.add(accessControlFloorDto.getAcfId());
         }
 
 
         AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
-        accessControlFaceDto.setComeIds(unitIds.toArray(new String[unitIds.size()]));
+        accessControlFaceDto.setComeIds(acfIds.toArray(new String[acfIds.size()]));
         accessControlFaceDto.setCommunityId(accessControlFloorDtos.get(0).getCommunityId());
         List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFacesByComeId(accessControlFaceDto);
 
-        if (accessControlFaceDtos == null || accessControlFaceDtos.size() < 1) {
+        if (ListUtil.isNull(accessControlFaceDtos)) {
             return;
         }
 
         for (AccessControlFloorDto accessControlFloorDto : accessControlFloorDtos) {
             for (AccessControlFaceDto tAccessControlFaceDto : accessControlFaceDtos) {
-                if (!tAccessControlFaceDto.getComeId().equals(accessControlFloorDto.getUnitId())) {
+                if (!tAccessControlFaceDto.getComeId().equals(accessControlFloorDto.getAcfId())) {
                     continue;
                 }
 
