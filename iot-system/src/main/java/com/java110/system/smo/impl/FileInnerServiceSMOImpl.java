@@ -41,9 +41,7 @@ public class FileInnerServiceSMOImpl  implements IFileInnerServiceSMO {
         String ossSwitch = MappingCache.getValue(MappingConstant.FILE_DOMAIN, OSSUtil.OSS_SWITCH);
 
         if (OSSUtil.OSS_SWITCH_OSS.equals(ossSwitch)) {
-            fileName = ossUploadTemplate.upload(fileDto.getContext(),"",
-                    0, "",
-                    "", ROOT_PATH);
+            fileName = ossUploadTemplate.upload(fileDto.getContext(), ROOT_PATH);
         } else {
             String ftpServer = MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_SERVER);
             int ftpPort = Integer.parseInt(MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_PORT));
