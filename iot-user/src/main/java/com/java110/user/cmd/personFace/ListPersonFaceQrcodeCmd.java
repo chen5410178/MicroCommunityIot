@@ -98,7 +98,7 @@ public class ListPersonFaceQrcodeCmd extends Cmd {
             return;
         }
 
-        String ownerUrl = UrlCache.getOwnerUrl() + "/#/pages/user/personFace?communityId=" + personFaceQrcodeDtos.get(0).getCommunityId() + "&=pfqId";
+        String ownerUrl = UrlCache.getOwnerUrl() + "/#/pages/user/personFace?communityId=" + personFaceQrcodeDtos.get(0).getCommunityId() + "&pfqId=";
         for (PersonFaceQrcodeDto personFaceQrcodeDto : personFaceQrcodeDtos) {
             personFaceQrcodeDto.setQrCodeUrl(ownerUrl + personFaceQrcodeDto.getPfqId());
         }

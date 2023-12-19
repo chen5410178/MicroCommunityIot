@@ -51,6 +51,7 @@ public class OwnerDto extends PageDto implements Serializable {
     private String userId;
     private String age;
     private String memberId;
+    private String[] memberIds;
     private String ownerTypeCd;
     private String[] ownerTypeCds;
     private String ownerTypeName;
@@ -510,5 +511,13 @@ public class OwnerDto extends PageDto implements Serializable {
 
     public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
+    }
+
+    public String[] getMemberIds() {
+        return memberIds;
+    }
+
+    public void setMemberIds(String[] memberIds) {
+        this.memberIds = memberIds;
     }
 }

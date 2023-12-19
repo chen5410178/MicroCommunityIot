@@ -17,6 +17,7 @@ package com.java110.po.personFace;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-12-18 18:47:46 mail: 928255095@qq.com
@@ -28,97 +29,122 @@ import java.util.Date;
 public class PersonFacePo implements Serializable {
 
     private String pfId;
-private String openId;
-private String ownerTypeCd;
-private String remark;
-private String statusCd = "0";
-private String pfqId;
-private String roomId;
-private String roomName;
-private String personName;
-private String faceUrl;
-private String state;
-private String communityId;
-private String personTel;
-public String getPfId() {
+    private String openId;
+    private String ownerTypeCd;
+    private String remark;
+    private String statusCd = "0";
+    private String pfqId;
+    private String roomId;
+    private String roomName;
+    private String personName;
+    private String faceUrl;
+    private String state;
+    private String communityId;
+    private String personTel;
+
+    public String getPfId() {
         return pfId;
     }
-public void setPfId(String pfId) {
+
+    public void setPfId(String pfId) {
         this.pfId = pfId;
     }
-public String getOpenId() {
+
+    public String getOpenId() {
         return openId;
     }
-public void setOpenId(String openId) {
+
+    public void setOpenId(String openId) {
         this.openId = openId;
     }
-public String getOwnerTypeCd() {
+
+    public String getOwnerTypeCd() {
         return ownerTypeCd;
     }
-public void setOwnerTypeCd(String ownerTypeCd) {
+
+    public void setOwnerTypeCd(String ownerTypeCd) {
         this.ownerTypeCd = ownerTypeCd;
     }
-public String getRemark() {
+
+    public String getRemark() {
         return remark;
     }
-public void setRemark(String remark) {
+
+    public void setRemark(String remark) {
         this.remark = remark;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getPfqId() {
+
+    public String getPfqId() {
         return pfqId;
     }
-public void setPfqId(String pfqId) {
+
+    public void setPfqId(String pfqId) {
         this.pfqId = pfqId;
     }
-public String getRoomId() {
+
+    public String getRoomId() {
         return roomId;
     }
-public void setRoomId(String roomId) {
+
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
-public String getRoomName() {
+
+    public String getRoomName() {
         return roomName;
     }
-public void setRoomName(String roomName) {
+
+    public void setRoomName(String roomName) {
         this.roomName = roomName;
     }
-public String getPersonName() {
+
+    public String getPersonName() {
         return personName;
     }
-public void setPersonName(String personName) {
+
+    public void setPersonName(String personName) {
         this.personName = personName;
     }
-public String getFaceUrl() {
+
+    public String getFaceUrl() {
         return faceUrl;
     }
-public void setFaceUrl(String faceUrl) {
+
+    public void setFaceUrl(String faceUrl) {
         this.faceUrl = faceUrl;
     }
-public String getState() {
+
+    public String getState() {
         return state;
     }
-public void setState(String state) {
+
+    public void setState(String state) {
         this.state = state;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-public String getPersonTel() {
+
+    public String getPersonTel() {
         return personTel;
     }
-public void setPersonTel(String personTel) {
+
+    public void setPersonTel(String personTel) {
         this.personTel = personTel;
     }
-
 
 
 }

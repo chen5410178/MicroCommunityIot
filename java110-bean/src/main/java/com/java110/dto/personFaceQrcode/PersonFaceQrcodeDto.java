@@ -16,6 +16,7 @@ import java.util.Date;
 public class PersonFaceQrcodeDto extends PageDto implements Serializable {
 
     public static final String OFF = "OFF";
+    public static final String STATE_NORMAL = "ON";
     private String remark;
     private String pfqId;
     private String smsValidate;

@@ -12,10 +12,10 @@
 		</scroll-view>
 		
 		<view v-show="active == 0" class="margin-top">
-			<apply-face ref="applyFaceRef" ></apply-face>
+			<apply-face ref="applyFaceRef" :communityId="communityId" :pfqId="pfqId"></apply-face>
 		</view>
 		<view v-show="active == 1" class="margin-top">
-			<apply-face-detail ref="applyFaceDetailRef"></apply-face-detail>
+			<apply-face-detail ref="applyFaceDetailRef" :communityId="communityId"></apply-face-detail>
 		</view>
 	</view>
 </template>
@@ -27,11 +27,28 @@
 		data() {
 			return {
 				active:0,
+				communityId:'',
+				pfqId:''
 			}
 		},
 		components:{
 			applyFace,
 			applyFaceDetail
+		},
+		onLoad(options) {
+			this.communityId = options.communityId;
+			this.pfqId = options.pfqId;
+		},
+		onShow() {
+			
+			if(this.$refs.applyFaceRef && this.active == 0){
+				let _selectRoom = uni.getStorageSync('selectRoom');
+				if(_selectRoom){
+					uni.removeStorageSync('selectRoom');
+				}
+				this.$refs.applyFaceRef.setRoom(_selectRoom);
+			}
+			
 		},
 		methods: {
 			

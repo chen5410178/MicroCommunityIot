@@ -29,6 +29,11 @@ export default {
 	uploadImage: baseUrl + "iot/api/upload/uploadImage",
 	queryFloors: baseUrl + "iot/api/floor.queryFloors",
 	queryUnits: baseUrl + "iot/api/unit.queryUnits",
+	queryRoomsByApp: baseUrl + "iot/api/room.queryRoomsByApp",
+	savePersonFace: baseUrl + "iot/api/personFace.savePersonFace",
+	listPersonFace: baseUrl + "iot/api/personFace.listPersonFace",
+	
+	
 	
 	
 	NEED_NOT_LOGIN_PAGE: [

@@ -2,7 +2,7 @@
 	<view>
 		<view class="cu-form-group">
 			<view class="title">房屋编号</view>
-			<input v-model="roomName" placeholder="请输入房屋编号(楼栋-单元-房屋)" class="text-right"></input>
+			<view class="text-right" @click="_chooseRoom()"><text>{{roomName || '请选择 >'}}</text></view>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">人员名称</view>
@@ -34,19 +34,22 @@
 
 <script>
 	import vcUploadAsync from '../vc-upload-async/vc-upload-async.vue';
+	import {savePersonFace} from '../../api/owner/ownerApi.js';
 	export default {
 		name: "applyFace",
 		data() {
 			return {
 				maxPhotoNum: 1,
 				roomName: '',
+				roomId:'',
 				personName: '',
 				personTel: '',
 				ownerTypeCd: '',
 				ownerTypeCdIndex: 0,
-				communityId: '',
 				faceUrl: '',
 				openId: '',
+				inviteCode:'',
+				msgCode:'',
 				ownerTypeCds: [{
 						name: '请选择',
 						value: ''
@@ -62,6 +65,14 @@
 				]
 			};
 		},
+		props: {
+			communityId: {
+				type: String,
+			},
+			pfqId:{
+				type:String,
+			}
+		},
 		components: {
 			vcUploadAsync
 		},
@@ -73,8 +84,59 @@
 			sendImagesData: function(_data) {
 				this.faceUrl = _data.url;
 			},
-			submitApplyFace:function(){
+			_chooseRoom: function() {
+				uni.navigateTo({
+					url: '/pages/room/selectRoom?communityId='+this.communityId
+				})
+			},
+			setRoom: function(_room) {
+				this.roomName = _room.roomName;
+				this.roomId = _room.roomId;
+			},
+			submitApplyFace: function() {
 				
+				let _that = this;
+
+				savePersonFace({
+					communityId:this.communityId,
+					roomName: this.roomName,
+					roomId:this.roomId,
+					personName: this.personName,
+					personTel: this.personTel,
+					ownerTypeCd: this.ownerTypeCd,
+					faceUrl: this.faceUrl,
+					openId: this.openId,
+					inviteCode:this.inviteCode,
+					msgCode:this.msgCode,
+				}).then(_data=>{
+					_that.resetData();
+				})
+			},
+			resetData:function(){
+				this.maxPhotoNum= 1;
+				this.roomName= '';
+				this.roomId='';
+				this.personName= '';
+				this.personTel= '';
+				this.ownerTypeCd= '';
+				this.ownerTypeCdIndex= 0;
+				this.faceUrl= '';
+				this.openId= '';
+				this.inviteCode='';
+				this.msgCode='';
+				this.ownerTypeCds= [{
+						name: '请选择',
+						value: ''
+					},
+					{
+						name: '业主本人',
+						value: '1001'
+					},
+					{
+						name: '家庭成员',
+						value: '1002'
+					}
+				];
 			}
 		}
 	}
