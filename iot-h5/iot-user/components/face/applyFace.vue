@@ -71,6 +71,9 @@
 			},
 			pfqId:{
 				type:String,
+			},
+			openId:{
+				type:String,
 			}
 		},
 		components: {
@@ -82,7 +85,7 @@
 				this.ownerTypeCd = this.ownerTypeCds[this.ownerTypeCdIndex].value;
 			},
 			sendImagesData: function(_data) {
-				this.faceUrl = _data.url;
+				this.faceUrl = _data[0].fileId;
 			},
 			_chooseRoom: function() {
 				uni.navigateTo({
@@ -98,6 +101,7 @@
 				let _that = this;
 
 				savePersonFace({
+					pfqId:this.pfqId,
 					communityId:this.communityId,
 					roomName: this.roomName,
 					roomId:this.roomId,
@@ -137,6 +141,8 @@
 						value: '1002'
 					}
 				];
+				
+				this.$refs.vcUploadRef.resetPhoto();
 			}
 		}
 	}

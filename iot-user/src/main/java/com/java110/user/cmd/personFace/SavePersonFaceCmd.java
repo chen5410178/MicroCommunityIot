@@ -43,6 +43,7 @@ import com.java110.intf.user.IOwnerV1InnerServiceSMO;
 import com.java110.intf.user.IPersonFaceQrcodeV1InnerServiceSMO;
 import com.java110.intf.user.IPersonFaceV1InnerServiceSMO;
 import com.java110.po.personFace.PersonFacePo;
+import com.java110.user.bmo.IAuditPersonFaceAgreeBMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,6 +85,9 @@ public class SavePersonFaceCmd extends Cmd {
 
     @Autowired
     private IOwnerV1InnerServiceSMO ownerV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAuditPersonFaceAgreeBMO auditPersonFaceAgreeBMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
@@ -186,12 +190,14 @@ public class SavePersonFaceCmd extends Cmd {
             throw new CmdException("保存数据失败");
         }
 
+        cmdDataFlowContext.setResponseEntity(ResultVo.success());
 
         //todo 直接 走审核逻辑
-        if (!PersonFaceQrcodeDto.OFF.equals(reqJson.getString("audit"))) {
-
+        if (PersonFaceQrcodeDto.OFF.equals(reqJson.getString("audit"))) {
+            return;
         }
 
-        cmdDataFlowContext.setResponseEntity(ResultVo.success());
+        auditPersonFaceAgreeBMOImpl.agree(personFacePo);
+
     }
 }

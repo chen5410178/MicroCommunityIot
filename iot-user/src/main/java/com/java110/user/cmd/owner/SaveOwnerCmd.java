@@ -25,6 +25,7 @@ import com.java110.intf.community.ICommunityV1InnerServiceSMO;
 import com.java110.intf.system.IFileInnerServiceSMO;
 import com.java110.intf.system.IFileRelInnerServiceSMO;
 import com.java110.intf.user.*;
+import com.java110.user.bmo.ISyncAccessControlBMO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -112,6 +113,9 @@ public class SaveOwnerCmd extends Cmd {
     @Autowired
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ISyncAccessControlBMO syncAccessControlBMOImpl;
+
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
@@ -188,6 +192,9 @@ public class SaveOwnerCmd extends Cmd {
                 reqJson.getString("memberId"),
                 reqJson.getString("communityId"),
                 "10000");
+
+
+        syncAccessControlBMOImpl.syncAccessControl(ownerPo.getMemberId());
 
         dealOwnerAttr(reqJson, cmdDataFlowContext);
 

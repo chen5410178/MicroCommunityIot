@@ -12,10 +12,10 @@
 		</scroll-view>
 		
 		<view v-show="active == 0" class="margin-top">
-			<apply-face ref="applyFaceRef" :communityId="communityId" :pfqId="pfqId"></apply-face>
+			<apply-face ref="applyFaceRef" :communityId="communityId" :pfqId="pfqId" :openId="openId"></apply-face>
 		</view>
 		<view v-show="active == 1" class="margin-top">
-			<apply-face-detail ref="applyFaceDetailRef" :communityId="communityId"></apply-face-detail>
+			<apply-face-detail ref="applyFaceDetailRef" :communityId="communityId" :openId="openId"></apply-face-detail>
 		</view>
 	</view>
 </template>
@@ -28,7 +28,8 @@
 			return {
 				active:0,
 				communityId:'',
-				pfqId:''
+				pfqId:'',
+				openId:'123123123'
 			}
 		},
 		components:{
@@ -45,8 +46,8 @@
 				let _selectRoom = uni.getStorageSync('selectRoom');
 				if(_selectRoom){
 					uni.removeStorageSync('selectRoom');
+					this.$refs.applyFaceRef.setRoom(_selectRoom);
 				}
-				this.$refs.applyFaceRef.setRoom(_selectRoom);
 			}
 			
 		},

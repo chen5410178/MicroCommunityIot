@@ -116,6 +116,10 @@
 			sendData() {
 				this.$emit('sendImagesData', this.photos)
 			},
+			resetPhoto() {
+				this.imgList = [];
+				this.photos= [];
+			},
 			// 删除
 			deleteImage: function(index) {
 				this.imgList.splice(index, 1);

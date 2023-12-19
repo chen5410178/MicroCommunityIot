@@ -31,6 +31,7 @@ import com.java110.intf.system.IFileRelInnerServiceSMO;
 import com.java110.intf.user.*;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.user.UserPo;
+import com.java110.user.bmo.ISyncAccessControlBMO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -118,6 +119,9 @@ public class EditOwnerCmd extends Cmd {
     @Autowired
     private IAccessControlFloorV1InnerServiceSMO accessControlFloorV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ISyncAccessControlBMO syncAccessControlBMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
         Assert.jsonObjectHaveKey(reqJson, "memberId", "请求报文中未包含ownerId");
@@ -199,10 +203,6 @@ public class EditOwnerCmd extends Cmd {
             reqJson.put("ownerId", reqJson.getString("memberId"));
         }
 
-        //这里注释 因为 有国外的手机号 不是11位
-//        if (link.length() != 11) {
-//            throw new IllegalArgumentException("手机号输入不正确！");
-//        }
         if (reqJson.containsKey("ownerPhoto") && !StringUtils.isEmpty(reqJson.getString("ownerPhoto"))) {
             editOwnerPhoto(reqJson);
         }
@@ -210,7 +210,7 @@ public class EditOwnerCmd extends Cmd {
         editOwner(reqJson);
 
         //todo 人员同步门禁
-        synchronousAccessControl(reqJson);
+        syncAccessControlBMOImpl.syncAccessControl(reqJson.getString("memberId"));
 
         JSONArray attrs = reqJson.getJSONArray("attrs");
         if (attrs == null || attrs.size() < 1) {
@@ -314,110 +314,6 @@ public class EditOwnerCmd extends Cmd {
         flag = fileRelInnerServiceSMOImpl.updateFileRel(fileRelPo);
         if (flag < 1) {
             throw new CmdException("保存文件失败");
-        }
-    }
-
-
-    private void synchronousAccessControl(JSONObject reqJson) {
-
-        //todo 查询是否人员表中有数据
-
-        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
-        accessControlFaceDto.setPersonId(reqJson.getString("memberId"));
-        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
-        AccessControlFacePo accessControlFacePo = null;
-        if (!ListUtil.isNull(accessControlFaceDtos)) {
-            for (AccessControlFaceDto tmpAccessControlFaceDto : accessControlFaceDtos) {
-                accessControlFacePo = BeanConvertUtil.covertBean(tmpAccessControlFaceDto, AccessControlFacePo.class);
-                accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
-                accessControlFacePo.setMessage("待下发到门禁");
-                String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN,"IMG_PATH");
-
-                accessControlFacePo.setFacePath(imgUrl+reqJson.getString("ownerPhoto"));
-            }
-            accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
-            return;
-        }
-        // todo 查询业主房屋
-
-        OwnerRoomRelDto ownerRoomRelDto = new OwnerRoomRelDto();
-        ownerRoomRelDto.setOwnerId(reqJson.getString("memberId"));
-        List<OwnerRoomRelDto> ownerRoomRelDtos = ownerRoomRelV1InnerServiceSMOImpl.queryOwnerRoomRels(ownerRoomRelDto);
-
-        if (ListUtil.isNull(ownerRoomRelDtos)) {
-            return;
-        }
-
-        List<String> roomIds = new ArrayList<>();
-
-        for (OwnerRoomRelDto tmpOwnerRoomRelDto : ownerRoomRelDtos) {
-            roomIds.add(tmpOwnerRoomRelDto.getRoomId());
-        }
-
-        RoomDto roomDto = new RoomDto();
-        roomDto.setRoomIds(roomIds.toArray(new String[roomIds.size()]));
-        List<RoomDto> roomDtos = roomV1InnerServiceSMOImpl.queryRooms(roomDto);
-
-        if (ListUtil.isNull(roomDtos)) {
-            return;
-        }
-
-        //todo 查询人员信息
-        OwnerDto ownerDto = new OwnerDto();
-        ownerDto.setMemberId(reqJson.getString("memberId"));
-        List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
-        if (ListUtil.isNull(ownerDtos)) {
-            return;
-        }
-        ownerDto = ownerDtos.get(0);
-        //todo 查询业主照片
-        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
-        FileRelDto fileRelDto = new FileRelDto();
-        fileRelDto.setObjId(ownerDto.getMemberId());
-        fileRelDto.setRelTypeCd("10000"); //人员照片
-        List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
-        if (!ListUtil.isNull(fileRelDtos)) {
-            List<String> urls = new ArrayList<>();
-            for (FileRelDto fileRel : fileRelDtos) {
-                urls.add(imgUrl + fileRel.getFileRealName());
-                ownerDto.setUrl(imgUrl + fileRel.getFileRealName());
-            }
-            ownerDto.setUrls(urls);
-        }
-
-        for(RoomDto tmpRoomDto : roomDtos){
-            String unitId = tmpRoomDto.getUnitId();
-            if (StringUtil.isEmpty(unitId)) {
-                continue;
-            }
-
-            AccessControlFloorDto accessControlFloorDto = new AccessControlFloorDto();
-            accessControlFloorDto.setUnitId(unitId);
-            accessControlFloorDto.setCommunityId(reqJson.getString("communityId"));
-            List<AccessControlFloorDto> accessControlFloorDtos = accessControlFloorV1InnerServiceSMOImpl.queryAccessControlFloors(accessControlFloorDto);
-            if (ListUtil.isNull(accessControlFloorDtos)) {
-                continue;
-            }
-            for (AccessControlFloorDto tmpAccessControlFloorDto : accessControlFloorDtos) {
-                accessControlFacePo = new AccessControlFacePo();
-                accessControlFacePo.setFacePath(ownerDto.getUrl());
-                accessControlFacePo.setCommunityId(tmpAccessControlFloorDto.getCommunityId());
-                accessControlFacePo.setIdNumber(ownerDto.getIdCard());
-                accessControlFacePo.setComeId(tmpAccessControlFloorDto.getAcfId());
-                accessControlFacePo.setComeType(AccessControlFaceDto.COME_TYPE_FLOOR);
-                accessControlFacePo.setEndTime(DateUtil.getFormatTimeStringA(ownerRoomRelDtos.get(0).getEndTime()));
-                accessControlFacePo.setStartTime(DateUtil.getFormatTimeStringA(ownerRoomRelDtos.get(0).getStartTime()));
-                accessControlFacePo.setCardNumber("");
-                accessControlFacePo.setMachineId(tmpAccessControlFloorDto.getMachineId());
-                accessControlFacePo.setMessage("待下发到门禁");
-                accessControlFacePo.setMfId(GenerateCodeFactory.getGeneratorId("11"));
-                accessControlFacePo.setName(ownerDto.getName());
-                accessControlFacePo.setPersonId(ownerDto.getMemberId());
-                accessControlFacePo.setPersonType(AccessControlFaceDto.PERSON_TYPE_OWNER);
-                accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
-                accessControlFacePo.setRoomName(roomDtos.get(0).getFloorNum() + "-" + roomDtos.get(0).getUnitNum() + "-" + roomDtos.get(0).getRoomNum());
-                accessControlFaceV1InnerServiceSMOImpl.saveAccessControlFace(accessControlFacePo);
-            }
         }
     }
 

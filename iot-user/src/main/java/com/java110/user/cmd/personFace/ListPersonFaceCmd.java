@@ -17,9 +17,13 @@ package com.java110.user.cmd.personFace;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.file.FileRelDto;
+import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cache.MappingCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.constant.MappingConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
@@ -29,8 +33,10 @@ import com.java110.dto.app.AppDto;
 import com.java110.intf.user.IPersonFaceV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.personFace.PersonFaceDto;
+
 import java.util.List;
 import java.util.ArrayList;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
@@ -50,7 +56,7 @@ import org.slf4j.LoggerFactory;
 @Java110Cmd(serviceCode = "personFace.listPersonFace")
 public class ListPersonFaceCmd extends Cmd {
 
-  private static Logger logger = LoggerFactory.getLogger(ListPersonFaceCmd.class);
+    private static Logger logger = LoggerFactory.getLogger(ListPersonFaceCmd.class);
     @Autowired
     private IPersonFaceV1InnerServiceSMO personFaceV1InnerServiceSMOImpl;
 
@@ -60,7 +66,7 @@ public class ListPersonFaceCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
 
         String appId = CmdContextUtils.getAppId(cmdDataFlowContext);
-        if(AppDto.USER_APP_ID.equals(appId)){
+        if (AppDto.USER_APP_ID.equals(appId)) {
             Assert.hasKeyAndValue(reqJson, "openId", "未包含openId");
         }
 
@@ -69,22 +75,27 @@ public class ListPersonFaceCmd extends Cmd {
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-           PersonFaceDto personFaceDto = BeanConvertUtil.covertBean(reqJson, PersonFaceDto.class);
+        PersonFaceDto personFaceDto = BeanConvertUtil.covertBean(reqJson, PersonFaceDto.class);
 
-           int count = personFaceV1InnerServiceSMOImpl.queryPersonFacesCount(personFaceDto);
+        int count = personFaceV1InnerServiceSMOImpl.queryPersonFacesCount(personFaceDto);
 
-           List<PersonFaceDto> personFaceDtos = null;
+        List<PersonFaceDto> personFaceDtos = null;
+        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
 
-           if (count > 0) {
-               personFaceDtos = personFaceV1InnerServiceSMOImpl.queryPersonFaces(personFaceDto);
-           } else {
-               personFaceDtos = new ArrayList<>();
-           }
+        if (count > 0) {
+            personFaceDtos = personFaceV1InnerServiceSMOImpl.queryPersonFaces(personFaceDto);
+            for (PersonFaceDto tmpPersonFaceDto : personFaceDtos) {
+                //查询照片
+                tmpPersonFaceDto.setFaceUrl(imgUrl + tmpPersonFaceDto.getFaceUrl());
+            }
+        } else {
+            personFaceDtos = new ArrayList<>();
+        }
 
-           ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, personFaceDtos);
+        ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, personFaceDtos);
 
-           ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
+        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
-           cmdDataFlowContext.setResponseEntity(responseEntity);
+        cmdDataFlowContext.setResponseEntity(responseEntity);
     }
 }

@@ -82,8 +82,9 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">
-                                            <vc:i18n name='编号' namespace='personFace'></vc:i18n>
+                                            <vc:i18n name='人脸' namespace='personFace'></vc:i18n>
                                         </th>
+                                        
                                         <th class="text-center">
                                             <vc:i18n name='房屋名称' namespace='personFace'></vc:i18n>
                                         </th>
@@ -99,9 +100,7 @@
                                         <th class="text-center">
                                             <vc:i18n name='人员类型' namespace='personFace'></vc:i18n>
                                         </th>
-                                        <th class="text-center">
-                                            <vc:i18n name='人脸' namespace='personFace'></vc:i18n>
-                                        </th>
+                                       
                                         <th class="text-center">
                                             <vc:i18n name='微信openId' namespace='personFace'></vc:i18n>
                                         </th>
@@ -115,23 +114,29 @@
                                             <vc:i18n name='申请时间' namespace='personFace'></vc:i18n>
                                         </th>
                                         <th class="text-center">
+                                            <vc:i18n name='编号' namespace='personFace'></vc:i18n>
+                                        </th>
+                                        <th class="text-center">
                                             <vc:i18n name='操作'></vc:i18n>
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="personFace in personFaceInfo.personFaces">
-                                        <td class="text-center">{{personFace.pfId}}</td>
+                                        <td class="text-center" style="white-space: nowrap;">
+                                            <img style="width: 60px; height: 60px;" class="border-radius" v-if="personFace.faceUrl" v-bind:src="personFace.faceUrl" v-on:click="_viewOwnerFace(personFace.faceUrl)" />
+                                            <img style="width: 60px; height: 60px;" class="border-radius" v-else src="/img/noPhoto.jpg" />
+                                        </td>
                                         <td class="text-center">{{personFace.roomName}}</td>
-                                        <td class="text-center">{{personFace.pfqId}}</td>
+                                        <td class="text-center">{{personFace.qrcodeName}}</td>
                                         <td class="text-center">{{personFace.personName}}</td>
                                         <td class="text-center">{{personFace.personTel}}</td>
                                         <td class="text-center">{{personFace.ownerTypeCd == '1001'?'业主本人':'家庭成员'}}</td>
-                                        <td class="text-center">{{personFace.faceUrl}}</td>
                                         <td class="text-center">{{personFace.openId}}</td>
-                                        <td class="text-center">{{personFace.state}}</td>
-                                        <td class="text-center">{{personFace.remark}}</td>
+                                        <td class="text-center" >{{personFace.stateName}}</td>
+                                        <td class="text-center">{{personFace.remark || '-'}}</td>
                                         <td class="text-center">{{personFace.createTime}}</td>
+                                        <td class="text-center">{{personFace.pfId}}</td>
                                         <td class="text-center">
                                             <div class="btn-group">
                                                 <button class="btn-white btn btn-xs"

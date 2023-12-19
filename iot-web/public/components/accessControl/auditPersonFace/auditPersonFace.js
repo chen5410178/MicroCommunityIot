@@ -43,78 +43,6 @@
                             errInfo: "房屋名称不能超过64"
                         },
                     ],
-                    'auditPersonFaceInfo.pfqId': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "二维码不能为空"
-                        },
-                        {
-                            limit: "maxLength",
-                            param: "30",
-                            errInfo: "二维码不能超过30"
-                        },
-                    ],
-                    'auditPersonFaceInfo.personName': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "人员名称不能为空"
-                        },
-                        {
-                            limit: "maxLength",
-                            param: "64",
-                            errInfo: "人员名称不能超过64"
-                        },
-                    ],
-                    'auditPersonFaceInfo.personTel': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "人员电话不能为空"
-                        },
-                        {
-                            limit: "maxLength",
-                            param: "11",
-                            errInfo: "人员电话不能超过11"
-                        },
-                    ],
-                    'auditPersonFaceInfo.ownerTypeCd': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "1001不能为空"
-                        },
-                        {
-                            limit: "maxLength",
-                            param: "4",
-                            errInfo: "1001不能超过4"
-                        },
-                    ],
-                    'auditPersonFaceInfo.faceUrl': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "人脸不能为空"
-                        },
-                        {
-                            limit: "maxLength",
-                            param: "512",
-                            errInfo: "人脸不能超过512"
-                        },
-                    ],
-                    'auditPersonFaceInfo.openId': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "openId不能为空"
-                        },
-                        {
-                            limit: "maxLength",
-                            param: "64",
-                            errInfo: "openId不能超过64"
-                        },
-                    ],
                     'auditPersonFaceInfo.state': [
                         {
                             limit: "required",
@@ -155,7 +83,7 @@
                 }
 
                 vc.http.apiPost(
-                    'personFace.updatePersonFace',
+                    '/personFace.authPersonFace',
                     JSON.stringify($that.auditPersonFaceInfo),
                     {
                         emulateJSON: true
@@ -169,12 +97,12 @@
                             vc.emit('personFaceManage', 'listPersonFace', {});
                             return;
                         }
-                        vc.message(_json.msg);
+                        vc.toast(_json.msg);
                     },
                     function (errInfo, error) {
                         console.log('请求失败处理');
 
-                        vc.message(errInfo);
+                        vc.toast(errInfo);
                     });
             },
             refreshAuditPersonFaceInfo: function () {

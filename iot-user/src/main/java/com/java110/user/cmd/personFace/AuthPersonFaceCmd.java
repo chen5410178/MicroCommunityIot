@@ -25,8 +25,10 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.personFace.PersonFaceDto;
 import com.java110.intf.user.IPersonFaceV1InnerServiceSMO;
 import com.java110.po.personFace.PersonFacePo;
+import com.java110.user.bmo.IAuditPersonFaceAgreeBMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +53,9 @@ public class AuthPersonFaceCmd extends Cmd {
     @Autowired
     private IPersonFaceV1InnerServiceSMO personFaceV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IAuditPersonFaceAgreeBMO auditPersonFaceAgreeBMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "pfId", "pfId不能为空");
@@ -68,6 +73,12 @@ public class AuthPersonFaceCmd extends Cmd {
         if (flag < 1) {
             throw new CmdException("更新数据失败");
         }
+
+        if(!PersonFaceDto.STATE_C.equals(personFacePo.getState())){
+            return;
+        }
+
+        auditPersonFaceAgreeBMOImpl.agree(personFacePo);
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }

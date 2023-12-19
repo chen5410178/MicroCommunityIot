@@ -16,6 +16,7 @@ import java.util.Date;
  **/
 public class PersonFaceDto extends PersonFaceQrcodeDto implements Serializable {
 
+    public static final String STATE_C = "C";
     private String pfId;
     private String openId;
     private String ownerTypeCd;

@@ -85,7 +85,12 @@
             _switchState:function(_state){
                 $that.personFaceInfo.conditions.state = _state.statusCd;
                 $that._listPersonFaces(DEFAULT_PAGE, DEFAULT_ROWS);
-            }
+            },
+            _viewOwnerFace: function(_url) {
+                vc.emit('viewImage', 'showImage', {
+                    url: _url
+                });
+            },
 
 
         }
