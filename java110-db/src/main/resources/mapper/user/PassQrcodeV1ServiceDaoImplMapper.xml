@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="passQrcodeV1ServiceDaoImpl">
+
+
+    <!-- 保存通信码信息 add by wuxw 2018-07-03 -->
+    <insert id="savePassQrcodeInfo" parameterType="Map">
+        insert into pass_qrcode(
+        person_name,qrcode_time,open_id,qrcode,pq_id,remark,state,person_tel,owner_id,community_id
+        ) values (
+        #{personName},#{qrcodeTime},#{openId},#{qrcode},#{pqId},#{remark},#{state},#{personTel},#{ownerId},#{communityId}
+        )
+    </insert>
+
+
+    <!-- 查询通信码信息 add by wuxw 2018-07-03 -->
+    <select id="getPassQrcodeInfo" parameterType="Map" resultType="Map">
+        select t.person_name,t.person_name personName,t.qrcode_time,t.qrcode_time qrcodeTime,t.open_id,t.open_id
+        openId,t.qrcode,t.pq_id,t.pq_id pqId,t.remark,t.status_cd,t.status_cd statusCd,t.state,t.person_tel,t.person_tel
+        personTel,t.owner_id,t.owner_id ownerId,t.community_id,t.community_id communityId
+        from pass_qrcode t
+        where 1 =1
+        <if test="personName !=null and personName != ''">
+            and t.person_name= #{personName}
+        </if>
+        <if test="qrcodeTime !=null and qrcodeTime != ''">
+            and t.qrcode_time= #{qrcodeTime}
+        </if>
+        <if test="openId !=null and openId != ''">
+            and t.open_id= #{openId}
+        </if>
+        <if test="qrcode !=null and qrcode != ''">
+            and t.qrcode= #{qrcode}
+        </if>
+        <if test="pqId !=null and pqId != ''">
+            and t.pq_id= #{pqId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="personTel !=null and personTel != ''">
+            and t.person_tel= #{personTel}
+        </if>
+        <if test="ownerId !=null and ownerId != ''">
+            and t.owner_id= #{ownerId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改通信码信息 add by wuxw 2018-07-03 -->
+    <update id="updatePassQrcodeInfo" parameterType="Map">
+        update pass_qrcode t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="personName !=null and personName != ''">
+            , t.person_name= #{personName}
+        </if>
+        <if test="qrcodeTime !=null and qrcodeTime != ''">
+            , t.qrcode_time= #{qrcodeTime}
+        </if>
+        <if test="openId !=null and openId != ''">
+            , t.open_id= #{openId}
+        </if>
+        <if test="qrcode !=null and qrcode != ''">
+            , t.qrcode= #{qrcode}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="personTel !=null and personTel != ''">
+            , t.person_tel= #{personTel}
+        </if>
+        <if test="ownerId !=null and ownerId != ''">
+            , t.owner_id= #{ownerId}
+        </if>
+
+        where 1=1
+        <if test="pqId !=null and pqId != ''">
+            and t.pq_id= #{pqId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+    </update>
+
+    <!-- 查询通信码数量 add by wuxw 2018-07-03 -->
+    <select id="queryPassQrcodesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from pass_qrcode t
+        where 1 =1
+        <if test="personName !=null and personName != ''">
+            and t.person_name= #{personName}
+        </if>
+        <if test="qrcodeTime !=null and qrcodeTime != ''">
+            and t.qrcode_time= #{qrcodeTime}
+        </if>
+        <if test="openId !=null and openId != ''">
+            and t.open_id= #{openId}
+        </if>
+        <if test="qrcode !=null and qrcode != ''">
+            and t.qrcode= #{qrcode}
+        </if>
+        <if test="pqId !=null and pqId != ''">
+            and t.pq_id= #{pqId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="personTel !=null and personTel != ''">
+            and t.person_tel= #{personTel}
+        </if>
+        <if test="ownerId !=null and ownerId != ''">
+            and t.owner_id= #{ownerId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+
+    </select>
+
+</mapper>
