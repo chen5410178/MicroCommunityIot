@@ -59,6 +59,8 @@ public class AuthPersonFaceCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "pfId", "pfId不能为空");
+        Assert.hasKeyAndValue(reqJson, "state", "state不能为空");
+        Assert.hasKeyAndValue(reqJson, "remark", "remark不能为空");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
 
     }
@@ -67,7 +69,11 @@ public class AuthPersonFaceCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        PersonFacePo personFacePo = BeanConvertUtil.covertBean(reqJson, PersonFacePo.class);
+        PersonFacePo personFacePo = new PersonFacePo();
+        personFacePo.setState(reqJson.getString("state"));
+        personFacePo.setRemark(reqJson.getString("remark"));
+        personFacePo.setPfId(reqJson.getString("pfId"));
+        personFacePo.setCommunityId(reqJson.getString("communityId"));
         int flag = personFaceV1InnerServiceSMOImpl.updatePersonFace(personFacePo);
 
         if (flag < 1) {
