@@ -68,9 +68,9 @@ public class AccessControlFaceV1ServiceDaoImpl extends BaseServiceDao implements
     public List<Map> getAccessControlFaceInfo(Map info) throws DAOException {
         logger.debug("查询 getAccessControlFaceInfo 入参 info : {}",info);
 
-        List<Map> businessAccessControlFaceInfos = sqlSessionTemplate.selectList("accessControlFaceV1ServiceDaoImpl.getAccessControlFaceInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlFaceV1ServiceDaoImpl.getAccessControlFaceInfo",info);
 
-        return businessAccessControlFaceInfos;
+        return infos;
     }
 
 
