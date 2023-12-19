@@ -27,6 +27,8 @@ public class PassQrcodeSettingDto extends PageDto implements Serializable {
     private String communityId;
     private String smsValidate;
 
+    private String qrcodeUrl;
+
 
     private Date createTime;
 
@@ -128,5 +130,13 @@ public class PassQrcodeSettingDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getQrcodeUrl() {
+        return qrcodeUrl;
+    }
+
+    public void setQrcodeUrl(String qrcodeUrl) {
+        this.qrcodeUrl = qrcodeUrl;
     }
 }

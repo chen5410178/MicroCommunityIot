@@ -85,7 +85,7 @@
                 $that.addPassQrcodeSettingInfo.communityId = vc.getCurrentCommunity().communityId;
           
                 vc.http.apiPost(
-                    '/passcode.savePassQrcode',
+                    '/passcode.savePassQrcodeSetting',
                     JSON.stringify($that.addPassQrcodeSettingInfo),
                     {
                         emulateJSON: true

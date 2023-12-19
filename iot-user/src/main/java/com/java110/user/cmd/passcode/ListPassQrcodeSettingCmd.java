@@ -18,17 +18,22 @@ package com.java110.user.cmd.passcode;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cache.UrlCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.dto.personFaceQrcode.PersonFaceQrcodeDto;
 import com.java110.intf.user.IPassQrcodeSettingV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.passQrcodeSetting.PassQrcodeSettingDto;
+
 import java.util.List;
 import java.util.ArrayList;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
@@ -48,7 +53,7 @@ import org.slf4j.LoggerFactory;
 @Java110Cmd(serviceCode = "passcode.listPassQrcodeSetting")
 public class ListPassQrcodeSettingCmd extends Cmd {
 
-  private static Logger logger = LoggerFactory.getLogger(ListPassQrcodeSettingCmd.class);
+    private static Logger logger = LoggerFactory.getLogger(ListPassQrcodeSettingCmd.class);
     @Autowired
     private IPassQrcodeSettingV1InnerServiceSMO passQrcodeSettingV1InnerServiceSMOImpl;
 
@@ -62,22 +67,41 @@ public class ListPassQrcodeSettingCmd extends Cmd {
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-           PassQrcodeSettingDto passQrcodeSettingDto = BeanConvertUtil.covertBean(reqJson, PassQrcodeSettingDto.class);
+        PassQrcodeSettingDto passQrcodeSettingDto = BeanConvertUtil.covertBean(reqJson, PassQrcodeSettingDto.class);
 
-           int count = passQrcodeSettingV1InnerServiceSMOImpl.queryPassQrcodeSettingsCount(passQrcodeSettingDto);
+        int count = passQrcodeSettingV1InnerServiceSMOImpl.queryPassQrcodeSettingsCount(passQrcodeSettingDto);
 
-           List<PassQrcodeSettingDto> passQrcodeSettingDtos = null;
+        List<PassQrcodeSettingDto> passQrcodeSettingDtos = null;
 
-           if (count > 0) {
-               passQrcodeSettingDtos = passQrcodeSettingV1InnerServiceSMOImpl.queryPassQrcodeSettings(passQrcodeSettingDto);
-           } else {
-               passQrcodeSettingDtos = new ArrayList<>();
-           }
+        if (count > 0) {
+            passQrcodeSettingDtos = passQrcodeSettingV1InnerServiceSMOImpl.queryPassQrcodeSettings(passQrcodeSettingDto);
+        } else {
+            passQrcodeSettingDtos = new ArrayList<>();
+        }
 
-           ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, passQrcodeSettingDtos);
+        //todo 生成二维码
+        generatorQrcode(passQrcodeSettingDtos);
 
-           ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
+        ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, passQrcodeSettingDtos);
 
-           cmdDataFlowContext.setResponseEntity(responseEntity);
+        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
+
+        cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    /**
+     * 生成二维码
+     *
+     * @param passQrcodeSettingDtos
+     */
+    private void generatorQrcode(List<PassQrcodeSettingDto> passQrcodeSettingDtos) {
+        if (ListUtil.isNull(passQrcodeSettingDtos)) {
+            return;
+        }
+
+        String ownerUrl = UrlCache.getOwnerUrl() + "/#/pages/user/passQrcode?communityId=" + passQrcodeSettingDtos.get(0).getCommunityId() + "&pqsId=";
+        for (PassQrcodeSettingDto passQrcodeSettingDto : passQrcodeSettingDtos) {
+            passQrcodeSettingDto.setQrcodeUrl(ownerUrl + passQrcodeSettingDto.getPqsId());
+        }
     }
 }

@@ -26,11 +26,16 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
+import com.java110.dto.user.UserDto;
 import com.java110.intf.user.IPassQrcodeSettingV1InnerServiceSMO;
+import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.passQrcodeSetting.PassQrcodeSettingPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -52,6 +57,9 @@ public class SavePassQrcodeSettingCmd extends Cmd {
     @Autowired
     private IPassQrcodeSettingV1InnerServiceSMO passQrcodeSettingV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "qrcodeName", "请求报文中未包含qrcodeName");
@@ -65,6 +73,14 @@ public class SavePassQrcodeSettingCmd extends Cmd {
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
+
+        String userId = CmdContextUtils.getUserId(cmdDataFlowContext);
+
+        UserDto userDto = new UserDto();
+        userDto.setUserId(userId);
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+
+        Assert.listOnlyOne(userDtos,"用户未登录");
 
         PassQrcodeSettingPo passQrcodeSettingPo = BeanConvertUtil.covertBean(reqJson, PassQrcodeSettingPo.class);
         passQrcodeSettingPo.setPqsId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
