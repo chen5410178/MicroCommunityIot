@@ -84,6 +84,8 @@ public class SavePassQrcodeSettingCmd extends Cmd {
 
         PassQrcodeSettingPo passQrcodeSettingPo = BeanConvertUtil.covertBean(reqJson, PassQrcodeSettingPo.class);
         passQrcodeSettingPo.setPqsId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        passQrcodeSettingPo.setCreateStaffId(userId);
+        passQrcodeSettingPo.setCreateStaffName(userDtos.get(0).getName());
         int flag = passQrcodeSettingV1InnerServiceSMOImpl.savePassQrcodeSetting(passQrcodeSettingPo);
 
         if (flag < 1) {
