@@ -82,6 +82,13 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function(options) {
+			// context.onLoad(options);
+			// let _that = this;
+			// context.getOwner(function(_owner) {
+			// 	_that.ownerInfo = _owner;
+			// 	_that._loadVisitList();
+			// });
+			
 			let _that = this;
 			_that._loadVisitList();
 		},

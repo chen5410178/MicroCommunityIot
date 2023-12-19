@@ -30,6 +30,7 @@ import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.visit.VisitTypeDto;
 import com.java110.intf.accessControl.IVisitTypeV1InnerServiceSMO;
 import com.java110.intf.accessControl.IVisitV1InnerServiceSMO;
+import com.java110.intf.community.IRoomInnerServiceSMO;
 import com.java110.intf.community.IRoomsTreeInnerServiceSMO;
 import com.java110.po.visit.VisitPo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,7 @@ public class SaveVisitCmd extends Cmd {
     private static Logger logger = LoggerFactory.getLogger(SaveVisitCmd.class);
 
     public static final String CODE_PREFIX_ID = "10";
+    public static final String FLAG_H5 = "h5";
 
     @Autowired
     private IVisitV1InnerServiceSMO visitV1InnerServiceSMOImpl;
@@ -68,12 +70,32 @@ public class SaveVisitCmd extends Cmd {
     @Resource
     private IRoomsTreeInnerServiceSMO roomsTreeInnerServiceSMOImpl;
 
+    @Autowired
+    private IRoomInnerServiceSMO roomInnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "name", "name不能为空");
         Assert.hasKeyAndValue(reqJson, "visitGender", "visitGender不能为空");
         Assert.hasKeyAndValue(reqJson, "phoneNumber", "phoneNumber不能为空");
         Assert.hasKeyAndValue(reqJson, "roomName", "roomName不能为空");
+        Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
+        if (FLAG_H5.equals(reqJson.getString("flag"))) {
+            RoomDto roomDto = new RoomDto();
+            String[] roomNames = null;
+            try {
+                roomNames = reqJson.getString("roomName").split("-");
+                roomDto.setFloorNum(roomNames[0]);
+                roomDto.setUnitNum(roomNames[1]);
+                roomDto.setRoomNum(roomNames[2]);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("房屋编号格式错误");
+            }
+            roomDto.setCommunityId(reqJson.getString("communityId"));
+            List<RoomDto> roomDtos = roomInnerServiceSMOImpl.queryRoomsByRoomName(roomDto);
+            Assert.listOnlyOne(roomDtos, "房屋不存在");
+            reqJson.put("roomId", roomDtos.get(0).getRoomId());
+        }
         Assert.hasKeyAndValue(reqJson, "roomId", "roomId不能为空");
         Assert.hasKeyAndValue(reqJson, "typeId", "typeId不能为空");
         Assert.hasKeyAndValue(reqJson, "state", "state不能为空");

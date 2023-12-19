@@ -140,4 +140,5 @@ public interface IRoomServiceDao {
 
     public List<Map> getRoomInfos(Map info);
 
+    List<Map> queryRoomsByRoomName(Map info);
 }

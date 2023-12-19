@@ -2,12 +2,8 @@
 	<view>
 		<view class="block__title">房屋信息</view>
 		<view class="cu-form-group">
-			<view class="title">房屋ID</view>
-			<input v-model="roomId" placeholder="请输入房屋ID" class="text-right"></input>
-		</view>
-		<view class="cu-form-group">
 			<view class="title">房屋编号</view>
-			<input v-model="roomName" placeholder="请输入房屋编号" class="text-right"></input>
+			<input v-model="roomName" placeholder="请输入房屋编号(楼栋-单元-房屋)" class="text-right"></input>
 		</view>
 		<view class="block__title">访客信息</view>
 		<view class="cu-form-group">
@@ -129,7 +125,8 @@
 		 */
 		onLoad: function(options) {
 			let that = this;
-			listVisitType({page:-1, row:100, communityId:'102023021386560001'}).then(res => {
+			this.communityId = options.communityId;
+			listVisitType({page:-1, row:100, communityId:this.communityId}).then(res => {
 				if(res.code == 0) {
 					this.reasonTypeScopes = res.data.map(item => {
 						return {
@@ -207,12 +204,13 @@
 					typeId: this.reasonType,
 					visitCase: this.visitCase,
 					state: '0',
-					communityId: this.communityId
+					communityId: this.communityId,
+					flag: 'h5'
 				};
 				
 				let msg = "";
-				if (obj.roomId == "") {
-					msg = "请选择房屋";
+				if (obj.roomName == "") {
+					msg = "请输入房屋编号";
 				} else if (obj.name == "") {
 					msg = "请填写访客姓名";
 				} else if (checkStrLength(obj.name) > 255) {
@@ -226,8 +224,8 @@
 				}else{
 					let visitTime = Date.parse(new Date(obj.visitTime.replace(/-/g, '/'))),
 					now = Date.parse(new Date());
-					if(now - visitTime > 1800 * 1000){
-						msg = "开始时间有误";
+					if(now - visitTime > 0){
+						msg = "开始时间有误,小于当前时间";
 					}
 				}
 				

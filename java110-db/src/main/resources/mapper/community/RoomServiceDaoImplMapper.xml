@@ -935,4 +935,19 @@
             limit #{page},#{row}
         </if>
     </select>
+
+    <select id="queryRoomsByRoomName" resultType="Map">
+        select 
+        br.fee_coefficient,br.fee_coefficient feeCoefficient,br.section,br.status_cd,
+        br.status_cd statusCd,br.remark,br.user_id,br.user_id userId,br.room_id,br.room_id roomId,
+        br.layer,br.built_up_area,br.built_up_area builtUpArea,br.room_num,br.room_num roomNum,
+        br.unit_id,br.unit_id unitId,br.b_id,br.b_id bId,br.apartment,br.state,
+        br.room_type roomType,br.room_type,br.room_sub_type,br.room_rent,br.room_area,br.room_sub_type roomSubType,
+        br.room_rent roomRent,br.room_area roomArea
+        from building_room br
+        left join building_unit bu on br.unit_id = bu.unit_id and bu.status_cd = '0'
+        left join f_floor ff on bu.floor_id = ff.floor_id and ff.status_cd = '0'
+        where br.status_cd = '0'
+        and br.room_num = #{roomNum} and bu.unit_num = #{unitNum} and ff.floor_num = #{floorNum} and ff.community_id = #{communityId}
+    </select>
 </mapper>
