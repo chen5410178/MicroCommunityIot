@@ -275,11 +275,6 @@ public class RoomInnerServiceSMOImpl  implements IRoomInnerServiceSMO {
 
     }
 
-    @Override
-    public List<RoomDto> queryRoomsByRoomName(RoomDto roomDto) {
-        return  BeanConvertUtil.covertBeanList(roomServiceDaoImpl.queryRoomsByRoomName(BeanConvertUtil.beanCovertMap(roomDto)), RoomDto.class);
-    }
-
 
     public IRoomServiceDao getRoomServiceDaoImpl() {
         return roomServiceDaoImpl;

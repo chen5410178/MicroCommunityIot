@@ -94,7 +94,4 @@ public interface IRoomInnerServiceSMO {
      */
     @RequestMapping(value = "/queryRoomsByOwner", method = RequestMethod.POST)
     List<RoomDto> queryRoomsByOwner(@RequestBody RoomDto roomDto);
-
-    @RequestMapping(value = "/queryRoomsByRoomName", method = RequestMethod.POST)
-    List<RoomDto> queryRoomsByRoomName(RoomDto roomDto);
 }

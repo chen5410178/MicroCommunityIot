@@ -3,7 +3,7 @@
 		<view class="block__title">房屋信息</view>
 		<view class="cu-form-group">
 			<view class="title">房屋编号</view>
-			<input v-model="roomName" placeholder="请输入房屋编号(楼栋-单元-房屋)" class="text-right"></input>
+			<view class="text-right" @click="_chooseRoom()"><text>{{roomName || '请选择 >'}}</text></view>
 		</view>
 		<view class="block__title">访客信息</view>
 		<view class="cu-form-group">
@@ -139,28 +139,6 @@
 			});
 			//context.onLoad(options);
 			this.visitTime = formatTimeNow();
-			// 房屋信息
-			// context.getRooms().then(res => {
-			// 	let arr = res.data.rooms;
-			// 	let roomCloums = [];
-			// 	let roomIdArr = [];
-			// 	arr.map(item => {
-			// 		roomCloums.push(item.floorNum + "号楼" + item.unitNum + "单元" + item.roomNum + "室");
-			// 		roomIdArr.push(item.roomId);
-			// 	})
-			// 	that.roomCloums = roomCloums;
-			// 	that.roomIdArr = roomIdArr;
-			// 	that.ownerId = res.data.owner.ownerId;
-			// 	that.userId = res.data.owner.userId;
-			// 	that.communityId = res.data.owner.communityId;
-			// 	// 只有一个房屋时，默认选中
-			// 	if(roomCloums.length == 1){
-			// 		that.roomId = roomIdArr[0];
-			// 		that.roomName = roomCloums[0];
-			// 	}
-			// 	// 查询免费时长、次数信息
-			// 	that._queryFreeInfo();
-			// });
 		},
 		
 		methods: {
@@ -205,12 +183,11 @@
 					visitCase: this.visitCase,
 					state: '0',
 					communityId: this.communityId,
-					flag: 'h5'
 				};
 				
 				let msg = "";
 				if (obj.roomName == "") {
-					msg = "请输入房屋编号";
+					msg = "请选择房屋编号";
 				} else if (obj.name == "") {
 					msg = "请填写访客姓名";
 				} else if (checkStrLength(obj.name) > 255) {
@@ -265,7 +242,12 @@
 						duration: 2000
 					})
 				})
-			}
+			},
+			_chooseRoom: function() {
+				uni.navigateTo({
+					url: '/pages/room/selectRoom?communityId='+this.communityId
+				})
+			},
 		},
 
 		/**
@@ -276,7 +258,14 @@
 		/**
 		 * 生命周期函数--监听页面显示
 		 */
-		onShow: function() {},
+		onShow: function() {
+			let _selectRoom = uni.getStorageSync('selectRoom');
+			if(_selectRoom){
+				uni.removeStorageSync('selectRoom');
+				this.roomId = _selectRoom.roomId;
+				this.roomName = _selectRoom.roomName;
+			}
+		},
 
 		/**
 		 * 生命周期函数--监听页面隐藏
