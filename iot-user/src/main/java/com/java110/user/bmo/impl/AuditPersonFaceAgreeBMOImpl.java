@@ -94,7 +94,7 @@ public class AuditPersonFaceAgreeBMOImpl implements IAuditPersonFaceAgreeBMO {
 
         if (ListUtil.isNull(ownerDtos)) {
             // todo 保存人员信息并且绑定关系
-            addOwnerAndRel(personFaceDtos.get(0),memberIds);
+            addOwnerAndRel(personFaceDtos.get(0), memberIds);
 
         } else {
             /**
@@ -104,10 +104,9 @@ public class AuditPersonFaceAgreeBMOImpl implements IAuditPersonFaceAgreeBMO {
         }
 
 
-
     }
 
-    private void addOwnerAndRel(PersonFaceDto personFaceDto,List<String> memberIds) {
+    private void addOwnerAndRel(PersonFaceDto personFaceDto, List<String> memberIds) {
 
         OwnerPo ownerPo = new OwnerPo();
         ownerPo.setOwnerFlag(OwnerDto.OWNER_FLAG_TRUE);
@@ -124,15 +123,15 @@ public class AuditPersonFaceAgreeBMOImpl implements IAuditPersonFaceAgreeBMO {
         ownerPo.setUserId("-1");
         ownerPo.setOwnerId(ownerPo.getOwnerId());
 
-        if(OwnerDto.OWNER_TYPE_CD_MEMBER.equals(personFaceDto.getOwnerTypeCd())){
+        if (OwnerDto.OWNER_TYPE_CD_MEMBER.equals(personFaceDto.getOwnerTypeCd())) {
             OwnerDto ownerDto = new OwnerDto();
             ownerDto.setMemberIds(memberIds.toArray(new String[memberIds.size()]));
             ownerDto.setCommunityId(personFaceDto.getCommunityId());
             ownerDto.setOwnerTypeCd(OwnerDto.OWNER_TYPE_CD_OWNER);
             List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
-            if(ListUtil.isNull(ownerDtos)){
+            if (ListUtil.isNull(ownerDtos)) {
                 ownerPo.setOwnerTypeCd(OwnerDto.OWNER_TYPE_CD_OWNER);
-            }else{
+            } else {
                 ownerPo.setOwnerId(ownerDtos.get(0).getOwnerId());
             }
         }
@@ -185,16 +184,16 @@ public class AuditPersonFaceAgreeBMOImpl implements IAuditPersonFaceAgreeBMO {
             if (flag < 1) {
                 throw new CmdException("保存文件失败");
             }
-        }
-
-        JSONObject businessUnit = new JSONObject();
-        businessUnit.putAll(BeanConvertUtil.beanCovertMap(fileRelDtos.get(0)));
-        businessUnit.put("fileRealName", personFaceDtos.get(0).getFaceUrl());
-        businessUnit.put("fileSaveName", personFaceDtos.get(0).getFaceUrl());
-        FileRelPo fileRelPo = BeanConvertUtil.covertBean(businessUnit, FileRelPo.class);
-        flag = fileRelInnerServiceSMOImpl.updateFileRel(fileRelPo);
-        if (flag < 1) {
-            throw new CmdException("保存文件失败");
+        } else {
+            JSONObject businessUnit = new JSONObject();
+            businessUnit.putAll(BeanConvertUtil.beanCovertMap(fileRelDtos.get(0)));
+            businessUnit.put("fileRealName", personFaceDtos.get(0).getFaceUrl());
+            businessUnit.put("fileSaveName", personFaceDtos.get(0).getFaceUrl());
+            FileRelPo fileRelPo = BeanConvertUtil.covertBean(businessUnit, FileRelPo.class);
+            flag = fileRelInnerServiceSMOImpl.updateFileRel(fileRelPo);
+            if (flag < 1) {
+                throw new CmdException("保存文件失败");
+            }
         }
 
 

@@ -23,6 +23,7 @@
                 $that.refreshAuditPersonFaceInfo();
                 $('#auditPersonFaceModel').modal('show');
                 vc.copyObject(_params, $that.auditPersonFaceInfo);
+                $that.auditPersonFaceInfo.state='';
                 $that.auditPersonFaceInfo.communityId = vc.getCurrentCommunity().communityId;
             });
         },
@@ -31,28 +32,12 @@
                 return vc.validate.validate({
                     auditPersonFaceInfo: $that.auditPersonFaceInfo
                 }, {
-                    'auditPersonFaceInfo.roomName': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "房屋名称不能为空"
-                        },
-                        {
-                            limit: "maxLength",
-                            param: "64",
-                            errInfo: "房屋名称不能超过64"
-                        },
-                    ],
+                    
                     'auditPersonFaceInfo.state': [
                         {
                             limit: "required",
                             param: "",
                             errInfo: "状态不能为空"
-                        },
-                        {
-                            limit: "maxLength",
-                            param: "12",
-                            errInfo: "状态不能超过12"
                         },
                     ],
                     'auditPersonFaceInfo.remark': [
@@ -60,12 +45,7 @@
                             limit: "required",
                             param: "",
                             errInfo: "审核说明不能为空"
-                        },
-                        {
-                            limit: "maxLength",
-                            param: "512",
-                            errInfo: "审核说明不能超过512"
-                        },
+                        }
                     ],
                     'auditPersonFaceInfo.pfId': [
                         {
@@ -94,7 +74,7 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#auditPersonFaceModel').modal('hide');
-                            vc.emit('personFaceManage', 'listPersonFace', {});
+                            vc.emit('personFace', 'listPersonFace', {});
                             return;
                         }
                         vc.toast(_json.msg);
