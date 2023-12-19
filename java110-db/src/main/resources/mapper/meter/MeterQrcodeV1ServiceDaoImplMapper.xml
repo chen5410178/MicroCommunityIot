@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="meterQrcodeV1ServiceDaoImpl">
+
+
+    <!-- 保存水电二维码信息 add by wuxw 2018-07-03 -->
+    <insert id="saveMeterQrcodeInfo" parameterType="Map">
+        insert into meter_qrcode(create_staff_name, query_way, create_staff_id, state, remark, mq_id, qrcode_name,
+                                 community_id)
+        values (#{createStaffName}, #{queryWay}, #{createStaffId}, #{state}, #{remark}, #{mqId}, #{qrcodeName},
+                #{communityId})
+    </insert>
+
+
+    <!-- 查询水电二维码信息 add by wuxw 2018-07-03 -->
+    <select id="getMeterQrcodeInfo" parameterType="Map" resultType="Map">
+        select t.create_staff_name,t.create_staff_name createStaffName,t.query_way,t.query_way
+        queryWay,t.create_staff_id,t.create_staff_id createStaffId,t.status_cd,t.status_cd
+        statusCd,t.remark,t.state,t.mq_id,t.mq_id mqId,t.qrcode_name,t.qrcode_name
+        qrcodeName,t.community_id,t.community_id communityId,t.create_time createTime,td.name queryWayName
+        from meter_qrcode t
+        left join t_dict td on t.query_way = td.status_cd and td.table_name = 'meter_qrcode' and td.table_columns = 'query_way'
+        where 1 =1
+        <if test="createStaffName !=null and createStaffName != ''">
+            and t.create_staff_name= #{createStaffName}
+        </if>
+        <if test="queryWay !=null and queryWay != ''">
+            and t.query_way= #{queryWay}
+        </if>
+        <if test="createStaffId !=null and createStaffId != ''">
+            and t.create_staff_id= #{createStaffId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="mqId !=null and mqId != ''">
+            and t.mq_id= #{mqId}
+        </if>
+        <if test="qrcodeName !=null and qrcodeName != ''">
+            and t.qrcode_name= #{qrcodeName}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="qrcodeNameLike !=null and qrcodeNameLike != ''">
+            and t.qrcode_name like concat('%', #{qrcodeNameLike}, '%')
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改水电二维码信息 add by wuxw 2018-07-03 -->
+    <update id="updateMeterQrcodeInfo" parameterType="Map">
+        update meter_qrcode t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="createStaffName !=null and createStaffName != ''">
+            , t.create_staff_name= #{createStaffName}
+        </if>
+        <if test="queryWay !=null and queryWay != ''">
+            , t.query_way= #{queryWay}
+        </if>
+        <if test="createStaffId !=null and createStaffId != ''">
+            , t.create_staff_id= #{createStaffId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="qrcodeName !=null and qrcodeName != ''">
+            , t.qrcode_name= #{qrcodeName}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="mqId !=null and mqId != ''">
+            and t.mq_id= #{mqId}
+        </if>
+
+    </update>
+
+    <!-- 查询水电二维码数量 add by wuxw 2018-07-03 -->
+    <select id="queryMeterQrcodesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from meter_qrcode t
+        where 1 =1
+        <if test="createStaffName !=null and createStaffName != ''">
+            and t.create_staff_name= #{createStaffName}
+        </if>
+        <if test="queryWay !=null and queryWay != ''">
+            and t.query_way= #{queryWay}
+        </if>
+        <if test="createStaffId !=null and createStaffId != ''">
+            and t.create_staff_id= #{createStaffId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="mqId !=null and mqId != ''">
+            and t.mq_id= #{mqId}
+        </if>
+        <if test="qrcodeName !=null and qrcodeName != ''">
+            and t.qrcode_name= #{qrcodeName}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="qrcodeNameLike !=null and qrcodeNameLike != ''">
+            and t.qrcode_name like concat('%', #{qrcodeNameLike}, '%')
+        </if>
+
+
+    </select>
+
+</mapper>
