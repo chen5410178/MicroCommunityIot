@@ -54,9 +54,9 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/personFace.savePersonFace,");// 人脸审核
         exclusions.append("/iot/api/personFace.listPersonFace,");// 人脸审核
         exclusions.append("/iot/api/upload/uploadImage,");// 上传图片
-
-
-
+        exclusions.append("/iot/api/floor.queryFloors,");// 上传图片
+        exclusions.append("/iot/api/unit.queryUnits,");// 上传图片
+        exclusions.append("/iot/api/room.queryRoomsByApp,");// 查询房屋
 
 
     }

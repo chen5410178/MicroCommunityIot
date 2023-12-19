@@ -2,10 +2,10 @@
 	<view>
 		<scroll-view scroll-x class="bg-white nav ">
 			<view class="flex text-center">
-				<view class="cu-item flex-sub" :class="active==0?'text-green cur':''" @tap="tabSelect(0)">
+				<view class="cu-item flex-sub" :class="active==0?'text-blue cur':''" @tap="tabSelect(0)">
 					申请人脸
 				</view>
-				<view class="cu-item flex-sub" :class="active==1?'text-green cur':''" @tap="tabSelect(1)">
+				<view class="cu-item flex-sub" :class="active==1?'text-blue cur':''" @tap="tabSelect(1)">
 					申请记录
 				</view>
 			</view>

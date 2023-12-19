@@ -213,7 +213,7 @@ export function refreshUserOpenId(_objData){
 // 异步上传图片
 export function uploadImageAsync(_objData,_that) {
 	return new Promise( (resolve, reject) => {
-		request({
+		requestNoAuth({
 			url: url.uploadImage,
 			data: _objData,
 			method: "POST",

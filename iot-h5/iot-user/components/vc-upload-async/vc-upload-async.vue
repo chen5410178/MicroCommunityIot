@@ -139,7 +139,7 @@
 								communityId: that.communityId
 							}
 							uploadImageAsync(_objData, that).then((res) => {
-								that.photos.push(res);
+								that.photos.push(res.data);
 							})
 						})
 						//#endif

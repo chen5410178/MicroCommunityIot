@@ -11,3 +11,56 @@ export function getCommunityName(){
 export function getCommunityId(){
 	return "-1"
 }
+
+
+export function queryFloors(_objData) {
+	return new Promise( (resolve, reject) => {
+		requestNoAuth({
+			url: url.queryFloors,
+			data: _objData,
+			method: "GET",
+			//动态数据
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code == 0) {
+					resolve(_json.data);
+					return ;
+				}
+				reject();
+			},
+			fail: function(e) {
+				uni.hideLoading();
+				uni.showToast({
+					title: "服务器异常了",
+					icon: 'none'
+				})
+			}
+		});
+	})
+}
+export function queryUnits(_objData) {
+	return new Promise( (resolve, reject) => {
+		requestNoAuth({
+			url: url.queryUnits,
+			data: _objData,
+			method: "GET",
+			//动态数据
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code == 0) {
+					resolve(_json.data);
+					return ;
+				}
+				reject();
+			},
+			fail: function(e) {
+				uni.hideLoading();
+				uni.showToast({
+					title: "服务器异常了",
+					icon: 'none'
+				})
+			}
+		});
+	})
+}
+

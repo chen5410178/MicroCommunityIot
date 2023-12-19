@@ -216,7 +216,16 @@
             "path" : "pages/user/personFace",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "人脸申请",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/room/selectRoom",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "选择房屋",
                 "enablePullDownRefresh": false
             }
             

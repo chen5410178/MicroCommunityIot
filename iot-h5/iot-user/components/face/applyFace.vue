@@ -20,12 +20,15 @@
 				</view>
 			</picker>
 		</view>
+		<view class="margin-top">
 
-		<view class="block__title">人脸图片</view>
-		<vc-upload-async ref="vcUploadRef" :communityId="communityId" :maxPhotoNum="maxPhotoNum" 
-			 @sendImagesData="sendImagesData"></vc-upload-async>
+		</view>
+		<vc-upload-async ref="vcUploadRef" :communityId="communityId" title="人脸照片" :maxPhotoNum="maxPhotoNum"
+			@sendImagesData="sendImagesData"></vc-upload-async>
 
-
+		<view class="flex flex-direction margin-top">
+			<button class="cu-btn bg-blue margin-tb-sm lg" @click="submitApplyFace()">提交</button>
+		</view>
 	</view>
 </template>
 
@@ -35,12 +38,15 @@
 		name: "applyFace",
 		data() {
 			return {
-				maxPhotoNum:1,
+				maxPhotoNum: 1,
 				roomName: '',
 				personName: '',
 				personTel: '',
 				ownerTypeCd: '',
 				ownerTypeCdIndex: 0,
+				communityId: '',
+				faceUrl: '',
+				openId: '',
 				ownerTypeCds: [{
 						name: '请选择',
 						value: ''
@@ -63,6 +69,12 @@
 			ownerTypeCdChange: function(e) {
 				this.ownerTypeCdIndex = e.target.value
 				this.ownerTypeCd = this.ownerTypeCds[this.ownerTypeCdIndex].value;
+			},
+			sendImagesData: function(_data) {
+				this.faceUrl = _data.url;
+			},
+			submitApplyFace:function(){
+				
 			}
 		}
 	}

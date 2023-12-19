@@ -27,6 +27,10 @@ export default {
 	saveAddVisit: baseUrl + "iot/api/visit.saveVisit",
 	listOwnerVisit: baseUrl + "iot/api/visit.listVisit",
 	uploadImage: baseUrl + "iot/api/upload/uploadImage",
+	queryFloors: baseUrl + "iot/api/floor.queryFloors",
+	queryUnits: baseUrl + "iot/api/unit.queryUnits",
+	
+	
 	NEED_NOT_LOGIN_PAGE: [
 		'pages/user/login',
 		'pages/user/register',
