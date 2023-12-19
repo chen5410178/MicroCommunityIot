@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="personFaceQrcodeV1ServiceDaoImpl">
+
+
+    <!-- 保存人脸二维码信息 add by wuxw 2018-07-03 -->
+    <insert id="savePersonFaceQrcodeInfo" parameterType="Map">
+        insert into person_face_qrcode(
+        remark,pfq_id,sms_validate,tel_validate,create_staff_name,create_staff_id,audit,invite_code,invite,state,qrcode_name,community_id
+        ) values (
+        #{remark},#{pfqId},#{smsValidate},#{telValidate},#{createStaffName},#{createStaffId},#{audit},#{inviteCode},#{invite},#{state},#{qrcodeName},#{communityId}
+        )
+    </insert>
+
+
+    <!-- 查询人脸二维码信息 add by wuxw 2018-07-03 -->
+    <select id="getPersonFaceQrcodeInfo" parameterType="Map" resultType="Map">
+        select t.status_cd,t.status_cd statusCd,t.remark,t.pfq_id,t.pfq_id pfqId,t.sms_validate,t.sms_validate
+        smsValidate,t.tel_validate,t.tel_validate telValidate,t.create_staff_name,t.create_staff_name
+        createStaffName,t.create_staff_id,t.create_staff_id createStaffId,t.audit,t.invite_code,t.invite_code
+        inviteCode,t.invite,t.state,t.qrcode_name,t.qrcode_name qrcodeName,t.community_id,t.community_id communityId,
+        t.create_time createTime
+        from person_face_qrcode t
+        where 1 =1
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="pfqId !=null and pfqId != ''">
+            and t.pfq_id= #{pfqId}
+        </if>
+        <if test="smsValidate !=null and smsValidate != ''">
+            and t.sms_validate= #{smsValidate}
+        </if>
+        <if test="telValidate !=null and telValidate != ''">
+            and t.tel_validate= #{telValidate}
+        </if>
+        <if test="createStaffName !=null and createStaffName != ''">
+            and t.create_staff_name= #{createStaffName}
+        </if>
+        <if test="createStaffId !=null and createStaffId != ''">
+            and t.create_staff_id= #{createStaffId}
+        </if>
+        <if test="audit !=null and audit != ''">
+            and t.audit= #{audit}
+        </if>
+        <if test="inviteCode !=null and inviteCode != ''">
+            and t.invite_code= #{inviteCode}
+        </if>
+        <if test="invite !=null and invite != ''">
+            and t.invite= #{invite}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="qrcodeName !=null and qrcodeName != ''">
+            and t.qrcode_name= #{qrcodeName}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改人脸二维码信息 add by wuxw 2018-07-03 -->
+    <update id="updatePersonFaceQrcodeInfo" parameterType="Map">
+        update person_face_qrcode t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="smsValidate !=null and smsValidate != ''">
+            , t.sms_validate= #{smsValidate}
+        </if>
+        <if test="telValidate !=null and telValidate != ''">
+            , t.tel_validate= #{telValidate}
+        </if>
+        <if test="createStaffName !=null and createStaffName != ''">
+            , t.create_staff_name= #{createStaffName}
+        </if>
+        <if test="createStaffId !=null and createStaffId != ''">
+            , t.create_staff_id= #{createStaffId}
+        </if>
+        <if test="audit !=null and audit != ''">
+            , t.audit= #{audit}
+        </if>
+        <if test="inviteCode !=null and inviteCode != ''">
+            , t.invite_code= #{inviteCode}
+        </if>
+        <if test="invite !=null and invite != ''">
+            , t.invite= #{invite}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="qrcodeName !=null and qrcodeName != ''">
+            , t.qrcode_name= #{qrcodeName}
+        </if>
+
+        where 1=1
+        <if test="pfqId !=null and pfqId != ''">
+            and t.pfq_id= #{pfqId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+    </update>
+
+    <!-- 查询人脸二维码数量 add by wuxw 2018-07-03 -->
+    <select id="queryPersonFaceQrcodesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from person_face_qrcode t
+        where 1 =1
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="pfqId !=null and pfqId != ''">
+            and t.pfq_id= #{pfqId}
+        </if>
+        <if test="smsValidate !=null and smsValidate != ''">
+            and t.sms_validate= #{smsValidate}
+        </if>
+        <if test="telValidate !=null and telValidate != ''">
+            and t.tel_validate= #{telValidate}
+        </if>
+        <if test="createStaffName !=null and createStaffName != ''">
+            and t.create_staff_name= #{createStaffName}
+        </if>
+        <if test="createStaffId !=null and createStaffId != ''">
+            and t.create_staff_id= #{createStaffId}
+        </if>
+        <if test="audit !=null and audit != ''">
+            and t.audit= #{audit}
+        </if>
+        <if test="inviteCode !=null and inviteCode != ''">
+            and t.invite_code= #{inviteCode}
+        </if>
+        <if test="invite !=null and invite != ''">
+            and t.invite= #{invite}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="qrcodeName !=null and qrcodeName != ''">
+            and t.qrcode_name= #{qrcodeName}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+
+    </select>
+
+</mapper>

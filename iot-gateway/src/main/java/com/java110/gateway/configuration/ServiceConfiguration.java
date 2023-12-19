@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ServiceConfiguration {
 
-    public static final  StringBuffer exclusions = new StringBuffer();
+    public static final StringBuffer exclusions = new StringBuffer();
 
     static {
         exclusions.append("/iot/api/login.pcUserLogin,");
@@ -23,9 +23,6 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/wechat.wechatNotifyOpenId/*,");
         exclusions.append("/app/payment/notify/*,");// 通用通知放开
         exclusions.append("/iot/api/system.listSystemInfo,");
-
-
-
 
 
         exclusions.append("/iot/api/login.generatorValidateCode,");
@@ -45,8 +42,6 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/payment.cashier,");//支付
 
 
-
-
         exclusions.append("/app/charge/*,");// 通用充电桩通知放开
         exclusions.append("/app/equipments/*,");// 叮叮充电桩通知放开
         exclusions.append("/app/charge/kehang/*,");// 科航充电桩通知放开
@@ -55,7 +50,13 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/visit.saveVisit,");// 访客登记
         exclusions.append("/iot/api/visitType.listVisitType,");// 访客类型
         exclusions.append("/iot/api/visit.listVisit,");// 访客人员
+
+        exclusions.append("/iot/api/personFace.savePersonFace,");// 人脸审核
+        exclusions.append("/iot/api/personFace.listPersonFace,");// 人脸审核
+
+
     }
+
     @Bean
     public FilterRegistrationBean jwtFilter() {
 
@@ -63,7 +64,7 @@ public class ServiceConfiguration {
         registrationBean.setFilter(new JwtFilter());
         registrationBean.addUrlPatterns("/iot/api/*");
         registrationBean.addUrlPatterns("/app/*");
-        registrationBean.addInitParameter("excludedUri",exclusions.toString());
+        registrationBean.addInitParameter("excludedUri", exclusions.toString());
 
         return registrationBean;
     }

@@ -16,6 +16,7 @@ import java.util.Date;
 public class AppDto extends PageDto implements Serializable {
 
     public static final String WEB_APP_ID = "992023010100000001";
+    public static final String USER_APP_ID = "992023111817510002";
 
 
     private String appId;

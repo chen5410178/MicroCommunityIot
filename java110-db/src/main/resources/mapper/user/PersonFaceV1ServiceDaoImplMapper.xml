@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="personFaceV1ServiceDaoImpl">
+
+
+    <!-- 保存人脸审核信息 add by wuxw 2018-07-03 -->
+    <insert id="savePersonFaceInfo" parameterType="Map">
+        insert into person_face(
+        pf_id,open_id,owner_type_cd,remark,pfq_id,room_id,room_name,person_name,face_url,state,community_id,person_tel
+        ) values (
+        #{pfId},#{openId},#{ownerTypeCd},#{remark},#{pfqId},#{roomId},#{roomName},#{personName},#{faceUrl},#{state},#{communityId},#{personTel}
+        )
+    </insert>
+
+
+    <!-- 查询人脸审核信息 add by wuxw 2018-07-03 -->
+    <select id="getPersonFaceInfo" parameterType="Map" resultType="Map">
+        select t.pf_id,t.pf_id pfId,t.open_id,t.open_id openId,t.owner_type_cd,t.owner_type_cd
+        ownerTypeCd,t.remark,t.status_cd,t.status_cd statusCd,t.pfq_id,t.pfq_id pfqId,t.room_id,t.room_id
+        roomId,t.room_name,t.room_name roomName,t.person_name,t.person_name personName,t.face_url,t.face_url
+        faceUrl,t.state,t.community_id,t.community_id communityId,t.person_tel,t.person_tel personTel,
+        t.create_time createTime,pfq.qrcode_name qrcodeName,td.`name` stateName
+        from person_face t
+        left join person_face_qrcode pfq on t.pfq_id = pfq.pfq_id
+        left join t_dict td on t.state = td.status_cd and td.table_name = 'person_face' and td.table_columns = 'state'
+        where 1 =1
+        <if test="pfId !=null and pfId != ''">
+            and t.pf_id= #{pfId}
+        </if>
+        <if test="openId !=null and openId != ''">
+            and t.open_id= #{openId}
+        </if>
+        <if test="ownerTypeCd !=null and ownerTypeCd != ''">
+            and t.owner_type_cd= #{ownerTypeCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="pfqId !=null and pfqId != ''">
+            and t.pfq_id= #{pfqId}
+        </if>
+        <if test="roomId !=null and roomId != ''">
+            and t.room_id= #{roomId}
+        </if>
+        <if test="roomName !=null and roomName != ''">
+            and t.room_name= #{roomName}
+        </if>
+        <if test="personName !=null and personName != ''">
+            and t.person_name= #{personName}
+        </if>
+        <if test="faceUrl !=null and faceUrl != ''">
+            and t.face_url= #{faceUrl}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="personTel !=null and personTel != ''">
+            and t.person_tel= #{personTel}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改人脸审核信息 add by wuxw 2018-07-03 -->
+    <update id="updatePersonFaceInfo" parameterType="Map">
+        update person_face t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="openId !=null and openId != ''">
+            , t.open_id= #{openId}
+        </if>
+        <if test="ownerTypeCd !=null and ownerTypeCd != ''">
+            , t.owner_type_cd= #{ownerTypeCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="pfqId !=null and pfqId != ''">
+            , t.pfq_id= #{pfqId}
+        </if>
+        <if test="roomId !=null and roomId != ''">
+            , t.room_id= #{roomId}
+        </if>
+        <if test="roomName !=null and roomName != ''">
+            , t.room_name= #{roomName}
+        </if>
+        <if test="personName !=null and personName != ''">
+            , t.person_name= #{personName}
+        </if>
+        <if test="faceUrl !=null and faceUrl != ''">
+            , t.face_url= #{faceUrl}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+
+        <if test="personTel !=null and personTel != ''">
+            , t.person_tel= #{personTel}
+        </if>
+        where 1=1
+        <if test="pfId !=null and pfId != ''">
+            and t.pf_id= #{pfId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+    </update>
+
+    <!-- 查询人脸审核数量 add by wuxw 2018-07-03 -->
+    <select id="queryPersonFacesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from person_face t
+        where 1 =1
+        <if test="pfId !=null and pfId != ''">
+            and t.pf_id= #{pfId}
+        </if>
+        <if test="openId !=null and openId != ''">
+            and t.open_id= #{openId}
+        </if>
+        <if test="ownerTypeCd !=null and ownerTypeCd != ''">
+            and t.owner_type_cd= #{ownerTypeCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="pfqId !=null and pfqId != ''">
+            and t.pfq_id= #{pfqId}
+        </if>
+        <if test="roomId !=null and roomId != ''">
+            and t.room_id= #{roomId}
+        </if>
+        <if test="roomName !=null and roomName != ''">
+            and t.room_name= #{roomName}
+        </if>
+        <if test="personName !=null and personName != ''">
+            and t.person_name= #{personName}
+        </if>
+        <if test="faceUrl !=null and faceUrl != ''">
+            and t.face_url= #{faceUrl}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="personTel !=null and personTel != ''">
+            and t.person_tel= #{personTel}
+        </if>
+
+    </select>
+
+</mapper>
