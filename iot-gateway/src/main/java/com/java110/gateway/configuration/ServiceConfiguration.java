@@ -53,6 +53,10 @@ public class ServiceConfiguration {
 
         exclusions.append("/iot/api/personFace.savePersonFace,");// 人脸审核
         exclusions.append("/iot/api/personFace.listPersonFace,");// 人脸审核
+        exclusions.append("/iot/api/upload/uploadImage,");// 上传图片
+
+
+
 
 
     }

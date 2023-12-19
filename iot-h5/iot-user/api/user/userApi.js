@@ -209,3 +209,28 @@ export function refreshUserOpenId(_objData){
 		});
 	})
 }
+
+// 异步上传图片
+export function uploadImageAsync(_objData,_that) {
+	return new Promise( (resolve, reject) => {
+		request({
+			url: url.uploadImage,
+			data: _objData,
+			method: "POST",
+			//动态数据
+			success: function(res) {
+				if (res.statusCode == 200) {
+					let imgInfo = res.data;
+					resolve(imgInfo);
+				}
+			},
+			fail: function(e) {
+				uni.hideLoading();
+				uni.showToast({
+					title: "服务器异常了",
+					icon: 'none'
+				})
+			}
+		});
+	})
+}

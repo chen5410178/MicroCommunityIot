@@ -36,8 +36,7 @@ public class OssUploadTemplate {
      *图片上传工具方法
      * 默认上传至 img 文件下的当前日期下
      */
-    public String upload(String imageBase64, String server, int port,
-                         String userName, String userPassword, String ftpPath) {
+    public String upload(String imageBase64,  String ftpPath) {
         String fileName = "";
         OSSClient ossClient = null;
         ByteArrayInputStream is = null;

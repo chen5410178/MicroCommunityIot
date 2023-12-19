@@ -27,7 +27,7 @@
 <script>
 	import * as TanslateImage from '../../lib/java110/utils/translate-image.js';
 	import conf from '../../conf/config.js'
-	import {uploadImageAsync} from '../../api/common/commonApi.js'
+	import {uploadImageAsync} from '../../api/user/userApi.js';
 	const context = require("../../lib/java110/Java110Context.js");
 	const factory = context.factory;
 	export default {

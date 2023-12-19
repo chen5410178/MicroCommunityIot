@@ -134,6 +134,31 @@ public class IotApiController {
         return ResultVo.createResponseEntity(outParam);
     }
 
+    /**
+     * get 入口类
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/upload/uploadImage", method = RequestMethod.POST)
+    public ResponseEntity<String> uploadImage(
+                                             @RequestBody String postInfo,
+                                             HttpServletRequest request) {
+        ResponseEntity<String> responseEntity = null;
+
+        JSONObject photoData = JSONObject.parseObject(postInfo);
+
+        String fileName = ossUploadTemplate.upload(photoData.getString("uploadFile"), ROOT_PATH);
+
+
+        JSONObject outParam = new JSONObject();
+        outParam.put("fileId", fileName);
+        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
+        outParam.put("url", imgUrl + fileName);
+
+        return ResultVo.createResponseEntity(outParam);
+    }
+
 
     /**
      * get 入口类
