@@ -137,10 +137,8 @@
             _toVisitDetail: function (_visit) {
                 vc.jumpToPage('/#/pages/accessControl/visitDetail?visitId=' + _visit.visitId + "&phoneNumber=" + _visit.phoneNumber);
             },
-            _showVisitQrCode: function (_visit) {
-                vc.emit('visitQrCode', 'openQrCodeModal', {
-                    qrcode: _visit.qrcode
-                })
+            _showVisitQrCode: function () {
+                vc.emit('visitQrCode', 'openQrCodeModal', {});
             }
         }
     });

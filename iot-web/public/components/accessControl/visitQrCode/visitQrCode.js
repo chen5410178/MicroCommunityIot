@@ -19,7 +19,6 @@
                 var param = {
                     params: {
                         communityId: vc.getCurrentCommunity().communityId,
-                        qrcode: _param.qrcode
                     }
                 };
                 //发送get请求
@@ -27,8 +26,7 @@
                     param,
                     function(json, res) {
                         let _info = JSON.parse(json);
-                        //$that._viewVisitQrCode(_info.data.url);
-                        $that._viewVisitQrCode(_param.qrcode);
+                        $that._viewVisitQrCode(_info.data.url);
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');
@@ -39,15 +37,14 @@
             _viewVisitQrCode: function(_url) {
                 document.getElementById("visitQrcode").innerHTML = "";
                 let qrcode = new QRCode(document.getElementById("visitQrcode"), {
-                    text: _url, //你想要填写的文本
+                    text: '', //你想要填写的文本
                     width: 200, //生成的二维码的宽度
                     height: 200, //生成的二维码的高度
                     colorDark: "#000000", // 生成的二维码的深色部分
                     colorLight: "#ffffff", //生成二维码的浅色部分
                     correctLevel: QRCode.CorrectLevel.L
                 });
-                //qrcode.makeCode(_url);
-                qrcode.makeCode();
+                qrcode.makeCode(_url);
             }
         }
     });

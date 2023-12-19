@@ -107,6 +107,13 @@
                             errInfo: "审核状态不能为空"
                         },
                     ],
+                    'addVisitInfo.communityId': [
+                        {
+                            limit: "required",
+                            param: "",
+                            errInfo: "小区不能为空"
+                        },
+                    ],
                 });
             },
             saveVisitInfo: function () {

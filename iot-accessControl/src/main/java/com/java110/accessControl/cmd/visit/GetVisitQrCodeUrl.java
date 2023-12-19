@@ -23,21 +23,10 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
-import com.java110.core.factory.CommunitySettingFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
-import com.java110.core.utils.StringUtil;
-import com.java110.dto.parking.ParkingBoxAreaDto;
-import com.java110.dto.smallWeChat.SmallWeChatDto;
-import com.java110.dto.visit.VisitDto;
-import com.java110.intf.accessControl.IVisitV1InnerServiceSMO;
-import com.java110.intf.barrier.IParkingBoxAreaV1InnerServiceSMO;
-import com.java110.intf.charge.ISmallWeChatInnerServiceSMO;
+import com.java110.core.utils.CmdContextUtils;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
-
-import java.util.List;
 
 /**
  * 类表述：保存
@@ -54,50 +43,19 @@ public class GetVisitQrCodeUrl extends Cmd {
 
     private static Logger logger = LoggerFactory.getLogger(GetVisitQrCodeUrl.class);
 
-    public static final String CODE_PREFIX_ID = "10";
-
-
-    @Autowired
-    private ISmallWeChatInnerServiceSMO smallWeChatInnerServiceSMOImpl;
-    @Autowired
-    private IVisitV1InnerServiceSMO visitV1InnerServiceSMOImpl;
-
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含小区信息");
-        Assert.hasKeyAndValue(reqJson, "qrcode", "请求报文中未包含访客码");
     }
 
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        SmallWeChatDto smallWeChatDto = new SmallWeChatDto();
-        smallWeChatDto.setObjId(reqJson.getString("communityId"));
-        smallWeChatDto.setWeChatType(SmallWeChatDto.WECHAT_TYPE_PUBLIC);
-        List<SmallWeChatDto> smallWeChatDtos = smallWeChatInnerServiceSMOImpl.querySmallWeChats(smallWeChatDto);
+        String userId = CmdContextUtils.getUserId(cmdDataFlowContext);
         String ownerUrl = UrlCache.getOwnerUrl();
-        // todo:
-        ownerUrl += ("/#/pages/?qrcode=" + getQrcode(reqJson)+"&communityId="+reqJson.getString("communityId"));
-        if (smallWeChatDtos != null && !smallWeChatDtos.isEmpty()) {
-            ownerUrl += ("&appId=" + smallWeChatDtos.get(0).getAppId());
-        }
-
-        /*String aliAppId = CommunitySettingFactory.getValue(reqJson.getString("communityId"),"APP_ID");
-        if( !StringUtil.isEmpty(aliAppId)){
-           ownerUrl += ("&aliAppId=" + aliAppId);
-        }*/
+        ownerUrl += ("/#/pages/visit/addVisit?createUserId=" + userId +"&communityId="+reqJson.getString("communityId"));
         reqJson.put("url", ownerUrl);
         cmdDataFlowContext.setResponseEntity(ResultVo.createResponseEntity(reqJson));
     }
 
-    private String getQrcode(JSONObject reqJson) {
-        VisitDto visitDto = new VisitDto();
-        visitDto.setCommunityId(reqJson.getString("communityId"));
-        visitDto.setQrcode(reqJson.getString("qrcode"));
-        List<VisitDto> visitDtos = visitV1InnerServiceSMOImpl.queryVisits(visitDto);
-        if (CollectionUtils.isEmpty(visitDtos)) {
-            throw new CmdException("未查到访客码信息");
-        }
-        return reqJson.getString("qrcode");
-    }
 }
