@@ -19,7 +19,7 @@
             deletePassQrcodeSetting:function(){
                 $that.deletePassQrcodeSettingInfo.communityId=vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
-                    '/passcode.deletePassQrcode',
+                    '/passcode.deletePassQrcodeSetting',
                     JSON.stringify($that.deletePassQrcodeSettingInfo),
                     {
                         emulateJSON:true

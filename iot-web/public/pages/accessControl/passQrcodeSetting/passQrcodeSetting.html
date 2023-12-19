@@ -48,9 +48,6 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <vc:i18n name='编号' namespace='passQrcodeSetting'></vc:i18n>
-                                </th>
-                                <th class="text-center">
                                     <vc:i18n name='名称' namespace='passQrcodeSetting'></vc:i18n>
                                 </th>
                                 <th class="text-center">
@@ -65,11 +62,12 @@
                                 <th class="text-center">
                                     <vc:i18n name='状态' namespace='passQrcodeSetting'></vc:i18n>
                                 </th>
-                                <th class="text-center">
-                                    <vc:i18n name='说明' namespace='passQrcodeSetting'></vc:i18n>
-                                </th>
+                                
                                 <th class="text-center">
                                     <vc:i18n name='创建时间' namespace='passQrcodeSetting'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='说明' namespace='passQrcodeSetting'></vc:i18n>
                                 </th>
                                 <th class="text-center">
                                     <vc:i18n name='操作'></vc:i18n>
@@ -78,15 +76,21 @@
                         </thead>
                         <tbody>
                             <tr v-for="passQrcodeSetting in passQrcodeSettingInfo.passQrcodeSettings">
-                                <td class="text-center">{{passQrcodeSetting.pqsId}}</td>
                                 <td class="text-center">{{passQrcodeSetting.qrcodeName}}</td>
                                 <td class="text-center">{{passQrcodeSetting.smsValidate == 'ON'?'是':'否'}}</td>
                                 <td class="text-center">{{passQrcodeSetting.audit == 'ON'?'是':'否'}}</td>
                                 <td class="text-center">{{passQrcodeSetting.expired}}分钟</td>
                                 <td class="text-center">{{passQrcodeSetting.state == 'ON'?'启用':'停用'}}</td>
-                                <td class="text-center">{{passQrcodeSetting.remark}}</td>
                                 <td class="text-center">{{passQrcodeSetting.createTime}}</td>
+                                <td class="text-center">{{passQrcodeSetting.remark || '-'}}</td>
+
                                 <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs"
+                                            v-on:click="showQrCode(passQrcodeSetting)">
+                                            <vc:i18n name='二维码'></vc:i18n>
+                                        </button>
+                                    </div>
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs"
                                             v-on:click="_openEditPassQrcodeSettingModel(passQrcodeSetting)">
@@ -116,5 +120,6 @@
     <vc:create path="accessControl/addPassQrcodeSetting" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="accessControl/editPassQrcodeSetting"></vc:create>
     <vc:create path="accessControl/deletePassQrcodeSetting"></vc:create>
+    <vc:create path="common/viewQrCode"></vc:create>
 
 </div>

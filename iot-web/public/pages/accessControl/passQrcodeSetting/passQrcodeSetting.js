@@ -43,7 +43,7 @@
                 };
 
                 //发送get请求
-                vc.http.apiGet('/passcode.listPassQrcode',
+                vc.http.apiGet('/passcode.listPassQrcodeSetting',
                     param,
                     function (json, res) {
                         var _json = JSON.parse(json);
@@ -71,6 +71,13 @@
             _queryPassQrcodeSettingMethod: function () {
                 $that._listPassQrcodeSettings(DEFAULT_PAGE, DEFAULT_ROWS);
 
+            },
+            showQrCode:function(_passQrcodeSetting){
+                vc.emit('viewQrCode', 'openQrCodeModal',{
+                    title:'通行码申请',
+                    url:_passQrcodeSetting.qrcodeUrl,
+                    remark:'请将二维码解码后，地址绑定到公众号菜单'
+                })
             },
 
         }

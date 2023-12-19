@@ -92,7 +92,7 @@
                 }
 
                 vc.http.apiPost(
-                    '/passcode.updatePassQrcode',
+                    '/passcode.updatePassQrcodeSetting',
                     JSON.stringify($that.editPassQrcodeSettingInfo),
                     {
                         emulateJSON: true
