@@ -56,7 +56,7 @@ public class RefreshPassQrcodeCmd extends Cmd {
             passQrcodeDtos = new ArrayList<>();
         }
 
-        ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, passQrcodeDtos);
+        ResultVo resultVo = new ResultVo(1, count, passQrcodeDtos);
 
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
