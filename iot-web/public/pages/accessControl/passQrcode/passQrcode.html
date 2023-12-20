@@ -61,7 +61,6 @@
                             </div>
                         </div>
                         <div class="ibox-content">
-
                             <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
                                 <thead>
                                     <tr>
@@ -90,6 +89,9 @@
                                             <vc:i18n name='审核说明' namespace='passQrcode'></vc:i18n>
                                         </th>
                                         <th class="text-center">
+                                            <vc:i18n name='申请时间' namespace='passQrcode'></vc:i18n>
+                                        </th>
+                                        <th class="text-center">
                                             <vc:i18n name='操作'></vc:i18n>
                                         </th>
                                     </tr>
@@ -102,8 +104,9 @@
                                         <td class="text-center">{{passQrcode.openId}}</td>
                                         <td class="text-center">{{passQrcode.qrcode}}</td>
                                         <td class="text-center">{{passQrcode.qrcodeTime}}</td>
-                                        <td class="text-center">{{passQrcode.state}}</td>
-                                        <td class="text-center">{{passQrcode.remark}}</td>
+                                        <td class="text-center">{{passQrcode.stateName}}</td>
+                                        <td class="text-center">{{passQrcode.remark||'-'}}</td>
+                                        <td class="text-center">{{passQrcode.createTime}}</td>
                                         <td class="text-center">
                                             <div class="btn-group" v-if="passQrcode.state == 'W'">
                                                 <button class="btn-white btn btn-xs"

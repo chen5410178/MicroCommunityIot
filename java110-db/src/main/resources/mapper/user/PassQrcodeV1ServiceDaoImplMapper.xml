@@ -19,8 +19,9 @@
     <select id="getPassQrcodeInfo" parameterType="Map" resultType="Map">
         select t.person_name,t.person_name personName,t.qrcode_time,t.qrcode_time qrcodeTime,t.open_id,t.open_id
         openId,t.qrcode,t.pq_id,t.pq_id pqId,t.remark,t.status_cd,t.status_cd statusCd,t.state,t.person_tel,t.person_tel
-        personTel,t.owner_id,t.owner_id ownerId,t.community_id,t.community_id communityId,t.create_time createTime
+        personTel,t.owner_id,t.owner_id ownerId,t.community_id,t.community_id communityId,t.create_time createTime,td.`name` stateName
         from pass_qrcode t
+        left join t_dict td on t.state = td.status_cd and td.table_name = 'person_face' and td.table_columns = 'state'
         where 1 =1
         <if test="personName !=null and personName != ''">
             and t.person_name= #{personName}

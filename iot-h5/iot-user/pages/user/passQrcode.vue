@@ -17,8 +17,10 @@
 			</view>
 
 			<view class="u-qrcode" style="text-align: center;" v-show="passcode">
-				<canvas style="width: 200px; height: 200px; margin: 0 auto;" canvas-id="myQrcode"></canvas>
-			<!-- 	<image :src="tempFilePath" style="width: 200px; height: 200px; margin: 0 auto;"></image> -->
+				<view style="height: 120upx;"></view>
+				<canvas style="width: 300px; height: 300px; margin: 0 auto;" canvas-id="myQrcode"></canvas>
+				<!-- 	<image :src="tempFilePath" style="width: 200px; height: 200px; margin: 0 auto;"></image> -->
+				<view>通行二维码，{{expire}}后过期</view>
 			</view>
 
 		</view>
@@ -31,7 +33,7 @@
 <script>
 	import applyPassQrcode from '../../components/pass/applyPassQrcode.vue';
 	import drawQrcode from '@/components/weapp-qrcode/weapp.qrcode.esm.js'
-	
+
 	import {
 		refreshPassQrcode
 	} from '../../api/owner/ownerApi.js';
@@ -42,7 +44,8 @@
 				communityId: '',
 				pqsId: '',
 				openId: '123123123',
-				passcode: ''
+				passcode: '',
+				expire:''
 			}
 		},
 		components: {
@@ -69,18 +72,25 @@
 					openId: this.openId,
 					communityId: this.communityId
 				}).then(_data => {
-					if (_data && _data.length > 0) {
-						_that.passcode = _data[0].qrcode;
-						drawQrcode({
-						  width: 200,
-						  height: 200,
-						  canvasId: 'myQrcode',
-						  // ctx: wx.createCanvasContext('myQrcode'),
-						  text: _that.passcode,
-						  callback: function(e){
-						  }
-						})
+					console.log(_data)
+					if (_data.data && _data.data.length > 0) {
+						_that.passcode = _data.data[0].qrcode;
+						_that.expire = _data.data[0].expire;
+						setTimeout(function() {
+							_that.showQrcode()
+						}, 1000)
+
 					}
+				})
+			},
+			showQrcode: function() {
+				drawQrcode({
+					width: 280,
+					height: 280,
+					canvasId: 'myQrcode',
+					// ctx: wx.createCanvasContext('myQrcode'),
+					text: this.passcode,
+					callback: function(e) {}
 				})
 			}
 		}
