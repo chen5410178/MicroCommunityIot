@@ -44,6 +44,7 @@ public class RefreshPassQrcodeCmd extends Cmd {
         passQrcodeDto.setCommunityId(reqJson.getString("communityId"));
         passQrcodeDto.setPage(1);
         passQrcodeDto.setRow(1);
+        passQrcodeDto.setStates(new String[]{"W","C"});
 
         int count = passQrcodeV1InnerServiceSMOImpl.queryPassQrcodesCount(passQrcodeDto);
 

@@ -23,6 +23,7 @@ public class PassQrcodeDto extends PageDto implements Serializable {
     private String pqId;
     private String remark;
     private String state;
+    private String[] states;
     private String stateName;
     private String personTel;
     private String ownerId;
@@ -137,5 +138,13 @@ public class PassQrcodeDto extends PageDto implements Serializable {
 
     public void setStateName(String stateName) {
         this.stateName = stateName;
+    }
+
+    public String[] getStates() {
+        return states;
+    }
+
+    public void setStates(String[] states) {
+        this.states = states;
     }
 }

@@ -42,10 +42,10 @@ import org.slf4j.LoggerFactory;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
-@Java110Cmd(serviceCode = "passcode.updatePassQrcode")
-public class UpdatePassQrcodeCmd extends Cmd {
+@Java110Cmd(serviceCode = "passcode.auditPassQrcode")
+public class AuditPassQrcodeCmd extends Cmd {
 
-    private static Logger logger = LoggerFactory.getLogger(UpdatePassQrcodeCmd.class);
+    private static Logger logger = LoggerFactory.getLogger(AuditPassQrcodeCmd.class);
 
 
     @Autowired
@@ -55,6 +55,8 @@ public class UpdatePassQrcodeCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "pqId", "pqId不能为空");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
+        Assert.hasKeyAndValue(reqJson, "state", "state不能为空");
+        Assert.hasKeyAndValue(reqJson, "remark", "备注不能为空");
 
     }
 
