@@ -99,8 +99,6 @@
                 $that.passQrcodeInfo.conditions.state = _state.statusCd;
                 $that._listPassQrcodes(DEFAULT_PAGE, DEFAULT_ROWS);
             },
-
-
         }
     });
 })(window.vc);

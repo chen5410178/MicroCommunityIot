@@ -18,6 +18,7 @@ package com.java110.accessControl.dao;
 
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.core.exception.DAOException;
 
 import java.util.List;
@@ -71,4 +72,5 @@ public interface IAccessControlV1ServiceDao {
      */
     int queryAccessControlsCount(Map info);
 
+    List<Map> queryAcInoutStatistics(Map reqJson);
 }

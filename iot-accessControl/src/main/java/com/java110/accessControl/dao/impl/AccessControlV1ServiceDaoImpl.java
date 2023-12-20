@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package com.java110.accessControl.dao.impl;
+
+import com.alibaba.fastjson.JSONObject;
 import com.java110.accessControl.dao.IAccessControlV1ServiceDao;
 import com.java110.core.db.dao.BaseServiceDao;
 import com.java110.core.exception.DAOException;
@@ -39,19 +41,17 @@ public class AccessControlV1ServiceDaoImpl extends BaseServiceDao implements IAc
     private static Logger logger = LoggerFactory.getLogger(AccessControlV1ServiceDaoImpl.class);
 
 
-
-
-
     /**
      * 保存门禁信息 到 instance
-     * @param info   bId 信息
+     *
+     * @param info bId 信息
      * @throws DAOException DAO异常
      */
     @Override
     public int saveAccessControlInfo(Map info) throws DAOException {
-        logger.debug("保存 saveAccessControlInfo 入参 info : {}",info);
+        logger.debug("保存 saveAccessControlInfo 入参 info : {}", info);
 
-        int saveFlag = sqlSessionTemplate.insert("accessControlV1ServiceDaoImpl.saveAccessControlInfo",info);
+        int saveFlag = sqlSessionTemplate.insert("accessControlV1ServiceDaoImpl.saveAccessControlInfo", info);
 
         return saveFlag;
     }
@@ -59,15 +59,16 @@ public class AccessControlV1ServiceDaoImpl extends BaseServiceDao implements IAc
 
     /**
      * 查询门禁信息（instance）
+     *
      * @param info bId 信息
      * @return List<Map>
      * @throws DAOException DAO异常
      */
     @Override
     public List<Map> getAccessControlInfo(Map info) throws DAOException {
-        logger.debug("查询 getAccessControlInfo 入参 info : {}",info);
+        logger.debug("查询 getAccessControlInfo 入参 info : {}", info);
 
-        List<Map> businessAccessControlInfos = sqlSessionTemplate.selectList("accessControlV1ServiceDaoImpl.getAccessControlInfo",info);
+        List<Map> businessAccessControlInfos = sqlSessionTemplate.selectList("accessControlV1ServiceDaoImpl.getAccessControlInfo", info);
 
         return businessAccessControlInfos;
     }
@@ -75,33 +76,41 @@ public class AccessControlV1ServiceDaoImpl extends BaseServiceDao implements IAc
 
     /**
      * 修改门禁信息
+     *
      * @param info 修改信息
      * @throws DAOException DAO异常
      */
     @Override
     public int updateAccessControlInfo(Map info) throws DAOException {
-        logger.debug("修改 updateAccessControlInfo 入参 info : {}",info);
+        logger.debug("修改 updateAccessControlInfo 入参 info : {}", info);
 
-        int saveFlag = sqlSessionTemplate.update("accessControlV1ServiceDaoImpl.updateAccessControlInfo",info);
+        int saveFlag = sqlSessionTemplate.update("accessControlV1ServiceDaoImpl.updateAccessControlInfo", info);
 
         return saveFlag;
     }
 
-     /**
+    /**
      * 查询门禁数量
+     *
      * @param info 门禁信息
      * @return 门禁数量
      */
     @Override
     public int queryAccessControlsCount(Map info) {
-        logger.debug("查询 queryAccessControlsCount 入参 info : {}",info);
+        logger.debug("查询 queryAccessControlsCount 入参 info : {}", info);
 
-        List<Map> businessAccessControlInfos = sqlSessionTemplate.selectList("accessControlV1ServiceDaoImpl.queryAccessControlsCount", info);
-        if (businessAccessControlInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlV1ServiceDaoImpl.queryAccessControlsCount", info);
+        if (infos.size() < 1) {
             return 0;
         }
 
-        return Integer.parseInt(businessAccessControlInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
+    }
+
+    @Override
+    public List<Map> queryAcInoutStatistics(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlV1ServiceDaoImpl.queryAcInoutStatistics", info);
+        return infos;
     }
 
 
