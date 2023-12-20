@@ -16,6 +16,7 @@ import java.util.Date;
  **/
 public class PassQrcodeSettingDto extends PageDto implements Serializable {
 
+    public static final String ON = "ON";
     private String createStaffName;
     private String pqsId;
     private String expired;

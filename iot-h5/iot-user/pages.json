@@ -230,6 +230,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/user/passQrcode",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "通行码",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"tabBar": {
 		"color": "#272636",
