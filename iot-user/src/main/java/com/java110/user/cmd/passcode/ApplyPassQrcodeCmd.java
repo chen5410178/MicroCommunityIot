@@ -117,7 +117,7 @@ public class ApplyPassQrcodeCmd extends Cmd {
         ownerDto.setCommunityId(reqJson.getString("communityId"));
         List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
 
-        Assert.listOnlyOne(ownerDtos, "未包含业主");
+        Assert.listOnlyOne(ownerDtos, "手机号错误");
 
         PassQrcodePo passQrcodePo = BeanConvertUtil.covertBean(reqJson, PassQrcodePo.class);
         passQrcodePo.setPqId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));

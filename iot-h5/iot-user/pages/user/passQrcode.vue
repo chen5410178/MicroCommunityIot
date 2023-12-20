@@ -18,7 +18,7 @@
 
 			<view class="u-qrcode" style="text-align: center;" v-show="passcode">
 				<canvas style="width: 200px; height: 200px; margin: 0 auto;" canvas-id="myQrcode"></canvas>
-				<image :src="tempFilePath" style="width: 200px; height: 200px; margin: 0 auto;"></image>
+			<!-- 	<image :src="tempFilePath" style="width: 200px; height: 200px; margin: 0 auto;"></image> -->
 			</view>
 
 		</view>

@@ -11,7 +11,7 @@
 			<button class='cu-btn bg-blue shadow' :disabled="btnDisabled" @click="_sendMsgCode()">{{btnValue}}</button>
 		</view>
 		<view class="flex flex-direction margin-top">
-			<button class="cu-btn bg-blue margin-tb-sm lg" @click="submitApplyFace()">申请</button>
+			<button class="cu-btn bg-blue margin-tb-sm lg" @click="_applyPassQrcode()">申请</button>
 		</view>
 	</view>
 </template>
@@ -49,6 +49,7 @@
 				sendSmsCode(this.personTel, this);
 			},
 			_applyPassQrcode:function(){
+				let _that =this;
 				applyPassQrcode({
 					personTel:this.personTel,
 					pqsId:this.pqsId,
@@ -56,7 +57,7 @@
 					openId:this.openId,
 					msgCode:this.msgCode
 				}).then(_data=>{
-					this.$emit('getPassQrcode', {})
+					_that.$emit('getPassQrcode', {})
 				})
 			}
 		}
