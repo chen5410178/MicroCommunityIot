@@ -540,6 +540,15 @@ public class DateUtil {
     }
 
 
+    public static String getAddMinStringA(Date date, int min) {
+        SimpleDateFormat sf = new SimpleDateFormat(DATE_FORMATE_STRING_A);
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.MINUTE, min);
+        return sf.format(c.getTime());
+    }
+
+
     public static String getAddMonthStringA(Date date, int month) {
         SimpleDateFormat sf = new SimpleDateFormat(DATE_FORMATE_STRING_A);
         Calendar c = Calendar.getInstance();

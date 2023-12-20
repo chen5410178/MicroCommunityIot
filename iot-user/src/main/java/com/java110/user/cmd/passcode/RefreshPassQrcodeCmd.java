@@ -13,6 +13,8 @@ import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.dto.passQrcode.PassQrcodeDto;
+import com.java110.dto.passQrcodeSetting.PassQrcodeSettingDto;
+import com.java110.intf.user.IPassQrcodeSettingV1InnerServiceSMO;
 import com.java110.intf.user.IPassQrcodeV1InnerServiceSMO;
 import com.java110.po.passQrcode.PassQrcodePo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class RefreshPassQrcodeCmd extends Cmd {
     @Autowired
     private IPassQrcodeV1InnerServiceSMO passQrcodeV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IPassQrcodeSettingV1InnerServiceSMO passQrcodeSettingV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
@@ -44,7 +49,7 @@ public class RefreshPassQrcodeCmd extends Cmd {
         passQrcodeDto.setCommunityId(reqJson.getString("communityId"));
         passQrcodeDto.setPage(1);
         passQrcodeDto.setRow(1);
-        passQrcodeDto.setStates(new String[]{"W","C"});
+        passQrcodeDto.setStates(new String[]{"W", "C"});
 
         int count = passQrcodeV1InnerServiceSMOImpl.queryPassQrcodesCount(passQrcodeDto);
 
@@ -66,7 +71,7 @@ public class RefreshPassQrcodeCmd extends Cmd {
 
     private void refreshQrcode(List<PassQrcodeDto> passQrcodeDtos) {
 
-        if(ListUtil.isNull(passQrcodeDtos)){
+        if (ListUtil.isNull(passQrcodeDtos)) {
             return;
         }
 
@@ -78,6 +83,18 @@ public class RefreshPassQrcodeCmd extends Cmd {
 
         passQrcodeDtos.get(0).setQrcode(passQrcodePo.getQrcode());
         passQrcodeDtos.get(0).setQrcodeTime(passQrcodePo.getQrcodeTime());
+
+        PassQrcodeSettingDto passQrcodeSettingDto = new PassQrcodeSettingDto();
+        passQrcodeSettingDto.setCommunityId(passQrcodeDtos.get(0).getCommunityId());
+        List<PassQrcodeSettingDto> passQrcodeSettingDtos = passQrcodeSettingV1InnerServiceSMOImpl.queryPassQrcodeSettings(passQrcodeSettingDto);
+
+        int min = 120;
+        if (!ListUtil.isNull(passQrcodeSettingDtos)) {
+            min = Integer.parseInt(passQrcodeSettingDtos.get(0).getExpired());
+        }
+
+
+        passQrcodeDtos.get(0).setExpire(DateUtil.getAddMinStringA(DateUtil.getCurrentDate(), min));
 
 
     }

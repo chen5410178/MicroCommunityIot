@@ -29,6 +29,8 @@ public class PassQrcodeDto extends PageDto implements Serializable {
     private String ownerId;
     private String communityId;
 
+    private String expire;
+
 
     private Date createTime;
 
@@ -146,5 +148,13 @@ public class PassQrcodeDto extends PageDto implements Serializable {
 
     public void setStates(String[] states) {
         this.states = states;
+    }
+
+    public String getExpire() {
+        return expire;
+    }
+
+    public void setExpire(String expire) {
+        this.expire = expire;
     }
 }
