@@ -72,7 +72,7 @@
                 );
             },
             _openAuditPassQrcodeModel: function (_passQrcode) {
-                vc.emit('editPassQrcode', 'openEditPassQrcodeModal', _passQrcode);
+                vc.emit('auditPassQrcode', 'openAuditPassQrcodeModal', _passQrcode);
             },
             _openDeletePassQrcodeModel: function (_passQrcode) {
                 vc.emit('deletePassQrcode', 'openDeletePassQrcodeModal', _passQrcode);
@@ -80,6 +80,13 @@
             _queryPassQrcodeMethod: function () {
                 $that._listPassQrcodes(DEFAULT_PAGE, DEFAULT_ROWS);
 
+            },
+            _viewPasscode:function(_passQrcode){
+                vc.emit('viewQrCode', 'openQrCodeModal',{
+                    title:'通行码',
+                    url:_passQrcode.qrcode,
+                    remark:_passQrcode.personName
+                })
             },
             _moreCondition: function () {
                 if ($that.passQrcodeInfo.moreCondition) {

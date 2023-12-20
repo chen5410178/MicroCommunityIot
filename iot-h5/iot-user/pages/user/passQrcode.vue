@@ -13,7 +13,7 @@
 		<view v-show="active == 0" class="margin-top">
 			<view v-if="!passcode">
 				<apply-pass-qrcode :communityId='communityId' :openId="openId" :pqsId="pqsId"
-					:getPassQrcode="getPassQrcode"></apply-pass-qrcode>
+					@getPassQrcode="getPassQrcode"></apply-pass-qrcode>
 			</view>
 
 			<view class="u-qrcode" style="text-align: center;" v-show="passcode">
