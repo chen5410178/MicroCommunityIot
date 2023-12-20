@@ -32,6 +32,7 @@ export default {
 	queryRoomsByApp: baseUrl + "iot/api/room.queryRoomsByApp",
 	savePersonFace: baseUrl + "iot/api/personFace.savePersonFace",
 	listPersonFace: baseUrl + "iot/api/personFace.listPersonFace",
+	applyPassQrcode: baseUrl + "iot/api/passcode.applyPassQrcode",
 	
 	
 	

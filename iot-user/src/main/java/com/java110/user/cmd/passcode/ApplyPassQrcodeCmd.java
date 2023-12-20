@@ -98,7 +98,7 @@ public class ApplyPassQrcodeCmd extends Cmd {
         }
 
         SmsDto smsDto = new SmsDto();
-        smsDto.setTel(reqJson.getString("link"));
+        smsDto.setTel(reqJson.getString("personTel"));
         smsDto.setCode(reqJson.getString("msgCode"));
         smsDto = smsInnerServiceSMOImpl.validateCode(smsDto);
 

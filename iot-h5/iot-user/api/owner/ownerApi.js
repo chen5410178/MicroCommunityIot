@@ -67,3 +67,34 @@ export function listPersonFace(_objData) {
 		});
 	})
 }
+
+
+// 人脸审核
+export function applyPassQrcode(_objData) {
+	return new Promise( (resolve, reject) => {
+		requestNoAuth({
+			url: url.applyPassQrcode,
+			data: _objData,
+			method: "POST",
+			//动态数据
+			success: function(res) {
+				let _json = res.data;
+				uni.showToast({
+					icon:'none',
+					title:_json.msg
+				});
+				if (_json.code == 0) {
+					resolve(_json);
+					return;
+				}
+			},
+			fail: function(e) {
+				uni.hideLoading();
+				uni.showToast({
+					title: "服务器异常了",
+					icon: 'none'
+				})
+			}
+		});
+	})
+}

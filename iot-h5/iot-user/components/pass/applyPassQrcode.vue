@@ -20,6 +20,8 @@
 	import {
 		sendSmsCode
 	} from '@/api/user/userApi.js';
+	
+	import {applyPassQrcode} from '@/api/owner/ownerApi.js';
 
 	export default {
 		name: "applyPassQrcode",
@@ -46,6 +48,17 @@
 			_sendMsgCode: function() {
 				sendSmsCode(this.personTel, this);
 			},
+			_applyPassQrcode:function(){
+				applyPassQrcode({
+					personTel:this.personTel,
+					pqsId:this.pqsId,
+					communityId:this.communityId,
+					openId:this.openId,
+					msgCode:this.msgCode
+				}).then(_data=>{
+					this.$emit('getPassQrcode', {})
+				})
+			}
 		}
 	}
 </script>

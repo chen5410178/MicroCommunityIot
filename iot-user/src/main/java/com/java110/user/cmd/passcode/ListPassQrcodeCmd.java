@@ -24,6 +24,8 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
+import com.java110.dto.app.AppDto;
 import com.java110.intf.user.IPassQrcodeV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.passQrcode.PassQrcodeDto;
@@ -56,6 +58,8 @@ public class ListPassQrcodeCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
+
+
 
     }
 

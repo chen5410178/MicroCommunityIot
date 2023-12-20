@@ -11,7 +11,7 @@
 			</view>
 		</scroll-view>
 		<view v-show="active == 0" class="margin-top">
-			<apply-pass-qrcode :communityId='communityId' :openId="openId" :pqsId="pqsId"></apply-pass-qrcode>
+			<apply-pass-qrcode :communityId='communityId' :openId="openId" :pqsId="pqsId" :getPassQrcode="getPassQrcode"></apply-pass-qrcode>
 		</view>
 		<view v-show="active == 1" class="margin-top">
 			
@@ -42,7 +42,12 @@
 				this.active = _active;
 				if(this.active == 1){
 					//this.$refs.applyFaceDetailRef.loadApplyFaceDetail();
+				}else{
+					this.getPassQrcode();
 				}
+			},
+			getPassQrcode:function(){
+				
 			}
 		}
 	}

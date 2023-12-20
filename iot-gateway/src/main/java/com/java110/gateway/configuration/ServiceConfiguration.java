@@ -58,6 +58,10 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/unit.queryUnits,");// 上传图片
         exclusions.append("/iot/api/room.queryRoomsByApp,");// 查询房屋
 
+        exclusions.append("/iot/api/passcode.applyPassQrcode,");// 申请通行码
+        exclusions.append("/iot/api/passcode.refreshPassQrcode,");// 查询通信码
+
+
 
     }
 
