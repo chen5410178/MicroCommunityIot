@@ -268,7 +268,7 @@
     <select id="queryMeterCountStatistics" parameterType="Map" resultType="Map">
         select DATE_FORMAT(t.create_time,'%Y-%m-%d') createTime,count(1) totalCount
         from meter_machine_charge t
-        left meter_machine mm on t.machine_id = mm.machine_id and mm.status_cd = '0'
+        left join meter_machine mm on t.machine_id = mm.machine_id and mm.status_cd = '0'
         where 1=1
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
@@ -283,7 +283,7 @@
     <select id="queryMeterMoneyStatistics" parameterType="Map" resultType="Map">
         select DATE_FORMAT(t.create_time,'%Y-%m-%d') createTime,sum(t.charge_money) totalCount
         from meter_machine_charge t
-        left meter_machine mm on t.machine_id = mm.machine_id and mm.status_cd = '0'
+        left join meter_machine mm on t.machine_id = mm.machine_id and mm.status_cd = '0'
         where 1=1
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
