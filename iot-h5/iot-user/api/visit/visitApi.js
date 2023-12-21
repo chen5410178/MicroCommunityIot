@@ -58,6 +58,9 @@ export function saveAddVisit(_data) {
 		});
 	})
 }
+/**
+ * 查询访客类型
+ */
 export function listVisitType(_data) {
 	return new Promise((resolve, reject) => {
 		requestNoAuth({

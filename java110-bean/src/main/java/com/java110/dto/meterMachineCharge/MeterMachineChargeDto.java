@@ -14,6 +14,8 @@ import java.util.Date;
  * add by wuxw 2019/4/24
  **/
 public class MeterMachineChargeDto extends PageDto implements Serializable {
+    public static final String STATE_WAITING = "W";
+    public static final String STATE_COMPLETE = "C";
 
     private String machineId;
     private String chargeId;

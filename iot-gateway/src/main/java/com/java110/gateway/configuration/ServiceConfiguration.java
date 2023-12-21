@@ -61,6 +61,9 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/passcode.applyPassQrcode,");// 申请通行码
         exclusions.append("/iot/api/passcode.refreshPassQrcode,");// 查询通信码
 
+        exclusions.append("/iot/api/meterQrcode.listMeterQrcode,");// 查询水电二维码
+        exclusions.append("/iot/api/meterMachine.listMeterMachine,");// 查询水电表
+        exclusions.append("/iot/api/meterMachineCharge.listMeterMachineCharge,");// 查询水电表充值记录
 
 
     }

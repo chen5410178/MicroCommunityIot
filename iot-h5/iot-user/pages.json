@@ -239,6 +239,51 @@
             }
             
         }
+		,{
+		    "path" : "pages/meter/meterCharge",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "水电充值",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/meter/meterRechargeRecords",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "充值记录",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/meter/meterRechargeRecord",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "充值记录",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/meter/preStoreMeter",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "水电充值",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/meter/selectMeter",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "选择水电表",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
     ],
 	"tabBar": {
 		"color": "#272636",
