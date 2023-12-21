@@ -186,4 +186,18 @@
         group by DATE_FORMAT(t.create_time,'%Y-%m-%d')
 
     </select>
+
+
+    <select id="queryAcVisitStatistics" parameterType="Map" resultType="Map">
+        select DATE_FORMAT(t.create_time,'%Y-%m-%d') createTime,count(1) totalCount
+        from visit t
+        WHERE 1=1
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        and t.create_time &gt; #{startTime}
+
+        group by DATE_FORMAT(t.create_time,'%Y-%m-%d')
+
+    </select>
 </mapper>
