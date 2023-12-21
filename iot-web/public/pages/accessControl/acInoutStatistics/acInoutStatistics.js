@@ -83,12 +83,32 @@
                     }
                 );
             },
-
+            _listAccessControlFaces: function(_page, _rows) {
+                let param = {
+                    params: {
+                        communityId:vc.getCurrentCommunity().communityId,
+                        machineId:$that.acInoutStatisticsInfo.machineId
+                    }
+                };
+                //发送get请求
+                vc.http.apiGet('/accessControl.queryAcFaceStatistics',
+                    param,
+                    function(json, res) {
+                        let _json = JSON.parse(json);
+                        $that._initSummaryChart(_json.data,'人脸审核统计表',"acFaceStatisticsCharts");
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
             swatchAccessControl: function(_accessControl) {
                 $that.acInoutStatisticsInfo.machineId = _accessControl.machineId;
                 $that._listAccessControlInouts(DEFAULT_PAGE, DEFAULT_ROWS);
                 $that._listAccessControlLogs();
                 $that._listAccessControlVisits();
+                $that._listAccessControlFaces();
+                
             },
             _listAccessControls: function(_page, _rows) {
 

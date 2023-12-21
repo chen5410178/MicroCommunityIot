@@ -85,4 +85,7 @@ public interface IAccessControlV1InnerServiceSMO {
 
     @RequestMapping(value = "/queryAcVisitStatistics", method = RequestMethod.POST)
     List<Map> queryAcVisitStatistics(@RequestBody JSONObject reqJson);
+
+    @RequestMapping(value = "/queryAcFaceStatistics", method = RequestMethod.POST)
+    List<Map> queryAcFaceStatistics(@RequestBody JSONObject reqJson);
 }

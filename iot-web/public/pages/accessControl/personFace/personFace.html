@@ -138,13 +138,13 @@
                                         <td class="text-center">{{personFace.createTime}}</td>
                                         <td class="text-center">{{personFace.pfId}}</td>
                                         <td class="text-center">
-                                            <div class="btn-group">
+                                            <div class="btn-group" v-if="personFace.state == 'W'">
                                                 <button class="btn-white btn btn-xs"
                                                     v-on:click="_openAuditPersonFaceModel(personFace)">
                                                     <vc:i18n name='审核'></vc:i18n>
                                                 </button>
                                             </div>
-                                            <div class="btn-group">
+                                            <div class="btn-group" v-if="personFace.state == 'W'">
                                                 <button class="btn-white btn btn-xs"
                                                     v-on:click="_openDeletePersonFaceModel(personFace)">
                                                     <vc:i18n name='删除'></vc:i18n>

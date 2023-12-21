@@ -77,4 +77,6 @@ public interface IAccessControlV1ServiceDao {
     List<Map> queryAcLogStatistics(Map info);
 
     List<Map> queryAcVisitStatistics(Map info);
+
+    List<Map> queryAcFaceStatistics(Map info);
 }
