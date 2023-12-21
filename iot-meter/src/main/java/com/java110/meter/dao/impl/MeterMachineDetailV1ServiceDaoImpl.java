@@ -141,4 +141,18 @@ public class MeterMachineDetailV1ServiceDaoImpl extends BaseServiceDao implement
 
         return infos;
     }
+
+    @Override
+    public List<Map> queryMeterCountStatistics(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("meterMachineDetailV1ServiceDaoImpl.queryMeterCountStatistics", info);
+
+        return infos;
+    }
+
+    @Override
+    public List<Map> queryMeterMoneyStatistics(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("meterMachineDetailV1ServiceDaoImpl.queryMeterMoneyStatistics", info);
+
+        return infos;
+    }
 }

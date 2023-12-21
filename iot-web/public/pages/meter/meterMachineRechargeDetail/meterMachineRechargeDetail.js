@@ -51,7 +51,8 @@
                         $that.meterMachineDetailInfo.details = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.meterMachineDetailInfo.records,
-                            currentPage: _page
+                            currentPage: _page,
+                            dataCount:_json.total
                         });
                     }, function (errInfo, error) {
                         console.log('请求失败处理');

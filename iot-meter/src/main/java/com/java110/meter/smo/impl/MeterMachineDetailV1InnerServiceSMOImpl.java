@@ -15,6 +15,7 @@
  */
 package com.java110.meter.smo.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.dto.PageDto;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.meter.MeterMachineDetailDto;
@@ -95,12 +96,12 @@ public class MeterMachineDetailV1InnerServiceSMOImpl implements IMeterMachineDet
 
 
     @Override
-    public int queryMeterMachineReadOrRechargeDetailsCount(MeterMachineReadOrRechargeDetailDto meterMachineReadOrRechargeDetailDto) {
+    public int queryMeterMachineReadOrRechargeDetailsCount(@RequestBody MeterMachineReadOrRechargeDetailDto meterMachineReadOrRechargeDetailDto) {
         return meterMachineDetailV1ServiceDaoImpl.queryMeterMachineReadOrRechargeDetailsCount(BeanConvertUtil.beanCovertMap(meterMachineReadOrRechargeDetailDto));
     }
 
     @Override
-    public List<MeterMachineReadOrRechargeDetailDto> queryMeterMachineReadOrRechargeDetails(MeterMachineReadOrRechargeDetailDto meterMachineReadOrRechargeDetailDto) {
+    public List<MeterMachineReadOrRechargeDetailDto> queryMeterMachineReadOrRechargeDetails(@RequestBody MeterMachineReadOrRechargeDetailDto meterMachineReadOrRechargeDetailDto) {
         int page = meterMachineReadOrRechargeDetailDto.getPage();
 
         if (page != PageDto.DEFAULT_PAGE) {
@@ -108,6 +109,18 @@ public class MeterMachineDetailV1InnerServiceSMOImpl implements IMeterMachineDet
         }
 
         List<MeterMachineReadOrRechargeDetailDto> infos = BeanConvertUtil.covertBeanList(meterMachineDetailV1ServiceDaoImpl.queryMeterMachineReadOrRechargeDetails(BeanConvertUtil.beanCovertMap(meterMachineReadOrRechargeDetailDto)), MeterMachineReadOrRechargeDetailDto.class);
+        return infos;
+    }
+
+    @Override
+    public List<Map> queryMeterCountStatistics(@RequestBody JSONObject reqJson) {
+        List<Map> infos =meterMachineDetailV1ServiceDaoImpl.queryMeterCountStatistics(reqJson);
+        return infos;
+    }
+
+    @Override
+    public List<Map> queryMeterMoneyStatistics(@RequestBody JSONObject reqJson) {
+        List<Map> infos =meterMachineDetailV1ServiceDaoImpl.queryMeterMoneyStatistics(reqJson);
         return infos;
     }
 }

@@ -15,6 +15,7 @@
  */
 package com.java110.intf.meter;
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.dto.meter.MeterMachineDetailDto;
 import com.java110.dto.meter.MeterMachineReadOrRechargeDetailDto;
 import com.java110.intf.FeignConfiguration;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类表述： 服务之前调用的接口类，不对外提供接口能力 只用于接口建调用
@@ -68,11 +70,17 @@ public interface IMeterMachineDetailV1InnerServiceSMO {
     int queryMeterMachineDetailsCount(@RequestBody MeterMachineDetailDto meterMachineDetailDto);
 
     @RequestMapping(value = "/saveMeterMachineDetails", method = RequestMethod.POST)
-    int saveMeterMachineDetails(List<MeterMachineDetailPo> meterMachineDetailPos);
+    int saveMeterMachineDetails(@RequestBody List<MeterMachineDetailPo> meterMachineDetailPos);
 
     @RequestMapping(value = "/queryMeterMachineReadOrRechargeDetailsCount", method = RequestMethod.POST)
-    int queryMeterMachineReadOrRechargeDetailsCount(MeterMachineReadOrRechargeDetailDto meterMachineReadOrRechargeDetailDto);
+    int queryMeterMachineReadOrRechargeDetailsCount(@RequestBody MeterMachineReadOrRechargeDetailDto meterMachineReadOrRechargeDetailDto);
 
     @RequestMapping(value = "/queryMeterMachineReadOrRechargeDetails", method = RequestMethod.POST)
-    List<MeterMachineReadOrRechargeDetailDto> queryMeterMachineReadOrRechargeDetails(MeterMachineReadOrRechargeDetailDto meterMachineReadOrRechargeDetailDto);
+    List<MeterMachineReadOrRechargeDetailDto> queryMeterMachineReadOrRechargeDetails(@RequestBody MeterMachineReadOrRechargeDetailDto meterMachineReadOrRechargeDetailDto);
+
+    @RequestMapping(value = "/queryMeterCountStatistics", method = RequestMethod.POST)
+    List<Map> queryMeterCountStatistics(@RequestBody JSONObject reqJson);
+
+    @RequestMapping(value = "/queryMeterMoneyStatistics", method = RequestMethod.POST)
+    List<Map> queryMeterMoneyStatistics(@RequestBody JSONObject reqJson);
 }

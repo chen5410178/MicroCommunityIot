@@ -16,6 +16,7 @@
 package com.java110.meter.dao;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.core.exception.DAOException;
 
 import java.util.List;
@@ -73,4 +74,8 @@ public interface IMeterMachineDetailV1ServiceDao {
     int queryMeterMachineReadOrRechargeDetailsCount(Map info);
 
     List<Map> queryMeterMachineReadOrRechargeDetails(Map info);
+
+    List<Map> queryMeterCountStatistics(Map info);
+
+    List<Map> queryMeterMoneyStatistics(Map info);
 }
