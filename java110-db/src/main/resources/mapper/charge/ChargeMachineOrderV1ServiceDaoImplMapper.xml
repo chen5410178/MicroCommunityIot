@@ -252,7 +252,7 @@
     </select>
     <select id="queryMonthMoneyStatistics" parameterType="Map" resultType="Map">
         select DATE_FORMAT(t.create_time,'%Y-%m-%d') createTime,sum(t.received_amount) totalCount
-        from person_face t
+        from charge_month_order t
         WHERE 1=1
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
