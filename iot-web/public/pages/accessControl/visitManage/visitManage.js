@@ -63,7 +63,8 @@
                         $that.visitManageInfo.visits = _visitManageInfo.data;
                         vc.emit('pagination', 'init', {
                             total: $that.visitManageInfo.records,
-                            currentPage: _page
+                            currentPage: _page,
+                            dataCount:_visitManageInfo.total
                         });
                     }, function (errInfo, error) {
                         console.log('请求失败处理');

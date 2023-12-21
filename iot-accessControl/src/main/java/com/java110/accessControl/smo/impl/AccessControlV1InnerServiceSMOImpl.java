@@ -185,4 +185,9 @@ public class AccessControlV1InnerServiceSMOImpl implements IAccessControlV1Inner
         return accessControlV1ServiceDaoImpl.queryAcInoutStatistics(reqJson);
     }
 
+    @Override
+    public List<Map> queryAcLogStatistics(@RequestBody JSONObject reqJson) {
+        return accessControlV1ServiceDaoImpl.queryAcLogStatistics(reqJson);
+    }
+
 }

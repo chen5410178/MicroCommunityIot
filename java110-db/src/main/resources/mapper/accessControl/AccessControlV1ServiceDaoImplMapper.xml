@@ -157,7 +157,7 @@
     </select>
 
     <select id="queryAcInoutStatistics" parameterType="Map" resultType="Map">
-        select DATE_FORMAT(t.create_time,'%Y-%m-%d') createTime,count(1) inoutCount
+        select DATE_FORMAT(t.create_time,'%Y-%m-%d') createTime,count(1) totalCount
         from access_control_inout t
         WHERE 1=1
         <if test="machineId !=null and machineId != ''">
@@ -171,5 +171,19 @@
         group by DATE_FORMAT(t.create_time,'%Y-%m-%d')
 
     </select>
+    <select id="queryAcLogStatistics" parameterType="Map" resultType="Map">
+        select DATE_FORMAT(t.create_time,'%Y-%m-%d') createTime,count(1) totalCount
+        from access_control_log t
+        WHERE 1=1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        and t.create_time &gt; #{startTime}
 
+        group by DATE_FORMAT(t.create_time,'%Y-%m-%d')
+
+    </select>
 </mapper>

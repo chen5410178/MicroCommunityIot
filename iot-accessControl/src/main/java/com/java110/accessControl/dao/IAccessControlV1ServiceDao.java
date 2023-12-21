@@ -72,5 +72,7 @@ public interface IAccessControlV1ServiceDao {
      */
     int queryAccessControlsCount(Map info);
 
-    List<Map> queryAcInoutStatistics(Map reqJson);
+    List<Map> queryAcInoutStatistics(Map info);
+
+    List<Map> queryAcLogStatistics(Map info);
 }

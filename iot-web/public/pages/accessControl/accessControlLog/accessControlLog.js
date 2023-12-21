@@ -55,7 +55,8 @@
                         $that.accessControlLogInfo.accessControlLogs = _accessControlLogInfo.data;
                         vc.emit('pagination', 'init', {
                             total: $that.accessControlLogInfo.records,
-                            currentPage: _page
+                            currentPage: _page,
+                            dataCount:_accessControlLogInfo.total
                         });
                     },
                     function(errInfo, error) {

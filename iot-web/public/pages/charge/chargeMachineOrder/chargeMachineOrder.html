@@ -3,31 +3,43 @@
         <div class="col-lg-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5><span>
+                    <h5>
                             <vc:i18n name="查询条件"></vc:i18n>
-                        </span></h5>
+                    </h5>
                     <div class="ibox-tools" style="top:10px;">
 
                     </div>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请选择订单编号','chargeMachineOrder')"
                                     v-model="chargeMachineOrderInfo.conditions.orderId" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请选择名称','chargeMachineOrder')"
                                     v-model="chargeMachineOrderInfo.conditions.personName" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请选择手机号','chargeMachineOrder')"
                                     v-model="chargeMachineOrderInfo.conditions.personTel" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请填写充电桩名称','chargeMachineOrder')"
+                                    v-model="chargeMachineOrderInfo.conditions.machineName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请填写插槽','chargeMachineOrder')"
+                                    v-model="chargeMachineOrderInfo.conditions.portName" class=" form-control">
                             </div>
                         </div>
                         <div class="col-sm-1">
@@ -40,19 +52,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请填写充电桩名称','chargeMachineOrder')"
-                                    v-model="chargeMachineOrderInfo.conditions.machineName" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请填写插槽','chargeMachineOrder')"
-                                    v-model="chargeMachineOrderInfo.conditions.portName" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
+                        
+                        <div class="col-sm-2">
                             <select class="custom-select" v-model="chargeMachineOrderInfo.conditions.state">
                                 <option selected value="">
                                     请选择插座状态

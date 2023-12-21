@@ -67,13 +67,14 @@
                 vc.http.apiGet('/accessControlInout.listAccessControlInout',
                     param,
                     function(json, res) {
-                        var _accessControlInoutInfo = JSON.parse(json);
-                        $that.accessControlInoutInfo.total = _accessControlInoutInfo.total;
-                        $that.accessControlInoutInfo.records = _accessControlInoutInfo.records;
-                        $that.accessControlInoutInfo.accessControlInouts = _accessControlInoutInfo.data;
+                        var _json = JSON.parse(json);
+                        $that.accessControlInoutInfo.total = _json.total;
+                        $that.accessControlInoutInfo.records = _json.records;
+                        $that.accessControlInoutInfo.accessControlInouts = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.accessControlInoutInfo.records,
-                            currentPage: _page
+                            currentPage: _page,
+                            dataCount:_json.total
                         });
                     },
                     function(errInfo, error) {

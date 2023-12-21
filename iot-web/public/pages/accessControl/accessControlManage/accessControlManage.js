@@ -53,7 +53,8 @@
                         $that.accessControlManageInfo.accessControls = _accessControlManageInfo.data;
                         vc.emit('pagination', 'init', {
                             total: $that.accessControlManageInfo.records,
-                            currentPage: _page
+                            currentPage: _page,
+                            dataCount:_accessControlManageInfo.total
                         });
                     },
                     function (errInfo, error) {

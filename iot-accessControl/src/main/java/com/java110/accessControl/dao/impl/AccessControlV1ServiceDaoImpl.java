@@ -113,5 +113,11 @@ public class AccessControlV1ServiceDaoImpl extends BaseServiceDao implements IAc
         return infos;
     }
 
+    @Override
+    public List<Map> queryAcLogStatistics(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlV1ServiceDaoImpl.queryAcLogStatistics", info);
+        return infos;
+    }
+
 
 }

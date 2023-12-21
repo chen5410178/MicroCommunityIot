@@ -66,7 +66,8 @@
                         $that.personFaceInfo.personFaces = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.personFaceInfo.records,
-                            currentPage: _page
+                            currentPage: _page,
+                            dataCount:_json.total
                         });
                     }, function (errInfo, error) {
                         console.log('请求失败处理');

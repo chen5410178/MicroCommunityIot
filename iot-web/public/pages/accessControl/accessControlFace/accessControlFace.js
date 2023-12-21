@@ -51,13 +51,14 @@ import Cockpit3d from 'api/3d/Cockpit3d.js'
                 vc.http.apiGet('/accessControlFace.listAccessControlFace',
                     param,
                     function(json, res) {
-                        var _accessControlFaceInfo = JSON.parse(json);
-                        $that.accessControlFaceInfo.total = _accessControlFaceInfo.total;
-                        $that.accessControlFaceInfo.records = _accessControlFaceInfo.records;
-                        $that.accessControlFaceInfo.accessControlFaces = _accessControlFaceInfo.data;
+                        var _json = JSON.parse(json);
+                        $that.accessControlFaceInfo.total = _json.total;
+                        $that.accessControlFaceInfo.records = _json.records;
+                        $that.accessControlFaceInfo.accessControlFaces = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.accessControlFaceInfo.records,
-                            currentPage: _page
+                            currentPage: _page,
+                            dataCount:_json.total
                         });
                     },
                     function(errInfo, error) {

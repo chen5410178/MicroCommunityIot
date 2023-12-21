@@ -24,37 +24,38 @@
             }
         },
         _initMethod: function() {
-            vc.component._listChargeMachineOrders(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._listChargeMachineOrders(DEFAULT_PAGE, DEFAULT_ROWS);
         },
         _initEvent: function() {
 
             vc.on('chargeMachineOrder', 'listChargeMachineOrder', function(_param) {
-                vc.component._listChargeMachineOrders(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listChargeMachineOrders(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('pagination', 'page_event', function(_currentPage) {
-                vc.component._listChargeMachineOrders(_currentPage, DEFAULT_ROWS);
+                $that._listChargeMachineOrders(_currentPage, DEFAULT_ROWS);
             });
         },
         methods: {
             _listChargeMachineOrders: function(_page, _rows) {
 
-                vc.component.chargeMachineOrderInfo.conditions.page = _page;
-                vc.component.chargeMachineOrderInfo.conditions.row = _rows;
+                $that.chargeMachineOrderInfo.conditions.page = _page;
+                $that.chargeMachineOrderInfo.conditions.row = _rows;
                 let param = {
-                    params: vc.component.chargeMachineOrderInfo.conditions
+                    params: $that.chargeMachineOrderInfo.conditions
                 };
 
                 //发送get请求
                 vc.http.apiGet('/chargeMachine.listChargeMachineOrder',
                     param,
                     function(json, res) {
-                        var _chargeMachineOrderInfo = JSON.parse(json);
-                        vc.component.chargeMachineOrderInfo.total = _chargeMachineOrderInfo.total;
-                        vc.component.chargeMachineOrderInfo.records = _chargeMachineOrderInfo.records;
-                        vc.component.chargeMachineOrderInfo.chargeMachineOrders = _chargeMachineOrderInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.chargeMachineOrderInfo.total = _json.total;
+                        $that.chargeMachineOrderInfo.records = _json.records;
+                        $that.chargeMachineOrderInfo.chargeMachineOrders = _json.data;
                         vc.emit('pagination', 'init', {
-                            total: vc.component.chargeMachineOrderInfo.records,
-                            currentPage: _page
+                            total: $that.chargeMachineOrderInfo.records,
+                            currentPage: _page,
+                            dataCount:_json.total
                         });
                     },
                     function(errInfo, error) {
@@ -63,7 +64,7 @@
                 );
             },
             _queryChargeMachineOrderMethod: function() {
-                vc.component._listChargeMachineOrders(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listChargeMachineOrders(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
             _viewOrderAccts: function(_order) { // 展示扣款明细

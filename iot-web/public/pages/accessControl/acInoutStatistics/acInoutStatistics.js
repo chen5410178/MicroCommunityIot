@@ -16,6 +16,7 @@
         _initMethod: function() {
             $that._listAccessControls();
             $that._listAccessControlInouts(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._listAccessControlLogs();
         },
         _initEvent: function() {
 
@@ -36,7 +37,27 @@
                     param,
                     function(json, res) {
                         let _json = JSON.parse(json);
-                        $that._initSummaryChart(_json.data);
+
+                        $that._initSummaryChart(_json.data,'人员进出统计表',"acInoutStatisticsCharts");
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+            _listAccessControlLogs: function(_page, _rows) {
+                let param = {
+                    params: {
+                        communityId:vc.getCurrentCommunity().communityId,
+                        machineId:$that.acInoutStatisticsInfo.machineId
+                    }
+                };
+                //发送get请求
+                vc.http.apiGet('/accessControl.queryAcLogStatistics',
+                    param,
+                    function(json, res) {
+                        let _json = JSON.parse(json);
+                        $that._initSummaryChart(_json.data,'人员下发统计表',"acLogStatisticsCharts");
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');
@@ -75,19 +96,19 @@
                     }
                 );
             },
-            _initSummaryChart: function(_data) {
-                let dom = document.getElementById("acInoutStatisticsCharts");
+            _initSummaryChart: function(_data,_title,_elementName) {
+                let dom = document.getElementById(_elementName);
                 let myChart = echarts.init(dom);
                 let _createTime = [];
                 let _realChargeTotals = [];
                 _data.forEach(item => {
                     _createTime.push(item.createTime);
-                    _realChargeTotals.push(item.inoutCount);
+                    _realChargeTotals.push(item.totalCount);
                 });
                 let option = null;
                 option = {
                     title: {
-                        text: '人员进出统计表'
+                        text: _title
                     },
                     tooltip: {
                         trigger: 'axis'
@@ -115,7 +136,7 @@
                         type: 'value'
                     },
                     series: [{
-                        name: '收入金额',
+                        name: '数量',
                         type: 'line',
                         stack: 'Total',
                         data: _realChargeTotals

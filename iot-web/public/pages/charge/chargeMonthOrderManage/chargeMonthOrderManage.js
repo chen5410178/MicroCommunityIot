@@ -58,13 +58,14 @@
                 vc.http.apiGet('/chargeCard.listChargeMonthOrder',
                     param,
                     function(json, res) {
-                        var _chargeMonthOrderManageInfo = JSON.parse(json);
-                        $that.chargeMonthOrderManageInfo.total = _chargeMonthOrderManageInfo.total;
-                        $that.chargeMonthOrderManageInfo.records = _chargeMonthOrderManageInfo.records;
-                        $that.chargeMonthOrderManageInfo.chargeMonthOrders = _chargeMonthOrderManageInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.chargeMonthOrderManageInfo.total = _json.total;
+                        $that.chargeMonthOrderManageInfo.records = _json.records;
+                        $that.chargeMonthOrderManageInfo.chargeMonthOrders = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.chargeMonthOrderManageInfo.records,
-                            currentPage: _page
+                            currentPage: _page,
+                            dataCount:_json.total
                         });
                     },
                     function(errInfo, error) {
