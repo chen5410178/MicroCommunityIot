@@ -104,5 +104,29 @@ public class ChargeMachineOrderV1ServiceDaoImpl extends BaseServiceDao implement
         return Integer.parseInt(businessChargeMachineOrderInfos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> queryOrderCountStatistics(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("chargeMachineOrderV1ServiceDaoImpl.queryOrderCountStatistics", info);
+       return infos;
+    }
+
+    @Override
+    public List<Map> queryOrderMoneyStatistics(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("chargeMachineOrderV1ServiceDaoImpl.queryOrderMoneyStatistics", info);
+        return infos;
+    }
+
+    @Override
+    public List<Map> queryMonthCountStatistics(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("chargeMachineOrderV1ServiceDaoImpl.queryMonthCountStatistics", info);
+        return infos;
+    }
+
+    @Override
+    public List<Map> queryMonthMoneyStatistics(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("chargeMachineOrderV1ServiceDaoImpl.queryMonthMoneyStatistics", info);
+        return infos;
+    }
+
 
 }

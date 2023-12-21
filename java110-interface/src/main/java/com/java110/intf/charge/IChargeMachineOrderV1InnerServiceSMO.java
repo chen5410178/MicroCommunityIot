@@ -15,6 +15,7 @@
  */
 package com.java110.intf.charge;
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.dto.chargeMachine.ChargeMachineOrderDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.chargeMachineOrder.ChargeMachineOrderPo;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类表述： 服务之前调用的接口类，不对外提供接口能力 只用于接口建调用
@@ -65,4 +67,16 @@ public interface IChargeMachineOrderV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryChargeMachineOrdersCount", method = RequestMethod.POST)
     int queryChargeMachineOrdersCount(@RequestBody ChargeMachineOrderDto chargeMachineOrderDto);
+
+    @RequestMapping(value = "/queryOrderCountStatistics", method = RequestMethod.POST)
+    List<Map> queryOrderCountStatistics(@RequestBody JSONObject reqJson);
+
+    @RequestMapping(value = "/queryOrderMoneyStatistics", method = RequestMethod.POST)
+    List<Map> queryOrderMoneyStatistics(@RequestBody JSONObject reqJson);
+
+    @RequestMapping(value = "/queryMonthCountStatistics", method = RequestMethod.POST)
+    List<Map> queryMonthCountStatistics(@RequestBody JSONObject reqJson);
+
+    @RequestMapping(value = "/queryMonthMoneyStatistics", method = RequestMethod.POST)
+    List<Map> queryMonthMoneyStatistics(@RequestBody JSONObject reqJson);
 }

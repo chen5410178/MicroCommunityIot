@@ -16,6 +16,7 @@
 package com.java110.charge.dao;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.core.exception.DAOException;
 
 import java.util.List;
@@ -69,4 +70,11 @@ public interface IChargeMachineOrderV1ServiceDao {
      */
     int queryChargeMachineOrdersCount(Map info);
 
+    List<Map> queryOrderCountStatistics(Map info);
+
+    List<Map> queryOrderMoneyStatistics(Map info);
+
+    List<Map> queryMonthCountStatistics(Map info);
+
+    List<Map> queryMonthMoneyStatistics(Map info);
 }

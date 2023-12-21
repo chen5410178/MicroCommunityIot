@@ -214,4 +214,53 @@
 
     </select>
 
+    <select id="queryOrderCountStatistics" parameterType="Map" resultType="Map">
+        select DATE_FORMAT(t.create_time,'%Y-%m-%d') createTime,count(1) totalCount
+        from charge_machine_order t
+        WHERE 1=1
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        and t.create_time &gt; #{startTime}
+
+        group by DATE_FORMAT(t.create_time,'%Y-%m-%d')
+
+    </select>
+    <select id="queryOrderMoneyStatistics" parameterType="Map" resultType="Map">
+        select DATE_FORMAT(t.create_time,'%Y-%m-%d') createTime,sum(t.amount) totalCount
+        from charge_machine_order t
+        WHERE 1=1
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        and t.create_time &gt; #{startTime}
+
+        group by DATE_FORMAT(t.create_time,'%Y-%m-%d')
+
+    </select>
+    <select id="queryMonthCountStatistics" parameterType="Map" resultType="Map">
+        select DATE_FORMAT(t.create_time,'%Y-%m-%d') createTime,count(1) totalCount
+        from charge_month_order t
+        WHERE 1=1
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        and t.create_time &gt; #{startTime}
+
+        group by DATE_FORMAT(t.create_time,'%Y-%m-%d')
+
+    </select>
+    <select id="queryMonthMoneyStatistics" parameterType="Map" resultType="Map">
+        select DATE_FORMAT(t.create_time,'%Y-%m-%d') createTime,sum(t.received_amount) totalCount
+        from person_face t
+        WHERE 1=1
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        and t.create_time &gt; #{startTime}
+
+        group by DATE_FORMAT(t.create_time,'%Y-%m-%d')
+
+    </select>
+
 </mapper>

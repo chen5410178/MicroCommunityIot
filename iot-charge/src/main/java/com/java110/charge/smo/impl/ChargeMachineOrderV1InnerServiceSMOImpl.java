@@ -16,6 +16,7 @@
 package com.java110.charge.smo.impl;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.dto.PageDto;
 import com.java110.charge.dao.IChargeMachineOrderV1ServiceDao;
 import com.java110.core.utils.BeanConvertUtil;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类表述： 服务之前调用的接口实现类，不对外提供接口能力 只用于接口建调用
@@ -82,5 +84,25 @@ public class ChargeMachineOrderV1InnerServiceSMOImpl implements IChargeMachineOr
     @Override
     public int queryChargeMachineOrdersCount(@RequestBody ChargeMachineOrderDto chargeMachineOrderDto) {
         return chargeMachineOrderV1ServiceDaoImpl.queryChargeMachineOrdersCount(BeanConvertUtil.beanCovertMap(chargeMachineOrderDto));    }
+
+    @Override
+    public List<Map> queryOrderCountStatistics(@RequestBody JSONObject reqJson) {
+        return chargeMachineOrderV1ServiceDaoImpl.queryOrderCountStatistics(reqJson);
+    }
+
+    @Override
+    public List<Map> queryOrderMoneyStatistics(@RequestBody JSONObject reqJson) {
+        return chargeMachineOrderV1ServiceDaoImpl.queryOrderMoneyStatistics(reqJson);
+    }
+
+    @Override
+    public List<Map> queryMonthCountStatistics(@RequestBody JSONObject reqJson) {
+        return chargeMachineOrderV1ServiceDaoImpl.queryMonthCountStatistics(reqJson);
+    }
+
+    @Override
+    public List<Map> queryMonthMoneyStatistics(@RequestBody JSONObject reqJson) {
+        return chargeMachineOrderV1ServiceDaoImpl.queryMonthMoneyStatistics(reqJson);
+    }
 
 }
