@@ -32,7 +32,7 @@
                 };
 
                 //发送get请求
-                vc.http.apiGet('/acInoutStatistics.listAccessControlInout',
+                vc.http.apiGet('/accessControl.queryAcInoutStatistics',
                     param,
                     function(json, res) {
                         let _json = JSON.parse(json);
