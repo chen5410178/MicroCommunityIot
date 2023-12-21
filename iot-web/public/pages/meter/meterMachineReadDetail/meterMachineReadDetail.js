@@ -45,13 +45,14 @@
                 vc.http.apiGet('/meterMachine.listMeterMachineReadOrRechargeDetail',
                     param,
                     function (json, res) {
-                        var _meterMachineDetailInfo = JSON.parse(json);
-                        $that.meterMachineDetailInfo.total = _meterMachineDetailInfo.total;
-                        $that.meterMachineDetailInfo.records = _meterMachineDetailInfo.records;
-                        $that.meterMachineDetailInfo.details = _meterMachineDetailInfo.data;
+                        var _json = JSON.parse(json);
+                        $that.meterMachineDetailInfo.total = _json.total;
+                        $that.meterMachineDetailInfo.records = _json.records;
+                        $that.meterMachineDetailInfo.details = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.meterMachineDetailInfo.records,
-                            currentPage: _page
+                            currentPage: _page,
+                            dataCount:_json.total
                         });
                     }, function (errInfo, error) {
                         console.log('请求失败处理');

@@ -7,32 +7,38 @@
                         <vc:i18n name="查询条件"></vc:i18n>
                     </h5>
                     <div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;" v-on:click="_moreCondition()">
-                            {{meterMachineDetailInfo.moreCondition == true?'隐藏':'更多'}}
-                        </button>
+
                     </div>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请填写名称','meterMachineDetail')"
                                     v-model="meterMachineDetailInfo.conditions.machineNameLike" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请填写表号','meterMachineDetail')"
                                     v-model="meterMachineDetailInfo.conditions.addressLike" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <select class="custom-select" v-model="meterMachineDetailInfo.conditions.state">
                                 <option selected value="">{{vc.i18n('请选择抄表状态','meterMachineDetail')}}</option>
                                 <option value="W">{{vc.i18n('等待','meterMachineDetail')}}</option>
                                 <option value="F">{{vc.i18n('失败','meterMachineDetail')}}</option>
                                 <option value="C">{{vc.i18n('完成','meterMachineDetail')}}</option>
                             </select>
+                        </div>
+                        <div class="col-sm-2" >
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <input type="text" :placeholder="vc.i18n('请填写房屋编号 楼栋-单元-房屋','meterMachineManage')"
+                                        v-model="meterMachineDetailInfo.conditions.roomNameLike" class=" form-control">
+                                </div>
+                            </div>
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryMeterMachineDetailMethod()">
@@ -41,16 +47,6 @@
                             <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetMeterMachineDetailMethod()">
                                 <vc:i18n name="重置"></vc:i18n>
                             </button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3" v-if="meterMachineDetailInfo.moreCondition == true">
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <input type="text" :placeholder="vc.i18n('请填写房屋编号 楼栋-单元-房屋','meterMachineManage')"
-                                        v-model="meterMachineDetailInfo.conditions.roomNameLike" class=" form-control">
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

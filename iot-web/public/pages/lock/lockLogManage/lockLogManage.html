@@ -9,13 +9,13 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请输入门锁编号','lockLogManage')"
                                     v-model="lockLogManageInfo.conditions.machineCode" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group input-group">
                                 <input type="text" :placeholder="vc.i18n('请选择业主','lockLogManage')"
                                     v-model="lockLogManageInfo.conditions.userName" class=" form-control">
@@ -27,7 +27,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <select class="custom-select" v-model="lockLogManageInfo.conditions.state">
                                     <option selected disabled value="">{{vc.i18n('请选择状态','lockLogManage')}}</option>
