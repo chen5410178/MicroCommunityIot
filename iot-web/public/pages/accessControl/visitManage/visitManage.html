@@ -134,6 +134,12 @@
                                             <vc:i18n name='拜访事由' namespace='visitManage'></vc:i18n>
                                         </th>
                                         <th class="text-center">
+                                            <vc:i18n name='拜访时间' namespace='visitManage'></vc:i18n>
+                                        </th>
+                                        <th class="text-center">
+                                            <vc:i18n name='离开时间' namespace='visitManage'></vc:i18n>
+                                        </th>
+                                        <th class="text-center">
                                             <vc:i18n name='审核状态' namespace='visitManage'></vc:i18n>
                                         </th>
                                         <th class="text-center">
@@ -156,6 +162,8 @@
                                         <td class="text-center">{{visit.ownerName || '-'}}</td>
                                         <td class="text-center">{{visit.visitTypeName}}</td>
                                         <td class="text-center">{{visit.visitCase || '-'}}</td>
+                                        <td class="text-center">{{visit.visitTime || '-'}}</td>
+                                        <td class="text-center">{{visit.departureTime || '-'}}</td>
                                         <td class="text-center">{{visit.stateName}}</td>
                                         <td class="text-center">{{visit.msg || '-'}}</td>
                                         <td class="text-center">
