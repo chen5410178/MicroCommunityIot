@@ -24,7 +24,7 @@
                         </div>
                         <div class="ibox-content">
                             <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-sm-2">
                                     <select class="custom-select" v-model="accessControlFaceInfo.conditions.state">
                                             <option selected  value="">请选择状态</option>
                                             <option  value="W">待下发</option>
@@ -32,32 +32,30 @@
                                             <option  value="F">下发设备</option>
                                     </select>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-2">
                                     <select class="custom-select" v-model="accessControlFaceInfo.conditions.personType">
                                             <option selected  value="">请选择人员类型</option>
                                             <option  value="OWNER">人员</option>
                                             <option  value="STAFF">员工</option>
                                     </select>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <div class="form-group">
                                         <input type="text" :placeholder="vc.i18n('请选择用户名称','accessControlFace')" v-model="accessControlFaceInfo.conditions.name" class=" form-control">
                                     </div>
                                 </div>
-                                <div class="col-sm-1">
-                                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryAccessControlFaceMethod()">
-                                            <i class="glyphicon glyphicon-search"></i> <span><vc:i18n name="查询"></vc:i18n></span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-sm-2">
                                     <select class="custom-select" v-model="accessControlFaceInfo.conditions.comeType">
                                             <option selected  value="">请选择来自类型</option>
                                             <option  value="FLOOR">楼栋授权</option>
                                             <option  value="OWNER">人员授权</option>
                                             <option  value="STAFF">员工授权</option>
                                     </select>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryAccessControlFaceMethod()">
+                                            <i class="glyphicon glyphicon-search"></i> <span><vc:i18n name="查询"></vc:i18n></span>
+                                    </button>
                                 </div>
                             </div>
                         </div>

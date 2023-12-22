@@ -96,13 +96,7 @@
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
-                //不提交数据将数据 回调给侦听处理
-                if (vc.notNull($props.callBackListener)) {
-                    vc.emit($props.callBackListener, $props.callBackFunction, $that.addMonitorMachineInfo);
-                    $('#addMonitorMachineModel').modal('hide');
-                    return;
-                }
-
+              
                 vc.http.apiPost(
                     '/monitorMachine.saveMonitorMachine',
                     JSON.stringify($that.addMonitorMachineInfo),
