@@ -13,6 +13,9 @@ public class MonitorMachineDto extends PageDto implements Serializable {
     public static final String STATE_ONLINE = "ONLINE";
     public static final String STATE_OFFLINE = "OFFLINE";
 
+    public static final String PROTOCOL_RTSP = "RTSP";
+
+
     private String machineId;
     private String machineName;
     private String machineCode;

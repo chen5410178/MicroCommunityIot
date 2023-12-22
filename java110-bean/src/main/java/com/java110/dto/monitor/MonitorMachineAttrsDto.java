@@ -3,6 +3,7 @@ package com.java110.dto.monitor;
 import com.java110.bean.dto.PageDto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class MonitorMachineAttrsDto extends PageDto implements Serializable {
     private String attrId;
@@ -11,6 +12,15 @@ public class MonitorMachineAttrsDto extends PageDto implements Serializable {
     private String specCd;
     private String value;
     private String statusCd = "0";
+
+    public static String getSpecValue(List<MonitorMachineAttrsDto> attrs,String specCd){
+        for(MonitorMachineAttrsDto monitorMachineAttrsDto : attrs){
+            if(specCd.equals(monitorMachineAttrsDto.getSpecCd())){
+                return monitorMachineAttrsDto.getValue();
+            }
+        }
+        return null;
+    }
 
     public String getAttrId() {
         return attrId;

@@ -5,7 +5,9 @@ import com.java110.bean.ResultVo;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.WsDataDto;
+import com.java110.hal.rtsp.IPlayVideo;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -53,6 +55,9 @@ public class VideoStreamWebsocket {
 
     private String machineId = "";
 
+    @Autowired
+    private IPlayVideo playVideoImpl;
+
     /**
      * 连接建立成功调用的方法
      */
@@ -75,11 +80,8 @@ public class VideoStreamWebsocket {
 
         logger.debug("用户连接:" + clientId + ",当前在线人数为:" + getOnlineCount());
 
-//        try {
-//            sendMessage("连接成功");
-//        } catch (IOException e) {
-//            logger.error("用户:" + clientId + ",网络异常!!!!!!");
-//        }
+        playVideoImpl.playVideo(machineId);
+
     }
 
     /**
@@ -157,11 +159,16 @@ public class VideoStreamWebsocket {
     /**
      * 发送设备监控信息
      */
-    public static void sendInfo(ByteBuffer data, String machineId) throws IOException {
+    public static void sendInfo(ByteBuffer data, String machineId) {
         logger.info("发送消息到:" + machineId + "，报文:" + data);
         for (VideoStreamWebsocket server : webSocketMap.values()) {
-            if (machineId.equals(server.machineId)) {
+            if (!machineId.equals(server.machineId)) {
+                continue;
+            }
+            try {
                 webSocketMap.get(server.clientId).sendMessage(data);
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
     }

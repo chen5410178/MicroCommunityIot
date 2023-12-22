@@ -18,11 +18,28 @@
             });
         },
         methods: {
-            
-            _playWsVideo:function(){
 
+            _playWsVideo: function () {
+                let _protocol = window.location.protocol;
+                let url = window.location.host  + "/ws/" + this.clientId;
+                if (_protocol.startsWith('https')) {
+                    url =
+                        "wss://" + url;
+                } else {
+                    url =
+                        "ws://" + url;
+                }
+                let image = document.getElementById("receiver1Div");
+                let jessibuca = new Jessibuca({
+                    container: image,
+                    videoBuffer: 0.2,
+                    isResize: false,
+                });
+                jessibuca.onLoad = function () {
+                    this.play(wsUrl);
+                };
             },
-            
+
             clearPlayMonitorVideoInfo: function () {
                 $that.playMonitorVideoInfo = {
                     machineName: '',
