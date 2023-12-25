@@ -16,7 +16,7 @@
     <select id="getInstrumentLogInfo" parameterType="Map" resultType="Map">
         select t.machine_id,t.machine_id machineId,t.machine_code,t.machine_code machineCode,t.action,t.log_id,t.log_id
         logId,t.status_cd,t.status_cd statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name
-        machineName,ils.sensor_value sensorValue
+        machineName,t.create_time createTime,ils.sensor_value sensorValue
         from instrument_log t
         left join instrument_log_sensor ils on t.log_id = ils.log_id and ils.status_cd = '0'
         left join instrument i on t.machine_id = i.machine_id and ils.machine_id = i.machine_id and i.status_cd = '0'
@@ -42,6 +42,12 @@
         </if>
         <if test="machineName !=null and machineName != ''">
             and t.machine_name= #{machineName}
+        </if>
+        <if test="queryStartTime !=null and queryStartTime != ''">
+            and t.create_time &gt;= #{queryStartTime}
+        </if>
+        <if test="queryEndTime !=null and queryEndTime != ''">
+            and t.create_time &lt;= #{queryEndTime}
         </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
@@ -105,7 +111,12 @@
         <if test="machineName !=null and machineName != ''">
             and t.machine_name= #{machineName}
         </if>
-
+        <if test="queryStartTime !=null and queryStartTime != ''">
+            and t.create_time &gt;= #{queryStartTime}
+        </if>
+        <if test="queryEndTime !=null and queryEndTime != ''">
+            and t.create_time &lt;= #{queryEndTime}
+        </if>
 
     </select>
 

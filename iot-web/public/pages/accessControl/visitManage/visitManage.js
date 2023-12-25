@@ -22,6 +22,8 @@
                     communityId: '',
                     typeId: '',
                     state: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
             },
             visitTypeList: [],
@@ -33,6 +35,12 @@
                 $that.stateList = _data;
             })
             $that._listVisits(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.visitManageInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.visitManageInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function () {
 
@@ -94,6 +102,8 @@
                     communityId: '',
                     typeId: '',
                     state: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
                 $that._listVisits(DEFAULT_PAGE, DEFAULT_ROWS);
             },

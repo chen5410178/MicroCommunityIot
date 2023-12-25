@@ -194,6 +194,12 @@
         <if test="roomNameLike !=null and roomNameLike != ''">
             and mm.room_name like concat('%', #{roomNameLike}, '%')
         </if>
+        <if test="queryStartTime !=null and queryStartTime != ''">
+            and mmd.create_time &gt;= #{queryStartTime}
+        </if>
+        <if test="queryEndTime !=null and queryEndTime != ''">
+            and mmd.create_time &lt;= #{queryEndTime}
+        </if>
     </select>
 
     <select id="queryMeterMachineReadOrRechargeDetails" parameterType="Map" resultType="Map">
@@ -256,6 +262,12 @@
         </if>
         <if test="roomNameLike !=null and roomNameLike != ''">
             and mm.room_name like concat('%', #{roomNameLike}, '%')
+        </if>
+        <if test="queryStartTime !=null and queryStartTime != ''">
+            and mmd.create_time &gt;= #{queryStartTime}
+        </if>
+        <if test="queryEndTime !=null and queryEndTime != ''">
+            and mmd.create_time &lt;= #{queryEndTime}
         </if>
         order by mmd.create_time desc, mm.room_name, mm.meter_type, mm.address
         <if test="page != -1 and page != null ">

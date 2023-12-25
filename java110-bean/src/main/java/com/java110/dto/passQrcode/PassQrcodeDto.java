@@ -36,6 +36,10 @@ public class PassQrcodeDto extends PageDto implements Serializable {
 
     private String statusCd = "0";
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
 
     public String getPersonName() {
         return personName;
@@ -156,5 +160,21 @@ public class PassQrcodeDto extends PageDto implements Serializable {
 
     public void setExpire(String expire) {
         this.expire = expire;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

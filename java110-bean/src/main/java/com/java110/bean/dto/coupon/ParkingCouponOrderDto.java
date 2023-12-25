@@ -41,6 +41,10 @@ public class ParkingCouponOrderDto extends PageDto implements Serializable {
 
     private String couponName;
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
 
     public String getQuantity() {
         return quantity;
@@ -185,5 +189,21 @@ public class ParkingCouponOrderDto extends PageDto implements Serializable {
 
     public void setCouponName(String couponName) {
         this.couponName = couponName;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

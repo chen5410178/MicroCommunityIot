@@ -56,6 +56,12 @@
         <if test="userId !=null and userId != ''">
             and t.user_id= #{userId}
         </if>
+        <if test="queryStartTime !=null and queryStartTime != ''">
+            and t.create_time &gt;= #{queryStartTime}
+        </if>
+        <if test="queryEndTime !=null and queryEndTime != ''">
+            and t.create_time &lt;= #{queryEndTime}
+        </if>
         <if test="userIds !=null ">
             and t.user_id in
             <foreach collection="userIds" item="item" open="(" close=")" separator=",">
@@ -147,6 +153,12 @@
         </if>
         <if test="userId !=null and userId != ''">
             and t.user_id= #{userId}
+        </if>
+        <if test="queryStartTime !=null and queryStartTime != ''">
+            and t.create_time &gt;= #{queryStartTime}
+        </if>
+        <if test="queryEndTime !=null and queryEndTime != ''">
+            and t.create_time &lt;= #{queryEndTime}
         </if>
         <if test="userIds !=null ">
             and t.user_id in

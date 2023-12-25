@@ -32,6 +32,9 @@ public class VisitDto extends PageDto implements Serializable {
     private String phoneNumberLike;
     private String roomNameLike;
     private String ownerNameLike;
+    private String queryStartTime;
+
+    private String queryEndTime;
 
     public String getVisitId() {
         return visitId;
@@ -231,5 +234,21 @@ public class VisitDto extends PageDto implements Serializable {
 
     public void setOwnerNameLike(String ownerNameLike) {
         this.ownerNameLike = ownerNameLike;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

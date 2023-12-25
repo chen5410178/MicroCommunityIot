@@ -27,6 +27,10 @@ public class LiftMachineLogDto extends PageDto implements Serializable {
     private String stateName;
     private String logActionName;
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
     public String getLogId() {
         return logId;
     }
@@ -145,5 +149,21 @@ public class LiftMachineLogDto extends PageDto implements Serializable {
 
     public void setLogActionName(String logActionName) {
         this.logActionName = logActionName;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

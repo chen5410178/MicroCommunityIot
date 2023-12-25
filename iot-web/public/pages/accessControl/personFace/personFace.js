@@ -19,6 +19,8 @@
                     personTel: '',
                     ownerTypeCd: '',
                     state: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
             }
         },
@@ -36,6 +38,12 @@
                     $that.personFaceInfo.states.push(item);
                 })
             })
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.personFaceInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.personFaceInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function () {
             vc.on('personFace', 'listPersonFace', function (_param) {

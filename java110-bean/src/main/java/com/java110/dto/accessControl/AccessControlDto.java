@@ -37,6 +37,7 @@ public class AccessControlDto extends PageDto implements Serializable {
 
     private String userId;
     private String userName;
+    private String implBeanName;
 
 
     public String getMachineMac() {
@@ -166,5 +167,13 @@ public class AccessControlDto extends PageDto implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getImplBeanName() {
+        return implBeanName;
+    }
+
+    public void setImplBeanName(String implBeanName) {
+        this.implBeanName = implBeanName;
     }
 }

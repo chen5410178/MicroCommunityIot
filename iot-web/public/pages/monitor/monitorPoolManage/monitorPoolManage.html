@@ -9,7 +9,7 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <select class="custom-select" v-model="monitorPoolManageInfo.conditions.machineId">
                                     <option selected disabled value="">{{vc.i18n('请选择监控设备','monitorPoolManage')}}</option>
@@ -19,7 +19,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <select class="custom-select" v-model="monitorPoolManageInfo.conditions.modelId">
                                     <option selected disabled value="">{{vc.i18n('请选择监控模型','monitorPoolManage')}}</option>
@@ -29,7 +29,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <select class="custom-select" v-model="monitorPoolManageInfo.conditions.monitorType">
                                     <option selected disabled value="">{{vc.i18n('请选择监控类型','monitorPoolManage')}}</option>
@@ -37,6 +37,20 @@
                                         {{item.name}}
                                     </option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入开始时间','monitorPoolManage')"
+                                    v-model="monitorPoolManageInfo.conditions.queryStartTime"
+                                    class=" form-control queryStartTime">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入结束时间','monitorPoolManage')"
+                                    v-model="monitorPoolManageInfo.conditions.queryEndTime"
+                                    class=" form-control queryEndTime">
                             </div>
                         </div>
                         <div class="col-sm-2">

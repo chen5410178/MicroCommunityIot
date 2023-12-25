@@ -42,6 +42,10 @@ public class AccessControlLogDto extends PageDto implements Serializable {
 
     private String stateName;
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
 
 
     public String getResParam() {
@@ -163,5 +167,21 @@ public class AccessControlLogDto extends PageDto implements Serializable {
 
     public void setUserIds(String[] userIds) {
         this.userIds = userIds;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

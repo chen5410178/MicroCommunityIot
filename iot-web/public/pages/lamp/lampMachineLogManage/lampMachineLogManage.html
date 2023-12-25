@@ -7,14 +7,12 @@
                         <vc:i18n name="查询条件"></vc:i18n>
                     </h5>
                     <div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;" v-on:click="_moreCondition()">
-                            {{lampMachineLogManageInfo.moreCondition == true?'隐藏':'更多'}}
-                        </button>
+
                     </div>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <select class="custom-select" v-model="lampMachineLogManageInfo.conditions.machineId">
                                     <option selected disabled value="">{{vc.i18n('请选择路灯设备','lampMachineLogManageInfo')}}</option>
@@ -24,7 +22,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <select class="custom-select" v-model="lampMachineLogManageInfo.conditions.logAction">
                                     <option selected disabled value="">{{vc.i18n('请选择日志动作','lampMachineLogManageInfo')}}</option>
@@ -34,13 +32,23 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <select class="custom-select" v-model="lampMachineLogManageInfo.conditions.state">
                                 <option selected disabled value="">{{vc.i18n('请选择请求状态','lampMachineLogManageInfo')}}</option>
                                 <option v-for="(item, index) in lampMachineLogManageInfo.reqStateList" :key="index" :value="item.statusCd">
                                     {{item.name}}
                                 </option>
                             </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="lampMachineLogManageInfo.conditions.personId">
+                                    <option selected disabled value="">{{vc.i18n('请选择操作人员','lampMachineLogManageInfo')}}</option>
+                                    <option v-for="(item, index) in lampMachineLogManageInfo.operatePersonList" :key="index" :value="item.userId">
+                                        {{item.name}}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-primary btn-sm"
@@ -54,21 +62,19 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-3" v-if="lampMachineLogManageInfo.moreCondition == true">
+                        <div class="col-sm-2">
                             <div class="form-group">
-                                <select class="custom-select" v-model="lampMachineLogManageInfo.conditions.personId">
-                                    <option selected disabled value="">{{vc.i18n('请选择操作人员','lampMachineLogManageInfo')}}</option>
-                                    <option v-for="(item, index) in lampMachineLogManageInfo.operatePersonList" :key="index" :value="item.userId">
-                                        {{item.name}}
-                                    </option>
-                                </select>
+                                <input type="text" :placeholder="vc.i18n('请输入开始时间','lampMachineLogManageInfo')"
+                                    v-model="lampMachineLogManageInfo.conditions.queryStartTime"
+                                    class=" form-control queryStartTime">
                             </div>
                         </div>
-                        <div class="col-sm-3" v-if="lampMachineLogManageInfo.moreCondition == true">
-                            <!--<div class="form-group">
-                                <input v-model="lampMachineLogManageInfo.conditions.createTime" type="text"
-                                   :placeholder="vc.i18n('请选择操作时间','lampMachineLogManageInfo')" class="form-control operationTime">
-                            </div>-->
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入结束时间','lampMachineLogManageInfo')"
+                                    v-model="lampMachineLogManageInfo.conditions.queryEndTime"
+                                    class=" form-control queryEndTime">
+                            </div>
                         </div>
                     </div>
                 </div>

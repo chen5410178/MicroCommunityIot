@@ -55,6 +55,12 @@
         <if test="staffId !=null and staffId != ''">
             and t.staff_id= #{staffId}
         </if>
+        <if test="queryStartTime !=null and queryStartTime != ''">
+            and t.create_time &gt;= #{queryStartTime}
+        </if>
+        <if test="queryEndTime !=null and queryEndTime != ''">
+            and t.create_time &lt;= #{queryEndTime}
+        </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
@@ -135,7 +141,12 @@
         <if test="staffId !=null and staffId != ''">
             and t.staff_id= #{staffId}
         </if>
-
+        <if test="queryStartTime !=null and queryStartTime != ''">
+            and t.create_time &gt;= #{queryStartTime}
+        </if>
+        <if test="queryEndTime !=null and queryEndTime != ''">
+            and t.create_time &lt;= #{queryEndTime}
+        </if>
 
     </select>
 

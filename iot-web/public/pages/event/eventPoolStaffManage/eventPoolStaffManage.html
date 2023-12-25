@@ -9,7 +9,7 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <select class="custom-select" v-model="eventPoolStaffManageInfo.conditions.state">
                                     <option selected disabled value="">{{vc.i18n('请选择事件处理状态','eventPoolStaffManage')}}</option>
@@ -18,6 +18,20 @@
                                     <option value="NC">{{vc.i18n('正常处理完成','eventPoolStaffManage')}}</option>
                                     <option value="TC">{{vc.i18n('超时处理完成','eventPoolStaffManage')}}</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入开始时间','eventPoolStaffManage')"
+                                    v-model="eventPoolStaffManageInfo.conditions.queryStartTime"
+                                    class=" form-control queryStartTime">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入结束时间','eventPoolStaffManage')"
+                                    v-model="eventPoolStaffManageInfo.conditions.queryEndTime"
+                                    class=" form-control queryEndTime">
                             </div>
                         </div>
                         <div class="col-sm-2">

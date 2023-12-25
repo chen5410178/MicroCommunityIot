@@ -37,6 +37,10 @@ public class MeterMachineChargeDto extends PageDto implements Serializable {
     private String addressLike;
     private String roomNameLike;
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
 
     public String getMachineId() {
         return machineId;
@@ -165,5 +169,21 @@ public class MeterMachineChargeDto extends PageDto implements Serializable {
 
     public void setRoomNameLike(String roomNameLike) {
         this.roomNameLike = roomNameLike;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

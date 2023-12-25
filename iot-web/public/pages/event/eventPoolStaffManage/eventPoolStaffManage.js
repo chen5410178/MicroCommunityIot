@@ -15,12 +15,20 @@
                 conditions: {
                     eventId: '',
                     state: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
             },
             event: {}
         },
         _initMethod: function () {
             $that._listEventPoolStaffs(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.eventPoolStaffManageInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.eventPoolStaffManageInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function () {
 
@@ -69,6 +77,8 @@
                 $that.eventPoolStaffManageInfo.conditions = {
                     eventId: '',
                     state: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 };
                 $that._listEventPoolStaffs(DEFAULT_PAGE, DEFAULT_ROWS);
             },

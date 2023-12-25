@@ -38,6 +38,10 @@ public class MeterMachineReadOrRechargeDetailDto extends PageDto implements Seri
     private String addressLike;
     private String roomNameLike;
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
     public String getMachineName() {
         return machineName;
     }
@@ -197,5 +201,21 @@ public class MeterMachineReadOrRechargeDetailDto extends PageDto implements Seri
 
     public void setRoomNameLike(String roomNameLike) {
         this.roomNameLike = roomNameLike;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

@@ -17,12 +17,20 @@
                     shopNameLike: '',
                     carNumLike: '',
                     state: '',
-                    communityId: vc.getCurrentCommunity().communityId
+                    communityId: vc.getCurrentCommunity().communityId,
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
             }
         },
         _initMethod: function () {
             $that._listParkingCouponCars(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.parkingCouponCarInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.parkingCouponCarInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function () {
             vc.on('parkingCouponCar', 'listParkingCouponCar', function (_param) {
@@ -68,6 +76,8 @@
                 $that.parkingCouponCarInfo.conditions.carNumLike = "";
                 $that.parkingCouponCarInfo.conditions.shopNameLike = "";
                 $that.parkingCouponCarInfo.conditions.state = "";
+                $that.parkingCouponCarInfo.conditions.queryStartTime = "";
+                $that.parkingCouponCarInfo.conditions.queryEndTime = "";
                 $that._listParkingCouponCars(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _moreCondition: function () {

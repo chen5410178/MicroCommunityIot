@@ -7,14 +7,12 @@
                         <vc:i18n name="查询条件"></vc:i18n>
                     </h5>
                     <div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;" v-on:click="_moreCondition()">
-                            {{lockInoutManageInfo.moreCondition == true?'隐藏':'更多'}}
-                        </button>
+
                     </div>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group input-group">
                                 <input type="text" :placeholder="vc.i18n('请选择业主','lockInoutManage')"
                                     v-model="lockInoutManageInfo.conditions.userName" class=" form-control">
@@ -26,7 +24,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <select class="custom-select" v-model="lockInoutManageInfo.conditions.openTypeCd">
                                     <option selected disabled value="">{{vc.i18n('请选择开门方式','lockInoutManage')}}</option>
@@ -36,13 +34,19 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <select class="custom-select" v-model="lockInoutManageInfo.conditions.state">
                                     <option selected disabled value="">{{vc.i18n('请选择状态','lockInoutManage')}}</option>
                                     <option value="C">{{vc.i18n('开门成功','lockInoutManage')}}</option>
                                     <option value="F">{{vc.i18n('开门失败','lockInoutManage')}}</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入门锁编号','lockInoutManage')"
+                                    v-model="lockInoutManageInfo.conditions.machineCode" class=" form-control">
                             </div>
                         </div>
                         <div class="col-sm-2">
@@ -55,10 +59,18 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-3" v-if="lockInoutManageInfo.moreCondition == true">
+                        <div class="col-sm-2">
                             <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请输入门锁编号','lockInoutManage')"
-                                    v-model="lockInoutManageInfo.conditions.machineCode" class=" form-control">
+                                <input type="text" :placeholder="vc.i18n('请输入开始时间','lockInoutManage')"
+                                    v-model="lockInoutManageInfo.conditions.queryStartTime"
+                                    class=" form-control queryStartTime">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入结束时间','lockInoutManage')"
+                                    v-model="lockInoutManageInfo.conditions.queryEndTime"
+                                    class=" form-control queryEndTime">
                             </div>
                         </div>
                     </div>

@@ -62,6 +62,10 @@ public class AccessControlFaceDto extends PageDto implements Serializable {
 
     private String tel;
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
 
     public String getComeId() {
         return comeId;
@@ -262,5 +266,21 @@ public class AccessControlFaceDto extends PageDto implements Serializable {
 
     public void setTel(String tel) {
         this.tel = tel;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

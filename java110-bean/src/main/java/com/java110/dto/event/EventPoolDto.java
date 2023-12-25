@@ -32,6 +32,10 @@ public class EventPoolDto extends PageDto implements Serializable {
 
     private List<EventPoolStaffDto> eventPoolStaffList;
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
     public String getEventId() {
         return eventId;
     }
@@ -174,5 +178,21 @@ public class EventPoolDto extends PageDto implements Serializable {
 
     public void setEventPoolStaffList(List<EventPoolStaffDto> eventPoolStaffList) {
         this.eventPoolStaffList = eventPoolStaffList;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

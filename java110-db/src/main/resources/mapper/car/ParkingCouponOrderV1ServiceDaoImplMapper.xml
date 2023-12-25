@@ -19,7 +19,7 @@
     <select id="getParkingCouponOrderInfo" parameterType="Map" resultType="Map">
         select t.quantity,t.order_id,t.order_id orderId,t.pa_name,t.pa_name paName,t.shop_name,t.shop_name
         shopName,t.receivable_amount,t.receivable_amount receivableAmount,t.remark,t.status_cd,t.status_cd
-        statusCd,t.received_amount,t.received_amount receivedAmount,t.coupon_id,t.coupon_id
+        statusCd,t.received_amount,t.received_amount receivedAmount,t.create_time createTime,t.coupon_id,t.coupon_id
         couponId,t.price,t.pa_id,t.pa_id paId,t.community_name,t.community_name communityName,t.shop_id,t.shop_id
         shopId,t.community_id,t.community_id communityId,t.pay_type payType,pc.`name` couponName,td.name payTypeName
         from parking_coupon_order t
@@ -70,6 +70,12 @@
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
+        </if>
+        <if test="queryStartTime !=null and queryStartTime != ''">
+            and t.create_time &gt;= #{queryStartTime}
+        </if>
+        <if test="queryEndTime !=null and queryEndTime != ''">
+            and t.create_time &lt;= #{queryEndTime}
         </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
@@ -177,6 +183,12 @@
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
+        </if>
+        <if test="queryStartTime !=null and queryStartTime != ''">
+            and t.create_time &gt;= #{queryStartTime}
+        </if>
+        <if test="queryEndTime !=null and queryEndTime != ''">
+            and t.create_time &lt;= #{queryEndTime}
         </if>
 
 

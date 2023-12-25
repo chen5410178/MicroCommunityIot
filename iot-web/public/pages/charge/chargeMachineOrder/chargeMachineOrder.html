@@ -63,7 +63,19 @@
                                 <option value="3003">充电失败</option>
                             </select>
                         </div>
-                        <div class="col-sm-1">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入开始时间','chargeMachineOrder')"
+                                    v-model="chargeMachineOrderInfo.conditions.queryStartTime"
+                                    class=" form-control queryStartTime">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入结束时间','chargeMachineOrder')"
+                                    v-model="chargeMachineOrderInfo.conditions.queryEndTime"
+                                    class=" form-control queryEndTime">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -129,6 +141,9 @@
                                     <vc:i18n name='说明' namespace='chargeMachineOrder'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='chargeMachineOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='操作' namespace='chargeMachineOrder'></vc:i18n>
                                 </th>
                             </tr>
@@ -160,6 +175,7 @@
                                 <td class="text-center">
                                     <div style="width: 100px;">{{chargeMachineOrder.remark || '-'}}</div>
                                 </td>
+                                <td class="text-center">{{chargeMachineOrder.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs"

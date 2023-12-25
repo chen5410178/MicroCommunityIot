@@ -1,0 +1,55 @@
+<div class="margin-top">
+    <div class="margin-top">
+        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <vc:i18n name='编号' namespace='accessControlLog'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='设备名称' namespace='accessControlLog'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='设备编码' namespace='accessControlLog'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='日志动作' namespace='accessControlLog'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='用户ID' namespace='accessControlLog'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='用户名称' namespace='accessControlLog'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='状态' namespace='accessControlLog'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='下发时间' namespace='accessControlLog'></vc:i18n>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="accessControlLog in accessControlDetailAccessControlLogInfo.accessControlLogs">
+                    <td class="text-center">{{accessControlLog.logId}}</td>
+                    <td class="text-center">{{accessControlLog.machineName}}</td>
+                    <td class="text-center">{{accessControlLog.machineCode}}</td>
+                    <td class="text-center">{{accessControlLog.logAction}}</td>
+                    <td class="text-center">{{accessControlLog.userId}}</td>
+                    <td class="text-center">{{accessControlLog.userName}}</td>
+                    <td class="text-center">{{accessControlLog.stateName}}</td>
+                    <td class="text-center">{{accessControlLog.createTime}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="row">
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-sm-8">
+                <vc:create namespace="accessControlDetailAccessControlLog" path="frame/paginationPlus"></vc:create>
+            </div>
+        </div>
+    </div>
+</div>

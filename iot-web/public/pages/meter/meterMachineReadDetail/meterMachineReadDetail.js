@@ -18,13 +18,20 @@
                     state: "",
                     roomNameLike: "",
                     communityId: "",
-                    detailType: "2002"
+                    detailType: "2002",
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
             }
         },
         _initMethod: function () {
             $that._listMeterMachineDetails(DEFAULT_PAGE, DEFAULT_ROWS);
-            
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.meterMachineDetailInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.meterMachineDetailInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function () {
             vc.on('pagination', 'page_event', function (_currentPage) {
@@ -70,7 +77,9 @@
                     state: "",
                     roomNameLike: "",
                     communityId: "",
-                    detailType: "2002"
+                    detailType: "2002",
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
                 $that._listMeterMachineDetails(DEFAULT_PAGE, DEFAULT_ROWS);
             },

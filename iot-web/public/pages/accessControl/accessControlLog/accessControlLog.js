@@ -17,14 +17,21 @@
                     machineId: '',
                     logAction: '',
                     state: '',
-                    userName: ''
-
+                    userName: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
             }
         },
         _initMethod: function() {
             $that._listAccessControlLogs(DEFAULT_PAGE, DEFAULT_ROWS);
             $that._listAccessControls();
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.accessControlLogInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.accessControlLogInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function() {
 

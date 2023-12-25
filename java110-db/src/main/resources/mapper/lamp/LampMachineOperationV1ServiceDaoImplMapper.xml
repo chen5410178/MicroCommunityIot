@@ -42,6 +42,12 @@
         <if test="operationTime !=null and operationTime != ''">
             and t.operation_time= #{operationTime}
         </if>
+        <if test="queryStartTime !=null and queryStartTime != ''">
+            and t.create_time &gt;= #{queryStartTime}
+        </if>
+        <if test="queryEndTime !=null and queryEndTime != ''">
+            and t.create_time &lt;= #{queryEndTime}
+        </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
@@ -103,6 +109,12 @@
         </if>
         <if test="operationTime !=null and operationTime != ''">
             and t.operation_time= #{operationTime}
+        </if>
+        <if test="queryStartTime !=null and queryStartTime != ''">
+            and t.create_time &gt;= #{queryStartTime}
+        </if>
+        <if test="queryEndTime !=null and queryEndTime != ''">
+            and t.create_time &lt;= #{queryEndTime}
         </if>
 
 

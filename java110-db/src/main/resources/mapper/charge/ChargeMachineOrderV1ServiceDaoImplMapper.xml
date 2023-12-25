@@ -22,7 +22,7 @@
         select t.order_id,t.order_id orderId,t.remark,t.port_id,t.port_id
         portId,t.person_name,t.person_name personName,t.machine_id,t.machine_id
         machineId,t.acct_detail_id,t.acct_detail_id acctDetailId,t.person_id,t.person_id
-        personId,t.charge_hours,t.charge_hours chargeHours,t.start_time,t.start_time startTime,t.end_time,t.end_time
+        personId,t.charge_hours,t.charge_hours chargeHours,t.create_time createTime,t.start_time,t.start_time startTime,t.end_time,t.end_time
         endTime,t.state,t.person_tel,t.person_tel personTel,t.community_id,t.community_id communityId,t.energy,t.duration_price durationPrice,
         cm.machine_name machineName,cm.machine_code machineCode,
         cmp.port_code portCode,cmp.port_name portName,td.`name` stateName,SUM(cmoa.amount) amount
@@ -83,6 +83,12 @@
         </if>
         <if test="energy !=null and energy != ''">
             and t.energy= #{energy}
+        </if>
+        <if test="queryStartTime !=null and queryStartTime != ''">
+            and t.create_time &gt;= #{queryStartTime}
+        </if>
+        <if test="queryEndTime !=null and queryEndTime != ''">
+            and t.create_time &lt;= #{queryEndTime}
         </if>
         GROUP BY t.order_id,t.remark,t.port_id,t.person_name,t.machine_id,t.acct_detail_id,t.person_id,
         t.charge_hours,t.start_time,t.end_time,t.state,t.person_tel,t.community_id,t.energy,t.duration_price,
@@ -209,6 +215,12 @@
         </if>
         <if test="energy !=null and energy != ''">
             and t.energy= #{energy}
+        </if>
+        <if test="queryStartTime !=null and queryStartTime != ''">
+            and t.create_time &gt;= #{queryStartTime}
+        </if>
+        <if test="queryEndTime !=null and queryEndTime != ''">
+            and t.create_time &lt;= #{queryEndTime}
         </if>
 
 

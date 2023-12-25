@@ -28,6 +28,10 @@ public class LockInoutDto extends PageDto implements Serializable {
 
     private String roomId;
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
     public String getInoutId() {
         return inoutId;
     }
@@ -130,5 +134,21 @@ public class LockInoutDto extends PageDto implements Serializable {
 
     public void setRoomId(String roomId) {
         this.roomId = roomId;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

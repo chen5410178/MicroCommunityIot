@@ -84,6 +84,20 @@
                                             v-model="visitManageInfo.conditions.ownerNameLike" class=" form-control">
                                     </div>
                                 </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <input type="text" :placeholder="vc.i18n('请输入开始时间','visitManage')"
+                                            v-model="visitManageInfo.conditions.queryStartTime"
+                                            class=" form-control queryStartTime">
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <input type="text" :placeholder="vc.i18n('请输入结束时间','visitManage')"
+                                            v-model="visitManageInfo.conditions.queryEndTime"
+                                            class=" form-control queryEndTime">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -146,6 +160,9 @@
                                             <vc:i18n name='审核备注' namespace='visitManage'></vc:i18n>
                                         </th>
                                         <th class="text-center">
+                                            <vc:i18n name='创建时间' namespace='visitManage'></vc:i18n>
+                                        </th>
+                                        <th class="text-center">
                                             <vc:i18n name='操作'></vc:i18n>
                                         </th>
                                     </tr>
@@ -166,6 +183,7 @@
                                         <td class="text-center">{{visit.departureTime || '-'}}</td>
                                         <td class="text-center">{{visit.stateName}}</td>
                                         <td class="text-center">{{visit.msg || '-'}}</td>
+                                        <td class="text-center">{{visit.createTime}}</td>
                                         <td class="text-center">
                                             <div class="btn-group" v-if="visit.state == 0">
                                                 <button class="btn-white btn btn-xs" v-on:click="_doVisitAuth(visit)">

@@ -10,25 +10,39 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请输入车牌号','parkingCouponCar')"
                                     v-model="parkingCouponCarInfo.conditions.carNumLike" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请输入商家店铺名称','parkingCouponCar')"
                                     v-model="parkingCouponCarInfo.conditions.shopNameLike" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <select class="custom-select" v-model="parkingCouponCarInfo.conditions.state">
                                 <option selected value="">{{vc.i18n('请选择状态','parkingCouponCar')}}</option>
                                 <option value="1001">{{vc.i18n('未使用','parkingCouponCar')}}</option>
                                 <option value="2002">{{vc.i18n('已使用','parkingCouponCar')}}</option>
                                 <option value="3003">{{vc.i18n('作废','parkingCouponCar')}}</option>
                             </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入开始时间','parkingCouponCar')"
+                                    v-model="parkingCouponCarInfo.conditions.queryStartTime"
+                                    class=" form-control queryStartTime">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入结束时间','parkingCouponCar')"
+                                    v-model="parkingCouponCarInfo.conditions.queryEndTime"
+                                    class=" form-control queryEndTime">
+                            </div>
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-primary btn-sm"

@@ -23,6 +23,10 @@ public class MonitorPoolDto extends PageDto implements Serializable {
     private String maName;
     private String locationName;
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
     public String getMpId() {
         return mpId;
     }
@@ -141,5 +145,21 @@ public class MonitorPoolDto extends PageDto implements Serializable {
 
     public void setLocationName(String locationName) {
         this.locationName = locationName;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

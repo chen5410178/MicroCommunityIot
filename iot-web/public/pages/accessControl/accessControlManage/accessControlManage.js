@@ -125,8 +125,9 @@
 
                     });
             },
-
-
+            _toAccessControlDetail: function (_accessControl) {
+                vc.jumpToPage('/#/pages/accessControl/accessControlDetail?machineId=' + _accessControl.machineId);
+            }
 
         }
     });

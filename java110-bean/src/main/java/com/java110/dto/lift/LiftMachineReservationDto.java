@@ -23,6 +23,10 @@ public class LiftMachineReservationDto extends PageDto implements Serializable {
     private String personWayName;
     private String machineName;
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
     public String getLmrId() {
         return lmrId;
     }
@@ -141,5 +145,21 @@ public class LiftMachineReservationDto extends PageDto implements Serializable {
 
     public void setMachineName(String machineName) {
         this.machineName = machineName;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

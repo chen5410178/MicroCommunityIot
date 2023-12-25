@@ -19,6 +19,8 @@
                     modelId: '',
                     monitorType: '',
                     communityId: vc.getCurrentCommunity().communityId,
+                    queryStartTime: '',
+                    queryEndTime: ''
                 }
             },
             monitorTypeList: [],
@@ -32,6 +34,12 @@
             $that._listMonitorMachines();
             $that._listMonitorModels()
             $that._listMonitorPools(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.monitorPoolManageInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.monitorPoolManageInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function () {
             vc.on('monitorPoolManage', 'listMonitorPool', function (_param) {
@@ -77,6 +85,8 @@
                     modelId: '',
                     monitorType: '',
                     communityId: vc.getCurrentCommunity().communityId,
+                    queryStartTime: '',
+                    queryEndTime: ''
                 };
                 $that._listMonitorPools(DEFAULT_PAGE, DEFAULT_ROWS);
             },

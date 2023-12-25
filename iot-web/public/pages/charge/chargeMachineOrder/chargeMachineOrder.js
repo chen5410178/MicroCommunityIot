@@ -20,11 +20,19 @@
                     portName: '',
                     communityId: vc.getCurrentCommunity().communityId,
                     state: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
             }
         },
         _initMethod: function() {
             $that._listChargeMachineOrders(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.chargeMachineOrderInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.chargeMachineOrderInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function() {
 

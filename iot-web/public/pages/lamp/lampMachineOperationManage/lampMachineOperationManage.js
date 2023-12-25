@@ -18,6 +18,8 @@
                     personId: '',
                     type: '',
                     curCommunityId: vc.getCurrentCommunity().communityId,
+                    queryStartTime: '',
+                    queryEndTime: ''
                 },
                 operateTypes: [],
                 lampMachineList: [],
@@ -31,6 +33,12 @@
             $that._listLampMachine();
             $that._listOperatePerson();
             $that._listLampMachineOperations(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.lampMachineOperationManageInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.lampMachineOperationManageInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function () {
             vc.on('lampMachineOperationManage', 'listLampMachineOperation', function (_param) {
@@ -75,6 +83,8 @@
                     personId: '',
                     type: '',
                     curCommunityId: vc.getCurrentCommunity().communityId,
+                    queryStartTime: '',
+                    queryEndTime: ''
                 };
                 $that._listLampMachineOperations(DEFAULT_PAGE, DEFAULT_ROWS);
             },

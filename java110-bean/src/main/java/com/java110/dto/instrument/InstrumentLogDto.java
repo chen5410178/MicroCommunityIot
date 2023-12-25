@@ -20,6 +20,10 @@ public class InstrumentLogDto extends PageDto implements Serializable {
 
     private String sensorValue;
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
     public String getLogId() {
         return logId;
     }
@@ -90,5 +94,21 @@ public class InstrumentLogDto extends PageDto implements Serializable {
 
     public void setSensorValue(String sensorValue) {
         this.sensorValue = sensorValue;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

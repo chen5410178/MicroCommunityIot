@@ -20,11 +20,19 @@
                     logAction: '',
                     state: '',
                     createTime: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
             }
         },
         _initMethod: function () {
             $that._listLiftMachineLogs(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.liftMachineLogManageInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.liftMachineLogManageInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function () {
 
@@ -71,6 +79,8 @@
                 $that.liftMachineLogManageInfo.conditions.logAction = '';
                 $that.liftMachineLogManageInfo.conditions.createTime = '';
                 $that.liftMachineLogManageInfo.conditions.state = '';
+                $that.liftMachineLogManageInfo.conditions.queryStartTime = '';
+                $that.liftMachineLogManageInfo.conditions.queryEndTime = '';
                 $that._listLiftMachineLogs(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _moreCondition: function () {

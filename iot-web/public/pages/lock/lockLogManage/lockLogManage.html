@@ -38,6 +38,20 @@
                             </div>
                         </div>
                         <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入开始时间','lockLogManage')"
+                                    v-model="lockLogManageInfo.conditions.queryStartTime"
+                                    class=" form-control queryStartTime">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入结束时间','lockLogManage')"
+                                    v-model="lockLogManageInfo.conditions.queryEndTime"
+                                    class=" form-control queryEndTime">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
                             <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryLockLogMethod()">
                                 <vc:i18n name="查询" namespace="lockLogManage"></vc:i18n>
                             </button>

@@ -35,13 +35,20 @@
                     openTypeCd: '',
                     tel: '',
                     state: '',
-
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
             }
         },
         _initMethod: function() {
             $that._listAccessControls();
             $that._listAccessControlInouts(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.accessControlInoutInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.accessControlInoutInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function() {
 

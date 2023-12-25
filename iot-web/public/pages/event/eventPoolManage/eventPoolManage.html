@@ -20,14 +20,12 @@
                                 <vc:i18n name="查询条件"></vc:i18n>
                             </h5>
                             <div class="ibox-tools" style="top:10px;">
-                                <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;"
-                                    v-on:click="_moreCondition()">{{eventPoolManageInfo.moreCondition == true?'隐藏':'更多'}}
-                                </button>
+
                             </div>
                         </div>
                         <div class="ibox-content">
                             <div class="row">
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <div class="form-group">
                                         <select class="custom-select" v-model="eventPoolManageInfo.conditions.ruleId">
                                             <option selected disabled value="">{{vc.i18n('请选择规则','eventPoolManage')}}</option>
@@ -37,7 +35,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <div class="form-group">
                                         <select class="custom-select" v-model="eventPoolManageInfo.conditions.eventType">
                                             <option selected disabled value="">{{vc.i18n('请选择事件类型','eventPoolManage')}}</option>
@@ -47,7 +45,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <div class="form-group">
                                         <select class="custom-select" v-model="eventPoolManageInfo.conditions.state">
                                             <option selected disabled value="">{{vc.i18n('请选择事件状态','eventPoolManage')}}</option>
@@ -55,6 +53,20 @@
                                             <option value="NC">{{vc.i18n('正常处理完成','eventPoolManage')}}</option>
                                             <option value="TC">{{vc.i18n('超时处理完成','eventPoolManage')}}</option>
                                             <option value="D">{{vc.i18n('处理中','eventPoolManage')}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <input type="text" :placeholder="vc.i18n('请输入对象名称','eventPoolManage')" v-model="eventPoolManageInfo.conditions.objectName" class=" form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <select class="custom-select" v-model="eventPoolManageInfo.conditions.fromType">
+                                            <option selected disabled value="">{{vc.i18n('请选择事件来源','eventPoolManage')}}</option>
+                                            <option value="PERSON">{{vc.i18n('人员创建','eventPoolManage')}}</option>
+                                            <option value="SYSTEM">{{vc.i18n('平台创建','eventPoolManage')}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -70,18 +82,18 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-3" v-if="eventPoolManageInfo.moreCondition == true">
+                                <div class="col-sm-2">
                                     <div class="form-group">
-                                        <input type="text" :placeholder="vc.i18n('请输入对象名称','eventPoolManage')" v-model="eventPoolManageInfo.conditions.objectName" class=" form-control">
+                                        <input type="text" :placeholder="vc.i18n('请输入开始时间','eventPoolManage')"
+                                            v-model="eventPoolManageInfo.conditions.queryStartTime"
+                                            class=" form-control queryStartTime">
                                     </div>
                                 </div>
-                                <div class="col-sm-3" v-if="eventPoolManageInfo.moreCondition == true">
+                                <div class="col-sm-2">
                                     <div class="form-group">
-                                        <select class="custom-select" v-model="eventPoolManageInfo.conditions.fromType">
-                                            <option selected disabled value="">{{vc.i18n('请选择事件来源','eventPoolManage')}}</option>
-                                            <option value="PERSON">{{vc.i18n('人员创建','eventPoolManage')}}</option>
-                                            <option value="SYSTEM">{{vc.i18n('平台创建','eventPoolManage')}}</option>
-                                        </select>
+                                        <input type="text" :placeholder="vc.i18n('请输入结束时间','eventPoolManage')"
+                                            v-model="eventPoolManageInfo.conditions.queryEndTime"
+                                            class=" form-control queryEndTime">
                                     </div>
                                 </div>
                             </div>

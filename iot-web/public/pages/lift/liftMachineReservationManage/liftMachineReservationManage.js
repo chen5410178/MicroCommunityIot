@@ -19,11 +19,19 @@
                     personId: '',
                     roomId: '',
                     createTime: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
             }
         },
         _initMethod: function () {
             $that._listLiftMachineReservations(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.liftMachineReservationManageInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.liftMachineReservationManageInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function () {
 
@@ -73,13 +81,15 @@
                 $that._listLiftMachineReservations(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
-            liftMachineReservationManage: function () {
+            _resetLiftMachineReservationMethod: function () {
                 $that.liftMachineReservationManageInfo.conditions.machineId = '';
                 $that.liftMachineReservationManageInfo.conditions.resWay = '';
                 $that.liftMachineReservationManageInfo.conditions.personWay = '';
                 $that.liftMachineReservationManageInfo.conditions.personId = '';
                 $that.liftMachineReservationManageInfo.conditions.roomId = '';
                 $that.liftMachineReservationManageInfo.conditions.createTime = '';
+                $that.liftMachineReservationManageInfo.conditions.queryStartTime = '';
+                $that.liftMachineReservationManageInfo.conditions.queryEndTime = '';
                 $that._listLiftMachineReservations(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _moreCondition: function () {

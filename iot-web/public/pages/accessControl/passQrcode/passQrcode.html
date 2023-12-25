@@ -39,6 +39,20 @@
                                             v-model="passQrcodeInfo.conditions.personTel" class=" form-control">
                                     </div>
                                 </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <input type="text" :placeholder="vc.i18n('请输入开始时间','passQrcode')"
+                                            v-model="passQrcodeInfo.conditions.queryStartTime"
+                                            class=" form-control queryStartTime">
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <input type="text" :placeholder="vc.i18n('请输入结束时间','passQrcode')"
+                                            v-model="passQrcodeInfo.conditions.queryEndTime"
+                                            class=" form-control queryEndTime">
+                                    </div>
+                                </div>
                                 <div class="col-sm-1">
                                     <button type="button" class="btn btn-primary btn-sm"
                                         v-on:click="_queryPassQrcodeMethod()">

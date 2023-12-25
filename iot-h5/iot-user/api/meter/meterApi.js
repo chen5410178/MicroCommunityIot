@@ -19,6 +19,7 @@ export function listMeterQrcode(_data) {
 				resolve(res.data);
 			},
 			fail: function(res) {
+				wx.hideLoading();
 				reject(res);
 			}
 		})
@@ -41,6 +42,7 @@ export function listMeterMachine(_data) {
 				resolve(res.data);
 			},
 			fail: function(res) {
+				wx.hideLoading();
 				reject(res);
 			}
 		})
@@ -63,6 +65,7 @@ export function getMeterRechargeRecord(_data) {
 				resolve(res.data);
 			},
 			fail: function(res) {
+				wx.hideLoading();
 				reject(res);
 			}
 		})

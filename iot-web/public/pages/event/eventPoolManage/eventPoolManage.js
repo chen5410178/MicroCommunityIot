@@ -19,6 +19,8 @@
                     objectName: '',
                     fromType: '',
                     state: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 },
                 objTypeList: [],
             },
@@ -42,6 +44,12 @@
                 $that.objTypeList = _data;
             });
             $that._listEventPools(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.eventPoolManageInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.eventPoolManageInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function () {
             vc.on('eventPoolManage', 'listEventPool', function (_param) {
@@ -102,6 +110,8 @@
                     objectName: '',
                     fromType: '',
                     state: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 };
                 $that._listEventPools(DEFAULT_PAGE, DEFAULT_ROWS);
             },

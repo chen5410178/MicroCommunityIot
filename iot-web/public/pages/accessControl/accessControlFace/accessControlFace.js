@@ -21,12 +21,20 @@ import Cockpit3d from 'api/3d/Cockpit3d.js'
                     name: '',
                     state: '',
                     comeType: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
             }
         },
         _initMethod: function() {
             $that._listAccessControls();
             $that._listAccessControlFaces(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.accessControlFaceInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.accessControlFaceInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function() {
 

@@ -21,11 +21,19 @@
                     openTypeCd: '',
                     communityId: '',
                     state: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
             }
         },
         _initMethod: function () {
             $that._listLockInouts(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.lockInoutManageInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.lockInoutManageInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function () {
             vc.on('pagination', 'page_event', function (_currentPage) {
@@ -76,6 +84,8 @@
                     openTypeCd: '',
                     communityId: '',
                     state: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 };
                 $that._listLockInouts(DEFAULT_PAGE, DEFAULT_ROWS);
             },

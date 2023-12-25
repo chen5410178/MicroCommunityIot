@@ -17,7 +17,8 @@
                     personName: '',
                     personTel: '',
                     state: '',
-
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
             }
         },
@@ -34,6 +35,12 @@
                     $that.passQrcodeInfo.states.push(item);
                 })
             })
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.passQrcodeInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.passQrcodeInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function () {
 

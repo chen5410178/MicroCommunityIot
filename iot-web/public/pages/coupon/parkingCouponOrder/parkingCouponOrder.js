@@ -16,12 +16,20 @@
                     couponId: '',
                     shopName: '',
                     typeCd: '',
-                    communityId: vc.getCurrentCommunity().communityId
+                    communityId: vc.getCurrentCommunity().communityId,
+                    queryStartTime: '',
+                    queryEndTime: ''
                 }
             }
         },
         _initMethod: function () {
             $that._listParkingCouponOrders(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.parkingCouponOrderInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.parkingCouponOrderInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function () {
             vc.on('parkingCouponOrder', 'listParkingCouponOrder', function (_param) {
@@ -66,6 +74,8 @@
             _resetParkingCouponOrderMethod: function () {
                 $that.parkingCouponOrderInfo.conditions.couponId = "";
                 $that.parkingCouponOrderInfo.conditions.shopName = "";
+                $that.parkingCouponOrderInfo.conditions.queryStartTime = "";
+                $that.parkingCouponOrderInfo.conditions.queryEndTime = "";
                 $that._listParkingCouponOrders(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _moreCondition: function () {

@@ -49,6 +49,22 @@
                             </button>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入开始时间','meterMachineDetail')"
+                                    v-model="meterMachineDetailInfo.conditions.queryStartTime"
+                                    class=" form-control queryStartTime">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入结束时间','meterMachineDetail')"
+                                    v-model="meterMachineDetailInfo.conditions.queryEndTime"
+                                    class=" form-control queryEndTime">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -98,6 +114,9 @@
                                 <th class="text-center">
                                     <vc:i18n name='说明' namespace='meterMachineDetail'></vc:i18n>
                                 </th>
+                                <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='meterMachineDetail'></vc:i18n>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -115,6 +134,7 @@
                                     <label v-if="detail.state == 'C'">完成</label>
                                 </td>
                                 <td class="text-center">{{detail.remark || '-'}}</td>
+                                <td class="text-center">{{detail.createTime}}</td>
                             </tr>
                         </tbody>
                     </table>

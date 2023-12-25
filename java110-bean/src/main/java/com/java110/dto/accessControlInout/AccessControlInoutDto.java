@@ -36,6 +36,10 @@ public class AccessControlInoutDto extends PageDto implements Serializable {
 
     private String statusCd = "0";
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
 
     public String getSimilar() {
         return similar;
@@ -164,5 +168,21 @@ public class AccessControlInoutDto extends PageDto implements Serializable {
 
     public void setPersonId(String personId) {
         this.personId = personId;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

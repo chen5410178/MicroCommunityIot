@@ -25,6 +25,10 @@ public class LampMachineLogDto extends PageDto implements Serializable {
     private String logActionName;
     private String stateName;
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
     public String getLogId() {
         return logId;
     }
@@ -127,5 +131,21 @@ public class LampMachineLogDto extends PageDto implements Serializable {
 
     public void setStateName(String stateName) {
         this.stateName = stateName;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

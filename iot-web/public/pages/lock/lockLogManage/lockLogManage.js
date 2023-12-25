@@ -20,6 +20,8 @@
                     state: '',
                     userId: '',
                     userName: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 }
             },
             logAction: [],
@@ -29,6 +31,12 @@
                 $that.logAction = _data;
             })
             $that._listLockLogs(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.lockLogManageInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.lockLogManageInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function () {
             vc.on('pagination', 'page_event', function (_currentPage) {
@@ -77,6 +85,8 @@
                     state: '',
                     userId: '',
                     userName: '',
+                    queryStartTime:'',
+                    queryEndTime:''
                 };
                 $that._listLockLogs(DEFAULT_PAGE, DEFAULT_ROWS);
             },

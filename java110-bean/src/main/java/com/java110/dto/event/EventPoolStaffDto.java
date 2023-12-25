@@ -18,6 +18,10 @@ public class EventPoolStaffDto extends PageDto implements Serializable {
     private Date createTime;
     private String statusCd = "0";
 
+    private String queryStartTime;
+
+    private String queryEndTime;
+
     public String getEpsId() {
         return epsId;
     }
@@ -104,5 +108,21 @@ public class EventPoolStaffDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(String queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
+
+    public String getQueryEndTime() {
+        return queryEndTime;
+    }
+
+    public void setQueryEndTime(String queryEndTime) {
+        this.queryEndTime = queryEndTime;
     }
 }

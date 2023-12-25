@@ -20,6 +20,8 @@
                     state: '',
                     personId: '',
                     createTime: '',
+                    queryStartTime: '',
+                    queryEndTime: ''
                 },
                 lampMachineList: [],
                 operatePersonList: [],
@@ -37,6 +39,12 @@
             $that._listLampMachine();
             $that._listOperatePerson();
             $that._listLampMachineLogs(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.initDateTime('queryStartTime',function(_value){
+                $that.lampMachineLogManageInfo.conditions.queryStartTime = _value;
+            });
+            vc.initDateTime('queryEndTime',function(_value){
+                $that.lampMachineLogManageInfo.conditions.queryEndTime = _value;
+            });
         },
         _initEvent: function () {
 
@@ -85,6 +93,8 @@
                     state: '',
                     personId: '',
                     createTime: '',
+                    queryStartTime: '',
+                    queryEndTime: ''
                 };
                 $that._listLampMachineLogs(DEFAULT_PAGE, DEFAULT_ROWS);
             },
