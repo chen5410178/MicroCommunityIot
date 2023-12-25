@@ -2,6 +2,7 @@ package com.java110.hal.rtsp.handler;
 
 import com.java110.core.factory.AuthenticationFactory;
 import com.java110.hal.rtsp.command.RtspCommand;
+import com.java110.hal.rtsp.rtp.RtpDataDeal;
 import com.java110.hal.websocket.VideoStreamWebsocket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -34,6 +35,8 @@ public class RtspHandler extends ChannelInboundHandlerAdapter {
 
     private String authenticate;
 
+    private RtpDataDeal rtpDataDeal;
+
     public RtspHandler() {
     }
 
@@ -44,6 +47,7 @@ public class RtspHandler extends ChannelInboundHandlerAdapter {
         this.password = password;
         this.machineId = machineId;
         this.action = "OPTIONS";
+        this.rtpDataDeal = new RtpDataDeal();
     }
 
     @Override
@@ -121,8 +125,14 @@ public class RtspHandler extends ChannelInboundHandlerAdapter {
 
         System.out.println("摄像头视频流"+bytes);
 
+        // 获取RTP头长度（通常为12字节）
+        int rtpHeaderLength = 12;
 
-        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+//        byte[] rtpPayload = new byte[bytes.length - rtpHeaderLength];
+//        System.arraycopy(bytes, rtpHeaderLength, rtpPayload, 0, rtpPayload.length);
+        byte[] rtpPayload = rtpDataDeal.convergeBytes(bytes, bytes.length);
+        //ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+        ByteBuffer byteBuffer = ByteBuffer.wrap(rtpPayload);
         VideoStreamWebsocket.sendInfo(byteBuffer,this.machineId);
     }
 

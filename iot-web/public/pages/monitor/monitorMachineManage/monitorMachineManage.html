@@ -145,6 +145,11 @@
                                 <td class="text-center">{{monitorMachine.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openPlayVideo(monitorMachine)">
+                                            <vc:i18n name='预览'></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
                                         <button class="btn-white btn btn-xs" v-on:click="_toMonitorDetail(monitorMachine)">
                                             <vc:i18n name='详情'></vc:i18n>
                                         </button>
@@ -162,13 +167,6 @@
                                 </td>
                             </tr>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="9">
-                                    <ul class="pagination float-right"></ul>
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
                     <!-- 分页 -->
                     <vc:create path="frame/pagination"></vc:create>
@@ -180,5 +178,6 @@
     <vc:create path="monitor/addMonitorMachine" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="monitor/editMonitorMachine"></vc:create>
     <vc:create path="monitor/deleteMonitorMachine"></vc:create>
+    <vc:create path="monitor/playMonitorVideo"></vc:create>
 
 </div>

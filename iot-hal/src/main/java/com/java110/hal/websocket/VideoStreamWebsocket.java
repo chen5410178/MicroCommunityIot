@@ -2,6 +2,7 @@ package com.java110.hal.websocket;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.WsDataDto;
@@ -55,7 +56,7 @@ public class VideoStreamWebsocket {
 
     private String machineId = "";
 
-    @Autowired
+
     private IPlayVideo playVideoImpl;
 
     /**
@@ -79,6 +80,8 @@ public class VideoStreamWebsocket {
 
 
         logger.debug("用户连接:" + clientId + ",当前在线人数为:" + getOnlineCount());
+
+        playVideoImpl =  ApplicationContextFactory.getBean("playVideoImpl",IPlayVideo.class);
 
         playVideoImpl.playVideo(machineId);
 

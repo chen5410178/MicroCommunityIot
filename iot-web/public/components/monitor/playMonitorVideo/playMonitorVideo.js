@@ -13,15 +13,17 @@
 
         },
         _initEvent: function () {
-            vc.on('playMonitorVideo', 'openPlayMonitorVideoModal', function () {
+            vc.on('playMonitorVideo', 'openPlayMonitorVideoModal', function (_machine) {
+                vc.copyObject(_machine, $that.playMonitorVideoInfo);
                 $('#playMonitorVideoModel').modal('show');
+                $that._playWsVideo();
             });
         },
         methods: {
 
             _playWsVideo: function () {
                 let _protocol = window.location.protocol;
-                let url = window.location.host  + "/ws/" + this.clientId;
+                let url = window.location.host + "/ws/videoStream/" + $that.playMonitorVideoInfo.machineId + "/" + vc.uuid();
                 if (_protocol.startsWith('https')) {
                     url =
                         "wss://" + url;
@@ -34,9 +36,12 @@
                     container: image,
                     videoBuffer: 0.2,
                     isResize: false,
+                    isFlv:true,
+                    useMSE:true,
+                    debug:true
                 });
                 jessibuca.onLoad = function () {
-                    this.play(wsUrl);
+                    this.play(url);
                 };
             },
 

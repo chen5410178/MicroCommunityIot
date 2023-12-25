@@ -74,6 +74,10 @@
             _openDeleteMonitorMachineModel: function (_monitorMachine) {
                 vc.emit('deleteMonitorMachine', 'openDeleteMonitorMachineModal', _monitorMachine);
             },
+            _openPlayVideo:function(_monitorMachine){
+                vc.emit('playMonitorVideo', 'openPlayMonitorVideoModal', _monitorMachine);
+
+            },
             _queryMonitorMachineMethod: function () {
                 $that._listMonitorMachines(DEFAULT_PAGE, DEFAULT_ROWS);
             },
