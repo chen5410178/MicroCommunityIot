@@ -16,7 +16,7 @@
                 link: '',
                 license: '',
                 prodUrl: '',
-                defaultProtocol: '',
+                //defaultProtocol: '',
             }
         },
         _initMethod: function () {
@@ -118,13 +118,13 @@
                             errInfo: "产品官网不能超过500"
                         },
                     ],
-                    'addHardwareManufacturerInfo.defaultProtocol': [
+                    /*'addHardwareManufacturerInfo.defaultProtocol': [
                         {
                             limit: "required",
                             param: "",
                             errInfo: "是否启用该协议不能为空"
                         },
-                    ],
+                    ],*/
                 });
             },
             saveHardwareManufacturerInfo: function () {
@@ -173,7 +173,7 @@
                     link: '',
                     license: '',
                     prodUrl: '',
-                    defaultProtocol: '',
+                    //defaultProtocol: '',
                 };
             }
         }

@@ -143,9 +143,9 @@
                                 <th class="text-center">
                                     <vc:i18n name='产品官网' namespace='hardwareManufacturerManage'></vc:i18n>
                                 </th>
-                                <th class="text-center">
+                               <!-- <th class="text-center">
                                     <vc:i18n name='是否启用该协议' namespace='hardwareManufacturerManage'></vc:i18n>
-                                </th>
+                                </th>-->
                                 <th class="text-center">
                                     <vc:i18n name='创建时间' namespace='hardwareManufacturerManage'></vc:i18n>
                                 </th>
@@ -168,14 +168,14 @@
                                     </button>
                                 </td>
                                 <td class="text-center">{{hardwareManufacturer.prodUrl}}</td>
-                                <td class="text-center">
+                                <!--<td class="text-center">
                                     <label v-if="hardwareManufacturer.defaultProtocol == 'T'">
                                         {{vc.i18n('是','hardwareManufacturerManage')}}
                                     </label>
                                     <label v-if="hardwareManufacturer.defaultProtocol == 'F'">
                                         {{vc.i18n('否','hardwareManufacturerManage')}}
                                     </label>
-                                </td>
+                                </td>-->
                                 <td class="text-center">{{hardwareManufacturer.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
