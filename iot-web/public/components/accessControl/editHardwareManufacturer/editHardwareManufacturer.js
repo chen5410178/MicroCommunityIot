@@ -12,7 +12,7 @@
                 link: '',
                 license: '',
                 prodUrl: '',
-                defaultProtocol: '',
+                //defaultProtocol: '',
             }
         },
         _initMethod: function () {
@@ -123,13 +123,13 @@
                             errInfo: "产品官网不能超过500"
                         },
                     ],
-                    'editHardwareManufacturerInfo.defaultProtocol': [
+                    /*'editHardwareManufacturerInfo.defaultProtocol': [
                         {
                             limit: "required",
                             param: "",
                             errInfo: "是否启用该协议不能为空"
                         },
-                    ],
+                    ],*/
                 });
             },
             editHardwareManufacturer: function () {
@@ -170,7 +170,7 @@
                     link: '',
                     license: '',
                     prodUrl: '',
-                    defaultProtocol: '',
+                    //defaultProtocol: '',
                 }
             }
         }

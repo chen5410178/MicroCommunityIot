@@ -62,7 +62,7 @@ public class SaveHardwareManufacturerCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "link", "link不能为空");
         Assert.hasKeyAndValue(reqJson, "license", "license不能为空");
         Assert.hasKeyAndValue(reqJson, "prodUrl", "prodUrl不能为空");
-        Assert.hasKeyAndValue(reqJson, "defaultProtocol", "defaultProtocol不能为空");
+        //Assert.hasKeyAndValue(reqJson, "defaultProtocol", "defaultProtocol不能为空");
     }
 
     @Override
