@@ -34,17 +34,17 @@
             _listMonitorAreas: function (_page, _rows) {
                 $that.monitorAreaManageInfo.conditions.page = _page;
                 $that.monitorAreaManageInfo.conditions.row = _rows;
-                var param = {
+                let param = {
                     params: $that.monitorAreaManageInfo.conditions
                 };
                 //发送get请求
                 vc.http.apiGet('/monitorArea.listMonitorArea',
                     param,
                     function (json, res) {
-                        var _monitorAreaManageInfo = JSON.parse(json);
-                        $that.monitorAreaManageInfo.total = _monitorAreaManageInfo.total;
-                        $that.monitorAreaManageInfo.records = _monitorAreaManageInfo.records;
-                        $that.monitorAreaManageInfo.monitorAreas = _monitorAreaManageInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.monitorAreaManageInfo.total = _json.total;
+                        $that.monitorAreaManageInfo.records = _json.records;
+                        $that.monitorAreaManageInfo.monitorAreas = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.monitorAreaManageInfo.records,
                             currentPage: _page

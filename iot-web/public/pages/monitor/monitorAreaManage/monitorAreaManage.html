@@ -9,7 +9,7 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请选择区域名称','monitorAreaManage')"
                                     v-model="monitorAreaManageInfo.conditions.maName" class=" form-control">
@@ -18,9 +18,6 @@
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryMonitorAreaMethod()">
                                 <vc:i18n name="查询" namespace="monitorAreaManage"></vc:i18n>
-                            </button>
-                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetMonitorAreaMethod()">
-                                <vc:i18n name="重置" namespace="monitorAreaManage"></vc:i18n>
                             </button>
                         </div>
                     </div>
@@ -86,13 +83,6 @@
                                 </td>
                             </tr>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="7">
-                                    <ul class="pagination float-right"></ul>
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
                     <!-- 分页 -->
                     <vc:create path="frame/pagination"></vc:create>

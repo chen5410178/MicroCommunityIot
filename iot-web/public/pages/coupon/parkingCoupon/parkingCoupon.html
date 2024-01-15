@@ -10,19 +10,13 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择优惠券ID','parkingCoupon')"
-                                    v-model="parkingCouponInfo.conditions.couponId" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请选择名称','parkingCoupon')"
                                     v-model="parkingCouponInfo.conditions.name" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <select class="custom-select" v-model="parkingCouponInfo.conditions.typeCd">
                                 <option selected value="">{{vc.i18n('请选择时长减免','parkingCoupon')}}</option>
                                 <option value="1001">{{vc.i18n('时长减免','parkingCoupon')}}</option>
@@ -34,17 +28,7 @@
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-primary btn-sm"
                                 v-on:click="_queryParkingCouponMethod()">
-                                <i class="fa fa-search"></i>
-                                <span>
                                     <vc:i18n name="查询"></vc:i18n>
-                                </span>
-                            </button>
-                            <button type="button" class="btn btn-primary btn-sm"
-                                v-on:click="_resetParkingCouponMethod()">
-                                <i class="fa fa-repeat"></i>
-                                <span>
-                                    <vc:i18n name="重置"></vc:i18n>
-                                </span>
                             </button>
                         </div>
                     </div>

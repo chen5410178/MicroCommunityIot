@@ -7,26 +7,23 @@
                         <vc:i18n name="查询条件"></vc:i18n>
                     </h5>
                     <div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;" v-on:click="_moreCondition()">
-                            {{monitorMachineManageInfo.moreCondition == true?'隐藏':'更多'}}
-                        </button>
                     </div>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请输入监控名称','monitorMachineManage')"
                                     v-model="monitorMachineManageInfo.conditions.machineName" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请输入监控编号','monitorMachineManage')"
                                     v-model="monitorMachineManageInfo.conditions.machineCode" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <select class="custom-select" v-model="monitorMachineManageInfo.conditions.maId">
                                     <option selected disabled value="">{{vc.i18n('请选择监控区域','monitorMachineManage')}}</option>
@@ -36,23 +33,13 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryMonitorMachineMethod()">
-                                <vc:i18n name="查询" namespace="monitorMachineManage"></vc:i18n>
-                            </button>
-                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetMonitorMachineMethod()">
-                                <vc:i18n name="重置" namespace="monitorMachineManage"></vc:i18n>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3" v-if="monitorMachineManageInfo.moreCondition == true">
+                        <div class="col-sm-2" >
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请输入监控位置','monitorMachineManage')"
                                     v-model="monitorMachineManageInfo.conditions.locationName" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3" v-if="monitorMachineManageInfo.moreCondition == true">
+                        <div class="col-sm-2" >
                             <div class="form-group">
                                 <select class="custom-select" v-model="monitorMachineManageInfo.conditions.protocol">
                                     <option selected disabled value="">{{vc.i18n('请选择监控协议','monitorMachineManage')}}</option>
@@ -62,7 +49,16 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-3" v-if="monitorMachineManageInfo.moreCondition == true">
+                       
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryMonitorMachineMethod()">
+                                <vc:i18n name="查询" namespace="monitorMachineManage"></vc:i18n>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetMonitorMachineMethod()">
+                                <vc:i18n name="重置" namespace="monitorMachineManage"></vc:i18n>
+                            </button>
+                        </div>
+                        <div class="col-sm-2" >
                             <div class="form-group">
                                 <select class="custom-select" v-model="monitorMachineManageInfo.conditions.state">
                                     <option selected disabled value="">{{vc.i18n('请选择状态','monitorMachineManage')}}</option>
