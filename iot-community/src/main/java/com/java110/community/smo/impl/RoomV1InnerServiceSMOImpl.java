@@ -17,15 +17,20 @@ package com.java110.community.smo.impl;
 
 
 import com.java110.bean.dto.PageDto;
+import com.java110.bean.dto.owner.OwnerDto;
+import com.java110.bean.dto.owner.OwnerRoomRelDto;
 import com.java110.bean.dto.room.RoomDto;
 import com.java110.bean.po.room.RoomPo;
 import com.java110.community.dao.IRoomV1ServiceDao;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
+import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,6 +47,9 @@ public class RoomV1InnerServiceSMOImpl implements IRoomV1InnerServiceSMO {
     @Autowired
     private IRoomV1ServiceDao roomV1ServiceDaoImpl;
 
+    @Autowired
+    private IOwnerRoomRelV1InnerServiceSMO ownerRoomRelV1InnerServiceSMOImpl;
+
 
     @Override
     public int saveRoom(@RequestBody RoomPo roomPo) {
@@ -49,17 +57,17 @@ public class RoomV1InnerServiceSMOImpl implements IRoomV1InnerServiceSMO {
         return saveFlag;
     }
 
-     @Override
-    public int updateRoom(@RequestBody  RoomPo roomPo) {
+    @Override
+    public int updateRoom(@RequestBody RoomPo roomPo) {
         int saveFlag = roomV1ServiceDaoImpl.updateRoomInfo(BeanConvertUtil.beanCovertMap(roomPo));
         return saveFlag;
     }
 
-     @Override
-    public int deleteRoom(@RequestBody  RoomPo roomPo) {
-       roomPo.setStatusCd("1");
-       int saveFlag = roomV1ServiceDaoImpl.updateRoomInfo(BeanConvertUtil.beanCovertMap(roomPo));
-       return saveFlag;
+    @Override
+    public int deleteRoom(@RequestBody RoomPo roomPo) {
+        roomPo.setStatusCd("1");
+        int saveFlag = roomV1ServiceDaoImpl.updateRoomInfo(BeanConvertUtil.beanCovertMap(roomPo));
+        return saveFlag;
     }
 
     @Override
@@ -81,6 +89,30 @@ public class RoomV1InnerServiceSMOImpl implements IRoomV1InnerServiceSMO {
 
     @Override
     public int queryRoomsCount(@RequestBody RoomDto roomDto) {
-        return roomV1ServiceDaoImpl.queryRoomsCount(BeanConvertUtil.beanCovertMap(roomDto));    }
+        return roomV1ServiceDaoImpl.queryRoomsCount(BeanConvertUtil.beanCovertMap(roomDto));
+    }
+
+    @Override
+    public List<RoomDto> queryRoomsByOwner(@RequestBody OwnerDto ownerDto) {
+
+        OwnerRoomRelDto ownerRoomRelDto = new OwnerRoomRelDto();
+        ownerRoomRelDto.setOwnerId(ownerDto.getMemberId());
+        List<OwnerRoomRelDto> ownerRoomRelDtos = ownerRoomRelV1InnerServiceSMOImpl.queryOwnerRoomRels(ownerRoomRelDto);
+        if (ListUtil.isNull(ownerRoomRelDtos)) {
+            return null;
+        }
+
+        List<String> roomIds = new ArrayList<>();
+        for (OwnerRoomRelDto tmpOwnerRoomRelDto : ownerRoomRelDtos) {
+            roomIds.add(tmpOwnerRoomRelDto.getRoomId());
+        }
+
+        RoomDto roomDto = new RoomDto();
+        roomDto.setRoomIds(roomIds.toArray(new String[roomIds.size()]));
+
+        List<RoomDto> rooms = BeanConvertUtil.covertBeanList(roomV1ServiceDaoImpl.getRoomInfo(BeanConvertUtil.beanCovertMap(roomDto)), RoomDto.class);
+
+        return rooms;
+    }
 
 }

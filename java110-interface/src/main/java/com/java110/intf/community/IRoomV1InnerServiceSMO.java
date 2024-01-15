@@ -15,6 +15,7 @@
  */
 package com.java110.intf.community;
 
+import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.bean.dto.room.RoomDto;
 import com.java110.bean.po.room.RoomPo;
 import com.java110.intf.FeignConfiguration;
@@ -65,4 +66,7 @@ public interface IRoomV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryRoomsCount", method = RequestMethod.POST)
     int queryRoomsCount(@RequestBody RoomDto roomDto);
+
+    @RequestMapping(value = "/queryRoomsByOwner", method = RequestMethod.POST)
+    List<RoomDto> queryRoomsByOwner(@RequestBody OwnerDto ownerDto);
 }

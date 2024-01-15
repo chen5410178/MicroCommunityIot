@@ -3,23 +3,28 @@ package com.java110.accessControl.manufactor;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.bean.dto.file.FileDto;
+import com.java110.bean.dto.room.RoomDto;
 import com.java110.core.cache.MappingCache;
 import com.java110.core.constant.MappingConstant;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.factory.MqttFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControl.MachineHeartbeatDto;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
+import com.java110.dto.accessControlFloor.AccessControlFloorDto;
 import com.java110.dto.accessControlInout.AccessControlInoutDto;
 import com.java110.dto.accessControlLog.AccessControlLogDto;
+import com.java110.dto.passQrcode.PassQrcodeDto;
 import com.java110.dto.user.UserDto;
-import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
-import com.java110.intf.accessControl.IAccessControlInoutV1InnerServiceSMO;
-import com.java110.intf.accessControl.IAccessControlLogV1InnerServiceSMO;
-import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
+import com.java110.dto.visit.VisitDto;
+import com.java110.intf.accessControl.*;
+import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.system.IFileInnerServiceSMO;
+import com.java110.intf.user.IPassQrcodeV1InnerServiceSMO;
 import com.java110.po.accessControl.AccessControlPo;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.accessControlInout.AccessControlInoutPo;
@@ -55,6 +60,19 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
 
     @Autowired
     private IFileInnerServiceSMO fileInnerServiceSMOImpl;
+
+
+    @Autowired
+    private IPassQrcodeV1InnerServiceSMO passQrcodeV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IVisitV1InnerServiceSMO visitV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAccessControlFloorV1InnerServiceSMO accessControlFloorV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IRoomV1InnerServiceSMO roomV1InnerServiceSMOImpl;
 
     @Override
     public boolean initMachine(AccessControlDto accessControlDto) {
@@ -333,4 +351,55 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
 
 
     }
+
+    /**
+     * 二维码核验
+     * @param qrcode
+     * @param machineCode
+     * @return
+     */
+
+    protected boolean qrcodeCheck(String qrcode, String machineCode) {
+
+        PassQrcodeDto passQrcodeDto = new PassQrcodeDto();
+        passQrcodeDto.setQrcodeTime(qrcode);
+        List<PassQrcodeDto> passQrcodeDtos = passQrcodeV1InnerServiceSMOImpl.queryPassQrcodes(passQrcodeDto);
+        if(!ListUtil.isNull(passQrcodeDtos)){
+            String ownerId = passQrcodeDtos.get(0).getOwnerId();
+            AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
+            accessControlFaceDto.setPersonId(ownerId);
+            accessControlFaceDto.setMachineCode(machineCode);
+            int count = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFacesCount(accessControlFaceDto);
+            if(count < 1){
+                return false;
+            }
+            return true;
+        }
+
+        //todo 核验访客人员
+        VisitDto visitDto = new VisitDto();
+        visitDto.setQrcode(qrcode);
+        List<VisitDto> visitDtos = visitV1InnerServiceSMOImpl.queryVisits(visitDto);
+        if(ListUtil.isNull(visitDtos)){
+
+            return false;
+        }
+        String roomId = visitDtos.get(0).getRoomId();
+
+        RoomDto roomDto = new RoomDto();
+        roomDto.setRoomId(roomId);
+        List<RoomDto> roomDtos = roomV1InnerServiceSMOImpl.queryRooms(roomDto);
+        if(ListUtil.isNull(roomDtos)){
+            return false;
+        }
+        AccessControlFloorDto accessControlFloorDto = new AccessControlFloorDto();
+        accessControlFloorDto.setMachineCode(machineCode);
+        accessControlFloorDto.setUnitId(roomDtos.get(0).getUnitId());
+        int count = accessControlFloorV1InnerServiceSMOImpl.queryAccessControlFloorsCount(accessControlFloorDto);
+        if(count < 1){
+            return false;
+        }
+       return true;
+    }
+
 }
