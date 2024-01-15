@@ -123,7 +123,7 @@ public class RtspHandler extends ChannelInboundHandlerAdapter {
 
     private void pushVideo(ChannelHandlerContext ctx, byte[] bytes) {
 
-        System.out.println("摄像头视频流"+bytes);
+        System.out.println("摄像头视频流"+bytes.length);
 
         // 获取RTP头长度（通常为12字节）
         int rtpHeaderLength = 12;

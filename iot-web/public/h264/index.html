@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WS Wasm Player</title>
+
+  <style type="text/css">
+    #root {
+      display: flex;
+      flex-direction: column;
+      margin: 1rem;
+    }
+
+    #root>* {
+      margin: 0 0 1rem 0;
+    }
+
+    #root>*:last-child {
+      margin: 0;
+    }
+
+    .row {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .row>* {
+      margin: 0 1rem 0 0;
+    }
+
+    .row>*:last-child {
+      margin: 0;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      /* width: 400px; */
+      flex: 0 0 400px;
+    }
+
+    .card>* {
+      margin: 0.5rem 0;
+    }
+
+    .card_title {
+      flex: auto;
+      font-size: 2rem;
+    }
+
+    .card_info {
+      flex: auto;
+    }
+
+    .card_content {
+      flex: auto;
+    }
+
+    .card_action {
+      flex: auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+
+    .card_action>button {
+      width: 80px;
+      margin: 0 0.5rem;
+    }
+
+    .input {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      margin: 0.5rem 0;
+    }
+
+    .input>.input_label,
+    .input_select {
+      flex: 0 0 60px;
+    }
+
+    .input>.input_item {
+      flex: auto;
+    }
+
+    .input>.input-error {
+      border: 2px solid red;
+    }
+
+    .input>.input-error:focus {
+      outline: none !important;
+      border: 2px solid red;
+    }
+
+    .panel {
+      flex: auto;
+      max-height: 200px;
+    }
+  </style>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root">
+    <div class="row">
+      <div class="card">
+        <div class="card_title">WS Wasm Player</div>
+        <div class="card_info" hidden></div>
+        <div class="card_content">
+          <div class="input">
+            <span class="input_label">Host</span>
+            <input class="input_item" id="input_host" type="text" value="127.0.0.1" />
+          </div>
+          <div class="input">
+            <span class="input_label">Port</span>
+            <input class="input_item" id="input_port" type="text" value="8080" />
+          </div>
+          <div class="input">
+            <span class="input_label">Stream</span>
+            <span class="input_item" id="stream_url"></span>
+            <select class="input_select" id="stream_select_id">
+            </select>
+          </div>
+          <div class="input">
+            <span class="input_label">Player</span>
+            <div class="input_item">
+              <input type="radio" id="webgl" name="player" value="webgl" checked>
+              <label for="webgl">WebGL</label>
+            </div>
+            <div class="input_item">
+              <input type="radio" id="opengl" name="player" value="opengl">
+              <label for="opengl">OpenGL</label>
+            </div>
+          </div>
+        </div>
+        <div class="card_action">
+          <button id="btn_refresh">Refresh</button>
+          <button id="btn_open">Open</button>
+        </div>
+      </div>
+      <pre class="panel" id="stream_info" style="overflow: auto">
+        </pre>
+    </div>
+    <div>
+      <canvas id="canvas"></canvas>
+    </div>
+  </div>
+  <script src="/js/bootstrap/jquery-3.3.1.min.js"></script>
+  <script>
+    var Module = {
+      canvas: document.getElementById('canvas'),
+      onRuntimeInitialized: function () {
+        $(function () {
+          const client = new WsClient({
+            dbg: true,
+             wasm_log_v: 2,
+          });
+
+          const config = new class {
+            streams = [{
+              id: "b",
+              method: "network",
+              input_url: "rtsp://127.0.0.1:8554/test",
+              max_delay: 1000000,
+              rtsp_transport: "tcp",
+              stimeout: 5000000,
+            }
+            ];
+            streamSelectId = undefined;
+            getStream() {
+              // return this.streams &&
+              //   this.streams.find((s) => s.id === this.streamSelectId);
+              return this.streams[0];
+            }
+            resetStreams() {
+              this.streams = undefined;
+              this.streamSelectId = undefined;
+            }
+          };
+
+          let gl_player = null;
+
+          config.protocol = { http: "http", ws: "ws" };
+
+          // info
+          const updateErrorMessage = (msg, color = 'red') => {
+            const $card_info = $('.card_info');
+            if (msg === undefined) {
+              $card_info.hide();
+            } else {
+              $card_info.html(msg).css({
+                color: color,
+                display: "block",
+              });
+            }
+          };
+          const updateStreamInfo = (stream = config.getStream()) => {
+            stream && $('#stream_info').html(JSON.stringify(stream, null, 2));
+          };
+
+          // select
+          const updateStreamIds = (streams = config.streams) => {
+            const $select = $('#stream_select_id');
+            $select.empty();
+            streams.forEach(s => {
+              $select.append($('<option>', {
+                text: s.id,
+                value: s.id,
+              }));
+            });
+            config.streamSelectId = $('#stream_select_id option:first').val();
+            updateStreamInfo();
+          };
+          $('#stream_select_id').change(function () {
+            config.streamSelectId = $(this).val();
+            updateStreamInfo();
+          });
+
+          const resetStreamUi = () => {
+            $('#stream_select_id').empty();
+            $('#stream_info').empty();
+            config.resetStreams();
+          };
+
+          // action
+          const getStreamIds = () => {
+          };
+          $('#btn_refresh').click(function () {
+            getStreamIds();
+          });
+          const updateStreamStatus = () => {
+            $('#btn_open').html(client.isOpen() ? 'Close' : 'Open')
+          };
+          $('#btn_open').click(function () {
+            const stream = config.getStream();
+            if (client.isOpen()) {
+              if (gl_player != null) {
+                gl_player.delete();
+                gl_player = null;
+              }
+              client.close();
+            } else {
+              let player;
+              const player_name = $('input[name="player"]:checked').val();
+              if (player_name === "webgl") {
+                const canvas = $('#canvas')[0];
+                if (stream.video) {
+                  canvas.width = stream.video.codecpar.width;
+                  canvas.height = stream.video.codecpar.height;
+                }
+                player = new WebGLPlayer(canvas);
+              } else if (player_name === "opengl") {
+                player = WsClient.createOpenGLPlayer();
+                gl_player = player;
+              } else {
+                alert("unknown player");
+                return;
+              }
+              client.open({
+                url: `ws://127.0.0.1:9999/ws/videoStream/102023122221190002/a4c6a42f-f4f7-4079-8d11-37da5227585a`,
+                stream: stream,
+                player: player,
+              });
+            }
+            updateStreamStatus();
+          });
+          updateStreamStatus();
+          getStreamIds();
+        });
+      },
+    };
+
+
+  </script>
+  <script src="lib/decoder.js"></script>
+  <script src="lib/webgl.js"></script>
+  <script src="lib/ws_client.js"></script>
+</body>
+
+</html>

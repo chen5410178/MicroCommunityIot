@@ -64,7 +64,7 @@ public class PcUserLoginCmd extends Cmd {
         if (AppDto.WEB_APP_ID.equals(appId)) {
             Assert.hasKeyAndValue(reqJson, "validateCode", "未包含图片验证码");
             String code = CommonCache.getValue(CmdContextUtils.getSessionId(cmdDataFlowContext) + "_validateCode");
-            if (!reqJson.getString("validateCode").equals(code)) {
+            if (!reqJson.getString("validateCode").toLowerCase().equals(code)) {
                 throw new IllegalArgumentException("验证码错误");
             }
         }
