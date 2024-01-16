@@ -46,7 +46,9 @@ public class HcChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     public static final String TOPIC_RES = "hc/charge/response";
 
     public static final String CMD_OPEN_CHARGE = "openCharge"; //todo 开启充电
-    public static final String CMD_CLOSE_CHARGE = "closeCharge"; //todo 结束充电
+    public static final String CMD_CLOSE_CHARGE = "closeCharge"; //todo 关闭充电
+
+    public static final String CMD_STOP_CHARGE = "stopCharge"; //todo 结束充电
 
     public static final String CMD_HEARTBEAT = "heartbeat"; //todo 心跳
     public static final String CMD_REBOOT = "reboot"; //todo 重启
@@ -82,7 +84,7 @@ public class HcChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         param.put("machineCode", chargeMachineDto.getMachineCode());
         param.put("port", chargeMachinePortDto.getPortCode());
         param.put("duration", duration * 60);
-        param.put("chargeId", orderId);
+        param.put("orderId", orderId);
 
         MqttFactory.publish(TOPIC_REQ.replace(SN, chargeMachineDto.getMachineCode()), param.toJSONString());
 
@@ -198,7 +200,7 @@ public class HcChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
                 break;
             case CMD_OPEN_CHARGE: // todo 开始充电返回
                 break;
-            case CMD_CLOSE_CHARGE: // todo 结束充电返回
+            case CMD_STOP_CHARGE: // todo 结束充电
                 machineChargeEnd(cmd, taskId, machineCode, chargeMachineDtos.get(0), paramIn);
                 break;
             case CMD_UPLOAD_CHARGE_DATA:// todo 充电过程中上报 功率
@@ -266,7 +268,7 @@ public class HcChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         String reason = data.getString("reason");
         String port = data.getString("port");
         String orderNum = data.getString("orderId");
-        String w = data.getString("w");
+        String energy = data.getString("energy");
 
 
         String remark = StringUtil.isEmpty(reason) ? "未知原因" : reason;
@@ -278,7 +280,7 @@ public class HcChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         notifyChargeOrderDto.setPortCode(port + "");
         notifyChargeOrderDto.setBodyParam("");
         notifyChargeOrderDto.setReason(remark);
-        notifyChargeOrderDto.setEnergy(w + "");
+        notifyChargeOrderDto.setEnergy(energy + "");
 
 
         notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);
