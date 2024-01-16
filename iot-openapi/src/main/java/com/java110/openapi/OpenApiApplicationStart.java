@@ -1,4 +1,4 @@
-package com.java110.attendance;
+package com.java110.openapi;
 
 import com.java110.core.annotation.Java110CmdDiscovery;
 import com.java110.core.client.OutRestTemplate;
@@ -37,20 +37,21 @@ import java.util.concurrent.TimeUnit;
  * add by wuxw 2023-02-10
  */
 @SpringBootApplication(scanBasePackages = {
-        "com.java110.attendance",
+        "com.java110.openapi",
         "com.java110.core",
         "com.java110.doc",
 })
 @EnableFeignClients(basePackages = {
         "com.java110.intf.community",
+        "com.java110.intf.user",
 })
 @Java110CmdDiscovery(cmdPublishClass = ServiceCmdEventPublishing.class,
-        basePackages = {"com.java110.user.cmd"})
+        basePackages = {"com.java110.openapi.cmd"})
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 @EnableDiscoveryClient
-public class AttendanceApplicationStart {
+public class OpenApiApplicationStart {
 
-    private static Logger logger = LoggerFactory.getLogger(AttendanceApplicationStart.class);
+    private static Logger logger = LoggerFactory.getLogger(OpenApiApplicationStart.class);
 
     @Resource
     private Java110RestTemplateInterceptor java110RestTemplateInterceptor;
@@ -93,7 +94,7 @@ public class AttendanceApplicationStart {
     public static void main(String[] args) throws Exception {
         try {
             ServiceStartInit.preInitSystemConfig();
-            ApplicationContext context = SpringApplication.run(AttendanceApplicationStart.class, args);
+            ApplicationContext context = SpringApplication.run(OpenApiApplicationStart.class, args);
             //服务启动加载
             ServiceStartInit.initSystemConfig(context);
         } catch (Throwable e) {

@@ -7,10 +7,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>iot-attendance</artifactId>
+    <artifactId>iot-openapi</artifactId>
     <packaging>jar</packaging>
 
-    <name>iot-attendance</name>
+    <name>iot-openapi</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -39,7 +39,7 @@
     </dependencies>
 
     <build>
-        <finalName>iot-attendance</finalName>
+        <finalName>iot-openapi</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -71,7 +71,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.java110.attendance.AttendanceApplicationStart</mainClass>
+                    <mainClass>com.java110.openapi.OpenApiApplicationStart</mainClass>
                 </configuration>
             </plugin>
         </plugins>

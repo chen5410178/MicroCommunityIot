@@ -97,7 +97,7 @@
         </dependency>
         <dependency>
             <groupId>com.java110</groupId>
-            <artifactId>iot-attendance</artifactId>
+            <artifactId>iot-openapi</artifactId>
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>

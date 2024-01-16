@@ -1,4 +1,4 @@
-package com.java110.attendance;
+package com.java110.openapi;
 
 
 /**
@@ -10,7 +10,7 @@ package com.java110.attendance;
  * add by wuxw 2023-02-10
  */
 
-public class AttendanceApplicationStart {
+public class OpenApiApplicationStart {
 
 
 }

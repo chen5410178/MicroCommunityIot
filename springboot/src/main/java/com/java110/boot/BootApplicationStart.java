@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 @SpringBootApplication(scanBasePackages = {
         "com.java110.core",
         "com.java110.accessControl",
-        "com.java110.attendance",
+        "com.java110.openapi",
         "com.java110.barrier",
         "com.java110.car",
         "com.java110.community",
@@ -68,7 +68,7 @@ import java.util.concurrent.TimeUnit;
 @Java110CmdDiscovery(cmdPublishClass = ServiceCmdEventPublishing.class,
         basePackages = {
                 "com.java110.accessControl.cmd",
-                "com.java110.attendance.cmd",
+                "com.java110.openapi.cmd",
                 "com.java110.barrier.cmd",
                 "com.java110.car.cmd",
                 "com.java110.community.cmd",
@@ -89,7 +89,7 @@ import java.util.concurrent.TimeUnit;
 @Java110ApiDocDiscovery(basePackages = {"com.java110.boot.rest"}, apiDocClass = ApiDocPublishing.class)
 @Java110CmdDocDiscovery(basePackages = {
         "com.java110.accessControl.cmd",
-        "com.java110.attendance.cmd",
+        "com.java110.openapi.cmd",
         "com.java110.barrier.cmd",
         "com.java110.car.cmd",
         "com.java110.community.cmd",

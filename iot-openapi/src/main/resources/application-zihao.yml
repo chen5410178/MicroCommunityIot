@@ -23,7 +23,7 @@ spring:
       enabled: true
       force: true
   application:
-    name: iot-attendance
+    name: iot-openapi
   redis:
     database: 0
     host: dev.redis.java110.com

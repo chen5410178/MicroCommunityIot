@@ -7,10 +7,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>iot-attendance</artifactId>
+    <artifactId>iot-openapi</artifactId>
     <packaging>jar</packaging>
 
-    <name>iot-attendance</name>
+    <name>iot-openapi</name>
     <url>http://maven.apache.org</url>
 
     <properties>
