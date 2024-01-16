@@ -311,6 +311,11 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
         return res.getInteger("electricQuantity");
     }
 
+    @Override
+    public void lockResult(String topic, String data) {
+
+    }
+
     private JSONObject queryLockDetail(LockMachineDto lockMachineDto, List<LockMachineParamDto> lockMachineParamDtos) {
         String accessToken = getAccessToken(lockMachineParamDtos);
 

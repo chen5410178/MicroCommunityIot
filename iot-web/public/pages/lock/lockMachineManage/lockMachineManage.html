@@ -7,26 +7,26 @@
                         <vc:i18n name="查询条件"></vc:i18n>
                     </h5>
                     <div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;" v-on:click="_moreCondition()">
+                        <!-- <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;" v-on:click="_moreCondition()">
                             {{lockMachineManageInfo.moreCondition == true?'隐藏':'更多'}}
-                        </button>
+                        </button> -->
                     </div>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请输入门锁名称','lockMachineManage')"
                                     v-model="lockMachineManageInfo.conditions.machineName" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请输入门锁编号','lockMachineManage')"
                                     v-model="lockMachineManageInfo.conditions.machineCode" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group input-group">
                                 <input type="text" :placeholder="vc.i18n('请选择房屋编号','lockMachineManage')"
                                     v-model="lockMachineManageInfo.conditions.roomId" class=" form-control">
@@ -38,17 +38,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryLockMachineMethod()">
-                                <vc:i18n name="查询" namespace="lockMachineManage"></vc:i18n>
-                            </button>
-                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetLockMachineMethod()">
-                                <vc:i18n name="重置" namespace="lockMachineManage"></vc:i18n>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3" v-if="lockMachineManageInfo.moreCondition == true">
+                        <div class="col-sm-2" >
                             <div class="form-group">
                                 <select class="custom-select" v-model="lockMachineManageInfo.conditions.implBean">
                                     <option selected disabled value="">{{vc.i18n('请选择门禁厂家','lockMachineManage')}}</option>
@@ -57,6 +47,14 @@
                                     </option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryLockMachineMethod()">
+                                <vc:i18n name="查询" namespace="lockMachineManage"></vc:i18n>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetLockMachineMethod()">
+                                <vc:i18n name="重置" namespace="lockMachineManage"></vc:i18n>
+                            </button>
                         </div>
                     </div>
                 </div>

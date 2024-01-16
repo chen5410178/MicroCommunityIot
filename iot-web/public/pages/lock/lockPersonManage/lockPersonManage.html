@@ -7,14 +7,14 @@
                         <vc:i18n name="查询条件"></vc:i18n>
                     </h5>
                     <div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;" v-on:click="_moreCondition()">
+                        <!-- <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;" v-on:click="_moreCondition()">
                             {{lockPersonManageInfo.moreCondition == true?'隐藏':'更多'}}
-                        </button>
+                        </button> -->
                     </div>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group input-group">
                                 <input type="text" :placeholder="vc.i18n('请选择业主','lockPersonManage')"
                                     v-model="lockPersonManageInfo.conditions.name" class=" form-control">
@@ -26,19 +26,34 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请选择时间（在有效期内）','lockPersonManage')"
                                     v-model="lockPersonManageInfo.conditions.queryTime" class="form-control queryTime">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <select class="custom-select" v-model="lockPersonManageInfo.conditions.state">
                                     <option selected disabled value="">{{vc.i18n('请选择授权状态','lockPersonManage')}}</option>
                                     <option value="1001">{{vc.i18n('可用','lockPersonManage')}}</option>
                                     <option value="2002">{{vc.i18n('冻结','lockPersonManage')}}</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2" >
+                            <div class="form-group">
+                                <select class="custom-select" v-model="lockPersonManageInfo.conditions.openModel">
+                                    <option selected disabled value="">{{vc.i18n('请选择开锁方式','lockPersonManage')}}</option>
+                                    <option value="1001">{{vc.i18n('密码开锁','lockPersonManage')}}</option>
+                                    <option value="2002">{{vc.i18n('蓝牙开锁','lockPersonManage')}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2" >
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入门锁名称','lockPersonManage')"
+                                    v-model="lockPersonManageInfo.conditions.machineName" class=" form-control">
                             </div>
                         </div>
                         <div class="col-sm-2">
@@ -51,22 +66,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-3" v-if="lockPersonManageInfo.moreCondition == true">
-                            <div class="form-group">
-                                <select class="custom-select" v-model="lockPersonManageInfo.conditions.openModel">
-                                    <option selected disabled value="">{{vc.i18n('请选择开锁方式','lockPersonManage')}}</option>
-                                    <option value="1001">{{vc.i18n('密码开锁','lockPersonManage')}}</option>
-                                    <option value="2002">{{vc.i18n('蓝牙开锁','lockPersonManage')}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-3" v-if="lockPersonManageInfo.moreCondition == true">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请输入门锁名称','lockPersonManage')"
-                                    v-model="lockPersonManageInfo.conditions.machineName" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-3" v-if="lockPersonManageInfo.moreCondition == true">
+                        <div class="col-sm-2" >
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请输入门锁编号','lockPersonManage')"
                                     v-model="lockPersonManageInfo.conditions.machineCode" class=" form-control">

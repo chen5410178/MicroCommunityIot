@@ -7,31 +7,39 @@
                         <vc:i18n name="查询条件"></vc:i18n>
                     </h5>
                     <div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;"
-                            v-on:click="_moreCondition()">{{instrumentManageInfo.moreCondition == true?'隐藏':'更多'}}
-                        </button>
+                       
                     </div>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请输入仪表编码','instrumentManage')"
                                        v-model="instrumentManageInfo.conditions.machineCode" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <input type="text" :placeholder="vc.i18n('请输入仪表名称','instrumentManage')"
                                        v-model="instrumentManageInfo.conditions.machineName" class=" form-control">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <select class="custom-select" v-model="instrumentManageInfo.conditions.typeId">
                                     <option disabled selected value="">{{vc.i18n('请选择仪表类型','instrumentManage')}}</option>
                                     <option v-for="(item, index) in instrumentTypeList" :value="item.typeId">
                                         {{item.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2" >
+                            <div class="form-group">
+                                <select class="custom-select" v-model="instrumentManageInfo.conditions.implBean">
+                                    <option disabled selected value="">{{vc.i18n('请选择仪表厂家','instrumentManage')}}</option>
+                                    <option v-for="(item, index) in factoryList" :value="item.factoryId">
+                                        {{item.factoryName}}
                                     </option>
                                 </select>
                             </div>
@@ -43,18 +51,6 @@
                             <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetInstrumentMethod()">
                                 <vc:i18n name="重置" namespace="instrumentManage"></vc:i18n>
                             </button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3" v-if="instrumentManageInfo.moreCondition == true">
-                            <div class="form-group">
-                                <select class="custom-select" v-model="instrumentManageInfo.conditions.implBean">
-                                    <option disabled selected value="">{{vc.i18n('请选择仪表厂家','instrumentManage')}}</option>
-                                    <option v-for="(item, index) in factoryList" :value="item.factoryId">
-                                        {{item.factoryName}}
-                                    </option>
-                                </select>
-                            </div>
                         </div>
                     </div>
                 </div>
