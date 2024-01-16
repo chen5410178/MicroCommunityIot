@@ -70,27 +70,13 @@ public class SmartMeterCoreReadImpl implements ISmartMeterCoreRead {
     @Override
     public void saveMeterAndCreateFee(MeterMachineDetailDto meterMachineDetailDto, String degree, String batchId) {
 
-        /*MeterMachineDto meterMachineDto = new MeterMachineDto();
+        MeterMachineDto meterMachineDto = new MeterMachineDto();
         meterMachineDto.setMachineId(meterMachineDetailDto.getMachineId());
         meterMachineDto.setCommunityId(meterMachineDetailDto.getCommunityId());
         List<MeterMachineDto> meterMachineDtos = meterMachineV1InnerServiceSMOImpl.queryMeterMachines(meterMachineDto);
         Assert.listOnlyOne(meterMachineDtos, "表不存在");
 
         String preDegrees = "0";
-        String preReadingTime = DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A);
-
-        //费用抄表
-        MeterWaterDto meterWaterDto = new MeterWaterDto();
-        meterWaterDto.setObjType(MeterWaterDto.OBJ_TYPE_ROOM);
-        meterWaterDto.setObjId(meterMachineDtos.get(0).getRoomId());
-        meterWaterDto.setCommunityId(meterMachineDtos.get(0).getCommunityId());
-        meterWaterDto.setMeterType(meterMachineDtos.get(0).getMeterType());
-        List<MeterWaterDto> meterWaterDtos = meterWaterInnerServiceSMOImpl.queryMeterWaters(meterWaterDto);
-
-        if (meterWaterDtos != null && meterWaterDtos.size() > 0) {
-            preDegrees = meterWaterDtos.get(0).getCurDegrees();
-            preReadingTime = meterWaterDtos.get(0).getCurReadingTime();
-        }
 
         MeterMachineDetailPo meterMachineDetailPo = new MeterMachineDetailPo();
         meterMachineDetailPo.setDetailId(meterMachineDetailDto.getDetailId());
@@ -112,7 +98,21 @@ public class SmartMeterCoreReadImpl implements ISmartMeterCoreRead {
             return;
         }
 
+/*
+        String preReadingTime = DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A);
 
+//费用抄表
+        MeterMachineDto meterWaterDto = new MeterWaterDto();
+        meterWaterDto.setObjType(MeterWaterDto.OBJ_TYPE_ROOM);
+        meterWaterDto.setObjId(meterMachineDtos.get(0).getRoomId());
+        meterWaterDto.setCommunityId(meterMachineDtos.get(0).getCommunityId());
+        meterWaterDto.setMeterType(meterMachineDtos.get(0).getMeterType());
+        List<MeterWaterDto> meterWaterDtos = meterWaterInnerServiceSMOImpl.queryMeterWaters(meterWaterDto);
+
+        if (meterWaterDtos != null && meterWaterDtos.size() > 0) {
+            preDegrees = meterWaterDtos.get(0).getCurDegrees();
+            preReadingTime = meterWaterDtos.get(0).getCurReadingTime();
+        }
 
         CommunityMemberDto communityMemberDto = new CommunityMemberDto();
         communityMemberDto.setCommunityId(meterMachineDtos.get(0).getCommunityId());
