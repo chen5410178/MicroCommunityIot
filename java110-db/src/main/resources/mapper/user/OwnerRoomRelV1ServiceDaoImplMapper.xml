@@ -79,9 +79,7 @@
         <if test="endTime !=null and endTime != ''">
             , t.end_time= #{endTime}
         </if>
-        <if test="ownerId !=null and ownerId != ''">
-            , t.owner_id= #{ownerId}
-        </if>
+
         <if test="userId !=null and userId != ''">
             , t.user_id= #{userId}
         </if>
@@ -91,6 +89,9 @@
         where 1=1
         <if test="relId !=null and relId != ''">
             and t.rel_id= #{relId}
+        </if>
+        <if test="ownerId !=null and ownerId != ''">
+            and t.owner_id= #{ownerId}
         </if>
 
     </update>

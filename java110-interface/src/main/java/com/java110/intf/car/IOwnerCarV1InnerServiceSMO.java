@@ -39,13 +39,13 @@ public interface IOwnerCarV1InnerServiceSMO {
 
 
     @RequestMapping(value = "/saveOwnerCar", method = RequestMethod.POST)
-    public int saveOwnerCar(@RequestBody  OwnerCarPo ownerCarPo);
+     int saveOwnerCar(@RequestBody  OwnerCarPo ownerCarPo);
 
     @RequestMapping(value = "/updateOwnerCar", method = RequestMethod.POST)
-    public int updateOwnerCar(@RequestBody  OwnerCarPo ownerCarPo);
+     int updateOwnerCar(@RequestBody  OwnerCarPo ownerCarPo);
 
     @RequestMapping(value = "/deleteOwnerCar", method = RequestMethod.POST)
-    public int deleteOwnerCar(@RequestBody  OwnerCarPo ownerCarPo);
+     int deleteOwnerCar(@RequestBody  OwnerCarPo ownerCarPo);
 
     /**
      * <p>查询小区楼信息</p>

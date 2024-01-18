@@ -7,6 +7,7 @@ import com.java110.bean.po.file.FileRelPo;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.smo.IPhotoSMO;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.intf.system.IFileInnerServiceSMO;
 import com.java110.intf.system.IFileRelInnerServiceSMO;
@@ -56,7 +57,7 @@ public class PhotoSMOImpl implements IPhotoSMO {
         fileRelDto.setObjId(objId);
         List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
 
-        if(fileRelDtos == null || fileRelDtos.size()< 1){
+        if(ListUtil.isNull(fileRelDtos)){
             businessUnit.put("fileRelId", GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_fileRelId));
             FileRelPo fileRelPo = BeanConvertUtil.covertBean(businessUnit, FileRelPo.class);
             return fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
