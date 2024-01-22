@@ -88,7 +88,7 @@ public class AddStaffApiCmd extends Cmd {
     private void addStaffOrg(JSONObject reqJson) {
 
         OrgDto orgDto = new OrgDto();
-        orgDto.setStoreId(reqJson.getString("storeId"));
+        orgDto.setStoreId(reqJson.getString("propertyId"));
         orgDto.setOrgLevel("1");
         List<OrgDto> orgDtos = orgV1InnerServiceSMOImpl.queryOrgs(orgDto);
 
@@ -103,7 +103,7 @@ public class AddStaffApiCmd extends Cmd {
         orgStaffRelPo.setStaffId(reqJson.getString("staffId"));
         orgStaffRelPo.setRelId(GenerateCodeFactory.getGeneratorId("11"));
         orgStaffRelPo.setRelCd(OrgStaffRelDto.REL_CD_ADMIN);
-        orgStaffRelPo.setStoreId(reqJson.getString("storeId"));
+        orgStaffRelPo.setStoreId(reqJson.getString("propertyId"));
         int flag = orgStaffRelV1InnerServiceSMOImpl.saveOrgStaffRel(orgStaffRelPo);
         if (flag < 1) {
             throw new CmdException("注册失败");
@@ -117,7 +117,7 @@ public class AddStaffApiCmd extends Cmd {
         storeUserPo.setStoreStaffId(GenerateCodeFactory.getGeneratorId("11"));
         storeUserPo.setAdminFlag(StoreStaffDto.ADMIN_FLAG_N);
 
-        storeUserPo.setStoreId(reqJson.getString("storeId"));
+        storeUserPo.setStoreId(reqJson.getString("propertyId"));
         storeUserPo.setStaffId(reqJson.getString("staffId"));
         storeUserPo.setTel(reqJson.getString("tel"));
         storeUserPo.setStaffName(reqJson.getString("name"));
