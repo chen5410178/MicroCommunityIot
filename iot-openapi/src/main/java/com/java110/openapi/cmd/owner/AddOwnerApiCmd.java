@@ -227,6 +227,7 @@ public class AddOwnerApiCmd extends Cmd {
         ownerCarPo.setState("1001"); //1001 正常状态，2002 车位释放欠费状态，3003 车位释放
         ownerCarPo.setLeaseType(car.getString("leaseType"));
         ownerCarPo.setCarNum(car.getString("carNum"));
+        ownerCarPo.setCarType("9901");
 
         if (ListUtil.isNull(ownerCarDtos)) {
             ownerCarV1InnerServiceSMOImpl.saveOwnerCar(ownerCarPo);
