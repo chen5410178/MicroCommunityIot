@@ -71,7 +71,7 @@
         destroyedMethod: _destroyedMethod,
         debug: false,
         timers: _timers,
-        waitLoadCount:0,
+        waitLoadCount: 0,
         _map: {},
         pageRoutes: _routes, //路由
     };
@@ -465,8 +465,8 @@
                 console.log(err, _paramJs);
             }
 
-            if(_paramJs.indexOf('vc.extends') > -1){
-                vcFramework.waitLoadCount +=1;
+            if (_paramJs.indexOf('vc.extends') > -1) {
+                vcFramework.waitLoadCount += 1;
             }
         })
     }
@@ -478,23 +478,23 @@
         for (let i = 0; i < _componentScript.length; i++) {
             if (_componentScript[i].indexOf(';;;;;;;;;;') > -1) {
                 appendModules(_componentScript[i].split(';;;;;;;;;;'));
-               
+
                 continue;
             }
 
-           
+
             _jsBody = (_componentScript[i] + ';');
             let script = document.createElement('script');
             script.setAttribute("type", "module");
-            script.setAttribute('name','custom')
+            script.setAttribute('name', 'custom')
             script.innerHTML = _jsBody; // 替换为你的JavaScript代码
             try {
                 document.body.appendChild(script);
             } catch (err) {
                 console.log(err, _jsBody);
             }
-            if(_jsBody.indexOf('vc.extends')>-1){
-                vcFramework.waitLoadCount +=1;
+            if (_jsBody.indexOf('vc.extends') > -1) {
+                vcFramework.waitLoadCount += 1;
             }
         }
         // let _initScript = "vcFramework.initVue();vcFramework.initVcComponent();";
@@ -1170,7 +1170,7 @@
     //继承方法,合并 _vmOptions 的数据到 vmOptions中
     vcFramework.extends = function (_vmOptions) {
         let vmOptions = vcFramework.vmOptions;
-        
+
         if (typeof _vmOptions !== "object") {
             throw "_vmOptions is not Object";
         }
@@ -1233,7 +1233,7 @@
         }
 
         vcFramework.waitLoadCount -= 1;
-        if(vcFramework.waitLoadCount == 0){
+        if (vcFramework.waitLoadCount == 0) {
             vcFramework.initVue();
             vcFramework.initVcComponent();
         }
@@ -1245,18 +1245,18 @@
         //判断 url 的模板是否 和当前url 模板一个
         console.log('jumpToPage', url);
         //todo 通知释放socket 资源
-        vcFramework.emit('parkingWebSocket', 'release',{});
+        vcFramework.emit('parkingWebSocket', 'release', {});
         if (url.indexOf('#') < 0) {
             window.location.href = url;
             return;
         }
         //保存路由信息
-        try{
+        try {
             vcFramework.saveComponentToPageRoute();
-        }catch(err){
+        } catch (err) {
             console.error(err)
         }
-        
+
         let _targetUrl = url.substring(0, url.indexOf('#'));
         if (location.pathname != _targetUrl) {
             window.location.href = url;
@@ -1636,13 +1636,14 @@
                 document.title = _data.systemTitle;
                 let _logoImg = document.getElementsByClassName('java110-logo');
                 if (_logoImg && _logoImg.length > 0) {
-                    // let _image = document.createElement('img')
-                    // _image.src = _data.logoUrl;
-                    // _image.style.width = "300px";
-                    // _image.style.height = "80px";
-
-                    // _logoImg[0].appendChild(_image);
                     _logoImg[0].innerHTML = _data.systemTitle;
+                } else {
+                    setTimeout(function () {
+                        _logoImg = document.getElementsByClassName('java110-logo');
+                        if (_logoImg && _logoImg.length > 0) {
+                            _logoImg[0].innerHTML = _data.systemTitle;
+                        }
+                    }, 1000);
                 }
 
                 let _subSystemName = document.getElementsByClassName('java110-sub-system-name');

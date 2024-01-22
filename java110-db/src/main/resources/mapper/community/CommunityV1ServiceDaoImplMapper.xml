@@ -20,7 +20,13 @@
         select t.address,t.city_code,t.city_code cityCode,t.name,t.tel,t.status_cd,t.status_cd
         statusCd,t.community_id,t.community_id communityId,t.ext_community_id,t.ext_community_id extCommunityId
         from s_community t
+        <if test="memberId !=null and memberId !=''">
+            left join s_community_member cm on t.community_id = cm.community_id and cm.status_cd = '0'
+        </if>
         where 1 =1
+        <if test="memberId !=null and memberId !=''">
+            and cm.member_id = #{memberId}
+        </if>
         <if test="address !=null and address != ''">
             and t.address= #{address}
         </if>
@@ -88,7 +94,13 @@
     <select id="queryCommunitysCount" parameterType="Map" resultType="Map">
         select count(1) count
         from s_community t
+        <if test="memberId !=null and memberId !=''">
+            left join s_community_member cm on t.community_id = cm.community_id and cm.status_cd = '0'
+        </if>
         where 1 =1
+        <if test="memberId !=null and memberId !=''">
+            and cm.member_id = #{memberId}
+        </if>
         <if test="address !=null and address != ''">
             and t.address= #{address}
         </if>
