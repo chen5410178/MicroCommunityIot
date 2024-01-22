@@ -268,7 +268,7 @@ public class AddCommunityApiCmd extends Cmd {
             communityMemberV1InnerServiceSMOImpl.saveCommunityMember(communityMemberPo);
         } else {
             communityMemberPo.setCommunityMemberId(communityMemberDtos.get(0).getCommunityMemberId());
-            communityMemberV1InnerServiceSMOImpl.saveCommunityMember(communityMemberPo);
+            communityMemberV1InnerServiceSMOImpl.updateCommunityMember(communityMemberPo);
         }
     }
 }
