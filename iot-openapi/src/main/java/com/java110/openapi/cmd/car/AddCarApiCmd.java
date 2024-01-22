@@ -143,7 +143,7 @@ public class AddCarApiCmd extends Cmd {
     private void toSaveParkingArea(JSONObject car, ICmdDataFlowContext context, String communityId) {
 
         ParkingAreaDto parkingAreaDto = new ParkingAreaDto();
-        parkingAreaDto.setPaId(car.getString("carId"));
+        parkingAreaDto.setPaId(car.getString("paId"));
         //查询停车场
         List<ParkingAreaDto> parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
         if (ListUtil.isNull(parkingAreaDtos)) {
