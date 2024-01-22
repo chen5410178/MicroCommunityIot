@@ -261,6 +261,7 @@ public class AddCommunityApiCmd extends Cmd {
         communityMemberPo.setEndTime(DateUtil.getLastTime());
         communityMemberPo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         communityMemberPo.setMemberTypeCd(CommunityMemberDto.MEMBER_TYPE_PROPERTY);
+        communityMemberPo.setMemberName(reqJson.getString("storeName"));
 
         if (ListUtil.isNull(communityMemberDtos)) {
             communityMemberPo.setCommunityMemberId(GenerateCodeFactory.getGeneratorId("11"));
