@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 获取请求中的token
- *
  */
 public class SessionTokenUtil {
 
@@ -19,15 +18,17 @@ public class SessionTokenUtil {
      */
     public static String getToken(HttpServletRequest request) throws IllegalArgumentException {
         String token = "";
-        for (Cookie cookie : request.getCookies()) {
-            if (CommonConstant.COOKIE_AUTH_TOKEN.equals(cookie.getName())) {
-                token = cookie.getValue();
+        if (request.getCookies() != null && request.getCookies().length > 0) {
+            for (Cookie cookie : request.getCookies()) {
+                if (CommonConstant.COOKIE_AUTH_TOKEN.equals(cookie.getName())) {
+                    token = cookie.getValue();
+                }
             }
         }
 
         String authorization = request.getHeader("Authorization");
-
-        if(StringUtil.isEmpty(token) && !StringUtil.isEmpty(authorization)){
+//StringUtil.isEmpty(token) &&
+        if (!StringUtil.isEmpty(authorization)) {
             token = authorization.substring("Bearer ".length());
         }
 
