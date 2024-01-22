@@ -1,5 +1,6 @@
 package com.java110.openapi.cmd.community;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.dto.org.OrgStaffRelDto;
 import com.java110.bean.po.org.OrgPo;
@@ -19,6 +20,7 @@ import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.dto.community.CommunityDto;
 import com.java110.dto.communityMember.CommunityMemberDto;
+import com.java110.dto.menuGroup.MenuGroupDto;
 import com.java110.dto.store.StoreDto;
 import com.java110.dto.storeStaff.StoreStaffDto;
 import com.java110.dto.user.UserDto;
@@ -27,6 +29,7 @@ import com.java110.intf.community.ICommunityV1InnerServiceSMO;
 import com.java110.intf.user.*;
 import com.java110.po.community.CommunityPo;
 import com.java110.po.communityMember.CommunityMemberPo;
+import com.java110.po.menuGroupCommunity.MenuGroupCommunityPo;
 import com.java110.po.privilegeUser.PrivilegeUserPo;
 import com.java110.po.store.StorePo;
 import com.java110.po.storeStaff.StoreStaffPo;
@@ -35,6 +38,7 @@ import org.springframework.aop.scope.ScopedObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,6 +73,12 @@ public class AddCommunityApiCmd extends Cmd {
 
     @Autowired
     private IPrivilegeUserV1InnerServiceSMO privilegeUserV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IMenuGroupV1InnerServiceSMO menuGroupV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IMenuGroupCommunityV1InnerServiceSMO menuGroupCommunityV1InnerServiceSMOImpl;
 
 
     public static final String CODE_PREFIX_ID = "10";
@@ -232,8 +242,6 @@ public class AddCommunityApiCmd extends Cmd {
         //todo 查询小区是否存在
         CommunityDto communityDto = new CommunityDto();
         communityDto.setCommunityId(reqJson.getString("communityId"));
-
-
         List<CommunityDto> communityDtos = communityV1InnerServiceSMOImpl.queryCommunitys(communityDto);
 
         CommunityPo communityPo = new CommunityPo();
@@ -245,6 +253,7 @@ public class AddCommunityApiCmd extends Cmd {
         communityPo.setTel(reqJson.getString("tel"));
         if (ListUtil.isNull(communityDtos)) {
             communityV1InnerServiceSMOImpl.saveCommunity(communityPo);
+            saveMenuGroupCommunity(communityPo);
         } else {
             communityV1InnerServiceSMOImpl.updateCommunity(communityPo);
         }
@@ -269,6 +278,37 @@ public class AddCommunityApiCmd extends Cmd {
         } else {
             communityMemberPo.setCommunityMemberId(communityMemberDtos.get(0).getCommunityMemberId());
             communityMemberV1InnerServiceSMOImpl.updateCommunityMember(communityMemberPo);
+        }
+    }
+
+
+    /**
+     * 分配小区 权限功能
+     *
+     * @param communityPo
+     */
+    private void saveMenuGroupCommunity(CommunityPo communityPo) {
+        List<MenuGroupDto> menuGroupDtos = null;
+        MenuGroupDto menuGroupDto = null;
+        menuGroupDto = new MenuGroupDto();
+        menuGroupDto.setStoreType(StoreDto.STORE_TYPE_PROPERTY);
+        menuGroupDtos = menuGroupV1InnerServiceSMOImpl.queryMenuGroups(menuGroupDto);
+
+
+        List<MenuGroupCommunityPo> menuGroupCommunityPos = new ArrayList<>();
+        MenuGroupCommunityPo tmpMenuGroupCommunityPo = null;
+        for (MenuGroupDto tmpMenuGroupDto : menuGroupDtos) {
+            tmpMenuGroupCommunityPo = new MenuGroupCommunityPo();
+            tmpMenuGroupCommunityPo.setCommunityId(communityPo.getCommunityId());
+            tmpMenuGroupCommunityPo.setCommunityName(communityPo.getName());
+            tmpMenuGroupCommunityPo.setGcId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+            tmpMenuGroupCommunityPo.setgId(tmpMenuGroupDto.getgId());
+            tmpMenuGroupCommunityPo.setName(tmpMenuGroupDto.getName());
+            menuGroupCommunityPos.add(tmpMenuGroupCommunityPo);
+        }
+        int flag = menuGroupCommunityV1InnerServiceSMOImpl.saveMenuGroupCommunitys(menuGroupCommunityPos);
+        if (flag < 1) {
+            throw new CmdException("注册失败");
         }
     }
 }

@@ -396,7 +396,6 @@ public class AddOwnerApiCmd extends Cmd {
         unitDto.setUnitId(room.getString("unitId"));
         List<UnitDto> unitDtos = unitV1InnerServiceSMOImpl.queryUnits(unitDto);
         UnitPo unitPo = null;
-        String unitId = "";
 
         int flag = 0;
         if (!ListUtil.isNull(unitDtos)) {
@@ -406,7 +405,7 @@ public class AddOwnerApiCmd extends Cmd {
         unitPo.setFloorId(room.getString("floorId"));
         unitPo.setLayerCount("33");
         unitPo.setLift("1010");
-        unitPo.setUnitId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_unitId));
+        unitPo.setUnitId(room.getString("unitId"));
         unitPo.setUnitArea("1");
         unitPo.setUnitNum(room.getString("unitNum"));
         unitPo.setRemark("第三方系统同步");
