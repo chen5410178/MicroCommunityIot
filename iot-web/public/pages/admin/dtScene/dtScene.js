@@ -59,7 +59,9 @@
                 );
             },
             _openAddDtSceneModal: function () {
-                vc.emit('addDtScene', 'openAddDtSceneModal', {});
+                vc.emit('addDtScene', 'openAddDtSceneModal', {
+                    communityId: $that.dtSceneInfo.conditions.communityId
+                });
             },
             _openEditDtSceneModel: function (_dtScene) {
                 vc.emit('editDtScene', 'openEditDtSceneModal', _dtScene);

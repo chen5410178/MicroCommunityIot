@@ -11,14 +11,15 @@
                 sceneName: '',
                 state: 'Y',
                 seq: '1',
-
+                communityId:''
             }
         },
         _initMethod: function () {
 
         },
         _initEvent: function () {
-            vc.on('addDtScene', 'openAddDtSceneModal', function () {
+            vc.on('addDtScene', 'openAddDtSceneModal', function (_param) {
+                $that.addDtSceneInfo.communityId = _param.communityId;
                 $('#addDtSceneModel').modal('show');
             });
         },
@@ -75,8 +76,6 @@
 
                     return;
                 }
-
-                $that.addDtSceneInfo.communityId = vc.getCurrentCommunity().communityId;
         
                 vc.http.apiPost(
                     '/dtScene.saveDtScene',
@@ -110,7 +109,7 @@
                     sceneName: '',
                     state: 'Y',
                     seq: '1',
-
+                    communityId:''
                 };
             }
         }
