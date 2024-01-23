@@ -46,7 +46,9 @@
 
                 $that.lampMachineManageInfo.conditions.page = _page;
                 $that.lampMachineManageInfo.conditions.row = _rows;
-                var param = {
+                $that.lampMachineManageInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
+
+                let param = {
                     params: $that.lampMachineManageInfo.conditions
                 };
 
@@ -54,10 +56,10 @@
                 vc.http.apiGet('/lampMachine.listLampMachine',
                     param,
                     function (json, res) {
-                        var _lampMachineManageInfo = JSON.parse(json);
-                        $that.lampMachineManageInfo.total = _lampMachineManageInfo.total;
-                        $that.lampMachineManageInfo.records = _lampMachineManageInfo.records;
-                        $that.lampMachineManageInfo.lampMachines = _lampMachineManageInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.lampMachineManageInfo.total = _json.total;
+                        $that.lampMachineManageInfo.records = _json.records;
+                        $that.lampMachineManageInfo.lampMachines = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.lampMachineManageInfo.records,
                             currentPage: _page
