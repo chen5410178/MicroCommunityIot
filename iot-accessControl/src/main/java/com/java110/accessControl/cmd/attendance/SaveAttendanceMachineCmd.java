@@ -71,6 +71,8 @@ public class SaveAttendanceMachineCmd extends Cmd {
         AttendanceMachinePo attendanceMachinePo = BeanConvertUtil.covertBean(reqJson, AttendanceMachinePo.class);
         attendanceMachinePo.setMachineId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         attendanceMachinePo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        attendanceMachinePo.setClassesId(attendanceMachinePo.getClassesId().trim());
+        attendanceMachinePo.setClassesName(attendanceMachinePo.getClassesName().trim());
         int flag = attendanceMachineV1InnerServiceSMOImpl.saveAttendanceMachine(attendanceMachinePo);
 
         if (flag < 1) {
