@@ -1,6 +1,7 @@
 package com.java110.openapi.cmd.staff;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.dto.file.FileDto;
 import com.java110.bean.dto.org.OrgDto;
 import com.java110.bean.dto.org.OrgStaffRelDto;
 import com.java110.bean.po.org.OrgStaffRelPo;
@@ -14,8 +15,10 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.storeStaff.StoreStaffDto;
 import com.java110.dto.user.UserDto;
+import com.java110.intf.system.IFileInnerServiceSMO;
 import com.java110.intf.user.*;
 import com.java110.po.storeStaff.StoreStaffPo;
 import com.java110.po.user.UserPo;
@@ -48,6 +51,9 @@ public class AddStaffApiCmd extends Cmd {
 
     @Autowired
     private IPrivilegeUserV1InnerServiceSMO privilegeUserV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IFileInnerServiceSMO fileInnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
@@ -139,6 +145,8 @@ public class AddStaffApiCmd extends Cmd {
      */
     private void addUser(JSONObject reqJson) {
 
+        String faceUrl = getFaceUrl(reqJson);
+
         UserPo userPo = new UserPo();
         userPo.setTel(reqJson.getString("tel"));
         userPo.setName(reqJson.getString("name"));
@@ -147,10 +155,33 @@ public class AddStaffApiCmd extends Cmd {
         userPo.setEmail("无");
         userPo.setLevelCd(UserDto.LEVEL_CD_STAFF);
         userPo.setSex("1");
+        userPo.setFaceUrl(faceUrl);
         //设置默认密码
         String staffDefaultPassword = STAFF_DEFAULT_PASSWORD;
         staffDefaultPassword = AuthenticationFactory.passwdMd5(staffDefaultPassword);
         userPo.setPassword(staffDefaultPassword);
         userV1InnerServiceSMOImpl.saveUser(userPo);
+    }
+
+    private String getFaceUrl(JSONObject reqJson) {
+        if (!reqJson.containsKey("staffPhoto")) {
+            return "";
+        }
+
+        String staffPhoto = reqJson.getString("staffPhoto");
+
+        if (StringUtil.isEmpty(staffPhoto)) {
+            return "";
+        }
+
+        FileDto fileDto = new FileDto();
+        fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
+        fileDto.setFileName(fileDto.getFileId());
+        fileDto.setContext(reqJson.getString("staffPhoto"));
+        fileDto.setSuffix("jpeg");
+        fileDto.setCommunityId("-1");
+        String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
+
+        return fileName;
     }
 }
