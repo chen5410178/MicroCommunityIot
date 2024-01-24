@@ -1,4 +1,4 @@
-package com.java110.accessControl.manufactor.adapt;
+package com.java110.accessControl.manufactor.adapt.accessControl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -15,18 +15,12 @@ import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
-import com.java110.dto.accessControlFloor.AccessControlFloorDto;
 import com.java110.dto.accessControlLog.AccessControlLogDto;
-import com.java110.dto.passQrcode.PassQrcodeDto;
 import com.java110.dto.user.UserDto;
-import com.java110.dto.visit.VisitDto;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
-import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlLogV1InnerServiceSMO;
-import com.java110.intf.accessControl.IVisitV1InnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerV1InnerServiceSMO;
-import com.java110.intf.user.IPassQrcodeV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.accessControlLog.AccessControlLogPo;

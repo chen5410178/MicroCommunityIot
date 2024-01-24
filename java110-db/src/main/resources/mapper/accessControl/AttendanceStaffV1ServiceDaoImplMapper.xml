@@ -19,7 +19,8 @@
     <select id="getAttendanceStaffInfo" parameterType="Map" resultType="Map">
         select t.ms_id,t.ms_id msId,t.machine_id,t.machine_id machineId,t.staff_name,t.staff_name
         staffName,t.status_cd,t.status_cd statusCd,t.face_path,t.face_path
-        facePath,t.state,t.message,t.community_id,t.community_id communityId,t.staff_id,t.staff_id staffId
+        facePath,t.state,t.message,t.community_id,t.community_id communityId,t.staff_id,t.staff_id staffId,
+        t.create_time createTime
         from attendance_staff t
         where 1 =1
         <if test="msId !=null and msId != ''">

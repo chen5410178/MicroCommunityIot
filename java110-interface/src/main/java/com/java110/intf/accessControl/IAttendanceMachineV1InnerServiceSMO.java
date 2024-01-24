@@ -15,6 +15,7 @@
  */
 package com.java110.intf.accessControl;
 
+import com.java110.dto.accessControl.MachineHeartbeatDto;
 import com.java110.dto.attendanceMachine.AttendanceMachineDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.attendanceMachine.AttendanceMachinePo;
@@ -64,4 +65,7 @@ public interface IAttendanceMachineV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryAttendanceMachinesCount", method = RequestMethod.POST)
     int queryAttendanceMachinesCount(@RequestBody AttendanceMachineDto attendanceMachineDto);
+
+    @RequestMapping(value = "/attendanceHeartbeat", method = RequestMethod.POST)
+    int attendanceHeartbeat(@RequestBody MachineHeartbeatDto machineHeartbeatDto);
 }

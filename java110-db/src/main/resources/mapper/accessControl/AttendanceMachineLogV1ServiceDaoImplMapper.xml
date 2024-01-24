@@ -17,9 +17,13 @@
 
     <!-- 查询考勤下发日志信息 add by wuxw 2018-07-03 -->
     <select id="getAttendanceMachineLogInfo" parameterType="Map" resultType="Map">
-        select t.res_param,t.res_param resParam,t.machine_id,t.machine_id machineId,t.staff_name,t.staff_name
-        staffName,t.log_id,t.log_id logId,t.req_param,t.req_param reqParam,t.state,t.community_id,t.community_id
+        select t.machine_id,t.machine_id machineId,t.staff_name,t.staff_name
+        staffName,t.log_id,t.log_id logId,t.state,t.community_id,t.community_id
         communityId,t.log_action,t.log_action logAction,t.staff_id,t.staff_id staffId
+        <if test="logId !=null and logId != ''">
+            ,t.req_param reqParam
+            ,t.res_param resParam
+        </if>
         from attendance_machine_log t
         where 1 =1
         <if test="resParam !=null and resParam != ''">

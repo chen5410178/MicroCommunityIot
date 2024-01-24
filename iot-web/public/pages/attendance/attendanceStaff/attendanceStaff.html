@@ -4,9 +4,8 @@
             <div class=" border-radius ">
                 <div class="margin-xs-r  treeview attendance-staff">
                     <ul class="list-group text-center border-radius">
-                        <li class="list-group-item node-orgTree "
-                            v-for="(item,index) in attendanceStaffInfo.machines" :key="index"
-                            @click="swatchMachine(item)"
+                        <li class="list-group-item node-orgTree " v-for="(item,index) in attendanceStaffInfo.machines"
+                            :key="index" @click="swatchMachine(item)"
                             :class="{'vc-node-selected':attendanceStaffInfo.conditions.machineId == item.machineId}">
                             {{item.machineName}}({{item.classesName}})
                         </li>
@@ -67,16 +66,16 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">
-                                                <vc:i18n name='人脸' namespace='attendanceStaff'></vc:i18n>
+                                            <vc:i18n name='人脸' namespace='attendanceStaff'></vc:i18n>
                                         </th>
                                         <th class="text-center">
-                                                <vc:i18n name='员工编号' namespace='attendanceStaff'></vc:i18n>
+                                            <vc:i18n name='员工编号' namespace='attendanceStaff'></vc:i18n>
                                         </th>
                                         <th class="text-center">
-                                                <vc:i18n name='员工名称' namespace='attendanceStaff'></vc:i18n>
+                                            <vc:i18n name='员工名称' namespace='attendanceStaff'></vc:i18n>
                                         </th>
                                         <th class="text-center">
-                                                <vc:i18n name='创建时间' namespace='attendanceStaff'></vc:i18n>
+                                            <vc:i18n name='创建时间' namespace='attendanceStaff'></vc:i18n>
                                         </th>
                                         <th class="text-center">
                                             <span>
@@ -86,13 +85,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr
-                                        v-for="attendanceStaff in attendanceStaffInfo.attendanceStaffs">
+                                    <tr v-for="attendanceStaff in attendanceStaffInfo.staffs">
                                         <td class="text-center">
                                             <div style="position: relative; display: inline-block;"
-                                                v-on:click="showImg(attendanceStaff.personFace?attendanceStaff.personFace:'/img/noPhoto.jpg')">
+                                                v-on:click="showImg(attendanceStaff.facePath?attendanceStaff.facePath:'/img/noPhoto.jpg')">
                                                 <img width="50" height="50"
-                                                    v-bind:src="attendanceStaff.personFace?attendanceStaff.personFace:'/img/noPhoto.jpg'"
+                                                    v-bind:src="attendanceStaff.facePath?attendanceStaff.facePath:'/img/noPhoto.jpg'"
                                                     onerror="this.src='/img/noPhoto.jpg';">
                                                 <img src="/img/icon-bigimg.png"
                                                     style="position: absolute;right: 0;bottom: 0;" width="50"
@@ -106,7 +104,7 @@
                                             <div class="btn-group">
                                                 <button class="btn-white btn btn-xs"
                                                     v-on:click="_openDeleteAttendanceStaffModel(attendanceStaff)">
-                                                        <vc:i18n name='删除'></vc:i18n>
+                                                    <vc:i18n name='删除'></vc:i18n>
                                                 </button>
                                             </div>
                                         </td>

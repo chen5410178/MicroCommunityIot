@@ -15,7 +15,7 @@
             deleteAttendanceStaff: function () {
                 $that.deleteAttendanceStaffInfo.communityId = vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
-                    '/attendanceClasses.deleteAttendanceStaff',
+                    '/attendance.deleteAttendanceStaff',
                     JSON.stringify($that.deleteAttendanceStaffInfo),
                     {
                         emulateJSON: true

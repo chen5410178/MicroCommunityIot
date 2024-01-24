@@ -105,5 +105,14 @@ public class AttendanceMachineV1ServiceDaoImpl extends BaseServiceDao implements
         return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
+    @Override
+    public int attendanceHeartbeat(Map info) {
+        logger.debug("修改 attendanceHeartbeat 入参 info : {}",info);
+
+        int saveFlag = sqlSessionTemplate.update("attendanceMachineV1ServiceDaoImpl.attendanceHeartbeat",info);
+
+        return saveFlag;
+    }
+
 
 }

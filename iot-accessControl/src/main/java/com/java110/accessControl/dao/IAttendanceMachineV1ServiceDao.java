@@ -71,4 +71,5 @@ public interface IAttendanceMachineV1ServiceDao {
      */
     int queryAttendanceMachinesCount(Map info);
 
+    int attendanceHeartbeat(Map info);
 }

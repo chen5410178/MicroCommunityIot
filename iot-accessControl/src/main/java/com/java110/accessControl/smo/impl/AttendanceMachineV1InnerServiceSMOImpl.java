@@ -19,6 +19,7 @@ package com.java110.accessControl.smo.impl;
 import com.java110.accessControl.dao.IAttendanceMachineV1ServiceDao;
 import com.java110.bean.dto.PageDto;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.accessControl.MachineHeartbeatDto;
 import com.java110.intf.accessControl.IAttendanceMachineV1InnerServiceSMO;
 import com.java110.dto.attendanceMachine.AttendanceMachineDto;
 import com.java110.po.attendanceMachine.AttendanceMachinePo;
@@ -84,5 +85,9 @@ public class AttendanceMachineV1InnerServiceSMOImpl implements IAttendanceMachin
     public int queryAttendanceMachinesCount(@RequestBody AttendanceMachineDto attendanceMachineDto) {
         return attendanceMachineV1ServiceDaoImpl.queryAttendanceMachinesCount(BeanConvertUtil.beanCovertMap(attendanceMachineDto));
     }
+
+    @Override
+    public int attendanceHeartbeat(@RequestBody MachineHeartbeatDto machineHeartbeatDto) {
+        return attendanceMachineV1ServiceDaoImpl.attendanceHeartbeat(BeanConvertUtil.beanCovertMap(machineHeartbeatDto));    }
 
 }
