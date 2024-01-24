@@ -26,6 +26,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.DateUtil;
 import com.java110.intf.accessControl.IAttendanceMachineV1InnerServiceSMO;
 import com.java110.po.attendanceMachine.AttendanceMachinePo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,7 @@ public class SaveAttendanceMachineCmd extends Cmd {
 
         AttendanceMachinePo attendanceMachinePo = BeanConvertUtil.covertBean(reqJson, AttendanceMachinePo.class);
         attendanceMachinePo.setMachineId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        attendanceMachinePo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         int flag = attendanceMachineV1InnerServiceSMOImpl.saveAttendanceMachine(attendanceMachinePo);
 
         if (flag < 1) {

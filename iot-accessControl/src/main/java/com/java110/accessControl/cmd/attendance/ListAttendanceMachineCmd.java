@@ -22,12 +22,14 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.*;
+import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.intf.accessControl.IAttendanceMachineV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.attendanceMachine.AttendanceMachineDto;
 
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -72,6 +74,8 @@ public class ListAttendanceMachineCmd extends Cmd {
 
         if (count > 0) {
             attendanceMachineDtos = attendanceMachineV1InnerServiceSMOImpl.queryAttendanceMachines(attendanceMachineDto);
+            freshMachineStateName(attendanceMachineDtos);
+
         } else {
             attendanceMachineDtos = new ArrayList<>();
         }
@@ -81,5 +85,31 @@ public class ListAttendanceMachineCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+    private void freshMachineStateName(List<AttendanceMachineDto> attendanceMachineDtos) {
+
+        if (ListUtil.isNull(attendanceMachineDtos)) {
+            return;
+        }
+        for (AttendanceMachineDto attendanceMachineDto : attendanceMachineDtos) {
+            String heartbeatTime = attendanceMachineDto.getHeartbeatTime();
+            try {
+                if (StringUtil.isEmpty(heartbeatTime)) {
+                    attendanceMachineDto.setStateName("设备离线");
+                } else {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(DateUtil.getDateFromString(heartbeatTime, DateUtil.DATE_FORMATE_STRING_A));
+                    calendar.add(Calendar.MINUTE, 2);
+                    if (calendar.getTime().getTime() <= DateUtil.getCurrentDate().getTime()) {
+                        attendanceMachineDto.setStateName("设备离线");
+                    } else {
+                        attendanceMachineDto.setStateName("设备在线");
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+                attendanceMachineDto.setStateName("设备离线");
+            }
+        }
     }
 }

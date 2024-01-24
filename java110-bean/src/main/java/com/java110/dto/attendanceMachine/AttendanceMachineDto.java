@@ -30,6 +30,8 @@ public class AttendanceMachineDto extends PageDto implements Serializable {
 
     private String statusCd = "0";
 
+    private String stateName;
+
 
     public String getClassesName() {
         return classesName;
@@ -118,5 +120,13 @@ public class AttendanceMachineDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
     }
 }
