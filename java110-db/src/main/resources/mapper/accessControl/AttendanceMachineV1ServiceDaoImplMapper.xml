@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="attendanceMachineV1ServiceDaoImpl">
+
+
+    <!-- 保存考勤设备信息 add by wuxw 2018-07-03 -->
+    <insert id="saveAttendanceMachineInfo" parameterType="Map">
+        insert into attendance_machine(
+        classes_name,heartbeat_time,impl_bean,classes_id,machine_id,machine_code,community_id,machine_name,machine_ip
+        ) values (
+        #{classesName},#{heartbeatTime},#{implBean},#{classesId},#{machineId},#{machineCode},#{communityId},#{machineName},#{machineIp}
+        )
+    </insert>
+
+
+    <!-- 查询考勤设备信息 add by wuxw 2018-07-03 -->
+    <select id="getAttendanceMachineInfo" parameterType="Map" resultType="Map">
+        select t.classes_name,t.classes_name classesName,t.heartbeat_time,t.heartbeat_time
+        heartbeatTime,t.impl_bean,t.impl_bean implBean,t.classes_id,t.classes_id classesId,t.machine_id,t.machine_id
+        machineId,t.machine_code,t.machine_code machineCode,t.status_cd,t.status_cd
+        statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name
+        machineName,t.machine_ip,t.machine_ip machineIp
+        from attendance_machine t
+        where 1 =1
+        <if test="classesName !=null and classesName != ''">
+            and t.classes_name= #{classesName}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="classesId !=null and classesId != ''">
+            and t.classes_id= #{classesId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="machineIp !=null and machineIp != ''">
+            and t.machine_ip= #{machineIp}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改考勤设备信息 add by wuxw 2018-07-03 -->
+    <update id="updateAttendanceMachineInfo" parameterType="Map">
+        update attendance_machine t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="classesName !=null and classesName != ''">
+            , t.classes_name= #{classesName}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            , t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            , t.impl_bean= #{implBean}
+        </if>
+        <if test="classesId !=null and classesId != ''">
+            , t.classes_id= #{classesId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+
+        <if test="machineName !=null and machineName != ''">
+            , t.machine_name= #{machineName}
+        </if>
+        <if test="machineIp !=null and machineIp != ''">
+            , t.machine_ip= #{machineIp}
+        </if>
+        where 1=1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+    </update>
+
+    <!-- 查询考勤设备数量 add by wuxw 2018-07-03 -->
+    <select id="queryAttendanceMachinesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from attendance_machine t
+        where 1 =1
+        <if test="classesName !=null and classesName != ''">
+            and t.classes_name= #{classesName}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="classesId !=null and classesId != ''">
+            and t.classes_id= #{classesId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="machineIp !=null and machineIp != ''">
+            and t.machine_ip= #{machineIp}
+        </if>
+
+
+    </select>
+
+</mapper>
