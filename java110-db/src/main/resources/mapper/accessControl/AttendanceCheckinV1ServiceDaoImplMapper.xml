@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="attendanceCheckinV1ServiceDaoImpl">
+
+
+    <!-- 保存考勤记录信息 add by wuxw 2018-07-03 -->
+    <insert id="saveAttendanceCheckinInfo" parameterType="Map">
+        insert into attendance_checkin(
+        checkin_time,checkin_id,machine_code,open_type_cd,remark,machine_id,staff_name,tel,face_path,state,community_id,staff_id
+        ) values (
+        #{checkinTime},#{checkinId},#{machineCode},#{openTypeCd},#{remark},#{machineId},#{staffName},#{tel},#{facePath},#{state},#{communityId},#{staffId}
+        )
+    </insert>
+
+
+    <!-- 查询考勤记录信息 add by wuxw 2018-07-03 -->
+    <select id="getAttendanceCheckinInfo" parameterType="Map" resultType="Map">
+        select t.checkin_time,t.checkin_time checkinTime,t.checkin_id,t.checkin_id
+        checkinId,t.machine_code,t.machine_code machineCode,t.open_type_cd,t.open_type_cd
+        openTypeCd,t.status_cd,t.status_cd statusCd,t.remark,t.machine_id,t.machine_id
+        machineId,t.staff_name,t.staff_name staffName,t.tel,t.face_path,t.face_path
+        facePath,t.state,t.community_id,t.community_id communityId,t.staff_id,t.staff_id staffId
+        from attendance_checkin t
+        where 1 =1
+        <if test="checkinTime !=null and checkinTime != ''">
+            and t.checkin_time= #{checkinTime}
+        </if>
+        <if test="checkinId !=null and checkinId != ''">
+            and t.checkin_id= #{checkinId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="openTypeCd !=null and openTypeCd != ''">
+            and t.open_type_cd= #{openTypeCd}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            and t.staff_name= #{staffName}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="facePath !=null and facePath != ''">
+            and t.face_path= #{facePath}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改考勤记录信息 add by wuxw 2018-07-03 -->
+    <update id="updateAttendanceCheckinInfo" parameterType="Map">
+        update attendance_checkin t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="checkinTime !=null and checkinTime != ''">
+            , t.checkin_time= #{checkinTime}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="openTypeCd !=null and openTypeCd != ''">
+            , t.open_type_cd= #{openTypeCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            , t.staff_name= #{staffName}
+        </if>
+        <if test="tel !=null and tel != ''">
+            , t.tel= #{tel}
+        </if>
+        <if test="facePath !=null and facePath != ''">
+            , t.face_path= #{facePath}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            , t.staff_id= #{staffId}
+        </if>
+        where 1=1
+        <if test="checkinId !=null and checkinId != ''">
+            and t.checkin_id= #{checkinId}
+        </if>
+
+    </update>
+
+    <!-- 查询考勤记录数量 add by wuxw 2018-07-03 -->
+    <select id="queryAttendanceCheckinsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from attendance_checkin t
+        where 1 =1
+        <if test="checkinTime !=null and checkinTime != ''">
+            and t.checkin_time= #{checkinTime}
+        </if>
+        <if test="checkinId !=null and checkinId != ''">
+            and t.checkin_id= #{checkinId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="openTypeCd !=null and openTypeCd != ''">
+            and t.open_type_cd= #{openTypeCd}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            and t.staff_name= #{staffName}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="facePath !=null and facePath != ''">
+            and t.face_path= #{facePath}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+
+
+    </select>
+
+</mapper>
