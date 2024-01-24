@@ -65,17 +65,27 @@ public class AddStaffApiCmd extends Cmd {
 
 
         //判断员工手机号是否重复(员工可根据手机号登录平台)
-        UserDto userDto = new UserDto();
-        userDto.setTel(reqJson.getString("tel"));
-        userDto.setUserFlag("1");
-        userDto.setLevelCd("01"); //员工
-        List<UserDto> users = userV1InnerServiceSMOImpl.queryUsers(userDto);
-        Assert.listIsNull(users, "员工手机号不能重复，请重新输入");
+//        UserDto userDto = new UserDto();
+//        userDto.setTel(reqJson.getString("tel"));
+//        userDto.setUserFlag("1");
+//        userDto.setLevelCd("01"); //员工
+//        List<UserDto> users = userV1InnerServiceSMOImpl.queryUsers(userDto);
+//        Assert.listIsNull(users, "员工手机号不能重复，请重新输入");
 
     }
 
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
+
+
+        StoreStaffDto storeStaffDto = new StoreStaffDto();
+        storeStaffDto.setUserId(reqJson.getString("staffId"));
+        List<StoreStaffDto> storeStaffDtos = storeUserV1InnerServiceSMOImpl.queryStoreStaffs(storeStaffDto);
+        if (!ListUtil.isNull(storeStaffDtos)) {
+            updateUser(reqJson);
+            return;
+        }
+
 
         //todo 添加用户
         addUser(reqJson);
@@ -90,6 +100,7 @@ public class AddStaffApiCmd extends Cmd {
         //synchronousAccessControl(reqJson);
 
     }
+
 
     private void addStaffOrg(JSONObject reqJson) {
 
@@ -161,6 +172,19 @@ public class AddStaffApiCmd extends Cmd {
         staffDefaultPassword = AuthenticationFactory.passwdMd5(staffDefaultPassword);
         userPo.setPassword(staffDefaultPassword);
         userV1InnerServiceSMOImpl.saveUser(userPo);
+    }
+
+
+    private void updateUser(JSONObject reqJson) {
+
+        String faceUrl = getFaceUrl(reqJson);
+
+        UserPo userPo = new UserPo();
+        userPo.setTel(reqJson.getString("tel"));
+        userPo.setName(reqJson.getString("name"));
+        userPo.setUserId(reqJson.getString("staffId"));
+        userPo.setFaceUrl(faceUrl);
+        userV1InnerServiceSMOImpl.updateUser(userPo);
     }
 
     private String getFaceUrl(JSONObject reqJson) {
