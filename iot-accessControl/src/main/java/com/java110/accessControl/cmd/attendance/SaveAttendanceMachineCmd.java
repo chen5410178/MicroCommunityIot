@@ -58,7 +58,6 @@ public class SaveAttendanceMachineCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "machineCode", "请求报文中未包含machineCode");
         Assert.hasKeyAndValue(reqJson, "machineName", "请求报文中未包含machineName");
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
-        Assert.hasKeyAndValue(reqJson, "heartbeatTime", "请求报文中未包含heartbeatTime");
         Assert.hasKeyAndValue(reqJson, "implBean", "请求报文中未包含implBean");
         Assert.hasKeyAndValue(reqJson, "classesId", "请求报文中未包含classesId");
         Assert.hasKeyAndValue(reqJson, "classesName", "请求报文中未包含classesName");

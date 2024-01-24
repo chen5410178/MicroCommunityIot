@@ -51,13 +51,6 @@
                             errInfo: "设备名称不能超过200"
                         },
                     ],
-                    'addAttendanceMachineInfo.machineIp': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "设备IP不能为空"
-                        },
-                    ],
                     'addAttendanceMachineInfo.implBean': [
                         {
                             limit: "required",
