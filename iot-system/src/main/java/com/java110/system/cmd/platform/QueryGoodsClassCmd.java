@@ -26,7 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-@Java110Cmd(serviceCode = "product.queryProduct")
+@Java110Cmd(serviceCode = "product.queryGoodsClasses")
 public class QueryGoodsClassCmd extends Cmd {
 
     private static Logger logger = LoggerFactory.getLogger(QueryGoodsClassCmd.class);
