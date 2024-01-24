@@ -21,7 +21,7 @@
         heartbeatTime,t.impl_bean,t.impl_bean implBean,t.classes_id,t.classes_id classesId,t.machine_id,t.machine_id
         machineId,t.machine_code,t.machine_code machineCode,t.status_cd,t.status_cd
         statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name
-        machineName,t.machine_ip,t.machine_ip machineIp
+        machineName,t.machine_ip,t.machine_ip machineIp,t.create_time createTime
         from attendance_machine t
         where 1 =1
         <if test="classesName !=null and classesName != ''">

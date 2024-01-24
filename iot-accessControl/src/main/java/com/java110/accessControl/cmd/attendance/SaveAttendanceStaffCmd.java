@@ -26,11 +26,17 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.dto.attendanceStaff.AttendanceStaffDto;
+import com.java110.dto.user.UserDto;
 import com.java110.intf.accessControl.IAttendanceStaffV1InnerServiceSMO;
+import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.attendanceStaff.AttendanceStaffPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -52,6 +58,9 @@ public class SaveAttendanceStaffCmd extends Cmd {
     @Autowired
     private IAttendanceStaffV1InnerServiceSMO attendanceStaffV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineId", "请求报文中未包含machineId");
@@ -65,8 +74,20 @@ public class SaveAttendanceStaffCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
+
+        UserDto userDto = new UserDto();
+        userDto.setUserId(reqJson.getString("staffId"));
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+
+        if (ListUtil.isNull(userDtos)) {
+            throw new CmdException("员工不存在");
+        }
+
         AttendanceStaffPo attendanceStaffPo = BeanConvertUtil.covertBean(reqJson, AttendanceStaffPo.class);
         attendanceStaffPo.setMsId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        attendanceStaffPo.setStaffName(userDtos.get(0).getName());
+        attendanceStaffPo.setState(AttendanceStaffDto.STATE_WAIT);
+        attendanceStaffPo.setMessage("待下发设备");
         int flag = attendanceStaffV1InnerServiceSMOImpl.saveAttendanceStaff(attendanceStaffPo);
 
         if (flag < 1) {

@@ -16,6 +16,9 @@ import java.util.Date;
  **/
 public class AttendanceStaffDto extends PageDto implements Serializable {
 
+    public static final String STATE_WAIT = "W" ;//待处理;
+    public static final String STATE_COMPLETE = "C" ;//处理完成;
+    public static final String STATE_FAIL = "F" ;//处理完成;
     private String msId;
     private String machineId;
     private String staffName;

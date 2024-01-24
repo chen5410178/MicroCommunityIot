@@ -3,7 +3,7 @@
     vc.extends({
         data: {
             editAttendanceMachineInfo: {
-                wtId: '',
+                machineId: '',
                 machineCode: '',
                 machineName: '',
                 machineIp: '',
@@ -76,7 +76,7 @@
                             errInfo: "班组名称不能为空"
                         },
                     ],
-                    'editAttendanceMachineInfo.wtId': [
+                    'editAttendanceMachineInfo.machineId': [
                         {
                             limit: "required",
                             param: "",
@@ -116,7 +116,7 @@
             },
             refreshEditAttendanceMachineInfo: function () {
                 $that.editAttendanceMachineInfo = {
-                    wtId: '',
+                    machineId: '',
                     machineCode: '',
                     machineName: '',
                     machineIp: '',
