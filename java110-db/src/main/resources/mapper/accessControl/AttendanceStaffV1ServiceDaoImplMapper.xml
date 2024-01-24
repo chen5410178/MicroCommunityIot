@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="attendanceStaffV1ServiceDaoImpl">
+
+
+    <!-- 保存考勤员工信息 add by wuxw 2018-07-03 -->
+    <insert id="saveAttendanceStaffInfo" parameterType="Map">
+        insert into attendance_staff(
+        ms_id,machine_id,staff_name,face_path,state,message,community_id,staff_id
+        ) values (
+        #{msId},#{machineId},#{staffName},#{facePath},#{state},#{message},#{communityId},#{staffId}
+        )
+    </insert>
+
+
+    <!-- 查询考勤员工信息 add by wuxw 2018-07-03 -->
+    <select id="getAttendanceStaffInfo" parameterType="Map" resultType="Map">
+        select t.ms_id,t.ms_id msId,t.machine_id,t.machine_id machineId,t.staff_name,t.staff_name
+        staffName,t.status_cd,t.status_cd statusCd,t.face_path,t.face_path
+        facePath,t.state,t.message,t.community_id,t.community_id communityId,t.staff_id,t.staff_id staffId
+        from attendance_staff t
+        where 1 =1
+        <if test="msId !=null and msId != ''">
+            and t.ms_id= #{msId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            and t.staff_name= #{staffName}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="facePath !=null and facePath != ''">
+            and t.face_path= #{facePath}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="message !=null and message != ''">
+            and t.message= #{message}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改考勤员工信息 add by wuxw 2018-07-03 -->
+    <update id="updateAttendanceStaffInfo" parameterType="Map">
+        update attendance_staff t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            , t.staff_name= #{staffName}
+        </if>
+        <if test="facePath !=null and facePath != ''">
+            , t.face_path= #{facePath}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="message !=null and message != ''">
+            , t.message= #{message}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            , t.staff_id= #{staffId}
+        </if>
+        where 1=1
+        <if test="msId !=null and msId != ''">
+            and t.ms_id= #{msId}
+        </if>
+
+    </update>
+
+    <!-- 查询考勤员工数量 add by wuxw 2018-07-03 -->
+    <select id="queryAttendanceStaffsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from attendance_staff t
+        where 1 =1
+        <if test="msId !=null and msId != ''">
+            and t.ms_id= #{msId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            and t.staff_name= #{staffName}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="facePath !=null and facePath != ''">
+            and t.face_path= #{facePath}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="message !=null and message != ''">
+            and t.message= #{message}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+
+
+    </select>
+
+</mapper>
