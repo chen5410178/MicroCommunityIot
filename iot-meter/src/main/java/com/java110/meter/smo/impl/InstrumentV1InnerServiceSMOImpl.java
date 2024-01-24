@@ -98,7 +98,7 @@ public class InstrumentV1InnerServiceSMOImpl implements IInstrumentV1InnerServic
 
     @Override
     @Java110Transactional
-    public String instrumentResult(MqttResultDto mqttResultDto) {
+    public String instrumentResult(@RequestBody MqttResultDto mqttResultDto) {
         HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
         hardwareManufacturerDto.setHmId(mqttResultDto.getHmId());
         hardwareManufacturerDto.setHmType(HardwareManufacturerDto.HM_TYPE_INSTRUMENT);

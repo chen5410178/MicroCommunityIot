@@ -17,6 +17,7 @@ package com.java110.po.attendanceCheckin;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2024-01-24 14:35:22 mail: 928255095@qq.com
@@ -28,97 +29,122 @@ import java.util.Date;
 public class AttendanceCheckinPo implements Serializable {
 
     private String checkinTime;
-private String checkinId;
-private String machineCode;
-private String openTypeCd;
-private String statusCd = "0";
-private String remark;
-private String machineId;
-private String staffName;
-private String tel;
-private String facePath;
-private String state;
-private String communityId;
-private String staffId;
-public String getCheckinTime() {
+    private String checkinId;
+    private String machineCode;
+    private String openTypeCd;
+    private String statusCd = "0";
+    private String remark;
+    private String machineId;
+    private String staffName;
+    private String tel;
+    private String facePath;
+    private String state;
+    private String communityId;
+    private String staffId;
+
+    public String getCheckinTime() {
         return checkinTime;
     }
-public void setCheckinTime(String checkinTime) {
+
+    public void setCheckinTime(String checkinTime) {
         this.checkinTime = checkinTime;
     }
-public String getCheckinId() {
+
+    public String getCheckinId() {
         return checkinId;
     }
-public void setCheckinId(String checkinId) {
+
+    public void setCheckinId(String checkinId) {
         this.checkinId = checkinId;
     }
-public String getMachineCode() {
+
+    public String getMachineCode() {
         return machineCode;
     }
-public void setMachineCode(String machineCode) {
+
+    public void setMachineCode(String machineCode) {
         this.machineCode = machineCode;
     }
-public String getOpenTypeCd() {
+
+    public String getOpenTypeCd() {
         return openTypeCd;
     }
-public void setOpenTypeCd(String openTypeCd) {
+
+    public void setOpenTypeCd(String openTypeCd) {
         this.openTypeCd = openTypeCd;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getRemark() {
+
+    public String getRemark() {
         return remark;
     }
-public void setRemark(String remark) {
+
+    public void setRemark(String remark) {
         this.remark = remark;
     }
-public String getMachineId() {
+
+    public String getMachineId() {
         return machineId;
     }
-public void setMachineId(String machineId) {
+
+    public void setMachineId(String machineId) {
         this.machineId = machineId;
     }
-public String getStaffName() {
+
+    public String getStaffName() {
         return staffName;
     }
-public void setStaffName(String staffName) {
+
+    public void setStaffName(String staffName) {
         this.staffName = staffName;
     }
-public String getTel() {
+
+    public String getTel() {
         return tel;
     }
-public void setTel(String tel) {
+
+    public void setTel(String tel) {
         this.tel = tel;
     }
-public String getFacePath() {
+
+    public String getFacePath() {
         return facePath;
     }
-public void setFacePath(String facePath) {
+
+    public void setFacePath(String facePath) {
         this.facePath = facePath;
     }
-public String getState() {
+
+    public String getState() {
         return state;
     }
-public void setState(String state) {
+
+    public void setState(String state) {
         this.state = state;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-public String getStaffId() {
+
+    public String getStaffId() {
         return staffId;
     }
-public void setStaffId(String staffId) {
+
+    public void setStaffId(String staffId) {
         this.staffId = staffId;
     }
-
 
 
 }

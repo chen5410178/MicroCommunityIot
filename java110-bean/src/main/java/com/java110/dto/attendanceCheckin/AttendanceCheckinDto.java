@@ -16,6 +16,9 @@ import java.util.Date;
  **/
 public class AttendanceCheckinDto extends PageDto implements Serializable {
 
+    public static final String STATE_SUCCESS = "C";
+    public static final String STATE_FAIL = "F";
+
     private String checkinTime;
     private String checkinId;
     private String machineCode;

@@ -535,7 +535,17 @@ public class AuthenticationFactory {
 
     }
 
+    /**
+     * 生成签名
+     *
+     * @param transactionId
+     * @return
+     */
+    public static String generatorSign(String appId, String transactionId, String requestTime, String param, String securityCode) throws NoAuthorityException {
 
+        String reqInfo = transactionId + requestTime + appId + param + securityCode;
+        return md5(reqInfo);
+    }
 }
 
 

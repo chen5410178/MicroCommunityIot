@@ -2,9 +2,11 @@ package com.java110.accessControl.manufactor;
 
 import com.java110.bean.ResultVo;
 import com.java110.dto.attendanceMachine.AttendanceMachineDto;
+import com.java110.dto.attendanceStaff.AttendanceStaffDto;
 import com.java110.dto.user.UserDto;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.attendanceMachine.AttendanceMachinePo;
+import com.java110.po.attendanceStaff.AttendanceStaffPo;
 
 /**
  * 考勤机厂家实现接口类
@@ -49,28 +51,28 @@ public interface IAttendanceManufactor {
      * 添加用户
      *
      * @param attendanceMachineDto 门禁信息
-     * @param accessControlFacePo  人员信息
+     * @param attendanceStaffPo  人员信息
      * @return
      */
-    boolean addUser(AttendanceMachineDto attendanceMachineDto, AccessControlFacePo accessControlFacePo);
+    boolean addUser(AttendanceMachineDto attendanceMachineDto, AttendanceStaffPo attendanceStaffPo);
 
     /**
      * 修改用户
      *
      * @param attendanceMachineDto 门禁信息
-     * @param accessControlFacePo  人员信息
+     * @param attendanceStaffPo  人员信息
      * @return
      */
-    boolean updateUser(AttendanceMachineDto attendanceMachineDto, AccessControlFacePo accessControlFacePo);
+    boolean updateUser(AttendanceMachineDto attendanceMachineDto, AttendanceStaffPo attendanceStaffPo);
 
     /**
      * 删除用户
      *
      * @param attendanceMachineDto 门禁信息
-     * @param accessControlFacePo  人员信息
+     * @param attendanceStaffPo  人员信息
      * @return
      */
-    boolean deleteUser(AttendanceMachineDto attendanceMachineDto, AccessControlFacePo accessControlFacePo);
+    boolean deleteUser(AttendanceMachineDto attendanceMachineDto, AttendanceStaffPo attendanceStaffPo);
 
 
     /**

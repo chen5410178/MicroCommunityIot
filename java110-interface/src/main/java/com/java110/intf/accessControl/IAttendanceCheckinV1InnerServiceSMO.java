@@ -16,6 +16,7 @@
 package com.java110.intf.accessControl;
 
 import com.java110.dto.attendanceCheckin.AttendanceCheckinDto;
+import com.java110.dto.mqtt.MqttResultDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.attendanceCheckin.AttendanceCheckinPo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -64,4 +65,7 @@ public interface IAttendanceCheckinV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryAttendanceCheckinsCount", method = RequestMethod.POST)
     int queryAttendanceCheckinsCount(@RequestBody AttendanceCheckinDto attendanceCheckinDto);
+
+    @RequestMapping(value = "/attendanceResult", method = RequestMethod.POST)
+    String attendanceResult(@RequestBody MqttResultDto mqttResultDto);
 }

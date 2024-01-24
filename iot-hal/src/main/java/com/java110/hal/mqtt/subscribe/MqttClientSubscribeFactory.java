@@ -3,12 +3,14 @@ package com.java110.hal.mqtt.subscribe;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.attendanceMachine.AttendanceMachineDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.dto.hardwareManufacturerAttr.HardwareManufacturerAttrDto;
 import com.java110.core.factory.MqttFactory;
 import com.java110.dto.instrument.InstrumentDto;
 import com.java110.dto.instrument.InstrumentSensorDto;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
+import com.java110.intf.accessControl.IAttendanceMachineV1InnerServiceSMO;
 import com.java110.intf.meter.IInstrumentV1InnerServiceSMO;
 import com.java110.intf.system.IHardwareManufacturerAttrV1InnerServiceSMO;
 import org.springframework.util.CollectionUtils;
@@ -42,12 +44,45 @@ public class MqttClientSubscribeFactory {
             //todo 订阅道闸topic
             subscribeBarrierHardwareTopic(manufacturerAttrDto);
 
-            //订阅仪表topic
+            //todo 订阅仪表topic
             subscribeInstrumentHardwareTopic(manufacturerAttrDto);
+
+            //todo 订阅考勤topic
+            subscribeAttendanceHardwareTopic(manufacturerAttrDto);
 
         }
 
 
+    }
+
+    private static void subscribeAttendanceHardwareTopic(HardwareManufacturerAttrDto manufacturerAttrDto) {
+        if (!HardwareManufacturerDto.HM_TYPE_ATTENDANCE.equals(manufacturerAttrDto.getHmType())) {
+            return;
+        }
+
+        String topic = manufacturerAttrDto.getValue();
+
+        if (!topic.contains("SN")) {
+            MqttFactory.subscribe(topic.trim());
+            return;
+        }
+
+        IAttendanceMachineV1InnerServiceSMO attendanceMachineV1InnerServiceSMOImpl = ApplicationContextFactory.getBean("attendanceMachineV1InnerServiceSMOImpl", IAttendanceMachineV1InnerServiceSMO.class);
+        if (attendanceMachineV1InnerServiceSMOImpl == null) {
+            attendanceMachineV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(IAttendanceMachineV1InnerServiceSMO.class.getName(), IAttendanceMachineV1InnerServiceSMO.class);
+        }
+
+        AttendanceMachineDto attendanceMachineDto = new AttendanceMachineDto();
+        attendanceMachineDto.setImplBean(manufacturerAttrDto.getHmId());
+        List<AttendanceMachineDto> attendanceMachineDtos = attendanceMachineV1InnerServiceSMOImpl.queryAttendanceMachines(attendanceMachineDto);
+        if (CollectionUtils.isEmpty(attendanceMachineDtos)) {
+            return;
+        }
+
+        for (AttendanceMachineDto tmpAttendanceMachineDto : attendanceMachineDtos) {
+            String newTopic = topic.replace("SN", tmpAttendanceMachineDto.getMachineCode());
+            MqttFactory.subscribe(newTopic);
+        }
     }
 
     private static void subscribeInstrumentHardwareTopic(HardwareManufacturerAttrDto manufacturerAttrDto) {

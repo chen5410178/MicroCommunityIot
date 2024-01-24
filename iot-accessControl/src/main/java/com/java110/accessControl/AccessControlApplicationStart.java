@@ -22,6 +22,7 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableAsync;
 
@@ -58,23 +59,37 @@ public class AccessControlApplicationStart {
     private Java110RestTemplateInterceptor java110RestTemplateInterceptor;
 
     @Bean
+    public OutRestTemplate outRestTemplate() {
+        StringHttpMessageConverter m = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        OutRestTemplate restTemplate = new RestTemplateBuilder().additionalMessageConverters(m).build(OutRestTemplate.class);
+        restTemplate.getInterceptors().add(java110RestTemplateInterceptor);
+
+        //设置超时时间
+        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+        httpRequestFactory.setConnectionRequestTimeout(10000);
+        httpRequestFactory.setConnectTimeout(10000);
+        httpRequestFactory.setReadTimeout(30000);
+        restTemplate.setRequestFactory(httpRequestFactory);
+        return restTemplate;
+    }
+
+    /**
+     * 实例化RestTemplate，通过@LoadBalanced注解开启均衡负载能力.
+     *
+     * @return restTemplate
+     */
+    @Bean
     @LoadBalanced
     public RestTemplate restTemplate() {
         StringHttpMessageConverter m = new StringHttpMessageConverter(Charset.forName("UTF-8"));
         RestTemplate restTemplate = new RestTemplateBuilder().additionalMessageConverters(m).build(RestTemplate.class);
         restTemplate.getInterceptors().add(java110RestTemplateInterceptor);
-        return restTemplate;
-    }
-
-    /**
-     * 实例化RestTemplate
-     *
-     * @return restTemplate
-     */
-    @Bean
-    public OutRestTemplate outRestTemplate() {
-        StringHttpMessageConverter m = new StringHttpMessageConverter(Charset.forName("UTF-8"));
-        OutRestTemplate restTemplate = new RestTemplateBuilder().additionalMessageConverters(m).build(OutRestTemplate.class);
+        //设置超时时间
+        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+        httpRequestFactory.setConnectionRequestTimeout(10000);
+        httpRequestFactory.setConnectTimeout(10000);
+        httpRequestFactory.setReadTimeout(30000);
+        restTemplate.setRequestFactory(httpRequestFactory);
         return restTemplate;
     }
 

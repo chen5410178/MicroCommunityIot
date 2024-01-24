@@ -67,7 +67,8 @@ public interface IInstrumentV1InnerServiceSMO {
     @RequestMapping(value = "/queryInstrumentsCount", method = RequestMethod.POST)
     int queryInstrumentsCount(@RequestBody InstrumentDto instrumentDto);
 
-    String instrumentResult(MqttResultDto mqttResultDto);
+    @RequestMapping(value = "/instrumentResult", method = RequestMethod.POST)
+    String instrumentResult(@RequestBody MqttResultDto mqttResultDto);
 
     @RequestMapping(value = "/queryInstrumentList", method = RequestMethod.POST)
     List<InstrumentDto> queryInstrumentList(InstrumentDto instrumentDto);

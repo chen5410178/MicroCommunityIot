@@ -11,7 +11,7 @@
                 implBean: '',
                 classesId: '',
                 classesName: '',
-
+                hms:[]
             }
         },
         _initMethod: function () {
@@ -22,6 +22,7 @@
                 $that.refreshEditAttendanceMachineInfo();
                 $('#editAttendanceMachineModel').modal('show');
                 vc.copyObject(_params, $that.editAttendanceMachineInfo);
+                $that._listEditHms();
                 $that.editAttendanceMachineInfo.communityId = vc.getCurrentCommunity().communityId;
             });
         },
@@ -124,9 +125,32 @@
                     implBean: '',
                     classesId: '',
                     classesName: '',
-
+                    hms:[]
                 }
-            }
+            },
+            _listEditHms: function(_page, _rows) {
+
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        hmType: '4004'
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/hm.listHardwareManufacturer',
+                    param,
+                    function(json, res) {
+                        let _json = JSON.parse(json);
+                        $that.editAttendanceMachineInfo.hms = _json.data;
+
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
         }
     });
 

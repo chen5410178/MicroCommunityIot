@@ -24,6 +24,9 @@ public class HardwareManufacturerDto extends PageDto implements Serializable {
     // 仪表
     public static final String HM_TYPE_INSTRUMENT = "5005";
 
+    // 考勤机
+    public static final String HM_TYPE_ATTENDANCE = "4004";
+
     private String hmId;
     private String license;
     private String prodUrl;
