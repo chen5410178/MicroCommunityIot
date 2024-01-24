@@ -6,70 +6,91 @@
                     <vc:i18n name="添加" namespace="addAccessControl"></vc:i18n>
                 </h3>
                 <div class="ibox-content">
-                    <div>
-                        <div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"><vc:i18n name='门禁编码' namespace='addAccessControl'></vc:i18n></label>
-                                <div class="col-sm-10">
-                                    <input v-model="addAccessControlInfo.machineCode" type="text" :placeholder="vc.i18n('必填，请填写门禁编码','addAccessControl')" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"><vc:i18n name='门禁名称' namespace='addAccessControl'></vc:i18n></label>
-                                <div class="col-sm-10">
-                                    <input v-model="addAccessControlInfo.machineName" type="text" :placeholder="vc.i18n('必填，请填写门禁名称','addAccessControl')" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"><vc:i18n name='IP' namespace='addAccessControl'></vc:i18n></label>
-                                <div class="col-sm-10">
-                                    <input v-model="addAccessControlInfo.machineIp" type="text" :placeholder="vc.i18n('选填，请填写门禁IP','addAccessControl')" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"><vc:i18n name='Mac' namespace='addAccessControl'></vc:i18n></label>
-                                <div class="col-sm-10">
-                                    <input v-model="addAccessControlInfo.machineMac" type="text" :placeholder="vc.i18n('选填，请填写门禁mac','addAccessControl')" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"><vc:i18n name='方向' namespace='addAccessControl'></vc:i18n></label>
-                                <div class="col-sm-10">
-                                    <select class="custom-select" v-model="addAccessControlInfo.direction">
-                                          <option selected  disabled value="">{{vc.i18n('必填，请选择门禁方向','addAccessControl')}}</option>
-                                          <option  value="3306">{{vc.i18n('进','addAccessControl')}}</option>
-                                          <option  value="3307">{{vc.i18n('出','addAccessControl')}}</option>
-
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"><vc:i18n name='位置' namespace='addAccessControl'></vc:i18n></label>
-                                <div class="col-sm-10">
-                                    <select class="custom-select" v-model="addAccessControlInfo.locationId">
-                                            <option selected  disabled value="">{{vc.i18n('必填，请选择位置','addAccessControl')}}</option>
-                                            <option  :value="item.locationId" v-for="(item,index) in  addAccessControlInfo.locations">{{item.locationName}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='门禁厂家' namespace='addAccessControl'></vc:i18n></span></label>
-                                <div class="col-sm-10">
-                                    <select class="custom-select" v-model="addAccessControlInfo.implBean">
-                                        <option selected  disabled value="">{{vc.i18n('必填，请选择门禁厂家','addAccessControl')}}</option>
-                                        <option  :value="item.hmId" v-for="(item,index) in  addAccessControlInfo.hms">{{item.hmName}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="ibox-content">
-                                <button class="btn btn-primary float-right" type="button" v-on:click="saveAccessControlInfo()"><i class="fa fa-check"></i>&nbsp;
-                                    <span><vc:i18n name="保存"></vc:i18n></span>
-                                </button>
-                                <button type="button" class="btn btn-warning float-right" style="margin-right:20px;" data-dismiss="modal">
-                                    <vc:i18n name="取消"></vc:i18n>
-                                    </button>
-                            </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">
+                            <vc:i18n name='门禁编码' namespace='addAccessControl'></vc:i18n>
+                        </label>
+                        <div class="col-sm-10">
+                            <input v-model="addAccessControlInfo.machineCode" type="text"
+                                :placeholder="vc.i18n('必填，请填写门禁编码','addAccessControl')" class="form-control">
                         </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">
+                            <vc:i18n name='门禁名称' namespace='addAccessControl'></vc:i18n>
+                        </label>
+                        <div class="col-sm-10">
+                            <input v-model="addAccessControlInfo.machineName" type="text"
+                                :placeholder="vc.i18n('必填，请填写门禁名称','addAccessControl')" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">
+                            <vc:i18n name='IP' namespace='addAccessControl'></vc:i18n>
+                        </label>
+                        <div class="col-sm-10">
+                            <input v-model="addAccessControlInfo.machineIp" type="text"
+                                :placeholder="vc.i18n('选填，请填写门禁IP','addAccessControl')" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">
+                            <vc:i18n name='Mac' namespace='addAccessControl'></vc:i18n>
+                        </label>
+                        <div class="col-sm-10">
+                            <input v-model="addAccessControlInfo.machineMac" type="text"
+                                :placeholder="vc.i18n('选填，请填写门禁mac','addAccessControl')" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">
+                            <vc:i18n name='方向' namespace='addAccessControl'></vc:i18n>
+                        </label>
+                        <div class="col-sm-10">
+                            <select class="custom-select" v-model="addAccessControlInfo.direction">
+                                <option selected disabled value="">{{vc.i18n('必填，请选择门禁方向','addAccessControl')}}</option>
+                                <option value="3306">{{vc.i18n('进','addAccessControl')}}</option>
+                                <option value="3307">{{vc.i18n('出','addAccessControl')}}</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">
+                            <vc:i18n name='位置' namespace='addAccessControl'></vc:i18n>
+                        </label>
+                        <div class="col-sm-10">
+                            <select class="custom-select" v-model="addAccessControlInfo.locationId">
+                                <option selected disabled value="">{{vc.i18n('必填，请选择位置','addAccessControl')}}</option>
+                                <option :value="item.locationId"
+                                    v-for="(item,index) in  addAccessControlInfo.locations">{{item.locationName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><span>
+                                <vc:i18n name='门禁厂家' namespace='addAccessControl'></vc:i18n>
+                            </span></label>
+                        <div class="col-sm-10">
+                            <select class="custom-select" v-model="addAccessControlInfo.implBean">
+                                <option selected disabled value="">{{vc.i18n('必填，请选择门禁厂家','addAccessControl')}}</option>
+                                <option :value="item.hmId" v-for="(item,index) in  addAccessControlInfo.hms">
+                                    {{item.hmName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <button class="btn btn-primary float-right" type="button"
+                            v-on:click="saveAccessControlInfo()"><i class="fa fa-check"></i>&nbsp;
+                            <span>
+                                <vc:i18n name="保存"></vc:i18n>
+                            </span>
+                        </button>
+                        <button type="button" class="btn btn-warning float-right" style="margin-right:20px;"
+                            data-dismiss="modal">
+                            <vc:i18n name="取消"></vc:i18n>
+                        </button>
                     </div>
                 </div>
             </div>

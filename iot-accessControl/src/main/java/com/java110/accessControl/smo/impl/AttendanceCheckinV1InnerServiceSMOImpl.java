@@ -17,10 +17,16 @@ package com.java110.accessControl.smo.impl;
 
 
 import com.java110.accessControl.dao.IAttendanceCheckinV1ServiceDao;
+import com.java110.accessControl.manufactor.IAttendanceManufactor;
 import com.java110.bean.dto.PageDto;
+import com.java110.core.factory.ApplicationContextFactory;
+import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
+import com.java110.dto.mqtt.MqttResultDto;
 import com.java110.intf.accessControl.IAttendanceCheckinV1InnerServiceSMO;
 import com.java110.dto.attendanceCheckin.AttendanceCheckinDto;
+import com.java110.intf.system.IHardwareManufacturerV1InnerServiceSMO;
 import com.java110.po.attendanceCheckin.AttendanceCheckinPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +48,9 @@ public class AttendanceCheckinV1InnerServiceSMOImpl implements IAttendanceChecki
 
     @Autowired
     private IAttendanceCheckinV1ServiceDao attendanceCheckinV1ServiceDaoImpl;
+
+    @Autowired
+    private IHardwareManufacturerV1InnerServiceSMO hardwareManufacturerV1InnerServiceSMOImpl;
 
 
     @Override
@@ -83,6 +92,19 @@ public class AttendanceCheckinV1InnerServiceSMOImpl implements IAttendanceChecki
     @Override
     public int queryAttendanceCheckinsCount(@RequestBody AttendanceCheckinDto attendanceCheckinDto) {
         return attendanceCheckinV1ServiceDaoImpl.queryAttendanceCheckinsCount(BeanConvertUtil.beanCovertMap(attendanceCheckinDto));
+    }
+
+    @Override
+    public String attendanceResult(@RequestBody MqttResultDto mqttResultDto) {
+
+        HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
+        hardwareManufacturerDto.setHmId(mqttResultDto.getHmId());
+        hardwareManufacturerDto.setHmType(HardwareManufacturerDto.HM_TYPE_ATTENDANCE);
+        List<HardwareManufacturerDto> hardwareManufacturerDtos = hardwareManufacturerV1InnerServiceSMOImpl.queryHardwareManufacturers(hardwareManufacturerDto);
+        Assert.listOnlyOne(hardwareManufacturerDtos, "未找到仪表接口协议");
+        IAttendanceManufactor attendanceManufactor = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IAttendanceManufactor.class);
+
+        return attendanceManufactor.attendanceResult(mqttResultDto.getTopic(), mqttResultDto.getData());
     }
 
 }

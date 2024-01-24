@@ -9,6 +9,7 @@ import com.java110.dto.mqtt.MqttMsgDto;
 import com.java110.dto.mqtt.MqttResultDto;
 import com.java110.hal.mqtt.queue.MqttQueue;
 import com.java110.intf.accessControl.IAccessControlResultV1InnerServiceSMO;
+import com.java110.intf.accessControl.IAttendanceCheckinV1InnerServiceSMO;
 import com.java110.intf.barrier.IMqttNotifyBarrierV1InnerServiceSMO;
 import com.java110.intf.meter.IInstrumentV1InnerServiceSMO;
 import com.java110.intf.system.IHardwareManufacturerAttrV1InnerServiceSMO;
@@ -73,7 +74,11 @@ public class CustomMqttMsgThread implements Runnable {
             //todo 通知道闸
             notifyBarrierMsg(manufacturerAttrDto, mqttMsgDto);
 
+            //todo 通知仪表
             notifyInstrumentMsg(manufacturerAttrDto, mqttMsgDto);
+
+            //todo 通知考勤
+            notifyAttendanceMsg(manufacturerAttrDto, mqttMsgDto);
 
 
 //            if (ManufacturerDto.HM_TYPE_ACCESS_CONTROL.equals(manufacturerAttrDto.getHmType())) {
@@ -84,6 +89,30 @@ public class CustomMqttMsgThread implements Runnable {
 //                AttendanceProcessFactory.getAttendanceProcessImpl(manufacturerAttrDto.getHmId()).mqttMessageArrived(taskId, mqttMsgDto.getTopic(), mqttMsgDto.getMsg());
 //            }
         }
+    }
+
+    private void notifyAttendanceMsg(HardwareManufacturerAttrDto manufacturerAttrDto, MqttMsgDto mqttMsgDto) {
+
+        if (!HardwareManufacturerDto.HM_TYPE_ATTENDANCE.equals(manufacturerAttrDto.getHmType())) {
+            return;
+        }
+
+        IAttendanceCheckinV1InnerServiceSMO attendanceCheckinV1InnerServiceSMO = ApplicationContextFactory.getBean("attendanceCheckinV1InnerServiceSMOImpl", IAttendanceCheckinV1InnerServiceSMO.class);
+        if (attendanceCheckinV1InnerServiceSMO == null) {
+            attendanceCheckinV1InnerServiceSMO = ApplicationContextFactory.getBean(IAttendanceCheckinV1InnerServiceSMO.class.getName(), IAttendanceCheckinV1InnerServiceSMO.class);
+        }
+
+        if (!manufacturerAttrDto.getValue().contains("SN") && manufacturerAttrDto.getValue().equals(mqttMsgDto.getTopic())) {
+            attendanceCheckinV1InnerServiceSMO.attendanceResult(new MqttResultDto(manufacturerAttrDto.getHmId(), mqttMsgDto.getTopic(), mqttMsgDto.getMsg()));
+            return;
+        }
+
+        String[] values = manufacturerAttrDto.getValue().split("SN");
+
+        if (values.length == 1 && mqttMsgDto.getTopic().contains(values[0])) {
+            attendanceCheckinV1InnerServiceSMO.attendanceResult(new MqttResultDto(manufacturerAttrDto.getHmId(), mqttMsgDto.getTopic(), mqttMsgDto.getMsg()));
+        }
+
     }
 
     private void notifyInstrumentMsg(HardwareManufacturerAttrDto manufacturerAttrDto, MqttMsgDto mqttMsgDto) {
