@@ -1,6 +1,7 @@
 package com.java110.openapi.cmd.sso;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cache.CommonCache;
 import com.java110.core.cmd.Cmd;
@@ -86,5 +87,10 @@ public class GetSsoTokenCmd extends Cmd {
         String token = GenerateCodeFactory.getUUID();
 
         CommonCache.setValue("sso_" + token, JSONObject.toJSONString(loginStoreStaffDto), CommonCache.SSO_TOKEN_EXPIRE_TIME);
+
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("token",token);
+
+        context.setResponseEntity(ResultVo.createResponseEntity(paramOut));
     }
 }
