@@ -40,6 +40,7 @@ public class ApiServiceImpl implements IApiService {
 
     private static final String LOGIN_URL = "login.pcUserLogin";
     private static final String ADMIN_LOGIN_PROPERTY_URL = "login.adminLoginProperty";
+    private static final String SSO_LOGIN_PROPERTY_URL = "login.ssoTokenLogin";
 
 
     private static final String LOGOUT_URL = "login.userLogout";
@@ -107,7 +108,7 @@ public class ApiServiceImpl implements IApiService {
     }
 
     private void wirteToken(String service, String body, HttpServletRequest request) {
-        if (!LOGIN_URL.equals(service) && !ADMIN_LOGIN_PROPERTY_URL.equals(service)) {
+        if (!LOGIN_URL.equals(service) && !ADMIN_LOGIN_PROPERTY_URL.equals(service) && !SSO_LOGIN_PROPERTY_URL.equals(service)) {
             return;
         }
 

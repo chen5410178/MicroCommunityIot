@@ -19,6 +19,9 @@ public class CommonCache extends BaseCache {
     public final static int PAY_DEFAULT_EXPIRE_TIME = 2 * 60 * 60;
 
 
+    //todo sso token 失效时间
+    public final static int SSO_TOKEN_EXPIRE_TIME = 30 * 60;
+
 
     /**
      * 获取值(用户ID)

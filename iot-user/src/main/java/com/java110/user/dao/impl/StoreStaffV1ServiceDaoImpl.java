@@ -18,6 +18,7 @@ package com.java110.user.dao.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.db.dao.BaseServiceDao;
 import com.java110.core.exception.DAOException;
+import com.java110.core.utils.ListUtil;
 import com.java110.user.dao.IStoreStaffV1ServiceDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,9 +70,9 @@ public class StoreStaffV1ServiceDaoImpl extends BaseServiceDao implements IStore
     public List<Map> getStoreStaffInfo(Map info) throws DAOException {
         logger.debug("查询 getStoreStaffInfo 入参 info : {}",info);
 
-        List<Map> businessStoreStaffInfos = sqlSessionTemplate.selectList("storeStaffV1ServiceDaoImpl.getStoreStaffInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("storeStaffV1ServiceDaoImpl.getStoreStaffInfo",info);
 
-        return businessStoreStaffInfos;
+        return infos;
     }
 
 
@@ -98,12 +99,12 @@ public class StoreStaffV1ServiceDaoImpl extends BaseServiceDao implements IStore
     public int queryStoreStaffsCount(Map info) {
         logger.debug("查询 queryStoreStaffsCount 入参 info : {}",info);
 
-        List<Map> businessStoreStaffInfos = sqlSessionTemplate.selectList("storeStaffV1ServiceDaoImpl.queryStoreStaffsCount", info);
-        if (businessStoreStaffInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("storeStaffV1ServiceDaoImpl.queryStoreStaffsCount", info);
+        if (ListUtil.isNull(infos)) {
             return 0;
         }
 
-        return Integer.parseInt(businessStoreStaffInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
 

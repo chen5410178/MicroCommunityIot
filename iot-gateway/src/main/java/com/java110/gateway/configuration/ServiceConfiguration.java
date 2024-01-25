@@ -15,6 +15,8 @@ public class ServiceConfiguration {
 
     static {
         exclusions.append("/iot/api/login.pcUserLogin,");
+        exclusions.append("/iot/api/login.ssoTokenLogin,");
+
         exclusions.append("/iot/api/login.getSysInfo,");
         exclusions.append("/iot/api/login.appUserRegister,");
         exclusions.append("/iot/api/login.appUserLogin,");
