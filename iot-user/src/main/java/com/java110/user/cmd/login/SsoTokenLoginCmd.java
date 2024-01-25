@@ -13,6 +13,7 @@ import com.java110.core.factory.AuthenticationFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.store.StoreDto;
 import com.java110.dto.storeStaff.StoreStaffDto;
@@ -60,15 +61,15 @@ public class SsoTokenLoginCmd extends Cmd {
 
 
         JSONObject paramJson = JSONObject.parseObject(paramIn);
-        String userId = paramJson.getString("userId");
+        String staffId = paramJson.getString("staffId");
         String storeId = paramJson.getString("storeId");
 
-        if(StringUtil.isEmpty(userId)){
+        if(StringUtil.isEmpty(staffId)){
             throw new CmdException("token 不存在");
         }
 
         UserDto userDto = new UserDto();
-        userDto.setUserId(userId);
+        userDto.setUserId(staffId);
         List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
 
         Assert.listOnlyOne(userDtos,"token 错误");
@@ -79,7 +80,7 @@ public class SsoTokenLoginCmd extends Cmd {
         storeUserDto.setStaffId(userDtos.get(0).getUserId());
         List<StoreStaffDto> storeUserDtos = storeStaffV1InnerServiceSMOImpl.queryStoreStaffs(storeUserDto);
 
-        if (storeUserDtos != null && storeUserDtos.size() > 0) {
+        if (!ListUtil.isNull(storeUserDtos)) {
             String state = storeUserDtos.get(0).getState();
             if (!StoreDto.STATE_NORMAL.equals(state)) {
                 responseEntity = new ResponseEntity<String>("当前商户限制登录，请联系管理员", HttpStatus.UNAUTHORIZED);
