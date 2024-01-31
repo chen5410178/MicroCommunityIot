@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="liftRideLogV1ServiceDaoImpl">
+
+
+    <!-- 保存电梯乘坐记录信息 add by wuxw 2018-07-03 -->
+    <insert id="saveLiftRideLogInfo" parameterType="Map">
+        insert into lift_ride_log(
+        ride_type,ac_machine_code,machine_name,ac_machine_name,room_name,layer,ac_machine_id,machine_id,name,log_id,tel,face_path,person_type,community_id
+        ) values (
+        #{rideType},#{acMachineCode},#{machineName},#{acMachineName},#{roomName},#{layer},#{acMachineId},#{machineId},#{name},#{logId},#{tel},#{facePath},#{personType},#{communityId}
+        )
+    </insert>
+
+
+    <!-- 查询电梯乘坐记录信息 add by wuxw 2018-07-03 -->
+    <select id="getLiftRideLogInfo" parameterType="Map" resultType="Map">
+        select t.ride_type,t.ride_type rideType,t.status_cd,t.status_cd statusCd,t.ac_machine_code,t.ac_machine_code
+        acMachineCode,t.machine_name,t.machine_name machineName,t.ac_machine_name,t.ac_machine_name
+        acMachineName,t.room_name,t.room_name roomName,t.layer,t.ac_machine_id,t.ac_machine_id
+        acMachineId,t.machine_id,t.machine_id machineId,t.name,t.log_id,t.log_id logId,t.tel,t.face_path,t.face_path
+        facePath,t.person_type,t.person_type personType,t.community_id,t.community_id communityId
+        from lift_ride_log t
+        where 1 =1
+        <if test="rideType !=null and rideType != ''">
+            and t.ride_type= #{rideType}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="acMachineCode !=null and acMachineCode != ''">
+            and t.ac_machine_code= #{acMachineCode}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="acMachineName !=null and acMachineName != ''">
+            and t.ac_machine_name= #{acMachineName}
+        </if>
+        <if test="roomName !=null and roomName != ''">
+            and t.room_name= #{roomName}
+        </if>
+        <if test="layer !=null and layer != ''">
+            and t.layer= #{layer}
+        </if>
+        <if test="acMachineId !=null and acMachineId != ''">
+            and t.ac_machine_id= #{acMachineId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="logId !=null and logId != ''">
+            and t.log_id= #{logId}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="facePath !=null and facePath != ''">
+            and t.face_path= #{facePath}
+        </if>
+        <if test="personType !=null and personType != ''">
+            and t.person_type= #{personType}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改电梯乘坐记录信息 add by wuxw 2018-07-03 -->
+    <update id="updateLiftRideLogInfo" parameterType="Map">
+        update lift_ride_log t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="rideType !=null and rideType != ''">
+            , t.ride_type= #{rideType}
+        </if>
+        <if test="acMachineCode !=null and acMachineCode != ''">
+            , t.ac_machine_code= #{acMachineCode}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            , t.machine_name= #{machineName}
+        </if>
+        <if test="acMachineName !=null and acMachineName != ''">
+            , t.ac_machine_name= #{acMachineName}
+        </if>
+        <if test="roomName !=null and roomName != ''">
+            , t.room_name= #{roomName}
+        </if>
+        <if test="layer !=null and layer != ''">
+            , t.layer= #{layer}
+        </if>
+        <if test="acMachineId !=null and acMachineId != ''">
+            , t.ac_machine_id= #{acMachineId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="name !=null and name != ''">
+            , t.name= #{name}
+        </if>
+        <if test="tel !=null and tel != ''">
+            , t.tel= #{tel}
+        </if>
+        <if test="facePath !=null and facePath != ''">
+            , t.face_path= #{facePath}
+        </if>
+        <if test="personType !=null and personType != ''">
+            , t.person_type= #{personType}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="logId !=null and logId != ''">
+            and t.log_id= #{logId}
+        </if>
+
+    </update>
+
+    <!-- 查询电梯乘坐记录数量 add by wuxw 2018-07-03 -->
+    <select id="queryLiftRideLogsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from lift_ride_log t
+        where 1 =1
+        <if test="rideType !=null and rideType != ''">
+            and t.ride_type= #{rideType}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="acMachineCode !=null and acMachineCode != ''">
+            and t.ac_machine_code= #{acMachineCode}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="acMachineName !=null and acMachineName != ''">
+            and t.ac_machine_name= #{acMachineName}
+        </if>
+        <if test="roomName !=null and roomName != ''">
+            and t.room_name= #{roomName}
+        </if>
+        <if test="layer !=null and layer != ''">
+            and t.layer= #{layer}
+        </if>
+        <if test="acMachineId !=null and acMachineId != ''">
+            and t.ac_machine_id= #{acMachineId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="name !=null and name != ''">
+            and t.name= #{name}
+        </if>
+        <if test="logId !=null and logId != ''">
+            and t.log_id= #{logId}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="facePath !=null and facePath != ''">
+            and t.face_path= #{facePath}
+        </if>
+        <if test="personType !=null and personType != ''">
+            and t.person_type= #{personType}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+
+    </select>
+
+</mapper>
