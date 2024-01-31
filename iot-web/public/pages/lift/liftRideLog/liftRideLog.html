@@ -14,61 +14,67 @@
             </div>
         </div>
         <div class="col-md-11">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="ibox ">
-                        <div class="ibox-title">
-                            <h5>
-                                <vc:i18n name="查询条件"></vc:i18n>
-                            </h5>
-                            <div class="ibox-tools" style="top:10px;">
 
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择门禁设备名称','liftRideLog')"
+                                    v-model="liftRideLogInfo.conditions.acMachineName" class=" form-control">
                             </div>
                         </div>
-                        <div class="ibox-content">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="form-group">
-                                        <input type="text" :placeholder="vc.i18n('请选择门禁设备名称','liftRideLog')"
-                                            v-model="liftRideLogInfo.conditions.acMachineName" class=" form-control">
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="form-group">
-                                        <input type="text" :placeholder="vc.i18n('请选择门禁设备编号','liftRideLog')"
-                                            v-model="liftRideLogInfo.conditions.acMachineCode" class=" form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-2">
-                                    <div class="form-group">
-                                        <input type="text" :placeholder="vc.i18n('请选择乘坐类型','liftRideLog')"
-                                            v-model="liftRideLogInfo.conditions.rideType" class=" form-control">
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="form-group">
-                                        <input type="text" :placeholder="vc.i18n('请选择用户名称','liftRideLog')"
-                                            v-model="liftRideLogInfo.conditions.name" class=" form-control">
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="form-group">
-                                        <input type="text" :placeholder="vc.i18n('请选择人员类型','liftRideLog')"
-                                            v-model="liftRideLogInfo.conditions.personType" class=" form-control">
-                                    </div>
-                                </div>
-                                <div class="col-sm-1">
-                                    <button type="button" class="btn btn-primary btn-sm"
-                                        v-on:click="_queryLiftRideLogMethod()">
-                                        <vc:i18n name="查询"></vc:i18n>
-                                    </button>
-                                </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择门禁设备编号','liftRideLog')"
+                                    v-model="liftRideLogInfo.conditions.acMachineCode" class=" form-control">
                             </div>
-
-
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="liftRideLogInfo.conditions.rideType">
+                                    <option selected  value="">
+                                        {{vc.i18n('请选择乘坐类型','liftMachineManage')}}
+                                    </option>
+                                    <option value="1001">人脸</option>
+                                    <option value="2002">刷卡</option>
+                                    <option value="3003">二维码</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择用户名称','liftRideLog')"
+                                    v-model="liftRideLogInfo.conditions.name" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="liftRideLogInfo.conditions.personType">
+                                    <option selected  value="">
+                                        {{vc.i18n('请选择人员类型','liftMachineManage')}}
+                                    </option>
+                                    <option value="100">访客</option>
+                                    <option value="200">员工</option>
+                                    <option value="300">业主</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryLiftRideLogMethod()">
+                                <vc:i18n name="查询"></vc:i18n>
+                            </button>
                         </div>
                     </div>
+
                 </div>
             </div>
             <div class="row">
@@ -119,11 +125,9 @@
                                         <th class="text-center">
                                             <vc:i18n name='楼层' namespace='liftRideLog'></vc:i18n>
                                         </th>
-
                                         <th class="text-center">
-                                            <vc:i18n name='操作'></vc:i18n>
+                                            <vc:i18n name='乘坐时间' namespace='liftRideLog'></vc:i18n>
                                         </th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -145,6 +149,7 @@
                                         <td class="text-center">{{liftRideLog.personType}}</td>
                                         <td class="text-center">{{liftRideLog.roomName}}</td>
                                         <td class="text-center">{{liftRideLog.layer}}</td>
+                                        <td class="text-center">{{liftRideLog.createTime}}</td>
                                     </tr>
                                 </tbody>
                             </table>

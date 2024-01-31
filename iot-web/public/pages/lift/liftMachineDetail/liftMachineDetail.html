@@ -4,169 +4,168 @@
             电梯信息
         </div>
         <div>
-            <button type="button" class="btn btn-white btn-sm" style="margin-left:10px"  v-on:click="vc.goBack()">
+            <button type="button" class="btn btn-white btn-sm" style="margin-left:10px" v-on:click="vc.goBack()">
                 返回
             </button>
         </div>
     </div>
     <!-- 业主信息 -->
     <div class="margin-top">
-        <div class="row" >
-            <div class="col-sm-12">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                <vc:i18n name="电梯ID：" namespace="machineDetailInfo"></vc:i18n>
-                            </label>
-                            <label class="">{{machineDetailInfo.machineId}}</label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                <vc:i18n name="电梯名称：" namespace="machineDetailInfo"></vc:i18n>
-                            </label>
-                            <label class="">{{machineDetailInfo.machineName}}</label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                <vc:i18n name="电梯编号：" namespace="machineDetailInfo"></vc:i18n>
-                            </label>
-                            <label class="">{{machineDetailInfo.machineCode}}</label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                <vc:i18n name="厂家名称:" namespace="machineDetailInfo"></vc:i18n>
-                            </label>
-                            <label class="">{{machineDetailInfo.factoryName}}</label>
-                        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-form-label">
+                        <vc:i18n name="电梯ID：" namespace="machineDetailInfo"></vc:i18n>
+                    </label>
+                    <label class="">{{machineDetailInfo.machineId}}</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-form-label">
+                        <vc:i18n name="电梯名称：" namespace="machineDetailInfo"></vc:i18n>
+                    </label>
+                    <label class="">{{machineDetailInfo.machineName}}</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-form-label">
+                        <vc:i18n name="电梯编号：" namespace="machineDetailInfo"></vc:i18n>
+                    </label>
+                    <label class="">{{machineDetailInfo.machineCode}}</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-form-label">
+                        <vc:i18n name="厂家名称:" namespace="machineDetailInfo"></vc:i18n>
+                    </label>
+                    <label class="">{{machineDetailInfo.factoryName}}</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-form-label">
+                        <vc:i18n name="在线状态:" namespace="machineDetailInfo"></vc:i18n>
+                    </label>
+                    <label class="">{{machineDetailInfo.isOnlineStateName}}</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-form-label">
+                        <vc:i18n name="电梯状态:" namespace="machineDetailInfo"></vc:i18n>
+                    </label>
+                    <label class="">{{machineDetailInfo.stateName}}</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-form-label">
+                        <vc:i18n name="心跳时间" namespace="machineDetailInfo"></vc:i18n>
+                    </label>
+                    <label class=""> {{machineDetailInfo.heartbeatTime}}</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-form-label">
+                        <vc:i18n name="添加时间" namespace="machineDetailInfo"></vc:i18n>
+                    </label>
+                    <label class=""> {{machineDetailInfo.createTime}}</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-form-label">
+                        <vc:i18n name="品牌:" namespace="machineDetailInfo"></vc:i18n>
+                    </label>
+                    <label class="">{{machineDetailInfo.brand}}</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-form-label">
+                        <vc:i18n name="位置:" namespace="machineDetailInfo"></vc:i18n>
+                    </label>
+                    <label class="">{{machineDetailInfo.locationName}}</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-form-label">
+                        <vc:i18n name="登记单位" namespace="machineDetailInfo"></vc:i18n>
+                    </label>
+                    <label class=""> {{machineDetailInfo.registrationUnit}}</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-form-label">
+                        <vc:i18n name="使用单位" namespace="machineDetailInfo"></vc:i18n>
+                    </label>
+                    <label class=""> {{machineDetailInfo.useUnit}}</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-form-label">
+                        <vc:i18n name="当前楼层:" namespace="machineDetailInfo"></vc:i18n>
+                    </label>
+                    <label class="">{{machineDetailInfo.curLayer}}层</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-form-label">
+                        <vc:i18n name="维保单位:" namespace="machineDetailInfo"></vc:i18n>
+                    </label>
+                    <label class="">{{machineDetailInfo.maintenanceUnit}}</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-form-label">
+                        <vc:i18n name="救援电话:" namespace="machineDetailInfo"></vc:i18n>
+                    </label>
+                    <label class="">{{machineDetailInfo.rescueLink}}</label>
+                </div>
+            </div>
+        </div>
+        <div v-for="(item,index) in machineDetailInfo.liftMachineParamDtoList">
+            <div class="row" v-if="index % 4 == 0">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-form-label">{{item.specName}}：</label>
+                        <label class="">{{item.value}}</label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                <vc:i18n name="在线状态:" namespace="machineDetailInfo"></vc:i18n>
-                            </label>
-                            <label class="">{{machineDetailInfo.isOnlineStateName}}</label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                <vc:i18n name="电梯状态:" namespace="machineDetailInfo"></vc:i18n>
-                            </label>
-                            <label class="">{{machineDetailInfo.stateName}}</label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                <vc:i18n name="心跳时间" namespace="machineDetailInfo"></vc:i18n>
-                            </label>
-                            <label class=""> {{machineDetailInfo.heartbeatTime}}</label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                <vc:i18n name="添加时间" namespace="machineDetailInfo"></vc:i18n>
-                            </label>
-                            <label class=""> {{machineDetailInfo.createTime}}</label>
-                        </div>
+                <div class="col-sm-3" v-if="index < machineDetailInfo.liftMachineParamDtoList.length-1">
+                    <div class="form-group">
+                        <label
+                            class="col-form-label">{{machineDetailInfo.liftMachineParamDtoList[index+1].specName}}：</label>
+                        <label class="">{{machineDetailInfo.liftMachineParamDtoList[index+1].value}}</label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                <vc:i18n name="品牌:" namespace="machineDetailInfo"></vc:i18n>
-                            </label>
-                            <label class="">{{machineDetailInfo.brand}}</label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                <vc:i18n name="位置:" namespace="machineDetailInfo"></vc:i18n>
-                            </label>
-                            <label class="">{{machineDetailInfo.locationName}}</label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                <vc:i18n name="登记单位" namespace="machineDetailInfo"></vc:i18n>
-                            </label>
-                            <label class=""> {{machineDetailInfo.registrationUnit}}</label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                <vc:i18n name="使用单位" namespace="machineDetailInfo"></vc:i18n>
-                            </label>
-                            <label class=""> {{machineDetailInfo.useUnit}}</label>
-                        </div>
+                <div class="col-sm-3" v-if="index < machineDetailInfo.liftMachineParamDtoList.length-2">
+                    <div class="form-group">
+                        <label
+                            class="col-form-label">{{machineDetailInfo.liftMachineParamDtoList[index+2].specName}}：</label>
+                        <label class="">{{machineDetailInfo.liftMachineParamDtoList[index+2].value}}</label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                <vc:i18n name="当前楼层:" namespace="machineDetailInfo"></vc:i18n>
-                            </label>
-                            <label class="">{{machineDetailInfo.curLayer}}层</label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                <vc:i18n name="维保单位:" namespace="machineDetailInfo"></vc:i18n>
-                            </label>
-                            <label class="">{{machineDetailInfo.maintenanceUnit}}</label>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label class="col-form-label">
-                                <vc:i18n name="救援电话:" namespace="machineDetailInfo"></vc:i18n>
-                            </label>
-                            <label class="">{{machineDetailInfo.rescueLink}}</label>
-                        </div>
-                    </div>
-                </div>
-                <div v-for="(item,index) in machineDetailInfo.liftMachineParamDtoList">
-                    <div class="row" v-if="index % 4 == 0">
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label class="col-form-label">{{item.specName}}：</label>
-                                <label class="">{{item.value}}</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-3" v-if="index < machineDetailInfo.liftMachineParamDtoList.length-1">
-                            <div class="form-group">
-                                <label class="col-form-label">{{machineDetailInfo.liftMachineParamDtoList[index+1].specName}}：</label>
-                                <label class="">{{machineDetailInfo.liftMachineParamDtoList[index+1].value}}</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-3" v-if="index < machineDetailInfo.liftMachineParamDtoList.length-2">
-                            <div class="form-group">
-                                <label class="col-form-label">{{machineDetailInfo.liftMachineParamDtoList[index+2].specName}}：</label>
-                                <label class="">{{machineDetailInfo.liftMachineParamDtoList[index+2].value}}</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-3" v-if="index < machineDetailInfo.liftMachineParamDtoList.length-3">
-                            <div class="form-group">
-                                <label class="col-form-label">{{machineDetailInfo.liftMachineParamDtoList[index+3].specName}}：</label>
-                                <label class="">{{machineDetailInfo.liftMachineParamDtoList[index+3].value}}</label>
-                            </div>
-                        </div>
+                <div class="col-sm-3" v-if="index < machineDetailInfo.liftMachineParamDtoList.length-3">
+                    <div class="form-group">
+                        <label
+                            class="col-form-label">{{machineDetailInfo.liftMachineParamDtoList[index+3].specName}}：</label>
+                        <label class="">{{machineDetailInfo.liftMachineParamDtoList[index+3].value}}</label>
                     </div>
                 </div>
             </div>
@@ -176,17 +175,35 @@
     <div class="margin-top-sm">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailLiftReservation'}" v-on:click="changeTab('machineDetailLiftReservation')">
+                <a class="nav-link"
+                    v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailLiftAc'}"
+                    v-on:click="changeTab('machineDetailLiftAc')">
+                    <vc:i18n name="电梯门禁" namespace="machineDetail"></vc:i18n>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                    v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailLiftReservation'}"
+                    v-on:click="changeTab('machineDetailLiftReservation')">
                     <vc:i18n name="预约记录" namespace="machineDetail"></vc:i18n>
                 </a>
             </li>
-
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailLiftLog'}" v-on:click="changeTab('machineDetailLiftLog')">
+                <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailLiftLog'}"
+                    v-on:click="changeTab('machineDetailLiftLog')">
                     <vc:i18n name="电梯日志" namespace="machineDetail"></vc:i18n>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailRideLog'}"
+                    v-on:click="changeTab('machineDetailRideLog')">
+                    <vc:i18n name="乘坐记录" namespace="machineDetail"></vc:i18n>
+                </a>
+            </li>
         </ul>
+    </div>
+    <div v-if="machineDetailInfo._currentTab == 'machineDetailLiftAc'">
+        <vc:create path="property/machineDetailLiftAc"></vc:create>
     </div>
     <div v-if="machineDetailInfo._currentTab == 'machineDetailLiftReservation'">
         <vc:create path="property/machineDetailLiftReservation"></vc:create>
@@ -194,5 +211,9 @@
     <div v-if="machineDetailInfo._currentTab == 'machineDetailLiftLog'">
         <vc:create path="property/machineDetailLiftLog"></vc:create>
     </div>
+    <div v-if="machineDetailInfo._currentTab == 'machineDetailRideLog'">
+        <vc:create path="property/machineDetailRideLog"></vc:create>
+    </div>
+    
     <vc:create path="lift/showLiftMachineLog"></vc:create>
 </div>

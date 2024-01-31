@@ -22,7 +22,7 @@
                 createTime: "",
                 liftMachineParamDtoList: [],
                 url: '',
-                _currentTab: 'machineDetailLiftReservation',
+                _currentTab: 'machineDetailLiftAc',
                 needBack: false,
             }
         },
