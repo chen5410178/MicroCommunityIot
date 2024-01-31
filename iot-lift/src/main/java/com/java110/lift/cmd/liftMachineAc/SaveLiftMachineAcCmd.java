@@ -26,11 +26,15 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.intf.lift.ILiftMachineAcV1InnerServiceSMO;
 import com.java110.po.liftMachineAc.LiftMachineAcPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -52,22 +56,30 @@ public class SaveLiftMachineAcCmd extends Cmd {
     @Autowired
     private ILiftMachineAcV1InnerServiceSMO liftMachineAcV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IAccessControlV1InnerServiceSMO accessControlV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineId", "请求报文中未包含machineId");
         Assert.hasKeyAndValue(reqJson, "acMachineId", "请求报文中未包含acMachineId");
-        Assert.hasKeyAndValue(reqJson, "acMachineName", "请求报文中未包含acMachineName");
-        Assert.hasKeyAndValue(reqJson, "acMachineCode", "请求报文中未包含acMachineCode");
         Assert.hasKeyAndValue(reqJson, "acType", "请求报文中未包含acType");
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
+
     }
 
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
+        AccessControlDto accessControlDto = new AccessControlDto();
+        accessControlDto.setMachineId(reqJson.getString("acMachineId"));
+        List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+        Assert.listOnlyOne(accessControlDtos, "门禁不存在");
 
         LiftMachineAcPo liftMachineAcPo = BeanConvertUtil.covertBean(reqJson, LiftMachineAcPo.class);
         liftMachineAcPo.setLmaId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        liftMachineAcPo.setAcMachineCode(accessControlDtos.get(0).getMachineCode());
+        liftMachineAcPo.setAcMachineName(accessControlDtos.get(0).getMachineName());
         int flag = liftMachineAcV1InnerServiceSMOImpl.saveLiftMachineAc(liftMachineAcPo);
 
         if (flag < 1) {

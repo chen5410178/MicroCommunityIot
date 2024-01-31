@@ -23,6 +23,9 @@ public class LiftMachineAcDto extends PageDto implements Serializable {
     private String acMachineName;
     private String lmaId;
 
+    private String machineCode;
+    private String machineName;
+
 
     private Date createTime;
 
@@ -100,5 +103,21 @@ public class LiftMachineAcDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getMachineCode() {
+        return machineCode;
+    }
+
+    public void setMachineCode(String machineCode) {
+        this.machineCode = machineCode;
+    }
+
+    public String getMachineName() {
+        return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
     }
 }

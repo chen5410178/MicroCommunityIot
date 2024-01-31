@@ -19,8 +19,10 @@
     <select id="getLiftMachineAcInfo" parameterType="Map" resultType="Map">
         select t.ac_machine_id,t.ac_machine_id acMachineId,t.machine_id,t.machine_id machineId,t.status_cd,t.status_cd
         statusCd,t.ac_machine_code,t.ac_machine_code acMachineCode,t.community_id,t.community_id
-        communityId,t.ac_type,t.ac_type acType,t.ac_machine_name,t.ac_machine_name acMachineName,t.lma_id,t.lma_id lmaId
+        communityId,t.ac_type,t.ac_type acType,t.ac_machine_name,t.ac_machine_name acMachineName,t.lma_id,t.lma_id
+        lmaId,t.create_time createTime,lm.machine_code machineCode,lm.machine_name machineName
         from lift_machine_ac t
+        left join lift_machine lm on t.machine_id = lm.machine_id and t.community_id = lm.community_id
         where 1 =1
         <if test="acMachineId !=null and acMachineId != ''">
             and t.ac_machine_id= #{acMachineId}
