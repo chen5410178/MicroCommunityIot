@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="liftMachineAcV1ServiceDaoImpl">
+
+
+    <!-- 保存电梯门禁信息 add by wuxw 2018-07-03 -->
+    <insert id="saveLiftMachineAcInfo" parameterType="Map">
+        insert into lift_machine_ac(
+        ac_machine_id,machine_id,ac_machine_code,community_id,ac_type,ac_machine_name,lma_id
+        ) values (
+        #{acMachineId},#{machineId},#{acMachineCode},#{communityId},#{acType},#{acMachineName},#{lmaId}
+        )
+    </insert>
+
+
+    <!-- 查询电梯门禁信息 add by wuxw 2018-07-03 -->
+    <select id="getLiftMachineAcInfo" parameterType="Map" resultType="Map">
+        select t.ac_machine_id,t.ac_machine_id acMachineId,t.machine_id,t.machine_id machineId,t.status_cd,t.status_cd
+        statusCd,t.ac_machine_code,t.ac_machine_code acMachineCode,t.community_id,t.community_id
+        communityId,t.ac_type,t.ac_type acType,t.ac_machine_name,t.ac_machine_name acMachineName,t.lma_id,t.lma_id lmaId
+        from lift_machine_ac t
+        where 1 =1
+        <if test="acMachineId !=null and acMachineId != ''">
+            and t.ac_machine_id= #{acMachineId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="acMachineCode !=null and acMachineCode != ''">
+            and t.ac_machine_code= #{acMachineCode}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="acType !=null and acType != ''">
+            and t.ac_type= #{acType}
+        </if>
+        <if test="acMachineName !=null and acMachineName != ''">
+            and t.ac_machine_name= #{acMachineName}
+        </if>
+        <if test="lmaId !=null and lmaId != ''">
+            and t.lma_id= #{lmaId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改电梯门禁信息 add by wuxw 2018-07-03 -->
+    <update id="updateLiftMachineAcInfo" parameterType="Map">
+        update lift_machine_ac t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="acMachineId !=null and acMachineId != ''">
+            , t.ac_machine_id= #{acMachineId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="acMachineCode !=null and acMachineCode != ''">
+            , t.ac_machine_code= #{acMachineCode}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="acType !=null and acType != ''">
+            , t.ac_type= #{acType}
+        </if>
+        <if test="acMachineName !=null and acMachineName != ''">
+            , t.ac_machine_name= #{acMachineName}
+        </if>
+        where 1=1
+        <if test="lmaId !=null and lmaId != ''">
+            and t.lma_id= #{lmaId}
+        </if>
+
+    </update>
+
+    <!-- 查询电梯门禁数量 add by wuxw 2018-07-03 -->
+    <select id="queryLiftMachineAcsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from lift_machine_ac t
+        where 1 =1
+        <if test="acMachineId !=null and acMachineId != ''">
+            and t.ac_machine_id= #{acMachineId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="acMachineCode !=null and acMachineCode != ''">
+            and t.ac_machine_code= #{acMachineCode}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="acType !=null and acType != ''">
+            and t.ac_type= #{acType}
+        </if>
+        <if test="acMachineName !=null and acMachineName != ''">
+            and t.ac_machine_name= #{acMachineName}
+        </if>
+        <if test="lmaId !=null and lmaId != ''">
+            and t.lma_id= #{lmaId}
+        </if>
+    </select>
+
+</mapper>
