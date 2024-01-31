@@ -29,7 +29,7 @@ export function getHeaders() {
 		"req-time": getDateYYYYMMDDHHMISS(),
 		"sign": '1234567',
 		"user-id": '-1',
-		//"cookie": '_java110_token_=' + getToken(),
+		//"cookie": '_java110_iot_token_=' + getToken(),
 		"Accept": '*/*',
 		"Authorization":"Bearer "+_token
 	};

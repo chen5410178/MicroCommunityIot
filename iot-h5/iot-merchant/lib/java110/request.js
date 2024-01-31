@@ -11,7 +11,7 @@ export default{
 		hasSession()
 		.then((_data)=>{
 			//重写token
-			_reqObj.header.cookie = '_java110_token_=' + uni.getStorageSync('token'); //console.log("_reqObj",_reqObj);
+			_reqObj.header.cookie = '_java110_iot_token_=' + uni.getStorageSync('token'); //console.log("_reqObj",_reqObj);
 			console.log(_reqObj);
 			uni.request(_reqObj);
 		})

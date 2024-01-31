@@ -47,7 +47,7 @@ public class CommonConstant {
     /**
      * 鉴权token
      */
-    public final static String COOKIE_AUTH_TOKEN = "_java110_token_";
+    public final static String COOKIE_AUTH_TOKEN = "_java110_iot_token_";
 
     public final static String DEFAULT_USER_PWD_SECRET = "@java110.com";
 
