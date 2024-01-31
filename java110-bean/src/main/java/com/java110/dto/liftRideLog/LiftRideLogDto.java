@@ -30,7 +30,7 @@ public class LiftRideLogDto extends PageDto implements Serializable {
     private String personType;
     private String communityId;
 
-
+    private String machineCode;
     private Date createTime;
 
     private String statusCd = "0";
@@ -163,5 +163,13 @@ public class LiftRideLogDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getMachineCode() {
+        return machineCode;
+    }
+
+    public void setMachineCode(String machineCode) {
+        this.machineCode = machineCode;
     }
 }

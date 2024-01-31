@@ -106,12 +106,8 @@
             _queryLiftMachineAcMethod: function () {
                 $that._listLiftMachineAcs(DEFAULT_PAGE, DEFAULT_ROWS);
             },
-            _moreCondition: function () {
-                if ($that.liftMachineAcInfo.moreCondition) {
-                    $that.liftMachineAcInfo.moreCondition = false;
-                } else {
-                    $that.liftMachineAcInfo.moreCondition = true;
-                }
+            _toLiftDetail: function (_liftMachine) {
+                vc.jumpToPage('/#/pages/lift/liftMachineDetail?machineId=' + _liftMachine.machineId);
             }
 
 

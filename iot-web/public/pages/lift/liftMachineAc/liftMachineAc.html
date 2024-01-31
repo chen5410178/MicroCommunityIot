@@ -100,15 +100,23 @@
                                         <td class="text-center">{{liftMachineAc.machineCode}}</td>
                                         <td class="text-center">{{liftMachineAc.acMachineName}}</td>
                                         <td class="text-center">{{liftMachineAc.acMachineCode}}</td>
-                                        <td class="text-center">{{liftMachineAc.acType}}</td>
+                                        <td class="text-center" v-if="liftMachineAc.acType='1001'">人脸机</td>
+                                        <td class="text-center" v-else-if="liftMachineAc.acType='2002'">刷卡机</td>
+                                        <td class="text-center" v-else>二维码机</td>
                                         <td class="text-center">{{liftMachineAc.createTime}}</td>
                                         <td class="text-center">
+                                            <div class="btn-group">
+                                                <button class="btn-white btn btn-xs" v-on:click="_toLiftDetail(liftMachineAc)">
+                                                    <vc:i18n name='详情'></vc:i18n>
+                                                </button>
+                                            </div>
                                             <div class="btn-group">
                                                 <button class="btn-white btn btn-xs"
                                                     v-on:click="_openDeleteLiftMachineAcModel(liftMachineAc)">
                                                     <vc:i18n name='删除'></vc:i18n>
                                                 </button>
                                             </div>
+                                          
                                         </td>
                                     </tr>
                                 </tbody>

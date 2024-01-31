@@ -21,8 +21,10 @@
         acMachineCode,t.machine_name,t.machine_name machineName,t.ac_machine_name,t.ac_machine_name
         acMachineName,t.room_name,t.room_name roomName,t.layer,t.ac_machine_id,t.ac_machine_id
         acMachineId,t.machine_id,t.machine_id machineId,t.name,t.log_id,t.log_id logId,t.tel,t.face_path,t.face_path
-        facePath,t.person_type,t.person_type personType,t.community_id,t.community_id communityId
+        facePath,t.person_type,t.person_type personType,t.community_id,t.community_id communityId,t.create_time createTime,
+        lm.machine_code machineCode
         from lift_ride_log t
+        left join lift_machine lm on t.machine_id = lm.machine_id
         where 1 =1
         <if test="rideType !=null and rideType != ''">
             and t.ride_type= #{rideType}
