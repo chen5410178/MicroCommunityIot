@@ -2,6 +2,7 @@ package com.java110.openapi.bmo.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.Assert;
@@ -11,6 +12,7 @@ import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.dto.user.UserDto;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.intf.system.IHardwareManufacturerV1InnerServiceSMO;
+import com.java110.intf.user.IOwnerV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.openapi.bmo.IIotCommonApiBmo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,24 +32,27 @@ public class OpenAccessControlDoorBmoImpl implements IIotCommonApiBmo {
     @Autowired
     private IHardwareManufacturerV1InnerServiceSMO hardwareManufacturerV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IOwnerV1InnerServiceSMO ownerV1InnerServiceSMOImpl;
+
     @Override
     public void validate(ICmdDataFlowContext context, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineCode", "未包含设备信息");
         Assert.hasKeyAndValue(reqJson, "communityId", "未包含小区信息");
-        Assert.hasKeyAndValue(reqJson, "propertyUserId", "未包含员工账号");
+        Assert.hasKeyAndValue(reqJson, "memberId", "未包含员工账号");
 
     }
 
     @Override
     public void doCmd(ICmdDataFlowContext context, JSONObject reqJson) {
 
-        String userId = reqJson.getString("propertyUserId");
+        String memberId = reqJson.getString("memberId");
 
-        UserDto userDto = new UserDto();
-        userDto.setUserId(userId);
-        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+        OwnerDto ownerDto = new OwnerDto();
+        ownerDto.setMemberId(memberId);
+        List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
 
-        Assert.listOnlyOne(userDtos, "用户不存在");
+        Assert.listOnlyOne(ownerDtos, "用户不存在");
 
 
         AccessControlDto accessControlDto = new AccessControlDto();
@@ -57,8 +62,8 @@ public class OpenAccessControlDoorBmoImpl implements IIotCommonApiBmo {
 
         Assert.listOnlyOne(accessControlDtos, "门禁不存在");
 
-        accessControlDto.setUserId(userId);
-        accessControlDto.setUserName(userDtos.get(0).getName());
+        accessControlDto.setUserId(memberId);
+        accessControlDto.setUserName(ownerDtos.get(0).getName());
 
 
         int openFlag = accessControlV1InnerServiceSMOImpl.openDoor(accessControlDtos.get(0));
