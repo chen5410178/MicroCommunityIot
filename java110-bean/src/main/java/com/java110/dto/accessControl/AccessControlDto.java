@@ -39,6 +39,12 @@ public class AccessControlDto extends PageDto implements Serializable {
     private String userName;
     private String implBeanName;
 
+    private String link;
+
+    private String personId;
+
+    private String personType;
+
 
     public String getMachineMac() {
         return machineMac;
@@ -175,5 +181,29 @@ public class AccessControlDto extends PageDto implements Serializable {
 
     public void setImplBeanName(String implBeanName) {
         this.implBeanName = implBeanName;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
+    }
+
+    public String getPersonType() {
+        return personType;
+    }
+
+    public void setPersonType(String personType) {
+        this.personType = personType;
     }
 }

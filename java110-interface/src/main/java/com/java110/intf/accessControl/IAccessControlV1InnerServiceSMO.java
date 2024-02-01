@@ -18,6 +18,7 @@ package com.java110.intf.accessControl;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControl.MachineHeartbeatDto;
+import com.java110.dto.chargeMachine.ChargeMachineOrderDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.accessControl.AccessControlPo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -88,4 +89,10 @@ public interface IAccessControlV1InnerServiceSMO {
 
     @RequestMapping(value = "/queryAcFaceStatistics", method = RequestMethod.POST)
     List<Map> queryAcFaceStatistics(@RequestBody JSONObject reqJson);
+
+    @RequestMapping(value = "/queryOwnerAccessControlsCount", method = RequestMethod.POST)
+    int queryOwnerAccessControlsCount(@RequestBody AccessControlDto accessControlDto);
+
+    @RequestMapping(value = "/queryOwnerAccessControls", method = RequestMethod.POST)
+    List<AccessControlDto> queryOwnerAccessControls(@RequestBody AccessControlDto accessControlDto);
 }

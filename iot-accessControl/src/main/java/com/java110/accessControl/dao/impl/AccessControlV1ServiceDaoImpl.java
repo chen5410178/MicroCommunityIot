@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.java110.accessControl.dao.IAccessControlV1ServiceDao;
 import com.java110.core.db.dao.BaseServiceDao;
 import com.java110.core.exception.DAOException;
+import com.java110.core.utils.ListUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -128,6 +129,24 @@ public class AccessControlV1ServiceDaoImpl extends BaseServiceDao implements IAc
     @Override
     public List<Map> queryAcFaceStatistics(Map info) {
         List<Map> infos = sqlSessionTemplate.selectList("accessControlV1ServiceDaoImpl.queryAcFaceStatistics", info);
+        return infos;
+    }
+
+    @Override
+    public int queryOwnerAccessControlsCount(Map info) {
+        logger.debug("查询 queryAccessControlsCount 入参 info : {}", info);
+
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlV1ServiceDaoImpl.queryOwnerAccessControlsCount", info);
+        if (ListUtil.isNull(infos)) {
+            return 0;
+        }
+
+        return Integer.parseInt(infos.get(0).get("count").toString());
+    }
+
+    @Override
+    public List<Map> queryOwnerAccessControls(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlV1ServiceDaoImpl.queryOwnerAccessControls", info);
         return infos;
     }
 

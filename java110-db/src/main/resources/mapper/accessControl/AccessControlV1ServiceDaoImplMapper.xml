@@ -21,7 +21,8 @@
         heartbeatTime,t.impl_bean,t.impl_bean implBean,t.machine_id,t.machine_id machineId,t.machine_code,t.machine_code
         machineCode,t.location_name,t.location_name locationName,t.location_id,t.location_id
         locationId,t.status_cd,t.status_cd statusCd,t.create_time createTime,t.community_id,t.community_id
-        communityId,t.machine_name,t.machine_name machineName,t.machine_ip,t.machine_ip machineIp,t.direction,hm.hm_name implBeanName
+        communityId,t.machine_name,t.machine_name machineName,t.machine_ip,t.machine_ip machineIp,t.direction,hm.hm_name
+        implBeanName
         from access_control t
         left join hardware_manufacturer hm on t.impl_bean = hm.hm_id and hm.status_cd = '0'
         where 1 =1
@@ -211,6 +212,110 @@
         and t.create_time &gt; #{startTime}
 
         group by DATE_FORMAT(t.create_time,'%Y-%m-%d')
+
+    </select>
+
+
+    <!-- 查询门禁数量 add by wuxw 2018-07-03 -->
+    <select id="queryOwnerAccessControlsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from ( select t.machine_id
+        from access_control t
+        left join access_control_face acf on t.machine_id = acf.machine_id and acf.status_cd = '0'
+        where 1=1
+        and acf.person_type = #{personType}
+        and acf.person_id = #{personId}
+        <if test="machineMac !=null and machineMac != ''">
+            and t.machine_mac= #{machineMac}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and DATE_ADD(t.heartbeat_time, INTERVAL 2 MINUTE) &lt; #{heartbeatTime}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            and t.location_name= #{locationName}
+        </if>
+        <if test="locationId !=null and locationId != ''">
+            and t.location_id= #{locationId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="machineIp !=null and machineIp != ''">
+            and t.machine_ip= #{machineIp}
+        </if>
+        <if test="direction !=null and direction != ''">
+            and t.direction= #{direction}
+        </if>
+        group by t.machine_id
+        ) a
+    </select>
+
+    <select id="queryOwnerAccessControls" parameterType="Map" resultType="Map">
+        select distinct t.machine_mac machineMac,t.heartbeat_time
+        heartbeatTime,t.impl_bean implBean,t.machine_id machineId,t.machine_code
+        machineCode,t.location_name locationName,t.location_id
+        locationId,t.status_cd statusCd,t.create_time createTime,t.community_id
+        communityId,t.machine_name machineName,t.machine_ip machineIp,t.direction
+        from access_control t
+        left join access_control_face acf on t.machine_id = acf.machine_id and acf.status_cd = '0'
+        where 1=1
+        and acf.person_type = #{personType}
+        and acf.person_id = #{personId}
+        <if test="machineMac !=null and machineMac != ''">
+            and t.machine_mac= #{machineMac}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="locationName !=null and locationName != ''">
+            and t.location_name= #{locationName}
+        </if>
+        <if test="locationId !=null and locationId != ''">
+            and t.location_id= #{locationId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="machineIp !=null and machineIp != ''">
+            and t.machine_ip= #{machineIp}
+        </if>
+        <if test="direction !=null and direction != ''">
+            and t.direction= #{direction}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
 
     </select>
 

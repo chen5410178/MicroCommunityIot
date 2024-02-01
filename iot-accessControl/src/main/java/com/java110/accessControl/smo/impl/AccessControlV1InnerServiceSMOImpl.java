@@ -24,6 +24,7 @@ import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.accessControl.MachineHeartbeatDto;
+import com.java110.dto.chargeMachine.ChargeMachineOrderDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.dto.accessControl.AccessControlDto;
@@ -198,6 +199,26 @@ public class AccessControlV1InnerServiceSMOImpl implements IAccessControlV1Inner
     @Override
     public List<Map> queryAcFaceStatistics(@RequestBody JSONObject reqJson) {
         return accessControlV1ServiceDaoImpl.queryAcFaceStatistics(reqJson);
+    }
+
+    @Override
+    public int queryOwnerAccessControlsCount(@RequestBody AccessControlDto accessControlDto) {
+        return accessControlV1ServiceDaoImpl.queryOwnerAccessControlsCount(BeanConvertUtil.beanCovertMap(accessControlDto));
+    }
+
+    @Override
+    public List<AccessControlDto> queryOwnerAccessControls(@RequestBody AccessControlDto accessControlDto) {
+        //校验是否传了 分页信息
+
+        int page = accessControlDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            accessControlDto.setPage((page - 1) * accessControlDto.getRow());
+        }
+
+        List<AccessControlDto> accessControls = BeanConvertUtil.covertBeanList(accessControlV1ServiceDaoImpl.queryOwnerAccessControls(BeanConvertUtil.beanCovertMap(accessControlDto)), AccessControlDto.class);
+
+        return accessControls;
     }
 
 }
