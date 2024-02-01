@@ -424,50 +424,21 @@
 
     }
 
-    /**
-     * 手工执行js 脚本
-     */
-    // execScript = function (_tree, _componentScript) {
-
-    //     let _jsBody = "";
-    //     for (let i = 0; i < _componentScript.length; i++) {
-    //         //一段一段执行script 
-    //         // try {
-    //         //     eval(_componentScript[i]);
-    //         // } catch (e) {
-    //         //     console.log('js脚本错误', _componentScript[i]);
-    //         //     console.error(e);
-    //         // }
-    //         _jsBody += (_componentScript[i]+';');
-    //     }
-    //     //let _tmpJsBody = '<script type="text/javascript">//<![CDATA[\n' + _jsBody + '//]]>\n</script>';
-
-    //     _jsBody +="vcFramework.initVue();vcFramework.initVcComponent();"
-    //     let script = document.createElement('script');
-    //    // script.type="module";
-    //     script.setAttribute("type", "module"); 
-    //     script.innerHTML = _jsBody; // 替换为你的JavaScript代码
-    //     document.body.appendChild(script);
-    //     //初始化vue 对象
-    //     // vcFramework.initVue();
-
-    //     // vcFramework.initVcComponent();
-    // }
-
-    appendModules = function (_modules) {
+    appendModules = function (_modules,_scripts) {
         _modules.forEach(_paramJs => {
             let script = document.createElement('script');
             script.setAttribute("type", "module");
             script.innerHTML = _paramJs; // 替换为你的JavaScript代码
-            try {
-                document.body.appendChild(script);
-            } catch (err) {
-                console.log(err, _paramJs);
-            }
-
             if (_paramJs.indexOf('vc.extends') > -1) {
                 vcFramework.waitLoadCount += 1;
             }
+
+            _scripts.push(script);
+            // try {
+            //     document.body.appendChild(script);
+            // } catch (err) {
+            //     console.log(err, _paramJs);
+            // }
         })
     }
 
@@ -475,42 +446,31 @@
 
         let _jsBody = "";
         vcFramework.waitLoadCount = 0;
+        let _scripts = [];
         for (let i = 0; i < _componentScript.length; i++) {
             if (_componentScript[i].indexOf(';;;;;;;;;;') > -1) {
-                appendModules(_componentScript[i].split(';;;;;;;;;;'));
+                appendModules(_componentScript[i].split(';;;;;;;;;;'),_scripts);
 
                 continue;
             }
-
-
             _jsBody = (_componentScript[i] + ';');
             let script = document.createElement('script');
             script.setAttribute("type", "module");
             script.setAttribute('name', 'custom')
             script.innerHTML = _jsBody; // 替换为你的JavaScript代码
-            try {
-                document.body.appendChild(script);
-            } catch (err) {
-                console.log(err, _jsBody);
-            }
             if (_jsBody.indexOf('vc.extends') > -1) {
                 vcFramework.waitLoadCount += 1;
             }
+            _scripts.push(script);
         }
-        // let _initScript = "vcFramework.initVue();vcFramework.initVcComponent();";
-        // let script = document.createElement('script');
-        // script.setAttribute("type", "module");
-        // script.innerHTML = _initScript; // 替换为你的JavaScript代码
 
-        // try {
-        //     document.body.appendChild(script);
-        // } catch (err) {
-        //     console.log(err, _jsBody);
-        // }
-        // setTimeout(function () {
-        //     vcFramework.initVue();
-        //     vcFramework.initVcComponent();
-        // }, 100)
+        _scripts.forEach(_s => {
+            try {
+                document.body.appendChild(_s);
+            } catch (err) {
+                console.log(err, _s.innerHTML);
+            }
+        })
     }
 
     /**
@@ -1202,7 +1162,6 @@
                 if (nameSpace == DEFAULT_NAMESPACE) {
                     vmOptions.methods[methodAttr] = _vmOptions.methods[methodAttr];
                 } else {
-
                     vmOptions.methods[nameSpace + "_" + methodAttr] = _vmOptions.methods[methodAttr];
                 }
             }
