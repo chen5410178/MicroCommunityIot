@@ -32,6 +32,8 @@ public class ListOwnerAccessControlBmoImpl implements IIotCommonApiBmo {
     public void validate(ICmdDataFlowContext context, JSONObject reqJson) {
 
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
+        Assert.hasKeyAndValue(reqJson, "page", "未包含page");
+        Assert.hasKeyAndValue(reqJson, "row", "未包含row");
         Assert.hasKeyAndValue(reqJson, "link", "未包含link");
 
 

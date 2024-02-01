@@ -221,4 +221,23 @@ public class AccessControlV1InnerServiceSMOImpl implements IAccessControlV1Inner
         return accessControls;
     }
 
+    @Override
+    public int openDoor(@RequestBody AccessControlDto accessControlDto) {
+
+        HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
+        hardwareManufacturerDto.setHmId(accessControlDto.getImplBean());
+        List<HardwareManufacturerDto> hardwareManufacturerDtos = hardwareManufacturerV1InnerServiceSMOImpl.queryHardwareManufacturers(hardwareManufacturerDto);
+
+        Assert.listOnlyOne(hardwareManufacturerDtos, "协议不存在");
+
+
+
+        IAccessControlManufactor accessControlManufactor = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
+        boolean openFlag = accessControlManufactor.openDoor(accessControlDto);
+        if(openFlag){
+            return 1;
+        }
+        return 0;
+    }
+
 }

@@ -95,4 +95,8 @@ public interface IAccessControlV1InnerServiceSMO {
 
     @RequestMapping(value = "/queryOwnerAccessControls", method = RequestMethod.POST)
     List<AccessControlDto> queryOwnerAccessControls(@RequestBody AccessControlDto accessControlDto);
+
+
+    @RequestMapping(value = "/openDoor", method = RequestMethod.POST)
+    int openDoor(@RequestBody AccessControlDto accessControlDto);
 }
