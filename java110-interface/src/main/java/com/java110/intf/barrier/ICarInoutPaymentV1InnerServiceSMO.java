@@ -15,6 +15,8 @@
  */
 package com.java110.intf.barrier;
 
+import com.java110.bean.ResultVo;
+import com.java110.dto.fee.TempCarPayOrderDto;
 import com.java110.dto.payment.CarInoutPaymentDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.ownerCar.CarInoutPaymentPo;
@@ -70,4 +72,7 @@ public interface ICarInoutPaymentV1InnerServiceSMO {
 
     @RequestMapping(value = "/queryCarInoutPaymentSummary", method = RequestMethod.POST)
     List<CarInoutPaymentDto> queryCarInoutPaymentSummary(@RequestBody CarInoutPaymentDto carInoutPaymentDto);
+
+    @RequestMapping(value = "/getTempCarFeeOrder", method = RequestMethod.POST)
+    ResultVo getTempCarFeeOrder(@RequestBody TempCarPayOrderDto tempCarPayOrderDto);
 }

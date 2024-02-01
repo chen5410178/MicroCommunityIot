@@ -58,10 +58,10 @@ public class GetTempCarFeeRulesImpl implements IGetTempCarFeeRules {
      * @return
      */
     @Override
-    public ResponseEntity<String> getTempCarFeeOrder(TempCarPayOrderDto tempCarPayOrderDto) {
+    public ResultVo getTempCarFeeOrder(TempCarPayOrderDto tempCarPayOrderDto) {
 
         ResultVo resultVo = barrierEngineImpl.getTempCarFeeOrder(tempCarPayOrderDto);//dataBusInnerServiceSMOImpl.getTempCarFeeOrder(tempCarPayOrderDto);
-        return ResultVo.createResponseEntity(resultVo);
+        return resultVo;
     }
 
     @Override

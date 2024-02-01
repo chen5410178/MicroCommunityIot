@@ -16,9 +16,12 @@
 package com.java110.barrier.smo.impl;
 
 
+import com.java110.barrier.bmo.IGetTempCarFeeRules;
 import com.java110.barrier.dao.ICarInoutPaymentV1ServiceDao;
+import com.java110.bean.ResultVo;
 import com.java110.bean.dto.PageDto;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.fee.TempCarPayOrderDto;
 import com.java110.dto.payment.CarInoutPaymentDto;
 import com.java110.intf.barrier.ICarInoutPaymentV1InnerServiceSMO;
 import com.java110.po.ownerCar.CarInoutPaymentPo;
@@ -42,7 +45,8 @@ public class CarInoutPaymentV1InnerServiceSMOImpl  implements ICarInoutPaymentV1
     @Autowired
     private ICarInoutPaymentV1ServiceDao carInoutPaymentV1ServiceDaoImpl;
 
-
+    @Autowired
+    private IGetTempCarFeeRules getTempCarFeeRulesImpl;
     @Override
     public int saveCarInoutPayment(@RequestBody CarInoutPaymentPo carInoutPaymentPo) {
         int saveFlag = carInoutPaymentV1ServiceDaoImpl.saveCarInoutPaymentInfo(BeanConvertUtil.beanCovertMap(carInoutPaymentPo));
@@ -91,5 +95,8 @@ public class CarInoutPaymentV1InnerServiceSMOImpl  implements ICarInoutPaymentV1
         return BeanConvertUtil.covertBeanList(carInoutPaymentV1ServiceDaoImpl.queryCarInoutPaymentSummary(BeanConvertUtil.beanCovertMap(carInoutPaymentDto)),CarInoutPaymentDto.class);
     }
 
-
+   public ResultVo getTempCarFeeOrder(@RequestBody TempCarPayOrderDto tempCarPayOrderDto){
+       ResultVo resultVo = getTempCarFeeRulesImpl.getTempCarFeeOrder(tempCarPayOrderDto);
+        return resultVo;
+   }
 }

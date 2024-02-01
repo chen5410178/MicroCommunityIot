@@ -24,10 +24,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.smo.IComputeFeeSMO;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.utils.*;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.parking.ParkingBoxAreaDto;
 import com.java110.dto.payment.CarInoutPaymentDto;
@@ -67,7 +64,6 @@ public class ListCarInParkingAreaCmd extends Cmd {
     private IComputeFeeSMO computeFeeSMOImpl;
 
 
-
     @Autowired
     private ICarInoutPaymentV1InnerServiceSMO carInoutPaymentV1InnerServiceSMOImpl;
 
@@ -75,9 +71,9 @@ public class ListCarInParkingAreaCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
-        if(reqJson.containsKey("boxId") && !StringUtil.isEmpty(reqJson.getString("boxId"))) {
+        if (reqJson.containsKey("boxId") && !StringUtil.isEmpty(reqJson.getString("boxId"))) {
             Assert.hasKeyAndValue(reqJson, "boxId", "未包含岗亭信息");
-        }else{
+        } else {
             Assert.hasKeyAndValue(reqJson, "paId", "未包含停车场信息");
         }
     }
@@ -86,9 +82,9 @@ public class ListCarInParkingAreaCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
         CarInoutDto carInoutDto = BeanConvertUtil.covertBean(reqJson, CarInoutDto.class);
         carInoutDto.setStates(new String[]{CarInoutDto.STATE_IN, CarInoutDto.STATE_PAY, CarInoutDto.STATE_REPAY});
-        if(reqJson.containsKey("boxId")) {
+        if (reqJson.containsKey("boxId")) {
             carInoutDto.setPaIds(getPaIds(reqJson));
-        }else{
+        } else {
             carInoutDto.setPaId(reqJson.getString("paId"));
         }
         int count = carInoutV1InnerServiceSMOImpl.queryCarInoutsCount(carInoutDto);
@@ -112,25 +108,26 @@ public class ListCarInParkingAreaCmd extends Cmd {
 
     /**
      * 输入最新的支付时间
+     *
      * @param carInoutDtos
      */
     private void freshPayTime(List<CarInoutDto> carInoutDtos) {
-        for(CarInoutDto carInoutDto : carInoutDtos){
-            if(CarInoutDto.STATE_PAY.equals(carInoutDto.getState()) || CarInoutDto.STATE_REPAY.equals(carInoutDto.getState())){
+        for (CarInoutDto carInoutDto : carInoutDtos) {
+            if (CarInoutDto.STATE_PAY.equals(carInoutDto.getState()) || CarInoutDto.STATE_REPAY.equals(carInoutDto.getState())) {
 
                 //查询 支付记录 刷新payTime
                 CarInoutPaymentDto carInoutPaymentDto = new CarInoutPaymentDto();
                 carInoutPaymentDto.setInoutId(carInoutDto.getInoutId());
                 carInoutPaymentDto.setPage(1);
                 carInoutPaymentDto.setRow(1);
-               List<CarInoutPaymentDto> carInoutPaymentDtos =  carInoutPaymentV1InnerServiceSMOImpl.queryCarInoutPayments(carInoutPaymentDto);
+                List<CarInoutPaymentDto> carInoutPaymentDtos = carInoutPaymentV1InnerServiceSMOImpl.queryCarInoutPayments(carInoutPaymentDto);
 
-               if(carInoutPaymentDtos == null || carInoutPaymentDtos.size() < 1){
-                   carInoutDto.setPayTime(DateUtil.getCurrentDate());
-                   continue;
-               }
+                if (ListUtil.isNull(carInoutPaymentDtos)) {
+                    carInoutDto.setPayTime(DateUtil.getCurrentDate());
+                    continue;
+                }
 
-               carInoutDto.setPayTime(carInoutPaymentDtos.get(0).getPayTime());
+                carInoutDto.setPayTime(carInoutPaymentDtos.get(0).getPayTime());
             }
         }
     }
@@ -142,7 +139,7 @@ public class ListCarInParkingAreaCmd extends Cmd {
             parkingBoxAreaDto.setCommunityId(reqJson.getString("communityId"));
             List<ParkingBoxAreaDto> parkingBoxAreaDtos = parkingBoxAreaV1InnerServiceSMOImpl.queryParkingBoxAreas(parkingBoxAreaDto);
 
-            if (parkingBoxAreaDtos == null || parkingBoxAreaDtos.size() < 1) {
+            if (ListUtil.isNull(parkingBoxAreaDtos)) {
                 throw new CmdException("未查到停车场信息");
             }
             List<String> paIds = new ArrayList<>();

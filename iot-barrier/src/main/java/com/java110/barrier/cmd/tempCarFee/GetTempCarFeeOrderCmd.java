@@ -2,12 +2,14 @@ package com.java110.barrier.cmd.tempCarFee;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.barrier.bmo.IGetTempCarFeeRules;
+import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.fee.TempCarPayOrderDto;
 import com.java110.dto.parking.ParkingBoxAreaDto;
@@ -29,7 +31,7 @@ import java.util.List;
  */
 @Java110Cmd(serviceCode = "tempCarFee.getTempCarFeeOrder")
 public class GetTempCarFeeOrderCmd extends Cmd {
-//    @Autowired
+    //    @Autowired
 //    private ICouponUserV1InnerServiceSMO couponUserV1InnerServiceSMOImpl;
     @Autowired
     private IGetTempCarFeeRules getTempCarFeeRulesImpl;
@@ -41,17 +43,17 @@ public class GetTempCarFeeOrderCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
 
         Assert.hasKeyAndValue(reqJson, "carNum", "carNum不能为空");
-        if(StringUtil.isEmpty(reqJson.getString("paId"))){
+        if (StringUtil.isEmpty(reqJson.getString("paId"))) {
             Assert.hasKeyAndValue(reqJson, "boxId", "boxId不能为空");
 
             ParkingBoxAreaDto parkingBoxAreaDto = new ParkingBoxAreaDto();
             parkingBoxAreaDto.setDefaultArea(ParkingBoxAreaDto.DEFAULT_AREA_TRUE);
             parkingBoxAreaDto.setBoxId(reqJson.getString("boxId"));
             List<ParkingBoxAreaDto> parkingBoxAreaDtos = parkingBoxAreaV1InnerServiceSMOImpl.queryParkingBoxAreas(parkingBoxAreaDto);
-            if(parkingBoxAreaDtos == null || parkingBoxAreaDtos.size()< 1){
+            if (ListUtil.isNull(parkingBoxAreaDtos)) {
                 throw new CmdException("未找到停车场");
             }
-            reqJson.put("paId",parkingBoxAreaDtos.get(0).getPaId());
+            reqJson.put("paId", parkingBoxAreaDtos.get(0).getPaId());
         }
         Assert.hasKeyAndValue(reqJson, "paId", "paId不能为空");
 
@@ -63,10 +65,10 @@ public class GetTempCarFeeOrderCmd extends Cmd {
         TempCarPayOrderDto tempCarPayOrderDto = new TempCarPayOrderDto();
         tempCarPayOrderDto.setPaId(reqJson.getString("paId"));
         tempCarPayOrderDto.setCarNum(reqJson.getString("carNum"));
-        if(reqJson.containsKey("pccIds") && !StringUtil.isEmpty(reqJson.getString("pccIds"))){
+        if (reqJson.containsKey("pccIds") && !StringUtil.isEmpty(reqJson.getString("pccIds"))) {
             tempCarPayOrderDto.setPccIds(reqJson.getString("pccIds").split(","));
         }
-        ResponseEntity<String> responseEntity = getTempCarFeeRulesImpl.getTempCarFeeOrder(tempCarPayOrderDto);
-        cmdDataFlowContext.setResponseEntity(responseEntity);
+        ResultVo resultVo = getTempCarFeeRulesImpl.getTempCarFeeOrder(tempCarPayOrderDto);
+        cmdDataFlowContext.setResponseEntity(ResultVo.createResponseEntity(resultVo));
     }
 }

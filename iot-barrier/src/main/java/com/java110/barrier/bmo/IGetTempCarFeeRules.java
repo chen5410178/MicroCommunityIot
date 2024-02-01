@@ -14,6 +14,7 @@ package com.java110.barrier.bmo;/*
  * limitations under the License.
  */
 
+import com.java110.bean.ResultVo;
 import com.java110.dto.fee.TempCarFeeRuleDto;
 import com.java110.dto.fee.TempCarPayOrderDto;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public interface IGetTempCarFeeRules {
      * @param tempCarPayOrderDto
      * @return
      */
-    ResponseEntity<String> getTempCarFeeOrder(TempCarPayOrderDto tempCarPayOrderDto);
+    ResultVo getTempCarFeeOrder(TempCarPayOrderDto tempCarPayOrderDto);
 
     ResponseEntity<String> notifyTempCarFeeOrder(TempCarPayOrderDto tempCarPayOrderDto);
 }

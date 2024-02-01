@@ -2,6 +2,7 @@ package com.java110.barrier.smo.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.barrier.bmo.IGetTempCarFeeRules;
+import com.java110.bean.ResultVo;
 import com.java110.core.cache.CommonCache;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
@@ -21,9 +22,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-public class TempCarFeeCreateOrderV1InnerServiceSMOImpl   implements ITempCarFeeCreateOrderV1InnerServiceSMO {
+public class TempCarFeeCreateOrderV1InnerServiceSMOImpl implements ITempCarFeeCreateOrderV1InnerServiceSMO {
 
-//    @Autowired
+    //    @Autowired
 //    private ICouponUserV1InnerServiceSMO couponUserV1InnerServiceSMOImpl;
     @Autowired
     private IGetTempCarFeeRules getTempCarFeeRulesImpl;
@@ -47,20 +48,17 @@ public class TempCarFeeCreateOrderV1InnerServiceSMOImpl   implements ITempCarFee
         TempCarPayOrderDto tempCarPayOrderDto = new TempCarPayOrderDto();
         tempCarPayOrderDto.setPaId(reqJson.getString("paId"));
         tempCarPayOrderDto.setCarNum(reqJson.getString("carNum"));
-        if(reqJson.containsKey("couponIds")&& !StringUtil.isEmpty(reqJson.getString("couponIds"))) {
+        if (reqJson.containsKey("couponIds") && !StringUtil.isEmpty(reqJson.getString("couponIds"))) {
             tempCarPayOrderDto.setPccIds(reqJson.getString("couponIds").split(","));
         }
-        ResponseEntity<String> responseEntity = getTempCarFeeRulesImpl.getTempCarFeeOrder(tempCarPayOrderDto);
+        ResultVo resultVo = getTempCarFeeRulesImpl.getTempCarFeeOrder(tempCarPayOrderDto);
 
-        if (responseEntity.getStatusCode() != HttpStatus.OK) {
-            return responseEntity;
-        }
-        JSONObject orderInfo = JSONObject.parseObject(responseEntity.getBody().toString());
-        if (orderInfo.getIntValue("code") != 0) {
-            return responseEntity;
+
+        if (resultVo.getCode() != 0) {
+            return ResultVo.createResponseEntity(resultVo);
         }
 
-        JSONObject fee = orderInfo.getJSONObject("data");
+        JSONObject fee = (JSONObject) resultVo.getData();
         //double money = fee.getDouble("payCharge");
         BigDecimal money = new BigDecimal(fee.getDouble("amount"));
         //3.0 考虑优惠卷 这里不考虑了 因为 物联网平台已经 考虑过了
@@ -76,9 +74,9 @@ public class TempCarFeeCreateOrderV1InnerServiceSMOImpl   implements ITempCarFee
         fee.put("receivedAmount", receivedAmount);
         fee.put("oId", GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_oId));
         JSONObject outParm = new JSONObject();
-        outParm.put("data",fee);
-        outParm.put("code","0");
-        outParm.put("msg","成功");
+        outParm.put("data", fee);
+        outParm.put("code", "0");
+        outParm.put("msg", "成功");
         ResponseEntity<String> responseEntitys = new ResponseEntity<>(outParm.toJSONString(), HttpStatus.OK);
         fee.putAll(reqJson);
         CommonCache.setValue("queryTempCarFeeOrder" + fee.getString("oId"), fee.toJSONString(), 24 * 60 * 60);
@@ -96,25 +94,24 @@ public class TempCarFeeCreateOrderV1InnerServiceSMOImpl   implements ITempCarFee
         ParkingAreaDto parkingAreaDto = new ParkingAreaDto();
         parkingAreaDto.setPaId(paramObj.getString("paId"));
         List<ParkingAreaDto> parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
-        if(parkingAreaDtos == null  || parkingAreaDtos.size()<1){
-            paramObj.put("communityId","-1");
-        }else{
-            paramObj.put("communityId",parkingAreaDtos.get(0).getCommunityId());
+        if (parkingAreaDtos == null || parkingAreaDtos.size() < 1) {
+            paramObj.put("communityId", "-1");
+        } else {
+            paramObj.put("communityId", parkingAreaDtos.get(0).getCommunityId());
         }
         paramObj.putAll(reqJson);
         TempCarPayOrderDto tempCarPayOrderDto = BeanConvertUtil.covertBean(paramObj, TempCarPayOrderDto.class);
-        dealParkingCouponCar(paramObj,tempCarPayOrderDto);
+        dealParkingCouponCar(paramObj, tempCarPayOrderDto);
         ResponseEntity<String> responseEntity = getTempCarFeeRulesImpl.notifyTempCarFeeOrder(tempCarPayOrderDto);
         return responseEntity;
     }
 
 
-
-    private void dealParkingCouponCar(JSONObject reqJson,TempCarPayOrderDto tempCarPayOrderDto) {
+    private void dealParkingCouponCar(JSONObject reqJson, TempCarPayOrderDto tempCarPayOrderDto) {
         //处理停车劵
 
-        if(!reqJson.containsKey("couponIds") || StringUtil.isEmpty(reqJson.getString("couponIds"))) {
-            return ;
+        if (!reqJson.containsKey("couponIds") || StringUtil.isEmpty(reqJson.getString("couponIds"))) {
+            return;
         }
 
         String[] pccIds = reqJson.getString("couponIds").split(",");
