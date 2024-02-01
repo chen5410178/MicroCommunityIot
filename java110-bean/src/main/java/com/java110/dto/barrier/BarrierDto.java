@@ -27,6 +27,7 @@ public class BarrierDto extends PageDto implements Serializable {
     private String machineIp;
     private String direction;
     private String boxId;
+    private String[] boxIds;
     private String boxName;
 
     private String implBeanName;
@@ -179,5 +180,13 @@ public class BarrierDto extends PageDto implements Serializable {
 
     public void setPaId(String paId) {
         this.paId = paId;
+    }
+
+    public String[] getBoxIds() {
+        return boxIds;
+    }
+
+    public void setBoxIds(String[] boxIds) {
+        this.boxIds = boxIds;
     }
 }

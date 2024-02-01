@@ -56,6 +56,12 @@
         <if test="boxId !=null and boxId != ''">
             and t.box_id= #{boxId}
         </if>
+        <if test="boxIds !=null">
+            and t.box_id in
+            <foreach collection="boxIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
@@ -136,7 +142,12 @@
         <if test="boxId !=null and boxId != ''">
             and t.box_id= #{boxId}
         </if>
-
+        <if test="boxIds !=null">
+            and t.box_id in
+            <foreach collection="boxIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
 
     </select>
 

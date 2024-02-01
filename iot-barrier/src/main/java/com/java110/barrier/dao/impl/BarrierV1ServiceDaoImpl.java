@@ -18,6 +18,7 @@ package com.java110.barrier.dao.impl;
 import com.java110.barrier.dao.IBarrierV1ServiceDao;
 import com.java110.core.db.dao.BaseServiceDao;
 import com.java110.core.exception.DAOException;
+import com.java110.core.utils.ListUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -68,9 +69,9 @@ public class BarrierV1ServiceDaoImpl extends BaseServiceDao implements IBarrierV
     public List<Map> getBarrierInfo(Map info) throws DAOException {
         logger.debug("查询 getBarrierInfo 入参 info : {}",info);
 
-        List<Map> businessBarrierInfos = sqlSessionTemplate.selectList("barrierV1ServiceDaoImpl.getBarrierInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("barrierV1ServiceDaoImpl.getBarrierInfo",info);
 
-        return businessBarrierInfos;
+        return infos;
     }
 
 
@@ -97,12 +98,12 @@ public class BarrierV1ServiceDaoImpl extends BaseServiceDao implements IBarrierV
     public int queryBarriersCount(Map info) {
         logger.debug("查询 queryBarriersCount 入参 info : {}",info);
 
-        List<Map> businessBarrierInfos = sqlSessionTemplate.selectList("barrierV1ServiceDaoImpl.queryBarriersCount", info);
-        if (businessBarrierInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("barrierV1ServiceDaoImpl.queryBarriersCount", info);
+        if (ListUtil.isNull(infos)) {
             return 0;
         }
 
-        return Integer.parseInt(businessBarrierInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
     @Override
