@@ -24,10 +24,7 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.utils.*;
 import com.java110.doc.annotation.*;
 import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
@@ -159,7 +156,7 @@ public class ListChargeMachineCmd extends Cmd {
 
     private void queryMachineState(List<ChargeMachineDto> chargeMachineDtos) {
 
-        if (chargeMachineDtos == null || chargeMachineDtos.size() < 1 || chargeMachineDtos.size() > 10) {
+        if (ListUtil.isNull(chargeMachineDtos) || chargeMachineDtos.size() > 10) {
             return;
         }
 

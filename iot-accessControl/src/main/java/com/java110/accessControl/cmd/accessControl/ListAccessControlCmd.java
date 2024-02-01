@@ -22,10 +22,7 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.utils.*;
 import com.java110.doc.annotation.*;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,7 +118,7 @@ public class ListAccessControlCmd extends Cmd {
 
     private void freshMachineStateName(List<AccessControlDto> accessControlDtos) {
 
-        if (accessControlDtos == null || accessControlDtos.size() < 1) {
+        if (ListUtil.isNull(accessControlDtos)) {
             return;
         }
         for (AccessControlDto accessControlDto : accessControlDtos) {
