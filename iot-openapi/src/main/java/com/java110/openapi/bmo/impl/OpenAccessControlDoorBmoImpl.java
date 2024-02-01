@@ -32,7 +32,7 @@ public class OpenAccessControlDoorBmoImpl implements IIotCommonApiBmo {
 
     @Override
     public void validate(ICmdDataFlowContext context, JSONObject reqJson) {
-        Assert.hasKeyAndValue(reqJson, "machineId", "未包含设备信息");
+        Assert.hasKeyAndValue(reqJson, "machineCode", "未包含设备信息");
         Assert.hasKeyAndValue(reqJson, "communityId", "未包含小区信息");
         Assert.hasKeyAndValue(reqJson, "propertyUserId", "未包含员工账号");
 
@@ -51,7 +51,7 @@ public class OpenAccessControlDoorBmoImpl implements IIotCommonApiBmo {
 
 
         AccessControlDto accessControlDto = new AccessControlDto();
-        accessControlDto.setMachineId(reqJson.getString("machineId"));
+        accessControlDto.setMachineCode(reqJson.getString("machineCode"));
         accessControlDto.setCommunityId(reqJson.getString("communityId"));
         List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
 
