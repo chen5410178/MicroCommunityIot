@@ -12,7 +12,7 @@ public interface IBarrierEngine {
 
     ResultVo notifyTempCarFeeOrder(TempCarPayOrderDto tempCarPayOrderDto);
 
-    ResponseEntity<String> customCarInOut(JSONObject reqJson);
+    ResultVo customCarInOut(JSONObject reqJson);
 
     ResultVo openDoor(BarrierDto machineDto, ParkingAreaTextDto parkingAreaTextDto, JSONObject paramObj);
 

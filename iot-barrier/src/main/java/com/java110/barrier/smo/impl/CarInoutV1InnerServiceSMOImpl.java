@@ -16,11 +16,27 @@
 package com.java110.barrier.smo.impl;
 
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.java110.barrier.dao.ICarInoutV1ServiceDao;
+import com.java110.barrier.engine.IBarrierEngine;
+import com.java110.bean.ResultVo;
 import com.java110.bean.dto.PageDto;
+import com.java110.bean.dto.coupon.ParkingCouponCarDto;
+import com.java110.bean.po.coupon.ParkingCouponCarOrderPo;
+import com.java110.bean.po.coupon.ParkingCouponCarPo;
+import com.java110.core.exception.CmdException;
+import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
+import com.java110.dto.fee.TempCarPayOrderDto;
+import com.java110.dto.parking.ParkingBoxAreaDto;
 import com.java110.intf.barrier.ICarInoutV1InnerServiceSMO;
 import com.java110.dto.carInout.CarInoutDto;
+import com.java110.intf.barrier.IParkingBoxAreaV1InnerServiceSMO;
+import com.java110.intf.car.IParkingCouponCarOrderV1InnerServiceSMO;
+import com.java110.intf.car.IParkingCouponCarV1InnerServiceSMO;
 import com.java110.po.carInout.CarInoutPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,6 +59,19 @@ public class CarInoutV1InnerServiceSMOImpl implements ICarInoutV1InnerServiceSMO
     @Autowired
     private ICarInoutV1ServiceDao carInoutV1ServiceDaoImpl;
 
+    @Autowired
+    private IBarrierEngine barrierEngineImpl;
+
+
+    @Autowired
+    private IParkingBoxAreaV1InnerServiceSMO parkingBoxAreaV1InnerServiceSMOImpl;
+
+
+    @Autowired
+    private IParkingCouponCarV1InnerServiceSMO parkingCouponCarV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IParkingCouponCarOrderV1InnerServiceSMO parkingCouponCarOrderV1InnerServiceSMOImpl;
 
     @Override
     public int saveCarInout(@RequestBody  CarInoutPo carInoutPo) {
@@ -111,5 +140,85 @@ public class CarInoutV1InnerServiceSMOImpl implements ICarInoutV1InnerServiceSMO
     @Override
     public int queryCarInoutDetailsCount(@RequestBody CarInoutDto carInoutDetailDto) {
         return carInoutV1ServiceDaoImpl.queryCarInoutDetailsCount(BeanConvertUtil.beanCovertMap(carInoutDetailDto));    }
+    @Override
+    public ResultVo carInout(@RequestBody JSONObject reqJson) {
+        //出场时 先 补充费用信息
+        if(!"1101".equals(reqJson.getString("type"))) {
+
+            ParkingBoxAreaDto parkingBoxAreaDto = new ParkingBoxAreaDto();
+            parkingBoxAreaDto.setBoxId(reqJson.getString("boxId"));
+            parkingBoxAreaDto.setDefaultArea(ParkingBoxAreaDto.DEFAULT_AREA_TRUE);
+            List<ParkingBoxAreaDto> parkingBoxAreaDtos = parkingBoxAreaV1InnerServiceSMOImpl.queryParkingBoxAreas(parkingBoxAreaDto);
+
+            if(ListUtil.isNull(parkingBoxAreaDtos)){
+                throw new CmdException("未包含停车场信息");
+            }
+            TempCarPayOrderDto tempCarPayOrderDto = new TempCarPayOrderDto();
+            tempCarPayOrderDto.setCarNum(reqJson.getString("carNum"));
+            tempCarPayOrderDto.setPaId(parkingBoxAreaDtos.get(0).getPaId());
+            ResultVo resultVo = barrierEngineImpl.getTempCarFeeOrder(tempCarPayOrderDto);
+            if(resultVo.getCode() != ResultVo.CODE_OK){
+                throw new CmdException(resultVo.getMsg());
+            }
+            String data = JSONObject.toJSONString(resultVo.getData());
+            JSONObject orderInfo = JSONObject.parseObject(data);
+            //JSONObject orderInfo = JSONObject.parseObject(resultVo.getData().toString());
+
+            tempCarPayOrderDto = new TempCarPayOrderDto();
+            tempCarPayOrderDto.setCarNum(reqJson.getString("carNum"));
+            tempCarPayOrderDto.setPaId(parkingBoxAreaDtos.get(0).getPaId());
+            tempCarPayOrderDto.setOrderId(orderInfo.getString("orderId"));
+            tempCarPayOrderDto.setAmount(Double.parseDouble(reqJson.getString("amount")));
+            tempCarPayOrderDto.setPayCharge(Double.parseDouble(reqJson.getString("payCharge")));
+            tempCarPayOrderDto.setPayType(reqJson.getString("payType"));
+            //处理优惠券
+            dealParkingCouponCar(reqJson,tempCarPayOrderDto);
+            //tempCarPayOrderDto.setMachineId(reqJson.getString("machineId"));
+            resultVo = barrierEngineImpl.notifyTempCarFeeOrder(tempCarPayOrderDto);
+            if(resultVo.getCode() != ResultVo.CODE_OK){
+                throw new CmdException(resultVo.getMsg());
+            }
+        }
+        ResultVo resultVo = barrierEngineImpl.customCarInOut(reqJson);
+       return resultVo;
+    }
+
+    private void dealParkingCouponCar(JSONObject reqJson,TempCarPayOrderDto tempCarPayOrderDto) {
+        //处理停车劵
+
+        if(!reqJson.containsKey("pccIds")) {
+            return ;
+        }
+
+        JSONArray pccIds = reqJson.getJSONArray("pccIds");
+        ParkingCouponCarPo parkingCouponCarPo = null;
+        ParkingCouponCarOrderPo parkingCouponCarOrderPo = null;
+        String pccId = "";
+        List<String> tmpPccIds = new ArrayList<>();
+        for(int pccIndex = 0;pccIndex <  pccIds.size();pccIndex++){
+            pccId = pccIds.getString(pccIndex);
+            tmpPccIds.add(pccId);
+            parkingCouponCarPo = new ParkingCouponCarPo();
+            parkingCouponCarPo.setPccId(pccId);
+            parkingCouponCarPo.setState(ParkingCouponCarDto.STATE_FINISH);
+            parkingCouponCarV1InnerServiceSMOImpl.updateParkingCouponCar(parkingCouponCarPo);
+
+            parkingCouponCarOrderPo = new ParkingCouponCarOrderPo();
+            parkingCouponCarOrderPo.setOrderId(GenerateCodeFactory.getGeneratorId("11"));
+            parkingCouponCarOrderPo.setCarNum(reqJson.getString("carNum"));
+            parkingCouponCarOrderPo.setCarOutId("-1");
+            parkingCouponCarOrderPo.setCommunityId(reqJson.getString("communityId"));
+            parkingCouponCarOrderPo.setMachineId(StringUtil.isEmpty(reqJson.getString("machineId"))?"-1":reqJson.getString("machineId"));
+            parkingCouponCarOrderPo.setMachineName("未知");
+            parkingCouponCarOrderPo.setPaId(reqJson.getString("paId"));
+            parkingCouponCarOrderPo.setPccId(pccId);
+            parkingCouponCarOrderPo.setRemark("pc端支付停车劵抵扣");
+
+            parkingCouponCarOrderV1InnerServiceSMOImpl.saveParkingCouponCarOrder(parkingCouponCarOrderPo);
+        }
+
+        tempCarPayOrderDto.setPccIds(tmpPccIds.toArray(new String[tmpPccIds.size()]));
+    }
+
 
 }

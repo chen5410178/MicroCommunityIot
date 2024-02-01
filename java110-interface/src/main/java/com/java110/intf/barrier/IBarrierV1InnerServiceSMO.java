@@ -15,6 +15,8 @@
  */
 package com.java110.intf.barrier;
 
+import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
 import com.java110.dto.barrier.BarrierDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.barrier.BarrierPo;
@@ -39,13 +41,13 @@ public interface IBarrierV1InnerServiceSMO {
 
 
     @RequestMapping(value = "/saveBarrier", method = RequestMethod.POST)
-    public int saveBarrier(@RequestBody  BarrierPo barrierPo);
+     int saveBarrier(@RequestBody  BarrierPo barrierPo);
 
     @RequestMapping(value = "/updateBarrier", method = RequestMethod.POST)
-    public int updateBarrier(@RequestBody  BarrierPo barrierPo);
+     int updateBarrier(@RequestBody  BarrierPo barrierPo);
 
     @RequestMapping(value = "/deleteBarrier", method = RequestMethod.POST)
-    public int deleteBarrier(@RequestBody  BarrierPo barrierPo);
+     int deleteBarrier(@RequestBody  BarrierPo barrierPo);
 
     /**
      * <p>查询小区楼信息</p>
@@ -68,4 +70,10 @@ public interface IBarrierV1InnerServiceSMO {
 
     @RequestMapping(value = "/queryBoxMachines", method = RequestMethod.POST)
     List<BarrierDto> queryBoxMachines(@RequestBody BarrierDto machineDto);
+
+    @RequestMapping(value = "/openDoor", method = RequestMethod.POST)
+    ResultVo openDoor(@RequestBody JSONObject reqJson);
+
+    @RequestMapping(value = "/closeDoor", method = RequestMethod.POST)
+    ResultVo closeDoor(@RequestBody JSONObject reqJson);
 }

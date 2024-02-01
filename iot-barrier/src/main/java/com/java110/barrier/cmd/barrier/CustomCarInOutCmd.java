@@ -31,6 +31,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.fee.TempCarPayOrderDto;
@@ -139,7 +140,7 @@ public class CustomCarInOutCmd extends Cmd {
             parkingBoxAreaDto.setDefaultArea(ParkingBoxAreaDto.DEFAULT_AREA_TRUE);
             List<ParkingBoxAreaDto> parkingBoxAreaDtos = parkingBoxAreaV1InnerServiceSMOImpl.queryParkingBoxAreas(parkingBoxAreaDto);
 
-            if(parkingBoxAreaDtos == null  || parkingBoxAreaDtos.size()< 1){
+            if(ListUtil.isNull(parkingBoxAreaDtos)){
                 throw new CmdException("未包含停车场信息");
             }
             TempCarPayOrderDto tempCarPayOrderDto = new TempCarPayOrderDto();
@@ -168,8 +169,8 @@ public class CustomCarInOutCmd extends Cmd {
                 throw new CmdException(resultVo.getMsg());
             }
         }
-        ResponseEntity<String> responseEntity = barrierEngineImpl.customCarInOut(reqJson);
-        cmdDataFlowContext.setResponseEntity(responseEntity);
+        ResultVo resultVo = barrierEngineImpl.customCarInOut(reqJson);
+        cmdDataFlowContext.setResponseEntity(ResultVo.createResponseEntity(resultVo));
     }
 
     private void dealParkingCouponCar(JSONObject reqJson,TempCarPayOrderDto tempCarPayOrderDto) {

@@ -15,6 +15,8 @@
  */
 package com.java110.intf.barrier;
 
+import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.carInout.CarInoutPo;
@@ -76,4 +78,8 @@ public interface ICarInoutV1InnerServiceSMO {
 
     @RequestMapping(value = "/hasOpenDoorError", method = RequestMethod.POST)
     List<CarInoutDto> hasOpenDoorError(@RequestBody CarInoutDto tmpCarInoutDto);
+
+
+    @RequestMapping(value = "/carInout", method = RequestMethod.POST)
+    ResultVo carInout(@RequestBody JSONObject reqJson);
 }

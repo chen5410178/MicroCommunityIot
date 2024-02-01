@@ -16,8 +16,12 @@
 package com.java110.barrier.smo.impl;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.barrier.dao.IBarrierV1ServiceDao;
+import com.java110.barrier.engine.IBarrierEngine;
+import com.java110.bean.ResultVo;
 import com.java110.bean.dto.PageDto;
+import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.barrier.IBarrierV1InnerServiceSMO;
 import com.java110.dto.barrier.BarrierDto;
@@ -42,7 +46,8 @@ public class BarrierV1InnerServiceSMOImpl  implements IBarrierV1InnerServiceSMO 
 
     @Autowired
     private IBarrierV1ServiceDao barrierV1ServiceDaoImpl;
-
+    @Autowired
+    private IBarrierEngine barrierEngineImpl;
 
     @Override
     public int saveBarrier(@RequestBody  BarrierPo barrierPo) {
@@ -89,6 +94,33 @@ public class BarrierV1InnerServiceSMOImpl  implements IBarrierV1InnerServiceSMO 
         List<BarrierDto> barriers = BeanConvertUtil.covertBeanList(barrierV1ServiceDaoImpl.queryBoxMachines(BeanConvertUtil.beanCovertMap(machineDto)), BarrierDto.class);
 
         return barriers;
+    }
+
+    @Override
+    public ResultVo openDoor(@RequestBody JSONObject reqJson) {
+        BarrierDto barrierDto = new BarrierDto();
+        barrierDto.setMachineCode(reqJson.getString("machineCode"));
+        barrierDto.setCommunityId(reqJson.getString("communityId"));
+        List<BarrierDto> barrierDtos = queryBarriers(barrierDto);
+
+        Assert.listOnlyOne(barrierDtos, "摄像头不存在");
+
+        ResultVo resultVo = barrierEngineImpl.openDoor(barrierDtos.get(0),null, reqJson);
+        return resultVo;
+    }
+
+    @Override
+    public ResultVo closeDoor(JSONObject reqJson) {
+
+        BarrierDto barrierDto = new BarrierDto();
+        barrierDto.setMachineCode(reqJson.getString("machineCode"));
+        barrierDto.setCommunityId(reqJson.getString("communityId"));
+        List<BarrierDto> barrierDtos = queryBarriers(barrierDto);
+
+        Assert.listOnlyOne(barrierDtos, "摄像头不存在");
+
+        ResultVo resultVo = barrierEngineImpl.closeDoor(barrierDtos.get(0),null, reqJson);
+        return resultVo;
     }
 
 }

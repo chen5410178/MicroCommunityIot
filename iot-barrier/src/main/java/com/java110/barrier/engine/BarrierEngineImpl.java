@@ -113,7 +113,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
     }
 
     @Override
-    public ResponseEntity<String> customCarInOut(JSONObject reqJson) {
+    public ResultVo customCarInOut(JSONObject reqJson) {
 
 
         BarrierDto machineDto = new BarrierDto();
@@ -138,7 +138,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
         parkingAreaTextDto.setCarNum(reqJson.getString("carNum"));
         resultDto = openDoor(machineDtos.get(0), parkingAreaTextDto, reqJson);
 
-        return ResultVo.createResponseEntity(resultDto);
+        return resultDto;
     }
 
     public ResultVo openDoor(BarrierDto machineDto, ParkingAreaTextDto parkingAreaTextDto, JSONObject paramObj) {
