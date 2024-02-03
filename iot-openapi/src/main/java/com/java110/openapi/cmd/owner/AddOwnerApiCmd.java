@@ -493,5 +493,7 @@ public class AddOwnerApiCmd extends Cmd {
                 reqJson.getString("memberId"),
                 reqJson.getString("communityId"),
                 "10000");
+
+        ownerV1InnerServiceSMOImpl.syncAccessControl(ownerPo.getMemberId());
     }
 }

@@ -114,5 +114,7 @@ public class DeleteOwnerApiCmd extends Cmd {
             ownerV1InnerServiceSMOImpl.deleteOwner(ownerPo);
         }
 
+        ownerV1InnerServiceSMOImpl.syncDeleteAccessControl(ownerDtos.get(0).getMemberId());
+
     }
 }

@@ -7,4 +7,10 @@ public interface ISyncAccessControlBMO {
      * @param memberId
      */
     void syncAccessControl(String memberId);
+
+    /**
+     * 同步删除人脸门禁
+     * @param memberId
+     */
+    void syncDeleteAccessControl(String memberId);
 }

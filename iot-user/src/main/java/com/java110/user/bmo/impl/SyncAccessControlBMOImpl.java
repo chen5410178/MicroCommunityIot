@@ -81,8 +81,8 @@ public class SyncAccessControlBMOImpl implements ISyncAccessControlBMO {
                 accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
                 accessControlFacePo.setMessage("待下发到门禁");
                 accessControlFacePo.setFacePath(ownerDto.getUrl());
+                accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
             }
-            accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
             return;
         }
         // todo 查询业主房屋
@@ -143,5 +143,23 @@ public class SyncAccessControlBMOImpl implements ISyncAccessControlBMO {
                 accessControlFaceV1InnerServiceSMOImpl.saveAccessControlFace(accessControlFacePo);
             }
         }
+    }
+
+    @Override
+    public void syncDeleteAccessControl(String memberId) {
+        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
+        accessControlFaceDto.setPersonId(memberId);
+        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
+        AccessControlFacePo accessControlFacePo = null;
+        if (ListUtil.isNull(accessControlFaceDtos)) {
+            return;
+        }
+        for (AccessControlFaceDto tmpAccessControlFaceDto : accessControlFaceDtos) {
+            accessControlFacePo = BeanConvertUtil.covertBean(tmpAccessControlFaceDto, AccessControlFacePo.class);
+            accessControlFacePo.setMfId(tmpAccessControlFaceDto.getMfId());
+            accessControlFaceV1InnerServiceSMOImpl.deleteAccessControlFace(accessControlFacePo);
+
+        }
+
     }
 }

@@ -17,6 +17,7 @@ import com.java110.core.utils.BeanConvertUtil;
 import com.java110.doc.annotation.*;
 import com.java110.intf.community.IRoomInnerServiceSMO;
 import com.java110.intf.user.*;
+import com.java110.user.bmo.ISyncAccessControlBMO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -61,6 +62,9 @@ public class DeleteOwnerCmd extends Cmd {
 
     @Autowired
     private IRoomInnerServiceSMO roomInnerServiceSMOImpl;
+
+    @Autowired
+    private ISyncAccessControlBMO syncAccessControlBMOImpl;
 
 
     @Override
@@ -112,6 +116,8 @@ public class DeleteOwnerCmd extends Cmd {
         if (flag < 1) {
             throw new CmdException("删除失败");
         }
+
+        syncAccessControlBMOImpl.syncDeleteAccessControl(ownerPo.getMemberId());
 
     }
 }

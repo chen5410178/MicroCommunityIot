@@ -22,6 +22,7 @@ import com.java110.bean.po.owner.OwnerPo;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.user.IOwnerV1InnerServiceSMO;
+import com.java110.user.bmo.ISyncAccessControlBMO;
 import com.java110.user.dao.IOwnerV1ServiceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +45,9 @@ public class OwnerV1InnerServiceSMOImpl  implements IOwnerV1InnerServiceSMO {
 
     @Autowired
     private IOwnerV1ServiceDao ownerV1ServiceDaoImpl;
+
+    @Autowired
+    private ISyncAccessControlBMO syncAccessControlBMOImpl;
 
 
     @Override
@@ -114,6 +118,18 @@ public class OwnerV1InnerServiceSMOImpl  implements IOwnerV1InnerServiceSMO {
         List<OwnerDto> owners = BeanConvertUtil.covertBeanList(ownerV1ServiceDaoImpl.queryRoomOwners(BeanConvertUtil.beanCovertMap(ownerDto)), OwnerDto.class);
 
         return owners;
+    }
+
+    @Override
+    public int syncAccessControl(@RequestBody String memberId) {
+        syncAccessControlBMOImpl.syncAccessControl(memberId);
+        return 1;
+    }
+
+    @Override
+    public int syncDeleteAccessControl(@RequestBody String memberId) {
+        syncAccessControlBMOImpl.syncDeleteAccessControl(memberId);
+        return 1;
     }
 
 }
