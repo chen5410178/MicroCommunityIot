@@ -137,6 +137,7 @@ public class AddCommunityApiCmd extends Cmd {
 
         StoreDto storeDto = new StoreDto();
         storeDto.setStoreId(reqJson.getString("storeId"));
+        storeDto.setStatusCd("");
 
         List<StoreDto> storeDtos = storeV1InnerServiceSMOImpl.queryStores(storeDto);
 
@@ -242,6 +243,7 @@ public class AddCommunityApiCmd extends Cmd {
         //todo 查询小区是否存在
         CommunityDto communityDto = new CommunityDto();
         communityDto.setCommunityId(reqJson.getString("communityId"));
+        communityDto.setStatusCd("");
         List<CommunityDto> communityDtos = communityV1InnerServiceSMOImpl.queryCommunitys(communityDto);
 
         CommunityPo communityPo = new CommunityPo();

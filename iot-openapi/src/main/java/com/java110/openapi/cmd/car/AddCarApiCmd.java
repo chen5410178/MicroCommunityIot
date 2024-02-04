@@ -112,6 +112,7 @@ public class AddCarApiCmd extends Cmd {
 
         OwnerCarDto ownerCarDto = new OwnerCarDto();
         ownerCarDto.setMemberId(car.getString("carMemberId"));
+        ownerCarDto.setStatusCd("");
         List<OwnerCarDto> ownerCarDtos = ownerCarV1InnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
 
 
@@ -144,18 +145,21 @@ public class AddCarApiCmd extends Cmd {
 
         ParkingAreaDto parkingAreaDto = new ParkingAreaDto();
         parkingAreaDto.setPaId(car.getString("paId"));
+        parkingAreaDto.setStatusCd("");
         //查询停车场
         List<ParkingAreaDto> parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
-        if (ListUtil.isNull(parkingAreaDtos)) {
-
-            ParkingAreaPo parkingAreaPo = new ParkingAreaPo();
-            parkingAreaPo.setCommunityId(communityId);
-            parkingAreaPo.setNum(car.getString("paNum"));
-            parkingAreaPo.setPaId(car.getString("paId"));
-            parkingAreaPo.setTypeCd("1001");
-            parkingAreaPo.setRemark("导入数据");
-            parkingAreaV1InnerServiceSMOImpl.saveParkingArea(parkingAreaPo);
+        ParkingAreaPo parkingAreaPo = new ParkingAreaPo();
+        parkingAreaPo.setCommunityId(communityId);
+        parkingAreaPo.setNum(car.getString("paNum"));
+        parkingAreaPo.setPaId(car.getString("paId"));
+        parkingAreaPo.setTypeCd("1001");
+        parkingAreaPo.setRemark("导入数据");
+        if (!ListUtil.isNull(parkingAreaDtos)) {
+            parkingAreaV1InnerServiceSMOImpl.updateParkingArea(parkingAreaPo);
+            return;
         }
+        parkingAreaV1InnerServiceSMOImpl.saveParkingArea(parkingAreaPo);
+
     }
 
     /**
@@ -168,20 +172,23 @@ public class AddCarApiCmd extends Cmd {
     private void toSaveParkingSpace(JSONObject car, ICmdDataFlowContext context, String communityId) {
         ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
         parkingSpaceDto.setPsId(car.getString("psId"));
+        parkingSpaceDto.setStatusCd("");
         //查询停车位
         List<ParkingSpaceDto> parkingSpaceDtos = parkingSpaceV1InnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
-
-        if (ListUtil.isNull(parkingSpaceDtos)) {
-            ParkingSpacePo parkingSpacePo = new ParkingSpacePo();
-            parkingSpacePo.setCommunityId(communityId);
-            parkingSpacePo.setNum(car.getString("psNum"));
-            parkingSpacePo.setPaId(car.getString("paId"));
-            parkingSpacePo.setParkingType(ParkingSpaceDto.TYPE_CD_COMMON);
-            parkingSpacePo.setState(ParkingSpaceDto.STATE_HIRE);
-            parkingSpacePo.setPsId(car.getString("psId"));
-            parkingSpacePo.setRemark("导入数据");
-            parkingSpaceV1InnerServiceSMOImpl.saveParkingSpace(parkingSpacePo);
+        ParkingSpacePo parkingSpacePo = new ParkingSpacePo();
+        parkingSpacePo.setCommunityId(communityId);
+        parkingSpacePo.setNum(car.getString("psNum"));
+        parkingSpacePo.setPaId(car.getString("paId"));
+        parkingSpacePo.setParkingType(ParkingSpaceDto.TYPE_CD_COMMON);
+        parkingSpacePo.setState(ParkingSpaceDto.STATE_HIRE);
+        parkingSpacePo.setPsId(car.getString("psId"));
+        parkingSpacePo.setRemark("导入数据");
+        if (!ListUtil.isNull(parkingSpaceDtos)) {
+            parkingSpaceV1InnerServiceSMOImpl.updateParkingSpace(parkingSpacePo);
+            return;
         }
+        parkingSpaceV1InnerServiceSMOImpl.saveParkingSpace(parkingSpacePo);
+
     }
 
 
@@ -189,20 +196,8 @@ public class AddCarApiCmd extends Cmd {
 
         OwnerDto ownerDto = new OwnerDto();
         ownerDto.setMemberId(reqJson.getString("memberId"));
-
+        ownerDto.setStatusCd("");
         List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
-
-        if (!ListUtil.isNull(ownerDtos)) {
-            return;
-        }
-
-        /**
-         *   Assert.hasKeyAndValue(reqJson, "communityId", "未包含communityId");
-         *         Assert.hasKeyAndValue(reqJson, "ownerId", "未包含ownerId");
-         *         Assert.hasKeyAndValue(reqJson, "name", "未包含name");
-         *         Assert.hasKeyAndValue(reqJson, "link", "未包含link");
-         */
-
         OwnerPo ownerPo = new OwnerPo();
         ownerPo.setUserId("-1");
         ownerPo.setAge("1");
@@ -213,12 +208,24 @@ public class AddCarApiCmd extends Cmd {
         ownerPo.setMemberId(reqJson.getString("ownerId"));
         ownerPo.setName(reqJson.getString("name"));
         ownerPo.setOwnerId(reqJson.getString("ownerId")); //业主 所以和成员ID需要一样
+
+        if (!ListUtil.isNull(ownerDtos)) {
+            ownerV1InnerServiceSMOImpl.updateOwner(ownerPo);
+            return;
+        }
+
         ownerPo.setOwnerTypeCd(OwnerDto.OWNER_TYPE_CD_OWNER);
         ownerPo.setRemark("第三方导入系统同步");
         ownerPo.setState("2000");
         ownerPo.setAddress("无");
         ownerPo.setOwnerFlag(OwnerDto.OWNER_FLAG_TRUE);
 
+        /**
+         *   Assert.hasKeyAndValue(reqJson, "communityId", "未包含communityId");
+         *         Assert.hasKeyAndValue(reqJson, "ownerId", "未包含ownerId");
+         *         Assert.hasKeyAndValue(reqJson, "name", "未包含name");
+         *         Assert.hasKeyAndValue(reqJson, "link", "未包含link");
+         */
         ownerV1InnerServiceSMOImpl.saveOwner(ownerPo);
 
     }

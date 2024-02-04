@@ -211,6 +211,7 @@ public class AddOwnerApiCmd extends Cmd {
 
         OwnerCarDto ownerCarDto = new OwnerCarDto();
         ownerCarDto.setMemberId(car.getString("carMemberId"));
+        ownerCarDto.setStatusCd("");
         List<OwnerCarDto> ownerCarDtos = ownerCarV1InnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
 
 
@@ -243,18 +244,21 @@ public class AddOwnerApiCmd extends Cmd {
 
         ParkingAreaDto parkingAreaDto = new ParkingAreaDto();
         parkingAreaDto.setPaId(car.getString("paId"));
+        parkingAreaDto.setStatusCd("");
         //查询停车场
         List<ParkingAreaDto> parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
-        if (ListUtil.isNull(parkingAreaDtos)) {
-
-            ParkingAreaPo parkingAreaPo = new ParkingAreaPo();
-            parkingAreaPo.setCommunityId(communityId);
-            parkingAreaPo.setNum(car.getString("paNum"));
-            parkingAreaPo.setPaId(car.getString("paId"));
-            parkingAreaPo.setTypeCd("1001");
-            parkingAreaPo.setRemark("导入数据");
-            parkingAreaV1InnerServiceSMOImpl.saveParkingArea(parkingAreaPo);
+        ParkingAreaPo parkingAreaPo = new ParkingAreaPo();
+        parkingAreaPo.setCommunityId(communityId);
+        parkingAreaPo.setNum(car.getString("paNum"));
+        parkingAreaPo.setPaId(car.getString("paId"));
+        parkingAreaPo.setTypeCd("1001");
+        parkingAreaPo.setRemark("导入数据");
+        if (!ListUtil.isNull(parkingAreaDtos)) {
+            parkingAreaV1InnerServiceSMOImpl.updateParkingArea(parkingAreaPo);
+            return ;
         }
+        parkingAreaV1InnerServiceSMOImpl.saveParkingArea(parkingAreaPo);
+
     }
 
     /**
@@ -267,20 +271,24 @@ public class AddOwnerApiCmd extends Cmd {
     private void toSaveParkingSpace(JSONObject car, ICmdDataFlowContext context, String communityId) {
         ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
         parkingSpaceDto.setPsId(car.getString("psId"));
+        parkingSpaceDto.setStatusCd("");
         //查询停车位
         List<ParkingSpaceDto> parkingSpaceDtos = parkingSpaceV1InnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
 
-        if (ListUtil.isNull(parkingSpaceDtos)) {
-            ParkingSpacePo parkingSpacePo = new ParkingSpacePo();
-            parkingSpacePo.setCommunityId(communityId);
-            parkingSpacePo.setNum(car.getString("psNum"));
-            parkingSpacePo.setPaId(car.getString("paId"));
-            parkingSpacePo.setParkingType(ParkingSpaceDto.TYPE_CD_COMMON);
-            parkingSpacePo.setState(ParkingSpaceDto.STATE_HIRE);
-            parkingSpacePo.setPsId(car.getString("psId"));
-            parkingSpacePo.setRemark("导入数据");
-            parkingSpaceV1InnerServiceSMOImpl.saveParkingSpace(parkingSpacePo);
+        ParkingSpacePo parkingSpacePo = new ParkingSpacePo();
+        parkingSpacePo.setCommunityId(communityId);
+        parkingSpacePo.setNum(car.getString("psNum"));
+        parkingSpacePo.setPaId(car.getString("paId"));
+        parkingSpacePo.setPsId(car.getString("psId"));
+        parkingSpacePo.setRemark("导入数据");
+        if (!ListUtil.isNull(parkingSpaceDtos)) {
+            parkingSpaceV1InnerServiceSMOImpl.updateParkingSpace(parkingSpacePo);
+            return ;
         }
+        parkingSpacePo.setParkingType(ParkingSpaceDto.TYPE_CD_COMMON);
+        parkingSpacePo.setState(ParkingSpaceDto.STATE_HIRE);
+        parkingSpaceV1InnerServiceSMOImpl.saveParkingSpace(parkingSpacePo);
+
     }
 
     /**
@@ -347,26 +355,29 @@ public class AddOwnerApiCmd extends Cmd {
 
         roomDto = new RoomDto();
         roomDto.setRoomId(room.getString("roomId"));
+        roomDto.setStatusCd("");
         roomDtos = roomV1InnerServiceSMOImpl.queryRooms(roomDto);
 
-        if (ListUtil.isNull(roomDtos)) {
-            roomPo = new RoomPo();
-            roomPo.setState(RoomDto.STATE_SELL);
-            roomPo.setRoomId(room.getString("roomId"));
+        roomPo = new RoomPo();
+        roomPo.setRoomId(room.getString("roomId"));
+        roomPo.setSection("1");
+        roomPo.setCommunityId(reqJson.getString("communityId"));
+        roomPo.setRoomNum(room.getString("roomNum"));
+        roomPo.setRoomSubType(RoomDto.ROOM_SUB_TYPE_PERSON);
+        roomPo.setRoomType(RoomDto.ROOM_TYPE_ROOM);
+        roomPo.setUnitId(room.getString("unitId"));
+        roomPo.setRemark("房产导入");
+        roomPo.setUserId(CmdContextUtils.getUserId(context));
+        if (!ListUtil.isNull(roomDtos)) {
+            roomV1InnerServiceSMOImpl.updateRoom(roomPo);
+        }else{
             roomPo.setApartment("10102");
-            roomPo.setSection("1");
-            roomPo.setCommunityId(reqJson.getString("communityId"));
+            roomPo.setState(RoomDto.STATE_SELL);
             roomPo.setBuiltUpArea("1");
             roomPo.setFeeCoefficient("1.00");
             roomPo.setLayer("1");
             roomPo.setRoomArea("1");
-            roomPo.setRoomNum(room.getString("roomNum"));
             roomPo.setRoomRent("0");
-            roomPo.setRoomSubType(RoomDto.ROOM_SUB_TYPE_PERSON);
-            roomPo.setRoomType(RoomDto.ROOM_TYPE_ROOM);
-            roomPo.setUnitId(room.getString("unitId"));
-            roomPo.setRemark("房产导入");
-            roomPo.setUserId(CmdContextUtils.getUserId(context));
             roomV1InnerServiceSMOImpl.saveRoom(roomPo);
         }
 
@@ -395,13 +406,11 @@ public class AddOwnerApiCmd extends Cmd {
         UnitDto unitDto = new UnitDto();
         unitDto.setCommunityId(communityId);
         unitDto.setUnitId(room.getString("unitId"));
+        unitDto.setStatusCd("");
         List<UnitDto> unitDtos = unitV1InnerServiceSMOImpl.queryUnits(unitDto);
         UnitPo unitPo = null;
 
         int flag = 0;
-        if (!ListUtil.isNull(unitDtos)) {
-            return;
-        }
         unitPo = new UnitPo();
         unitPo.setFloorId(room.getString("floorId"));
         unitPo.setLayerCount("33");
@@ -411,6 +420,11 @@ public class AddOwnerApiCmd extends Cmd {
         unitPo.setUnitNum(room.getString("unitNum"));
         unitPo.setRemark("第三方系统同步");
         unitPo.setUserId(CmdContextUtils.getUserId(context));
+        if (!ListUtil.isNull(unitDtos)) {
+            flag = unitV1InnerServiceSMOImpl.updateUnit(unitPo);
+            return;
+        }
+
         flag = unitV1InnerServiceSMOImpl.saveUnit(unitPo);
 
         if (flag < 1) {
@@ -422,22 +436,24 @@ public class AddOwnerApiCmd extends Cmd {
 
         FloorDto floorDto = new FloorDto();
         floorDto.setFloorId(room.getString("floorId"));
+        floorDto.setStatusCd("");
         List<FloorDto> floorDtos = floorV1InnerServiceSMOImpl.queryFloors(floorDto);
 
-
-        if (!ListUtil.isNull(floorDtos)) {
-            return;
-        }
-        int flag = 0;
         FloorPo floorPo = new FloorPo();
         floorPo.setbId("-1");
         floorPo.setCommunityId(communityId);
-        floorPo.setFloorArea("1");
         floorPo.setFloorId(room.getString("floorId"));
         floorPo.setFloorNum(room.getString("floorNum"));
         floorPo.setName(room.getString("floorNum") + "栋");
         floorPo.setRemark("房产导入");
         floorPo.setUserId(CmdContextUtils.getUserId(context));
+
+        if (!ListUtil.isNull(floorDtos)) {
+            floorV1InnerServiceSMOImpl.updateFloor(floorPo);
+            return;
+        }
+        int flag = 0;
+        floorPo.setFloorArea("1");
         floorPo.setSeq(1);
         flag = floorV1InnerServiceSMOImpl.saveFloor(floorPo);
         if (flag < 1) {
@@ -462,6 +478,7 @@ public class AddOwnerApiCmd extends Cmd {
 
         OwnerDto ownerDto = new OwnerDto();
         ownerDto.setMemberId(reqJson.getString("memberId"));
+        ownerDto.setStatusCd("");
 
         List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
 
