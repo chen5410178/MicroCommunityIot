@@ -195,15 +195,21 @@ public class CustomMqttMsgThread implements Runnable {
             return;
         }
 
-        IMqttNotifyBarrierV1InnerServiceSMO mqttNotifyBarrierV1InnerServiceSMOImpl =
-                ApplicationContextFactory.getBean("mqttNotifyBarrierV1InnerServiceSMOImpl",
+
+        //todo 检查 配置的topic 中是否存在sn
+        if (!manufacturerAttrDto.getValue().contains("SN") && manufacturerAttrDto.getValue().equals(mqttMsgDto.getTopic())) {
+            IMqttNotifyBarrierV1InnerServiceSMO mqttNotifyBarrierV1InnerServiceSMOImpl =
+                    ApplicationContextFactory.getBean("mqttNotifyBarrierV1InnerServiceSMOImpl",
+                            IMqttNotifyBarrierV1InnerServiceSMO.class);
+            if (mqttNotifyBarrierV1InnerServiceSMOImpl == null) {
+                mqttNotifyBarrierV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(IMqttNotifyBarrierV1InnerServiceSMO.class.getName(),
                         IMqttNotifyBarrierV1InnerServiceSMO.class);
-        if (mqttNotifyBarrierV1InnerServiceSMOImpl == null) {
-            mqttNotifyBarrierV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(IMqttNotifyBarrierV1InnerServiceSMO.class.getName(),
-                    IMqttNotifyBarrierV1InnerServiceSMO.class);
+            }
+
+            mqttNotifyBarrierV1InnerServiceSMOImpl.mqttMessageArrived(new BarrierResultDto(manufacturerAttrDto.getHmId(), mqttMsgDto.getTopic(), mqttMsgDto.getMsg(), mqttMsgDto.getTaskId()));
+            return;
         }
 
-        mqttNotifyBarrierV1InnerServiceSMOImpl.mqttMessageArrived(new BarrierResultDto(manufacturerAttrDto.getHmId(), mqttMsgDto.getTopic(), mqttMsgDto.getMsg(), mqttMsgDto.getTaskId()));
 
 
     }
