@@ -6,7 +6,7 @@
 		<view class="undo-menu flex justify-start flex-wrap">
 			<view class="menu-item" v-for="(item,index) in machines" :key="index" @click="_toPage(item)">
 				<view style="position: relative;">
-					<image :src="item.icon"></image>
+					<image src="/static/images/ac.png"></image>
 					<view><text>{{item.name}}</text></view>
 				</view>
 			</view>
@@ -25,21 +25,17 @@
 		methods:{
 			_initData:function(){
 				this.machines = [{
-					icon: '/static/image/index_apply_audit.png',
 					name: '大门',
-					url: '/pages/resource/purchaseApplyAuditOrders',
+					machineCode: '/pages/resource/purchaseApplyAuditOrders',
 				}, {
-					icon: '/static/image/index_itemout_audit.png',
 					name: '大门2',
-					url: '/pages/resource/itemOutAuditOrders',
+					machineCode: '/pages/resource/itemOutAuditOrders',
 				}, {
-					icon: '/static/image/index_allocation.png',
 					name: '大门3',
-					url: '/pages/resource/allocationStorehouseAuditOrders',
+					machineCode: '/pages/resource/allocationStorehouseAuditOrders',
 				}, {
-					icon: '/static/image/index_complaint.png',
 					name: '大门4',
-					url: '/pages/itemRelease/itemRelease',
+					machineCode: '/pages/itemRelease/itemRelease',
 				}]
 			},
 			_toPage: function(_item) {

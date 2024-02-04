@@ -159,7 +159,7 @@ public class AddCommunityApiCmd extends Cmd {
         //添加用户
         UserPo userPo = new UserPo();
         userPo.setTel(reqJson.getString("tel"));
-        userPo.setName(reqJson.getString("name"));
+        userPo.setName(reqJson.getString("storeName"));
         userPo.setAddress(reqJson.getString("address"));
         userPo.setUserId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_userId));
         userPo.setEmail("无");
