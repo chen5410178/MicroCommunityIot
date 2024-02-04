@@ -15,7 +15,7 @@
                 conditions: {
                     crcId: '',
                     ruleId: '',
-                    communityId: vc.getCurrentCommunity().communityId,
+                    communityId: '',
                     quantity: '',
                     chargeType: '',
                 }
@@ -50,6 +50,8 @@
 
                 $that.chargeRuleFeeInfo.conditions.page = _page;
                 $that.chargeRuleFeeInfo.conditions.row = _rows;
+                $that.chargeRuleFeeInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
+                
                 let param = {
                     params: $that.chargeRuleFeeInfo.conditions
                 };
