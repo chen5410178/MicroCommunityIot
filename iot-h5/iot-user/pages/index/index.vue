@@ -3,12 +3,15 @@
 		<view>
 			<index-ads></index-ads>
 		</view>
-
+		<view>
+			<index-ac ref="indexAcRef"></index-ac>
+		</view>
 	</view>
 </template>
 
 <script>
-	import indexAds from '@/components/index/index-ads.vue'
+	import indexAds from '@/components/index/index-ads.vue';
+	import indexAc from '@/components/index/index-ac.vue';
 
 	export default {
 		data() {
@@ -18,6 +21,7 @@
 		},
 		components: {
 			indexAds,
+			indexAc
 		},
 
 		/**
@@ -25,7 +29,7 @@
 		 */
 		onLoad: function(options) {
 
-			//查询目录
+			this._initIndexData();
 		},
 
 		onShareAppMessage: function() {
@@ -45,7 +49,12 @@
 
 		},
 		methods: {
-
+			_initIndexData:function(){
+				let _that = this;
+				setTimeout(function(){
+					_that.$refs.indexAcRef._initData();
+				},1000)
+			}
 		}
 	};
 </script>

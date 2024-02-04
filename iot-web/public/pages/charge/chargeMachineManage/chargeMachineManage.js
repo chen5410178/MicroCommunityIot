@@ -16,7 +16,7 @@
                     machineName: '',
                     machineCode: '',
                     implBean: '',
-                    communityId: vc.getCurrentCommunity().communityId
+                    communityId: ''
                 },
                 chargeTypes: []
             }
@@ -41,7 +41,9 @@
 
                 $that.chargeMachineManageInfo.conditions.page = _page;
                 $that.chargeMachineManageInfo.conditions.row = _rows;
-                var param = {
+                $that.chargeMachineManageInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
+                
+                let param = {
                     params: $that.chargeMachineManageInfo.conditions
                 };
 
@@ -49,10 +51,10 @@
                 vc.http.apiGet('/chargeMachine.listChargeMachine',
                     param,
                     function(json, res) {
-                        var _chargeMachineManageInfo = JSON.parse(json);
-                        $that.chargeMachineManageInfo.total = _chargeMachineManageInfo.total;
-                        $that.chargeMachineManageInfo.records = _chargeMachineManageInfo.records;
-                        $that.chargeMachineManageInfo.chargeMachines = _chargeMachineManageInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.chargeMachineManageInfo.total = _json.total;
+                        $that.chargeMachineManageInfo.records = _json.records;
+                        $that.chargeMachineManageInfo.chargeMachines = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.chargeMachineManageInfo.records,
                             currentPage: _page
