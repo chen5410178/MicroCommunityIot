@@ -66,7 +66,7 @@
             and t.room_id= #{roomId}
         </if>
         <if test="roomIds !=null ">
-            and f.room_id in
+            and t.room_id in
             <foreach collection="roomIds" item="item" index="index" open="(" close=")" separator=",">
                 #{item}
             </foreach>
@@ -215,7 +215,7 @@
             and t.room_id= #{roomId}
         </if>
         <if test="roomIds !=null ">
-            and f.room_id in
+            and t.room_id in
             <foreach collection="roomIds" item="item" index="index" open="(" close=")" separator=",">
                 #{item}
             </foreach>
