@@ -3,8 +3,11 @@
 		<view>
 			<index-ads></index-ads>
 		</view>
-		<view>
+		<view v-if="hasOwner == 'Y'">
 			<index-ac ref="indexAcRef"></index-ac>
+		</view>
+		<view v-if="hasOwner == 'N'">
+			<index-bind-room ref="indexBindRoomRef"></index-bind-room>
 		</view>
 	</view>
 </template>
@@ -12,16 +15,18 @@
 <script>
 	import indexAds from '@/components/index/index-ads.vue';
 	import indexAc from '@/components/index/index-ac.vue';
+	import indexBindRoom from '@/components/index-bind-room.vue';
 
 	export default {
 		data() {
 			return {
-
+				hasOwner:'N',// Y 是业主 N 不是  W 查询中
 			};
 		},
 		components: {
 			indexAds,
-			indexAc
+			indexAc,
+			indexBindRoom
 		},
 
 		/**
@@ -51,9 +56,12 @@
 		methods: {
 			_initIndexData:function(){
 				let _that = this;
-				setTimeout(function(){
-					_that.$refs.indexAcRef._initData();
-				},1000)
+				if(this.hasOwner == 'Y'){
+					setTimeout(function(){
+						_that.$refs.indexAcRef._initData();
+					},1000)
+				}
+				
 			}
 		}
 	};
