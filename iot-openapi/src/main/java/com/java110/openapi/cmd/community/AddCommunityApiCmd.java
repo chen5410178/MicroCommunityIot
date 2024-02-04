@@ -152,6 +152,29 @@ public class AddCommunityApiCmd extends Cmd {
 
         if (!ListUtil.isNull(storeDtos)) {
             storeV1InnerServiceSMOImpl.updateStore(storePo);
+            //todo 修改管理员名称
+            StoreStaffDto storeStaffDto = new StoreStaffDto();
+            storeStaffDto.setAdminFlag(StoreStaffDto.ADMIN_FLAG_Y);
+            storeStaffDto.setStoreId(reqJson.getString("storeId"));
+            List<StoreStaffDto> storeStaffDtos = storeUserV1InnerServiceSMOImpl.queryStoreStaffs(storeStaffDto);
+            if(ListUtil.isNull(storeStaffDtos)){
+                return;
+            }
+            StoreStaffPo storeUserPo = new StoreStaffPo();
+            storeUserPo.setStoreStaffId(storeStaffDtos.get(0).getStoreStaffId());
+            storeUserPo.setTel(reqJson.getString("tel"));
+            storeUserPo.setStaffName(reqJson.getString("storeName"));
+            storeUserV1InnerServiceSMOImpl.updateStoreStaff(storeUserPo);
+
+            UserPo userPo = new UserPo();
+            userPo.setTel(reqJson.getString("tel"));
+            userPo.setName(reqJson.getString("storeName"));
+            userPo.setAddress(reqJson.getString("address"));
+            userPo.setUserId(storeStaffDtos.get(0).getUserId());
+            userPo.setEmail("无");
+            userPo.setLevelCd(UserDto.LEVEL_CD_ADMIN);
+            userPo.setSex("1");
+            userV1InnerServiceSMOImpl.updateUser(userPo);
             return;
         }
 
@@ -180,7 +203,7 @@ public class AddCommunityApiCmd extends Cmd {
         storeUserPo.setStoreId(storePo.getStoreId());
         storeUserPo.setStaffId(userPo.getUserId());
         storeUserPo.setTel(reqJson.getString("tel"));
-        storeUserPo.setStaffName(reqJson.getString("name"));
+        storeUserPo.setStaffName(reqJson.getString("storeName"));
         flag = storeUserV1InnerServiceSMOImpl.saveStoreStaff(storeUserPo);
         if (flag < 1) {
             throw new CmdException("注册失败");
