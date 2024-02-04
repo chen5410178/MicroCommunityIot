@@ -2,6 +2,7 @@ package com.java110.charge.factory.lvcc;
 
 import com.java110.bean.ResultVo;
 import com.java110.charge.factory.IChargeFactoryAdapt;
+import com.java110.core.exception.CmdException;
 import com.java110.core.utils.BytesUtil;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
@@ -203,6 +204,17 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         String cmd = LvCCUtil.getCmd(data);
 
         logger.debug("设备 {} ，解析到 指令为 ：{}", chargeMachineDto.getMachineCode(), cmd);
+
+        //todo 查询设备是否在线
+        ChargeMachineDto tmpChargeMachineDto = new ChargeMachineDto();
+        tmpChargeMachineDto.setMachineId(chargeMachineDto.getMachineId());
+        tmpChargeMachineDto.setMachineCode(chargeMachineDto.getMachineCode());
+        List<ChargeMachineDto> chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(tmpChargeMachineDto);
+
+        if (ListUtil.isNull(chargeMachineDtos)) {
+            throw new CmdException("设备不存在");
+        }
+
 
         switch (cmd) {
             case LvCCUtil.CMD_REGISTER: //todo 注册
