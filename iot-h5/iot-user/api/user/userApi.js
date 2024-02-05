@@ -61,7 +61,7 @@ export function sendSmsCode(_tel, _that) {
 					duration: 3000
 				});
 				_that.codeMsg = res.data;
-				_that.timer(_that);
+				timer(_that);
 				resolve(res);
 			},
 			fail: function(res) {
