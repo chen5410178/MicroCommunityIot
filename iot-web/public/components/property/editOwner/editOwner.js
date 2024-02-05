@@ -20,6 +20,7 @@
                 ownerPhoto: '',
                 ownerPhotoUrl: '',
                 idCard: '',
+                cardNumber:'',
                 card: '',
                 videoPlaying: true,
                 mediaStreamTrack: null,
@@ -153,6 +154,7 @@
                     ownerPhoto: '',
                     ownerPhotoUrl: '',
                     idCard: '',
+                    cardNumber:'',
                     videoPlaying: true,
                     mediaStreamTrack: null,
                     attrs: _attrs

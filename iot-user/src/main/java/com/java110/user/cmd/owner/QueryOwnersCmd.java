@@ -14,6 +14,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.doc.annotation.*;
 import com.java110.intf.community.IRoomInnerServiceSMO;
@@ -127,14 +128,23 @@ public class QueryOwnersCmd extends Cmd {
                 fileRelDto.setObjId(ownerDto.getMemberId());
                 fileRelDto.setRelTypeCd("10000"); //人员照片
                 List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
-                if (fileRelDtos != null && !fileRelDtos.isEmpty()) {
-                    List<String> urls = new ArrayList<>();
-                    for (FileRelDto fileRel : fileRelDtos) {
+                if (ListUtil.isNull(fileRelDtos)) {
+                    continue;
+                }
+
+                List<String> urls = new ArrayList<>();
+                for (FileRelDto fileRel : fileRelDtos) {
+
+                    if (fileRel.getFileSaveName().startsWith("http")) {
+                        urls.add(fileRel.getFileRealName());
+                        ownerDto.setUrl(fileRel.getFileRealName());
+                    } else {
                         urls.add(imgUrl+fileRel.getFileRealName());
                         ownerDto.setUrl(imgUrl+fileRel.getFileRealName());
                     }
-                    ownerDto.setUrls(urls);
+
                 }
+                ownerDto.setUrls(urls);
             }
         }
         ResultVo resultVo = new ResultVo((int) Math.ceil((double) total / (double) reqJson.getInteger("row")), total, ownerDtos);

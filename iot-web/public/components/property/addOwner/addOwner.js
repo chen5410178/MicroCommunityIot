@@ -18,6 +18,7 @@
                 ownerPhoto: '',
                 ownerPhotoUrl: '',
                 idCard: '',
+                cardNumber:'',
                 videoPlaying: true,
                 mediaStreamTrack: null,
                 attrs: []
@@ -78,13 +79,6 @@
                         param: "",
                         errInfo: "性别不能为空"
                     }],
-                    // 'addOwnerInfo.ownerTypeCd': [
-                    //     {
-                    //         limit: "required",
-                    //         param: "",
-                    //         errInfo: "人员类型不能为空"
-                    //     }
-                    // ],
                     'addOwnerInfo.remark': [{
                         limit: "maxLength",
                         param: "200",
@@ -136,6 +130,7 @@
                     ownerPhoto: '',
                     ownerPhotoUrl: '',
                     idCard: '',
+                    cardNumber:'',
                     videoPlaying: true,
                     mediaStreamTrack: null,
                     attrs: []
