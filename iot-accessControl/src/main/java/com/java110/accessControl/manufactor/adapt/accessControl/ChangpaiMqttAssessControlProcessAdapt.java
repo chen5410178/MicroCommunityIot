@@ -327,7 +327,7 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
         if (StringUtil.isEmpty(images)) {
             images = dataObj.getString("image");
         }
-        saveOpenDoorResult(machineCode, images, staffId, staffName, OPEN_TYPE_FACE, dataObj.containsKey("face_quality") ? dataObj.getIntValue("face_quality") : 0);
+        saveOpenDoorResult(machineCode, images, staffId, staffName, OPEN_TYPE_FACE, dataObj.containsKey("face_quality") ? dataObj.getIntValue("face_quality") : 100);
     }
 
 
