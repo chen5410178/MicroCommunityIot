@@ -49,7 +49,8 @@ public class QueryBindRoomCmd extends Cmd {
 
 
         AppUserDto appUserDto = new AppUserDto();
-        appUserDto.setLink(userDtos.get(0).getTel());
+        appUserDto.setUserId(userDtos.get(0).getUserId());
+        appUserDto.setState(AppUserDto.STATE_FINISH);
         List<AppUserDto> appUserDtos = appUserV1InnerServiceSMOImpl.queryAppUsers(appUserDto);
 
         if (ListUtil.isNull(appUserDtos)) {
