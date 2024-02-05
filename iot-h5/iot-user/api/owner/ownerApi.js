@@ -99,9 +99,43 @@ export function applyPassQrcode(_objData) {
 	})
 }
 
+
+
+// 开通通行码
+export function openPassQrcode(_objData) {
+	return new Promise( (resolve, reject) => {
+		request({
+			url: url.openPassQrcode,
+			data: _objData,
+			method: "POST",
+			//动态数据
+			success: function(res) {
+				let _json = res.data;
+				uni.showToast({
+					icon:'none',
+					title:_json.msg
+				});
+				if (_json.code == 0) {
+					resolve(_json);
+					return;
+				}
+				reject(_json.msg);
+			},
+			fail: function(e) {
+				uni.hideLoading();
+				uni.showToast({
+					title: "服务器异常了",
+					icon: 'none'
+				})
+			}
+		});
+	})
+}
+
+
 export function refreshPassQrcode(_objData) {
 	return new Promise( (resolve, reject) => {
-		requestNoAuth({
+		request({
 			url: url.refreshPassQrcode,
 			data: _objData,
 			method: "POST",

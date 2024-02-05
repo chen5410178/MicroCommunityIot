@@ -26,8 +26,10 @@
 	import drawQrcode from '@/components/weapp-qrcode/weapp.qrcode.esm.js'
 
 	import {
-		refreshUserPassQrcode
+		refreshUserPassQrcode,
+		openPassQrcode
 	} from '../../api/owner/ownerApi.js';
+	import {getCommunityId} from '../../api/community/communityApi.js'
 	export default {
 		data() {
 			return {
@@ -39,21 +41,15 @@
 			}
 		},
 		onLoad(options) {
-			this.communityId = options.communityId;
-			this.pqsId = options.pqsId;
 			this.getPassQrcode();
 		},
 		methods: {
-			tabSelect: function(_active) {
-				this.active = _active;
-				this.getPassQrcode();
-			},
 			getPassQrcode: function() {
 				let _that = this;
 				_that.passcode = "";
 				refreshUserPassQrcode({
 					openId: this.openId,
-					communityId: this.communityId
+					communityId: getCommunityId()
 				}).then(_data => {
 					if (_data.data && _data.data.length > 0) {
 						_that.passcode = _data.data[0].qrcode;
@@ -71,6 +67,14 @@
 					canvasId: 'myQrcode',
 					text: this.passcode,
 					callback: function(e) {}
+				})
+			},
+			_applyPassQrcode:function(){
+				let _that =this;
+				openPassQrcode({
+					communityId:getCommunityId()
+				}).then((_data)=>{
+					_that.getPassQrcode();
 				})
 			}
 		}

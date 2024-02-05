@@ -35,6 +35,7 @@ export default {
 	applyPassQrcode: baseUrl + "iot/api/passcode.applyPassQrcode",
 	refreshPassQrcode: baseUrl + "iot/api/passcode.refreshPassQrcode",
 	refreshUserPassQrcode: baseUrl + "iot/api/passcode.refreshUserPassQrcode",
+	openPassQrcode: baseUrl + "iot/api/passcode.openPassQrcode",
 	
 	
 

@@ -41,7 +41,7 @@ public class RefreshUserPassQrcodeCmd extends Cmd {
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
-        Assert.hasKeyAndValue(reqJson,"communityId","未包含小区ID");
+        Assert.hasKeyAndValue(reqJson, "communityId", "未包含小区ID");
     }
 
     @Override
@@ -53,9 +53,9 @@ public class RefreshUserPassQrcodeCmd extends Cmd {
         userDto.setUserId(userId);
         List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
 
-        Assert.listOnlyOne(userDtos,"用户未登录");
+        Assert.listOnlyOne(userDtos, "用户未登录");
         PassQrcodeDto passQrcodeDto = new PassQrcodeDto();
-        passQrcodeDto.setOpenId(reqJson.getString("openId"));
+        passQrcodeDto.setPersonTel(userDtos.get(0).getTel());
         passQrcodeDto.setCommunityId(reqJson.getString("communityId"));
         passQrcodeDto.setPage(1);
         passQrcodeDto.setRow(1);
