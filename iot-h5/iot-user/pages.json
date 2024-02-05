@@ -283,6 +283,14 @@
 		        "enablePullDownRefresh": false
 		    }
 		    
+		},
+		{
+			"path" : "pages/index/func",
+			"style" : 
+			{
+				"navigationBarTitleText" : "服务",
+				"enablePullDownRefresh" : false
+			}
 		}
     ],
 	"tabBar": {
@@ -296,6 +304,12 @@
 				"iconPath": "static/images/home.png",
 				"selectedIconPath": "static/images/home-selected.png"
 			},
+			{
+					"pagePath": "pages/index/func",
+					"text": "服务",
+					"iconPath": "static/images/rent.png",
+					"selectedIconPath": "static/images/rent-selected.png"
+				},
 			{
 				"pagePath": "pages/index/my",
 				"text": "我的",

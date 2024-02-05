@@ -33,11 +33,11 @@ export function timer(_that) {
  */
 export function sendSmsCode(_tel, _that) {
 	return new Promise((resolve, reject) => {
-		let obj = {
+		let _objData = {
 			tel: _tel
 		};
 		let msg = "";
-		if (obj.tel == '') {
+		if (_objData.tel == '') {
 			msg = '请输入手机号';
 		}
 		if (msg != "") {

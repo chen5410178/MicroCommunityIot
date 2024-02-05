@@ -3,7 +3,7 @@
 		<view class="undo-menu flex justify-start flex-wrap">
 			<view class="menu-item"  @click="_toBindRoom()">
 				<view style="position: relative;">
-					<image src="/static/images/ac.png"></image>
+					<image src="/static/images/bindRoom.png"></image>
 					<view><text>认证房屋</text></view>
 				</view>
 			</view>

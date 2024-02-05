@@ -72,7 +72,6 @@
 					openId: this.openId,
 					communityId: this.communityId
 				}).then(_data => {
-					console.log(_data)
 					if (_data.data && _data.data.length > 0) {
 						_that.passcode = _data.data[0].qrcode;
 						_that.expire = _data.data[0].expire;

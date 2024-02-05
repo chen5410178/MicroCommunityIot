@@ -1,6 +1,10 @@
 <template>
 	<view>
+		
 		<view>
+			<index-header></index-header>
+		</view>
+		<view class="margin-top-sm">
 			<index-ads></index-ads>
 		</view>
 		<view v-if="hasOwner == 'Y'">
@@ -13,6 +17,7 @@
 </template>
 
 <script>
+	import indexHeader from '@/components/index/index-header.vue';
 	import indexAds from '@/components/index/index-ads.vue';
 	import indexAc from '@/components/index/index-ac.vue';
 	import indexBindRoom from '@/components/index-bind-room.vue';
@@ -26,7 +31,8 @@
 		components: {
 			indexAds,
 			indexAc,
-			indexBindRoom
+			indexBindRoom,
+			indexHeader
 		},
 
 		/**
