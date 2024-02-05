@@ -170,7 +170,7 @@ public class AddCommunityApiCmd extends Cmd {
             userPo.setTel(reqJson.getString("tel"));
             userPo.setName(reqJson.getString("storeName"));
             userPo.setAddress(reqJson.getString("address"));
-            userPo.setUserId(storeStaffDtos.get(0).getUserId());
+            userPo.setUserId(storeStaffDtos.get(0).getStaffId());
             userPo.setEmail("无");
             userPo.setLevelCd(UserDto.LEVEL_CD_ADMIN);
             userPo.setSex("1");

@@ -41,13 +41,13 @@ public interface IUserV1InnerServiceSMO {
 
 
     @RequestMapping(value = "/saveUser", method = RequestMethod.POST)
-    public int saveUser(@RequestBody  UserPo userPo);
+    int saveUser(@RequestBody  UserPo userPo);
 
     @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
-    public int updateUser(@RequestBody  UserPo userPo);
+    int updateUser(@RequestBody  UserPo userPo);
 
     @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
-    public int deleteUser(@RequestBody  UserPo userPo);
+    int deleteUser(@RequestBody  UserPo userPo);
 
     /**
      * <p>查询小区楼信息</p>

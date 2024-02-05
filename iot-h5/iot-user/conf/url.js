@@ -38,6 +38,8 @@ export default {
 	listMeterQrcode: baseUrl + "iot/api/meterQrcode.listMeterQrcode",
 	listMeterMachine: baseUrl + "iot/api/meterMachine.listMeterMachine",
 	listMeterMachineCharge: baseUrl + "iot/api/meterMachineCharge.listMeterMachineCharge",
+	userSendSms: baseUrl + "iot/api/user.userSendSms",
+	listAppUser: baseUrl + "iot/api/appUser.listAppUser",
 
 	
 	

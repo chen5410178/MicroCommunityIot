@@ -12,38 +12,59 @@
 </template>
 
 <script>
-	import {hasLogin} from '../../api/user/sessionApi.js'
+	import {
+		hasLogin
+	} from '../../api/user/sessionApi.js';
+	import {
+		getAppUser
+	} from '@/api/user/appUser.js';
 	export default {
 		name: "indexHeader",
 		data() {
 			return {
-				headerMenus:  [{
-					icon:'/static/images/qrcode.png',
+				headerMenus: [{
+					icon: '/static/images/qrcode.png',
 					name: '通行码',
-					url: '/pages/complaintList/complaintList'
+					action: 'pass'
 				}, {
-					icon:'/static/images/qrcode-visit.png',
+					icon: '/static/images/qrcode-visit.png',
 					name: '访客码',
 					url: '/pages/repairDispatch/repairDispatch'
 				}]
 			};
 		},
 		methods: {
-			
+
 			_toPage: function(_item) {
-				
-				console.log('跳转',_item)
-				
-				if(!hasLogin()){
+
+				if (!hasLogin()) {
 					uni.navigateTo({
-						url:'/pages/user/login'
+						url: '/pages/user/login'
 					});
 					return;
 				}
-				
-				uni.navigateTo({
-					url: _item.url
-				})
+
+				//todo 查询房屋认证
+				let _that = this;
+				let _action = _item.action;
+				getAppUser().then((_data) => {
+					if (_action == 'pass') {
+						_that.passQrcode();
+						return;
+					}
+				}, _err => {
+					uni.showToast({
+						icon: 'none',
+						title: '请先房屋认证'
+					})
+				});
+
+				// uni.navigateTo({
+				// 	url: _item.url
+				// })
+			},
+			passQrcode: function() {
+
 			}
 		}
 	}

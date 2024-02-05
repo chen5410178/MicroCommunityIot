@@ -31,7 +31,7 @@
 </template>
 
 <script>
-	import applyPassQrcode from '../../components/pass/applyPassQrcode.vue';
+	import applyPassQrcode from '@/components/pass/applyPassQrcode.vue';
 	import drawQrcode from '@/components/weapp-qrcode/weapp.qrcode.esm.js'
 
 	import {
@@ -77,8 +77,7 @@
 						_that.expire = _data.data[0].expire;
 						setTimeout(function() {
 							_that.showQrcode()
-						}, 1000)
-
+						}, 1000);
 					}
 				})
 			},
