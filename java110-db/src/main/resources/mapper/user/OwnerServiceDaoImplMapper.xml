@@ -125,7 +125,7 @@
         t.user_id,t.user_id userId,t.age,t.member_id,t.member_id memberId,t.owner_type_cd,
         t.owner_type_cd ownerTypeCd,t.create_time createTime,t.community_id,
         t.community_id communityId,t.id_card, t.id_card idCard,t.state,td.name ownerTypeName,
-        t.owner_flag,t.owner_flag ownerFlag,t.address
+        t.owner_flag,t.owner_flag ownerFlag,t.address,t.card_number cardNumber
         <if test="roomIds != null">
             , borr.room_id roomId
         </if>
@@ -460,7 +460,7 @@
         select t.sex,t.name,t.link,t.status_cd,t.status_cd statusCd,t.remark,t.owner_id,t.owner_id ownerId,t.b_id,t.b_id
         bId,t.user_id,t.user_id userId,t.age,t.member_id,t.member_id memberId,
         t.owner_type_cd,t.owner_type_cd ownerTypeCd,t.community_id,
-        t.community_id communityId,t.id_card, t.id_card idCard,t.address
+        t.community_id communityId,t.id_card, t.id_card idCard,t.address,t.card_number cardNumber
         FROM building_owner t
         WHERE
         t.`status_cd` = '0'
@@ -542,7 +542,7 @@
         SELECT t.sex,t.name,t.link,t.status_cd,t.status_cd statusCd,t.remark,t.owner_id,t.owner_id ownerId,t.b_id,t.b_id
         bId,t.user_id,t.user_id userId,t.age,t.member_id,t.member_id memberId,t.owner_type_cd,t.owner_type_cd ownerTypeCd,
         r.`room_id` roomId,r.`room_num` roomNum,t.community_id,t.community_id communityId,t.id_card, t.id_card
-        idCard,orr.start_time startTime ,orr.end_time endTime,t.address
+        idCard,orr.start_time startTime ,orr.end_time endTime,t.address,t.card_number cardNumber
         FROM building_room r,building_owner_room_rel orr,building_owner t
         WHERE r.`room_id` = orr.`room_id`
         AND orr.`owner_id` = t.`owner_id`

@@ -131,7 +131,7 @@ public class SyncAccessControlBMOImpl implements ISyncAccessControlBMO {
                 accessControlFacePo.setComeType(AccessControlFaceDto.COME_TYPE_FLOOR);
                 accessControlFacePo.setEndTime(DateUtil.getFormatTimeStringA(ownerRoomRelDtos.get(0).getEndTime()));
                 accessControlFacePo.setStartTime(DateUtil.getFormatTimeStringA(ownerRoomRelDtos.get(0).getStartTime()));
-                accessControlFacePo.setCardNumber("");
+                accessControlFacePo.setCardNumber(ownerDto.getCardNumber());
                 accessControlFacePo.setMachineId(tmpAccessControlFloorDto.getMachineId());
                 accessControlFacePo.setMessage("待下发到门禁");
                 accessControlFacePo.setMfId(GenerateCodeFactory.getGeneratorId("11"));
