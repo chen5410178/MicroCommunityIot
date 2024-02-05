@@ -39,7 +39,7 @@ export default {
 	listMeterMachine: baseUrl + "iot/api/meterMachine.listMeterMachine",
 	listMeterMachineCharge: baseUrl + "iot/api/meterMachineCharge.listMeterMachineCharge",
 	userSendSms: baseUrl + "iot/api/user.userSendSms",
-	listAppUser: baseUrl + "iot/api/appUser.listAppUser",
+	queryBindRoom: baseUrl + "iot/api/appUser.queryBindRoom",
 
 	
 	

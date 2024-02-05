@@ -9,10 +9,14 @@ import url from '../../conf/url.js';
 
  * @param {Object} _tel 手机号
  */
-export function getAppUser(_data) {
+export function getAppUser() {
+	let _data = {
+		page:1,
+		row:1,
+	};
 	return new Promise((resolve, reject) => {
 		requestNoAuth({
-			url: url.listAppUser,
+			url: url.queryBindRoom,
 			method: "GET",
 			data: _data,
 			success: function(res) {
