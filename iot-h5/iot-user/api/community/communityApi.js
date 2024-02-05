@@ -5,10 +5,18 @@ import {
 import url from '../../conf/url.js';
 
 export function getCommunityName() {
+	let _community = uni.getStorageSync("currentCommunityInfo");
+	if(_community){
+		return _community.name;
+	}
 	return "无";
 }
 
 export function getCommunityId() {
+	let _community = uni.getStorageSync("currentCommunityInfo");
+	if(_community){
+		return _community.communityId;
+	}
 	return "-1"
 }
 

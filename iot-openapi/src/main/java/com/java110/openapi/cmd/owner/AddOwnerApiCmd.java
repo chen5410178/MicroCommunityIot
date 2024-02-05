@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.dto.car.OwnerCarDto;
 import com.java110.bean.dto.floor.FloorDto;
+import com.java110.bean.dto.owner.OwnerAttrDto;
 import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.bean.dto.owner.OwnerRoomRelDto;
 import com.java110.bean.dto.room.RoomDto;
@@ -30,10 +31,7 @@ import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
 import com.java110.intf.community.IFloorV1InnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.community.IUnitV1InnerServiceSMO;
-import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
-import com.java110.intf.user.IOwnerV1InnerServiceSMO;
-import com.java110.intf.user.IStoreV1InnerServiceSMO;
-import com.java110.intf.user.IUserV1InnerServiceSMO;
+import com.java110.intf.user.*;
 import com.java110.po.ownerCar.OwnerCarPo;
 import com.java110.po.parking.ParkingAreaPo;
 import com.java110.po.parking.ParkingSpacePo;
@@ -58,6 +56,9 @@ public class AddOwnerApiCmd extends Cmd {
 
     @Autowired
     private IOwnerV1InnerServiceSMO ownerV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IOwnerAttrInnerServiceSMO ownerAttrInnerServiceSMOImpl;
 
     @Autowired
     private IFloorV1InnerServiceSMO floorV1InnerServiceSMOImpl;
@@ -493,6 +494,7 @@ public class AddOwnerApiCmd extends Cmd {
         ownerPo.setName(reqJson.getString("name"));
         ownerPo.setOwnerId(reqJson.getString("ownerId")); //业主 所以和成员ID需要一样
         ownerPo.setOwnerTypeCd(reqJson.getString("ownerTypeCd"));
+        ownerPo.setCardNumber(reqJson.getString("cardNumber"));
         ownerPo.setRemark("第三方导入系统同步");
         ownerPo.setState("2000");
         ownerPo.setAddress("无");

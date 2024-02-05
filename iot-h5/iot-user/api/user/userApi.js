@@ -97,10 +97,35 @@ export function ownerLogin(_objData) {
 			}
 		});
 
-	})
+	});
 
 }
-
+/**
+ * 退出登录
+ */
+export function userLogout(_objData){
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.userLogout,
+			method: "POST",
+			data: _objData,
+			success: function(res) {
+				//将业主信息和房屋信息一起返回
+				// let _json = res.data;
+				// if (_json.code != 0) {
+				// 	reject(_json.msg);
+				// 	return;
+				// }
+				uni.removeStorageSync("userInfo");
+				resolve();
+			},
+			fail: function(res) {
+				reject(res);
+			}
+		});
+	
+	})
+}
 /**
  * 用户注册
 

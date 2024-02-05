@@ -2,8 +2,6 @@
 	<view>
 		<my-person ref="myPersonRef"></my-person>
 
-		<!-- <my-menu></my-menu> -->
-
 		<my-system ref="mySystem"></my-system>
 	</view>
 </template>
@@ -21,7 +19,6 @@
 	} from '@/api/user/userApi.js'
 
 	import myPerson from '@/components/index/my-person.vue'
-	// import myMenu from '@/components/index/my-menu.vue'
 	import mySystem from '@/components/index/my-system.vue'
 	export default {
 		data() {

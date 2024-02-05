@@ -81,7 +81,9 @@ public interface IOwnerV1InnerServiceSMO {
     @RequestMapping(value = "/queryRoomOwners", method = RequestMethod.POST)
     List<OwnerDto> queryRoomOwners(@RequestBody OwnerDto ownerDto);
 
+    @RequestMapping(value = "/syncAccessControl", method = RequestMethod.POST)
     int syncAccessControl(@RequestBody String memberId);
 
+    @RequestMapping(value = "/syncDeleteAccessControl", method = RequestMethod.POST)
     int syncDeleteAccessControl(@RequestBody String memberId);
 }

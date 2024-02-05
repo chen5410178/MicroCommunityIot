@@ -4,13 +4,13 @@ import {
 } from '../../lib/java110/java110Request.js';
 import url from '../../conf/url.js';
 
-export function getMemberId(){
+export function getMemberId() {
 	return null;
 }
 
 // 人脸审核
 export function savePersonFace(_objData) {
-	return new Promise( (resolve, reject) => {
+	return new Promise((resolve, reject) => {
 		requestNoAuth({
 			url: url.savePersonFace,
 			data: _objData,
@@ -19,8 +19,8 @@ export function savePersonFace(_objData) {
 			success: function(res) {
 				let _json = res.data;
 				uni.showToast({
-					icon:'none',
-					title:_json.msg
+					icon: 'none',
+					title: _json.msg
 				});
 				if (_json.code == 0) {
 					resolve(_json);
@@ -43,7 +43,7 @@ export function savePersonFace(_objData) {
  * @param {Object} _objData
  */
 export function listPersonFace(_objData) {
-	return new Promise( (resolve, reject) => {
+	return new Promise((resolve, reject) => {
 		requestNoAuth({
 			url: url.listPersonFace,
 			data: _objData,
@@ -51,7 +51,7 @@ export function listPersonFace(_objData) {
 			//动态数据
 			success: function(res) {
 				let _json = res.data;
-			
+
 				if (_json.code == 0) {
 					resolve(_json.data);
 					return;
@@ -71,7 +71,7 @@ export function listPersonFace(_objData) {
 
 // 人脸审核
 export function applyPassQrcode(_objData) {
-	return new Promise( (resolve, reject) => {
+	return new Promise((resolve, reject) => {
 		requestNoAuth({
 			url: url.applyPassQrcode,
 			data: _objData,
@@ -80,8 +80,8 @@ export function applyPassQrcode(_objData) {
 			success: function(res) {
 				let _json = res.data;
 				uni.showToast({
-					icon:'none',
-					title:_json.msg
+					icon: 'none',
+					title: _json.msg
 				});
 				if (_json.code == 0) {
 					resolve(_json);
@@ -103,7 +103,7 @@ export function applyPassQrcode(_objData) {
 
 // 开通通行码
 export function openPassQrcode(_objData) {
-	return new Promise( (resolve, reject) => {
+	return new Promise((resolve, reject) => {
 		request({
 			url: url.openPassQrcode,
 			data: _objData,
@@ -112,8 +112,8 @@ export function openPassQrcode(_objData) {
 			success: function(res) {
 				let _json = res.data;
 				uni.showToast({
-					icon:'none',
-					title:_json.msg
+					icon: 'none',
+					title: _json.msg
 				});
 				if (_json.code == 0) {
 					resolve(_json);
@@ -134,7 +134,7 @@ export function openPassQrcode(_objData) {
 
 
 export function refreshPassQrcode(_objData) {
-	return new Promise( (resolve, reject) => {
+	return new Promise((resolve, reject) => {
 		request({
 			url: url.refreshPassQrcode,
 			data: _objData,
@@ -143,14 +143,14 @@ export function refreshPassQrcode(_objData) {
 			success: function(res) {
 				let _json = res.data;
 				uni.showToast({
-					icon:'none',
-					title:_json.msg
+					icon: 'none',
+					title: _json.msg
 				});
 				if (_json.code == 0) {
 					resolve(_json);
 					return;
 				}
-				
+
 			},
 			fail: function(e) {
 				uni.hideLoading();
@@ -165,7 +165,7 @@ export function refreshPassQrcode(_objData) {
 
 
 export function refreshUserPassQrcode(_objData) {
-	return new Promise( (resolve, reject) => {
+	return new Promise((resolve, reject) => {
 		requestNoAuth({
 			url: url.refreshUserPassQrcode,
 			data: _objData,
@@ -174,14 +174,14 @@ export function refreshUserPassQrcode(_objData) {
 			success: function(res) {
 				let _json = res.data;
 				uni.showToast({
-					icon:'none',
-					title:_json.msg
+					icon: 'none',
+					title: _json.msg
 				});
 				if (_json.code == 0) {
 					resolve(_json);
 					return;
 				}
-				
+
 			},
 			fail: function(e) {
 				uni.hideLoading();
@@ -193,4 +193,9 @@ export function refreshUserPassQrcode(_objData) {
 		});
 	})
 }
-
+/**
+ * 
+ */
+export function loadLoginOwner() {
+	return new Promise((resolve, reject) => {});
+}

@@ -6,9 +6,9 @@
     <!-- 保存业主信息信息 add by wuxw 2018-07-03 -->
     <insert id="saveOwnerInfo" parameterType="Map">
         insert into building_owner(id_card, sex, link, owner_type_cd, remark, owner_id, user_id, name, state,
-        community_id, age, member_id, address)
+        community_id, age, member_id, address,card_number)
         values (#{idCard}, #{sex}, #{link}, #{ownerTypeCd}, #{remark}, #{ownerId}, #{userId}, #{name}, #{state},
-        #{communityId}, #{age}, #{memberId}, #{address})
+        #{communityId}, #{age}, #{memberId}, #{address},#{cardNumber})
     </insert>
 
     <!-- 查询业主信息信息 add by wuxw 2018-07-03 -->
@@ -16,7 +16,8 @@
         select t.id_card,t.id_card idCard,t.sex,t.link,t.owner_type_cd,t.owner_type_cd
         ownerTypeCd,t.remark,t.status_cd,t.status_cd statusCd,t.owner_id,t.owner_id ownerId,t.user_id,t.user_id
         userId,t.name,t.state,t.community_id,t.community_id communityId,t.age,t.member_id,t.member_id memberId,
-        t.address from building_owner t
+        t.address ,t.card_number cardNumber
+        from building_owner t
         where 1 =1
         <if test="idCard !=null and idCard != ''">
             and t.id_card= #{idCard}
@@ -48,8 +49,8 @@
                 #{item}
             </foreach>
         </if>
-        <if test="userId !=null and userId != ''">
-            and t.user_id= #{userId}
+        <if test="cardNumber !=null and cardNumber != ''">
+            and t.card_number = #{cardNumber}
         </if>
         <if test="name !=null and name != ''">
             and t.name= #{name}
@@ -81,6 +82,9 @@
         , t.id_card= #{idCard}
         <if test="sex !=null and sex != ''">
             , t.sex= #{sex}
+        </if>
+        <if test="cardNumber !=null and cardNumber != ''">
+            , t.card_number = #{cardNumber}
         </if>
         <if test="link !=null and link != ''">
             , t.link= #{link}
@@ -155,8 +159,8 @@
                 #{item}
             </foreach>
         </if>
-        <if test="userId !=null and userId != ''">
-            and t.user_id= #{userId}
+        <if test="cardNumber !=null and cardNumber != ''">
+            and t.card_number = #{cardNumber}
         </if>
         <if test="name !=null and name != ''">
             and t.name= #{name}

@@ -29,6 +29,8 @@ public class OwnerPo implements Serializable {
     private String bId;
     private String ownerFlag;
 
+    private String cardNumber;
+
     public String getMemberId() {
         return memberId;
     }
@@ -155,5 +157,13 @@ public class OwnerPo implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 }

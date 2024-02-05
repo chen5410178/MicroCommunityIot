@@ -37,7 +37,8 @@
 
 <script>
 
-import {hasLogin} from '../../api/user/sessionApi.js'
+import {hasLogin} from '../../api/user/sessionApi.js';
+import {userLogout} from '../../api/user/userApi.js';
 	export default {
 		name: "my-system",
 		data() {
@@ -83,40 +84,14 @@ import {hasLogin} from '../../api/user/sessionApi.js'
 				this.logoutUser = false;
 			},
 			_doLogoutUser: function() {
-				let _data = {
-					token: wx.getStorageSync('token')
-				}
-				let that = this;
-				context.request({
-					url: constant.url.userLogout,
-					header: context.getHeaders(),
-					method: "POST",
-					data: _data,
-					success: function(res) {
-						if (res.statusCode != 200) {
-							uni.showToast({
-								icon: "none",
-								title: res.data
-							});
-							return;
-						}
-						let wAppId = uni.getStorageSync(constant.mapping.W_APP_ID);
-						uni.clearStorageSync();
-						if (wAppId != null && wAppId != undefined && wAppId != '') {
-							uni.setStorageSync(constant.mapping.W_APP_ID, wAppId);
-						}
-						that.logoutUser =false;
-						that.vc.navigateTo({
-							url: '/pages/login/login'
-						});
-					},
-					fail: function(error) {
-						// 调用服务端登录接口失败
-						uni.showToast({
-							title: '调用接口失败'
-						});
-						console.log(error);
-					}
+				let _that = this;
+				userLogout({
+					token: uni.getStorageSync('token')
+				}).then(_data=>{
+					_that.logoutUser = false;
+					uni.navigateTo({
+						url:'/pages/user/login'
+					});
 				});
 			}
 		}

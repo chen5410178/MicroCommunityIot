@@ -54,7 +54,6 @@ public class OwnerV1InnerServiceSMOImpl  implements IOwnerV1InnerServiceSMO {
     public int saveOwner(@RequestBody OwnerPo ownerPo) {
         int saveFlag = ownerV1ServiceDaoImpl.saveOwnerInfo(BeanConvertUtil.beanCovertMap(ownerPo));
 
-
         return saveFlag;
     }
 

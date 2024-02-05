@@ -15,7 +15,7 @@ export function getAppUser() {
 		row:1,
 	};
 	return new Promise((resolve, reject) => {
-		requestNoAuth({
+		request({
 			url: url.queryBindRoom,
 			method: "GET",
 			data: _data,
