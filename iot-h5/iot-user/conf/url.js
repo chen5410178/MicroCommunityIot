@@ -34,6 +34,9 @@ export default {
 	listPersonFace: baseUrl + "iot/api/personFace.listPersonFace",
 	applyPassQrcode: baseUrl + "iot/api/passcode.applyPassQrcode",
 	refreshPassQrcode: baseUrl + "iot/api/passcode.refreshPassQrcode",
+	refreshUserPassQrcode: baseUrl + "iot/api/passcode.refreshUserPassQrcode",
+	
+	
 
 	listMeterQrcode: baseUrl + "iot/api/meterQrcode.listMeterQrcode",
 	listMeterMachine: baseUrl + "iot/api/meterMachine.listMeterMachine",

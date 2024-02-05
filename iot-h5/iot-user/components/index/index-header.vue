@@ -49,7 +49,7 @@
 				let _action = _item.action;
 				getAppUser().then((_data) => {
 					if (_action == 'pass') {
-						_that.passQrcode();
+						_that.passQrcode(_data);
 						return;
 					}
 				}, _err => {
@@ -58,13 +58,11 @@
 						title: '请先房屋认证'
 					})
 				});
-
-				// uni.navigateTo({
-				// 	url: _item.url
-				// })
 			},
-			passQrcode: function() {
-
+			passQrcode: function(_data) {
+				uni.navigateTo({
+					url:'/pages/user/userPassQrcode'
+				})
 			}
 		}
 	}

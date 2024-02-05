@@ -291,6 +291,14 @@
 				"navigationBarTitleText" : "服务",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/user/userPassQrcode",
+			"style" : 
+			{
+				"navigationBarTitleText" : "用户通信码",
+				"enablePullDownRefresh" : false
+			}
 		}
     ],
 	"tabBar": {

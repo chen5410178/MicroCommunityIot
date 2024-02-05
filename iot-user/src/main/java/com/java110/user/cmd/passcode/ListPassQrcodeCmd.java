@@ -58,9 +58,6 @@ public class ListPassQrcodeCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
-
-
-
     }
 
     @Override
