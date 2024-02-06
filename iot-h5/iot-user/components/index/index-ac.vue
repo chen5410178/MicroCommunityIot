@@ -15,8 +15,10 @@
 </template>
 
 <script>
+	import {getOwnerAccessControl} from '../../api/accessControl/accessControlApi.js';
+	import {getCommunityId} from '../../api/community/communityApi.js';
 	export default {
-		name: "index-ac",
+		name: "indexAc",
 		data() {
 			return {
 				machines: []
@@ -24,19 +26,27 @@
 		},
 		methods:{
 			_initData:function(){
-				this.machines = [{
-					name: '大门',
-					machineCode: '/pages/resource/purchaseApplyAuditOrders',
-				}, {
-					name: '大门2',
-					machineCode: '/pages/resource/itemOutAuditOrders',
-				}, {
-					name: '大门3',
-					machineCode: '/pages/resource/allocationStorehouseAuditOrders',
-				}, {
-					name: '大门4',
-					machineCode: '/pages/itemRelease/itemRelease',
-				}]
+				let _that = this;
+				getOwnerAccessControl({
+					page:1,
+					row:30,
+					communityId:getCommunityId()
+				}).then(_json=>{
+					_that.machines = _json.data;
+				});
+				// this.machines = [{
+				// 	name: '大门',
+				// 	machineCode: '/pages/resource/purchaseApplyAuditOrders',
+				// }, {
+				// 	name: '大门2',
+				// 	machineCode: '/pages/resource/itemOutAuditOrders',
+				// }, {
+				// 	name: '大门3',
+				// 	machineCode: '/pages/resource/allocationStorehouseAuditOrders',
+				// }, {
+				// 	name: '大门4',
+				// 	machineCode: '/pages/itemRelease/itemRelease',
+				// }]
 			},
 			_toPage: function(_item) {
 				if(!this.java110Context.hasPrivilege(_item.pri)){

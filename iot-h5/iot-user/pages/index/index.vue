@@ -1,6 +1,6 @@
 <template>
 	<view>
-		
+
 		<view>
 			<index-header></index-header>
 		</view>
@@ -22,10 +22,17 @@
 	import indexAc from '@/components/index/index-ac.vue';
 	import indexBindRoom from '@/components/index-bind-room.vue';
 
+	import {
+		hasLogin
+	} from '@/api/user/sessionApi.js';
+	import {
+		getAppUser
+	} from '../../api/user/appUser.js';
+
 	export default {
 		data() {
 			return {
-				hasOwner:'N',// Y 是业主 N 不是  W 查询中
+				hasOwner: 'W', // Y 是业主 N 不是  W 查询中
 			};
 		},
 		components: {
@@ -40,7 +47,8 @@
 		 */
 		onLoad: function(options) {
 
-			this._initIndexData();
+
+			//this._initIndexData();
 		},
 
 		onShareAppMessage: function() {
@@ -50,25 +58,31 @@
 		 * 生命周期函数--监听页面显示
 		 */
 		onShow: function() {
-
-		},
-
-		/**
-		 * 页面上拉触底事件的处理函数
-		 */
-		onReachBottom: function() {
-
-		},
-		methods: {
-			_initIndexData:function(){
-				let _that = this;
-				if(this.hasOwner == 'Y'){
-					setTimeout(function(){
-						_that.$refs.indexAcRef._initData();
-					},1000)
-				}
-				
+			if (!hasLogin()) {
+				return;
 			}
+
+			let _that = this;
+			getAppUser().then(_data => {
+				_that.hasOwner = 'Y';
+				_that._initIndexData();
+			}, err => {
+				_that.hasOwner = 'N';
+			})
+		},
+
+
+		methods: {
+			_initIndexData: function() {
+				let _that = this;
+				if (this.hasOwner == 'Y') {
+					setTimeout(function() {
+						_that.$refs.indexAcRef._initData();
+					}, 1000)
+				}
+
+			},
+
 		}
 	};
 </script>

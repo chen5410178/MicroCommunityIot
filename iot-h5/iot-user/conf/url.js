@@ -45,6 +45,7 @@ export default {
 	userSendSms: baseUrl + "iot/api/user.userSendSms",
 	queryBindRoom: baseUrl + "iot/api/appUser.queryBindRoom",
 	getVisitQrCodeUrl: baseUrl + "iot/api/visit.getVisitQrCodeUrl",
+	listOwnerAccessControl: baseUrl + "iot/api/accessControl.listOwnerAccessControl",
 
 	
 	
