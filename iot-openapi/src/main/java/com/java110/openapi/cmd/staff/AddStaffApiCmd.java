@@ -6,20 +6,24 @@ import com.java110.bean.dto.org.OrgDto;
 import com.java110.bean.dto.org.OrgStaffRelDto;
 import com.java110.bean.po.org.OrgStaffRelPo;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cache.MappingCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.constant.MappingConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.AuthenticationFactory;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.ListUtil;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.utils.*;
+import com.java110.dto.accessControlFace.AccessControlFaceDto;
+import com.java110.dto.accessControlOrg.AccessControlOrgDto;
 import com.java110.dto.storeStaff.StoreStaffDto;
 import com.java110.dto.user.UserDto;
+import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
+import com.java110.intf.accessControl.IAccessControlOrgV1InnerServiceSMO;
 import com.java110.intf.system.IFileInnerServiceSMO;
 import com.java110.intf.user.*;
+import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.storeStaff.StoreStaffPo;
 import com.java110.po.user.UserPo;
 import org.aspectj.weaver.ast.Or;
@@ -55,6 +59,12 @@ public class AddStaffApiCmd extends Cmd {
     @Autowired
     private IFileInnerServiceSMO fileInnerServiceSMOImpl;
 
+    @Autowired
+    private IAccessControlOrgV1InnerServiceSMO accessControlOrgV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
         Assert.hasKeyAndValue(reqJson, "propertyId", "未包含propertyId");
@@ -83,6 +93,8 @@ public class AddStaffApiCmd extends Cmd {
         List<StoreStaffDto> storeStaffDtos = storeUserV1InnerServiceSMOImpl.queryStoreStaffs(storeStaffDto);
         if (!ListUtil.isNull(storeStaffDtos)) {
             updateUser(reqJson);
+            //todo 同步人脸至 门禁
+            synchronousAccessControl(reqJson);
             return;
         }
 
@@ -96,8 +108,6 @@ public class AddStaffApiCmd extends Cmd {
         //todo 添加员工组织关系
         addStaffOrg(reqJson);
 
-        //todo 同步人脸至 门禁
-        //synchronousAccessControl(reqJson);
 
     }
 
@@ -207,5 +217,47 @@ public class AddStaffApiCmd extends Cmd {
         String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
 
         return fileName;
+    }
+
+    private void synchronousAccessControl(JSONObject reqJson) {
+
+
+        //todo 查询人员信息
+        UserDto userDto = new UserDto();
+        userDto.setUserId(reqJson.getString("staffId"));
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+        if (ListUtil.isNull(userDtos)) {
+            return;
+        }
+        userDto = userDtos.get(0);
+
+        //todo 查询业主照片
+        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
+
+        String url = userDto.getFaceUrl();
+        if (!url.startsWith("http")) {
+            url = imgUrl + userDto.getFaceUrl();
+        }
+
+
+        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
+        accessControlFaceDto.setPersonId(reqJson.getString("staffId"));
+        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
+        AccessControlFacePo accessControlFacePo = null;
+        if (ListUtil.isNull(accessControlFaceDtos)) {
+            return;
+        }
+        for (AccessControlFaceDto tmpAccessControlFaceDto : accessControlFaceDtos) {
+            accessControlFacePo = BeanConvertUtil.covertBean(tmpAccessControlFaceDto, AccessControlFacePo.class);
+            accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
+            accessControlFacePo.setMessage("待下发到门禁");
+            accessControlFacePo.setFacePath(url);
+            accessControlFacePo.setCardNumber("");
+            accessControlFacePo.setIdNumber("");
+            accessControlFacePo.setName(userDto.getName());
+            accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
+        }
+
+
     }
 }
