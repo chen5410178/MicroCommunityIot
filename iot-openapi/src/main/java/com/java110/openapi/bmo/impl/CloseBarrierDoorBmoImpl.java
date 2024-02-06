@@ -29,21 +29,21 @@ public class CloseBarrierDoorBmoImpl implements IIotCommonApiBmo {
     public void validate(ICmdDataFlowContext context, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineCode", "未包含设备");
         Assert.hasKeyAndValue(reqJson, "state", "未包含状态");
-        Assert.hasKeyAndValue(reqJson, "propertyUserId", "未包含员工账号");
+        Assert.hasKeyAndValue(reqJson, "propertyUserTel", "未包含员工账号");
 
 
     }
 
     @Override
     public void doCmd(ICmdDataFlowContext context, JSONObject reqJson) {
-        String userId = reqJson.getString("propertyUserId");
+        String tel = reqJson.getString("propertyUserTel");
 
         UserDto userDto = new UserDto();
-        userDto.setUserId(userId);
+        userDto.setTel(tel);
         List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
         Assert.listOnlyOne(userDtos, "用户未登录");
 
-        reqJson.put("staffId", userId);
+        reqJson.put("staffId", userDtos.get(0).getUserId());
         reqJson.put("staffName", userDtos.get(0).getName());
 
         ResultVo resultVo = barrierV1InnerServiceSMOImpl.closeDoor(reqJson);
