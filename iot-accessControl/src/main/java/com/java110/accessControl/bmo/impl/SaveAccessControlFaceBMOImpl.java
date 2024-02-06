@@ -7,7 +7,9 @@ import com.java110.bean.dto.room.RoomDto;
 import com.java110.bean.dto.unit.UnitDto;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.user.UserDto;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
@@ -94,6 +96,32 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
             }
         }
 
+    }
+
+    @Override
+    @Async
+    public void reSendFace(String machineId, String communityId,String mfId) {
+        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
+        accessControlFaceDto.setCommunityId(communityId);
+        accessControlFaceDto.setMachineId(machineId);
+        accessControlFaceDto.setMfId(mfId);
+        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
+
+        if(ListUtil.isNull(accessControlFaceDtos)){
+            return ;
+        }
+
+        AccessControlFacePo accessControlFacePo = null;
+        for(AccessControlFaceDto tmpAccessControlFaceDto:accessControlFaceDtos){
+            try {
+                accessControlFacePo = BeanConvertUtil.covertBean(tmpAccessControlFaceDto, AccessControlFacePo.class);
+                accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
+                accessControlFacePo.setMessage("待下发到门禁");
+                accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     private void doOrgStaff(AccessControlOrgPo accessControlOrgPo, OrgStaffRelDto tmpOrgStaffRelDto, String machineId,String startDate,String endDate) {

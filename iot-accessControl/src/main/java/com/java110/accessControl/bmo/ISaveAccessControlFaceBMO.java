@@ -20,4 +20,11 @@ public interface ISaveAccessControlFaceBMO {
      * @param machineId
      */
     void saveOrgStaff(AccessControlOrgPo accessControlOrgPo, String machineId,String startDate,String endDate);
+
+    /**
+     * 异步重新下发人脸
+     * @param machineId
+     * @param communityId
+     */
+    void reSendFace(String machineId,String communityId,String mfId);
 }

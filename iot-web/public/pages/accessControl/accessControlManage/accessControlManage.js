@@ -47,14 +47,14 @@
                 vc.http.apiGet('/accessControl.listAccessControl',
                     param,
                     function (json, res) {
-                        let _accessControlManageInfo = JSON.parse(json);
-                        $that.accessControlManageInfo.total = _accessControlManageInfo.total;
-                        $that.accessControlManageInfo.records = _accessControlManageInfo.records;
-                        $that.accessControlManageInfo.accessControls = _accessControlManageInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.accessControlManageInfo.total = _json.total;
+                        $that.accessControlManageInfo.records = _json.records;
+                        $that.accessControlManageInfo.accessControls = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.accessControlManageInfo.records,
                             currentPage: _page,
-                            dataCount:_accessControlManageInfo.total
+                            dataCount:_json.total
                         });
                     },
                     function (errInfo, error) {
@@ -74,6 +74,9 @@
             _queryAccessControlMethod: function () {
                 $that._listAccessControls(DEFAULT_PAGE, DEFAULT_ROWS);
 
+            },
+            _reSendPersonData:function(_accessControl){
+                vc.emit('reSendAccessControlFace', 'openDeleteAccessControlModal', _accessControl);
             },
             _moreCondition: function () {
                 if ($that.accessControlManageInfo.moreCondition) {

@@ -77,6 +77,9 @@ import Cockpit3d from 'api/3d/Cockpit3d.js'
             _openDeleteAccessControlFaceModel: function(_accessControlFace) {
                 vc.emit('deleteAccessControlFace', 'openDeleteAccessControlFaceModal', _accessControlFace);
             },
+            _reSendPersonData:function(_accessControlFace){
+                vc.emit('reSendAccessControlFace', 'openDeleteAccessControlModal', _accessControlFace);
+            },
             _queryAccessControlFaceMethod: function() {
                 $that._listAccessControlFaces(DEFAULT_PAGE, DEFAULT_ROWS);
             },

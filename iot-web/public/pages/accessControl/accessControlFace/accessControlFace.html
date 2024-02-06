@@ -162,7 +162,7 @@
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs"
-                                            v-on:click="_openDeleteAccessControlFaceModel(accessControlFace)">
+                                            v-on:click="_reSendPersonData(accessControlFace)">
                                             <vc:i18n name='重新下发'></vc:i18n>
                                         </button>
                                     </div>
@@ -183,4 +183,7 @@
         </div>
     </div>
     <vc:create path="accessControl/deleteAccessControlFace"></vc:create>
+
+
+    <vc:create path="accessControl/reSendAccessControlFace"></vc:create>
 </div>
