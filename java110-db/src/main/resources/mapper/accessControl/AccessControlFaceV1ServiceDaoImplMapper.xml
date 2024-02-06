@@ -131,6 +131,9 @@
         <if test="cardNumber !=null and cardNumber != ''">
             , t.card_number= #{cardNumber}
         </if>
+        <if test="cardNumber == 'null'">
+            , t.card_number= ''
+        </if>
         where 1=1
         <if test="mfId !=null and mfId != ''">
             and t.mf_id= #{mfId}

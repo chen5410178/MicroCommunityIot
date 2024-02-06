@@ -261,8 +261,12 @@ public class EditOwnerCmd extends Cmd {
         }
         businessOwner.put("state", ownerDtos.get(0).getState());
         OwnerPo ownerPo = BeanConvertUtil.covertBean(businessOwner, OwnerPo.class);
+
         if (StringUtil.isEmpty(ownerPo.getIdCard())) {
             ownerPo.setAge(null);
+        }
+        if (StringUtil.isEmpty(ownerPo.getCardNumber())) {
+            ownerPo.setCardNumber("null");
         }
         int flag = ownerV1InnerServiceSMOImpl.updateOwner(ownerPo);
         if (flag < 1) {

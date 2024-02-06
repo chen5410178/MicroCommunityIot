@@ -500,9 +500,13 @@ public class AddOwnerApiCmd extends Cmd {
         ownerPo.setAddress("无");
         ownerPo.setOwnerFlag(OwnerDto.OWNER_FLAG_TRUE);
 
+
         if (ListUtil.isNull(ownerDtos)) {
             ownerV1InnerServiceSMOImpl.saveOwner(ownerPo);
         } else {
+            if (StringUtil.isEmpty(ownerPo.getCardNumber())) {
+                ownerPo.setCardNumber("null");
+            }
             ownerV1InnerServiceSMOImpl.updateOwner(ownerPo);
         }
 

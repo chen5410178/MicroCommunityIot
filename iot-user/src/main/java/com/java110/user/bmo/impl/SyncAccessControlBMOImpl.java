@@ -81,6 +81,12 @@ public class SyncAccessControlBMOImpl implements ISyncAccessControlBMO {
                 accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
                 accessControlFacePo.setMessage("待下发到门禁");
                 accessControlFacePo.setFacePath(ownerDto.getUrl());
+                accessControlFacePo.setCardNumber(ownerDto.getCardNumber());
+                accessControlFacePo.setIdNumber(ownerDto.getIdCard());
+                accessControlFacePo.setName(ownerDto.getName());
+                if(StringUtil.isEmpty(ownerDto.getCardNumber())){
+                    ownerDto.setCardNumber("null");
+                }
                 accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
             }
             return;

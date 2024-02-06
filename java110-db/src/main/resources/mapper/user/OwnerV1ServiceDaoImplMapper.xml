@@ -86,6 +86,9 @@
         <if test="cardNumber !=null and cardNumber != ''">
             , t.card_number = #{cardNumber}
         </if>
+        <if test="cardNumber == 'null'">
+            , t.card_number = ''
+        </if>
         <if test="link !=null and link != ''">
             , t.link= #{link}
         </if>

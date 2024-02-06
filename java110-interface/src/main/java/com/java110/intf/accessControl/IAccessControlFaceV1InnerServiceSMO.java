@@ -39,13 +39,13 @@ public interface IAccessControlFaceV1InnerServiceSMO {
 
 
     @RequestMapping(value = "/saveAccessControlFace", method = RequestMethod.POST)
-    public int saveAccessControlFace(@RequestBody AccessControlFacePo accessControlFacePo);
+     int saveAccessControlFace(@RequestBody AccessControlFacePo accessControlFacePo);
 
     @RequestMapping(value = "/updateAccessControlFace", method = RequestMethod.POST)
-    public int updateAccessControlFace(@RequestBody AccessControlFacePo accessControlFacePo);
+     int updateAccessControlFace(@RequestBody AccessControlFacePo accessControlFacePo);
 
     @RequestMapping(value = "/deleteAccessControlFace", method = RequestMethod.POST)
-    public int deleteAccessControlFace(@RequestBody AccessControlFacePo accessControlFacePo);
+     int deleteAccessControlFace(@RequestBody AccessControlFacePo accessControlFacePo);
 
     /**
      * <p>查询小区楼信息</p>
