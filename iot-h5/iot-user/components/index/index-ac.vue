@@ -4,10 +4,10 @@
 			<text class="text-bold">门禁开门</text>
 		</view>
 		<view class="undo-menu flex justify-start flex-wrap">
-			<view class="menu-item" v-for="(item,index) in machines" :key="index" @click="_toPage(item)">
+			<view class="menu-item" v-for="(item,index) in machines" :key="index" @click="_openAcDoor(item)">
 				<view style="position: relative;">
 					<image src="/static/images/ac.png"></image>
-					<view><text>{{item.name}}</text></view>
+					<view><text>{{item.machineName}}</text></view>
 				</view>
 			</view>
 		</view>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-	import {getOwnerAccessControl} from '../../api/accessControl/accessControlApi.js';
+	import {getOwnerAccessControl,ownerOpenAccessControlDoor} from '../../api/accessControl/accessControlApi.js';
 	import {getCommunityId} from '../../api/community/communityApi.js';
 	export default {
 		name: "indexAc",
@@ -34,30 +34,16 @@
 				}).then(_json=>{
 					_that.machines = _json.data;
 				});
-				// this.machines = [{
-				// 	name: '大门',
-				// 	machineCode: '/pages/resource/purchaseApplyAuditOrders',
-				// }, {
-				// 	name: '大门2',
-				// 	machineCode: '/pages/resource/itemOutAuditOrders',
-				// }, {
-				// 	name: '大门3',
-				// 	machineCode: '/pages/resource/allocationStorehouseAuditOrders',
-				// }, {
-				// 	name: '大门4',
-				// 	machineCode: '/pages/itemRelease/itemRelease',
-				// }]
 			},
-			_toPage: function(_item) {
-				if(!this.java110Context.hasPrivilege(_item.pri)){
+			_openAcDoor: function(_machine) {
+				ownerOpenAccessControlDoor({
+					machineId:_machine.machineId,
+					communityId:getCommunityId()
+				}).then(_json=>{
 					uni.showToast({
 						icon:'none',
-						title:'无权限，联系管理员'
-					});
-					return ;
-				}
-				uni.navigateTo({
-					url: _item.url
+						title:'开门成功'
+					})
 				})
 			}
 		}
@@ -76,7 +62,6 @@
 		.undo-menu{
 			padding:20upx;
 			.menu-item{
-				
 				width: 33.33%;
 				padding: 30upx;
 				text-align: center;
