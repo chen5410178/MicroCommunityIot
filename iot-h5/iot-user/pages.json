@@ -307,6 +307,14 @@
 				"navigationBarTitleText" : "访客码",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/user/personFaceCollection",
+			"style" : 
+			{
+				"navigationBarTitleText" : "人脸采集",
+				"enablePullDownRefresh" : false
+			}
 		}
     ],
 	"tabBar": {

@@ -22,6 +22,11 @@
 </template>
 
 <script>
+	import {hasLogin} from '@/api/user/sessionApi.js';
+	import {
+		getAppUser
+	} from '../../api/user/appUser.js';
+	
 	export default {
 		data() {
 			return {
@@ -30,7 +35,7 @@
 					{
 						icon:'/static/images/ac.png',
 						name:'门禁人脸',
-						url:'/'
+						url:'/pages/user/personFaceCollection'
 					},
 					{
 						icon:'/static/images/ac.png',
@@ -63,7 +68,26 @@
 			}
 		},
 		methods: {
-			
+			to:function(_item){
+				if(!hasLogin()){
+					uni.navigateTo({
+						url:'/pages/user/login'
+					});
+					return;
+				}
+				
+				let _that = this;
+				getAppUser().then(_data => {
+					uni.navigateTo({
+						url:_item.url
+					})
+				}, err => {
+					uni.showToast({
+						icon:'none',
+						title:'未认证房屋'
+					})
+				})
+			}
 		}
 	}
 </script>
