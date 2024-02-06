@@ -57,7 +57,7 @@ public class QueryBindRoomCmd extends Cmd {
             throw new CmdException("用户未认证房屋");
         }
 
-        context.setResponseEntity(ResultVo.createResponseEntity(appUserDtos.get(0)));
+        context.setResponseEntity(ResultVo.createResponseEntity(appUserDtos));
 
     }
 }

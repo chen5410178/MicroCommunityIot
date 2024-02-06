@@ -12,7 +12,7 @@ import url from '../../conf/url.js';
 export function getAppUser() {
 	let _data = {
 		page:1,
-		row:1,
+		row:30,
 	};
 	return new Promise((resolve, reject) => {
 		request({
@@ -30,6 +30,13 @@ export function getAppUser() {
 					reject('未认证房屋');
 					return;
 				}
+				
+				uni.setStorageSync("userCommunitys",_json.data);
+				let _currentCommunityInfo = uni.getStorageSync("currentCommunityInfo");
+				if(!_currentCommunityInfo){
+					uni.setStorageSync("currentCommunityInfo",_json.data[0]);
+				}
+				
 				resolve(_json.data[0]);
 			},
 			fail: function(res) {
