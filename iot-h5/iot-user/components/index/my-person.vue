@@ -164,7 +164,7 @@
 					row: 20,
 					// idCard: _ownerInfo.idCard,
 					// link: _ownerInfo.link,
-					// communityId: _ownerInfo.communityId
+					communityId: getCommunityId()
 				}).then((data) => {
 					if (!data) {
 						_that.accounts = [];
@@ -201,7 +201,7 @@
 						page: 1,
 						row: 100,
 						// tel: _ownerInfo.link,
-						// communityId: _ownerInfo.communityId,
+						communityId: getCommunityId(),
 						state: '1001'
 					}, null)
 					.then((_couponList) => {

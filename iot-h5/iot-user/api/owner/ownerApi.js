@@ -166,17 +166,17 @@ export function refreshPassQrcode(_objData) {
 
 export function refreshUserPassQrcode(_objData) {
 	return new Promise((resolve, reject) => {
-		requestNoAuth({
+		request({
 			url: url.refreshUserPassQrcode,
 			data: _objData,
 			method: "POST",
 			//动态数据
 			success: function(res) {
 				let _json = res.data;
-				uni.showToast({
-					icon: 'none',
-					title: _json.msg
-				});
+				// uni.showToast({
+				// 	icon: 'none',
+				// 	title: _json.msg
+				// });
 				if (_json.code == 0) {
 					resolve(_json);
 					return;

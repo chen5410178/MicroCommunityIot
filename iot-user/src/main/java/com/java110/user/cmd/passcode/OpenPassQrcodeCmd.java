@@ -13,11 +13,14 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.CmdContextUtils;
 import com.java110.core.utils.DateUtil;
+import com.java110.dto.appUser.AppUserDto;
 import com.java110.dto.user.UserDto;
+import com.java110.intf.user.IAppUserV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerV1InnerServiceSMO;
 import com.java110.intf.user.IPassQrcodeV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.passQrcode.PassQrcodePo;
+import com.tencentcloudapi.iot.v20180123.models.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
@@ -39,6 +42,9 @@ public class OpenPassQrcodeCmd extends Cmd {
     @Autowired
     private IPassQrcodeV1InnerServiceSMO passQrcodeV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IAppUserV1InnerServiceSMO appUserV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
@@ -55,8 +61,14 @@ public class OpenPassQrcodeCmd extends Cmd {
 
         Assert.listOnlyOne(userDtos,"用户未登录");
 
+
+        AppUserDto appUserDto = new AppUserDto();
+        appUserDto.setUserId(userId);
+        List<AppUserDto> appUserDtos = appUserV1InnerServiceSMOImpl.queryAppUsers(appUserDto);
+        Assert.listOnlyOne(appUserDtos,"房屋未认证");
+
         OwnerDto ownerDto = new OwnerDto();
-        ownerDto.setLink(userDtos.get(0).getTel());
+        ownerDto.setLink(appUserDtos.get(0).getLink());
         ownerDto.setCommunityId(reqJson.getString("communityId"));
         List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
 
