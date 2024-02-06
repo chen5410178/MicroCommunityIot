@@ -128,23 +128,18 @@
                             {{owner.cardNumber || '-'}}
                         </td>
                         <td class="text-center">
-                            <a href="javascript:void(0)" @click="_viewOwnerRooms(owner)">
-                                {{owner.roomCount || 0}}
-                            </a>
+                            {{owner.roomCount || 0}}
                         </td>
                         <td class="text-center">
                             {{owner.ownerTypeName }}
                         </td>
                         <td class="text-center">
-                            <a href="javascript:void(0)" @click="_viewOwnerCars(owner)">
-                                {{owner.carCount || 0}}
-                            </a>
+                            {{owner.carCount || 0}}
                         </td>
                         <td v-for="item in owner.listValues" class="text-center">
                             {{item || '-'}}
                         </td>
                         <td class="text-center">
-
                             <div class="btn-group">
                                 <button class="btn-white btn btn-xs " v-on:click="_openEditOwnerModel(owner)">
                                     <vc:i18n name="修改" namespace="listOwner"></vc:i18n>
@@ -172,7 +167,4 @@
     <vc:create path="property/addOwner" notifyLoadDataComponentName="listOwner" componentTitle="人员"></vc:create>
     <vc:create path="property/editOwner" notifyLoadDataComponentName="listOwner" componentTitle="人员"></vc:create>
     <vc:create path="property/deleteOwner" notifyLoadDataComponentName="listOwner"></vc:create>
-    <!-- <vc:create path="owner/ownerRooms"></vc:create>
-    <vc:create path="owner/ownerMembers"></vc:create>
-    <vc:create path="common/viewImage"></vc:create> -->
 </div>
