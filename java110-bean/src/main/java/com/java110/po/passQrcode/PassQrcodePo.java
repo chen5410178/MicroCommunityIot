@@ -17,6 +17,7 @@ package com.java110.po.passQrcode;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-12-20 01:17:14 mail: 928255095@qq.com
@@ -28,83 +29,104 @@ import java.util.Date;
 public class PassQrcodePo implements Serializable {
 
     private String personName;
-private String qrcodeTime;
-private String openId;
-private String qrcode;
-private String pqId;
-private String remark;
-private String statusCd = "0";
-private String state;
-private String personTel;
-private String ownerId;
-private String communityId;
-public String getPersonName() {
+    private String qrcodeTime;
+    private String openId;
+    private String qrcode;
+    private String pqId;
+    private String remark;
+    private String statusCd = "0";
+    private String state;
+    private String personTel;
+    private String ownerId;
+    private String communityId;
+
+    public String getPersonName() {
         return personName;
     }
-public void setPersonName(String personName) {
+
+    public void setPersonName(String personName) {
         this.personName = personName;
     }
-public String getQrcodeTime() {
+
+    public String getQrcodeTime() {
         return qrcodeTime;
     }
-public void setQrcodeTime(String qrcodeTime) {
+
+    public void setQrcodeTime(String qrcodeTime) {
         this.qrcodeTime = qrcodeTime;
     }
-public String getOpenId() {
+
+    public String getOpenId() {
         return openId;
     }
-public void setOpenId(String openId) {
+
+    public void setOpenId(String openId) {
         this.openId = openId;
     }
-public String getQrcode() {
+
+    public String getQrcode() {
         return qrcode;
     }
-public void setQrcode(String qrcode) {
+
+    public void setQrcode(String qrcode) {
         this.qrcode = qrcode;
     }
-public String getPqId() {
+
+    public String getPqId() {
         return pqId;
     }
-public void setPqId(String pqId) {
+
+    public void setPqId(String pqId) {
         this.pqId = pqId;
     }
-public String getRemark() {
+
+    public String getRemark() {
         return remark;
     }
-public void setRemark(String remark) {
+
+    public void setRemark(String remark) {
         this.remark = remark;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getState() {
+
+    public String getState() {
         return state;
     }
-public void setState(String state) {
+
+    public void setState(String state) {
         this.state = state;
     }
-public String getPersonTel() {
+
+    public String getPersonTel() {
         return personTel;
     }
-public void setPersonTel(String personTel) {
+
+    public void setPersonTel(String personTel) {
         this.personTel = personTel;
     }
-public String getOwnerId() {
+
+    public String getOwnerId() {
         return ownerId;
     }
-public void setOwnerId(String ownerId) {
+
+    public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-
 
 
 }

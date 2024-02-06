@@ -80,6 +80,7 @@ public class OpenPassQrcodeCmd extends Cmd {
         passQrcodePo.setQrcodeTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         passQrcodePo.setOwnerId(ownerDtos.get(0).getMemberId());
         passQrcodePo.setPersonName(ownerDtos.get(0).getName());
+        passQrcodePo.setPersonTel(appUserDtos.get(0).getLink());
         passQrcodePo.setOpenId("-1");
         passQrcodePo.setState("C");
         passQrcodePo.setCommunityId(ownerDtos.get(0).getCommunityId());
