@@ -12,9 +12,11 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.CmdContextUtils;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
+import com.java110.dto.appUser.AppUserDto;
 import com.java110.dto.passQrcode.PassQrcodeDto;
 import com.java110.dto.passQrcodeSetting.PassQrcodeSettingDto;
 import com.java110.dto.user.UserDto;
+import com.java110.intf.user.IAppUserV1InnerServiceSMO;
 import com.java110.intf.user.IPassQrcodeSettingV1InnerServiceSMO;
 import com.java110.intf.user.IPassQrcodeV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
@@ -39,6 +41,9 @@ public class RefreshUserPassQrcodeCmd extends Cmd {
     @Autowired
     private IPassQrcodeSettingV1InnerServiceSMO passQrcodeSettingV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IAppUserV1InnerServiceSMO appUserV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
         Assert.hasKeyAndValue(reqJson, "communityId", "未包含小区ID");
@@ -53,9 +58,15 @@ public class RefreshUserPassQrcodeCmd extends Cmd {
         userDto.setUserId(userId);
         List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
 
+        AppUserDto appUserDto = new AppUserDto();
+        appUserDto.setUserId(userId);
+        List<AppUserDto> appUserDtos = appUserV1InnerServiceSMOImpl.queryAppUsers(appUserDto);
+        Assert.listOnlyOne(appUserDtos,"房屋未认证");
+
+
         Assert.listOnlyOne(userDtos, "用户未登录");
         PassQrcodeDto passQrcodeDto = new PassQrcodeDto();
-        passQrcodeDto.setPersonTel(userDtos.get(0).getTel());
+        passQrcodeDto.setPersonTel(appUserDtos.get(0).getLink());
         passQrcodeDto.setCommunityId(reqJson.getString("communityId"));
         passQrcodeDto.setPage(1);
         passQrcodeDto.setRow(1);
