@@ -44,6 +44,7 @@ export default {
 	listMeterMachineCharge: baseUrl + "iot/api/meterMachineCharge.listMeterMachineCharge",
 	userSendSms: baseUrl + "iot/api/user.userSendSms",
 	queryBindRoom: baseUrl + "iot/api/appUser.queryBindRoom",
+	getVisitQrCodeUrl: baseUrl + "iot/api/visit.getVisitQrCodeUrl",
 
 	
 	

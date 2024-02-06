@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="header flex justify-around align-center">
-			<view class="header-item " v-for="(item,index) in headerMenus" :key="index" @click="_toPage(item)">
+			<view class="header-item " v-for="(item,index) in headerMenus" :key="index" @click="_toCodeUrl(item)">
 				<view style="position: relative;">
 					<image :src="item.icon"></image>
 					<view><text>{{item.name}}</text></view>
@@ -29,14 +29,12 @@
 				}, {
 					icon: '/static/images/qrcode-visit.png',
 					name: '访客码',
-					url: '/pages/repairDispatch/repairDispatch'
+					action: 'visit'
 				}]
 			};
 		},
 		methods: {
-
-			_toPage: function(_item) {
-
+			_toCodeUrl: function(_item) {
 				if (!hasLogin()) {
 					uni.navigateTo({
 						url: '/pages/user/login'
@@ -51,6 +49,9 @@
 					if (_action == 'pass') {
 						_that.passQrcode(_data);
 						return;
+					}else if(_action == 'visit'){
+						_that.visitQrcode(_data);
+						return;
 					}
 				}, _err => {
 					uni.showToast({
@@ -62,6 +63,11 @@
 			passQrcode: function(_data) {
 				uni.navigateTo({
 					url:'/pages/user/userPassQrcode'
+				})
+			},
+			visitQrcode:function(_data){
+				uni.navigateTo({
+					url:'/pages/user/visitQrcode'
 				})
 			}
 		}

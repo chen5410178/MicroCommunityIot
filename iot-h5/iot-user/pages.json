@@ -299,6 +299,14 @@
 				"navigationBarTitleText" : "用户通信码",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/user/visitQrcode",
+			"style" : 
+			{
+				"navigationBarTitleText" : "访客码",
+				"enablePullDownRefresh" : false
+			}
 		}
     ],
 	"tabBar": {
