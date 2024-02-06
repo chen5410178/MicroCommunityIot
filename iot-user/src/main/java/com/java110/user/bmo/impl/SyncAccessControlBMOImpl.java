@@ -67,7 +67,12 @@ public class SyncAccessControlBMOImpl implements ISyncAccessControlBMO {
         fileRelDto.setRelTypeCd("10000"); //人员照片
         List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
         if (fileRelDtos != null && !fileRelDtos.isEmpty()) {
-            ownerDto.setUrl(imgUrl + fileRelDtos.get(0).getFileRealName());
+            String url = fileRelDtos.get(0).getFileRealName();
+            if(url.startsWith("http")){
+                ownerDto.setUrl(fileRelDtos.get(0).getFileRealName());
+            }else{
+                ownerDto.setUrl(imgUrl + fileRelDtos.get(0).getFileRealName());
+            }
         }
 
 
