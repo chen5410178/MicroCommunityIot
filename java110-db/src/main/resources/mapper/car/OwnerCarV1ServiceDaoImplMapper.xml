@@ -194,4 +194,17 @@
 
     </select>
 
+
+    <select id="queryOwnerCarCountByOwnerIds" parameterType="Map" resultType="Map">
+        select t.owner_id ownerId,count(1) carCount
+        from
+        owner_car t
+        where t.status_cd = '0'
+        and t.owner_id in
+        <foreach collection="ownerIds" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        group by t.owner_id
+    </select>
+
 </mapper>

@@ -70,4 +70,5 @@ public interface IOwnerCarV1ServiceDao {
      */
     int queryOwnerCarsCount(Map info);
 
+    List<Map> queryOwnerCarCountByOwnerIds(Map info);
 }

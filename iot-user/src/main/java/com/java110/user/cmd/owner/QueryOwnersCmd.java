@@ -17,15 +17,18 @@ import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.doc.annotation.*;
+import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.intf.community.IRoomInnerServiceSMO;
 import com.java110.intf.system.IFileRelInnerServiceSMO;
 import com.java110.intf.user.IOwnerInnerServiceSMO;
+import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Java110CmdDoc(title = "查询人员",
         description = "第三方系统，比如招商系统查询人员信息",
@@ -101,6 +104,12 @@ public class QueryOwnersCmd extends Cmd {
     @Autowired
     private IFileRelInnerServiceSMO fileRelInnerServiceSMOImpl;
 
+    @Autowired
+    private IOwnerRoomRelV1InnerServiceSMO ownerRoomRelV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IOwnerCarV1InnerServiceSMO ownerCarV1InnerServiceSMOImpl;
+
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
@@ -120,7 +129,13 @@ public class QueryOwnersCmd extends Cmd {
         List<OwnerDto> ownerDtos = null;
         if (total > 0) {
             ownerDtos = ownerInnerServiceSMOImpl.queryOwners(BeanConvertUtil.covertBean(reqJson, OwnerDto.class));
-            String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN,"IMG_PATH");
+            String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
+
+            // todo 查询 房屋数量
+            queryRoomCount(ownerDtos);
+
+            // todo 查询 车辆数
+            queryCarCount(ownerDtos);
 
             for (OwnerDto ownerDto : ownerDtos) {
                 //查询照片
@@ -139,8 +154,8 @@ public class QueryOwnersCmd extends Cmd {
                         urls.add(fileRel.getFileRealName());
                         ownerDto.setUrl(fileRel.getFileRealName());
                     } else {
-                        urls.add(imgUrl+fileRel.getFileRealName());
-                        ownerDto.setUrl(imgUrl+fileRel.getFileRealName());
+                        urls.add(imgUrl + fileRel.getFileRealName());
+                        ownerDto.setUrl(imgUrl + fileRel.getFileRealName());
                     }
 
                 }
@@ -153,6 +168,55 @@ public class QueryOwnersCmd extends Cmd {
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
     }
+
+    private void queryRoomCount(List<OwnerDto> ownerDtos) {
+
+        if (ListUtil.isNull(ownerDtos)) {
+            return;
+        }
+
+        List<String> ownerIds = new ArrayList<>();
+        for (OwnerDto ownerDto : ownerDtos) {
+            ownerIds.add(ownerDto.getMemberId());
+        }
+
+        //查询业主房屋数
+        List<Map> ownerRoomCounts = ownerRoomRelV1InnerServiceSMOImpl.queryRoomCountByOwnerIds(ownerIds);
+
+        for (OwnerDto ownerDto : ownerDtos) {
+            for (Map count : ownerRoomCounts) {
+                if (StringUtil.isEmpty(ownerDto.getMemberId()) || StringUtil.isEmpty(count.get("ownerId").toString())) {
+                    continue;
+                }
+                if (ownerDto.getMemberId().equals(count.get("ownerId").toString())) {
+                    ownerDto.setRoomCount(count.get("roomCount").toString());
+                }
+
+            }
+        }
+    }
+
+    private void queryCarCount(List<OwnerDto> ownerDtos) {
+        if (ListUtil.isNull(ownerDtos)) {
+            return;
+        }
+
+        List<String> ownerIds = new ArrayList<>();
+        for (OwnerDto ownerDto : ownerDtos) {
+            ownerIds.add(ownerDto.getMemberId());
+        }
+
+        List<Map> memberCounts = ownerCarV1InnerServiceSMOImpl.queryOwnerCarCountByOwnerIds(ownerIds);
+
+        for(OwnerDto ownerDto : ownerDtos) {
+            for (Map count : memberCounts) {
+                if(ownerDto.getOwnerId().equals(count.get("ownerId"))){
+                    ownerDto.setCarCount(count.get("carCount").toString());
+                }
+            }
+        }
+    }
+
 
     private void freshRoomId(JSONObject reqJson) {
         if (!reqJson.containsKey("roomName")) {
