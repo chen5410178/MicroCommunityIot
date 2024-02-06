@@ -9,6 +9,15 @@
 				</view>
 			</view>
 		</view>
+		<view class="real_list">
+			<view class="title">充值服务</view>
+			<view class="list">
+				<view class="item" v-for="(item,index) in charges" :key="index" @tap="to(item)">
+					<image :src="item.icon"></image>
+					<view class="text">{{item.name}}</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -17,14 +26,37 @@
 		data() {
 			return {
 				orders:[
+					
 					{
 						icon:'/static/images/ac.png',
-						name:'我的小区',
+						name:'门禁人脸',
 						url:'/'
 					},
 					{
 						icon:'/static/images/ac.png',
-						name:'申请记录',
+						name:'人脸下发',
+						url:'/'
+					},
+					{
+						icon:'/static/images/ac.png',
+						name:'访客记录',
+						url:'/'
+					}
+				],
+				charges:[
+					{
+						icon:'/static/images/ac.png',
+						name:'水电充值',
+						url:'/'
+					},
+					{
+						icon:'/static/images/ac.png',
+						name:'停车月卡',
+						url:'/'
+					},
+					{
+						icon:'/static/images/ac.png',
+						name:'充电月卡',
 						url:'/'
 					}
 				]

@@ -4,7 +4,7 @@
 			<view class="cu-item arrow" @click="mySettings()">
 				<view class="content">
 					<text class="cuIcon-settings text-gray"></text>
-					<text class="text-grey">设置</text>
+					<text class="text-grey">切换小区</text>
 				</view>
 			</view>
 			<view class="cu-item arrow" @tap="_logout()" v-if="login">

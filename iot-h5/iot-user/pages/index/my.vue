@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<my-person ref="myPersonRef"></my-person>
-
+		<my-menu ref="myMenuRef"></my-menu>
 		<my-system ref="mySystem"></my-system>
 	</view>
 </template>
@@ -19,7 +19,8 @@
 	} from '@/api/user/userApi.js'
 
 	import myPerson from '@/components/index/my-person.vue'
-	import mySystem from '@/components/index/my-system.vue'
+	import mySystem from '@/components/index/my-system.vue';
+	import myMenu from '@/components/index/my-menu.vue';
 	export default {
 		data() {
 			return {
@@ -29,7 +30,7 @@
 		},
 		components: {
 			myPerson,
-			//myMenu,
+			myMenu,
 			mySystem
 		},
 		onLoad: function(options) {

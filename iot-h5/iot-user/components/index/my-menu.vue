@@ -15,34 +15,11 @@
 </template>
 
 <script>
-	import context from '@/lib/java110/Java110Context.js';
-	const factory = context.factory; //获取app实例
-	const constant = context.constant;
+
 	export default {
 		name: "myMenu",
 		data() {
 			return {
-				order_list: [{
-						name: '待付款',
-						src: this.imgUrl+'/h5/images/serve/order1.png',
-						href: ''
-					},
-					{
-						name: '待发货',
-						src: this.imgUrl+'/h5/images/serve/order2.png',
-						href: ''
-					},
-					{
-						name: '待收货',
-						src: this.imgUrl+'/h5/images/serve/order3.png',
-						href: ''
-					},
-					{
-						name: '已完成',
-						src: this.imgUrl+'/h5/images/serve/order4.png',
-						href: ''
-					}
-				],
 				serve_list: [{
 						name: '业主信息',
 						src: this.imgUrl+'/h5/images/serve/my1.png',
@@ -59,64 +36,20 @@
 						href: '/pages/my/myHouse'
 					},
 					{
-						name: '发票设置',
+						name: '停车月卡记录',
 						src: this.imgUrl+'/h5/images/serve/my4.png',
 						href: '/pages/invoice/invoice'
 					},
 					{
-						name: '缴费记录',
+						name: '充电月卡记录',
 						src: this.imgUrl+'/h5/images/serve/my5.png',
 						href: '/pages/fee/payFeeDetail'
 					},
-					// {
-					// 	name: '我的车位',
-					// 	src: this.imgUrl+'/h5/images/serve/my6.png',
-					// 	href: '/pages/applyparking/parkingInfo'
-					// },
-					// {
-					// 	name: '我的投诉',
-					// 	src: this.imgUrl+'/h5/images/serve/11.png',
-					// 	href: '/pages/complaint/complaintList'
-					// },
-					// {
-					// 	name: '门禁日志',
-					// 	src: this.imgUrl+'/h5/images/serve/my9.png',
-					// 	href: '/pages/machine/machineTranslateLog'
-					// },
-					// {
-					// 	name: '空置房记录',
-					// 	src: this.imgUrl+'/h5/images/serve/my8.png',
-					// 	href: '/pages/applyRoom/myRoomList'
-					// },
-					// {
-					// 	name: '装修记录',
-					// 	src: this.imgUrl+'/h5/images/serve/my10.png',
-					// 	href: '/pages/renovation/myRoomList'
-					// },
-					// {
-					// 	name: '订场记录',
-					// 	src: this.imgUrl+'/h5/images/serve/my8.png',
-					// 	href: '/pages/appointment/myBoomList'
-					// },	
-					// {
-					// 	name: '预约记录',
-					// 	src: this.imgUrl+'/h5/images/serve/my8.png',
-					// 	href: '/pages/reserve/reserveMyOrder'
-					// },
-					// {
-					// 	name: '放行记录',
-					// 	src: this.imgUrl+'/h5/images/serve/my8.png',
-					// 	href: '/pages/itemRelease/myItemReleaseList'
-					// },{
-					// 	name: '充电订单',
-					// 	src: this.imgUrl+'/h5/images/serve/11.png',
-					// 	href: '/pages/machine/chargeMachineOrders'
-					// },
-					// {
-					// 	name: '发票',
-					// 	src: this.imgUrl+'/h5/images/serve/my5.png',
-					// 	href: '/pages/invoice/invoice'
-					// },
+					{
+						name: '充电订单',
+						src: this.imgUrl+'/h5/images/serve/my5.png',
+						href: '/pages/fee/payFeeDetail'
+					},
 				]
 			};
 		},
@@ -130,59 +63,12 @@
 					url: v.href,
 				})
 			},
-			ckeckUserInfo: function() {
-				return context.checkLoginStatus();
-			},
-			toMallOrders() {
-				if (!this.ckeckUserInfo()) {
-					this.vc.navigateTo({
-						url: '../login/showlogin'
-					}, () => {
-						this.refreshPageLoginInfo();
-					});
-					return;
-				}
-				this.vc.navigateToMall({
-					url: '/pages/myOrder/myOrderAll'
-				})
-			},
 		}
 	}
 </script>
 
 <style lang="less">
-	.order_box {
-			margin-top:20upx;
-		.order_title {
-			line-height: 42upx;
-			font-size: 30upx;
-			font-weight: 600;
-			color: #333;
-			padding: 20upx;
-		}
-
-		.order_list {
-			padding: 20upx 20upx 0;
-			background: #fff;
-		}
-
-		.item {
-			width: 25%;
-			display: inline-block;
-			text-align: center;
-			margin-bottom: 20upx;
-		}
-
-		image {
-			height: 44upx;
-			width: 44upx;
-		}
-
-		.text {
-			color: #333;
-			font-size: 28upx;
-		}
-	}
+	
 
 	.serve_box {
 		margin-top:20upx;
@@ -200,7 +86,7 @@
 		}
 
 		.item {
-			width: 20%;
+			width: 25%;
 			display: inline-block;
 			text-align: center;
 			margin-bottom: 40upx;
