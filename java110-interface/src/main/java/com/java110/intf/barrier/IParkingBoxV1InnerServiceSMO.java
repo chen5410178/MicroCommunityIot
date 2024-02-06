@@ -39,13 +39,13 @@ public interface IParkingBoxV1InnerServiceSMO {
 
 
     @RequestMapping(value = "/saveParkingBox", method = RequestMethod.POST)
-    public int saveParkingBox(@RequestBody  ParkingBoxPo parkingBoxPo);
+     int saveParkingBox(@RequestBody  ParkingBoxPo parkingBoxPo);
 
     @RequestMapping(value = "/updateParkingBox", method = RequestMethod.POST)
-    public int updateParkingBox(@RequestBody  ParkingBoxPo parkingBoxPo);
+     int updateParkingBox(@RequestBody  ParkingBoxPo parkingBoxPo);
 
     @RequestMapping(value = "/deleteParkingBox", method = RequestMethod.POST)
-    public int deleteParkingBox(@RequestBody  ParkingBoxPo parkingBoxPo);
+     int deleteParkingBox(@RequestBody  ParkingBoxPo parkingBoxPo);
 
     /**
      * <p>查询小区楼信息</p>

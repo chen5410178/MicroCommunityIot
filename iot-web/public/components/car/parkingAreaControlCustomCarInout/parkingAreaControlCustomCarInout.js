@@ -176,8 +176,8 @@
                 vc.http.apiGet('/parkingCoupon.listParkingCouponCar',
                     param,
                     function(json, res) {
-                        let _machineManageInfo = JSON.parse(json);
-                        let _coupons = _machineManageInfo.data;
+                        let _json = JSON.parse(json);
+                        let _coupons = _json.data;
                         $that.parkingAreaControlCustomCarInoutInfo.coupons = _coupons;
                     },
                     function(errInfo, error) {
