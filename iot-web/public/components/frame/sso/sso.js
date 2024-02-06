@@ -5,7 +5,8 @@
     vc.extends({
         data: {
             ssoInfo: {
-                errMsg:''
+                errMsg:'',
+                communityId:'',
             }
         },
         _initMethod: function() {
@@ -16,6 +17,7 @@
             }
 
             let _targetUrl = vc.getParam('targetUrl');
+            $that.ssoInfo.communityId = vc.getParam('communityId');
             if(!_targetUrl){
                 $that.ssoInfo.errMsg = '未包含targetUrl 或者未用 targetUrl 未用encodeURIComponent 编码';
             }
@@ -43,7 +45,8 @@
                             return;
                         }
                         vc.emit('initData', 'loadCommunityInfo', {
-                            url: decodeURIComponent(_targetUrl)
+                            url: decodeURIComponent(_targetUrl),
+                            communityId:$that.ssoInfo.communityId
                         });
                         //vc.jumpToPage(decodeURIComponent(_targetUrl));
                     },

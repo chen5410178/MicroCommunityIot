@@ -9,7 +9,7 @@
         _initEvent: function() {
             vc.on('initData', 'loadCommunityInfo', function(_param) {
 
-                vc.component._validateHasStore(_param);
+                $that._validateHasStore(_param);
             })
         },
         methods: {
@@ -27,8 +27,18 @@
                         if (res.status == 200) {
                             var _communityInfos = JSON.parse(json).data;
                             if (_communityInfos != null && _communityInfos.length > 0) {
+                                
                                 vc.setCurrentCommunity(_communityInfos[0]);
                                 vc.setCommunitys(_communityInfos);
+
+                                let _communityId = _param.communityId;
+                                if(_communityId){
+                                    _communityInfos.forEach(_c=>{
+                                        if(_c.communityId == _communityId){
+                                            vc.setCurrentCommunity(_c);
+                                        }
+                                    })
+                                }
                             } else {
                                 vc.toast('运营团队未分配小区，请联系运营团队');
                                 return;
@@ -53,7 +63,7 @@
                     function(json, res) {
                         if (res.status == 200) {
                             $that._loadStaffPrivileges(_param);
-                            //vc.component._loadCommunityInfo(_param);
+                            //$that._loadCommunityInfo(_param);
                         } else {
                             vc.toast(json);
                         }
@@ -84,7 +94,7 @@
                         });
 
                         vc.saveData('hc_staff_privilege', _privilege);
-                        vc.component._loadCommunityInfo(_param);
+                        $that._loadCommunityInfo(_param);
                     },
                     function() {
                         console.log('请求失败处理');
