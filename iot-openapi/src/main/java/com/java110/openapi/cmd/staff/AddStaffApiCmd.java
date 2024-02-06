@@ -79,7 +79,7 @@ public class AddStaffApiCmd extends Cmd {
 
 
         StoreStaffDto storeStaffDto = new StoreStaffDto();
-        storeStaffDto.setUserId(reqJson.getString("staffId"));
+        storeStaffDto.setStaffId(reqJson.getString("staffId"));
         List<StoreStaffDto> storeStaffDtos = storeUserV1InnerServiceSMOImpl.queryStoreStaffs(storeStaffDto);
         if (!ListUtil.isNull(storeStaffDtos)) {
             updateUser(reqJson);
