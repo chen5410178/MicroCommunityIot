@@ -16,6 +16,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.doc.annotation.*;
 import com.java110.intf.system.IFileInnerServiceSMO;
 import com.java110.intf.system.IFileRelInnerServiceSMO;
@@ -86,21 +87,21 @@ public class UploadOwnerPhotoCmd extends Cmd {
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
-        if (reqJson.containsKey("photo") && !StringUtils.isEmpty(reqJson.getString("photo"))) {
-            FileDto fileDto = new FileDto();
-            fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
-            fileDto.setFileName(fileDto.getFileId());
-            fileDto.setContext(reqJson.getString("photo"));
-            fileDto.setSuffix("jpeg");
-            fileDto.setCommunityId(reqJson.getString("communityId"));
-            String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
-            reqJson.put("ownerPhotoId", fileDto.getFileId());
-            reqJson.put("fileSaveName", fileName);
+        FileDto fileDto = new FileDto();
+        fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
+        fileDto.setFileName(fileDto.getFileId());
+        fileDto.setContext(reqJson.getString("photo"));
+        fileDto.setSuffix("jpeg");
+        fileDto.setCommunityId(reqJson.getString("communityId"));
+        String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
+        reqJson.put("ownerPhotoId", fileDto.getFileId());
+        reqJson.put("fileSaveName", fileName);
 
-            editOwnerPhoto(reqJson);
+        //todo 修改业主人脸
+        editOwnerPhoto(reqJson);
 
-        }
-        //添加小区楼
+
+        //todo 修改业主
         editOwner(reqJson);
     }
 
@@ -110,7 +111,7 @@ public class UploadOwnerPhotoCmd extends Cmd {
         fileRelDto.setRelTypeCd("10000");
         fileRelDto.setObjId(paramInJson.getString("memberId"));
         List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
-        if (fileRelDtos == null || fileRelDtos.size() == 0) {
+        if (ListUtil.isNull(fileRelDtos)) {
             JSONObject businessUnit = new JSONObject();
             businessUnit.put("fileRelId", GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_fileRelId));
             businessUnit.put("relTypeCd", "10000");

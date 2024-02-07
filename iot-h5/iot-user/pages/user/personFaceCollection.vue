@@ -14,6 +14,8 @@
 	import {uploadImageAsync} from '../../api/user/userApi.js';
 	import * as TanslateImage from '../../lib/java110/utils/translate-image.js';
 	import {getCommunityId} from '../../api/community/communityApi.js';
+	import {getMemberId,getOwnerFace} from '../../api/owner/ownerApi.js';
+	
 	export default {
 		data() {
 			return {
@@ -22,12 +24,17 @@
 			}
 		},
 		onLoad(options) {
-			this.memberId = options.memberId;
+			this.memberId = getMemberId();
 			this._loadOwnerFace();
 		},
 		methods: {
 			_loadOwnerFace:function(){
-				
+				let _that =this;
+				getOwnerFace({
+					a:1
+				}).then(_data=>{
+					_that.logoUrl = _data;
+				});
 			},
 			_doFace:function(){
 				let that = this;
@@ -45,7 +52,9 @@
 								communityId: getCommunityId()
 							}
 							uploadImageAsync(_objData, that).then((res) => {
-								that.logoUrl = res.data;
+								console.log('res=',res)
+								let _data= res.data;
+								that.logoUrl = _data.url;
 							})
 						})
 						//#endif
@@ -57,7 +66,8 @@
 								communityId: getCommunityId()
 							}
 							uploadImageAsync(_objData, that).then((res) => {
-								that.logoUrl = res;
+								let _data= res.data;
+								that.logoUrl = _data.url;
 							})
 						});
 						//#endif

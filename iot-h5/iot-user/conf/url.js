@@ -47,6 +47,7 @@ export default {
 	getVisitQrCodeUrl: baseUrl + "iot/api/visit.getVisitQrCodeUrl",
 	listOwnerAccessControl: baseUrl + "iot/api/accessControl.listOwnerAccessControl",
 	ownerOpenAccessControlDoor: baseUrl + "iot/api/accessControl.ownerOpenAccessControlDoor",
+	listOwnerFace: baseUrl + "iot/api/owner.listOwnerFace",
 	
 	
 

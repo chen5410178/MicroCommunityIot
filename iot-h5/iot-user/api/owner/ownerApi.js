@@ -5,6 +5,10 @@ import {
 import url from '../../conf/url.js';
 
 export function getMemberId() {
+	let _community = uni.getStorageSync("currentCommunityInfo");
+	if(_community){
+		return _community.memberId;
+	}
 	return null;
 }
 
@@ -204,6 +208,25 @@ export function getVisitQrCodeUrl(_objData){
 	return new Promise((resolve, reject) => {
 		request({
 			url: url.getVisitQrCodeUrl,
+			data: _objData,
+			method: "POST",
+			//动态数据
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code == 0) {
+					resolve(_json.data);
+					return;
+				}
+			},
+			fail: function(e) {
+			}
+		});
+	})
+}
+export function getOwnerFace(_objData){
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.listOwnerFace,
 			data: _objData,
 			method: "POST",
 			//动态数据
