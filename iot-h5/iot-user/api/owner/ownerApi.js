@@ -228,6 +228,25 @@ export function getOwnerFace(_objData){
 		request({
 			url: url.listOwnerFace,
 			data: _objData,
+			method: "GET",
+			//动态数据
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code == 0) {
+					resolve(_json.data);
+					return;
+				}
+			},
+			fail: function(e) {
+			}
+		});
+	})
+}
+export function uploadOwnerPhoto(_objData){
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.uploadOwnerPhoto,
+			data: _objData,
 			method: "POST",
 			//动态数据
 			success: function(res) {
@@ -242,3 +261,4 @@ export function getOwnerFace(_objData){
 		});
 	})
 }
+

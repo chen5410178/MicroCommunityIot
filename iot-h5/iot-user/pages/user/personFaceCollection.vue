@@ -14,7 +14,7 @@
 	import {uploadImageAsync} from '../../api/user/userApi.js';
 	import * as TanslateImage from '../../lib/java110/utils/translate-image.js';
 	import {getCommunityId} from '../../api/community/communityApi.js';
-	import {getMemberId,getOwnerFace} from '../../api/owner/ownerApi.js';
+	import {getMemberId,getOwnerFace,uploadOwnerPhoto} from '../../api/owner/ownerApi.js';
 	
 	export default {
 		data() {
@@ -36,6 +36,20 @@
 					_that.logoUrl = _data;
 				});
 			},
+			_uploadOwnerPhoto:function(photoPath){
+				let _that =this;
+				uploadOwnerPhoto({
+					memberId:this.memberId,
+					photo:photoPath,
+					communityId:getCommunityId()
+				}).then(_data=>{
+					uni.showToast({
+						icon:'none',
+						title:'提交成功'
+					});
+					_that._loadOwnerFace();
+				})
+			},
 			_doFace:function(){
 				let that = this;
 				wx.chooseImage({
@@ -55,6 +69,7 @@
 								console.log('res=',res)
 								let _data= res.data;
 								that.logoUrl = _data.url;
+								that.uploadOwnerPhoto(_data.fileId);
 							})
 						})
 						//#endif
@@ -68,6 +83,7 @@
 							uploadImageAsync(_objData, that).then((res) => {
 								let _data= res.data;
 								that.logoUrl = _data.url;
+								that.uploadOwnerPhoto(_data.fileId);
 							})
 						});
 						//#endif

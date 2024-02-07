@@ -85,40 +85,20 @@ public class UploadOwnerPhotoCmd extends Cmd {
     }
 
     @Override
-    @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
-        FileDto fileDto = new FileDto();
-        fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
-        fileDto.setFileName(fileDto.getFileId());
-        fileDto.setContext(reqJson.getString("photo"));
-        fileDto.setSuffix("jpeg");
-        fileDto.setCommunityId(reqJson.getString("communityId"));
-        String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
-        reqJson.put("ownerPhotoId", fileDto.getFileId());
-        reqJson.put("fileSaveName", fileName);
-
-        //todo 修改业主人脸
-        editOwnerPhoto(reqJson);
-
-
-        //todo 修改业主
-        editOwner(reqJson);
-    }
-
-    public void editOwnerPhoto(JSONObject paramInJson) {
 
         FileRelDto fileRelDto = new FileRelDto();
         fileRelDto.setRelTypeCd("10000");
-        fileRelDto.setObjId(paramInJson.getString("memberId"));
+        fileRelDto.setObjId(reqJson.getString("memberId"));
         List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
         if (ListUtil.isNull(fileRelDtos)) {
             JSONObject businessUnit = new JSONObject();
             businessUnit.put("fileRelId", GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_fileRelId));
             businessUnit.put("relTypeCd", "10000");
             businessUnit.put("saveWay", "table");
-            businessUnit.put("objId", paramInJson.getString("memberId"));
-            businessUnit.put("fileRealName", paramInJson.getString("ownerPhotoId"));
-            businessUnit.put("fileSaveName", paramInJson.getString("ownerPhotoId"));
+            businessUnit.put("objId", reqJson.getString("memberId"));
+            businessUnit.put("fileRealName", reqJson.getString("photo"));
+            businessUnit.put("fileSaveName", reqJson.getString("photo"));
             FileRelPo fileRelPo = BeanConvertUtil.covertBean(businessUnit, FileRelPo.class);
             fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
             return;
@@ -126,35 +106,11 @@ public class UploadOwnerPhotoCmd extends Cmd {
 
         JSONObject businessUnit = new JSONObject();
         businessUnit.putAll(BeanConvertUtil.beanCovertMap(fileRelDtos.get(0)));
-        businessUnit.put("fileRealName", paramInJson.getString("ownerPhotoId"));
-        businessUnit.put("fileSaveName", paramInJson.getString("fileSaveName"));
+        businessUnit.put("fileRealName", reqJson.getString("photo"));
+        businessUnit.put("fileSaveName", reqJson.getString("photo"));
         FileRelPo fileRelPo = BeanConvertUtil.covertBean(businessUnit, FileRelPo.class);
         fileRelInnerServiceSMOImpl.updateFileRel(fileRelPo);
 
-
-    }
-
-    public void editOwner(JSONObject paramInJson) {
-
-        OwnerDto ownerDto = new OwnerDto();
-        ownerDto.setMemberId(paramInJson.getString("memberId"));
-        List<OwnerDto> ownerDtos = ownerInnerServiceSMOImpl.queryOwnerMembers(ownerDto);
-
-        Assert.listOnlyOne(ownerDtos, "未查询到业主信息或查询到多条");
-
-        JSONObject businessOwner = new JSONObject();
-        businessOwner.putAll(BeanConvertUtil.beanCovertMap(ownerDtos.get(0)));
-        businessOwner.putAll(paramInJson);
-
-        if (paramInJson.containsKey("wxPhoto")) {
-            businessOwner.put("link", paramInJson.getString("wxPhoto"));
-        }
-        businessOwner.put("state", ownerDtos.get(0).getState());
-        OwnerPo ownerPo = BeanConvertUtil.covertBean(businessOwner, OwnerPo.class);
-        int flag = ownerV1InnerServiceSMOImpl.updateOwner(ownerPo);
-        if (flag < 1) {
-            throw new CmdException("修改业主");
-        }
     }
 
 }
