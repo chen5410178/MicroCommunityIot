@@ -69,7 +69,7 @@
 								console.log('res=',res)
 								let _data= res.data;
 								that.logoUrl = _data.url;
-								that.uploadOwnerPhoto(_data.fileId);
+								that._uploadOwnerPhoto(_data.fileId);
 							})
 						})
 						//#endif
@@ -83,7 +83,7 @@
 							uploadImageAsync(_objData, that).then((res) => {
 								let _data= res.data;
 								that.logoUrl = _data.url;
-								that.uploadOwnerPhoto(_data.fileId);
+								that._uploadOwnerPhoto(_data.fileId);
 							})
 						});
 						//#endif

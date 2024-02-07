@@ -22,6 +22,7 @@ import com.java110.intf.system.IFileInnerServiceSMO;
 import com.java110.intf.system.IFileRelInnerServiceSMO;
 import com.java110.intf.user.IOwnerInnerServiceSMO;
 import com.java110.intf.user.IOwnerV1InnerServiceSMO;
+import com.java110.user.bmo.ISyncAccessControlBMO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -76,6 +77,9 @@ public class UploadOwnerPhotoCmd extends Cmd {
     @Autowired
     private IOwnerV1InnerServiceSMO ownerV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ISyncAccessControlBMO syncAccessControlBMOImpl;
+
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
@@ -111,6 +115,8 @@ public class UploadOwnerPhotoCmd extends Cmd {
         FileRelPo fileRelPo = BeanConvertUtil.covertBean(businessUnit, FileRelPo.class);
         fileRelInnerServiceSMOImpl.updateFileRel(fileRelPo);
 
+        //todo 人员同步门禁
+        syncAccessControlBMOImpl.syncAccessControl(reqJson.getString("memberId"));
     }
 
 }
