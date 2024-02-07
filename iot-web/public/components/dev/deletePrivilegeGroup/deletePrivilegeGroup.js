@@ -4,8 +4,8 @@
             deletePrivilegeGroupInfo: {}
         },
         _initEvent: function () {
-            vc.component.$on('deletePrivilegeGroup_openDeletePrivilegeGroupModel', function (_pGroup) {
-                vc.component.deletePrivilegeGroupInfo = _pGroup;
+            $that.$on('deletePrivilegeGroup_openDeletePrivilegeGroupModel', function (_pGroup) {
+                $that.deletePrivilegeGroupInfo = _pGroup;
                 $('#deletePrivilegeGroupModel').modal('show');
             });
         },
@@ -14,10 +14,10 @@
                 $('#deletePrivilegeGroupModel').modal('hide');
             },
             deletePrivilegeGroup: function () {
-                console.log("开始删除权限组：", vc.component.deletePrivilegeGroupInfo);
+                console.log("开始删除权限组：", $that.deletePrivilegeGroupInfo);
                 vc.http.apiPost(
-                    '/delete.privilegeGroup.info',
-                    JSON.stringify(vc.component.deletePrivilegeGroupInfo),
+                    '/privilegeGroup.deletePrivilegeGroup',
+                    JSON.stringify($that.deletePrivilegeGroupInfo),
                     {
                         emulateJSON: true
                     },
@@ -26,18 +26,18 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#deletePrivilegeGroupModel').modal('hide');
-                            vc.component.$emit('privilegeGroup_loadPrivilegeGroup', {});
+                            $that.$emit('privilegeGroup_loadPrivilegeGroup', {});
                             vc.emit('roleDiv', '_loadRole', {})
                             vc.toast("删除成功");
                             return;
                         } else {
                             vc.toast(_json.msg);
                         }
-                        vc.component.deletePrivilegeGroupInfo.errorInfo = json;
+                        $that.deletePrivilegeGroupInfo.errorInfo = json;
                     },
                     function (errInfo, error) {
                         console.log('请求失败处理');
-                        vc.component.deletePrivilegeGroupInfo.errorInfo = errInfo;
+                        $that.deletePrivilegeGroupInfo.errorInfo = errInfo;
                     }
                 );
             }

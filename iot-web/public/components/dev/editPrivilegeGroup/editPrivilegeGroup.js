@@ -12,14 +12,14 @@
         },
         _initEvent: function () {
             vc.on('editPrivilegeGroup', 'openPrivilegeGroupModel', function (_params) {
-                vc.copyObject(_params, vc.component.editPrivilegeGroupInfo)
+                vc.copyObject(_params, $that.editPrivilegeGroupInfo)
                 $('#editPrivilegeGroupModel').modal('show');
             });
         },
         methods: {
             editPrivilegeGroupValidate() {
                 return vc.validate.validate({
-                    editPrivilegeGroupInfo: vc.component.editPrivilegeGroupInfo
+                    editPrivilegeGroupInfo: $that.editPrivilegeGroupInfo
                 }, {
                     'editPrivilegeGroupInfo.pgId': [
                         {
@@ -50,14 +50,14 @@
                 });
             },
             saveEditPrivilegeGroup: function () {
-                if (!vc.component.editPrivilegeGroupValidate()) {
+                if (!$that.editPrivilegeGroupValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
-                vc.component.editPrivilegeGroupInfo.errorInfo = "";
+                $that.editPrivilegeGroupInfo.errorInfo = "";
                 vc.http.apiPost(
-                    '/edit.privilegeGroup.info',
-                    JSON.stringify(vc.component.editPrivilegeGroupInfo),
+                    '/privilegeGroup.updatePrivilegeGroup',
+                    JSON.stringify($that.editPrivilegeGroupInfo),
                     {
                         emulateJSON: true
                     },
@@ -66,23 +66,23 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#editPrivilegeGroupModel').modal('hide');
-                            vc.component.clearEditPrivilegeGroupInfo();
-                            vc.component.$emit('privilegeGroup_loadPrivilegeGroup', {});
+                            $that.clearEditPrivilegeGroupInfo();
+                            $that.$emit('privilegeGroup_loadPrivilegeGroup', {});
                             vc.emit('roleDiv', '_loadRole', {})
                             vc.toast("修改成功");
                             return;
                         } else {
                             vc.toast(_json.msg);
                         }
-                        vc.component.editPrivilegeGroupInfo.errorInfo = json;
+                        $that.editPrivilegeGroupInfo.errorInfo = json;
                     },
                     function (errInfo, error) {
                         console.log('请求失败处理');
-                        vc.component.editPrivilegeGroupInfo.errorInfo = errInfo;
+                        $that.editPrivilegeGroupInfo.errorInfo = errInfo;
                     });
             },
             clearEditPrivilegeGroupInfo: function () {
-                vc.component.editPrivilegeGroupInfo = {
+                $that.editPrivilegeGroupInfo = {
                     pgId: '',
                     name: '',
                     description: '',

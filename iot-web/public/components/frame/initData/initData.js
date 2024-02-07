@@ -14,7 +14,7 @@
         },
         methods: {
             _loadCommunityInfo: function(_param) {
-                var param = {
+                let param = {
                     params: {
                         _uId: 'ccdd00opikookjuhyyttvhnnjuuu',
                         page: 1,
@@ -25,7 +25,7 @@
                     param,
                     function(json, res) {
                         if (res.status == 200) {
-                            var _communityInfos = JSON.parse(json).data;
+                            let _communityInfos = JSON.parse(json).data;
                             if (_communityInfos != null && _communityInfos.length > 0) {
                                 
                                 vc.setCurrentCommunity(_communityInfos[0]);

@@ -26,11 +26,19 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.dto.privilegeRel.PrivilegeRelDto;
+import com.java110.dto.privilegeUser.PrivilegeUserDto;
 import com.java110.intf.user.IPrivilegeGroupV1InnerServiceSMO;
+import com.java110.intf.user.IPrivilegeRelV1InnerServiceSMO;
+import com.java110.intf.user.IPrivilegeUserV1InnerServiceSMO;
 import com.java110.po.privilegeGroup.PrivilegeGroupPo;
+import com.java110.po.privilegeRel.PrivilegeRelPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：删除
@@ -49,10 +57,15 @@ public class DeletePrivilegeGroupCmd extends Cmd {
     @Autowired
     private IPrivilegeGroupV1InnerServiceSMO privilegeGroupV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IPrivilegeUserV1InnerServiceSMO privilegeUserV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IPrivilegeRelV1InnerServiceSMO privilegeRelV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
-        Assert.hasKeyAndValue(reqJson, "pgId", "pgId不能为空");
-        Assert.hasKeyAndValue(reqJson, "pgId", "pgId不能为空");
+        Assert.hasKeyAndValue(reqJson,"pgId","角色不存在");
 
     }
 
@@ -60,13 +73,31 @@ public class DeletePrivilegeGroupCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        PrivilegeGroupPo privilegeGroupPo = BeanConvertUtil.covertBean(reqJson, PrivilegeGroupPo.class);
-        int flag = privilegeGroupV1InnerServiceSMOImpl.deletePrivilegeGroup(privilegeGroupPo);
-
-        if (flag < 1) {
-            throw new CmdException("删除数据失败");
+        PrivilegeUserDto privilegeUserDto = new PrivilegeUserDto();
+        privilegeUserDto.setpId(reqJson.getString("pgId"));
+        List<PrivilegeUserDto> privilegeUserDtos = privilegeUserV1InnerServiceSMOImpl.queryPrivilegeUsers(privilegeUserDto);
+        if(!ListUtil.isNull(privilegeUserDtos)){
+            throw new CmdException("该角色下有关联员工，请先删除关联员工！");
         }
-
-        cmdDataFlowContext.setResponseEntity(ResultVo.success());
+        PrivilegeGroupPo privilegeGroupPo = BeanConvertUtil.covertBean(reqJson,PrivilegeGroupPo.class);
+        int flag = privilegeGroupV1InnerServiceSMOImpl.deletePrivilegeGroup(privilegeGroupPo);
+        if(flag  < 1){
+            throw new CmdException("删除失败");
+        }
+        PrivilegeRelDto privilegeRelDto = new PrivilegeRelDto();
+        privilegeRelDto.setPgId(reqJson.getString("pgId"));
+        List<PrivilegeRelDto> privilegeRelDtos = privilegeRelV1InnerServiceSMOImpl.queryPrivilegeRels(privilegeRelDto);
+        if(privilegeRelDtos == null || privilegeRelDtos.size()<1){
+            return ;
+        }
+        PrivilegeRelPo privilegeRelPo = null;
+        for(PrivilegeRelDto tmpPrivilegeDto: privilegeRelDtos){
+            privilegeRelPo = new PrivilegeRelPo();
+            privilegeRelPo.setRelId(tmpPrivilegeDto.getRelId());
+            flag = privilegeRelV1InnerServiceSMOImpl.deletePrivilegeRel(privilegeRelPo);
+            if(flag <1){
+                throw new CmdException("删除失败");
+            }
+        }
     }
 }

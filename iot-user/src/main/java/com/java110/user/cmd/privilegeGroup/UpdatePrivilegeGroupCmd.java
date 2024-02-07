@@ -26,11 +26,16 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
+import com.java110.dto.store.StoreDto;
 import com.java110.intf.user.IPrivilegeGroupV1InnerServiceSMO;
+import com.java110.intf.user.IStoreV1InnerServiceSMO;
 import com.java110.po.privilegeGroup.PrivilegeGroupPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 
 /**
@@ -52,11 +57,28 @@ public class UpdatePrivilegeGroupCmd extends Cmd {
     @Autowired
     private IPrivilegeGroupV1InnerServiceSMO privilegeGroupV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IStoreV1InnerServiceSMO storeV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
-        Assert.hasKeyAndValue(reqJson, "pgId", "pgId不能为空");
-        Assert.hasKeyAndValue(reqJson, "pgId", "pgId不能为空");
 
+        Assert.jsonObjectHaveKey(reqJson, "name", "请求报文中未包含name节点");
+
+        Assert.hasKeyAndValue(reqJson, "pgId", "角色不存在");
+
+        String storeId = CmdContextUtils.getStoreId(cmdDataFlowContext);
+
+        StoreDto storeDto = new StoreDto();
+        storeDto.setStoreId(storeId);
+        storeDto.setPage(1);
+        storeDto.setRow(1);
+        List<StoreDto> storeDtos = storeV1InnerServiceSMOImpl.queryStores(storeDto);
+
+        Assert.listOnlyOne(storeDtos, "商户不存在");
+
+        reqJson.put("storeId", storeDtos.get(0).getStoreId());
+        reqJson.put("storeTypeCd", storeDtos.get(0).getStoreTypeCd());
     }
 
     @Override
