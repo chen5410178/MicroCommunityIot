@@ -243,7 +243,7 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         accessControlDto.setMachineCode(machineCode);
         List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
 
-        if (accessControlDtos == null || accessControlDtos.size() < 1) {
+        if (ListUtil.isNull(accessControlDtos)) {
             throw new IllegalArgumentException("门禁不存在" + machineCode);
         }
 
@@ -310,7 +310,7 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         accessControlLogDto.setMachineCode(machineCode);
         accessControlLogDto.setState(AccessControlLogDto.STATE_REQ);
         List<AccessControlLogDto> accessControlLogDtos = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogs(accessControlLogDto);
-        if (accessControlLogDtos == null || accessControlLogDtos.size() < 1) {
+        if (ListUtil.isNull(accessControlLogDtos)) {
             return;
         }
 
@@ -333,7 +333,7 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         accessControlFaceDto.setMachineCode(machineCode);
         accessControlFaceDto.setState(AccessControlFaceDto.STATE_WAIT);
         List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
-        if (accessControlFaceDtos == null || accessControlFaceDtos.size() < 1) {
+        if (ListUtil.isNull(accessControlFaceDtos)) {
             return;
         }
 
