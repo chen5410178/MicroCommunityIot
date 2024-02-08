@@ -42,6 +42,7 @@ public class ListOwnerFaceDownloadCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
 
         super.validatePageInfo(reqJson);
+        Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
 
         String userId = CmdContextUtils.getUserId(context);
 

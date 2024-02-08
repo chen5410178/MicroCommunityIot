@@ -50,6 +50,7 @@ export default {
 	listOwnerFace: baseUrl + "iot/api/owner.listOwnerFace",
 	uploadOwnerPhoto: baseUrl + "iot/api/owner.uploadOwnerPhoto",
 	listOwnerFaceDownload: baseUrl + "iot/api/accessControlLog.listOwnerFaceDownload",
+	getOwnerVisit: baseUrl + "iot/api/visit.listOwnerVisit",
 	
 	
 	NEED_NOT_LOGIN_PAGE: [

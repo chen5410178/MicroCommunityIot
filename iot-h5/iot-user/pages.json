@@ -323,6 +323,14 @@
 				"navigationBarTitleText" : "人脸下发",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/visit/ownerVisit",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
 		}
     ],
 	"tabBar": {
