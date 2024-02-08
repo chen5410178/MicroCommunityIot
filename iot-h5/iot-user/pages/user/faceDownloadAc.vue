@@ -37,6 +37,8 @@
 
 <script>
 	import noDataPage from '@/components/no-data-page/no-data-page.vue';
+	import {getOwnerFaceDownload} from '../../api/owner/ownerApi.js';
+	import {getCommunityId} from '../../api/community/communityApi.js';
 	export default {
 		data() {
 			return {
@@ -46,8 +48,20 @@
 		components:{
 			noDataPage
 		},
+		onLoad() {
+			this._loadData();
+		},
 		methods: {
-			
+			_loadData:function(){
+				let _that =this;
+				getOwnerFaceDownload({
+					page:1,
+					row:30,
+					communityId:getCommunityId()
+				}).then(_data=>{
+					_that.faces = _data;
+				})
+			}
 		}
 	}
 </script>

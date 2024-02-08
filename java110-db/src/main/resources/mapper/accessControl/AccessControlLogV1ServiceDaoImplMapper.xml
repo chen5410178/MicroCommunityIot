@@ -21,7 +21,7 @@
         logId,t.state,t.community_id,t.community_id communityId,t.user_name,t.user_name
         userName,t.log_action,t.log_action logAction,t.user_id,t.user_id userId,
         ac.machine_code machineCode,ac.machine_name machineName,td.name stateName,t.create_time createTime,
-        t.req_param reqParam, t.res_param resParam,t.log_cmd logCmd,td1.name logCmdName
+        t.log_cmd logCmd,td1.name logCmdName
         from access_control_log t
         left join access_control ac on ac.machine_id = t.machine_id and ac.status_cd = '0'
         left join t_dict td on t.state = td.status_cd and td.table_name = 'access_control_log' and td.table_columns = 'state'
@@ -47,6 +47,12 @@
         </if>
         <if test="logCmd !=null and logCmd != ''">
             and t.log_cmd= #{logCmd}
+        </if>
+        <if test="logCmds != null ">
+            and t.log_cmd in
+            <foreach collection="logCmds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
@@ -148,6 +154,12 @@
         </if>
         <if test="logCmd !=null and logCmd != ''">
             and t.log_cmd= #{logCmd}
+        </if>
+        <if test="logCmds != null ">
+            and t.log_cmd in
+            <foreach collection="logCmds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}

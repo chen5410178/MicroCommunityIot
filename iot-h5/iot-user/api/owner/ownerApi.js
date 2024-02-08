@@ -262,3 +262,25 @@ export function uploadOwnerPhoto(_objData){
 	})
 }
 
+export function getOwnerFaceDownload(_objData){
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.listOwnerFaceDownload,
+			data: _objData,
+			method: "GET",
+			//动态数据
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code == 0) {
+					resolve(_json.data);
+					return;
+				}
+			},
+			fail: function(e) {
+			}
+		});
+	})
+}
+
+
+

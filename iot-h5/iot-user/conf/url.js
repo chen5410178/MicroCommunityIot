@@ -49,6 +49,7 @@ export default {
 	ownerOpenAccessControlDoor: baseUrl + "iot/api/accessControl.ownerOpenAccessControlDoor",
 	listOwnerFace: baseUrl + "iot/api/owner.listOwnerFace",
 	uploadOwnerPhoto: baseUrl + "iot/api/owner.uploadOwnerPhoto",
+	listOwnerFaceDownload: baseUrl + "iot/api/accessControlLog.listOwnerFaceDownload",
 	
 	
 	NEED_NOT_LOGIN_PAGE: [

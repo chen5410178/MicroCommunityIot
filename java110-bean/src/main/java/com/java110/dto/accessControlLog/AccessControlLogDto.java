@@ -33,6 +33,7 @@ public class AccessControlLogDto extends PageDto implements Serializable {
     private String logId;
     private String reqParam;
     private String state;
+    private String[] states;
     private String communityId;
     private String userName;
     private String logAction;
@@ -56,6 +57,7 @@ public class AccessControlLogDto extends PageDto implements Serializable {
     private String queryEndTime;
 
     private String logCmd;
+    private String[] logCmds;
 
     private String logCmdName;
 
@@ -212,5 +214,21 @@ public class AccessControlLogDto extends PageDto implements Serializable {
 
     public void setLogCmdName(String logCmdName) {
         this.logCmdName = logCmdName;
+    }
+
+    public String[] getStates() {
+        return states;
+    }
+
+    public void setStates(String[] states) {
+        this.states = states;
+    }
+
+    public String[] getLogCmds() {
+        return logCmds;
+    }
+
+    public void setLogCmds(String[] logCmds) {
+        this.logCmds = logCmds;
     }
 }

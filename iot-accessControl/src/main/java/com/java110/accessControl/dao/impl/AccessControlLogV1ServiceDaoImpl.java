@@ -18,6 +18,7 @@ package com.java110.accessControl.dao.impl;
 import com.java110.accessControl.dao.IAccessControlLogV1ServiceDao;
 import com.java110.core.db.dao.BaseServiceDao;
 import com.java110.core.exception.DAOException;
+import com.java110.core.utils.ListUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -68,9 +69,9 @@ public class AccessControlLogV1ServiceDaoImpl extends BaseServiceDao implements 
     public List<Map> getAccessControlLogInfo(Map info) throws DAOException {
         logger.debug("查询 getAccessControlLogInfo 入参 info : {}",info);
 
-        List<Map> businessAccessControlLogInfos = sqlSessionTemplate.selectList("accessControlLogV1ServiceDaoImpl.getAccessControlLogInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlLogV1ServiceDaoImpl.getAccessControlLogInfo",info);
 
-        return businessAccessControlLogInfos;
+        return infos;
     }
 
 
@@ -97,12 +98,12 @@ public class AccessControlLogV1ServiceDaoImpl extends BaseServiceDao implements 
     public int queryAccessControlLogsCount(Map info) {
         logger.debug("查询 queryAccessControlLogsCount 入参 info : {}",info);
 
-        List<Map> businessAccessControlLogInfos = sqlSessionTemplate.selectList("accessControlLogV1ServiceDaoImpl.queryAccessControlLogsCount", info);
-        if (businessAccessControlLogInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlLogV1ServiceDaoImpl.queryAccessControlLogsCount", info);
+        if (ListUtil.isNull(infos)) {
             return 0;
         }
 
-        return Integer.parseInt(businessAccessControlLogInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
     @Override
