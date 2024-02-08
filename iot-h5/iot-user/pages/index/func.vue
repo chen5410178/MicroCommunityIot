@@ -45,7 +45,7 @@
 					{
 						icon:'/static/images/ac.png',
 						name:'访客记录',
-						url:'/'
+						url:'/pages/visit/ownerVisit'
 					}
 				],
 				charges:[

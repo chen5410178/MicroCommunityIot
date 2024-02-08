@@ -3,7 +3,7 @@
 		<view class="block__title">
 			<text>访客预约历史</text>
 		</view>
-		<view v-if="noData == false">
+		<view v-if="visits && visits.length>0">
 			<view v-for="(item,index) in visits" :key="index"
 				class="bg-white margin-bottom margin-right-xs radius margin-left-xs padding" @click="_showDetail(item)">
 				<view class="flex padding-bottom-xs solid-bottom justify-between">
@@ -19,7 +19,6 @@
 					<view class="text-gray">{{item.visitTime}}</view>
 				</view>
 			</view>
-			<uni-load-more :status="loadingStatus" :content-text="loadingContentText" />
 		</view>
 		<view v-else>
 			<no-data-page></no-data-page>
@@ -45,17 +44,10 @@
 				ownerInfo: {},
 				noData: false,
 				page: 1,
-				loadingStatus: 'loading',
-				loadingContentText: {
-					contentdown: '上拉加载更多',
-					contentrefresh: '加载中',
-					contentnomore: '没有更多'
-				}
 			}
 		},
 		components: {
-			noDataPage,
-			uniLoadMore
+			noDataPage
 		},
 
 		/**
@@ -71,7 +63,7 @@
 				let _that = this;
 				let _objData = {
 					page: 1,
-					row: 10,
+					row: 30,
 					communityId: getCommunityId()
 				}
 				getOwnerVisit(_objData).then(function(_visits) {
