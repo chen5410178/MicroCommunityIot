@@ -67,7 +67,7 @@ public class CjHttpAssessControlProcessAdapt extends AbstractAccessControlManufa
 
         MqttFactory.publish(REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()), param.toJSONString());
 
-        saveLog("", accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/addPerson",
+        saveAddFaceLog("", accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/addPerson",
                 accessControlDto.getCommunityId(),
                 param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 
@@ -101,7 +101,7 @@ public class CjHttpAssessControlProcessAdapt extends AbstractAccessControlManufa
 
         MqttFactory.publish(REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()), param.toJSONString());
 
-        saveLog("", accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/deletePerson",
+        saveDeleteFaceLog("", accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/deletePerson",
                 accessControlDto.getCommunityId(),
                 param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 
@@ -127,7 +127,7 @@ public class CjHttpAssessControlProcessAdapt extends AbstractAccessControlManufa
 
         MqttFactory.publish(REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()), param.toJSONString());
 
-        saveLog("", accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/openDoor",
+        saveOpenDoorLog("", accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/openDoor",
                 accessControlDto.getCommunityId(),
                 param.toJSONString(), accessControlDto.getUserId(), accessControlDto.getUserName());
 
@@ -143,7 +143,7 @@ public class CjHttpAssessControlProcessAdapt extends AbstractAccessControlManufa
 
         MqttFactory.publish(REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()), param.toJSONString());
 
-        saveLog("", accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/reboot",
+        saveRebootAcLog("", accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/reboot",
                 accessControlDto.getCommunityId(),
                 param.toJSONString(), accessControlDto.getUserId(), accessControlDto.getUserName());
 

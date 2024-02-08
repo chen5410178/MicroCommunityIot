@@ -19,6 +19,15 @@ public class AccessControlLogDto extends PageDto implements Serializable {
     public static final String STATE_RES = "10002";//返回成功10002
     public static final String STATE_FAIL = "10003";//操作失败 10003
 
+    public static final String CMD_ADD_FACE = "ADD_FACE"; // todo 添加人脸
+
+    public static final String CMD_UPDATE_FACE = "UPDATE_FACE"; // todo 修改人脸
+
+    public static final String CMD_DELETE_FACE = "DELETE_FACE"; // todo 修改人脸
+
+    public static final String CMD_REBOOT = "REBOOT"; // todo 重启
+
+    public static final String CMD_OPEN_DOOR = "OPEN_DOOR"; // todo 开门
     private String resParam;
     private String machineId;
     private String logId;
@@ -45,6 +54,8 @@ public class AccessControlLogDto extends PageDto implements Serializable {
     private String queryStartTime;
 
     private String queryEndTime;
+
+    private String logCmd;
 
 
 
@@ -183,5 +194,13 @@ public class AccessControlLogDto extends PageDto implements Serializable {
 
     public void setQueryEndTime(String queryEndTime) {
         this.queryEndTime = queryEndTime;
+    }
+
+    public String getLogCmd() {
+        return logCmd;
+    }
+
+    public void setLogCmd(String logCmd) {
+        this.logCmd = logCmd;
     }
 }

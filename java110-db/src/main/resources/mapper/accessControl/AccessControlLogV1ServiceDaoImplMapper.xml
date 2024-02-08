@@ -8,9 +8,9 @@
     <!-- 保存门禁日志信息 add by wuxw 2018-07-03 -->
     <insert id="saveAccessControlLogInfo" parameterType="Map">
         insert into access_control_log(
-        res_param,machine_id,log_id,req_param,state,community_id,user_name,log_action,user_id
+        res_param,machine_id,log_id,req_param,state,community_id,user_name,log_action,user_id,log_cmd
         ) values (
-        #{resParam},#{machineId},#{logId},#{reqParam},#{state},#{communityId},#{userName},#{logAction},#{userId}
+        #{resParam},#{machineId},#{logId},#{reqParam},#{state},#{communityId},#{userName},#{logAction},#{userId},#{logCmd}
         )
     </insert>
 
@@ -21,7 +21,7 @@
         logId,t.state,t.community_id,t.community_id communityId,t.user_name,t.user_name
         userName,t.log_action,t.log_action logAction,t.user_id,t.user_id userId,
         ac.machine_code machineCode,ac.machine_name machineName,td.name stateName,t.create_time createTime,
-        t.req_param reqParam, t.res_param resParam
+        t.req_param reqParam, t.res_param resParam,t.log_cmd logCmd
         from access_control_log t
         left join access_control ac on ac.machine_id = t.machine_id and ac.status_cd = '0'
         left join t_dict td on t.state = td.status_cd and td.table_name = 'access_control_log' and td.table_columns =
@@ -44,6 +44,9 @@
         </if>
         <if test="state !=null and state != ''">
             and t.state= #{state}
+        </if>
+        <if test="logCmd !=null and logCmd != ''">
+            and t.log_cmd= #{logCmd}
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
@@ -142,6 +145,9 @@
         </if>
         <if test="state !=null and state != ''">
             and t.state= #{state}
+        </if>
+        <if test="logCmd !=null and logCmd != ''">
+            and t.log_cmd= #{logCmd}
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}

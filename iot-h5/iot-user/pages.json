@@ -315,6 +315,14 @@
 				"navigationBarTitleText" : "人脸采集",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/user/faceDownloadAc",
+			"style" : 
+			{
+				"navigationBarTitleText" : "人脸下发",
+				"enablePullDownRefresh" : false
+			}
 		}
     ],
 	"tabBar": {

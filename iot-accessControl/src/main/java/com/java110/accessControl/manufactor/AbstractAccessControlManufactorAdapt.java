@@ -175,42 +175,99 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
      *
      * @param logId     日志ID
      * @param machineId 设备ID
-     * @param cmd       操作命令
+     * @param logAction 操作命令
      * @param reqParam  请求报文
      * @param userId    业主ID
      * @param userName  业主名称
      */
-    protected void saveLog(String logId, String machineId, String cmd,String communityId, String reqParam, String userId, String userName) {
-        saveLog(logId, machineId, cmd,communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName);
+    protected void saveAddFaceLog(String logId,
+                                  String machineId,
+                                  String logAction,
+                                  String communityId,
+                                  String reqParam,
+                                  String userId,
+                                  String userName) {
+        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName,AccessControlLogDto.CMD_ADD_FACE);
     }
+
+    protected void saveUpdateFaceLog(String logId,
+                                  String machineId,
+                                  String logAction,
+                                  String communityId,
+                                  String reqParam,
+                                  String userId,
+                                  String userName) {
+        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName,AccessControlLogDto.CMD_UPDATE_FACE);
+    }
+
+    protected void saveDeleteFaceLog(String logId,
+                                     String machineId,
+                                     String logAction,
+                                     String communityId,
+                                     String reqParam,
+                                     String userId,
+                                     String userName) {
+        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName,AccessControlLogDto.CMD_DELETE_FACE);
+    }
+
+    protected void saveRebootAcLog(String logId,
+                                     String machineId,
+                                     String logAction,
+                                     String communityId,
+                                     String reqParam,
+                                     String userId,
+                                     String userName) {
+        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName,AccessControlLogDto.CMD_REBOOT);
+    }
+
+    protected void saveOpenDoorLog(String logId,
+                                   String machineId,
+                                   String logAction,
+                                   String communityId,
+                                   String reqParam,
+                                   String userId,
+                                   String userName) {
+        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName,AccessControlLogDto.CMD_OPEN_DOOR);
+    }
+
 
     /**
      * 存储日志
      *
      * @param logId     日志ID
      * @param machineId 设备ID
-     * @param cmd       操作命令
+     * @param logAction 操作命令
      * @param reqParam  请求报文
      * @param resParam  返回报文
      * @param state     状态
      * @param userId    业主ID
      * @param userName  业主名称
      */
-    protected void saveLog(String logId, String machineId, String cmd,String communityId, String reqParam, String resParam, String state, String userId, String userName) {
+    protected void saveLog(String logId,
+                           String machineId,
+                           String logAction,
+                           String communityId,
+                           String reqParam,
+                           String resParam,
+                           String state,
+                           String userId,
+                           String userName,
+                           String logCmd) {
         AccessControlLogPo accessControlLogPo = new AccessControlLogPo();
-        if(StringUtil.isEmpty(logId)){
+        if (StringUtil.isEmpty(logId)) {
             logId = GenerateCodeFactory.getGeneratorId("11");
         }
         accessControlLogPo.setLogId(logId);
 
         accessControlLogPo.setMachineId(machineId);
-        accessControlLogPo.setLogAction(cmd);
+        accessControlLogPo.setLogAction(logAction);
         accessControlLogPo.setReqParam(reqParam);
         accessControlLogPo.setResParam(resParam);
         accessControlLogPo.setState(state);
         accessControlLogPo.setUserId(userId);
         accessControlLogPo.setUserName(userName);
         accessControlLogPo.setCommunityId(communityId);
+        accessControlLogPo.setLogCmd(logCmd);
         accessControlLogV1InnerServiceSMOImpl.saveAccessControlLog(accessControlLogPo);
     }
 
@@ -247,7 +304,7 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
             throw new IllegalArgumentException("门禁不存在" + machineCode);
         }
 
-        if(!StringUtil.isEmpty(facePath)){
+        if (!StringUtil.isEmpty(facePath)) {
 
         }
         if (!StringUtil.isEmpty(facePath) && facePath.length() > 512) { //说明是图片
@@ -258,9 +315,9 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
             fileDto.setSuffix("jpeg");
             fileDto.setCommunityId(accessControlDtos.get(0).getCommunityId());
             String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
-            String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN,"IMG_PATH");
+            String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
 
-            facePath = imgUrl+fileName;
+            facePath = imgUrl + fileName;
         }
 
         AccessControlFaceDto accessControlFaceDto = queryAccessControlFace(personId, accessControlDtos);
@@ -354,6 +411,7 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
 
     /**
      * 二维码核验
+     *
      * @param qrcode
      * @param machineCode
      * @return
@@ -364,13 +422,13 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         PassQrcodeDto passQrcodeDto = new PassQrcodeDto();
         passQrcodeDto.setQrcodeTime(qrcode);
         List<PassQrcodeDto> passQrcodeDtos = passQrcodeV1InnerServiceSMOImpl.queryPassQrcodes(passQrcodeDto);
-        if(!ListUtil.isNull(passQrcodeDtos)){
+        if (!ListUtil.isNull(passQrcodeDtos)) {
             String ownerId = passQrcodeDtos.get(0).getOwnerId();
             AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
             accessControlFaceDto.setPersonId(ownerId);
             accessControlFaceDto.setMachineCode(machineCode);
             int count = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFacesCount(accessControlFaceDto);
-            if(count < 1){
+            if (count < 1) {
                 return false;
             }
             return true;
@@ -380,7 +438,7 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         VisitDto visitDto = new VisitDto();
         visitDto.setQrcode(qrcode);
         List<VisitDto> visitDtos = visitV1InnerServiceSMOImpl.queryVisits(visitDto);
-        if(ListUtil.isNull(visitDtos)){
+        if (ListUtil.isNull(visitDtos)) {
 
             return false;
         }
@@ -389,17 +447,17 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         RoomDto roomDto = new RoomDto();
         roomDto.setRoomId(roomId);
         List<RoomDto> roomDtos = roomV1InnerServiceSMOImpl.queryRooms(roomDto);
-        if(ListUtil.isNull(roomDtos)){
+        if (ListUtil.isNull(roomDtos)) {
             return false;
         }
         AccessControlFloorDto accessControlFloorDto = new AccessControlFloorDto();
         accessControlFloorDto.setMachineCode(machineCode);
         accessControlFloorDto.setUnitId(roomDtos.get(0).getUnitId());
         int count = accessControlFloorV1InnerServiceSMOImpl.queryAccessControlFloorsCount(accessControlFloorDto);
-        if(count < 1){
+        if (count < 1) {
             return false;
         }
-       return true;
+        return true;
     }
 
 }

@@ -40,7 +40,7 @@
 					{
 						icon:'/static/images/ac.png',
 						name:'人脸下发',
-						url:'/'
+						url:'/pages/user/faceDownloadAc'
 					},
 					{
 						icon:'/static/images/ac.png',

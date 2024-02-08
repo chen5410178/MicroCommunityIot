@@ -77,9 +77,6 @@ public class HcAccessControlProcessAdapt extends AbstractAccessControlManufactor
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
 
 
-
-
-
     /**
      * 添加用户
      *
@@ -112,7 +109,7 @@ public class HcAccessControlProcessAdapt extends AbstractAccessControlManufactor
         }
 
         MqttFactory.publish(TOPIC_REQ.replace(SN, accessControlDto.getMachineCode()), param.toJSONString());
-        saveLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ.replace(SN, accessControlDto.getMachineCode()) + "/" + CMD_ADD_USER,
+        saveAddFaceLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ.replace(SN, accessControlDto.getMachineCode()) + "/" + CMD_ADD_USER,
                 accessControlDto.getCommunityId(), param.toJSONString(), accessControlDto.getUserId(), accessControlDto.getUserName());
         return true;
     }
@@ -150,7 +147,7 @@ public class HcAccessControlProcessAdapt extends AbstractAccessControlManufactor
         }
 
         MqttFactory.publish(TOPIC_REQ.replace(SN, accessControlDto.getMachineCode()), param.toJSONString());
-        saveLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ.replace(SN, accessControlDto.getMachineCode()) + "/" + CMD_UPDATE_USER,
+        saveUpdateFaceLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ.replace(SN, accessControlDto.getMachineCode()) + "/" + CMD_UPDATE_USER,
                 accessControlDto.getCommunityId(), param.toJSONString(), accessControlDto.getUserId(), accessControlDto.getUserName());
         return true;
     }
@@ -171,7 +168,7 @@ public class HcAccessControlProcessAdapt extends AbstractAccessControlManufactor
         param.put("userId", accessControlFacePo.getPersonId());
 
         MqttFactory.publish(TOPIC_REQ.replace(SN, accessControlDto.getMachineCode()), param.toJSONString());
-        saveLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ.replace(SN, accessControlDto.getMachineCode()) + "/" + CMD_DELETE_USER,
+        saveDeleteFaceLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ.replace(SN, accessControlDto.getMachineCode()) + "/" + CMD_DELETE_USER,
                 accessControlDto.getCommunityId(), param.toJSONString(), accessControlDto.getUserId(), accessControlDto.getUserName());
         return true;
     }
@@ -183,7 +180,7 @@ public class HcAccessControlProcessAdapt extends AbstractAccessControlManufactor
         param.put("cmd", CMD_OPEN_DOOR);
         param.put("taskId", taskId);
         MqttFactory.publish(TOPIC_REQ.replace(SN, accessControlDto.getMachineCode()), param.toJSONString());
-        saveLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ.replace(SN, accessControlDto.getMachineCode()) + "/" + CMD_OPEN_DOOR,
+        saveOpenDoorLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ.replace(SN, accessControlDto.getMachineCode()) + "/" + CMD_OPEN_DOOR,
                 accessControlDto.getCommunityId(), param.toJSONString(), accessControlDto.getUserId(), accessControlDto.getUserName());
         return true;
     }
@@ -201,7 +198,7 @@ public class HcAccessControlProcessAdapt extends AbstractAccessControlManufactor
         param.put("cmd", CMD_REBOOT);
         param.put("taskId", taskId);
         MqttFactory.publish(TOPIC_REQ.replace(SN, accessControlDto.getMachineCode()), param.toJSONString());
-        saveLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ.replace(SN, accessControlDto.getMachineCode()) + "/" + CMD_REBOOT,
+        saveRebootAcLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ.replace(SN, accessControlDto.getMachineCode()) + "/" + CMD_REBOOT,
                 accessControlDto.getCommunityId(), param.toJSONString(), accessControlDto.getUserId(), accessControlDto.getUserName());
         return true;
     }
@@ -249,7 +246,7 @@ public class HcAccessControlProcessAdapt extends AbstractAccessControlManufactor
 
     /**
      * 二维码开门请求
-     *
+     * <p>
      * {
      * “cmd”:”qrcodeOpenDoor”,
      * “taskId”:”123123123123”,
@@ -268,8 +265,8 @@ public class HcAccessControlProcessAdapt extends AbstractAccessControlManufactor
 
         //todo 检查是否为通行码
 
-        boolean hasOpenDoor = qrcodeCheck(qrcode,machineCode);
-        if(!hasOpenDoor){
+        boolean hasOpenDoor = qrcodeCheck(qrcode, machineCode);
+        if (!hasOpenDoor) {
             JSONObject paramOut = new JSONObject();
             paramOut.put("cmd", cmd);
             paramOut.put("taskId", taskId);
@@ -277,7 +274,7 @@ public class HcAccessControlProcessAdapt extends AbstractAccessControlManufactor
             paramOut.put("msg", "用户没有权限");
             paramOut.put("machineCode", machineCode);
             MqttFactory.publish(TOPIC_REQ.replace(SN, machineCode), paramOut.toJSONString());
-            return ;
+            return;
         }
         JSONObject paramOut = new JSONObject();
         paramOut.put("cmd", cmd);

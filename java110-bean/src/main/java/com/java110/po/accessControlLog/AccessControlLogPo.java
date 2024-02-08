@@ -38,6 +38,8 @@ public class AccessControlLogPo implements Serializable {
     private String logAction;
     private String userId;
 
+    private String logCmd;
+
     public String getResParam() {
         return resParam;
     }
@@ -110,5 +112,11 @@ public class AccessControlLogPo implements Serializable {
         this.userId = userId;
     }
 
+    public String getLogCmd() {
+        return logCmd;
+    }
 
+    public void setLogCmd(String logCmd) {
+        this.logCmd = logCmd;
+    }
 }
