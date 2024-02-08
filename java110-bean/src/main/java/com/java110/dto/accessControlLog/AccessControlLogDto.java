@@ -23,7 +23,7 @@ public class AccessControlLogDto extends PageDto implements Serializable {
 
     public static final String CMD_UPDATE_FACE = "UPDATE_FACE"; // todo 修改人脸
 
-    public static final String CMD_DELETE_FACE = "DELETE_FACE"; // todo 修改人脸
+    public static final String CMD_DELETE_FACE = "DELETE_FACE"; // todo 删除人脸
 
     public static final String CMD_REBOOT = "REBOOT"; // todo 重启
 
@@ -56,6 +56,8 @@ public class AccessControlLogDto extends PageDto implements Serializable {
     private String queryEndTime;
 
     private String logCmd;
+
+    private String logCmdName;
 
 
 
@@ -202,5 +204,13 @@ public class AccessControlLogDto extends PageDto implements Serializable {
 
     public void setLogCmd(String logCmd) {
         this.logCmd = logCmd;
+    }
+
+    public String getLogCmdName() {
+        return logCmdName;
+    }
+
+    public void setLogCmdName(String logCmdName) {
+        this.logCmdName = logCmdName;
     }
 }
