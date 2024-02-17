@@ -4,7 +4,6 @@
 		<view class="cu-list menu">
 			<view class="cu-item">
 				<view class="content">
-					<text class="cuIcon-profile text-green"></text>
 					<text class="text-grey">姓名</text>
 				</view>
 				<view class="action">
@@ -13,11 +12,26 @@
 			</view>
 			<view class="cu-item">
 				<view class="content">
-					<text class="cuIcon-phone text-green"></text>
 					<text class="text-grey">手机号</text>
 				</view>
 				<view class="action">
 					<text class="text-grey text-sm">{{link}}</text>
+				</view>
+			</view>
+			<view class="cu-item">
+				<view class="content">
+					<text class="text-grey">类型</text>
+				</view>
+				<view class="action">
+					<text class="text-grey text-sm">{{ownerTypeName}}</text>
+				</view>
+			</view>
+			<view class="cu-item">
+				<view class="content">
+					<text class="text-grey">地址</text>
+				</view>
+				<view class="action">
+					<text class="text-grey text-sm">{{address}}</text>
 				</view>
 			</view>
 		</view>
@@ -26,30 +40,34 @@
 
 <script>
 	import {getUserOwner} from '../../api/owner/ownerApi.js';
-	import {hasLogin} from '../../api/user/sessionApi.js';
+
 	import {getCommunityId} from '../../api/community/communityApi.js';
 	export default {
 		data() {
 			return {
 				ownerName:'',
-				link:''
+				link:'',
+				ownerTypeName:'',
+				address:'',
 			}
 		},
 		onLoad(options) {
-			if(!hasLogin()){
-				uni.showToast({
-					icon:'none',
-					title:'用户未登录'
-				});
-				return;
-			}
+			
 			this._loadOwnerInfo();
 		},
 		methods: {
 			_loadOwnerInfo:function(){
+				let _that =this;
 				getUserOwner({
 					communityId:getCommunityId()
-				})
+				}).then(_data=>{
+					if(_data && _data.length>0){
+						_that.ownerName = _data[0].name;
+						_that.link = _data[0].link;
+						_that.ownerTypeName = _data[0].ownerTypeName;
+						_that.address = _data[0].address;
+					}
+				});
 			}
 		}
 	}

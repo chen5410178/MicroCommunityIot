@@ -15,7 +15,7 @@
 </template>
 
 <script>
-
+	import {hasLogin} from '../../api/user/sessionApi.js';
 	export default {
 		name: "myMenu",
 		data() {
@@ -59,6 +59,12 @@
 		methods: {
 			// 我的服务跳转
 			to_serve(v) {
+				if(!hasLogin()){
+					uni.navigateTo({
+						url:'/pages/user/login'
+					})
+					return;
+				}
 				this.vc.navigateTo({
 					url: v.href,
 				})
