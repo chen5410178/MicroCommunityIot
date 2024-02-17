@@ -23,7 +23,7 @@
 				serve_list: [{
 						name: '业主信息',
 						src: this.imgUrl+'/h5/images/serve/my1.png',
-						href: '/pages/viewBindOwner/viewBindOwner'
+						href: '/pages/user/owner'
 					},
 					{
 						name: '我的物业',

@@ -331,6 +331,14 @@
 				"navigationBarTitleText" : "",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/user/owner",
+			"style" : 
+			{
+				"navigationBarTitleText" : "业主信息",
+				"enablePullDownRefresh" : false
+			}
 		}
     ],
 	"tabBar": {

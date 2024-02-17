@@ -51,6 +51,8 @@ export default {
 	uploadOwnerPhoto: baseUrl + "iot/api/owner.uploadOwnerPhoto",
 	listOwnerFaceDownload: baseUrl + "iot/api/accessControlLog.listOwnerFaceDownload",
 	getOwnerVisit: baseUrl + "iot/api/visit.listOwnerVisit",
+	//todo 查询业主信息
+	listUserOwner: baseUrl + "iot/api/owner.listUserOwner",
 	
 	
 	NEED_NOT_LOGIN_PAGE: [

@@ -282,5 +282,27 @@ export function getOwnerFaceDownload(_objData){
 	})
 }
 
+export function getUserOwner(_objData){
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.listUserOwner,
+			data: _objData,
+			method: "GET",
+			//动态数据
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code == 0) {
+					resolve(_json.data);
+					return;
+				}
+			},
+			fail: function(e) {
+			}
+		});
+	})
+}
+
+
+
 
 
