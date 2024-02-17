@@ -25,7 +25,9 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.doc.annotation.*;
+import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.accessControlFloor.AccessControlFloorDto;
 import com.java110.dto.accessControlOrg.AccessControlOrgDto;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
@@ -110,10 +112,24 @@ public class DeleteAccessControlOrgCmd extends Cmd {
             throw new CmdException("删除数据失败");
         }
 
+        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
+        accessControlFaceDto.setComeId(accessControlOrgs.get(0).getOrgId());
+        accessControlFaceDto.setCommunityId(accessControlOrgs.get(0).getCommunityId());
+        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
+
+        if (ListUtil.isNull(accessControlFaceDtos)) {
+            cmdDataFlowContext.setResponseEntity(ResultVo.success());
+
+            return;
+        }
+
         //todo 删除员工授权
         AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
         accessControlFacePo.setComeId(accessControlOrgs.get(0).getOrgId());
         accessControlFacePo.setCommunityId(accessControlOrgs.get(0).getCommunityId());
+        accessControlFacePo.setPersonId(accessControlFaceDtos.get(0).getPersonId());
+        accessControlFacePo.setName(accessControlFaceDtos.get(0).getName());
+        accessControlFacePo.setMachineId(accessControlFaceDtos.get(0).getMachineId());
         accessControlFaceV1InnerServiceSMOImpl.deleteAccessControlFace(accessControlFacePo);
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());

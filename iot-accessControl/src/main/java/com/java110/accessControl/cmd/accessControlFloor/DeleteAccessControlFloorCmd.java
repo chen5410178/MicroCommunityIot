@@ -128,6 +128,9 @@ public class DeleteAccessControlFloorCmd extends Cmd {
         accessControlFacePo.setComeId(accessControlFloorDtos.get(0).getUnitId());
         accessControlFacePo.setCommunityId(accessControlFloorDtos.get(0).getCommunityId());
         accessControlFacePo.setMfId(accessControlFaceDtos.get(0).getMfId());
+        accessControlFacePo.setPersonId(accessControlFaceDtos.get(0).getPersonId());
+        accessControlFacePo.setName(accessControlFaceDtos.get(0).getName());
+        accessControlFacePo.setMachineId(accessControlFaceDtos.get(0).getMachineId());
         accessControlFaceV1InnerServiceSMOImpl.deleteAccessControlFace(accessControlFacePo);
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
