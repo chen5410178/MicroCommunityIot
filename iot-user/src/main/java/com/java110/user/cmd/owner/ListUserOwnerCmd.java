@@ -108,11 +108,8 @@ public class ListUserOwnerCmd extends Cmd {
                 ownerDto.setUrls(urls);
             }
         }
-        ResultVo resultVo = new ResultVo((int) Math.ceil((double) total / (double) reqJson.getInteger("row")), total, ownerDtos);
 
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
-
-        context.setResponseEntity(responseEntity);
+        context.setResponseEntity(ResultVo.createResponseEntity(ownerDtos));
     }
 
     private void queryRoomCount(List<OwnerDto> ownerDtos) {
