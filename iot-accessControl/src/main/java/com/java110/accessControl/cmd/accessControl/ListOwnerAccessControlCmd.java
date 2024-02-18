@@ -11,6 +11,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.CmdContextUtils;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.appUser.AppUserDto;
@@ -67,8 +68,9 @@ public class ListOwnerAccessControlCmd extends Cmd {
         AppUserDto appUserDto = new AppUserDto();
         appUserDto.setUserId(userId);
         List<AppUserDto> appUserDtos = appUserV1InnerServiceSMOImpl.queryAppUsers(appUserDto);
-        Assert.listOnlyOne(appUserDtos,"房屋未认证");
-
+        if (ListUtil.isNull(appUserDtos)) {
+            throw new CmdException("用户未认证房屋");
+        }
         OwnerDto ownerDto = new OwnerDto();
         ownerDto.setMemberId(appUserDtos.get(0).getMemberId());
         ownerDto.setCommunityId(reqJson.getString("communityId"));
