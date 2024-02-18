@@ -38,19 +38,21 @@ public class QueryAppUserAccountCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
 
         Assert.hasKeyAndValue(reqJson, "communityId", "未包含小区ID");
-        Assert.hasKeyAndValue(reqJson, "link", "未包含手机号");
+        // Assert.hasKeyAndValue(reqJson, "link", "未包含手机号");
 
         String userId = CmdContextUtils.getUserId(context);
 
 
         UserDto userDto = new UserDto();
         userDto.setUserId(userId);
-        userDto.setTel(reqJson.getString("link"));
+        //userDto.setTel(reqJson.getString("link"));
         List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
 
         if (ListUtil.isNull(userDtos)) {
             throw new CmdException("参数错误");
         }
+
+        reqJson.put("link", userDtos.get(0).getTel());
 
     }
 
@@ -73,7 +75,7 @@ public class QueryAppUserAccountCmd extends Cmd {
 
         if (ListUtil.isNull(accountDtos)) {
             //todo 添加 账户
-            accountDtos = addAccountDto(accountDto,userId);
+            accountDtos = addAccountDto(accountDto, userId);
         }
 
         ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) accountDto.getRow()), count, accountDtos);
@@ -83,7 +85,7 @@ public class QueryAppUserAccountCmd extends Cmd {
         context.setResponseEntity(responseEntity);
     }
 
-    private List<AccountDto> addAccountDto(AccountDto accountDto,String userId) {
+    private List<AccountDto> addAccountDto(AccountDto accountDto, String userId) {
 
         // todo  查询账户名称 这里如果存在业主则业主名称 不是业主 则 填写用户名称，如果用户都没有 则返回空
         UserDto userDto = new UserDto();
@@ -99,6 +101,11 @@ public class QueryAppUserAccountCmd extends Cmd {
         String key = this.getClass().getSimpleName() + "AddCountDto" + userId;
         try {
             DistributedLock.waitGetDistributedLock(key, requestId);
+            List<AccountDto> accountDtos = accountInnerServiceSMOImpl.queryAccounts(accountDto);
+            if (!ListUtil.isNull(accountDtos)) {
+                return accountDtos;
+            }
+
             AccountPo accountPo = new AccountPo();
             accountPo.setAmount("0");
             accountPo.setAcctId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_acctId));
@@ -109,10 +116,10 @@ public class QueryAppUserAccountCmd extends Cmd {
             accountPo.setPartId(accountDto.getPartId());
             accountPo.setLink(accountDto.getLink());
             accountInnerServiceSMOImpl.saveAccount(accountPo);
-            List<AccountDto> accountDtos = accountInnerServiceSMOImpl.queryAccounts(accountDto);
+            accountDtos = accountInnerServiceSMOImpl.queryAccounts(accountDto);
             return accountDtos;
         } finally {
-            DistributedLock.releaseDistributedLock(requestId, key);
+            DistributedLock.releaseDistributedLock(key, requestId);
         }
 
     }

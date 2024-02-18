@@ -33,7 +33,7 @@
 					{
 						name: '我的房屋',
 						src: this.imgUrl+'/h5/images/serve/my3.png',
-						href: '/pages/my/myHouse'
+						href: '/pages/room/room'
 					},
 					{
 						name: '停车月卡记录',

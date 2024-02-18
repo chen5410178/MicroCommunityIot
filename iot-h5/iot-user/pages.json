@@ -298,6 +298,14 @@
 				"navigationBarTitleText": "物业公司",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path" : "pages/room/room",
+			"style" : 
+			{
+				"navigationBarTitleText" : "业主房屋",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"tabBar": {
