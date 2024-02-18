@@ -61,7 +61,10 @@ public class RefreshUserPassQrcodeCmd extends Cmd {
         AppUserDto appUserDto = new AppUserDto();
         appUserDto.setUserId(userId);
         List<AppUserDto> appUserDtos = appUserV1InnerServiceSMOImpl.queryAppUsers(appUserDto);
-        Assert.listOnlyOne(appUserDtos,"房屋未认证");
+
+        if(ListUtil.isNull(appUserDtos)){
+            throw new CmdException("房屋未认证");
+        }
 
 
         Assert.listOnlyOne(userDtos, "用户未登录");

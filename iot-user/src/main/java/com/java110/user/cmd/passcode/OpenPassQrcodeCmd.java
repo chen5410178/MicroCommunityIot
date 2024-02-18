@@ -9,10 +9,7 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.CmdContextUtils;
-import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.*;
 import com.java110.dto.appUser.AppUserDto;
 import com.java110.dto.user.UserDto;
 import com.java110.intf.user.IAppUserV1InnerServiceSMO;
@@ -65,7 +62,11 @@ public class OpenPassQrcodeCmd extends Cmd {
         AppUserDto appUserDto = new AppUserDto();
         appUserDto.setUserId(userId);
         List<AppUserDto> appUserDtos = appUserV1InnerServiceSMOImpl.queryAppUsers(appUserDto);
-        Assert.listOnlyOne(appUserDtos,"房屋未认证");
+
+        if(ListUtil.isNull(appUserDtos)){
+            throw new CmdException("房屋未认证");
+        }
+
 
         OwnerDto ownerDto = new OwnerDto();
         ownerDto.setLink(appUserDtos.get(0).getLink());
