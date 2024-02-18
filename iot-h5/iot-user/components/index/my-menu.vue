@@ -28,7 +28,7 @@
 					{
 						name: '我的物业',
 						src: this.imgUrl+'/h5/images/serve/my2.png',
-						href: '/pages/my/myProperty'
+						href: '/pages/property/property'
 					},
 					{
 						name: '我的房屋',

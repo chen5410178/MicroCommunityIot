@@ -53,6 +53,10 @@ export default {
 	getOwnerVisit: baseUrl + "iot/api/visit.listOwnerVisit",
 	//todo 查询业主信息
 	listUserOwner: baseUrl + "iot/api/owner.listUserOwner",
+	//todo 查询物业公司
+	listUserProperty: baseUrl + "iot/api/store.listUserProperty",
+	
+	
 	
 	
 	NEED_NOT_LOGIN_PAGE: [
