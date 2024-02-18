@@ -35,6 +35,12 @@ java + vue + uni-app + maven + spring boot(cloud) 方式
 
 演示环境：http://iot.homecommunity.cn
 
+运营账号密码：admin/admin
+
+物业账号：18909715555/123456
+
+物业账号可以自行到admin 添加
+
 本机环境：http://localhost:3002
 
 ## 如何部署
