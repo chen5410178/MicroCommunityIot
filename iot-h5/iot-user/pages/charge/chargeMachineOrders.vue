@@ -34,6 +34,8 @@
 	import {
 		getChargeMachineOrder
 	} from '../../api/machine/machineApi.js';
+	
+
 
 
 	import {
@@ -58,6 +60,9 @@
 		 */
 		onLoad: function(options) {
 			this.communityId = options.communityId;
+			if(!this.communityId){
+				this.communityId = getCommunityId();
+			}
 			let _that = this;
 			_that._loadChargeMachineOrder();
 		},

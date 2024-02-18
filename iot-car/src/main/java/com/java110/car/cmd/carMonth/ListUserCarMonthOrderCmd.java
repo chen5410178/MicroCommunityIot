@@ -55,6 +55,8 @@ public class ListUserCarMonthOrderCmd extends Cmd {
         List<CarMonthOrderDto> carMonthOrderDtos = null;
         CarMonthOrderDto carMonthOrderDto = new CarMonthOrderDto();
         carMonthOrderDto.setOwnerId(reqJson.getString("memberId"));
+        carMonthOrderDto.setPage(1);
+        carMonthOrderDto.setRow(30);
 
         carMonthOrderDtos = carMonthOrderV1InnerServiceSMOImpl.queryCarMonthOrders(carMonthOrderDto);
 

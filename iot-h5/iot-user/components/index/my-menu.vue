@@ -43,12 +43,12 @@
 					{
 						name: '充电月卡记录',
 						src: this.imgUrl+'/h5/images/serve/my5.png',
-						href: '/pages/fee/payFeeDetail'
+						href: '/pages/charge/chargeMonthOrder'
 					},
 					{
 						name: '充电订单',
 						src: this.imgUrl+'/h5/images/serve/my5.png',
-						href: '/pages/fee/payFeeDetail'
+						href: '/pages/charge/chargeMachineOrders'
 					},
 				]
 			};
