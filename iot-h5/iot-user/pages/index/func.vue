@@ -29,7 +29,7 @@ import {getRoomId,getRoomName} from '@/api/community/roomApi.js';
 		getAppUser
 	} from '../../api/user/appUser.js';
 	
-	import {getUserId} from '@/api/user/userApi.js'
+	import {getUserId,getUserTel} from '@/api/user/userApi.js'
 	
 	export default {
 		data() {
@@ -66,7 +66,7 @@ import {getRoomId,getRoomName} from '@/api/community/roomApi.js';
 					{
 						icon:'/static/images/ac.png',
 						name:'充电月卡',
-						url:'/'
+						url:'buyMonthChardCard'
 					}
 				]
 			}
@@ -102,6 +102,13 @@ import {getRoomId,getRoomName} from '@/api/community/roomApi.js';
 				}
 				if(_item.url == 'buyMonthCarCard'){
 					_url = "/pages/car/selectCar"
+					uni.navigateTo({
+						url:_url
+					});
+					return ;
+				}
+				if(_item.url == 'buyMonthChardCard'){
+					_url = "/pages/charge/prestoreChargeCard?communityId="+getCommunityId()+"&personTel="+getUserTel()
 					uni.navigateTo({
 						url:_url
 					});

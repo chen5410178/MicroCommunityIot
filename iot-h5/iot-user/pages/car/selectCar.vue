@@ -6,10 +6,10 @@
 				<view class="content padding-tb-sm" is-link @click="chooseCar(car)">
 					<view>
 						<text
-							class="cuIcon-clothesfill text-blue margin-right-xs"></text>{{car.carNum}}
+							class="cuIcon-clothesfill text-blue margin-right-xs"></text>{{car.carNum}}({{car.carTypeCdName}})
 					</view>
 					<view class="text-gray text-sm">
-						<text class="cuIcon-infofill margin-right-xs"></text>{{car.address}}
+						<text class="cuIcon-infofill margin-right-xs"></text>{{car.areaNum}}停车场{{car.num}}车位
 					</view>
 				</view>
 			</view>
@@ -22,6 +22,7 @@
 		getUserCar
 	} from '../../api/car/carApi.js';
 	import {getUserId} from '../../api/user/userApi.js';
+	import {getCommunityId} from '../../api/community/communityApi.js'
 	export default {
 		data() {
 			return {
@@ -40,14 +41,14 @@
 				getUserCar({
 					page: 1,
 					row: 30,
-					communityId: this.communityId,
+					communityId: getCommunityId(),
 				}).then((cars) => {
-					_that.cars = cars.data;
+					_that.cars = cars;
 				})
 			},
 			chooseCar: function(_car) {
 				uni.navigateTo({
-					url: '/pages/fee/buyCarMonthCard?communityId=' + this.communityId + '&createUserId=' +
+					url: '/pages/fee/buyCarMonthCard?communityId=' + getCommunityId() + '&createUserId=' +
 						this.createStaffId +
 						"&carNum=" + _car.carNum
 				})
