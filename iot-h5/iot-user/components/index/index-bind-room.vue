@@ -1,5 +1,5 @@
 <template>
-	<view class="index-undo" >
+	<view class="index-undo radius-lg" >
 		<view class="undo-menu flex justify-start flex-wrap">
 			<view class="menu-item"  @click="_toBindRoom()">
 				<view style="position: relative;">
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-	import {hasLogin} from '../api/user/sessionApi.js';
+	import {hasLogin} from '@/api/user/sessionApi.js';
 	export default {
 		name:"indexBindRoom",
 		data() {

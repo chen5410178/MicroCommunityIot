@@ -1,17 +1,19 @@
 <template>
 	<view>
-
-		<view>
-			<index-header></index-header>
-		</view>
-		<view class="margin-top-sm">
-			<index-ads></index-ads>
-		</view>
-		<view v-if="hasOwner == 'Y'">
-			<index-ac ref="indexAcRef"></index-ac>
-		</view>
-		<view v-if="hasOwner == 'N'">
-			<index-bind-room ref="indexBindRoomRef"></index-bind-room>
+		<view class="padding-lr-sm">
+			
+			<view class="margin-top-sm ">
+				<index-ads></index-ads>
+			</view>
+			<view class="margin-top">
+				<index-header></index-header>
+			</view>
+			<view class="margin-top-sm" >
+				<index-ac ref="indexAcRef"></index-ac>
+			</view>
+			<view class="margin-top" v-if="hasOwner == 'N'">
+				<index-bind-room ref="indexBindRoomRef"></index-bind-room>
+			</view>
 		</view>
 	</view>
 </template>
@@ -20,7 +22,7 @@
 	import indexHeader from '@/components/index/index-header.vue';
 	import indexAds from '@/components/index/index-ads.vue';
 	import indexAc from '@/components/index/index-ac.vue';
-	import indexBindRoom from '@/components/index-bind-room.vue';
+	import indexBindRoom from '@/components/index/index-bind-room.vue';
 
 	import {
 		hasLogin
@@ -58,15 +60,18 @@
 		 * 生命周期函数--监听页面显示
 		 */
 		onShow: function() {
+			let _that = this;
 			if (!hasLogin()) {
+				_that.hasOwner = 'N';
 				return;
 			}
 
-			let _that = this;
+			
 			getAppUser().then(_data => {
 				_that.hasOwner = 'Y';
 				_that._initIndexData();
 			}, err => {
+				console.log(err)
 				_that.hasOwner = 'N';
 			})
 		},

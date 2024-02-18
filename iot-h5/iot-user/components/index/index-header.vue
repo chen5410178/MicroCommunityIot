@@ -1,11 +1,19 @@
 <template>
 	<view>
-		<view class="header flex justify-around align-center">
-			<view class="header-item " v-for="(item,index) in headerMenus" :key="index" @click="_toCodeUrl(item)">
-				<view style="position: relative;">
-					<image :src="item.icon"></image>
-					<view><text>{{item.name}}</text></view>
+		<view class="header flex justify-between">
+			<view class="header-item flex justify-between"  @click="_toCodeUrl('pass')">
+				<view class="h-i-name"><text>通行码</text></view>
+				<view>
+					<image src="/static/images/qrcode.png"></image>
 				</view>
+				
+			</view>
+			<view class="header-item flex justify-between"  @click="_toCodeUrl('visit')">
+				<view class="h-i-name"><text>访客码</text></view>
+				<view>
+					<image src="/static/images/qrcode-visit.png"></image>
+				</view>
+				
 			</view>
 		</view>
 	</view>
@@ -22,19 +30,11 @@
 		name: "indexHeader",
 		data() {
 			return {
-				headerMenus: [{
-					icon: '/static/images/qrcode.png',
-					name: '通行码',
-					action: 'pass'
-				}, {
-					icon: '/static/images/qrcode-visit.png',
-					name: '访客码',
-					action: 'visit'
-				}]
+				
 			};
 		},
 		methods: {
-			_toCodeUrl: function(_item) {
+			_toCodeUrl: function(_action) {
 				if (!hasLogin()) {
 					uni.navigateTo({
 						url: '/pages/user/login'
@@ -44,12 +44,11 @@
 
 				//todo 查询房屋认证
 				let _that = this;
-				let _action = _item.action;
 				getAppUser().then((_data) => {
 					if (_action == 'pass') {
 						_that.passQrcode(_data);
 						return;
-					}else if(_action == 'visit'){
+					} else if (_action == 'visit') {
 						_that.visitQrcode(_data);
 						return;
 					}
@@ -62,12 +61,12 @@
 			},
 			passQrcode: function(_data) {
 				uni.navigateTo({
-					url:'/pages/user/userPassQrcode'
+					url: '/pages/user/userPassQrcode'
 				})
 			},
-			visitQrcode:function(_data){
+			visitQrcode: function(_data) {
 				uni.navigateTo({
-					url:'/pages/user/visitQrcode'
+					url: '/pages/user/visitQrcode'
 				})
 			}
 		}
@@ -77,22 +76,26 @@
 <style lang="scss">
 	.header {
 		width: 100%;
-		/** #ifndef H5 **/
-		height: 320upx;
-		/** #endif **/
-		/** #ifdef H5 **/
-		height: 320upx;
-		/** #endif **/
-		background-color: #368CFE;
-		color: #FFFFFF;
+		//color: #FFFFFF;
 
 		.header-item {
+			padding:30upx;
+			background-color: #FFFFFF;
+			width: 48%;
+			border-radius: 10upx;
 			//margin-top: 50upx;
 			text-align: center;
+			font-size: 32upx;
+			color: #323437;
+			line-height: 1;
+			
+			.h-i-name{
+				line-height: 58upx;
+			}
 
 			image {
-				height: 100upx;
-				width: 100upx;
+				height: 60upx;
+				width: 60upx;
 			}
 		}
 	}

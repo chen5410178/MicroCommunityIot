@@ -360,8 +360,8 @@
 			{
 				"pagePath": "pages/index/my",
 				"text": "我的",
-				"iconPath": "static/images/home.png",
-				"selectedIconPath": "static/images/home-selected.png"
+				"iconPath": "static/images/my.png",
+				"selectedIconPath": "static/images/my-selected.png"
 			}
 		]
 	},

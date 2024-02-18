@@ -8,8 +8,7 @@
 					<view class="userinfo-nickname margin-top">
 						<text class="username">{{ userName }}</text>
 						<text class="userphone">{{ userPhone }}</text>
-						<text class="userarea" @tap="_changeCommunity()" v-if="communityName">{{ communityName }} <text
-								class="cuIcon-settings text-white margin-left-sm"></text></text>
+						<text class="userarea" @tap="_changeCommunity()" v-if="communityName">{{ communityName }}</text>
 					</view>
 					<!-- <view class="text-right" @click="_viewUserQrCode">
 						<text class="cuIcon-qrcode text-white margin-left" ></text>

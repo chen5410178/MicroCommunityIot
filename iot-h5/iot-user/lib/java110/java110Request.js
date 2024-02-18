@@ -72,11 +72,8 @@ export function request(_reqObj) {
 	
 	if(!hasLogin()){
 		//todo 这里延迟跳转，等待如果界面又自登陆的话 自登陆完成
-		setTimeout(function(){
-			uni.navigateTo({
-				url:'/pages/login/showlogin'
-			})
-		},1500);
+		console.log(_reqObj)
+		_reqObj.fail('用户未登录');
 		return;
 	}
 	uni.request(_reqObj);

@@ -1,11 +1,11 @@
 <template>
 	<view>
-		<view class="home_swiper">
-			<swiper class="ad-swiper bg-white" indicator-dots="true" indicator-color="rgba(228,228,228,1)"
+		<view class="home_swiper ">
+			<swiper class="ad-swiper bg-white radius-lg" indicator-dots="true" indicator-color="rgba(228,228,228,1)"
 				indicator-active-color="#FECA49" autoplay="true" interval="5000" duration="1000" circular="true">
 				<block v-for="(item, index) in banner" :key="index" @click="_advertJump(item)">
 					<swiper-item>
-						<image style="height:100%;width: 100%" :src="item.url"></image>
+						<image style="height:100%;width: 100%" class="radius-lg" :src="item.url"></image>
 					</swiper-item>
 				</block>
 			</swiper>
