@@ -27,6 +27,10 @@ HC物联网系统专注于小区和园区内的设备管理，智能化控制，
 
 事件： 设备离线，仪表告警等通过事件方式 通过短信 或者微信模版消息方式告警；
 
+## 技术选型
+
+java + vue + uni-app + maven + spring boot(cloud) 方式
+
 ## 如何体验
 
 演示环境：http://iot.homecommunity.cn
@@ -36,6 +40,8 @@ HC物联网系统专注于小区和园区内的设备管理，智能化控制，
 ## 如何部署
 
 梓豪部署：[安装](./document/cn/install.md)
+
+数据库sql: [mysql文件](./document/db/hc_iot.sql)
 
 ## 接口文档
 
