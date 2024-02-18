@@ -53,6 +53,8 @@ public class CarMonthOrderDto extends PageDto implements Serializable {
 
     private String queryEndTime;
 
+    private String ownerId;
+
 
     public String getPrimeRate() {
         return primeRate;
@@ -237,5 +239,13 @@ public class CarMonthOrderDto extends PageDto implements Serializable {
 
     public void setQueryEndTime(String queryEndTime) {
         this.queryEndTime = queryEndTime;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 }

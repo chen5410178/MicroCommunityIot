@@ -27,7 +27,11 @@
         left join car_month_card cmc on t.card_id = cmc.card_id
         left join parking_space ps on t.ps_id = ps.ps_id
         left join t_dict td on t.prime_rate = td.status_cd and td.table_name = 'pay_fee_detail' and td.table_columns = 'prime_rate'
+        left join owner_car oc on t.car_id = oc.member_id and oc.status_cd = '0'
         where 1 =1
+        <if test="ownerId !=null and ownerId != ''">
+            and oc.owner_id = #{ownerId}
+        </if>
         <if test="primeRate !=null and primeRate != ''">
             and t.prime_rate= #{primeRate}
         </if>
@@ -150,7 +154,11 @@
     <select id="queryCarMonthOrdersCount" parameterType="Map" resultType="Map">
         select count(1) count
         from car_month_order t
+        left join owner_car oc on t.car_id = oc.member_id and oc.status_cd = '0'
         where 1 =1
+        <if test="ownerId !=null and ownerId != ''">
+            and oc.owner_id = #{ownerId}
+        </if>
         <if test="primeRate !=null and primeRate != ''">
             and t.prime_rate= #{primeRate}
         </if>

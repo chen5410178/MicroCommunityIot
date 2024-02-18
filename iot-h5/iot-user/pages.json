@@ -306,6 +306,14 @@
 				"navigationBarTitleText" : "业主房屋",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/car/carMonthOrder",
+			"style" : 
+			{
+				"navigationBarTitleText" : "车辆月卡订单",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"tabBar": {

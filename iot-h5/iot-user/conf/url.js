@@ -57,6 +57,7 @@ export default {
 	listUserProperty: baseUrl + "iot/api/store.listUserProperty",
 	//todo 查询业主房屋
 	queryUserRoom: baseUrl + "iot/api/room.queryUserRoom",
+	listUserCarMonthOrder: baseUrl + "iot/api/carMonth.listUserCarMonthOrder",
 	
 	
 	
