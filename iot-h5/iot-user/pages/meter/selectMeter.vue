@@ -1,16 +1,15 @@
 <template>
 	<view>
-		<view class="cu-list menu margin-top">
-			<view class="cu-item" v-for="(meter, idx) in meters" :key="idx" >
+		<view class="block__title">选择表</view>
+		<view class="cu-list menu ">
+			<view class="cu-item  arrow" v-for="(meter, idx) in meters" :key="idx">
 				<view class="content padding-tb-sm" is-link @click="chooseMeter(meter)">
 					<view>
-						<text class="cuIcon-clothesfill text-blue margin-right-xs"></text>表名：{{meter.machineName}}
+						<text
+							class="cuIcon-clothesfill text-blue margin-right-xs"></text>{{meter.machineName}}({{meter.roomName}})
 					</view>
 					<view class="text-gray text-sm">
 						<text class="cuIcon-infofill margin-right-xs"></text>表号：{{meter.address}}
-					</view>
-					<view class="text-gray text-sm">
-						<text class="cuIcon-infofill margin-right-xs"></text>表类型：{{meter.meterTypeName}}
 					</view>
 				</view>
 			</view>
@@ -19,7 +18,9 @@
 </template>
 
 <script>
-	import {listMeterMachine} from '../../api/meter/meterApi.js'
+	import {
+		listMeterMachine
+	} from '../../api/meter/meterApi.js'
 	export default {
 		data() {
 			return {
@@ -52,14 +53,21 @@
 			},
 			chooseMeter: function(_meter) {
 				uni.navigateTo({
-					url: '/pages/meter/preStoreMeter?communityId=' + this.communityId + '&createStaffId=' + this.createStaffId 
-					+ "&address=" + _meter.address
+					url: '/pages/meter/preStoreMeter?communityId=' + this.communityId + '&createStaffId=' +
+						this.createStaffId +
+						"&address=" + _meter.address
 				})
 			},
 		}
 	}
 </script>
 
-<style>
-
+<style lang="scss">
+	.block__title {
+		margin: 0;
+		font-weight: 400;
+		font-size: 14px;
+		color: rgba(69, 90, 100, .6);
+		padding: 60rpx 30rpx 20rpx;
+	}
 </style>

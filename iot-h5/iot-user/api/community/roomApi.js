@@ -24,3 +24,19 @@ export function queryUserRoom(_objData){
 		});
 	})
 }
+
+export function getRoomName() {
+	let _community = uni.getStorageSync("currentCommunityInfo");
+	if(_community){
+		return _community.roomName;
+	}
+	return "无";
+}
+
+export function getRoomId() {
+	let _community = uni.getStorageSync("currentCommunityInfo");
+	if(_community){
+		return _community.roomId;
+	}
+	return "-1"
+}

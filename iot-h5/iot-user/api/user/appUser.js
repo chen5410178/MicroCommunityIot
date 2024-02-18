@@ -45,3 +45,34 @@ export function getAppUser() {
 		});
 	})
 }
+
+export function getAppUsers() {
+	let _data = {
+		page:1,
+		row:30,
+	};
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.queryBindRoom,
+			method: "GET",
+			data: _data,
+			success: function(res) {
+				//将业主信息和房屋信息一起返回
+				let _json  = res.data;
+				if(_json.code != 0){
+					reject(_json.msg);
+					return;
+				}
+				if(!_json.data || _json.data.length <1 ){
+					reject('未认证房屋');
+					return;
+				}
+				uni.setStorageSync("userCommunitys",_json.data);
+				resolve(_json.data);
+			},
+			fail: function(res) {
+				reject(res);
+			}
+		});
+	})
+}

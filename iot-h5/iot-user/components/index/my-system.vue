@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="cu-list menu  margin-top margin-bottom">
-			<view class="cu-item arrow" @click="mySettings()">
+			<view class="cu-item arrow" @click="_changeCommunity()">
 				<view class="content">
 					<text class="cuIcon-settings text-gray"></text>
 					<text class="text-grey">切换小区</text>
@@ -63,17 +63,15 @@ import {userLogout} from '../../api/user/userApi.js';
 				return hasLogin();
 			},
 			// 设置
-			mySettings: function() {
-				if (!this.ckeckUserInfo()) {
-					this.vc.navigateTo({
-						url: '/pages/user/login'
-					}, () => {
-						this.refreshPageLoginInfo();
-					});
+			_changeCommunity: function() {
+				if (!hasLogin()) {
+					uni.navigateTo({
+						url:'/pages/user/login'
+					})
 					return;
 				}
 				this.vc.navigateTo({
-					url: '/pages/settings/settings',
+					url: '/pages/property/changeCommunity',
 				});
 			},
 			//退出系统

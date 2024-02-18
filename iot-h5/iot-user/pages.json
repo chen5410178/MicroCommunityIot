@@ -319,7 +319,23 @@
 			"path" : "pages/charge/chargeMonthOrder",
 			"style" : 
 			{
-				"navigationBarTitleText" : "",
+				"navigationBarTitleText" : "充电月卡订单",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/property/changeCommunity",
+			"style" : 
+			{
+				"navigationBarTitleText" : "切换小区",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/car/selectCar",
+			"style" : 
+			{
+				"navigationBarTitleText" : "选择车辆",
 				"enablePullDownRefresh" : false
 			}
 		}

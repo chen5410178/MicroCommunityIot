@@ -23,9 +23,13 @@
 
 <script>
 	import {hasLogin} from '@/api/user/sessionApi.js';
+import { getCommunityId } from '../../api/community/communityApi.js';
+import {getRoomId,getRoomName} from '@/api/community/roomApi.js';
 	import {
 		getAppUser
 	} from '../../api/user/appUser.js';
+	
+	import {getUserId} from '@/api/user/userApi.js'
 	
 	export default {
 		data() {
@@ -52,12 +56,12 @@
 					{
 						icon:'/static/images/ac.png',
 						name:'水电充值',
-						url:'/'
+						url:'chargeMeter'
 					},
 					{
 						icon:'/static/images/ac.png',
 						name:'停车月卡',
-						url:'/'
+						url:'buyMonthCarCard'
 					},
 					{
 						icon:'/static/images/ac.png',
@@ -78,14 +82,33 @@
 				
 				let _that = this;
 				getAppUser().then(_data => {
-					uni.navigateTo({
-						url:_item.url
-					})
+					_that.toUrl(_item);
 				}, err => {
 					uni.showToast({
 						icon:'none',
 						title:'未认证房屋'
 					})
+				})
+			},
+			toUrl:function(_item){
+				let _url = _item.url;
+				if(_item.url == 'chargeMeter'){
+					_url = "/pages/meter/selectMeter?communityId="+getCommunityId()
+					+"&createStaffId="+getUserId()+"&roomId="+getRoomId()+"&roomName="+getRoomName()
+					uni.navigateTo({
+						url:_url
+					});
+					return ;
+				}
+				if(_item.url == 'buyMonthCarCard'){
+					_url = "/pages/car/selectCar"
+					uni.navigateTo({
+						url:_url
+					});
+					return ;
+				}
+				uni.navigateTo({
+					url:_item.url
 				})
 			}
 		}
