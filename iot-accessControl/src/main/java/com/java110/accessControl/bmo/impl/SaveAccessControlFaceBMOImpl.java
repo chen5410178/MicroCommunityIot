@@ -189,7 +189,7 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
                 accessControlFacePo.setFacePath(tmpOwnerDto.getUrl());
                 accessControlFacePo.setCommunityId(tmpOwnerDto.getCommunityId());
                 accessControlFacePo.setIdNumber(tmpOwnerDto.getIdCard());
-                accessControlFacePo.setComeId(accessControlFloorPo.getUnitId());
+                accessControlFacePo.setComeId(accessControlFloorPo.getAcfId());
                 accessControlFacePo.setComeType(AccessControlFaceDto.COME_TYPE_FLOOR);
                 accessControlFacePo.setEndTime(endDate);
                 accessControlFacePo.setStartTime(startDate);
