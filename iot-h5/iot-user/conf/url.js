@@ -37,7 +37,7 @@ export default {
 	refreshUserPassQrcode: baseUrl + "iot/api/passcode.refreshUserPassQrcode",
 	openPassQrcode: baseUrl + "iot/api/passcode.openPassQrcode",
 	userLogout:  baseUrl + "iot/api/login.userLogout",
-	
+
 
 	listMeterQrcode: baseUrl + "iot/api/meterQrcode.listMeterQrcode",
 	listMeterMachine: baseUrl + "iot/api/meterMachine.listMeterMachine",
@@ -60,13 +60,16 @@ export default {
 	listUserCarMonthOrder: baseUrl + "iot/api/carMonth.listUserCarMonthOrder",
 	listUserChargeMonthOrder: baseUrl + "iot/api/chargeCard.listUserChargeMonthOrder",
 	listUserCar: baseUrl + "iot/api/car.listUserCar",
+
+	queryCommunitys: baseUrl + "iot/api/community.listCommunitys",
+	saveAppUser: baseUrl + "iot/api/appUser.saveAppUser",
+
+
 	
 	
-	
-	
-	
-	
-	
+
+
+
 	NEED_NOT_LOGIN_PAGE: [
 		'pages/user/login',
 		'pages/user/register',

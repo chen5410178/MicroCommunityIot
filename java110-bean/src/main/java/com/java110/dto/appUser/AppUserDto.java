@@ -15,6 +15,9 @@ import java.util.Date;
  * add by wuxw 2019/4/24
  **/
 public class AppUserDto extends PageDto implements Serializable {
+    public static final String STATE_W = "10000";
+    public static final String STATE_S = "12000";
+    public static final String STATE_F = "13000";
 
     public static final String STATE_FINISH = "12000";
     private String stateMsg;

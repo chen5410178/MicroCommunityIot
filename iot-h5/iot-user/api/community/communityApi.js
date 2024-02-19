@@ -93,6 +93,26 @@ export function queryRoomsByApp(_objData) {
 		});
 	})
 }
+export function queryCommunitys(_objData) {
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.queryCommunitys,
+			data: _objData,
+			method: "GET",
+			//动态数据
+			success: function(res) {
+				resolve(res.data);
+			},
+			fail: function(e) {
+				uni.hideLoading();
+				uni.showToast({
+					title: "服务器异常了",
+					icon: 'none'
+				})
+			}
+		});
+	})
+}
 
 export function getUserProperty(_objData){
 	return new Promise((resolve, reject) => {

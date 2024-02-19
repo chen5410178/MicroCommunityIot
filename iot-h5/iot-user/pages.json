@@ -301,7 +301,7 @@
 		},
 		{
 			"path" : "pages/room/room",
-			"style" : 
+			"style" :
 			{
 				"navigationBarTitleText" : "业主房屋",
 				"enablePullDownRefresh" : false
@@ -309,7 +309,7 @@
 		},
 		{
 			"path" : "pages/car/carMonthOrder",
-			"style" : 
+			"style" :
 			{
 				"navigationBarTitleText" : "车辆月卡订单",
 				"enablePullDownRefresh" : false
@@ -317,7 +317,7 @@
 		},
 		{
 			"path" : "pages/charge/chargeMonthOrder",
-			"style" : 
+			"style" :
 			{
 				"navigationBarTitleText" : "充电月卡订单",
 				"enablePullDownRefresh" : false
@@ -325,7 +325,7 @@
 		},
 		{
 			"path" : "pages/property/changeCommunity",
-			"style" : 
+			"style" :
 			{
 				"navigationBarTitleText" : "切换小区",
 				"enablePullDownRefresh" : false
@@ -333,11 +333,20 @@
 		},
 		{
 			"path" : "pages/car/selectCar",
-			"style" : 
+			"style" :
 			{
 				"navigationBarTitleText" : "选择车辆",
 				"enablePullDownRefresh" : false
 			}
+		}
+		,{
+		    "path" : "pages/roomCertification/roomCertification",
+		    "style" :
+		    {
+		        "navigationBarTitleText": "房屋认证",
+		        "enablePullDownRefresh": false
+		    }
+
 		}
 	],
 	"tabBar": {

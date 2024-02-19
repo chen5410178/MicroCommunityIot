@@ -66,6 +66,9 @@
             _openDeleteAppUserModel: function (_appUser) {
                 vc.emit('deleteAppUser', 'openDeleteAppUserModal', _appUser);
             },
+            _openEditAppUserModel: function (_appUser) {
+                vc.emit('editAppUser', 'openEditAppUserModal', _appUser);
+            },
             _queryAppUserMethod: function () {
                 $that._listAppUsers(DEFAULT_PAGE, DEFAULT_ROWS);
             },

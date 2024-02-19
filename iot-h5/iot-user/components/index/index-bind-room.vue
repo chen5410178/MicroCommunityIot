@@ -30,7 +30,7 @@
 					return;
 				}
 				uni.navigateTo({
-					url:'/'
+					url:'/pages/roomCertification/roomCertification'
 				})
 			}
 		}
