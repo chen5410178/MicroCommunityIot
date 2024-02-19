@@ -59,6 +59,8 @@ java + vue + uni-app + maven + spring boot(cloud) 方式
 
 [门禁配置文档](./document/HC物联网门禁配置指南.docx)
 
+[道闸配置文档](./document/HC物联网道闸配置指南.docx)
+
 [充电桩配置文档](./document/HC物联网两轮充电桩配置指南.docx)
 
 ## 运行效果
