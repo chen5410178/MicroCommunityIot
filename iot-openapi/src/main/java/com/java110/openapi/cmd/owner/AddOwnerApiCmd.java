@@ -157,6 +157,9 @@ public class AddOwnerApiCmd extends Cmd {
         //todo 处理 房屋信息
         doRooms(reqJson, context);
 
+        //todo 同步 人员到门禁
+        ownerV1InnerServiceSMOImpl.syncAccessControl(reqJson.getString("memberId"));
+
         //todo 处理 车辆信息
         doCars(reqJson, context);
 
@@ -517,6 +520,6 @@ public class AddOwnerApiCmd extends Cmd {
                 reqJson.getString("communityId"),
                 "10000");
 
-        ownerV1InnerServiceSMOImpl.syncAccessControl(ownerPo.getMemberId());
+
     }
 }
