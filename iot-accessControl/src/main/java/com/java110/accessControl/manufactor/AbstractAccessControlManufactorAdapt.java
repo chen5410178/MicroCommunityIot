@@ -384,11 +384,10 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         accessControlLogV1InnerServiceSMOImpl.updateAccessControlLog(accessControlLogPo);
 
         //todo 更新人员日志
-
         AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
         accessControlFaceDto.setPersonId(accessControlLogDtos.get(0).getUserId());
         accessControlFaceDto.setMachineCode(machineCode);
-        accessControlFaceDto.setState(AccessControlFaceDto.STATE_WAIT);
+        //accessControlFaceDto.setState(AccessControlFaceDto.STATE_WAIT);
         List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
         if (ListUtil.isNull(accessControlFaceDtos)) {
             return;
