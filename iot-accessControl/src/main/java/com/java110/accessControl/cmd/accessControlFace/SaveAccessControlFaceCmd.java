@@ -19,17 +19,21 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.accessControl.bmo.ISaveAccessControlFaceBMO;
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.file.FileRelDto;
 import com.java110.bean.dto.floor.FloorDto;
 import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.bean.dto.unit.UnitDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
+import com.java110.core.cache.MappingCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.constant.MappingConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.doc.annotation.*;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
@@ -37,6 +41,7 @@ import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
 import com.java110.intf.community.IFloorV1InnerServiceSMO;
 import com.java110.intf.community.IUnitV1InnerServiceSMO;
+import com.java110.intf.system.IFileRelInnerServiceSMO;
 import com.java110.intf.user.IOwnerV1InnerServiceSMO;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.accessControlFloor.AccessControlFloorPo;
@@ -104,6 +109,9 @@ public class SaveAccessControlFaceCmd extends Cmd {
     @Autowired
     private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IFileRelInnerServiceSMO fileRelInnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
@@ -132,7 +140,7 @@ public class SaveAccessControlFaceCmd extends Cmd {
     }
 
     @Override
-    @Java110Transactional
+    // @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
 
@@ -171,8 +179,24 @@ public class SaveAccessControlFaceCmd extends Cmd {
      * @param machineId
      */
     private void doComputeAccessControl(OwnerDto tmpOwnerDto, String machineId, JSONObject reqJson) {
+        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
+
+        FileRelDto fileRelDto = new FileRelDto();
+        fileRelDto.setObjId(tmpOwnerDto.getMemberId());
+        fileRelDto.setRelTypeCd("10000"); //人员照片
+        List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
+        if (!ListUtil.isNull(fileRelDtos)) {
+            String url = fileRelDtos.get(0).getFileRealName();
+            if (url.startsWith("http")) {
+                tmpOwnerDto.setUrl(fileRelDtos.get(0).getFileRealName());
+            } else {
+                tmpOwnerDto.setUrl(imgUrl + fileRelDtos.get(0).getFileRealName());
+            }
+        }
+
+
         AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
-        accessControlFacePo.setFacePath("http://");
+        accessControlFacePo.setFacePath(tmpOwnerDto.getUrl());
         accessControlFacePo.setCommunityId(tmpOwnerDto.getCommunityId());
         accessControlFacePo.setIdNumber(tmpOwnerDto.getIdCard());
         accessControlFacePo.setComeId(tmpOwnerDto.getMemberId());
