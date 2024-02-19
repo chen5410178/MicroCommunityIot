@@ -390,7 +390,7 @@ public class AddOwnerApiCmd extends Cmd {
         ownerRoomRelPo.setRelId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_relId));
         ownerRoomRelPo.setState("2001");
         ownerRoomRelPo.setRoomId(room.getString("roomId"));
-        ownerRoomRelPo.setOwnerId(reqJson.getString("ownerId"));
+        ownerRoomRelPo.setOwnerId(reqJson.getString("memberId"));
         ownerRoomRelPo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_B));
         ownerRoomRelPo.setEndTime(DateUtil.LAST_TIME);
 
