@@ -30,6 +30,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.doc.annotation.*;
 import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
@@ -114,7 +115,7 @@ public class SaveAccessControlFloorCmd extends Cmd {
         }
 
         JSONArray machineIds = reqJson.getJSONArray("machineIds");
-        if (machineIds == null || machineIds.size() < 1) {
+        if (ListUtil.isNull(machineIds)) {
             throw new CmdException("未包含门禁");
         }
 

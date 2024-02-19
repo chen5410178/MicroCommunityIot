@@ -1,10 +1,13 @@
 package com.java110.accessControl.bmo.impl;
 
 import com.java110.accessControl.bmo.ISaveAccessControlFaceBMO;
+import com.java110.bean.dto.file.FileRelDto;
 import com.java110.bean.dto.org.OrgStaffRelDto;
 import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.bean.dto.room.RoomDto;
 import com.java110.bean.dto.unit.UnitDto;
+import com.java110.core.cache.MappingCache;
+import com.java110.core.constant.MappingConstant;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
@@ -14,6 +17,7 @@ import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.user.UserDto;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
+import com.java110.intf.system.IFileRelInnerServiceSMO;
 import com.java110.intf.user.IOrgStaffRelV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
@@ -47,6 +51,9 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
     @Autowired
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IFileRelInnerServiceSMO fileRelInnerServiceSMOImpl;
+
     /**
      * 将单元下的房屋
      *
@@ -55,20 +62,20 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
      */
     @Override
     @Async
-    public void save(AccessControlFloorPo accessControlFloorPo, String machineId,String startDate,String endDate) {
+    public void save(AccessControlFloorPo accessControlFloorPo, String machineId, String startDate, String endDate) {
 
         RoomDto roomDto = new RoomDto();
         roomDto.setUnitId(accessControlFloorPo.getUnitId());
         roomDto.setCommunityId(accessControlFloorPo.getCommunityId());
         List<RoomDto> roomDtos = roomV1InnerServiceSMOImpl.queryRooms(roomDto);
 
-        if (roomDtos == null || roomDtos.size() < 1) {
+        if (ListUtil.isNull(roomDtos)) {
             return;
         }
 
         for (RoomDto tmpRoomDto : roomDtos) {
             try {
-                doRoomOwner(accessControlFloorPo, tmpRoomDto, machineId,startDate,endDate);
+                doRoomOwner(accessControlFloorPo, tmpRoomDto, machineId, startDate, endDate);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -78,7 +85,7 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
 
     @Override
     @Async
-    public void saveOrgStaff(AccessControlOrgPo accessControlOrgPo, String machineId,String startDate,String endDate) {
+    public void saveOrgStaff(AccessControlOrgPo accessControlOrgPo, String machineId, String startDate, String endDate) {
 
         OrgStaffRelDto orgStaffRelDto = new OrgStaffRelDto();
         orgStaffRelDto.setOrgId(accessControlOrgPo.getOrgId());
@@ -90,7 +97,7 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
 
         for (OrgStaffRelDto tmpOrgStaffRelDto : orgStaffRelDtos) {
             try {
-                doOrgStaff(accessControlOrgPo, tmpOrgStaffRelDto, machineId,startDate,endDate);
+                doOrgStaff(accessControlOrgPo, tmpOrgStaffRelDto, machineId, startDate, endDate);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -100,31 +107,31 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
 
     @Override
     @Async
-    public void reSendFace(String machineId, String communityId,String mfId) {
+    public void reSendFace(String machineId, String communityId, String mfId) {
         AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
         accessControlFaceDto.setCommunityId(communityId);
         accessControlFaceDto.setMachineId(machineId);
         accessControlFaceDto.setMfId(mfId);
         List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
 
-        if(ListUtil.isNull(accessControlFaceDtos)){
-            return ;
+        if (ListUtil.isNull(accessControlFaceDtos)) {
+            return;
         }
 
         AccessControlFacePo accessControlFacePo = null;
-        for(AccessControlFaceDto tmpAccessControlFaceDto:accessControlFaceDtos){
+        for (AccessControlFaceDto tmpAccessControlFaceDto : accessControlFaceDtos) {
             try {
                 accessControlFacePo = BeanConvertUtil.covertBean(tmpAccessControlFaceDto, AccessControlFacePo.class);
                 accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
                 accessControlFacePo.setMessage("待下发到门禁");
                 accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void doOrgStaff(AccessControlOrgPo accessControlOrgPo, OrgStaffRelDto tmpOrgStaffRelDto, String machineId,String startDate,String endDate) {
+    private void doOrgStaff(AccessControlOrgPo accessControlOrgPo, OrgStaffRelDto tmpOrgStaffRelDto, String machineId, String startDate, String endDate) {
         UserDto userDto = new UserDto();
         userDto.setUserId(tmpOrgStaffRelDto.getStaffId());
         List<UserDto> staffDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
@@ -150,35 +157,55 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
         accessControlFaceV1InnerServiceSMOImpl.saveAccessControlFace(accessControlFacePo);
     }
 
-    private void doRoomOwner(AccessControlFloorPo accessControlFloorPo, RoomDto tmpRoomDto, String machineId,String startDate,String endDate) {
+    private void doRoomOwner(AccessControlFloorPo accessControlFloorPo, RoomDto tmpRoomDto, String machineId, String startDate, String endDate) {
 
         OwnerDto ownerDto = new OwnerDto();
         ownerDto.setRoomId(tmpRoomDto.getRoomId());
         ownerDto.setCommunityId(tmpRoomDto.getCommunityId());
         List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryRoomOwners(ownerDto);
 
-        if (ownerDtos == null || ownerDtos.size() < 1) {
+        if (ListUtil.isNull(ownerDtos)) {
             return;
         }
+        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
         for (OwnerDto tmpOwnerDto : ownerDtos) {
-            AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
-            accessControlFacePo.setFacePath("http://");
-            accessControlFacePo.setCommunityId(tmpOwnerDto.getCommunityId());
-            accessControlFacePo.setIdNumber(tmpOwnerDto.getIdCard());
-            accessControlFacePo.setComeId(accessControlFloorPo.getUnitId());
-            accessControlFacePo.setComeType(AccessControlFaceDto.COME_TYPE_FLOOR);
-            accessControlFacePo.setEndTime(endDate);
-            accessControlFacePo.setStartTime(startDate);
-            accessControlFacePo.setCardNumber(tmpOwnerDto.getCardNumber());
-            accessControlFacePo.setMachineId(machineId);
-            accessControlFacePo.setMessage("待下发到门禁");
-            accessControlFacePo.setMfId(GenerateCodeFactory.getGeneratorId("11"));
-            accessControlFacePo.setName(tmpOwnerDto.getName());
-            accessControlFacePo.setPersonId(tmpOwnerDto.getMemberId());
-            accessControlFacePo.setPersonType(AccessControlFaceDto.PERSON_TYPE_OWNER);
-            accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
-            accessControlFacePo.setRoomName(tmpRoomDto.getFloorNum() + "-" + tmpOwnerDto.getUnitNum() + "-" + tmpOwnerDto.getRoomNum());
-            accessControlFaceV1InnerServiceSMOImpl.saveAccessControlFace(accessControlFacePo);
+
+            try {
+
+                FileRelDto fileRelDto = new FileRelDto();
+                fileRelDto.setObjId(tmpOwnerDto.getMemberId());
+                fileRelDto.setRelTypeCd("10000"); //人员照片
+                List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
+                if (!ListUtil.isNull(fileRelDtos)) {
+                    String url = fileRelDtos.get(0).getFileRealName();
+                    if (url.startsWith("http")) {
+                        tmpOwnerDto.setUrl(fileRelDtos.get(0).getFileRealName());
+                    } else {
+                        tmpOwnerDto.setUrl(imgUrl + fileRelDtos.get(0).getFileRealName());
+                    }
+                }
+
+                AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
+                accessControlFacePo.setFacePath(tmpOwnerDto.getUrl());
+                accessControlFacePo.setCommunityId(tmpOwnerDto.getCommunityId());
+                accessControlFacePo.setIdNumber(tmpOwnerDto.getIdCard());
+                accessControlFacePo.setComeId(accessControlFloorPo.getUnitId());
+                accessControlFacePo.setComeType(AccessControlFaceDto.COME_TYPE_FLOOR);
+                accessControlFacePo.setEndTime(endDate);
+                accessControlFacePo.setStartTime(startDate);
+                accessControlFacePo.setCardNumber(tmpOwnerDto.getCardNumber());
+                accessControlFacePo.setMachineId(machineId);
+                accessControlFacePo.setMessage("待下发到门禁");
+                accessControlFacePo.setMfId(GenerateCodeFactory.getGeneratorId("11"));
+                accessControlFacePo.setName(tmpOwnerDto.getName());
+                accessControlFacePo.setPersonId(tmpOwnerDto.getMemberId());
+                accessControlFacePo.setPersonType(AccessControlFaceDto.PERSON_TYPE_OWNER);
+                accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
+                accessControlFacePo.setRoomName(tmpRoomDto.getFloorNum() + "-" + tmpOwnerDto.getUnitNum() + "-" + tmpOwnerDto.getRoomNum());
+                accessControlFaceV1InnerServiceSMOImpl.saveAccessControlFace(accessControlFacePo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
