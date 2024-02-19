@@ -16,6 +16,8 @@
 package com.java110.accessControl.cmd.accessControlFloor;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.accessControl.bmo.IDeleteAccessControlFaceBMO;
+import com.java110.accessControl.bmo.ISaveAccessControlFaceBMO;
 import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
@@ -87,6 +89,9 @@ public class DeleteAccessControlFloorCmd extends Cmd {
     @Autowired
     private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IDeleteAccessControlFaceBMO deleteAccessControlFaceBMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "acfId", "acfId不能为空");
@@ -112,29 +117,7 @@ public class DeleteAccessControlFloorCmd extends Cmd {
             throw new CmdException("删除数据失败");
         }
 
-        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
-        accessControlFaceDto.setComeId(accessControlFloorDtos.get(0).getAcfId());
-        accessControlFaceDto.setCommunityId(accessControlFloorDtos.get(0).getCommunityId());
-        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
-
-        if (ListUtil.isNull(accessControlFaceDtos)) {
-            cmdDataFlowContext.setResponseEntity(ResultVo.success());
-
-            return;
-        }
-
-        for(AccessControlFaceDto tmpAccessControlFaceDto:accessControlFaceDtos){
-            //todo 删除员工授权
-            AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
-            accessControlFacePo.setComeId(tmpAccessControlFaceDto.getComeId());
-            accessControlFacePo.setCommunityId(tmpAccessControlFaceDto.getCommunityId());
-            accessControlFacePo.setMfId(tmpAccessControlFaceDto.getMfId());
-            accessControlFacePo.setPersonId(tmpAccessControlFaceDto.getPersonId());
-            accessControlFacePo.setName(tmpAccessControlFaceDto.getName());
-            accessControlFacePo.setMachineId(tmpAccessControlFaceDto.getMachineId());
-            accessControlFaceV1InnerServiceSMOImpl.deleteAccessControlFace(accessControlFacePo);
-        }
-
+        deleteAccessControlFaceBMOImpl.delete(accessControlFloorDtos.get(0));
 
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
