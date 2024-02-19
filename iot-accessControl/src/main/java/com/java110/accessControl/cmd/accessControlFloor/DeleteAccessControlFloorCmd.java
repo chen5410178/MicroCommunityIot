@@ -113,7 +113,7 @@ public class DeleteAccessControlFloorCmd extends Cmd {
         }
 
         AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
-        accessControlFaceDto.setComeId(accessControlFloorDtos.get(0).getUnitId());
+        accessControlFaceDto.setComeId(accessControlFloorDtos.get(0).getAcfId());
         accessControlFaceDto.setCommunityId(accessControlFloorDtos.get(0).getCommunityId());
         List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
 
@@ -123,15 +123,19 @@ public class DeleteAccessControlFloorCmd extends Cmd {
             return;
         }
 
-        //todo 删除员工授权
-        AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
-        accessControlFacePo.setComeId(accessControlFloorDtos.get(0).getUnitId());
-        accessControlFacePo.setCommunityId(accessControlFloorDtos.get(0).getCommunityId());
-        accessControlFacePo.setMfId(accessControlFaceDtos.get(0).getMfId());
-        accessControlFacePo.setPersonId(accessControlFaceDtos.get(0).getPersonId());
-        accessControlFacePo.setName(accessControlFaceDtos.get(0).getName());
-        accessControlFacePo.setMachineId(accessControlFaceDtos.get(0).getMachineId());
-        accessControlFaceV1InnerServiceSMOImpl.deleteAccessControlFace(accessControlFacePo);
+        for(AccessControlFaceDto tmpAccessControlFaceDto:accessControlFaceDtos){
+            //todo 删除员工授权
+            AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
+            accessControlFacePo.setComeId(tmpAccessControlFaceDto.getComeId());
+            accessControlFacePo.setCommunityId(tmpAccessControlFaceDto.getCommunityId());
+            accessControlFacePo.setMfId(tmpAccessControlFaceDto.getMfId());
+            accessControlFacePo.setPersonId(tmpAccessControlFaceDto.getPersonId());
+            accessControlFacePo.setName(tmpAccessControlFaceDto.getName());
+            accessControlFacePo.setMachineId(tmpAccessControlFaceDto.getMachineId());
+            accessControlFaceV1InnerServiceSMOImpl.deleteAccessControlFace(accessControlFacePo);
+        }
+
+
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }
