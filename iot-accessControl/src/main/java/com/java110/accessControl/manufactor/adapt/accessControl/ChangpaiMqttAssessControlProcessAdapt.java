@@ -329,10 +329,8 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
         }
 
         int similar = 0;
-        if(paramJson.containsKey("person")){
-            JSONObject person = paramJson.getJSONObject("person");
-
-            similar = person.getIntValue("face_quality");
+        if(paramJson.containsKey("match_result")){
+            similar = paramJson.getIntValue("match_result");
         }
         saveOpenDoorResult(machineCode, images, staffId, staffName, OPEN_TYPE_FACE, similar);
     }
