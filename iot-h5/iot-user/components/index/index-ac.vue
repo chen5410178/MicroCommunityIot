@@ -43,7 +43,8 @@
 		name: "indexAc",
 		data() {
 			return {
-				machines: []
+				machines: [],
+				
 			};
 		},
 		methods: {
