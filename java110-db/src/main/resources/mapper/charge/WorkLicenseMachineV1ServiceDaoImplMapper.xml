@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="workLicenseMachineV1ServiceDaoImpl">
+
+
+    <!-- 保存工牌信息 add by wuxw 2018-07-03 -->
+    <insert id="saveWorkLicenseMachineInfo" parameterType="Map">
+        insert into work_license_machine(
+        heartbeat_time,impl_bean,machine_code,address,charge,lon,store_id,machine_name,pos_upload_sec,machine_id,staff_name,staff_id,lat
+        ) values (
+        #{heartbeatTime},#{implBean},#{machineCode},#{address},#{charge},#{lon},#{storeId},#{machineName},#{posUploadSec},#{machineId},#{staffName},#{staffId},#{lat}
+        )
+    </insert>
+
+
+    <!-- 查询工牌信息 add by wuxw 2018-07-03 -->
+    <select id="getWorkLicenseMachineInfo" parameterType="Map" resultType="Map">
+        select t.heartbeat_time,t.heartbeat_time heartbeatTime,t.impl_bean,t.impl_bean
+        implBean,t.machine_code,t.machine_code machineCode,t.address,t.charge,t.lon,t.status_cd,t.status_cd
+        statusCd,t.store_id,t.store_id storeId,t.machine_name,t.machine_name
+        machineName,t.pos_upload_sec,t.pos_upload_sec posUploadSec,t.machine_id,t.machine_id
+        machineId,t.staff_name,t.staff_name staffName,t.staff_id,t.staff_id staffId,t.lat,t.create_time createTime
+        from work_license_machine t
+        where 1 =1
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="address !=null and address != ''">
+            and t.address= #{address}
+        </if>
+        <if test="charge !=null and charge != ''">
+            and t.charge= #{charge}
+        </if>
+        <if test="lon !=null and lon != ''">
+            and t.lon= #{lon}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="storeId !=null and storeId != ''">
+            and t.store_id= #{storeId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="posUploadSec !=null and posUploadSec != ''">
+            and t.pos_upload_sec= #{posUploadSec}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            and t.staff_name= #{staffName}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+        <if test="lat !=null and lat != ''">
+            and t.lat= #{lat}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改工牌信息 add by wuxw 2018-07-03 -->
+    <update id="updateWorkLicenseMachineInfo" parameterType="Map">
+        update work_license_machine t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            , t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            , t.impl_bean= #{implBean}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="address !=null and address != ''">
+            , t.address= #{address}
+        </if>
+        <if test="charge !=null and charge != ''">
+            , t.charge= #{charge}
+        </if>
+        <if test="lon !=null and lon != ''">
+            , t.lon= #{lon}
+        </if>
+
+        <if test="machineName !=null and machineName != ''">
+            , t.machine_name= #{machineName}
+        </if>
+        <if test="posUploadSec !=null and posUploadSec != ''">
+            , t.pos_upload_sec= #{posUploadSec}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            , t.staff_name= #{staffName}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            , t.staff_id= #{staffId}
+        </if>
+        <if test="lat !=null and lat != ''">
+            , t.lat= #{lat}
+        </if>
+        where 1=1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="storeId !=null and storeId != ''">
+            and t.store_id= #{storeId}
+        </if>
+
+    </update>
+
+    <!-- 查询工牌数量 add by wuxw 2018-07-03 -->
+    <select id="queryWorkLicenseMachinesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from work_license_machine t
+        where 1 =1
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="address !=null and address != ''">
+            and t.address= #{address}
+        </if>
+        <if test="charge !=null and charge != ''">
+            and t.charge= #{charge}
+        </if>
+        <if test="lon !=null and lon != ''">
+            and t.lon= #{lon}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="storeId !=null and storeId != ''">
+            and t.store_id= #{storeId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="posUploadSec !=null and posUploadSec != ''">
+            and t.pos_upload_sec= #{posUploadSec}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            and t.staff_name= #{staffName}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+        <if test="lat !=null and lat != ''">
+            and t.lat= #{lat}
+        </if>
+
+
+    </select>
+
+</mapper>
