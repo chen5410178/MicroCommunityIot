@@ -80,6 +80,34 @@ public abstract class Cmd implements ServiceCmdListener {
         return storeDtos.get(0);
     }
 
+    protected void assertAdmin(ICmdDataFlowContext context) {
+        String storeId = CmdContextUtils.getStoreId(context);
+        Assert.hasLength(storeId, "未查询到商户");
+        if (storeId.startsWith("-")) {
+            throw new IllegalArgumentException("未查询到商户");
+        }
+        StoreDto storeDto = new StoreDto();
+        storeDto.setStoreId(storeId);
+        storeDto.setStoreTypeCd(StoreDto.STORE_TYPE_ADMIN);
+        List<StoreDto> storeDtos = storeV1InnerServiceSMOImpl.queryStores(storeDto);
+
+        Assert.listOnlyOne(storeDtos, "不是运营者");
+    }
+
+    protected void assertDev(ICmdDataFlowContext context) {
+        String storeId = CmdContextUtils.getStoreId(context);
+        Assert.hasLength(storeId, "未查询到商户");
+        if (storeId.startsWith("-")) {
+            throw new IllegalArgumentException("未查询到商户");
+        }
+        StoreDto storeDto = new StoreDto();
+        storeDto.setStoreId(storeId);
+        storeDto.setStoreTypeCd(StoreDto.STORE_TYPE_DEV);
+        List<StoreDto> storeDtos = storeV1InnerServiceSMOImpl.queryStores(storeDto);
+
+        Assert.listOnlyOne(storeDtos, "不是运营者");
+    }
+
 
     @Override
     public int getOrder() {
