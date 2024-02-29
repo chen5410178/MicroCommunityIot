@@ -147,29 +147,13 @@ public class HcWorkLicenseUtil {
     }
 
     public static void main(String[] args) throws UnsupportedEncodingException {
-        String data = "7e010000360160596316660002002c012c455656494e544132303100000000000000000000000000000039363331363636003030383632303136303539363331363636757e";
-        System.out.println(machineCode(BytesUtil.hexStringToByteArray(data)));
+        String aa = "7e010000360160596316660002002c012c455656494e544132303100000000000000000000000000000039363331363636003030383632303136303539363331363636757e";
+        byte[] data = BytesUtil.hexStringToByteArray(aa);
 
 
+        String resultData = HcWorkLicenseUtil.tranId(data) + "00" + "123456";
 
-
-        String lenHex = data.substring(6,10);
-        String lenBin = Integer.toBinaryString(Integer.parseInt(lenHex,16));
-        DecimalFormat decimalFormat = new DecimalFormat("0000000000000000");
-        String bit = decimalFormat.format(Integer.valueOf(lenBin));
-        System.out.println(bit);
-
-        String fengbao = String.valueOf(bit.charAt(2));
-        String encrypt = bit.substring(3,6);
-        String bitLen = bit.substring(6);
-        int len = Integer.parseInt(bitLen,2);
-
-        System.out.println(fengbao);
-        System.out.println(encrypt);
-        System.out.println(bitLen);
-        System.out.println(len);
-
-        System.out.println(getData(BytesUtil.hexStringToByteArray(data)));
+        resultData = HcWorkLicenseUtil.computeResultDate(data, "", resultData, "8100");
 
 
     }

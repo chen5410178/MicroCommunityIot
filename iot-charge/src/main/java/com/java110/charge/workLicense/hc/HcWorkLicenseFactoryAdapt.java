@@ -108,7 +108,7 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
      */
     private void heartbeat(WorkLicenseMachineDto workLicenseMachineDto, String cmd, byte[] data) {
 
-        String resultData = HcWorkLicenseUtil.tranId(data) + cmd + "0";
+        String resultData = HcWorkLicenseUtil.tranId(data) + cmd + "00";
 
         WorkLicenseMachinePo workLicenseMachinePo = new WorkLicenseMachinePo();
         workLicenseMachinePo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
@@ -134,9 +134,9 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         String authCode = HcWorkLicenseUtil.getData(data);
         String resultData = HcWorkLicenseUtil.tranId(data) + cmd;
         if (!AUTH_CODE.equals(authCode)) {
-            resultData += "1";
+            resultData += "01";
         } else {
-            resultData += "0";
+            resultData += "00";
         }
 
         resultData = HcWorkLicenseUtil.computeResultDate(data, workLicenseMachineDto.getMachineCode(), resultData);
@@ -153,7 +153,7 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
      */
     private void machineRegister(WorkLicenseMachineDto workLicenseMachineDto, String cmd, byte[] data) {
 
-        String resultData = HcWorkLicenseUtil.tranId(data) + "0" + AUTH_CODE;
+        String resultData = HcWorkLicenseUtil.tranId(data) + "00" + AUTH_CODE;
 
         resultData = HcWorkLicenseUtil.computeResultDate(data, workLicenseMachineDto.getMachineCode(), resultData, "8100");
 
