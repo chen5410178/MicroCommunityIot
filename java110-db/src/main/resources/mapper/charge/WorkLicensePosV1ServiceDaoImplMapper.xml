@@ -19,7 +19,8 @@
     <select id="getWorkLicensePosInfo" parameterType="Map" resultType="Map">
         select t.machine_id,t.machine_id machineId,t.machine_code,t.machine_code machineCode,t.upload_date,t.upload_date
         uploadDate,t.wlt_id,t.wlt_id wltId,t.staff_name,t.staff_name staffName,t.lon,t.status_cd,t.status_cd
-        statusCd,t.store_id,t.store_id storeId,t.staff_id,t.staff_id staffId,t.pos_type,t.pos_type posType,t.lat
+        statusCd,t.store_id,t.store_id storeId,t.staff_id,t.staff_id staffId,t.pos_type,t.pos_type posType,t.lat,
+        t.create_time createTime
         from work_license_pos t
         where 1 =1
         <if test="machineId !=null and machineId != ''">
