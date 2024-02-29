@@ -23,15 +23,21 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
+import com.java110.core.exception.DAOException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.CmdContextUtils;
+import com.java110.core.utils.DateUtil;
+import com.java110.dto.user.UserDto;
 import com.java110.intf.charge.IWorkLicenseMachineV1InnerServiceSMO;
+import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.workLicenseMachine.WorkLicenseMachinePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -53,6 +59,9 @@ public class SaveWorkLicenseMachineCmd extends Cmd {
     @Autowired
     private IWorkLicenseMachineV1InnerServiceSMO workLicenseMachineV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineName", "请求报文中未包含machineName");
@@ -69,8 +78,21 @@ public class SaveWorkLicenseMachineCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
         String storeId = CmdContextUtils.getStoreId(cmdDataFlowContext);
 
+
+        UserDto userDto = new UserDto();
+        userDto.setUserId(reqJson.getString("staffId"));
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+
+        Assert.listOnlyOne(userDtos, "用户未登录");
         WorkLicenseMachinePo workLicenseMachinePo = BeanConvertUtil.covertBean(reqJson, WorkLicenseMachinePo.class);
         workLicenseMachinePo.setMachineId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        workLicenseMachinePo.setStaffId(reqJson.getString("staffId"));
+        workLicenseMachinePo.setStaffName(userDtos.get(0).getName());
+        workLicenseMachinePo.setAddress("无");
+        workLicenseMachinePo.setCharge("100");
+        workLicenseMachinePo.setLat("0");
+        workLicenseMachinePo.setLon("0");
+        workLicenseMachinePo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         workLicenseMachinePo.setStoreId(storeId);
         int flag = workLicenseMachineV1InnerServiceSMOImpl.saveWorkLicenseMachine(workLicenseMachinePo);
 

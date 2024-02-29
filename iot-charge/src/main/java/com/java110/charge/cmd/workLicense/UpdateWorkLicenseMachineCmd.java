@@ -55,7 +55,6 @@ public class UpdateWorkLicenseMachineCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
-        Assert.hasKeyAndValue(reqJson, "storeId", "storeId不能为空");
 
     }
 

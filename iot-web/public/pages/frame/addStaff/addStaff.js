@@ -17,7 +17,7 @@
         },
         _initMethod: function() {
             vc.getDict('u_org_staff_rel', "rel_cd", function(_data) {
-                vc.component.addStaffInfo.relCds = _data;
+                $that.addStaffInfo.relCds = _data;
             });
         },
         _initEvent: function() {
@@ -34,7 +34,7 @@
         methods: {
             addStaffValidate() {
                 return vc.validate.validate({
-                    addStaffInfo: vc.component.addStaffInfo
+                    addStaffInfo: $that.addStaffInfo
                 }, {
                     'addStaffInfo.username': [{
                             limit: "required",
@@ -52,17 +52,6 @@
                         param: "",
                         errInfo: "员工性别不能为空"
                     }],
-                    // 'addStaffInfo.relCd': [{
-                    //     limit: "required",
-                    //     param: "",
-                    //     errInfo: "员工岗位不能为空"
-                    // },
-                    //     {
-                    //         limit: "num",
-                    //         param: "",
-                    //         errInfo: "员工岗位错误"
-                    //     },
-                    // ],
                     'addStaffInfo.tel': [{
                         limit: "required",
                         param: "",
@@ -87,14 +76,14 @@
                 });
             },
             saveStaffInfo: function() {
-                if (!vc.component.addStaffValidate()) {
+                if (!$that.addStaffValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
                 $that.addStaffInfo.name = $that.addStaffInfo.username;
                 vc.http.apiPost(
                     '/user.staff.add',
-                    JSON.stringify(vc.component.addStaffInfo), {
+                    JSON.stringify($that.addStaffInfo), {
                         emulateJSON: true
                     },
                     function(json, res) {
@@ -103,7 +92,7 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#addStaffModel').modal('hide');
-                            vc.component.clearAddStaffInfo();
+                            $that.clearAddStaffInfo();
                             vc.goBack();
                             vc.toast("添加成功");
                             return;
@@ -117,7 +106,7 @@
             },
             clearAddStaffInfo: function() {
                 let _relCds = $that.addStaffInfo.relCds;
-                vc.component.addStaffInfo = {
+                $that.addStaffInfo = {
                     orgId: '',
                     orgName: '',
                     username: '',

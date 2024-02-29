@@ -56,6 +56,7 @@ public class WechatNotifyOpenIdCmd extends Cmd {
 
         if (StringUtil.isEmpty(paramStr)) {
             context.setResponseEntity(ResultVo.redirectPage("/"));
+            return;
         }
 
         JSONObject param = JSONObject.parseObject(paramStr);

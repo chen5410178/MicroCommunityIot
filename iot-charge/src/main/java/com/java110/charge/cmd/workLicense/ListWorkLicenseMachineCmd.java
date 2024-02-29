@@ -22,12 +22,14 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.CmdContextUtils;
+import com.java110.core.utils.*;
+import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.intf.charge.IWorkLicenseMachineV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.workLicenseMachine.WorkLicenseMachineDto;
 
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -71,6 +73,8 @@ public class ListWorkLicenseMachineCmd extends Cmd {
 
         if (count > 0) {
             workLicenseMachineDtos = workLicenseMachineV1InnerServiceSMOImpl.queryWorkLicenseMachines(workLicenseMachineDto);
+            freshMachineStateName(workLicenseMachineDtos);
+
         } else {
             workLicenseMachineDtos = new ArrayList<>();
         }
@@ -80,5 +84,31 @@ public class ListWorkLicenseMachineCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void freshMachineStateName(List<WorkLicenseMachineDto> workLicenseMachineDtos) {
+        if (ListUtil.isNull(workLicenseMachineDtos)) {
+            return;
+        }
+        for (WorkLicenseMachineDto accessControlDto : workLicenseMachineDtos) {
+            String heartbeatTime = accessControlDto.getHeartbeatTime();
+            try {
+                if (StringUtil.isEmpty(heartbeatTime)) {
+                    accessControlDto.setStateName("设备离线");
+                } else {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(DateUtil.getDateFromString(heartbeatTime, DateUtil.DATE_FORMATE_STRING_A));
+                    calendar.add(Calendar.MINUTE, 2);
+                    if (calendar.getTime().getTime() <= DateUtil.getCurrentDate().getTime()) {
+                        accessControlDto.setStateName("设备离线");
+                    } else {
+                        accessControlDto.setStateName("设备在线");
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+                accessControlDto.setStateName("设备离线");
+            }
+        }
     }
 }

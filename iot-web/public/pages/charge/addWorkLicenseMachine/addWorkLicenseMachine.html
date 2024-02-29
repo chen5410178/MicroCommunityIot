@@ -1,0 +1,72 @@
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>
+            <vc:i18n name="添加工牌" namespace="addWorkLicenseMachine"></vc:i18n>
+        </h5>
+        <div class="ibox-tools" style="top:10px;">
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label text-right">
+                <vc:i18n name='名称' namespace='addWorkLicenseMachine'></vc:i18n>
+            </label>
+            <div class="col-sm-4">
+                <input v-model="addWorkLicenseMachineInfo.machineName" type="text"
+                    :placeholder="vc.i18n('必填，请填写名称','addWorkLicenseMachine')" class="form-control">
+            </div>
+            <label class="col-sm-2 col-form-label text-right">
+                <vc:i18n name='工牌编号' namespace='addWorkLicenseMachine'></vc:i18n>
+            </label>
+            <div class="col-sm-4">
+                <input v-model="addWorkLicenseMachineInfo.machineCode" type="text"
+                    :placeholder="vc.i18n('必填，请填写工牌编号','addWorkLicenseMachine')" class="form-control">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label text-right">
+                <vc:i18n name='员工' namespace='addWorkLicenseMachine'></vc:i18n>
+            </label>
+            <div class="col-sm-3">
+                <input v-model="addWorkLicenseMachineInfo.staffName" type="text" disabled
+                    :placeholder="vc.i18n('必填，请填写员工','addWorkLicenseMachine')" class="form-control">
+            </div>
+            <div class="col-sm-1">
+                <button class="btn btn-primary " type="button" v-on:click="openChooseStaff()">
+                    <i class="fa fa-search"></i>选择
+                </button>
+            </div>
+            <label class="col-sm-2 col-form-label text-right">
+                <vc:i18n name='上报间隔' namespace='addWorkLicenseMachine'></vc:i18n>
+            </label>
+            <div class="col-sm-4">
+                <input v-model="addWorkLicenseMachineInfo.posUploadSec" type="text"
+                    :placeholder="vc.i18n('必填，请填写位置上报间隔','addWorkLicenseMachine')" class="form-control">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label text-right">
+                <vc:i18n name='工牌厂家' namespace='addWorkLicenseMachine'></vc:i18n>
+            </label>
+            <div class="col-sm-4">
+                <select class="custom-select" v-model="addWorkLicenseMachineInfo.implBean">
+                    <option selected disabled value="">
+                        {{vc.i18n('必填，请选择工牌厂家','addWorkLicenseMachine')}}
+                    </option>
+                    <option :value="item.factoryId" v-for="(item,index) in addWorkLicenseMachineInfo.factorys">{{item.factoryName}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <button class="btn btn-primary float-right" type="button" v-on:click="_saveWorkLicenseMachine()">
+                <vc:i18n name="保存"></vc:i18n>
+            </button>
+            <button type="button" class="btn btn-warning float-right" style="margin-right:20px;" data-dismiss="modal">
+                <vc:i18n name="取消"></vc:i18n>
+            </button>
+        </div>
+    </div>
+
+    <vc:create path="frame/searchStaff"></vc:create>
+
+</div>

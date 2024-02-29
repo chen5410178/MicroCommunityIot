@@ -54,7 +54,7 @@ public class ListWorkLicenseFactoryCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
-        super.assertAdmin(cmdDataFlowContext);
+        //super.assertAdmin(cmdDataFlowContext);
 
     }
 

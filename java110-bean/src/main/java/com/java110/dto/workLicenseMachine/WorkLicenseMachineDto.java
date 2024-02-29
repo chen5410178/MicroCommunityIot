@@ -29,6 +29,9 @@ public class WorkLicenseMachineDto extends PageDto implements Serializable {
     private String staffId;
     private String lat;
 
+    private String state;
+    private String stateName;
+
 
     private Date createTime;
 
@@ -154,5 +157,21 @@ public class WorkLicenseMachineDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
     }
 }
