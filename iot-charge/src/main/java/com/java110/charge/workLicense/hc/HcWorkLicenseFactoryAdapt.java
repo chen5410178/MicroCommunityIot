@@ -147,7 +147,7 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         WorkLicensePosPo workLicensePosPo = new WorkLicensePosPo();
         workLicensePosPo.setMachineId(workLicenseMachineDto.getMachineId());
         workLicensePosPo.setMachineCode(workLicenseMachineDto.getMachineCode());
-        workLicensePosPo.setUploadDate(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        workLicensePosPo.setUploadDate(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_B));
         workLicensePosPo.setWltId(GenerateCodeFactory.getGeneratorId("11"));
         workLicensePosPo.setStaffName(workLicenseMachineDto.getStaffName());
         workLicensePosPo.setLon(lon);
