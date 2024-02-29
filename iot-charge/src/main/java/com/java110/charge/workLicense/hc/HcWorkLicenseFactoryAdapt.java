@@ -1,6 +1,7 @@
 package com.java110.charge.workLicense.hc;
 
 import com.java110.bean.ResultVo;
+import com.java110.charge.factory.lvcc.LvCCChargeMachineFactoryAdapt;
 import com.java110.charge.workLicense.IWorkLicenseAdapt;
 import com.java110.core.utils.BytesUtil;
 import com.java110.core.utils.DateUtil;
@@ -10,6 +11,8 @@ import com.java110.intf.charge.IWorkLicenseMachineV1InnerServiceSMO;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
 import com.java110.po.chargeMachine.ChargeMachinePo;
 import com.java110.po.workLicenseMachine.WorkLicenseMachinePo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
  */
 @Service("hcWorkLicenseFactoryAdapt")
 public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
+    private static Logger logger = LoggerFactory.getLogger(HcWorkLicenseFactoryAdapt.class);
 
     public static final String CMD_REGISTER = "0100"; // todo 注册
 
@@ -75,6 +79,8 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
      */
     @Override
     public ResultVo result(WorkLicenseMachineDto workLicenseMachineDto, byte[] data) {
+
+        logger.debug("收到工牌消息，machineCode = {}，data = {}", workLicenseMachineDto.getMachineCode(), BytesUtil.bytesToHex(data));
 
         String cmd = HcWorkLicenseUtil.getCmd(data);
 

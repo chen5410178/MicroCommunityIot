@@ -26,7 +26,7 @@ public class CustomDecoder  extends MessageToMessageDecoder<byte[]> {
                 unpackSH(msg, out);
             }else {
             //    LOGGER.info( " unkown proctrol 未知协议类型" );
-                //out.add(msg);
+                out.add(msg);
             }
 
         } catch (Exception e) {
