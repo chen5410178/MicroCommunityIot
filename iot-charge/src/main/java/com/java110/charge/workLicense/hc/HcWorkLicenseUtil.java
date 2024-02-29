@@ -47,7 +47,7 @@ public class HcWorkLicenseUtil {
 
     public static String tranId(byte[] msg) {
         String data = BytesUtil.bytesToHex(msg);
-        data = data.substring(23, 26);
+        data = data.substring(22, 26);
         return data;
     }
 
@@ -129,7 +129,7 @@ public class HcWorkLicenseUtil {
         DecimalFormat decimalFormat = new DecimalFormat("0000000000");
         String bit = "000000"+decimalFormat.format( Integer.valueOf(Integer.toBinaryString(rsData.length()/2)));
         int aa = Integer.parseInt(bit,2);
-        return String.format("%02x",aa);
+        return String.format("%04x",aa);
     }
 
     public static String xOrCheckSum(byte[] data) {
@@ -151,7 +151,8 @@ public class HcWorkLicenseUtil {
         byte[] data = BytesUtil.hexStringToByteArray(aa);
 
 
-        String resultData = HcWorkLicenseUtil.tranId(data) + "00" + "123456";
+        String resultData = HcWorkLicenseUtil.tranId(data) ;
+        System.out.println(resultData);
 
         resultData = HcWorkLicenseUtil.computeResultDate(data, "", resultData, "8100");
 
