@@ -1,0 +1,153 @@
+<div>
+    <div class="row">
+        <div class="col-md-1 padding-r-0">
+            <div class=" border-radius ">
+                <div class="margin-xs-r  treeview ">
+                    <ul class="list-group text-center border-radius">
+                        <li class="list-group-item node-orgTree "
+                            v-for="(item,index) in workLicenseLogInfo.machines" :key="index"
+                            @click="swatchAccessControl(item)"
+                            :class="{'vc-node-selected':workLicenseLogInfo.conditions.machineId == item.machineId}">
+                            {{item.machineName}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-11">
+
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入用户名','workLicenseLog')"
+                                    v-model="workLicenseLogInfo.conditions.userName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择日志动作','workLicenseLog')"
+                                    v-model="workLicenseLogInfo.conditions.logAction" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择状态','workLicenseLog')"
+                                    v-model="workLicenseLogInfo.conditions.state" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入开始时间','workLicenseLog')"
+                                    v-model="workLicenseLogInfo.conditions.queryStartTime"
+                                    class=" form-control queryStartTime">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入结束时间','workLicenseLog')"
+                                    v-model="workLicenseLogInfo.conditions.queryEndTime"
+                                    class=" form-control queryEndTime">
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-primary btn-sm"
+                                v-on:click="_queryWorkLicenseLogMethod()">
+                                <i class="glyphicon glyphicon-search"></i> <span>
+                                    <vc:i18n name="查询"></vc:i18n>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="工牌日志" namespace="workLicenseLog"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='编号' namespace='workLicenseLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='设备名称' namespace='workLicenseLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='设备编码' namespace='workLicenseLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='日志动作' namespace='workLicenseLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='用户ID' namespace='workLicenseLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='用户名称' namespace='workLicenseLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='状态' namespace='workLicenseLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='下发时间' namespace='workLicenseLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="workLicenseLog in workLicenseLogInfo.workLicenseLogs">
+                                <td class="text-center">{{workLicenseLog.logId}}</td>
+                                <td class="text-center">{{workLicenseLog.machineName}}</td>
+                                <td class="text-center">{{workLicenseLog.machineCode}}</td>
+                                <td class="text-center">{{workLicenseLog.logCmdName}}</td>
+                                <td class="text-center">{{workLicenseLog.userId}}</td>
+                                <td class="text-center">{{workLicenseLog.userName}}</td>
+                                <td class="text-center">{{workLicenseLog.stateName}}</td>
+                                <td class="text-center">{{workLicenseLog.createTime}}</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs"
+                                            v-on:click="_openViewWorkLicenseLogModel(workLicenseLog)">
+                                            <vc:i18n name='报文'></vc:i18n>
+                                        </button>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <vc:create path="charge/showWorkLicenseLog"></vc:create>
+
+</div>

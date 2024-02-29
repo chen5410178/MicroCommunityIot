@@ -17,6 +17,7 @@ package com.java110.intf.charge;
 
 import com.java110.bean.ResultVo;
 import com.java110.dto.chargeMachine.ChargeMachineByteDataDto;
+import com.java110.dto.chargeMachine.LicenseMachineByteDataDto;
 import com.java110.dto.chargeMachine.NotifyChargeOrderDto;
 import com.java110.intf.FeignConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;

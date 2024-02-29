@@ -31,6 +31,26 @@ public class DataHeader {
     }
 
     /**
+     * 是否为员工工牌
+     * @param msg
+     * @return
+     */
+    public static boolean isWorkLicense(byte[] msg){
+        String data = BytesUtil.bytesToHex(msg);
+
+        if (StringUtil.isEmpty(data)) {
+            return false;
+        }
+
+        if (data.startsWith("7e") && data.endsWith("7e")) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    /**
      * 获取报文长度
      *
      * @param msg
@@ -71,5 +91,11 @@ public class DataHeader {
             throw new RuntimeException(e);
         }
         return bb;
+    }
+
+    public static String getWorkLicenseMachineCode(byte[] msg) {
+        String data = BytesUtil.bytesToHex(msg);
+        data = data.substring(10, 10 + 12);
+        return data.replaceAll("^0+", "");
     }
 }

@@ -6,8 +6,12 @@ import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.chargeMachine.ChargeMachineByteDataDto;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
+import com.java110.dto.chargeMachine.LicenseMachineByteDataDto;
+import com.java110.dto.workLicenseMachine.WorkLicenseMachineDto;
 import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
 import com.java110.intf.charge.INotifyChargeV1InnerServiceSMO;
+import com.java110.intf.charge.INotifyWorkLicenseV1InnerServiceSMO;
+import com.java110.intf.charge.IWorkLicenseMachineV1InnerServiceSMO;
 import com.java110.intf.system.IHardwareManufacturerV1InnerServiceSMO;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -27,7 +31,13 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(HeartBeatSimpleHandle.class);
 
+
+    public static final String MACHINE_TYPE_CHARGE = "CHARGE"; // todo 充电桩
+    public static final String MACHINE_TYPE_METER = "METER"; // todo 水电表
+    public static final String MACHINE_TYPE_WORK_LICENSE = "WORK_LICENSE"; // todo 员工牌
+
     private final static Map<String,ChargeMachineDto> chargeCache = new HashMap<>();
+    private final static Map<String, WorkLicenseMachineDto> workLicenseCache = new HashMap<>();
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -87,8 +97,16 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
         LOGGER.info("收到字节={}", Arrays.toString(bytes));
 
         String machineCode = "";
+        String machineType = "";
         if (DataHeader.isLvChongChong(bytes)) {
             machineCode = DataHeader.getLvCCMachineCode(bytes);
+            machineType = MACHINE_TYPE_CHARGE;
+        }
+
+        if(DataHeader.isWorkLicense(bytes)){
+            machineCode = DataHeader.getWorkLicenseMachineCode(bytes);
+            machineType = MACHINE_TYPE_WORK_LICENSE;
+
         }
 
         if (StringUtil.isEmpty(machineCode)) {
@@ -99,13 +117,48 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
         initMachineToCache(ctx, machineCode, false);
 
         //todo 通知充电桩数据给适配器
-        if (toNotifyCharge(machineCode, bytes)) {
+        if (MACHINE_TYPE_CHARGE.equals(machineType)) {
+            toNotifyCharge(machineCode, bytes);
+            return;
+        }
+        //todo 通知员工牌数据给适配器
+        if (MACHINE_TYPE_WORK_LICENSE.equals(machineType)) {
+            toNotifyWorkLicense(machineCode, bytes);
             return;
         }
         //todo 通知 水电表
         if (toNotifyMeter(machineCode, bytes)) {
             return;
         }
+    }
+
+    private void toNotifyWorkLicense(String machineCode, byte[] bytes) {
+        WorkLicenseMachineDto workLicenseMachineDto = null;
+        if(!workLicenseCache.containsKey(machineCode)) {
+            IWorkLicenseMachineV1InnerServiceSMO workLicenseMachineV1InnerServiceSMOImpl = ApplicationContextFactory.getBean("workLicenseMachineV1InnerServiceSMOImpl", IWorkLicenseMachineV1InnerServiceSMO.class);
+            if (workLicenseMachineV1InnerServiceSMOImpl == null) {
+                workLicenseMachineV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(IWorkLicenseMachineV1InnerServiceSMO.class.getName(), IWorkLicenseMachineV1InnerServiceSMO.class);
+            }
+            workLicenseMachineDto = new WorkLicenseMachineDto();
+            workLicenseMachineDto.setMachineCode(machineCode);
+            List<WorkLicenseMachineDto> machineDtos = workLicenseMachineV1InnerServiceSMOImpl.queryWorkLicenseMachines(workLicenseMachineDto);
+            if (ListUtil.isNull(machineDtos)) {
+                return ;
+            }
+            workLicenseCache.put(machineCode,machineDtos.get(0));
+        }
+
+        workLicenseMachineDto = workLicenseCache.get(machineCode);
+
+        INotifyWorkLicenseV1InnerServiceSMO notifyWorkLicenseV1InnerServiceSMOImpl = ApplicationContextFactory.getBean("notifyWorkLicenseV1InnerServiceSMOImpl", INotifyWorkLicenseV1InnerServiceSMO.class);
+
+        if (notifyWorkLicenseV1InnerServiceSMOImpl == null) {
+            notifyWorkLicenseV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(INotifyWorkLicenseV1InnerServiceSMO.class.getName(), INotifyWorkLicenseV1InnerServiceSMO.class);
+        }
+
+        notifyWorkLicenseV1InnerServiceSMOImpl.licenseResult(new LicenseMachineByteDataDto(workLicenseMachineDto, bytes));
+
+
     }
 
     private boolean toNotifyMeter(String machineCode, byte[] bytes) {

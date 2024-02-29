@@ -25,6 +25,7 @@ import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
 import com.java110.dto.chargeMachine.ChargeMachineByteDataDto;
 import com.java110.dto.chargeMachine.ChargeMachineFactoryDto;
+import com.java110.dto.chargeMachine.LicenseMachineByteDataDto;
 import com.java110.dto.chargeMachine.NotifyChargeOrderDto;
 import com.java110.intf.charge.IChargeMachineFactoryV1InnerServiceSMO;
 import com.java110.intf.charge.INotifyChargeV1InnerServiceSMO;
@@ -104,6 +105,7 @@ public class NotifyChargeV1InnerServiceSMOImpl implements INotifyChargeV1InnerSe
 
         return new ResultVo(ResultVo.CODE_OK, "成功");
     }
+
 
 
 }
