@@ -17,6 +17,10 @@ public class WorkLicenseMachineDto extends PageDto implements Serializable {
 
     private String heartbeatTime;
     private String implBean;
+
+    private String factoryName;
+
+
     private String machineCode;
     private String address;
     private String charge;
@@ -173,5 +177,13 @@ public class WorkLicenseMachineDto extends PageDto implements Serializable {
 
     public void setStateName(String stateName) {
         this.stateName = stateName;
+    }
+
+    public String getFactoryName() {
+        return factoryName;
+    }
+
+    public void setFactoryName(String factoryName) {
+        this.factoryName = factoryName;
     }
 }

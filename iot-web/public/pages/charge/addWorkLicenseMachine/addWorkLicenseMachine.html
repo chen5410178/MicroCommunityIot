@@ -37,10 +37,10 @@
                 </button>
             </div>
             <label class="col-sm-2 col-form-label text-right">
-                <vc:i18n name='上报间隔' namespace='addWorkLicenseMachine'></vc:i18n>
+                <vc:i18n name='上报间隔(秒)' namespace='addWorkLicenseMachine'></vc:i18n>
             </label>
             <div class="col-sm-4">
-                <input v-model="addWorkLicenseMachineInfo.posUploadSec" type="text"
+                <input v-model="addWorkLicenseMachineInfo.posUploadSec" type="number"
                     :placeholder="vc.i18n('必填，请填写位置上报间隔','addWorkLicenseMachine')" class="form-control">
             </div>
         </div>

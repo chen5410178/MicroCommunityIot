@@ -59,10 +59,10 @@
                 );
             },
             _openAddWorkLicenseMachineModal: function () {
-               vc.jumpToPage('/#/pages/charge/addWorkLicenseMachine')
+               vc.jumpToPage('/#/pages/charge/addWorkLicenseMachine');
             },
             _openEditWorkLicenseMachineModel: function (_workLicenseMachine) {
-                vc.emit('editWorkLicenseMachine', 'openEditWorkLicenseMachineModal', _workLicenseMachine);
+                vc.jumpToPage('/#/pages/charge/editWorkLicenseMachine?machineId='+_workLicenseMachine.machineId);
             },
             _openDeleteWorkLicenseMachineModel: function (_workLicenseMachine) {
                 vc.emit('deleteWorkLicenseMachine', 'openDeleteWorkLicenseMachineModal', _workLicenseMachine);

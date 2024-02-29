@@ -21,7 +21,7 @@
             deleteWorkLicenseMachine:function(){
                 $that.deleteWorkLicenseMachineInfo.communityId=vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
-                    'workLicenseMachine.deleteWorkLicenseMachine',
+                    '/workLicense.deleteWorkLicenseMachine',
                     JSON.stringify($that.deleteWorkLicenseMachineInfo),
                     {
                         emulateJSON:true

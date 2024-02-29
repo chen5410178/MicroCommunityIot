@@ -56,9 +56,6 @@
                 <thead>
                     <tr>
                         <th class="text-center">
-                            <vc:i18n name='编号' namespace='workLicenseMachine'></vc:i18n>
-                        </th>
-                        <th class="text-center">
                             <vc:i18n name='名称' namespace='workLicenseMachine'></vc:i18n>
                         </th>
                         <th class="text-center">
@@ -86,7 +83,13 @@
                             <vc:i18n name='工牌厂家' namespace='workLicenseMachine'></vc:i18n>
                         </th>
                         <th class="text-center">
+                            <vc:i18n name='状态' namespace='workLicenseMachine'></vc:i18n>
+                        </th>
+                        <th class="text-center">
                             <vc:i18n name='心跳时间' namespace='workLicenseMachine'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='创建时间' namespace='workLicenseMachine'></vc:i18n>
                         </th>
                         <th class="text-center">
                             <vc:i18n name='操作'></vc:i18n>
@@ -95,17 +98,19 @@
                 </thead>
                 <tbody>
                     <tr v-for="workLicenseMachine in workLicenseMachineInfo.machines">
-                        <td class="text-center">{{workLicenseMachine.machineId}}</td>
                         <td class="text-center">{{workLicenseMachine.machineName}}</td>
                         <td class="text-center">{{workLicenseMachine.machineCode}}</td>
-                        <td class="text-center">{{workLicenseMachine.staffId}}</td>
+                        <td class="text-center">{{workLicenseMachine.staffName}}</td>
                         <td class="text-center">{{workLicenseMachine.posUploadSec}}</td>
                         <td class="text-center">{{workLicenseMachine.lat}}</td>
                         <td class="text-center">{{workLicenseMachine.lon}}</td>
                         <td class="text-center">{{workLicenseMachine.address}}</td>
-                        <td class="text-center">{{workLicenseMachine.charge}}</td>
-                        <td class="text-center">{{workLicenseMachine.implBean}}</td>
+                        <td class="text-center">{{workLicenseMachine.charge}}%</td>
+                        <td class="text-center">{{workLicenseMachine.factoryName}}</td>
+                        <td class="text-center">{{workLicenseMachine.stateName}}</td>
                         <td class="text-center">{{workLicenseMachine.heartbeatTime}}</td>
+                        <td class="text-center">{{workLicenseMachine.createTime}}</td>
+
                         <td class="text-center">
                             <div class="btn-group">
                                 <button class="btn-white btn btn-xs"
@@ -129,8 +134,6 @@
 
     </div>
 
-    <!-- <vc:create path="charge/addWorkLicenseMachine" callBackListener="" callBackFunction=""></vc:create>
-    <vc:create path="charge/editWorkLicenseMachine"></vc:create> -->
     <vc:create path="charge/deleteWorkLicenseMachine"></vc:create>
 
 </div>

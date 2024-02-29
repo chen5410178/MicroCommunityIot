@@ -21,8 +21,10 @@
         implBean,t.machine_code,t.machine_code machineCode,t.address,t.charge,t.lon,t.status_cd,t.status_cd
         statusCd,t.store_id,t.store_id storeId,t.machine_name,t.machine_name
         machineName,t.pos_upload_sec,t.pos_upload_sec posUploadSec,t.machine_id,t.machine_id
-        machineId,t.staff_name,t.staff_name staffName,t.staff_id,t.staff_id staffId,t.lat,t.create_time createTime
+        machineId,t.staff_name,t.staff_name staffName,t.staff_id,t.staff_id staffId,t.lat,t.create_time createTime,
+        plf.factory_name factoryName
         from work_license_machine t
+        left join work_license_factory plf on t.impl_bean = plf.factory_id and plf.status_cd = '0'
         where 1 =1
         <if test="heartbeatTime !=null and heartbeatTime != ''">
             and t.heartbeat_time= #{heartbeatTime}
