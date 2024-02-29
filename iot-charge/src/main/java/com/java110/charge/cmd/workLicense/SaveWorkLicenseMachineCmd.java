@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.charge.cmd.workLicenseMachine;
+package com.java110.charge.cmd.workLicense;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
@@ -26,6 +26,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
 import com.java110.intf.charge.IWorkLicenseMachineV1InnerServiceSMO;
 import com.java110.po.workLicenseMachine.WorkLicenseMachinePo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
-@Java110Cmd(serviceCode = "workLicenseMachine.saveWorkLicenseMachine")
+@Java110Cmd(serviceCode = "workLicense.saveWorkLicenseMachine")
 public class SaveWorkLicenseMachineCmd extends Cmd {
 
     private static Logger logger = LoggerFactory.getLogger(SaveWorkLicenseMachineCmd.class);
@@ -66,9 +67,11 @@ public class SaveWorkLicenseMachineCmd extends Cmd {
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
+        String storeId = CmdContextUtils.getStoreId(cmdDataFlowContext);
 
         WorkLicenseMachinePo workLicenseMachinePo = BeanConvertUtil.covertBean(reqJson, WorkLicenseMachinePo.class);
         workLicenseMachinePo.setMachineId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        workLicenseMachinePo.setStoreId(storeId);
         int flag = workLicenseMachineV1InnerServiceSMOImpl.saveWorkLicenseMachine(workLicenseMachinePo);
 
         if (flag < 1) {

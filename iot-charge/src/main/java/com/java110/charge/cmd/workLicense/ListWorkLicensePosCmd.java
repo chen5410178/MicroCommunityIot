@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.charge.cmd.workLicenseMachine;
+package com.java110.charge.cmd.workLicense;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
@@ -23,9 +23,10 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.BeanConvertUtil;
-import com.java110.intf.charge.IWorkLicenseMachineV1InnerServiceSMO;
+import com.java110.core.utils.CmdContextUtils;
+import com.java110.intf.charge.IWorkLicensePosV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.java110.dto.workLicenseMachine.WorkLicenseMachineDto;
+import com.java110.dto.workLicensePos.WorkLicensePosDto;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -38,42 +39,44 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 类表述：查询
- * 服务编码：workLicenseMachine.listWorkLicenseMachine
- * 请求路劲：/app/workLicenseMachine.ListWorkLicenseMachine
- * add by 吴学文 at 2024-02-29 02:21:42 mail: 928255095@qq.com
+ * 服务编码：workLicensePos.listWorkLicensePos
+ * 请求路劲：/app/workLicensePos.ListWorkLicensePos
+ * add by 吴学文 at 2024-02-29 09:49:07 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
-@Java110Cmd(serviceCode = "workLicenseMachine.listWorkLicenseMachine")
-public class ListWorkLicenseMachineCmd extends Cmd {
+@Java110Cmd(serviceCode = "workLicense.listWorkLicensePos")
+public class ListWorkLicensePosCmd extends Cmd {
 
-    private static Logger logger = LoggerFactory.getLogger(ListWorkLicenseMachineCmd.class);
+    private static Logger logger = LoggerFactory.getLogger(ListWorkLicensePosCmd.class);
     @Autowired
-    private IWorkLicenseMachineV1InnerServiceSMO workLicenseMachineV1InnerServiceSMOImpl;
+    private IWorkLicensePosV1InnerServiceSMO workLicensePosV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
+
     }
 
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
+        String storeId = CmdContextUtils.getStoreId(cmdDataFlowContext);
 
-        WorkLicenseMachineDto workLicenseMachineDto = BeanConvertUtil.covertBean(reqJson, WorkLicenseMachineDto.class);
+        WorkLicensePosDto workLicensePosDto = BeanConvertUtil.covertBean(reqJson, WorkLicensePosDto.class);
+        workLicensePosDto.setStoreId(storeId);
+        int count = workLicensePosV1InnerServiceSMOImpl.queryWorkLicensePossCount(workLicensePosDto);
 
-        int count = workLicenseMachineV1InnerServiceSMOImpl.queryWorkLicenseMachinesCount(workLicenseMachineDto);
-
-        List<WorkLicenseMachineDto> workLicenseMachineDtos = null;
+        List<WorkLicensePosDto> workLicensePosDtos = null;
 
         if (count > 0) {
-            workLicenseMachineDtos = workLicenseMachineV1InnerServiceSMOImpl.queryWorkLicenseMachines(workLicenseMachineDto);
+            workLicensePosDtos = workLicensePosV1InnerServiceSMOImpl.queryWorkLicensePoss(workLicensePosDto);
         } else {
-            workLicenseMachineDtos = new ArrayList<>();
+            workLicensePosDtos = new ArrayList<>();
         }
 
-        ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, workLicenseMachineDtos);
+        ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, workLicensePosDtos);
 
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 

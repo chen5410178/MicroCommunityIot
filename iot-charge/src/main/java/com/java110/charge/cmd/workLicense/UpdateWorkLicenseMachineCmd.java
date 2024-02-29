@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.charge.cmd.workLicenseMachine;
+package com.java110.charge.cmd.workLicense;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
@@ -25,25 +25,29 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.CmdContextUtils;
 import com.java110.intf.charge.IWorkLicenseMachineV1InnerServiceSMO;
 import com.java110.po.workLicenseMachine.WorkLicenseMachinePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
- * 类表述：删除
- * 服务编码：workLicenseMachine.deleteWorkLicenseMachine
- * 请求路劲：/app/workLicenseMachine.DeleteWorkLicenseMachine
+ * 类表述：更新
+ * 服务编码：workLicenseMachine.updateWorkLicenseMachine
+ * 请求路劲：/app/workLicenseMachine.UpdateWorkLicenseMachine
  * add by 吴学文 at 2024-02-29 02:21:42 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
-@Java110Cmd(serviceCode = "workLicenseMachine.deleteWorkLicenseMachine")
-public class DeleteWorkLicenseMachineCmd extends Cmd {
-    private static Logger logger = LoggerFactory.getLogger(DeleteWorkLicenseMachineCmd.class);
+@Java110Cmd(serviceCode = "workLicense.updateWorkLicenseMachine")
+public class UpdateWorkLicenseMachineCmd extends Cmd {
+
+    private static Logger logger = LoggerFactory.getLogger(UpdateWorkLicenseMachineCmd.class);
+
 
     @Autowired
     private IWorkLicenseMachineV1InnerServiceSMO workLicenseMachineV1InnerServiceSMOImpl;
@@ -51,18 +55,21 @@ public class DeleteWorkLicenseMachineCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
+        Assert.hasKeyAndValue(reqJson, "storeId", "storeId不能为空");
 
     }
 
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
+        String storeId = CmdContextUtils.getStoreId(cmdDataFlowContext);
 
         WorkLicenseMachinePo workLicenseMachinePo = BeanConvertUtil.covertBean(reqJson, WorkLicenseMachinePo.class);
-        int flag = workLicenseMachineV1InnerServiceSMOImpl.deleteWorkLicenseMachine(workLicenseMachinePo);
+        workLicenseMachinePo.setStoreId(storeId);
+        int flag = workLicenseMachineV1InnerServiceSMOImpl.updateWorkLicenseMachine(workLicenseMachinePo);
 
         if (flag < 1) {
-            throw new CmdException("删除数据失败");
+            throw new CmdException("更新数据失败");
         }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
