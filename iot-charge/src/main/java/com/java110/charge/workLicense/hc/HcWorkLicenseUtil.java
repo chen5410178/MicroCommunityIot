@@ -147,14 +147,23 @@ public class HcWorkLicenseUtil {
     }
 
     public static void main(String[] args) throws UnsupportedEncodingException {
-        String aa = "7e010000360160596316660002002c012c455656494e544132303100000000000000000000000000000039363331363636003030383632303136303539363331363636757e";
+        String aa = "7e0200004301605963166600030000000080000040015b455506cf33310000000c0000240301011213010400000012040201640501023001533101002b0410271027000c00b2898604b0262270341649177e";
         byte[] data = BytesUtil.hexStringToByteArray(aa);
 
 
-        String resultData = HcWorkLicenseUtil.tranId(data) ;
+        String resultData = HcWorkLicenseUtil.getData(data) ;
         System.out.println(resultData);
 
-        resultData = HcWorkLicenseUtil.computeResultDate(data, "", resultData, "8100");
+        String lon = resultData.substring(2*8,3*8);
+
+        String lat = resultData.substring(3*8,4*8);
+
+        System.out.println(lat+"::"+lon);
+        System.out.println(Integer.parseInt(lat,16)+"::"+Integer.parseInt(lon,16));
+
+
+
+        System.out.println(Integer.parseInt(lat,16)/1000000.0+"::"+Integer.parseInt(lon,16)/1000000.0);
 
 
     }

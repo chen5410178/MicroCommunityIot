@@ -15,6 +15,7 @@ import java.util.Date;
  **/
 public class WorkLicensePosDto extends PageDto implements Serializable {
 
+    public static final String POS_TYPE_PUBLIC = "1001"; //普通上报
     private String machineId;
     private String machineCode;
     private String uploadDate;

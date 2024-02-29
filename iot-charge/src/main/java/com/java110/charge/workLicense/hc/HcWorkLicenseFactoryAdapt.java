@@ -3,14 +3,18 @@ package com.java110.charge.workLicense.hc;
 import com.java110.bean.ResultVo;
 import com.java110.charge.factory.lvcc.LvCCChargeMachineFactoryAdapt;
 import com.java110.charge.workLicense.IWorkLicenseAdapt;
+import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BytesUtil;
 import com.java110.core.utils.DateUtil;
 import com.java110.dto.data.NettyReplyDataDto;
 import com.java110.dto.workLicenseMachine.WorkLicenseMachineDto;
+import com.java110.dto.workLicensePos.WorkLicensePosDto;
 import com.java110.intf.charge.IWorkLicenseMachineV1InnerServiceSMO;
+import com.java110.intf.charge.IWorkLicensePosV1InnerServiceSMO;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
 import com.java110.po.chargeMachine.ChargeMachinePo;
 import com.java110.po.workLicenseMachine.WorkLicenseMachinePo;
+import com.java110.po.workLicensePos.WorkLicensePosPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,8 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
 
     public static final String CMD_MACHINE_RESULT = "0001";// todo 设备应答
 
+    public static final String CMD_UPLOAD_POS = "0200";// todo 汇报位置
+
     public static final String AUTH_CODE = "123456";
 
 
@@ -41,6 +47,9 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
 
     @Autowired
     private IWorkLicenseMachineV1InnerServiceSMO workLicenseMachineV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IWorkLicensePosV1InnerServiceSMO workLicensePosV1InnerServiceSMOImpl;
 
 
     @Override
@@ -94,9 +103,70 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
             case CMD_HEARTBEAT:
                 heartbeat(workLicenseMachineDto, cmd, data);
                 break;
+            case CMD_UPLOAD_POS:
+                uploadPos(workLicenseMachineDto, cmd, data);
+                break;
         }
 
         return null;
+    }
+
+    /**
+     * 上报位置
+     *
+     * @param workLicenseMachineDto
+     * @param cmd
+     * @param data
+     */
+    private void uploadPos(WorkLicenseMachineDto workLicenseMachineDto, String cmd, byte[] data) {
+
+        //00000000 80000040 015b4555 06cf3331 0000000c0000240301011213010400000012040201640501023001533101002b0410271027000c00b2898604b0262270341649
+        String uploadData = HcWorkLicenseUtil.getData(data);
+
+        /**
+         * 0 报警标志 DWORD 报警标志位定义见 表 24
+         * 4 状态 DWORD 状态位定义见 表 25
+         * 8 纬度 DWORD 以度为单位的纬度值乘以 10 的 6 次方，精确到百万
+         * 分之一度
+         * 12 经度 DWORD 以度为单位的经度值乘以 10 的 6 次方，精确到百万
+         * 分之一度
+         * 16 高程 WORD 海拔高度，单位为米（m）
+         * 18 速度 WORD 1/10km/h
+         * 20 方向 WORD 0-359，正北为 0，顺时针
+         * 21 时间 BCD[6] YY-MM-DD-hh-mm-ss（GMT+8 时间，本标准中之后涉
+         * 及的时间均采用此时区）
+         */
+        String  lon= uploadData.substring(2*8,3*8);
+
+        String lat = uploadData.substring(3*8,4*8);
+        //015b4555::06cf3331
+
+        lon = (Integer.parseInt(lon,16)/1000000.0) +"";
+        lat = (Integer.parseInt(lat,16)/1000000.0) +"";
+
+        WorkLicensePosPo workLicensePosPo = new WorkLicensePosPo();
+        workLicensePosPo.setMachineId(workLicenseMachineDto.getMachineId());
+        workLicensePosPo.setMachineCode(workLicenseMachineDto.getMachineCode());
+        workLicensePosPo.setUploadDate(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        workLicensePosPo.setWltId(GenerateCodeFactory.getGeneratorId("11"));
+        workLicensePosPo.setStaffName(workLicenseMachineDto.getStaffName());
+        workLicensePosPo.setLon(lon);
+        workLicensePosPo.setLat(lat);
+        workLicensePosPo.setStoreId(workLicenseMachineDto.getStoreId());
+        workLicensePosPo.setStaffId(workLicenseMachineDto.getStaffId());
+        workLicensePosPo.setPosType(WorkLicensePosDto.POS_TYPE_PUBLIC);
+
+        workLicensePosV1InnerServiceSMOImpl.saveWorkLicensePos(workLicensePosPo);
+
+        WorkLicenseMachinePo workLicenseMachinePo = new WorkLicenseMachinePo();
+        workLicenseMachinePo.setLon(lon);
+        workLicenseMachinePo.setLat(lat);
+        workLicenseMachinePo.setMachineId(workLicenseMachineDto.getMachineId());
+        workLicenseMachinePo.setMachineCode(workLicenseMachineDto.getMachineCode());
+        workLicenseMachineV1InnerServiceSMOImpl.updateWorkLicenseMachine(workLicenseMachinePo);
+
+        commonReturn(workLicenseMachineDto, cmd, data);
+
     }
 
     /**
@@ -108,7 +178,6 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
      */
     private void heartbeat(WorkLicenseMachineDto workLicenseMachineDto, String cmd, byte[] data) {
 
-        String resultData = HcWorkLicenseUtil.tranId(data) + cmd + "00";
 
         WorkLicenseMachinePo workLicenseMachinePo = new WorkLicenseMachinePo();
         workLicenseMachinePo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
@@ -117,9 +186,7 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         workLicenseMachineV1InnerServiceSMOImpl.updateWorkLicenseMachine(workLicenseMachinePo);
 
 
-        resultData = HcWorkLicenseUtil.computeResultDate(data, workLicenseMachineDto.getMachineCode(), resultData);
-
-        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(resultData)));
+        commonReturn(workLicenseMachineDto, cmd, data);
     }
 
     /**
@@ -159,5 +226,12 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
 
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(resultData)));
 
+    }
+
+    private void commonReturn(WorkLicenseMachineDto workLicenseMachineDto, String cmd, byte[] data) {
+        String resultData = HcWorkLicenseUtil.tranId(data) + cmd + "00";
+        resultData = HcWorkLicenseUtil.computeResultDate(data, workLicenseMachineDto.getMachineCode(), resultData);
+
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(resultData)));
     }
 }
