@@ -68,7 +68,6 @@ public class SaveWorkLicenseMachineCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "machineCode", "请求报文中未包含machineCode");
         Assert.hasKeyAndValue(reqJson, "staffId", "请求报文中未包含staffId");
         Assert.hasKeyAndValue(reqJson, "posUploadSec", "请求报文中未包含posUploadSec");
-        Assert.hasKeyAndValue(reqJson, "charge", "请求报文中未包含charge");
         Assert.hasKeyAndValue(reqJson, "implBean", "请求报文中未包含implBean");
 
     }

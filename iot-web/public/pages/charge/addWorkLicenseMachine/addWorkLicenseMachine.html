@@ -58,10 +58,10 @@
             </div>
         </div>
         <div class="ibox-content">
-            <button class="btn btn-primary float-right" type="button" v-on:click="_saveWorkLicenseMachine()">
+            <button class="btn btn-primary float-right" type="button" @click="_saveWorkLicenseMachine()">
                 <vc:i18n name="保存"></vc:i18n>
             </button>
-            <button type="button" class="btn btn-warning float-right" style="margin-right:20px;" data-dismiss="modal">
+            <button type="button" class="btn btn-warning float-right" style="margin-right:20px;" @click="vc.goBack()">
                 <vc:i18n name="取消"></vc:i18n>
             </button>
         </div>
