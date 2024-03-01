@@ -69,7 +69,9 @@
             },
             _queryWorkLicenseMachineMethod: function () {
                 $that._listWorkLicenseMachines(DEFAULT_PAGE, DEFAULT_ROWS);
-
+            },
+            _openPps:function(_workLicenseMachine){
+                vc.emit('worklicensePps', 'openWorklicensePpsModal', _workLicenseMachine);
             },
             _moreCondition: function () {
                 if ($that.workLicenseMachineInfo.moreCondition) {

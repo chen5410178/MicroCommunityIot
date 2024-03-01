@@ -1,5 +1,6 @@
 package com.java110.charge.workLicense.hc;
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.charge.factory.lvcc.LvCCChargeMachineFactoryAdapt;
 import com.java110.charge.workLicense.IWorkLicenseAdapt;
@@ -11,10 +12,12 @@ import com.java110.dto.data.NettyReplyDataDto;
 import com.java110.dto.workLicenseFactory.WorkLicenseFactoryDto;
 import com.java110.dto.workLicenseMachine.WorkLicenseMachineDto;
 import com.java110.dto.workLicensePos.WorkLicensePosDto;
+import com.java110.intf.charge.IWorkLicenseLogV1InnerServiceSMO;
 import com.java110.intf.charge.IWorkLicenseMachineV1InnerServiceSMO;
 import com.java110.intf.charge.IWorkLicensePosV1InnerServiceSMO;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
 import com.java110.po.chargeMachine.ChargeMachinePo;
+import com.java110.po.workLicenseLog.WorkLicenseLogPo;
 import com.java110.po.workLicenseMachine.WorkLicenseMachinePo;
 import com.java110.po.workLicensePos.WorkLicensePosPo;
 import org.slf4j.Logger;
@@ -22,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -96,6 +100,9 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
     @Autowired
     private IWorkLicensePosV1InnerServiceSMO workLicensePosV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IWorkLicenseLogV1InnerServiceSMO workLicenseLogV1InnerServiceSMOImpl;
+
 
     @Override
     public ResultVo settingParam(WorkLicenseMachineDto workLicenseMachineDto) {
@@ -104,7 +111,36 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
 
     @Override
     public ResultVo playTts(WorkLicenseMachineDto workLicenseMachineDto, String ttsText) {
-        return null;
+        //todo 下发tts
+        String reqType = "00001000";
+        int aa = Integer.parseInt(reqType, 2);
+        reqType = String.format("%02x", aa);
+        String reqData = null;
+        try {
+            byte[] data = ttsText.getBytes("GBK");
+            reqData = reqType + BytesUtil.bytesToHex(data);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        reqData = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), reqData);
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(reqData)));
+
+        JSONObject reqJson = new JSONObject();
+        reqJson.put("ttsText",ttsText);
+        reqJson.put("ttsTextBin",reqData);
+
+        WorkLicenseLogPo workLicenseLogPo = new WorkLicenseLogPo();
+        workLicenseLogPo.setLogCmd("8300");
+        workLicenseLogPo.setMachineId(workLicenseMachineDto.getMachineId());
+        workLicenseLogPo.setStaffName(workLicenseMachineDto.getStaffName());
+        workLicenseLogPo.setStaffId(workLicenseMachineDto.getStaffId());
+        workLicenseLogPo.setLogId(GenerateCodeFactory.getGeneratorId("11"));
+        workLicenseLogPo.setReqParam(reqJson.toJSONString());
+        workLicenseLogPo.setState("W");
+        workLicenseLogPo.setStoreId(workLicenseMachineDto.getStoreId());
+        workLicenseLogPo.setLogAction("tts");
+        workLicenseLogV1InnerServiceSMOImpl.saveWorkLicenseLog(workLicenseLogPo);
+        return new ResultVo(ResultVo.CODE_OK, "已提交工牌");
     }
 
     /**
@@ -275,11 +311,11 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         WorkLicenseMachineDto workLicenseMachineDto1 = new WorkLicenseMachineDto();
         workLicenseMachineDto1.setMachineId(workLicenseMachineDto.getMachineId());
         workLicenseMachineDto1.setMachineCode(workLicenseMachineDto.getMachineCode());
-        List<WorkLicenseMachineDto> workLicenseMachineDtos =  workLicenseMachineV1InnerServiceSMOImpl.queryWorkLicenseMachines(workLicenseMachineDto1);
+        List<WorkLicenseMachineDto> workLicenseMachineDtos = workLicenseMachineV1InnerServiceSMOImpl.queryWorkLicenseMachines(workLicenseMachineDto1);
 
-       if(ListUtil.isNull(workLicenseMachineDtos)){
-           return ;
-       }
+        if (ListUtil.isNull(workLicenseMachineDtos)) {
+            return;
+        }
         //todo 汇报时间间隔
         int sec = Integer.parseInt(workLicenseMachineDtos.get(0).getPosUploadSec());
         resultData = HcWorkLicenseUtil.getSettingWorkModeParam(sec);
