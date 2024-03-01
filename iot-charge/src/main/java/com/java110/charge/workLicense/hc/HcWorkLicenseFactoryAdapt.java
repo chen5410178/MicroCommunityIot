@@ -6,7 +6,9 @@ import com.java110.charge.workLicense.IWorkLicenseAdapt;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BytesUtil;
 import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.data.NettyReplyDataDto;
+import com.java110.dto.workLicenseFactory.WorkLicenseFactoryDto;
 import com.java110.dto.workLicenseMachine.WorkLicenseMachineDto;
 import com.java110.dto.workLicensePos.WorkLicensePosDto;
 import com.java110.intf.charge.IWorkLicenseMachineV1InnerServiceSMO;
@@ -19,6 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 员工牌
@@ -268,8 +272,16 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
             e.printStackTrace();
         }
 
+        WorkLicenseMachineDto workLicenseMachineDto1 = new WorkLicenseMachineDto();
+        workLicenseMachineDto1.setMachineId(workLicenseMachineDto.getMachineId());
+        workLicenseMachineDto1.setMachineCode(workLicenseMachineDto.getMachineCode());
+        List<WorkLicenseMachineDto> workLicenseMachineDtos =  workLicenseMachineV1InnerServiceSMOImpl.queryWorkLicenseMachines(workLicenseMachineDto1);
+
+       if(ListUtil.isNull(workLicenseMachineDtos)){
+           return ;
+       }
         //todo 汇报时间间隔
-        int sec = Integer.parseInt(workLicenseMachineDto.getPosUploadSec());
+        int sec = Integer.parseInt(workLicenseMachineDtos.get(0).getPosUploadSec());
         resultData = HcWorkLicenseUtil.getSettingWorkSec(sec);
         resultData = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), resultData);
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(resultData)));
