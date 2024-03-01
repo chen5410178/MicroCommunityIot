@@ -13,7 +13,7 @@
 
         },
         _initEvent: function() {
-            vc.on('showWorkLicenseLog', 'openShowAccessControlLogModal', function(_param) {
+            vc.on('showWorkLicenseLog', 'openShowWorkLicenseLogModal', function(_param) {
                 vc.copyObject(_param, $that.showWorkLicenseLogInfo);
                 $that.loadShowAccessControlLogInfo();
                 $('#showWorkLicenseLogModel').modal('show');
@@ -32,7 +32,7 @@
                 };
 
                 //发送get请求
-                vc.http.apiGet('/accessControlLog.listAccessControlLogParam',
+                vc.http.apiGet('/workLicense.listWorkLicenseLog',
                     param,
                     function(json, res) {
                         let _json = JSON.parse(json);
@@ -44,14 +44,10 @@
                 );
             },
             clearShowAccessControlLogInfo: function() {
-                vc.component.showWorkLicenseLogInfo = {
+                $that.showWorkLicenseLogInfo = {
                     logId: '',
-                    machineName: '',
-                    machineCode: '',
-                    logAction: '',
-                    userId: '',
-                    userName: '',
-                    state: '',
+                    reqParam: '',
+                    resParam: '',
 
                 };
             }
