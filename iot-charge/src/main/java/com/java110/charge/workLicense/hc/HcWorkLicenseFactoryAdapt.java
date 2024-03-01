@@ -222,15 +222,15 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         String lat = uploadData.substring(3 * 8, 4 * 8);
         //015b4555::06cf3331
 
-
-
-        lon = (Integer.parseInt(lon, 16) / 1000000.0) + "";
-        lat = (Integer.parseInt(lat, 16) / 1000000.0) + "";
-
         if(Integer.parseInt(lon, 16) <=0 ){
             commonReturn(workLicenseMachineDto, cmd, data);
             return;
         }
+
+        lon = (Integer.parseInt(lon, 16) / 1000000.0) + "";
+        lat = (Integer.parseInt(lat, 16) / 1000000.0) + "";
+
+
 
         WorkLicensePosPo workLicensePosPo = new WorkLicensePosPo();
         workLicensePosPo.setMachineId(workLicenseMachineDto.getMachineId());
