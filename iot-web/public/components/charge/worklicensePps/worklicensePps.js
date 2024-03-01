@@ -12,7 +12,8 @@
 
         },
         _initEvent: function() {
-            vc.on('worklicensePps', 'openWorklicensePpsModal', function() {
+            vc.on('worklicensePps', 'openWorklicensePpsModal', function(_data) {
+                vc.copyObject(_data,$that.worklicensePpsInfo)
                 $('#worklicensePpsModel').modal('show');
             });
         },
@@ -46,7 +47,7 @@
                     return;
                 }
                 vc.http.apiPost(
-                    '/accessControl.saveAccessControl',
+                    '/workLicense.playPps',
                     JSON.stringify($that.worklicensePpsInfo), {
                         emulateJSON: true
                     },

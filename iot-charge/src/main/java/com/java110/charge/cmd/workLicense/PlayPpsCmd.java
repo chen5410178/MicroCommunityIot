@@ -57,7 +57,7 @@ public class PlayPpsCmd extends Cmd {
 
         Assert.listOnlyOne(workLicenseFactoryDtos, "工牌厂家不存在");
 
-        IWorkLicenseAdapt workLicenseAdapt = ApplicationContextFactory.getBean(workLicenseFactoryDto.getBeanImpl(), IWorkLicenseAdapt.class);
+        IWorkLicenseAdapt workLicenseAdapt = ApplicationContextFactory.getBean(workLicenseFactoryDtos.get(0).getBeanImpl(), IWorkLicenseAdapt.class);
         if (workLicenseAdapt == null) {
             throw new CmdException("厂家接口未实现");
         }
