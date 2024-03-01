@@ -252,7 +252,7 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
 
         //todo 休息一秒
         try {
-            Thread.sleep(1000);
+            Thread.sleep(3000);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -263,14 +263,14 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
 
         //todo 休息一秒
         try {
-            Thread.sleep(1000);
+            Thread.sleep(3000);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        //todo 下发工作模式
+        //todo 汇报时间间隔
         int sec = Integer.parseInt(workLicenseMachineDto.getPosUploadSec());
-        resultData = HcWorkLicenseUtil.getSettingWorkModeParam(sec);
+        resultData = HcWorkLicenseUtil.getSettingWorkSec(sec);
         resultData = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), resultData);
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(resultData)));
 

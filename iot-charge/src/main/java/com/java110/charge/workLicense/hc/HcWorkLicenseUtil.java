@@ -200,6 +200,21 @@ public class HcWorkLicenseUtil {
         return reqData;
     }
 
+    public static String getSettingWorkSec(int sec) {
+        String reqType = "00000001";
+        int aa = Integer.parseInt(reqType, 2);
+        reqType = String.format("%02x", aa);
+
+        String reqData = "FREQ,"+sec+"#";
+        try {
+            byte[] data = reqData.getBytes("GBK");
+            reqData = reqType + BytesUtil.bytesToHex(data);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        return reqData;
+    }
+
     public static void main(String[] args) throws UnsupportedEncodingException {
         String aa = "7e020000a6016059631666000700000000800000400000000000000000000000000000240301124529f01fe60b0462518d88c05528c4518d88c05428ac81ae7baab0385e0214a2370749150f38363230313630353936333136363660290401cc0097120ef11f413401cc0097120efb084c1e01cc00971209a05b081d01cc00971206f056422afe12e60200015f20000a898604b02622703416490104000000120402015f05010230015a3101002b04101010106a7e";
         byte[] data = BytesUtil.hexStringToByteArray(aa);
@@ -248,7 +263,7 @@ public class HcWorkLicenseUtil {
         int aa = Integer.parseInt(reqType, 2);
         reqType = String.format("%02x", aa);
 
-        String reqData = "MODE,1,"+sec+",1,0,0,1#";
+        String reqData = "MODE,1,"+sec+",1,1,1,1#";
         try {
             byte[] data = reqData.getBytes("GBK");
             reqData = reqType + BytesUtil.bytesToHex(data);
