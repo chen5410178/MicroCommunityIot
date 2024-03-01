@@ -198,7 +198,7 @@ public class HcWorkLicenseUtil {
     }
 
     public static void main(String[] args) throws UnsupportedEncodingException {
-        String aa = "7e0200004301605963166600030000000080000040015b455506cf33310000000c0000240301011213010400000012040201640501023001533101002b0410271027000c00b2898604b0262270341649177e";
+        String aa = "7e020000a6016059631666000700000000800000400000000000000000000000000000240301124529f01fe60b0462518d88c05528c4518d88c05428ac81ae7baab0385e0214a2370749150f38363230313630353936333136363660290401cc0097120ef11f413401cc0097120efb084c1e01cc00971209a05b081d01cc00971206f056422afe12e60200015f20000a898604b02622703416490104000000120402015f05010230015a3101002b04101010106a7e";
         byte[] data = BytesUtil.hexStringToByteArray(aa);
 
 
@@ -209,7 +209,7 @@ public class HcWorkLicenseUtil {
 
         String lat = resultData.substring(3 * 8, 4 * 8);
 
-        System.out.println(generatorMsgId());
+        System.out.println(lat+ "::" + lon);
         System.out.println(Integer.parseInt(lat, 16) + "::" + Integer.parseInt(lon, 16));
 
 
@@ -240,7 +240,7 @@ public class HcWorkLicenseUtil {
     public static String getSettingWorkModeParam(int sec) {
 
         String reqType = "00";
-        String reqData = "MODE,1,"+sec+",1,1,1,1#";
+        String reqData = "MODE,1,"+sec+",1,1,0,0#";
         try {
             byte[] data = reqData.getBytes("GBK");
             reqData = reqType + BytesUtil.bytesToHex(data);
