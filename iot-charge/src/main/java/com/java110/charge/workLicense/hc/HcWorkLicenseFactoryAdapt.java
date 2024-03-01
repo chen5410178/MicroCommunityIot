@@ -22,6 +22,45 @@ import org.springframework.stereotype.Service;
 
 /**
  * 员工牌
+ * <p>
+ * 查询参数：PARAM#
+ * 查询状态：STATUS#
+ * <p>
+ * 设置主IP:IP,58.61.154.237,7018#
+ * 58.61.154.237-IP地址
+ * 7018-端口
+ * 查询主IP:IP#
+ * <p>
+ * 设置副IP
+ * FIP,58.61.154.237,7018#
+ * 58.61.154.237-IP地址
+ * 7018-端口
+ * 查询副IP:FIP#
+ * <p>
+ * 取消副IP：FIP,#
+ * <p>
+ * 配置主副IP的要注意下，主IP可以下发指令可执行，副IP不执行指令，只接收数据。其中一个ip连接不上都会影响另外一个
+ * <p>
+ * 汇报间隔设置:FREQ,30#
+ * 30-汇报间隔，单位秒
+ * 查询汇报间隔:FREQ#
+ * <p>
+ * 心跳间隔设置:HBT,180#
+ * 180-心跳间隔，单位秒
+ * 查询心跳间隔:HBT#
+ * <p>
+ * 设置工作模式
+ * MODE,x,y,A,B,C,D#
+ * x-工作模式，1定时，2智能
+ * y-汇报间隔，单位秒
+ * A-GPS，1开启，0关闭
+ * B-WiFi，1开启，0关闭
+ * C-LBS，1开启，0关闭
+ * D-GPRS，1开启，0关闭
+ * 查询工作模式：MODE#
+ * <p>
+ * 重启：RESET#
+ * 恢复出厂：FACTORY#
  */
 @Service("hcWorkLicenseFactoryAdapt")
 public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
@@ -38,6 +77,8 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
     public static final String CMD_MACHINE_RESULT = "0001";// todo 设备应答
 
     public static final String CMD_UPLOAD_POS = "0200";// todo 汇报位置
+
+    public static final String CMD_REQ = "8300"; // todo 请求下发数据
 
     public static final String AUTH_CODE = "123456";
 
@@ -136,13 +177,13 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
          * 21 时间 BCD[6] YY-MM-DD-hh-mm-ss（GMT+8 时间，本标准中之后涉
          * 及的时间均采用此时区）
          */
-        String  lon= uploadData.substring(2*8,3*8);
+        String lon = uploadData.substring(2 * 8, 3 * 8);
 
-        String lat = uploadData.substring(3*8,4*8);
+        String lat = uploadData.substring(3 * 8, 4 * 8);
         //015b4555::06cf3331
 
-        lon = (Integer.parseInt(lon,16)/1000000.0) +"";
-        lat = (Integer.parseInt(lat,16)/1000000.0) +"";
+        lon = (Integer.parseInt(lon, 16) / 1000000.0) + "";
+        lat = (Integer.parseInt(lat, 16) / 1000000.0) + "";
 
         WorkLicensePosPo workLicensePosPo = new WorkLicensePosPo();
         workLicensePosPo.setMachineId(workLicenseMachineDto.getMachineId());
@@ -207,8 +248,33 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         }
 
         resultData = HcWorkLicenseUtil.computeResultDate(data, workLicenseMachineDto.getMachineCode(), resultData);
-
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(resultData)));
+
+        //todo 休息一秒
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //todo 下发心跳时间
+        resultData = HcWorkLicenseUtil.getSettingHeartbeatParam();
+        resultData = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), resultData);
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(resultData)));
+
+        //todo 休息一秒
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //todo 下发工作模式
+        int sec = Integer.parseInt(workLicenseMachineDto.getPosUploadSec());
+        resultData = HcWorkLicenseUtil.getSettingWorkModeParam(sec);
+        resultData = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), resultData);
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(resultData)));
+
+
     }
 
     /**
