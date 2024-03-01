@@ -1,14 +1,16 @@
 /**
     入驻小区
 **/
+import {wgs84togcj02} from 'api/map/mapApi.js';
 (function (vc) {
     var DEFAULT_PAGE = 1;
     var DEFAULT_ROWS = 30;
+
     vc.extends({
         data: {
             workLicenseMapInfo: {
                 machines: [],
-                map:{},
+                map: {},
                 total: 0,
                 records: 1,
                 moreCondition: false,
@@ -24,17 +26,23 @@
         _initMethod: function () {
             $that._listWorkLicenseMachines(DEFAULT_PAGE, DEFAULT_ROWS);
 
-           
+
         },
         _initEvent: function () {
         },
         methods: {
 
-            _initMap:function(){
+            _initMap: function () {
                 let _lon = 39.984120;
                 let _lat = 116.307484;
                 let _machines = $that.workLicenseMapInfo.machines;
-                if(_machines && _machines.length>0){
+
+                _machines.forEach(_m => {
+                    let _latLon = wgs84togcj02(_m.lat, _m.lon)
+                    _m.lon = _latLon.lat;
+                    _m.lat = _latLon.lon;
+                });
+                if (_machines && _machines.length > 0) {
                     _lat = _machines[0].lat;
                     _lon = _machines[0].lon;
                 }
@@ -45,30 +53,27 @@
                     zoom: 18,   //设置地图缩放级别
                     baseMap: {			//底图设置（参数为：VectorBaseMap对象）
                         type: 'vector',	//类型：失量底图
-                        features: ['base', 'building2d','point']  
+                        features: ['base', 'building2d', 'point']
                         //仅渲染：道路及底面(base) + 2d建筑物(building2d)，以达到隐藏文字的效果
-                      }
+                    }
                 });
                 $that.workLicenseMapInfo.map = map;
                 $that._addPointMachine();
             },
-            _addPointMachine:function(){
+            _addPointMachine: function () {
                 let _geometriesMarker = [];
                 let _geometriesLabel = [];
 
                 let _machines = $that.workLicenseMapInfo.machines;
                 _machines.forEach(_m => {
-                    let  center = new TMap.LatLng(_m.lon, _m.lat);
+                    let center = new TMap.LatLng(_m.lon, _m.lat);
                     _geometriesMarker.push({
                         "id": _m.machineId,   //点标记唯一标识，后续如果有删除、修改位置等操作，都需要此id
                         "styleId": 'myStyle',  //指定样式id
                         "position": center,  //点标记坐标位置
-                        "properties": {//自定义属性
-                            "title": _m.staffName
-                        }
                     });
                     _geometriesLabel.push({
-                        'id': 'label_'+_m.machineId, //点图形数据的标志信息
+                        'id': 'label_' + _m.machineId, //点图形数据的标志信息
                         'styleId': 'label', //样式id
                         'position': center, //标注点位置
                         'content': _m.staffName, //标注文本
@@ -79,16 +84,22 @@
                     //样式定义
                     styles: {
                         //创建一个styleId为"myStyle"的样式（styles的子属性名即为styleId）
-                        "myStyle": new TMap.MarkerStyle({ 
+                        "myStyle": new TMap.MarkerStyle({
                             "width": 25,  // 点标记样式宽度（像素）
                             "height": 35, // 点标记样式高度（像素）
                             "src": '/img/maper.png',  //图片路径
+                            "cursor": "pointer",
                             //焦点在图片中的像素位置，一般大头针类似形式的图片以针尖位置做为焦点，圆形点以圆心位置为焦点
-                            "anchor": { x: 32, y: 32 }  
-                        }) 
+                            "anchor": { x: 32, y: 32 }
+                        })
                     },
                     //点标记数据数组
                     geometries: _geometriesMarker
+                });
+
+                markerLayer.on('click',function(e){
+                    let _curDate = vc.dateFormat(new Date());
+                    vc.jumpToPage('/#/pages/charge/workLicenseLineMap?machineId='+e.geometry.id+"&uploadDate="+_curDate); 
                 });
 
                 var label = new TMap.MultiLabel({
@@ -128,7 +139,6 @@
                     }
                 );
             },
-
         }
     });
 })(window.vc);
