@@ -20,8 +20,9 @@
         select t.res_param,t.res_param resParam,t.log_cmd,t.log_cmd logCmd,t.machine_id,t.machine_id
         machineId,t.staff_name,t.staff_name staffName,t.log_id,t.log_id logId,t.req_param,t.req_param
         reqParam,t.state,t.store_id,t.store_id storeId,t.log_action,t.log_action logAction,t.staff_id,t.staff_id staffId,
-        t.create_time createTime
+        t.create_time createTime,wlm.machine_name machineName,wlm.machine_code machineCode
         from work_license_log t
+        left join work_license_machine wlm on t.machine_id = wlm.machine_id
         where 1 =1
         <if test="resParam !=null and resParam != ''">
             and t.res_param= #{resParam}

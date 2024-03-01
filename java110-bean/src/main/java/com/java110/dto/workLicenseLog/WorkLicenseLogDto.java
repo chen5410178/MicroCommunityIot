@@ -1,6 +1,7 @@
 package com.java110.dto.workLicenseLog;
 
 import com.java110.bean.dto.PageDto;
+import com.java110.dto.workLicenseMachine.WorkLicenseMachineDto;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,7 +14,7 @@ import java.util.Date;
  * @Version 1.0
  * add by wuxw 2019/4/24
  **/
-public class WorkLicenseLogDto extends PageDto implements Serializable {
+public class WorkLicenseLogDto extends WorkLicenseMachineDto implements Serializable {
 
     private String resParam;
     private String logCmd;

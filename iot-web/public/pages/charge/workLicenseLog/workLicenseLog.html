@@ -121,10 +121,10 @@
                                 <td class="text-center">{{workLicenseLog.logId}}</td>
                                 <td class="text-center">{{workLicenseLog.machineName}}</td>
                                 <td class="text-center">{{workLicenseLog.machineCode}}</td>
-                                <td class="text-center">{{workLicenseLog.logCmdName}}</td>
-                                <td class="text-center">{{workLicenseLog.userId}}</td>
-                                <td class="text-center">{{workLicenseLog.userName}}</td>
-                                <td class="text-center">{{workLicenseLog.stateName}}</td>
+                                <td class="text-center">{{workLicenseLog.logCmd == 'tts'?'语音':'参数'}}</td>
+                                <td class="text-center">{{workLicenseLog.staffId}}</td>
+                                <td class="text-center">{{workLicenseLog.staffName}}</td>
+                                <td class="text-center">{{workLicenseLog.stateName == 'W'?'请求成功':'返回成功'}}</td>
                                 <td class="text-center">{{workLicenseLog.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
