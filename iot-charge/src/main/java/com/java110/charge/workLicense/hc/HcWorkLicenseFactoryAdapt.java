@@ -282,7 +282,7 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
        }
         //todo 汇报时间间隔
         int sec = Integer.parseInt(workLicenseMachineDtos.get(0).getPosUploadSec());
-        resultData = HcWorkLicenseUtil.getSettingWorkSec(sec);
+        resultData = HcWorkLicenseUtil.getSettingWorkModeParam(sec);
         resultData = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), resultData);
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(resultData)));
 
