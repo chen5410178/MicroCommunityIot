@@ -186,7 +186,10 @@ public class HcWorkLicenseUtil {
     }
 
     public static String getSettingHeartbeatParam() {
-        String reqType = "00";
+        String reqType = "00000001";
+        int aa = Integer.parseInt(reqType, 2);
+        reqType = String.format("%02x", aa);
+
         String reqData = "HBT,60#";
         try {
             byte[] data = reqData.getBytes("GBK");
@@ -208,6 +211,8 @@ public class HcWorkLicenseUtil {
         String lon = resultData.substring(2 * 8, 3 * 8);
 
         String lat = resultData.substring(3 * 8, 4 * 8);
+
+        System.out.println(getSettingHeartbeatParam());
 
         System.out.println(lat+ "::" + lon);
         System.out.println(Integer.parseInt(lat, 16) + "::" + Integer.parseInt(lon, 16));
@@ -239,8 +244,11 @@ public class HcWorkLicenseUtil {
      */
     public static String getSettingWorkModeParam(int sec) {
 
-        String reqType = "00";
-        String reqData = "MODE,1,"+sec+",1,1,0,0#";
+        String reqType = "00000001";
+        int aa = Integer.parseInt(reqType, 2);
+        reqType = String.format("%02x", aa);
+
+        String reqData = "MODE,1,"+sec+",1,0,0,1#";
         try {
             byte[] data = reqData.getBytes("GBK");
             reqData = reqType + BytesUtil.bytesToHex(data);
