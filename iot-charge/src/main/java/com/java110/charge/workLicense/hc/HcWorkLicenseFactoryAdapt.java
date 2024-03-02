@@ -264,13 +264,14 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         }else{ //todo gps 定位
              lon = uploadData.substring(2 * 8, 3 * 8);
              lat = uploadData.substring(3 * 8, 4 * 8);
-            //015b4555::06cf3331
-            lon = (Long.parseLong(lon, 16) / 1000000.0) + "";
-            lat = (Long.parseLong(lat, 16) / 1000000.0) + "";
             if(Integer.parseInt(lon, 16) <=0 ){
                 commonReturn(workLicenseMachineDto, cmd, data);
                 return;
             }
+            //015b4555::06cf3331
+            lon = (Long.parseLong(lon, 16) / 1000000.0) + "";
+            lat = (Long.parseLong(lat, 16) / 1000000.0) + "";
+
         }
 
 
