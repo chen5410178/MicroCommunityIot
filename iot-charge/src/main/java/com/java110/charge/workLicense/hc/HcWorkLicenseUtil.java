@@ -215,25 +215,21 @@ public class HcWorkLicenseUtil {
         return reqData;
     }
 
-    public static void main(String[] args) throws UnsupportedEncodingException {
-        String aa = "7e020000a6016059631666000700000000800000400000000000000000000000000000240301124529f01fe60b0462518d88c05528c4518d88c05428ac81ae7baab0385e0214a2370749150f38363230313630353936333136363660290401cc0097120ef11f413401cc0097120efb084c1e01cc00971209a05b081d01cc00971206f056422afe12e60200015f20000a898604b02622703416490104000000120402015f05010230015a3101002b04101010106a7e";
-        byte[] data = BytesUtil.hexStringToByteArray(aa);
 
+    public static String[] getMacs(String uploadData) {
+
+
+        return null;
+    }
+
+
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        String aa = "7e02000092016059631666004600000000800000400000000000000000000000000000240302153330f01fe60b044c50773aa67d013f3868be0e40d1493868bed9d6c94c88c3974d14fc4d150f38363230313630353936333136363660150201cc00971209a336012d01cc00971209a3360325fe12e60200015020000a898604b02622703416490104000000120402015005010130014a3101002b040f3f0f3f717e";
+        byte[] data = BytesUtil.hexStringToByteArray(aa);
 
         String resultData = HcWorkLicenseUtil.getData(data);
         System.out.println(resultData);
 
-        String lon = resultData.substring(2 * 8, 3 * 8);
-
-        String lat = resultData.substring(3 * 8, 4 * 8);
-
-        System.out.println(getSettingHeartbeatParam());
-
-        System.out.println(lat+ "::" + lon);
-        System.out.println(Integer.parseInt(lat, 16) + "::" + Integer.parseInt(lon, 16));
-
-
-        System.out.println(Integer.parseInt(lat, 16) / 1000000.0 + "::" + Integer.parseInt(lon, 16) / 1000000.0);
 
 
     }
@@ -272,4 +268,6 @@ public class HcWorkLicenseUtil {
         }
         return reqData;
     }
+
 }
+

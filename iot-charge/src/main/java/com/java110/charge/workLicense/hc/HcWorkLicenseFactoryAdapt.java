@@ -26,7 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工牌
@@ -228,19 +230,32 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
          * 21 时间 BCD[6] YY-MM-DD-hh-mm-ss（GMT+8 时间，本标准中之后涉
          * 及的时间均采用此时区）
          */
-        String lon = uploadData.substring(2 * 8, 3 * 8);
 
-        String lat = uploadData.substring(3 * 8, 4 * 8);
-        //015b4555::06cf3331
+        String state = uploadData.substring( 8, 2 * 8);
+
+        long decimal = Long.parseLong(state, 16); // 先将十六进制转换为十进制
+        String binary = Long.toBinaryString(decimal); // 再将十进制转换为二进制
+
+        String gps =  binary.charAt(binary.length() - 2)+"";
+
+        String lon = "0";
+        String lat = "0";
+        if("0".equals(gps)){ // 没有gps
+            Map<String,String> info = getFromWifi(uploadData);
+            lon = info.get("lon");
+            lat = info.get("lat");
+        }else{ //todo gps 定位
+             lon = uploadData.substring(2 * 8, 3 * 8);
+             lat = uploadData.substring(3 * 8, 4 * 8);
+            //015b4555::06cf3331
+            lon = (Long.parseLong(lon, 16) / 1000000.0) + "";
+            lat = (Long.parseLong(lat, 16) / 1000000.0) + "";
+        }
 
         if(Integer.parseInt(lon, 16) <=0 ){
             commonReturn(workLicenseMachineDto, cmd, data);
             return;
         }
-
-        lon = (Integer.parseInt(lon, 16) / 1000000.0) + "";
-        lat = (Integer.parseInt(lat, 16) / 1000000.0) + "";
-
 
 
         WorkLicensePosPo workLicensePosPo = new WorkLicensePosPo();
@@ -266,6 +281,46 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
 
         commonReturn(workLicenseMachineDto, cmd, data);
 
+    }
+
+    /**
+     * 7e020000920160596316660046
+     * 00000000
+     * 80000040
+     * 00000000 -- 精度
+     * 00000000 -- 维度
+     * 0000 高度
+     * 0000 速度
+     * 0000 方向角
+     * 240302153330
+     * -- 附加信息
+     * f0 -- 扩展WIFI定位获取的MAC地址及信号强度
+     * 1f -- 长度 31位
+     * e6 -- 0XE6特定标识
+     * 0b -- 0X0B特定标识
+     * 04 -- 扫描到的WIFI数据组数，最多4组
+     * 4c50773aa67d -- MAC地址
+     * 01 -- 强度
+     * 3f3868be0e40
+     * d1
+     * 493868bed9d6
+     * c9
+     * 4c88c3974d14
+     * fc
+     * -- 附加信息
+     * 4d150f38363230313630353936333136363660150201cc00971209a336012d01cc00971209a3360325
+     * fe12e60200015020000a898604b02622703416490104000000120402015005010130014a3101002b040f3f0f3f717e
+     * @param uploadData
+     * @return
+     */
+    private Map<String, String> getFromWifi(String uploadData) {
+        Map<String,String> info = new HashMap<>();
+        info.put("lon","0");
+        info.put("lat","0");
+
+        String[] macs = HcWorkLicenseUtil.getMacs(uploadData);
+
+        return info;
     }
 
     /**
