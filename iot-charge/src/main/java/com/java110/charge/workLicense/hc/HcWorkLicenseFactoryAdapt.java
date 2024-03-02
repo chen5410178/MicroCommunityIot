@@ -1,9 +1,11 @@
 package com.java110.charge.workLicense.hc;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.charge.factory.lvcc.LvCCChargeMachineFactoryAdapt;
 import com.java110.charge.workLicense.IWorkLicenseAdapt;
+import com.java110.core.cache.MappingCache;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BytesUtil;
 import com.java110.core.utils.DateUtil;
@@ -23,7 +25,13 @@ import com.java110.po.workLicensePos.WorkLicensePosPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -97,6 +105,8 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
 
     public static final String AUTH_CODE = "123456";
 
+    public static final String TENCENT_MAP_URL = "https://apis.map.qq.com/ws/location/v1/network";
+
 
     @Autowired
     private INotifyNettyDataV1InnerServiceSMO notifyNettyDataV1InnerServiceSMOImpl;
@@ -109,6 +119,9 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
 
     @Autowired
     private IWorkLicenseLogV1InnerServiceSMO workLicenseLogV1InnerServiceSMOImpl;
+
+    @Autowired
+    private RestTemplate outRestTemplate;
 
 
     @Override
@@ -241,7 +254,7 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         String lon = "0";
         String lat = "0";
         if("0".equals(gps)){ // 没有gps
-            Map<String,String> info = getFromWifi(uploadData);
+            Map<String,String> info = getFromWifi(uploadData,workLicenseMachineDto.getMachineId());
             lon = info.get("lon");
             lat = info.get("lat");
         }else{ //todo gps 定位
@@ -313,13 +326,42 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
      * @param uploadData
      * @return
      */
-    private Map<String, String> getFromWifi(String uploadData) {
+    private Map<String, String> getFromWifi(String uploadData,String machineId) {
         Map<String,String> info = new HashMap<>();
         info.put("lon","0");
         info.put("lat","0");
 
         String[] macs = HcWorkLicenseUtil.getMacs(uploadData);
+        JSONObject body = new JSONObject();
+        body.put("key","ZUXBZ-7F5AU-WLXV6-GRX62-RZ6P7-XOB3N");
+        body.put("device_id",machineId);
 
+        JSONArray wifiinfos = new JSONArray();
+        JSONObject wifiinfo = null;
+        for(String mac :macs){
+            wifiinfo = new JSONObject();
+            wifiinfo.put("mac",mac.split("\\|")[0]);
+            wifiinfo.put("rssi",Long.parseLong(mac.split("\\|")[1],16));
+            wifiinfos.add(wifiinfo);
+        }
+
+        body.put("wifiinfo",wifiinfos);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-Type","application/json");
+        HttpEntity httpEntity = new HttpEntity(body.toJSONString(), httpHeaders);
+        ResponseEntity<String> response = null;
+        response = outRestTemplate.exchange(TENCENT_MAP_URL, HttpMethod.POST, httpEntity, String.class);
+        JSONObject resJson = JSONObject.parseObject(response.getBody());
+        if(resJson.getIntValue("status") != 0){
+            return info;
+        }
+
+       JSONObject location = resJson.getJSONObject("result").getJSONObject("location");
+
+        String latitude = location.getString("latitude");
+        String longitude = location.getString("longitude");
+        info.put("lon",longitude);
+        info.put("lat",latitude);
         return info;
     }
 

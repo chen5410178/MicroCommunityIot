@@ -216,10 +216,65 @@ public class HcWorkLicenseUtil {
     }
 
 
+    /**
+     * 00000000
+     * 80000040
+     * 00000000 -- 精度
+     * 00000000 -- 维度
+     * 0000 高度
+     * 0000 速度
+     * 0000 方向角
+     * 240302153330
+     * -- 附加信息
+     * f0 -- 扩展WIFI定位获取的MAC地址及信号强度
+     * 1f -- 长度 31位
+     * e6 -- 0XE6特定标识
+     * 0b -- 0X0B特定标识
+     * 04 -- 扫描到的WIFI数据组数，最多4组
+     * 4c50773aa67d -- MAC地址
+     * 01 -- 强度
+     * 3f3868be0e40
+     * d1
+     * 493868bed9d6
+     * c9
+     * 4c88c3974d14
+     * fc
+     * -- 附加信息
+     * 4d150f38363230313630353936333136363660150201cc00971209a336012d01cc00971209a3360325
+     * fe12e60200015020000a898604b02622703416490104000000120402015005010130014a3101002b040f3f0f3f717e
+     * @return
+     */
     public static String[] getMacs(String uploadData) {
+        int extStartPos = 8*4+4*3+12;
+        String exId = uploadData.substring(extStartPos,extStartPos + 2);
 
+        if(!"f0".equals(exId)){
+            return null;
+        }
 
-        return null;
+        extStartPos += 10;
+
+        String mac1 = uploadData.substring(extStartPos,extStartPos + 14);
+        extStartPos += 14;
+        String mac2 = uploadData.substring(extStartPos,extStartPos + 14);
+        extStartPos += 14;
+        String mac3 = uploadData.substring(extStartPos,extStartPos + 14);
+        extStartPos += 14;
+        String mac4 = uploadData.substring(extStartPos,extStartPos + 14);
+
+        mac1 = mac1.substring(0,2)+":"+mac1.substring(2,4)+":"+mac1.substring(4,6)
+                +":"+mac1.substring(6,8)+":"+mac1.substring(8,10)
+                +":"+mac1.substring(10,12)+"|"+mac1.substring(12,14) ;
+        mac2 = mac2.substring(0,2)+":"+mac2.substring(2,4)+":"+mac2.substring(4,6)
+                +":"+mac2.substring(6,8)+":"+mac2.substring(8,10)
+                +":"+mac2.substring(10,12)+"|"+mac2.substring(12,14) ;
+        mac3 = mac3.substring(0,2)+":"+mac3.substring(2,4)+":"+mac3.substring(4,6)
+                +":"+mac3.substring(6,8)+":"+mac3.substring(8,10)
+                +":"+mac3.substring(10,12)+"|"+mac3.substring(12,14) ;
+        mac4 = mac4.substring(0,2)+":"+mac4.substring(2,4)+":"+mac4.substring(4,6)
+                +":"+mac4.substring(6,8)+":"+mac4.substring(8,10)
+                +":"+mac4.substring(10,12)+"|"+mac4.substring(12,14) ;
+        return new String[]{mac1,mac2,mac3,mac4};
     }
 
 
@@ -228,7 +283,13 @@ public class HcWorkLicenseUtil {
         byte[] data = BytesUtil.hexStringToByteArray(aa);
 
         String resultData = HcWorkLicenseUtil.getData(data);
-        System.out.println(resultData);
+
+        String[] macs = getMacs(resultData);
+
+        System.out.println(macs[0]);
+        System.out.println(macs[1]);
+        System.out.println(macs[2]);
+        System.out.println(macs[3]);
 
 
 
@@ -259,7 +320,7 @@ public class HcWorkLicenseUtil {
         int aa = Integer.parseInt(reqType, 2);
         reqType = String.format("%02x", aa);
 
-        String reqData = "MODE,1,"+sec+",1,1,1,1#";
+        String reqData = "MODE,2,"+sec+",1,1,1,1#";
         try {
             byte[] data = reqData.getBytes("GBK");
             reqData = reqType + BytesUtil.bytesToHex(data);
