@@ -16,9 +16,14 @@
 package com.java110.charge.smo.impl;
 
 
+import com.java110.bean.ResultVo;
 import com.java110.bean.dto.PageDto;
 import com.java110.charge.dao.IWorkLicenseMachineV1ServiceDao;
+import com.java110.charge.workLicense.IWorkLicenseAdapt;
+import com.java110.core.exception.CmdException;
+import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.workLicenseMachine.WorkLicenseTtsTextDto;
 import com.java110.intf.charge.IWorkLicenseMachineV1InnerServiceSMO;
 import com.java110.dto.workLicenseMachine.WorkLicenseMachineDto;
 import com.java110.po.workLicenseMachine.WorkLicenseMachinePo;
@@ -83,5 +88,16 @@ public class WorkLicenseMachineV1InnerServiceSMOImpl  implements IWorkLicenseMac
     @Override
     public int queryWorkLicenseMachinesCount(@RequestBody WorkLicenseMachineDto workLicenseMachineDto) {
         return workLicenseMachineV1ServiceDaoImpl.queryWorkLicenseMachinesCount(BeanConvertUtil.beanCovertMap(workLicenseMachineDto));    }
+
+    @Override
+    public ResultVo playTts(@RequestBody WorkLicenseTtsTextDto workLicenseTtsTextDto) {
+        IWorkLicenseAdapt workLicenseAdapt = ApplicationContextFactory.getBean(workLicenseTtsTextDto.getWorkLicenseFactoryDto().getBeanImpl(), IWorkLicenseAdapt.class);
+        if (workLicenseAdapt == null) {
+            throw new CmdException("厂家接口未实现");
+        }
+
+        ResultVo resultVo = workLicenseAdapt.playTts(workLicenseTtsTextDto.getWorkLicenseMachineDto(), workLicenseTtsTextDto.getTtsText());
+        return resultVo;
+    }
 
 }

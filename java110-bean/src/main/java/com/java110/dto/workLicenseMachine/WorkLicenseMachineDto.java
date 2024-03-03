@@ -36,6 +36,8 @@ public class WorkLicenseMachineDto extends PageDto implements Serializable {
     private String state;
     private String stateName;
 
+    private String ttsText;
+
 
     private Date createTime;
 
@@ -185,5 +187,13 @@ public class WorkLicenseMachineDto extends PageDto implements Serializable {
 
     public void setFactoryName(String factoryName) {
         this.factoryName = factoryName;
+    }
+
+    public String getTtsText() {
+        return ttsText;
+    }
+
+    public void setTtsText(String ttsText) {
+        this.ttsText = ttsText;
     }
 }

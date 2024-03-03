@@ -15,7 +15,9 @@
  */
 package com.java110.intf.charge;
 
+import com.java110.bean.ResultVo;
 import com.java110.dto.workLicenseMachine.WorkLicenseMachineDto;
+import com.java110.dto.workLicenseMachine.WorkLicenseTtsTextDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.workLicenseMachine.WorkLicenseMachinePo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -65,4 +67,7 @@ public interface IWorkLicenseMachineV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryWorkLicenseMachinesCount", method = RequestMethod.POST)
     int queryWorkLicenseMachinesCount(@RequestBody WorkLicenseMachineDto workLicenseMachineDto);
+
+    @RequestMapping(value = "/playTts", method = RequestMethod.POST)
+    ResultVo playTts(@RequestBody WorkLicenseTtsTextDto workLicenseTtsTextDto);
 }
