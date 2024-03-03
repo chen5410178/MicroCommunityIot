@@ -1,27 +1,27 @@
 <div>
     <div class="bg-white padding-sm">
-        <button type="button" class="btn btn-white btn-sm" v-on:click="_openAddRoomFloorModal()">
+        <button type="button" class="btn btn-white btn-sm" v-if="vc.hasPrivilege('502024030435620096')" @click="_openAddRoomFloorModal()">
             添加楼栋
         </button>
-        <button type="button" class="btn btn-white btn-sm" v-on:click="_openUpdateRoomFloorModal()">
+        <button type="button" class="btn btn-white btn-sm" v-if="vc.hasPrivilege('502024030434510098')" @click="_openUpdateRoomFloorModal()">
             修改楼栋
         </button>
-        <button type="button" class="btn btn-white btn-sm" v-on:click="_openDeleteRoomFloorModal()">
+        <button type="button" class="btn btn-white btn-sm" v-if="vc.hasPrivilege('502024030483540100')" @click="_openDeleteRoomFloorModal()">
             删除楼栋
         </button>
-        <button type="button" class="btn btn-white btn-sm margin-left-sm" v-on:click="_openAddRoomUnitModal()">
+        <button type="button" class="btn btn-white btn-sm margin-left-sm" v-if="vc.hasPrivilege('502024030413890102')" @click="_openAddRoomUnitModal()">
             添加单元
         </button>
-        <button type="button" class="btn btn-white btn-sm" v-on:click="_openUpdateRoomUnitModal()">
+        <button type="button" class="btn btn-white btn-sm" v-if="vc.hasPrivilege('502024030445920104')" @click="_openUpdateRoomUnitModal()">
             修改单元
         </button>
-        <button type="button" class="btn btn-white btn-sm" v-on:click="_openDeleteRoomUnitModal()">
+        <button type="button" class="btn btn-white btn-sm" v-if="vc.hasPrivilege('502024030493380106')" @click="_openDeleteRoomUnitModal()">
             删除单元
         </button>
-        <button type="button" class="btn btn-white btn-sm margin-left-sm" v-on:click="_openImportRoomInfo()">
+        <button type="button" class="btn btn-white btn-sm margin-left-sm" v-if="vc.hasPrivilege('502024030461540108')" @click="_openImportRoomInfo()">
             <vc:i18n name="房产导入" namespace="room"></vc:i18n>
         </button>
-        <button type="button" class="btn btn-white btn-sm" v-on:click="_openAddRoom()">
+        <button type="button" class="btn btn-white btn-sm" v-if="vc.hasPrivilege('502024030444500110')" @click="_openAddRoom()">
             <vc:i18n name="添加房屋" namespace="room"></vc:i18n>
         </button>
     </div>
@@ -30,16 +30,13 @@
             <vc:create path="property/floorUnitTree" callBackListener="room"></vc:create>
         </div>
         <div class="margin-top-xs margin-left-sm" style="flex-grow: 1;">
-
             <div class="ibox ">
                 <div class="ibox-title">
                     <h5>
                         <vc:i18n name="查询条件" namespace="room"></vc:i18n>
                     </h5>
                     <div class="ibox-tools" style="top:10px;">
-                        <!-- <button type="button" class="btn btn-link btn-sm" style="margin-right:10px;"
-                                        v-on:click="_moreCondition()">{{roomInfo.moreCondition == true?'隐藏':'更多'}}
-                                </button> -->
+
                     </div>
                 </div>
                 <div class="ibox-content">
@@ -77,10 +74,7 @@
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryRoomMethod()">
-                                <i class="fa fa-search"></i>
-                                <span>
-                                    <vc:i18n name="查询" namespace="room"></vc:i18n>
-                                </span>
+                                <vc:i18n name="查询" namespace="room"></vc:i18n>
                             </button>
                         </div>
                     </div>
@@ -208,22 +202,22 @@
                                     </td>
                                     <td class="text-center hc-table-fix-right-td">
                                         <div class="btn-group">
-                                            <button class="btn-white btn btn-xs" v-on:click="_openEditRoomModel(room)">
+                                            <button class="btn-white btn btn-xs" v-if="vc.hasPrivilege('502024030477610112')" @click="_openEditRoomModel(room)">
                                                 <vc:i18n name="修改" namespace="room"></vc:i18n>
                                             </button>
                                         </div>
                                         <div class="btn-group">
-                                            <button class="btn-white btn btn-xs" v-on:click="_openDelRoomModel(room)">
+                                            <button class="btn-white btn btn-xs" v-if="vc.hasPrivilege('502024030472060114')" @click="_openDelRoomModel(room)">
                                                 <vc:i18n name="删除" namespace="room"></vc:i18n>
                                             </button>
                                         </div>
                                         <div class="btn-group">
-                                            <button class="btn-white btn btn-xs" v-on:click="_toRoomBindOwner(room)">
+                                            <button class="btn-white btn btn-xs" v-if="vc.hasPrivilege('502024030471400116')" @click="_toRoomBindOwner(room)">
                                                 <vc:i18n name="绑定人员" namespace="room"></vc:i18n>
                                             </button>
                                         </div>
-                                        <div class="btn-group" v-if="room.state != '2002' && room.ownerId ">
-                                            <button class="btn-white btn btn-xs" v-on:click="_toRoomUnBindOwner(room)">
+                                        <div class="btn-group" v-if="room.state != '2002' && room.ownerId && vc.hasPrivilege('502024030404460118')">
+                                            <button class="btn-white btn btn-xs" @click="_toRoomUnBindOwner(room)">
                                                 <vc:i18n name="解绑人员" namespace="room"></vc:i18n>
                                             </button>
                                         </div>

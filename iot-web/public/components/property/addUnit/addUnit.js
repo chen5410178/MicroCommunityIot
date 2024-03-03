@@ -19,32 +19,32 @@
         },
         _initEvent: function () {
             vc.on('addUnit', 'openAddUnitModal', function (_params) {
-                vc.component.refreshAddUnitInfo();
+                $that.refreshAddUnitInfo();
                 $('#addUnitModel').modal('show');
                 if (_params.hasOwnProperty("floorId") && vc.notNull(_params.floorId)) {
-                    vc.component.addUnitInfo.floorId = _params.floorId;
+                    $that.addUnitInfo.floorId = _params.floorId;
                 }
-                vc.component.addUnitInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.addUnitInfo.communityId = vc.getCurrentCommunity().communityId;
             });
             vc.on('addUnit', 'addUnitModel', function (_params) {
-                vc.component.refreshAddUnitInfo();
+                $that.refreshAddUnitInfo();
                 $('#addUnitModel').modal('show');
                 if (_params.hasOwnProperty("floorId") && vc.notNull(_params.floorId)) {
-                    vc.component.addUnitInfo.floorId = _params.floorId;
+                    $that.addUnitInfo.floorId = _params.floorId;
                 }
-                vc.component.addUnitInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.addUnitInfo.communityId = vc.getCurrentCommunity().communityId;
             });
             vc.on('addUnit', 'onFloorInfo', function (_params) {
                 if (_params.hasOwnProperty("floorId") && vc.notNull(_params.floorId)) {
-                    vc.component.addUnitInfo.floorId = _params.floorId;
+                    $that.addUnitInfo.floorId = _params.floorId;
                 }
-                vc.component.addUnitInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.addUnitInfo.communityId = vc.getCurrentCommunity().communityId;
             });
         },
         methods: {
             addUnitValidate: function () {
                 return vc.validate.validate({
-                    addUnitInfo: vc.component.addUnitInfo
+                    addUnitInfo: $that.addUnitInfo
                 }, {
                     'addUnitInfo.floorId': [{
                         limit: "required",
@@ -97,24 +97,24 @@
                 });
             },
             addUnit: function () {
-                if (!vc.component.addUnitValidate()) {
+                if (!$that.addUnitValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
-                if (vc.component.addUnitInfo.unitNum == '0') {
+                if ($that.addUnitInfo.unitNum == '0') {
                     vc.toast("0单元为商铺特有，不允许添加");
                     return;
                 }
-                vc.component.addUnitInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.addUnitInfo.communityId = vc.getCurrentCommunity().communityId;
                 //不提交数据将数据 回调给侦听处理
                 if (vc.notNull($props.callBackListener)) {
-                    vc.emit($props.callBackListener, $props.callBackFunction, vc.component.addUnitInfo);
+                    vc.emit($props.callBackListener, $props.callBackFunction, $that.addUnitInfo);
                     $('#addUnitModel').modal('hide');
                     return;
                 }
                 vc.http.apiPost(
                     '/unit.saveUnit',
-                    JSON.stringify(vc.component.addUnitInfo), {
+                    JSON.stringify($that.addUnitInfo), {
                         emulateJSON: true
                     },
                     function (json, res) {
@@ -123,10 +123,10 @@
                             //关闭model
                             $('#addUnitModel').modal('hide');
                             vc.emit('unit', 'loadUnit', {
-                                floorId: vc.component.addUnitInfo.floorId
+                                floorId: $that.addUnitInfo.floorId
                             });
                             vc.emit('floorUnitTree', 'refreshTree', {
-                                floorId: vc.component.addUnitInfo.floorId
+                                floorId: $that.addUnitInfo.floorId
                             });
                             vc.toast("添加成功");
                             return;
@@ -140,7 +140,7 @@
                     });
             },
             refreshAddUnitInfo: function () {
-                vc.component.addUnitInfo = {
+                $that.addUnitInfo = {
                     floorId: '',
                     unitNum: '',
                     layerCount: '',
@@ -152,4 +152,4 @@
             }
         }
     });
-})(window.vc, window.vc.component);
+})(window.vc, window.$that);

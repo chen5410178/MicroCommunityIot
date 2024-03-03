@@ -35,7 +35,7 @@
             _listParkingBoxs: function(_page, _rows) {
                 $that.parkingBoxInfo.conditions.page = _page;
                 $that.parkingBoxInfo.conditions.row = _rows;
-                var param = {
+                let param = {
                     params: $that.parkingBoxInfo.conditions
                 };
                 param.params.boxId = param.params.boxId.trim();
@@ -44,10 +44,10 @@
                 vc.http.apiGet('/parkingBox.listParkingBox',
                     param,
                     function(json, res) {
-                        var _parkingBoxInfo = JSON.parse(json);
-                        $that.parkingBoxInfo.total = _parkingBoxInfo.total;
-                        $that.parkingBoxInfo.records = _parkingBoxInfo.records;
-                        $that.parkingBoxInfo.parkingBoxs = _parkingBoxInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.parkingBoxInfo.total = _json.total;
+                        $that.parkingBoxInfo.records = _json.records;
+                        $that.parkingBoxInfo.parkingBoxs = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.parkingBoxInfo.records,
                             dataCount: $that.parkingBoxInfo.total,

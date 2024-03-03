@@ -12,17 +12,17 @@
          _initEvent:function(){
              vc.on('deleteBarrier','openDeleteBarrierModal',function(_params){
 
-                vc.component.deleteBarrierInfo = _params;
+                $that.deleteBarrierInfo = _params;
                 $('#deleteBarrierModel').modal('show');
 
             });
         },
         methods:{
             deleteBarrier:function(){
-                vc.component.deleteBarrierInfo.communityId=vc.getCurrentCommunity().communityId;
+                $that.deleteBarrierInfo.communityId=vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
-                    'barrier.deleteBarrier',
-                    JSON.stringify(vc.component.deleteBarrierInfo),
+                    '/barrier.deleteBarrier',
+                    JSON.stringify($that.deleteBarrierInfo),
                     {
                         emulateJSON:true
                      },
@@ -49,4 +49,4 @@
         }
     });
 
-})(window.vc,window.vc.component);
+})(window.vc,window.$that);

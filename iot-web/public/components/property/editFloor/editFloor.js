@@ -15,9 +15,9 @@
         //     "editFloorInfo.floorNum": { //深度监听，可监听到对象、数组的变化
         //         handler(val, oldVal) {
         //             if (vc.notNull(val)) {
-        //                 vc.component.editFloorInfo.floorName = vc.component.editFloorInfo.floorNum + "号楼";
+        //                 $that.editFloorInfo.floorName = $that.editFloorInfo.floorNum + "号楼";
         //             } else {
-        //                 vc.component.editFloorInfo.floorName = "";
+        //                 $that.editFloorInfo.floorName = "";
         //             }
         //         },
         //         deep: true
@@ -27,15 +27,15 @@
         },
         _initEvent: function () {
             vc.on('editFloor', 'openEditFloorModal', function (_floor) {
-                vc.component.editFloorInfo.errorInfo = "";
-                vc.copyObject(_floor, vc.component.editFloorInfo);
+                $that.editFloorInfo.errorInfo = "";
+                vc.copyObject(_floor, $that.editFloorInfo);
                 $('#editFloorModel').modal('show');
             });
         },
         methods: {
             editFloorValidate() {
                 return vc.validate.validate({
-                    editFloorInfo: vc.component.editFloorInfo
+                    editFloorInfo: $that.editFloorInfo
                 }, {
                     'editFloorInfo.floorName': [{
                         limit: "required",
@@ -92,16 +92,16 @@
                 });
             },
             editFloorMethod: function () {
-                if (!vc.component.editFloorValidate()) {
-                    vc.component.editFloorInfo.errorInfo = vc.validate.errInfo;
+                if (!$that.editFloorValidate()) {
+                    $that.editFloorInfo.errorInfo = vc.validate.errInfo;
                     return;
                 }
-                vc.component.editFloorInfo.errorInfo = "";
-                vc.component.editFloorInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.editFloorInfo.errorInfo = "";
+                $that.editFloorInfo.communityId = vc.getCurrentCommunity().communityId;
                 $that.editFloorInfo.name = $that.editFloorInfo.floorName;
                 vc.http.apiPost(
                     '/floor.editFloor',
-                    JSON.stringify(vc.component.editFloorInfo), {
+                    JSON.stringify($that.editFloorInfo), {
                         emulateJSON: true
                     },
                     function (json, res) {
@@ -110,7 +110,7 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#editFloorModel').modal('hide');
-                            vc.component.clearEditFloorInfo();
+                            $that.clearEditFloorInfo();
                             vc.emit('listFloor', 'listFloorData', {});
                             vc.emit('floorUnitTree', 'refreshTree', {
                                 floorId: $that.editFloorInfo.floorId
@@ -124,11 +124,11 @@
                     },
                     function (errInfo, error) {
                         console.log('请求失败处理');
-                        vc.component.editFloorInfo.errorInfo = errInfo;
+                        $that.editFloorInfo.errorInfo = errInfo;
                     });
             },
             clearEditFloorInfo: function () {
-                vc.component.editFloorInfo = {
+                $that.editFloorInfo = {
                     floorId: '',
                     floorName: '',
                     floorNum: '',

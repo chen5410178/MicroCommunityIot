@@ -6,16 +6,16 @@
         _initMethod: function() {},
         _initEvent: function() {
             vc.on('deleteParkingBox', 'openDeleteParkingBoxModal', function(_params) {
-                vc.component.deleteParkingBoxInfo = _params;
+                $that.deleteParkingBoxInfo = _params;
                 $('#deleteParkingBoxModel').modal('show');
             });
         },
         methods: {
             deleteParkingBox: function() {
-                vc.component.deleteParkingBoxInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.deleteParkingBoxInfo.communityId = vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
                     '/parkingBox.deleteParkingBox',
-                    JSON.stringify(vc.component.deleteParkingBoxInfo), {
+                    JSON.stringify($that.deleteParkingBoxInfo), {
                         emulateJSON: true
                     },
                     function(json, res) {
@@ -41,4 +41,4 @@
             }
         }
     });
-})(window.vc, window.vc.component);
+})(window.vc, window.$that);

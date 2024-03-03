@@ -12,17 +12,17 @@
         _initEvent: function() {
             vc.on('deleteAccessControl', 'openDeleteAccessControlModal', function(_params) {
 
-                vc.component.deleteAccessControlInfo = _params;
+                $that.deleteAccessControlInfo = _params;
                 $('#deleteAccessControlModel').modal('show');
 
             });
         },
         methods: {
             deleteAccessControl: function() {
-                vc.component.deleteAccessControlInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.deleteAccessControlInfo.communityId = vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
                     '/accessControl.deleteAccessControl',
-                    JSON.stringify(vc.component.deleteAccessControlInfo), {
+                    JSON.stringify($that.deleteAccessControlInfo), {
                         emulateJSON: true
                     },
                     function(json, res) {
@@ -48,4 +48,4 @@
         }
     });
 
-})(window.vc, window.vc.component);
+})(window.vc, window.$that);

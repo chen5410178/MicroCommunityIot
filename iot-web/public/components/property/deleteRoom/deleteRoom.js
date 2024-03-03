@@ -5,7 +5,7 @@
         },
         _initEvent: function () {
             vc.on('deleteRoom', 'openRoomModel', function (_roomInfo) {
-                vc.component.deleteRoomInfo = _roomInfo;
+                $that.deleteRoomInfo = _roomInfo;
                 $('#deleteRoomModel').modal('show');
             });
         },
@@ -14,10 +14,10 @@
                 $('#deleteRoomModel').modal('hide');
             },
             deleteRoom: function () {
-                vc.component.deleteRoomInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.deleteRoomInfo.communityId = vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
                     '/room.deleteRoom',
-                    JSON.stringify(vc.component.deleteRoomInfo), {
+                    JSON.stringify($that.deleteRoomInfo), {
                         emulateJSON: true
                     },
                     function (json, res) {
@@ -26,10 +26,10 @@
                             //关闭model
                             $('#deleteRoomModel').modal('hide');
                             vc.emit('room', 'loadData', {
-                                floorId: vc.component.deleteRoomInfo.floorId
+                                floorId: $that.deleteRoomInfo.floorId
                             });
                             vc.emit('shops', 'loadData', {
-                                floorId: vc.component.deleteRoomInfo.floorId
+                                floorId: $that.deleteRoomInfo.floorId
                             });
                             vc.toast("删除成功");
                             return;

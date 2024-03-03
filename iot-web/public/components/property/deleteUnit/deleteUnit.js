@@ -10,16 +10,16 @@
         },
         _initEvent: function () {
             vc.on('deleteUnit', 'openUnitModel', function (_params) {
-                vc.component.deleteUnitInfo._currentFloorId = _params.floorId;
-                vc.component.deleteUnitInfo._currentUnitId = _params.unitId;
+                $that.deleteUnitInfo._currentFloorId = _params.floorId;
+                $that.deleteUnitInfo._currentUnitId = _params.unitId;
                 $('#deleteUnitModel').modal('show');
             });
         },
         methods: {
             deleteUnit: function () {
                 var param = {
-                    floorId: vc.component.deleteUnitInfo._currentFloorId,
-                    unitId: vc.component.deleteUnitInfo._currentUnitId,
+                    floorId: $that.deleteUnitInfo._currentFloorId,
+                    unitId: $that.deleteUnitInfo._currentUnitId,
                     communityId: vc.getCurrentCommunity().communityId
                 }
                 vc.http.apiPost(
@@ -34,10 +34,10 @@
                             //关闭model
                             $('#deleteUnitModel').modal('hide');
                             vc.emit('unit', 'loadUnit', {
-                                floorId: vc.component.deleteUnitInfo._currentFloorId
+                                floorId: $that.deleteUnitInfo._currentFloorId
                             });
                             vc.emit('floorUnitTree', 'refreshTree', {
-                                floorId: vc.component.deleteUnitInfo._currentFloorId
+                                floorId: $that.deleteUnitInfo._currentFloorId
                             })
                             vc.toast("删除成功");
                             return;
@@ -55,4 +55,4 @@
             }
         }
     });
-})(window.vc, window.vc.component);
+})(window.vc, window.$that);

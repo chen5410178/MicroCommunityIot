@@ -29,7 +29,7 @@
             $that._loadRoomAttrSpec();
             //与字典表关联
             vc.getDict('building_room', "room_sub_type", function(_data) {
-                vc.component.addRoomViewInfo.roomSubTypes = _data;
+                $that.addRoomViewInfo.roomSubTypes = _data;
             });
             $that._loadFloor();
         },
@@ -42,7 +42,7 @@
         methods: {
             addRoomValidate() {
                 return vc.validate.validate({
-                    addRoomViewInfo: vc.component.addRoomViewInfo
+                    addRoomViewInfo: $that.addRoomViewInfo
                 }, {
                     'addRoomViewInfo.roomNum': [{
                             limit: "required",
@@ -152,7 +152,7 @@
             },
             saveAddRoomInfo: function() {
                 let msg = '';
-                vc.component.addRoomViewInfo.attrs.forEach((item) => {
+                $that.addRoomViewInfo.attrs.forEach((item) => {
                     if (item.required == 'Y' && item.value == "") {
                         msg = item.specHoldplace;
                     }
@@ -161,7 +161,7 @@
                     vc.toast(msg);
                     return;
                 }
-                if (!vc.component.addRoomValidate()) {
+                if (!$that.addRoomValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }

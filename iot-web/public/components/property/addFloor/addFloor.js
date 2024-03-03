@@ -20,9 +20,9 @@
             "addFloorInfo.floorNum": { //深度监听，可监听到对象、数组的变化
                 handler(val, oldVal) {
                     if (vc.notNull(val)) {
-                        vc.component.addFloorInfo.name = vc.component.addFloorInfo.floorNum + "号楼";
+                        $that.addFloorInfo.name = $that.addFloorInfo.floorNum + "号楼";
                     } else {
-                        vc.component.addFloorInfo.name = "";
+                        $that.addFloorInfo.name = "";
                     }
                 },
                 deep: true
@@ -38,51 +38,51 @@
         methods: {
             addFloorValidate() {
                 return vc.validate.validate({
-                    addFloorInfo: vc.component.addFloorInfo
+                    addFloorInfo: $that.addFloorInfo
                 }, {
                     'addFloorInfo.name': [{
                         limit: "required",
                         param: "",
                         errInfo: "楼名称不能为空"
                     },
-                        {
-                            limit: "maxin",
-                            param: "2,64",
-                            errInfo: "楼名称长度必须在2位至10位"
-                        },
+                    {
+                        limit: "maxin",
+                        param: "2,64",
+                        errInfo: "楼名称长度必须在2位至10位"
+                    },
                     ],
                     'addFloorInfo.floorNum': [{
                         limit: "required",
                         param: "",
                         errInfo: "楼编号不能为空"
                     },
-                        {
-                            limit: "maxin",
-                            param: "1,64",
-                            errInfo: "楼编号长度必须在1位至64位"
-                        },
+                    {
+                        limit: "maxin",
+                        param: "1,64",
+                        errInfo: "楼编号长度必须在1位至64位"
+                    },
                     ],
                     'addFloorInfo.floorArea': [{
                         limit: "required",
                         param: "",
                         errInfo: "建筑面积不能为空"
                     },
-                        {
-                            limit: "money",
-                            param: "",
-                            errInfo: "建筑面积错误，如300.00"
-                        },
+                    {
+                        limit: "money",
+                        param: "",
+                        errInfo: "建筑面积错误，如300.00"
+                    },
                     ],
                     'addFloorInfo.seq': [{
-                            limit: "required",
-                            param: "",
-                            errInfo: "排序不能为空"
-                        },
-                        {
-                            limit: "number",
-                            param: "",
-                            errInfo: "排序必须是数字"
-                        },
+                        limit: "required",
+                        param: "",
+                        errInfo: "排序不能为空"
+                    },
+                    {
+                        limit: "number",
+                        param: "",
+                        errInfo: "排序必须是数字"
+                    },
                     ],
                     'addFloorInfo.remark': [
                         {
@@ -94,30 +94,30 @@
                 });
             },
             saveFloorInfo: function () {
-                if (!vc.component.addFloorValidate()) {
+                if (!$that.addFloorValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
-                vc.component.addFloorInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.addFloorInfo.communityId = vc.getCurrentCommunity().communityId;
                 //不提交数据将数据 回调给侦听处理
                 if (vc.notNull($props.callBackListener)) {
-                    vc.component.addFloorInfo.floorName = vc.component.addFloorInfo.name;
-                    vc.emit($props.callBackListener, $props.callBackFunction, vc.component.addFloorInfo);
+                    $that.addFloorInfo.floorName = $that.addFloorInfo.name;
+                    vc.emit($props.callBackListener, $props.callBackFunction, $that.addFloorInfo);
                     $('#addFloorModel').modal('hide');
                     return;
                 }
                 vc.http.apiPost(
                     '/floor.saveFloor',
-                    JSON.stringify(vc.component.addFloorInfo), {
-                        emulateJSON: true
-                    },
+                    JSON.stringify($that.addFloorInfo), {
+                    emulateJSON: true
+                },
                     function (json, res) {
                         //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
                         let _json = JSON.parse(json);
                         if (_json.code == 0) {
                             //关闭model
                             $('#addFloorModel').modal('hide');
-                            vc.component.clearAddFloorInfo();
+                            $that.clearAddFloorInfo();
                             vc.emit('listFloor', 'listFloorData', {});
                             vc.emit('floorUnitTree', 'refreshTree', {})
                             vc.toast("添加成功")
@@ -125,16 +125,16 @@
                         } else {
                             vc.toast(_json.msg);
                         }
-                        //vc.component.addFloorInfo.errorInfo = json;
+                        //$that.addFloorInfo.errorInfo = json;
                     },
                     function (errInfo, error) {
                         console.log('请求失败处理');
-                        vc.component.addFloorInfo.errorInfo = errInfo;
+                        $that.addFloorInfo.errorInfo = errInfo;
                         vc.toast(errInfo)
                     });
             },
             clearAddFloorInfo: function () {
-                vc.component.addFloorInfo = {
+                $that.addFloorInfo = {
                     name: '',
                     floorNum: '',
                     floorArea: '',

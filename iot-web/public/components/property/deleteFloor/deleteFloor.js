@@ -5,7 +5,7 @@
         },
         _initEvent: function () {
             vc.on('deleteFloor', 'openFloorModel', function (_floorInfo) {
-                vc.component.deleteFloorInfo = _floorInfo;
+                $that.deleteFloorInfo = _floorInfo;
                 $('#deleteFloorModel').modal('show');
             });
         },
@@ -14,10 +14,10 @@
                 $('#deleteFloorModel').modal('hide');
             },
             deleteFloor: function () {
-                vc.component.deleteFloorInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.deleteFloorInfo.communityId = vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
                     '/floor.deleteFloor',
-                    JSON.stringify(vc.component.deleteFloorInfo), {
+                    JSON.stringify($that.deleteFloorInfo), {
                         emulateJSON: true
                     },
                     function (json, res) {
@@ -33,11 +33,11 @@
                         } else {
                             vc.toast(_json.msg)
                         }
-                        vc.component.deleteFloornfo.errorInfo = json;
+                        $that.deleteFloornfo.errorInfo = json;
                     },
                     function (errInfo, error) {
                         console.log('请求失败处理');
-                        vc.component.deleteFloornfo.errorInfo = errInfo;
+                        $that.deleteFloornfo.errorInfo = errInfo;
                     });
             }
         }

@@ -1,122 +1,109 @@
 <div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox ">
-                <div class="ibox-title">
-                    <h5>
-                        <vc:i18n name="查询条件"></vc:i18n>
-                    </h5>
-                    <div class="ibox-tools" style="top:10px;">
-
+    <div class="ibox ">
+        <div class="ibox-title">
+            <h5>
+                <vc:i18n name="查询条件"></vc:i18n>
+            </h5>
+            <div class="ibox-tools" style="top:10px;">
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <input type="text" :placeholder="vc.i18n('请选择停车场编号','parkingArea')"
+                            v-model="parkingAreaInfo.conditions.num" class=" form-control">
                     </div>
                 </div>
-                <div class="ibox-content">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择停车场编号','parkingArea')"
-                                    v-model="parkingAreaInfo.conditions.num" class=" form-control">
+                <div class="col-sm-2">
+                    <select class="custom-select" v-model="parkingAreaInfo.conditions.typeCd">
+                        <option selected value="">请选择停车场类型</option>
+                        <option value="1001">地上停车场</option>
+                        <option value="2002">地下停车场</option>
+                    </select>
+                </div>
+                <div class="col-sm-1">
+                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryParkingAreaMethod()">
+                        <vc:i18n name="查询"></vc:i18n>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>
+                <vc:i18n name="停车场" namespace="parkingArea"></vc:i18n>
+            </h5>
+            <div class="ibox-tools" style="top:10px;">
+                <button type="button" class="btn btn-primary btn-sm" v-if="vc.hasPrivilege('502024030451430070')" v-on:click="_openAddParkingAreaModal()">
+                    <vc:i18n name="添加" namespace="parkingArea"></vc:i18n>
+                </button>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            <vc:i18n name='ID' namespace='parkingArea'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='编号' namespace='parkingArea'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='类型' namespace='parkingArea'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='三方ID' namespace='parkingArea'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='备注' namespace='parkingArea'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='创建时间' namespace='parkingArea'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='操作'></vc:i18n>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="parkingArea in parkingAreaInfo.parkingAreas">
+                        <td class="text-center">{{parkingArea.paId}}</td>
+                        <td class="text-center">{{parkingArea.num}}</td>
+                        <td class="text-center">{{parkingArea.typeCd == '1001'?'地上':'地下'}}</td>
+                        <td class="text-center">{{parkingArea.extPaId || '-'}}</td>
+                        <td class="text-center">{{parkingArea.remark || '-'}}</td>
+                        <td class="text-center">{{parkingArea.createTime}}</td>
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <button class="btn-white btn btn-xs" v-if="vc.hasPrivilege('502024030461900072')"
+                                    v-on:click="_openEditParkingAreaModel(parkingArea)">
+                                    <vc:i18n name='修改'></vc:i18n>
+                                </button>
                             </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <select class="custom-select" v-model="parkingAreaInfo.conditions.typeCd">
-                                <option selected value="">请选择停车场类型</option>
-                                <option value="1001">地上停车场</option>
-                                <option value="2002">地下停车场</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-1">
-                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryParkingAreaMethod()">
-                                <vc:i18n name="查询"></vc:i18n>
-                            </button>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
+                            <div class="btn-group">
+                                <button class="btn-white btn btn-xs" v-if="vc.hasPrivilege('502024030466060074')"
+                                    v-on:click="_openDeleteParkingAreaModel(parkingArea)">
+                                    <vc:i18n name='删除'></vc:i18n>
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn-white btn btn-xs" v-if="vc.hasPrivilege('502024030469480076')"
+                                    v-on:click="_openParkingAreaTotalControl(parkingArea)">
+                                    <vc:i18n name="控制台" namespace="parkingAreaManage"></vc:i18n>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- 分页 -->
+            <vc:create path="frame/pagination"></vc:create>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox">
-                <div class="ibox-title">
-                    <h5>
-                        <vc:i18n name="停车场" namespace="parkingArea"></vc:i18n>
-                    </h5>
-                    <div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddParkingAreaModal()">
-                            <vc:i18n name="添加" namespace="parkingArea"></vc:i18n>
-                        </button>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
-                        <thead>
-                            <tr>
-                                <th class="text-center">
-                                    <vc:i18n name='ID' namespace='parkingArea'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='编号' namespace='parkingArea'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='类型' namespace='parkingArea'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='三方ID' namespace='parkingArea'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='备注' namespace='parkingArea'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='创建时间' namespace='parkingArea'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='操作'></vc:i18n>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="parkingArea in parkingAreaInfo.parkingAreas">
-                                <td class="text-center">{{parkingArea.paId}}</td>
-                                <td class="text-center">{{parkingArea.num}}</td>
-                                <td class="text-center">{{parkingArea.typeCd == '1001'?'地上':'地下'}}</td>
-                                <td class="text-center">{{parkingArea.extPaId || '-'}}</td>
-                                <td class="text-center">{{parkingArea.remark || '-'}}</td>
-                                <td class="text-center">{{parkingArea.createTime}}</td>
-                                <td class="text-center">
-                                    <div class="btn-group">
-                                        <button class="btn-white btn btn-xs"
-                                            v-on:click="_openEditParkingAreaModel(parkingArea)">
-                                            <vc:i18n name='修改'></vc:i18n>
-                                        </button>
-                                    </div>
-                                    <div class="btn-group">
-                                        <button class="btn-white btn btn-xs"
-                                            v-on:click="_openDeleteParkingAreaModel(parkingArea)">
-                                            <vc:i18n name='删除'></vc:i18n>
-                                        </button>
-                                    </div>
-                                    <div class="btn-group" >
-                                        <button class="btn-white btn btn-xs"
-                                            v-on:click="_openParkingAreaTotalControl(parkingArea)">
-                                            <vc:i18n name="控制台" namespace="parkingAreaManage"></vc:i18n>
-                                        </button>
-                                    </div>
-                                </td>
-
-                            </tr>
-                        </tbody>
-                    </table>
-                    <!-- 分页 -->
-                    <vc:create path="frame/pagination"></vc:create>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
 
     <vc:create path="car/addParkingArea" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="car/editParkingArea"></vc:create>

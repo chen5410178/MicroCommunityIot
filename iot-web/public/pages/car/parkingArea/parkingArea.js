@@ -46,10 +46,10 @@
                 vc.http.apiGet('/parkingArea.listParkingArea',
                     param,
                     function(json, res) {
-                        var _parkingAreaInfo = JSON.parse(json);
-                        $that.parkingAreaInfo.total = _parkingAreaInfo.total;
-                        $that.parkingAreaInfo.records = _parkingAreaInfo.records;
-                        $that.parkingAreaInfo.parkingAreas = _parkingAreaInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.parkingAreaInfo.total = _json.total;
+                        $that.parkingAreaInfo.records = _json.records;
+                        $that.parkingAreaInfo.parkingAreas = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.parkingAreaInfo.records,
                             currentPage: _page

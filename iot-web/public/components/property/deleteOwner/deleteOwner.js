@@ -8,7 +8,7 @@
         },
         _initEvent: function () {
             vc.on('deleteOwner', 'openOwnerModel', function (_ownerInfo) {
-                vc.component.deleteOwnerInfo = _ownerInfo;
+                $that.deleteOwnerInfo = _ownerInfo;
                 $('#deleteOwnerModel').modal('show');
             });
         },
@@ -17,10 +17,10 @@
                 $('#deleteOwnerModel').modal('hide');
             },
             deleteOwner: function () {
-                vc.component.deleteOwnerInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.deleteOwnerInfo.communityId = vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
                     '/owner.deleteOwner',
-                    JSON.stringify(vc.component.deleteOwnerInfo), {
+                    JSON.stringify($that.deleteOwnerInfo), {
                         emulateJSON: true
                     },
                     function (json, res) {
@@ -37,7 +37,7 @@
                     },
                     function (errInfo, error) {
                         vc.toast(errInfo);
-                        // vc.component.deleteOwnernfo.errorInfo = errInfo;
+                        // $that.deleteOwnernfo.errorInfo = errInfo;
                     });
             }
         }

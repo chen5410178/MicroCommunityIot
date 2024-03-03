@@ -31,13 +31,13 @@
                 $that.refreshEditRoomInfo();
                 //与字典表关联
                 vc.getDict('building_room', "room_sub_type", function (_data) {
-                    vc.component.editRoomInfo.roomSubTypes = _data;
+                    $that.editRoomInfo.roomSubTypes = _data;
                 });
-                vc.copyObject(_room, vc.component.editRoomInfo);
-                vc.component.loadUnitsFromEditRoom(_room.floorId);
+                vc.copyObject(_room, $that.editRoomInfo);
+                $that.loadUnitsFromEditRoom(_room.floorId);
                 $('#editRoomModel').modal('show');
-                vc.component.editRoomInfo.floorId = _room.floorId;
-                vc.component.editRoomInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.editRoomInfo.floorId = _room.floorId;
+                $that.editRoomInfo.communityId = vc.getCurrentCommunity().communityId;
                 if (_room.hasOwnProperty('roomAttrDto')) {
                     let _roomAttrDtos = _room.roomAttrDto;
                     _roomAttrDtos.forEach(item => {
@@ -56,7 +56,7 @@
              根据楼ID加载房屋
              **/
             loadUnitsFromEditRoom: function (_floorId) {
-                vc.component.editRoomUnits = [];
+                $that.editRoomUnits = [];
                 var param = {
                     params: {
                         floorId: _floorId,
@@ -70,19 +70,10 @@
                         //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
                         if (res.status == 200) {
                             var tmpUnits = JSON.parse(json);
-                            vc.component.editRoomUnits = tmpUnits;
+                            $that.editRoomUnits = tmpUnits;
 
-                            // if('0.00' == vc.component.editRoomInfo.unitPrice){
-                            //     vc.component.editRoomInfo.unitPrice='';
-                            // }
-                            vc.component.editRoomInfo.apartment1 = vc.component.editRoomInfo.apartment.substr(0, 2);
-                            vc.component.editRoomInfo.apartment2 = vc.component.editRoomInfo.apartment.substr(2, 5);
-                            /*if(tmpUnits == null || tmpUnits.length == 0){
-                                return ;
-                            }
-                            for(var unitIndex = 0; unitIndex < tmpUnits.length;unitIndex++){
-                               vc.component.editRoomInfo.units[unitIndex] = tmpUnits[unitIndex];
-                            }*/
+                            $that.editRoomInfo.apartment1 = $that.editRoomInfo.apartment.substr(0, 2);
+                            $that.editRoomInfo.apartment2 = $that.editRoomInfo.apartment.substr(2, 5);
                             return;
                         }
                         vc.toast(json);
@@ -116,7 +107,7 @@
             },
             editRoomValidate: function () {
                 return vc.validate.validate({
-                    editRoomInfo: vc.component.editRoomInfo
+                    editRoomInfo: $that.editRoomInfo
                 }, {
                     'editRoomInfo.unitId': [{
                         limit: "required",
@@ -128,11 +119,11 @@
                         param: "",
                         errInfo: "房屋编号不能为空"
                     },
-                        {
-                            limit: "maxLength",
-                            param: "12",
-                            errInfo: "房屋编号长度不能超过12位"
-                        },
+                    {
+                        limit: "maxLength",
+                        param: "12",
+                        errInfo: "房屋编号长度不能超过12位"
+                    },
                     ],
                     'editRoomInfo.layer': [{
                         limit: "required",
@@ -154,38 +145,38 @@
                         param: "",
                         errInfo: "建筑面积不能为空"
                     },
-                        {
-                            limit: "money",
-                            param: "",
-                            errInfo: "建筑面积错误，如 300.00"
-                        },
-                        {
-                            limit: "maxLength",
-                            param: "12",
-                            errInfo: "建筑面积数字长度不能超过6位"
-                        }
+                    {
+                        limit: "money",
+                        param: "",
+                        errInfo: "建筑面积错误，如 300.00"
+                    },
+                    {
+                        limit: "maxLength",
+                        param: "12",
+                        errInfo: "建筑面积数字长度不能超过6位"
+                    }
                     ],
                     'editRoomInfo.roomArea': [{
                         limit: "required",
                         param: "",
                         errInfo: "室内面积不能为空"
                     },
-                        {
-                            limit: "money",
-                            param: "",
-                            errInfo: "室内面积错误，如 300.00"
-                        },
+                    {
+                        limit: "money",
+                        param: "",
+                        errInfo: "室内面积错误，如 300.00"
+                    },
                     ],
                     'editRoomInfo.feeCoefficient': [{
                         limit: "required",
                         param: "",
                         errInfo: "算费系数不能为空"
                     },
-                        {
-                            limit: "money",
-                            param: "",
-                            errInfo: "算费系数错误，如 300.00"
-                        }
+                    {
+                        limit: "money",
+                        param: "",
+                        errInfo: "算费系数错误，如 300.00"
+                    }
                     ],
                     'editRoomInfo.roomSubType': [{
                         limit: "required",
@@ -200,19 +191,19 @@
                 });
             },
             editRoom: function () {
-                if (!vc.component.editRoomValidate()) {
+                if (!$that.editRoomValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
-                vc.component.editRoomInfo.apartment = vc.component.editRoomInfo.apartment1 + vc.component.editRoomInfo.apartment2;
-                if ('' == vc.component.editRoomInfo.unitPrice || null == vc.component.editRoomInfo.unitPrice) {
-                    vc.component.editRoomInfo.unitPrice = '0';
+                $that.editRoomInfo.apartment = $that.editRoomInfo.apartment1 + $that.editRoomInfo.apartment2;
+                if ('' == $that.editRoomInfo.unitPrice || null == $that.editRoomInfo.unitPrice) {
+                    $that.editRoomInfo.unitPrice = '0';
                 }
                 vc.http.apiPost(
                     '/room.updateRoom',
-                    JSON.stringify(vc.component.editRoomInfo), {
-                        emulateJSON: true
-                    },
+                    JSON.stringify($that.editRoomInfo), {
+                    emulateJSON: true
+                },
                     function (json, res) {
                         //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
                         let _json = JSON.parse(json);
@@ -220,7 +211,7 @@
                             //关闭model
                             $('#editRoomModel').modal('hide');
                             vc.emit('room', 'loadData', {
-                                floorId: vc.component.editRoomInfo.floorId
+                                floorId: $that.editRoomInfo.floorId
                             });
                             vc.toast("修改成功");
                             return;
@@ -239,7 +230,7 @@
                     _item.attrId = '';
                     _item.value = '';
                 });
-                vc.component.editRoomInfo = {
+                $that.editRoomInfo = {
                     roomId: '',
                     unitId: '',
                     roomNum: '',
@@ -262,4 +253,4 @@
             }
         }
     });
-})(window.vc, window.vc.component);
+})(window.vc, window.$that);

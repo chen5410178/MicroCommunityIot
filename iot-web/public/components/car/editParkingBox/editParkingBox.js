@@ -19,16 +19,16 @@
         },
         _initEvent: function() {
             vc.on('editParkingBox', 'openEditParkingBoxModal', function(_params) {
-                vc.component.refreshEditParkingBoxInfo();
+                $that.refreshEditParkingBoxInfo();
                 $('#editParkingBoxModel').modal('show');
-                vc.copyObject(_params, vc.component.editParkingBoxInfo);
-                vc.component.editParkingBoxInfo.communityId = vc.getCurrentCommunity().communityId;
+                vc.copyObject(_params, $that.editParkingBoxInfo);
+                $that.editParkingBoxInfo.communityId = vc.getCurrentCommunity().communityId;
             });
         },
         methods: {
             editParkingBoxValidate: function() {
                 return vc.validate.validate({
-                    editParkingBoxInfo: vc.component.editParkingBoxInfo
+                    editParkingBoxInfo: $that.editParkingBoxInfo
                 }, {
                     'editParkingBoxInfo.boxName': [{
                             limit: "required",
@@ -69,13 +69,13 @@
                 });
             },
             editParkingBox: function() {
-                if (!vc.component.editParkingBoxValidate()) {
+                if (!$that.editParkingBoxValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
                 vc.http.apiPost(
                     '/parkingBox.updateParkingBox',
-                    JSON.stringify(vc.component.editParkingBoxInfo), {
+                    JSON.stringify($that.editParkingBoxInfo), {
                         emulateJSON: true
                     },
                     function(json, res) {
@@ -116,7 +116,7 @@
             },
             refreshEditParkingBoxInfo: function() {
                 let _parkingAreas = $that.editParkingBoxInfo.parkingAreas;
-                vc.component.editParkingBoxInfo = {
+                $that.editParkingBoxInfo = {
                     boxId: '',
                     boxName: '',
                     tempCarIn: '',
@@ -131,4 +131,4 @@
             }
         }
     });
-})(window.vc, window.vc.component);
+})(window.vc, window.$that);
