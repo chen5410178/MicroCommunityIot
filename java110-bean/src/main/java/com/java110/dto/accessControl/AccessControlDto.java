@@ -44,6 +44,9 @@ public class AccessControlDto extends PageDto implements Serializable {
     private String personId;
 
     private String personType;
+    private String promptSwitch;
+    private String normalPrompt;
+    private String owePrompt;
 
 
     public String getMachineMac() {
@@ -205,5 +208,29 @@ public class AccessControlDto extends PageDto implements Serializable {
 
     public void setPersonType(String personType) {
         this.personType = personType;
+    }
+
+    public String getPromptSwitch() {
+        return promptSwitch;
+    }
+
+    public void setPromptSwitch(String promptSwitch) {
+        this.promptSwitch = promptSwitch;
+    }
+
+    public String getNormalPrompt() {
+        return normalPrompt;
+    }
+
+    public void setNormalPrompt(String normalPrompt) {
+        this.normalPrompt = normalPrompt;
+    }
+
+    public String getOwePrompt() {
+        return owePrompt;
+    }
+
+    public void setOwePrompt(String owePrompt) {
+        this.owePrompt = owePrompt;
     }
 }

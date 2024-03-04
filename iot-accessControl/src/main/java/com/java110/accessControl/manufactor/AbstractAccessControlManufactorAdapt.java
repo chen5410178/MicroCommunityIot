@@ -1,18 +1,22 @@
 package com.java110.accessControl.manufactor;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.bean.dto.file.FileDto;
 import com.java110.bean.dto.room.RoomDto;
 import com.java110.core.cache.MappingCache;
+import com.java110.core.client.RestTemplate;
 import com.java110.core.constant.MappingConstant;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.MqttFactory;
+import com.java110.core.factory.PropertyHttpFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.accessControl.AccessControlOweFeeDto;
 import com.java110.dto.accessControl.MachineHeartbeatDto;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.accessControlFloor.AccessControlFloorDto;
@@ -30,9 +34,12 @@ import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.accessControlInout.AccessControlInoutPo;
 import com.java110.po.accessControlLog.AccessControlLogPo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractAccessControlManufactorAdapt implements IAccessControlManufactor {
 
@@ -73,6 +80,10 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
 
     @Autowired
     private IRoomV1InnerServiceSMO roomV1InnerServiceSMOImpl;
+
+    @Autowired
+    private RestTemplate outRestTemplate;
+
 
     @Override
     public boolean initMachine(AccessControlDto accessControlDto) {
@@ -187,17 +198,17 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
                                   String reqParam,
                                   String userId,
                                   String userName) {
-        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName,AccessControlLogDto.CMD_ADD_FACE);
+        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName, AccessControlLogDto.CMD_ADD_FACE);
     }
 
     protected void saveUpdateFaceLog(String logId,
-                                  String machineId,
-                                  String logAction,
-                                  String communityId,
-                                  String reqParam,
-                                  String userId,
-                                  String userName) {
-        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName,AccessControlLogDto.CMD_UPDATE_FACE);
+                                     String machineId,
+                                     String logAction,
+                                     String communityId,
+                                     String reqParam,
+                                     String userId,
+                                     String userName) {
+        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName, AccessControlLogDto.CMD_UPDATE_FACE);
     }
 
     protected void saveDeleteFaceLog(String logId,
@@ -207,17 +218,17 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
                                      String reqParam,
                                      String userId,
                                      String userName) {
-        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName,AccessControlLogDto.CMD_DELETE_FACE);
+        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName, AccessControlLogDto.CMD_DELETE_FACE);
     }
 
     protected void saveRebootAcLog(String logId,
-                                     String machineId,
-                                     String logAction,
-                                     String communityId,
-                                     String reqParam,
-                                     String userId,
-                                     String userName) {
-        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName,AccessControlLogDto.CMD_REBOOT);
+                                   String machineId,
+                                   String logAction,
+                                   String communityId,
+                                   String reqParam,
+                                   String userId,
+                                   String userName) {
+        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName, AccessControlLogDto.CMD_REBOOT);
     }
 
     protected void saveOpenDoorLog(String logId,
@@ -227,7 +238,7 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
                                    String reqParam,
                                    String userId,
                                    String userName) {
-        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName,AccessControlLogDto.CMD_OPEN_DOOR);
+        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName, AccessControlLogDto.CMD_OPEN_DOOR);
     }
 
 
@@ -280,21 +291,21 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
                 new MachineHeartbeatDto(machineCode, DateUtil.getFormatTimeStringA(heartbeatTime)));
     }
 
-    protected void saveOpenDoorResult(String machineCode,
-                                      String facePath,
-                                      String personId,
-                                      String name,
-                                      String openTypeCd,
-                                      int similar) {
-        saveOpenDoorResult(machineCode, GenerateCodeFactory.getGeneratorId("11"), facePath, personId, name, openTypeCd, similar);
+    protected AccessControlOweFeeDto saveOpenDoorResult(String machineCode,
+                                                        String facePath,
+                                                        String personId,
+                                                        String name,
+                                                        String openTypeCd,
+                                                        int similar) {
+        return saveOpenDoorResult(machineCode, GenerateCodeFactory.getGeneratorId("11"), facePath, personId, name, openTypeCd, similar);
     }
 
-    protected void saveOpenDoorResult(String machineCode, String inoutId,
-                                      String facePath,
-                                      String personId,
-                                      String name,
-                                      String openTypeCd,
-                                      int similar) {
+    protected AccessControlOweFeeDto saveOpenDoorResult(String machineCode, String inoutId,
+                                                        String facePath,
+                                                        String personId,
+                                                        String name,
+                                                        String openTypeCd,
+                                                        int similar) {
 
         AccessControlDto accessControlDto = new AccessControlDto();
         accessControlDto.setMachineCode(machineCode);
@@ -334,6 +345,33 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         accessControlInoutPo.setSimilar(similar + "");
         accessControlInoutPo.setTel(accessControlFaceDto.getTel());
         accessControlInoutV1InnerServiceSMOImpl.saveAccessControlInout(accessControlInoutPo);
+
+        //todo 不需要提示
+        if ("OFF".equals(accessControlDtos.get(0).getPromptSwitch())) {
+            return new AccessControlOweFeeDto(-1, "不需要提示", "", "", new JSONArray());
+        }
+        JSONObject param = new JSONObject();
+        param.put("ownerTel", accessControlFaceDto.getTel());
+        param.put("communityId", accessControlDtos.get(0).getCommunityId());
+
+        Map<String, String> headers = new HashMap<>();
+
+        ResponseEntity<String> tmpResponseEntity = PropertyHttpFactory.post(outRestTemplate, "/api/attendanceClasses.checkIn", param.toJSONString(), headers);
+
+        JSONObject paramOut = JSONObject.parseObject(tmpResponseEntity.getBody());
+
+        JSONArray data = paramOut.getJSONArray("data");
+
+        if (ListUtil.isNull(data)) {
+            return new AccessControlOweFeeDto(0, accessControlDtos.get(0).getNormalPrompt(),
+                    accessControlDtos.get(0).getNormalPrompt()
+                    , accessControlDtos.get(0).getOwePrompt(), new JSONArray());
+        }
+
+        return new AccessControlOweFeeDto(1, accessControlDtos.get(0).getOwePrompt(),
+                accessControlDtos.get(0).getNormalPrompt()
+                , accessControlDtos.get(0).getOwePrompt(), data);
+
 
     }
 
@@ -458,5 +496,6 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         }
         return true;
     }
+
 
 }

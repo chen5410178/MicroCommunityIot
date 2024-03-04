@@ -64,6 +64,9 @@
                             <vc:i18n name='Mac' namespace='accessControlManage'></vc:i18n>
                         </th>
                         <th class="text-center">
+                            <vc:i18n name='开门提示' namespace='accessControlManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
                             <vc:i18n name='方向' namespace='accessControlManage'></vc:i18n>
                         </th>
                         <th class="text-center">
@@ -89,6 +92,7 @@
                         <td class="text-center">{{accessControl.machineName}}</td>
                         <td class="text-center">{{accessControl.machineIp || '-'}}</td>
                         <td class="text-center">{{accessControl.machineMac || '-'}}</td>
+                        <td class="text-center">{{accessControl.promptSwitch == 'ON'?'是':'否'}}</td>
                         <td class="text-center">{{accessControl.direction == '3306'?'进':'出'}}</td>
                         <td class="text-center">{{accessControl.implBean}}</td>
                         <td class="text-center">{{accessControl.locationName}}</td>
@@ -132,7 +136,6 @@
                                 </div>
                             </div>
                         </td>
-
                     </tr>
                 </tbody>
             </table>

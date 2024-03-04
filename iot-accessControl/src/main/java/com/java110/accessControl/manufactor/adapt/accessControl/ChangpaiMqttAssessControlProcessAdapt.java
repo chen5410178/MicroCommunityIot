@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.java110.accessControl.manufactor.AbstractAccessControlManufactorAdapt;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.MqttFactory;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.accessControl.AccessControlOweFeeDto;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -329,10 +332,57 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
         }
 
         int similar = 0;
-        if(paramJson.containsKey("match_result")){
+        if (paramJson.containsKey("match_result")) {
             similar = paramJson.getIntValue("match_result");
         }
-        saveOpenDoorResult(machineCode, images, staffId, staffName, OPEN_TYPE_FACE, similar);
+        AccessControlOweFeeDto accessControlOweFeeDto = saveOpenDoorResult(machineCode, images, staffId, staffName, OPEN_TYPE_FACE, similar);
+        JSONObject result = new JSONObject();
+        result.put("reply", "ACK");
+        result.put("cmd", "face");
+        result.put("code", 0);
+        result.put("sequence_no", paramJson.getString("sequence_no"));
+        result.put("cap_time", paramJson.getString("cap_time"));
+
+        if (accessControlOweFeeDto.getCode() < 0) {
+            MqttFactory.publish(RESPONSE_FACE + paramJson.getString("device_sn"), result.toJSONString());
+            return;
+        }
+
+        JSONObject tts = new JSONObject();
+        tts.put("text",  accessControlOweFeeDto.getMsg());
+        result.put("tts", tts);
+        MqttFactory.publish(RESPONSE_FACE + paramJson.getString("device_sn"), result.toJSONString());
+
+        String viewText = "{\n" +
+                " \"cmd\": \"text display\",\n" +
+                " \"coding_type\":\"utf8\",\n" +
+                " \"text_list\":[\n" +
+                "  {\n" +
+                "   \"position\":{\n" +
+                "    \"x\":40,\n" +
+                "    \"y\":800\n" +
+                "   },\n" +
+                "   \"alive_time\": 3000,\n" +
+                "   \"font_size\": 50,\n" +
+                "   \"font_spacing\": 1,\n" +
+                "   \"font_color\": \"0xff00ff00\",\n" +
+                "   \"text\":\"" + dataObj.getString("person_name") + "\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "   \"position\":{\n" +
+                "    \"x\":10,\n" +
+                "    \"y\":850\n" +
+                "   },\n" +
+                "   \"alive_time\": 3000,\n" +
+                "   \"font_size\": 50,\n" +
+                "   \"font_spacing\": 1,\n" +
+                "   \"font_color\": \"0xff00ff00\",\n" +
+                "   \"text\":\"" + accessControlOweFeeDto.getMsg() + "\"\n" +
+                "  }\n" +
+                " ]\n" +
+                "}";
+        MqttFactory.publish(REQUEST_FACE.replace(SN, paramJson.getString("device_sn")), viewText);
+
     }
 
 

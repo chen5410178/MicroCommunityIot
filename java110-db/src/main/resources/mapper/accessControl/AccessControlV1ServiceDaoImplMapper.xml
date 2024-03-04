@@ -8,9 +8,11 @@
     <!-- 保存门禁信息 add by wuxw 2018-07-03 -->
     <insert id="saveAccessControlInfo" parameterType="Map">
         insert into access_control(
-        machine_mac,heartbeat_time,impl_bean,machine_id,machine_code,location_name,location_id,community_id,machine_name,machine_ip,direction
+        machine_mac,heartbeat_time,impl_bean,machine_id,machine_code,location_name,location_id,community_id,machine_name,machine_ip,direction,
+        prompt_switch,normal_prompt,owe_prompt
         ) values (
-        #{machineMac},#{heartbeatTime},#{implBean},#{machineId},#{machineCode},#{locationName},#{locationId},#{communityId},#{machineName},#{machineIp},#{direction}
+        #{machineMac},#{heartbeatTime},#{implBean},#{machineId},#{machineCode},#{locationName},#{locationId},#{communityId},#{machineName},#{machineIp},#{direction},
+        #{promptSwitch},#{normalPrompt},#{owePrompt}
         )
     </insert>
 
@@ -22,10 +24,11 @@
         machineCode,t.location_name,t.location_name locationName,t.location_id,t.location_id
         locationId,t.status_cd,t.status_cd statusCd,t.create_time createTime,t.community_id,t.community_id
         communityId,t.machine_name,t.machine_name machineName,t.machine_ip,t.machine_ip machineIp,t.direction,hm.hm_name
-        implBeanName
+        implBeanName,t.prompt_switch promptSwitch,t.normal_prompt normalPrompt,t.owe_prompt owePrompt
         from access_control t
         left join hardware_manufacturer hm on t.impl_bean = hm.hm_id and hm.status_cd = '0'
         where 1 =1
+
         <if test="machineMac !=null and machineMac != ''">
             and t.machine_mac= #{machineMac}
         </if>
@@ -62,6 +65,15 @@
         <if test="direction !=null and direction != ''">
             and t.direction= #{direction}
         </if>
+        <if test="promptSwitch !=null and promptSwitch != ''">
+            and t.prompt_switch= #{promptSwitch}
+        </if>
+        <if test="normalPrompt !=null and normalPrompt != ''">
+            and t.normal_prompt= #{normalPrompt}
+        </if>
+        <if test="owePrompt !=null and owePrompt != ''">
+            and t.owe_prompt= #{owePrompt}
+        </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
@@ -94,9 +106,7 @@
         <if test="locationId !=null and locationId != ''">
             , t.location_id= #{locationId}
         </if>
-        <if test="communityId !=null and communityId != ''">
-            , t.community_id= #{communityId}
-        </if>
+
         <if test="machineName !=null and machineName != ''">
             , t.machine_name= #{machineName}
         </if>
@@ -106,9 +116,21 @@
         <if test="direction !=null and direction != ''">
             , t.direction= #{direction}
         </if>
+        <if test="promptSwitch !=null and promptSwitch != ''">
+            , t.prompt_switch= #{promptSwitch}
+        </if>
+        <if test="normalPrompt !=null and normalPrompt != ''">
+            , t.normal_prompt= #{normalPrompt}
+        </if>
+        <if test="owePrompt !=null and owePrompt != ''">
+            , t.owe_prompt= #{owePrompt}
+        </if>
         where 1=1
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
         </if>
 
     </update>
@@ -153,6 +175,15 @@
         </if>
         <if test="direction !=null and direction != ''">
             and t.direction= #{direction}
+        </if>
+        <if test="promptSwitch !=null and promptSwitch != ''">
+            and t.prompt_switch= #{promptSwitch}
+        </if>
+        <if test="normalPrompt !=null and normalPrompt != ''">
+            and t.normal_prompt= #{normalPrompt}
+        </if>
+        <if test="owePrompt !=null and owePrompt != ''">
+            and t.owe_prompt= #{owePrompt}
         </if>
 
 
@@ -270,7 +301,8 @@
         heartbeatTime,t.impl_bean implBean,t.machine_id machineId,t.machine_code
         machineCode,t.location_name locationName,t.location_id
         locationId,t.status_cd statusCd,t.create_time createTime,t.community_id
-        communityId,t.machine_name machineName,t.machine_ip machineIp,t.direction
+        communityId,t.machine_name machineName,t.machine_ip machineIp,t.direction,
+        t.prompt_switch promptSwitch,t.normal_prompt normalPrompt,t.owe_prompt owePrompt
         from access_control t
         left join access_control_face acf on t.machine_id = acf.machine_id and acf.status_cd = '0'
         where 1=1

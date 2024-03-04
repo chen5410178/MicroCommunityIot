@@ -41,6 +41,10 @@ public class AccessControlPo implements Serializable {
     private String machineIp;
     private String direction;
 
+    private String promptSwitch;
+    private String normalPrompt;
+    private String owePrompt;
+
     public String getMachineMac() {
         return machineMac;
     }
@@ -137,5 +141,27 @@ public class AccessControlPo implements Serializable {
         this.direction = direction;
     }
 
+    public String getPromptSwitch() {
+        return promptSwitch;
+    }
 
+    public void setPromptSwitch(String promptSwitch) {
+        this.promptSwitch = promptSwitch;
+    }
+
+    public String getNormalPrompt() {
+        return normalPrompt;
+    }
+
+    public void setNormalPrompt(String normalPrompt) {
+        this.normalPrompt = normalPrompt;
+    }
+
+    public String getOwePrompt() {
+        return owePrompt;
+    }
+
+    public void setOwePrompt(String owePrompt) {
+        this.owePrompt = owePrompt;
+    }
 }

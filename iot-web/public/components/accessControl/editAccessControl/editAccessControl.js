@@ -12,6 +12,9 @@
                 implBean: '',
                 locationId: '',
                 locationName: '',
+                promptSwitch: '',
+                    normalPrompt: '',
+                    owePrompt: '',
                 locations: [],
                 hms: []
             }
@@ -134,6 +137,9 @@
                     implBean: '',
                     locationId: '',
                     locationName: '',
+                    promptSwitch: '',
+                    normalPrompt: '',
+                    owePrompt: '',
                     locations: [],
                     hms: []
                 }
