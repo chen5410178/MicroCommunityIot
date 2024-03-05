@@ -356,7 +356,8 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
 
         Map<String, String> headers = new HashMap<>();
 
-        ResponseEntity<String> tmpResponseEntity = PropertyHttpFactory.post(outRestTemplate, "/api/attendanceClasses.checkIn", param.toJSONString(), headers);
+        ResponseEntity<String> tmpResponseEntity = null;
+        tmpResponseEntity = PropertyHttpFactory.post(outRestTemplate, "/api/fee.listOwnerTelOweFee", param.toJSONString(), headers);
 
         JSONObject paramOut = JSONObject.parseObject(tmpResponseEntity.getBody());
 
