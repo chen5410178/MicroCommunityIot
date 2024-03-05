@@ -25,8 +25,10 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.intf.car.IParkingSpaceMachineRelV1InnerServiceSMO;
 import com.java110.intf.car.IParkingSpaceMachineV1InnerServiceSMO;
 import com.java110.po.parkingSpaceMachine.ParkingSpaceMachinePo;
+import com.java110.po.parkingSpaceMachineRel.ParkingSpaceMachineRelPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +50,9 @@ public class DeleteParkingSpaceMachineCmd extends Cmd {
     @Autowired
     private IParkingSpaceMachineV1InnerServiceSMO parkingSpaceMachineV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IParkingSpaceMachineRelV1InnerServiceSMO parkingSpaceMachineRelV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
@@ -65,6 +70,10 @@ public class DeleteParkingSpaceMachineCmd extends Cmd {
         if (flag < 1) {
             throw new CmdException("删除数据失败");
         }
+
+        ParkingSpaceMachineRelPo parkingSpaceMachineRelPo = new ParkingSpaceMachineRelPo();
+        parkingSpaceMachineRelPo.setMachineId(parkingSpaceMachinePo.getMachineId());
+        parkingSpaceMachineRelV1InnerServiceSMOImpl.deleteParkingSpaceMachineRel(parkingSpaceMachineRelPo);
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }

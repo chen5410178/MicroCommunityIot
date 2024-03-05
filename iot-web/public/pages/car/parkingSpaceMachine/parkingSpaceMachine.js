@@ -63,7 +63,7 @@
                 vc.jumpToPage('/#/pages/car/addParkingSpaceMachine')
             },
             _openEditParkingSpaceMachineModel: function (_parkingSpaceMachine) {
-                vc.emit('editParkingSpaceMachine', 'openEditParkingSpaceMachineModal', _parkingSpaceMachine);
+                vc.jumpToPage('/#/pages/car/editParkingSpaceMachine?machineId='+_parkingSpaceMachine.machineId)
             },
             _openDeleteParkingSpaceMachineModel: function (_parkingSpaceMachine) {
                 vc.emit('deleteParkingSpaceMachine', 'openDeleteParkingSpaceMachineModal', _parkingSpaceMachine);

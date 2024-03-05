@@ -112,6 +112,7 @@ public class SaveParkingSpaceMachineCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
         ParkingSpaceMachinePo parkingSpaceMachinePo = BeanConvertUtil.covertBean(reqJson, ParkingSpaceMachinePo.class);
+        parkingSpaceMachinePo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         parkingSpaceMachinePo.setMachineId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         int flag = parkingSpaceMachineV1InnerServiceSMOImpl.saveParkingSpaceMachine(parkingSpaceMachinePo);
 

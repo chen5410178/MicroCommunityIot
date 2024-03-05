@@ -26,6 +26,11 @@ public class ParkingSpaceMachineDto extends PageDto implements Serializable {
     private String machineName;
     private String machineIp;
 
+    private String heartbeatTime;
+
+    private String stateName;
+
+
     private List<ParkingSpaceMachineRelDto> parkingSpaces;
 
 
@@ -121,5 +126,21 @@ public class ParkingSpaceMachineDto extends PageDto implements Serializable {
 
     public void setImplBeanName(String implBeanName) {
         this.implBeanName = implBeanName;
+    }
+
+    public String getHeartbeatTime() {
+        return heartbeatTime;
+    }
+
+    public void setHeartbeatTime(String heartbeatTime) {
+        this.heartbeatTime = heartbeatTime;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
     }
 }

@@ -1,0 +1,81 @@
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>
+            <vc:i18n name="修改地磁" namespace="editParkingSpaceMachine"></vc:i18n>
+        </h5>
+        <div class="ibox-tools" style="top:10px;">
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label text-right">
+                <vc:i18n name='设备名称' namespace='editParkingSpaceMachine'></vc:i18n>
+            </label>
+            <div class="col-sm-4">
+                <input v-model="editParkingSpaceMachineInfo.machineName" type="text"
+                    :placeholder="vc.i18n('必填，请填写设备名称','editParkingSpaceMachine')" class="form-control">
+            </div>
+            <label class="col-sm-2 col-form-label text-right">
+                <vc:i18n name='设备编码' namespace='editParkingSpaceMachine'></vc:i18n>
+            </label>
+            <div class="col-sm-4">
+                <input v-model="editParkingSpaceMachineInfo.machineCode" type="text"
+                    :placeholder="vc.i18n('必填，请填写设备编码','editParkingSpaceMachine')" class="form-control">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label text-right">
+                <vc:i18n name='设备IP' namespace='editParkingSpaceMachine'></vc:i18n>
+            </label>
+            <div class="col-sm-4">
+                <input v-model="editParkingSpaceMachineInfo.machineIp" type="text"
+                    :placeholder="vc.i18n('选填，请填写设备IP','editParkingSpaceMachine')" class="form-control">
+            </div>
+            <label class="col-sm-2 col-form-label text-right">
+                <vc:i18n name='设备mac' namespace='editParkingSpaceMachine'></vc:i18n>
+            </label>
+            <div class="col-sm-4">
+                <input v-model="editParkingSpaceMachineInfo.machineMac" type="text"
+                    :placeholder="vc.i18n('选填，请填写设备mac','editParkingSpaceMachine')" class="form-control">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label text-right">
+                <vc:i18n name='工牌厂家' namespace='editParkingSpaceMachine'></vc:i18n>
+            </label>
+            <div class="col-sm-4">
+                <select class="custom-select" v-model="editParkingSpaceMachineInfo.implBean">
+                    <option selected disabled value="">
+                        {{vc.i18n('必填，请选择工牌厂家','editParkingSpaceMachine')}}
+                    </option>
+                    <option :value="item.factoryId" v-for="(item,index) in editParkingSpaceMachineInfo.factorys">
+                        {{item.factoryName}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label text-right">
+                <vc:i18n name='绑定车位' namespace='editParkingSpaceMachine'></vc:i18n>
+            </label>
+            <div class="col-sm-10 flex justify-start">
+                <div class="margin-right" v-for="(item,index) in editParkingSpaceMachineInfo.parkingSpaces" :key="index">{{item.psName}} <span class="fa fa-remove hand" @click="_deleteParkingSpace(item)" style="color: #dc3545;"></span></div>
+                <div class="margin-left">
+                    <button type="button" class="btn btn-primary btn-sm" @click="openSearchParkingSpaceModel()">选择车位
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <button class="btn btn-primary float-right" type="button" @click="_updateParkingSpaceMachine()">
+                <vc:i18n name="保存"></vc:i18n>
+            </button>
+            <button type="button" class="btn btn-warning float-right" style="margin-right:20px;" @click="vc.goBack()">
+                <vc:i18n name="取消"></vc:i18n>
+            </button>
+        </div>
+    </div>
+
+    <vc:create path="car/searchParkingSpace" emitChooseParkingSpace="editParkingSpaceMachine"
+        emitLoadData="editParkingSpaceMachine" parkingSpaceFlag="" showSearchCondition="true">
+    </vc:create>
+</div>

@@ -22,14 +22,16 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.*;
+import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.parkingSpaceMachineRel.ParkingSpaceMachineRelDto;
 import com.java110.intf.car.IParkingSpaceMachineRelV1InnerServiceSMO;
 import com.java110.intf.car.IParkingSpaceMachineV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.parkingSpaceMachine.ParkingSpaceMachineDto;
+
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ArrayList;
 import org.springframework.http.ResponseEntity;
@@ -76,6 +78,8 @@ public class ListParkingSpaceMachineCmd extends Cmd {
            if (count > 0) {
                parkingSpaceMachineDtos = parkingSpaceMachineV1InnerServiceSMOImpl.queryParkingSpaceMachines(parkingSpaceMachineDto);
                refreshParkingSpaces(parkingSpaceMachineDtos);
+               freshMachineStateName(parkingSpaceMachineDtos);
+
            } else {
                parkingSpaceMachineDtos = new ArrayList<>();
            }
@@ -85,6 +89,32 @@ public class ListParkingSpaceMachineCmd extends Cmd {
            ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
            cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void freshMachineStateName(List<ParkingSpaceMachineDto> parkingSpaceMachineDtos) {
+        if (ListUtil.isNull(parkingSpaceMachineDtos)) {
+            return;
+        }
+        for (ParkingSpaceMachineDto parkingSpaceMachineDto : parkingSpaceMachineDtos) {
+            String heartbeatTime = parkingSpaceMachineDto.getHeartbeatTime();
+            try {
+                if (StringUtil.isEmpty(heartbeatTime)) {
+                    parkingSpaceMachineDto.setStateName("设备离线");
+                } else {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(DateUtil.getDateFromString(heartbeatTime, DateUtil.DATE_FORMATE_STRING_A));
+                    calendar.add(Calendar.MINUTE, 2);
+                    if (calendar.getTime().getTime() <= DateUtil.getCurrentDate().getTime()) {
+                        parkingSpaceMachineDto.setStateName("设备离线");
+                    } else {
+                        parkingSpaceMachineDto.setStateName("设备在线");
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+                parkingSpaceMachineDto.setStateName("设备离线");
+            }
+        }
     }
 
     private void refreshParkingSpaces(List<ParkingSpaceMachineDto> parkingSpaceMachineDtos) {
