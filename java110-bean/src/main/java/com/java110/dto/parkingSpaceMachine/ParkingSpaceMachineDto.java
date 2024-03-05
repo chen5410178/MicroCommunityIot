@@ -1,9 +1,11 @@
 package com.java110.dto.parkingSpaceMachine;
 
 import com.java110.bean.dto.PageDto;
+import com.java110.dto.parkingSpaceMachineRel.ParkingSpaceMachineRelDto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName FloorDto
@@ -22,6 +24,8 @@ public class ParkingSpaceMachineDto extends PageDto implements Serializable {
     private String communityId;
     private String machineName;
     private String machineIp;
+
+    private List<ParkingSpaceMachineRelDto> parkingSpaces;
 
 
     private Date createTime;
@@ -100,5 +104,13 @@ public class ParkingSpaceMachineDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public List<ParkingSpaceMachineRelDto> getParkingSpaces() {
+        return parkingSpaces;
+    }
+
+    public void setParkingSpaces(List<ParkingSpaceMachineRelDto> parkingSpaces) {
+        this.parkingSpaces = parkingSpaces;
     }
 }

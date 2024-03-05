@@ -24,6 +24,9 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.dto.parkingSpaceMachineRel.ParkingSpaceMachineRelDto;
+import com.java110.intf.car.IParkingSpaceMachineRelV1InnerServiceSMO;
 import com.java110.intf.car.IParkingSpaceMachineV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.parkingSpaceMachine.ParkingSpaceMachineDto;
@@ -52,6 +55,9 @@ public class ListParkingSpaceMachineCmd extends Cmd {
     @Autowired
     private IParkingSpaceMachineV1InnerServiceSMO parkingSpaceMachineV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IParkingSpaceMachineRelV1InnerServiceSMO parkingSpaceMachineRelV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -69,6 +75,7 @@ public class ListParkingSpaceMachineCmd extends Cmd {
 
            if (count > 0) {
                parkingSpaceMachineDtos = parkingSpaceMachineV1InnerServiceSMOImpl.queryParkingSpaceMachines(parkingSpaceMachineDto);
+               refreshParkingSpaces(parkingSpaceMachineDtos);
            } else {
                parkingSpaceMachineDtos = new ArrayList<>();
            }
@@ -78,5 +85,34 @@ public class ListParkingSpaceMachineCmd extends Cmd {
            ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
            cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void refreshParkingSpaces(List<ParkingSpaceMachineDto> parkingSpaceMachineDtos) {
+
+        if(ListUtil.isNull(parkingSpaceMachineDtos)){
+            return;
+        }
+
+        List<String> machineIds = new ArrayList<>();
+
+        for(ParkingSpaceMachineDto parkingSpaceMachineDto : parkingSpaceMachineDtos){
+            machineIds.add(parkingSpaceMachineDto.getMachineId());
+        }
+
+        ParkingSpaceMachineRelDto parkingSpaceMachineRelDto = new ParkingSpaceMachineRelDto();
+        parkingSpaceMachineRelDto.setMachineIds(machineIds.toArray(new String[machineIds.size()]));
+        List<ParkingSpaceMachineRelDto> parkingSpaceMachineRelDtos
+                = parkingSpaceMachineRelV1InnerServiceSMOImpl.queryParkingSpaceMachineRels(parkingSpaceMachineRelDto);
+
+        List<ParkingSpaceMachineRelDto> tmpParkingSpaceMachineRelDtos = null;
+        for(ParkingSpaceMachineDto parkingSpaceMachineDto : parkingSpaceMachineDtos){
+            tmpParkingSpaceMachineRelDtos = new ArrayList<>();
+            for(ParkingSpaceMachineRelDto tmpParkingSpaceMachineRelDto: parkingSpaceMachineRelDtos){
+                if(parkingSpaceMachineDto.getMachineId().equals(tmpParkingSpaceMachineRelDto.getMachineId())){
+                    tmpParkingSpaceMachineRelDtos.add(tmpParkingSpaceMachineRelDto);
+                }
+            }
+            parkingSpaceMachineDto.setParkingSpaces(tmpParkingSpaceMachineRelDtos);
+        }
     }
 }

@@ -15,10 +15,17 @@ import java.util.Date;
  **/
 public class ParkingSpaceMachineRelDto extends PageDto implements Serializable {
 
+    public static final String PS_STATE_FREE = "FREE";//车位状态，FREE 空闲 OCCUPY 占用
+    public static final String PS_STATE_OCCUPY = "OCCUPY";//车位状态，FREE 空闲 OCCUPY 占用
+
+    public static final String LOCK_STATE_ON = "ON"; // 开
+    public static final String LOCK_STATE_OFF = "OFF"; // 关
+
     private String lockBattery;
     private String relId;
     private String psState;
     private String machineId;
+    private String[] machineIds;
     private String psName;
     private String carNum;
     private String psId;
@@ -136,5 +143,13 @@ public class ParkingSpaceMachineRelDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String[] getMachineIds() {
+        return machineIds;
+    }
+
+    public void setMachineIds(String[] machineIds) {
+        this.machineIds = machineIds;
     }
 }

@@ -35,6 +35,12 @@
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}
         </if>
+        <if test="machineIds != null ">
+            and t.machine_id in
+            <foreach collection="machineIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
         <if test="psName !=null and psName != ''">
             and t.ps_name= #{psName}
         </if>
@@ -79,9 +85,7 @@
         <if test="psState !=null and psState != ''">
             , t.ps_state= #{psState}
         </if>
-        <if test="machineId !=null and machineId != ''">
-            , t.machine_id= #{machineId}
-        </if>
+
         <if test="psName !=null and psName != ''">
             , t.ps_name= #{psName}
         </if>
@@ -94,9 +98,7 @@
         <if test="updateTime !=null and updateTime != ''">
             , t.update_time= #{updateTime}
         </if>
-        <if test="communityId !=null and communityId != ''">
-            , t.community_id= #{communityId}
-        </if>
+
         <if test="lockState !=null and lockState != ''">
             , t.lock_state= #{lockState}
         </if>
@@ -106,6 +108,12 @@
         where 1=1
         <if test="relId !=null and relId != ''">
             and t.rel_id= #{relId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
         </if>
 
     </update>
@@ -126,6 +134,12 @@
         </if>
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}
+        </if>
+        <if test="machineIds != null ">
+            and t.machine_id in
+            <foreach collection="machineIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
         </if>
         <if test="psName !=null and psName != ''">
             and t.ps_name= #{psName}

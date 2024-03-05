@@ -15,6 +15,7 @@
  */
 package com.java110.car.cmd.parkingSpaceMachine;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
@@ -23,10 +24,16 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
+import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.dto.parkingSpaceMachineRel.ParkingSpaceMachineRelDto;
+import com.java110.intf.car.IParkingSpaceMachineRelV1InnerServiceSMO;
 import com.java110.intf.car.IParkingSpaceMachineV1InnerServiceSMO;
 import com.java110.po.parkingSpaceMachine.ParkingSpaceMachinePo;
+import com.java110.po.parkingSpaceMachineRel.ParkingSpaceMachineRelPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,11 +58,29 @@ public class UpdateParkingSpaceMachineCmd extends Cmd {
     @Autowired
     private IParkingSpaceMachineV1InnerServiceSMO parkingSpaceMachineV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IParkingSpaceMachineRelV1InnerServiceSMO parkingSpaceMachineRelV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
 
+        if (reqJson.containsKey("parkingSpaces")) {
+            throw new CmdException("未包含车位");
+        }
+
+        JSONArray parkingSpaces = reqJson.getJSONArray("parkingSpaces");
+
+        if (ListUtil.isNull(parkingSpaces)) {
+            throw new CmdException("未包含车位");
+        }
+        JSONObject psObj = null;
+        for (int psIndex = 0; psIndex < parkingSpaces.size(); psIndex++) {
+            psObj = parkingSpaces.getJSONObject(psIndex);
+            Assert.hasKeyAndValue(psObj, "psId", "未包含车位ID");
+            Assert.hasKeyAndValue(psObj, "psName", "未包含车位名称");
+        }
     }
 
     @Override
@@ -67,6 +92,33 @@ public class UpdateParkingSpaceMachineCmd extends Cmd {
 
         if (flag < 1) {
             throw new CmdException("更新数据失败");
+        }
+
+        ParkingSpaceMachineRelPo parkingSpaceMachineRelPo = new ParkingSpaceMachineRelPo();
+        parkingSpaceMachineRelPo.setMachineId(parkingSpaceMachinePo.getMachineId());
+        parkingSpaceMachineRelV1InnerServiceSMOImpl.deleteParkingSpaceMachineRel(parkingSpaceMachineRelPo);
+
+        JSONArray parkingSpaces = reqJson.getJSONArray("parkingSpaces");
+
+        JSONObject psObj = null;
+        for (int psIndex = 0; psIndex < parkingSpaces.size(); psIndex++) {
+            psObj = parkingSpaces.getJSONObject(psIndex);
+            parkingSpaceMachineRelPo = new ParkingSpaceMachineRelPo();
+            parkingSpaceMachineRelPo.setLockBattery("0");
+            parkingSpaceMachineRelPo.setRelId(GenerateCodeFactory.getGeneratorId("11"));
+            parkingSpaceMachineRelPo.setPsState(ParkingSpaceMachineRelDto.PS_STATE_FREE);
+            parkingSpaceMachineRelPo.setMachineId(parkingSpaceMachinePo.getMachineId());
+            parkingSpaceMachineRelPo.setPsName(psObj.getString("psName"));
+            parkingSpaceMachineRelPo.setCarNum("无");
+            parkingSpaceMachineRelPo.setPsId(psObj.getString("psId"));
+            parkingSpaceMachineRelPo.setUpdateTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+            parkingSpaceMachineRelPo.setCommunityId(reqJson.getString("communityId"));
+            parkingSpaceMachineRelPo.setLockState(ParkingSpaceMachineRelDto.LOCK_STATE_OFF);
+            parkingSpaceMachineRelPo.setImagePhoto("");
+            int count = parkingSpaceMachineRelV1InnerServiceSMOImpl.saveParkingSpaceMachineRel(parkingSpaceMachineRelPo);
+            if (count < 1) {
+                throw new CmdException("保存车位失败");
+            }
         }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
