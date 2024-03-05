@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="parkingSpaceMachineRelV1ServiceDaoImpl">
+
+
+    <!-- 保存车位摄像头信息 add by wuxw 2018-07-03 -->
+    <insert id="saveParkingSpaceMachineRelInfo" parameterType="Map">
+        insert into parking_space_machine_rel(
+        lock_battery,rel_id,ps_state,machine_id,ps_name,car_num,ps_id,update_time,community_id,lock_state,image_photo
+        ) values (
+        #{lockBattery},#{relId},#{psState},#{machineId},#{psName},#{carNum},#{psId},#{updateTime},#{communityId},#{lockState},#{imagePhoto}
+        )
+    </insert>
+
+    <!-- 查询车位摄像头信息 add by wuxw 2018-07-03 -->
+    <select id="getParkingSpaceMachineRelInfo" parameterType="Map" resultType="Map">
+        select t.lock_battery,t.lock_battery lockBattery,t.rel_id,t.rel_id relId,t.ps_state,t.ps_state
+        psState,t.machine_id,t.machine_id machineId,t.ps_name,t.ps_name psName,t.car_num,t.car_num
+        carNum,t.ps_id,t.ps_id psId,t.update_time,t.update_time updateTime,t.status_cd,t.status_cd
+        statusCd,t.community_id,t.community_id communityId,t.lock_state,t.lock_state
+        lockState,t.image_photo,t.image_photo imagePhoto,t.create_time createTime
+        from parking_space_machine_rel t
+        where 1 =1
+        <if test="lockBattery !=null and lockBattery != ''">
+            and t.lock_battery= #{lockBattery}
+        </if>
+        <if test="relId !=null and relId != ''">
+            and t.rel_id= #{relId}
+        </if>
+        <if test="psState !=null and psState != ''">
+            and t.ps_state= #{psState}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="psName !=null and psName != ''">
+            and t.ps_name= #{psName}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            and t.car_num= #{carNum}
+        </if>
+        <if test="psId !=null and psId != ''">
+            and t.ps_id= #{psId}
+        </if>
+        <if test="updateTime !=null and updateTime != ''">
+            and t.update_time= #{updateTime}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="lockState !=null and lockState != ''">
+            and t.lock_state= #{lockState}
+        </if>
+        <if test="imagePhoto !=null and imagePhoto != ''">
+            and t.image_photo= #{imagePhoto}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改车位摄像头信息 add by wuxw 2018-07-03 -->
+    <update id="updateParkingSpaceMachineRelInfo" parameterType="Map">
+        update parking_space_machine_rel t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="lockBattery !=null and lockBattery != ''">
+            , t.lock_battery= #{lockBattery}
+        </if>
+        <if test="psState !=null and psState != ''">
+            , t.ps_state= #{psState}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="psName !=null and psName != ''">
+            , t.ps_name= #{psName}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            , t.car_num= #{carNum}
+        </if>
+        <if test="psId !=null and psId != ''">
+            , t.ps_id= #{psId}
+        </if>
+        <if test="updateTime !=null and updateTime != ''">
+            , t.update_time= #{updateTime}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="lockState !=null and lockState != ''">
+            , t.lock_state= #{lockState}
+        </if>
+        <if test="imagePhoto !=null and imagePhoto != ''">
+            , t.image_photo= #{imagePhoto}
+        </if>
+        where 1=1
+        <if test="relId !=null and relId != ''">
+            and t.rel_id= #{relId}
+        </if>
+
+    </update>
+
+    <!-- 查询车位摄像头数量 add by wuxw 2018-07-03 -->
+    <select id="queryParkingSpaceMachineRelsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from parking_space_machine_rel t
+        where 1 =1
+        <if test="lockBattery !=null and lockBattery != ''">
+            and t.lock_battery= #{lockBattery}
+        </if>
+        <if test="relId !=null and relId != ''">
+            and t.rel_id= #{relId}
+        </if>
+        <if test="psState !=null and psState != ''">
+            and t.ps_state= #{psState}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="psName !=null and psName != ''">
+            and t.ps_name= #{psName}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            and t.car_num= #{carNum}
+        </if>
+        <if test="psId !=null and psId != ''">
+            and t.ps_id= #{psId}
+        </if>
+        <if test="updateTime !=null and updateTime != ''">
+            and t.update_time= #{updateTime}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="lockState !=null and lockState != ''">
+            and t.lock_state= #{lockState}
+        </if>
+        <if test="imagePhoto !=null and imagePhoto != ''">
+            and t.image_photo= #{imagePhoto}
+        </if>
+
+
+    </select>
+
+</mapper>
