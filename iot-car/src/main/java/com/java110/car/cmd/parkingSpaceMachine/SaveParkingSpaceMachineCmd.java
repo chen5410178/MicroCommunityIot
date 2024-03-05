@@ -71,7 +71,7 @@ public class SaveParkingSpaceMachineCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
         Assert.hasKeyAndValue(reqJson, "implBean", "请求报文中未包含implBean");
 
-        if (reqJson.containsKey("parkingSpaces")) {
+        if (!reqJson.containsKey("parkingSpaces")) {
             throw new CmdException("未包含车位");
         }
 

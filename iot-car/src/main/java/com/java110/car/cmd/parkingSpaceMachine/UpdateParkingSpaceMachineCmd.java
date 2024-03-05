@@ -66,7 +66,7 @@ public class UpdateParkingSpaceMachineCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
 
-        if (reqJson.containsKey("parkingSpaces")) {
+        if (!reqJson.containsKey("parkingSpaces")) {
             throw new CmdException("未包含车位");
         }
 
