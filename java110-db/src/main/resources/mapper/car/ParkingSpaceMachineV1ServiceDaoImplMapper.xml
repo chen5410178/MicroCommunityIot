@@ -20,8 +20,9 @@
         select t.machine_mac,t.machine_mac machineMac,t.impl_bean,t.impl_bean implBean,t.machine_id,t.machine_id
         machineId,t.machine_code,t.machine_code machineCode,t.status_cd,t.status_cd
         statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name
-        machineName,t.machine_ip,t.machine_ip machineIp,t.create_time createTime
+        machineName,t.machine_ip,t.machine_ip machineIp,t.create_time createTime,smf.factory_name implBeanName
         from parking_space_machine t
+        LEFT JOIN space_machine_factory smf on t.impl_bean = smf.factory_id
         where 1 =1
         <if test="machineMac !=null and machineMac != ''">
             and t.machine_mac= #{machineMac}

@@ -19,6 +19,7 @@ public class ParkingSpaceMachineDto extends PageDto implements Serializable {
 
     private String machineMac;
     private String implBean;
+    private String implBeanName;
     private String machineId;
     private String machineCode;
     private String communityId;
@@ -112,5 +113,13 @@ public class ParkingSpaceMachineDto extends PageDto implements Serializable {
 
     public void setParkingSpaces(List<ParkingSpaceMachineRelDto> parkingSpaces) {
         this.parkingSpaces = parkingSpaces;
+    }
+
+    public String getImplBeanName() {
+        return implBeanName;
+    }
+
+    public void setImplBeanName(String implBeanName) {
+        this.implBeanName = implBeanName;
     }
 }

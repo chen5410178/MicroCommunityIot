@@ -81,6 +81,9 @@
                                     <vc:i18n name='门禁厂家' namespace='parkingSpaceMachine'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='车位' namespace='parkingSpaceMachine'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='创建时间' namespace='parkingSpaceMachine'></vc:i18n>
                                 </th>
                                 <th class="text-center">
@@ -96,6 +99,9 @@
                                 <td class="text-center">{{parkingSpaceMachine.machineIp}}</td>
                                 <td class="text-center">{{parkingSpaceMachine.machineMac}}</td>
                                 <td class="text-center">{{parkingSpaceMachine.implBean}}</td>
+                                <td class="text-center">
+                                    <div v-for="(item,index) in  parkingSpaceMachine.parkingSpaces">{{item.psName}}</div>
+                                </td>
                                 <td class="text-center">{{parkingSpaceMachine.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
