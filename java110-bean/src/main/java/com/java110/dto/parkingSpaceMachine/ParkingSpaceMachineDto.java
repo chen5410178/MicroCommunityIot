@@ -19,6 +19,8 @@ public class ParkingSpaceMachineDto extends PageDto implements Serializable {
 
     private String machineMac;
     private String implBean;
+
+    private String beanImpl;
     private String implBeanName;
     private String machineId;
     private String machineCode;
@@ -142,5 +144,13 @@ public class ParkingSpaceMachineDto extends PageDto implements Serializable {
 
     public void setStateName(String stateName) {
         this.stateName = stateName;
+    }
+
+    public String getBeanImpl() {
+        return beanImpl;
+    }
+
+    public void setBeanImpl(String beanImpl) {
+        this.beanImpl = beanImpl;
     }
 }
