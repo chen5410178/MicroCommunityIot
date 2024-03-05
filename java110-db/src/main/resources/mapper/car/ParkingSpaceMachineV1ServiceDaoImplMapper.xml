@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="parkingSpaceMachineV1ServiceDaoImpl">
+
+
+    <!-- 保存车位摄像头信息 add by wuxw 2018-07-03 -->
+    <insert id="saveParkingSpaceMachineInfo" parameterType="Map">
+        insert into parking_space_machine(
+        machine_mac,impl_bean,machine_id,machine_code,community_id,machine_name,machine_ip
+        ) values (
+        #{machineMac},#{implBean},#{machineId},#{machineCode},#{communityId},#{machineName},#{machineIp}
+        )
+    </insert>
+
+
+    <!-- 查询车位摄像头信息 add by wuxw 2018-07-03 -->
+    <select id="getParkingSpaceMachineInfo" parameterType="Map" resultType="Map">
+        select t.machine_mac,t.machine_mac machineMac,t.impl_bean,t.impl_bean implBean,t.machine_id,t.machine_id
+        machineId,t.machine_code,t.machine_code machineCode,t.status_cd,t.status_cd
+        statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name
+        machineName,t.machine_ip,t.machine_ip machineIp,t.create_time createTime
+        from parking_space_machine t
+        where 1 =1
+        <if test="machineMac !=null and machineMac != ''">
+            and t.machine_mac= #{machineMac}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="machineIp !=null and machineIp != ''">
+            and t.machine_ip= #{machineIp}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改车位摄像头信息 add by wuxw 2018-07-03 -->
+    <update id="updateParkingSpaceMachineInfo" parameterType="Map">
+        update parking_space_machine t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="machineMac !=null and machineMac != ''">
+            , t.machine_mac= #{machineMac}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            , t.impl_bean= #{implBean}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            , t.machine_name= #{machineName}
+        </if>
+        <if test="machineIp !=null and machineIp != ''">
+            , t.machine_ip= #{machineIp}
+        </if>
+        where 1=1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+
+    </update>
+
+    <!-- 查询车位摄像头数量 add by wuxw 2018-07-03 -->
+    <select id="queryParkingSpaceMachinesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from parking_space_machine t
+        where 1 =1
+        <if test="machineMac !=null and machineMac != ''">
+            and t.machine_mac= #{machineMac}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="machineIp !=null and machineIp != ''">
+            and t.machine_ip= #{machineIp}
+        </if>
+
+
+    </select>
+
+</mapper>
