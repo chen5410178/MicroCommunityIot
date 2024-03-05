@@ -22,12 +22,16 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.*;
 import com.java110.doc.annotation.*;
+import com.java110.dto.parkingSpaceMachine.ParkingSpaceMachineDto;
+import com.java110.dto.parkingSpaceMachineRel.ParkingSpaceMachineRelDto;
 import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.parking.ParkingSpaceDto;
+
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ArrayList;
 import org.springframework.http.ResponseEntity;
@@ -123,6 +127,8 @@ public class ListParkingSpaceCmd extends Cmd {
 
            if (count > 0) {
                parkingSpaceDtos = parkingSpaceV1InnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
+               freshMachineStateName(parkingSpaceDtos);
+
            } else {
                parkingSpaceDtos = new ArrayList<>();
            }
@@ -132,5 +138,49 @@ public class ListParkingSpaceCmd extends Cmd {
            ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
            cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void freshMachineStateName(List<ParkingSpaceDto> parkingSpaceDtos) {
+        if (ListUtil.isNull(parkingSpaceDtos)) {
+            return;
+        }
+        for (ParkingSpaceDto parkingSpaceDto : parkingSpaceDtos) {
+
+            if(ParkingSpaceMachineRelDto.PS_STATE_OCCUPY.equals(parkingSpaceDto.getPsState())){
+                parkingSpaceDto.setPsStateName("占用");
+            }else if(ParkingSpaceMachineRelDto.PS_STATE_FREE.equals(parkingSpaceDto.getPsState())){
+                parkingSpaceDto.setPsStateName("空闲");
+            }else{
+                parkingSpaceDto.setPsStateName("未知");
+            }
+
+            if(ParkingSpaceMachineRelDto.LOCK_STATE_ON.equals(parkingSpaceDto.getLockState())){
+                parkingSpaceDto.setPsStateName("开");
+            }else if(ParkingSpaceMachineRelDto.LOCK_STATE_OFF.equals(parkingSpaceDto.getLockState())){
+                parkingSpaceDto.setPsStateName("关");
+            }else{
+                parkingSpaceDto.setPsStateName("未知");
+            }
+
+
+            String heartbeatTime = parkingSpaceDto.getHeartbeatTime();
+            try {
+                if (StringUtil.isEmpty(heartbeatTime)) {
+                    parkingSpaceDto.setMachineStateName("设备离线");
+                } else {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(DateUtil.getDateFromString(heartbeatTime, DateUtil.DATE_FORMATE_STRING_A));
+                    calendar.add(Calendar.MINUTE, 2);
+                    if (calendar.getTime().getTime() <= DateUtil.getCurrentDate().getTime()) {
+                        parkingSpaceDto.setMachineStateName("设备离线");
+                    } else {
+                        parkingSpaceDto.setMachineStateName("设备在线");
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+                parkingSpaceDto.setMachineStateName("设备离线");
+            }
+        }
     }
 }

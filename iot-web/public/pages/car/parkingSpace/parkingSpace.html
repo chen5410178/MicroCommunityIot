@@ -1,5 +1,4 @@
 <div>
-
     <div class="ibox ">
         <div class="ibox-title">
             <h5>
@@ -66,9 +65,9 @@
             <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
                 <thead>
                     <tr>
-                        <th class="text-center">
+                        <!-- <th class="text-center">
                             <vc:i18n name='编号' namespace='parkingSpace'></vc:i18n>
-                        </th>
+                        </th> -->
                         <th class="text-center">
                             <vc:i18n name='停车场' namespace='parkingSpace'></vc:i18n>
                         </th>
@@ -79,13 +78,34 @@
                             <vc:i18n name='车位状态' namespace='parkingSpace'></vc:i18n>
                         </th>
                         <th class="text-center">
-                            <vc:i18n name='备注' namespace='parkingSpace'></vc:i18n>
-                        </th>
-                        <th class="text-center">
                             <vc:i18n name='车位类型' namespace='parkingSpace'></vc:i18n>
                         </th>
                         <th class="text-center">
+                            <vc:i18n name='车位占用' namespace='parkingSpace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='停放车牌号' namespace='parkingSpace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='地锁电量' namespace='parkingSpace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='地锁状态' namespace='parkingSpace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='车位图片' namespace='parkingSpace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='地磁' namespace='parkingSpace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='上报时间' namespace='parkingSpace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
                             <vc:i18n name='创建时间' namespace='parkingSpace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='备注' namespace='parkingSpace'></vc:i18n>
                         </th>
                         <th class="text-center">
                             <vc:i18n name='操作'></vc:i18n>
@@ -94,17 +114,26 @@
                 </thead>
                 <tbody>
                     <tr v-for="parkingSpace in parkingSpaceInfo.parkingSpaces">
-                        <td class="text-center">{{parkingSpace.psId}}</td>
+                        <!-- <td class="text-center">{{parkingSpace.psId}}</td> -->
                         <td class="text-center">{{parkingSpace.paNum}}</td>
                         <td class="text-center">{{parkingSpace.num}}</td>
                         <td class="text-center" v-if="parkingSpace.state == 'F'">空闲</td>
                         <td class="text-center" v-else-if="parkingSpace.state == 'S'">出售</td>
                         <td class="text-center" v-else="parkingSpace.state == 'H'">出租</td>
-                        <td class="text-center">{{parkingSpace.remark}}</td>
                         <td class="text-center" v-if="parkingSpace.parkingType == '1'">普通车位</td>
                         <td class="text-center" v-else-if="parkingSpace.parkingType == '2'">子母车位</td>
                         <td class="text-center" v-else="parkingSpace.parkingType == '3'">豪华车位</td>
+                        <td class="text-center">{{parkingSpace.psStateName}}</td>
+                        <td class="text-center">{{parkingSpace.parkCarNum || '未知'}}</td>
+                        <td class="text-center">{{parkingSpace.lockBattery || '未知'}}</td>
+                        <td class="text-center">{{parkingSpace.lockStateName}}</td>
+                        <td class="text-center">{{parkingSpace.imagePhoto}}</td>
+                        <td class="text-center" v-if="parkingSpace.machineName">{{parkingSpace.machineName}}({{parkingSpace.machineStateName}})</td>
+                        <td class="text-center" v-else>未知</td>
+                        <td class="text-center">{{parkingSpace.updateTime || '-'}}</td>
                         <td class="text-center">{{parkingSpace.createTime}}</td>
+                        <td class="text-center">{{parkingSpace.remark}}</td>
+
                         <td class="text-center">
                             <div class="btn-group">
                                 <button class="btn-white btn btn-xs"

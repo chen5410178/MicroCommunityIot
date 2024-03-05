@@ -68,9 +68,9 @@ public class ParkingSpaceV1ServiceDaoImpl extends BaseServiceDao implements IPar
     public List<Map> getParkingSpaceInfo(Map info) throws DAOException {
         logger.debug("查询 getParkingSpaceInfo 入参 info : {}",info);
 
-        List<Map> businessParkingSpaceInfos = sqlSessionTemplate.selectList("parkingSpaceV1ServiceDaoImpl.getParkingSpaceInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("parkingSpaceV1ServiceDaoImpl.getParkingSpaceInfo",info);
 
-        return businessParkingSpaceInfos;
+        return infos;
     }
 
 

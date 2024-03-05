@@ -35,6 +35,18 @@ public class ParkingSpaceDto extends PageDto implements Serializable {
     private String paNum;
 
     private String areaNum;
+    private String psState;
+    private String psStateName;
+    private String parkCarNum;
+    private String lockBattery;
+    private String lockState;
+    private String lockStateName;
+    private String imagePhoto;
+    private String machineName;
+
+    private String machineStateName;
+    private String updateTime;
+    private String heartbeatTime;
 
 
     private Date createTime;
@@ -137,5 +149,93 @@ public class ParkingSpaceDto extends PageDto implements Serializable {
 
     public void setPsIds(String[] psIds) {
         this.psIds = psIds;
+    }
+
+    public String getPsState() {
+        return psState;
+    }
+
+    public void setPsState(String psState) {
+        this.psState = psState;
+    }
+
+    public String getParkCarNum() {
+        return parkCarNum;
+    }
+
+    public void setParkCarNum(String parkCarNum) {
+        this.parkCarNum = parkCarNum;
+    }
+
+    public String getLockBattery() {
+        return lockBattery;
+    }
+
+    public void setLockBattery(String lockBattery) {
+        this.lockBattery = lockBattery;
+    }
+
+    public String getLockState() {
+        return lockState;
+    }
+
+    public void setLockState(String lockState) {
+        this.lockState = lockState;
+    }
+
+    public String getImagePhoto() {
+        return imagePhoto;
+    }
+
+    public void setImagePhoto(String imagePhoto) {
+        this.imagePhoto = imagePhoto;
+    }
+
+    public String getMachineName() {
+        return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getHeartbeatTime() {
+        return heartbeatTime;
+    }
+
+    public void setHeartbeatTime(String heartbeatTime) {
+        this.heartbeatTime = heartbeatTime;
+    }
+
+    public String getMachineStateName() {
+        return machineStateName;
+    }
+
+    public void setMachineStateName(String machineStateName) {
+        this.machineStateName = machineStateName;
+    }
+
+    public String getPsStateName() {
+        return psStateName;
+    }
+
+    public void setPsStateName(String psStateName) {
+        this.psStateName = psStateName;
+    }
+
+    public String getLockStateName() {
+        return lockStateName;
+    }
+
+    public void setLockStateName(String lockStateName) {
+        this.lockStateName = lockStateName;
     }
 }

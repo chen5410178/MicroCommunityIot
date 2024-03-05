@@ -8,9 +8,9 @@
     <!-- 保存车位摄像头信息 add by wuxw 2018-07-03 -->
     <insert id="saveParkingSpaceMachineInfo" parameterType="Map">
         insert into parking_space_machine(
-        machine_mac,impl_bean,machine_id,machine_code,community_id,machine_name,machine_ip
+        machine_mac,impl_bean,machine_id,machine_code,community_id,machine_name,machine_ip,heartbeat_time
         ) values (
-        #{machineMac},#{implBean},#{machineId},#{machineCode},#{communityId},#{machineName},#{machineIp}
+        #{machineMac},#{implBean},#{machineId},#{machineCode},#{communityId},#{machineName},#{machineIp},#{heartbeatTime}
         )
     </insert>
 
@@ -20,7 +20,8 @@
         select t.machine_mac,t.machine_mac machineMac,t.impl_bean,t.impl_bean implBean,t.machine_id,t.machine_id
         machineId,t.machine_code,t.machine_code machineCode,t.status_cd,t.status_cd
         statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name
-        machineName,t.machine_ip,t.machine_ip machineIp,t.create_time createTime,smf.factory_name implBeanName
+        machineName,t.machine_ip,t.machine_ip machineIp,t.create_time createTime,smf.factory_name implBeanName,
+        t.heartbeat_time heartbeatTime
         from parking_space_machine t
         LEFT JOIN space_machine_factory smf on t.impl_bean = smf.factory_id
         where 1 =1
@@ -79,6 +80,9 @@
         </if>
         <if test="machineIp !=null and machineIp != ''">
             , t.machine_ip= #{machineIp}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            , t.heartbeat_time= #{heartbeatTime}
         </if>
         where 1=1
         <if test="machineId !=null and machineId != ''">
