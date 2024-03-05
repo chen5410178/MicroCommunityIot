@@ -155,11 +155,11 @@ public class ListParkingSpaceCmd extends Cmd {
             }
 
             if(ParkingSpaceMachineRelDto.LOCK_STATE_ON.equals(parkingSpaceDto.getLockState())){
-                parkingSpaceDto.setPsStateName("开");
+                parkingSpaceDto.setLockStateName("开");
             }else if(ParkingSpaceMachineRelDto.LOCK_STATE_OFF.equals(parkingSpaceDto.getLockState())){
-                parkingSpaceDto.setPsStateName("关");
+                parkingSpaceDto.setLockStateName("关");
             }else{
-                parkingSpaceDto.setPsStateName("未知");
+                parkingSpaceDto.setLockStateName("未知");
             }
 
 

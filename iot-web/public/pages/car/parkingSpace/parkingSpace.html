@@ -127,7 +127,13 @@
                         <td class="text-center">{{parkingSpace.parkCarNum || '未知'}}</td>
                         <td class="text-center">{{parkingSpace.lockBattery || '未知'}}</td>
                         <td class="text-center">{{parkingSpace.lockStateName}}</td>
-                        <td class="text-center">{{parkingSpace.imagePhoto}}</td>
+                        <td class="text-center" style="white-space: nowrap;">
+                            <img style="width: 60px; height: 60px;" class="border-radius"
+                                v-if="parkingSpace.imagePhoto" v-bind:src="parkingSpace.imagePhoto"
+                                v-on:click="_viewOwnerFace(parkingSpace.imagePhoto)" />
+                            <img style="width: 60px; height: 60px;" class="border-radius" v-else
+                                src="/img/noCar.png" />
+                        </td>
                         <td class="text-center" v-if="parkingSpace.machineName">{{parkingSpace.machineName}}({{parkingSpace.machineStateName}})</td>
                         <td class="text-center" v-else>未知</td>
                         <td class="text-center">{{parkingSpace.updateTime || '-'}}</td>

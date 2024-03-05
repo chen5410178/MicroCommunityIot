@@ -106,6 +106,11 @@
                     }
                 );
             },
+            _viewOwnerFace: function(_url) {
+                vc.emit('viewImage', 'showImage', {
+                    url: _url
+                });
+            },
 
 
         }
