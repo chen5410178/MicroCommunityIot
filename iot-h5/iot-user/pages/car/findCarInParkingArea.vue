@@ -168,6 +168,7 @@
 				getCarInParkingArea({
 					paId: this.paId,
 					carNum: this.carNum,
+					communityId:this.communityId
 				}).then(_data => {
 					if (_data.data < 1) {
 						uni.showToast({

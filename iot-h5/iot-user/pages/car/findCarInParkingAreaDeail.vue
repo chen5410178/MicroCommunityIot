@@ -43,35 +43,32 @@
 						<text class="text-grey text-sm">{{imagePhoto }}</text>
 					</view>
 				</view>
-				
+
 				<view class="cu-bar btn-group" style="margin-top: 20upx;">
-					<button @click="onReQuery()"
-						class="cu-btn bg-grey shadow-blur round lg">重新查询</button>
+					<button @click="onReQuery()" class="cu-btn bg-grey shadow-blur round lg">重新查询</button>
 				</view>
 			</view>
 		</scroll-view>
-		
+
 	</view>
-	
+
 </template>
 
 <script>
-
-	
 	import {
 		getCarInParkingArea
 	} from '@/api/car/carApi.js';
-	
+
 	export default {
 		data() {
 			return {
 				carNum: '',
 				paId: '',
 				communityId: '',
-				updateTime:'',
-				areaNum:'',
-				psNum:'',
-				imagePhoto:''
+				updateTime: '',
+				areaNum: '',
+				psNum: '',
+				imagePhoto: ''
 			};
 		},
 		/**
@@ -88,9 +85,10 @@
 				let _that = this;
 				getCarInParkingArea({
 					paId: this.paId,
-					carNum: this.carNum
+					carNum: this.carNum,
+					communityId: this.communityId
 				}).then(_data => {
-					if (_data.data <1) {
+					if (_data.data < 1) {
 						uni.showToast({
 							icon: 'none',
 							title: '未查到停车费'
@@ -104,12 +102,12 @@
 					_that.imagePhoto = data.imagePhoto;
 				})
 			},
-			onReQuery:function(){
+			onReQuery: function() {
 				uni.navigateBack({
-					delta:1
+					delta: 1
 				})
 			}
-			
+
 		}
 	};
 </script>
@@ -152,8 +150,9 @@
 	.line-height {
 		line-height: 100upx;
 	}
-	.temp-remark{
+
+	.temp-remark {
 		color: #888888;
-		padding:10upx;
+		padding: 10upx;
 	}
 </style>

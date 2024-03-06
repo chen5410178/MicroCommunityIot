@@ -29,6 +29,8 @@ public class ParkingSpaceMachineRelDto extends PageDto implements Serializable {
     private String psName;
     private String carNum;
     private String psId;
+
+    private String paId;
     private String updateTime;
     private String communityId;
     private String lockState;
@@ -171,5 +173,13 @@ public class ParkingSpaceMachineRelDto extends PageDto implements Serializable {
 
     public void setPsNum(String psNum) {
         this.psNum = psNum;
+    }
+
+    public String getPaId() {
+        return paId;
+    }
+
+    public void setPaId(String paId) {
+        this.paId = paId;
     }
 }
