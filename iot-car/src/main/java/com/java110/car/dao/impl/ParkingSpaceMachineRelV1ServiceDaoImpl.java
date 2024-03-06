@@ -106,5 +106,26 @@ public class ParkingSpaceMachineRelV1ServiceDaoImpl extends BaseServiceDao imple
         return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
+    @Override
+    public int findCarInParkingSpaceMachineRelCount(Map info) {
+        logger.debug("查询 findCarInParkingSpaceMachineRelCount 入参 info : {}",info);
+
+        List<Map> infos = sqlSessionTemplate.selectList("parkingSpaceMachineRelV1ServiceDaoImpl.findCarInParkingSpaceMachineRelCount", info);
+        if (ListUtil.isNull(infos)) {
+            return 0;
+        }
+
+        return Integer.parseInt(infos.get(0).get("count").toString());
+    }
+
+    @Override
+    public List<Map> findCarInParkingSpaceMachineRels(Map info) {
+        logger.debug("查询 getParkingSpaceMachineRelInfo 入参 info : {}",info);
+
+        List<Map> infos = sqlSessionTemplate.selectList("parkingSpaceMachineRelV1ServiceDaoImpl.findCarInParkingSpaceMachineRels",info);
+
+        return infos;
+    }
+
 
 }

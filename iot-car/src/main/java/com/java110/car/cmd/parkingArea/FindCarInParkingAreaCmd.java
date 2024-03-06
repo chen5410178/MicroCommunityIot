@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.car.cmd.parkingSpaceMachine;
+package com.java110.car.cmd.parkingArea;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
@@ -45,16 +45,17 @@ import org.slf4j.LoggerFactory;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
-@Java110Cmd(serviceCode = "parkingSpaceMachine.listParkingSpaceMachineRel")
-public class ListParkingSpaceMachineRelCmd extends Cmd {
+@Java110Cmd(serviceCode = "parkingArea.findCarInParkingArea")
+public class FindCarInParkingAreaCmd extends Cmd {
 
-  private static Logger logger = LoggerFactory.getLogger(ListParkingSpaceMachineRelCmd.class);
+  private static Logger logger = LoggerFactory.getLogger(FindCarInParkingAreaCmd.class);
     @Autowired
     private IParkingSpaceMachineRelV1InnerServiceSMO parkingSpaceMachineRelV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
-        super.validatePageInfo(reqJson);
+        Assert.hasKeyAndValue(reqJson,"carNum","未包含车牌号");
+        Assert.hasKeyAndValue(reqJson,"paId","未包含停车场");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
 
     }
@@ -64,17 +65,17 @@ public class ListParkingSpaceMachineRelCmd extends Cmd {
 
            ParkingSpaceMachineRelDto parkingSpaceMachineRelDto = BeanConvertUtil.covertBean(reqJson, ParkingSpaceMachineRelDto.class);
 
-           int count = parkingSpaceMachineRelV1InnerServiceSMOImpl.queryParkingSpaceMachineRelsCount(parkingSpaceMachineRelDto);
+           int count = parkingSpaceMachineRelV1InnerServiceSMOImpl.findCarInParkingSpaceMachineRelCount(parkingSpaceMachineRelDto);
 
            List<ParkingSpaceMachineRelDto> parkingSpaceMachineRelDtos = null;
 
            if (count > 0) {
-               parkingSpaceMachineRelDtos = parkingSpaceMachineRelV1InnerServiceSMOImpl.queryParkingSpaceMachineRels(parkingSpaceMachineRelDto);
+               parkingSpaceMachineRelDtos = parkingSpaceMachineRelV1InnerServiceSMOImpl.findCarInParkingSpaceMachineRels(parkingSpaceMachineRelDto);
            } else {
                parkingSpaceMachineRelDtos = new ArrayList<>();
            }
 
-           ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, parkingSpaceMachineRelDtos);
+           ResultVo resultVo = new ResultVo(parkingSpaceMachineRelDtos);
 
            ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 

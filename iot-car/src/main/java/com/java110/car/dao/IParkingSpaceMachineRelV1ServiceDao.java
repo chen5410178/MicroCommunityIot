@@ -70,4 +70,7 @@ public interface IParkingSpaceMachineRelV1ServiceDao {
      */
     int queryParkingSpaceMachineRelsCount(Map info);
 
+    int findCarInParkingSpaceMachineRelCount(Map info);
+
+    List<Map> findCarInParkingSpaceMachineRels(Map info);
 }

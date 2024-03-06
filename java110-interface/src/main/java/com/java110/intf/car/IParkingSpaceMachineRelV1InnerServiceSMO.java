@@ -65,4 +65,10 @@ public interface IParkingSpaceMachineRelV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryParkingSpaceMachineRelsCount", method = RequestMethod.POST)
     int queryParkingSpaceMachineRelsCount(@RequestBody ParkingSpaceMachineRelDto parkingSpaceMachineRelDto);
+
+    @RequestMapping(value = "/findCarInParkingSpaceMachineRelCount", method = RequestMethod.POST)
+    int findCarInParkingSpaceMachineRelCount(@RequestBody ParkingSpaceMachineRelDto parkingSpaceMachineRelDto);
+
+    @RequestMapping(value = "/findCarInParkingSpaceMachineRels", method = RequestMethod.POST)
+    List<ParkingSpaceMachineRelDto> findCarInParkingSpaceMachineRels(@RequestBody ParkingSpaceMachineRelDto parkingSpaceMachineRelDto);
 }

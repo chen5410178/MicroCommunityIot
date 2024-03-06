@@ -40,6 +40,9 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/carMonth.queryMonthCardByCarNum,");//根据小区查询appId
         exclusions.append("/iot/api/car.queryWaitPayFeeTempCar,");//根据小区查询appId
 
+        exclusions.append("/iot/api/parkingArea.findCarInParkingArea,");// 停车场找车
+
+
         // todo 支付
         exclusions.append("/iot/api/payment.cashier,");//支付
 
@@ -70,6 +73,9 @@ public class ServiceConfiguration {
 
         exclusions.append("/iot/api/community.listCommunitys,");// 查询小区
         exclusions.append("/iot/api/appUser.saveAppUser,");// 房屋认证
+
+
+
 
     }
 

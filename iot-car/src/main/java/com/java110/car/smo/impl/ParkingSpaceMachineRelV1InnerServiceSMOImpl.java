@@ -85,4 +85,17 @@ public class ParkingSpaceMachineRelV1InnerServiceSMOImpl implements IParkingSpac
         return parkingSpaceMachineRelV1ServiceDaoImpl.queryParkingSpaceMachineRelsCount(BeanConvertUtil.beanCovertMap(parkingSpaceMachineRelDto));
     }
 
+    @Override
+    public int findCarInParkingSpaceMachineRelCount(@RequestBody ParkingSpaceMachineRelDto parkingSpaceMachineRelDto) {
+        return parkingSpaceMachineRelV1ServiceDaoImpl.findCarInParkingSpaceMachineRelCount(BeanConvertUtil.beanCovertMap(parkingSpaceMachineRelDto));
+    }
+
+    @Override
+    public List<ParkingSpaceMachineRelDto> findCarInParkingSpaceMachineRels(@RequestBody ParkingSpaceMachineRelDto parkingSpaceMachineRelDto) {
+        List<ParkingSpaceMachineRelDto> parkingSpaceMachineRels = BeanConvertUtil.covertBeanList(
+                parkingSpaceMachineRelV1ServiceDaoImpl.findCarInParkingSpaceMachineRels(BeanConvertUtil.beanCovertMap(parkingSpaceMachineRelDto)),
+                ParkingSpaceMachineRelDto.class);
+        return parkingSpaceMachineRels;
+    }
+
 }

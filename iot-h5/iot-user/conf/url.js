@@ -63,6 +63,8 @@ export default {
 
 	queryCommunitys: baseUrl + "iot/api/community.listCommunitys",
 	saveAppUser: baseUrl + "iot/api/appUser.saveAppUser",
+	findCarInParkingArea: baseUrl + "iot/api/parkingArea.findCarInParkingArea",
+
 
 
 	

@@ -355,6 +355,14 @@
 				"navigationBarTitleText" : "找车",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/car/findCarInParkingAreaDeail",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"tabBar": {

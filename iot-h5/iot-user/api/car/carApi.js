@@ -151,3 +151,30 @@ export function getUserCar(_objData){
 	})
 }
 
+/**
+ * 停车场找车
+ * @param {Object} _objData{
+	 * carNum:'',
+	 * paId:''
+ }
+ */
+export function getCarInParkingArea(_objData){
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.findCarInParkingArea,
+			data: _objData,
+			method: "GET",
+			//动态数据
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code == 0) {
+					resolve(_json.data);
+					return;
+				}
+			},
+			fail: function(e) {
+			}
+		});
+	})
+}
+

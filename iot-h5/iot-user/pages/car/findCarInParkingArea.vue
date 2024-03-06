@@ -77,10 +77,10 @@
 	import selectCarNum from '../../components/select-carnum/select-carnum.vue';
 	import {
 		isNotNull
-	} from '../../lib/java110/utils/StringUtil.js'
-
+	} from '../../lib/java110/utils/StringUtil.js';
+	
 	import {
-		queryWaitPayFeeTempCar
+		getCarInParkingArea
 	} from '@/api/car/carApi.js';
 	export default {
 		data() {
@@ -165,22 +165,20 @@
 			},
 			_queryCarNum: function() {
 				let _that = this;
-				getTempCarFeeOrder({
+				getCarInParkingArea({
 					paId: this.paId,
 					carNum: this.carNum,
-					couponIds: ''
 				}).then(_data => {
-					if (_data.code != 0) {
+					if (_data.data < 1) {
 						uni.showToast({
 							icon: 'none',
-							title: '未查到停车费'
+							title: '未查到车辆'
 						})
 						return;
 					}
 					uni.navigateTo({
-						url: '/pages/fee/tempCarFee?paId=' + _that.paId + '&carNum=' + _that
-							.carNum + "&appId=" + _that.appId + "&openId=" + _that.openId +
-							"&machineId=" + this.machineId+"&communityId="+_that.communityId
+						url: '/pages/car/findCarInParkingAreaDetail?paId=' + _that.paId + '&carNum=' + _that
+							.carNum +"&communityId="+_that.communityId
 					})
 				})
 			},
