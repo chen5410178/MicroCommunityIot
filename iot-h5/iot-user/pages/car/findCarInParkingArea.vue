@@ -170,7 +170,7 @@
 					carNum: this.carNum,
 					communityId:this.communityId
 				}).then(_data => {
-					if (_data.data < 1) {
+					if (_data.length < 1) {
 						uni.showToast({
 							icon: 'none',
 							title: '未查到车辆'

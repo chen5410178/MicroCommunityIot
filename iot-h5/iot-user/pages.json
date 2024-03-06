@@ -357,7 +357,7 @@
 			}
 		},
 		{
-			"path" : "pages/car/findCarInParkingAreaDeail",
+			"path" : "pages/car/findCarInParkingAreaDetail",
 			"style" : 
 			{
 				"navigationBarTitleText" : "",

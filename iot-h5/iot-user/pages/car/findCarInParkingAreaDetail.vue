@@ -35,18 +35,15 @@
 						<text class="text-grey text-sm">{{psNum }}</text>
 					</view>
 				</view>
-				<view class="cu-item">
-					<view class="content">
-						<text class="text-grey">照片</text>
-					</view>
-					<view class="action">
-						<text class="text-grey text-sm">{{imagePhoto }}</text>
-					</view>
-				</view>
+			</view>
 
-				<view class="cu-bar btn-group" style="margin-top: 20upx;">
-					<button @click="onReQuery()" class="cu-btn bg-grey shadow-blur round lg">重新查询</button>
-				</view>
+			<view class="block__title">照片</view>
+			<view>
+				<image :src="imagePhoto" style="width: 100%;"></image>
+			</view>
+
+			<view class="cu-bar btn-group" style="margin-top: 20upx;">
+				<button @click="onReQuery()" class="cu-btn bg-grey shadow-blur round lg">重新查询</button>
 			</view>
 		</scroll-view>
 
@@ -88,14 +85,14 @@
 					carNum: this.carNum,
 					communityId: this.communityId
 				}).then(_data => {
-					if (_data.data < 1) {
+					if (_data.length < 1) {
 						uni.showToast({
 							icon: 'none',
 							title: '未查到停车费'
 						})
 						return;
 					}
-					let data = _data.data[0];
+					let data = _data[0];
 					_that.updateTime = data.updateTime;
 					_that.areaNum = data.areaNum;
 					_that.psNum = data.psNum;
@@ -132,9 +129,7 @@
 		height: 180rpx;
 	}
 
-	.fee-last {
-		margin-bottom: 100upx;
-	}
+	.fee-last {}
 
 	.cu-btn.lgplus {
 		padding: 0 20px;
