@@ -18,18 +18,23 @@ package com.java110.car.cmd.parkingArea;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cache.UrlCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.doc.annotation.*;
+import com.java110.dto.meter.MeterQrcodeDto;
 import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.parking.ParkingAreaDto;
+
 import java.util.List;
 import java.util.ArrayList;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
@@ -102,7 +107,7 @@ import org.slf4j.LoggerFactory;
 @Java110Cmd(serviceCode = "parkingArea.listParkingArea")
 public class ListParkingAreaCmd extends Cmd {
 
-  private static Logger logger = LoggerFactory.getLogger(ListParkingAreaCmd.class);
+    private static Logger logger = LoggerFactory.getLogger(ListParkingAreaCmd.class);
     @Autowired
     private IParkingAreaV1InnerServiceSMO parkingAreaV1InnerServiceSMOImpl;
 
@@ -116,22 +121,35 @@ public class ListParkingAreaCmd extends Cmd {
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-           ParkingAreaDto parkingAreaDto = BeanConvertUtil.covertBean(reqJson, ParkingAreaDto.class);
+        ParkingAreaDto parkingAreaDto = BeanConvertUtil.covertBean(reqJson, ParkingAreaDto.class);
 
-           int count = parkingAreaV1InnerServiceSMOImpl.queryParkingAreasCount(parkingAreaDto);
+        int count = parkingAreaV1InnerServiceSMOImpl.queryParkingAreasCount(parkingAreaDto);
 
-           List<ParkingAreaDto> parkingAreaDtos = null;
+        List<ParkingAreaDto> parkingAreaDtos = null;
 
-           if (count > 0) {
-               parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
-           } else {
-               parkingAreaDtos = new ArrayList<>();
-           }
+        if (count > 0) {
+            parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
+        } else {
+            parkingAreaDtos = new ArrayList<>();
+        }
 
-           ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, parkingAreaDtos);
+        generatorQrcode(parkingAreaDtos);
 
-           ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
+        ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, parkingAreaDtos);
 
-           cmdDataFlowContext.setResponseEntity(responseEntity);
+        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
+
+        cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void generatorQrcode(List<ParkingAreaDto> parkingAreaDtos) {
+        if (ListUtil.isNull(parkingAreaDtos)) {
+            return;
+        }
+
+        String ownerUrl = UrlCache.getOwnerUrl() + "/#/pages/car/findCarInParkingArea?communityId=" + parkingAreaDtos.get(0).getCommunityId() + "&paId=";
+        for (ParkingAreaDto parkingAreaDto : parkingAreaDtos) {
+            parkingAreaDto.setFindQrcodeUrl(ownerUrl + parkingAreaDto.getPaId());
+        }
     }
 }

@@ -82,7 +82,14 @@
             },
             _openParkingAreaTotalControl: function (_parkingArea) {
                 vc.jumpToPage('/#/pages/car/parkingAreaTotalControl?paId=' + _parkingArea.paId);
-            }
+            },
+            showFindCarQrCode:function(_parkingArea){
+                vc.emit('viewQrCode', 'openQrCodeModal',{
+                    title:'找车二维码',
+                    url:_parkingArea.findQrcodeUrl,
+                    remark:'将二维码贴到停车场，方便用户扫码找车'
+                })
+            },
 
         }
     });

@@ -347,6 +347,14 @@
 		        "enablePullDownRefresh": false
 		    }
 
+		},
+		{
+			"path" : "pages/car/findCarInParkingArea",
+			"style" : 
+			{
+				"navigationBarTitleText" : "找车",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"tabBar": {

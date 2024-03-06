@@ -5,7 +5,12 @@
             <div class="form-group">
                 <input type="text" :placeholder="vc.i18n('选择日期','workLicenseLineMap')"
                     v-model="workLicenseLineMapInfo.uploadDate"  class=" form-control uploadDate ">
+                    
             </div>
+        </div>
+        <div class="col-sm-1">
+            <div style="line-height: 36px;
+            font-size: 16px;">员工：{{workLicenseLineMapInfo.staffName}}</div>
         </div>
         <div class="col-sm-1">
             <button type="button" class="btn btn-white btn-sm" v-on:click="vc.goBack()">

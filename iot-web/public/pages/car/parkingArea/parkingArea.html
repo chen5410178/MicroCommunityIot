@@ -96,6 +96,12 @@
                                     <vc:i18n name="控制台" namespace="parkingAreaManage"></vc:i18n>
                                 </button>
                             </div>
+                            <div class="btn-group">
+                                <button class="btn-white btn btn-xs"
+                                    v-on:click="showFindCarQrCode(parkingArea)">
+                                    <vc:i18n name='找车辆'></vc:i18n>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -108,5 +114,7 @@
     <vc:create path="car/addParkingArea" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="car/editParkingArea"></vc:create>
     <vc:create path="car/deleteParkingArea"></vc:create>
+    <vc:create path="common/viewQrCode"></vc:create>
+
 
 </div>

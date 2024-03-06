@@ -39,6 +39,8 @@ public class ParkingAreaDto extends PageDto implements Serializable {
 
     private String boxId;
 
+    private String findQrcodeUrl;
+
 
     public String getTypeCd() {
         return typeCd;
@@ -167,5 +169,13 @@ public class ParkingAreaDto extends PageDto implements Serializable {
 
     public void setBoxId(String boxId) {
         this.boxId = boxId;
+    }
+
+    public String getFindQrcodeUrl() {
+        return findQrcodeUrl;
+    }
+
+    public void setFindQrcodeUrl(String findQrcodeUrl) {
+        this.findQrcodeUrl = findQrcodeUrl;
     }
 }

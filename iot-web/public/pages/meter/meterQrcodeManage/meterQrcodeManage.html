@@ -1,135 +1,123 @@
 <div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox ">
-                <div class="ibox-title">
-                    <h5>
-                        <vc:i18n name="查询条件"></vc:i18n>
-                    </h5>
-                </div>
-                <div class="ibox-content">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请选择名称','meterQrcodeManage')"
-                                    v-model="meterQrcodeManageInfo.conditions.qrcodeNameLike" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <select class="custom-select" v-model="meterQrcodeManageInfo.conditions.queryWay">
-                                    <option selected value="">{{vc.i18n('请选择查询方式','meterQrcodeManage')}}</option>
-                                    <option v-for="(item, index) in queryWayList" :key="index" :value="item.statusCd">
-                                        {{item.name}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <select class="custom-select" v-model="meterQrcodeManageInfo.conditions.state">
-                                    <option selected value="">{{vc.i18n('请选择状态','meterQrcodeManage')}}</option>
-                                    <option value="ON">{{vc.i18n('启用','meterQrcodeManage')}}</option>
-                                    <option value="OFF">{{vc.i18n('停用','meterQrcodeManage')}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryMeterQrcodeMethod()">
-                                <vc:i18n name="查询" namespace="meterQrcodeManage"></vc:i18n>
-                            </button>
-                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetMeterQrcodeMethod()">
-                                <vc:i18n name="重置" namespace="meterQrcodeManage"></vc:i18n>
-                            </button>
-                        </div>
+    <div class="ibox ">
+        <div class="ibox-title">
+            <h5>
+                <vc:i18n name="查询条件"></vc:i18n>
+            </h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <input type="text" :placeholder="vc.i18n('请选择名称','meterQrcodeManage')"
+                            v-model="meterQrcodeManageInfo.conditions.qrcodeNameLike" class=" form-control">
                     </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <select class="custom-select" v-model="meterQrcodeManageInfo.conditions.queryWay">
+                            <option selected value="">{{vc.i18n('请选择查询方式','meterQrcodeManage')}}</option>
+                            <option v-for="(item, index) in queryWayList" :key="index" :value="item.statusCd">
+                                {{item.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <select class="custom-select" v-model="meterQrcodeManageInfo.conditions.state">
+                            <option selected value="">{{vc.i18n('请选择状态','meterQrcodeManage')}}</option>
+                            <option value="ON">{{vc.i18n('启用','meterQrcodeManage')}}</option>
+                            <option value="OFF">{{vc.i18n('停用','meterQrcodeManage')}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryMeterQrcodeMethod()">
+                        <vc:i18n name="查询" namespace="meterQrcodeManage"></vc:i18n>
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetMeterQrcodeMethod()">
+                        <vc:i18n name="重置" namespace="meterQrcodeManage"></vc:i18n>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox">
-                <div class="ibox-title">
-                    <h5>
-                        <vc:i18n name="水电二维码" namespace="meterQrcodeManage"></vc:i18n>
-                    </h5>
-                    <div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddMeterQrcodeModal()">
-                            <vc:i18n name="添加" namespace="meterQrcodeManage"></vc:i18n>
-                        </button>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
-                        <thead>
-                            <tr>
-                                <th class="text-center">
-                                    <vc:i18n name='编号' namespace='meterQrcodeManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='名称' namespace='meterQrcodeManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='查询方式' namespace='meterQrcodeManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='状态' namespace='meterQrcodeManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='说明' namespace='meterQrcodeManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='创建时间' namespace='meterQrcodeManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='创建员工' namespace='meterQrcodeManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='操作'></vc:i18n>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="meterQrcode in meterQrcodeManageInfo.meterQrcodes">
-                                <td class="text-center">{{meterQrcode.mqId}}</td>
-                                <td class="text-center">{{meterQrcode.qrcodeName}}</td>
-                                <td class="text-center">{{meterQrcode.queryWayName}}</td>
-                                <td class="text-center">{{meterQrcode.state == 'ON' ? '启用' : '停用'}}</td>
-                                <td class="text-center">{{meterQrcode.remark}}</td>
-                                <td class="text-center">{{meterQrcode.createTime}}</td>
-                                <td class="text-center">{{meterQrcode.createStaffName}}</td>
-                                <td class="text-center">
-                                    <div class="btn-group">
-                                        <button class="btn-white btn btn-xs" v-on:click="showMeterQrCode(meterQrcode)">
-                                            <vc:i18n name='二维码'></vc:i18n>
-                                        </button>
-                                    </div>
-                                    <div class="btn-group">
-                                        <button class="btn-white btn btn-xs" v-on:click="_openEditMeterQrcodeModel(meterQrcode)">
-                                            <vc:i18n name='修改'></vc:i18n>
-                                        </button>
-                                    </div>
-                                    <div class="btn-group">
-                                        <button class="btn-white btn btn-xs" v-on:click="_openDeleteMeterQrcodeModel(meterQrcode)">
-                                            <vc:i18n name='删除'></vc:i18n>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="7">
-                                    <ul class="pagination float-right"></ul>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                    <!-- 分页 -->
-                    <vc:create path="frame/pagination"></vc:create>
-                </div>
+
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>
+                <vc:i18n name="水电二维码" namespace="meterQrcodeManage"></vc:i18n>
+            </h5>
+            <div class="ibox-tools" style="top:10px;">
+                <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddMeterQrcodeModal()">
+                    <vc:i18n name="添加" namespace="meterQrcodeManage"></vc:i18n>
+                </button>
             </div>
+        </div>
+        <div class="ibox-content">
+            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            <vc:i18n name='编号' namespace='meterQrcodeManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='名称' namespace='meterQrcodeManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='查询方式' namespace='meterQrcodeManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='状态' namespace='meterQrcodeManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='说明' namespace='meterQrcodeManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='创建时间' namespace='meterQrcodeManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='创建员工' namespace='meterQrcodeManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='操作'></vc:i18n>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="meterQrcode in meterQrcodeManageInfo.meterQrcodes">
+                        <td class="text-center">{{meterQrcode.mqId}}</td>
+                        <td class="text-center">{{meterQrcode.qrcodeName}}</td>
+                        <td class="text-center">{{meterQrcode.queryWayName}}</td>
+                        <td class="text-center">{{meterQrcode.state == 'ON' ? '启用' : '停用'}}</td>
+                        <td class="text-center">{{meterQrcode.remark}}</td>
+                        <td class="text-center">{{meterQrcode.createTime}}</td>
+                        <td class="text-center">{{meterQrcode.createStaffName}}</td>
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <button class="btn-white btn btn-xs" v-on:click="showMeterQrCode(meterQrcode)">
+                                    <vc:i18n name='二维码'></vc:i18n>
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn-white btn btn-xs"
+                                    v-on:click="_openEditMeterQrcodeModel(meterQrcode)">
+                                    <vc:i18n name='修改'></vc:i18n>
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn-white btn btn-xs"
+                                    v-on:click="_openDeleteMeterQrcodeModel(meterQrcode)">
+                                    <vc:i18n name='删除'></vc:i18n>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- 分页 -->
+            <vc:create path="frame/pagination"></vc:create>
         </div>
     </div>
 

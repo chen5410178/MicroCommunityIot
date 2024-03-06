@@ -11,12 +11,14 @@ import {wgs84togcj02} from 'api/map/mapApi.js';
                 pos: [],
                 machineId:'',
                 uploadDate:'',
+                staffName:'',
                 map: {},
             }
         },
         _initMethod: function () {
             $that.workLicenseLineMapInfo.machineId = vc.getParam('machineId');
             $that.workLicenseLineMapInfo.uploadDate = vc.getParam('uploadDate');
+            $that._listWorkLicenseMachines(DEFAULT_PAGE, DEFAULT_ROWS);
             $that._listWorkLicensePos();
 
             vc.initDate('uploadDate',function(_value){
@@ -71,11 +73,13 @@ import {wgs84togcj02} from 'api/map/mapApi.js';
                         "styleId": 'myStyle',  //指定样式id
                         "position": center,  //点标记坐标位置
                     });
+                    
                     _geometriesLabel.push({
                         'id': 'label_' + _m.wltId, //点图形数据的标志信息
                         'styleId': 'label', //样式id
                         'position': center, //标注点位置
-                        'content': _m.staffName, //标注文本
+                       // 'content': _m.staffName, //标注文本
+                       'content':vc.timeMinFormat(_m.createTime)
                     });
                     _path.push(center);
                 });
@@ -154,6 +158,27 @@ import {wgs84togcj02} from 'api/map/mapApi.js';
                         let _json = JSON.parse(json);
                         $that.workLicenseLineMapInfo.pos = _json.data;
                         $that._initMap();
+                    }, function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+            _listWorkLicenseMachines: function (_page, _rows) {
+                let param = {
+                    params: {
+                        page:1,
+                        row:1,
+                        machineId:$that.workLicenseLineMapInfo.machineId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/workLicense.listWorkLicenseMachine',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        $that.workLicenseLineMapInfo.staffName = _json.data[0].staffName;
+                       
                     }, function (errInfo, error) {
                         console.log('请求失败处理');
                     }
