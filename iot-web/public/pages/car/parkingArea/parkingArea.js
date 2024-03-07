@@ -90,6 +90,9 @@
                     remark:'将二维码贴到停车场，方便用户扫码找车'
                 })
             },
+            _to3dParkingArea:function(_parkingArea){
+                vc.jumpToPage('/3d.html#/pages/3d/parkingArea3dMap')
+            }
 
         }
     });

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="parkingRegionV1ServiceDaoImpl">
+
+
+    <!-- 保存停车区信息 add by wuxw 2018-07-03 -->
+    <insert id="saveParkingRegionInfo" parameterType="Map">
+        insert into parking_region(
+        region_code,pa_id,pr_id,remark,community_id
+        ) values (
+        #{regionCode},#{paId},#{prId},#{remark},#{communityId}
+        )
+    </insert>
+
+
+    <!-- 查询停车区信息 add by wuxw 2018-07-03 -->
+    <select id="getParkingRegionInfo" parameterType="Map" resultType="Map">
+        select t.region_code,t.region_code regionCode,t.pa_id,t.pa_id paId,t.pr_id,t.pr_id
+        prId,t.remark,t.status_cd,t.status_cd statusCd,t.community_id,t.community_id communityId,
+        t.create_time createTime,pa.num paNum
+        from parking_region t
+        left join parking_area pa on t.pa_id = pa.pa_id and pa.community_id = t.community_id
+        where 1 =1
+        <if test="regionCode !=null and regionCode != ''">
+            and t.region_code= #{regionCode}
+        </if>
+        <if test="paId !=null and paId != ''">
+            and t.pa_id= #{paId}
+        </if>
+        <if test="prId !=null and prId != ''">
+            and t.pr_id= #{prId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改停车区信息 add by wuxw 2018-07-03 -->
+    <update id="updateParkingRegionInfo" parameterType="Map">
+        update parking_region t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="regionCode !=null and regionCode != ''">
+            , t.region_code= #{regionCode}
+        </if>
+        <if test="paId !=null and paId != ''">
+            , t.pa_id= #{paId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="prId !=null and prId != ''">
+            and t.pr_id= #{prId}
+        </if>
+
+    </update>
+
+    <!-- 查询停车区数量 add by wuxw 2018-07-03 -->
+    <select id="queryParkingRegionsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from parking_region t
+        where 1 =1
+        <if test="regionCode !=null and regionCode != ''">
+            and t.region_code= #{regionCode}
+        </if>
+        <if test="paId !=null and paId != ''">
+            and t.pa_id= #{paId}
+        </if>
+        <if test="prId !=null and prId != ''">
+            and t.pr_id= #{prId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+
+    </select>
+
+</mapper>

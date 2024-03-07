@@ -67,21 +67,26 @@ import {wgs84togcj02} from 'api/map/mapApi.js';
 
                 let _pos = $that.workLicenseLineMapInfo.pos;
                 _pos.forEach(_m => {
-                    let center = new TMap.LatLng(_m.lon, _m.lat);
-                    _geometriesMarker.push({
-                        "id": _m.wltId,   //点标记唯一标识，后续如果有删除、修改位置等操作，都需要此id
-                        "styleId": 'myStyle',  //指定样式id
-                        "position": center,  //点标记坐标位置
-                    });
-                    
-                    _geometriesLabel.push({
-                        'id': 'label_' + _m.wltId, //点图形数据的标志信息
-                        'styleId': 'label', //样式id
-                        'position': center, //标注点位置
-                       // 'content': _m.staffName, //标注文本
-                       'content':vc.timeMinFormat(_m.createTime)
-                    });
-                    _path.push(center);
+                    try{
+                        let center = new TMap.LatLng(_m.lon, _m.lat);
+                        _geometriesMarker.push({
+                            "id": _m.wltId,   //点标记唯一标识，后续如果有删除、修改位置等操作，都需要此id
+                            "styleId": 'myStyle',  //指定样式id
+                            "position": center,  //点标记坐标位置
+                        });
+                        
+                        _geometriesLabel.push({
+                            'id': 'label_' + _m.wltId, //点图形数据的标志信息
+                            'styleId': 'label', //样式id
+                            'position': center, //标注点位置
+                           // 'content': _m.staffName, //标注文本
+                           'content':vc.timeMinFormat(_m.createTime)
+                        });
+                        _path.push(center);
+                    }catch(e){
+
+                    }
+                   
                 });
                 let markerLayer = new TMap.MultiMarker({
                     map: $that.workLicenseLineMapInfo.map,  //指定地图容器
