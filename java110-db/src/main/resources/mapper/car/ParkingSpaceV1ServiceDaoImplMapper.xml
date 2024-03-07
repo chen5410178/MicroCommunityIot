@@ -43,6 +43,12 @@
         <if test="paId !=null and paId != ''">
             and t.pa_id= #{paId}
         </if>
+        <if test="prId !=null and prId != ''">
+            and t.pr_id= #{prId}
+        </if>
+        <if test="regionCode !=null and regionCode != ''">
+            and pr.region_code= #{regionCode}
+        </if>
         <if test="psId !=null and psId != ''">
             and t.ps_id= #{psId}
         </if>
@@ -78,6 +84,9 @@
         <if test="paId !=null and paId != ''">
             , t.pa_id= #{paId}
         </if>
+        <if test="prId !=null and prId != ''">
+            , t.pr_id= #{prId}
+        </if>
         <if test="remark !=null and remark != ''">
             , t.remark= #{remark}
         </if>
@@ -102,6 +111,7 @@
         left join parking_area pa on t.pa_id = pa.pa_id and pa.status_cd = '0'
         left join parking_space_machine_rel psmr on t.ps_id = psmr.ps_id and psmr.status_cd = '0'
         left join parking_space_machine psm on psmr.machine_id = psm.machine_id and psm.status_cd = '0'
+        left join parking_region pr on t.pr_id = pr.pr_id and pr.status_cd = '0'
         where 1 =1
         <if test="machineCode !=null and machineCode != ''">
             and psm.machine_code = #{machineCode}
@@ -117,6 +127,12 @@
         </if>
         <if test="paId !=null and paId != ''">
             and t.pa_id= #{paId}
+        </if>
+        <if test="prId !=null and prId != ''">
+            and t.pr_id= #{prId}
+        </if>
+        <if test="regionCode !=null and regionCode != ''">
+            and pr.region_code= #{regionCode}
         </if>
         <if test="psId !=null and psId != ''">
             and t.ps_id= #{psId}
