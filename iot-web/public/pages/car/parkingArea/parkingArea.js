@@ -91,7 +91,7 @@
                 })
             },
             _to3dParkingArea:function(_parkingArea){
-                vc.jumpToPage('/3d.html#/pages/3d/parkingArea3dMap')
+                window.open('/3d.html#/pages/3d/parkingArea3dMap?paId=' + _parkingArea.paId)
             }
 
         }

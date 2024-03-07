@@ -154,6 +154,29 @@ export default class ParkingAreaMap3d {
         this.camera.lookAt(_object.position);
     }
 
+    clearThree(obj) {
+        while (obj.children.length > 0) {
+            this.clearThree(obj.children[0])
+            obj.remove(obj.children[0]);
+        }
+        if (obj.geometry) obj.geometry.dispose()
+
+        if (obj.material) {
+            //in case of map, bumpMap, normalMap, envMap ...
+            Object.keys(obj.material).forEach(prop => {
+                if (!obj.material[prop])
+                    return
+                if (typeof obj.material[prop].dispose === 'function')
+                    obj.material[prop].dispose()
+            })
+            obj.material.dispose()
+        }
+    }
+
+    resetScene() {
+        this.clearThree(this.scene);
+    }
+
     addText(_objName, _text, _position) {
         let _that = this;
         const loader = new FontLoader();
@@ -177,7 +200,11 @@ export default class ParkingAreaMap3d {
     createParkingSpace(x, y, z, parkingSpaceSize) {
         console.log(parkingSpaceSize)
         const parkingSpaceDepth = 0.1; // 车位的厚度  
-        const parkingSpaceMaterial = new THREE.MeshBasicMaterial({ color: 0x00FF00 }); // 灰色材质  
+        let _color =  0x00FF00;
+        if(parkingSpaceSize.color){
+            _color = parkingSpaceSize.color;
+        }
+        const parkingSpaceMaterial = new THREE.MeshBasicMaterial({ color: _color }); // 灰色材质  
         const geometry = new THREE.BoxGeometry(parkingSpaceSize.width, parkingSpaceSize.height, parkingSpaceDepth);
         const mesh = new THREE.Mesh(geometry, parkingSpaceMaterial);
         mesh.position.set(x, y, z); // 设置车位位置  
@@ -190,6 +217,7 @@ export default class ParkingAreaMap3d {
      * @param {车位列表} pSpaces 
      */
     initParkingSpace(pSpaces) {
+        this.resetScene();
 
         let sWidth = 0.5;
         let sHeight = 1;
@@ -242,11 +270,12 @@ export default class ParkingAreaMap3d {
             this.createParkingSpace(_x, _y, 0, {
                 width: sWidth,
                 height: sHeight,
+                color:pSpaces[i].psColor
             }); // 创建车位并设置位置  
-            if(i > 8){
+            if(pSpaces[i].num.length>1 ){
                 _textX = _x -sWidth/2
             }
-            this.addText(pSpaces[i].psNum,pSpaces[i].psNum+"",{
+            this.addText(pSpaces[i].num,pSpaces[i].num+"",{
                 x:_textX,
                 y:_textY,
                 z:0

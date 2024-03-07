@@ -37,7 +37,6 @@
         },
         methods: {
             _listParkingSpaces: function(_page, _rows) {
-
                 $that.parkingSpaceInfo.conditions.page = _page;
                 $that.parkingSpaceInfo.conditions.row = _rows;
                 $that.parkingSpaceInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
