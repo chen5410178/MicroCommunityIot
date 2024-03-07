@@ -9,7 +9,9 @@
                 state: 'F',
                 remark: '',
                 parkingType: '',
-                parkingAreas: []
+                prId:'',
+                parkingAreas: [],
+                parkingRegions:[]
             }
         },
         _initMethod: function() {
@@ -102,13 +104,13 @@
 
                             return;
                         }
-                        vc.message(_json.msg);
+                        vc.toast(_json.msg);
 
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');
 
-                        vc.message(errInfo);
+                        vc.toast(errInfo);
 
                     });
             },
@@ -119,7 +121,9 @@
                     state: 'F',
                     remark: '',
                     parkingType: '',
-                    parkingAreas: []
+                    prId:'',
+                    parkingAreas: [],
+                    parkingRegions:[]
                 };
             },
             _loadAddParkingAreas: function(_page, _rows) {
@@ -138,6 +142,31 @@
                     function(json, res) {
                         let _json = JSON.parse(json);
                         $that.addParkingSpaceInfo.parkingAreas = _json.data;
+
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+            _queryAddParkingRegions: function(_page, _rows) {
+                if(!$that.addParkingSpaceInfo.paId){
+                    return;
+                }
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 100,
+                        communityId: vc.getCurrentCommunity().communityId,
+                        paId:$that.addParkingSpaceInfo.paId
+                    }
+                };
+                //发送get请求
+                vc.http.apiGet('/parkingRegion.listParkingRegion',
+                    param,
+                    function(json, res) {
+                        let _json = JSON.parse(json);
+                        $that.addParkingSpaceInfo.parkingRegions = _json.data;
 
                     },
                     function(errInfo, error) {

@@ -17,6 +17,7 @@ package com.java110.po.parking;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-08-23 10:01:12 mail: 928255095@qq.com
@@ -28,62 +29,85 @@ import java.util.Date;
 public class ParkingSpacePo implements Serializable {
 
     private String parkingType;
-private String num;
-private String paId;
-private String psId;
-private String remark;
-private String statusCd = "0";
-private String state;
-private String communityId;
-public String getParkingType() {
+    private String num;
+    private String paId;
+
+    private String prId;
+    private String psId;
+    private String remark;
+    private String statusCd = "0";
+    private String state;
+    private String communityId;
+
+    public String getParkingType() {
         return parkingType;
     }
-public void setParkingType(String parkingType) {
+
+    public void setParkingType(String parkingType) {
         this.parkingType = parkingType;
     }
-public String getNum() {
+
+    public String getNum() {
         return num;
     }
-public void setNum(String num) {
+
+    public void setNum(String num) {
         this.num = num;
     }
-public String getPaId() {
+
+    public String getPaId() {
         return paId;
     }
-public void setPaId(String paId) {
+
+    public void setPaId(String paId) {
         this.paId = paId;
     }
-public String getPsId() {
+
+    public String getPsId() {
         return psId;
     }
-public void setPsId(String psId) {
+
+    public void setPsId(String psId) {
         this.psId = psId;
     }
-public String getRemark() {
+
+    public String getRemark() {
         return remark;
     }
-public void setRemark(String remark) {
+
+    public void setRemark(String remark) {
         this.remark = remark;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getState() {
+
+    public String getState() {
         return state;
     }
-public void setState(String state) {
+
+    public void setState(String state) {
         this.state = state;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
 
+    public String getPrId() {
+        return prId;
+    }
 
-
+    public void setPrId(String prId) {
+        this.prId = prId;
+    }
 }

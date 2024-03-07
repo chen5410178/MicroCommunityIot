@@ -72,6 +72,9 @@
                             <vc:i18n name='停车场' namespace='parkingSpace'></vc:i18n>
                         </th>
                         <th class="text-center">
+                            <vc:i18n name='停车区域' namespace='parkingSpace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
                             <vc:i18n name='车位编号' namespace='parkingSpace'></vc:i18n>
                         </th>
                         <th class="text-center">
@@ -116,6 +119,7 @@
                     <tr v-for="parkingSpace in parkingSpaceInfo.parkingSpaces">
                         <!-- <td class="text-center">{{parkingSpace.psId}}</td> -->
                         <td class="text-center">{{parkingSpace.paNum}}</td>
+                        <td class="text-center">{{parkingSpace.regionCode || '-'}}</td>
                         <td class="text-center">{{parkingSpace.num}}</td>
                         <td class="text-center" v-if="parkingSpace.state == 'F'">空闲</td>
                         <td class="text-center" v-else-if="parkingSpace.state == 'S'">出售</td>

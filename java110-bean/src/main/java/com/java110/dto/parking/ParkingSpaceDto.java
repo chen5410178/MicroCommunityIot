@@ -26,6 +26,8 @@ public class ParkingSpaceDto extends PageDto implements Serializable {
     private String parkingType;
     private String num;
     private String paId;
+
+    private String prId;
     private String psId;
     private String[] psIds;
     private String remark;
@@ -47,6 +49,8 @@ public class ParkingSpaceDto extends PageDto implements Serializable {
     private String machineStateName;
     private String updateTime;
     private String heartbeatTime;
+
+    private String regionCode;
 
 
     private Date createTime;
@@ -237,5 +241,21 @@ public class ParkingSpaceDto extends PageDto implements Serializable {
 
     public void setLockStateName(String lockStateName) {
         this.lockStateName = lockStateName;
+    }
+
+    public String getPrId() {
+        return prId;
+    }
+
+    public void setPrId(String prId) {
+        this.prId = prId;
+    }
+
+    public String getRegionCode() {
+        return regionCode;
+    }
+
+    public void setRegionCode(String regionCode) {
+        this.regionCode = regionCode;
     }
 }

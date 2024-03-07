@@ -34,7 +34,7 @@
                                     <vc:i18n name='编号' namespace='parkingRegion'></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <vc:i18n name='停车场编号' namespace='parkingRegion'></vc:i18n>
+                                    <vc:i18n name='区域编号' namespace='parkingRegion'></vc:i18n>
                                 </th>
                                 <th class="text-center">
                                     <vc:i18n name='停车场' namespace='parkingRegion'></vc:i18n>
@@ -56,7 +56,7 @@
                             <tr v-for="parkingRegion in parkingRegionInfo.parkingRegions">
                                 <td class="text-center">{{parkingRegion.prId}}</td>
                                 <td class="text-center">{{parkingRegion.regionCode}}</td>
-                                <td class="text-center">{{parkingRegion.paId}}</td>
+                                <td class="text-center">{{parkingRegion.paNum}}</td>
                                 <td class="text-center">{{parkingRegion.createTime}}</td>
                                 <td class="text-center">{{parkingRegion.remark}}</td>
                                 <td class="text-center">

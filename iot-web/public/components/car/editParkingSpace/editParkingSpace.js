@@ -9,7 +9,9 @@
                 state: '',
                 remark: '',
                 parkingType: '',
-                parkingAreas: []
+                parkingAreas: [],
+                parkingRegions:[],
+                prId:''
             }
         },
         _initMethod: function() {
@@ -21,6 +23,7 @@
                 $that._loadEditParkingAreas();
                 $('#editParkingSpaceModel').modal('show');
                 vc.copyObject(_params, $that.editParkingSpaceInfo);
+                $that._queryEditParkingRegions();
                 $that.editParkingSpaceInfo.communityId = vc.getCurrentCommunity().communityId;
             });
         },
@@ -106,12 +109,12 @@
                             vc.emit('parkingSpace', 'listParkingSpace', {});
                             return;
                         }
-                        vc.message(_json.msg);
+                        vc.toast(_json.msg);
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');
 
-                        vc.message(errInfo);
+                        vc.toast(errInfo);
                     });
             },
             refreshEditParkingSpaceInfo: function() {
@@ -122,7 +125,9 @@
                     state: '',
                     remark: '',
                     parkingType: '',
-                    parkingAreas: []
+                    parkingAreas: [],
+                    parkingRegions:[],
+                    prId:''
                 }
             },
             _loadEditParkingAreas: function(_page, _rows) {
@@ -141,6 +146,31 @@
                     function(json, res) {
                         let _json = JSON.parse(json);
                         $that.editParkingSpaceInfo.parkingAreas = _json.data;
+
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+            _queryEditParkingRegions: function(_page, _rows) {
+                if(!$that.editParkingSpaceInfo.paId){
+                    return;
+                }
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 100,
+                        communityId: vc.getCurrentCommunity().communityId,
+                        paId:$that.editParkingSpaceInfo.paId
+                    }
+                };
+                //发送get请求
+                vc.http.apiGet('/parkingRegion.listParkingRegion',
+                    param,
+                    function(json, res) {
+                        let _json = JSON.parse(json);
+                        $that.editParkingSpaceInfo.parkingRegions = _json.data;
 
                     },
                     function(errInfo, error) {
