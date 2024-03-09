@@ -191,7 +191,8 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
 
         int status = response.getStatus();
         if (status != 200) {
-            throw new IllegalArgumentException("调用臻识云异常");
+           // throw new IllegalArgumentException("调用臻识云异常");
+            return new ResultVo(ResultVo.CODE_ERROR,"调用臻识云异常:"+response.getBodyStr());
         }
         String result = response.getBodyStr();
         return new ResultVo(ResultVo.CODE_OK,ResultVo.MSG_OK,JSONObject.parseObject(result));
