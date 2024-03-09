@@ -3,8 +3,10 @@ package com.java110.openapi.bmo.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.core.context.ICmdDataFlowContext;
+import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.CmdContextUtils;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.user.UserDto;
 import com.java110.intf.barrier.IBarrierV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
@@ -42,7 +44,9 @@ public class OpenBarrierDoorBmoImpl implements IIotCommonApiBmo {
         UserDto userDto = new UserDto();
         userDto.setTel(tel);
         List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
-        Assert.listOnlyOne(userDtos, "用户未登录");
+        if(ListUtil.isNull(userDtos)){
+            throw new CmdException("用户未登录");
+        }
 
         reqJson.put("staffId", userDtos.get(0).getUserId());
         reqJson.put("staffName", userDtos.get(0).getName());
