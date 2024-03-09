@@ -24,10 +24,13 @@
                 </div>
             </div>
             <div class="margin-top-sm">
-                <div :id="'receiverDiv'+item.machineId" style="border: 1px solid #dee2e6;">
+                <div :id="'receiverDiv'+item.machineId" style="border: 1px solid #dee2e6; height:300px">
                     <img width="100%" src="../../../img/init.jpg" height="300px" :id="'receiver'+item.machineId"
                         style="border: 1;" />
                     <img :src="item.inOutImg" style="position: absolute;left: 0px;bottom: 0px;height: 70px;z-index:1;"/>
+                    <div class="camera-right" v-if="item.machineId" @click="openCloudFlvViedo(item.machineId)">
+                        <span class="fa fa-camera "></span>
+                    </div>
                 </div>
                 <div class="margin-top-sm margin-left-sm" style="font-size: 14px;" v-if="item.carNum">
                     <span class="fa fa-bell" style="color: #007bff;"></span>

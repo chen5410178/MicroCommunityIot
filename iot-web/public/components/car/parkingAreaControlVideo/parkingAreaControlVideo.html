@@ -65,9 +65,10 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <div id="receiver1Div" style="border: 1px solid #dee2e6;">
+            <div id="receiver1Div" style="border: 1px solid #dee2e6; height:300px">
                 <img width="100%" src="../../../img/init.jpg" height="300px" id="receiver1" style="border: 1;" />
-                <div class="camera-right" @click="openCloudFlvViedo('receiver1')"><span class="fa fa-camera "></span>
+                <div class="camera-right" v-if="parkingAreaControlVideoInfo.inMachineId" @click="openCloudFlvViedo('receiver1')">
+                    <span class="fa fa-camera "></span>
                 </div>
             </div>
             <div class="margin-top-sm margin-left-sm" style="font-size: 14px;"
@@ -84,9 +85,10 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div id="receiver2Div" style="border: 1px solid #dee2e6;">
+            <div id="receiver2Div" style="border: 1px solid #dee2e6;height:300px">
                 <img width="100%" src="../../../img/init.jpg" height="300px" id="receiver2" />
-                <div class="camera-right" @click="openCloudFlvViedo('receiver2')"><span class="fa fa-camera "></span>
+                <div class="camera-right" v-if="parkingAreaControlVideoInfo.outMachineId" @click="openCloudFlvViedo('receiver2')">
+                    <span class="fa fa-camera "></span>
                 </div>
             </div>
             <div class="margin-top-sm margin-left-sm" style="font-size: 14px;"

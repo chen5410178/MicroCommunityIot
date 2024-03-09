@@ -7,6 +7,7 @@
             parkingAreaTotalControlVideoInfo: {
                 paId: '',
                 machines: [],
+                jessibuca:{},
             }
         },
         _initMethod: function () {
@@ -36,13 +37,13 @@
                 _machines.forEach(item => {
                     if (item.machineId == _data.extMachineId) {
                         vc.emit('parkingAreaTotalControlFee', 'notify', {
-                            machine:item,
-                            data:_data
+                            machine: item,
+                            data: _data
                         });
                     }
                 })
 
-               
+
             });
 
         },
@@ -63,7 +64,7 @@
                     }
                 })
             },
-            _showCarInoutMachineInoutInfo:function(_data){
+            _showCarInoutMachineInoutInfo: function (_data) {
                 if (_data.action != 'FEE_INFO') {
                     return;
                 }
@@ -136,32 +137,30 @@
                 wsUrl += "/ws.flv";
                 wsUrl =
                     "ws://" + wsUrl;
-
-                let image = document.getElementById("receiver" + _machine.machineId);
-                if (wsUrl.endsWith(".flv")) {
-                    image = document.getElementById("receiverDiv" + _machine.machineId);
-                    let jessibuca = new Jessibuca({
-                        container: image,
-                        videoBuffer: 0.2,
-                        isResize: false,
-                    });
-                    jessibuca.onLoad = function () {
-                        this.play(wsUrl);
-                    };
-                    return;
+                $that._showCameraVideo(wsUrl,"receiverDiv" + _machine.machineId)
+            },
+            _showCameraVideo: function (wsUrl, _div) {
+                let image = document.getElementById(_div);
+                let jMap = $that.parkingAreaTotalControlVideoInfo.jessibuca;
+                let jessibuca = jMap[_div];
+                if (jessibuca) {
+                    jessibuca.destroy();
                 }
-                let receiver_socket = new WebSocket(wsUrl);
-                // 监听消息
-                receiver_socket.onmessage = function (data) {
-                    let reader = new FileReader();
-                    reader.onload = function (evt) {
-                        if (evt.target.readyState == FileReader.DONE) {
-                            let url = evt.target.result;
-                            image.src = "data:image/png;" + url;
-                        }
-                    };
-                    reader.readAsDataURL(data.data);
-                };
+                jessibuca = new Jessibuca({
+                    container: image,
+                    videoBuffer: 0.2, // 缓存时长
+                    isResize: false,
+                    text: "",
+                    loadingText: "",
+                    useMSE: false,
+                    debug: false,
+                    isNotMute: false,
+                },);
+
+                jessibuca.play(wsUrl);
+
+                jMap[_div] = jessibuca;
+
             },
             _openDoor: function (_machine) {
 
@@ -221,9 +220,33 @@
                     type: _type,
                     machineId: _machine.machineId,
                     boxId: _machine.locationObjId,
-                    paId:$that.parkingAreaTotalControlVideoInfo.paId
+                    paId: $that.parkingAreaTotalControlVideoInfo.paId
                 })
             },
+            openCloudFlvViedo: function (_machineId) {
+                let _param = {
+                    params: {
+                        "machineId": _machineId,
+                        "communityId": vc.getCurrentCommunity().communityId
+                    }
+
+                };
+                vc.http.apiGet('/barrier.getCloudFlvVideo',
+                    _param,
+                    function (json, res) {
+                        let _data = JSON.parse(json);
+                        if (_data.code != 0) {
+                            vc.toast(_data.msg);
+                            return;
+                        }
+                        console.log(_data)
+                        $that._showCameraVideo(_data.data.url, 'receiverDiv'+_machineId);
+                    },
+                    function (errInfo, error) {
+                        console.log('请求失败处理');
+                        vc.toast(json);
+                    });
+            }
         }
     });
 })(window.vc);

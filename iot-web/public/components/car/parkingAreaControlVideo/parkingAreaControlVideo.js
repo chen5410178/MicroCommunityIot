@@ -10,7 +10,6 @@
                 outMachineId: '',
                 inMachines: [],
                 outMachines: [],
-
                 inMachineCarNum: '',
                 inMachineInOutTime: '',
                 inMachineOpen: '',
@@ -18,7 +17,8 @@
                 outMachineCarNum: '',
                 outMachineInOutTime: '',
                 outMachineOpen: '',
-                outMachineOpenMsg: ''
+                outMachineOpenMsg: '',
+                jessibuca: {}
 
             }
         },
@@ -157,31 +157,28 @@
             },
             _showCameraVideo: function (wsUrl, _div) {
 
-                let image = document.getElementById(_div);
-                if (wsUrl.endsWith(".flv")) {
-                    image = document.getElementById(_div + "Div");
-                    let jessibuca = new Jessibuca({
-                        container: image,
-                        videoBuffer: 0.2,
-                        isResize: false,
-                    });
-                    jessibuca.onLoad = function () {
-                        this.play(wsUrl);
-                    };
-                    return;
+                let image = document.getElementById(_div + "Div");
+                let jMap = $that.parkingAreaControlVideoInfo.jessibuca;
+                let jessibuca = jMap[_div];
+                if (jessibuca) {
+                    jessibuca.destroy();
                 }
-                let receiver_socket = new WebSocket(wsUrl);
-                // 监听消息
-                receiver_socket.onmessage = function (data) {
-                    let reader = new FileReader();
-                    reader.onload = function (evt) {
-                        if (evt.target.readyState == FileReader.DONE) {
-                            let url = evt.target.result;
-                            image.src = "data:image/png;" + url;
-                        }
-                    };
-                    reader.readAsDataURL(data.data);
-                };
+
+                jessibuca = new Jessibuca({
+                    container: image,
+                    videoBuffer: 0.2, // 缓存时长
+                    isResize: false,
+                    text: "",
+                    loadingText: "",
+                    useMSE: false,
+                    debug: false,
+                    isNotMute: false,
+                },);
+
+                jessibuca.play(wsUrl);
+
+                jMap[_div] = jessibuca;
+
             },
             _openDoor: function (_inOut) {
                 let _machines = [];
@@ -322,20 +319,22 @@
                 } else {
                     _machineId = $that.parkingAreaControlVideoInfo.outMachineId;
                 }
-                let _data = {
-                    "machineId": _machineId,
-                    "communityId": vc.getCurrentCommunity().communityId
+                let _param = {
+                    params: {
+                        "machineId": _machineId,
+                        "communityId": vc.getCurrentCommunity().communityId
+                    }
+
                 };
-                vc.http.apiPost('/barrier.getCloudFlvVideo',
-                    JSON.stringify(_data), {
-                    emulateJSON: true
-                },
+                vc.http.apiGet('/barrier.getCloudFlvVideo',
+                    _param,
                     function (json, res) {
                         let _data = JSON.parse(json);
                         if (_data.code != 0) {
                             vc.toast(_data.msg);
                             return;
                         }
+                        console.log(_data)
                         $that._showCameraVideo(_data.data.url, _inOut);
                     },
                     function (errInfo, error) {
