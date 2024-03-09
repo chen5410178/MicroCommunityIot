@@ -20,6 +20,11 @@ import com.java110.barrier.engine.ICallCarService;
 import com.java110.barrier.engine.ICarMachineProcess;
 import com.java110.barrier.engine.IInOutCarTextEngine;
 import com.java110.barrier.engine.adapt.BaseMachineAdapt;
+import com.java110.barrier.engine.adapt.zhenshiMqtt.http.HttpClient;
+import com.java110.barrier.engine.adapt.zhenshiMqtt.http.HttpMethod;
+import com.java110.barrier.engine.adapt.zhenshiMqtt.http.HttpRequest;
+import com.java110.barrier.engine.adapt.zhenshiMqtt.http.HttpResponse;
+import com.java110.bean.ResultVo;
 import com.java110.core.cache.MappingCache;
 import com.java110.core.constant.MappingConstant;
 import com.java110.core.constant.ResponseConstant;
@@ -108,7 +113,7 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
         if (paramIn.containsKey("cmd") && "TriggerImage".equals(paramIn.getString("cmd"))) {
             ManualOpenDoorLogPo manualOpenDoorLogPo = new ManualOpenDoorLogPo();
             manualOpenDoorLogPo.setLogId(paramIn.getString("msgId"));
-            manualOpenDoorLogPo.setPhotoJpg(MappingCache.getValue(MappingConstant.FILE_DOMAIN,"OSS_URL") + paramIn.getString("oss_path"));
+            manualOpenDoorLogPo.setPhotoJpg(MappingCache.getValue(MappingConstant.FILE_DOMAIN, "OSS_URL") + paramIn.getString("oss_path"));
             manualOpenDoorLogServiceImpl.updateManualOpenDoorLog(manualOpenDoorLogPo);
             return;
         }
@@ -168,6 +173,30 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
         ZhenshiMqttSend.sendCmd(taskId, "手工开闸", machineDto, data.toJSONString());
     }
 
+    @Override
+    public ResultVo getCloudFlvVideo(BarrierDto barrierDto) {
+
+        String accessKey = MappingCache.getValue("VZICLOUD", "AccessKey");
+        String AccessKeySecret = MappingCache.getValue("VZICLOUD", "AccessKeySecret");
+        String baseUrl = "https://open.vzicloud.com";
+        HttpClient client = new HttpClient(baseUrl, accessKey, AccessKeySecret);
+        String path = "/openapi/v1/stp/user/devices/vurl";
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, path);
+        request.addParam("sn", barrierDto.getMachineCode());
+        request.addParam("type", "flv");
+        request.addParam("proto", "ws");
+
+        HttpResponse response = client.doRequest(request);
+
+        int status = response.getStatus();
+        if (status != 200) {
+            throw new IllegalArgumentException("调用臻识云异常");
+        }
+        String result = response.getBodyStr();
+        return new ResultVo(ResultVo.CODE_OK,ResultVo.MSG_OK,JSONObject.parseObject(result));
+    }
+
     private void dealCmd(String taskId, JSONObject reqData, BarrierDto machineDto) {
         String cmd = reqData.getString("cmd");
         switch (cmd) {
@@ -199,7 +228,7 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
             String license = plateResult.getString("license");
             if (plateResult.containsKey("imagePath")) {
                 //String imagePath = ImageFactory.getBase64ByImgUrl(MappingCacheFactory.getValue("OSS_URL") + plateResult.getString("imagePath"));
-                machineDto.setPhotoJpg(MappingCache.getValue(MappingConstant.FILE_DOMAIN,"OSS_URL") + plateResult.getString("imagePath"));
+                machineDto.setPhotoJpg(MappingCache.getValue(MappingConstant.FILE_DOMAIN, "OSS_URL") + plateResult.getString("imagePath"));
             }
 
             IInOutCarTextEngine inOutCarTextEngine = ApplicationContextFactory.getBean("zhenshiMqttInOutCarTextEngine", IInOutCarTextEngine.class);

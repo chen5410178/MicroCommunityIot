@@ -1,5 +1,6 @@
 package com.java110.barrier.engine;
 
+import com.java110.bean.ResultVo;
 import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.manualOpenDoorLog.ManualOpenDoorLogDto;
 import com.java110.dto.parking.ParkingAreaTextDto;
@@ -69,4 +70,11 @@ public interface ICarMachineProcess {
      * @param manualOpenDoorLogPo
      */
     void triggerImage(BarrierDto machineDto, ManualOpenDoorLogPo manualOpenDoorLogPo);
+
+    /**
+     * 获取视频播放地址
+     * @param barrierDto
+     * @return
+     */
+    ResultVo getCloudFlvVideo(BarrierDto barrierDto);
 }

@@ -5,6 +5,7 @@ import com.java110.barrier.engine.ICallCarService;
 import com.java110.barrier.engine.ICarMachineProcess;
 import com.java110.barrier.engine.IInOutCarTextEngine;
 import com.java110.barrier.engine.adapt.BaseMachineAdapt;
+import com.java110.bean.ResultVo;
 import com.java110.core.cache.MappingCache;
 import com.java110.core.constant.MappingConstant;
 import com.java110.core.factory.ApplicationContextFactory;
@@ -278,5 +279,10 @@ public class HcCarMachineAdapt extends BaseMachineAdapt implements ICarMachinePr
         param.put("cmd", CMD_RECOGNITION);
         param.put("taskId", taskId);
         MqttFactory.publish(TOPIC_REQ.replace(SN, machineDto.getMachineCode()), param.toJSONString());
+    }
+
+    @Override
+    public ResultVo getCloudFlvVideo(BarrierDto barrierDto) {
+        return new ResultVo(ResultVo.CODE_OK, ResultVo.MSG_OK);
     }
 }

@@ -65,6 +65,7 @@
         <div class="col-md-6">
             <div id="receiver1Div" style="border: 1px solid #dee2e6;">
                 <img width="100%" src="../../../img/init.jpg" height="300px" id="receiver1" style="border: 1;" />
+                <span class="fa fa-camera camera-right" @click="openCloudFlvViedo('receiver1')"></span>
             </div>
             <div class="margin-top-sm margin-left-sm" style="font-size: 14px;" v-if="parkingAreaControlVideoInfo.inMachineCarNum">
                 <span class="fa fa-bell" style="color: #007bff;"></span>
@@ -81,6 +82,7 @@
         <div class="col-md-6">
             <div id="receiver2Div" style="border: 1px solid #dee2e6;">
                 <img width="100%" src="../../../img/init.jpg" height="300px" id="receiver2" />
+                <span class="fa fa-camera camera-right" @click="openCloudFlvViedo('receiver2')"></span>
             </div>
             <div class="margin-top-sm margin-left-sm" style="font-size: 14px;" v-if="parkingAreaControlVideoInfo.outMachineCarNum">
                 <span class="fa fa-bell" style="color: #007bff;"></span>

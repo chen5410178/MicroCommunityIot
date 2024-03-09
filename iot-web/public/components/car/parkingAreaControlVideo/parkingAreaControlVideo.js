@@ -1,7 +1,7 @@
 /**
  入驻小区
  **/
-(function(vc) {
+(function (vc) {
     vc.extends({
         data: {
             parkingAreaControlVideoInfo: {
@@ -22,19 +22,19 @@
 
             }
         },
-        _initMethod: function() {
+        _initMethod: function () {
 
         },
-        _initEvent: function() {
-            vc.on('parkingAreaControlVideo', 'notify', function(param) {
+        _initEvent: function () {
+            vc.on('parkingAreaControlVideo', 'notify', function (param) {
                 if (param.hasOwnProperty('boxId')) {
                     $that.parkingAreaControlVideoInfo.boxId = param.boxId;
                     $that._listMachines();
                 }
             });
 
-            vc.on('parkingAreaControlVideo', 'carIn', function(param) {
-                if($that.parkingAreaControlVideoInfo.inMachineId != param.machineId){
+            vc.on('parkingAreaControlVideo', 'carIn', function (param) {
+                if ($that.parkingAreaControlVideoInfo.inMachineId != param.machineId) {
                     return;
                 }
                 $that.parkingAreaControlVideoInfo.inMachineCarNum = param.carNum;
@@ -43,8 +43,8 @@
                 $that.parkingAreaControlVideoInfo.inMachineOpenMsg = param.remark;
             });
 
-            vc.on('parkingAreaControlVideo', 'carOut', function(param) {
-                if($that.parkingAreaControlVideoInfo.outMachineId != param.machineId){
+            vc.on('parkingAreaControlVideo', 'carOut', function (param) {
+                if ($that.parkingAreaControlVideoInfo.outMachineId != param.machineId) {
                     return;
                 }
                 $that.parkingAreaControlVideoInfo.outMachineCarNum = param.carNum;
@@ -54,19 +54,19 @@
             });
         },
         methods: {
-            _listMachines: function() {
+            _listMachines: function () {
                 let param = {
-                        params: {
-                            boxId: $that.parkingAreaControlVideoInfo.boxId,
-                            page: 1,
-                            row: 100,
-                            communityId: vc.getCurrentCommunity().communityId
-                        }
+                    params: {
+                        boxId: $that.parkingAreaControlVideoInfo.boxId,
+                        page: 1,
+                        row: 100,
+                        communityId: vc.getCurrentCommunity().communityId
                     }
-                    //发送get请求
+                }
+                //发送get请求
                 vc.http.apiGet('/barrier.listBarrier',
                     param,
-                    function(json, res) {
+                    function (json, res) {
                         let _machineManageInfo = JSON.parse(json);
                         let _machines = _machineManageInfo.data;
                         $that.parkingAreaControlVideoInfo.inMachines = [];
@@ -80,12 +80,12 @@
                         });
 
                     },
-                    function(errInfo, error) {
+                    function (errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );
             },
-            _swatchVedio: function() {
+            _swatchVedio: function () {
                 //创建一个socket实例
                 let wsUrl = "";
                 let _enterMachineId = $that.parkingAreaControlVideoInfo.inMachineId;
@@ -104,37 +104,11 @@
                 if (wsUrl.indexOf(":") < 0) {
                     wsUrl = wsUrl + ":9080";
                 }
-
                 wsUrl += "/ws.flv";
-                wsUrl =
-                    "ws://" + wsUrl;
-                let image = document.getElementById("receiver1");
-                if (wsUrl.endsWith(".flv")) {
-                    image = document.getElementById("receiver1Div");
-                    let jessibuca = new Jessibuca({
-                        container: image,
-                        videoBuffer: 0.2,
-                        isResize: false,
-                    });
-                    jessibuca.onLoad = function() {
-                        this.play(wsUrl);
-                    };
-                    return;
-                }
-                let receiver_socket = new WebSocket(wsUrl);
-                // 监听消息
-                receiver_socket.onmessage = function(data) {
-                    let reader = new FileReader();
-                    reader.onload = function(evt) {
-                        if (evt.target.readyState == FileReader.DONE) {
-                            let url = evt.target.result;
-                            image.src = "data:image/png;" + url;
-                        }
-                    };
-                    reader.readAsDataURL(data.data);
-                };
+                wsUrl = "ws://" + wsUrl;
+                $that._showCameraVideo(wsUrl, 'receiver1')
             },
-            _swatchOutVedio: function() {
+            _swatchOutVedio: function () {
                 //创建一个socket实例
                 let wsUrl = "";
                 let _outMachineId = $that.parkingAreaControlVideoInfo.outMachineId;
@@ -176,29 +150,31 @@
                 if (wsUrl.indexOf(":") < 0) {
                     wsUrl = wsUrl + ":9080";
                 }
-                 wsUrl += "/ws.flv"; 
+                wsUrl += "/ws.flv";
                 wsUrl =
                     "ws://" + wsUrl;
+                $that._showCameraVideo(wsUrl, 'receiver2');
+            },
+            _showCameraVideo: function (wsUrl, _div) {
 
-                let image = document.getElementById("receiver2");
+                let image = document.getElementById(_div);
                 if (wsUrl.endsWith(".flv")) {
-                    image = document.getElementById("receiver2Div");
+                    image = document.getElementById(_div + "Div");
                     let jessibuca = new Jessibuca({
                         container: image,
                         videoBuffer: 0.2,
                         isResize: false,
                     });
-                    jessibuca.onLoad = function() {
+                    jessibuca.onLoad = function () {
                         this.play(wsUrl);
                     };
                     return;
                 }
                 let receiver_socket = new WebSocket(wsUrl);
                 // 监听消息
-                receiver_socket.onmessage = function(data) {
-                    //image.src = 'data:image/png;' + data.data;
+                receiver_socket.onmessage = function (data) {
                     let reader = new FileReader();
-                    reader.onload = function(evt) {
+                    reader.onload = function (evt) {
                         if (evt.target.readyState == FileReader.DONE) {
                             let url = evt.target.result;
                             image.src = "data:image/png;" + url;
@@ -207,7 +183,7 @@
                     reader.readAsDataURL(data.data);
                 };
             },
-            _openDoor: function(_inOut) {
+            _openDoor: function (_inOut) {
                 let _machines = [];
                 let _machineId = "";
                 if (_inOut == 'in') {
@@ -238,9 +214,9 @@
                 };
                 vc.http.apiPost('/barrier.openBarrierDoor',
                     JSON.stringify(_data), {
-                        emulateJSON: true
-                    },
-                    function(json, res) {
+                    emulateJSON: true
+                },
+                    function (json, res) {
                         let _data = JSON.parse(json);
                         if (_data.code != 0) {
                             vc.toast(_data.msg);
@@ -248,12 +224,12 @@
                             vc.toast('已请求设备');
                         }
                     },
-                    function(errInfo, error) {
+                    function (errInfo, error) {
                         console.log('请求失败处理');
                         vc.toast(json);
                     });
             },
-            _closeDoor: function(_inOut) {
+            _closeDoor: function (_inOut) {
                 let _machines = [];
                 let _machineId = "";
                 if (_inOut == 'in') {
@@ -284,9 +260,9 @@
                 };
                 vc.http.apiPost('/barrier.closeBarrierDoor',
                     JSON.stringify(_data), {
-                        emulateJSON: true
-                    },
-                    function(json, res) {
+                    emulateJSON: true
+                },
+                    function (json, res) {
                         let _data = JSON.parse(json);
                         if (_data.code != 0) {
                             vc.toast(_data.msg);
@@ -294,12 +270,12 @@
                             vc.toast('已请求设备');
                         }
                     },
-                    function(errInfo, error) {
+                    function (errInfo, error) {
                         console.log('请求失败处理');
                         vc.toast(json);
                     });
             },
-            customCarIn: function(_type) {
+            customCarIn: function (_type) {
                 let _machineId = $that.parkingAreaControlVideoInfo.inMachineId;
                 if (_type != '1101') {
                     _machineId = $that.parkingAreaControlVideoInfo.outMachineId;
@@ -314,7 +290,7 @@
                     boxId: $that.parkingAreaControlVideoInfo.boxId
                 })
             },
-            unlicensedCarIn: function(_type) {
+            unlicensedCarIn: function (_type) {
                 let _machineId = $that.parkingAreaControlVideoInfo.inMachineId;
 
                 if (!_machineId) {
@@ -326,7 +302,7 @@
                     machineId: _machineId
                 })
             },
-            _outPayFeeQrCode: function() {
+            _outPayFeeQrCode: function () {
                 let _machineId = $that.parkingAreaControlVideoInfo.outMachineId;
 
                 if (!_machineId) {
@@ -338,6 +314,34 @@
                     machineId: _machineId,
                     locationObjId: $that.parkingAreaControlVideoInfo.boxId
                 });
+            },
+            openCloudFlvViedo: function (_inOut) {
+                let _machineId = '';
+                if (_inOut == 'receiver1') {
+                    _machineId = $that.parkingAreaControlVideoInfo.inMachineId;
+                } else {
+                    _machineId = $that.parkingAreaControlVideoInfo.outMachineId;
+                }
+                let _data = {
+                    "machineId": _machineCode,
+                    "communityId": vc.getCurrentCommunity().communityId
+                };
+                vc.http.apiPost('/barrier.getCloudFlvVideo',
+                    JSON.stringify(_data), {
+                    emulateJSON: true
+                },
+                    function (json, res) {
+                        let _data = JSON.parse(json);
+                        if (_data.code != 0) {
+                            vc.toast(_data.msg);
+                            return;
+                        }
+                        $that._showCameraVideo(_data.data.url, _inOut);
+                    },
+                    function (errInfo, error) {
+                        console.log('请求失败处理');
+                        vc.toast(json);
+                    });
             }
 
 

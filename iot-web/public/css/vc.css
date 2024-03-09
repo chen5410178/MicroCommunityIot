@@ -1033,7 +1033,7 @@ nav-link nav-link-breadcrumb active:active {
 }
 
 .cockpit-header {
-    
+
     position: absolute;
     left: 0;
     top: 0;
@@ -1076,7 +1076,7 @@ nav-link nav-link-breadcrumb active:active {
     background: linear-gradient(270deg, rgba(3, 17, 23, 1), rgba(3, 17, 23, 0));
 }
 
-.cockpit-right .view-box{
+.cockpit-right .view-box {
     position: absolute;
     width: 24rem;
     height: 91.14vh;
@@ -1090,15 +1090,16 @@ nav-link nav-link-breadcrumb active:active {
     transition: all 1.5s;
 }
 
-.cockpit-right .view-box .vb-c{
-    color:#fff;
+.cockpit-right .view-box .vb-c {
+    color: #fff;
 }
-.cockpit-right .view-box .vb-c .r-title{
+
+.cockpit-right .view-box .vb-c .r-title {
     font-size: 18px;
     font-weight: 700;
 }
 
-.cockpit-right .view-box .vb-c .r-body{
+.cockpit-right .view-box .vb-c .r-body {
     font-size: 14px;
 }
 
@@ -1123,32 +1124,40 @@ nav-link nav-link-breadcrumb active:active {
     height: 0.6875rem; */
 }
 
-.cockpit-menu .active .bg-a{
+.cockpit-menu .active .bg-a {
     background: url('/img/3d/active.png');
     background-size: 100% 100%;
-  
+
 }
 
 .cockpit-menu .title {
     cursor: pointer;
     font-size: 18px;
-    font-weight: 700;  
+    font-weight: 700;
 }
 
 .cockpit-menu .title .bg {
     width: 120px;
-    height: 60px; 
+    height: 60px;
     padding: 9px 0px 15px 25px;
     font-size: 24px;
 }
 
 
-.cockpit-menu .title .t-text{
+.cockpit-menu .title .t-text {
     position: relative;
     top: 15px;
     left: -58px;
 }
+
 .cockpit-right .lift::-webkit-scrollbar {
     display: none;
 }
 
+.camera-right {
+    font-size: 30px;
+    position: absolute;
+    top: 0;
+    right: 15px;
+    padding: 10px;
+}
