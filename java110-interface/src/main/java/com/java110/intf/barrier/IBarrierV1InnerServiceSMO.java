@@ -76,4 +76,7 @@ public interface IBarrierV1InnerServiceSMO {
 
     @RequestMapping(value = "/closeDoor", method = RequestMethod.POST)
     ResultVo closeDoor(@RequestBody JSONObject reqJson);
+
+    @RequestMapping(value = "/getCloudFlvVideo", method = RequestMethod.POST)
+    ResultVo getCloudFlvVideo(@RequestBody BarrierDto barrierDto);
 }

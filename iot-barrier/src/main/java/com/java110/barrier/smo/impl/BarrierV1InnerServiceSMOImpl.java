@@ -19,6 +19,7 @@ package com.java110.barrier.smo.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.barrier.dao.IBarrierV1ServiceDao;
 import com.java110.barrier.engine.IBarrierEngine;
+import com.java110.barrier.factory.CarMachineProcessFactory;
 import com.java110.bean.ResultVo;
 import com.java110.bean.dto.PageDto;
 import com.java110.core.utils.Assert;
@@ -110,7 +111,7 @@ public class BarrierV1InnerServiceSMOImpl  implements IBarrierV1InnerServiceSMO 
     }
 
     @Override
-    public ResultVo closeDoor(JSONObject reqJson) {
+    public ResultVo closeDoor(@RequestBody JSONObject reqJson) {
 
         BarrierDto barrierDto = new BarrierDto();
         barrierDto.setMachineCode(reqJson.getString("machineCode"));
@@ -120,6 +121,13 @@ public class BarrierV1InnerServiceSMOImpl  implements IBarrierV1InnerServiceSMO 
         Assert.listOnlyOne(barrierDtos, "摄像头不存在");
 
         ResultVo resultVo = barrierEngineImpl.closeDoor(barrierDtos.get(0),null, reqJson);
+        return resultVo;
+    }
+
+    @Override
+    public ResultVo getCloudFlvVideo(@RequestBody BarrierDto barrierDto) {
+        ResultVo resultVo = CarMachineProcessFactory.getCarImpl(barrierDto.getHmId()).getCloudFlvVideo(barrierDto);
+
         return resultVo;
     }
 
