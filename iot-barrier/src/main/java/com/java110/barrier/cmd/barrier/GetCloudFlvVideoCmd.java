@@ -48,7 +48,7 @@ public class GetCloudFlvVideoCmd extends Cmd {
         reqJson.put("staffName", userDtos.get(0).getName());
 
         BarrierDto barrierDto = new BarrierDto();
-        barrierDto.setMachineCode(reqJson.getString("machineCode"));
+        barrierDto.setMachineId(reqJson.getString("machineId"));
         barrierDto.setCommunityId(reqJson.getString("communityId"));
         List<BarrierDto> barrierDtos = barrierV1InnerServiceSMOImpl.queryBarriers(barrierDto);
 

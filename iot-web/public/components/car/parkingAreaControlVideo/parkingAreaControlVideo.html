@@ -3,10 +3,11 @@
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-4">
-                    <select class="custom-select custom-select-sm" v-model="parkingAreaControlVideoInfo.inMachineId" @change="_swatchVedio()">
-                        <option selected  value="">{{vc.i18n('选择入场摄像头','parkingAreaControlVideo')}}</option>
-                        <option :value="item.machineId"
-                            v-for="(item,index) in parkingAreaControlVideoInfo.inMachines">{{item.machineName}}
+                    <select class="custom-select custom-select-sm" v-model="parkingAreaControlVideoInfo.inMachineId"
+                        @change="_swatchVedio()">
+                        <option selected value="">{{vc.i18n('选择入场摄像头','parkingAreaControlVideo')}}</option>
+                        <option :value="item.machineId" v-for="(item,index) in parkingAreaControlVideoInfo.inMachines">
+                            {{item.machineName}}
                         </option>
                     </select>
                 </div>
@@ -33,10 +34,11 @@
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-4">
-                    <select class="custom-select custom-select-sm" v-model="parkingAreaControlVideoInfo.outMachineId" @change="_swatchOutVedio()">
-                        <option selected  value="">{{vc.i18n('选择出场摄像头','parkingAreaControlVideo')}}</option>
-                        <option :value="item.machineId"
-                            v-for="(item,index) in parkingAreaControlVideoInfo.outMachines">{{item.machineName}}
+                    <select class="custom-select custom-select-sm" v-model="parkingAreaControlVideoInfo.outMachineId"
+                        @change="_swatchOutVedio()">
+                        <option selected value="">{{vc.i18n('选择出场摄像头','parkingAreaControlVideo')}}</option>
+                        <option :value="item.machineId" v-for="(item,index) in parkingAreaControlVideoInfo.outMachines">
+                            {{item.machineName}}
                         </option>
                     </select>
                 </div>
@@ -65,9 +67,11 @@
         <div class="col-md-6">
             <div id="receiver1Div" style="border: 1px solid #dee2e6;">
                 <img width="100%" src="../../../img/init.jpg" height="300px" id="receiver1" style="border: 1;" />
-                <span class="fa fa-camera camera-right" @click="openCloudFlvViedo('receiver1')"></span>
+                <div class="camera-right" @click="openCloudFlvViedo('receiver1')"><span class="fa fa-camera "></span>
+                </div>
             </div>
-            <div class="margin-top-sm margin-left-sm" style="font-size: 14px;" v-if="parkingAreaControlVideoInfo.inMachineCarNum">
+            <div class="margin-top-sm margin-left-sm" style="font-size: 14px;"
+                v-if="parkingAreaControlVideoInfo.inMachineCarNum">
                 <span class="fa fa-bell" style="color: #007bff;"></span>
                 <span>{{parkingAreaControlVideoInfo.inMachineInOutTime}}</span>
                 <!-- <span>{{parkingAreaControlVideoInfo.inMachineCarNum}}</span> -->
@@ -82,9 +86,11 @@
         <div class="col-md-6">
             <div id="receiver2Div" style="border: 1px solid #dee2e6;">
                 <img width="100%" src="../../../img/init.jpg" height="300px" id="receiver2" />
-                <span class="fa fa-camera camera-right" @click="openCloudFlvViedo('receiver2')"></span>
+                <div class="camera-right" @click="openCloudFlvViedo('receiver2')"><span class="fa fa-camera "></span>
+                </div>
             </div>
-            <div class="margin-top-sm margin-left-sm" style="font-size: 14px;" v-if="parkingAreaControlVideoInfo.outMachineCarNum">
+            <div class="margin-top-sm margin-left-sm" style="font-size: 14px;"
+                v-if="parkingAreaControlVideoInfo.outMachineCarNum">
                 <span class="fa fa-bell" style="color: #007bff;"></span>
                 <span>{{parkingAreaControlVideoInfo.outMachineInOutTime}}</span>
                 <!-- <span>{{parkingAreaControlVideoInfo.outMachineCarNum}}</span> -->

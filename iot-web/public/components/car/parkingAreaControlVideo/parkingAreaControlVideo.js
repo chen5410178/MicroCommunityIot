@@ -323,7 +323,7 @@
                     _machineId = $that.parkingAreaControlVideoInfo.outMachineId;
                 }
                 let _data = {
-                    "machineId": _machineCode,
+                    "machineId": _machineId,
                     "communityId": vc.getCurrentCommunity().communityId
                 };
                 vc.http.apiPost('/barrier.getCloudFlvVideo',
