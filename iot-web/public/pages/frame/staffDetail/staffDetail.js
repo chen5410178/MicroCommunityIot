@@ -1,7 +1,8 @@
 /**
  入驻小区
  **/
-(function(vc) {
+
+(function (vc) {
     var _fileUrl = '/callComponent/download/getFile/fileByObjId';
     vc.extends({
         data: {
@@ -19,7 +20,7 @@
                 roles: []
             }
         },
-        _initMethod: function() {
+        _initMethod: function () {
             //根据请求参数查询 查询 业主信息
             let _staffId = vc.getParam('staffId');
             $that.staffDetailInfo.staffId = _staffId;
@@ -28,10 +29,13 @@
             $that._loadStaffOrgs();
             //            $that._loadStaffCommunity();
             $that._loadStaffRole();
+            vc.emit('staffMapPos', '_showStaffMap',{
+                staffId:$that.staffDetailInfo.staffId
+            })
         },
-        _initEvent: function() {},
+        _initEvent: function () { },
         methods: {
-            _loadStaffPrivileges: function() {
+            _loadStaffPrivileges: function () {
                 let param = {
                     params: {
                         staffId: $that.staffDetailInfo.staffId
@@ -40,16 +44,16 @@
                 //发送get请求
                 vc.http.apiGet('/privilege.queryStaffPrivileges',
                     param,
-                    function(json) {
+                    function (json) {
                         let _staffDetailInfo = JSON.parse(json);
                         vc.component.staffDetailInfo.privileges = _staffDetailInfo.datas;
                         $that._initJsTreePrivilege(_staffDetailInfo.datas);
                     },
-                    function() {
+                    function () {
                         console.log('请求失败处理');
                     });
             },
-            _initJsTreePrivilege: function(_privileges) {
+            _initJsTreePrivilege: function (_privileges) {
                 let _data = $that._doJsTreeData(_privileges);
                 $.jstree.destroy()
                 $("#jstree_privilege").jstree({
@@ -63,13 +67,13 @@
                         'data': _data
                     }
                 });
-                $('#jstree_privilege').on("loaded.jstree", function(e, data) {
+                $('#jstree_privilege').on("loaded.jstree", function (e, data) {
                     console.log(data);
                     //默认合并
                     // $("#jstree_privilege").jstree("open_all");
                 });
             },
-            _doJsTreeData: function(_privileges) {
+            _doJsTreeData: function (_privileges) {
                 let _mGroupTree = [];
                 //构建 第一层菜单组
                 _privileges.forEach(pItem => {
@@ -95,7 +99,7 @@
                 });
                 return _mGroupTree;
             },
-            _doJsTreeMenuData: function(_groupItem) {
+            _doJsTreeMenuData: function (_groupItem) {
                 let _privileges = $that.staffDetailInfo.privileges;
                 //构建菜单
                 let _children = _groupItem.children;
@@ -123,7 +127,7 @@
                     }
                 }
             },
-            _doJsTreePrivilegeData: function(_menuItem) {
+            _doJsTreePrivilegeData: function (_menuItem) {
                 let _privileges = $that.staffDetailInfo.privileges;
                 //构建菜单
                 let _children = _menuItem.children;
@@ -151,7 +155,7 @@
                     }
                 }
             },
-            _loadStaffDetail: function() {
+            _loadStaffDetail: function () {
                 let param = {
                     params: {
                         page: 1,
@@ -162,22 +166,22 @@
                 //发送get请求
                 vc.http.apiGet('/query.staff.infos',
                     param,
-                    function(json) {
+                    function (json) {
                         let _staffInfo = JSON.parse(json);
                         // 员工列表 和 岗位列表匹配
                         vc.copyObject(_staffInfo.data[0], $that.staffDetailInfo);
                         $that.staffDetailInfo.photo = _fileUrl + "?objId=" +
                             $that.staffDetailInfo.staffId + "&communityId=" + vc.getCurrentCommunity().communityId + "&fileTypeCd=12000&time=" + new Date();
                     },
-                    function() {
+                    function () {
                         console.log('请求失败处理');
                     }
                 );
             },
-            errorLoadImg: function() {
+            errorLoadImg: function () {
                 vc.component.staffDetailInfo.photo = "/img/noPhoto.jpg";
             },
-            _loadStaffOrgs: function() {
+            _loadStaffOrgs: function () {
                 let param = {
                     params: {
                         page: 1,
@@ -188,16 +192,16 @@
                 //发送get请求
                 vc.http.apiGet('/user.listStaffOrgs',
                     param,
-                    function(json) {
+                    function (json) {
                         let _staffInfo = JSON.parse(json);
                         $that.staffDetailInfo.orgs = _staffInfo.data
                     },
-                    function() {
+                    function () {
                         console.log('请求失败处理');
                     }
                 );
             },
-            _loadStaffRole: function() {
+            _loadStaffRole: function () {
                 let param = {
                     params: {
                         page: 1,
@@ -208,15 +212,16 @@
                 //发送get请求
                 vc.http.apiGet('/user.listStaffRoles',
                     param,
-                    function(json) {
+                    function (json) {
                         let _staffInfo = JSON.parse(json);
                         $that.staffDetailInfo.roles = _staffInfo.data
                     },
-                    function() {
+                    function () {
                         console.log('请求失败处理');
                     }
                 );
             },
+            
 
         }
     });
