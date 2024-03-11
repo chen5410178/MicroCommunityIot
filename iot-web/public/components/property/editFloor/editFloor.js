@@ -9,20 +9,10 @@
                 remark: '',
                 errorInfo: '',
                 seq: '',
+                lat: 0,
+                lng: 0
             }
         },
-        // watch: {
-        //     "editFloorInfo.floorNum": { //深度监听，可监听到对象、数组的变化
-        //         handler(val, oldVal) {
-        //             if (vc.notNull(val)) {
-        //                 $that.editFloorInfo.floorName = $that.editFloorInfo.floorNum + "号楼";
-        //             } else {
-        //                 $that.editFloorInfo.floorName = "";
-        //             }
-        //         },
-        //         deep: true
-        //     }
-        // },
         _initMethod: function () {
         },
         _initEvent: function () {
@@ -30,6 +20,11 @@
                 $that.editFloorInfo.errorInfo = "";
                 vc.copyObject(_floor, $that.editFloorInfo);
                 $('#editFloorModel').modal('show');
+
+                setTimeout(function () {
+                    vc.emit('editMap', 'showMap', $that.editFloorInfo);
+                }, 1000)
+
             });
         },
         methods: {
@@ -136,6 +131,8 @@
                     remark: '',
                     errorInfo: '',
                     seq: '',
+                    lat: 0,
+                lng: 0
                 };
             }
         }

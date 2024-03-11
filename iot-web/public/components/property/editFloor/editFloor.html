@@ -29,6 +29,9 @@
                                 <label class="col-sm-2 col-form-label"><span><vc:i18n name="备注" namespace="editFloor"></vc:i18n></span></label>
                                 <div class="col-sm-10"><textarea cols="5" v-model="editFloorInfo.remark" type="tel" :placeholder="vc.i18n('可填，请填写备注','editFloor')" class="form-control"></textarea></div>
                             </div>
+                            <div >
+                                <vc:create path="3d/editMap"></vc:create>
+                            </div>
                             <div class="ibox-content">
                                 <button class="btn btn-primary float-right" type="button" v-on:click="editFloorMethod()"><i class="fa fa-check"></i>&nbsp;修改
                                 </button>

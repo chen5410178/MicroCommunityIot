@@ -29,6 +29,9 @@
                                 <label class="col-sm-2 col-form-label"><span><vc:i18n name="备注" namespace="addFloor"></vc:i18n></span></label>
                                 <div class="col-sm-10"><textarea cols="5" v-model="addFloorInfo.remark" type="tel" :placeholder="vc.i18n('可填，请填写备注','addFloor')" class="form-control"></textarea></div>
                             </div>
+                            <div class="">
+                                <vc:create path="3d/addMap"></vc:create>
+                            </div>
                             <div class="ibox-content">
                                 <button class="btn btn-primary float-right" type="button" v-on:click="saveFloorInfo()">
                                     <i class="fa fa-check"></i>&nbsp;保存

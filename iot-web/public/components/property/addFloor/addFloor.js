@@ -14,6 +14,8 @@
                 remark: '',
                 errorInfo: '',
                 seq: '',
+                lat: 0,
+                lng: 0
             }
         },
         watch: {
@@ -32,7 +34,12 @@
         },
         _initEvent: function () {
             vc.on('addFloor', 'openAddFloorModal', function () {
+
                 $('#addFloorModel').modal('show');
+                setTimeout(function () {
+                    vc.emit('addMap', 'showMap', $that.addFloorInfo);
+                }, 1000)
+
             });
         },
         methods: {
@@ -141,6 +148,8 @@
                     remark: '',
                     errorInfo: '',
                     seq: '',
+                    lat: 0,
+                    lng: 0
                 };
             }
         }

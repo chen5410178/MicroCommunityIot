@@ -20,7 +20,6 @@ export default class WorkLicenseLineMapApi {
             _lon = _pos[0].lon;
         }
 
-        console.log(_lat,_lon)
 
         let center = new TMap.LatLng(_lat, _lon)
         //定义map变量，调用 TMap.Map() 构造函数创建地图
