@@ -67,9 +67,9 @@ public class FloorV1ServiceDaoImpl extends BaseServiceDao implements IFloorV1Ser
     public List<Map> getFloorInfo(Map info) throws DAOException {
         logger.debug("查询 getFloorInfo 入参 info : {}",info);
 
-        List<Map> businessFloorInfos = sqlSessionTemplate.selectList("floorV1ServiceDaoImpl.getFloorInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("floorV1ServiceDaoImpl.getFloorInfo",info);
 
-        return businessFloorInfos;
+        return infos;
     }
 
 

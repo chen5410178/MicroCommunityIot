@@ -26,6 +26,10 @@ public class FloorPo implements Serializable {
     private String statusCd = "0";
     private int seq;
 
+    private String lat;
+
+    private String lng;
+
     public String getFloorId() {
         return floorId;
     }
@@ -104,5 +108,21 @@ public class FloorPo implements Serializable {
 
     public void setSeq(int seq) {
         this.seq = seq;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 }

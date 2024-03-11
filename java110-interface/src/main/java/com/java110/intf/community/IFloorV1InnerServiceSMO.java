@@ -39,13 +39,13 @@ public interface IFloorV1InnerServiceSMO {
 
 
     @RequestMapping(value = "/saveFloor", method = RequestMethod.POST)
-    public int saveFloor(@RequestBody FloorPo floorPo);
+     int saveFloor(@RequestBody FloorPo floorPo);
 
     @RequestMapping(value = "/updateFloor", method = RequestMethod.POST)
-    public int updateFloor(@RequestBody  FloorPo floorPo);
+     int updateFloor(@RequestBody  FloorPo floorPo);
 
     @RequestMapping(value = "/deleteFloor", method = RequestMethod.POST)
-    public int deleteFloor(@RequestBody  FloorPo floorPo);
+     int deleteFloor(@RequestBody  FloorPo floorPo);
 
     /**
      * <p>查询小区楼信息</p>

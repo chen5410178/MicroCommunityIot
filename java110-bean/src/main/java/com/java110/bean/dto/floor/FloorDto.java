@@ -57,6 +57,10 @@ public class FloorDto extends PageDto implements Serializable {
 
     private int layer;
 
+    private String lat;
+
+    private String lng;
+
     private List<FloorAttrDto> floorAttrDto;
 
     public String getFloorId() {
@@ -185,5 +189,21 @@ public class FloorDto extends PageDto implements Serializable {
 
     public void setLayer(int layer) {
         this.layer = layer;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 }

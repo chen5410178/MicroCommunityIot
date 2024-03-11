@@ -101,6 +101,8 @@ public class SaveFloorCmd extends Cmd {
         businessFloor.put("floorArea", reqJson.getString("floorArea"));
         businessFloor.put("seq", reqJson.getString("seq"));
         FloorPo floorPo = BeanConvertUtil.covertBean(businessFloor, FloorPo.class);
+        floorPo.setLat(reqJson.getString("lat"));
+        floorPo.setLng(reqJson.getString("lng"));
         int flag = floorV1InnerServiceSMOImpl.saveFloor(floorPo);
 
         if (flag < 1) {

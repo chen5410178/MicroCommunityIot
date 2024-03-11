@@ -7,6 +7,7 @@ import com.java110.core.db.dao.BaseServiceDao;
 import com.java110.core.exception.DAOException;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -139,12 +140,12 @@ public class FloorServiceDaoImpl extends BaseServiceDao implements IFloorService
     public int queryFloorsCount(Map info) throws DAOException {
         logger.debug("查询小区楼信息 入参 info : {}", info);
 
-        List<Map> businessFloorInfos = sqlSessionTemplate.selectList("floorServiceDaoImpl.queryFloorsCount", info);
-        if (businessFloorInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("floorServiceDaoImpl.queryFloorsCount", info);
+        if (ListUtil.isNull(infos)) {
             return 0;
         }
 
-        return Integer.parseInt(businessFloorInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
     @Override

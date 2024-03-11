@@ -200,7 +200,9 @@
         f.`user_id` userId,
         f.`community_id` communityId,
         f.floor_area floorArea,
-        f.seq
+        f.seq,
+        f.lat,
+        f.lng
         FROM
         f_floor f
         where 1=1
