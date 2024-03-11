@@ -28,17 +28,26 @@
         },
         methods: {
             _showEditMapContainer: function () {
-                let lat = "39.916527";
-                let lng = "116.397128";
+
+                let _community = vc.getCurrentCommunity();
+                let _lat = 39.916527;
+                let _lng = 116.397128;
+                if (_community && _community.lat) {
+                    _lat = _community.lat;
+                }
+                if (_community && _community.lng) {
+                    _lng = _community.lng;
+                }
+
                 let latLng = $that.editMapInfo.latLng;
                 if(latLng.lat){
-                    lat = latLng.lat;
+                    _lat = latLng.lat;
                 }
                 if(latLng.lng){
-                    lng = latLng.lng;
+                    _lng = latLng.lng;
                 }
                 let editMap = new TMap.Map(document.getElementById("editMapContainer"), {
-                    center: new TMap.LatLng(lat, lng),
+                    center: new TMap.LatLng(_lat, _lng),
                     zoom: 13
                 });
                 $that.editMapInfo.editMap = editMap;
@@ -51,7 +60,7 @@
                     {
                      "styleId":"marker",
                      "id": "1",
-                     "position":new TMap.LatLng(lat, lng),
+                     "position":new TMap.LatLng(_lat, _lng),
                     }
                 ])
                 //添加监听事件  获取鼠标点击事件

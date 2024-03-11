@@ -8,7 +8,7 @@
         data: {
             addMapInfo: {
                 latLng: {},
-                addMap:{}
+                addMap: {}
 
             }
         },
@@ -20,7 +20,7 @@
 
             vc.on('addMap', 'showMap', function (_param) {
                 $that.addMapInfo.latLng = _param;
-                if($that.addMapInfo.addMap.destroy){
+                if ($that.addMapInfo.addMap.destroy) {
                     $that.addMapInfo.addMap.destroy();
                 }
                 $that._showAddMapContainer();
@@ -29,8 +29,19 @@
         },
         methods: {
             _showAddMapContainer: function () {
+
+                let _community = vc.getCurrentCommunity();
+                let _lat = 39.916527;
+                let _lng = 116.397128;
+                if (_community && _community.lat) {
+                    _lat = _community.lat;
+                }
+                if (_community && _community.lng) {
+                    _lng = _community.lng;
+                }
+
                 let addMap = new TMap.Map(document.getElementById("addMapContainer"), {
-                    center: new TMap.LatLng(39.916527, 116.397128),
+                    center: new TMap.LatLng(_lat, _lng),
                     zoom: 13
                 });
                 $that.addMapInfo.addMap = addMap;
@@ -39,10 +50,10 @@
                 addMap.on('click', function (event) {
                     if (!marker) {
                         marker = new TMap.MultiMarker({
-                            styleId:"marker",
+                            styleId: "marker",
                             position: event.latLng,
                             map: addMap,
-                            id:"1",
+                            id: "1",
                         });
                         return;
                     }
@@ -53,9 +64,9 @@
 
                     marker.updateGeometries([
                         {
-                         "styleId":"marker",
-                         "id": "1",
-                         "position": event.latLng,
+                            "styleId": "marker",
+                            "id": "1",
+                            "position": event.latLng,
                         }
                     ])
                 });
