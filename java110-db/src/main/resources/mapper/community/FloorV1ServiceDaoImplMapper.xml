@@ -10,7 +10,7 @@
         insert into f_floor(
         floor_id,name,remark,b_id,community_id,user_id,floor_num,floor_area,seq,lat,lng
         ) values (
-        #{floorId},#{name},#{remark},#{bId},#{communityId},#{userId},#{floorNum},#{floorArea},#{seq}.#{lat},#{lng}
+        #{floorId},#{name},#{remark},#{bId},#{communityId},#{userId},#{floorNum},#{floorArea},#{seq},#{lat},#{lng}
         )
     </insert>
 
