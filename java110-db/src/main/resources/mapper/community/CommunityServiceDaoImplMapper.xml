@@ -110,7 +110,8 @@
 
     <!-- 查询小区信息 add by wuxw 2018-07-03 -->
     <select id="getCommunityInfo" parameterType="Map" resultType="Map">
-        select s.community_id,s.b_id,s.name,s.address,s.city_code,s.status_cd,s.state
+        select s.community_id,s.b_id,s.name,s.address,s.city_code,s.status_cd,s.state,
+        s.lat,s.lng
         from s_community s
         where 1=1
         <if test="statusCd != null and statusCd != ''">

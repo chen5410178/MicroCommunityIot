@@ -36,6 +36,10 @@ public class CommunityPo implements Serializable {
     private String communityId;
     private String extCommunityId;
 
+    private String lat;
+
+    private String lng;
+
     public String getAddress() {
         return address;
     }
@@ -92,5 +96,19 @@ public class CommunityPo implements Serializable {
         this.extCommunityId = extCommunityId;
     }
 
+    public String getLat() {
+        return lat;
+    }
 
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
 }

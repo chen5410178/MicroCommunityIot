@@ -52,6 +52,10 @@ public class CommunityDto extends PageDto implements Serializable {
 
     private String qrCode;
 
+    private String lat;
+
+    private String lng;
+
     private List<CommunityAttrDto> communityAttrDtos;
 
 
@@ -316,5 +320,21 @@ public class CommunityDto extends PageDto implements Serializable {
 
     public void setCommunityName(String communityName) {
         this.communityName = communityName;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 }

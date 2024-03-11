@@ -8,9 +8,9 @@
     <!-- 保存小区信息 add by wuxw 2018-07-03 -->
     <insert id="saveCommunityInfo" parameterType="Map">
         insert into s_community(
-        address,city_code,name,tel,community_id,ext_community_id
+        address,city_code,name,tel,community_id,ext_community_id,lat,lng
         ) values (
-        #{address},#{cityCode},#{name},#{tel},#{communityId},#{extCommunityId}
+        #{address},#{cityCode},#{name},#{tel},#{communityId},#{extCommunityId},#{lat},#{lng}
         )
     </insert>
 
@@ -18,7 +18,8 @@
     <!-- 查询小区信息 add by wuxw 2018-07-03 -->
     <select id="getCommunityInfo" parameterType="Map" resultType="Map">
         select t.address,t.city_code,t.city_code cityCode,t.name,t.tel,t.status_cd,t.status_cd
-        statusCd,t.community_id,t.community_id communityId,t.ext_community_id,t.ext_community_id extCommunityId
+        statusCd,t.community_id,t.community_id communityId,t.ext_community_id,t.ext_community_id extCommunityId,
+        t.lat,t.lng
         from s_community t
         <if test="memberId !=null and memberId !=''">
             left join s_community_member cm on t.community_id = cm.community_id and cm.status_cd = '0'
@@ -82,6 +83,12 @@
         </if>
         <if test="extCommunityId !=null and extCommunityId != ''">
             , t.ext_community_id= #{extCommunityId}
+        </if>
+        <if test="lat !=null and lat != ''">
+            , t.lat= #{lat}
+        </if>
+        <if test="lng !=null and lng != ''">
+            , t.lng= #{lng}
         </if>
         where 1=1
         <if test="communityId !=null and communityId != ''">

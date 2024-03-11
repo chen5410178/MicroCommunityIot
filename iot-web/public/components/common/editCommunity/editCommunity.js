@@ -14,7 +14,9 @@
                 feePrice: 0,
                 tel: '',
                 attrs: [],
-                extCommunityId:''
+                extCommunityId:'',
+                lat: '',
+                lng: ''
             }
         },
         _initMethod: function() {
@@ -23,9 +25,9 @@
         _initEvent: function() {
             vc.on('editCommunity', 'openEditCommunityModal',
                 function(_params) {
-                    vc.component.refreshEditCommunityInfo();
+                    $that.refreshEditCommunityInfo();
                     $('#editCommunityModel').modal('show');
-                    vc.copyObject(_params, vc.component.editCommunityInfo);
+                    vc.copyObject(_params, $that.editCommunityInfo);
                     if (_params.hasOwnProperty('communityAttrDtos')) {
                         let _attrDtos = _params.communityAttrDtos;
                         _attrDtos.forEach(item => {
@@ -37,12 +39,16 @@
                             })
                         })
                     }
+
+                    setTimeout(function () {
+                        vc.emit('editMap', 'showMap', $that.editCommunityInfo);
+                    }, 1000)
                 });
         },
         methods: {
             editCommunityValidate: function() {
                 return vc.validate.validate({
-                    editCommunityInfo: vc.component.editCommunityInfo
+                    editCommunityInfo: $that.editCommunityInfo
                 }, {
                     'editCommunityInfo.name': [{
                             limit: "required",
@@ -101,11 +107,11 @@
                 });
             },
             editCommunity: function() {
-                if (!vc.component.editCommunityValidate()) {
+                if (!$that.editCommunityValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
-                vc.http.apiPost('/community.updateCommunity', JSON.stringify(vc.component.editCommunityInfo), {
+                vc.http.apiPost('/community.updateCommunity', JSON.stringify($that.editCommunityInfo), {
                         emulateJSON: true
                     },
                     function(json, res) {
@@ -127,7 +133,7 @@
             refreshEditCommunityInfo: function() {
 
                 let _attrs = $that.editCommunityInfo.attrs;
-                vc.component.editCommunityInfo = {
+                $that.editCommunityInfo = {
                     communityId: '',
                     name: '',
                     address: '',
@@ -139,7 +145,9 @@
                     feePrice: 0,
                     tel: '',
                     attrs: _attrs,
-                    extCommunityId:''
+                    extCommunityId:'',
+                    lat: '',
+                    lng: ''
                 }
             },
             _loadEditCommunityAttrSpec: function() {
@@ -169,4 +177,4 @@
         }
     });
 
-})(window.vc, window.vc.component);
+})(window.vc, window.$that);

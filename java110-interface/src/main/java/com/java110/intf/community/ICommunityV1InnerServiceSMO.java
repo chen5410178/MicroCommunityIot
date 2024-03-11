@@ -39,13 +39,13 @@ public interface ICommunityV1InnerServiceSMO {
 
 
     @RequestMapping(value = "/saveCommunity", method = RequestMethod.POST)
-    public int saveCommunity(@RequestBody  CommunityPo communityPo);
+     int saveCommunity(@RequestBody  CommunityPo communityPo);
 
     @RequestMapping(value = "/updateCommunity", method = RequestMethod.POST)
-    public int updateCommunity(@RequestBody  CommunityPo communityPo);
+     int updateCommunity(@RequestBody  CommunityPo communityPo);
 
     @RequestMapping(value = "/deleteCommunity", method = RequestMethod.POST)
-    public int deleteCommunity(@RequestBody  CommunityPo communityPo);
+     int deleteCommunity(@RequestBody  CommunityPo communityPo);
 
     /**
      * <p>查询小区楼信息</p>
