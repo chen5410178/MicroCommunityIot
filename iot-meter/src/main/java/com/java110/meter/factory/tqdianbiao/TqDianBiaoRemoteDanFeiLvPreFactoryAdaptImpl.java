@@ -37,12 +37,11 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
 
     private static final String RECHARGE_URL = "http://api2.tqdianbiao.com/Api_v2/ele_security/recharge";
 
-    private static final String NOTIFY_URL = "/app/smartMeter/notify/tqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl/992020051967020024";
-
+    private static final String NOTIFY_URL = "/app/smartMeter/notify/b/992020051967020024";
     private static final String ELE_METER_QUERY_URL = "http://api2.tqdianbiao.com/Api_v2/ele_meter/query";//电能表档案查询
 
     private static final String ELE_CONTROL_URL = "http://api2.tqdianbiao.com/Api_v2/ele_control";
-    private static final String ELE_CONTROL_NOTIFY_URL = "/app/smartMeter/notify/tqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl/switchControl";
+    private static final String ELE_CONTROL_NOTIFY_URL = "/app/smartMeter/notify/b/switchControl";
     @Autowired
     private IMeterMachineSpecV1InnerServiceSMO meterMachineSpecV1InnerServiceSMOImpl;
 
@@ -75,10 +74,9 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
             return new ResultVo(ResultVo.CODE_ERROR, "未配置采集器ID");
         }
         String detailId = GenerateCodeFactory.getGeneratorId("11");
-        Map<String, Object> item = new HashMap<>();
+       Map<String, Object> item = new HashMap<>();
         Map<String, Object> params = new HashMap<>();
         params.put("money", money + "");
-
         item.put("opr_id", detailId);
         item.put("time_out", 0);
         item.put("must_online", true);
@@ -340,19 +338,19 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         }
 
         JSONArray responseContent = paramOut.getJSONArray("response_content");
-
-        for (int resIndex = 0; resIndex < responseContent.size(); resIndex++) {
-            String status = responseContent.getJSONObject(resIndex).getString("status");
-            if ("SUCCESS".equals(status)) {
+        if (responseContent.size() == 1){
+            String status = responseContent.getJSONObject(0).getString("status");
+            JSONArray addressList = responseContent.getJSONObject(0).getJSONArray("address");
+            if ("SUCCESS".equals(status) && addressList.getString(0).equals(meterMachineDto.getAddress())) {
                 meterMachineDto.setState(MeterMachineDto.STATE_ONLINE);
                 meterMachineDto.setStateName("在线");
             } else {
-                throw new CmdException(ResultVo.CODE_ERROR, responseContent.getJSONObject(resIndex).getString("error_msg"));
+                throw new CmdException(ResultVo.CODE_ERROR, responseContent.getJSONObject(0).getString("error_msg"));
             }
+        }else{
+            meterMachineDto.setState(MeterMachineDto.STATE_OFFLINE);
+            meterMachineDto.setStateName("查询超时");
         }
-
-        meterMachineDto.setState(MeterMachineDto.STATE_OFFLINE);
-        meterMachineDto.setStateName("离线");
     }
 
     @Override
@@ -366,6 +364,7 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         if (meterMachineSpecDtos == null || meterMachineSpecDtos.size() < 1) {
             return new ResultVo(ResultVo.CODE_ERROR, "未配置采集器ID");
         }
+
         String detailId = GenerateCodeFactory.getGeneratorId("11");
         Map<String, Object> item = new HashMap<>();
         item.put("opr_id", detailId);
