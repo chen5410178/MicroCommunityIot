@@ -71,6 +71,7 @@ public class SaveHardwareManufacturerCmd extends Cmd {
 
         HardwareManufacturerPo hardwareManufacturerPo = BeanConvertUtil.covertBean(reqJson, HardwareManufacturerPo.class);
         hardwareManufacturerPo.setHmId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        hardwareManufacturerPo.setDefaultProtocol("F");
         int flag = hardwareManufacturerV1InnerServiceSMOImpl.saveHardwareManufacturer(hardwareManufacturerPo);
 
         if (flag < 1) {
