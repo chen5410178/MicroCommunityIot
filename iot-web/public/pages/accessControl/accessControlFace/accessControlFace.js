@@ -1,8 +1,6 @@
 /**
     入驻小区
 **/
-import Cockpit3d from 'api/3d/Cockpit3d.js'
-
 (function(vc) {
     var DEFAULT_PAGE = 1;
     var DEFAULT_ROWS = 10;
