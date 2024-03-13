@@ -58,6 +58,9 @@
             },
             _openExitCommunityModel: function(_community) {
                 vc.emit('storeExitCommunity', 'openStoreExitCommunityModal', _community);
+            },
+            _to3dCommunity:function(_parkingArea){
+                window.open('/3d.html#/pages/3d/community3dMap');
             }
         }
     });
