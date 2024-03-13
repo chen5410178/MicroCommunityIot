@@ -23,6 +23,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 /**
@@ -43,7 +44,7 @@ public class ImageUtils {
             return base64Str;
         } catch (Exception e) {
             return "";
-        }finally {
+        } finally {
             try {
                 baos.close();
             } catch (IOException e) {
@@ -62,10 +63,10 @@ public class ImageUtils {
             Image image = Toolkit.getDefaultToolkit().getImage(urls);
             BufferedImage biOut = toBufferedImage(image);
             ImageIO.write(biOut, suffix, baos);
-           return DigestUtils.md5Hex(baos.toByteArray());
+            return DigestUtils.md5Hex(baos.toByteArray());
         } catch (Exception e) {
             return "";
-        }finally {
+        } finally {
             try {
                 baos.close();
             } catch (IOException e) {
@@ -105,6 +106,27 @@ public class ImageUtils {
         g.drawImage(image, 0, 0, null);
         g.dispose();
         return bimage;
+    }
+
+
+    public static byte[] imageToBinary(String imageUrl) {
+        byte[] imageBytes = null;
+        try {
+            URL url = new URL(imageUrl);
+            try (InputStream inputStream = url.openStream(); ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                 imageBytes = outputStream.toByteArray();
+                // imageBytes 就是图片的二进制数据
+                System.out.println("Image size in bytes: " + imageBytes.length);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return imageBytes;
     }
 
 }
