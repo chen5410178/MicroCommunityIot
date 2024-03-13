@@ -109,7 +109,7 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         }
 
         MeterMachineChargePo meterMachineChargePo = new MeterMachineChargePo();
-        meterMachineChargePo.setChargeId(GenerateCodeFactory.getGeneratorId("11"));
+        meterMachineChargePo.setChargeId(detailId);
         meterMachineChargePo.setMachineId(meterMachineDto.getMachineId());
         meterMachineChargePo.setCommunityId(meterMachineDto.getCommunityId());
         meterMachineChargePo.setChargeMoney(money + "");
