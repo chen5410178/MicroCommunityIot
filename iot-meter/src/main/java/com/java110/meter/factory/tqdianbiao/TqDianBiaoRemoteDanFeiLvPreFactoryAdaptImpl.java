@@ -365,6 +365,7 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         if (meterMachineSpecDtos == null || meterMachineSpecDtos.size() < 1) {
             return new ResultVo(ResultVo.CODE_ERROR, "未配置采集器ID");
         }
+
         String detailId = GenerateCodeFactory.getGeneratorId("11");
         Map<String, Object> item = new HashMap<>();
         item.put("opr_id", detailId);
