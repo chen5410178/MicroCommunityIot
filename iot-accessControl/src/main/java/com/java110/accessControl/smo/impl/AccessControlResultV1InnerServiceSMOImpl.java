@@ -22,7 +22,9 @@ import com.java110.bean.dto.PageDto;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.accessControl.AccessControlNotifyDto;
 import com.java110.dto.accessControl.AccessControlResultDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.intf.accessControl.IAccessControlResultV1InnerServiceSMO;
@@ -51,6 +53,9 @@ public class AccessControlResultV1InnerServiceSMOImpl implements IAccessControlR
     @Autowired
     private IHardwareManufacturerV1InnerServiceSMO hardwareManufacturerV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IAccessControlV1InnerServiceSMO accessControlV1InnerServiceSMOImpl;
+
 
     @Override
     public String accessControlResult(@RequestBody AccessControlResultDto accessControlResultDto) {
@@ -63,6 +68,22 @@ public class AccessControlResultV1InnerServiceSMOImpl implements IAccessControlR
         accessControlManufactorImpl = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
 
         String result = accessControlManufactorImpl.accessControlResult(accessControlResultDto.getTopic(), accessControlResultDto.getData());
+        return result;
+    }
+
+    @Override
+    public String heartbeat(@RequestBody AccessControlNotifyDto accessControlNotifyDto) {
+
+        AccessControlDto accessControlDto = new AccessControlDto();
+        accessControlDto.setMachineCode(accessControlNotifyDto.getMachineCode());
+        List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+        if(ListUtil.isNull(accessControlDtos)){
+            throw new IllegalArgumentException("门禁不存在");
+        }
+
+        accessControlManufactorImpl = ApplicationContextFactory.getBean(accessControlDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
+
+        String result = accessControlManufactorImpl.accessControlResult(accessControlNotifyDto.getMachineCode(), accessControlNotifyDto.getReqBody());
         return result;
     }
 

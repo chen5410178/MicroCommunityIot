@@ -16,6 +16,7 @@
 package com.java110.intf.accessControl;
 
 import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.accessControl.AccessControlNotifyDto;
 import com.java110.dto.accessControl.AccessControlResultDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.accessControl.AccessControlPo;
@@ -42,5 +43,6 @@ public interface IAccessControlResultV1InnerServiceSMO {
     @RequestMapping(value = "/accessControlResult", method = RequestMethod.POST)
     public String accessControlResult(@RequestBody AccessControlResultDto accessControlResultDto);
 
-
+    @RequestMapping(value = "/heartbeat", method = RequestMethod.POST)
+    String heartbeat(@RequestBody  AccessControlNotifyDto accessControlNotifyDto);
 }
