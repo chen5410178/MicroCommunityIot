@@ -139,14 +139,17 @@ public class ListMeterMachineCmd extends Cmd {
     }
 
     private void queryMeterMachineDegree(List<MeterMachineDto> meterMachineDtos) {
-        if (meterMachineDtos == null || meterMachineDtos.size() < 1) {
+
+        if (meterMachineDtos == null || meterMachineDtos.size() != 1) {
             return;
         }
 
-        for (MeterMachineDto meterMachineDto : meterMachineDtos) {
-            double degree = smartMeterCoreReadImpl.getMeterDegree(meterMachineDto);
-            meterMachineDto.setDegree(degree + "");
+        if (!MeterMachineDto.MACHINE_MODEL_RECHARGE.equals(meterMachineDtos.get(0).getMachineModel())) {
+            return;
         }
+
+        double degree = smartMeterCoreReadImpl.getMeterDegree(meterMachineDtos.get(0));
+        meterMachineDtos.get(0).setDegree(degree + "");
     }
 
     /**

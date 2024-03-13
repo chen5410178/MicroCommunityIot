@@ -75,10 +75,9 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
             return new ResultVo(ResultVo.CODE_ERROR, "未配置采集器ID");
         }
         String detailId = GenerateCodeFactory.getGeneratorId("11");
-        Map<String, Object> item = new HashMap<>();
+       Map<String, Object> item = new HashMap<>();
         Map<String, Object> params = new HashMap<>();
         params.put("money", money + "");
-
         item.put("opr_id", detailId);
         item.put("time_out", 0);
         item.put("must_online", true);
@@ -340,19 +339,19 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         }
 
         JSONArray responseContent = paramOut.getJSONArray("response_content");
-
-        for (int resIndex = 0; resIndex < responseContent.size(); resIndex++) {
-            String status = responseContent.getJSONObject(resIndex).getString("status");
-            if ("SUCCESS".equals(status)) {
+        if (responseContent.size() == 1){
+            String status = responseContent.getJSONObject(0).getString("status");
+            JSONArray addressList = responseContent.getJSONObject(0).getJSONArray("address");
+            if ("SUCCESS".equals(status) && addressList.getString(0).equals(meterMachineDto.getAddress())) {
                 meterMachineDto.setState(MeterMachineDto.STATE_ONLINE);
                 meterMachineDto.setStateName("在线");
             } else {
-                throw new CmdException(ResultVo.CODE_ERROR, responseContent.getJSONObject(resIndex).getString("error_msg"));
+                throw new CmdException(ResultVo.CODE_ERROR, responseContent.getJSONObject(0).getString("error_msg"));
             }
+        }else{
+            meterMachineDto.setState(MeterMachineDto.STATE_OFFLINE);
+            meterMachineDto.setStateName("查询超时");
         }
-
-        meterMachineDto.setState(MeterMachineDto.STATE_OFFLINE);
-        meterMachineDto.setStateName("离线");
     }
 
     @Override
