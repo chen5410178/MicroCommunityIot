@@ -24,7 +24,7 @@
         machineCode,t.location_name,t.location_name locationName,t.location_id,t.location_id
         locationId,t.status_cd,t.status_cd statusCd,t.create_time createTime,t.community_id,t.community_id
         communityId,t.machine_name,t.machine_name machineName,t.machine_ip,t.machine_ip machineIp,t.direction,hm.hm_name
-        implBeanName,t.prompt_switch promptSwitch,t.normal_prompt normalPrompt,t.owe_prompt owePrompt
+        implBeanName,t.prompt_switch promptSwitch,t.normal_prompt normalPrompt,t.owe_prompt owePrompt,hm.protocol_impl protocolImpl
         from access_control t
         left join hardware_manufacturer hm on t.impl_bean = hm.hm_id and hm.status_cd = '0'
         where 1 =1

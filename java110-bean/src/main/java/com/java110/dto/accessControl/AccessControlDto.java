@@ -48,6 +48,8 @@ public class AccessControlDto extends PageDto implements Serializable {
     private String normalPrompt;
     private String owePrompt;
 
+    private String protocolImpl;
+
 
     public String getMachineMac() {
         return machineMac;
@@ -232,5 +234,13 @@ public class AccessControlDto extends PageDto implements Serializable {
 
     public void setOwePrompt(String owePrompt) {
         this.owePrompt = owePrompt;
+    }
+
+    public String getProtocolImpl() {
+        return protocolImpl;
+    }
+
+    public void setProtocolImpl(String protocolImpl) {
+        this.protocolImpl = protocolImpl;
     }
 }
