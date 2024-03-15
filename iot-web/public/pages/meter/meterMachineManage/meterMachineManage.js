@@ -79,6 +79,9 @@
             _openDeleteMeterMachineModel: function(_meterMachine) {
                 vc.emit('deleteMeterMachine', 'openDeleteMeterMachineModal', _meterMachine);
             },
+            _openCleanMeterMachineModel: function(_meterMachine) {
+                vc.emit('cleanMeterMachine', 'openCleanMeterMachineModal', _meterMachine);
+            },
             _openSettingMeterMachineRead: function() {
                 vc.emit('settingMeterMachineRead', 'openSettingMeterMachineReadModal', {});
             },
@@ -163,11 +166,23 @@
                 }
                 return _meterTypeName;
             },
+
             _controlSwitch: function (_meterMachine, _type) {
-                _meterMachine.type = _type;
+                let tmpMeterMachine = {};
+                tmpMeterMachine.type= _type;
+                tmpMeterMachine.address=_meterMachine.address;
+                tmpMeterMachine.communityId=_meterMachine.communityId;
+                tmpMeterMachine.roomId=_meterMachine.roomId;
+                tmpMeterMachine.machineId=_meterMachine.machineId;
+                tmpMeterMachine.controlType=_meterMachine.controlType;
+                tmpMeterMachine.meterType=_meterMachine.meterType;
+                tmpMeterMachine.implBean=_meterMachine.implBean;
+                tmpMeterMachine.implBeanName=_meterMachine.implBeanName;
+                tmpMeterMachine.curDegrees=_meterMachine.curDegrees;
+                tmpMeterMachine.prestoreDegrees=_meterMachine.prestoreDegrees;
                 vc.http.apiPost(
                     '/meterMachine.meterMachineControlSwitch',
-                    JSON.stringify(_meterMachine), {
+                    JSON.stringify(tmpMeterMachine), {
                         emulateJSON: true
                     },
                     function(json, res) {

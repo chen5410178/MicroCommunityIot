@@ -41,7 +41,12 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
     private static final String ELE_METER_QUERY_URL = "http://api2.tqdianbiao.com/Api_v2/ele_meter/query";//电能表档案查询
 
     private static final String ELE_CONTROL_URL = "http://api2.tqdianbiao.com/Api_v2/ele_control";
-    private static final String ELE_CONTROL_NOTIFY_URL = "/app/smartMeter/notify/b/switchControl";
+    private static final String ELE_CONTROL_NOTIFY_URL = "/app/smartMeter/notify/e/switchControl";
+
+    private static final String CLEAN_URL = "http://api2.tqdianbiao.com/Api_v2/ele_security/reset";
+
+    private static final String CLEAN_NOTIFY_URL = "/app/smartMeter/notify/e/cleanControl";
+
     @Autowired
     private IMeterMachineSpecV1InnerServiceSMO meterMachineSpecV1InnerServiceSMOImpl;
 
@@ -74,7 +79,7 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
             return new ResultVo(ResultVo.CODE_ERROR, "未配置采集器ID");
         }
         String detailId = GenerateCodeFactory.getGeneratorId("11");
-       Map<String, Object> item = new HashMap<>();
+        Map<String, Object> item = new HashMap<>();
         Map<String, Object> params = new HashMap<>();
         params.put("money", money + "");
         item.put("opr_id", detailId);
@@ -304,9 +309,16 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
             return;
         }
 
+        String dsp = contentObject.getJSONArray("data").getJSONObject(0).getString("dsp");
+        //剩余金额
+        String remainingAmount = "0";
+        if (dsp.contains("剩余金额")) {
+            remainingAmount = dsp.substring(dsp.indexOf("剩余金额:")+5, dsp.indexOf("元"));
+        }
+        //已用电量
         double degree = contentObject.getJSONArray("data").getJSONObject(0).getJSONArray("value").getDouble(0);
 
-        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree + "", batchId);
+        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree + "",remainingAmount.replace(" ",""), batchId);
     }
 
     @Override
@@ -338,7 +350,7 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         }
 
         JSONArray responseContent = paramOut.getJSONArray("response_content");
-        if (responseContent.size() == 1){
+        if (responseContent.size() == 1) {
             String status = responseContent.getJSONObject(0).getString("status");
             JSONArray addressList = responseContent.getJSONObject(0).getJSONArray("address");
             if ("SUCCESS".equals(status) && addressList.getString(0).equals(meterMachineDto.getAddress())) {
@@ -347,10 +359,49 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
             } else {
                 throw new CmdException(ResultVo.CODE_ERROR, responseContent.getJSONObject(0).getString("error_msg"));
             }
-        }else{
+        } else {
             meterMachineDto.setState(MeterMachineDto.STATE_OFFLINE);
             meterMachineDto.setStateName("查询超时");
         }
+    }
+
+    @Override
+    public ResultVo cleanControl(MeterMachineDto meterMachineDto, String controlType) {
+        List<Map<String, Object>> req = new ArrayList<>();
+        MeterMachineSpecDto meterMachineSpecDto = new MeterMachineSpecDto();
+        meterMachineSpecDto.setMachineId(meterMachineDto.getMachineId());
+        meterMachineSpecDto.setCommunityId(meterMachineDto.getCommunityId());
+        meterMachineSpecDto.setSpecId("120102");
+        List<MeterMachineSpecDto> meterMachineSpecDtos = meterMachineSpecV1InnerServiceSMOImpl.queryMeterMachineSpecs(meterMachineSpecDto);
+        if (meterMachineSpecDtos == null || meterMachineSpecDtos.size() < 1) {
+            return new ResultVo(ResultVo.CODE_ERROR, "未配置采集器ID");
+        }
+
+        String detailId = GenerateCodeFactory.getGeneratorId("11");
+        Map<String, Object> item = new HashMap<>();
+        item.put("opr_id", detailId);
+        item.put("time_out", 0);
+        item.put("must_online", true);
+        item.put("retry_times", 1);
+        item.put("cid", meterMachineSpecDtos.get(0).getSpecValue());
+        item.put("address", meterMachineDto.getAddress());
+        req.add(item);
+        String request_content = JSON.toJSONString(req);
+        String resStr = TdDianBiaoUtil.requestAsync(CLEAN_URL, request_content, UrlCache.getOwnerUrl() + CLEAN_NOTIFY_URL);
+        JSONObject paramOut = JSONObject.parseObject(resStr);
+        if (!"SUCCESS".equals(paramOut.getString("status"))) {
+            return new ResultVo(ResultVo.CODE_ERROR, paramOut.getString("error_msg"));
+        }
+
+        JSONArray responseContent = paramOut.getJSONArray("response_content");
+
+        for (int resIndex = 0; resIndex < responseContent.size(); resIndex++) {
+            String status = responseContent.getJSONObject(resIndex).getString("status");
+            if (!"SUCCESS".equals(status)) {
+                return new ResultVo(ResultVo.CODE_ERROR, responseContent.getJSONObject(resIndex).getString("error_msg"));
+            }
+        }
+        return new ResultVo(ResultVo.CODE_OK, "请求已发送，等待电表反馈");
     }
 
     @Override

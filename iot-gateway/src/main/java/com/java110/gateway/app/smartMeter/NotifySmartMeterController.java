@@ -87,6 +87,15 @@ public class NotifySmartMeterController {
                                                       @RequestBody String postInfo,
                                                       HttpServletRequest request) {
 
+
+        JSONObject paramIn = new JSONObject();
+        for (String key : request.getParameterMap().keySet()) {
+            paramIn.put(key, request.getParameter(key));
+            logger.debug("拓强回调报文form" + key + ":: " + request.getParameter(key));
+        }
+        logger.debug("拓强回调报文" + paramIn.toJSONString());
+
+
         switch (implBean) {
             case "e":
                 implBean ="tqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl";
@@ -96,6 +105,30 @@ public class NotifySmartMeterController {
             default:
         }
 
-        return notifySmartMeterV1InnerServiceSMOImpl.switchControlNotify(implBean, postInfo);
+        return notifySmartMeterV1InnerServiceSMOImpl.switchControlNotify(implBean, paramIn.toJSONString());
+    }
+
+    @RequestMapping("/{implBean}/cleanControl")
+    public ResponseEntity<String> cleanControlNotify(@PathVariable String implBean,
+                                                      @RequestBody String postInfo,
+                                                      HttpServletRequest request) {
+
+        JSONObject paramIn = new JSONObject();
+        for (String key : request.getParameterMap().keySet()) {
+            paramIn.put(key, request.getParameter(key));
+            logger.debug("拓强回调报文form" + key + ":: " + request.getParameter(key));
+        }
+        logger.debug("拓强回调报文" + paramIn.toJSONString());
+
+        switch (implBean) {
+            case "e":
+                implBean ="tqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl";
+                break;
+            case "f":
+                implBean = "tqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl";
+            default:
+        }
+
+        return notifySmartMeterV1InnerServiceSMOImpl.cleanControlNotify(implBean, paramIn.toJSONString());
     }
 }

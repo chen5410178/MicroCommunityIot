@@ -43,4 +43,9 @@ public class CommonFactoryAdaptImpl implements ISmartMeterFactoryAdapt {
     public ResultVo switchControl(MeterMachineDto meterMachineDto, String controlType) {
         return null;
     }
+
+    @Override
+    public ResultVo cleanControl(MeterMachineDto meterMachineDto, String controlType) {
+        return null;
+    }
 }

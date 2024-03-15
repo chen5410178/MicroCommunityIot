@@ -47,4 +47,8 @@ public interface INotifySmartMeterV1InnerServiceSMO {
 
     @RequestMapping(value = "/switchControlNotify", method = RequestMethod.POST)
     ResponseEntity<String> switchControlNotify(@RequestBody String implBean, @RequestBody String postInfo);
+
+    @RequestMapping(value = "/cleanControlNotify", method = RequestMethod.POST)
+    ResponseEntity<String> cleanControlNotify(@RequestBody String implBean, @RequestBody String postInfo);
+
 }

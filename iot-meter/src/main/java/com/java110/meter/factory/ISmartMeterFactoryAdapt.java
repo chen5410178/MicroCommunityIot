@@ -55,4 +55,11 @@ public interface ISmartMeterFactoryAdapt {
      * @param meterMachineDto
      */
     ResultVo switchControl(MeterMachineDto meterMachineDto, String controlType);
+
+    /**
+     * 表数据清零
+     *
+     * @param meterMachineDto
+     */
+    ResultVo cleanControl(MeterMachineDto meterMachineDto, String controlType);
 }

@@ -152,4 +152,40 @@ public class NotifySmartMeterV1InnerServiceSMOImpl implements INotifySmartMeterV
 
         return ResultVo.createResponseEntity(new ResultVo(ResultVo.CODE_OK, "成功"));
     }
+
+    @Override
+    @Java110Transactional
+    public ResponseEntity<String> cleanControlNotify(String implBean, String postInfo) {
+        JSONObject data = JSONObject.parseObject(postInfo);
+
+        String response_content = data.getString("response_content");
+        String timestamp = data.getString("timestamp");
+        String sign = data.getString("sign");
+
+        if (!TdDianBiaoUtil.checkSign(response_content, timestamp, sign)) {
+            System.out.println("sign check failed");
+            return ResultVo.createResponseEntity(new ResultVo(ResultVo.CODE_ERROR, "鉴权失败"));
+        }
+
+        JSONArray contentArray = JSON.parseArray(response_content);
+
+        if (contentArray == null || contentArray.size() < 1) {
+            return ResultVo.createResponseEntity(new ResultVo(ResultVo.CODE_ERROR, "没有数据"));
+        }
+        MeterMachineDetailDto meterMachineDetailDto = new MeterMachineDetailDto();
+        meterMachineDetailDto.setDetailId(contentArray.getJSONObject(0).getString("opr_id"));
+        meterMachineDetailDto.setState(MeterMachineDetailDto.STATE_W);
+        List<MeterMachineDetailDto> meterMachineDetailDtos = meterMachineDetailV1InnerServiceSMOImpl.queryMeterMachineDetails(meterMachineDetailDto);
+        if (meterMachineDetailDtos == null || meterMachineDetailDtos.size() < 1) {
+            return ResultVo.createResponseEntity(new ResultVo(ResultVo.CODE_ERROR, "没有数据"));
+        }
+        if (!"SUCCESS".equals(contentArray.getJSONObject(0).getString("status"))) {
+            meterMachineDetailDtos.get(0).setState(MeterMachineDetailDto.STATE_F);
+            MeterMachineDetailPo meterMachineDetailPo = BeanConvertUtil.covertBean(meterMachineDetailDtos.get(0), MeterMachineDetailPo.class);
+            meterMachineDetailV1InnerServiceSMOImpl.updateMeterMachineDetail(meterMachineDetailPo);
+            return ResultVo.createResponseEntity(new ResultVo(ResultVo.CODE_ERROR, "电表清零失败"));
+        }
+        return ResultVo.createResponseEntity(new ResultVo(ResultVo.CODE_OK, "成功"));
+    }
+
 }

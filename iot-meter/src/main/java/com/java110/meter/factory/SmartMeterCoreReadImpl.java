@@ -68,7 +68,7 @@ public class SmartMeterCoreReadImpl implements ISmartMeterCoreRead {
     private IMeterMachineFactoryV1InnerServiceSMO meterMachineFactoryV1InnerServiceSMOImpl;
 
     @Override
-    public void saveMeterAndCreateFee(MeterMachineDetailDto meterMachineDetailDto, String degree, String batchId) {
+    public void saveMeterAndCreateFee(MeterMachineDetailDto meterMachineDetailDto, String degree, String remainingAmount, String batchId) {
 
         MeterMachineDto meterMachineDto = new MeterMachineDto();
         meterMachineDto.setMachineId(meterMachineDetailDto.getMachineId());
@@ -89,7 +89,7 @@ public class SmartMeterCoreReadImpl implements ISmartMeterCoreRead {
 
         MeterMachinePo meterMachinePo = new MeterMachinePo();
         meterMachinePo.setMachineId(meterMachineDtos.get(0).getMachineId());
-        meterMachinePo.setCurDegrees(degree);
+        meterMachinePo.setCurDegrees(remainingAmount);//这里用作剩余金额
         meterMachinePo.setPrestoreDegrees(degree);
         meterMachinePo.setCurReadingTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         meterMachineV1InnerServiceSMOImpl.updateMeterMachine(meterMachinePo);
@@ -301,6 +301,30 @@ public class SmartMeterCoreReadImpl implements ISmartMeterCoreRead {
                 meterMachineDto.setState(MeterMachineDto.STATE_OFFLINE);
                 meterMachineDto.setStateName("离线");
             }
+        }
+    }
+
+    @Override
+    public ResultVo cleanControl(MeterMachineDto meterMachineDto, String controlType) {
+        try {
+            MeterMachineFactoryDto meterMachineFactoryDto = new MeterMachineFactoryDto();
+            meterMachineFactoryDto.setFactoryId(meterMachineDto.getImplBean());
+            List<MeterMachineFactoryDto> meterMachineFactoryDtos = meterMachineFactoryV1InnerServiceSMOImpl.queryMeterMachineFactorys(meterMachineFactoryDto);
+            Assert.listOnlyOne(meterMachineFactoryDtos, "智能水电表厂家不存在");
+
+            ISmartMeterFactoryAdapt smartMeterFactoryAdapt = null;
+            try {
+                smartMeterFactoryAdapt = ApplicationContextFactory.getBean(meterMachineFactoryDtos.get(0).getBeanImpl(), ISmartMeterFactoryAdapt.class);
+            } finally {
+                if (smartMeterFactoryAdapt == null) {
+                    throw new CmdException("厂家接口未实现");
+                }
+            }
+
+            return smartMeterFactoryAdapt.cleanControl(meterMachineDto, controlType);
+        } catch (CmdException e) {
+            e.printStackTrace();
+            return new ResultVo(ResultVo.CODE_ERROR, "失败");
         }
     }
 

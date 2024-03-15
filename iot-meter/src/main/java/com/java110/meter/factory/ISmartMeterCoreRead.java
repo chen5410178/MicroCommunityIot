@@ -15,7 +15,7 @@ public interface ISmartMeterCoreRead {
     /**
      * 抄表
      */
-    void saveMeterAndCreateFee(MeterMachineDetailDto meterMachineDetailDto, String degree, String batchId);
+    void saveMeterAndCreateFee(MeterMachineDetailDto meterMachineDetailDto, String degree,String remainingAmount,String batchId);
 
     String generatorBatch(String communityId);
 
@@ -38,4 +38,6 @@ public interface ISmartMeterCoreRead {
      * @return
      */
     ResultVo switchControl(MeterMachineDto meterMachineDto, String controlType);
+
+    ResultVo cleanControl(MeterMachineDto meterMachineDto, String controlType);
 }

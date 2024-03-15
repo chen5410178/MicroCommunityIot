@@ -125,10 +125,10 @@
                                     <vc:i18n name='设备厂家' namespace='meterMachineManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <vc:i18n name='剩余度数' namespace='meterMachineManage'></vc:i18n>
+                                    <vc:i18n name='当前度数' namespace='meterMachineManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <vc:i18n name='当前度数' namespace='meterMachineManage'></vc:i18n>
+                                    <vc:i18n name='剩余金额' namespace='meterMachineManage'></vc:i18n>
                                 </th>
                                 <th class="text-center">
                                     <vc:i18n name='读表时间' namespace='meterMachineManage'></vc:i18n>
@@ -156,7 +156,7 @@
                                 <td class="text-center" v-if="meterMachine.machineModel == '1001'">
                                     {{meterMachine.degree?meterMachine.degree:meterMachine.prestoreDegrees}}</td>
                                 <td class="text-center" v-else>-</td>
-                                <td class="text-center" v-if="meterMachine.machineModel == '1001'">-</td>
+                                <td class="text-center" v-if="meterMachine.machineModel == '1001'">{{meterMachine.curDegrees}}</td>
                                 <td class="text-center" v-else>
                                     {{meterMachine.curDegrees}}(每月{{meterMachine.readDay}}日{{meterMachine.readHours}}时抄表)
                                 </td>
@@ -185,7 +185,11 @@
                                         </div>
 
                                     </div>
-                                
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openCleanMeterMachineModel(meterMachine)">
+                                            <vc:i18n name='清零'></vc:i18n>
+                                        </button>
+                                    </div>
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs" v-on:click="_toDetail(meterMachine)">
                                             <vc:i18n name='记录'></vc:i18n>
@@ -199,11 +203,11 @@
                                     <div class="btn-group">
                                         <button v-if="!meterMachine.controlType || meterMachine.controlType == 'OFF'"
                                             class="btn-white btn btn-xs" v-on:click="_controlSwitch(meterMachine,'ON')">
-                                            <vc:i18n name='开闸'></vc:i18n>
+                                            <vc:i18n name='跳闸'></vc:i18n>
                                         </button>
                                         <button v-if="meterMachine.controlType == 'ON'" class="btn-white btn btn-xs"
                                             v-on:click="_controlSwitch(meterMachine,'OFF')">
-                                            <vc:i18n name='关闸'></vc:i18n>
+                                            <vc:i18n name='合闸'></vc:i18n>
                                         </button>
                                     </div>
                                 </td>
@@ -217,7 +221,7 @@
 
         </div>
     </div>
-
+    <vc:create path="meter/cleanMeterMachine"></vc:create>
     <vc:create path="meter/deleteMeterMachine"></vc:create>
     <vc:create path="meter/settingMeterMachineRead"></vc:create>
     <vc:create path="meter/customReadMeterMachine"></vc:create>

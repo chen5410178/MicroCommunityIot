@@ -255,7 +255,7 @@ public class TqDianBiaoDanxiangDanFeiLvFactoryAdaptImpl implements ISmartMeterFa
 
         double degree = contentObject.getJSONArray("data").getJSONObject(0).getJSONArray("value").getDouble(0);
 
-        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree + "", batchId);
+        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree + "","", batchId);
     }
 
     @Override
