@@ -37,7 +37,7 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
 
     private static final String RECHARGE_URL = "http://api2.tqdianbiao.com/Api_v2/ele_security/recharge";
 
-    private static final String NOTIFY_URL = "/app/smartMeter/notify/b/992020051967020024";
+    private static final String NOTIFY_URL = "/app/smartMeter/notify/b";
     private static final String ELE_METER_QUERY_URL = "http://api2.tqdianbiao.com/Api_v2/ele_meter/query";//电能表档案查询
 
     private static final String ELE_CONTROL_URL = "http://api2.tqdianbiao.com/Api_v2/ele_control";
