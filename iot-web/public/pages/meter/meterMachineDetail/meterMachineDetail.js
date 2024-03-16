@@ -33,7 +33,8 @@
                         page:_page,
                         row:_rows,
                         machineId:$that.meterMachineDetailInfo.machineId,
-                        communityId:vc.getCurrentCommunity().communityId
+                        communityId:vc.getCurrentCommunity().communityId,
+                        detailType:'2002'
                     }
                 };
 

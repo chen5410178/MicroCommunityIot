@@ -96,7 +96,7 @@
             },
 
             _toDetail: function(_meterMachine) {
-                vc.jumpToPage('/#/pages/meter/meterMachineDetail?machineId=' + _meterMachine.machineId)
+                vc.jumpToPage('/#/pages/meter/meterMachineCharge?machineId=' + _meterMachine.machineId)
             },
             _queryMeterMachineMethod: function() {
                 $that._listMeterMachines(DEFAULT_PAGE, DEFAULT_ROWS);

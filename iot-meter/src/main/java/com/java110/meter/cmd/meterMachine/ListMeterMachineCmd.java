@@ -119,7 +119,7 @@ public class ListMeterMachineCmd extends Cmd {
             meterMachineDtos = meterMachineV1InnerServiceSMOImpl.queryMeterMachines(meterMachineDto);
             freshSpecs(meterMachineDtos);
             queryMeterMachineDegree(meterMachineDtos);
-            queryMachineState(meterMachineDtos);
+            //queryMachineState(meterMachineDtos);
         } else {
             meterMachineDtos = new ArrayList<>();
         }
@@ -140,16 +140,17 @@ public class ListMeterMachineCmd extends Cmd {
 
     private void queryMeterMachineDegree(List<MeterMachineDto> meterMachineDtos) {
 
-        if (meterMachineDtos == null || meterMachineDtos.size() != 1) {
+        if (meterMachineDtos == null || meterMachineDtos.size() < 1) {
             return;
         }
 
         if (!MeterMachineDto.MACHINE_MODEL_RECHARGE.equals(meterMachineDtos.get(0).getMachineModel())) {
             return;
         }
-
-        double degree = smartMeterCoreReadImpl.getMeterDegree(meterMachineDtos.get(0));
-        meterMachineDtos.get(0).setDegree(degree + "");
+        for (MeterMachineDto meterMachineDto : meterMachineDtos) {
+            double degree = smartMeterCoreReadImpl.getMeterDegree(meterMachineDto);
+            meterMachineDto.setDegree(degree + "");
+        }
     }
 
     /**

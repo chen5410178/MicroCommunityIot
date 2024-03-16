@@ -61,9 +61,10 @@ public class ChargeMeterMoneyCmd extends Cmd {
 
     private static Logger logger = LoggerFactory.getLogger(ChargeMeterMoneyCmd.class);
 
-    public static final String CODE_PREFIX_ID = "10";
+    public static final String CODE_PREFIX_ID = "30";
 
-
+    @Autowired
+    private IMeterMachineChargeV1InnerServiceSMO meterMachineChargeV1InnerServiceSMOImpl;
 
     @Autowired
     private IMeterMachineV1InnerServiceSMO meterMachineV1InnerServiceSMOImpl;
@@ -146,15 +147,11 @@ public class ChargeMeterMoneyCmd extends Cmd {
         BigDecimal chargeMoneyDec = new BigDecimal(chargeMoney);
         BigDecimal degree = chargeMoneyDec.divide(new BigDecimal(price), 2, BigDecimal.ROUND_HALF_UP);
 
-
         ResultVo resultVo = smartMeterFactoryAdapt.requestRecharge(machineDtos.get(0), degree.doubleValue(), chargeMoney);
 
         if (ResultVo.CODE_OK != resultVo.getCode()) {
             throw new CmdException(resultVo.getMsg());
         }
-
-
-
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }
 }

@@ -61,5 +61,5 @@ public interface ISmartMeterFactoryAdapt {
      *
      * @param meterMachineDto
      */
-    ResultVo cleanControl(MeterMachineDto meterMachineDto, String controlType);
+    ResultVo cleanControl(MeterMachineDto meterMachineDto);
 }

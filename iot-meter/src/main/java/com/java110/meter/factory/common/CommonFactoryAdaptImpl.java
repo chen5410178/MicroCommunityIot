@@ -45,7 +45,7 @@ public class CommonFactoryAdaptImpl implements ISmartMeterFactoryAdapt {
     }
 
     @Override
-    public ResultVo cleanControl(MeterMachineDto meterMachineDto, String controlType) {
+    public ResultVo cleanControl(MeterMachineDto meterMachineDto) {
         return null;
     }
 }

@@ -458,4 +458,9 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
 
         return new ResultVo(ResultVo.CODE_OK, "请求已发送，等待电表反馈");
     }
+
+    @Override
+    public ResultVo cleanControl(MeterMachineDto meterMachineDto) {
+        return null;
+    }
 }

@@ -23,6 +23,7 @@ import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.ApplicationContextFactory;
+import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
@@ -30,14 +31,12 @@ import com.java110.dto.meter.MeterMachineDetailDto;
 import com.java110.dto.meter.MeterMachineDto;
 import com.java110.dto.meter.MeterMachineFactoryDto;
 import com.java110.dto.meter.NotifyMeterWaterOrderDto;
-import com.java110.intf.meter.IMeterMachineDetailV1InnerServiceSMO;
-import com.java110.intf.meter.IMeterMachineFactoryV1InnerServiceSMO;
-import com.java110.intf.meter.IMeterMachineV1InnerServiceSMO;
-import com.java110.intf.meter.INotifySmartMeterV1InnerServiceSMO;
+import com.java110.intf.meter.*;
 import com.java110.meter.factory.ISmartMeterFactoryAdapt;
 import com.java110.meter.factory.tqdianbiao.TdDianBiaoUtil;
 import com.java110.po.meter.MeterMachineDetailPo;
 import com.java110.po.meter.MeterMachinePo;
+import com.java110.po.meterMachineLog.MeterMachineLogPo;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +69,9 @@ public class NotifySmartMeterV1InnerServiceSMOImpl implements INotifySmartMeterV
 
     @Autowired
     private IMeterMachineDetailV1InnerServiceSMO meterMachineDetailV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IMeterMachineLogV1InnerServiceSMO meterMachineLogV1InnerServiceSMOImpl;
 
     /**
      * 通知类
@@ -118,7 +120,6 @@ public class NotifySmartMeterV1InnerServiceSMOImpl implements INotifySmartMeterV
         }
 
         JSONArray contentArray = JSON.parseArray(response_content);
-
         if (contentArray == null || contentArray.size() < 1) {
             return ResultVo.createResponseEntity(new ResultVo(ResultVo.CODE_ERROR, "没有数据"));
         }
@@ -130,6 +131,14 @@ public class NotifySmartMeterV1InnerServiceSMOImpl implements INotifySmartMeterV
         if (meterMachineDetailDtos == null || meterMachineDetailDtos.size() < 1) {
             return ResultVo.createResponseEntity(new ResultVo(ResultVo.CODE_ERROR, "没有数据"));
         }
+        //系统记录开合闸记录--返回结果记录
+        MeterMachineLogPo meterMachineLogPo =new MeterMachineLogPo();
+        meterMachineLogPo.setLogId(GenerateCodeFactory.getGeneratorId("42"));
+        meterMachineLogPo.setMachineId(meterMachineDetailDtos.get(0).getMachineId());
+        meterMachineLogPo.setCommunityId(meterMachineDetailDtos.get(0).getCommunityId());
+        meterMachineLogPo.setResParam(response_content+contentArray.getJSONObject(0).getString("opr_id"));
+        meterMachineLogPo.setState("10002");
+        meterMachineLogV1InnerServiceSMOImpl.saveMeterMachineLog(meterMachineLogPo);
 
         if (!"SUCCESS".equals(contentArray.getJSONObject(0).getString("status"))) {
             meterMachineDetailDtos.get(0).setState(MeterMachineDetailDto.STATE_F);
@@ -149,6 +158,7 @@ public class NotifySmartMeterV1InnerServiceSMOImpl implements INotifySmartMeterV
         meterMachineDtos.get(0).setControlType(meterMachineDetailDtos.get(0).getDetailType());
         MeterMachinePo meterMachinePo = BeanConvertUtil.covertBean(meterMachineDtos.get(0), MeterMachinePo.class);
         meterMachineV1InnerServiceSMOImpl.updateMeterMachine(meterMachinePo);
+
 
         return ResultVo.createResponseEntity(new ResultVo(ResultVo.CODE_OK, "成功"));
     }

@@ -44,7 +44,7 @@ import java.util.List;
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
-@Java110Cmd(serviceCode = "meterMachine.meterMachineControlClean")
+@Java110Cmd(serviceCode = "meterMachine.cleanMeterMachine")
 public class MeterMachineControlCleanCmd extends Cmd {
 
     private static Logger logger = LoggerFactory.getLogger(MeterMachineControlCleanCmd.class);
@@ -59,10 +59,13 @@ public class MeterMachineControlCleanCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
-        Assert.hasKeyAndValue(reqJson, "type", "type不能为空");
         Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
     }
 
+
+    /**
+     *这里同时会把电表清零和开户的操作一起发给电表，执行成功后才可以使用充值
+     */
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
@@ -72,7 +75,7 @@ public class MeterMachineControlCleanCmd extends Cmd {
 
         Assert.listOnlyOne(meterMachineDtos, "表设备不存在!");
 
-        ResultVo resultVo = smartMeterCoreReadImpl.cleanControl(meterMachineDto, reqJson.getString("type"));
+        ResultVo resultVo = smartMeterCoreReadImpl.cleanControl(meterMachineDto);
 
         cmdDataFlowContext.setResponseEntity(ResultVo.createResponseEntity(resultVo));
     }

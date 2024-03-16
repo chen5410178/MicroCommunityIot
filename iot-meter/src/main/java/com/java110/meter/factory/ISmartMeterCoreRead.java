@@ -39,5 +39,5 @@ public interface ISmartMeterCoreRead {
      */
     ResultVo switchControl(MeterMachineDto meterMachineDto, String controlType);
 
-    ResultVo cleanControl(MeterMachineDto meterMachineDto, String controlType);
+    ResultVo cleanControl(MeterMachineDto meterMachineDto);
 }

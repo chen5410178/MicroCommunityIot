@@ -19,10 +19,22 @@
         },
         methods:{
             cleanMeterMachine:function(){
+                let _meterMachine = vc.component.cleanMeterMachineInfo;
+                let tmpMeterMachine = {};
+                tmpMeterMachine.address=_meterMachine.address;
+                tmpMeterMachine.communityId=_meterMachine.communityId;
+                tmpMeterMachine.roomId=_meterMachine.roomId;
+                tmpMeterMachine.machineId=_meterMachine.machineId;
+                tmpMeterMachine.controlType=_meterMachine.controlType;
+                tmpMeterMachine.meterType=_meterMachine.meterType;
+                tmpMeterMachine.implBean=_meterMachine.implBean;
+                tmpMeterMachine.implBeanName=_meterMachine.implBeanName;
+                tmpMeterMachine.curDegrees=_meterMachine.curDegrees;
+                tmpMeterMachine.prestoreDegrees=_meterMachine.prestoreDegrees;
                 vc.component.cleanMeterMachineInfo.communityId=vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
                     '/meterMachine.cleanMeterMachine',
-                    JSON.stringify(vc.component.cleanMeterMachineInfo),
+                    JSON.stringify(tmpMeterMachine),
                     {
                         emulateJSON:true
                      },

@@ -305,7 +305,7 @@ public class SmartMeterCoreReadImpl implements ISmartMeterCoreRead {
     }
 
     @Override
-    public ResultVo cleanControl(MeterMachineDto meterMachineDto, String controlType) {
+    public ResultVo cleanControl(MeterMachineDto meterMachineDto) {
         try {
             MeterMachineFactoryDto meterMachineFactoryDto = new MeterMachineFactoryDto();
             meterMachineFactoryDto.setFactoryId(meterMachineDto.getImplBean());
@@ -321,7 +321,7 @@ public class SmartMeterCoreReadImpl implements ISmartMeterCoreRead {
                 }
             }
 
-            return smartMeterFactoryAdapt.cleanControl(meterMachineDto, controlType);
+            return smartMeterFactoryAdapt.cleanControl(meterMachineDto);
         } catch (CmdException e) {
             e.printStackTrace();
             return new ResultVo(ResultVo.CODE_ERROR, "失败");

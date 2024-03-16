@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="meterMachineLogV1ServiceDaoImpl">
+
+
+
+
+
+    <!-- 保存电表日志信息 add by wuxw 2018-07-03 -->
+    <insert id="saveMeterMachineLogInfo" parameterType="Map">
+        insert into meter_machine_log(
+person_name,res_param,machine_id,log_id,person_id,req_param,state,community_id,log_action
+) values (
+#{personName},#{resParam},#{machineId},#{logId},#{personId},#{reqParam},#{state},#{communityId},#{logAction}
+)
+    </insert>
+
+
+
+    <!-- 查询电表日志信息 add by wuxw 2018-07-03 -->
+    <select id="getMeterMachineLogInfo" parameterType="Map" resultType="Map">
+        select  t.person_name,t.person_name personName,t.res_param,t.res_param resParam,t.machine_id,t.machine_id machineId,t.create_time,t.create_time createTime,t.log_id,t.log_id logId,t.person_id,t.person_id personId,t.req_param,t.req_param reqParam,t.state,t.community_id,t.community_id communityId,t.log_action,t.log_action logAction 
+from meter_machine_log t 
+where 1 =1 
+<if test="personName !=null and personName != ''">
+   and t.person_name= #{personName}
+</if> 
+<if test="resParam !=null and resParam != ''">
+   and t.res_param= #{resParam}
+</if> 
+<if test="machineId !=null and machineId != ''">
+   and t.machine_id= #{machineId}
+</if> 
+<if test="createTime !=null and createTime != ''">
+   and t.create_time= #{createTime}
+</if> 
+<if test="logId !=null and logId != ''">
+   and t.log_id= #{logId}
+</if> 
+<if test="personId !=null and personId != ''">
+   and t.person_id= #{personId}
+</if> 
+<if test="reqParam !=null and reqParam != ''">
+   and t.req_param= #{reqParam}
+</if> 
+<if test="state !=null and state != ''">
+   and t.state= #{state}
+</if> 
+<if test="communityId !=null and communityId != ''">
+   and t.community_id= #{communityId}
+</if> 
+<if test="logAction !=null and logAction != ''">
+   and t.log_action= #{logAction}
+</if> 
+order by t.create_time desc
+<if test="page != -1 and page != null ">
+   limit #{page}, #{row}
+</if> 
+
+    </select>
+
+
+
+
+    <!-- 修改电表日志信息 add by wuxw 2018-07-03 -->
+    <update id="updateMeterMachineLogInfo" parameterType="Map">
+        update  meter_machine_log t set t.status_cd = #{statusCd}
+<if test="newBId != null and newBId != ''">
+,t.b_id = #{newBId}
+</if> 
+<if test="personName !=null and personName != ''">
+, t.person_name= #{personName}
+</if> 
+<if test="resParam !=null and resParam != ''">
+, t.res_param= #{resParam}
+</if> 
+<if test="machineId !=null and machineId != ''">
+, t.machine_id= #{machineId}
+</if> 
+<if test="createTime !=null and createTime != ''">
+, t.create_time= #{createTime}
+</if> 
+<if test="logId !=null and logId != ''">
+, t.log_id= #{logId}
+</if> 
+<if test="personId !=null and personId != ''">
+, t.person_id= #{personId}
+</if> 
+<if test="reqParam !=null and reqParam != ''">
+, t.req_param= #{reqParam}
+</if> 
+<if test="state !=null and state != ''">
+, t.state= #{state}
+</if> 
+<if test="communityId !=null and communityId != ''">
+, t.community_id= #{communityId}
+</if> 
+<if test="logAction !=null and logAction != ''">
+, t.log_action= #{logAction}
+</if> 
+ where 1=1 
+    </update>
+
+    <!-- 查询电表日志数量 add by wuxw 2018-07-03 -->
+     <select id="queryMeterMachineLogsCount" parameterType="Map" resultType="Map">
+        select  count(1) count 
+from meter_machine_log t 
+where 1 =1 
+<if test="personName !=null and personName != ''">
+   and t.person_name= #{personName}
+</if> 
+<if test="resParam !=null and resParam != ''">
+   and t.res_param= #{resParam}
+</if> 
+<if test="machineId !=null and machineId != ''">
+   and t.machine_id= #{machineId}
+</if> 
+<if test="createTime !=null and createTime != ''">
+   and t.create_time= #{createTime}
+</if> 
+<if test="logId !=null and logId != ''">
+   and t.log_id= #{logId}
+</if> 
+<if test="personId !=null and personId != ''">
+   and t.person_id= #{personId}
+</if> 
+<if test="reqParam !=null and reqParam != ''">
+   and t.req_param= #{reqParam}
+</if> 
+<if test="state !=null and state != ''">
+   and t.state= #{state}
+</if> 
+<if test="communityId !=null and communityId != ''">
+   and t.community_id= #{communityId}
+</if> 
+<if test="logAction !=null and logAction != ''">
+   and t.log_action= #{logAction}
+</if> 
+
+
+     </select>
+
+</mapper>
