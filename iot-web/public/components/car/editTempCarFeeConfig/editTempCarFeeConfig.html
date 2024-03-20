@@ -99,8 +99,9 @@
                                     <label
                                         class="col-sm-3 col-form-label padding-lr-sm text-right">{{item.specName}}</label>
                                     <div class="col-sm-9 ">
-                                        <input v-model="item.value" type="text" :placeholder="item.remark"
+                                        <input v-model="item.value" type="text" 
                                             class="form-control">
+                                            <span>{{item.remark}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -111,8 +112,8 @@
                                     </label>
                                     <div class="col-sm-9 ">
                                         <input v-model="editTempCarFeeConfigInfo.attrs[index+1].value" type="text"
-                                            :placeholder="editTempCarFeeConfigInfo.attrs[index+1].remark"
                                             class="form-control">
+                                            <span>{{editTempCarFeeConfigInfo.attrs[index+1].remark}}</span>
                                     </div>
                                 </div>
                             </div>
