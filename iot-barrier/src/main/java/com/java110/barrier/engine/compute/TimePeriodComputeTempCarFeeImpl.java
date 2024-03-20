@@ -64,7 +64,7 @@ public class TimePeriodComputeTempCarFeeImpl extends BaseComputeTempCarFee {
         String endTime1 = TempCarFeeFactory.getAttrValueString(tempCarFeeConfigAttrDtos, SPEC_CD_5600012020);
         String inTime = carInoutDto.getInTime();
 
-        if (compareTime(startTime1, endTime1, inTime) && compareTime(startTime1, endTime1, DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A))) {
+        if (compareTime(startTime1, endTime1, inTime) || compareTime(startTime1, endTime1, DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A))) {
             //todo 走时段1 的设置
             return doComputeOne(carInoutDto, tempCarFeeConfigDto, tempCarFeeConfigAttrDtos, parkingCouponCarDtos);
         } else {
