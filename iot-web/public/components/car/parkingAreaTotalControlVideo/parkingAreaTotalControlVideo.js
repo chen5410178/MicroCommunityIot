@@ -35,7 +35,7 @@
                 let _machines = $that.parkingAreaTotalControlVideoInfo.machines;
 
                 _machines.forEach(item => {
-                    if (item.machineId == _data.extMachineId) {
+                    if (item.machineId == _data.machineId) {
                         vc.emit('parkingAreaTotalControlFee', 'notify', {
                             machine: item,
                             data: _data
@@ -55,7 +55,7 @@
                 let _machines = $that.parkingAreaTotalControlVideoInfo.machines;
 
                 _machines.forEach(item => {
-                    if (item.machineId == _data.extMachineId) {
+                    if (item.machineId == _data.machineId) {
                         setTimeout(function () {
                             item.inOutImg = _data.img.replace('.jpg', '_plate.jpg');
                             //强制刷新下
@@ -70,7 +70,7 @@
                 }
                 let _machines = $that.parkingAreaTotalControlVideoInfo.machines;
                 _machines.forEach(item => {
-                    if (item.machineId == _data.extMachineId) {
+                    if (item.machineId == _data.machineId) {
                         item.carNum = _data.carNum;
                         item.inOutTime = _data.inOutTime;
                         item.open = _data.open;

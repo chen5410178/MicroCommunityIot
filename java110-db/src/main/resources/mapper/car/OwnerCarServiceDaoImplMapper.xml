@@ -185,6 +185,12 @@
         <if test="ownerId !=null and ownerId != ''">
             and t.owner_id= #{ownerId}
         </if>
+        <if test="ownerIds !=null">
+            and t.owner_id in
+            <foreach collection="ownerIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
         <if test="leaseType !=null and leaseType != ''">
             and t.lease_type= #{leaseType}
         </if>
@@ -346,6 +352,12 @@
         </if>
         <if test="ownerId !=null and ownerId != ''">
             and t.owner_id= #{ownerId}
+        </if>
+        <if test="ownerIds !=null">
+            and t.owner_id in
+            <foreach collection="ownerIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
         </if>
         <if test="leaseType !=null and leaseType != ''">
             and t.lease_type= #{leaseType}
