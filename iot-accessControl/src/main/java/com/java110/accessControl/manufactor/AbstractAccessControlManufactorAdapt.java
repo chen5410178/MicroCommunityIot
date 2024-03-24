@@ -29,6 +29,7 @@ import com.java110.intf.accessControl.*;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.system.IFileInnerServiceSMO;
 import com.java110.intf.user.IPassQrcodeV1InnerServiceSMO;
+import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.accessControl.AccessControlPo;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.accessControlInout.AccessControlInoutPo;
@@ -80,6 +81,9 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
 
     @Autowired
     private IRoomV1InnerServiceSMO roomV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
 
     @Autowired
     private RestTemplate outRestTemplate;
@@ -387,13 +391,20 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         accessControlFaceDto.setPersonId(personId);
         accessControlFaceDto.setCommunityId(accessControlDtos.get(0).getCommunityId());
         List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
-        if (accessControlFaceDtos == null || accessControlFaceDtos.size() < 1) {
+        if (ListUtil.isNull(accessControlFaceDtos)) {
             accessControlFaceDto.setIdNumber("无");
             accessControlFaceDto.setCardNumber("无");
             accessControlFaceDto.setTel("无");
             return accessControlFaceDto;
         }
         accessControlFaceDto = accessControlFaceDtos.get(0);
+
+        UserDto userDto = new UserDto();
+        userDto.setUserId(personId);
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+        if (!ListUtil.isNull(userDtos)) {
+            accessControlFaceDto.setTel(userDtos.get(0).getTel());
+        }
         return accessControlFaceDto;
     }
 
