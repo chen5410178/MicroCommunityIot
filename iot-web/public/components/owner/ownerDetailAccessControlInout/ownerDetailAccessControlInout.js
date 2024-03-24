@@ -9,6 +9,8 @@
             ownerDetailAccessControlInoutInfo: {
                 inouts: [],
                 roomId:'',
+                ownerId:'',
+                link:''
             }
         },
         _initMethod: function () {
@@ -16,6 +18,9 @@
         _initEvent: function () {
             vc.on('ownerDetailAccessControlInout', 'switch', function (_data) {
                 $that.ownerDetailAccessControlInoutInfo.roomId = _data.roomId;
+                $that.ownerDetailAccessControlInoutInfo.ownerId = _data.ownerId;
+                $that.ownerDetailAccessControlInoutInfo.link = _data.link;
+                
                 $that._loadOwnerDetailAccessControlInoutData(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('ownerDetailAccessControlInout', 'paginationPlus', 'page_event',
@@ -32,6 +37,7 @@
                     params: {
                         communityId: vc.getCurrentCommunity().communityId,
                         personId:$that.ownerDetailAccessControlInoutInfo.ownerId,
+                        tel:$that.ownerDetailAccessControlInoutInfo.link,
                         page:_page,
                         row:_row
                     }
