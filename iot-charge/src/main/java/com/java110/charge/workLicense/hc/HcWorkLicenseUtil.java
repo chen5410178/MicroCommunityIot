@@ -280,8 +280,18 @@ public class HcWorkLicenseUtil {
 
 
     public static void main(String[] args) throws UnsupportedEncodingException {
-        String aa = "7e02000092016059631666004600000000800000400000000000000000000000000000240302153330f01fe60b044c50773aa67d013f3868be0e40d1493868bed9d6c94c88c3974d14fc4d150f38363230313630353936333136363660150201cc00971209a336012d01cc00971209a3360325fe12e60200015020000a898604b02622703416490104000000120402015005010130014a3101002b040f3f0f3f717e";
+        String aa = "7e020000b908270677816000da00000000020c0001022dd26c061036a209690000013f24032512451101040000004530011ef026e60b05d89fd4a8ea30cac86c2000a0dec900037f602177c224b8da0084a0c19c28efb3e2b8c060290401cc0097120efb08414b01cc00971205128f040001cc00971205128f060001cc0097120ef11f4100fe3fe60200014d07002a573130305f59312e3032443b4c54453a33303b47423a302c313b4d323a33302c3330303b423a342e303520000a898604b0262270307139797e";
         byte[] data = BytesUtil.hexStringToByteArray(aa);
+        String uploadData = HcWorkLicenseUtil.getData(data);
+
+        String state = uploadData.substring( 8, 2 * 8);
+
+        long decimal = Long.parseLong(state, 16); // 先将十六进制转换为十进制
+        String binary = Long.toBinaryString(decimal); // 再将十进制转换为二进制
+
+        String gps =  binary.charAt(binary.length() - 2)+"";
+
+        System.out.println("gps="+gps);
 
         String resultData = HcWorkLicenseUtil.getData(data);
 
@@ -322,7 +332,7 @@ public class HcWorkLicenseUtil {
         reqType = String.format("%02x", aa);
 
         //String reqData = "MODE,2,"+sec+",1,1,1,1#";
-        String reqData = "#2014*SET*M2:30,300#";
+        String reqData = "#2014*SET*M2:"+sec+",300#";
         try {
             byte[] data = reqData.getBytes("GBK");
             reqData = reqType + BytesUtil.bytesToHex(data);
