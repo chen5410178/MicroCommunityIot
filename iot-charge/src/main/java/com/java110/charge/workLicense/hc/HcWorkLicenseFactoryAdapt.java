@@ -10,6 +10,7 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BytesUtil;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.data.NettyReplyDataDto;
 import com.java110.dto.workLicenseFactory.WorkLicenseFactoryDto;
 import com.java110.dto.workLicenseMachine.WorkLicenseMachineDto;
@@ -340,6 +341,10 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         JSONObject body = new JSONObject();
         body.put("key","ZUXBZ-7F5AU-WLXV6-GRX62-RZ6P7-XOB3N");
         body.put("device_id",machineId);
+
+        if(StringUtil.isNullOrNone(macs)){
+            return info;
+        }
 
         JSONArray wifiinfos = new JSONArray();
         JSONObject wifiinfo = null;
