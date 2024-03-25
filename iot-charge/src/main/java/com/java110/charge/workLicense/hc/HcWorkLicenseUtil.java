@@ -280,27 +280,12 @@ public class HcWorkLicenseUtil {
 
 
     public static void main(String[] args) throws UnsupportedEncodingException {
-        String aa = "7e020000b908270677816000da00000000020c0001022dd26c061036a209690000013f24032512451101040000004530011ef026e60b05d89fd4a8ea30cac86c2000a0dec900037f602177c224b8da0084a0c19c28efb3e2b8c060290401cc0097120efb08414b01cc00971205128f040001cc00971205128f060001cc0097120ef11f4100fe3fe60200014d07002a573130305f59312e3032443b4c54453a33303b47423a302c313b4d323a33302c3330303b423a342e303520000a898604b0262270307139797e";
+        String aa = "7e0704007d010827067781600064000101007800000000020c0000022dd26c061036a209690000013f240325100646010400000045300117f01fe60b04c4518d88c054e2ac81ae7baab0c9547595f49205bf602e204b7cecbb60290401cc0097120ef11f414501cc00971205128f040001cc0097120efb08410001cc00971206f0564200fe05e6020001592b7e";
         byte[] data = BytesUtil.hexStringToByteArray(aa);
         String uploadData = HcWorkLicenseUtil.getData(data);
 
-        String state = uploadData.substring( 8, 2 * 8);
-
-        long decimal = Long.parseLong(state, 16); // 先将十六进制转换为十进制
-        String binary = Long.toBinaryString(decimal); // 再将十进制转换为二进制
-
-        String gps =  binary.charAt(binary.length() - 2)+"";
-
-        System.out.println("gps="+gps);
-
-        String resultData = HcWorkLicenseUtil.getData(data);
-
-        String[] macs = getMacs(resultData);
-
-        System.out.println(macs[0]);
-        System.out.println(macs[1]);
-        System.out.println(macs[2]);
-        System.out.println(macs[3]);
+        String machineCode = machineCode(data);
+        System.out.println(machineCode);
 
 
 

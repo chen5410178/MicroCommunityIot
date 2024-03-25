@@ -98,4 +98,11 @@ public class DataHeader {
         data = data.substring(10, 10 + 12);
         return data.replaceAll("^0+", "");
     }
+
+    public static byte[] clearWorkLicense(byte[] bytes) {
+        String data = BytesUtil.bytesToHex(bytes);
+        data = data.replaceAll("7d01","7d");
+
+        return BytesUtil.hexStringToByteArray(data);
+    }
 }
