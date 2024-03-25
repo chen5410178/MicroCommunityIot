@@ -101,7 +101,7 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
 
     public static final String CMD_UPLOAD_POS_ATT_ON = "0203";// todo 打开
 
-
+    public static final String CMD_BATCH_UPLOAD_POS = "0704";// todo 批量汇报位置
     public static final String CMD_REQ = "8300"; // todo 请求下发数据
 
     public static final String AUTH_CODE = "123456";
@@ -213,6 +213,9 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
                 break;
             case CMD_UPLOAD_POS_ATT_ON:
                 uploadPos(workLicenseMachineDto, cmd, data);
+                break;
+            case CMD_BATCH_UPLOAD_POS:
+                commonReturn(workLicenseMachineDto,cmd,data);
                 break;
         }
 
