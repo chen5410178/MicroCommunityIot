@@ -190,7 +190,8 @@ public class HcWorkLicenseUtil {
         int aa = Integer.parseInt(reqType, 2);
         reqType = String.format("%02x", aa);
 
-        String reqData = "HBT,60#";
+        //String reqData = "HBT,60#";
+        String reqData = "#2014*SET*X:60#";
         try {
             byte[] data = reqData.getBytes("GBK");
             reqData = reqType + BytesUtil.bytesToHex(data);
@@ -320,7 +321,8 @@ public class HcWorkLicenseUtil {
         int aa = Integer.parseInt(reqType, 2);
         reqType = String.format("%02x", aa);
 
-        String reqData = "MODE,2,"+sec+",1,1,1,1#";
+        //String reqData = "MODE,2,"+sec+",1,1,1,1#";
+        String reqData = "#2014*SET*M2:30,300#";
         try {
             byte[] data = reqData.getBytes("GBK");
             reqData = reqType + BytesUtil.bytesToHex(data);
