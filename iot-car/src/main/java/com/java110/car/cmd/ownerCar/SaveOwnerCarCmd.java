@@ -25,16 +25,14 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.utils.*;
 import com.java110.dto.parking.ParkingSpaceDto;
 import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
 import com.java110.intf.car.IOwnerCarInnerServiceSMO;
 import com.java110.po.ownerCar.OwnerCarPo;
 import com.java110.po.parking.ParkingSpacePo;
+import com.tencentcloudapi.cam.v20190116.models.ListAttachedUserPoliciesRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,9 +101,9 @@ public class SaveOwnerCarCmd extends Cmd {
         ownerCarDto.setCarNum(reqJson.getString("carNum"));
         ownerCarDto.setPaIds(new String[]{parkingSpaceDtos.get(0).getPaId()});
         ownerCarDto.setCarTypeCds(new String[]{OwnerCarDto.CAR_TYPE_PRIMARY, OwnerCarDto.CAR_TYPE_MEMBER}); // 临时车除外
-        int count = ownerCarInnerServiceSMOImpl.queryOwnerCarsCount(ownerCarDto);
+        List<OwnerCarDto> ownerCars = ownerCarInnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
 
-        if (count > 0) {
+        if (!ListUtil.isNull(ownerCars)) {
             throw new IllegalArgumentException("车辆已存在");
         }
 
@@ -120,7 +118,7 @@ public class SaveOwnerCarCmd extends Cmd {
         ownerCarDto.setCommunityId(reqJson.getString("communityId"));
         ownerCarDto.setCarNum(reqJson.getString("carNum"));
         ownerCarDto.setCarTypeCds(new String[]{OwnerCarDto.CAR_TYPE_TEMP}); // 临时车除外
-        count = ownerCarInnerServiceSMOImpl.queryOwnerCarsCount(ownerCarDto);
+       int count = ownerCarInnerServiceSMOImpl.queryOwnerCarsCount(ownerCarDto);
         if (count < 1) {
             return;
         }

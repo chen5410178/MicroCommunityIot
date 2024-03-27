@@ -178,8 +178,9 @@
                 );
             },
             _changeCard:function(){
+                let _cardId = $that.buyCarMonthCardInfo.cardId;
                 $that.buyCarMonthCardInfo.cards.forEach(item => {
-                    if (item.cardId == item.cardId) {
+                    if (item.cardId == _cardId) {
                         $that.buyCarMonthCardInfo.receivableAmount = item.cardPrice;
                         $that.buyCarMonthCardInfo.receivedAmount = item.cardPrice;
                     }
