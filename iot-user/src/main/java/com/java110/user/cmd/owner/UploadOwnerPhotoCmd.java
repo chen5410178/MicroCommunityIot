@@ -105,15 +105,16 @@ public class UploadOwnerPhotoCmd extends Cmd {
             businessUnit.put("fileSaveName", reqJson.getString("photo"));
             FileRelPo fileRelPo = BeanConvertUtil.covertBean(businessUnit, FileRelPo.class);
             fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
-            return;
+        }else{
+            JSONObject businessUnit = new JSONObject();
+            businessUnit.putAll(BeanConvertUtil.beanCovertMap(fileRelDtos.get(0)));
+            businessUnit.put("fileRealName", reqJson.getString("photo"));
+            businessUnit.put("fileSaveName", reqJson.getString("photo"));
+            FileRelPo fileRelPo = BeanConvertUtil.covertBean(businessUnit, FileRelPo.class);
+            fileRelInnerServiceSMOImpl.updateFileRel(fileRelPo);
         }
 
-        JSONObject businessUnit = new JSONObject();
-        businessUnit.putAll(BeanConvertUtil.beanCovertMap(fileRelDtos.get(0)));
-        businessUnit.put("fileRealName", reqJson.getString("photo"));
-        businessUnit.put("fileSaveName", reqJson.getString("photo"));
-        FileRelPo fileRelPo = BeanConvertUtil.covertBean(businessUnit, FileRelPo.class);
-        fileRelInnerServiceSMOImpl.updateFileRel(fileRelPo);
+
 
         //todo 人员同步门禁
         syncAccessControlBMOImpl.syncAccessControl(reqJson.getString("memberId"));

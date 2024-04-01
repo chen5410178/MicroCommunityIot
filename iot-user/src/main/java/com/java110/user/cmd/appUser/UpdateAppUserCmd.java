@@ -130,6 +130,11 @@ public class UpdateAppUserCmd extends Cmd {
             saveOwner(reqJson, appUserPo, userId, appUserDtos);
         }
 
+        if (StringUtil.isEmpty(appUserDtos.get(0).getUserId())) {
+            cmdDataFlowContext.setResponseEntity(ResultVo.success());
+            return;
+        }
+
         UserPo userPo = new UserPo();
         userPo.setUserId(appUserDtos.get(0).getUserId());
         userPo.setName(appUserDtos.get(0).getOwnerName());
