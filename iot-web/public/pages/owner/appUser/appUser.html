@@ -118,7 +118,11 @@
                                 <td class="text-center">{{appUser.openId}}</td>
                                 <td class="text-center">{{appUser.createTime}}</td>
 
-                                <td class="text-center">{{appUser.state}}</td>
+                                <td class="text-center">
+                                    <span v-if="appUser.state == '12000'">审核成功</span>
+                                    <span v-if="appUser.state == '10000'">待审核</span>
+                                    <span v-if="appUser.state == '13000'">审核失败</span>
+                                </td>
                                 <td class="text-center">{{appUser.stateMsg}}</td>
                                 <td class="text-center">{{appUser.remark}}</td>
                                 <td class="text-center">
