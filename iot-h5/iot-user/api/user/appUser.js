@@ -23,7 +23,7 @@ export function getAppUser() {
 				//将业主信息和房屋信息一起返回
 				let _json  = res.data;
 				if(_json.code != 0){
-					reject(_json.msg);
+					reject(_json);
 					return;
 				}
 				if(!_json.data || _json.data.length <1 ){

@@ -1,19 +1,20 @@
 <template>
 	<view>
 		<view class="padding-lr-sm">
-			
+
 			<view class="margin-top-sm ">
 				<index-ads></index-ads>
 			</view>
 			<view class="margin-top">
 				<index-header></index-header>
 			</view>
-			<view class="margin-top-sm" >
+			<view class="margin-top-sm">
 				<index-ac ref="indexAcRef"></index-ac>
 			</view>
-			<view class="margin-top" v-if="hasOwner == 'N'">
-				<index-bind-room ref="indexBindRoomRef"></index-bind-room>
+			<view class="margin-top">
+				<index-bind-room ref="indexBindRoomRef" :hasOwner="hasOwner"></index-bind-room>
 			</view>
+			
 		</view>
 	</view>
 </template>
@@ -66,13 +67,18 @@
 				return;
 			}
 
-			
+
 			getAppUser().then(_data => {
 				_that.hasOwner = 'Y';
 				_that._initIndexData();
 			}, err => {
-				console.log(err)
-				_that.hasOwner = 'N';
+				console.log(err);
+				if (err.code != -101) {
+					_that.hasOwner = 'N';
+				} else {
+					_that.hasOwner = 'D';
+				}
+
 			})
 		},
 

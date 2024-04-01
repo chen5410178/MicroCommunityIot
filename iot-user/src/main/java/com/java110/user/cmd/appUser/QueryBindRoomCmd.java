@@ -50,11 +50,17 @@ public class QueryBindRoomCmd extends Cmd {
 
         AppUserDto appUserDto = new AppUserDto();
         appUserDto.setUserId(userDtos.get(0).getUserId());
-        appUserDto.setState(AppUserDto.STATE_FINISH);
+        appUserDto.setStates(new String[]{AppUserDto.STATE_FINISH,AppUserDto.STATE_W});
         List<AppUserDto> appUserDtos = appUserV1InnerServiceSMOImpl.queryAppUsers(appUserDto);
 
         if (ListUtil.isNull(appUserDtos)) {
             throw new CmdException("用户未认证房屋");
+        }
+
+        if (AppUserDto.STATE_W.equals(appUserDtos.get(0).getState())) {
+            ResultVo resultVo = new ResultVo(-101, "认证审核中");
+            context.setResponseEntity(ResultVo.createResponseEntity(resultVo));
+            return;
         }
 
         context.setResponseEntity(ResultVo.createResponseEntity(appUserDtos));
