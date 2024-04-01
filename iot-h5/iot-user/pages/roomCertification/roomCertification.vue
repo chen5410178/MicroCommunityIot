@@ -36,7 +36,8 @@
 	import vcUploadAsync from '../../components/vc-upload-async/vc-upload-async.vue';
 	import {saveAppUser} from '../../api/owner/ownerApi.js';
 	import {queryCommunitys} from '../../api/community/communityApi.js';
-	import {checkPhoneNumber,checkStrLength} from '../../lib/java110/utils/StringUtil.js'
+	import {checkPhoneNumber,checkStrLength} from '../../lib/java110/utils/StringUtil.js';
+	import {getUserTel} from '../../api/user/userApi.js'
 	export default {
 		name: "applyFace",
 		data() {
@@ -64,6 +65,7 @@
 		components: {
 			vcUploadAsync
 		},
+	
 		methods: {
 			sendImagesData: function(_data) {
 				this.faceUrl = _data[0].fileId;
@@ -129,7 +131,7 @@
 							icon: 'none',
 							duration: 2000
 						});
-						uni.navigateBack();
+						uni.navigateBack()
 					}
 				})
 			},
@@ -174,6 +176,7 @@
 		},
 		onLoad: function(options) {
 			this._loadCommunitys();
+			this.personTel = getUserTel();
 		},
 		onShow: function() {
 			let _selectRoom = uni.getStorageSync('selectRoom');
