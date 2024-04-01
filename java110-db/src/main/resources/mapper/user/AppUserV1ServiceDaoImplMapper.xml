@@ -20,7 +20,7 @@
         select t.state_msg,t.state_msg stateMsg,t.au_id,t.au_id auId,t.open_id,t.open_id
         openId,t.link,t.remark,t.status_cd,t.status_cd statusCd,t.user_id,t.user_id userId,t.room_id,t.room_id
         roomId,t.room_name,t.room_name roomName,t.owner_name,t.owner_name ownerName,t.community_name,t.community_name
-        communityName,t.state,t.community_id,t.community_id communityId,t.member_id,t.member_id memberId
+        communityName,t.state,t.community_id,t.community_id communityId,t.member_id,t.member_id memberId,t.create_time createTime
         from app_user t
         where 1 =1
         <if test="stateMsg !=null and stateMsg != ''">
