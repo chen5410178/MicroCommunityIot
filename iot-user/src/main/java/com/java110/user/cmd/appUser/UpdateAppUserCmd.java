@@ -119,7 +119,7 @@ public class UpdateAppUserCmd extends Cmd {
             return;
         }
         OwnerDto ownerDto = new OwnerDto();
-        ownerDto.setLink(appUserPo.getLink());
+        ownerDto.setLink(appUserDtos.get(0).getLink());
         ownerDto.setCommunityId(appUserPo.getCommunityId());
         List<OwnerDto> ownerDtos = ownerInnerServiceSMOImpl.queryOwners(ownerDto);
         if (!ListUtil.isNull(ownerDtos)) {
