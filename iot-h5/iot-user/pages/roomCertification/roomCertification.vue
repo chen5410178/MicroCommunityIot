@@ -23,8 +23,8 @@
 		<view class="margin-top">
 
 		</view>
-		<vc-upload-async ref="vcUploadRef" :communityId="communityId" title="人脸照片" :maxPhotoNum="maxPhotoNum"
-			@sendImagesData="sendImagesData"></vc-upload-async>
+		<!-- <vc-upload-async ref="vcUploadRef" :communityId="communityId" title="人脸照片" :maxPhotoNum="maxPhotoNum"
+			@sendImagesData="sendImagesData"></vc-upload-async> -->
 
 		<view class="flex flex-direction margin-top">
 			<button class="cu-btn bg-blue margin-tb-sm lg" @click="submitApplyFace()">提交</button>
@@ -93,8 +93,7 @@
 					ownerName: this.personName,
 					communityId: this.communityId,
 					communityName: this.communityName,
-					state: '10000',
-					stateMsg: this.faceUrl
+					faceUrl: this.faceUrl
 				};
 				
 				let msg = "";
@@ -108,8 +107,8 @@
 					msg = "请填写手机号";
 				} else if (!checkPhoneNumber(obj.link)) {
 					msg = "手机号有误";
-				} else if (obj.faceUrl == "") {
-					msg = "请上传人脸照片";
+				// } else if (obj.faceUrl == "") {
+				// 	msg = "请上传人脸照片";
 				}else{
 				}
 				

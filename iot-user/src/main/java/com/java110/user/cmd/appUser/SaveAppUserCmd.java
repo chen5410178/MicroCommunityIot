@@ -27,6 +27,7 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.CmdContextUtils;
+import com.java110.dto.appUser.AppUserDto;
 import com.java110.intf.user.IAppUserV1InnerServiceSMO;
 import com.java110.po.appUser.AppUserPo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,6 @@ public class SaveAppUserCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "roomId", "请求报文中未包含roomId");
         Assert.hasKeyAndValue(reqJson, "roomName", "请求报文中未包含roomName");
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
-        Assert.hasKeyAndValue(reqJson, "state", "请求报文中未包含state");
 
     }
 
@@ -74,6 +74,8 @@ public class SaveAppUserCmd extends Cmd {
         AppUserPo appUserPo = BeanConvertUtil.covertBean(reqJson, AppUserPo.class);
         appUserPo.setUserId(userId);
         appUserPo.setAuId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        appUserPo.setState(AppUserDto.STATE_W);
+        appUserPo.setStateMsg("待审核");
         int flag = appUserV1InnerServiceSMOImpl.saveAppUser(appUserPo);
 
         if (flag < 1) {

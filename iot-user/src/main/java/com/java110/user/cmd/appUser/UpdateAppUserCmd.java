@@ -148,34 +148,10 @@ public class UpdateAppUserCmd extends Cmd {
      * @param appUserDtos
      */
     private void updateOwner(JSONObject reqJson, List<OwnerDto> ownerDtos, AppUserPo appUserPo, List<AppUserDto> appUserDtos) {
-        for (OwnerDto owner : ownerDtos) {
-            FileRelDto fileRelDto = new FileRelDto();
-            fileRelDto.setObjId(owner.getMemberId());
-            fileRelDto.setRelTypeCd("10000");
-            List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
-
-            if (!ListUtil.isNull(fileRelDtos)) {
-                FileRelPo fileRelPo = BeanConvertUtil.covertBean(fileRelDtos.get(0), FileRelPo.class);
-                fileRelPo.setFileRealName(appUserPo.getStateMsg());
-                fileRelPo.setFileSaveName(appUserPo.getStateMsg());
-                fileRelInnerServiceSMOImpl.updateFileRel(fileRelPo);
-            } else {
-                FileRelPo fileRelPo = new FileRelPo();
-                fileRelPo.setFileRelId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_fileRelId));
-                fileRelPo.setRelTypeCd(FileRelDto.REL_TYPE_CD_OWNER);
-                fileRelPo.setSaveWay(FileRelDto.SAVE_WAY_UPLOAD);
-                fileRelPo.setObjId(owner.getMemberId());
-                fileRelPo.setFileRealName(appUserPo.getStateMsg());
-                fileRelPo.setFileSaveName(appUserPo.getStateMsg());
-                fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
-            }
-        }
         appUserPo = new AppUserPo();
         appUserPo.setAuId(reqJson.getString("auId"));
         appUserPo.setMemberId(ownerDtos.get(0).getMemberId());
-
         int flag = appUserV1InnerServiceSMOImpl.updateAppUser(appUserPo);
-
         if (flag < 1) {
             throw new CmdException("更新数据失败");
         }
@@ -228,14 +204,6 @@ public class UpdateAppUserCmd extends Cmd {
         ownerRoomRelPo.setEndTime(new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime()));
         ownerRoomRelV1InnerServiceSMOImpl.saveOwnerRoomRel(ownerRoomRelPo);
 
-        FileRelPo fileRelPo = new FileRelPo();
-        fileRelPo.setFileRelId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_fileRelId));
-        fileRelPo.setRelTypeCd(FileRelDto.REL_TYPE_CD_OWNER);
-        fileRelPo.setSaveWay(FileRelDto.SAVE_WAY_UPLOAD);
-        fileRelPo.setObjId(ownerPo.getMemberId());
-        fileRelPo.setFileRealName(appUserPo.getStateMsg());
-        fileRelPo.setFileSaveName(appUserPo.getStateMsg());
-        fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
 
         appUserPo = new AppUserPo();
         appUserPo.setAuId(reqJson.getString("auId"));
