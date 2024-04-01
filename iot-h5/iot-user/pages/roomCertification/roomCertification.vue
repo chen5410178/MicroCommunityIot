@@ -130,6 +130,7 @@
 							icon: 'none',
 							duration: 2000
 						});
+						uni.navigateBack();
 					}
 				})
 			},

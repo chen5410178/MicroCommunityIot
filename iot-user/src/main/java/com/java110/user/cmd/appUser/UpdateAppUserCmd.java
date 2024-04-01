@@ -30,16 +30,12 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.*;
 import com.java110.dto.appUser.AppUserDto;
 import com.java110.intf.system.IFileRelInnerServiceSMO;
-import com.java110.intf.user.IAppUserV1InnerServiceSMO;
-import com.java110.intf.user.IOwnerInnerServiceSMO;
-import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
-import com.java110.intf.user.IOwnerV1InnerServiceSMO;
+import com.java110.intf.user.*;
 import com.java110.po.appUser.AppUserPo;
+import com.java110.po.user.UserPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,12 +75,16 @@ public class UpdateAppUserCmd extends Cmd {
     private IOwnerRoomRelV1InnerServiceSMO ownerRoomRelV1InnerServiceSMOImpl;
 
     @Autowired
+    private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
+    @Autowired
     private IFileRelInnerServiceSMO fileRelInnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "auId", "auId不能为空");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
+        Assert.hasKeyAndValue(reqJson, "state", "state不能为空");
 
     }
 
@@ -92,77 +92,154 @@ public class UpdateAppUserCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        AppUserPo appUserPo = BeanConvertUtil.covertBean(reqJson, AppUserPo.class);
+        String userId = CmdContextUtils.getUserId(cmdDataFlowContext);
 
-        if(AppUserDto.STATE_S.equals(appUserPo.getState())) {
-            OwnerDto ownerDto = new OwnerDto();
-            ownerDto.setLink(appUserPo.getLink());
-            ownerDto.setCommunityId(appUserPo.getCommunityId());
-            List<OwnerDto> ownerDtos = ownerInnerServiceSMOImpl.queryOwners(ownerDto);
-            if (ownerDtos.size() > 0) {
-                for (OwnerDto owner : ownerDtos) {
-                    FileRelDto fileRelDto = new FileRelDto();
-                    fileRelDto.setObjId(owner.getMemberId());
-                    fileRelDto.setRelTypeCd("10000");
-                    List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
 
-                    if (fileRelDtos.size() > 0) {
-                        FileRelPo fileRelPo = BeanConvertUtil.covertBean(fileRelDtos.get(0), FileRelPo.class);
-                        fileRelPo.setFileRealName(appUserPo.getStateMsg());
-                        fileRelPo.setFileSaveName(appUserPo.getStateMsg());
-                        fileRelInnerServiceSMOImpl.updateFileRel(fileRelPo);
-                    } else {
-                        FileRelPo fileRelPo = new FileRelPo();
-                        fileRelPo.setFileRelId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_fileRelId));
-                        fileRelPo.setRelTypeCd(FileRelDto.REL_TYPE_CD_OWNER);
-                        fileRelPo.setSaveWay(FileRelDto.SAVE_WAY_UPLOAD);
-                        fileRelPo.setObjId(owner.getMemberId());
-                        fileRelPo.setFileRealName(appUserPo.getStateMsg());
-                        fileRelPo.setFileSaveName(appUserPo.getStateMsg());
-                        fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
-                    }
-                }
+        AppUserDto appUserDto = new AppUserDto();
+        appUserDto.setAuId(reqJson.getString("auId"));
+        List<AppUserDto> appUserDtos = appUserV1InnerServiceSMOImpl.queryAppUsers(appUserDto);
+
+        if (ListUtil.isNull(appUserDtos)) {
+            throw new CmdException("审核记录不存在");
+        }
+
+        AppUserPo appUserPo = new AppUserPo();
+        appUserPo.setAuId(reqJson.getString("auId"));
+        appUserPo.setState(reqJson.getString("state"));
+
+        appUserPo.setStateMsg("成功");
+        if (!AppUserDto.STATE_S.equals(appUserPo.getState())) {
+            appUserPo.setStateMsg("失败");
+        }
+
+        appUserV1InnerServiceSMOImpl.updateAppUser(appUserPo);
+
+        //todo 审核不通过
+        if (!AppUserDto.STATE_S.equals(appUserPo.getState())) {
+            return;
+        }
+        OwnerDto ownerDto = new OwnerDto();
+        ownerDto.setLink(appUserPo.getLink());
+        ownerDto.setCommunityId(appUserPo.getCommunityId());
+        List<OwnerDto> ownerDtos = ownerInnerServiceSMOImpl.queryOwners(ownerDto);
+        if (!ListUtil.isNull(ownerDtos)) {
+            //todo 修改业主
+            updateOwner(reqJson, ownerDtos, appUserPo, appUserDtos);
+        } else {
+            //todo 添加业主
+            saveOwner(reqJson, appUserPo, userId, appUserDtos);
+        }
+
+        UserPo userPo = new UserPo();
+        userPo.setUserId(appUserDtos.get(0).getUserId());
+        userPo.setName(appUserDtos.get(0).getOwnerName());
+        userV1InnerServiceSMOImpl.updateUser(userPo);
+
+
+        cmdDataFlowContext.setResponseEntity(ResultVo.success());
+    }
+
+    /**
+     * 修改业主
+     *
+     * @param reqJson
+     * @param ownerDtos
+     * @param appUserPo
+     * @param appUserDtos
+     */
+    private void updateOwner(JSONObject reqJson, List<OwnerDto> ownerDtos, AppUserPo appUserPo, List<AppUserDto> appUserDtos) {
+        for (OwnerDto owner : ownerDtos) {
+            FileRelDto fileRelDto = new FileRelDto();
+            fileRelDto.setObjId(owner.getMemberId());
+            fileRelDto.setRelTypeCd("10000");
+            List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
+
+            if (!ListUtil.isNull(fileRelDtos)) {
+                FileRelPo fileRelPo = BeanConvertUtil.covertBean(fileRelDtos.get(0), FileRelPo.class);
+                fileRelPo.setFileRealName(appUserPo.getStateMsg());
+                fileRelPo.setFileSaveName(appUserPo.getStateMsg());
+                fileRelInnerServiceSMOImpl.updateFileRel(fileRelPo);
             } else {
-                OwnerPo ownerPo = new OwnerPo();
-                ownerPo.setMemberId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_ownerId));
-                ownerPo.setOwnerId(ownerPo.getMemberId());
-                ownerPo.setName(appUserPo.getOwnerName());
-                ownerPo.setSex("0");
-                ownerPo.setLink(appUserPo.getLink());
-                ownerPo.setUserId("-1");
-                ownerPo.setRemark("房屋认证通过");
-                ownerPo.setOwnerTypeCd(OwnerDto.OWNER_TYPE_CD_OWNER);
-                ownerPo.setCommunityId(appUserPo.getCommunityId());
-                ownerPo.setState(OwnerDto.STATE_FINISH);
-                ownerPo.setOwnerFlag(OwnerDto.OWNER_FLAG_TRUE);
-                ownerV1InnerServiceSMOImpl.saveOwner(ownerPo);
-
-                OwnerRoomRelPo ownerRoomRelPo = new OwnerRoomRelPo();
-                ownerRoomRelPo.setRelId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_relId));
-                ownerRoomRelPo.setOwnerId(ownerPo.getOwnerId());
-                ownerRoomRelPo.setRoomId(appUserPo.getRoomId());
-                ownerRoomRelPo.setState("2001");
-                ownerRoomRelPo.setUserId("-1");
-                ownerRoomRelPo.setStartTime(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(System.currentTimeMillis());
-                int yearToAdd = 50;
-                calendar.add(Calendar.YEAR, yearToAdd);
-                ownerRoomRelPo.setEndTime(new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime()));
-                ownerRoomRelV1InnerServiceSMOImpl.saveOwnerRoomRel(ownerRoomRelPo);
-
                 FileRelPo fileRelPo = new FileRelPo();
                 fileRelPo.setFileRelId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_fileRelId));
                 fileRelPo.setRelTypeCd(FileRelDto.REL_TYPE_CD_OWNER);
                 fileRelPo.setSaveWay(FileRelDto.SAVE_WAY_UPLOAD);
-                fileRelPo.setObjId(ownerPo.getMemberId());
+                fileRelPo.setObjId(owner.getMemberId());
                 fileRelPo.setFileRealName(appUserPo.getStateMsg());
                 fileRelPo.setFileSaveName(appUserPo.getStateMsg());
                 fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
             }
-
-            appUserPo.setStateMsg("成功");
         }
+        appUserPo = new AppUserPo();
+        appUserPo.setAuId(reqJson.getString("auId"));
+        appUserPo.setMemberId(ownerDtos.get(0).getMemberId());
+
+        int flag = appUserV1InnerServiceSMOImpl.updateAppUser(appUserPo);
+
+        if (flag < 1) {
+            throw new CmdException("更新数据失败");
+        }
+    }
+
+    /**
+     * 业主不存在时 添加业主
+     *
+     * @param reqJson
+     * @param appUserPo
+     * @param userId
+     * @param appUserDtos
+     */
+    private void saveOwner(JSONObject reqJson, AppUserPo appUserPo, String userId, List<AppUserDto> appUserDtos) {
+        OwnerPo ownerPo = new OwnerPo();
+        ownerPo.setMemberId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_ownerId));
+        ownerPo.setOwnerId(ownerPo.getMemberId());
+        ownerPo.setName(appUserPo.getOwnerName());
+        ownerPo.setSex("0");
+        ownerPo.setLink(appUserPo.getLink());
+        ownerPo.setUserId(userId);
+        ownerPo.setRemark("房屋认证通过");
+        ownerPo.setOwnerTypeCd(OwnerDto.OWNER_TYPE_CD_OWNER);
+        ownerPo.setCommunityId(appUserPo.getCommunityId());
+        ownerPo.setState(OwnerDto.STATE_FINISH);
+        ownerPo.setOwnerFlag(OwnerDto.OWNER_FLAG_TRUE);
+
+        // todo 查询房屋业主
+        OwnerDto tmpOwnerDto = new OwnerDto();
+        tmpOwnerDto.setRoomId(appUserDtos.get(0).getRoomId());
+        tmpOwnerDto.setCommunityId(appUserDtos.get(0).getCommunityId());
+        List<OwnerDto> tmpOwnerDtos = ownerInnerServiceSMOImpl.queryOwnersByRoom(tmpOwnerDto);
+        if (!ListUtil.isNull(tmpOwnerDtos)) {
+            ownerPo.setOwnerId(tmpOwnerDtos.get(0).getOwnerId());
+            ownerPo.setOwnerTypeCd(OwnerDto.OWNER_TYPE_CD_MEMBER);
+        }
+        ownerV1InnerServiceSMOImpl.saveOwner(ownerPo);
+
+        OwnerRoomRelPo ownerRoomRelPo = new OwnerRoomRelPo();
+        ownerRoomRelPo.setRelId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_relId));
+        ownerRoomRelPo.setOwnerId(ownerPo.getOwnerId());
+        ownerRoomRelPo.setRoomId(appUserPo.getRoomId());
+        ownerRoomRelPo.setState("2001");
+        ownerRoomRelPo.setUserId(userId);
+        ownerRoomRelPo.setStartTime(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        int yearToAdd = 50;
+        calendar.add(Calendar.YEAR, yearToAdd);
+        ownerRoomRelPo.setEndTime(new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime()));
+        ownerRoomRelV1InnerServiceSMOImpl.saveOwnerRoomRel(ownerRoomRelPo);
+
+        FileRelPo fileRelPo = new FileRelPo();
+        fileRelPo.setFileRelId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_fileRelId));
+        fileRelPo.setRelTypeCd(FileRelDto.REL_TYPE_CD_OWNER);
+        fileRelPo.setSaveWay(FileRelDto.SAVE_WAY_UPLOAD);
+        fileRelPo.setObjId(ownerPo.getMemberId());
+        fileRelPo.setFileRealName(appUserPo.getStateMsg());
+        fileRelPo.setFileSaveName(appUserPo.getStateMsg());
+        fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
+
+        appUserPo = new AppUserPo();
+        appUserPo.setAuId(reqJson.getString("auId"));
+        appUserPo.setMemberId(ownerPo.getMemberId());
 
         int flag = appUserV1InnerServiceSMOImpl.updateAppUser(appUserPo);
 
@@ -170,6 +247,6 @@ public class UpdateAppUserCmd extends Cmd {
             throw new CmdException("更新数据失败");
         }
 
-        cmdDataFlowContext.setResponseEntity(ResultVo.success());
+
     }
 }
