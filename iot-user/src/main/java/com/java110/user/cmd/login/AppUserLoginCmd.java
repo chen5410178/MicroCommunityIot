@@ -13,7 +13,9 @@ import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.ListUtil;
+import com.java110.dto.appUser.AppUserDto;
 import com.java110.dto.user.UserDto;
+import com.java110.intf.user.IAppUserV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class AppUserLoginCmd extends Cmd {
 
     @Autowired
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAppUserV1InnerServiceSMO appUserV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
@@ -62,6 +67,16 @@ public class AppUserLoginCmd extends Cmd {
             throw new CmdException("用户名或密码错误");
         }
 
+        String communityId = "";
+        //todo 查询业主是否 认证了，如果认证了获取小区ID
+        AppUserDto appUserDto = new AppUserDto();
+        appUserDto.setUserId(userDtos.get(0).getUserId());
+        List<AppUserDto> appUserDtos = appUserV1InnerServiceSMOImpl.queryAppUsers(appUserDto);
+        if(!ListUtil.isNull(appUserDtos)){
+            communityId = appUserDtos.get(0).getCommunityId();
+        }
+
+
         ResponseEntity<String> responseEntity = null;
         try {
             Map userMap = new HashMap();
@@ -71,6 +86,7 @@ public class AppUserLoginCmd extends Cmd {
             JSONObject userInfo = BeanConvertUtil.beanCovertJson(userDtos.get(0));
             userInfo.remove("userPwd");
             userInfo.put("token", token);
+            userInfo.put("communityId",communityId);
             userInfo.put("code", "0");
             userInfo.put("msg", "成功");
             context.setResponseEntity(ResultVo.createResponseEntity(userInfo));
