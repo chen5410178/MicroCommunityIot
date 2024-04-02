@@ -177,14 +177,6 @@ export function loginByOpenId(openId){
 				communityId:_json.data.communityId,
 				communityName:_json.data.communityName,
 			});
-			uni.setStorageSync("ownerInfo",{
-				memberId:_json.data.memberId,
-				ownerName:_json.data.ownerName,
-				ownerId:_json.data.ownerId,
-				ownerTel:_json.data.ownerTel,
-				communityId:_json.data.communityId,
-				link:_json.data.ownerTel
-			});
 			saveUserLoginInfo(_json.data.userId, _json.data.token, _json.data.key);
 		},
 		fail: function(e) {
