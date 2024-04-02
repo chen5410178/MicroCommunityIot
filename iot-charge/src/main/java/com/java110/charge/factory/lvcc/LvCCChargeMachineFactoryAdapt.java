@@ -76,7 +76,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         String minW = String.format("%04x", 20);
 
         //todo 最大功率
-        String maxW = String.format("%04x", 800);
+        String maxW = String.format("%04x", 3000);
 
         //todo 空载等待时间
         String freeWaitTime = String.format("%04x", 60);
