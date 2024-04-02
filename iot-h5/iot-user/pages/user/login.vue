@@ -108,18 +108,10 @@
 					.then((_user) => {
 						//todo 保存登录信息
 						saveUserLoginInfo(_user.userId, _user.token, _user.key);
-						//todo 是否有跳转地址
-						let _targetUrl = uni.getStorageSync('targetUrl');
-						if(_targetUrl){
-							uni.removeStorageSync("targetUrl");
-							uni.navigateTo({
-								url:_targetUrl
-							});
-							return;
-						}
-						uni.switchTab({
-							url:'/pages/index/index'
-						})
+						
+						uni.navigateTo({
+							url:'/pages/user/loginInitWechat?communityId='+_user.communityId
+						});
 					},err=>{
 						uni.showToast({
 							icon:'none',

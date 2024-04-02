@@ -36,7 +36,7 @@ export default {
 	refreshPassQrcode: baseUrl + "iot/api/passcode.refreshPassQrcode",
 	refreshUserPassQrcode: baseUrl + "iot/api/passcode.refreshUserPassQrcode",
 	openPassQrcode: baseUrl + "iot/api/passcode.openPassQrcode",
-	userLogout:  baseUrl + "iot/api/login.userLogout",
+	userLogout: baseUrl + "iot/api/login.userLogout",
 
 
 	listMeterQrcode: baseUrl + "iot/api/meterQrcode.listMeterQrcode",
@@ -64,11 +64,12 @@ export default {
 	queryCommunitys: baseUrl + "iot/api/community.listCommunitys",
 	saveAppUser: baseUrl + "iot/api/appUser.saveAppUser",
 	findCarInParkingArea: baseUrl + "iot/api/parkingArea.findCarInParkingArea",
+	getWechatMiniOpenId: baseUrl + "iot/api/wechat.getWechatMiniOpenId",
+	refreshAppUserBindingOwnerOpenId: baseUrl+"iot/api/owner.refreshAppUserBindingOwnerOpenId",
 
 
 
-	
-	
+
 
 
 

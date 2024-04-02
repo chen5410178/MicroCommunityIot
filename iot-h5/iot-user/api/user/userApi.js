@@ -243,6 +243,26 @@ export function refreshUserOpenId(_objData){
 	})
 }
 
+export function getWechatMiniOpenId(_objData){
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.getWechatMiniOpenId,
+			method: "GET",
+			data: _objData, //动态数据
+			success: function(res) {
+				if (res.statusCode == 200) {
+					resolve(res.data);
+					return;
+				}
+				reject();
+			},
+			fail: function(e) {
+				reject();
+			}
+		});
+	})
+}
+
 // 异步上传图片
 export function uploadImageAsync(_objData,_that) {
 	return new Promise( (resolve, reject) => {
@@ -266,4 +286,33 @@ export function uploadImageAsync(_objData,_that) {
 			}
 		});
 	})
+}
+
+export function refreshAppUserBindingOwnerOpenId(_that, _data) {
+	uni.showLoading({
+		title: '加载中',
+		mask: true
+	});
+	return new Promise(
+		(resolve, reject) => {
+			requestNoAuth({
+				url: url.refreshAppUserBindingOwnerOpenId,
+				method: "POST",
+				data: _data,
+				//动态数据
+				success: function(res) {
+					uni.hideLoading();
+					let _json = res.data;
+					if (_json.code != 0) {
+						reject(_json.msg);
+						return;
+					}
+					resolve(_json);
+				},
+				fail: function(e) {
+					uni.hideLoading();
+					reject(e);
+				}
+			});
+		})
 }
