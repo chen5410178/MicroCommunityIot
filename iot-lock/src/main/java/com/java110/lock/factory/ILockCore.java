@@ -35,4 +35,10 @@ public interface ILockCore {
      * @param lockPersonPo
      */
     void updatePasswordToCloud(LockPersonPo lockPersonPo);
+
+    /**
+     * 移除锁下发的权限
+     * @param lockPersonPo
+     */
+    void deletePwd(LockPersonPo lockPersonPo);
 }

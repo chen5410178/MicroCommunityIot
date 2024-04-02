@@ -27,6 +27,7 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.lock.ILockPersonV1InnerServiceSMO;
+import com.java110.lock.factory.ILockCore;
 import com.java110.po.lock.LockPersonPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
@@ -49,6 +50,9 @@ public class DeleteLockPersonCmd extends Cmd {
     @Autowired
     private ILockPersonV1InnerServiceSMO lockPersonV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ILockCore lockCoreImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "lpId", "lpId不能为空");
@@ -60,11 +64,14 @@ public class DeleteLockPersonCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
         LockPersonPo lockPersonPo = BeanConvertUtil.covertBean(reqJson, LockPersonPo.class);
+
+
         int flag = lockPersonV1InnerServiceSMOImpl.deleteLockPerson(lockPersonPo);
 
         if (flag < 1) {
             throw new CmdException("删除数据失败");
         }
+        lockCoreImpl.deletePwd(lockPersonPo);
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }

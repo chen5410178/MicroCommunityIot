@@ -44,6 +44,14 @@ public interface ILockFactoryAdapt {
     void updatePasswordToCloud(LockPersonPo lockPersonPo, List<LockMachineParamDto> lockMachineParamDtos);
 
     /**
+     * 删除锁密码
+     *
+     * @param lockPersonPo
+     * @param lockMachineParamDtos
+     */
+    void deletePassword(LockPersonPo lockPersonPo, List<LockMachineParamDto> lockMachineParamDtos);
+
+    /**
      * 查询门锁电量
      *
      * @param lockMachineDto

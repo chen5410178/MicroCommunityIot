@@ -49,6 +49,8 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
     public static final String ADD_PASSWORD_URL = "https://cnapi.sciener.com/v3/keyboardPwd/add";
     //修改密码
     public static final String CHANGE_PASSWORD_URL = "https://cnapi.sciener.com/v3/keyboardPwd/change";
+    //删除密码
+    public static final String DELETE_PASSWORD_URL = "https://cnapi.sciener.com/v3/keyboardPwd/delete";
     //远程开锁
     public static final String UNLOCK_URL = "https://cnapi.sciener.com/v3/lock/unlock";
     //获取wifi锁信息
@@ -223,6 +225,55 @@ public class CommonLockFactoryAdaptImpl implements ILockFactoryAdapt {
         return keyboardPwdId.toString();
     }
 
+    @Override
+    public void deletePassword(LockPersonPo lockPersonPo, List<LockMachineParamDto> lockMachineParamDtos) {
+        String accessToken = getAccessToken(/*lockPersonPo.getOprUserId(), lockPersonPo.getOprUserName(), */lockMachineParamDtos);
+
+        StringBuilder params = new StringBuilder();
+        List<LockMachineParamDto> client = lockMachineParamDtos.stream().filter(lockMachineParam -> "clientId".equals(lockMachineParam.getSpecName())).collect(Collectors.toList());
+        params.append("clientId=" + client.get(0).getValue());
+        params.append("&accessToken=" + accessToken);
+        params.append("&lockId=" + lockPersonPo.getMachineId());
+        params.append("&keyboardPwdId=" + lockPersonPo.getLpId());
+        params.append("&deleteType=" + ADD_TYPE_WIFI);
+        params.append("&date=" + new Date().getTime());
+
+        LockLogPo lockLogPo = new LockLogPo();
+        lockLogPo.setLogId(GenerateCodeFactory.getGeneratorId("10"));
+        lockLogPo.setMachineId(lockMachineParamDtos.get(0).getMachineId());
+        lockLogPo.setCommunityId(lockMachineParamDtos.get(0).getCommunityId());
+        lockLogPo.setLogAction(LockLogDto.LOG_ACTION_CHANGE_PWD_TO_CLOUD);
+        lockLogPo.setUserId(lockPersonPo.getOprUserId());
+        lockLogPo.setUserName(lockPersonPo.getOprUserName());
+        String url = DELETE_PASSWORD_URL + "?" + params;
+        lockLogPo.setReqParam(url);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-Type", "application/x-www-form-urlencoded");
+        HttpEntity httpEntity = new HttpEntity("", httpHeaders);
+        ResponseEntity<String> responseEntity = null;
+        try {
+            responseEntity = outRestTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
+        } catch (HttpStatusCodeException e) {
+            logger.error("请求异常", e.getResponseBodyAsString());
+            throw new CmdException("操作失败," + e.getResponseBodyAsString());
+        }
+        lockLogPo.setState(LockLogDto.REQUEST_SUCCESS);
+        lockLogV1InnerServiceSMOImpl.saveLockLog(lockLogPo);
+
+        JSONObject res = JSONObject.parseObject(responseEntity.getBody());
+        if (CommonLockFactoryAdaptUtil.errorMap.containsKey(res.getInteger("errcode"))) {
+            logger.error("删除密码失败，错误码：" + res.getInteger("errcode") + "，错误信息：" + res.getString("errmsg") + "，错误描述：" + res.getString("description"));
+            throw new CmdException(CommonLockFactoryAdaptUtil.errorMap.get(res.getInteger("errcode")));
+        }
+
+        if (res.getInteger("errcode") == 0) {
+            lockLogPo.setState(LockLogDto.RETURN_SUCCESS);
+            lockLogPo.setResParam(responseEntity.getBody());
+            lockLogV1InnerServiceSMOImpl.updateLockLog(lockLogPo);
+            logger.info("操作成功");
+        }
+    }
     @Override
     public void updatePasswordToCloud(LockPersonPo lockPersonPo, List<LockMachineParamDto> lockMachineParamDtos) {
         String accessToken = getAccessToken(/*lockPersonPo.getOprUserId(), lockPersonPo.getOprUserName(), */lockMachineParamDtos);

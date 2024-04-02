@@ -164,4 +164,36 @@ public class LockCoreImpl implements ILockCore{
 
         lockFactoryAdapt.updatePasswordToCloud(lockPersonPo, lockMachineDtos.get(0).getLockMachineParamDtoList());
     }
+
+
+    @Override
+    public void deletePwd(LockPersonPo lockPersonPo) {
+        LockMachineDto lockMachineDto = new LockMachineDto();
+        lockMachineDto.setMachineId(lockPersonPo.getMachineId());
+        List<LockMachineDto> lockMachineDtos = lockMachineV1InnerServiceSMOImpl.queryLockMachines(lockMachineDto);
+        Assert.listOnlyOne(lockMachineDtos, "门锁设备不存在");
+
+        LockMachineFactoryDto lockMachineFactoryDto = new LockMachineFactoryDto();
+        lockMachineFactoryDto.setFactoryId(lockMachineDtos.get(0).getImplBean());
+        List<LockMachineFactoryDto> lockMachineFactoryDtos = lockMachineFactoryV1InnerServiceSMOImpl.queryLockMachineFactorys(lockMachineFactoryDto);
+        Assert.listOnlyOne(lockMachineFactoryDtos, "门锁厂家不存在");
+
+        ILockFactoryAdapt lockFactoryAdapt = null;
+        try{
+            lockFactoryAdapt = ApplicationContextFactory.getBean(lockMachineFactoryDtos.get(0).getBeanImpl(), ILockFactoryAdapt.class);
+        } finally {
+            if (lockFactoryAdapt == null) {
+                throw new CmdException("厂家接口未实现");
+            }
+        }
+
+        LockMachineParamDto lockMachineParamDto = new LockMachineParamDto();
+        lockMachineParamDto.setMachineId(lockPersonPo.getMachineId());
+        List<LockMachineParamDto> lockMachineParamDtos = lockMachineParamV1InnerServiceSMOImpl.queryLockMachineParams(lockMachineParamDto);
+        if (lockMachineParamDtos.size() != lockMachineFactoryDtos.get(0).getLockMachineFactorySpecList().size() || lockMachineParamDtos.size() < 1) {
+            throw new CmdException("未设置门锁参数");
+        }
+
+        lockFactoryAdapt.deletePassword(lockPersonPo, lockMachineDtos.get(0).getLockMachineParamDtoList());
+    }
 }
