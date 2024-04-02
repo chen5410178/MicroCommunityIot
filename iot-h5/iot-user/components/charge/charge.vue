@@ -23,7 +23,7 @@
 		getChargeMonthOrder
 	} from '@/api/machine/machineApi.js';
 	import {
-		formatDate
+		formatDate,formatTimeNow
 	} from '../../lib/java110/utils/DateUtil.js';
 	import {
 		getUserTel
@@ -49,7 +49,7 @@
 					row: 20,
 					personTel: getUserTel(),
 					communityId: _communityId,
-					queryTime: formatDate(new Date())
+					queryTime: formatTimeNow()
 				}).then((data) => {
 					if (!data) {
 						_that.chargeOrders = [];

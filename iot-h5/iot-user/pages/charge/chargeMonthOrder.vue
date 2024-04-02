@@ -5,10 +5,10 @@
 				:key="index">
 				<view class="apply-title flex justify-between">
 					<view>
-						<text class="text-bold">{{item.carNum}}</text>
+						<text class="text-bold">{{item.cardName}}</text>
 					</view>
 					<view class="flex justify-start" >
-						{{item.state == '1001'?'正常':'已退费'}}
+						{{item.dayHours}}小时
 					</view>
 				</view>
 				<view class="apply-content flex justify-start flex-wrap">
@@ -29,10 +29,6 @@
 					<view class="item">
 						<text>金额:</text>
 						<text>{{item.receivedAmount || '-'}}</text>
-					</view>
-					<view class="item">
-						<text>月卡:</text>
-						<text>{{item.cardName || '-'}}</text>
 					</view>
 					<view class="item">
 						<text>订单编号:</text>

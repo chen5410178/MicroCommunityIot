@@ -46,6 +46,7 @@
 		getCouponUsers
 	} from '../../api/fee/feeApi.js'
 	import {getCommunityId} from '@/api/community/communityApi.js';
+	import {getUserTel} from '../../api/user/userApi.js'
 	export default {
 		data() {
 			return {
@@ -56,7 +57,6 @@
 			}
 		},
 		onLoad: function(options) {
-			context.onLoad(options);
 			this._loadCouponUsers();
 		},
 		methods: {
@@ -79,7 +79,7 @@
 				let _objData = {
 					page: 1,
 					row: 30,
-					tel: context.getUserInfo().ownerTel,
+					tel: getUserTel(),
 					state: '1001',
 					communityId:getCommunityId(),
 					toType:'5005'

@@ -5,10 +5,10 @@
 				<view class="cu-item " v-for="(item, key) in chargeOrders" :key="key">
 					<view class="content padding-tb-sm">
 						<view>
-							<text class="cuIcon-rechargefill text-green margin-right-xs"></text> {{item.acctTypeName}}
+							<text class="cuIcon-rechargefill text-green margin-right-xs"></text> {{item.cardName}}
 						</view>
 						<view class="text-gray text-sm">
-							<text class="cuIcon-right margin-right-xs"></text>余额: {{item.amount}}
+							<text class="cuIcon-right margin-right-xs"></text>小时: {{item.dayHours}}
 						</view>
 					</view>
 					<view class="action">
@@ -30,7 +30,7 @@
 		getChargeMonthOrder
 	} from '@/api/machine/machineApi.js';
 	import {
-		formatDate
+		formatDate, formatTimeNow
 	} from '../../lib/java110/utils/DateUtil.js';
 	import {getUserTel} from '../../api/user/userApi.js'
 	export default {
@@ -72,7 +72,7 @@
 					row: 20,
 					personTel: getUserTel(),
 					communityId: _that.communityId,
-					queryTime: formatDate(new Date())
+					queryTime: formatTimeNow()
 				}).then((data) => {
 					if (!data) {
 						_that.chargeOrders = [];
