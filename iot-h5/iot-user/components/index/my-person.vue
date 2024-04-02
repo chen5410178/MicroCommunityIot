@@ -219,12 +219,10 @@
 			},
 			// 我的钱包
 			myAccount: function() {
-				if (!this.ckeckUserInfo()) {
-					this.vc.navigateTo({
-						url: '../login/showlogin'
-					}, () => {
-						this.refreshPageLoginInfo();
-					});
+				if (!hasLogin()) {
+					uni.navigateTo({
+						url:'/pages/user/login'
+					})
 					return;
 				}
 				this.vc.navigateTo({
