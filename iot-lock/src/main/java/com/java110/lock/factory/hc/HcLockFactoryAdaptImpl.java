@@ -47,6 +47,7 @@ public class HcLockFactoryAdaptImpl implements ILockFactoryAdapt {
     public static final String CMD_OPEN_LOCK = "openLock"; //todo 远程开锁
     public static final String CMD_ADD_PWD = "addPwd"; //todo 添加密码
     public static final String CMD_UPDATE_PWD = "updatePwd"; //todo 修改密码
+    public static final String CMD_DELETE_PWD = "deletePwd"; // 删除密码
 
 
     public static final String SN = "{sn}";
@@ -183,6 +184,38 @@ public class HcLockFactoryAdaptImpl implements ILockFactoryAdapt {
         lockLogPo.setMachineId(lockMachineParamDtos.get(0).getMachineId());
         lockLogPo.setCommunityId(lockMachineParamDtos.get(0).getCommunityId());
         lockLogPo.setLogAction(LockLogDto.LOG_ACTION_ADD_PWD_TO_CLOUD);
+        lockLogPo.setUserId(lockPersonPo.getOprUserId());
+        lockLogPo.setUserName(lockPersonPo.getOprUserName());
+
+        lockLogPo.setReqParam(param.toJSONString());
+
+        lockLogPo.setState(LockLogDto.REQUEST_SUCCESS);
+        lockLogV1InnerServiceSMOImpl.saveLockLog(lockLogPo);
+    }
+
+
+    @Override
+    public void deletePassword(LockPersonPo lockPersonPo, List<LockMachineParamDto> lockMachineParamDtos) {
+        LockMachineDto lockMachineDto = new LockMachineDto();
+        lockMachineDto.setMachineId(lockPersonPo.getMachineId());
+
+        List<LockMachineDto> lockMachineDtos = lockMachineV1InnerServiceSMOImpl.queryLockMachines(lockMachineDto);
+
+        Assert.listOnlyOne(lockMachineDtos, "未包含门锁设备");
+
+        String taskId = GenerateCodeFactory.getGeneratorId("13");
+        JSONObject param = new JSONObject();
+        param.put("cmd", CMD_DELETE_PWD);
+        param.put("taskId", taskId);
+        param.put("lockId", lockPersonPo.getCardNumber());//锁ID
+        param.put("keyboardPwdId", KEYBOARD_PWD_TYPE_TERM);//	密码ID
+        MqttFactory.publish(TOPIC_REQ.replace(SN, lockMachineDtos.get(0).getMachineCode()), param.toJSONString());
+
+        LockLogPo lockLogPo = new LockLogPo();
+        lockLogPo.setLogId(taskId);
+        lockLogPo.setMachineId(lockMachineParamDtos.get(0).getMachineId());
+        lockLogPo.setCommunityId(lockMachineParamDtos.get(0).getCommunityId());
+        lockLogPo.setLogAction(LockLogDto.LOG_ACTION_PWD_DELETE);
         lockLogPo.setUserId(lockPersonPo.getOprUserId());
         lockLogPo.setUserName(lockPersonPo.getOprUserName());
 

@@ -15,6 +15,7 @@ public class LockLogDto extends PageDto implements Serializable {
     public static final String LOG_ACTION_ADD_PWD_TO_CLOUD = "1003";
     public static final String LOG_ACTION_CHANGE_PWD_TO_CLOUD = "1004";
     public static final String LOG_ACTION_UNLOCK = "1005";
+    public static final String LOG_ACTION_PWD_DELETE = "1006";
 
     private String logId;
     private String machineId;
