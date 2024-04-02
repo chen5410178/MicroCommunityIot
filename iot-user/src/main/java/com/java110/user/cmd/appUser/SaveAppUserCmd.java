@@ -27,12 +27,17 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.CmdContextUtils;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.appUser.AppUserDto;
+import com.java110.dto.userAttr.UserAttrDto;
 import com.java110.intf.user.IAppUserV1InnerServiceSMO;
+import com.java110.intf.user.IUserAttrV1InnerServiceSMO;
 import com.java110.po.appUser.AppUserPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -54,6 +59,9 @@ public class SaveAppUserCmd extends Cmd {
     @Autowired
     private IAppUserV1InnerServiceSMO appUserV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IUserAttrV1InnerServiceSMO userAttrV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "memberId", "请求报文中未包含memberId");
@@ -71,11 +79,19 @@ public class SaveAppUserCmd extends Cmd {
 
         String userId = CmdContextUtils.getUserId(cmdDataFlowContext);
 
+        UserAttrDto userAttrDto = new UserAttrDto();
+        userAttrDto.setUserId(userId);
+        userAttrDto.setSpecCd(UserAttrDto.SPEC_OPEN_ID);
+        List<UserAttrDto> userAttrDtos = userAttrV1InnerServiceSMOImpl.queryUserAttrs(userAttrDto);
+
         AppUserPo appUserPo = BeanConvertUtil.covertBean(reqJson, AppUserPo.class);
         appUserPo.setUserId(userId);
         appUserPo.setAuId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         appUserPo.setState(AppUserDto.STATE_W);
         appUserPo.setStateMsg("待审核");
+        if (!ListUtil.isNull(userAttrDtos)) {
+            appUserPo.setOpenId(userAttrDtos.get(0).getValue());
+        }
         int flag = appUserV1InnerServiceSMOImpl.saveAppUser(appUserPo);
 
         if (flag < 1) {
