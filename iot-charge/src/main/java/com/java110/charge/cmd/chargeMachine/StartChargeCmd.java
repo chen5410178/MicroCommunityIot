@@ -10,10 +10,7 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.DistributedLock;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.utils.*;
 import com.java110.dto.account.AccountDto;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
 import com.java110.dto.chargeMachine.ChargeMachineOrderDto;
@@ -397,6 +394,10 @@ public class StartChargeCmd extends Cmd {
         AccountDto accountDto = new AccountDto();
         accountDto.setAcctId(reqJson.getString("acctId"));
         List<AccountDto> accountDtos = accountInnerServiceSMOImpl.queryAccounts(accountDto);
+
+        if (ListUtil.isNull(accountDtos)) {
+            throw new CmdException("账户不存在");
+        }
 
         double amount = 0.0;
         BigDecimal durationPrice = new BigDecimal(Double.parseDouble(reqJson.getString("durationPrice")));
