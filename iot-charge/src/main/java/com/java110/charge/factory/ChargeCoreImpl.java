@@ -7,6 +7,7 @@ import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.account.AccountDto;
 import com.java110.dto.chargeMachine.*;
@@ -188,6 +189,11 @@ public class ChargeCoreImpl implements IChargeCore {
         AccountDto accountDto = new AccountDto();
         accountDto.setAcctId(chargeMachineOrderDtos.get(0).getAcctDetailId());
         List<AccountDto> accountDtos = accountInnerServiceSMOImpl.queryAccounts(accountDto);
+
+        if(ListUtil.isNull(accountDtos)){
+            return;
+        }
+
 
         AccountDetailPo accountDetailPo = new AccountDetailPo();
         accountDetailPo.setAcctId(accountDtos.get(0).getAcctId());
