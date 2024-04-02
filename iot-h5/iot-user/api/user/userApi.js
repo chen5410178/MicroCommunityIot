@@ -140,6 +140,10 @@ export function userRegister(_data) {
 			success: function(res) {
 				//将业主信息和房屋信息一起返回
 				let _json  = res.data;
+				uni.showToast({
+					icon:'none',
+					title:_json.msg
+				});
 				if(_json.code != 0){
 					reject(_json.msg);
 					return;
@@ -147,6 +151,10 @@ export function userRegister(_data) {
 				resolve(res.data);
 			},
 			fail: function(res) {
+				uni.showToast({
+					icon:'none',
+					title:res
+				});
 				reject(res);
 			}
 		});

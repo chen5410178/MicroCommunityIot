@@ -37,19 +37,9 @@ public class AppUserRegisterCmd extends Cmd {
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
-        Assert.hasKeyAndValue(reqJson,"link","手机号不能为空");
-        Assert.hasKeyAndValue(reqJson,"password","密码不能为空");
-        Assert.hasKeyAndValue(reqJson,"msgCode","验证码不能为空");
-
-
-        UserDto userDto = new UserDto();
-        userDto.setTel(reqJson.getString("link"));
-        userDto.setLevelCd(UserDto.LEVEL_CD_PHONE);
-       List<UserDto> userDtos =  userV1InnerServiceSMOImpl.queryUsers(userDto);
-
-       if(!ListUtil.isNull(userDtos)){
-           throw new CmdException("手机号已存在");
-       }
+        Assert.hasKeyAndValue(reqJson, "link", "手机号不能为空");
+        Assert.hasKeyAndValue(reqJson, "password", "密码不能为空");
+        Assert.hasKeyAndValue(reqJson, "msgCode", "验证码不能为空");
 
         SmsDto smsDto = new SmsDto();
         smsDto.setTel(reqJson.getString("link"));
@@ -59,6 +49,17 @@ public class AppUserRegisterCmd extends Cmd {
         if (!smsDto.isSuccess() && "ON".equals(MappingCache.getValue(MappingConstant.SMS_DOMAIN, SendSmsFactory.SMS_SEND_SWITCH))) {
             throw new IllegalArgumentException(smsDto.getMsg());
         }
+
+        UserDto userDto = new UserDto();
+        userDto.setTel(reqJson.getString("link"));
+        userDto.setLevelCd(UserDto.LEVEL_CD_PHONE);
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+
+        if (!ListUtil.isNull(userDtos)) {
+            throw new CmdException("手机号已存在");
+        }
+
+
     }
 
     @Override

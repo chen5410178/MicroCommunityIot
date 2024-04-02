@@ -103,7 +103,7 @@
 			},
 			refreshPageLoginInfo: function() {
 				let _that = this; //查询用户信息
-				if (!_that.ckeckUserInfo()) {
+				if (!hasLogin()) {
 					_that.login = false;
 					return;
 				}
@@ -118,9 +118,6 @@
 				this.loadOwnerHeaderImg();
 				this.loadOwnerAccount();
 				this.loadOwnerCoupon();
-			},
-			ckeckUserInfo: function() {
-				return hasLogin();
 			},
 			loadOwenrInfo: function() {
 				let _that = this;
