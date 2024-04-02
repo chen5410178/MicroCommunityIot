@@ -26,7 +26,8 @@
 	import indexBindRoom from '@/components/index/index-bind-room.vue';
 
 	import {
-		hasLogin
+		hasLogin,
+		autoLogin
 	} from '@/api/user/sessionApi.js';
 	import {
 		getAppUser
@@ -49,9 +50,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function(options) {
-
-
-			//this._initIndexData();
+			autoLogin(options);
 		},
 
 		onShareAppMessage: function() {
