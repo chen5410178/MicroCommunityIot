@@ -209,6 +209,9 @@
 				if (this.communityId) {
 					uni.setStorageSync("DEFAULT_COMMUNITY_ID", this.communityId);
 				}
+				// #ifdef H5
+					uni.setStorageSync('targetUrl',location.hash.substr(1));
+				// #endif
 				uni.navigateTo({
 					url: '/pages/user/login'
 				})
