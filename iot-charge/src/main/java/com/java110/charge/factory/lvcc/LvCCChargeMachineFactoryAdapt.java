@@ -94,7 +94,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         String orderNum = BytesUtil.bytesToHex(("HC" + orderId).getBytes());
 
         //todo 计费方式
-        String feeWay = String.format("%02x", 1);
+        String feeWay = String.format("%02x", 4);
         //todo 开电方式
         String openWay = String.format("%02x", 1);
 

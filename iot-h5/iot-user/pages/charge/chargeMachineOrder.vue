@@ -96,6 +96,9 @@
 		onLoad(options) {
 			this.orderId = options.orderId;
 			this.communityId = options.communityId;
+			
+		},
+		onShow() {
 			this._loadChargeMachineOrder();
 		},
 		methods: {

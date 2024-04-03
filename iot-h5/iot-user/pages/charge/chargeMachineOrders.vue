@@ -13,7 +13,7 @@
 					</view>
 				</view>
 				<view class="action">
-					{{item.stateName}}
+					{{item.remark || item.stateName}}
 				</view>
 			</view>
 			<view class="cu-item" v-if="orders.length === 0">
