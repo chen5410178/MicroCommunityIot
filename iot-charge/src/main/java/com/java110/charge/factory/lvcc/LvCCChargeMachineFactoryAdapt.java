@@ -129,7 +129,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
             return maxW;
         }
 
-        maxW = Integer.parseInt(chargeRuleFeeDtos.get(0).getMaxEnergyPrice());
+        maxW = (int)Double.parseDouble(chargeRuleFeeDtos.get(0).getMaxEnergyPrice());
         int tmpMaxW = 0;
         for (ChargeRuleFeeDto tmpChargeRuleFeeDto : chargeRuleFeeDtos) {
             tmpMaxW = (int)Double.parseDouble(tmpChargeRuleFeeDto.getMaxEnergyPrice());
