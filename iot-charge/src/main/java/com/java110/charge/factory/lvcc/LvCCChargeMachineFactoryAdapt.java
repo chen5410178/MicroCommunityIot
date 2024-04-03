@@ -94,7 +94,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         String orderNum = BytesUtil.bytesToHex(("HC" + orderId).getBytes());
 
         //todo 计费方式
-        String feeWay = String.format("%02x", 4);
+        String feeWay = String.format("%02x", 1);
         //todo 开电方式
         String openWay = String.format("%02x", 1);
 
@@ -112,6 +112,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
     /**
      * 计算最大功率
+     *
      * @param chargeMachineDto
      * @return
      */
@@ -129,10 +130,10 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
             return maxW;
         }
 
-        maxW = (int)Double.parseDouble(chargeRuleFeeDtos.get(0).getMaxEnergyPrice());
+        maxW = (int) Double.parseDouble(chargeRuleFeeDtos.get(0).getMaxEnergyPrice());
         int tmpMaxW = 0;
         for (ChargeRuleFeeDto tmpChargeRuleFeeDto : chargeRuleFeeDtos) {
-            tmpMaxW = (int)Double.parseDouble(tmpChargeRuleFeeDto.getMaxEnergyPrice());
+            tmpMaxW = (int) Double.parseDouble(tmpChargeRuleFeeDto.getMaxEnergyPrice());
             if (tmpMaxW > maxW) {
                 maxW = tmpMaxW;
             }
@@ -406,9 +407,29 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+        //todo 充电电量
+        int e = Integer.parseInt(dataHex.substring(44, 48), 16);
         //todo 结束时功率
-        int w = Integer.parseInt(dataHex.substring(48, 52), 16);
+        //int w = Integer.parseInt(dataHex.substring(48, 52), 16);
 
+        ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
+        chargeMachineOrderDto.setOrderId(orderNum.substring(2));
+        List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
+        if (ListUtil.isNull(chargeMachineOrderDtos)) {
+            throw new CmdException("订单不存在");
+        }
+
+        Date nowTime = DateUtil.getCurrentDate();
+        //支付完成超过15分钟
+
+       double tHours = (nowTime.getTime() - DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime()).getTime()) / (60 * 60 * 1000 * 1.00);
+
+        int w = 0;
+        if(tHours <= 0){
+            w = e;
+        }else{
+            w = new Double(Math.ceil(e/tHours)).intValue();
+        }
 
         String remark = resultMap.containsKey(reason + "") ? resultMap.get(reason + "") : "未知原因";
 
