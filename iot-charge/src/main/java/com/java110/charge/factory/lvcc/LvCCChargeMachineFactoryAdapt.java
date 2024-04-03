@@ -9,10 +9,7 @@ import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.chargeMachine.*;
 import com.java110.dto.data.NettyReplyDataDto;
-import com.java110.intf.charge.IChargeMachineOrderV1InnerServiceSMO;
-import com.java110.intf.charge.IChargeMachinePortV1InnerServiceSMO;
-import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
-import com.java110.intf.charge.INotifyChargeV1InnerServiceSMO;
+import com.java110.intf.charge.*;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
 import com.java110.po.chargeMachine.ChargeMachinePo;
 import com.java110.po.chargeMachineOrder.ChargeMachineOrderPo;
@@ -45,6 +42,9 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     @Autowired
     private IChargeMachineOrderV1InnerServiceSMO chargeMachineOrderV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IChargeRuleFeeV1InnerServiceSMO chargeRuleFeeV1InnerServiceSMOImpl;
+
     public static final Map<String, String> resultMap = new HashMap<>();
 
     static {
@@ -68,6 +68,9 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     @Override
     public ResultVo startCharge(ChargeMachineDto chargeMachineDto, ChargeMachinePortDto chargeMachinePortDto, String chargeType, double duration, String orderId) {
 
+
+        int maxEnergy = getMaxEnery(chargeMachineDto);
+
         //todo 插座
         int port = Integer.parseInt(chargeMachinePortDto.getPortCode()) - 1;
         String portHex = String.format("%02x", port);
@@ -76,7 +79,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         String minW = String.format("%04x", 20);
 
         //todo 最大功率
-        String maxW = String.format("%04x", 3000);
+        String maxW = String.format("%04x", maxEnergy);
 
         //todo 空载等待时间
         String freeWaitTime = String.format("%04x", 60);
@@ -105,6 +108,41 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
 
         return new ResultVo(ResultVo.CODE_OK, "启动成功");
+    }
+
+    /**
+     * 计算最大功率
+     * @param chargeMachineDto
+     * @return
+     */
+    private int getMaxEnery(ChargeMachineDto chargeMachineDto) {
+
+        int maxW = 800;
+        if (StringUtil.isEmpty(chargeMachineDto.getRuleId())) {
+            return maxW;
+        }
+
+        ChargeRuleFeeDto chargeRuleFeeDto = new ChargeRuleFeeDto();
+        chargeRuleFeeDto.setRuleId(chargeMachineDto.getRuleId());
+        List<ChargeRuleFeeDto> chargeRuleFeeDtos = chargeRuleFeeV1InnerServiceSMOImpl.queryChargeRuleFees(chargeRuleFeeDto);
+        if (ListUtil.isNull(chargeRuleFeeDtos)) {
+            return maxW;
+        }
+
+        maxW = Integer.parseInt(chargeRuleFeeDtos.get(0).getMaxEnergyPrice());
+        int tmpMaxW = 0;
+        for (ChargeRuleFeeDto tmpChargeRuleFeeDto : chargeRuleFeeDtos) {
+            tmpMaxW = Integer.parseInt(tmpChargeRuleFeeDto.getMaxEnergyPrice());
+            if (tmpMaxW > maxW) {
+                maxW = tmpMaxW;
+            }
+        }
+        //todo 极端情况
+        if (tmpMaxW <= 20) {
+            maxW = 800;
+        }
+
+        return maxW;
     }
 
     @Override
