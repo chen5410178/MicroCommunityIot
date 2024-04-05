@@ -1,6 +1,7 @@
 package com.java110.hal.mqtt.subscribe;
 
 import com.java110.core.factory.ApplicationContextFactory;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.attendanceMachine.AttendanceMachineDto;
@@ -161,14 +162,15 @@ public class MqttClientSubscribeFactory {
         accessControlDto.setImplBean(manufacturerAttrDto.getHmId());
         List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
 
-        if (accessControlDtos == null || accessControlDtos.isEmpty()) {
+        if (ListUtil.isNull(accessControlDtos)) {
             return;
 
         }
 
+        String nTopic = "";
         for (AccessControlDto tmpAccessControlDto : accessControlDtos) {
-            topic = topic.replace("SN", tmpAccessControlDto.getMachineCode());
-            MqttFactory.subscribe(topic);
+            nTopic = topic.replace("SN", tmpAccessControlDto.getMachineCode());
+            MqttFactory.subscribe(nTopic);
         }
 
     }
