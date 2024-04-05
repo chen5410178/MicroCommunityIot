@@ -41,7 +41,7 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
     private static final String RESPONSE_FACE = "changpaimenjin/topic/face/manage/response/";
 
 
-    private static final String UPLOAD_RESPONSE_FACE = "changpaimenjin/topic/face/capture/request/";
+    private static final String UPLOAD_RESPONSE_FACE = "changpaimenjin/topic/face/capture/response/";
 
 
     //心跳
@@ -308,6 +308,15 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
     public void openDoorResult(String data) {
         JSONObject paramJson = JSONObject.parseObject(data);
         logger.debug("门禁内容,{}", paramJson.toJSONString());
+
+        JSONObject result = new JSONObject();
+        result.put("reply", "ACK");
+        result.put("cmd", "face");
+        result.put("code", 0);
+        result.put("sequence_no", paramJson.getIntValue("sequence_no"));
+        result.put("cap_time", paramJson.getString("cap_time"));
+        MqttFactory.publish(UPLOAD_RESPONSE_FACE + paramJson.getString("device_sn"), result.toJSONString());
+
         if (!paramJson.containsKey("match")) {
             return;
         }
@@ -336,15 +345,8 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
             similar = paramJson.getIntValue("match_result");
         }
         AccessControlOweFeeDto accessControlOweFeeDto = saveOpenDoorResult(machineCode, images, staffId, staffName, OPEN_TYPE_FACE, similar);
-        JSONObject result = new JSONObject();
-        result.put("reply", "ACK");
-        result.put("cmd", "face");
-        result.put("code", 0);
-        result.put("sequence_no", paramJson.getString("sequence_no"));
-        result.put("cap_time", paramJson.getString("cap_time"));
 
         if (accessControlOweFeeDto.getCode() < 0) {
-            MqttFactory.publish(RESPONSE_FACE + paramJson.getString("device_sn"), result.toJSONString());
             return;
         }
 
