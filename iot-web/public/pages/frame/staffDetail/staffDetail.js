@@ -170,8 +170,7 @@
                         let _staffInfo = JSON.parse(json);
                         // 员工列表 和 岗位列表匹配
                         vc.copyObject(_staffInfo.data[0], $that.staffDetailInfo);
-                        $that.staffDetailInfo.photo = _fileUrl + "?objId=" +
-                            $that.staffDetailInfo.staffId + "&communityId=" + vc.getCurrentCommunity().communityId + "&fileTypeCd=12000&time=" + new Date();
+                        $that.staffDetailInfo.photo = _staffInfo.data[0].faceUrl;
                     },
                     function () {
                         console.log('请求失败处理');

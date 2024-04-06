@@ -65,6 +65,10 @@ public class AddStaffApiCmd extends Cmd {
     @Autowired
     private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IOrgStaffRelInnerServiceSMO orgStaffRelInnerServiceSMOImpl;
+
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
         Assert.hasKeyAndValue(reqJson, "propertyId", "未包含propertyId");
@@ -94,7 +98,7 @@ public class AddStaffApiCmd extends Cmd {
         if (!ListUtil.isNull(storeStaffDtos)) {
             updateUser(reqJson);
             //todo 同步人脸至 门禁
-            synchronousAccessControl(reqJson);
+            synchronousAccessControl(reqJson.getString("staffId"));
             return;
         }
 
@@ -108,6 +112,7 @@ public class AddStaffApiCmd extends Cmd {
         //todo 添加员工组织关系
         addStaffOrg(reqJson);
 
+        synchronousAccessControl(reqJson.getString("staffId"));
 
     }
 
@@ -219,12 +224,12 @@ public class AddStaffApiCmd extends Cmd {
         return fileName;
     }
 
-    private void synchronousAccessControl(JSONObject reqJson) {
+    private void synchronousAccessControl(String staffId) {
 
 
         //todo 查询人员信息
         UserDto userDto = new UserDto();
-        userDto.setUserId(reqJson.getString("staffId"));
+        userDto.setUserId(staffId);
         List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
         if (ListUtil.isNull(userDtos)) {
             return;
@@ -241,22 +246,61 @@ public class AddStaffApiCmd extends Cmd {
 
 
         AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
-        accessControlFaceDto.setPersonId(reqJson.getString("staffId"));
+        accessControlFaceDto.setPersonId(staffId);
         List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
         AccessControlFacePo accessControlFacePo = null;
-        if (ListUtil.isNull(accessControlFaceDtos)) {
+        if (!ListUtil.isNull(accessControlFaceDtos)) {
+            for (AccessControlFaceDto tmpAccessControlFaceDto : accessControlFaceDtos) {
+                accessControlFacePo = BeanConvertUtil.covertBean(tmpAccessControlFaceDto, AccessControlFacePo.class);
+                accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
+                accessControlFacePo.setMessage("待下发到门禁");
+                accessControlFacePo.setFacePath(url);
+                accessControlFacePo.setCardNumber("");
+                accessControlFacePo.setIdNumber("");
+                accessControlFacePo.setName(userDto.getName());
+                accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
+            }
             return;
         }
-        for (AccessControlFaceDto tmpAccessControlFaceDto : accessControlFaceDtos) {
-            accessControlFacePo = BeanConvertUtil.covertBean(tmpAccessControlFaceDto, AccessControlFacePo.class);
-            accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
-            accessControlFacePo.setMessage("待下发到门禁");
-            accessControlFacePo.setFacePath(url);
-            accessControlFacePo.setCardNumber("");
-            accessControlFacePo.setIdNumber("");
-            accessControlFacePo.setName(userDto.getName());
-            accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
+
+        //todo
+
+        OrgStaffRelDto orgStaffRelDto = new OrgStaffRelDto();
+        orgStaffRelDto.setStaffId(staffId);
+        List<OrgStaffRelDto> orgStaffRelDtoList = orgStaffRelInnerServiceSMOImpl.queryOrgInfoByStaffIdsNew(orgStaffRelDto);
+
+        if (ListUtil.isNull(orgStaffRelDtoList)) {
+            return;
         }
+
+        AccessControlOrgDto accessControlOrgDto = new AccessControlOrgDto();
+        accessControlOrgDto.setOrgId(orgStaffRelDtoList.get(0).getOrgId());
+        List<AccessControlOrgDto> accessControlOrgDtos = accessControlOrgV1InnerServiceSMOImpl.queryAccessControlOrgs(accessControlOrgDto);
+        if (ListUtil.isNull(accessControlOrgDtos)) {
+            return;
+        }
+
+        for (AccessControlOrgDto tmpAccessControlOrgDto : accessControlOrgDtos) {
+            accessControlFacePo = new AccessControlFacePo();
+            accessControlFacePo.setFacePath(url);
+            accessControlFacePo.setCommunityId(tmpAccessControlOrgDto.getCommunityId());
+            accessControlFacePo.setIdNumber("");
+            accessControlFacePo.setComeId(tmpAccessControlOrgDto.getAcoId());
+            accessControlFacePo.setComeType(AccessControlFaceDto.COME_TYPE_STAFF);
+            accessControlFacePo.setEndTime(DateUtil.getLastTime());
+            accessControlFacePo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_B));
+            accessControlFacePo.setCardNumber("");
+            accessControlFacePo.setMachineId(tmpAccessControlOrgDto.getMachineId());
+            accessControlFacePo.setMessage("待下发到门禁");
+            accessControlFacePo.setMfId(GenerateCodeFactory.getGeneratorId("11"));
+            accessControlFacePo.setName(userDto.getName());
+            accessControlFacePo.setPersonId(userDto.getUserId());
+            accessControlFacePo.setPersonType(AccessControlFaceDto.PERSON_TYPE_STAFF);
+            accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
+            accessControlFacePo.setRoomName("无");
+            accessControlFaceV1InnerServiceSMOImpl.saveAccessControlFace(accessControlFacePo);
+        }
+
 
 
     }

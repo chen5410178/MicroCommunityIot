@@ -187,7 +187,7 @@ public class UserStaffModifyCmd extends Cmd {
 
         OrgStaffRelDto orgStaffRelDto = new OrgStaffRelDto();
         orgStaffRelDto.setStaffId(reqJson.getString("userId"));
-        List<OrgStaffRelDto> orgStaffRelDtoList = orgStaffRelInnerServiceSMOImpl.queryOrgInfoByStaffIds(orgStaffRelDto);
+        List<OrgStaffRelDto> orgStaffRelDtoList = orgStaffRelInnerServiceSMOImpl.queryOrgInfoByStaffIdsNew(orgStaffRelDto);
 
         if (ListUtil.isNull(orgStaffRelDtoList)) {
             return;
