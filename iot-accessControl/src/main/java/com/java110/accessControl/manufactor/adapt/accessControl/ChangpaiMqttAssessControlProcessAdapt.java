@@ -96,7 +96,7 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
         param.put("role", 1);
         param.put("kind", 0);
         String cardId = accessControlFacePo.getCardNumber();
-        if (!StringUtil.isEmpty(cardId)) {
+        if (!StringUtil.isEmpty(cardId) && StringUtil.isNumber(cardId.trim())) {
             param.put("wg_card_id", Long.parseLong(cardId.trim()));
         }
 //        if(!StringUtil.isEmpty(userFaceDto.getStartTime())){
