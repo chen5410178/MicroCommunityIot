@@ -132,45 +132,4 @@ public class MemberQuitCommunityCmd extends Cmd {
 
     }
 
-    private void saveMenuGroupCommunity(JSONObject reqJson, String communityId, String communityName) {
-        List<MenuGroupDto> menuGroupDtos = null;
-        MenuGroupDto menuGroupDto = null;
-        if (!reqJson.containsKey("groupIds") || reqJson.getJSONArray("groupIds").size() < 1) {
-            menuGroupDto = new MenuGroupDto();
-            menuGroupDto.setStoreType(StoreDto.STORE_TYPE_PROPERTY);
-            menuGroupDtos = menuGroupV1InnerServiceSMOImpl.queryMenuGroups(menuGroupDto);
-        } else {
-            menuGroupDto = new MenuGroupDto();
-            JSONArray groupIds = reqJson.getJSONArray("groupIds");
-            String groupId;
-            List<String> gIds = new ArrayList<>();
-            for (int groupIndex = 0; groupIndex < groupIds.size(); groupIndex++) {
-                groupId = groupIds.getString(groupIndex);
-                gIds.add(groupId);
-            }
-            menuGroupDto.setgIds(gIds.toArray(new String[gIds.size()]));
-            menuGroupDtos = menuGroupV1InnerServiceSMOImpl.queryMenuGroups(menuGroupDto);
-        }
-
-        if (menuGroupDtos == null || menuGroupDtos.size() < 1) {
-            throw new IllegalArgumentException("没有分配任何功能");
-        }
-
-        List<MenuGroupCommunityPo> menuGroupCommunityPos = new ArrayList<>();
-        MenuGroupCommunityPo tmpMenuGroupCommunityPo = null;
-        for (MenuGroupDto menuGroupDto1 : menuGroupDtos) {
-            tmpMenuGroupCommunityPo = new MenuGroupCommunityPo();
-            tmpMenuGroupCommunityPo.setCommunityId(communityId);
-            tmpMenuGroupCommunityPo.setCommunityName(communityName);
-            tmpMenuGroupCommunityPo.setGcId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
-            tmpMenuGroupCommunityPo.setgId(menuGroupDto1.getgId());
-            tmpMenuGroupCommunityPo.setName(menuGroupDto1.getName());
-            menuGroupCommunityPos.add(tmpMenuGroupCommunityPo);
-        }
-        int flag = menuGroupCommunityV1InnerServiceSMOImpl.saveMenuGroupCommunitys(menuGroupCommunityPos);
-        if (flag < 1) {
-            throw new CmdException("注册失败");
-        }
-    }
-
 }
