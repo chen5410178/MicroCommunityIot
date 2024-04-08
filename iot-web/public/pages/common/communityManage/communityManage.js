@@ -50,7 +50,7 @@
                         $that.communityManageInfo.total = _communityManageInfo.total;
                         $that.communityManageInfo.records = _communityManageInfo.records;
                         $that.communityManageInfo.communitys = _communityManageInfo.data;
-                        $that.dealCommunityAttr(_communityManageInfo.communitys);
+                        $that.dealCommunityAttr(_communityManageInfo.data);
                         vc.emit('pagination', 'init', {
                             total: $that.communityManageInfo.records,
                             dataCount: $that.communityManageInfo.total,
