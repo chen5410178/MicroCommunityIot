@@ -27,6 +27,8 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.ListUtil;
+import com.java110.dto.communityMember.CommunityMemberDto;
 import com.java110.dto.menuGroup.MenuGroupDto;
 import com.java110.dto.store.StoreDto;
 import com.java110.intf.community.ICommunityMemberV1InnerServiceSMO;
@@ -109,10 +111,19 @@ public class MemberQuitCommunityCmd extends Cmd {
 
         String communityId = reqJson.getString("communityId");
 
+
+        CommunityMemberDto communityMemberDto = new CommunityMemberDto();
+        communityMemberDto.setCommunityId(communityId);
+        communityMemberDto.setMemberId(storeDtos.get(0).getStoreId());
+       List<CommunityMemberDto> communityMemberDtos = communityMemberV1InnerServiceSMOImpl.queryCommunityMembers(communityMemberDto);
+
+       if(ListUtil.isNull(communityMemberDtos)){
+           throw new CmdException("不存在关系");
+       }
+
         //释放小区
         CommunityMemberPo communityMemberPo = new CommunityMemberPo();
-        communityMemberPo.setMemberId(storeDto.getStoreId());
-        communityMemberPo.setCommunityId(communityId);
+        communityMemberPo.setCommunityMemberId(communityMemberDtos.get(0).getCommunityMemberId());
         int flag = communityMemberV1InnerServiceSMOImpl.deleteCommunityMember(communityMemberPo);
         if (flag < 1) {
             throw new CmdException("删除数据失败");
