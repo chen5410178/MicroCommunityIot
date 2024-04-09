@@ -27,6 +27,7 @@ import com.java110.barrier.engine.adapt.zhenshiMqtt.http.HttpMethod;
 import com.java110.barrier.engine.adapt.zhenshiMqtt.http.HttpRequest;
 import com.java110.barrier.engine.adapt.zhenshiMqtt.http.HttpResponse;
 import com.java110.bean.ResultVo;
+import com.java110.core.cache.CommonCache;
 import com.java110.core.cache.MappingCache;
 import com.java110.core.constant.MappingConstant;
 import com.java110.core.factory.ApplicationContextFactory;
@@ -178,6 +179,7 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
      */
     @Override
     public void triggerImage(BarrierDto machineDto, ManualOpenDoorLogPo manualOpenDoorLogDto) {
+        CommonCache.setValue("triggerImage_" + machineDto.getMachineCode(), manualOpenDoorLogDto.getLogId());
         ZhenshiWebMqttSend.triggerImage(manualOpenDoorLogDto.getLogId(), "手工开闸", machineDto);
     }
 
@@ -443,11 +445,16 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
      * @param paramIn
      */
     private void doTriggerImage(String taskId, JSONObject paramIn) {
+        String sn = paramIn.getString("sn");
+        String id = CommonCache.getAndRemoveValue("triggerImage_" + sn);
+        if (StringUtil.isEmpty(id)) {
+            return;
+        }
 
         JSONObject payload = paramIn.getJSONObject("payload");
 
         ManualOpenDoorLogPo manualOpenDoorLogPo = new ManualOpenDoorLogPo();
-        manualOpenDoorLogPo.setLogId(paramIn.getString("id"));
+        manualOpenDoorLogPo.setLogId(id);
         String imagePath = payload.getString("imgPath");
         imagePath = Base64Convert.decoder(imagePath);
 
