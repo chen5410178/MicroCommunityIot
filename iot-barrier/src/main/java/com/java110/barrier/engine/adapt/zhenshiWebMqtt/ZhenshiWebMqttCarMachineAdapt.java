@@ -325,6 +325,8 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
             throw new IllegalArgumentException("设备不存在" + sn);
         }
 
+        machineDto = machineDtos.get(0);
+
         JSONObject payload = reqData.getJSONObject("payload");
         JSONObject AlarmInfoPlate = payload.getJSONObject("AlarmInfoPlate");
         JSONObject result = AlarmInfoPlate.getJSONObject("result");
