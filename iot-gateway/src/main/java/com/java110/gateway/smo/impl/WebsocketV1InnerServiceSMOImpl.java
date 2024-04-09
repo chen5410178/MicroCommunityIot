@@ -37,6 +37,7 @@ public class WebsocketV1InnerServiceSMOImpl implements IWebsocketV1InnerSMO {
             ParkingBoxWebsocket.sendInfo(param.toJSONString(), param.getString("boxId"));
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
 
