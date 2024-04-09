@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.bean.dto.file.FileDto;
+import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.bean.dto.room.RoomDto;
 import com.java110.core.cache.MappingCache;
 import com.java110.core.client.RestTemplate;
@@ -28,6 +29,7 @@ import com.java110.dto.visit.VisitDto;
 import com.java110.intf.accessControl.*;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.system.IFileInnerServiceSMO;
+import com.java110.intf.user.IOwnerV1InnerServiceSMO;
 import com.java110.intf.user.IPassQrcodeV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.accessControl.AccessControlPo;
@@ -84,6 +86,9 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
 
     @Autowired
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IOwnerV1InnerServiceSMO ownerV1InnerServiceSMOImpl;
 
     @Autowired
     private RestTemplate outRestTemplate;
@@ -398,6 +403,16 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
             return accessControlFaceDto;
         }
         accessControlFaceDto = accessControlFaceDtos.get(0);
+
+        if (AccessControlFaceDto.COME_TYPE_OWNER.equals(accessControlFaceDto.getPersonType())) {
+            OwnerDto ownerDto = new OwnerDto();
+            ownerDto.setMemberId(accessControlFaceDto.getPersonId());
+            List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
+            if (!ListUtil.isNull(ownerDtos)) {
+                accessControlFaceDto.setTel(ownerDtos.get(0).getLink());
+            }
+            return accessControlFaceDto;
+        }
 
         UserDto userDto = new UserDto();
         userDto.setUserId(personId);
