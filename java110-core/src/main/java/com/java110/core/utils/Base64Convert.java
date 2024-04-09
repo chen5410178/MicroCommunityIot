@@ -1,5 +1,6 @@
 package com.java110.core.utils;
 
+import org.apache.commons.codec.binary.Base64;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -10,6 +11,11 @@ public class Base64Convert {
 
     private void Base64Convert() {
 
+    }
+
+    public static String decoder(String data){
+        Base64 decoder = new Base64();
+        return new String(decoder.decode(data));
     }
 
     /**

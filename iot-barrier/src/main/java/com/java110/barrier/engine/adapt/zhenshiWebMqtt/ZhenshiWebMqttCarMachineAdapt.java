@@ -31,6 +31,7 @@ import com.java110.core.cache.MappingCache;
 import com.java110.core.constant.MappingConstant;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.utils.Base64Convert;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
@@ -329,9 +330,12 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
         try {
             String type = plateResult.getString("type");
             String license = plateResult.getString("license");
+            license = Base64Convert.decoder(license);
             if (plateResult.containsKey("imagePath")) {
+                String imagePath = plateResult.getString("imagePath");
+                imagePath = Base64Convert.decoder(imagePath);
                 //String imagePath = ImageFactory.getBase64ByImgUrl(MappingCacheFactory.getValue("OSS_URL") + plateResult.getString("imagePath"));
-                machineDto.setPhotoJpg(MappingCache.getValue(MappingConstant.FILE_DOMAIN, "OSS_URL") + plateResult.getString("imagePath"));
+                machineDto.setPhotoJpg(imagePath);
             }
 
             IInOutCarTextEngine inOutCarTextEngine = ApplicationContextFactory.getBean("zhenshiMqttInOutCarTextEngine", IInOutCarTextEngine.class);
@@ -444,7 +448,10 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
 
         ManualOpenDoorLogPo manualOpenDoorLogPo = new ManualOpenDoorLogPo();
         manualOpenDoorLogPo.setLogId(paramIn.getString("id"));
-        manualOpenDoorLogPo.setPhotoJpg(MappingCache.getValue(MappingConstant.FILE_DOMAIN, "OSS_URL") + payload.getString("imgPath"));
+        String imagePath = payload.getString("imgPath");
+        imagePath = Base64Convert.decoder(imagePath);
+
+        manualOpenDoorLogPo.setPhotoJpg(imagePath);
         manualOpenDoorLogServiceImpl.updateManualOpenDoorLog(manualOpenDoorLogPo);
     }
 
