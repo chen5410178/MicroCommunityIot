@@ -194,22 +194,35 @@ public class CustomMqttMsgThread implements Runnable {
         if (!HardwareManufacturerDto.HM_TYPE_BARRIER.equals(manufacturerAttrDto.getHmType())) {
             return;
         }
+        IMqttNotifyBarrierV1InnerServiceSMO mqttNotifyBarrierV1InnerServiceSMOImpl =
+                ApplicationContextFactory.getBean("mqttNotifyBarrierV1InnerServiceSMOImpl",
+                        IMqttNotifyBarrierV1InnerServiceSMO.class);
+        if (mqttNotifyBarrierV1InnerServiceSMOImpl == null) {
+            mqttNotifyBarrierV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(IMqttNotifyBarrierV1InnerServiceSMO.class.getName(),
+                    IMqttNotifyBarrierV1InnerServiceSMO.class);
+        }
 
 
         //todo 检查 配置的topic 中是否存在sn
         if (!manufacturerAttrDto.getValue().contains("SN") && manufacturerAttrDto.getValue().equals(mqttMsgDto.getTopic())) {
-            IMqttNotifyBarrierV1InnerServiceSMO mqttNotifyBarrierV1InnerServiceSMOImpl =
-                    ApplicationContextFactory.getBean("mqttNotifyBarrierV1InnerServiceSMOImpl",
-                            IMqttNotifyBarrierV1InnerServiceSMO.class);
-            if (mqttNotifyBarrierV1InnerServiceSMOImpl == null) {
-                mqttNotifyBarrierV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(IMqttNotifyBarrierV1InnerServiceSMO.class.getName(),
-                        IMqttNotifyBarrierV1InnerServiceSMO.class);
-            }
-
             mqttNotifyBarrierV1InnerServiceSMOImpl.mqttMessageArrived(new BarrierResultDto(manufacturerAttrDto.getHmId(), mqttMsgDto.getTopic(), mqttMsgDto.getMsg(), mqttMsgDto.getTaskId()));
             return;
         }
 
+
+        String[] values = manufacturerAttrDto.getValue().split("SN");
+
+        //todo 设备编码在结尾的情况
+        if (values.length == 1 && mqttMsgDto.getTopic().contains(values[0])) {
+            mqttNotifyBarrierV1InnerServiceSMOImpl.mqttMessageArrived(new BarrierResultDto(manufacturerAttrDto.getHmId(), mqttMsgDto.getTopic(), mqttMsgDto.getMsg(), mqttMsgDto.getTaskId()));
+            return;
+        }
+
+        //todo 设备编码在中间的情况
+        if (values.length == 2 && mqttMsgDto.getTopic().contains(values[0]) && mqttMsgDto.getTopic().contains(values[1])) {
+            mqttNotifyBarrierV1InnerServiceSMOImpl.mqttMessageArrived(new BarrierResultDto(manufacturerAttrDto.getHmId(), mqttMsgDto.getTopic(), mqttMsgDto.getMsg(), mqttMsgDto.getTaskId()));
+            return;
+        }
 
 
     }
