@@ -5,6 +5,7 @@ import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.attendanceMachine.AttendanceMachineDto;
+import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.dto.hardwareManufacturerAttr.HardwareManufacturerAttrDto;
 import com.java110.core.factory.MqttFactory;
@@ -12,6 +13,7 @@ import com.java110.dto.instrument.InstrumentDto;
 import com.java110.dto.instrument.InstrumentSensorDto;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAttendanceMachineV1InnerServiceSMO;
+import com.java110.intf.barrier.IBarrierV1InnerServiceSMO;
 import com.java110.intf.meter.IInstrumentV1InnerServiceSMO;
 import com.java110.intf.system.IHardwareManufacturerAttrV1InnerServiceSMO;
 import org.springframework.util.CollectionUtils;
@@ -130,7 +132,31 @@ public class MqttClientSubscribeFactory {
             return;
         }
 
-        MqttFactory.subscribe(topic);
+        if (!topic.contains("SN")) {
+            MqttFactory.subscribe(topic.trim());
+            return;
+        }
+
+        IBarrierV1InnerServiceSMO barrierV1InnerServiceSMOImpl = ApplicationContextFactory.getBean("barrierV1InnerServiceSMOImpl", IBarrierV1InnerServiceSMO.class);
+
+        if (barrierV1InnerServiceSMOImpl == null) {
+            barrierV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(IBarrierV1InnerServiceSMO.class.getName(), IBarrierV1InnerServiceSMO.class);
+        }
+
+        BarrierDto barrierDto = new BarrierDto();
+        barrierDto.setImplBean(manufacturerAttrDto.getHmId());
+        List<BarrierDto> barrierDtos = barrierV1InnerServiceSMOImpl.queryBarriers(barrierDto);
+
+        if (ListUtil.isNull(barrierDtos)) {
+            return;
+
+        }
+
+        String nTopic = "";
+        for (BarrierDto tmpBarrierDto : barrierDtos) {
+            nTopic = topic.replace("SN", tmpBarrierDto.getMachineCode());
+            MqttFactory.subscribe(nTopic);
+        }
     }
 
     /**

@@ -38,9 +38,6 @@ public interface ICarMachineProcess {
      */
     void closeDoor(BarrierDto machineDto, ParkingAreaTextDto parkingAreaTextDto);
 
-    void sendKeepAlive(BarrierDto machineDto);
-
-
     void mqttMessageArrived(String taskId,String topic, String s);
 
     /**

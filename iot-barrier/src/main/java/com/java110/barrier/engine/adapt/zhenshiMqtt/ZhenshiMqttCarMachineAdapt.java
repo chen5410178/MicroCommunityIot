@@ -358,11 +358,7 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
 
     }
 
-    @Override
-    public void sendKeepAlive(BarrierDto machineDto) {
-        // ZhenshiByteToString.sendKeepAlive(machineDto);
 
-    }
 
 
 }

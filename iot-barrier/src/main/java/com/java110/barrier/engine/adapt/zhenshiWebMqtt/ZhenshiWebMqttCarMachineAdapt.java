@@ -526,11 +526,6 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
 
     }
 
-    @Override
-    public void sendKeepAlive(BarrierDto machineDto) {
-        // ZhenshiByteToString.sendKeepAlive(machineDto);
-
-    }
 
 
 }

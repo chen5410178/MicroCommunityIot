@@ -126,10 +126,7 @@ public class HcCarMachineAdapt extends BaseMachineAdapt implements ICarMachinePr
 
     }
 
-    @Override
-    public void sendKeepAlive(BarrierDto machineDto) {
 
-    }
 
     @Override
     public void mqttMessageArrived(String tId, String topic, String s) {
