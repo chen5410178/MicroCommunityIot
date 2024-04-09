@@ -411,7 +411,7 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
         String heartBeatTime = null;
         heartBeatTime = DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A);
         BarrierPo barrierPo = new BarrierPo();
-        barrierPo.setMachineId(machineDto.getMachineId());
+        barrierPo.setMachineId(machineDtos.get(0).getMachineId());
         barrierPo.setHeartbeatTime(heartBeatTime);
         barrierV1InnerServiceSMOImpl.updateBarrier(barrierPo);
     }
