@@ -77,21 +77,6 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
     private IManualOpenDoorLogV1InnerServiceSMO manualOpenDoorLogServiceImpl;
 
 
-    @Override
-    public void initCar() {
-
-    }
-
-    @Override
-    public void initCar(BarrierDto machineDto) {
-
-
-    }
-
-    @Override
-    public void readByte(BarrierDto machineDto, byte[] bytes) throws Exception {
-
-    }
 
     /**
      * {"AlarmInfoPlate": {"channel": 0,"deviceName": "","ipaddr": "192.168.1.100","serialno": "5cdc5841-3d038816","heartbeat": 1}}

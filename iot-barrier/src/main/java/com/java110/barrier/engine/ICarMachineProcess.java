@@ -14,24 +14,8 @@ import com.java110.po.manualOpenDoorLog.ManualOpenDoorLogPo;
  */
 public interface ICarMachineProcess {
 
-    /**
-     * 初始化方法
-     */
-    void initCar();
-
-    /**
-     * 初始化设备
-     */
-    void initCar(BarrierDto machineDto);
 
 
-    /**
-     * 设备同步的字节信息
-     *
-     * @param machineDto 设备信息
-     * @param bytes      字节信息
-     */
-    void readByte(BarrierDto machineDto, byte[] bytes) throws Exception;
 
 
     /**

@@ -63,20 +63,6 @@ public class HcCarMachineAdapt extends BaseMachineAdapt implements ICarMachinePr
     @Autowired
     private IBarrierV1InnerServiceSMO barrierV1InnerServiceSMOImpl;
 
-    @Override
-    public void initCar() {
-
-    }
-
-    @Override
-    public void initCar(BarrierDto machineDto) {
-
-    }
-
-    @Override
-    public void readByte(BarrierDto machineDto, byte[] bytes) throws Exception {
-
-    }
 
     @Override
     public void restartMachine(BarrierDto machineDto) {

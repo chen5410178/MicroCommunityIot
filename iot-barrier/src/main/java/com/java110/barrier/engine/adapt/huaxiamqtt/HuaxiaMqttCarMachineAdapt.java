@@ -8,20 +8,6 @@ import com.java110.dto.parking.ParkingAreaTextDto;
 import com.java110.po.manualOpenDoorLog.ManualOpenDoorLogPo;
 
 public class HuaxiaMqttCarMachineAdapt extends BaseMachineAdapt implements ICarMachineProcess {
-    @Override
-    public void initCar() {
-
-    }
-
-    @Override
-    public void initCar(BarrierDto machineDto) {
-
-    }
-
-    @Override
-    public void readByte(BarrierDto machineDto, byte[] bytes) throws Exception {
-
-    }
 
     @Override
     public void restartMachine(BarrierDto machineDto) {

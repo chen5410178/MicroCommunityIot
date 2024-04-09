@@ -10,7 +10,7 @@ package com.java110.barrier.engine.adapt;
  * @Version 1.0
  * add by wuxw 2021/1/6
  **/
-public class BaseMachineAdapt {
+public  class BaseMachineAdapt {
 
     /**
      * 存储日志
