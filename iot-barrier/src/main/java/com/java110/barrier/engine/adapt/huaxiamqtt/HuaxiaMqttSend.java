@@ -56,7 +56,7 @@ public class HuaxiaMqttSend {
         JSONObject paramIn = new JSONObject();
         paramIn.put("cmd", CMD_IO_OUTPUT);
         paramIn.put("msgId", generateUniqueId());
-        paramIn.put("utcTs", DateUtil.getCurrentDate().getTime());
+        paramIn.put("utcTs", DateUtil.getCurrentDate().getTime()/1000);
 
         JSONObject gpioData = new JSONObject();
         gpioData.put("ioNum", "io1");
@@ -82,7 +82,7 @@ public class HuaxiaMqttSend {
         JSONObject paramIn = new JSONObject();
         paramIn.put("cmd", CMD_IO_OUTPUT);
         paramIn.put("msgId", generateUniqueId());
-        paramIn.put("utcTs", DateUtil.getCurrentDate().getTime());
+        paramIn.put("utcTs", DateUtil.getCurrentDate().getTime()/1000);
 
         JSONObject gpioData = new JSONObject();
         gpioData.put("ioNum", "io2");
@@ -131,7 +131,7 @@ public class HuaxiaMqttSend {
         JSONObject paramIn = new JSONObject();
         paramIn.put("cmd", CMD_RS485);
         paramIn.put("msgId", generateUniqueId());
-        paramIn.put("utcTs", DateUtil.getCurrentDate().getTime());
+        paramIn.put("utcTs", DateUtil.getCurrentDate().getTime()/1000);
         paramIn.put("encodeType", "base64");
 
         JSONArray chn1Data = new JSONArray();
@@ -166,7 +166,7 @@ public class HuaxiaMqttSend {
         JSONObject paramIn = new JSONObject();
         paramIn.put("cmd", CMD_RS485);
         paramIn.put("msgId", generateUniqueId());
-        paramIn.put("utcTs", DateUtil.getCurrentDate().getTime());
+        paramIn.put("utcTs", DateUtil.getCurrentDate().getTime()/1000);
         paramIn.put("encodeType", "base64");
 
         JSONArray chn1Data = new JSONArray();
@@ -199,7 +199,7 @@ public class HuaxiaMqttSend {
         JSONObject paramIn = new JSONObject();
         paramIn.put("cmd", CMD_CAPTURE);
         paramIn.put("msgId", generateUniqueId());
-        paramIn.put("utcTs", DateUtil.getCurrentDate().getTime());
+        paramIn.put("utcTs", DateUtil.getCurrentDate().getTime()/1000);
         try {
             MqttFactory.publish(TOPIC_PUBLISH.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
             MqttLogFactory.saveSendLog(taskId, carNum, TOPIC_PUBLISH.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
@@ -222,7 +222,7 @@ public class HuaxiaMqttSend {
         JSONObject paramIn = new JSONObject();
         paramIn.put("cmd", CMD_TRIGGER);
         paramIn.put("msgId", generateUniqueId());
-        paramIn.put("utcTs", DateUtil.getCurrentDate().getTime());
+        paramIn.put("utcTs", DateUtil.getCurrentDate().getTime()/1000);
         try {
             MqttFactory.publish(TOPIC_PUBLISH.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
             MqttLogFactory.saveSendLog(taskId, carNum, TOPIC_PUBLISH.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());

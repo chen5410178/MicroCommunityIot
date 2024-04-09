@@ -7,6 +7,9 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Unit test for simple App.
@@ -42,12 +45,11 @@ public class AppTest
 
     public void testApp1() {
 
-        String aa = "61e0dc1d";
-
-        String bb = null;
-        bb = new String(BytesUtil.hexStringToByteArray(aa));
-
-        System.out.println(bb);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+        long timestamp = calendar.getTime().getTime();
+        System.out.println(timestamp/1000);
     }
 
 
