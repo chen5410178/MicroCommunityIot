@@ -32,7 +32,7 @@ public class MqttClientSubscribeFactory {
         hardwareManufacturerAttrDto.setSpecCd(HardwareManufacturerAttrDto.SPEC_TOPIC);
         List<HardwareManufacturerAttrDto> manufacturerAttrDtos = hardwareManufacturerAttrV1InnerServiceSMOImpl.queryHardwareManufacturerAttrs(hardwareManufacturerAttrDto);
 
-        if (manufacturerAttrDtos == null || manufacturerAttrDtos.isEmpty()) {
+        if (ListUtil.isNull(manufacturerAttrDtos)) {
             return;
         }
 
