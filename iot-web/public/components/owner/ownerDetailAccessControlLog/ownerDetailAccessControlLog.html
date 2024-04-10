@@ -43,6 +43,12 @@
                     <th class="text-center">
                         <vc:i18n name='状态' namespace='ownerDetailAccessControlLog'></vc:i18n>
                     </th>
+                    <th class="text-center">
+                        <vc:i18n name='下发时间' namespace='ownerDetailAccessControlLog'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='报文' namespace='ownerDetailAccessControlLog'></vc:i18n>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -54,6 +60,8 @@
                     <td class="text-center">{{log.userId}}</td>
                     <td class="text-center">{{log.userName}}</td>
                     <td class="text-center">{{log.stateName}}</td>
+                    <td class="text-center">{{log.createTime}}</td>
+
                     <td class="text-center">
                         <div class="btn-group">
                             <button class="btn-white btn btn-xs"
