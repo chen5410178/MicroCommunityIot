@@ -81,4 +81,8 @@ public interface IMeterMachineV1InnerServiceSMO {
 
     @RequestMapping(value = "/settingMeterMachineRead", method = RequestMethod.POST)
     int settingMeterMachineRead(@RequestBody MeterMachinePo meterMachinePo);
+
+    @RequestMapping(value = "/getMeterDegree", method = RequestMethod.POST)
+    double getMeterDegree(@RequestBody MeterMachineDto meterMachineDto);
+
 }

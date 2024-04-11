@@ -29,6 +29,7 @@ import com.java110.dto.meter.MeterMachineFactoryDto;
 import com.java110.intf.meter.IMeterMachineFactoryV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterMachineV1InnerServiceSMO;
 import com.java110.meter.dao.IMeterMachineV1ServiceDao;
+import com.java110.meter.factory.ISmartMeterCoreRead;
 import com.java110.meter.factory.ISmartMeterFactoryAdapt;
 import com.java110.po.meter.MeterMachinePo;
 import org.slf4j.Logger;
@@ -59,6 +60,10 @@ public class MeterMachineV1InnerServiceSMOImpl implements IMeterMachineV1InnerSe
 
     @Autowired
     private IMeterMachineFactoryV1InnerServiceSMO meterMachineFactoryV1InnerServiceSMOImpl;
+
+
+    @Autowired
+    private ISmartMeterCoreRead smartMeterCoreReadImpl;
 
 
     @Override
@@ -164,6 +169,12 @@ public class MeterMachineV1InnerServiceSMOImpl implements IMeterMachineV1InnerSe
     public int settingMeterMachineRead(@RequestBody MeterMachinePo meterMachinePo) {
         int saveFlag = meterMachineV1ServiceDaoImpl.settingMeterMachineRead(BeanConvertUtil.beanCovertMap(meterMachinePo));
         return saveFlag;
+    }
+
+    @Override
+    public double getMeterDegree(@RequestBody MeterMachineDto meterMachineDto) {
+        double degree = smartMeterCoreReadImpl.getMeterDegree(meterMachineDto);
+        return degree;
     }
 
 
