@@ -3,6 +3,7 @@ package com.java110.acct.payment.business.meter;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.acct.payment.IPaymentBusiness;
 import com.java110.core.context.ICmdDataFlowContext;
+import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
@@ -10,11 +11,13 @@ import com.java110.dto.communityMember.CommunityMemberDto;
 import com.java110.dto.fee.FeeAttrDto;
 import com.java110.dto.fee.FeeDto;
 import com.java110.dto.meter.MeterMachineDto;
+import com.java110.dto.meter.MeterTypeDto;
 import com.java110.dto.payment.PaymentOrderDto;
 import com.java110.intf.community.ICommunityMemberV1InnerServiceSMO;
 import com.java110.intf.community.ICommunityV1InnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterMachineV1InnerServiceSMO;
+import com.java110.intf.meter.IMeterTypeV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +40,11 @@ public class PreStoreMeterPaymentBusiness implements IPaymentBusiness {
     public static final String CODE_PREFIX_ID = "10";
 
 
-
     @Autowired
     private IMeterMachineV1InnerServiceSMO meterMachineV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IMeterTypeV1InnerServiceSMO meterTypeV1InnerServiceSMOImpl;
 
     @Autowired
     private ICommunityV1InnerServiceSMO communityV1InnerServiceSMOImpl;
@@ -69,6 +74,20 @@ public class PreStoreMeterPaymentBusiness implements IPaymentBusiness {
 
         Assert.listOnlyOne(meterMachineDtos, "表不存在");
 
+
+        MeterTypeDto meterTypeDto = new MeterTypeDto();
+        meterTypeDto.setTypeId(meterMachineDtos.get(0).getMeterType());
+        List<MeterTypeDto> meterTypeDtos = meterTypeV1InnerServiceSMOImpl.queryMeterTypes(meterTypeDto);
+        Assert.listOnlyOne(meterTypeDtos, "表类型不存在");
+
+        double price = Double.parseDouble(meterTypeDtos.get(0).getPrice());
+        if (price <= 0) {
+            throw new IllegalArgumentException("单价设置错误");
+        }
+
+        double degree = new BigDecimal(reqJson.getDoubleValue("receivedAmount")).divide(new BigDecimal(price), 0, BigDecimal.ROUND_HALF_UP).doubleValue();
+
+
         PaymentOrderDto paymentOrderDto = new PaymentOrderDto();
         paymentOrderDto.setOrderId(GenerateCodeFactory.getOId());
         paymentOrderDto.setMoney(reqJson.getDoubleValue("receivedAmount"));
@@ -76,6 +95,8 @@ public class PreStoreMeterPaymentBusiness implements IPaymentBusiness {
 
         reqJson.put("receivableAmount", reqJson.getDoubleValue("receivedAmount"));
         reqJson.put("receivedAmount", reqJson.getDoubleValue("receivedAmount"));
+        reqJson.put("degree", degree);
+
         return paymentOrderDto;
     }
 
@@ -90,16 +111,19 @@ public class PreStoreMeterPaymentBusiness implements IPaymentBusiness {
 
 
 
-        CommunityMemberDto communityMemberDto = new CommunityMemberDto();
-        communityMemberDto.setCommunityId(meterMachineDtos.get(0).getCommunityId());
-        communityMemberDto.setMemberTypeCd(CommunityMemberDto.MEMBER_TYPE_PROPERTY);
-        List<CommunityMemberDto> communityMemberDtos = communityMemberV1InnerServiceSMOImpl.queryCommunityMembers(communityMemberDto);
+        double money = reqJson.getDoubleValue("receivedAmount");
 
-        Assert.listOnlyOne(communityMemberDtos, "物业不存在");
+
+        double degree = reqJson.getDoubleValue("degree");
+
+        meterMachineDtos.get(0).setRechargeDegree(degree);
+        meterMachineDtos.get(0).setRechargeMoney(money);
+
+        //智能电表充值
+        meterMachineV1InnerServiceSMOImpl.reChargeMeterMachines(meterMachineDtos.get(0));
 
 
     }
-
 
 
 }
