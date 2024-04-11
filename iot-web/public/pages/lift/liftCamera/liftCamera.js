@@ -37,7 +37,8 @@
 
                 $that.liftCameraInfo.conditions.page = _page;
                 $that.liftCameraInfo.conditions.row = _rows;
-                var param = {
+                $that.liftCameraInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
+                let param = {
                     params: $that.liftCameraInfo.conditions
                 };
 

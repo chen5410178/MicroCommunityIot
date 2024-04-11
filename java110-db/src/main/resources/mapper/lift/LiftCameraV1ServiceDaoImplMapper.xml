@@ -20,7 +20,8 @@
         select t.lc_id,t.lc_id lcId,t.heartbeat_time,t.heartbeat_time heartbeatTime,t.lift_name,t.lift_name
         liftName,t.factory_id,t.factory_id factoryId,t.lift_machine_id,t.lift_machine_id
         liftMachineId,t.status_cd,t.status_cd statusCd,t.camera_code,t.camera_code
-        cameraCode,t.community_id,t.community_id communityId,t.camera_name,t.camera_name cameraName
+        cameraCode,t.community_id,t.community_id communityId,t.camera_name,t.camera_name cameraName,
+        t.create_time createTime
         from lift_camera t
         where 1 =1
         <if test="lcId !=null and lcId != ''">

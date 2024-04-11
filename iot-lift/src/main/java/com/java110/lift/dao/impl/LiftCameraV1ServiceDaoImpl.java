@@ -68,9 +68,9 @@ public class LiftCameraV1ServiceDaoImpl extends BaseServiceDao implements ILiftC
     public List<Map> getLiftCameraInfo(Map info) throws DAOException {
         logger.debug("查询 getLiftCameraInfo 入参 info : {}",info);
 
-        List<Map> businessLiftCameraInfos = sqlSessionTemplate.selectList("liftCameraV1ServiceDaoImpl.getLiftCameraInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("liftCameraV1ServiceDaoImpl.getLiftCameraInfo",info);
 
-        return businessLiftCameraInfos;
+        return infos;
     }
 
 

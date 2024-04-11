@@ -1,0 +1,118 @@
+<div>
+
+    <div class="ibox ">
+        <div class="ibox-title">
+            <h5>
+                <vc:i18n name="查询条件"></vc:i18n>
+            </h5>
+            <div class="ibox-tools" style="top:10px;">
+
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <input type="text" :placeholder="vc.i18n('请选择相机名称','liftWarn')"
+                            v-model="liftWarnInfo.conditions.cameraName" class=" form-control">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <input type="text" :placeholder="vc.i18n('请选择相机编号','liftWarn')"
+                            v-model="liftWarnInfo.conditions.cameraCode" class=" form-control">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <input type="text" :placeholder="vc.i18n('请选择电梯名称','liftWarn')"
+                            v-model="liftWarnInfo.conditions.liftName" class=" form-control">
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryLiftCameraMethod()">
+                        <i class="glyphicon glyphicon-search"></i> <span>
+                            <vc:i18n name="查询"></vc:i18n>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>
+                <vc:i18n name="电梯相机" namespace="liftWarn"></vc:i18n>
+            </h5>
+            <div class="ibox-tools" style="top:10px;">
+
+            </div>
+        </div>
+        <div class="ibox-content">
+
+            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            <vc:i18n name='相机名称' namespace='liftWarn'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='相机编号' namespace='liftWarn'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='电梯名称' namespace='liftWarn'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='告警类型' namespace='liftWarn'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='告警图片' namespace='liftWarn'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='进入电梯人数' namespace='liftWarn'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='离开电梯人数' namespace='liftWarn'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='当前电梯人数' namespace='liftWarn'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='开门状态' namespace='liftWarn'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='非机动车' namespace='liftWarn'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='当前速度' namespace='liftWarn'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='告警时间' namespace='liftWarn'></vc:i18n>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="liftWarn in liftWarnInfo.liftWarns">
+                        <td class="text-center">{{liftWarn.cameraName}}</td>
+                        <td class="text-center">{{liftWarn.cameraCode}}</td>
+                        <td class="text-center">{{liftWarn.liftName}}</td>
+                        <td class="text-center">{{liftWarn.warnTypeName}}</td>
+                        <td class="text-center">{{liftWarn.warnImg}}</td>
+                        <td class="text-center">{{liftWarn.enterPeopleNum}}</td>
+                        <td class="text-center">{{liftWarn.leavePeopleNum}}</td>
+                        <td class="text-center">{{liftWarn.currentPeopleNum}}</td>
+                        <td class="text-center">{{liftWarn.alarmInPolarity}}</td>
+                        <td class="text-center">{{liftWarn.haveBicycle == 'Y'?'是':'否'}}</td>
+                        <td class="text-center">{{liftWarn.liftOperateState}}</td>
+                        <td class="text-center">{{liftWarn.currentSpeed}}</td>
+                        <td class="text-center">{{liftWarn.warnTime}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- 分页 -->
+            <vc:create path="frame/pagination"></vc:create>
+        </div>
+    </div>
+
+</div>
