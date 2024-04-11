@@ -42,7 +42,7 @@
                 };
 
                 //发送get请求
-                vc.http.apiGet('/liftCamera.listLiftCameras',
+                vc.http.apiGet('/liftCamera.listLiftCamera',
                     param,
                     function (json, res) {
                         let _json = JSON.parse(json);

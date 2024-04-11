@@ -8,6 +8,7 @@
                 cameraCode: '',
                 factoryId: '',
                 liftName: '',
+                lifts:[]
             }
         },
         _initMethod: function () {
@@ -15,6 +16,7 @@
         },
         _initEvent: function () {
             vc.on('addLiftCamera', 'openAddLiftCameraModal', function () {
+                $that._listAddLiftMachines();
                 $('#addLiftCameraModel').modal('show');
             });
         },
@@ -111,9 +113,30 @@
                     cameraCode: '',
                     factoryId: '',
                     liftName: '',
-
+                    lifts:[]
                 };
-            }
+            },
+            _listAddLiftMachines: function (_page, _rows) {
+
+                let param = {
+                    params: {
+                        page:1,
+                        row:100,
+                        communityId:vc.getCurrentCommunity().communityId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/liftMachine.listLiftMachine',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        $that.addLiftCameraInfo.lifts = _json.data;
+                    }, function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
         }
     });
 

@@ -32,7 +32,7 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#deleteLiftCameraModel').modal('hide');
-                            vc.emit('liftCameraManage','listLiftCamera',{});
+                            vc.emit('liftCamera','listLiftCamera',{});
                             return ;
                         }
                         vc.toast(_json.msg);
