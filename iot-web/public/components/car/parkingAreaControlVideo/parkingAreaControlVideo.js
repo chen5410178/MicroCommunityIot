@@ -102,7 +102,7 @@ import HuaXiaVideo from "api/3d/HuaXiaVideo.js";
                 });
 
                 if(_hmId == "24"){
-                    wsUrl = "ws://" + wsUrl;
+                    wsUrl = "ws://" + wsUrl+":9999";
                     $that._showHuaXiaCameraVideo(wsUrl, 'receiver1');
                     return;
                 }
@@ -150,7 +150,7 @@ import HuaXiaVideo from "api/3d/HuaXiaVideo.js";
                     }
                 });
                 if(_hmId == "24"){
-                    wsUrl = "ws://" + wsUrl;
+                    wsUrl = "ws://" + wsUrl+":9999";
                     $that._showHuaXiaCameraVideo(wsUrl, 'receiver2');
                     return;
                 }
