@@ -192,8 +192,14 @@ import HuaXiaVideo from "api/3d/HuaXiaVideo.js";
 
             },
             _showHuaXiaCameraVideo: function (wsUrl, _div) {
+                let jMap = $that.parkingAreaControlVideoInfo.jessibuca;
+                let huaXiaVideo = jMap[_div];
+                if (huaXiaVideo) {
+                    huaXiaVideo.destroy();
+                }
                 let _huaXiaVideo = new HuaXiaVideo(wsUrl,_div);
                 _huaXiaVideo.playVideo();
+                jMap[_div] = _huaXiaVideo;
             },
             _openDoor: function (_inOut) {
                 let _machines = [];

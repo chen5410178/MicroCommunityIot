@@ -58,6 +58,13 @@ export default class HuaXiaVideo {
 
     }
 
+    destroy(){
+        if (this.ws) {
+            this.ws.close()
+        }
+        this.lockReconnect = false;
+    }
+
 
     //心跳检测
     _initHeartbeat() {
