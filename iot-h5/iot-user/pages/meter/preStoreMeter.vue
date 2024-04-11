@@ -15,7 +15,7 @@
 					<text class="text-grey">剩余读数</text>
 				</view>
 				<view class="action">
-					<text class="text-grey text-sm">{{prestoreDegrees}}</text>
+					<text class="text-grey text-sm">{{curDegrees}}</text>
 				</view>
 			</view>
 			<view class="cu-item">
@@ -52,7 +52,7 @@
 			return {
 				machineId:'',
 				machineName:'',
-				prestoreDegrees:'0',
+				curDegrees:'0',
 				communityId:'',
 				createStaffId:'',
 				address:'',
@@ -83,7 +83,7 @@
 					}
 					_that.machineId=_data.data[0].machineId;
 					_that.machineName=_data.data[0].machineName;
-					_that.prestoreDegrees=_data.data[0].prestoreDegrees;
+					_that.curDegrees=_data.data[0].curDegrees;
 				})
 			},
 			onPayFee: function() {
@@ -104,7 +104,7 @@
 				let _receivedAmount = this.amount;
 				let _tradeType = 'JSAPI';
 				let _objData = {
-					business: "meterRecharge",
+					business: "preStoreMeter",
 					machineId: this.machineId,
 					feeName: '水电表充值',
 					tradeType: _tradeType,
@@ -116,7 +116,7 @@
 				uni.setStorageSync('doing_cashier', _objData);
 				uni.navigateTo({
 					url: '/pages/fee/cashier?money=' + _receivedAmount +
-						"&business=meterRecharge&communityId=" +
+						"&business=preStoreMeter&communityId=" +
 						this.communityId + "&cashierUserId=" + this.createStaffId
 				})
 			}
