@@ -33,8 +33,8 @@ public class ListMeterMachineBmoImpl implements IIotCommonApiBmo {
     @Override
     public void validate(ICmdDataFlowContext context, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "communityId", "未包含小区");
-        Assert.hasKeyAndValue(reqJson, "roomId", "未包含房屋");
-
+        Assert.hasKeyAndValue(reqJson, "page", "未包含page");
+        Assert.hasKeyAndValue(reqJson, "row", "未包含row");
     }
 
     @Override

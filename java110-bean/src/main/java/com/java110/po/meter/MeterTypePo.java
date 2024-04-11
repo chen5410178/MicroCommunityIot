@@ -28,48 +28,67 @@ import java.io.Serializable;
 public class MeterTypePo implements Serializable {
 
     private String typeName;
-private String typeId;
-private String price;
-private String remark;
-private String statusCd = "0";
-private String communityId;
-public String getTypeName() {
+    private String typeId;
+    private String price;
+    private String remark;
+
+    private String typeCd;
+    private String statusCd = "0";
+    private String communityId;
+
+    public String getTypeName() {
         return typeName;
     }
-public void setTypeName(String typeName) {
+
+    public void setTypeName(String typeName) {
         this.typeName = typeName;
     }
-public String getTypeId() {
+
+    public String getTypeId() {
         return typeId;
     }
-public void setTypeId(String typeId) {
+
+    public void setTypeId(String typeId) {
         this.typeId = typeId;
     }
+
     public String getPrice() {
         return price;
     }
+
     public void setPrice(String price) {
         this.price = price;
     }
+
     public String getRemark() {
         return remark;
     }
-public void setRemark(String remark) {
+
+    public void setRemark(String remark) {
         this.remark = remark;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
 
+    public String getTypeCd() {
+        return typeCd;
+    }
 
-
+    public void setTypeCd(String typeCd) {
+        this.typeCd = typeCd;
+    }
 }

@@ -37,6 +37,8 @@ public class MeterMachineDto extends PageDto implements Serializable {
     private String machineId;
     private String meterType;
     private String meterTypeName;
+
+    private String typeCd;
     private String feeConfigName;
     private String feeConfigNameLike;
     private String communityId;
@@ -60,6 +62,14 @@ public class MeterMachineDto extends PageDto implements Serializable {
     private String state;
     private String stateName;
     private String controlType;
+
+    public String getTypeCd() {
+        return typeCd;
+    }
+
+    public void setTypeCd(String typeCd) {
+        this.typeCd = typeCd;
+    }
 
     public String getHeartbeatTime() {
         return heartbeatTime;

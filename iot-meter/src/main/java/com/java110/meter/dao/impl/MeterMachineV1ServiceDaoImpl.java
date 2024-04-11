@@ -66,9 +66,9 @@ public class MeterMachineV1ServiceDaoImpl extends BaseServiceDao implements IMet
     public List<Map> getMeterMachineInfo(Map info) throws DAOException {
         logger.debug("查询 getMeterMachineInfo 入参 info : {}", info);
 
-        List<Map> businessMeterMachineInfos = sqlSessionTemplate.selectList("meterMachineV1ServiceDaoImpl.getMeterMachineInfo", info);
+        List<Map> infos = sqlSessionTemplate.selectList("meterMachineV1ServiceDaoImpl.getMeterMachineInfo", info);
 
-        return businessMeterMachineInfos;
+        return infos;
     }
 
 

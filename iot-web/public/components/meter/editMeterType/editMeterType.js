@@ -5,23 +5,24 @@
                 typeId: '',
                 typeName: '',
                 remark: '',
-                price: ''
+                price: '',
+                typeCd:''
             }
         },
         _initMethod: function () {
         },
         _initEvent: function () {
             vc.on('editMeterType', 'openEditMeterTypeModal', function (_params) {
-                vc.component.refreshEditMeterTypeInfo();
+                $that.refreshEditMeterTypeInfo();
                 $('#editMeterTypeModel').modal('show');
-                vc.copyObject(_params, vc.component.editMeterTypeInfo);
-                vc.component.editMeterTypeInfo.communityId = vc.getCurrentCommunity().communityId;
+                vc.copyObject(_params, $that.editMeterTypeInfo);
+                $that.editMeterTypeInfo.communityId = vc.getCurrentCommunity().communityId;
             });
         },
         methods: {
             editMeterTypeValidate: function () {
                 return vc.validate.validate({
-                    editMeterTypeInfo: vc.component.editMeterTypeInfo
+                    editMeterTypeInfo: $that.editMeterTypeInfo
                 }, {
                     'editMeterTypeInfo.typeName': [
                         {
@@ -69,13 +70,13 @@
                 });
             },
             editMeterType: function () {
-                if (!vc.component.editMeterTypeValidate()) {
+                if (!$that.editMeterTypeValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
                 vc.http.apiPost(
-                    'meterType.updateMeterType',
-                    JSON.stringify(vc.component.editMeterTypeInfo),
+                    '/meterType.updateMeterType',
+                    JSON.stringify($that.editMeterTypeInfo),
                     {
                         emulateJSON: true
                     },
@@ -98,13 +99,14 @@
                     });
             },
             refreshEditMeterTypeInfo: function () {
-                vc.component.editMeterTypeInfo = {
+                $that.editMeterTypeInfo = {
                     typeId: '',
                     typeName: '',
                     remark: '',
-                    price: ''
+                    price: '',
+                    typeCd:''
                 }
             }
         }
     });
-})(window.vc, window.vc.component);
+})(window.vc, window.$that);

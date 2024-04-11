@@ -21,6 +21,8 @@ public class MeterTypeDto extends PageDto implements Serializable {
     private String remark;
     private String communityId;
 
+    private String typeCd;
+
 
     private Date createTime;
 
@@ -82,5 +84,13 @@ public class MeterTypeDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getTypeCd() {
+        return typeCd;
+    }
+
+    public void setTypeCd(String typeCd) {
+        this.typeCd = typeCd;
     }
 }

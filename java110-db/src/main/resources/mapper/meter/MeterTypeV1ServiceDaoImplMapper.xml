@@ -8,9 +8,9 @@
     <!-- 保存抄表类型信息 add by wuxw 2018-07-03 -->
     <insert id="saveMeterTypeInfo" parameterType="Map">
         insert into meter_type(
-        type_name,type_id,remark,community_id,price
+        type_name,type_id,remark,community_id,price,type_cd
         ) values (
-        #{typeName},#{typeId},#{remark},#{communityId},#{price}
+        #{typeName},#{typeId},#{remark},#{communityId},#{price},#{typeCd}
         )
     </insert>
 
@@ -18,7 +18,7 @@
     <!-- 查询抄表类型信息 add by wuxw 2018-07-03 -->
     <select id="getMeterTypeInfo" parameterType="Map" resultType="Map">
         select t.type_name,t.type_name typeName,t.type_id,t.type_id typeId,t.remark,t.status_cd,t.status_cd
-        statusCd,t.community_id,t.community_id communityId,t.create_time createTime,t.price
+        statusCd,t.community_id,t.community_id communityId,t.create_time createTime,t.price,t.type_cd typeCd
         from meter_type t
         where 1 =1
         <if test="typeName !=null and typeName != ''">
@@ -62,6 +62,9 @@
         <if test="price !=null and price != ''">
             , t.price= #{price}
         </if>
+        <if test="typeCd !=null and typeCd != ''">
+            , t.type_cd= #{typeCd}
+        </if>
         where 1=1
         <if test="typeId !=null and typeId != ''">
             and t.type_id= #{typeId}
@@ -88,6 +91,9 @@
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
+        </if>
+        <if test="typeCd !=null and typeCd != ''">
+            and t.type_cd= #{typeCd}
         </if>
 
 

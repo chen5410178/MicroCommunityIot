@@ -9,7 +9,8 @@
                 typeId: '',
                 typeName: '',
                 remark: '',
-                price: ''
+                price: '',
+                typeCd:''
             }
         },
         _initMethod: function () {
@@ -103,7 +104,8 @@
                 vc.component.addMeterTypeInfo = {
                     typeName: '',
                     remark: '',
-                    price: ''
+                    price: '',
+                    typeCd:''
                 };
             }
         }
