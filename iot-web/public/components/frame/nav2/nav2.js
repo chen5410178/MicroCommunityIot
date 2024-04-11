@@ -32,15 +32,6 @@ import { parkingWebSocket } from "/api/websocket/parkingWebSocket.js";
             },
             logo: '',
             userName: "",
-            mallCatalog: {
-                active: '0',
-                caId: '1',
-                icon: 'fa fa-shopping-cart',
-                isShow: 'Y',
-                name: '商城',
-                seq: '9',
-                url: "#"
-            },
         },
         mounted: function () {
             this._initSysInfo();
@@ -175,8 +166,6 @@ import { parkingWebSocket } from "/api/websocket/parkingWebSocket.js";
                 vc.jumpToPage("/");
             },
             _noticeDetail: function (_msg) {
-                //console.log(_notice.noticeId);
-                //vc.jumpToPage("/#/noticeDetail?noticeId="+_notice.noticeId);
                 //标记为消息已读
                 vc.http.post('nav',
                     'readMsg',
@@ -215,7 +204,6 @@ import { parkingWebSocket } from "/api/websocket/parkingWebSocket.js";
                 );
             },
             _emitMsg: function (_param) {
-                vm._settingActiveCatalog(_param);
                 let event = new CustomEvent('loadMenu', {
                     "detail": _param
                 });
@@ -259,7 +247,7 @@ import { parkingWebSocket } from "/api/websocket/parkingWebSocket.js";
                     return;
                 }
                 if (_catalog.url != '#') {
-                    vm._settingActiveCatalog(_catalog);
+                    
                     vc.jumpToPage(_catalog.url);
                     //return;
                 }
@@ -273,6 +261,9 @@ import { parkingWebSocket } from "/api/websocket/parkingWebSocket.js";
                 }
                 return false;
             },
+            _toChainMall:function(){
+                window.open('http://shop.songbingcloud.com/')
+            }
         }
     });
     vm.getUserInfo();
