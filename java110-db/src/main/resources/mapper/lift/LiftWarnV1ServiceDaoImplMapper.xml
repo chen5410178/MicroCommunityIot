@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="liftWarnV1ServiceDaoImpl">
+
+
+    <!-- 保存电梯告警信息 add by wuxw 2018-07-03 -->
+    <insert id="saveLiftWarnInfo" parameterType="Map">
+        insert into lift_warn(
+        lc_id,current_people_num,leave_people_num,have_bicycle,lift_door_state,warn_type,lift_operate_state,current_speed,
+        alarm_in_polarity,lw_id,lift_name,warn_time,enter_people_num,warn_img,lift_machine_id,camera_code,community_id,camera_name
+        ) values (
+        #{lcId},#{currentPeopleNum},#{leavePeopleNum},#{haveBicycle},#{liftDoorState},#{warnType},#{liftOperateState},#{currentSpeed},
+        #{alarmInPolarity},#{lwId},#{liftName},#{warnTime},#{enterPeopleNum},#{warnImg},#{liftMachineId},#{cameraCode},#{communityId},#{cameraName}
+        )
+    </insert>
+
+
+    <!-- 查询电梯告警信息 add by wuxw 2018-07-03 -->
+    <select id="getLiftWarnInfo" parameterType="Map" resultType="Map">
+        select t.lc_id,t.lc_id lcId,t.current_people_num,t.current_people_num
+        currentPeopleNum,t.leave_people_num,t.leave_people_num leavePeopleNum,t.have_bicycle,t.have_bicycle
+        haveBicycle,t.lift_door_state,t.lift_door_state liftDoorState,t.warn_type,t.warn_type
+        warnType,t.lift_operate_state,t.lift_operate_state liftOperateState,t.status_cd,t.status_cd
+        statusCd,t.current_speed,t.current_speed currentSpeed,t.alarm_in_polarity,t.alarm_in_polarity
+        alarmInPolarity,t.lw_id,t.lw_id lwId,t.lift_name,t.lift_name liftName,t.warn_time,t.warn_time
+        warnTime,t.enter_people_num,t.enter_people_num enterPeopleNum,t.warn_img,t.warn_img
+        warnImg,t.lift_machine_id,t.lift_machine_id liftMachineId,t.camera_code,t.camera_code
+        cameraCode,t.community_id,t.community_id communityId,t.camera_name,t.camera_name cameraName
+        from lift_warn t
+        where 1 =1
+        <if test="lcId !=null and lcId != ''">
+            and t.lc_id= #{lcId}
+        </if>
+        <if test="currentPeopleNum !=null and currentPeopleNum != ''">
+            and t.current_people_num= #{currentPeopleNum}
+        </if>
+        <if test="leavePeopleNum !=null and leavePeopleNum != ''">
+            and t.leave_people_num= #{leavePeopleNum}
+        </if>
+        <if test="haveBicycle !=null and haveBicycle != ''">
+            and t.have_bicycle= #{haveBicycle}
+        </if>
+        <if test="liftDoorState !=null and liftDoorState != ''">
+            and t.lift_door_state= #{liftDoorState}
+        </if>
+        <if test="warnType !=null and warnType != ''">
+            and t.warn_type= #{warnType}
+        </if>
+        <if test="liftOperateState !=null and liftOperateState != ''">
+            and t.lift_operate_state= #{liftOperateState}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="currentSpeed !=null and currentSpeed != ''">
+            and t.current_speed= #{currentSpeed}
+        </if>
+        <if test="alarmInPolarity !=null and alarmInPolarity != ''">
+            and t.alarm_in_polarity= #{alarmInPolarity}
+        </if>
+        <if test="lwId !=null and lwId != ''">
+            and t.lw_id= #{lwId}
+        </if>
+        <if test="liftName !=null and liftName != ''">
+            and t.lift_name= #{liftName}
+        </if>
+        <if test="warnTime !=null and warnTime != ''">
+            and t.warn_time= #{warnTime}
+        </if>
+        <if test="enterPeopleNum !=null and enterPeopleNum != ''">
+            and t.enter_people_num= #{enterPeopleNum}
+        </if>
+        <if test="warnImg !=null and warnImg != ''">
+            and t.warn_img= #{warnImg}
+        </if>
+        <if test="liftMachineId !=null and liftMachineId != ''">
+            and t.lift_machine_id= #{liftMachineId}
+        </if>
+        <if test="cameraCode !=null and cameraCode != ''">
+            and t.camera_code= #{cameraCode}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="cameraName !=null and cameraName != ''">
+            and t.camera_name= #{cameraName}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改电梯告警信息 add by wuxw 2018-07-03 -->
+    <update id="updateLiftWarnInfo" parameterType="Map">
+        update lift_warn t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="lcId !=null and lcId != ''">
+            , t.lc_id= #{lcId}
+        </if>
+        <if test="currentPeopleNum !=null and currentPeopleNum != ''">
+            , t.current_people_num= #{currentPeopleNum}
+        </if>
+        <if test="leavePeopleNum !=null and leavePeopleNum != ''">
+            , t.leave_people_num= #{leavePeopleNum}
+        </if>
+        <if test="haveBicycle !=null and haveBicycle != ''">
+            , t.have_bicycle= #{haveBicycle}
+        </if>
+        <if test="liftDoorState !=null and liftDoorState != ''">
+            , t.lift_door_state= #{liftDoorState}
+        </if>
+        <if test="warnType !=null and warnType != ''">
+            , t.warn_type= #{warnType}
+        </if>
+        <if test="liftOperateState !=null and liftOperateState != ''">
+            , t.lift_operate_state= #{liftOperateState}
+        </if>
+        <if test="currentSpeed !=null and currentSpeed != ''">
+            , t.current_speed= #{currentSpeed}
+        </if>
+        <if test="alarmInPolarity !=null and alarmInPolarity != ''">
+            , t.alarm_in_polarity= #{alarmInPolarity}
+        </if>
+        <if test="liftName !=null and liftName != ''">
+            , t.lift_name= #{liftName}
+        </if>
+        <if test="warnTime !=null and warnTime != ''">
+            , t.warn_time= #{warnTime}
+        </if>
+        <if test="enterPeopleNum !=null and enterPeopleNum != ''">
+            , t.enter_people_num= #{enterPeopleNum}
+        </if>
+        <if test="warnImg !=null and warnImg != ''">
+            , t.warn_img= #{warnImg}
+        </if>
+        <if test="liftMachineId !=null and liftMachineId != ''">
+            , t.lift_machine_id= #{liftMachineId}
+        </if>
+        <if test="cameraCode !=null and cameraCode != ''">
+            , t.camera_code= #{cameraCode}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="cameraName !=null and cameraName != ''">
+            , t.camera_name= #{cameraName}
+        </if>
+        where 1=1
+        <if test="lwId !=null and lwId != ''">
+            and t.lw_id= #{lwId}
+        </if>
+
+    </update>
+
+    <!-- 查询电梯告警数量 add by wuxw 2018-07-03 -->
+    <select id="queryLiftWarnsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from lift_warn t
+        where 1 =1
+        <if test="lcId !=null and lcId != ''">
+            and t.lc_id= #{lcId}
+        </if>
+        <if test="currentPeopleNum !=null and currentPeopleNum != ''">
+            and t.current_people_num= #{currentPeopleNum}
+        </if>
+        <if test="leavePeopleNum !=null and leavePeopleNum != ''">
+            and t.leave_people_num= #{leavePeopleNum}
+        </if>
+        <if test="haveBicycle !=null and haveBicycle != ''">
+            and t.have_bicycle= #{haveBicycle}
+        </if>
+        <if test="liftDoorState !=null and liftDoorState != ''">
+            and t.lift_door_state= #{liftDoorState}
+        </if>
+        <if test="warnType !=null and warnType != ''">
+            and t.warn_type= #{warnType}
+        </if>
+        <if test="liftOperateState !=null and liftOperateState != ''">
+            and t.lift_operate_state= #{liftOperateState}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="currentSpeed !=null and currentSpeed != ''">
+            and t.current_speed= #{currentSpeed}
+        </if>
+        <if test="alarmInPolarity !=null and alarmInPolarity != ''">
+            and t.alarm_in_polarity= #{alarmInPolarity}
+        </if>
+        <if test="lwId !=null and lwId != ''">
+            and t.lw_id= #{lwId}
+        </if>
+        <if test="liftName !=null and liftName != ''">
+            and t.lift_name= #{liftName}
+        </if>
+        <if test="warnTime !=null and warnTime != ''">
+            and t.warn_time= #{warnTime}
+        </if>
+        <if test="enterPeopleNum !=null and enterPeopleNum != ''">
+            and t.enter_people_num= #{enterPeopleNum}
+        </if>
+        <if test="warnImg !=null and warnImg != ''">
+            and t.warn_img= #{warnImg}
+        </if>
+        <if test="liftMachineId !=null and liftMachineId != ''">
+            and t.lift_machine_id= #{liftMachineId}
+        </if>
+        <if test="cameraCode !=null and cameraCode != ''">
+            and t.camera_code= #{cameraCode}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="cameraName !=null and cameraName != ''">
+            and t.camera_name= #{cameraName}
+        </if>
+
+
+    </select>
+
+</mapper>
