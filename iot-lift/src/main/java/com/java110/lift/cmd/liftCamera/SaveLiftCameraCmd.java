@@ -26,11 +26,17 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.dto.lift.LiftMachineDto;
 import com.java110.intf.lift.ILiftCameraV1InnerServiceSMO;
+import com.java110.intf.lift.ILiftMachineV1InnerServiceSMO;
 import com.java110.po.liftCamera.LiftCameraPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -52,13 +58,15 @@ public class SaveLiftCameraCmd extends Cmd {
     @Autowired
     private ILiftCameraV1InnerServiceSMO liftCameraV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ILiftMachineV1InnerServiceSMO liftMachineV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "cameraName", "请求报文中未包含cameraName");
         Assert.hasKeyAndValue(reqJson, "cameraCode", "请求报文中未包含cameraCode");
         Assert.hasKeyAndValue(reqJson, "factoryId", "请求报文中未包含factoryId");
         Assert.hasKeyAndValue(reqJson, "liftMachineId", "请求报文中未包含liftMachineId");
-        Assert.hasKeyAndValue(reqJson, "liftName", "请求报文中未包含liftName");
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
 
     }
@@ -67,8 +75,18 @@ public class SaveLiftCameraCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
+        LiftMachineDto liftMachineDto = new LiftMachineDto();
+        liftMachineDto.setMachineId(reqJson.getString("liftMachineId"));
+        List<LiftMachineDto> liftMachineDtos = liftMachineV1InnerServiceSMOImpl.queryLiftMachines(liftMachineDto);
+        if (ListUtil.isNull(liftMachineDtos)) {
+            throw new CmdException("电梯不存在");
+        }
+
         LiftCameraPo liftCameraPo = BeanConvertUtil.covertBean(reqJson, LiftCameraPo.class);
         liftCameraPo.setLcId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        liftCameraPo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        liftCameraPo.setLiftName(liftMachineDtos.get(0).getMachineName());
+        liftCameraPo.setLiftMachineId(liftMachineDtos.get(0).getMachineId());
         int flag = liftCameraV1InnerServiceSMOImpl.saveLiftCamera(liftCameraPo);
 
         if (flag < 1) {

@@ -7,7 +7,7 @@
                 cameraName: '',
                 cameraCode: '',
                 factoryId: '',
-                liftName: '',
+                liftMachineId: '',
                 lifts:[]
             }
         },
@@ -61,7 +61,7 @@
                             errInfo: "相机厂家不能超过30"
                         },
                     ],
-                    'addLiftCameraInfo.liftName': [
+                    'addLiftCameraInfo.liftMachineId': [
                         {
                             limit: "required",
                             param: "",
@@ -112,7 +112,7 @@
                     cameraName: '',
                     cameraCode: '',
                     factoryId: '',
-                    liftName: '',
+                    liftMachineId: '',
                     lifts:[]
                 };
             },

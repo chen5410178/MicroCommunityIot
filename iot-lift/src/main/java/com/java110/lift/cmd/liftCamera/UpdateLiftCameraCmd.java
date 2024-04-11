@@ -25,11 +25,17 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
+import com.java110.dto.lift.LiftMachineDto;
 import com.java110.intf.lift.ILiftCameraV1InnerServiceSMO;
+import com.java110.intf.lift.ILiftMachineV1InnerServiceSMO;
 import com.java110.po.liftCamera.LiftCameraPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 
 /**
@@ -51,6 +57,10 @@ public class UpdateLiftCameraCmd extends Cmd {
     @Autowired
     private ILiftCameraV1InnerServiceSMO liftCameraV1InnerServiceSMOImpl;
 
+
+    @Autowired
+    private ILiftMachineV1InnerServiceSMO liftMachineV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "lcId", "lcId不能为空");
@@ -63,6 +73,17 @@ public class UpdateLiftCameraCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
         LiftCameraPo liftCameraPo = BeanConvertUtil.covertBean(reqJson, LiftCameraPo.class);
+
+        if (!StringUtil.isEmpty(reqJson.getString("liftMachineId"))) {
+            LiftMachineDto liftMachineDto = new LiftMachineDto();
+            liftMachineDto.setMachineId(reqJson.getString("liftMachineId"));
+            List<LiftMachineDto> liftMachineDtos = liftMachineV1InnerServiceSMOImpl.queryLiftMachines(liftMachineDto);
+            if (ListUtil.isNull(liftMachineDtos)) {
+                throw new CmdException("电梯不存在");
+            }
+            liftCameraPo.setLiftName(liftMachineDtos.get(0).getMachineName());
+        }
+
         int flag = liftCameraV1InnerServiceSMOImpl.updateLiftCamera(liftCameraPo);
 
         if (flag < 1) {
