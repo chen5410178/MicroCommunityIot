@@ -1,6 +1,7 @@
 /**
  入驻小区
  **/
+import HuaXiaVideo from "api/3d/HuaXiaVideo.js";
 (function (vc) {
     vc.extends({
         data: {
@@ -92,14 +93,21 @@
                 vc.emit('parkingAreaControl', 'notify', {
                     inMachineId: _enterMachineId
                 });
+                let _hmId = "";
                 $that.parkingAreaControlVideoInfo.inMachines.forEach((item) => {
                     if (item.machineId == _enterMachineId) {
                         wsUrl = item.machineIp;
+                        _hmId = item.hmId;
                     }
                 });
 
+                if(_hmId == "24"){
+                    wsUrl = "ws://" + wsUrl;
+                    $that._showHuaXiaCameraVideo(wsUrl, 'receiver1');
+                    return;
+                }
+
                 wsUrl = wsUrl.replace(':8131', ':9080');
-                let _protocol = window.location.protocol;
 
                 if (wsUrl.indexOf(":") < 0) {
                     wsUrl = wsUrl + ":9080";
@@ -133,17 +141,20 @@
 
 
                 let paId = "";
+                let _hmId = "";
                 $that.parkingAreaControlVideoInfo.outMachines.forEach((item) => {
                     if (item.machineId == _outMachineId) {
                         wsUrl = item.machineIp;
                         paId = item.locationObjId;
-                        // if (item.machineVersion.indexOf('300') > -1) {
-                        //     wsUrl += "/ws.flv"
-                        // } else {
-                        //     wsUrl += "/ws"
-                        // }
+                        _hmId = item.hmId;
                     }
                 });
+                if(_hmId == "24"){
+                    wsUrl = "ws://" + wsUrl;
+                    $that._showHuaXiaCameraVideo(wsUrl, 'receiver2');
+                    return;
+                }
+
                 wsUrl = wsUrl.replace(':8131', ':9080')
                 let _protocol = window.location.protocol;
 
@@ -179,6 +190,10 @@
 
                 jMap[_div] = jessibuca;
 
+            },
+            _showHuaXiaCameraVideo: function (wsUrl, _div) {
+                let _huaXiaVideo = new HuaXiaVideo(wsUrl,_div);
+                _huaXiaVideo.playVideo();
             },
             _openDoor: function (_inOut) {
                 let _machines = [];
