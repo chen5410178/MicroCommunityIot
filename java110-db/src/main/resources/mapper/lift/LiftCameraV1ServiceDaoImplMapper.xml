@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="liftCameraV1ServiceDaoImpl">
+
+
+    <!-- 保存电梯相机信息 add by wuxw 2018-07-03 -->
+    <insert id="saveLiftCameraInfo" parameterType="Map">
+        insert into lift_camera(
+        lc_id,heartbeat_time,lift_name,factory_id,lift_machine_id,camera_code,community_id,camera_name
+        ) values (
+        #{lcId},#{heartbeatTime},#{liftName},#{factoryId},#{liftMachineId},#{cameraCode},#{communityId},#{cameraName}
+        )
+    </insert>
+
+
+    <!-- 查询电梯相机信息 add by wuxw 2018-07-03 -->
+    <select id="getLiftCameraInfo" parameterType="Map" resultType="Map">
+        select t.lc_id,t.lc_id lcId,t.heartbeat_time,t.heartbeat_time heartbeatTime,t.lift_name,t.lift_name
+        liftName,t.factory_id,t.factory_id factoryId,t.lift_machine_id,t.lift_machine_id
+        liftMachineId,t.status_cd,t.status_cd statusCd,t.camera_code,t.camera_code
+        cameraCode,t.community_id,t.community_id communityId,t.camera_name,t.camera_name cameraName
+        from lift_camera t
+        where 1 =1
+        <if test="lcId !=null and lcId != ''">
+            and t.lc_id= #{lcId}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="liftName !=null and liftName != ''">
+            and t.lift_name= #{liftName}
+        </if>
+        <if test="factoryId !=null and factoryId != ''">
+            and t.factory_id= #{factoryId}
+        </if>
+        <if test="liftMachineId !=null and liftMachineId != ''">
+            and t.lift_machine_id= #{liftMachineId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="cameraCode !=null and cameraCode != ''">
+            and t.camera_code= #{cameraCode}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="cameraName !=null and cameraName != ''">
+            and t.camera_name= #{cameraName}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改电梯相机信息 add by wuxw 2018-07-03 -->
+    <update id="updateLiftCameraInfo" parameterType="Map">
+        update lift_camera t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            , t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="liftName !=null and liftName != ''">
+            , t.lift_name= #{liftName}
+        </if>
+        <if test="factoryId !=null and factoryId != ''">
+            , t.factory_id= #{factoryId}
+        </if>
+        <if test="liftMachineId !=null and liftMachineId != ''">
+            , t.lift_machine_id= #{liftMachineId}
+        </if>
+        <if test="cameraCode !=null and cameraCode != ''">
+            , t.camera_code= #{cameraCode}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="cameraName !=null and cameraName != ''">
+            , t.camera_name= #{cameraName}
+        </if>
+        where 1=1
+        <if test="lcId !=null and lcId != ''">
+            and t.lc_id= #{lcId}
+        </if>
+
+    </update>
+
+    <!-- 查询电梯相机数量 add by wuxw 2018-07-03 -->
+    <select id="queryLiftCamerasCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from lift_camera t
+        where 1 =1
+        <if test="lcId !=null and lcId != ''">
+            and t.lc_id= #{lcId}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="liftName !=null and liftName != ''">
+            and t.lift_name= #{liftName}
+        </if>
+        <if test="factoryId !=null and factoryId != ''">
+            and t.factory_id= #{factoryId}
+        </if>
+        <if test="liftMachineId !=null and liftMachineId != ''">
+            and t.lift_machine_id= #{liftMachineId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="cameraCode !=null and cameraCode != ''">
+            and t.camera_code= #{cameraCode}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="cameraName !=null and cameraName != ''">
+            and t.camera_name= #{cameraName}
+        </if>
+
+
+    </select>
+
+</mapper>
