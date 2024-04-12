@@ -15,7 +15,7 @@
  */
 package com.java110.intf.lift;
 
-import com.java110.dto.liftCamera.LiftCameraDto;
+import com.java110.dto.lift.LiftCameraDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.liftCamera.LiftCameraPo;
 import org.springframework.cloud.openfeign.FeignClient;

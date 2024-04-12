@@ -20,13 +20,12 @@ import com.java110.bean.dto.PageDto;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.lift.dao.ILiftCameraV1ServiceDao;
 import com.java110.intf.lift.ILiftCameraV1InnerServiceSMO;
-import com.java110.dto.liftCamera.LiftCameraDto;
+import com.java110.dto.lift.LiftCameraDto;
 import com.java110.po.liftCamera.LiftCameraPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

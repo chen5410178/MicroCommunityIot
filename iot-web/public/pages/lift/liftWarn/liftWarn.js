@@ -8,6 +8,7 @@
         data: {
             liftWarnInfo: {
                 liftWarns: [],
+                warnTypes:[],
                 total: 0,
                 records: 1,
                 moreCondition: false,
@@ -16,15 +17,25 @@
                     cameraName: '',
                     cameraCode: '',
                     liftName: '',
-
+                    warnType:''
                 }
             }
         },
         _initMethod: function () {
+            $that.liftWarnInfo.warnTypes = [{
+                name:'全部',
+                statusCd:''
+            }]
+            vc.getDict('lift_warn','warn_type',function(_data){
+                _data.forEach(_d=>{
+                    $that.liftWarnInfo.warnTypes.push(_d);
+                });
+            })
             $that._listLiftWarns(DEFAULT_PAGE, DEFAULT_ROWS);
         },
         _initEvent: function () {
 
+            
             vc.on('liftWarn', 'listLiftWarn', function (_param) {
                 $that._listLiftWarns(DEFAULT_PAGE, DEFAULT_ROWS);
             });
@@ -69,6 +80,10 @@
                 } else {
                     $that.liftWarnInfo.moreCondition = true;
                 }
+            },
+            _swatchWarnType:function(_item){
+                $that.liftWarnInfo.conditions.warnType = _item.statusCd;
+                $that._listLiftWarns(DEFAULT_PAGE, DEFAULT_ROWS);
             }
 
 

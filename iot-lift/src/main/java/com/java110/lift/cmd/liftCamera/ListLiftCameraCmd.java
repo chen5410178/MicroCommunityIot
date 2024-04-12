@@ -26,7 +26,7 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.lift.ILiftCameraV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.java110.dto.liftCamera.LiftCameraDto;
+import com.java110.dto.lift.LiftCameraDto;
 
 import java.util.List;
 import java.util.ArrayList;

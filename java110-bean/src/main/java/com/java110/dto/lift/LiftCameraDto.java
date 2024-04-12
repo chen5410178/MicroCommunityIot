@@ -1,4 +1,4 @@
-package com.java110.dto.liftCamera;
+package com.java110.dto.lift;
 
 import com.java110.bean.dto.PageDto;
 
