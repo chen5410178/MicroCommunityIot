@@ -54,7 +54,6 @@ public class OwnerUserLoginByOpenIdCmd extends Cmd {
     private IUserAttrV1InnerServiceSMO userAttrV1InnerServiceSMOImpl;
 
 
-
     @Autowired
     private IAppUserV1InnerServiceSMO appUserV1InnerServiceSMOImpl;
 
@@ -69,7 +68,6 @@ public class OwnerUserLoginByOpenIdCmd extends Cmd {
 
     @Autowired
     private ISystemInfoV1InnerServiceSMO systemInfoV1InnerServiceSMOImpl;
-
 
 
     @Override
@@ -87,7 +85,7 @@ public class OwnerUserLoginByOpenIdCmd extends Cmd {
         userAttrDto.setValue(reqJson.getString("openId"));
         List<UserAttrDto> userAttrDtos = userAttrV1InnerServiceSMOImpl.queryUserAttrs(userAttrDto);
 
-        if(ListUtil.isNull(userAttrDtos)){
+        if (ListUtil.isNull(userAttrDtos)) {
             throw new CmdException("未找到用户信息");
         }
 
@@ -118,7 +116,7 @@ public class OwnerUserLoginByOpenIdCmd extends Cmd {
         //todo 1.0 查询用户是否存在
         List<UserDto> userDtos = userInnerServiceSMOImpl.queryUsers(userDto);
 
-        if (userDtos == null || userDtos.size() < 1) {
+        if (ListUtil.isNull(userDtos)) {
             throw new CmdException("业主不存在，请先注册");
         }
 
@@ -131,7 +129,7 @@ public class OwnerUserLoginByOpenIdCmd extends Cmd {
             JSONObject userInfo = BeanConvertUtil.beanCovertJson(userDtos.get(0));
             userInfo.remove("userPwd");
             userInfo.put("token", token);
-            userInfo.put("communityId",communityId);
+            userInfo.put("communityId", communityId);
             userInfo.put("code", "0");
             userInfo.put("msg", "成功");
             context.setResponseEntity(ResultVo.createResponseEntity(userInfo));
