@@ -110,7 +110,12 @@ public class SbLiftCameraAdaptImpl implements ILiftCameraAdapt {
         liftWarnPo.setLcId(liftCameraDto.getLcId());
         liftWarnPo.setCurrentPeopleNum(values.getString("current_people_num"));
         liftWarnPo.setLeavePeopleNum(values.getString("leave_people_num"));
-        liftWarnPo.setHaveBicycle(values.getString("have_bicycle"));
+        if("0".equals(values.getString("have_bicycle"))) {
+            liftWarnPo.setHaveBicycle("N");
+        }else{
+            liftWarnPo.setHaveBicycle("Y");
+
+        }
         liftWarnPo.setLiftDoorState(values.getString("lift_door_state"));
         liftWarnPo.setWarnType(errors.getString("code"));
         liftWarnPo.setLiftOperateState(values.getString("lift_operate_state"));

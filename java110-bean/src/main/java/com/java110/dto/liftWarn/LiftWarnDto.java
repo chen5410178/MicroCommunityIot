@@ -21,6 +21,9 @@ public class LiftWarnDto extends PageDto implements Serializable {
     private String haveBicycle;
     private String liftDoorState;
     private String warnType;
+    private String warnTypeName;
+
+
     private String liftOperateState;
     private String currentSpeed;
     private String alarmInPolarity;
@@ -199,5 +202,13 @@ public class LiftWarnDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getWarnTypeName() {
+        return warnTypeName;
+    }
+
+    public void setWarnTypeName(String warnTypeName) {
+        this.warnTypeName = warnTypeName;
     }
 }

@@ -27,8 +27,11 @@
         alarmInPolarity,t.lw_id,t.lw_id lwId,t.lift_name,t.lift_name liftName,t.warn_time,t.warn_time
         warnTime,t.enter_people_num,t.enter_people_num enterPeopleNum,t.warn_img,t.warn_img
         warnImg,t.lift_machine_id,t.lift_machine_id liftMachineId,t.camera_code,t.camera_code
-        cameraCode,t.community_id,t.community_id communityId,t.camera_name,t.camera_name cameraName
+        cameraCode,t.community_id,t.community_id communityId,t.camera_name,t.camera_name cameraName,t.create_time createTime,
+        td.name warnTypeName
         from lift_warn t
+        left join t_dict td on t.warn_type = td.status_cd and td.table_name = 'lift_warn' and td.table_columns = 'warn_type'
+
         where 1 =1
         <if test="lcId !=null and lcId != ''">
             and t.lc_id= #{lcId}
