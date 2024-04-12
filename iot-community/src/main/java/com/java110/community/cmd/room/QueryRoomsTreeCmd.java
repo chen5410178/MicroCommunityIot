@@ -9,6 +9,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.intf.community.IRoomsTreeInnerServiceSMO;
 import com.java110.vo.ApiRoomDataVo;
 import com.java110.vo.ApiRoomVo;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Java110Cmd(serviceCode = "room.queryRoomsTree")
@@ -41,20 +43,47 @@ public class QueryRoomsTreeCmd extends Cmd {
         RoomDto roomDto = BeanConvertUtil.covertBean(reqJson, RoomDto.class);
         ApiRoomVo apiRoomVo = new ApiRoomVo();
 
-        List<RoomDto> roomDtoList = null;
+        List<RoomDto> roomDtos = null;
 
-        roomDtoList = roomsTreeInnerServiceSMOImpl.queryRoomsTree(roomDto);
+        roomDtos = roomsTreeInnerServiceSMOImpl.queryRoomsTree(roomDto);
+
         apiRoomVo.setTotal(0);
-        if (roomDtoList != null && roomDtoList.size() > 0) {
-            apiRoomVo.setTotal(roomDtoList.size());
+        if (!ListUtil.isNull(roomDtos)) {
+            roomDtos = deduplication(roomDtos);
+            apiRoomVo.setTotal(roomDtos.size());
         }
 
-        apiRoomVo.setRooms(BeanConvertUtil.covertBeanList(roomDtoList, ApiRoomDataVo.class));
+        apiRoomVo.setRooms(BeanConvertUtil.covertBeanList(roomDtos, ApiRoomDataVo.class));
         int row = reqJson.getInteger("row");
         apiRoomVo.setRecords((int) Math.ceil((double) apiRoomVo.getTotal() / (double) row));
 
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(JSONObject.toJSONString(apiRoomVo), HttpStatus.OK);
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private List<RoomDto> deduplication(List<RoomDto> roomDtos) {
+        List<RoomDto> newRoomDtos = new ArrayList<>();
+        for(RoomDto roomDto : roomDtos){
+            if(!hasInNewRoomDtos(newRoomDtos,roomDto)){
+                newRoomDtos.add(roomDto);
+            }
+        }
+
+        return newRoomDtos;
+    }
+
+    private boolean hasInNewRoomDtos(List<RoomDto> newRoomDtos, RoomDto roomDto) {
+        if(ListUtil.isNull(newRoomDtos)){
+            return false;
+        }
+
+        for(RoomDto newRoomDto : newRoomDtos){
+            if(newRoomDto.getRoomId().equals(roomDto.getRoomId())){
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
