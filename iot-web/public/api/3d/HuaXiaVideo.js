@@ -31,8 +31,8 @@ export default class HuaXiaVideo {
         let oldtime = new Date().valueOf();
         this.ws.onmessage = function (event) {
             let curtime = new Date().valueOf()
-            logtime = curtime - oldtime;
-            //console.log("当前时间:"+curtime+'-------'+"差值:"+logtime)
+            let logtime = curtime - oldtime;
+            console.log("当前时间:"+curtime+'-------'+"差值:"+logtime)
             oldtime = curtime;
             _that.heartCheck.reset().start();
             if (typeof (event.data) == "string") { //字符串数据
