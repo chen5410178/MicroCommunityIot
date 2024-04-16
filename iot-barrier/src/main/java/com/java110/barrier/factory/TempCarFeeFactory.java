@@ -71,6 +71,12 @@ public class TempCarFeeFactory {
 
         min = (nowTime.getTime() - payTime.getTime()) / (60 * 1000 * 1.00);
 
+        //todo 支付完成 并且没有超过15分钟 则分钟数修改为0
+        if ((nowTime.getTime() - payTime.getTime() < 15 * 60 * 1000)
+                && CarInoutDto.STATE_PAY.equals(carInoutDto.getState()) ) {
+            min = 0;
+        }
+
         minLong = new Double(Math.ceil(min)).longValue();
 
 

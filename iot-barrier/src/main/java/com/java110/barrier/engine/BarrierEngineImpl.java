@@ -219,6 +219,12 @@ public class BarrierEngineImpl implements IBarrierEngine {
         carInoutPo.setRemark("手工进场");
         carInoutPo.setCiId(GenerateCodeFactory.getGeneratorId("11"));
         carInoutPo.setInTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        carInoutPo.setUnlicense("F");
+        //无牌车标识
+        if(acceptJson.containsKey("unlicense")){
+            carInoutPo.setUnlicense("T");
+        }
+
 
 
         carInoutV1InnerServiceSMOImpl.saveCarInout(carInoutPo);
@@ -504,6 +510,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
         carInoutPaymentPo.setInoutId(carInoutDtos.get(0).getInoutId());
         carInoutPaymentPo.setPaId(carInoutDtos.get(0).getPaId());
         carInoutPaymentPo.setPayType(tempCarPayOrderDto.getPayType());
+        carInoutPaymentPo.setPayCharge(tempCarPayOrderDto.getAmount() + "");
         carInoutPaymentPo.setRealCharge(tempCarPayOrderDto.getAmount() + "");
         carInoutPaymentPo.setPaymentId(GenerateCodeFactory.getGeneratorId("9"));
         if (tempCarPayOrderDto.getPayCharge() != 0) {
@@ -535,7 +542,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
         }
 
         // 校验是否有车辆 在门口
-        if (!carHasOpenError(carInoutDtos.get(0).getCarNum(), carInoutDtos.get(0).getPaId(), "")) {
+        if (!carHasOpenError(carInoutDtos.get(0).getCarNum(), carInoutDtos.get(0).getPaId(), carInoutDtos.get(0).getUnlicense())) {
             return new ResultVo(ResultVo.CODE_OK, "支付成功");
         }
 

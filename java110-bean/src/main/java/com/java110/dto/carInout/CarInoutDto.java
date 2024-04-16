@@ -66,6 +66,8 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
 
     private String configId;
 
+    private String unlicense;
+
 
     private List<ParkingCouponCarDto> parkingCouponCarDtos;
 
@@ -292,4 +294,11 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
         this.stateName = stateName;
     }
 
+    public String getUnlicense() {
+        return unlicense;
+    }
+
+    public void setUnlicense(String unlicense) {
+        this.unlicense = unlicense;
+    }
 }

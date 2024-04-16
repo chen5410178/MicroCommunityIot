@@ -46,6 +46,8 @@ public class CarInoutPo implements Serializable {
     private String inTime;
     private String carTypeName;
 
+    private String unlicense;
+
     public String getPaNum() {
         return paNum;
     }
@@ -180,5 +182,13 @@ public class CarInoutPo implements Serializable {
 
     public void setInTime(String inTime) {
         this.inTime = inTime;
+    }
+
+    public String getUnlicense() {
+        return unlicense;
+    }
+
+    public void setUnlicense(String unlicense) {
+        this.unlicense = unlicense;
     }
 }
