@@ -23,7 +23,7 @@ import java.text.ParseException;
 import java.util.*;
 
 @Java110Cmd(serviceCode = "carInout.getFreeParkingSpace")
-public class MachineGetFreeParkingSpaceCmd extends Cmd {
+public class GetFreeParkingSpaceCmd extends Cmd {
 
     private static final String MACHINE_DIRECTION_IN = "3306"; // 进入
 
@@ -70,6 +70,7 @@ public class MachineGetFreeParkingSpaceCmd extends Cmd {
         CarInoutDto carInoutDto = new CarInoutDto();
         carInoutDto.setCommunityId(communityId);
         carInoutDto.setStates(new String[]{"100300", "100400", "100600"});//状态，100300 进场状态 100400 支付完成 100500 离场状态 100600 支付超时重新支付
+        carInoutDto.setCarType(CarInoutDto.CAR_TYPE_TEMP);
         List<CarInoutDto> carInoutDtos = carInoutInnerServiceSMOImpl.queryCarInouts(carInoutDto);
         List<String> carNums = new ArrayList<>();//小区内的在场车辆车牌
         for (CarInoutDto tmpCarInoutDto : carInoutDtos) {
