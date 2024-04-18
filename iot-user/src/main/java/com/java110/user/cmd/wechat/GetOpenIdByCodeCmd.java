@@ -12,6 +12,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.smallWeChat.SmallWeChatDto;
 import com.java110.dto.userAttr.UserAttrDto;
@@ -67,7 +68,7 @@ public class GetOpenIdByCodeCmd extends Cmd {
             smallWeChatDto.setAppId(reqJson.getString("appId"));
             List<SmallWeChatDto> smallWeChatDtos = smallWechatV1InnerServiceSMOImpl.querySmallWeChats(smallWeChatDto);
 
-            if (smallWeChatDtos == null || smallWeChatDtos.size() < 1) {
+            if (ListUtil.isNull(smallWeChatDtos)) {
                 throw new IllegalArgumentException("未配置小程序信息");
             }
 
