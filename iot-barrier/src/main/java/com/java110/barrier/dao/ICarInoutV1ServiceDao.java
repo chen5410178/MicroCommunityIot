@@ -74,4 +74,6 @@ public interface ICarInoutV1ServiceDao {
     int queryCarInoutDetailsCount(Map info);
 
     List<Map> hasOpenDoorError(Map info);
+
+    int queryCarInCount(Map map);
 }

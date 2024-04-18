@@ -129,12 +129,12 @@ public class CarInoutV1ServiceDaoImpl extends BaseServiceDao implements ICarInou
     public int queryCarInoutDetailsCount(Map info) {
         logger.debug("查询 queryCarInoutDetailsCount 入参 info : {}",info);
 
-        List<Map> businessCarInoutDetailInfos = sqlSessionTemplate.selectList("carInoutV1ServiceDaoImpl.queryCarInoutDetailsCount", info);
-        if (businessCarInoutDetailInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("carInoutV1ServiceDaoImpl.queryCarInoutDetailsCount", info);
+        if (infos.size() < 1) {
             return 0;
         }
 
-        return Integer.parseInt(businessCarInoutDetailInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
     @Override
@@ -142,6 +142,18 @@ public class CarInoutV1ServiceDaoImpl extends BaseServiceDao implements ICarInou
         List<Map> infos = sqlSessionTemplate.selectList("carInoutV1ServiceDaoImpl.hasOpenDoorError",info);
 
         return infos;
+    }
+
+    @Override
+    public int queryCarInCount(Map info) {
+        logger.debug("查询 queryCarInoutDetailsCount 入参 info : {}",info);
+
+        List<Map> infos = sqlSessionTemplate.selectList("carInoutV1ServiceDaoImpl.queryCarInCount", info);
+        if (infos.size() < 1) {
+            return 0;
+        }
+
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
 }
