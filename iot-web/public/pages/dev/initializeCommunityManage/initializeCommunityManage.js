@@ -48,10 +48,10 @@
                 vc.http.apiGet('/community.listCommunitys',
                     _param,
                     function (json, res) {
-                        var _initializeCommunityManageInfo = JSON.parse(json);
-                        $that.initializeCommunityManageInfo.total = _initializeCommunityManageInfo.total;
-                        $that.initializeCommunityManageInfo.records = _initializeCommunityManageInfo.records;
-                        $that.initializeCommunityManageInfo.initializeCommunitys = _initializeCommunityManageInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.initializeCommunityManageInfo.total = _json.total;
+                        $that.initializeCommunityManageInfo.records = _json.records;
+                        $that.initializeCommunityManageInfo.initializeCommunitys = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.initializeCommunityManageInfo.records,
                             dataCount: $that.initializeCommunityManageInfo.total,
@@ -69,7 +69,7 @@
                     devPassword: _community._devPassword
                 }
                 vc.http.apiPost(
-                    '/initializeBuildingUnit/deleteBuildingUnit',
+                    '/initializeBuildingUnit.deleteBuildingUnit',
                     JSON.stringify(_param), {
                         emulateJSON: true
                     },
