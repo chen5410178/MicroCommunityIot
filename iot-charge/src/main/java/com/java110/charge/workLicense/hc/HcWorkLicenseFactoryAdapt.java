@@ -138,7 +138,7 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         reqType = String.format("%02x", aa);
         String reqData = null;
         try {
-            byte[] data = ttsText.getBytes("GBK");
+            byte[] data = ttsText.getBytes("UTF-8");
             reqData = reqType + BytesUtil.bytesToHex(data);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
