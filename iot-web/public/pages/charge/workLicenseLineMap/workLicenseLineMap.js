@@ -36,6 +36,7 @@ import WorkLicenseLineMapApi from 'api/map/workLicenseLineMapApi.js';
                 let _pos = $that.workLicenseLineMapInfo.pos;
                 let _tmpLon = 0;
                 _pos.forEach(_m => {
+                   
                     _tmpLon = _m.lon;
                     _m.lon = _m.lat;
                     _m.lat = _tmpLon;
@@ -61,7 +62,15 @@ import WorkLicenseLineMapApi from 'api/map/workLicenseLineMapApi.js';
                     param,
                     function (json, res) {
                         let _json = JSON.parse(json);
-                        $that.workLicenseLineMapInfo.pos = _json.data;
+                        let _data = [];
+                        _json.data.forEach(_m =>{
+                            console.log(_m);
+                            if(_m.lon == 0 || _m.lat == 0){
+                                return;
+                            }
+                            _data.push(_m);
+                        })
+                        $that.workLicenseLineMapInfo.pos = _data;
                         $that._initMap();
                     }, function (errInfo, error) {
                         console.log('请求失败处理');

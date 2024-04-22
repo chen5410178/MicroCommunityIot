@@ -7,8 +7,8 @@ export default class WorkLicenseLineMapApi {
     }
 
     initMap(_pos,_elementId) {
-        let _lon = 39.984120;
-        let _lat = 116.307484;
+        let _lon = 116.307484;
+        let _lat = 39.984120;
         _pos.forEach(_m => {
             let _latLon = wgs84togcj02(_m.lon,_m.lat);
             _m.lat = _latLon.lat;

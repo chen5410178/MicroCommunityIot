@@ -38,6 +38,9 @@ import {wgs84togcj02} from 'api/map/mapApi.js';
                 let _machines = $that.workLicenseMapInfo.machines;
 
                 _machines.forEach(_m => {
+                    if(_m.lat == 0 || _m.lon == 0){
+                        return;
+                    }
                     let _latLon = wgs84togcj02(_m.lat, _m.lon)
                     _m.lon = _latLon.lat;
                     _m.lat = _latLon.lon;
