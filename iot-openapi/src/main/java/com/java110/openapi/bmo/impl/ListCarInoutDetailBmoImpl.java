@@ -37,7 +37,7 @@ public class ListCarInoutDetailBmoImpl implements IIotCommonApiBmo {
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
         Assert.hasKeyAndValue(reqJson, "page", "未包含page");
         Assert.hasKeyAndValue(reqJson, "row", "未包含row");
-        Assert.hasKeyAndValue(reqJson, "paId", "未包含paId");
+        Assert.hasKeyAndValue(reqJson, "paNum", "未包含paNum");
 
     }
 
@@ -45,7 +45,7 @@ public class ListCarInoutDetailBmoImpl implements IIotCommonApiBmo {
     public void doCmd(ICmdDataFlowContext context, JSONObject reqJson) {
         CarInoutDto carInoutDetailDto = BeanConvertUtil.covertBean(reqJson, CarInoutDto.class);
 
-        carInoutDetailDto.setPaId(reqJson.getString("paId"));
+        //carInoutDetailDto.setPaId(reqJson.getString("paId"));
 
         int count = carInoutV1InnerServiceSMOImpl.queryCarInoutDetailsCount(carInoutDetailDto);
 

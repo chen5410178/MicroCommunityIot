@@ -47,7 +47,7 @@ public class ListCarInParkingAreaBmoImpl implements IIotCommonApiBmo {
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
         Assert.hasKeyAndValue(reqJson, "page", "未包含page");
         Assert.hasKeyAndValue(reqJson, "row", "未包含row");
-        Assert.hasKeyAndValue(reqJson, "paId", "未包含paId");
+        Assert.hasKeyAndValue(reqJson, "paNum", "未包含paNum");
     }
 
     @Override
@@ -55,7 +55,7 @@ public class ListCarInParkingAreaBmoImpl implements IIotCommonApiBmo {
         CarInoutDto carInoutDto = BeanConvertUtil.covertBean(reqJson, CarInoutDto.class);
         carInoutDto.setStates(new String[]{CarInoutDto.STATE_IN, CarInoutDto.STATE_PAY, CarInoutDto.STATE_REPAY});
 
-        carInoutDto.setPaId(reqJson.getString("paId"));
+        //carInoutDto.setPaId(reqJson.getString("paId"));
 
         int count = carInoutV1InnerServiceSMOImpl.queryCarInoutsCount(carInoutDto);
 
