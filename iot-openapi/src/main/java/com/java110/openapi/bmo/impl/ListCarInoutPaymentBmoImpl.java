@@ -3,13 +3,12 @@ package com.java110.openapi.bmo.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.core.context.ICmdDataFlowContext;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.utils.*;
+import com.java110.dto.parking.ParkingAreaDto;
 import com.java110.dto.payment.CarInoutPaymentDto;
 import com.java110.intf.barrier.ICarInoutPaymentV1InnerServiceSMO;
 import com.java110.intf.barrier.IParkingBoxAreaV1InnerServiceSMO;
+import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
 import com.java110.openapi.bmo.IIotCommonApiBmo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,19 +26,30 @@ public class ListCarInoutPaymentBmoImpl implements IIotCommonApiBmo {
     @Autowired
     private IParkingBoxAreaV1InnerServiceSMO parkingBoxAreaV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IParkingAreaV1InnerServiceSMO parkingAreaV1InnerServiceSMOImpl;
+
     @Override
     public void validate(ICmdDataFlowContext context, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
         Assert.hasKeyAndValue(reqJson, "page", "未包含page");
         Assert.hasKeyAndValue(reqJson, "row", "未包含row");
-        Assert.hasKeyAndValue(reqJson, "paId", "未包含paId");
+        Assert.hasKeyAndValue(reqJson, "paNum", "未包含paId");
     }
 
     @Override
     public void doCmd(ICmdDataFlowContext context, JSONObject reqJson) {
+        ParkingAreaDto parkingAreaDto = new ParkingAreaDto();
+        parkingAreaDto.setNum(reqJson.getString("paNum"));
+        parkingAreaDto.setCommunityId(reqJson.getString("communityId"));
+        List<ParkingAreaDto> parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
+        if (ListUtil.isNull(parkingAreaDtos)) {
+            throw new IllegalArgumentException("停车场不存在");
+        }
+
         CarInoutPaymentDto carInoutPaymentDto = BeanConvertUtil.covertBean(reqJson, CarInoutPaymentDto.class);
 
-        carInoutPaymentDto.setPaId(reqJson.getString("paId"));
+        carInoutPaymentDto.setPaId(parkingAreaDtos.get(0).getPaId());
 
         if (!StringUtil.isEmpty(carInoutPaymentDto.getEndTime())) {
             Date endTime = DateUtil.getDateFromStringB(carInoutPaymentDto.getEndTime());
