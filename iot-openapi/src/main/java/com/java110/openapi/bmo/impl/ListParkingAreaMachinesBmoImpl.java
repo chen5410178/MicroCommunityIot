@@ -7,9 +7,11 @@ import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.ListUtil;
 import com.java110.dto.barrier.BarrierDto;
+import com.java110.dto.parking.ParkingAreaDto;
 import com.java110.dto.parking.ParkingBoxAreaDto;
 import com.java110.intf.barrier.IBarrierV1InnerServiceSMO;
 import com.java110.intf.barrier.IParkingBoxAreaV1InnerServiceSMO;
+import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
 import com.java110.openapi.bmo.IIotCommonApiBmo;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,20 +30,31 @@ public class ListParkingAreaMachinesBmoImpl implements IIotCommonApiBmo {
     @Autowired
     private IParkingBoxAreaV1InnerServiceSMO parkingBoxAreaV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IParkingAreaV1InnerServiceSMO parkingAreaV1InnerServiceSMOImpl;
+
     @Override
     public void validate(ICmdDataFlowContext context, JSONObject reqJson) {
         Assert.jsonObjectHaveKey(reqJson, "communityId", "请求报文中未包含小区信息");
-        Assert.jsonObjectHaveKey(reqJson, "paId", "请求报文中未包含停车场");
+        Assert.jsonObjectHaveKey(reqJson, "paNum", "请求报文中未包含停车场");
         Assert.hasKeyAndValue(reqJson, "page", "未包含page");
         Assert.hasKeyAndValue(reqJson, "row", "未包含row");
     }
 
     @Override
     public void doCmd(ICmdDataFlowContext context, JSONObject reqJson) {
+
+        ParkingAreaDto parkingAreaDto = new ParkingAreaDto();
+        parkingAreaDto.setNum(reqJson.getString("paNum"));
+        parkingAreaDto.setCommunityId(reqJson.getString("communityId"));
+        List<ParkingAreaDto> parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
+        if (ListUtil.isNull(parkingAreaDtos)) {
+            throw new IllegalArgumentException("停车场不存在");
+        }
         List<BarrierDto> machines = null;
         ParkingBoxAreaDto parkingBoxAreaDto = new ParkingBoxAreaDto();
         parkingBoxAreaDto.setCommunityId(reqJson.getString("communityId"));
-        parkingBoxAreaDto.setPaId(reqJson.getString("paId"));
+        parkingBoxAreaDto.setPaId(parkingAreaDtos.get(0).getPaId());
         parkingBoxAreaDto.setDefaultArea(ParkingBoxAreaDto.DEFAULT_AREA_TRUE);
         List<ParkingBoxAreaDto> parkingBoxAreaDtos = parkingBoxAreaV1InnerServiceSMOImpl.queryParkingBoxAreas(parkingBoxAreaDto);
 
