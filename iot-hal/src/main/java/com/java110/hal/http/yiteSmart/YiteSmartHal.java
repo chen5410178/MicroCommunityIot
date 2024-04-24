@@ -85,11 +85,15 @@ public class YiteSmartHal {
     @RequestMapping(path = "/v3_1/device/login", method = RequestMethod.POST)
     public ResponseEntity<String> login(@RequestBody String postInfo,
                                         HttpServletRequest request) {
-        logger.debug("进入设备登陆接口,/v3_1/device/login");
+
+        Map<String,String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        logger.debug("进入设备登陆接口,/v3_1/device/login,{}",headers);
 
         logger.debug("设备来登录，{}", postInfo);
         JSONObject param = JSONObject.parseObject(postInfo);
-        String uuId = param.getString("uuid");
+        String uuId = headers.get("uuid");
 
         if (StringUtil.isEmpty(uuId)) {
             throw new IllegalArgumentException("未包含设备ID");
