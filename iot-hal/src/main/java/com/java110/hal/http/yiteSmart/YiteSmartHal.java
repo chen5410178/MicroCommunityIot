@@ -40,7 +40,7 @@ public class YiteSmartHal {
 
         logger.debug("进入设备校验接口,/v3_1/device/test");
 
-        String uuId = request.getHeader("uuid");
+        String uuId = request.getParameter("uuid");
 
         try {
             if (StringUtil.isEmpty(uuId)) {
