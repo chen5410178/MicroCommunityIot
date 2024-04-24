@@ -92,8 +92,10 @@ public class YiteSmartHal {
         logger.debug("进入设备登陆接口,/v3_1/device/login,{}",headers);
 
         logger.debug("设备来登录，{}", postInfo);
-        JSONObject param = JSONObject.parseObject(postInfo);
-        String uuId = headers.get("uuid");
+
+        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+
+        String uuId = reqJson.getString("uuid");
 
         if (StringUtil.isEmpty(uuId)) {
             throw new IllegalArgumentException("未包含设备ID");
