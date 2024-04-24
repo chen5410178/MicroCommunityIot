@@ -42,11 +42,11 @@ public class YiteSmartHal {
     public ResponseEntity<String> test(HttpServletRequest request) {
 
 
-        Map<String,String> headers = new HashMap<>();
+        Map<String, String> headers = new HashMap<>();
         RequestUtils.initHeadParam(request, headers);
         RequestUtils.initUrlParam(request, headers);
 
-        logger.debug("进入设备校验接口,/v3_1/device/test,{}",headers.toString());
+        logger.debug("进入设备校验接口,/v3_1/device/test,{}", headers.toString());
 
         JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
 
@@ -86,10 +86,10 @@ public class YiteSmartHal {
     public ResponseEntity<String> login(@RequestBody String postInfo,
                                         HttpServletRequest request) {
 
-        Map<String,String> headers = new HashMap<>();
+        Map<String, String> headers = new HashMap<>();
         RequestUtils.initHeadParam(request, headers);
         RequestUtils.initUrlParam(request, headers);
-        logger.debug("进入设备登陆接口,/v3_1/device/login,{}",headers);
+        logger.debug("进入设备登陆接口,/v3_1/device/login,{}", headers);
 
         logger.debug("设备来登录，{}", postInfo);
 
@@ -178,11 +178,12 @@ public class YiteSmartHal {
         mqtt.put("ip", "49.232.150.183");
         mqtt.put("port", "1883");
         mqtt.put("username", "wuxw");
-        mqtt.put("publish_topic", "/yitesmart/accesscontrol");
-        mqtt.put("subscribe_id", "SUBSCRIBE:36:" + uuId);
-        mqtt.put("publish_id", "PUBLISH:36:" + uuId);
+        mqtt.put("publish_topic", "zghl_door/server_php");
+        mqtt.put("subscribe_id", "SUBSCRIBE:" + accessControlDtos.get(0).getCommunityId() + ":" + uuId);
+        mqtt.put("publish_id", "PUBLISH:" + accessControlDtos.get(0).getCommunityId() + ":" + uuId);
         JSONArray subTopics = new JSONArray();
-        subTopics.add("yite_door/" + uuId);
+        subTopics.add("zghl_door/" + uuId);
+        subTopics.add("zghl_door/" + accessControlDtos.get(0).getCommunityId());
         mqtt.put("subscribe_topic", subTopics);
 
         logger.debug("登陆返回报文：{}", request.toString());
