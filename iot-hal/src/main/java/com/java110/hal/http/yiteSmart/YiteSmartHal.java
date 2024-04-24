@@ -48,8 +48,9 @@ public class YiteSmartHal {
 
         logger.debug("进入设备校验接口,/v3_1/device/test,{}",headers.toString());
 
+        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
 
-        String uuId = headers.get("uuid");
+        String uuId = reqJson.getString("uuid");
 
         try {
             if (StringUtil.isEmpty(uuId)) {
