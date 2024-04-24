@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.RequestUtils;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.hal.http.AccessControlHal;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class YiteSmartHal {
@@ -38,9 +41,15 @@ public class YiteSmartHal {
     @RequestMapping(path = "/v3_1/device/test", method = RequestMethod.GET)
     public ResponseEntity<String> test(HttpServletRequest request) {
 
-        logger.debug("进入设备校验接口,/v3_1/device/test");
 
-        String uuId = request.getParameter("uuid");
+        Map<String,String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+
+        logger.debug("进入设备校验接口,/v3_1/device/test,{}",headers.toString());
+
+
+        String uuId = headers.get("uuid");
 
         try {
             if (StringUtil.isEmpty(uuId)) {
