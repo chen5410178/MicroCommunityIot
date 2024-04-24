@@ -38,18 +38,25 @@ public class YiteSmartHal {
     @RequestMapping(path = "/v3_1/device/test", method = RequestMethod.GET)
     public ResponseEntity<String> test(HttpServletRequest request) {
 
+        logger.debug("进入设备校验接口,/v3_1/device/test");
+
         String uuId = request.getHeader("uuid");
 
-        if (StringUtil.isEmpty(uuId)) {
-            throw new IllegalArgumentException("未包含设备ID");
-        }
+        try {
+            if (StringUtil.isEmpty(uuId)) {
+                throw new IllegalArgumentException("未包含设备ID");
+            }
 
-        AccessControlDto accessControlDto = new AccessControlDto();
-        accessControlDto.setMachineCode(uuId);
-        List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+            AccessControlDto accessControlDto = new AccessControlDto();
+            accessControlDto.setMachineCode(uuId);
+            List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
 
-        if (ListUtil.isNull(accessControlDtos)) {
-            throw new IllegalArgumentException("设备不存在");
+            if (ListUtil.isNull(accessControlDtos)) {
+                throw new IllegalArgumentException("设备不存在");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
         }
 
         JSONObject result = new JSONObject();
@@ -68,6 +75,8 @@ public class YiteSmartHal {
     @RequestMapping(path = "/v3_1/device/login", method = RequestMethod.POST)
     public ResponseEntity<String> login(@RequestBody String postInfo,
                                         HttpServletRequest request) {
+        logger.debug("进入设备登陆接口,/v3_1/device/login");
+
         logger.debug("设备来登录，{}", postInfo);
         JSONObject param = JSONObject.parseObject(postInfo);
         String uuId = param.getString("uuid");
@@ -87,7 +96,7 @@ public class YiteSmartHal {
         JSONObject result = JSONObject.parseObject("{\n" +
                 "\t\"code\": 200,\n" +
                 "\t\"msg\": \"\",\n" +
-                "\t\"timestamp\": "+DateUtil.getCurrentDate().getTime()+",\n" +
+                "\t\"timestamp\": " + DateUtil.getCurrentDate().getTime() + ",\n" +
                 "\t\"data\": {\n" +
                 "\t\t\"socket\": {\n" +
                 "\t\t\t\"ip\": \"120.28.34.218\",\n" +
@@ -148,19 +157,19 @@ public class YiteSmartHal {
                 "}");
 
         JSONObject mqtt = result.getJSONObject("data").getJSONObject("mqtt");
-        mqtt.put("client_id",uuId);
-        mqtt.put("mqtt_pwd","wuxw2015");
-        mqtt.put("ip","49.232.150.183");
-        mqtt.put("port","1883");
-        mqtt.put("username","wuxw");
-        mqtt.put("publish_topic","/yitesmart/accesscontrol");
-        mqtt.put("subscribe_id","SUBSCRIBE:36:"+uuId);
-        mqtt.put("publish_id","PUBLISH:36:"+uuId);
+        mqtt.put("client_id", uuId);
+        mqtt.put("mqtt_pwd", "wuxw2015");
+        mqtt.put("ip", "49.232.150.183");
+        mqtt.put("port", "1883");
+        mqtt.put("username", "wuxw");
+        mqtt.put("publish_topic", "/yitesmart/accesscontrol");
+        mqtt.put("subscribe_id", "SUBSCRIBE:36:" + uuId);
+        mqtt.put("publish_id", "PUBLISH:36:" + uuId);
         JSONArray subTopics = new JSONArray();
-        subTopics.add("yite_door/"+uuId);
-        mqtt.put("subscribe_topic",subTopics);
+        subTopics.add("yite_door/" + uuId);
+        mqtt.put("subscribe_topic", subTopics);
 
-        logger.debug("登陆返回报文：{}",request.toString());
+        logger.debug("登陆返回报文：{}", request.toString());
 
         return new ResponseEntity<>(result.toJSONString(), HttpStatus.OK);
     }
