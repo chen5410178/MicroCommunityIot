@@ -48,6 +48,17 @@ spring:
     username: wuxw
     keepalive: 20
     poolSize: 20
+  datasource:
+    url: jdbc:mysql://192.168.100.108:3306/hc_iot?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: hc_iot
+    password: hc_iot12345678
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      initial-size: 5
+      max-active: 10
+      min-idle: 5
+      max-wait: 60000
 
 
 
