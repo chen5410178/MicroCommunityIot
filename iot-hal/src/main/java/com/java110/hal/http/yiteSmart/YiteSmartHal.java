@@ -193,14 +193,17 @@ public class YiteSmartHal {
 
 
     @RequestMapping(path = "/device/v1/face/users", method = RequestMethod.GET)
-    public ResponseEntity<String> user(
-                                        HttpServletRequest request){
+    public ResponseEntity<String> user(HttpServletRequest request){
 
         Map<String, String> headers = new HashMap<>();
         RequestUtils.initHeadParam(request, headers);
         RequestUtils.initUrlParam(request, headers);
 
-        logger.debug("进入设备校验接口,/v3_1/device/test,{}", headers.toString());
+        String t = request.getParameter("t");
+
+        logger.debug("进入设备同步人脸,/device/v1/face/users,t={},{}",t, headers.toString());
+
+
         String body = "{\n" +
                 "    \"code\": 200,\n" +
                 "    \"msg\": \"success\",\n" +
@@ -245,7 +248,7 @@ public class YiteSmartHal {
                 "                                \"expired\": 1618965646\n" +
                 "                            }\n" +
                 "                        ]\n" +
-                "                    },\n" +
+                "                    }],\n" +
                 "                \"del\": {\n" +
                 "                    \"del_room\": [],\n" +
                 "                    \"del_user\": []\n" +
