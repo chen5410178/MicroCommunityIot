@@ -202,7 +202,7 @@ public class YiteSmartHal {
         String t = request.getParameter("t");
 
         logger.debug("进入设备同步人脸,/device/v1/face/users,t={},{}",t, headers.toString());
-
+        long timestrap = DateUtil.getCurrentDate().getTime();
 
         String body = "{\n" +
                 "    \"code\": 200,\n" +
@@ -225,27 +225,13 @@ public class YiteSmartHal {
                 "                                \"id\": 416290,\n" +
                 "                                \"uid\": \"6003e234c6f988a6fc7ab5275f766d1e\",\n" +
                 "                                \"phone\": \"17782426083\",\n" +
-                "                                \"expired\": 4294967295\n" +
+                "                                \"expired\": "+timestrap+"\n" +
                 "                            },\n" +
                 "                            {\n" +
                 "                                \"id\": 1004352,\n" +
                 "                                \"uid\": \"7247871cfb24f48bf1877d8f6795cc23\",\n" +
                 "                                \"phone\": \"17728043791\",\n" +
-                "                                \"expired\": 1589205120\n" +
-                "                            }\n" +
-                "                        ]\n" +
-                "                    },\n" +
-                "                    {\n" +
-                "                        \"id\": 392146,\n" +
-                "                        \"uid\": \"9621c06d7a09214da1809019dfa49533\",\n" +
-                "                        \"name\": \"0201\",\n" +
-                "                        \"num\": \"0101-0201\",\n" +
-                "                        \"user\": [\n" +
-                "                            {\n" +
-                "                                \"id\": 976586,\n" +
-                "                                \"uid\": \"7a6cbdceb1225595b9d99373762301d7\",\n" +
-                "                                \"phone\": \"17776125054\",\n" +
-                "                                \"expired\": 1618965646\n" +
+                "                                \"expired\": "+timestrap+"\n" +
                 "                            }\n" +
                 "                        ]\n" +
                 "                    }],\n" +
