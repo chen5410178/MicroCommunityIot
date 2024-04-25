@@ -245,74 +245,67 @@ public class YiteSmartHal {
         data.put("token","eyJ0eXBlIjoiSldUIiwiYWxnIjoiU0hBMjU2In0=.eyJpc3MiOiJkZXZlbG9wZXJAemhpZ3VvaHVsaWFuLmNvbSIsImlhdCI6MTYyNjcwMDQ1NiwiZXhwIjoxNjI3MzA1MjU2LCJ1aWQiOiIyMjAxOGFiMzIxODY3ODQ1NmYzNDZhZjBiM2Y2YWNhMyIsImlkIjoiZ2F0ZSIsInBhcmFtcyI6eyJnYXRlX3VpZCI6IjIyMDE4YWIzMjE4Njc4NDU2ZjM0NmFmMGIzZjZhY2EzIiwiZ2F0ZV9ndWlkIjoiODQxMDc4OTY4NDA4MmMxNjA3ZDAiLCJhcHBfaWQiOiIyMDIwMTAyMTE3NDAzMiIsInByb2plY3RfdWlkIjoiMWZlMDIwMzJhZWFiODRlYjAyMWNkYmZhYmNmMjY5NjYifX0=.65585f3313292b7d24fc8f9ba42cfe7f59cbc2e0c8ee47b9ca95ee4715bfe114.20201021174032");
 
 
-
-
-//        JSONObject result = JSONObject.parseObject("{\n" +
-//                "\t\"code\": 200,\n" +
-//                "\t\"msg\": \"\",\n" +
-//                "\t\"timestamp\": " + DateUtil.getCurrentDate().getTime() + ",\n" +
-//                "\t\"data\": {\n" +
-//                "\t\t\"socket\": {\n" +
-//                "\t\t\t\"ip\": \"120.28.34.218\",\n" +
-//                "\t\t\t\"port\": \"9700\",\n" +
-//                "\t\t\t\"token\": \"abcdef\",\n" +
-//                "\t\t\t\"interval\": \"90\"\n" +
-//                "\t\t},\n" +
-//                "\t\t\"mqtt\": {\n" +
-//                "\t\t\t\"client_id\": \"\",\n" +
-//                "\t\t\t\"mqtt_pwd\": \"XXX@122223$\",\n" +
-//                "\t\t\t\"ip\": \"120.28.147.218\",\n" +
-//                "\t\t\t\"port\": \"1443\",\n" +
-//                "\t\t\t\"username\": \"xiaozhi\",\n" +
-//                "\t\t\t\"subscribe_topic\": [\n" +
-//                "\t\t\t\t\"zghl_door/8410789684082c1607d0\", //设备ID\n" +
-//                "\t\t\t\t\"zghl_door/1fe02032aeab84eb021cdbfabcf26966\"  //项目小区ID\n" +
-//                "\t\t\t],\n" +
-//                "\t\t\t\"publish_topic\": \"zghl_door/server_php\",\n" +
-//                "\t\t\t\"subscribe_id\": \"SUBSCRIBE:36:8410789684082c1607d0\", //设备ID\n" +
-//                "\t\t\t\"publish_id\": \"PUBLISH:36:8410789684082c1607d0\" //设备ID\n" +
-//                "\t\t},\n" +
-//                "\t\t\"sip\": {\n" +
-//                "\t\t\t\"ip\": \"39.108.64.137\",\n" +
-//                "\t\t\t\"port\": \"6050\",\n" +
-//                "\t\t\t\"username\": 101011,\n" +
-//                "\t\t\t\"sip\": \"Z$Xiaowo\"\n" +
-//                "\t\t},\n" +
-//                "\t\t\"secret_key\": \"023917234\",\n" +
-//                "\t\t\"ad_config\": {\n" +
-//                "\t\t\t\"ad_url\": \"https://adapi.***.com\",\n" +
-//                "\t\t\t\"app_id\": \"10862002\",\n" +
-//                "\t\t\t\"app_secret\": \"54b318acea40\"\n" +
-//                "\t\t},\n" +
-//                "\t\t\"b_id\": [//b_id与房屋，用户，卡等数据关联\n" +
-//                "\t\"287$&2栋3单元\",//楼栋编号$&楼栋名称(建议按实际名称来)\n" +
-//                "\"288$&2栋4单元\",\n" +
-//                "\t\t\t  \"-1$&物业中心\"//单元门口机只有1条记录，围墙机就多个\n" +
-//                "\t\t],\n" +
-//                "\t\t\"type\": \"1\",\n" +
-//                "\t\t\"address\": \"花园测试\",\n" +
-//                "\t\t\"system_pwd\": \"00888\",\n" +
-//                "\t\t\"setting_pwd\": \"006666\",\n" +
-//                "\t\t\"app_latest\": \"v2.0\",\n" +
-//                "\t\t\"app_url\": \"http://www.baidu.com\",\n" +
-//                "\t\t\"reboot_at\": \"1,2,3,4,5,6,7|04:30\",\n" +
-//                "\t\t\"talk_timeout\": \"55\",\n" +
-//                "\t\t\"sync\": \"86400\",\n" +
-//                "\t\t\"face\": \"1\",\n" +
-//                "\t\t\"manage\": \"1\",\n" +
-//                "\t\t\"baidu_face_type\": \"v2\",\n" +
-//                "\t\t\"baidu_face_url\": \"https://aip.baidubce.com/rest/2.0/face/v2/identify\",\n" +
-//                "\t\t\"ad\": {\n" +
-//                "\t\t\t\"local\": 9,\n" +
-//                "\t\t\t\"baidu\": 0\n" +
-//                "\t\t},\n" +
-//                "\t\t\"token\": \"eyJ0eXBlIjoiSldUIiwiYWxnIjoiU0hBMjU2In0=.eyJpc3MiOiJkZXZlbG9wZXJAemhpZ3VvaHVsaWFuLmNvbSIsImlhdCI6MTYyNjcwMDQ1NiwiZXhwIjoxNjI3MzA1MjU2LCJ1aWQiOiIyMjAxOGFiMzIxODY3ODQ1NmYzNDZhZjBiM2Y2YWNhMyIsImlkIjoiZ2F0ZSIsInBhcmFtcyI6eyJnYXRlX3VpZCI6IjIyMDE4YWIzMjE4Njc4NDU2ZjM0NmFmMGIzZjZhY2EzIiwiZ2F0ZV9ndWlkIjoiODQxMDc4OTY4NDA4MmMxNjA3ZDAiLCJhcHBfaWQiOiIyMDIwMTAyMTE3NDAzMiIsInByb2plY3RfdWlkIjoiMWZlMDIwMzJhZWFiODRlYjAyMWNkYmZhYmNmMjY5NjYifX0=.65585f3313292b7d24fc8f9ba42cfe7f59cbc2e0c8ee47b9ca95ee4715bfe114.20201021174032\"\n" +
-//                "\t}\n" +
-//                "}");
-
-
         logger.debug("登陆返回报文：{}", paramOut.toString());
 
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
+
+
+    /**
+     * 实例:
+     * {
+     * 	"code": 200,
+     * 	"msg": "",
+     * 	"timestamp": 1626961185,
+     * 	"data": {
+     * 		"gate_button_password": "1",
+     * 		"gate_button_phone": "1",
+     * 		"gate_button_room": "1",
+     * 		"gate_button_room_input": "1",
+     * 		"gate_call_manager": "1",
+     * 		"gate_capture_picture": "1",
+     * 		"gate_check_face_switch": "0",
+     * 		"gate_open_face": "1",
+     * 		"gate_qr_pwd_state": "1",
+     * 		"gate_register_face": "1",
+     * 		"health_qr_code_switch": "0",
+     * 		"pop_ad_switch": "0",
+     * 		"property_fee_switch": "0",
+     * 		"stranger_captures": "1",
+     * 		"alarm_switch": "1",
+     * 		"gate_log_open": 1,
+     * 		"gate_log_cycle": 3
+     * 	    }
+     * }
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/device/v1/gate/getSwitch", method = RequestMethod.GET)
+    public ResponseEntity<String> getSwitch(HttpServletRequest request) {
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        JSONObject data = new JSONObject();
+        data.put("gate_button_password","1");
+        data.put("gate_button_phone","1");
+        data.put("gate_button_room","1");
+        data.put("gate_button_room_input","1");
+        data.put("gate_call_manager","1");
+        data.put("gate_capture_picture","1");
+        data.put("gate_check_face_switch","0");
+        data.put("gate_open_face","1");
+        data.put("gate_qr_pwd_state","1");
+        data.put("gate_register_face","1");
+        data.put("health_qr_code_switch","0");
+        data.put("pop_ad_switch","0");
+        data.put("property_fee_switch","0");
+        data.put("stranger_captures","1");
+        data.put("alarm_switch","1");
+        data.put("gate_log_open",1);
+        data.put("gate_log_cycle",3);
+        paramOut.put("data", data);
+        logger.debug("登陆返回报文：{}", paramOut.toString());
         return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
     }
 
