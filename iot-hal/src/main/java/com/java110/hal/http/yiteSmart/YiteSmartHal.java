@@ -16,10 +16,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -130,7 +127,7 @@ public class YiteSmartHal {
         mqtt.put("client_id", uuId);
         mqtt.put("mqtt_pwd", "wuxw2015");
         mqtt.put("ip", "49.232.150.183");
-        mqtt.put("port", "1883");
+        mqtt.put("port", "2883");
         mqtt.put("username", "wuxw");
         mqtt.put("publish_topic", "zghl_door/server_php");
         mqtt.put("subscribe_id", "SUBSCRIBE:" + accessControlDtos.get(0).getCommunityId() + ":" + uuId);
@@ -308,6 +305,157 @@ public class YiteSmartHal {
         logger.debug("登陆返回报文：{}", paramOut.toString());
         return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
     }
+
+
+    /**
+     * 实例:
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/v3_1/sync/users/bid/{unitId}", method = RequestMethod.GET)
+    public ResponseEntity<String> syncUsersBid(@PathVariable String unitId,
+                                            HttpServletRequest request) {
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        JSONObject data = new JSONObject();
+        paramOut.put("data", data);
+        logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
+
+    /**
+     * 实例:
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/v3_1/sync/cards/bid/{unitId}", method = RequestMethod.GET)
+    public ResponseEntity<String> syncCardsBid(@PathVariable String unitId,
+                                               HttpServletRequest request) {
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        JSONObject data = new JSONObject();
+        paramOut.put("data", data);
+        logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
+
+    /**
+     * 实例:
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/v3_1/sync/passwords/add/{unitId}", method = RequestMethod.GET)
+    public ResponseEntity<String> passwords(@PathVariable String unitId,
+                                               HttpServletRequest request) {
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        JSONObject data = new JSONObject();
+        paramOut.put("data", data);
+        logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
+
+
+    /**
+     * 实例:
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/device/v2/face/sync", method = RequestMethod.GET)
+    public ResponseEntity<String> faceSync(
+                                            HttpServletRequest request) {
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        JSONObject data = new JSONObject();
+        paramOut.put("data", data);
+        logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
+
+    /**
+     * 实例:
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/device/v3_1/sync/employee", method = RequestMethod.GET)
+    public ResponseEntity<String> syncEmployee(
+            HttpServletRequest request) {
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        JSONObject data = new JSONObject();
+        paramOut.put("data", data);
+        logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
+
+    /**
+     * 实例:
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/v3_1/sync/user/add/{userId}", method = RequestMethod.GET)
+    public ResponseEntity<String> syncUserAdd(
+            @PathVariable String userId,
+            HttpServletRequest request) {
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        JSONObject data = new JSONObject();
+        paramOut.put("data", data);
+        logger.debug("/v3_1/sync/user/add/：{}", paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
+
+    /**
+     * 实例:
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/v3_1/sync/cards/add/{userId}", method = RequestMethod.GET)
+    public ResponseEntity<String> syncCardsAdd(
+            @PathVariable String userId,
+            HttpServletRequest request) {
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        JSONObject data = new JSONObject();
+        paramOut.put("data", data);
+        logger.debug("/v3_1/sync/user/add/：{}", paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
+
+    /**
+     * 实例:
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/v3_1/sync/passwords/add/{userId}", method = RequestMethod.GET)
+    public ResponseEntity<String> syncPasswordsAdd(
+            @PathVariable String userId,
+            HttpServletRequest request) {
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        JSONObject data = new JSONObject();
+        paramOut.put("data", data);
+        logger.debug("/v3_1/sync/user/add/：{}", paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
+
+
 
 
     @RequestMapping(path = "/device/v1/face/users", method = RequestMethod.GET)
