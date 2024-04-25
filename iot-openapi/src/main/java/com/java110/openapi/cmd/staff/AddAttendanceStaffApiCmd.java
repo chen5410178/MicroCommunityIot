@@ -3,8 +3,10 @@ package com.java110.openapi.cmd.staff;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.dto.file.FileDto;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cache.MappingCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
+import com.java110.core.constant.MappingConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
@@ -119,7 +121,8 @@ public class AddAttendanceStaffApiCmd extends Cmd {
         fileDto.setSuffix("jpeg");
         fileDto.setCommunityId("-1");
         String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
+        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
 
-        return fileName;
+        return imgUrl+fileName;
     }
 }
