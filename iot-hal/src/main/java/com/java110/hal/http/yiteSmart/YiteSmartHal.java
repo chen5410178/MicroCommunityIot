@@ -330,6 +330,7 @@ public class YiteSmartHal {
 
         logger.debug("进入设备同步人脸,/device/v1/face/users,t={},{}", t, headers.toString());
         long timestrap = DateUtil.getCurrentDate().getTime();
+        timestrap = timestrap/1000;
 
         String body = "{\n" +
                 "    \"code\": 200,\n" +
