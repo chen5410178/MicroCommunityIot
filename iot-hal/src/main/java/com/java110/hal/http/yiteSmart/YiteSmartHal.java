@@ -369,9 +369,12 @@ public class YiteSmartHal {
                 "            }\n" +
                 "        ]\n" +
                 "    },\n" +
-                "    \"timestamp\": 1626702918\n" +
+                "    \"timestamp\": "+timestrap+"\n" +
                 "}";
         JSONObject result = JSONObject.parseObject(body);
+
+        logger.debug("用户返回报文：{}", result.toString());
+
 
         return new ResponseEntity<>(result.toJSONString(), HttpStatus.OK);
     }
