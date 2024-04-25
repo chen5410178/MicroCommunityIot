@@ -63,7 +63,7 @@ public class AddAttendanceStaffApiCmd extends Cmd {
 
         String staffId = reqJson.getString("staffId");
         UserDto userDto = new UserDto();
-        userDto.setStaffId(staffId);
+        userDto.setUserId(staffId);
         List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
 
         Assert.listOnlyOne(userDtos,"员工未同步");
