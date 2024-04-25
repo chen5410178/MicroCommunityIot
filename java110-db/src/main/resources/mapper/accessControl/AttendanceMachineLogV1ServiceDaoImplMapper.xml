@@ -27,7 +27,8 @@
         </if>
         from attendance_machine_log t
         left join attendance_machine am on t.machine_id = am.machine_id and am.status_cd = '0'
-        left join t_dict td on t.state = td.status_cd and td.table_name = 'access_control_log' and td.table_columns = 'state'
+        left join t_dict td on t.state = td.status_cd and td.table_name = 'access_control_log' and td.table_columns =
+        'state'
         where 1 =1
         <if test="resParam !=null and resParam != ''">
             and t.res_param= #{resParam}
@@ -66,34 +67,36 @@
 
     <!-- 修改考勤下发日志信息 add by wuxw 2018-07-03 -->
     <update id="updateAttendanceMachineLogInfo" parameterType="Map">
-        update attendance_machine_log t set t.status_cd = #{statusCd}
-        <if test="newBId != null and newBId != ''">
-            ,t.b_id = #{newBId}
-        </if>
-        <if test="resParam !=null and resParam != ''">
-            , t.res_param= #{resParam}
-        </if>
-        <if test="machineId !=null and machineId != ''">
-            , t.machine_id= #{machineId}
-        </if>
-        <if test="staffName !=null and staffName != ''">
-            , t.staff_name= #{staffName}
-        </if>
-        <if test="reqParam !=null and reqParam != ''">
-            , t.req_param= #{reqParam}
-        </if>
-        <if test="state !=null and state != ''">
-            , t.state= #{state}
-        </if>
-        <if test="communityId !=null and communityId != ''">
-            , t.community_id= #{communityId}
-        </if>
-        <if test="logAction !=null and logAction != ''">
-            , t.log_action= #{logAction}
-        </if>
-        <if test="staffId !=null and staffId != ''">
-            , t.staff_id= #{staffId}
-        </if>
+        update attendance_machine_log t
+        <set>
+            <if test="newBId != null and newBId != ''">
+                t.b_id = #{newBId},
+            </if>
+            <if test="resParam !=null and resParam != ''">
+                t.res_param= #{resParam},
+            </if>
+            <if test="machineId !=null and machineId != ''">
+                t.machine_id= #{machineId},
+            </if>
+            <if test="staffName !=null and staffName != ''">
+                t.staff_name= #{staffName} ,
+            </if>
+            <if test="reqParam !=null and reqParam != ''">
+                t.req_param= #{reqParam},
+            </if>
+            <if test="state !=null and state != ''">
+                t.state= #{state},
+            </if>
+            <if test="communityId !=null and communityId != ''">
+                t.community_id= #{communityId},
+            </if>
+            <if test="logAction !=null and logAction != ''">
+                t.log_action= #{logAction},
+            </if>
+            <if test="staffId !=null and staffId != ''">
+                t.staff_id= #{staffId},
+            </if>
+        </set>
         where 1=1
         <if test="logId !=null and logId != ''">
             and t.log_id= #{logId}
