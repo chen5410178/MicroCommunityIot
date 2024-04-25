@@ -61,6 +61,7 @@ public class SaveAttendanceStaffCmd extends Cmd {
     @Autowired
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
 
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineId", "请求报文中未包含machineId");
@@ -93,6 +94,9 @@ public class SaveAttendanceStaffCmd extends Cmd {
         if (flag < 1) {
             throw new CmdException("保存数据失败");
         }
+
+
+
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }

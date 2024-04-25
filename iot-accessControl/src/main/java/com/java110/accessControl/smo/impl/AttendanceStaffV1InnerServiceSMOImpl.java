@@ -17,10 +17,17 @@ package com.java110.accessControl.smo.impl;
 
 
 import com.java110.accessControl.dao.IAttendanceStaffV1ServiceDao;
+import com.java110.accessControl.manufactor.IAttendanceManufactor;
 import com.java110.bean.dto.PageDto;
+import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.dto.attendanceMachine.AttendanceMachineDto;
+import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
+import com.java110.intf.accessControl.IAttendanceMachineV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAttendanceStaffV1InnerServiceSMO;
 import com.java110.dto.attendanceStaff.AttendanceStaffDto;
+import com.java110.intf.system.IHardwareManufacturerV1InnerServiceSMO;
 import com.java110.po.attendanceStaff.AttendanceStaffPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,10 +50,39 @@ public class AttendanceStaffV1InnerServiceSMOImpl implements IAttendanceStaffV1I
     @Autowired
     private IAttendanceStaffV1ServiceDao attendanceStaffV1ServiceDaoImpl;
 
+    @Autowired
+    private IHardwareManufacturerV1InnerServiceSMO hardwareManufacturerV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAttendanceMachineV1InnerServiceSMO attendanceMachineV1InnerServiceSMOImpl;
+
 
     @Override
     public int saveAttendanceStaff(@RequestBody AttendanceStaffPo attendanceStaffPo) {
         int saveFlag = attendanceStaffV1ServiceDaoImpl.saveAttendanceStaffInfo(BeanConvertUtil.beanCovertMap(attendanceStaffPo));
+
+        if (!AttendanceStaffDto.STATE_WAIT.equals(attendanceStaffPo.getState())) {
+            return saveFlag;
+        }
+
+        AttendanceMachineDto attendanceMachineDto = new AttendanceMachineDto();
+        attendanceMachineDto.setMachineId(attendanceStaffPo.getMachineId());
+        attendanceMachineDto.setCommunityId(attendanceStaffPo.getCommunityId());
+        List<AttendanceMachineDto> attendanceMachineDtos = attendanceMachineV1InnerServiceSMOImpl.queryAttendanceMachines(attendanceMachineDto);
+        if (ListUtil.isNull(attendanceMachineDtos)) {
+            return saveFlag;
+        }
+
+        HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
+        hardwareManufacturerDto.setHmId(attendanceMachineDtos.get(0).getImplBean());
+        List<HardwareManufacturerDto> hardwareManufacturerDtos = hardwareManufacturerV1InnerServiceSMOImpl.queryHardwareManufacturers(hardwareManufacturerDto);
+        if (ListUtil.isNull(attendanceMachineDtos)) {
+            return saveFlag;
+        }
+
+        IAttendanceManufactor attendanceManufactor = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IAttendanceManufactor.class);
+
+        attendanceManufactor.addUser(attendanceMachineDtos.get(0), attendanceStaffPo);
         return saveFlag;
     }
 
@@ -58,8 +94,35 @@ public class AttendanceStaffV1InnerServiceSMOImpl implements IAttendanceStaffV1I
 
     @Override
     public int deleteAttendanceStaff(@RequestBody AttendanceStaffPo attendanceStaffPo) {
+
+
+        AttendanceStaffDto attendanceStaffDto = new AttendanceStaffDto();
+        attendanceStaffDto.setMsId(attendanceStaffPo.getMsId());
+        List<AttendanceStaffDto> attendanceStaffDtos = queryAttendanceStaffs(attendanceStaffDto);
         attendanceStaffPo.setStatusCd("1");
         int saveFlag = attendanceStaffV1ServiceDaoImpl.updateAttendanceStaffInfo(BeanConvertUtil.beanCovertMap(attendanceStaffPo));
+        if (ListUtil.isNull(attendanceStaffDtos)) {
+            return saveFlag;
+        }
+
+        AttendanceMachineDto attendanceMachineDto = new AttendanceMachineDto();
+        attendanceMachineDto.setMachineId(attendanceStaffDtos.get(0).getMachineId());
+        attendanceMachineDto.setCommunityId(attendanceStaffDtos.get(0).getCommunityId());
+        List<AttendanceMachineDto> attendanceMachineDtos = attendanceMachineV1InnerServiceSMOImpl.queryAttendanceMachines(attendanceMachineDto);
+        if (ListUtil.isNull(attendanceMachineDtos)) {
+            return saveFlag;
+        }
+
+        HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
+        hardwareManufacturerDto.setHmId(attendanceMachineDtos.get(0).getImplBean());
+        List<HardwareManufacturerDto> hardwareManufacturerDtos = hardwareManufacturerV1InnerServiceSMOImpl.queryHardwareManufacturers(hardwareManufacturerDto);
+        if (ListUtil.isNull(attendanceMachineDtos)) {
+            return saveFlag;
+        }
+
+        IAttendanceManufactor attendanceManufactor = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IAttendanceManufactor.class);
+        attendanceManufactor.deleteUser(attendanceMachineDtos.get(0), BeanConvertUtil.covertBean(attendanceStaffDtos.get(0), AttendanceStaffPo.class));
+
         return saveFlag;
     }
 

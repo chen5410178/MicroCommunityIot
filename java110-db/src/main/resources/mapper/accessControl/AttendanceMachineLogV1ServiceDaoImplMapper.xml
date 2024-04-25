@@ -19,12 +19,15 @@
     <select id="getAttendanceMachineLogInfo" parameterType="Map" resultType="Map">
         select t.machine_id,t.machine_id machineId,t.staff_name,t.staff_name
         staffName,t.log_id,t.log_id logId,t.state,t.community_id,t.community_id
-        communityId,t.log_action,t.log_action logAction,t.staff_id,t.staff_id staffId
+        communityId,t.log_action,t.log_action logAction,t.staff_id,t.staff_id staffId,
+        am.machine_code machineCode,am.machine_name machineName,t.create_time createTime,td.name stateName
         <if test="logId !=null and logId != ''">
             ,t.req_param reqParam
             ,t.res_param resParam
         </if>
         from attendance_machine_log t
+        left join attendance_machine am on t.machine_id = am.machine_id and am.status_cd = '0'
+        left join t_dict td on t.state = td.status_cd and td.table_name = 'access_control_log' and td.table_columns = 'state'
         where 1 =1
         <if test="resParam !=null and resParam != ''">
             and t.res_param= #{resParam}

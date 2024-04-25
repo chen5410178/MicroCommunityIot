@@ -17,6 +17,12 @@ public class AttendanceMachineLogDto extends PageDto implements Serializable {
 
     private String resParam;
     private String machineId;
+
+    private String machineName;
+
+    private String machineCode;
+
+    private String stateName;
     private String staffName;
     private String logId;
     private String reqParam;
@@ -118,5 +124,29 @@ public class AttendanceMachineLogDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getMachineName() {
+        return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
+    }
+
+    public String getMachineCode() {
+        return machineCode;
+    }
+
+    public void setMachineCode(String machineCode) {
+        this.machineCode = machineCode;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
     }
 }
