@@ -1,0 +1,150 @@
+package com.java110.hal.http.yiteSmart.bmo.impl;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.dto.owner.OwnerRoomRelDto;
+import com.java110.bean.dto.room.RoomDto;
+import com.java110.bean.dto.unit.UnitDto;
+import com.java110.core.factory.LoggerFactory;
+import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.hal.http.yiteSmart.YiteSmartHal;
+import com.java110.hal.http.yiteSmart.bmo.ISyncUserBidBmo;
+import com.java110.intf.community.IRoomV1InnerServiceSMO;
+import com.java110.intf.community.IUnitInnerServiceSMO;
+import com.java110.intf.community.IUnitV1InnerServiceSMO;
+import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@Service
+public class SyncUserBidBmoImpl implements ISyncUserBidBmo {
+    Logger logger = LoggerFactory.getLogger(YiteSmartHal.class);
+
+    @Autowired
+    private IRoomV1InnerServiceSMO roomV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IOwnerRoomRelV1InnerServiceSMO ownerRoomRelV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IUnitInnerServiceSMO unitInnerServiceSMOImpl;
+
+    @Override
+    public ResponseEntity<String> sync(String unitId) {
+        long curTimeTimeStamp = new Date().getTime();
+        curTimeTimeStamp = curTimeTimeStamp / 1000;
+
+        UnitDto unitDto = new UnitDto();
+        unitDto.setUnitId(unitId);
+        List<UnitDto> unitDtos = unitInnerServiceSMOImpl.queryUnits(unitDto);
+
+        if (ListUtil.isNull(unitDtos)) {
+            throw new IllegalArgumentException("单元错误");
+        }
+
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp",curTimeTimeStamp);
+        JSONObject data = new JSONObject();
+        paramOut.put("data", data);
+
+        RoomDto roomDto = new RoomDto();
+        roomDto.setUnitId(unitId);
+        List<RoomDto> roomDtos = roomV1InnerServiceSMOImpl.queryRooms(roomDto);
+        if (ListUtil.isNull(roomDtos)) {
+            return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        }
+
+        List<String> roomIds = new ArrayList<>();
+        for (RoomDto tmpRoomDto : roomDtos) {
+            roomIds.add(tmpRoomDto.getRoomId());
+        }
+
+        OwnerRoomRelDto ownerRoomRelDto = new OwnerRoomRelDto();
+        ownerRoomRelDto.setRoomIds(roomIds.toArray(new String[roomIds.size()]));
+        List<OwnerRoomRelDto> ownerRoomRelDtos = ownerRoomRelV1InnerServiceSMOImpl.queryOwnerRoomRels(ownerRoomRelDto);
+
+
+        JSONArray rooms = new JSONArray();
+        JSONObject room = new JSONObject();
+        room.put("b_id",unitId);
+        room.put("b_name",unitDtos.get(0).getFloorNum()+"栋"+unitDtos.get(0).getUnitNum()+"单元");
+
+        JSONArray addRooms = new JSONArray();
+        room.put("add",addRooms);
+
+        JSONObject del = new JSONObject();
+        JSONArray del_room = new JSONArray();
+        del.put("del_room",del_room);
+        JSONArray del_user = new JSONArray();
+        del.put("del_user",del_user);
+        room.put("del",del);
+
+        rooms.add(room);
+        data.put("rooms", rooms);
+        JSONArray users =null;
+        JSONObject addRoom = null;
+        /**
+         *  {\n" +
+         *                       \"id\": 392188,\n" +
+         *                       \"uid\": \"20ce9b7368ad918515650baee75420fd\",\n" +
+         *                       \"name\": \"1003\",\n" +
+         *                       \"num\": \"0101-1003\",\n" +
+         *                       \"user\": [\n" +
+         *                           {\n" +
+         *                               \"id\": 416290,\n" +
+         *                               \"uid\": \"6003e234c6f988a6fc7ab5275f766d1e\",\n" +
+         *                               \"phone\": \"17782426083\",\n" +
+         *                               \"expired\": " + timestrap + "\n" +
+         *                           },\n" +
+         *                           {\n" +
+         *                               \"id\": 1004352,\n" +
+         *                               \"uid\": \"7247871cfb24f48bf1877d8f6795cc23\",\n" +
+         *                               \"phone\": \"17728043791\",\n" +
+         *                               \"expired\": " + timestrap + "\n" +
+         *                           }\n" +
+         *                       ]\n" +
+         *                   }
+         */
+        JSONObject user = null;
+        for (RoomDto tmpRoomDto : roomDtos) {
+            addRoom = new JSONObject();
+            addRoom.put("id",tmpRoomDto.getRoomId());
+            addRoom.put("uid",tmpRoomDto.getRoomId());
+            addRoom.put("name",tmpRoomDto.getRoomNum());
+            addRoom.put("num",tmpRoomDto.getRoomNum());
+            users = new JSONArray();
+            addRoom.put("user",users);
+            if(ListUtil.isNull(ownerRoomRelDtos)){
+                continue;
+            }
+
+            for(OwnerRoomRelDto tmpOwnerRoomRelDto: ownerRoomRelDtos){
+                if(tmpRoomDto.getRoomId().equals(tmpOwnerRoomRelDto.getRoomId())){
+                    user = new JSONObject();
+                    user.put("id",tmpOwnerRoomRelDto.getOwnerId());
+                    user.put("uid",tmpOwnerRoomRelDto.getOwnerId());
+                    user.put("phone",tmpOwnerRoomRelDto.getLink());
+                    long timestrap =tmpOwnerRoomRelDto.getEndTime().getTime();
+                    timestrap = timestrap / 1000;
+                    user.put("expired",timestrap);
+                }
+            }
+            addRooms.add(addRoom);
+        }
+
+        logger.debug("/v3_1/sync/user/add/：{}", paramOut.toString());
+
+        logger.debug("用户返回报文：{}", paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
+}

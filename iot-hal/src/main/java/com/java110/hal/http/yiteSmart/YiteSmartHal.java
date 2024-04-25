@@ -10,6 +10,9 @@ import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControlFloor.AccessControlFloorDto;
 import com.java110.hal.http.AccessControlHal;
+import com.java110.hal.http.yiteSmart.bmo.ISyncCardsBidBmo;
+import com.java110.hal.http.yiteSmart.bmo.ISyncFaceBmo;
+import com.java110.hal.http.yiteSmart.bmo.ISyncUserBidBmo;
 import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import org.slf4j.Logger;
@@ -31,6 +34,15 @@ public class YiteSmartHal {
 
     @Autowired
     private IAccessControlFloorV1InnerServiceSMO accessControlFloorV1InnerServiceSMOImpl;
+
+    @Autowired
+    private ISyncUserBidBmo syncUserBidBmoImpl;
+
+    @Autowired
+    private ISyncCardsBidBmo syncCardsBidBmoImpl;
+
+    @Autowired
+    private ISyncFaceBmo syncFaceBmoImpl;
 
     /**
      * 设备核验
@@ -209,19 +221,19 @@ public class YiteSmartHal {
          *                 "\t\t\"baidu_face_type\": \"v2\",\n" +
          *                 "\t\t\"baidu_face_url\": \"https://aip.baidubce.com/rest/2.0/face/v2/identify\",\n" +
          */
-        data.put("type",1);
-        data.put("address","花园测试");
-        data.put("system_pwd","00888");
-        data.put("setting_pwd","006666");
-        data.put("app_latest","app_latest");
-        data.put("app_url","http://www.baidu.com");
-        data.put("reboot_at","1,2,3,4,5,6,7|04:30");
-        data.put("talk_timeout","55");
-        data.put("sync","86400");
-        data.put("face","1");
-        data.put("manage","1");
-        data.put("baidu_face_type","v2");
-        data.put("baidu_face_url","https://aip.baidubce.com/rest/2.0/face/v2/identify");
+        data.put("type", 1);
+        data.put("address", "花园测试");
+        data.put("system_pwd", "00888");
+        data.put("setting_pwd", "006666");
+        data.put("app_latest", "app_latest");
+        data.put("app_url", "http://www.baidu.com");
+        data.put("reboot_at", "1,2,3,4,5,6,7|04:30");
+        data.put("talk_timeout", "55");
+        data.put("sync", "86400");
+        data.put("face", "1");
+        data.put("manage", "1");
+        data.put("baidu_face_type", "v2");
+        data.put("baidu_face_url", "https://aip.baidubce.com/rest/2.0/face/v2/identify");
 
 
         /**
@@ -231,15 +243,15 @@ public class YiteSmartHal {
          *                 "\t\t},\n" +
          */
         JSONObject ad = new JSONObject();
-        ad.put("local",9);
-        ad.put("baidu",0);
-        data.put("ad",ad);
+        ad.put("local", 9);
+        ad.put("baidu", 0);
+        data.put("ad", ad);
 
         /**
          *                 "\t\t\"token\": \"eyJ0eXBlIjoiSldUIiwiYWxnIjoiU0hBMjU2In0=.eyJpc3MiOiJkZXZlbG9wZXJAemhpZ3VvaHVsaWFuLmNvbSIsImlhdCI6MTYyNjcwMDQ1NiwiZXhwIjoxNjI3MzA1MjU2LCJ1aWQiOiIyMjAxOGFiMzIxODY3ODQ1NmYzNDZhZjBiM2Y2YWNhMyIsImlkIjoiZ2F0ZSIsInBhcmFtcyI6eyJnYXRlX3VpZCI6IjIyMDE4YWIzMjE4Njc4NDU2ZjM0NmFmMGIzZjZhY2EzIiwiZ2F0ZV9ndWlkIjoiODQxMDc4OTY4NDA4MmMxNjA3ZDAiLCJhcHBfaWQiOiIyMDIwMTAyMTE3NDAzMiIsInByb2plY3RfdWlkIjoiMWZlMDIwMzJhZWFiODRlYjAyMWNkYmZhYmNmMjY5NjYifX0=.65585f3313292b7d24fc8f9ba42cfe7f59cbc2e0c8ee47b9ca95ee4715bfe114.20201021174032\"\n" +
          */
 
-        data.put("token","eyJ0eXBlIjoiSldUIiwiYWxnIjoiU0hBMjU2In0=.eyJpc3MiOiJkZXZlbG9wZXJAemhpZ3VvaHVsaWFuLmNvbSIsImlhdCI6MTYyNjcwMDQ1NiwiZXhwIjoxNjI3MzA1MjU2LCJ1aWQiOiIyMjAxOGFiMzIxODY3ODQ1NmYzNDZhZjBiM2Y2YWNhMyIsImlkIjoiZ2F0ZSIsInBhcmFtcyI6eyJnYXRlX3VpZCI6IjIyMDE4YWIzMjE4Njc4NDU2ZjM0NmFmMGIzZjZhY2EzIiwiZ2F0ZV9ndWlkIjoiODQxMDc4OTY4NDA4MmMxNjA3ZDAiLCJhcHBfaWQiOiIyMDIwMTAyMTE3NDAzMiIsInByb2plY3RfdWlkIjoiMWZlMDIwMzJhZWFiODRlYjAyMWNkYmZhYmNmMjY5NjYifX0=.65585f3313292b7d24fc8f9ba42cfe7f59cbc2e0c8ee47b9ca95ee4715bfe114.20201021174032");
+        data.put("token", "eyJ0eXBlIjoiSldUIiwiYWxnIjoiU0hBMjU2In0=.eyJpc3MiOiJkZXZlbG9wZXJAemhpZ3VvaHVsaWFuLmNvbSIsImlhdCI6MTYyNjcwMDQ1NiwiZXhwIjoxNjI3MzA1MjU2LCJ1aWQiOiIyMjAxOGFiMzIxODY3ODQ1NmYzNDZhZjBiM2Y2YWNhMyIsImlkIjoiZ2F0ZSIsInBhcmFtcyI6eyJnYXRlX3VpZCI6IjIyMDE4YWIzMjE4Njc4NDU2ZjM0NmFmMGIzZjZhY2EzIiwiZ2F0ZV9ndWlkIjoiODQxMDc4OTY4NDA4MmMxNjA3ZDAiLCJhcHBfaWQiOiIyMDIwMTAyMTE3NDAzMiIsInByb2plY3RfdWlkIjoiMWZlMDIwMzJhZWFiODRlYjAyMWNkYmZhYmNmMjY5NjYifX0=.65585f3313292b7d24fc8f9ba42cfe7f59cbc2e0c8ee47b9ca95ee4715bfe114.20201021174032");
 
 
         logger.debug("登陆返回报文：{}", paramOut.toString());
@@ -251,29 +263,30 @@ public class YiteSmartHal {
     /**
      * 实例:
      * {
-     * 	"code": 200,
-     * 	"msg": "",
-     * 	"timestamp": 1626961185,
-     * 	"data": {
-     * 		"gate_button_password": "1",
-     * 		"gate_button_phone": "1",
-     * 		"gate_button_room": "1",
-     * 		"gate_button_room_input": "1",
-     * 		"gate_call_manager": "1",
-     * 		"gate_capture_picture": "1",
-     * 		"gate_check_face_switch": "0",
-     * 		"gate_open_face": "1",
-     * 		"gate_qr_pwd_state": "1",
-     * 		"gate_register_face": "1",
-     * 		"health_qr_code_switch": "0",
-     * 		"pop_ad_switch": "0",
-     * 		"property_fee_switch": "0",
-     * 		"stranger_captures": "1",
-     * 		"alarm_switch": "1",
-     * 		"gate_log_open": 1,
-     * 		"gate_log_cycle": 3
-     * 	    }
+     * "code": 200,
+     * "msg": "",
+     * "timestamp": 1626961185,
+     * "data": {
+     * "gate_button_password": "1",
+     * "gate_button_phone": "1",
+     * "gate_button_room": "1",
+     * "gate_button_room_input": "1",
+     * "gate_call_manager": "1",
+     * "gate_capture_picture": "1",
+     * "gate_check_face_switch": "0",
+     * "gate_open_face": "1",
+     * "gate_qr_pwd_state": "1",
+     * "gate_register_face": "1",
+     * "health_qr_code_switch": "0",
+     * "pop_ad_switch": "0",
+     * "property_fee_switch": "0",
+     * "stranger_captures": "1",
+     * "alarm_switch": "1",
+     * "gate_log_open": 1,
+     * "gate_log_cycle": 3
      * }
+     * }
+     *
      * @param request
      * @return
      */
@@ -284,23 +297,23 @@ public class YiteSmartHal {
         paramOut.put("msg", "");
         paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
         JSONObject data = new JSONObject();
-        data.put("gate_button_password","1");
-        data.put("gate_button_phone","1");
-        data.put("gate_button_room","1");
-        data.put("gate_button_room_input","1");
-        data.put("gate_call_manager","1");
-        data.put("gate_capture_picture","1");
-        data.put("gate_check_face_switch","0");
-        data.put("gate_open_face","1");
-        data.put("gate_qr_pwd_state","1");
-        data.put("gate_register_face","1");
-        data.put("health_qr_code_switch","0");
-        data.put("pop_ad_switch","0");
-        data.put("property_fee_switch","0");
-        data.put("stranger_captures","1");
-        data.put("alarm_switch","1");
-        data.put("gate_log_open",1);
-        data.put("gate_log_cycle",3);
+        data.put("gate_button_password", "1");
+        data.put("gate_button_phone", "1");
+        data.put("gate_button_room", "1");
+        data.put("gate_button_room_input", "1");
+        data.put("gate_call_manager", "1");
+        data.put("gate_capture_picture", "1");
+        data.put("gate_check_face_switch", "0");
+        data.put("gate_open_face", "1");
+        data.put("gate_qr_pwd_state", "1");
+        data.put("gate_register_face", "1");
+        data.put("health_qr_code_switch", "0");
+        data.put("pop_ad_switch", "0");
+        data.put("property_fee_switch", "0");
+        data.put("stranger_captures", "1");
+        data.put("alarm_switch", "1");
+        data.put("gate_log_open", 1);
+        data.put("gate_log_cycle", 3);
         paramOut.put("data", data);
         logger.debug("登陆返回报文：{}", paramOut.toString());
         return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
@@ -308,101 +321,70 @@ public class YiteSmartHal {
 
 
     /**
-     * 实例:
+     * 同步单元下的所有人员信息
+     *
      * @param request
      * @return
      */
     @RequestMapping(path = "/v3_1/sync/users/bid/{unitId}", method = RequestMethod.GET)
     public ResponseEntity<String> syncUsersBid(@PathVariable String unitId,
-                                            HttpServletRequest request) {
-        JSONObject paramOut = new JSONObject();
-        paramOut.put("code", 200);
-        paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
-        JSONObject data = new JSONObject();
-        paramOut.put("data", data);
-        logger.debug("/v3_1/sync/user/add/：{}", paramOut.toString());
+                                               HttpServletRequest request) {
 
-        // logger.debug("进入设备同步人脸,/device/v1/face/users,t={},{}", t, headers.toString());
-        long timestrap = DateUtil.getDateFromStringB("2050-01-01").getTime();
-        timestrap = timestrap/1000;
-
-        long curTimeTimeStamp = new Date().getTime();
-        curTimeTimeStamp = curTimeTimeStamp/1000;
-
-        String body = "{\n" +
-                "    \"code\": 200,\n" +
-                "    \"msg\": \"success\",\n" +
-                "    \"data\": {\n" +
-                "        \"rooms\": [\n" +
-                "            {\n" +
-                "                \"b_id\": \"742023120517690335\",\n" +
-                "                \"b_name\": [\n" +
-                "                    \"1栋1单元\"\n" +
-                "                ],\n" +
-                "                \"add\": [\n" +
-                "                    {\n" +
-                "                        \"id\": 392188,\n" +
-                "                        \"uid\": \"20ce9b7368ad918515650baee75420fd\",\n" +
-                "                        \"name\": \"1003\",\n" +
-                "                        \"num\": \"0101-1003\",\n" +
-                "                        \"user\": [\n" +
-                "                            {\n" +
-                "                                \"id\": 416290,\n" +
-                "                                \"uid\": \"6003e234c6f988a6fc7ab5275f766d1e\",\n" +
-                "                                \"phone\": \"17782426083\",\n" +
-                "                                \"expired\": " + timestrap + "\n" +
-                "                            },\n" +
-                "                            {\n" +
-                "                                \"id\": 1004352,\n" +
-                "                                \"uid\": \"7247871cfb24f48bf1877d8f6795cc23\",\n" +
-                "                                \"phone\": \"17728043791\",\n" +
-                "                                \"expired\": " + timestrap + "\n" +
-                "                            }\n" +
-                "                        ]\n" +
-                "                    }],\n" +
-                "                \"del\": {\n" +
-                "                    \"del_room\": [],\n" +
-                "                    \"del_user\": []\n" +
-                "                }\n" +
-                "            }\n" +
-                "        ]\n" +
-                "    },\n" +
-                "    \"timestamp\": "+curTimeTimeStamp+"\n" +
-                "}";
-        JSONObject result = JSONObject.parseObject(body);
-
-        logger.debug("用户返回报文：{}", result.toString());
-        return new ResponseEntity<>(result.toJSONString(), HttpStatus.OK);
+        ResponseEntity<String> responseEntity = null;
+        try {
+            responseEntity = syncUserBidBmoImpl.sync(unitId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            long curTimeTimeStamp = new Date().getTime();
+            curTimeTimeStamp = curTimeTimeStamp / 1000;
+            JSONObject paramOut = new JSONObject();
+            paramOut.put("code", 200);
+            paramOut.put("msg", "");
+            paramOut.put("timestamp", curTimeTimeStamp);
+            JSONObject data = new JSONObject();
+            paramOut.put("data", data);
+            responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+        return responseEntity;
 
     }
 
     /**
      * 实例:
+     *
      * @param request
      * @return
      */
     @RequestMapping(path = "/v3_1/sync/cards/bid/{unitId}", method = RequestMethod.GET)
     public ResponseEntity<String> syncCardsBid(@PathVariable String unitId,
                                                HttpServletRequest request) {
-        JSONObject paramOut = new JSONObject();
-        paramOut.put("code", 200);
-        paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
-        JSONObject data = new JSONObject();
-        paramOut.put("data", data);
-        logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
-        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        ResponseEntity<String> responseEntity = null;
+        try {
+            responseEntity = syncCardsBidBmoImpl.sync(unitId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            long curTimeTimeStamp = new Date().getTime();
+            curTimeTimeStamp = curTimeTimeStamp / 1000;
+            JSONObject paramOut = new JSONObject();
+            paramOut.put("code", 200);
+            paramOut.put("msg", "");
+            paramOut.put("timestamp", curTimeTimeStamp);
+            JSONObject data = new JSONObject();
+            paramOut.put("data", data);
+            responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+        return  responseEntity;
     }
 
     /**
      * 实例:
+     *
      * @param request
      * @return
      */
     @RequestMapping(path = "/v3_1/sync/password/add/{unitId}", method = RequestMethod.GET)
     public ResponseEntity<String> password(@PathVariable String unitId,
-                                               HttpServletRequest request) {
+                                           HttpServletRequest request) {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
@@ -416,12 +398,13 @@ public class YiteSmartHal {
 
     /**
      * 实例:
+     *
      * @param request
      * @return
      */
     @RequestMapping(path = "/device/v2/face/sync", method = RequestMethod.GET)
     public ResponseEntity<String> faceSync(
-                                            HttpServletRequest request) {
+            HttpServletRequest request) {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
@@ -434,6 +417,7 @@ public class YiteSmartHal {
 
     /**
      * 实例:
+     *
      * @param request
      * @return
      */
@@ -452,6 +436,7 @@ public class YiteSmartHal {
 
     /**
      * 实例:
+     *
      * @param request
      * @return
      */
@@ -471,6 +456,7 @@ public class YiteSmartHal {
 
     /**
      * 实例:
+     *
      * @param request
      * @return
      */
@@ -490,6 +476,7 @@ public class YiteSmartHal {
 
     /**
      * 实例:
+     *
      * @param request
      * @return
      */
@@ -505,12 +492,12 @@ public class YiteSmartHal {
         paramOut.put("data", data);
         logger.debug("/v3_1/sync/user/add/：{}", paramOut.toString());
 
-       // logger.debug("进入设备同步人脸,/device/v1/face/users,t={},{}", t, headers.toString());
+        // logger.debug("进入设备同步人脸,/device/v1/face/users,t={},{}", t, headers.toString());
         long timestrap = DateUtil.getDateFromStringB("2050-01-01").getTime();
-        timestrap = timestrap/1000;
+        timestrap = timestrap / 1000;
 
         long curTimeTimeStamp = new Date().getTime();
-        curTimeTimeStamp = curTimeTimeStamp/1000;
+        curTimeTimeStamp = curTimeTimeStamp / 1000;
 
         String body = "{\n" +
                 "    \"code\": 200,\n" +
@@ -550,7 +537,7 @@ public class YiteSmartHal {
                 "            }\n" +
                 "        ]\n" +
                 "    },\n" +
-                "    \"timestamp\": "+curTimeTimeStamp+"\n" +
+                "    \"timestamp\": " + curTimeTimeStamp + "\n" +
                 "}";
         JSONObject result = JSONObject.parseObject(body);
 
@@ -559,18 +546,34 @@ public class YiteSmartHal {
     }
 
 
-
-
     @RequestMapping(path = "/device/v1/face/users", method = RequestMethod.GET)
     public ResponseEntity<String> user(HttpServletRequest request) {
 
-        JSONObject paramOut = new JSONObject();
-        paramOut.put("code", 200);
-        paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
-        JSONObject data = new JSONObject();
-        paramOut.put("data", data);
-        logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
-        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        logger.debug("进入设备登陆接口,/v3_1/device/login,{}", headers);
+        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+
+        String uuId = reqJson.getString("uuid");
+
+
+        ResponseEntity<String> responseEntity = null;
+        try {
+            responseEntity = syncFaceBmoImpl.sync(uuId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            long curTimeTimeStamp = new Date().getTime();
+            curTimeTimeStamp = curTimeTimeStamp / 1000;
+            JSONObject paramOut = new JSONObject();
+            paramOut.put("code", 200);
+            paramOut.put("msg", "");
+            paramOut.put("timestamp", curTimeTimeStamp);
+            JSONObject data = new JSONObject();
+            paramOut.put("data", data);
+            responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+        return  responseEntity;
     }
 }
