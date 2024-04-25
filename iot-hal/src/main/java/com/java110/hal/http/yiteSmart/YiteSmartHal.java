@@ -22,9 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class YiteSmartHal {
@@ -329,8 +327,11 @@ public class YiteSmartHal {
         String t = request.getParameter("t");
 
         logger.debug("进入设备同步人脸,/device/v1/face/users,t={},{}", t, headers.toString());
-        long timestrap = DateUtil.getCurrentDate().getTime();
+        long timestrap = DateUtil.getDateFromStringB("2050-01-01").getTime();
         timestrap = timestrap/1000;
+
+        long curTimeTimeStamp = new Date().getTime();
+        curTimeTimeStamp = curTimeTimeStamp/1000;
 
         String body = "{\n" +
                 "    \"code\": 200,\n" +
@@ -370,7 +371,7 @@ public class YiteSmartHal {
                 "            }\n" +
                 "        ]\n" +
                 "    },\n" +
-                "    \"timestamp\": "+timestrap+"\n" +
+                "    \"timestamp\": "+curTimeTimeStamp+"\n" +
                 "}";
         JSONObject result = JSONObject.parseObject(body);
 
