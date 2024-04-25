@@ -321,59 +321,8 @@ public class YiteSmartHal {
         paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
-        logger.debug("/v3_1/sync/user/add/：{}", paramOut.toString());
-
-        // logger.debug("进入设备同步人脸,/device/v1/face/users,t={},{}", t, headers.toString());
-        long timestrap = DateUtil.getDateFromStringB("2050-01-01").getTime();
-        timestrap = timestrap/1000;
-
-        long curTimeTimeStamp = new Date().getTime();
-        curTimeTimeStamp = curTimeTimeStamp/1000;
-
-        String body = "{\n" +
-                "    \"code\": 200,\n" +
-                "    \"msg\": \"success\",\n" +
-                "    \"data\": {\n" +
-                "        \"rooms\": [\n" +
-                "            {\n" +
-                "                \"b_id\": \"742023120517690335\",\n" +
-                "                \"b_name\": [\n" +
-                "                    \"1栋1单元\"\n" +
-                "                ],\n" +
-                "                \"add\": [\n" +
-                "                    {\n" +
-                "                        \"id\": 392188,\n" +
-                "                        \"uid\": \"20ce9b7368ad918515650baee75420fd\",\n" +
-                "                        \"name\": \"1003\",\n" +
-                "                        \"num\": \"0101-1003\",\n" +
-                "                        \"user\": [\n" +
-                "                            {\n" +
-                "                                \"id\": 416290,\n" +
-                "                                \"uid\": \"6003e234c6f988a6fc7ab5275f766d1e\",\n" +
-                "                                \"phone\": \"17782426083\",\n" +
-                "                                \"expired\": " + timestrap + "\n" +
-                "                            },\n" +
-                "                            {\n" +
-                "                                \"id\": 1004352,\n" +
-                "                                \"uid\": \"7247871cfb24f48bf1877d8f6795cc23\",\n" +
-                "                                \"phone\": \"17728043791\",\n" +
-                "                                \"expired\": " + timestrap + "\n" +
-                "                            }\n" +
-                "                        ]\n" +
-                "                    }],\n" +
-                "                \"del\": {\n" +
-                "                    \"del_room\": [],\n" +
-                "                    \"del_user\": []\n" +
-                "                }\n" +
-                "            }\n" +
-                "        ]\n" +
-                "    },\n" +
-                "    \"timestamp\": "+curTimeTimeStamp+"\n" +
-                "}";
-        JSONObject result = JSONObject.parseObject(body);
-
-        logger.debug("用户返回报文：{}", result.toString());
-        return new ResponseEntity<>(result.toJSONString(), HttpStatus.OK);
+        logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
     }
 
     /**
@@ -614,64 +563,13 @@ public class YiteSmartHal {
     @RequestMapping(path = "/device/v1/face/users", method = RequestMethod.GET)
     public ResponseEntity<String> user(HttpServletRequest request) {
 
-        Map<String, String> headers = new HashMap<>();
-        RequestUtils.initHeadParam(request, headers);
-        RequestUtils.initUrlParam(request, headers);
-
-        String t = request.getParameter("t");
-
-        logger.debug("进入设备同步人脸,/device/v1/face/users,t={},{}", t, headers.toString());
-        long timestrap = DateUtil.getDateFromStringB("2050-01-01").getTime();
-        timestrap = timestrap/1000;
-
-        long curTimeTimeStamp = new Date().getTime();
-        curTimeTimeStamp = curTimeTimeStamp/1000;
-
-        String body = "{\n" +
-                "    \"code\": 200,\n" +
-                "    \"msg\": \"success\",\n" +
-                "    \"data\": {\n" +
-                "        \"rooms\": [\n" +
-                "            {\n" +
-                "                \"b_id\": \"742023120517690335\",\n" +
-                "                \"b_name\": [\n" +
-                "                    \"1栋1单元\"\n" +
-                "                ],\n" +
-                "                \"add\": [\n" +
-                "                    {\n" +
-                "                        \"id\": 392188,\n" +
-                "                        \"uid\": \"20ce9b7368ad918515650baee75420fd\",\n" +
-                "                        \"name\": \"1003\",\n" +
-                "                        \"num\": \"0101-1003\",\n" +
-                "                        \"user\": [\n" +
-                "                            {\n" +
-                "                                \"id\": 416290,\n" +
-                "                                \"uid\": \"6003e234c6f988a6fc7ab5275f766d1e\",\n" +
-                "                                \"phone\": \"17782426083\",\n" +
-                "                                \"expired\": " + timestrap + "\n" +
-                "                            },\n" +
-                "                            {\n" +
-                "                                \"id\": 1004352,\n" +
-                "                                \"uid\": \"7247871cfb24f48bf1877d8f6795cc23\",\n" +
-                "                                \"phone\": \"17728043791\",\n" +
-                "                                \"expired\": " + timestrap + "\n" +
-                "                            }\n" +
-                "                        ]\n" +
-                "                    }],\n" +
-                "                \"del\": {\n" +
-                "                    \"del_room\": [],\n" +
-                "                    \"del_user\": []\n" +
-                "                }\n" +
-                "            }\n" +
-                "        ]\n" +
-                "    },\n" +
-                "    \"timestamp\": "+curTimeTimeStamp+"\n" +
-                "}";
-        JSONObject result = JSONObject.parseObject(body);
-
-        logger.debug("用户返回报文：{}", result.toString());
-
-
-        return new ResponseEntity<>(result.toJSONString(), HttpStatus.OK);
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        JSONObject data = new JSONObject();
+        paramOut.put("data", data);
+        logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
     }
 }
