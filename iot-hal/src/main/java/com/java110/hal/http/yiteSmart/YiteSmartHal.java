@@ -348,8 +348,8 @@ public class YiteSmartHal {
      * @param request
      * @return
      */
-    @RequestMapping(path = "/v3_1/sync/passwords/add/{unitId}", method = RequestMethod.GET)
-    public ResponseEntity<String> passwords(@PathVariable String unitId,
+    @RequestMapping(path = "/v3_1/sync/password/add/{unitId}", method = RequestMethod.GET)
+    public ResponseEntity<String> password(@PathVariable String unitId,
                                                HttpServletRequest request) {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
@@ -357,7 +357,7 @@ public class YiteSmartHal {
         paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
-        logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
+        logger.debug("/v3_1/sync/passwords/add/：{}", paramOut.toString());
         return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
     }
 
