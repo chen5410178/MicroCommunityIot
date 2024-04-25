@@ -403,7 +403,7 @@ public class YiteSmartHal {
      * @param request
      * @return
      */
-    @RequestMapping(path = "/v3_1/sync/user/add/{userId}", method = RequestMethod.GET)
+    @RequestMapping(path = "/v3_1/sync/users/add/{userId}", method = RequestMethod.GET)
     public ResponseEntity<String> syncUserAdd(
             @PathVariable String userId,
             HttpServletRequest request) {
