@@ -121,4 +121,11 @@ public class AccessControlFaceV1ServiceDaoImpl extends BaseServiceDao implements
         return infos;
     }
 
+    @Override
+    public List<Map> queryYiteAccessControlFaces(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlFaceV1ServiceDaoImpl.queryYiteAccessControlFaces",info);
+
+        return infos;
+    }
+
 }

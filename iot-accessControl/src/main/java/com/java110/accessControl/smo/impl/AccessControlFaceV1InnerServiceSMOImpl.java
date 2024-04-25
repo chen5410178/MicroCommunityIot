@@ -182,4 +182,11 @@ public class AccessControlFaceV1InnerServiceSMOImpl implements IAccessControlFac
         return accessControlFaces;
     }
 
+    @Override
+    public List<AccessControlFaceDto> queryYiteAccessControlFaces(@RequestBody AccessControlFaceDto accessControlFaceDto) {
+        List<AccessControlFaceDto> accessControlFaces = BeanConvertUtil.covertBeanList(accessControlFaceV1ServiceDaoImpl.queryYiteAccessControlFaces(BeanConvertUtil.beanCovertMap(accessControlFaceDto)), AccessControlFaceDto.class);
+
+        return accessControlFaces;
+    }
+
 }

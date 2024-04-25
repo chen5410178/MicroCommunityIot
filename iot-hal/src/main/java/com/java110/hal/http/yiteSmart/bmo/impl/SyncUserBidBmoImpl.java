@@ -137,6 +137,7 @@ public class SyncUserBidBmoImpl implements ISyncUserBidBmo {
                     long timestrap =tmpOwnerRoomRelDto.getEndTime().getTime();
                     timestrap = timestrap / 1000;
                     user.put("expired",timestrap);
+                    users.add(user);
                 }
             }
             addRooms.add(addRoom);

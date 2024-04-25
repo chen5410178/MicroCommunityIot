@@ -553,26 +553,28 @@ public class YiteSmartHal {
         Map<String, String> headers = new HashMap<>();
         RequestUtils.initHeadParam(request, headers);
         RequestUtils.initUrlParam(request, headers);
-        logger.debug("进入设备登陆接口,/v3_1/device/login,{}", headers);
+        logger.debug("进入人脸获取接口,/device/v1/face/users,{}", headers);
         JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
 
         String uuId = reqJson.getString("uuid");
 
-
+        String t = request.getParameter("t");
+        long curTimeTimeStamp = new Date().getTime();
+        curTimeTimeStamp = curTimeTimeStamp / 1000;
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", curTimeTimeStamp);
+        JSONObject data = new JSONObject();
+        paramOut.put("data", data);
         ResponseEntity<String> responseEntity = null;
-        try {
-            responseEntity = syncFaceBmoImpl.sync(uuId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            long curTimeTimeStamp = new Date().getTime();
-            curTimeTimeStamp = curTimeTimeStamp / 1000;
-            JSONObject paramOut = new JSONObject();
-            paramOut.put("code", 200);
-            paramOut.put("msg", "");
-            paramOut.put("timestamp", curTimeTimeStamp);
-            JSONObject data = new JSONObject();
-            paramOut.put("data", data);
-            responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.BAD_REQUEST);
+        responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.BAD_REQUEST);
+        if("0".equals(t)) {
+            try {
+                responseEntity = syncFaceBmoImpl.sync(uuId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return  responseEntity;
     }

@@ -66,6 +66,10 @@ public class AccessControlFaceDto extends PageDto implements Serializable {
 
     private String queryEndTime;
 
+    private String ownerLink;
+
+    private String staffLink;
+
 
     public String getComeId() {
         return comeId;
@@ -282,5 +286,21 @@ public class AccessControlFaceDto extends PageDto implements Serializable {
 
     public void setQueryEndTime(String queryEndTime) {
         this.queryEndTime = queryEndTime;
+    }
+
+    public String getOwnerLink() {
+        return ownerLink;
+    }
+
+    public void setOwnerLink(String ownerLink) {
+        this.ownerLink = ownerLink;
+    }
+
+    public String getStaffLink() {
+        return staffLink;
+    }
+
+    public void setStaffLink(String staffLink) {
+        this.staffLink = staffLink;
     }
 }

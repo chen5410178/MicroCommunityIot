@@ -226,4 +226,20 @@
         group by t.come_id
     </select>
 
+    <select id="queryYiteAccessControlFaces" parameterType="Map" resultType="Map">
+        select t.come_id,t.come_id comeId,t.come_type,t.come_type comeType,t.mf_id,t.mf_id mfId,t.status_cd,t.status_cd
+        statusCd,t.id_number,t.id_number idNumber,t.message,t.machine_id,t.machine_id
+        machineId,t.name,t.person_id,t.person_id personId,t.start_time,t.start_time startTime,t.end_time,t.end_time
+        endTime,t.face_path,t.face_path facePath,t.state,t.person_type,t.person_type
+        personType,t.community_id,t.community_id communityId,t.card_number,t.card_number cardNumber,t.room_name roomName,
+        ac.machine_code machineCode,ac.machine_name machineName,t.create_time createTime,bo.link ownerLink,uu.tel staffLink
+        from access_control_face t
+        left join access_control ac on ac.machine_id = t.machine_id and ac.status_cd = '0'
+        left join building_owner bo on bo.member_id = t.person_id and t.person_type = 'OWNER' and bo.status_cd = '0'
+        left join u_user uu on uu.user_id = t.person_id and t.person_type = 'STAFF' and uu.status_cd = '0'
+        where 1 =1
+        and t.machine_id = #{machineId}
+    </select>
+
+
 </mapper>
