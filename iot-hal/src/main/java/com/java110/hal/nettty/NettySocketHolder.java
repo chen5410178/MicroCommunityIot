@@ -75,4 +75,15 @@ public class NettySocketHolder {
     }
 
 
+    public static boolean hasOnLine(String machineCode) {
+        NioSocketChannel channel = get(machineCode);
+        if (channel == null) {
+            return false;
+        }
+
+        if(!channel.isActive()){
+            return false;
+        }
+        return true;
+    }
 }
