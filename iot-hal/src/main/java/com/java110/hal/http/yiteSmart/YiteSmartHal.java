@@ -9,12 +9,14 @@ import com.java110.core.utils.RequestUtils;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControlFloor.AccessControlFloorDto;
+import com.java110.dto.community.CommunityDto;
 import com.java110.hal.http.AccessControlHal;
 import com.java110.hal.http.yiteSmart.bmo.ISyncCardsBidBmo;
 import com.java110.hal.http.yiteSmart.bmo.ISyncFaceBmo;
 import com.java110.hal.http.yiteSmart.bmo.ISyncUserBidBmo;
 import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
+import com.java110.intf.community.ICommunityInnerServiceSMO;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +36,9 @@ public class YiteSmartHal {
 
     @Autowired
     private IAccessControlFloorV1InnerServiceSMO accessControlFloorV1InnerServiceSMOImpl;
+
+    @Autowired
+    private ICommunityInnerServiceSMO communityInnerServiceSMOImpl;
 
     @Autowired
     private ISyncUserBidBmo syncUserBidBmoImpl;
@@ -121,6 +126,14 @@ public class YiteSmartHal {
             throw new IllegalArgumentException("设备不存在");
         }
 
+        CommunityDto communityDto = new CommunityDto();
+        communityDto.setCommunityId(accessControlDtos.get(0).getCommunityId());
+
+        List<CommunityDto> communityDtos = communityInnerServiceSMOImpl.queryCommunitys(communityDto);
+        if (ListUtil.isNull(communityDtos)) {
+            throw new IllegalArgumentException("小区不存在");
+        }
+
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
@@ -204,6 +217,9 @@ public class YiteSmartHal {
             b_id.add(tmpAccessControlFloorDto.getUnitId() + "$&" + tmpAccessControlFloorDto.getFloorNum() + "栋" + tmpAccessControlFloorDto.getUnitNum() + "单元");
         }
 
+        b_id.add("-1$&物业中心");
+
+
         data.put("b_id", b_id);
 
         /**
@@ -222,7 +238,7 @@ public class YiteSmartHal {
          *                 "\t\t\"baidu_face_url\": \"https://aip.baidubce.com/rest/2.0/face/v2/identify\",\n" +
          */
         data.put("type", 1);
-        data.put("address", "花园测试");
+        data.put("address", communityDtos.get(0).getName());
         data.put("system_pwd", "00888");
         data.put("setting_pwd", "006666");
         data.put("app_latest", "app_latest");
