@@ -84,6 +84,7 @@ public class SyncFaceBmoImpl implements ISyncFaceBmo {
         }
 
 
+
         responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
         return responseEntity;
     }
