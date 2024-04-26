@@ -17,13 +17,17 @@ package com.java110.charge.cmd.workLicense;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.charge.workLicense.IWorkLicenseAdapt;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
+import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.*;
 import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.workLicenseFactory.WorkLicenseFactoryDto;
+import com.java110.intf.charge.IWorkLicenseFactoryV1InnerServiceSMO;
 import com.java110.intf.charge.IWorkLicenseMachineV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.workLicenseMachine.WorkLicenseMachineDto;
@@ -55,6 +59,9 @@ public class ListWorkLicenseMachineCmd extends Cmd {
     private static Logger logger = LoggerFactory.getLogger(ListWorkLicenseMachineCmd.class);
     @Autowired
     private IWorkLicenseMachineV1InnerServiceSMO workLicenseMachineV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IWorkLicenseFactoryV1InnerServiceSMO workLicenseFactoryV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
@@ -108,6 +115,30 @@ public class ListWorkLicenseMachineCmd extends Cmd {
             } catch (ParseException e) {
                 e.printStackTrace();
                 accessControlDto.setStateName("设备离线");
+            }
+
+            if(!"设备离线".equals(accessControlDto.getStateName())){
+                continue;
+            }
+
+            WorkLicenseFactoryDto workLicenseFactoryDto = null;
+
+            workLicenseFactoryDto = new WorkLicenseFactoryDto();
+            workLicenseFactoryDto.setFactoryId(accessControlDto.getImplBean());
+            List<WorkLicenseFactoryDto> workLicenseFactoryDtos = workLicenseFactoryV1InnerServiceSMOImpl.queryWorkLicenseFactorys(workLicenseFactoryDto);
+
+            if(ListUtil.isNull(workLicenseFactoryDtos)){
+                continue;
+            }
+
+            IWorkLicenseAdapt workLicenseAdapt = ApplicationContextFactory.getBean(workLicenseFactoryDtos.get(0).getBeanImpl(), IWorkLicenseAdapt.class);
+            if (workLicenseAdapt == null) {
+                continue;
+            }
+
+            boolean hasOnline = workLicenseAdapt.hasOnLine(accessControlDto);
+            if(hasOnline){
+                accessControlDto.setStateName("设备在线");
             }
         }
     }

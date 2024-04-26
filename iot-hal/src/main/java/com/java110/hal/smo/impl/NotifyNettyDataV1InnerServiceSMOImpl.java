@@ -24,4 +24,9 @@ public class NotifyNettyDataV1InnerServiceSMOImpl implements INotifyNettyDataV1I
         NettySocketHolder.sendData(nettyReplyDataDto.getMachineCode(),nettyReplyDataDto.getData());
         return new ResultVo(ResultVo.CODE_OK,ResultVo.MSG_OK);
     }
+
+    @Override
+    public boolean hasOnLine(String machineCode) {
+        return NettySocketHolder.hasOnLine(machineCode);
+    }
 }

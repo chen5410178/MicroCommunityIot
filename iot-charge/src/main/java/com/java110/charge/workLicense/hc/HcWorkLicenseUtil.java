@@ -5,7 +5,9 @@ import com.java110.core.utils.StringUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class HcWorkLicenseUtil {
@@ -53,6 +55,7 @@ public class HcWorkLicenseUtil {
         return data;
     }
 
+
     public static String getData(byte[] msg) {
         int start = 13;
         int end = 0;
@@ -65,7 +68,7 @@ public class HcWorkLicenseUtil {
         String bit = decimalFormat.format(Integer.valueOf(lenBin)); // 00 0 000 0000110110
         /**
          * 15 14 |  13   |   12 11 10  |  9 8 7 6 5 4 3 2 1 0
-         * 保留  | 分包    |数据加密方式   |    消息体长度
+         * 保留  | 分包    |数p据加密方式   |    消息体长度
          */
         String fengbao = String.valueOf(bit.charAt(2));
         String encrypt = bit.substring(3, 6);
@@ -83,6 +86,7 @@ public class HcWorkLicenseUtil {
 
         return data.substring(start, end);
     }
+
 
     /**
      * 计算返回内容
@@ -206,7 +210,7 @@ public class HcWorkLicenseUtil {
         int aa = Integer.parseInt(reqType, 2);
         reqType = String.format("%02x", aa);
 
-        String reqData = "FREQ,"+sec+"#";
+        String reqData = "FREQ," + sec + "#";
         try {
             byte[] data = reqData.getBytes("GBK");
             reqData = reqType + BytesUtil.bytesToHex(data);
@@ -243,52 +247,74 @@ public class HcWorkLicenseUtil {
      * -- 附加信息
      * 4d150f38363230313630353936333136363660150201cc00971209a336012d01cc00971209a3360325
      * fe12e60200015020000a898604b02622703416490104000000120402015005010130014a3101002b040f3f0f3f717e
+     *
      * @return
      */
     public static String[] getMacs(String uploadData) {
-        int extStartPos = 8*4+4*3+12;
-        String exId = uploadData.substring(extStartPos,extStartPos + 2);
+        int extStartPos = 8 * 4 + 4 * 3 + 12;
+        String exId = uploadData.substring(extStartPos, extStartPos + 2);
 
-        if(!"f0".equals(exId)){
+        if (!"f0".equals(exId)) {
             return null;
         }
 
         extStartPos += 10;
 
-        String mac1 = uploadData.substring(extStartPos,extStartPos + 14);
+        String mac1 = uploadData.substring(extStartPos, extStartPos + 14);
         extStartPos += 14;
-        String mac2 = uploadData.substring(extStartPos,extStartPos + 14);
+        String mac2 = uploadData.substring(extStartPos, extStartPos + 14);
         extStartPos += 14;
-        String mac3 = uploadData.substring(extStartPos,extStartPos + 14);
+        String mac3 = uploadData.substring(extStartPos, extStartPos + 14);
         extStartPos += 14;
-        String mac4 = uploadData.substring(extStartPos,extStartPos + 14);
+        String mac4 = uploadData.substring(extStartPos, extStartPos + 14);
 
-        mac1 = mac1.substring(0,2)+":"+mac1.substring(2,4)+":"+mac1.substring(4,6)
-                +":"+mac1.substring(6,8)+":"+mac1.substring(8,10)
-                +":"+mac1.substring(10,12)+"|"+mac1.substring(12,14) ;
-        mac2 = mac2.substring(0,2)+":"+mac2.substring(2,4)+":"+mac2.substring(4,6)
-                +":"+mac2.substring(6,8)+":"+mac2.substring(8,10)
-                +":"+mac2.substring(10,12)+"|"+mac2.substring(12,14) ;
-        mac3 = mac3.substring(0,2)+":"+mac3.substring(2,4)+":"+mac3.substring(4,6)
-                +":"+mac3.substring(6,8)+":"+mac3.substring(8,10)
-                +":"+mac3.substring(10,12)+"|"+mac3.substring(12,14) ;
-        mac4 = mac4.substring(0,2)+":"+mac4.substring(2,4)+":"+mac4.substring(4,6)
-                +":"+mac4.substring(6,8)+":"+mac4.substring(8,10)
-                +":"+mac4.substring(10,12)+"|"+mac4.substring(12,14) ;
-        return new String[]{mac1,mac2,mac3,mac4};
+        mac1 = mac1.substring(0, 2) + ":" + mac1.substring(2, 4) + ":" + mac1.substring(4, 6)
+                + ":" + mac1.substring(6, 8) + ":" + mac1.substring(8, 10)
+                + ":" + mac1.substring(10, 12) + "|" + mac1.substring(12, 14);
+        mac2 = mac2.substring(0, 2) + ":" + mac2.substring(2, 4) + ":" + mac2.substring(4, 6)
+                + ":" + mac2.substring(6, 8) + ":" + mac2.substring(8, 10)
+                + ":" + mac2.substring(10, 12) + "|" + mac2.substring(12, 14);
+        mac3 = mac3.substring(0, 2) + ":" + mac3.substring(2, 4) + ":" + mac3.substring(4, 6)
+                + ":" + mac3.substring(6, 8) + ":" + mac3.substring(8, 10)
+                + ":" + mac3.substring(10, 12) + "|" + mac3.substring(12, 14);
+        mac4 = mac4.substring(0, 2) + ":" + mac4.substring(2, 4) + ":" + mac4.substring(4, 6)
+                + ":" + mac4.substring(6, 8) + ":" + mac4.substring(8, 10)
+                + ":" + mac4.substring(10, 12) + "|" + mac4.substring(12, 14);
+        return new String[]{mac1, mac2, mac3, mac4};
     }
 
 
     public static void main(String[] args) throws UnsupportedEncodingException {
-        String aa = "7e0704007d010827067781600064000101007800000000020c0000022dd26c061036a209690000013f240325100646010400000045300117f01fe60b04c4518d88c054e2ac81ae7baab0c9547595f49205bf602e204b7cecbb60290401cc0097120ef11f414501cc00971205128f040001cc0097120efb08410001cc00971206f0564200fe05e6020001592b7e";
-        byte[] data = BytesUtil.hexStringToByteArray(aa);
-        String uploadData = HcWorkLicenseUtil.getData(data);
+        String aa = "7e070400fc075550144804000a000301005100000080004c000001e4837406fd357e00000000000024042515481801040000029a30011d310100e4020101e50101e60100e7080000000400000000e10c01cc000b00de0a069e381f00f0020000f50101005100000080204c000001e4837406fd357e00000000000024042515482401040000029a30011a310100e4020001e50101e60100e7080000000400000000e10c01cc000b00de0a069e381f00f0020000f50101005100000080204c000001e4837406fd357e00000000000024042515485201040000029a300117310100e4020001e50101e60100e7080000000400000000e10c01cc000b00de0a05fa911500f0020000f50101a07e";
 
+        byte[] data = BytesUtil.hexStringToByteArray(aa);
+
+       HcWorkLicenseUtil.getBatchPosData(data);
         String machineCode = machineCode(data);
         System.out.println(machineCode);
 
 
+    }
 
+    /**
+     * 定位数据批量上传具体解析
+     *
+     * @param msg
+     * @return
+     */
+    public static List<String> getBatchPosData(byte[] msg) {
+        List<String> reList = new ArrayList<>();
+        //获取消息个数
+        String data = BytesUtil.bytesToHex(msg);
+        String msgCount = data.substring(26, 30);
+        String lenMsg = data.substring(32, 36);
+        int count = Integer.parseInt(msgCount, 16);
+        int msgLenth = Integer.parseInt(lenMsg, 16)*2;
+        String[] returnArgs = data.split(lenMsg);
+        for (int i = 0; i < count; i++) {
+            reList.add(data.substring(36+msgLenth*i+(i*4), (i*4)+36+msgLenth*(i+1)));
+        }
+        return reList;
     }
 
     public static String generatorMsgId() {
@@ -317,7 +343,7 @@ public class HcWorkLicenseUtil {
         reqType = String.format("%02x", aa);
 
         //String reqData = "MODE,2,"+sec+",1,1,1,1#";
-        String reqData = "#2014*SET*M2:"+sec+",300#";
+        String reqData = "#2014*SET*M2:" + sec + ",300#";
         try {
             byte[] data = reqData.getBytes("GBK");
             reqData = reqType + BytesUtil.bytesToHex(data);

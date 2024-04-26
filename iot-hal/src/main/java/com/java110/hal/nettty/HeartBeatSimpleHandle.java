@@ -133,6 +133,7 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
         }
     }
 
+
     private void toNotifyWorkLicense(String machineCode, byte[] bytes) {
         WorkLicenseMachineDto workLicenseMachineDto = null;
         if(!workLicenseCache.containsKey(machineCode)) {
@@ -165,6 +166,7 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
     private boolean toNotifyMeter(String machineCode, byte[] bytes) {
         return false;
     }
+
 
     /**
      * 通知 充电桩

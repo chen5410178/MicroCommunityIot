@@ -43,4 +43,6 @@ public interface INotifyNettyDataV1InnerServiceSMO {
     ResultVo sendData(@RequestBody NettyReplyDataDto nettyReplyDataDto);
 
 
+    @RequestMapping(value = "/hasOnLine", method = RequestMethod.POST)
+    boolean hasOnLine(@RequestBody String machineCode);
 }
