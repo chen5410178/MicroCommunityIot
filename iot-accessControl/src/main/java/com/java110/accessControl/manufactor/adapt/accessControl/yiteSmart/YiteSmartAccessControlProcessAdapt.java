@@ -6,6 +6,7 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.MqttFactory;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.po.accessControlFace.AccessControlFacePo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,19 +15,75 @@ import org.springframework.stereotype.Service;
 @Service("yiteSmartAccessControlProcessAdapt")
 public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlManufactorAdapt {
 
+    @Autowired
+    private ISyncUser syncUserImpl;
+
     @Override
     public boolean initMachine(AccessControlDto machineDto) {
         MqttFactory.subscribe("zghl_door/server_php");
         return true;
     }
 
+    /**
+     * {
+     * "t": "8410789684082c1607d0",
+     * "c": "syncUsers",
+     * "m": {
+     * "p": "all",
+     * "t": "11291445e513488f1f0381ef6de241a2"
+     * },
+     * "f": "server_php"
+     * }
+     *
+     * @param accessControlDto    门禁信息
+     * @param accessControlFacePo 人员信息
+     * @return
+     */
     @Override
     public boolean addUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
-        return false;
+
+        // todo 保存用户信息
+
+        JSONObject param = syncUserImpl.getAddUser(accessControlDto, accessControlFacePo);
+
+        saveAddFaceLog("", accessControlDto.getMachineId(), "/v3_1/sync/users/add/",
+                accessControlDto.getCommunityId(),
+                param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
+
+        //todo 人员人脸信息
+        param = syncUserImpl.getAddUser(accessControlDto, accessControlFacePo);
+
+        saveAddFaceLog("", accessControlDto.getMachineId(), "/device/v2/face/sync",
+                accessControlDto.getCommunityId(),
+                param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
+
+
+        JSONObject paramIn = new JSONObject();
+        paramIn.put("t", accessControlDto.getMachineCode());
+        paramIn.put("c", "syncUsers");
+        paramIn.put("f", "server_php");
+
+        JSONObject m = new JSONObject();
+        m.put("p", "all");
+        m.put("t", GenerateCodeFactory.getUUID());
+        paramIn.put("m", m);
+
+        MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
+
+        return true;
     }
 
     @Override
     public boolean updateUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
+
+        //todo 人员人脸信息
+       JSONObject param = syncUserImpl.getAddUser(accessControlDto, accessControlFacePo);
+
+        saveAddFaceLog("", accessControlDto.getMachineId(), "/device/v2/face/sync",
+                accessControlDto.getCommunityId(),
+                param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
+
+
         return false;
     }
 
@@ -37,13 +94,14 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
 
     /**
      * {
-     * 	"f": "18988888888",//手机发, server_php 服务端发、
-     * 	"t": "8410789684082c1607d0",
-     * 	"c": "openDoor",
-     * 	"m": {
-     * 		"t": "441da6eefef101225257c2b23281eccc"
-     * 	    }
+     * "f": "18988888888",//手机发, server_php 服务端发、
+     * "t": "8410789684082c1607d0",
+     * "c": "openDoor",
+     * "m": {
+     * "t": "441da6eefef101225257c2b23281eccc"
      * }
+     * }
+     *
      * @param accessControlDto 门禁信息
      * @return
      */
@@ -59,7 +117,7 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
         paramIn.put("m", m);
 
         MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
-        return false;
+        return true;
     }
 
     /**

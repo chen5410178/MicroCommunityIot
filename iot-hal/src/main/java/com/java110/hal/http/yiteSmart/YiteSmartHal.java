@@ -11,10 +11,7 @@ import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControlFloor.AccessControlFloorDto;
 import com.java110.dto.community.CommunityDto;
 import com.java110.hal.http.AccessControlHal;
-import com.java110.hal.http.yiteSmart.bmo.ILoginBmo;
-import com.java110.hal.http.yiteSmart.bmo.ISyncCardsBidBmo;
-import com.java110.hal.http.yiteSmart.bmo.ISyncFaceBmo;
-import com.java110.hal.http.yiteSmart.bmo.ISyncUserBidBmo;
+import com.java110.hal.http.yiteSmart.bmo.*;
 import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.intf.community.ICommunityInnerServiceSMO;
@@ -52,6 +49,12 @@ public class YiteSmartHal {
 
     @Autowired
     private ILoginBmo loginBmoImpl;
+
+    @Autowired
+    private ISyncOneUserBmo syncOneUserBmoImpl;
+
+    @Autowired
+    private ISyncOneUserFaceBmo syncOneUserFaceBmoImpl;
 
     /**
      * 设备核验
@@ -208,7 +211,7 @@ public class YiteSmartHal {
 
         ResponseEntity<String> responseEntity = null;
         try {
-            responseEntity = syncUserBidBmoImpl.sync(unitId,uuId);
+            responseEntity = syncUserBidBmoImpl.sync(unitId, uuId);
         } catch (Exception e) {
             e.printStackTrace();
             long curTimeTimeStamp = new Date().getTime();
@@ -246,7 +249,7 @@ public class YiteSmartHal {
 
         ResponseEntity<String> responseEntity = null;
         try {
-            responseEntity = syncCardsBidBmoImpl.sync(unitId,uuId);
+            responseEntity = syncCardsBidBmoImpl.sync(unitId, uuId);
         } catch (Exception e) {
             e.printStackTrace();
             long curTimeTimeStamp = new Date().getTime();
@@ -316,6 +319,14 @@ public class YiteSmartHal {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }else{
+
+            try {
+                responseEntity = syncOneUserFaceBmoImpl.syncUserFace(uuId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
         logger.debug("/device/v2/face/sync,返回内容：{}", responseEntity);
         return responseEntity;
@@ -346,9 +357,9 @@ public class YiteSmartHal {
      * @param request
      * @return
      */
-    @RequestMapping(path = "/v3_1/sync/users/add/{userId}", method = RequestMethod.GET)
+    @RequestMapping(path = "/v3_1/sync/users/add/{t}", method = RequestMethod.GET)
     public ResponseEntity<String> syncUserAdd(
-            @PathVariable String userId,
+            @PathVariable String t,
             HttpServletRequest request) {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
@@ -357,7 +368,29 @@ public class YiteSmartHal {
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
         logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
-        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        if ("0".equals(t)) {
+            return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        }
+
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        logger.debug("进入人脸获取接口,/device/v2/face/sync,{}", headers);
+        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+
+        String uuId = reqJson.getString("uuid");
+
+
+        ResponseEntity<String> responseEntity = null;
+        try {
+            responseEntity = syncOneUserBmoImpl.syncUser(uuId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+
+        }
+
+        return responseEntity;
     }
 
     /**
