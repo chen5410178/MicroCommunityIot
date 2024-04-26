@@ -373,7 +373,7 @@ public class YiteSmartHal {
             paramOut.put("data", data);
             responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.BAD_REQUEST);
         }
-        return  responseEntity;
+        return responseEntity;
     }
 
     /**
@@ -405,14 +405,34 @@ public class YiteSmartHal {
     @RequestMapping(path = "/device/v2/face/sync", method = RequestMethod.GET)
     public ResponseEntity<String> faceSync(
             HttpServletRequest request) {
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        logger.debug("进入人脸获取接口,/device/v2/face/sync,{}", headers);
+        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+
+        String uuId = reqJson.getString("uuid");
+
+        String t = request.getParameter("t");
+        long curTimeTimeStamp = new Date().getTime();
+        curTimeTimeStamp = curTimeTimeStamp / 1000;
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timestamp", curTimeTimeStamp);
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
-        logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
-        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        ResponseEntity<String> responseEntity = null;
+        responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.BAD_REQUEST);
+        if ("0".equals(t)) {
+            try {
+                responseEntity = syncFaceBmoImpl.sync(uuId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        logger.debug("/device/v2/face/sync,返回内容：{}", responseEntity);
+        return responseEntity;
     }
 
     /**
@@ -550,32 +570,13 @@ public class YiteSmartHal {
     public ResponseEntity<String> user(HttpServletRequest request) {
 
 
-        Map<String, String> headers = new HashMap<>();
-        RequestUtils.initHeadParam(request, headers);
-        RequestUtils.initUrlParam(request, headers);
-        logger.debug("进入人脸获取接口,/device/v1/face/users,{}", headers);
-        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
-
-        String uuId = reqJson.getString("uuid");
-
-        String t = request.getParameter("t");
-        long curTimeTimeStamp = new Date().getTime();
-        curTimeTimeStamp = curTimeTimeStamp / 1000;
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp", curTimeTimeStamp);
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
-        ResponseEntity<String> responseEntity = null;
-        responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.BAD_REQUEST);
-        if("0".equals(t)) {
-            try {
-                responseEntity = syncFaceBmoImpl.sync(uuId);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return  responseEntity;
+        logger.debug("/device/v1/face/users：{}", paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
     }
 }
