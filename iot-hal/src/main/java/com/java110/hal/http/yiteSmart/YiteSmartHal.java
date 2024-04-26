@@ -346,9 +346,19 @@ public class YiteSmartHal {
     public ResponseEntity<String> syncUsersBid(@PathVariable String unitId,
                                                HttpServletRequest request) {
 
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        logger.debug("进入设备登陆接口,/v3_1/device/login,{}", headers);
+
+
+        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+
+        String uuId = reqJson.getString("uuid");
+
         ResponseEntity<String> responseEntity = null;
         try {
-            responseEntity = syncUserBidBmoImpl.sync(unitId);
+            responseEntity = syncUserBidBmoImpl.sync(unitId,uuId);
         } catch (Exception e) {
             e.printStackTrace();
             long curTimeTimeStamp = new Date().getTime();
@@ -374,9 +384,19 @@ public class YiteSmartHal {
     @RequestMapping(path = "/v3_1/sync/cards/bid/{unitId}", method = RequestMethod.GET)
     public ResponseEntity<String> syncCardsBid(@PathVariable String unitId,
                                                HttpServletRequest request) {
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        logger.debug("进入设备登陆接口,/v3_1/device/login,{}", headers);
+
+
+        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+
+        String uuId = reqJson.getString("uuid");
+
         ResponseEntity<String> responseEntity = null;
         try {
-            responseEntity = syncCardsBidBmoImpl.sync(unitId);
+            responseEntity = syncCardsBidBmoImpl.sync(unitId,uuId);
         } catch (Exception e) {
             e.printStackTrace();
             long curTimeTimeStamp = new Date().getTime();

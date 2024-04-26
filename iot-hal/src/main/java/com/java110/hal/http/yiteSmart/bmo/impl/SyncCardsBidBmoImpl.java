@@ -9,8 +9,12 @@ import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
+import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.hal.http.yiteSmart.YiteSmartHal;
 import com.java110.hal.http.yiteSmart.bmo.ISyncCardsBidBmo;
+import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
+import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.community.IUnitInnerServiceSMO;
 import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
@@ -38,35 +42,132 @@ public class SyncCardsBidBmoImpl implements ISyncCardsBidBmo {
     @Autowired
     private IUnitInnerServiceSMO unitInnerServiceSMOImpl;
 
+    @Autowired
+    private IAccessControlV1InnerServiceSMO accessControlV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
+
     /**
      * {
-     * 	"code": 200,
-     * 	"msg": "success",
-     * 	"data": {
-     * 		"cards": [
-     * 			            {
-     * 				"add": [
-     *                    {
-     * 						"card": "a1b2c3d4",
-     * 						"expired": 1744646400,
-     * 						"roomnum": "0204-1201" //绑定房间的
-     *                    }
-     * 				],
-     * 				"del": [],
-     * 				"b_id": 287,
-     * 				"b_name": [
-     * 					"2栋4单元"
-     * 				]
-     *            }
-     * 		]
-     * 	},
-     * 	"timestamp": 1713194440
+     * "code": 200,
+     * "msg": "success",
+     * "data": {
+     * "cards": [
+     * {
+     * "add": [
+     * {
+     * "card": "a1b2c3d4",
+     * "expired": 1744646400,
+     * "roomnum": "0204-1201" //绑定房间的
      * }
+     * ],
+     * "del": [],
+     * "b_id": 287,
+     * "b_name": [
+     * "2栋4单元"
+     * ]
+     * }
+     * ]
+     * },
+     * "timestamp": 1713194440
+     * }
+     *
      * @param unitId
      * @return
      */
     @Override
-    public ResponseEntity<String> sync(String unitId) {
+    public ResponseEntity<String> sync(String unitId, String machineCode) {
+
+        if ("-1".equals(unitId)) {
+            return syncStaff(unitId, machineCode);
+        } else {
+            return syncOwner(unitId);
+        }
+
+    }
+
+    private ResponseEntity<String> syncStaff(String unitId, String machineCode) {
+
+        long curTimeTimeStamp = new Date().getTime();
+        curTimeTimeStamp = curTimeTimeStamp / 1000;
+
+
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", curTimeTimeStamp);
+        JSONObject data = new JSONObject();
+        paramOut.put("data", data);
+
+
+        AccessControlDto accessControlDto = new AccessControlDto();
+        accessControlDto.setMachineCode(machineCode);
+        List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+
+        if (ListUtil.isNull(accessControlDtos)) {
+            throw new IllegalArgumentException("设备不存在");
+        }
+
+
+        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
+        accessControlFaceDto.setMachineId(accessControlDtos.get(0).getMachineId());
+        accessControlFaceDto.setPersonType(AccessControlFaceDto.PERSON_TYPE_STAFF);
+        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryYiteAccessControlFaces(accessControlFaceDto);
+        if (ListUtil.isNull(accessControlFaceDtos)) {
+            return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        }
+
+        /**
+         * "cards": [
+         *                            {
+         *     				"add": [
+         *                        {
+         *     						"card": "a1b2c3d4",
+         *     						"expired": 1744646400,
+         *     						"roomnum": "0204-1201" //绑定房间的
+         *                        }
+         *     				],
+         *     				"del": [],
+         *     				"b_id": 287,
+         *     				"b_name": [
+         *     					"2栋4单元"
+         *     				]
+         *                }
+         *     		]
+         */
+        JSONArray cards = new JSONArray();
+        JSONObject card = new JSONObject();
+        card.put("b_id", unitId);
+        card.put("b_name", "物业中心");
+
+        JSONArray addCards = new JSONArray();
+        card.put("add", addCards);
+        JSONArray del = new JSONArray();
+        card.put("del", del);
+
+        cards.add(card);
+        data.put("cards", cards);
+
+        JSONObject addCard = null;
+
+        for (AccessControlFaceDto tmpAccessControlFaceDto : accessControlFaceDtos) {
+            addCard = new JSONObject();
+            addCard.put("card", tmpAccessControlFaceDto.getCardNumber());
+            addCard.put("roomnum", "9999");
+            long timestrap = DateUtil.getDateFromStringA(tmpAccessControlFaceDto.getEndTime()).getTime();
+            timestrap = timestrap / 1000;
+            addCard.put("expired", timestrap);
+            addCards.add(addCard);
+        }
+
+        logger.debug("/v3_1/sync/cards/bid/：{}", paramOut.toString());
+        logger.debug("card返回报文：{}", paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
+
+    private ResponseEntity<String> syncOwner(String unitId) {
+
         long curTimeTimeStamp = new Date().getTime();
         curTimeTimeStamp = curTimeTimeStamp / 1000;
 
@@ -84,7 +185,6 @@ public class SyncCardsBidBmoImpl implements ISyncCardsBidBmo {
         paramOut.put("timestamp", curTimeTimeStamp);
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
-
 
 
         RoomDto roomDto = new RoomDto();
@@ -106,7 +206,7 @@ public class SyncCardsBidBmoImpl implements ISyncCardsBidBmo {
 
         /**
          * "cards": [
-         *     			            {
+         *                            {
          *     				"add": [
          *                        {
          *     						"card": "a1b2c3d4",
@@ -124,33 +224,33 @@ public class SyncCardsBidBmoImpl implements ISyncCardsBidBmo {
          */
         JSONArray cards = new JSONArray();
         JSONObject card = new JSONObject();
-        card.put("b_id",unitId);
-        card.put("b_name",unitDtos.get(0).getFloorNum()+"栋"+unitDtos.get(0).getUnitNum()+"单元");
+        card.put("b_id", unitId);
+        card.put("b_name", unitDtos.get(0).getFloorNum() + "栋" + unitDtos.get(0).getUnitNum() + "单元");
 
         JSONArray addCards = new JSONArray();
-        card.put("add",addCards);
+        card.put("add", addCards);
         JSONArray del = new JSONArray();
-        card.put("del",del);
+        card.put("del", del);
 
         cards.add(card);
         data.put("cards", cards);
 
-        JSONObject addCard =null;
+        JSONObject addCard = null;
         for (RoomDto tmpRoomDto : roomDtos) {
-            if(ListUtil.isNull(ownerRoomRelDtos)){
+            if (ListUtil.isNull(ownerRoomRelDtos)) {
                 continue;
             }
-            for(OwnerRoomRelDto tmpOwnerRoomRelDto: ownerRoomRelDtos){
-                if(StringUtil.isEmpty(tmpOwnerRoomRelDto.getCardNumber())){
+            for (OwnerRoomRelDto tmpOwnerRoomRelDto : ownerRoomRelDtos) {
+                if (StringUtil.isEmpty(tmpOwnerRoomRelDto.getCardNumber())) {
                     continue;
                 }
-                if(tmpRoomDto.getRoomId().equals(tmpOwnerRoomRelDto.getRoomId())){
+                if (tmpRoomDto.getRoomId().equals(tmpOwnerRoomRelDto.getRoomId())) {
                     addCard = new JSONObject();
-                    addCard.put("card",tmpOwnerRoomRelDto.getCardNumber());
-                    addCard.put("roomnum",tmpRoomDto.getRoomNum());
-                    long timestrap =tmpOwnerRoomRelDto.getEndTime().getTime();
+                    addCard.put("card", tmpOwnerRoomRelDto.getCardNumber());
+                    addCard.put("roomnum", tmpRoomDto.getRoomNum());
+                    long timestrap = tmpOwnerRoomRelDto.getEndTime().getTime();
                     timestrap = timestrap / 1000;
-                    addCard.put("expired",timestrap);
+                    addCard.put("expired", timestrap);
                     addCards.add(addCard);
                 }
             }

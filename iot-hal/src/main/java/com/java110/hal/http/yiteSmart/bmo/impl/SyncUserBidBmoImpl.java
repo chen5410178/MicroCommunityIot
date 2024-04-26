@@ -8,8 +8,13 @@ import com.java110.bean.dto.unit.UnitDto;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
+import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.hal.http.yiteSmart.YiteSmartHal;
 import com.java110.hal.http.yiteSmart.bmo.ISyncUserBidBmo;
+import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
+import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.community.IUnitInnerServiceSMO;
 import com.java110.intf.community.IUnitV1InnerServiceSMO;
@@ -35,10 +40,126 @@ public class SyncUserBidBmoImpl implements ISyncUserBidBmo {
     private IOwnerRoomRelV1InnerServiceSMO ownerRoomRelV1InnerServiceSMOImpl;
 
     @Autowired
+    private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
+
+    @Autowired
     private IUnitInnerServiceSMO unitInnerServiceSMOImpl;
 
+    @Autowired
+    private IAccessControlV1InnerServiceSMO accessControlV1InnerServiceSMOImpl;
+
     @Override
-    public ResponseEntity<String> sync(String unitId) {
+    public ResponseEntity<String> sync(String unitId, String machineCode) {
+        if ("-1".equals(unitId)) {
+            return syncStaff(unitId, machineCode);
+        } else {
+            return syncOwner(unitId);
+        }
+    }
+
+    private ResponseEntity<String> syncStaff(String unitId, String machineCode) {
+        long curTimeTimeStamp = new Date().getTime();
+        curTimeTimeStamp = curTimeTimeStamp / 1000;
+
+
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", curTimeTimeStamp);
+        JSONObject data = new JSONObject();
+        paramOut.put("data", data);
+
+        AccessControlDto accessControlDto = new AccessControlDto();
+        accessControlDto.setMachineCode(machineCode);
+        List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+
+        if (ListUtil.isNull(accessControlDtos)) {
+            throw new IllegalArgumentException("设备不存在");
+        }
+
+
+        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
+        accessControlFaceDto.setMachineId(accessControlDtos.get(0).getMachineId());
+        accessControlFaceDto.setPersonType(AccessControlFaceDto.PERSON_TYPE_STAFF);
+        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryYiteAccessControlFaces(accessControlFaceDto);
+        if (ListUtil.isNull(accessControlFaceDtos)) {
+            return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        }
+
+
+        JSONArray rooms = new JSONArray();
+        JSONObject room = new JSONObject();
+        room.put("b_id", unitId);
+        room.put("b_name", "物业中心");
+
+        JSONArray addRooms = new JSONArray();
+        room.put("add", addRooms);
+
+        JSONObject del = new JSONObject();
+        JSONArray del_room = new JSONArray();
+        del.put("del_room", del_room);
+        JSONArray del_user = new JSONArray();
+        del.put("del_user", del_user);
+        room.put("del", del);
+
+        rooms.add(room);
+        data.put("rooms", rooms);
+        JSONArray users = null;
+        JSONObject addRoom = null;
+        /**
+         *  {\n" +
+         *                       \"id\": 392188,\n" +
+         *                       \"uid\": \"20ce9b7368ad918515650baee75420fd\",\n" +
+         *                       \"name\": \"1003\",\n" +
+         *                       \"num\": \"0101-1003\",\n" +
+         *                       \"user\": [\n" +
+         *                           {\n" +
+         *                               \"id\": 416290,\n" +
+         *                               \"uid\": \"6003e234c6f988a6fc7ab5275f766d1e\",\n" +
+         *                               \"phone\": \"17782426083\",\n" +
+         *                               \"expired\": " + timestrap + "\n" +
+         *                           },\n" +
+         *                           {\n" +
+         *                               \"id\": 1004352,\n" +
+         *                               \"uid\": \"7247871cfb24f48bf1877d8f6795cc23\",\n" +
+         *                               \"phone\": \"17728043791\",\n" +
+         *                               \"expired\": " + timestrap + "\n" +
+         *                           }\n" +
+         *                       ]\n" +
+         *                   }
+         */
+        JSONObject user = null;
+
+        addRoom = new JSONObject();
+        addRoom.put("id", 1);
+        addRoom.put("uid", 1);
+        addRoom.put("name", "9999");
+        addRoom.put("num", "9999");
+        users = new JSONArray();
+        addRoom.put("user", users);
+
+        for (AccessControlFaceDto tmpAccessControlFaceDto : accessControlFaceDtos) {
+            user = new JSONObject();
+            user.put("id", tmpAccessControlFaceDto.getPersonId());
+            user.put("uid", tmpAccessControlFaceDto.getPersonId());
+            user.put("phone", tmpAccessControlFaceDto.getStaffLink());
+            long timestrap = DateUtil.getDateFromStringA(tmpAccessControlFaceDto.getEndTime()).getTime();
+            timestrap = timestrap / 1000;
+            user.put("expired", timestrap);
+            users.add(user);
+
+        }
+        addRooms.add(addRoom);
+
+
+        logger.debug("/v3_1/sync/user/add/：{}", paramOut.toString());
+
+        logger.debug("用户返回报文：{}", paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
+
+    private ResponseEntity<String> syncOwner(String unitId) {
+
         long curTimeTimeStamp = new Date().getTime();
         curTimeTimeStamp = curTimeTimeStamp / 1000;
 
@@ -53,7 +174,7 @@ public class SyncUserBidBmoImpl implements ISyncUserBidBmo {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp",curTimeTimeStamp);
+        paramOut.put("timestamp", curTimeTimeStamp);
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
 
@@ -76,22 +197,22 @@ public class SyncUserBidBmoImpl implements ISyncUserBidBmo {
 
         JSONArray rooms = new JSONArray();
         JSONObject room = new JSONObject();
-        room.put("b_id",unitId);
-        room.put("b_name",unitDtos.get(0).getFloorNum()+"栋"+unitDtos.get(0).getUnitNum()+"单元");
+        room.put("b_id", unitId);
+        room.put("b_name", unitDtos.get(0).getFloorNum() + "栋" + unitDtos.get(0).getUnitNum() + "单元");
 
         JSONArray addRooms = new JSONArray();
-        room.put("add",addRooms);
+        room.put("add", addRooms);
 
         JSONObject del = new JSONObject();
         JSONArray del_room = new JSONArray();
-        del.put("del_room",del_room);
+        del.put("del_room", del_room);
         JSONArray del_user = new JSONArray();
-        del.put("del_user",del_user);
-        room.put("del",del);
+        del.put("del_user", del_user);
+        room.put("del", del);
 
         rooms.add(room);
         data.put("rooms", rooms);
-        JSONArray users =null;
+        JSONArray users = null;
         JSONObject addRoom = null;
         /**
          *  {\n" +
@@ -118,25 +239,25 @@ public class SyncUserBidBmoImpl implements ISyncUserBidBmo {
         JSONObject user = null;
         for (RoomDto tmpRoomDto : roomDtos) {
             addRoom = new JSONObject();
-            addRoom.put("id",tmpRoomDto.getRoomId());
-            addRoom.put("uid",tmpRoomDto.getRoomId());
-            addRoom.put("name",tmpRoomDto.getRoomNum());
-            addRoom.put("num",tmpRoomDto.getRoomNum());
+            addRoom.put("id", tmpRoomDto.getRoomId());
+            addRoom.put("uid", tmpRoomDto.getRoomId());
+            addRoom.put("name", tmpRoomDto.getRoomNum());
+            addRoom.put("num", tmpRoomDto.getRoomNum());
             users = new JSONArray();
-            addRoom.put("user",users);
-            if(ListUtil.isNull(ownerRoomRelDtos)){
+            addRoom.put("user", users);
+            if (ListUtil.isNull(ownerRoomRelDtos)) {
                 continue;
             }
 
-            for(OwnerRoomRelDto tmpOwnerRoomRelDto: ownerRoomRelDtos){
-                if(tmpRoomDto.getRoomId().equals(tmpOwnerRoomRelDto.getRoomId())){
+            for (OwnerRoomRelDto tmpOwnerRoomRelDto : ownerRoomRelDtos) {
+                if (tmpRoomDto.getRoomId().equals(tmpOwnerRoomRelDto.getRoomId())) {
                     user = new JSONObject();
-                    user.put("id",tmpOwnerRoomRelDto.getOwnerId());
-                    user.put("uid",tmpOwnerRoomRelDto.getOwnerId());
-                    user.put("phone",tmpOwnerRoomRelDto.getLink());
-                    long timestrap =tmpOwnerRoomRelDto.getEndTime().getTime();
+                    user.put("id", tmpOwnerRoomRelDto.getOwnerId());
+                    user.put("uid", tmpOwnerRoomRelDto.getOwnerId());
+                    user.put("phone", tmpOwnerRoomRelDto.getLink());
+                    long timestrap = tmpOwnerRoomRelDto.getEndTime().getTime();
                     timestrap = timestrap / 1000;
-                    user.put("expired",timestrap);
+                    user.put("expired", timestrap);
                     users.add(user);
                 }
             }

@@ -239,6 +239,9 @@
         left join u_user uu on uu.user_id = t.person_id and t.person_type = 'STAFF' and uu.status_cd = '0'
         where 1 =1
         and t.machine_id = #{machineId}
+        <if test="personType !=null and personType != ''">
+            and t.person_type= #{personType}
+        </if>
     </select>
 
 

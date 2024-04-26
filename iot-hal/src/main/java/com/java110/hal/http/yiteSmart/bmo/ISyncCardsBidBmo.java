@@ -10,5 +10,5 @@ public interface ISyncCardsBidBmo {
      * @param unitId
      * @return
      */
-    public ResponseEntity<String> sync(String unitId);
+    public ResponseEntity<String> sync(String unitId,String machineCode);
 }
