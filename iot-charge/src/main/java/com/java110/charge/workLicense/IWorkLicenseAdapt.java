@@ -34,4 +34,6 @@ public interface IWorkLicenseAdapt {
      * @return
      */
     ResultVo result(WorkLicenseMachineDto workLicenseMachineDto, byte[] data);
+
+    boolean hasOnLine(WorkLicenseMachineDto workLicenseMachineDto);
 }

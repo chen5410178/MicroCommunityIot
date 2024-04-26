@@ -215,12 +215,80 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
                 uploadPos(workLicenseMachineDto, cmd, data);
                 break;
             case CMD_BATCH_UPLOAD_POS:
-                commonReturn(workLicenseMachineDto,cmd,data);
+                //commonReturn(workLicenseMachineDto,cmd,data);
+                uploadBatchPos(workLicenseMachineDto, cmd, data);
                 break;
+            default:
+                commonReturn(workLicenseMachineDto,cmd,data);
         }
 
         return null;
     }
+
+    @Override
+    public boolean hasOnLine(WorkLicenseMachineDto workLicenseMachineDto) {
+        return notifyNettyDataV1InnerServiceSMOImpl.hasOnLine(workLicenseMachineDto.getMachineCode());
+    }
+
+
+    /**
+     * 批量上报位置
+     *
+     * @param workLicenseMachineDto
+     * @param cmd
+     * @param data
+     */
+    private void uploadBatchPos(WorkLicenseMachineDto workLicenseMachineDto, String cmd, byte[] data) {
+       List<String> posList = HcWorkLicenseUtil.getBatchPosData(data);
+       for (String posdata : posList){
+           String state = posdata.substring( 8, 2 * 8);
+           long decimal = Long.parseLong(state, 16); // 先将十六进制转换为十进制
+           String binary = Long.toBinaryString(decimal); // 再将十进制转换为二进制
+           String gps =  binary.charAt(binary.length() - 2)+"";
+           String lon = "0";
+           String lat = "0";
+           if("0".equals(gps)){ // 没有gps
+               Map<String,String> info = getFromWifi(posdata,workLicenseMachineDto.getMachineId());
+               lon = info.get("lon");
+               lat = info.get("lat");
+               if(Double.parseDouble(lon) <=0 ){
+                   commonReturn(workLicenseMachineDto, cmd, data);
+                   return;
+               }
+           }else{ //todo gps 定位
+               lon = posdata.substring(2 * 8, 3 * 8);
+               lat = posdata.substring(3 * 8, 4 * 8);
+               if(Integer.parseInt(lon, 16) <=0 ){
+                   commonReturn(workLicenseMachineDto, cmd, data);
+                   return;
+               }
+               //015b4555::06cf3331
+               lon = (Long.parseLong(lon, 16) / 1000000.0) + "";
+               lat = (Long.parseLong(lat, 16) / 1000000.0) + "";
+
+           }
+           WorkLicensePosPo workLicensePosPo = new WorkLicensePosPo();
+           workLicensePosPo.setMachineId(workLicenseMachineDto.getMachineId());
+           workLicensePosPo.setMachineCode(workLicenseMachineDto.getMachineCode());
+           workLicensePosPo.setUploadDate(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_B));
+           workLicensePosPo.setWltId(GenerateCodeFactory.getGeneratorId("11"));
+           workLicensePosPo.setStaffName(workLicenseMachineDto.getStaffName());
+           workLicensePosPo.setLon(lon);
+           workLicensePosPo.setLat(lat);
+           workLicensePosPo.setStoreId(workLicenseMachineDto.getStoreId());
+           workLicensePosPo.setStaffId(workLicenseMachineDto.getStaffId());
+           workLicensePosPo.setPosType(WorkLicensePosDto.POS_TYPE_PUBLIC);
+           workLicensePosV1InnerServiceSMOImpl.saveWorkLicensePos(workLicensePosPo);
+           WorkLicenseMachinePo workLicenseMachinePo = new WorkLicenseMachinePo();
+           workLicenseMachinePo.setLon(lon);
+           workLicenseMachinePo.setLat(lat);
+           workLicenseMachinePo.setMachineId(workLicenseMachineDto.getMachineId());
+           workLicenseMachinePo.setMachineCode(workLicenseMachineDto.getMachineCode());
+           workLicenseMachineV1InnerServiceSMOImpl.updateWorkLicenseMachine(workLicenseMachinePo);
+       }
+        commonReturn(workLicenseMachineDto, cmd, data);
+    }
+
 
     /**
      * 上报位置
@@ -394,7 +462,6 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         workLicenseMachinePo.setMachineCode(workLicenseMachineDto.getMachineCode());
         workLicenseMachineV1InnerServiceSMOImpl.updateWorkLicenseMachine(workLicenseMachinePo);
 
-
         commonReturn(workLicenseMachineDto, cmd, data);
     }
 
@@ -449,7 +516,7 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         resultData = HcWorkLicenseUtil.getSettingWorkModeParam(sec);
         resultData = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), resultData);
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(resultData)));
-
+        commonReturn(workLicenseMachineDto,cmd,data);
 
     }
 

@@ -102,7 +102,7 @@ public class DataHeader {
     public static byte[] clearWorkLicense(byte[] bytes) {
         String data = BytesUtil.bytesToHex(bytes);
         data = data.replaceAll("7d01","7d");
-
+        data = data.replaceAll("7d02","7e");
         return BytesUtil.hexStringToByteArray(data);
     }
 }
