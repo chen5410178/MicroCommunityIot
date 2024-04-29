@@ -44,6 +44,8 @@ public class GetCommunityStoreInfoSMOImpl implements IGetCommunityStoreInfoSMO {
     @Autowired
     private IMenuV1InnerServiceSMO menuV1InnerServiceSMOImpl;
 
+
+
     @Override
     @Cacheable(value = "getStoreInfo" + Java110RedisConfig.GET_STORE_INFO_EXPIRE_TIME_KEY, key = "#userId")
     public StoreStaffDto getStoreInfo(String userId) {
