@@ -121,7 +121,7 @@ public class AuditPersonFaceAgreeBMOImpl implements IAuditPersonFaceAgreeBMO {
         ownerPo.setSex("1");
         ownerPo.setState(OwnerDto.STATE_FINISH);
         ownerPo.setUserId("-1");
-        ownerPo.setOwnerId(ownerPo.getOwnerId());
+        ownerPo.setOwnerId(ownerPo.getMemberId());
 
         if (OwnerDto.OWNER_TYPE_CD_MEMBER.equals(personFaceDto.getOwnerTypeCd())) {
             OwnerDto ownerDto = new OwnerDto();
