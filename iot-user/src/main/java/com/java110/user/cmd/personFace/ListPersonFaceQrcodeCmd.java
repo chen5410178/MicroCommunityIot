@@ -26,6 +26,8 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.ListUtil;
+import com.java110.dto.smallWeChat.SmallWeChatDto;
+import com.java110.intf.system.ISmallWechatV1InnerServiceSMO;
 import com.java110.intf.user.IPersonFaceQrcodeV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.personFaceQrcode.PersonFaceQrcodeDto;
@@ -55,6 +57,9 @@ public class ListPersonFaceQrcodeCmd extends Cmd {
     private static Logger logger = LoggerFactory.getLogger(ListPersonFaceQrcodeCmd.class);
     @Autowired
     private IPersonFaceQrcodeV1InnerServiceSMO personFaceQrcodeV1InnerServiceSMOImpl;
+
+    @Autowired
+    private ISmallWechatV1InnerServiceSMO smallWechatV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
@@ -98,7 +103,16 @@ public class ListPersonFaceQrcodeCmd extends Cmd {
             return;
         }
 
-        String ownerUrl = UrlCache.getOwnerUrl() + "/#/pages/user/personFace?communityId=" + personFaceQrcodeDtos.get(0).getCommunityId() + "&pfqId=";
+        SmallWeChatDto smallWeChatDto = new SmallWeChatDto();
+        smallWeChatDto.setObjId(personFaceQrcodeDtos.get(0).getCommunityId());
+
+        List<SmallWeChatDto> smallWeChatDtos = smallWechatV1InnerServiceSMOImpl.querySmallWechats(smallWeChatDto);
+        String appId = "";
+        if(!ListUtil.isNull(smallWeChatDtos)){
+            appId = smallWeChatDtos.get(0).getAppId();
+        }
+
+        String ownerUrl = UrlCache.getOwnerUrl() + "/#/pages/user/personFace?communityId=" + personFaceQrcodeDtos.get(0).getCommunityId() +"&appId="+appId+ "&pfqId=";
         for (PersonFaceQrcodeDto personFaceQrcodeDto : personFaceQrcodeDtos) {
             personFaceQrcodeDto.setQrCodeUrl(ownerUrl + personFaceQrcodeDto.getPfqId());
         }

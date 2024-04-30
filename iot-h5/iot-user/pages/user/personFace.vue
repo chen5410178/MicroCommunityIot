@@ -36,7 +36,8 @@
 				active: 0,
 				communityId: '',
 				pfqId: '',
-				openId: ''
+				openId: '',
+				appId:''
 			}
 		},
 		components: {
@@ -46,6 +47,7 @@
 		onLoad(options) {
 			this.communityId = options.communityId;
 			this.pfqId = options.pfqId;
+			this.appId = options.appId;
 			if (!isNotNull(this.openId)) {
 				//刷新 openId
 				this._refreshWechatOpenId();
