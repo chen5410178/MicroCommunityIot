@@ -148,6 +148,7 @@ public class AuditPersonFaceAgreeBMOImpl implements IAuditPersonFaceAgreeBMO {
         ownerRoomRelPo.setState("2001");
         ownerRoomRelPo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         ownerRoomRelPo.setEndTime(DateUtil.getLastTime());
+        ownerRoomRelPo.setUserId("-1");
 
         flag = ownerRoomRelV1InnerServiceSMOImpl.saveOwnerRoomRel(ownerRoomRelPo);
         if (flag < 1) {
