@@ -110,22 +110,28 @@ public class YiteSmartHal {
     public ResponseEntity<String> login(@RequestBody String postInfo,
                                         HttpServletRequest request) {
 
-        Map<String, String> headers = new HashMap<>();
-        RequestUtils.initHeadParam(request, headers);
-        RequestUtils.initUrlParam(request, headers);
-        logger.debug("进入设备登陆接口,/v3_1/device/login,{}", headers);
+        ResponseEntity<String> responseEntity = null;
+        try {
+            Map<String, String> headers = new HashMap<>();
+            RequestUtils.initHeadParam(request, headers);
+            RequestUtils.initUrlParam(request, headers);
+            logger.debug("进入设备登陆接口,/v3_1/device/login,{}", headers);
 
-        logger.debug("设备来登录，{}", postInfo);
+            logger.debug("设备来登录，{}", postInfo);
 
-        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+            JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
 
-        String uuId = reqJson.getString("uuid");
+            String uuId = reqJson.getString("uuid");
+            if (StringUtil.isEmpty(uuId)) {
+                throw new IllegalArgumentException("未包含设备ID");
+            }
+            responseEntity = loginBmoImpl.login(uuId);
 
-        if (StringUtil.isEmpty(uuId)) {
-            throw new IllegalArgumentException("未包含设备ID");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
         }
-
-        return loginBmoImpl.login(uuId);
+        return responseEntity;
     }
 
 
@@ -319,7 +325,7 @@ public class YiteSmartHal {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
 
             try {
                 responseEntity = syncOneUserFaceBmoImpl.syncUserFace(uuId);
