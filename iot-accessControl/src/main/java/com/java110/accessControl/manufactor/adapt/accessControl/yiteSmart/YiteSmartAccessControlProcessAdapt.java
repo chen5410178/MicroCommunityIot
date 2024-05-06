@@ -154,6 +154,16 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
 
     @Override
     public String accessControlResult(String topic, String param) {
+
+        JSONObject paramObj = JSONObject.parseObject(param);
+        String c = paramObj.getString("c");
+
+        switch (c){
+            case "heartbeat":
+                heartbeat(paramObj.getString("f"));
+                break;
+        }
+
         return null;
     }
 }
