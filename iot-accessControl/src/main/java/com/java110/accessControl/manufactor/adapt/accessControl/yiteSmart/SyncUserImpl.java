@@ -2,6 +2,7 @@ package com.java110.accessControl.manufactor.adapt.accessControl.yiteSmart;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.dto.room.RoomDto;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
@@ -11,6 +12,7 @@ import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.accessControlFloor.AccessControlFloorDto;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
+import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,9 @@ public class SyncUserImpl implements ISyncUser {
 
     @Autowired
     private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IRoomV1InnerServiceSMO roomV1InnerServiceSMOImpl;
 
     @Override
     public JSONObject getAddUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
@@ -106,8 +111,8 @@ public class SyncUserImpl implements ISyncUser {
          */
         JSONObject user = null;
         addRoom = new JSONObject();
-        addRoom.put("id", DateUtil.getCurrentDate().getTime());
-        addRoom.put("uid", accessControlFacePo.getPersonId());
+        addRoom.put("id", 1);
+        addRoom.put("uid", 1);
         addRoom.put("name", "9999");
         addRoom.put("num", "9999");
         if (AccessControlFaceDto.PERSON_TYPE_OWNER.equals(accessControlFacePo.getPersonType())) {
@@ -115,13 +120,24 @@ public class SyncUserImpl implements ISyncUser {
             if (!StringUtil.isEmpty(roomName) && roomName.split("-", 3).length == 3) {
                 addRoom.put("name", roomName.split("-", 3)[2]);
                 addRoom.put("num", roomName.split("-", 3)[2]);
+                RoomDto roomDto = new RoomDto();
+                roomDto.setFloorNum(roomName.split("-", 3)[0]);
+                roomDto.setUnitNum(roomName.split("-", 3)[1]);
+                roomDto.setRoomNum(roomName.split("-", 3)[2]);
+                roomDto.setCommunityId(accessControlFaceDtos.get(0).getCommunityId());
+                List<RoomDto> roomDtos = roomV1InnerServiceSMOImpl.queryRooms(roomDto);
+                if (ListUtil.isNull(roomDtos)) {
+                    throw new IllegalArgumentException("房屋不存在");
+                }
+                addRoom.put("id", roomDtos.get(0).getRoomId());
+                addRoom.put("uid", roomDtos.get(0).getRoomId());
             }
         }
         users = new JSONArray();
         addRoom.put("user", users);
 
         user = new JSONObject();
-        user.put("id", accessControlFaceDtos.get(0).getPersonId());
+        user.put("id", DateUtil.getCurrentDate().getTime());
         user.put("uid", accessControlFaceDtos.get(0).getPersonId());
         if (AccessControlFaceDto.PERSON_TYPE_STAFF.equals(accessControlFacePo.getPersonType())) {
             user.put("phone", accessControlFaceDtos.get(0).getStaffLink());
@@ -139,27 +155,28 @@ public class SyncUserImpl implements ISyncUser {
 
     /**
      * {
-     * 	"code": 200,
-     * 	"msg": "success",
-     * 	"data": {
-     * 		"rooms": [
-     * 			            {
-     * 				"b_id": 288,
-     * 				"b_name": [
-     * 					"2栋4单元"
-     * 				],
-     * 				"add": [],
-     * 				"del": {
-     * 					"del_room": [],
-     * 					"del_user": [
-     * 						1325929
-     * 					]
-     *                }
-     *            }
-     * 		]
-     * 	},
-     * 	"timestamp": 1626701606
+     * "code": 200,
+     * "msg": "success",
+     * "data": {
+     * "rooms": [
+     * {
+     * "b_id": 288,
+     * "b_name": [
+     * "2栋4单元"
+     * ],
+     * "add": [],
+     * "del": {
+     * "del_room": [],
+     * "del_user": [
+     * 1325929
+     * ]
      * }
+     * }
+     * ]
+     * },
+     * "timestamp": 1626701606
+     * }
+     *
      * @param accessControlDto
      * @param accessControlFacePo
      * @return
