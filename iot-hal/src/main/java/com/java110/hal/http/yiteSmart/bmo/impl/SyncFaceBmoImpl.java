@@ -40,6 +40,7 @@ public class SyncFaceBmoImpl implements ISyncFaceBmo {
 
         AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
         accessControlFaceDto.setMachineId(accessControlDtos.get(0).getMachineId());
+
         List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryYiteAccessControlFaces(accessControlFaceDto);
 
         if (ListUtil.isNull(accessControlFaceDtos)) {

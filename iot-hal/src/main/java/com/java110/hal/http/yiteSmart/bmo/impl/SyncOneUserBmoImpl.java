@@ -34,7 +34,7 @@ public class SyncOneUserBmoImpl implements ISyncOneUserBmo {
 
         accessControlLogDto = new AccessControlLogDto();
         accessControlLogDto.setLogId(accessControlLogDtos.get(0).getLogId());
-        accessControlLogDto.setCommunityId(accessControlLogDtos.get(0).getLogId());
+        accessControlLogDto.setCommunityId(accessControlLogDtos.get(0).getCommunityId());
         accessControlLogDtos = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogParams(accessControlLogDto);
         if (ListUtil.isNull(accessControlLogDtos)) {
             throw new IllegalArgumentException("没有数据");
