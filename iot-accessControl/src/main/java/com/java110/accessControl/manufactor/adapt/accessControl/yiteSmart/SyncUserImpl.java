@@ -106,8 +106,8 @@ public class SyncUserImpl implements ISyncUser {
         JSONObject user = null;
 
         addRoom = new JSONObject();
-        addRoom.put("id", 1);
-        addRoom.put("uid", 1);
+        addRoom.put("id", accessControlFacePo.getPersonId());
+        addRoom.put("uid", accessControlFacePo.getPersonId());
         addRoom.put("name", "9999");
         addRoom.put("num", "9999");
         if (AccessControlFaceDto.PERSON_TYPE_OWNER.equals(accessControlFacePo.getPersonType())) {
