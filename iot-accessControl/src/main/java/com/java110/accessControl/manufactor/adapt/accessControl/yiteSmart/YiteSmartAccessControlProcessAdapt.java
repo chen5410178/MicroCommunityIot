@@ -144,7 +144,7 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
 
         JSONObject paramIn = new JSONObject();
         paramIn.put("t", accessControlDto.getMachineCode());
-        paramIn.put("c", "restartApp");
+        paramIn.put("c", "restartGate");
         paramIn.put("f", "server_php");
 
         JSONObject m = new JSONObject();
