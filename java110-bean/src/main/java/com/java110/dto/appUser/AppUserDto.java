@@ -19,6 +19,10 @@ public class AppUserDto extends PageDto implements Serializable {
     public static final String STATE_S = "12000";
     public static final String STATE_F = "13000";
 
+    public static final String APP_TYPE_APP = "APP";//app绑定业主
+    public static final String APP_TYPE_WECHAT_MINA = "WECHAT_MINA";//小程序绑定业主
+    public static final String APP_TYPE_WECHAT = "WECHAT";//公众号绑定业主
+
     public static final String STATE_FINISH = "12000";
     private String stateMsg;
     private String auId;
