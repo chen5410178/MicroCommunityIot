@@ -22,6 +22,8 @@ public class AttendanceCheckinDto extends PageDto implements Serializable {
     private String checkinTime;
     private String checkinId;
     private String machineCode;
+
+    private String machineName;
     private String openTypeCd;
     private String remark;
     private String machineId;
@@ -31,6 +33,7 @@ public class AttendanceCheckinDto extends PageDto implements Serializable {
     private String state;
     private String communityId;
     private String staffId;
+
 
 
     private Date createTime;
@@ -149,5 +152,13 @@ public class AttendanceCheckinDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getMachineName() {
+        return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
     }
 }

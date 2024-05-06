@@ -21,8 +21,10 @@
         checkinId,t.machine_code,t.machine_code machineCode,t.open_type_cd,t.open_type_cd
         openTypeCd,t.status_cd,t.status_cd statusCd,t.remark,t.machine_id,t.machine_id
         machineId,t.staff_name,t.staff_name staffName,t.tel,t.face_path,t.face_path
-        facePath,t.state,t.community_id,t.community_id communityId,t.staff_id,t.staff_id staffId
+        facePath,t.state,t.community_id,t.community_id communityId,t.staff_id,t.staff_id staffId,
+        t.create_time createTime,am.machine_name machineName,am.machine_code machineCode
         from attendance_checkin t
+        left join attendance_machine am on t.machine_id = am.machine_id and am.status_cd = '0'
         where 1 =1
         <if test="checkinTime !=null and checkinTime != ''">
             and t.checkin_time= #{checkinTime}
