@@ -2,6 +2,7 @@ package com.java110.accessControl.manufactor.adapt.accessControl.yiteSmart;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
@@ -104,9 +105,8 @@ public class SyncUserImpl implements ISyncUser {
          *                   }
          */
         JSONObject user = null;
-
         addRoom = new JSONObject();
-        addRoom.put("id", accessControlFacePo.getPersonId());
+        addRoom.put("id", DateUtil.getCurrentDate().getTime());
         addRoom.put("uid", accessControlFacePo.getPersonId());
         addRoom.put("name", "9999");
         addRoom.put("num", "9999");
