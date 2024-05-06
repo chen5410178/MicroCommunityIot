@@ -56,6 +56,9 @@ public class YiteSmartHal {
     @Autowired
     private ISyncOneUserFaceBmo syncOneUserFaceBmoImpl;
 
+    @Autowired
+    private IOpenDoorBmo openDoorBmoImpl;
+
     /**
      * 设备核验
      *
@@ -504,4 +507,31 @@ public class YiteSmartHal {
         logger.debug("/device/v1/face/users：{}", paramOut.toString());
         return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
     }
+
+    @RequestMapping(path = "/v3_1/log/open_door", method = RequestMethod.POST)
+    public ResponseEntity<String> openDoor(HttpServletRequest request) {
+
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        logger.debug("开门记录接口,/v3_1/log/open_door,{}", headers);
+        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+
+        String uuId = reqJson.getString("uuid");
+
+        JSONObject reqParam = new JSONObject();
+
+        reqParam.put("data", request.getParameter("data"));
+        reqParam.put("type", request.getParameter("type"));
+        reqParam.put("photo", request.getParameter("photo"));
+
+        ResponseEntity<String> responseEntity = null;
+        try {
+            responseEntity = openDoorBmoImpl.openDoor(uuId, reqParam);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return responseEntity;
+    }
+
 }

@@ -136,4 +136,84 @@ public class SyncUserImpl implements ISyncUser {
         addRooms.add(addRoom);
         return paramOut;
     }
+
+    /**
+     * {
+     * 	"code": 200,
+     * 	"msg": "success",
+     * 	"data": {
+     * 		"rooms": [
+     * 			            {
+     * 				"b_id": 288,
+     * 				"b_name": [
+     * 					"2栋4单元"
+     * 				],
+     * 				"add": [],
+     * 				"del": {
+     * 					"del_room": [],
+     * 					"del_user": [
+     * 						1325929
+     * 					]
+     *                }
+     *            }
+     * 		]
+     * 	},
+     * 	"timestamp": 1626701606
+     * }
+     * @param accessControlDto
+     * @param accessControlFacePo
+     * @return
+     */
+    @Override
+    public JSONObject getDeleteUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
+        AccessControlFloorDto accessControlFloorDto = new AccessControlFloorDto();
+        accessControlFloorDto.setMachineId(accessControlDto.getMachineId());
+        List<AccessControlFloorDto> accessControlFloorDtos = accessControlFloorV1InnerServiceSMOImpl.queryAccessControlFloors(accessControlFloorDto);
+
+        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
+        accessControlFaceDto.setMfId(accessControlFacePo.getMfId());
+        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryYiteAccessControlFaces(accessControlFaceDto);
+
+
+        long curTimeTimeStamp = new Date().getTime();
+        curTimeTimeStamp = curTimeTimeStamp / 1000;
+
+
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "success");
+        paramOut.put("timestamp", curTimeTimeStamp);
+        JSONObject data = new JSONObject();
+        paramOut.put("data", data);
+
+
+        JSONArray rooms = new JSONArray();
+        JSONObject room = new JSONObject();
+        if (AccessControlFaceDto.PERSON_TYPE_STAFF.equals(accessControlFacePo.getPersonType())) {
+            room.put("b_id", "-1");
+            room.put("b_name", "物业中心");
+        } else {
+            if (ListUtil.isNull(accessControlFloorDtos)) {
+                throw new IllegalArgumentException("设备未关联单元");
+            }
+            room.put("b_id", accessControlFloorDtos.get(0).getUnitId());
+            room.put("b_name", accessControlFloorDtos.get(0).getFloorNum() + "栋" + accessControlFloorDtos.get(0).getUnitNum() + "单元");
+
+        }
+
+        JSONArray addRooms = new JSONArray();
+        room.put("add", addRooms);
+
+        JSONObject del = new JSONObject();
+        JSONArray del_room = new JSONArray();
+        del.put("del_room", del_room);
+        JSONArray del_user = new JSONArray();
+        del_user.add(accessControlFacePo.getPersonId());
+        del.put("del_user", del_user);
+        room.put("del", del);
+        rooms.add(room);
+        data.put("rooms", rooms);
+
+        return paramOut;
+    }
 }
