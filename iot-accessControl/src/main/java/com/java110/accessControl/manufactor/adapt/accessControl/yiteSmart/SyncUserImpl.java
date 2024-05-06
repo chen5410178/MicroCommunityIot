@@ -80,6 +80,7 @@ public class SyncUserImpl implements ISyncUser {
         JSONArray del_room = new JSONArray();
         del.put("del_room", del_room);
         JSONArray del_user = new JSONArray();
+        del_user.add(accessControlFacePo.getPersonId());
         del.put("del_user", del_user);
         room.put("del", del);
 
@@ -137,7 +138,7 @@ public class SyncUserImpl implements ISyncUser {
         addRoom.put("user", users);
 
         user = new JSONObject();
-        user.put("id", DateUtil.getCurrentDate().getTime());
+        user.put("id", accessControlFaceDtos.get(0).getPersonId());
         user.put("uid", accessControlFaceDtos.get(0).getPersonId());
         if (AccessControlFaceDto.PERSON_TYPE_STAFF.equals(accessControlFacePo.getPersonType())) {
             user.put("phone", accessControlFaceDtos.get(0).getStaffLink());
