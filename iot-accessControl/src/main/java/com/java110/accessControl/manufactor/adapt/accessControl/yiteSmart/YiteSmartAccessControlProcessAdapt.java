@@ -2,10 +2,13 @@ package com.java110.accessControl.manufactor.adapt.accessControl.yiteSmart;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.accessControl.manufactor.AbstractAccessControlManufactorAdapt;
+import com.java110.accessControl.manufactor.adapt.accessControl.ChangpaiMqttAssessControlProcessAdapt;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.MqttFactory;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.po.accessControlFace.AccessControlFacePo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,8 @@ import org.springframework.stereotype.Service;
  */
 @Service("yiteSmartAccessControlProcessAdapt")
 public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlManufactorAdapt {
+
+    private static Logger logger = LoggerFactory.getLogger(YiteSmartAccessControlProcessAdapt.class);
 
     @Autowired
     private ISyncUser syncUserImpl;
@@ -155,6 +160,7 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
     @Override
     public String accessControlResult(String topic, String param) {
 
+        logger.debug("topic={},data={}",topic,param);
         JSONObject paramObj = JSONObject.parseObject(param);
         String c = paramObj.getString("c");
 
