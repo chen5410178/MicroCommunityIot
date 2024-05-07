@@ -508,6 +508,30 @@ public class YiteSmartHal {
         return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
     }
 
+
+    @RequestMapping(path = "/device/v1/face/qiniu/token")
+    public ResponseEntity<String> qiniuToken(HttpServletRequest request) {
+
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        return responseEntity;
+    }
+    @RequestMapping(path = "/device/v1/face/qiniu/token/{photo}")
+    public ResponseEntity<String> qiniuToken(HttpServletRequest request,@PathVariable String photo) {
+
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        return responseEntity;
+    }
+
     @RequestMapping(path = "/v3_1/log/open_door", method = RequestMethod.POST)
     public ResponseEntity<String> openDoor(HttpServletRequest request) {
 
