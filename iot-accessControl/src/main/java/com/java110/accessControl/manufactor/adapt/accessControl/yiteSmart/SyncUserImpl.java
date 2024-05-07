@@ -19,8 +19,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class SyncUserImpl implements ISyncUser {
@@ -80,7 +82,7 @@ public class SyncUserImpl implements ISyncUser {
         JSONArray del_room = new JSONArray();
         del.put("del_room", del_room);
         JSONArray del_user = new JSONArray();
-       // del_user.add(accessControlFacePo.getPersonId());
+        // del_user.add(accessControlFacePo.getPersonId());
         del.put("del_user", del_user);
         room.put("del", del);
 
@@ -116,23 +118,21 @@ public class SyncUserImpl implements ISyncUser {
         addRoom.put("uid", 1);
         addRoom.put("name", "9999");
         addRoom.put("num", "9999");
-        if (AccessControlFaceDto.PERSON_TYPE_OWNER.equals(accessControlFacePo.getPersonType())) {
-            String roomName = accessControlFaceDtos.get(0).getRoomName();
-            if (!StringUtil.isEmpty(roomName) && roomName.split("-", 3).length == 3) {
-                addRoom.put("name", roomName.split("-", 3)[2]);
-                addRoom.put("num", roomName.split("-", 3)[2]);
-                RoomDto roomDto = new RoomDto();
-                roomDto.setFloorNum(roomName.split("-", 3)[0]);
-                roomDto.setUnitNum(roomName.split("-", 3)[1]);
-                roomDto.setRoomNum(roomName.split("-", 3)[2]);
-                roomDto.setCommunityId(accessControlFaceDtos.get(0).getCommunityId());
-                List<RoomDto> roomDtos = roomV1InnerServiceSMOImpl.queryRooms(roomDto);
-                if (ListUtil.isNull(roomDtos)) {
-                    throw new IllegalArgumentException("房屋不存在");
-                }
-                addRoom.put("id", roomDtos.get(0).getRoomId());
-                addRoom.put("uid", roomDtos.get(0).getRoomId());
+        String roomName = accessControlFaceDtos.get(0).getRoomName();
+        if (!StringUtil.isEmpty(roomName) && roomName.split("-", 3).length == 3) {
+            addRoom.put("name", roomName.split("-", 3)[2]);
+            addRoom.put("num", roomName.split("-", 3)[2]);
+            RoomDto roomDto = new RoomDto();
+            roomDto.setFloorNum(roomName.split("-", 3)[0]);
+            roomDto.setUnitNum(roomName.split("-", 3)[1]);
+            roomDto.setRoomNum(roomName.split("-", 3)[2]);
+            roomDto.setCommunityId(accessControlFaceDtos.get(0).getCommunityId());
+            List<RoomDto> roomDtos = roomV1InnerServiceSMOImpl.queryRooms(roomDto);
+            if (ListUtil.isNull(roomDtos)) {
+                throw new IllegalArgumentException("房屋不存在");
             }
+            addRoom.put("id", roomDtos.get(0).getRoomId());
+            addRoom.put("uid", roomDtos.get(0).getRoomId());
         }
         users = new JSONArray();
         addRoom.put("user", users);
@@ -145,7 +145,16 @@ public class SyncUserImpl implements ISyncUser {
         } else {
             user.put("phone", accessControlFaceDtos.get(0).getOwnerLink());
         }
-        long timestrap = DateUtil.getDateFromStringA(accessControlFacePo.getEndTime()).getTime();
+
+        //todo 这里 随机加个2小时内的秒数，不然 人员不修改 ，门禁不来同步人脸信息
+        Date endTime = DateUtil.getDateFromStringA(accessControlFacePo.getEndTime());
+        Random random = new Random();
+        int randomSec = random.nextInt(7200);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(endTime);
+        calendar.add(Calendar.SECOND, randomSec);
+        endTime = calendar.getTime();
+        long timestrap = endTime.getTime();
         timestrap = timestrap / 1000;
         user.put("expired", timestrap);
         users.add(user);
