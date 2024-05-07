@@ -58,13 +58,6 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
                 accessControlDto.getCommunityId(),
                 param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 
-        //todo 人员人脸信息
-        param = syncUserFaceImpl.getUserFace(accessControlDto, accessControlFacePo);
-
-        saveAddFaceLog("", accessControlDto.getMachineId(), "/device/v2/face/sync",
-                accessControlDto.getCommunityId(),
-                param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
-
 
         JSONObject paramIn = new JSONObject();
         paramIn.put("t", accessControlDto.getMachineCode());
@@ -72,6 +65,25 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
         paramIn.put("f", "server_php");
 
         JSONObject m = new JSONObject();
+        m.put("p", "all");
+        m.put("t", GenerateCodeFactory.getUUID());
+        paramIn.put("m", m);
+
+        MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
+
+        //todo 人员人脸信息
+        param = syncUserFaceImpl.getUserFace(accessControlDto, accessControlFacePo);
+
+        saveAddFaceLog("", accessControlDto.getMachineId(), "/device/v2/face/sync",
+                accessControlDto.getCommunityId(),
+                param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
+
+        paramIn = new JSONObject();
+        paramIn.put("t", accessControlDto.getMachineCode());
+        paramIn.put("c", "syncFace");
+        paramIn.put("f", "server_php");
+
+        m = new JSONObject();
         m.put("p", "all");
         m.put("t", GenerateCodeFactory.getUUID());
         paramIn.put("m", m);

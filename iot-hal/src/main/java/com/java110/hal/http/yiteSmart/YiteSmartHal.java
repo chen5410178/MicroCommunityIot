@@ -321,7 +321,7 @@ public class YiteSmartHal {
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
         ResponseEntity<String> responseEntity = null;
-        responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.BAD_REQUEST);
+        responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
         if ("0".equals(t)) {
             try {
                 responseEntity = syncFaceBmoImpl.sync(uuId);
