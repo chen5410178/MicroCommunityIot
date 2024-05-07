@@ -512,6 +512,14 @@ public class YiteSmartHal {
     @RequestMapping(path = "/device/v1/face/qiniu/token")
     public ResponseEntity<String> qiniuToken(HttpServletRequest request) {
 
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        logger.debug("qiniuToken,/device/v1/face/qiniu/token/,{}", headers);
+        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+
+        String uuId = reqJson.getString("uuid");
+
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
@@ -526,7 +534,7 @@ public class YiteSmartHal {
         Map<String, String> headers = new HashMap<>();
         RequestUtils.initHeadParam(request, headers);
         RequestUtils.initUrlParam(request, headers);
-        logger.debug("qiniuToken,/v3_1/log/open_door,{},photo={}", headers,photo);
+        logger.debug("qiniuToken,/device/v1/face/qiniu/token/,{},photo={}", headers,photo);
         JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
 
         String uuId = reqJson.getString("uuid");
