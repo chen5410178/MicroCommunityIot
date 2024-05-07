@@ -42,6 +42,7 @@ public class WorkLicenseMachinePo implements Serializable {
     private String staffName;
     private String staffId;
     private String lat;
+    private String version = "UTF-8";
 
     public String getHeartbeatTime() {
         return heartbeatTime;
@@ -155,5 +156,11 @@ public class WorkLicenseMachinePo implements Serializable {
         this.lat = lat;
     }
 
+    public String getVersion() {
+        return version;
+    }
 
+    public void setVersion(String version) {
+        this.version = version;
+    }
 }
