@@ -26,6 +26,7 @@ public class SyncOneUserFaceBmoImpl implements ISyncOneUserFaceBmo {
         AccessControlLogDto accessControlLogDto = new AccessControlLogDto();
         accessControlLogDto.setState(AccessControlLogDto.STATE_REQ);
         accessControlLogDto.setLogAction("/device/v2/face/sync");
+        accessControlLogDto.setMachineCode(machineCode);
         List<AccessControlLogDto> accessControlLogDtos = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogs(accessControlLogDto);
 
         if (ListUtil.isNull(accessControlLogDtos)) {
