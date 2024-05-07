@@ -531,6 +531,19 @@ public class YiteSmartHal {
         ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
         return responseEntity;
     }
+    @RequestMapping(path = "/device/v1/stranger/captures")
+    public ResponseEntity<String> captures(HttpServletRequest request) {
+
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        return responseEntity;
+    }
+
+
 
     @RequestMapping(path = "/v3_1/log/open_door", method = RequestMethod.POST)
     public ResponseEntity<String> openDoor(HttpServletRequest request) {
