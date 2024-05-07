@@ -56,6 +56,18 @@
                     <option :value="item.factoryId" v-for="(item,index) in editWorkLicenseMachineInfo.factorys">{{item.factoryName}}</option>
                 </select>
             </div>
+            <label class="col-sm-2 col-form-label text-right">
+                <vc:i18n name='工牌版本' namespace='editWorkLicenseMachine'></vc:i18n>
+            </label>
+            <div class="col-sm-4">
+                <select class="custom-select" v-model="editWorkLicenseMachineInfo.version">
+                    <option selected disabled value="">
+                        {{vc.i18n('必填，请选择工牌版本','editWorkLicenseMachine')}}
+                    </option>
+                    <option value="GBK" >2.0</option>
+                    <option value="UTF-8" >1.0</option>
+                </select>
+            </div>
         </div>
         <div class="ibox-content">
             <button class="btn btn-primary float-right" type="button" @click="_saveWorkLicenseMachine()">
