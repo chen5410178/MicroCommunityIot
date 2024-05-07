@@ -12,4 +12,6 @@ public interface IOpenDoorBmo {
      * @return
      */
     ResponseEntity<String> openDoor(String machineCode, JSONObject reqJson);
+
+    ResponseEntity<String>  createPhoto(String photo, String image);
 }

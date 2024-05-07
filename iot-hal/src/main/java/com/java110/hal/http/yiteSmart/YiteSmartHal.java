@@ -540,6 +540,9 @@ public class YiteSmartHal {
         String uuId = reqJson.getString("uuid");
 
 
+        openDoorBmoImpl.createPhoto(photo,request.getParameter("image"));
+
+
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");

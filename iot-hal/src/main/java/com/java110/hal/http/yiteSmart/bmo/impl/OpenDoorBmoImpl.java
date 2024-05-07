@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.dto.file.FileDto;
 import com.java110.bean.dto.owner.OwnerDto;
+import com.java110.core.cache.CommonCache;
 import com.java110.core.cache.MappingCache;
 import com.java110.core.constant.MappingConstant;
 import com.java110.core.factory.GenerateCodeFactory;
@@ -14,6 +15,7 @@ import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControl.AccessControlOweFeeDto;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
+import com.java110.dto.accessControlInout.AccessControlInoutDto;
 import com.java110.dto.user.UserDto;
 import com.java110.hal.http.yiteSmart.bmo.IOpenDoorBmo;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
@@ -85,19 +87,6 @@ public class OpenDoorBmoImpl implements IOpenDoorBmo {
 
         String facePath = reqJson.getString("photo");
 
-        if (!StringUtil.isEmpty(facePath) && facePath.length() > 512) { //说明是图片
-            FileDto fileDto = new FileDto();
-            fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
-            fileDto.setFileName(fileDto.getFileId());
-            fileDto.setContext(facePath);
-            fileDto.setSuffix("jpeg");
-            fileDto.setCommunityId(accessControlDtos.get(0).getCommunityId());
-            String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
-            String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
-
-            facePath = imgUrl + fileName;
-        }
-
 
         AccessControlInoutPo accessControlInoutPo = new AccessControlInoutPo();
         accessControlInoutPo.setMachineCode(machineCode);
@@ -113,7 +102,52 @@ public class OpenDoorBmoImpl implements IOpenDoorBmo {
         accessControlInoutPo.setTel(userDto.getTel());
         accessControlInoutV1InnerServiceSMOImpl.saveAccessControlInout(accessControlInoutPo);
 
+        CommonCache.setValue(facePath,accessControlInoutPo.getInoutId(),CommonCache.defaultExpireTime);
+
         return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<String> createPhoto(String facePath, String image) {
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+
+        String inoutId = CommonCache.getAndRemoveValue(facePath);
+
+        if(StringUtil.isEmpty(inoutId)){
+            return responseEntity;
+        }
+
+
+        AccessControlInoutDto accessControlInoutDto = new AccessControlInoutDto();
+        accessControlInoutDto.setInoutId(inoutId);
+        List<AccessControlInoutDto> accessControlInoutDtos = accessControlInoutV1InnerServiceSMOImpl.queryAccessControlInouts(accessControlInoutDto);
+        if(ListUtil.isNull(accessControlInoutDtos)){
+            return responseEntity;
+        }
+
+
+
+        FileDto fileDto = new FileDto();
+        fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
+        fileDto.setFileName(fileDto.getFileId());
+        fileDto.setContext(image);
+        fileDto.setSuffix("jpeg");
+        fileDto.setCommunityId(accessControlInoutDtos.get(0).getCommunityId());
+        String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
+        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
+
+        facePath = imgUrl + fileName;
+
+        AccessControlInoutPo accessControlInoutPo = new AccessControlInoutPo();
+        accessControlInoutPo.setInoutId(inoutId);
+        accessControlInoutPo.setFacePath(facePath);
+        accessControlInoutV1InnerServiceSMOImpl.updateAccessControlInout(accessControlInoutPo);
+        return responseEntity;
     }
 
 
