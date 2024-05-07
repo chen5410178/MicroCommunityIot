@@ -83,6 +83,9 @@
                             <vc:i18n name='工牌厂家' namespace='workLicenseMachine'></vc:i18n>
                         </th>
                         <th class="text-center">
+                            <vc:i18n name='版本' namespace='workLicenseMachine'></vc:i18n>
+                        </th>
+                        <th class="text-center">
                             <vc:i18n name='状态' namespace='workLicenseMachine'></vc:i18n>
                         </th>
                         <th class="text-center">
@@ -107,6 +110,7 @@
                         <td class="text-center">{{workLicenseMachine.address}}</td>
 <!--                        <td class="text-center">{{workLicenseMachine.charge}}%</td>-->
                         <td class="text-center">{{workLicenseMachine.factoryName}}</td>
+                        <td class="text-center">{{workLicenseMachine.version== 'GBK'?'2.0':'1.0'}}</td>
                         <td class="text-center">{{workLicenseMachine.stateName}}</td>
                         <td class="text-center">{{workLicenseMachine.heartbeatTime}}</td>
                         <td class="text-center">{{workLicenseMachine.createTime}}</td>

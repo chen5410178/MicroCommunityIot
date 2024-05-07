@@ -9,6 +9,7 @@
                 staffName:'',
                 posUploadSec: '',
                 implBean: '',
+                version: '',
                 factorys:[]
             }
         },
@@ -84,6 +85,18 @@
                             limit: "maxLength",
                             param: "30",
                             errInfo: "工牌厂家不能超过30"
+                        },
+                    ],
+                    'editWorkLicenseMachineInfo.version': [
+                        {
+                            limit: "required",
+                            param: "",
+                            errInfo: "工牌版本不能为空"
+                        },
+                        {
+                            limit: "maxLength",
+                            param: "30",
+                            errInfo: "工牌版本不能超过30"
                         },
                     ],
 
