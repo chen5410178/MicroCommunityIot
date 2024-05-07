@@ -2,6 +2,7 @@ package com.java110.hal.http.yiteSmart.bmo.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.java110.core.cache.CommonCache;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
@@ -68,6 +69,7 @@ public class LoginBmoImpl implements ILoginBmo {
         socket.put("token", "abcdef");
         socket.put("interval", "90");
         data.put("socket", socket);
+
 
         JSONObject mqtt = new JSONObject();
         mqtt.put("client_id", machineCode);

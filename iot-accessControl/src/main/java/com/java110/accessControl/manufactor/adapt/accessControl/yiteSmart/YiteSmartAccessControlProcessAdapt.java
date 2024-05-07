@@ -150,6 +150,27 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
             return true;
         }
 
+        //todo 人员卡信息
+
+        param = syncUserCardImpl.getUserCard(accessControlDto, accessControlFacePo);
+
+        saveAddFaceLog("", accessControlDto.getMachineId(), "/v3_1/sync/cards/add/sync",
+                accessControlDto.getCommunityId(),
+                param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
+
+        paramIn = new JSONObject();
+        paramIn.put("t", accessControlDto.getMachineCode());
+        paramIn.put("c", "syncCards");
+        paramIn.put("f", "server_php");
+
+        m = new JSONObject();
+        m.put("p", "all");
+        m.put("t", GenerateCodeFactory.getUUID());
+        paramIn.put("m", m);
+
+        MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
+
+
         return true;
     }
 

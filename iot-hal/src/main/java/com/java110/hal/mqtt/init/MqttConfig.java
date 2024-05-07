@@ -1,5 +1,7 @@
 package com.java110.hal.mqtt.init;
 
+import com.alibaba.fastjson.JSONObject;
+import com.java110.core.cache.CommonCache;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.hal.mqtt.MqttPushCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -50,7 +52,7 @@ public class MqttConfig {
     @Bean
     public MqttClient mqttClient() {
         MqttClient client = null;
-        clientId = "java110_"+GenerateCodeFactory.getUUID();
+        clientId = "java110_" + GenerateCodeFactory.getUUID();
         try {
             client = new MqttClient(hostUrl, clientId, new MemoryPersistence());
             //client = new MqttClient(hostUrl, clientId, new MemoryPersistence(), Executors.newScheduledThreadPool(poolSize));
@@ -69,14 +71,16 @@ public class MqttConfig {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return client;
     }
 
     /**
      * 重新构造 MQTT 客户端
+     *
      * @return
      */
-    public MqttClient createNewMqttClient(){
+    public MqttClient createNewMqttClient() {
         return mqttClient();
     }
 
