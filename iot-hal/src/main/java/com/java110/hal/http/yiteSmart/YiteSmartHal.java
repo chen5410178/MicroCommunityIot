@@ -57,6 +57,9 @@ public class YiteSmartHal {
     private ISyncOneUserFaceBmo syncOneUserFaceBmoImpl;
 
     @Autowired
+    private ISyncOneUserCardBmo syncOneUserCardBmoImpl;
+
+    @Autowired
     private IOpenDoorBmo openDoorBmoImpl;
 
     /**
@@ -402,15 +405,9 @@ public class YiteSmartHal {
         return responseEntity;
     }
 
-    /**
-     * 实例:
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping(path = "/v3_1/sync/cards/add/{userId}", method = RequestMethod.GET)
+    @RequestMapping(path = "/v3_1/sync/cards/add/sync/{t}", method = RequestMethod.GET)
     public ResponseEntity<String> syncCardsAdd(
-            @PathVariable String userId,
+            @PathVariable String t,
             HttpServletRequest request) {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
@@ -418,9 +415,34 @@ public class YiteSmartHal {
         paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
-        logger.debug("/v3_1/sync/user/add/：{}", paramOut.toString());
-        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
+        if ("0".equals(t)) {
+            return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        }
+
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        logger.debug("进入人脸获取接口,/device/v2/face/sync,{}", headers);
+        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+
+        String uuId = reqJson.getString("uuid");
+
+
+        ResponseEntity<String> responseEntity = null;
+        try {
+            responseEntity = syncOneUserCardBmoImpl.syncUserCard(uuId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+
+        }
+
+        return responseEntity;
     }
+
+
+
 
     /**
      * 实例:
