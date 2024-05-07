@@ -45,7 +45,7 @@ public class SyncOneUserFaceBmoImpl implements ISyncOneUserFaceBmo {
         AccessControlLogPo accessControlLogPo = new AccessControlLogPo();
         accessControlLogPo.setLogId(accessControlLogDtos.get(0).getLogId());
         accessControlLogPo.setState(AccessControlLogDto.STATE_RES);
-        accessControlLogPo.setResParam("已同步");
+        accessControlLogPo.setResParam("已同步-" + machineCode);
         accessControlLogV1InnerServiceSMOImpl.updateAccessControlLog(accessControlLogPo);
 
 
