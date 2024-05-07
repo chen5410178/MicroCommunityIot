@@ -137,12 +137,19 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         int aa = Integer.parseInt(reqType, 2);
         reqType = String.format("%02x", aa);
         String reqData = null;
+        String reqData_utf = null;
         try {
-            byte[] data = ttsText.getBytes("UTF-8");
+            byte[] data = ttsText.getBytes("GBK");
+            byte[] data_utf = ttsText.getBytes("UTF-8");
             reqData = reqType + BytesUtil.bytesToHex(data);
+            reqData_utf = reqType + BytesUtil.bytesToHex(data_utf);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+
+        reqData_utf = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), reqData_utf);
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(reqData_utf)));
+
         reqData = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), reqData);
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(reqData)));
 
