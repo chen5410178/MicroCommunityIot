@@ -146,13 +146,13 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-
-        reqData_utf = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), reqData_utf);
-        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(reqData_utf)));
-
-        reqData = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), reqData);
-        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(reqData)));
-
+        if ("UTF-8".equals(workLicenseMachineDto.getVersion())){
+            reqData_utf = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), reqData_utf);
+            notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(reqData_utf)));
+        }else{
+            reqData = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), reqData);
+            notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(reqData)));
+        }
         JSONObject reqJson = new JSONObject();
         reqJson.put("ttsText",ttsText);
         reqJson.put("ttsTextBin",reqData);

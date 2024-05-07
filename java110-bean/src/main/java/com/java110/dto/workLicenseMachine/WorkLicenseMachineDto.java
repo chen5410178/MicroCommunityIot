@@ -32,7 +32,7 @@ public class WorkLicenseMachineDto extends PageDto implements Serializable {
     private String staffName;
     private String staffId;
     private String lat;
-
+    private String version;
     private String state;
     private String stateName;
 
@@ -195,5 +195,13 @@ public class WorkLicenseMachineDto extends PageDto implements Serializable {
 
     public void setTtsText(String ttsText) {
         this.ttsText = ttsText;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 }
