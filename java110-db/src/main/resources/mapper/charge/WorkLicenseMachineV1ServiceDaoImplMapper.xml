@@ -8,9 +8,9 @@
     <!-- 保存工牌信息 add by wuxw 2018-07-03 -->
     <insert id="saveWorkLicenseMachineInfo" parameterType="Map">
         insert into work_license_machine(
-        heartbeat_time,impl_bean,machine_code,address,charge,lon,store_id,machine_name,pos_upload_sec,machine_id,staff_name,staff_id,lat
+        heartbeat_time,impl_bean,machine_code,address,charge,lon,store_id,machine_name,pos_upload_sec,machine_id,staff_name,staff_id,lat,version
         ) values (
-        #{heartbeatTime},#{implBean},#{machineCode},#{address},#{charge},#{lon},#{storeId},#{machineName},#{posUploadSec},#{machineId},#{staffName},#{staffId},#{lat}
+        #{heartbeatTime},#{implBean},#{machineCode},#{address},#{charge},#{lon},#{storeId},#{machineName},#{posUploadSec},#{machineId},#{staffName},#{staffId},#{lat},#{version}
         )
     </insert>
 
@@ -21,7 +21,7 @@
         implBean,t.machine_code,t.machine_code machineCode,t.address,t.charge,t.lon,t.status_cd,t.status_cd
         statusCd,t.store_id,t.store_id storeId,t.machine_name,t.machine_name
         machineName,t.pos_upload_sec,t.pos_upload_sec posUploadSec,t.machine_id,t.machine_id
-        machineId,t.staff_name,t.staff_name staffName,t.staff_id,t.staff_id staffId,t.lat,t.create_time createTime,
+        machineId,t.staff_name,t.staff_name staffName,t.staff_id,t.staff_id staffId,t.lat,t.create_time createTime,t.version,
         plf.factory_name factoryName
         from work_license_machine t
         left join work_license_factory plf on t.impl_bean = plf.factory_id and plf.status_cd = '0'
@@ -62,6 +62,9 @@
         <if test="staffName !=null and staffName != ''">
             and t.staff_name= #{staffName}
         </if>
+        <if test="version !=null and version != ''">
+            and t.version= #{version}
+        </if>
         <if test="staffId !=null and staffId != ''">
             and t.staff_id= #{staffId}
         </if>
@@ -100,7 +103,9 @@
         <if test="lon !=null and lon != ''">
             , t.lon= #{lon}
         </if>
-
+        <if test="version !=null and version != ''">
+            , t.version= #{version}
+        </if>
         <if test="machineName !=null and machineName != ''">
             , t.machine_name= #{machineName}
         </if>
@@ -172,6 +177,9 @@
         </if>
         <if test="lat !=null and lat != ''">
             and t.lat= #{lat}
+        </if>
+        <if test="version !=null and version != ''">
+            and t.version= #{version}
         </if>
 
 
