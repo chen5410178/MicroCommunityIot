@@ -319,9 +319,9 @@ public class YldMqttAssessControlProcessAdapt extends AbstractAccessControlManuf
 
         MqttFactory.subscribe(TOPIC_FACE_SN_RESPONSE.replace(SN, machineCode));
         //注册设备上线 topic
-        MqttFactory.subscribe("heartbeat.response");
+        MqttFactory.subscribe("heartbeat/response");
         //推送人脸识别结果
-        MqttFactory.subscribe("face.response");
+        MqttFactory.subscribe("face/response");
 
         heartbeat(machineCode, DateUtil.getCurrentDate());
     }
