@@ -17,6 +17,7 @@
         _initEvent: function() {
             vc.on('worklicenseWhiteLine', 'openWorklicenseWhiteLineModal', function(_data) {
                 vc.copyObject(_data,$that.worklicenseWhiteLineInfo)
+                $that._listWorkLicenseWhiteList($that.worklicenseWhiteLineInfo.machineId);
                 $('#worklicenseWhiteLineModel').modal('show');
             });
         },
@@ -57,6 +58,27 @@
                         },
                     ],
                 });
+            },
+            _listWorkLicenseWhiteList: function (machineId) {
+                let param = {
+                    params: {page:1,row:1,machineId:machineId}
+                };
+                //发送get请求
+                vc.http.apiGet('/whiteList.listWhiteList',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        if (_json.total == 1){
+                            $that.worklicenseWhiteLineInfo = _json.data[0];
+                        }else{
+                            $that.worklicenseWhiteLineInfo.tel1 = "";
+                            $that.worklicenseWhiteLineInfo.tel2 = "";
+                            $that.worklicenseWhiteLineInfo.tel3 = "";
+                        }
+                    }, function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
             },
             _saveWhiteList: function() {
                 if (!$that.worklicenseWhiteLineValidate()) {
