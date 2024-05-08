@@ -139,7 +139,7 @@ public class YldMqttAssessControlProcessAdapt extends AbstractAccessControlManuf
         param.put("type", 0);
         param.put("per_id", accessControlFacePo.getPersonId());
         MqttFactory.publish(TOPIC_FACE_SN_REQUEST.replace(SN, accessControlDto.getMachineCode()), param.toJSONString());
-        saveDeleteFaceLog("", accessControlDto.getMachineId(), TOPIC_FACE_SN_REQUEST.replace(SN, accessControlDto.getMachineCode()) + "/deleteperson",
+        saveDeleteFaceLog(cmdId, accessControlDto.getMachineId(), TOPIC_FACE_SN_REQUEST.replace(SN, accessControlDto.getMachineCode()) + "/deleteperson",
                 accessControlDto.getCommunityId(), param.toJSONString(),
                 accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 
@@ -177,6 +177,7 @@ public class YldMqttAssessControlProcessAdapt extends AbstractAccessControlManuf
             return;
         }
         String cmd = resultCmd.getString("cmd");
+
         switch (cmd) {
             case CMD_ADD_FACE:
                 doCmdResultCloud(resultCmd);
@@ -185,6 +186,13 @@ public class YldMqttAssessControlProcessAdapt extends AbstractAccessControlManuf
                 doCmdResultCloud(resultCmd);
                 break;
             case CMD_DELETE_FACE:
+                doCmdResultCloud(resultCmd);
+                break;
+            case CMD_OPEN_DOOR:
+                doCmdResultCloud(resultCmd);
+                break;
+            case CMD_REBOOT:
+                doCmdResultCloud(resultCmd);
                 break;
             default:
                 break;
@@ -215,13 +223,14 @@ public class YldMqttAssessControlProcessAdapt extends AbstractAccessControlManuf
 
     @Override
     public boolean restartMachine(AccessControlDto machineDto) {
+        String cmdId = GenerateCodeFactory.getGeneratorId("11");
         JSONObject param = new JSONObject();
         param.put("client_id", machineDto.getMachineCode());
-        param.put("cmd_id", GenerateCodeFactory.getUUID());
+        param.put("cmd_id", cmdId);
         param.put("version", VERSION);
         param.put("cmd", CMD_REBOOT);
         MqttFactory.publish(TOPIC_FACE_SN_REQUEST.replace(SN, machineDto.getMachineCode()), param.toJSONString());
-        saveRebootAcLog(GenerateCodeFactory.getGeneratorId("11"), machineDto.getMachineId(), TOPIC_FACE_SN_REQUEST.replace(SN, machineDto.getMachineCode()) + "/reboot",
+        saveRebootAcLog(cmdId, machineDto.getMachineId(), TOPIC_FACE_SN_REQUEST.replace(SN, machineDto.getMachineCode()) + "/reboot",
                 machineDto.getCommunityId(), param.toJSONString(), machineDto.getUserId(), machineDto.getUserName());
         return true;
 
@@ -229,14 +238,15 @@ public class YldMqttAssessControlProcessAdapt extends AbstractAccessControlManuf
 
     @Override
     public boolean openDoor(AccessControlDto machineDto) {
+        String cmdId = GenerateCodeFactory.getGeneratorId("11");
         JSONObject param = new JSONObject();
         param.put("client_id", machineDto.getMachineCode());
-        param.put("cmd_id", GenerateCodeFactory.getUUID());
+        param.put("cmd_id", cmdId);
         param.put("version", VERSION);
         param.put("cmd", CMD_OPEN_DOOR);
         param.put("ctrl_type", "on");
         MqttFactory.publish(TOPIC_FACE_SN_REQUEST.replace(SN, machineDto.getMachineCode()), param.toJSONString());
-        saveOpenDoorLog(GenerateCodeFactory.getGeneratorId("11"), machineDto.getMachineId(), TOPIC_FACE_SN_REQUEST.replace(SN, machineDto.getMachineCode()) + "/openDoor",
+        saveOpenDoorLog(cmdId, machineDto.getMachineId(), TOPIC_FACE_SN_REQUEST.replace(SN, machineDto.getMachineCode()) + "/openDoor",
                 machineDto.getCommunityId(), param.toJSONString(), machineDto.getUserId(), machineDto.getUserName());
 
         return true;
