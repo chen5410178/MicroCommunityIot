@@ -42,7 +42,7 @@ public class WorkLicenseMachinePo implements Serializable {
     private String staffName;
     private String staffId;
     private String lat;
-    private String version = "UTF-8";
+    private String version;
 
     public String getHeartbeatTime() {
         return heartbeatTime;
