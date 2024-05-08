@@ -116,7 +116,7 @@
                         let _json = JSON.parse(json)
                         if (_json.code == 0) {
                             vc.goBack();
-                            vc.toast("添加成功");
+                            vc.toast("修改成功");
                             return;
                         } else {
                             vc.toast(_json.msg);
