@@ -91,7 +91,7 @@ public class YldMqttAssessControlProcessAdapt extends AbstractAccessControlManuf
 
     @Override
     public boolean addUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
-        String cmdId = GenerateCodeFactory.getUUID();
+        String cmdId = GenerateCodeFactory.getGeneratorId("11");
         JSONObject param = new JSONObject();
         param.put("client_id", accessControlDto.getMachineCode());
         param.put("cmd_id", cmdId);
@@ -129,7 +129,7 @@ public class YldMqttAssessControlProcessAdapt extends AbstractAccessControlManuf
 
     @Override
     public boolean deleteUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
-        String cmdId = GenerateCodeFactory.getUUID();
+        String cmdId = GenerateCodeFactory.getGeneratorId("11");
 
         JSONObject param = new JSONObject();
         param.put("client_id", accessControlDto.getMachineCode());
