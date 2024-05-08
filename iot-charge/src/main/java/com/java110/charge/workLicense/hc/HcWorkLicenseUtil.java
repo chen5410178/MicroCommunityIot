@@ -2,6 +2,7 @@ package com.java110.charge.workLicense.hc;
 
 import com.java110.core.utils.BytesUtil;
 import com.java110.core.utils.StringUtil;
+import com.java110.po.whiteList.WhiteListPo;
 
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
@@ -189,6 +190,50 @@ public class HcWorkLicenseUtil {
 
     }
 
+    public static String getRemoteServerParam(String remoteServer) {
+        if (StringUtil.isEmpty(remoteServer)) {
+            remoteServer = "58.61.154.237,7018";
+        }
+        String reqType = "00000001";
+        int aa = Integer.parseInt(reqType, 2);
+        reqType = String.format("%02x", aa);
+
+        //String reqData = "HBT,60#";
+        String reqData = "#2014*SET*T:"+remoteServer+ "#";
+        try {
+            byte[] data = reqData.getBytes("GBK");
+            reqData = reqType + BytesUtil.bytesToHex(data);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        return reqData;
+    }
+
+    //设置白名单
+    public static String setWhiteList(WhiteListPo whiteListPo) {
+        String reqType = "00000001";
+        int aa = Integer.parseInt(reqType, 2);
+        reqType = String.format("%02x", aa);
+
+        if(StringUtil.isEmpty(whiteListPo.getTel1())){
+            whiteListPo.setTel1("13888888888");
+        }
+        if(StringUtil.isEmpty(whiteListPo.getTel2())){
+            whiteListPo.setTel2("13888888888");
+        }
+        if(StringUtil.isEmpty(whiteListPo.getTel3())){
+            whiteListPo.setTel3("13888888888");
+        }
+        String reqData = "#2014*SET*D1:"+whiteListPo.getTel1()+"*D2:"+whiteListPo.getTel2()+"*D3:"+whiteListPo.getTel3()+"#";
+        try {
+            byte[] data = reqData.getBytes("GBK");
+            reqData = reqType + BytesUtil.bytesToHex(data);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        return reqData;
+    }
+
     public static String getSettingHeartbeatParam() {
         String reqType = "00000001";
         int aa = Integer.parseInt(reqType, 2);
@@ -285,11 +330,9 @@ public class HcWorkLicenseUtil {
 
 
     public static void main(String[] args) throws UnsupportedEncodingException {
-        String aa = "7e070400fc075550144804000a000301005100000080004c000001e4837406fd357e00000000000024042515481801040000029a30011d310100e4020101e50101e60100e7080000000400000000e10c01cc000b00de0a069e381f00f0020000f50101005100000080204c000001e4837406fd357e00000000000024042515482401040000029a30011a310100e4020001e50101e60100e7080000000400000000e10c01cc000b00de0a069e381f00f0020000f50101005100000080204c000001e4837406fd357e00000000000024042515485201040000029a300117310100e4020001e50101e60100e7080000000400000000e10c01cc000b00de0a05fa911500f0020000f50101a07e";
-
+        String aa = "7e070401cb0755501448040021000601005100000800800c00000210562806b46fea0016000000002404300756170104000002a9300117310100e4020135e50100e60100e7080000000700000000e10c01cc00000049330883844000f0020000f50101005100000800800c00000210562806b46fea0016000000002404300801170104000002a9300117310100e4020135e50100e60100e7080000000700000000e10c01cc00000049330883844000f0020000f50101005100000800804c00000210562806b46fea0016000000002404300801550104000002a9300117310100e4020135e50101e60100e7080000000500000000e10c01cc00000049330883844000f0020000f50101004300000800800c00020210562806b46fea0016000000002404300804070104000002a9300116310105e4020135e50100e60100e7080000000700000000f0020000f50101004300000800800c00020210562806b46fea0016000000002404300806550104000002a9300116310105e4020135e50100e60100e7080000000700000000f0020000f50101004300000800800c00020210562806b46fea0016000000002404300811550104000002a9300116310105e4020135e50100e60100e7080000000700000000f0020000f50101ef7e";
         byte[] data = BytesUtil.hexStringToByteArray(aa);
-
-       HcWorkLicenseUtil.getBatchPosData(data);
+        List<String> posList =  HcWorkLicenseUtil.getBatchPosData(data);
         String machineCode = machineCode(data);
         System.out.println(machineCode);
 
@@ -304,15 +347,18 @@ public class HcWorkLicenseUtil {
      */
     public static List<String> getBatchPosData(byte[] msg) {
         List<String> reList = new ArrayList<>();
-        //获取消息个数
         String data = BytesUtil.bytesToHex(msg);
         String msgCount = data.substring(26, 30);
         String lenMsg = data.substring(32, 36);
         int count = Integer.parseInt(msgCount, 16);
-        int msgLenth = Integer.parseInt(lenMsg, 16)*2;
-        String[] returnArgs = data.split(lenMsg);
+        int msgLenth = Integer.parseInt(lenMsg, 16) * 2;
+        int msgstart = 32;
+        int msgend = 36 + msgLenth;
         for (int i = 0; i < count; i++) {
-            reList.add(data.substring(36+msgLenth*i+(i*4), (i*4)+36+msgLenth*(i+1)));
+           reList.add(data.substring(msgstart+4,msgend));
+            int nextmsglength = Integer.parseInt(data.substring(msgend, msgend+4), 16) * 2;
+            msgstart = msgend;
+            msgend = nextmsglength+msgend+4;
         }
         return reList;
     }

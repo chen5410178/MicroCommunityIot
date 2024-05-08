@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="whiteListV1ServiceDaoImpl">
+
+
+
+
+
+    <!-- 保存白名单管理信息 add by wuxw 2018-07-03 -->
+    <insert id="saveWhiteListInfo" parameterType="Map">
+        insert into work_license_white_list(
+tel1,tel2,machine_id,id,tel3,tel4
+) values (
+#{tel1},#{tel2},#{machineId},#{id},#{tel3},#{tel4}
+)
+    </insert>
+
+
+
+    <!-- 查询白名单管理信息 add by wuxw 2018-07-03 -->
+    <select id="getWhiteListInfo" parameterType="Map" resultType="Map">
+        select  t.tel1,t.tel2,t.machine_id,t.machine_id machineId,t.create_time,t.create_time createTime,t.status_cd,t.status_cd statusCd,t.id,t.tel3,t.tel4 
+from work_license_white_list t 
+where 1 =1 
+<if test="tel1 !=null and tel1 != ''">
+   and t.tel1= #{tel1}
+</if> 
+<if test="tel2 !=null and tel2 != ''">
+   and t.tel2= #{tel2}
+</if> 
+<if test="machineId !=null and machineId != ''">
+   and t.machine_id= #{machineId}
+</if> 
+<if test="createTime !=null and createTime != ''">
+   and t.create_time= #{createTime}
+</if> 
+<if test="statusCd !=null and statusCd != ''">
+   and t.status_cd= #{statusCd}
+</if> 
+<if test="id !=null and id != ''">
+   and t.id= #{id}
+</if> 
+<if test="tel3 !=null and tel3 != ''">
+   and t.tel3= #{tel3}
+</if> 
+<if test="tel4 !=null and tel4 != ''">
+   and t.tel4= #{tel4}
+</if> 
+order by t.create_time desc
+<if test="page != -1 and page != null ">
+   limit #{page}, #{row}
+</if> 
+
+    </select>
+
+
+
+
+    <!-- 修改白名单管理信息 add by wuxw 2018-07-03 -->
+    <update id="updateWhiteListInfo" parameterType="Map">
+        update  work_license_white_list t set t.status_cd = #{statusCd}
+<if test="newBId != null and newBId != ''">
+,t.b_id = #{newBId}
+</if> 
+<if test="tel1 !=null and tel1 != ''">
+, t.tel1= #{tel1}
+</if> 
+<if test="tel2 !=null and tel2 != ''">
+, t.tel2= #{tel2}
+</if> 
+<if test="machineId !=null and machineId != ''">
+, t.machine_id= #{machineId}
+</if> 
+<if test="createTime !=null and createTime != ''">
+, t.create_time= #{createTime}
+</if> 
+<if test="tel3 !=null and tel3 != ''">
+, t.tel3= #{tel3}
+</if> 
+<if test="tel4 !=null and tel4 != ''">
+, t.tel4= #{tel4}
+</if> 
+ where 1=1 <if test="id !=null and id != ''">
+and t.id= #{id}
+</if> 
+
+    </update>
+
+    <!-- 查询白名单管理数量 add by wuxw 2018-07-03 -->
+     <select id="queryWhiteListsCount" parameterType="Map" resultType="Map">
+        select  count(1) count 
+from work_license_white_list t 
+where 1 =1 
+<if test="tel1 !=null and tel1 != ''">
+   and t.tel1= #{tel1}
+</if> 
+<if test="tel2 !=null and tel2 != ''">
+   and t.tel2= #{tel2}
+</if> 
+<if test="machineId !=null and machineId != ''">
+   and t.machine_id= #{machineId}
+</if> 
+<if test="createTime !=null and createTime != ''">
+   and t.create_time= #{createTime}
+</if> 
+<if test="statusCd !=null and statusCd != ''">
+   and t.status_cd= #{statusCd}
+</if> 
+<if test="id !=null and id != ''">
+   and t.id= #{id}
+</if> 
+<if test="tel3 !=null and tel3 != ''">
+   and t.tel3= #{tel3}
+</if> 
+<if test="tel4 !=null and tel4 != ''">
+   and t.tel4= #{tel4}
+</if> 
+
+
+     </select>
+
+</mapper>

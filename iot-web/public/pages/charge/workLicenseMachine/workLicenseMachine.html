@@ -124,6 +124,12 @@
                             </div>
                             <div class="btn-group">
                                 <button class="btn-white btn btn-xs"
+                                        v-on:click="_whiteLine(workLicenseMachine)">
+                                    <vc:i18n name='通话白名单'></vc:i18n>
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn-white btn btn-xs"
                                     v-on:click="_openEditWorkLicenseMachineModel(workLicenseMachine)">
                                         <vc:i18n name='修改'></vc:i18n>
                                 </button>
@@ -146,6 +152,6 @@
 
     <vc:create path="charge/deleteWorkLicenseMachine"></vc:create>
     <vc:create path="charge/worklicensePps"></vc:create>
-    
+    <vc:create path="charge/worklicenseWhiteLine"></vc:create>
 
 </div>

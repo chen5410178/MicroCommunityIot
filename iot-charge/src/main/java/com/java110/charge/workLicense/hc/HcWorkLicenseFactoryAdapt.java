@@ -6,20 +6,20 @@ import com.java110.bean.ResultVo;
 import com.java110.charge.factory.lvcc.LvCCChargeMachineFactoryAdapt;
 import com.java110.charge.workLicense.IWorkLicenseAdapt;
 import com.java110.core.cache.MappingCache;
+import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.BytesUtil;
-import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.ListUtil;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.utils.*;
 import com.java110.dto.data.NettyReplyDataDto;
 import com.java110.dto.workLicenseFactory.WorkLicenseFactoryDto;
 import com.java110.dto.workLicenseMachine.WorkLicenseMachineDto;
 import com.java110.dto.workLicensePos.WorkLicensePosDto;
+import com.java110.intf.charge.IWhiteListV1InnerServiceSMO;
 import com.java110.intf.charge.IWorkLicenseLogV1InnerServiceSMO;
 import com.java110.intf.charge.IWorkLicenseMachineV1InnerServiceSMO;
 import com.java110.intf.charge.IWorkLicensePosV1InnerServiceSMO;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
 import com.java110.po.chargeMachine.ChargeMachinePo;
+import com.java110.po.whiteList.WhiteListPo;
 import com.java110.po.workLicenseLog.WorkLicenseLogPo;
 import com.java110.po.workLicenseMachine.WorkLicenseMachinePo;
 import com.java110.po.workLicensePos.WorkLicensePosPo;
@@ -108,6 +108,8 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
 
     public static final String TENCENT_MAP_URL = "https://apis.map.qq.com/ws/location/v1/network";
 
+    @Autowired
+    private IWhiteListV1InnerServiceSMO whiteListV1InnerServiceSMOImpl;
 
     @Autowired
     private INotifyNettyDataV1InnerServiceSMO notifyNettyDataV1InnerServiceSMOImpl;
@@ -146,16 +148,16 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-        if ("UTF-8".equals(workLicenseMachineDto.getVersion())){
+        if ("UTF-8".equals(workLicenseMachineDto.getVersion())) {
             reqData_utf = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), reqData_utf);
             notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(reqData_utf)));
-        }else{
+        } else {
             reqData = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), reqData);
             notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(reqData)));
         }
         JSONObject reqJson = new JSONObject();
-        reqJson.put("ttsText",ttsText);
-        reqJson.put("ttsTextBin",reqData);
+        reqJson.put("ttsText", ttsText);
+        reqJson.put("ttsTextBin", reqData);
 
         WorkLicenseLogPo workLicenseLogPo = new WorkLicenseLogPo();
         workLicenseLogPo.setLogCmd("8300");
@@ -169,6 +171,27 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         workLicenseLogPo.setLogAction("tts");
         workLicenseLogV1InnerServiceSMOImpl.saveWorkLicenseLog(workLicenseLogPo);
         return new ResultVo(ResultVo.CODE_OK, "已提交工牌");
+    }
+
+    @Override
+    public ResultVo saveWhiteList(WorkLicenseMachineDto workLicenseMachineDto, WhiteListPo whiteListPo) {
+
+        String reqData = null;
+        reqData = HcWorkLicenseUtil.setWhiteList(whiteListPo);
+        reqData = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), reqData);
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(reqData)));
+
+        WhiteListPo whiteListOld = new WhiteListPo();
+        whiteListOld.setId(whiteListPo.getId());
+        whiteListV1InnerServiceSMOImpl.deleteWhiteList(whiteListOld);
+
+        whiteListPo.setId(GenerateCodeFactory.getGeneratorId("999"));
+        int flag = whiteListV1InnerServiceSMOImpl.saveWhiteList(whiteListPo);
+        if (flag < 1) {
+            throw new CmdException("保存数据失败");
+        }
+
+        return new ResultVo(ResultVo.CODE_OK, "白名单已经设置");
     }
 
     /**
@@ -226,7 +249,7 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
                 uploadBatchPos(workLicenseMachineDto, cmd, data);
                 break;
             default:
-                commonReturn(workLicenseMachineDto,cmd,data);
+                commonReturn(workLicenseMachineDto, cmd, data);
         }
 
         return null;
@@ -246,53 +269,53 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
      * @param data
      */
     private void uploadBatchPos(WorkLicenseMachineDto workLicenseMachineDto, String cmd, byte[] data) {
-       List<String> posList = HcWorkLicenseUtil.getBatchPosData(data);
-       for (String posdata : posList){
-           String state = posdata.substring( 8, 2 * 8);
-           long decimal = Long.parseLong(state, 16); // 先将十六进制转换为十进制
-           String binary = Long.toBinaryString(decimal); // 再将十进制转换为二进制
-           String gps =  binary.charAt(binary.length() - 2)+"";
-           String lon = "0";
-           String lat = "0";
-           if("0".equals(gps)){ // 没有gps
-               Map<String,String> info = getFromWifi(posdata,workLicenseMachineDto.getMachineId());
-               lon = info.get("lon");
-               lat = info.get("lat");
-               if(Double.parseDouble(lon) <=0 ){
-                   commonReturn(workLicenseMachineDto, cmd, data);
-                   return;
-               }
-           }else{ //todo gps 定位
-               lon = posdata.substring(2 * 8, 3 * 8);
-               lat = posdata.substring(3 * 8, 4 * 8);
-               if(Integer.parseInt(lon, 16) <=0 ){
-                   commonReturn(workLicenseMachineDto, cmd, data);
-                   return;
-               }
-               //015b4555::06cf3331
-               lon = (Long.parseLong(lon, 16) / 1000000.0) + "";
-               lat = (Long.parseLong(lat, 16) / 1000000.0) + "";
+        List<String> posList = HcWorkLicenseUtil.getBatchPosData(data);
+        for (String posdata : posList) {
+            String state = posdata.substring(8, 2 * 8);
+            long decimal = Long.parseLong(state, 16); // 先将十六进制转换为十进制
+            String binary = Long.toBinaryString(decimal); // 再将十进制转换为二进制
+            String gps = binary.charAt(binary.length() - 2) + "";
+            String lon = "0";
+            String lat = "0";
+            if ("0".equals(gps)) { // 没有gps
+                Map<String, String> info = getFromWifi(posdata, workLicenseMachineDto.getMachineId());
+                lon = info.get("lon");
+                lat = info.get("lat");
+                if (Double.parseDouble(lon) <= 0) {
+                    commonReturn(workLicenseMachineDto, cmd, data);
+                    return;
+                }
+            } else { //todo gps 定位
+                lon = posdata.substring(2 * 8, 3 * 8);
+                lat = posdata.substring(3 * 8, 4 * 8);
+                if (Integer.parseInt(lon, 16) <= 0) {
+                    commonReturn(workLicenseMachineDto, cmd, data);
+                    return;
+                }
+                //015b4555::06cf3331
+                lon = (Long.parseLong(lon, 16) / 1000000.0) + "";
+                lat = (Long.parseLong(lat, 16) / 1000000.0) + "";
 
-           }
-           WorkLicensePosPo workLicensePosPo = new WorkLicensePosPo();
-           workLicensePosPo.setMachineId(workLicenseMachineDto.getMachineId());
-           workLicensePosPo.setMachineCode(workLicenseMachineDto.getMachineCode());
-           workLicensePosPo.setUploadDate(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_B));
-           workLicensePosPo.setWltId(GenerateCodeFactory.getGeneratorId("11"));
-           workLicensePosPo.setStaffName(workLicenseMachineDto.getStaffName());
-           workLicensePosPo.setLon(lon);
-           workLicensePosPo.setLat(lat);
-           workLicensePosPo.setStoreId(workLicenseMachineDto.getStoreId());
-           workLicensePosPo.setStaffId(workLicenseMachineDto.getStaffId());
-           workLicensePosPo.setPosType(WorkLicensePosDto.POS_TYPE_PUBLIC);
-           workLicensePosV1InnerServiceSMOImpl.saveWorkLicensePos(workLicensePosPo);
-           WorkLicenseMachinePo workLicenseMachinePo = new WorkLicenseMachinePo();
-           workLicenseMachinePo.setLon(lon);
-           workLicenseMachinePo.setLat(lat);
-           workLicenseMachinePo.setMachineId(workLicenseMachineDto.getMachineId());
-           workLicenseMachinePo.setMachineCode(workLicenseMachineDto.getMachineCode());
-           workLicenseMachineV1InnerServiceSMOImpl.updateWorkLicenseMachine(workLicenseMachinePo);
-       }
+            }
+            WorkLicensePosPo workLicensePosPo = new WorkLicensePosPo();
+            workLicensePosPo.setMachineId(workLicenseMachineDto.getMachineId());
+            workLicensePosPo.setMachineCode(workLicenseMachineDto.getMachineCode());
+            workLicensePosPo.setUploadDate(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_B));
+            workLicensePosPo.setWltId(GenerateCodeFactory.getGeneratorId("11"));
+            workLicensePosPo.setStaffName(workLicenseMachineDto.getStaffName());
+            workLicensePosPo.setLon(lon);
+            workLicensePosPo.setLat(lat);
+            workLicensePosPo.setStoreId(workLicenseMachineDto.getStoreId());
+            workLicensePosPo.setStaffId(workLicenseMachineDto.getStaffId());
+            workLicensePosPo.setPosType(WorkLicensePosDto.POS_TYPE_PUBLIC);
+            workLicensePosV1InnerServiceSMOImpl.saveWorkLicensePos(workLicensePosPo);
+            WorkLicenseMachinePo workLicenseMachinePo = new WorkLicenseMachinePo();
+            workLicenseMachinePo.setLon(lon);
+            workLicenseMachinePo.setLat(lat);
+            workLicenseMachinePo.setMachineId(workLicenseMachineDto.getMachineId());
+            workLicenseMachinePo.setMachineCode(workLicenseMachineDto.getMachineCode());
+            workLicenseMachineV1InnerServiceSMOImpl.updateWorkLicenseMachine(workLicenseMachinePo);
+        }
         commonReturn(workLicenseMachineDto, cmd, data);
     }
 
@@ -323,27 +346,27 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
          * 及的时间均采用此时区）
          */
 
-        String state = uploadData.substring( 8, 2 * 8);
+        String state = uploadData.substring(8, 2 * 8);
 
         long decimal = Long.parseLong(state, 16); // 先将十六进制转换为十进制
         String binary = Long.toBinaryString(decimal); // 再将十进制转换为二进制
 
-        String gps =  binary.charAt(binary.length() - 2)+"";
+        String gps = binary.charAt(binary.length() - 2) + "";
 
         String lon = "0";
         String lat = "0";
-        if("0".equals(gps)){ // 没有gps
-            Map<String,String> info = getFromWifi(uploadData,workLicenseMachineDto.getMachineId());
+        if ("0".equals(gps)) { // 没有gps
+            Map<String, String> info = getFromWifi(uploadData, workLicenseMachineDto.getMachineId());
             lon = info.get("lon");
             lat = info.get("lat");
-            if(Double.parseDouble(lon) <=0 ){
+            if (Double.parseDouble(lon) <= 0) {
                 commonReturn(workLicenseMachineDto, cmd, data);
                 return;
             }
-        }else{ //todo gps 定位
-             lon = uploadData.substring(2 * 8, 3 * 8);
-             lat = uploadData.substring(3 * 8, 4 * 8);
-            if(Integer.parseInt(lon, 16) <=0 ){
+        } else { //todo gps 定位
+            lon = uploadData.substring(2 * 8, 3 * 8);
+            lat = uploadData.substring(3 * 8, 4 * 8);
+            if (Integer.parseInt(lon, 16) <= 0) {
                 commonReturn(workLicenseMachineDto, cmd, data);
                 return;
             }
@@ -352,7 +375,6 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
             lat = (Long.parseLong(lat, 16) / 1000000.0) + "";
 
         }
-
 
 
         WorkLicensePosPo workLicensePosPo = new WorkLicensePosPo();
@@ -407,49 +429,50 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
      * -- 附加信息
      * 4d150f38363230313630353936333136363660150201cc00971209a336012d01cc00971209a3360325
      * fe12e60200015020000a898604b02622703416490104000000120402015005010130014a3101002b040f3f0f3f717e
+     *
      * @param uploadData
      * @return
      */
-    private Map<String, String> getFromWifi(String uploadData,String machineId) {
-        Map<String,String> info = new HashMap<>();
-        info.put("lon","0");
-        info.put("lat","0");
+    private Map<String, String> getFromWifi(String uploadData, String machineId) {
+        Map<String, String> info = new HashMap<>();
+        info.put("lon", "0");
+        info.put("lat", "0");
 
         String[] macs = HcWorkLicenseUtil.getMacs(uploadData);
         JSONObject body = new JSONObject();
-        body.put("key","ZUXBZ-7F5AU-WLXV6-GRX62-RZ6P7-XOB3N");
-        body.put("device_id",machineId);
+        body.put("key", "ZUXBZ-7F5AU-WLXV6-GRX62-RZ6P7-XOB3N");
+        body.put("device_id", machineId);
 
-        if(StringUtil.isNullOrNone(macs)){
+        if (StringUtil.isNullOrNone(macs)) {
             return info;
         }
 
         JSONArray wifiinfos = new JSONArray();
         JSONObject wifiinfo = null;
-        for(String mac :macs){
+        for (String mac : macs) {
             wifiinfo = new JSONObject();
-            wifiinfo.put("mac",mac.split("\\|")[0]);
-            wifiinfo.put("rssi",Long.parseLong(mac.split("\\|")[1],16));
+            wifiinfo.put("mac", mac.split("\\|")[0]);
+            wifiinfo.put("rssi", Long.parseLong(mac.split("\\|")[1], 16));
             wifiinfos.add(wifiinfo);
         }
 
-        body.put("wifiinfo",wifiinfos);
+        body.put("wifiinfo", wifiinfos);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Content-Type","application/json");
+        httpHeaders.add("Content-Type", "application/json");
         HttpEntity httpEntity = new HttpEntity(body.toJSONString(), httpHeaders);
         ResponseEntity<String> response = null;
         response = outRestTemplate.exchange(TENCENT_MAP_URL, HttpMethod.POST, httpEntity, String.class);
         JSONObject resJson = JSONObject.parseObject(response.getBody());
-        if(resJson.getIntValue("status") != 0){
+        if (resJson.getIntValue("status") != 0) {
             return info;
         }
 
-       JSONObject location = resJson.getJSONObject("result").getJSONObject("location");
+        JSONObject location = resJson.getJSONObject("result").getJSONObject("location");
 
         String latitude = location.getString("latitude");
         String longitude = location.getString("longitude");
-        info.put("lon",longitude);
-        info.put("lat",latitude);
+        info.put("lon", longitude);
+        info.put("lat", latitude);
         return info;
     }
 
@@ -523,7 +546,7 @@ public class HcWorkLicenseFactoryAdapt implements IWorkLicenseAdapt {
         resultData = HcWorkLicenseUtil.getSettingWorkModeParam(sec);
         resultData = HcWorkLicenseUtil.computeReqData(workLicenseMachineDto.getMachineCode(), resultData);
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(workLicenseMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(resultData)));
-        commonReturn(workLicenseMachineDto,cmd,data);
+        commonReturn(workLicenseMachineDto, cmd, data);
 
     }
 

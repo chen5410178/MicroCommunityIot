@@ -73,6 +73,9 @@
             _openPps:function(_workLicenseMachine){
                 vc.emit('worklicensePps', 'openWorklicensePpsModal', _workLicenseMachine);
             },
+            _whiteLine:function(_workLicenseMachine){
+                vc.emit('worklicenseWhiteLine', 'openWorklicenseWhiteLineModal', _workLicenseMachine);
+            },
             _moreCondition: function () {
                 if ($that.workLicenseMachineInfo.moreCondition) {
                     $that.workLicenseMachineInfo.moreCondition = false;
