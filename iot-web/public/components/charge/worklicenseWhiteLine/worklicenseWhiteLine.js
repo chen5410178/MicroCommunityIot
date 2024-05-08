@@ -64,7 +64,7 @@
                     return;
                 }
                 vc.http.apiPost(
-                    '/whiteList.saveWhiteList',
+                    '/workLicense.saveWhiteList',
                     JSON.stringify($that.worklicenseWhiteLineInfo), {
                         emulateJSON: true
                     },
