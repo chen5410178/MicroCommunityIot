@@ -411,7 +411,7 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
         MeterMachineSpecDto meterMachineSpecDto = new MeterMachineSpecDto();
         meterMachineSpecDto.setMachineId(meterMachineDto.getMachineId());
         meterMachineSpecDto.setCommunityId(meterMachineDto.getCommunityId());
-        meterMachineSpecDto.setSpecId("120102");
+        meterMachineSpecDto.setSpecId("120104");
         List<MeterMachineSpecDto> meterMachineSpecDtos = meterMachineSpecV1InnerServiceSMOImpl.queryMeterMachineSpecs(meterMachineSpecDto);
         if (meterMachineSpecDtos == null || meterMachineSpecDtos.size() < 1) {
             return new ResultVo(ResultVo.CODE_ERROR, "未配置采集器ID");
@@ -472,7 +472,7 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
         MeterMachineSpecDto meterMachineSpecDto = new MeterMachineSpecDto();
         meterMachineSpecDto.setMachineId(meterMachineDto.getMachineId());
         meterMachineSpecDto.setCommunityId(meterMachineDto.getCommunityId());
-        meterMachineSpecDto.setSpecId("120102");
+        meterMachineSpecDto.setSpecId("120104");
         List<MeterMachineSpecDto> meterMachineSpecDtos = meterMachineSpecV1InnerServiceSMOImpl.queryMeterMachineSpecs(meterMachineSpecDto);
         if (meterMachineSpecDtos == null || meterMachineSpecDtos.size() < 1) {
             return new ResultVo(ResultVo.CODE_ERROR, "未配置采集器ID");
