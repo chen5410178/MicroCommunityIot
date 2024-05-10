@@ -200,10 +200,13 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
         }
 
         JSONArray responseContent = paramOut.getJSONArray("response_content");
-
+        meterMachineDto.setState(MeterMachineDto.STATE_ONLINE);
+        meterMachineDto.setStateName("在线");//默认在线
         for (int resIndex = 0; resIndex < responseContent.size(); resIndex++) {
             String status = responseContent.getJSONObject(resIndex).getString("status");
             if (!"SUCCESS".equals(status)) {
+                meterMachineDto.setState(MeterMachineDto.STATE_OFFLINE);
+                meterMachineDto.setStateName(responseContent.getJSONObject(resIndex).getString("error_msg"));
                 return new ResultVo(ResultVo.CODE_ERROR, responseContent.getJSONObject(resIndex).getString("error_msg"));
             }
         }
