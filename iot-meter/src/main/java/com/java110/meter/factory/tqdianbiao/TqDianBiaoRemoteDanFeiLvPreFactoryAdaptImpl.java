@@ -184,6 +184,8 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         JSONObject paramOut = JSONObject.parseObject(resStr);
 
         if (!"SUCCESS".equals(paramOut.getString("status"))) {
+            meterMachineDto.setState(MeterMachineDto.STATE_OFFLINE);
+            meterMachineDto.setStateName(paramOut.getString("error_msg"));
             return new ResultVo(ResultVo.CODE_ERROR, paramOut.getString("error_msg"));
         }
         JSONArray responseContent = paramOut.getJSONArray("response_content");
