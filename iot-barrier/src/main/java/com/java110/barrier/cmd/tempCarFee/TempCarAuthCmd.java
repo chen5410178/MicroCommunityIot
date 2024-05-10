@@ -55,7 +55,7 @@ public class TempCarAuthCmd extends Cmd {
             throw new CmdException("审核失败");
         }
 
-        if (!CarInoutTempAuthDto.STATE_C.equals(carInoutTempAuthDto.getState())) {
+        if (!CarInoutTempAuthDto.STATE_C.equals(reqJson.getString("state"))) {
             return;
         }
 
