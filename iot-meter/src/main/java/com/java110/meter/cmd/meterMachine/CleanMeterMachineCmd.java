@@ -45,9 +45,9 @@ import java.util.List;
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
 @Java110Cmd(serviceCode = "meterMachine.cleanMeterMachine")
-public class MeterMachineControlCleanCmd extends Cmd {
+public class CleanMeterMachineCmd extends Cmd {
 
-    private static Logger logger = LoggerFactory.getLogger(MeterMachineControlCleanCmd.class);
+    private static Logger logger = LoggerFactory.getLogger(CleanMeterMachineCmd.class);
 
 
     @Autowired
