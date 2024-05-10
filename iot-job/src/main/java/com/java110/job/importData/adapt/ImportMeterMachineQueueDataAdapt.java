@@ -104,10 +104,23 @@ public class ImportMeterMachineQueueDataAdapt extends DefaultImportData implemen
             return;
         }
 
+        String specId = "120101";
+
+        //拓强电表-单相单费率电表
+        if("1".equals(meterMachinePo.getImplBean())){
+            specId = "120101";
+        }else if("2".equals(meterMachinePo.getImplBean())){ //拓强电表-单相远程单费率预付费表
+            specId = "120102";
+        }else if("3".equals(meterMachinePo.getImplBean())){ // 拓强水表-Lora无预付费水表
+            specId = "120103";
+        }else if("4".equals(meterMachinePo.getImplBean())){ //拓强水表-Lora普通预付费水表
+            specId = "120104";
+        }
+
         MeterMachineSpecPo meterMachineSpecPo = null;
         meterMachineSpecPo = new MeterMachineSpecPo();
         meterMachineSpecPo.setMachineId(meterMachinePo.getMachineId());
-        meterMachineSpecPo.setSpecId("120101");
+        meterMachineSpecPo.setSpecId(specId);
         meterMachineSpecPo.setSpecName("采集器ID");
         meterMachineSpecPo.setSpecValue(importMeterMachineDto.getValue1());
         meterMachineSpecPo.setMmsId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
