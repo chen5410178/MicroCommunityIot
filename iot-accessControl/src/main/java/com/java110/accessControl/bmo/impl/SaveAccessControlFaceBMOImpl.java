@@ -140,8 +140,17 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
         List<UserDto> staffDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
         Assert.listOnlyOne(staffDtos, "用户不存在");
 
+        //todo 查询业主照片
+        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
+
+        String url = staffDtos.get(0).getFaceUrl();
+        if (!url.startsWith("http")) {
+            url = imgUrl +  staffDtos.get(0).getFaceUrl();
+        }
+
+
         AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
-        accessControlFacePo.setFacePath("http://");
+        accessControlFacePo.setFacePath(url);
         accessControlFacePo.setCommunityId(accessControlOrgPo.getCommunityId());
         accessControlFacePo.setIdNumber("");
         accessControlFacePo.setComeId(tmpOrgStaffRelDto.getOrgId());

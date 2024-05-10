@@ -30,6 +30,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.doc.annotation.*;
 import com.java110.intf.accessControl.IAccessControlOrgV1InnerServiceSMO;
 import com.java110.intf.user.IOrgStaffRelV1InnerServiceSMO;
@@ -91,7 +92,6 @@ public class SaveAccessControlOrgCmd extends Cmd {
     private IAccessControlOrgV1InnerServiceSMO accessControlOrgV1InnerServiceSMOImpl;
 
 
-
     @Autowired
     private IOrgV1InnerServiceSMO orgV1InnerServiceSMOImpl;
 
@@ -105,7 +105,7 @@ public class SaveAccessControlOrgCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "startDate", "请求报文中未包含startDate");
         Assert.hasKeyAndValue(reqJson, "endDate", "请求报文中未包含endDate");
         JSONArray machineIds = reqJson.getJSONArray("machineIds");
-        if (machineIds == null || machineIds.size() < 1) {
+        if (ListUtil.isNull(machineIds)) {
             throw new CmdException("未包含门禁");
         }
     }
@@ -118,8 +118,8 @@ public class SaveAccessControlOrgCmd extends Cmd {
         orgDto.setOrgId(reqJson.getString("orgId"));
         List<OrgDto> orgDtos = orgV1InnerServiceSMOImpl.queryOrgs(orgDto);
 
-        if (orgDtos == null || orgDtos.size() < 1) {
-            throw new CmdException("未包含楼栋单元");
+        if (ListUtil.isNull(orgDtos)) {
+            throw new CmdException("未包含组织");
         }
 
         JSONArray machineIds = reqJson.getJSONArray("machineIds");
@@ -128,7 +128,7 @@ public class SaveAccessControlOrgCmd extends Cmd {
 
         //todo 保存 楼栋授权
         for (int machineIndex = 0; machineIndex < machineIds.size(); machineIndex++) {
-            doComputeAccessControl(orgDtos.get(0), machineIds.getString(machineIndex),reqJson);
+            doComputeAccessControl(orgDtos.get(0), machineIds.getString(machineIndex), reqJson);
         }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
@@ -149,6 +149,6 @@ public class SaveAccessControlOrgCmd extends Cmd {
         }
 
         //todo  查询房屋人员信息
-        saveAccessControlFaceBMOImpl.saveOrgStaff(accessControlOrgPo, machineId,reqJson.getString("startDate"),reqJson.getString("endDate"));
+        saveAccessControlFaceBMOImpl.saveOrgStaff(accessControlOrgPo, machineId, reqJson.getString("startDate"), reqJson.getString("endDate"));
     }
 }
