@@ -110,7 +110,7 @@ public class CarInLogEngine extends CarEngine {
         carInoutPo.setMachineId(machineDto.getMachineId());
         carInoutPo.setMachineCode(machineDto.getMachineCode());
         carInoutPo.setInoutId(GenerateCodeFactory.getGeneratorId("11"));
-        carInoutPo.setCarInout(CarInoutDto.CAR_INOUT_OUT);
+        carInoutPo.setCarInout(CarInoutDto.CAR_INOUT_IN);
         carInoutPo.setMachineCode(machineDto.getMachineCode());
         carInoutPo.setOpenTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         carInoutPo.setPaId(paId);
