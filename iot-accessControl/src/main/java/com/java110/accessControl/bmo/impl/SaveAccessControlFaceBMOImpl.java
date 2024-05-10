@@ -204,7 +204,7 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
                 accessControlFacePo.setPersonId(tmpOwnerDto.getMemberId());
                 accessControlFacePo.setPersonType(AccessControlFaceDto.PERSON_TYPE_OWNER);
                 accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
-                accessControlFacePo.setRoomName(tmpRoomDto.getFloorNum() + "-" + tmpOwnerDto.getUnitNum() + "-" + tmpOwnerDto.getRoomNum());
+                accessControlFacePo.setRoomName(tmpRoomDto.getFloorNum() + "-" + tmpRoomDto.getUnitNum() + "-" + tmpRoomDto.getRoomNum());
                 accessControlFaceV1InnerServiceSMOImpl.saveAccessControlFace(accessControlFacePo);
             } catch (Exception e) {
                 e.printStackTrace();

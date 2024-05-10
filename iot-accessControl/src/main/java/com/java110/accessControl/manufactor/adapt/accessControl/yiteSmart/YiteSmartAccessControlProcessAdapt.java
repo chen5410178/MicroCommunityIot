@@ -94,7 +94,7 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
 
         MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
 
-        if(StringUtil.isEmpty(accessControlFacePo.getCardNumber())){
+        if (StringUtil.isEmpty(accessControlFacePo.getCardNumber())) {
             return true;
         }
 
@@ -118,7 +118,6 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
         paramIn.put("m", m);
 
         MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
-
 
 
         return true;
@@ -146,7 +145,7 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
 
         MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
 
-        if(StringUtil.isEmpty(accessControlFacePo.getCardNumber())){
+        if (StringUtil.isEmpty(accessControlFacePo.getCardNumber())) {
             return true;
         }
 
@@ -178,23 +177,27 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
     public boolean deleteUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
         // todo 保存用户信息
 
-        JSONObject param = syncUserImpl.getDeleteUser(accessControlDto, accessControlFacePo);
+        try {
+            JSONObject param = syncUserImpl.getDeleteUser(accessControlDto, accessControlFacePo);
 
-        saveAddFaceLog("", accessControlDto.getMachineId(), "/v3_1/sync/users/add/",
-                accessControlDto.getCommunityId(),
-                param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
+            saveAddFaceLog("", accessControlDto.getMachineId(), "/v3_1/sync/users/add/",
+                    accessControlDto.getCommunityId(),
+                    param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 
-        JSONObject paramIn = new JSONObject();
-        paramIn.put("t", accessControlDto.getMachineCode());
-        paramIn.put("c", "syncUsers");
-        paramIn.put("f", "server_php");
+            JSONObject paramIn = new JSONObject();
+            paramIn.put("t", accessControlDto.getMachineCode());
+            paramIn.put("c", "syncUsers");
+            paramIn.put("f", "server_php");
 
-        JSONObject m = new JSONObject();
-        m.put("p", "all");
-        m.put("t", GenerateCodeFactory.getUUID());
-        paramIn.put("m", m);
+            JSONObject m = new JSONObject();
+            m.put("p", "all");
+            m.put("t", GenerateCodeFactory.getUUID());
+            paramIn.put("m", m);
 
-        MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
+            MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return true;
     }

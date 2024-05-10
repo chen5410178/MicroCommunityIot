@@ -4,9 +4,9 @@ import com.java110.bean.dto.order.ServiceBusiness;
 import com.java110.bean.dto.service.ServiceSql;
 import com.java110.core.db.dao.BaseServiceDao;
 import com.java110.core.db.dao.IQueryServiceDAO;
+import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.StringUtil;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +21,7 @@ import java.util.Map;
  * Created by wuxw on 2018/4/20.
  */
 @Service("queryServiceDAOImpl")
-//@Transactional
+@Transactional
 public class QueryServiceDAOImpl extends BaseServiceDao implements IQueryServiceDAO {
 
     private final static Logger logger = LoggerFactory.getLogger(QueryServiceDAOImpl.class);
@@ -86,9 +86,6 @@ public class QueryServiceDAOImpl extends BaseServiceDao implements IQueryService
             return null;
         } finally {
             try {
-                if(conn != null){
-                    conn.close();
-                }
                 //conn.close();
                 if (ps != null) {
                     ps.close();
@@ -129,9 +126,6 @@ public class QueryServiceDAOImpl extends BaseServiceDao implements IQueryService
             return 0;
         } finally {
             try {
-                if(conn != null){
-                    conn.close();
-                }
                 //conn.close();
                 ps.close();
             } catch (SQLException e) {
@@ -195,6 +189,7 @@ public class QueryServiceDAOImpl extends BaseServiceDao implements IQueryService
         return sqlSessionTemplate.selectList("queryServiceDAOImpl.qureyServiceSqlAll");
     }
 
+
     /**
      * 查询服务业务信息
      *
@@ -203,5 +198,4 @@ public class QueryServiceDAOImpl extends BaseServiceDao implements IQueryService
     public List<ServiceBusiness> qureyServiceBusiness() {
         return sqlSessionTemplate.selectList("queryServiceDAOImpl.queryServiceBusiness");
     }
-
 }
