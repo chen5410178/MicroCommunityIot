@@ -42,7 +42,7 @@
             and t.address= #{address}
         </if>
         <if test="addressLike !=null and addressLike != ''">
-            and t.address concat('%', #{addressLike},'%')
+            and t.address like concat('%', #{addressLike},'%')
         </if>
         <if test="prestoreDegrees !=null and prestoreDegrees != ''">
             and t.prestore_degrees= #{prestoreDegrees}
@@ -54,7 +54,7 @@
             and t.machine_name= #{machineName}
         </if>
         <if test="machineNameLike !=null and machineNameLike != ''">
-            and t.machine_name concat('%', #{machineNameLike},'%')
+            and t.machine_name like concat('%', #{machineNameLike},'%')
         </if>
         <if test="roomId !=null and roomId != ''">
             and t.room_id= #{roomId}
@@ -63,7 +63,7 @@
             and t.room_name= #{roomName}
         </if>
         <if test="roomNameLike !=null and roomNameLike != ''">
-            and t.room_name concat('%', #{roomNameLike},'%')
+            and t.room_name like concat('%', #{roomNameLike},'%')
         </if>
         <if test="curReadingTime !=null and curReadingTime != ''">
             and t.cur_reading_time= #{curReadingTime}
@@ -84,7 +84,7 @@
             and t.fee_config_name= #{feeConfigName}
         </if>
         <if test="feeConfigNameLike !=null and feeConfigNameLike != ''">
-            and t.fee_config_name concat('%', #{feeConfigNameLike},'%')
+            and t.fee_config_name like concat('%', #{feeConfigNameLike},'%')
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
@@ -180,7 +180,7 @@
             and t.address= #{address}
         </if>
         <if test="addressLike !=null and addressLike != ''">
-            and t.address concat('%', #{addressLike},'%')
+            and t.address like concat('%', #{addressLike},'%')
         </if>
         <if test="prestoreDegrees !=null and prestoreDegrees != ''">
             and t.prestore_degrees= #{prestoreDegrees}
@@ -192,7 +192,7 @@
             and t.machine_name= #{machineName}
         </if>
         <if test="machineNameLike !=null and machineNameLike != ''">
-            and t.machine_name concat('%', #{machineNameLike},'%')
+            and t.machine_name like concat('%', #{machineNameLike},'%')
         </if>
         <if test="roomId !=null and roomId != ''">
             and t.room_id= #{roomId}
@@ -201,7 +201,7 @@
             and t.room_name= #{roomName}
         </if>
         <if test="roomNameLike !=null and roomNameLike != ''">
-            and t.room_name concat('%', #{roomNameLike},'%')
+            and t.room_name like concat('%', #{roomNameLike},'%')
         </if>
         <if test="curReadingTime !=null and curReadingTime != ''">
             and t.cur_reading_time= #{curReadingTime}
@@ -222,7 +222,7 @@
             and t.fee_config_name= #{feeConfigName}
         </if>
         <if test="feeConfigNameLike !=null and feeConfigNameLike != ''">
-            and t.fee_config_name concat('%', #{feeConfigNameLike},'%')
+            and t.fee_config_name like concat('%', #{feeConfigNameLike},'%')
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
