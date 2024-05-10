@@ -54,6 +54,13 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
 
     private static final String ELE_CONTROL_NOTIFY_URL = "/app/smartMeter/notify/e/switchControl";
 
+
+    private static final String CLEAN_URL = "http://api2.tqdianbiao.com/Api_v2/ele_security/reset";//清零后必须开户才能充值
+
+    private static final String OPEN_ACOUNT_URL = "http://api2.tqdianbiao.com/Api_v2/ele_security/open_acount";//开户
+
+    private static final String CLEAN_NOTIFY_URL = "/app/smartMeter/notify/e/cleanControl";
+
     @Autowired
     private IUserV1InnerServiceSMO userInnerServiceSMOImpl;
 
@@ -461,6 +468,71 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
 
     @Override
     public ResultVo cleanControl(MeterMachineDto meterMachineDto) {
-        return null;
+        List<Map<String, Object>> req = new ArrayList<>();
+        MeterMachineSpecDto meterMachineSpecDto = new MeterMachineSpecDto();
+        meterMachineSpecDto.setMachineId(meterMachineDto.getMachineId());
+        meterMachineSpecDto.setCommunityId(meterMachineDto.getCommunityId());
+        meterMachineSpecDto.setSpecId("120102");
+        List<MeterMachineSpecDto> meterMachineSpecDtos = meterMachineSpecV1InnerServiceSMOImpl.queryMeterMachineSpecs(meterMachineSpecDto);
+        if (meterMachineSpecDtos == null || meterMachineSpecDtos.size() < 1) {
+            return new ResultVo(ResultVo.CODE_ERROR, "未配置采集器ID");
+        }
+        //执行清零
+        String detailId = GenerateCodeFactory.getGeneratorId("11");
+        Map<String, Object> item = new HashMap<>();
+        item.put("opr_id", detailId);
+        item.put("time_out", 0);
+        item.put("must_online", true);
+        item.put("retry_times", 1);
+        item.put("cid", meterMachineSpecDtos.get(0).getSpecValue());
+        item.put("address", meterMachineDto.getAddress());
+        req.add(item);
+        String request_content = JSON.toJSONString(req);
+        String resStr = TdDianBiaoUtil.requestAsync(CLEAN_URL, request_content, UrlCache.getOwnerUrl() + CLEAN_NOTIFY_URL);
+        JSONObject paramOut = JSONObject.parseObject(resStr);
+        if (!"SUCCESS".equals(paramOut.getString("status"))) {
+            return new ResultVo(ResultVo.CODE_ERROR, paramOut.getString("error_msg"));
+        }
+        JSONArray responseContent = paramOut.getJSONArray("response_content");
+        for (int resIndex = 0; resIndex < responseContent.size(); resIndex++) {
+            String status = responseContent.getJSONObject(resIndex).getString("status");
+            if (!"SUCCESS".equals(status)) {
+                return new ResultVo(ResultVo.CODE_ERROR, responseContent.getJSONObject(resIndex).getString("error_msg"));
+            }
+        }
+        //暂停3秒执行开户
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        detailId = GenerateCodeFactory.getGeneratorId("11");
+        item = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
+        params.put("money", "0");
+        item.put("opr_id", detailId);
+        item.put("time_out", 0);
+        item.put("must_online", true);
+        item.put("retry_times", 1);
+        item.put("cid", meterMachineSpecDtos.get(0).getSpecValue());
+        item.put("address", meterMachineDto.getAddress());
+        item.put("params", params);
+        req.add(item);
+        request_content = JSON.toJSONString(req);
+        resStr = TdDianBiaoUtil.requestAsync(OPEN_ACOUNT_URL, request_content, UrlCache.getOwnerUrl() + CLEAN_NOTIFY_URL);
+        //{"response_content":"[{\"opr_id\":\"112024051033555817\",\"status\":\"ACCEPTED\"},{\"status\":\"FAIL\",\"error_msg\":\"\\u672a\\u7ed1\\u5b9a\\u7528\\u6237\",\"opr_id\"
+        //:\"112024051008655818\"}]","status":"SUCCESS","timestamp":1715346684,"sign":"049718f2434bf088f845c7118e703a2a"}
+        paramOut = JSONObject.parseObject(resStr);
+        if (!"SUCCESS".equals(paramOut.getString("status"))) {
+            return new ResultVo(ResultVo.CODE_ERROR, paramOut.getString("error_msg"));
+        }
+        responseContent = paramOut.getJSONArray("response_content");
+        for (int resIndex = 0; resIndex < responseContent.size(); resIndex++) {
+            String status = responseContent.getJSONObject(resIndex).getString("status");
+            if ("FAIL".equals(status)) {
+                return new ResultVo(ResultVo.CODE_ERROR, responseContent.getJSONObject(resIndex).getString("error_msg"));
+            }
+        }
+        return new ResultVo(ResultVo.CODE_OK, "请求已发送，等待电表反馈");
     }
 }

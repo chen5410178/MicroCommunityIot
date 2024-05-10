@@ -442,6 +442,8 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         req.add(item);
         request_content = JSON.toJSONString(req);
         resStr = TdDianBiaoUtil.requestAsync(OPEN_ACOUNT_URL, request_content, UrlCache.getOwnerUrl() + CLEAN_NOTIFY_URL);
+        //{"response_content":"[{\"opr_id\":\"112024051033555817\",\"status\":\"ACCEPTED\"},{\"status\":\"FAIL\",\"error_msg\":\"\\u672a\\u7ed1\\u5b9a\\u7528\\u6237\",\"opr_id\"
+        //:\"112024051008655818\"}]","status":"SUCCESS","timestamp":1715346684,"sign":"049718f2434bf088f845c7118e703a2a"}
         paramOut = JSONObject.parseObject(resStr);
         if (!"SUCCESS".equals(paramOut.getString("status"))) {
             return new ResultVo(ResultVo.CODE_ERROR, paramOut.getString("error_msg"));
@@ -449,7 +451,7 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         responseContent = paramOut.getJSONArray("response_content");
         for (int resIndex = 0; resIndex < responseContent.size(); resIndex++) {
             String status = responseContent.getJSONObject(resIndex).getString("status");
-            if (!"SUCCESS".equals(status)) {
+            if ("FAIL".equals(status)) {
                 return new ResultVo(ResultVo.CODE_ERROR, responseContent.getJSONObject(resIndex).getString("error_msg"));
             }
         }
