@@ -32,6 +32,9 @@
         left join meter_machine_factory mmf on t.impl_bean = mmf.factory_id and mmf.status_cd='0'
         left join meter_type mt on t.meter_type = mt.type_id and mt.status_cd = '0'
         where 1 =1
+        <if test="typeCd !=null and typeCd != ''">
+            and mt.type_cd = #{typeCd}
+        </if>
         <if test="heartbeatTime !=null">
             and t.heartbeat_time= #{heartbeatTime}
         </if>

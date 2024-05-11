@@ -3,6 +3,7 @@ package com.java110.openapi.bmo.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.communityMember.CommunityMemberDto;
 import com.java110.dto.meter.MeterMachineDto;
 import com.java110.intf.meter.IMeterMachineV1InnerServiceSMO;
@@ -25,6 +26,7 @@ public class PreStoreMeterBmoImpl implements IIotCommonApiBmo {
     public void validate(ICmdDataFlowContext context, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson,"roomId","未包含房屋");
         Assert.hasKeyAndValue(reqJson,"communityId","未包含小区");
+        Assert.hasKeyAndValue(reqJson,"feeTypeCd","未包含表类型");
         Assert.hasKeyAndValue(reqJson, "receivedAmount", "请求报文中未包含receivedAmount");
 
     }
@@ -34,9 +36,14 @@ public class PreStoreMeterBmoImpl implements IIotCommonApiBmo {
 
         MeterMachineDto meterMachineDto = new MeterMachineDto();
         meterMachineDto.setRoomId(reqJson.getString("roomId"));
+        meterMachineDto.setTypeCd(reqJson.getString("feeTypeCd"));
         List<MeterMachineDto> meterMachineDtos = meterMachineV1InnerServiceSMOImpl.queryMeterMachines(meterMachineDto);
 
         Assert.listOnlyOne(meterMachineDtos, "表不存在");
+
+        if(ListUtil.isNull(meterMachineDtos)){
+            throw new IllegalArgumentException("表不存在");
+        }
 
 
 
