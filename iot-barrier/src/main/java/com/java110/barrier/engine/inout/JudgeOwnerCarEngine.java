@@ -3,6 +3,7 @@ package com.java110.barrier.engine.inout;
 import com.java110.bean.dto.car.OwnerCarDto;
 import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.carInout.CarInoutDto;
@@ -37,12 +38,12 @@ public class JudgeOwnerCarEngine {
         ownerCarDto.setCarNum(carNum);
         List<OwnerCarDto> ownerCarDtos = carServiceImpl.queryOwnerCars(ownerCarDto);
 
-        if (ownerCarDtos == null || ownerCarDtos.size() < 1) {
+        if (ListUtil.isNull(ownerCarDtos)) {
             return new CarDayDto(carNum, OwnerCarDto.LEASE_TYPE_TEMP, -1);
         }
 
         //主副车辆中 有一个车辆在场，这个车场当做临时车处理
-        if (hasInParkingArea(ownerCarDtos.get(0).getPrimaryCarId(),carNum, paIds)) {
+        if (hasInParkingArea(ownerCarDtos.get(0).getCarId(),carNum, paIds)) {
             return new CarDayDto(carNum, OwnerCarDto.LEASE_TYPE_TEMP, -1);
         }
 
@@ -74,7 +75,7 @@ public class JudgeOwnerCarEngine {
         OwnerCarDto carDto = new OwnerCarDto();
         carDto.setPaIds(paIds.toArray(new String[paIds.size()]));
         carDto.setCarNum(carNum);
-        carDto.setPrimaryCarId(primaryCarId);
+        carDto.setCarId(primaryCarId);
         List<OwnerCarDto> tmpCarDtos = carServiceImpl.queryOwnerCars(carDto);
         if (tmpCarDtos == null || tmpCarDtos.size() < 2) {
             return false;
