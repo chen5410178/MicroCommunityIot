@@ -43,18 +43,18 @@ public class JudgeOwnerCarEngine {
         }
 
         //主副车辆中 有一个车辆在场，这个车场当做临时车处理
-        if (hasInParkingArea(ownerCarDtos.get(0).getCarId(),carNum, paIds)) {
+        if (hasInParkingArea(ownerCarDtos.get(0).getCarId(), carNum, paIds)) {
             return new CarDayDto(carNum, OwnerCarDto.LEASE_TYPE_TEMP, -1);
         }
 
 
         int day = DateUtil.differentDaysUp(DateUtil.getCurrentDate(), ownerCarDtos.get(0).getEndTime());
         //来个五天 缴费期
-        if (day <= 0 && day >-5) {
+        if (day <= 0 && day > -5) {
             return new CarDayDto(carNum, ownerCarDtos.get(0).getLeaseType(), -2);
         }
 
-        if(day <= -5){
+        if (day <= -5) {
             return new CarDayDto(carNum, OwnerCarDto.LEASE_TYPE_TEMP, -1);
         }
         return new CarDayDto(carNum, ownerCarDtos.get(0).getLeaseType(), day);
@@ -99,7 +99,8 @@ public class JudgeOwnerCarEngine {
             CarInoutDto inoutDto = new CarInoutDto();
             inoutDto.setCarNum(otherCarNum);
             inoutDto.setPaIds(paIds.toArray(new String[paIds.size()]));
-            inoutDto.setState("1");
+            inoutDto.setCarType(CarInoutDto.CAR_TYPE_MONTH);
+            inoutDto.setStates(new String[]{CarInoutDto.STATE_IN, CarInoutDto.STATE_PAY});
             List<CarInoutDto> carInoutDtos = carInoutServiceImpl.queryCarInouts(inoutDto);
             if (carInoutDtos != null && carInoutDtos.size() > 0) {
                 return true;
