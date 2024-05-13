@@ -74,7 +74,7 @@ public class JudgeOwnerCarEngine {
         // 判断是否为主副车辆
         OwnerCarDto carDto = new OwnerCarDto();
         carDto.setPaIds(paIds.toArray(new String[paIds.size()]));
-        carDto.setCarNum(carNum);
+        //carDto.setCarNum(carNum);
         carDto.setCarId(primaryCarId);
         List<OwnerCarDto> tmpCarDtos = carServiceImpl.queryOwnerCars(carDto);
         if (tmpCarDtos == null || tmpCarDtos.size() < 2) {
