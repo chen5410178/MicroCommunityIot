@@ -1,6 +1,7 @@
 package com.java110.openapi.bmo.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.ListUtil;
@@ -22,11 +23,12 @@ public class PreStoreMeterBmoImpl implements IIotCommonApiBmo {
 
     @Autowired
     private IMeterTypeV1InnerServiceSMO meterTypeV1InnerServiceSMOImpl;
+
     @Override
     public void validate(ICmdDataFlowContext context, JSONObject reqJson) {
-        Assert.hasKeyAndValue(reqJson,"roomId","未包含房屋");
-        Assert.hasKeyAndValue(reqJson,"communityId","未包含小区");
-        Assert.hasKeyAndValue(reqJson,"feeTypeCd","未包含表类型");
+        Assert.hasKeyAndValue(reqJson, "roomId", "未包含房屋");
+        Assert.hasKeyAndValue(reqJson, "communityId", "未包含小区");
+        Assert.hasKeyAndValue(reqJson, "feeTypeCd", "未包含表类型");
         Assert.hasKeyAndValue(reqJson, "receivedAmount", "请求报文中未包含receivedAmount");
 
     }
@@ -41,10 +43,9 @@ public class PreStoreMeterBmoImpl implements IIotCommonApiBmo {
 
         Assert.listOnlyOne(meterMachineDtos, "表不存在");
 
-        if(ListUtil.isNull(meterMachineDtos)){
+        if (ListUtil.isNull(meterMachineDtos)) {
             throw new IllegalArgumentException("表不存在");
         }
-
 
 
         double money = reqJson.getDoubleValue("receivedAmount");
@@ -56,7 +57,9 @@ public class PreStoreMeterBmoImpl implements IIotCommonApiBmo {
         meterMachineDtos.get(0).setRechargeMoney(money);
 
         //智能电表充值
-        meterMachineV1InnerServiceSMOImpl.reChargeMeterMachines(meterMachineDtos.get(0));
+        ResultVo resultVo = meterMachineV1InnerServiceSMOImpl.reChargeMeterMachines(meterMachineDtos.get(0));
+
+        context.setResponseEntity(ResultVo.createResponseEntity(resultVo));
 
     }
 }
