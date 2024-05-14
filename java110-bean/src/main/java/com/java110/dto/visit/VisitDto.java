@@ -15,6 +15,8 @@ public class VisitDto extends PageDto implements Serializable {
     private String roomId;
     private String ownerId;
     private String ownerName;
+
+    private String carNum;
     private String typeId;
     private String visitCase;
     private Date visitTime;
@@ -250,5 +252,13 @@ public class VisitDto extends PageDto implements Serializable {
 
     public void setQueryEndTime(String queryEndTime) {
         this.queryEndTime = queryEndTime;
+    }
+
+    public String getCarNum() {
+        return carNum;
+    }
+
+    public void setCarNum(String carNum) {
+        this.carNum = carNum;
     }
 }

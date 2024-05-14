@@ -8,11 +8,11 @@
     <!-- 保存访客菜单信息 add by wuxw 2018-07-03 -->
     <insert id="saveVisitInfo" parameterType="Map">
         insert into visit(departure_time, msg, qrcode, visit_gender, owner_id, room_name, room_id, visit_time,
-                          phone_number, visit_id, owner_name, name, visit_case, type_id, face_path, state, community_id,
+                          phone_number, visit_id, owner_name, name, visit_case, type_id, face_path, state, community_id,car_num
                           status_cd)
         values (#{departureTime}, #{msg}, #{qrcode}, #{visitGender}, #{ownerId}, #{roomName}, #{roomId}, #{visitTime},
                 #{phoneNumber}, #{visitId}, #{ownerName}, #{name}, #{visitCase}, #{typeId}, #{facePath}, #{state},
-                #{communityId}, #{statusCd})
+                #{communityId},#{carNum}, #{statusCd})
     </insert>
 
 
@@ -23,7 +23,7 @@
         roomName,t.room_id,t.room_id roomId,t.visit_time,t.visit_time visitTime,t.phone_number,t.phone_number
         phoneNumber,t.visit_id,t.visit_id visitId,t.owner_name,t.owner_name ownerName,t.name,t.visit_case,t.visit_case
         visitCase,t.type_id,t.type_id typeId,t.face_path,t.face_path facePath,t.state,t.community_id,t.community_id
-        communityId,t.create_time createTime,vt.name visitTypeName,td.name stateName
+        communityId,t.create_time createTime,vt.name visitTypeName,td.name stateName,t.car_num carNum
         from visit t
         left join visit_type vt on t.type_id = vt.type_id and vt.status_cd = '0'
         left join t_dict td on t.state = td.status_cd and td.table_name = 'visit' and td.table_columns = 'state'
@@ -63,6 +63,9 @@
         </if>
         <if test="ownerName !=null and ownerName != ''">
             and t.owner_name= #{ownerName}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            and t.car_num= #{carNum}
         </if>
         <if test="name !=null and name != ''">
             and t.name= #{name}
@@ -159,12 +162,16 @@
         <if test="state !=null and state != ''">
             , t.state= #{state}
         </if>
-        <if test="communityId !=null and communityId != ''">
-            , t.community_id= #{communityId}
+
+        <if test="carNum !=null and carNum != ''">
+            , t.car_num= #{carNum}
         </if>
         where 1=1
         <if test="visitId !=null and visitId != ''">
             and t.visit_id= #{visitId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
         </if>
 
     </update>
@@ -209,6 +216,9 @@
         </if>
         <if test="ownerName !=null and ownerName != ''">
             and t.owner_name= #{ownerName}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            and t.car_num= #{carNum}
         </if>
         <if test="name !=null and name != ''">
             and t.name= #{name}

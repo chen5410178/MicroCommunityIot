@@ -13,6 +13,8 @@ public class VisitPo implements Serializable {
     private String roomId;
     private String ownerId;
     private String ownerName;
+
+    private String carNum;
     private String typeId;
     private String visitCase;
     private Date visitTime;
@@ -165,5 +167,13 @@ public class VisitPo implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getCarNum() {
+        return carNum;
+    }
+
+    public void setCarNum(String carNum) {
+        this.carNum = carNum;
     }
 }
