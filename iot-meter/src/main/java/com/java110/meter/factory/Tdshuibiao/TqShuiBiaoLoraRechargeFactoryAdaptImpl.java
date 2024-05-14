@@ -7,6 +7,7 @@ import com.java110.bean.ResultVo;
 import com.java110.core.cache.UrlCache;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.meter.MeterMachineDetailDto;
 import com.java110.dto.meter.MeterMachineDto;
 import com.java110.dto.meter.MeterMachineSpecDto;
@@ -164,7 +165,7 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
         meterMachineSpecDto.setCommunityId(meterMachineDto.getCommunityId());
         meterMachineSpecDto.setSpecId("120104");
         List<MeterMachineSpecDto> meterMachineSpecDtos = meterMachineSpecV1InnerServiceSMOImpl.queryMeterMachineSpecs(meterMachineSpecDto);
-        if (meterMachineSpecDtos == null || meterMachineSpecDtos.size() < 1) {
+        if (ListUtil.isNull(meterMachineSpecDtos)) {
             return new ResultVo(ResultVo.CODE_ERROR, "未配置采集器ID");
         }
         String detailId = GenerateCodeFactory.getGeneratorId("11");
@@ -195,6 +196,8 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
 
         JSONObject paramOut = JSONObject.parseObject(resStr);
 
+        //{"response_content":"[{\"opr_id\":\"112024051400320889\",\"status\":\"SUCCESS\"}]",
+        // "status":"SUCCESS","timestamp":1715651107,"sign":"9711ba369d7ef880a51eca32632d2b08"}
         if (!"SUCCESS".equals(paramOut.getString("status"))) {
             meterMachineDto.setState(MeterMachineDto.STATE_OFFLINE);
             meterMachineDto.setStateName(paramOut.getString("error_msg"));
@@ -305,7 +308,7 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
 
         JSONArray contentArray = JSON.parseArray(response_content);
 
-        if (contentArray == null || contentArray.size() < 1) {
+        if (ListUtil.isNull(contentArray)) {
             return new ResultVo(ResultVo.CODE_ERROR, "没有数据");
         }
 
@@ -313,8 +316,18 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
         meterMachineDetailDto.setDetailId(contentArray.getJSONObject(0).getString("opr_id"));
         meterMachineDetailDto.setState(MeterMachineDetailDto.STATE_W);
         List<MeterMachineDetailDto> meterMachineDetailDtos = meterMachineDetailV1InnerServiceSMOImpl.queryMeterMachineDetails(meterMachineDetailDto);
-        if (meterMachineDetailDtos == null || meterMachineDetailDtos.size() < 1) {
+        if (ListUtil.isNull(meterMachineDetailDtos)) {
             return new ResultVo(ResultVo.CODE_ERROR, "没有数据");
+        }
+
+        //判断是不是充值订单，是的话，完成充值
+        if ("2002".equals(meterMachineDetailDtos.get(0).getDetailType())) {
+            MeterMachineChargePo meterMachineChargePo = new MeterMachineChargePo();
+            meterMachineChargePo.setChargeId(contentArray.getJSONObject(0).getString("opr_id"));
+            meterMachineChargePo.setState("C");
+            meterMachineChargePo.setRemark("拓强异步通知，充值成功。");
+            meterMachineChargeV1InnerServiceSMOImpl.updateMeterMachineCharge(meterMachineChargePo);
+            return new ResultVo(ResultVo.CODE_OK, ResultVo.MSG_OK);
         }
 
         String batchId = smartMeterCoreReadImpl.generatorBatch(meterMachineDetailDtos.get(0).getCommunityId());
@@ -350,8 +363,9 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
         }
 
         /**
-         * [{"opr_id":"112023100894930005","resolve_time":"2023-10-08 23:45:52","status":"SUCCESS","data":[{"type":42,"value":["0.66|0.11|677.30"],
-         * "dsp":"总用量：0.66 m³  本月用量：0.11 m³ 阀门状态：开阀 表类型：远程预付费 购买次数：6 累计消费金额：2.70 元 剩余金额:677.30 元 电池电压：3.8V 信号强度：-94"}]}]
+         *[{"opr_id":"112024051413551038","resolv
+         * e_time":"2024-05-14 10:08:27","status":"SUCCESS","data":[{"type":42,"value":["0.09|0.00|0.00"],"dsp":"总用量：0.09 m³  本月用量：0.00 m³ 阀门状态：关阀 表类型：远程预付费 购买次数：0 累计消费金额：0.00 元 剩
+         * 金额:0.00 元 电池电压：3.6V 信号强度：-88"}]}
          */
         //double degree = contentObject.getJSONArray("data").getJSONObject(0).getJSONArray("value").getDouble(0);
         String value = contentObject.getJSONArray("data").getJSONObject(0).getJSONArray("value").getString(0);
@@ -360,8 +374,15 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
         if (values.length == 3) {
             degree = values[2];
         }
+        String dsp = contentObject.getJSONArray("data").getJSONObject(0).getString("dsp");
+        //剩余金额
+        String remainingAmount = "0";
+        if (dsp.contains("剩余金额")) {
+            remainingAmount = dsp.substring(dsp.indexOf("剩余金额:") + 5, dsp.indexOf("元"));
+        }
 
-        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree,"", batchId);
+
+        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree,remainingAmount.replace(" ", ""), batchId);
     }
 
     @Override

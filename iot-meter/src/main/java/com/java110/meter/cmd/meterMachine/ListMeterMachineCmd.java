@@ -24,6 +24,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.doc.annotation.*;
 import com.java110.dto.meter.MeterMachineDto;
 import com.java110.dto.meter.MeterMachineSpecDto;
@@ -140,7 +141,7 @@ public class ListMeterMachineCmd extends Cmd {
 
     private void queryMeterMachineDegree(List<MeterMachineDto> meterMachineDtos) {
 
-        if (meterMachineDtos == null || meterMachineDtos.size() < 1) {
+        if (ListUtil.isNull(meterMachineDtos)) {
             return;
         }
 
