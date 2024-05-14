@@ -87,14 +87,7 @@
 				visitCase: '',
 				reasonType: 0,
 				reasonTypeIndex: 0,
-				reasonTypeScopes: [{
-						value: '0',
-						name: '喜事'
-					},
-					{
-						value: '1',
-						name: '白事'
-					}
+				reasonTypeScopes: [
 				],
 				roomCloums: [],
 				roomIdArr: [],
