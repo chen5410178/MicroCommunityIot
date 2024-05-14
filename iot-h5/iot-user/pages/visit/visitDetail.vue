@@ -57,6 +57,10 @@
 				<view class="text-gray">拜访业主</view>
 				<view class="text-gray">{{visitInfo.ownerName}}</view>
 			</view>
+			<view class="flex margin-top-xs justify-between" v-if="visitInfo.ownerName">
+				<view class="text-gray">访客车辆</view>
+				<view class="text-gray">{{visitInfo.carNum}}</view>
+			</view>
 			<view class="flex margin-top-xs justify-between" v-show="visitInfo.msg">
 				<view class="text-gray w100">审核备注</view>
 				<view class="text-gray">{{visitInfo.msg}}</view>
@@ -78,6 +82,7 @@
 				ownerInfo: {},
 				qrcodeValue: '',
 				tempFilePath: '',
+				communityId:'',
 				needLongTapSaveImg: false,
 			}
 		},
@@ -89,6 +94,7 @@
 		 */
 		onLoad: function(options) {
 			let _that = this;
+			this.communityId = options.communityId;
 			this.$nextTick(() => {
 				drawQrcode({
 				  width: 200,
@@ -152,9 +158,7 @@
 					page: 1,
 					row: 1,
 					visitId: vId,
-					ownerId: this.ownerInfo.ownerId,
-					userId: this.ownerInfo.userId,
-					communityId: this.ownerInfo.communityId
+					communityId: this.communityId
 				}
 				listOwnerVisit(_objData).then(function(_visits){
 					_that.visitInfo = _visits.data[0];

@@ -5,6 +5,7 @@
 			<view class="title">房屋编号</view>
 			<view class="text-right" @click="_chooseRoom()"><text>{{roomName || '请选择 >'}}</text></view>
 		</view>
+		
 		<view class="block__title">访客信息</view>
 		<view class="cu-form-group">
 			<view class="title">访客姓名</view>
@@ -17,6 +18,10 @@
 					{{visitGenderScopes[visitGenderIndex].name}}
 				</view>
 			</picker>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">访客车辆</view>
+			<input v-model="carNum" placeholder="请输入访客车辆" class="text-right"></input>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">访客联系方式</view>
@@ -171,6 +176,7 @@
 					name: this.vName,
 					visitGender: this.visitGender,
 					phoneNumber: this.phoneNumber,
+					carNum:this.carNum,
 					visitTime: this.visitTime.replace(/\//g, '-'),
 					typeId: this.reasonType,
 					visitCase: this.visitCase,
@@ -224,7 +230,7 @@
 						listOwnerVisit(_objData).then(function(list){
 							let info = list.data[0];
 							uni.navigateTo({
-								url: '/pages/visit/visitDetail?vId=' + info.visitId + '&qrcode=' + info.qrcode
+								url: '/pages/visit/visitDetail?vId=' + info.visitId + '&qrcode=' + info.qrcode+"&communityId="+_that.communityId
 							})
 						})
 						return;

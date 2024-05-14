@@ -8,6 +8,7 @@
                 visitGender: '',
                 phoneNumber: '',
                 communityId: '',
+                carNum: '',
                 roomName: '',
                 roomId: '',
                 visitTime: '',
@@ -21,7 +22,6 @@
             visitTypeList: []
         },
         _initMethod: function () {
-            $that.refreshEditVisitInfo();
             $that.listVisitTypes();
             vc.initDateTime('editVisitTime', function (_data) {
                 $that.editVisitInfo.visitTime = _data;
@@ -143,24 +143,6 @@
                         vc.toast(errInfo);
                     });
             },
-            refreshEditVisitInfo: function () {
-                $that.editVisitInfo = {
-                    visitId: '',
-                    name: '',
-                    visitGender: '',
-                    phoneNumber: '',
-                    communityId: '',
-                    roomName: '',
-                    roomId: '',
-                    visitTime: '',
-                    typeId: '',
-                    visitCase: '',
-                    facePath: '',
-                    qrcode: '',
-                    state: '0',
-                    msg: '',
-                }
-            },
             listVisitTypes: function () {
                 let param = {
                     params: {
@@ -192,7 +174,9 @@
                     params: {
                         page: 1,
                         row: 1,
-                        visitId: vc.getParam("visitId")
+                        visitId: vc.getParam("visitId"),
+                        communityId: vc.getCurrentCommunity().communityId
+
                     }
                 }
                 vc.http.apiGet('/visit.listVisit',
