@@ -374,15 +374,9 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
         if (values.length == 3) {
             degree = values[2];
         }
-        String dsp = contentObject.getJSONArray("data").getJSONObject(0).getString("dsp");
-        //剩余金额
-        String remainingAmount = "0";
-        if (dsp.contains("剩余金额")) {
-            remainingAmount = dsp.substring(dsp.indexOf("剩余金额:") + 5, dsp.indexOf("元"));
-        }
 
 
-        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree,remainingAmount.replace(" ", ""), batchId);
+        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree, degree, batchId);
     }
 
     @Override
