@@ -8,6 +8,7 @@
                 visitGender: '',
                 phoneNumber: '',
                 communityId: '',
+                carNum:'',
                 roomName: '',
                 roomId: '',
                 visitTime: '',
@@ -150,6 +151,7 @@
                     visitGender: '',
                     phoneNumber: '',
                     communityId: '',
+                    carNum:'',
                     roomName: '',
                     roomId: '',
                     typeId: '',
@@ -171,8 +173,8 @@
                 vc.http.apiGet('/visitType.listVisitType',
                     param,
                     function (json, res) {
-                        var _visitTypeInfo = JSON.parse(json);
-                        $that.visitTypeList = _visitTypeInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.visitTypeList = _json.data;
                     }, function (errInfo, error) {
                         console.log('请求失败处理');
                     }

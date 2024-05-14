@@ -1,134 +1,120 @@
 <div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox ">
-                <div class="ibox-title">
-                    <h5>
-                        <vc:i18n name="查询条件"></vc:i18n>
-                    </h5>
-                </div>
-                <div class="ibox-content">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <input type="text" :placeholder="vc.i18n('请输入类型名称','visitTypeManage')"
-                                    v-model="visitTypeManageInfo.conditions.nameLike" class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <select class="custom-select" v-model="visitTypeManageInfo.conditions.visitWay">
-                                    <option selected value="">{{vc.i18n('请选择通行方式','visitTypeManage')}}</option>
-                                    <option v-for="(item, index) in visitWayList" :key="index" :value="item.statusCd">
-                                        {{item.name}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <select class="custom-select" v-model="visitTypeManageInfo.conditions.auditWay">
-                                    <option selected value="">{{vc.i18n('请选择审核方式','visitTypeManage')}}</option>
-                                    <option v-for="(item, index) in auditWayList" :key="index" :value="item.statusCd">
-                                        {{item.name}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryVisitTypeMethod()">
-                                <vc:i18n name="查询" namespace="visitTypeManage"></vc:i18n>
-                            </button>
-                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetVisitTypeMethod()">
-                                <vc:i18n name="重置" namespace="visitTypeManage"></vc:i18n>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+    <div class="ibox ">
+        <div class="ibox-title">
+            <h5>
+                <vc:i18n name="查询条件"></vc:i18n>
+            </h5>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox">
-                <div class="ibox-title">
-                    <h5>
-                        <vc:i18n name="访客类型" namespace="visitTypeManage"></vc:i18n>
-                    </h5>
-                    <div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddVisitTypeModal()">
-                            <vc:i18n name="添加" namespace="visitTypeManage"></vc:i18n>
-                        </button>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <input type="text" :placeholder="vc.i18n('请输入类型名称','visitTypeManage')"
+                            v-model="visitTypeManageInfo.conditions.nameLike" class=" form-control">
                     </div>
                 </div>
-                <div class="ibox-content">
-                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
-                        <thead>
-                            <tr>
-                                <th class="text-center">
-                                    <vc:i18n name='类型ID' namespace='visitTypeManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='类型名称' namespace='visitTypeManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='通行方式' namespace='visitTypeManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='审核方式' namespace='visitTypeManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='拜访天数' namespace='visitTypeManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='备注' namespace='visitTypeManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='创建时间' namespace='visitTypeManage'></vc:i18n>
-                                </th>
-                                <th class="text-center">
-                                    <vc:i18n name='操作'></vc:i18n>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="visitType in visitTypeManageInfo.visitTypes">
-                                <td class="text-center">{{visitType.typeId}}</td>
-                                <td class="text-center">{{visitType.name}}</td>
-                                <td class="text-center">{{visitType.visitWayName}}</td>
-                                <td class="text-center">{{visitType.auditWayName}}</td>
-                                <td class="text-center">{{visitType.visitDay}}天</td>
-                                <td class="text-center">{{visitType.remark || '-'}}</td>
-                                <td class="text-center">{{visitType.createTime}}</td>
-                                <td class="text-center">
-                                    <div class="btn-group">
-                                        <button class="btn-white btn btn-xs" v-on:click="_openEditVisitTypeModel(visitType)">
-                                            <vc:i18n name='修改'></vc:i18n>
-                                        </button>
-                                    </div>
-                                    <div class="btn-group">
-                                        <button class="btn-white btn btn-xs" v-on:click="_openDeleteVisitTypeModel(visitType)">
-                                            <vc:i18n name='删除'></vc:i18n>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="7">
-                                    <ul class="pagination float-right"></ul>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                    <!-- 分页 -->
-                    <vc:create path="frame/pagination"></vc:create>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <select class="custom-select" v-model="visitTypeManageInfo.conditions.visitWay">
+                            <option selected value="">{{vc.i18n('请选择通行方式','visitTypeManage')}}</option>
+                            <option v-for="(item, index) in visitWayList" :key="index" :value="item.statusCd">
+                                {{item.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <select class="custom-select" v-model="visitTypeManageInfo.conditions.auditWay">
+                            <option selected value="">{{vc.i18n('请选择审核方式','visitTypeManage')}}</option>
+                            <option v-for="(item, index) in auditWayList" :key="index" :value="item.statusCd">
+                                {{item.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryVisitTypeMethod()">
+                        <vc:i18n name="查询" namespace="visitTypeManage"></vc:i18n>
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_resetVisitTypeMethod()">
+                        <vc:i18n name="重置" namespace="visitTypeManage"></vc:i18n>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>
+                <vc:i18n name="访客类型" namespace="visitTypeManage"></vc:i18n>
+            </h5>
+            <div class="ibox-tools" style="top:10px;">
+                <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddVisitTypeModal()">
+                    <vc:i18n name="添加" namespace="visitTypeManage"></vc:i18n>
+                </button>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            <vc:i18n name='类型ID' namespace='visitTypeManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='类型名称' namespace='visitTypeManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='通行方式' namespace='visitTypeManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='审核方式' namespace='visitTypeManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='拜访天数' namespace='visitTypeManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='备注' namespace='visitTypeManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='创建时间' namespace='visitTypeManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='操作'></vc:i18n>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="visitType in visitTypeManageInfo.visitTypes">
+                        <td class="text-center">{{visitType.typeId}}</td>
+                        <td class="text-center">{{visitType.name}}</td>
+                        <td class="text-center">{{visitType.visitWayName}}</td>
+                        <td class="text-center">{{visitType.auditWayName}}</td>
+                        <td class="text-center">{{visitType.visitDay}}天</td>
+                        <td class="text-center">{{visitType.remark || '-'}}</td>
+                        <td class="text-center">{{visitType.createTime}}</td>
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <button class="btn-white btn btn-xs" v-on:click="_openEditVisitTypeModel(visitType)">
+                                    <vc:i18n name='修改'></vc:i18n>
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn-white btn btn-xs" v-on:click="_openDeleteVisitTypeModel(visitType)">
+                                    <vc:i18n name='删除'></vc:i18n>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- 分页 -->
+            <vc:create path="frame/pagination"></vc:create>
+        </div>
+    </div>
     <vc:create path="accessControl/addVisitType" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="accessControl/editVisitType"></vc:create>
     <vc:create path="accessControl/deleteVisitType"></vc:create>

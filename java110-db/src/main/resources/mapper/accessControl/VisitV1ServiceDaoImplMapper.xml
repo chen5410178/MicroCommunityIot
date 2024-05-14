@@ -8,7 +8,7 @@
     <!-- 保存访客菜单信息 add by wuxw 2018-07-03 -->
     <insert id="saveVisitInfo" parameterType="Map">
         insert into visit(departure_time, msg, qrcode, visit_gender, owner_id, room_name, room_id, visit_time,
-                          phone_number, visit_id, owner_name, name, visit_case, type_id, face_path, state, community_id,car_num
+                          phone_number, visit_id, owner_name, name, visit_case, type_id, face_path, state, community_id,car_num,
                           status_cd)
         values (#{departureTime}, #{msg}, #{qrcode}, #{visitGender}, #{ownerId}, #{roomName}, #{roomId}, #{visitTime},
                 #{phoneNumber}, #{visitId}, #{ownerName}, #{name}, #{visitCase}, #{typeId}, #{facePath}, #{state},
