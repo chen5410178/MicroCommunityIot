@@ -81,7 +81,7 @@ public class GetSsoTokenCmd extends Cmd {
         }
 
         if (loginStoreStaffDto == null) {
-            throw new CmdException("未包含员工");
+            throw new CmdException("未找到名称为 " + reqJson.getString("storeName") + " 的物业公司");
         }
 
         String token = GenerateCodeFactory.getUUID();
@@ -89,7 +89,7 @@ public class GetSsoTokenCmd extends Cmd {
         CommonCache.setValue("sso_" + token, JSONObject.toJSONString(loginStoreStaffDto), CommonCache.SSO_TOKEN_EXPIRE_TIME);
 
         JSONObject paramOut = new JSONObject();
-        paramOut.put("token",token);
+        paramOut.put("token", token);
 
         context.setResponseEntity(ResultVo.createResponseEntity(paramOut));
     }
