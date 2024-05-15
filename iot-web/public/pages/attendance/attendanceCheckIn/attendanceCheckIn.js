@@ -15,7 +15,7 @@
                 inoutId: '',
                 conditions: {
                     machineId: '',
-                    name: '',
+                    staffName: '',
                     openTypeCd: '',
                     tel: '',
                     state: '',
