@@ -22,12 +22,13 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.utils.*;
 import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.parking.ParkingAreaDto;
+import com.java110.dto.parking.ParkingBoxAreaDto;
 import com.java110.intf.barrier.IBarrierV1InnerServiceSMO;
+import com.java110.intf.barrier.IParkingBoxAreaV1InnerServiceSMO;
+import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.barrier.BarrierDto;
 
@@ -59,6 +60,9 @@ public class ListBarrierCmd extends Cmd {
     @Autowired
     private IBarrierV1InnerServiceSMO barrierV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IParkingBoxAreaV1InnerServiceSMO parkingBoxAreaV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -70,6 +74,10 @@ public class ListBarrierCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
         BarrierDto barrierDto = BeanConvertUtil.covertBean(reqJson, BarrierDto.class);
+
+
+
+        containPaId(reqJson,barrierDto);
 
         int count = barrierV1InnerServiceSMOImpl.queryBarriersCount(barrierDto);
 
@@ -87,6 +95,33 @@ public class ListBarrierCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void containPaId(JSONObject reqJson, BarrierDto barrierDto) {
+
+        if(!reqJson.containsKey("paId")){
+            return;
+        }
+
+        String paId = reqJson.getString("paId");
+        if(StringUtil.isEmpty(paId)){
+            return ;
+        }
+
+        ParkingBoxAreaDto parkingBoxAreaDto = new ParkingBoxAreaDto();
+        parkingBoxAreaDto.setPaId(paId);
+        List<ParkingBoxAreaDto> parkingBoxAreaDtos = parkingBoxAreaV1InnerServiceSMOImpl.queryParkingBoxAreas(parkingBoxAreaDto);
+        if(ListUtil.isNull(parkingBoxAreaDtos)){
+            return ;
+        }
+        List<String> boxIds = new ArrayList<>();
+
+        for(ParkingBoxAreaDto tmpParkingBoxAreaDto: parkingBoxAreaDtos){
+            boxIds.add(tmpParkingBoxAreaDto.getBoxId());
+        }
+
+        barrierDto.setBoxIds(boxIds.toArray(new String[boxIds.size()]));
+
     }
 
     private void freshMachineStateName(List<BarrierDto> barrierDtos) {
