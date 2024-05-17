@@ -171,6 +171,15 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
             return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_BLACK, inOutCarTextDto, carNum);
         }
 
+        // todo 车辆访客记录校验
+        if ("V".equals(parkingAreaDtos.get(0).getTempAuth())) {
+            inOutCarTextDto = inOutCarTextEngine.tempCarAuthIn(carNum, machineDto, getDefaultPaId(parkingAreaDtos));
+            // todo 保存临时车审核数据，通知HC小区管理系统 确认审核 确认审核后，再开门
+            saveTempCarAuthCarInout(carNum, machineDto, inOutCarTextDto, type, parkingAreaDtos);
+            return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_BLACK, inOutCarTextDto, carNum);
+        }
+
+
         inOutCarTextDto = inOutCarTextEngine.carInTempCar(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto);
         saveCarInInfo(carNum, machineDto, inOutCarTextDto, "开门成功", type, parkingAreaDtos, CarInoutDto.STATE_IN);
         return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_IN_SUCCESS, inOutCarTextDto, carNum);
