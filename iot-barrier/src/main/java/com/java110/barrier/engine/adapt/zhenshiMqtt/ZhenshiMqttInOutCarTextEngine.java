@@ -146,6 +146,11 @@ public class ZhenshiMqttInOutCarTextEngine implements IInOutCarTextEngine {
         return new InOutCarTextDto("临时车", carNum, "请等待人工放行", "", "临时车," + carNum + ",请等待人工放行");
     }
 
+    @Override
+    public InOutCarTextDto visitCarAuthIn(String carNum, BarrierDto machineDto, String paId) {
+        return new InOutCarTextDto("临时车", carNum, "请登记访客信息", "", "临时车," + carNum + ",请登记访客信息");
+    }
+
     /**
      * 9.0入场：临时车进场
      *

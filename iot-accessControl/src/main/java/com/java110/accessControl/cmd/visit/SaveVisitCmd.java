@@ -16,6 +16,7 @@
 package com.java110.accessControl.cmd.visit;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.accessControl.bmo.IAuthVisitBMO;
 import com.java110.bean.ResultVo;
 import com.java110.bean.dto.room.RoomDto;
 import com.java110.core.annotation.Java110Cmd;
@@ -27,6 +28,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.visit.VisitDto;
 import com.java110.dto.visit.VisitTypeDto;
 import com.java110.intf.accessControl.IVisitTypeV1InnerServiceSMO;
 import com.java110.intf.accessControl.IVisitV1InnerServiceSMO;
@@ -68,6 +70,9 @@ public class SaveVisitCmd extends Cmd {
 
     @Resource
     private IRoomsTreeInnerServiceSMO roomsTreeInnerServiceSMOImpl;
+
+    @Autowired
+    private IAuthVisitBMO authVisitBMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
@@ -123,7 +128,15 @@ public class SaveVisitCmd extends Cmd {
         if (flag < 1) {
             throw new CmdException("保存数据失败");
         }
-
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
+
+        if (!VisitTypeDto.AUDIT_NO.equals(visitTypeDtos.get(0).getAuditWay())) {
+            return;
+        }
+        VisitDto visitDto = new VisitDto();
+        visitDto.setVisitId(visitPo.getVisitId());
+        List<VisitDto> visitDtos = visitV1InnerServiceSMOImpl.queryVisits(visitDto);
+
+        authVisitBMOImpl.auth(visitDtos.get(0), VisitDto.STATE_C, "成功");
     }
 }

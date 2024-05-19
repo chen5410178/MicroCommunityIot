@@ -1,14 +1,18 @@
 package com.java110.barrier.engine.inout;
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.barrier.engine.IInCarEngine;
 import com.java110.barrier.engine.IInOutCarTextEngine;
 import com.java110.barrier.factory.BarrierGateControlDto;
 import com.java110.barrier.factory.CarMachineProcessFactory;
 import com.java110.bean.dto.car.CarBlackWhiteDto;
 import com.java110.bean.dto.car.OwnerCarDto;
+import com.java110.core.cache.CommonCache;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.carInoutTempAuth.CarInoutTempAuthDto;
@@ -16,6 +20,8 @@ import com.java110.dto.parking.CarDayDto;
 import com.java110.dto.parking.InOutCarTextDto;
 import com.java110.dto.parking.ParkingAreaDto;
 import com.java110.dto.parking.ResultParkingAreaTextDto;
+import com.java110.dto.visit.VisitDto;
+import com.java110.intf.accessControl.IVisitV1InnerServiceSMO;
 import com.java110.intf.barrier.IBarrierV1InnerServiceSMO;
 import com.java110.intf.barrier.ICarInoutTempAuthV1InnerServiceSMO;
 import com.java110.intf.barrier.ICarInoutV1InnerServiceSMO;
@@ -51,6 +57,9 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
 
     @Autowired
     private IBarrierV1InnerServiceSMO machineService;
+
+    @Autowired
+    private IVisitV1InnerServiceSMO visitV1InnerServiceSMOImpl;
 
 
     /**
@@ -122,14 +131,14 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
             return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_IN_SUCCESS, inOutCarTextDto, carNum);
         }
 
-        // 判断是否为出售车辆
+        // 判断是否为内部车辆
         if (OwnerCarDto.LEASE_TYPE_INNER.equals(carDayDto.getLeaseType())) {
             inOutCarTextDto = inOutCarTextEngine.carInInnerCar(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto);
             saveCarInInfo(carNum, machineDto, inOutCarTextDto, "开门成功", type, parkingAreaDtos, CarInoutDto.STATE_IN);
             return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_IN_SUCCESS, inOutCarTextDto, carNum);
         }
 
-        // 判断是否为出售车辆
+        // 判断是否为免费车辆
         if (OwnerCarDto.LEASE_TYPE_NO_MONEY.equals(carDayDto.getLeaseType())) {
             inOutCarTextDto = inOutCarTextEngine.carInInnerNoMoney(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto);
             saveCarInInfo(carNum, machineDto, inOutCarTextDto, "开门成功", type, parkingAreaDtos, CarInoutDto.STATE_IN);
@@ -172,10 +181,11 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
         }
 
         // todo 车辆访客记录校验
-        if ("V".equals(parkingAreaDtos.get(0).getTempAuth())) {
-            inOutCarTextDto = inOutCarTextEngine.tempCarAuthIn(carNum, machineDto, getDefaultPaId(parkingAreaDtos));
-            // todo 保存临时车审核数据，通知HC小区管理系统 确认审核 确认审核后，再开门
-            saveTempCarAuthCarInout(carNum, machineDto, inOutCarTextDto, type, parkingAreaDtos);
+        if ("V".equals(parkingAreaDtos.get(0).getTempAuth()) && noVisitInfo(carNum,machineDto)) {
+            inOutCarTextDto = inOutCarTextEngine.visitCarAuthIn(carNum, machineDto, getDefaultPaId(parkingAreaDtos));
+            // todo 暂存临时车数据，通知界面临时车需要登记访客信息
+            saveVisitCarAuthCarInout(carNum, machineDto, inOutCarTextDto, type, parkingAreaDtos);
+            saveCarInInfo(carNum, machineDto, inOutCarTextDto, "开门失败", type, parkingAreaDtos, CarInoutDto.STATE_IN_FAIL);
             return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_BLACK, inOutCarTextDto, carNum);
         }
 
@@ -184,6 +194,8 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
         saveCarInInfo(carNum, machineDto, inOutCarTextDto, "开门成功", type, parkingAreaDtos, CarInoutDto.STATE_IN);
         return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_IN_SUCCESS, inOutCarTextDto, carNum);
     }
+
+
 
     @Override
     public void tempCarAuthOpen(CarInoutTempAuthDto carInoutTempAuthDto) throws Exception {
@@ -257,6 +269,33 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
     }
 
 
+    /**
+     * 保存临时车进入信息
+     * @param carNum
+     * @param machineDto
+     * @param inOutCarTextDto
+     * @param type
+     * @param parkingAreaDtos
+     */
+    private void saveVisitCarAuthCarInout(String carNum, BarrierDto machineDto, InOutCarTextDto inOutCarTextDto, String type, List<ParkingAreaDto> parkingAreaDtos) {
+        CarInoutTempAuthPo carInoutTempAuthPo = new CarInoutTempAuthPo();
+        carInoutTempAuthPo.setCarType(type);
+        carInoutTempAuthPo.setMachineCode(machineDto.getMachineCode());
+        carInoutTempAuthPo.setMachineId(machineDto.getMachineId());
+        carInoutTempAuthPo.setMachineName(machineDto.getMachineName());
+        carInoutTempAuthPo.setPhoneJpg(machineDto.getPhotoJpg());
+        carInoutTempAuthPo.setCommunityId(machineDto.getCommunityId());
+        carInoutTempAuthPo.setPaId(getDefaultPaId(parkingAreaDtos));
+        carInoutTempAuthPo.setPaNum(getDefaultPaNum(parkingAreaDtos));
+        carInoutTempAuthPo.setState(CarInoutTempAuthDto.STATE_W);
+        carInoutTempAuthPo.setRemark(inOutCarTextDto.getRemark());
+        carInoutTempAuthPo.setCarNum(carNum);
+        CommonCache.setValue(machineDto.getMachineId()+"_inCarEngine", JSONObject.toJSONString(carInoutTempAuthPo),15 * 60);
+        CommonCache.setValue(carNum+"_inCarEngine", JSONObject.toJSONString(carInoutTempAuthPo),15 * 60);
+
+    }
+
+
     private void saveCarInInfo(String carNum, BarrierDto machineDto, InOutCarTextDto inOutCarTextDto, String openStats, String type, List<ParkingAreaDto> parkingAreaDtos, String stateInFail) throws Exception {
         BarrierGateControlDto barrierGateControlDto
                 = new BarrierGateControlDto(BarrierGateControlDto.ACTION_FEE_INFO, carNum, machineDto, inOutCarTextDto.getRemark(), openStats);
@@ -264,4 +303,22 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
         //保存 进场记录
         carInLogEngine.saveCarInLog(carNum, type, machineDto, parkingAreaDtos, stateInFail, inOutCarTextDto.getRemark());
     }
+
+
+    private boolean noVisitInfo(String carNum, BarrierDto machineDto) {
+
+        VisitDto visitDto = new VisitDto();
+        visitDto.setCarNum(carNum);
+        visitDto.setCommunityId(machineDto.getCommunityId());
+        visitDto.setState(VisitDto.STATE_C);
+        visitDto.setValidTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        List<VisitDto> visitDtos = visitV1InnerServiceSMOImpl.queryVisits(visitDto);
+
+        if(!ListUtil.isNull(visitDtos)){
+            return false;
+        }
+
+        return true;
+    }
+
 }

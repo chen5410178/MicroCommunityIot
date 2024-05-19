@@ -8,6 +8,7 @@ import java.util.Date;
 public class VisitTypeDto extends PageDto implements Serializable {
     public static final String VISIT_WAY_FACE = "FACE";
     public static final String VISIT_WAY_QRCODE = "QRCODE";
+    public static final String AUDIT_NO = "2002";
 
     private String typeId;
     private String name;

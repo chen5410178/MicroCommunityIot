@@ -18,6 +18,7 @@ package com.java110.intf.barrier;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.dto.barrier.BarrierDto;
+import com.java110.dto.carInoutTempAuth.CarInoutTempAuthDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.barrier.BarrierPo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -79,4 +80,7 @@ public interface IBarrierV1InnerServiceSMO {
 
     @RequestMapping(value = "/getCloudFlvVideo", method = RequestMethod.POST)
     ResultVo getCloudFlvVideo(@RequestBody BarrierDto barrierDto);
+
+    @RequestMapping(value = "/tempCarAuthOpen", method = RequestMethod.POST)
+    ResultVo tempCarAuthOpen(@RequestBody CarInoutTempAuthDto carInoutTempAuthDto);
 }

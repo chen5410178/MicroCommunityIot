@@ -2,7 +2,7 @@
 
     vc.extends({
         data: {
-            editVisitInfo: {
+            visitAuthInfo: {
                 visitId: '',
                 name: '',
                 visitGender: '',
@@ -30,83 +30,24 @@
         },
         _initEvent: function () {
             vc.on('doVisitAuth', 'doVisitAuthModal', function (_params) {
-                $that.refreshEditVisitInfo();
+                $that.refreshvisitAuthInfo();
                 $('#visitAuthModel').modal('show');
-                vc.copyObject(_params, $that.editVisitInfo);
+                vc.copyObject(_params, $that.visitAuthInfo);
             });
         },
         methods: {
-            editVisitValidate: function () {
+            visitAuthValidate: function () {
                 return vc.validate.validate({
-                    editVisitInfo: $that.editVisitInfo
+                    visitAuthInfo: $that.visitAuthInfo
                 }, {
-                    'editVisitInfo.visitId': [
+                    'visitAuthInfo.visitId': [
                         {
                             limit: "required",
                             param: "",
                             errInfo: "拜访ID不能为空"
                         },
                     ],
-                    'editVisitInfo.name': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "姓名不能为空"
-                        },
-                        {
-                            limit: "maxLength",
-                            param: "255",
-                            errInfo: "姓名不能超过255"
-                        },
-                    ],
-                    'editVisitInfo.visitGender': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "性别不能为空"
-                        },
-                    ],
-                    'editVisitInfo.phoneNumber': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "电话号码不能为空"
-                        },
-                        {
-                            limit: "phone",
-                            param: "",
-                            errInfo: "电话号码格式错误"
-                        },
-                    ],
-                    'editVisitInfo.roomName': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "拜访房屋不能为空"
-                        },
-                    ],
-                    'editVisitInfo.roomId': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "拜访房屋不能为空"
-                        },
-                    ],
-                    'editVisitInfo.typeId': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "访客类型不能为空"
-                        },
-                    ],
-                    'editVisitInfo.visitCase': [
-                        {
-                            limit: "maxLength",
-                            param: "255",
-                            errInfo: "拜访事由不能超过255"
-                        },
-                    ],
-                    'editVisitInfo.state': [
+                    'visitAuthInfo.state': [
                         {
                             limit: "required",
                             param: "",
@@ -116,14 +57,14 @@
                 });
             },
             visitAuth: function () {
-                if (!$that.editVisitValidate()) {
+                if (!$that.visitAuthValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
 
                 vc.http.apiPost(
-                    '/visit.updateVisit',
-                    JSON.stringify($that.editVisitInfo),
+                    '/visit.propertyAuthVisit',
+                    JSON.stringify($that.visitAuthInfo),
                     {
                         emulateJSON: true
                     },
@@ -142,8 +83,8 @@
                         vc.toast(errInfo);
                     });
             },
-            refreshEditVisitInfo: function () {
-                $that.editVisitInfo = {
+            refreshvisitAuthInfo: function () {
+                $that.visitAuthInfo = {
                     visitId: '',
                     name: '',
                     visitGender: '',

@@ -128,6 +128,16 @@ public interface IInOutCarTextEngine {
      */
     InOutCarTextDto tempCarAuthIn(String carNum, BarrierDto machineDto, String paId);
 
+
+    /**
+     * 访客车俩入场
+     * @param carNum
+     * @param machineDto
+     * @param paId
+     * @return
+     */
+    InOutCarTextDto visitCarAuthIn(String carNum, BarrierDto machineDto, String paId);
+
     /**
      * 临时车进场
      *

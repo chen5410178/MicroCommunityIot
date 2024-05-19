@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class VisitDto extends PageDto implements Serializable {
+
+    public static final String STATE_W = "0"; //审核状态 0表示未审核；1表示审核通过；2表示审核拒绝
+    public static final String STATE_C = "1";
     private String visitId;
     private String name;
     private String visitGender;
@@ -37,6 +40,8 @@ public class VisitDto extends PageDto implements Serializable {
     private String queryStartTime;
 
     private String queryEndTime;
+
+    private String validTime;
 
     public String getVisitId() {
         return visitId;
@@ -260,5 +265,13 @@ public class VisitDto extends PageDto implements Serializable {
 
     public void setCarNum(String carNum) {
         this.carNum = carNum;
+    }
+
+    public String getValidTime() {
+        return validTime;
+    }
+
+    public void setValidTime(String validTime) {
+        this.validTime = validTime;
     }
 }

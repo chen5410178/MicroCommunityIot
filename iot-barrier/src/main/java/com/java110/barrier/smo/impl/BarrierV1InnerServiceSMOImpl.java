@@ -19,11 +19,13 @@ package com.java110.barrier.smo.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.barrier.dao.IBarrierV1ServiceDao;
 import com.java110.barrier.engine.IBarrierEngine;
+import com.java110.barrier.engine.ICallCarService;
 import com.java110.barrier.factory.CarMachineProcessFactory;
 import com.java110.bean.ResultVo;
 import com.java110.bean.dto.PageDto;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.carInoutTempAuth.CarInoutTempAuthDto;
 import com.java110.intf.barrier.IBarrierV1InnerServiceSMO;
 import com.java110.dto.barrier.BarrierDto;
 import com.java110.po.barrier.BarrierPo;
@@ -49,6 +51,9 @@ public class BarrierV1InnerServiceSMOImpl  implements IBarrierV1InnerServiceSMO 
     private IBarrierV1ServiceDao barrierV1ServiceDaoImpl;
     @Autowired
     private IBarrierEngine barrierEngineImpl;
+
+    @Autowired
+    private ICallCarService callCarServiceImpl;
 
     @Override
     public int saveBarrier(@RequestBody  BarrierPo barrierPo) {
@@ -129,6 +134,16 @@ public class BarrierV1InnerServiceSMOImpl  implements IBarrierV1InnerServiceSMO 
         ResultVo resultVo = CarMachineProcessFactory.getCarImpl(barrierDto.getHmId()).getCloudFlvVideo(barrierDto);
 
         return resultVo;
+    }
+
+    @Override
+    public ResultVo tempCarAuthOpen(@RequestBody CarInoutTempAuthDto carInoutTempAuthDto) {
+        try {
+            callCarServiceImpl.tempCarAuthOpen(carInoutTempAuthDto);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+        return new ResultVo(ResultVo.CODE_OK,ResultVo.MSG_OK);
     }
 
 }

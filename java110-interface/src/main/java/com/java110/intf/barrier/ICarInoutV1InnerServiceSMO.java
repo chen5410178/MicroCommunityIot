@@ -85,4 +85,6 @@ public interface ICarInoutV1InnerServiceSMO {
 
     @RequestMapping(value = "/queryCarInCount", method = RequestMethod.POST)
     int queryCarInCount(@RequestBody CarInoutDto carInoutDto);
+
+
 }
