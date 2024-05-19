@@ -62,7 +62,7 @@
 	// pages/visit/addVisit.js
 	import context from '../../lib/java110/Java110Context.js';
 	const factory = context.factory;
-	import {listOwnerVisit, saveAddVisit, listVisitType}  from '../../api/visit/visitApi.js'
+	import {listOwnerVisit, saveAddVisit, listVisitType,listVisitCarNum}  from '../../api/visit/visitApi.js'
 	import uniDatetimePicker from '../../components/uni-datetime-picker/uni-datetime-picker.vue'
 	//import CarNumber from '../../components/codecook-carnumber/components/codecook-carnumber/codecook-carnumber.vue'
 	import {formatTimeNow} from '../../lib/java110/utils/DateUtil.js'
@@ -101,6 +101,7 @@
 				communityId: '',
 				roomId: '',
 				roomName: '',
+				machineId:'',
 				photos: [],
 				freeInfo: {},
 				uploadImage: {
@@ -137,6 +138,8 @@
 			});
 			//context.onLoad(options);
 			this.visitTime = formatTimeNow();
+			this.machineId = options.machineId;
+			this._loadBarrierCarNum();
 		},
 		
 		methods: {
@@ -247,6 +250,17 @@
 					url: '/pages/room/selectRoom?communityId='+this.communityId
 				})
 			},
+			_loadBarrierCarNum:function(){
+				if(!this.machineId){
+					return;
+				}
+				let _that = this;
+				listVisitCarNum({
+					machineId:this.machineId
+				}).then((data)=>{
+					_that.carNum = _data.data;
+				})
+			}
 		},
 
 		/**

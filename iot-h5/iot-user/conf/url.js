@@ -24,6 +24,9 @@ export default {
 	queryMonthCardByCarNum: baseUrl + "iot/api/carMonth.queryMonthCardByCarNum",
 	queryWaitPayFeeTempCar: baseUrl + "iot/api/car.queryWaitPayFeeTempCar",
 	listVisitType: baseUrl + "iot/api/visitType.listVisitType",
+	queryWaitVisitCarNum: baseUrl + "iot/api/visit.queryWaitVisitCarNum",
+	
+	
 	saveAddVisit: baseUrl + "iot/api/visit.saveVisit",
 	listOwnerVisit: baseUrl + "iot/api/visit.listVisit",
 	uploadImage: baseUrl + "iot/api/upload/uploadImage",

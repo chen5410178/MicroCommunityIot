@@ -55,6 +55,8 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/visit.saveVisit,");// 访客登记
         exclusions.append("/iot/api/visitType.listVisitType,");// 访客类型
         exclusions.append("/iot/api/visit.listVisit,");// 访客人员
+        exclusions.append("/iot/api/visit.queryWaitVisitCarNum,");// 查询等待访客车牌号
+
 
         exclusions.append("/iot/api/personFace.savePersonFace,");// 人脸审核
         exclusions.append("/iot/api/personFace.listPersonFace,");// 人脸审核
@@ -73,8 +75,6 @@ public class ServiceConfiguration {
 
         exclusions.append("/iot/api/community.listCommunitys,");// 查询小区
         //exclusions.append("/iot/api/appUser.saveAppUser,");// 房屋认证
-
-
 
 
     }

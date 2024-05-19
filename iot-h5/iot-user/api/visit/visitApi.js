@@ -122,3 +122,23 @@ export function getOwnerVisit(_data) {
 		});
 	})
 }
+
+/**
+ * visit.queryWaitVisitCarNum
+ * 查询访客类型
+ */
+export function listVisitCarNum(_data) {
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.queryWaitVisitCarNum,
+			method: "get",
+			data: _data,
+			success: function(res) {
+				resolve(res.data);
+			},
+			fail: function(res) {
+				reject(res);
+			}
+		});
+	})
+}
