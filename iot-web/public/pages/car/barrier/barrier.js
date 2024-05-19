@@ -8,7 +8,7 @@
         data: {
             barrierInfo: {
                 barriers: [],
-                parkingBoxs:[],
+                parkingBoxs: [],
                 total: 0,
                 records: 1,
                 moreCondition: false,
@@ -81,36 +81,58 @@
                     $that.barrierInfo.moreCondition = true;
                 }
             },
-            _listParkingBoxs: function(_page, _rows) {
+            _listParkingBoxs: function (_page, _rows) {
                 let param = {
                     params: {
-                        page:1,
-                        row:50,
-                        communityId:vc.getCurrentCommunity().communityId
+                        page: 1,
+                        row: 50,
+                        communityId: vc.getCurrentCommunity().communityId
                     }
                 };
                 $that.barrierInfo.parkingBoxs = [{
-                    boxId:'',
-                    boxName:'全部'
+                    boxId: '',
+                    boxName: '全部'
                 }]
                 //发送get请求
                 vc.http.apiGet('/parkingBox.listParkingBox',
                     param,
-                    function(json, res) {
+                    function (json, res) {
                         var _parkingBoxInfo = JSON.parse(json);
                         _parkingBoxInfo.data.forEach(item => {
                             $that.barrierInfo.parkingBoxs.push(item);
                         });
-                      
+
                     },
-                    function(errInfo, error) {
+                    function (errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );
             },
-            swatchParkingBox:function(_box){
+            swatchParkingBox: function (_box) {
                 $that.barrierInfo.conditions.boxId = _box.boxId;
                 $that._listBarriers(DEFAULT_PAGE, DEFAULT_ROWS);
+            },
+            _openVisitQrCode: function (_barrier) {
+                var param = {
+                    params: {
+                        communityId: vc.getCurrentCommunity().communityId,
+                    }
+                };
+                //发送get请求
+                vc.http.apiGet('/visit.getVisitQrCodeUrl',
+                    param,
+                    function (json, res) {
+                        let _info = JSON.parse(json);
+                        vc.emit('viewQrCode', 'openQrCodeModal', {
+                            title: _barrier.machineName+"访客码",
+                            url: _info.data.url+'&machineId='+_barrier.machineId,
+                            remark: '道闸口访客码，扫码后自动关联待进场车辆信息',
+                        })
+                    },
+                    function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
             }
 
         }

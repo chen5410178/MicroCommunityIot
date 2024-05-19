@@ -109,6 +109,12 @@
                                 <td class="text-center">{{barrier.createTime}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-if="barrier.direction == '3306'"
+                                            v-on:click="_openVisitQrCode(barrier)">
+                                            <vc:i18n name='访客码'></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
                                         <button class="btn-white btn btn-xs"
                                             v-if="vc.hasPrivilege('502024030398460046')"
                                             v-on:click="_openEditBarrierModel(barrier)">
@@ -137,4 +143,5 @@
     <vc:create path="car/editBarrier"></vc:create>
     <vc:create path="car/deleteBarrier"></vc:create>
 
+    <vc:create path="common/viewQrCode"></vc:create>
 </div>
