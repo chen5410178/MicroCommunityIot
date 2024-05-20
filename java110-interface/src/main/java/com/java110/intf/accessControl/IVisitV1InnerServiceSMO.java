@@ -15,6 +15,8 @@
  */
 package com.java110.intf.accessControl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
 import com.java110.dto.visit.VisitDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.visit.VisitPo;
@@ -64,4 +66,7 @@ public interface IVisitV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryVisitsCount", method = RequestMethod.POST)
     int queryVisitsCount(@RequestBody VisitDto visitDto);
+
+    @RequestMapping(value = "/authVisit", method = RequestMethod.POST)
+    ResultVo authVisit(@RequestBody JSONObject reqJson);
 }

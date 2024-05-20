@@ -16,9 +16,14 @@
 package com.java110.accessControl.smo.impl;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.java110.accessControl.bmo.IAuthVisitBMO;
 import com.java110.accessControl.dao.IVisitV1ServiceDao;
+import com.java110.bean.ResultVo;
 import com.java110.bean.dto.PageDto;
+import com.java110.core.exception.CmdException;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.intf.accessControl.IVisitV1InnerServiceSMO;
 import com.java110.dto.visit.VisitDto;
 import com.java110.po.visit.VisitPo;
@@ -41,6 +46,9 @@ public class VisitV1InnerServiceSMOImpl implements IVisitV1InnerServiceSMO {
 
     @Autowired
     private IVisitV1ServiceDao visitV1ServiceDaoImpl;
+
+    @Autowired
+    private IAuthVisitBMO authVisitBMOImpl;
 
 
     @Override
@@ -82,6 +90,22 @@ public class VisitV1InnerServiceSMOImpl implements IVisitV1InnerServiceSMO {
     @Override
     public int queryVisitsCount(@RequestBody VisitDto visitDto) {
         return visitV1ServiceDaoImpl.queryVisitsCount(BeanConvertUtil.beanCovertMap(visitDto));
+    }
+
+    @Override
+    public ResultVo authVisit(@RequestBody JSONObject reqJson) {
+        VisitDto visitDto = new VisitDto();
+        visitDto.setVisitId(reqJson.getString("visitId"));
+        visitDto.setState(VisitDto.STATE_W);
+        List<VisitDto> visitDtos = queryVisits(visitDto);
+
+        if(ListUtil.isNull(visitDtos)){
+            throw new CmdException("不存在待审核记录");
+        }
+
+       authVisitBMOImpl.auth(visitDtos.get(0),reqJson.getString("state"),reqJson.getString("msg"));
+
+        return new ResultVo(ResultVo.CODE_OK,ResultVo.MSG_OK);
     }
 
 }
