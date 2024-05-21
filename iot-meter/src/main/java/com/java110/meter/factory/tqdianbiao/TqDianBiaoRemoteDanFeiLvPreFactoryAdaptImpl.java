@@ -434,6 +434,8 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         item = new HashMap<>();
         Map<String, Object> params = new HashMap<>();
         params.put("money", "0");
+        params.put("account_id", 1);
+        params.put("count", 1);
         item.put("opr_id", detailId);
         item.put("time_out", 0);
         item.put("must_online", true);
