@@ -12,6 +12,7 @@ import com.java110.core.utils.ListUtil;
 import com.java110.dto.meter.MeterMachineDetailDto;
 import com.java110.dto.meter.MeterMachineDto;
 import com.java110.dto.meter.MeterMachineSpecDto;
+import com.java110.dto.meter.MeterTypeDto;
 import com.java110.intf.meter.*;
 import com.java110.meter.factory.ISmartMeterCoreRead;
 import com.java110.meter.factory.ISmartMeterFactoryAdapt;
@@ -67,6 +68,9 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
 
     @Autowired
     private IMeterMachineLogV1InnerServiceSMO meterMachineLogV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IMeterTypeV1InnerServiceSMO meterTypeV1InnerServiceSMOImpl;
 
     @Override
     public ResultVo requestRecharge(MeterMachineDto meterMachineDto, double degree, double money) {
@@ -430,12 +434,24 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        MeterTypeDto meterTypeDto = new MeterTypeDto();
+        meterTypeDto.setTypeId(meterMachineDto.getMeterType());
+        meterTypeDto.setCommunityId(meterMachineDto.getCommunityId());
+        List<MeterTypeDto> meterTypeDtos = meterTypeV1InnerServiceSMOImpl.queryMeterTypes(meterTypeDto);
+
+        String price = "";
+        if(!ListUtil.isNull(meterTypeDtos)){
+            price = meterTypeDtos.get(0).getPrice();
+        }
+
         detailId = GenerateCodeFactory.getGeneratorId("11");
         item = new HashMap<>();
         Map<String, Object> params = new HashMap<>();
         params.put("money", "0");
-//        params.put("account_id", 1);
-//        params.put("count", 1);
+        params.put("account_id", "1");
+        params.put("count", "1");
+        params.put("price",price);
         item.put("opr_id", detailId);
         item.put("time_out", 0);
         item.put("must_online", true);
