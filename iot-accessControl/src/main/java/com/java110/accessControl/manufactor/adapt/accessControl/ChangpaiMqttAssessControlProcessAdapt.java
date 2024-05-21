@@ -104,6 +104,7 @@ public class ChangpaiMqttAssessControlProcessAdapt extends AbstractAccessControl
 //        }
         String faceData = accessControlFacePo.getFaceBase64();
         if (!StringUtil.isEmpty(faceData)) {
+            faceData = faceData.replaceAll("\r\n", "");
             faceData = faceData.replaceAll("\n", "");
         }
         param.put("reg_image", faceData);
