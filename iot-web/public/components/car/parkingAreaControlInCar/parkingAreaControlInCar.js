@@ -220,6 +220,8 @@
                     payCharge: carIn.payCharge,
                     machineId: $that.parkingAreaControlInCarInfo.machineId,
                     boxId: $that.parkingAreaControlInCarInfo.boxId,
+                    paId: $that.parkingAreaControlInCarInfo.paId,
+
                 })
             }
         }
