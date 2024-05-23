@@ -102,11 +102,12 @@ public class ImportOwnerCarQueueDataAdapt extends DefaultImportData implements I
         ParkingAreaDto parkingAreaDto = new ParkingAreaDto();
         parkingAreaDto.setNum(ownerCarDto.getAreaNum());
         parkingAreaDto.setTypeCd(ownerCarDto.getTypeCd());
+        parkingAreaDto.setCommunityId(ownerCarDto.getCommunityId());
         //查询停车场
         List<ParkingAreaDto> parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
         //Assert.listOnlyOne(parkingAreaDtos, "查询停车场错误！");
         String paId = "";
-        if (parkingAreaDtos == null || parkingAreaDtos.size() < 1) {
+        if (ListUtil.isNull(parkingAreaDtos)) {
             paId = GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_paId);
             ParkingAreaPo parkingAreaPo = new ParkingAreaPo();
             parkingAreaPo.setCommunityId(ownerCarDto.getCommunityId());
@@ -120,6 +121,7 @@ public class ImportOwnerCarQueueDataAdapt extends DefaultImportData implements I
         }
         ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
         parkingSpaceDto.setNum(ownerCarDto.getNum());
+        parkingSpaceDto.setCommunityId(ownerCarDto.getCommunityId());
         parkingSpaceDto.setPaId(paId);
         //查询停车位
         List<ParkingSpaceDto> parkingSpaceDtos = parkingSpaceV1InnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
