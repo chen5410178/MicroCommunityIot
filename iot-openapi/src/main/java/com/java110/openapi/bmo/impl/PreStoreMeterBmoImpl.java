@@ -39,6 +39,7 @@ public class PreStoreMeterBmoImpl implements IIotCommonApiBmo {
         MeterMachineDto meterMachineDto = new MeterMachineDto();
         meterMachineDto.setRoomId(reqJson.getString("roomId"));
         meterMachineDto.setTypeCd(reqJson.getString("feeTypeCd"));
+        meterMachineDto.setAddress(reqJson.getString("address"));
         List<MeterMachineDto> meterMachineDtos = meterMachineV1InnerServiceSMOImpl.queryMeterMachines(meterMachineDto);
 
         Assert.listOnlyOne(meterMachineDtos, "表不存在");
