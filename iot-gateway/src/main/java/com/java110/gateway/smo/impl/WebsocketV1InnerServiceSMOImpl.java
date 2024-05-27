@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.dto.idSeq.IdSeqDto;
 import com.java110.core.configuration.ServiceInfoListener;
 import com.java110.core.factory.LoggerFactory;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.parking.ParkingBoxAreaDto;
 import com.java110.gateway.dao.ISnowflakeldWorker;
 import com.java110.gateway.websocket.ParkingAreaWebsocket;
@@ -42,12 +43,12 @@ public class WebsocketV1InnerServiceSMOImpl implements IWebsocketV1InnerSMO {
         }
 
         ParkingBoxAreaDto parkingBoxAreaDto = new ParkingBoxAreaDto();
-        parkingBoxAreaDto.setBoxId(reqJson.getString("extBoxId"));
+        parkingBoxAreaDto.setBoxId(reqJson.getString("boxId"));
         parkingBoxAreaDto.setDefaultArea(ParkingBoxAreaDto.DEFAULT_AREA_TRUE);
 
         List<ParkingBoxAreaDto> parkingBoxAreaDtos = parkingBoxAreaV1InnerServiceSMOImpl.queryParkingBoxAreas(parkingBoxAreaDto);
 
-        if (parkingBoxAreaDtos == null || parkingBoxAreaDtos.isEmpty()) {
+        if (ListUtil.isNull(parkingBoxAreaDtos)) {
             return 1;
         }
 
