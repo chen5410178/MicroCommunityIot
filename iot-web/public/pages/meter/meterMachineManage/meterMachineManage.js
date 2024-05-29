@@ -21,11 +21,12 @@
                     machineModel: '',
                     roomNameLike: '',
                     implBean: '',
-                    communityId: vc.getCurrentCommunity().communityId
+                    communityId: ''
                 }
             }
         },
         _initMethod: function() {
+            $that.meterMachineManageInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
             $that._listMeterMachines(DEFAULT_PAGE, DEFAULT_ROWS);
             $that._listMeterType();
             $that._listFactorys();
