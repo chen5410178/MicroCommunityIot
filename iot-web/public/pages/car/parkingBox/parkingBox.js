@@ -16,11 +16,12 @@
                     boxId: '',
                     boxName: '',
                     tempCarIn: '',
-                    communityId: vc.getCurrentCommunity().communityId
+                    communityId: ''
                 }
             }
         },
         _initMethod: function() {
+            $that.parkingBoxInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
             $that._listParkingBoxs(DEFAULT_PAGE, DEFAULT_ROWS);
         },
         _initEvent: function() {

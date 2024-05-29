@@ -84,7 +84,7 @@ public class TimePeriodComputeTempCarFeeImpl extends BaseComputeTempCarFee {
      * 5600012025	超过首段1(分钟)
      * 5600012026	超过首段收费1
      */
-    private TempCarFeeResult doComputeTwo(CarInoutDto carInoutDto, TempCarFeeConfigDto tempCarFeeConfigDto, List<TempCarFeeConfigAttrDto> tempCarFeeConfigAttrDtos, List<ParkingCouponCarDto> parkingCouponCarDtos) {
+    private TempCarFeeResult doComputeOne(CarInoutDto carInoutDto, TempCarFeeConfigDto tempCarFeeConfigDto, List<TempCarFeeConfigAttrDto> tempCarFeeConfigAttrDtos, List<ParkingCouponCarDto> parkingCouponCarDtos) {
         //获取停车时间
         long min = TempCarFeeFactory.getTempCarCeilMin(carInoutDto, parkingCouponCarDtos);
 
@@ -147,7 +147,7 @@ public class TimePeriodComputeTempCarFeeImpl extends BaseComputeTempCarFee {
      * 5600012033	超过首段2(分钟)
      * 5600012034	超过首段收费2
      */
-    private TempCarFeeResult doComputeOne(CarInoutDto carInoutDto, TempCarFeeConfigDto tempCarFeeConfigDto, List<TempCarFeeConfigAttrDto> tempCarFeeConfigAttrDtos, List<ParkingCouponCarDto> parkingCouponCarDtos) {
+    private TempCarFeeResult doComputeTwo(CarInoutDto carInoutDto, TempCarFeeConfigDto tempCarFeeConfigDto, List<TempCarFeeConfigAttrDto> tempCarFeeConfigAttrDtos, List<ParkingCouponCarDto> parkingCouponCarDtos) {
         //获取停车时间
         long min = TempCarFeeFactory.getTempCarCeilMin(carInoutDto, parkingCouponCarDtos);
 
