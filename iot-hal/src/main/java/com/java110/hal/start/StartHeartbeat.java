@@ -22,7 +22,7 @@ public class StartHeartbeat {
         mqttThread.start();
 
         //todo 启动mqtt 处理消息 线程
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
         executorService.execute(new CustomMqttMsgThread());
 
     }
