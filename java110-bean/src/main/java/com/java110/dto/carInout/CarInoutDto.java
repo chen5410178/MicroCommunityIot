@@ -35,6 +35,7 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
     private String carInout;
     private String photoJpg;
     private String carNum;
+    private String carNumLike;
     private String remark;
     private String ciId;
     private String inoutId;
@@ -300,5 +301,13 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
 
     public void setUnlicense(String unlicense) {
         this.unlicense = unlicense;
+    }
+
+    public String getCarNumLike() {
+        return carNumLike;
+    }
+
+    public void setCarNumLike(String carNumLike) {
+        this.carNumLike = carNumLike;
     }
 }

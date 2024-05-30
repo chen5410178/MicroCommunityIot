@@ -71,6 +71,9 @@
             </foreach>
         </if>
         <if test="carNum !=null and carNum != ''">
+            and t.car_num = #{carNum}
+        </if>
+        <if test="carNumLike !=null and carNumLike != ''">
             and t.car_num like concat('%',#{carNum},'%')
         </if>
         <if test="state !=null and state != ''">
