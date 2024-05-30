@@ -323,6 +323,7 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
             if (plateResult.containsKey("imagePath")) {
                 String imagePath = plateResult.getString("imagePath");
                 imagePath = Base64Convert.decoder(imagePath);
+                imagePath = imagePath.substring(0,imagePath.indexOf("?"));
                 //String imagePath = ImageFactory.getBase64ByImgUrl(MappingCacheFactory.getValue("OSS_URL") + plateResult.getString("imagePath"));
                 machineDto.setPhotoJpg(imagePath);
             }
