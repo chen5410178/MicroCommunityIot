@@ -248,9 +248,18 @@ public class AddOwnerApiCmd extends Cmd {
 
         ParkingAreaDto parkingAreaDto = new ParkingAreaDto();
         parkingAreaDto.setPaId(car.getString("paId"));
+        parkingAreaDto.setCommunityId(communityId);
         parkingAreaDto.setStatusCd("");
         //查询停车场
         List<ParkingAreaDto> parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
+
+        if(ListUtil.isNull(parkingAreaDtos)) {
+            parkingAreaDto = new ParkingAreaDto();
+            parkingAreaDto.setNum(car.getString("paNum"));
+            parkingAreaDto.setCommunityId(communityId);
+            //查询停车场
+            parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
+        }
         ParkingAreaPo parkingAreaPo = new ParkingAreaPo();
         parkingAreaPo.setCommunityId(communityId);
         parkingAreaPo.setNum(car.getString("paNum"));
