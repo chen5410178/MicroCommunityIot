@@ -155,7 +155,7 @@ public class AccountInnerServiceSMOImpl implements IAccountInnerServiceSMO {
                 throw new IllegalArgumentException("更新账户失败");
             }
         } finally {
-            DistributedLock.releaseDistributedLock(requestId, key);
+            DistributedLock.releaseDistributedLock(key, requestId);
         }
         accountDetailPo.setDetailType(AccountDetailDto.DETAIL_TYPE_IN);
         if (StringUtil.isEmpty(accountDetailPo.getDetailId())) {
