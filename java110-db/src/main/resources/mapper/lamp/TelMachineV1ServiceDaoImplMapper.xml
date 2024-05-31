@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="telMachineV1ServiceDaoImpl">
+
+
+    <!-- 保存话机信息 add by wuxw 2018-07-03 -->
+    <insert id="saveTelMachineInfo" parameterType="Map">
+        insert into tel_machine(
+        heartbeat_time,success_prompt,impl_bean,machine_id,machine_code,machine_port,fail_prompt,community_id,machine_name,machine_ip
+        ) values (
+        #{heartbeatTime},#{successPrompt},#{implBean},#{machineId},#{machineCode},#{machinePort},#{failPrompt},#{communityId},#{machineName},#{machineIp}
+        )
+    </insert>
+
+
+    <!-- 查询话机信息 add by wuxw 2018-07-03 -->
+    <select id="getTelMachineInfo" parameterType="Map" resultType="Map">
+        select t.heartbeat_time,t.heartbeat_time heartbeatTime,t.success_prompt,t.success_prompt
+        successPrompt,t.impl_bean,t.impl_bean implBean,t.machine_id,t.machine_id machineId,t.machine_code,t.machine_code
+        machineCode,t.machine_port,t.machine_port machinePort,t.fail_prompt,t.fail_prompt
+        failPrompt,t.status_cd,t.status_cd statusCd,t.community_id,t.community_id
+        communityId,t.machine_name,t.machine_name machineName,t.machine_ip,t.machine_ip machineIp,t.create_time createTime
+        from tel_machine t
+        where 1 =1
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="successPrompt !=null and successPrompt != ''">
+            and t.success_prompt= #{successPrompt}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="machinePort !=null and machinePort != ''">
+            and t.machine_port= #{machinePort}
+        </if>
+        <if test="failPrompt !=null and failPrompt != ''">
+            and t.fail_prompt= #{failPrompt}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="machineIp !=null and machineIp != ''">
+            and t.machine_ip= #{machineIp}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改话机信息 add by wuxw 2018-07-03 -->
+    <update id="updateTelMachineInfo" parameterType="Map">
+        update tel_machine t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            , t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="successPrompt !=null and successPrompt != ''">
+            , t.success_prompt= #{successPrompt}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            , t.impl_bean= #{implBean}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="machinePort !=null and machinePort != ''">
+            , t.machine_port= #{machinePort}
+        </if>
+        <if test="failPrompt !=null and failPrompt != ''">
+            , t.fail_prompt= #{failPrompt}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            , t.machine_name= #{machineName}
+        </if>
+        <if test="machineIp !=null and machineIp != ''">
+            , t.machine_ip= #{machineIp}
+        </if>
+        where 1=1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+
+    </update>
+
+    <!-- 查询话机数量 add by wuxw 2018-07-03 -->
+    <select id="queryTelMachinesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from tel_machine t
+        where 1 =1
+        <if test="heartbeatTime !=null and heartbeatTime != ''">
+            and t.heartbeat_time= #{heartbeatTime}
+        </if>
+        <if test="successPrompt !=null and successPrompt != ''">
+            and t.success_prompt= #{successPrompt}
+        </if>
+        <if test="implBean !=null and implBean != ''">
+            and t.impl_bean= #{implBean}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="machinePort !=null and machinePort != ''">
+            and t.machine_port= #{machinePort}
+        </if>
+        <if test="failPrompt !=null and failPrompt != ''">
+            and t.fail_prompt= #{failPrompt}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="machineIp !=null and machineIp != ''">
+            and t.machine_ip= #{machineIp}
+        </if>
+
+
+    </select>
+
+</mapper>

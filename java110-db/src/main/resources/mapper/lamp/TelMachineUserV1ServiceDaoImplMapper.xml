@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="telMachineUserV1ServiceDaoImpl">
+
+
+    <!-- 保存客服人员信息 add by wuxw 2018-07-03 -->
+    <insert id="saveTelMachineUserInfo" parameterType="Map">
+        insert into tel_machine_user(
+        master_flag,tmu_id,machine_id,staff_tel,staff_name,community_id,staff_id
+        ) values (
+        #{masterFlag},#{tmuId},#{machineId},#{staffTel},#{staffName},#{communityId},#{staffId}
+        )
+    </insert>
+
+
+    <!-- 查询客服人员信息 add by wuxw 2018-07-03 -->
+    <select id="getTelMachineUserInfo" parameterType="Map" resultType="Map">
+        select t.master_flag,t.master_flag masterFlag,t.tmu_id,t.tmu_id tmuId,t.machine_id,t.machine_id
+        machineId,t.staff_tel,t.staff_tel staffTel,t.staff_name,t.staff_name staffName,t.status_cd,t.status_cd
+        statusCd,t.community_id,t.community_id communityId,t.staff_id,t.staff_id staffId,t.create_time createTime
+        from tel_machine_user t
+        where 1 =1
+        <if test="masterFlag !=null and masterFlag != ''">
+            and t.master_flag= #{masterFlag}
+        </if>
+        <if test="tmuId !=null and tmuId != ''">
+            and t.tmu_id= #{tmuId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="staffTel !=null and staffTel != ''">
+            and t.staff_tel= #{staffTel}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            and t.staff_name= #{staffName}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改客服人员信息 add by wuxw 2018-07-03 -->
+    <update id="updateTelMachineUserInfo" parameterType="Map">
+        update tel_machine_user t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="masterFlag !=null and masterFlag != ''">
+            , t.master_flag= #{masterFlag}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="staffTel !=null and staffTel != ''">
+            , t.staff_tel= #{staffTel}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            , t.staff_name= #{staffName}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            , t.staff_id= #{staffId}
+        </if>
+        where 1=1
+        <if test="tmuId !=null and tmuId != ''">
+            and t.tmu_id= #{tmuId}
+        </if>
+
+    </update>
+
+    <!-- 查询客服人员数量 add by wuxw 2018-07-03 -->
+    <select id="queryTelMachineUsersCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from tel_machine_user t
+        where 1 =1
+        <if test="masterFlag !=null and masterFlag != ''">
+            and t.master_flag= #{masterFlag}
+        </if>
+        <if test="tmuId !=null and tmuId != ''">
+            and t.tmu_id= #{tmuId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="staffTel !=null and staffTel != ''">
+            and t.staff_tel= #{staffTel}
+        </if>
+        <if test="staffName !=null and staffName != ''">
+            and t.staff_name= #{staffName}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+
+
+    </select>
+
+</mapper>

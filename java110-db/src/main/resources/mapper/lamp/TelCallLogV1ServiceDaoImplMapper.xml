@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="telCallLogV1ServiceDaoImpl">
+
+
+    <!-- 保存通话记录信息 add by wuxw 2018-07-03 -->
+    <insert id="saveTelCallLogInfo" parameterType="Map">
+        insert into tel_call_log(
+        person_name,talk_time,machine_id,ccid,voice_path,cl_id,tel,person_id,state,community_id,call_type
+        ) values (
+        #{personName},#{talkTime},#{machineId},#{ccid},#{voicePath},#{clId},#{tel},#{personId},#{state},#{communityId},#{callType}
+        )
+    </insert>
+
+
+    <!-- 查询通话记录信息 add by wuxw 2018-07-03 -->
+    <select id="getTelCallLogInfo" parameterType="Map" resultType="Map">
+        select t.person_name,t.person_name personName,t.talk_time,t.talk_time talkTime,t.machine_id,t.machine_id
+        machineId,t.ccid,t.voice_path,t.voice_path voicePath,t.cl_id,t.cl_id clId,t.tel,t.person_id,t.person_id
+        personId,t.status_cd,t.status_cd statusCd,t.state,t.community_id,t.community_id
+        communityId,t.call_type,t.call_type callType,t.create_time createTime
+        from tel_call_log t
+        where 1 =1
+        <if test="personName !=null and personName != ''">
+            and t.person_name= #{personName}
+        </if>
+        <if test="talkTime !=null and talkTime != ''">
+            and t.talk_time= #{talkTime}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="ccid !=null and ccid != ''">
+            and t.ccid= #{ccid}
+        </if>
+        <if test="voicePath !=null and voicePath != ''">
+            and t.voice_path= #{voicePath}
+        </if>
+        <if test="clId !=null and clId != ''">
+            and t.cl_id= #{clId}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="personId !=null and personId != ''">
+            and t.person_id= #{personId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="callType !=null and callType != ''">
+            and t.call_type= #{callType}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改通话记录信息 add by wuxw 2018-07-03 -->
+    <update id="updateTelCallLogInfo" parameterType="Map">
+        update tel_call_log t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="personName !=null and personName != ''">
+            , t.person_name= #{personName}
+        </if>
+        <if test="talkTime !=null and talkTime != ''">
+            , t.talk_time= #{talkTime}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="ccid !=null and ccid != ''">
+            , t.ccid= #{ccid}
+        </if>
+        <if test="voicePath !=null and voicePath != ''">
+            , t.voice_path= #{voicePath}
+        </if>
+        <if test="tel !=null and tel != ''">
+            , t.tel= #{tel}
+        </if>
+        <if test="personId !=null and personId != ''">
+            , t.person_id= #{personId}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="callType !=null and callType != ''">
+            , t.call_type= #{callType}
+        </if>
+        where 1=1
+        <if test="clId !=null and clId != ''">
+            and t.cl_id= #{clId}
+        </if>
+
+    </update>
+
+    <!-- 查询通话记录数量 add by wuxw 2018-07-03 -->
+    <select id="queryTelCallLogsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from tel_call_log t
+        where 1 =1
+        <if test="personName !=null and personName != ''">
+            and t.person_name= #{personName}
+        </if>
+        <if test="talkTime !=null and talkTime != ''">
+            and t.talk_time= #{talkTime}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="ccid !=null and ccid != ''">
+            and t.ccid= #{ccid}
+        </if>
+        <if test="voicePath !=null and voicePath != ''">
+            and t.voice_path= #{voicePath}
+        </if>
+        <if test="clId !=null and clId != ''">
+            and t.cl_id= #{clId}
+        </if>
+        <if test="tel !=null and tel != ''">
+            and t.tel= #{tel}
+        </if>
+        <if test="personId !=null and personId != ''">
+            and t.person_id= #{personId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="callType !=null and callType != ''">
+            and t.call_type= #{callType}
+        </if>
+
+
+    </select>
+
+</mapper>
