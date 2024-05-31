@@ -13,7 +13,7 @@ import java.util.Date;
  * @Version 1.0
  * add by wuxw 2019/4/24
  **/
-public class TelMachineUserDto extends PageDto implements Serializable {
+public class TelMachineUserDto extends TelMachineDto implements Serializable {
 
     private String masterFlag;
     private String tmuId;
