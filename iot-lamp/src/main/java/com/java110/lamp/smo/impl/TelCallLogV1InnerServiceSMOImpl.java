@@ -21,7 +21,7 @@ import com.java110.core.utils.BeanConvertUtil;
 import com.java110.lamp.dao.ITelCallLogV1ServiceDao;
 import com.java110.intf.lamp.ITelCallLogV1InnerServiceSMO;
 import com.java110.dto.tel.TelCallLogDto;
-import com.java110.po.telCallLog.TelCallLogPo;
+import com.java110.po.tel.TelCallLogPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

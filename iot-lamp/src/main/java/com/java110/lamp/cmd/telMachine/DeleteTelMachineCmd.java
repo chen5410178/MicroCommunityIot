@@ -26,10 +26,11 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.lamp.ITelMachineV1InnerServiceSMO;
-import com.java110.po.telMachine.TelMachinePo;
+import com.java110.po.tel.TelMachinePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * 类表述：删除
  * 服务编码：telMachine.deleteTelMachine
@@ -42,7 +43,7 @@ import org.slf4j.LoggerFactory;
  */
 @Java110Cmd(serviceCode = "telMachine.deleteTelMachine")
 public class DeleteTelMachineCmd extends Cmd {
-  private static Logger logger = LoggerFactory.getLogger(DeleteTelMachineCmd.class);
+    private static Logger logger = LoggerFactory.getLogger(DeleteTelMachineCmd.class);
 
     @Autowired
     private ITelMachineV1InnerServiceSMO telMachineV1InnerServiceSMOImpl;
@@ -50,7 +51,7 @@ public class DeleteTelMachineCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
-Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
+        Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
 
     }
 
@@ -58,7 +59,7 @@ Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-       TelMachinePo telMachinePo = BeanConvertUtil.covertBean(reqJson, TelMachinePo.class);
+        TelMachinePo telMachinePo = BeanConvertUtil.covertBean(reqJson, TelMachinePo.class);
         int flag = telMachineV1InnerServiceSMOImpl.deleteTelMachine(telMachinePo);
 
         if (flag < 1) {

@@ -26,7 +26,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.lamp.ITelSmsLogV1InnerServiceSMO;
-import com.java110.po.telSmsLog.TelSmsLogPo;
+import com.java110.po.tel.TelSmsLogPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

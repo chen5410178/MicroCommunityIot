@@ -8,17 +8,16 @@
     <!-- 保存通话记录信息 add by wuxw 2018-07-03 -->
     <insert id="saveTelSmsLogInfo" parameterType="Map">
         insert into tel_sms_log(
-        person_name,sl_id,talk_time,machine_id,sms_content,tel,person_id,state,community_id,call_type
+        person_name,sl_id,machine_id,sms_content,tel,person_id,state,community_id,call_type
         ) values (
-        #{personName},#{slId},#{talkTime},#{machineId},#{smsContent},#{tel},#{personId},#{state},#{communityId},#{callType}
+        #{personName},#{slId},#{machineId},#{smsContent},#{tel},#{personId},#{state},#{communityId},#{callType}
         )
     </insert>
 
 
     <!-- 查询通话记录信息 add by wuxw 2018-07-03 -->
     <select id="getTelSmsLogInfo" parameterType="Map" resultType="Map">
-        select t.person_name,t.person_name personName,t.sl_id,t.sl_id slId,t.talk_time,t.talk_time
-        talkTime,t.machine_id,t.machine_id machineId,t.sms_content,t.sms_content
+        select t.person_name,t.person_name personName,t.sl_id,t.sl_id slId,t.machine_id,t.machine_id machineId,t.sms_content,t.sms_content
         smsContent,t.tel,t.person_id,t.person_id personId,t.status_cd,t.status_cd
         statusCd,t.state,t.community_id,t.community_id communityId,t.call_type,t.call_type callType,t.create_time createTime
         from tel_sms_log t
@@ -29,9 +28,7 @@
         <if test="slId !=null and slId != ''">
             and t.sl_id= #{slId}
         </if>
-        <if test="talkTime !=null and talkTime != ''">
-            and t.talk_time= #{talkTime}
-        </if>
+
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}
         </if>
@@ -73,9 +70,7 @@
         <if test="personName !=null and personName != ''">
             , t.person_name= #{personName}
         </if>
-        <if test="talkTime !=null and talkTime != ''">
-            , t.talk_time= #{talkTime}
-        </if>
+
         <if test="machineId !=null and machineId != ''">
             , t.machine_id= #{machineId}
         </if>
@@ -115,9 +110,7 @@
         <if test="slId !=null and slId != ''">
             and t.sl_id= #{slId}
         </if>
-        <if test="talkTime !=null and talkTime != ''">
-            and t.talk_time= #{talkTime}
-        </if>
+
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}
         </if>

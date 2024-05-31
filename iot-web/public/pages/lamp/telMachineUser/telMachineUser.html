@@ -1,0 +1,83 @@
+<div>
+
+    <div class="row">
+        <div class="col-md-1 padding-r-0">
+            <div class=" border-radius ">
+                <div class="margin-xs-r  treeview ">
+                    <ul class="list-group text-center border-radius">
+                        <li class="list-group-item node-orgTree " v-for="(item,index) in telMachineUserInfo.machines"
+                            :key="index" @click="_swatchMachine(item)"
+                            :class="{'vc-node-selected':telMachineUserInfo.conditions.machineId == item.machineId}">
+                            {{item.machineName}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-11">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="话机客服" namespace="telMachineUser"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-primary btn-sm" v-if="telMachineUserInfo.conditions.machineId"
+                         @click="_openAddTelMachineUserModal()">
+                            <vc:i18n name="添加客服" namespace="telMachineUser"></vc:i18n>
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='编号' namespace='telMachineUser'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='设备ID' namespace='telMachineUser'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作人' namespace='telMachineUser'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='默认客服' namespace='telMachineUser'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="telMachineUser in telMachineUserInfo.telMachineUsers">
+                                <td class="text-center">{{telMachineUser.tmuId}}</td>
+                                <td class="text-center">{{telMachineUser.machineName}}</td>
+                                <td class="text-center">{{telMachineUser.staffName}}</td>
+                                <td class="text-center">{{telMachineUser.masterFlag == 'Y'?'是':'否'}}</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs"
+                                            @click="_openDeleteTelMachineUserModel(telMachineUser)">
+                                            <vc:i18n name='删除'></vc:i18n>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <vc:create path="lamp/addTelMachineUser"></vc:create>
+
+    <vc:create path="lamp/deleteTelMachineUser"></vc:create>
+
+</div>

@@ -27,7 +27,7 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.lamp.ITelCallLogV1InnerServiceSMO;
-import com.java110.po.telCallLog.TelCallLogPo;
+import com.java110.po.tel.TelCallLogPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

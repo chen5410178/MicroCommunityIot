@@ -17,7 +17,7 @@ package com.java110.intf.lamp;
 
 import com.java110.dto.tel.TelCallLogDto;
 import com.java110.intf.FeignConfiguration;
-import com.java110.po.telCallLog.TelCallLogPo;
+import com.java110.po.tel.TelCallLogPo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

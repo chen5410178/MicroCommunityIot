@@ -13,39 +13,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.po.telMachineUser;
+package com.java110.po.tel;
 
 import java.io.Serializable;
-import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
- * add by 吴学文 at 2024-05-31 21:20:46 mail: 928255095@qq.com
+ * add by 吴学文 at 2024-05-31 21:12:52 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
  * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
  */
-public class TelMachineUserPo implements Serializable {
+public class TelMachinePo implements Serializable {
 
-    private String masterFlag;
-private String tmuId;
+    private String heartbeatTime;
+private String successPrompt;
+private String implBean;
 private String machineId;
-private String staffTel;
-private String staffName;
+private String machineCode;
+private String machinePort;
+private String failPrompt;
 private String statusCd = "0";
 private String communityId;
-private String staffId;
-public String getMasterFlag() {
-        return masterFlag;
+private String machineName;
+private String machineIp;
+public String getHeartbeatTime() {
+        return heartbeatTime;
     }
-public void setMasterFlag(String masterFlag) {
-        this.masterFlag = masterFlag;
+public void setHeartbeatTime(String heartbeatTime) {
+        this.heartbeatTime = heartbeatTime;
     }
-public String getTmuId() {
-        return tmuId;
+public String getSuccessPrompt() {
+        return successPrompt;
     }
-public void setTmuId(String tmuId) {
-        this.tmuId = tmuId;
+public void setSuccessPrompt(String successPrompt) {
+        this.successPrompt = successPrompt;
+    }
+public String getImplBean() {
+        return implBean;
+    }
+public void setImplBean(String implBean) {
+        this.implBean = implBean;
     }
 public String getMachineId() {
         return machineId;
@@ -53,17 +62,23 @@ public String getMachineId() {
 public void setMachineId(String machineId) {
         this.machineId = machineId;
     }
-public String getStaffTel() {
-        return staffTel;
+public String getMachineCode() {
+        return machineCode;
     }
-public void setStaffTel(String staffTel) {
-        this.staffTel = staffTel;
+public void setMachineCode(String machineCode) {
+        this.machineCode = machineCode;
     }
-public String getStaffName() {
-        return staffName;
+public String getMachinePort() {
+        return machinePort;
     }
-public void setStaffName(String staffName) {
-        this.staffName = staffName;
+public void setMachinePort(String machinePort) {
+        this.machinePort = machinePort;
+    }
+public String getFailPrompt() {
+        return failPrompt;
+    }
+public void setFailPrompt(String failPrompt) {
+        this.failPrompt = failPrompt;
     }
 public String getStatusCd() {
         return statusCd;
@@ -77,11 +92,17 @@ public String getCommunityId() {
 public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-public String getStaffId() {
-        return staffId;
+public String getMachineName() {
+        return machineName;
     }
-public void setStaffId(String staffId) {
-        this.staffId = staffId;
+public void setMachineName(String machineName) {
+        this.machineName = machineName;
+    }
+public String getMachineIp() {
+        return machineIp;
+    }
+public void setMachineIp(String machineIp) {
+        this.machineIp = machineIp;
     }
 
 

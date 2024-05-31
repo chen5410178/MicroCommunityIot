@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.java110.po.telSmsLog;
+package com.java110.po.tel;
 
 import java.io.Serializable;
-import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2024-05-31 21:19:29 mail: 928255095@qq.com
@@ -28,83 +28,95 @@ import java.util.Date;
 public class TelSmsLogPo implements Serializable {
 
     private String personName;
-private String slId;
-private String talkTime;
-private String machineId;
-private String smsContent;
-private String tel;
-private String personId;
-private String statusCd = "0";
-private String state;
-private String communityId;
-private String callType;
-public String getPersonName() {
+    private String slId;
+    private String machineId;
+    private String smsContent;
+    private String tel;
+    private String personId;
+    private String statusCd = "0";
+    private String state;
+    private String communityId;
+    private String callType;
+
+    public String getPersonName() {
         return personName;
     }
-public void setPersonName(String personName) {
+
+    public void setPersonName(String personName) {
         this.personName = personName;
     }
-public String getSlId() {
+
+    public String getSlId() {
         return slId;
     }
-public void setSlId(String slId) {
+
+    public void setSlId(String slId) {
         this.slId = slId;
     }
-public String getTalkTime() {
-        return talkTime;
-    }
-public void setTalkTime(String talkTime) {
-        this.talkTime = talkTime;
-    }
-public String getMachineId() {
+
+    public String getMachineId() {
         return machineId;
     }
-public void setMachineId(String machineId) {
+
+    public void setMachineId(String machineId) {
         this.machineId = machineId;
     }
-public String getSmsContent() {
+
+    public String getSmsContent() {
         return smsContent;
     }
-public void setSmsContent(String smsContent) {
+
+    public void setSmsContent(String smsContent) {
         this.smsContent = smsContent;
     }
-public String getTel() {
+
+    public String getTel() {
         return tel;
     }
-public void setTel(String tel) {
+
+    public void setTel(String tel) {
         this.tel = tel;
     }
-public String getPersonId() {
+
+    public String getPersonId() {
         return personId;
     }
-public void setPersonId(String personId) {
+
+    public void setPersonId(String personId) {
         this.personId = personId;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getState() {
+
+    public String getState() {
         return state;
     }
-public void setState(String state) {
+
+    public void setState(String state) {
         this.state = state;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-public String getCallType() {
+
+    public String getCallType() {
         return callType;
     }
-public void setCallType(String callType) {
+
+    public void setCallType(String callType) {
         this.callType = callType;
     }
-
 
 
 }

@@ -21,7 +21,7 @@ import com.java110.core.utils.BeanConvertUtil;
 import com.java110.lamp.dao.ITelMachineV1ServiceDao;
 import com.java110.intf.lamp.ITelMachineV1InnerServiceSMO;
 import com.java110.dto.tel.TelMachineDto;
-import com.java110.po.telMachine.TelMachinePo;
+import com.java110.po.tel.TelMachinePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

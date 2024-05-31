@@ -26,8 +26,9 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.DateUtil;
 import com.java110.intf.lamp.ITelMachineV1InnerServiceSMO;
-import com.java110.po.telMachine.TelMachinePo;
+import com.java110.po.tel.TelMachinePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,11 +55,9 @@ public class SaveTelMachineCmd extends Cmd {
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
-        Assert.hasKeyAndValue(reqJson, "machineId", "请求报文中未包含machineId");
         Assert.hasKeyAndValue(reqJson, "machineCode", "请求报文中未包含machineCode");
         Assert.hasKeyAndValue(reqJson, "machineName", "请求报文中未包含machineName");
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
-        Assert.hasKeyAndValue(reqJson, "heartbeatTime", "请求报文中未包含heartbeatTime");
         Assert.hasKeyAndValue(reqJson, "implBean", "请求报文中未包含implBean");
 
     }
@@ -69,6 +68,7 @@ public class SaveTelMachineCmd extends Cmd {
 
         TelMachinePo telMachinePo = BeanConvertUtil.covertBean(reqJson, TelMachinePo.class);
         telMachinePo.setMachineId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        telMachinePo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         int flag = telMachineV1InnerServiceSMOImpl.saveTelMachine(telMachinePo);
 
         if (flag < 1) {

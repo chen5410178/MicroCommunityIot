@@ -16,12 +16,14 @@ import java.util.Date;
 public class TelMachineUserDto extends PageDto implements Serializable {
 
     private String masterFlag;
-private String tmuId;
-private String machineId;
-private String staffTel;
-private String staffName;
-private String communityId;
-private String staffId;
+    private String tmuId;
+    private String machineId;
+    private String machineCode;
+    private String machineName;
+    private String staffTel;
+    private String staffName;
+    private String communityId;
+    private String staffId;
 
 
     private Date createTime;
@@ -32,43 +34,56 @@ private String staffId;
     public String getMasterFlag() {
         return masterFlag;
     }
-public void setMasterFlag(String masterFlag) {
+
+    public void setMasterFlag(String masterFlag) {
         this.masterFlag = masterFlag;
     }
-public String getTmuId() {
+
+    public String getTmuId() {
         return tmuId;
     }
-public void setTmuId(String tmuId) {
+
+    public void setTmuId(String tmuId) {
         this.tmuId = tmuId;
     }
-public String getMachineId() {
+
+    public String getMachineId() {
         return machineId;
     }
-public void setMachineId(String machineId) {
+
+    public void setMachineId(String machineId) {
         this.machineId = machineId;
     }
-public String getStaffTel() {
+
+    public String getStaffTel() {
         return staffTel;
     }
-public void setStaffTel(String staffTel) {
+
+    public void setStaffTel(String staffTel) {
         this.staffTel = staffTel;
     }
-public String getStaffName() {
+
+    public String getStaffName() {
         return staffName;
     }
-public void setStaffName(String staffName) {
+
+    public void setStaffName(String staffName) {
         this.staffName = staffName;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-public String getStaffId() {
+
+    public String getStaffId() {
         return staffId;
     }
-public void setStaffId(String staffId) {
+
+    public void setStaffId(String staffId) {
         this.staffId = staffId;
     }
 
@@ -87,5 +102,21 @@ public void setStaffId(String staffId) {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getMachineCode() {
+        return machineCode;
+    }
+
+    public void setMachineCode(String machineCode) {
+        this.machineCode = machineCode;
+    }
+
+    public String getMachineName() {
+        return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
     }
 }

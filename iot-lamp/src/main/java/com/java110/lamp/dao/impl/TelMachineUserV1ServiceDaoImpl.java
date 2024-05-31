@@ -68,9 +68,9 @@ public class TelMachineUserV1ServiceDaoImpl extends BaseServiceDao implements IT
     public List<Map> getTelMachineUserInfo(Map info) throws DAOException {
         logger.debug("查询 getTelMachineUserInfo 入参 info : {}",info);
 
-        List<Map> businessTelMachineUserInfos = sqlSessionTemplate.selectList("telMachineUserV1ServiceDaoImpl.getTelMachineUserInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("telMachineUserV1ServiceDaoImpl.getTelMachineUserInfo",info);
 
-        return businessTelMachineUserInfos;
+        return infos;
     }
 
 
@@ -97,12 +97,12 @@ public class TelMachineUserV1ServiceDaoImpl extends BaseServiceDao implements IT
     public int queryTelMachineUsersCount(Map info) {
         logger.debug("查询 queryTelMachineUsersCount 入参 info : {}",info);
 
-        List<Map> businessTelMachineUserInfos = sqlSessionTemplate.selectList("telMachineUserV1ServiceDaoImpl.queryTelMachineUsersCount", info);
-        if (businessTelMachineUserInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("telMachineUserV1ServiceDaoImpl.queryTelMachineUsersCount", info);
+        if (infos.size() < 1) {
             return 0;
         }
 
-        return Integer.parseInt(businessTelMachineUserInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
 

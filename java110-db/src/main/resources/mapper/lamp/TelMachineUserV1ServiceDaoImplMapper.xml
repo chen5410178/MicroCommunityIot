@@ -19,8 +19,10 @@
     <select id="getTelMachineUserInfo" parameterType="Map" resultType="Map">
         select t.master_flag,t.master_flag masterFlag,t.tmu_id,t.tmu_id tmuId,t.machine_id,t.machine_id
         machineId,t.staff_tel,t.staff_tel staffTel,t.staff_name,t.staff_name staffName,t.status_cd,t.status_cd
-        statusCd,t.community_id,t.community_id communityId,t.staff_id,t.staff_id staffId,t.create_time createTime
+        statusCd,t.community_id,t.community_id communityId,t.staff_id,t.staff_id staffId,t.create_time createTime,
+        tm.machine_code machineCode,tm.machine_name machineName
         from tel_machine_user t
+        left join tel_machine tm on t.machine_id = tm.machine_id and tm.status_cd = '0'
         where 1 =1
         <if test="masterFlag !=null and masterFlag != ''">
             and t.master_flag= #{masterFlag}

@@ -17,7 +17,6 @@ public class TelSmsLogDto extends PageDto implements Serializable {
 
     private String personName;
     private String slId;
-    private String talkTime;
     private String machineId;
     private String smsContent;
     private String tel;
@@ -48,13 +47,6 @@ public class TelSmsLogDto extends PageDto implements Serializable {
         this.slId = slId;
     }
 
-    public String getTalkTime() {
-        return talkTime;
-    }
-
-    public void setTalkTime(String talkTime) {
-        this.talkTime = talkTime;
-    }
 
     public String getMachineId() {
         return machineId;

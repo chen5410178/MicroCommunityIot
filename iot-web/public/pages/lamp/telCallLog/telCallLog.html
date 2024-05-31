@@ -1,0 +1,75 @@
+<div>
+
+    <div class="row">
+        <div class="col-md-1 padding-r-0">
+            <div class=" border-radius ">
+                <div class="margin-xs-r  treeview ">
+                    <ul class="list-group text-center border-radius">
+                        <li class="list-group-item node-orgTree " v-for="(item,index) in telCallLogInfo.machines"
+                            :key="index" @click="_swatchMachine(item)"
+                            :class="{'vc-node-selected':telCallLogInfo.conditions.machineId == item.machineId}">
+                            {{item.machineName}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-11">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="通话记录" namespace="telCallLog"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                       
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='呼叫类型' namespace='telCallLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='状态' namespace='telCallLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='电话号' namespace='telCallLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='通话时间' namespace='telCallLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='CCID' namespace='telCallLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作人' namespace='telCallLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='telCallLog'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="telCallLog in telCallLogInfo.telCallLogs">
+                                <td class="text-center">{{telCallLog.callType == 'CALL_IN'?'呼入':'呼出'}}</td>
+                                <td class="text-center">{{telCallLog.state}}</td>
+                                <td class="text-center">{{telCallLog.tel}}</td>
+                                <td class="text-center">{{telCallLog.talkTime}}</td>
+                                <td class="text-center">{{telCallLog.ccid}}</td>
+                                <td class="text-center">{{telCallLog.voicePath}}</td>
+                                <td class="text-center">{{telCallLog.personName}}</td>
+                                <td class="text-center">{{telCallLog.createTime}}</td>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

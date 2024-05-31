@@ -26,11 +26,16 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.tel.TelMachineUserDto;
+import com.java110.dto.user.UserDto;
 import com.java110.intf.lamp.ITelMachineUserV1InnerServiceSMO;
-import com.java110.po.telMachineUser.TelMachineUserPo;
+import com.java110.intf.user.IUserV1InnerServiceSMO;
+import com.java110.po.tel.TelMachineUserPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -52,23 +57,55 @@ public class SaveTelMachineUserCmd extends Cmd {
     @Autowired
     private ITelMachineUserV1InnerServiceSMO telMachineUserV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineId", "请求报文中未包含machineId");
-Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
-Assert.hasKeyAndValue(reqJson, "staffId", "请求报文中未包含staffId");
-Assert.hasKeyAndValue(reqJson, "staffName", "请求报文中未包含staffName");
-Assert.hasKeyAndValue(reqJson, "staffTel", "请求报文中未包含staffTel");
-Assert.hasKeyAndValue(reqJson, "masterFlag", "请求报文中未包含masterFlag");
+        Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
+        Assert.hasKeyAndValue(reqJson, "staffId", "请求报文中未包含staffId");
+        Assert.hasKeyAndValue(reqJson, "masterFlag", "请求报文中未包含masterFlag");
 
+        TelMachineUserDto telMachineUserDto = new TelMachineUserDto();
+        telMachineUserDto.setMachineId(reqJson.getString("machineId"));
+        telMachineUserDto.setCommunityId(reqJson.getString("communityId"));
+        telMachineUserDto.setMasterFlag("Y");
+        int count = telMachineUserV1InnerServiceSMOImpl.queryTelMachineUsersCount(telMachineUserDto);
+        if ("Y".equals(reqJson.getString("masterFlag"))) {
+            if (count > 0) {
+                throw new CmdException("已经存在默认客服");
+            }
+        } else {
+            if (count < 1) {
+                throw new CmdException("不存在默认客服");
+            }
+        }
+        telMachineUserDto = new TelMachineUserDto();
+        telMachineUserDto.setMachineId(reqJson.getString("machineId"));
+        telMachineUserDto.setCommunityId(reqJson.getString("communityId"));
+        telMachineUserDto.setStaffId(reqJson.getString("staffId"));
+        count = telMachineUserV1InnerServiceSMOImpl.queryTelMachineUsersCount(telMachineUserDto);
+        if (count > 0) {
+            throw new CmdException("已经存在该客服");
+        }
     }
 
     @Override
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-       TelMachineUserPo telMachineUserPo = BeanConvertUtil.covertBean(reqJson, TelMachineUserPo.class);
+        String staffId = reqJson.getString("staffId");
+        UserDto userDto = new UserDto();
+        userDto.setUserId(staffId);
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+
+        Assert.listOnlyOne(userDtos, "用户未登录");
+
+        TelMachineUserPo telMachineUserPo = BeanConvertUtil.covertBean(reqJson, TelMachineUserPo.class);
         telMachineUserPo.setTmuId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        telMachineUserPo.setStaffName(userDtos.get(0).getName());
+        telMachineUserPo.setStaffTel(userDtos.get(0).getTel());
         int flag = telMachineUserV1InnerServiceSMOImpl.saveTelMachineUser(telMachineUserPo);
 
         if (flag < 1) {
