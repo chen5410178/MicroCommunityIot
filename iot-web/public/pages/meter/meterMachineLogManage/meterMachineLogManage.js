@@ -14,7 +14,7 @@
                 logId:'',
                 conditions:{
                     personName:'',
-
+                    communityId: vc.getCurrentCommunity().communityId
                 }
             }
         },
@@ -22,7 +22,7 @@
             vc.component._listMeterMachineLogs(DEFAULT_PAGE, DEFAULT_ROWS);
         },
         _initEvent:function(){
-            
+
             vc.on('meterMachineLogManage','listMeterMachineLog',function(_param){
                   vc.component._listMeterMachineLogs(DEFAULT_PAGE, DEFAULT_ROWS);
             });
@@ -40,7 +40,7 @@
                };
 
                //发送get请求
-               vc.http.apiGet('meterMachineLog.listMeterMachineLogs',
+               vc.http.apiGet('meterMachineLog.listMeterMachineLog',
                              param,
                              function(json,res){
                                 var _meterMachineLogManageInfo=JSON.parse(json);
@@ -55,6 +55,9 @@
                                 console.log('请求失败处理');
                              }
                            );
+            },
+            _openViewMeterMachineLogModal: function(_meterMachineLog) {
+                vc.emit('showMeterMachineLog', 'openShowMeterMachineLogModal', _meterMachineLog);
             },
             _openAddMeterMachineLogModal:function(){
                 vc.emit('addMeterMachineLog','openAddMeterMachineLogModal',{});

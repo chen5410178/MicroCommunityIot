@@ -505,21 +505,24 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         }
 
         req.add(item);
-        String request_content = JSON.toJSONString(req);
-        String resStr = TdDianBiaoUtil.requestAsync(ELE_CONTROL_URL, request_content, UrlCache.getOwnerUrl() + ELE_CONTROL_NOTIFY_URL);
-
-        JSONObject paramOut = JSONObject.parseObject(resStr);
-
-        if (!"SUCCESS".equals(paramOut.getString("status"))) {
-            return new ResultVo(ResultVo.CODE_ERROR, paramOut.getString("error_msg"));
-        }
-        //系统记录开合闸记录--请求成功
         MeterMachineLogPo meterMachineLogPo = new MeterMachineLogPo();
         meterMachineLogPo.setLogId(detailId);
         meterMachineLogPo.setMachineId(meterMachineDto.getMachineId());
         meterMachineLogPo.setCommunityId(meterMachineDto.getCommunityId());
         meterMachineLogPo.setLogAction(controlType);
+
+        String request_content = JSON.toJSONString(req);
+        String resStr = TdDianBiaoUtil.requestAsync(ELE_CONTROL_URL, request_content, UrlCache.getOwnerUrl() + ELE_CONTROL_NOTIFY_URL);
         meterMachineLogPo.setReqParam(request_content);
+        JSONObject paramOut = JSONObject.parseObject(resStr);
+        meterMachineLogPo.setResParam(paramOut.toJSONString());
+        if (!"SUCCESS".equals(paramOut.getString("status"))) {
+            //系统记录开合闸记录--请求失败
+            meterMachineLogPo.setState("10003");
+            meterMachineLogV1InnerServiceSMOImpl.saveMeterMachineLog(meterMachineLogPo);
+            return new ResultVo(ResultVo.CODE_ERROR, paramOut.getString("error_msg"));
+        }
+        //系统记录开合闸记录--请求成功
         meterMachineLogPo.setState("10001");
         meterMachineLogV1InnerServiceSMOImpl.saveMeterMachineLog(meterMachineLogPo);
         JSONArray responseContent = paramOut.getJSONArray("response_content");
