@@ -16,8 +16,15 @@
                                        v-model="meterMachineLogManageInfo.conditions.personName" class=" form-control">
                             </div>
                         </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-primary btn-sm"
+                                    v-on:click="_queryMeterMachineLogMethod()">
+                                <i class="glyphicon glyphicon-search"></i> <span>
+                                    <vc:i18n name="查询"></vc:i18n>
+                                </span>
+                            </button>
+                        </div>
                     </div>
-
 
                 </div>
             </div>
@@ -29,11 +36,7 @@
                 <div class="ibox-title">
                     <h5><span><vc:i18n name="放行申请信息" namespace="meterMachineLogManage"></vc:i18n></span></h5>
                     <div class="ibox-tools" style="top:10px;">
-                        <button type="button" class="btn btn-primary btn-sm"
-                                v-on:click="_openAddMeterMachineLogModal()">
-                            <i class="glyphicon glyphicon-plus"></i>
-                            <span><vc:i18n name="添加放行申请" namespace="meterMachineLogManage"></vc:i18n></span>
-                        </button>
+
                     </div>
                 </div>
                 <div class="ibox-content">
@@ -46,31 +49,39 @@
                             <th class="text-center"><span><vc:i18n name='日志ID'
                                                                    namespace='meterMachineLogManage'></vc:i18n></span>
                             </th>
+                            <th class="text-center"><span><vc:i18n name='设备ID'
+                                                                   namespace='meterMachineLogManage'></vc:i18n></span>
+                            </th>
+                            <th class="text-center"><span><vc:i18n name='动作'
+                                                                   namespace='meterMachineLogManage'></vc:i18n></span>
+                            </th>
                             <th class="text-center"><span><vc:i18n name='用户名称'
                                                                    namespace='meterMachineLogManage'></vc:i18n></span>
                             </th>
+                            <th class="text-center"><span><vc:i18n name='状态'
+                                                                          namespace='meterMachineLogManage'></vc:i18n></span>
+                        </th>
+                            <th class="text-center"><span><vc:i18n name='创建时间'
+                                                                   namespace='meterMachineLogManage'></vc:i18n></span>
+                            </th>
                             <th class="text-center"><span><vc:i18n name='操作'></vc:i18n></span></th>
-
-
                         </tr>
                         </thead>
                         <tbody>
                         <tr v-for="meterMachineLog in meterMachineLogManageInfo.meterMachineLogs">
-                            <td class="text-center">{{meterMachineLog.applyId}}</td>
+                            <td class="text-center">{{meterMachineLog.logId}}</td>
+                            <td class="text-center">{{meterMachineLog.machineId}}</td>
+                            <td class="text-center">{{meterMachineLog.logAction =='1001'?'开闸':'关闸'}}</td>
                             <td class="text-center">{{meterMachineLog.personName}}</td>
+                            <td class="text-center">{{meterMachineLog.state =='10001'?'请求成功':'返回异常'}}</td>
+                            <td class="text-center">{{meterMachineLog.createTime}}</td>
                             <td class="text-center">
                                 <div class="btn-group">
                                     <button class="btn-white btn btn-xs"
-                                            v-on:click="_openEditMeterMachineLogModel(meterMachineLog)"><span><vc:i18n
-                                            name='修改'></vc:i18n></span></button>
-                                </div>
-                                <div class="btn-group">
-                                    <button class="btn-white btn btn-xs"
-                                            v-on:click="_openDeleteMeterMachineLogModel(meterMachineLog)"><span><vc:i18n
-                                            name='删除'></vc:i18n></span></button>
+                                            v-on:click="_openViewMeterMachineLogModal(meterMachineLog)"><span><vc:i18n
+                                            name='报文'></vc:i18n></span></button>
                                 </div>
                             </td>
-
                         </tr>
                         </tbody>
                         <tfoot>
@@ -88,12 +99,5 @@
         </div>
     </div>
 
-
-    <vc:create path="meterMachineLogManage/addMeterMachineLog"
-               callBackListener=""
-               callBackFunction=""
-    ></vc:create>
-    <vc:create path="meterMachineLogManage/editMeterMachineLog"></vc:create>
-    <vc:create path="meterMachineLogManage/deleteMeterMachineLog"></vc:create>
-
+    <vc:create path="meter/showMeterMachineLog"></vc:create>
 </div>
