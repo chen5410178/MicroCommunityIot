@@ -1,6 +1,7 @@
 package com.java110.openapi.bmo.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cache.CommonCache;
 import com.java110.core.context.ICmdDataFlowContext;
@@ -9,12 +10,15 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.DistributedLock;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
+import com.java110.dto.tel.TelMachineDto;
 import com.java110.dto.user.UserDto;
 import com.java110.intf.lamp.ITelCallLogV1InnerServiceSMO;
+import com.java110.intf.lamp.ITelMachineV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.openapi.bmo.IIotCommonApiBmo;
 import com.java110.po.tel.TelCallLogPo;
 import org.apache.catalina.User;
+import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,9 @@ public class TelMachineMsgBmoImpl implements IIotCommonApiBmo {
 
     @Autowired
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
+    @Autowired
+    private ITelMachineV1InnerServiceSMO telMachineV1InnerServiceSMOImpl;
 
     @Override
     public void validate(ICmdDataFlowContext context, JSONObject reqJson) {
@@ -104,8 +111,8 @@ public class TelMachineMsgBmoImpl implements IIotCommonApiBmo {
         UserDto userDto = new UserDto();
         userDto.setUserId(reqJson.getString("propertyUserId"));
         List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
-        if(ListUtil.isNull(userDtos)){
-            return ;
+        if (ListUtil.isNull(userDtos)) {
+            return;
         }
 
         TelCallLogPo telCallLogPo = new TelCallLogPo();
@@ -123,7 +130,31 @@ public class TelMachineMsgBmoImpl implements IIotCommonApiBmo {
 
         telCallLogV1InnerServiceSMOImpl.saveTelCallLog(telCallLogPo);
 
+        TelMachineDto telMachineDto = new TelMachineDto();
+        telMachineDto.setMachineId(telCallLogPo.getMachineId());
+        telMachineDto.setCommunityId(telCallLogPo.getCommunityId());
+        List<TelMachineDto> telMachineDtos = telMachineV1InnerServiceSMOImpl.queryTelMachines(telMachineDto);
 
+        if (ListUtil.isNull(telMachineDtos)) {
+            return;
+        }
+
+        String msgText = telMachineDtos.get(0).getFailPrompt();
+        if ("Succeeded".equals(state)) {
+            msgText = telMachineDtos.get(0).getSuccessPrompt();
+        }
+
+        if (StringUtil.isEmpty(msgText)) {
+            return;
+        }
+
+
+        JSONObject data = new JSONObject();
+        data.put("action", "sms");
+        data.put("tel", tel);
+        data.put("msgText", msgText);
+
+        context.setResponseEntity(ResultVo.createResponseEntity(data));
 
     }
 }

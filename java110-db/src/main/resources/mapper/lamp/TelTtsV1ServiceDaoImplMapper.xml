@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="telTtsV1ServiceDaoImpl">
+
+
+    <!-- 保存客服人员信息 add by wuxw 2018-07-03 -->
+    <insert id="saveTelTtsInfo" parameterType="Map">
+        insert into tel_tts(
+        tts_name,tts_path,remark,tts_type,community_id,tt_id
+        ) values (
+        #{ttsName},#{ttsPath},#{remark},#{ttsType},#{communityId},#{ttId}
+        )
+    </insert>
+
+
+    <!-- 查询客服人员信息 add by wuxw 2018-07-03 -->
+    <select id="getTelTtsInfo" parameterType="Map" resultType="Map">
+        select t.tts_name,t.tts_name ttsName,t.tts_path,t.tts_path ttsPath,t.status_cd,t.status_cd
+        statusCd,t.remark,t.tts_type,t.tts_type ttsType,t.community_id,t.community_id communityId,t.tt_id,t.tt_id ttId,
+        t.create_time createTime
+        from tel_tts t
+        where 1 =1
+        <if test="ttsName !=null and ttsName != ''">
+            and t.tts_name= #{ttsName}
+        </if>
+        <if test="ttsPath !=null and ttsPath != ''">
+            and t.tts_path= #{ttsPath}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="ttsType !=null and ttsType != ''">
+            and t.tts_type= #{ttsType}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="ttId !=null and ttId != ''">
+            and t.tt_id= #{ttId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改客服人员信息 add by wuxw 2018-07-03 -->
+    <update id="updateTelTtsInfo" parameterType="Map">
+        update tel_tts t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="ttsName !=null and ttsName != ''">
+            , t.tts_name= #{ttsName}
+        </if>
+        <if test="ttsPath !=null and ttsPath != ''">
+            , t.tts_path= #{ttsPath}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="ttsType !=null and ttsType != ''">
+            , t.tts_type= #{ttsType}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="ttId !=null and ttId != ''">
+            and t.tt_id= #{ttId}
+        </if>
+
+    </update>
+
+    <!-- 查询客服人员数量 add by wuxw 2018-07-03 -->
+    <select id="queryTelTtssCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from tel_tts t
+        where 1 =1
+        <if test="ttsName !=null and ttsName != ''">
+            and t.tts_name= #{ttsName}
+        </if>
+        <if test="ttsPath !=null and ttsPath != ''">
+            and t.tts_path= #{ttsPath}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="ttsType !=null and ttsType != ''">
+            and t.tts_type= #{ttsType}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="ttId !=null and ttId != ''">
+            and t.tt_id= #{ttId}
+        </if>
+
+
+    </select>
+
+</mapper>
