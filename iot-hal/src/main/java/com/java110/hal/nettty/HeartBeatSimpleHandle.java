@@ -107,8 +107,8 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
             bytes = DataHeader.clearWorkLicense(bytes);
             machineCode = DataHeader.getWorkLicenseMachineCode(bytes);
             machineType = MACHINE_TYPE_WORK_LICENSE;
-
         }
+
 
         if (StringUtil.isEmpty(machineCode)) {
             return;

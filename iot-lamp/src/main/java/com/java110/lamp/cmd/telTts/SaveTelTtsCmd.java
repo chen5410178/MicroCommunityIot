@@ -55,9 +55,9 @@ public class SaveTelTtsCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "ttsType", "请求报文中未包含ttsType");
-Assert.hasKeyAndValue(reqJson, "ttsName", "请求报文中未包含ttsName");
-Assert.hasKeyAndValue(reqJson, "ttsPath", "请求报文中未包含ttsPath");
-Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
+        Assert.hasKeyAndValue(reqJson, "ttsName", "请求报文中未包含ttsName");
+        Assert.hasKeyAndValue(reqJson, "ttsPath", "请求报文中未包含ttsPath");
+        Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
 
     }
 
@@ -65,7 +65,7 @@ Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含community
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-       TelTtsPo telTtsPo = BeanConvertUtil.covertBean(reqJson, TelTtsPo.class);
+        TelTtsPo telTtsPo = BeanConvertUtil.covertBean(reqJson, TelTtsPo.class);
         telTtsPo.setTtId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         int flag = telTtsV1InnerServiceSMOImpl.saveTelTts(telTtsPo);
 

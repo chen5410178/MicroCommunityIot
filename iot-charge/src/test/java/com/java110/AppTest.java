@@ -37,24 +37,16 @@ public class AppTest
      * Rigourous Test :-)
      */
     public void testApp(){
-        String dataHex = "0500484331313230323331313230353832313030303500000000655b08ca";
+        String dataHex = "3839383630343938313032324330343038353530";
         // todo 结束原因
-        int reason = Integer.parseInt(dataHex.substring(0, 2), 16);
-
-        // todo 插座
-        int port = Integer.parseInt(dataHex.substring(2, 4), 16) + 1;
-
-        //todo 订单号
-        String orderHex = dataHex.substring(4, 44);
-
-        String orderNum = null;
+        String bb = null;
         try {
-            orderNum = new String(BytesUtil.hexStringToByteArray(orderHex), "UTF-8");
+            bb = new String(BytesUtil.hexStringToByteArray(dataHex), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-        //todo 结束时功率
-        int w = Integer.parseInt(dataHex.substring(48, 52), 16);
+
+        System.out.println(bb);
     }
 
     public void testByte(){
