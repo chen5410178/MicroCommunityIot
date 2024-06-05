@@ -201,11 +201,11 @@
 				} else if (obj.visitCase == "") {
 					msg = "请填写拜访事由";
 				}else{
-					let visitTime = Date.parse(new Date(obj.visitTime.replace(/-/g, '/'))),
-					now = Date.parse(new Date());
-					if(now - visitTime > 0){
-						msg = "开始时间有误,小于当前时间";
-					}
+					// let visitTime = Date.parse(new Date(obj.visitTime.replace(/-/g, '/'))),
+					// now = Date.parse(new Date());
+					// if(now - visitTime > 0){
+					// 	msg = "开始时间有误,小于当前时间";
+					// }
 				}
 				
 				if (msg != "") {
@@ -257,7 +257,7 @@
 				let _that = this;
 				listVisitCarNum({
 					machineId:this.machineId
-				}).then((data)=>{
+				}).then((_data)=>{
 					_that.carNum = _data.data;
 				})
 			}

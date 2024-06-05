@@ -90,7 +90,11 @@
                         <td class="text-center">{{parkingBox.boxId}}</td>
                         <td class="text-center">{{parkingBox.boxName}}</td>
                         <td class="text-center">{{parkingBox.paNum}}</td>
-                        <td class="text-center">{{parkingBox.tempCarIn== 'Y'?'是':'否'}}</td>
+                        <td class="text-center" v-if="parkingBox.tempCarIn== 'Y'">是</td>
+                        <td class="text-center" v-else-if="parkingBox.tempCarIn== 'N'">否</td>
+                        <td class="text-center" v-else-if="parkingBox.tempCarIn== 'V'">需访客登记</td>
+                        <td class="text-center" v-else>未知</td>
+
                         <td class="text-center">{{parkingBox.tempAuth== 'Y'?'是':'否'}}</td>
                         <td class="text-center">{{parkingBox.fee == 'Y'?'是':'否'}}</td>
                         <td class="text-center">{{parkingBox.blueCarIn== 'Y'?'可进场':'不可进场'}}</td>

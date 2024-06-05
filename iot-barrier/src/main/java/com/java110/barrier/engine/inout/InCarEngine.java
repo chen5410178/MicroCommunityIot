@@ -181,7 +181,7 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
         }
 
         // todo 车辆访客记录校验
-        if ("V".equals(parkingAreaDtos.get(0).getTempAuth()) && noVisitInfo(carNum,machineDto)) {
+        if ("V".equals(parkingAreaDtos.get(0).getTempCarIn()) && noVisitInfo(carNum,machineDto)) {
             inOutCarTextDto = inOutCarTextEngine.visitCarAuthIn(carNum, machineDto, getDefaultPaId(parkingAreaDtos));
             // todo 暂存临时车数据，通知界面临时车需要登记访客信息
             saveVisitCarAuthCarInout(carNum, machineDto, inOutCarTextDto, type, parkingAreaDtos);
