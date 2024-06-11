@@ -23,6 +23,8 @@ public class BarrierGateControlDto implements Serializable {
     private String carNum;
     private String inOutTime;
     private String img;
+
+    private String clitImg;
     private String machineId;
     private String extMachineId;
     private Double payCharge;
@@ -51,6 +53,8 @@ public class BarrierGateControlDto implements Serializable {
         this.carNum = carNum;
         this.inOutTime = DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_P);
         this.img = machineDto.getPhotoJpg();
+        this.clitImg = machineDto.getPhotoFragment();
+
         this.machineId = machineDto.getMachineId();
     }
 
@@ -61,6 +65,7 @@ public class BarrierGateControlDto implements Serializable {
         this.carNum = carNum;
         this.inOutTime = DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_P);
         this.img = machineDto.getPhotoJpg();
+        this.clitImg = machineDto.getPhotoFragment();
         this.machineId = machineDto.getMachineId();
         this.payCharge = 0.0;
         this.hours = 0;
@@ -74,6 +79,8 @@ public class BarrierGateControlDto implements Serializable {
         this.carNum = carNum;
         this.inOutTime = DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_P);
         this.img = machineDto.getPhotoJpg();
+        this.clitImg = machineDto.getPhotoFragment();
+
         this.machineId = machineDto.getMachineId();
         this.payCharge = payCharge;
         this.open = open;
@@ -223,5 +230,13 @@ public class BarrierGateControlDto implements Serializable {
 
     public void setBody(Object body) {
         this.body = body;
+    }
+
+    public String getClitImg() {
+        return clitImg;
+    }
+
+    public void setClitImg(String clitImg) {
+        this.clitImg = clitImg;
     }
 }

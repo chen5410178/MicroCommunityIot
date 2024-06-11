@@ -57,7 +57,7 @@
                 _machines.forEach(item => {
                     if (item.machineId == _data.machineId) {
                         setTimeout(function () {
-                            item.inOutImg = _data.img.replace('full.jpg', 'plates_clip.jpg');
+                            item.inOutImg = _data.clitImg;
                             //强制刷新下
                             $that.$forceUpdate();
                         }, 1500);

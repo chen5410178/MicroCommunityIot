@@ -328,6 +328,15 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
                 machineDto.setPhotoJpg(imagePath);
             }
 
+            if (plateResult.containsKey("imageFragmentPath")) {
+                String imageFragmentPath = plateResult.getString("imageFragmentPath");
+                imageFragmentPath = Base64Convert.decoder(imageFragmentPath);
+                imageFragmentPath = imageFragmentPath.substring(0,imageFragmentPath.indexOf("?"));
+                //String imagePath = ImageFactory.getBase64ByImgUrl(MappingCacheFactory.getValue("OSS_URL") + plateResult.getString("imagePath"));
+                machineDto.setPhotoFragment(imageFragmentPath);
+            }
+
+
             IInOutCarTextEngine inOutCarTextEngine = ApplicationContextFactory.getBean("zhenshiMqttInOutCarTextEngine", IInOutCarTextEngine.class);
 
             ResultParkingAreaTextDto resultParkingAreaTextDto = callCarServiceImpl.ivsResult(type, license, machineDto, inOutCarTextEngine);

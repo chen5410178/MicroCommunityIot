@@ -40,6 +40,8 @@ public class BarrierDto extends PageDto implements Serializable {
 
     private String photoJpg;
 
+    private String photoFragment;
+
     private String hmId;
 
     private String paId;
@@ -188,5 +190,13 @@ public class BarrierDto extends PageDto implements Serializable {
 
     public void setBoxIds(String[] boxIds) {
         this.boxIds = boxIds;
+    }
+
+    public String getPhotoFragment() {
+        return photoFragment;
+    }
+
+    public void setPhotoFragment(String photoFragment) {
+        this.photoFragment = photoFragment;
     }
 }

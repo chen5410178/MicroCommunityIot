@@ -32,6 +32,8 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
 
     private String paNum;
     private String machineCode;
+
+    private String machineName;
     private String carInout;
     private String photoJpg;
     private String carNum;
@@ -309,5 +311,13 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
 
     public void setCarNumLike(String carNumLike) {
         this.carNumLike = carNumLike;
+    }
+
+    public String getMachineName() {
+        return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
     }
 }
