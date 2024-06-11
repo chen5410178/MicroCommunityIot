@@ -117,11 +117,11 @@ public class TempCarFeeConfigInnerServiceSMOImpl implements ITempCarFeeConfigInn
                 if (tempCarFeeConfigDtos == null || tempCarFeeConfigDtos.size() < 1) {
                     continue;
                 }
-                TempCarFeeConfigAttrDto tempCarFeeConfigAttrDto = new TempCarFeeConfigAttrDto();
-                tempCarFeeConfigAttrDto.setConfigId(tempCarFeeConfigDtos.get(0).getConfigId());
-                tempCarFeeConfigAttrDto.setCommunityId(tempCarFeeConfigDto.getCommunityId());
-
-                List<TempCarFeeConfigAttrDto> tempCarFeeConfigAttrDtos = tempCarFeeConfigAttrInnerServiceSMOImpl.queryTempCarFeeConfigAttrs(tempCarFeeConfigAttrDto);
+//                TempCarFeeConfigAttrDto tempCarFeeConfigAttrDto = new TempCarFeeConfigAttrDto();
+//                tempCarFeeConfigAttrDto.setConfigId(tempCarFeeConfigDtos.get(0).getConfigId());
+//                tempCarFeeConfigAttrDto.setCommunityId(tempCarFeeConfigDto.getCommunityId());
+//
+//                List<TempCarFeeConfigAttrDto> tempCarFeeConfigAttrDtos = tempCarFeeConfigAttrInnerServiceSMOImpl.queryTempCarFeeConfigAttrs(tempCarFeeConfigAttrDto);
                 IComputeTempCarFee computeTempCarFee = ApplicationContextFactory.getBean(tempCarFeeConfigDtos.get(0).getRuleId(), IComputeTempCarFee.class);
 
 
