@@ -163,13 +163,15 @@
                 );
             },
             _loadOutCoupons: function() {
+                let _communityId = vc.getCurrentCommunity().communityId;
                 let param = {
                         params: {
                             paId: $that.parkingAreaControlCustomCarInoutInfo.paId,
                             page: 1,
                             row: 30,
                             state: '1001',
-                            carNum: $that.parkingAreaControlCustomCarInoutInfo.carNum
+                            carNum: $that.parkingAreaControlCustomCarInoutInfo.carNum,
+                            communityId:_communityId,
                         }
                     }
                     //发送get请求
