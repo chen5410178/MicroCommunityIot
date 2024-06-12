@@ -91,7 +91,9 @@ public class ZhenshiMqttInOutCarTextEngine implements IInOutCarTextEngine {
      */
     @Override
     public InOutCarTextDto carInInnerNoMoney(String carNum, BarrierDto machineDto, String defaultPaId, CarDayDto carDayDto) {
-        return new InOutCarTextDto("免费车辆", carNum, "欢迎光临", "", "免费车辆," + carNum + ",欢迎光临");
+        //return new InOutCarTextDto("免费车辆", carNum, "欢迎光临", "", "免费车辆," + carNum + ",欢迎光临");
+        //这里改成内部车 免费车 大家比较吐槽
+        return new InOutCarTextDto("内部车", carNum, "欢迎光临", "", "内部车," + carNum + ",欢迎光临");
     }
 
     /**
