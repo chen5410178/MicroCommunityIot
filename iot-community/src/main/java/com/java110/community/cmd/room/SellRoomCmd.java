@@ -130,8 +130,21 @@ public class SellRoomCmd extends Cmd {
             reqJson.put("startTime", DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         }
         if (!reqJson.containsKey("endTime")) {
-            reqJson.put("endTime", "2037-01-01 00:00:00");
+            reqJson.put("endTime", "2050-01-01 00:00:00");
         }
+
+        String startTime = reqJson.getString("startTime");
+        String endTime = reqJson.getString("endTime");
+
+        if(!startTime.contains(":")){
+            startTime += " 00:00:00";
+            reqJson.put("startTime", startTime);
+        }
+        if(!endTime.contains(":")){
+            endTime += " 23:59:59";
+            reqJson.put("endTime", endTime);
+        }
+
         //todo 绑定人员 房屋关系
         sellRoom(reqJson);
 
