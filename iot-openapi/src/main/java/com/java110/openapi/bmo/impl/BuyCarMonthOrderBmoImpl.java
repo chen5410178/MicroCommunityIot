@@ -72,23 +72,23 @@ public class BuyCarMonthOrderBmoImpl implements IIotCommonApiBmo {
             throw new CmdException("月卡不存在");
         }
         reqJson.put("receivableAmount", carMonthCardDtos.get(0).getCardPrice());
-        reqJson.put("cardMonth",carMonthCardDtos.get(0).getCardMonth());
-        reqJson.put("carMemberId",ownerCarDtos.get(0).getMemberId());
-        reqJson.put("startTime",ownerCarDtos.get(0).getEndTime());
-        reqJson.put("psId",ownerCarDtos.get(0).getPsId());
-        reqJson.put("carId",ownerCarDtos.get(0).getCarId());
+        reqJson.put("cardMonth", carMonthCardDtos.get(0).getCardMonth());
+        reqJson.put("carMemberId", ownerCarDtos.get(0).getMemberId());
+        reqJson.put("startTime", ownerCarDtos.get(0).getEndTime());
+        reqJson.put("psId", ownerCarDtos.get(0).getPsId());
+        reqJson.put("carId", ownerCarDtos.get(0).getCarId());
     }
 
     @Override
     public void doCmd(ICmdDataFlowContext context, JSONObject reqJson) {
 
-        Date startTime = reqJson.getDate("endTime");
+        Date startTime = reqJson.getDate("startTime");
 
-        if(startTime.getTime()< DateUtil.getCurrentDate().getTime()){
+        if (startTime.getTime() < DateUtil.getCurrentDate().getTime()) {
             startTime = DateUtil.getCurrentDate();
         }
 
-        String endTime = DateUtil.getAddMonthStringA(startTime,reqJson.getIntValue("cardMonth"));
+        String endTime = reqJson.getString("endTime");
 
         CarMonthOrderPo carMonthOrderPo = BeanConvertUtil.covertBean(reqJson, CarMonthOrderPo.class);
         carMonthOrderPo.setOrderId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
