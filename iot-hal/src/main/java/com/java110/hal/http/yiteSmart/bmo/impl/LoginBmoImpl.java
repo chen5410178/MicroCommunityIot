@@ -74,6 +74,7 @@ public class LoginBmoImpl implements ILoginBmo {
 
         String ip= MappingCache.getValue("YI_TE","YI_IP");
         String password= MappingCache.getValue("YI_TE","YI_PASSWORD");
+        String username= MappingCache.getValue("YI_TE","YI_USERNAME");
         String port= MappingCache.getValue("YI_TE","YI_PORT");
 
         JSONObject mqtt = new JSONObject();
@@ -81,7 +82,7 @@ public class LoginBmoImpl implements ILoginBmo {
         mqtt.put("mqtt_pwd", password);
         mqtt.put("ip", ip);
         mqtt.put("port", port);
-        mqtt.put("username", "wuxw");
+        mqtt.put("username", username);
         mqtt.put("publish_topic", "zghl_door/server_php");
         mqtt.put("subscribe_id", "SUBSCRIBE:" + accessControlDtos.get(0).getCommunityId() + ":" + machineCode);
         mqtt.put("publish_id", "PUBLISH:" + accessControlDtos.get(0).getCommunityId() + ":" + machineCode);
@@ -165,7 +166,7 @@ public class LoginBmoImpl implements ILoginBmo {
          *                 "\t\t\"baidu_face_type\": \"v2\",\n" +
          *                 "\t\t\"baidu_face_url\": \"https://aip.baidubce.com/rest/2.0/face/v2/identify\",\n" +
          */
-        data.put("type", 1);
+        data.put("type", accessControlDtos.get(0).getLocationName());
         data.put("address", communityDtos.get(0).getName() + "-" + accessControlDtos.get(0).getMachineName());
         data.put("system_pwd", "00888");
         data.put("setting_pwd", "006666");
