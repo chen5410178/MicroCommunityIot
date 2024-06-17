@@ -109,17 +109,17 @@ public class SaveAccessControlOrgCmd extends Cmd {
             throw new CmdException("未包含门禁");
         }
 
-        String startTime = reqJson.getString("startTime");
-        String endTime = reqJson.getString("endTime");
+        String startDate = reqJson.getString("startDate");
+        String endDate = reqJson.getString("endDate");
 
 
-        if(!startTime.contains(":")){
-            startTime += " 00:00:00";
-            reqJson.put("startTime", startTime);
+        if(!startDate.contains(":")){
+            startDate += " 00:00:00";
+            reqJson.put("startDate", startDate);
         }
-        if(!endTime.contains(":")){
-            endTime += " 23:59:59";
-            reqJson.put("endTime", endTime);
+        if(!endDate.contains(":")){
+            endDate += " 23:59:59";
+            reqJson.put("endDate", endDate);
         }
     }
 
