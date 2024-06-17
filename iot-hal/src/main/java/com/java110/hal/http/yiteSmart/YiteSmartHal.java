@@ -178,8 +178,8 @@ public class YiteSmartHal {
         paramOut.put("msg", "");
         paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
         JSONObject data = new JSONObject();
-        data.put("gate_button_password", "1");
-        data.put("gate_button_phone", "1");
+        data.put("gate_button_password", "0");
+        data.put("gate_button_phone", "0");
         data.put("gate_button_room", "1");
         data.put("gate_button_room_input", "1");
         data.put("gate_call_manager", "1");
@@ -187,12 +187,12 @@ public class YiteSmartHal {
         data.put("gate_check_face_switch", "0");
         data.put("gate_open_face", "1");
         data.put("gate_qr_pwd_state", "1");
-        data.put("gate_register_face", "1");
+        data.put("gate_register_face", "0");
         data.put("health_qr_code_switch", "0");
         data.put("pop_ad_switch", "0");
         data.put("property_fee_switch", "0");
-        data.put("stranger_captures", "1");
-        data.put("alarm_switch", "1");
+        data.put("stranger_captures", "0");
+        data.put("alarm_switch", "0");
         data.put("gate_log_open", 1);
         data.put("gate_log_cycle", 3);
         paramOut.put("data", data);
