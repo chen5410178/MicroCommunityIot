@@ -149,6 +149,9 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
         }
 
 
+
+
+
         AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
         accessControlFacePo.setFacePath(url);
         accessControlFacePo.setCommunityId(accessControlOrgPo.getCommunityId());

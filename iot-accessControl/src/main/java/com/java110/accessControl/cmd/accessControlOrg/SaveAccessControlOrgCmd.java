@@ -108,6 +108,19 @@ public class SaveAccessControlOrgCmd extends Cmd {
         if (ListUtil.isNull(machineIds)) {
             throw new CmdException("未包含门禁");
         }
+
+        String startTime = reqJson.getString("startTime");
+        String endTime = reqJson.getString("endTime");
+
+
+        if(!startTime.contains(":")){
+            startTime += " 00:00:00";
+            reqJson.put("startTime", startTime);
+        }
+        if(!endTime.contains(":")){
+            endTime += " 23:59:59";
+            reqJson.put("endTime", endTime);
+        }
     }
 
     @Override
