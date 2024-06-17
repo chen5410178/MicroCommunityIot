@@ -166,7 +166,7 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
         accessControlFacePo.setMfId(GenerateCodeFactory.getGeneratorId("11"));
         accessControlFacePo.setName(staffDtos.get(0).getName());
         accessControlFacePo.setPersonId(staffDtos.get(0).getUserId());
-        accessControlFacePo.setPersonType(AccessControlFaceDto.PERSON_TYPE_OWNER);
+        accessControlFacePo.setPersonType(AccessControlFaceDto.PERSON_TYPE_STAFF);
         accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
         accessControlFacePo.setRoomName("");
         accessControlFaceV1InnerServiceSMOImpl.saveAccessControlFace(accessControlFacePo);
