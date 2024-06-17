@@ -3,6 +3,7 @@ package com.java110.hal.http.yiteSmart.bmo.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.cache.CommonCache;
+import com.java110.core.cache.MappingCache;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
@@ -71,11 +72,15 @@ public class LoginBmoImpl implements ILoginBmo {
         data.put("socket", socket);
 
 
+        String ip= MappingCache.getValue("YI_TE","YI_IP");
+        String password= MappingCache.getValue("YI_TE","YI_PASSWORD");
+        String port= MappingCache.getValue("YI_TE","YI_PORT");
+
         JSONObject mqtt = new JSONObject();
         mqtt.put("client_id", machineCode);
-        mqtt.put("mqtt_pwd", "wuxw2015");
-        mqtt.put("ip", "49.232.150.183");
-        mqtt.put("port", "2883");
+        mqtt.put("mqtt_pwd", password);
+        mqtt.put("ip", ip);
+        mqtt.put("port", port);
         mqtt.put("username", "wuxw");
         mqtt.put("publish_topic", "zghl_door/server_php");
         mqtt.put("subscribe_id", "SUBSCRIBE:" + accessControlDtos.get(0).getCommunityId() + ":" + machineCode);
