@@ -40,6 +40,10 @@ public class AccessControlInoutDto extends PageDto implements Serializable {
 
     private String queryEndTime;
 
+    private String locationName;
+
+    private String openTypeCdName;
+
 
     public String getSimilar() {
         return similar;
@@ -184,5 +188,21 @@ public class AccessControlInoutDto extends PageDto implements Serializable {
 
     public void setQueryEndTime(String queryEndTime) {
         this.queryEndTime = queryEndTime;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
+    public String getOpenTypeCdName() {
+        return openTypeCdName;
+    }
+
+    public void setOpenTypeCdName(String openTypeCdName) {
+        this.openTypeCdName = openTypeCdName;
     }
 }

@@ -20,9 +20,11 @@
         select t.similar,t.inout_id,t.inout_id inoutId,t.machine_id,t.machine_id machineId,t.machine_code,t.machine_code
         machineCode,t.open_type_cd,t.open_type_cd openTypeCd,t.id_card,t.id_card
         idCard,t.name,t.tel,t.status_cd,t.status_cd statusCd,t.face_path,t.face_path
-        facePath,t.state,t.community_id,t.community_id communityId,ac.machine_name machineName,t.create_time createTime
+        facePath,t.state,t.community_id,t.community_id communityId,ac.machine_name machineName,t.create_time createTime,
+        ac.location_name locationName,td.name openTypeCdName
         from access_control_inout t
         left join access_control ac on t.machine_id = ac.machine_id and ac.status_cd = '0'
+        left join t_dict td on t.open_type_cd = td.status_cd and td.table_name = 'access_control_inout' and td.table_columns = 'open_type_cd'
         where 1 =1
         <if test="similar !=null and similar != ''">
             and t.similar= #{similar}

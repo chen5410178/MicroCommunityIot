@@ -68,9 +68,9 @@ public class AccessControlInoutV1ServiceDaoImpl extends BaseServiceDao implement
     public List<Map> getAccessControlInoutInfo(Map info) throws DAOException {
         logger.debug("查询 getAccessControlInoutInfo 入参 info : {}",info);
 
-        List<Map> businessAccessControlInoutInfos = sqlSessionTemplate.selectList("accessControlInoutV1ServiceDaoImpl.getAccessControlInoutInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlInoutV1ServiceDaoImpl.getAccessControlInoutInfo",info);
 
-        return businessAccessControlInoutInfos;
+        return infos;
     }
 
 
