@@ -249,7 +249,7 @@ public class ZhenshiMqttInOutCarTextEngine implements IInOutCarTextEngine {
      */
     @Override
     public InOutCarTextDto carOutInnerNoMoney(String carNum, BarrierDto machineDto, String defaultPaId, CarDayDto carDayDto) {
-        return new InOutCarTextDto(carNum, "免费车辆,一路平安", carNum + ",免费车辆,一路平安");
+        return new InOutCarTextDto(carNum, "内部车,一路平安", carNum + ",内部车,一路平安");
     }
 
     /**
