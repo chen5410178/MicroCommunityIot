@@ -21,7 +21,7 @@ public class CustomDecoder  extends MessageToMessageDecoder<byte[]> {
         LOGGER.debug("-------------解码器接收到数据16：{}",BytesUtil.bytesToHex(msg));
 
         try {
-            if (DataHeader.isLvChongChong(msg)) {
+            if (DataHeader.isLvChongChong(msg) || DataHeader.isSbCharge(msg)) {
                 // todo 驴充充
                 unpackSH(msg, out);
             }else {

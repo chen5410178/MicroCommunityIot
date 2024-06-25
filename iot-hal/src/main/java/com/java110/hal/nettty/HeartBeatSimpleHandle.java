@@ -98,6 +98,12 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
 
         String machineCode = "";
         String machineType = "";
+
+        if (DataHeader.isSbCharge(bytes)) {
+            machineCode = DataHeader.getSbMachineCode(bytes);
+            machineType = MACHINE_TYPE_CHARGE;
+        }
+
         if (DataHeader.isLvChongChong(bytes)) {
             machineCode = DataHeader.getLvCCMachineCode(bytes);
             machineType = MACHINE_TYPE_CHARGE;
