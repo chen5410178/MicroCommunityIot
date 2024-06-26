@@ -46,15 +46,13 @@
 				data: {},
 				appId:'',
 				cashierUserId:'',
+				wxAli:'WECHAT'
 			}
 		},
 		mounted() {
 			// #ifdef H5
 			if (isWxOrAli() == "ALIPAY") {
-				const oScript = document.createElement('script');
-				oScript.type = 'text/javascript';
-				oScript.src = 'https://gw.alipayobjects.com/as/g/h5-lib/alipayjsapi/3.1.1/alipayjsapi.min.js';
-				document.body.appendChild(oScript);
+				this.wxAli:'ALIPAY'
 			}
 			// #endif
 		},
@@ -68,7 +66,7 @@
 					//刷新 openId
 					// #ifdef H5
 					if (isWxOrAli() == 'ALIPAY') {
-						_that._refreshAliPayOpenId();
+						//_that._refreshAliPayOpenId();
 						return;
 					}
 					//todo h5 情况
@@ -162,6 +160,7 @@
 				_data.appId = this.appId;
 				_data.cashierUserId = this.cashierUserId;
 				_data.openId = this.openId;
+				_data.wxAli = this.wxAli;
 				cashierPayFee(this,_data)
 			},
 			

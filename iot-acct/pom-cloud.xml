@@ -37,9 +37,13 @@
             <artifactId>java110-doc</artifactId>
 
         </dependency>
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+        </dependency>
     </dependencies>
     <build>
-        <finalName>iot-charge</finalName>
+        <finalName>iot-acct</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -148,9 +148,10 @@ public class CashierCmd extends Cmd {
     private String computeAdapt(String business, JSONObject reqJson) {
 
         String communityId = reqJson.getString("communityId");
+        String wxAli = reqJson.getString("wxAli");
 
         //todo 如果是临时车
-        PaymentPoolDto paymentPoolDto = ifTempCarFeeBusiness(business, communityId);
+        PaymentPoolDto paymentPoolDto = ifTempCarFeeBusiness(business, communityId,wxAli);
         if (paymentPoolDto != null) {
             reqJson.put("paymentPoolId", paymentPoolDto.getPpId());
             return paymentPoolDto.getBeanJsapi();
@@ -161,6 +162,9 @@ public class CashierCmd extends Cmd {
         paymentPoolDto.setCommunityId(communityId);
         paymentPoolDto.setPayType(PaymentPoolDto.PAY_TYPE_COMMUNITY);
         paymentPoolDto.setState("Y");
+        if("ALIPAY".equals(wxAli)){
+            paymentPoolDto.setPaymentType(wxAli);
+        }
         List<PaymentPoolDto> paymentPoolDtos = paymentPoolV1InnerServiceSMOImpl.queryPaymentPools(paymentPoolDto);
         if (paymentPoolDtos == null || paymentPoolDtos.isEmpty()) {
             throw new IllegalArgumentException("小区未配置支付信息");
@@ -177,7 +181,7 @@ public class CashierCmd extends Cmd {
      * @param communityId
      * @return
      */
-    private PaymentPoolDto ifTempCarFeeBusiness(String business, String communityId) {
+    private PaymentPoolDto ifTempCarFeeBusiness(String business, String communityId,String wxAli) {
         if (!"tempCarFee".equals(business)) {
             return null;
         }
@@ -186,6 +190,9 @@ public class CashierCmd extends Cmd {
         paymentPoolDto.setCommunityId(communityId);
         paymentPoolDto.setPayType(PaymentPoolDto.PAY_TYPE_TEMP_CAT);
         paymentPoolDto.setState("Y");
+        if("ALIPAY".equals(wxAli)){
+            paymentPoolDto.setPaymentType(wxAli);
+        }
         List<PaymentPoolDto> paymentPoolDtos = paymentPoolV1InnerServiceSMOImpl.queryPaymentPools(paymentPoolDto);
         if (paymentPoolDtos == null || paymentPoolDtos.isEmpty()) {
             return null;

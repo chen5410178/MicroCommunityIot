@@ -86,22 +86,22 @@ public class SavePaymentPoolCmd extends Cmd {
             Assert.hasKeyAndValue(columns, "columnValue", reqJson.getString("name") + "未填写值");
         }
 
-        if (!PaymentPoolDto.PAY_TYPE_FEE_CONFIG.equals(reqJson.getString("payType"))) {
-
-            PaymentPoolDto paymentPoolDto = new PaymentPoolDto();
-            paymentPoolDto.setCommunityId(reqJson.getString("communityId"));
-            paymentPoolDto.setPayType(reqJson.getString("payType"));
-            int count = paymentPoolV1InnerServiceSMOImpl.queryPaymentPoolsCount(paymentPoolDto);
-            if (count > 0) {
-                throw new CmdException("已经存在，请勿重复添加，只有支付范围为费用项的可以添加多个支付");
-            }
-            return;
-        }
-
-        JSONArray configIds = reqJson.getJSONArray("configIds");
-        if (configIds == null || configIds.isEmpty()) {
-            throw new CmdException("未包含费用项");
-        }
+//        if (!PaymentPoolDto.PAY_TYPE_FEE_CONFIG.equals(reqJson.getString("payType"))) {
+//
+//            PaymentPoolDto paymentPoolDto = new PaymentPoolDto();
+//            paymentPoolDto.setCommunityId(reqJson.getString("communityId"));
+//            paymentPoolDto.setPayType(reqJson.getString("payType"));
+//            int count = paymentPoolV1InnerServiceSMOImpl.queryPaymentPoolsCount(paymentPoolDto);
+//            if (count > 0) {
+//                throw new CmdException("已经存在，请勿重复添加，只有支付范围为费用项的可以添加多个支付");
+//            }
+//            return;
+//        }
+//
+//        JSONArray configIds = reqJson.getJSONArray("configIds");
+//        if (configIds == null || configIds.isEmpty()) {
+//            throw new CmdException("未包含费用项");
+//        }
 
     }
 

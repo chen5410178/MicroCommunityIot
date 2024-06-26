@@ -129,8 +129,8 @@ export function getParkingCarCoupon(_objData) {
  * @param {Object} _data
  * @param {Object} _successUrl
  */
-export function cashierPayFee(_that, _data,_successUrl) {
-	if(!_successUrl ){
+export function cashierPayFee(_that, _data, _successUrl) {
+	if (!_successUrl) {
 		_successUrl = "/pages/successPage/successPage?msg=支付成功&objType=3003";
 	}
 	wx.showLoading({
@@ -163,6 +163,10 @@ export function cashierPayFee(_that, _data,_successUrl) {
 				});
 				// #endif
 				// #ifdef H5
+				if (_data.wxAli == 'ALIPAY') {
+					window.location.href = data.url;
+					return;
+				}
 				WexinPayFactory.wexinPay(data, function() {
 					uni.navigateTo({
 						url: _successUrl
@@ -187,7 +191,7 @@ export function cashierPayFee(_that, _data,_successUrl) {
 				return;
 			}
 			wx.showToast({
-				title: "缴费失败"+res.data.msg,
+				title: "缴费失败" + res.data.msg,
 				icon: 'none',
 				duration: 2000
 			});
