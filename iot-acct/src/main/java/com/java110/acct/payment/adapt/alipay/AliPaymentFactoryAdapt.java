@@ -102,7 +102,7 @@ public class AliPaymentFactoryAdapt implements IPaymentFactoryAdapt {
         String paymentPoolId = reqJson.getString("paymentPoolId");
 
         String tradeType = reqJson.getString("tradeType");
-        String notifyUrl = UrlCache.getOwnerUrl() + "/app/payment/notify/wechat/992020011134400001/" + paymentPoolId;
+        String notifyUrl = UrlCache.getOwnerUrl() + "/app/payment/notify/alipay/992020011134400001/" + paymentPoolId;
 
         String openId = reqJson.getString("openId");
 
