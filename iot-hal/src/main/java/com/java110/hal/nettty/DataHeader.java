@@ -9,6 +9,31 @@ public class DataHeader {
 
     public static final String LV_CHONG_CHONG_HEAD = "7e5d7d7f";// 驴充充 针头
 
+    public static final String SONG_BING_HEAD = "68";// 松饼头
+    public static final String SONG_BING_END = "16";// 松饼尾
+
+    /**
+     * 判断是否为松饼充电桩
+     *
+     * @param msg
+     * @return
+     */
+    public static boolean isSbCharge(byte[] msg) {
+
+        String data = BytesUtil.bytesToHex(msg);
+
+        if (StringUtil.isEmpty(data)) {
+            return false;
+        }
+
+        if (data.startsWith(SONG_BING_HEAD)) {
+            return true;
+        }
+
+        return false;
+    }
+
+
     /**
      * 判断是否为驴充充
      *
@@ -91,6 +116,22 @@ public class DataHeader {
             throw new RuntimeException(e);
         }
         return bb;
+    }
+
+    /**
+     * 获取设备ID
+     *
+     * @param msg
+     * @return
+     */
+    public static String getSbMachineCode(byte[] msg) {
+        String data = BytesUtil.bytesToHex(msg);
+        try {
+            data = data.substring(30, 40);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return data;
     }
 
     public static String getWorkLicenseMachineCode(byte[] msg) {
