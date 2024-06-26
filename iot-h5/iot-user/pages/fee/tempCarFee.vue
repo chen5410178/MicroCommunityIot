@@ -109,7 +109,8 @@
 				receivableAmount: 0.0, // 抵扣金额
 				couponCount: 0,
 				communityId:'',
-				couponList: []
+				couponList: [],
+				wxAli:'WECHAT'
 			};
 		},
 		/**
@@ -123,6 +124,11 @@
 			this.machineId = options.machineId;
 			this.communityId = options.communityId;
 			this._loadTempCarFee();
+			// #ifdef H5
+			if (isWxOrAli() == "ALIPAY") {
+				this.wxAli='ALIPAY'
+			}
+			// #endif
 		},
 		onShow: function(options) {
 			this._dealCarCoupons();
@@ -170,13 +176,6 @@
 				})
 			},
 			onPayFee: function() {
-				if(isWxOrAli() == 'ALIPAY'){
-					this.onAliPayPayFee();
-				}else{
-					this.onWxPayFee();
-				}
-			},
-			onAliPayPayFee:function(){
 				let _receivedAmount = this.receivableAmount;
 				wx.showLoading({
 					title: '支付中'
@@ -195,59 +194,18 @@
 					cashierUserId:'-1',
 					machineId:this.machineId,
 					communityId:this.communityId,
+					wxAli : this.wxAli
 				};
-				toAliPayTempCarFee(_objData)
-				.then(_data=>{
-					if (_data.code == '0') {
-						// #ifdef H5	
-						AliPayFactory.aliPay({
-							tradeNO:_data.data
-						}, function() {
-							uni.showToast({
-								title: "支付成功",
-								duration: 2000
-							});
-							uni.navigateBack({
-								delta:1
-							});
-						});
-						// #endif
-						wx.hideLoading();
-						return;
-					}
-					wx.hideLoading();
-					wx.showToast({
-						title: "缴费失败",
-						icon: 'none',
-						duration: 2000
-					});
-				})
-			},
-			onWxPayFee:function(){
-				let _receivedAmount = this.receivableAmount;
-				wx.showLoading({
-					title: '支付中'
-				});
-				let _tradeType = 'JSAPI';
-				let _objData = {
-					business: "tempCarFee",
-					carNum: this.carNum,
-					openId: this.openId,
-					paId: this.paId,
-					feeName: '停车费',
-					tradeType: _tradeType,
-					appId: this.appId,
-					inoutId: this.inoutId,
-					couponList: this.couponList,
-					cashierUserId:'-1',
-					machineId:this.machineId,
-					communityId:this.communityId,
-				};
+				let _that = this;
 				toPayTempCarFee(_objData)
 				.then(_data=>{
 					wx.hideLoading();
 					if (_data.code == '0') {
 						// #ifdef H5	
+						if (_that.wxAli == 'ALIPAY') {
+							window.location.href = data.url;
+							return;
+						}
 						WexinPayFactory.wexinPay(_data, function() {
 							uni.showToast({
 								title: "支付成功",

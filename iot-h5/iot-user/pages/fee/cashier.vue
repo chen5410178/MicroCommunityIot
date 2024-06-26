@@ -52,7 +52,7 @@
 		mounted() {
 			// #ifdef H5
 			if (isWxOrAli() == "ALIPAY") {
-				this.wxAli:'ALIPAY'
+				this.wxAli='ALIPAY'
 			}
 			// #endif
 		},
