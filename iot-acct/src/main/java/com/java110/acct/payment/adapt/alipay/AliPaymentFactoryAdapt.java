@@ -35,7 +35,16 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * 微信支付厂家类
+ * 支付宝厂家
+ * INSERT INTO `hc_iot`.`payment_adapt` (`adapt_id`, `payment_type`, `name`, `bean_jsapi`, `bean_qrcode`, `bean_native`, `create_time`, `status_cd`, `bean_refund`)
+ * VALUES ('11', 'ALIPAY', '支付宝支付', 'aliPaymentFactory', '', '', '2023-10-26 14:42:23', '1', NULL);
+ *
+ * INSERT INTO `hc_iot`.`payment_key` (`key_id`, `payment_type`, `name`, `column_key`, `remark`, `create_time`, `status_cd`)
+ * VALUES ('13', 'ALIPAY', '商家私钥', 'ALIPAY_PRIVATE_KEY', '值请填写 商家私钥 ', '2023-10-25 16:26:46', '0');
+ * INSERT INTO `hc_iot`.`payment_key` (`key_id`, `payment_type`, `name`, `column_key`, `remark`, `create_time`, `status_cd`)
+ * VALUES ('14', 'ALIPAY', '支付宝公钥', 'ALIPAY_PUBLIC_KEY', '值请填写 支付宝公钥', '2023-10-25 16:27:06', '0');
+ * INSERT INTO `hc_iot`.`payment_key` (`key_id`, `payment_type`, `name`, `column_key`, `remark`, `create_time`, `status_cd`)
+ * VALUES ('15', 'ALIPAY', '支付宝appId', 'ALIPAY_APP_ID', '值请填写 APP_ID', '2023-10-25 16:27:24', '0');
  * <p>
  * 微信官方原生 支付实现类
  */
