@@ -39,7 +39,7 @@ import java.util.TreeMap;
  * 支付宝厂家
  * INSERT INTO `hc_iot`.`payment_adapt` (`adapt_id`, `payment_type`, `name`, `bean_jsapi`, `bean_qrcode`, `bean_native`, `create_time`, `status_cd`, `bean_refund`)
  * VALUES ('11', 'ALIPAY', '支付宝支付', 'aliPaymentFactory', '', '', '2023-10-26 14:42:23', '1', NULL);
- *
+ * <p>
  * INSERT INTO `hc_iot`.`payment_key` (`key_id`, `payment_type`, `name`, `column_key`, `remark`, `create_time`, `status_cd`)
  * VALUES ('13', 'ALIPAY', '商家私钥', 'ALIPAY_PRIVATE_KEY', '值请填写 商家私钥 ', '2023-10-25 16:26:46', '0');
  * INSERT INTO `hc_iot`.`payment_key` (`key_id`, `payment_type`, `name`, `column_key`, `remark`, `create_time`, `status_cd`)
@@ -218,13 +218,14 @@ public class AliPaymentFactoryAdapt implements IPaymentFactoryAdapt {
         String publicKey = PaymentPoolValueDto.getValue(paymentPoolValueDtos, "ALIPAY_PUBLIC_KEY");
 
 
+        JSONObject paramIn = JSONObject.parseObject(param);
 
-        Map<String, String> map = UrlParamToJsonUtil.getMap(param);
+        Map<String, String> map = JSONObject.parseObject(paramIn.getJSONObject("params").toString(), Map.class);
         boolean verify_result = false;
         try {
             verify_result = AlipaySignature.rsaCheckV1(map, publicKey, "UTF-8", "RSA2");
             if (verify_result && "TRADE_SUCCESS".equals(map.get("trade_status"))) {//验证成功
-                int result = confirmPayFee(map, paymentOrderDto, notifyPaymentOrderDto);
+                int result = confirmPayFee(paramIn, paymentOrderDto, notifyPaymentOrderDto);
             } else {
                 throw new IllegalArgumentException("签名错误");
             }
@@ -238,7 +239,7 @@ public class AliPaymentFactoryAdapt implements IPaymentFactoryAdapt {
         return paymentOrderDto;
     }
 
-    public int confirmPayFee(Map<String, String> map, PaymentOrderDto paymentOrderDto, NotifyPaymentOrderDto notifyPaymentOrderDto) {
+    public int confirmPayFee(JSONObject map, PaymentOrderDto paymentOrderDto, NotifyPaymentOrderDto notifyPaymentOrderDto) {
         //兼容 港币交易时 或者微信有时不会掉参数的问题
 
         SortedMap<String, String> paramMap = new TreeMap<String, String>();
