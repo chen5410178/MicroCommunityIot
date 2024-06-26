@@ -223,13 +223,15 @@ public class AliPaymentFactoryAdapt implements IPaymentFactoryAdapt {
         Map<String, String> map = JSONObject.parseObject(paramIn.getJSONObject("params").toString(), Map.class);
         boolean verify_result = false;
         try {
-            int result = confirmPayFee(paramIn, paymentOrderDto, notifyPaymentOrderDto);
+            if ("TRADE_SUCCESS".equals(map.get("trade_status"))) {//验证成功
+                int result = confirmPayFee(paramIn, paymentOrderDto, notifyPaymentOrderDto);
 //            verify_result = AlipaySignature.rsaCheckV1(map, publicKey, "UTF-8", "RSA2");
 //            if (verify_result && "TRADE_SUCCESS".equals(map.get("trade_status"))) {//验证成功
 //                int result = confirmPayFee(paramIn, paymentOrderDto, notifyPaymentOrderDto);
 //            } else {
 //                throw new IllegalArgumentException("签名错误");
 //            }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
