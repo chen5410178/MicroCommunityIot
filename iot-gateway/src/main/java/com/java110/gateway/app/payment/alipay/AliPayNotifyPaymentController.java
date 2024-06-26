@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 @RestController
-@RequestMapping(path = "/app/payment/Notify")
+@RequestMapping(path = "/app/payment/notify")
 public class AliPayNotifyPaymentController {
 
     private final static Logger logger = LoggerFactory.getLogger(AliPayNotifyPaymentController.class);
@@ -26,7 +26,7 @@ public class AliPayNotifyPaymentController {
 
     /**
      * <p>支付回调Api</p>
-     *
+     * /app/payment/notify/alipay/992020011134400001/102024062678900262
      * @param request
      * @throws Exception
      */
@@ -64,7 +64,7 @@ public class AliPayNotifyPaymentController {
         paramInfo.put("out_trade_no",out_trade_no);
         paramInfo.put("trade_status",trade_status);
         paramInfo.put("params",params);
-        logger.debug("微信支付回调报文" + paramInfo);
+        logger.debug("支付宝支付回调报文" + paramInfo);
 
 
         return notifyPaymentV1InnerServiceSMOImpl.notifyPayment(new NotifyPaymentOrderDto(appId,paramInfo.toJSONString(),"",paymentPoolId));
