@@ -16,6 +16,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.PayUtil;
+import com.java110.core.utils.UrlParamToJsonUtil;
 import com.java110.dto.app.AppDto;
 import com.java110.dto.payment.NotifyPaymentOrderDto;
 import com.java110.dto.payment.PaymentOrderDto;
@@ -216,7 +217,9 @@ public class AliPaymentFactoryAdapt implements IPaymentFactoryAdapt {
         }
         String publicKey = PaymentPoolValueDto.getValue(paymentPoolValueDtos, "ALIPAY_PUBLIC_KEY");
 
-        Map<String, String> map = JSONObject.parseObject(param, Map.class);
+
+
+        Map<String, String> map = UrlParamToJsonUtil.getMap(param);
         boolean verify_result = false;
         try {
             verify_result = AlipaySignature.rsaCheckV1(map, publicKey, "UTF-8", "RSA2");

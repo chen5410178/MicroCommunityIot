@@ -203,7 +203,7 @@
 					if (_data.code == '0') {
 						// #ifdef H5	
 						if (_that.wxAli == 'ALIPAY') {
-							window.location.href = data.url;
+							window.location.href = _data.url;
 							return;
 						}
 						WexinPayFactory.wexinPay(_data, function() {
