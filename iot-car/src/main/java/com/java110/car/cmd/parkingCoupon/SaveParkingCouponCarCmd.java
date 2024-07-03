@@ -31,14 +31,14 @@ import com.java110.core.constant.MappingConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.DistributedLock;
+import com.java110.core.utils.*;
 import com.java110.doc.annotation.*;
+import com.java110.dto.shop.ShopDto;
+import com.java110.dto.shop.StoreShopDto;
 import com.java110.intf.car.IParkingCouponCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingCouponShopV1InnerServiceSMO;
 import com.java110.intf.car.IParkingCouponV1InnerServiceSMO;
+import com.java110.intf.user.IStoreShopV1InnerServiceSMO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +100,8 @@ public class SaveParkingCouponCarCmd extends Cmd {
 
     @Autowired
     private IParkingCouponShopV1InnerServiceSMO parkingCouponShopV1InnerServiceSMOImpl;
+    @Autowired
+    private IStoreShopV1InnerServiceSMO shopInnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
@@ -108,6 +110,14 @@ public class SaveParkingCouponCarCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "carNum", "请求报文中未包含carNum");
         Assert.hasKeyAndValue(reqJson, "giveWay", "请求报文中未包含giveWay");
         Assert.hasKeyAndValue(reqJson, "code", "请求报文中未包含临时票据");
+
+        StoreShopDto shopDto = new StoreShopDto();
+        shopDto.setShopId(reqJson.getString("shopId"));
+        List<ShopDto> shopDtos = shopInnerServiceSMOImpl.queryStoreShops(shopDto);
+
+        if (ListUtil.isNull(shopDtos)) {
+            throw new CmdException("店铺不存在");
+        }
 
         String codeKey = reqJson.getString("shopId") + reqJson.getString("code");
 
