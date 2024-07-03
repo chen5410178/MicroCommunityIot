@@ -166,7 +166,7 @@ public class LoginBmoImpl implements ILoginBmo {
          *                 "\t\t\"baidu_face_type\": \"v2\",\n" +
          *                 "\t\t\"baidu_face_url\": \"https://aip.baidubce.com/rest/2.0/face/v2/identify\",\n" +
          */
-        data.put("type", accessControlDtos.get(0).getLocationName());
+        data.put("type", accessControlDtos.get(0).getMachineMac());
         data.put("address", communityDtos.get(0).getName() + "-" + accessControlDtos.get(0).getMachineName());
         data.put("system_pwd", "00888");
         data.put("setting_pwd", "006666");
