@@ -8,6 +8,7 @@ import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.fee.*;
 import com.java110.intf.barrier.ITempCarFeeConfigAttrInnerServiceSMO;
@@ -114,7 +115,7 @@ public class TempCarFeeConfigInnerServiceSMOImpl implements ITempCarFeeConfigInn
                 tempCarFeeConfigDto.setCommunityId(carInoutDto.getCommunityId());
                 List<TempCarFeeConfigDto> tempCarFeeConfigDtos = queryTempCarFeeConfigs(tempCarFeeConfigDto);
 
-                if (tempCarFeeConfigDtos == null || tempCarFeeConfigDtos.size() < 1) {
+                if (ListUtil.isNull(tempCarFeeConfigDtos)) {
                     continue;
                 }
 //                TempCarFeeConfigAttrDto tempCarFeeConfigAttrDto = new TempCarFeeConfigAttrDto();
