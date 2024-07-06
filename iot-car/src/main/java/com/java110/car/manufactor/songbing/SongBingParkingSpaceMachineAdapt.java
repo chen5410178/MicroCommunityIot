@@ -266,6 +266,21 @@ public class SongBingParkingSpaceMachineAdapt implements IParkingSpaceMachineMan
         return getPlateReulst(parkingSpaceMachineDto);
     }
 
+    @Override
+    public String eventPush(ParkingSpaceMachineDto parkingSpaceMachineDto, String reqParam) {
+
+
+        return getPlateReulst(parkingSpaceMachineDto);
+    }
+
+
+    @Override
+    public String getEmptyFrame(ParkingSpaceMachineDto parkingSpaceMachineDto, String reqParam) {
+
+
+        return getPlateReulst(parkingSpaceMachineDto);
+    }
+
     private String getPlateReulst(ParkingSpaceMachineDto parkingSpaceMachineDto) {
 
         /**

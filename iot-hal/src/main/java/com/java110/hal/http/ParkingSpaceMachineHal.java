@@ -32,7 +32,7 @@ public class ParkingSpaceMachineHal {
      * @param request
      * @return
      */
-    @RequestMapping(path = "/heartbeat/{machineCode}", method = RequestMethod.POST)
+    @RequestMapping(path = "/heartbeat/{machineCode}", method = RequestMethod.GET)
     public ResponseEntity<String> heartbeat(@PathVariable String machineCode,
                                             @RequestBody String postInfo,
                                             HttpServletRequest request) {
@@ -66,6 +66,60 @@ public class ParkingSpaceMachineHal {
         String result = "";
         try {
             result = parkingSpaceMachineNotifyV1InnerServiceSMOImpl.plateResult(new ParkingSpaceMachineNotifyDto(machineCode, postInfo));
+            paramOut = new ResponseEntity<String>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("网关异常", e);
+            paramOut = ResultVo.error("请求发生异常，" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return paramOut;
+    }
+
+
+
+    /**
+     * 事件信息推送
+     *
+     * @param machineCode
+     * @param postInfo
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/eventPush/{machineCode}", method = RequestMethod.POST)
+    public ResponseEntity<String> eventPush(@PathVariable String machineCode,
+                                              @RequestBody String postInfo,
+                                              HttpServletRequest request) {
+
+        ResponseEntity<String> paramOut = null;
+        String result = "";
+        try {
+            result = parkingSpaceMachineNotifyV1InnerServiceSMOImpl.eventPush(new ParkingSpaceMachineNotifyDto(machineCode, postInfo));
+            paramOut = new ResponseEntity<String>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("网关异常", e);
+            paramOut = ResultVo.error("请求发生异常，" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return paramOut;
+    }
+
+
+
+    /**
+     * 车位设置
+     *
+     * @param machineCode
+     * @param postInfo
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/getEmptyFrame/{machineCode}", method = RequestMethod.POST)
+    public ResponseEntity<String> getEmptyFrame(@PathVariable String machineCode,
+                                              @RequestBody String postInfo,
+                                              HttpServletRequest request) {
+
+        ResponseEntity<String> paramOut = null;
+        String result = "";
+        try {
+            result = parkingSpaceMachineNotifyV1InnerServiceSMOImpl.getEmptyFrame(new ParkingSpaceMachineNotifyDto(machineCode, postInfo));
             paramOut = new ResponseEntity<String>(result, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("网关异常", e);

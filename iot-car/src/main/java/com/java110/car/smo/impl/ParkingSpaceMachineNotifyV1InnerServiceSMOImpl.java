@@ -31,6 +31,8 @@ import com.java110.intf.car.IParkingSpaceMachineV1InnerServiceSMO;
 import com.java110.po.parkingSpaceMachine.ParkingSpaceMachinePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -98,4 +100,52 @@ public class ParkingSpaceMachineNotifyV1InnerServiceSMOImpl implements IParkingS
 
         return parkingSpaceMachineManufactor.plateResult(parkingSpaceMachineDto, parkingSpaceMachineNotifyDto.getReqBody());
     }
+
+
+    @Override
+    public String eventPush(ParkingSpaceMachineNotifyDto parkingSpaceMachineNotifyDto) {
+        ParkingSpaceMachineDto parkingSpaceMachineDto = null;
+        if (!factoryCache.containsKey(parkingSpaceMachineNotifyDto.getMachineCode())) {
+            parkingSpaceMachineDto = new ParkingSpaceMachineDto();
+            parkingSpaceMachineDto.setMachineCode(parkingSpaceMachineNotifyDto.getMachineCode());
+            List<ParkingSpaceMachineDto> parkingSpaceMachineDtos = parkingSpaceMachineV1InnerServiceSMOImpl.queryParkingSpaceMachines(parkingSpaceMachineDto);
+
+            Assert.listOnlyOne(parkingSpaceMachineDtos, "地磁设备厂家不存在");
+
+            factoryCache.put(parkingSpaceMachineNotifyDto.getMachineCode(), parkingSpaceMachineDtos.get(0));
+        }
+
+        parkingSpaceMachineDto = factoryCache.get(parkingSpaceMachineNotifyDto.getMachineCode());
+
+        IParkingSpaceMachineManufactor parkingSpaceMachineManufactor = ApplicationContextFactory.getBean(parkingSpaceMachineDto.getBeanImpl(), IParkingSpaceMachineManufactor.class);
+        if (parkingSpaceMachineManufactor == null) {
+            throw new CmdException("厂家接口未实现");
+        }
+
+        return parkingSpaceMachineManufactor.plateResult(parkingSpaceMachineDto, parkingSpaceMachineNotifyDto.getReqBody());
+    }
+
+    @Override
+    public String getEmptyFrame(ParkingSpaceMachineNotifyDto parkingSpaceMachineNotifyDto) {
+        ParkingSpaceMachineDto parkingSpaceMachineDto = null;
+        if (!factoryCache.containsKey(parkingSpaceMachineNotifyDto.getMachineCode())) {
+            parkingSpaceMachineDto = new ParkingSpaceMachineDto();
+            parkingSpaceMachineDto.setMachineCode(parkingSpaceMachineNotifyDto.getMachineCode());
+            List<ParkingSpaceMachineDto> parkingSpaceMachineDtos = parkingSpaceMachineV1InnerServiceSMOImpl.queryParkingSpaceMachines(parkingSpaceMachineDto);
+
+            Assert.listOnlyOne(parkingSpaceMachineDtos, "地磁设备厂家不存在");
+
+            factoryCache.put(parkingSpaceMachineNotifyDto.getMachineCode(), parkingSpaceMachineDtos.get(0));
+        }
+
+        parkingSpaceMachineDto = factoryCache.get(parkingSpaceMachineNotifyDto.getMachineCode());
+
+        IParkingSpaceMachineManufactor parkingSpaceMachineManufactor = ApplicationContextFactory.getBean(parkingSpaceMachineDto.getBeanImpl(), IParkingSpaceMachineManufactor.class);
+        if (parkingSpaceMachineManufactor == null) {
+            throw new CmdException("厂家接口未实现");
+        }
+
+        return parkingSpaceMachineManufactor.plateResult(parkingSpaceMachineDto, parkingSpaceMachineNotifyDto.getReqBody());
+    }
+
 }

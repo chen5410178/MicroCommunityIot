@@ -22,11 +22,29 @@ public interface IParkingSpaceMachineManufactor {
     String heartbeat(ParkingSpaceMachineDto parkingSpaceMachineDto,String reqParam);
 
     /**
-     * 心跳
+     * 识别结果
      * @param parkingSpaceMachineDto
      * @param reqParam
      * @return
      */
     String plateResult(ParkingSpaceMachineDto parkingSpaceMachineDto,String reqParam);
+
+
+    /**
+     * 事件信息推送
+     * @param parkingSpaceMachineDto
+     * @param reqParam
+     * @return
+     */
+    String eventPush(ParkingSpaceMachineDto parkingSpaceMachineDto,String reqParam);
+
+
+    /**
+     * 车位设置
+     * @param parkingSpaceMachineDto
+     * @param reqParam
+     * @return
+     */
+    String getEmptyFrame(ParkingSpaceMachineDto parkingSpaceMachineDto,String reqParam);
 
 }

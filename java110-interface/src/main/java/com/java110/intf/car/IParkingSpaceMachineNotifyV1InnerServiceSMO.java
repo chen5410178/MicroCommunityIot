@@ -56,4 +56,23 @@ public interface IParkingSpaceMachineNotifyV1InnerServiceSMO {
      */
     @RequestMapping(value = "/plateResult", method = RequestMethod.POST)
     String plateResult(@RequestBody ParkingSpaceMachineNotifyDto parkingSpaceMachineNotifyDto);
+
+    /**
+     * 事件信息推送
+     * @param parkingSpaceMachineNotifyDto
+     * @return
+     */
+    @RequestMapping(value = "/eventPush", method = RequestMethod.POST)
+    String eventPush(@RequestBody ParkingSpaceMachineNotifyDto parkingSpaceMachineNotifyDto);
+
+
+    /**
+     * 车位设置
+     * @param parkingSpaceMachineNotifyDto
+     * @return
+     */
+    @RequestMapping(value = "/getEmptyFrame", method = RequestMethod.POST)
+    String getEmptyFrame(@RequestBody ParkingSpaceMachineNotifyDto parkingSpaceMachineNotifyDto);
+
+
 }
