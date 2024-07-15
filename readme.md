@@ -77,6 +77,9 @@ pc 端dev账户效果图</br>
 道闸商用截图
 ![image](./document/img/readme/9.png)</br>
 
+监控效果图
+![image](./document/img/readme/10.png)
+
 
 用户端首页效果图和用户端服务页面效果图
 
