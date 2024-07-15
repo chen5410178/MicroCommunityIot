@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="monitorManufactorV1ServiceDaoImpl">
+
+
+    <!-- 保存监控厂家信息 add by wuxw 2018-07-03 -->
+    <insert id="saveMonitorManufactorInfo" parameterType="Map">
+        insert into monitor_manufactor(
+        app_secure,app_id,mm_id,remark,community_id,mm_url,mm_name,mm_bean
+        ) values (
+        #{appSecure},#{appId},#{mmId},#{remark},#{communityId},#{mmUrl},#{mmName},#{mmBean}
+        )
+    </insert>
+
+
+    <!-- 查询监控厂家信息 add by wuxw 2018-07-03 -->
+    <select id="getMonitorManufactorInfo" parameterType="Map" resultType="Map">
+        select t.app_secure,t.app_secure appSecure,t.app_id,t.app_id appId,t.mm_id,t.mm_id
+        mmId,t.remark,t.status_cd,t.status_cd statusCd,t.community_id,t.community_id communityId,t.mm_url,t.mm_url
+        mmUrl,t.mm_name,t.mm_name mmName,t.mm_bean,t.mm_bean mmBean
+        from monitor_manufactor t
+        where 1 =1
+        <if test="appSecure !=null and appSecure != ''">
+            and t.app_secure= #{appSecure}
+        </if>
+        <if test="appId !=null and appId != ''">
+            and t.app_id= #{appId}
+        </if>
+        <if test="mmId !=null and mmId != ''">
+            and t.mm_id= #{mmId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="mmUrl !=null and mmUrl != ''">
+            and t.mm_url= #{mmUrl}
+        </if>
+        <if test="mmName !=null and mmName != ''">
+            and t.mm_name= #{mmName}
+        </if>
+        <if test="mmBean !=null and mmBean != ''">
+            and t.mm_bean= #{mmBean}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改监控厂家信息 add by wuxw 2018-07-03 -->
+    <update id="updateMonitorManufactorInfo" parameterType="Map">
+        update monitor_manufactor t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="appSecure !=null and appSecure != ''">
+            , t.app_secure= #{appSecure}
+        </if>
+        <if test="appId !=null and appId != ''">
+            , t.app_id= #{appId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="mmUrl !=null and mmUrl != ''">
+            , t.mm_url= #{mmUrl}
+        </if>
+        <if test="mmName !=null and mmName != ''">
+            , t.mm_name= #{mmName}
+        </if>
+        <if test="mmBean !=null and mmBean != ''">
+            , t.mm_bean= #{mmBean}
+        </if>
+        where 1=1
+        <if test="mmId !=null and mmId != ''">
+            and t.mm_id= #{mmId}
+        </if>
+
+    </update>
+
+    <!-- 查询监控厂家数量 add by wuxw 2018-07-03 -->
+    <select id="queryMonitorManufactorsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from monitor_manufactor t
+        where 1 =1
+        <if test="appSecure !=null and appSecure != ''">
+            and t.app_secure= #{appSecure}
+        </if>
+        <if test="appId !=null and appId != ''">
+            and t.app_id= #{appId}
+        </if>
+        <if test="mmId !=null and mmId != ''">
+            and t.mm_id= #{mmId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="mmUrl !=null and mmUrl != ''">
+            and t.mm_url= #{mmUrl}
+        </if>
+        <if test="mmName !=null and mmName != ''">
+            and t.mm_name= #{mmName}
+        </if>
+        <if test="mmBean !=null and mmBean != ''">
+            and t.mm_bean= #{mmBean}
+        </if>
+
+
+    </select>
+
+</mapper>
