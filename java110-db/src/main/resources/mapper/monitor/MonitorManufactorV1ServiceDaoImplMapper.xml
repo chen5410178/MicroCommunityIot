@@ -19,7 +19,7 @@
     <select id="getMonitorManufactorInfo" parameterType="Map" resultType="Map">
         select t.app_secure,t.app_secure appSecure,t.app_id,t.app_id appId,t.mm_id,t.mm_id
         mmId,t.remark,t.status_cd,t.status_cd statusCd,t.community_id,t.community_id communityId,t.mm_url,t.mm_url
-        mmUrl,t.mm_name,t.mm_name mmName,t.mm_bean,t.mm_bean mmBean,td.name mmBeanName
+        mmUrl,t.mm_name,t.mm_name mmName,t.mm_bean,t.mm_bean mmBean,td.name mmBeanName,t.create_time createTime
         from monitor_manufactor t
         left join t_dict td on t.mm_bean = td.status_cd and td.table_name = 'monitor_manufactor' and td.table_columns = 'mm_bean'
         where 1 =1
