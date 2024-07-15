@@ -23,6 +23,7 @@ public class MonitorManufactorDto extends PageDto implements Serializable {
     private String mmUrl;
     private String mmName;
     private String mmBean;
+    private String mmBeanName;
 
 
     private Date createTime;
@@ -109,5 +110,13 @@ public class MonitorManufactorDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getMmBeanName() {
+        return mmBeanName;
+    }
+
+    public void setMmBeanName(String mmBeanName) {
+        this.mmBeanName = mmBeanName;
     }
 }
