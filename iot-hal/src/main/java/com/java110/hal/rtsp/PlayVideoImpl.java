@@ -32,9 +32,9 @@ public class PlayVideoImpl implements IPlayVideo {
         List<MonitorMachineDto> machineDtos = monitorMachineV1InnerServiceSMOImpl.queryMonitorMachines(monitorMachineDto);
 
         Assert.listOnlyOne(machineDtos, "未包含监控设备");
-        if (MonitorMachineDto.PROTOCOL_RTSP.equals(machineDtos.get(0).getProtocol())) {
-            return playRtspVideo(machineDtos.get(0));
-        }
+//        if (MonitorMachineDto.PROTOCOL_RTSP.equals(machineDtos.get(0).getProtocol())) {
+//            return playRtspVideo(machineDtos.get(0));
+//        }
         return null;
     }
 

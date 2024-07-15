@@ -7,9 +7,9 @@
 
     <!-- 保存监控设备信息 add by wuxw 2018-07-03 -->
     <insert id="saveMonitorMachineInfo" parameterType="Map">
-        insert into monitor_machine(heartbeat_time, protocol, machine_id, machine_code, location_name, state, ma_id,
+        insert into monitor_machine(heartbeat_time, mm_id, machine_id, machine_code, location_name, state, ma_id,
                                     community_id, machine_name)
-        values (#{heartbeatTime}, #{protocol}, #{machineId}, #{machineCode}, #{locationName}, #{state}, #{maId},
+        values (#{heartbeatTime}, #{mmId}, #{machineId}, #{machineCode}, #{locationName}, #{state}, #{maId},
                 #{communityId}, #{machineName})
     </insert>
 
@@ -46,7 +46,7 @@
         t.machine_code machineCode,
         t.location_name locationName,
         t.ma_id maId,
-        t.protocol,
+        t.mm_id mmId,
         t.community_id communityId,
         t.heartbeat_time heartbeatTime,
         t.state,
@@ -66,8 +66,8 @@
         <if test="heartbeatTime !=null">
             and t.heartbeat_time= #{heartbeatTime}
         </if>
-        <if test="protocol !=null and protocol != ''">
-            and t.protocol= #{protocol}
+        <if test="mmId !=null and mmId != ''">
+            and t.mm_id= #{mmId}
         </if>
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}
@@ -107,19 +107,23 @@
         t.machine_code machineCode,
         t.location_name locationName,
         t.ma_id maId,
-        t.protocol,
+        t.mm_id mmId,
         t.community_id communityId,
         t.heartbeat_time heartbeatTime,
         t.state,
         t.create_time createTime,
-        t.status_cd statusCd
+        t.status_cd statusCd,
+        mm.mm_name mmName,
+        ma.ma_name maName
         from monitor_machine t
+        left join monitor_manufactor mm on t.mm_id = mm.mm_id and mm.status_cd = '0'
+        left join monitor_area ma on t.ma_id = ma.ma_id and ma.status_cd = '0'
         where 1 =1
         <if test="heartbeatTime !=null">
             and t.heartbeat_time= #{heartbeatTime}
         </if>
-        <if test="protocol !=null and protocol != ''">
-            and t.protocol= #{protocol}
+        <if test="mmId !=null and mmId != ''">
+            and t.mm_id= #{mmId}
         </if>
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}
@@ -161,8 +165,8 @@
         <if test="heartbeatTime !=null">
             , t.heartbeat_time= #{heartbeatTime}
         </if>
-        <if test="protocol !=null and protocol != ''">
-            , t.protocol= #{protocol}
+        <if test="mmId !=null and mmId != ''">
+            , t.mm_id= #{mmId}
         </if>
         <if test="machineCode !=null and machineCode != ''">
             , t.machine_code= #{machineCode}
@@ -197,8 +201,8 @@
         <if test="heartbeatTime !=null">
             and t.heartbeat_time= #{heartbeatTime}
         </if>
-        <if test="protocol !=null and protocol != ''">
-            and t.protocol= #{protocol}
+        <if test="mmId !=null and mmId != ''">
+            and t.mm_id= #{mmId}
         </if>
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}

@@ -70,11 +70,9 @@ public class SaveMonitorMachineCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "machineCode", "请求报文中未包含machineCode");
         Assert.hasKeyAndValue(reqJson, "locationName", "请求报文中未包含locationName");
         Assert.hasKeyAndValue(reqJson, "maId", "请求报文中未包含maId");
-        Assert.hasKeyAndValue(reqJson, "protocol", "请求报文中未包含protocol");
+        Assert.hasKeyAndValue(reqJson, "mmId", "请求报文中未包含mmId");
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
-        if (CollectionUtils.isEmpty(reqJson.getJSONArray("attrSpecList"))) {
-            throw new IllegalArgumentException("未包含属性信息");
-        }
+
     }
 
     @Override
@@ -91,25 +89,6 @@ public class SaveMonitorMachineCmd extends Cmd {
             throw new CmdException("保存数据失败");
         }
 
-        JSONArray attrSpecList = reqJson.getJSONArray("attrSpecList");
-        List<MonitorMachineAttrsPo> monitorMachineAttrsPoList = new ArrayList<>();
-        JSONObject attrSpec = null;
-        for (int i = 0; i < attrSpecList.size(); i++) {
-            attrSpec = attrSpecList.getJSONObject(i);
-            Assert.hasKeyAndValue(attrSpec, "specCd", "未包含属性");
-            Assert.hasKeyAndValue(attrSpec, "value", "未包含属性值");
-            MonitorMachineAttrsPo monitorMachineAttrsPo = BeanConvertUtil.covertBean(attrSpec, MonitorMachineAttrsPo.class);
-            monitorMachineAttrsPo.setAttrId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
-            monitorMachineAttrsPo.setMachineId(monitorMachinePo.getMachineId());
-            monitorMachineAttrsPo.setCommunityId(monitorMachinePo.getCommunityId());
-            monitorMachineAttrsPoList.add(monitorMachineAttrsPo);
-        }
-
-        flag = monitorMachineAttrsV1InnerServiceSMOImpl.saveMonitorMachineAttrsList(monitorMachineAttrsPoList);
-
-        if (flag != monitorMachineAttrsPoList.size()) {
-            throw new CmdException("保存数据失败");
-        }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }

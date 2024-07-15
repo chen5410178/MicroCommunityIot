@@ -69,11 +69,9 @@ public class UpdateMonitorMachineCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "machineCode", "请求报文中未包含machineCode");
         Assert.hasKeyAndValue(reqJson, "locationName", "请求报文中未包含locationName");
         Assert.hasKeyAndValue(reqJson, "maId", "请求报文中未包含maId");
-        Assert.hasKeyAndValue(reqJson, "protocol", "请求报文中未包含protocol");
+        Assert.hasKeyAndValue(reqJson, "mmId", "请求报文中未包含protocol");
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
-        if (CollectionUtils.isEmpty(reqJson.getJSONArray("attrSpecList"))) {
-            throw new IllegalArgumentException("未包含属性信息");
-        }
+
     }
 
     @Override
@@ -84,34 +82,6 @@ public class UpdateMonitorMachineCmd extends Cmd {
         int flag = monitorMachineV1InnerServiceSMOImpl.updateMonitorMachine(monitorMachinePo);
 
         if (flag < 1) {
-            throw new CmdException("更新数据失败");
-        }
-
-        MonitorMachineAttrsPo monitorMachineAttrs = new MonitorMachineAttrsPo();
-        monitorMachineAttrs.setMachineId(monitorMachinePo.getMachineId());
-        monitorMachineAttrs.setStatusCd("1");
-        flag = monitorMachineAttrsV1InnerServiceSMOImpl.updateMonitorMachineAttrs(monitorMachineAttrs);
-        if (flag < 1) {
-            throw new CmdException("更新数据失败");
-        }
-
-        JSONArray attrSpecList = reqJson.getJSONArray("attrSpecList");
-        List<MonitorMachineAttrsPo> monitorMachineAttrsPoList = new ArrayList<>();
-        JSONObject attrSpec = null;
-        for (int i = 0; i < attrSpecList.size(); i++) {
-            attrSpec = attrSpecList.getJSONObject(i);
-            Assert.hasKeyAndValue(attrSpec, "specCd", "未包含属性");
-            Assert.hasKeyAndValue(attrSpec, "value", "未包含属性值");
-            MonitorMachineAttrsPo monitorMachineAttrsPo = BeanConvertUtil.covertBean(attrSpec, MonitorMachineAttrsPo.class);
-            monitorMachineAttrsPo.setAttrId(GenerateCodeFactory.getGeneratorId("10"));
-            monitorMachineAttrsPo.setMachineId(monitorMachinePo.getMachineId());
-            monitorMachineAttrsPo.setCommunityId(monitorMachinePo.getCommunityId());
-            monitorMachineAttrsPoList.add(monitorMachineAttrsPo);
-        }
-
-        flag = monitorMachineAttrsV1InnerServiceSMOImpl.saveMonitorMachineAttrsList(monitorMachineAttrsPoList);
-
-        if (flag != monitorMachineAttrsPoList.size()) {
             throw new CmdException("更新数据失败");
         }
 

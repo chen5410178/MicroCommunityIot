@@ -21,7 +21,11 @@ public class MonitorMachineDto extends PageDto implements Serializable {
     private String machineCode;
     private String locationName;
     private String maId;
-    private String protocol;
+    private String mmId;
+
+    private String mmName;
+
+
     private String communityId;
     private Date heartbeatTime;
     private String state;
@@ -73,13 +77,7 @@ public class MonitorMachineDto extends PageDto implements Serializable {
         this.maId = maId;
     }
 
-    public String getProtocol() {
-        return protocol;
-    }
 
-    public void setProtocol(String protocol) {
-        this.protocol = protocol;
-    }
 
     public String getCommunityId() {
         return communityId;
@@ -151,5 +149,21 @@ public class MonitorMachineDto extends PageDto implements Serializable {
 
     public void setIsOnlineStateName(String isOnlineStateName) {
         this.isOnlineStateName = isOnlineStateName;
+    }
+
+    public String getMmId() {
+        return mmId;
+    }
+
+    public void setMmId(String mmId) {
+        this.mmId = mmId;
+    }
+
+    public String getMmName() {
+        return mmName;
+    }
+
+    public void setMmName(String mmName) {
+        this.mmName = mmName;
     }
 }

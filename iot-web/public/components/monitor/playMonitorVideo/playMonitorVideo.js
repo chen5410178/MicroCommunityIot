@@ -7,6 +7,7 @@
                 machineId: '',
                 communityId: '',
                 remark: '',
+                jessibuca:{}
             }
         },
         _initMethod: function () {
@@ -16,33 +17,63 @@
             vc.on('playMonitorVideo', 'openPlayMonitorVideoModal', function (_machine) {
                 vc.copyObject(_machine, $that.playMonitorVideoInfo);
                 $('#playMonitorVideoModel').modal('show');
-                $that._playWsVideo();
+                $that._queryPlayVideoUrl();
             });
         },
         methods: {
 
-            _playWsVideo: function () {
-                let _protocol = window.location.protocol;
-                let url = window.location.host + "/ws/videoStream/" + $that.playMonitorVideoInfo.machineId + "/" + vc.uuid();
-                if (_protocol.startsWith('https')) {
-                    url =
-                        "wss://" + url;
-                } else {
-                    url =
-                        "ws://" + url;
+            _queryPlayVideoUrl: function () {
+                let param = {
+                    params: {
+                        page:1,
+                        row:100,
+                        communityId:vc.getCurrentCommunity().communityId,
+                        machineId:$that.playMonitorVideoInfo.machineId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/monitorMachine.getPlayVideoUrl',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        if(_json.code != 0){
+                            vc.toast(_json.msg);
+                            return;
+                        }
+                        $that._playWsVideo(_json.data);
+                    }, function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+
+            _playWsVideo: function (_url) {
+              
+                let _jessibuca = $that.playMonitorVideoInfo.jessibuca;
+                if (_jessibuca) {
+                    try {
+                        _jessibuca.destroy();
+                    } catch (err) {
+
+                    }
                 }
+
                 let image = document.getElementById("receiver1Div");
                 let jessibuca = new Jessibuca({
                     container: image,
-                    videoBuffer: 0.2,
+                    videoBuffer: 0.2, // 缓存时长
                     isResize: false,
-                    isFlv:true,
-                    useMSE:true,
-                    debug:true
-                });
-                jessibuca.onLoad = function () {
-                    this.play(url);
-                };
+                    text: "",
+                    loadingText: "",
+                    useMSE: false,
+                    debug: false,
+                    isNotMute: false,
+                },);
+
+                $that.playMonitorVideoInfo.jessibuca = jessibuca;
+
+                jessibuca.play(_url);
             },
 
             clearPlayMonitorVideoInfo: function () {
@@ -51,6 +82,7 @@
                     machineId: '',
                     communityId: '',
                     remark: '',
+                    jessibuca:{}
                 };
             }
         }

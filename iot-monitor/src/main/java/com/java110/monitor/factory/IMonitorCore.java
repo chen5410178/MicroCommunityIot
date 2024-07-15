@@ -10,4 +10,6 @@ public interface IMonitorCore {
      * @param monitorMachineDtos
      */
     void queryMonitorMachineState(List<MonitorMachineDto> monitorMachineDtos);
+
+
 }

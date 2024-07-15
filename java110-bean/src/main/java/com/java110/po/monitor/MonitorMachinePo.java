@@ -9,7 +9,8 @@ public class MonitorMachinePo implements Serializable {
     private String machineCode;
     private String locationName;
     private String maId;
-    private String protocol;
+
+    private String mmId;
     private String communityId;
     private Date heartbeatTime;
     private String state;
@@ -55,13 +56,6 @@ public class MonitorMachinePo implements Serializable {
         this.maId = maId;
     }
 
-    public String getProtocol() {
-        return protocol;
-    }
-
-    public void setProtocol(String protocol) {
-        this.protocol = protocol;
-    }
 
     public String getCommunityId() {
         return communityId;
@@ -93,5 +87,13 @@ public class MonitorMachinePo implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getMmId() {
+        return mmId;
+    }
+
+    public void setMmId(String mmId) {
+        this.mmId = mmId;
     }
 }

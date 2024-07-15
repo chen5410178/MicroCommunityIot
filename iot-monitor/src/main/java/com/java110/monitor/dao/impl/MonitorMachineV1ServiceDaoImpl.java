@@ -109,9 +109,9 @@ public class MonitorMachineV1ServiceDaoImpl extends BaseServiceDao implements IM
     public List<Map> getMonitorMachineInfo1(Map info) throws DAOException {
         logger.debug("查询 getMonitorMachineInfo1 入参 info : {}", info);
 
-        List<Map> businessMonitorMachineInfos = sqlSessionTemplate.selectList("monitorMachineV1ServiceDaoImpl.getMonitorMachineInfo1", info);
+        List<Map> infos = sqlSessionTemplate.selectList("monitorMachineV1ServiceDaoImpl.getMonitorMachineInfo1", info);
 
-        return businessMonitorMachineInfos;
+        return infos;
     }
 
 

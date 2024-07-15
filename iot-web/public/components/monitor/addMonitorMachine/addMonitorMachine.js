@@ -1,10 +1,6 @@
 (function (vc) {
 
     vc.extends({
-        propTypes: {
-            callBackListener: vc.propTypes.string, //父组件名称
-            callBackFunction: vc.propTypes.string //父组件监听方法
-        },
         data: {
             addMonitorMachineInfo: {
                 machineId: '',
@@ -12,10 +8,10 @@
                 machineCode: '',
                 locationName: '',
                 maId: '',
-                protocol: '',
+                mmId: '',
                 communityId: '',
                 state: '',
-                attrSpecList: []
+                manufactors: []
             },
         },
         _initMethod: function () {
@@ -23,6 +19,7 @@
         },
         _initEvent: function () {
             vc.on('addMonitorMachine', 'openAddMonitorMachineModal', function () {
+                $that._listAddMonitorManufactors();
                 $('#addMonitorMachineModel').modal('show');
             });
         },
@@ -74,11 +71,11 @@
                             errInfo: "监控区域不能为空"
                         },
                     ],
-                    'addMonitorMachineInfo.protocol': [
+                    'addMonitorMachineInfo.mmId': [
                         {
                             limit: "required",
                             param: "",
-                            errInfo: "监控协议不能为空"
+                            errInfo: "监控厂家不能为空"
                         },
                     ],
                     'addMonitorMachineInfo.communityId': [
@@ -126,31 +123,34 @@
                     machineCode: '',
                     locationName: '',
                     maId: '',
-                    protocol: '',
+                    mmId: '',
                     communityId: '',
                     state: '',
-                    attrSpecList: []
+                    manufactors: []
                 };
             },
-            listAttrSpec: function () {
-                var param = {
+            _listAddMonitorManufactors: function () {
+
+                let param = {
                     params: {
-                        page: -1,
-                        row: 100,
-                        tableName: 'machine_attr',
-                        domain: 'MONITOR.' + $that.addMonitorMachineInfo.protocol,
+                        page:1,
+                        row:100,
+                        communityId:vc.getCurrentCommunity().communityId
                     }
-                }
-                vc.http.apiGet('/attrSpec.listAttrSpec',
+                };
+
+                //发送get请求
+                vc.http.apiGet('/monitorManufactor.listMonitorManufactor',
                     param,
                     function (json, res) {
-                        var _attrSpecInfo = JSON.parse(json);
-                        $that.addMonitorMachineInfo.attrSpecList = _attrSpecInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.addMonitorMachineInfo.manufactors = _json.data;
                     }, function (errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );
-            }
+            },
+        
         }
     });
 })(window.vc);
