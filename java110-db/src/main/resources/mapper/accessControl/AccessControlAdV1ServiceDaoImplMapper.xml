@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="accessControlAdV1ServiceDaoImpl">
+
+
+    <!-- 保存门禁广告信息 add by wuxw 2018-07-03 -->
+    <insert id="saveAccessControlAdInfo" parameterType="Map">
+        insert into access_control_ad(
+        ad_name,ad_type,ad_id,remark,state,community_id,url
+        ) values (
+        #{adName},#{adType},#{adId},#{remark},#{state},#{communityId},#{url}
+        )
+    </insert>
+
+
+    <!-- 查询门禁广告信息 add by wuxw 2018-07-03 -->
+    <select id="getAccessControlAdInfo" parameterType="Map" resultType="Map">
+        select t.ad_name,t.ad_name adName,t.ad_type,t.ad_type adType,t.ad_id,t.ad_id
+        adId,t.remark,t.status_cd,t.status_cd statusCd,t.state,t.community_id,t.community_id communityId,t.url
+        from access_control_ad t
+        where 1 =1
+        <if test="adName !=null and adName != ''">
+            and t.ad_name= #{adName}
+        </if>
+        <if test="adType !=null and adType != ''">
+            and t.ad_type= #{adType}
+        </if>
+        <if test="adId !=null and adId != ''">
+            and t.ad_id= #{adId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="url !=null and url != ''">
+            and t.url= #{url}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改门禁广告信息 add by wuxw 2018-07-03 -->
+    <update id="updateAccessControlAdInfo" parameterType="Map">
+        update access_control_ad t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="adName !=null and adName != ''">
+            , t.ad_name= #{adName}
+        </if>
+        <if test="adType !=null and adType != ''">
+            , t.ad_type= #{adType}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="url !=null and url != ''">
+            , t.url= #{url}
+        </if>
+        where 1=1
+        <if test="adId !=null and adId != ''">
+            and t.ad_id= #{adId}
+        </if>
+
+    </update>
+
+    <!-- 查询门禁广告数量 add by wuxw 2018-07-03 -->
+    <select id="queryAccessControlAdsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from access_control_ad t
+        where 1 =1
+        <if test="adName !=null and adName != ''">
+            and t.ad_name= #{adName}
+        </if>
+        <if test="adType !=null and adType != ''">
+            and t.ad_type= #{adType}
+        </if>
+        <if test="adId !=null and adId != ''">
+            and t.ad_id= #{adId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="url !=null and url != ''">
+            and t.url= #{url}
+        </if>
+
+
+    </select>
+
+</mapper>
