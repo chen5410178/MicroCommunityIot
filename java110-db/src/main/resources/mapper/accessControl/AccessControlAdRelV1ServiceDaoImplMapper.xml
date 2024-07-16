@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="accessControlAdRelV1ServiceDaoImpl">
+
+
+    <!-- 保存广告门禁信息 add by wuxw 2018-07-03 -->
+    <insert id="saveAccessControlAdRelInfo" parameterType="Map">
+        insert into access_control_ad_rel(
+        rel_id,ad_id,machine_id,machine_code,remark,community_id,machine_name
+        ) values (
+        #{relId},#{adId},#{machineId},#{machineCode},#{remark},#{communityId},#{machineName}
+        )
+    </insert>
+
+
+    <!-- 查询广告门禁信息 add by wuxw 2018-07-03 -->
+    <select id="getAccessControlAdRelInfo" parameterType="Map" resultType="Map">
+        select t.rel_id,t.rel_id relId,t.ad_id,t.ad_id adId,t.machine_id,t.machine_id
+        machineId,t.machine_code,t.machine_code machineCode,t.remark,t.status_cd,t.status_cd
+        statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name machineName
+        from access_control_ad_rel t
+        where 1 =1
+        <if test="relId !=null and relId != ''">
+            and t.rel_id= #{relId}
+        </if>
+        <if test="adId !=null and adId != ''">
+            and t.ad_id= #{adId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改广告门禁信息 add by wuxw 2018-07-03 -->
+    <update id="updateAccessControlAdRelInfo" parameterType="Map">
+        update access_control_ad_rel t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="adId !=null and adId != ''">
+            , t.ad_id= #{adId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            , t.machine_name= #{machineName}
+        </if>
+        where 1=1
+        <if test="relId !=null and relId != ''">
+            and t.rel_id= #{relId}
+        </if>
+
+    </update>
+
+    <!-- 查询广告门禁数量 add by wuxw 2018-07-03 -->
+    <select id="queryAccessControlAdRelsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from access_control_ad_rel t
+        where 1 =1
+        <if test="relId !=null and relId != ''">
+            and t.rel_id= #{relId}
+        </if>
+        <if test="adId !=null and adId != ''">
+            and t.ad_id= #{adId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+
+
+    </select>
+
+</mapper>
