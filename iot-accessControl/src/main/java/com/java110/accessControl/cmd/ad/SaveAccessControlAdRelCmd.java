@@ -55,10 +55,10 @@ public class SaveAccessControlAdRelCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "adId", "请求报文中未包含adId");
-Assert.hasKeyAndValue(reqJson, "machineId", "请求报文中未包含machineId");
-Assert.hasKeyAndValue(reqJson, "machineCode", "请求报文中未包含machineCode");
-Assert.hasKeyAndValue(reqJson, "machineName", "请求报文中未包含machineName");
-Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
+        Assert.hasKeyAndValue(reqJson, "machineId", "请求报文中未包含machineId");
+        Assert.hasKeyAndValue(reqJson, "machineCode", "请求报文中未包含machineCode");
+        Assert.hasKeyAndValue(reqJson, "machineName", "请求报文中未包含machineName");
+        Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
 
     }
 
@@ -66,7 +66,7 @@ Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含community
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-       AccessControlAdRelPo accessControlAdRelPo = BeanConvertUtil.covertBean(reqJson, AccessControlAdRelPo.class);
+        AccessControlAdRelPo accessControlAdRelPo = BeanConvertUtil.covertBean(reqJson, AccessControlAdRelPo.class);
         accessControlAdRelPo.setRelId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         int flag = accessControlAdRelV1InnerServiceSMOImpl.saveAccessControlAdRel(accessControlAdRelPo);
 
