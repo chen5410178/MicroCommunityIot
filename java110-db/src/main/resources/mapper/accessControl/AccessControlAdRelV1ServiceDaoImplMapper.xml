@@ -19,8 +19,10 @@
     <select id="getAccessControlAdRelInfo" parameterType="Map" resultType="Map">
         select t.rel_id,t.rel_id relId,t.ad_id,t.ad_id adId,t.machine_id,t.machine_id
         machineId,t.machine_code,t.machine_code machineCode,t.remark,t.status_cd,t.status_cd
-        statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name machineName
+        statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name machineName,
+        aca.ad_name adName,aca.ad_type adType,aca.url,aca.state,t.create_time createTime
         from access_control_ad_rel t
+        left join access_control_ad aca on t.ad_id = aca.ad_id and aca.status_cd = '0'
         where 1 =1
         <if test="relId !=null and relId != ''">
             and t.rel_id= #{relId}

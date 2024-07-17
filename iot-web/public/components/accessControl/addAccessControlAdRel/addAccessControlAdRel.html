@@ -1,0 +1,35 @@
+<div id="addAccessControlAdRelModel" class="modal fade" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="m-t-none m-b ">
+                    <vc:i18n name="关联门禁" namespace="addAccessControlAdRel"></vc:i18n>
+                </h3>
+                <div class="ibox-content">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label text-right">
+                            <vc:i18n name='门禁设备' namespace='addAccessControlAdRel'></vc:i18n>
+                        </label>
+                        <div class="col-sm-10 col-form-label">
+                            <label class="margin-right" v-for="(item,index) in addAccessControlAdRelInfo.machines">
+                                <input type="checkbox" v-model="addAccessControlAdRelInfo.machineIds"
+                                    :value="item.machineId"> {{item.machineName}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <button class="btn btn-primary float-right" type="button"
+                            v-on:click="_addAccessControlAdRel()">
+                            <vc:i18n name="提交"></vc:i18n>
+                        </button>
+                        <button type="button" class="btn btn-warning float-right" style="margin-right:20px;"
+                            data-dismiss="modal">
+                            <vc:i18n name="取消"></vc:i18n>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -17,11 +17,16 @@ public class AccessControlAdRelDto extends PageDto implements Serializable {
 
     private String relId;
     private String adId;
+    private String adName;
+    private String adType;
+    private String url;
+    private String state;
     private String machineId;
     private String machineCode;
     private String remark;
     private String communityId;
     private String machineName;
+
 
 
     private Date createTime;
@@ -100,5 +105,37 @@ public class AccessControlAdRelDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getAdName() {
+        return adName;
+    }
+
+    public void setAdName(String adName) {
+        this.adName = adName;
+    }
+
+    public String getAdType() {
+        return adType;
+    }
+
+    public void setAdType(String adType) {
+        this.adType = adType;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

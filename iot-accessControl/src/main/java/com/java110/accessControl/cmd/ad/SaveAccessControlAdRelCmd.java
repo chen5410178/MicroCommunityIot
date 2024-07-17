@@ -15,6 +15,7 @@
  */
 package com.java110.accessControl.cmd.ad;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
@@ -26,11 +27,16 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.intf.accessControl.IAccessControlAdRelV1InnerServiceSMO;
+import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.po.accessControlAdRel.AccessControlAdRelPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -52,13 +58,23 @@ public class SaveAccessControlAdRelCmd extends Cmd {
     @Autowired
     private IAccessControlAdRelV1InnerServiceSMO accessControlAdRelV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IAccessControlV1InnerServiceSMO accessControlV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "adId", "请求报文中未包含adId");
-        Assert.hasKeyAndValue(reqJson, "machineId", "请求报文中未包含machineId");
-        Assert.hasKeyAndValue(reqJson, "machineCode", "请求报文中未包含machineCode");
-        Assert.hasKeyAndValue(reqJson, "machineName", "请求报文中未包含machineName");
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
+
+        if (!reqJson.containsKey("machineIds")) {
+            throw new CmdException("未包含门禁");
+        }
+
+        JSONArray machineIds = reqJson.getJSONArray("machineIds");
+
+        if (ListUtil.isNull(machineIds)) {
+            throw new CmdException("未包含门禁");
+        }
 
     }
 
@@ -66,12 +82,34 @@ public class SaveAccessControlAdRelCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        AccessControlAdRelPo accessControlAdRelPo = BeanConvertUtil.covertBean(reqJson, AccessControlAdRelPo.class);
-        accessControlAdRelPo.setRelId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
-        int flag = accessControlAdRelV1InnerServiceSMOImpl.saveAccessControlAdRel(accessControlAdRelPo);
 
-        if (flag < 1) {
-            throw new CmdException("保存数据失败");
+        JSONArray machineIds = reqJson.getJSONArray("machineIds");
+
+        List<AccessControlDto> accessControlDtos = null;
+        AccessControlAdRelPo accessControlAdRelPo = null;
+        int flag = 0;
+        for (int machineIndex = 0; machineIndex < machineIds.size(); machineIndex++) {
+            AccessControlDto accessControlDto = new AccessControlDto();
+            accessControlDto.setMachineId(machineIds.getString(machineIndex));
+            accessControlDto.setCommunityId(reqJson.getString("communityId"));
+            accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+            if (ListUtil.isNull(accessControlDtos)) {
+                continue;
+            }
+            accessControlAdRelPo = new AccessControlAdRelPo();
+            accessControlAdRelPo.setRelId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+            accessControlAdRelPo.setAdId(reqJson.getString("adId"));
+            accessControlAdRelPo.setMachineId(accessControlDtos.get(0).getMachineId());
+            accessControlAdRelPo.setMachineCode(accessControlDtos.get(0).getMachineCode());
+            accessControlAdRelPo.setRemark(reqJson.getString("remark"));
+            accessControlAdRelPo.setCommunityId(accessControlDtos.get(0).getCommunityId());
+            accessControlAdRelPo.setMachineName(accessControlDtos.get(0).getMachineName());
+            flag = accessControlAdRelV1InnerServiceSMOImpl.saveAccessControlAdRel(accessControlAdRelPo);
+
+            if (flag < 1) {
+                throw new CmdException("保存数据失败");
+            }
+
         }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());

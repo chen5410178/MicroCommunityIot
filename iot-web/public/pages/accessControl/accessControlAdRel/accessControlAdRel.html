@@ -1,12 +1,11 @@
 <div>
     <div class="flex justify-start">
-        <div style="padding-right:0px;width: 200px;" >
+        <div style="padding-right:0px;width: 200px;">
             <div class=" border-radius ">
                 <div class="margin-xs-r  treeview ">
                     <ul class="list-group text-center border-radius">
-                        <li class="list-group-item node-orgTree "
-                            v-for="(item,index) in accessControlAdRelInfo.ads" :key="index"
-                            @click="_swatchAd(item)"
+                        <li class="list-group-item node-orgTree " v-for="(item,index) in accessControlAdRelInfo.ads"
+                            :key="index" @click="_swatchAd(item)"
                             :class="{'vc-node-selected':accessControlAdRelInfo.conditions.adId == item.adId}">
                             {{item.adName}}
                         </li>
@@ -52,8 +51,8 @@
                     </h5>
                     <div class="ibox-tools" style="top:10px;">
                         <button type="button" class="btn btn-primary btn-sm"
-                            v-on:click="_openAuthorizeAccessControlModel()">
-                            授权门禁
+                            v-on:click="_openAddAccessControlAdRelModel()">
+                            关联门禁
                         </button>
                     </div>
                 </div>
@@ -63,7 +62,7 @@
                             <thead>
                                 <tr>
                                     <th data-hide="phone" class="text-center ">
-                                        <vc:i18n name="组织" namespace="accessControlAdRel"></vc:i18n>
+                                        <vc:i18n name="广告" namespace="accessControlAdRel"></vc:i18n>
                                     </th>
                                     <th data-hide="phone" class="text-center ">
                                         <vc:i18n name="门禁名称" namespace="accessControlAdRel"></vc:i18n>
@@ -71,11 +70,9 @@
                                     <th data-hide="phone" class="text-center">
                                         <vc:i18n name="门禁编号" namespace="accessControlAdRel"></vc:i18n>
                                     </th>
+
                                     <th data-hide="phone" class="text-center">
-                                        <vc:i18n name="人员数" namespace="accessControlAdRel"></vc:i18n>
-                                    </th>
-                                    <th data-hide="phone" class="text-center">
-                                        <vc:i18n name="授权时间" namespace="accessControlAdRel"></vc:i18n>
+                                        <vc:i18n name="关联时间" namespace="accessControlAdRel"></vc:i18n>
                                     </th>
                                     <th class="text-center ">
                                         <vc:i18n name="操作" namespace="accessControlAdRel"></vc:i18n>
@@ -86,16 +83,13 @@
                                 <tr v-for="accessControl in accessControlAdRelInfo.accessControls">
                                     <!-- <td>{{room.roomId}}</td> -->
                                     <td class="text-center">
-                                        {{accessControl.orgName}}
+                                        {{accessControl.adName}}
                                     </td>
                                     <td class="text-center">
                                         {{accessControl.machineName}}
                                     </td>
                                     <td class="text-center">
                                         {{accessControl.machineCode}}
-                                    </td>
-                                    <td class="text-center">
-                                        {{accessControl.personCount}}
                                     </td>
                                     <td class="text-center">
                                         {{accessControl.createTime}}
@@ -126,7 +120,7 @@
         </div>
     </div>
     <!-- 删除员工权限 -->
-    <!-- <vc:create path="accessControl/deleteAccessControlAdRel"></vc:create>
+    <vc:create path="accessControl/deleteAccessControlAdRel"></vc:create>
 
-    <vc:create path="accessControl/authorizeAccessControl"></vc:create> -->
+    <vc:create path="accessControl/addAccessControlAdRel"></vc:create>
 </div>

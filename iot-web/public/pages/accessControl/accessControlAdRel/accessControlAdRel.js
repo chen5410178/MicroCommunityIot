@@ -100,7 +100,7 @@
                 );
             },
 
-            _openAuthorizeAccessControlModel: function (_accessControlAdRel) {
+            _openAddAccessControlAdRelModel: function (_accessControlAdRel) {
                 let _adId = $that.accessControlAdRelInfo.conditions.adId;
 
                 if (!_adId) {
@@ -108,7 +108,7 @@
                     return;
                 }
 
-                vc.emit('authorizeAccessControl', 'openAddAccessControlModal', {
+                vc.emit('addAccessControlAdRel', 'openAddAccessControlModal', {
                     adId: _adId,
                 });
             },

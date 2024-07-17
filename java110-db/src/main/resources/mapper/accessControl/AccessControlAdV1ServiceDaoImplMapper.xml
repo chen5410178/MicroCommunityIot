@@ -18,7 +18,8 @@
     <!-- 查询门禁广告信息 add by wuxw 2018-07-03 -->
     <select id="getAccessControlAdInfo" parameterType="Map" resultType="Map">
         select t.ad_name,t.ad_name adName,t.ad_type,t.ad_type adType,t.ad_id,t.ad_id
-        adId,t.remark,t.status_cd,t.status_cd statusCd,t.state,t.community_id,t.community_id communityId,t.url
+        adId,t.remark,t.status_cd,t.status_cd statusCd,t.state,t.community_id,t.community_id communityId,t.url,
+        t.create_time createTime
         from access_control_ad t
         where 1 =1
         <if test="adName !=null and adName != ''">
