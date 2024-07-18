@@ -30,6 +30,7 @@ import com.java110.dto.accessControl.AccessControlDto;
 
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -124,18 +125,29 @@ public class ListAccessControlCmd extends Cmd {
         for (AccessControlDto accessControlDto : accessControlDtos) {
             String heartbeatTime = accessControlDto.getHeartbeatTime();
             try {
+
                 if (StringUtil.isEmpty(heartbeatTime)) {
                     accessControlDto.setStateName("设备离线");
-                } else {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(DateUtil.getDateFromString(heartbeatTime, DateUtil.DATE_FORMATE_STRING_A));
-                    calendar.add(Calendar.MINUTE, 2);
-                    if (calendar.getTime().getTime() <= DateUtil.getCurrentDate().getTime()) {
-                        accessControlDto.setStateName("设备离线");
-                    } else {
-                        accessControlDto.setStateName("设备在线");
-                    }
+                    continue;
                 }
+                Date hTime = DateUtil.getDateFromString(heartbeatTime, DateUtil.DATE_FORMATE_STRING_B);
+                //todo 宇凡设备特殊处理，因为宇凡没有心跳
+                if ("4".equals(accessControlDto.getImplBean())) {
+                    accessControlDto.setStateName("设备在线");
+                    if ("2020-01-01".equals(DateUtil.getFormatTimeStringB(hTime))){
+                        accessControlDto.setStateName("设备离线");
+                    }
+                    continue;
+                }
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(DateUtil.getDateFromString(heartbeatTime, DateUtil.DATE_FORMATE_STRING_A));
+                calendar.add(Calendar.MINUTE, 2);
+                if (calendar.getTime().getTime() <= DateUtil.getCurrentDate().getTime()) {
+                    accessControlDto.setStateName("设备离线");
+                } else {
+                    accessControlDto.setStateName("设备在线");
+                }
+
             } catch (ParseException e) {
                 e.printStackTrace();
                 accessControlDto.setStateName("设备离线");

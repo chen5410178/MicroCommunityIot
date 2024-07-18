@@ -6,8 +6,11 @@ import com.java110.accessControl.manufactor.AbstractAccessControlManufactorAdapt
 import com.java110.accessControl.smo.impl.AccessControlLogV1InnerServiceSMOImpl;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.MqttFactory;
+import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.accessControl.AccessControlOweFeeDto;
 import com.java110.dto.accessControlLog.AccessControlLogDto;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import org.slf4j.Logger;
@@ -37,15 +40,18 @@ public class CjHttpAssessControlProcessAdapt extends AbstractAccessControlManufa
     public boolean initMachine(AccessControlDto machineDto) {
         MqttFactory.subscribe("device/uface/" + machineDto.getMachineCode() + "/response");
         MqttFactory.subscribe("device/uface/" + machineDto.getMachineCode() + "/event");
+        MqttFactory.subscribe("device/uface/online");
+
         return true;
     }
 
     @Override
     public boolean addUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
+        String id = GenerateCodeFactory.getUUID();
         JSONObject param = new JSONObject();
         param.put("method", "addPerson");
         param.put("timestamp", System.currentTimeMillis());
-        param.put("id", GenerateCodeFactory.getUUID());
+        param.put("id", id);
 
         JSONObject data = new JSONObject();
         JSONObject person = new JSONObject();
@@ -54,6 +60,10 @@ public class CjHttpAssessControlProcessAdapt extends AbstractAccessControlManufa
 
         person.put("personId", accessControlFacePo.getPersonId());
         person.put("name", accessControlFacePo.getName());
+        String cardId = accessControlFacePo.getCardNumber();
+        if (!StringUtil.isEmpty(cardId)) {
+            person.put("cardNo", cardId);
+        }
         data.put("person", person);
 
         String faceData = accessControlFacePo.getFaceBase64();
@@ -67,7 +77,7 @@ public class CjHttpAssessControlProcessAdapt extends AbstractAccessControlManufa
 
         MqttFactory.publish(REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()), param.toJSONString());
 
-        saveAddFaceLog("", accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/addPerson",
+        saveAddFaceLog(id, accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/addPerson",
                 accessControlDto.getCommunityId(),
                 param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 
@@ -87,10 +97,12 @@ public class CjHttpAssessControlProcessAdapt extends AbstractAccessControlManufa
 
     @Override
     public boolean deleteUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
+        String id = GenerateCodeFactory.getUUID();
+
         JSONObject param = new JSONObject();
         param.put("method", "deletePerson");
         param.put("timestamp", System.currentTimeMillis());
-        param.put("id", GenerateCodeFactory.getUUID());
+        param.put("id",id);
 
         JSONObject data = new JSONObject();
         List<String> personId = new ArrayList<>();
@@ -101,7 +113,7 @@ public class CjHttpAssessControlProcessAdapt extends AbstractAccessControlManufa
 
         MqttFactory.publish(REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()), param.toJSONString());
 
-        saveDeleteFaceLog("", accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/deletePerson",
+        saveDeleteFaceLog(id, accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/deletePerson",
                 accessControlDto.getCommunityId(),
                 param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 
@@ -110,24 +122,26 @@ public class CjHttpAssessControlProcessAdapt extends AbstractAccessControlManufa
 
     @Override
     public boolean openDoor(AccessControlDto accessControlDto) {
+        String id =  GenerateCodeFactory.getUUID();
+
         JSONObject param = new JSONObject();
         param.put("method", "openDoor");
         param.put("timestamp", System.currentTimeMillis());
-        param.put("id", GenerateCodeFactory.getUUID());
+        param.put("id",id);
 
         JSONObject data = new JSONObject();
-        JSONObject uiDisplayText = new JSONObject();
-        JSONObject broadcast = new JSONObject();
-        uiDisplayText.put("custom", "欢迎" + accessControlDto.getUserName());
-        uiDisplayText.put("duration", 3000);
-        broadcast.put("custom", "欢迎" + accessControlDto.getUserName());
-        data.put("uiDisplayText", uiDisplayText);
-        data.put("broadcast", broadcast);
+//        JSONObject uiDisplayText = new JSONObject();
+//        JSONObject broadcast = new JSONObject();
+//        uiDisplayText.put("custom", "欢迎" + accessControlDto.getUserName());
+//        uiDisplayText.put("duration", 3000);
+//        broadcast.put("custom", "欢迎" + accessControlDto.getUserName());
+//        data.put("uiDisplayText", uiDisplayText);
+//        data.put("broadcast", broadcast);
         param.put("data", data);
 
         MqttFactory.publish(REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()), param.toJSONString());
 
-        saveOpenDoorLog("", accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/openDoor",
+        saveOpenDoorLog(id, accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/openDoor",
                 accessControlDto.getCommunityId(),
                 param.toJSONString(), accessControlDto.getUserId(), accessControlDto.getUserName());
 
@@ -136,14 +150,15 @@ public class CjHttpAssessControlProcessAdapt extends AbstractAccessControlManufa
 
     @Override
     public boolean restartMachine(AccessControlDto accessControlDto) {
+        String id =  GenerateCodeFactory.getUUID();
         JSONObject param = new JSONObject();
         param.put("method", "reboot");
         param.put("timestamp", System.currentTimeMillis());
-        param.put("id", GenerateCodeFactory.getUUID());
+        param.put("id",id);
 
         MqttFactory.publish(REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()), param.toJSONString());
 
-        saveRebootAcLog("", accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/reboot",
+        saveRebootAcLog(id, accessControlDto.getMachineId(), REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()) + "/reboot",
                 accessControlDto.getCommunityId(),
                 param.toJSONString(), accessControlDto.getUserId(), accessControlDto.getUserName());
 
@@ -152,8 +167,14 @@ public class CjHttpAssessControlProcessAdapt extends AbstractAccessControlManufa
 
     @Override
     public String accessControlResult(String topic, String data) {
+
+        if ("device/uface/online".equals(topic)) {
+            machineOnline(data);
+            return SUCCESS;
+        }
+
         if (topic.contains("upload")) {
-            doUploadResult(data);
+            doUploadResult(topic,data);
             return SUCCESS;
         }
 
@@ -168,14 +189,82 @@ public class CjHttpAssessControlProcessAdapt extends AbstractAccessControlManufa
         return SUCCESS;
     }
 
-    private void doUploadResult(String data) {
+    private void machineOnline(String data) {
+
+        JSONObject paramIn = JSONObject.parseObject(data);
+        String method = paramIn.getString("method");
+        if (!"online".equals(method)) {
+            return;
+        }
+
+
+        String id = paramIn.getString("id");
+        String deviceNo = paramIn.getJSONObject("data").getString("deviceNo");
+        heartbeat(deviceNo, DateUtil.getCurrentDate());
+
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("id", id);
+        paramOut.put("code", 0);
+        paramOut.put("message", "success");
+        JSONObject dataObj = new JSONObject();
+        dataObj.put("platformKey", "111111111111111111111111");//24位
+        dataObj.put("platformName", "Y星球");
+        dataObj.put("platformIV", "1111111111111111");
+        paramOut.put("data", dataObj);
+
+        MqttFactory.publish("device/uface/" + deviceNo + "/response", paramOut.toJSONString());
+
+
+    }
+
+    private void doUploadResult(String topic,String data) {
         JSONObject param = JSONObject.parseObject(data);
         String method = param.getString("method");
-        if ("pushIdentifyRecord".equals(method)) {
-            JSONObject uploadData = param.getJSONObject("data");
-            String spotImage = uploadData.getJSONObject("spotContent").getString("spotImage");
-            //todo:
+        if (!"pushIdentifyRecord".equals(method)) {
+            return;
+
         }
+        String id = param.getString("id");
+        //device/uface/84E0F42F78D91901/upload
+        String[]topics = topic.split("/");
+        if(topics.length != 4){
+            return;
+        }
+        String deviceNo = topics[2];
+
+        JSONObject uploadData = param.getJSONObject("data");
+        String personId = uploadData.getString("personId");
+        String name = uploadData.getString("name");
+        int result = uploadData.getIntValue("result");
+        JSONObject spotContent = uploadData.getJSONObject("spotContent");
+        if(spotContent == null){
+            return;
+        }
+
+        String spotImage = spotContent.getString("spotImage");
+        //todo:
+
+        int similar = 100;
+        if (result == 1) {
+            similar = 0;
+        }
+
+        AccessControlOweFeeDto accessControlOweFeeDto = saveOpenDoorResult(deviceNo, spotImage, personId, name, OPEN_TYPE_FACE, similar);
+        if (accessControlOweFeeDto.getCode() < 0) {
+            return;
+        }
+
+
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("id", id);
+        paramOut.put("code", 0);
+        paramOut.put("message", "success");
+        JSONObject dataObj = new JSONObject();
+        paramOut.put("data", dataObj);
+
+        MqttFactory.publish("device/uface/" + deviceNo + "/response", paramOut.toJSONString());
 
     }
 
@@ -196,40 +285,34 @@ public class CjHttpAssessControlProcessAdapt extends AbstractAccessControlManufa
         JSONObject param = JSONObject.parseObject(data);
         Integer code = param.getInteger("code");
         String message = param.getString("message");
-        if (code != 0 || !"success".equals(message)) {
-            return;
-        }
 
         String logAction = "";
 
-        JSONObject responseData = param.getJSONObject("data");
-        if (responseData != null && responseData.getJSONObject("uiDisplayText") != null) {
-            logAction = topic.replace("response", "request") + "/openDoor";
-            openDoorResult(logAction, param.getString("id"), param.getInteger("timestamp"));
-        }
-        if (responseData == null) {
-            logAction = topic.replace("response", "request") + "/reboot";
-        }
-        if (responseData != null && responseData.get("person") != null && responseData.get("person") instanceof JSONObject) {
-            logAction = topic.replace("response", "request") + "/addPerson";
-        }
-        if (responseData != null && responseData.get("person") != null && responseData.get("person") instanceof JSONArray) {
-            logAction = topic.replace("response", "request") + "/deletePerson";
-        }
+        String id = param.getString("id");
         AccessControlLogDto accessControlLogDto = new AccessControlLogDto();
-        accessControlLogDto.setLogAction(logAction);
+        accessControlLogDto.setLogId(id);
         accessControlLogDto.setState(AccessControlLogDto.STATE_REQ);
         List<AccessControlLogDto> accessControlLogDtos = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogs(accessControlLogDto);
-        for (AccessControlLogDto controlLogDto : accessControlLogDtos) {
-            String reqParam = controlLogDto.getReqParam();
-            JSONObject paramData = JSONObject.parseObject(reqParam);
-            Integer reqTimestamp = paramData.getInteger("timestamp");
-            String reqId = paramData.getString("id");
-            if (param.getString("id").equals(reqId) && param.getInteger("timestamp") >= reqTimestamp) {
-                cmdResult(code, data, logAction, logAction.split("/")[2], controlLogDto.getUserId());
-                break;
-            }
+        if(ListUtil.isNull(accessControlLogDtos)){
+            return;
         }
+
+        if("ADD_FACE".equals(accessControlLogDtos.get(0).getLogCmd())){
+            JSONObject dataObj = param.getJSONObject("data");
+            JSONObject face = dataObj.getJSONArray("face").getJSONObject(0);
+            code = face.getInteger("code");
+            message = face.getString("message");
+        }
+        if(AccessControlLogDto.CMD_DELETE_FACE.equals(accessControlLogDtos.get(0).getLogCmd())){
+            //todo 这里失败的情况下再看下 成功的时候 好像没有必要判断
+            /**
+             * {"code":0,"data":{"person":[{"personId":"772024021975863681","result":true}]},"id":"efe78797d05a421a83dcee484726dda2","message":"操作成功","timestamp":1721296025759}
+             */
+        }
+
+
+        cmdResult(code,message,accessControlLogDtos.get(0));
+
     }
 
     private void openDoorResult(String logAction, String id, Integer timestamp) {

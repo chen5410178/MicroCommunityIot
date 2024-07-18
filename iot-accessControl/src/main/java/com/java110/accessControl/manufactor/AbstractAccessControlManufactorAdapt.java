@@ -423,19 +423,7 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         return accessControlFaceDto;
     }
 
-    protected void cmdResult(int code, String msg, String logAction, String machineCode, String personId) {
-
-        //todo 更新下发日志
-        AccessControlLogDto accessControlLogDto = new AccessControlLogDto();
-        accessControlLogDto.setLogAction(logAction);
-        accessControlLogDto.setUserId(personId);
-        accessControlLogDto.setMachineCode(machineCode);
-        accessControlLogDto.setState(AccessControlLogDto.STATE_REQ);
-        List<AccessControlLogDto> accessControlLogDtos = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogs(accessControlLogDto);
-        if (ListUtil.isNull(accessControlLogDtos)) {
-            return;
-        }
-
+    protected  void cmdResult(int code, String msg,AccessControlLogDto accessControlLogDto){
         String state = AccessControlLogDto.STATE_RES;
         if (code != ResultVo.CODE_OK) {
             state = AccessControlLogDto.STATE_FAIL;
@@ -443,15 +431,15 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
 
 
         AccessControlLogPo accessControlLogPo = new AccessControlLogPo();
-        accessControlLogPo.setLogId(accessControlLogDtos.get(0).getLogId());
+        accessControlLogPo.setLogId(accessControlLogDto.getLogId());
         accessControlLogPo.setState(state);
         accessControlLogPo.setResParam(msg);
         accessControlLogV1InnerServiceSMOImpl.updateAccessControlLog(accessControlLogPo);
 
         //todo 更新人员日志
         AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
-        accessControlFaceDto.setPersonId(accessControlLogDtos.get(0).getUserId());
-        accessControlFaceDto.setMachineId(accessControlLogDtos.get(0).getMachineId());
+        accessControlFaceDto.setPersonId(accessControlLogDto.getUserId());
+        accessControlFaceDto.setMachineId(accessControlLogDto.getMachineId());
         //accessControlFaceDto.setState(AccessControlFaceDto.STATE_WAIT);
         List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
         if (ListUtil.isNull(accessControlFaceDtos)) {
@@ -469,6 +457,22 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         accessControlFacePo.setState(state);
         accessControlFacePo.setMessage(msg);
         accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
+    }
+
+    protected void cmdResult(int code, String msg, String logAction, String machineCode, String personId) {
+
+        //todo 更新下发日志
+        AccessControlLogDto accessControlLogDto = new AccessControlLogDto();
+        accessControlLogDto.setLogAction(logAction);
+        accessControlLogDto.setUserId(personId);
+        accessControlLogDto.setMachineCode(machineCode);
+        accessControlLogDto.setState(AccessControlLogDto.STATE_REQ);
+        List<AccessControlLogDto> accessControlLogDtos = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogs(accessControlLogDto);
+        if (ListUtil.isNull(accessControlLogDtos)) {
+            return;
+        }
+
+        cmdResult(code,msg,accessControlLogDtos.get(0));
 
 
     }
