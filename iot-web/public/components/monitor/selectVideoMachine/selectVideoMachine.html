@@ -1,0 +1,44 @@
+<div class="modal fade" id="selectVideoMachineModel" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="row">
+                    <div class="col-md-6 border-right padding-0">
+                        <div class="text-center">
+                            <vc:i18n name="监控区域" namespace="selectVideoMachine"></vc:i18n>
+                        </div>
+                        <div class="padding-left staff padding padding-top-xs">
+                            <div class=" padding overflow-hidden"
+                                :class="{'select':selectVideoMachineInfo.maId == item.maId}"
+                                v-for="(item,index) in selectVideoMachineInfo.areas" @click="_changeArea(item)"
+                                style="cursor:pointer">
+                                <div>
+                                    {{item.maName}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 padding-0">
+                        <div class="text-center">
+                            <vc:i18n name="摄像头" namespace="selectVideoMachine"></vc:i18n>
+                        </div>
+                        <div class="padding-left staff padding padding-top-xs">
+                            <div class=" padding overflow-hidden"
+                                :class="{'select':selectVideoMachineInfo.machineId == item.machineId}"
+                                v-for="(item,index) in selectVideoMachineInfo.machines" @click="_changeMachine(item)"
+                                style="cursor:pointer">
+                                <div>
+                                    {{item.machineName}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

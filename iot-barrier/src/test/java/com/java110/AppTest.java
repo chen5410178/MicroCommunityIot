@@ -38,11 +38,6 @@ public class AppTest
      * Rigourous Test :-)
      */
     public void testApp() throws IOException {
-        String aa = "X+aXoF8=";
-        byte[] bytes = new BASE64Decoder().decodeBuffer(aa);   //将字符串转换为byte数组
-        Base64 decoder = new Base64();
-        String imagePath = Base64Convert.decoder("aHR0cDovL3d1aGFvZmhjLm9zcy1jbi1iZWlqaW5nLmFsaXl1bmNzLmNv bS85MjZiYzMxMC0yOWIyMjFlMS8xNzEyNjc2MDAwXzkyNmJjMzEwLTI5YjIyMWUxXzIxMDJfMl9mdWxsLmpwZz9FeHBpcmVzPTE3MTI2Nzk2MDAmT1NTQWNjZXNzS2V5SWQ9TFRBSTV0ODk1ejhLWjE2TldnR1BQcFVCJlNpZ25hdHVyZT00S2dVUWM4aXYyN3VvRGNCUUFlRDBX cE9XbzAlM2Q=");
-        imagePath = imagePath.substring(0,imagePath.indexOf("?"));
-        System.out.println(imagePath);
+
     }
 }

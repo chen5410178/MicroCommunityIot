@@ -148,7 +148,7 @@
                     });
             },
             _addCarParkingSpace: function(_car) {
-                vc.jumpToPage('/#/pages/property/carAddParkingSpace?carId=' + _car.carId);
+                vc.jumpToPage('/#/pages/car/carAddParkingSpace?carId=' + _car.carId);
             },
             _toPayFee: function(_car) {
                 vc.jumpToPage('/#/pages/property/listCarFee?carId=' +

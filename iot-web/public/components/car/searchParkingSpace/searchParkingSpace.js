@@ -4,7 +4,6 @@
             emitChooseParkingSpace: vc.propTypes.string,
             emitLoadData: vc.propTypes.string,
             parkingSpaceFlag: vc.propTypes.string, // 如果 S 表示查询售卖停车位 H 出租停车位 SH 查询出租和出售车位 F 表示查询未售卖未出租停车位
-            showSearchCondition: vc.propTypes.string
         },
         data: {
             searchParkingSpaceInfo: {
@@ -16,7 +15,6 @@
                 carNum: '',
                 parkingAreas: [],
                 psFlag: $props.parkingSpaceFlag,
-                showSearchCondition: $props.showSearchCondition
             }
         },
         _initMethod: function() {
