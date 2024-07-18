@@ -150,12 +150,13 @@ public class AddCarApiCmd extends Cmd {
         //查询停车场
         List<ParkingAreaDto> parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
 
-        if(ListUtil.isNull(parkingAreaDtos)) {
+        if (ListUtil.isNull(parkingAreaDtos)) {
             parkingAreaDto = new ParkingAreaDto();
             parkingAreaDto.setNum(car.getString("paNum"));
             parkingAreaDto.setCommunityId(communityId);
             //查询停车场
-           parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
+            parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
+            car.put("paId", parkingAreaDtos.get(0).getPaId());
         }
         ParkingAreaPo parkingAreaPo = new ParkingAreaPo();
         parkingAreaPo.setCommunityId(communityId);
@@ -165,7 +166,7 @@ public class AddCarApiCmd extends Cmd {
         parkingAreaPo.setRemark("导入数据");
         if (!ListUtil.isNull(parkingAreaDtos)) {
             parkingAreaPo.setPaId(parkingAreaDtos.get(0).getPaId());
-            car.put("paId",parkingAreaDtos.get(0).getPaId());
+            car.put("paId", parkingAreaDtos.get(0).getPaId());
             parkingAreaV1InnerServiceSMOImpl.updateParkingArea(parkingAreaPo);
             return;
         }
