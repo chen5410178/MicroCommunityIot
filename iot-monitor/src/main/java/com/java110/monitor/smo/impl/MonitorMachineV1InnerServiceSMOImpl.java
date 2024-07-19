@@ -17,10 +17,16 @@ package com.java110.monitor.smo.impl;
 
 
 import com.java110.bean.dto.PageDto;
+import com.java110.core.exception.CmdException;
+import com.java110.core.factory.ApplicationContextFactory;
+import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.dto.monitor.MonitorMachineDto;
+import com.java110.dto.monitorManufactor.MonitorManufactorDto;
+import com.java110.intf.monitor.IMonitorManufactorV1InnerServiceSMO;
 import com.java110.monitor.dao.IMonitorMachineV1ServiceDao;
 import com.java110.intf.monitor.IMonitorMachineV1InnerServiceSMO;
+import com.java110.monitor.factory.IMonitorModelAdapt;
 import com.java110.po.monitor.MonitorMachinePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +47,9 @@ public class MonitorMachineV1InnerServiceSMOImpl implements IMonitorMachineV1Inn
 
     @Autowired
     private IMonitorMachineV1ServiceDao monitorMachineV1ServiceDaoImpl;
+
+    @Autowired
+    private IMonitorManufactorV1InnerServiceSMO monitorManufactorV1InnerServiceSMOImpl;
 
 
     @Override
@@ -85,7 +94,7 @@ public class MonitorMachineV1InnerServiceSMOImpl implements IMonitorMachineV1Inn
     }
 
     @Override
-    public List<MonitorMachineDto> queryMonitorMachineList(MonitorMachineDto monitorMachineDto) {
+    public List<MonitorMachineDto> queryMonitorMachineList(@RequestBody MonitorMachineDto monitorMachineDto) {
         int page = monitorMachineDto.getPage();
 
         if (page != PageDto.DEFAULT_PAGE) {
@@ -95,6 +104,29 @@ public class MonitorMachineV1InnerServiceSMOImpl implements IMonitorMachineV1Inn
         List<MonitorMachineDto> monitorMachines = BeanConvertUtil.covertBeanList(monitorMachineV1ServiceDaoImpl.getMonitorMachineInfo1(BeanConvertUtil.beanCovertMap(monitorMachineDto)), MonitorMachineDto.class);
 
         return monitorMachines;
+    }
+
+    @Override
+    public String getPlayVideoUrl(@RequestBody MonitorMachineDto monitorMachineDto) {
+        List<MonitorMachineDto> monitorMachineDtos = queryMonitorMachineList(monitorMachineDto);
+
+        Assert.listOnlyOne(monitorMachineDtos, "摄像头不存在");
+
+
+        MonitorManufactorDto monitorManufactorDto = new MonitorManufactorDto();
+        monitorManufactorDto.setMmId(monitorMachineDtos.get(0).getMmId());
+        List<MonitorManufactorDto> monitorManufactorDtos = monitorManufactorV1InnerServiceSMOImpl.queryMonitorManufactors(monitorManufactorDto);
+        Assert.listOnlyOne(monitorManufactorDtos, "监控厂家不存在");
+
+
+        IMonitorModelAdapt monitorModelAdapt = ApplicationContextFactory.getBean(monitorManufactorDtos.get(0).getMmBean(), IMonitorModelAdapt.class);
+
+        if (monitorModelAdapt == null) {
+            throw new CmdException("厂家协议未实现");
+        }
+
+        String url = monitorModelAdapt.getVideoUrl(monitorMachineDtos.get(0), monitorManufactorDtos.get(0));
+        return url;
     }
 
 }

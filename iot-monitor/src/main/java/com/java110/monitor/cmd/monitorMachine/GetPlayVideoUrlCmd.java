@@ -25,8 +25,7 @@ public class GetPlayVideoUrlCmd extends Cmd {
     @Autowired
     private IMonitorMachineV1InnerServiceSMO monitorMachineV1InnerServiceSMOImpl;
 
-    @Autowired
-    private IMonitorManufactorV1InnerServiceSMO monitorManufactorV1InnerServiceSMOImpl;
+
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
@@ -40,24 +39,8 @@ public class GetPlayVideoUrlCmd extends Cmd {
 
         MonitorMachineDto monitorMachineDto = new MonitorMachineDto();
         monitorMachineDto.setMachineId(reqJson.getString("machineId"));
-        List<MonitorMachineDto> monitorMachineDtos = monitorMachineV1InnerServiceSMOImpl.queryMonitorMachineList(monitorMachineDto);
-
-        Assert.listOnlyOne(monitorMachineDtos, "摄像头不存在");
-
-
-        MonitorManufactorDto monitorManufactorDto = new MonitorManufactorDto();
-        monitorManufactorDto.setMmId(monitorMachineDtos.get(0).getMmId());
-        List<MonitorManufactorDto> monitorManufactorDtos = monitorManufactorV1InnerServiceSMOImpl.queryMonitorManufactors(monitorManufactorDto);
-        Assert.listOnlyOne(monitorManufactorDtos, "监控厂家不存在");
-
-
-        IMonitorModelAdapt monitorModelAdapt = ApplicationContextFactory.getBean(monitorManufactorDtos.get(0).getMmBean(), IMonitorModelAdapt.class);
-
-        if (monitorModelAdapt == null) {
-            throw new CmdException("厂家协议未实现");
-        }
-
-        String url = monitorModelAdapt.getVideoUrl(monitorMachineDtos.get(0), monitorManufactorDtos.get(0));
+        monitorMachineDto.setCommunityId(reqJson.getString("communityId"));
+        String url = monitorMachineV1InnerServiceSMOImpl.getPlayVideoUrl(monitorMachineDto);
 
 
         context.setResponseEntity(ResultVo.createResponseEntity(url));
