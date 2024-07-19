@@ -37,6 +37,9 @@ public class MonitorMachineDto extends PageDto implements Serializable {
     private String isOnlineState;
     private String isOnlineStateName;
 
+    private String photoUrl;
+
+
     public String getMachineId() {
         return machineId;
     }
@@ -165,5 +168,13 @@ public class MonitorMachineDto extends PageDto implements Serializable {
 
     public void setMmName(String mmName) {
         this.mmName = mmName;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

@@ -120,6 +120,11 @@
                     }
                 );
             },
+            _viewOwnerFace: function(_url) {
+                vc.emit('viewImage', 'showImage', {
+                    url: _url
+                });
+            },
             _toMonitorDetail: function (_machine) {
                 vc.jumpToPage('/#/pages/monitor/monitorMachineDetail?machineId=' + _machine.machineId + "&maId=" + _machine.maId);
             }

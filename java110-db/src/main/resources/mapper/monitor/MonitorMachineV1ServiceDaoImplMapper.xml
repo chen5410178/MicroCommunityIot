@@ -25,6 +25,7 @@
         <result column="state" property="state"/>
         <result column="createTime" property="createTime"/>
         <result column="statusCd" property="statusCd"/>
+        <result column="photoUrl" property="photoUrl"/>
         <result column="maName" property="maName"/>
         <collection property="monitorMachineAttrsList"
                     ofType="com.java110.dto.monitor.MonitorMachineAttrsDto"
@@ -52,6 +53,7 @@
         t.state,
         t.create_time createTime,
         t.status_cd statusCd,
+        t.photo_url photoUrl,
         ma.ma_name maName,
         mma.attr_id attrId,
         mma.machine_id machineId1,
@@ -113,6 +115,7 @@
         t.state,
         t.create_time createTime,
         t.status_cd statusCd,
+        t.photo_url photoUrl,
         mm.mm_name mmName,
         ma.ma_name maName
         from monitor_machine t
@@ -180,15 +183,20 @@
         <if test="maId !=null and maId != ''">
             , t.ma_id= #{maId}
         </if>
-        <if test="communityId !=null and communityId != ''">
-            , t.community_id= #{communityId}
-        </if>
+
         <if test="machineName !=null and machineName != ''">
             , t.machine_name= #{machineName}
         </if>
+        <if test="photoUrl !=null and photoUrl != ''">
+            , t.photo_url= #{photoUrl}
+        </if>
+
         where 1=1
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
         </if>
 
     </update>

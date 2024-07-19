@@ -2,9 +2,13 @@ package com.java110.openapi.bmo.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.core.cache.MappingCache;
+import com.java110.core.constant.MappingConstant;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.monitor.MonitorMachineAttrsDto;
 import com.java110.dto.monitor.MonitorMachineDto;
 import com.java110.intf.monitor.IMonitorMachineAttrsV1InnerServiceSMO;
@@ -53,6 +57,8 @@ public class ListMonitorMachineBmoImpl implements IIotCommonApiBmo {
             refreshAttr(monitorMachineDtos);
             // todo  查询设备是否在线
            // queryMachineState(monitorMachineDtos);
+
+            queryMachinePhotos(monitorMachineDtos);
         } else {
             monitorMachineDtos = new ArrayList<>();
         }
@@ -62,6 +68,28 @@ public class ListMonitorMachineBmoImpl implements IIotCommonApiBmo {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         context.setResponseEntity(responseEntity);
+    }
+
+    private void queryMachinePhotos(List<MonitorMachineDto> monitorMachineDtos) {
+
+        if(ListUtil.isNull(monitorMachineDtos)){
+            return;
+        }
+
+        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
+        String photoUrl = "";
+        for(MonitorMachineDto monitorMachineDto : monitorMachineDtos){
+            if(StringUtil.isEmpty(monitorMachineDto.getPhotoUrl())){
+                continue;
+            }
+            if (monitorMachineDto.getPhotoUrl().startsWith("http")) {
+                continue;
+            }
+            photoUrl = imgUrl + monitorMachineDto.getPhotoUrl();
+            monitorMachineDto.setPhotoUrl(photoUrl);
+
+        }
+
     }
 
     private void refreshAttr(List<MonitorMachineDto> monitorMachineDtos) {

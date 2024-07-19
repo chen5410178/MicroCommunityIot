@@ -83,6 +83,9 @@
                 <thead>
                     <tr>
                         <th class="text-center">
+                            <vc:i18n name='画面' namespace='accessControlInout'></vc:i18n>
+                        </th>
+                        <th class="text-center">
                             <vc:i18n name='监控ID' namespace='monitorMachineManage'></vc:i18n>
                         </th>
                         <th class="text-center">
@@ -119,6 +122,13 @@
                 </thead>
                 <tbody>
                     <tr v-for="monitorMachine in monitorMachineManageInfo.monitorMachines">
+                        <td class="text-center" style="white-space: nowrap;">
+                            <img style="width: 60px; height: 60px;" class="border-radius"
+                                v-if="monitorMachine.photoUrl" v-bind:src="monitorMachine.photoUrl"
+                                v-on:click="_viewOwnerFace(monitorMachine.photoUrl)" />
+                            <img style="width: 60px; height: 60px;" class="border-radius" v-else
+                                src="/img/noPhoto.jpg" />
+                        </td>
                         <td class="text-center">{{monitorMachine.machineId}}</td>
                         <td class="text-center">{{monitorMachine.machineName}}</td>
                         <td class="text-center">{{monitorMachine.machineCode}}</td>
@@ -170,5 +180,8 @@
     <vc:create path="monitor/editMonitorMachine"></vc:create>
     <vc:create path="monitor/deleteMonitorMachine"></vc:create>
     <vc:create path="monitor/playMonitorVideo"></vc:create>
+    <vc:create path="common/viewImage"></vc:create>
+
+    
 
 </div>

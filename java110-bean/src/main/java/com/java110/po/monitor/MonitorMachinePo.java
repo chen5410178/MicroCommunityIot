@@ -12,6 +12,9 @@ public class MonitorMachinePo implements Serializable {
 
     private String mmId;
     private String communityId;
+    private String photoUrl;
+
+
     private Date heartbeatTime;
     private String state;
     private String statusCd = "0";
@@ -95,5 +98,13 @@ public class MonitorMachinePo implements Serializable {
 
     public void setMmId(String mmId) {
         this.mmId = mmId;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

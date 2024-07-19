@@ -7,7 +7,7 @@
                 machineId: '',
                 communityId: '',
                 remark: '',
-                jessibuca:{}
+                jessibuca: {}
             }
         },
         _initMethod: function () {
@@ -25,10 +25,10 @@
             _queryPlayVideoUrl: function () {
                 let param = {
                     params: {
-                        page:1,
-                        row:100,
-                        communityId:vc.getCurrentCommunity().communityId,
-                        machineId:$that.playMonitorVideoInfo.machineId
+                        page: 1,
+                        row: 100,
+                        communityId: vc.getCurrentCommunity().communityId,
+                        machineId: $that.playMonitorVideoInfo.machineId
                     }
                 };
 
@@ -37,7 +37,7 @@
                     param,
                     function (json, res) {
                         let _json = JSON.parse(json);
-                        if(_json.code != 0){
+                        if (_json.code != 0) {
                             vc.toast(_json.msg);
                             return;
                         }
@@ -49,7 +49,7 @@
             },
 
             _playWsVideo: function (_url) {
-              
+
                 let _jessibuca = $that.playMonitorVideoInfo.jessibuca;
                 if (_jessibuca) {
                     try {
@@ -74,15 +74,39 @@
                 $that.playMonitorVideoInfo.jessibuca = jessibuca;
 
                 jessibuca.play(_url);
-            },
+                jessibuca.on("start", function (data) {
+                    setTimeout(function () {
+                        const _videoPhoto = jessibuca.screenshot("test", "jpeg", 0.5, 'base64');
+                        $that._saveCameraPhoto($that.playMonitorVideoInfo.machineId, _videoPhoto);
+                    }, 1 * 1000);
 
+                });
+            },
+            _saveCameraPhoto: function (_machineId, _photo) {
+                console.log(_machineId, _photo)
+                let _data = {
+                    communityId: vc.getCurrentCommunity().communityId,
+                    machineId: _machineId,
+                    photo: _photo
+                }
+                vc.http.apiPost(
+                    '/monitorMachine.saveVideoPhoto',
+                    JSON.stringify(_data),
+                    {
+                        emulateJSON: true
+                    },
+                    function (json, res) {
+                    },
+                    function (errInfo, error) {
+                    });
+            },
             clearPlayMonitorVideoInfo: function () {
                 $that.playMonitorVideoInfo = {
                     machineName: '',
                     machineId: '',
                     communityId: '',
                     remark: '',
-                    jessibuca:{}
+                    jessibuca: {}
                 };
             }
         }
