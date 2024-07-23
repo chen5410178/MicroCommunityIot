@@ -130,6 +130,13 @@
             },
             _toAccessControlDetail: function (_accessControl) {
                 vc.jumpToPage('/#/pages/accessControl/accessControlDetail?machineId=' + _accessControl.machineId);
+            },
+            _viewAccessControlVideo:function(_accessControl){
+                vc.emit('playMonitorVideo', 'openPlayMonitorVideoModal', {
+                    machineId:_accessControl.monitorId,
+                    machineName:_accessControl.monitorName,
+                    communityId:_accessControl.communityId
+                });
             }
 
         }

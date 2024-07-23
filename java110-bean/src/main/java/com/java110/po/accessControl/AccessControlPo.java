@@ -45,6 +45,9 @@ public class AccessControlPo implements Serializable {
     private String normalPrompt;
     private String owePrompt;
 
+    private String monitorId;
+    private String monitorName;
+
     public String getMachineMac() {
         return machineMac;
     }
@@ -163,5 +166,21 @@ public class AccessControlPo implements Serializable {
 
     public void setOwePrompt(String owePrompt) {
         this.owePrompt = owePrompt;
+    }
+
+    public String getMonitorId() {
+        return monitorId;
+    }
+
+    public void setMonitorId(String monitorId) {
+        this.monitorId = monitorId;
+    }
+
+    public String getMonitorName() {
+        return monitorName;
+    }
+
+    public void setMonitorName(String monitorName) {
+        this.monitorName = monitorName;
     }
 }

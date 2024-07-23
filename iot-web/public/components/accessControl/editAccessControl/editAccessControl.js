@@ -16,7 +16,9 @@
                     normalPrompt: '',
                     owePrompt: '',
                 locations: [],
-                hms: []
+                hms: [],
+                monitorId:'',
+                monitors:[]
             }
         },
         _initMethod: function() {
@@ -29,6 +31,7 @@
                 vc.copyObject(_params, $that.editAccessControlInfo);
                 $that._listEditMachineLocations();
                 $that._listEditHms();
+                $that._listEditMonitors();
                 $that.editAccessControlInfo.communityId = vc.getCurrentCommunity().communityId;
             });
         },
@@ -141,7 +144,9 @@
                     normalPrompt: '',
                     owePrompt: '',
                     locations: [],
-                    hms: []
+                    hms: [],
+                    monitorId:'',
+                    monitors:[]
                 }
             },
             _listEditMachineLocations: function(_page, _rows) {
@@ -187,6 +192,28 @@
 
                     },
                     function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+            _listEditMonitors: function (_page, _rows) {
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        communityId:vc.getCurrentCommunity().communityId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/monitorMachine.listMonitorMachine',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        $that.editAccessControlInfo.monitors = _json.data;
+
+                    },
+                    function (errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );

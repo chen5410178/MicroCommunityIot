@@ -62,9 +62,9 @@
         mma.value,
         mma.status_cd statusCd
         from monitor_machine t
-        left join monitor_area ma on t.ma_id = ma.ma_id
-        left join monitor_machine_attrs mma on mma.machine_id = t.machine_id
-        where 1 =1 and ma.status_cd = '0' and mma.status_cd = '0'
+        left join monitor_area ma on t.ma_id = ma.ma_id  and ma.status_cd = '0'
+        left join monitor_machine_attrs mma on mma.machine_id = t.machine_id and mma.status_cd = '0'
+        where 1 =1
         <if test="heartbeatTime !=null">
             and t.heartbeat_time= #{heartbeatTime}
         </if>

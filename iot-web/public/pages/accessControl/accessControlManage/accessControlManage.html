@@ -82,6 +82,9 @@
                             <vc:i18n name='心跳时间' namespace='accessControlManage'></vc:i18n>
                         </th>
                         <th class="text-center">
+                            <vc:i18n name='监控视频' namespace='accessControlManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
                             <vc:i18n name='操作'></vc:i18n>
                         </th>
                     </tr>
@@ -98,6 +101,9 @@
                         <td class="text-center">{{accessControl.locationName}}</td>
                         <td class="text-center">{{accessControl.stateName}}</td>
                         <td class="text-center">{{accessControl.heartbeatTime}}</td>
+                        <td class="text-center">{{accessControl.monitorName || '-'}}
+                            <a v-if="accessControl.monitorName" href="javascript:void(0)" @click="_viewAccessControlVideo(accessControl)">(观看)</a>
+                        </td>
                         <td class="text-center">
                             <div>
                                 <div class="btn-group">
@@ -150,5 +156,7 @@
     <vc:create path="accessControl/editAccessControl"></vc:create>
     <vc:create path="accessControl/deleteAccessControl"></vc:create>
     <vc:create path="accessControl/reSendAccessControlFace"></vc:create>
+    <vc:create path="monitor/playMonitorVideo"></vc:create>
+
 
 </div>

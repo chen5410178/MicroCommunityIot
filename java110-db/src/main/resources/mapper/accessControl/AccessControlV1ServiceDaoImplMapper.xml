@@ -9,10 +9,10 @@
     <insert id="saveAccessControlInfo" parameterType="Map">
         insert into access_control(
         machine_mac,heartbeat_time,impl_bean,machine_id,machine_code,location_name,location_id,community_id,machine_name,machine_ip,direction,
-        prompt_switch,normal_prompt,owe_prompt
+        prompt_switch,normal_prompt,owe_prompt,monitor_id,monitor_name
         ) values (
         #{machineMac},#{heartbeatTime},#{implBean},#{machineId},#{machineCode},#{locationName},#{locationId},#{communityId},#{machineName},#{machineIp},#{direction},
-        #{promptSwitch},#{normalPrompt},#{owePrompt}
+        #{promptSwitch},#{normalPrompt},#{owePrompt},#{monitorId},#{monitorName}
         )
     </insert>
 
@@ -24,7 +24,8 @@
         machineCode,t.location_name,t.location_name locationName,t.location_id,t.location_id
         locationId,t.status_cd,t.status_cd statusCd,t.create_time createTime,t.community_id,t.community_id
         communityId,t.machine_name,t.machine_name machineName,t.machine_ip,t.machine_ip machineIp,t.direction,hm.hm_name
-        implBeanName,t.prompt_switch promptSwitch,t.normal_prompt normalPrompt,t.owe_prompt owePrompt,hm.protocol_impl protocolImpl
+        implBeanName,t.prompt_switch promptSwitch,t.normal_prompt normalPrompt,t.owe_prompt owePrompt,hm.protocol_impl protocolImpl,
+        t.monitor_id monitorId,t.monitor_name monitorName
         from access_control t
         left join hardware_manufacturer hm on t.impl_bean = hm.hm_id and hm.status_cd = '0'
         where 1 =1
@@ -124,6 +125,12 @@
         </if>
         <if test="owePrompt !=null and owePrompt != ''">
             , t.owe_prompt= #{owePrompt}
+        </if>
+        <if test="monitorId !=null and monitorId != ''">
+            , t.monitor_id= #{monitorId}
+        </if>
+        <if test="monitorName !=null and monitorName != ''">
+            , t.monitor_name= #{monitorName}
         </if>
         where 1=1
         <if test="machineId !=null and machineId != ''">
@@ -302,7 +309,8 @@
         machineCode,t.location_name locationName,t.location_id
         locationId,t.status_cd statusCd,t.create_time createTime,t.community_id
         communityId,t.machine_name machineName,t.machine_ip machineIp,t.direction,
-        t.prompt_switch promptSwitch,t.normal_prompt normalPrompt,t.owe_prompt owePrompt
+        t.prompt_switch promptSwitch,t.normal_prompt normalPrompt,t.owe_prompt owePrompt,
+        t.monitor_id monitorId,t.monitor_name monitorName
         from access_control t
         left join access_control_face acf on t.machine_id = acf.machine_id and acf.status_cd = '0'
         where 1=1
