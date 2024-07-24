@@ -17,11 +17,12 @@
                 updateCarNum: '',
                 ciId: '',
                 carType: '',
-                machineId: ''
+                machineId: '',
+                curCarIn:{},
             }
         },
         _initMethod: function() {
-            vc.component._initParkingAreaControlInCarDateInfo();
+            $that._initParkingAreaControlInCarDateInfo();
         },
         _initEvent: function() {
             vc.on('parkingAreaControlInCar', 'switch', function(_data) {
@@ -31,7 +32,7 @@
             });
             vc.on('parkingAreaControlInCar', 'paginationPlus', 'page_event',
                 function(_currentPage) {
-                    vc.component._loadParkingAreaControlInCarData(_currentPage, DEFAULT_ROWS);
+                    $that._loadParkingAreaControlInCarData(_currentPage, DEFAULT_ROWS);
                 });
             vc.on('parkingAreaControlInCar', 'changeMachine', function(_data) {
                 $that.parkingAreaControlInCarInfo.machineId = _data.machineId;
@@ -52,13 +53,13 @@
                     .on('changeDate', function(ev) {
                         var value = $(".inCarStartTime").val();
                         var start = Date.parse(new Date(value));
-                        var end = Date.parse(new Date(vc.component.parkingAreaControlInCarInfo.endTime));
+                        var end = Date.parse(new Date($that.parkingAreaControlInCarInfo.endTime));
                         if (start - end >= 0) {
                             vc.toast("开始时间必须小于结束时间");
                             $(".inCarStartTime").val('');
-                            vc.component.parkingAreaControlInCarInfo.startTime = "";
+                            $that.parkingAreaControlInCarInfo.startTime = "";
                         } else {
-                            vc.component.parkingAreaControlInCarInfo.startTime = value;
+                            $that.parkingAreaControlInCarInfo.startTime = value;
                         }
                     });
                 $('.inCarEndTime').datetimepicker({
@@ -73,14 +74,14 @@
                 $('.inCarEndTime').datetimepicker()
                     .on('changeDate', function(ev) {
                         var value = $(".inCarEndTime").val();
-                        var start = Date.parse(new Date(vc.component.parkingAreaControlInCarInfo.startTime));
+                        var start = Date.parse(new Date($that.parkingAreaControlInCarInfo.startTime));
                         var end = Date.parse(new Date(value));
                         if (start - end >= 0) {
                             vc.toast("计费终止时间必须大于计费起始时间");
                             $(".inCarEndTime").val('');
-                            vc.component.parkingAreaControlInCarInfo.endTime = "";
+                            $that.parkingAreaControlInCarInfo.endTime = "";
                         } else {
-                            vc.component.parkingAreaControlInCarInfo.endTime = value;
+                            $that.parkingAreaControlInCarInfo.endTime = value;
                         }
                     });
                 //防止多次点击时间插件失去焦点
@@ -117,9 +118,9 @@
                     param,
                     function(json) {
                         let _feeConfigInfo = JSON.parse(json);
-                        vc.component.parkingAreaControlInCarInfo.total = _feeConfigInfo.total;
-                        vc.component.parkingAreaControlInCarInfo.records = _feeConfigInfo.records;
-                        vc.component.parkingAreaControlInCarInfo.carIns = _feeConfigInfo.data;
+                        $that.parkingAreaControlInCarInfo.total = _feeConfigInfo.total;
+                        $that.parkingAreaControlInCarInfo.records = _feeConfigInfo.records;
+                        $that.parkingAreaControlInCarInfo.carIns = _feeConfigInfo.data;
                         vc.emit('parkingAreaControlInCar', 'paginationPlus', 'init', {
                             total: _feeConfigInfo.records,
                             currentPage: _page
@@ -136,11 +137,11 @@
             },
             //重置
             _resetParkingAreaControlInCar: function() {
-                vc.component.parkingAreaControlInCarInfo.carNum = "";
-                vc.component.parkingAreaControlInCarInfo.state = "";
-                vc.component.parkingAreaControlInCarInfo.carType = "";
-                vc.component.parkingAreaControlInCarInfo.startTime = "";
-                vc.component.parkingAreaControlInCarInfo.endTime = "";
+                $that.parkingAreaControlInCarInfo.carNum = "";
+                $that.parkingAreaControlInCarInfo.state = "";
+                $that.parkingAreaControlInCarInfo.carType = "";
+                $that.parkingAreaControlInCarInfo.startTime = "";
+                $that.parkingAreaControlInCarInfo.endTime = "";
                 $that._loadParkingAreaControlInCarData(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _viewTempFeeConfigInCar: function(_feeConfigId) {
@@ -223,6 +224,40 @@
                     paId: $that.parkingAreaControlInCarInfo.paId,
 
                 })
+            },
+            _exceptionCarOut:function(_carIn){
+                $that.parkingAreaControlInCarInfo.curCarIn = _carIn;
+                $('#exceptionModel').modal('show');
+            },
+            _doExceptionCarOut:function(){
+                if (!$that.parkingAreaControlInCarInfo.curCarIn) {
+                    vc.toast('未包含车牌号');
+                    return;
+                }
+                let _data = {
+                    ciId: $that.parkingAreaControlInCarInfo.curCarIn.ciId,
+                    communityId: vc.getCurrentCommunity().communityId
+                }
+                vc.http.apiPost(
+                    '/carInout.exceptionCarOut',
+                    JSON.stringify(_data), {
+                        emulateJSON: true
+                    },
+                    function(json, res) {
+                        //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
+                        let _data = JSON.parse(json);
+                        if (_data.code != 0) {
+                            vc.toast(_data.msg);
+                        } else {
+                            $('#exceptionModel').modal('hide');
+                            vc.toast(_data.msg);
+                            $that._loadParkingAreaControlInCarData(DEFAULT_PAGE, DEFAULT_ROWS);
+                        }
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                        vc.toast(errInfo);
+                    });
             }
         }
     });
