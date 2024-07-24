@@ -107,7 +107,7 @@
                     </td>
                     <td class="text-center" v-else>-</td>
                     <th class="text-center">
-                        <button class="btn-white btn btn-xs" @click="_exceptionCarOut(carIn)">
+                        <button class="btn-white btn btn-xs" @click="_exceptionCarOut(carIn)" v-if="vc.hasPrivilege('502024072439940002')">
                             <vc:i18n name='异常出场'></vc:i18n>
                         </button>
                     </th>
