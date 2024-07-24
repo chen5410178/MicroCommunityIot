@@ -96,6 +96,13 @@
             },
             _toChargeMachineDetail: function (_chargeMachine) {
                 vc.jumpToPage('/#/pages/charge/chargeMachineDetail?machineId=' + _chargeMachine.machineId);
+            },
+            _viewChargeMachineVideo:function(_chargeMachine){
+                vc.emit('playMonitorVideo', 'openPlayMonitorVideoModal', {
+                    machineId:_chargeMachine.monitorId,
+                    machineName:_chargeMachine.monitorName,
+                    communityId:_chargeMachine.communityId
+                });
             }
 
         }

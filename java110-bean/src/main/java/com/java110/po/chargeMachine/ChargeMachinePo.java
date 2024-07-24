@@ -38,6 +38,9 @@ public class ChargeMachinePo implements Serializable {
     private String machineName;
     private String chargeType;
 
+    private String monitorId;
+    private String monitorName;
+
     public String getChargeType() {
         return chargeType;
     }
@@ -117,5 +120,21 @@ public class ChargeMachinePo implements Serializable {
 
     public void setRuleId(String ruleId) {
         this.ruleId = ruleId;
+    }
+
+    public String getMonitorId() {
+        return monitorId;
+    }
+
+    public void setMonitorId(String monitorId) {
+        this.monitorId = monitorId;
+    }
+
+    public String getMonitorName() {
+        return monitorName;
+    }
+
+    public void setMonitorName(String monitorName) {
+        this.monitorName = monitorName;
     }
 }

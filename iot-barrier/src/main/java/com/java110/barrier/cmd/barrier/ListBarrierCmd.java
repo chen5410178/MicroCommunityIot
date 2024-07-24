@@ -75,8 +75,6 @@ public class ListBarrierCmd extends Cmd {
 
         BarrierDto barrierDto = BeanConvertUtil.covertBean(reqJson, BarrierDto.class);
 
-
-
         containPaId(reqJson,barrierDto);
 
         int count = barrierV1InnerServiceSMOImpl.queryBarriersCount(barrierDto);

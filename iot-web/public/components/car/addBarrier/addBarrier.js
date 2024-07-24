@@ -11,7 +11,9 @@
                 implBean: '',
                 boxId: '',
                 hms: [],
-                parkingBoxs:[]
+                parkingBoxs:[],
+                monitorId:'',
+                monitors:[]
             }
         },
         _initMethod: function () {
@@ -21,6 +23,7 @@
             vc.on('addBarrier', 'openAddBarrierModal', function () {
                 $that._listAddHms();
                 $that._listAddParkingBoxs();
+                $that._listAddMonitors();
                 $('#addBarrierModel').modal('show');
             });
         },
@@ -143,7 +146,9 @@
                     implBean: '',
                     boxId: '',
                     hms: [],
-                    parkingBoxs:[]
+                    parkingBoxs:[],
+                    monitorId:'',
+                    monitors:[]
                 };
             },
             _listAddHms: function(_page, _rows) {
@@ -185,6 +190,28 @@
                       
                     },
                     function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+            _listAddMonitors: function (_page, _rows) {
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        communityId:vc.getCurrentCommunity().communityId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/monitorMachine.listMonitorMachine',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        $that.addBarrierInfo.monitors = _json.data;
+
+                    },
+                    function (errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );

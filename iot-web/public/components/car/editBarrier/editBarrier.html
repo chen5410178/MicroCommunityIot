@@ -68,6 +68,19 @@
               </select>
             </div>
           </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label ">
+              <vc:i18n name='监控视频' namespace='editBarrier'></vc:i18n>
+            </label>
+            <div class="col-sm-10">
+              <select class="custom-select" v-model="editBarrierInfo.monitorId">
+                <option selected disabled value="">{{vc.i18n('选填，请选择监控视频','editBarrier')}}</option>
+                <option value="-1">{{vc.i18n('没有监控','editBarrier')}}</option>
+                <option :value="item.machineId" v-for="(item,index) in  editBarrierInfo.monitors">
+                  {{item.machineName}}</option>
+              </select>
+            </div>
+          </div>
 
           <div class="ibox-content">
             <button class="btn btn-primary float-right" type="button" v-on:click="editBarrier()">

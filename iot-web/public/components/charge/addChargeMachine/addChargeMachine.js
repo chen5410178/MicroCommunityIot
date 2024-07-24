@@ -1,10 +1,6 @@
 (function (vc) {
 
     vc.extends({
-        propTypes: {
-            callBackListener: vc.propTypes.string, //父组件名称
-            callBackFunction: vc.propTypes.string //父组件监听方法
-        },
         data: {
             addChargeMachineInfo: {
                 machineId: '',
@@ -17,7 +13,9 @@
                 specs: [],
                 rules:[],
                 portCount:'',
-                chargeType: ''
+                chargeType: '',
+                monitors:[],
+                monitorId:''
             }
         },
         _initMethod: function () {
@@ -27,13 +25,14 @@
             vc.on('addChargeMachine', 'openAddChargeMachineModal', function () {
                 $that._listFactorys();
                 $that._listAddChargeRules();
+                $that._listAddMonitors();
                 $('#addChargeMachineModel').modal('show');
             });
         },
         methods: {
             addChargeMachineValidate() {
                 return vc.validate.validate({
-                    addChargeMachineInfo: vc.component.addChargeMachineInfo
+                    addChargeMachineInfo: $that.addChargeMachineInfo
                 }, {
                     'addChargeMachineInfo.machineName': [
                         {
@@ -101,16 +100,16 @@
                 });
             },
             saveChargeMachineInfo: function () {
-                if (!vc.component.addChargeMachineValidate()) {
+                if (!$that.addChargeMachineValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
 
-                vc.component.addChargeMachineInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.addChargeMachineInfo.communityId = vc.getCurrentCommunity().communityId;
             
                 vc.http.apiPost(
                     '/chargeMachine.saveChargeMachine',
-                    JSON.stringify(vc.component.addChargeMachineInfo),
+                    JSON.stringify($that.addChargeMachineInfo),
                     {
                         emulateJSON: true
                     },
@@ -120,7 +119,7 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#addChargeMachineModel').modal('hide');
-                            vc.component.clearAddChargeMachineInfo();
+                            $that.clearAddChargeMachineInfo();
                             vc.emit('chargeMachineManage', 'listChargeMachine', {});
 
                             return;
@@ -136,7 +135,7 @@
                     });
             },
             clearAddChargeMachineInfo: function () {
-                vc.component.addChargeMachineInfo = {
+                $that.addChargeMachineInfo = {
                     machineName: '',
                     machineCode: '',
                     implBean: '',
@@ -146,7 +145,9 @@
                     specs: [],
                     rules:[],
                     portCount:'',
-                    chargeType: ''
+                    chargeType: '',
+                    monitors:[],
+                    monitorId:''
                 };
             },
             _listFactorys: function(_page, _rows) {
@@ -193,6 +194,28 @@
                         let _chargeRuleManageInfo = JSON.parse(json);
                         $that.addChargeMachineInfo.rules = _chargeRuleManageInfo.data;
                     }, function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+            _listAddMonitors: function (_page, _rows) {
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        communityId:vc.getCurrentCommunity().communityId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/monitorMachine.listMonitorMachine',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        $that.addChargeMachineInfo.monitors = _json.data;
+
+                    },
+                    function (errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );

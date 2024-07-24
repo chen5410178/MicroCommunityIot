@@ -17,6 +17,7 @@ package com.java110.po.barrier;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2023-09-21 01:05:11 mail: 928255095@qq.com
@@ -28,76 +29,112 @@ import java.util.Date;
 public class BarrierPo implements Serializable {
 
     private String heartbeatTime;
-private String implBean;
-private String machineId;
-private String machineCode;
-private String statusCd = "0";
-private String communityId;
-private String machineName;
-private String machineIp;
-private String direction;
-private String boxId;
-public String getHeartbeatTime() {
+    private String implBean;
+    private String machineId;
+    private String machineCode;
+    private String statusCd = "0";
+    private String communityId;
+    private String machineName;
+    private String machineIp;
+    private String direction;
+    private String boxId;
+
+    private String monitorId;
+    private String monitorName;
+
+    public String getHeartbeatTime() {
         return heartbeatTime;
     }
-public void setHeartbeatTime(String heartbeatTime) {
+
+    public void setHeartbeatTime(String heartbeatTime) {
         this.heartbeatTime = heartbeatTime;
     }
-public String getImplBean() {
+
+    public String getImplBean() {
         return implBean;
     }
-public void setImplBean(String implBean) {
+
+    public void setImplBean(String implBean) {
         this.implBean = implBean;
     }
-public String getMachineId() {
+
+    public String getMachineId() {
         return machineId;
     }
-public void setMachineId(String machineId) {
+
+    public void setMachineId(String machineId) {
         this.machineId = machineId;
     }
-public String getMachineCode() {
+
+    public String getMachineCode() {
         return machineCode;
     }
-public void setMachineCode(String machineCode) {
+
+    public void setMachineCode(String machineCode) {
         this.machineCode = machineCode;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
-public String getMachineName() {
+
+    public String getMachineName() {
         return machineName;
     }
-public void setMachineName(String machineName) {
+
+    public void setMachineName(String machineName) {
         this.machineName = machineName;
     }
-public String getMachineIp() {
+
+    public String getMachineIp() {
         return machineIp;
     }
-public void setMachineIp(String machineIp) {
+
+    public void setMachineIp(String machineIp) {
         this.machineIp = machineIp;
     }
-public String getDirection() {
+
+    public String getDirection() {
         return direction;
     }
-public void setDirection(String direction) {
+
+    public void setDirection(String direction) {
         this.direction = direction;
     }
-public String getBoxId() {
+
+    public String getBoxId() {
         return boxId;
     }
-public void setBoxId(String boxId) {
+
+    public void setBoxId(String boxId) {
         this.boxId = boxId;
     }
 
+    public String getMonitorId() {
+        return monitorId;
+    }
 
+    public void setMonitorId(String monitorId) {
+        this.monitorId = monitorId;
+    }
 
+    public String getMonitorName() {
+        return monitorName;
+    }
+
+    public void setMonitorName(String monitorName) {
+        this.monitorName = monitorName;
+    }
 }

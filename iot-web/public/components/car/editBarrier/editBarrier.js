@@ -11,7 +11,9 @@
                 implBean: '',
                 boxId: '',
                 hms: [],
-                parkingBoxs:[]
+                parkingBoxs:[],
+                monitorId:'',
+                monitors:[]
             }
         },
         _initMethod: function () {
@@ -22,6 +24,7 @@
                 $that.refreshEditBarrierInfo();
                 $that._listEditHms();
                 $that._listEditParkingBoxs();
+                $that._listEditMonitors();
                 $('#editBarrierModel').modal('show');
                 vc.copyObject(_params, $that.editBarrierInfo);
                 $that.editBarrierInfo.communityId = vc.getCurrentCommunity().communityId;
@@ -151,7 +154,9 @@
                     implBean: '',
                     boxId: '',
                     hms: [],
-                    parkingBoxs:[]
+                    parkingBoxs:[],
+                    monitorId:'',
+                    monitors:[]
                 }
             },
             _listEditHms: function(_page, _rows) {
@@ -193,6 +198,28 @@
                       
                     },
                     function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+            _listEditMonitors: function (_page, _rows) {
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        communityId:vc.getCurrentCommunity().communityId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/monitorMachine.listMonitorMachine',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        $that.editBarrierInfo.monitors = _json.data;
+
+                    },
+                    function (errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );

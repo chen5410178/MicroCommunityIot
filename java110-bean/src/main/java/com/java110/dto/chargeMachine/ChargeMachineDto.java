@@ -46,6 +46,9 @@ public class ChargeMachineDto extends PageDto implements Serializable {
 
     private String stateName;
 
+    private String monitorId;
+    private String monitorName;
+
     private List<ChargeRuleFeeDto> fees;
 
     public String getChargeType() {
@@ -200,5 +203,21 @@ public class ChargeMachineDto extends PageDto implements Serializable {
 
     public void setFees(List<ChargeRuleFeeDto> fees) {
         this.fees = fees;
+    }
+
+    public String getMonitorId() {
+        return monitorId;
+    }
+
+    public void setMonitorId(String monitorId) {
+        this.monitorId = monitorId;
+    }
+
+    public String getMonitorName() {
+        return monitorName;
+    }
+
+    public void setMonitorName(String monitorName) {
+        this.monitorName = monitorName;
     }
 }
