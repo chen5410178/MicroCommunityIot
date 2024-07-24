@@ -5,7 +5,7 @@
 			<view class="title">房屋编号</view>
 			<view class="text-right" @click="_chooseRoom()"><text>{{roomName || '请选择 >'}}</text></view>
 		</view>
-		
+
 		<view class="block__title">访客信息</view>
 		<view class="cu-form-group">
 			<view class="title">访客姓名</view>
@@ -13,7 +13,8 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">访客性别</view>
-			<picker :value="visitGenderIndex" :range="visitGenderScopes" :range-key="'name'" @change="visitGenderChange">
+			<picker :value="visitGenderIndex" :range="visitGenderScopes" :range-key="'name'"
+				@change="visitGenderChange">
 				<view class="picker">
 					{{visitGenderScopes[visitGenderIndex].name}}
 				</view>
@@ -62,11 +63,21 @@
 	// pages/visit/addVisit.js
 	import context from '../../lib/java110/Java110Context.js';
 	const factory = context.factory;
-	import {listOwnerVisit, saveAddVisit, listVisitType,listVisitCarNum}  from '../../api/visit/visitApi.js'
+	import {
+		listOwnerVisit,
+		saveAddVisit,
+		listVisitType,
+		listVisitCarNum
+	} from '../../api/visit/visitApi.js'
 	import uniDatetimePicker from '../../components/uni-datetime-picker/uni-datetime-picker.vue'
 	//import CarNumber from '../../components/codecook-carnumber/components/codecook-carnumber/codecook-carnumber.vue'
-	import {formatTimeNow} from '../../lib/java110/utils/DateUtil.js'
-	import {checkPhoneNumber,checkStrLength} from '../../lib/java110/utils/StringUtil.js'
+	import {
+		formatTimeNow
+	} from '../../lib/java110/utils/DateUtil.js'
+	import {
+		checkPhoneNumber,
+		checkStrLength
+	} from '../../lib/java110/utils/StringUtil.js'
 	import * as TanslateImage from '../../lib/java110/utils/translate-image.js';
 	//import uploadImageAsync from "../../components/vc-upload-async/vc-upload-async.vue";
 
@@ -92,8 +103,7 @@
 				visitCase: '',
 				reasonType: 0,
 				reasonTypeIndex: 0,
-				reasonTypeScopes: [
-				],
+				reasonTypeScopes: [],
 				roomCloums: [],
 				roomIdArr: [],
 				ownerId: '',
@@ -101,7 +111,7 @@
 				communityId: '',
 				roomId: '',
 				roomName: '',
-				machineId:'',
+				machineId: '',
 				photos: [],
 				freeInfo: {},
 				uploadImage: {
@@ -125,8 +135,12 @@
 		onLoad: function(options) {
 			let that = this;
 			this.communityId = options.communityId;
-			listVisitType({page:-1, row:100, communityId:this.communityId}).then(res => {
-				if(res.code == 0) {
+			listVisitType({
+				page: -1,
+				row: 100,
+				communityId: this.communityId
+			}).then(res => {
+				if (res.code == 0 && res.data && res.data.length > 0) {
 					this.reasonTypeScopes = res.data.map(item => {
 						return {
 							value: item.typeId,
@@ -141,12 +155,12 @@
 			this.machineId = options.machineId;
 			this._loadBarrierCarNum();
 		},
-		
+
 		methods: {
-			sendImagesData: function(e){
+			sendImagesData: function(e) {
 				this.photos = e[0].fileId;
 			},
-			_queryFreeInfo: function(){
+			_queryFreeInfo: function() {
 				let _that = this;
 				let _objData = {
 					page: 1,
@@ -154,16 +168,16 @@
 					communityId: _that.communityId,
 					addVisitType: 'initAddVisitParameter',
 				}
-				listOwnerVisit(_objData).then(function(info){
+				listOwnerVisit(_objData).then(function(info) {
 					_that.freeInfo = info;
 				})
 			},
 			// 选择性别
-			visitGenderChange: function(e){
+			visitGenderChange: function(e) {
 				this.visitGenderIndex = e.target.value
 				this.visitGender = this.visitGenderScopes[this.visitGenderIndex].value;
 			},
-			reasonTypeChange: function(e){
+			reasonTypeChange: function(e) {
 				this.reasonTypeIndex = e.target.value
 				this.reasonType = this.reasonTypeScopes[this.reasonTypeIndex].value;
 			},
@@ -172,21 +186,21 @@
 				this.roomName = this.roomCloums[e.detail.value];
 			},
 			// 提交
-			submitVisit: function(){
+			submitVisit: function() {
 				let obj = {
 					roomId: this.roomId,
 					roomName: this.roomName,
 					name: this.vName,
 					visitGender: this.visitGender,
 					phoneNumber: this.phoneNumber,
-					carNum:this.carNum,
+					carNum: this.carNum,
 					visitTime: this.visitTime.replace(/\//g, '-'),
 					typeId: this.reasonType,
 					visitCase: this.visitCase,
 					state: '0',
 					communityId: this.communityId,
 				};
-				
+
 				let msg = "";
 				if (obj.roomName == "") {
 					msg = "请选择房屋编号";
@@ -200,14 +214,14 @@
 					msg = "手机号有误";
 				} else if (obj.visitCase == "") {
 					msg = "请填写拜访事由";
-				}else{
+				} else {
 					// let visitTime = Date.parse(new Date(obj.visitTime.replace(/-/g, '/'))),
 					// now = Date.parse(new Date());
 					// if(now - visitTime > 0){
 					// 	msg = "开始时间有误,小于当前时间";
 					// }
 				}
-				
+
 				if (msg != "") {
 					wx.showToast({
 						title: msg,
@@ -217,7 +231,7 @@
 					return;
 				}
 				let _that = this;
-				saveAddVisit(obj).then(function(data){
+				saveAddVisit(obj).then(function(data) {
 					if (data.code == 0) {
 						// wx.redirectTo({
 						// 	url: '/pages/visit/addVisitSuccess?msg=' + data.msg,
@@ -230,10 +244,12 @@
 							phoneNumber: _that.phoneNumber,
 							communityId: _that.communityId
 						}
-						listOwnerVisit(_objData).then(function(list){
+						listOwnerVisit(_objData).then(function(list) {
 							let info = list.data[0];
 							uni.navigateTo({
-								url: '/pages/visit/visitDetail?vId=' + info.visitId + '&qrcode=' + info.qrcode+"&communityId="+_that.communityId
+								url: '/pages/visit/visitDetail?vId=' + info.visitId +
+									'&qrcode=' + info.qrcode + "&communityId=" + _that
+									.communityId
 							})
 						})
 						return;
@@ -247,17 +263,17 @@
 			},
 			_chooseRoom: function() {
 				uni.navigateTo({
-					url: '/pages/room/selectRoom?communityId='+this.communityId
+					url: '/pages/room/selectRoom?communityId=' + this.communityId
 				})
 			},
-			_loadBarrierCarNum:function(){
-				if(!this.machineId){
+			_loadBarrierCarNum: function() {
+				if (!this.machineId) {
 					return;
 				}
 				let _that = this;
 				listVisitCarNum({
-					machineId:this.machineId
-				}).then((_data)=>{
+					machineId: this.machineId
+				}).then((_data) => {
 					_that.carNum = _data.data;
 				})
 			}
@@ -273,7 +289,7 @@
 		 */
 		onShow: function() {
 			let _selectRoom = uni.getStorageSync('selectRoom');
-			if(_selectRoom){
+			if (_selectRoom) {
 				uni.removeStorageSync('selectRoom');
 				this.roomId = _selectRoom.roomId;
 				this.roomName = _selectRoom.roomName;
