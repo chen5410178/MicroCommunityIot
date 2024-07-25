@@ -92,7 +92,11 @@ public class ListParkingCouponCarCmd extends Cmd {
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
-        Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
+        if(reqJson.containsKey("shopId")){
+            Assert.hasKeyAndValue(reqJson, "shopId", "shopId不能为空");
+        }else{
+            Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
+        }
 
         super.validatePageInfo(reqJson);
     }
