@@ -78,6 +78,13 @@
                 } else {
                     $that.attendanceMachineInfo.moreCondition = true;
                 }
+            },
+            _viewAccessControlVideo:function(_attendanceMachine){
+                vc.emit('playMonitorVideo', 'openPlayMonitorVideoModal', {
+                    machineId:_attendanceMachine.monitorId,
+                    machineName:_attendanceMachine.monitorName,
+                    communityId:_attendanceMachine.communityId
+                });
             }
         }
     });

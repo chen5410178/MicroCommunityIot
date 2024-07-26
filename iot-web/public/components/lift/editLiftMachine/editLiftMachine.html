@@ -1,99 +1,121 @@
 <div id="editLiftMachineModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+    aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-body">
-                <h3 class="m-t-none m-b "><span><vc:i18n name="修改电梯管理" namespace="editLiftMachine"></vc:i18n></span>
+                <h3 class="m-t-none m-b ">
+                    <vc:i18n name="修改电梯" namespace="editLiftMachine"></vc:i18n>
                 </h3>
                 <div class="ibox-content">
-                    <div>
-                        <div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='名称'
-                                                                                      namespace='editLiftMachine'></vc:i18n></span>
-                                </label>
-                                <div class="col-sm-4">
-                                    <input v-model="editLiftMachineInfo.machineName" type="text"
-                                           :placeholder="vc.i18n('必填，请填写名称','editLiftMachine')" class="form-control">
-                                </div>
-                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='设备编号'
-                                                                                      namespace='editLiftMachine'></vc:i18n></span>
-                                </label>
-                                <div class="col-sm-4">
-                                    <input v-model="editLiftMachineInfo.machineCode" type="text"
-                                           :placeholder="vc.i18n('必填，请填写设备编号','editLiftMachine')" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='品牌'
-                                                                                      namespace='editLiftMachine'></vc:i18n></span>
-                                </label>
-                                <div class="col-sm-4">
-                                    <input v-model="editLiftMachineInfo.brand" type="text"
-                                           :placeholder="vc.i18n('必填，请填写品牌','editLiftMachine')" class="form-control">
-                                </div>
-                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='位置'
-                                                                                      namespace='editLiftMachine'></vc:i18n></span>
-                                </label>
-                                <div class="col-sm-4">
-                                    <input v-model="editLiftMachineInfo.locationName" type="text"
-                                           :placeholder="vc.i18n('必填，请填写位置','editLiftMachine')" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='登记单位'
-                                                                                      namespace='editLiftMachine'></vc:i18n></span>
-                                </label>
-                                <div class="col-sm-4">
-                                    <input v-model="editLiftMachineInfo.registrationUnit" type="text"
-                                           :placeholder="vc.i18n('必填，请填写登记单位','editLiftMachine')" class="form-control">
-                                </div>
-                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='使用单位'
-                                                                                      namespace='editLiftMachine'></vc:i18n></span>
-                                </label>
-                                <div class="col-sm-4">
-                                    <input v-model="editLiftMachineInfo.useUnit" type="text"
-                                           :placeholder="vc.i18n('必填，请填写使用单位','editLiftMachine')" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='维保单位'
-                                                                                      namespace='editLiftMachine'></vc:i18n></span>
-                                </label>
-                                <div class="col-sm-4">
-                                    <input v-model="editLiftMachineInfo.maintenanceUnit" type="text"
-                                           :placeholder="vc.i18n('必填，请填写维保单位','editLiftMachine')" class="form-control">
-                                </div>
-                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='救援电话'
-                                                                                      namespace='editLiftMachine'></vc:i18n></span>
-                                </label>
-                                <div class="col-sm-4">
-                                    <input v-model="editLiftMachineInfo.rescueLink" type="text"
-                                           :placeholder="vc.i18n('必填，请填写救援电话','editLiftMachine')" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"><span><vc:i18n name='厂家'
-                                                                                      namespace='editLiftMachine'></vc:i18n></span>
-                                </label>
-                                <div class="col-sm-4">
-                                    <select class="custom-select" v-model="editLiftMachineInfo.factoryId">
-                                        <option value="" disabled selected>{{vc.i18n('请选择','editLiftMachine')}}</option>
-                                        <option v-for="(item, index) in liftMachineFactoryList" :key="index" :value="item.factoryId">
-                                            {{item.factoryName}}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
 
-                            <div class="ibox-content">
-                                <button class="btn btn-primary float-right" type="button"
-                                        v-on:click="editLiftMachine()"><i class="fa fa-check"></i>&nbsp;<span><vc:i18n
-                                        name="保存"></vc:i18n></span></button>
-                                <button type="button" class="btn btn-warning float-right" style="margin-right:20px;"
-                                        data-dismiss="modal"><span><vc:i18n name="取消"></vc:i18n></span></button>
-                            </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><span>
+                                <vc:i18n name='名称' namespace='editLiftMachine'></vc:i18n>
+                            </span>
+                        </label>
+                        <div class="col-sm-4">
+                            <input v-model="editLiftMachineInfo.machineName" type="text"
+                                :placeholder="vc.i18n('必填，请填写名称','editLiftMachine')" class="form-control">
                         </div>
+                        <label class="col-sm-2 col-form-label"><span>
+                                <vc:i18n name='设备编号' namespace='editLiftMachine'></vc:i18n>
+                            </span>
+                        </label>
+                        <div class="col-sm-4">
+                            <input v-model="editLiftMachineInfo.machineCode" type="text"
+                                :placeholder="vc.i18n('必填，请填写设备编号','editLiftMachine')" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><span>
+                                <vc:i18n name='品牌' namespace='editLiftMachine'></vc:i18n>
+                            </span>
+                        </label>
+                        <div class="col-sm-4">
+                            <input v-model="editLiftMachineInfo.brand" type="text"
+                                :placeholder="vc.i18n('必填，请填写品牌','editLiftMachine')" class="form-control">
+                        </div>
+                        <label class="col-sm-2 col-form-label"><span>
+                                <vc:i18n name='位置' namespace='editLiftMachine'></vc:i18n>
+                            </span>
+                        </label>
+                        <div class="col-sm-4">
+                            <input v-model="editLiftMachineInfo.locationName" type="text"
+                                :placeholder="vc.i18n('必填，请填写位置','editLiftMachine')" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><span>
+                                <vc:i18n name='登记单位' namespace='editLiftMachine'></vc:i18n>
+                            </span>
+                        </label>
+                        <div class="col-sm-4">
+                            <input v-model="editLiftMachineInfo.registrationUnit" type="text"
+                                :placeholder="vc.i18n('必填，请填写登记单位','editLiftMachine')" class="form-control">
+                        </div>
+                        <label class="col-sm-2 col-form-label"><span>
+                                <vc:i18n name='使用单位' namespace='editLiftMachine'></vc:i18n>
+                            </span>
+                        </label>
+                        <div class="col-sm-4">
+                            <input v-model="editLiftMachineInfo.useUnit" type="text"
+                                :placeholder="vc.i18n('必填，请填写使用单位','editLiftMachine')" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><span>
+                                <vc:i18n name='维保单位' namespace='editLiftMachine'></vc:i18n>
+                            </span>
+                        </label>
+                        <div class="col-sm-4">
+                            <input v-model="editLiftMachineInfo.maintenanceUnit" type="text"
+                                :placeholder="vc.i18n('必填，请填写维保单位','editLiftMachine')" class="form-control">
+                        </div>
+                        <label class="col-sm-2 col-form-label"><span>
+                                <vc:i18n name='救援电话' namespace='editLiftMachine'></vc:i18n>
+                            </span>
+                        </label>
+                        <div class="col-sm-4">
+                            <input v-model="editLiftMachineInfo.rescueLink" type="text"
+                                :placeholder="vc.i18n('必填，请填写救援电话','editLiftMachine')" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">
+                            <vc:i18n name='厂家' namespace='editLiftMachine'></vc:i18n>
+                        </label>
+                        <div class="col-sm-4">
+                            <select class="custom-select" v-model="editLiftMachineInfo.factoryId">
+                                <option value="" disabled selected>{{vc.i18n('请选择','editLiftMachine')}}</option>
+                                <option v-for="(item, index) in liftMachineFactoryList" :key="index"
+                                    :value="item.factoryId">
+                                    {{item.factoryName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label ">
+                            <vc:i18n name='监控视频' namespace='editLiftMachine'></vc:i18n>
+                        </label>
+                        <div class="col-sm-10">
+                            <select class="custom-select" v-model="editLiftMachineInfo.monitorId">
+                                <option selected disabled value="">{{vc.i18n('选填，请选择监控视频','editLiftMachine')}}</option>
+                                <option value="-1">{{vc.i18n('没有监控','editLiftMachine')}}</option>
+                                <option :value="item.machineId" v-for="(item,index) in  editLiftMachineInfo.monitors">
+                                    {{item.machineName}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+                        <button class="btn btn-primary float-right" type="button" v-on:click="editLiftMachine()">
+                            <vc:i18n name="保存"></vc:i18n>
+                        </button>
+                        <button type="button" class="btn btn-warning float-right" style="margin-right:20px;"
+                            data-dismiss="modal">
+                            <vc:i18n name="取消"></vc:i18n>
+                        </button>
                     </div>
                 </div>
             </div>

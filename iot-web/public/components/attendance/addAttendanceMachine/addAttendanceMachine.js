@@ -11,7 +11,9 @@
                 implBean: '',
                 classesId: '',
                 classesName: '',
-                hms: []
+                hms: [],
+                monitors:[],
+                monitorId:'',
             }
         },
         _initMethod: function () {
@@ -20,6 +22,7 @@
         _initEvent: function () {
             vc.on('addAttendanceMachine', 'openAddAttendanceMachineModal', function () {
                 $that._listAddHms();
+                $that._listAddMonitors();
                 $('#addAttendanceMachineModel').modal('show');
             });
         },
@@ -114,7 +117,9 @@
                     implBean: '',
                     classesId: '',
                     classesName: '',
-                    hms:[]
+                    hms:[],
+                    monitors:[],
+                    monitorId:'',
                 };
             },
             _listAddHms: function(_page, _rows) {
@@ -136,6 +141,28 @@
 
                     },
                     function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+            _listAddMonitors: function (_page, _rows) {
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        communityId:vc.getCurrentCommunity().communityId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/monitorMachine.listMonitorMachine',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        $that.addAttendanceMachineInfo.monitors = _json.data;
+
+                    },
+                    function (errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );

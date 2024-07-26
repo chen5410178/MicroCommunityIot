@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="monitorMachinePersonV1ServiceDaoImpl">
+
+
+    <!-- 保存监控人员信息 add by wuxw 2018-07-03 -->
+    <insert id="saveMonitorMachinePersonInfo" parameterType="Map">
+        insert into monitor_machine_person(
+        person_name,mmu_id,machine_id,machine_code,person_id,person_type,community_id,machine_name
+        ) values (
+        #{personName},#{mmuId},#{machineId},#{machineCode},#{personId},#{personType},#{communityId},#{machineName}
+        )
+    </insert>
+
+
+    <!-- 查询监控人员信息 add by wuxw 2018-07-03 -->
+    <select id="getMonitorMachinePersonInfo" parameterType="Map" resultType="Map">
+        select t.person_name,t.person_name personName,t.mmu_id,t.mmu_id mmuId,t.machine_id,t.machine_id
+        machineId,t.machine_code,t.machine_code machineCode,t.person_id,t.person_id personId,t.status_cd,t.status_cd
+        statusCd,t.person_type,t.person_type personType,t.community_id,t.community_id
+        communityId,t.machine_name,t.machine_name machineName
+        from monitor_machine_person t
+        where 1 =1
+        <if test="personName !=null and personName != ''">
+            and t.person_name= #{personName}
+        </if>
+        <if test="mmuId !=null and mmuId != ''">
+            and t.mmu_id= #{mmuId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="personId !=null and personId != ''">
+            and t.person_id= #{personId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="personType !=null and personType != ''">
+            and t.person_type= #{personType}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改监控人员信息 add by wuxw 2018-07-03 -->
+    <update id="updateMonitorMachinePersonInfo" parameterType="Map">
+        update monitor_machine_person t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="personName !=null and personName != ''">
+            , t.person_name= #{personName}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="personId !=null and personId != ''">
+            , t.person_id= #{personId}
+        </if>
+        <if test="personType !=null and personType != ''">
+            , t.person_type= #{personType}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            , t.machine_name= #{machineName}
+        </if>
+        where 1=1
+        <if test="mmuId !=null and mmuId != ''">
+            and t.mmu_id= #{mmuId}
+        </if>
+
+    </update>
+
+    <!-- 查询监控人员数量 add by wuxw 2018-07-03 -->
+    <select id="queryMonitorMachinePersonsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from monitor_machine_person t
+        where 1 =1
+        <if test="personName !=null and personName != ''">
+            and t.person_name= #{personName}
+        </if>
+        <if test="mmuId !=null and mmuId != ''">
+            and t.mmu_id= #{mmuId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="personId !=null and personId != ''">
+            and t.person_id= #{personId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="personType !=null and personType != ''">
+            and t.person_type= #{personType}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+
+
+    </select>
+
+</mapper>

@@ -8,9 +8,11 @@
     <!-- 保存考勤设备信息 add by wuxw 2018-07-03 -->
     <insert id="saveAttendanceMachineInfo" parameterType="Map">
         insert into attendance_machine(
-        classes_name,heartbeat_time,impl_bean,classes_id,machine_id,machine_code,community_id,machine_name,machine_ip
+        classes_name,heartbeat_time,impl_bean,classes_id,machine_id,machine_code,community_id,machine_name,machine_ip,
+        monitor_id,monitor_name
         ) values (
-        #{classesName},#{heartbeatTime},#{implBean},#{classesId},#{machineId},#{machineCode},#{communityId},#{machineName},#{machineIp}
+        #{classesName},#{heartbeatTime},#{implBean},#{classesId},#{machineId},#{machineCode},#{communityId},#{machineName},#{machineIp},
+        #{monitorId},#{monitorName}
         )
     </insert>
 
@@ -21,7 +23,8 @@
         heartbeatTime,t.impl_bean,t.impl_bean implBean,t.classes_id,t.classes_id classesId,t.machine_id,t.machine_id
         machineId,t.machine_code,t.machine_code machineCode,t.status_cd,t.status_cd
         statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name
-        machineName,t.machine_ip,t.machine_ip machineIp,t.create_time createTime
+        machineName,t.machine_ip,t.machine_ip machineIp,t.create_time createTime,
+        t.monitor_id monitorId,t.monitor_name monitorName
         from attendance_machine t
         where 1 =1
         <if test="classesName !=null and classesName != ''">
@@ -53,6 +56,12 @@
         </if>
         <if test="machineIp !=null and machineIp != ''">
             and t.machine_ip= #{machineIp}
+        </if>
+        <if test="monitorId !=null and monitorId != ''">
+            and t.monitor_id= #{monitorId}
+        </if>
+        <if test="monitorName !=null and monitorName != ''">
+            and t.monitor_name= #{monitorName}
         </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
@@ -89,6 +98,12 @@
         </if>
         <if test="machineIp !=null and machineIp != ''">
             , t.machine_ip= #{machineIp}
+        </if>
+        <if test="monitorId !=null and monitorId != ''">
+            , t.monitor_id= #{monitorId}
+        </if>
+        <if test="monitorName !=null and monitorName != ''">
+            , t.monitor_name= #{monitorName}
         </if>
         where 1=1
         <if test="machineId !=null and machineId != ''">
@@ -134,6 +149,12 @@
         </if>
         <if test="machineIp !=null and machineIp != ''">
             and t.machine_ip= #{machineIp}
+        </if>
+        <if test="monitorId !=null and monitorId != ''">
+            and t.monitor_id= #{monitorId}
+        </if>
+        <if test="monitorName !=null and monitorName != ''">
+            and t.monitor_name= #{monitorName}
         </if>
 
 

@@ -24,14 +24,16 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.*;
+import com.java110.dto.monitor.MonitorMachineDto;
 import com.java110.intf.lift.ILiftMachineV1InnerServiceSMO;
+import com.java110.intf.monitor.IMonitorMachineV1InnerServiceSMO;
 import com.java110.po.lift.LiftMachinePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 import static com.java110.dto.lift.LiftMachineDto.LIFT_STOPPING_STATE;
 
@@ -55,6 +57,10 @@ public class SaveLiftMachineCmd extends Cmd {
     @Autowired
     private ILiftMachineV1InnerServiceSMO liftMachineV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IMonitorMachineV1InnerServiceSMO monitorMachineV1InnerServiceSMOImpl;
+
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineName", "请求报文中未包含machineName");
@@ -63,6 +69,18 @@ public class SaveLiftMachineCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "locationName", "请求报文中未包含locationName");
         Assert.hasKeyAndValue(reqJson, "factoryId", "请求报文中未包含factoryId");
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
+        String monitorId = reqJson.getString("monitorId");
+
+        if (!StringUtil.isEmpty(monitorId) && !"-1".equals(monitorId)) {
+            MonitorMachineDto monitorMachineDto = new MonitorMachineDto();
+            monitorMachineDto.setMachineId(reqJson.getString("monitorId"));
+            monitorMachineDto.setCommunityId(reqJson.getString("communityId"));
+            List<MonitorMachineDto> monitorMachineDtos = monitorMachineV1InnerServiceSMOImpl.queryMonitorMachines(monitorMachineDto);
+            if (ListUtil.isNull(monitorMachineDtos)) {
+                throw new CmdException("监控设备不存在");
+            }
+            reqJson.put("monitorName", monitorMachineDtos.get(0).getMachineName());
+        }
     }
 
     @Override

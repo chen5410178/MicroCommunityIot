@@ -110,6 +110,13 @@
                     url: _url
                 });
             },
+            _viewParkingSpaceVideo:function(_parkingSpace){
+                vc.emit('playMonitorVideo', 'openPlayMonitorVideoModal', {
+                    machineId:_parkingSpace.monitorId,
+                    machineName:_parkingSpace.monitorName,
+                    communityId:_parkingSpace.communityId
+                });
+            }
 
 
         }

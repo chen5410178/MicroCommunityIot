@@ -18,6 +18,8 @@
                 rescueLink: '',
                 factoryId: '',
                 communityId: '',
+                monitors:[],
+                monitorId:'',
             }
         },
         _initMethod: function () {
@@ -25,13 +27,14 @@
         },
         _initEvent: function () {
             vc.on('addLiftMachine', 'openAddLiftMachineModal', function () {
+                $that._listAddMonitors();
                 $('#addLiftMachineModel').modal('show');
             });
         },
         methods: {
             addLiftMachineValidate() {
                 return vc.validate.validate({
-                    addLiftMachineInfo: vc.component.addLiftMachineInfo
+                    addLiftMachineInfo: $that.addLiftMachineInfo
                 }, {
                     'addLiftMachineInfo.machineName': [
                         {
@@ -126,24 +129,18 @@
                 });
             },
             saveLiftMachineInfo: function () {
-                vc.component.addLiftMachineInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.addLiftMachineInfo.communityId = vc.getCurrentCommunity().communityId;
 
-                if (!vc.component.addLiftMachineValidate()) {
+                if (!$that.addLiftMachineValidate()) {
                     vc.toast(vc.validate.errInfo);
 
                     return;
                 }
 
-                //不提交数据将数据 回调给侦听处理
-                if (vc.notNull($props.callBackListener)) {
-                    vc.emit($props.callBackListener, $props.callBackFunction, vc.component.addLiftMachineInfo);
-                    $('#addLiftMachineModel').modal('hide');
-                    return;
-                }
-
+   
                 vc.http.apiPost(
-                    'liftMachine.saveLiftMachine',
-                    JSON.stringify(vc.component.addLiftMachineInfo),
+                    '/liftMachine.saveLiftMachine',
+                    JSON.stringify($that.addLiftMachineInfo),
                     {
                         emulateJSON: true
                     },
@@ -153,7 +150,7 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#addLiftMachineModel').modal('hide');
-                            vc.component.clearAddLiftMachineInfo();
+                            $that.clearAddLiftMachineInfo();
                             vc.emit('liftMachineManage', 'listLiftMachine', {});
 
                             return;
@@ -169,7 +166,7 @@
                     });
             },
             clearAddLiftMachineInfo: function () {
-                vc.component.addLiftMachineInfo = {
+                $that.addLiftMachineInfo = {
                     machineId: '',
                     machineName: '',
                     machineCode: '',
@@ -181,8 +178,32 @@
                     rescueLink: '',
                     factoryId: '',
                     communityId: '',
+                    monitors:[],
+                    monitorId:'',
                 };
-            }
+            },
+            _listAddMonitors: function (_page, _rows) {
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        communityId:vc.getCurrentCommunity().communityId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/monitorMachine.listMonitorMachine',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        $that.addLiftMachineInfo.monitors = _json.data;
+
+                    },
+                    function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
         }
     });
 

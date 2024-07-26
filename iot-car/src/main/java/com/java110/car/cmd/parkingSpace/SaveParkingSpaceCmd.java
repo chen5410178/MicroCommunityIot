@@ -26,12 +26,18 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.doc.annotation.*;
+import com.java110.dto.monitor.MonitorMachineDto;
 import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
+import com.java110.intf.monitor.IMonitorMachineV1InnerServiceSMO;
 import com.java110.po.parking.ParkingSpacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -79,6 +85,9 @@ public class SaveParkingSpaceCmd extends Cmd {
     @Autowired
     private IParkingSpaceV1InnerServiceSMO parkingSpaceV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IMonitorMachineV1InnerServiceSMO monitorMachineV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
@@ -86,7 +95,18 @@ public class SaveParkingSpaceCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "paId", "请求报文中未包含paId");
         Assert.hasKeyAndValue(reqJson, "state", "请求报文中未包含state");
         Assert.hasKeyAndValue(reqJson, "parkingType", "请求报文中未包含parkingType");
+        String monitorId = reqJson.getString("monitorId");
 
+        if (!StringUtil.isEmpty(monitorId) && !"-1".equals(monitorId)) {
+            MonitorMachineDto monitorMachineDto = new MonitorMachineDto();
+            monitorMachineDto.setMachineId(reqJson.getString("monitorId"));
+            monitorMachineDto.setCommunityId(reqJson.getString("communityId"));
+            List<MonitorMachineDto> monitorMachineDtos = monitorMachineV1InnerServiceSMOImpl.queryMonitorMachines(monitorMachineDto);
+            if (ListUtil.isNull(monitorMachineDtos)) {
+                throw new CmdException("监控设备不存在");
+            }
+            reqJson.put("monitorName", monitorMachineDtos.get(0).getMachineName());
+        }
     }
 
     @Override

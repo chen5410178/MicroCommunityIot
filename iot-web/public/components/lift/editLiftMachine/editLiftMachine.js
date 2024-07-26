@@ -14,6 +14,8 @@
                 rescueLink: '',
                 factoryId: '',
                 communityId: '',
+                monitors: [],
+                monitorId: '',
             }
         },
         _initMethod: function () {
@@ -21,16 +23,17 @@
         },
         _initEvent: function () {
             vc.on('editLiftMachine', 'openEditLiftMachineModal', function (_params) {
-                vc.component.refreshEditLiftMachineInfo();
+                $that.refreshEditLiftMachineInfo();
+                $that._listEditMonitors();
                 $('#editLiftMachineModel').modal('show');
-                vc.copyObject(_params, vc.component.editLiftMachineInfo);
-                vc.component.editLiftMachineInfo.communityId = vc.getCurrentCommunity().communityId;
+                vc.copyObject(_params, $that.editLiftMachineInfo);
+                $that.editLiftMachineInfo.communityId = vc.getCurrentCommunity().communityId;
             });
         },
         methods: {
             editLiftMachineValidate: function () {
                 return vc.validate.validate({
-                    editLiftMachineInfo: vc.component.editLiftMachineInfo
+                    editLiftMachineInfo: $that.editLiftMachineInfo
                 }, {
                     'editLiftMachineInfo.machineId': [
                         {
@@ -132,14 +135,14 @@
                 });
             },
             editLiftMachine: function () {
-                if (!vc.component.editLiftMachineValidate()) {
+                if (!$that.editLiftMachineValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
 
                 vc.http.apiPost(
-                    'liftMachine.updateLiftMachine',
-                    JSON.stringify(vc.component.editLiftMachineInfo),
+                    '/liftMachine.updateLiftMachine',
+                    JSON.stringify($that.editLiftMachineInfo),
                     {
                         emulateJSON: true
                     },
@@ -152,16 +155,16 @@
                             vc.emit('liftMachineManage', 'listLiftMachine', {});
                             return;
                         }
-                        vc.message(_json.msg);
+                        vc.toast(_json.msg);
                     },
                     function (errInfo, error) {
                         console.log('请求失败处理');
 
-                        vc.message(errInfo);
+                        vc.toast(errInfo);
                     });
             },
             refreshEditLiftMachineInfo: function () {
-                vc.component.editLiftMachineInfo = {
+                $that.editLiftMachineInfo = {
                     machineId: '',
                     machineName: '',
                     machineCode: '',
@@ -173,9 +176,33 @@
                     rescueLink: '',
                     factoryId: '',
                     communityId: '',
+                    monitors: [],
+                    monitorId: '',
                 }
-            }
+            },
+            _listEditMonitors: function (_page, _rows) {
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        communityId:vc.getCurrentCommunity().communityId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/monitorMachine.listMonitorMachine',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        $that.editLiftMachineInfo.monitors = _json.data;
+
+                    },
+                    function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
         }
     });
 
-})(window.vc, window.vc.component);
+})(window.vc, window.$that);

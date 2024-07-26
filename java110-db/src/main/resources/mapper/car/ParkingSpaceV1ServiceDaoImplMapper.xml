@@ -8,9 +8,9 @@
     <!-- 保存停车位信息 add by wuxw 2018-07-03 -->
     <insert id="saveParkingSpaceInfo" parameterType="Map">
         insert into parking_space(
-        parking_type,num,pa_id,ps_id,remark,state,community_id,pr_id
+        parking_type,num,pa_id,ps_id,remark,state,community_id,pr_id,monitor_id,monitor_name
         ) values (
-        #{parkingType},#{num},#{paId},#{psId},#{remark},#{state},#{communityId},#{prId}
+        #{parkingType},#{num},#{paId},#{psId},#{remark},#{state},#{communityId},#{prId},#{monitorId},#{monitorName}
         )
     </insert>
 
@@ -21,7 +21,8 @@
         psId,t.remark,t.status_cd,t.status_cd statusCd,t.state,t.community_id,t.community_id communityId,
         t.create_time createTime,pa.num paNum,psmr.ps_state psState,psmr.car_num parkCarNum,
         psmr.lock_battery lockBattery,psmr.lock_state lockState,psmr.image_photo imagePhoto,psmr.update_time updateTime,
-        psm.machine_name machineName,psm.heartbeat_time heartbeatTime,t.pr_id prId,pr.region_code regionCode
+        psm.machine_name machineName,psm.heartbeat_time heartbeatTime,t.pr_id prId,pr.region_code regionCode,
+        t.monitor_id monitorId,t.monitor_name monitorName
         from parking_space t
         left join parking_area pa on t.pa_id = pa.pa_id and pa.status_cd = '0'
         left join parking_space_machine_rel psmr on t.ps_id = psmr.ps_id and psmr.status_cd = '0'
@@ -64,6 +65,12 @@
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
         </if>
+        <if test="monitorId !=null and monitorId != ''">
+            and t.monitor_id= #{monitorId}
+        </if>
+        <if test="monitorName !=null and monitorName != ''">
+            and t.monitor_name= #{monitorName}
+        </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
@@ -93,7 +100,12 @@
         <if test="state !=null and state != ''">
             , t.state= #{state}
         </if>
-
+        <if test="monitorId !=null and monitorId != ''">
+            , t.monitor_id= #{monitorId}
+        </if>
+        <if test="monitorName !=null and monitorName != ''">
+            , t.monitor_name= #{monitorName}
+        </if>
         where 1=1
         <if test="psId !=null and psId != ''">
             and t.ps_id= #{psId}
@@ -148,6 +160,12 @@
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
+        </if>
+        <if test="monitorId !=null and monitorId != ''">
+            and t.monitor_id= #{monitorId}
+        </if>
+        <if test="monitorName !=null and monitorName != ''">
+            and t.monitor_name= #{monitorName}
         </if>
 
 
