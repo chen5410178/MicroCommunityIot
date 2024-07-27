@@ -29,9 +29,11 @@ import com.java110.doc.annotation.*;
 import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
 import com.java110.dto.chargeMachine.ChargeRuleFeeDto;
+import com.java110.dto.chargeRulePrice.ChargeRulePriceDto;
 import com.java110.dto.smallWeChat.SmallWeChatDto;
 import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
 import com.java110.intf.charge.IChargeRuleFeeV1InnerServiceSMO;
+import com.java110.intf.charge.IChargeRulePriceV1InnerServiceSMO;
 import com.java110.intf.charge.ISmallWeChatInnerServiceSMO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,6 +104,9 @@ public class ListChargeMachineCmd extends Cmd {
     private IChargeRuleFeeV1InnerServiceSMO chargeRuleFeeV1InnerServiceSMOImpl;
 
     @Autowired
+    private IChargeRulePriceV1InnerServiceSMO chargeRulePriceV1InnerServiceSMOImpl;
+
+    @Autowired
     private IChargeCore chargeCoreImpl;
 
     @Override
@@ -140,18 +145,26 @@ public class ListChargeMachineCmd extends Cmd {
     }
 
     private void queryChargeRuleFee(List<ChargeMachineDto> chargeMachineDtos) {
-        if (chargeMachineDtos == null || chargeMachineDtos.size() != 1) {
+        if (chargeMachineDtos == null || chargeMachineDtos.size() < 1) {
             return;
         }
 
-        ChargeRuleFeeDto chargeRuleFeeDto = new ChargeRuleFeeDto();
-        chargeRuleFeeDto.setRuleId(chargeMachineDtos.get(0).getRuleId());
-        chargeRuleFeeDto.setCommunityId(chargeMachineDtos.get(0).getCommunityId());
-        chargeRuleFeeDto.setChargeType(chargeMachineDtos.get(0).getChargeType());
-        List<ChargeRuleFeeDto> fees = chargeRuleFeeV1InnerServiceSMOImpl.queryChargeRuleFees(chargeRuleFeeDto);
-
-        chargeMachineDtos.get(0).setFees(fees);
-
+        for (ChargeMachineDto chargeMachineDto : chargeMachineDtos) {
+            if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDto.getChargeType())){
+                ChargeRuleFeeDto chargeRuleFeeDto = new ChargeRuleFeeDto();
+                chargeRuleFeeDto.setRuleId(chargeMachineDto.getRuleId());
+                chargeRuleFeeDto.setCommunityId(chargeMachineDto.getCommunityId());
+                chargeRuleFeeDto.setChargeType(chargeMachineDto.getChargeType());
+                List<ChargeRuleFeeDto> fees = chargeRuleFeeV1InnerServiceSMOImpl.queryChargeRuleFees(chargeRuleFeeDto);
+                chargeMachineDto.setFees(fees);
+            }else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDto.getChargeType())){
+                ChargeRulePriceDto chargeRulePriceDto = new ChargeRulePriceDto();
+                chargeRulePriceDto.setRuleId(chargeMachineDto.getRuleId());
+                chargeRulePriceDto.setCommunityId(chargeMachineDto.getCommunityId());
+                List<ChargeRulePriceDto> prices = chargeRulePriceV1InnerServiceSMOImpl.queryChargeRulePrices(chargeRulePriceDto);
+                chargeMachineDto.setPrices(prices);
+            }
+        }
     }
 
     private void queryMachineState(List<ChargeMachineDto> chargeMachineDtos) {
@@ -185,13 +198,20 @@ public class ListChargeMachineCmd extends Cmd {
             appId = smallWeChatDtos.get(0).getAppId();
         }
         String ownerUrl = UrlCache.getOwnerUrl();
-
         for (ChargeMachineDto chargeMachineDto : chargeMachineDtos) {
-            chargeMachineDto.setQrCode(ownerUrl + "/#/pages/charge/machineToCharge?machineId="
-                    + chargeMachineDto.getMachineId()
-                    + "&communityId=" + chargeMachineDto.getCommunityId()
-                    + "&wAppId=" + appId
-            );
+            if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDto.getChargeType())){
+                chargeMachineDto.setQrCode(ownerUrl + "/#/pages/charge/machineToCharge?machineId="
+                        + chargeMachineDto.getMachineId()
+                        + "&communityId=" + chargeMachineDto.getCommunityId()
+                        + "&wAppId=" + appId
+                );
+            }else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDto.getChargeType())){
+                chargeMachineDto.setQrCode(ownerUrl + "/#/pages/charge/machineToCarCharge?machineId="
+                        + chargeMachineDto.getMachineId()
+                        + "&communityId=" + chargeMachineDto.getCommunityId()
+                        + "&wAppId=" + appId
+                );
+            }
         }
     }
 }

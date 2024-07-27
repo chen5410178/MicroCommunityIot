@@ -22,9 +22,9 @@
             vc.on('editChargeMachine', 'openEditChargeMachineModal', function (_params) {
                 vc.component.refreshEditChargeMachineInfo();
                 $that._listEditFactorys();
-                $that._listEditChargeRules();
                 $('#editChargeMachineModel').modal('show');
                 vc.copyObject(_params, vc.component.editChargeMachineInfo);
+                $that._listEditChargeRules(vc.component.editChargeMachineInfo.chargeType);
                 vc.component.editChargeMachineInfo.communityId = vc.getCurrentCommunity().communityId;
             });
         },
@@ -176,11 +176,16 @@
                     }
                 });
             },
-            _listEditChargeRules: function () {
+            _loadEditFees: function (event) {
+                const selectedValue = event.target.value;
+                $that._listEditChargeRules(selectedValue);
+            },
+            _listEditChargeRules: function (_chargeType) {
                 let param = {
                     params: {
                         page:1,
                         row:100,
+                        chargeType:_chargeType,
                         communityId:vc.getCurrentCommunity().communityId
                     }
                 };

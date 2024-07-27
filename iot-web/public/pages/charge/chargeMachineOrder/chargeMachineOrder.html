@@ -132,6 +132,9 @@
                                     <vc:i18n name='小时电价' namespace='chargeMachineOrder'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='服务费' namespace='chargeMachineOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='扣款金额' namespace='chargeMachineOrder'></vc:i18n>
                                 </th>
                                 <th class="text-center">
@@ -164,6 +167,7 @@
                                     <a href="javascript:void(0)" @click="_viewAccount(chargeMachineOrder)">查看</a>)
                                 </td>
                                 <td class="text-center">{{chargeMachineOrder.durationPrice}}</td>
+                                <td class="text-center">{{chargeMachineOrder.servicePrice}}</td>
                                 <td class="text-center">{{chargeMachineOrder.amount}}(<a href="javascript:void(0)"
                                         @click="_viewOrderAccts(chargeMachineOrder)">明细</a>)</td>
                                 <td class="text-center">{{chargeMachineOrder.stateName}}

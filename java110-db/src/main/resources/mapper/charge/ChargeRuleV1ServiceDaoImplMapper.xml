@@ -8,9 +8,9 @@
     <!-- 保存充电规则信息 add by wuxw 2018-07-03 -->
     <insert id="saveChargeRuleInfo" parameterType="Map">
         insert into charge_rule(
-        rule_name,remark,rule_id,community_id
+        rule_name,remark,rule_id,community_id,charge_type
         ) values (
-        #{ruleName},#{remark},#{ruleId},#{communityId}
+        #{ruleName},#{remark},#{ruleId},#{communityId},#{chargeType}
         )
     </insert>
 
@@ -18,8 +18,8 @@
     <!-- 查询充电规则信息 add by wuxw 2018-07-03 -->
     <select id="getChargeRuleInfo" parameterType="Map" resultType="Map">
         select t.rule_name,t.rule_name ruleName,t.remark,t.status_cd,t.status_cd statusCd,t.rule_id,t.rule_id
-        ruleId,t.community_id,t.community_id communityId
-        from charge_rule t
+        ruleId,t.community_id,t.community_id communityId,t.charge_type,t.charge_type chargeType,d.`name` chargeTypeName
+        from charge_rule t LEFT JOIN t_dict d on t.charge_type = d.status_cd and d.table_name = 'charge_rule' and d.table_columns = 'charge_type'
         where 1 =1
         <if test="ruleName !=null and ruleName != ''">
             and t.rule_name= #{ruleName}
@@ -35,6 +35,9 @@
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
+        </if>
+        <if test="chargeType !=null and chargeType != ''">
+            and t.charge_type= #{chargeType}
         </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
@@ -59,6 +62,9 @@
         <if test="communityId !=null and communityId != ''">
             , t.community_id= #{communityId}
         </if>
+        <if test="chargeType !=null and chargeType != ''">
+            , t.charge_type= #{chargeType}
+        </if>
         where 1=1
         <if test="ruleId !=null and ruleId != ''">
             and t.rule_id= #{ruleId}
@@ -82,6 +88,9 @@
         </if>
         <if test="ruleId !=null and ruleId != ''">
             and t.rule_id= #{ruleId}
+        </if>
+        <if test="chargeType !=null and chargeType != ''">
+            and t.charge_type= #{chargeType}
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}

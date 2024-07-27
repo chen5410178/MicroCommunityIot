@@ -27,6 +27,7 @@
         _initEvent: function () {
             vc.on('chargeRuleFee', 'switch', function (_data) {
                 $that.chargeRuleFeeInfo.conditions.ruleId = _data.ruleId;
+                $that.chargeRuleFeeInfo.conditions.chargeType = _data.chargeType;
                 $that._listChargeRuleFees(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('chargeRuleFee', 'listChargeRuleFee', function (_param) {
@@ -36,10 +37,10 @@
                 function (_currentPage) {
                     $that._listChargeRuleFees(_currentPage, DEFAULT_ROWS);
                 });
-            vc.on('chargeType', 'switchChargeType', function (_param) {
-                $that.chargeRuleFeeInfo.conditions.chargeType = _param.statusCd;
-                $that._listChargeRuleFees(DEFAULT_PAGE, DEFAULT_ROWS);
-            });
+            // vc.on('chargeType', 'switchChargeType', function (_param) {
+            //     $that.chargeRuleFeeInfo.conditions.chargeType = _param.statusCd;
+            //     $that._listChargeRuleFees(DEFAULT_PAGE, DEFAULT_ROWS);
+            // });
         },
         methods: {
             _listChargeRuleFees: function (_page, _rows) {

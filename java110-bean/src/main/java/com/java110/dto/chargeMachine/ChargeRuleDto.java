@@ -19,6 +19,8 @@ public class ChargeRuleDto extends PageDto implements Serializable {
 private String remark;
 private String ruleId;
 private String communityId;
+private String chargeType;
+private String chargeTypeName;
 
 
     private Date createTime;
@@ -66,5 +68,21 @@ public void setCommunityId(String communityId) {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getChargeType() {
+        return chargeType;
+    }
+
+    public void setChargeType(String chargeType) {
+        this.chargeType = chargeType;
+    }
+
+    public String getChargeTypeName() {
+        return chargeTypeName;
+    }
+
+    public void setChargeTypeName(String chargeTypeName) {
+        this.chargeTypeName = chargeTypeName;
     }
 }

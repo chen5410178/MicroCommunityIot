@@ -24,6 +24,16 @@
                                     v-model="chargeMachineManageInfo.conditions.machineCode" class=" form-control">
                             </div>
                         </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <select class="custom-select" v-model="chargeMachineManageInfo.conditions.chargeType">
+                                    <option selected value="">{{vc.i18n('请选择充电桩类型','editChargeMachine')}}</option>
+                                    <option v-for="(item, index) in chargeMachineManageInfo.chargeTypes" :key="index" :value="item.statusCd">
+                                        {{item.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-sm-1">
                             <button type="button" class="btn btn-primary btn-sm"
                                 v-on:click="_queryChargeMachineMethod()">

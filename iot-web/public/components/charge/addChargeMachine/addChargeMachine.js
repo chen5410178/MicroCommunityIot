@@ -26,7 +26,6 @@
         _initEvent: function () {
             vc.on('addChargeMachine', 'openAddChargeMachineModal', function () {
                 $that._listFactorys();
-                $that._listAddChargeRules();
                 $('#addChargeMachineModel').modal('show');
             });
         },
@@ -135,6 +134,10 @@
 
                     });
             },
+            _loadFees: function (event) {
+                const selectedValue = event.target.value;
+                $that._listAddChargeRules(selectedValue);
+            },
             clearAddChargeMachineInfo: function () {
                 vc.component.addChargeMachineInfo = {
                     machineName: '',
@@ -178,11 +181,12 @@
                     }
                 });
             },
-            _listAddChargeRules: function () {
+            _listAddChargeRules: function (_chargeType) {
                 let param = {
                     params: {
                         page:1,
                         row:100,
+                        chargeType:_chargeType,
                         communityId:vc.getCurrentCommunity().communityId
                     }
                 };

@@ -5,6 +5,7 @@
             editChargeRuleInfo: {
                 ruleId: '',
                 ruleName: '',
+                chargeType: '',
                 remark: '',
 
             }
@@ -49,6 +50,12 @@
                             limit: "required",
                             param: "",
                             errInfo: "编号不能为空"
+                        }],
+                    'editChargeRuleInfo.chargeType': [
+                        {
+                            limit: "required",
+                            param: "",
+                            errInfo: "规则使用对象不能为空"
                         }]
 
                 });
@@ -85,6 +92,7 @@
                 vc.component.editChargeRuleInfo = {
                     ruleId: '',
                     ruleName: '',
+                    chargeType: '',
                     remark: '',
 
                 }

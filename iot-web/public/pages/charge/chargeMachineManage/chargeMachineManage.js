@@ -16,7 +16,8 @@
                     machineName: '',
                     machineCode: '',
                     implBean: '',
-                    communityId: ''
+                    communityId: '',
+                    chargeType: ''
                 },
                 chargeTypes: []
             }

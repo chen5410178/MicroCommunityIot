@@ -35,11 +35,25 @@
 		}, {
 			"path": "pages/charge/machineToCharge",
 			"style": {
-				"navigationBarTitleText": "智能充电",
+				"navigationBarTitleText": "电动自行车充电",
+				"enablePullDownRefresh": false
+			}
+
+		},{
+			"path": "pages/charge/carChargePort",
+			"style": {
+				"navigationBarTitleText": "汽车充电端口",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
+			"path": "pages/charge/machineToCarCharge",
+			"style": {
+				"navigationBarTitleText": "汽车充电",
+				"enablePullDownRefresh": false
+			}
+
+		},{
 			"path": "pages/charge/chargeConfirm",
 			"style": {
 				"navigationBarTitleText": "充电确认",

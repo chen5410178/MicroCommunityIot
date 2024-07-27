@@ -9,6 +9,7 @@
             addChargeRuleInfo: {
                 ruleId: '',
                 ruleName: '',
+                chargeType: '',
                 remark: '',
 
             }
@@ -36,6 +37,13 @@
                             limit: "maxLength",
                             param: "64",
                             errInfo: "规则名称不能超过64"
+                        },
+                    ],
+                    'addChargeRuleInfo.chargeType': [
+                        {
+                            limit: "required",
+                            param: "",
+                            errInfo: "规则对象不能为空"
                         },
                     ],
                     'addChargeRuleInfo.remark': [
@@ -83,6 +91,7 @@
             clearAddChargeRuleInfo: function () {
                 vc.component.addChargeRuleInfo = {
                     ruleName: '',
+                    chargeType: '',
                     remark: '',
                 };
             }

@@ -32,6 +32,8 @@ private String remark;
 private String statusCd = "0";
 private String ruleId;
 private String communityId;
+    private String chargeType;
+    private String chargeTypeName;
 public String getRuleName() {
         return ruleName;
     }
@@ -63,6 +65,19 @@ public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
 
+    public String getChargeType() {
+        return chargeType;
+    }
 
+    public void setChargeType(String chargeType) {
+        this.chargeType = chargeType;
+    }
 
+    public String getChargeTypeName() {
+        return chargeTypeName;
+    }
+
+    public void setChargeTypeName(String chargeTypeName) {
+        this.chargeTypeName = chargeTypeName;
+    }
 }

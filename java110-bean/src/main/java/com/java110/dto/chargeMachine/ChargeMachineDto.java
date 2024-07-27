@@ -1,6 +1,7 @@
 package com.java110.dto.chargeMachine;
 
 import com.java110.bean.dto.PageDto;
+import com.java110.dto.chargeRulePrice.ChargeRulePriceDto;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,6 +19,9 @@ public class ChargeMachineDto extends PageDto implements Serializable {
 
     public static final String STATE_ONLINE = "ONLINE";
     public static final String STATE_OFFLINE = "OFFLINE";
+
+    public static final String CHARGE_TYPE_BIKE ="1001";
+    public static final String CHARGE_TYPE_CAR ="1002";
 
     private String heartbeatTime;
     private String implBean;
@@ -47,6 +51,8 @@ public class ChargeMachineDto extends PageDto implements Serializable {
     private String stateName;
 
     private List<ChargeRuleFeeDto> fees;
+
+    private List<ChargeRulePriceDto> prices;
 
     public String getChargeType() {
         return chargeType;
@@ -200,5 +206,13 @@ public class ChargeMachineDto extends PageDto implements Serializable {
 
     public void setFees(List<ChargeRuleFeeDto> fees) {
         this.fees = fees;
+    }
+
+    public List<ChargeRulePriceDto> getPrices() {
+        return prices;
+    }
+
+    public void setPrices(List<ChargeRulePriceDto> prices) {
+        this.prices = prices;
     }
 }

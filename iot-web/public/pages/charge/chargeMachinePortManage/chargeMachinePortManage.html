@@ -21,6 +21,9 @@
                         <thead>
                             <tr>
                                 <th class="text-center"><span>
+                                        <vc:i18n name='插座id' namespace='chargeMachinePortManage'></vc:i18n>
+                                    </span></th>
+                                <th class="text-center"><span>
                                         <vc:i18n name='插座名称' namespace='chargeMachinePortManage'></vc:i18n>
                                     </span></th>
                                 <th class="text-center"><span>
@@ -36,6 +39,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="chargeMachinePort in chargeMachinePortManageInfo.chargeMachinePorts">
+                                <td class="text-center">{{chargeMachinePort.portId}}</td>
                                 <td class="text-center">{{chargeMachinePort.portName}}</td>
                                 <td class="text-center">{{chargeMachinePort.portCode}}</td>
                                 <td class="text-center">{{chargeMachinePort.stateName}}
