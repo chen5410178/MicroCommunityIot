@@ -108,6 +108,20 @@
                     remark: '',
                     jessibuca: {}
                 };
+            },
+            _closeVideo:function(){
+                let _jessibuca = $that.playMonitorVideoInfo.jessibuca;
+                if (_jessibuca) {
+                    try {
+                        _jessibuca.destroy();
+                    } catch (err) {
+
+                    }
+                }
+
+                $that.clearPlayMonitorVideoInfo();
+
+                $('#playMonitorVideoModel').modal('hide');
             }
         }
     });
