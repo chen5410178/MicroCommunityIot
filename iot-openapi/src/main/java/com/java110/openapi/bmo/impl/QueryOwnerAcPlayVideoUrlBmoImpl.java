@@ -38,43 +38,34 @@ public class QueryOwnerAcPlayVideoUrlBmoImpl implements IIotCommonApiBmo {
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
         Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
         Assert.hasKeyAndValue(reqJson, "link", "未包含link");
+        Assert.hasKeyAndValue(reqJson, "videoType", "未包含videoType");
 
-        OwnerDto ownerDto = new OwnerDto();
-        ownerDto.setLink(reqJson.getString("link"));
-        ownerDto.setCommunityId(reqJson.getString("communityId"));
-        List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
+        if ("AccessControl".equals(reqJson.getString("videoType"))) {
+            OwnerDto ownerDto = new OwnerDto();
+            ownerDto.setLink(reqJson.getString("link"));
+            ownerDto.setCommunityId(reqJson.getString("communityId"));
+            List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
 
-        Assert.listOnlyOne(ownerDtos, "业主不存在");
+            Assert.listOnlyOne(ownerDtos, "业主不存在");
 
+            AccessControlDto accessControlDto = new AccessControlDto();
+            accessControlDto.setPersonType(AccessControlFaceDto.PERSON_TYPE_OWNER);
+            accessControlDto.setPersonId(ownerDtos.get(0).getMemberId());
+            accessControlDto.setMonitorId(reqJson.getString("machineId"));
 
-        AccessControlDto accessControlDto = BeanConvertUtil.covertBean(reqJson, AccessControlDto.class);
-        accessControlDto.setPersonType(AccessControlFaceDto.PERSON_TYPE_OWNER);
-        accessControlDto.setPersonId(ownerDtos.get(0).getMemberId());
-        accessControlDto.setMachineId(reqJson.getString("machineId"));
-
-        int count = accessControlV1InnerServiceSMOImpl.queryOwnerAccessControlsCount(accessControlDto);
-        if (count < 1) {
-            throw new CmdException("业主没有权限");
+            int count = accessControlV1InnerServiceSMOImpl.queryOwnerAccessControlsCount(accessControlDto);
+            if (count < 1) {
+                throw new CmdException("业主没有权限");
+            }
         }
     }
 
     @Override
     public void doCmd(ICmdDataFlowContext context, JSONObject reqJson) {
 
-        AccessControlDto accessControlDto = new AccessControlDto();
-        accessControlDto.setMachineId(reqJson.getString("machineId"));
-        accessControlDto.setCommunityId(reqJson.getString("communityId"));
-        List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
-        if (ListUtil.isNull(accessControlDtos)) {
-            throw new CmdException("门禁不存在");
-        }
-
-        if (StringUtil.isEmpty(accessControlDtos.get(0).getMonitorId())) {
-            throw new CmdException("门禁不支持观看视频");
-        }
 
         MonitorMachineDto monitorMachineDto = new MonitorMachineDto();
-        monitorMachineDto.setMachineId(accessControlDtos.get(0).getMonitorId());
+        monitorMachineDto.setMachineId(reqJson.getString("machineId"));
         monitorMachineDto.setCommunityId(reqJson.getString("communityId"));
         String url = monitorMachineV1InnerServiceSMOImpl.getPlayVideoUrl(monitorMachineDto);
 

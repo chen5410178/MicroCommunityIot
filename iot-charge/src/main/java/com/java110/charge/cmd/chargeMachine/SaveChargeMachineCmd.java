@@ -25,21 +25,23 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.*;
 import com.java110.doc.annotation.*;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
 import com.java110.dto.chargeMachine.ChargeMachinePortDto;
+import com.java110.dto.monitor.MonitorMachineDto;
 import com.java110.intf.charge.IChargeMachinePortV1InnerServiceSMO;
 import com.java110.intf.charge.IChargeMachineSpecV1InnerServiceSMO;
 import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
+import com.java110.intf.monitor.IMonitorMachineV1InnerServiceSMO;
 import com.java110.po.chargeMachine.ChargeMachinePo;
 import com.java110.po.chargeMachinePort.ChargeMachinePortPo;
 import com.java110.po.chargeMachineSpec.ChargeMachineSpecPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -98,6 +100,9 @@ public class SaveChargeMachineCmd extends Cmd {
     @Autowired
     private IChargeMachineSpecV1InnerServiceSMO chargeMachineSpecV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IMonitorMachineV1InnerServiceSMO monitorMachineV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineName", "请求报文中未包含machineName");
@@ -107,6 +112,19 @@ public class SaveChargeMachineCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
         Assert.hasKeyAndValue(reqJson, "portCount", "请求报文中未包含portCount");
         Assert.hasKeyAndValue(reqJson, "chargeType", "请求报文中未包含chargeType");
+
+        String monitorId = reqJson.getString("monitorId");
+
+        if (!StringUtil.isEmpty(monitorId) && !"-1".equals(monitorId)) {
+            MonitorMachineDto monitorMachineDto = new MonitorMachineDto();
+            monitorMachineDto.setMachineId(reqJson.getString("monitorId"));
+            monitorMachineDto.setCommunityId(reqJson.getString("communityId"));
+            List<MonitorMachineDto> monitorMachineDtos = monitorMachineV1InnerServiceSMOImpl.queryMonitorMachines(monitorMachineDto);
+            if (ListUtil.isNull(monitorMachineDtos)) {
+                throw new CmdException("监控设备不存在");
+            }
+            reqJson.put("monitorName", monitorMachineDtos.get(0).getMachineName());
+        }
 
         ChargeMachineDto chargeMachineDto = new ChargeMachineDto();
         chargeMachineDto.setMachineCode(reqJson.getString("machineCode"));

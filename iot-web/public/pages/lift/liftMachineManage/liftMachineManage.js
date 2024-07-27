@@ -154,6 +154,13 @@
             },
             _toLiftDetail: function (_liftMachine) {
                 vc.jumpToPage('/#/pages/lift/liftMachineDetail?machineId=' + _liftMachine.machineId);
+            },
+            _viewLiftVideo:function(_liftMachine){
+                vc.emit('playMonitorVideo', 'openPlayMonitorVideoModal', {
+                    machineId:_liftMachine.monitorId,
+                    machineName:_liftMachine.monitorName,
+                    communityId:_liftMachine.communityId
+                });
             }
         }
     });

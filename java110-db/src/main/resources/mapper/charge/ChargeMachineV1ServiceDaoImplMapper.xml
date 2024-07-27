@@ -8,9 +8,11 @@
     <!-- 保存充电桩信息 add by wuxw 2018-07-03 -->
     <insert id="saveChargeMachineInfo" parameterType="Map">
         insert into charge_machine(
-        heartbeat_time,impl_bean,machine_id,machine_code,energy_price,rule_id,community_id,machine_name,charge_type
+        heartbeat_time,impl_bean,machine_id,machine_code,energy_price,rule_id,community_id,
+        machine_name,charge_type,monitor_id,monitor_name
         ) values (
-        #{heartbeatTime},#{implBean},#{machineId},#{machineCode},#{energyPrice},#{ruleId},#{communityId},#{machineName},#{chargeType}
+        #{heartbeatTime},#{implBean},#{machineId},#{machineCode},#{energyPrice},#{ruleId},#{communityId},
+        #{machineName},#{chargeType},#{monitorId},#{monitorName}
         )
     </insert>
 
@@ -22,7 +24,7 @@
         machineCode,t.energy_price,t.energy_price energyPrice,t.rule_id,t.rule_id
         ruleId,t.community_id,t.community_id communityId,t.charge_type,t.charge_type chargeType,
         t.machine_name,t.machine_name machineName,cmf.factory_name factoryName,t.create_time createTime,
-        cr.rule_name ruleName,td.name chargeTypeName,
+        cr.rule_name ruleName,td.name chargeTypeName,t.monitor_id monitorId,t.monitor_name monitorName,
         count(1) portCount
         from charge_machine t
         left join charge_rule cr on t.rule_id = cr.rule_id and cr.status_cd = '0'
@@ -91,18 +93,25 @@
         <if test="ruleId !=null and ruleId != ''">
             , t.rule_id= #{ruleId}
         </if>
-        <if test="communityId !=null and communityId != ''">
-            , t.community_id= #{communityId}
-        </if>
+
         <if test="machineName !=null and machineName != ''">
             , t.machine_name= #{machineName}
         </if>
         <if test="chargeType !=null and chargeType != ''">
             , t.charge_type= #{chargeType}
         </if>
+        <if test="monitorId !=null and monitorId != ''">
+            , t.monitor_id= #{monitorId}
+        </if>
+        <if test="monitorName !=null and monitorName != ''">
+            , t.monitor_name= #{monitorName}
+        </if>
         where 1=1
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
         </if>
 
     </update>

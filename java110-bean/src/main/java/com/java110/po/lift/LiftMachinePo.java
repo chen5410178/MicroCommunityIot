@@ -19,6 +19,10 @@ public class LiftMachinePo implements Serializable {
     private String curLayer;
     private String statusCd = "0";
 
+
+    private String monitorId;
+    private String monitorName;
+
     public String getMachineId() {
         return machineId;
     }
@@ -137,5 +141,21 @@ public class LiftMachinePo implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getMonitorId() {
+        return monitorId;
+    }
+
+    public void setMonitorId(String monitorId) {
+        this.monitorId = monitorId;
+    }
+
+    public String getMonitorName() {
+        return monitorName;
+    }
+
+    public void setMonitorName(String monitorName) {
+        this.monitorName = monitorName;
     }
 }

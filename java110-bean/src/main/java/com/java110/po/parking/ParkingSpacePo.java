@@ -39,6 +39,9 @@ public class ParkingSpacePo implements Serializable {
     private String state;
     private String communityId;
 
+    private String monitorId;
+    private String monitorName;
+
     public String getParkingType() {
         return parkingType;
     }
@@ -109,5 +112,21 @@ public class ParkingSpacePo implements Serializable {
 
     public void setPrId(String prId) {
         this.prId = prId;
+    }
+
+    public String getMonitorId() {
+        return monitorId;
+    }
+
+    public void setMonitorId(String monitorId) {
+        this.monitorId = monitorId;
+    }
+
+    public String getMonitorName() {
+        return monitorName;
+    }
+
+    public void setMonitorName(String monitorName) {
+        this.monitorName = monitorName;
     }
 }

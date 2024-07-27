@@ -52,7 +52,8 @@ public class ParkingSpaceDto extends PageDto implements Serializable {
 
     private String regionCode;
 
-
+    private String monitorId;
+    private String monitorName;
     private Date createTime;
 
     private String statusCd = "0";
@@ -257,5 +258,21 @@ public class ParkingSpaceDto extends PageDto implements Serializable {
 
     public void setRegionCode(String regionCode) {
         this.regionCode = regionCode;
+    }
+
+    public String getMonitorId() {
+        return monitorId;
+    }
+
+    public void setMonitorId(String monitorId) {
+        this.monitorId = monitorId;
+    }
+
+    public String getMonitorName() {
+        return monitorName;
+    }
+
+    public void setMonitorName(String monitorName) {
+        this.monitorName = monitorName;
     }
 }

@@ -8,10 +8,12 @@
                 machineCode: '',
                 locationName: '',
                 maId: '',
+                mmId: '',
                 protocol: '',
                 communityId: '',
                 state: '',
-                attrSpecList: []
+                attrSpecList: [],
+                manufactors: []
             },
             initProtocol: '',
             initMonitorMachineAttrsList: '',
@@ -25,7 +27,7 @@
                 $that.initMonitorMachineAttrsList = _params.monitorMachineAttrsList;
                 $that.refreshEditMonitorMachineInfo();
                 vc.copyObject(_params, $that.editMonitorMachineInfo);
-                $that._listAttrSpec();
+                $that._listEditMonitorManufactors();
                 $('#editMonitorMachineModel').modal('show');
             });
         },
@@ -141,44 +143,35 @@
                     machineCode: '',
                     locationName: '',
                     maId: '',
+                    mmId: '',
                     protocol: '',
                     communityId: '',
                     state: '',
-                    attrSpecList: []
+                    attrSpecList: [],
+                    manufactors: []
                 }
             },
-            _listAttrSpec: function () {
-                var param = {
+            _listEditMonitorManufactors: function () {
+
+                let param = {
                     params: {
-                        page: -1,
-                        row: 100,
-                        tableName: 'machine_attr',
-                        domain: 'MONITOR.' + $that.editMonitorMachineInfo.protocol,
+                        page:1,
+                        row:100,
+                        communityId:vc.getCurrentCommunity().communityId
                     }
-                }
-                vc.http.apiGet('/attrSpec.listAttrSpec',
+                };
+
+                //发送get请求
+                vc.http.apiGet('/monitorManufactor.listMonitorManufactor',
                     param,
                     function (json, res) {
-                        var _attrSpecInfo = JSON.parse(json);
-                        if ($that.editMonitorMachineInfo.protocol === $that.initProtocol) {
-                            for (var i = 0; i < _attrSpecInfo.data.length; i++) {
-                                for (var j = 0; j < $that.initMonitorMachineAttrsList.length; j++) {
-                                    if (_attrSpecInfo.data[i].specCd === $that.initMonitorMachineAttrsList[j].specCd) {
-                                        _attrSpecInfo.data[i].value = $that.initMonitorMachineAttrsList[j].value;
-                                        break;
-                                    }
-                                }
-                            }
-                            $that.editMonitorMachineInfo.attrSpecList = _attrSpecInfo.data;
-                            return ;
-                        }
-
-                        $that.editMonitorMachineInfo.attrSpecList = _attrSpecInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.editMonitorMachineInfo.manufactors = _json.data;
                     }, function (errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );
-            }
+            },
         }
     });
 })(window.vc, window.$that);

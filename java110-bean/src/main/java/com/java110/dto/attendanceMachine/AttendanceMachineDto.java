@@ -31,6 +31,8 @@ public class AttendanceMachineDto extends PageDto implements Serializable {
     private String statusCd = "0";
 
     private String stateName;
+    private String monitorId;
+    private String monitorName;
 
 
     public String getClassesName() {
@@ -128,5 +130,21 @@ public class AttendanceMachineDto extends PageDto implements Serializable {
 
     public void setStateName(String stateName) {
         this.stateName = stateName;
+    }
+
+    public String getMonitorId() {
+        return monitorId;
+    }
+
+    public void setMonitorId(String monitorId) {
+        this.monitorId = monitorId;
+    }
+
+    public String getMonitorName() {
+        return monitorName;
+    }
+
+    public void setMonitorName(String monitorName) {
+        this.monitorName = monitorName;
     }
 }

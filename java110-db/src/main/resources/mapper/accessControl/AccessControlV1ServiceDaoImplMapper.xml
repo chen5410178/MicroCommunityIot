@@ -192,7 +192,12 @@
         <if test="owePrompt !=null and owePrompt != ''">
             and t.owe_prompt= #{owePrompt}
         </if>
-
+        <if test="monitorId !=null and monitorId != ''">
+            and t.monitor_id= #{monitorId}
+        </if>
+        <if test="monitorName !=null and monitorName != ''">
+            and t.monitor_name= #{monitorName}
+        </if>
 
     </select>
 
@@ -299,6 +304,12 @@
         <if test="direction !=null and direction != ''">
             and t.direction= #{direction}
         </if>
+        <if test="monitorId !=null and monitorId != ''">
+            and t.monitor_id= #{monitorId}
+        </if>
+        <if test="monitorName !=null and monitorName != ''">
+            and t.monitor_name= #{monitorName}
+        </if>
         group by t.machine_id
         ) a
     </select>
@@ -351,6 +362,12 @@
         </if>
         <if test="direction !=null and direction != ''">
             and t.direction= #{direction}
+        </if>
+        <if test="monitorId !=null and monitorId != ''">
+            and t.monitor_id= #{monitorId}
+        </if>
+        <if test="monitorName !=null and monitorName != ''">
+            and t.monitor_name= #{monitorName}
         </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">

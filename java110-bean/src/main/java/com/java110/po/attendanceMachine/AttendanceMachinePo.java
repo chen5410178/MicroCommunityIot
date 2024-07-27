@@ -39,6 +39,9 @@ public class AttendanceMachinePo implements Serializable {
     private String machineName;
     private String machineIp;
 
+    private String monitorId;
+    private String monitorName;
+
     public String getClassesName() {
         return classesName;
     }
@@ -119,5 +122,19 @@ public class AttendanceMachinePo implements Serializable {
         this.machineIp = machineIp;
     }
 
+    public String getMonitorId() {
+        return monitorId;
+    }
 
+    public void setMonitorId(String monitorId) {
+        this.monitorId = monitorId;
+    }
+
+    public String getMonitorName() {
+        return monitorName;
+    }
+
+    public void setMonitorName(String monitorName) {
+        this.monitorName = monitorName;
+    }
 }

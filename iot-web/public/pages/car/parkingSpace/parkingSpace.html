@@ -5,7 +5,7 @@
                 <vc:i18n name="查询条件"></vc:i18n>
             </h5>
             <div class="ibox-tools" style="top:10px;">
-          
+
             </div>
         </div>
         <div class="ibox-content">
@@ -31,7 +31,7 @@
                         <option value="F">空闲</option>
                     </select>
                 </div>
-                <div class="col-sm-2" >
+                <div class="col-sm-2">
                     <select class="custom-select" v-model="parkingSpaceInfo.conditions.parkingType">
                         <option selected value="">请选择车位类型</option>
                         <option value="1">普通车位</option>
@@ -41,9 +41,7 @@
                 </div>
                 <div class="col-sm-1">
                     <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryParkingSpaceMethod()">
-                        <i class="glyphicon glyphicon-search"></i> <span>
-                            <vc:i18n name="查询"></vc:i18n>
-                        </span>
+                        <vc:i18n name="查询"></vc:i18n>
                     </button>
                 </div>
             </div>
@@ -111,6 +109,9 @@
                             <vc:i18n name='备注' namespace='parkingSpace'></vc:i18n>
                         </th>
                         <th class="text-center">
+                            <vc:i18n name='监控视频' namespace='liftMachineManage'></vc:i18n>
+                        </th>
+                        <th class="text-center">
                             <vc:i18n name='操作'></vc:i18n>
                         </th>
                     </tr>
@@ -132,18 +133,20 @@
                         <td class="text-center">{{parkingSpace.lockBattery || '未知'}}</td>
                         <td class="text-center">{{parkingSpace.lockStateName}}</td>
                         <td class="text-center" style="white-space: nowrap;">
-                            <img style="width: 60px; height: 60px;" class="border-radius"
-                                v-if="parkingSpace.imagePhoto" v-bind:src="parkingSpace.imagePhoto"
+                            <img style="width: 60px; height: 60px;" class="border-radius" v-if="parkingSpace.imagePhoto"
+                                v-bind:src="parkingSpace.imagePhoto"
                                 v-on:click="_viewOwnerFace(parkingSpace.imagePhoto)" />
-                            <img style="width: 60px; height: 60px;" class="border-radius" v-else
-                                src="/img/noCar.png" />
+                            <img style="width: 60px; height: 60px;" class="border-radius" v-else src="/img/noCar.png" />
                         </td>
-                        <td class="text-center" v-if="parkingSpace.machineName">{{parkingSpace.machineName}}({{parkingSpace.machineStateName}})</td>
+                        <td class="text-center" v-if="parkingSpace.machineName">
+                            {{parkingSpace.machineName}}({{parkingSpace.machineStateName}})</td>
                         <td class="text-center" v-else>未知</td>
                         <td class="text-center">{{parkingSpace.updateTime || '-'}}</td>
                         <td class="text-center">{{parkingSpace.createTime}}</td>
                         <td class="text-center">{{parkingSpace.remark}}</td>
-
+                        <td class="text-center">{{parkingSpace.monitorName || '-'}}
+                            <a v-if="parkingSpace.monitorName" href="javascript:void(0)" @click="_viewParkingSpaceVideo(parkingSpace)">(观看)</a>
+                        </td>
                         <td class="text-center">
                             <div class="btn-group">
                                 <button class="btn-white btn btn-xs"
@@ -170,5 +173,6 @@
     <vc:create path="car/addParkingSpace"></vc:create>
     <vc:create path="car/editParkingSpace"></vc:create>
     <vc:create path="car/deleteParkingSpace"></vc:create>
+    <vc:create path="monitor/playMonitorVideo"></vc:create>
 
 </div>

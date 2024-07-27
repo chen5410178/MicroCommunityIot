@@ -99,10 +99,12 @@ public class CarOutLogEngine extends CarEngine{
         }
 
         if (carInoutDtos != null && carInoutDtos.size() > 0) {
-            carInoutPo = new CarInoutPo();
-            carInoutPo.setCiId(carInoutDtos.get(0).getCiId());
-            carInoutPo.setState(CarInoutDto.STATE_OUT);
-            carInoutServiceImpl.updateCarInout(carInoutPo);
+            for(CarInoutDto tmpCarInoutDto :carInoutDtos) {
+                carInoutPo = new CarInoutPo();
+                carInoutPo.setCiId(tmpCarInoutDto.getCiId());
+                carInoutPo.setState(CarInoutDto.STATE_OUT);
+                carInoutServiceImpl.updateCarInout(carInoutPo);
+            }
         }
 
         if(parkingCouponCarDtos == null || parkingCouponCarDtos.isEmpty()){

@@ -1,0 +1,114 @@
+<div>
+    <div class="row">
+        <div class="col-md-1 padding-r-0">
+            <div class=" border-radius ">
+                <div class="margin-xs-r  treeview ">
+                    <ul class="list-group text-center border-radius">
+                        <li class="list-group-item node-orgTree "
+                            v-for="(item,index) in monitorMachineStaffInfo.monitors" :key="index"
+                            @click="swatchMonitor(item)"
+                            :class="{'vc-node-selected':monitorMachineStaffInfo.conditions.machineId == item.machineId}">
+                            {{item.machineName}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-11">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择名称','monitorMachineStaff')"
+                                    v-model="monitorMachineStaffInfo.conditions.personName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-primary btn-sm"
+                                v-on:click="_queryMonitorMachinePersonMethod()">
+                                <vc:i18n name="查询"></vc:i18n>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="员工监控" namespace="monitorMachineStaff"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-primary btn-sm"
+                            v-if="monitorMachineStaffInfo.conditions.machineId"
+                            @click="_openAddMonitorMachinePersonModal()">
+                            <vc:i18n name="授权" namespace="monitorMachineStaff"></vc:i18n>
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='编号' namespace='monitorMachineStaff'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='监控用户' namespace='monitorMachineStaff'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='名称' namespace='monitorMachineStaff'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='人员类型' namespace='monitorMachineStaff'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='人员' namespace='monitorMachineStaff'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='操作'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="monitorMachinePerson in monitorMachineStaffInfo.monitorMachinePersons">
+                                <td class="text-center">{{monitorMachinePerson.mmuId}}</td>
+                                <td class="text-center">{{monitorMachinePerson.mmuId}}</td>
+                                <td class="text-center">{{monitorMachinePerson.machineName}}</td>
+                                <td class="text-center">{{monitorMachinePerson.personType}}</td>
+                                <td class="text-center">{{monitorMachinePerson.personName}}</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs"
+                                            v-on:click="_openDeleteMonitorMachinePersonModel(monitorMachinePerson)">
+                                            <vc:i18n name='删除'></vc:i18n>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <vc:create path="monitor/deleteMonitorMachinePerson"></vc:create>
+
+</div>

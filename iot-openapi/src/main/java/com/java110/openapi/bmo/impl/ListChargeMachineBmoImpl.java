@@ -6,6 +6,8 @@ import com.java110.core.cache.UrlCache;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
 import com.java110.dto.chargeMachine.ChargeRuleFeeDto;
 import com.java110.dto.smallWeChat.SmallWeChatDto;
@@ -20,7 +22,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Service("listChargeMachineBmoImpl")
@@ -54,7 +58,8 @@ public class ListChargeMachineBmoImpl implements IIotCommonApiBmo {
         if (count > 0) {
             chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(chargeMachineDto);
             freshQrCodeUrl(chargeMachineDtos);
-
+// todo  查询设备是否在线
+            queryChargeMachineState(chargeMachineDtos);
             // todo 刷入算费规则
             queryChargeRuleFee(chargeMachineDtos);
         } else {
@@ -110,6 +115,35 @@ public class ListChargeMachineBmoImpl implements IIotCommonApiBmo {
                     + "&communityId=" + chargeMachineDto.getCommunityId()
                     + "&wAppId=" + appId
             );
+        }
+    }
+
+    public void queryChargeMachineState(List<ChargeMachineDto> chargeMachineDtos) {
+
+        for (ChargeMachineDto chargeMachineDto : chargeMachineDtos) {
+
+            String heartbeatTime = chargeMachineDto.getHeartbeatTime();
+            try {
+                if (StringUtil.isEmpty(heartbeatTime)) {
+                    chargeMachineDto.setStateName("设备离线");
+                    chargeMachineDto.setState("OFFLINE");
+                } else {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(DateUtil.getDateFromString(heartbeatTime, DateUtil.DATE_FORMATE_STRING_A));
+                    calendar.add(Calendar.MINUTE, 2);
+                    if (calendar.getTime().getTime() <= DateUtil.getCurrentDate().getTime()) {
+                        chargeMachineDto.setStateName("设备离线");
+                        chargeMachineDto.setState("OFFLINE");
+                    } else {
+                        chargeMachineDto.setStateName("设备在线");
+                        chargeMachineDto.setState("ONLINE");
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+                chargeMachineDto.setStateName("设备离线");
+                chargeMachineDto.setState("OFFLINE");
+            }
         }
     }
 }

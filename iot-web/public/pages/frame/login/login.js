@@ -3,8 +3,8 @@
         data: {
             loginInfo: {
                 logo: '',
-                username: '',
-                passwd: '',
+                username: '18909715555',
+                passwd: '572314',
                 validateCode: '',
                 errorInfo: '',
                 codeImage: '',

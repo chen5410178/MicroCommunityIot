@@ -7,9 +7,9 @@
     <!-- 保存道闸摄像头信息 add by wuxw 2018-07-03 -->
     <insert id="saveBarrierInfo" parameterType="Map">
         insert into barrier(
-        heartbeat_time,impl_bean,machine_id,machine_code,community_id,machine_name,machine_ip,direction,box_id
+        heartbeat_time,impl_bean,machine_id,machine_code,community_id,machine_name,machine_ip,direction,box_id,monitor_id,monitor_name
         ) values (
-        #{heartbeatTime},#{implBean},#{machineId},#{machineCode},#{communityId},#{machineName},#{machineIp},#{direction},#{boxId}
+        #{heartbeatTime},#{implBean},#{machineId},#{machineCode},#{communityId},#{machineName},#{machineIp},#{direction},#{boxId},#{monitorId},#{monitorName}
         )
     </insert>
 
@@ -21,7 +21,7 @@
         statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name
         machineName,t.machine_ip,t.machine_ip machineIp,t.direction,t.box_id,t.box_id boxId,pb.box_name
         boxName,t.create_time createTime,hm.hm_name implBeanName,
-        hm.hm_id hmId
+        hm.hm_id hmId,t.monitor_id monitorId,t.monitor_name monitorName
         from barrier t
         left join parking_box pb on t.box_id = pb.box_id and pb.status_cd = '0'
         left join hardware_manufacturer hm on t.impl_bean = hm.hm_id and hm.status_cd = '0'
@@ -85,9 +85,7 @@
         <if test="machineCode !=null and machineCode != ''">
             , t.machine_code= #{machineCode}
         </if>
-        <if test="communityId !=null and communityId != ''">
-            , t.community_id= #{communityId}
-        </if>
+
         <if test="machineName !=null and machineName != ''">
             , t.machine_name= #{machineName}
         </if>
@@ -100,9 +98,18 @@
         <if test="boxId !=null and boxId != ''">
             , t.box_id= #{boxId}
         </if>
+        <if test="monitorId !=null and monitorId != ''">
+            , t.monitor_id= #{monitorId}
+        </if>
+        <if test="monitorName !=null and monitorName != ''">
+            , t.monitor_name= #{monitorName}
+        </if>
         where 1=1
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
         </if>
 
     </update>
@@ -156,7 +163,7 @@
         implBean,t.machine_id,t.machine_id machineId,t.machine_code,t.machine_code machineCode,t.status_cd,t.status_cd
         statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name
         machineName,t.machine_ip,t.machine_ip machineIp,t.direction,t.box_id,t.box_id boxId,pb.box_name
-        boxName,t.create_time createTime
+        boxName,t.create_time createTime,t.monitor_id monitorId,t.monitor_name monitorName
         from barrier t
         left join parking_box pb on t.box_id = pb.box_id and pb.status_cd = '0'
         left join parking_box_area pba on pb.box_id = pba.box_id and pba.status_cd = '0'

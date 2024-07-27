@@ -46,6 +46,9 @@ public class BarrierDto extends PageDto implements Serializable {
 
     private String paId;
 
+    private String monitorId;
+    private String monitorName;
+
 
     public String getHeartbeatTime() {
         return heartbeatTime;
@@ -198,5 +201,21 @@ public class BarrierDto extends PageDto implements Serializable {
 
     public void setPhotoFragment(String photoFragment) {
         this.photoFragment = photoFragment;
+    }
+
+    public String getMonitorId() {
+        return monitorId;
+    }
+
+    public void setMonitorId(String monitorId) {
+        this.monitorId = monitorId;
+    }
+
+    public String getMonitorName() {
+        return monitorName;
+    }
+
+    public void setMonitorName(String monitorName) {
+        this.monitorName = monitorName;
     }
 }

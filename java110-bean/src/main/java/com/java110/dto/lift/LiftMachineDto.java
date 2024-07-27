@@ -39,6 +39,9 @@ public class LiftMachineDto extends PageDto implements Serializable {
     private String isOnlineState;
     private String isOnlineStateName;
 
+    private String monitorId;
+    private String monitorName;
+
     public String getMachineId() {
         return machineId;
     }
@@ -229,5 +232,21 @@ public class LiftMachineDto extends PageDto implements Serializable {
 
     public void setIsOnlineStateName(String isOnlineStateName) {
         this.isOnlineStateName = isOnlineStateName;
+    }
+
+    public String getMonitorId() {
+        return monitorId;
+    }
+
+    public void setMonitorId(String monitorId) {
+        this.monitorId = monitorId;
+    }
+
+    public String getMonitorName() {
+        return monitorName;
+    }
+
+    public void setMonitorName(String monitorName) {
+        this.monitorName = monitorName;
     }
 }

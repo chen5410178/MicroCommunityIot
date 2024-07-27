@@ -9,10 +9,11 @@
     <insert id="saveLiftMachineInfo" parameterType="Map">
         insert into lift_machine(heartbeat_time, machine_code, location_name, use_unit, maintenance_unit,
                                  factory_id, machine_name, machine_id, rescue_link, registration_unit, state,
-                                 community_id, brand)
+                                 community_id, brand,monitor_id,monitor_name
+        )
         values (#{heartbeatTime}, #{machineCode}, #{locationName}, #{useUnit}, #{maintenanceUnit},
                 #{factoryId}, #{machineName}, #{machineId}, #{rescueLink}, #{registrationUnit}, #{state},
-                #{communityId}, #{brand})
+                #{communityId}, #{brand},#{monitorId},#{monitorName})
     </insert>
 
 
@@ -24,7 +25,7 @@
         factoryId,t.status_cd,t.status_cd statusCd,t.machine_name,t.machine_name machineName,t.machine_id,t.machine_id
         machineId,t.rescue_link,t.rescue_link rescueLink,t.registration_unit,t.registration_unit
         registrationUnit,t.state,t.community_id,t.community_id communityId,t.brand,t.create_time createTime,lmf.factory_name factoryName,
-        sc.name communityName, td.name stateName
+        sc.name communityName, td.name stateName,t.monitor_id monitorId,t.monitor_name monitorName
         from lift_machine t
         left join lift_machine_factory lmf on t.factory_id = lmf.factory_id
         left join s_community sc on t.community_id = sc.community_id
@@ -75,6 +76,12 @@
         <if test="brand !=null and brand != ''">
             and t.brand like concat('%', #{brand}, '%')
         </if>
+        <if test="monitorId !=null and monitorId != ''">
+            and t.monitor_id= #{monitorId}
+        </if>
+        <if test="monitorName !=null and monitorName != ''">
+            and t.monitor_name= #{monitorName}
+        </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
@@ -122,15 +129,22 @@
         <if test="state !=null and state != ''">
             , t.state= #{state}
         </if>
-        <if test="communityId !=null and communityId != ''">
-            , t.community_id= #{communityId}
-        </if>
+
         <if test="brand !=null and brand != ''">
             , t.brand= #{brand}
+        </if>
+        <if test="monitorId !=null and monitorId != ''">
+            , t.monitor_id= #{monitorId}
+        </if>
+        <if test="monitorName !=null and monitorName != ''">
+            , t.monitor_name= #{monitorName}
         </if>
         where 1=1
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
         </if>
 
     </update>
@@ -184,6 +198,12 @@
         </if>
         <if test="brand !=null and brand != ''">
             and t.brand like concat('%', #{brand}, '%')
+        </if>
+        <if test="monitorId !=null and monitorId != ''">
+            and t.monitor_id= #{monitorId}
+        </if>
+        <if test="monitorName !=null and monitorName != ''">
+            and t.monitor_name= #{monitorName}
         </if>
 
 

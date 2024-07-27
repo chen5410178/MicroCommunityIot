@@ -20,8 +20,8 @@ public class ChargeMachineDto extends PageDto implements Serializable {
     public static final String STATE_ONLINE = "ONLINE";
     public static final String STATE_OFFLINE = "OFFLINE";
 
-    public static final String CHARGE_TYPE_BIKE ="1001";
-    public static final String CHARGE_TYPE_CAR ="1002";
+    public static final String CHARGE_TYPE_BIKE = "1001";
+    public static final String CHARGE_TYPE_CAR = "1002";
 
     private String heartbeatTime;
     private String implBean;
@@ -49,6 +49,9 @@ public class ChargeMachineDto extends PageDto implements Serializable {
     private String state;
 
     private String stateName;
+
+    private String monitorId;
+    private String monitorName;
 
     private List<ChargeRuleFeeDto> fees;
 
@@ -208,6 +211,7 @@ public class ChargeMachineDto extends PageDto implements Serializable {
         this.fees = fees;
     }
 
+
     public List<ChargeRulePriceDto> getPrices() {
         return prices;
     }
@@ -215,4 +219,22 @@ public class ChargeMachineDto extends PageDto implements Serializable {
     public void setPrices(List<ChargeRulePriceDto> prices) {
         this.prices = prices;
     }
+
+    public String getMonitorId() {
+        return monitorId;
+    }
+
+    public void setMonitorId(String monitorId) {
+        this.monitorId = monitorId;
+    }
+
+    public String getMonitorName() {
+        return monitorName;
+    }
+
+    public void setMonitorName(String monitorName) {
+        this.monitorName = monitorName;
+    }
 }
+
+
