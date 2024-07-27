@@ -26,11 +26,15 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.dto.monitor.MonitorMachineDto;
 import com.java110.intf.monitor.IMonitorMachinePersonV1InnerServiceSMO;
+import com.java110.intf.monitor.IMonitorMachineV1InnerServiceSMO;
 import com.java110.po.monitorMachinePerson.MonitorMachinePersonPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 类表述：保存
@@ -52,11 +56,13 @@ public class SaveMonitorMachinePersonCmd extends Cmd {
     @Autowired
     private IMonitorMachinePersonV1InnerServiceSMO monitorMachinePersonV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IMonitorMachineV1InnerServiceSMO monitorMachineV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "machineId", "请求报文中未包含machineId");
-        Assert.hasKeyAndValue(reqJson, "machineName", "请求报文中未包含machineName");
-        Assert.hasKeyAndValue(reqJson, "machineCode", "请求报文中未包含machineCode");
+
         Assert.hasKeyAndValue(reqJson, "personType", "请求报文中未包含personType");
         Assert.hasKeyAndValue(reqJson, "personId", "请求报文中未包含personId");
         Assert.hasKeyAndValue(reqJson, "personName", "请求报文中未包含personName");
@@ -67,8 +73,16 @@ public class SaveMonitorMachinePersonCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
+        MonitorMachineDto monitorMachineDto = new MonitorMachineDto();
+        monitorMachineDto.setMachineId(reqJson.getString("machineId"));
+        List<MonitorMachineDto> monitorMachineDtos = monitorMachineV1InnerServiceSMOImpl.queryMonitorMachines(monitorMachineDto);
+
+        Assert.listOnlyOne(monitorMachineDtos, "未包含监控设备");
+
         MonitorMachinePersonPo monitorMachinePersonPo = BeanConvertUtil.covertBean(reqJson, MonitorMachinePersonPo.class);
         monitorMachinePersonPo.setMmuId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        monitorMachinePersonPo.setMachineName(monitorMachineDtos.get(0).getMachineName());
+        monitorMachinePersonPo.setMachineCode(monitorMachineDtos.get(0).getMachineCode());
         int flag = monitorMachinePersonV1InnerServiceSMOImpl.saveMonitorMachinePerson(monitorMachinePersonPo);
 
         if (flag < 1) {
