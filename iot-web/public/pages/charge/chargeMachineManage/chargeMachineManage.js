@@ -23,8 +23,17 @@
             }
         },
         _initMethod: function() {
-            vc.getDict('','charge_type',function (_data) {
-                $that.chargeMachineManageInfo.chargeTypes = _data;
+            vc.getDict('charge_rule','charge_type',function (_data) {
+                let _chargeTypes = [
+                    {
+                        name:'全部',
+                        statusCd:''
+                    }
+                ];
+                _data.forEach(item => {
+                    _chargeTypes.push(item);
+                });
+                $that.chargeMachineManageInfo.chargeTypes = _chargeTypes;
             })
             $that._listChargeMachines(DEFAULT_PAGE, DEFAULT_ROWS);
         },
@@ -94,6 +103,10 @@
             },
             _chargeMachineQrCode: function(_chargeMachine) {
                 vc.emit('chargeMachineQrCode', 'openChargeMachineQrCodeModal', _chargeMachine);
+            },
+            swatchChargeType:function(_item){
+                $that.chargeMachineManageInfo.conditions.chargeType= _item.statusCd;
+                $that._listChargeMachines(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _toChargeMachineDetail: function (_chargeMachine) {
                 vc.jumpToPage('/#/pages/charge/chargeMachineDetail?machineId=' + _chargeMachine.machineId);

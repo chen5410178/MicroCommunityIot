@@ -46,6 +46,8 @@ public class ListMonitorMachineBmoImpl implements IIotCommonApiBmo {
 
     @Override
     public void doCmd(ICmdDataFlowContext context, JSONObject reqJson) {
+
+
         MonitorMachineDto monitorMachineDto = BeanConvertUtil.covertBean(reqJson, MonitorMachineDto.class);
 
         int count = monitorMachineV1InnerServiceSMOImpl.queryMonitorMachinesCount(monitorMachineDto);

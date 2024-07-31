@@ -11,7 +11,7 @@
             },
         },
         _initMethod: function () {
-            vc.getDict('', 'charge_type', function (_data) {
+            vc.getDict('charge_rule', 'charge_type', function (_data) {
                 $that.chargeRuleInfo.chargeTypes = _data;
                 //$that._switchChargeType($that.chargeRuleInfo.chargeTypes[0])
             })

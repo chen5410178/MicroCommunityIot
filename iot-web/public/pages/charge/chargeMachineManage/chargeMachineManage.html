@@ -1,170 +1,163 @@
 <div>
-    <div class="ibox ">
-        <div class="ibox-title">
-            <h5>
-                <vc:i18n name="查询条件"></vc:i18n>
-            </h5>
-            <div class="ibox-tools" style="top:10px;">
-
+    <div class="row">
+        <div class="col-md-1 padding-r-0">
+            <div class=" border-radius ">
+                <div class="margin-xs-r  treeview ">
+                    <ul class="list-group text-center border-radius">
+                        <li class="list-group-item node-orgTree "
+                            v-for="(item,index) in chargeMachineManageInfo.chargeTypes" :key="index"
+                            @click="swatchChargeType(item)"
+                            :class="{'vc-node-selected':chargeMachineManageInfo.conditions.chargeType == item.statusCd}">
+                            {{item.name}}
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
+        <div class="col-md-11">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
 
-        <div class="ibox-content">
-            <div class="row">
-                <div class="col-sm-2">
-                    <div class="form-group">
-                        <input type="text" :placeholder="vc.i18n('请选择名称','chargeMachineManage')"
-                               v-model="chargeMachineManageInfo.conditions.machineName" class=" form-control">
                     </div>
                 </div>
-                <div class="col-sm-2">
-                    <div class="form-group">
-                        <input type="text" :placeholder="vc.i18n('请选择设备编号','chargeMachineManage')"
-                               v-model="chargeMachineManageInfo.conditions.machineCode" class=" form-control">
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="form-group">
-                        <select class="custom-select" v-model="chargeMachineManageInfo.conditions.chargeType">
-                            <option selected value="">{{vc.i18n('请选择充电桩类型','editChargeMachine')}}</option>
-                            <option v-for="(item, index) in chargeMachineManageInfo.chargeTypes" :key="index"
-                                    :value="item.statusCd">
-                                {{item.name}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-1">
-                    <button type="button" class="btn btn-primary btn-sm"
-                            v-on:click="_queryChargeMachineMethod()">
-                        <i class="glyphicon glyphicon-search"></i> <span>
+
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择名称','chargeMachineManage')"
+                                    v-model="chargeMachineManageInfo.conditions.machineName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择设备编号','chargeMachineManage')"
+                                    v-model="chargeMachineManageInfo.conditions.machineCode" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-primary btn-sm"
+                                v-on:click="_queryChargeMachineMethod()">
                                     <vc:i18n name="查询"></vc:i18n>
-                                </span>
-                    </button>
-                </div>
-                <div class="col-sm-2">
-                    <div class="form-group">
-                        <input type="text" :placeholder="vc.i18n('请选择设备编号','chargeMachineManage')"
-                               v-model="chargeMachineManageInfo.conditions.machineCode" class=" form-control">
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-1">
-                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryChargeMachineMethod()">
-                        <i class="glyphicon glyphicon-search"></i> <span>
-                            <vc:i18n name="查询"></vc:i18n>
-                        </span>
-                    </button>
-                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="ibox">
-        <div class="ibox-title">
-            <h5>
-                <vc:i18n name="充电桩" namespace="chargeMachineManage"></vc:i18n>
-            </h5>
-            <div class="ibox-tools" style="top:10px;">
-                <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddChargeMachineModal()">
-                    <vc:i18n name="添加" namespace="chargeMachineManage"></vc:i18n>
-                </button>
-            </div>
-        </div>
-        <div class="ibox-content">
-            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
-                <thead>
-                <tr>
-                    <th class="text-center">
-                        <vc:i18n name='名称' namespace='chargeMachineManage'></vc:i18n>
-                    </th>
-                    <th class="text-center">
-                        <vc:i18n name='设备编号' namespace='chargeMachineManage'></vc:i18n>
-                    </th>
-                    <th class="text-center">
-                        <vc:i18n name='厂家' namespace='chargeMachineManage'></vc:i18n>
-                    </th>
-                    <th class="text-center">
-                        <vc:i18n name='插槽个数' namespace='chargeMachineManage'></vc:i18n>
-                    </th>
-                    <th class="text-center">
-                        <vc:i18n name='充电规则' namespace='chargeMachineManage'></vc:i18n>
-                    </th>
-                    <th class="text-center">
-                        <vc:i18n name='充电类型' namespace='chargeMachineManage'></vc:i18n>
-                    </th>
-                    <th class="text-center">
-                        <vc:i18n name='状态' namespace='chargeMachineManage'></vc:i18n>
-                    </th>
-                    <th class="text-center">
-                        <vc:i18n name='心跳时间' namespace='chargeMachineManage'></vc:i18n>
-                    </th>
-                    <th class="text-center">
-                        <vc:i18n name='监控' namespace='chargeMachineManage'></vc:i18n>
-                    </th>
-                    <!-- <th class="text-center"><span>
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="充电桩" namespace="chargeMachineManage"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddChargeMachineModal()">
+                            <vc:i18n name="添加" namespace="chargeMachineManage"></vc:i18n>
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='名称' namespace='chargeMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='设备编号' namespace='chargeMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='厂家' namespace='chargeMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='插槽个数' namespace='chargeMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='充电规则' namespace='chargeMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='充电类型' namespace='chargeMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='状态' namespace='chargeMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='心跳时间' namespace='chargeMachineManage'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='监控' namespace='chargeMachineManage'></vc:i18n>
+                                </th>
+                                <!-- <th class="text-center"><span>
                                     <vc:i18n name='用量电价' namespace='chargeMachineManage'></vc:i18n>
                                 </span></th> -->
-                    <th class="text-center">
-                        <vc:i18n name='操作'></vc:i18n>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="chargeMachine in chargeMachineManageInfo.chargeMachines">
-                    <td class="text-center">{{chargeMachine.machineName}}</td>
-                    <td class="text-center">{{chargeMachine.machineCode}}</td>
-                    <td class="text-center">{{chargeMachine.factoryName}}</td>
-                    <td class="text-center">{{chargeMachine.portCount || 0}}(<a href="javascript:void(0)"
-                                                                                @click="_viewPort(chargeMachine)">查看</a>)
-                    </td>
-                    <td class="text-center">{{chargeMachine.ruleName}}</td>
-                    <td class="text-center">{{chargeMachine.chargeTypeName}}</td>
-                    <td class="text-center">{{chargeMachine.stateName}}</td>
-                    <td class="text-center">{{chargeMachine.heartbeatTime}}</td>
-                    <td class="text-center">{{chargeMachine.monitorName}}
-                        <a v-if="chargeMachine.monitorName" href="javascript:void(0)"
-                           @click="_viewChargeMachineVideo(chargeMachine)">(观看)</a>
-                    </td>
+                                <th class="text-center">
+                                    <vc:i18n name='操作'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="chargeMachine in chargeMachineManageInfo.chargeMachines">
+                                <td class="text-center">{{chargeMachine.machineName}}</td>
+                                <td class="text-center">{{chargeMachine.machineCode}}</td>
+                                <td class="text-center">{{chargeMachine.factoryName}}</td>
+                                <td class="text-center">{{chargeMachine.portCount || 0}}(<a href="javascript:void(0)"
+                                        @click="_viewPort(chargeMachine)">查看</a>)
+                                </td>
+                                <td class="text-center">{{chargeMachine.ruleName}}</td>
+                                <td class="text-center">{{chargeMachine.chargeTypeName}}</td>
+                                <td class="text-center">{{chargeMachine.stateName}}</td>
+                                <td class="text-center">{{chargeMachine.heartbeatTime}}</td>
+                                <td class="text-center">{{chargeMachine.monitorName}}
+                                    <a v-if="chargeMachine.monitorName" href="javascript:void(0)"
+                                        @click="_viewChargeMachineVideo(chargeMachine)">(观看)</a>
+                                </td>
 
-                    <!-- <td class="text-center">{{chargeMachine.energyPrice}}</td> -->
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <button class="btn-white btn btn-xs"
-                                    v-on:click="_openRestartChargeMachineModel(chargeMachine)">
-                                <vc:i18n name='重启'></vc:i18n>
-                            </button>
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn-white btn btn-xs"
-                                    v-on:click="_openEditChargeMachineModel(chargeMachine)">
-                                <vc:i18n name='修改'></vc:i18n>
-                            </button>
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn-white btn btn-xs"
-                                    v-on:click="_openDeleteChargeMachineModel(chargeMachine)">
-                                <vc:i18n name='删除'></vc:i18n>
-                            </button>
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn-white btn btn-xs" v-on:click="_chargeMachineQrCode(chargeMachine)">
-                                <vc:i18n name="二维码" namespace="chargeMachineManage"></vc:i18n>
-                            </button>
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn-white btn btn-xs" v-on:click="_toChargeMachineDetail(chargeMachine)">
-                                <vc:i18n name='详情'></vc:i18n>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <!-- 分页 -->
-            <vc:create path="frame/pagination"></vc:create>
+                                <!-- <td class="text-center">{{chargeMachine.energyPrice}}</td> -->
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs"
+                                            v-on:click="_openRestartChargeMachineModel(chargeMachine)">
+                                            <vc:i18n name='重启'></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs"
+                                            v-on:click="_openEditChargeMachineModel(chargeMachine)">
+                                            <vc:i18n name='修改'></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs"
+                                            v-on:click="_openDeleteChargeMachineModel(chargeMachine)">
+                                            <vc:i18n name='删除'></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs"
+                                            v-on:click="_chargeMachineQrCode(chargeMachine)">
+                                            <vc:i18n name="二维码" namespace="chargeMachineManage"></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs"
+                                            v-on:click="_toChargeMachineDetail(chargeMachine)">
+                                            <vc:i18n name='详情'></vc:i18n>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
         </div>
     </div>
-
     <vc:create path="charge/addChargeMachine" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="charge/editChargeMachine"></vc:create>
     <vc:create path="charge/deleteChargeMachine"></vc:create>

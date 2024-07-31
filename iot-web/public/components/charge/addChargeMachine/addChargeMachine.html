@@ -78,6 +78,19 @@
                   </select>
                 </div>
               </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label ">
+                  <vc:i18n name='监控视频' namespace='addChargeMachine'></vc:i18n>
+                </label>
+                <div class="col-sm-10">
+                  <select class="custom-select" v-model="addChargeMachineInfo.monitorId">
+                    <option selected disabled value="">{{vc.i18n('选填，请选择监控视频','addChargeMachine')}}</option>
+                    <option value="-1">{{vc.i18n('没有监控','addChargeMachine')}}</option>
+                    <option :value="item.machineId" v-for="(item,index) in  addChargeMachineInfo.monitors">
+                      {{item.machineName}}</option>
+                  </select>
+                </div>
+              </div>
               <!-- <div class="form-group row">
                 <label class="col-sm-2 col-form-label"><span>
                     <vc:i18n name='用量电价' namespace='addChargeMachine'></vc:i18n>
@@ -89,17 +102,12 @@
               </div> -->
 
               <div class="ibox-content">
-                <button class="btn btn-primary float-right" type="button" v-on:click="saveChargeMachineInfo()"><i
-                    class="fa fa-check"></i>&nbsp;
-                  <span>
+                <button class="btn btn-primary float-right" type="button" v-on:click="saveChargeMachineInfo()">
                     <vc:i18n name="保存"></vc:i18n>
-                  </span>
                 </button>
                 <button type="button" class="btn btn-warning float-right" style="margin-right:20px;"
                   data-dismiss="modal">
-                  <span>
                     <vc:i18n name="取消"></vc:i18n>
-                  </span>
                 </button>
               </div>
             </div>

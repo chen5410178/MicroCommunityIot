@@ -12,7 +12,9 @@
                 factorys:[],
                 rules:[],
                 specs: [],
-                chargeType: ''
+                chargeType: '',
+                monitors:[],
+                monitorId:''
             }
         },
         _initMethod: function () {
@@ -20,18 +22,19 @@
         },
         _initEvent: function () {
             vc.on('editChargeMachine', 'openEditChargeMachineModal', function (_params) {
-                vc.component.refreshEditChargeMachineInfo();
+                $that.refreshEditChargeMachineInfo();
                 $that._listEditFactorys();
+                $that._listEditMonitors();
                 $('#editChargeMachineModel').modal('show');
-                vc.copyObject(_params, vc.component.editChargeMachineInfo);
-                $that._listEditChargeRules(vc.component.editChargeMachineInfo.chargeType);
-                vc.component.editChargeMachineInfo.communityId = vc.getCurrentCommunity().communityId;
+                vc.copyObject(_params, $that.editChargeMachineInfo);
+                $that._listEditChargeRules($that.editChargeMachineInfo.chargeType);
+                $that.editChargeMachineInfo.communityId = vc.getCurrentCommunity().communityId;
             });
         },
         methods: {
             editChargeMachineValidate: function () {
                 return vc.validate.validate({
-                    editChargeMachineInfo: vc.component.editChargeMachineInfo
+                    editChargeMachineInfo: $that.editChargeMachineInfo
                 }, {
                     'editChargeMachineInfo.machineName': [
                         {
@@ -105,14 +108,14 @@
                 });
             },
             editChargeMachine: function () {
-                if (!vc.component.editChargeMachineValidate()) {
+                if (!$that.editChargeMachineValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
 
                 vc.http.apiPost(
                     '/chargeMachine.updateChargeMachine',
-                    JSON.stringify(vc.component.editChargeMachineInfo),
+                    JSON.stringify($that.editChargeMachineInfo),
                     {
                         emulateJSON: true
                     },
@@ -134,7 +137,7 @@
                     });
             },
             refreshEditChargeMachineInfo: function () {
-                vc.component.editChargeMachineInfo = {
+                $that.editChargeMachineInfo = {
                     machineId: '',
                     machineName: '',
                     machineCode: '',
@@ -144,7 +147,9 @@
                     factorys:[],
                     rules:[],
                     specs: [],
-                    chargeType: ''
+                    chargeType: '',
+                    monitors:[],
+                    monitorId:''
                 }
             },
             _listEditFactorys: function(_page, _rows) {
@@ -200,7 +205,29 @@
                     }
                 );
             },
+            _listEditMonitors: function (_page, _rows) {
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        communityId:vc.getCurrentCommunity().communityId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/monitorMachine.listMonitorMachine',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        $that.editChargeMachineInfo.monitors = _json.data;
+
+                    },
+                    function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
         }
     });
 
-})(window.vc, window.vc.component);
+})(window.vc, window.$that);

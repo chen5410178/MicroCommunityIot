@@ -14,26 +14,26 @@
             }
         },
         _initMethod: function () {
-            vc.initHourMinute('editStartTime', function (_value) {
-                vc.component.editChargeRulePriceInfo.startTime = _value;
-            });
-            vc.initHourMinute('editEndTime', function (_value) {
-                vc.component.editChargeRulePriceInfo.endTime = _value;
-            });
+           
         },
         _initEvent: function () {
             vc.on('editChargeRulePrice', 'openEditChargeRulePriceModal', function (_params) {
-                vc.component.refreshEditChargeRulePriceInfo();
-                vc.copyObject(_params, vc.component.editChargeRulePriceInfo);
-                document.querySelectorAll('.editTime')[0].setAttribute('style', "display:show");
+                $that.refreshEditChargeRulePriceInfo();
+                vc.copyObject(_params, $that.editChargeRulePriceInfo);
+                vc.initHourMinute('editStartTime', function (_value) {
+                    $that.editChargeRulePriceInfo.startTime = _value;
+                });
+                vc.initHourMinute('editEndTime', function (_value) {
+                    $that.editChargeRulePriceInfo.endTime = _value;
+                });
                 $('#editChargeRulePriceModel').modal('show');
-                vc.component.editChargeRulePriceInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.editChargeRulePriceInfo.communityId = vc.getCurrentCommunity().communityId;
             });
         },
         methods: {
             editChargeRulePriceValidate: function () {
                 return vc.validate.validate({
-                    editChargeRulePriceInfo: vc.component.editChargeRulePriceInfo
+                    editChargeRulePriceInfo: $that.editChargeRulePriceInfo
                 }, {
                     'editChargeRulePriceInfo.ruleId': [
                         {
@@ -101,14 +101,14 @@
                 });
             },
             editChargeRulePrice: function () {
-                if (!vc.component.editChargeRulePriceValidate()) {
+                if (!$that.editChargeRulePriceValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
 
                 vc.http.apiPost(
                     '/chargeRule.updateChargeRulePrice',
-                    JSON.stringify(vc.component.editChargeRulePriceInfo),
+                    JSON.stringify($that.editChargeRulePriceInfo),
                     {
                         emulateJSON: true
                     },
@@ -129,7 +129,7 @@
                     });
             },
             refreshEditChargeRulePriceInfo: function () {
-                vc.component.editChargeRulePriceInfo = {
+                $that.editChargeRulePriceInfo = {
                     crpId: '',
                     ruleId: '',
                     price: '',
@@ -143,4 +143,4 @@
         }
     });
 
-})(window.vc, window.vc.component);
+})(window.vc, window.$that);

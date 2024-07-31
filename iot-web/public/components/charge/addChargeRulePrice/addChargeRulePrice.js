@@ -18,15 +18,16 @@
             }
         },
         _initMethod: function () {
-            vc.initHourMinute('addPriceStartTime', function (_value) {
-                vc.component.addChargeRulePriceInfo.startTime = _value;
-            });
-            vc.initHourMinute('addPriceEndTime', function (_value) {
-                vc.component.addChargeRulePriceInfo.endTime = _value;
-            });
+           
         },
         _initEvent: function () {
             vc.on('addChargeRulePrice', 'openAddChargeRulePriceModal', function (_param) {
+                vc.initHourMinute('addPriceStartTime', function (_value) {
+                    $that.addChargeRulePriceInfo.startTime = _value;
+                });
+                vc.initHourMinute('addPriceEndTime', function (_value) {
+                    $that.addChargeRulePriceInfo.endTime = _value;
+                });
                 vc.copyObject(_param,$that.addChargeRulePriceInfo);
                 $('#addChargeRulePriceModel').modal('show');
             });
@@ -34,7 +35,7 @@
         methods: {
             addChargeRulePriceValidate() {
                     return vc.validate.validate({
-                        addChargeRulePriceInfo: vc.component.addChargeRulePriceInfo
+                        addChargeRulePriceInfo: $that.addChargeRulePriceInfo
                     }, {
                         'addChargeRulePriceInfo.chargeType': [
                             {
@@ -103,17 +104,17 @@
                     });
             },
             saveChargeRulePriceInfo: function () {
-                if (!vc.component.addChargeRulePriceValidate()) {
+                if (!$that.addChargeRulePriceValidate()) {
                     vc.toast(vc.validate.errInfo);
 
                     return;
                 }
 
-                vc.component.addChargeRulePriceInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.addChargeRulePriceInfo.communityId = vc.getCurrentCommunity().communityId;
           
                 vc.http.apiPost(
                     '/chargeRule.saveChargeRulePrice',
-                    JSON.stringify(vc.component.addChargeRulePriceInfo),
+                    JSON.stringify($that.addChargeRulePriceInfo),
                     {
                         emulateJSON: true
                     },
@@ -123,7 +124,7 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#addChargeRulePriceModel').modal('hide');
-                            vc.component.clearAddChargeRulePriceInfo();
+                            $that.clearAddChargeRulePriceInfo();
                             vc.emit('chargeRulePrice', 'listChargeRulePrice', {});
 
                             return;
@@ -139,7 +140,7 @@
                     });
             },
             clearAddChargeRulePriceInfo: function () {
-                vc.component.addChargeRulePriceInfo = {
+                $that.addChargeRulePriceInfo = {
                     ruleId: '',
                     price: '',
                     servicePrice: '',

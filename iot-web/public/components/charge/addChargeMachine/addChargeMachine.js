@@ -13,11 +13,13 @@
                 implBean: '',
                 ruleId: '',
                 energyPrice: '1',
-                factorys:[],
+                factorys: [],
                 specs: [],
-                rules:[],
-                portCount:'',
-                chargeType: ''
+                rules: [],
+                portCount: '',
+                chargeType: '',
+                monitors: [],
+                monitorId: ''
             }
         },
         _initMethod: function () {
@@ -26,13 +28,14 @@
         _initEvent: function () {
             vc.on('addChargeMachine', 'openAddChargeMachineModal', function () {
                 $that._listFactorys();
+                $that._listAddMonitors();
                 $('#addChargeMachineModel').modal('show');
             });
         },
         methods: {
             addChargeMachineValidate() {
                 return vc.validate.validate({
-                    addChargeMachineInfo: vc.component.addChargeMachineInfo
+                    addChargeMachineInfo: $that.addChargeMachineInfo
                 }, {
                     'addChargeMachineInfo.machineName': [
                         {
@@ -100,16 +103,16 @@
                 });
             },
             saveChargeMachineInfo: function () {
-                if (!vc.component.addChargeMachineValidate()) {
+                if (!$that.addChargeMachineValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
 
-                vc.component.addChargeMachineInfo.communityId = vc.getCurrentCommunity().communityId;
-            
+                $that.addChargeMachineInfo.communityId = vc.getCurrentCommunity().communityId;
+
                 vc.http.apiPost(
                     '/chargeMachine.saveChargeMachine',
-                    JSON.stringify(vc.component.addChargeMachineInfo),
+                    JSON.stringify($that.addChargeMachineInfo),
                     {
                         emulateJSON: true
                     },
@@ -119,7 +122,7 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#addChargeMachineModel').modal('hide');
-                            vc.component.clearAddChargeMachineInfo();
+                            $that.clearAddChargeMachineInfo();
                             vc.emit('chargeMachineManage', 'listChargeMachine', {});
 
                             return;
@@ -139,20 +142,22 @@
                 $that._listAddChargeRules(selectedValue);
             },
             clearAddChargeMachineInfo: function () {
-                vc.component.addChargeMachineInfo = {
+                $that.addChargeMachineInfo = {
                     machineName: '',
                     machineCode: '',
                     implBean: '',
                     ruleId: '',
                     energyPrice: '1',
-                    factorys:[],
+                    factorys: [],
                     specs: [],
-                    rules:[],
-                    portCount:'',
-                    chargeType: ''
+                    rules: [],
+                    portCount: '',
+                    chargeType: '',
+                    monitors: [],
+                    monitorId: ''
                 };
             },
-            _listFactorys: function(_page, _rows) {
+            _listFactorys: function (_page, _rows) {
                 let param = {
                     params: {
                         page: 1,
@@ -161,16 +166,16 @@
                 };
                 //发送get请求
                 vc.http.apiGet('/chargeMachine.listChargeMachineFactory', param,
-                    function(json, res) {
+                    function (json, res) {
                         let _feeConfigManageInfo = JSON.parse(json);
                         $that.addChargeMachineInfo.factorys = _feeConfigManageInfo.data;
                     },
-                    function(errInfo, error) {
+                    function (errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );
             },
-            _changeFactory: function() {
+            _changeFactory: function () {
                 let _factorys = $that.addChargeMachineInfo.factorys;
                 _factorys.forEach(item => {
                     if (item.factoryId == $that.addChargeMachineInfo.implBean) {
@@ -184,10 +189,10 @@
             _listAddChargeRules: function (_chargeType) {
                 let param = {
                     params: {
-                        page:1,
-                        row:100,
-                        chargeType:_chargeType,
-                        communityId:vc.getCurrentCommunity().communityId
+                        page: 1,
+                        row: 100,
+                        chargeType: _chargeType,
+                        communityId: vc.getCurrentCommunity().communityId
                     }
                 };
                 //发送get请求
@@ -197,6 +202,28 @@
                         let _chargeRuleManageInfo = JSON.parse(json);
                         $that.addChargeMachineInfo.rules = _chargeRuleManageInfo.data;
                     }, function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+            _listAddMonitors: function (_page, _rows) {
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 50,
+                        communityId:vc.getCurrentCommunity().communityId
+                    }
+                };
+
+                //发送get请求
+                vc.http.apiGet('/monitorMachine.listMonitorMachine',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        $that.addChargeMachineInfo.monitors = _json.data;
+
+                    },
+                    function (errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );
