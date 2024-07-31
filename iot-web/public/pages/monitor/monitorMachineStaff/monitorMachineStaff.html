@@ -65,9 +65,6 @@
                                     <vc:i18n name='编号' namespace='monitorMachineStaff'></vc:i18n>
                                 </th>
                                 <th class="text-center">
-                                    <vc:i18n name='监控用户' namespace='monitorMachineStaff'></vc:i18n>
-                                </th>
-                                <th class="text-center">
                                     <vc:i18n name='名称' namespace='monitorMachineStaff'></vc:i18n>
                                 </th>
                                 <th class="text-center">
@@ -84,9 +81,8 @@
                         <tbody>
                             <tr v-for="monitorMachinePerson in monitorMachineStaffInfo.monitorMachinePersons">
                                 <td class="text-center">{{monitorMachinePerson.mmuId}}</td>
-                                <td class="text-center">{{monitorMachinePerson.mmuId}}</td>
                                 <td class="text-center">{{monitorMachinePerson.machineName}}</td>
-                                <td class="text-center">{{monitorMachinePerson.personType}}</td>
+                                <td class="text-center">员工</td>
                                 <td class="text-center">{{monitorMachinePerson.personName}}</td>
                                 <td class="text-center">
                                     <div class="btn-group">

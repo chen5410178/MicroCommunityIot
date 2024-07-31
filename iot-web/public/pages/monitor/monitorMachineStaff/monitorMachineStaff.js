@@ -16,7 +16,7 @@
                 conditions: {
                     machineName: '',
                     machineId: '',
-                    personType: '',
+                    personType: '2002',
                     personName: '',
 
                 }

@@ -86,7 +86,7 @@
                             errInfo: "区域ID不能为空"
                         },
                     ],
-                    'editMonitorMachineInfo.protocol': [
+                    'editMonitorMachineInfo.manufactors': [
                         {
                             limit: "required",
                             param: "",

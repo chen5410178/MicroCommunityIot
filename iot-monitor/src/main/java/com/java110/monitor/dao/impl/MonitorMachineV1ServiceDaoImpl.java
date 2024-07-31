@@ -97,12 +97,12 @@ public class MonitorMachineV1ServiceDaoImpl extends BaseServiceDao implements IM
     public int queryMonitorMachinesCount(Map info) {
         logger.debug("查询 queryMonitorMachinesCount 入参 info : {}", info);
 
-        List<Map> businessMonitorMachineInfos = sqlSessionTemplate.selectList("monitorMachineV1ServiceDaoImpl.queryMonitorMachinesCount", info);
-        if (businessMonitorMachineInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("monitorMachineV1ServiceDaoImpl.queryMonitorMachinesCount", info);
+        if (infos.size() < 1) {
             return 0;
         }
 
-        return Integer.parseInt(businessMonitorMachineInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
     @Override

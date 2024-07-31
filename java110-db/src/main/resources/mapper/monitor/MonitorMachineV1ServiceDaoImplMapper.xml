@@ -64,7 +64,13 @@
         from monitor_machine t
         left join monitor_area ma on t.ma_id = ma.ma_id  and ma.status_cd = '0'
         left join monitor_machine_attrs mma on mma.machine_id = t.machine_id and mma.status_cd = '0'
+        <if test="personId != null and personId != ''">
+            left join monitor_machine_person mmp on t.machine_id = mmp.machine_id and mmp.status_cd = '0'
+        </if>
         where 1 =1
+        <if test="personId != null and personId != ''">
+            and mmp.person_id = #{personId}
+        </if>
         <if test="heartbeatTime !=null">
             and t.heartbeat_time= #{heartbeatTime}
         </if>
@@ -121,7 +127,13 @@
         from monitor_machine t
         left join monitor_manufactor mm on t.mm_id = mm.mm_id and mm.status_cd = '0'
         left join monitor_area ma on t.ma_id = ma.ma_id and ma.status_cd = '0'
+        <if test="personId != null and personId != ''">
+            left join monitor_machine_person mmp on t.machine_id = mmp.machine_id and mmp.status_cd = '0'
+        </if>
         where 1 =1
+        <if test="personId != null and personId != ''">
+           and mmp.person_id = #{personId}
+        </if>
         <if test="heartbeatTime !=null">
             and t.heartbeat_time= #{heartbeatTime}
         </if>
@@ -205,7 +217,13 @@
     <select id="queryMonitorMachinesCount" parameterType="Map" resultType="Map">
         select count(1) count
         from monitor_machine t
+        <if test="personId != null and personId != ''">
+            left join monitor_machine_person mmp on t.machine_id = mmp.machine_id and mmp.status_cd = '0'
+        </if>
         where 1 =1
+        <if test="personId != null and personId != ''">
+           and mmp.person_id = #{personId}
+        </if>
         <if test="heartbeatTime !=null">
             and t.heartbeat_time= #{heartbeatTime}
         </if>

@@ -1,14 +1,11 @@
 (function (vc) {
     vc.extends({
-        propTypes: {
-            emitChooseOwner: vc.propTypes.string,
-            emitLoadData: vc.propTypes.string
-        },
         data: {
             searchOwnerInfo: {
                 owners: [],
                 _currentOwnerName: '',
-                roomName: ''
+                roomName: '',
+                callBack:{}
             }
         },
         _initMethod: function () {
@@ -16,6 +13,7 @@
         _initEvent: function () {
             vc.on('searchOwner', 'openSearchOwnerModel', function (_param) {
                 $('#searchOwnerModel').modal('show');
+                $that.searchOwnerInfo.callBack = _param.callBack;
                 $that._refreshSearchOwnerData();
                 $that._loadAllOwnerInfo(1, 10);
             });
@@ -51,10 +49,7 @@
                 );
             },
             chooseOwner: function (_owner) {
-                vc.emit($props.emitChooseOwner, 'chooseOwner', _owner);
-                vc.emit($props.emitLoadData, 'listOwnerData', {
-                    ownerId: _owner.ownerId
-                });
+                $that.searchOwnerInfo.callBack(_owner);
                 $('#searchOwnerModel').modal('hide');
             },
             searchOwners: function () {

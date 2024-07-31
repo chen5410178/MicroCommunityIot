@@ -12,17 +12,17 @@
          _initEvent:function(){
              vc.on('deleteMonitorMachinePerson','openDeleteMonitorMachinePersonModal',function(_params){
 
-                vc.component.deleteMonitorMachinePersonInfo = _params;
+                $that.deleteMonitorMachinePersonInfo = _params;
                 $('#deleteMonitorMachinePersonModel').modal('show');
 
             });
         },
         methods:{
             deleteMonitorMachinePerson:function(){
-                vc.component.deleteMonitorMachinePersonInfo.communityId=vc.getCurrentCommunity().communityId;
+                $that.deleteMonitorMachinePersonInfo.communityId=vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
-                    'monitorMachinePerson.deleteMonitorMachinePerson',
-                    JSON.stringify(vc.component.deleteMonitorMachinePersonInfo),
+                    '/monitor.deleteMonitorMachinePerson',
+                    JSON.stringify($that.deleteMonitorMachinePersonInfo),
                     {
                         emulateJSON:true
                      },
@@ -32,14 +32,17 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#deleteMonitorMachinePersonModel').modal('hide');
-                            vc.emit('monitorMachinePersonManage','listMonitorMachinePerson',{});
+                            vc.emit('monitorMachineStaff', 'listMonitorMachinePerson',{});
+                            vc.emit('monitorMachineOwner', 'listMonitorMachinePerson',{});
+
+                            
                             return ;
                         }
-                        vc.message(_json.msg);
+                        vc.toast(_json.msg);
                      },
                      function(errInfo,error){
                         console.log('请求失败处理');
-                        vc.message(json);
+                        vc.toast(json);
 
                      });
             },
@@ -49,4 +52,4 @@
         }
     });
 
-})(window.vc,window.vc.component);
+})(window.vc,window.$that);

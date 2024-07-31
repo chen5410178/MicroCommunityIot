@@ -25,6 +25,8 @@ public class MonitorMachineDto extends PageDto implements Serializable {
 
     private String mmName;
 
+    private String personId;
+
 
     private String communityId;
     private Date heartbeatTime;
@@ -176,5 +178,13 @@ public class MonitorMachineDto extends PageDto implements Serializable {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
     }
 }
