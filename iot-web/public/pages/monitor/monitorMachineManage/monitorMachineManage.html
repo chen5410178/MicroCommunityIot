@@ -103,7 +103,7 @@
                         <th class="text-center">
                             <vc:i18n name='监控厂家' namespace='monitorMachineManage'></vc:i18n>
                         </th>
-                        <th class="text-center">
+                        <!-- <th class="text-center">
                             <vc:i18n name='状态' namespace='monitorMachineManage'></vc:i18n>
                         </th>
                         <th class="text-center">
@@ -111,7 +111,7 @@
                         </th>
                         <th class="text-center">
                             <vc:i18n name='心跳时间' namespace='monitorMachineManage'></vc:i18n>
-                        </th>
+                        </th> -->
                         <th class="text-center">
                             <vc:i18n name='创建时间' namespace='monitorMachineManage'></vc:i18n>
                         </th>
@@ -135,14 +135,14 @@
                         <td class="text-center">{{monitorMachine.locationName}}</td>
                         <td class="text-center">{{monitorMachine.maName}}</td>
                         <td class="text-center">{{monitorMachine.mmName}}</td>
-                        <td class="text-center">
+                        <!-- <td class="text-center">
                             <label
                                 v-if="monitorMachine.state === '1001'">{{vc.i18n('打开中','monitorMachineManage')}}</label>
                             <label
                                 v-if="monitorMachine.state === '1002'">{{vc.i18n('关闭中','monitorMachineManage')}}</label>
                         </td>
                         <td class="text-center">{{monitorMachine.isOnlineStateName}}</td>
-                        <td class="text-center">{{monitorMachine.heartbeatTime}}</td>
+                        <td class="text-center">{{monitorMachine.heartbeatTime}}</td> -->
                         <td class="text-center">{{monitorMachine.createTime}}</td>
                         <td class="text-center">
                             <div class="btn-group">
