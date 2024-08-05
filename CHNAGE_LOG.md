@@ -18,3 +18,4 @@ alter table s_community add COLUMN lng varchar(32) comment '维度';
 alter table access_control add COLUMN monitor_id varchar(30) comment '监控ID'; 
 alter table access_control add COLUMN monitor_name varchar(64) comment '监控名称'; 
 ```
+
