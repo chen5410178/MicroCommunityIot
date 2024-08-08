@@ -31,6 +31,11 @@ public class MVideoAdaptImpl implements IMonitorModelAdapt {
 
     public static final String QUERY_VIDEO_URL = "oapp/community/getVideoUrl";
 
+    public static final String QUERY_VIDEO_RECORD = "oapp/record/getMachineRecord";
+
+    public static final String QUERY_RECORD_VIDEO_URL = "oapp/record/getRecordUrl";
+
+
     @Override
     public void queryMonitorMachineState(MonitorMachineDto monitorMachineDto) {
 
@@ -40,30 +45,105 @@ public class MVideoAdaptImpl implements IMonitorModelAdapt {
     public String getVideoUrl(MonitorMachineDto monitorMachineDto, MonitorManufactorDto monitorManufactorDto) {
 
         String url = monitorManufactorDto.getMmUrl();
-        url = url.endsWith("/")?(url+QUERY_VIDEO_URL):(url+"/"+QUERY_VIDEO_URL);
+        url = url.endsWith("/") ? (url + QUERY_VIDEO_URL) : (url + "/" + QUERY_VIDEO_URL);
         String appId = monitorManufactorDto.getAppId();
         String appSecure = monitorManufactorDto.getAppSecure();
         long timestamp = DateUtil.getCurrentDate().getTime();
-        String sign = AuthenticationFactory.md5(appId+monitorMachineDto.getMachineCode()+timestamp+appSecure);
-        url +=("?appId="+appId+"&timestamp="+timestamp+"&machineCode="+monitorMachineDto.getMachineCode()+"&sign="+sign);
+        String sign = AuthenticationFactory.md5(appId + monitorMachineDto.getMachineCode() + timestamp + appSecure);
+        url += ("?appId=" + appId + "&timestamp=" + timestamp + "&machineCode=" + monitorMachineDto.getMachineCode() + "&sign=" + sign);
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity httpEntity = new HttpEntity("",headers);
+        HttpEntity httpEntity = new HttpEntity("", headers);
 
         ResponseEntity<String> responseEntity = null;
         try {
             responseEntity = outRestTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
         } catch (HttpStatusCodeException e) { //这里spring 框架 在4XX 或 5XX 时抛出 HttpServerErrorException 异常，需要重新封装一下
             responseEntity = ResultVo.error(e.getMessage());
-            logger.error("调用接口"+QUERY_VIDEO_URL+"异常：",e);
+            logger.error("调用接口" + QUERY_VIDEO_URL + "异常：", e);
             throw e;
         } catch (Exception e) {
-            logger.error("调用接口"+QUERY_VIDEO_URL+"异常：",e);
+            logger.error("调用接口" + QUERY_VIDEO_URL + "异常：", e);
             throw e;
         } finally {
             logger.debug("请求地址为,{} 请求中心服务信息，{},中心服务返回信息，{}", url, httpEntity, responseEntity);
         }
         JSONObject paramOut = JSONObject.parseObject(responseEntity.getBody());
-        if(paramOut.getIntValue("code") != 0){
+        if (paramOut.getIntValue("code") != 0) {
+            throw new IllegalArgumentException(paramOut.getString("msg"));
+        }
+
+        return paramOut.getJSONObject("data").getString("url");
+    }
+
+    @Override
+    public ResultVo getVideoRecords(MonitorMachineDto monitorMachineDto, MonitorManufactorDto monitorManufactorDto, JSONObject reqJson) {
+
+        String url = monitorManufactorDto.getMmUrl();
+        url = url.endsWith("/") ? (url + QUERY_VIDEO_RECORD) : (url + "/" + QUERY_VIDEO_RECORD);
+        String appId = monitorManufactorDto.getAppId();
+        String appSecure = monitorManufactorDto.getAppSecure();
+        long timestamp = DateUtil.getCurrentDate().getTime();
+        String sign = AuthenticationFactory.md5(appId + monitorMachineDto.getMachineCode() + timestamp + appSecure);
+        url += ("?appId=" + appId
+                + "&timestamp=" + timestamp
+                + "&machineCode=" + monitorMachineDto.getMachineCode()
+                + "&page=" + reqJson.getIntValue("page")
+                + "&row=" + reqJson.getIntValue("row")
+                + "&sign=" + sign);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity httpEntity = new HttpEntity("", headers);
+
+        ResponseEntity<String> responseEntity = null;
+        try {
+            responseEntity = outRestTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+        } catch (HttpStatusCodeException e) { //这里spring 框架 在4XX 或 5XX 时抛出 HttpServerErrorException 异常，需要重新封装一下
+            responseEntity = ResultVo.error(e.getMessage());
+            logger.error("调用接口" + QUERY_VIDEO_RECORD + "异常：", e);
+            throw e;
+        } catch (Exception e) {
+            logger.error("调用接口" + QUERY_VIDEO_RECORD + "异常：", e);
+            throw e;
+        } finally {
+            logger.debug("请求地址为,{} 请求中心服务信息，{},中心服务返回信息，{}", url, httpEntity, responseEntity);
+        }
+        JSONObject paramOut = JSONObject.parseObject(responseEntity.getBody());
+        if (paramOut.getIntValue("code") != 0) {
+            throw new IllegalArgumentException(paramOut.getString("msg"));
+        }
+        return new ResultVo(paramOut.getJSONArray("data"));
+    }
+
+    @Override
+    public String getRecordVideoUrl(MonitorMachineDto monitorMachineDto, MonitorManufactorDto monitorManufactorDto, JSONObject reqJson) {
+        String url = monitorManufactorDto.getMmUrl();
+        url = url.endsWith("/") ? (url + QUERY_RECORD_VIDEO_URL) : (url + "/" + QUERY_RECORD_VIDEO_URL);
+        String appId = monitorManufactorDto.getAppId();
+        String appSecure = monitorManufactorDto.getAppSecure();
+        long timestamp = DateUtil.getCurrentDate().getTime();
+        String sign = AuthenticationFactory.md5(appId + monitorMachineDto.getMachineCode() + timestamp + appSecure);
+        url += ("?appId=" + appId
+                + "&timestamp=" + timestamp
+                + "&machineCode=" + monitorMachineDto.getMachineCode()
+                + "&rvId=" + reqJson.getString("rvId")
+                + "&sign=" + sign);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity httpEntity = new HttpEntity("", headers);
+
+        ResponseEntity<String> responseEntity = null;
+        try {
+            responseEntity = outRestTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+        } catch (HttpStatusCodeException e) { //这里spring 框架 在4XX 或 5XX 时抛出 HttpServerErrorException 异常，需要重新封装一下
+            responseEntity = ResultVo.error(e.getMessage());
+            logger.error("调用接口" + QUERY_RECORD_VIDEO_URL + "异常：", e);
+            throw e;
+        } catch (Exception e) {
+            logger.error("调用接口" + QUERY_RECORD_VIDEO_URL + "异常：", e);
+            throw e;
+        } finally {
+            logger.debug("请求地址为,{} 请求中心服务信息，{},中心服务返回信息，{}", url, httpEntity, responseEntity);
+        }
+        JSONObject paramOut = JSONObject.parseObject(responseEntity.getBody());
+        if (paramOut.getIntValue("code") != 0) {
             throw new IllegalArgumentException(paramOut.getString("msg"));
         }
 

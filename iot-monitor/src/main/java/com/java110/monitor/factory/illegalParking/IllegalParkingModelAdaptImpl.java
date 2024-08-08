@@ -1,5 +1,7 @@
 package com.java110.monitor.factory.illegalParking;
 
+import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
 import com.java110.dto.monitor.MonitorMachineDto;
 import com.java110.dto.monitorManufactor.MonitorManufactorDto;
 import com.java110.monitor.factory.IMonitorModelAdapt;
@@ -15,6 +17,16 @@ public class IllegalParkingModelAdaptImpl implements IMonitorModelAdapt {
 
     @Override
     public String getVideoUrl(MonitorMachineDto monitorMachineDto, MonitorManufactorDto monitorManufactorDto) {
+        return null;
+    }
+
+    @Override
+    public ResultVo getVideoRecords(MonitorMachineDto monitorMachineDto, MonitorManufactorDto monitorManufactorDto, JSONObject reqJson) {
+        return null;
+    }
+
+    @Override
+    public String getRecordVideoUrl(MonitorMachineDto monitorMachineDto, MonitorManufactorDto monitorManufactorDto, JSONObject reqJson) {
         return null;
     }
 }

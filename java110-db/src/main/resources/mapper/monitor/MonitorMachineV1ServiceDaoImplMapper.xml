@@ -40,7 +40,7 @@
     </resultMap>
 
     <!-- 查询监控设备信息 add by wuxw 2018-07-03 -->
-    <select id="getMonitorMachineInfo" parameterType="Map" resultMap="resultMap">
+    <select id="getMonitorMachineInfo" parameterType="Map" resultType="Map">
         select
         t.machine_id machineId,
         t.machine_name machineName,

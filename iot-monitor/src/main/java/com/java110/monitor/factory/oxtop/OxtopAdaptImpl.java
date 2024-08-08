@@ -224,6 +224,16 @@ public class OxtopAdaptImpl implements IMonitorModelAdapt {
         }
     }
 
+    @Override
+    public ResultVo getVideoRecords(MonitorMachineDto monitorMachineDto, MonitorManufactorDto monitorManufactorDto,JSONObject reqJson) {
+        return null;
+    }
+
+    @Override
+    public String getRecordVideoUrl(MonitorMachineDto monitorMachineDto, MonitorManufactorDto monitorManufactorDto, JSONObject reqJson) {
+        return null;
+    }
+
     private String readStream(InputStream inputStream) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))) {
             StringBuilder sb = new StringBuilder();

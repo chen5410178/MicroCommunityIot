@@ -36,7 +36,6 @@ public class ListOwnerAccessControlBmoImpl implements IIotCommonApiBmo {
         Assert.hasKeyAndValue(reqJson, "row", "未包含row");
         Assert.hasKeyAndValue(reqJson, "link", "未包含link");
 
-
     }
 
     @Override

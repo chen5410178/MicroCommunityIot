@@ -76,7 +76,6 @@
             },
             _openPlayVideo:function(_monitorMachine){
                 vc.emit('playMonitorVideo', 'openPlayMonitorVideoModal', _monitorMachine);
-
             },
             _queryMonitorMachineMethod: function () {
                 $that._listMonitorMachines(DEFAULT_PAGE, DEFAULT_ROWS);
