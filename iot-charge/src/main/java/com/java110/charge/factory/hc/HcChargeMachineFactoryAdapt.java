@@ -3,14 +3,10 @@ package com.java110.charge.factory.hc;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.charge.factory.IChargeFactoryAdapt;
-import com.java110.charge.factory.dingding.DingdingChargeUtils;
-import com.java110.charge.factory.lvcc.LvCCChargeMachineFactoryAdapt;
-import com.java110.charge.factory.lvcc.LvCCUtil;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.MqttFactory;
 import com.java110.core.utils.*;
 import com.java110.dto.chargeMachine.*;
-import com.java110.dto.data.NettyReplyDataDto;
 import com.java110.intf.charge.IChargeMachineOrderV1InnerServiceSMO;
 import com.java110.intf.charge.IChargeMachinePortV1InnerServiceSMO;
 import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
@@ -21,12 +17,10 @@ import com.java110.po.chargeMachineOrder.ChargeMachineOrderPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 

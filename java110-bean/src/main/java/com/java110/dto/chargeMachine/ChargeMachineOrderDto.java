@@ -41,6 +41,7 @@ public class ChargeMachineOrderDto extends PageDto implements Serializable {
 
     private String machineCode;
     private String machineName;
+    private String chargeType;
     private String portCode;
     private String portName;
 
@@ -209,6 +210,14 @@ public class ChargeMachineOrderDto extends PageDto implements Serializable {
 
     public void setMachineName(String machineName) {
         this.machineName = machineName;
+    }
+
+    public String getChargeType() {
+        return chargeType;
+    }
+
+    public void setChargeType(String chargeType) {
+        this.chargeType = chargeType;
     }
 
     public String getPortCode() {

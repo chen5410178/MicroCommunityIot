@@ -12,6 +12,8 @@ export default {
 
 	startCharge: baseUrl + "iot/api/chargeMachine.startCharge", // 开始充电
 	stopCharge: baseUrl + "iot/api/chargeMachine.stopCharge", // 结束充电
+	startCarCharge: baseUrl + "iot/api/chargeMachine.startCarCharge", // 开始汽车充电
+	stopCarCharge: baseUrl + "iot/api/chargeMachine.stopCarCharge", // 结束汽车充电
 
 	listChargeMachineOrder: baseUrl + "iot/api/chargeMachine.listChargeMachineOrder", // 查询充电订单
 	listChargeMonthOrder: baseUrl + "iot/api/chargeCard.listChargeMonthOrder", // 查询充电订单

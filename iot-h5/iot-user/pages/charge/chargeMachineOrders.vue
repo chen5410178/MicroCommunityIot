@@ -79,9 +79,15 @@
 				})
 			},
 			toDetail: function(_order) {
-				uni.navigateTo({
-					url: '/pages/charge/chargeMachineOrder?orderId=' + _order.orderId+'&communityId='+this.communityId
-				})
+				if(_order.chargeType =="1001"){
+					uni.navigateTo({
+						url: '/pages/charge/chargeMachineOrder?orderId=' + _order.orderId+'&communityId='+this.communityId
+					})
+				}else{
+					uni.navigateTo({
+						url: '/pages/charge/chargeCarOrder?orderId=' + _order.orderId+'&communityId='+this.communityId
+					})
+				}
 			}
 		}
 	}
