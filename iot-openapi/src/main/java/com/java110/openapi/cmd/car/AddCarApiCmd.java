@@ -156,7 +156,9 @@ public class AddCarApiCmd extends Cmd {
             parkingAreaDto.setCommunityId(communityId);
             //查询停车场
             parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
-            car.put("paId", parkingAreaDtos.get(0).getPaId());
+            if(!ListUtil.isNull(parkingAreaDtos)) {
+                car.put("paId", parkingAreaDtos.get(0).getPaId());
+            }
         }
         ParkingAreaPo parkingAreaPo = new ParkingAreaPo();
         parkingAreaPo.setCommunityId(communityId);
