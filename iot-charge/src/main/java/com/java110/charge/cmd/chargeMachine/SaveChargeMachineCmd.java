@@ -159,19 +159,23 @@ public class SaveChargeMachineCmd extends Cmd {
         chargeMachinePo.setMachineId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         chargeMachinePo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         int flag = chargeMachineV1InnerServiceSMOImpl.saveChargeMachine(chargeMachinePo);
-
         if (flag < 1) {
             throw new CmdException("保存数据失败");
         }
-
         int portCount = reqJson.getIntValue("portCount");
         ChargeMachinePortPo chargeMachinePortPo = null;
         for (int portIndex = 0; portIndex < portCount; portIndex++) {
             chargeMachinePortPo = new ChargeMachinePortPo();
             chargeMachinePortPo.setMachineId(chargeMachinePo.getMachineId());
             chargeMachinePortPo.setPortId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
-            chargeMachinePortPo.setPortCode((portIndex + 1) + "");
-            chargeMachinePortPo.setPortName((portIndex + 1) + "号插座");
+            if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachinePo.getChargeType())){
+                chargeMachinePortPo.setPortCode((portIndex + 1) + "");
+                chargeMachinePortPo.setPortName((portIndex + 1) + "号插座");
+            }else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachinePo.getChargeType())){
+                char letter = (char) ('A' + portIndex); // 计算对应的字母
+                chargeMachinePortPo.setPortCode((portIndex + 1) + "");
+                chargeMachinePortPo.setPortName(letter + "桩");
+            }
             chargeMachinePortPo.setCommunityId(chargeMachinePo.getCommunityId());
             chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_FREE);
             chargeMachinePortV1InnerServiceSMOImpl.saveChargeMachinePort(chargeMachinePortPo);

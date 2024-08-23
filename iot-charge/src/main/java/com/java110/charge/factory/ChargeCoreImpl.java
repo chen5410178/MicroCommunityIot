@@ -12,6 +12,7 @@ import com.java110.core.utils.StringUtil;
 import com.java110.dto.account.AccountDto;
 import com.java110.dto.chargeMachine.*;
 import com.java110.dto.chargeMonthOrder.ChargeMonthOrderDto;
+import com.java110.dto.chargeRulePrice.ChargeRulePriceDto;
 import com.java110.intf.acct.IAccountInnerServiceSMO;
 import com.java110.intf.charge.*;
 import com.java110.po.accountDetail.AccountDetailPo;
@@ -26,6 +27,9 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static com.java110.dto.chargeMachine.ChargeRuleFeeDto.CHARGE_TYPE_MOTORCYCLE;
+import static com.java110.dto.chargeMachine.ChargeRuleFeeDto.CHARGE_TYPE_CAR;
 
 /**
  * 充电核心类
@@ -61,6 +65,8 @@ public class ChargeCoreImpl implements IChargeCore {
     @Autowired
     private IChargeMonthOrderV1InnerServiceSMO chargeMonthOrderV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IChargeRulePriceV1InnerServiceSMO chargeRulePriceV1InnerServiceSMO;
 
     @Override
     public ResultVo startCharge(ChargeMachineDto chargeMachineDto, ChargeMachinePortDto chargeMachinePortDto, String chargeType, double duration, String orderId) {
@@ -105,6 +111,85 @@ public class ChargeCoreImpl implements IChargeCore {
 
 
         return resultVo;
+    }
+    /**
+     * 汽车订单退款
+     *
+     * @param chargeMachineDto
+     */
+    private void returnCarOrderMoney(ChargeMachineDto chargeMachineDto,
+                                  String remark,
+                                  String energy,
+                                  List<ChargeMachineOrderDto> chargeMachineOrderDtos) {
+        ChargeRulePriceDto chargeRulePriceDto = new ChargeRulePriceDto();
+        chargeRulePriceDto.setRuleId(chargeMachineDto.getRuleId());
+        chargeRulePriceDto.setCommunityId(chargeMachineDto.getCommunityId());
+        List<ChargeRulePriceDto> chargeRulePriceDtos = chargeRulePriceV1InnerServiceSMO.queryChargeRulePrices(chargeRulePriceDto);
+        if (chargeRulePriceDtos == null || chargeRulePriceDtos.size() < 1) {
+            throw new CmdException("未设置充值收费标准，请联系管理员！");
+        }
+        BigDecimal returnMoneyDec = new BigDecimal("1");
+        double returnMoney = returnMoneyDec.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+
+        ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
+        chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
+        chargeMachineOrderPo.setRemark(remark);
+        chargeMachineOrderPo.setState(ChargeMachineOrderDto.STATE_FINISH);
+        BigDecimal amount = new BigDecimal(Double.parseDouble(chargeMachineOrderDtos.get(0).getAmount())).subtract(new BigDecimal(returnMoney)).setScale(2, BigDecimal.ROUND_HALF_UP);
+        chargeMachineOrderPo.setAmount(amount.doubleValue() + "");
+        chargeMachineOrderPo.setEndTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        chargeMachineOrderPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
+        chargeMachineOrderPo.setDurationPrice("1");
+        chargeMachineOrderPo.setEnergy(energy);
+
+        int flag = chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
+        if (flag < 1) {
+            throw new IllegalArgumentException("修改订单失败");
+        }
+
+        AccountDto accountDto = new AccountDto();
+        accountDto.setAcctId(chargeMachineOrderDtos.get(0).getAcctDetailId());
+        List<AccountDto> accountDtos = accountInnerServiceSMOImpl.queryAccounts(accountDto);
+        if(ListUtil.isNull(accountDtos)){
+            return;
+        }
+
+        AccountDetailPo accountDetailPo = new AccountDetailPo();
+        accountDetailPo.setAcctId(accountDtos.get(0).getAcctId());
+        accountDetailPo.setObjId(accountDtos.get(0).getObjId());
+        accountDetailPo.setObjType(accountDtos.get(0).getObjType());
+        accountDetailPo.setDetailId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_detailId));
+        if (returnMoney < 0) {
+            accountDetailPo.setAmount((-1 * returnMoney) + "");
+            accountDetailPo.setRemark("充电扣款金额-" + chargeMachineOrderDtos.get(0).getOrderId());
+            accountInnerServiceSMOImpl.withholdAccount(accountDetailPo);
+        } else {
+            accountDetailPo.setAmount(returnMoney + "");
+            accountDetailPo.setRemark("充电退回金额-" + chargeMachineOrderDtos.get(0).getOrderId());
+            accountInnerServiceSMOImpl.prestoreAccount(accountDetailPo);
+        }
+
+
+        //充电表中加入退款金额
+        ChargeMachineOrderAcctPo chargeMachineOrderAcctPo = new ChargeMachineOrderAcctPo();
+        chargeMachineOrderAcctPo.setAcctDetailId(accountDetailPo.getDetailId());
+        chargeMachineOrderAcctPo.setAmount((-1 * returnMoney) + "");
+
+        chargeMachineOrderAcctPo.setCmoaId(GenerateCodeFactory.getGeneratorId("11"));
+        chargeMachineOrderAcctPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
+        chargeMachineOrderAcctPo.setAcctId(accountDtos.get(0).getAcctId());
+        chargeMachineOrderAcctPo.setStartTime(chargeMachineOrderDtos.get(0).getStartTime());
+        chargeMachineOrderAcctPo.setEnergy(energy);
+        chargeMachineOrderAcctPo.setEndTime(chargeMachineOrderDtos.get(0).getEndTime());
+        if (returnMoney < 0) {
+            chargeMachineOrderAcctPo.setRemark("账户扣款-" + remark);
+        } else {
+            chargeMachineOrderAcctPo.setRemark("账户退款-" + remark);
+        }
+        chargeMachineOrderAcctPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
+        //chargeMachineOrderAcctPo.setEnergy("0");
+        chargeMachineOrderAcctPo.setDurationPrice("1");
+        chargeMachineOrderAcctV1InnerServiceSMOImpl.saveChargeMachineOrderAcct(chargeMachineOrderAcctPo);
     }
 
     /**
@@ -390,14 +475,16 @@ public class ChargeCoreImpl implements IChargeCore {
             throw new IllegalArgumentException("修改订单失败");
         }
 
-        //todo 月卡直接修改状态
-        if (ifMonthCard(chargeMachineOrderDtos.get(0).getPersonTel(), chargeMachinePortDtos.get(0).getCommunityId())) {
-            finishMonthCardChargeOrder(notifyChargeOrderDto, chargeMachineOrderDtos);
-            return new ResultVo(ResultVo.CODE_OK, "成功");
+        if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDto.getChargeType())){
+            //todo 月卡直接修改状态
+            if (ifMonthCard(chargeMachineOrderDtos.get(0).getPersonTel(), chargeMachinePortDtos.get(0).getCommunityId())) {
+                finishMonthCardChargeOrder(notifyChargeOrderDto, chargeMachineOrderDtos);
+                return new ResultVo(ResultVo.CODE_OK, "成功");
+            }
+            returnOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getEnergy(),chargeMachineOrderDtos);
+        }else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDto.getChargeType())){
+            returnCarOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getEnergy(),chargeMachineOrderDtos);
         }
-
-        returnOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getEnergy(),chargeMachineOrderDtos);
-
         return new ResultVo(ResultVo.CODE_OK, "成功");
     }
 

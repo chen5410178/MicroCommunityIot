@@ -68,9 +68,9 @@
 		<view class="margin-sm" v-if="login">
 			<account ref="accRef"></account>
 		</view>
-		<view class="margin-sm" v-if="login">
+		<!-- <view class="margin-sm" v-if="login">
 			<charge ref="chargeRef"></charge>
-		</view>
+		</view> -->
 		<view class="plat-btn-black"></view>
 		<view class="cu-bar btn-group" style="margin-top: 30px;" v-if="login">
 			<button @click="_startCharge" :disabled="!curHours.duration || !curPort.portId"
@@ -81,6 +81,25 @@
 		</view>
 		<view class="cu-load load-modal" v-if="loadModal">
 			<view class="gray-text">{{statusReminder}}</view>
+			<view class="red-text" v-show="showReasonFlag" @tap="showReason" data-target="DialogModal1" style="color: red;">查看原因</view>
+		</view>
+		<view class="cu-modal" :class="modalName=='DialogModal1'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">失败原因</view>
+					<view class="action" @tap="hideModal">
+						<text class="cuIcon-close text-red"></text>
+					</view>
+				</view>
+				<view class="padding-xl">
+					{{modalReason}}
+				</view>
+				<view class="cu-bar bg-white justify-end">
+					<view class="action">
+						<button class="cu-btn bg-green margin-left" @tap="hideModal">确定</button>
+					</view>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -89,7 +108,7 @@
 	import {
 		getChargeMachines,
 		getChargeMachinePort,
-		startCharge
+		startCarCharge
 	} from '@/api/machine/machineApi.js';
 	import account from '@/components/account/account.vue';
 	import charge from '@/components/charge/charge.vue';
@@ -102,10 +121,14 @@
 			return {
 				statusReminder: '枪头开启中...',
 				machineId: '',
+				showReasonFlag:false,
+				modalReason: '',  
+				modalName: null,
 				portId: '',
 				communityId: '',
 				machineCode: '',
 				machineName: '',
+				duration:'',
 				portCount: '',
 				prices: [],
 				ports: [],
@@ -168,6 +191,15 @@
 			}
 		},
 		methods: {
+			showReason(e) {
+				this.modalName = e.currentTarget.dataset.target;
+				this.loadModal = false;
+				this.showReasonFlag = false;
+				this.statusReminder = "枪头开启中...";
+			},
+			hideModal(e) {
+				this.modalName = null
+			},
 			_loadChargeMachines: function() {
 				let _that = this;
 				getChargeMachines({
@@ -176,7 +208,6 @@
 					machineId: this.machineId,
 					communityId: this.communityId
 				}).then(_data => {
-					//_that.machines = _data.data;
 					_that.machineCode = _data.data[0].machineCode;
 					_that.machineName = _data.data[0].machineName;
 					_that.portCount = _data.data[0].portCount;
@@ -199,27 +230,28 @@
 			_startCharge: function() {
 				const childAccounts = this.$refs.accRef.account;
 				this.loadModal = true;
-				startCharge({
+				startCarCharge({
 					communityId:this.communityId,
 					machineId:this.machineId,
 					portId:this.portId,
-					duration:this.duration,
-					couponIds:this.couponIds
+					money:this.curHours.duration
 				}).then(_data=>{
+				
 					if(_data.code != 0){
-						uni.showToast({
-							icon:'none',
-							title:_data.msg
-						});
+						this.statusReminder = "开启失败";
+						this.showReasonFlag = true;
+						this.modalReason =_data.msg;
 						return ;
+					}else{
+						this.statusReminder = "开启成功";
+						setTimeout(() => {
+							this.loadModal = false;
+							uni.navigateTo({
+								url:'/pages/charge/chargeCarOrder?orderId='+_data.data +'&communityId='+this.communityId
+							})
+						}, 3000)
 					}
 				})
-				
-				setTimeout(() => {
-					this.statusReminder = "xxxxxxxxx";
-					this.loadModal = false;
-				}, 2000)
-
 			},
 			_switchPort: function(_port) {
 				if (_port.state != 'FREE') {
@@ -229,6 +261,7 @@
 			},
 			_switchMoney: function(_hours) {
 				this.curHours = _hours;
+				
 			},
 			_selectCoupons: function(_item) {
 				let _that = this;

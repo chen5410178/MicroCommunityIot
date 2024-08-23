@@ -66,8 +66,14 @@
 				"navigationBarTitleText": "充电订单详情",
 				"enablePullDownRefresh": false
 			}
-
-		}, {
+		},{
+			"path": "pages/charge/chargeCarOrder",
+			"style": {
+				"navigationBarTitleText": "汽车充电订单详情",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/charge/chargeMachineOrders",
 			"style": {
 				"navigationBarTitleText": "充电订单",
