@@ -15,6 +15,9 @@ import java.util.Date;
  **/
 public class AccessControlAdRelDto extends PageDto implements Serializable {
 
+    public static final String AD_TYPE_IMG = "IMG";
+    public static final String AD_TYPE_VIDEO = "VIDEO";
+
     private String relId;
     private String adId;
     private String adName;

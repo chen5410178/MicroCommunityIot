@@ -62,6 +62,9 @@ public class YiteSmartHal {
     @Autowired
     private IOpenDoorBmo openDoorBmoImpl;
 
+    @Autowired
+    private IAdBmo adBmoImpl;
+
     /**
      * 设备核验
      *
@@ -442,8 +445,6 @@ public class YiteSmartHal {
     }
 
 
-
-
     /**
      * 实例:
      *
@@ -550,19 +551,20 @@ public class YiteSmartHal {
         ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
         return responseEntity;
     }
+
     @RequestMapping(path = "/device/v1/face/qiniu/token/{photo}")
-    public ResponseEntity<String> qiniuToken(HttpServletRequest request,@PathVariable String photo) {
+    public ResponseEntity<String> qiniuToken(HttpServletRequest request, @PathVariable String photo) {
 
         Map<String, String> headers = new HashMap<>();
         RequestUtils.initHeadParam(request, headers);
         RequestUtils.initUrlParam(request, headers);
-        logger.debug("qiniuToken,/device/v1/face/qiniu/token/,{},photo={}", headers,photo);
+        logger.debug("qiniuToken,/device/v1/face/qiniu/token/,{},photo={}", headers, photo);
         JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
 
         String uuId = reqJson.getString("uuid");
 
 
-        openDoorBmoImpl.createPhoto(photo,request.getParameter("image"));
+        openDoorBmoImpl.createPhoto(photo, request.getParameter("image"));
 
 
         JSONObject paramOut = new JSONObject();
@@ -573,6 +575,7 @@ public class YiteSmartHal {
         ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
         return responseEntity;
     }
+
     @RequestMapping(path = "/device/v1/stranger/captures")
     public ResponseEntity<String> captures(HttpServletRequest request) {
 
@@ -584,7 +587,6 @@ public class YiteSmartHal {
         ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
         return responseEntity;
     }
-
 
 
     @RequestMapping(path = "/v3_1/log/open_door", method = RequestMethod.POST)
@@ -607,6 +609,34 @@ public class YiteSmartHal {
         ResponseEntity<String> responseEntity = null;
         try {
             responseEntity = openDoorBmoImpl.openDoor(uuId, reqParam);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return responseEntity;
+    }
+
+    /**
+     * /device/v2/ad?orientation=1&t=1724685762&sign=0c4379f7188be1f879c82a2dd8788126&baidu=0&uuid=zy20240529003
+     * &app_id=10862002&local=9 HTTP/1.0" 500 199 "-" "okhttp-okgo/jeasonlzy" "60.222.137.151"
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/device/v2/ad")
+    public ResponseEntity<String> ad(HttpServletRequest request) {
+
+
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        logger.debug("查询广告门禁,/device/v2/ad,{}", headers);
+        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+
+        String uuId = reqJson.getString("uuid");
+
+        ResponseEntity<String> responseEntity = null;
+        try {
+            responseEntity = adBmoImpl.getAd(uuId, reqJson);
         } catch (Exception e) {
             e.printStackTrace();
         }

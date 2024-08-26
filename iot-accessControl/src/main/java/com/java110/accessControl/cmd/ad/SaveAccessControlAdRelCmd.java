@@ -17,6 +17,7 @@ package com.java110.accessControl.cmd.ad;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.java110.accessControl.manufactor.IAccessControlManufactor;
 import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
@@ -24,13 +25,16 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
+import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.intf.accessControl.IAccessControlAdRelV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
+import com.java110.intf.system.IHardwareManufacturerV1InnerServiceSMO;
 import com.java110.po.accessControlAdRel.AccessControlAdRelPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
@@ -60,6 +64,9 @@ public class SaveAccessControlAdRelCmd extends Cmd {
 
     @Autowired
     private IAccessControlV1InnerServiceSMO accessControlV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IHardwareManufacturerV1InnerServiceSMO hardwareManufacturerV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
@@ -109,6 +116,16 @@ public class SaveAccessControlAdRelCmd extends Cmd {
             if (flag < 1) {
                 throw new CmdException("保存数据失败");
             }
+
+            //todo 调用门禁适配器 同步广告
+            HardwareManufacturerDto hardwareManufacturerDto = new HardwareManufacturerDto();
+            hardwareManufacturerDto.setHmId(accessControlDtos.get(0).getImplBean());
+            List<HardwareManufacturerDto> hardwareManufacturerDtos = hardwareManufacturerV1InnerServiceSMOImpl.queryHardwareManufacturers(hardwareManufacturerDto);
+
+            Assert.listOnlyOne(hardwareManufacturerDtos, "协议不存在");
+
+            IAccessControlManufactor accessControlManufactor = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
+            accessControlManufactor.addAd(accessControlDtos.get(0), accessControlAdRelPo);
 
         }
 

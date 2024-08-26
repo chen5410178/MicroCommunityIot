@@ -7,6 +7,7 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.MqttFactory;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.po.accessControlAdRel.AccessControlAdRelPo;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -276,5 +277,21 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
         }
 
         return null;
+    }
+
+
+    @Override
+    public boolean addAd(AccessControlDto accessControlDto, AccessControlAdRelPo accessControlAdRelPo){
+        JSONObject paramIn = new JSONObject();
+        paramIn.put("t", accessControlDto.getMachineCode());
+        paramIn.put("c", "syncAd");
+        paramIn.put("f", "server_php");
+
+        JSONObject m = new JSONObject();
+        m.put("t", GenerateCodeFactory.getUUID());
+        paramIn.put("m", m);
+
+        MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
+        return true;
     }
 }

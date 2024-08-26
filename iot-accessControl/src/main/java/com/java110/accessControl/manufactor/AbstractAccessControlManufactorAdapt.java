@@ -33,6 +33,7 @@ import com.java110.intf.user.IOwnerV1InnerServiceSMO;
 import com.java110.intf.user.IPassQrcodeV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.accessControl.AccessControlPo;
+import com.java110.po.accessControlAdRel.AccessControlAdRelPo;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.accessControlInout.AccessControlInoutPo;
 import com.java110.po.accessControlLog.AccessControlLogPo;
@@ -179,6 +180,10 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         return null;
     }
 
+    public boolean addAd(AccessControlDto accessControlDto, AccessControlAdRelPo accessControlAdRelPo){
+        return true;
+    }
+
     /**
      * 门禁记录上报
      *
@@ -188,6 +193,7 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
      */
     @Override
     public abstract String accessControlResult(String topic, String param);
+
 
 
     /**

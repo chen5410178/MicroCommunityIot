@@ -5,6 +5,7 @@ import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.user.UserDto;
 import com.java110.po.accessControl.AccessControlPo;
+import com.java110.po.accessControlAdRel.AccessControlAdRelPo;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 
 /**
@@ -123,4 +124,11 @@ public interface IAccessControlManufactor {
      */
     String accessControlResult(String topic, String param);
 
+    /**
+     * 同步广告
+     * @param accessControlDto
+     * @param accessControlAdRelPo
+     * @return
+     */
+    boolean addAd(AccessControlDto accessControlDto, AccessControlAdRelPo accessControlAdRelPo);
 }
