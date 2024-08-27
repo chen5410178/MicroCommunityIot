@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -43,10 +44,11 @@ public class AdBmoImpl implements IAdBmo {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "ok");
-        //paramOut.put("timetamp", DateUtil.getCurrentDate().getTime());
-        long curTimeTimeStamp = new Date().getTime();
-        curTimeTimeStamp = curTimeTimeStamp / 1000;
-        paramOut.put("timestamp", curTimeTimeStamp);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE,5);
+        paramOut.put("timetamp", calendar.getTime().getTime());
+
+       // paramOut.put("timetamp", DateUtil.getCurrentDate().getTime());
         paramOut.put("type", "local");
 
         JSONObject data = new JSONObject();
