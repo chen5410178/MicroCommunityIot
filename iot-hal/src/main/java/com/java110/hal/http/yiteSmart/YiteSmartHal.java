@@ -640,6 +640,8 @@ public class YiteSmartHal {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        logger.debug("查询广告门禁返回报文,{}", responseEntity);
+
         return responseEntity;
     }
 

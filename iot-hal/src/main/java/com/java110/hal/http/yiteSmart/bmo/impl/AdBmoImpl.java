@@ -102,6 +102,8 @@ public class AdBmoImpl implements IAdBmo {
             ad.put("secord", 15);
         }
         datas.add(data);
+
+
         responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
         return responseEntity;
     }
