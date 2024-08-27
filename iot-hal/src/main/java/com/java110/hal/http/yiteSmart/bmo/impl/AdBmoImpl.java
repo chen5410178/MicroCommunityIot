@@ -45,7 +45,7 @@ public class AdBmoImpl implements IAdBmo {
         paramOut.put("code", 200);
         paramOut.put("msg", "ok");
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE,5);
+        calendar.add(Calendar.MINUTE,-5);
         paramOut.put("timetamp", calendar.getTime().getTime());
 
        // paramOut.put("timetamp", DateUtil.getCurrentDate().getTime());
