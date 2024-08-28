@@ -44,11 +44,11 @@ public class AdBmoImpl implements IAdBmo {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "ok");
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE,-5);
-        paramOut.put("timetamp", calendar.getTime().getTime());
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.add(Calendar.MINUTE,-5);
+//        paramOut.put("timetamp", calendar.getTime().getTime());
 
-       // paramOut.put("timetamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timetamp", DateUtil.getCurrentDate().getTime());
         paramOut.put("type", "local");
 
         JSONObject data = new JSONObject();
@@ -95,7 +95,9 @@ public class AdBmoImpl implements IAdBmo {
                 ad.put("ad_type", "video");
             }
             ad.put("ad_md5", "");
-            ad.put("s_time", DateUtil.getCurrentDate().getTime());
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+            ad.put("s_time", calendar.getTime().getTime());
             try {
                 ad.put("e_time", DateUtil.getLastDate().getTime());
             } catch (ParseException e) {
