@@ -48,7 +48,7 @@ public class AdBmoImpl implements IAdBmo {
 //        calendar.add(Calendar.MINUTE,-5);
 //        paramOut.put("timetamp", calendar.getTime().getTime());
 
-        paramOut.put("timetamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timetamp", (DateUtil.getCurrentDate().getTime())/1000);
         paramOut.put("type", "local");
 
         JSONObject data = new JSONObject();
@@ -97,9 +97,9 @@ public class AdBmoImpl implements IAdBmo {
             ad.put("ad_md5", "");
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DAY_OF_MONTH, -1);
-            ad.put("s_time", calendar.getTime().getTime());
+            ad.put("s_time", (calendar.getTime().getTime())/1000);
             try {
-                ad.put("e_time", DateUtil.getLastDate().getTime());
+                ad.put("e_time", (DateUtil.getLastDate().getTime())/1000);
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
