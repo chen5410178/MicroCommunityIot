@@ -1,6 +1,5 @@
-package com.java110.accessControl.manufactor.adapt.accessControl;
+package com.java110.accessControl.manufactor.adapt.accessControl.yufan;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.accessControl.manufactor.AbstractAccessControlManufactorAdapt;
 import com.java110.accessControl.smo.impl.AccessControlLogV1InnerServiceSMOImpl;
