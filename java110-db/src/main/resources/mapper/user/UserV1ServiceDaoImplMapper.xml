@@ -222,8 +222,7 @@
 
     <!-- 查询员工总量 -->
     <select id="getStaffs" parameterType="Map" resultType="Map">
-        select u.user_id, u.user_id userId,u.name,u.name
-        userName,u.email,u.address,u.sex,u.tel,u.level_cd levelCd,u.face_url faceUrl
+        select u.user_id, u.user_id userId,u.name,u.name userName,u.email,u.address,u.sex,u.tel,u.level_cd levelCd,u.face_url faceUrl
         <if test="orgId !=null and orgId != ''">
             ,uo.org_id orgId,uo.org_name,uo.org_name orgName,uosr.store_id storeId,uosr.rel_id relId
         </if>
@@ -270,7 +269,7 @@
                 #{item}
             </foreach>
             and uosr.status_cd =0
-            GROUP BY u.user_id u.name,u.email,u.address,
+            GROUP BY u.user_id, u.name,u.email,u.address,
             u.sex,u.tel,u.level_cd ,u.b_id,td.name
         </if>
         order by u.create_time desc
