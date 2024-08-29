@@ -107,7 +107,7 @@ public class AdBmoImpl implements IAdBmo {
             ad.put("url", tmpAccessControlAdRelDto.getUrl());
             ad.put("type", 1);
             ad.put("count", "99999999999");
-            ad.put("secord", 15);
+            ad.put("secord", 100);
             datas.add(ad);
         }
 
