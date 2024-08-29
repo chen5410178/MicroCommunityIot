@@ -44,7 +44,7 @@ spring:
     default:
       topic: topic
     password: wuxw2015
-    url: tcp://192.168.100.108:1883
+    url: tcp://192.168.31.45:1883
     username: wuxw
     keepalive: 20
     poolSize: 20

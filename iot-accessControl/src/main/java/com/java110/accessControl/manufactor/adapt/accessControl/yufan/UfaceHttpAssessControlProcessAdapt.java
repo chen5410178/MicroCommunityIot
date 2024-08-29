@@ -22,6 +22,7 @@ import com.java110.dto.accessControlLog.AccessControlLogDto;
 import com.java110.dto.user.UserDto;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlLogV1InnerServiceSMO;
+import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
@@ -37,7 +38,7 @@ import java.util.List;
 
 /**
  * 宇凡Http + HC 网关盒子
- *
+ * <p>
  * 由于 宇凡设备需要部署在内网 他们提供Http方式，所以需要加一个网关盒子配合处理流程如下：
  * HC物联网系统-------mqtt------> 网关盒子 ------------>宇凡设备
  */
@@ -86,6 +87,9 @@ public class UfaceHttpAssessControlProcessAdapt extends AbstractAccessControlMan
     @Autowired
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IAccessControlV1InnerServiceSMO accessControlV1InnerServiceSMOImpl;
+
 
     /**
      * 添加用户
@@ -100,13 +104,14 @@ public class UfaceHttpAssessControlProcessAdapt extends AbstractAccessControlMan
         JSONObject param = new JSONObject();
         param.put("cmd", CMD_ADD_USER);
         param.put("action", ACTION);
-        param.put("sn",accessControlDto.getMachineCode());
+        param.put("sn", accessControlDto.getMachineCode());
 
         param.put("taskId", taskId);
         param.put("userId", accessControlFacePo.getPersonId());
         param.put("userName", accessControlFacePo.getName());
+        param.put("pass", accessControlDto.getMachineMac());
         param.put("idcard", accessControlFacePo.getIdNumber());
-        param.put("faceData", accessControlFacePo.getFacePath());
+        param.put("faceData", accessControlFacePo.getFaceBase64());
         param.put("idNumber", accessControlFacePo.getCardNumber());
         param.put("userType", accessControlFacePo.getPersonType());
 
@@ -123,7 +128,7 @@ public class UfaceHttpAssessControlProcessAdapt extends AbstractAccessControlMan
 
         MqttFactory.publish(TOPIC_REQ, param.toJSONString());
         saveAddFaceLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ + "/" + CMD_ADD_USER,
-                accessControlDto.getCommunityId(), param.toJSONString(), accessControlDto.getUserId(), accessControlDto.getUserName());
+                accessControlDto.getCommunityId(), param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
         return true;
     }
 
@@ -137,34 +142,13 @@ public class UfaceHttpAssessControlProcessAdapt extends AbstractAccessControlMan
      */
     @Override
     public boolean updateUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
-        String taskId = GenerateCodeFactory.getGeneratorId("11");
-        JSONObject param = new JSONObject();
-        param.put("cmd", CMD_UPDATE_USER);
-        param.put("action", ACTION);
-        param.put("sn",accessControlDto.getMachineCode());
-        param.put("taskId", taskId);
-        param.put("userId", accessControlFacePo.getPersonId());
-        param.put("userName", accessControlFacePo.getName());
-        param.put("idcard", accessControlFacePo.getIdNumber());
-        param.put("faceData", accessControlFacePo.getFacePath());
-        param.put("idNumber", accessControlFacePo.getCardNumber());
-        param.put("userType", accessControlFacePo.getPersonType());
-
-        if (AccessControlFaceDto.PERSON_TYPE_OWNER.equals(accessControlFacePo.getState())) {
-            getOwnerRooms(accessControlFacePo, param);
-        } else {
-            UserDto userDto = new UserDto();
-            userDto.setUserId(accessControlFacePo.getPersonId());
-            List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
-            if (!ListUtil.isNull(userDtos)) {
-                param.put("tel", userDtos.get(0).getTel());
-            }
+        deleteUser(accessControlDto, accessControlFacePo);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-
-        MqttFactory.publish(TOPIC_REQ, param.toJSONString());
-        saveUpdateFaceLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ + "/" + CMD_UPDATE_USER,
-                accessControlDto.getCommunityId(), param.toJSONString(), accessControlDto.getUserId(), accessControlDto.getUserName());
-        return true;
+        return addUser(accessControlDto, accessControlFacePo);
     }
 
     /**
@@ -180,13 +164,14 @@ public class UfaceHttpAssessControlProcessAdapt extends AbstractAccessControlMan
         JSONObject param = new JSONObject();
         param.put("cmd", CMD_DELETE_USER);
         param.put("action", ACTION);
-        param.put("sn",accessControlDto.getMachineCode());
+        param.put("sn", accessControlDto.getMachineCode());
+        param.put("pass", accessControlDto.getMachineMac());
         param.put("taskId", taskId);
         param.put("userId", accessControlFacePo.getPersonId());
 
         MqttFactory.publish(TOPIC_REQ, param.toJSONString());
         saveDeleteFaceLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ + "/" + CMD_DELETE_USER,
-                accessControlDto.getCommunityId(), param.toJSONString(), accessControlDto.getUserId(), accessControlDto.getUserName());
+                accessControlDto.getCommunityId(), param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
         return true;
     }
 
@@ -196,7 +181,8 @@ public class UfaceHttpAssessControlProcessAdapt extends AbstractAccessControlMan
         JSONObject param = new JSONObject();
         param.put("cmd", CMD_OPEN_DOOR);
         param.put("action", ACTION);
-        param.put("sn",accessControlDto.getMachineCode());
+        param.put("pass", accessControlDto.getMachineMac());
+        param.put("sn", accessControlDto.getMachineCode());
         param.put("taskId", taskId);
         MqttFactory.publish(TOPIC_REQ, param.toJSONString());
         saveOpenDoorLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ + "/" + CMD_OPEN_DOOR,
@@ -216,7 +202,8 @@ public class UfaceHttpAssessControlProcessAdapt extends AbstractAccessControlMan
         JSONObject param = new JSONObject();
         param.put("cmd", CMD_REBOOT);
         param.put("action", ACTION);
-        param.put("sn",accessControlDto.getMachineCode());
+        param.put("sn", accessControlDto.getMachineCode());
+        param.put("pass", accessControlDto.getMachineMac());
         param.put("taskId", taskId);
         MqttFactory.publish(TOPIC_REQ, param.toJSONString());
         saveRebootAcLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ + "/" + CMD_REBOOT,
@@ -230,11 +217,11 @@ public class UfaceHttpAssessControlProcessAdapt extends AbstractAccessControlMan
         JSONObject paramIn = JSONObject.parseObject(param);
         String cmd = paramIn.getString("cmd");
         String taskId = paramIn.getString("taskId");
-        String machineCode = paramIn.getString("machineCode");
+        String machineCode = paramIn.getString("sn");
 
         Assert.hasLength(cmd, "未包含cmd");
         Assert.hasLength(taskId, "未包含taskId");
-        Assert.hasLength(machineCode, "未包含machineCode");
+        Assert.hasLength(machineCode, "未包含sn");
 
         switch (cmd) {
             case CMD_HEARTBEAT: // todo 心跳
@@ -288,27 +275,25 @@ public class UfaceHttpAssessControlProcessAdapt extends AbstractAccessControlMan
 
         boolean hasOpenDoor = qrcodeCheck(qrcode, machineCode);
         if (!hasOpenDoor) {
-            JSONObject paramOut = new JSONObject();
-            paramOut.put("cmd", cmd);
-            paramOut.put("action", ACTION);
-            paramOut.put("sn",machineCode);
-            paramOut.put("taskId", taskId);
-            paramOut.put("code", -1);
-            paramOut.put("msg", "用户没有权限");
-            paramOut.put("machineCode", machineCode);
-            MqttFactory.publish(TOPIC_REQ, paramOut.toJSONString());
             return;
         }
-        JSONObject paramOut = new JSONObject();
-        paramOut.put("cmd", cmd);
-        paramOut.put("action", ACTION);
-        paramOut.put("sn",machineCode);
-        paramOut.put("taskId", taskId);
-        paramOut.put("code", 0);
-        paramOut.put("msg", "核验成功");
-        paramOut.put("machineCode", machineCode);
-        MqttFactory.publish(TOPIC_REQ, paramOut.toJSONString());
 
+        AccessControlDto accessControlDto = new AccessControlDto();
+        accessControlDto.setMachineCode(machineCode);
+        List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+        if (ListUtil.isNull(accessControlDtos)) {
+            return;
+        }
+
+        JSONObject param = new JSONObject();
+        param.put("cmd", CMD_OPEN_DOOR);
+        param.put("action", ACTION);
+        param.put("pass", accessControlDtos.get(0).getMachineMac());
+        param.put("sn", accessControlDtos.get(0).getMachineCode());
+        param.put("taskId", taskId);
+        MqttFactory.publish(TOPIC_REQ, param.toJSONString());
+        saveOpenDoorLog(taskId, accessControlDtos.get(0).getMachineId(), TOPIC_REQ + "/" + CMD_OPEN_DOOR,
+                accessControlDtos.get(0).getCommunityId(), param.toJSONString(), accessControlDtos.get(0).getUserId(), accessControlDtos.get(0).getUserName());
     }
 
     /**
@@ -366,13 +351,13 @@ public class UfaceHttpAssessControlProcessAdapt extends AbstractAccessControlMan
      */
     private void heartbeatHc(String cmd, String taskId, String machineCode, JSONObject paramIn) {
         heartbeat(machineCode, DateUtil.getCurrentDate());
-        JSONObject paramOut = new JSONObject();
-        paramOut.put("cmd", cmd);
-        paramOut.put("taskId", taskId);
-        paramOut.put("code", 0);
-        paramOut.put("msg", "处理成功");
-        paramOut.put("machineCode", machineCode);
-        MqttFactory.publish(TOPIC_REQ.replace(SN, machineCode), paramOut.toJSONString());
+//        JSONObject paramOut = new JSONObject();
+//        paramOut.put("cmd", cmd);
+//        paramOut.put("taskId", taskId);
+//        paramOut.put("code", 0);
+//        paramOut.put("msg", "处理成功");
+//        paramOut.put("machineCode", machineCode);
+//        MqttFactory.publish(TOPIC_REQ.replace(SN, machineCode), paramOut.toJSONString());
     }
 
     /**
