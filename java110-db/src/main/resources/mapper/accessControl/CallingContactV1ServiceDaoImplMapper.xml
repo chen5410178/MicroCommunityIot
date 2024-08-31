@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="callingContactV1ServiceDaoImpl">
+
+
+    <!-- 保存联系人目录信息 add by wuxw 2018-07-03 -->
+    <insert id="saveCallingContactInfo" parameterType="Map">
+        insert into calling_contact(
+machine_id,contact_id,remark,platform_id,community_id,device_id
+) values (
+#{machineId},#{contactId},#{remark},#{platformId},#{communityId},#{deviceId}
+)
+    </insert>
+
+
+    <!-- 查询联系人目录信息 add by wuxw 2018-07-03 -->
+    <select id="getCallingContactInfo" parameterType="Map" resultType="Map">
+        select t.machine_id,t.machine_id machineId,t.contact_id,t.contact_id contactId,t.create_time,t.create_time
+        createTime,t.remark,t.status_cd,t.status_cd statusCd,t.platform_id,t.platform_id
+        platformId,t.community_id,t.community_id communityId,t.device_id,t.device_id deviceId,
+        cd.device_name deviceName,cd.calling_num callingNum,cp.platform_name platformName
+        from calling_contact t
+        left join calling_platform cp on t.platform_id = cp.platform_id and cp.status_cd = '0'
+        left join calling_device cd on t.device_id = cd.device_id and cd.status_cd = '0'
+        where 1 =1
+        <if test="deviceName !=null and deviceName != ''">
+            and cd.device_name = #{deviceName}
+        </if>
+        <if test="callingNum !=null and callingNum != ''">
+            and cd.calling_num= #{callingNum}
+        </if>
+        <if test="platformName !=null and platformName != ''">
+            and cp.platform_name= #{platformName}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="contactId !=null and contactId != ''">
+            and t.contact_id= #{contactId}
+        </if>
+        <if test="createTime !=null and createTime != ''">
+            and t.create_time= #{createTime}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="platformId !=null and platformId != ''">
+            and t.platform_id= #{platformId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="deviceId !=null and deviceId != ''">
+            and t.device_id= #{deviceId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改联系人目录信息 add by wuxw 2018-07-03 -->
+    <update id="updateCallingContactInfo" parameterType="Map">
+        update calling_contact t set t.status_cd = #{statusCd}
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="createTime !=null and createTime != ''">
+            , t.create_time= #{createTime}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="platformId !=null and platformId != ''">
+            , t.platform_id= #{platformId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="deviceId !=null and deviceId != ''">
+            , t.device_id= #{deviceId}
+        </if>
+        where 1=1
+        <if test="contactId !=null and contactId != ''">
+            and t.contact_id= #{contactId}
+        </if>
+    </update>
+
+    <!-- 查询联系人目录数量 add by wuxw 2018-07-03 -->
+    <select id="queryCallingContactsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from calling_contact t
+        left join calling_platform cp on t.platform_id = cp.platform_id and cp.status_cd = '0'
+        left join calling_device cd on t.device_id = cd.device_id and cd.status_cd = '0'
+        where 1 =1
+        <if test="deviceName !=null and deviceName != ''">
+            and cd.device_name = #{deviceName}
+        </if>
+        <if test="callingNum !=null and callingNum != ''">
+            and cd.calling_num= #{callingNum}
+        </if>
+        <if test="platformName !=null and platformName != ''">
+            and cp.platform_name= #{platformName}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="contactId !=null and contactId != ''">
+            and t.contact_id= #{contactId}
+        </if>
+        <if test="createTime !=null and createTime != ''">
+            and t.create_time= #{createTime}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="platformId !=null and platformId != ''">
+            and t.platform_id= #{platformId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="deviceId !=null and deviceId != ''">
+            and t.device_id= #{deviceId}
+        </if>
+
+
+    </select>
+
+</mapper>
