@@ -5,14 +5,18 @@ import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.dto.owner.OwnerRoomRelDto;
 import com.java110.bean.dto.room.RoomDto;
 import com.java110.bean.dto.unit.UnitDto;
+import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.accessControlFloor.AccessControlFloorDto;
+import com.java110.dto.accessControlYiteCard.AccessControlYiteCardDto;
 import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
+import com.java110.intf.accessControl.IAccessControlYiteCardV1InnerServiceSMO;
 import com.java110.po.accessControlFace.AccessControlFacePo;
+import com.java110.po.accessControlYiteCard.AccessControlYiteCardPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +31,9 @@ public class SyncUserCardImpl implements ISyncUserCard {
 
     @Autowired
     private IAccessControlFloorV1InnerServiceSMO accessControlFloorV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAccessControlYiteCardV1InnerServiceSMO accessControlYiteCardV1InnerServiceSMOImpl;
 
     @Override
     public JSONObject getUserCard(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
@@ -51,7 +58,9 @@ public class SyncUserCardImpl implements ISyncUserCard {
         paramOut.put("timestamp", curTimeTimeStamp);
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
-
+        AccessControlYiteCardDto accessControlYiteCardDto = new AccessControlYiteCardDto();
+        accessControlYiteCardDto.setPersonId(accessControlFacePo.getPersonId());
+        List<AccessControlYiteCardDto> accessControlYiteCardDtos = accessControlYiteCardV1InnerServiceSMOImpl.queryAccessControlYiteCards(accessControlYiteCardDto);
 
         /**
          * "cards": [
@@ -79,6 +88,14 @@ public class SyncUserCardImpl implements ISyncUserCard {
         JSONArray addCards = new JSONArray();
         card.put("add", addCards);
         JSONArray del = new JSONArray();
+        if (!ListUtil.isNull(accessControlYiteCardDtos)) {
+            JSONObject delCard = null;
+            for (AccessControlYiteCardDto tmpAccessControlYiteCardDto : accessControlYiteCardDtos) {
+                delCard = new JSONObject();
+                delCard.put("card", tmpAccessControlYiteCardDto.getCardNum());
+                del.add(delCard);
+            }
+        }
         card.put("del", del);
 
         cards.add(card);
@@ -94,7 +111,28 @@ public class SyncUserCardImpl implements ISyncUserCard {
         addCard.put("expired", timestrap);
         addCards.add(addCard);
 
+        freshCard(accessControlFacePo.getCardNumber(), accessControlFacePo.getPersonId(), accessControlFacePo.getCommunityId());
+
         return paramOut;
+    }
+
+    private void freshCard(String cardNumber, String personId, String communityId) {
+        AccessControlYiteCardDto accessControlYiteCardDto = new AccessControlYiteCardDto();
+        accessControlYiteCardDto.setPersonId(personId);
+        List<AccessControlYiteCardDto> accessControlYiteCardDtos = accessControlYiteCardV1InnerServiceSMOImpl.queryAccessControlYiteCards(accessControlYiteCardDto);
+        AccessControlYiteCardPo accessControlYiteCardPo = new AccessControlYiteCardPo();
+
+        if (ListUtil.isNull(accessControlYiteCardDtos)) {
+            accessControlYiteCardPo.setAcycId(accessControlYiteCardDtos.get(0).getAcycId());
+            accessControlYiteCardPo.setCardNum(cardNumber);
+            accessControlYiteCardV1InnerServiceSMOImpl.updateAccessControlYiteCard(accessControlYiteCardPo);
+        }
+
+        accessControlYiteCardPo.setCardNum(cardNumber);
+        accessControlYiteCardPo.setAcycId(GenerateCodeFactory.getGeneratorId("11"));
+        accessControlYiteCardPo.setPersonId(personId);
+        accessControlYiteCardPo.setCommunityId(communityId);
+        accessControlYiteCardV1InnerServiceSMOImpl.saveAccessControlYiteCard(accessControlYiteCardPo);
     }
 
     private JSONObject syncOwner(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
@@ -105,7 +143,9 @@ public class SyncUserCardImpl implements ISyncUserCard {
         AccessControlFloorDto accessControlFloorDto = new AccessControlFloorDto();
         accessControlFloorDto.setMachineId(accessControlDto.getMachineId());
         List<AccessControlFloorDto> accessControlFloorDtos = accessControlFloorV1InnerServiceSMOImpl.queryAccessControlFloors(accessControlFloorDto);
-
+        AccessControlYiteCardDto accessControlYiteCardDto = new AccessControlYiteCardDto();
+        accessControlYiteCardDto.setPersonId(accessControlFacePo.getPersonId());
+        List<AccessControlYiteCardDto> accessControlYiteCardDtos = accessControlYiteCardV1InnerServiceSMOImpl.queryAccessControlYiteCards(accessControlYiteCardDto);
 
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
@@ -140,6 +180,14 @@ public class SyncUserCardImpl implements ISyncUserCard {
         JSONArray addCards = new JSONArray();
         card.put("add", addCards);
         JSONArray del = new JSONArray();
+        if (!ListUtil.isNull(accessControlYiteCardDtos)) {
+            JSONObject delCard = null;
+            for (AccessControlYiteCardDto tmpAccessControlYiteCardDto : accessControlYiteCardDtos) {
+                delCard = new JSONObject();
+                delCard.put("card", tmpAccessControlYiteCardDto.getCardNum());
+                del.add(delCard);
+            }
+        }
         card.put("del", del);
 
         cards.add(card);
@@ -159,6 +207,7 @@ public class SyncUserCardImpl implements ISyncUserCard {
         addCard.put("expired", timestrap);
         addCards.add(addCard);
 
+        freshCard(accessControlFacePo.getCardNumber(), accessControlFacePo.getPersonId(), accessControlFacePo.getCommunityId());
 
         return paramOut;
     }
