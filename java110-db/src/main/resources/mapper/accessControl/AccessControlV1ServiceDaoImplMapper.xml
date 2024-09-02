@@ -9,10 +9,10 @@
     <insert id="saveAccessControlInfo" parameterType="Map">
         insert into access_control(
         machine_mac,heartbeat_time,impl_bean,machine_id,machine_code,location_name,location_id,community_id,machine_name,machine_ip,direction,
-        prompt_switch,normal_prompt,owe_prompt,monitor_id,monitor_name
+        prompt_switch,normal_prompt,owe_prompt,monitor_id,monitor_name,platform_id,calling_num
         ) values (
         #{machineMac},#{heartbeatTime},#{implBean},#{machineId},#{machineCode},#{locationName},#{locationId},#{communityId},#{machineName},#{machineIp},#{direction},
-        #{promptSwitch},#{normalPrompt},#{owePrompt},#{monitorId},#{monitorName}
+        #{promptSwitch},#{normalPrompt},#{owePrompt},#{monitorId},#{monitorName},#{platformId},#{callingNum}
         )
     </insert>
 
@@ -25,9 +25,10 @@
         locationId,t.status_cd,t.status_cd statusCd,t.create_time createTime,t.community_id,t.community_id
         communityId,t.machine_name,t.machine_name machineName,t.machine_ip,t.machine_ip machineIp,t.direction,hm.hm_name
         implBeanName,t.prompt_switch promptSwitch,t.normal_prompt normalPrompt,t.owe_prompt owePrompt,hm.protocol_impl protocolImpl,
-        t.monitor_id monitorId,t.monitor_name monitorName
+        t.monitor_id monitorId,t.monitor_name monitorName,t.platform_id platformId,cp.platform_name platformName,t.calling_num callingNum
         from access_control t
         left join hardware_manufacturer hm on t.impl_bean = hm.hm_id and hm.status_cd = '0'
+        left join calling_platform cp on t.platform_id = cp.platform_id and cp.status_cd = '0'
         where 1 =1
 
         <if test="machineMac !=null and machineMac != ''">
@@ -65,6 +66,12 @@
         </if>
         <if test="direction !=null and direction != ''">
             and t.direction= #{direction}
+        </if>
+        <if test="platformId !=null and platformId != ''">
+            and t.platform_id= #{platformId}
+        </if>
+        <if test="callingNum !=null and callingNum != ''">
+            and t.calling_num= #{callingNum}
         </if>
         <if test="promptSwitch !=null and promptSwitch != ''">
             and t.prompt_switch= #{promptSwitch}
@@ -129,6 +136,12 @@
         <if test="monitorId !=null and monitorId != ''">
             , t.monitor_id= #{monitorId}
         </if>
+        <if test="platformId !=null and platformId != ''">
+            , t.platform_id= #{platformId}
+        </if>
+        <if test="callingNum !=null and callingNum != ''">
+            , t.calling_num= #{callingNum}
+        </if>
         <if test="monitorName !=null and monitorName != ''">
             , t.monitor_name= #{monitorName}
         </if>
@@ -188,6 +201,12 @@
         </if>
         <if test="normalPrompt !=null and normalPrompt != ''">
             and t.normal_prompt= #{normalPrompt}
+        </if>
+        <if test="platformId !=null and platformId != ''">
+            and t.platform_id= #{platformId}
+        </if>
+        <if test="callingNum !=null and callingNum != ''">
+            and t.calling_num= #{callingNum}
         </if>
         <if test="owePrompt !=null and owePrompt != ''">
             and t.owe_prompt= #{owePrompt}

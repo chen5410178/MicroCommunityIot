@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="callingPlatformV1ServiceDaoImpl">
+
+
+    <!-- 保存呼叫平台信息 add by wuxw 2018-07-03 -->
+    <insert id="saveCallingPlatformInfo" parameterType="Map">
+        insert into calling_platform(
+port_type,port,remark,platform_id,community_id,platform_name,ip_addr
+) values (
+#{portType},#{port},#{remark},#{platformId},#{communityId},#{platformName},#{ipAddr}
+)
+    </insert>
+
+
+    <!-- 查询呼叫平台信息 add by wuxw 2018-07-03 -->
+    <select id="getCallingPlatformInfo" parameterType="Map" resultType="Map">
+        select t.port_type,t.port_type portType,t.port,t.create_time,t.create_time
+        createTime,t.remark,t.status_cd,t.status_cd statusCd,t.platform_id,t.platform_id
+        platformId,t.community_id,t.community_id communityId,t.platform_name,t.platform_name
+        platformName,t.ip_addr,t.ip_addr ipAddr
+        from calling_platform t
+        where 1 =1
+        <if test="portType !=null and portType != ''">
+            and t.port_type= #{portType}
+        </if>
+        <if test="port !=null and port != ''">
+            and t.port= #{port}
+        </if>
+        <if test="createTime !=null and createTime != ''">
+            and t.create_time= #{createTime}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="platformId !=null and platformId != ''">
+            and t.platform_id= #{platformId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="platformName !=null and platformName != ''">
+            and t.platform_name= #{platformName}
+        </if>
+        <if test="ipAddr !=null and ipAddr != ''">
+            and t.ip_addr= #{ipAddr}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改呼叫平台信息 add by wuxw 2018-07-03 -->
+    <update id="updateCallingPlatformInfo" parameterType="Map">
+        update calling_platform t set t.status_cd = #{statusCd}
+        <if test="portType !=null and portType != ''">
+            , t.port_type= #{portType}
+        </if>
+        <if test="port !=null and port != ''">
+            , t.port= #{port}
+        </if>
+        <if test="createTime !=null and createTime != ''">
+            , t.create_time= #{createTime}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="platformName !=null and platformName != ''">
+            , t.platform_name= #{platformName}
+        </if>
+        <if test="ipAddr !=null and ipAddr != ''">
+            , t.ip_addr= #{ipAddr}
+        </if>
+        where 1=1
+        <if test="platformId !=null and platformId != ''">
+            and t.platform_id= #{platformId}
+        </if>
+    </update>
+
+    <!-- 查询呼叫平台数量 add by wuxw 2018-07-03 -->
+    <select id="queryCallingPlatformsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from calling_platform t
+        where 1 =1
+        <if test="portType !=null and portType != ''">
+            and t.port_type= #{portType}
+        </if>
+        <if test="port !=null and port != ''">
+            and t.port= #{port}
+        </if>
+        <if test="createTime !=null and createTime != ''">
+            and t.create_time= #{createTime}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="platformId !=null and platformId != ''">
+            and t.platform_id= #{platformId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="platformName !=null and platformName != ''">
+            and t.platform_name= #{platformName}
+        </if>
+        <if test="ipAddr !=null and ipAddr != ''">
+            and t.ip_addr= #{ipAddr}
+        </if>
+
+
+    </select>
+
+</mapper>

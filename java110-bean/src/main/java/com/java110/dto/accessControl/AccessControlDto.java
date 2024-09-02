@@ -53,6 +53,9 @@ public class AccessControlDto extends PageDto implements Serializable {
     private String monitorId;
     private String monitorName;
 
+    private String platformId;
+    private String platformName;
+    private String callingNum;
 
     public String getMachineMac() {
         return machineMac;
@@ -261,5 +264,29 @@ public class AccessControlDto extends PageDto implements Serializable {
 
     public void setMonitorName(String monitorName) {
         this.monitorName = monitorName;
+    }
+
+    public String getPlatformId() {
+        return platformId;
+    }
+
+    public void setPlatformId(String platformId) {
+        this.platformId = platformId;
+    }
+
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
+    public String getCallingNum() {
+        return callingNum;
+    }
+
+    public void setCallingNum(String callingNum) {
+        this.callingNum = callingNum;
     }
 }

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="callingDeviceV1ServiceDaoImpl">
+
+
+    <!-- 保存呼叫平台信息 add by wuxw 2018-07-03 -->
+    <insert id="saveCallingDeviceInfo" parameterType="Map">
+        insert into calling_device(
+calling_type,remark,platform_id,community_id,device_id,device_name,calling_num
+) values (
+#{callingType},#{remark},#{platformId},#{communityId},#{deviceId},#{deviceName},#{callingNum}
+)
+    </insert>
+
+
+    <!-- 查询呼叫平台信息 add by wuxw 2018-07-03 -->
+    <select id="getCallingDeviceInfo" parameterType="Map" resultType="Map">
+        select t.create_time,t.create_time createTime,t.calling_type,t.calling_type
+        callingType,t.remark,t.status_cd,t.status_cd statusCd,t.platform_id,t.platform_id
+        platformId,t.community_id,t.community_id communityId,t.device_id,t.device_id
+        deviceId,t.device_name,t.device_name deviceName,t.calling_num,t.calling_num callingNum,cp.platform_name platformName
+        from calling_device t
+        left join calling_platform cp on t.platform_id = cp.platform_id and cp.status_cd = '0'
+        where 1 =1
+        <if test="createTime !=null and createTime != ''">
+            and t.create_time= #{createTime}
+        </if>
+        <if test="callingType !=null and callingType != ''">
+            and t.calling_type= #{callingType}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="platformId !=null and platformId != ''">
+            and t.platform_id= #{platformId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="deviceId !=null and deviceId != ''">
+            and t.device_id= #{deviceId}
+        </if>
+        <if test="deviceName !=null and deviceName != ''">
+            and t.device_name= #{deviceName}
+        </if>
+        <if test="callingNum !=null and callingNum != ''">
+            and t.calling_num= #{callingNum}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改呼叫平台信息 add by wuxw 2018-07-03 -->
+    <update id="updateCallingDeviceInfo" parameterType="Map">
+        update calling_device t set t.status_cd = #{statusCd}
+        <if test="createTime !=null and createTime != ''">
+            , t.create_time= #{createTime}
+        </if>
+        <if test="callingType !=null and callingType != ''">
+            , t.calling_type= #{callingType}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="platformId !=null and platformId != ''">
+            , t.platform_id= #{platformId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+
+        <if test="deviceName !=null and deviceName != ''">
+            , t.device_name= #{deviceName}
+        </if>
+        <if test="callingNum !=null and callingNum != ''">
+            , t.calling_num= #{callingNum}
+        </if>
+        where 1=1
+        <if test="deviceId !=null and deviceId != ''">
+            and t.device_id= #{deviceId}
+        </if>
+    </update>
+
+    <!-- 查询呼叫平台数量 add by wuxw 2018-07-03 -->
+    <select id="queryCallingDevicesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from calling_device t
+        where 1 =1
+        <if test="createTime !=null and createTime != ''">
+            and t.create_time= #{createTime}
+        </if>
+        <if test="callingType !=null and callingType != ''">
+            and t.calling_type= #{callingType}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="platformId !=null and platformId != ''">
+            and t.platform_id= #{platformId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="deviceId !=null and deviceId != ''">
+            and t.device_id= #{deviceId}
+        </if>
+        <if test="deviceName !=null and deviceName != ''">
+            and t.device_name= #{deviceName}
+        </if>
+        <if test="callingNum !=null and callingNum != ''">
+            and t.calling_num= #{callingNum}
+        </if>
+
+
+    </select>
+
+</mapper>
