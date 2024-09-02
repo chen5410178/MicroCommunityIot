@@ -126,6 +126,7 @@ public class SyncUserCardImpl implements ISyncUserCard {
             accessControlYiteCardPo.setAcycId(accessControlYiteCardDtos.get(0).getAcycId());
             accessControlYiteCardPo.setCardNum(cardNumber);
             accessControlYiteCardV1InnerServiceSMOImpl.updateAccessControlYiteCard(accessControlYiteCardPo);
+            return;
         }
 
         accessControlYiteCardPo.setCardNum(cardNumber);
