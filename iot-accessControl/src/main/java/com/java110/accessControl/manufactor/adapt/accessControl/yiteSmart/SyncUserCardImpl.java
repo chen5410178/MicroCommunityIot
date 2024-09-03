@@ -89,11 +89,11 @@ public class SyncUserCardImpl implements ISyncUserCard {
         card.put("add", addCards);
         JSONArray del = new JSONArray();
         if (!ListUtil.isNull(accessControlYiteCardDtos)) {
-            JSONObject delCard = null;
+            //JSONObject delCard = null;
             for (AccessControlYiteCardDto tmpAccessControlYiteCardDto : accessControlYiteCardDtos) {
-                delCard = new JSONObject();
-                delCard.put("card", tmpAccessControlYiteCardDto.getCardNum());
-                del.add(delCard);
+               // delCard = new JSONObject();
+               // delCard.put("card", tmpAccessControlYiteCardDto.getCardNum());
+                del.add(tmpAccessControlYiteCardDto.getCardNum());
             }
         }
         card.put("del", del);
@@ -182,11 +182,11 @@ public class SyncUserCardImpl implements ISyncUserCard {
         card.put("add", addCards);
         JSONArray del = new JSONArray();
         if (!ListUtil.isNull(accessControlYiteCardDtos)) {
-            JSONObject delCard = null;
+            //JSONObject delCard = null;
             for (AccessControlYiteCardDto tmpAccessControlYiteCardDto : accessControlYiteCardDtos) {
-                delCard = new JSONObject();
-                delCard.put("card", tmpAccessControlYiteCardDto.getCardNum());
-                del.add(delCard);
+                // delCard = new JSONObject();
+                // delCard.put("card", tmpAccessControlYiteCardDto.getCardNum());
+                del.add(tmpAccessControlYiteCardDto.getCardNum());
             }
         }
         card.put("del", del);
