@@ -25,6 +25,10 @@ public class AccessControlYiteCardDto extends PageDto implements Serializable {
 
     private String statusCd = "0";
 
+    private String bId;
+
+    private String bName;
+
 
     public String getCardNum() {
         return cardNum;
@@ -73,5 +77,21 @@ public class AccessControlYiteCardDto extends PageDto implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getbId() {
+        return bId;
+    }
+
+    public void setbId(String bId) {
+        this.bId = bId;
+    }
+
+    public String getbName() {
+        return bName;
+    }
+
+    public void setbName(String bName) {
+        this.bName = bName;
     }
 }

@@ -17,6 +17,7 @@ package com.java110.po.accessControlYiteCard;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2024-09-02 14:29:57 mail: 928255095@qq.com
@@ -28,41 +29,68 @@ import java.util.Date;
 public class AccessControlYiteCardPo implements Serializable {
 
     private String cardNum;
-private String acycId;
-private String personId;
-private String statusCd = "0";
-private String communityId;
-public String getCardNum() {
+    private String acycId;
+    private String personId;
+    private String statusCd = "0";
+    private String communityId;
+
+    private String bId;
+
+    private String bName;
+
+    public String getCardNum() {
         return cardNum;
     }
-public void setCardNum(String cardNum) {
+
+    public void setCardNum(String cardNum) {
         this.cardNum = cardNum;
     }
-public String getAcycId() {
+
+    public String getAcycId() {
         return acycId;
     }
-public void setAcycId(String acycId) {
+
+    public void setAcycId(String acycId) {
         this.acycId = acycId;
     }
-public String getPersonId() {
+
+    public String getPersonId() {
         return personId;
     }
-public void setPersonId(String personId) {
+
+    public void setPersonId(String personId) {
         this.personId = personId;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
 
+    public String getbId() {
+        return bId;
+    }
 
+    public void setbId(String bId) {
+        this.bId = bId;
+    }
 
+    public String getbName() {
+        return bName;
+    }
+
+    public void setbName(String bName) {
+        this.bName = bName;
+    }
 }

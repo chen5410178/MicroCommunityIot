@@ -46,6 +46,7 @@ public class SyncUserCardImpl implements ISyncUserCard {
     }
 
 
+
     private JSONObject syncStaff(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
 
         long curTimeTimeStamp = new Date().getTime();
@@ -91,8 +92,8 @@ public class SyncUserCardImpl implements ISyncUserCard {
         if (!ListUtil.isNull(accessControlYiteCardDtos)) {
             //JSONObject delCard = null;
             for (AccessControlYiteCardDto tmpAccessControlYiteCardDto : accessControlYiteCardDtos) {
-               // delCard = new JSONObject();
-               // delCard.put("card", tmpAccessControlYiteCardDto.getCardNum());
+                // delCard = new JSONObject();
+                // delCard.put("card", tmpAccessControlYiteCardDto.getCardNum());
                 del.add(tmpAccessControlYiteCardDto.getCardNum());
             }
         }
@@ -111,30 +112,17 @@ public class SyncUserCardImpl implements ISyncUserCard {
         addCard.put("expired", timestrap);
         addCards.add(addCard);
 
-        freshCard(accessControlFacePo.getCardNumber(), accessControlFacePo.getPersonId(), accessControlFacePo.getCommunityId());
+        freshCard(accessControlFacePo.getCardNumber(),
+                accessControlFacePo.getPersonId(),
+                accessControlFacePo.getCommunityId(),
+                card.getString("b_id"),
+                card.getString("b_name")
+        );
 
         return paramOut;
     }
 
-    private void freshCard(String cardNumber, String personId, String communityId) {
-        AccessControlYiteCardDto accessControlYiteCardDto = new AccessControlYiteCardDto();
-        accessControlYiteCardDto.setPersonId(personId);
-        List<AccessControlYiteCardDto> accessControlYiteCardDtos = accessControlYiteCardV1InnerServiceSMOImpl.queryAccessControlYiteCards(accessControlYiteCardDto);
-        AccessControlYiteCardPo accessControlYiteCardPo = new AccessControlYiteCardPo();
 
-        if (!ListUtil.isNull(accessControlYiteCardDtos)) {
-            accessControlYiteCardPo.setAcycId(accessControlYiteCardDtos.get(0).getAcycId());
-            accessControlYiteCardPo.setCardNum(cardNumber);
-            accessControlYiteCardV1InnerServiceSMOImpl.updateAccessControlYiteCard(accessControlYiteCardPo);
-            return;
-        }
-
-        accessControlYiteCardPo.setCardNum(cardNumber);
-        accessControlYiteCardPo.setAcycId(GenerateCodeFactory.getGeneratorId("11"));
-        accessControlYiteCardPo.setPersonId(personId);
-        accessControlYiteCardPo.setCommunityId(communityId);
-        accessControlYiteCardV1InnerServiceSMOImpl.saveAccessControlYiteCard(accessControlYiteCardPo);
-    }
 
     private JSONObject syncOwner(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
 
@@ -208,8 +196,103 @@ public class SyncUserCardImpl implements ISyncUserCard {
         addCard.put("expired", timestrap);
         addCards.add(addCard);
 
-        freshCard(accessControlFacePo.getCardNumber(), accessControlFacePo.getPersonId(), accessControlFacePo.getCommunityId());
+        freshCard(accessControlFacePo.getCardNumber(),
+                accessControlFacePo.getPersonId(),
+                accessControlFacePo.getCommunityId(),
+                card.getString("b_id"),
+                card.getString("b_name")
+                );
 
         return paramOut;
+    }
+
+    @Override
+    public JSONObject getUserDeleteCard(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
+        long curTimeTimeStamp = new Date().getTime();
+        curTimeTimeStamp = curTimeTimeStamp / 1000;
+        AccessControlFloorDto accessControlFloorDto = new AccessControlFloorDto();
+        accessControlFloorDto.setMachineId(accessControlDto.getMachineId());
+        List<AccessControlFloorDto> accessControlFloorDtos = accessControlFloorV1InnerServiceSMOImpl.queryAccessControlFloors(accessControlFloorDto);
+
+        AccessControlYiteCardDto accessControlYiteCardDto = new AccessControlYiteCardDto();
+        accessControlYiteCardDto.setPersonId(accessControlFacePo.getPersonId());
+        List<AccessControlYiteCardDto> accessControlYiteCardDtos = accessControlYiteCardV1InnerServiceSMOImpl.queryAccessControlYiteCards(accessControlYiteCardDto);
+
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", curTimeTimeStamp);
+        JSONObject data = new JSONObject();
+        paramOut.put("data", data);
+
+        /**
+         * "cards": [
+         *                            {
+         *     				"add": [
+         *     				],
+         *     				"del": [],
+         *     				"b_id": 287,
+         *     				"b_name": [
+         *     					"2栋4单元"
+         *     				]
+         *                }
+         *     		]
+         */
+        JSONArray cards = new JSONArray();
+        JSONObject card = new JSONObject();
+        if (AccessControlFaceDto.PERSON_TYPE_STAFF.equals(accessControlFacePo.getPersonType())) {
+            card.put("b_id", "-1");
+            card.put("b_name", "物业中心");
+        } else {
+            if (ListUtil.isNull(accessControlFloorDtos)) {
+                throw new IllegalArgumentException("设备未关联单元");
+            }
+            card.put("b_id", accessControlFloorDtos.get(0).getUnitId());
+            card.put("b_name", accessControlFloorDtos.get(0).getFloorNum() + "栋" + accessControlFloorDtos.get(0).getUnitNum() + "单元");
+
+        }
+
+        JSONArray addCards = new JSONArray();
+        card.put("add", addCards);
+        JSONArray del = new JSONArray();
+        if (!ListUtil.isNull(accessControlYiteCardDtos)) {
+            //JSONObject delCard = null;
+            for (AccessControlYiteCardDto tmpAccessControlYiteCardDto : accessControlYiteCardDtos) {
+                // delCard = new JSONObject();
+                // delCard.put("card", tmpAccessControlYiteCardDto.getCardNum());
+                del.add(tmpAccessControlYiteCardDto.getCardNum());
+            }
+        }
+        card.put("del", del);
+
+        cards.add(card);
+        data.put("cards", cards);
+
+        return paramOut;
+    }
+
+
+    private void freshCard(String cardNumber, String personId, String communityId, String bId, String bName) {
+        AccessControlYiteCardDto accessControlYiteCardDto = new AccessControlYiteCardDto();
+        accessControlYiteCardDto.setPersonId(personId);
+        List<AccessControlYiteCardDto> accessControlYiteCardDtos = accessControlYiteCardV1InnerServiceSMOImpl.queryAccessControlYiteCards(accessControlYiteCardDto);
+        AccessControlYiteCardPo accessControlYiteCardPo = new AccessControlYiteCardPo();
+
+        if (!ListUtil.isNull(accessControlYiteCardDtos)) {
+            accessControlYiteCardPo.setAcycId(accessControlYiteCardDtos.get(0).getAcycId());
+            accessControlYiteCardPo.setCardNum(cardNumber);
+            accessControlYiteCardPo.setbId(bId);
+            accessControlYiteCardPo.setbName(bName);
+            accessControlYiteCardV1InnerServiceSMOImpl.updateAccessControlYiteCard(accessControlYiteCardPo);
+            return;
+        }
+
+        accessControlYiteCardPo.setCardNum(cardNumber);
+        accessControlYiteCardPo.setAcycId(GenerateCodeFactory.getGeneratorId("11"));
+        accessControlYiteCardPo.setPersonId(personId);
+        accessControlYiteCardPo.setCommunityId(communityId);
+        accessControlYiteCardPo.setbId(bId);
+        accessControlYiteCardPo.setbName(bName);
+        accessControlYiteCardV1InnerServiceSMOImpl.saveAccessControlYiteCard(accessControlYiteCardPo);
     }
 }
