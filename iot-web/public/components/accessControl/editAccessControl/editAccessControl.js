@@ -18,7 +18,10 @@
                 locations: [],
                 hms: [],
                 monitorId:'',
-                monitors:[]
+                monitors:[],
+                platformId: '',
+                callingNum: '',
+                remark:''
             }
         },
         _initMethod: function() {
@@ -146,7 +149,10 @@
                     locations: [],
                     hms: [],
                     monitorId:'',
-                    monitors:[]
+                    monitors:[],
+                    platformId: '',
+                    callingNum: '',
+                    remark:''
                 }
             },
             _listEditMachineLocations: function(_page, _rows) {

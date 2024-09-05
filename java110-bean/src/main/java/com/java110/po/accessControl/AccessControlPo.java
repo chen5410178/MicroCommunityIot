@@ -50,7 +50,8 @@ public class AccessControlPo implements Serializable {
     private String platformId;
     private String platformName;
     private String callingNum;
-
+    private String password;
+    private String remark;
 
     public String getMachineMac() {
         return machineMac;
@@ -210,5 +211,21 @@ public class AccessControlPo implements Serializable {
 
     public void setCallingNum(String callingNum) {
         this.callingNum = callingNum;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

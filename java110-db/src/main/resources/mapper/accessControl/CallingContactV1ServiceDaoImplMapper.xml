@@ -19,8 +19,8 @@ machine_id,contact_id,remark,platform_id,community_id,device_id
     <select id="getCallingContactInfo" parameterType="Map" resultType="Map">
         select t.machine_id,t.machine_id machineId,t.contact_id,t.contact_id contactId,t.create_time,t.create_time
         createTime,t.remark,t.status_cd,t.status_cd statusCd,t.platform_id,t.platform_id
-        platformId,t.community_id,t.community_id communityId,t.device_id,t.device_id deviceId,
-        cd.device_name deviceName,cd.calling_num callingNum,cp.platform_name platformName
+        platformId,t.community_id,t.community_id communityId,t.device_id,t.device_id deviceId,cd.calling_type callingType,
+        cd.device_name deviceName,cd.calling_num callingNum,cp.platform_name platformName,cp.ip_addr ipAddr,cp.`port` port
         from calling_contact t
         left join calling_platform cp on t.platform_id = cp.platform_id and cp.status_cd = '0'
         left join calling_device cd on t.device_id = cd.device_id and cd.status_cd = '0'
