@@ -8,4 +8,6 @@ public interface ISyncUserCard {
 
 
     JSONObject getUserCard(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo);
+
+    JSONObject getUserDeleteCard(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo);
 }

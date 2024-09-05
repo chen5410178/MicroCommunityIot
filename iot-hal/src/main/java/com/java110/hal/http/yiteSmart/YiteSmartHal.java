@@ -408,7 +408,7 @@ public class YiteSmartHal {
         return responseEntity;
     }
 
-    @RequestMapping(path = "/v3_1/sync/cards/add/sync/{t}", method = RequestMethod.GET)
+    @RequestMapping(path = "/v3_1/sync/cards/add/{t}", method = RequestMethod.GET)
     public ResponseEntity<String> syncCardsAdd(
             @PathVariable String t,
             HttpServletRequest request) {
@@ -426,7 +426,7 @@ public class YiteSmartHal {
         Map<String, String> headers = new HashMap<>();
         RequestUtils.initHeadParam(request, headers);
         RequestUtils.initUrlParam(request, headers);
-        logger.debug("进入人脸获取接口,/device/v2/face/sync,{}", headers);
+        logger.debug("进入人脸获取接口,/v3_1/sync/cards/add/,{}", headers);
         JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
 
         String uuId = reqJson.getString("uuid");
