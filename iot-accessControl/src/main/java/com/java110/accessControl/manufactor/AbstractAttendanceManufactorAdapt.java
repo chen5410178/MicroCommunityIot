@@ -271,6 +271,63 @@ public abstract class AbstractAttendanceManufactorAdapt implements IAttendanceMa
 
     }
 
+    protected void cmdResult(int code, String msg, String logId, String machineCode) {
+
+        AttendanceMachineDto attendanceMachineDto = new AttendanceMachineDto();
+        attendanceMachineDto.setMachineCode(machineCode);
+        List<AttendanceMachineDto> attendanceMachineDtos = attendanceMachineV1InnerServiceSMOImpl.queryAttendanceMachines(attendanceMachineDto);
+
+        if (ListUtil.isNull(attendanceMachineDtos)) {
+            return;
+        }
+        //todo 更新下发日志
+        AttendanceMachineLogDto attendanceMachineLogDto = new AttendanceMachineLogDto();
+        attendanceMachineLogDto.setLogId(logId);
+        attendanceMachineLogDto.setMachineId(attendanceMachineDtos.get(0).getMachineId());
+        attendanceMachineLogDto.setState(AccessControlLogDto.STATE_REQ);
+        List<AttendanceMachineLogDto> attendanceMachineLogDtos = attendanceMachineLogV1InnerServiceSMOImpl.queryAttendanceMachineLogs(attendanceMachineLogDto);
+        if (ListUtil.isNull(attendanceMachineLogDtos)) {
+            return;
+        }
+
+        String state = AccessControlLogDto.STATE_RES;
+        if (code != ResultVo.CODE_OK) {
+            state = AccessControlLogDto.STATE_FAIL;
+        }
+
+
+        AttendanceMachineLogPo attendanceMachineLogPo = new AttendanceMachineLogPo();
+        attendanceMachineLogPo.setLogId(attendanceMachineLogDtos.get(0).getLogId());
+        attendanceMachineLogPo.setState(state);
+        attendanceMachineLogPo.setResParam(msg);
+        attendanceMachineLogV1InnerServiceSMOImpl.updateAttendanceMachineLog(attendanceMachineLogPo);
+
+        //todo 更新人员日志
+
+        AttendanceStaffDto attendanceStaffDto = new AttendanceStaffDto();
+        attendanceStaffDto.setStaffId(attendanceMachineLogDtos.get(0).getStaffId());
+        attendanceStaffDto.setMachineId(attendanceMachineDtos.get(0).getMachineId());
+        attendanceStaffDto.setState(AccessControlFaceDto.STATE_WAIT);
+        List<AttendanceStaffDto> attendanceStaffDtos = attendanceStaffV1InnerServiceSMOImpl.queryAttendanceStaffs(attendanceStaffDto);
+        if (ListUtil.isNull(attendanceStaffDtos)) {
+            return;
+        }
+
+        state = AttendanceStaffDto.STATE_COMPLETE;
+        if (code != ResultVo.CODE_OK) {
+            state = AttendanceStaffDto.STATE_FAIL;
+        }
+
+
+        AttendanceStaffPo attendanceStaffPo = new AttendanceStaffPo();
+        attendanceStaffPo.setMsId(attendanceStaffDtos.get(0).getMsId());
+        attendanceStaffPo.setState(state);
+        attendanceStaffPo.setMessage(msg);
+        attendanceStaffV1InnerServiceSMOImpl.updateAttendanceStaff(attendanceStaffPo);
+
+
+    }
+
     protected ResultVo propertyCheckIn(String staffId, String photo, String machineCode) {
 
         AttendanceMachineDto attendanceMachineDto = new AttendanceMachineDto();
