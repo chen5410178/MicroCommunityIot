@@ -169,7 +169,12 @@
                 );
             },
             _openChooseOwner: function () {
-                vc.emit('searchOwner', 'openSearchOwnerModel', {});
+                vc.emit('searchOwner', 'openSearchOwnerModel', {
+                    callBack:function(_owner){
+                        $that.addLockPersonInfo.personId = _owner.memberId;
+                        $that.addLockPersonInfo.name = _owner.name;
+                    }
+                });
             },
         }
     });

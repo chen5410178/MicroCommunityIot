@@ -94,7 +94,12 @@
                 vc.emit('showLockLog', 'openShowLockLogModal', _log);
             },
             _openChooseOwner: function () {
-                vc.emit('searchOwner', 'openSearchOwnerModel', {});
+                vc.emit('searchOwner', 'openSearchOwnerModel', {
+                    callBack:function(_owner){
+                        $that.lockLogManageInfo.conditions.userName = _owner.name;
+                        $that.lockLogManageInfo.conditions.userId = _owner.memberId;
+                    }
+                });
             },
         }
     });

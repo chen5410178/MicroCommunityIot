@@ -186,7 +186,12 @@
                 })
             },
             _openChooseOwner: function () {
-                vc.emit('searchOwner', 'openSearchOwnerModel', {});
+                vc.emit('searchOwner', 'openSearchOwnerModel', {
+                    callBack:function(_owner){
+                        $that.addVisitInfo.ownerId = _owner.memberId;
+                        $that.addVisitInfo.ownerName = _owner.name;
+                    }
+                });
             },
         }
     });

@@ -100,7 +100,12 @@
                 vc.goBack();
             },
             _openChooseOwner: function () {
-                vc.emit('searchOwner', 'openSearchOwnerModel', {});
+                vc.emit('searchOwner', 'openSearchOwnerModel', {
+                    callBack:function(_owner){
+                        $that.roomBindOwnerInfo.ownerName = _owner.name;
+                        $that.roomBindOwnerInfo.ownerId = _owner.memberId;
+                    }
+                });
             },
             listRoom: function (_roomId) {
                 var param = {

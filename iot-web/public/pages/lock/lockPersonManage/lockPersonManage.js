@@ -106,7 +106,12 @@
                 }
             },
             _openChooseOwner: function () {
-                vc.emit('searchOwner', 'openSearchOwnerModel', {});
+                vc.emit('searchOwner', 'openSearchOwnerModel', {
+                    callBack:function(_owner){
+                        $that.lockPersonManageInfo.conditions.userName = _owner.name;
+                        $that.lockPersonManageInfo.conditions.userId = _owner.memberId;
+                    }
+                });
             },
             _resetLockPwd: function (_lockPerson) {
                 vc.emit('resetLockPwd', 'openResetLockPwd', _lockPerson);
