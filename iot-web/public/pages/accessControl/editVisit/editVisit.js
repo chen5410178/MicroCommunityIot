@@ -167,7 +167,12 @@
                 })
             },
             _openChooseOwner: function () {
-                vc.emit('searchOwner', 'openSearchOwnerModel', {});
+                vc.emit('searchOwner', 'openSearchOwnerModel', {
+                    callBack:function(_owner){
+                        $that.editVisitInfo.ownerId = _owner.memberId;
+                        $that.editVisitInfo.ownerName = _owner.name;
+                    }
+                });
             },
             listVisits: function () {
                 let param = {
