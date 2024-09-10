@@ -248,8 +248,7 @@
 							let info = list.data[0];
 							uni.navigateTo({
 								url: '/pages/visit/visitDetail?vId=' + info.visitId +
-									'&qrcode=' + info.qrcode + "&communityId=" + _that
-									.communityId
+									'&qrcode=' + info.qrcode + "&communityId=" + _that.communityId
 							})
 						})
 						return;
