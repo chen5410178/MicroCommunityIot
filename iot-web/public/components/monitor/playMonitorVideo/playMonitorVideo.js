@@ -64,12 +64,21 @@
                     container: image,
                     videoBuffer: 0.2, // 缓存时长
                     isResize: false,
+                    supportDblclickFullscreen:true,
                     text: "",
-                    loadingText: "",
+                    loadingText: "loading",
                     useMSE: false,
                     debug: false,
                     isNotMute: false,
+                    operateBtns: {
+						fullscreen: true,
+						screenshot: true,
+						play: true,
+						audio: false,
+						recorder: false
+					},
                 },);
+
 
                 $that.playMonitorVideoInfo.jessibuca = jessibuca;
 

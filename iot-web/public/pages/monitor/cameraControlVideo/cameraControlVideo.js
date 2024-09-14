@@ -78,17 +78,25 @@
                                 useMSE: false,
                                 debug: false,
                                 isNotMute: false,
+                                supportDblclickFullscreen:true,
+                                operateBtns: {
+                                    fullscreen: true,
+                                    screenshot: true,
+                                    play: true,
+                                    audio: false,
+                                    recorder: false
+                                },
                             },);
                             _item.jessibuca = jessibuca;
                             jessibuca.play(_json.data);
                             jessibuca.on("start", function (data) {
-                                setTimeout(function(){
+                                setTimeout(function () {
                                     const _videoPhoto = jessibuca.screenshot("test", "jpeg", 0.5, 'base64');
-                                    $that._saveCameraPhoto( _machine.machineId,_videoPhoto);
-                                },1*1000);
-                              
+                                    $that._saveCameraPhoto(_machine.machineId, _videoPhoto);
+                                }, 1 * 1000);
+
                             });
-                            
+
                         }, function (errInfo, error) {
                             console.log('请求失败处理');
                         }
@@ -97,12 +105,12 @@
                 }
                 vc.emit('selectVideoMachine', 'openSelectVideo', _item);
             },
-            _saveCameraPhoto:function(_machineId,_photo){
-                console.log(_machineId,_photo)
+            _saveCameraPhoto: function (_machineId, _photo) {
+                console.log(_machineId, _photo)
                 let _data = {
-                    communityId:vc.getCurrentCommunity().communityId,
-                    machineId:_machineId,
-                    photo:_photo
+                    communityId: vc.getCurrentCommunity().communityId,
+                    machineId: _machineId,
+                    photo: _photo
                 }
                 vc.http.apiPost(
                     '/monitorMachine.saveVideoPhoto',
