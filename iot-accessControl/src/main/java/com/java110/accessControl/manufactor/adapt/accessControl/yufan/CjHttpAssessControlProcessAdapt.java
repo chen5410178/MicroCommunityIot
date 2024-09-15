@@ -68,10 +68,11 @@ public class CjHttpAssessControlProcessAdapt extends AbstractAccessControlManufa
         String faceData = accessControlFacePo.getFaceBase64();
         if (!StringUtil.isEmpty(faceData)) {
             faceData = faceData.replaceAll("\n", "");
+            faceJSON.put("image", faceData);
+            face.add(faceJSON);
+            data.put("face", face);
         }
-        faceJSON.put("image", faceData);
-        face.add(faceJSON);
-        data.put("face", face);
+
         param.put("data", data);
 
         MqttFactory.publish(REQUEST_FACE.replace(DEVICE_SN, accessControlDto.getMachineCode()), param.toJSONString());

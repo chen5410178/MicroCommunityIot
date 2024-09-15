@@ -29,7 +29,12 @@
         },
         methods: {
             _selectOwner: function () {
-                vc.emit('searchOwner', 'openSearchOwnerModel', {});
+                vc.emit('searchOwner', 'openSearchOwnerModel', {
+                    callBack:function(_owner){
+                        $that.editOwnerSettledApplyInfo.ownerName = _owner.name + "(" + _owner.link + ")";
+                        vc.copyObject(_owner, $that.editOwnerSettledApplyInfo);
+                    }
+                });
             },
             _selectRoom: function () {
                 vc.emit('roomTree', 'openRoomTree', {

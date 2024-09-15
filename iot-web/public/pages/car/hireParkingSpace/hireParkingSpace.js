@@ -121,7 +121,12 @@
                 });
             },
             _openChooseOwner: function() {
-                vc.emit('searchOwner', 'openSearchOwnerModel', {});
+                vc.emit('searchOwner', 'openSearchOwnerModel', {
+                    callBack:function(_owner){
+                        $that.hireParkingSpaceInfo.ownerId = _owner.memberId;
+                        $that.hireParkingSpaceInfo.ownerName = _owner.name;
+                    }
+                });
             },
             openSearchParkingSpaceModel() {
                 vc.emit('searchParkingSpace', 'openSearchParkingSpaceModel', {});

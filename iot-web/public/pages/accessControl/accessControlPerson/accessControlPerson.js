@@ -62,7 +62,12 @@
                 vc.goBack();
             },
             _openChooseOwner: function() {
-                vc.emit('searchOwner', 'openSearchOwnerModel', {});
+                vc.emit('searchOwner', 'openSearchOwnerModel', {
+                    callBack:function(_owner){
+                        $that.accessControlPersonInfo.ownerId = _owner.memberId;
+                        $that.accessControlPersonInfo.ownerName = _owner.name;
+                    }
+                });
             },
             _listMachines: function(_page, _rows) {
                 let param = {

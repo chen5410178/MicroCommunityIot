@@ -3,12 +3,29 @@ package com.java110.accessControl.manufactor.adapt.accessControl.hik;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.accessControl.manufactor.AbstractAccessControlManufactorAdapt;
+import com.java110.accessControl.manufactor.adapt.accessControl.HcAccessControlProcessAdapt;
+import com.java110.bean.ResultVo;
+import com.java110.bean.dto.owner.OwnerDto;
+import com.java110.bean.dto.room.RoomDto;
 import com.java110.core.client.RestTemplate;
+import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.factory.MqttFactory;
 import com.java110.core.utils.*;
 import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.accessControlFace.AccessControlFaceDto;
+import com.java110.dto.accessControlLog.AccessControlLogDto;
+import com.java110.dto.user.UserDto;
+import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
+import com.java110.intf.accessControl.IAccessControlLogV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
+import com.java110.intf.community.IRoomV1InnerServiceSMO;
+import com.java110.intf.user.IOwnerV1InnerServiceSMO;
+import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.accessControlFace.AccessControlFacePo;
+import com.java110.po.accessControlLog.AccessControlLogPo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,26 +45,29 @@ import java.util.List;
  */
 @Service("hikGatewayAccessControlAdapt")
 public class HikGatewayAccessControlAdapt extends AbstractAccessControlManufactorAdapt {
+    private static Logger logger = LoggerFactory.getLogger(HcAccessControlProcessAdapt.class);
 
-    //todo 查询门禁设备
-    public static final String ADD_PERSON = "/ISAPI/AccessControl/UserInfo/Record?format=json&devIndex=";
+    public static final String ACTION = "HIK";
 
-    public static final String DELETE_PERSON = "/ISAPI/AccessControl/UserInfoDetail/Delete?format=json&devIndex=";
+    public static final String SN = "{sn}";
+
+    public static final String TOPIC_REQ = "mgateway/request";
+
+    public static final String TOPIC_RES = "mgateway/response/hik";
+
+    public static final String CMD_HEARTBEAT = "heartbeat"; //todo 心跳指令
+    public static final String CMD_REBOOT = "reboot"; //todo 心跳指令
+    public static final String CMD_OPEN_DOOR = "openDoor"; //todo 心跳指令
+
+    public static final String CMD_ADD_USER = "addUser";// todo 添加用户；
+    public static final String CMD_UPDATE_USER = "updateUser";// todo 修改用户；
+    public static final String CMD_DELETE_USER = "deleteUser";// todo 删除用户；
+
+    public static final String CMD_FACE_RESULT = "faceResult"; // todo 开门记录
+
+    public static final String CMD_QRCODE_OPEN_DOOR = "qrcodeOpenDoor"; // todo 二维码开门
 
 
-
-    public static final String ADD_CARD = "/ISAPI/AccessControl/CardInfo/Record?format=json&devIndex=";
-
-    public static final String ADD_FACE = "/ISAPI/Intelligent/FDLib/FaceDataRecord?format=json&devIndex=";
-
-    public static final String GET_PERSON = "/ISAPI/AccessControl/UserInfo/Search?format=json&devIndex=";
-
-    public static final String UPDATE_CARD = "/ISAPI/AccessControl/CardInfo/Modify?format=json&devIndex=";
-
-    public static final String DELETE_FACE = "/ISAPI/Intelligent/FDLib/FDSearch/Delete?format=json&devIndex=";
-
-
-    public static final String OPEN_DOOR = "/ISAPI/AccessControl/RemoteControl/door/<ID>?format=json&devIndex=";
 
 
     public static final String QUERY_OPEN_DOOR_RESULT = "/ISAPI/AccessControl/AcsEvent?format=json&devIndex=";
@@ -57,6 +77,21 @@ public class HikGatewayAccessControlAdapt extends AbstractAccessControlManufacto
     @Autowired
     private IAccessControlV1InnerServiceSMO accessControlV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IOwnerV1InnerServiceSMO ownerV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IRoomV1InnerServiceSMO roomV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAccessControlLogV1InnerServiceSMO accessControlLogV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
+
 
     @Autowired
     private RestTemplate outRestTemplate;
@@ -64,458 +99,321 @@ public class HikGatewayAccessControlAdapt extends AbstractAccessControlManufacto
     @Override
     public boolean addUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
 
-        //todo 添加人员
+        String taskId = GenerateCodeFactory.getGeneratorId("11");
+        JSONObject param = new JSONObject();
+        param.put("cmd", CMD_ADD_USER);
+        param.put("action", ACTION);
+        param.put("sn", accessControlDto.getMachineCode());
 
-//        {
-//            "UserInfo" : [{
-//            "employeeNo":"",
-//                    /*必选项，string，工号（人员 ID）；长度根据能力集协议获取*/
-//                    "name":"",
-//                    /*可选项，string，人员姓名；长度根据能力集协议获取*/
-//                    "Valid" :{
-//                /*必选项，有效期；最早时间"1970-01-01T00:00:00"，最晚时间"2037-12-31T23:59:59"*/
-//                "beginTime":"",
-//                        /*必选项，有效期开始时间，例如，当地时间为"2017-08-01T17:30:08"；UTC 时间为"2017-08-01T17:30:08+08:00"*/
-//                        "endTime":""
-//                /*必选项，有效期开始时间，例如，当地时间为"2017-08-01T17:30:08"；UTC 时间为"2017-08-01T17:30:08+08:00"*/
-//            }
-//        }]
-//        }
-        String url = accessControlDto.getMachineIp() + ADD_PERSON + accessControlDto.getMachineCode();
-        JSONObject reqParam = JSONObject.parseObject("{\n" +
-                " \"UserInfo\" : [{\n" +
-                " \"employeeNo\": \"" + accessControlFacePo.getPersonId() + "\", \n" +
-                " \"name\": \"" + accessControlFacePo.getName() + "\", \n" +
-                " \"Valid\" : {\n" +
-                " \"beginTime\": \"" + accessControlFacePo.getStartTime().replace(" ", "T") + "\",\n" +
-                " \"endTime\": \"" + accessControlFacePo.getEndTime().replace(" ", "T") + "\"\n" +
-                " }\n" +
-                " }]\n" +
-                "}");
-        String paramOutString = HttpClient.doPost(url, reqParam.toJSONString(), " ", "POST");
+        param.put("taskId", taskId);
+        param.put("userId", accessControlFacePo.getPersonId());
+        param.put("userName", accessControlFacePo.getName());
+        param.put("pass", accessControlDto.getMachineMac());
+        param.put("idcard", accessControlFacePo.getIdNumber());
+        param.put("faceData", accessControlFacePo.getFacePath());
+        param.put("idNumber", accessControlFacePo.getCardNumber());
+        param.put("userType", accessControlFacePo.getPersonType());
 
-        JSONObject retParam = JSONObject.parseObject(paramOutString);
-        if (retParam.containsKey("statusCode") && retParam.getIntValue("statusCode") != 1) {
-            throw new IllegalArgumentException(retParam.getString("statusString"));
+        if (AccessControlFaceDto.PERSON_TYPE_OWNER.equals(accessControlFacePo.getState())) {
+            getOwnerRooms(accessControlFacePo, param);
+        } else {
+            UserDto userDto = new UserDto();
+            userDto.setUserId(accessControlFacePo.getPersonId());
+            List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+            if (!ListUtil.isNull(userDtos)) {
+                param.put("tel", userDtos.get(0).getTel());
+            }
         }
 
-        //todo 添加卡
-
-        /**
-         * {
-         *  "CardInfo" : {
-         *  "employeeNo": "",
-         * /*必选项，string，工号（人员 ID）
-         * "cardNo":"1234567890"
-         * /*必选项，string，卡号
-         *  }
-         *}
-         */
-        url = accessControlDto.getMachineIp() + ADD_CARD + accessControlDto.getMachineCode();
-        String cardId = accessControlFacePo.getCardNumber();
-        if (StringUtil.isEmpty(cardId)) {
-            cardId = "123456789";
-        }
-        reqParam = JSONObject.parseObject("{\n" +
-                " \"CardInfo\" : {\n" +
-                " \"employeeNo\": \"" + accessControlFacePo.getPersonId() + "\", \n" +
-                " \"cardNo\": \"" + cardId + "\" \n" +
-                " }\n" +
-                "}");
-        HttpClient.doPost(url, reqParam.toJSONString(), " ", "POST");
-
-        //todo 添加人脸
-        url = accessControlDto.getMachineIp() + ADD_FACE + accessControlDto.getMachineCode();
-        MultiValueMap<String, Object> postParameters = new LinkedMultiValueMap<>();
-        /**
-         * {
-         *  "FaceInfo": {
-         *  "employeeNo": "",
-         * /*必选项，string，人员 ID
-         *"faceLibType":""
-         * 必选项，string，名单库类型：infraredFD（红外名单库）、blackFD（非准入名单库）、ƐƚĂƟcF（静态名单库）
-         *}
-         *
-         }
-         */
-        reqParam = JSONObject.parseObject("{\n" +
-                " \"FaceInfo\": {\n" +
-                " \"employeeNo\": \"" + accessControlFacePo.getPersonId() + "\"\n" +
-                " }\n" +
-                "}");
-        postParameters.add("FaceDataRecord", reqParam);
-        postParameters.add("FaceImage", ImageUtils.imageToBinary(accessControlFacePo.getFacePath()));
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Content-Type", "application/x-www-form-urlencoded");
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity(postParameters, httpHeaders);
-
-        String logId = GenerateCodeFactory.getGeneratorId("11");
-        saveAddFaceLog(logId, accessControlDto.getMachineId(), "uploadperson",
-                accessControlDto.getCommunityId(),
-                postParameters.toString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
-
-        ResponseEntity<String> responseEntity = outRestTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
-
-        retParam = JSONObject.parseObject(responseEntity.getBody());
-
-        if (retParam.containsKey("statusCode") && retParam.getIntValue("statusCode") != 1) {
-            cmdResult(-1, retParam.getString("statusString"), "uploadperson", accessControlDto.getMachineCode(), accessControlFacePo.getPersonId());
-            return false;
-        }
-
-        cmdResult(0, "成功", "uploadperson", accessControlDto.getMachineCode(), accessControlFacePo.getPersonId());
-
+        MqttFactory.publish(TOPIC_REQ, param.toJSONString());
+        saveAddFaceLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ + "/" + CMD_ADD_USER,
+                accessControlDto.getCommunityId(), param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
         return true;
     }
 
     @Override
     public boolean updateUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
-        //todo 查询员工 如果不存在调用添加人脸
-        /**
-         * {
-         *  "UserInfoSearchCond": {
-         *  "searchID": "",
-         * /*必选项，string，查询 ID，用于确认前后两次的搜索请求者是否相同；如果相同，搜索记录将被存储在设备中
-         * 以加快下一次搜索
-         * "serachResultPosition": 0,
-         * /*必选项，integer32，搜索结果在结果列表的结束位置；如果在一次查询中，不能获取结果列表中的所有记录,
-         * 可以标记结束位置,并在下次查询时直接获取到指定位置后的记录
-         *"maxResults":30,
-         * /*必选项，integer32，可获取的最大记录数；如 maxResults 的值大于设备能力集返回的范围，则设备按照能力
-         * 集最大值返回，不进行报错
-         *"EmployeeNoList" : [{
-         * /*可选项，人员 ID 列表；当该节点不存在或者未配置是，表示将查询所有人员
-         *"employeeNo":""
-         * /*可选项，string，工号（人员 ID）
-         *}]
-         *}
-         *
-         }
-         */
-        String url = accessControlDto.getMachineIp() + GET_PERSON + accessControlDto.getMachineCode();
-
-        JSONObject reqParam = JSONObject.parseObject(" {\n" +
-                "  \"UserInfoSearchCond\": {\n" +
-                "  \"searchID\": \""+GenerateCodeFactory.getUUID()+"\",\n" +
-                " \"serachResultPosition\": 0,\n" +
-                "\"maxResults\":30,\n" +
-                "\"EmployeeNoList\" : [{\n" +
-                "\"employeeNo\":\""+accessControlFacePo.getPersonId()+"\"\n" +
-                "}]\n" +
-                "}");
-        String paramOutString = HttpClient.doPost(url, reqParam.toJSONString(), " ", "POST");
-
-        JSONObject retParam = JSONObject.parseObject(paramOutString);
-        if (retParam.containsKey("statusCode") && retParam.getIntValue("statusCode") != 1) {
-            return addUser(accessControlDto,accessControlFacePo);
+        deleteUser(accessControlDto, accessControlFacePo);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-
-        url = accessControlDto.getMachineIp() + UPDATE_CARD + accessControlDto.getMachineCode();
-        String cardId = accessControlFacePo.getCardNumber();
-        if (StringUtil.isEmpty(cardId)) {
-            cardId = "123456789";
-        }
-        reqParam = JSONObject.parseObject("{\n" +
-                " \"CardInfo\" : {\n" +
-                " \"employeeNo\": \"" + accessControlFacePo.getPersonId() + "\", \n" +
-                " \"cardNo\": \"" + cardId + "\" \n" +
-                " }\n" +
-                "}");
-        HttpClient.doPost(url, reqParam.toJSONString(), " ", "PUT");
-
-        url = accessControlDto.getMachineIp() + DELETE_FACE + accessControlDto.getMachineCode();
-//        {
-//            "FaceInfoDelCond": {
-//            "EmployeeNoList" : [{
-//                /*必选项，人员 ID 列表*/
-//                "employeeNo": ""
-//                /*必选项，string, 工号 ID（人员 ID）*/
-//            }]
-//        }
-//        }
-        reqParam = JSONObject.parseObject("{\n" +
-                " \"FaceInfoDelCond\": {\n" +
-                " \"EmployeeNoList\" : [{\n" +
-                " \"employeeNo\": \""+accessControlFacePo.getPersonId()+"\" \n" +
-                " }]\n" +
-                " }\n" +
-                "}");
-        HttpClient.doPost(url, reqParam.toJSONString(), " ", "PUT");
-
-
-
-//todo 添加人脸
-        url = accessControlDto.getMachineIp() + ADD_FACE + accessControlDto.getMachineCode();
-        MultiValueMap<String, Object> postParameters = new LinkedMultiValueMap<>();
-        /**
-         * {
-         *  "FaceInfo": {
-         *  "employeeNo": "",
-         * /*必选项，string，人员 ID
-         *"faceLibType":""
-         * 必选项，string，名单库类型：infraredFD（红外名单库）、blackFD（非准入名单库）、ƐƚĂƟcF（静态名单库）
-         *}
-         *
-         }
-         */
-        reqParam = JSONObject.parseObject("{\n" +
-                " \"FaceInfo\": {\n" +
-                " \"employeeNo\": \"" + accessControlFacePo.getPersonId() + "\"\n" +
-                " }\n" +
-                "}");
-        postParameters.add("FaceDataRecord", reqParam);
-        postParameters.add("FaceImage", ImageUtils.imageToBinary(accessControlFacePo.getFacePath()));
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Content-Type", "application/x-www-form-urlencoded");
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity(postParameters, httpHeaders);
-
-        String logId = GenerateCodeFactory.getGeneratorId("11");
-        saveUpdateFaceLog(logId, accessControlDto.getMachineId(), "uploadperson",
-                accessControlDto.getCommunityId(),
-                postParameters.toString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
-
-        ResponseEntity<String> responseEntity = outRestTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
-
-        retParam = JSONObject.parseObject(responseEntity.getBody());
-
-        if (retParam.containsKey("statusCode") && retParam.getIntValue("statusCode") != 1) {
-            cmdResult(-1, retParam.getString("statusString"), "uploadperson", accessControlDto.getMachineCode(), accessControlFacePo.getPersonId());
-            return false;
-        }
-
-        cmdResult(0, "成功", "uploadperson", accessControlDto.getMachineCode(), accessControlFacePo.getPersonId());
-
-        return true;
+        return addUser(accessControlDto, accessControlFacePo);
     }
 
     @Override
     public boolean deleteUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
-        String url = accessControlDto.getMachineIp() + GET_PERSON + accessControlDto.getMachineCode();
+        String taskId = GenerateCodeFactory.getGeneratorId("11");
+        JSONObject param = new JSONObject();
+        param.put("cmd", CMD_DELETE_USER);
+        param.put("action", ACTION);
+        param.put("sn", accessControlDto.getMachineCode());
+        param.put("pass", accessControlDto.getMachineMac());
+        param.put("taskId", taskId);
+        param.put("userId", accessControlFacePo.getPersonId());
 
-        JSONObject reqParam = JSONObject.parseObject(" {\n" +
-                "  \"UserInfoSearchCond\": {\n" +
-                "  \"searchID\": \""+GenerateCodeFactory.getUUID()+"\",\n" +
-                " \"serachResultPosition\": 0,\n" +
-                "\"maxResults\":30,\n" +
-                "\"EmployeeNoList\" : [{\n" +
-                "\"employeeNo\":\""+accessControlFacePo.getPersonId()+"\"\n" +
-                "}]\n" +
-                "}");
-        String paramOutString = HttpClient.doPost(url, reqParam.toJSONString(), " ", "POST");
-
-        JSONObject retParam = JSONObject.parseObject(paramOutString);
-        if (retParam.containsKey("statusCode") && retParam.getIntValue("statusCode") != 1) {
-            return true;
-        }
-        url = accessControlDto.getMachineIp() + DELETE_PERSON + accessControlDto.getMachineCode();
-
-//        {
-//            "UserInfoDetail" : {
-//            "mode": "",
-///必选项，string，删除模式："all"（全部删除）、"byEmployeeNo"（按工号或人员 ID 删除）*/
-//            "EmployeeNoList" : [{
-//                /*可选项，工号（人员 ID）列表*/
-//                "employeeNo": ""
-//                /*可选项，string， 工号（人员 ID）；当 mode 的值为"byEmployeeNo"时，该节点才有效*/
-//            }]
-//        }
-//        }
-
-
-
-        reqParam = JSONObject.parseObject("{\n" +
-                 " \"UserInfoDetail\" : {\n" +
-                 " \"mode\": \"all\", \n" +
-                 " \"EmployeeNoList\" : [{\n" +
-                 " \"employeeNo\": \""+accessControlFacePo.getPersonId()+"\" \n" +
-                 " }]\n" +
-                 " }\n" +
-                 "}");
-        saveDeleteFaceLog("", accessControlDto.getMachineId(), "/deleteperson",
-                accessControlDto.getCommunityId(), reqParam.toJSONString(),
-                accessControlFacePo.getPersonId(), accessControlFacePo.getName());
-         paramOutString = HttpClient.doPost(url, reqParam.toJSONString(), " ", "PUT");
-
-         retParam = JSONObject.parseObject(paramOutString);
-        if (retParam.containsKey("statusCode") && retParam.getIntValue("statusCode") != 1) {
-            cmdResult(-1, retParam.getString("statusString"), "uploadperson", accessControlDto.getMachineCode(), accessControlFacePo.getPersonId());
-            return false;
-        }
-        cmdResult(0, "成功", "uploadperson", accessControlDto.getMachineCode(), accessControlFacePo.getPersonId());
-
-
+        MqttFactory.publish(TOPIC_REQ, param.toJSONString());
+        saveDeleteFaceLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ + "/" + CMD_DELETE_USER,
+                accessControlDto.getCommunityId(), param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
         return true;
     }
 
     @Override
     public boolean openDoor(AccessControlDto accessControlDto) {
 
-        String url = accessControlDto.getMachineIp() + OPEN_DOOR + accessControlDto.getMachineCode();
-
-        /**
-         * {
-         *  "RemoteControlDoor": {
-         *  "cmd":""
-         * /*string，命令："open"（开），"close"（关），"alwaysOpen"（常开），"alwaysClose"（常关/禁用），"visitorCallLadder"
-         * （访客呼梯），"householdCallLadder"（住户呼梯）
-         *}
-         *
-}
-         */
-        JSONObject reqParam = JSONObject.parseObject(" {\n" +
-                " \"RemoteControlDoor\": {\n" +
-                " \"cmd\":\"open\" \n" +
-                " }\n" +
-                "}");
-        String paramOutString = HttpClient.doPost(url, reqParam.toJSONString(), " ", "PUT");
-
-        JSONObject retParam = JSONObject.parseObject(paramOutString);
-        if (retParam.containsKey("statusCode") && retParam.getIntValue("statusCode") != 1) {
-            return true;
-        }
-        return false;
+        String taskId = GenerateCodeFactory.getGeneratorId("11");
+        JSONObject param = new JSONObject();
+        param.put("cmd", CMD_OPEN_DOOR);
+        param.put("action", ACTION);
+        param.put("pass", accessControlDto.getMachineMac());
+        param.put("sn", accessControlDto.getMachineCode());
+        param.put("taskId", taskId);
+        MqttFactory.publish(TOPIC_REQ, param.toJSONString());
+        saveOpenDoorLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ + "/" + CMD_OPEN_DOOR,
+                accessControlDto.getCommunityId(), param.toJSONString(), accessControlDto.getUserId(), accessControlDto.getUserName());
+        return true;
     }
 
     @Override
     public boolean restartMachine(AccessControlDto accessControlDto) {
-
-
-        return false;
+        String taskId = GenerateCodeFactory.getGeneratorId("11");
+        JSONObject param = new JSONObject();
+        param.put("cmd", CMD_REBOOT);
+        param.put("action", ACTION);
+        param.put("sn", accessControlDto.getMachineCode());
+        param.put("pass", accessControlDto.getMachineMac());
+        param.put("taskId", taskId);
+        MqttFactory.publish(TOPIC_REQ, param.toJSONString());
+        saveRebootAcLog(taskId, accessControlDto.getMachineId(), TOPIC_REQ + "/" + CMD_REBOOT,
+                accessControlDto.getCommunityId(), param.toJSONString(), accessControlDto.getUserId(), accessControlDto.getUserName());
+        return true;
     }
 
     @Override
     public String accessControlResult(String topic, String param) {
 
-        JSONObject reqJson = JSONObject.parseObject(param);
+        JSONObject paramIn = JSONObject.parseObject(param);
+        String cmd = paramIn.getString("cmd");
+        String taskId = paramIn.getString("taskId");
+        String machineCode = paramIn.getString("sn");
 
-        JSONObject eventNotificationAlert = reqJson.getJSONObject("EventNotificationAlert");
+        Assert.hasLength(cmd, "未包含cmd");
+        Assert.hasLength(taskId, "未包含taskId");
+        Assert.hasLength(machineCode, "未包含sn");
 
-        if ("heartbeat".equals(eventNotificationAlert.getString("eventType"))) {
-            heartbeat(topic);
-
-            // todo 心跳时 触发 一次查询
-            queryOpenDoorResult(topic);
-            return SUCCESS;
+        switch (cmd) {
+            case CMD_HEARTBEAT: // todo 心跳
+                heartbeatHc(cmd, taskId, machineCode, paramIn);
+                break;
+            case CMD_REBOOT: //todo 重启返回
+                response(cmd, taskId, machineCode, paramIn);
+                break;
+            case CMD_OPEN_DOOR: //todo 开门返回
+                response(cmd, taskId, machineCode, paramIn);
+                break;
+            case CMD_ADD_USER: //todo 添加用户返回
+                response(cmd, taskId, machineCode, paramIn);
+                break;
+            case CMD_UPDATE_USER: //todo 修改用户返回
+                response(cmd, taskId, machineCode, paramIn);
+                break;
+            case CMD_DELETE_USER: //todo 删除用户返回
+                response(cmd, taskId, machineCode, paramIn);
+                break;
+            case CMD_FACE_RESULT: //todo 开门记录
+                faceResult(cmd, taskId, machineCode, paramIn);
+                break;
+            case CMD_QRCODE_OPEN_DOOR: //todo 二维码开门
+                qrCodeOpenDoor(cmd, taskId, machineCode, paramIn);
+                break;
         }
-        return SUCCESS;
+        return null;
     }
 
-    private void queryOpenDoorResult(String machineCode) {
+    /**
+     * 心跳处理
+     *
+     * @param cmd
+     * @param taskId
+     * @param machineCode
+     * @param paramIn
+     */
+    private void heartbeatHc(String cmd, String taskId, String machineCode, JSONObject paramIn) {
+        heartbeat(machineCode, DateUtil.getCurrentDate());
+//        JSONObject paramOut = new JSONObject();
+//        paramOut.put("cmd", cmd);
+//        paramOut.put("taskId", taskId);
+//        paramOut.put("code", 0);
+//        paramOut.put("msg", "处理成功");
+//        paramOut.put("machineCode", machineCode);
+//        MqttFactory.publish(TOPIC_REQ.replace(SN, machineCode), paramOut.toJSONString());
+    }
 
-        AccessControlDto accessControlDto = new AccessControlDto();
-        accessControlDto.setMachineCode(machineCode);
+    public void response(String cmd, String taskId, String machineCode, JSONObject paramIn) {
 
-       List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
-
-       if(ListUtil.isNull(accessControlDtos)){
-           return;
-       }
-        accessControlDto = accessControlDtos.get(0);
-
-
-        String url = accessControlDto.getMachineIp() + QUERY_OPEN_DOOR_RESULT + accessControlDto.getMachineCode();
-
-//        {
-//            "AcsEventCond": {
-//            "searchID": "",
-///*必选项，string，查询 ID，用于确认前后两次的搜索请求者是否相同；如果相同，搜索记录将被存储在设备中
-//以加快下一次搜索*/
-//                    ΗƐĞĂrcŚRĞƐƵůƚWŽƐŝƟŽnΗ͗ ,
-///*必选项，integer32，搜索结果在结果列表的结束位置；如果在一次查询中，不能获取结果列表中的所有记录,
-//可以标记结束位置,并在下次查询时直接获取到指定位置后的记录*/
-//                    "maxResults": ,
-///*必选项，integer32，可获取的最大记录数，依赖于设备能力。若 maxResults 值大于设备能力集返回的范围，
-//则设备按照能力集最大值返回，不进行报错*/
-//            "major": ,
-///*可选项，int，事件主类型，参考事件上传宏定义，此处传递的是 10 进制数据，不能传递 16 进制，如传递
-//1024 代表 0x400。不填默认为 0，表示全部事件/
-// "minor": ,
-///*可选项，int，事件次类型，参考事件上传宏定义，此处传递的是 10 进制数据，不能传递 16 进制，如传递
-//1024 代表 0x400。不填默认为 0，表示全部事件/
-// "startTime": "2016-12-12T17:30:08+08:00",
-///*可选项，string，开始时间（UTC 时间）*/
-//            "endTime": "2017-12-12T17:30:08+08:00",
-//                    /*可选项，string，结束时间（UTC 时间）*/
-//                    "cardNo": "",
-//                    /*可选项，string，卡号*/
-//                    "name": "",
-//                    /*可选项，string，持卡人姓名*/
-//                    "picEnable": ,
-//            /*可选项，boolean，是否带图片：false（不带图片）、true（带图片）*/
-//            "employeeNoString": ""
-//            /*可选项，string，工号（人员 ID）*/
-//        }
-//        }
-        JSONObject reqParam = JSONObject.parseObject(" {\n" +
-                " \"AcsEventCond\": {\n"+
-                " }\n" +
-                "}");
-
-        JSONObject acsEventCond = reqParam.getJSONObject("AcsEventCond");
-        acsEventCond.put("searchID",GenerateCodeFactory.getUUID());
-        acsEventCond.put("searchResultPosition",0);
-        acsEventCond.put("maxResults",100);
-        acsEventCond.put("startTime", DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A).replace(" ","T"));
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE,1);
-        acsEventCond.put("endTime",DateUtil.getFormatTimeStringA(calendar.getTime()).replace(" ","T"));
-        String paramOutString = HttpClient.doPost(url, reqParam.toJSONString(), " ", "PUT");
-
-        JSONObject retParam = JSONObject.parseObject(paramOutString);
-
-        if (retParam.containsKey("statusCode") && retParam.getIntValue("statusCode") != 1) {
-            return ;
-        }
-
-        JSONArray matchList = retParam.getJSONObject("AcsEvent").getJSONArray("MatchList");
-
-        if(ListUtil.isNull(matchList)){
+        //todo 更新下发日志
+        AccessControlLogDto accessControlLogDto = new AccessControlLogDto();
+        accessControlLogDto.setLogId(taskId);
+        List<AccessControlLogDto> accessControlLogDtos = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogs(accessControlLogDto);
+        if (ListUtil.isNull(accessControlLogDtos)) {
             return;
         }
 
-        for(int matIndex = 0; matIndex < matchList.size();matIndex++){
-            try{
-                openDoorResult(matchList.getJSONObject(matIndex),accessControlDto);
-            }catch (Exception e){
-                e.printStackTrace();
+        String state = AccessControlLogDto.STATE_RES;
+        if (paramIn.getIntValue("code") != ResultVo.CODE_OK) {
+            state = AccessControlLogDto.STATE_FAIL;
+        }
+
+
+        AccessControlLogPo accessControlLogPo = new AccessControlLogPo();
+        accessControlLogPo.setLogId(accessControlLogDtos.get(0).getLogId());
+        accessControlLogPo.setState(state);
+        accessControlLogPo.setResParam(paramIn.getString("msg"));
+        accessControlLogV1InnerServiceSMOImpl.updateAccessControlLog(accessControlLogPo);
+
+        //todo 更新人员日志
+
+        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
+        accessControlFaceDto.setPersonId(accessControlLogDtos.get(0).getUserId());
+        accessControlFaceDto.setMachineCode(machineCode);
+        accessControlFaceDto.setState(AccessControlFaceDto.STATE_WAIT);
+        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
+        if (ListUtil.isNull(accessControlFaceDtos)) {
+            return;
+        }
+
+        state = AccessControlFaceDto.STATE_COMPLETE;
+        if (paramIn.getIntValue("code") != ResultVo.CODE_OK) {
+            state = AccessControlFaceDto.STATE_FAIL;
+        }
+
+
+        AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
+        accessControlFacePo.setMfId(accessControlFaceDtos.get(0).getMfId());
+        accessControlFacePo.setState(state);
+        accessControlFacePo.setMessage(paramIn.getString("msg"));
+        accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
+
+
+    }
+    /**
+     * 查询业主房屋
+     *
+     * @param accessControlFacePo
+     * @param param
+     */
+    private void getOwnerRooms(AccessControlFacePo accessControlFacePo, JSONObject param) {
+        JSONArray rooms = new JSONArray();
+
+        JSONObject room;
+        OwnerDto ownerDto = new OwnerDto();
+        ownerDto.setMemberId(accessControlFacePo.getPersonId());
+        List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
+
+        if (ListUtil.isNull(ownerDtos)) {
+            throw new CmdException("业主不存在");
+        }
+        param.put("tel", ownerDtos.get(0).getLink());
+
+        List<RoomDto> roomDtos = roomV1InnerServiceSMOImpl.queryRoomsByOwner(ownerDtos.get(0));
+        if (!ListUtil.isNull(roomDtos)) {
+            for (RoomDto roomDto : roomDtos) {
+                room = new JSONObject();
+                room.put("roomId", roomDto.getRoomId());
+                room.put("roomName", roomDto.getFloorNum() + "-" + roomDto.getUnitNum() + "-" + roomDto.getRoomNum());
+                rooms.add(room);
             }
         }
-
+        param.put("rooms", rooms);
     }
 
-    private void openDoorResult(JSONObject data,AccessControlDto accessControlDto) {
+    /**
+     * 开门记录
+     * <p>
+     * {
+     * “cmd”:”faceResult”,
+     * “taskId”:”123123123123”,
+     * “userId”:”12312312”,
+     * “userName”:”张三”,
+     * “faceData”:”sdfsdf”,
+     * “state”:”0”,
+     * “message”:”开门成功”,
+     * “openTypeCd”:”1000”,
+     * “machineCode”:”123123123123”
+     * }
+     *
+     * @param cmd
+     * @param taskId
+     * @param machineCode
+     * @param paramIn
+     */
+    private void faceResult(String cmd, String taskId, String machineCode, JSONObject paramIn) {
+        logger.debug("门禁内容,{}", paramIn.toJSONString());
 
-        if (!data.containsKey("employeeNoString") || StringUtil.isEmpty(data.getString("employeeNoString"))) {
-            return;
-        }
-        String staffId = data.getString("employeeNoString");
-        String staffName = data.getString("person_name");
-        String machineCode = accessControlDto.getMachineCode();
+        String staffId = paramIn.getString("userId");
+        String staffName = paramIn.getString("userName");
+        String openTypeCd = paramIn.getString("openTypeCd");
+        int similar = paramIn.getIntValue("similar");
         if (StringUtil.isEmpty(staffId)) {
             staffId = "-1";
             staffName = "未知";
         }
+        String images = paramIn.getString("faceData");
 
-        String currentVerifyMode = data.getString("currentVerifyMode");
+        saveOpenDoorResult(machineCode, images, staffId, staffName, openTypeCd, similar);
 
-        String openType = OPEN_TYPE_FACE;
-        if("card".equals(openType)){
-            openType = OPEN_TYPE_CARD;
-        }
-
-        String images = "";
-        if (data.containsKey("pictureURL")) {
-            images = data.getString("pictureURL");
-            images = ImageUtils.getBase64ByImgUrl(images);
-        }
-
-        int similar = 100;
-        if (data.containsKey("match_result")) {
-            similar = data.getIntValue("match_result");
-        }
-        saveOpenDoorResult(machineCode, images, staffId, staffName, openType, similar);
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("cmd", cmd);
+        paramOut.put("taskId", taskId);
+        paramOut.put("code", 0);
+        paramOut.put("msg", "处理成功");
+        paramOut.put("machineCode", machineCode);
+        MqttFactory.publish(TOPIC_REQ, paramOut.toJSONString());
 
     }
 
+    /**
+     * 二维码开门请求
+     * <p>
+     * {
+     * “cmd”:”qrcodeOpenDoor”,
+     * “taskId”:”123123123123”,
+     * “qrcode”:”xxxxxxx”,
+     * “machineCode”:”123123123123”
+     * }
+     *
+     * @param cmd
+     * @param taskId
+     * @param machineCode
+     * @param paramIn
+     */
+    private void qrCodeOpenDoor(String cmd, String taskId, String machineCode, JSONObject paramIn) {
 
+        String qrcode = paramIn.getString("qrcode");
+
+        //todo 检查是否为通行码
+
+        boolean hasOpenDoor = qrcodeCheck(qrcode, machineCode);
+        if (!hasOpenDoor) {
+            return;
+        }
+
+        AccessControlDto accessControlDto = new AccessControlDto();
+        accessControlDto.setMachineCode(machineCode);
+        List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+        if (ListUtil.isNull(accessControlDtos)) {
+            return;
+        }
+
+        JSONObject param = new JSONObject();
+        param.put("cmd", CMD_OPEN_DOOR);
+        param.put("action", ACTION);
+        param.put("pass", accessControlDtos.get(0).getMachineMac());
+        param.put("sn", accessControlDtos.get(0).getMachineCode());
+        param.put("taskId", taskId);
+        MqttFactory.publish(TOPIC_REQ, param.toJSONString());
+        saveOpenDoorLog(taskId, accessControlDtos.get(0).getMachineId(), TOPIC_REQ + "/" + CMD_OPEN_DOOR,
+                accessControlDtos.get(0).getCommunityId(), param.toJSONString(), accessControlDtos.get(0).getUserId(), accessControlDtos.get(0).getUserName());
+    }
 }

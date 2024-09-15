@@ -97,7 +97,12 @@
                 }
             },
             _openChooseOwner: function () {
-                vc.emit('searchOwner', 'openSearchOwnerModel', {});
+                vc.emit('searchOwner', 'openSearchOwnerModel', {
+                    callBack:function(_owner){
+                        $that.lockInoutManageInfo.conditions.userName = _owner.name;
+                        $that.lockInoutManageInfo.conditions.userId = _owner.memberId;
+                    }
+                });
             },
         }
     });

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>门禁开门</title>
+	<script src="./jessibuca.js"></script>
+	<script type="text/javascript" src="./jweixin-1.4.0.js"></script>
+	<script type="text/javascript" src="./hybrid_html_uni.webview.1.5.5.js"></script>
+</head>
+
+<body>
+	<div class="container-shell">
+		<div id="container" style="width: 100%;height: 600px;"></div>
+
+		<!-- <div style="height: 100px;
+			width: 90%;
+			text-align: center;
+			background-color: #0081ff;
+			color: #fff;
+			font-size: 42px;
+			line-height: 100px;
+			border-radius: 10px;
+			margin: 0 auto;
+			margin-top: 50px;" type="button" onclick="_openDoor()">开 门</div> -->
+	</div>
+
+
+	<script>
+		function _play() {
+			let image = document.getElementById("container");
+			let jessibuca = new Jessibuca({
+				container: image,
+				videoBuffer: 0.2, // 缓存时长
+				isResize: false,
+				text: "",
+				loadingText: "",
+				useMSE: false,
+				debug: false,
+				isNotMute: false,
+				operateBtns: {
+					fullscreen: true,
+					screenshot: true,
+					play: true,
+					audio: false,
+					recorder: false
+				},
+			});
+			const urlParams = new URLSearchParams(window.location.search);
+			const tt = urlParams.get('tt'); // "john"
+			jessibuca.play(
+				tt
+			);
+		}
+
+		_play();
+
+		function _openDoor() {
+			uni.postMessage({
+				data: {
+					action: 'openDoor'
+				}
+			});
+		}
+	</script>
+
+</body>
+
+</html>
