@@ -55,36 +55,33 @@ public class yuFanHal {
         JSONObject contact = new JSONObject();
         if (count > 0) {
             accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+            contact.put("password", accessControlDtos.get(0).getRemark());
+            contact.put("accountName", accessControlDtos.get(0).getMachineName());
+            contact.put("accountObj", accountObj);
+            contact.put("account", accessControlDtos.get(0).getCallingNum());
+            contact.put("address", accessControlDtos.get(0).getIpAddr() + ":" + accessControlDtos.get(0).getPort());
             CallingContactDto callingContactDto = new CallingContactDto();
             callingContactDto.setMachineId(accessControlDtos.get(0).getMachineId());
-            count = callingContactV1InnerServiceSMOImpl.queryCallingContactsCount(callingContactDto);
-            if (count > 0) {
-                contact.put("password", accessControlDtos.get(0).getRemark());
-                contact.put("accountName", accessControlDtos.get(0).getMachineName());
-                contact.put("accountObj", accountObj);
-                contact.put("account", accessControlDtos.get(0).getCallingNum());
-                contact.put("address", accessControlDtos.get(0).getIpAddr() + ":" + accessControlDtos.get(0).getPort());
-                if ("QueryContacts".equals(type)) {
-                    type = "ResponseContacts";
-                    callingContactDtos = callingContactV1InnerServiceSMOImpl.queryCallingContacts(callingContactDto);
-                    JSONArray deviceList = new JSONArray();
-                    for (CallingContactDto callingContact : callingContactDtos) {
-                        JSONObject device = new JSONObject();
-                        device.put("address", callingContact.getIpAddr() + ":" + callingContact.getPort());
-                        device.put("accountName", callingContact.getDeviceName());
-                        device.put("accountObj", callingContact.getCallingNum());
-                        device.put("contactType", callingContact.getCallingType());
-                        device.put("labelName", callingContact.getDeviceName());
-                        device.put("account", callingContact.getCallingNum());
-                        device.put("password", callingContact.getRemark());
-                        device.put("aliasCode", callingContact.getDeviceName());
-                        device.put("gmtCreate", null);
-                        deviceList.add(device);
-                    }
-                    contact.put("contacts", deviceList);
-                } else {
-                    type = "ResponseSelfSipAccount";
+            if ("QueryContacts".equals(type)) {
+                type = "ResponseContacts";
+                callingContactDtos = callingContactV1InnerServiceSMOImpl.queryCallingContacts(callingContactDto);
+                JSONArray deviceList = new JSONArray();
+                for (CallingContactDto callingContact : callingContactDtos) {
+                    JSONObject device = new JSONObject();
+                    device.put("address", callingContact.getIpAddr() + ":" + callingContact.getPort());
+                    device.put("accountName", callingContact.getDeviceName());
+                    device.put("accountObj", callingContact.getCallingNum());
+                    device.put("contactType", callingContact.getCallingType());
+                    device.put("labelName", callingContact.getDeviceName());
+                    device.put("account", callingContact.getCallingNum());
+                    device.put("password", callingContact.getRemark());
+                    device.put("aliasCode", callingContact.getDeviceName());
+                    device.put("gmtCreate", null);
+                    deviceList.add(device);
                 }
+                contact.put("contacts", deviceList);
+            } else {
+                type = "ResponseSelfSipAccount";
             }
         } else {
             throw new CmdException("未查询到设备信息。");
