@@ -24,7 +24,9 @@ public class CallingContactDto extends PageDto implements Serializable {
     private String deviceName;
     private String callingNum;
     private String platformName;
-
+    private String callingType;
+    private String ipAddr;
+    private String port;
     private Date createTime;
 
     private String statusCd = "0";
@@ -100,6 +102,30 @@ public class CallingContactDto extends PageDto implements Serializable {
 
     public void setPlatformName(String platformName) {
         this.platformName = platformName;
+    }
+
+    public String getCallingType() {
+        return callingType;
+    }
+
+    public void setCallingType(String callingType) {
+        this.callingType = callingType;
+    }
+
+    public String getIpAddr() {
+        return ipAddr;
+    }
+
+    public void setIpAddr(String ipAddr) {
+        this.ipAddr = ipAddr;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
     }
 
     public Date getCreateTime() {

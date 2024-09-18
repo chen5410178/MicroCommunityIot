@@ -7,6 +7,7 @@
                 machineCode: '',
                 machineName: '',
                 machineIp: '',
+                platformId: '',
                 machineMac: '',
                 direction: '',
                 implBean: '',
@@ -19,6 +20,8 @@
                 hms: [],
                 monitors:[],
                 monitorId:'',
+                callingNum:'',
+                remark:'',
             }
         },
         _initMethod: function () {
@@ -123,6 +126,7 @@
                     machineCode: '',
                     machineName: '',
                     machineIp: '',
+                    platformId: '',
                     machineMac: '',
                     direction: '',
                     implBean: '',
@@ -135,6 +139,8 @@
                     hms: [],
                     monitors:[],
                     monitorId:'',
+                    callingNum:'',
+                    remark:''
                 };
             },
             _listAddMachineLocations: function (_page, _rows) {

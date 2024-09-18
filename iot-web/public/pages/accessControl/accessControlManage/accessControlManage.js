@@ -8,6 +8,7 @@
         data: {
             accessControlManageInfo: {
                 accessControls: [],
+                callingPlatforms: [],
                 total: 0,
                 records: 1,
                 moreCondition: false,
@@ -22,6 +23,7 @@
         },
         _initMethod: function () {
             $that._listAccessControls(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._listCallingPlatforms();
         },
         _initEvent: function () {
 
@@ -58,6 +60,21 @@
                         });
                     },
                     function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
+            _listCallingPlatforms: function () {
+                var param = {
+                    params: {page:1,row:50,communityId:vc.getCurrentCommunity().communityId}
+                };
+                //发送get请求
+                vc.http.apiGet('callingPlatform.listCallingPlatform',
+                    param,
+                    function (json, res) {
+                        var _callingPlatformManageInfo = JSON.parse(json);
+                        vc.component.accessControlManageInfo.callingPlatforms = _callingPlatformManageInfo.data;
+                    }, function (errInfo, error) {
                         console.log('请求失败处理');
                     }
                 );
