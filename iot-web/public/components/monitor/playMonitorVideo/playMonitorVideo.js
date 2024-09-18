@@ -64,12 +64,12 @@
                     container: image,
                     videoBuffer: 0.2, // 缓存时长
                     isResize: false,
-                    supportDblclickFullscreen:true,
                     text: "",
                     loadingText: "loading",
                     useMSE: false,
                     debug: false,
                     isNotMute: false,
+                    supportDblclickFullscreen:true,
                     operateBtns: {
 						fullscreen: true,
 						screenshot: true,
