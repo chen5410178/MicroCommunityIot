@@ -188,6 +188,16 @@ public class CarInoutV1InnerServiceSMOImpl implements ICarInoutV1InnerServiceSMO
         return carInoutV1ServiceDaoImpl.queryCarInCount(BeanConvertUtil.beanCovertMap(carInoutDto));
     }
 
+    @Override
+    public int getCarInCount(@RequestBody CarInoutDto carInoutDto) {
+        return carInoutV1ServiceDaoImpl.getCarInCount(BeanConvertUtil.beanCovertMap(carInoutDto));
+    }
+
+    @Override
+    public int getCarOutCount(@RequestBody CarInoutDto carInoutDto) {
+        return carInoutV1ServiceDaoImpl.getCarOutCount(BeanConvertUtil.beanCovertMap(carInoutDto));
+    }
+
 
     private void dealParkingCouponCar(JSONObject reqJson,TempCarPayOrderDto tempCarPayOrderDto) {
         //处理停车劵

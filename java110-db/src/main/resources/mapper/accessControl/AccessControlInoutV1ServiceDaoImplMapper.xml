@@ -182,4 +182,14 @@
 
     </select>
 
+    <!-- 人员进场数 -->
+    <select id="getPersonInCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from access_control_inout t
+        where 1=1
+        and t.community_id = #{communityId}
+        and t.create_time &gt; #{queryStartTime}
+        and t.create_time &lt; #{queryEndTime}
+        and t.status_cd = '0'
+    </select>
 </mapper>

@@ -83,4 +83,9 @@ public class AccessControlInoutV1InnerServiceSMOImpl  implements IAccessControlI
     public int queryAccessControlInoutsCount(@RequestBody AccessControlInoutDto accessControlInoutDto) {
         return accessControlInoutV1ServiceDaoImpl.queryAccessControlInoutsCount(BeanConvertUtil.beanCovertMap(accessControlInoutDto));    }
 
+    @Override
+    public int getPersonInCount(@RequestBody AccessControlInoutDto accessControlInoutDto) {
+        return accessControlInoutV1ServiceDaoImpl.getPersonInCount(BeanConvertUtil.beanCovertMap(accessControlInoutDto));
+    }
+
 }

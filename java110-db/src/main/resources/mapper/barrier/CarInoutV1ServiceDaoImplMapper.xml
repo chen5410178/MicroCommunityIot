@@ -419,4 +419,28 @@
     </select>
 
 
+    <select id="getCarInCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from car_inout t
+        where 1=1
+        and t.car_inout = '3306'
+        and t.community_id = #{communityId}
+        and t.create_time &gt; #{startTime}
+        and t.create_time &lt; #{endTime}
+        and t.status_cd = '0'
+    </select>
+
+    <!-- 出场车辆数 -->
+    <select id="getCarOutCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from car_inout t
+        where 1=1
+        and t.car_inout = '3307'
+        and t.community_id = #{communityId}
+        and t.create_time &gt; #{startTime}
+        and t.create_time &lt; #{endTime}
+        and t.status_cd = '0'
+    </select>
+
+
 </mapper>

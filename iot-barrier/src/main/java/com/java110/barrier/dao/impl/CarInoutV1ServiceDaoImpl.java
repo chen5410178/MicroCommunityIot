@@ -156,4 +156,28 @@ public class CarInoutV1ServiceDaoImpl extends BaseServiceDao implements ICarInou
         return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
+    @Override
+    public int getCarInCount(Map info) {
+        logger.debug("查询 queryCarInoutDetailsCount 入参 info : {}",info);
+
+        List<Map> infos = sqlSessionTemplate.selectList("carInoutV1ServiceDaoImpl.getCarInCount", info);
+        if (infos.size() < 1) {
+            return 0;
+        }
+
+        return Integer.parseInt(infos.get(0).get("count").toString());
+    }
+
+    @Override
+    public int getCarOutCount(Map info) {
+        logger.debug("查询 queryCarInoutDetailsCount 入参 info : {}",info);
+
+        List<Map> infos = sqlSessionTemplate.selectList("carInoutV1ServiceDaoImpl.getCarOutCount", info);
+        if (infos.size() < 1) {
+            return 0;
+        }
+
+        return Integer.parseInt(infos.get(0).get("count").toString());
+    }
+
 }

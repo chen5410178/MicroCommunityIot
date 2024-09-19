@@ -70,4 +70,5 @@ public interface IAccessControlInoutV1ServiceDao {
      */
     int queryAccessControlInoutsCount(Map info);
 
+    int getPersonInCount(Map info);
 }

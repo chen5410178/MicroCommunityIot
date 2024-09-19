@@ -87,4 +87,9 @@ public interface ICarInoutV1InnerServiceSMO {
     int queryCarInCount(@RequestBody CarInoutDto carInoutDto);
 
 
+    @RequestMapping(value = "/getCarInCount", method = RequestMethod.POST)
+    int getCarInCount(@RequestBody CarInoutDto carInoutDto);
+
+    @RequestMapping(value = "/getCarOutCount", method = RequestMethod.POST)
+    int getCarOutCount(@RequestBody CarInoutDto carInoutDto);
 }

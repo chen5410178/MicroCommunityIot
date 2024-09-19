@@ -65,4 +65,7 @@ public interface IAccessControlInoutV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryAccessControlInoutsCount", method = RequestMethod.POST)
     int queryAccessControlInoutsCount(@RequestBody AccessControlInoutDto accessControlInoutDto);
+
+    @RequestMapping(value = "/getPersonInCount", method = RequestMethod.POST)
+    int getPersonInCount(@RequestBody AccessControlInoutDto accessControlInoutDto);
 }

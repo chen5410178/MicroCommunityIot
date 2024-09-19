@@ -97,12 +97,24 @@ public class AccessControlInoutV1ServiceDaoImpl extends BaseServiceDao implement
     public int queryAccessControlInoutsCount(Map info) {
         logger.debug("查询 queryAccessControlInoutsCount 入参 info : {}",info);
 
-        List<Map> businessAccessControlInoutInfos = sqlSessionTemplate.selectList("accessControlInoutV1ServiceDaoImpl.queryAccessControlInoutsCount", info);
-        if (businessAccessControlInoutInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlInoutV1ServiceDaoImpl.queryAccessControlInoutsCount", info);
+        if (infos.size() < 1) {
             return 0;
         }
 
-        return Integer.parseInt(businessAccessControlInoutInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
+    }
+
+    @Override
+    public int getPersonInCount(Map info) {
+        logger.debug("查询 getPersonInCount 入参 info : {}",info);
+
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlInoutV1ServiceDaoImpl.getPersonInCount", info);
+        if (infos.size() < 1) {
+            return 0;
+        }
+
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
 
