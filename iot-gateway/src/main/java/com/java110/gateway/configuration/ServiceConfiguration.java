@@ -74,6 +74,9 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/meterMachineCharge.listMeterMachineCharge,");// 查询水电表充值记录
 
         exclusions.append("/iot/api/community.listCommunitys,");// 查询小区
+        exclusions.append("/iot/api/user.ownerUserLoginByOpenId,");// 查询小区
+
+
         //exclusions.append("/iot/api/appUser.saveAppUser,");// 房屋认证
 
 

@@ -181,7 +181,7 @@ export function loginByOpenId(openId){
 		},
 		fail: function(e) {
 			uni.hideLoading();
-			reject(e);
+			console.error(e);
 		}
 	});
 	

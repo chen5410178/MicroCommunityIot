@@ -35,9 +35,7 @@
 			}
 			this._loadAppId(function(){
 				if(!_that.appId || _that.appId.indexOf('wx') < 0){
-					wx.switchTab({
-						url: "/pages/index/index"
-					});
+					_that.navPage();
 				}
 				//todo 查询openId
 				_that._generatorOpenId();

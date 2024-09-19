@@ -71,6 +71,7 @@ export default {
 	findCarInParkingArea: baseUrl + "iot/api/parkingArea.findCarInParkingArea",
 	getWechatMiniOpenId: baseUrl + "iot/api/wechat.getWechatMiniOpenId",
 	refreshAppUserBindingOwnerOpenId: baseUrl+"iot/api/owner.refreshAppUserBindingOwnerOpenId",
+	ownerUserLoginByOpenId: baseUrl+"iot/api/user.ownerUserLoginByOpenId",
 
 
 
