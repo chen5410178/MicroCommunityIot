@@ -91,4 +91,11 @@ public class AccessControlLogV1InnerServiceSMOImpl implements IAccessControlLogV
 
         return accessControlLogs;    }
 
+    @Override
+    public List<AccessControlLogDto> getAssetOpenDoor(@RequestBody AccessControlLogDto accessControlLogDto) {
+        List<AccessControlLogDto> accessControlLogs = BeanConvertUtil.covertBeanList(
+                accessControlLogV1ServiceDaoImpl.getAssetOpenDoor(BeanConvertUtil.beanCovertMap(accessControlLogDto)), AccessControlLogDto.class);
+
+        return accessControlLogs;    }
+
 }

@@ -115,5 +115,14 @@ public class AccessControlLogV1ServiceDaoImpl extends BaseServiceDao implements 
         return infos;
     }
 
+    @Override
+    public List<Map> getAssetOpenDoor(Map info) {
+        logger.debug("查询 getAssetOpenDoor 入参 info : {}",info);
+
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlLogV1ServiceDaoImpl.getAssetOpenDoor",info);
+
+        return infos;
+    }
+
 
 }

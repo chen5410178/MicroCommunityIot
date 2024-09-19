@@ -72,4 +72,6 @@ public interface IAccessControlLogV1ServiceDao {
     int queryAccessControlLogsCount(Map info);
 
     List<Map> queryAccessControlLogParams(Map info);
+
+    List<Map> getAssetOpenDoor(Map info);
 }

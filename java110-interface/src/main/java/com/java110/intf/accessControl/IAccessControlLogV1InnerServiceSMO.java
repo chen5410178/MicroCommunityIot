@@ -68,4 +68,7 @@ public interface IAccessControlLogV1InnerServiceSMO {
 
     @RequestMapping(value = "/queryAccessControlLogParams", method = RequestMethod.POST)
     List<AccessControlLogDto> queryAccessControlLogParams(@RequestBody AccessControlLogDto accessControlLogDto);
+
+    @RequestMapping(value = "/getAssetOpenDoor", method = RequestMethod.POST)
+    List<AccessControlLogDto> getAssetOpenDoor(@RequestBody AccessControlLogDto accessControlLogDto);
 }

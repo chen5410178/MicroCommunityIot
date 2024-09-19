@@ -61,6 +61,10 @@ public class AccessControlLogDto extends PageDto implements Serializable {
 
     private String logCmdName;
 
+    private String cTime;
+
+    private String count;
+
 
 
     public String getResParam() {
@@ -230,5 +234,21 @@ public class AccessControlLogDto extends PageDto implements Serializable {
 
     public void setLogCmds(String[] logCmds) {
         this.logCmds = logCmds;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
+    public String getcTime() {
+        return cTime;
+    }
+
+    public void setcTime(String cTime) {
+        this.cTime = cTime;
     }
 }
