@@ -302,7 +302,7 @@
         select DISTINCT t.address,t.sex,t.status_cd,t.status_cd statusCd,t.user_id,t.user_id userId,t.level_cd,t.level_cd
         levelCd,t.name,t.tel,t.email,t.create_time createTime
         from u_user t
-        inner join s_store_user su on t.user_id = su.staff_id and su.status_cd = '0'
+        inner join s_store_staff su on t.user_id = su.staff_id and su.status_cd = '0'
         LEFT JOIN u_org_staff_rel osr on su.staff_id = osr.staff_id and osr.status_cd = '0'
         where t.level_cd = '01'
         and su.store_id = #{storeId}
