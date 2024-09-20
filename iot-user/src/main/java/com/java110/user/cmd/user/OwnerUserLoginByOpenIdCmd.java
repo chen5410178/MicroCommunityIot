@@ -110,7 +110,7 @@ public class OwnerUserLoginByOpenIdCmd extends Cmd {
 
 
         UserDto userDto = new UserDto();
-        userDto.setLevelCd(UserDto.LEVEL_CD_USER);
+        userDto.setLevelCd(UserDto.LEVEL_CD_PHONE);
         userDto.setUserId(userAttrDtos.get(0).getUserId());
 
         //todo 1.0 查询用户是否存在
