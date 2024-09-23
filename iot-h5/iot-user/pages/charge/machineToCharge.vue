@@ -41,10 +41,10 @@
 				<view v-else>{{couponCount+ '张' }}</view>
 			</view>
 		</view>
-		<view class="margin-sm" v-if="login">
+		<view class="margin-sm" v-show="login">
 			<account ref="accRef"></account>
 		</view>
-		<view class="margin-sm" v-if="login">
+		<view class="margin-sm" v-show="login">
 			<charge ref="chargeRef"></charge>
 		</view>
 
@@ -116,19 +116,20 @@
 			autoLogin(options);
 			this.machineId = options.machineId;
 			this.communityId = options.communityId;
-			this.login = hasLogin();
+			
 			this._loadChargeMachines();
 			this._loadChargeMachinePorts();
 			let _that = this;
 
 			setTimeout(function() {
+				_that.login = hasLogin();
 				if (_that.$refs.accRef) {
 					_that.$refs.accRef.loadOwnerAccount(_that.communityId);
 				}
 				if (_that.$refs.chargeRef) {
 					_that.$refs.chargeRef.loadChargeMonthOrder(_that.communityId);
 				}
-			}, 1000);
+			}, 1500);
 		},
 		onShow: function(options) {
 			this._dealChargeCoupons();
