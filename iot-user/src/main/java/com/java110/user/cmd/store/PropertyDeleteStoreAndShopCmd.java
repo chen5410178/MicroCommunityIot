@@ -10,6 +10,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.doc.annotation.*;
 import com.java110.dto.shop.ShopCommunityDto;
 import com.java110.dto.shop.ShopDto;
@@ -173,14 +174,14 @@ public class PropertyDeleteStoreAndShopCmd extends Cmd {
 
         List<StoreStaffDto> storeUserDtos = storeUserV1InnerServiceSMOImpl.queryStoreStaffs(storeUserDto);
 
-        if (storeUserDtos == null || storeUserDtos.size() < 1) {
+        if (ListUtil.isNull(storeUserDtos)) {
             return;
         }
 
         UserPo userPo = null;
         for (StoreStaffDto tmpStoreUserDto : storeUserDtos) {
             userPo = new UserPo();
-            userPo.setUserId(tmpStoreUserDto.getUserId());
+            userPo.setUserId(tmpStoreUserDto.getStaffId());
             userV1InnerServiceSMOImpl.deleteUser(userPo);
         }
 
