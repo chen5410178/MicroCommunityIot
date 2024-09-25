@@ -75,7 +75,7 @@ public class yuFanHal {
                     device.put("labelName", callingContact.getDeviceName());
                     device.put("account", callingContact.getCallingNum());
                     device.put("password", callingContact.getRemark());
-                    device.put("aliasCode", callingContact.getDeviceName());
+                    device.put("aliasCode", callingContact.getCallingNum());
                     device.put("gmtCreate", null);
                     deviceList.add(device);
                 }
