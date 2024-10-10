@@ -475,14 +475,14 @@ public class ChargeCoreImpl implements IChargeCore {
             throw new IllegalArgumentException("修改订单失败");
         }
 
-        if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDto.getChargeType())){
+        if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDtos.get(0).getChargeType())){
             //todo 月卡直接修改状态
             if (ifMonthCard(chargeMachineOrderDtos.get(0).getPersonTel(), chargeMachinePortDtos.get(0).getCommunityId())) {
                 finishMonthCardChargeOrder(notifyChargeOrderDto, chargeMachineOrderDtos);
                 return new ResultVo(ResultVo.CODE_OK, "成功");
             }
             returnOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getEnergy(),chargeMachineOrderDtos);
-        }else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDto.getChargeType())){
+        }else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDtos.get(0).getChargeType())){
             returnCarOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getEnergy(),chargeMachineOrderDtos);
         }
         return new ResultVo(ResultVo.CODE_OK, "成功");
