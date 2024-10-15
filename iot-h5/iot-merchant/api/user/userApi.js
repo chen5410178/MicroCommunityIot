@@ -18,8 +18,8 @@ export function login(userName, passwd) {
 			method: "POST",
 			data: userInfo,
 			success: function(res) {
-				if (res.statusCode != 200) {
-					reject(res.data);
+				if (res.data.code != 0) {
+					reject(res.data.msg);
 					return;
 				}
 				let data = res.data;
