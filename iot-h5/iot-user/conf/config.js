@@ -18,7 +18,7 @@ const baseUrl = '/';
 const baseUrl = 'http://192.168.100.108:9999/';
 // #endif
 
-let commonBaseUrl = 'http://demo.homecommunity.cn/';
+let commonBaseUrl = 'http://iot.newwish.cc/';
 
 const logLevel = "DEBUG"; // 日志级别
 

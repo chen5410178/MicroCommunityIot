@@ -56,7 +56,7 @@
         <if test="chargeType !=null and chargeType != ''">
             and t.charge_type= #{chargeType}
         </if>
-        order by t.create_time desc,t.duration_price
+        order by t.duration_price
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
         </if>

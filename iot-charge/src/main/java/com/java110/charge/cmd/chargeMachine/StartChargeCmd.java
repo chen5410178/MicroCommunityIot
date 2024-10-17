@@ -132,9 +132,9 @@ public class StartChargeCmd extends Cmd {
         //todo: 电动摩托按充电桩功率计算,电动汽车按时段收费
         double payMoney = 0;
         if (CHARGE_TYPE_MOTORCYCLE.equals(chargeRuleFeeDtos.get(0).getChargeType())) {
-            reqJson.put("durationPrice", chargeRuleFeeDtos.get(0).getDurationPrice());
+            reqJson.put("durationPrice", chargeRuleFeeDtos.get(chargeRuleFeeDtos.size() - 1).getDurationPrice());
 
-            BigDecimal payMoneyDec = new BigDecimal(Double.parseDouble(chargeRuleFeeDtos.get(0).getDurationPrice()));
+            BigDecimal payMoneyDec = new BigDecimal(Double.parseDouble(chargeRuleFeeDtos.get(chargeRuleFeeDtos.size() - 1).getDurationPrice()));
 
             payMoney = payMoneyDec.multiply(new BigDecimal(duration)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         }
