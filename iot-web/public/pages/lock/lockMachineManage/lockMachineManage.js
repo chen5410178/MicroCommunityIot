@@ -124,6 +124,10 @@
                 })
             },
             _unlock: function (_lockMachine) {
+                if (_lockMachine.state == "OFFLINE"){
+                    vc.toast("锁离线，开锁失败");
+                    return;
+                }
                 vc.http.apiPost(
                     '/lockMachine.unLockMachine',
                     JSON.stringify(_lockMachine),
