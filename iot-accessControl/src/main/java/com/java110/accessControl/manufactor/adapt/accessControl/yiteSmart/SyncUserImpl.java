@@ -116,12 +116,12 @@ public class SyncUserImpl implements ISyncUser {
         addRoom = new JSONObject();
         addRoom.put("id", 1);
         addRoom.put("uid", 1);
-        addRoom.put("name", "9999");
-        addRoom.put("num", "9999");
+        addRoom.put("name", "管理处");  //修改物业中心名称
+        addRoom.put("num", "9909-909");//添加楼栋单元号
         String roomName = accessControlFaceDtos.get(0).getRoomName();
         if (!StringUtil.isEmpty(roomName) && roomName.split("-", 3).length == 3) {
             addRoom.put("name", roomName.split("-", 3)[2]);
-            addRoom.put("num", roomName.split("-", 3)[2]);
+            addRoom.put("num", roomName.split("-", 3)[0] + roomName.split("-", 3)[1] + "-" + roomName.split("-", 3)[2]); //添加楼栋单元号
             RoomDto roomDto = new RoomDto();
             roomDto.setFloorNum(roomName.split("-", 3)[0]);
             roomDto.setUnitNum(roomName.split("-", 3)[1]);

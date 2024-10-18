@@ -154,7 +154,7 @@ public class SyncCardsBidBmoImpl implements ISyncCardsBidBmo {
         for (AccessControlFaceDto tmpAccessControlFaceDto : accessControlFaceDtos) {
             addCard = new JSONObject();
             addCard.put("card", tmpAccessControlFaceDto.getCardNumber());
-            addCard.put("roomnum", "9999");
+            addCard.put("roomnum", "9909-909");//添加楼栋单元号
             long timestrap = DateUtil.getDateFromStringA(tmpAccessControlFaceDto.getEndTime()).getTime();
             timestrap = timestrap / 1000;
             addCard.put("expired", timestrap);
@@ -247,7 +247,7 @@ public class SyncCardsBidBmoImpl implements ISyncCardsBidBmo {
                 if (tmpRoomDto.getRoomId().equals(tmpOwnerRoomRelDto.getRoomId())) {
                     addCard = new JSONObject();
                     addCard.put("card", tmpOwnerRoomRelDto.getCardNumber());
-                    addCard.put("roomnum", tmpRoomDto.getRoomNum());
+                    addCard.put("roomnum", unitDtos.get(0).getFloorNum() + unitDtos.get(0).getUnitNum() + "-" + tmpRoomDto.getRoomNum());//添加楼栋单元号
                     long timestrap = tmpOwnerRoomRelDto.getEndTime().getTime();
                     timestrap = timestrap / 1000;
                     addCard.put("expired", timestrap);
