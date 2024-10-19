@@ -133,8 +133,8 @@ public class SyncUserBidBmoImpl implements ISyncUserBidBmo {
         addRoom = new JSONObject();
         addRoom.put("id", 1);
         addRoom.put("uid", 1);
-        addRoom.put("name", "9999");
-        addRoom.put("num", "9999");
+        addRoom.put("name", "管理处");//修改物业中心名称
+        addRoom.put("num", "9909-909");//添加楼栋单元号
         users = new JSONArray();
         addRoom.put("user", users);
 
@@ -242,7 +242,7 @@ public class SyncUserBidBmoImpl implements ISyncUserBidBmo {
             addRoom.put("id", tmpRoomDto.getRoomId());
             addRoom.put("uid", tmpRoomDto.getRoomId());
             addRoom.put("name", tmpRoomDto.getRoomNum());
-            addRoom.put("num", tmpRoomDto.getRoomNum());
+            addRoom.put("num", unitDtos.get(0).getFloorNum() + unitDtos.get(0).getUnitNum() + "-" + tmpRoomDto.getRoomNum());//添加楼栋单元号
             users = new JSONArray();
             addRoom.put("user", users);
             if (ListUtil.isNull(ownerRoomRelDtos)) {
