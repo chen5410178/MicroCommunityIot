@@ -158,11 +158,11 @@
 				})
 			},
 			_dealCarCoupons: function() {
-				let carCoupons = uni.getStorageSync(constant.mapping.COUPON_USER_TEMP_CAR_KEY);
+				let carCoupons = uni.getStorageSync("COUPON_USER_TEMP_CAR_KEY");
 				if(!carCoupons){
 					return ;
 				}
-				uni.removeStorageSync(constant.mapping.COUPON_USER_TEMP_CAR_KEY);
+				uni.removeStorageSync("COUPON_USER_TEMP_CAR_KEY");
 				this.couponList = carCoupons;
 				this.couponCount = carCoupons.length;
 				//重新计算 金额

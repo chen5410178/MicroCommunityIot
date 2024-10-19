@@ -105,7 +105,7 @@
 			},
 			_selectCouponBack: function() {
 				let _that = this;
-				uni.setStorageSync(constant.mapping.COUPON_USER_TEMP_CAR_KEY, this.selectCoupons);
+				uni.setStorageSync("COUPON_USER_TEMP_CAR_KEY", this.selectCoupons);
 				uni.navigateBack();
 			}
 		}
