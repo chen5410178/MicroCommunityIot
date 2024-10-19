@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.bean.dto.systemInfo.SystemInfoDto;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cache.UrlCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
@@ -68,6 +69,8 @@ public class ListSystemInfoCmd extends Cmd {
 
         if (count > 0) {
             systemInfoDtos = systemInfoV1InnerServiceSMOImpl.querySystemInfos(systemInfoDto);
+            systemInfoDtos.get(0).setOwnerUrl(UrlCache.getOwnerUrl());
+
         } else {
             systemInfoDtos = new ArrayList<>();
         }
