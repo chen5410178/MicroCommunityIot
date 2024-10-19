@@ -393,7 +393,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
     public double dealParkingCouponCar(double payCharge, List<ParkingCouponCarDto> parkingCouponCarDtos) {
 
 
-        if (parkingCouponCarDtos == null || parkingCouponCarDtos.isEmpty()) {
+        if (ListUtil.isNull(parkingCouponCarDtos)) {
             return payCharge;
         }
 
@@ -450,7 +450,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
 
         List<ParkingCouponCarDto> tmpParkingCouponCarDtos = new ArrayList<>();
 
-        if (parkingCouponCarDtos == null || parkingCouponCarDtos.isEmpty()) {
+        if (ListUtil.isNull(parkingCouponCarDtos)) {
             return tmpParkingCouponCarDtos;
         }
 

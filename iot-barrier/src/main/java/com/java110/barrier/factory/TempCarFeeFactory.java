@@ -3,6 +3,7 @@ package com.java110.barrier.factory;
 
 import com.java110.bean.dto.coupon.ParkingCouponCarDto;
 import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.fee.TempCarFeeConfigAttrDto;
 
@@ -80,7 +81,7 @@ public class TempCarFeeFactory {
         minLong = new Double(Math.ceil(min)).longValue();
 
 
-        if (parkingCouponCarDtos == null || parkingCouponCarDtos.size() < 1) {
+        if (ListUtil.isNull(parkingCouponCarDtos)) {
             return minLong;
         }
 
