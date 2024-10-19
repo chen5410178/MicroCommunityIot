@@ -116,9 +116,23 @@ public class CustomCarInOutCmd extends Cmd {
             if(count > 0){
                 throw new CmdException("车辆已经在场，请先出场");
             }
+
+            ParkingBoxAreaDto parkingBoxAreaDto = new ParkingBoxAreaDto();
+            parkingBoxAreaDto.setBoxId(reqJson.getString("boxId"));
+            parkingBoxAreaDto.setDefaultArea(ParkingBoxAreaDto.DEFAULT_AREA_TRUE);
+            List<ParkingBoxAreaDto> parkingBoxAreaDtos = parkingBoxAreaV1InnerServiceSMOImpl.queryParkingBoxAreas(parkingBoxAreaDto);
+
+            if(ListUtil.isNull(parkingBoxAreaDtos)){
+                throw new CmdException("未包含停车场信息");
+            }
+
             //进场时 判断是否为黑名单
             CarBlackWhiteDto carBlackWhiteDto = new CarBlackWhiteDto();
             carBlackWhiteDto.setCarNum(reqJson.getString("carNum"));
+            carBlackWhiteDto.setCommunityId(reqJson.getString("communityId"));
+            carBlackWhiteDto.setBlackWhite(CarBlackWhiteDto.BLACK_WHITE_BLACK);
+            carBlackWhiteDto.setPaId(parkingBoxAreaDtos.get(0).getPaId());
+
             count =  carBlackWhiteV1InnerServiceSMOImpl.queryCarBlackWhitesCount(carBlackWhiteDto);
             if(count > 0){
                 throw new CmdException("黑名单车辆禁止入场");
