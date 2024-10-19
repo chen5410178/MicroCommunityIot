@@ -172,7 +172,7 @@
 			_selectCoupons: function(_item) {
 				let _that = this;
 				uni.navigateTo({
-					url: '/pages/coupon/tempCarCoupon?carNum='+_that.carNum+ "&paId=" + this.paId 
+					url: '/pages/coupon/tempCarCoupon?carNum='+_that.carNum+ "&paId=" + this.paId +"&communityId="+this.communityId
 				})
 			},
 			onPayFee: function() {

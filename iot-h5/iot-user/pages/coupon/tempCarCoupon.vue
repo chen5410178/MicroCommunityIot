@@ -63,6 +63,7 @@
 		onLoad: function(options) {
 			this.carNum = options.carNum;
 			this.paId = options.paId;
+			this.communityId = options.communityId;
 			this._loadCarCoupons(options);
 		},
 		methods: {
@@ -87,6 +88,7 @@
 					row: 30,
 					carNum: this.carNum,
 					paId: this.paId,
+					communityId:this.communityId,
 					state:'1001'
 				}
 				_that.coupons = [];
