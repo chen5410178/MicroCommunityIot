@@ -56,6 +56,13 @@
         <if test="pccId !=null and pccId != ''">
             and t.pcc_id= #{pccId}
         </if>
+
+        <if test="extPccIds !=null">
+            and t.pcc_id in
+            <foreach collection="extPccIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
         <if test="typeCd !=null and typeCd != ''">
             and t.type_cd= #{typeCd}
         </if>
@@ -185,6 +192,12 @@
         </if>
         <if test="pccId !=null and pccId != ''">
             and t.pcc_id= #{pccId}
+        </if>
+        <if test="extPccIds !=null">
+            and t.pcc_id in
+            <foreach collection="extPccIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
         </if>
         <if test="typeCd !=null and typeCd != ''">
             and t.type_cd= #{typeCd}
