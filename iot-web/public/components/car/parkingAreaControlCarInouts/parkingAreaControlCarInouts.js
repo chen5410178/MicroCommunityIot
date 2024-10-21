@@ -19,7 +19,7 @@
             }
         },
         _initMethod: function () {
-            vc.component._initParkingAreaControlCarInoutDateInfo();
+            $that._initParkingAreaControlCarInoutDateInfo();
             /*vc.initDate('carInoutsStartTime', function (_value) {
                 $that.parkingAreaControlCarInoutsInfo.startTime = _value;
             });
@@ -35,7 +35,7 @@
             });
             vc.on('parkingAreaControlCarInouts', 'paginationPlus', 'page_event',
                 function (_currentPage) {
-                    vc.component._loadParkingAreaControlCarInouts(_currentPage, DEFAULT_ROWS);
+                    $that._loadParkingAreaControlCarInouts(_currentPage, DEFAULT_ROWS);
                 });
             vc.on('parkingAreaControlCarInouts', 'changeMachine', function (_data) {
                 $that.parkingAreaControlCarInoutsInfo.machineId = _data.machineId;
@@ -56,13 +56,13 @@
                     .on('changeDate', function (ev) {
                         var value = $(".carInoutsStartTime").val();
                         var start = Date.parse(new Date(value));
-                        var end = Date.parse(new Date(vc.component.parkingAreaControlCarInoutsInfo.endTime));
+                        var end = Date.parse(new Date($that.parkingAreaControlCarInoutsInfo.endTime));
                         if (start - end >= 0) {
                             vc.toast("开始时间必须小于结束时间");
                             $(".carInoutsStartTime").val('');
-                            vc.component.parkingAreaControlCarInoutsInfo.startTime = "";
+                            $that.parkingAreaControlCarInoutsInfo.startTime = "";
                         } else {
-                            vc.component.parkingAreaControlCarInoutsInfo.startTime = value;
+                            $that.parkingAreaControlCarInoutsInfo.startTime = value;
                         }
                     });
                 $('.carInoutsEndTime').datetimepicker({
@@ -77,14 +77,14 @@
                 $('.carInoutsEndTime').datetimepicker()
                     .on('changeDate', function (ev) {
                         var value = $(".carInoutsEndTime").val();
-                        var start = Date.parse(new Date(vc.component.parkingAreaControlCarInoutsInfo.startTime));
+                        var start = Date.parse(new Date($that.parkingAreaControlCarInoutsInfo.startTime));
                         var end = Date.parse(new Date(value));
                         if (start - end >= 0) {
                             vc.toast("计费终止时间必须大于计费起始时间");
                             $(".carInoutsEndTime").val('');
-                            vc.component.parkingAreaControlCarInoutsInfo.endTime = "";
+                            $that.parkingAreaControlCarInoutsInfo.endTime = "";
                         } else {
-                            vc.component.parkingAreaControlCarInoutsInfo.endTime = value;
+                            $that.parkingAreaControlCarInoutsInfo.endTime = value;
                         }
                     });
                 //防止多次点击时间插件失去焦点
@@ -108,22 +108,22 @@
                         communityId: vc.getCurrentCommunity().communityId,
                         boxId: $that.parkingAreaControlCarInoutsInfo.boxId,
                         state: $that.parkingAreaControlCarInoutsInfo.state,
-                        carNum: $that.parkingAreaControlCarInoutsInfo.carNum,
+                        carNumLike: $that.parkingAreaControlCarInoutsInfo.carNum,
                         startTime: $that.parkingAreaControlCarInoutsInfo.startTime,
                         endTime: $that.parkingAreaControlCarInoutsInfo.endTime,
                         carType: $that.parkingAreaControlCarInoutsInfo.carType,
                         paId: $that.parkingAreaControlCarInoutsInfo.paId
                     }
                 };
-                param.params.carNum = param.params.carNum.trim();
+                param.params.carNumLike = param.params.carNum.trim();
                 //发送get请求
                 vc.http.apiGet('/carInoutDetail.listCarInoutDetail',
                     param,
                     function (json) {
                         let _feeConfigInfo = JSON.parse(json);
-                        vc.component.parkingAreaControlCarInoutsInfo.total = _feeConfigInfo.total;
-                        vc.component.parkingAreaControlCarInoutsInfo.records = _feeConfigInfo.records;
-                        vc.component.parkingAreaControlCarInoutsInfo.carIns = _feeConfigInfo.data;
+                        $that.parkingAreaControlCarInoutsInfo.total = _feeConfigInfo.total;
+                        $that.parkingAreaControlCarInoutsInfo.records = _feeConfigInfo.records;
+                        $that.parkingAreaControlCarInoutsInfo.carIns = _feeConfigInfo.data;
                         vc.emit('parkingAreaControlCarInouts', 'paginationPlus', 'init', {
                             total: _feeConfigInfo.records,
                             currentPage: _page
@@ -140,11 +140,11 @@
             },
             //重置
             _resetParkingAreaControlCarInouts: function () {
-                vc.component.parkingAreaControlCarInoutsInfo.carNum = "";
-                vc.component.parkingAreaControlCarInoutsInfo.state = "";
-                vc.component.parkingAreaControlCarInoutsInfo.carType = "";
-                vc.component.parkingAreaControlCarInoutsInfo.startTime = "";
-                vc.component.parkingAreaControlCarInoutsInfo.endTime = "";
+                $that.parkingAreaControlCarInoutsInfo.carNum = "";
+                $that.parkingAreaControlCarInoutsInfo.state = "";
+                $that.parkingAreaControlCarInoutsInfo.carType = "";
+                $that.parkingAreaControlCarInoutsInfo.startTime = "";
+                $that.parkingAreaControlCarInoutsInfo.endTime = "";
                 $that._loadParkingAreaControlCarInouts(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _viewTempFeeConfigInOutCar: function (_feeConfigId) {

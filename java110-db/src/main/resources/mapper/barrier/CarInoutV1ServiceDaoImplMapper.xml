@@ -330,7 +330,10 @@
             and t.detail_id= #{detailId}
         </if>
         <if test="carNum !=null and carNum != ''">
-            and t.car_num like concat('%',#{carNum},'%')
+            and t.car_num  = #{carNum}
+        </if>
+        <if test="carNumLike !=null and carNumLike != ''">
+            and t.car_num like concat('%',#{carNumLike},'%')
         </if>
         <if test="carType !=null and carType != ''">
             and t.car_type= #{carType}

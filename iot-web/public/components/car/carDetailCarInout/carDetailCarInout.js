@@ -38,7 +38,7 @@
                 let param = {
                     params: {
                         communityId: vc.getCurrentCommunity().communityId,
-                        carNumLike: $that.carDetailCarInoutInfo.carNum,
+                        carNum: $that.carDetailCarInoutInfo.carNum,
                         paId:$that.carDetailCarInoutInfo.paId,
                         page: _page,
                         row: _row
