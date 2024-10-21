@@ -30,7 +30,7 @@
                 });
             vc.on('carDetailCarInout', 'paginationPlus', 'page_event',
                 function (_currentPage) {
-                    vc.component._loadCarDetailCarInoutData(_currentPage, DEFAULT_ROWS);
+                    $that._loadCarDetailCarInoutData(_currentPage, DEFAULT_ROWS);
                 });
         },
         methods: {
@@ -50,7 +50,7 @@
                     param,
                     function (json) {
                         let _roomInfo = JSON.parse(json);
-                        vc.component.carDetailCarInoutInfo.carIns = _roomInfo.data;
+                        $that.carDetailCarInoutInfo.carIns = _roomInfo.data;
                         vc.emit('carDetailCarInout', 'paginationPlus', 'init', {
                             total: _roomInfo.records,
                             dataCount: _roomInfo.total,

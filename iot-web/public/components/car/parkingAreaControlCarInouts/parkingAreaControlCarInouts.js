@@ -115,7 +115,7 @@
                         paId: $that.parkingAreaControlCarInoutsInfo.paId
                     }
                 };
-                param.params.carNumLike = param.params.carNum.trim();
+                param.params.carNumLike = param.params.carNumLike.trim();
                 //发送get请求
                 vc.http.apiGet('/carInoutDetail.listCarInoutDetail',
                     param,
