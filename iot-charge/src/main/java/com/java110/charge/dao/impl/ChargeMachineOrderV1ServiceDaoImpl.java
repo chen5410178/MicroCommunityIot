@@ -67,9 +67,9 @@ public class ChargeMachineOrderV1ServiceDaoImpl extends BaseServiceDao implement
     public List<Map> getChargeMachineOrderInfo(Map info) throws DAOException {
         logger.debug("查询 getChargeMachineOrderInfo 入参 info : {}",info);
 
-        List<Map> businessChargeMachineOrderInfos = sqlSessionTemplate.selectList("chargeMachineOrderV1ServiceDaoImpl.getChargeMachineOrderInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("chargeMachineOrderV1ServiceDaoImpl.getChargeMachineOrderInfo",info);
 
-        return businessChargeMachineOrderInfos;
+        return infos;
     }
 
 
@@ -96,12 +96,12 @@ public class ChargeMachineOrderV1ServiceDaoImpl extends BaseServiceDao implement
     public int queryChargeMachineOrdersCount(Map info) {
         logger.debug("查询 queryChargeMachineOrdersCount 入参 info : {}",info);
 
-        List<Map> businessChargeMachineOrderInfos = sqlSessionTemplate.selectList("chargeMachineOrderV1ServiceDaoImpl.queryChargeMachineOrdersCount", info);
-        if (businessChargeMachineOrderInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("chargeMachineOrderV1ServiceDaoImpl.queryChargeMachineOrdersCount", info);
+        if (infos.size() < 1) {
             return 0;
         }
 
-        return Integer.parseInt(businessChargeMachineOrderInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
     @Override
