@@ -213,10 +213,11 @@ public class ChargeCoreImpl implements IChargeCore {
         String power = energy;
         if (usedHours <= 0) {
             usedHours = 0;
-        } else {
-            BigDecimal powerDec = new BigDecimal(Double.parseDouble(energy)).divide(new BigDecimal(usedHours), 2, BigDecimal.ROUND_HALF_UP);
-            power = powerDec.doubleValue() + "";
         }
+//        else {
+//            BigDecimal powerDec = new BigDecimal(Double.parseDouble(energy)).divide(new BigDecimal(usedHours), 2, BigDecimal.ROUND_HALF_UP);
+//            power = powerDec.doubleValue() + "";
+//        }
 
         // todo 优惠券抵扣
         JSONObject result = useCoupon(usedHours, chargeMachineOrderDtos);
