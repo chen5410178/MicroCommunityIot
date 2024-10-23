@@ -328,7 +328,7 @@ public class ChargeCoreImpl implements IChargeCore {
         chargeMonthOrderDto.setCommunityId(communityId);
         chargeMonthOrderDto.setQueryTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         List<ChargeMonthOrderDto> chargeMonthOrderDtos = chargeMonthOrderV1InnerServiceSMOImpl.queryChargeMonthOrders(chargeMonthOrderDto);
-        if (chargeMonthOrderDtos == null || chargeMonthOrderDtos.size() < 1) {
+        if (ListUtil.isNull(chargeMonthOrderDtos)) {
             return false;
         }
 
@@ -336,10 +336,11 @@ public class ChargeCoreImpl implements IChargeCore {
         ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
         chargeMachineOrderDto.setPersonTel(personTel);
         chargeMachineOrderDto.setCommunityId(communityId);
-        chargeMachineOrderDto.setQueryTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        //chargeMachineOrderDto.setQueryTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        chargeMachineOrderDto.setQueryStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_B));
+        chargeMachineOrderDto.setQueryEndTime(DateUtil.getAddDayStringB(new Date(),1));
         List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
-
-        if (chargeMachineOrderDtos == null || chargeMachineOrderDtos.size() < 1) {
+        if (ListUtil.isNull(chargeMachineOrderDtos)) {
             return true;
         }
 
