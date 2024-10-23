@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.*;
 
@@ -218,7 +219,11 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         notifyChargeOrderDto.setPortCode(chargeMachinePortDto.getPortCode());
         notifyChargeOrderDto.setBodyParam("");
         notifyChargeOrderDto.setReason("停止成功");
-        notifyChargeOrderDto.setEnergy(chargeMachineOrderDtos.get(0).getEnergy());
+        Date startTime = DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime());//开始时间
+        Date endTime = new Date();//本次结束时间
+        double differenceInMillis = (endTime.getTime() - startTime.getTime()) / ( 60 * 1000.00);
+        double lastPower = Double.parseDouble(chargeMachineOrderDtos.get(0).getEnergy())/differenceInMillis;
+        notifyChargeOrderDto.setEnergy(lastPower+ "");
         notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);
     }
 
@@ -417,18 +422,15 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
             notifyChargeOrderDto.setPortCode(chargeMachinePortDto.getPortCode());
             notifyChargeOrderDto.setBodyParam("");
             notifyChargeOrderDto.setReason("停止成功");
-            notifyChargeOrderDto.setEnergy(chargeMachineOrderDtos.get(0).getEnergy());
+
+            Date startTime = DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime());//开始时间
+            Date endTime = new Date();//本次结束时间
+            double differenceInMillis = (endTime.getTime() - startTime.getTime()) / (60 * 1000.00);
+            double lastPower = Double.parseDouble(chargeMachineOrderDtos.get(0).getEnergy()) / differenceInMillis;
+            notifyChargeOrderDto.setEnergy(lastPower+ "");
+
             notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);
         }
-        double lastPower = Double.parseDouble(chargeMachineOrderDtos.get(0).getEnergy());
-        BigDecimal bd = new BigDecimal(lastPower);
-        bd = bd.divide(new BigDecimal(60), 2, RoundingMode.HALF_UP);
-        double result = bd.doubleValue();
-        ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
-        chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
-        chargeMachineOrderPo.setEnergy(result + "");
-        chargeMachineOrderPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
-        chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
 
         String paramOut = SongbingChargeUtil.stateChangeResponse(chargeMachineDto.getMachineCode());
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
@@ -474,16 +476,10 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         }
 
         Date nowTime = DateUtil.getCurrentDate();
-        //支付完成超过15分钟
-
         double tHours = (nowTime.getTime() - DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime()).getTime()) / (60 * 60 * 1000 * 1.00);
-
-        int w = 0;
-        if (tHours <= 0) {
-            w = e;
-        } else {
-            w = new Double(Math.ceil(e / tHours)).intValue();
-        }
+        DecimalFormat decimalFormat = new DecimalFormat("#.###");
+        String diffInHoursStr = decimalFormat.format(tHours);
+        double lastPower = Double.parseDouble(chargeMachineOrderDtos.get(0).getEnergy())*Double.parseDouble(diffInHoursStr);
 
         String remark = resultMap.containsKey(reason + "") ? resultMap.get(reason + "") : "未知原因";
 
@@ -494,7 +490,7 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         notifyChargeOrderDto.setPortCode(port + "");
         notifyChargeOrderDto.setBodyParam("");
         notifyChargeOrderDto.setReason(remark);
-        notifyChargeOrderDto.setEnergy(w + "");
+        notifyChargeOrderDto.setEnergy(lastPower + "");
 
 
         notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);

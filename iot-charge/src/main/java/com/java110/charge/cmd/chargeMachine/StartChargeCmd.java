@@ -257,9 +257,13 @@ public class StartChargeCmd extends Cmd {
         if (duration == 999) {
             calendar.add(Calendar.HOUR, 10);
         } else {
-            calendar.add(Calendar.HOUR, reqJson.getIntValue("duration"));
+            try {
+                int duration_1 = reqJson.getIntValue("duration");
+                calendar.add(Calendar.HOUR, duration_1);
+            } catch (Exception e) {
+                calendar.add(Calendar.MINUTE, 1);
+            }
         }
-
         chargeMachineOrderPo.setEndTime(DateUtil.getFormatTimeString(calendar.getTime(), DateUtil.DATE_FORMATE_STRING_A));
         chargeMachineOrderPo.setState(ChargeMachineOrderDto.STATE_DOING);
         chargeMachineOrderPo.setPersonTel(userDtos.get(0).getTel());
