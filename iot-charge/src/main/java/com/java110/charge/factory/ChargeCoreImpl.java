@@ -214,6 +214,7 @@ public class ChargeCoreImpl implements IChargeCore {
         if (usedHours <= 0) {
             usedHours = 0;
         }
+        //适配器给功率，不要给电量 如果给电量的话 页面上显示的是电量 这样 导致 客户搞不清楚
 //        else {
 //            BigDecimal powerDec = new BigDecimal(Double.parseDouble(energy)).divide(new BigDecimal(usedHours), 2, BigDecimal.ROUND_HALF_UP);
 //            power = powerDec.doubleValue() + "";
