@@ -47,7 +47,20 @@
 		<view class="margin-sm" v-show="login">
 			<charge ref="chargeRef"></charge>
 		</view>
-
+		<view class="margin-sm" v-show="login">
+				<view class="cu-list menu">
+					<view class="cu-item arrow" @click="_toChargeOrder()">
+						<view class="content padding-tb-sm">
+							<view>
+								<text class="cuIcon-formfill text-green margin-right-xs"></text> 充电订单
+							</view>
+						</view>
+						<view class="action">
+							去查看
+						</view>
+					</view>
+				</view>
+		</view>
 		<view class="plat-btn-black"></view>
 		<view class="cu-bar btn-group" style="margin-top: 30px;" v-if="login">
 			<button @click="_toCharge" :disabled="!curHours.duration || !curPort.portId"
@@ -214,6 +227,11 @@
 				// #endif
 				uni.navigateTo({
 					url: '/pages/user/login'
+				})
+			},
+			_toChargeOrder: function() {
+				uni.navigateTo({
+					url: '/pages/charge/chargeMachineOrders'
 				})
 			}
 		}

@@ -4,7 +4,7 @@
 			<view class="cu-item arrow" @click="_toChargeCard()">
 				<view class="content padding-tb-sm">
 					<view>
-						<text class="cuIcon-rechargefill text-green margin-right-xs"></text> 充电月卡
+						<text class="cuIcon-card text-green margin-right-xs"></text> 充电月卡
 					</view>
 					<view class="text-gray text-sm">
 						<text class="cuIcon-right margin-right-xs"></text> {{ chargeOrders.length}} 张
