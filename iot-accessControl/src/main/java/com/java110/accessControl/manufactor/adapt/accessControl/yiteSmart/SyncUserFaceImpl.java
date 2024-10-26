@@ -76,7 +76,7 @@ public class SyncUserFaceImpl implements ISyncUserFace {
             Random random = new Random();
             int faceId = random.nextInt(100);
             //d.put("face_id", phone.substring(6) + faceId);
-            d.put("face_id", user_uid.substring(9));
+            d.put("face_id", user_uid.substring(user_uid.length() - 9));
             d.put("source", "1");
             ds.add(d);
         }

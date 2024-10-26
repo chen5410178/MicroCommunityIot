@@ -124,8 +124,8 @@ public class SyncUserImpl implements ISyncUser {
             //addRoom.put("num", roomName.split("-", 3)[0] + roomName.split("-", 3)[1] + "-" + roomName.split("-", 3)[2]); //添加楼栋单元号
 			addRoom.put("num", String.format("%02d%02d-%04d",
 			    Integer.parseInt(roomName.split("-", 3)[0]),
-			    Integer.parseInt(roomName.split("-", 3)[0]),
-			    Integer.parseInt(roomName.split("-", 3)[0])));
+			    Integer.parseInt(roomName.split("-", 3)[1]),
+			    Integer.parseInt(roomName.split("-", 3)[2])));
 			
             RoomDto roomDto = new RoomDto();
             roomDto.setFloorNum(roomName.split("-", 3)[0]);
