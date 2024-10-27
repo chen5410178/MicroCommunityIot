@@ -188,15 +188,14 @@ public class SyncUserCardImpl implements ISyncUserCard {
         addCard = new JSONObject();
         addCard.put("card", accessControlFacePo.getCardNumber());
         String roomName = accessControlFacePo.getRoomName();
-       // if (!StringUtil.isEmpty(roomName) && roomName.split("-", 3).length == 3) {
-           addCard.put("roomnum",roomName);
-		   //addCard.put("roomnum", roomName.split("-", 3)[0] + roomName.split("-", 3)[1] + "-" + roomName.split("-", 3)[2]);
-			//addCard.put("roomnum", String.format("%02d%02d-%s",
-			//    Integer.parseInt(roomName.split("-", 3)[0]),
-			 //   Integer.parseInt(roomName.split("-", 3)[1]),
-			 //   Integer.parseInt(roomName.split("-", 3)[2])));
+        if (!StringUtil.isEmpty(roomName) && roomName.split("-", 3).length == 3) {
+           //addCard.put("roomnum", roomName.split("-", 3)[0] + roomName.split("-", 3)[1] + "-" + roomName.split("-", 3)[2]);
+			addCard.put("roomnum", String.format("%02d%02d-%s",
+			    Integer.parseInt(roomName.split("-", 3)[0]),
+			    Integer.parseInt(roomName.split("-", 3)[1]),
+			    Integer.parseInt(roomName.split("-", 3)[2])));
 			
-       // }
+        }
         long timestrap = DateUtil.getDateFromStringA(accessControlFacePo.getEndTime()).getTime();
         timestrap = timestrap / 1000;
         addCard.put("expired", timestrap);
