@@ -243,7 +243,7 @@ public class SyncUserBidBmoImpl implements ISyncUserBidBmo {
             addRoom.put("uid", tmpRoomDto.getRoomId());
             addRoom.put("name", tmpRoomDto.getRoomNum());
             //addRoom.put("num", unitDtos.get(0).getFloorNum() + unitDtos.get(0).getUnitNum() + "-" + tmpRoomDto.getRoomNum());//添加楼栋单元号
-			addRoom.put("num", String.format("%02d%02d-%04d",
+			addRoom.put("num", String.format("%02d%02d-%s",
 			    Integer.parseInt(unitDtos.get(0).getFloorNum()),
 			    Integer.parseInt(unitDtos.get(0).getUnitNum()),
 			    Integer.parseInt(tmpRoomDto.getRoomNum())));

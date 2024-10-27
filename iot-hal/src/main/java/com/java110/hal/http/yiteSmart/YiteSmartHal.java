@@ -187,7 +187,7 @@ public class YiteSmartHal {
         data.put("gate_button_room_input", "1");
         data.put("gate_call_manager", "0");
         data.put("gate_capture_picture", "1");
-        data.put("gate_check_face_switch", "1");
+        data.put("gate_check_face_switch", "0");
         data.put("gate_open_face", "1");
         data.put("gate_qr_pwd_state", "1");
         data.put("gate_register_face", "0");
