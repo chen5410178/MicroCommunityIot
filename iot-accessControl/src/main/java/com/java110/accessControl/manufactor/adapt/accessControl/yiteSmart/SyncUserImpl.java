@@ -121,11 +121,12 @@ public class SyncUserImpl implements ISyncUser {
         String roomName = accessControlFaceDtos.get(0).getRoomName();
         if (!StringUtil.isEmpty(roomName) && roomName.split("-", 3).length == 3) {
             addRoom.put("name", roomName.split("-", 3)[2]);
-            //addRoom.put("num", roomName.split("-", 3)[0] + roomName.split("-", 3)[1] + "-" + roomName.split("-", 3)[2]); //添加楼栋单元号
-			addRoom.put("num", String.format("%02d%02d-%s",
-			    Integer.parseInt(roomName.split("-", 3)[0]),
-			    Integer.parseInt(roomName.split("-", 3)[1]),
-			    Integer.parseInt(roomName.split("-", 3)[2])));
+            addRoom.put("num", roomName);
+			//addRoom.put("num", roomName.split("-", 3)[0] + roomName.split("-", 3)[1] + "-" + roomName.split("-", 3)[2]); //添加楼栋单元号
+			// addRoom.put("num", String.format("%02d%02d-%s",
+			//     Integer.parseInt(roomName.split("-", 3)[0]),
+			//     Integer.parseInt(roomName.split("-", 3)[1]),
+			//     Integer.parseInt(roomName.split("-", 3)[2])));
 			
             RoomDto roomDto = new RoomDto();
             roomDto.setFloorNum(roomName.split("-", 3)[0]);
