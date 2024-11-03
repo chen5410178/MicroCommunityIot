@@ -337,11 +337,11 @@ public class GenerateCodeFactory {
      * @throws Exception
      */
     public static String getGeneratorId(String prefix)  {
-        //if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
+        if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefix + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
-       // }
+        }
         //调用服务
-       // return getCode(prefix);
+        return getCode(prefix);
     }
 
     /**
