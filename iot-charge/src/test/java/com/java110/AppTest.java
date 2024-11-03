@@ -1,6 +1,7 @@
 package com.java110;
 
 import com.java110.charge.factory.lvcc.LvCCUtil;
+import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BytesUtil;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -50,6 +51,8 @@ public class AppTest
     }
 
     public void testByte(){
-        System.out.println(LvCCUtil.generatorMsgId());
+
+        for(int index = 0;index < 50000; index ++)
+            System.out.println(GenerateCodeFactory.getGeneratorId("11"));
     }
 }

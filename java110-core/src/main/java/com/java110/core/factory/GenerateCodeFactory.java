@@ -22,7 +22,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class GenerateCodeFactory {
 
-    private static final long ONE_STEP = 1000000;
+    private static final long ONE_STEP = 10000;
     private static final Lock LOCK = new ReentrantLock();
     private static short lastCount = 1;
     private static int count = 0;
@@ -281,7 +281,7 @@ public class GenerateCodeFactory {
     public static String nextId(String idLength) {
         LOCK.lock();
         try {
-            if (lastCount == ONE_STEP) {
+            if (lastCount >= ONE_STEP) {
                 lastCount = 1;
             }
             count = lastCount++;
@@ -337,11 +337,11 @@ public class GenerateCodeFactory {
      * @throws Exception
      */
     public static String getGeneratorId(String prefix)  {
-        if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
+        //if (!MappingConstant.VALUE_ON.equals(MappingCache.getValue(MappingConstant.KEY_NEED_INVOKE_GENERATE_ID))) {
             return prefix + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_H) + nextId("%04d");
-        }
+       // }
         //调用服务
-        return getCode(prefix);
+       // return getCode(prefix);
     }
 
     /**
