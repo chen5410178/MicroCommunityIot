@@ -50,6 +50,12 @@
                 #{item}
             </foreach>
         </if>
+        <if test="inoutIds !=null ">
+            and t.inout_id in
+            <foreach collection="inoutIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
         <if test="statusCd !=null and statusCd != ''">
             and t.status_cd= #{statusCd}
         </if>

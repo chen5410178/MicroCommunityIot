@@ -112,24 +112,32 @@ public class ListCarInParkingAreaCmd extends Cmd {
      * @param carInoutDtos
      */
     private void freshPayTime(List<CarInoutDto> carInoutDtos) {
+        if(ListUtil.isNull(carInoutDtos)){
+            return;
+        }
+        List<String> inoutIds = new ArrayList<>();
         for (CarInoutDto carInoutDto : carInoutDtos) {
-            if (CarInoutDto.STATE_PAY.equals(carInoutDto.getState()) || CarInoutDto.STATE_REPAY.equals(carInoutDto.getState())) {
+            inoutIds.add(carInoutDto.getInoutId());
+        }
 
-                //查询 支付记录 刷新payTime
-                CarInoutPaymentDto carInoutPaymentDto = new CarInoutPaymentDto();
-                carInoutPaymentDto.setInoutId(carInoutDto.getInoutId());
-                carInoutPaymentDto.setPage(1);
-                carInoutPaymentDto.setRow(1);
-                List<CarInoutPaymentDto> carInoutPaymentDtos = carInoutPaymentV1InnerServiceSMOImpl.queryCarInoutPayments(carInoutPaymentDto);
-
-                if (ListUtil.isNull(carInoutPaymentDtos)) {
-                    carInoutDto.setPayTime(DateUtil.getCurrentDate());
-                    continue;
+        CarInoutPaymentDto carInoutPaymentDto = new CarInoutPaymentDto();
+        carInoutPaymentDto.setInoutIds(inoutIds.toArray(new String[inoutIds.size()]));
+        carInoutPaymentDto.setCommunityId(carInoutDtos.get(0).getCommunityId());
+        List<CarInoutPaymentDto> carInoutPaymentDtos = carInoutPaymentV1InnerServiceSMOImpl.queryCarInoutPayments(carInoutPaymentDto);
+        if (ListUtil.isNull(carInoutPaymentDtos)) {
+            for (CarInoutDto carInoutDto : carInoutDtos) {
+                carInoutDto.setPayTime(DateUtil.getCurrentDate());
+            }
+            return;
+        }
+        for (CarInoutDto carInoutDto : carInoutDtos) {
+            for(CarInoutPaymentDto tmpCarInoutPaymentDto:carInoutPaymentDtos) {
+                if (CarInoutDto.STATE_PAY.equals(carInoutDto.getState()) || CarInoutDto.STATE_REPAY.equals(carInoutDto.getState())) {
+                    carInoutDto.setPayTime(tmpCarInoutPaymentDto.getCreateTime());
                 }
-
-                carInoutDto.setPayTime(carInoutPaymentDtos.get(0).getPayTime());
             }
         }
+
     }
 
     private String[] getPaIds(JSONObject reqJson) {

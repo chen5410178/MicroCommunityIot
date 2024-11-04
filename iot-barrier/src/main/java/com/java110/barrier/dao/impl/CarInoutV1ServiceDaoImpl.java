@@ -68,9 +68,9 @@ public class CarInoutV1ServiceDaoImpl extends BaseServiceDao implements ICarInou
     public List<Map> getCarInoutInfo(Map info) throws DAOException {
         logger.debug("查询 getCarInoutInfo 入参 info : {}",info);
 
-        List<Map> businessCarInoutInfos = sqlSessionTemplate.selectList("carInoutV1ServiceDaoImpl.getCarInoutInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("carInoutV1ServiceDaoImpl.getCarInoutInfo",info);
 
-        return businessCarInoutInfos;
+        return infos;
     }
 
 
@@ -97,12 +97,12 @@ public class CarInoutV1ServiceDaoImpl extends BaseServiceDao implements ICarInou
     public int queryCarInoutsCount(Map info) {
         logger.debug("查询 queryCarInoutsCount 入参 info : {}",info);
 
-        List<Map> businessCarInoutInfos = sqlSessionTemplate.selectList("carInoutV1ServiceDaoImpl.queryCarInoutsCount", info);
-        if (businessCarInoutInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("carInoutV1ServiceDaoImpl.queryCarInoutsCount", info);
+        if (infos.size() < 1) {
             return 0;
         }
 
-        return Integer.parseInt(businessCarInoutInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
     /**
