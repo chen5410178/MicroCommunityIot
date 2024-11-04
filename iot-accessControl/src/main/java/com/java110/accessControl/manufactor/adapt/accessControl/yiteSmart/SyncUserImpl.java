@@ -117,12 +117,12 @@ public class SyncUserImpl implements ISyncUser {
         addRoom.put("id", 1);
         addRoom.put("uid", 1);
         addRoom.put("name", "管理处");  //修改物业中心名称
-        addRoom.put("num", "9909-909");//添加楼栋单元号
+        addRoom.put("num", "0000-909");//添加楼栋单元号
         String roomName = accessControlFaceDtos.get(0).getRoomName();
         if (!StringUtil.isEmpty(roomName) && roomName.split("-", 3).length == 3) {
             addRoom.put("name", roomName.split("-", 3)[2]);
             //addRoom.put("num", roomName.split("-", 3)[0] + roomName.split("-", 3)[1] + "-" + roomName.split("-", 3)[2]); //添加楼栋单元号
-			addRoom.put("num", String.format("%02d%02d-%s",
+			addRoom.put("num", String.format("%02d%02d-%4d",
 			    Integer.parseInt(roomName.split("-", 3)[0]),
 			    Integer.parseInt(roomName.split("-", 3)[1]),
 			    Integer.parseInt(roomName.split("-", 3)[2])));
@@ -130,10 +130,7 @@ public class SyncUserImpl implements ISyncUser {
             RoomDto roomDto = new RoomDto();
             roomDto.setFloorNum(roomName.split("-", 3)[0]);
             roomDto.setUnitNum(roomName.split("-", 3)[1]);
-            roomDto.setRoomNum(String.format("%02d%02d-%s",
-			    Integer.parseInt(roomName.split("-", 3)[0]),
-			    Integer.parseInt(roomName.split("-", 3)[1]),
-			    Integer.parseInt(roomName.split("-", 3)[2])));
+            roomDto.setRoomNum(roomName.split("-", 3)[2]);
             roomDto.setCommunityId(accessControlFaceDtos.get(0).getCommunityId());
             List<RoomDto> roomDtos = roomV1InnerServiceSMOImpl.queryRooms(roomDto);
             if (ListUtil.isNull(roomDtos)) {
