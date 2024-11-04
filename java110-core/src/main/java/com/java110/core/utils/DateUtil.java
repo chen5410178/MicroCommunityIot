@@ -812,4 +812,11 @@ public class DateUtil {
         return calendar.getTime();
     }
 
+    public static long mulMillSecA(String nowTime, String preTime) {
+
+        Date nTime = DateUtil.getDateFromStringA(nowTime);
+        Date pTime = DateUtil.getDateFromStringA(preTime);
+
+        return nTime.getTime() - pTime.getTime();
+    }
 }

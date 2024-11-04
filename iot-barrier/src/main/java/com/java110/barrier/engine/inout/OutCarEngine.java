@@ -9,6 +9,8 @@ import com.java110.bean.dto.car.OwnerCarDto;
 import com.java110.bean.dto.coupon.ParkingCouponCarDto;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.fee.TempCarFeeConfigDto;
@@ -17,6 +19,7 @@ import com.java110.dto.parking.*;
 import com.java110.intf.barrier.ICarInoutV1InnerServiceSMO;
 import com.java110.intf.barrier.IParkingBoxV1InnerServiceSMO;
 import com.java110.intf.barrier.ITempCarFeeConfigV1InnerServiceSMO;
+import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
 import com.java110.intf.car.IParkingCouponCarV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +58,12 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
     @Autowired
     private IParkingCouponCarV1InnerServiceSMO parkingCouponCarServiceImpl;
 
+    @Autowired
+    private IOwnerCarV1InnerServiceSMO ownerCarV1InnerServiceSMOImpl;
+
 
     @Override
-    public ResultParkingAreaTextDto outParkingArea(String type, String carNum, BarrierDto machineDto, 
+    public ResultParkingAreaTextDto outParkingArea(String type, String carNum, BarrierDto machineDto,
                                                    List<ParkingAreaDto> parkingAreaDtos, IInOutCarTextEngine inOutCarTextEngine) throws Exception {
 
         InOutCarTextDto inOutCarTextDto = null;
@@ -70,12 +76,12 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         List<CarInoutDto> carInoutDtos = carInoutServiceImpl.queryCarInouts(carInoutDto);
         CarDayDto carDayDto = judgeOwnerCarEngine.judgeOwnerCar(machineDto, carNum, parkingAreaDtos);
 
-        if (carInoutDtos == null || carInoutDtos.size() < 1) {
-            if("N".equals(parkingAreaDtos.get(0).getYelowCarIn())) {
+        if (ListUtil.isNull(carInoutDtos)) {
+            if ("N".equals(parkingAreaDtos.get(0).getYelowCarIn())) {
                 inOutCarTextDto = inOutCarTextEngine.carNotInParkingArea(carNum, machineDto, getDefaultPaId(parkingAreaDtos));
                 saveCarOutInfo(carNum, machineDto, inOutCarTextDto, 0, "开门失败", null, parkingAreaDtos, CarInoutDto.STATE_IN_FAIL);
                 return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_NO_IN, inOutCarTextDto, carNum);
-            }else{
+            } else {
                 inOutCarTextDto = inOutCarTextEngine.carNotInParkingAreaCanOut(carNum, machineDto, getDefaultPaId(parkingAreaDtos));
                 saveCarOutInfo(carNum, machineDto, inOutCarTextDto, 0, "开门成功", null, parkingAreaDtos, CarInoutDto.STATE_OUT);
                 return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_FREE_CAR_OUT_SUCCESS, inOutCarTextDto, carNum);
@@ -85,61 +91,64 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         //判断是否为黑名单
         if (judgeWhiteCarEngine.judgeBlackCar(machineDto, carNum, parkingAreaDtos, type, carInoutDtos)) {
             inOutCarTextDto = inOutCarTextEngine.blackCarOut(carNum, machineDto, getDefaultPaId(parkingAreaDtos));
-            saveCarOutInfo(carNum,machineDto,inOutCarTextDto,0,"开门失败",carInoutDtos.get(0),parkingAreaDtos, CarInoutDto.STATE_IN_FAIL);
+            saveCarOutInfo(carNum, machineDto, inOutCarTextDto, 0, "开门失败", carInoutDtos.get(0), parkingAreaDtos, CarInoutDto.STATE_IN_FAIL);
 
             return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_OUT_ERROR, inOutCarTextDto, carNum);
         }
         //判断是否为白名单
         if (judgeWhiteCarEngine.judgeWhiteCar(machineDto, carNum, parkingAreaDtos, type, carInoutDtos)) {
             inOutCarTextDto = inOutCarTextEngine.whiteCarOut(carNum, machineDto, getDefaultPaId(parkingAreaDtos));
-            saveCarOutInfo(carNum,machineDto,inOutCarTextDto,0,"开门成功",carInoutDtos.get(0),parkingAreaDtos, CarInoutDto.STATE_OUT);
+            saveCarOutInfo(carNum, machineDto, inOutCarTextDto, 0, "开门成功", carInoutDtos.get(0), parkingAreaDtos, CarInoutDto.STATE_OUT);
 
             return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_FREE_CAR_OUT_SUCCESS, inOutCarTextDto, carNum);
         }
 
 
-
-        // 判断是否为出售车辆
-        if (OwnerCarDto.LEASE_TYPE_SALE.equals(carDayDto.getLeaseType())) {
-            inOutCarTextDto = inOutCarTextEngine.carOutSaleCar(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto);
-            saveCarOutInfo(carNum,machineDto,inOutCarTextDto,0,"开门成功",carInoutDtos.get(0),parkingAreaDtos, CarInoutDto.STATE_OUT);
-            return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_IN_SUCCESS, inOutCarTextDto, carNum);
-        }
-
-        // 判断是否为内部车辆
+        // todo 判断是否为内部车辆
         if (OwnerCarDto.LEASE_TYPE_INNER.equals(carDayDto.getLeaseType())) {
             inOutCarTextDto = inOutCarTextEngine.carOutInnerCar(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto);
-            saveCarOutInfo(carNum,machineDto,inOutCarTextDto,0,"开门成功",carInoutDtos.get(0),parkingAreaDtos, CarInoutDto.STATE_OUT);
+            saveCarOutInfo(carNum, machineDto, inOutCarTextDto, 0, "开门成功", carInoutDtos.get(0), parkingAreaDtos, CarInoutDto.STATE_OUT);
             return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_IN_SUCCESS, inOutCarTextDto, carNum);
         }
 
-        // 判断是否为免费车辆
+        // todo 判断是否为免费车辆
         if (OwnerCarDto.LEASE_TYPE_NO_MONEY.equals(carDayDto.getLeaseType())) {
             inOutCarTextDto = inOutCarTextEngine.carOutInnerNoMoney(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto);
-            saveCarOutInfo(carNum,machineDto,inOutCarTextDto,0,"开门成功",carInoutDtos.get(0),parkingAreaDtos, CarInoutDto.STATE_OUT);
+            saveCarOutInfo(carNum, machineDto, inOutCarTextDto, 0, "开门成功", carInoutDtos.get(0), parkingAreaDtos, CarInoutDto.STATE_OUT);
             return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_IN_SUCCESS, inOutCarTextDto, carNum);
         }
 
-        //说明是--------------------------------------------------------------------月租车---------------------------------------------------------------
-        if (carDayDto.getDay() > 0) {
+        // todo 如果是共享岗亭，则判断月租车或者出售车辆是否进入过它自己的停车场
+        boolean cameInParking = true;
+        cameInParking = comeInParking(carNum, getDefaultPaId(parkingAreaDtos), machineDto.getCommunityId(), carInoutDtos.get(0));
+
+        // todo 判断是否为出售车辆
+        if (OwnerCarDto.LEASE_TYPE_SALE.equals(carDayDto.getLeaseType()) && cameInParking) {
+            inOutCarTextDto = inOutCarTextEngine.carOutSaleCar(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto);
+            saveCarOutInfo(carNum, machineDto, inOutCarTextDto, 0, "开门成功", carInoutDtos.get(0), parkingAreaDtos, CarInoutDto.STATE_OUT);
+            return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_IN_SUCCESS, inOutCarTextDto, carNum);
+        }
+
+        //todo 说明是--------------------------------------------------------------------月租车---------------------------------------------------------------
+        if (carDayDto.getDay() > 0 && cameInParking) {
             inOutCarTextDto = inOutCarTextEngine.carOutMonthCar(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto);
-            saveCarOutInfo(carNum,machineDto,inOutCarTextDto,0,"开门成功",carInoutDtos.get(0),parkingAreaDtos, CarInoutDto.STATE_OUT);
+            saveCarOutInfo(carNum, machineDto, inOutCarTextDto, 0, "开门成功", carInoutDtos.get(0), parkingAreaDtos, CarInoutDto.STATE_OUT);
             ResultParkingAreaTextDto resultParkingAreaTextDto
                     = new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_MONTH_CAR_OUT_SUCCESS, inOutCarTextDto, carNum);
             resultParkingAreaTextDto.setDay(carDayDto.getDay());
             return resultParkingAreaTextDto;
         }
 
-        if (carDayDto.getDay() == -2) {
+        if (carDayDto.getDay() == -2 && cameInParking) {
             inOutCarTextDto = inOutCarTextEngine.carOutMonthCarExpire(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto);
-            saveCarOutInfo(carNum,machineDto,inOutCarTextDto,0,"开门失败",carInoutDtos.get(0),parkingAreaDtos, CarInoutDto.STATE_IN_FAIL);
+            saveCarOutInfo(carNum, machineDto, inOutCarTextDto, 0, "开门失败", carInoutDtos.get(0), parkingAreaDtos, CarInoutDto.STATE_IN_FAIL);
             ResultParkingAreaTextDto resultParkingAreaTextDto
                     = new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_OUT_ERROR, inOutCarTextDto, carNum);
             resultParkingAreaTextDto.setDay(0);
             return resultParkingAreaTextDto;
         }
 
-        //说明是--------------------------------------------------------------------临时车---------------------------------------------------------------
+        //todo 说明是--------------------------------------------------------------------临时车---------------------------------------------------------------
 
         //判断岗亭是否收费
         ParkingBoxDto parkingBoxDto = new ParkingBoxDto();
@@ -151,7 +160,7 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
 
         if (!"Y".equals(parkingBoxDtos.get(0).getFee())) {
             inOutCarTextDto = inOutCarTextEngine.carOutConfigError(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto);
-            saveCarOutInfo(carNum,machineDto,inOutCarTextDto,0,"开门成功",carInoutDtos.get(0),parkingAreaDtos, CarInoutDto.STATE_OUT);
+            saveCarOutInfo(carNum, machineDto, inOutCarTextDto, 0, "开门成功", carInoutDtos.get(0), parkingAreaDtos, CarInoutDto.STATE_OUT);
             return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_OUT_SUCCESS, inOutCarTextDto, carNum);
         }
 
@@ -159,7 +168,7 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         // 说明完成支付
         if (TempCarFeeFactory.judgeFinishPayTempCarFee(carInoutDtos.get(0))) {
             inOutCarTextDto = inOutCarTextEngine.carOutFinishPayFee(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto);
-            saveCarOutInfo(carNum,machineDto,inOutCarTextDto,0,"开门成功",carInoutDtos.get(0),parkingAreaDtos, CarInoutDto.STATE_OUT);
+            saveCarOutInfo(carNum, machineDto, inOutCarTextDto, 0, "开门成功", carInoutDtos.get(0), parkingAreaDtos, CarInoutDto.STATE_OUT);
 
             return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_TEMP_CAR_OUT_SUCCESS, inOutCarTextDto, carNum);
         }
@@ -179,10 +188,10 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         }
 
         //考虑停车劵
-        List<ParkingCouponCarDto> parkingCouponOwnerCarDtos = getCarCoupons(carNum,tempCarFeeConfigDto.getPaId());
+        List<ParkingCouponCarDto> parkingCouponOwnerCarDtos = getCarCoupons(carNum, tempCarFeeConfigDto.getPaId());
 
         IComputeTempCarFee computeTempCarFee = ApplicationContextFactory.getBean(tempCarFeeConfigDtos.get(0).getRuleId(), IComputeTempCarFee.class);
-        TempCarFeeResult result = computeTempCarFee.computeTempCarFee(carInoutDtos.get(0), tempCarFeeConfigDtos.get(0),getDurationCarCoupons(parkingCouponOwnerCarDtos));
+        TempCarFeeResult result = computeTempCarFee.computeTempCarFee(carInoutDtos.get(0), tempCarFeeConfigDtos.get(0), getDurationCarCoupons(parkingCouponOwnerCarDtos));
 
         // 停车劵处理 这里主要处理 打折 金额
         double amount = dealParkingCouponCar(result.getPayCharge(), parkingCouponOwnerCarDtos);
@@ -192,12 +201,12 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         if (result.getPayCharge() == 0) {
             inOutCarTextDto = inOutCarTextEngine.carOutFinishPayFee(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto);
             //刷入停车劵到车辆出场
-            refreshParkingCouponToCarInout(parkingCouponOwnerCarDtos,carInoutDtos.get(0));
-            saveCarOutInfo(carNum,machineDto,inOutCarTextDto,0,"开门成功",carInoutDtos.get(0),parkingAreaDtos, CarInoutDto.STATE_OUT);
+            refreshParkingCouponToCarInout(parkingCouponOwnerCarDtos, carInoutDtos.get(0));
+            saveCarOutInfo(carNum, machineDto, inOutCarTextDto, 0, "开门成功", carInoutDtos.get(0), parkingAreaDtos, CarInoutDto.STATE_OUT);
             return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_OUT_SUCCESS, inOutCarTextDto, carNum);
         }
-        inOutCarTextDto = inOutCarTextEngine.carOutNeedPayFee(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto,result);
-        saveCarOutInfo(carNum,machineDto,inOutCarTextDto, result.getPayCharge(),"开门失败",carInoutDtos.get(0),parkingAreaDtos, CarInoutDto.STATE_IN_FAIL);
+        inOutCarTextDto = inOutCarTextEngine.carOutNeedPayFee(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto, result);
+        saveCarOutInfo(carNum, machineDto, inOutCarTextDto, result.getPayCharge(), "开门失败", carInoutDtos.get(0), parkingAreaDtos, CarInoutDto.STATE_IN_FAIL);
         //分钟
         ResultParkingAreaTextDto resultParkingAreaTextDto = new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_OUT_ERROR,
                 inOutCarTextDto, carNum);
@@ -208,7 +217,73 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
     }
 
     /**
-     *  刷入停车劵
+     * 月租车和出售车是否进入到自己的停车场
+     *
+     * @param carNum
+     * @param defaultPaId
+     * @param communityId
+     * @return
+     */
+    private boolean comeInParking(String carNum, String defaultPaId, String communityId, CarInoutDto carInoutDto) {
+
+        //todo 查询车辆停车场
+        OwnerCarDto ownerCarDto = new OwnerCarDto();
+        ownerCarDto.setCarNum(carNum);
+        ownerCarDto.setCommunityId(communityId);
+        List<OwnerCarDto> ownerCarDtos = ownerCarV1InnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
+
+        if (ListUtil.isNull(ownerCarDtos)) {
+            return true;
+        }
+
+        if (defaultPaId.equals(ownerCarDtos.get(0).getPaId())) {
+            return true;
+        }
+
+        String carInTime = carInoutDto.getInTime();
+        //todo 总停车时间
+        long totalMillSec = DateUtil.mulMillSecA(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A), carInTime);
+
+        // todo 如果总时间未超过两个小时那么就不做判断
+        if( totalMillSec < 2 * 60 * 60 * 1000){
+            return true;
+        }
+
+
+        CarInoutDto inCarInoutDto = new CarInoutDto();
+        inCarInoutDto.setCarNum(carNum);
+        inCarInoutDto.setPaId(ownerCarDtos.get(0).getPaId());
+        inCarInoutDto.setCommunityId(communityId);
+        inCarInoutDto.setCarInout(CarInoutDto.CAR_INOUT_OUT);
+        inCarInoutDto.setState(CarInoutDto.STATE_OUT);
+        inCarInoutDto.setStartTime(carInTime);
+        inCarInoutDto.setEndTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        List<CarInoutDto> carInoutDtos = carInoutServiceImpl.queryCarInouts(inCarInoutDto);
+        //todo 说明车辆没有下地下停车场
+        if (ListUtil.isNull(carInoutDtos) ) {
+            return false;
+        }
+
+        //todo 判断时间是否超过
+
+        long inMillSec = 0;
+        for (CarInoutDto tmpOutCarInoutDto : carInoutDtos) {
+            inMillSec += DateUtil.mulMillSecA(tmpOutCarInoutDto.getOpenTime(), tmpOutCarInoutDto.getInTime());
+        }
+
+        long midMisSec = totalMillSec - inMillSec;
+        // todo 如果外部停车场 停时间超过 4个小时就按
+        if (midMisSec > 2 * 60 * 60 * 1000) {
+            return false;
+        }
+
+        return true;
+
+    }
+
+    /**
+     * 刷入停车劵
+     *
      * @param parkingCouponOwnerCarDtos
      * @param carInoutDto
      */
@@ -216,13 +291,13 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
 
         List<ParkingCouponCarDto> tmpParkingCouponCarDtos = new ArrayList<>();
 
-        if(parkingCouponOwnerCarDtos == null || parkingCouponOwnerCarDtos.size() < 1){
+        if (parkingCouponOwnerCarDtos == null || parkingCouponOwnerCarDtos.size() < 1) {
             carInoutDto.setParkingCouponCarDtos(tmpParkingCouponCarDtos);
-            return ;
+            return;
         }
 
-        for(ParkingCouponCarDto tmpParkingCouponCarDto : parkingCouponOwnerCarDtos){
-            if(!tmpParkingCouponCarDto.isHasUser()){
+        for (ParkingCouponCarDto tmpParkingCouponCarDto : parkingCouponOwnerCarDtos) {
+            if (!tmpParkingCouponCarDto.isHasUser()) {
                 continue;
             }
             tmpParkingCouponCarDtos.add(tmpParkingCouponCarDto);
@@ -248,7 +323,7 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         for (ParkingCouponCarDto parkingCouponOwnerCarDto : parkingCouponOwnerCarDtos) {
             if (ParkingCouponCarDto.TYPE_CD_HOURS.equals(parkingCouponOwnerCarDto.getTypeCd())
                     || ParkingCouponCarDto.TYPE_CD_FREE.equals(parkingCouponOwnerCarDto.getTypeCd())
-                    ) {
+            ) {
                 tmpParkingCouponCarDtos.add(parkingCouponOwnerCarDto);
             }
         }
@@ -256,7 +331,7 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         return tmpParkingCouponCarDtos;
     }
 
-    private List<ParkingCouponCarDto> getCarCoupons(String carNum,String  paId) {
+    private List<ParkingCouponCarDto> getCarCoupons(String carNum, String paId) {
 
         ParkingCouponCarDto parkingCouponOwnerCarDto = new ParkingCouponCarDto();
         parkingCouponOwnerCarDto.setCarNum(carNum);
@@ -264,7 +339,7 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         parkingCouponOwnerCarDto.setState(ParkingCouponCarDto.STATE_W);
         List<ParkingCouponCarDto> parkingCouponOwnerCarDtos = parkingCouponCarServiceImpl.queryParkingCouponCars(parkingCouponOwnerCarDto);
 
-        if(parkingCouponOwnerCarDtos == null || parkingCouponOwnerCarDtos.size() <1){
+        if (parkingCouponOwnerCarDtos == null || parkingCouponOwnerCarDtos.size() < 1) {
             parkingCouponOwnerCarDtos = new ArrayList<>();
         }
 
@@ -282,7 +357,7 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         BarrierGateControlDto barrierGateControlDto
                 = new BarrierGateControlDto(BarrierGateControlDto.ACTION_FEE_INFO, carNum, machineDto, payCharge, carInoutDto, inOutCarTextDto.getRemark(), openStats);
         sendInfoEngine.sendInfo(barrierGateControlDto, machineDto.getBoxId(), machineDto);
-        carOutLogEngine.saveCarOutLog(carNum, machineDto, parkingAreaDtos, stateInFail, inOutCarTextDto.getRemark(),carInoutDto == null ? null : carInoutDto.getParkingCouponCarDtos());
+        carOutLogEngine.saveCarOutLog(carNum, machineDto, parkingAreaDtos, stateInFail, inOutCarTextDto.getRemark(), carInoutDto == null ? null : carInoutDto.getParkingCouponCarDtos());
     }
 
 
@@ -300,7 +375,7 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
             return payCharge;
         }
 
-        if(payCharge == 0){
+        if (payCharge == 0) {
             return payCharge;
         }
 

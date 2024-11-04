@@ -91,6 +91,11 @@
         <if test="openTime !=null and openTime != ''">
             and t.open_time= #{openTime}
         </if>
+        <if test="startTime !=null and startTime != ''">
+            and t.open_time &gt; #{startTime}
+            and t.open_time &lt; #{endTime}
+        </if>
+
         <if test="carTypeName !=null and carTypeName != ''">
             and t.car_type_name= #{carTypeName}
         </if>
@@ -226,6 +231,10 @@
         </if>
         <if test="openTime !=null and openTime != ''">
             and t.open_time= #{openTime}
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            and t.open_time &gt; #{startTime}
+            and t.open_time &lt; #{endTime}
         </if>
         <if test="carTypeName !=null and carTypeName != ''">
             and t.car_type_name= #{carTypeName}
