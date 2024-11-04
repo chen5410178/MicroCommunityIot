@@ -26,9 +26,12 @@ import com.java110.core.factory.LoggerFactory;
 import com.java110.core.smo.IComputeFeeSMO;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.parking.ParkingBoxAreaDto;
+import com.java110.dto.payment.CarInoutPaymentDto;
+import com.java110.intf.barrier.ICarInoutPaymentV1InnerServiceSMO;
 import com.java110.intf.barrier.ICarInoutV1InnerServiceSMO;
 import com.java110.intf.barrier.IParkingBoxAreaV1InnerServiceSMO;
 import org.slf4j.Logger;
@@ -58,9 +61,13 @@ public class ListCarInoutDetailCmd extends Cmd {
     private ICarInoutV1InnerServiceSMO carInoutV1InnerServiceSMOImpl;
 
     @Autowired
+    private ICarInoutPaymentV1InnerServiceSMO carInoutPaymentV1InnerServiceSMOImpl;
+
+    @Autowired
     private IComputeFeeSMO computeFeeSMOImpl;
     @Autowired
     private IParkingBoxAreaV1InnerServiceSMO parkingBoxAreaV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -72,9 +79,9 @@ public class ListCarInoutDetailCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
         CarInoutDto carInoutDetailDto = BeanConvertUtil.covertBean(reqJson, CarInoutDto.class);
-        if(reqJson.containsKey("boxId")) {
+        if (reqJson.containsKey("boxId")) {
             carInoutDetailDto.setPaIds(getPaIds(reqJson));
-        }else{
+        } else {
             carInoutDetailDto.setPaId(reqJson.getString("paId"));
         }
         int count = carInoutV1InnerServiceSMOImpl.queryCarInoutDetailsCount(carInoutDetailDto);
@@ -83,6 +90,8 @@ public class ListCarInoutDetailCmd extends Cmd {
 
         if (count > 0) {
             carInoutDetailDtos = carInoutV1InnerServiceSMOImpl.queryCarInoutDetails(carInoutDetailDto);
+            // 计算实收
+            computeRealCharge(carInoutDetailDtos);
             carInoutDetailDtos = computeCarInoutDetail(carInoutDetailDtos);
         } else {
             carInoutDetailDtos = new ArrayList<>();
@@ -93,6 +102,36 @@ public class ListCarInoutDetailCmd extends Cmd {
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void computeRealCharge(List<CarInoutDto> carInoutDetailDtos) {
+
+        if (ListUtil.isNull(carInoutDetailDtos)) {
+            return;
+        }
+
+        List<String> inoutIds = new ArrayList<>();
+        for (CarInoutDto tmpCarInoutDto : carInoutDetailDtos) {
+            inoutIds.add(tmpCarInoutDto.getInoutId());
+        }
+
+        CarInoutPaymentDto carInoutPaymentDto = new CarInoutPaymentDto();
+        carInoutPaymentDto.setCommunityId(carInoutDetailDtos.get(0).getCommunityId());
+        carInoutPaymentDto.setInoutIds(inoutIds.toArray(new String[inoutIds.size()]));
+
+        List<CarInoutPaymentDto> carInoutPaymentDtos = carInoutPaymentV1InnerServiceSMOImpl.queryRealChargeByInoutId(carInoutPaymentDto);
+
+        if (ListUtil.isNull(carInoutPaymentDtos)) {
+            return;
+        }
+        for (CarInoutDto tmpCarInoutDto : carInoutDetailDtos) {
+            for (CarInoutPaymentDto tmpCarInoutPaymentDto : carInoutPaymentDtos) {
+                if (tmpCarInoutPaymentDto.getInoutId().equals(tmpCarInoutDto.getInoutId())) {
+                    tmpCarInoutDto.setRealCharge(tmpCarInoutPaymentDto.getRealCharge());
+                }
+            }
+        }
+
     }
 
 
@@ -115,6 +154,7 @@ public class ListCarInoutDetailCmd extends Cmd {
         }
         return null;
     }
+
     private List<CarInoutDto> computeCarInoutDetail(List<CarInoutDto> carInoutDetailDtos) {
         return computeFeeSMOImpl.computeTempCarInoutDetailStopTimeAndFee(carInoutDetailDtos);
     }

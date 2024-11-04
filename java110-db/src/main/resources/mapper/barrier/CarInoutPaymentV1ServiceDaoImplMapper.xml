@@ -221,5 +221,25 @@
         group by DATE_FORMAT(t.create_time,'%Y-%m-%d')
     </select>
 
+    <select id="queryRealChargeByInoutId" parameterType="Map" resultType="Map">
+        select max(t.real_charge) realCharge,t.inout_id inoutId
+        from car_inout_payment t
+        where 1 =1
+        <if test="inoutIds !=null ">
+            and t.inout_id in
+            <foreach collection="inoutIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        group by inout_id
+    </select>
+
+
 
 </mapper>

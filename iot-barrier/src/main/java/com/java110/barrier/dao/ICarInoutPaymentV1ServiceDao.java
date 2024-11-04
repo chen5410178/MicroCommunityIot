@@ -73,4 +73,6 @@ public interface ICarInoutPaymentV1ServiceDao {
     List<Map> queryCarInoutPaymentMarjor(Map info);
 
     List<Map>  queryCarInoutPaymentSummary(Map info);
+
+    List<Map> queryRealChargeByInoutId(Map info);
 }

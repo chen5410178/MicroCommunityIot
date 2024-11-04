@@ -75,4 +75,7 @@ public interface ICarInoutPaymentV1InnerServiceSMO {
 
     @RequestMapping(value = "/getTempCarFeeOrder", method = RequestMethod.POST)
     ResultVo getTempCarFeeOrder(@RequestBody TempCarPayOrderDto tempCarPayOrderDto);
+
+    @RequestMapping(value = "/queryRealChargeByInoutId", method = RequestMethod.POST)
+    List<CarInoutPaymentDto> queryRealChargeByInoutId(@RequestBody CarInoutPaymentDto carInoutPaymentDto);
 }

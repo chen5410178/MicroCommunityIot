@@ -99,4 +99,9 @@ public class CarInoutPaymentV1InnerServiceSMOImpl  implements ICarInoutPaymentV1
        ResultVo resultVo = getTempCarFeeRulesImpl.getTempCarFeeOrder(tempCarPayOrderDto);
         return resultVo;
    }
+
+    @Override
+    public List<CarInoutPaymentDto> queryRealChargeByInoutId( @RequestBody CarInoutPaymentDto carInoutPaymentDto) {
+        return BeanConvertUtil.covertBeanList(carInoutPaymentV1ServiceDaoImpl.queryRealChargeByInoutId(BeanConvertUtil.beanCovertMap(carInoutPaymentDto)),CarInoutPaymentDto.class);
+    }
 }

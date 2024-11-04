@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.java110.core.context.Environment;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.smo.IComputeFeeSMO;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.community.CommunityDto;
 import com.java110.dto.fee.FeeAttrDto;
@@ -103,7 +104,7 @@ public class ComputeFeeSMOImpl implements IComputeFeeSMO {
 
     @Override
     public List<CarInoutDto> computeTempCarInoutDetailStopTimeAndFee(List<CarInoutDto> carInoutDtos) {
-        if (carInoutDtos == null || carInoutDtos.size() < 1) {
+        if (ListUtil.isNull(carInoutDtos)) {
             return null;
         }
 

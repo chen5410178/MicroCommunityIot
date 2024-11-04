@@ -67,9 +67,9 @@ public class CarInoutPaymentV1ServiceDaoImpl extends BaseServiceDao implements I
     public List<Map> getCarInoutPaymentInfo(Map info) throws DAOException {
         logger.debug("查询 getCarInoutPaymentInfo 入参 info : {}",info);
 
-        List<Map> businessCarInoutPaymentInfos = sqlSessionTemplate.selectList("carInoutPaymentV1ServiceDaoImpl.getCarInoutPaymentInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("carInoutPaymentV1ServiceDaoImpl.getCarInoutPaymentInfo",info);
 
-        return businessCarInoutPaymentInfos;
+        return infos;
     }
 
 
@@ -96,12 +96,12 @@ public class CarInoutPaymentV1ServiceDaoImpl extends BaseServiceDao implements I
     public int queryCarInoutPaymentsCount(Map info) {
         logger.debug("查询 queryCarInoutPaymentsCount 入参 info : {}",info);
 
-        List<Map> businessCarInoutPaymentInfos = sqlSessionTemplate.selectList("carInoutPaymentV1ServiceDaoImpl.queryCarInoutPaymentsCount", info);
-        if (businessCarInoutPaymentInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("carInoutPaymentV1ServiceDaoImpl.queryCarInoutPaymentsCount", info);
+        if (infos.size() < 1) {
             return 0;
         }
 
-        return Integer.parseInt(businessCarInoutPaymentInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
     /**
@@ -114,17 +114,22 @@ public class CarInoutPaymentV1ServiceDaoImpl extends BaseServiceDao implements I
     public List<Map> queryCarInoutPaymentMarjor(Map info) throws DAOException {
         logger.debug("查询 queryCarInoutPaymentMarjor 入参 info : {}",info);
 
-        List<Map> businessCarInoutPaymentInfos = sqlSessionTemplate.selectList("carInoutPaymentV1ServiceDaoImpl.queryCarInoutPaymentMarjor",info);
+        List<Map> infos = sqlSessionTemplate.selectList("carInoutPaymentV1ServiceDaoImpl.queryCarInoutPaymentMarjor",info);
 
-        return businessCarInoutPaymentInfos;
+        return infos;
     }
 
     public List<Map>  queryCarInoutPaymentSummary(Map info) throws DAOException{
         logger.debug("查询 queryCarInoutPaymentSummary 入参 info : {}",info);
-        List<Map> businessCarInoutPaymentInfos = sqlSessionTemplate.selectList("carInoutPaymentV1ServiceDaoImpl.queryCarInoutPaymentSummary",info);
-        return businessCarInoutPaymentInfos;
+        List<Map> infos = sqlSessionTemplate.selectList("carInoutPaymentV1ServiceDaoImpl.queryCarInoutPaymentSummary",info);
+        return infos;
     }
 
+    @Override
+    public List<Map> queryRealChargeByInoutId(Map info) {
+        logger.debug("查询 queryRealChargeByInoutId 入参 info : {}",info);
+        List<Map> infos = sqlSessionTemplate.selectList("carInoutPaymentV1ServiceDaoImpl.queryRealChargeByInoutId",info);
+        return infos;    }
 
 
 }
