@@ -106,7 +106,7 @@ public class SyncUserCardImpl implements ISyncUserCard {
 
         addCard = new JSONObject();
         addCard.put("card", accessControlFacePo.getCardNumber());
-        addCard.put("roomnum", "9909-909");//添加楼栋单元号
+        addCard.put("roomnum", "0000-909");//添加楼栋单元号
         long timestrap = DateUtil.getDateFromStringA(accessControlFacePo.getEndTime()).getTime();
         timestrap = timestrap / 1000;
         addCard.put("expired", timestrap);
