@@ -25,12 +25,13 @@
                 let param = {
                     params: {
                         page:1,
-                        row:1000
+                        row:1000,
+                        communityId:vc.getCurrentCommunity().communityId
                     }
                 };
 
                 //发送get请求
-                vc.http.apiGet('/app/machine/getMachineCollect',
+                vc.http.apiGet('/monitor.listMonitorCollect',
                     param,
                     function (json, res) {
                         let _json = JSON.parse(json);

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="monitorCollectV1ServiceDaoImpl">
+
+
+    <!-- 保存收藏监控信息 add by wuxw 2018-07-03 -->
+    <insert id="saveMonitorCollectInfo" parameterType="Map">
+        insert into monitor_collect(
+        machine_id,machine_code,collect_id,community_id,machine_name,staff_id
+        ) values (
+        #{machineId},#{machineCode},#{collectId},#{communityId},#{machineName},#{staffId}
+        )
+    </insert>
+
+
+    <!-- 查询收藏监控信息 add by wuxw 2018-07-03 -->
+    <select id="getMonitorCollectInfo" parameterType="Map" resultType="Map">
+        select t.machine_id machineId,t.machine_code machineCode,t.collect_id collectId,t.status_cd
+        statusCd,t.community_id communityId,t.machine_name machineName,t.staff_id staffId,t.create_time createTime
+        from monitor_collect t
+        where 1 =1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="collectId !=null and collectId != ''">
+            and t.collect_id= #{collectId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改收藏监控信息 add by wuxw 2018-07-03 -->
+    <update id="updateMonitorCollectInfo" parameterType="Map">
+        update monitor_collect t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            , t.machine_name= #{machineName}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            , t.staff_id= #{staffId}
+        </if>
+        where 1=1
+        <if test="collectId !=null and collectId != ''">
+            and t.collect_id= #{collectId}
+        </if>
+
+    </update>
+
+    <!-- 查询收藏监控数量 add by wuxw 2018-07-03 -->
+    <select id="queryMonitorCollectsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from monitor_collect t
+        where 1 =1
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="collectId !=null and collectId != ''">
+            and t.collect_id= #{collectId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="machineName !=null and machineName != ''">
+            and t.machine_name= #{machineName}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+
+
+    </select>
+
+</mapper>
