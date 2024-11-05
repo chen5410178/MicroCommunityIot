@@ -248,7 +248,8 @@ import { parkingWebSocket } from "/api/websocket/parkingWebSocket.js";
                 }
                 if (_catalog.url != '#') {
                     
-                    vc.jumpToPage(_catalog.url);
+                    //vc.jumpToPage(_catalog.url);
+                    window.open(_catalog.url);
                     //return;
                 }
                 vm._emitMsg(_catalog);

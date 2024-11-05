@@ -1,0 +1,24 @@
+<div class="bs flex justify-start">
+
+    <div class="bs-left-area">
+        <vc:create path="monitor/monitorCamera"></vc:create>
+    </div>
+    <div class="bs-center-area">
+        <div v-if="monitorVideoInfo.screenCount == 1">
+            <vc:create path="monitor/monitorViewOne"></vc:create>
+        </div>
+        <div v-if="monitorVideoInfo.screenCount == 4">
+            <vc:create path="monitor/monitorViewFour"></vc:create>
+        </div>
+        <div v-if="monitorVideoInfo.screenCount == 8">
+            <vc:create path="monitor/monitorView"></vc:create>
+        </div>
+        <div v-if="monitorVideoInfo.screenCount == 9">
+            <vc:create path="monitor/monitorViewNine"></vc:create>
+        </div>
+       
+    </div>
+    <div class="bs-right-area">
+        <vc:create path="monitor/cameraAlter"></vc:create>
+    </div>
+</div>

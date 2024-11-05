@@ -1,0 +1,21 @@
+<div class="cameraAlter">
+    <div class="big-title">
+        <span class="fa fa-th-large"></span>
+        <span>AI告警</span>
+    </div>
+    <div class="big-content">
+        <div class="item border-radius flex justify-start" v-for="(item,index) in cameraAlterInfo.videoAlters" :key="index">
+            <div class="item-img">
+                <img class="border-radius"
+                    :src="item.imgUrl" />
+            </div>
+            <div >
+                <div class="item-title">{{item.alterTitle}}【{{item.stateMsg}}】</div>
+                <div class="margin-left-xs">{{item.createTime}}</div>
+                <div class="margin-left-xs">{{item.remark}}</div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
