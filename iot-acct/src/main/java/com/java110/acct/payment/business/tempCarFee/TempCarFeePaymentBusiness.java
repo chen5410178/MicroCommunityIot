@@ -7,6 +7,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.fee.TempCarPayOrderDto;
 import com.java110.dto.ownerCarOpenUser.OwnerCarOpenUserDto;
 import com.java110.dto.payment.PaymentOrderDto;
@@ -49,9 +50,9 @@ public class TempCarFeePaymentBusiness implements IPaymentBusiness {
 
         JSONArray couponList = reqJson.getJSONArray("couponList");
         List<String> couponIds = new ArrayList<String>();
-        if (couponList != null && couponList.size() > 0) {
+        if (!ListUtil.isNull(couponList)) {
             for (int couponIndex = 0; couponIndex < couponList.size(); couponIndex++) {
-                couponIds.add(couponList.getJSONObject(couponIndex).getString("couponId"));
+                couponIds.add(couponList.getString(couponIndex));
             }
         }
 
