@@ -75,6 +75,9 @@
 
 <script>
 	import {
+		isNotNull
+	} from '../../lib/java110/utils/StringUtil.js'
+	import {
 		getChargeMachines,
 		getChargeMachinePort
 	} from '@/api/machine/machineApi.js';
@@ -125,11 +128,12 @@
 			account,
 		},
 		onLoad(options) {
-
 			autoLogin(options);
 			this.machineId = options.machineId;
 			this.communityId = options.communityId;
-			
+			if(isNotNull(options.portId)){
+				this.curPort.portId = options.portId;
+			}
 			this._loadChargeMachines();
 			this._loadChargeMachinePorts();
 			let _that = this;
