@@ -23,6 +23,9 @@
         },
         _initMethod: function () {
             //$that._listChargeRulePrices(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.getDict('car_inout_payment', 'pay_type', function(_data) {
+                $that.parkingAreaControlCustomCarInoutInfo.payTypes = _data;
+            })
         },
         _initEvent: function () {
             vc.on('chargeRulePrice', 'switch', function (_data) {
@@ -73,6 +76,16 @@
                         console.log('请求失败处理');
                     }
                 );
+            },
+            _openAddChargePeakAlleyPriceModal: function () {
+                if (!$that.chargeRulePriceInfo.conditions.chargeType) {
+                    vc.toast('未选择充电类型');
+                    return;
+                }
+                vc.emit('addChargePeakAlleyPrice', 'openAddChargePeakAlleyPriceModal', {
+                    ruleId:$that.chargeRulePriceInfo.conditions.ruleId,
+                    chargeType:$that.chargeRulePriceInfo.conditions.chargeType
+                });
             },
             _openAddChargeRulePriceModal: function () {
                 if (!$that.chargeRulePriceInfo.conditions.chargeType) {

@@ -21,9 +21,12 @@ public class CustomDecoder  extends MessageToMessageDecoder<byte[]> {
         LOGGER.debug("-------------解码器接收到数据16：{}",BytesUtil.bytesToHex(msg));
 
         try {
-            if (DataHeader.isLvChongChong(msg) || DataHeader.isSbCharge(msg)) {
-                // todo 驴充充
+            if (DataHeader.isLvChongChong(msg)) {
                 unpackSH(msg, out);
+            }else if ( DataHeader.isSbCharge(msg)) {
+                unpackSH(msg, out);
+            }else if ( DataHeader.isYunKuaiChongCharge(msg)) {
+                unpackYKC(msg, out);
             }else {
             //    LOGGER.info( " unkown proctrol 未知协议类型" );
                 out.add(msg);
@@ -34,6 +37,27 @@ public class CustomDecoder  extends MessageToMessageDecoder<byte[]> {
         }
     }
 
+    /**
+     * 云快充拆包
+     */
+    private void unpackYKC(byte[] msg, List<Object> out) {
+        // 获取报文的长度帧，并转化10进制字节，在加上起始帧1个字节+长度帧1个字节+效验帧2个字节，所以+4，
+        int len = DataHeader.getYKCLength(msg)+8;
+        if (msg.length <= len) { // 一个整包
+            out.add(msg);
+        } else {
+            // 1.取出一个包的数据
+            byte[] array = new byte[len];
+            System.arraycopy(msg, 0, array, 0, len);
+            out.add(array);
+
+            // 2. 多余的数据继续分包
+            int other = msg.length - len;
+            array = new byte[other];
+            System.arraycopy(msg, len, array, 0, array.length);
+            unpackSH(array, out);
+        }
+    }
 
     /**
      * 云快充拆包
@@ -55,9 +79,7 @@ public class CustomDecoder  extends MessageToMessageDecoder<byte[]> {
             array = new byte[other];
             System.arraycopy(msg, len, array, 0, array.length);
             unpackSH(array, out);
-
         }
-
     }
 
 

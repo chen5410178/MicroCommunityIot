@@ -12,6 +12,52 @@ public class DataHeader {
     public static final String SONG_BING_HEAD = "68";// 松饼头
     public static final String SONG_BING_END = "16";// 松饼尾
 
+
+    /**
+     * 判断是否为松饼云快充
+     *
+     * @param msg
+     * @return
+     */
+    public static boolean isYunKuaiChongCharge(byte[] msg) {
+
+        String data = BytesUtil.bytesToHex(msg);
+
+        if (StringUtil.isEmpty(data)) {
+            return false;
+        }
+
+
+        if (data.startsWith(SONG_BING_HEAD)) {
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * 获取设备ID
+     *
+     * @param msg
+     * @return
+     */
+    public static String getYKMachineCode(byte[] msg) {
+        String data = BytesUtil.bytesToHex(msg);
+        try {
+            String cmd = data.substring(10, 12);
+            int num1 = Integer.parseInt(cmd, 16);
+            if (num1 < 19 || "33".equals(cmd)|| "35".equals(cmd)){
+                data = data.substring(12, 26);
+            }else {
+                data = data.substring(44, 58);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return data;
+    }
+
+
     /**
      * 判断是否为松饼充电桩
      *
@@ -26,7 +72,7 @@ public class DataHeader {
             return false;
         }
 
-        if (data.startsWith(SONG_BING_HEAD)) {
+        if (data.startsWith(SONG_BING_HEAD) && data.endsWith(SONG_BING_END)) {
             return true;
         }
 
@@ -57,10 +103,11 @@ public class DataHeader {
 
     /**
      * 是否为员工工牌
+     *
      * @param msg
      * @return
      */
-    public static boolean isWorkLicense(byte[] msg){
+    public static boolean isWorkLicense(byte[] msg) {
         String data = BytesUtil.bytesToHex(msg);
 
         if (StringUtil.isEmpty(data)) {
@@ -73,6 +120,18 @@ public class DataHeader {
 
         return false;
 
+    }
+
+    /**
+     * 获取报文长度
+     *
+     * @param msg
+     * @return
+     */
+    public static int getYKCLength(byte[] msg) {
+        String data = BytesUtil.bytesToHex(msg);
+        data = data.substring(2,4);
+        return Integer.parseInt(data, 16);
     }
 
     /**
@@ -108,7 +167,7 @@ public class DataHeader {
      */
     public static String getLvCCMachineCode(byte[] msg) {
         String data = BytesUtil.bytesToHex(msg);
-        data = data.substring(20, 20 + getLvCCMachineCodeLength(msg)*2);
+        data = data.substring(20, 20 + getLvCCMachineCodeLength(msg) * 2);
         String bb = null;
         try {
             bb = new String(BytesUtil.hexStringToByteArray(data), "UTF-8");
@@ -142,8 +201,8 @@ public class DataHeader {
 
     public static byte[] clearWorkLicense(byte[] bytes) {
         String data = BytesUtil.bytesToHex(bytes);
-        data = data.replaceAll("7d01","7d");
-        data = data.replaceAll("7d02","7e");
+        data = data.replaceAll("7d01", "7d");
+        data = data.replaceAll("7d02", "7e");
         return BytesUtil.hexStringToByteArray(data);
     }
 }

@@ -416,6 +416,10 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         chargeMachineOrderDto.setOrderId(orderNum.substring(2));
         List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
         if (ListUtil.isNull(chargeMachineOrderDtos)) {
+            //todo 这里结束掉
+            String paramOut = String.format("%02x", 1);
+            paramOut = LvCCUtil.computeResultDate(data, chargeMachineDto.getMachineCode(), paramOut);
+            notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
             throw new CmdException("订单不存在");
         }
 

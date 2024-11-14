@@ -119,6 +119,7 @@ public class ChargeCoreImpl implements IChargeCore {
      */
     private void returnCarOrderMoney(ChargeMachineDto chargeMachineDto,
                                   String remark,
+                                  String amount,
                                   String energy,
                                   List<ChargeMachineOrderDto> chargeMachineOrderDtos) {
         ChargeRulePriceDto chargeRulePriceDto = new ChargeRulePriceDto();
@@ -128,19 +129,19 @@ public class ChargeCoreImpl implements IChargeCore {
         if (chargeRulePriceDtos == null || chargeRulePriceDtos.size() < 1) {
             throw new CmdException("未设置充值收费标准，请联系管理员！");
         }
-        BigDecimal returnMoneyDec = new BigDecimal("1");
+        BigDecimal usedHoursDec = new BigDecimal(amount);
+
+        BigDecimal returnMoneyDec = new BigDecimal(Double.parseDouble(chargeMachineOrderDtos.get(0).getAmount())).subtract(usedHoursDec);
         double returnMoney = returnMoneyDec.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
         ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
         chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
         chargeMachineOrderPo.setRemark(remark);
         chargeMachineOrderPo.setState(ChargeMachineOrderDto.STATE_FINISH);
-        BigDecimal amount = new BigDecimal(Double.parseDouble(chargeMachineOrderDtos.get(0).getAmount())).subtract(new BigDecimal(returnMoney)).setScale(2, BigDecimal.ROUND_HALF_UP);
-        chargeMachineOrderPo.setAmount(amount.doubleValue() + "");
+        chargeMachineOrderPo.setAmount(amount);
         chargeMachineOrderPo.setEndTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         chargeMachineOrderPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
         chargeMachineOrderPo.setDurationPrice("1");
-        chargeMachineOrderPo.setEnergy(energy);
 
         int flag = chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
         if (flag < 1) {
@@ -169,7 +170,6 @@ public class ChargeCoreImpl implements IChargeCore {
             accountInnerServiceSMOImpl.prestoreAccount(accountDetailPo);
         }
 
-
         //充电表中加入退款金额
         ChargeMachineOrderAcctPo chargeMachineOrderAcctPo = new ChargeMachineOrderAcctPo();
         chargeMachineOrderAcctPo.setAcctDetailId(accountDetailPo.getDetailId());
@@ -180,7 +180,7 @@ public class ChargeCoreImpl implements IChargeCore {
         chargeMachineOrderAcctPo.setAcctId(accountDtos.get(0).getAcctId());
         chargeMachineOrderAcctPo.setStartTime(chargeMachineOrderDtos.get(0).getStartTime());
         chargeMachineOrderAcctPo.setEnergy(energy);
-        chargeMachineOrderAcctPo.setEndTime(chargeMachineOrderDtos.get(0).getEndTime());
+        chargeMachineOrderAcctPo.setEndTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         if (returnMoney < 0) {
             chargeMachineOrderAcctPo.setRemark("账户扣款-" + remark);
         } else {
@@ -486,7 +486,7 @@ public class ChargeCoreImpl implements IChargeCore {
             }
             returnOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getEnergy(),chargeMachineOrderDtos);
         }else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDtos.get(0).getChargeType())){
-            returnCarOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getEnergy(),chargeMachineOrderDtos);
+            returnCarOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getAmount(), notifyChargeOrderDto.getEnergy(),chargeMachineOrderDtos);
         }
         return new ResultVo(ResultVo.CODE_OK, "成功");
     }
