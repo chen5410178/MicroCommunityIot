@@ -344,7 +344,15 @@ public class DahuaGatewayAccessControlAdapt extends AbstractAccessControlManufac
         logger.debug("门禁内容,{}", paramIn.toJSONString());
 
         String staffId = paramIn.getString("userId");
+        UserDto userDto = new UserDto();
+        userDto.setUserId(staffId);
         String staffName = paramIn.getString("userName");
+
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+        if(!ListUtil.isNull(userDtos)){
+            staffName = userDtos.get(0).getName();
+        }
+
         String openTypeCd = paramIn.getString("openTypeCd");
         int similar = paramIn.getIntValue("similar");
         if (StringUtil.isEmpty(staffId)) {
