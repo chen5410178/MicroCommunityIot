@@ -120,7 +120,7 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
 
         // todo 如果是共享岗亭，则判断月租车或者出售车辆是否进入过它自己的停车场
         boolean cameInParking = true;
-        cameInParking = comeInParking(carNum, getDefaultPaId(parkingAreaDtos), machineDto.getCommunityId(), carInoutDtos.get(0));
+        //cameInParking = comeInParking(carNum, getDefaultPaId(parkingAreaDtos), machineDto.getCommunityId(), carInoutDtos.get(0));
 
         // todo 判断是否为出售车辆
         if (OwnerCarDto.LEASE_TYPE_SALE.equals(carDayDto.getLeaseType()) && cameInParking) {

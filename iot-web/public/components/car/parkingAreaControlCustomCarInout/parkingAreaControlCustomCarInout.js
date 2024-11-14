@@ -150,7 +150,7 @@
                         }
                     }
                     //发送get请求
-                vc.http.apiGet('/machine.listParkingAreaMachines',
+                vc.http.apiGet('/barrier.listBarrier',
                     param,
                     function(json, res) {
                         let _machineManageInfo = JSON.parse(json);
