@@ -25,7 +25,13 @@
         from barrier t
         left join parking_box pb on t.box_id = pb.box_id and pb.status_cd = '0'
         left join hardware_manufacturer hm on t.impl_bean = hm.hm_id and hm.status_cd = '0'
+        <if test="paId !=null and paId != ''">
+             left join parking_box_area boa on pb.box_id = boa.box_id and boa.default_area = 'T'
+        </if>
         where 1 =1
+        <if test="paId !=null and paId != ''">
+            and boa.pa_id = #{paId}
+        </if>
         <if test="heartbeatTime !=null and heartbeatTime != ''">
             and t.heartbeat_time= #{heartbeatTime}
         </if>
@@ -118,7 +124,13 @@
     <select id="queryBarriersCount" parameterType="Map" resultType="Map">
         select count(1) count
         from barrier t
+        <if test="paId !=null and paId != ''">
+            left join parking_box_area boa on pb.box_id = boa.box_id and boa.default_area = 'T'
+        </if>
         where 1 =1
+        <if test="paId !=null and paId != ''">
+            and boa.pa_id = #{paId}
+        </if>
         <if test="heartbeatTime !=null and heartbeatTime != ''">
             and DATE_ADD(t.heartbeat_time, INTERVAL 2 MINUTE) &lt; #{heartbeatTime}
         </if>
