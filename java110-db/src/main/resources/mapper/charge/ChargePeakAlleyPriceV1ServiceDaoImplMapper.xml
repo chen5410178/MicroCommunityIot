@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="chargePeakAlleyPriceV1ServiceDaoImpl">
+
+
+    <!-- 保存汽车尖峰谷平电价信息 add by wuxw 2018-07-03 -->
+    <insert id="saveChargePeakAlleyPriceInfo" parameterType="Map">
+        insert into charge_peak_alley_price(
+service_price,price,cpa_id,remark,rule_id,type,community_id
+) values (
+#{servicePrice},#{price},#{cpaId},#{remark},#{ruleId},#{type},#{communityId}
+)
+    </insert>
+
+
+    <!-- 查询汽车尖峰谷平电价信息 add by wuxw 2018-07-03 -->
+    <select id="getChargePeakAlleyPriceInfo" parameterType="Map" resultType="Map">
+        select t.service_price,t.service_price servicePrice,t.create_time,t.create_time
+        createTime,t.price,t.cpa_id,t.cpa_id cpaId,t.remark,t.status_cd,t.status_cd statusCd,t.rule_id,t.rule_id
+        ruleId,t.type,td.`name` typeName,t.community_id,t.community_id communityId
+        from charge_peak_alley_price t
+        left join t_dict td on td.status_cd = t.type and td.table_name = 'charge_peak_alley_price' and td.table_columns = 'type'
+        where 1 =1
+        <if test="servicePrice !=null and servicePrice != ''">
+            and t.service_price= #{servicePrice}
+        </if>
+        <if test="createTime !=null and createTime != ''">
+            and t.create_time= #{createTime}
+        </if>
+        <if test="price !=null and price != ''">
+            and t.price= #{price}
+        </if>
+        <if test="cpaId !=null and cpaId != ''">
+            and t.cpa_id= #{cpaId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="ruleId !=null and ruleId != ''">
+            and t.rule_id= #{ruleId}
+        </if>
+        <if test="type !=null and type != ''">
+            and t.type= #{type}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        order by t.type asc,t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+
+    <!-- 修改汽车尖峰谷平电价信息 add by wuxw 2018-07-03 -->
+    <update id="updateChargePeakAlleyPriceInfo" parameterType="Map">
+        update charge_peak_alley_price t set t.status_cd = #{statusCd}
+        <if test="servicePrice !=null and servicePrice != ''">
+            , t.service_price= #{servicePrice}
+        </if>
+        <if test="createTime !=null and createTime != ''">
+            , t.create_time= #{createTime}
+        </if>
+        <if test="price !=null and price != ''">
+            , t.price= #{price}
+        </if>
+        <if test="cpaId !=null and cpaId != ''">
+            , t.cpa_id= #{cpaId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="type !=null and type != ''">
+            , t.type= #{type}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="ruleId !=null and ruleId != ''">
+            and t.rule_id= #{ruleId}
+        </if>
+    </update>
+
+    <!-- 查询汽车尖峰谷平电价数量 add by wuxw 2018-07-03 -->
+    <select id="queryChargePeakAlleyPricesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from charge_peak_alley_price t
+        where 1 =1
+        <if test="servicePrice !=null and servicePrice != ''">
+            and t.service_price= #{servicePrice}
+        </if>
+        <if test="createTime !=null and createTime != ''">
+            and t.create_time= #{createTime}
+        </if>
+        <if test="price !=null and price != ''">
+            and t.price= #{price}
+        </if>
+        <if test="cpaId !=null and cpaId != ''">
+            and t.cpa_id= #{cpaId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="ruleId !=null and ruleId != ''">
+            and t.rule_id= #{ruleId}
+        </if>
+        <if test="type !=null and type != ''">
+            and t.type= #{type}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+
+    </select>
+
+</mapper>
