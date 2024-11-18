@@ -462,12 +462,14 @@ public class ChargeCoreImpl implements IChargeCore {
         ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
         chargeMachineOrderDto.setMachineId(chargeMachineDtos.get(0).getMachineId());
         chargeMachineOrderDto.setPortId(chargeMachinePortDtos.get(0).getPortId());
-        chargeMachineOrderDto.setState(ChargeMachineOrderDto.STATE_DOING);
+        chargeMachineOrderDto.setOrderId(notifyChargeOrderDto.getOrderId());
         List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
 
         if (chargeMachineOrderDtos == null || chargeMachineOrderDtos.size() < 1) {
             return new ResultVo(ResultVo.CODE_OK, "成功");
         }
+
+
 
         ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
         chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());

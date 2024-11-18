@@ -81,20 +81,20 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         String data = YunCarUtil.stopCharge("0003", chargeMachineDto.getMachineCode(), portHex);
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(data)));
 
-        ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
-        chargeMachineOrderDto.setMachineId(chargeMachineDto.getMachineId());
-        chargeMachineOrderDto.setPortId(chargeMachinePortDto.getPortId());
-        chargeMachineOrderDto.setState(ChargeMachineOrderDto.STATE_DOING);
-        List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
-        if (ListUtil.isNull(chargeMachineOrderDtos)) {
-            return new ResultVo(ResultVo.CODE_OK, "该充电端口订单不存在");
-        }
-
-        ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
-        chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
-        chargeMachineOrderPo.setState("4004");
-        chargeMachineOrderPo.setRemark("充电结束，等待结算");
-        chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
+//        ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
+//        chargeMachineOrderDto.setMachineId(chargeMachineDto.getMachineId());
+//        chargeMachineOrderDto.setPortId(chargeMachinePortDto.getPortId());
+//        chargeMachineOrderDto.setState(ChargeMachineOrderDto.STATE_DOING);
+//        List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
+//        if (ListUtil.isNull(chargeMachineOrderDtos)) {
+//            return new ResultVo(ResultVo.CODE_OK, "该充电端口订单不存在");
+//        }
+//
+//        ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
+//        chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
+//        chargeMachineOrderPo.setState("4004");
+//        chargeMachineOrderPo.setRemark("充电结束，等待结算");
+//        chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
 
 //        List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
 //        if (ListUtil.isNull(chargeMachinePortDtos)){
