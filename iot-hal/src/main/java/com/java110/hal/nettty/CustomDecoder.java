@@ -1,18 +1,22 @@
 package com.java110.hal.nettty;
 
 import com.java110.core.utils.BytesUtil;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomDecoder  extends MessageToMessageDecoder<byte[]> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(HeartBeatSimpleHandle.class);
 
+    private Map<String,DataByteDto> dataByteMap;
 
     @Override
     protected void decode(ChannelHandlerContext ctx, byte[] msg, List<Object> out) throws Exception {
@@ -20,18 +24,53 @@ public class CustomDecoder  extends MessageToMessageDecoder<byte[]> {
         LOGGER.debug("-------------解码器接收到数据：{}",msg);
         LOGGER.debug("-------------解码器接收到数据16：{}",BytesUtil.bytesToHex(msg));
 
-        try {
-            if (DataHeader.isLvChongChong(msg) || DataHeader.isSbCharge(msg)) {
-                // todo 驴充充
-                unpackSH(msg, out);
-            }else {
-            //    LOGGER.info( " unkown proctrol 未知协议类型" );
-                out.add(msg);
-            }
+        Channel channel = ctx.channel();
+        InetSocketAddress address = (InetSocketAddress)channel.remoteAddress();
+        String ip = address.toString();
 
-        } catch (Exception e) {
-            LOGGER.error(" decode Exception : " + e.toString());
+        if(dataByteMap == null){
+            dataByteMap = new HashMap<>();
         }
+
+        LOGGER.debug("channelActive -->  RamoteAddress : " + ip + " channelRead ");
+
+        int totalLen = msg.length;
+        //todo 云快充
+        if(DataHeader.isYunKuaiChongCharge(msg)){
+            totalLen = DataHeader.getYKCLength(msg) + 4;
+        }else if(DataHeader.isLvChongChong(msg)){
+            totalLen = DataHeader.getLvChongChongLength(msg)+6;
+        }else if(DataHeader.isSbCharge(msg)){
+            totalLen = DataHeader.getLvChongChongLength(msg)+6;
+        }
+        //todo 说明是完整包
+        if(msg.length >= totalLen){
+            out.add(msg);
+            return;
+        }
+        DataByteDto dataByteDto = null;
+        if(!dataByteMap.containsKey(ip)){
+            byte[] data = new byte[1024*1024];
+            dataByteDto = new DataByteDto(ip,data,0,totalLen);
+            dataByteMap.put(ip,dataByteDto);
+        }else{
+            dataByteDto = dataByteMap.get(ip);
+        }
+
+        byte[] data = dataByteDto.getData();
+        int dataLen = dataByteDto.getDataLen();
+        System.arraycopy(msg, 0, data, dataLen, msg.length);
+        dataLen+=msg.length;
+        dataByteDto.setData(data);
+        dataByteDto.setDataLen(dataLen);
+
+        if(dataLen<totalLen){
+            return;
+        }
+        byte[] dataMsg = new byte[dataByteDto.getTotalLen()];
+        System.arraycopy(data, 0, dataMsg, 0, dataLen);
+        out.add(dataMsg);
+        dataByteMap.remove(ip);
     }
 
 
