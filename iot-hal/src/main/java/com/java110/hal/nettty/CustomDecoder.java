@@ -7,34 +7,71 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
+import java.util.Arrays;
 import java.util.List;
 
 public class CustomDecoder  extends MessageToMessageDecoder<byte[]> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(HeartBeatSimpleHandle.class);
 
+    private byte[] preData;
+    private int preLen;
+    private int totalLen;
 
-    @Override
+
+
+    //   @Override
+//    protected void decode(ChannelHandlerContext ctx, byte[] msg, List<Object> out) throws Exception {
+//
+//        LOGGER.debug("-------------解码器接收到数据：{}",msg);
+//        LOGGER.debug("-------------解码器接收到数据16：{}",BytesUtil.bytesToHex(msg));
+//        System.out.println(BytesUtil.bytesToHex(msg).length());
+//        try {
+//            if (DataHeader.isLvChongChong(msg)) {
+//                unpackSH(msg, out);
+//            }else if ( DataHeader.isSbCharge(msg)) {
+//                unpackSH(msg, out);
+//            }else if ( DataHeader.isYunKuaiChongCharge(msg)) {
+//                unpackYKC(msg, out);
+//            }else {
+//            //    LOGGER.info( " unkown proctrol 未知协议类型" );
+//                out.add(msg);
+//            }
+//
+//        } catch (Exception e) {
+//            LOGGER.error(" decode Exception : " + e.toString());
+//        }
+//    }
+
     protected void decode(ChannelHandlerContext ctx, byte[] msg, List<Object> out) throws Exception {
 
         LOGGER.debug("-------------解码器接收到数据：{}",msg);
         LOGGER.debug("-------------解码器接收到数据16：{}",BytesUtil.bytesToHex(msg));
-
-        try {
-            if (DataHeader.isLvChongChong(msg)) {
-                unpackSH(msg, out);
-            }else if ( DataHeader.isSbCharge(msg)) {
-                unpackSH(msg, out);
-            }else if ( DataHeader.isYunKuaiChongCharge(msg)) {
-                unpackYKC(msg, out);
-            }else {
-            //    LOGGER.info( " unkown proctrol 未知协议类型" );
-                out.add(msg);
-            }
-
-        } catch (Exception e) {
-            LOGGER.error(" decode Exception : " + e.toString());
+        System.out.println(BytesUtil.bytesToHex(msg).length());
+        if(preData == null){
+            preData = new byte[1024*1024];
+            preLen = 0;
         }
+        // todo 判断是否云快充，并且是第一包
+        if ( DataHeader.isYunKuaiChongCharge(msg)) {
+            totalLen = DataHeader.getYKCLength(msg) + 4;
+            Arrays.fill(preData,(byte) 0);
+            preLen = 0;
+        }
+        //todo 如果是完整的包
+        if(msg.length >= totalLen){
+            out.add(msg);
+            return;
+        }
+        System.arraycopy(msg, 0, preData, preLen, msg.length);
+        preLen+=msg.length;
+        if(preLen >= totalLen){
+            byte[] dataMsg = new byte[preLen];
+            System.arraycopy(preData, 0, dataMsg, 0, preLen);
+            out.add(dataMsg);
+            return;
+        }
+
     }
 
     /**
@@ -43,7 +80,7 @@ public class CustomDecoder  extends MessageToMessageDecoder<byte[]> {
     private void unpackYKC(byte[] msg, List<Object> out) {
         // 获取报文的长度帧，并转化10进制字节，在加上起始帧1个字节+长度帧1个字节+效验帧2个字节，所以+4，
         int len = DataHeader.getYKCLength(msg)+8;
-        if (msg.length <= len) { // 一个整包
+        if (msg.length >= len) { // 一个整包
             out.add(msg);
         } else {
             // 1.取出一个包的数据
@@ -55,7 +92,7 @@ public class CustomDecoder  extends MessageToMessageDecoder<byte[]> {
             int other = msg.length - len;
             array = new byte[other];
             System.arraycopy(msg, len, array, 0, array.length);
-            unpackSH(array, out);
+            unpackYKC(array, out);
         }
     }
 
