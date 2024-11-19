@@ -11,12 +11,14 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.doc.annotation.*;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
+import com.java110.dto.chargeMachine.ChargeMachineOrderDto;
 import com.java110.dto.chargeMachine.ChargeMachinePortDto;
 import com.java110.intf.acct.IAccountInnerServiceSMO;
 import com.java110.intf.charge.IChargeMachineOrderV1InnerServiceSMO;
 import com.java110.intf.charge.IChargeMachinePortV1InnerServiceSMO;
 import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
+import com.java110.po.chargeMachineOrder.ChargeMachineOrderPo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
@@ -123,7 +125,7 @@ public class StopCarChargeCmd extends Cmd {
         chargeMachinePortDto.setPortId(reqJson.getString("portId"));
         List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
 
-        //调用充电桩充电
+        //调用充电桩停电
         ResultVo resultVo = chargeCoreImpl.stopCharge(chargeMachineDtos.get(0), chargeMachinePortDtos.get(0));
 
         if (resultVo.getCode() != ResultVo.CODE_OK) {
@@ -131,19 +133,7 @@ public class StopCarChargeCmd extends Cmd {
             return;
         }
 
-//        // todo 生成 充电订单
-//        ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
-//        chargeMachineOrderPo.setEndTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
-//        chargeMachineOrderPo.setState(ChargeMachineOrderDto.STATE_FINISH);
-//        chargeMachineOrderPo.setCommunityId(chargeMachineDtos.get(0).getCommunityId());
-//        chargeMachineOrderPo.setOrderId(orderId);
-//        chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
 
-        //todo  这里不操作 以设备通知为主
-//        ChargeMachinePortPo chargeMachinePortPo = new ChargeMachinePortPo();
-//        chargeMachinePortPo.setPortId(reqJson.getString("portId"));
-//        chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_FREE);
-//        chargeMachinePortV1InnerServiceSMOImpl.updateChargeMachinePort(chargeMachinePortPo);
 
         context.setResponseEntity(ResultVo.createResponseEntity(resultVo));
     }

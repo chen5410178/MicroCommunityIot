@@ -8,6 +8,7 @@
         data: {
             addChargeRulePriceInfo: {
                 crpId: '',
+                cpaId: '',
                 ruleId: '',
                 price: '',
                 servicePrice: '',
@@ -15,6 +16,10 @@
                 chargeType: '',
                 startTime: '',
                 endTime: ''
+            },
+            peakAlleyPriceAdd:{
+                prices: [
+                ],
             }
         },
         _initMethod: function () {
@@ -30,9 +35,29 @@
                 });
                 vc.copyObject(_param,$that.addChargeRulePriceInfo);
                 $('#addChargeRulePriceModel').modal('show');
+                $that._listPeakAlleyPricesAdd();
             });
         },
         methods: {
+            _listPeakAlleyPricesAdd: function() {
+                $that.addChargeRulePriceInfo.page = 1;
+                $that.addChargeRulePriceInfo.row = 4;
+                $that.addChargeRulePriceInfo.communityId = vc.getCurrentCommunity().communityId;
+                let param = {
+                    params: $that.addChargeRulePriceInfo
+                };
+                //发送get请求
+                vc.http.apiGet('/chargePeakAlleyPrice.listChargePeakAlleyPrice',
+                    param,
+                    function(json, res) {
+                        let _json = JSON.parse(json);
+                        $that.peakAlleyPriceAdd.prices = _json.data;
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
             addChargeRulePriceValidate() {
                     return vc.validate.validate({
                         addChargeRulePriceInfo: $that.addChargeRulePriceInfo
@@ -70,30 +95,30 @@
                                 errInfo: "时段结束时间不能为空"
                             }
                         ],
-                        'addChargeRulePriceInfo.price': [
-                            {
-                                limit: "required",
-                                param: "",
-                                errInfo: "小时电价不能为空"
-                            },
-                            {
-                                limit: "maxLength",
-                                param: "30",
-                                errInfo: "小时电价不能超过30"
-                            },
-                        ],
-                        'addChargeRulePriceInfo.servicePrice': [
-                            {
-                                limit: "required",
-                                param: "",
-                                errInfo: "服务单价不能为空"
-                            },
-                            {
-                                limit: "maxLength",
-                                param: "30",
-                                errInfo: "服务单价不能超过30"
-                            },
-                        ],
+                        // 'addChargeRulePriceInfo.price': [
+                        //     {
+                        //         limit: "required",
+                        //         param: "",
+                        //         errInfo: "小时电价不能为空"
+                        //     },
+                        //     {
+                        //         limit: "maxLength",
+                        //         param: "30",
+                        //         errInfo: "小时电价不能超过30"
+                        //     },
+                        // ],
+                        // 'addChargeRulePriceInfo.servicePrice': [
+                        //     {
+                        //         limit: "required",
+                        //         param: "",
+                        //         errInfo: "服务单价不能为空"
+                        //     },
+                        //     {
+                        //         limit: "maxLength",
+                        //         param: "30",
+                        //         errInfo: "服务单价不能超过30"
+                        //     },
+                        // ],
                         'addChargeRulePriceInfo.remark': [
                             {
                                 limit: "maxLength",
@@ -109,7 +134,12 @@
 
                     return;
                 }
-
+                $that.peakAlleyPriceAdd.prices.forEach((item, index) => {
+                    if (item.cpaId == $that.addChargeRulePriceInfo.cpaId){
+                        $that.addChargeRulePriceInfo.price = item.price;
+                        $that.addChargeRulePriceInfo.servicePrice =  item.servicePrice;
+                    }
+                })
                 $that.addChargeRulePriceInfo.communityId = vc.getCurrentCommunity().communityId;
           
                 vc.http.apiPost(
@@ -142,6 +172,7 @@
             clearAddChargeRulePriceInfo: function () {
                 $that.addChargeRulePriceInfo = {
                     ruleId: '',
+                    cpaId: '',
                     price: '',
                     servicePrice: '',
                     remark: '',

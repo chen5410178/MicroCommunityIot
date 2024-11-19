@@ -33,7 +33,8 @@
 		data() {
 			return {
 				chargeOrders: [],
-				communityId: ''
+				communityId: '',
+				
 			};
 		},
 		created() {

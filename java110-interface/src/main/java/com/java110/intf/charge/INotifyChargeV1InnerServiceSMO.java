@@ -47,6 +47,8 @@ public interface INotifyChargeV1InnerServiceSMO {
     @RequestMapping(value = "/finishCharge", method = RequestMethod.POST)
     ResultVo finishCharge(@RequestBody NotifyChargeOrderDto notifyChargeOrderDto);
 
+
+
     /**
      * 设备心跳
      *
@@ -60,4 +62,18 @@ public interface INotifyChargeV1InnerServiceSMO {
     ResultVo machineResult(@RequestBody ChargeMachineByteDataDto chargeMachineByteDataDto);
 
 
+    /**
+     * 开启充电失败
+     *
+     * @param notifyChargeOrderDto 数据对象分享
+     * @return 小区下的小区楼记录数
+     */
+    @RequestMapping(value = "/startChargeFail", method = RequestMethod.POST)
+    ResultVo startChargeFail(@RequestBody NotifyChargeOrderDto notifyChargeOrderDto);
+
+    /**
+     * 开启充电成功
+     * @param notifyChargeOrderDto
+     */
+    ResultVo startChargeSuccess(@RequestBody NotifyChargeOrderDto notifyChargeOrderDto);
 }

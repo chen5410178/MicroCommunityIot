@@ -18,11 +18,15 @@
                     portCode: '',
                     communityId: vc.getCurrentCommunity().communityId
                 }
+            },
+            chargeMachineInfo: {
+
             }
         },
         _initMethod: function() {
             $that.chargeMachinePortManageInfo.conditions.machineId = vc.getParam('machineId');
             vc.component._listChargeMachinePorts(DEFAULT_PAGE, DEFAULT_ROWS);
+            vc.component._listChargeMachines();
         },
         _initEvent: function() {
 
@@ -60,6 +64,22 @@
                     }
                 );
             },
+            _listChargeMachines: function() {
+                let param = {
+                    params: {page:1,row:1,communityId:vc.getCurrentCommunity().communityId,machineId:vc.getParam('machineId')}
+                };
+                //发送get请求
+                vc.http.apiGet('/chargeMachine.listChargeMachine',
+                    param,
+                    function(json, res) {
+                        let _json = JSON.parse(json);
+                        $that.chargeMachineInfo = _json.data[0];
+                    },
+                    function(errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
             _openAddChargeMachinePortModal: function() {
                 vc.emit('addChargeMachinePort', 'openAddChargeMachinePortModal', {
                     machineId: $that.chargeMachinePortManageInfo.conditions.machineId
@@ -74,6 +94,15 @@
             _queryChargeMachinePortMethod: function() {
                 vc.component._listChargeMachinePorts(DEFAULT_PAGE, DEFAULT_ROWS);
 
+            },
+            _chargeMachineQrCode: function(_chargeMachinePort) {
+                let _qrCode = $that.chargeMachineInfo.qrCode+ '&portId='+ _chargeMachinePort.portId;
+                if ($that.chargeMachineInfo.chargeType == ''){
+                    let _qrCodeNew = _qrCode.replace("machineToCarCharge", "carChargePort");
+                    _qrCode = _qrCodeNew;
+                }
+                let qrCode = { qrCode: _qrCode,machineName:  $that.chargeMachineInfo.machineName + _chargeMachinePort.portName};
+                vc.emit('chargeMachineQrCode', 'openChargeMachineQrCodeModal', qrCode);
             },
             _moreCondition: function() {
                 if (vc.component.chargeMachinePortManageInfo.moreCondition) {

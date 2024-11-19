@@ -1,0 +1,73 @@
+<div id="addChargePeakAlleyPriceModel" class="modal fade" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="m-t-none m-b ">
+                    <vc:i18n name="设置尖峰谷平价格" namespace="addChargePeakAlleyPrice"></vc:i18n>
+                </h3>
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                        <tr>
+                            <th class="text-center" style="width: 80px;vertical-align: middle;">
+                                <vc:i18n name='费率类型' namespace='chargeRuleFee'></vc:i18n>
+                            </th>
+                            <th class="text-center">
+                                <vc:i18n name='电费费率' namespace='chargeRuleFee'></vc:i18n>
+                            </th>
+                            <th class="text-center">
+                                <vc:i18n name='服务费费率' namespace='chargeRuleFee'></vc:i18n>
+                            </th>
+                            <th class="text-center">
+                                <vc:i18n name='备注' namespace='chargeRuleFee'></vc:i18n>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="price in peakAlleyPrice.prices">
+                            <td class="text-center" style="width: 80px;vertical-align: middle;">
+                                <div class="col-sm-20">
+                                    {{price.typeName}}
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="col-sm-15">
+                                    <input v-model="price.price" type="number"
+                                           :placeholder="vc.i18n('请填写电费费率','addChargePeakAlleyPrice')"
+                                           class="form-control">
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="col-sm-15">
+                                    <input v-model="price.servicePrice" type="number"
+                                           :placeholder="vc.i18n('请填写服务费费率','addChargePeakAlleyPrice')"
+                                           class="form-control">
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="col-sm-20">
+                                    <input v-model="price.remark" type="text"
+                                           :placeholder="vc.i18n('请填写备注','addChargePeakAlleyPrice')"
+                                           class="form-control">
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="ibox-content">
+                        <button class="btn btn-primary float-right" type="button"
+                                v-on:click="saveChargePeakAlleyPriceInfo()"><i
+                                class="fa fa-check"></i>&nbsp;
+                            <vc:i18n name="保存"></vc:i18n>
+                        </button>
+                        <button type="button" class="btn btn-warning float-right" style="margin-right:20px;"
+                                data-dismiss="modal">
+                            <vc:i18n name="取消"></vc:i18n>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
