@@ -185,33 +185,27 @@ public class ListChargeMachineCmd extends Cmd {
      */
     private void freshQrCodeUrl(List<ChargeMachineDto> chargeMachineDtos) {
 
-        if (chargeMachineDtos == null || chargeMachineDtos.size() < 1) {
+        if (ListUtil.isNull(chargeMachineDtos)) {
             return;
         }
 
-        SmallWeChatDto smallWeChatDto = new SmallWeChatDto();
-        smallWeChatDto.setObjId(chargeMachineDtos.get(0).getCommunityId());
-        smallWeChatDto.setWeChatType(SmallWeChatDto.WECHAT_TYPE_PUBLIC);
-        List<SmallWeChatDto> smallWeChatDtos = smallWeChatInnerServiceSMOImpl.querySmallWeChats(smallWeChatDto);
-        String appId = "";
-        if (smallWeChatDtos != null && smallWeChatDtos.size() > 0) {
-            appId = smallWeChatDtos.get(0).getAppId();
-        }
         String ownerUrl = UrlCache.getOwnerUrl();
         for (ChargeMachineDto chargeMachineDto : chargeMachineDtos) {
-            if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDto.getChargeType())){
-                chargeMachineDto.setQrCode(ownerUrl + "/#/pages/charge/machineToCharge?machineId="
-                        + chargeMachineDto.getMachineId()
-                        + "&communityId=" + chargeMachineDto.getCommunityId()
-                        + "&wAppId=" + appId
-                );
-            }else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDto.getChargeType())){
-                chargeMachineDto.setQrCode(ownerUrl + "/#/pages/charge/machineToCarCharge?machineId="
-                        + chargeMachineDto.getMachineId()
-                        + "&communityId=" + chargeMachineDto.getCommunityId()
-                        + "&wAppId=" + appId
-                );
-            }
+//            if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDto.getChargeType())){
+//                chargeMachineDto.setQrCode(ownerUrl + "/#/pages/charge/machineToCharge?machineId="
+//                        + chargeMachineDto.getMachineId()
+//                        + "&communityId=" + chargeMachineDto.getCommunityId()
+//                        + "&wAppId=" + appId
+//                );
+//            }else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDto.getChargeType())){
+//                chargeMachineDto.setQrCode(ownerUrl + "/#/pages/charge/machineToCarCharge?machineId="
+//                        + chargeMachineDto.getMachineId()
+//                        + "&communityId=" + chargeMachineDto.getCommunityId()
+//                        + "&wAppId=" + appId
+//                );
+//            }
+            //todo 修改为短号
+            chargeMachineDto.setQrCode(ownerUrl + "/app/charge/"+ chargeMachineDto.getMachineCode());
         }
     }
 }
