@@ -2,6 +2,7 @@ package com.java110.charge.factory.yuncarcharge;
 
 import com.java110.bean.ResultVo;
 import com.java110.charge.factory.IChargeFactoryAdapt;
+import com.java110.core.cache.UrlCache;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.*;
@@ -362,6 +363,14 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
         String paramOut = YunCarUtil.machineBillingmodelRequestRespon(serNo, chargeMachineDto.getMachineCode(), chargeRulePriceDtos, chargePeakAlleyPriceDtos);
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+
+        //时间校准
+        paramOut = YunCarUtil.calibrationTime(chargeMachineDto.getMachineCode());
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+        //二维码下发
+        paramOut = YunCarUtil.sendQrCode(chargeMachineDto.getMachineCode(), UrlCache.getOwnerUrl()+"/app/chargeYkc?machineCode=");
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+
     }
 
     /**

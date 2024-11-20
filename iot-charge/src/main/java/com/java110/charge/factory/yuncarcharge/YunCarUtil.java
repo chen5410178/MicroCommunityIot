@@ -8,13 +8,11 @@ import com.java110.dto.chargeRulePrice.ChargeRulePriceDto;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class YunCarUtil {
 
@@ -280,6 +278,50 @@ public class YunCarUtil {
         }
         return chargeRulePrices;
     }
+
+
+    //    68（起始标志）12（数据长度）00DF（序列号域）00（加密标志）56（类型）55031412782305
+//            （桩编码）98B70E11100314（当前时间：2020-03-16 17:14:47）8A13（帧校验域）
+    public static String calibrationTime(String machineCode) {
+        String dataContent = "CDEF" + "00" + "56" + machineCode + dateToCP56Time2a();
+        String dataLength = calculateLength(dataContent);
+        byte[] byteArray = BytesUtil.hexStringToByteArray(dataContent);
+        String CRCCode = BytesUtil.bytesToHex(YunCrcUtil.calculateCrc(byteArray));
+        return YUN_KUAI_CHONG_HEAD + dataLength + dataContent+  CRCCode;
+    }
+
+    public static String sendQrCode(String machineCode,String url) {
+        String dataContent = "00CE" + "00" + "F0" + machineCode +"00" + Integer.toHexString(url.length()).toUpperCase()+url;
+        String dataLength = calculateLength(dataContent);
+        byte[] byteArray = BytesUtil.hexStringToByteArray(dataContent);
+        String CRCCode = BytesUtil.bytesToHex(YunCrcUtil.calculateCrc(byteArray));
+        return YUN_KUAI_CHONG_HEAD + dataLength + dataContent+  CRCCode;
+    }
+
+
+    public static String dateToCP56Time2a() {
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int year = calendar.get(Calendar.YEAR) % 100; // 取年份的后两位
+        int month = calendar.get(Calendar.MONTH) + 1; // 月份从0开始
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        int second = calendar.get(Calendar.SECOND)*1000;
+        byte[] cp56Time2a = new byte[7];
+        cp56Time2a[0] = (byte) (year & 0x3F);
+        cp56Time2a[1] = (byte) ((month & 0x0F) );
+        cp56Time2a[2] = (byte) ((day & 0x1F) );
+        cp56Time2a[3] = (byte) ((hour & 0x1F));
+        cp56Time2a[4] = (byte) ((minute & 0x3F));
+        cp56Time2a[5] = (byte) (((second >> 8) & 0xFF)); ;
+        cp56Time2a[6] = (byte) (second);
+        String reversedHexString = reverseHexEndian(BytesUtil.bytesToHex(cp56Time2a));
+        return reversedHexString;
+    }
+
+
 
     public static String machineBillingmodelRespon(String serialNumber,String machineCode,String billModeNo) {
         String verifyResult = "01";
