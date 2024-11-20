@@ -251,7 +251,7 @@ public class StartCarChargeCmd extends Cmd {
         chargeMachineOrderAcctPo.setCommunityId(chargeMachineDtos.get(0).getCommunityId());
         chargeMachineOrderAcctPo.setEnergy("0");
         chargeMachineOrderAcctPo.setDurationPrice("0");
-        chargeMachineOrderAcctPo.setDurationPrice(reqJson.getString("durationPrice"));
+        //chargeMachineOrderAcctPo.setDurationPrice(reqJson.getString("durationPrice"));
 
         chargeMachineOrderAcctV1InnerServiceSMOImpl.saveChargeMachineOrderAcct(chargeMachineOrderAcctPo);
     }
