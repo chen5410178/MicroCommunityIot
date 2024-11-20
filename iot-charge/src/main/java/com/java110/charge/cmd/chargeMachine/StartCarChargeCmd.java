@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static com.java110.dto.chargeMachine.ChargeRuleFeeDto.CHARGE_TYPE_CAR;
@@ -164,7 +165,7 @@ public class StartCarChargeCmd extends Cmd {
         chargeMachinePortDto.setState(ChargeMachinePortDto.STATE_FREE);
         List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
         String orderId = GenerateCodeFactory.getGeneratorId("12");
-        int port = Integer.parseInt(chargeMachinePortDtos.get(0).getPortCode()) ;
+        int port = Integer.parseInt(chargeMachinePortDtos.get(0).getPortCode());
         String portHex = String.format("%02x", port);
         orderId = chargeMachineDtos.get(0).getMachineCode() + portHex + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_DEFAULT) + orderId.substring(orderId.length() - 2);
 
@@ -186,8 +187,7 @@ public class StartCarChargeCmd extends Cmd {
         chargeMachineOrderPo.setPersonId(userId);
         chargeMachineOrderPo.setChargeHours(reqJson.getString("duration"));
         chargeMachineOrderPo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
-        //汽车充电桩结束时间为空
-        //chargeMachineOrderPo.setEndTime();
+        chargeMachineOrderPo.setEndTime(DateUtil.getAddHoursStringA(new Date(), 2));
         chargeMachineOrderPo.setState(ChargeMachineOrderDto.STATE_STARTING);
         chargeMachineOrderPo.setPersonTel(userDtos.get(0).getTel());
         chargeMachineOrderPo.setCommunityId(chargeMachineDtos.get(0).getCommunityId());
