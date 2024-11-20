@@ -250,6 +250,7 @@ public class StartCarChargeCmd extends Cmd {
         chargeMachineOrderAcctPo.setRemark("账户扣款");
         chargeMachineOrderAcctPo.setCommunityId(chargeMachineDtos.get(0).getCommunityId());
         chargeMachineOrderAcctPo.setEnergy("0");
+        chargeMachineOrderAcctPo.setDurationPrice("0");
         chargeMachineOrderAcctPo.setDurationPrice(reqJson.getString("durationPrice"));
 
         chargeMachineOrderAcctV1InnerServiceSMOImpl.saveChargeMachineOrderAcct(chargeMachineOrderAcctPo);
