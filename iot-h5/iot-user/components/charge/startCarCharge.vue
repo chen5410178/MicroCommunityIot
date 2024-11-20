@@ -61,7 +61,7 @@
 			},
 			heartbeatStart: function() {
 				let _that = this;
-				let setTimer = setInterval(
+				this.setTimer = setInterval(
 					() => {
 						let second = _that.second + 1;
 						_that.second = second;
@@ -72,7 +72,7 @@
 						if (_that.second > 300) {
 							_that.msg = '等待充电桩就绪超时';
 							_that.startState = 'fail';
-							clearInterval(setTimer);
+							clearInterval(this.setTimer);
 						}
 					}, 1000);
 
@@ -111,7 +111,7 @@
 						_that._closeChargeModal();
 						uni.navigateTo({
 							url: '/pages/charge/chargeCarOrder?orderId=' + _order.orderId +
-								'&communityId=' + this.communityId
+								'&communityId=' + _order.communityId
 						});
 						//	return;
 						//}
