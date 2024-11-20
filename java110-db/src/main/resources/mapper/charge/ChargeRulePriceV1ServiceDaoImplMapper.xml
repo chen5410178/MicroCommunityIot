@@ -54,7 +54,7 @@ crp_id,cpa_id,service_price,price,start_time,remark,end_time,rule_id,community_i
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
         </if>
-        order by t.create_time desc
+        order by t.price
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
         </if>

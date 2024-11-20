@@ -145,7 +145,7 @@ public class ListChargeMachineCmd extends Cmd {
     }
 
     private void queryChargeRuleFee(List<ChargeMachineDto> chargeMachineDtos) {
-        if (chargeMachineDtos == null || chargeMachineDtos.size() < 1) {
+        if (ListUtil.isNull(chargeMachineDtos)) {
             return;
         }
 
