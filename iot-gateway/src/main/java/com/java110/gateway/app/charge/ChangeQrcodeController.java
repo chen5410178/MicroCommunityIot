@@ -117,7 +117,7 @@ public class ChangeQrcodeController {
                     + "&communityId=" + chargeMachineDtos.get(0).getCommunityId()
                     + "&wAppId=" + appId+"&portId="+portId;
         } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDtos.get(0).getChargeType())) {
-            url = ownerUrl + "/#/pages/charge/machineToCarCharge?machineId="
+            url = ownerUrl + "/#/pages/charge/carChargePort?machineId="
                     + chargeMachineDtos.get(0).getMachineId()
                     + "&communityId=" + chargeMachineDtos.get(0).getCommunityId()
                     + "&wAppId=" + appId+"&portId="+portId;
