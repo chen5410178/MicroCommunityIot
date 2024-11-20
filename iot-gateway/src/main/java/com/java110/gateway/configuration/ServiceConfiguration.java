@@ -48,6 +48,7 @@ public class ServiceConfiguration {
 
 
         exclusions.append("/app/charge/*,");// 通用充电桩通知放开
+        exclusions.append("/app/chargeYkc/*,");// 通用充电桩通知放开
         exclusions.append("/app/equipments/*,");// 叮叮充电桩通知放开
         exclusions.append("/app/charge/kehang/*,");// 科航充电桩通知放开
         exclusions.append("/app/smartMeter/notify/*,");// 水电表通知放开
