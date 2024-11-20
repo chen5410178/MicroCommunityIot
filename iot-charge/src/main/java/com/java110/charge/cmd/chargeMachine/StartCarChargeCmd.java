@@ -186,6 +186,7 @@ public class StartCarChargeCmd extends Cmd {
         chargeMachineOrderPo.setAcctDetailId(reqJson.getString("acctId"));
         chargeMachineOrderPo.setPersonId(userId);
         chargeMachineOrderPo.setChargeHours(reqJson.getString("duration"));
+        chargeMachineOrderPo.setDurationPrice("0");
         chargeMachineOrderPo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         chargeMachineOrderPo.setEndTime(DateUtil.getAddHoursStringA(new Date(), 2));
         chargeMachineOrderPo.setState(ChargeMachineOrderDto.STATE_STARTING);
