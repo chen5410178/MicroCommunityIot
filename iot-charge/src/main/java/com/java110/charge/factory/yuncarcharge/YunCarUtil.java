@@ -291,12 +291,26 @@ public class YunCarUtil {
     }
 
     public static String sendQrCode(String machineCode,String url) {
-        String dataContent = "00CE" + "00" + "F0" + machineCode +"00" + Integer.toHexString(url.length()).toUpperCase()+url;
+        String urlASCII = getUrlASCII(url);
+        String dataContent = "00CE" + "00" + "F0" + machineCode +"01" + calculateLength(urlASCII) + urlASCII ;
         String dataLength = calculateLength(dataContent);
         byte[] byteArray = BytesUtil.hexStringToByteArray(dataContent);
         String CRCCode = BytesUtil.bytesToHex(YunCrcUtil.calculateCrc(byteArray));
         return YUN_KUAI_CHONG_HEAD + dataLength + dataContent+  CRCCode;
     }
+
+
+    private static String getUrlASCII(String url){
+        String urlHex = "";
+        for (int i = 0; i < url.length(); i++) {
+            char ch = url.charAt(i);  // 获取字符串中的字符
+            int ascii = (int) ch;  // 转换字符为 ASCII 码
+            String hex = Integer.toHexString(ascii); // 转换为十六进制
+            urlHex += hex;
+        }
+        return urlHex;
+    }
+
 
 
     public static String dateToCP56Time2a() {

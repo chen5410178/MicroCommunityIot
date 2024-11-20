@@ -368,7 +368,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         paramOut = YunCarUtil.calibrationTime(chargeMachineDto.getMachineCode());
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
         //二维码下发
-        paramOut = YunCarUtil.sendQrCode(chargeMachineDto.getMachineCode(), UrlCache.getOwnerUrl()+"/app/chargeYkc?machineCode=");
+        paramOut = YunCarUtil.sendQrCode(chargeMachineDto.getMachineCode(), UrlCache.getOwnerUrl()+"/app/chargeYkc?No=");
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
 
     }

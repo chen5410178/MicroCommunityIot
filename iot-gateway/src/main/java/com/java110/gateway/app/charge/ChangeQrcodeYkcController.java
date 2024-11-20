@@ -13,8 +13,10 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
+import com.java110.dto.chargeMachine.ChargeMachinePortDto;
 import com.java110.dto.smallWeChat.SmallWeChatDto;
 import com.java110.intf.charge.IChargeMachineOrderV1InnerServiceSMO;
+import com.java110.intf.charge.IChargeMachinePortV1InnerServiceSMO;
 import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
 import com.java110.intf.charge.ISmallWeChatInnerServiceSMO;
 import org.slf4j.Logger;
@@ -41,25 +43,41 @@ public class ChangeQrcodeYkcController {
     private IChargeMachineV1InnerServiceSMO chargeMachineV1InnerServiceSMOImpl;
 
     @Autowired
+    private IChargeMachinePortV1InnerServiceSMO chargeMachinePortV1InnerServiceSMOImpl;
+
+    @Autowired
     private ISmallWeChatInnerServiceSMO smallWeChatInnerServiceSMOImpl;
 
 
     /**
-     * <p>充电结束通知</p>
+     * <p>二维码转码</p>
      *
      * @param request
      * @throws Exception
      */
     @RequestMapping(path = "/chargeYkc", method = RequestMethod.GET)
-    public ResponseEntity<String> qrcode(
-            @RequestParam("machineCode") String machineCode,
+    public ResponseEntity<String> chargeYkc(
+            @RequestParam("No") String no,
             HttpServletRequest request) {
 
+        if (no.length() != 16) {
+            return ResultVo.error("码不符合规范");
+        }
+        String machineCode = no.substring(0,no.length()-2);
+        String gunNo = no.substring(no.length()-2);
         ChargeMachineDto chargeMachineDto = new ChargeMachineDto();
         chargeMachineDto.setMachineCode(machineCode);
         List<ChargeMachineDto> chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(chargeMachineDto);
         if (ListUtil.isNull(chargeMachineDtos)) {
             return ResultVo.error("设备不存在");
+        }
+
+        ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
+        chargeMachinePortDto.setMachineId(chargeMachineDtos.get(0).getMachineId());
+        chargeMachinePortDto.setPortCode(Integer.parseInt(gunNo, 16)+"");
+        List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
+        if (ListUtil.isNull(chargeMachinePortDtos)) {
+            throw new CmdException("枪不存在");
         }
 
         SmallWeChatDto smallWeChatDto = new SmallWeChatDto();
@@ -80,10 +98,10 @@ public class ChangeQrcodeYkcController {
                     + "&communityId=" + chargeMachineDtos.get(0).getCommunityId()
                     + "&wAppId=" + appId;
         } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDtos.get(0).getChargeType())) {
-            url = ownerUrl + "/#/pages/charge/machineToCarCharge?machineId="
+            url = ownerUrl + "/#/pages/charge/carChargePort?machineId="
                     + chargeMachineDtos.get(0).getMachineId()
                     + "&communityId=" + chargeMachineDtos.get(0).getCommunityId()
-                    + "&wAppId=" + appId;
+                    + "&wAppId=" + appId+"&portId="+chargeMachinePortDtos.get(0).getPortId();
         } else {
             return ResultVo.error("不支持的设备");
         }
