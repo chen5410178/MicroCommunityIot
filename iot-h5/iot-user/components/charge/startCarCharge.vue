@@ -110,7 +110,7 @@
 						//if (_order.state == '1001') {
 						_that._closeChargeModal();
 						uni.navigateTo({
-							url: '/pages/charge/chargeCarOrder?orderId=' + _data.data +
+							url: '/pages/charge/chargeCarOrder?orderId=' + _order.orderId +
 								'&communityId=' + this.communityId
 						});
 						//	return;
