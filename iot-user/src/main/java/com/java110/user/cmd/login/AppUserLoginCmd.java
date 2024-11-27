@@ -17,7 +17,9 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.dto.appUser.AppUserDto;
+import com.java110.dto.msg.SmsDto;
 import com.java110.dto.user.UserDto;
+import com.java110.intf.system.ISmsInnerServiceSMO;
 import com.java110.intf.system.ISystemInfoV1InnerServiceSMO;
 import com.java110.intf.user.IAppUserV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
@@ -47,6 +49,8 @@ public class AppUserLoginCmd extends Cmd {
     @Autowired
     private ISystemInfoV1InnerServiceSMO systemInfoV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ISmsInnerServiceSMO smsInnerServiceSMOImpl;
 
 
     @Override
@@ -54,14 +58,17 @@ public class AppUserLoginCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "link", "手机号不能为空");
         Assert.hasKeyAndValue(reqJson, "passwd", "密码不能为空");
 
-//        String appId = CmdContextUtils.getAppId(context);
-//        if (AppDto.equals(appId)) {
-//            Assert.hasKeyAndValue(reqJson, "validateCode", "未包含图片验证码");
-//            String code = CommonCache.getValue(CmdContextUtils.getSessionId(cmdDataFlowContext) + "_validateCode");
-//            if (!reqJson.getString("validateCode").equals(code)) {
-//                throw new IllegalArgumentException("验证码错误");
-//            }
-//        }
+//todo 验证码登录
+        if (reqJson.containsKey("loginByPhone") && reqJson.getBoolean("loginByPhone")) {
+            SmsDto smsDto = new SmsDto();
+            smsDto.setTel(reqJson.getString("link"));
+            smsDto.setCode(reqJson.getString("passwd"));
+            smsDto = smsInnerServiceSMOImpl.validateCode(smsDto);
+            if (!smsDto.isSuccess()) {
+                throw new CmdException("验证码错误");
+            }
+
+        }
     }
 
     @Override
@@ -69,7 +76,10 @@ public class AppUserLoginCmd extends Cmd {
 
         UserDto userDto = new UserDto();
         userDto.setTel(reqJson.getString("link"));
-        userDto.setPassword(AuthenticationFactory.passwdMd5(reqJson.getString("passwd")));
+        // todo 不是验证码登录
+        if (!reqJson.containsKey("loginByPhone") || !reqJson.getBoolean("loginByPhone")) {
+            userDto.setPassword(AuthenticationFactory.passwdMd5(reqJson.getString("passwd")));
+        }
         userDto.setLevelCd(UserDto.LEVEL_CD_PHONE);
         List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
 
@@ -82,9 +92,9 @@ public class AppUserLoginCmd extends Cmd {
         AppUserDto appUserDto = new AppUserDto();
         appUserDto.setUserId(userDtos.get(0).getUserId());
         List<AppUserDto> appUserDtos = appUserV1InnerServiceSMOImpl.queryAppUsers(appUserDto);
-        if(!ListUtil.isNull(appUserDtos)){
+        if (!ListUtil.isNull(appUserDtos)) {
             communityId = appUserDtos.get(0).getCommunityId();
-        }else{
+        } else {
             SystemInfoDto systemInfoDto = new SystemInfoDto();
             List<SystemInfoDto> systemInfoDtos = systemInfoV1InnerServiceSMOImpl.querySystemInfos(systemInfoDto);
             communityId = systemInfoDtos.get(0).getDefaultCommunityId();
@@ -100,7 +110,7 @@ public class AppUserLoginCmd extends Cmd {
             JSONObject userInfo = BeanConvertUtil.beanCovertJson(userDtos.get(0));
             userInfo.remove("userPwd");
             userInfo.put("token", token);
-            userInfo.put("communityId",communityId);
+            userInfo.put("communityId", communityId);
             userInfo.put("code", "0");
             userInfo.put("msg", "成功");
             context.setResponseEntity(ResultVo.createResponseEntity(userInfo));
