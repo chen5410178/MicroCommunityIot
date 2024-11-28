@@ -391,6 +391,13 @@
 				"navigationBarTitleText" : "",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/charge/carChargging",
+			"style" : 
+			{
+				"navigationBarTitleText" : "充电中"
+			}
 		}
 	],
 	"tabBar": {

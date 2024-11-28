@@ -151,6 +151,28 @@ export function heartbeatCarCharge(_objData) {
 		});
 	})
 }
+// 查询充电进度
+export function queryCarChargeProcess(_objData) {
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.queryCarChargeProcess,
+			method: "POST",
+			data: JSON.stringify(_objData), //动态数据
+			success: function(res) {
+				if (res.statusCode == 200) {
+					//成功情况下跳转
+					resolve(res.data);
+					return;
+				}
+				reject();
+			},
+			fail: function(e) {
+				reject();
+			}
+		});
+	})
+}
+
 
 /**
  * 查询充电订单

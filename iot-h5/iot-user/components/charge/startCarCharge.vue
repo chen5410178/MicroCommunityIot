@@ -109,8 +109,12 @@
 						// todo 充电中,结束中，充电完成
 						//if (_order.state == '1001') {
 						_that._closeChargeModal();
+						// uni.navigateTo({
+						// 	url: '/pages/charge/chargeCarOrder?orderId=' + _order.orderId +
+						// 		'&communityId=' + _order.communityId
+						// });
 						uni.navigateTo({
-							url: '/pages/charge/chargeCarOrder?orderId=' + _order.orderId +
+							url: '/pages/charge/carChargging?orderId=' + _order.orderId +
 								'&communityId=' + _order.communityId
 						});
 						//	return;
