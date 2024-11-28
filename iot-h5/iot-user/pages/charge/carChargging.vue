@@ -28,13 +28,13 @@
 				<view class="detail-item">{{voltage}}<br><span>电压 (V)</span></view>
 				<view class="detail-item">{{temperature}}<br><span>枪温 (C)</span></view>
 			</view>
-			<button class="stop-charging">结束充电</button>
+			<button class="stop-charging" @click="_stopCharge">结束充电</button>
 		</view>
 	</view>
 </template>
 
 <script>
-	import {queryCarChargeProcess} from '@/api/machine/machineApi.js';
+	import {stopCarCharge,getChargeMachineOrder,queryCarChargeProcess} from '@/api/machine/machineApi.js';
 	export default {
 		data() {
 			return {
@@ -48,6 +48,10 @@
 				electric: 10,
 				voltage: 220,
 				temperature: 35,
+				machineId:'',
+				portId:'',
+				portName:'',
+				machineName:'',
 				backgroupProcess: {
 
 				},
@@ -58,6 +62,7 @@
 			this.orderId = options.orderId;
 			this.communityId = options.communityId;
 			this.updateProgress();
+			this._loadChargeMachineOrder();
 			this._queryCarChargeState();
 			
 		},
@@ -67,6 +72,27 @@
 					background: 'conic-gradient(#9acd32 calc(var(--progress, ' + this.process +
 						') * 1%),#fff calc(var(--progress, 0) * 1%))'
 				}
+			},
+			_loadChargeMachineOrder:function(){
+				let _that = this;
+				getChargeMachineOrder({
+					communityId:this.communityId,
+					page:1,
+					row:1,
+					orderId:this.orderId
+				}).then(_data =>{
+					_that.machineId = _data[0].machineId;
+					_that.portId= _data[0].portId;
+					_that.portName= _data[0].portName;
+					_that.machineName= _data[0].machineName;
+					// todo 充电完成或充电失败 
+					if(_data[0].state == '2002' || _data[0].state == '3003'){
+						uni.navigateTo({
+							url: '/pages/charge/chargeCarOrder?orderId=' + _that.orderId +
+								'&communityId=' + _that.communityId
+						});
+					}
+				})
 			},
 			_queryCarChargeState:function(){
 				let _that = this;
@@ -95,8 +121,34 @@
 					_that._queryCarChargeState();
 					if(_that.process < 100){
 						_that._heartbeatState();
+					}else{
+						uni.navigateTo({
+							url: '/pages/charge/chargeCarOrder?orderId=' + _that.orderId +
+								'&communityId=' + _that.communityId
+						});
 					}
 				},10000);
+			},
+			_stopCharge: function() {
+				let _that = this;
+				stopCarCharge({
+					orderId: this.orderId,
+					machineId:this.machineId,
+					portId:this.portId,
+					communityId:this.communityId
+				}).then(_data => {
+					if(_data.code != 0){
+						uni.showToast({
+							icon:'none',
+							title:_data.msg
+						});
+						return ;
+					}
+					uni.navigateTo({
+						url: '/pages/charge/chargeCarOrder?orderId=' + _that.orderId +
+							'&communityId=' + _that.communityId
+					});
+				})
 			}
 		}
 	}
