@@ -46,13 +46,13 @@ public class QueryCarChargeProcessCmd extends Cmd {
          * todo 这里实现查询充电进度
          */
         JSONObject data = new JSONObject();
-        data.put("process", 40);
-        data.put("min", 10);
-        data.put("charged", 3.17);
-        data.put("chargeMoney", 2.01);
-        data.put("electric", 10);
-        data.put("voltage", 220);
-        data.put("temperature", 35);
+        data.put("process", 40); // todo 充电进度
+        data.put("min", 10); // 剩余分钟数
+        data.put("charged", 3.17); // 已充电量
+        data.put("chargeMoney", 2.01); // todo 已充金额
+        data.put("electric", 10); // 电流
+        data.put("voltage", 220); // 电压
+        data.put("temperature", 35); // 温度
         context.setResponseEntity(ResultVo.createResponseEntity(data));
     }
 }
