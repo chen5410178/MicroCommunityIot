@@ -133,7 +133,18 @@ public class StopCarChargeCmd extends Cmd {
             return;
         }
 
-
+//        ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
+//        chargeMachineOrderDto.setState(ChargeMachineOrderDto.STATE_DOING);
+//        chargeMachineOrderDto.setCommunityId(chargeMachineDto.getCommunityId());
+//        chargeMachineOrderDto.setMachineId(chargeMachineDto.getMachineId());
+//        List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
+//
+//        ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
+//        chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
+//        chargeMachineOrderPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
+//        chargeMachineOrderPo.setState("4004");
+//        chargeMachineOrderPo.setRemark("等待结算");
+//        chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
 
         context.setResponseEntity(ResultVo.createResponseEntity(resultVo));
     }

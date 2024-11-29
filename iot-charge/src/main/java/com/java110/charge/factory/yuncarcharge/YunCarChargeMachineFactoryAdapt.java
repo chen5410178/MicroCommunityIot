@@ -2,20 +2,18 @@ package com.java110.charge.factory.yuncarcharge;
 
 import com.java110.bean.ResultVo;
 import com.java110.charge.factory.IChargeFactoryAdapt;
-import com.java110.core.cache.UrlCache;
 import com.java110.core.exception.CmdException;
-import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.*;
+import com.java110.core.utils.BytesUtil;
+import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.chargeMachine.*;
-import com.java110.dto.chargePeakAlleyPrice.ChargePeakAlleyPriceDto;
-import com.java110.dto.chargeRulePrice.ChargeRulePriceDto;
 import com.java110.dto.data.NettyReplyDataDto;
 import com.java110.intf.charge.*;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
 import com.java110.po.chargeMachine.ChargeMachinePo;
 import com.java110.po.chargeMachineOrder.ChargeMachineOrderPo;
 import com.java110.po.chargeMachinePort.ChargeMachinePortPo;
-import com.java110.po.chargeProcessInfo.ChargeProcessInfoPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,26 +21,130 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service("yunCarChargeMachineFactory")
 public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
+    private static Logger logger = LoggerFactory.getLogger(YunCarChargeMachineFactoryAdapt.class);
+
+    @Autowired
+    private INotifyNettyDataV1InnerServiceSMO notifyNettyDataV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IChargeMachineV1InnerServiceSMO chargeMachineV1InnerServiceSMOImpl;
+
+    @Autowired
+    private INotifyChargeV1InnerServiceSMO notifyChargeV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IChargeMachinePortV1InnerServiceSMO chargeMachinePortV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IChargeMachineOrderV1InnerServiceSMO chargeMachineOrderV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IChargeRuleFeeV1InnerServiceSMO chargeRuleFeeV1InnerServiceSMOImpl;
+
+    public static final Map<String, String> resultMap = new HashMap<>();
+
+    static {
+        /**
+         * 1：计时结束
+         * 2：充满结束
+         * 3：手动结束
+         * 4：功率过大
+         * 5：空载结束
+         * 6：中途异常拔
+         * 掉插座
+         */
+        resultMap.put("1", "计时结束");
+        resultMap.put("2", "充满结束");
+        resultMap.put("3", "手动结束");
+        resultMap.put("4", "功率过大");
+        resultMap.put("5", "空载结束");
+        resultMap.put("6", "中途异常拔");
+    }
 
     @Override
     public ResultVo startCharge(ChargeMachineDto chargeMachineDto, ChargeMachinePortDto chargeMachinePortDto, String chargeType, double duration, String orderId) {
-        return null;
+
+        //枪头
+        int port = Integer.parseInt(chargeMachinePortDto.getPortCode()) - 1;
+        String portHex = String.format("%02x", port);
+        System.out.println(portHex);
+        //notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+
+        return new ResultVo(ResultVo.CODE_OK, "启动成功008648");
+    }
+
+    /**
+     * 计算最大功率
+     *
+     * @param chargeMachineDto
+     * @return
+     */
+    private int getMaxEnery(ChargeMachineDto chargeMachineDto) {
+
+        int maxW = 800;
+        if (StringUtil.isEmpty(chargeMachineDto.getRuleId())) {
+            return maxW;
+        }
+
+        ChargeRuleFeeDto chargeRuleFeeDto = new ChargeRuleFeeDto();
+        chargeRuleFeeDto.setRuleId(chargeMachineDto.getRuleId());
+        List<ChargeRuleFeeDto> chargeRuleFeeDtos = chargeRuleFeeV1InnerServiceSMOImpl.queryChargeRuleFees(chargeRuleFeeDto);
+        if (ListUtil.isNull(chargeRuleFeeDtos)) {
+            return maxW;
+        }
+
+        maxW = (int) Double.parseDouble(chargeRuleFeeDtos.get(0).getMaxEnergyPrice());
+        int tmpMaxW = 0;
+        for (ChargeRuleFeeDto tmpChargeRuleFeeDto : chargeRuleFeeDtos) {
+            tmpMaxW = (int) Double.parseDouble(tmpChargeRuleFeeDto.getMaxEnergyPrice());
+            if (tmpMaxW > maxW) {
+                maxW = tmpMaxW;
+            }
+        }
+        //todo 极端情况
+        if (tmpMaxW <= 20) {
+            maxW = 800;
+        }
+
+        return maxW;
     }
 
     @Override
     public ResultVo stopCharge(ChargeMachineDto chargeMachineDto, ChargeMachinePortDto chargeMachinePortDto) {
-        return null;
+        //枪头
+        int port = Integer.parseInt(chargeMachinePortDto.getPortCode()) - 1;
+        String portHex = String.format("%02x", port);
+
+        ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
+        chargeMachineOrderDto.setPortId(chargeMachinePortDto.getPortId());
+        chargeMachineOrderDto.setCommunityId(chargeMachinePortDto.getCommunityId());
+        chargeMachineOrderDto.setMachineId(chargeMachinePortDto.getMachineId());
+        List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
+
+        if (ListUtil.isNull(chargeMachineOrderDtos)) {
+            return new ResultVo(ResultVo.CODE_OK, "停止成功");
+        }
+        //todo 设备不上传结束的指令上来 所以需要 自己手工结束下
+        NotifyChargeOrderDto notifyChargeOrderDto = new NotifyChargeOrderDto();
+        notifyChargeOrderDto.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
+        notifyChargeOrderDto.setMachineCode(chargeMachineDto.getMachineCode());
+        notifyChargeOrderDto.setPortCode(chargeMachinePortDto.getPortCode());
+        notifyChargeOrderDto.setBodyParam("");
+        notifyChargeOrderDto.setReason("停止成功");
+        notifyChargeOrderDto.setEnergy(chargeMachineOrderDtos.get(0).getEnergy());
+
+        notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);
+
+        return new ResultVo(ResultVo.CODE_OK, "结束成功");
     }
 
     @Override
     public ChargeMachinePortDto getChargePortState(ChargeMachineDto chargeMachineDto, ChargeMachinePortDto chargeMachinePortDto) {
-        return null;
+        return chargeMachinePortDto;
     }
 
     @Override
@@ -53,6 +155,30 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     @Override
     public void queryChargeMachineState(ChargeMachineDto chargeMachineDto) {
 
+        String heartbeatTime = chargeMachineDto.getHeartbeatTime();
+        try {
+            if (StringUtil.isEmpty(heartbeatTime)) {
+                chargeMachineDto.setStateName("设备离线");
+                chargeMachineDto.setState("OFFLINE");
+            } else {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(DateUtil.getDateFromString(heartbeatTime, DateUtil.DATE_FORMATE_STRING_A));
+                calendar.add(Calendar.MINUTE, 2);
+                if (calendar.getTime().getTime() <= DateUtil.getCurrentDate().getTime()) {
+                    chargeMachineDto.setStateName("设备离线");
+                    chargeMachineDto.setState("OFFLINE");
+                } else {
+                    chargeMachineDto.setStateName("设备在线");
+                    chargeMachineDto.setState("ONLINE");
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            chargeMachineDto.setStateName("设备离线");
+            chargeMachineDto.setState("OFFLINE");
+
+        }
+
     }
 
     @Override
@@ -61,12 +187,271 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     }
 
     @Override
-    public void chargeResult(ChargeMachineDto chargeMachineDto, byte[] data) {
+    public ResultVo restartMachine(ChargeMachineDto chargeMachineDto) {
 
+        String paramOut = YunCarUtil.requestMachineData(YunCarUtil.CMD_RESTART, chargeMachineDto.getMachineCode(), "");
+
+        return new ResultVo(ResultVo.CODE_OK, "充电桩重启成功");
     }
 
     @Override
-    public ResultVo restartMachine(ChargeMachineDto chargeMachineDto) {
-        return null;
+    public void chargeResult(ChargeMachineDto chargeMachineDto, byte[] data) {
+
+        //todo 解析指令
+        String cmd = YunCarUtil.getCmd(data);
+
+        logger.debug("设备 {} ，解析到 指令为 ：{}", chargeMachineDto.getMachineCode(), cmd);
+
+        //todo 查询设备是否在线
+        ChargeMachineDto tmpChargeMachineDto = new ChargeMachineDto();
+        tmpChargeMachineDto.setMachineId(chargeMachineDto.getMachineId());
+        tmpChargeMachineDto.setMachineCode(chargeMachineDto.getMachineCode());
+        List<ChargeMachineDto> chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(tmpChargeMachineDto);
+
+        if (ListUtil.isNull(chargeMachineDtos)) {
+            throw new CmdException("设备不存在");
+        }
+
+
+        switch (cmd) {
+            case YunCarUtil.CMD_REGISTER: //todo 注册
+                machineRegister(chargeMachineDto, data, YunCarUtil.getCmdContext(data));
+                break;
+            case YunCarUtil.CMD_HEARTBEAT: // todo 心跳
+                machineHeartbeat(chargeMachineDto, data);
+                break;
+            case YunCarUtil.CMD_CHARGE_END:// todo 充电结束
+                machineChargeEnd(chargeMachineDto, data);
+                break;
+            case YunCarUtil.CMD_UPLOAD_CHARGE_DATA:// todo 充电过程中上报 功率
+                machineUploadChargeData(chargeMachineDto, data);
+                break;
+            case YunCarUtil.CMD_CHANGE_PORT_STATE:// todo 充电过程中上报 功率
+                machineChangePortState(chargeMachineDto, data);
+                break;
+
+
+        }
+
+
     }
+
+    /**
+     * 插座状态改变上报
+     *
+     * @param chargeMachineDto
+     * @param data
+     */
+    private void machineChangePortState(ChargeMachineDto chargeMachineDto, byte[] data) {
+        String dataHex = YunCarUtil.getCmdContext(data);
+
+        // todo 插座
+        int port = Integer.parseInt(dataHex.substring(0, 2), 16) + 1;
+
+        // todo 状态
+        int state = Integer.parseInt(dataHex.substring(2, 4), 16);
+
+        ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
+        chargeMachinePortDto.setMachineId(chargeMachineDto.getMachineId());
+        chargeMachinePortDto.setPortCode(port + "");
+        List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
+        if (!ListUtil.isNull(chargeMachinePortDtos)) {
+            ChargeMachinePortPo chargeMachinePortPo = new ChargeMachinePortPo();
+            chargeMachinePortPo.setPortId(chargeMachinePortDtos.get(0).getPortId());
+            chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_FREE);
+            if (state == 1) {
+                chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_WORKING);
+            }
+            if (state == 2) {
+                chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_BREAKDOWN);
+            }
+            chargeMachinePortV1InnerServiceSMOImpl.updateChargeMachinePort(chargeMachinePortPo);
+        }
+
+        String paramOut = String.format("%02x", 1);
+
+        paramOut = YunCarUtil.computeResultDate(data, chargeMachineDto.getMachineCode(), paramOut);
+
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+    }
+
+    /**
+     * 充电数据上报
+     *
+     * @param chargeMachineDto
+     * @param data
+     */
+    private void machineUploadChargeData(ChargeMachineDto chargeMachineDto, byte[] data) {
+
+        String param = YunCarUtil.getCmdContext(data);
+
+        //todo 设备当前信号值 丢弃
+        param = param.substring(2);
+
+
+        List<String> portWs = new ArrayList<>();
+        String w = "";
+        for (int port = 0; port < param.length(); port++) {
+            w += param.charAt(port);
+            if (w.length() == 4) {
+                portWs.add(w);
+                w = "";
+            }
+        }
+
+        int energy = 0;
+        for (int port = 0; port < portWs.size(); port++) {
+
+            energy = Integer.parseInt(portWs.get(port), 16);
+            if (energy <= 0) {
+                continue;
+            }
+
+            ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
+            chargeMachinePortDto.setMachineId(chargeMachineDto.getMachineId());
+            chargeMachinePortDto.setPortCode((port + 1) + "");
+            List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
+            if (ListUtil.isNull(chargeMachinePortDtos)) {
+                continue;
+            }
+
+            ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
+            chargeMachineOrderDto.setMachineId(chargeMachineDto.getMachineId());
+            chargeMachineOrderDto.setPortId(chargeMachinePortDtos.get(0).getPortId());
+            chargeMachineOrderDto.setState(ChargeMachineOrderDto.STATE_DOING);
+            List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
+            if (ListUtil.isNull(chargeMachineOrderDtos)) {
+                continue;
+            }
+
+            ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
+            chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
+            chargeMachineOrderPo.setEnergy(energy + "");
+            chargeMachineOrderPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
+            chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
+        }
+
+        String paramOut = String.format("%02x", 1);
+
+        paramOut = YunCarUtil.computeResultDate(data, chargeMachineDto.getMachineCode(), paramOut);
+
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+
+    }
+
+    /**
+     * 充电结束
+     * 例如 ： 7e5d7d7f00360001110f38363135353130353730303536393601ca00100500484331313230323331313230353832313030303500000000655b08ca0c
+     *
+     * @param chargeMachineDto
+     * @param data
+     */
+    private void machineChargeEnd(ChargeMachineDto chargeMachineDto, byte[] data) {
+
+        String dataHex = YunCarUtil.getCmdContext(data);
+
+        // todo 结束原因
+        int reason = Integer.parseInt(dataHex.substring(0, 2), 16);
+
+        // todo 插座
+        int port = Integer.parseInt(dataHex.substring(2, 4), 16) + 1;
+
+        //todo 订单号
+        String orderHex = dataHex.substring(4, 44);
+
+        String orderNum = null;
+        try {
+            orderNum = new String(BytesUtil.hexStringToByteArray(orderHex), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        //todo 充电电量
+        int e = Integer.parseInt(dataHex.substring(44, 48), 16);
+        //todo 结束时功率
+        //int w = Integer.parseInt(dataHex.substring(48, 52), 16);
+
+        ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
+        chargeMachineOrderDto.setOrderId(orderNum.substring(2));
+        List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
+        if (ListUtil.isNull(chargeMachineOrderDtos)) {
+            throw new CmdException("订单不存在");
+        }
+
+        Date nowTime = DateUtil.getCurrentDate();
+        //支付完成超过15分钟
+
+       double tHours = (nowTime.getTime() - DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime()).getTime()) / (60 * 60 * 1000 * 1.00);
+
+        int w = 0;
+        if(tHours <= 0){
+            w = e;
+        }else{
+            w = new Double(Math.ceil(e/tHours)).intValue();
+        }
+
+        String remark = resultMap.containsKey(reason + "") ? resultMap.get(reason + "") : "未知原因";
+
+        // JSONObject param = JSONObject.parseObject(postInfo);
+        NotifyChargeOrderDto notifyChargeOrderDto = new NotifyChargeOrderDto();
+        notifyChargeOrderDto.setOrderId(orderNum.substring(2));
+        notifyChargeOrderDto.setMachineCode(chargeMachineDto.getMachineCode());
+        notifyChargeOrderDto.setPortCode(port + "");
+        notifyChargeOrderDto.setBodyParam("");
+        notifyChargeOrderDto.setReason(remark);
+        notifyChargeOrderDto.setEnergy(w + "");
+
+
+        notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);
+
+        //
+        String paramOut = String.format("%02x", 1);
+
+        paramOut = YunCarUtil.computeResultDate(data, chargeMachineDto.getMachineCode(), paramOut);
+
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+
+    }
+
+    /**
+     * 心跳
+     *
+     * @param chargeMachineDto
+     * @param data
+     */
+    private void machineHeartbeat(ChargeMachineDto chargeMachineDto, byte[] data) {
+
+        ChargeMachinePo chargeMachinePo = new ChargeMachinePo();
+        chargeMachinePo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        chargeMachinePo.setMachineId(chargeMachineDto.getMachineId());
+        chargeMachinePo.setMachineCode(chargeMachineDto.getMachineCode());
+        chargeMachineV1InnerServiceSMOImpl.updateChargeMachine(chargeMachinePo);
+
+        long curUnit = new Date().getTime() / 1000;
+
+        String paramOut = String.format("%x", curUnit);
+
+        paramOut = YunCarUtil.computeResultDate(data, chargeMachineDto.getMachineCode(), paramOut);
+
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+    }
+
+    /**
+     * 设备注册
+     *
+     * @param chargeMachineDto
+     * @param data
+     * @param cmdContext
+     */
+    private void machineRegister(ChargeMachineDto chargeMachineDto, byte[] data, String cmdContext) {
+
+        long curUnit = new Date().getTime() / 1000;
+
+        String paramOut = String.format("%x", curUnit);
+
+        paramOut = YunCarUtil.computeResultDate(data, chargeMachineDto.getMachineCode(), paramOut);
+
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+    }
+
+
 }

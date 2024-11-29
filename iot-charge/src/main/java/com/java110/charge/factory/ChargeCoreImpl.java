@@ -28,8 +28,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.java110.dto.chargeMachine.ChargeRuleFeeDto.CHARGE_TYPE_MOTORCYCLE;
-import static com.java110.dto.chargeMachine.ChargeRuleFeeDto.CHARGE_TYPE_CAR;
 
 /**
  * 充电核心类

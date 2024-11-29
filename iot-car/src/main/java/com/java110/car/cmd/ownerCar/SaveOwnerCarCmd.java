@@ -139,17 +139,10 @@ public class SaveOwnerCarCmd extends Cmd {
             reqJson.put("leaseType", OwnerCarDto.LEASE_TYPE_MONTH);
         }
 
-        String startTime = reqJson.getString("startTime");
-        String endTime = reqJson.getString("endTime");
-        if(StringUtil.isEmpty(startTime)){
-            startTime = DateUtil.getFormatTimeString(new Date(), DateUtil.DATE_FORMATE_STRING_B);
-            reqJson.put("startTime",startTime);
+        if (!OwnerCarDto.LEASE_TYPE_MONTH.equals(reqJson.getString("leaseType"))) {
+            reqJson.put("startTime", DateUtil.getFormatTimeString(new Date(), DateUtil.DATE_FORMATE_STRING_B));
+            reqJson.put("endTime", "2050-01-01");
         }
-        if(StringUtil.isEmpty(endTime)){
-            endTime = "2050-01-01";
-            reqJson.put("endTime",endTime);
-        }
-
         JSONObject businessOwnerCar = new JSONObject();
         businessOwnerCar.putAll(reqJson);
         businessOwnerCar.put("memberId", GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_carId));

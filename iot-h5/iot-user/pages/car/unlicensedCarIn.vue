@@ -7,25 +7,25 @@
 				<text>{{communityName}}</text>
 			</view>
 
-			<view class="tips_block">
+			<!-- <view class="tips_block">
 			</view>
 			<view class="cu-bar btn-group " style="margin-top: 30px;">
 				<button @click="_changeFlag('phone')" style="margin-right: 0px;"
 					class="cu-btn  shadow-blur lg" :class="{'bg-blue':showFlag == 'phone','line-blue':showFlag != 'phone'}">手机号</button>
 				<button @click="_changeFlag('car')" style="margin-left: 0px;"
 					class="cu-btn shadow-blur  lg" :class="{'bg-blue':showFlag == 'car','line-blue':showFlag != 'car'}">车牌号</button>
-			</view>
-			<view v-if="showFlag == 'phone'">
+			</view> -->
+			<view>
 				<view class='tips'>
 					<text>请输入手机号</text>
 				</view>
 				<view class="plate-input-body">
 					<view class="plate-input-content" >
-						<input type="number" maxlength="11" class="input-ui" v-model="carNum" placeholder="手机号作为车牌号入场"/>
+						<input type="number" maxlength="11" class="input-ui" v-model="telNum" placeholder="手机号作为车牌号入场"/>
 					</view>
 				</view>
 			</view>
-			<view v-if="showFlag == 'car'">
+			<view>
 				<view class='tips'>
 					<text>点击方框输入车牌号</text>
 				</view>
@@ -68,7 +68,7 @@
 
 			<view class="plat-btn-black"></view>
 			<view class="cu-bar btn-group" style="margin-top: 30px;">
-				<button @click="_saveCarNum" :disabled="carNum == ''"
+				<button @click="_saveCarNum" 
 					class="cu-btn bg-green shadow-blur round lg">立即入场</button>
 			</view>
 		</view>
@@ -124,6 +124,7 @@
 					index7: ""
 				},
 				carNum: '',
+				telNum: '',
 				communityId: '',
 				communityName:'',
 				appId: '',
@@ -205,6 +206,7 @@
 				customCarInOut({
 					communityId: _that.communityId,
 					carNum: _that.carNum,
+					telNum: _that.telNum,
 					machineId: _that.machineId,
 					type: '1101',
 					unlicense:'T'
