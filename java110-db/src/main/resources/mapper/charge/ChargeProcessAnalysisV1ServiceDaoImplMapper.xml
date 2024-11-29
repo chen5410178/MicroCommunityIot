@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="chargeProcessAnalysisV1ServiceDaoImpl">
+
+
+
+
+
+    <!-- 保存充电过程数据分析信息 add by wuxw 2018-07-03 -->
+    <insert id="saveChargeProcessAnalysisInfo" parameterType="Map">
+        insert into charge_process_analysis(
+gun_num,order_id,accumulated_charging_time,output_voltage,soc,cpa_id,remark,charging_degree,inserted_gun,output_current,remaining_time,gun_line_tem,back_in_place,batterypack_max_tem,machine_id,pile_num,calculated_charging_degree,hardware_failure,recharge_amount,gun_code,community_id,status
+) values (
+#{gunNum},#{orderId},#{accumulatedChargingTime},#{outputVoltage},#{soc},#{cpaId},#{remark},#{chargingDegree},#{insertedGun},#{outputCurrent},#{remainingTime},#{gunLineTem},#{backInPlace},#{batterypackMaxTem},#{machineId},#{pileNum},#{calculatedChargingDegree},#{hardwareFailure},#{rechargeAmount},#{gunCode},#{communityId},#{status}
+)
+    </insert>
+
+
+
+    <!-- 查询充电过程数据分析信息 add by wuxw 2018-07-03 -->
+    <select id="getChargeProcessAnalysisInfo" parameterType="Map" resultType="Map">
+        select  t.gun_num,t.gun_num gunNum,t.order_id,t.order_id orderId,t.accumulated_charging_time,t.accumulated_charging_time accumulatedChargingTime,t.output_voltage,t.output_voltage outputVoltage,t.soc,t.cpa_id,t.cpa_id cpaId,t.status_cd,t.status_cd statusCd,t.remark,t.charging_degree,t.charging_degree chargingDegree,t.inserted_gun,t.inserted_gun insertedGun,t.output_current,t.output_current outputCurrent,t.remaining_time,t.remaining_time remainingTime,t.gun_line_tem,t.gun_line_tem gunLineTem,t.back_in_place,t.back_in_place backInPlace,t.batterypack_max_tem,t.batterypack_max_tem batterypackMaxTem,t.machine_id,t.machine_id machineId,t.pile_num,t.pile_num pileNum,t.calculated_charging_degree,t.calculated_charging_degree calculatedChargingDegree,t.hardware_failure,t.hardware_failure hardwareFailure,t.recharge_amount,t.recharge_amount rechargeAmount,t.create_time,t.create_time createTime,t.gun_code,t.gun_code gunCode,t.community_id,t.community_id communityId,t.status 
+from charge_process_analysis t 
+where 1 =1 
+<if test="gunNum !=null and gunNum != ''">
+   and t.gun_num= #{gunNum}
+</if> 
+<if test="orderId !=null and orderId != ''">
+   and t.order_id= #{orderId}
+</if> 
+<if test="accumulatedChargingTime !=null and accumulatedChargingTime != ''">
+   and t.accumulated_charging_time= #{accumulatedChargingTime}
+</if> 
+<if test="outputVoltage !=null and outputVoltage != ''">
+   and t.output_voltage= #{outputVoltage}
+</if> 
+<if test="soc !=null and soc != ''">
+   and t.soc= #{soc}
+</if> 
+<if test="cpaId !=null and cpaId != ''">
+   and t.cpa_id= #{cpaId}
+</if> 
+<if test="statusCd !=null and statusCd != ''">
+   and t.status_cd= #{statusCd}
+</if> 
+<if test="remark !=null and remark != ''">
+   and t.remark= #{remark}
+</if> 
+<if test="chargingDegree !=null and chargingDegree != ''">
+   and t.charging_degree= #{chargingDegree}
+</if> 
+<if test="insertedGun !=null and insertedGun != ''">
+   and t.inserted_gun= #{insertedGun}
+</if> 
+<if test="outputCurrent !=null and outputCurrent != ''">
+   and t.output_current= #{outputCurrent}
+</if> 
+<if test="remainingTime !=null and remainingTime != ''">
+   and t.remaining_time= #{remainingTime}
+</if> 
+<if test="gunLineTem !=null and gunLineTem != ''">
+   and t.gun_line_tem= #{gunLineTem}
+</if> 
+<if test="backInPlace !=null and backInPlace != ''">
+   and t.back_in_place= #{backInPlace}
+</if> 
+<if test="batterypackMaxTem !=null and batterypackMaxTem != ''">
+   and t.batterypack_max_tem= #{batterypackMaxTem}
+</if> 
+<if test="machineId !=null and machineId != ''">
+   and t.machine_id= #{machineId}
+</if> 
+<if test="pileNum !=null and pileNum != ''">
+   and t.pile_num= #{pileNum}
+</if> 
+<if test="calculatedChargingDegree !=null and calculatedChargingDegree != ''">
+   and t.calculated_charging_degree= #{calculatedChargingDegree}
+</if> 
+<if test="hardwareFailure !=null and hardwareFailure != ''">
+   and t.hardware_failure= #{hardwareFailure}
+</if> 
+<if test="rechargeAmount !=null and rechargeAmount != ''">
+   and t.recharge_amount= #{rechargeAmount}
+</if> 
+<if test="createTime !=null and createTime != ''">
+   and t.create_time= #{createTime}
+</if> 
+<if test="gunCode !=null and gunCode != ''">
+   and t.gun_code= #{gunCode}
+</if> 
+<if test="communityId !=null and communityId != ''">
+   and t.community_id= #{communityId}
+</if> 
+<if test="status !=null and status != ''">
+   and t.status= #{status}
+</if> 
+order by t.create_time desc
+<if test="page != -1 and page != null ">
+   limit #{page}, #{row}
+</if> 
+
+    </select>
+
+
+
+
+    <!-- 修改充电过程数据分析信息 add by wuxw 2018-07-03 -->
+    <update id="updateChargeProcessAnalysisInfo" parameterType="Map">
+        update  charge_process_analysis t set t.status_cd = #{statusCd}
+<if test="newBId != null and newBId != ''">
+,t.b_id = #{newBId}
+</if> 
+<if test="gunNum !=null and gunNum != ''">
+, t.gun_num= #{gunNum}
+</if> 
+<if test="orderId !=null and orderId != ''">
+, t.order_id= #{orderId}
+</if> 
+<if test="accumulatedChargingTime !=null and accumulatedChargingTime != ''">
+, t.accumulated_charging_time= #{accumulatedChargingTime}
+</if> 
+<if test="outputVoltage !=null and outputVoltage != ''">
+, t.output_voltage= #{outputVoltage}
+</if> 
+<if test="soc !=null and soc != ''">
+, t.soc= #{soc}
+</if> 
+<if test="cpaId !=null and cpaId != ''">
+, t.cpa_id= #{cpaId}
+</if> 
+<if test="remark !=null and remark != ''">
+, t.remark= #{remark}
+</if> 
+<if test="chargingDegree !=null and chargingDegree != ''">
+, t.charging_degree= #{chargingDegree}
+</if> 
+<if test="insertedGun !=null and insertedGun != ''">
+, t.inserted_gun= #{insertedGun}
+</if> 
+<if test="outputCurrent !=null and outputCurrent != ''">
+, t.output_current= #{outputCurrent}
+</if> 
+<if test="remainingTime !=null and remainingTime != ''">
+, t.remaining_time= #{remainingTime}
+</if> 
+<if test="gunLineTem !=null and gunLineTem != ''">
+, t.gun_line_tem= #{gunLineTem}
+</if> 
+<if test="backInPlace !=null and backInPlace != ''">
+, t.back_in_place= #{backInPlace}
+</if> 
+<if test="batterypackMaxTem !=null and batterypackMaxTem != ''">
+, t.batterypack_max_tem= #{batterypackMaxTem}
+</if> 
+<if test="machineId !=null and machineId != ''">
+, t.machine_id= #{machineId}
+</if> 
+<if test="pileNum !=null and pileNum != ''">
+, t.pile_num= #{pileNum}
+</if> 
+<if test="calculatedChargingDegree !=null and calculatedChargingDegree != ''">
+, t.calculated_charging_degree= #{calculatedChargingDegree}
+</if> 
+<if test="hardwareFailure !=null and hardwareFailure != ''">
+, t.hardware_failure= #{hardwareFailure}
+</if> 
+<if test="rechargeAmount !=null and rechargeAmount != ''">
+, t.recharge_amount= #{rechargeAmount}
+</if> 
+<if test="createTime !=null and createTime != ''">
+, t.create_time= #{createTime}
+</if> 
+<if test="gunCode !=null and gunCode != ''">
+, t.gun_code= #{gunCode}
+</if> 
+<if test="communityId !=null and communityId != ''">
+, t.community_id= #{communityId}
+</if> 
+<if test="status !=null and status != ''">
+, t.status= #{status}
+</if> 
+ where 1=1 
+    </update>
+
+    <!-- 查询充电过程数据分析数量 add by wuxw 2018-07-03 -->
+     <select id="queryChargeProcessAnalysissCount" parameterType="Map" resultType="Map">
+        select  count(1) count 
+from charge_process_analysis t 
+where 1 =1 
+<if test="gunNum !=null and gunNum != ''">
+   and t.gun_num= #{gunNum}
+</if> 
+<if test="orderId !=null and orderId != ''">
+   and t.order_id= #{orderId}
+</if> 
+<if test="accumulatedChargingTime !=null and accumulatedChargingTime != ''">
+   and t.accumulated_charging_time= #{accumulatedChargingTime}
+</if> 
+<if test="outputVoltage !=null and outputVoltage != ''">
+   and t.output_voltage= #{outputVoltage}
+</if> 
+<if test="soc !=null and soc != ''">
+   and t.soc= #{soc}
+</if> 
+<if test="cpaId !=null and cpaId != ''">
+   and t.cpa_id= #{cpaId}
+</if> 
+<if test="statusCd !=null and statusCd != ''">
+   and t.status_cd= #{statusCd}
+</if> 
+<if test="remark !=null and remark != ''">
+   and t.remark= #{remark}
+</if> 
+<if test="chargingDegree !=null and chargingDegree != ''">
+   and t.charging_degree= #{chargingDegree}
+</if> 
+<if test="insertedGun !=null and insertedGun != ''">
+   and t.inserted_gun= #{insertedGun}
+</if> 
+<if test="outputCurrent !=null and outputCurrent != ''">
+   and t.output_current= #{outputCurrent}
+</if> 
+<if test="remainingTime !=null and remainingTime != ''">
+   and t.remaining_time= #{remainingTime}
+</if> 
+<if test="gunLineTem !=null and gunLineTem != ''">
+   and t.gun_line_tem= #{gunLineTem}
+</if> 
+<if test="backInPlace !=null and backInPlace != ''">
+   and t.back_in_place= #{backInPlace}
+</if> 
+<if test="batterypackMaxTem !=null and batterypackMaxTem != ''">
+   and t.batterypack_max_tem= #{batterypackMaxTem}
+</if> 
+<if test="machineId !=null and machineId != ''">
+   and t.machine_id= #{machineId}
+</if> 
+<if test="pileNum !=null and pileNum != ''">
+   and t.pile_num= #{pileNum}
+</if> 
+<if test="calculatedChargingDegree !=null and calculatedChargingDegree != ''">
+   and t.calculated_charging_degree= #{calculatedChargingDegree}
+</if> 
+<if test="hardwareFailure !=null and hardwareFailure != ''">
+   and t.hardware_failure= #{hardwareFailure}
+</if> 
+<if test="rechargeAmount !=null and rechargeAmount != ''">
+   and t.recharge_amount= #{rechargeAmount}
+</if> 
+<if test="createTime !=null and createTime != ''">
+   and t.create_time= #{createTime}
+</if> 
+<if test="gunCode !=null and gunCode != ''">
+   and t.gun_code= #{gunCode}
+</if> 
+<if test="communityId !=null and communityId != ''">
+   and t.community_id= #{communityId}
+</if> 
+<if test="status !=null and status != ''">
+   and t.status= #{status}
+</if> 
+
+
+     </select>
+
+</mapper>
