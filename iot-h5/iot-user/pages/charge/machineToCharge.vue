@@ -187,7 +187,6 @@
 				})
 			},
 			_toCharge: function() {
-
 				uni.navigateTo({
 					url: '/pages/charge/chargeConfirm?machineId=' + this.machineId +
 						"&communityId=" + this.communityId +
@@ -195,7 +194,6 @@
 						"&duration=" + this.curHours.duration +
 						"&couponIds=" + this.couponList.join(",")
 				});
-
 			},
 
 			_switchPort: function(_port) {
@@ -235,7 +233,7 @@
 			},
 			_toChargeOrder: function() {
 				uni.navigateTo({
-					url: '/pages/charge/chargeMachineOrders'
+					url: '/pages/charge/chargeMachineOrders?communityId='+this.communityId
 				})
 			}
 		}
