@@ -187,7 +187,7 @@ public class StartChargeCmd extends Cmd {
 
             List<CouponPropertyUserDto> couponPropertyUserDtos = couponPropertyUserV1InnerServiceSMOImpl.queryCouponPropertyUsers(couponPropertyUserDto);
 
-            if (couponPropertyUserDtos == null || couponPropertyUserDtos.size() < 1) {
+            if (ListUtil.isNull(couponPropertyUserDtos)) {
                 throw new CmdException("优惠券不存在");
             }
             if (!"Y".equals(couponPropertyUserDtos.get(0).getIsExpire())) {
@@ -362,14 +362,14 @@ public class StartChargeCmd extends Cmd {
                     throw new CmdException("核销失败");
                 }
 
-                CouponPropertyPoolConfigDto couponPropertyPoolConfigDto = new CouponPropertyPoolConfigDto();
-                couponPropertyPoolConfigDto.setCouponId(couponPropertyUserDtos.get(0).getCppId());
-                couponPropertyPoolConfigDto.setColumnKey("hours");
-                List<CouponPropertyPoolConfigDto> couponPropertyPoolConfigDtos = couponPropertyPoolConfigV1InnerServiceSMOImpl.queryCouponPropertyPoolConfigs(couponPropertyPoolConfigDto);
+//                CouponPropertyPoolConfigDto couponPropertyPoolConfigDto = new CouponPropertyPoolConfigDto();
+//                couponPropertyPoolConfigDto.setCouponId(couponPropertyUserDtos.get(0).getCppId());
+//                couponPropertyPoolConfigDto.setColumnKey("hours");
+//                List<CouponPropertyPoolConfigDto> couponPropertyPoolConfigDtos = couponPropertyPoolConfigV1InnerServiceSMOImpl.queryCouponPropertyPoolConfigs(couponPropertyPoolConfigDto);
+//
+//                Assert.listOnlyOne(couponPropertyPoolConfigDtos, "未包含优惠券配置信息");
 
-                Assert.listOnlyOne(couponPropertyPoolConfigDtos, "未包含优惠券配置信息");
-
-                double value = Double.parseDouble(couponPropertyPoolConfigDtos.get(0).getColumnValue());
+                double value = Double.parseDouble(couponPropertyUserDtos.get(0).getValue());
 
                 chargeMachineOrderCouponPo = new ChargeMachineOrderCouponPo();
                 chargeMachineOrderCouponPo.setCouponId(couponId);
