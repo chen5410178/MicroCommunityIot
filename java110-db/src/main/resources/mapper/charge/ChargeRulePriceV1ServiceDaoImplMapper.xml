@@ -5,138 +5,137 @@
 <mapper namespace="chargeRulePriceV1ServiceDaoImpl">
 
 
-
-
-
     <!-- 保存汽车电价信息 add by wuxw 2018-07-03 -->
     <insert id="saveChargeRulePriceInfo" parameterType="Map">
         insert into charge_rule_price(
-crp_id,service_price,price,start_time,remark,end_time,rule_id,community_id
+crp_id,cpa_id,service_price,price,start_time,remark,end_time,rule_id,community_id
 ) values (
-#{crpId},#{servicePrice},#{price},#{startTime},#{remark},#{endTime},#{ruleId},#{communityId}
+#{crpId},#{cpaId},#{servicePrice},#{price},#{startTime},#{remark},#{endTime},#{ruleId},#{communityId}
 )
     </insert>
 
 
-
     <!-- 查询汽车电价信息 add by wuxw 2018-07-03 -->
     <select id="getChargeRulePriceInfo" parameterType="Map" resultType="Map">
-        select  t.crp_id,t.crp_id crpId,t.service_price,t.service_price servicePrice,t.create_time,t.create_time createTime,t.price,t.start_time,t.start_time startTime,t.remark,t.status_cd,t.status_cd statusCd,t.end_time,t.end_time endTime,t.rule_id,t.rule_id ruleId,t.community_id,t.community_id communityId 
-from charge_rule_price t 
-where 1 =1 
-<if test="crpId !=null and crpId != ''">
-   and t.crp_id= #{crpId}
-</if> 
-<if test="servicePrice !=null and servicePrice != ''">
-   and t.service_price= #{servicePrice}
-</if> 
-<if test="createTime !=null and createTime != ''">
-   and t.create_time= #{createTime}
-</if> 
-<if test="price !=null and price != ''">
-   and t.price= #{price}
-</if> 
-<if test="startTime !=null and startTime != ''">
-   and t.start_time= #{startTime}
-</if> 
-<if test="remark !=null and remark != ''">
-   and t.remark= #{remark}
-</if> 
-<if test="statusCd !=null and statusCd != ''">
-   and t.status_cd= #{statusCd}
-</if> 
-<if test="endTime !=null and endTime != ''">
-   and t.end_time= #{endTime}
-</if> 
-<if test="ruleId !=null and ruleId != ''">
-   and t.rule_id= #{ruleId}
-</if> 
-<if test="communityId !=null and communityId != ''">
-   and t.community_id= #{communityId}
-</if> 
-order by t.create_time desc
-<if test="page != -1 and page != null ">
-   limit #{page}, #{row}
-</if> 
+        select t.crp_id,t.crp_id crpId,t.cpa_id cpaId,p.service_price,p.service_price servicePrice,t.create_time,t.create_time
+        createTime,p.price,t.start_time,t.start_time startTime,t.remark,t.status_cd,t.status_cd
+        statusCd,t.end_time,t.end_time endTime,t.rule_id,t.rule_id ruleId,t.community_id,t.community_id communityId,p.type cpaType,td.`name` cpaTypeName
+        from charge_rule_price t
+        LEFT JOIN charge_peak_alley_price p on t.cpa_id = p.cpa_id
+        LEFT JOIN t_dict td on td.status_cd = p.type and td.table_name = 'charge_peak_alley_price' and td.table_columns = 'type'
+        where 1 =1
+        <if test="crpId !=null and crpId != ''">
+            and t.crp_id= #{crpId}
+        </if>
+        <if test="servicePrice !=null and servicePrice != ''">
+            and t.service_price= #{servicePrice}
+        </if>
+        <if test="createTime !=null and createTime != ''">
+            and t.create_time= #{createTime}
+        </if>
+        <if test="price !=null and price != ''">
+            and t.price= #{price}
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            and t.start_time= #{startTime}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            and t.end_time= #{endTime}
+        </if>
+        <if test="ruleId !=null and ruleId != ''">
+            and t.rule_id= #{ruleId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        order by t.price
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
 
     </select>
 
 
-
-
     <!-- 修改汽车电价信息 add by wuxw 2018-07-03 -->
     <update id="updateChargeRulePriceInfo" parameterType="Map">
-        update  charge_rule_price t set t.status_cd = #{statusCd}
-<if test="newBId != null and newBId != ''">
-,t.b_id = #{newBId}
-</if> 
-<if test="crpId !=null and crpId != ''">
-, t.crp_id= #{crpId}
-</if> 
-<if test="servicePrice !=null and servicePrice != ''">
-, t.service_price= #{servicePrice}
-</if> 
-<if test="createTime !=null and createTime != ''">
-, t.create_time= #{createTime}
-</if> 
-<if test="price !=null and price != ''">
-, t.price= #{price}
-</if> 
-<if test="startTime !=null and startTime != ''">
-, t.start_time= #{startTime}
-</if> 
-<if test="remark !=null and remark != ''">
-, t.remark= #{remark}
-</if> 
-<if test="endTime !=null and endTime != ''">
-, t.end_time= #{endTime}
-</if> 
-<if test="ruleId !=null and ruleId != ''">
-, t.rule_id= #{ruleId}
-</if> 
-<if test="communityId !=null and communityId != ''">
-, t.community_id= #{communityId}
-</if> 
- where 1=1 
+        update charge_rule_price t set t.status_cd = #{statusCd}
+
+        <if test="cpaId !=null and cpaId != ''">
+            , t.cpa_id= #{cpaId}
+        </if>
+        <if test="servicePrice !=null and servicePrice != ''">
+            , t.service_price= #{servicePrice}
+        </if>
+        <if test="createTime !=null and createTime != ''">
+            , t.create_time= #{createTime}
+        </if>
+        <if test="price !=null and price != ''">
+            , t.price= #{price}
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            , t.start_time= #{startTime}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            , t.end_time= #{endTime}
+        </if>
+        <if test="ruleId !=null and ruleId != ''">
+            , t.rule_id= #{ruleId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="crpId !=null and crpId != ''">
+            and t.crp_id= #{crpId}
+        </if>
     </update>
 
     <!-- 查询汽车电价数量 add by wuxw 2018-07-03 -->
-     <select id="queryChargeRulePricesCount" parameterType="Map" resultType="Map">
-        select  count(1) count 
-from charge_rule_price t 
-where 1 =1 
-<if test="crpId !=null and crpId != ''">
-   and t.crp_id= #{crpId}
-</if> 
-<if test="servicePrice !=null and servicePrice != ''">
-   and t.service_price= #{servicePrice}
-</if> 
-<if test="createTime !=null and createTime != ''">
-   and t.create_time= #{createTime}
-</if> 
-<if test="price !=null and price != ''">
-   and t.price= #{price}
-</if> 
-<if test="startTime !=null and startTime != ''">
-   and t.start_time= #{startTime}
-</if> 
-<if test="remark !=null and remark != ''">
-   and t.remark= #{remark}
-</if> 
-<if test="statusCd !=null and statusCd != ''">
-   and t.status_cd= #{statusCd}
-</if> 
-<if test="endTime !=null and endTime != ''">
-   and t.end_time= #{endTime}
-</if> 
-<if test="ruleId !=null and ruleId != ''">
-   and t.rule_id= #{ruleId}
-</if> 
-<if test="communityId !=null and communityId != ''">
-   and t.community_id= #{communityId}
-</if> 
+    <select id="queryChargeRulePricesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from charge_rule_price t
+        where 1 =1
+        <if test="crpId !=null and crpId != ''">
+            and t.crp_id= #{crpId}
+        </if>
+        <if test="servicePrice !=null and servicePrice != ''">
+            and t.service_price= #{servicePrice}
+        </if>
+        <if test="createTime !=null and createTime != ''">
+            and t.create_time= #{createTime}
+        </if>
+        <if test="price !=null and price != ''">
+            and t.price= #{price}
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            and t.start_time= #{startTime}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            and t.end_time= #{endTime}
+        </if>
+        <if test="ruleId !=null and ruleId != ''">
+            and t.rule_id= #{ruleId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
 
 
-     </select>
+    </select>
 
 </mapper>

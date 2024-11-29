@@ -102,20 +102,17 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
         if (DataHeader.isSbCharge(bytes)) {
             machineCode = DataHeader.getSbMachineCode(bytes);
             machineType = MACHINE_TYPE_CHARGE;
-        }
-
-        if (DataHeader.isLvChongChong(bytes)) {
+        } else if (DataHeader.isYunKuaiChongCharge(bytes)) {
+            machineCode = DataHeader.getYKMachineCode(bytes);
+            machineType = MACHINE_TYPE_CHARGE;
+        }else if (DataHeader.isLvChongChong(bytes)) {
             machineCode = DataHeader.getLvCCMachineCode(bytes);
             machineType = MACHINE_TYPE_CHARGE;
-        }
-
-        if(DataHeader.isWorkLicense(bytes)){
+        }else if(DataHeader.isWorkLicense(bytes)){
             bytes = DataHeader.clearWorkLicense(bytes);
             machineCode = DataHeader.getWorkLicenseMachineCode(bytes);
             machineType = MACHINE_TYPE_WORK_LICENSE;
         }
-
-
         if (StringUtil.isEmpty(machineCode)) {
             return;
         }

@@ -14,6 +14,7 @@ import java.util.Date;
  * add by wuxw 2019/4/24
  **/
 public class ChargeMachineOrderDto extends PageDto implements Serializable {
+    public static final String STATE_STARTING = "1000";// 1000 等待开启充电 1001 充电中  2002 充电完成 3003 充电失败
 
     public static final String STATE_DOING = "1001";//1001 充电中  2002 充电完成 3003 充电失败
     public static final String STATE_FINISH = "2002";//1001 充电中  2002 充电完成 3003 充电失败

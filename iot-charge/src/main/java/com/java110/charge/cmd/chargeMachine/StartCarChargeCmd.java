@@ -163,15 +163,10 @@ public class StartCarChargeCmd extends Cmd {
         chargeMachinePortDto.setPortId(reqJson.getString("portId"));
         chargeMachinePortDto.setState(ChargeMachinePortDto.STATE_FREE);
         List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
-
         String orderId = GenerateCodeFactory.getGeneratorId("12");
-        //调用充电桩充电,开启充电桩
-        ResultVo resultVo = chargeCoreImpl.startCharge(chargeMachineDtos.get(0), chargeMachinePortDtos.get(0), CHARGE_TYPE_CAR, money, orderId);
-
-        if (resultVo.getCode() != ResultVo.CODE_OK) {
-            context.setResponseEntity(ResultVo.createResponseEntity(resultVo));
-            return;
-        }
+        int port = Integer.parseInt(chargeMachinePortDtos.get(0).getPortCode()) ;
+        String portHex = String.format("%02x", port);
+        orderId = chargeMachineDtos.get(0).getMachineCode() + portHex + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_DEFAULT) + orderId.substring(orderId.length() - 2);
 
         // todo 修改端口状态
         ChargeMachinePortPo chargeMachinePortPo = new ChargeMachinePortPo();
@@ -203,6 +198,15 @@ public class StartCarChargeCmd extends Cmd {
             chargeCoreImpl.stopCharge(chargeMachineDtos.get(0), chargeMachinePortDtos.get(0));
             throw new CmdException("充电失败");
         }
+
+        //调用充电桩充电,开启充电桩
+        ResultVo resultVo = chargeCoreImpl.startCharge(chargeMachineDtos.get(0), chargeMachinePortDtos.get(0), CHARGE_TYPE_CAR, money, orderId);
+
+        if (resultVo.getCode() != ResultVo.CODE_OK) {
+            context.setResponseEntity(ResultVo.createResponseEntity(resultVo));
+            return;
+        }
+
         resultVo.setData(orderId);
         // todo 直接账户预扣款
         withholdAccount(reqJson, chargeMachineDtos, orderId, money);

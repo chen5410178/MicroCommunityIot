@@ -16,6 +16,10 @@ import java.util.Date;
 public class ChargeMachinePortDto extends PageDto implements Serializable {
 
     public static final String STATE_FREE = "FREE";//设备插座工作状态，FREE 空闲，WORKING 忙碌，BREAKDOWN 故障
+
+    //todo 开启中
+    public static final String STATE_STARTING = "STARTING";//设备插座工作状态，FREE 空闲，WORKING 忙碌，BREAKDOWN 故障
+
     public static final String STATE_WORKING = "WORKING";//设备插座工作状态，FREE 空闲，WORKING 忙碌，BREAKDOWN 故障
     public static final String STATE_BREAKDOWN = "BREAKDOWN";//设备插座工作状态，FREE 空闲，WORKING 忙碌，BREAKDOWN 故障
 

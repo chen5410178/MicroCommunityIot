@@ -52,4 +52,18 @@ public interface IChargeCore {
     void queryChargeMachineState(List<ChargeMachineDto> chargeMachineDtos);
 
      boolean ifMonthCard(String personTel, String communityId);
+
+    /**
+     * 开启充电失败
+     * @param notifyChargeOrderDto
+     * @return
+     */
+    ResultVo startChargeFail(NotifyChargeOrderDto notifyChargeOrderDto);
+
+    /**
+     * 开启充电成功
+     * @param notifyChargeOrderDto
+     * @return
+     */
+    ResultVo startChargeSuccess(NotifyChargeOrderDto notifyChargeOrderDto);
 }

@@ -28,8 +28,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.java110.dto.chargeMachine.ChargeRuleFeeDto.CHARGE_TYPE_MOTORCYCLE;
-import static com.java110.dto.chargeMachine.ChargeRuleFeeDto.CHARGE_TYPE_CAR;
 
 /**
  * 充电核心类
@@ -112,35 +110,37 @@ public class ChargeCoreImpl implements IChargeCore {
 
         return resultVo;
     }
+
     /**
      * 汽车订单退款
      *
      * @param chargeMachineDto
      */
     private void returnCarOrderMoney(ChargeMachineDto chargeMachineDto,
-                                  String remark,
-                                  String energy,
-                                  List<ChargeMachineOrderDto> chargeMachineOrderDtos) {
+                                     String remark,
+                                     String amount,
+                                     String energy,
+                                     List<ChargeMachineOrderDto> chargeMachineOrderDtos) {
         ChargeRulePriceDto chargeRulePriceDto = new ChargeRulePriceDto();
         chargeRulePriceDto.setRuleId(chargeMachineDto.getRuleId());
         chargeRulePriceDto.setCommunityId(chargeMachineDto.getCommunityId());
         List<ChargeRulePriceDto> chargeRulePriceDtos = chargeRulePriceV1InnerServiceSMO.queryChargeRulePrices(chargeRulePriceDto);
-        if (chargeRulePriceDtos == null || chargeRulePriceDtos.size() < 1) {
+        if (ListUtil.isNull(chargeRulePriceDtos)) {
             throw new CmdException("未设置充值收费标准，请联系管理员！");
         }
-        BigDecimal returnMoneyDec = new BigDecimal("1");
+        BigDecimal usedHoursDec = new BigDecimal(amount);
+
+        BigDecimal returnMoneyDec = new BigDecimal(Double.parseDouble(chargeMachineOrderDtos.get(0).getAmount())).subtract(usedHoursDec);
         double returnMoney = returnMoneyDec.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
         ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
         chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
         chargeMachineOrderPo.setRemark(remark);
         chargeMachineOrderPo.setState(ChargeMachineOrderDto.STATE_FINISH);
-        BigDecimal amount = new BigDecimal(Double.parseDouble(chargeMachineOrderDtos.get(0).getAmount())).subtract(new BigDecimal(returnMoney)).setScale(2, BigDecimal.ROUND_HALF_UP);
-        chargeMachineOrderPo.setAmount(amount.doubleValue() + "");
+        chargeMachineOrderPo.setAmount(amount);
         chargeMachineOrderPo.setEndTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         chargeMachineOrderPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
         chargeMachineOrderPo.setDurationPrice("1");
-        chargeMachineOrderPo.setEnergy(energy);
 
         int flag = chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
         if (flag < 1) {
@@ -150,7 +150,7 @@ public class ChargeCoreImpl implements IChargeCore {
         AccountDto accountDto = new AccountDto();
         accountDto.setAcctId(chargeMachineOrderDtos.get(0).getAcctDetailId());
         List<AccountDto> accountDtos = accountInnerServiceSMOImpl.queryAccounts(accountDto);
-        if(ListUtil.isNull(accountDtos)){
+        if (ListUtil.isNull(accountDtos)) {
             return;
         }
 
@@ -169,7 +169,6 @@ public class ChargeCoreImpl implements IChargeCore {
             accountInnerServiceSMOImpl.prestoreAccount(accountDetailPo);
         }
 
-
         //充电表中加入退款金额
         ChargeMachineOrderAcctPo chargeMachineOrderAcctPo = new ChargeMachineOrderAcctPo();
         chargeMachineOrderAcctPo.setAcctDetailId(accountDetailPo.getDetailId());
@@ -180,7 +179,7 @@ public class ChargeCoreImpl implements IChargeCore {
         chargeMachineOrderAcctPo.setAcctId(accountDtos.get(0).getAcctId());
         chargeMachineOrderAcctPo.setStartTime(chargeMachineOrderDtos.get(0).getStartTime());
         chargeMachineOrderAcctPo.setEnergy(energy);
-        chargeMachineOrderAcctPo.setEndTime(chargeMachineOrderDtos.get(0).getEndTime());
+        chargeMachineOrderAcctPo.setEndTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         if (returnMoney < 0) {
             chargeMachineOrderAcctPo.setRemark("账户扣款-" + remark);
         } else {
@@ -277,7 +276,7 @@ public class ChargeCoreImpl implements IChargeCore {
         accountDto.setAcctId(chargeMachineOrderDtos.get(0).getAcctDetailId());
         List<AccountDto> accountDtos = accountInnerServiceSMOImpl.queryAccounts(accountDto);
 
-        if(ListUtil.isNull(accountDtos)){
+        if (ListUtil.isNull(accountDtos)) {
             return;
         }
 
@@ -338,7 +337,7 @@ public class ChargeCoreImpl implements IChargeCore {
         chargeMachineOrderDto.setCommunityId(communityId);
         //chargeMachineOrderDto.setQueryTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         chargeMachineOrderDto.setQueryStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_B));
-        chargeMachineOrderDto.setQueryEndTime(DateUtil.getAddDayStringB(new Date(),1));
+        chargeMachineOrderDto.setQueryEndTime(DateUtil.getAddDayStringB(new Date(), 1));
         List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
         if (ListUtil.isNull(chargeMachineOrderDtos)) {
             return true;
@@ -357,6 +356,7 @@ public class ChargeCoreImpl implements IChargeCore {
 
         return false;
     }
+
 
     /**
      * 优惠券抵扣 小时
@@ -424,6 +424,173 @@ public class ChargeCoreImpl implements IChargeCore {
         return chargeFactoryAdapt.getChargePortState(chargeMachineDto, chargeMachinePortDto);
     }
 
+
+    /**
+     * 汽车开启充电失败
+     *
+     * @param notifyChargeOrderDto{ orderId,
+     *                              machineCode,
+     *                              portCode,
+     *                              reason
+     *                              }
+     * @return
+     */
+    @Override
+    public ResultVo startChargeFail(NotifyChargeOrderDto notifyChargeOrderDto) {
+
+        ChargeMachineDto chargeMachineDto = new ChargeMachineDto();
+        chargeMachineDto.setMachineCode(notifyChargeOrderDto.getMachineCode());
+        List<ChargeMachineDto> chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(chargeMachineDto);
+
+        if (ListUtil.isNull(chargeMachineDtos)) {
+            return new ResultVo(ResultVo.CODE_OK, "成功");
+        }
+
+        // todo 插槽是否空闲
+
+        ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
+        chargeMachinePortDto.setMachineId(chargeMachineDtos.get(0).getMachineId());
+        chargeMachinePortDto.setPortCode(notifyChargeOrderDto.getPortCode());
+        List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
+        if (ListUtil.isNull(chargeMachinePortDtos)) {
+            throw new CmdException("插座不存在");
+        }
+        // todo 插座修改为空闲
+        ChargeMachinePortPo chargeMachinePortPo = new ChargeMachinePortPo();
+        chargeMachinePortPo.setPortId(chargeMachinePortDtos.get(0).getPortId());
+        chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_FREE);
+        chargeMachinePortV1InnerServiceSMOImpl.updateChargeMachinePort(chargeMachinePortPo);
+
+        ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
+        chargeMachineOrderDto.setMachineId(chargeMachineDtos.get(0).getMachineId());
+        chargeMachineOrderDto.setPortId(chargeMachinePortDtos.get(0).getPortId());
+        chargeMachineOrderDto.setOrderId(notifyChargeOrderDto.getOrderId());
+        List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
+
+        if (ListUtil.isNull(chargeMachineOrderDtos)) {
+            return new ResultVo(ResultVo.CODE_OK, "成功");
+        }
+
+        ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
+        chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
+        chargeMachineOrderPo.setState(ChargeMachineOrderDto.STATE_FAIL);
+        chargeMachineOrderPo.setRemark(notifyChargeOrderDto.getReason());
+        chargeMachineOrderPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
+        int flag = chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
+        if (flag < 1) {
+            throw new IllegalArgumentException("修改订单失败");
+        }
+
+        //todo 查询扣款金额
+        ChargeMachineOrderAcctDto chargeMachineOrderAcctDto = new ChargeMachineOrderAcctDto();
+        chargeMachineOrderAcctDto.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
+        chargeMachineOrderAcctDto.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
+        List<ChargeMachineOrderAcctDto> chargeMachineOrderAcctDtos =
+                chargeMachineOrderAcctV1InnerServiceSMOImpl.queryChargeMachineOrderAccts(chargeMachineOrderAcctDto);
+
+        if (ListUtil.isNull(chargeMachineOrderAcctDtos)) {
+            return new ResultVo(ResultVo.CODE_OK, "成功");
+        }
+
+        AccountDto accountDto = new AccountDto();
+        accountDto.setAcctId(chargeMachineOrderDtos.get(0).getAcctDetailId());
+        List<AccountDto> accountDtos = accountInnerServiceSMOImpl.queryAccounts(accountDto);
+        if (ListUtil.isNull(accountDtos)) {
+            return new ResultVo(ResultVo.CODE_OK, "成功");
+        }
+
+        double returnMoney = Double.parseDouble(chargeMachineOrderAcctDtos.get(0).getAmount());
+
+
+        AccountDetailPo accountDetailPo = new AccountDetailPo();
+        accountDetailPo.setAcctId(accountDtos.get(0).getAcctId());
+        accountDetailPo.setObjId(accountDtos.get(0).getObjId());
+        accountDetailPo.setObjType(accountDtos.get(0).getObjType());
+        accountDetailPo.setDetailId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_detailId));
+
+        accountDetailPo.setAmount(returnMoney + "");
+        accountDetailPo.setRemark("由于" + notifyChargeOrderDto.getReason() + "，充电退回金额-" + chargeMachineOrderDtos.get(0).getOrderId());
+        accountInnerServiceSMOImpl.prestoreAccount(accountDetailPo);
+
+
+        //充电表中加入退款金额
+        ChargeMachineOrderAcctPo chargeMachineOrderAcctPo = new ChargeMachineOrderAcctPo();
+        chargeMachineOrderAcctPo.setAcctDetailId(accountDetailPo.getDetailId());
+        chargeMachineOrderAcctPo.setAmount((-1 * returnMoney) + "");
+
+        chargeMachineOrderAcctPo.setCmoaId(GenerateCodeFactory.getGeneratorId("11"));
+        chargeMachineOrderAcctPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
+        chargeMachineOrderAcctPo.setAcctId(accountDtos.get(0).getAcctId());
+        chargeMachineOrderAcctPo.setStartTime(chargeMachineOrderDtos.get(0).getStartTime());
+        chargeMachineOrderAcctPo.setEnergy("0");
+        chargeMachineOrderAcctPo.setEndTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+
+        chargeMachineOrderAcctPo.setRemark("账户退款-" + notifyChargeOrderDto.getReason());
+
+        chargeMachineOrderAcctPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
+        //chargeMachineOrderAcctPo.setEnergy("0");
+        chargeMachineOrderAcctPo.setDurationPrice("1");
+        chargeMachineOrderAcctV1InnerServiceSMOImpl.saveChargeMachineOrderAcct(chargeMachineOrderAcctPo);
+        return new ResultVo(ResultVo.CODE_OK, "成功");
+    }
+    /**
+     * 汽车开启充电成功
+     *
+     * @param notifyChargeOrderDto{ orderId,
+     *                              machineCode,
+     *                              portCode,
+     *                              reason
+     *                              }
+     * @return
+     */
+    @Override
+    public ResultVo startChargeSuccess(NotifyChargeOrderDto notifyChargeOrderDto) {
+        ChargeMachineDto chargeMachineDto = new ChargeMachineDto();
+        chargeMachineDto.setMachineCode(notifyChargeOrderDto.getMachineCode());
+        List<ChargeMachineDto> chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(chargeMachineDto);
+
+        if (ListUtil.isNull(chargeMachineDtos)) {
+            return new ResultVo(ResultVo.CODE_OK, "成功");
+        }
+
+        // todo 插槽
+        ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
+        chargeMachinePortDto.setMachineId(chargeMachineDtos.get(0).getMachineId());
+        chargeMachinePortDto.setPortCode(notifyChargeOrderDto.getPortCode());
+        List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
+        if (ListUtil.isNull(chargeMachinePortDtos)) {
+            throw new CmdException("插座不存在");
+        }
+        // todo 插座修改为工作中
+        ChargeMachinePortPo chargeMachinePortPo = new ChargeMachinePortPo();
+        chargeMachinePortPo.setPortId(chargeMachinePortDtos.get(0).getPortId());
+        chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_WORKING);
+        chargeMachinePortV1InnerServiceSMOImpl.updateChargeMachinePort(chargeMachinePortPo);
+
+        ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
+        chargeMachineOrderDto.setMachineId(chargeMachineDtos.get(0).getMachineId());
+        chargeMachineOrderDto.setPortId(chargeMachinePortDtos.get(0).getPortId());
+        chargeMachineOrderDto.setOrderId(notifyChargeOrderDto.getOrderId());
+        List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
+
+        if (ListUtil.isNull(chargeMachineOrderDtos)) {
+            return new ResultVo(ResultVo.CODE_OK, "成功");
+        }
+        // todo 将订单修改为开始充电中
+        ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
+        chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
+        chargeMachineOrderPo.setState(ChargeMachineOrderDto.STATE_DOING);
+        chargeMachineOrderPo.setRemark(notifyChargeOrderDto.getReason());
+        chargeMachineOrderPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
+        int flag = chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
+        if (flag < 1) {
+            throw new IllegalArgumentException("修改订单失败");
+        }
+
+        return new ResultVo(ResultVo.CODE_OK, "成功");
+
+    }
+
     /**
      * 完成充电
      *
@@ -438,7 +605,7 @@ public class ChargeCoreImpl implements IChargeCore {
         chargeMachineDto.setMachineCode(notifyChargeOrderDto.getMachineCode());
         List<ChargeMachineDto> chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(chargeMachineDto);
 
-        if (chargeMachineDtos == null || chargeMachineDtos.size() < 1) {
+        if (ListUtil.isNull(chargeMachineDtos)) {
             return new ResultVo(ResultVo.CODE_OK, "成功");
         }
 
@@ -450,7 +617,7 @@ public class ChargeCoreImpl implements IChargeCore {
         //chargeMachinePortDto.setState(ChargeMachinePortDto.STATE_WORKING);
         List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
         //Assert.listOnlyOne(chargeMachinePortDtos, "插槽空闲");
-        if (chargeMachinePortDtos == null || chargeMachinePortDtos.size() < 1) {
+        if (ListUtil.isNull(chargeMachinePortDtos)) {
             throw new CmdException("插座不存在");
         }
 
@@ -462,12 +629,13 @@ public class ChargeCoreImpl implements IChargeCore {
         ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
         chargeMachineOrderDto.setMachineId(chargeMachineDtos.get(0).getMachineId());
         chargeMachineOrderDto.setPortId(chargeMachinePortDtos.get(0).getPortId());
-        chargeMachineOrderDto.setState(ChargeMachineOrderDto.STATE_DOING);
+        chargeMachineOrderDto.setOrderId(notifyChargeOrderDto.getOrderId());
         List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
 
-        if (chargeMachineOrderDtos == null || chargeMachineOrderDtos.size() < 1) {
+        if (ListUtil.isNull(chargeMachineOrderDtos)) {
             return new ResultVo(ResultVo.CODE_OK, "成功");
         }
+
 
         ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
         chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
@@ -478,21 +646,22 @@ public class ChargeCoreImpl implements IChargeCore {
             throw new IllegalArgumentException("修改订单失败");
         }
 
-        if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDtos.get(0).getChargeType())){
+        if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDtos.get(0).getChargeType())) {
             //todo 月卡直接修改状态
             if (ifMonthCard(chargeMachineOrderDtos.get(0).getPersonTel(), chargeMachinePortDtos.get(0).getCommunityId())) {
                 finishMonthCardChargeOrder(notifyChargeOrderDto, chargeMachineOrderDtos);
                 return new ResultVo(ResultVo.CODE_OK, "成功");
             }
-            returnOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getEnergy(),chargeMachineOrderDtos);
-        }else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDtos.get(0).getChargeType())){
-            returnCarOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getEnergy(),chargeMachineOrderDtos);
+            returnOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getEnergy(), chargeMachineOrderDtos);
+        } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDtos.get(0).getChargeType())) {
+            returnCarOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getAmount(), notifyChargeOrderDto.getEnergy(), chargeMachineOrderDtos);
         }
         return new ResultVo(ResultVo.CODE_OK, "成功");
     }
 
     /**
      * 结束月卡 充电订单
+     *
      * @param notifyChargeOrderDto
      * @param chargeMachineOrderDtos
      */

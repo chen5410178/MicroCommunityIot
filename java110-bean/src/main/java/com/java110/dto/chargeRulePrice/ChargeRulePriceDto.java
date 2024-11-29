@@ -22,6 +22,9 @@ public class ChargeRulePriceDto extends PageDto implements Serializable {
     private String remark;
     private String endTime;
     private String ruleId;
+    private String cpaId;
+    private String cpaType;
+    private String cpaTypeName;
     private String communityId;
 
 
@@ -94,6 +97,29 @@ public class ChargeRulePriceDto extends PageDto implements Serializable {
         this.communityId = communityId;
     }
 
+    public String getCpaId() {
+        return cpaId;
+    }
+
+    public void setCpaId(String cpaId) {
+        this.cpaId = cpaId;
+    }
+
+    public String getCpaType() {
+        return cpaType;
+    }
+
+    public void setCpaType(String cpaType) {
+        this.cpaType = cpaType;
+    }
+
+    public String getCpaTypeName() {
+        return cpaTypeName;
+    }
+
+    public void setCpaTypeName(String cpaTypeName) {
+        this.cpaTypeName = cpaTypeName;
+    }
 
     public Date getCreateTime() {
         return createTime;

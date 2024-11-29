@@ -17,6 +17,7 @@ package com.java110.po.chargeRulePrice;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
  * add by 吴学文 at 2024-07-07 10:23:05 mail: 928255095@qq.com
@@ -28,69 +29,95 @@ import java.util.Date;
 public class ChargeRulePricePo implements Serializable {
 
     private String crpId;
-private String servicePrice;
-private String price;
-private String startTime;
-private String remark;
-private String statusCd = "0";
-private String endTime;
-private String ruleId;
-private String communityId;
-public String getCrpId() {
+    private String cpaId;
+    private String servicePrice;
+    private String price;
+    private String startTime;
+    private String remark;
+    private String statusCd = "0";
+    private String endTime;
+    private String ruleId;
+    private String communityId;
+
+    public String getCrpId() {
         return crpId;
     }
-public void setCrpId(String crpId) {
+
+    public void setCrpId(String crpId) {
         this.crpId = crpId;
     }
-public String getServicePrice() {
-        return servicePrice;
-    }
-public void setServicePrice(String servicePrice) {
-        this.servicePrice = servicePrice;
-    }
-public String getPrice() {
-        return price;
-    }
-public void setPrice(String price) {
-        this.price = price;
-    }
-public String getStartTime() {
-        return startTime;
-    }
-public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-public String getRemark() {
-        return remark;
-    }
-public void setRemark(String remark) {
-        this.remark = remark;
-    }
-public String getStatusCd() {
-        return statusCd;
-    }
-public void setStatusCd(String statusCd) {
-        this.statusCd = statusCd;
-    }
-public String getEndTime() {
-        return endTime;
-    }
-public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-public String getRuleId() {
-        return ruleId;
-    }
-public void setRuleId(String ruleId) {
-        this.ruleId = ruleId;
-    }
-public String getCommunityId() {
-        return communityId;
-    }
-public void setCommunityId(String communityId) {
-        this.communityId = communityId;
+
+    public String getCpaId() {
+        return cpaId;
     }
 
+    public void setCpaId(String cpaId) {
+        this.cpaId = cpaId;
+    }
+
+    public String getServicePrice() {
+        return servicePrice;
+    }
+
+    public void setServicePrice(String servicePrice) {
+        this.servicePrice = servicePrice;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getStatusCd() {
+        return statusCd;
+    }
+
+    public void setStatusCd(String statusCd) {
+        this.statusCd = statusCd;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getRuleId() {
+        return ruleId;
+    }
+
+    public void setRuleId(String ruleId) {
+        this.ruleId = ruleId;
+    }
+
+    public String getCommunityId() {
+        return communityId;
+    }
+
+    public void setCommunityId(String communityId) {
+        this.communityId = communityId;
+    }
 
 
 }

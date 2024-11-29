@@ -49,6 +49,12 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
+                                        <button class="btn-white btn btn-xs"
+                                                v-on:click="_chargeMachineQrCode(chargeMachinePort)">
+                                            <vc:i18n name="二维码" namespace="chargeMachinePortManage"></vc:i18n>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
                                         <button class="btn-white btn btn-xs" v-on:click="_openDeleteChargeMachinePortModel(chargeMachinePort)"><span>
                                                 <vc:i18n name='删除'></vc:i18n>
                                             </span></button>
@@ -73,7 +79,7 @@
 
     <vc:create path="charge/addChargeMachinePort" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="charge/deleteChargeMachinePort"></vc:create>
-
+    <vc:create path="charge/chargeMachineQrCode"></vc:create>
     <vc:create path="charge/stopChargeMachine"></vc:create>
 
 </div>

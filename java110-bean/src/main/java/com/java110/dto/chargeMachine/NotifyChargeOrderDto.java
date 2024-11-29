@@ -18,6 +18,8 @@ public class NotifyChargeOrderDto implements Serializable {
 
     private String energy;
 
+    private String amount;
+
 
     public String getOrderId() {
         return orderId;
@@ -73,5 +75,13 @@ public class NotifyChargeOrderDto implements Serializable {
 
     public void setEnergy(String energy) {
         this.energy = energy;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 }

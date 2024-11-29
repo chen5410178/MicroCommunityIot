@@ -75,6 +75,37 @@ public class NotifyChargeV1InnerServiceSMOImpl implements INotifyChargeV1InnerSe
         return resultVo;
     }
 
+    /**
+     * 开启充电失败
+     * @param notifyChargeOrderDto 数据对象分享
+     * @return
+     */
+    @Override
+    public ResultVo startChargeFail(@RequestBody NotifyChargeOrderDto notifyChargeOrderDto) {
+        ResultVo resultVo = null;
+        try {
+            resultVo = chargeCoreImpl.startChargeFail(notifyChargeOrderDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("停止充电失败", e);
+            throw e;
+        }
+        return resultVo;
+    }
+
+    @Override
+    public ResultVo startChargeSuccess(@RequestBody NotifyChargeOrderDto notifyChargeOrderDto) {
+        ResultVo resultVo = null;
+        try {
+            resultVo = chargeCoreImpl.startChargeSuccess(notifyChargeOrderDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("停止充电失败", e);
+            throw e;
+        }
+        return resultVo;
+    }
+
     @Override
     public ResultVo workHeartbeat(@RequestBody NotifyChargeOrderDto notifyChargeOrderDto) {
         return chargeCoreImpl.workHeartbeat(notifyChargeOrderDto);

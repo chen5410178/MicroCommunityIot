@@ -65,6 +65,18 @@
                     machineId: $that.chargeMachinePortManageInfo.conditions.machineId
                 });
             },
+            _chargeMachineQrCode: function (_chargeMachinePort) {
+                let _qrCode = $that.chargeMachineInfo.qrCode + '/' + _chargeMachinePort.portId;
+                if ($that.chargeMachineInfo.chargeType == '') {
+                    let _qrCodeNew = _qrCode.replace("machineToCarCharge", "carChargePort");
+                    _qrCode = _qrCodeNew;
+                }
+                let qrCode = {
+                    qrCode: _qrCode,
+                    machineName: $that.chargeMachineInfo.machineName + _chargeMachinePort.portName
+                };
+                vc.emit('chargeMachineQrCode', 'openChargeMachineQrCodeModal', qrCode);
+            },
             _showStopCharge: function(_order) {
                 vc.emit('stopChargeMachine', 'openStopChargeMachineModal', _order);
             },

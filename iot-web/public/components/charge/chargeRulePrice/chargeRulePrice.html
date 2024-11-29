@@ -1,6 +1,6 @@
 <div class="margin-top">
     <div class="row margin-top-lg">
-        <div class="col-lg-2 padding-right-xs padding-right-xl ">
+        <div class="col-lg-5 padding-right-xs padding-right-xl ">
             <button type="button" class="btn btn-primary btn-sm" style="margin-left:10px"
                 v-on:click="_queryChargeRulePriceMethod()">
                 查询
@@ -9,6 +9,12 @@
                 <i class="glyphicon glyphicon-plus"></i>
                 <span>
                     <vc:i18n name="添加" namespace="marketTextManage"></vc:i18n>
+                </span>
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddChargePeakAlleyPriceModal()">
+                <i class="glyphicon glyphicon-plus"></i>
+                <span>
+                    <vc:i18n name="设置尖峰谷平价格" namespace="marketTextManage"></vc:i18n>
                 </span>
             </button>
         </div>
@@ -25,6 +31,9 @@
                     </th>
                     <th class="text-center">
                         <vc:i18n name='时段结束时间' namespace='chargeRulePrice'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='价格策略' namespace='chargeRulePrice'></vc:i18n>
                     </th>
                     <th class="text-center">
                         <vc:i18n name='电价' namespace='chargeRulePrice'></vc:i18n>
@@ -46,6 +55,7 @@
                     <td class="text-center">{{chargeRulePrice.crpId}}</td>
                     <td class="text-center">{{chargeRulePrice.startTime}}</td>
                     <td class="text-center">{{chargeRulePrice.endTime}}</td>
+                    <td class="text-center">{{chargeRulePrice.cpaTypeName}}</td>
                     <td class="text-center">{{chargeRulePrice.price}}</td>
                     <td class="text-center">{{chargeRulePrice.servicePrice}}</td>
                     <td class="text-center">{{chargeRulePrice.remark}}</td>
@@ -72,6 +82,7 @@
     </div>
 
     <vc:create path="charge/addChargeRulePrice" callBackListener="" callBackFunction=""></vc:create>
+    <vc:create path="charge/addChargePeakAlleyPrice" callBackListener="" callBackFunction=""></vc:create>
     <vc:create path="charge/editChargeRulePrice"></vc:create>
     <vc:create path="charge/deleteChargeRulePrice"></vc:create>
 </div>
