@@ -10,22 +10,34 @@
         </div>
         <div class="ibox-content">
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-2">
                     <div class="form-group">
                         <input type="text" :placeholder="vc.i18n('请填写优惠券编号','chargeUserCoupon')"
                             v-model="chargeUserCouponInfo.conditions.couponId" class=" form-control">
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-2">
                     <div class="form-group">
                         <input type="text" :placeholder="vc.i18n('请填写优惠券名称','chargeUserCoupon')"
                             v-model="chargeUserCouponInfo.conditions.couponName" class=" form-control">
                     </div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <div class="form-group">
                         <input type="text" :placeholder="vc.i18n('请填写有效期','chargeUserCoupon')"
                             v-model="chargeUserCouponInfo.conditions.validityDay" class=" form-control">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <input type="text" :placeholder="vc.i18n('请填写用户名称','chargeUserCoupon')"
+                            v-model="chargeUserCouponInfo.conditions.userName" class=" form-control">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <input type="text" :placeholder="vc.i18n('请填写手机号','chargeUserCoupon')"
+                            v-model="chargeUserCouponInfo.conditions.tel" class=" form-control">
                     </div>
                 </div>
                 <div class="col-sm-1">
@@ -37,23 +49,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <input type="text" :placeholder="vc.i18n('请填写用户名称','chargeUserCoupon')"
-                            v-model="chargeUserCouponInfo.conditions.userName" class=" form-control">
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <input type="text" :placeholder="vc.i18n('请填写手机号','chargeUserCoupon')"
-                            v-model="chargeUserCouponInfo.conditions.tel" class=" form-control">
-                    </div>
-                </div>
-                <div class="col-sm-1">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-2">
                     <select class="custom-select" v-model="chargeUserCouponInfo.conditions.state">
                         <option selected value="">
                             {{vc.i18n('请选择状态','chargeUserCoupon')}}
@@ -70,7 +66,7 @@
     <div class="ibox">
         <div class="ibox-title">
             <h5>
-                <vc:i18n name="业主充点券" namespace="chargeUserCoupon"></vc:i18n>
+                <vc:i18n name="业主充电券" namespace="chargeUserCoupon"></vc:i18n>
             </h5>
             <div class="ibox-tools" style="top:10px;">
 
