@@ -107,6 +107,9 @@
                         <th class="text-center">
                             <vc:i18n name='生效时间' namespace='chargeUserCoupon'></vc:i18n>
                         </th>
+                        <th class="text-center">
+                            <vc:i18n name='赠送时间' namespace='chargeUserCoupon'></vc:i18n>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -121,6 +124,7 @@
                         <td class="text-center">{{couponPropertyUser.stock}}张</td>
                         <td class="text-center">{{couponPropertyUser.state == '1001'?'未使用':'已使用'}}</td>
                         <td class="text-center">{{couponPropertyUser.startTime}}</td>
+                        <td class="text-center">{{couponPropertyUser.createTime}}</td>
 
                     </tr>
                 </tbody>
