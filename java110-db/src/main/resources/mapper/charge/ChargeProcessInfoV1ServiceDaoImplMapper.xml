@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="chargeProcessInfoV1ServiceDaoImpl">
+
+
+    <!-- 保存充电过程数据上报信息 add by wuxw 2018-07-03 -->
+    <insert id="saveChargeProcessInfoInfo" parameterType="Map">
+        insert into charge_process_info(
+cpi_id,machine_id,frame_type,community_id,type,content,order_id
+) values (
+#{cpiId},#{machineId},#{frameType},#{communityId},#{type},#{content},#{orderId}
+)
+    </insert>
+
+
+    <!-- 查询充电过程数据上报信息 add by wuxw 2018-07-03 -->
+    <select id="getChargeProcessInfoInfo" parameterType="Map" resultType="Map">
+        select t.cpi_id,t.cpi_id cpiId,t.machine_id,t.machine_id machineId,t.create_time,t.create_time
+        createTime,t.frame_type,t.frame_type frameType,t.status_cd,t.status_cd statusCd,t.community_id,t.community_id
+        communityId,t.type,t.content,t.order_id,t.order_id orderId
+        from charge_process_info t
+        where 1 =1
+        <if test="cpiId !=null and cpiId != ''">
+            and t.cpi_id= #{cpiId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="createTime !=null and createTime != ''">
+            and t.create_time= #{createTime}
+        </if>
+        <if test="frameType !=null and frameType != ''">
+            and t.frame_type= #{frameType}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="orderId !=null and orderId != ''">
+            and t.order_id= #{orderId}
+        </if>
+        <if test="type !=null and type != ''">
+            and t.type= #{type}
+        </if>
+        <if test="content !=null and content != ''">
+            and t.content= #{content}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改充电过程数据上报信息 add by wuxw 2018-07-03 -->
+    <update id="updateChargeProcessInfoInfo" parameterType="Map">
+        update charge_process_info t set t.status_cd = #{statusCd}
+        <if test="orderId !=null and orderId != ''">
+            , t.order_id= #{orderId}
+        </if>
+        <if test="cpiId !=null and cpiId != ''">
+            , t.cpi_id= #{cpiId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="createTime !=null and createTime != ''">
+            , t.create_time= #{createTime}
+        </if>
+        <if test="frameType !=null and frameType != ''">
+            , t.frame_type= #{frameType}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="type !=null and type != ''">
+            , t.type= #{type}
+        </if>
+        <if test="content !=null and content != ''">
+            , t.content= #{content}
+        </if>
+        where 1=1
+    </update>
+
+    <!-- 查询充电过程数据上报数量 add by wuxw 2018-07-03 -->
+    <select id="queryChargeProcessInfosCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from charge_process_info t
+        where 1 =1
+        <if test="cpiId !=null and cpiId != ''">
+            and t.cpi_id= #{cpiId}
+        </if>
+        <if test="orderId !=null and orderId != ''">
+            and t.order_id= #{orderId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="createTime !=null and createTime != ''">
+            and t.create_time= #{createTime}
+        </if>
+        <if test="frameType !=null and frameType != ''">
+            and t.frame_type= #{frameType}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="type !=null and type != ''">
+            and t.type= #{type}
+        </if>
+        <if test="content !=null and content != ''">
+            and t.content= #{content}
+        </if>
+
+
+    </select>
+
+</mapper>
