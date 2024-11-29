@@ -18,11 +18,15 @@
                     portCode: '',
                     communityId: vc.getCurrentCommunity().communityId
                 }
+            },
+            chargeMachineInfo: {
+
             }
         },
         _initMethod: function() {
             $that.chargeMachinePortManageInfo.conditions.machineId = vc.getParam('machineId');
             vc.component._listChargeMachinePorts(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._listChargeMachines();
         },
         _initEvent: function() {
 
@@ -34,6 +38,28 @@
             });
         },
         methods: {
+
+            _listChargeMachines: function () {
+                let param = {
+                    params: {
+                        page: 1,
+                        row: 1,
+                        communityId: vc.getCurrentCommunity().communityId,
+                        machineId: vc.getParam('machineId')
+                    }
+                };
+                //发送get请求
+                vc.http.apiGet('/chargeMachine.listChargeMachine',
+                    param,
+                    function (json, res) {
+                        let _json = JSON.parse(json);
+                        $that.chargeMachineInfo = _json.data[0];
+                    },
+                    function (errInfo, error) {
+                        console.log('请求失败处理');
+                    }
+                );
+            },
             _listChargeMachinePorts: function(_page, _rows) {
 
                 vc.component.chargeMachinePortManageInfo.conditions.page = _page;
