@@ -53,10 +53,12 @@
 				couponList: [],
 				selectCoupons: [],
 				userLink: '',
-				couponAmount: 0.0
+				couponAmount: 0.0,
+				communityId:''
 			}
 		},
 		onLoad: function(options) {
+			this.communityId = options.communityId;
 			this._loadCouponUsers();
 		},
 		methods: {
@@ -81,7 +83,7 @@
 					row: 30,
 					tel: getUserTel(),
 					state: '1001',
-					communityId:getCommunityId(),
+					communityId:this.communityId,
 					toType:'5005'
 				}
 				_that.couponList = [];

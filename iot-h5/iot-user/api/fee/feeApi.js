@@ -6,7 +6,7 @@ import url from '../../conf/url.js';
 // #ifdef H5
 const WexinPayFactory = require('../../factory/WexinPayFactory.js');
 // #endif
-export function getCouponUsers(_objData, _couponUsers) {
+export function getCouponUsers(_objData) {
 	return new Promise((resolve, reject) => {
 		requestNoAuth({
 			url: url.queryCouponUser,
@@ -15,12 +15,11 @@ export function getCouponUsers(_objData, _couponUsers) {
 			success: function(res) {
 				if (res.statusCode == 200) {
 					//成功情况下跳转
-					_couponUsers = res.data;
-					if (_couponUsers.length < 1) {
+					if (res.data.length < 1) {
 						//_that.noData = true;
 						reject();
 					}
-					resolve(_couponUsers);
+					resolve(res.data);
 					return;
 				}
 				reject();

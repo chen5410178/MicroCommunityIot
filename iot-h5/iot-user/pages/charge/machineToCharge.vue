@@ -210,7 +210,7 @@
 			_selectCoupons: function(_item) {
 				let _that = this;
 				uni.navigateTo({
-					url: '/pages/coupon/chargeCoupon'
+					url: '/pages/coupon/chargeCoupon?communityId='+this.communityId
 				})
 			},
 			_dealChargeCoupons: function() {

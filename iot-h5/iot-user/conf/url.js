@@ -16,6 +16,7 @@ export default {
 	stopCarCharge: baseUrl + "iot/api/chargeMachine.stopCarCharge", // 结束汽车充电
 	heartbeatCarCharge: baseUrl + "iot/api/chargeMachine.heartbeatCarCharge", // 心跳充电是否开启岑巩
 	queryCarChargeProcess: baseUrl + "iot/api/chargeMachine.queryCarChargeProcess", // 查询充电进度
+	queryCouponUser: baseUrl + "iot/api/coupon.listCouponPropertyUser", //查询用户优惠卷
 	
 
 	listChargeMachineOrder: baseUrl + "iot/api/chargeMachine.listChargeMachineOrder", // 查询充电订单
