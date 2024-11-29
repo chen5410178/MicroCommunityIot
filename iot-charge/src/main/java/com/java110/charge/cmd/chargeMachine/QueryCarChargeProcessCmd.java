@@ -8,14 +8,23 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
+import com.java110.dto.chargeProcessAnalysis.ChargeProcessAnalysisDto;
+import com.java110.intf.charge.IChargeProcessAnalysisV1InnerServiceSMO;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * 查询充电进度
  */
 @Java110Cmd(serviceCode = "chargeMachine.queryCarChargeProcess")
 public class QueryCarChargeProcessCmd extends Cmd {
+
+    @Autowired
+    private IChargeProcessAnalysisV1InnerServiceSMO chargeProcessAnalysisV1InnerServiceSMOImpl;
+
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
         Assert.hasKeyAndValue(reqJson, "communityId", "查询小区ID");
@@ -41,18 +50,18 @@ public class QueryCarChargeProcessCmd extends Cmd {
      */
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
-
-        /**
-         * todo 这里实现查询充电进度
-         */
+        ChargeProcessAnalysisDto chargeProcessAnalysisDto = new ChargeProcessAnalysisDto();
+        chargeProcessAnalysisDto.setOrderId(reqJson.getString("orderId"));
+        List<ChargeProcessAnalysisDto> chargeProcessAnalysiss = chargeProcessAnalysisV1InnerServiceSMOImpl.queryChargeProcessAnalysiss(chargeProcessAnalysisDto);
         JSONObject data = new JSONObject();
-        data.put("process", 40); // todo 充电进度
-        data.put("min", 10); // 剩余分钟数
-        data.put("charged", 3.17); // 已充电量
-        data.put("chargeMoney", 2.01); // todo 已充金额
-        data.put("electric", 10); // 电流
-        data.put("voltage", 220); // 电压
-        data.put("temperature", 35); // 温度
+        String[] parts = chargeProcessAnalysiss.get(0).getSoc().split("\\.");
+        data.put("process", parts[0]); //充电进度（整数部分）
+        data.put("min", chargeProcessAnalysiss.get(0).getRemainingTime()); // 剩余分钟数
+        data.put("charged", chargeProcessAnalysiss.get(0).getChargingDegree()); // 已充电量
+        data.put("chargeMoney", chargeProcessAnalysiss.get(0).getRechargeAmount()); //已充金额
+        data.put("electric", chargeProcessAnalysiss.get(0).getOutputCurrent()); // 电流
+        data.put("voltage", chargeProcessAnalysiss.get(0).getOutputVoltage()); // 电压
+        data.put("temperature", chargeProcessAnalysiss.get(0).getGunLineTem()); // 枪线温度
         context.setResponseEntity(ResultVo.createResponseEntity(data));
     }
 }
