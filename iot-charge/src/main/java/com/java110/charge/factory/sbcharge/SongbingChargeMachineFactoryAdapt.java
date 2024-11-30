@@ -71,20 +71,21 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
     @Override
     public ResultVo startCharge(ChargeMachineDto chargeMachineDto, ChargeMachinePortDto chargeMachinePortDto, String chargeType, double duration, String orderId) {
-        if (chargeType.equals("hours")) {
-            chargeType = "1";
-        } else {
-            chargeType = "0";
-        }
+//        if (chargeType.equals("hours")) {
+//            chargeType = "1";
+//        } else {
+//            chargeType = "0";
+//        }
+        chargeType = "0";
         int maxEnergy = getMaxEnery(chargeMachineDto);
         // 插座
         int port = Integer.parseInt(chargeMachinePortDto.getPortCode()) - 1;
         String portHex = String.format("%X", port);
         // 充电时间 分钟
         String chargeTime = String.format("%04X", (int) Math.round(duration * 60));
-        if (!chargeType.equals("1")) {//智能模式与免费模式
-            chargeTime = String.format("%04X",600);
-        }
+//        if (!chargeType.equals("1")) {//智能模式与免费模式
+//            chargeTime = String.format("%04X",600);
+//        }
         chargeType = String.format("%02x", Integer.parseInt(chargeType));
         // todo 最小功率
         String minW = String.format("%04x", 20);
