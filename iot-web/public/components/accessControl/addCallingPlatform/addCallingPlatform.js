@@ -1,10 +1,6 @@
 (function (vc) {
 
     vc.extends({
-        propTypes: {
-            callBackListener: vc.propTypes.string, //父组件名称
-            callBackFunction: vc.propTypes.string //父组件监听方法
-        },
         data: {
             addCallingPlatformInfo: {
                 platformName: '',
@@ -24,7 +20,7 @@
         methods: {
             addCallingPlatformValidate() {
                 return vc.validate.validate({
-                    addCallingPlatformInfo: vc.component.addCallingPlatformInfo
+                    addCallingPlatformInfo: $that.addCallingPlatformInfo
                 }, {
                     'addCallingPlatformInfo.platformName': [
                         {
@@ -67,23 +63,17 @@
                 });
             },
             saveCallingPlatformInfo: function () {
-                if (!vc.component.addCallingPlatformValidate()) {
+                if (!$that.addCallingPlatformValidate()) {
                     vc.toast(vc.validate.errInfo);
 
                     return;
                 }
 
-                vc.component.addCallingPlatformInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.addCallingPlatformInfo.communityId = vc.getCurrentCommunity().communityId;
                 //不提交数据将数据 回调给侦听处理
-                if (vc.notNull($props.callBackListener)) {
-                    vc.emit($props.callBackListener, $props.callBackFunction, vc.component.addCallingPlatformInfo);
-                    $('#addCallingPlatformModel').modal('hide');
-                    return;
-                }
-
                 vc.http.apiPost(
-                    'callingPlatform.saveCallingPlatform',
-                    JSON.stringify(vc.component.addCallingPlatformInfo),
+                    '/callingPlatform.saveCallingPlatform',
+                    JSON.stringify($that.addCallingPlatformInfo),
                     {
                         emulateJSON: true
                     },
@@ -93,23 +83,23 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#addCallingPlatformModel').modal('hide');
-                            vc.component.clearAddCallingPlatformInfo();
+                            $that.clearAddCallingPlatformInfo();
                             vc.emit('callingPlatformManage', 'listCallingPlatform', {});
 
                             return;
                         }
-                        vc.message(_json.msg);
+                        vc.toast(_json.msg);
 
                     },
                     function (errInfo, error) {
                         console.log('请求失败处理');
 
-                        vc.message(errInfo);
+                        vc.toast(errInfo);
 
                     });
             },
             clearAddCallingPlatformInfo: function () {
-                vc.component.addCallingPlatformInfo = {
+                $that.addCallingPlatformInfo = {
                     platformName: '',
                     ipAddr: '',
                     remark: '',

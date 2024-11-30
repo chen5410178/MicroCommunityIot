@@ -12,17 +12,17 @@
          _initEvent:function(){
              vc.on('deleteCallingPlatform','openDeleteCallingPlatformModal',function(_params){
 
-                vc.component.deleteCallingPlatformInfo = _params;
+                $that.deleteCallingPlatformInfo = _params;
                 $('#deleteCallingPlatformModel').modal('show');
 
             });
         },
         methods:{
             deleteCallingPlatform:function(){
-                vc.component.deleteCallingPlatformInfo.communityId=vc.getCurrentCommunity().communityId;
+                $that.deleteCallingPlatformInfo.communityId=vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
-                    'callingPlatform.deleteCallingPlatform',
-                    JSON.stringify(vc.component.deleteCallingPlatformInfo),
+                    '/callingPlatform.deleteCallingPlatform',
+                    JSON.stringify($that.deleteCallingPlatformInfo),
                     {
                         emulateJSON:true
                      },
@@ -35,11 +35,11 @@
                             vc.emit('callingPlatformManage','listCallingPlatform',{});
                             return ;
                         }
-                        vc.message(_json.msg);
+                        vc.toast(_json.msg);
                      },
                      function(errInfo,error){
                         console.log('请求失败处理');
-                        vc.message(json);
+                        vc.toast(json);
 
                      });
             },
@@ -49,4 +49,4 @@
         }
     });
 
-})(window.vc,window.vc.component);
+})(window.vc,window.$that);

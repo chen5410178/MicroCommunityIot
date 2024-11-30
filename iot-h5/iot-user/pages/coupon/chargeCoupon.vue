@@ -87,10 +87,9 @@
 					toType:'5005'
 				}
 				_that.couponList = [];
-				let _couponUsers = [];
-				getCouponUsers(_objData, _couponUsers)
-					.then((_couponList) => {
-						_couponList.data.forEach(items => {
+				getCouponUsers(_objData)
+					.then((_json) => {
+						_json.data.forEach(items => {
 							items['checked'] = false;
 							if (items.isExpire == 'Y') {
 								for(let stockIndex = 0; stockIndex < items.stock;stockIndex++){

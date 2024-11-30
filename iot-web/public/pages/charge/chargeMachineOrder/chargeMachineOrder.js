@@ -18,7 +18,7 @@
                     personTel: '',
                     machineName: '',
                     portName: '',
-                    communityId: vc.getCurrentCommunity().communityId,
+                    communityId:'',
                     state: '',
                     queryStartTime:'',
                     queryEndTime:''
@@ -48,6 +48,7 @@
 
                 $that.chargeMachineOrderInfo.conditions.page = _page;
                 $that.chargeMachineOrderInfo.conditions.row = _rows;
+                $that.chargeMachineOrderInfo.conditions.row = vc.getCurrentCommunity().communityId;
                 let param = {
                     params: $that.chargeMachineOrderInfo.conditions
                 };

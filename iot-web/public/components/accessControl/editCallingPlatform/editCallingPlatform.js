@@ -16,16 +16,16 @@
         },
         _initEvent: function () {
             vc.on('editCallingPlatform', 'openEditCallingPlatformModal', function (_params) {
-                vc.component.refreshEditCallingPlatformInfo();
+                $that.refreshEditCallingPlatformInfo();
                 $('#editCallingPlatformModel').modal('show');
-                vc.copyObject(_params, vc.component.editCallingPlatformInfo);
-                vc.component.editCallingPlatformInfo.communityId = vc.getCurrentCommunity().communityId;
+                vc.copyObject(_params, $that.editCallingPlatformInfo);
+                $that.editCallingPlatformInfo.communityId = vc.getCurrentCommunity().communityId;
             });
         },
         methods: {
             editCallingPlatformValidate: function () {
                 return vc.validate.validate({
-                    editCallingPlatformInfo: vc.component.editCallingPlatformInfo
+                    editCallingPlatformInfo: $that.editCallingPlatformInfo
                 }, {
                     'editCallingPlatformInfo.platformName': [
                         {
@@ -73,14 +73,14 @@
                 });
             },
             editCallingPlatform: function () {
-                if (!vc.component.editCallingPlatformValidate()) {
+                if (!$that.editCallingPlatformValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
                 }
 
                 vc.http.apiPost(
-                    'callingPlatform.updateCallingPlatform',
-                    JSON.stringify(vc.component.editCallingPlatformInfo),
+                    '/callingPlatform.updateCallingPlatform',
+                    JSON.stringify($that.editCallingPlatformInfo),
                     {
                         emulateJSON: true
                     },
@@ -93,16 +93,16 @@
                             vc.emit('callingPlatformManage', 'listCallingPlatform', {});
                             return;
                         }
-                        vc.message(_json.msg);
+                        vc.toast(_json.msg);
                     },
                     function (errInfo, error) {
                         console.log('请求失败处理');
 
-                        vc.message(errInfo);
+                        vc.toast(errInfo);
                     });
             },
             refreshEditCallingPlatformInfo: function () {
-                vc.component.editCallingPlatformInfo = {
+                $that.editCallingPlatformInfo = {
                     platformId: '',
                     platformName: '',
                     ipAddr: '',
@@ -114,4 +114,4 @@
         }
     });
 
-})(window.vc, window.vc.component);
+})(window.vc, window.$that);
