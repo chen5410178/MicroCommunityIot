@@ -102,7 +102,7 @@
                         </label>
                         <div class="col-sm-4">
                             <select class="custom-select" v-model="addAccessControlInfo.platformId">
-                                <option selected disabled value="">{{vc.i18n('必填，请选择平台','addAccessControl')}}</option>
+                                <option selected disabled value="">{{vc.i18n('选填，请选择平台','addAccessControl')}}</option>
                                 <option :value="item.platformId"
                                         v-for="(item,index) in  accessControlManageInfo.callingPlatforms">{{item.platformName}}
                                 </option>

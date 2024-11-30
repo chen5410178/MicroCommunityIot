@@ -39,10 +39,10 @@ let opts = {
     },
 
 }
-app.use('/app', proxy('http://192.168.3.223:9999', opts));
-app.use('/iot/api', proxy('http://192.168.3.223:9999', opts));
+app.use('/app', proxy('http://127.0.0.1:9999', opts));
+app.use('/iot/api', proxy('http://127.0.0.1:9999', opts));
 app.use('/ws', createProxyMiddleware({
-    target: 'http://192.168.3.223:9999',
+    target: 'http://127.0.0.1:9999',
     changeOrigin: true,
     ws: true
 }));
