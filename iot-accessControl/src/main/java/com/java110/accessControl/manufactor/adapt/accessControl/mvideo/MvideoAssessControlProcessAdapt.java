@@ -2,13 +2,19 @@ package com.java110.accessControl.manufactor.adapt.accessControl.mvideo;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.accessControl.manufactor.AbstractAccessControlManufactorAdapt;
+import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.MVideoHttpUtil;
 import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.monitorManufactor.MonitorManufactorDto;
+import com.java110.dto.user.UserDto;
 import com.java110.intf.monitor.IMonitorManufactorV1InnerServiceSMO;
+import com.java110.intf.user.IOwnerV1InnerServiceSMO;
+import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +27,7 @@ import java.util.List;
 @Service("mvideoAssessControlProcessAdapt")
 public class MvideoAssessControlProcessAdapt extends AbstractAccessControlManufactorAdapt {
 
-    public static final String CMD_ADD_USER = "addUser";// todo 添加用户；
+    public static final String CMD_ADD_USER = "addPersonFaceService";// todo 添加用户；
     public static final String ACTION = "MVIDEO";
 
     public static final String CMD_UPDATE_USER = "updateUser";// todo 修改用户；
@@ -33,6 +39,12 @@ public class MvideoAssessControlProcessAdapt extends AbstractAccessControlManufa
 
     @Autowired
     private IMonitorManufactorV1InnerServiceSMO monitorManufactorV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IOwnerV1InnerServiceSMO ownerV1InnerServiceSMOImpl;
 
 
     /**
@@ -51,14 +63,34 @@ public class MvideoAssessControlProcessAdapt extends AbstractAccessControlManufa
         param.put("action", ACTION);
         param.put("sn", accessControlDto.getMachineCode());
 
+        String tel = "";
+        if(AccessControlFaceDto.PERSON_TYPE_STAFF.equals(accessControlFacePo.getPersonType())){
+            UserDto userDto = new UserDto();
+            userDto.setUserId(accessControlFacePo.getPersonId());
+            List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+            if(!ListUtil.isNull(userDtos)){
+                tel = userDtos.get(0).getTel();
+            }
+        }else {
+            OwnerDto ownerDto = new OwnerDto();
+            ownerDto.setMemberId(accessControlFacePo.getPersonId());
+            List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
+            if(!ListUtil.isNull(ownerDtos)){
+                tel = ownerDtos.get(0).getLink();
+            }
+        }
+
         param.put("taskId", taskId);
-        param.put("userId", accessControlFacePo.getPersonId());
-        param.put("userName", accessControlFacePo.getName());
+        param.put("personId", accessControlFacePo.getPersonId());
+        param.put("personName", accessControlFacePo.getName());
+        param.put("personLink", tel);
         param.put("pass", accessControlDto.getMachineMac());
         param.put("idcard", accessControlFacePo.getIdNumber());
-        param.put("faceData", accessControlFacePo.getFacePath());
+        param.put("faceUrl", accessControlFacePo.getFacePath());
         param.put("idNumber", accessControlFacePo.getCardNumber());
         param.put("userType", accessControlFacePo.getPersonType());
+        param.put("startTime", accessControlFacePo.getStartTime());
+        param.put("endTime", accessControlFacePo.getEndTime());
 
         MonitorManufactorDto monitorManufactorDto = new MonitorManufactorDto();
         monitorManufactorDto.setCommunityId(accessControlDto.getCommunityId());
