@@ -131,4 +131,19 @@ public interface IAccessControlManufactor {
      * @return
      */
     boolean addAd(AccessControlDto accessControlDto, AccessControlAdRelPo accessControlAdRelPo);
+	
+	/**
+	 * 开放电梯
+	 * @param accessControlDto 门禁信息
+	 * @return
+	 */
+	boolean ladder_stop(AccessControlDto accessControlDto);
+	
+	/**
+	 * 限制电梯
+	 * @param accessControlDto 门禁信息
+	 * @return
+	 */
+	boolean ladder_start(AccessControlDto accessControlDto);
+	
 }
