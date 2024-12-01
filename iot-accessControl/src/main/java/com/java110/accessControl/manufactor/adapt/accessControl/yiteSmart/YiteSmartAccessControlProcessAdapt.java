@@ -300,6 +300,66 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
     }
 
 
+    /**
+   *{
+  * 	"c": "ladder_stop", 
+  * 	"f": "server_php",
+  *	"m": {
+  * 		"t": "0101"
+  * 	},
+  * 	"t": "c166a74c96b50944"
+  * }
+
+     * @param accessControlDto 门禁信息
+     * @return
+     */
+    @Override
+    public boolean ladder_stop(AccessControlDto accessControlDto) {
+    
+        JSONObject paramIn = new JSONObject();
+        paramIn.put("t", accessControlDto.getMachineCode());
+        paramIn.put("c", "ladder_stop");
+        paramIn.put("f", "server_php");
+    
+        JSONObject m = new JSONObject();
+        m.put("t", "0101");
+        paramIn.put("m", m);
+    
+        MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
+    
+        return true;
+    }
+	
+	  /**
+	 *{
+	* 	"c": "ladder_start", 
+	* 	"f": "server_php",
+	*	"m": {
+	* 		"t": "0101"
+	* 	},
+	* 	"t": "c166a74c96b50944"
+	* }
+	
+	   * @param accessControlDto 门禁信息
+	   * @return
+	   */
+	  @Override
+	  public boolean ladder_start(AccessControlDto accessControlDto) {
+	  
+	      JSONObject paramIn = new JSONObject();
+	      paramIn.put("t", accessControlDto.getMachineCode());
+	      paramIn.put("c", "ladder_start");
+	      paramIn.put("f", "server_php");
+	  
+	      JSONObject m = new JSONObject();
+	      m.put("t", "0101");
+	      paramIn.put("m", m);
+	  
+	      MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
+	  
+	      return true;
+	  }
+		
     @Override
     public boolean addAd(AccessControlDto accessControlDto, AccessControlAdRelPo accessControlAdRelPo){
         JSONObject paramIn = new JSONObject();

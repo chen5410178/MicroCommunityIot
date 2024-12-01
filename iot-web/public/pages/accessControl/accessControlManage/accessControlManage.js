@@ -145,6 +145,49 @@
 
                     });
             },
+
+            _ladder_stop: function (_accessControl) {
+                vc.http.apiPost(
+                    '/accessControl.StopAccessControlDoor',
+                    JSON.stringify(_accessControl), {
+                    emulateJSON: true
+                },
+                    function (json, res) {
+                        //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
+                        let _json = JSON.parse(json);
+                        vc.toast(_json.msg);
+                        if (_json.code == 0) {
+                            vc.emit('accessControlManage', 'listAccessControl', {});
+                        }
+                    },
+                    function (errInfo, error) {
+                        console.log('请求失败处理');
+
+                        vc.toast(errInfo);
+
+                    });
+            },
+            _ladder_start: function (_accessControl) {
+                vc.http.apiPost(
+                    '/accessControl.StartAccessControlDoor',
+                    JSON.stringify(_accessControl), {
+                    emulateJSON: true
+                },
+                    function (json, res) {
+                        //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
+                        let _json = JSON.parse(json);
+                        vc.toast(_json.msg);
+                        if (_json.code == 0) {
+                            vc.emit('accessControlManage', 'listAccessControl', {});
+                        }
+                    },
+                    function (errInfo, error) {
+                        console.log('请求失败处理');
+
+                        vc.toast(errInfo);
+
+                    });
+            },
             _toAccessControlDetail: function (_accessControl) {
                 vc.jumpToPage('/#/pages/accessControl/accessControlDetail?machineId=' + _accessControl.machineId);
             },

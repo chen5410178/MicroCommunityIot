@@ -184,6 +184,16 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         return true;
     }
 
+
+
+    public boolean ladder_stop(AccessControlDto accessControlDto){
+        return true;
+    }
+	
+	
+    public boolean ladder_start(AccessControlDto accessControlDto){
+        return true;
+    }
     /**
      * 门禁记录上报
      *
