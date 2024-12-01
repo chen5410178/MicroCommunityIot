@@ -31,7 +31,7 @@ public class MvideoAssessControlProcessAdapt extends AbstractAccessControlManufa
     public static final String ACTION = "MVIDEO";
 
     public static final String CMD_UPDATE_USER = "updateUser";// todo 修改用户；
-    public static final String CMD_DELETE_USER = "deleteUser";// todo 删除用户；
+    public static final String CMD_DELETE_USER = "deletePersonFaceService";// todo 删除用户；
 
     public static final String MVIDEO_BEAN = "mvideoAdaptImpl";
 

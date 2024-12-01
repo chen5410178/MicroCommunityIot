@@ -32,7 +32,7 @@ public class MVideoHttpUtil {
         HttpHeaders httpHeaders = new HttpHeaders();
         String appId = monitorManufactorDto.getAppId();
         String appSecure = monitorManufactorDto.getAppSecure();
-        long timestamp = DateUtil.getCurrentDate().getTime();
+        String timestamp = DateUtil.getCurrentDate().getTime()+"";
 
         paramIn.put("appId", appId);
         paramIn.put("appSecure", appSecure);
