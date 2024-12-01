@@ -48,18 +48,18 @@
 			<charge ref="chargeRef"></charge>
 		</view>
 		<view class="margin-sm" v-show="login">
-				<view class="cu-list menu">
-					<view class="cu-item arrow" @click="_toChargeOrder()">
-						<view class="content padding-tb-sm">
-							<view>
-								<text class="cuIcon-formfill text-green margin-right-xs"></text> 充电订单
-							</view>
-						</view>
-						<view class="action">
-							去查看
+			<view class="cu-list menu">
+				<view class="cu-item arrow" @click="_toChargeOrder()">
+					<view class="content padding-tb-sm">
+						<view>
+							<text class="cuIcon-formfill text-green margin-right-xs"></text> 充电订单
 						</view>
 					</view>
+					<view class="action">
+						去查看
+					</view>
 				</view>
+			</view>
 		</view>
 		<view class="plat-btn-black"></view>
 		<view class="cu-bar btn-group" style="margin-top: 30px;" v-if="login">
@@ -131,7 +131,7 @@
 			autoLogin(options);
 			this.machineId = options.machineId;
 			this.communityId = options.communityId;
-			if(isNotNull(options.portId)){
+			if (isNotNull(options.portId)) {
 				this.curPort.portId = options.portId;
 			}
 			this._loadChargeMachines();
@@ -208,7 +208,7 @@
 			_selectCoupons: function(_item) {
 				let _that = this;
 				uni.navigateTo({
-					url: '/pages/coupon/chargeCoupon?communityId='+this.communityId
+					url: '/pages/coupon/chargeCoupon?communityId=' + this.communityId
 				})
 			},
 			_dealChargeCoupons: function() {
@@ -225,7 +225,7 @@
 					uni.setStorageSync("DEFAULT_COMMUNITY_ID", this.communityId);
 				}
 				// #ifdef H5
-					uni.setStorageSync('targetUrl',location.hash.substr(1));
+				uni.setStorageSync('targetUrl', location.hash.substr(1));
 				// #endif
 				uni.navigateTo({
 					url: '/pages/user/login'
@@ -233,7 +233,7 @@
 			},
 			_toChargeOrder: function() {
 				uni.navigateTo({
-					url: '/pages/charge/chargeMachineOrders?communityId='+this.communityId
+					url: '/pages/charge/chargeMachineOrders?communityId=' + this.communityId
 				})
 			}
 		}
