@@ -121,6 +121,16 @@
                                         <vc:i18n name='重启'></vc:i18n>
                                     </button>
                                 </div>
+                                <div class="btn-group">
+                                    <button class="btn-white btn btn-xs" v-if="vc.hasPrivilege('502024111100000001')" @click="_ladder_start(accessControl)">
+                                        <vc:i18n name='开放电梯'></vc:i18n>
+                                    </button>
+                                </div>
+								<div class="btn-group">
+								    <button class="btn-white btn btn-xs" v-if="vc.hasPrivilege('502024111100000002')" @click="_ladder_stop(accessControl)">
+								        <vc:i18n name='限制电梯'></vc:i18n>
+								    </button>
+								</div>
                             </div>
                             <div class="margin-top-xs">
                                 <div class="btn-group">
