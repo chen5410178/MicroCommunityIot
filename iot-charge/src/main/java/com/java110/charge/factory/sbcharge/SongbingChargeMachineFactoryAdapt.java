@@ -71,20 +71,21 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
     @Override
     public ResultVo startCharge(ChargeMachineDto chargeMachineDto, ChargeMachinePortDto chargeMachinePortDto, String chargeType, double duration, String orderId) {
-        if (chargeType.equals("hours")) {
-            chargeType = "1";
-        } else {
-            chargeType = "0";
-        }
+//        if (chargeType.equals("hours")) {
+//            chargeType = "1";
+//        } else {
+//            chargeType = "0";
+//        }
+        chargeType = "0";
         int maxEnergy = getMaxEnery(chargeMachineDto);
         // 插座
         int port = Integer.parseInt(chargeMachinePortDto.getPortCode()) - 1;
         String portHex = String.format("%X", port);
         // 充电时间 分钟
         String chargeTime = String.format("%04X", (int) Math.round(duration * 60));
-        if (!chargeType.equals("1")) {//智能模式与免费模式
-            chargeTime = String.format("%04X",600);
-        }
+//        if (!chargeType.equals("1")) {//智能模式与免费模式
+//            chargeTime = String.format("%04X",600);
+//        }
         chargeType = String.format("%02x", Integer.parseInt(chargeType));
         // todo 最小功率
         String minW = String.format("%04x", 20);
@@ -398,39 +399,53 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         chargeMachinePortDto.setMachineId(chargeMachineDto.getMachineId());
         chargeMachinePortDto.setPortCode(port + "");
         List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
-        if (!ListUtil.isNull(chargeMachinePortDtos)) {
-            ChargeMachinePortPo chargeMachinePortPo = new ChargeMachinePortPo();
-            chargeMachinePortPo.setPortId(chargeMachinePortDtos.get(0).getPortId());
-            if (state == 0) {
-                chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_FREE);
-            } else {
-                chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_WORKING);
-            }
-            chargeMachinePortV1InnerServiceSMOImpl.updateChargeMachinePort(chargeMachinePortPo);
+        if(ListUtil.isNull(chargeMachinePortDtos)){
+            String paramOut = SongbingChargeUtil.stateChangeResponse(chargeMachineDto.getMachineCode());
+            notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+            return ;
         }
+        ChargeMachinePortPo chargeMachinePortPo = new ChargeMachinePortPo();
+        chargeMachinePortPo.setPortId(chargeMachinePortDtos.get(0).getPortId());
+        if (state == 0) {
+            chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_FREE);
+        } else {
+            chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_WORKING);
+        }
+        chargeMachinePortV1InnerServiceSMOImpl.updateChargeMachinePort(chargeMachinePortPo);
+        // 正在充电 ，不结束充电
+        if(ChargeMachinePortDto.STATE_WORKING.equals(chargeMachinePortPo.getState())){
+            String paramOut = SongbingChargeUtil.stateChangeResponse(chargeMachineDto.getMachineCode());
+            notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+            return ;
+        }
+
 
         ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
-        chargeMachineOrderDto.setPortId(chargeMachinePortDto.getPortId());
-        chargeMachineOrderDto.setCommunityId(chargeMachinePortDto.getCommunityId());
-        chargeMachineOrderDto.setMachineId(chargeMachinePortDto.getMachineId());
+        chargeMachineOrderDto.setPortId(chargeMachinePortDtos.get(0).getPortId());
+        chargeMachineOrderDto.setCommunityId(chargeMachinePortDtos.get(0).getCommunityId());
+        chargeMachineOrderDto.setMachineId(chargeMachinePortDtos.get(0).getMachineId());
         chargeMachineOrderDto.setState(ChargeMachineOrderDto.STATE_DOING);
         List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
-        if (!ListUtil.isNull(chargeMachineOrderDtos)) {//有进行的
-            NotifyChargeOrderDto notifyChargeOrderDto = new NotifyChargeOrderDto();
-            notifyChargeOrderDto.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
-            notifyChargeOrderDto.setMachineCode(chargeMachineDto.getMachineCode());
-            notifyChargeOrderDto.setPortCode(chargeMachinePortDto.getPortCode());
-            notifyChargeOrderDto.setBodyParam("");
-            notifyChargeOrderDto.setReason("停止成功");
-
-            Date startTime = DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime());//开始时间
-            Date endTime = new Date();//本次结束时间
-            double differenceInMillis = (endTime.getTime() - startTime.getTime()) / (60 * 1000.00);
-            double lastPower = Double.parseDouble(chargeMachineOrderDtos.get(0).getEnergy()) / differenceInMillis;
-            notifyChargeOrderDto.setEnergy(lastPower+ "");
-
-            notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);
+        if (ListUtil.isNull(chargeMachineOrderDtos)) {//有进行的
+            String paramOut = SongbingChargeUtil.stateChangeResponse(chargeMachineDto.getMachineCode());
+            notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+            return;
         }
+        NotifyChargeOrderDto notifyChargeOrderDto = new NotifyChargeOrderDto();
+        notifyChargeOrderDto.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
+        notifyChargeOrderDto.setMachineCode(chargeMachineDto.getMachineCode());
+        notifyChargeOrderDto.setPortCode(chargeMachinePortDto.getPortCode());
+        notifyChargeOrderDto.setBodyParam("");
+        notifyChargeOrderDto.setReason("停止成功");
+
+        Date startTime = DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime());//开始时间
+        Date endTime = new Date();//本次结束时间
+        double differenceInMillis = (endTime.getTime() - startTime.getTime()) / (60 * 1000.00);
+        double lastPower = Double.parseDouble(chargeMachineOrderDtos.get(0).getEnergy()) / differenceInMillis;
+        notifyChargeOrderDto.setEnergy(lastPower+ "");
+
+        notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);
+
 
         String paramOut = SongbingChargeUtil.stateChangeResponse(chargeMachineDto.getMachineCode());
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
