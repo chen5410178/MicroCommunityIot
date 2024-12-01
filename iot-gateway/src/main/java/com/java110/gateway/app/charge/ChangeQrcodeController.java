@@ -98,6 +98,65 @@ public class ChangeQrcodeController {
         return ResultVo.redirectPage(url);
 
     }
+//    桩二维码：域名  + /app/charge/songbing?No= + 设备编码
+//    插座二维码地址：域名  + /app/charge/songbing?No= + 设备编码 &socket=1~10
+    /**
+     * <p>松饼二维码转码</p>
+     *
+     * @param request
+     * @throws Exception
+     */
+    @RequestMapping(path = "/songbing", method = RequestMethod.GET)
+    public ResponseEntity<String> chargeSongbing(
+            @RequestParam("No") String no,
+            @RequestParam(value = "socket",required = false,defaultValue = "222") String socket,
+            HttpServletRequest request) {
+        if (no.length() != 10) {
+            return ResultVo.error("桩码不符合规范");
+        }
+        String machineCode = no;
+        String gunNo = socket;
+        String portId = "";
+        ChargeMachineDto chargeMachineDto = new ChargeMachineDto();
+        chargeMachineDto.setMachineCode(machineCode);
+        List<ChargeMachineDto> chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(chargeMachineDto);
+        if (ListUtil.isNull(chargeMachineDtos)) {
+            return ResultVo.error("充电设备不存在");
+        }
+        if (!"222".equals(socket)){
+            ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
+            chargeMachinePortDto.setMachineId(chargeMachineDtos.get(0).getMachineId());
+            chargeMachinePortDto.setPortCode(gunNo);
+            List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
+            if (ListUtil.isNull(chargeMachinePortDtos)) {
+                throw new CmdException("充电插座不存在");
+            }
+            portId = chargeMachinePortDtos.get(0).getPortId();
+        }
+        SmallWeChatDto smallWeChatDto = new SmallWeChatDto();
+        smallWeChatDto.setObjId(chargeMachineDtos.get(0).getCommunityId());
+        smallWeChatDto.setWeChatType(SmallWeChatDto.WECHAT_TYPE_PUBLIC);
+        List<SmallWeChatDto> smallWeChatDtos = smallWeChatInnerServiceSMOImpl.querySmallWeChats(smallWeChatDto);
+        String appId = "";
+        if (ListUtil.isNull(smallWeChatDtos)) {
+            return ResultVo.error("小区未配置公众号信息");
+        }
+        appId = smallWeChatDtos.get(0).getAppId();
+        String ownerUrl = UrlCache.getOwnerUrl();
+        String url = "";
+        if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDtos.get(0).getChargeType())) {
+            url = ownerUrl + "/#/pages/charge/machineToCharge?machineId="
+                    + chargeMachineDtos.get(0).getMachineId()
+                    + "&communityId=" + chargeMachineDtos.get(0).getCommunityId()
+                    + "&wAppId=" + appId;
+            if (!"222".equals(socket)){
+                url += "&portId=" + portId;
+            }
+        }  else {
+            return ResultVo.error("不支持的设备");
+        }
+        return ResultVo.redirectPage(url);
+    }
 
     /**
      * <p>充电结束通知</p>

@@ -7,7 +7,7 @@
 		</view>
 		<view class="flex justify-start mtc-machine-port">
 			<view v-for="(item,index) in  ports" :key="index" class="port-item">
-				<view class="item-1" :class="{'item-1-active':curPort.portId == item.portId || item.state=='WORKING'}"
+				<view class="item-1" :class="{'item-1-active':curPort.portId == item.portId,'item-1-working':item.state=='WORKING'}"
 					@click="_switchPort(item)">
 					<view class="port-name">
 						{{item.portName}}
@@ -203,6 +203,14 @@
 				this.curPort = _port;
 			},
 			_switchHours: function(_hours) {
+				if (this.curPort.state != 'FREE') {
+					wx.showToast({
+						title: '请先选择空闲插座',
+						icon: "none",
+						duration: 2000
+					});
+					return;
+				}
 				this.curHours = _hours;
 			},
 			_selectCoupons: function(_item) {
@@ -287,6 +295,9 @@
 
 			.item-1-active {
 				background-color: #0FBA82;
+			}
+			.item-1-working {
+				background-color: #e54d42;
 			}
 		}
 	}
