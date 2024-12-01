@@ -48,7 +48,7 @@
 
                 $that.chargeMachineOrderInfo.conditions.page = _page;
                 $that.chargeMachineOrderInfo.conditions.row = _rows;
-                $that.chargeMachineOrderInfo.conditions.row = vc.getCurrentCommunity().communityId;
+                $that.chargeMachineOrderInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
                 let param = {
                     params: $that.chargeMachineOrderInfo.conditions
                 };
