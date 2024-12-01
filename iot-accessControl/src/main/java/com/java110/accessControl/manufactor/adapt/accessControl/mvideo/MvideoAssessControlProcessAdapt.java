@@ -8,6 +8,7 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.MVideoHttpUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.monitorManufactor.MonitorManufactorDto;
@@ -78,6 +79,10 @@ public class MvideoAssessControlProcessAdapt extends AbstractAccessControlManufa
             if(!ListUtil.isNull(ownerDtos)){
                 tel = ownerDtos.get(0).getLink();
             }
+        }
+
+        if(StringUtil.isEmpty(accessControlFacePo.getFacePath())){
+            return true;
         }
 
         param.put("taskId", taskId);
