@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static com.java110.dto.chargeMachine.ChargeRuleFeeDto.CHARGE_TYPE_CAR;
@@ -118,7 +119,7 @@ public class StartCarChargeCmd extends Cmd {
         chargeRulePriceDto.setRuleId(chargeMachineDtos.get(0).getRuleId());
         chargeRulePriceDto.setCommunityId(chargeMachineDtos.get(0).getCommunityId());
         List<ChargeRulePriceDto> chargeRulePriceDtos = chargeRulePriceV1InnerServiceSMO.queryChargeRulePrices(chargeRulePriceDto);
-        if (chargeRulePriceDtos == null || chargeRulePriceDtos.size() < 1) {
+        if (ListUtil.isNull(chargeRulePriceDtos)) {
             throw new CmdException("未设置充值收费标准，请联系管理员！");
         }
         UserDto userDto = new UserDto();
@@ -133,7 +134,7 @@ public class StartCarChargeCmd extends Cmd {
         accountDto.setPartId(reqJson.getString("communityId"));
         List<AccountDto> accountDtos = accountInnerServiceSMOImpl.queryAccounts(accountDto);
 
-        if (accountDtos == null || accountDtos.size() < 1) {
+        if (ListUtil.isNull(accountDtos)) {
             throw new CmdException("请先充值，账户金额不足");
         }
         double payMoney = reqJson.getDoubleValue("money");
@@ -164,7 +165,7 @@ public class StartCarChargeCmd extends Cmd {
         chargeMachinePortDto.setState(ChargeMachinePortDto.STATE_FREE);
         List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
         String orderId = GenerateCodeFactory.getGeneratorId("12");
-        int port = Integer.parseInt(chargeMachinePortDtos.get(0).getPortCode()) ;
+        int port = Integer.parseInt(chargeMachinePortDtos.get(0).getPortCode());
         String portHex = String.format("%02x", port);
         orderId = chargeMachineDtos.get(0).getMachineCode() + portHex + DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_DEFAULT) + orderId.substring(orderId.length() - 2);
 
@@ -172,7 +173,7 @@ public class StartCarChargeCmd extends Cmd {
         ChargeMachinePortPo chargeMachinePortPo = new ChargeMachinePortPo();
         chargeMachinePortPo.setPortId(chargeMachinePortDtos.get(0).getPortId());
         chargeMachinePortPo.setCommunityId(chargeMachinePortDtos.get(0).getCommunityId());
-        chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_WORKING);
+        chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_STARTING);
         chargeMachinePortV1InnerServiceSMOImpl.updateChargeMachinePort(chargeMachinePortPo);
 
         // todo 生成 充电订单
@@ -185,10 +186,10 @@ public class StartCarChargeCmd extends Cmd {
         chargeMachineOrderPo.setAcctDetailId(reqJson.getString("acctId"));
         chargeMachineOrderPo.setPersonId(userId);
         chargeMachineOrderPo.setChargeHours(reqJson.getString("duration"));
+        chargeMachineOrderPo.setDurationPrice("0");
         chargeMachineOrderPo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
-        //汽车充电桩结束时间为空
-        //chargeMachineOrderPo.setEndTime();
-        chargeMachineOrderPo.setState(ChargeMachineOrderDto.STATE_DOING);
+        chargeMachineOrderPo.setEndTime(DateUtil.getAddHoursStringA(new Date(), 2));
+        chargeMachineOrderPo.setState(ChargeMachineOrderDto.STATE_STARTING);
         chargeMachineOrderPo.setPersonTel(userDtos.get(0).getTel());
         chargeMachineOrderPo.setCommunityId(chargeMachineDtos.get(0).getCommunityId());
         chargeMachineOrderPo.setEnergy("1");
@@ -249,7 +250,8 @@ public class StartCarChargeCmd extends Cmd {
         chargeMachineOrderAcctPo.setRemark("账户扣款");
         chargeMachineOrderAcctPo.setCommunityId(chargeMachineDtos.get(0).getCommunityId());
         chargeMachineOrderAcctPo.setEnergy("0");
-        chargeMachineOrderAcctPo.setDurationPrice(reqJson.getString("durationPrice"));
+        chargeMachineOrderAcctPo.setDurationPrice("0");
+        //chargeMachineOrderAcctPo.setDurationPrice(reqJson.getString("durationPrice"));
 
         chargeMachineOrderAcctV1InnerServiceSMOImpl.saveChargeMachineOrderAcct(chargeMachineOrderAcctPo);
     }
