@@ -10,7 +10,7 @@
 						<view class="cu-avatar xl round margin-left bg-green" v-if="curPort.state =='FREE'">
 							<text class="avatar-text">{{curPort.stateName}}</text>
 						</view>
-						<view class="cu-avatar xl round margin-left bg-red" v-if="curPort.state !='FREE'">
+						<view class="cu-avatar xl round margin-left bg-red" v-else>
 							<text class="avatar-text">{{curPort.stateName}}</text>
 						</view>
 					</view>
@@ -23,26 +23,15 @@
 				</view>
 			</view>
 		</view>
-		<view class=" mtc-hours-title">
-			<view>充电服务价格明细</view>
-		</view>
-		<view class="flex justify-start mtc-machine-hours">
-			<view class="grid margin-bottom text-center" v-for="(item,index) in prices" :key="index">
-				<view class="flex flex-wrap">
-					<view class="margin-xs padding-sm radius">{{index+1}}</view>
-					<view class="margin-xs padding-sm radius">{{item.startTime}} ~ {{item.endTime}}</view>
-					<view class="margin-xs padding-sm radius">{{item.price}}</view>
-					<view class="margin-xs padding-sm radius">{{item.servicePrice}}</view>
-				</view>
-			</view>
-
+		<view>
+			<car-charge-price ref="carChargePriceRef" :prices="prices"></car-charge-price>
 		</view>
 		<view class=" mtc-hours-title">
 			<view>充电金额</view>
 		</view>
 		<view class="flex justify-start mtc-machine-hours">
-			<view v-for="(item,index) in  moneys" :key="index" class="hours-item">
-				<view class="item-1" :class="{'item-1-active':curHours.duration == item.duration}"
+			<view v-for="(item,index) in moneys" :key="index" class="hours-item">
+				<view class="item-1" :class="{'item-1-active':curMoney == item.amount}"
 					@click="_switchMoney(item)">
 					<view class="port-name">
 						{{item.name}}
@@ -53,54 +42,19 @@
 				</view>
 			</view>
 		</view>
-
-		<!-- 		<view class="cu-list menu margin-sm" @click="_selectCoupons" v-if="curHours.duration && curPort.portId">
-			<view class="cu-item arrow">
-				<view class="content padding-tb-sm">
-					<view>
-						<view class="text-cut" style="width:220px">使用充电劵抵扣</view>
-					</view>
-				</view>
-				<view v-if="couponCount == 0">请选择</view>
-				<view v-else>{{couponCount+ '张' }}</view>
-			</view>
-		</view> -->
 		<view class="margin-sm" v-if="login">
 			<account ref="accRef"></account>
 		</view>
-		<!-- <view class="margin-sm" v-if="login">
-			<charge ref="chargeRef"></charge>
-		</view> -->
 		<view class="plat-btn-black"></view>
 		<view class="cu-bar btn-group" style="margin-top: 30px;" v-if="login">
-			<button @click="_startCharge" :disabled="!curHours.duration || !curPort.portId"
+			<button @click="_startCharge" :disabled="!curMoney || !curPort.portId"
 				class="cu-btn bg-green shadow-blur round lg">开启充电</button>
 		</view>
 		<view class="cu-bar btn-group" style="margin-top: 30px;" v-else>
 			<button @click="_toLogin" class="cu-btn bg-green shadow-blur round lg">请先登录</button>
 		</view>
-		<view class="cu-load load-modal" v-if="loadModal">
-			<view class="gray-text">{{statusReminder}}</view>
-			<view class="red-text" v-show="showReasonFlag" @tap="showReason" data-target="DialogModal1" style="color: red;">查看原因</view>
-		</view>
-		<view class="cu-modal" :class="modalName=='DialogModal1'?'show':''">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white justify-end">
-					<view class="content">失败原因</view>
-					<view class="action" @tap="hideModal">
-						<text class="cuIcon-close text-red"></text>
-					</view>
-				</view>
-				<view class="padding-xl">
-					{{modalReason}}
-				</view>
-				<view class="cu-bar bg-white justify-end">
-					<view class="action">
-						<button class="cu-btn bg-green margin-left" @tap="hideModal">确定</button>
-					</view>
-				</view>
-			</view>
-		</view>
+		
+		<start-car-charge ref="startCarChargeRef"></start-car-charge>
 	</view>
 </template>
 
@@ -108,7 +62,6 @@
 	import {
 		getChargeMachines,
 		getChargeMachinePort,
-		startCarCharge
 	} from '@/api/machine/machineApi.js';
 	import account from '@/components/account/account.vue';
 	import charge from '@/components/charge/charge.vue';
@@ -116,52 +69,50 @@
 		autoLogin,
 		hasLogin
 	} from '@/api/user/sessionApi.js';
+	import startCarCharge from '@/components/charge/startCarCharge.vue';
+	import carChargePrice from '@/components/charge/carChargePrice.vue';
 	export default {
 		data() {
 			return {
-				statusReminder: '枪头开启中...',
-				machineId: '',
-				showReasonFlag:false,
-				modalReason: '',  
+				machineId: '', 
 				modalName: null,
 				portId: '',
 				communityId: '',
 				machineCode: '',
 				machineName: '',
-				duration:'',
+				amount:'',
 				portCount: '',
 				prices: [],
 				ports: [],
-				loadModal: false,
 				curPort: {},
-				curHours: {},
-				couponList: [],
-				couponCount: 0,
+				curMoney: 50,
 				login: false,
 				moneys: [{
 					name: '20',
-					duration: 20,
+					amount: 20,
 				}, {
 					name: '30',
-					duration: 30,
+					amount: 30,
 				}, {
 					name: '50',
-					duration: 50,
+					amount: 50,
 				}, {
 					name: '80',
-					duration: 80,
+					amount: 80,
 				}, {
 					name: '100',
-					duration: 100,
+					amount: 100,
 				}, {
 					name: '150',
-					duration: 150,
+					amount: 150,
 				}]
 			}
 		},
 		components: {
 			charge,
 			account,
+			startCarCharge,
+			carChargePrice
 		},
 		onLoad(options) {
 			autoLogin(options);
@@ -182,7 +133,7 @@
 			}, 1000);
 		},
 		onShow: function(options) {
-			this._dealChargeCoupons();
+			
 			if (this.$refs.accRef) {
 				this.$refs.accRef.loadOwnerAccount(this.communityId);
 			}
@@ -191,15 +142,6 @@
 			}
 		},
 		methods: {
-			showReason(e) {
-				this.modalName = e.currentTarget.dataset.target;
-				this.loadModal = false;
-				this.showReasonFlag = false;
-				this.statusReminder = "枪头开启中...";
-			},
-			hideModal(e) {
-				this.modalName = null
-			},
 			_loadChargeMachines: function() {
 				let _that = this;
 				getChargeMachines({
@@ -212,6 +154,7 @@
 					_that.machineName = _data.data[0].machineName;
 					_that.portCount = _data.data[0].portCount;
 					_that.prices = _data.data[0].prices;
+					_that.$refs.carChargePriceRef.initPrice(_that.prices);
 				})
 			},
 			_loadChargeMachinePorts: function() {
@@ -228,30 +171,20 @@
 				})
 			},
 			_startCharge: function() {
-				const childAccounts = this.$refs.accRef.account;
-				this.loadModal = true;
-				startCarCharge({
+				if(!this.curMoney){
+					uni.showToast({
+						icon:'none',
+						title:'请选择充电金额'
+					});
+					return;
+				}
+				// todo 开启充电
+				this.$refs.startCarChargeRef.startCharge({
 					communityId:this.communityId,
 					machineId:this.machineId,
 					portId:this.portId,
-					money:this.curHours.duration
-				}).then(_data=>{
-				
-					if(_data.code != 0){
-						this.statusReminder = "开启失败";
-						this.showReasonFlag = true;
-						this.modalReason =_data.msg;
-						return ;
-					}else{
-						this.statusReminder = "开启成功";
-						setTimeout(() => {
-							this.loadModal = false;
-							uni.navigateTo({
-								url:'/pages/charge/chargeCarOrder?orderId='+_data.data +'&communityId='+this.communityId
-							})
-						}, 3000)
-					}
-				})
+					money:this.curMoney
+				});
 			},
 			_switchPort: function(_port) {
 				if (_port.state != 'FREE') {
@@ -259,25 +192,9 @@
 				}
 				this.curPort = _port;
 			},
-			_switchMoney: function(_hours) {
-				this.curHours = _hours;
+			_switchMoney: function(_curMoney) {
+				this.curMoney = _curMoney.amount;
 				
-			},
-			_selectCoupons: function(_item) {
-				let _that = this;
-				uni.navigateTo({
-					url: '/pages/coupon/chargeCoupon'
-				})
-			},
-
-			_dealChargeCoupons: function() {
-				let chargeCoupons = uni.getStorageSync('COUPON_USER_CHARGE');
-				if (!chargeCoupons) {
-					return;
-				}
-				uni.removeStorageSync('COUPON_USER_CHARGE');
-				this.couponList = chargeCoupons;
-				this.couponCount = chargeCoupons.length;
 			},
 			_toLogin: function() {
 				if (this.communityId) {
