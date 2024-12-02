@@ -209,7 +209,7 @@ public class AddCarApiCmd extends Cmd {
     private void doOwner(JSONObject reqJson, ICmdDataFlowContext context) {
 
         OwnerDto ownerDto = new OwnerDto();
-        ownerDto.setMemberId(reqJson.getString("memberId"));
+        ownerDto.setMemberId(reqJson.getString("ownerId"));
         ownerDto.setStatusCd("");
         List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
         OwnerPo ownerPo = new OwnerPo();
