@@ -134,6 +134,8 @@ public class AddCarApiCmd extends Cmd {
         if (ListUtil.isNull(ownerCarDtos)) {
             ownerCarV1InnerServiceSMOImpl.saveOwnerCar(ownerCarPo);
         } else {
+            ownerCarPo.setOwnerId("");
+
             ownerCarV1InnerServiceSMOImpl.updateOwnerCar(ownerCarPo);
         }
 
