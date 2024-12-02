@@ -109,8 +109,8 @@
 					name: '2小时',
 					duration: 2,
 				}, {
-					name: '1小时',
-					duration: 1,
+					name: '4小时',
+					duration: 4,
 				}, {
 					name: '6小时',
 					duration: 6,
