@@ -59,8 +59,8 @@ public class GetCloudFlvVideoCmd extends Cmd {
 
         Assert.listOnlyOne(barrierDtos, "摄像头不存在");
         //todo 这里不调用臻识云
-       // ResultVo resultVo = CarMachineProcessFactory.getCarImpl(barrierDtos.get(0).getHmId()).getCloudFlvVideo(barrierDtos.get(0));
-
+//        ResultVo resultVo = CarMachineProcessFactory.getCarImpl(barrierDtos.get(0).getHmId()).getCloudFlvVideo(barrierDtos.get(0));
+//        context.setResponseEntity(ResultVo.createResponseEntity(resultVo));
         MonitorMachineDto monitorMachineDto = new MonitorMachineDto();
         monitorMachineDto.setMachineId(barrierDtos.get(0).getMonitorId());
         monitorMachineDto.setCommunityId(reqJson.getString("communityId"));
