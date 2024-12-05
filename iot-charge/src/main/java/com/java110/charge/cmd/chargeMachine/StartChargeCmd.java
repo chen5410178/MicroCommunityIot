@@ -151,8 +151,12 @@ public class StartChargeCmd extends Cmd {
 
         Assert.listOnlyOne(userDtos, "用户不存在");
 
+        boolean ifMonthCard = chargeCoreImpl.ifMonthCard(userDtos.get(0).getTel(), chargeMachinePortDtos.get(0).getCommunityId());
+
+        reqJson.put("ifMonthCard",ifMonthCard);
+
         //todo 如果是 月卡充值 ，后面不做校验  暂时只有电动摩托有月卡
-        if (chargeCoreImpl.ifMonthCard(userDtos.get(0).getTel(), chargeMachinePortDtos.get(0).getCommunityId()) && CHARGE_TYPE_MOTORCYCLE.equals(chargeRuleFeeDtos.get(0).getChargeType())) {
+        if (ifMonthCard && CHARGE_TYPE_MOTORCYCLE.equals(chargeRuleFeeDtos.get(0).getChargeType())) {
             reqJson.put("acctId", "-1");
             return;
         }
@@ -165,7 +169,7 @@ public class StartChargeCmd extends Cmd {
         accountDto.setPartId(reqJson.getString("communityId"));
         List<AccountDto> accountDtos = accountInnerServiceSMOImpl.queryAccounts(accountDto);
 
-        if (accountDtos == null || accountDtos.size() < 1) {
+        if (ListUtil.isNull(accountDtos)) {
             throw new CmdException("请先充值，账户金额不足");
         }
 
@@ -278,7 +282,8 @@ public class StartChargeCmd extends Cmd {
         resultVo.setData(orderId);
 
         //todo 如果是 月卡充值 ，后面不做校验
-        if (chargeCoreImpl.ifMonthCard(userDtos.get(0).getTel(), chargeMachinePortDtos.get(0).getCommunityId())) {
+        boolean ifMonthCard = reqJson.getBoolean("ifMonthCard");
+        if (ifMonthCard) {
             monthCardOrder(reqJson, chargeMachineDtos, orderId, durationHours);
             context.setResponseEntity(ResultVo.createResponseEntity(resultVo));
             return;
