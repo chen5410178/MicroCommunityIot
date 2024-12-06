@@ -103,7 +103,7 @@
 					communityId:this.communityId
 				}).then(_data=>{
 					_that.cards = _data;
-					let selected = this.cards[0] //获取选中的数组
+					let selected = _that.cards[0] //获取选中的数组
 					this.cardId = selected.cardId;
 					this.cardMonth = selected.cardMonth;
 					this.cardName = selected.cardName;
