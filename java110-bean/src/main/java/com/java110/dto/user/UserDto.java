@@ -19,7 +19,6 @@ public class UserDto extends PageDto implements Serializable {
     public static final String LEVEL_CD_MALL = "03";//商城用户
     public static final String LEVEL_CD_ADMIN = "00";//系统管理员
     public static final String LEVEL_CD_STAFF = "01";//员工
-    public static final String LEVEL_CD_USER = "02";//普通用户
     public static final String LEVEL_CD_PHONE = "04";//手机用户
 
 

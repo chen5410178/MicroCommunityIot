@@ -13,7 +13,7 @@
                 moreCondition: false,
                 scId: '',
                 conditions: {
-                    ownerName: '',
+                    acctName: '',
                     link: '',
                     communityId: ''
                 }
@@ -38,8 +38,6 @@
                 let param = {
                     params: $that.accountInfo.conditions
                 };
-                param.params.ownerName = param.params.ownerName.trim();
-                param.params.link = param.params.link.trim();
                 //发送get请求
                 vc.http.apiGet('/account.queryCommunityAccount',
                     param,

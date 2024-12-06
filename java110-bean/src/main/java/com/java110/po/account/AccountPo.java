@@ -14,6 +14,8 @@ public class AccountPo implements Serializable {
 
     private String link;
 
+    private String statusCd = "0";
+
 
     public String getAmount() {
         return amount;
@@ -77,5 +79,13 @@ public class AccountPo implements Serializable {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getStatusCd() {
+        return statusCd;
+    }
+
+    public void setStatusCd(String statusCd) {
+        this.statusCd = statusCd;
     }
 }

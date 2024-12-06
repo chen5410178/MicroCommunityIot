@@ -12,7 +12,7 @@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <input type="text" :placeholder="vc.i18n('请输入账户名称','account')"
-                            v-model="accountInfo.conditions.ownerName" class=" form-control">
+                            v-model="accountInfo.conditions.acctName" class=" form-control">
                     </div>
                 </div>
                 <div class="col-sm-2">
@@ -98,6 +98,6 @@
         </div>
 
     </div>
-    <!-- <vc:create path="property/prestoreAccount"></vc:create>
-    <vc:create path="property/deleteAccount"></vc:create> -->
+    <vc:create path="owner/prestoreAccount"></vc:create>
+    <vc:create path="owner/deleteAccount"></vc:create> 
 </div>
