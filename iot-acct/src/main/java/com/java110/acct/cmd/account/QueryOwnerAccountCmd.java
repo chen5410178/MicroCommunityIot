@@ -1,7 +1,6 @@
 package com.java110.acct.cmd.account;
 
 import com.alibaba.fastjson.JSONObject;
-import com.java110.acct.bmo.account.IGetAccountBMO;
 import com.java110.bean.ResultVo;
 import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.core.annotation.Java110Cmd;
@@ -11,12 +10,8 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.CommunitySettingFactory;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.DistributedLock;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.utils.*;
 import com.java110.dto.account.AccountDto;
-import com.java110.dto.chargeMonthCard.ChargeMonthCardDto;
 import com.java110.dto.user.UserDto;
 import com.java110.intf.acct.IAccountInnerServiceSMO;
 import com.java110.intf.user.IOwnerInnerServiceSMO;
@@ -31,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Java110Cmd(serviceCode = "account.queryOwnerAccount")
-public class queryOwnerAccountCmd extends Cmd {
+public class QueryOwnerAccountCmd extends Cmd {
 
     @Autowired
     private IAccountInnerServiceSMO accountInnerServiceSMOImpl;
@@ -68,7 +63,7 @@ public class queryOwnerAccountCmd extends Cmd {
         if (!StringUtil.isEmpty(ownerDto.getIdCard())) {
             //先查询业主
             ownerDtos = ownerInnerServiceSMOImpl.queryOwners(ownerDto);
-            if (ownerDtos != null && ownerDtos.size() > 0) {
+            if (!ListUtil.isNull(ownerDtos)) {
                 accountDto.setAcctName("");
                 accountDto.setObjId(ownerDtos.get(0).getMemberId());
             }
@@ -82,7 +77,7 @@ public class queryOwnerAccountCmd extends Cmd {
         }
 
 
-        if (accountDtos == null || accountDtos.size() < 1) {
+        if (ListUtil.isNull(accountDtos)) {
             //添加 账户
             accountDtos = addAccountDto(accountDto, ownerDto);
 
@@ -147,7 +142,7 @@ public class queryOwnerAccountCmd extends Cmd {
             tmpOwnerDto.setMemberId(ownerDto.getOwnerId());
             tmpOwnerDto.setCommunityId(ownerDto.getCommunityId());
             List<OwnerDto> ownerDtos = ownerInnerServiceSMOImpl.queryOwners(tmpOwnerDto);
-            if (ownerDtos == null || ownerDtos.size() < 1) {
+            if (ListUtil.isNull(ownerDtos)) {
                 return "";
             }
             ownerDto.setCommunityId(ownerDtos.get(0).getCommunityId());
@@ -165,7 +160,7 @@ public class queryOwnerAccountCmd extends Cmd {
         tmpOwnerDto.setLink(ownerDto.getLink());
         tmpOwnerDto.setCommunityId(ownerDto.getCommunityId());
         List<OwnerDto> ownerDtos = ownerInnerServiceSMOImpl.queryOwners(tmpOwnerDto);
-        if (ownerDtos != null && ownerDtos.size() > 0) {
+        if (!ListUtil.isNull(ownerDtos)) {
             ownerDto.setOwnerId(ownerDtos.get(0).getMemberId());
             return ownerDtos.get(0).getName();
         }
@@ -174,7 +169,7 @@ public class queryOwnerAccountCmd extends Cmd {
         UserDto userDto = new UserDto();
         userDto.setTel(ownerDto.getLink());
         List<UserDto> userDtos = userInnerServiceSMOImpl.queryUsers(userDto);
-        if (userDtos != null && userDtos.size() > 0) {
+        if (!ListUtil.isNull(userDtos)) {
             ownerDto.setOwnerId("-1");
             return userDtos.get(0).getName();
         }
