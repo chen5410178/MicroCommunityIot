@@ -140,7 +140,7 @@ public class MvideoAssessControlProcessAdapt extends AbstractAccessControlManufa
         param.put("sn", accessControlDto.getMachineCode());
 
         param.put("taskId", taskId);
-        param.put("userId", accessControlFacePo.getPersonId());
+        param.put("personId", accessControlFacePo.getPersonId());
 
         MonitorManufactorDto monitorManufactorDto = new MonitorManufactorDto();
         monitorManufactorDto.setCommunityId(accessControlDto.getCommunityId());
