@@ -80,7 +80,7 @@
                 vc.emit('prestoreAccount', 'openAddModal', {});
             },
             _accountDetail: function (_account) {
-                vc.jumpToPage('/#/pages/property/accountDetailManage?acctId=' + _account.acctId);
+                vc.jumpToPage('/#/pages/owner/accountDetail?acctId=' + _account.acctId);
             },
             _doDeleteAccount:function(_account){
                 vc.emit('deleteAccount', 'openDeleteAccountModal',_account);

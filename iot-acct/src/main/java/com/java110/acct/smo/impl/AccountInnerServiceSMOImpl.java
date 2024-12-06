@@ -8,6 +8,7 @@ import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DistributedLock;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.account.AccountDetailDto;
 import com.java110.dto.account.AccountDto;
@@ -139,7 +140,7 @@ public class AccountInnerServiceSMOImpl implements IAccountInnerServiceSMO {
             accountDto.setObjId(accountDetailPo.getObjId());
             accountDto.setAcctId(accountDetailPo.getAcctId());
             accounts = BeanConvertUtil.covertBeanList(accountServiceDaoImpl.getAccountInfo(BeanConvertUtil.beanCovertMap(accountDto)), AccountDto.class);
-            if (accounts == null || accounts.size() < 1) {
+            if (ListUtil.isNull(accounts)) {
                 throw new IllegalArgumentException("账户不存在");
             }
             //在账户增加

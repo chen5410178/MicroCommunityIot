@@ -1,0 +1,59 @@
+<div>
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>
+                <vc:i18n name="账户明细" namespace="accountDetail"></vc:i18n>
+            </h5>
+            <div class="ibox-tools" style="top:10px;">
+                <button type="button" class="btn btn-primary btn-sm" style="margin-left:10px" v-on:click="_goBack()">
+                    <i class="fa fa-close"></i>返回
+                </button>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            <vc:i18n name="明细编号" namespace="accountDetail"></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name="交易编号" namespace="accountDetail"></vc:i18n>
+                        </th>
+                        <!-- <th class="text-center">
+                            <vc:i18n name="账户名称" namespace="accountDetail"></vc:i18n>
+                        </th> -->
+                        <th class="text-center">
+                            <vc:i18n name="明细类型" namespace="accountDetail"></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name="金额" namespace="accountDetail"></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name="交易时间" namespace="accountDetail"></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name="说明" namespace="accountDetail"></vc:i18n>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="accountDetail in accountDetailInfo.accountDetails">
+                        <td class="text-center">{{accountDetail.detailId}}</td>
+                        <td class="text-center">{{accountDetail.orderId}}</td>
+                        <!-- <td class="text-center">{{accountDetail.acctName}}</td> -->
+                        <td class="text-center" v-if="accountDetail.detailType =='1001'">转入
+                        </td>
+                        <td class="text-center" v-else-if="accountDetail.detailType =='3003'">转入已撤销</td>
+                        <td class="text-center" v-else>转出</td>
+                        <td class="text-center">{{accountDetail.amount}}</td>
+                        <td class="text-center">{{accountDetail.createTime}}</td>
+                        <td class="text-center">{{accountDetail.remark || '无'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- 分页 -->
+            <vc:create path="frame/pagination"></vc:create>
+        </div>
+    </div>
+</div>

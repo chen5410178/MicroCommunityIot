@@ -85,7 +85,7 @@ public class OwnerPrestoreAccountCmd extends Cmd {
 
         //查询 业主是否有账户
         AccountDto accountDto = new AccountDto();
-        accountDto.setObjId(accountDetailPo.getObjId());
+        accountDto.setLink(reqJson.getString("tel"));
         accountDto.setObjType(AccountDto.OBJ_TYPE_PERSON);
         accountDto.setPartId(reqJson.getString("communityId"));
         accountDto.setAcctType(reqJson.getString("acctType"));
@@ -110,6 +110,8 @@ public class OwnerPrestoreAccountCmd extends Cmd {
             accountDetailPo.setOrderId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_orderId));
             accountDetailPo.setAcctId(accountDto.getAcctId());
             accountDetailPo.setObjType(AccountDetailDto.ORDER_TYPE_USER);
+            accountDetailPo.setObjId(accountDto.getObjId());
+
             int flag = accountInnerServiceSMOImpl.prestoreAccount(accountDetailPo);
             if (flag < 1) {
                 throw new CmdException("预存失败");
@@ -145,7 +147,7 @@ public class OwnerPrestoreAccountCmd extends Cmd {
         AccountPo accountPo = new AccountPo();
         accountPo.setAmount(reqJson.getString("amount"));
         accountPo.setAcctId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_acctId));
-        accountPo.setObjId(reqJson.getString("ownerId"));
+        accountPo.setObjId(userDto.getUserId());
         accountPo.setObjType(AccountDto.OBJ_TYPE_PERSON);
         accountPo.setAcctType(reqJson.getString("acctType"));
         accountPo.setAcctName(userDto.getName());
