@@ -55,13 +55,9 @@ java + vue + uni-app + maven + spring boot(cloud) 方式
 
 [word接口文档](./document/protocol)
 
-## 设备配置文档
+## 操作文档
 
-[门禁配置文档](./document/HC物联网门禁配置指南.docx)
-
-[道闸配置文档](./document/HC物联网道闸配置指南.docx)
-
-[充电桩配置文档](./document/HC物联网两轮充电桩配置指南.docx)
+[操作文档](http://www.homecommunity.cn/pages/introduce/introduce_iot.html)
 
 ## 运行效果
 
