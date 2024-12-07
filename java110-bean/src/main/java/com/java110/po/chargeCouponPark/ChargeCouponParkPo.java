@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.Date;
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体
- * add by 吴学文 at 2024-12-07 19:46:00 mail: 928255095@qq.com
+ * add by 吴学文 at 2024-12-07 20:23:56 mail: 928255095@qq.com
  * open source address: https://gitee.com/wuxw7/MicroCommunity
  * 官网：http://www.homecommunity.cn
  * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
@@ -36,6 +36,7 @@ private String storeId;
 private String couponId;
 private String machineName;
 private String machineId;
+private String name;
 private String storeName;
 private String minMin;
 private String state;
@@ -93,6 +94,12 @@ public String getMachineId() {
     }
 public void setMachineId(String machineId) {
         this.machineId = machineId;
+    }
+public String getName() {
+        return name;
+    }
+public void setName(String name) {
+        this.name = name;
     }
 public String getStoreName() {
         return storeName;

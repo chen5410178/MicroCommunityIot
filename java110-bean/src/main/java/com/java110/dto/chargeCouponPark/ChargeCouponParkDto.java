@@ -23,6 +23,7 @@ public class ChargeCouponParkDto extends PageDto implements Serializable {
     private String couponId;
     private String machineName;
     private String machineId;
+    private String name;
     private String storeName;
     private String minMin;
     private String state;
@@ -96,6 +97,14 @@ public class ChargeCouponParkDto extends PageDto implements Serializable {
 
     public void setMachineId(String machineId) {
         this.machineId = machineId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getStoreName() {
