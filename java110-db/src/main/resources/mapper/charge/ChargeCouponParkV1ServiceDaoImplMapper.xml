@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="chargeCouponParkV1ServiceDaoImpl">
+
+
+
+
+
+    <!-- 保存汽车充电订单赠券信息 add by wuxw 2018-07-03 -->
+    <insert id="saveChargeCouponParkInfo" parameterType="Map">
+        insert into charge_coupon_park(
+max_min,coupon_name,ccp_id,remark,store_id,coupon_id,machine_name,machine_id,store_name,min_min,state,community_id
+) values (
+#{maxMin},#{couponName},#{ccpId},#{remark},#{storeId},#{couponId},#{machineName},#{machineId},#{storeName},#{minMin},#{state},#{communityId}
+)
+    </insert>
+
+
+
+    <!-- 查询汽车充电订单赠券信息 add by wuxw 2018-07-03 -->
+    <select id="getChargeCouponParkInfo" parameterType="Map" resultType="Map">
+        select  t.max_min,t.max_min maxMin,t.coupon_name,t.coupon_name couponName,t.ccp_id,t.ccp_id ccpId,t.remark,t.status_cd,t.status_cd statusCd,t.store_id,t.store_id storeId,t.coupon_id,t.coupon_id couponId,t.machine_name,t.machine_name machineName,t.machine_id,t.machine_id machineId,t.create_time,t.create_time createTime,t.store_name,t.store_name storeName,t.min_min,t.min_min minMin,t.state,t.community_id,t.community_id communityId 
+from charge_coupon_park t 
+where 1 =1 
+<if test="maxMin !=null and maxMin != ''">
+   and t.max_min= #{maxMin}
+</if> 
+<if test="couponName !=null and couponName != ''">
+   and t.coupon_name= #{couponName}
+</if> 
+<if test="ccpId !=null and ccpId != ''">
+   and t.ccp_id= #{ccpId}
+</if> 
+<if test="remark !=null and remark != ''">
+   and t.remark= #{remark}
+</if> 
+<if test="statusCd !=null and statusCd != ''">
+   and t.status_cd= #{statusCd}
+</if> 
+<if test="storeId !=null and storeId != ''">
+   and t.store_id= #{storeId}
+</if> 
+<if test="couponId !=null and couponId != ''">
+   and t.coupon_id= #{couponId}
+</if> 
+<if test="machineName !=null and machineName != ''">
+   and t.machine_name= #{machineName}
+</if> 
+<if test="machineId !=null and machineId != ''">
+   and t.machine_id= #{machineId}
+</if> 
+<if test="createTime !=null and createTime != ''">
+   and t.create_time= #{createTime}
+</if> 
+<if test="storeName !=null and storeName != ''">
+   and t.store_name= #{storeName}
+</if> 
+<if test="minMin !=null and minMin != ''">
+   and t.min_min= #{minMin}
+</if> 
+<if test="state !=null and state != ''">
+   and t.state= #{state}
+</if> 
+<if test="communityId !=null and communityId != ''">
+   and t.community_id= #{communityId}
+</if> 
+order by t.create_time desc
+<if test="page != -1 and page != null ">
+   limit #{page}, #{row}
+</if> 
+
+    </select>
+
+
+
+
+    <!-- 修改汽车充电订单赠券信息 add by wuxw 2018-07-03 -->
+    <update id="updateChargeCouponParkInfo" parameterType="Map">
+        update  charge_coupon_park t set t.status_cd = #{statusCd}
+<if test="newBId != null and newBId != ''">
+,t.b_id = #{newBId}
+</if> 
+<if test="maxMin !=null and maxMin != ''">
+, t.max_min= #{maxMin}
+</if> 
+<if test="couponName !=null and couponName != ''">
+, t.coupon_name= #{couponName}
+</if> 
+<if test="ccpId !=null and ccpId != ''">
+, t.ccp_id= #{ccpId}
+</if> 
+<if test="remark !=null and remark != ''">
+, t.remark= #{remark}
+</if> 
+<if test="storeId !=null and storeId != ''">
+, t.store_id= #{storeId}
+</if> 
+<if test="couponId !=null and couponId != ''">
+, t.coupon_id= #{couponId}
+</if> 
+<if test="machineName !=null and machineName != ''">
+, t.machine_name= #{machineName}
+</if> 
+<if test="machineId !=null and machineId != ''">
+, t.machine_id= #{machineId}
+</if> 
+<if test="createTime !=null and createTime != ''">
+, t.create_time= #{createTime}
+</if> 
+<if test="storeName !=null and storeName != ''">
+, t.store_name= #{storeName}
+</if> 
+<if test="minMin !=null and minMin != ''">
+, t.min_min= #{minMin}
+</if> 
+<if test="state !=null and state != ''">
+, t.state= #{state}
+</if> 
+<if test="communityId !=null and communityId != ''">
+, t.community_id= #{communityId}
+</if> 
+ where 1=1 
+    </update>
+
+    <!-- 查询汽车充电订单赠券数量 add by wuxw 2018-07-03 -->
+     <select id="queryChargeCouponParksCount" parameterType="Map" resultType="Map">
+        select  count(1) count 
+from charge_coupon_park t 
+where 1 =1 
+<if test="maxMin !=null and maxMin != ''">
+   and t.max_min= #{maxMin}
+</if> 
+<if test="couponName !=null and couponName != ''">
+   and t.coupon_name= #{couponName}
+</if> 
+<if test="ccpId !=null and ccpId != ''">
+   and t.ccp_id= #{ccpId}
+</if> 
+<if test="remark !=null and remark != ''">
+   and t.remark= #{remark}
+</if> 
+<if test="statusCd !=null and statusCd != ''">
+   and t.status_cd= #{statusCd}
+</if> 
+<if test="storeId !=null and storeId != ''">
+   and t.store_id= #{storeId}
+</if> 
+<if test="couponId !=null and couponId != ''">
+   and t.coupon_id= #{couponId}
+</if> 
+<if test="machineName !=null and machineName != ''">
+   and t.machine_name= #{machineName}
+</if> 
+<if test="machineId !=null and machineId != ''">
+   and t.machine_id= #{machineId}
+</if> 
+<if test="createTime !=null and createTime != ''">
+   and t.create_time= #{createTime}
+</if> 
+<if test="storeName !=null and storeName != ''">
+   and t.store_name= #{storeName}
+</if> 
+<if test="minMin !=null and minMin != ''">
+   and t.min_min= #{minMin}
+</if> 
+<if test="state !=null and state != ''">
+   and t.state= #{state}
+</if> 
+<if test="communityId !=null and communityId != ''">
+   and t.community_id= #{communityId}
+</if> 
+
+
+     </select>
+
+</mapper>
