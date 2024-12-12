@@ -7,15 +7,15 @@
 				<text>{{communityName}}</text>
 			</view>
 
-			<!-- <view class="tips_block">
+			<view class="tips_block">
 			</view>
 			<view class="cu-bar btn-group " style="margin-top: 30px;">
 				<button @click="_changeFlag('phone')" style="margin-right: 0px;"
 					class="cu-btn  shadow-blur lg" :class="{'bg-blue':showFlag == 'phone','line-blue':showFlag != 'phone'}">手机号</button>
 				<button @click="_changeFlag('car')" style="margin-left: 0px;"
 					class="cu-btn shadow-blur  lg" :class="{'bg-blue':showFlag == 'car','line-blue':showFlag != 'car'}">车牌号</button>
-			</view> -->
-			<view>
+			</view>
+			<view v-if="showFlag == 'phone'">
 				<view class='tips'>
 					<text>请输入手机号</text>
 				</view>
@@ -25,7 +25,7 @@
 					</view>
 				</view>
 			</view>
-			<view>
+			<view v-if="showFlag == 'car'">
 				<view class='tips'>
 					<text>点击方框输入车牌号</text>
 				</view>

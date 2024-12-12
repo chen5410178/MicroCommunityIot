@@ -16,41 +16,43 @@
                     cardName: '',
                     cardMonth: '',
                     cardPrice: '',
-                    communityId: vc.getCurrentCommunity().communityId
+                    communityId: ''
                 }
             }
         },
         _initMethod: function() {
-            vc.component._listChargeMonthCards(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._listChargeMonthCards(DEFAULT_PAGE, DEFAULT_ROWS);
         },
         _initEvent: function() {
 
             vc.on('chargeMonthCardManage', 'listChargeMonthCard', function(_param) {
-                vc.component._listChargeMonthCards(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listChargeMonthCards(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('pagination', 'page_event', function(_currentPage) {
-                vc.component._listChargeMonthCards(_currentPage, DEFAULT_ROWS);
+                $that._listChargeMonthCards(_currentPage, DEFAULT_ROWS);
             });
         },
         methods: {
             _listChargeMonthCards: function(_page, _rows) {
 
-                vc.component.chargeMonthCardManageInfo.conditions.page = _page;
-                vc.component.chargeMonthCardManageInfo.conditions.row = _rows;
+                $that.chargeMonthCardManageInfo.conditions.page = _page;
+                $that.chargeMonthCardManageInfo.conditions.row = _rows;
+                $that.chargeMonthCardManageInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
+                
                 let param = {
-                    params: vc.component.chargeMonthCardManageInfo.conditions
+                    params: $that.chargeMonthCardManageInfo.conditions
                 };
 
                 //发送get请求
                 vc.http.apiGet('/chargeCard.listChargeMonthCard',
                     param,
                     function(json, res) {
-                        var _chargeMonthCardManageInfo = JSON.parse(json);
-                        vc.component.chargeMonthCardManageInfo.total = _chargeMonthCardManageInfo.total;
-                        vc.component.chargeMonthCardManageInfo.records = _chargeMonthCardManageInfo.records;
-                        vc.component.chargeMonthCardManageInfo.chargeMonthCards = _chargeMonthCardManageInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.chargeMonthCardManageInfo.total = _json.total;
+                        $that.chargeMonthCardManageInfo.records = _json.records;
+                        $that.chargeMonthCardManageInfo.chargeMonthCards = _json.data;
                         vc.emit('pagination', 'init', {
-                            total: vc.component.chargeMonthCardManageInfo.records,
+                            total: $that.chargeMonthCardManageInfo.records,
                             currentPage: _page
                         });
                     },
@@ -69,14 +71,14 @@
                 vc.emit('deleteChargeMonthCard', 'openDeleteChargeMonthCardModal', _chargeMonthCard);
             },
             _queryChargeMonthCardMethod: function() {
-                vc.component._listChargeMonthCards(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listChargeMonthCards(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
             _moreCondition: function() {
-                if (vc.component.chargeMonthCardManageInfo.moreCondition) {
-                    vc.component.chargeMonthCardManageInfo.moreCondition = false;
+                if ($that.chargeMonthCardManageInfo.moreCondition) {
+                    $that.chargeMonthCardManageInfo.moreCondition = false;
                 } else {
-                    vc.component.chargeMonthCardManageInfo.moreCondition = true;
+                    $that.chargeMonthCardManageInfo.moreCondition = true;
                 }
             }
 

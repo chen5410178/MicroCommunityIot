@@ -20,7 +20,7 @@
                     primeRate: '',
                     receivableAmount: '',
                     receivedAmount: '',
-                    communityId: vc.getCurrentCommunity().communityId,
+                    communityId: '',
                     queryStartTime:'',
                     queryEndTime:''
                 }
@@ -50,6 +50,8 @@
 
                 $that.chargeMonthOrderManageInfo.conditions.page = _page;
                 $that.chargeMonthOrderManageInfo.conditions.row = _rows;
+                $that.chargeMonthOrderManageInfo.conditions.communityId = vc.getCurrentCommunity().communityId;
+                
                 let param = {
                     params: $that.chargeMonthOrderManageInfo.conditions
                 };
