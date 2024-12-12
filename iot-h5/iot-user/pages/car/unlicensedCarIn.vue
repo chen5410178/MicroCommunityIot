@@ -10,18 +10,19 @@
 			<view class="tips_block">
 			</view>
 			<view class="cu-bar btn-group " style="margin-top: 30px;">
-				<button @click="_changeFlag('phone')" style="margin-right: 0px;"
-					class="cu-btn  shadow-blur lg" :class="{'bg-blue':showFlag == 'phone','line-blue':showFlag != 'phone'}">手机号</button>
-				<button @click="_changeFlag('car')" style="margin-left: 0px;"
-					class="cu-btn shadow-blur  lg" :class="{'bg-blue':showFlag == 'car','line-blue':showFlag != 'car'}">车牌号</button>
+				<button @click="_changeFlag('phone')" style="margin-right: 0px;" class="cu-btn  shadow-blur lg"
+					:class="{'bg-blue':showFlag == 'phone','line-blue':showFlag != 'phone'}">手机号</button>
+				<button @click="_changeFlag('car')" style="margin-left: 0px;" class="cu-btn shadow-blur  lg"
+					:class="{'bg-blue':showFlag == 'car','line-blue':showFlag != 'car'}">车牌号</button>
 			</view>
 			<view v-if="showFlag == 'phone'">
 				<view class='tips'>
 					<text>请输入手机号</text>
 				</view>
 				<view class="plate-input-body">
-					<view class="plate-input-content" >
-						<input type="number" maxlength="11" class="input-ui" v-model="telNum" placeholder="手机号作为车牌号入场"/>
+					<view class="plate-input-content">
+						<input type="number" maxlength="11" class="input-ui" v-model="carNum"
+							placeholder="手机号作为车牌号入场" />
 					</view>
 				</view>
 			</view>
@@ -68,8 +69,7 @@
 
 			<view class="plat-btn-black"></view>
 			<view class="cu-bar btn-group" style="margin-top: 30px;">
-				<button @click="_saveCarNum" 
-					class="cu-btn bg-green shadow-blur round lg">立即入场</button>
+				<button @click="_saveCarNum" class="cu-btn bg-green shadow-blur round lg">立即入场</button>
 			</view>
 		</view>
 
@@ -124,13 +124,12 @@
 					index7: ""
 				},
 				carNum: '',
-				telNum: '',
 				communityId: '',
-				communityName:'',
+				communityName: '',
 				appId: '',
 				machineId: '',
 				showToastFlag: false,
-				carNumBtn:'',
+				carNumBtn: '',
 				showFlag: 'phone',
 			}
 		},
@@ -148,11 +147,9 @@
 			showCarNumberKeyboard() {
 				this.$refs.popupCarNumber.open()
 			},
-			_changeFlag:function(_flag){
-				
-					this.showFlag = _flag;
-				
-				
+			_changeFlag: function(_flag) {
+				this.showFlag = _flag;
+				this.carNum = "";
 			},
 			// 车牌号选择键盘
 			confirmCarNumber(value) {
@@ -206,10 +203,9 @@
 				customCarInOut({
 					communityId: _that.communityId,
 					carNum: _that.carNum,
-					telNum: _that.telNum,
 					machineId: _that.machineId,
 					type: '1101',
-					unlicense:'T'
+					unlicense: 'T'
 				}).then(_data => {
 					if (_data.data.code != 0) {
 						uni.showToast({
@@ -233,33 +229,33 @@
 	.pages {
 		padding: 20rpx 20rpx;
 	}
-	
+
 	.pages .plate-context {
 		background-color: #fff;
 		padding: 40rpx 20rpx 80rpx 20rpx;
 	}
-	
+
 	.ak_row_title {
 		padding-left: 20rpx;
 		font-size: 32rpx;
 		font-weight: 700;
-	
+
 	}
-	
+
 	.pages_header {
 		width: 100%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 	}
-	
+
 	.pages_header_top {
 		width: 33.3%;
 		height: 60rpx;
 		border-left: 5px solid #00AA00;
 		border-right: 5px solid #00AA00;
 	}
-	
+
 	.pages_header_btm {
 		width: 70%;
 		background: #00AA00;
@@ -271,36 +267,36 @@
 		font-weight: normal;
 		font-size: 16pt;
 	}
-	
+
 	.tips_block {
 		height: 60rpx;
 	}
-	
+
 	.tips {
 		text-align: center;
 		margin: 60rpx 0;
 		font-size: 12pt;
 		color: #888888;
 	}
-	
+
 	.plate-input-flag {
 		margin: 30rpx 10rpx 30rpx 0;
 		color: #00AA00;
 		float: right;
 	}
-	
+
 	.plate-input-body {
 		/*border: 1px solid red;*/
 		height: 100rpx;
 		margin: 0 10rpx;
 	}
-	
+
 	.plate-input-content {
 		display: flex;
 		flex-direction: row;
 		height: 100rpx;
 	}
-	
+
 	.plate-nums-foc {
 		flex: 1;
 		border: 2rpx solid #00bf70;
@@ -312,7 +308,7 @@
 		box-sizing: border-box;
 		border-radius: 4rpx;
 	}
-	
+
 	.plate-nums-first {
 		flex: 1;
 		border: 2rpx solid #ccc;
@@ -324,11 +320,11 @@
 		box-sizing: border-box;
 		border-radius: 4rpx;
 	}
-	
-	.green-border{
+
+	.green-border {
 		border: 2rpx solid #39b54a;
 	}
-	
+
 	.plate-num-text {
 		flex: 1;
 		line-height: 100rpx;
@@ -338,24 +334,24 @@
 		font-size: 40rpx;
 		font-weight: normal;
 	}
-	
+
 	.new-plate-input-content {
 		display: flex;
 		flex-direction: row;
 		height: 100rpx;
 	}
-	
+
 	.plat-btn-black {
 		height: 100rpx;
 	}
-	
+
 	.plat-btn {
 		padding-top: 80rpx;
 		width: 96%;
 		margin: 0 auto;
 	}
-	
-	
+
+
 	.kb_top {
 		align-content: relative;
 		width: 100%;
@@ -364,7 +360,7 @@
 		border-top: solid #ebebeb 2rpx;
 		border-bottom: 15rpx solid #d7d8dc;
 	}
-	
+
 	.keyboard {
 		z-index: 9999;
 		position: fixed;
@@ -377,7 +373,7 @@
 		flex-wrap: wrap;
 		border-bottom: 15rpx solid #d7d8dc;
 	}
-	
+
 	.td {
 		font-family: "微软雅黑";
 		flex-grow: 1;
@@ -391,24 +387,24 @@
 		border-radius: 10rpx 10rpx 10rpx 10rpx;
 		box-shadow: 0rpx 2rpx 0rpx #a9a9a9;
 	}
-	
+
 	.td_nor {
 		flex: 1 1 6%;
 	}
-	
+
 	.td_num {
 		flex: 1 1 8%;
 	}
-	
+
 	.td_spec {
 		flex: 1 1 12%;
 	}
-	
+
 	.board_bg {
 		box-shadow: 0 0 0 #e5e5e5;
 		background: #e5e5e5;
 	}
-	
+
 	.del-first {
 		position: absolute;
 		bottom: 10rpx;
@@ -422,7 +418,7 @@
 		justify-content: center;
 		border-radius: 10rpx;
 	}
-	
+
 	.del-hover {
 		position: absolute;
 		bottom: 10rpx;
@@ -436,29 +432,30 @@
 		border-radius: 10rpx;
 		box-shadow: 0 0 0 #e5e5e5;
 	}
-	
+
 	.del-img {
 		display: block;
 		width: 46rpx;
 		height: 38rpx;
 	}
-	
-	.temp-history{
+
+	.temp-history {
 		font-size: 38upx;
 		color: #888888;
 	}
-	
-	.temp-remark{
+
+	.temp-remark {
 		margin-top: 300upx;
-		padding:10upx;
+		padding: 10upx;
 		color: #888888;
 	}
-	.input-ui{
-				border: 1px solid #ccc;
-				padding: 12upx 18upx;
-				border-radius: 8upx;
-				color: rgb(48, 49, 51);
-				width: 100%;
-				height: 100%;
-			}
+
+	.input-ui {
+		border: 1px solid #ccc;
+		padding: 12upx 18upx;
+		border-radius: 8upx;
+		color: rgb(48, 49, 51);
+		width: 100%;
+		height: 100%;
+	}
 </style>
