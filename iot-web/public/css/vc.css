@@ -1161,3 +1161,56 @@ nav-link nav-link-breadcrumb active:active {
     right: 15px;
     padding: 10px;
 }
+.map-m-left{
+    position: absolute;
+    top: 120px;
+    margin-left: 20px;
+    width: 250px;
+    /* min-height: 80vh; */
+    background-color: #FFF;
+    border-radius: 10px;
+    color: #545761;
+    padding:10px;
+    z-index: 2000;
+}
+
+.map-m-left .map-m-staff{
+    background-color: #EAF0FE;
+    padding:10px;
+    margin-bottom:5px;
+    border-radius: 5px;
+    cursor:pointer;
+}
+.map-m-left .map-m-staff-active{
+    background-color: #3E77FC;
+    color: #FFF;
+}
+
+.map-m-right{
+    position: absolute;
+    top: 120px;
+    right: 20px;
+    width: 300px;
+    background-color: #FFF;
+    border-radius: 10px;
+    color: #888888;
+    padding:10px;
+    z-index: 2000;
+}
+
+.map-m-right  .item {
+    padding: 10px;
+    background-color: #F6F6F7;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.map-m-right  .item .item-title {
+    font-size: 16px;
+    margin-left:5px;
+}
+
+.map-m-right  .item img {
+    width: 80px;
+    height: 80px;
+}
