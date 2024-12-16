@@ -27,7 +27,7 @@
             });
             vc.on("addDispatchFace", "notifyUploadImage", function (_param) {
                 if (_param.length > 0) {
-                    $that.addDispatchFaceInfo.faceUrl = _param[0];
+                    $that.addDispatchFaceInfo.faceUrl = _param[0].url;
                 } else {
                     $that.addDispatchFaceInfo.faceUrl = ''
                 }
@@ -110,7 +110,7 @@
 
 
                 vc.http.apiPost(
-                    '/ai.savePersonFace',
+                    '/ai.saveDispatchFace',
                     JSON.stringify($that.addDispatchFaceInfo),
                     {
                         emulateJSON: true

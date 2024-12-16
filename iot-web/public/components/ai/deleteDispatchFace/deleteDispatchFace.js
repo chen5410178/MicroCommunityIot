@@ -13,6 +13,7 @@
              vc.on('deleteDispatchFace','openDeleteDispatchFaceModal',function(_params){
 
                 $that.deleteDispatchFaceInfo = _params;
+                $that.deleteDispatchFaceInfo.communityId = vc.getCurrentCommunity().communityId;
                 $('#deleteDispatchFaceModel').modal('show');
 
             });
@@ -20,7 +21,7 @@
         methods:{
             deleteDispatchFace:function(){
                 vc.http.apiPost(
-                    '/app/face/deletePersonFace',
+                    '/ai.deleteDispatchFace',
                     JSON.stringify($that.deleteDispatchFaceInfo),
                     {
                         emulateJSON:true
