@@ -20,8 +20,8 @@ import java.util.List;
 /**
  * 保存布控人员信息
  */
-@Java110Cmd(serviceCode = "ai.savePersonFace")
-public class SavePersonFaceCmd extends Cmd {
+@Java110Cmd(serviceCode = "ai.saveDispatchFace")
+public class SaveDispatchFaceCmd extends Cmd {
 
     public static final String faceUrl = "/oapp/ext/common";
 
