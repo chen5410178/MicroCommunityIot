@@ -1,0 +1,133 @@
+<div>
+    <div class="row">
+        <div class="col-md-1 padding-r-0">
+            <div class=" border-radius ">
+                <div class="margin-xs-r  treeview ">
+                    <ul class="list-group text-center border-radius">
+                        <li class="list-group-item node-orgTree " v-for="(item,index) in dispatchLogInfo.machines"
+                            :key="index" @click="swatchMachineId(item)"
+                            :class="{'vc-node-selected':dispatchLogInfo.conditions.machineId == item.machineId}">
+                            {{item.machineName}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-11">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请填写人员名称','dispatchLog')"
+                                    v-model="dispatchLogInfo.conditions.personName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryFaceLogMethod()">
+                                <vc:i18n name="查询"></vc:i18n>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="布控告警" namespace="dispatchLog"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+            
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='抓拍' namespace='dispatchLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='模版' namespace='dispatchLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='人员名称' namespace='dispatchLog'></vc:i18n>
+                                </th>
+                               
+                                <th class="text-center">
+                                    <vc:i18n name='编号' namespace='dispatchLog'></vc:i18n>
+                                </th>
+                                
+                                <th class="text-center">
+                                    <vc:i18n name='项目名称' namespace='dispatchLog'></vc:i18n>
+                                </th>
+                        
+                               
+                                <th class="text-center">
+                                    <vc:i18n name='设备编号' namespace='dispatchLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='设备名称' namespace='dispatchLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='相似度' namespace='dispatchLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='状态' namespace='dispatchLog'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='dispatchLog'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="dispatchLog in dispatchLogInfo.dispatchLogs">
+                               
+                                <td class="text-center" style="white-space: nowrap;">
+                                    <img style="width: 60px; height: 60px;" class="border-radius"
+                                        v-if="dispatchLog.imgUrl" v-bind:src="dispatchLog.imgUrl"
+                                        v-on:click="_viewFaceLog(dispatchLog.imgUrl)" />
+                                    <img style="width: 60px; height: 60px;" class="border-radius" v-else
+                                        src="/static/img/noPhoto.jpg" />
+                                </td>
+                                <td class="text-center" style="white-space: nowrap;">
+                                    <img style="width: 60px; height: 60px;" class="border-radius"
+                                        v-if="dispatchLog.faceUrl" v-bind:src="dispatchLog.faceUrl"
+                                        v-on:click="_viewFaceLog(dispatchLog.faceUrl)" />
+                                    <img style="width: 60px; height: 60px;" class="border-radius" v-else
+                                        src="/static/img/noPhoto.jpg" />
+                                </td>
+                                <td class="text-center">{{dispatchLog.personName}}</td>
+
+                                <td class="text-center">{{dispatchLog.personId}}</td>
+                                <td class="text-center">{{dispatchLog.communityName}}</td>
+                                <td class="text-center">{{dispatchLog.machineCode}}</td>
+                                <td class="text-center">{{dispatchLog.machineName}}</td>
+                                <td class="text-center">{{dispatchLog.score}}</td>
+                                <td class="text-center">{{dispatchLog.state == '1001'?'识别成功':'识别失败'}}</td>
+                                <td class="text-center">{{dispatchLog.createTime}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <vc:create path="common/viewImage"></vc:create>
+
+</div>
