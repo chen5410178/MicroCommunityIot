@@ -1,0 +1,128 @@
+<div>
+
+    <div class="ibox ">
+        <div class="ibox-title">
+            <h5>
+                <vc:i18n name="查询条件"></vc:i18n>
+            </h5>
+            <div class="ibox-tools" style="top:10px;">
+
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <input type="text" :placeholder="vc.i18n('请填写人员名称','dispatchFace')"
+                            v-model="dispatchFaceInfo.conditions.personName" class=" form-control">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <input type="text" :placeholder="vc.i18n('请填写手机号','dispatchFace')"
+                            v-model="dispatchFaceInfo.conditions.personLink" class=" form-control">
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryDispatchFaceMethod()">
+                        <vc:i18n name="查询"></vc:i18n>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>
+                <vc:i18n name="布控人员" namespace="dispatchFace"></vc:i18n>
+            </h5>
+            <div class="ibox-tools" style="top:10px;">
+                <button type="button" class="btn btn-primary btn-sm" v-if="dispatchFaceInfo.conditions.communityId"
+                    @click="_openAddDispatchFaceModal()">
+                    <vc:i18n name="添加" namespace="dispatchFace"></vc:i18n>
+                </button>
+            </div>
+        </div>
+        <div class="ibox-content">
+
+            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            <vc:i18n name='人脸' namespace='dispatchFace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='人员名称' namespace='dispatchFace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='编号' namespace='dispatchFace'></vc:i18n>
+                        </th>
+
+                        <th class="text-center">
+                            <vc:i18n name='项目名称' namespace='dispatchFace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='人员电话' namespace='dispatchFace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='身份证' namespace='dispatchFace'></vc:i18n>
+                        </th>
+
+                        <th class="text-center">
+                            <vc:i18n name='开始时间' namespace='dispatchFace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='结束时间' namespace='dispatchFace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='创建时间' namespace='dispatchFace'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='操作'></vc:i18n>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="dispatchFace in dispatchFaceInfo.dispatchFaces">
+                        <td class="text-center" style="white-space: nowrap;">
+                            <img style="width: 60px; height: 60px;" class="border-radius" v-if="dispatchFace.faceUrl"
+                                v-bind:src="dispatchFace.faceUrl"
+                                v-on:click="_viewDispatchFace(dispatchFace.faceUrl)" />
+                            <img style="width: 60px; height: 60px;" class="border-radius" v-else
+                                src="/static/img/noPhoto.jpg" />
+                        </td>
+                        <td class="text-center">{{dispatchFace.personName}}</td>
+                        <td class="text-center">{{dispatchFace.personId}}</td>
+                        <td class="text-center">{{dispatchFace.communityName}}</td>
+                        <td class="text-center">{{dispatchFace.personLink}}</td>
+                        <td class="text-center">{{dispatchFace.idnumber}}</td>
+                        <td class="text-center">{{dispatchFace.startTime}}</td>
+                        <td class="text-center">{{dispatchFace.endTime}}</td>
+                        <td class="text-center">{{dispatchFace.createTime}}</td>
+
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <button class="btn-white btn btn-xs"
+                                    v-on:click="_openDeleteDispatchFaceModel(dispatchFace)">
+                                    <vc:i18n name='删除'></vc:i18n>
+                                </button>
+                            </div>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <!-- 分页 -->
+            <vc:create path="frame/pagination"></vc:create>
+        </div>
+    </div>
+
+
+
+    <vc:create path="ai/addDispatchFace"></vc:create>
+    <vc:create path="ai/deleteDispatchFace"></vc:create>
+    <vc:create path="common/viewImage"></vc:create>
+
+</div>

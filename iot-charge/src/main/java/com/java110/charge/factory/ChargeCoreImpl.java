@@ -197,10 +197,11 @@ public class ChargeCoreImpl implements IChargeCore {
      * @param chargeMachineDto
      */
     private void returnOrderMoney(ChargeMachineDto chargeMachineDto,
-                                  String remark,
-                                  String energy,
+                                  NotifyChargeOrderDto notifyChargeOrderDto,
                                   List<ChargeMachineOrderDto> chargeMachineOrderDtos) {
 
+        String remark = notifyChargeOrderDto.getReason();
+        String energy = notifyChargeOrderDto.getEnergy();
 
         Date startTime = DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime());
 
@@ -212,6 +213,9 @@ public class ChargeCoreImpl implements IChargeCore {
         String power = energy;
         if (usedHours <= 0) {
             usedHours = 0;
+        }else if("1".equals(notifyChargeOrderDto.getEnergyFlag())){ // todo 说明传进来的是电量
+            BigDecimal powerDec = new BigDecimal(Double.parseDouble(energy)).divide(new BigDecimal(usedHours), 2, BigDecimal.ROUND_HALF_UP);
+            power = powerDec.doubleValue() + "";
         }
         //适配器给功率，不要给电量 如果给电量的话 页面上显示的是电量 这样 导致 客户搞不清楚
 //        else {
@@ -652,7 +656,7 @@ public class ChargeCoreImpl implements IChargeCore {
                 finishMonthCardChargeOrder(notifyChargeOrderDto, chargeMachineOrderDtos);
                 return new ResultVo(ResultVo.CODE_OK, "成功");
             }
-            returnOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getEnergy(), chargeMachineOrderDtos);
+            returnOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto, chargeMachineOrderDtos);
         } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDtos.get(0).getChargeType())) {
             returnCarOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getAmount(), notifyChargeOrderDto.getEnergy(), chargeMachineOrderDtos);
         }

@@ -59,6 +59,7 @@ public class NotifyDingDingChargeController {
         notifyChargeOrderDto.setBodyParam(postInfo);
         notifyChargeOrderDto.setReason(param.getString("typeName"));
         notifyChargeOrderDto.setEnergy(param.getString("energy"));
+        notifyChargeOrderDto.setEnergyFlag("1");
 
         ResultVo resultVo = null;
         resultVo = notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);

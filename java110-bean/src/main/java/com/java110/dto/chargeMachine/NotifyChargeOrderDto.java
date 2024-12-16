@@ -16,6 +16,8 @@ public class NotifyChargeOrderDto implements Serializable {
 
     private String reason;
 
+    private String energyFlag = "2"; // 1 是电量 2 是功率 默认是功率
+
     private String energy;
 
     private String amount;
@@ -83,5 +85,13 @@ public class NotifyChargeOrderDto implements Serializable {
 
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+    public String getEnergyFlag() {
+        return energyFlag;
+    }
+
+    public void setEnergyFlag(String energyFlag) {
+        this.energyFlag = energyFlag;
     }
 }
