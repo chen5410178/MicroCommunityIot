@@ -1,0 +1,107 @@
+<div>
+    <div class="ibox ">
+        <div class="ibox-title">
+            <h5>
+                <vc:i18n name="查询条件"></vc:i18n>
+            </h5>
+            <div class="ibox-tools" style="top:10px;">
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <input type="text" :placeholder="vc.i18n('请选择设备号码','intercomLog')"
+                            v-model="intercomLogInfo.conditions.machineCode" class=" form-control">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <input type="text" :placeholder="vc.i18n('请选择设备名称','intercomLog')"
+                            v-model="intercomLogInfo.conditions.machineName" class=" form-control">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <select class="custom-select" v-model="intercomLogInfo.conditions.state">
+                        <option selected value="">请选择状态</option>
+                        <option value="W">呼叫中</option>
+                        <option value="D">通话中</option>
+                        <option value="F">呼叫失败</option>
+                        <option value="C">通话完成</option>
+                    </select>
+                </div>
+                <div class="col-sm-1">
+                    <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryintercomLogMethod()">
+                        <vc:i18n name="查询"></vc:i18n>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>
+                <vc:i18n name="云呼记录" namespace="intercomLog"></vc:i18n>
+            </h5>
+            <div class="ibox-tools" style="top:10px;">
+
+            </div>
+        </div>
+        <div class="ibox-content">
+            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            <vc:i18n name='主呼设备' namespace='intercomLog'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='主呼号码' namespace='intercomLog'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='主呼端口' namespace='intercomLog'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='被呼设备' namespace='intercomLog'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='被呼号码' namespace='intercomLog'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='被呼端口' namespace='intercomLog'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='类型' namespace='intercomLog'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='状态' namespace='intercomLog'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='呼叫时间' namespace='intercomLog'></vc:i18n>
+                        </th>
+                        <th class="text-center">
+                            <vc:i18n name='备注' namespace='intercomLog'></vc:i18n>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="log in intercomLogInfo.intercomLogs">
+                        <!-- <td class="text-center">{{machine.machineId}}</td> -->
+                        <td class="text-center">{{log.amachineName}}</td>
+                        <td class="text-center">{{log.amachineCode}}</td>
+                        <td class="text-center">{{log.adataPort}}</td>
+                        <td class="text-center">{{log.zmachineName}}</td>
+                        <td class="text-center">{{log.zmachineCode}}</td>
+                        <td class="text-center">{{log.zdataPort}}</td>
+                        <td class="text-center">{{log.intercomType == '1001'?'语音':'视频'}}</td>
+                        <td class="text-center">{{_getLogStateName(log.state)}}</td>
+                        <td class="text-center">{{log.createTime}}</td>
+                        <td class="text-center">{{log.remark}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- 分页 -->
+            <vc:create path="frame/pagination"></vc:create>
+        </div>
+    </div>
+</div>
