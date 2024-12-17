@@ -23,7 +23,7 @@
             }
         },
         _initMethod: function() {
-            vc.getDict('','charge_type',function (_data) {
+            vc.getDict('charge_machine','charge_type',function (_data) {
                 let _chargeTypes = [
                     {
                         name:'全部',

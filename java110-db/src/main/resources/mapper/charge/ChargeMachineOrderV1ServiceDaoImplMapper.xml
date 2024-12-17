@@ -32,9 +32,13 @@
         left join t_dict td on td.status_cd = t.state and td.table_name = 'charge_machine_order' and td.table_columns = 'state'
         left join charge_machine_order_acct cmoa on t.order_id = cmoa.order_id and cmoa.status_cd = '0'
         where 1 =1
+        <if test="chargeType !=null and chargeType != ''">
+            and cm.charge_type = #{chargeType}
+        </if>
         <if test="amount !=null and amount != ''">
             and t.amount= #{amount}
         </if>
+
         <if test="orderId !=null and orderId != ''">
             and t.order_id= #{orderId}
         </if>
@@ -167,7 +171,13 @@
     <select id="queryChargeMachineOrdersCount" parameterType="Map" resultType="Map">
         select count(1) count
         from charge_machine_order t
+        <if test="chargeType !=null and chargeType != ''">
+        left join charge_machine cm on t.machine_id = cm.machine_id and cm.status_cd = '0'
+        </if>
         where 1 =1
+        <if test="chargeType !=null and chargeType != ''">
+            and cm.charge_type = #{chargeType}
+        </if>
         <if test="amount !=null and amount != ''">
             and t.amount= #{amount}
         </if>

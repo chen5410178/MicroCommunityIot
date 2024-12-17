@@ -8,6 +8,7 @@
         data: {
             chargeMachineOrderInfo: {
                 chargeMachineOrders: [],
+                chargeTypes: [],
                 total: 0,
                 records: 1,
                 moreCondition: false,
@@ -21,11 +22,13 @@
                     communityId:'',
                     state: '',
                     queryStartTime:'',
-                    queryEndTime:''
+                    queryEndTime:'',
+                    chargeType:''
                 }
             }
         },
         _initMethod: function() {
+
             $that._listChargeMachineOrders(DEFAULT_PAGE, DEFAULT_ROWS);
             vc.initDateTime('queryStartTime',function(_value){
                 $that.chargeMachineOrderInfo.conditions.queryStartTime = _value;
@@ -33,6 +36,18 @@
             vc.initDateTime('queryEndTime',function(_value){
                 $that.chargeMachineOrderInfo.conditions.queryEndTime = _value;
             });
+            vc.getDict('charge_machine','charge_type',function (_data) {
+                let _chargeTypes = [
+                    {
+                        name:'全部',
+                        statusCd:''
+                    }
+                ];
+                _data.forEach(item => {
+                    _chargeTypes.push(item);
+                });
+                $that.chargeMachineOrderInfo.chargeTypes = _chargeTypes;
+            })
         },
         _initEvent: function() {
 
@@ -71,6 +86,10 @@
                         console.log('请求失败处理');
                     }
                 );
+            },
+            swatchChargeType:function(_item){
+                $that.chargeMachineOrderInfo.conditions.chargeType= _item.statusCd;
+                $that._listChargeMachineOrders(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             _queryChargeMachineOrderMethod: function() {
                 $that._listChargeMachineOrders(DEFAULT_PAGE, DEFAULT_ROWS);
