@@ -134,6 +134,12 @@
         <if test="personId != null and personId != ''">
            and mmp.person_id = #{personId}
         </if>
+        <if test="personIds != null">
+            and mmp.person_id in
+            <foreach collection="personIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
         <if test="heartbeatTime !=null">
             and t.heartbeat_time= #{heartbeatTime}
         </if>
@@ -223,6 +229,12 @@
         where 1 =1
         <if test="personId != null and personId != ''">
            and mmp.person_id = #{personId}
+        </if>
+        <if test="personIds != null">
+            and mmp.person_id in
+            <foreach collection="personIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
         </if>
         <if test="heartbeatTime !=null">
             and t.heartbeat_time= #{heartbeatTime}

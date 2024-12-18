@@ -26,6 +26,7 @@ public class MonitorMachineDto extends PageDto implements Serializable {
     private String mmName;
 
     private String personId;
+    private String[] personIds;
 
 
     private String communityId;
@@ -186,5 +187,13 @@ public class MonitorMachineDto extends PageDto implements Serializable {
 
     public void setPersonId(String personId) {
         this.personId = personId;
+    }
+
+    public String[] getPersonIds() {
+        return personIds;
+    }
+
+    public void setPersonIds(String[] personIds) {
+        this.personIds = personIds;
     }
 }

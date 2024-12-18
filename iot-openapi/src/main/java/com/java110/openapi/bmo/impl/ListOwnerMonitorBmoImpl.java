@@ -52,7 +52,7 @@ public class ListOwnerMonitorBmoImpl implements IIotCommonApiBmo {
         Assert.listOnlyOne(ownerDtos, "业主不存在");
 
         MonitorMachineDto monitorMachineDto = BeanConvertUtil.covertBean(reqJson, MonitorMachineDto.class);
-        monitorMachineDto.setPersonId(ownerDtos.get(0).getMemberId());
+        monitorMachineDto.setPersonIds(new String[]{ownerDtos.get(0).getMemberId(),"9999"});
 
         int count = monitorMachineV1InnerServiceSMOImpl.queryMonitorMachinesCount(monitorMachineDto);
 

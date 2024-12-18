@@ -6,7 +6,8 @@
                 machineId: '',
                 memberId: '',
                 ownerName: '',
-                personType: '1001'
+                personType: '1001',
+                role:''
             }
         },
         _initMethod: function () {
@@ -26,17 +27,11 @@
                             param: "",
                             errInfo: "设备ID不能为空"
                         }
-                    ],
-                    'addMonitorMachineOwnerInfo.memberId': [
-                        {
-                            limit: "required",
-                            param: "",
-                            errInfo: "业主名称不能为空"
-                        }
                     ]
                 });
             },
             saveMonitorMachineOwnerInfo: function () {
+                
                 if (!$that.addMonitorMachineOwnerValidate()) {
                     vc.toast(vc.validate.errInfo);
                     return;
@@ -44,6 +39,11 @@
                 $that.addMonitorMachineOwnerInfo.communityId = vc.getCurrentCommunity().communityId;
                 $that.addMonitorMachineOwnerInfo.personId = $that.addMonitorMachineOwnerInfo.memberId;
                 $that.addMonitorMachineOwnerInfo.personName = $that.addMonitorMachineOwnerInfo.ownerName;
+                let _role = $that.addMonitorMachineOwnerInfo.role;
+                if(_role == '2'){
+                    $that.addMonitorMachineOwnerInfo.personId = '9999';
+                    $that.addMonitorMachineOwnerInfo.personName = '全部业主';
+                }
                 vc.http.apiPost(
                     '/monitor.saveMonitorMachinePerson',
                     JSON.stringify($that.addMonitorMachineOwnerInfo),
