@@ -241,7 +241,7 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         if (ListUtil.isNull(carInoutPaymentDtos)) {
             return;
         }
-        carInoutDtos.get(0).setPayTime(carInoutPaymentDtos.get(0).getPayTime());
+        carInoutDtos.get(0).setPayTime(carInoutPaymentDtos.get(0).getCreateTime());
 
     }
 
