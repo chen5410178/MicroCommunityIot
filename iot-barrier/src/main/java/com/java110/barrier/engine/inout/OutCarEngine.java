@@ -16,6 +16,8 @@ import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.fee.TempCarFeeConfigDto;
 import com.java110.dto.fee.TempCarFeeResult;
 import com.java110.dto.parking.*;
+import com.java110.dto.payment.CarInoutPaymentDto;
+import com.java110.intf.barrier.ICarInoutPaymentV1InnerServiceSMO;
 import com.java110.intf.barrier.ICarInoutV1InnerServiceSMO;
 import com.java110.intf.barrier.IParkingBoxV1InnerServiceSMO;
 import com.java110.intf.barrier.ITempCarFeeConfigV1InnerServiceSMO;
@@ -61,6 +63,9 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
     @Autowired
     private IOwnerCarV1InnerServiceSMO ownerCarV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ICarInoutPaymentV1InnerServiceSMO carInoutPaymentV1InnerServiceSMOImpl;
+
 
     @Override
     public ResultParkingAreaTextDto outParkingArea(String type, String carNum, BarrierDto machineDto,
@@ -87,6 +92,9 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
                 return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_FREE_CAR_OUT_SUCCESS, inOutCarTextDto, carNum);
             }
         }
+
+        // todo 输入支付时间
+        freshPayTime(carInoutDtos);
 
         //判断是否为黑名单
         if (judgeWhiteCarEngine.judgeBlackCar(machineDto, carNum, parkingAreaDtos, type, carInoutDtos)) {
@@ -216,6 +224,27 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         return resultParkingAreaTextDto;
     }
 
+    private void freshPayTime(List<CarInoutDto> carInoutDtos) {
+
+        if (ListUtil.isNull(carInoutDtos)) {
+            return;
+        }
+
+        if (!CarInoutDto.STATE_PAY.equals(carInoutDtos.get(0).getState())) {
+            return;
+        }
+
+        CarInoutPaymentDto carInoutPaymentDto = new CarInoutPaymentDto();
+        carInoutPaymentDto.setInoutId(carInoutDtos.get(0).getInoutId());
+        carInoutPaymentDto.setCommunityId(carInoutDtos.get(0).getCommunityId());
+        List<CarInoutPaymentDto> carInoutPaymentDtos = carInoutPaymentV1InnerServiceSMOImpl.queryCarInoutPayments(carInoutPaymentDto);
+        if (ListUtil.isNull(carInoutPaymentDtos)) {
+            return;
+        }
+        carInoutDtos.get(0).setPayTime(carInoutPaymentDtos.get(0).getPayTime());
+
+    }
+
     /**
      * 月租车和出售车是否进入到自己的停车场
      *
@@ -245,7 +274,7 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         long totalMillSec = DateUtil.mulMillSecA(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A), carInTime);
 
         // todo 如果总时间未超过两个小时那么就不做判断
-        if( totalMillSec < 2 * 60 * 60 * 1000){
+        if (totalMillSec < 2 * 60 * 60 * 1000) {
             return true;
         }
 
@@ -260,7 +289,7 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         inCarInoutDto.setEndTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         List<CarInoutDto> carInoutDtos = carInoutServiceImpl.queryCarInouts(inCarInoutDto);
         //todo 说明车辆没有下地下停车场
-        if (ListUtil.isNull(carInoutDtos) ) {
+        if (ListUtil.isNull(carInoutDtos)) {
             return false;
         }
 
