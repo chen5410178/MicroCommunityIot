@@ -16,7 +16,7 @@
                     couponId: '',
                     shopName: '',
                     typeCd: '',
-                    communityId: vc.getCurrentCommunity().communityId,
+                    communityId: '',
                     queryStartTime: '',
                     queryEndTime: ''
                 }
@@ -43,7 +43,8 @@
             _listParkingCouponOrders: function (_page, _rows) {
                 $that.parkingCouponOrderInfo.conditions.page = _page;
                 $that.parkingCouponOrderInfo.conditions.row = _rows;
-                var param = {
+                $that.parkingCouponOrderInfo.conditions.communityId =vc.getCurrentCommunity().communityId;
+                let param = {
                     params: $that.parkingCouponOrderInfo.conditions
                 };
                 param.params.couponId = param.params.couponId.trim();

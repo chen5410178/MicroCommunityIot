@@ -16,7 +16,7 @@
                     couponId: '',
                     name: '',
                     typeCd: '',
-                    communityId: vc.getCurrentCommunity().communityId
+                    communityId: ''
                 }
             }
         },
@@ -35,7 +35,8 @@
             _listParkingCoupons: function (_page, _rows) {
                 $that.parkingCouponInfo.conditions.page = _page;
                 $that.parkingCouponInfo.conditions.row = _rows;
-                var param = {
+                $that.parkingCouponInfo.conditions.communityId =vc.getCurrentCommunity().communityId;
+                let param = {
                     params: $that.parkingCouponInfo.conditions
                 };
                 param.params.couponId = param.params.couponId.trim();
@@ -44,10 +45,10 @@
                 vc.http.apiGet('/parkingCoupon.listParkingCoupon',
                     param,
                     function (json, res) {
-                        var _parkingCouponInfo = JSON.parse(json);
-                        $that.parkingCouponInfo.total = _parkingCouponInfo.total;
-                        $that.parkingCouponInfo.records = _parkingCouponInfo.records;
-                        $that.parkingCouponInfo.parkingCoupons = _parkingCouponInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.parkingCouponInfo.total = _json.total;
+                        $that.parkingCouponInfo.records = _json.records;
+                        $that.parkingCouponInfo.parkingCoupons = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.parkingCouponInfo.records,
                             dataCount: $that.parkingCouponInfo.total,

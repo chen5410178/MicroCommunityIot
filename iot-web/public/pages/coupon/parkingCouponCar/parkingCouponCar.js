@@ -17,7 +17,7 @@
                     shopNameLike: '',
                     carNumLike: '',
                     state: '',
-                    communityId: vc.getCurrentCommunity().communityId,
+                    communityId: '',
                     queryStartTime:'',
                     queryEndTime:''
                 }
@@ -44,6 +44,7 @@
             _listParkingCouponCars: function (_page, _rows) {
                 $that.parkingCouponCarInfo.conditions.page = _page;
                 $that.parkingCouponCarInfo.conditions.row = _rows;
+                $that.parkingCouponCarInfo.conditions.communityId =vc.getCurrentCommunity().communityId;
                 let param = {
                     params: $that.parkingCouponCarInfo.conditions
                 };
@@ -53,10 +54,10 @@
                 vc.http.apiGet('/parkingCoupon.listParkingCouponCar',
                     param,
                     function (json, res) {
-                        let _parkingCouponCarInfo = JSON.parse(json);
-                        $that.parkingCouponCarInfo.total = _parkingCouponCarInfo.total;
-                        $that.parkingCouponCarInfo.records = _parkingCouponCarInfo.records;
-                        $that.parkingCouponCarInfo.parkingCouponCars = _parkingCouponCarInfo.data;
+                        let _json = JSON.parse(json);
+                        $that.parkingCouponCarInfo.total = _json.total;
+                        $that.parkingCouponCarInfo.records = _json.records;
+                        $that.parkingCouponCarInfo.parkingCouponCars = _json.data;
                         vc.emit('pagination', 'init', {
                             total: $that.parkingCouponCarInfo.records,
                             currentPage: _page
