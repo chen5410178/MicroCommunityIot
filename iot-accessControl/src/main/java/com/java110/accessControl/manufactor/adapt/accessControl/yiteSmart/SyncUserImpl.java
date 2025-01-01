@@ -3,6 +3,7 @@ package com.java110.accessControl.manufactor.adapt.accessControl.yiteSmart;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.dto.room.RoomDto;
+import com.java110.bean.dto.unit.UnitDto;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
@@ -13,6 +14,7 @@ import com.java110.dto.accessControlFloor.AccessControlFloorDto;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
+import com.java110.intf.community.IUnitV1InnerServiceSMO;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,17 +38,21 @@ public class SyncUserImpl implements ISyncUser {
     @Autowired
     private IRoomV1InnerServiceSMO roomV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IUnitV1InnerServiceSMO unitV1InnerServiceSMOImpl;
+
     @Override
     public JSONObject getAddUser(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
 
+        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
+        accessControlFaceDto.setMfId(accessControlFacePo.getMfId());
+        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryYiteAccessControlFaces(accessControlFaceDto);
 
         AccessControlFloorDto accessControlFloorDto = new AccessControlFloorDto();
         accessControlFloorDto.setMachineId(accessControlDto.getMachineId());
         List<AccessControlFloorDto> accessControlFloorDtos = accessControlFloorV1InnerServiceSMOImpl.queryAccessControlFloors(accessControlFloorDto);
 
-        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
-        accessControlFaceDto.setMfId(accessControlFacePo.getMfId());
-        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryYiteAccessControlFaces(accessControlFaceDto);
+
 
 
         long curTimeTimeStamp = new Date().getTime();
@@ -70,8 +76,28 @@ public class SyncUserImpl implements ISyncUser {
             if (ListUtil.isNull(accessControlFloorDtos)) {
                 throw new IllegalArgumentException("设备未关联单元");
             }
-            room.put("b_id", accessControlFloorDtos.get(0).getUnitId());
-            room.put("b_name", accessControlFloorDtos.get(0).getFloorNum() + "栋" + accessControlFloorDtos.get(0).getUnitNum() + "单元");
+            if(StringUtil.isEmpty(accessControlFaceDtos.get(0).getRoomName())){
+                room.put("b_id", accessControlFloorDtos.get(0).getUnitId());
+                room.put("b_name", accessControlFloorDtos.get(0).getFloorNum() + "栋" + accessControlFloorDtos.get(0).getUnitNum() + "单元");
+            }else{
+                String[] roomNames = accessControlFaceDtos.get(0).getRoomName().split("-",3);
+                if(roomNames.length != 3){
+                    throw new IllegalArgumentException("房屋名称错误");
+                }
+                UnitDto unitDto = new UnitDto();
+                unitDto.setFloorNum(roomNames[0]);
+                unitDto.setUnitNum(roomNames[1]);
+                unitDto.setCommunityId(accessControlFaceDtos.get(0).getCommunityId());
+                List<UnitDto> unitDtos = unitV1InnerServiceSMOImpl.queryUnits(unitDto);
+                if(ListUtil.isNull(unitDtos)){
+                    room.put("b_id", accessControlFloorDtos.get(0).getUnitId());
+                    room.put("b_name", accessControlFloorDtos.get(0).getFloorNum() + "栋" + accessControlFloorDtos.get(0).getUnitNum() + "单元");
+                }else{
+                    room.put("b_id", unitDtos.get(0).getUnitId());
+                    room.put("b_name", unitDtos.get(0).getFloorNum() + "栋" + unitDtos.get(0).getUnitNum() + "单元");
+                }
+            }
+
 
         }
 
