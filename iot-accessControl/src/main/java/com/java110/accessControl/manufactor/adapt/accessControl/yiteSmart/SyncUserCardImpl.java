@@ -13,8 +13,10 @@ import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.accessControlFloor.AccessControlFloorDto;
 import com.java110.dto.accessControlYiteCard.AccessControlYiteCardDto;
+import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlFloorV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlYiteCardV1InnerServiceSMO;
+import com.java110.intf.community.IUnitV1InnerServiceSMO;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.accessControlYiteCard.AccessControlYiteCardPo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,12 @@ public class SyncUserCardImpl implements ISyncUserCard {
 
     @Autowired
     private IAccessControlYiteCardV1InnerServiceSMO accessControlYiteCardV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IUnitV1InnerServiceSMO unitV1InnerServiceSMOImpl;
 
     @Override
     public JSONObject getUserCard(AccessControlDto accessControlDto, AccessControlFacePo accessControlFacePo) {
@@ -129,6 +137,11 @@ public class SyncUserCardImpl implements ISyncUserCard {
         long curTimeTimeStamp = new Date().getTime();
         curTimeTimeStamp = curTimeTimeStamp / 1000;
 
+        AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
+        accessControlFaceDto.setMfId(accessControlFacePo.getMfId());
+        List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryYiteAccessControlFaces(accessControlFaceDto);
+
+
         AccessControlFloorDto accessControlFloorDto = new AccessControlFloorDto();
         accessControlFloorDto.setMachineId(accessControlDto.getMachineId());
         List<AccessControlFloorDto> accessControlFloorDtos = accessControlFloorV1InnerServiceSMOImpl.queryAccessControlFloors(accessControlFloorDto);
@@ -163,9 +176,27 @@ public class SyncUserCardImpl implements ISyncUserCard {
          */
         JSONArray cards = new JSONArray();
         JSONObject card = new JSONObject();
-        card.put("b_id", accessControlFloorDtos.get(0).getUnitId());
-        card.put("b_name", accessControlFloorDtos.get(0).getFloorNum() + "栋" + accessControlFloorDtos.get(0).getUnitNum() + "单元");
-
+        if(StringUtil.isEmpty(accessControlFaceDtos.get(0).getRoomName())) {
+            card.put("b_id", accessControlFloorDtos.get(0).getUnitId());
+            card.put("b_name", accessControlFloorDtos.get(0).getFloorNum() + "栋" + accessControlFloorDtos.get(0).getUnitNum() + "单元");
+        }else{
+            String[] roomNames = accessControlFaceDtos.get(0).getRoomName().split("-",3);
+            if(roomNames.length != 3){
+                throw new IllegalArgumentException("房屋名称错误");
+            }
+            UnitDto unitDto = new UnitDto();
+            unitDto.setFloorNum(roomNames[0]);
+            unitDto.setUnitNum(roomNames[1]);
+            unitDto.setCommunityId(accessControlFaceDtos.get(0).getCommunityId());
+            List<UnitDto> unitDtos = unitV1InnerServiceSMOImpl.queryUnits(unitDto);
+            if(ListUtil.isNull(unitDtos)){
+                card.put("b_id", accessControlFloorDtos.get(0).getUnitId());
+                card.put("b_name", accessControlFloorDtos.get(0).getFloorNum() + "栋" + accessControlFloorDtos.get(0).getUnitNum() + "单元");
+            }else{
+                card.put("b_id", unitDtos.get(0).getUnitId());
+                card.put("b_name", unitDtos.get(0).getFloorNum() + "栋" + unitDtos.get(0).getUnitNum() + "单元");
+            }
+        }
         JSONArray addCards = new JSONArray();
         card.put("add", addCards);
         JSONArray del = new JSONArray();
