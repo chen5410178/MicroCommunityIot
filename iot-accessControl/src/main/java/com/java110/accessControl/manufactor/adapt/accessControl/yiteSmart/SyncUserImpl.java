@@ -205,7 +205,12 @@ public class SyncUserImpl implements ISyncUser {
         }
 
         //todo 这里 随机加个2小时内的秒数，不然 人员不修改 ，门禁不来同步人脸信息
-        Date endTime = DateUtil.getDateFromStringA(accessControlFacePo.getEndTime());
+        Date endTime = null;
+        try{
+            endTime = DateUtil.getDateFromStringA(accessControlFacePo.getEndTime());
+        }catch (Exception e){
+            endTime = DateUtil.getDateFromStringB(accessControlFacePo.getEndTime());
+        }
         Random random = new Random();
         int randomSec = random.nextInt(7200);
         Calendar calendar = Calendar.getInstance();

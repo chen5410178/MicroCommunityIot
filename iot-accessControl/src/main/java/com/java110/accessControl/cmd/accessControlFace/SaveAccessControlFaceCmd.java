@@ -120,7 +120,7 @@ public class SaveAccessControlFaceCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "endDate", "请求报文中未包含endDate");
 
         JSONArray machineIds = reqJson.getJSONArray("machineIds");
-        if (machineIds == null || machineIds.size() < 1) {
+        if (ListUtil.isNull(machineIds)) {
             throw new CmdException("未包含门禁");
         }
         for (int machineIndex = 0; machineIndex < machineIds.size(); machineIndex++) {
@@ -149,7 +149,7 @@ public class SaveAccessControlFaceCmd extends Cmd {
         ownerDto.setCommunityId(reqJson.getString("communityId"));
         List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
 
-        if (ownerDtos == null || ownerDtos.size() < 1) {
+        if (ListUtil.isNull(ownerDtos)) {
             throw new CmdException("未包含人员");
         }
 
