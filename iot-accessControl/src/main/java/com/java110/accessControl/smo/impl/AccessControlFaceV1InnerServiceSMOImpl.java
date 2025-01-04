@@ -196,4 +196,9 @@ public class AccessControlFaceV1InnerServiceSMOImpl implements IAccessControlFac
         return accessControlFaces;
     }
 
+    @Override
+    public long queryYiteAccessControlFaceCount(@RequestBody AccessControlFaceDto accessControlFaceDto) {
+        return accessControlFaceV1ServiceDaoImpl.queryYiteAccessControlFaceCount(BeanConvertUtil.beanCovertMap(accessControlFaceDto));
+    }
+
 }

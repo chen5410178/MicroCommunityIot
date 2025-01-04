@@ -78,4 +78,6 @@ public interface IAccessControlFaceV1ServiceDao {
     List<Map> queryAccessControlFacesByComeId(Map info);
 
     List<Map> queryYiteAccessControlFaces(Map info);
+
+    long queryYiteAccessControlFaceCount(Map info);
 }

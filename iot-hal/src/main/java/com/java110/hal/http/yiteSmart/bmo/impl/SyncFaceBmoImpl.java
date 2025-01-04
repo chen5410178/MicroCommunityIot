@@ -39,6 +39,8 @@ public class SyncFaceBmoImpl implements ISyncFaceBmo {
             throw new IllegalArgumentException("设备不存在");
         }
 
+
+
         AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
         accessControlFaceDto.setMachineId(accessControlDtos.get(0).getMachineId());
         accessControlFaceDto.setPage(page);
@@ -48,6 +50,9 @@ public class SyncFaceBmoImpl implements ISyncFaceBmo {
         if (ListUtil.isNull(accessControlFaceDtos)) {
             throw new IllegalArgumentException("设备未授权人脸");
         }
+
+       long count = accessControlFaceV1InnerServiceSMOImpl.queryYiteAccessControlFaceCount(accessControlFaceDto);
+
 
         long curTimeTimeStamp = new Date().getTime();
         curTimeTimeStamp = curTimeTimeStamp / 1000;
@@ -59,7 +64,7 @@ public class SyncFaceBmoImpl implements ISyncFaceBmo {
         JSONObject data = new JSONObject();
         data.put("issync", 1);
         data.put("timestamp", curTimeTimeStamp);
-        data.put("total", accessControlFaceDtos.size());
+        data.put("total", count);
         data.put("del_data", new JSONArray());
 
         JSONArray ds = new JSONArray();

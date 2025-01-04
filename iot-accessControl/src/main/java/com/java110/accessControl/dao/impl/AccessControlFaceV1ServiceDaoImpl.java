@@ -97,12 +97,12 @@ public class AccessControlFaceV1ServiceDaoImpl extends BaseServiceDao implements
     public int queryAccessControlFacesCount(Map info) {
         logger.debug("查询 queryAccessControlFacesCount 入参 info : {}",info);
 
-        List<Map> businessAccessControlFaceInfos = sqlSessionTemplate.selectList("accessControlFaceV1ServiceDaoImpl.queryAccessControlFacesCount", info);
-        if (businessAccessControlFaceInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlFaceV1ServiceDaoImpl.queryAccessControlFacesCount", info);
+        if (infos.size() < 1) {
             return 0;
         }
 
-        return Integer.parseInt(businessAccessControlFaceInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
 
@@ -126,6 +126,18 @@ public class AccessControlFaceV1ServiceDaoImpl extends BaseServiceDao implements
         List<Map> infos = sqlSessionTemplate.selectList("accessControlFaceV1ServiceDaoImpl.queryYiteAccessControlFaces",info);
 
         return infos;
+    }
+
+    @Override
+    public long queryYiteAccessControlFaceCount(Map info) {
+        logger.debug("查询 queryYiteAccessControlFaceCount 入参 info : {}",info);
+
+        List<Map> infos = sqlSessionTemplate.selectList("accessControlFaceV1ServiceDaoImpl.queryYiteAccessControlFaceCount", info);
+        if (infos.size() < 1) {
+            return 0;
+        }
+
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
 }
