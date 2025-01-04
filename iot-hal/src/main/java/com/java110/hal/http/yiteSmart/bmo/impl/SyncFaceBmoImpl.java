@@ -32,8 +32,7 @@ public class SyncFaceBmoImpl implements ISyncFaceBmo {
 
         AccessControlDto accessControlDto = new AccessControlDto();
         accessControlDto.setMachineCode(machineCode);
-        accessControlDto.setPage(page);
-        accessControlDto.setRow(row);
+
         List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
 
         if (ListUtil.isNull(accessControlDtos)) {
@@ -42,7 +41,8 @@ public class SyncFaceBmoImpl implements ISyncFaceBmo {
 
         AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
         accessControlFaceDto.setMachineId(accessControlDtos.get(0).getMachineId());
-
+        accessControlFaceDto.setPage(page);
+        accessControlFaceDto.setRow(row);
         List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryYiteAccessControlFaces(accessControlFaceDto);
 
         if (ListUtil.isNull(accessControlFaceDtos)) {

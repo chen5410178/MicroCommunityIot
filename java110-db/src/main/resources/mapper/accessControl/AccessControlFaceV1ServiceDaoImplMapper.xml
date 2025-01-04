@@ -248,6 +248,10 @@
         <if test="mfId !=null and mfId != ''">
             and t.mf_id= #{mfId}
         </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
     </select>
 
 
