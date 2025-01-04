@@ -27,11 +27,13 @@ public class SyncFaceBmoImpl implements ISyncFaceBmo {
     private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
 
     @Override
-    public ResponseEntity<String> sync(String machineCode) {
+    public ResponseEntity<String> sync(String machineCode,int page,int row) {
 
 
         AccessControlDto accessControlDto = new AccessControlDto();
         accessControlDto.setMachineCode(machineCode);
+        accessControlDto.setPage(page);
+        accessControlDto.setRow(row);
         List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
 
         if (ListUtil.isNull(accessControlDtos)) {

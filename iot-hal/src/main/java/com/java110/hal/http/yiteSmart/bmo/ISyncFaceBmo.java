@@ -10,5 +10,5 @@ public interface ISyncFaceBmo {
      * @param machineCode
      * @return
      */
-    public ResponseEntity<String> sync(String machineCode);
+    public ResponseEntity<String> sync(String machineCode,int page,int row);
 }

@@ -316,6 +316,8 @@ public class YiteSmartHal {
         JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
 
         String uuId = reqJson.getString("uuid");
+        int page = reqJson.getIntValue("page");
+        int row = reqJson.getIntValue("size");
 
         String t = request.getParameter("t");
         long curTimeTimeStamp = new Date().getTime();
@@ -330,7 +332,7 @@ public class YiteSmartHal {
         responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
         if ("0".equals(t)) {
             try {
-                responseEntity = syncFaceBmoImpl.sync(uuId);
+                responseEntity = syncFaceBmoImpl.sync(uuId,page,row);
             } catch (Exception e) {
                 e.printStackTrace();
             }
