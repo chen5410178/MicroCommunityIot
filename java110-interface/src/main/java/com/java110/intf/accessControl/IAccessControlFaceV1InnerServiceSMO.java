@@ -77,6 +77,6 @@ public interface IAccessControlFaceV1InnerServiceSMO {
     @RequestMapping(value = "/queryYiteAccessControlFaces", method = RequestMethod.POST)
     List<AccessControlFaceDto> queryYiteAccessControlFaces(@RequestBody AccessControlFaceDto accessControlFaceDto);
 
-    @RequestMapping(value = "/queryYiteAccessControlFaces", method = RequestMethod.POST)
+    @RequestMapping(value = "/queryYiteAccessControlFaceCount", method = RequestMethod.POST)
     long queryYiteAccessControlFaceCount(@RequestBody AccessControlFaceDto accessControlFaceDto);
 }
