@@ -316,8 +316,8 @@ public class YiteSmartHal {
         JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
 
         String uuId = reqJson.getString("uuid");
-        int page = reqJson.getIntValue("page");
-        int row = reqJson.getIntValue("size");
+        int page = Integer.parseInt(request.getParameter("page"));
+        int row =  Integer.parseInt(request.getParameter("size"));
 
         String t = request.getParameter("t");
         long curTimeTimeStamp = new Date().getTime();
