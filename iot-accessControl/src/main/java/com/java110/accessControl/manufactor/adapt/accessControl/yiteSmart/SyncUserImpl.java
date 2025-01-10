@@ -183,7 +183,7 @@ public class SyncUserImpl implements ISyncUser {
             RoomDto roomDto = new RoomDto();
             roomDto.setFloorNum(roomName.split("-", 3)[0]);
             roomDto.setUnitNum(roomName.split("-", 3)[1]);
-            roomDto.setRoomNum(thfjh);
+            roomDto.setRoomNum(roomName.split("-", 3)[2]);
             roomDto.setCommunityId(accessControlFaceDtos.get(0).getCommunityId());
             List<RoomDto> roomDtos = roomV1InnerServiceSMOImpl.queryRooms(roomDto);
             if (ListUtil.isNull(roomDtos)) {
