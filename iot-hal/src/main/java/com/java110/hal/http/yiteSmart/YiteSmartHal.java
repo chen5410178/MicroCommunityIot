@@ -174,30 +174,46 @@ public class YiteSmartHal {
      * @param request
      * @return
      */
+	
+	
     @RequestMapping(path = "/device/v1/gate/getSwitch", method = RequestMethod.GET)
     public ResponseEntity<String> getSwitch(HttpServletRequest request) {
+		Map<String, String> headers = new HashMap<>();
+		RequestUtils.initHeadParam(request, headers);
+		RequestUtils.initUrlParam(request, headers);
+		JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+		
+		String uuId = reqJson.getString("uuid");
+		
+		AccessControlDto accessControlDto = new AccessControlDto();
+		accessControlDto.setMachineCode(uuId);
+		List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+		String getSwitchs = accessControlDtos.get(0).getRemark();
+		if(getSwitchs.split("-", 17).length != 17){
+			getSwitchs = "0-0-1-1-0-1-0-1-1-0-0-0-0-0-0-1-3";
+		}
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
         paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
         JSONObject data = new JSONObject();
-        data.put("gate_button_password", "0");
-        data.put("gate_button_phone", "0");
-        data.put("gate_button_room", "1");
-        data.put("gate_button_room_input", "1");
-        data.put("gate_call_manager", "0");
-        data.put("gate_capture_picture", "1");
-        data.put("gate_check_face_switch", "1");
-        data.put("gate_open_face", "1");
-        data.put("gate_qr_pwd_state", "1");
-        data.put("gate_register_face", "0");
-        data.put("health_qr_code_switch", "0");
-        data.put("pop_ad_switch", "0");
-        data.put("property_fee_switch", "0");
-        data.put("stranger_captures", "0");
-        data.put("alarm_switch", "0");
-        data.put("gate_log_open", 1);
-        data.put("gate_log_cycle", 3);
+        data.put("gate_button_password", getSwitchs.split("-", 17)[0]); //门禁机密码开门开关
+        data.put("gate_button_phone", getSwitchs.split("-", 17)[1]); //手机号呼叫开门开关
+        data.put("gate_button_room", getSwitchs.split("-", 17)[2]); //房间号呼叫开门开关
+        data.put("gate_button_room_input", getSwitchs.split("-", 17)[3]); //输入房间号呼叫开门开关
+        data.put("gate_call_manager", getSwitchs.split("-", 17)[4]); //门禁呼叫管理处开关
+        data.put("gate_capture_picture", getSwitchs.split("-", 17)[5]); //开门抓拍图片是否上传开关
+        data.put("gate_check_face_switch", getSwitchs.split("-", 17)[6]); //活体检测开关
+        data.put("gate_open_face", getSwitchs.split("-", 17)[7]); //门禁机人脸识别开关
+        data.put("gate_qr_pwd_state", getSwitchs.split("-", 17)[8]); //扫码开门开关
+        data.put("gate_register_face", getSwitchs.split("-", 17)[9]); //门禁机注册人脸开关
+        data.put("health_qr_code_switch", getSwitchs.split("-", 17)[10]);
+        data.put("pop_ad_switch", getSwitchs.split("-", 17)[11]); //弹屏广告开关
+        data.put("property_fee_switch", getSwitchs.split("-", 17)[12]);
+        data.put("stranger_captures", getSwitchs.split("-", 17)[13]); //陌生人抓拍开关
+        data.put("alarm_switch", getSwitchs.split("-", 17)[14]); //防拆报警开关
+        data.put("gate_log_open", getSwitchs.split("-", 17)[15]); //日志开关
+        data.put("gate_log_cycle", getSwitchs.split("-", 17)[16]); //日志保存周期
         paramOut.put("data", data);
         logger.debug("登陆返回报文：{}", paramOut.toString());
         return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
