@@ -133,7 +133,7 @@ public class SyncUserBidBmoImpl implements ISyncUserBidBmo {
         addRoom = new JSONObject();
         addRoom.put("id", 1);
         addRoom.put("uid", 1);
-        addRoom.put("name", "管理处");//修改物业中心名称
+        addRoom.put("name", "9999");//修改物业中心名称
         addRoom.put("num", "9909-909");//添加楼栋单元号
         users = new JSONArray();
         addRoom.put("user", users);
