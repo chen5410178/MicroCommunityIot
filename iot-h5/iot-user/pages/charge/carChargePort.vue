@@ -130,6 +130,7 @@
 				if (_that.$refs.chargeRef) {
 					_that.$refs.chargeRef.loadChargeMonthOrder(_that.communityId);
 				}
+				_that._checkOrder();
 			}, 1000);
 		},
 		onShow: function(options) {
@@ -185,6 +186,11 @@
 					portId:this.portId,
 					money:this.curMoney
 				});
+			},
+			_checkOrder:function(){
+				if(!this.login){
+					return;
+				}
 			},
 			_switchPort: function(_port) {
 				if (_port.state != 'FREE') {
