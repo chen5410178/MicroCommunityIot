@@ -185,31 +185,28 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
 
         System.out.println("---------------------222222222222222------------------------" + machineCode);
 
-        String requestId = DistributedLock.getLockUUID();
-        String key = this.getClass().getSimpleName() + machineCode;
         ChargeMachineDto chargeMachineDto = null;
 
-        try {
-            DistributedLock.waitGetDistributedLock(key, requestId);
-            if (!chargeCache.containsKey(machineCode)) {
-                IChargeMachineV1InnerServiceSMO chargeMachineV1InnerServiceSMO = ApplicationContextFactory.getBean("chargeMachineV1InnerServiceSMOImpl", IChargeMachineV1InnerServiceSMO.class);
-                if (chargeMachineV1InnerServiceSMO == null) {
-                    chargeMachineV1InnerServiceSMO = ApplicationContextFactory.getBean(IChargeMachineV1InnerServiceSMO.class.getName(), IChargeMachineV1InnerServiceSMO.class);
-                }
-                chargeMachineDto = new ChargeMachineDto();
-                chargeMachineDto.setMachineCode(machineCode);
-                List<ChargeMachineDto> machineDtos = chargeMachineV1InnerServiceSMO.queryChargeMachines(chargeMachineDto);
-                if (ListUtil.isNull(machineDtos)) {
-                    return false;
-                }
-                chargeCache.put(machineCode, machineDtos.get(0));
+        if (!chargeCache.containsKey(machineCode)) {
+            IChargeMachineV1InnerServiceSMO chargeMachineV1InnerServiceSMO = ApplicationContextFactory.getBean("chargeMachineV1InnerServiceSMOImpl", IChargeMachineV1InnerServiceSMO.class);
+            if (chargeMachineV1InnerServiceSMO == null) {
+                chargeMachineV1InnerServiceSMO = ApplicationContextFactory.getBean(IChargeMachineV1InnerServiceSMO.class.getName(), IChargeMachineV1InnerServiceSMO.class);
             }
-
-            chargeMachineDto = chargeCache.get(machineCode);
-            System.out.println("---------------------33333333333333------------------------" + machineCode);
-        } finally {
-            DistributedLock.releaseDistributedLock(key,requestId);
+            chargeMachineDto = new ChargeMachineDto();
+            chargeMachineDto.setMachineCode(machineCode);
+            List<ChargeMachineDto> machineDtos = chargeMachineV1InnerServiceSMO.queryChargeMachines(chargeMachineDto);
+            if (ListUtil.isNull(machineDtos)) {
+                return false;
+            }
+            chargeCache.put(machineCode, machineDtos.get(0));
         }
+
+        chargeMachineDto = chargeCache.get(machineCode);
+        if (StringUtil.isEmpty(chargeMachineDto.getMachineCode())) {
+            chargeMachineDto.setMachineCode(machineCode);
+        }
+        System.out.println("---------------------33333333333333------------------------" + machineCode);
+
         INotifyChargeV1InnerServiceSMO notifyChargeV1InnerServiceSMOImpl = ApplicationContextFactory.getBean("notifyChargeV1InnerServiceSMOImpl", INotifyChargeV1InnerServiceSMO.class);
 
         if (notifyChargeV1InnerServiceSMOImpl == null) {
