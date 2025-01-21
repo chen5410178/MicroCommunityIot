@@ -182,7 +182,7 @@
                                 <td class="text-center">{{chargeMachineOrder.amount}}(<a href="javascript:void(0)"
                                         @click="_viewOrderAccts(chargeMachineOrder)">明细</a>)</td>
                                 <td class="text-center">{{chargeMachineOrder.stateName}}
-                                    <span v-if="chargeMachineOrder.state == '1001'">
+                                    <span v-if="chargeMachineOrder.state == '1001' || chargeMachineOrder.state == '1000'">
                                         (<a href="javascript:void(0)"
                                             @click="_showStopCharge(chargeMachineOrder)">停止充电</a>)
                                     </span>
