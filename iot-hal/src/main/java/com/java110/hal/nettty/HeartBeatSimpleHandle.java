@@ -3,6 +3,7 @@ package com.java110.hal.nettty;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.annotation.Java110Synchronized;
 import com.java110.core.factory.ApplicationContextFactory;
+import com.java110.core.utils.DistributedLock;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.chargeMachine.ChargeMachineByteDataDto;
@@ -38,7 +39,7 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
     public static final String MACHINE_TYPE_METER = "METER"; // todo 水电表
     public static final String MACHINE_TYPE_WORK_LICENSE = "WORK_LICENSE"; // todo 员工牌
 
-    private final static Map<String,ChargeMachineDto> chargeCache = new ConcurrentHashMap<>();
+    private final static Map<String, ChargeMachineDto> chargeCache = new ConcurrentHashMap<>();
     private final static Map<String, WorkLicenseMachineDto> workLicenseCache = new ConcurrentHashMap<>();
 
     @Override
@@ -107,10 +108,10 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
         } else if (DataHeader.isYunKuaiChongCharge(bytes)) {
             machineCode = DataHeader.getYKMachineCode(bytes);
             machineType = MACHINE_TYPE_CHARGE;
-        }else if (DataHeader.isLvChongChong(bytes)) {
+        } else if (DataHeader.isLvChongChong(bytes)) {
             machineCode = DataHeader.getLvCCMachineCode(bytes);
             machineType = MACHINE_TYPE_CHARGE;
-        }else if(DataHeader.isWorkLicense(bytes)){
+        } else if (DataHeader.isWorkLicense(bytes)) {
             bytes = DataHeader.clearWorkLicense(bytes);
             machineCode = DataHeader.getWorkLicenseMachineCode(bytes);
             machineType = MACHINE_TYPE_WORK_LICENSE;
@@ -118,7 +119,7 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
         if (StringUtil.isEmpty(machineCode)) {
             return;
         }
-        System.out.println("---------------------111111111111111------------------------"+machineCode);
+        System.out.println("---------------------111111111111111------------------------" + machineCode);
         //todo 保存设备和连接的关系
         initMachineToCache(ctx, machineCode, false);
 
@@ -141,7 +142,7 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
 
     private void toNotifyWorkLicense(String machineCode, byte[] bytes) {
         WorkLicenseMachineDto workLicenseMachineDto = null;
-        if(!workLicenseCache.containsKey(machineCode)) {
+        if (!workLicenseCache.containsKey(machineCode)) {
             IWorkLicenseMachineV1InnerServiceSMO workLicenseMachineV1InnerServiceSMOImpl = ApplicationContextFactory.getBean("workLicenseMachineV1InnerServiceSMOImpl", IWorkLicenseMachineV1InnerServiceSMO.class);
             if (workLicenseMachineV1InnerServiceSMOImpl == null) {
                 workLicenseMachineV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(IWorkLicenseMachineV1InnerServiceSMO.class.getName(), IWorkLicenseMachineV1InnerServiceSMO.class);
@@ -150,9 +151,9 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
             workLicenseMachineDto.setMachineCode(machineCode);
             List<WorkLicenseMachineDto> machineDtos = workLicenseMachineV1InnerServiceSMOImpl.queryWorkLicenseMachines(workLicenseMachineDto);
             if (ListUtil.isNull(machineDtos)) {
-                return ;
+                return;
             }
-            workLicenseCache.put(machineCode,machineDtos.get(0));
+            workLicenseCache.put(machineCode, machineDtos.get(0));
         }
 
         workLicenseMachineDto = workLicenseCache.get(machineCode);
@@ -182,34 +183,40 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
      */
     private boolean toNotifyCharge(String machineCode, byte[] bytes) {
 
-        System.out.println("---------------------222222222222222------------------------"+machineCode);
+        System.out.println("---------------------222222222222222------------------------" + machineCode);
 
+        String requestId = DistributedLock.getLockUUID();
+        String key = this.getClass().getSimpleName() + machineCode;
         ChargeMachineDto chargeMachineDto = null;
-        if(!chargeCache.containsKey(machineCode)) {
-            IChargeMachineV1InnerServiceSMO chargeMachineV1InnerServiceSMO = ApplicationContextFactory.getBean("chargeMachineV1InnerServiceSMOImpl", IChargeMachineV1InnerServiceSMO.class);
-            if (chargeMachineV1InnerServiceSMO == null) {
-                chargeMachineV1InnerServiceSMO = ApplicationContextFactory.getBean(IChargeMachineV1InnerServiceSMO.class.getName(), IChargeMachineV1InnerServiceSMO.class);
+
+        try {
+            DistributedLock.waitGetDistributedLock(key, requestId);
+            if (!chargeCache.containsKey(machineCode)) {
+                IChargeMachineV1InnerServiceSMO chargeMachineV1InnerServiceSMO = ApplicationContextFactory.getBean("chargeMachineV1InnerServiceSMOImpl", IChargeMachineV1InnerServiceSMO.class);
+                if (chargeMachineV1InnerServiceSMO == null) {
+                    chargeMachineV1InnerServiceSMO = ApplicationContextFactory.getBean(IChargeMachineV1InnerServiceSMO.class.getName(), IChargeMachineV1InnerServiceSMO.class);
+                }
+                chargeMachineDto = new ChargeMachineDto();
+                chargeMachineDto.setMachineCode(machineCode);
+                List<ChargeMachineDto> machineDtos = chargeMachineV1InnerServiceSMO.queryChargeMachines(chargeMachineDto);
+                if (ListUtil.isNull(machineDtos)) {
+                    return false;
+                }
+                chargeCache.put(machineCode, machineDtos.get(0));
             }
-            chargeMachineDto = new ChargeMachineDto();
-            chargeMachineDto.setMachineCode(machineCode);
-            List<ChargeMachineDto> machineDtos = chargeMachineV1InnerServiceSMO.queryChargeMachines(chargeMachineDto);
-            if (ListUtil.isNull(machineDtos)) {
-                return false;
-            }
-            chargeCache.put(machineCode,machineDtos.get(0));
+
+            chargeMachineDto = chargeCache.get(machineCode);
+            System.out.println("---------------------33333333333333------------------------" + machineCode);
+        } finally {
+            DistributedLock.releaseDistributedLock(key,requestId);
         }
-
-        chargeMachineDto = chargeCache.get(machineCode);
-        System.out.println("---------------------33333333333333------------------------"+machineCode);
-
-
         INotifyChargeV1InnerServiceSMO notifyChargeV1InnerServiceSMOImpl = ApplicationContextFactory.getBean("notifyChargeV1InnerServiceSMOImpl", INotifyChargeV1InnerServiceSMO.class);
 
         if (notifyChargeV1InnerServiceSMOImpl == null) {
             notifyChargeV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(INotifyChargeV1InnerServiceSMO.class.getName(), INotifyChargeV1InnerServiceSMO.class);
         }
 
-        System.out.println("---------------------444444444444------------------------"+JSONObject.toJSONString(chargeMachineDto));
+        System.out.println("---------------------444444444444------------------------" + JSONObject.toJSONString(chargeMachineDto));
 
         notifyChargeV1InnerServiceSMOImpl.machineResult(new ChargeMachineByteDataDto(chargeMachineDto, bytes));
 
@@ -239,13 +246,13 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
         //保存客户端与 Channel 之间的关系
         InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
         String ip = address.toString();
-        NioSocketChannel channel = NettySocketHolder.get(machineCode,ip);
+        NioSocketChannel channel = NettySocketHolder.get(machineCode, ip);
         if (channel == null || force) {
-            NettySocketHolder.put(machineCode,ip, (NioSocketChannel) ctx.channel());
+            NettySocketHolder.put(machineCode, ip, (NioSocketChannel) ctx.channel());
         }
 
-        if(channel != null && channel.isShutdown()){
-            NettySocketHolder.put(machineCode,ip, (NioSocketChannel) ctx.channel());
+        if (channel != null && channel.isShutdown()) {
+            NettySocketHolder.put(machineCode, ip, (NioSocketChannel) ctx.channel());
         }
     }
 
