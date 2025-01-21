@@ -1,6 +1,7 @@
 package com.java110.hal.nettty;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.core.annotation.Java110Synchronized;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
@@ -26,6 +27,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
 
@@ -36,8 +38,8 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
     public static final String MACHINE_TYPE_METER = "METER"; // todo 水电表
     public static final String MACHINE_TYPE_WORK_LICENSE = "WORK_LICENSE"; // todo 员工牌
 
-    private final static Map<String,ChargeMachineDto> chargeCache = new HashMap<>();
-    private final static Map<String, WorkLicenseMachineDto> workLicenseCache = new HashMap<>();
+    private final static Map<String,ChargeMachineDto> chargeCache = new ConcurrentHashMap<>();
+    private final static Map<String, WorkLicenseMachineDto> workLicenseCache = new ConcurrentHashMap<>();
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
