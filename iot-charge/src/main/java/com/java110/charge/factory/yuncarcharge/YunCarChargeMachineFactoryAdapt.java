@@ -153,6 +153,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         if (ListUtil.isNull(chargeMachineDtos)) {
             throw new CmdException("设备不存在");
         }
+        chargeMachineDto = chargeMachineDtos.get(0);
         switch (cmd) {
             case YunCarUtil.CMD_REGISTER:
                 machineRegisterRespon(chargeMachineDto);

@@ -63,7 +63,7 @@
             and t.charge_type= #{chargeType}
         </if>
         group by t.heartbeat_time,t.impl_bean,t.machine_id,t.machine_code,t.energy_price,t.rule_id,t.community_id,t.charge_type,t.machine_name,
-        cmf.factory_name ,t.create_time,cr.rule_name,td.name
+        cmf.factory_name ,t.create_time,cr.rule_name,td.name,t.monitor_id,t.monitor_name
         order by t.create_time desc
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
