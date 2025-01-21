@@ -207,6 +207,8 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
             notifyChargeV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(INotifyChargeV1InnerServiceSMO.class.getName(), INotifyChargeV1InnerServiceSMO.class);
         }
 
+        System.out.println("---------------------444444444444------------------------"+JSONObject.toJSONString(chargeMachineDto));
+
         notifyChargeV1InnerServiceSMOImpl.machineResult(new ChargeMachineByteDataDto(chargeMachineDto, bytes));
 
 
