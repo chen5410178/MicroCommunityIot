@@ -140,7 +140,7 @@ public class IotApiController {
      * @param request
      * @return
      */
-    @RequestMapping(path = "/", method = RequestMethod.POST)
+    @RequestMapping(path = "/upload/uploadImage", method = RequestMethod.POST)
     public ResponseEntity<String> uploadImage(
                                              @RequestBody String postInfo,
                                              HttpServletRequest request) {
