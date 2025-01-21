@@ -16,6 +16,7 @@
 package com.java110.charge.smo.impl;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.charge.factory.IChargeCore;
 import com.java110.charge.factory.IChargeFactoryAdapt;
@@ -131,6 +132,7 @@ public class NotifyChargeV1InnerServiceSMOImpl implements INotifyChargeV1InnerSe
         if (chargeFactoryAdapt == null) {
             throw new CmdException("厂家接口未实现");
         }
+        System.out.println("---------------------555555555------------------------"+ JSONObject.toJSONString(chargeMachineByteDataDto));
 
         chargeFactoryAdapt.chargeResult(chargeMachineByteDataDto.getChargeMachineDto(), chargeMachineByteDataDto.getData());
 
