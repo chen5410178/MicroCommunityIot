@@ -116,7 +116,7 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
         if (StringUtil.isEmpty(machineCode)) {
             return;
         }
-
+        System.out.println("---------------------111111111111111------------------------"+machineCode);
         //todo 保存设备和连接的关系
         initMachineToCache(ctx, machineCode, false);
 
@@ -180,6 +180,7 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
      */
     private boolean toNotifyCharge(String machineCode, byte[] bytes) {
 
+        System.out.println("---------------------222222222222222------------------------"+machineCode);
 
         ChargeMachineDto chargeMachineDto = null;
         if(!chargeCache.containsKey(machineCode)) {
@@ -197,6 +198,8 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
         }
 
         chargeMachineDto = chargeCache.get(machineCode);
+        System.out.println("---------------------33333333333333------------------------"+machineCode);
+
 
         INotifyChargeV1InnerServiceSMO notifyChargeV1InnerServiceSMOImpl = ApplicationContextFactory.getBean("notifyChargeV1InnerServiceSMOImpl", INotifyChargeV1InnerServiceSMO.class);
 

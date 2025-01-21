@@ -37,7 +37,7 @@ public class DataHeader {
 
     /**
      * 获取设备ID
-     *
+     * 680d000500056620241101000100000e95
      * @param msg
      * @return
      */
