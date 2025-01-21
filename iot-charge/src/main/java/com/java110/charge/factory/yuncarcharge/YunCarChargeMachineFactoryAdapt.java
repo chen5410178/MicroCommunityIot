@@ -344,7 +344,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
      */
     private void doRealMonitoringData(ChargeMachineDto chargeMachineDto, String serNo, String tradeNo, byte[] data) {
         // todo 上传实时监测数据
-        // recordedData(chargeMachineDto, data);
+        recordedData(chargeMachineDto, data);
         // 684000020013000000000000000000000000000000006620241101000102020200000000003200000000000000000032000000000000000000000000000000000000c3c6
 
         int prexPos = 0; // 起始标志
@@ -431,21 +431,21 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         chargeProcessAnalysisPo.setGunNum(portCode); // 枪编号
         chargeProcessAnalysisPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId()); // 订单ID
         chargeProcessAnalysisPo.setAccumulatedChargingTime(YunCarUtil.getTargetBin(data,accumulatedChargingTimePos,accumulatedChargingTimeLen)); //累计充电时间单位：min；待机置零
-        chargeProcessAnalysisPo.setOutputVoltage(YunCarUtil.getTargetBin(data,outputVoltagePos,outputVoltageLen)); // 输出电压
+        chargeProcessAnalysisPo.setOutputVoltage(YunCarUtil.getTargetBin(data,outputVoltagePos,outputVoltageLen,1)); // 输出电压
         chargeProcessAnalysisPo.setSoc(YunCarUtil.getTargetBin(data,socPos,socLen));// SOC
         chargeProcessAnalysisPo.setRemark(""); // 备注
-        chargeProcessAnalysisPo.setChargingDegree(YunCarUtil.getTargetBin(data,chargingDegreePos,chargingDegreeLen)); //  充电度数 精确到小数点后四位；待机置零
+        chargeProcessAnalysisPo.setChargingDegree(YunCarUtil.getTargetBin(data,chargingDegreePos,chargingDegreeLen,4)); //  充电度数 精确到小数点后四位；待机置零
         chargeProcessAnalysisPo.setInsertedGun(YunCarUtil.getTargetBin(data,insertedGunPos,insertedGunLen)); // 是否插枪
-        chargeProcessAnalysisPo.setOutputCurrent(YunCarUtil.getTargetBin(data,outputCurrentPos,outputCurrentLen));//输出电流
+        chargeProcessAnalysisPo.setOutputCurrent(YunCarUtil.getTargetBin(data,outputCurrentPos,outputCurrentLen,1));//输出电流
         chargeProcessAnalysisPo.setRemainingTime(YunCarUtil.getTargetBin(data,remainingTimePos,remainingTimeLen));//剩余时间单位：min；待机置零、交流桩置零
         chargeProcessAnalysisPo.setGunLineTem(YunCarUtil.getTargetBin(data,gunLineTemPos,gunLineTemLen)); //枪线温度
         chargeProcessAnalysisPo.setBackInPlace(YunCarUtil.getTargetBin(data,backInPlacePos,backInPlaceLen)); // 枪是否归位 0x00 否 0x01 是 0x02未知
         chargeProcessAnalysisPo.setBatterypackMaxTem(YunCarUtil.getTargetBin(data,batterypackMaxTemPos,batterypackMaxTemLen)); //电池组最高温度
         chargeProcessAnalysisPo.setMachineId(chargeMachineDto.getMachineId());
         chargeProcessAnalysisPo.setPileNum(machineCode); // 桩编号
-        chargeProcessAnalysisPo.setCalculatedChargingDegree(YunCarUtil.getTargetBin(data,calculatedChargingDegreePos,calculatedChargingDegreeLen)); //计损充电度数
+        chargeProcessAnalysisPo.setCalculatedChargingDegree(YunCarUtil.getTargetBin(data,calculatedChargingDegreePos,calculatedChargingDegreeLen,4)); //计损充电度数
         chargeProcessAnalysisPo.setHardwareFailure(YunCarUtil.getTargetBin(data,hardwareFailurePos,hardwareFailureLen));//硬件故障
-        chargeProcessAnalysisPo.setRechargeAmount(YunCarUtil.getTargetBin(data,rechargeAmountPos,rechargeAmountLen));//已充金额
+        chargeProcessAnalysisPo.setRechargeAmount(YunCarUtil.getTargetBin(data,rechargeAmountPos,rechargeAmountLen,4));//已充金额
         chargeProcessAnalysisPo.setGunCode(YunCarUtil.getTargetBin(data,gunCodePos,gunCodeLen));//枪线编码
         chargeProcessAnalysisPo.setCommunityId(chargeMachineDto.getCommunityId());
 

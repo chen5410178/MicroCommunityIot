@@ -462,7 +462,6 @@ public class YunCarUtil {
         return targetValue;
 
     }
-
     /**
      *
      * @param data
@@ -471,6 +470,16 @@ public class YunCarUtil {
      * @return
      */
     public static String getTargetBin(byte[] data, int startPos, int dataLen) {
+        return getTargetBin(data,startPos,dataLen,0);
+    }
+    /**
+     *
+     * @param data
+     * @param startPos
+     * @param dataLen
+     * @return
+     */
+    public static String getTargetBin(byte[] data, int startPos, int dataLen,int point) {
         String dataStr = BytesUtil.bytesToHex(data);
         String targetValue = "";
         if (StringUtil.isEmpty(dataStr)) {
@@ -480,6 +489,8 @@ public class YunCarUtil {
             return targetValue;
         }
         targetValue = dataStr.substring(startPos, startPos + dataLen);
+
+        targetValue = priceHexToPrice(targetValue,point);
         return targetValue;
     }
 }

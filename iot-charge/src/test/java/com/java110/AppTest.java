@@ -62,7 +62,7 @@ public class AppTest
 
     public void testByte(){
 
-        String dataHex = "6840000100130000000000000000000000000000000066202411010004010202000000000032000000000000000000320000000000000000000000000000000000001cf2";
+        String dataHex = "684000190013662024110100050120250121190926586620241101000501030201180e9e01380000000000000000354502003b00280f0000280f0000100e00000000d46e";
 
         byte[] data = BytesUtil.hexStringToByteArray(dataHex);
         int prexPos = 0; // 起始标志
@@ -119,7 +119,7 @@ public class AppTest
         chargeProcessAnalysisPo.setGunNum(portCode); // 枪编号
         //chargeProcessAnalysisPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId()); // 订单ID
         chargeProcessAnalysisPo.setAccumulatedChargingTime(YunCarUtil.getTargetBin(data,accumulatedChargingTimePos,accumulatedChargingTimeLen)); //累计充电时间单位：min；待机置零
-        chargeProcessAnalysisPo.setOutputVoltage(YunCarUtil.getTargetBin(data,outputVoltagePos,outputVoltageLen)); // 输出电压
+        chargeProcessAnalysisPo.setOutputVoltage(YunCarUtil.getTargetBin(data,outputVoltagePos,outputVoltageLen,1)); // 输出电压
         chargeProcessAnalysisPo.setSoc(YunCarUtil.getTargetBin(data,socPos,socLen));// SOC
         //chargeProcessAnalysisPo.setCpaId(GenerateCodeFactory.getGeneratorId("11"));
         chargeProcessAnalysisPo.setRemark(""); // 备注
