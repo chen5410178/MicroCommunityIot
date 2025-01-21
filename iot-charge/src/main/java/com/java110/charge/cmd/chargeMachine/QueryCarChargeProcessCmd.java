@@ -8,6 +8,7 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.chargeProcessAnalysis.ChargeProcessAnalysisDto;
 import com.java110.intf.charge.IChargeProcessAnalysisV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,9 @@ public class QueryCarChargeProcessCmd extends Cmd {
         ChargeProcessAnalysisDto chargeProcessAnalysisDto = new ChargeProcessAnalysisDto();
         chargeProcessAnalysisDto.setOrderId(reqJson.getString("orderId"));
         List<ChargeProcessAnalysisDto> chargeProcessAnalysiss = chargeProcessAnalysisV1InnerServiceSMOImpl.queryChargeProcessAnalysiss(chargeProcessAnalysisDto);
+        if(ListUtil.isNull(chargeProcessAnalysiss)){
+            throw new CmdException("未查询到上报数据");
+        }
         JSONObject data = new JSONObject();
         String[] parts = chargeProcessAnalysiss.get(0).getSoc().split("\\.");
         data.put("process", parts[0]); //充电进度（整数部分）

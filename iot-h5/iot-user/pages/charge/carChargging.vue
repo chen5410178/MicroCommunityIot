@@ -64,6 +64,7 @@
 			this.updateProgress();
 			this._loadChargeMachineOrder();
 			this._queryCarChargeState();
+			this._heartbeatState();
 			
 		},
 		methods: {

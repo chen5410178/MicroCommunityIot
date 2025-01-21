@@ -67,9 +67,9 @@ public class ChargeProcessAnalysisV1ServiceDaoImpl extends BaseServiceDao implem
     public List<Map> getChargeProcessAnalysisInfo(Map info) throws DAOException {
         logger.debug("查询 getChargeProcessAnalysisInfo 入参 info : {}",info);
 
-        List<Map> businessChargeProcessAnalysisInfos = sqlSessionTemplate.selectList("chargeProcessAnalysisV1ServiceDaoImpl.getChargeProcessAnalysisInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("chargeProcessAnalysisV1ServiceDaoImpl.getChargeProcessAnalysisInfo",info);
 
-        return businessChargeProcessAnalysisInfos;
+        return infos;
     }
 
 
@@ -96,12 +96,12 @@ public class ChargeProcessAnalysisV1ServiceDaoImpl extends BaseServiceDao implem
     public int queryChargeProcessAnalysissCount(Map info) {
         logger.debug("查询 queryChargeProcessAnalysissCount 入参 info : {}",info);
 
-        List<Map> businessChargeProcessAnalysisInfos = sqlSessionTemplate.selectList("chargeProcessAnalysisV1ServiceDaoImpl.queryChargeProcessAnalysissCount", info);
-        if (businessChargeProcessAnalysisInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("chargeProcessAnalysisV1ServiceDaoImpl.queryChargeProcessAnalysissCount", info);
+        if (infos.size() < 1) {
             return 0;
         }
 
-        return Integer.parseInt(businessChargeProcessAnalysisInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
 

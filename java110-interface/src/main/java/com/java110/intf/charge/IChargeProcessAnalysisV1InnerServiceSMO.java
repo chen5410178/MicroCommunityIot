@@ -39,7 +39,7 @@ public interface IChargeProcessAnalysisV1InnerServiceSMO {
 
 
     @RequestMapping(value = "/saveChargeProcessAnalysis", method = RequestMethod.POST)
-    public int saveChargeProcessAnalysis(@RequestBody ChargeProcessAnalysisPo chargeProcessAnalysisPo);
+    public int  saveChargeProcessAnalysis(@RequestBody ChargeProcessAnalysisPo chargeProcessAnalysisPo);
 
     @RequestMapping(value = "/updateChargeProcessAnalysis", method = RequestMethod.POST)
     public int updateChargeProcessAnalysis(@RequestBody ChargeProcessAnalysisPo chargeProcessAnalysisPo);

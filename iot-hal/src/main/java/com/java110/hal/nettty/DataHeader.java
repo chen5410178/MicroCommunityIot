@@ -52,6 +52,7 @@ public class DataHeader {
                 data = data.substring(44, 58);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
         return data;
