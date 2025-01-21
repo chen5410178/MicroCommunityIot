@@ -49,9 +49,9 @@ spring:
     keepalive: 20
     poolSize: 20
   datasource:
-    url: jdbc:mysql://wy.sxjly.com:3306/hc_iot?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://192.168.100.108:3306/hc_iot?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: hc_iot
-    password: whfmysql521
+    password: hc_iot12345678
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     druid:
