@@ -72,6 +72,7 @@ public class QueryCarChargeProcessCmd extends Cmd {
         volDec = volDec.multiply(new BigDecimal(chargeProcessAnalysiss.get(0).getOutputCurrent()))
                 .divide(new BigDecimal("1000"), 2, BigDecimal.ROUND_HALF_UP);
         data.put("energy", volDec.doubleValue() + "");
+
         context.setResponseEntity(ResultVo.createResponseEntity(data));
     }
 }

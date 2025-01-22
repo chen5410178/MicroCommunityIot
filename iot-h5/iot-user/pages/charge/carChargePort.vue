@@ -2,6 +2,9 @@
 	<view class="">
 		<view class="flex justify-between mtc-machine">
 			<view>{{machineName}}({{machineCode}})</view>
+			<view>
+				<charge-car-num-vue ref="chargeCarNumRef"></charge-car-num-vue>
+			</view>
 		</view>
 		<view class="margin-sm">
 			<view class="cu-list menu">
@@ -16,13 +19,15 @@
 					</view>
 					<view class="bg-white padding">
 						<view class="flex flex-wrap">
-							<view class="margin-xs padding-sm radius">桩号：{{curPort.portName}}</view>
-							<view class="margin-xs padding-sm radius">编号：{{curPort.portId}}</view>
+							<view class="margin-xs  radius">桩号：{{curPort.portName}}</view>
+							<view class="margin-xs  radius">编号：{{curPort.portId}}</view>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
+		
+		
 		<view>
 			<car-charge-price ref="carChargePriceRef" :prices="prices"></car-charge-price>
 		</view>
@@ -72,11 +77,13 @@
 	} from '@/api/user/sessionApi.js';
 	import startCarCharge from '@/components/charge/startCarCharge.vue';
 	import carChargePrice from '@/components/charge/carChargePrice.vue';
+	import chargeCarNumVue from '@/components/charge/chargeCarNum.vue';
 	export default {
 		data() {
 			return {
 				machineId: '', 
 				modalName: null,
+				carNum:'未设置',
 				portId: '',
 				communityId: '',
 				machineCode: '',
@@ -113,7 +120,8 @@
 			charge,
 			account,
 			startCarCharge,
-			carChargePrice
+			carChargePrice,
+			chargeCarNumVue
 		},
 		onLoad(options) {
 			autoLogin(options);
@@ -131,7 +139,11 @@
 				if (_that.$refs.chargeRef) {
 					_that.$refs.chargeRef.loadChargeMonthOrder(_that.communityId);
 				}
+				if (_that.$refs.chargeCarNumRef) {
+					_that.$refs.chargeCarNumRef.initUserChargeCarNum(_that.login);
+				}
 				_that._checkOrder();
+				
 			}, 1000);
 		},
 		onShow: function(options) {

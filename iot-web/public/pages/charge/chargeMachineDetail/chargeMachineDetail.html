@@ -120,6 +120,11 @@
                     <vc:i18n name="充电订单" namespace="machineDetail"></vc:i18n>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailChargeParking'}" v-on:click="changeTab('machineDetailChargeParking')">
+                    <vc:i18n name="停车券" namespace="machineDetail"></vc:i18n>
+                </a>
+            </li>
             <li class="nav-item" v-if="machineDetailInfo.acctId">
                 <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailChargeAcct'}" v-on:click="changeTab('machineDetailChargeAcct')">
                     <vc:i18n name="账户详情" namespace="machineDetail"></vc:i18n>
@@ -141,6 +146,10 @@
     <div v-if="machineDetailInfo._currentTab == 'machineDetailChargeOrder'">
         <vc:create path="property/machineDetailChargeOrder"></vc:create>
     </div>
+    <div v-if="machineDetailInfo._currentTab == 'machineDetailChargeParking'">
+        <vc:create path="property/machineDetailChargeParking"></vc:create>
+    </div>
+    
     <div v-if="machineDetailInfo._currentTab == 'machineDetailChargeAcct'">
         <vc:create path="property/machineDetailChargeAcct"></vc:create>
     </div>

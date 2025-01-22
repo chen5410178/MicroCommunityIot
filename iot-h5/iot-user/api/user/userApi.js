@@ -316,3 +316,49 @@ export function refreshAppUserBindingOwnerOpenId(_that, _data) {
 			});
 		})
 }
+
+export function getUserChargeCar(_objData){
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.getUserChargeCar,
+			method: "GET",
+			data: _objData,
+			success: function(res) {
+				//将业主信息和房屋信息一起返回
+				let _json = res.data;
+				if (_json.code != 0) {
+					reject(_json.msg);
+					return;
+				}
+				resolve(_json);
+			},
+			fail: function(res) {
+				reject(res);
+			}
+		});
+	
+	})
+}
+
+export function saveUserChargeCar(_objData){
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.saveUserChargeCar,
+			method: "POST",
+			data: _objData,
+			success: function(res) {
+				//将业主信息和房屋信息一起返回
+				let _json = res.data;
+				if (_json.code != 0) {
+					reject(_json.msg);
+					return;
+				}
+				resolve();
+			},
+			fail: function(res) {
+				reject(res);
+			}
+		});
+	
+	})
+}

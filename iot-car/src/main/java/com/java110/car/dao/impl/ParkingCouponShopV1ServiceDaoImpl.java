@@ -67,9 +67,9 @@ public class ParkingCouponShopV1ServiceDaoImpl extends BaseServiceDao implements
     public List<Map> getParkingCouponShopInfo(Map info) throws DAOException {
         logger.debug("查询 getParkingCouponShopInfo 入参 info : {}",info);
 
-        List<Map> businessParkingCouponShopInfos = sqlSessionTemplate.selectList("parkingCouponShopV1ServiceDaoImpl.getParkingCouponShopInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("parkingCouponShopV1ServiceDaoImpl.getParkingCouponShopInfo",info);
 
-        return businessParkingCouponShopInfos;
+        return infos;
     }
 
 
@@ -96,12 +96,12 @@ public class ParkingCouponShopV1ServiceDaoImpl extends BaseServiceDao implements
     public int queryParkingCouponShopsCount(Map info) {
         logger.debug("查询 queryParkingCouponShopsCount 入参 info : {}",info);
 
-        List<Map> businessParkingCouponShopInfos = sqlSessionTemplate.selectList("parkingCouponShopV1ServiceDaoImpl.queryParkingCouponShopsCount", info);
-        if (businessParkingCouponShopInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("parkingCouponShopV1ServiceDaoImpl.queryParkingCouponShopsCount", info);
+        if (infos.size() < 1) {
             return 0;
         }
 
-        return Integer.parseInt(businessParkingCouponShopInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
     /**
@@ -113,9 +113,9 @@ public class ParkingCouponShopV1ServiceDaoImpl extends BaseServiceDao implements
     public List<Map> queryParkingCouponShopStatistics(Map info) {
         logger.debug("查询 queryParkingCouponShopStatistics 入参 info : {}",info);
 
-        List<Map> businessParkingCouponShopInfos = sqlSessionTemplate.selectList("parkingCouponShopV1ServiceDaoImpl.queryParkingCouponShopStatistics",info);
+        List<Map> infos = sqlSessionTemplate.selectList("parkingCouponShopV1ServiceDaoImpl.queryParkingCouponShopStatistics",info);
 
-        return businessParkingCouponShopInfos;
+        return infos;
     }
 
 

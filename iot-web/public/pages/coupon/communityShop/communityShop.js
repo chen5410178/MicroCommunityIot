@@ -21,22 +21,22 @@
             }
         },
         _initMethod: function () {
-            vc.component._listCommunityShops(DEFAULT_PAGE, DEFAULT_ROWS);
+            $that._listCommunityShops(DEFAULT_PAGE, DEFAULT_ROWS);
         },
         _initEvent: function () {
             vc.on('communityShop', 'listCommunityShop', function (_param) {
-                vc.component._listCommunityShops(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listCommunityShops(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('pagination', 'page_event', function (_currentPage) {
-                vc.component._listCommunityShops(_currentPage, DEFAULT_ROWS);
+                $that._listCommunityShops(_currentPage, DEFAULT_ROWS);
             });
         },
         methods: {
             _listCommunityShops: function (_page, _rows) {
-                vc.component.communityShopInfo.conditions.page = _page;
-                vc.component.communityShopInfo.conditions.row = _rows;
+                $that.communityShopInfo.conditions.page = _page;
+                $that.communityShopInfo.conditions.row = _rows;
                 var param = {
-                    params: vc.component.communityShopInfo.conditions
+                    params: $that.communityShopInfo.conditions
                 };
                 param.params.shopId = param.params.shopId.trim();
                 param.params.shopName = param.params.shopName.trim();
@@ -46,12 +46,12 @@
                     param,
                     function (json, res) {
                         var _communityShopInfo = JSON.parse(json);
-                        vc.component.communityShopInfo.total = _communityShopInfo.total;
-                        vc.component.communityShopInfo.records = _communityShopInfo.records;
-                        vc.component.communityShopInfo.shops = _communityShopInfo.data;
+                        $that.communityShopInfo.total = _communityShopInfo.total;
+                        $that.communityShopInfo.records = _communityShopInfo.records;
+                        $that.communityShopInfo.shops = _communityShopInfo.data;
                         vc.emit('pagination', 'init', {
-                            total: vc.component.communityShopInfo.records,
-                            dataCount: vc.component.communityShopInfo.total,
+                            total: $that.communityShopInfo.records,
+                            dataCount: $that.communityShopInfo.total,
                             currentPage: _page
                         });
                     },
@@ -71,14 +71,14 @@
             },
             //查询
             _queryCommunityShopMethod: function () {
-                vc.component._listCommunityShops(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that._listCommunityShops(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             //重置
             _resetCommunityShopMethod: function () {
-                vc.component.communityShopInfo.conditions.shopId = "";
-                vc.component.communityShopInfo.conditions.shopName = "";
-                vc.component.communityShopInfo.conditions.returnLink = "";
-                vc.component._listCommunityShops(DEFAULT_PAGE, DEFAULT_ROWS);
+                $that.communityShopInfo.conditions.shopId = "";
+                $that.communityShopInfo.conditions.shopName = "";
+                $that.communityShopInfo.conditions.returnLink = "";
+                $that._listCommunityShops(DEFAULT_PAGE, DEFAULT_ROWS);
             },
             /*_resetStaffPwd: function (_shop) {
                 vc.emit('resetStaffPwd', 'openResetStaffPwd', {
@@ -89,10 +89,10 @@
                 vc.emit('viewShopCoupons', 'openViewShopCouponsModel', _shop);
             },
             _moreCondition: function () {
-                if (vc.component.communityShopInfo.moreCondition) {
-                    vc.component.communityShopInfo.moreCondition = false;
+                if ($that.communityShopInfo.moreCondition) {
+                    $that.communityShopInfo.moreCondition = false;
                 } else {
-                    vc.component.communityShopInfo.moreCondition = true;
+                    $that.communityShopInfo.moreCondition = true;
                 }
             }
         }

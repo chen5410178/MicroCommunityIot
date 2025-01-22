@@ -77,6 +77,8 @@ export default {
 	refreshAppUserBindingOwnerOpenId: baseUrl+"iot/api/owner.refreshAppUserBindingOwnerOpenId",
 	ownerUserLoginByOpenId: baseUrl+"iot/api/user.ownerUserLoginByOpenId",
 	queryMyChargeOrder: baseUrl+"iot/api/charge.queryMyChargeOrder",
+	saveUserChargeCar: baseUrl+"iot/api/user.saveUserChargeCar",
+	getUserChargeCar: baseUrl+"iot/api/user.getUserChargeCar",
 
 
 
