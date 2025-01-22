@@ -2,19 +2,28 @@ package com.java110.charge.factory;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.coupon.ParkingCouponCarDto;
+import com.java110.bean.dto.coupon.ParkingCouponShopDto;
+import com.java110.bean.po.coupon.ParkingCouponCarPo;
+import com.java110.bean.po.coupon.ParkingCouponShopPo;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.GenerateCodeFactory;
-import com.java110.core.utils.Assert;
-import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.ListUtil;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.utils.*;
 import com.java110.dto.account.AccountDto;
 import com.java110.dto.chargeMachine.*;
 import com.java110.dto.chargeMonthOrder.ChargeMonthOrderDto;
 import com.java110.dto.chargeRulePrice.ChargeRulePriceDto;
+import com.java110.dto.parkingCouponCharge.ParkingCouponChargeDto;
+import com.java110.dto.userAttr.UserAttrDto;
 import com.java110.intf.acct.IAccountInnerServiceSMO;
+import com.java110.intf.car.IParkingCouponCarV1InnerServiceSMO;
+import com.java110.intf.car.IParkingCouponChargeV1InnerServiceSMO;
+import com.java110.intf.car.IParkingCouponShopV1InnerServiceSMO;
+import com.java110.intf.car.IParkingCouponV1InnerServiceSMO;
 import com.java110.intf.charge.*;
+import com.java110.intf.user.IStoreShopV1InnerServiceSMO;
+import com.java110.intf.user.IUserAttrV1InnerServiceSMO;
 import com.java110.po.accountDetail.AccountDetailPo;
 import com.java110.po.chargeMachineOrder.ChargeMachineOrderPo;
 import com.java110.po.chargeMachineOrderAcct.ChargeMachineOrderAcctPo;
@@ -66,6 +75,22 @@ public class ChargeCoreImpl implements IChargeCore {
     @Autowired
     private IChargeRulePriceV1InnerServiceSMO chargeRulePriceV1InnerServiceSMO;
 
+    @Autowired
+    private IUserAttrV1InnerServiceSMO userAttrV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IParkingCouponChargeV1InnerServiceSMO parkingCouponChargeV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IParkingCouponCarV1InnerServiceSMO parkingCouponCarV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IParkingCouponV1InnerServiceSMO parkingCouponV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IParkingCouponShopV1InnerServiceSMO parkingCouponShopV1InnerServiceSMOImpl;
+    @Autowired
+    private IStoreShopV1InnerServiceSMO shopInnerServiceSMOImpl;
     @Override
     public ResultVo startCharge(ChargeMachineDto chargeMachineDto, ChargeMachinePortDto chargeMachinePortDto, String chargeType, double duration, String orderId) {
 
@@ -213,7 +238,7 @@ public class ChargeCoreImpl implements IChargeCore {
         String power = energy;
         if (usedHours <= 0) {
             usedHours = 0;
-        }else if("1".equals(notifyChargeOrderDto.getEnergyFlag())){ // todo 说明传进来的是电量
+        } else if ("1".equals(notifyChargeOrderDto.getEnergyFlag())) { // todo 说明传进来的是电量
             BigDecimal powerDec = new BigDecimal(Double.parseDouble(energy)).divide(new BigDecimal(usedHours), 2, BigDecimal.ROUND_HALF_UP);
             power = powerDec.doubleValue() + "";
         }
@@ -537,6 +562,7 @@ public class ChargeCoreImpl implements IChargeCore {
         chargeMachineOrderAcctV1InnerServiceSMOImpl.saveChargeMachineOrderAcct(chargeMachineOrderAcctPo);
         return new ResultVo(ResultVo.CODE_OK, "成功");
     }
+
     /**
      * 汽车开启充电成功
      *
@@ -659,9 +685,13 @@ public class ChargeCoreImpl implements IChargeCore {
             returnOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto, chargeMachineOrderDtos);
         } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDtos.get(0).getChargeType())) {
             returnCarOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getAmount(), notifyChargeOrderDto.getEnergy(), chargeMachineOrderDtos);
+
+            // todo 给车辆送停车券
+            giftCouponToChargeCar(chargeMachineDtos.get(0), chargeMachineOrderDtos.get(0));
         }
         return new ResultVo(ResultVo.CODE_OK, "成功");
     }
+
 
     /**
      * 结束月卡 充电订单
@@ -737,4 +767,87 @@ public class ChargeCoreImpl implements IChargeCore {
             }
         }
     }
+
+    private void giftCouponToChargeCar(ChargeMachineDto chargeMachineDto, ChargeMachineOrderDto chargeMachineOrderDto) {
+        String userId = chargeMachineOrderDto.getPersonId();
+        if (StringUtil.isEmpty(userId)) {
+            return;
+        }
+        UserAttrDto userAttrDto = new UserAttrDto();
+        userAttrDto.setUserId(userId);
+        userAttrDto.setSpecCd(UserAttrDto.CHARGE_CAR);
+        List<UserAttrDto> userAttrDtos = userAttrV1InnerServiceSMOImpl.queryUserAttrs(userAttrDto);
+        if (ListUtil.isNull(userAttrDtos)) {
+            return;
+        }
+        String carNum = userAttrDtos.get(0).getValue();
+
+        ParkingCouponChargeDto parkingCouponChargeDto = new ParkingCouponChargeDto();
+        parkingCouponChargeDto.setMachineId(chargeMachineDto.getMachineId());
+        parkingCouponChargeDto.setCommunityId(chargeMachineDto.getCommunityId());
+        List<ParkingCouponChargeDto> parkingCouponChargeDtos = parkingCouponChargeV1InnerServiceSMOImpl.queryParkingCouponCharges(parkingCouponChargeDto);
+        if (ListUtil.isNull(parkingCouponChargeDtos)) {
+            return;
+        }
+
+        ParkingCouponShopDto parkingCouponShopDto = new ParkingCouponShopDto();
+        parkingCouponShopDto.setCouponShopId(parkingCouponChargeDtos.get(0).getCouponShopId());
+        parkingCouponShopDto.setShopId(parkingCouponChargeDtos.get(0).getShopId());
+        List<ParkingCouponShopDto> parkingCouponShopDtos = parkingCouponShopV1InnerServiceSMOImpl.queryParkingCouponShops(parkingCouponShopDto);
+
+        if(ListUtil.isNull(parkingCouponShopDtos)){
+            return;
+        }
+
+        int quantity = Integer.parseInt(parkingCouponShopDtos.get(0).getQuantity());
+
+        if (quantity < 1) {
+            return;
+        }
+        int flag = 0;
+        // 这里加全局锁 防止 并发
+        String requestId = DistributedLock.getLockUUID();
+        String key = this.getClass().getSimpleName() + parkingCouponChargeDtos.get(0).getCouponShopId();
+        try {
+            DistributedLock.waitGetDistributedLock(key, requestId);
+            parkingCouponShopDto = new ParkingCouponShopDto();
+            parkingCouponShopDto.setCouponShopId(parkingCouponChargeDtos.get(0).getCouponShopId());
+            parkingCouponShopDto.setShopId(parkingCouponChargeDtos.get(0).getShopId());
+            parkingCouponShopDtos = parkingCouponShopV1InnerServiceSMOImpl.queryParkingCouponShops(parkingCouponShopDto);
+            quantity = Integer.parseInt(parkingCouponShopDtos.get(0).getQuantity());
+            if (quantity < 1) {
+                return;
+            }
+            ParkingCouponShopPo parkingCouponShopPo = new ParkingCouponShopPo();
+            parkingCouponShopPo.setCouponShopId(parkingCouponShopDtos.get(0).getCouponShopId());
+            parkingCouponShopPo.setQuantity((quantity - 1) + "");
+            flag = parkingCouponShopV1InnerServiceSMOImpl.updateParkingCouponShop(parkingCouponShopPo);
+            if (flag < 1) {
+                return;
+            }
+        } finally {
+            DistributedLock.releaseDistributedLock(key, requestId);
+        }
+
+        ParkingCouponCarPo parkingCouponCarPo = new ParkingCouponCarPo();
+        parkingCouponCarPo.setGiveWay("1001");
+        parkingCouponCarPo.setCarNum(carNum);
+        parkingCouponCarPo.setCouponShopId(parkingCouponChargeDtos.get(0).getCouponShopId());
+        parkingCouponCarPo.setRemark("车辆充电赠送停车券");
+        parkingCouponCarPo.setShopId(parkingCouponChargeDtos.get(0).getShopId());
+        parkingCouponCarPo.setPccId(GenerateCodeFactory.getGeneratorId("11"));
+        parkingCouponCarPo.setCouponId(parkingCouponShopDtos.get(0).getCouponId());
+        parkingCouponCarPo.setCommunityId(parkingCouponShopDtos.get(0).getCommunityId());
+        parkingCouponCarPo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        parkingCouponCarPo.setEndTime(DateUtil.getAddDayString(DateUtil.getCurrentDate(), DateUtil.DATE_FORMATE_STRING_A, 1));
+        parkingCouponCarPo.setPaId(parkingCouponShopDtos.get(0).getPaId());
+        parkingCouponCarPo.setState(ParkingCouponCarDto.STATE_WAIT);
+        parkingCouponCarPo.setTypeCd(parkingCouponShopDtos.get(0).getTypeCd());
+        parkingCouponCarPo.setValue(parkingCouponShopDtos.get(0).getValue());
+
+        parkingCouponCarV1InnerServiceSMOImpl.saveParkingCouponCar(parkingCouponCarPo);
+
+
+    }
+
 }
