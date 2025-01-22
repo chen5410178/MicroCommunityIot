@@ -76,7 +76,7 @@ export default {
 	getWechatMiniOpenId: baseUrl + "iot/api/wechat.getWechatMiniOpenId",
 	refreshAppUserBindingOwnerOpenId: baseUrl+"iot/api/owner.refreshAppUserBindingOwnerOpenId",
 	ownerUserLoginByOpenId: baseUrl+"iot/api/user.ownerUserLoginByOpenId",
-
+	queryMyChargeOrder: baseUrl+"iot/api/charge.queryMyChargeOrder",
 
 
 

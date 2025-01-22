@@ -62,6 +62,7 @@
 	import {
 		getChargeMachines,
 		getChargeMachinePort,
+		queryMyChargeOrder
 	} from '@/api/machine/machineApi.js';
 	import account from '@/components/account/account.vue';
 	import charge from '@/components/charge/charge.vue';
@@ -191,6 +192,19 @@
 				if(!this.login){
 					return;
 				}
+				queryMyChargeOrder({
+					portId:this.portId,
+					communityId:this.communityId,
+				}).then(_json=>{
+					if(_json.code != 0){
+						return;
+					}
+					let _order = _json.data;
+					uni.navigateTo({
+						url: '/pages/charge/carChargging?orderId=' + _order.orderId +
+							'&communityId=' + _order.communityId
+					});
+				})
 			},
 			_switchPort: function(_port) {
 				if (_port.state != 'FREE') {
