@@ -26,7 +26,7 @@
 				<view class="detail-item">{{energy}}<br><span>功率 (kW)</span></view>
 				<view class="detail-item">{{electric}}<br><span>电流 (A)</span></view>
 				<view class="detail-item">{{voltage}}<br><span>电压 (V)</span></view>
-				<view class="detail-item">{{temperature}}<br><span>枪温 (C)</span></view>
+				<view class="detail-item">{{temperature}}<br><span>枪温 (°C)</span></view>
 			</view>
 			<button class="stop-charging" @click="_stopCharge">结束充电</button>
 		</view>
