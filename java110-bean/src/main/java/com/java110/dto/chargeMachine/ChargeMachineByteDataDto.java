@@ -7,6 +7,7 @@ public class ChargeMachineByteDataDto {
 
     public ChargeMachineByteDataDto(ChargeMachineDto chargeMachineDto, byte[] data) {
         this.chargeMachineDto = chargeMachineDto;
+
         this.data = data;
     }
 

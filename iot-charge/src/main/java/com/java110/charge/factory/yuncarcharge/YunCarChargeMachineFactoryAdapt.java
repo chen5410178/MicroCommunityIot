@@ -402,7 +402,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
             throw new CmdException("设备编号或枪号不存在");
         }
         ChargeMachineDto tmpChargeMachineDto = new ChargeMachineDto();
-        chargeMachineDto.setMachineCode(tmpChargeMachineDto.getMachineCode());
+        tmpChargeMachineDto.setMachineCode(machineCode);
         List<ChargeMachineDto> chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(chargeMachineDto);
 
         if (ListUtil.isNull(chargeMachineDtos)) {

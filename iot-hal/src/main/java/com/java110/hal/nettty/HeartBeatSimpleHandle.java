@@ -3,6 +3,7 @@ package com.java110.hal.nettty;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.annotation.Java110Synchronized;
 import com.java110.core.factory.ApplicationContextFactory;
+import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DistributedLock;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
@@ -183,7 +184,6 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
      */
     private boolean toNotifyCharge(String machineCode, byte[] bytes) {
 
-        System.out.println("---------------------222222222222222------------------------" + machineCode);
 
         ChargeMachineDto chargeMachineDto = null;
 
@@ -202,19 +202,15 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
         }
 
         chargeMachineDto = chargeCache.get(machineCode);
-        if (StringUtil.isEmpty(chargeMachineDto.getMachineCode())) {
-            chargeMachineDto.setMachineCode(machineCode);
-        }
-        System.out.println("---------------------33333333333333------------------------" + machineCode);
+
 
         INotifyChargeV1InnerServiceSMO notifyChargeV1InnerServiceSMOImpl = ApplicationContextFactory.getBean("notifyChargeV1InnerServiceSMOImpl", INotifyChargeV1InnerServiceSMO.class);
 
         if (notifyChargeV1InnerServiceSMOImpl == null) {
             notifyChargeV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(INotifyChargeV1InnerServiceSMO.class.getName(), INotifyChargeV1InnerServiceSMO.class);
         }
-
-        System.out.println("---------------------444444444444------------------------" + JSONObject.toJSONString(chargeMachineDto));
-
+        // 这里深度拷贝下，不然后面 改了对象内容导致 出错
+        chargeMachineDto = BeanConvertUtil.covertBean(chargeMachineDto,ChargeMachineDto.class);
         notifyChargeV1InnerServiceSMOImpl.machineResult(new ChargeMachineByteDataDto(chargeMachineDto, bytes));
 
 
