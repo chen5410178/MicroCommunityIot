@@ -66,6 +66,7 @@ public class QueryCarChargeProcessCmd extends Cmd {
         data.put("electric", chargeProcessAnalysiss.get(0).getOutputCurrent()); // 电流
         data.put("voltage", chargeProcessAnalysiss.get(0).getOutputVoltage()); // 电压
         data.put("temperature", chargeProcessAnalysiss.get(0).getGunLineTem()); // 枪线温度
+        //data.put("energy",chargeProcessAnalysiss.get(0).get());
         context.setResponseEntity(ResultVo.createResponseEntity(data));
     }
 }

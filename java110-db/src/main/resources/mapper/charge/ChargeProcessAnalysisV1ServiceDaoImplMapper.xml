@@ -136,9 +136,7 @@
         <if test="soc !=null and soc != ''">
             , t.soc= #{soc}
         </if>
-        <if test="cpaId !=null and cpaId != ''">
-            , t.cpa_id= #{cpaId}
-        </if>
+
         <if test="remark !=null and remark != ''">
             , t.remark= #{remark}
         </if>
@@ -178,9 +176,6 @@
         <if test="rechargeAmount !=null and rechargeAmount != ''">
             , t.recharge_amount= #{rechargeAmount}
         </if>
-        <if test="createTime !=null and createTime != ''">
-            , t.create_time= #{createTime}
-        </if>
         <if test="gunCode !=null and gunCode != ''">
             , t.gun_code= #{gunCode}
         </if>
@@ -191,6 +186,9 @@
             , t.status= #{status}
         </if>
         where 1=1
+        <if test="cpaId !=null and cpaId != ''">
+            and t.cpa_id= #{cpaId}
+        </if>
     </update>
 
     <!-- 查询充电过程数据分析数量 add by wuxw 2018-07-03 -->
