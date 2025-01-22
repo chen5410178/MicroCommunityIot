@@ -13,6 +13,7 @@ import com.java110.dto.chargeProcessAnalysis.ChargeProcessAnalysisDto;
 import com.java110.intf.charge.IChargeProcessAnalysisV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class QueryCarChargeProcessCmd extends Cmd {
         ChargeProcessAnalysisDto chargeProcessAnalysisDto = new ChargeProcessAnalysisDto();
         chargeProcessAnalysisDto.setOrderId(reqJson.getString("orderId"));
         List<ChargeProcessAnalysisDto> chargeProcessAnalysiss = chargeProcessAnalysisV1InnerServiceSMOImpl.queryChargeProcessAnalysiss(chargeProcessAnalysisDto);
-        if(ListUtil.isNull(chargeProcessAnalysiss)){
+        if (ListUtil.isNull(chargeProcessAnalysiss)) {
             throw new CmdException("未查询到上报数据");
         }
         JSONObject data = new JSONObject();
@@ -66,7 +67,11 @@ public class QueryCarChargeProcessCmd extends Cmd {
         data.put("electric", chargeProcessAnalysiss.get(0).getOutputCurrent()); // 电流
         data.put("voltage", chargeProcessAnalysiss.get(0).getOutputVoltage()); // 电压
         data.put("temperature", chargeProcessAnalysiss.get(0).getGunLineTem()); // 枪线温度
-        //data.put("energy",chargeProcessAnalysiss.get(0).get());
+
+        BigDecimal volDec = new BigDecimal(chargeProcessAnalysiss.get(0).getOutputVoltage());
+        volDec = volDec.multiply(new BigDecimal(chargeProcessAnalysiss.get(0).getOutputCurrent()))
+                .divide(new BigDecimal("1000"), 2, BigDecimal.ROUND_HALF_UP);
+        data.put("energy", volDec.doubleValue() + "");
         context.setResponseEntity(ResultVo.createResponseEntity(data));
     }
 }
