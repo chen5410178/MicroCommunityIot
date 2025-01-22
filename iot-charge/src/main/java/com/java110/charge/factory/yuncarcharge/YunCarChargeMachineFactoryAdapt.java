@@ -403,7 +403,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         }
         ChargeMachineDto tmpChargeMachineDto = new ChargeMachineDto();
         tmpChargeMachineDto.setMachineCode(machineCode);
-        List<ChargeMachineDto> chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(chargeMachineDto);
+        List<ChargeMachineDto> chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(tmpChargeMachineDto);
 
         if (ListUtil.isNull(chargeMachineDtos)) {
             throw new CmdException("充电桩不存在");
