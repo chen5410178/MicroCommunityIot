@@ -34,4 +34,8 @@ CREATE TABLE `monitor_collect` (
   PRIMARY KEY (`collect_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
-
+### 2025-01-23 充电桩支持国家新标准537号
+```sql
+alter table charge_rule_fee add COLUMN `service_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '服务单价';
+alter table charge_machine_order add COLUMN `service_price` decimal(10,2)  DEFAULT '0.00' COMMENT '服务费';
+```

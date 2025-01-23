@@ -220,11 +220,11 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         notifyChargeOrderDto.setPortCode(chargeMachinePortDto.getPortCode());
         notifyChargeOrderDto.setBodyParam("");
         notifyChargeOrderDto.setReason("停止成功");
-        Date startTime = DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime());//开始时间
-        Date endTime = new Date();//本次结束时间
-        double differenceInMillis = (endTime.getTime() - startTime.getTime()) / ( 60 * 1000.00);
-        double lastPower = Double.parseDouble(chargeMachineOrderDtos.get(0).getEnergy())/differenceInMillis;
-        notifyChargeOrderDto.setEnergy(lastPower+ "");
+//        Date startTime = DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime());//开始时间
+//        Date endTime = new Date();//本次结束时间
+//        double differenceInMillis = (endTime.getTime() - startTime.getTime()) / ( 60 * 1000.00);
+//        double lastPower = Double.parseDouble(chargeMachineOrderDtos.get(0).getEnergy())/differenceInMillis;
+        notifyChargeOrderDto.setEnergy(chargeMachineOrderDtos.get(0).getEnergy());
         notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);
     }
 
@@ -490,11 +490,8 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
             throw new CmdException("订单不存在");
         }
 
-        Date nowTime = DateUtil.getCurrentDate();
-        double tHours = (nowTime.getTime() - DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime()).getTime()) / (60 * 60 * 1000 * 1.00);
         DecimalFormat decimalFormat = new DecimalFormat("#.###");
-        String diffInHoursStr = decimalFormat.format(tHours);
-        double lastPower = Double.parseDouble(chargeMachineOrderDtos.get(0).getEnergy())*Double.parseDouble(diffInHoursStr);
+        double lastPower = Double.parseDouble(chargeMachineOrderDtos.get(0).getEnergy());
 
         String remark = resultMap.containsKey(reason + "") ? resultMap.get(reason + "") : "未知原因";
 

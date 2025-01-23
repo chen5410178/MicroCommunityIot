@@ -45,6 +45,7 @@ public class ChargeMachineOrderPo implements Serializable {
     private String energy;
 
     private String durationPrice;
+    private String servicePrice;
 
     public String getAmount() {
         return amount;
@@ -180,5 +181,13 @@ public class ChargeMachineOrderPo implements Serializable {
 
     public void setDurationPrice(String durationPrice) {
         this.durationPrice = durationPrice;
+    }
+
+    public String getServicePrice() {
+        return servicePrice;
+    }
+
+    public void setServicePrice(String servicePrice) {
+        this.servicePrice = servicePrice;
     }
 }

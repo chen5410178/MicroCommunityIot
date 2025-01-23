@@ -126,24 +126,30 @@ public class StartChargeCmd extends Cmd {
         chargeMachineDto.setChargeType(chargeMachineDtos.get(0).getChargeType());
         List<ChargeRuleFeeDto> chargeRuleFeeDtos = chargeRuleFeeV1InnerServiceSMOImpl.queryChargeRuleFees(chargeRuleFeeDto);
 
-        if (chargeRuleFeeDtos == null || chargeRuleFeeDtos.size() < 1) {
+        if (ListUtil.isNull(chargeRuleFeeDtos)) {
             throw new CmdException("未设置充值收费");
         }
         //todo: 电动摩托按充电桩功率计算,电动汽车按时段收费
         double payMoney = 0;
-        if (CHARGE_TYPE_MOTORCYCLE.equals(chargeRuleFeeDtos.get(0).getChargeType())) {
-            reqJson.put("durationPrice", chargeRuleFeeDtos.get(chargeRuleFeeDtos.size() - 1).getDurationPrice());
 
-            BigDecimal payMoneyDec = new BigDecimal(Double.parseDouble(chargeRuleFeeDtos.get(chargeRuleFeeDtos.size() - 1).getDurationPrice()));
+        reqJson.put("durationPrice", chargeRuleFeeDtos.get(0).getDurationPrice());
 
-            payMoney = payMoneyDec.multiply(new BigDecimal(duration)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        }
-//        reqJson.put("durationPrice", chargeRuleFeeDtos.get(chargeRuleFeeDtos.size() - 1).getDurationPrice());
-//
-//        BigDecimal payMoneyDec = new BigDecimal(Double.parseDouble(chargeRuleFeeDtos.get(chargeRuleFeeDtos.size() - 1).getDurationPrice()));
-//
-//        double payMoney = payMoneyDec.multiply(new BigDecimal(duration)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        BigDecimal payMoneyDec = new BigDecimal(Double.parseDouble(chargeRuleFeeDtos.get(0).getDurationPrice()));
 
+        BigDecimal maxEnergyPrice = new BigDecimal(chargeRuleFeeDtos.get(0).getMaxEnergyPrice());
+        BigDecimal servicePriceDec = new BigDecimal(chargeRuleFeeDtos.get(0).getServicePrice());
+        //充电时间
+        BigDecimal durationDec = new BigDecimal(duration);
+        // 电费部分
+        BigDecimal priceDec = maxEnergyPrice.multiply(payMoneyDec).multiply(durationDec).divide(new BigDecimal("1000"),2,BigDecimal.ROUND_HALF_UP);
+
+        // 服务费部分
+        servicePriceDec = servicePriceDec.multiply(durationDec);
+        // 总费用
+        payMoney = priceDec.add(servicePriceDec).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+
+        //payMoney = payMoneyDec.multiply(new BigDecimal(duration)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        reqJson.put("payMoney",payMoney);
 
         UserDto userDto = new UserDto();
         userDto.setUserId(userId);
@@ -153,7 +159,7 @@ public class StartChargeCmd extends Cmd {
 
         boolean ifMonthCard = chargeCoreImpl.ifMonthCard(userDtos.get(0).getTel(), chargeMachinePortDtos.get(0).getCommunityId());
 
-        reqJson.put("ifMonthCard",ifMonthCard);
+        reqJson.put("ifMonthCard", ifMonthCard);
 
         //todo 如果是 月卡充值 ，后面不做校验  暂时只有电动摩托有月卡
         if (ifMonthCard && CHARGE_TYPE_MOTORCYCLE.equals(chargeRuleFeeDtos.get(0).getChargeType())) {
@@ -407,12 +413,8 @@ public class StartChargeCmd extends Cmd {
         if (ListUtil.isNull(accountDtos)) {
             throw new CmdException("账户不存在");
         }
-
-        double amount = 0.0;
-        BigDecimal durationPrice = new BigDecimal(Double.parseDouble(reqJson.getString("durationPrice")));
-
-        durationPrice = durationPrice.multiply(new BigDecimal(durationHours)).setScale(2, BigDecimal.ROUND_HALF_UP);
-        amount = durationPrice.doubleValue();
+        // 校验的时候已经算过并且写到 reqJson中了
+        double amount = reqJson.getDoubleValue("payMoney");
 
 
         AccountDetailPo accountDetailPo = new AccountDetailPo();

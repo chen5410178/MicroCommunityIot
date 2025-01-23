@@ -236,12 +236,12 @@ public class ChargeCoreImpl implements IChargeCore {
         double usedHours = Math.ceil((calendar.getTime().getTime() - startTime.getTime()) / (60 * 60 * 1000.00));
         // 计算平均功率
         String power = energy;
-        if (usedHours <= 0) {
-            usedHours = 0;
-        } else if ("1".equals(notifyChargeOrderDto.getEnergyFlag())) { // todo 说明传进来的是电量
-            BigDecimal powerDec = new BigDecimal(Double.parseDouble(energy)).divide(new BigDecimal(usedHours), 2, BigDecimal.ROUND_HALF_UP);
-            power = powerDec.doubleValue() + "";
-        }
+//        if (usedHours <= 0) {
+//            usedHours = 0;
+//        } else if ("1".equals(notifyChargeOrderDto.getEnergyFlag())) { // todo 说明传进来的是电量
+//            BigDecimal powerDec = new BigDecimal(Double.parseDouble(energy)).divide(new BigDecimal(usedHours), 2, BigDecimal.ROUND_HALF_UP);
+//            power = powerDec.doubleValue() + "";
+//        }
         //适配器给功率，不要给电量 如果给电量的话 页面上显示的是电量 这样 导致 客户搞不清楚
 //        else {
 //            BigDecimal powerDec = new BigDecimal(Double.parseDouble(energy)).divide(new BigDecimal(usedHours), 2, BigDecimal.ROUND_HALF_UP);
@@ -260,26 +260,28 @@ public class ChargeCoreImpl implements IChargeCore {
         ChargeRuleFeeDto chargeRuleFeeDto = new ChargeRuleFeeDto();
         chargeRuleFeeDto.setRuleId(chargeMachineDto.getRuleId());
         chargeRuleFeeDto.setCommunityId(chargeMachineDto.getCommunityId());
-        chargeRuleFeeDto.setEnergy(power);
         List<ChargeRuleFeeDto> chargeRuleFeeDtos = chargeRuleFeeV1InnerServiceSMOImpl.queryChargeRuleFees(chargeRuleFeeDto);
 
-        if (chargeRuleFeeDtos == null || chargeRuleFeeDtos.size() < 1) {
-            chargeRuleFeeDto = new ChargeRuleFeeDto();
-            chargeRuleFeeDto.setRuleId(chargeMachineDto.getRuleId());
-            chargeRuleFeeDto.setCommunityId(chargeMachineDto.getCommunityId());
-            chargeRuleFeeDtos = chargeRuleFeeV1InnerServiceSMOImpl.queryChargeRuleFees(chargeRuleFeeDto);
-
-        }
-
-        if (chargeRuleFeeDtos == null || chargeRuleFeeDtos.size() < 1) {
+        if (ListUtil.isNull(chargeRuleFeeDtos)) {
             throw new CmdException("未找到收费规则");
         }
 
-        String durationPrice = chargeRuleFeeDtos.get(chargeRuleFeeDtos.size() - 1).getDurationPrice();
+        // 电价
+        BigDecimal durationPriceDec = new BigDecimal(Double.parseDouble(chargeRuleFeeDtos.get(0).getDurationPrice()));
+        // 电量
+        BigDecimal energyDec = new BigDecimal(energy);
+        BigDecimal servicePriceDec = new BigDecimal(chargeRuleFeeDtos.get(0).getServicePrice());
+        //充电时间
+        BigDecimal usedHoursDec = new BigDecimal(usedHours);
+        // 电费部分 电量 * 单价
+        BigDecimal priceDec = energyDec.multiply(durationPriceDec).setScale(2,BigDecimal.ROUND_HALF_UP);
 
-        BigDecimal usedHoursDec = new BigDecimal(usedHours).multiply(new BigDecimal(Double.parseDouble(durationPrice))).setScale(2, BigDecimal.ROUND_HALF_UP);
+        // 服务费部分
+        servicePriceDec = servicePriceDec.multiply(usedHoursDec);
+        // 总费用
+        BigDecimal useMoneyDec = priceDec.add(servicePriceDec).setScale(2,BigDecimal.ROUND_HALF_UP);
 
-        BigDecimal returnMoneyDec = new BigDecimal(Double.parseDouble(chargeMachineOrderDtos.get(0).getAmount())).subtract(usedHoursDec);
+        BigDecimal returnMoneyDec = new BigDecimal(Double.parseDouble(chargeMachineOrderDtos.get(0).getAmount())).subtract(useMoneyDec);
 
         double returnMoney = returnMoneyDec.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
@@ -288,11 +290,11 @@ public class ChargeCoreImpl implements IChargeCore {
         chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
         chargeMachineOrderPo.setRemark(remark);
         chargeMachineOrderPo.setState(ChargeMachineOrderDto.STATE_FINISH);
-        BigDecimal amount = new BigDecimal(Double.parseDouble(chargeMachineOrderDtos.get(0).getAmount())).subtract(new BigDecimal(returnMoney)).setScale(2, BigDecimal.ROUND_HALF_UP);
-        chargeMachineOrderPo.setAmount(amount.doubleValue() + "");
+        chargeMachineOrderPo.setAmount(useMoneyDec.doubleValue() + "");
         chargeMachineOrderPo.setEndTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         chargeMachineOrderPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
-        chargeMachineOrderPo.setDurationPrice(durationPrice);
+        chargeMachineOrderPo.setDurationPrice(priceDec.doubleValue()+"");
+        chargeMachineOrderPo.setServicePrice(servicePriceDec.doubleValue()+"");
         chargeMachineOrderPo.setEnergy(energy);
 
         int flag = chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
@@ -344,7 +346,7 @@ public class ChargeCoreImpl implements IChargeCore {
         }
         chargeMachineOrderAcctPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
         //chargeMachineOrderAcctPo.setEnergy("0");
-        chargeMachineOrderAcctPo.setDurationPrice(durationPrice);
+        chargeMachineOrderAcctPo.setDurationPrice(useMoneyDec.doubleValue()+"");
 
         chargeMachineOrderAcctV1InnerServiceSMOImpl.saveChargeMachineOrderAcct(chargeMachineOrderAcctPo);
     }

@@ -426,14 +426,14 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         Date nowTime = DateUtil.getCurrentDate();
         //支付完成超过15分钟
 
-       double tHours = (nowTime.getTime() - DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime()).getTime()) / (60 * 60 * 1000 * 1.00);
+        //double tHours = (nowTime.getTime() - DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime()).getTime()) / (60 * 60 * 1000 * 1.00);
 
-        int w = 0;
-        if(tHours <= 0){
-            w = e;
-        }else{
-            w = new Double(Math.ceil(e/tHours)).intValue();
-        }
+//        int w = 0;
+//        if(tHours <= 0){
+//            w = e;
+//        }else{
+//            w = new Double(Math.ceil(e/tHours)).intValue();
+//        }
 
         String remark = resultMap.containsKey(reason + "") ? resultMap.get(reason + "") : "未知原因";
 
@@ -444,7 +444,7 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         notifyChargeOrderDto.setPortCode(port + "");
         notifyChargeOrderDto.setBodyParam("");
         notifyChargeOrderDto.setReason(remark);
-        notifyChargeOrderDto.setEnergy(w + "");
+        notifyChargeOrderDto.setEnergy(e + "");
 
 
         notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);

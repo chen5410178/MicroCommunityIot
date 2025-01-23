@@ -20,6 +20,8 @@ public class ChargeRuleFeeDto extends PageDto implements Serializable {
 
     private String maxEnergyPrice;
     private String durationPrice;
+
+    private String servicePrice;
     private String crfId;
     private String remark;
     private String ruleId;
@@ -148,5 +150,13 @@ public class ChargeRuleFeeDto extends PageDto implements Serializable {
 
     public void setRuleName(String ruleName) {
         this.ruleName = ruleName;
+    }
+
+    public String getServicePrice() {
+        return servicePrice;
+    }
+
+    public void setServicePrice(String servicePrice) {
+        this.servicePrice = servicePrice;
     }
 }

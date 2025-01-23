@@ -8,9 +8,9 @@
     <!-- 保存充电价格信息 add by wuxw 2018-07-03 -->
     <insert id="saveChargeRuleFeeInfo" parameterType="Map">
         insert into charge_rule_fee(
-        max_energy_price,duration_price,crf_id,remark,rule_id,min_energy_price,community_id,charge_type,start_time,end_time
+        max_energy_price,duration_price,crf_id,remark,rule_id,min_energy_price,community_id,charge_type,start_time,end_time,service_price
         ) values (
-        #{maxEnergyPrice},#{durationPrice},#{crfId},#{remark},#{ruleId},#{minEnergyPrice},#{communityId},#{chargeType},#{startTime},#{endTime}
+        #{maxEnergyPrice},#{durationPrice},#{crfId},#{remark},#{ruleId},#{minEnergyPrice},#{communityId},#{chargeType},#{startTime},#{endTime},#{servicePrice}
         )
     </insert>
 
@@ -20,8 +20,8 @@
         select t.max_energy_price,t.max_energy_price maxEnergyPrice,t.duration_price,t.duration_price
         durationPrice,t.crf_id,t.crf_id crfId,t.remark,t.status_cd,t.status_cd statusCd,t.rule_id,t.rule_id
         ruleId,t.min_energy_price,t.min_energy_price minEnergyPrice,t.community_id,t.community_id communityId,
-        t.charge_type,t.charge_type chargeType,t.start_time,t.start_time startTime,t.end_time,t.end_time endTime,
-        cr.rule_name ruleName
+        t.charge_type,cr.charge_type chargeType,t.start_time,t.start_time startTime,t.end_time,t.end_time endTime,
+        cr.rule_name ruleName,t.service_price servicePrice
         from charge_rule_fee t
         left join charge_rule cr on t.rule_id = cr.rule_id and cr.status_cd = '0'
         where 1 =1
@@ -76,6 +76,9 @@
         </if>
         <if test="durationPrice !=null and durationPrice != ''">
             , t.duration_price= #{durationPrice}
+        </if>
+        <if test="servicePrice !=null and servicePrice != ''">
+            , t.service_price= #{servicePrice}
         </if>
         <if test="remark !=null and remark != ''">
             , t.remark= #{remark}

@@ -9,33 +9,27 @@
             addChargeRuleFeeInfo: {
                 crfId: '',
                 ruleId: '',
-                minEnergyPrice: '',
+                minEnergyPrice: '0',
                 maxEnergyPrice: '',
                 durationPrice: '',
                 remark: '',
                 chargeType: '',
                 startTime: '',
-                endTime: ''
+                endTime: '',
+                servicePrice:'',
             }
         },
         _initMethod: function () {
             vc.initHourMinute('addStartTime', function (_value) {
-                vc.component.addChargeRuleFeeInfo.startTime = _value;
+                $that.addChargeRuleFeeInfo.startTime = _value;
             });
             vc.initHourMinute('addEndTime', function (_value) {
-                vc.component.addChargeRuleFeeInfo.endTime = _value;
+                $that.addChargeRuleFeeInfo.endTime = _value;
             });
         },
         _initEvent: function () {
             vc.on('addChargeRuleFee', 'openAddChargeRuleFeeModal', function (_param) {
                 vc.copyObject(_param,$that.addChargeRuleFeeInfo);
-                if ($that.addChargeRuleFeeInfo.chargeType !== '1002') {
-                    document.querySelectorAll('.addTime')[0].setAttribute('style', "display:none");
-                } else {
-                    document.querySelectorAll('.addTime')[0].removeAttribute('style');
-                    $that.addChargeRuleFeeInfo.minEnergyPrice = null;
-                    $that.addChargeRuleFeeInfo.maxEnergyPrice = null;
-                }
                 $('#addChargeRuleFeeModel').modal('show');
             });
         },
@@ -43,7 +37,7 @@
             addChargeRuleFeeValidate() {
                 if ($that.addChargeRuleFeeInfo.chargeType === '1001') {
                     return vc.validate.validate({
-                        addChargeRuleFeeInfo: vc.component.addChargeRuleFeeInfo
+                        addChargeRuleFeeInfo: $that.addChargeRuleFeeInfo
                     }, {
                         'addChargeRuleFeeInfo.chargeType': [
                             {
@@ -110,7 +104,7 @@
                     });
                 } else if ($that.addChargeRuleFeeInfo.chargeType === '1002') {
                     return vc.validate.validate({
-                        addChargeRuleFeeInfo: vc.component.addChargeRuleFeeInfo
+                        addChargeRuleFeeInfo: $that.addChargeRuleFeeInfo
                     }, {
                         'addChargeRuleFeeInfo.chargeType': [
                             {
@@ -169,17 +163,17 @@
 
             },
             saveChargeRuleFeeInfo: function () {
-                if (!vc.component.addChargeRuleFeeValidate()) {
+                if (!$that.addChargeRuleFeeValidate()) {
                     vc.toast(vc.validate.errInfo);
 
                     return;
                 }
 
-                vc.component.addChargeRuleFeeInfo.communityId = vc.getCurrentCommunity().communityId;
+                $that.addChargeRuleFeeInfo.communityId = vc.getCurrentCommunity().communityId;
           
                 vc.http.apiPost(
                     '/chargeRule.saveChargeRuleFee',
-                    JSON.stringify(vc.component.addChargeRuleFeeInfo),
+                    JSON.stringify($that.addChargeRuleFeeInfo),
                     {
                         emulateJSON: true
                     },
@@ -189,31 +183,28 @@
                         if (_json.code == 0) {
                             //关闭model
                             $('#addChargeRuleFeeModel').modal('hide');
-                            vc.component.clearAddChargeRuleFeeInfo();
+                            $that.clearAddChargeRuleFeeInfo();
                             vc.emit('chargeRuleFee', 'listChargeRuleFee', {});
-
                             return;
                         }
-                        vc.message(_json.msg);
-
+                        vc.toast(_json.msg);
                     },
                     function (errInfo, error) {
                         console.log('请求失败处理');
-
-                        vc.message(errInfo);
-
+                        vc.toast(errInfo);
                     });
             },
             clearAddChargeRuleFeeInfo: function () {
-                vc.component.addChargeRuleFeeInfo = {
+                $that.addChargeRuleFeeInfo = {
                     ruleId: '',
-                    minEnergyPrice: '',
+                    minEnergyPrice: '0',
                     maxEnergyPrice: '',
                     durationPrice: '',
                     remark: '',
                     chargeType: '',
                     startTime: '',
-                    endTime: ''
+                    endTime: '',
+                    servicePrice:''
                 };
             }
         }

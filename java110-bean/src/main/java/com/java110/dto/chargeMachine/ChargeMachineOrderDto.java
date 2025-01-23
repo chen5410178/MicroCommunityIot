@@ -59,6 +59,13 @@ public class ChargeMachineOrderDto extends PageDto implements Serializable {
 
     private String queryEndTime;
 
+    private String servicePrice;
+
+    private String dPrice;
+
+    private String sPrice;
+
+
 
     public String getAmount() {
         return amount;
@@ -275,5 +282,29 @@ public class ChargeMachineOrderDto extends PageDto implements Serializable {
 
     public void setQueryEndTime(String queryEndTime) {
         this.queryEndTime = queryEndTime;
+    }
+
+    public String getServicePrice() {
+        return servicePrice;
+    }
+
+    public void setServicePrice(String servicePrice) {
+        this.servicePrice = servicePrice;
+    }
+
+    public String getdPrice() {
+        return dPrice;
+    }
+
+    public void setdPrice(String dPrice) {
+        this.dPrice = dPrice;
+    }
+
+    public String getsPrice() {
+        return sPrice;
+    }
+
+    public void setsPrice(String sPrice) {
+        this.sPrice = sPrice;
     }
 }

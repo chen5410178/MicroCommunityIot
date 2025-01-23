@@ -10,11 +10,14 @@
 		</view>
 		
 		<view class="suc-b">
-			<view class="suc-b-1">收费规则: 按时间收费(最小1小时);</view>
+			<view class="suc-b-1">收费规则: </view>
+			<view class="suc-b-2"  >电费*电量+服务费*时间收费(最小1小时);</view>
 			<view class="suc-b-1">充电价格: </view>
-			<view class="suc-b-2" v-for="(item,index) in fees" :key="index">
-				{{index+1}}、{{item.minEnergyPrice}}~{{item.maxEnergyPrice}}功率,{{item.durationPrice}}元/小时;
-			</view>
+			<view class="suc-b-2"  >1、电费：{{fee.durationPrice}}元/度;</view>
+			<view class="suc-b-2"  >2、服务费：{{fee.servicePrice}}元/度;</view>
+			<view class="suc-b-1">算费流程: </view>
+			<view class="suc-b-2"  >1、开启充电时按充电桩最大功率电量服务费扣款;</view>
+			<view class="suc-b-2"  >2、结算时根据收费规则结算后退款;</view>
 			<view class="suc-b-1 margin-top">规则说明:</view>
 			<view class="suc-b-2">1、充电时间不满1小时按1小时结算;</view>
 			<view class="suc-b-2">2、充电自满最长充电时间为10小时;</view>
@@ -47,7 +50,7 @@
 				machineName: '',
 				durationPrice: '',
 				couponIds:'',
-				fees:[]
+				fee:{}
 			}
 		},
 		
@@ -72,7 +75,7 @@
 					_that.machineCode = _data.data[0].machineCode;
 					_that.machineName = _data.data[0].machineName;
 					_that.durationPrice = _data.data[0].durationPrice;
-					_that.fees = _data.data[0].fees;
+					_that.fee = _data.data[0].fees[0];
 				})
 			},
 			_toChargeConfirm:function(){
@@ -128,10 +131,12 @@
 			font-size: 30upx;
 			color: #000;
 			font-weight: 400;
-			margin-bottom: 30upx;
+			margin-bottom:10upx;
+			margin-top:30upx;
 		}
 		.suc-b-2{
 			margin-bottom: 10upx;
+			margin-left: 20upx;
 		}
 	}
 </style>

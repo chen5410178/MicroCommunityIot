@@ -67,9 +67,9 @@ public class ChargeRuleFeeV1ServiceDaoImpl extends BaseServiceDao implements ICh
     public List<Map> getChargeRuleFeeInfo(Map info) throws DAOException {
         logger.debug("查询 getChargeRuleFeeInfo 入参 info : {}",info);
 
-        List<Map> businessChargeRuleFeeInfos = sqlSessionTemplate.selectList("chargeRuleFeeV1ServiceDaoImpl.getChargeRuleFeeInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("chargeRuleFeeV1ServiceDaoImpl.getChargeRuleFeeInfo",info);
 
-        return businessChargeRuleFeeInfos;
+        return infos;
     }
 
 
@@ -96,12 +96,12 @@ public class ChargeRuleFeeV1ServiceDaoImpl extends BaseServiceDao implements ICh
     public int queryChargeRuleFeesCount(Map info) {
         logger.debug("查询 queryChargeRuleFeesCount 入参 info : {}",info);
 
-        List<Map> businessChargeRuleFeeInfos = sqlSessionTemplate.selectList("chargeRuleFeeV1ServiceDaoImpl.queryChargeRuleFeesCount", info);
-        if (businessChargeRuleFeeInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("chargeRuleFeeV1ServiceDaoImpl.queryChargeRuleFeesCount", info);
+        if (infos.size() < 1) {
             return 0;
         }
 
-        return Integer.parseInt(businessChargeRuleFeeInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
 

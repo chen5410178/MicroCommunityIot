@@ -44,10 +44,34 @@
 				</view>
 				<view class="cu-item ">
 					<view class="content">
-						<text class="text-grey">计费模式</text>
+						<text class="text-grey">电费单价</text>
 					</view>
 					<view class="action">
-						{{durationPrice || 0}}元/小时
+						{{fee.durationPrice || 0}}元/度
+					</view>
+				</view>
+				<view class="cu-item ">
+					<view class="content">
+						<text class="text-grey">服务费单价</text>
+					</view>
+					<view class="action">
+						{{fee.servicePrice || 0}}元/小时
+					</view>
+				</view>
+				<view class="cu-item ">
+					<view class="content">
+						<text class="text-grey">电费</text>
+					</view>
+					<view class="action">
+						{{durationPrice || 0}}元/度
+					</view>
+				</view>
+				<view class="cu-item ">
+					<view class="content">
+						<text class="text-grey">服务费</text>
+					</view>
+					<view class="action">
+						{{servicePrice || 0}}元/小时
 					</view>
 				</view>
 				<view class="cu-item ">
@@ -89,8 +113,10 @@
 				machineName:'',
 				portName: '',
 				durationPrice: '',
+				servicePrice:'',
 				state: '',
-				stateName: ''
+				stateName: '',
+				fee:{}
 			}
 		},
 		onLoad(options) {
@@ -123,8 +149,22 @@
 					_that.machineName= _data[0].machineName;
 					
 					_that.durationPrice= _data[0].durationPrice;
+					_that.servicePrice= _data[0].servicePrice;
 					_that.state= _data[0].state;
 					_that.stateName= _data[0].stateName;
+					_that._loadChargeMachines();
+				})
+			},
+			_loadChargeMachines: function() {
+				let _that = this;
+				getChargeMachines({
+					page: 1,
+					row: 1,
+					machineId: this.machineId,
+					communityId: this.communityId
+				}).then(_data => {
+					//_that.machines = _data.data;
+					_that.fee = _data.data[0].fees[0];
 				})
 			},
 			_stopCharge: function() {

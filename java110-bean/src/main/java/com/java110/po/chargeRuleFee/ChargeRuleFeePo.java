@@ -29,32 +29,40 @@ import java.sql.Time;
 public class ChargeRuleFeePo implements Serializable {
 
     private String maxEnergyPrice;
-private String durationPrice;
-private String crfId;
-private String remark;
-private String statusCd = "0";
-private String ruleId;
-private String minEnergyPrice;
-private String communityId;
-private String chargeType;
-private Time startTime;
-private Time endTime;
+    private String durationPrice;
+
+    private String servicePrice;
+
+    private String crfId;
+    private String remark;
+    private String statusCd = "0";
+    private String ruleId;
+    private String minEnergyPrice;
+    private String communityId;
+    private String chargeType;
+    private Time startTime;
+    private Time endTime;
 
     public String getChargeType() {
         return chargeType;
     }
+
     public void setChargeType(String chargeType) {
         this.chargeType = chargeType;
     }
+
     public Time getStartTime() {
         return startTime;
     }
+
     public void setStartTime(Time startTime) {
         this.startTime = startTime;
     }
+
     public Time getEndTime() {
         return endTime;
     }
+
     public void setEndTime(Time endTime) {
         this.endTime = endTime;
     }
@@ -62,52 +70,72 @@ private Time endTime;
     public String getMaxEnergyPrice() {
         return maxEnergyPrice;
     }
-public void setMaxEnergyPrice(String maxEnergyPrice) {
+
+    public void setMaxEnergyPrice(String maxEnergyPrice) {
         this.maxEnergyPrice = maxEnergyPrice;
     }
-public String getDurationPrice() {
+
+    public String getDurationPrice() {
         return durationPrice;
     }
-public void setDurationPrice(String durationPrice) {
+
+    public void setDurationPrice(String durationPrice) {
         this.durationPrice = durationPrice;
     }
-public String getCrfId() {
+
+    public String getCrfId() {
         return crfId;
     }
-public void setCrfId(String crfId) {
+
+    public void setCrfId(String crfId) {
         this.crfId = crfId;
     }
-public String getRemark() {
+
+    public String getRemark() {
         return remark;
     }
-public void setRemark(String remark) {
+
+    public void setRemark(String remark) {
         this.remark = remark;
     }
-public String getStatusCd() {
+
+    public String getStatusCd() {
         return statusCd;
     }
-public void setStatusCd(String statusCd) {
+
+    public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
     }
-public String getRuleId() {
+
+    public String getRuleId() {
         return ruleId;
     }
-public void setRuleId(String ruleId) {
+
+    public void setRuleId(String ruleId) {
         this.ruleId = ruleId;
     }
-public String getMinEnergyPrice() {
+
+    public String getMinEnergyPrice() {
         return minEnergyPrice;
     }
-public void setMinEnergyPrice(String minEnergyPrice) {
+
+    public void setMinEnergyPrice(String minEnergyPrice) {
         this.minEnergyPrice = minEnergyPrice;
     }
-public String getCommunityId() {
+
+    public String getCommunityId() {
         return communityId;
     }
-public void setCommunityId(String communityId) {
+
+    public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
 
+    public String getServicePrice() {
+        return servicePrice;
+    }
 
-
+    public void setServicePrice(String servicePrice) {
+        this.servicePrice = servicePrice;
+    }
 }
