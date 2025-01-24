@@ -67,9 +67,9 @@ public class ParkingCouponCarOrderV1ServiceDaoImpl extends BaseServiceDao implem
     public List<Map> getParkingCouponCarOrderInfo(Map info) throws DAOException {
         logger.debug("查询 getParkingCouponCarOrderInfo 入参 info : {}",info);
 
-        List<Map> businessParkingCouponCarOrderInfos = sqlSessionTemplate.selectList("parkingCouponCarOrderV1ServiceDaoImpl.getParkingCouponCarOrderInfo",info);
+        List<Map> infos = sqlSessionTemplate.selectList("parkingCouponCarOrderV1ServiceDaoImpl.getParkingCouponCarOrderInfo",info);
 
-        return businessParkingCouponCarOrderInfos;
+        return infos;
     }
 
 
@@ -96,12 +96,12 @@ public class ParkingCouponCarOrderV1ServiceDaoImpl extends BaseServiceDao implem
     public int queryParkingCouponCarOrdersCount(Map info) {
         logger.debug("查询 queryParkingCouponCarOrdersCount 入参 info : {}",info);
 
-        List<Map> businessParkingCouponCarOrderInfos = sqlSessionTemplate.selectList("parkingCouponCarOrderV1ServiceDaoImpl.queryParkingCouponCarOrdersCount", info);
-        if (businessParkingCouponCarOrderInfos.size() < 1) {
+        List<Map> infos = sqlSessionTemplate.selectList("parkingCouponCarOrderV1ServiceDaoImpl.queryParkingCouponCarOrdersCount", info);
+        if (infos.size() < 1) {
             return 0;
         }
 
-        return Integer.parseInt(businessParkingCouponCarOrderInfos.get(0).get("count").toString());
+        return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
 

@@ -2,14 +2,17 @@ package com.java110.barrier.engine.inout;
 
 import com.java110.bean.dto.car.OwnerCarDto;
 import com.java110.bean.dto.coupon.ParkingCouponCarDto;
+import com.java110.bean.po.coupon.ParkingCouponCarOrderPo;
 import com.java110.bean.po.coupon.ParkingCouponCarPo;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.DateUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.parking.CarDayDto;
 import com.java110.dto.parking.ParkingAreaDto;
 import com.java110.intf.barrier.ICarInoutV1InnerServiceSMO;
+import com.java110.intf.car.IParkingCouponCarOrderV1InnerServiceSMO;
 import com.java110.intf.car.IParkingCouponCarV1InnerServiceSMO;
 import com.java110.po.carInout.CarInoutPo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +28,10 @@ public class CarOutLogEngine extends CarEngine{
     private ICarInoutV1InnerServiceSMO carInoutServiceImpl;
 
     @Autowired
-    private IParkingCouponCarV1InnerServiceSMO parkingCouponCarServiceImpl;
+    private IParkingCouponCarV1InnerServiceSMO parkingCouponCarV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IParkingCouponCarOrderV1InnerServiceSMO parkingCouponCarOrderV1InnerServiceSMOImpl;
 
     @Autowired
     private JudgeOwnerCarEngine judgeOwnerCarEngine;
@@ -107,7 +113,7 @@ public class CarOutLogEngine extends CarEngine{
             }
         }
 
-        if(parkingCouponCarDtos == null || parkingCouponCarDtos.isEmpty()){
+        if(ListUtil.isNull(parkingCouponCarDtos)){
             return ;
         }
         //停车劵核销
@@ -117,7 +123,27 @@ public class CarOutLogEngine extends CarEngine{
             tmpParkingCouponCarPo.setPccId(parkingCouponCarDto.getPccId());
             tmpParkingCouponCarPo.setState(ParkingCouponCarDto.STATE_F);
             tmpParkingCouponCarPo.setRemark("车辆出场核销");
-            parkingCouponCarServiceImpl.updateParkingCouponCar(tmpParkingCouponCarPo);
+            parkingCouponCarV1InnerServiceSMOImpl.updateParkingCouponCar(tmpParkingCouponCarPo);
+
+            parkingCouponCarDto = new ParkingCouponCarDto();
+            parkingCouponCarDto.setPccId(parkingCouponCarDto.getPccId());
+            parkingCouponCarDtos = parkingCouponCarV1InnerServiceSMOImpl.queryParkingCouponCars(parkingCouponCarDto);
+            if(ListUtil.isNull(parkingCouponCarDtos)){
+                continue;
+            }
+
+            ParkingCouponCarOrderPo parkingCouponCarOrderPo = new ParkingCouponCarOrderPo();
+            parkingCouponCarOrderPo.setOrderId(GenerateCodeFactory.getGeneratorId("11"));
+            parkingCouponCarOrderPo.setCarNum(parkingCouponCarDtos.get(0).getCarNum());
+            parkingCouponCarOrderPo.setCarOutId("-1");
+            parkingCouponCarOrderPo.setCommunityId(parkingCouponCarDtos.get(0).getCommunityId());
+            parkingCouponCarOrderPo.setMachineId(machineDto.getMachineId());
+            parkingCouponCarOrderPo.setMachineName(machineDto.getMachineName());
+            parkingCouponCarOrderPo.setPaId(parkingCouponCarDtos.get(0).getPaId());
+            parkingCouponCarOrderPo.setPccId(parkingCouponCarDtos.get(0).getPccId());
+            parkingCouponCarOrderPo.setRemark("pc端支付停车劵抵扣");
+
+            parkingCouponCarOrderV1InnerServiceSMOImpl.saveParkingCouponCarOrder(parkingCouponCarOrderPo);
         }
 
 

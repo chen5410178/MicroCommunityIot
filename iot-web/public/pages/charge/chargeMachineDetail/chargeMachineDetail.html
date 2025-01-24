@@ -110,8 +110,13 @@
                     <vc:i18n name="插槽" namespace="machineDetail"></vc:i18n>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="machineDetailInfo.chargeType == '1001'">
                 <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailChargeRule'}" v-on:click="changeTab('machineDetailChargeRule')">
+                    <vc:i18n name="充电规则" namespace="machineDetail"></vc:i18n>
+                </a>
+            </li>
+            <li class="nav-item" v-if="machineDetailInfo.chargeType == '1002'">
+                <a class="nav-link" v-bind:class="{active:machineDetailInfo._currentTab == 'machineDetailChargeRulePrice'}" v-on:click="changeTab('machineDetailChargeRulePrice')">
                     <vc:i18n name="充电规则" namespace="machineDetail"></vc:i18n>
                 </a>
             </li>
@@ -142,6 +147,9 @@
     </div>
     <div v-if="machineDetailInfo._currentTab == 'machineDetailChargeRule'">
         <vc:create path="property/machineDetailChargeRule"></vc:create>
+    </div>
+    <div v-if="machineDetailInfo._currentTab == 'machineDetailChargeRulePrice' ">
+        <vc:create path="property/machineDetailChargeRulePrice"></vc:create>
     </div>
     <div v-if="machineDetailInfo._currentTab == 'machineDetailChargeOrder'">
         <vc:create path="property/machineDetailChargeOrder"></vc:create>

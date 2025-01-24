@@ -320,7 +320,7 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
 
         List<ParkingCouponCarDto> tmpParkingCouponCarDtos = new ArrayList<>();
 
-        if (parkingCouponOwnerCarDtos == null || parkingCouponOwnerCarDtos.size() < 1) {
+        if (ListUtil.isNull(parkingCouponOwnerCarDtos)) {
             carInoutDto.setParkingCouponCarDtos(tmpParkingCouponCarDtos);
             return;
         }
@@ -400,7 +400,7 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
     public double dealParkingCouponCar(double payCharge, List<ParkingCouponCarDto> parkingCouponCarDtos) {
 
 
-        if (parkingCouponCarDtos == null || parkingCouponCarDtos.size() < 1) {
+        if (ListUtil.isNull(parkingCouponCarDtos)) {
             return payCharge;
         }
 
