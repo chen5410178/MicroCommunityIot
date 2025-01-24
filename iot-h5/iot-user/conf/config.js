@@ -18,7 +18,7 @@ const baseUrl = '/';
 const baseUrl = 'http://192.168.100.108:9999/';
 // #endif
 
-let commonBaseUrl = 'http://iot.crsdt.cn/';
+let commonBaseUrl = 'http://iot.sxjly.com/';
 
 const logLevel = "DEBUG"; // 日志级别
 
