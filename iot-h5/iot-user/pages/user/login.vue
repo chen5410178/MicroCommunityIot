@@ -110,7 +110,7 @@
 						//todo 保存登录信息
 						saveUserLoginInfo(_user.userId, _user.token, _user.key);
 						let _communityId = _user.communityId;
-						let qrcodeCommunityId = uni.getStorageInfoSync('QRCODE_COMMUNITY_ID');
+						let qrcodeCommunityId = uni.getStorageSync('QRCODE_COMMUNITY_ID');
 						if(qrcodeCommunityId){
 							_communityId = qrcodeCommunityId;
 						}
