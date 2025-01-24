@@ -1,7 +1,8 @@
 <template>
 	<view class="">
 		<view class="flex justify-between mtc-machine">
-			<view>{{machineName}}({{machineCode}})</view>
+			<!--({{machineCode}})-->
+			<view>{{machineName}}</view>
 			<view>
 				<charge-car-num-vue ref="chargeCarNumRef"></charge-car-num-vue>
 			</view>
