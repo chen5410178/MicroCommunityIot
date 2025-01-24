@@ -109,9 +109,13 @@
 					.then((_user) => {
 						//todo 保存登录信息
 						saveUserLoginInfo(_user.userId, _user.token, _user.key);
-						
+						let _communityId = _user.communityId;
+						let qrcodeCommunityId = uni.getStorageInfoSync('QRCODE_COMMUNITY_ID');
+						if(qrcodeCommunityId){
+							_communityId = qrcodeCommunityId;
+						}
 						uni.navigateTo({
-							url:'/pages/user/loginInitWechat?communityId='+_user.communityId
+							url:'/pages/user/loginInitWechat?communityId='+_communityId
 						});
 					},err=>{
 						uni.showToast({

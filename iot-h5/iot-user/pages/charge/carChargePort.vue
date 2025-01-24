@@ -231,7 +231,7 @@
 			},
 			_toLogin: function() {
 				if (this.communityId) {
-					uni.setStorageSync("DEFAULT_COMMUNITY_ID", this.communityId);
+					uni.setStorageSync("QRCODE_COMMUNITY_ID", this.communityId);
 				}
 				// #ifdef H5
 				uni.setStorageSync('targetUrl', location.hash.substr(1));
