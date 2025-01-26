@@ -234,8 +234,7 @@ public class ChargeCoreImpl implements IChargeCore {
         calendar.add(Calendar.MINUTE, -2); // 这里减掉两分钟，设备反应通知平台的时间
 
         double usedHours = Math.ceil((calendar.getTime().getTime() - startTime.getTime()) / (60 * 60 * 1000.00));
-        // 计算平均功率
-        String power = energy;
+
 //        if (usedHours <= 0) {
 //            usedHours = 0;
 //        } else if ("1".equals(notifyChargeOrderDto.getEnergyFlag())) { // todo 说明传进来的是电量
@@ -274,7 +273,7 @@ public class ChargeCoreImpl implements IChargeCore {
         //充电时间
         BigDecimal usedHoursDec = new BigDecimal(usedHours);
         // 电费部分 电量 * 单价
-        BigDecimal priceDec = energyDec.multiply(durationPriceDec).setScale(2,BigDecimal.ROUND_HALF_UP);
+        BigDecimal priceDec = energyDec.multiply(durationPriceDec).divide(new BigDecimal("1000"),2,BigDecimal.ROUND_HALF_UP);
 
         // 服务费部分
         servicePriceDec = servicePriceDec.multiply(usedHoursDec);
