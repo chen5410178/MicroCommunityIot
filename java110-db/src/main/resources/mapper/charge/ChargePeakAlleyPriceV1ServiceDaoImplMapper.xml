@@ -8,10 +8,10 @@
     <!-- 保存汽车尖峰谷平电价信息 add by wuxw 2018-07-03 -->
     <insert id="saveChargePeakAlleyPriceInfo" parameterType="Map">
         insert into charge_peak_alley_price(
-service_price,price,cpa_id,remark,rule_id,type,community_id
-) values (
-#{servicePrice},#{price},#{cpaId},#{remark},#{ruleId},#{type},#{communityId}
-)
+        service_price,price,cpa_id,remark,rule_id,type,community_id
+        ) values (
+        #{servicePrice},#{price},#{cpaId},#{remark},#{ruleId},#{type},#{communityId}
+        )
     </insert>
 
 
@@ -21,7 +21,8 @@ service_price,price,cpa_id,remark,rule_id,type,community_id
         createTime,t.price,t.cpa_id,t.cpa_id cpaId,t.remark,t.status_cd,t.status_cd statusCd,t.rule_id,t.rule_id
         ruleId,t.type,td.`name` typeName,t.community_id,t.community_id communityId
         from charge_peak_alley_price t
-        left join t_dict td on td.status_cd = t.type and td.table_name = 'charge_peak_alley_price' and td.table_columns = 'type'
+        left join t_dict td on td.status_cd = t.type and td.table_name = 'charge_peak_alley_price' and td.table_columns
+        = 'type'
         where 1 =1
         <if test="servicePrice !=null and servicePrice != ''">
             and t.service_price= #{servicePrice}

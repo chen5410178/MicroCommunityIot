@@ -262,7 +262,8 @@ public class StartChargeCmd extends Cmd {
         chargeMachineOrderPo.setPersonId(userId);
         chargeMachineOrderPo.setChargeHours(reqJson.getString("duration"));
         chargeMachineOrderPo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
-        chargeMachineOrderPo.setDurationPrice(reqJson.getString("durationPrice"));
+        chargeMachineOrderPo.setDurationPrice("0");
+        chargeMachineOrderPo.setServicePrice("0");
         Calendar calendar = Calendar.getInstance();
         if (duration == 999) {
             calendar.add(Calendar.HOUR, 10);

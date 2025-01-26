@@ -22,6 +22,10 @@ public class NotifyChargeOrderDto implements Serializable {
 
     private String amount;
 
+    private String feeAmount;
+
+    private String serviceAmount;
+
 
     public String getOrderId() {
         return orderId;
@@ -93,5 +97,21 @@ public class NotifyChargeOrderDto implements Serializable {
 
     public void setEnergyFlag(String energyFlag) {
         this.energyFlag = energyFlag;
+    }
+
+    public void setFeeAmount(String feeAmount) {
+        this.feeAmount = feeAmount;
+    }
+
+    public void setServiceAmount(String serviceAmount) {
+        this.serviceAmount = serviceAmount;
+    }
+
+    public String getFeeAmount() {
+        return feeAmount;
+    }
+
+    public String getServiceAmount() {
+        return serviceAmount;
     }
 }

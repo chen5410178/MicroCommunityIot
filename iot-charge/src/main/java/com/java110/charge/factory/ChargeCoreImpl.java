@@ -145,6 +145,8 @@ public class ChargeCoreImpl implements IChargeCore {
                                      String remark,
                                      String amount,
                                      String energy,
+                                     String feeAmount,
+                                     String serviceAmount,
                                      List<ChargeMachineOrderDto> chargeMachineOrderDtos) {
         ChargeRulePriceDto chargeRulePriceDto = new ChargeRulePriceDto();
         chargeRulePriceDto.setRuleId(chargeMachineDto.getRuleId());
@@ -165,7 +167,8 @@ public class ChargeCoreImpl implements IChargeCore {
         chargeMachineOrderPo.setAmount(amount);
         chargeMachineOrderPo.setEndTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         chargeMachineOrderPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
-        chargeMachineOrderPo.setDurationPrice("1");
+        chargeMachineOrderPo.setDurationPrice(feeAmount);
+        chargeMachineOrderPo.setServicePrice(serviceAmount);
 
         int flag = chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
         if (flag < 1) {
@@ -685,7 +688,11 @@ public class ChargeCoreImpl implements IChargeCore {
             }
             returnOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto, chargeMachineOrderDtos);
         } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDtos.get(0).getChargeType())) {
-            returnCarOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getAmount(), notifyChargeOrderDto.getEnergy(), chargeMachineOrderDtos);
+            returnCarOrderMoney(chargeMachineDtos.get(0), notifyChargeOrderDto.getReason(), notifyChargeOrderDto.getAmount(),
+                    notifyChargeOrderDto.getEnergy(),
+                    notifyChargeOrderDto.getFeeAmount(),
+                    notifyChargeOrderDto.getServiceAmount(),
+                    chargeMachineOrderDtos);
 
             // todo 给车辆送停车券
             giftCouponToChargeCar(chargeMachineDtos.get(0), chargeMachineOrderDtos.get(0));

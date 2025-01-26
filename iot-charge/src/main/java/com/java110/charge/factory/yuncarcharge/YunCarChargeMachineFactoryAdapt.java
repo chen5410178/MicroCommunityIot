@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -215,12 +216,77 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 //（交易时间：2020-03-16 17:14:47）00（停止原因：无）00000000D14B0A54（物理卡号：D14B0A54）
 //            388C（帧校验域）
     private void settlementOrder(ChargeMachineDto chargeMachineDto, String serNo, byte[] data) {
+
+        int prexPos = 0; // 起始标志
+        int prexLen = 12;
+        int transId = prexPos + prexLen; // 交易流水号
+        int transLen = 32;
+        int machineCodePos = transId + transLen;
+        int machineCodeLen = 14;
+        int portCodePos = machineCodePos + machineCodeLen; // 桩编号
+        int portCodeLen = 2;
+        int startTimePos = portCodePos + portCodeLen;
+        int startTimeLen = 14;
+        int endTimePos = startTimePos + startTimeLen;
+        int endTimeLen = 14;
+        int jianPricePos = endTimePos + endTimeLen; //尖单价
+        int jianPriceLen = 8;
+        int jianEnergyPos = jianPricePos + jianPriceLen;
+        int jianEnergyLen = 8;
+        int jisunjianEnergyPos = jianEnergyPos + jianEnergyLen;
+        int jisunjianEnergyLen = 8;
+        int jianAmountPos = jisunjianEnergyPos + jisunjianEnergyLen; // 尖金额
+        int jianAmountLen = 8;
+        int fenPricePos = jianAmountPos + jianAmountLen; //峰单价
+        int fenPriceLen = 8;
+        int fenEnergyPos = fenPricePos + fenPriceLen;
+        int fenEnergyLen = 8;
+        int jisunfenEnergyPos = fenEnergyPos + fenEnergyLen;
+        int jisunfenEnergyLen = 8;
+        int fenAmountPos = jisunfenEnergyPos + jisunfenEnergyLen; // 尖金额
+        int fenAmountLen = 8;
+        int pingPricePos = fenAmountPos + fenAmountLen; //峰单价
+        int pingPriceLen = 8;
+        int pingEnergyPos = pingPricePos + pingPriceLen;
+        int pingEnergyLen = 8;
+        int jisunpingEnergyPos = pingEnergyPos + pingEnergyLen;
+        int jisunpingEnergyLen = 8;
+        int pingAmountPos = jisunpingEnergyPos + jisunpingEnergyLen; // 平金额
+        int pingAmountLen = 8;
+        int guPricePos = pingAmountPos + pingAmountLen; //峰单价
+        int guPriceLen = 8;
+        int guEnergyPos = guPricePos + guPriceLen;
+        int guEnergyLen = 8;
+        int jisunguEnergyPos = guEnergyPos + guEnergyLen;
+        int jisunguEnergyLen = 8;
+        int guAmountPos = jisunguEnergyPos + jisunguEnergyLen; // 平金额
+        int guAmountLen = 8;
+        int biaoStartValuePos = guAmountPos + guAmountLen;
+        int biaoStartValueLen = 10;
+        int biaoEndValuePos = biaoStartValuePos + biaoStartValueLen;
+        int biaoEndValueLen = 10;
+        int energyPos = biaoEndValuePos + biaoEndValueLen;
+        int energyLen = 8;
+        int sunEnergyPos = energyPos + energyLen;
+        int sunEnergyLen = 8;
+        int amountPos = sunEnergyPos + sunEnergyLen;
+        int amountLen = 8;
+        int carOnlyIdPos = amountPos + amountLen; // 电动汽车唯一标识
+        int carOnlyIdLen = 34;
+        int tranFlagPos = carOnlyIdPos + carOnlyIdLen;
+        int tranFlagLen = 2;
+        int transTimePos = tranFlagPos + tranFlagLen;
+        int transTimeLen = 14;
+        int stopReasonPos = transTimePos + transTimeLen;
+        int stopReasonLen = 2;
+
+
         recordedData(chargeMachineDto, data);
+        String portCode = YunCarUtil.getTargetString(data, portCodePos, portCodeLen);
         String tradeNo = YunCarUtil.getTradeNo(data);
-        String amount = YunCarUtil.priceHexToPrice(YunCarUtil.getAmount(data), 4);
-        String energy = YunCarUtil.priceHexToPrice(YunCarUtil.getTotalEnergy(data), 4);
-        String endTime = YunCarUtil.getChargeEndTime(data);
-        String gunNo = YunCarUtil.getGunNumber(data);
+        String amount = YunCarUtil.getTargetBin(data, amountPos, amountLen, 4);
+        String energy = YunCarUtil.getTargetBin(data, energyPos, energyLen, 4);
+        String reason = YunCarUtil.getTargetString(data, stopReasonPos, stopReasonLen);
 
         ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
         chargeMachineOrderDto.setOrderId(tradeNo);
@@ -230,14 +296,60 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         if (ListUtil.isNull(chargeMachineOrderDtos)) {
             return;
         }
+
+        ChargePeakAlleyPriceDto chargePeakAlleyPriceDto = new ChargePeakAlleyPriceDto();
+        chargePeakAlleyPriceDto.setRuleId(chargeMachineDto.getRuleId());
+        List<ChargePeakAlleyPriceDto> chargePeakAlleyPriceDtos = chargePeakAlleyPriceV1InnerServiceSMOImpl.queryChargePeakAlleyPrices(chargePeakAlleyPriceDto);
+        if (ListUtil.isNull(chargePeakAlleyPriceDtos)) {
+            return;
+        }
+//        00	尖费率
+//        01	峰费率
+//        02	平费率
+//        03	谷费率
+        String jianServicePrice = "0";
+        String fenServicePrice = "0";
+        String pingServicePrice = "0";
+        String guServicePrice = "0";
+        for (ChargePeakAlleyPriceDto tmpChargePeakAlleyPriceDto : chargePeakAlleyPriceDtos) {
+            if ("00".equals(tmpChargePeakAlleyPriceDto.getType())) {
+                jianServicePrice = tmpChargePeakAlleyPriceDto.getServicePrice();
+            }
+            if ("01".equals(tmpChargePeakAlleyPriceDto.getType())) {
+                fenServicePrice = tmpChargePeakAlleyPriceDto.getServicePrice();
+            }
+            if ("02".equals(tmpChargePeakAlleyPriceDto.getType())) {
+                pingServicePrice = tmpChargePeakAlleyPriceDto.getServicePrice();
+            }
+            if ("03".equals(tmpChargePeakAlleyPriceDto.getType())) {
+                guServicePrice = tmpChargePeakAlleyPriceDto.getServicePrice();
+            }
+        }
+        // 尖电量
+        String jianEnergy = YunCarUtil.getTargetBin(data, jianEnergyPos, jianEnergyLen, 4);
+        // 峰电量
+        String fenEnergy = YunCarUtil.getTargetBin(data, fenEnergyPos, fenEnergyLen, 4);
+        // 平电量
+        String pingEnergy = YunCarUtil.getTargetBin(data, pingEnergyPos, pingEnergyLen, 4);
+        // 谷电量
+        String guEnergy = YunCarUtil.getTargetBin(data, guEnergyPos, guEnergyLen, 4);
+        BigDecimal jianDec = new BigDecimal(jianEnergy).multiply(new BigDecimal(jianServicePrice)).setScale(4, BigDecimal.ROUND_HALF_UP);
+        BigDecimal fenDec = new BigDecimal(fenEnergy).multiply(new BigDecimal(fenServicePrice)).setScale(4, BigDecimal.ROUND_HALF_UP);
+        BigDecimal pingDec = new BigDecimal(pingEnergy).multiply(new BigDecimal(pingServicePrice)).setScale(4, BigDecimal.ROUND_HALF_UP);
+        BigDecimal guDec = new BigDecimal(guEnergy).multiply(new BigDecimal(guServicePrice)).setScale(4, BigDecimal.ROUND_HALF_UP);
+        BigDecimal serviceFeeDec = jianDec.add(fenDec).add(pingDec).add(guDec);
+        BigDecimal feeDec = new BigDecimal(energy).subtract(serviceFeeDec);
+
         NotifyChargeOrderDto notifyChargeOrderDto = new NotifyChargeOrderDto();
         notifyChargeOrderDto.setOrderId(tradeNo);
         notifyChargeOrderDto.setMachineCode(chargeMachineDto.getMachineCode());
-        notifyChargeOrderDto.setPortCode(Integer.parseInt(gunNo, 16) + "");
+        notifyChargeOrderDto.setPortCode(Integer.parseInt(portCode, 16) + "");
         notifyChargeOrderDto.setBodyParam("");
-        notifyChargeOrderDto.setReason("结束充电");
+        notifyChargeOrderDto.setReason("结束充电->" + reason);
         notifyChargeOrderDto.setAmount(amount);
         notifyChargeOrderDto.setEnergy(energy);
+        notifyChargeOrderDto.setFeeAmount(feeDec.doubleValue() + "");
+        notifyChargeOrderDto.setServiceAmount(serviceFeeDec.doubleValue() + "");
         notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);
         //todo 回复订单计算情况
         String paramOut = YunCarUtil.confirmTransactionRespon(serNo, tradeNo);
@@ -431,24 +543,30 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         ChargeProcessAnalysisPo chargeProcessAnalysisPo = new ChargeProcessAnalysisPo();
         chargeProcessAnalysisPo.setGunNum(portCode); // 枪编号
         chargeProcessAnalysisPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId()); // 订单ID
-        chargeProcessAnalysisPo.setAccumulatedChargingTime(YunCarUtil.getTargetBin(data,accumulatedChargingTimePos,accumulatedChargingTimeLen)); //累计充电时间单位：min；待机置零
-        chargeProcessAnalysisPo.setOutputVoltage(YunCarUtil.getTargetBin(data,outputVoltagePos,outputVoltageLen,1)); // 输出电压
-        chargeProcessAnalysisPo.setSoc(YunCarUtil.getTargetBin(data,socPos,socLen));// SOC
+        chargeProcessAnalysisPo.setAccumulatedChargingTime(YunCarUtil.getTargetBin(data, accumulatedChargingTimePos, accumulatedChargingTimeLen)); //累计充电时间单位：min；待机置零
+        chargeProcessAnalysisPo.setOutputVoltage(YunCarUtil.getTargetBin(data, outputVoltagePos, outputVoltageLen, 1)); // 输出电压
+        chargeProcessAnalysisPo.setSoc(YunCarUtil.getTargetBin(data, socPos, socLen));// SOC
         chargeProcessAnalysisPo.setRemark(""); // 备注
-        chargeProcessAnalysisPo.setChargingDegree(YunCarUtil.getTargetBin(data,chargingDegreePos,chargingDegreeLen,4)); //  充电度数 精确到小数点后四位；待机置零
-        chargeProcessAnalysisPo.setInsertedGun(YunCarUtil.getTargetBin(data,insertedGunPos,insertedGunLen)); // 是否插枪
-        chargeProcessAnalysisPo.setOutputCurrent(YunCarUtil.getTargetBin(data,outputCurrentPos,outputCurrentLen,1));//输出电流
-        chargeProcessAnalysisPo.setRemainingTime(YunCarUtil.getTargetBin(data,remainingTimePos,remainingTimeLen));//剩余时间单位：min；待机置零、交流桩置零
-        chargeProcessAnalysisPo.setGunLineTem(YunCarUtil.getTargetBin(data,gunLineTemPos,gunLineTemLen)); //枪线温度
-        chargeProcessAnalysisPo.setBackInPlace(YunCarUtil.getTargetBin(data,backInPlacePos,backInPlaceLen)); // 枪是否归位 0x00 否 0x01 是 0x02未知
-        chargeProcessAnalysisPo.setBatterypackMaxTem(YunCarUtil.getTargetBin(data,batterypackMaxTemPos,batterypackMaxTemLen)); //电池组最高温度
+        chargeProcessAnalysisPo.setChargingDegree(YunCarUtil.getTargetBin(data, chargingDegreePos, chargingDegreeLen, 4)); //  充电度数 精确到小数点后四位；待机置零
+        chargeProcessAnalysisPo.setInsertedGun(YunCarUtil.getTargetBin(data, insertedGunPos, insertedGunLen)); // 是否插枪
+        chargeProcessAnalysisPo.setOutputCurrent(YunCarUtil.getTargetBin(data, outputCurrentPos, outputCurrentLen, 1));//输出电流
+        chargeProcessAnalysisPo.setRemainingTime(YunCarUtil.getTargetBin(data, remainingTimePos, remainingTimeLen));//剩余时间单位：min；待机置零、交流桩置零
+        chargeProcessAnalysisPo.setGunLineTem(YunCarUtil.getTargetBin(data, gunLineTemPos, gunLineTemLen)); //枪线温度
+        chargeProcessAnalysisPo.setBackInPlace(YunCarUtil.getTargetBin(data, backInPlacePos, backInPlaceLen)); // 枪是否归位 0x00 否 0x01 是 0x02未知
+        chargeProcessAnalysisPo.setBatterypackMaxTem(YunCarUtil.getTargetBin(data, batterypackMaxTemPos, batterypackMaxTemLen)); //电池组最高温度
         chargeProcessAnalysisPo.setMachineId(chargeMachineDto.getMachineId());
         chargeProcessAnalysisPo.setPileNum(machineCode); // 桩编号
-        chargeProcessAnalysisPo.setCalculatedChargingDegree(YunCarUtil.getTargetBin(data,calculatedChargingDegreePos,calculatedChargingDegreeLen,4)); //计损充电度数
-        chargeProcessAnalysisPo.setHardwareFailure(YunCarUtil.getTargetBin(data,hardwareFailurePos,hardwareFailureLen));//硬件故障
-        chargeProcessAnalysisPo.setRechargeAmount(YunCarUtil.getTargetBin(data,rechargeAmountPos,rechargeAmountLen,4));//已充金额
-        chargeProcessAnalysisPo.setGunCode(YunCarUtil.getTargetBin(data,gunCodePos,gunCodeLen));//枪线编码
+        chargeProcessAnalysisPo.setCalculatedChargingDegree(YunCarUtil.getTargetBin(data, calculatedChargingDegreePos, calculatedChargingDegreeLen, 4)); //计损充电度数
+        chargeProcessAnalysisPo.setHardwareFailure(YunCarUtil.getTargetBin(data, hardwareFailurePos, hardwareFailureLen));//硬件故障
+        chargeProcessAnalysisPo.setRechargeAmount(YunCarUtil.getTargetBin(data, rechargeAmountPos, rechargeAmountLen, 4));//已充金额
+        chargeProcessAnalysisPo.setGunCode(YunCarUtil.getTargetBin(data, gunCodePos, gunCodeLen));//枪线编码
         chargeProcessAnalysisPo.setCommunityId(chargeMachineDto.getCommunityId());
+
+        ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
+        chargeMachineOrderPo.setOrderId(chargeProcessAnalysisPo.getOrderId());
+        chargeMachineOrderPo.setEnergy(chargeProcessAnalysisPo.getChargingDegree());
+        chargeMachineOrderPo.setAmount(chargeProcessAnalysisPo.getRechargeAmount());
+        chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
 
 
         ChargeProcessAnalysisDto chargeProcessAnalysisDto = new ChargeProcessAnalysisDto();
@@ -456,7 +574,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         List<ChargeProcessAnalysisDto> chargeProcessAnalysisDtos =
                 chargeProcessAnalysisV1InnerServiceSMOImpl.queryChargeProcessAnalysiss(chargeProcessAnalysisDto);
 
-        if(ListUtil.isNull(chargeProcessAnalysisDtos)){
+        if (ListUtil.isNull(chargeProcessAnalysisDtos)) {
             chargeProcessAnalysisPo.setCpaId(GenerateCodeFactory.getGeneratorId("11"));
             chargeProcessAnalysisV1InnerServiceSMOImpl.saveChargeProcessAnalysis(chargeProcessAnalysisPo);
             return;
