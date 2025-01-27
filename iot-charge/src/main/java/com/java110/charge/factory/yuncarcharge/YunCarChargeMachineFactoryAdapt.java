@@ -64,12 +64,70 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     public static final Map<String, String> resultMap = new HashMap<>();
 
     static {
-        resultMap.put("00", "无");
-        resultMap.put("01", "设备编号不匹配");
-        resultMap.put("02", "枪已在充电");
-        resultMap.put("03", "设备故障");
-        resultMap.put("04", "设备离线");
-        resultMap.put("05", "未插枪");
+        resultMap.put("40", "结束充电，APP 远程停止");
+        resultMap.put("41", "结束充电，SOC 达到 100%");
+        resultMap.put("42", "结束充电，充电电量满足设定条件");
+        resultMap.put("43", "结束充电，充电金额满足设定条件");
+        resultMap.put("44", "结束充电，充电时间满足设定条件");
+        resultMap.put("4A", "充电启动失败，充电桩控制系统故障(需要重启或自动恢复)");
+        resultMap.put("4B", "充电启动失败，控制导引断开");
+        resultMap.put("4C", "充电启动失败，断路器跳位");
+        resultMap.put("4D", "充电启动失败，电表通信中断");
+        resultMap.put("4E", "充电启动失败，余额不足");
+        resultMap.put("4F", "充电启动失败，充电模块故障");
+        resultMap.put("50", "充电启动失败，急停开入");
+        resultMap.put("51", "充电启动失败，防雷器异常");
+        resultMap.put("52", "充电启动失败，BMS 未就绪");
+        resultMap.put("53", "充电启动失败，温度异常");
+        resultMap.put("54", "充电启动失败，电池反接故障");
+        resultMap.put("55", "充电启动失败，电子锁异常");
+        resultMap.put("56", "充电启动失败，合闸失败");
+        resultMap.put("57", "充电启动失败，绝缘异常");
+        resultMap.put("59", "充电启动失败，接收 BMS 握手报文 BHM 超时");
+        resultMap.put("5A", "充电启动失败，接收 BMS 和车辆的辨识报文超时 BRM");
+        resultMap.put("5B", "充电启动失败，接收电池充电参数报文超时 BCP");
+        resultMap.put("5C", "充电启动失败，接收 BMS 完成充电准备报文超时 BRO AA");
+        resultMap.put("5D", "充电启动失败，接收电池充电总状态报文超时 BCS");
+        resultMap.put("5E", "充电启动失败，接收电池充电要求报文超时 BCL");
+        resultMap.put("5F", "充电启动失败，接收电池状态信息报文超时 BSM");
+        resultMap.put("60", "充电启动失败，GB2015 电池在 BHM 阶段有电压不允许充电");
+        resultMap.put("61", "充电启动失败，GB2015 辨识阶段在 BRO_AA 时候电池实际电压与 BCP 报文电池电压差距大于 5%");
+        resultMap.put("62", "充电启动失败，B2015 充电机在预充电阶段从 BRO_AA 变成 BRO_00 状态");
+        resultMap.put("63", "充电启动失败，接收主机配置报文超时");
+        resultMap.put("64", "充电启动失败，充电机未准备就绪,我们没有回 CRO AA，对应老国标");
+        resultMap.put("6A", "充电异常中止，系统闭锁");
+        resultMap.put("6B", "充电异常中止，导引断开");
+        resultMap.put("6C", "充电异常中止，断路器跳位");
+        resultMap.put("6D", "充电异常中止，电表通信中断");
+        resultMap.put("6E", "充电异常中止，余额不足");
+        resultMap.put("6F", "充电异常中止，交流保护动作");
+        resultMap.put("70", "充电异常中止，直流保护动作");
+        resultMap.put("71", "充电异常中止，充电模块故障");
+        resultMap.put("72", "充电异常中止，急停开入");
+        resultMap.put("73", "充电异常中止，防雷器异常");
+        resultMap.put("74", "充电异常中止，温度异常");
+        resultMap.put("75", "充电异常中止，输出异常");
+        resultMap.put("76", "充电异常中止，充电无流");
+        resultMap.put("77", "充电异常中止，电子锁异常");
+        resultMap.put("79", "充电异常中止，总充电电压异常");
+        resultMap.put("7A", "充电异常中止，总充电电流异常");
+        resultMap.put("7B", "充电异常中止，单体充电电压异常");
+        resultMap.put("7C", "充电异常中止，电池组过温");
+        resultMap.put("7D", "充电异常中止，最高单体充电电压异常");
+        resultMap.put("7E", "充电异常中止，最高电池组过温");
+        resultMap.put("7F", "充电异常中止，BMV 单体充电电压异常");
+        resultMap.put("80", "充电异常中止，BMT 电池组过温");
+        resultMap.put("81", "充电异常中止，电池状态异常停止充电");
+        resultMap.put("82", "充电异常中止，车辆发报文禁止充电");
+        resultMap.put("83", "充电异常中止，充电桩断电");
+        resultMap.put("84", "充电异常中止，接收电池充电总状态报文超时");
+        resultMap.put("85", "充电异常中止，接收电池充电要求报文超时");
+        resultMap.put("86", "充电异常中止，接收电池状态信息报文超时");
+        resultMap.put("87", "充电异常中止，接收 BMS 中止充电报文超时");
+        resultMap.put("88", "充电异常中止，接收 BMS 充电统计报文超时");
+        resultMap.put("89", "充电异常中止，接收对侧 CCS 报文超时");
+        resultMap.put("90", "未知原因停止");
+
     }
 
     @Override
@@ -345,7 +403,11 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         notifyChargeOrderDto.setMachineCode(chargeMachineDto.getMachineCode());
         notifyChargeOrderDto.setPortCode(Integer.parseInt(portCode, 16) + "");
         notifyChargeOrderDto.setBodyParam("");
-        notifyChargeOrderDto.setReason("结束充电->" + reason);
+        String reasonStr = resultMap.get(reason);
+        if(StringUtil.isEmpty(reasonStr)){
+            reasonStr = "结束充电->" + reason;
+        }
+        notifyChargeOrderDto.setReason(reasonStr);
         notifyChargeOrderDto.setAmount(amount);
         notifyChargeOrderDto.setEnergy(energy);
         notifyChargeOrderDto.setFeeAmount(feeDec.doubleValue() + "");

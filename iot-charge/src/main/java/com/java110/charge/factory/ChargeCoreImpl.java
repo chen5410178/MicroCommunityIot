@@ -169,6 +169,7 @@ public class ChargeCoreImpl implements IChargeCore {
         chargeMachineOrderPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
         chargeMachineOrderPo.setDurationPrice(feeAmount);
         chargeMachineOrderPo.setServicePrice(serviceAmount);
+        chargeMachineOrderPo.setEnergy(energy);
 
         int flag = chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
         if (flag < 1) {
