@@ -82,7 +82,7 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         int port = Integer.parseInt(chargeMachinePortDto.getPortCode()) - 1;
         String portHex = String.format("%X", port);
         // 充电时间 分钟
-        String chargeTime = String.format("%04X", (int) Math.round(duration * 60));
+        String chargeTime = String.format("%04X", (int) Math.round(duration * 60)-1);
 //        if (!chargeType.equals("1")) {//智能模式与免费模式
 //            chargeTime = String.format("%04X",600);
 //        }

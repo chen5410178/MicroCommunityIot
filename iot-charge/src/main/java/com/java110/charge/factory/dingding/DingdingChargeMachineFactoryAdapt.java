@@ -47,7 +47,7 @@ public class DingdingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
         JSONObject body = new JSONObject();
         body.put("mode", 1);
-        body.put("duration", duration * 60);
+        body.put("duration", duration * 60-1);
         body.put("energy", 0);
         body.put("chargeType", "order");
         body.put("chargeId", orderId);
