@@ -8,21 +8,24 @@
     <!-- 保存汽车电价信息 add by wuxw 2018-07-03 -->
     <insert id="saveChargeRulePriceInfo" parameterType="Map">
         insert into charge_rule_price(
-crp_id,cpa_id,service_price,price,start_time,remark,end_time,rule_id,community_id
-) values (
-#{crpId},#{cpaId},#{servicePrice},#{price},#{startTime},#{remark},#{endTime},#{ruleId},#{communityId}
-)
+        crp_id,cpa_id,service_price,price,start_time,remark,end_time,rule_id,community_id
+        ) values (
+        #{crpId},#{cpaId},#{servicePrice},#{price},#{startTime},#{remark},#{endTime},#{ruleId},#{communityId}
+        )
     </insert>
 
 
     <!-- 查询汽车电价信息 add by wuxw 2018-07-03 -->
     <select id="getChargeRulePriceInfo" parameterType="Map" resultType="Map">
-        select t.crp_id,t.crp_id crpId,t.cpa_id cpaId,p.service_price,p.service_price servicePrice,t.create_time,t.create_time
+        select t.crp_id,t.crp_id crpId,t.cpa_id cpaId,p.service_price,p.service_price
+        servicePrice,t.create_time,t.create_time
         createTime,p.price,t.start_time,t.start_time startTime,t.remark,t.status_cd,t.status_cd
-        statusCd,t.end_time,t.end_time endTime,t.rule_id,t.rule_id ruleId,t.community_id,t.community_id communityId,p.type cpaType,td.`name` cpaTypeName
+        statusCd,t.end_time,t.end_time endTime,t.rule_id,t.rule_id ruleId,t.community_id,t.community_id
+        communityId,p.type cpaType,td.`name` cpaTypeName
         from charge_rule_price t
         LEFT JOIN charge_peak_alley_price p on t.cpa_id = p.cpa_id
-        LEFT JOIN t_dict td on td.status_cd = p.type and td.table_name = 'charge_peak_alley_price' and td.table_columns = 'type'
+        LEFT JOIN t_dict td on td.status_cd = p.type and td.table_name = 'charge_peak_alley_price' and td.table_columns
+        = 'type'
         where 1 =1
         <if test="crpId !=null and crpId != ''">
             and t.crp_id= #{crpId}
@@ -54,7 +57,7 @@ crp_id,cpa_id,service_price,price,start_time,remark,end_time,rule_id,community_i
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
         </if>
-        order by t.price
+        order by t.start_time
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
         </if>
