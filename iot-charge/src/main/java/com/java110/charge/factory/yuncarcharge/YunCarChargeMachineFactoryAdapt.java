@@ -145,6 +145,32 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         String portHex = String.format("%02x", port);
         String data = YunCarUtil.stopCharge("0003", chargeMachineDto.getMachineCode(), portHex);
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(data)));
+
+        // 检查工单是否为开启中 如果是开启中 说明工单异常了手动结束
+
+        ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
+        chargeMachineOrderDto.setMachineId(chargeMachineDto.getMachineId());
+        chargeMachineOrderDto.setPortId(chargeMachinePortDto.getPortId());
+        chargeMachineOrderDto.setState(ChargeMachineOrderDto.STATE_STARTING);
+        List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
+        if (ListUtil.isNull(chargeMachineOrderDtos)) {
+            return new ResultVo(ResultVo.CODE_OK, "结束信号已发送");
+        }
+
+        NotifyChargeOrderDto notifyChargeOrderDto = new NotifyChargeOrderDto();
+        notifyChargeOrderDto.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
+        notifyChargeOrderDto.setMachineCode(chargeMachineDto.getMachineCode());
+        notifyChargeOrderDto.setPortCode(chargeMachinePortDto.getPortCode());
+        notifyChargeOrderDto.setBodyParam("");
+        String reasonStr = "结束充电-> 开启设备没有反映，后台手工结束";
+
+        notifyChargeOrderDto.setReason(reasonStr);
+        notifyChargeOrderDto.setAmount("0");
+        notifyChargeOrderDto.setEnergy("0");
+        notifyChargeOrderDto.setFeeAmount("0");
+        notifyChargeOrderDto.setServiceAmount("0");
+        notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);
+
         return new ResultVo(ResultVo.CODE_OK, "结束信号已发送");
     }
 
@@ -404,7 +430,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         notifyChargeOrderDto.setPortCode(Integer.parseInt(portCode, 16) + "");
         notifyChargeOrderDto.setBodyParam("");
         String reasonStr = resultMap.get(reason);
-        if(StringUtil.isEmpty(reasonStr)){
+        if (StringUtil.isEmpty(reasonStr)) {
             reasonStr = "结束充电->" + reason;
         }
         notifyChargeOrderDto.setReason(reasonStr);
@@ -613,7 +639,14 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         chargeProcessAnalysisPo.setInsertedGun(YunCarUtil.getTargetBin(data, insertedGunPos, insertedGunLen)); // 是否插枪
         chargeProcessAnalysisPo.setOutputCurrent(YunCarUtil.getTargetBin(data, outputCurrentPos, outputCurrentLen, 1));//输出电流
         chargeProcessAnalysisPo.setRemainingTime(YunCarUtil.getTargetBin(data, remainingTimePos, remainingTimeLen));//剩余时间单位：min；待机置零、交流桩置零
-        chargeProcessAnalysisPo.setGunLineTem(YunCarUtil.getTargetBin(data, gunLineTemPos, gunLineTemLen)); //枪线温度
+        String gunLineTem = YunCarUtil.getTargetBin(data, gunLineTemPos, gunLineTemLen);
+        try{
+           int gunLineTemInt = Integer.parseInt(gunLineTem)-50;
+            gunLineTem = gunLineTemInt+"";
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        chargeProcessAnalysisPo.setGunLineTem(gunLineTem); //枪线温度
         chargeProcessAnalysisPo.setBackInPlace(YunCarUtil.getTargetBin(data, backInPlacePos, backInPlaceLen)); // 枪是否归位 0x00 否 0x01 是 0x02未知
         chargeProcessAnalysisPo.setBatterypackMaxTem(YunCarUtil.getTargetBin(data, batterypackMaxTemPos, batterypackMaxTemLen)); //电池组最高温度
         chargeProcessAnalysisPo.setMachineId(chargeMachineDto.getMachineId());
