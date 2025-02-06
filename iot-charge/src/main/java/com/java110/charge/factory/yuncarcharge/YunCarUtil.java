@@ -365,6 +365,8 @@ public class YunCarUtil {
     }
 
     //68（起始标志）0D（数据长度）3600（序列号域）00（加密标志）（类型）55031412782305桩编码）01(枪号) 00（心跳应答）65B2（帧校验域）
+//    68（起始标志）0D（数据长度）3600（序列号域）00（加密标志）04（类型）55031412782305
+//            （桩编码）01(枪号) 00（心跳应答）65B2（帧校验域）
     public static String machineHeartbeatRespon(String serialNumber, String machineCode, String gunNo) {
         String dataContent = serialNumber + "00" + "04" + machineCode + gunNo + "00";
         String dataLength = calculateLength(dataContent);
