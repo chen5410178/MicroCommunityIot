@@ -70,7 +70,7 @@
                 let param = {
                     params: {
                         page: 1,
-                        row: 50,
+                        row: 1000,
                         communityId: vc.getCurrentCommunity().communityId
                     }
                 };
