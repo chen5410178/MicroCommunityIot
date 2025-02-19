@@ -53,8 +53,6 @@ public class SyncUserImpl implements ISyncUser {
         List<AccessControlFloorDto> accessControlFloorDtos = accessControlFloorV1InnerServiceSMOImpl.queryAccessControlFloors(accessControlFloorDto);
 
 
-
-
         long curTimeTimeStamp = new Date().getTime();
         curTimeTimeStamp = curTimeTimeStamp / 1000;
 
@@ -76,12 +74,12 @@ public class SyncUserImpl implements ISyncUser {
             if (ListUtil.isNull(accessControlFloorDtos)) {
                 throw new IllegalArgumentException("设备未关联单元");
             }
-            if(StringUtil.isEmpty(accessControlFaceDtos.get(0).getRoomName())){
+            if (StringUtil.isEmpty(accessControlFaceDtos.get(0).getRoomName())) {
                 room.put("b_id", accessControlFloorDtos.get(0).getUnitId());
                 room.put("b_name", accessControlFloorDtos.get(0).getFloorNum() + "栋" + accessControlFloorDtos.get(0).getUnitNum() + "单元");
-            }else{
-                String[] roomNames = accessControlFaceDtos.get(0).getRoomName().split("-",3);
-                if(roomNames.length != 3){
+            } else {
+                String[] roomNames = accessControlFaceDtos.get(0).getRoomName().split("-", 3);
+                if (roomNames.length != 3) {
                     throw new IllegalArgumentException("房屋名称错误");
                 }
                 UnitDto unitDto = new UnitDto();
@@ -89,10 +87,10 @@ public class SyncUserImpl implements ISyncUser {
                 unitDto.setUnitNum(roomNames[1]);
                 unitDto.setCommunityId(accessControlFaceDtos.get(0).getCommunityId());
                 List<UnitDto> unitDtos = unitV1InnerServiceSMOImpl.queryUnits(unitDto);
-                if(ListUtil.isNull(unitDtos)){
+                if (ListUtil.isNull(unitDtos)) {
                     room.put("b_id", accessControlFloorDtos.get(0).getUnitId());
                     room.put("b_name", accessControlFloorDtos.get(0).getFloorNum() + "栋" + accessControlFloorDtos.get(0).getUnitNum() + "单元");
-                }else{
+                } else {
                     room.put("b_id", unitDtos.get(0).getUnitId());
                     room.put("b_name", unitDtos.get(0).getFloorNum() + "栋" + unitDtos.get(0).getUnitNum() + "单元");
                 }
@@ -144,42 +142,43 @@ public class SyncUserImpl implements ISyncUser {
         addRoom.put("uid", 1);
         addRoom.put("name", "9999");  //修改物业中心名称
         addRoom.put("num", "9909-909");//添加楼栋单元号
-		String ysfjh="";
-		String thfjh="";
+        String ysfjh = "";
+        String thfjh = "";
         String roomName = accessControlFaceDtos.get(0).getRoomName();
         if (!StringUtil.isEmpty(roomName) && roomName.split("-", 3).length == 3) {
             addRoom.put("name", roomName.split("-", 3)[2]);
             //addRoom.put("num", roomName.split("-", 3)[0] + roomName.split("-", 3)[1] + "-" + roomName.split("-", 3)[2]); //添加楼栋单元号
-			ysfjh = (roomName.split("-", 3)[2]);
-			thfjh = (roomName.split("-", 3)[2]);
-			// 利用switch表达式根据变量值进行替换
-			switch (ysfjh) {
-			    case "1B01":
-				 thfjh = "2201";
-				 break;
-			    case "1B02" :
-				 thfjh = "2202";
-				 break;
-			    case "1A01" :
-				 thfjh = "2301";
-				 break;
-			    case "1A02" :
-				 thfjh = "2302";
-				 break;
-			    case "17A1" :
-				 thfjh = "2401";
-				 break;
-			    case "17A2" :
-				 thfjh = "2402";
-				 break;
-			    default :				 
-			};
-			
-			addRoom.put("num", String.format("%02d%02d-%04d",
-			    Integer.parseInt(roomName.split("-", 3)[0]),
-			    Integer.parseInt(roomName.split("-", 3)[1]),
-			    Integer.parseInt(thfjh)));
-			
+            ysfjh = (roomName.split("-", 3)[2]);
+            thfjh = (roomName.split("-", 3)[2]);
+            // 利用switch表达式根据变量值进行替换
+            switch (ysfjh) {
+                case "1B01":
+                    thfjh = "2201";
+                    break;
+                case "1B02":
+                    thfjh = "2202";
+                    break;
+                case "1A01":
+                    thfjh = "2301";
+                    break;
+                case "1A02":
+                    thfjh = "2302";
+                    break;
+                case "17A1":
+                    thfjh = "2401";
+                    break;
+                case "17A2":
+                    thfjh = "2402";
+                    break;
+                default:
+            }
+            ;
+
+            addRoom.put("num", String.format("%02d%02d-%04d",
+                    Integer.parseInt(roomName.split("-", 3)[0]),
+                    Integer.parseInt(roomName.split("-", 3)[1]),
+                    Integer.parseInt(thfjh)));
+
             RoomDto roomDto = new RoomDto();
             roomDto.setFloorNum(roomName.split("-", 3)[0]);
             roomDto.setUnitNum(roomName.split("-", 3)[1]);
@@ -206,11 +205,12 @@ public class SyncUserImpl implements ISyncUser {
 
         //todo 这里 随机加个2小时内的秒数，不然 人员不修改 ，门禁不来同步人脸信息
         Date endTime = null;
-        try{
-            endTime = DateUtil.getDateFromStringA(accessControlFacePo.getEndTime());
-        }catch (Exception e){
-            endTime = DateUtil.getDateFromStringB(accessControlFacePo.getEndTime());
+        if (!accessControlFacePo.getEndTime().contains(":")) {
+            accessControlFacePo.setEndTime(accessControlFacePo.getEndTime() + " 00:00:00");
         }
+
+        endTime = DateUtil.getDateFromStringA(accessControlFacePo.getEndTime());
+
         Random random = new Random();
         int randomSec = random.nextInt(7200);
         Calendar calendar = Calendar.getInstance();
