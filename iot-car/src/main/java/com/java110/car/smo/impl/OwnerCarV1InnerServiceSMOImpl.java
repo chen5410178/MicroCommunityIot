@@ -20,6 +20,7 @@ import com.java110.bean.dto.PageDto;
 import com.java110.bean.dto.car.OwnerCarDto;
 import com.java110.car.dao.IOwnerCarV1ServiceDao;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.po.ownerCar.OwnerCarPo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,26 +47,30 @@ public class OwnerCarV1InnerServiceSMOImpl implements IOwnerCarV1InnerServiceSMO
 
 
     @Override
-    public int saveOwnerCar(@RequestBody  OwnerCarPo ownerCarPo) {
+    public int saveOwnerCar(@RequestBody OwnerCarPo ownerCarPo) {
+        ownerCarPo.setCarNum(ownerCarPo.getCarNum().trim());
         int saveFlag = ownerCarV1ServiceDaoImpl.saveOwnerCarInfo(BeanConvertUtil.beanCovertMap(ownerCarPo));
         return saveFlag;
     }
 
-     @Override
-    public int updateOwnerCar(@RequestBody  OwnerCarPo ownerCarPo) {
+    @Override
+    public int updateOwnerCar(@RequestBody OwnerCarPo ownerCarPo) {
+        if (!StringUtil.isEmpty(ownerCarPo.getCarNum())) {
+            ownerCarPo.setCarNum(ownerCarPo.getCarNum().trim());
+        }
         int saveFlag = ownerCarV1ServiceDaoImpl.updateOwnerCarInfo(BeanConvertUtil.beanCovertMap(ownerCarPo));
         return saveFlag;
     }
 
-     @Override
-    public int deleteOwnerCar(@RequestBody  OwnerCarPo ownerCarPo) {
-       ownerCarPo.setStatusCd("1");
-       int saveFlag = ownerCarV1ServiceDaoImpl.updateOwnerCarInfo(BeanConvertUtil.beanCovertMap(ownerCarPo));
-       return saveFlag;
+    @Override
+    public int deleteOwnerCar(@RequestBody OwnerCarPo ownerCarPo) {
+        ownerCarPo.setStatusCd("1");
+        int saveFlag = ownerCarV1ServiceDaoImpl.updateOwnerCarInfo(BeanConvertUtil.beanCovertMap(ownerCarPo));
+        return saveFlag;
     }
 
     @Override
-    public List<OwnerCarDto> queryOwnerCars(@RequestBody  OwnerCarDto ownerCarDto) {
+    public List<OwnerCarDto> queryOwnerCars(@RequestBody OwnerCarDto ownerCarDto) {
 
         //校验是否传了 分页信息
 
@@ -83,12 +88,13 @@ public class OwnerCarV1InnerServiceSMOImpl implements IOwnerCarV1InnerServiceSMO
 
     @Override
     public int queryOwnerCarsCount(@RequestBody OwnerCarDto ownerCarDto) {
-        return ownerCarV1ServiceDaoImpl.queryOwnerCarsCount(BeanConvertUtil.beanCovertMap(ownerCarDto));    }
+        return ownerCarV1ServiceDaoImpl.queryOwnerCarsCount(BeanConvertUtil.beanCovertMap(ownerCarDto));
+    }
 
     @Override
     public List<Map> queryOwnerCarCountByOwnerIds(@RequestBody List<String> ownerIds) {
         Map info = new HashMap();
-        info.put("ownerIds",ownerIds.toArray(new String[ownerIds.size()]));
+        info.put("ownerIds", ownerIds.toArray(new String[ownerIds.size()]));
         List<Map> result = ownerCarV1ServiceDaoImpl.queryOwnerCarCountByOwnerIds(info);
         return result;
     }
