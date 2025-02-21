@@ -20,13 +20,16 @@ public class SyncOneUserFaceBmoImpl implements ISyncOneUserFaceBmo {
     private IAccessControlLogV1InnerServiceSMO accessControlLogV1InnerServiceSMOImpl;
 
     @Override
-    public ResponseEntity syncUserFace(String machineCode) {
+    public ResponseEntity syncUserFace(String machineCode,int page,int row) {
+
 
 
         AccessControlLogDto accessControlLogDto = new AccessControlLogDto();
         accessControlLogDto.setState(AccessControlLogDto.STATE_REQ);
         accessControlLogDto.setLogAction("/device/v2/face/sync");
         accessControlLogDto.setMachineCode(machineCode);
+        accessControlLogDto.setPage(page);
+        accessControlLogDto.setRow(row);
         List<AccessControlLogDto> accessControlLogDtos = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogs(accessControlLogDto);
 
         if (ListUtil.isNull(accessControlLogDtos)) {

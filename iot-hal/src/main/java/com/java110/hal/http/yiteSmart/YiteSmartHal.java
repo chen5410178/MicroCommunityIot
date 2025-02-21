@@ -355,7 +355,7 @@ public class YiteSmartHal {
         } else {
 
             try {
-                responseEntity = syncOneUserFaceBmoImpl.syncUserFace(uuId);
+                responseEntity = syncOneUserFaceBmoImpl.syncUserFace(uuId,page,row);
             } catch (Exception e) {
                 e.printStackTrace();
             }
