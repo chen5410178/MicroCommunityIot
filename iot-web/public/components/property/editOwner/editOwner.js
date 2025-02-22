@@ -76,21 +76,11 @@
                         param: "",
                         errInfo: "性别不能为空"
                     }],
-                    /*'editOwnerInfo.idCard': [{
-                        limit: "maxLength",
-                        param: "18",
-                        errInfo: "身份证长度不能超过200位"
-                    }],*/
                     'editOwnerInfo.link': [
                         {
                             limit: "required",
                             param: "",
                             errInfo: "手机号不能为空"
-                        },
-                        {
-                            limit: "phone",
-                            param: "",
-                            errInfo: "手机号格式错误"
                         }
                     ],
                     'editOwnerInfo.remark': [{
