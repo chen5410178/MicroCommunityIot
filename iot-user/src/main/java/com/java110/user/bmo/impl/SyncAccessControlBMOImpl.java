@@ -66,7 +66,7 @@ public class SyncAccessControlBMOImpl implements ISyncAccessControlBMO {
         fileRelDto.setObjId(ownerDto.getMemberId());
         fileRelDto.setRelTypeCd("10000"); //人员照片
         List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
-        if (fileRelDtos != null && !fileRelDtos.isEmpty()) {
+        if (!ListUtil.isNull(fileRelDtos)) {
             String url = fileRelDtos.get(0).getFileRealName();
             if(url.startsWith("http")){
                 ownerDto.setUrl(fileRelDtos.get(0).getFileRealName());
@@ -142,7 +142,7 @@ public class SyncAccessControlBMOImpl implements ISyncAccessControlBMO {
                 accessControlFacePo.setPersonId(ownerDto.getMemberId());
                 accessControlFacePo.setPersonType(AccessControlFaceDto.PERSON_TYPE_OWNER);
                 accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
-                accessControlFacePo.setRoomName(roomDtos.get(0).getFloorNum() + "-" + roomDtos.get(0).getUnitNum() + "-" + roomDtos.get(0).getRoomNum());
+                accessControlFacePo.setRoomName(tmpRoomDto.getFloorNum() + "-" + tmpRoomDto.getUnitNum() + "-" + tmpRoomDto.getRoomNum());
                 accessControlFaceV1InnerServiceSMOImpl.saveAccessControlFace(accessControlFacePo);
             }
         }
