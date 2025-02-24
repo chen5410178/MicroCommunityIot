@@ -62,6 +62,7 @@ public class MqttConfig {
             option.setPassword(password.toCharArray());
             option.setConnectionTimeout(completionTimeout);
             option.setKeepAliveInterval(keepalive);
+            option.setMaxInflight(1000);
             option.setAutomaticReconnect(true);
 
             client.setCallback(new MqttPushCallback(client, option));
