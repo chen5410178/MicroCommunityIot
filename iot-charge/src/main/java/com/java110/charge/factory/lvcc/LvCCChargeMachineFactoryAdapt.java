@@ -407,8 +407,9 @@ public class LvCCChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-        //todo 充电电量
+        //todo 充电电量 单位是度  两位小数
         int e = Integer.parseInt(dataHex.substring(44, 48), 16);
+        e = e * 10; // e= e/100 * 1000
         //todo 结束时功率
         //int w = Integer.parseInt(dataHex.substring(48, 52), 16);
 
