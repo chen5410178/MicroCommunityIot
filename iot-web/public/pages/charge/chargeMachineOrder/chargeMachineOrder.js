@@ -101,6 +101,9 @@
             _showStopCharge: function(_order) {
                 vc.emit('stopChargeMachine', 'openStopChargeMachineModal', _order);
             },
+            _showThrowStopCharge:function(_order){
+                vc.emit('throwStopChargeMachine', 'openThrowStopChargeMachineModal', _order);
+            },
             _viewAccount: function(_order) {
                 let param = {
                     params: {
