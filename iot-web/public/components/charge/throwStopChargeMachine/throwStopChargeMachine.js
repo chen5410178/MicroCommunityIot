@@ -10,7 +10,7 @@
 
         },
         _initEvent: function() {
-            vc.on('throwStopChargeMachine', 'openStopChargeMachineModal', function(_params) {
+            vc.on('throwStopChargeMachine', 'openThrowStopChargeMachineModal', function(_params) {
 
                 $that.throwStopChargeMachineInfo = _params;
                 $('#throwStopChargeMachineModel').modal('show');
