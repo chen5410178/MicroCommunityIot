@@ -625,7 +625,8 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
 
         if (ListUtil.isNull(chargeMachineOrderDtos)) {
-            throw new IllegalArgumentException("订单不存在");
+           // throw new IllegalArgumentException("订单不存在");
+            return;
         }
 
         ChargeProcessAnalysisPo chargeProcessAnalysisPo = new ChargeProcessAnalysisPo();
