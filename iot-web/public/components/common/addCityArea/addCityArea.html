@@ -1,0 +1,53 @@
+<div id="addCityAreaModel" class="modal fade" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="m-t-none m-b ">
+                    <vc:i18n name="添加区域" namespace="addCityArea"></vc:i18n>
+                </h3>
+                <div class="ibox-content">
+                   
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">
+                            <vc:i18n name="地区名称" namespace="addCityArea"></vc:i18n>
+                        </label>
+                        <div class="col-sm-10">
+                            <input v-model="addCityAreaInfo.areaName" type="text"
+                                :placeholder="vc.i18n('必填，请填写地区名称','addCityArea')" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">
+                            <vc:i18n name="地区编码" namespace="addCityArea"></vc:i18n>
+                        </label>
+                        <div class="col-sm-10">
+                            <!--@blur="textOrgName()"-->
+                            <input v-model="addCityAreaInfo.areaCode" type="text"
+                                :placeholder="vc.i18n('必填，请填写地区编码','addCityArea')" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><span>
+                                <vc:i18n name="上级" namespace="addCityArea"></vc:i18n>
+                            </span></label>
+                        <div class="col-sm-10">
+                            <input v-model="addCityAreaInfo.parentAreaName" disabled type="text"
+                                :placeholder="vc.i18n('必填，请填写上级','addCityArea')" class="form-control">
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <button class="btn btn-primary float-right" type="button" v-on:click="saveOrgInfo()"><i
+                                class="fa fa-check"></i>&nbsp;
+                            <vc:i18n name="保存"></vc:i18n>
+                        </button>
+                        <button type="button" class="btn btn-warning float-right" style="margin-right:20px;"
+                            data-dismiss="modal"><span>
+                                <vc:i18n name="取消" namespace="addCityArea"></vc:i18n>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
