@@ -7,9 +7,6 @@ import java.util.Arrays;
 public class YunCrcUtil {
 
 
-
-
-
     private YunCrcUtil() {
 
     }
@@ -54,20 +51,35 @@ public class YunCrcUtil {
 
     };
 
+    //    public static byte[] calculateCrc(byte[] data) {
+//        int crc;
+//        int ucCRCHi = 0x00ff;
+//        int ucCRCLo = 0x00ff;
+//        int iIndex;
+//        for (int i = 0; i < data.length; ++i) {
+//            iIndex = (ucCRCLo ^ data[i]) & 0x00ff;
+//            ucCRCLo = ucCRCHi ^ gabyCRCHi[iIndex];
+//            ucCRCHi = gabyCRCLo[iIndex];
+//        }
+//        crc = ((ucCRCHi & 0x00ff) << 8) | (ucCRCLo & 0x00ff) & 0xffff;
+//        crc = ((crc & 0xFF00) >> 8) | ((crc & 0x00FF) << 8);
+//        byte[] bytes = toBytes(crc);
+//        return Arrays.copyOfRange(bytes, 2, 4);
+//    }
     public static byte[] calculateCrc(byte[] data) {
-        int crc;
-        int ucCRCHi = 0x00ff;
-        int ucCRCLo = 0x00ff;
-        int iIndex;
-        for (int i = 0; i < data.length; ++i) {
-            iIndex = (ucCRCLo ^ data[i]) & 0x00ff;
-            ucCRCLo = ucCRCHi ^ gabyCRCHi[iIndex];
-            ucCRCHi = gabyCRCLo[iIndex];
+        byte byCRCHi = (byte) 0xff;
+        byte byCRCLo = (byte) 0xff;
+        byte byIdx;
+        int len = data.length;
+
+        for (byte b : data) {
+            byIdx = (byte) (byCRCHi ^ b);
+            byCRCHi = (byte) (byCRCLo ^ gabyCRCHi[byIdx & 0xFF]);
+            byCRCLo = gabyCRCLo[byIdx & 0xFF];
         }
-        crc = ((ucCRCHi & 0x00ff) << 8) | (ucCRCLo & 0x00ff) & 0xffff;
-        crc = ((crc & 0xFF00) >> 8) | ((crc & 0x00FF) << 8);
-        byte[] bytes = toBytes(crc);
-        return Arrays.copyOfRange(bytes, 2, 4);
+
+        // 将 CRC 值拆分为两个字节并返回
+        return new byte[] { byCRCLo,byCRCHi};
     }
 
     public static byte[] toBytes(int value) {
@@ -78,11 +90,13 @@ public class YunCrcUtil {
 
     public static void main(String[] args) {
         // 输入数据 指令：680d 00010005550314127823000001 5043
+        // 680d 000b0003662024110100030100  963c
+        // 680d 000d0004662024110100030100 8544
 
 
         //680D8F3D
         //680DF6CC
-        String hexString = "00020005320102000000010001";
+        String hexString = "000d0004662024110100030100";
         byte[] byteArray = BytesUtil.hexStringToByteArray(hexString);
         System.out.println("生成的 CRC 校验码:" + BytesUtil.bytesToHex(calculateCrc(byteArray)));
 
