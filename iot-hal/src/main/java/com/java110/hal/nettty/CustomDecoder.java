@@ -22,19 +22,16 @@ public class CustomDecoder extends MessageToMessageDecoder<byte[]> {
     protected void decode(ChannelHandlerContext ctx, byte[] msg, List<Object> out) throws Exception {
         LOGGER.debug("-------------解码器接收到数据：{}", msg);
         LOGGER.debug("-------------解码器接收到数据16：{}", BytesUtil.bytesToHex(msg));
+        Channel channel = ctx.channel();
+        InetSocketAddress address = (InetSocketAddress) channel.remoteAddress();
+        String ip = address.toString();
+        if (dataByteMap == null) {
+            dataByteMap = new HashMap<>();
+        }
+
+        LOGGER.debug("channelActive --> RemoteAddress : " + ip + " channelRead ");
 
         try {
-
-            Channel channel = ctx.channel();
-            InetSocketAddress address = (InetSocketAddress) channel.remoteAddress();
-            String ip = address.toString();
-
-            if (dataByteMap == null) {
-                dataByteMap = new HashMap<>();
-            }
-
-            LOGGER.debug("channelActive --> RemoteAddress : " + ip + " channelRead ");
-
             // 计算完整包的长度
             int totalLen;
             if (DataHeader.isYunKuaiChongCharge(msg)) {
@@ -90,6 +87,7 @@ public class CustomDecoder extends MessageToMessageDecoder<byte[]> {
             dataByteMap.remove(ip);
         } catch (Exception e) {
             e.printStackTrace();
+            dataByteMap.remove(ip);
         }
     }
 
