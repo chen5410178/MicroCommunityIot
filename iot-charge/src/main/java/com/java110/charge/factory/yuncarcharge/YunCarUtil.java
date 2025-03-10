@@ -371,7 +371,7 @@ public class YunCarUtil {
         String dataContent = serialNumber + "00" + "04" + machineCode + gunNo + "00";
         String dataLength = calculateLength(dataContent);
         byte[] byteArray = BytesUtil.hexStringToByteArray(dataContent);
-        String CRCCode = BytesUtil.bytesToHex(YunCrcUtil.calculateCrcHL(byteArray));
+        String CRCCode = BytesUtil.bytesToHex(YunCrcUtil.calculateCrc(byteArray));
         return YUN_KUAI_CHONG_HEAD + dataLength + dataContent + CRCCode;
     }
 

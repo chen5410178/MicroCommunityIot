@@ -71,7 +71,7 @@ public class YunCrcUtil {
 //        byte[] result = new byte[]{(byte) (value >> 24), (byte) (value >> 16), (byte) (value >> 8), (byte) value};
 //        return result;
 //    }
-public static byte[] calculateCrcHL(byte[] data) {
+public static byte[] calculateCrcLH(byte[] data) {
     byte byCRCHi = (byte) 0xff;
     byte byCRCLo = (byte) 0xff;
     byte byIdx;
@@ -115,13 +115,14 @@ public static byte[] calculateCrcHL(byte[] data) {
         // 680d 00050003662024110100030100 41d5
         // 680d 00050004662024110100030100 649b
         // 680D 36000004550314127823050100 65B2 -- 心跳 对不上
+        // 680d 00120004662024110100030200 5f50
 
 
         //680D8F3D
         //680DF6CC
-        String hexString = "00050004662024110100030100";
+        String hexString = "00120004662024110100030200";
         byte[] byteArray = BytesUtil.hexStringToByteArray(hexString);
-        System.out.println("生成的 CRC 校验码:" + BytesUtil.bytesToHex(calculateCrc(byteArray)));
+        System.out.println("生成的 CRC 校验码:" + BytesUtil.bytesToHex(calculateCrcLH(byteArray)));
 
 
 

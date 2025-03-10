@@ -3,6 +3,7 @@ package com.java110.hal.nettty;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.utils.BytesUtil;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
