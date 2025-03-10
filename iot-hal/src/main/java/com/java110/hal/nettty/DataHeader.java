@@ -189,6 +189,7 @@ public class DataHeader {
         try {
             data = data.substring(30, 40);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
         return data;
