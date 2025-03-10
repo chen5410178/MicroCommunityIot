@@ -51,43 +51,58 @@ public class YunCrcUtil {
 
     };
 
-        public static byte[] calculateCrc(byte[] data) {
-        int crc;
-        int ucCRCHi = 0x00ff;
-        int ucCRCLo = 0x00ff;
-        int iIndex;
-        for (int i = 0; i < data.length; ++i) {
-            iIndex = (ucCRCLo ^ data[i]) & 0x00ff;
-            ucCRCLo = ucCRCHi ^ gabyCRCHi[iIndex];
-            ucCRCHi = gabyCRCLo[iIndex];
-        }
-        crc = ((ucCRCHi & 0x00ff) << 8) | (ucCRCLo & 0x00ff) & 0xffff;
-        crc = ((crc & 0xFF00) >> 8) | ((crc & 0x00FF) << 8);
-        byte[] bytes = toBytes(crc);
-        return Arrays.copyOfRange(bytes, 2, 4);
-    }
-
-    public static byte[] toBytes(int value) {
-        byte[] result = new byte[]{(byte) (value >> 24), (byte) (value >> 16), (byte) (value >> 8), (byte) value};
-        return result;
-    }
-
-//    public static byte[] calculateCrc(byte[] data) {
-//        byte byCRCHi = (byte) 0xff;
-//        byte byCRCLo = (byte) 0xff;
-//        byte byIdx;
-//        int len = data.length;
-//
-//        for (byte b : data) {
-//            byIdx = (byte) ((byCRCHi ^ b) & 0xFF);
-//            byCRCHi = (byte) ((byCRCLo ^ gabyCRCHi[byIdx & 0xFF]) & 0xFF);
-//            byCRCLo =(byte) (gabyCRCLo[byIdx & 0xFF]& 0xFF);
+//        public static byte[] calculateCrc(byte[] data) {
+//        int crc;
+//        int ucCRCHi = 0x00ff;
+//        int ucCRCLo = 0x00ff;
+//        int iIndex;
+//        for (int i = 0; i < data.length; ++i) {
+//            iIndex = (ucCRCLo ^ data[i]) & 0x00ff;
+//            ucCRCLo = ucCRCHi ^ gabyCRCHi[iIndex];
+//            ucCRCHi = gabyCRCLo[iIndex];
 //        }
-//
-//        // 将 CRC 值拆分为两个字节并返回
-//        //return new byte[] { byCRCLo,byCRCHi};
-//        return new byte[] { byCRCHi,byCRCLo};
+//        crc = ((ucCRCHi & 0x00ff) << 8) | (ucCRCLo & 0x00ff) & 0xffff;
+//        crc = ((crc & 0xFF00) >> 8) | ((crc & 0x00FF) << 8);
+//        byte[] bytes = toBytes(crc);
+//        return Arrays.copyOfRange(bytes, 2, 4);
 //    }
+//
+//    public static byte[] toBytes(int value) {
+//        byte[] result = new byte[]{(byte) (value >> 24), (byte) (value >> 16), (byte) (value >> 8), (byte) value};
+//        return result;
+//    }
+public static byte[] calculateCrcHL(byte[] data) {
+    byte byCRCHi = (byte) 0xff;
+    byte byCRCLo = (byte) 0xff;
+    byte byIdx;
+    int len = data.length;
+
+    for (byte b : data) {
+        byIdx = (byte) ((byCRCHi ^ b) & 0xFF);
+        byCRCHi = (byte) ((byCRCLo ^ gabyCRCHi[byIdx & 0xFF]) & 0xFF);
+        byCRCLo =(byte) (gabyCRCLo[byIdx & 0xFF]& 0xFF);
+    }
+
+    // 将 CRC 值拆分为两个字节并返回
+    return new byte[] { byCRCLo,byCRCHi};
+    //return new byte[] { byCRCHi,byCRCLo};
+}
+    public static byte[] calculateCrc(byte[] data) {
+        byte byCRCHi = (byte) 0xff;
+        byte byCRCLo = (byte) 0xff;
+        byte byIdx;
+        int len = data.length;
+
+        for (byte b : data) {
+            byIdx = (byte) ((byCRCHi ^ b) & 0xFF);
+            byCRCHi = (byte) ((byCRCLo ^ gabyCRCHi[byIdx & 0xFF]) & 0xFF);
+            byCRCLo =(byte) (gabyCRCLo[byIdx & 0xFF]& 0xFF);
+        }
+
+        // 将 CRC 值拆分为两个字节并返回
+        //return new byte[] { byCRCLo,byCRCHi};
+        return new byte[] { byCRCHi,byCRCLo};
+    }
 
 
 
@@ -97,13 +112,14 @@ public class YunCrcUtil {
         // 680c 000000026620241101000300 4921
         // 680C 000000025503141278230500 DA4C -- 注册放回，能对上
         // 68（起始标志）0D（数据长度）0001（序列号域）00（加密标志）03（类型）32010200000001（桩编码）0x01（枪号：1 号枪）00（枪状态：正常）6890（帧校验域）
-        // 680D 00010003320102000000010100 6890
+        // 680d 00050003662024110100030100 41d5
+        // 680d 00050004662024110100030100 649b
         // 680D 36000004550314127823050100 65B2 -- 心跳 对不上
 
 
         //680D8F3D
         //680DF6CC
-        String hexString = "680D00010003320102000000010100";
+        String hexString = "00050004662024110100030100";
         byte[] byteArray = BytesUtil.hexStringToByteArray(hexString);
         System.out.println("生成的 CRC 校验码:" + BytesUtil.bytesToHex(calculateCrc(byteArray)));
 
