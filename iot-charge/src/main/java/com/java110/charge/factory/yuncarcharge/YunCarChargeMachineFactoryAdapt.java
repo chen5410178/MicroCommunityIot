@@ -383,6 +383,9 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         chargeMachineOrderDto.setMachineId(chargeMachineDto.getMachineId());
         List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
         if (ListUtil.isNull(chargeMachineOrderDtos)) {
+            //todo 回复订单计算情况
+            String paramOut = YunCarUtil.confirmTransactionRespon(serNo, tradeNo);
+            notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
             return;
         }
 

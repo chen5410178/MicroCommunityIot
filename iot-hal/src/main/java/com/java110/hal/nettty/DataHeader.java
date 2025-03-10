@@ -186,6 +186,9 @@ public class DataHeader {
      */
     public static String getSbMachineCode(byte[] msg) {
         String data = BytesUtil.bytesToHex(msg);
+        if(data.length()< 40){
+            return "";
+        }
         try {
             data = data.substring(30, 40);
         } catch (Exception e) {
