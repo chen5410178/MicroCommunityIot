@@ -37,7 +37,7 @@ public class YunCarUtil {
      * @return
      */
     public static String getCmd(byte[] msg) {
-        String data = BytesUtil.bytesToHex(msg);
+        String data = us ;
         data = data.substring(10, 12);
         return data;
     }

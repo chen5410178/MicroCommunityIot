@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="machineTransLogV1ServiceDaoImpl">
+
+
+    <!-- 保存硬件交互日志信息 add by wuxw 2018-07-03 -->
+    <insert id="saveMachineTransLogInfo" parameterType="Map">
+        insert into machine_trans_log(
+        log_type,res_param,log_cmd,machine_code,busi_key,log_id,req_param,community_id
+        ) values (
+        #{logType},#{resParam},#{logCmd},#{machineCode},#{busiKey},#{logId},#{reqParam},#{communityId}
+        )
+    </insert>
+
+
+    <!-- 查询硬件交互日志信息 add by wuxw 2018-07-03 -->
+    <select id="getMachineTransLogInfo" parameterType="Map" resultType="Map">
+        select t.log_type logType,t.res_param resParam,t.log_cmd logCmd,t.machine_code machineCode,t.busi_key
+        busiKey,t.log_id logId,t.status_cd statusCd,t.req_param reqParam,t.community_id communityId
+        from machine_trans_log t
+        where 1 =1
+        <if test="logType !=null and logType != ''">
+            and t.log_type= #{logType}
+        </if>
+        <if test="resParam !=null and resParam != ''">
+            and t.res_param= #{resParam}
+        </if>
+        <if test="logCmd !=null and logCmd != ''">
+            and t.log_cmd= #{logCmd}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="busiKey !=null and busiKey != ''">
+            and t.busi_key= #{busiKey}
+        </if>
+        <if test="logId !=null and logId != ''">
+            and t.log_id= #{logId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="reqParam !=null and reqParam != ''">
+            and t.req_param= #{reqParam}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改硬件交互日志信息 add by wuxw 2018-07-03 -->
+    <update id="updateMachineTransLogInfo" parameterType="Map">
+        update machine_trans_log t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="logType !=null and logType != ''">
+            , t.log_type= #{logType}
+        </if>
+        <if test="resParam !=null and resParam != ''">
+            , t.res_param= #{resParam}
+        </if>
+        <if test="logCmd !=null and logCmd != ''">
+            , t.log_cmd= #{logCmd}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            , t.machine_code= #{machineCode}
+        </if>
+        <if test="busiKey !=null and busiKey != ''">
+            , t.busi_key= #{busiKey}
+        </if>
+        <if test="reqParam !=null and reqParam != ''">
+            , t.req_param= #{reqParam}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        where 1=1
+        <if test="logId !=null and logId != ''">
+            and t.log_id= #{logId}
+        </if>
+
+    </update>
+
+    <!-- 查询硬件交互日志数量 add by wuxw 2018-07-03 -->
+    <select id="queryMachineTransLogsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from machine_trans_log t
+        where 1 =1
+        <if test="logType !=null and logType != ''">
+            and t.log_type= #{logType}
+        </if>
+        <if test="resParam !=null and resParam != ''">
+            and t.res_param= #{resParam}
+        </if>
+        <if test="logCmd !=null and logCmd != ''">
+            and t.log_cmd= #{logCmd}
+        </if>
+        <if test="machineCode !=null and machineCode != ''">
+            and t.machine_code= #{machineCode}
+        </if>
+        <if test="busiKey !=null and busiKey != ''">
+            and t.busi_key= #{busiKey}
+        </if>
+        <if test="logId !=null and logId != ''">
+            and t.log_id= #{logId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="reqParam !=null and reqParam != ''">
+            and t.req_param= #{reqParam}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+
+    </select>
+
+</mapper>

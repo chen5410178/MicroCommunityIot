@@ -13,11 +13,13 @@ import com.java110.dto.chargeRulePrice.ChargeRulePriceDto;
 import com.java110.dto.data.NettyReplyDataDto;
 import com.java110.intf.charge.*;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
+import com.java110.intf.system.IMachineTransLogV1InnerServiceSMO;
 import com.java110.po.chargeMachine.ChargeMachinePo;
 import com.java110.po.chargeMachineOrder.ChargeMachineOrderPo;
 import com.java110.po.chargeMachinePort.ChargeMachinePortPo;
 import com.java110.po.chargeProcessAnalysis.ChargeProcessAnalysisPo;
 import com.java110.po.chargeProcessInfo.ChargeProcessInfoPo;
+import com.java110.po.machineTransLog.MachineTransLogPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,9 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
     @Autowired
     private INotifyChargeV1InnerServiceSMO notifyChargeV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IMachineTransLogV1InnerServiceSMO machineTransLogV1InnerServiceSMOImpl;
 
     public static final Map<String, String> resultMap = new HashMap<>();
 
@@ -241,19 +246,19 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         chargeMachineDto = chargeMachineDtos.get(0);
         switch (cmd) {
             case YunCarUtil.CMD_REGISTER:
-                machineRegisterRespon(chargeMachineDto);
+                machineRegisterRespon(chargeMachineDto, data);
                 break;
             case YunCarUtil.CMD_HEARTBEAT:
                 String gunNo = YunCarUtil.getGunNumber(data);
                 String gunState = YunCarUtil.getGunState(data); //todo 枪状态异常需要实现下
-                machineHeartbeatRespon(chargeMachineDto, serNo, gunNo);
+                machineHeartbeatRespon(chargeMachineDto, serNo, gunNo,data);
                 break;
             case YunCarUtil.CMD_BILLING_MODEL_VALIDATION:
                 String billModeNo = YunCarUtil.getBillingmodelNo(data);
-                machineBillingmodelRespon(chargeMachineDto, serNo, billModeNo);
+                machineBillingmodelRespon(chargeMachineDto, serNo, billModeNo,data);
                 break;
             case YunCarUtil.CMD_BILLING_MODEL_REQUEST:
-                machineBillingmodelRequestRespon(chargeMachineDto, serNo);
+                machineBillingmodelRequestRespon(chargeMachineDto, serNo,data);
                 break;
             case YunCarUtil.CMD_REAL_MONITORING_DATA://上传实时监测数据
                 String tradeNo = YunCarUtil.getTradeNo(data);
@@ -625,7 +630,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
 
         if (ListUtil.isNull(chargeMachineOrderDtos)) {
-           // throw new IllegalArgumentException("订单不存在");
+            // throw new IllegalArgumentException("订单不存在");
             return;
         }
 
@@ -641,10 +646,10 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         chargeProcessAnalysisPo.setOutputCurrent(YunCarUtil.getTargetBin(data, outputCurrentPos, outputCurrentLen, 1));//输出电流
         chargeProcessAnalysisPo.setRemainingTime(YunCarUtil.getTargetBin(data, remainingTimePos, remainingTimeLen));//剩余时间单位：min；待机置零、交流桩置零
         String gunLineTem = YunCarUtil.getTargetBin(data, gunLineTemPos, gunLineTemLen);
-        try{
-           int gunLineTemInt = Integer.parseInt(gunLineTem)-50;
-            gunLineTem = gunLineTemInt+"";
-        }catch (Exception e){
+        try {
+            int gunLineTemInt = Integer.parseInt(gunLineTem) - 50;
+            gunLineTem = gunLineTemInt + "";
+        } catch (Exception e) {
             e.printStackTrace();
         }
         chargeProcessAnalysisPo.setGunLineTem(gunLineTem); //枪线温度
@@ -686,7 +691,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
      * @param serNo
      */
 
-    private void machineBillingmodelRequestRespon(ChargeMachineDto chargeMachineDto, String serNo) {
+    private void machineBillingmodelRequestRespon(ChargeMachineDto chargeMachineDto, String serNo,byte[] data) {
         ChargeMachinePo chargeMachinePo = new ChargeMachinePo();
         chargeMachinePo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         chargeMachinePo.setMachineId(chargeMachineDto.getMachineId());
@@ -703,12 +708,14 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         String paramOut = YunCarUtil.machineBillingmodelRequestRespon(serNo, chargeMachineDto.getMachineCode(), chargeRulePriceDtos, chargePeakAlleyPriceDtos);
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
 
+        saveTranLog(chargeMachineDto,"BILL_MODEL_REQ",BytesUtil.bytesToHex(data),paramOut);
         //时间校准
         paramOut = YunCarUtil.calibrationTime(chargeMachineDto.getMachineCode());
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
         //二维码下发
         paramOut = YunCarUtil.sendQrCode(chargeMachineDto.getMachineCode(), UrlCache.getOwnerUrl() + "/app/charge/ykc?No=");
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+
 
     }
 
@@ -718,7 +725,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
      * @param chargeMachineDto
      * @param serNo
      */
-    private void machineBillingmodelRespon(ChargeMachineDto chargeMachineDto, String serNo, String billModeNo) {
+    private void machineBillingmodelRespon(ChargeMachineDto chargeMachineDto, String serNo, String billModeNo,byte[] data) {
         ChargeMachinePo chargeMachinePo = new ChargeMachinePo();
         chargeMachinePo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         chargeMachinePo.setMachineId(chargeMachineDto.getMachineId());
@@ -726,6 +733,8 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         chargeMachineV1InnerServiceSMOImpl.updateChargeMachine(chargeMachinePo);
         String paramOut = YunCarUtil.machineBillingmodelRespon(serNo, chargeMachineDto.getMachineCode(), billModeNo);
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+        saveTranLog(chargeMachineDto,"Billing_Model",BytesUtil.bytesToHex(data),paramOut);
+
     }
 
 
@@ -735,7 +744,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
      * @param chargeMachineDto
      * @param serNo
      */
-    private void machineHeartbeatRespon(ChargeMachineDto chargeMachineDto, String serNo, String gunNo) {
+    private void machineHeartbeatRespon(ChargeMachineDto chargeMachineDto, String serNo, String gunNo,byte[] data) {
         ChargeMachinePo chargeMachinePo = new ChargeMachinePo();
         chargeMachinePo.setHeartbeatTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         chargeMachinePo.setMachineId(chargeMachineDto.getMachineId());
@@ -743,6 +752,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         chargeMachineV1InnerServiceSMOImpl.updateChargeMachine(chargeMachinePo);
         String paramOut = YunCarUtil.machineHeartbeatRespon(serNo, chargeMachineDto.getMachineCode(), gunNo);
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+        saveTranLog(chargeMachineDto,"HEARTBEAT",BytesUtil.bytesToHex(data),paramOut);
     }
 
     /**
@@ -750,9 +760,27 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
      *
      * @param chargeMachineDto
      */
-    private void machineRegisterRespon(ChargeMachineDto chargeMachineDto) {
+    private void machineRegisterRespon(ChargeMachineDto chargeMachineDto, byte[] data) {
         String paramOut = YunCarUtil.machineRegisterRespon(chargeMachineDto.getMachineCode());
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+
+        saveTranLog(chargeMachineDto,"REGISTER",BytesUtil.bytesToHex(data),paramOut);
+
+    }
+
+    private void saveTranLog(ChargeMachineDto chargeMachineDto, String cmd, String reqStr, String resStr) {
+
+        MachineTransLogPo machineTransLogPo = new MachineTransLogPo();
+        machineTransLogPo.setLogType("CHARGE_CAR");
+        machineTransLogPo.setResParam(resStr);
+        machineTransLogPo.setLogCmd(cmd);
+        machineTransLogPo.setMachineCode(chargeMachineDto.getMachineCode());
+        machineTransLogPo.setBusiKey(chargeMachineDto.getMachineCode());
+        machineTransLogPo.setLogId(GenerateCodeFactory.getGeneratorId("11"));
+        machineTransLogPo.setReqParam(reqStr);
+        machineTransLogPo.setCommunityId(chargeMachineDto.getCommunityId());
+        machineTransLogV1InnerServiceSMOImpl.saveMachineTransLog(machineTransLogPo);
+
     }
 
 
