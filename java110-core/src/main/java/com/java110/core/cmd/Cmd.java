@@ -94,6 +94,20 @@ public abstract class Cmd implements ServiceCmdListener {
         Assert.listOnlyOne(storeDtos, "不是运营者");
     }
 
+    protected void assertProperty(ICmdDataFlowContext context) {
+        String storeId = CmdContextUtils.getStoreId(context);
+        Assert.hasLength(storeId, "未查询到商户");
+        if (storeId.startsWith("-")) {
+            throw new IllegalArgumentException("未查询到商户");
+        }
+        StoreDto storeDto = new StoreDto();
+        storeDto.setStoreId(storeId);
+        storeDto.setStoreTypeCd(StoreDto.STORE_TYPE_PROPERTY);
+        List<StoreDto> storeDtos = storeV1InnerServiceSMOImpl.queryStores(storeDto);
+
+        Assert.listOnlyOne(storeDtos, "不是物业");
+    }
+
     protected void assertDev(ICmdDataFlowContext context) {
         String storeId = CmdContextUtils.getStoreId(context);
         Assert.hasLength(storeId, "未查询到商户");

@@ -1,0 +1,132 @@
+<div>
+    <div class="row">
+        <div class="col-md-1 padding-r-0">
+            <vc:create path="community/selectAdminCommunity"></vc:create>
+        </div>
+        <div class="col-md-11">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择设备编码','aAccessControl')"
+                                    v-model="aAccessControlInfo.conditions.machineCode" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择设备名称','aAccessControl')"
+                                    v-model="aAccessControlInfo.conditions.machineName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择位置名称','aAccessControl')"
+                                    v-model="aAccessControlInfo.conditions.locationName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-primary btn-sm"
+                                v-on:click="_queryAccessControlMethod()">
+                                <vc:i18n name="查询"></vc:i18n>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="门禁信息" namespace="aAccessControl"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='小区名称' namespace='aAccessControl'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='门禁编码' namespace='aAccessControl'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='门禁名称' namespace='aAccessControl'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='IP' namespace='aAccessControl'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='Mac' namespace='aAccessControl'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='开门提示' namespace='aAccessControl'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='方向' namespace='aAccessControl'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='厂家' namespace='aAccessControl'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='位置' namespace='aAccessControl'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='在线' namespace='aAccessControl'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='心跳时间' namespace='aAccessControl'></vc:i18n>
+                                </th>
+                                <!-- <th class="text-center">
+                            <vc:i18n name='监控视频' namespace='aAccessControl'></vc:i18n>
+                        </th> -->
+                                <th class="text-center">
+                                    <vc:i18n name='操作'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="accessControl in aAccessControlInfo.accessControls">
+                                <td class="text-center">{{accessControl.communityName}}</td>
+                                <td class="text-center">{{accessControl.machineCode}}</td>
+                                <td class="text-center">{{accessControl.machineName}}</td>
+                                <td class="text-center">{{accessControl.machineIp || '-'}}</td>
+                                <td class="text-center">{{accessControl.machineMac || '-'}}</td>
+                                <td class="text-center">{{accessControl.promptSwitch == 'ON'?'是':'否'}}</td>
+                                <td class="text-center">{{accessControl.direction == '3306'?'进':'出'}}</td>
+                                <td class="text-center">{{accessControl.implBean}}</td>
+                                <td class="text-center">{{accessControl.locationName}}</td>
+                                <td class="text-center">{{accessControl.stateName}}</td>
+                                <td class="text-center">{{accessControl.heartbeatTime}}</td>
+                                <!-- <td class="text-center">{{accessControl.monitorName || '-'}}
+                            <a v-if="accessControl.monitorName" href="javascript:void(0)"
+                                @click="_viewAccessControlVideo(accessControl)">(观看)</a>
+                        </td> -->
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs"
+                                            @click="_toAccessControlDetail(accessControl)">
+                                            <vc:i18n name='详情'></vc:i18n>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
