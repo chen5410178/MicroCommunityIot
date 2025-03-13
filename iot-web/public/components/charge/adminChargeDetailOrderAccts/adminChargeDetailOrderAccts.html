@@ -1,0 +1,52 @@
+<div class="margin-top">
+    <div class="margin-top">
+        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <vc:i18n name='明细ID' namespace='adminChargeDetailOrderAccts'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='时间段' namespace='adminChargeDetailOrderAccts'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='小时电价' namespace='adminChargeDetailOrderAccts'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='扣款金额' namespace='adminChargeDetailOrderAccts'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='扣款时间' namespace='adminChargeDetailOrderAccts'></vc:i18n>
+                    </th>
+                    <th class="text-center">
+                        <vc:i18n name='说明' namespace='adminChargeDetailOrderAccts'></vc:i18n>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="acct in machineDetailChargeOrderAcctsInfo.orderAccts">
+                    <td class="text-center">{{acct.acctDetailId}}</td>
+                    <td class="text-center">
+                        <div>{{acct.startTime}}</div>
+                        <div>~{{acct.endTime}}</div>
+                    </td>
+                    <td class="text-center">{{acct.durationPrice}}</td>
+                    <td class="text-center">{{acct.amount}}</td>
+                    <td class="text-center">{{acct.createTime}}</td>
+                    <td class="text-center">
+                        <div style="width: 200px;">{{acct.remark}}</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="row">
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-sm-8">
+                <vc:create namespace="machineDetailChargeOrderAccts" path="frame/paginationPlus"></vc:create>
+            </div>
+        </div>
+    </div>
+</div>

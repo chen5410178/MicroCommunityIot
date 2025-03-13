@@ -23,6 +23,7 @@ public class BarrierDto extends PageDto implements Serializable {
     private String machineId;
     private String machineCode;
     private String communityId;
+    private String communityName;
     private String machineName;
     private String machineIp;
     private String direction;
@@ -217,5 +218,13 @@ public class BarrierDto extends PageDto implements Serializable {
 
     public void setMonitorName(String monitorName) {
         this.monitorName = monitorName;
+    }
+
+    public String getCommunityName() {
+        return communityName;
+    }
+
+    public void setCommunityName(String communityName) {
+        this.communityName = communityName;
     }
 }

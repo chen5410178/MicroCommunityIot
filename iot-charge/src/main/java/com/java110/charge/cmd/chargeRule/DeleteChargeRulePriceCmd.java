@@ -53,7 +53,7 @@ public class DeleteChargeRulePriceCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "ruleId", "id不能为空");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
-
+        super.assertProperty(cmdDataFlowContext);
     }
 
     @Override

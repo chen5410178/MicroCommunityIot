@@ -114,46 +114,49 @@
     <div class="margin-top-sm">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:aAccessControlDetailInfo._currentTab == 'aAccessControlDetailAccessControlFace'}" v-on:click="changeTab('aAccessControlDetailAccessControlFace')">
+                <a class="nav-link" v-bind:class="{active:aAccessControlDetailInfo._currentTab == 'aAccessControlDetailFace'}" v-on:click="changeTab('aAccessControlDetailFace')">
                     <vc:i18n name="门禁人员" namespace="aAccessControlDetail"></vc:i18n>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:aAccessControlDetailInfo._currentTab == 'aAccessControlDetailAccessControlFloor'}" v-on:click="changeTab('aAccessControlDetailAccessControlFloor')">
+                <a class="nav-link" v-bind:class="{active:aAccessControlDetailInfo._currentTab == 'aAccessControlDetailFloor'}" v-on:click="changeTab('aAccessControlDetailFloor')">
                     <vc:i18n name="楼栋授权" namespace="aAccessControlDetail"></vc:i18n>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:aAccessControlDetailInfo._currentTab == 'aAccessControlDetailAccessControlOrg'}" v-on:click="changeTab('aAccessControlDetailAccessControlOrg')">
+                <a class="nav-link" v-bind:class="{active:aAccessControlDetailInfo._currentTab == 'aAccessControlDetailOrg'}" v-on:click="changeTab('aAccessControlDetailOrg')">
                     <vc:i18n name="部门授权" namespace="aAccessControlDetail"></vc:i18n>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:aAccessControlDetailInfo._currentTab == 'aAccessControlDetailAccessControlLog'}" v-on:click="changeTab('aAccessControlDetailAccessControlLog')">
+                <a class="nav-link" v-bind:class="{active:aAccessControlDetailInfo._currentTab == 'aAccessControlDetailLog'}" v-on:click="changeTab('aAccessControlDetailLog')">
                     <vc:i18n name="下发日志" namespace="aAccessControlDetail"></vc:i18n>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" v-bind:class="{active:aAccessControlDetailInfo._currentTab == 'aAccessControlDetailAccessControlInout'}" v-on:click="changeTab('aAccessControlDetailAccessControlInout')">
+                <a class="nav-link" v-bind:class="{active:aAccessControlDetailInfo._currentTab == 'aAccessControlDetailInout'}" v-on:click="changeTab('aAccessControlDetailInout')">
                     <vc:i18n name="进出记录" namespace="aAccessControlDetail"></vc:i18n>
                 </a>
             </li>
         </ul>
     </div>
+    <div v-if="aAccessControlDetailInfo._currentTab == 'aAccessControlDetailFace'">
+        <vc:create path="accessControl/aAccessControlDetailFace"></vc:create>
+    </div>
 
-    <!-- <div v-if="aAccessControlDetailInfo._currentTab == 'aAccessControlDetailAccessControlFace'">
-        <vc:create path="property/aAccessControlDetailAccessControlFace"></vc:create>
+    <div v-if="aAccessControlDetailInfo._currentTab == 'aAccessControlDetailFloor'">
+        <vc:create path="accessControl/aAccessControlDetailFloor"></vc:create>
     </div>
-    <div v-if="aAccessControlDetailInfo._currentTab == 'aAccessControlDetailAccessControlFloor'">
-        <vc:create path="property/aAccessControlDetailAccessControlFloor"></vc:create>
+
+    <div v-if="aAccessControlDetailInfo._currentTab == 'aAccessControlDetailOrg'">
+        <vc:create path="accessControl/aAccessControlDetailOrg"></vc:create>
     </div>
-    <div v-if="aAccessControlDetailInfo._currentTab == 'aAccessControlDetailAccessControlOrg'">
-        <vc:create path="property/aAccessControlDetailAccessControlOrg"></vc:create>
+
+    <div v-if="aAccessControlDetailInfo._currentTab == 'aAccessControlDetailLog'">
+        <vc:create path="accessControl/aAccessControlDetailLog"></vc:create>
     </div>
-    <div v-if="aAccessControlDetailInfo._currentTab == 'aAccessControlDetailAccessControlLog'">
-        <vc:create path="property/aAccessControlDetailAccessControlLog"></vc:create>
-    </div>
-    <div v-if="aAccessControlDetailInfo._currentTab == 'aAccessControlDetailAccessControlInout'">
-        <vc:create path="property/aAccessControlDetailAccessControlInout"></vc:create>
-    </div> -->
+               
+    <div v-if="aAccessControlDetailInfo._currentTab == 'aAccessControlDetailInout'">
+        <vc:create path="accessControl/aAccessControlDetailInout"></vc:create>
+    </div> 
 </div>

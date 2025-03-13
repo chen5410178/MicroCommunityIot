@@ -65,6 +65,7 @@ public class ListAccessControlInoutCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
+        super.assertProperty(cmdDataFlowContext);
         Assert.hasKeyAndValue(reqJson, "communityId", "未包含小区");
 
     }

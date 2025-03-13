@@ -19,7 +19,7 @@
                 locationName: '',
                 stateName: '',
                 createTime: '',
-                _currentTab: 'aAccessControlDetailAccessControlFace',
+                _currentTab: 'aAccessControlDetailFace',
                 needBack: false,
             }
         },

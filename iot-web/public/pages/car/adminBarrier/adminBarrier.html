@@ -1,0 +1,111 @@
+<div>
+    <div class="row">
+        <div class="col-md-1 padding-r-0">
+            <vc:create path="community/selectAdminCommunity"></vc:create>
+        </div>
+        <div class="col-md-11">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择设备编码','adminBarrier')"
+                                    v-model="adminBarrierInfo.conditions.machineCode" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择设备名称','adminBarrier')"
+                                    v-model="adminBarrierInfo.conditions.machineName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryAdminBarrierMethod()">
+                                <i class="glyphicon glyphicon-search"></i> <span>
+                                    <vc:i18n name="查询"></vc:i18n>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="摄像头" namespace="adminBarrier"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='小区名称' namespace='adminBarrier'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='设备编码' namespace='adminBarrier'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='设备名称' namespace='adminBarrier'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='设备IP' namespace='adminBarrier'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='设备方向' namespace='adminBarrier'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='道闸厂家' namespace='adminBarrier'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='岗亭' namespace='adminBarrier'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='状态' namespace='adminBarrier'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='监控' namespace='adminBarrier'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='心跳时间' namespace='adminBarrier'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='adminBarrier'></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="adminBarrier in adminBarrierInfo.barriers">
+                                <td class="text-center">{{adminBarrier.communityName}}</td>
+                                <td class="text-center">{{adminBarrier.machineCode}}</td>
+                                <td class="text-center">{{adminBarrier.machineName}}</td>
+                                <td class="text-center">{{adminBarrier.machineIp}}</td>
+                                <td class="text-center">{{adminBarrier.direction == '3306'?'进':'出'}}</td>
+                                <td class="text-center">{{adminBarrier.implBeanName}}</td>
+                                <td class="text-center">{{adminBarrier.boxName}}</td>
+                                <td class="text-center">{{adminBarrier.stateName}}</td>
+                                <td class="text-center">{{adminBarrier.monitorName}}</td>
+                                <td class="text-center">{{adminBarrier.heartbeatTime}}</td>
+                                <td class="text-center">{{adminBarrier.createTime}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

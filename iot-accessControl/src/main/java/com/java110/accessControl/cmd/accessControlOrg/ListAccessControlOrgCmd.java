@@ -97,6 +97,7 @@ public class ListAccessControlOrgCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
+        super.assertProperty(cmdDataFlowContext);
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
 
     }

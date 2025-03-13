@@ -120,7 +120,7 @@ public static byte[] calculateCrcLH(byte[] data) {
 
         //680D8F3D
         //680DF6CC
-        String hexString = "00120004662024110100030200";
+        String hexString = "000000025503141278230500";
         byte[] byteArray = BytesUtil.hexStringToByteArray(hexString);
         System.out.println("生成的 CRC 校验码:" + BytesUtil.bytesToHex(calculateCrcLH(byteArray)));
 

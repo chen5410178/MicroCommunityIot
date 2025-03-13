@@ -55,6 +55,8 @@ public class ListChargeRulePriceCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
+        super.assertProperty(cmdDataFlowContext);
+
     }
 
     @Override

@@ -26,13 +26,14 @@ public class ChargeMachineDto extends PageDto implements Serializable {
     private String heartbeatTime;
     private String implBean;
     private String machineId;
+    private String machineName;
     private String machineCode;
     private String energyPrice;
     private String ruleId;
 
     private String ruleName;
     private String communityId;
-    private String machineName;
+    private String communityName;
     private String chargeType;
     private String chargeTypeName;
 
@@ -234,6 +235,14 @@ public class ChargeMachineDto extends PageDto implements Serializable {
 
     public void setMonitorName(String monitorName) {
         this.monitorName = monitorName;
+    }
+
+    public String getCommunityName() {
+        return communityName;
+    }
+
+    public void setCommunityName(String communityName) {
+        this.communityName = communityName;
     }
 }
 

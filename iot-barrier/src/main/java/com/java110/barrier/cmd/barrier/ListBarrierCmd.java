@@ -66,6 +66,8 @@ public class ListBarrierCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
+        super.assertProperty(cmdDataFlowContext);
+
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
 
     }
