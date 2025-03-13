@@ -1,0 +1,196 @@
+<div class="white-bg padding-lg padding-top border-radius">
+    <div class="flex justify-between">
+        <div class="text-title">
+            水电表信息
+        </div>
+        <div>
+            <button type="button" class="btn btn-white btn-sm" style="margin-left:10px"  v-on:click="vc.goBack()">
+                返回
+            </button>
+        </div>
+    </div>
+    <!-- 业主信息 -->
+    <div class="margin-top">
+        <div class="row" >
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="水电表ID：" namespace="adminMeterDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{adminMeterDetailInfo.machineId}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="水电表名称：" namespace="adminMeterDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{adminMeterDetailInfo.machineName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="水电表号：" namespace="adminMeterDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{adminMeterDetailInfo.address}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="厂家名称:" namespace="adminMeterDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{adminMeterDetailInfo.implBeanName}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="水电表模式：" namespace="adminMeterDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{adminMeterDetailInfo.machineModelName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="水电表类型：" namespace="adminMeterDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{adminMeterDetailInfo.meterTypeName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="房间:" namespace="adminMeterDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{adminMeterDetailInfo.roomName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="在线状态:" namespace="adminMeterDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{adminMeterDetailInfo.stateName}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="本期读数：" namespace="adminMeterDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{adminMeterDetailInfo.curDegrees}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="本期读数时间：" namespace="adminMeterDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{adminMeterDetailInfo.curReadingTime}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="预存剩余读数:" namespace="adminMeterDetailInfo"></vc:i18n>
+                            </label>
+                            <label class="">{{adminMeterDetailInfo.prestoreDegrees}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="心跳时间:" namespace="adminMeterDetailInfo"></vc:i18n>
+                            </label>
+                            <label class=""> {{adminMeterDetailInfo.heartbeatTime}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="每月抄表日:" namespace="adminMeterDetailInfo"></vc:i18n>
+                            </label>
+                            <label class=""> {{adminMeterDetailInfo.readDay}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="抄表小时:" namespace="adminMeterDetailInfo"></vc:i18n>
+                            </label>
+                            <label class=""> {{adminMeterDetailInfo.readHours}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                <vc:i18n name="添加时间:" namespace="adminMeterDetailInfo"></vc:i18n>
+                            </label>
+                            <label class=""> {{adminMeterDetailInfo.createTime}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div v-for="(item,index) in adminMeterDetailInfo.specs">
+                    <div class="row" v-if="index % 4 == 0">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="col-form-label">{{item.specName}}：</label>
+                                <label class="">{{item.specValue}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="index < adminMeterDetailInfo.specs.length-1">
+                            <div class="form-group">
+                                <label class="col-form-label">{{adminMeterDetailInfo.specs[index+1].specName}}：</label>
+                                <label class="">{{adminMeterDetailInfo.specs[index+1].specValue}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="index < adminMeterDetailInfo.specs.length-2">
+                            <div class="form-group">
+                                <label class="col-form-label">{{adminMeterDetailInfo.specs[index+2].specName}}：</label>
+                                <label class="">{{adminMeterDetailInfo.specs[index+2].specValue}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" v-if="index < adminMeterDetailInfo.specs.length-3">
+                            <div class="form-group">
+                                <label class="col-form-label">{{adminMeterDetailInfo.specs[index+3].specName}}：</label>
+                                <label class="">{{adminMeterDetailInfo.specs[index+3].specValue}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="vc-line-primary margin-top"></div>
+    <div class="margin-top-sm">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" v-bind:class="{active:adminMeterDetailInfo._currentTab == 'adminMeterDetailRoom'}" v-on:click="changeTab('adminMeterDetailRoom')">
+                    <vc:i18n name="房屋详情" namespace="adminMeterDetail"></vc:i18n>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" v-bind:class="{active:adminMeterDetailInfo._currentTab == 'adminMeterDetailRead'}" v-on:click="changeTab('adminMeterDetailRead')">
+                    <vc:i18n name="抄表记录" namespace="adminMeterDetail"></vc:i18n>
+                </a>
+            </li>
+        </ul>
+    </div>
+     <div v-if="adminMeterDetailInfo._currentTab == 'adminMeterDetailRoom'">
+        <vc:create path="community/adminMeterDetailRoom"></vc:create>
+    </div>
+    <div v-if="adminMeterDetailInfo._currentTab == 'adminMeterDetailRead'">
+        <vc:create path="meter/adminMeterDetailRead"></vc:create>
+    </div>
+</div>

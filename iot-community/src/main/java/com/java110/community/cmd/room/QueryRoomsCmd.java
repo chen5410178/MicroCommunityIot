@@ -94,6 +94,7 @@ public class QueryRoomsCmd extends Cmd {
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
+        super.assertProperty(cmdDataFlowContext);
         Assert.jsonObjectHaveKey(reqJson, "communityId", "请求中未包含communityId信息");
         //Assert.jsonObjectHaveKey(reqJson, "floorId", "请求中未包含floorId信息");
         Assert.jsonObjectHaveKey(reqJson, "page", "请求报文中未包含page节点");
