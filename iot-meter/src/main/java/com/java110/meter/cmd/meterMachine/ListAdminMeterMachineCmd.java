@@ -103,12 +103,6 @@ public class ListAdminMeterMachineCmd extends Cmd {
         cmdDataFlowContext.setResponseEntity(responseEntity);
     }
 
-    private void queryMachineState(List<MeterMachineDto> meterMachineDtos) {
-        if(meterMachineDtos == null || meterMachineDtos.size() < 1) {
-            return;
-        }
-        smartMeterCoreReadImpl.queryMeterMachineState(meterMachineDtos);
-    }
 
     private void queryMeterMachineDegree(List<MeterMachineDto> meterMachineDtos) {
 
