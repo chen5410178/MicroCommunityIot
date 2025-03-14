@@ -100,9 +100,6 @@ public class ListAdminChargeMachineCmd extends Cmd {
             chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(chargeMachineDto);
             freshQrCodeUrl(chargeMachineDtos);
 
-            // todo  查询设备是否在线
-            queryMachineState(chargeMachineDtos);
-
             // todo 刷入算费规则
             queryChargeRuleFee(chargeMachineDtos);
         } else {
@@ -142,17 +139,6 @@ public class ListAdminChargeMachineCmd extends Cmd {
         }
     }
 
-    private void queryMachineState(List<ChargeMachineDto> chargeMachineDtos) {
-
-        if (ListUtil.isNull(chargeMachineDtos) || chargeMachineDtos.size() > 10) {
-            return;
-        }
-
-        chargeCoreImpl.queryChargeMachineState(chargeMachineDtos);
-
-
-    }
-
     /**
      * 充电桩二维码
      *
@@ -166,19 +152,6 @@ public class ListAdminChargeMachineCmd extends Cmd {
 
         String ownerUrl = UrlCache.getOwnerUrl();
         for (ChargeMachineDto chargeMachineDto : chargeMachineDtos) {
-//            if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDto.getChargeType())){
-//                chargeMachineDto.setQrCode(ownerUrl + "/#/pages/charge/machineToCharge?machineId="
-//                        + chargeMachineDto.getMachineId()
-//                        + "&communityId=" + chargeMachineDto.getCommunityId()
-//                        + "&wAppId=" + appId
-//                );
-//            }else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDto.getChargeType())){
-//                chargeMachineDto.setQrCode(ownerUrl + "/#/pages/charge/machineToCarCharge?machineId="
-//                        + chargeMachineDto.getMachineId()
-//                        + "&communityId=" + chargeMachineDto.getCommunityId()
-//                        + "&wAppId=" + appId
-//                );
-//            }
             //todo 修改为短号
             chargeMachineDto.setQrCode(ownerUrl + "/app/charge/"+ chargeMachineDto.getMachineCode());
         }

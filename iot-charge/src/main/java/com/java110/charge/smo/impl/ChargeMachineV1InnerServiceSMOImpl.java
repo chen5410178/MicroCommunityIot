@@ -18,7 +18,9 @@ package com.java110.charge.smo.impl;
 
 import com.java110.bean.dto.PageDto;
 import com.java110.charge.dao.IChargeMachineV1ServiceDao;
+import com.java110.charge.factory.IChargeCore;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
 import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
 import com.java110.po.chargeMachine.ChargeMachinePo;
@@ -41,6 +43,9 @@ public class ChargeMachineV1InnerServiceSMOImpl implements IChargeMachineV1Inner
 
     @Autowired
     private IChargeMachineV1ServiceDao chargeMachineV1ServiceDaoImpl;
+
+    @Autowired
+    private IChargeCore chargeCoreImpl;
 
 
     @Override
@@ -74,8 +79,20 @@ public class ChargeMachineV1InnerServiceSMOImpl implements IChargeMachineV1Inner
         }
 
         List<ChargeMachineDto> chargeMachines = BeanConvertUtil.covertBeanList(chargeMachineV1ServiceDaoImpl.getChargeMachineInfo(BeanConvertUtil.beanCovertMap(chargeMachineDto)), ChargeMachineDto.class);
-
+        // todo  查询设备是否在线
+        queryMachineState(chargeMachines);
         return chargeMachines;
+    }
+
+    private void queryMachineState(List<ChargeMachineDto> chargeMachineDtos) {
+
+        if (ListUtil.isNull(chargeMachineDtos) || chargeMachineDtos.size() > 10) {
+            return;
+        }
+
+        chargeCoreImpl.queryChargeMachineState(chargeMachineDtos);
+
+
     }
 
 
