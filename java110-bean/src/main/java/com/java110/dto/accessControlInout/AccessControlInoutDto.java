@@ -28,6 +28,7 @@ public class AccessControlInoutDto extends PageDto implements Serializable {
     private String facePath;
     private String state;
     private String communityId;
+    private String communityName;
 
     private String personId;
 
@@ -204,5 +205,13 @@ public class AccessControlInoutDto extends PageDto implements Serializable {
 
     public void setOpenTypeCdName(String openTypeCdName) {
         this.openTypeCdName = openTypeCdName;
+    }
+
+    public String getCommunityName() {
+        return communityName;
+    }
+
+    public void setCommunityName(String communityName) {
+        this.communityName = communityName;
     }
 }

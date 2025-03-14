@@ -25,6 +25,8 @@ public class MeterMachineChargeDto extends PageDto implements Serializable {
     private String state;
     private String communityId;
 
+    private String communityName;
+
     private String address;
     private String roomName;
     private String machineName;
@@ -185,5 +187,13 @@ public class MeterMachineChargeDto extends PageDto implements Serializable {
 
     public void setQueryEndTime(String queryEndTime) {
         this.queryEndTime = queryEndTime;
+    }
+
+    public String getCommunityName() {
+        return communityName;
+    }
+
+    public void setCommunityName(String communityName) {
+        this.communityName = communityName;
     }
 }

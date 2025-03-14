@@ -1,0 +1,205 @@
+<div>
+    <div class="row">
+        <div class="col-md-1 padding-r-0">
+            <vc:create path="community/selectAdminCommunity"></vc:create>
+        </div>
+        <div class="col-md-11">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择订单编号','adminChargeOrder')"
+                                    v-model="adminChargeOrderInfo.conditions.orderId" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择名称','adminChargeOrder')"
+                                    v-model="adminChargeOrderInfo.conditions.personName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请选择手机号','adminChargeOrder')"
+                                    v-model="adminChargeOrderInfo.conditions.personTel" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请填写充电桩名称','adminChargeOrder')"
+                                    v-model="adminChargeOrderInfo.conditions.machineName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请填写插槽','adminChargeOrder')"
+                                    v-model="adminChargeOrderInfo.conditions.portName" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-primary btn-sm"
+                                v-on:click="_queryAdminChargeOrderMethod()">
+                                <i class="glyphicon glyphicon-search"></i> <span>
+                                    <vc:i18n name="查询"></vc:i18n>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-2">
+                            <select class="custom-select" v-model="adminChargeOrderInfo.conditions.state">
+                                <option selected value="">
+                                    请选择插座状态
+                                </option>
+                                <option value="1001">充电中</option>
+                                <option value="2002">充电完成</option>
+                                <option value="3003">充电失败</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入开始时间','adminChargeOrder')"
+                                    v-model="adminChargeOrderInfo.conditions.queryStartTime"
+                                    class=" form-control queryStartTime">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入结束时间','adminChargeOrder')"
+                                    v-model="adminChargeOrderInfo.conditions.queryEndTime"
+                                    class=" form-control queryEndTime">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="充电订单" namespace="adminChargeOrder"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name='编号' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='名称' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='手机号' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='充电桩' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='插槽' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='充电小时' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='充电量' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='开始时间' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='结束时间' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='扣款账户' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='电费' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='服务费' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='扣款金额' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='插座状态' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='说明' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name='创建时间' namespace='adminChargeOrder'></vc:i18n>
+                                </th>
+                                <!-- <th class="text-center">
+                                    <vc:i18n name='操作' namespace='adminChargeOrder'></vc:i18n>
+                                </th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="adminChargeOrder in adminChargeOrderInfo.adminChargeOrders">
+                                <td class="text-center">{{adminChargeOrder.orderId}}</td>
+                                <td class="text-center">{{adminChargeOrder.personName}}</td>
+                                <td class="text-center">{{adminChargeOrder.personTel}}</td>
+                                <td class="text-center">{{adminChargeOrder.machineName}}</td>
+                                <td class="text-center">{{adminChargeOrder.portName}}</td>
+                                <td class="text-center" v-if="adminChargeOrder.chargeHours == 999">按量充电</td>
+                                <td class="text-center" v-else>{{adminChargeOrder.chargeHours}}小时</td>
+                                <td class="text-center">{{adminChargeOrder.energy}}</td>
+                                <td class="text-center">{{adminChargeOrder.startTime}}</td>
+                                <td class="text-center">{{adminChargeOrder.endTime}}</td>
+                                <td class="text-center hand">{{adminChargeOrder.acctDetailId}} (
+                                    <a href="javascript:void(0)" @click="_viewAccount(adminChargeOrder)">查看</a>)
+                                </td>
+                                <td class="text-center">{{adminChargeOrder.durationPrice}}</td>
+                                <td class="text-center">{{adminChargeOrder.servicePrice}}</td>
+                                <td class="text-center">{{adminChargeOrder.amount}}(<a href="javascript:void(0)"
+                                        @click="_viewOrderAccts(adminChargeOrder)">明细</a>)</td>
+                                <td class="text-center">{{adminChargeOrder.stateName}}
+                                    <span v-if="adminChargeOrder.state == '1001' || adminChargeOrder.state == '1000'">
+                                        (<a href="javascript:void(0)"
+                                            @click="_showStopCharge(adminChargeOrder)">停止充电</a>|<a href="javascript:void(0)"
+                                            @click="_showThrowStopCharge(adminChargeOrder)">异常停止</a>)
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <div style="width: 100px;">{{adminChargeOrder.remark || '-'}}</div>
+                                </td>
+                                <td class="text-center">{{adminChargeOrder.createTime}}</td>
+                                <!-- <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs"
+                                            v-on:click="_toChargeMachineDetail(adminChargeOrder)">
+                                            <vc:i18n name='详情'></vc:i18n>
+                                        </button>
+                                    </div>
+                                </td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <vc:create path="charge/stopChargeMachine"></vc:create>
+    <vc:create path="charge/throwStopChargeMachine"></vc:create>
+    
+</div>

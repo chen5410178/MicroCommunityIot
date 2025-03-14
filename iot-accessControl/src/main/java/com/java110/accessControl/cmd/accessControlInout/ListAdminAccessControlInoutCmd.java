@@ -28,7 +28,10 @@ import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControlInout.AccessControlInoutDto;
+import com.java110.dto.community.CommunityDto;
+import com.java110.dto.meter.MeterMachineDto;
 import com.java110.intf.accessControl.IAccessControlInoutV1InnerServiceSMO;
+import com.java110.intf.community.ICommunityV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +63,9 @@ public class ListAdminAccessControlInoutCmd extends Cmd {
     @Autowired
     private IOwnerRoomRelV1InnerServiceSMO ownerRoomRelV1InnerServiceSMOImpl;
 
+    @Autowired
+    private ICommunityV1InnerServiceSMO communityV1InnerServiceSMOImpl;
+
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
@@ -85,11 +91,43 @@ public class ListAdminAccessControlInoutCmd extends Cmd {
             accessControlInoutDtos = new ArrayList<>();
         }
 
+        refreshCommunityName(accessControlInoutDtos);
+
         ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) reqJson.getInteger("row")), count, accessControlInoutDtos);
 
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
         cmdDataFlowContext.setResponseEntity(responseEntity);
+    }
+
+    private void refreshCommunityName(List<AccessControlInoutDto> accessControlInoutDtos) {
+
+        if(ListUtil.isNull(accessControlInoutDtos)){
+            return;
+        }
+
+        List<String> communityIds = new ArrayList<>();
+        for (AccessControlInoutDto accessControlInoutDto : accessControlInoutDtos) {
+            communityIds.add(accessControlInoutDto.getCommunityId());
+        }
+
+        if(ListUtil.isNull(communityIds)){
+            return ;
+        }
+        CommunityDto communityDto = new CommunityDto();
+        communityDto.setCommunityIds(communityIds.toArray(new String[communityIds.size()]));
+        List<CommunityDto> communityDtos = communityV1InnerServiceSMOImpl.queryCommunitys(communityDto);
+        if(ListUtil.isNull(communityDtos)){
+            return;
+        }
+        for (AccessControlInoutDto accessControlInoutDto : accessControlInoutDtos) {
+            for (CommunityDto tCommunityDto : communityDtos) {
+                if (!accessControlInoutDto.getCommunityId().equals(tCommunityDto.getCommunityId())) {
+                    continue;
+                }
+                accessControlInoutDto.setCommunityName(tCommunityDto.getName());
+            }
+        }
     }
 
     private void ifHasRoomId(JSONObject reqJson, AccessControlInoutDto accessControlInoutDto) {

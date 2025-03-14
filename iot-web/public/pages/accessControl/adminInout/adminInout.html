@@ -92,6 +92,9 @@
                                     <vc:i18n name='人脸' namespace='adminInout'></vc:i18n>
                                 </th>
                                 <th class="text-center">
+                                    <vc:i18n name='小区名称' namespace='adminInout'></vc:i18n>
+                                </th>
+                                <th class="text-center">
                                     <vc:i18n name='编号' namespace='adminInout'></vc:i18n>
                                 </th>
                                 <th class="text-center">
@@ -133,6 +136,7 @@
                                     <img style="width: 60px; height: 60px;" class="border-radius" v-else
                                         src="/img/noPhoto.jpg" />
                                 </td>
+                                <td class="text-center">{{adminInout.communityName}}</td>
                                 <td class="text-center">{{adminInout.inoutId}}</td>
                                 <td class="text-center">{{adminInout.machineName}}</td>
                                 <td class="text-center">{{adminInout.machineCode}}</td>
