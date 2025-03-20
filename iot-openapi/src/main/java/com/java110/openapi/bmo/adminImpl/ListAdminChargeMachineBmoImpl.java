@@ -7,6 +7,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
 import com.java110.dto.chargeMachine.ChargeRuleFeeDto;
 import com.java110.dto.chargeRulePrice.ChargeRulePriceDto;
@@ -52,7 +53,10 @@ public class ListAdminChargeMachineBmoImpl implements IIotAdminApiBmo {
     @Override
     public void doCmd(ICmdDataFlowContext context, JSONObject reqJson) {
         ChargeMachineDto chargeMachineDto = BeanConvertUtil.covertBean(reqJson, ChargeMachineDto.class);
-
+        String communityIdStr = reqJson.getString("communityIdStr");
+        if(!StringUtil.isEmpty(communityIdStr)){
+            chargeMachineDto.setCommunityIds(communityIdStr.split(","));
+        }
         int count = chargeMachineV1InnerServiceSMOImpl.queryChargeMachinesCount(chargeMachineDto);
 
         List<ChargeMachineDto> chargeMachineDtos = null;

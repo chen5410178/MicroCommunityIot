@@ -43,7 +43,10 @@ public class ListAdminAccessControlInoutBmoImpl implements IIotAdminApiBmo {
     @Override
     public void doCmd(ICmdDataFlowContext context, JSONObject reqJson) {
         AccessControlInoutDto accessControlInoutDto = BeanConvertUtil.covertBean(reqJson, AccessControlInoutDto.class);
-
+        String communityIdStr = reqJson.getString("communityIdStr");
+        if(!StringUtil.isEmpty(communityIdStr)){
+            accessControlInoutDto.setCommunityIds(communityIdStr.split(","));
+        }
         //todo 如果包含房屋信息
         ifHasRoomId(reqJson, accessControlInoutDto);
 

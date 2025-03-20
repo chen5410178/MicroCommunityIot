@@ -38,6 +38,7 @@ public class ChargeMachineOrderDto extends PageDto implements Serializable {
     private String state;
     private String personTel;
     private String communityId;
+    private String[] communityIds;
     private String energy;
 
     private String machineCode;
@@ -306,5 +307,13 @@ public class ChargeMachineOrderDto extends PageDto implements Serializable {
 
     public void setsPrice(String sPrice) {
         this.sPrice = sPrice;
+    }
+
+    public String[] getCommunityIds() {
+        return communityIds;
+    }
+
+    public void setCommunityIds(String[] communityIds) {
+        this.communityIds = communityIds;
     }
 }

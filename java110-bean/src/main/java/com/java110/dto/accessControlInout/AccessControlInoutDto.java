@@ -28,6 +28,7 @@ public class AccessControlInoutDto extends PageDto implements Serializable {
     private String facePath;
     private String state;
     private String communityId;
+    private String[] communityIds;
     private String communityName;
 
     private String personId;
@@ -213,5 +214,13 @@ public class AccessControlInoutDto extends PageDto implements Serializable {
 
     public void setCommunityName(String communityName) {
         this.communityName = communityName;
+    }
+
+    public String[] getCommunityIds() {
+        return communityIds;
+    }
+
+    public void setCommunityIds(String[] communityIds) {
+        this.communityIds = communityIds;
     }
 }

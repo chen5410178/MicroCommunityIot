@@ -42,7 +42,10 @@ public class ListAdminBarrierBmoImpl implements IIotAdminApiBmo {
     @Override
     public void doCmd(ICmdDataFlowContext context, JSONObject reqJson) {
         BarrierDto barrierDto = BeanConvertUtil.covertBean(reqJson, BarrierDto.class);
-
+        String communityIdStr = reqJson.getString("communityIdStr");
+        if(!StringUtil.isEmpty(communityIdStr)){
+            barrierDto.setCommunityIds(communityIdStr.split(","));
+        }
         containPaId(reqJson,barrierDto);
 
         int count = barrierV1InnerServiceSMOImpl.queryBarriersCount(barrierDto);

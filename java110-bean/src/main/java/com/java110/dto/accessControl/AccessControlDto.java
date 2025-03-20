@@ -24,6 +24,7 @@ public class AccessControlDto extends PageDto implements Serializable {
     private String locationName;
     private String locationId;
     private String communityId;
+    private String[] communityIds;
     private String communityName;
     private String machineName;
     private String machineIp;
@@ -334,5 +335,13 @@ public class AccessControlDto extends PageDto implements Serializable {
 
     public void setCommunityName(String communityName) {
         this.communityName = communityName;
+    }
+
+    public String[] getCommunityIds() {
+        return communityIds;
+    }
+
+    public void setCommunityIds(String[] communityIds) {
+        this.communityIds = communityIds;
     }
 }

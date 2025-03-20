@@ -36,7 +36,12 @@ public class ListAdminAccessControlBmoImpl implements IIotAdminApiBmo {
 
     @Override
     public void doCmd(ICmdDataFlowContext context, JSONObject reqJson) {
+
         AccessControlDto accessControlDto = BeanConvertUtil.covertBean(reqJson, AccessControlDto.class);
+        String communityIdStr = reqJson.getString("communityIdStr");
+        if(!StringUtil.isEmpty(communityIdStr)){
+            accessControlDto.setCommunityIds(communityIdStr.split(","));
+        }
 
         int count = accessControlV1InnerServiceSMOImpl.queryAccessControlsCount(accessControlDto);
 

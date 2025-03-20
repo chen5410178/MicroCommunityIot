@@ -52,6 +52,10 @@ public class ListAdminCarInoutDetailBmoImpl implements IIotAdminApiBmo {
     @Override
     public void doCmd(ICmdDataFlowContext context, JSONObject reqJson) {
         CarInoutDto carInoutDetailDto = BeanConvertUtil.covertBean(reqJson, CarInoutDto.class);
+        String communityIdStr = reqJson.getString("communityIdStr");
+        if(!StringUtil.isEmpty(communityIdStr)){
+            carInoutDetailDto.setCommunityIds(communityIdStr.split(","));
+        }
         if (reqJson.containsKey("boxId")) {
             carInoutDetailDto.setPaIds(getPaIds(reqJson));
         } else {
