@@ -321,30 +321,30 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
      * @param taskId
      * @param machineCode
      */
-    private void faceResult(String cmd, String taskId, String machineCode,String data ) {
+    private void faceResult(String cmd, String taskId, String machineCode, String data) {
         logger.debug("门禁内容,{}", data);
 
         WiegandDataDto wiegandDataDto = WiegandUtil.parseOpenDoorResult(data);
-        if(StringUtil.isEmpty(wiegandDataDto.getCardNum())){
+        if (StringUtil.isEmpty(wiegandDataDto.getCardNum())) {
             return;
         }
         // 不是刷卡记录
-        if(!"1".equals(wiegandDataDto.getState())){
+        if (!"1".equals(wiegandDataDto.getState())) {
             return;
         }
 
         OwnerDto ownerDto = new OwnerDto();
         ownerDto.setCardNumber(wiegandDataDto.getCardNum());
-       List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
+        List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
         String staffId = "";
         String staffName = "";
-       if(ListUtil.isNull(ownerDtos)){
-           staffId = "-1";
-           staffName = "未知";
-       }else{
-           staffId = ownerDtos.get(0).getMemberId();
-           staffName = ownerDtos.get(0).getName();
-       }
+        if (ListUtil.isNull(ownerDtos)) {
+            staffId = "-1";
+            staffName = "未知";
+        } else {
+            staffId = ownerDtos.get(0).getMemberId();
+            staffName = ownerDtos.get(0).getName();
+        }
 
 
         String openTypeCd = "2000";
@@ -357,47 +357,24 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
 
     }
 
-    /**
-     * 二维码开门请求
-     * <p>
-     * {
-     * “cmd”:”qrcodeOpenDoor”,
-     * “taskId”:”123123123123”,
-     * “qrcode”:”xxxxxxx”,
-     * “machineCode”:”123123123123”
-     * }
-     *
-     * @param cmd
-     * @param taskId
-     * @param machineCode
-     * @param paramIn
-     */
-    private void qrCodeOpenDoor(String cmd, String taskId, String machineCode, JSONObject paramIn) {
+    @Override
+    public ResultVo getQRCode(UserDto userDto) {
 
-        String qrcode = paramIn.getString("qrcode");
-
-        //todo 检查是否为通行码
-
-        boolean hasOpenDoor = qrcodeCheck(qrcode, machineCode);
-        if (!hasOpenDoor) {
-            return;
+        UserDto tmpUserDto = new UserDto();
+        tmpUserDto.setUserId(userDto.getUserId());
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(tmpUserDto);
+        if (ListUtil.isNull(userDtos)) {
+            throw new IllegalArgumentException("用户不存在");
         }
-
-        AccessControlDto accessControlDto = new AccessControlDto();
-        accessControlDto.setMachineCode(machineCode);
-        List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
-        if (ListUtil.isNull(accessControlDtos)) {
-            return;
-        }
-
-        JSONObject param = new JSONObject();
-//        param.put("cmd", CMD_OPEN_DOOR);
-//        param.put("action", ACTION);
-//        param.put("pass", accessControlDtos.get(0).getMachineMac());
-//        param.put("sn", accessControlDtos.get(0).getMachineCode());
-//        param.put("taskId", taskId);
-//        MqttFactory.publish(TOPIC_REQ, param.toJSONString());
-//        saveOpenDoorLog(taskId, accessControlDtos.get(0).getMachineId(), TOPIC_REQ + "/" + CMD_OPEN_DOOR,
-//                accessControlDtos.get(0).getCommunityId(), param.toJSONString(), accessControlDtos.get(0).getUserId(), accessControlDtos.get(0).getUserName());
+        String pwd = WiegandUtil.getLastSixDigits(userDtos.get(0).getTel());//  1-4号门控制时段
+        byte[] pwdData =
+                {
+                        (byte) 0x30, (byte) 0x31, (byte) 0x32, (byte) 0x33, (byte) 0x34, (byte) 0x35, (byte) 0x36, (byte) 0x37,
+                        (byte) 0x38, (byte) 0x39, (byte) 0x41, (byte) 0x42, (byte) 0x43, (byte) 0x44, (byte) 0x45, (byte) 0x46
+                }; //测试密码0123456789ABCDEF
+        String qrCode = WiegandCreateQr.createQR(Long.parseLong(pwd), pwdData);
+        return new ResultVo(ResultVo.CODE_OK,ResultVo.MSG_OK,qrCode);
     }
+
+
 }
