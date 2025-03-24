@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class CustomDecoder extends MessageToMessageDecoder<byte[]> {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(HeartBeatSimpleHandle.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(TcpHeartBeatSimpleHandler.class);
 
     private Map<String, DataByteDto> dataByteMap;
 

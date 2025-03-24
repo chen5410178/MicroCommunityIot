@@ -47,7 +47,7 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
     private static Logger logger = LoggerFactory.getLogger(WiegandGatewayAccessControlAdapt.class);
 
 
-    public static final String CMD_HEARTBEAT = "92"; //todo 心跳指令
+    public static final String CMD_HEARTBEAT = "26"; //todo 心跳指令
     public static final String CMD_REBOOT = "reboot"; //todo 心跳指令
     public static final String CMD_OPEN_DOOR = "40"; //todo 开门
 
@@ -114,7 +114,7 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
         userData += DateUtil.getFormatTimeStringH(endTime);// 截止日期
         userData += "01010101";//  1-4号门控制时段
         String tel = "";
-        if (AccessControlFaceDto.PERSON_TYPE_OWNER.equals(accessControlFacePo.getState())) {
+        if (AccessControlFaceDto.PERSON_TYPE_OWNER.equals(accessControlFacePo.getPersonType())) {
             OwnerDto ownerDto = new OwnerDto();
             ownerDto.setMemberId(accessControlFacePo.getPersonId());
             List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
@@ -134,12 +134,12 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
         userData += WiegandUtil.getLastSixDigits(tel);//  1-4号门控制时段
 
 
-        String sendData = WiegandUtil.createSendData(CMD_ADD_USER, accessControlDto.getMachineCode(), userData);
+        String sendUdpData = WiegandUtil.createSendData(CMD_ADD_USER, accessControlDto.getMachineCode(), userData);
 
-        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(accessControlDto.getMachineCode(), BytesUtil.hexStringToByteArray(sendData)));
+        notifyNettyDataV1InnerServiceSMOImpl.sendUdpData(new NettyReplyDataDto(accessControlDto.getMachineCode(), BytesUtil.hexStringToByteArray(sendUdpData)));
 
         saveAddFaceLog(taskId, accessControlDto.getMachineId(), CMD_ADD_USER,
-                accessControlDto.getCommunityId(), sendData, accessControlFacePo.getPersonId(), accessControlFacePo.getName());
+                accessControlDto.getCommunityId(), sendUdpData, accessControlFacePo.getPersonId(), accessControlFacePo.getName());
         return true;
     }
 
@@ -164,9 +164,9 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
         }
         String userData = cardNum;
 
-        String sendData = WiegandUtil.createSendData(CMD_DELETE_USER, accessControlDto.getMachineCode(), userData);
+        String sendUdpData = WiegandUtil.createSendData(CMD_DELETE_USER, accessControlDto.getMachineCode(), userData);
 
-        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(accessControlDto.getMachineCode(), BytesUtil.hexStringToByteArray(sendData)));
+        notifyNettyDataV1InnerServiceSMOImpl.sendUdpData(new NettyReplyDataDto(accessControlDto.getMachineCode(), BytesUtil.hexStringToByteArray(sendUdpData)));
 
         saveDeleteFaceLog(taskId, accessControlDto.getMachineId(), CMD_DELETE_USER,
                 accessControlDto.getCommunityId(), userData, accessControlFacePo.getPersonId(), accessControlFacePo.getName());
@@ -178,11 +178,11 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
         String taskId = GenerateCodeFactory.getGeneratorId("11");
 
         String gateNum = "01";//门号 (从1开始算. 最大为4)
-        String sendData = WiegandUtil.createSendData(CMD_OPEN_DOOR, accessControlDto.getMachineCode(), gateNum);
+        String sendUdpData = WiegandUtil.createSendData(CMD_OPEN_DOOR, accessControlDto.getMachineCode(), gateNum);
 
-        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(accessControlDto.getMachineCode(), BytesUtil.hexStringToByteArray(sendData)));
+        notifyNettyDataV1InnerServiceSMOImpl.sendUdpData(new NettyReplyDataDto(accessControlDto.getMachineCode(), BytesUtil.hexStringToByteArray(sendUdpData)));
         saveDeleteFaceLog(taskId, accessControlDto.getMachineId(), "openDoor",
-                accessControlDto.getCommunityId(), sendData, accessControlDto.getUserId(), accessControlDto.getUserName());
+                accessControlDto.getCommunityId(), sendUdpData, accessControlDto.getUserId(), accessControlDto.getUserName());
         return true;
     }
 
@@ -196,9 +196,9 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
     public ResultVo task(AccessControlDto accessControlDto) {
 
         //todo  读取接受服务器ip和端口作为设备的心跳，因为设备没有心跳，
-        String dataStr = "";
-        String sendData = WiegandUtil.createSendData(CMD_HEARTBEAT, accessControlDto.getMachineCode(), dataStr);
-        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(accessControlDto.getMachineCode(), BytesUtil.hexStringToByteArray(sendData)));
+//        String dataStr = "";
+//        String sendUdpData = WiegandUtil.createSendData(CMD_HEARTBEAT, accessControlDto.getMachineCode(), dataStr);
+//        notifyNettyDataV1InnerServiceSMOImpl.sendUdpData(new NettyReplyDataDto(accessControlDto.getMachineCode(), BytesUtil.hexStringToByteArray(sendUdpData)));
 
 
         return new ResultVo(ResultVo.CODE_OK, "成功");
@@ -234,6 +234,7 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
                 response(cmd, taskId, machineCode, wiegandDataDto);
                 break;
             case CMD_FACE_RESULT: //todo 开门记录
+                heartbeatHc(cmd, taskId, machineCode, wiegandDataDto);
                 faceResult(cmd, taskId, machineCode, data);
                 break;
 //            case CMD_QRCODE_OPEN_DOOR: //todo 二维码开门
@@ -259,7 +260,8 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
 
         //todo 更新下发日志
         AccessControlLogDto accessControlLogDto = new AccessControlLogDto();
-        accessControlLogDto.setLogId(taskId);
+        accessControlLogDto.setMachineCode(machineCode);
+        accessControlLogDto.setLogAction(cmd);
         List<AccessControlLogDto> accessControlLogDtos = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogs(accessControlLogDto);
         if (ListUtil.isNull(accessControlLogDtos)) {
             return;
@@ -329,7 +331,7 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
             return;
         }
         // 不是刷卡记录
-        if (!"1".equals(wiegandDataDto.getState())) {
+        if (!"01".equals(wiegandDataDto.getState())) {
             return;
         }
 
@@ -358,15 +360,13 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
     }
 
     @Override
-    public ResultVo getQRCode(UserDto userDto) {
+    public ResultVo getQRCode(AccessControlDto accessControlDto) {
 
-        UserDto tmpUserDto = new UserDto();
-        tmpUserDto.setUserId(userDto.getUserId());
-        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(tmpUserDto);
-        if (ListUtil.isNull(userDtos)) {
+
+        if (StringUtil.isEmpty(accessControlDto.getLink())) {
             throw new IllegalArgumentException("用户不存在");
         }
-        String pwd = WiegandUtil.getLastSixDigits(userDtos.get(0).getTel());//  1-4号门控制时段
+        String pwd = WiegandUtil.getLastSixDigits(accessControlDto.getLink());//  1-4号门控制时段
         byte[] pwdData =
                 {
                         (byte) 0x30, (byte) 0x31, (byte) 0x32, (byte) 0x33, (byte) 0x34, (byte) 0x35, (byte) 0x36, (byte) 0x37,

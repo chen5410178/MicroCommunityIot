@@ -19,6 +19,7 @@ import com.java110.bean.ResultVo;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControl.AccessControlNotifyDto;
 import com.java110.dto.accessControl.AccessControlResultDto;
+import com.java110.dto.user.UserDto;
 import com.java110.intf.FeignConfiguration;
 import com.java110.po.accessControl.AccessControlPo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -49,4 +50,7 @@ public interface IAccessControlResultV1InnerServiceSMO {
 
     @RequestMapping(value = "/task", method = RequestMethod.POST)
     ResultVo task(@RequestBody  AccessControlDto accessControlDto);
+
+    @RequestMapping(value = "/getQRCode", method = RequestMethod.POST)
+    ResultVo getQRCode(@RequestBody AccessControlDto accessControlDto);
 }

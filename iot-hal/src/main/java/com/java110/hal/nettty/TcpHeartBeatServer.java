@@ -14,9 +14,9 @@ import javax.annotation.PreDestroy;
 import java.net.InetSocketAddress;
 
 @Component
-public class HeartBeatServer {
+public class TcpHeartBeatServer {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(HeartBeatServer.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(TcpHeartBeatServer.class);
     /**
      * NioEventLoopGroup是一个处理I / O操作的多线程事件循环。 Netty为不同类型的传输提供各种EventLoopGroup实现。
      * 我们在此示例中实现了服务器端应用程序，因此将使用两个NioEventLoopGroup。第一个，通常称为“老板”，接受传入连接。第二个，通常称为“工人”，
@@ -44,7 +44,7 @@ public class HeartBeatServer {
                 //保持长连接
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, new WriteBufferWaterMark(1, 1024 * 1024 * 8))
-                .childHandler(new HeartbeatInitializer());
+                .childHandler(new TcpChannelInitializer());
         //绑定并开始接受传入的连接。
         ChannelFuture future = bootstrap.bind().sync();
         if (future.isSuccess()) {

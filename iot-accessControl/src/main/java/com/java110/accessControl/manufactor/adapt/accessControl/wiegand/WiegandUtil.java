@@ -21,8 +21,8 @@ public class WiegandUtil {
         sendData += "17";// type
         sendData += cmd;// 功能号
         sendData += "0000";// 保留
-        int machineCodeInt = Integer.parseInt(machineCode); // 要转换的十进制数
-        String machineCodeHex = Integer.toHexString(machineCodeInt);
+        long machineCodeInt = Long.parseLong(machineCode); // 要转换的十进制数
+        String machineCodeHex = Long.toHexString(machineCodeInt);
         sendData += machineCodeHex;// 设备序列号
         sendData += data;
 
@@ -89,6 +89,7 @@ public class WiegandUtil {
         String gateNum = getTargetString(data, gateNumPos, gateNumLen * 2);
         String inout = getTargetString(data, inoutPos, inoutLen * 2);
         String cardNum = getTargetString(data, cardPos, cardLen * 2);
+        String state = getTargetString(data, statePos, stateLen * 2);
         WiegandDataDto wiegandDataDto = new WiegandDataDto();
         wiegandDataDto.setCmd(cmd);
         wiegandDataDto.setMachineCode(machineCode);
@@ -97,6 +98,7 @@ public class WiegandUtil {
         wiegandDataDto.setCardNum(cardNum);
         wiegandDataDto.setInout(inout);
         wiegandDataDto.setOrgData(data);
+        wiegandDataDto.setState(state);
         return wiegandDataDto;
     }
 
@@ -122,7 +124,7 @@ public class WiegandUtil {
             return targetValue;
         }
         targetValue = dataStr.substring(startPos, startPos + dataLen);
-        return Integer.parseInt(targetValue, 16) + "";
+        return Long.parseLong(targetValue, 16) + "";
 
     }
 

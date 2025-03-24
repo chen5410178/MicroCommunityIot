@@ -28,6 +28,7 @@ import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControl.AccessControlNotifyDto;
 import com.java110.dto.accessControl.AccessControlResultDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
+import com.java110.dto.user.UserDto;
 import com.java110.intf.accessControl.IAccessControlResultV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.intf.system.IHardwareManufacturerV1InnerServiceSMO;
@@ -100,6 +101,21 @@ public class AccessControlResultV1InnerServiceSMOImpl implements IAccessControlR
         accessControlManufactorImpl = ApplicationContextFactory.getBean(accessControlDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
 
         ResultVo result = accessControlManufactorImpl.task(accessControlDto);
+        return result;
+    }
+
+    @Override
+    public ResultVo getQRCode(@RequestBody AccessControlDto accessControlDto) {
+        AccessControlDto tmpAccessControlDto = new AccessControlDto();
+        tmpAccessControlDto.setMachineCode(accessControlDto.getMachineCode());
+        List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(tmpAccessControlDto);
+        if(ListUtil.isNull(accessControlDtos)){
+            throw new IllegalArgumentException("门禁不存在");
+        }
+
+        accessControlManufactorImpl = ApplicationContextFactory.getBean(accessControlDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
+
+        ResultVo result = accessControlManufactorImpl.getQRCode(accessControlDto);
         return result;
     }
 

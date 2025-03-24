@@ -44,4 +44,10 @@ public interface INotifyNettyDataV1InnerServiceSMO {
 
     @RequestMapping(value = "/hasOnLine", method = RequestMethod.POST)
     boolean hasOnLine(@RequestBody String machineCode);
+
+    @RequestMapping(value = "/sendUdpData", method = RequestMethod.POST)
+    ResultVo sendUdpData(@RequestBody NettyReplyDataDto nettyReplyDataDto);
+
+    @RequestMapping(value = "/hasOnLineUdp", method = RequestMethod.POST)
+    boolean hasOnLineUdp(@RequestBody String machineCode);
 }

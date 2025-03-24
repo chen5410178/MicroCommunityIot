@@ -104,4 +104,14 @@ public class WiegandCreateQr {
         return crc;
     }
 
+    public static void main(String[] args) {
+        byte[] pwdData =
+                {
+                        (byte) 0x30, (byte) 0x31, (byte) 0x32, (byte) 0x33, (byte) 0x34, (byte) 0x35, (byte) 0x36, (byte) 0x37,
+                        (byte) 0x38, (byte) 0x39, (byte) 0x41, (byte) 0x42, (byte) 0x43, (byte) 0x44, (byte) 0x45, (byte) 0x46
+                }; //测试密码0123456789ABCDEF
+        String qrCode = WiegandCreateQr.createQR(21635053, pwdData);
+        System.out.println(qrCode);
+    }
+
 }

@@ -1,21 +1,15 @@
 package com.java110.hal.nettty;
 
-import com.alibaba.fastjson.JSONObject;
 import com.java110.core.utils.BytesUtil;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingDeque;
 
-public class NettySocketHolder {
-    private static Logger logger = LoggerFactory.getLogger(NettySocketHolder.class);
+public class TcpNettySocketHolder {
+    private static Logger logger = LoggerFactory.getLogger(TcpNettySocketHolder.class);
 
     private static final Map<String, NioSocketChannel> MAP = new ConcurrentHashMap<>();
 

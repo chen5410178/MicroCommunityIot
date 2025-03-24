@@ -1,6 +1,6 @@
 package com.java110;
 
-import com.java110.hal.nettty.HeartbeatInitializer;
+import com.java110.hal.nettty.TcpChannelInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -51,7 +51,7 @@ public class NettyTest
                 //保持长连接
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, new WriteBufferWaterMark(1, 1024 * 1024 * 8))
-                .childHandler(new HeartbeatInitializer());
+                .childHandler(new TcpChannelInitializer());
         //绑定并开始接受传入的连接。
         ChannelFuture future = null;
         try {

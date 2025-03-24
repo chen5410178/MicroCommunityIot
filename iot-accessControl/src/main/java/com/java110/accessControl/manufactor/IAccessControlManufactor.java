@@ -101,10 +101,10 @@ public interface IAccessControlManufactor {
     /**
      * 获取二维码
      *
-     * @param userDto 用户
+     * @param accessControlDto 用户
      * @return
      */
-    ResultVo getQRCode(UserDto userDto);
+    ResultVo getQRCode(AccessControlDto accessControlDto);
 
     /**
      * 二维码核验接口

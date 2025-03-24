@@ -229,8 +229,8 @@ public class DataHeader {
 
     public static String getWieGandMachineCode(byte[] msg) {
         String data = BytesUtil.bytesToHex(msg);
-        int startPos = 4;
-        data = data.substring(startPos, startPos + 4);
-        return Integer.parseInt(data,16)+"";
+        int startPos = 8;
+        data = data.substring(startPos, startPos + 8);
+        return Long.parseLong(data,16)+"";
     }
 }

@@ -1,7 +1,5 @@
 package com.java110.hal.nettty;
 
-import com.alibaba.fastjson.JSONObject;
-import com.java110.core.annotation.Java110Synchronized;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.*;
 import com.java110.dto.accessControl.AccessControlDto;
@@ -16,25 +14,21 @@ import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
 import com.java110.intf.charge.INotifyChargeV1InnerServiceSMO;
 import com.java110.intf.charge.INotifyWorkLicenseV1InnerServiceSMO;
 import com.java110.intf.charge.IWorkLicenseMachineV1InnerServiceSMO;
-import com.java110.intf.system.IHardwareManufacturerV1InnerServiceSMO;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
+public class TcpHeartBeatSimpleHandler extends ChannelInboundHandlerAdapter {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(HeartBeatSimpleHandle.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(TcpHeartBeatSimpleHandler.class);
 
 
     public static final String MACHINE_TYPE_CHARGE = "CHARGE"; // todo 充电桩
@@ -69,7 +63,7 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
         String ip = address.toString();
         LOGGER.debug("channelInactive -->  RamoteAddress : " + ip + " channelInactive ");
 
-        NettySocketHolder.remove((NioSocketChannel) ctx.channel());
+        TcpNettySocketHolder.remove((NioSocketChannel) ctx.channel());
     }
 
     @Override
@@ -96,6 +90,19 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
         }
 
 
+    }
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        if (ctx == null) {
+            LOGGER.error("ChannelHandlerContext is null");
+            return;
+        }
+        if (cause instanceof NullPointerException) {
+            LOGGER.error("NullPointerException occurred in channel: {}", ctx.channel().id(), cause);
+        } else {
+            LOGGER.error("Exception occurred in channel: {}", ctx.channel().id(), cause);
+        }
+        ctx.close(); // 关闭发生异常的连接
     }
 
     private void doChannelRead(ChannelHandlerContext ctx, Object msg) {
@@ -251,13 +258,13 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
         //保存客户端与 Channel 之间的关系
         InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
         String ip = address.toString();
-        NioSocketChannel channel = NettySocketHolder.get(machineCode, ip);
+        NioSocketChannel channel = TcpNettySocketHolder.get(machineCode, ip);
         if (channel == null || force) {
-            NettySocketHolder.put(machineCode, ip, (NioSocketChannel) ctx.channel());
+            TcpNettySocketHolder.put(machineCode, ip, (NioSocketChannel) ctx.channel());
         }
 
         if (channel != null && channel.isShutdown()) {
-            NettySocketHolder.put(machineCode, ip, (NioSocketChannel) ctx.channel());
+            TcpNettySocketHolder.put(machineCode, ip, (NioSocketChannel) ctx.channel());
         }
     }
 

@@ -171,8 +171,8 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
 
 
     @Override
-    public ResultVo getQRCode(UserDto userDto) {
-        return null;
+    public ResultVo getQRCode(AccessControlDto accessControlDto) {
+        return new ResultVo(ResultVo.CODE_OK,ResultVo.MSG_OK,"设备不支持二维码开门");
     }
 
     @Override
