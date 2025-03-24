@@ -15,6 +15,7 @@
  */
 package com.java110.intf.accessControl;
 
+import com.java110.bean.ResultVo;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControl.AccessControlNotifyDto;
 import com.java110.dto.accessControl.AccessControlResultDto;
@@ -47,5 +48,5 @@ public interface IAccessControlResultV1InnerServiceSMO {
     String heartbeat(@RequestBody  AccessControlNotifyDto accessControlNotifyDto);
 
     @RequestMapping(value = "/task", method = RequestMethod.POST)
-    String task(@RequestBody  AccessControlDto accessControlDto);
+    ResultVo task(@RequestBody  AccessControlDto accessControlDto);
 }

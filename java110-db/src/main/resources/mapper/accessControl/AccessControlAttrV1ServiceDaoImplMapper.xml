@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="accessControlAttrV1ServiceDaoImpl">
+
+
+    <!-- 保存门禁属性信息 add by wuxw 2018-07-03 -->
+    <insert id="saveAccessControlAttrInfo" parameterType="Map">
+        insert into access_control_attr(
+        attr_id,machine_id,spec_cd,community_id,value
+        ) values (
+        #{attrId},#{machineId},#{specCd},#{communityId},#{value}
+        )
+    </insert>
+
+
+    <!-- 查询门禁属性信息 add by wuxw 2018-07-03 -->
+    <select id="getAccessControlAttrInfo" parameterType="Map" resultType="Map">
+        select t.attr_id attrId,t.machine_id machineId,t.spec_cd specCd,t.status_cd statusCd,t.community_id
+        communityId,t.value,t.create_time createTime
+        from access_control_attr t
+        where 1 =1
+        <if test="attrId !=null and attrId != ''">
+            and t.attr_id= #{attrId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="specCd !=null and specCd != ''">
+            and t.spec_cd= #{specCd}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="value !=null and value != ''">
+            and t.value= #{value}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改门禁属性信息 add by wuxw 2018-07-03 -->
+    <update id="updateAccessControlAttrInfo" parameterType="Map">
+        update access_control_attr t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            , t.machine_id= #{machineId}
+        </if>
+        <if test="specCd !=null and specCd != ''">
+            , t.spec_cd= #{specCd}
+        </if>
+
+        <if test="value !=null and value != ''">
+            , t.value= #{value}
+        </if>
+        where 1=1
+        <if test="attrId !=null and attrId != ''">
+            and t.attr_id= #{attrId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+
+    </update>
+
+    <!-- 查询门禁属性数量 add by wuxw 2018-07-03 -->
+    <select id="queryAccessControlAttrsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from access_control_attr t
+        where 1 =1
+        <if test="attrId !=null and attrId != ''">
+            and t.attr_id= #{attrId}
+        </if>
+        <if test="machineId !=null and machineId != ''">
+            and t.machine_id= #{machineId}
+        </if>
+        <if test="specCd !=null and specCd != ''">
+            and t.spec_cd= #{specCd}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="value !=null and value != ''">
+            and t.value= #{value}
+        </if>
+
+
+    </select>
+
+</mapper>

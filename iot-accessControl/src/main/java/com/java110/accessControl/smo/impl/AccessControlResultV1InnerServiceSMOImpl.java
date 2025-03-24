@@ -18,6 +18,7 @@ package com.java110.accessControl.smo.impl;
 
 import com.java110.accessControl.dao.IAccessControlV1ServiceDao;
 import com.java110.accessControl.manufactor.IAccessControlManufactor;
+import com.java110.bean.ResultVo;
 import com.java110.bean.dto.PageDto;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.Assert;
@@ -88,7 +89,7 @@ public class AccessControlResultV1InnerServiceSMOImpl implements IAccessControlR
     }
 
     @Override
-    public String task(@RequestBody AccessControlDto accessControlDto) {
+    public ResultVo task(@RequestBody AccessControlDto accessControlDto) {
         AccessControlDto tmpAccessControlDto = new AccessControlDto();
         tmpAccessControlDto.setMachineCode(accessControlDto.getMachineCode());
         List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(tmpAccessControlDto);
@@ -98,7 +99,7 @@ public class AccessControlResultV1InnerServiceSMOImpl implements IAccessControlR
 
         accessControlManufactorImpl = ApplicationContextFactory.getBean(accessControlDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
 
-        String result = accessControlManufactorImpl.task(accessControlDto);
+        ResultVo result = accessControlManufactorImpl.task(accessControlDto);
         return result;
     }
 
