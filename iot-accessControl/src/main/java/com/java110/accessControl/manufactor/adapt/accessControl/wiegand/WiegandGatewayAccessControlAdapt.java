@@ -13,10 +13,12 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.MqttFactory;
 import com.java110.core.utils.*;
 import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.accessControlAttr.AccessControlAttrDto;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.accessControlLog.AccessControlLogDto;
 import com.java110.dto.data.NettyReplyDataDto;
 import com.java110.dto.user.UserDto;
+import com.java110.intf.accessControl.IAccessControlAttrV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlLogV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
@@ -24,6 +26,7 @@ import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
+import com.java110.po.accessControlAttr.AccessControlAttrPo;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.accessControlLog.AccessControlLogPo;
 import org.slf4j.Logger;
@@ -51,7 +54,7 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
     public static final String CMD_ADD_USER = "50";// todo 权限添加或修改；
     public static final String CMD_DELETE_USER = "52";// todo 权限删除（单个删除）；
 
-    public static final String CMD_FACE_RESULT = "faceResult"; // todo 开门记录
+    public static final String CMD_FACE_RESULT = "20"; // todo 开门记录
 
     public static final String CMD_QRCODE_OPEN_DOOR = "qrcodeOpenDoor"; // todo 二维码开门
 
@@ -73,6 +76,9 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
 
     @Autowired
     private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IAccessControlAttrV1InnerServiceSMO accessControlAttrV1InnerServiceSMOImpl;
 
     @Autowired
     private INotifyNettyDataV1InnerServiceSMO notifyNettyDataV1InnerServiceSMOImpl;
@@ -227,9 +233,9 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
             case CMD_DELETE_USER: //todo 删除用户返回
                 response(cmd, taskId, machineCode, wiegandDataDto);
                 break;
-//            case CMD_FACE_RESULT: //todo 开门记录
-//                faceResult(cmd, taskId, machineCode, paramIn);
-//                break;
+            case CMD_FACE_RESULT: //todo 开门记录
+                faceResult(cmd, taskId, machineCode, data);
+                break;
 //            case CMD_QRCODE_OPEN_DOOR: //todo 二维码开门
 //                qrCodeOpenDoor(cmd, taskId, machineCode, paramIn);
 //                break;
@@ -314,38 +320,40 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
      * @param cmd
      * @param taskId
      * @param machineCode
-     * @param paramIn
      */
-    private void faceResult(String cmd, String taskId, String machineCode, JSONObject paramIn) {
-        logger.debug("门禁内容,{}", paramIn.toJSONString());
+    private void faceResult(String cmd, String taskId, String machineCode,String data ) {
+        logger.debug("门禁内容,{}", data);
 
-        String staffId = paramIn.getString("userId");
-        UserDto userDto = new UserDto();
-        userDto.setUserId(staffId);
-        String staffName = paramIn.getString("userName");
-
-        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
-        if (!ListUtil.isNull(userDtos)) {
-            staffName = userDtos.get(0).getName();
+        WiegandDataDto wiegandDataDto = WiegandUtil.parseOpenDoorResult(data);
+        if(StringUtil.isEmpty(wiegandDataDto.getCardNum())){
+            return;
+        }
+        // 不是刷卡记录
+        if(!"1".equals(wiegandDataDto.getState())){
+            return;
         }
 
-        String openTypeCd = paramIn.getString("openTypeCd");
-        int similar = paramIn.getIntValue("similar");
-        if (StringUtil.isEmpty(staffId)) {
-            staffId = "-1";
-            staffName = "未知";
-        }
-        String images = paramIn.getString("faceData");
+        OwnerDto ownerDto = new OwnerDto();
+        ownerDto.setCardNumber(wiegandDataDto.getCardNum());
+       List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
+        String staffId = "";
+        String staffName = "";
+       if(ListUtil.isNull(ownerDtos)){
+           staffId = "-1";
+           staffName = "未知";
+       }else{
+           staffId = ownerDtos.get(0).getMemberId();
+           staffName = ownerDtos.get(0).getName();
+       }
+
+
+        String openTypeCd = "2000";
+        int similar = 100;
+
+        String images = "";
 
         saveOpenDoorResult(machineCode, images, staffId, staffName, openTypeCd, similar);
 
-        JSONObject paramOut = new JSONObject();
-        paramOut.put("cmd", cmd);
-        paramOut.put("taskId", taskId);
-        paramOut.put("code", 0);
-        paramOut.put("msg", "处理成功");
-        paramOut.put("machineCode", machineCode);
-        //MqttFactory.publish(TOPIC_REQ, paramOut.toJSONString());
 
     }
 

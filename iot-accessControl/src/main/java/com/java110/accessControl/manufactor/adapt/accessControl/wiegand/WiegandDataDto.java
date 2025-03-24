@@ -14,6 +14,15 @@ public class WiegandDataDto implements Serializable {
 
     private String businessData;
 
+    private String state;
+    private String cardNum;
+
+    private String gateNum;
+
+    private String inout;
+
+    private String orgData;
+
     public WiegandDataDto() {
     }
 
@@ -62,5 +71,45 @@ public class WiegandDataDto implements Serializable {
 
     public void setBusinessData(String businessData) {
         this.businessData = businessData;
+    }
+
+    public String getOrgData() {
+        return orgData;
+    }
+
+    public void setOrgData(String orgData) {
+        this.orgData = orgData;
+    }
+
+    public String getCardNum() {
+        return cardNum;
+    }
+
+    public void setCardNum(String cardNum) {
+        this.cardNum = cardNum;
+    }
+
+    public String getGateNum() {
+        return gateNum;
+    }
+
+    public void setGateNum(String gateNum) {
+        this.gateNum = gateNum;
+    }
+
+    public String getInout() {
+        return inout;
+    }
+
+    public void setInout(String inout) {
+        this.inout = inout;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

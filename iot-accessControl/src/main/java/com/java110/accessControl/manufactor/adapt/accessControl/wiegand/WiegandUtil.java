@@ -54,8 +54,50 @@ public class WiegandUtil {
         wiegandDataDto.setType(type);
         wiegandDataDto.setSequenceId(sequenceId);
         wiegandDataDto.setBusinessData(businessData);
+        wiegandDataDto.setOrgData(data);
         return wiegandDataDto;
 
+    }
+
+
+
+    public static WiegandDataDto parseOpenDoorResult(String data) {
+        int typePos = 0; // 类型
+        int typeLen = 1;
+        int cmdPos = typePos + typeLen * 2; // 功能号
+        int cmdLen = 1;
+        int reservedPos = cmdPos + cmdLen * 2; // 保留
+        int reservedLen = 2;
+        int machineCodePos = reservedPos + reservedLen * 2; // 设备编号
+        int machineCodeLen = 4;
+        int wiegandNumPos = machineCodePos + machineCodeLen * 2;
+        int wiegandNum = 4;
+        int upTypePos = wiegandNumPos + wiegandNum * 2; // 记录类型
+        int upTypeLen =1;
+        int statePos = upTypePos + upTypeLen*2; // 有效性
+        int stateLen = 1;
+        int gateNumPos = statePos + stateLen *2;
+        int gateNumLen = 1;
+        int inoutPos = gateNumPos + gateNumLen*2;
+        int inoutLen = 1;
+        int cardPos = inoutPos + inoutLen*2;
+        int cardLen = 4;
+
+        String type = getTargetString(data, typePos, typeLen * 2);
+        String cmd = getTargetString(data, cmdPos, cmdLen * 2);
+        String machineCode = getTargetIntString(data, machineCodePos, machineCodeLen * 2);
+        String gateNum = getTargetString(data, gateNumPos, gateNumLen * 2);
+        String inout = getTargetString(data, inoutPos, inoutLen * 2);
+        String cardNum = getTargetString(data, cardPos, cardLen * 2);
+        WiegandDataDto wiegandDataDto = new WiegandDataDto();
+        wiegandDataDto.setCmd(cmd);
+        wiegandDataDto.setMachineCode(machineCode);
+        wiegandDataDto.setType(type);
+        wiegandDataDto.setGateNum(gateNum);
+        wiegandDataDto.setCardNum(cardNum);
+        wiegandDataDto.setInout(inout);
+        wiegandDataDto.setOrgData(data);
+        return wiegandDataDto;
     }
 
     public static String getTargetString(String dataStr, int startPos, int dataLen) {
@@ -103,6 +145,5 @@ public class WiegandUtil {
         }
         return phoneNumber.substring(phoneNumber.length() - 6);
     }
-
 
 }

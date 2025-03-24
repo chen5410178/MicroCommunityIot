@@ -16,6 +16,8 @@ import java.util.Date;
  **/
 public class AccessControlAttrDto extends PageDto implements Serializable {
 
+    public static final String SPEC_CD_WIEGAND_NUM = "100201"; // 微耕记录号
+
     private String attrId;
     private String machineId;
     private String specCd;
