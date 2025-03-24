@@ -23,6 +23,7 @@ import com.java110.bean.dto.PageDto;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.accessControl.MachineHeartbeatDto;
 import com.java110.dto.chargeMachine.ChargeMachineOrderDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
@@ -163,7 +164,7 @@ public class AccessControlV1InnerServiceSMOImpl implements IAccessControlV1Inner
         accessControlDto.setMachineCode(machineHeartbeatDto.getMachineCode());
         List<AccessControlDto> accessControlDtos = queryAccessControls(accessControlDto);
 
-        if (accessControlDtos == null || accessControlDtos.size() < 1) {
+        if (ListUtil.isNull(accessControlDtos)) {
             return 0;
         }
 

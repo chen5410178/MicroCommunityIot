@@ -45,4 +45,7 @@ public interface IAccessControlResultV1InnerServiceSMO {
 
     @RequestMapping(value = "/heartbeat", method = RequestMethod.POST)
     String heartbeat(@RequestBody  AccessControlNotifyDto accessControlNotifyDto);
+
+    @RequestMapping(value = "/task", method = RequestMethod.POST)
+    String task(@RequestBody  AccessControlDto accessControlDto);
 }

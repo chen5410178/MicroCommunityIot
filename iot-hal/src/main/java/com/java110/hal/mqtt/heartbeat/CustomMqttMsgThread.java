@@ -1,6 +1,7 @@
 package com.java110.hal.mqtt.heartbeat;
 
 import com.java110.core.factory.ApplicationContextFactory;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.accessControl.AccessControlResultDto;
 import com.java110.dto.barrier.BarrierResultDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
@@ -62,7 +63,7 @@ public class CustomMqttMsgThread implements Runnable {
         //tmpManufacturerDto.setValue(mqttMsgDto.getTopic());
         List<HardwareManufacturerAttrDto> manufacturerAttrDtos = hardwareManufacturerAttrV1InnerServiceSMOImpl.queryHardwareManufacturerAttrs(tmpManufacturerDto);
 
-        if (manufacturerAttrDtos == null || manufacturerAttrDtos.isEmpty()) {
+        if (ListUtil.isNull(manufacturerAttrDtos)) {
             return;
         }
 

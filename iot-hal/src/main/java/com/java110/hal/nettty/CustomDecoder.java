@@ -42,6 +42,8 @@ public class CustomDecoder extends MessageToMessageDecoder<byte[]> {
                 totalLen = DataHeader.getLvChongChongLength(msg) + 6;
             } else if (DataHeader.isSbCharge(msg)) {
                 totalLen = DataHeader.getLvChongChongLength(msg) + 6;
+            } else if(DataHeader.isWiegand(msg)){
+                totalLen = 64;// 微耕固定长度为64字节
             }
             //todo 说明是完整包
             if (msg.length >= totalLen) {

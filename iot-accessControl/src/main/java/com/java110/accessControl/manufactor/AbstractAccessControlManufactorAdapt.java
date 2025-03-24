@@ -180,20 +180,25 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         return null;
     }
 
-    public boolean addAd(AccessControlDto accessControlDto, AccessControlAdRelPo accessControlAdRelPo){
+    public boolean addAd(AccessControlDto accessControlDto, AccessControlAdRelPo accessControlAdRelPo) {
         return true;
     }
 
 
+    public boolean ladder_stop(AccessControlDto accessControlDto) {
+        return true;
+    }
 
-    public boolean ladder_stop(AccessControlDto accessControlDto){
+
+    public boolean ladder_start(AccessControlDto accessControlDto) {
         return true;
     }
-	
-	
-    public boolean ladder_start(AccessControlDto accessControlDto){
-        return true;
+
+    public ResultVo task(AccessControlDto accessControlDto) {
+        ResultVo resultVo = new ResultVo(ResultVo.CODE_OK, "成功");
+        return resultVo;
     }
+
     /**
      * 门禁记录上报
      *
@@ -203,7 +208,6 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
      */
     @Override
     public abstract String accessControlResult(String topic, String param);
-
 
 
     /**
@@ -439,7 +443,7 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
         return accessControlFaceDto;
     }
 
-    protected  void cmdResult(int code, String msg,AccessControlLogDto accessControlLogDto){
+    protected void cmdResult(int code, String msg, AccessControlLogDto accessControlLogDto) {
         String state = AccessControlLogDto.STATE_RES;
         if (code != ResultVo.CODE_OK) {
             state = AccessControlLogDto.STATE_FAIL;
@@ -488,7 +492,7 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
             return;
         }
 
-        cmdResult(code,msg,accessControlLogDtos.get(0));
+        cmdResult(code, msg, accessControlLogDtos.get(0));
 
 
     }

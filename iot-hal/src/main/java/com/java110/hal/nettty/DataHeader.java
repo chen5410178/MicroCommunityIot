@@ -11,6 +11,7 @@ public class DataHeader {
 
     public static final String SONG_BING_HEAD = "68";// 松饼头
     public static final String SONG_BING_END = "16";// 松饼尾
+    public static final String WIEGAND_HEAD = "17";// 微耕开头
 
 
     /**
@@ -123,6 +124,21 @@ public class DataHeader {
 
     }
 
+    public static boolean isWiegand(byte[] msg) {
+
+        String data = BytesUtil.bytesToHex(msg);
+
+        if (StringUtil.isEmpty(data)) {
+            return false;
+        }
+
+        if (data.startsWith(WIEGAND_HEAD)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * 获取报文长度
      *
@@ -209,5 +225,12 @@ public class DataHeader {
         data = data.replaceAll("7d01", "7d");
         data = data.replaceAll("7d02", "7e");
         return BytesUtil.hexStringToByteArray(data);
+    }
+
+    public static String getWieGandMachineCode(byte[] msg) {
+        String data = BytesUtil.bytesToHex(msg);
+        int startPos = 4;
+        data = data.substring(startPos, startPos + 4);
+        return Integer.parseInt(data,16)+"";
     }
 }

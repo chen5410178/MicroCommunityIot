@@ -3,14 +3,15 @@ package com.java110.hal.nettty;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.annotation.Java110Synchronized;
 import com.java110.core.factory.ApplicationContextFactory;
-import com.java110.core.utils.BeanConvertUtil;
-import com.java110.core.utils.DistributedLock;
-import com.java110.core.utils.ListUtil;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.utils.*;
+import com.java110.dto.accessControl.AccessControlDto;
+import com.java110.dto.accessControl.AccessControlResultDto;
 import com.java110.dto.chargeMachine.ChargeMachineByteDataDto;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
 import com.java110.dto.chargeMachine.LicenseMachineByteDataDto;
 import com.java110.dto.workLicenseMachine.WorkLicenseMachineDto;
+import com.java110.intf.accessControl.IAccessControlResultV1InnerServiceSMO;
+import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
 import com.java110.intf.charge.INotifyChargeV1InnerServiceSMO;
 import com.java110.intf.charge.INotifyWorkLicenseV1InnerServiceSMO;
@@ -39,8 +40,10 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
     public static final String MACHINE_TYPE_CHARGE = "CHARGE"; // todo 充电桩
     public static final String MACHINE_TYPE_METER = "METER"; // todo 水电表
     public static final String MACHINE_TYPE_WORK_LICENSE = "WORK_LICENSE"; // todo 员工牌
+    public static final String MACHINE_TYPE_ACCESS_CONTROL = "ACCESS_CONTROL"; // todo 门禁
 
     private final static Map<String, ChargeMachineDto> chargeCache = new ConcurrentHashMap<>();
+    private final static Map<String, AccessControlDto> accessControlCache = new ConcurrentHashMap<>();
     private final static Map<String, WorkLicenseMachineDto> workLicenseCache = new ConcurrentHashMap<>();
 
     @Override
@@ -116,6 +119,9 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
             bytes = DataHeader.clearWorkLicense(bytes);
             machineCode = DataHeader.getWorkLicenseMachineCode(bytes);
             machineType = MACHINE_TYPE_WORK_LICENSE;
+        } else if (DataHeader.isWiegand(bytes)) {
+            machineCode = DataHeader.getWieGandMachineCode(bytes);
+            machineType = MACHINE_TYPE_ACCESS_CONTROL;
         }
         if (StringUtil.isEmpty(machineCode)) {
             return;
@@ -134,11 +140,17 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
             toNotifyWorkLicense(machineCode, bytes);
             return;
         }
+        //todo 通知门禁适配器
+        if (MACHINE_TYPE_ACCESS_CONTROL.equals(machineType)) {
+            toNotifyAccessControl(machineCode, bytes);
+            return;
+        }
         //todo 通知 水电表
         if (toNotifyMeter(machineCode, bytes)) {
             return;
         }
     }
+
 
 
     private void toNotifyWorkLicense(String machineCode, byte[] bytes) {
@@ -210,7 +222,7 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
             notifyChargeV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(INotifyChargeV1InnerServiceSMO.class.getName(), INotifyChargeV1InnerServiceSMO.class);
         }
         // 这里深度拷贝下，不然后面 改了对象内容导致 出错
-        chargeMachineDto = BeanConvertUtil.covertBean(chargeMachineDto,ChargeMachineDto.class);
+        chargeMachineDto = BeanConvertUtil.covertBean(chargeMachineDto, ChargeMachineDto.class);
         notifyChargeV1InnerServiceSMOImpl.machineResult(new ChargeMachineByteDataDto(chargeMachineDto, bytes));
 
 
@@ -248,5 +260,42 @@ public class HeartBeatSimpleHandle extends ChannelInboundHandlerAdapter {
             NettySocketHolder.put(machineCode, ip, (NioSocketChannel) ctx.channel());
         }
     }
+
+    private boolean toNotifyAccessControl(String machineCode, byte[] bytes) {
+        AccessControlDto accessControlDto = null;
+
+        if (!accessControlCache.containsKey(machineCode)) {
+            IAccessControlV1InnerServiceSMO accessControlV1InnerServiceSMOImpl
+                    = ApplicationContextFactory.getBean("accessControlV1InnerServiceSMOImpl", IAccessControlV1InnerServiceSMO.class);
+            if (accessControlV1InnerServiceSMOImpl == null) {
+                accessControlV1InnerServiceSMOImpl = ApplicationContextFactory.getBean(IAccessControlV1InnerServiceSMO.class.getName(), IAccessControlV1InnerServiceSMO.class);
+            }
+            accessControlDto = new AccessControlDto();
+            accessControlDto.setMachineCode(machineCode);
+            List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+            if (ListUtil.isNull(accessControlDtos)) {
+                return false;
+            }
+            accessControlCache.put(machineCode, accessControlDtos.get(0));
+        }
+
+        accessControlDto = accessControlCache.get(machineCode);
+
+
+        IAccessControlResultV1InnerServiceSMO accessControlResultV1InnerServiceSMO =
+                ApplicationContextFactory.getBean("accessControlResultV1InnerServiceSMOImpl",
+                        IAccessControlResultV1InnerServiceSMO.class);
+        if (accessControlResultV1InnerServiceSMO == null) {
+            accessControlResultV1InnerServiceSMO = ApplicationContextFactory.getBean(IAccessControlResultV1InnerServiceSMO.class.getName(),
+                    IAccessControlResultV1InnerServiceSMO.class);
+        }
+
+        String data = BytesUtil.bytesToHex(bytes);
+
+        accessControlResultV1InnerServiceSMO.accessControlResult(new AccessControlResultDto("102025032420940003", "wiegand/tcp", data));
+
+        return true;
+    }
+
 
 }

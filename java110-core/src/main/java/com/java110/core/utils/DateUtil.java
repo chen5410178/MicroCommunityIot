@@ -139,6 +139,13 @@ public class DateUtil {
             return sDateFormat.format(date);
         }
     }
+    public static String getFormatTimeStringH(Date date) {
+        SimpleDateFormat sDateFormat = getDateFormat(DateUtil.DATE_FORMATE_STRING_H);
+
+        synchronized (sDateFormat) {
+            return sDateFormat.format(date);
+        }
+    }
 
     public static String getDefaultFormateTimeString(Date date) {
         return getFormatTimeString(date, "yyyyMMddHHmmss");

@@ -87,5 +87,20 @@ public class AccessControlResultV1InnerServiceSMOImpl implements IAccessControlR
         return result;
     }
 
+    @Override
+    public String task(@RequestBody AccessControlDto accessControlDto) {
+        AccessControlDto tmpAccessControlDto = new AccessControlDto();
+        tmpAccessControlDto.setMachineCode(accessControlDto.getMachineCode());
+        List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(tmpAccessControlDto);
+        if(ListUtil.isNull(accessControlDtos)){
+            throw new IllegalArgumentException("门禁不存在");
+        }
+
+        accessControlManufactorImpl = ApplicationContextFactory.getBean(accessControlDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
+
+        String result = accessControlManufactorImpl.task(accessControlDto);
+        return result;
+    }
+
 
 }

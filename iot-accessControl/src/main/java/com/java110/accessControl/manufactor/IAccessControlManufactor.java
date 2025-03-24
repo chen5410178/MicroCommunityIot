@@ -145,5 +145,11 @@ public interface IAccessControlManufactor {
 	 * @return
 	 */
 	boolean ladder_start(AccessControlDto accessControlDto);
-	
+
+    /**
+     * 定时器
+     * @param accessControlDto
+     * @return
+     */
+    ResultVo task(AccessControlDto accessControlDto);
 }
