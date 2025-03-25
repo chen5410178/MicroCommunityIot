@@ -65,7 +65,7 @@ public class WiegandCreateQr {
             sendData[5] = (byte)((cardNO>>40) & 0xff);
             sendData[6] = (byte)((cardNO>>48) & 0xff);
             sendData[7] = (byte)((cardNO>>56) & 0xff);
-            sendData[7] = crc8(sendData, 7); //2017-12-18 22:03:47 校验和
+            //sendData[7] = crc8(sendData, 7); //2017-12-18 22:03:47 校验和
         }
         byte[] enOut = SM4.encode16(sendData, pwdData);
         String info ="";
@@ -110,8 +110,12 @@ public class WiegandCreateQr {
                         (byte) 0x30, (byte) 0x31, (byte) 0x32, (byte) 0x33, (byte) 0x34, (byte) 0x35, (byte) 0x36, (byte) 0x37,
                         (byte) 0x38, (byte) 0x39, (byte) 0x41, (byte) 0x42, (byte) 0x43, (byte) 0x44, (byte) 0x45, (byte) 0x46
                 }; //测试密码0123456789ABCDEF
-        String qrCode = WiegandCreateQr.createQR(21635053, pwdData);
+        String pwd = "ed1f4a01";
+        long cardNum = WiegandUtil.hexLittleEndianToDecimal(pwd); //21635053
+        String qrCode = WiegandCreateQr.createQR(cardNum, pwdData);
         System.out.println(qrCode);
+
+        System.out.println(cardNum);
     }
 
 }

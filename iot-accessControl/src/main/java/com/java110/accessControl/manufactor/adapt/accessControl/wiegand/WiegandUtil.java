@@ -70,7 +70,7 @@ public class WiegandUtil {
         int reservedLen = 2;
         int machineCodePos = reservedPos + reservedLen * 2; // 设备编号
         int machineCodeLen = 4;
-        int wiegandNumPos = machineCodePos + machineCodeLen * 2;
+        int wiegandNumPos = machineCodePos + machineCodeLen * 2; // 索引号
         int wiegandNum = 4;
         int upTypePos = wiegandNumPos + wiegandNum * 2; // 记录类型
         int upTypeLen =1;
@@ -90,6 +90,7 @@ public class WiegandUtil {
         String inout = getTargetString(data, inoutPos, inoutLen * 2);
         String cardNum = getTargetString(data, cardPos, cardLen * 2);
         String state = getTargetString(data, statePos, stateLen * 2);
+        String sequenceId = getTargetString(data, wiegandNumPos, wiegandNum * 2);
         WiegandDataDto wiegandDataDto = new WiegandDataDto();
         wiegandDataDto.setCmd(cmd);
         wiegandDataDto.setMachineCode(machineCode);
@@ -99,6 +100,7 @@ public class WiegandUtil {
         wiegandDataDto.setInout(inout);
         wiegandDataDto.setOrgData(data);
         wiegandDataDto.setState(state);
+        wiegandDataDto.setSequenceId(sequenceId);
         return wiegandDataDto;
     }
 
@@ -146,6 +148,27 @@ public class WiegandUtil {
             return "000000";
         }
         return phoneNumber.substring(phoneNumber.length() - 6);
+    }
+
+    public static long hexLittleEndianToDecimal(String hex) {
+        // 确保 hex 长度为 8（4字节）
+        if (hex.length() != 8) {
+            throw new IllegalArgumentException("Hex string must be 8 characters long (4 bytes)");
+        }
+
+        // 反转字节顺序（小端序 → 大端序）
+        String reversedHex = reverseHexBytes(hex);
+
+        // 解析为十进制
+        return Long.parseLong(reversedHex, 16);
+    }
+
+    private static String reverseHexBytes(String hex) {
+        StringBuilder reversed = new StringBuilder();
+        for (int i = hex.length() - 2; i >= 0; i -= 2) {
+            reversed.append(hex.substring(i, i + 2));
+        }
+        return reversed.toString();
     }
 
 }

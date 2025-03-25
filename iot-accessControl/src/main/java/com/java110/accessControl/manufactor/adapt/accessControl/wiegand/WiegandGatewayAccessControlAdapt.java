@@ -7,6 +7,7 @@ import com.java110.accessControl.manufactor.adapt.accessControl.HcAccessControlP
 import com.java110.bean.ResultVo;
 import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.bean.dto.room.RoomDto;
+import com.java110.core.cache.CommonCache;
 import com.java110.core.client.RestTemplate;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
@@ -335,6 +336,11 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
             return;
         }
 
+        String preSequenceId = CommonCache.getValue("Wiegand_fr_seq_"+machineCode);
+        if(wiegandDataDto.getSequenceId().equals(preSequenceId)){
+            return;
+        }
+
         OwnerDto ownerDto = new OwnerDto();
         ownerDto.setCardNumber(wiegandDataDto.getCardNum());
         List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
@@ -356,7 +362,7 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
 
         saveOpenDoorResult(machineCode, images, staffId, staffName, openTypeCd, similar);
 
-
+        CommonCache.setValue("Wiegand_fr_seq_"+machineCode,wiegandDataDto.getSequenceId());
     }
 
     @Override
@@ -366,14 +372,33 @@ public class WiegandGatewayAccessControlAdapt extends AbstractAccessControlManuf
         if (StringUtil.isEmpty(accessControlDto.getLink())) {
             throw new IllegalArgumentException("用户不存在");
         }
-        String pwd = WiegandUtil.getLastSixDigits(accessControlDto.getLink());//  1-4号门控制时段
+
+        OwnerDto ownerDto = new OwnerDto();
+        ownerDto.setLink(accessControlDto.getLink());
+        ownerDto.setCommunityId(accessControlDto.getCommunityId());
+        List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
+        if (ListUtil.isNull(ownerDtos)) {
+            throw new IllegalArgumentException("业主不存在");
+        }
+        String cardNum = "";
+        for (OwnerDto tmpOwnerDto : ownerDtos) {
+            if (StringUtil.isEmpty(tmpOwnerDto.getCardNumber())) {
+                continue;
+            }
+            cardNum = tmpOwnerDto.getCardNumber();
+        }
+        if (StringUtil.isEmpty(cardNum)) {
+            throw new IllegalArgumentException("业主没有办理卡");
+        }
+
         byte[] pwdData =
                 {
                         (byte) 0x30, (byte) 0x31, (byte) 0x32, (byte) 0x33, (byte) 0x34, (byte) 0x35, (byte) 0x36, (byte) 0x37,
                         (byte) 0x38, (byte) 0x39, (byte) 0x41, (byte) 0x42, (byte) 0x43, (byte) 0x44, (byte) 0x45, (byte) 0x46
                 }; //测试密码0123456789ABCDEF
-        String qrCode = WiegandCreateQr.createQR(Long.parseLong(pwd), pwdData);
-        return new ResultVo(ResultVo.CODE_OK,ResultVo.MSG_OK,qrCode);
+        long pwd = WiegandUtil.hexLittleEndianToDecimal(cardNum); //21635053
+        String qrCode = WiegandCreateQr.createQR(pwd, pwdData);
+        return new ResultVo(ResultVo.CODE_OK, ResultVo.MSG_OK, qrCode);
     }
 
 
