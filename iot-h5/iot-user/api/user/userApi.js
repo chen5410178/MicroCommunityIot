@@ -100,6 +100,29 @@ export function ownerLogin(_objData) {
 	});
 
 }
+
+export function wechatLogin(_data) {
+
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.phoneWechatLogin,
+			method: "POST",
+			data: _data, //动态数据
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code != 0) {
+					reject(_json.msg);
+					return;
+				}
+				uni.setStorageSync("userInfo",_json.data);
+				resolve(_json.data);
+			},
+			fail: function(e) {
+				reject(e);
+			}
+		});
+	})
+}
 /**
  * 退出登录
  */
@@ -362,3 +385,4 @@ export function saveUserChargeCar(_objData){
 	
 	})
 }
+

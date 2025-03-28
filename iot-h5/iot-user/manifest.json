@@ -49,7 +49,7 @@
                 "ad" : {},
                 "payment" : {
                     "weixin" : {
-                        "appid" : "wx3660216976a4e757",
+                        "appid" : "wx702e87d56708f858",
                         "UniversalLinks" : ""
                     }
                 }
@@ -59,7 +59,7 @@
     "quickapp" : {},
     "mp-weixin" : {
         "usingComponents" : true,
-        "appid" : "wxf83d66b0e9f5964d",
+        "appid" : "wx702e87d56708f858",
         "setting" : {
             "urlCheck" : false,
             "es6" : false

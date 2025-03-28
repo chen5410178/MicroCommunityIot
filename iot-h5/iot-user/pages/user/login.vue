@@ -30,8 +30,10 @@
 
 		<view class="padding flex flex-direction margin-top">
 			<button class="cu-btn bg-blue lg" @click="_doLogin()">登录</button>
+			<!-- #ifdef MP-WEIXIN -->
+			<wechat-login ref="wechatLoginRef"></wechat-login>
+			<!-- #endif -->
 			<button class="cu-btn line-orange  margin-tb-sm lg" @click="_doRegister()">注册</button>
-
 			<view class="text-center margin-top-sm text-green" @click="_doLoginPhone()">{{phoneLoginName}}</view>
 		</view>
 
@@ -40,7 +42,7 @@
 
 <script>
 	var _this;
-
+	import wechatLogin from '@/components/user/wechat-login.vue';
 	import {
 		sendSmsCode,
 		ownerLogin,
@@ -82,6 +84,14 @@
 			uni.removeStorageSync("currentCommunityInfo");
 			uni.removeStorageSync("ownerInfo");
 			removeUserLoginInfo();
+			// #ifdef MP-WEIXIN
+			setTimeout(function(){
+				that.$refs.wechatLoginRef._initWechatLogin();
+			},1000)
+			// #endif
+		},
+		components:{
+			wechatLogin
 		},
 		methods: {
 			_doLogin: function() {

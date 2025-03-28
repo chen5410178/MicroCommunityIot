@@ -7,6 +7,12 @@
 					<text class="text-grey">切换小区</text>
 				</view>
 			</view>
+			<view class="cu-item arrow" @click="_test()">
+				<view class="content">
+					<text class="cuIcon-settings text-gray"></text>
+					<text class="text-grey">测试</text>
+				</view>
+			</view>
 			<view class="cu-item arrow" @tap="_logout()" v-if="login">
 				<view class="content">
 					<text class="cuIcon-circlefill text-yellow"></text>
@@ -91,6 +97,11 @@ import {userLogout} from '../../api/user/userApi.js';
 						url:'/pages/user/login'
 					});
 				});
+			},
+			_test:function(){
+				uni.navigateTo({
+					url:'/pages/charge/carChargePort?machineId=102025032865650020&portId=102025032812880022&communityId=2024122649870005'
+				})
 			}
 		}
 	}

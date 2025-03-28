@@ -7,7 +7,8 @@
 		</view>
 		<view class="flex justify-start mtc-machine-port">
 			<view v-for="(item,index) in  ports" :key="index" class="port-item">
-				<view class="item-1" :class="{'item-1-active':curPort.portId == item.portId,'item-1-working':item.state=='WORKING'}"
+				<view class="item-1"
+					:class="{'item-1-active':curPort.portId == item.portId,'item-1-working':item.state=='WORKING'}"
 					@click="_switchPort(item)">
 					<view class="port-name">
 						{{item.portName}}
@@ -66,10 +67,16 @@
 			<button @click="_toCharge" :disabled="!curHours.duration || !curPort.portId"
 				class="cu-btn bg-green shadow-blur round lg">去充电</button>
 		</view>
+		<!-- #ifdef H5 -->
 		<view class="cu-bar btn-group" style="margin-top: 30px;" v-else>
 			<button @click="_toLogin" class="cu-btn bg-green shadow-blur round lg">请先登录</button>
 		</view>
-
+		<!-- #endif -->
+		<!-- #ifdef MP-WEIXIN -->
+		<view class="padding flex flex-direction" v-else>
+			<wechat-login-charge ref="wechatLoginChargeRel" @getWechatLogin="getWechatLogin"></wechat-login-charge>
+		</view>
+		<!-- #endif -->
 	</view>
 </template>
 
@@ -87,6 +94,7 @@
 		autoLogin,
 		hasLogin
 	} from '@/api/user/sessionApi.js';
+	import wechatLoginCharge from '@/components/user/wechat-login-charge.vue';
 	export default {
 		data() {
 			return {
@@ -126,6 +134,7 @@
 		components: {
 			charge,
 			account,
+			wechatLoginCharge
 		},
 		onLoad(options) {
 			autoLogin(options);
@@ -146,6 +155,12 @@
 				if (_that.$refs.chargeRef) {
 					_that.$refs.chargeRef.loadChargeMonthOrder(_that.communityId);
 				}
+				// #ifdef MP-WEIXIN
+				if (_that.$refs.wechatLoginChargeRel) {
+					_that.$refs.wechatLoginChargeRel._initWechatLogin(_that.communityId);
+				}
+				// #endif 
+
 			}, 1500);
 		},
 		onShow: function(options) {
@@ -243,6 +258,18 @@
 				uni.navigateTo({
 					url: '/pages/charge/chargeMachineOrders?communityId=' + this.communityId
 				})
+			},
+			getWechatLogin: function() {
+				let _that = this;
+				_that.login = hasLogin();
+				setTimeout(function() {
+					if (_that.$refs.accRef) {
+						_that.$refs.accRef.loadOwnerAccount(_that.communityId);
+					}
+					if (_that.$refs.chargeRef) {
+						_that.$refs.chargeRef.loadChargeMonthOrder(_that.communityId);
+					}
+				}, 1500)
 			}
 		}
 	}
@@ -296,6 +323,7 @@
 			.item-1-active {
 				background-color: #0FBA82;
 			}
+
 			.item-1-working {
 				background-color: #e54d42;
 			}

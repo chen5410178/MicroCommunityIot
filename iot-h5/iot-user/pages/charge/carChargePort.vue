@@ -27,8 +27,8 @@
 				</view>
 			</view>
 		</view>
-		
-		
+
+
 		<view>
 			<car-charge-price ref="carChargePriceRef" :prices="prices"></car-charge-price>
 		</view>
@@ -37,8 +37,7 @@
 		</view>
 		<view class="flex justify-start mtc-machine-hours">
 			<view v-for="(item,index) in moneys" :key="index" class="hours-item">
-				<view class="item-1" :class="{'item-1-active':curMoney == item.amount}"
-					@click="_switchMoney(item)">
+				<view class="item-1" :class="{'item-1-active':curMoney == item.amount}" @click="_switchMoney(item)">
 					<view class="port-name">
 						{{item.name}}
 					</view>
@@ -56,10 +55,16 @@
 			<button @click="_startCharge" :disabled="!curMoney || !curPort.portId"
 				class="cu-btn bg-green shadow-blur round lg">开启充电</button>
 		</view>
+		<!-- #ifdef H5 -->
 		<view class="cu-bar btn-group" style="margin-top: 30px;" v-else>
 			<button @click="_toLogin" class="cu-btn bg-green shadow-blur round lg">请先登录</button>
 		</view>
-		
+		<!-- #endif -->
+		<!-- #ifdef MP-WEIXIN -->
+		<view class="padding flex flex-direction" v-else>
+			<wechat-login-charge ref="wechatLoginChargeRel" @getWechatLogin="getWechatLogin"></wechat-login-charge>
+		</view>
+		<!-- #endif -->
 		<start-car-charge ref="startCarChargeRef"></start-car-charge>
 	</view>
 </template>
@@ -79,17 +84,18 @@
 	import startCarCharge from '@/components/charge/startCarCharge.vue';
 	import carChargePrice from '@/components/charge/carChargePrice.vue';
 	import chargeCarNumVue from '@/components/charge/chargeCarNum.vue';
+	import wechatLoginCharge from '@/components/user/wechat-login-charge.vue';
 	export default {
 		data() {
 			return {
-				machineId: '', 
+				machineId: '',
 				modalName: null,
-				carNum:'未设置',
+				carNum: '未设置',
 				portId: '',
 				communityId: '',
 				machineCode: '',
 				machineName: '',
-				amount:'',
+				amount: '',
 				portCount: '',
 				prices: [],
 				ports: [],
@@ -122,7 +128,8 @@
 			account,
 			startCarCharge,
 			carChargePrice,
-			chargeCarNumVue
+			chargeCarNumVue,
+			wechatLoginCharge
 		},
 		onLoad(options) {
 			autoLogin(options);
@@ -144,11 +151,16 @@
 					_that.$refs.chargeCarNumRef.initUserChargeCarNum(_that.login);
 				}
 				_that._checkOrder();
-				
+				// #ifdef MP-WEIXIN
+				if (_that.$refs.wechatLoginChargeRel) {
+					_that.$refs.wechatLoginChargeRel._initWechatLogin(_that.communityId);
+				}
+				// #endif 
+
 			}, 1000);
 		},
 		onShow: function(options) {
-			
+
 			if (this.$refs.accRef) {
 				this.$refs.accRef.loadOwnerAccount(this.communityId);
 			}
@@ -186,30 +198,30 @@
 				})
 			},
 			_startCharge: function() {
-				if(!this.curMoney){
+				if (!this.curMoney) {
 					uni.showToast({
-						icon:'none',
-						title:'请选择充电金额'
+						icon: 'none',
+						title: '请选择充电金额'
 					});
 					return;
 				}
 				// todo 开启充电
 				this.$refs.startCarChargeRef.startCharge({
-					communityId:this.communityId,
-					machineId:this.machineId,
-					portId:this.portId,
-					money:this.curMoney
+					communityId: this.communityId,
+					machineId: this.machineId,
+					portId: this.portId,
+					money: this.curMoney
 				});
 			},
-			_checkOrder:function(){
-				if(!this.login){
+			_checkOrder: function() {
+				if (!this.login) {
 					return;
 				}
 				queryMyChargeOrder({
-					portId:this.portId,
-					communityId:this.communityId,
-				}).then(_json=>{
-					if(_json.code != 0){
+					portId: this.portId,
+					communityId: this.communityId,
+				}).then(_json => {
+					if (_json.code != 0) {
 						return;
 					}
 					let _order = _json.data;
@@ -227,7 +239,7 @@
 			},
 			_switchMoney: function(_curMoney) {
 				this.curMoney = _curMoney.amount;
-				
+
 			},
 			_toLogin: function() {
 				if (this.communityId) {
@@ -239,6 +251,23 @@
 				uni.navigateTo({
 					url: '/pages/user/login'
 				})
+			},
+			getWechatLogin: function() {
+				let _that = this;
+				_that.login = hasLogin();
+				setTimeout(function() {
+					if (_that.$refs.accRef) {
+						_that.$refs.accRef.loadOwnerAccount(_that.communityId);
+					}
+					if (_that.$refs.chargeRef) {
+						_that.$refs.chargeRef.loadChargeMonthOrder(_that.communityId);
+					}
+					if (_that.$refs.chargeCarNumRef) {
+						_that.$refs.chargeCarNumRef.initUserChargeCarNum(_that.login);
+					}
+
+				}, 1000);
+				_that._checkOrder();
 			}
 		}
 	}
