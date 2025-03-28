@@ -220,11 +220,11 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         notifyChargeOrderDto.setPortCode(chargeMachinePortDto.getPortCode());
         notifyChargeOrderDto.setBodyParam("");
         notifyChargeOrderDto.setReason("停止成功");
-//        Date startTime = DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime());//开始时间
-//        Date endTime = new Date();//本次结束时间
-//        double differenceInMillis = (endTime.getTime() - startTime.getTime()) / ( 60 * 1000.00);
-//        double lastPower = Double.parseDouble(chargeMachineOrderDtos.get(0).getEnergy())/differenceInMillis;
-        notifyChargeOrderDto.setEnergy(chargeMachineOrderDtos.get(0).getEnergy());
+        Date startTime = DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime());//开始时间
+        Date endTime = new Date();//本次结束时间
+       // double differenceInMillis = (endTime.getTime() - startTime.getTime()) / ( 60 * 1000.00);
+        double lastPower = Double.parseDouble(chargeMachineOrderDtos.get(0).getEnergy())/ 60;
+        notifyChargeOrderDto.setEnergy(lastPower+ "");
         notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);
     }
 
@@ -440,8 +440,8 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
 
         Date startTime = DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime());//开始时间
         Date endTime = new Date();//本次结束时间
-        double differenceInMillis = (endTime.getTime() - startTime.getTime()) / (60 * 1000.00);
-        double lastPower = Double.parseDouble(chargeMachineOrderDtos.get(0).getEnergy()) / differenceInMillis;
+        //double differenceInMillis = (endTime.getTime() - startTime.getTime()) / (60 * 1000.00);
+        double lastPower = Double.parseDouble(chargeMachineOrderDtos.get(0).getEnergy()) / 60;
         notifyChargeOrderDto.setEnergy(lastPower+ "");
 
         notifyChargeV1InnerServiceSMOImpl.finishCharge(notifyChargeOrderDto);
