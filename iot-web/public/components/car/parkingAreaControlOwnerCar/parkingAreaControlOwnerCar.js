@@ -9,6 +9,7 @@
             parkingAreaControlOwnerCar: {
                 cars: [],
                 boxId: '',
+                paId: '',
                 carNum: '',
                 leaseType: '',
                 leaseTypes: []
@@ -23,6 +24,7 @@
         _initEvent: function() {
             vc.on('parkingAreaControlOwnerCar', 'switch', function(_data) {
                 $that.parkingAreaControlOwnerCar.boxId = _data.boxId;
+                $that.parkingAreaControlOwnerCar.paId = _data.paId;
                 $that._loadParkingAreaControlOwnerCars(DEFAULT_PAGE, DEFAULT_ROWS);
             });
             vc.on('parkingAreaControlOwnerCar', 'paginationPlus', 'page_event',
@@ -39,6 +41,7 @@
                         row: _row,
                         communityId: vc.getCurrentCommunity().communityId,
                         boxId: $that.parkingAreaControlOwnerCar.boxId,
+                        paId: $that.parkingAreaControlOwnerCar.paId,
                         carTypeCds: '1001,1002',
                         carNum: $that.parkingAreaControlOwnerCar.carNum,
                         leaseType: $that.parkingAreaControlOwnerCar.leaseType
