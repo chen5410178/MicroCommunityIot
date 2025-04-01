@@ -18,7 +18,7 @@ const baseUrl = '/';
 const baseUrl = 'http://127.0.0.1:9999/';
 // #endif
 
-let commonBaseUrl = 'http://iot.sxjly.com/';
+let commonBaseUrl = 'http://iot.homecommunity.cn/';
 
 const logLevel = "DEBUG"; // 日志级别
 
