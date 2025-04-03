@@ -2,7 +2,7 @@
 	<view class="login-container margin-top-sm">
 		<!-- 确保方法名一致 -->
 		<button open-type="getPhoneNumber" @getphonenumber="_getPhoneNumber" class="login-btn">
-			微信手机号一键登录
+			手机号快捷登录
 		</button>
 	</view>
 </template>
