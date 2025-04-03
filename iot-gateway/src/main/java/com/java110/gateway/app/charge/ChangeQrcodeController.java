@@ -270,34 +270,27 @@ public class ChangeQrcodeController {
 
     }
 
-    private ResponseEntity<String> pageMiniPagePort(ChargeMachineDto chargeMachineDto,String portId) {
-        String urlScheme ;
+    private ResponseEntity<String> pageMiniPagePort(ChargeMachineDto chargeMachineDto, String portId) {
+        String urlScheme;
         String path = "";
         String query = "";
+
         if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDto.getChargeType())) {
             path = "/pages/charge/machineToCharge";
-            query = "machineId="
-                    + chargeMachineDto.getMachineId()
-                    + "&communityId=" + chargeMachineDto.getCommunityId()+"&portId=" + portId;
+            query = "machineId=" + chargeMachineDto.getMachineId()
+                    + "&communityId=" + chargeMachineDto.getCommunityId()
+                    + "&portId=" + portId;
         } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDto.getChargeType())) {
             path = "/pages/charge/carChargePort";
-            query = "machineId="
-                    + chargeMachineDto.getMachineId()
-                    + "&communityId=" + chargeMachineDto.getCommunityId()+ "&portId=" + portId;
+            query = "machineId=" + chargeMachineDto.getMachineId()
+                    + "&communityId=" + chargeMachineDto.getCommunityId()
+                    + "&portId=" + portId;
         }
-        urlScheme = getWechatURLScheme(chargeMachineDto.getCommunityId(),path,query);
-        String html = "<!DOCTYPE html>" +
-                "<html>" +
-                "<head>" +
-                "    <title>跳转小程序</title>" +
-                "    <meta charset=\"UTF-8\">" +
-                "</head>" +
-                "<body>" +
-                "    <h1>正在跳转小程序...</h1>" +
-                "    <a href=\"" + urlScheme + "\">点击手动跳转</a>" +
-                "    <script>window.location.href = \"" + urlScheme + "\";</script>" +
-                "</body>" +
-                "</html>";
+
+        urlScheme = getWechatURLScheme(chargeMachineDto.getCommunityId(), path, query);
+
+        String html = getHtmlPage(urlScheme);
+
 
         return ResponseEntity.ok().body(html);
     }
@@ -319,20 +312,43 @@ public class ChangeQrcodeController {
                     + "&communityId=" + chargeMachineDto.getCommunityId();
         }
         urlScheme = getWechatURLScheme(chargeMachineDto.getCommunityId(),path,query);
-        String html = "<!DOCTYPE html>" +
-                "<html>" +
-                "<head>" +
-                "    <title>跳转小程序</title>" +
-                "    <meta charset=\"UTF-8\">" +
-                "</head>" +
-                "<body>" +
-                "    <h1>正在跳转小程序...</h1>" +
-                "    <a href=\"" + urlScheme + "\">点击手动跳转</a>" +
-                "    <script>window.location.href = \"" + urlScheme + "\";</script>" +
-                "</body>" +
-                "</html>";
+        String html = getHtmlPage(urlScheme);
 
         return ResponseEntity.ok().body(html);
+    }
+
+    private String getHtmlPage(String urlScheme) {
+        String html = "<!DOCTYPE html>\n" +
+                "<html lang=\"zh-CN\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\">\n" +
+                "    <title>跳转小程序</title>\n" +
+                "    <style>\n" +
+                "        * { margin: 0; padding: 0; box-sizing: border-box; }\n" +
+                "        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }\n" +
+                "        .container { max-width: 100%; padding: 20px; text-align: center; }\n" +
+                "        .loading { margin: 50px auto 30px; width: 60px; height: 60px; border: 4px solid rgba(0, 122, 255, 0.2); border-radius: 50%; border-top-color: #007aff; animation: spin 1s ease-in-out infinite; }\n" +
+                "        @keyframes spin { to { transform: rotate(360deg); } }\n" +
+                "        h1 { font-size: 20px; margin-bottom: 20px; color: #333; }\n" +
+                "        .btn { display: inline-block; margin-top: 20px; padding: 12px 25px; background: #07C160; color: white; text-decoration: none; border-radius: 5px; font-weight: 500; font-size: 16px; box-shadow: 0 2px 10px rgba(7, 193, 96, 0.3); }\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "    <div class=\"container\">\n" +
+                "        <div class=\"loading\"></div>\n" +
+                "        <h1>正在为您跳转小程序...</h1>\n" +
+                "        <p>如果跳转失败，请点击下方按钮</p>\n" +
+                "        <a href=\""+urlScheme+"\" class=\"btn\">立即跳转</a>\n" +
+                "    </div>\n" +
+                "    <script>\n" +
+                "        setTimeout(function() {\n" +
+                "            window.location.href = \""+urlScheme+"\";\n" +
+                "        }, 1500);\n" +
+                "    </script>\n" +
+                "</body>\n" +
+                "</html>";
+        return html;
     }
 
 
