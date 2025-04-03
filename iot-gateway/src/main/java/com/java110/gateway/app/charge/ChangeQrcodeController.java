@@ -235,6 +235,11 @@ public class ChangeQrcodeController {
             return ResultVo.error("设备不存在");
         }
 
+        String chargePath = MappingCache.getValue("SYSTEM_SWITCH","CHARGE_PAGE");
+        if("MINI".equals(chargePath)){
+            return pageMiniPagePort(chargeMachineDtos.get(0),portId);
+        }
+
         SmallWeChatDto smallWeChatDto = new SmallWeChatDto();
         smallWeChatDto.setObjId(chargeMachineDtos.get(0).getCommunityId());
         smallWeChatDto.setWeChatType(SmallWeChatDto.WECHAT_TYPE_PUBLIC);
@@ -265,6 +270,37 @@ public class ChangeQrcodeController {
 
     }
 
+    private ResponseEntity<String> pageMiniPagePort(ChargeMachineDto chargeMachineDto,String portId) {
+        String urlScheme ;
+        String path = "";
+        String query = "";
+        if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDto.getChargeType())) {
+            path = "/pages/charge/machineToCharge";
+            query = "machineId="
+                    + chargeMachineDto.getMachineId()
+                    + "&communityId=" + chargeMachineDto.getCommunityId()+"&portId=" + portId;
+        } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDto.getChargeType())) {
+            path = "/pages/charge/carChargePort";
+            query = "machineId="
+                    + chargeMachineDto.getMachineId()
+                    + "&communityId=" + chargeMachineDto.getCommunityId()+ "&portId=" + portId;
+        }
+        urlScheme = getWechatURLScheme(chargeMachineDto.getCommunityId(),path,query);
+        String html = "<!DOCTYPE html>" +
+                "<html>" +
+                "<head>" +
+                "    <title>跳转小程序</title>" +
+                "    <meta charset=\"UTF-8\">" +
+                "</head>" +
+                "<body>" +
+                "    <h1>正在跳转小程序...</h1>" +
+                "    <a href=\"" + urlScheme + "\">点击手动跳转</a>" +
+                "    <script>window.location.href = \"" + urlScheme + "\";</script>" +
+                "</body>" +
+                "</html>";
+
+        return ResponseEntity.ok().body(html);
+    }
 
 
     private ResponseEntity<String> pageMiniPage(ChargeMachineDto chargeMachineDto) {
