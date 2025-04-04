@@ -349,7 +349,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
         carInoutDto.setCarInout(CarInoutDto.CAR_INOUT_IN);
         List<CarInoutDto> carInoutDtos = carInoutV1InnerServiceSMOImpl.queryCarInouts(carInoutDto);
 
-        if (carInoutDtos == null || carInoutDtos.size() == 0) {
+        if (ListUtil.isNull(carInoutDtos)) {
             throw new IllegalArgumentException("未查询到进场记录");
         }
 

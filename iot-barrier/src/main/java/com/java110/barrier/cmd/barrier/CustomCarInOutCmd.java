@@ -152,6 +152,7 @@ public class CustomCarInOutCmd extends Cmd {
             ParkingBoxAreaDto parkingBoxAreaDto = new ParkingBoxAreaDto();
             parkingBoxAreaDto.setBoxId(reqJson.getString("boxId"));
             parkingBoxAreaDto.setDefaultArea(ParkingBoxAreaDto.DEFAULT_AREA_TRUE);
+            parkingBoxAreaDto.setPaId(reqJson.getString("paId"));
             List<ParkingBoxAreaDto> parkingBoxAreaDtos = parkingBoxAreaV1InnerServiceSMOImpl.queryParkingBoxAreas(parkingBoxAreaDto);
 
             if(ListUtil.isNull(parkingBoxAreaDtos)){
