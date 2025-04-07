@@ -1,4 +1,17 @@
+/*
+Navicat MySQL Data Transfer
 
+Source Server         : 120.27.160.124
+Source Server Version : 50651
+Source Host           : 120.27.160.124:3306
+Source Database       : hc_iot
+
+Target Server Type    : MYSQL
+Target Server Version : 50651
+File Encoding         : 65001
+
+Date: 2025-04-07 14:05:18
+*/
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -11,9 +24,9 @@ CREATE TABLE `access_control` (
   `machine_code` varchar(30) NOT NULL COMMENT '设备编码',
   `machine_name` varchar(200) NOT NULL COMMENT '设备名称',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `platform_id` varchar(30)  DEFAULT NULL COMMENT '云呼平台ID',
-  `calling_num` varchar(30)  DEFAULT NULL COMMENT '呼叫号码',
-  `password` varchar(20)  DEFAULT NULL COMMENT '用户密码（明文）',
+  `platform_id` varchar(30) DEFAULT NULL COMMENT '云呼平台ID',
+  `calling_num` varchar(30) DEFAULT NULL COMMENT '呼叫号码',
+  `password` varchar(20) DEFAULT NULL COMMENT '用户密码（明文）',
   `machine_ip` varchar(64) DEFAULT NULL COMMENT '设备IP',
   `machine_mac` varchar(64) DEFAULT NULL COMMENT '设备mac',
   `direction` varchar(12) NOT NULL DEFAULT '3306' COMMENT '设备方向进出，3306 进 3307 出',
@@ -28,7 +41,7 @@ CREATE TABLE `access_control` (
   `owe_prompt` varchar(512) DEFAULT NULL COMMENT '欠费提示语',
   `monitor_id` varchar(30) DEFAULT NULL COMMENT '监控ID',
   `monitor_name` varchar(64) DEFAULT NULL COMMENT '监控名称',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '备注',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`machine_id`),
   KEY `i_m_community_id` (`community_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -36,8 +49,6 @@ CREATE TABLE `access_control` (
 -- ----------------------------
 -- Records of access_control
 -- ----------------------------
-INSERT INTO `access_control` VALUES ('102025031244490006', '10029', '测试门禁', '2024122649870005', '', '', null, '', '', '3306', '2025-03-12 16:40:47', '102024031349250002', '102025031272110003', '大门位置', '2025-03-12 16:40:48', '0', 'OFF', '', '', '', null, '');
-INSERT INTO `access_control` VALUES ('102025032416800003', '2394154253', '微耕门禁', '2024122649870005', '', '', null, '', '', '3306', '2025-03-25 10:32:59', '102025032420940003', '102025031272110003', '大门位置', '2025-03-24 18:08:34', '0', 'OFF', '', '', '', null, '');
 
 -- ----------------------------
 -- Table structure for access_control_ad
@@ -131,11 +142,6 @@ CREATE TABLE `access_control_face` (
 -- ----------------------------
 -- Records of access_control_face
 -- ----------------------------
-INSERT INTO `access_control_face` VALUES ('112025032414550012', '102025032416800003', '772025031389520016', 'OWNER', '张三', '2025-03-13 00:00:00', '2050-01-01 23:59:59', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20250324/34de48a6-cdf3-41e6-b34f-1a15b5d46cfc.jpg', '', 'W', '待下发到门禁', '2024122649870005', 'ed1f4a01', 'FLOOR', '102025032491250002', '2025-03-24 18:46:52', '1', '1-1-1001');
-INSERT INTO `access_control_face` VALUES ('112025032422800014', '102025032416800003', '772025031389520016', 'OWNER', '张三', '2025-03-13 00:00:00', '2050-01-01 23:59:59', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20250324/34de48a6-cdf3-41e6-b34f-1a15b5d46cfc.jpg', '', 'C', '下发成功', '2024122649870005', 'ed1f4a01', 'FLOOR', '102025032491250002', '2025-03-24 19:04:20', '1', '1-1-1001');
-INSERT INTO `access_control_face` VALUES ('112025032429480006', '102025032416800003', '772025031389520016', 'OWNER', '张三', '2025-03-13 00:00:00', '2050-01-01 23:59:59', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20250324/34de48a6-cdf3-41e6-b34f-1a15b5d46cfc.jpg', '', 'C', '下发成功', '2024122649870005', 'ed1f4a01', 'FLOOR', '102025032491250002', '2025-03-24 21:27:09', '0', '1-1-1001');
-INSERT INTO `access_control_face` VALUES ('112025032487210004', '102025032416800003', '772025031389520016', 'OWNER', '张三', '2025-03-01 00:00:00', '2031-12-31 00:00:00', null, '', 'W', '待下发到门禁', '2024122649870005', '', 'FLOOR', '102025032491250002', '2025-03-24 18:45:59', '1', '1-1-1001');
-INSERT INTO `access_control_face` VALUES ('112025032495020011', '102025032416800003', '772025031389520016', 'OWNER', '张三', '2025-03-13 00:00:00', '2050-01-01 23:59:59', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20250324/34de48a6-cdf3-41e6-b34f-1a15b5d46cfc.jpg', '', 'C', '下发成功', '2024122649870005', 'ed1f4a01', 'FLOOR', '102025032491250002', '2025-03-24 21:20:44', '1', '1-1-1001');
 
 -- ----------------------------
 -- Table structure for access_control_floor
@@ -158,7 +164,6 @@ CREATE TABLE `access_control_floor` (
 -- ----------------------------
 -- Records of access_control_floor
 -- ----------------------------
-INSERT INTO `access_control_floor` VALUES ('102025032491250002', '102025032416800003', '2024122649870005', '732025031328880007', '1', '742025031383980010', '1', '2025-03-24 18:45:59', '0');
 
 -- ----------------------------
 -- Table structure for access_control_inout
@@ -182,6 +187,10 @@ CREATE TABLE `access_control_inout` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Records of access_control_inout
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for access_control_log
 -- ----------------------------
 DROP TABLE IF EXISTS `access_control_log`;
@@ -200,6 +209,9 @@ CREATE TABLE `access_control_log` (
   PRIMARY KEY (`log_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- ----------------------------
+-- Records of access_control_log
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for access_control_org
@@ -244,47 +256,41 @@ CREATE TABLE `access_control_yite_card` (
 -- ----------------------------
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
-  `acct_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账户ID',
-  `acct_name` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账户名称',
-  `acct_type` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账户类型，2003 现金账户 2004 积分账户 2005 优惠券账户',
+  `acct_id` varchar(30) NOT NULL COMMENT '账户ID',
+  `acct_name` varchar(128) NOT NULL COMMENT '账户名称',
+  `acct_type` varchar(12) NOT NULL COMMENT '账户类型，2003 现金账户 2004 积分账户 2005 优惠券账户',
   `amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '金额',
-  `obj_type` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '对象类型，6006 个人 7007 商户',
-  `obj_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '对象ID',
-  `b_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '业务Id',
+  `obj_type` varchar(12) NOT NULL COMMENT '对象类型，6006 个人 7007 商户',
+  `obj_id` varchar(30) NOT NULL COMMENT '对象ID',
+  `b_id` varchar(30) NOT NULL COMMENT '业务Id',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `part_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '局部ID',
-  `link` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '账户手机号',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `part_id` varchar(30) DEFAULT NULL COMMENT '局部ID',
+  `link` varchar(11) DEFAULT NULL COMMENT '账户手机号',
   PRIMARY KEY (`acct_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES ('312025012333350022', '充电厂家', '2003', '0.00', '7007', '102025012319250002', '-1', '2025-01-23 00:39:49', '0', '502025012327120018', '18909714525');
-INSERT INTO `account` VALUES ('312025012381060014', '18909711234', '2003', '0.00', '6006', '302025012355000012', '-1', '2025-01-23 01:34:11', '0', '102024121715970003', '18909711234');
-INSERT INTO `account` VALUES ('312025012393650022', '18909711234', '2003', '0.00', '6006', '302025012355000012', '-1', '2025-01-23 15:48:13', '0', '-1', '18909711234');
-INSERT INTO `account` VALUES ('312025032813850013', '13803478677', '2003', '0.00', '6006', '302025032861730011', '-1', '2025-03-28 16:54:37', '0', '-1', '13803478677');
-INSERT INTO `account` VALUES ('312025032839310016', '13803478677', '2003', '0.00', '6006', '302025032861730011', '-1', '2025-03-28 19:42:09', '0', '2024122649870005', '13803478677');
-INSERT INTO `account` VALUES ('312025040115300004', '18909711443', '2003', '0.00', '6006', '302025040152980001', '-1', '2025-04-01 09:38:34', '0', '-1', '18909711443');
 
 -- ----------------------------
 -- Table structure for account_detail
 -- ----------------------------
 DROP TABLE IF EXISTS `account_detail`;
 CREATE TABLE `account_detail` (
-  `detail_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '明细ID',
-  `acct_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账户ID',
-  `detail_type` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '类型，1001 转入 2002 转出',
-  `rel_acct_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '-1' COMMENT '关联账户',
+  `detail_id` varchar(30) NOT NULL COMMENT '明细ID',
+  `acct_id` varchar(30) NOT NULL COMMENT '账户ID',
+  `detail_type` varchar(128) NOT NULL COMMENT '类型，1001 转入 2002 转出',
+  `rel_acct_id` varchar(30) NOT NULL DEFAULT '-1' COMMENT '关联账户',
   `amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '金额',
-  `obj_type` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '对象类型，6006 个人 7007 商户',
-  `obj_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '对象ID',
-  `order_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '交易单号',
-  `b_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '业务Id',
-  `remark` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '备注',
+  `obj_type` varchar(12) NOT NULL COMMENT '对象类型，6006 个人 7007 商户',
+  `obj_id` varchar(30) NOT NULL COMMENT '对象ID',
+  `order_id` varchar(30) NOT NULL COMMENT '交易单号',
+  `b_id` varchar(30) NOT NULL COMMENT '业务Id',
+  `remark` varchar(1024) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`detail_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -329,8 +335,8 @@ CREATE TABLE `asset_import_log` (
   `log_id` varchar(30) NOT NULL COMMENT '日志ID',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `log_type` varchar(128) NOT NULL COMMENT '导入类型 1001 资产导入 2002 缴费历史导入',
-  `success_count` bigint NOT NULL COMMENT '成功条数',
-  `error_count` bigint NOT NULL COMMENT '失败条数',
+  `success_count` bigint(20) NOT NULL COMMENT '成功条数',
+  `error_count` bigint(20) NOT NULL COMMENT '失败条数',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '异常时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
@@ -555,30 +561,29 @@ CREATE TABLE `barrier` (
 -- ----------------------------
 -- Records of barrier
 -- ----------------------------
-INSERT INTO `barrier` VALUES ('102025031316220007', '19287363', '大门进口', '102024121715970003', '192.168.1.1', '3306', '2025-03-13 15:36:22', '23', '102025031363950002', '2025-03-13 15:36:24', '0', '', null);
 
 -- ----------------------------
 -- Table structure for building_owner
 -- ----------------------------
 DROP TABLE IF EXISTS `building_owner`;
 CREATE TABLE `building_owner` (
-  `member_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '业主成员ID',
-  `owner_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '业主ID',
-  `b_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '业务ID',
-  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '业主名称',
-  `sex` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '性别',
-  `age` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '年龄',
-  `link` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '联系人手机号',
-  `user_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户ID',
-  `remark` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '备注',
+  `member_id` varchar(30) NOT NULL COMMENT '业主成员ID',
+  `owner_id` varchar(30) NOT NULL COMMENT '业主ID',
+  `b_id` varchar(30) DEFAULT NULL COMMENT '业务ID',
+  `name` varchar(64) NOT NULL COMMENT '业主名称',
+  `sex` varchar(12) NOT NULL COMMENT '性别',
+  `age` varchar(12) DEFAULT NULL COMMENT '年龄',
+  `link` varchar(11) NOT NULL COMMENT '联系人手机号',
+  `user_id` varchar(30) NOT NULL COMMENT '用户ID',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0, 在用 1失效',
-  `owner_type_cd` varchar(4) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1001' COMMENT '1001 业主本人 1002 家庭成员',
-  `community_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '小区ID',
-  `id_card` varchar(18) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '-1' COMMENT '身份证号码',
-  `state` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '2000' COMMENT '业主 成员状态 1000 表示待审核，2000 审核完成  3000 拒绝审核 ',
-  `owner_flag` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'T' COMMENT '业主标识 T是真实业主 F 是虚拟业主',
-  `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '家庭住址',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0, 在用 1失效',
+  `owner_type_cd` varchar(4) NOT NULL DEFAULT '1001' COMMENT '1001 业主本人 1002 家庭成员',
+  `community_id` varchar(30) DEFAULT NULL COMMENT '小区ID',
+  `id_card` varchar(18) DEFAULT '-1' COMMENT '身份证号码',
+  `state` varchar(12) NOT NULL DEFAULT '2000' COMMENT '业主 成员状态 1000 表示待审核，2000 审核完成  3000 拒绝审核 ',
+  `owner_flag` varchar(12) NOT NULL DEFAULT 'T' COMMENT '业主标识 T是真实业主 F 是虚拟业主',
+  `address` varchar(255) DEFAULT NULL COMMENT '家庭住址',
   `card_number` varchar(64) DEFAULT NULL COMMENT '门禁卡号',
   UNIQUE KEY `member_id` (`member_id`) USING BTREE,
   UNIQUE KEY `idx_owner_id` (`member_id`) USING BTREE,
@@ -589,8 +594,6 @@ CREATE TABLE `building_owner` (
 -- ----------------------------
 -- Records of building_owner
 -- ----------------------------
-INSERT INTO `building_owner` VALUES ('772025010699280025', '772025010699280025', null, '演示业主', '1', '1', '18909714526', '-1', '第三方导入系统同步', '2025-03-24 19:20:56', '1', '1001', '2024122649870005', '', '2000', 'T', '无', '');
-INSERT INTO `building_owner` VALUES ('772025031389520016', '772025031389520016', null, '张三', '0', null, '18909714526', '302024121758390012', '', '2025-03-13 21:30:55', '0', '1001', '2024122649870005', '', '2000', 'T', '', 'ed1f4a01');
 
 -- ----------------------------
 -- Table structure for building_owner_attr
@@ -640,8 +643,6 @@ CREATE TABLE `building_owner_room_rel` (
 -- ----------------------------
 -- Records of building_owner_room_rel
 -- ----------------------------
-INSERT INTO `building_owner_room_rel` VALUES ('842025031358160018', '772025031389520016', '752025031305540013', null, '2001', '-1', null, '2025-03-13 21:31:12', '0', '2025-03-13 00:00:00', '2050-01-01 23:59:59');
-INSERT INTO `building_owner_room_rel` VALUES ('842025032452620037', '772025010699280025', '752025010608610020', null, '2001', '30518939884421922816', null, '2025-03-24 19:20:58', '0', '2025-03-24 00:00:00', '2038-01-01 00:00:00');
 
 -- ----------------------------
 -- Table structure for building_room
@@ -653,7 +654,7 @@ CREATE TABLE `building_room` (
   `room_num` varchar(64) NOT NULL COMMENT '房屋编号',
   `unit_id` varchar(30) NOT NULL COMMENT '单元ID',
   `layer` varchar(12) NOT NULL COMMENT '层数',
-  `section` int DEFAULT NULL COMMENT '室',
+  `section` int(11) DEFAULT NULL COMMENT '室',
   `apartment` varchar(20) NOT NULL COMMENT '户型',
   `built_up_area` decimal(12,2) NOT NULL COMMENT '建筑面积',
   `fee_coefficient` decimal(12,2) NOT NULL DEFAULT '1.00' COMMENT '算费系数',
@@ -676,8 +677,6 @@ CREATE TABLE `building_room` (
 -- ----------------------------
 -- Records of building_room
 -- ----------------------------
-INSERT INTO `building_room` VALUES ('752025010608610020', null, '1001', '742025010670850016', '1', '1', '10102', '1.00', '1.00', '30518939884421922816', '房产导入', '2025-03-24 19:20:57', '0', '2001', '2024122649870005', '1010301', '110', '1.00', '0.00');
-INSERT INTO `building_room` VALUES ('752025031305540013', null, '1001', '742025031383980010', '1', '0', '10102', '100.00', '1.00', '-1', '', '2025-03-13 21:30:36', '0', '2001', '2024122649870005', '1010301', '110', '100.00', '0.00');
 
 -- ----------------------------
 -- Table structure for building_room_attr
@@ -709,7 +708,7 @@ CREATE TABLE `building_unit` (
   `b_id` varchar(30) DEFAULT NULL COMMENT '业务ID',
   `unit_num` varchar(12) NOT NULL COMMENT '单元编号',
   `floor_id` varchar(30) NOT NULL COMMENT '楼ID',
-  `layer_count` int NOT NULL COMMENT '总层数',
+  `layer_count` int(11) NOT NULL COMMENT '总层数',
   `lift` varchar(4) NOT NULL COMMENT '是否有电梯 1010有 2020 无',
   `user_id` varchar(30) NOT NULL COMMENT '用户ID',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
@@ -726,30 +725,28 @@ CREATE TABLE `building_unit` (
 -- ----------------------------
 -- Records of building_unit
 -- ----------------------------
-INSERT INTO `building_unit` VALUES ('742025010670850016', null, '1', '732025010671110013', '33', '1010', '30518939884421922816', '第三方系统同步', '2025-03-24 19:20:57', '0', '1.00');
-INSERT INTO `building_unit` VALUES ('742025031383980010', null, '1', '732025031328880007', '1', '1010', '302024121758390012', '', '2025-03-13 21:30:14', '0', '100.00');
 
 -- ----------------------------
 -- Table structure for buiness_small_wechat
 -- ----------------------------
 DROP TABLE IF EXISTS `buiness_small_wechat`;
 CREATE TABLE `buiness_small_wechat` (
-  `wechat_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '微信ID',
-  `b_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '业务ID',
-  `store_Id` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '商户ID',
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '小程序名称',
-  `appId` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '小程序appid',
-  `appSecret` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '应用密钥',
-  `pay_password` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '支付密码',
-  `remarks` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `wechat_id` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '微信ID',
+  `b_id` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '业务ID',
+  `store_Id` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '商户ID',
+  `name` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '小程序名称',
+  `appId` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '小程序appid',
+  `appSecret` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '应用密钥',
+  `pay_password` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '支付密码',
+  `remarks` varchar(200) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `operate` varchar(4) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '数据状态，添加ADD，修改MOD 删除DEL',
-  `obj_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `obj_type` varchar(4) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `mch_id` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `wechat_type` varchar(4) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `cert_path` varchar(512) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '证书地址',
-  `mch_name` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '无' COMMENT '商户名称'
+  `operate` varchar(4) COLLATE utf8_bin NOT NULL COMMENT '数据状态，添加ADD，修改MOD 删除DEL',
+  `obj_id` varchar(30) COLLATE utf8_bin NOT NULL,
+  `obj_type` varchar(4) COLLATE utf8_bin NOT NULL,
+  `mch_id` varchar(200) COLLATE utf8_bin NOT NULL,
+  `wechat_type` varchar(4) COLLATE utf8_bin DEFAULT NULL,
+  `cert_path` varchar(512) COLLATE utf8_bin DEFAULT NULL COMMENT '证书地址',
+  `mch_name` varchar(128) COLLATE utf8_bin NOT NULL DEFAULT '无' COMMENT '商户名称'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
@@ -761,17 +758,17 @@ CREATE TABLE `buiness_small_wechat` (
 -- ----------------------------
 DROP TABLE IF EXISTS `business_account`;
 CREATE TABLE `business_account` (
-  `acct_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账户ID',
-  `acct_name` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账户名称',
-  `acct_type` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账户类型，2003 现金账户 2004 积分账户 2005 优惠券账户',
+  `acct_id` varchar(30) NOT NULL COMMENT '账户ID',
+  `acct_name` varchar(128) NOT NULL COMMENT '账户名称',
+  `acct_type` varchar(12) NOT NULL COMMENT '账户类型，2003 现金账户 2004 积分账户 2005 优惠券账户',
   `amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '金额',
-  `obj_type` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '对象类型，6006 个人 7007 商户',
-  `obj_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '对象ID',
-  `b_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '业务Id',
+  `obj_type` varchar(12) NOT NULL COMMENT '对象类型，6006 个人 7007 商户',
+  `obj_id` varchar(30) NOT NULL COMMENT '对象ID',
+  `b_id` varchar(30) NOT NULL COMMENT '业务Id',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `operate` varchar(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '数据状态，添加ADD，修改MOD 删除DEL',
-  `part_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '局部ID',
-  `link` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '账户手机号'
+  `operate` varchar(3) NOT NULL COMMENT '数据状态，添加ADD，修改MOD 删除DEL',
+  `part_id` varchar(30) DEFAULT NULL COMMENT '局部ID',
+  `link` varchar(11) DEFAULT NULL COMMENT '账户手机号'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
@@ -783,18 +780,18 @@ CREATE TABLE `business_account` (
 -- ----------------------------
 DROP TABLE IF EXISTS `business_account_detail`;
 CREATE TABLE `business_account_detail` (
-  `detail_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '明细ID',
-  `acct_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账户ID',
-  `detail_type` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '类型，1001 转入 2002 转出',
-  `rel_acct_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '-1' COMMENT '关联账户',
+  `detail_id` varchar(30) NOT NULL COMMENT '明细ID',
+  `acct_id` varchar(30) NOT NULL COMMENT '账户ID',
+  `detail_type` varchar(128) NOT NULL COMMENT '类型，1001 转入 2002 转出',
+  `rel_acct_id` varchar(30) NOT NULL DEFAULT '-1' COMMENT '关联账户',
   `amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '金额',
-  `obj_type` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '对象类型，6006 个人 7007 商户',
-  `obj_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '对象ID',
-  `order_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '交易单号',
-  `b_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '业务Id',
-  `remark` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '备注',
+  `obj_type` varchar(12) NOT NULL COMMENT '对象类型，6006 个人 7007 商户',
+  `obj_id` varchar(30) NOT NULL COMMENT '对象ID',
+  `order_id` varchar(30) NOT NULL COMMENT '交易单号',
+  `b_id` varchar(30) NOT NULL COMMENT '业务Id',
+  `remark` varchar(1024) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `operate` varchar(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '数据状态，添加ADD，修改MOD 删除DEL'
+  `operate` varchar(3) NOT NULL COMMENT '数据状态，添加ADD，修改MOD 删除DEL'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
@@ -806,25 +803,25 @@ CREATE TABLE `business_account_detail` (
 -- ----------------------------
 DROP TABLE IF EXISTS `business_owner_car`;
 CREATE TABLE `business_owner_car` (
-  `car_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '汽车ID',
-  `owner_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '业主ID',
-  `b_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '业务Id',
-  `car_num` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '车牌号',
-  `car_brand` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '汽车品牌',
-  `car_type` varchar(4) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '9901 家用小汽车，9902 客车，9903 货车',
-  `car_color` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '颜色',
-  `ps_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '车位ID',
-  `user_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户ID',
-  `remark` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '备注',
+  `car_id` varchar(30) NOT NULL COMMENT '汽车ID',
+  `owner_id` varchar(30) NOT NULL COMMENT '业主ID',
+  `b_id` varchar(30) NOT NULL COMMENT '业务Id',
+  `car_num` varchar(12) NOT NULL COMMENT '车牌号',
+  `car_brand` varchar(50) DEFAULT NULL COMMENT '汽车品牌',
+  `car_type` varchar(4) NOT NULL COMMENT '9901 家用小汽车，9902 客车，9903 货车',
+  `car_color` varchar(12) DEFAULT NULL COMMENT '颜色',
+  `ps_id` varchar(30) NOT NULL COMMENT '车位ID',
+  `user_id` varchar(30) NOT NULL COMMENT '用户ID',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `operate` varchar(4) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '数据状态，添加ADD，修改MOD 删除DEL',
-  `community_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '小区ID',
+  `operate` varchar(4) NOT NULL COMMENT '数据状态，添加ADD，修改MOD 删除DEL',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `start_time` datetime NOT NULL COMMENT '起租时间',
   `end_time` datetime NOT NULL COMMENT '结租时间',
-  `state` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '状态，1001 正常状态，2002 车位释放欠费状态  3003 车位释放',
-  `car_type_cd` varchar(4) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1001' COMMENT '1001 主车辆 1002 成员车辆',
-  `member_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '成员ID',
-  `lease_type` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'H' COMMENT '租赁类型，H 月租车 S 出售车 I 内部车 NM 免费车',
+  `state` varchar(12) NOT NULL COMMENT '状态，1001 正常状态，2002 车位释放欠费状态  3003 车位释放',
+  `car_type_cd` varchar(4) NOT NULL DEFAULT '1001' COMMENT '1001 主车辆 1002 成员车辆',
+  `member_id` varchar(30) NOT NULL COMMENT '成员ID',
+  `lease_type` varchar(12) NOT NULL DEFAULT 'H' COMMENT '租赁类型，H 月租车 S 出售车 I 内部车 NM 免费车',
   KEY `idx_boc_car_id` (`car_id`) USING BTREE,
   KEY `idx_boc_b_id` (`b_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
@@ -838,14 +835,14 @@ CREATE TABLE `business_owner_car` (
 -- ----------------------------
 DROP TABLE IF EXISTS `business_owner_car_attr`;
 CREATE TABLE `business_owner_car_attr` (
-  `b_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订单ID',
-  `attr_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '属性id',
-  `car_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '车辆ID',
-  `community_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '小区ID',
-  `spec_cd` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规格id,参考spec表',
-  `value` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '属性值',
+  `b_id` varchar(30) NOT NULL COMMENT '订单ID',
+  `attr_id` varchar(30) NOT NULL COMMENT '属性id',
+  `car_id` varchar(30) NOT NULL COMMENT '车辆ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `spec_cd` varchar(12) NOT NULL COMMENT '规格id,参考spec表',
+  `value` varchar(50) NOT NULL COMMENT '属性值',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `operate` varchar(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '数据状态，添加ADD，修改MOD 删除DEL',
+  `operate` varchar(3) NOT NULL COMMENT '数据状态，添加ADD，修改MOD 删除DEL',
   PRIMARY KEY (`attr_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -854,1941 +851,18 @@ CREATE TABLE `business_owner_car_attr` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for c_app
--- ----------------------------
-DROP TABLE IF EXISTS `c_app`;
-CREATE TABLE `c_app` (
-  `app_id` varchar(30) NOT NULL COMMENT '应用ID',
-  `name` varchar(50) NOT NULL COMMENT '名称 对应系统名称',
-  `security_code` varchar(64) DEFAULT NULL COMMENT '签名码 sign签名时用',
-  `while_list_ip` varchar(200) DEFAULT NULL COMMENT '白名单ip 多个之间用;隔开',
-  `black_list_ip` varchar(200) DEFAULT NULL COMMENT '黑名单ip 多个之间用;隔开',
-  `remark` varchar(200) DEFAULT NULL COMMENT '描述',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
-  PRIMARY KEY (`app_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='应用ID';
-
--- ----------------------------
--- Records of c_app
--- ----------------------------
-INSERT INTO `c_app` VALUES ('992023010100000001', '物联网web端', '', '', '', '物联网web端1', '2019-11-10 23:12:38', '0');
-INSERT INTO `c_app` VALUES ('992023021231380002', '测试应用', '', '', '', '1231234', '2023-02-12 14:19:41', '1');
-INSERT INTO `c_app` VALUES ('992023111817510002', '物联网用户', '', '', '', '物联网用户', '2023-11-18 15:36:22', '0');
-INSERT INTO `c_app` VALUES ('992023121426830015', '商家手机', '', '', '', '商家手机', '2023-12-14 21:37:29', '0');
-INSERT INTO `c_app` VALUES ('992024012179880001', '物业系统', 'localhost', '', '', '', '2024-01-21 19:01:42', '0');
-
--- ----------------------------
--- Table structure for c_business
--- ----------------------------
-DROP TABLE IF EXISTS `c_business`;
-CREATE TABLE `c_business` (
-  `b_id` varchar(30) NOT NULL COMMENT '业务Id',
-  `o_id` varchar(30) NOT NULL COMMENT '订单ID',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `business_type_cd` varchar(12) DEFAULT NULL,
-  `finish_time` date DEFAULT NULL COMMENT '完成时间',
-  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
-  `status_cd` varchar(2) NOT NULL COMMENT '数据状态，详细参考c_status表',
-  UNIQUE KEY `b_id` (`b_id`) USING BTREE,
-  KEY `i_cb_o_id` (`o_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of c_business
--- ----------------------------
-
--- ----------------------------
--- Table structure for c_business_databus
--- ----------------------------
-DROP TABLE IF EXISTS `c_business_databus`;
-CREATE TABLE `c_business_databus` (
-  `databus_id` varchar(30) NOT NULL COMMENT 'databus ID',
-  `databus_name` varchar(128) NOT NULL COMMENT '名称',
-  `business_type_cd` varchar(255) NOT NULL COMMENT '业务类型',
-  `bean_name` varchar(256) NOT NULL COMMENT '适配器',
-  `seq` int NOT NULL DEFAULT '1' COMMENT '顺序',
-  `state` varchar(12) NOT NULL DEFAULT '1001' COMMENT '1001 代表在用 2002 表示停用',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
-  PRIMARY KEY (`databus_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of c_business_databus
--- ----------------------------
-
--- ----------------------------
--- Table structure for c_business_table_his
--- ----------------------------
-DROP TABLE IF EXISTS `c_business_table_his`;
-CREATE TABLE `c_business_table_his` (
-  `his_id` varchar(30) NOT NULL COMMENT '历史ID',
-  `action` varchar(12) DEFAULT NULL COMMENT '动作表，ADD 添加记录 MOD 修改记录 DEL删除记录',
-  `action_obj` varchar(64) NOT NULL COMMENT '动作对象，一般为表名',
-  `action_obj_his` varchar(64) NOT NULL COMMENT 'his表',
-  `business_type_cd` varchar(64) NOT NULL COMMENT '业务动作',
-  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表',
-  UNIQUE KEY `his_id` (`his_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of c_business_table_his
--- ----------------------------
-INSERT INTO `c_business_table_his` VALUES ('102023021205810018', 'ADD', 'ss', 'ss', 'abcvb', 'ss', '2023-02-12 20:20:23', '1');
-
--- ----------------------------
--- Table structure for c_business_type
--- ----------------------------
-DROP TABLE IF EXISTS `c_business_type`;
-CREATE TABLE `c_business_type` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `business_type_cd` varchar(12) NOT NULL COMMENT '业务项类型',
-  `name` varchar(50) NOT NULL COMMENT '名称',
-  `description` varchar(200) DEFAULT NULL COMMENT '描述',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `business_type_cd` (`business_type_cd`) USING BTREE,
-  UNIQUE KEY `business_type_cd_2` (`business_type_cd`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=293 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of c_business_type
--- ----------------------------
-INSERT INTO `c_business_type` VALUES ('292', 'abc', 'abcn', 'sd', '2023-02-12 20:12:36');
-
--- ----------------------------
--- Table structure for c_cache
--- ----------------------------
-DROP TABLE IF EXISTS `c_cache`;
-CREATE TABLE `c_cache` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '缓存ID',
-  `cache_code` varchar(10) NOT NULL COMMENT '缓存编码 开始于1001',
-  `service_code` varchar(50) NOT NULL COMMENT '调用服务编码 对应 c_service',
-  `name` varchar(50) NOT NULL COMMENT '前台显示名称',
-  `seq` int NOT NULL COMMENT '列顺序',
-  `group` varchar(10) NOT NULL DEFAULT 'COMMON' COMMENT '组，缓存属于哪个组',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
-  `url` varchar(500) NOT NULL COMMENT '地址',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `cache_code` (`cache_code`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of c_cache
--- ----------------------------
-INSERT INTO `c_cache` VALUES ('1', '1001', 'flush.center.cache', '映射缓存（c_mapping表）', '1', 'COMMON', '2018-11-14 13:28:51', '0', 'MAPPING');
-INSERT INTO `c_cache` VALUES ('2', '1002', 'flush.center.cache', '业务配置缓存（c_app,c_service,c_route表）', '2', 'COMMON', '2018-11-14 13:28:51', '0', 'APP_ROUTE_SERVICE');
-INSERT INTO `c_cache` VALUES ('3', '1003', 'flush.center.cache', '公用服务缓存（c_service_sql表）', '3', 'COMMON', '2018-11-14 13:28:51', '0', 'SERVICE_SQL');
-INSERT INTO `c_cache` VALUES ('4', '1007', 'flush.center.cache', 'Databus（business_databus）', '4', 'COMMON', '2019-08-11 06:00:23', '0', 'DATABUS');
-INSERT INTO `c_cache` VALUES ('5', '1005', 'flush.center.cache', '服务业务信息（c_service_business）', '5', 'COMMON', '2019-08-11 06:00:23', '0', 'SERVICE_BUSINESS');
-INSERT INTO `c_cache` VALUES ('6', '1006', 'flush.center.cache', '基础权限信息（p_privilege）', '6', 'COMMON', '2019-08-11 06:00:23', '0', 'PRIVILEGE');
-INSERT INTO `c_cache` VALUES ('8', '1004', 'flush.center.cache', '刷新所有缓存（ALL）', '7', 'COMMON', '2019-08-11 05:44:40', '0', 'All');
-
--- ----------------------------
--- Table structure for c_mapping
--- ----------------------------
-DROP TABLE IF EXISTS `c_mapping`;
-CREATE TABLE `c_mapping` (
-  `id` varchar(30) NOT NULL COMMENT 'id',
-  `domain` varchar(50) NOT NULL COMMENT '域',
-  `name` varchar(50) NOT NULL COMMENT '名称',
-  `mapping_key` varchar(100) NOT NULL COMMENT 'key',
-  `value` varchar(1000) NOT NULL COMMENT 'value',
-  `remark` longtext COMMENT '描述',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of c_mapping
--- ----------------------------
-INSERT INTO `c_mapping` VALUES ('102023021308780004', 'DOMAIN.COMMON', '2333', '2', '2', '2', '2023-02-13 01:24:56', '1');
-INSERT INTO `c_mapping` VALUES ('102023021357700001', 'ENV_DOMAIN', '环境标识', 'HC_ENV', 'PROD', 'ENV1', '2023-02-13 01:22:20', '0');
-INSERT INTO `c_mapping` VALUES ('102023082203750005', 'OSS', 'bucket', 'bucketName', 'xx', '', '2023-08-22 16:56:46', '0');
-INSERT INTO `c_mapping` VALUES ('102023082236190012', 'FILE_DOMAIN', '静态资源域名', 'IMG_PATH', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/', '', '2023-08-22 17:02:24', '0');
-INSERT INTO `c_mapping` VALUES ('102023082245390006', 'OSS', 'accessKeySecret', 'accessKeySecret', 'xx', '', '2023-08-22 16:57:13', '0');
-INSERT INTO `c_mapping` VALUES ('102023082246810008', 'OSS', 'endpoint', 'endpoint', 'http://oss-cn-beijing.aliyuncs.com', '', '2023-08-22 16:57:56', '0');
-INSERT INTO `c_mapping` VALUES ('102023082294930007', 'OSS', 'accessKeyId', 'accessKeyId', 'xx', '', '2023-08-22 16:57:26', '0');
-INSERT INTO `c_mapping` VALUES ('102023102771040002', 'FILE_DOMAIN', 'OSS地址用于道闸', 'OSS_URL', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/', '', '2023-10-27 22:05:02', '0');
-INSERT INTO `c_mapping` VALUES ('102023111084740004', 'FILE_DOMAIN', '存储方式', 'OSS_SWITCH', 'OSS', '目前只支持OSS', '2023-11-10 17:26:36', '0');
-INSERT INTO `c_mapping` VALUES ('102023112127290055', 'TDDIANBIAO_DOMAIN', 'nonce', 'nonce', 'xx', '', '2023-11-21 01:26:38', '0');
-INSERT INTO `c_mapping` VALUES ('102023112164960056', 'TDDIANBIAO_DOMAIN', 'auth_code', 'auth_code', 'xx', '', '2023-11-21 01:27:11', '0');
-INSERT INTO `c_mapping` VALUES ('102024012402260026', 'WUYE', '物业系统地址', 'url', 'http://192.168.1.108:8008', '', '2024-01-24 22:04:17', '0');
-INSERT INTO `c_mapping` VALUES ('102024012442090025', 'WUYE', '物业秘钥', 'securityCode', 'g3kE9ggkM4Jqrs576rJS0CYg7dbtMXPT', '', '2024-01-24 22:03:41', '0');
-INSERT INTO `c_mapping` VALUES ('102024012445870024', 'WUYE', '应用ID', 'appId', '992020051967020024', '', '2024-01-24 22:03:11', '0');
-INSERT INTO `c_mapping` VALUES ('102024022631412822', 'WECHAT_PAY', '服务商开关', 'WECHAT_SERVICE_PAY_SWITCH', 'OFF', '', '2024-02-26 23:53:38', '0');
-INSERT INTO `c_mapping` VALUES ('102024022646552824', 'WECHAT_PAY', '服务商商户ID', 'SERVICE_MCH_ID', '1', '', '2024-02-26 23:54:22', '0');
-INSERT INTO `c_mapping` VALUES ('102024022695142823', 'WECHAT_PAY', '服务商appId', 'SERVICE_APP_ID', '1', '', '2024-02-26 23:54:02', '0');
-INSERT INTO `c_mapping` VALUES ('102024030954270097', 'VZICLOUD', 'AccessKey', 'AccessKey', 'xx', '', '2024-03-09 12:19:04', '1');
-INSERT INTO `c_mapping` VALUES ('102024030984490098', 'VZICLOUD', 'AccessKeySecret', 'AccessKeySecret', 'xx', '', '2024-03-09 12:19:16', '1');
-INSERT INTO `c_mapping` VALUES ('102024031316730024', 'HIK_GATEWAY', '网关地址', 'HIK_URL', 'http://192.168.1.108', '海康网关', '2024-03-13 21:13:05', '0');
-INSERT INTO `c_mapping` VALUES ('102024091035780003', 'WUYE', '物业开关', 'WUYE_SWITCH', 'ON', '', '2024-09-10 12:10:43', '0');
-INSERT INTO `c_mapping` VALUES ('102025040346940002', 'SYSTEM_SWITCH', '充电桩小程序', 'CHARGE_PAGE', 'MINI', 'MINI 小程序 OFF h5', '2025-04-03 23:12:04', '0');
-INSERT INTO `c_mapping` VALUES ('116', 'DEFAULT_PRIVILEGE_ADMIN', '商家对应的管理员权限组', '800900000005', '600201906009', '商家对应的管理员权限组', '2019-04-01 12:24:36', '0');
-INSERT INTO `c_mapping` VALUES ('201', 'MICROINDUSTRYPLATFORM_MALL', '供应链商城地址', 'url', 'http://shop.songbingcloud.com', '配置供应链商城地址或域名', '2023-09-15 14:04:35', '0');
-INSERT INTO `c_mapping` VALUES ('208', 'DING_DING_CHARGE', '应用ID', 'APP_ID', 'ss', '', '2023-03-17 12:17:38', '0');
-INSERT INTO `c_mapping` VALUES ('209', 'DING_DING_CHARGE', '应用秘钥', 'APP_SECURE', 'ss', '', '2023-03-17 12:18:06', '0');
-INSERT INTO `c_mapping` VALUES ('211', 'EVENT_WAY', '阿里云短信处理类', 'SMS-ALI', '', '配置阿里云短信处理类beanName', '2023-09-27 15:38:35', '0');
-INSERT INTO `c_mapping` VALUES ('212', 'EVENT_WAY', '钉钉群通知处理类', 'DINGDING', '', '配置钉钉群通知处理类beanName', '2023-09-27 15:38:35', '0');
-INSERT INTO `c_mapping` VALUES ('213', 'EVENT_WAY', '企业微信群通知处理类', 'WECHAT', '', '配置企业微信群通知处理类beanName', '2023-09-27 15:38:35', '0');
-INSERT INTO `c_mapping` VALUES ('28', 'DEFAULT_PRIVILEGE_ADMIN', '物业对应的管理员权限组', '800900000003', '600201904002', '物业对应的管理员权限组', '2019-04-01 12:24:36', '0');
-INSERT INTO `c_mapping` VALUES ('34', 'DEFAULT_PRIVILEGE_ADMIN', '运营团队对应的管理员权限组', '800900000001', '600201906005', '运营团队对应的管理员权限组', '2019-04-01 12:24:36', '0');
-INSERT INTO `c_mapping` VALUES ('37', 'DEFAULT_PRIVILEGE_ADMIN', '开发团队对应的管理员权限组', '800900000000', '600201906007', '开发团队对应的管理员权限组', '2019-04-01 12:24:36', '0');
-INSERT INTO `c_mapping` VALUES ('48', 'SMS_DOMAIN', '验证码开关', 'SMS_SEND_SWITCH', 'OFF', '验证码发送开关 ON 开启 OFF 关闭', '2019-09-16 11:56:44', '0');
-INSERT INTO `c_mapping` VALUES ('88', 'ALI_SMS', '区域', 'region', 'cn-hangzhou', '', '2020-06-29 09:08:57', '0');
-INSERT INTO `c_mapping` VALUES ('89', 'ALI_SMS', 'accessKeyId', 'accessKeyId', 'xxx', '', '2020-06-29 09:09:26', '0');
-INSERT INTO `c_mapping` VALUES ('90', 'ALI_SMS', '访问秘钥', 'accessSecret', 'xxx', '', '2020-06-29 09:09:49', '0');
-INSERT INTO `c_mapping` VALUES ('91', 'ALI_SMS', '短信签名', 'signName', 'xxx', '', '2020-06-29 09:10:28', '0');
-INSERT INTO `c_mapping` VALUES ('93', 'ALI_SMS', '模板编码', 'TemplateCode', 'xxx', '', '2020-06-29 10:16:15', '0');
-INSERT INTO `c_mapping` VALUES ('94', 'URL_DOMAIN', '业主公众号地址', 'OWNER_WECHAT_URL', 'http://localhost:8001', '公众号时写 公众号域名\n\n小程序时写 小程序appId', '2020-07-20 14:59:38', '0');
-
--- ----------------------------
--- Table structure for c_mapping_domain
--- ----------------------------
-DROP TABLE IF EXISTS `c_mapping_domain`;
-CREATE TABLE `c_mapping_domain` (
-  `id` varchar(30) NOT NULL COMMENT 'id',
-  `domain` varchar(50) NOT NULL COMMENT '域',
-  `domain_name` varchar(64) NOT NULL COMMENT '配置项',
-  `seq` int NOT NULL COMMENT '排序',
-  `remark` longtext COMMENT '描述',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of c_mapping_domain
--- ----------------------------
-INSERT INTO `c_mapping_domain` VALUES ('102023013033010027', 'ALI_SMS', '阿里短信配置', '13', '腾讯短信配置 开启验证码功能，搜索键为SMS_SEND_SWITCH的记录将值OFF改为ON 键为 SMS_COMPANY 的值 阿里为ALI', '2023-01-30 00:14:24', '0');
-INSERT INTO `c_mapping_domain` VALUES ('102023013081180032', 'SMS_DOMAIN', '短信配置', '12', '主要设置采用阿里云短信或者腾讯云服务商，阿里为 ALI 腾讯为TENCENT', '2023-01-30 00:20:29', '0');
-INSERT INTO `c_mapping_domain` VALUES ('102023021377130023', 'ENV_DOMAIN', '环境配置', '1', '环境相关配置，如演示环境 生产环境 切换', '2023-02-13 01:08:44', '0');
-INSERT INTO `c_mapping_domain` VALUES ('102023021380610022', 'SYSTEM_SWITCH', '系统开关', '2', '系统相关开关，比如日志开关，耗时开关等', '2023-02-13 01:08:19', '0');
-INSERT INTO `c_mapping_domain` VALUES ('102023021383440013', 'DOMAIN.COMMON', '通用配置', '10', '通用配置，一般很少配置1', '2023-02-13 01:03:08', '0');
-INSERT INTO `c_mapping_domain` VALUES ('102023082234410010', 'FILE_DOMAIN', '存储配置', '3', '存储配置', '2023-08-22 17:01:58', '0');
-INSERT INTO `c_mapping_domain` VALUES ('102023082296330003', 'OSS', '阿里云OSS', '4', '阿里云OSS', '2023-08-22 16:56:26', '0');
-INSERT INTO `c_mapping_domain` VALUES ('102023112061480002', 'URL_DOMAIN', '平台URL', '5', '平台URL', '2023-11-20 12:30:25', '0');
-INSERT INTO `c_mapping_domain` VALUES ('102023112115110053', 'TDDIANBIAO_DOMAIN', '智能水电表', '6', '智能水电表', '2023-11-21 01:24:58', '0');
-INSERT INTO `c_mapping_domain` VALUES ('102024012434290022', 'WUYE', '物业配置', '7', '物联网系统调用物业系统配置信息', '2024-01-24 22:02:41', '0');
-INSERT INTO `c_mapping_domain` VALUES ('102024022601992820', 'WECHAT_PAY', '微信支付', '8', '微信支付相关配置', '2024-02-26 23:53:04', '0');
-INSERT INTO `c_mapping_domain` VALUES ('102024030912650093', 'VZICLOUD', '臻识云', '9', '请填写臻云极致的AccessKeyId和AccessKeySecret，请到这里申请臻云极致(https://open.vzicloud.com)', '2024-03-09 12:17:36', '1');
-INSERT INTO `c_mapping_domain` VALUES ('102024031358100022', 'HIK_GATEWAY', '海康网关', '11', '海康网关，只有用海康网关的场景下，才需要配置，否则不用配置', '2024-03-13 21:11:10', '0');
-
--- ----------------------------
--- Table structure for c_order_item
--- ----------------------------
-DROP TABLE IF EXISTS `c_order_item`;
-CREATE TABLE `c_order_item` (
-  `b_id` varchar(30) NOT NULL COMMENT '业务Id',
-  `o_id` varchar(30) NOT NULL COMMENT '订单ID',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `action` varchar(12) DEFAULT NULL COMMENT '动作表，ADD 添加记录 MOD 修改记录 DEL删除记录',
-  `action_obj` varchar(64) NOT NULL COMMENT '动作对象，一般为表名',
-  `finish_time` datetime DEFAULT NULL COMMENT '完成时间',
-  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
-  `status_cd` varchar(2) NOT NULL COMMENT '数据状态，详细参考c_status表',
-  UNIQUE KEY `b_id` (`b_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for c_order_type
--- ----------------------------
-DROP TABLE IF EXISTS `c_order_type`;
-CREATE TABLE `c_order_type` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `order_type_cd` varchar(4) NOT NULL COMMENT '订单类型',
-  `name` varchar(50) NOT NULL COMMENT '名称',
-  `description` varchar(200) DEFAULT NULL COMMENT '描述',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `order_type_cd` (`order_type_cd`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of c_order_type
--- ----------------------------
-
--- ----------------------------
--- Table structure for c_orders
--- ----------------------------
-DROP TABLE IF EXISTS `c_orders`;
-CREATE TABLE `c_orders` (
-  `o_id` varchar(30) NOT NULL COMMENT '订单ID',
-  `app_id` varchar(30) NOT NULL COMMENT '应用ID',
-  `ext_transaction_id` varchar(36) DEFAULT NULL,
-  `user_id` varchar(30) NOT NULL COMMENT '用户ID',
-  `request_time` varchar(16) NOT NULL COMMENT '外部系统请求时间',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `order_type_cd` varchar(4) NOT NULL COMMENT '订单类型，参考c_order_type表',
-  `finish_time` date DEFAULT NULL COMMENT '订单完成时间',
-  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
-  `status_cd` varchar(2) NOT NULL COMMENT '数据状态，详细参考c_status表',
-  UNIQUE KEY `o_id` (`o_id`) USING BTREE,
-  UNIQUE KEY `o_id_2` (`o_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of c_orders
--- ----------------------------
-INSERT INTO `c_orders` VALUES ('102024121700720005', '992023010100000001', 'a2db5e6d-cf74-4a2c-b94d-ccfa1b4a2e7f', '30518939884421922816', '20241217155121', '2024-12-17 15:51:21', 'D', '2024-12-17', null, 'C');
-INSERT INTO `c_orders` VALUES ('102024121712620002', '992023010100000001', '22d4cc3f-721f-48c4-8b19-e4fa6c13b623', '30518939884421922816', '20241217155049', '2024-12-17 15:50:50', 'D', '2024-12-17', null, 'C');
-INSERT INTO `c_orders` VALUES ('102024121807450015', '992023010100000001', '98ddd25f-b39d-478e-86d1-56e64d32ceba', '302024121758390012', '20241218145738', '2024-12-18 14:57:39', 'D', '2024-12-18', null, 'C');
-INSERT INTO `c_orders` VALUES ('102024121820060007', '992023010100000001', '9779c58b-747d-4222-b6da-abd912d9c1aa', '302024121758390012', '20241218142041', '2024-12-18 14:20:42', 'D', '2024-12-18', null, 'C');
-INSERT INTO `c_orders` VALUES ('102024121839330004', '992023010100000001', '2df444d4-cb93-4d51-8525-91c8c6030585', '302024121758390012', '20241218141903', '2024-12-18 14:19:03', 'D', '2024-12-18', null, 'C');
-INSERT INTO `c_orders` VALUES ('102024121839860010', '992023010100000001', '850bcc89-fe89-4a71-8e3b-133633dd0a0d', '302024121758390012', '20241218142051', '2024-12-18 14:20:51', 'D', '2024-12-18', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012201220009', '992023010100000001', 'd90fb791-17c4-4756-8312-f6c37bf47e16', '30520751775595118592', '20250122235717', '2025-01-22 23:57:19', 'D', '2025-01-22', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012272720002', '992023010100000001', '470f748a-40ce-4d59-9fa0-cb61bc39ae4a', '302024121758390012', '20250122235433', '2025-01-22 23:54:35', 'D', '2025-01-22', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012303950005', '992023010100000001', '652f786b-ee7c-4ed4-a100-affc020793fa', '302024121758390012', '20250123145545', '2025-01-23 14:55:45', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012311320009', '992023010100000001', 'b0c8eeba-e440-4913-9067-3b0297a5c55a', '302024121758390012', '20250123022610', '2025-01-23 02:26:13', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012318110010', '992023010100000001', '70ef5dbc-d394-4ddb-8bc2-6c74408acd1b', '302024121758390012', '20250123150226', '2025-01-23 15:02:27', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012318960001', '992023010100000001', 'c4f736b0-c7d5-42ad-a042-67ded36a151c', '302024121758390012', '20250123145451', '2025-01-23 14:54:52', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012325900011', '992023010100000001', '0e57ea60-2510-4c68-909c-f6216228a339', '302024121758390012', '20250123000347', '2025-01-23 00:03:49', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012325930004', '992023010100000001', '2ea6f601-c81e-4af7-aec2-7388201add4e', '302024121758390012', '20250123010214', '2025-01-23 01:02:16', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012327090001', '992023010100000001', 'c966a565-dd36-4494-9b1b-996e305cf02d', '302024121758390012', '20250123010430', '2025-01-23 01:04:32', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012328370002', '992023010100000001', '2a639221-141e-444a-92c5-3fe90ba43c8f', '302024121758390012', '20250123132444', '2025-01-23 13:24:45', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012332100007', '992023010100000001', 'c98a9182-d0ac-4eef-8010-6f2470fee1ba', '302024121758390012', '20250123022442', '2025-01-23 02:24:45', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012335300024', '992023010100000001', '1c6b7256-826f-498e-8b4f-35834f1af92b', '302024121758390012', '20250123004630', '2025-01-23 00:46:32', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012349940040', '992023010100000001', 'ed978788-676e-4669-8f7c-e9e650359f9b', '302024121758390012', '20250123000901', '2025-01-23 00:09:03', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012350160030', '992023010100000001', 'ea4ea351-043a-4227-9116-7987b15abeac', '302024121758390012', '20250123004714', '2025-01-23 00:47:16', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012357520001', '992023010100000001', '2d169fc8-e5fc-45a9-8008-31dd85593657', '302024121758390012', '20250123003938', '2025-01-23 00:39:40', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012366990008', '992023010100000001', 'e0ac2440-e658-4a50-91df-da9e897b7db1', '302024121758390012', '20250123145757', '2025-01-23 14:57:58', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012367470035', '992023010100000001', 'ab8d77ed-72dc-44ce-8f96-64649f78d13e', '302024121758390012', '20250123000823', '2025-01-23 00:08:25', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012368100001', '992023010100000001', '7c89ea15-9fd6-46ef-bdb6-9d60db3e7c70', '302024121758390012', '20250123005654', '2025-01-23 00:56:57', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012368400008', '992023010100000001', '2a17fd63-357a-4b37-af41-569c104d7253', '302024121758390012', '20250123011926', '2025-01-23 01:19:29', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012370790021', '992023010100000001', '017e53cc-3ad5-4106-8687-6d78f09d8695', '302024121758390012', '20250123000637', '2025-01-23 00:06:39', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012375070003', '992023010100000001', '8d8bd3f5-a460-4a04-81d4-87b324003e3e', '302024121758390012', '20250123145505', '2025-01-23 14:55:05', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012377090031', '992023010100000001', '55055e88-0361-4a23-85ed-7e478cf326bc', '302024121758390012', '20250123000651', '2025-01-23 00:06:54', 'D', '2025-01-23', null, 'E');
-INSERT INTO `c_orders` VALUES ('102025012383170038', '992023010100000001', 'cfa93bed-f2e3-4d57-86c2-dfc9456c0249', '302024121758390012', '20250123000828', '2025-01-23 00:08:31', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012385320027', '992023010100000001', '7d401750-a67a-44ae-8f3b-7a4c46ab0aea', '302024121758390012', '20250123004659', '2025-01-23 00:47:01', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012387510013', '992023010100000001', 'd14af2bb-2c25-4031-806f-6de57529f654', '302024121758390012', '20250123153401', '2025-01-23 15:34:01', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025012398390005', '992023010100000001', '87651d38-a22e-4eaf-93f3-768d5db885b3', '302024121758390012', '20250123132510', '2025-01-23 13:25:10', 'D', '2025-01-23', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025030805930001', '992023010100000001', 'aea71ed1-5275-416f-880e-0de906606776', '30518939884421922816', '20250308122531', '2025-03-08 12:25:31', 'D', '2025-03-08', null, 'E');
-INSERT INTO `c_orders` VALUES ('102025030812230008', '992023010100000001', 'cd6be7b3-b435-476d-8401-7c81297cd440', '30518939884421922816', '20250308122611', '2025-03-08 12:26:12', 'D', '2025-03-08', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025030887830010', '992023010100000001', '8d468555-53e9-4e0b-835f-7af3f238c91c', '30518939884421922816', '20250308122620', '2025-03-08 12:26:21', 'D', '2025-03-08', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025030891620005', '992023010100000001', '93a8ad3d-6ee0-4d94-82d4-43234d2e55da', '30518939884421922816', '20250308122600', '2025-03-08 12:26:00', 'D', '2025-03-08', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025031210990010', '992023010100000001', '1ac3b844-2de1-4daf-951b-e6a442961365', '30520751775595118592', '20250312201639', '2025-03-12 20:16:40', 'D', '2025-03-12', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025031225800002', '992023010100000001', '368e2fab-9255-4248-9ddb-44c8c847403b', '302024121758390012', '20250312164027', '2025-03-12 16:40:27', 'D', '2025-03-12', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025031256690005', '992023010100000001', '92347ad3-7ff8-4b61-8730-5b835eb193d8', '302024121758390012', '20250312164046', '2025-03-12 16:40:47', 'D', '2025-03-12', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025031306700006', '992023010100000001', '60bf7d61-fd03-4d7c-8be4-55292b67ee45', '302024121758390012', '20250313212958', '2025-03-13 21:30:00', 'D', '2025-03-13', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025031318960006', '992023010100000001', 'b02216b1-481e-4401-82e4-824c148b5b5f', '302024121758390012', '20250313153622', '2025-03-13 15:36:23', 'D', '2025-03-13', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025031328740003', '992023010100000001', '68c5ac5b-a3af-439a-8531-38a3d24ca7df', '302024121758390012', '20250313212919', '2025-03-13 21:29:21', 'D', '2025-03-13', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025031330030009', '992023010100000001', 'c3eee142-eb94-44c9-89be-6ea9685d15ca', '302024121758390012', '20250313213011', '2025-03-13 21:30:13', 'D', '2025-03-13', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025031330330001', '992023010100000001', 'a35692f0-5731-4b4e-870c-2ec07644b826', '302024121758390012', '20250313153548', '2025-03-13 15:35:49', 'D', '2025-03-13', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025031350720019', '992023010100000001', 'b1ec2fc2-bb46-4e23-8271-cc3ec893778f', '302024121758390012', '20250313213109', '2025-03-13 21:31:11', 'D', '2025-03-13', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025031367360012', '992023010100000001', '82e1cffe-aebc-43aa-989b-b77df0c95a10', '302024121758390012', '20250313213033', '2025-03-13 21:30:35', 'D', '2025-03-13', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025031374850015', '992023010100000001', 'fc3e0178-05b0-4715-8754-c3384c613b20', '302024121758390012', '20250313213052', '2025-03-13 21:30:54', 'D', '2025-03-13', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025031375450021', '992023010100000001', '07392cd5-409a-4f0d-8fdd-7c62dd0e29c2', '302024121758390012', '20250313213130', '2025-03-13 21:31:31', 'D', '2025-03-13', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025031378370007', '992023010100000001', '210351a8-954e-4ac1-a988-578bb295673d', '30520751775595118592', '20250313234316', '2025-03-13 23:43:18', 'D', '2025-03-13', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025031407380012', '992023010100000001', 'b3cd526b-594b-4855-96b9-6a1df4e1f7e5', '30520751775595118592', '20250314112757', '2025-03-14 11:27:57', 'D', '2025-03-14', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032415120002', '992023010100000001', '9c0bae5f-ed86-4f51-85bf-578117a7e0e3', '30518939884421922816', '20250324093206', '2025-03-24 09:32:07', 'D', '2025-03-24', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032418010001', '992023010100000001', '3cddb1a4-3adf-4202-81fe-ab4dcd2976d3', '302024121758390012', '20250324184557', '2025-03-24 18:45:58', 'D', '2025-03-24', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032419330091', '992023010100000001', 'c4e65539-589c-446b-baaa-00928cfb0e40', '30518939884421922816', '20250324194022', '2025-03-24 19:40:22', 'D', '2025-03-24', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032420750047', '992023010100000001', 'a76bdb44-1889-4cb3-8971-1fb998440e25', '30518939884421922816', '20250324193953', '2025-03-24 19:39:53', 'D', '2025-03-24', null, 'E');
-INSERT INTO `c_orders` VALUES ('102025032421670051', '992023010100000001', 'c5acfeaa-e950-4bc4-90e7-50d4a2a6ae74', '30518939884421922816', '20250324194006', '2025-03-24 19:40:07', 'D', '2025-03-24', null, 'E');
-INSERT INTO `c_orders` VALUES ('102025032422720006', '992023010100000001', 'b3fa7668-88dd-4867-9231-ca9b623ddf69', '302024121758390012', '20250324184646', '2025-03-24 18:46:46', 'D', '2025-03-24', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032462590043', '992023010100000001', 'c8e0265b-1871-4a18-8b6c-cd62da82bb5b', '30518939884421922816', '20250324193939', '2025-03-24 19:39:40', 'D', '2025-03-24', null, 'E');
-INSERT INTO `c_orders` VALUES ('102025032462970094', '992023010100000001', '9e2f97c7-4fa2-4b9f-8c4a-aa9174115f7f', '30518939884421922816', '20250324194030', '2025-03-24 19:40:30', 'D', '2025-03-24', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032465420006', '992023010100000001', 'ff6396d4-631b-42bb-a95a-7add31f506ba', '30520751775595118592', '20250324133439', '2025-03-24 13:34:40', 'D', '2025-03-24', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032473140008', '992023010100000001', 'd859f738-4356-4c05-89a9-9fe73f5ad057', '302024121758390012', '20250324190414', '2025-03-24 19:04:14', 'D', '2025-03-24', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032474640002', '992023010100000001', 'e06f2a10-0b32-4255-babc-150a1aac667c', '302024121758390012', '20250324180831', '2025-03-24 18:08:33', 'D', '2025-03-24', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032474660038', '992024012179880001', '3c8c5083-6684-41f4-be80-921b493f3e5f', '30518939884421922816', '20250324192056', '2025-03-24 19:20:58', 'D', '2025-03-24', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032488730001', '992023010100000001', '7ad1b1e9-7a52-41ac-a998-b47433b45e9f', '302024121758390012', '20250324212702', '2025-03-24 21:27:03', 'D', '2025-03-24', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032493490055', '992023010100000001', '2bc52fdb-234e-4f65-9312-34df21833ed4', '30518939884421922816', '20250324194016', '2025-03-24 19:40:16', 'D', '2025-03-24', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032498990006', '992023010100000001', '13eefb70-e18c-427f-8a73-fbe8486b2a47', '302024121758390012', '20250324212037', '2025-03-24 21:20:38', 'D', '2025-03-24', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032800300024', '992023010100000001', '2eeecc1f-97b3-49dc-82a3-62060ff3e7b0', '302024121758390012', '20250328173850', '2025-03-28 17:38:51', 'D', '2025-03-28', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032801700051', '992023010100000001', '9104cf59-adcc-4a2b-85f4-60d6d0901d43', '302024121758390012', '20250328174406', '2025-03-28 17:44:07', 'D', '2025-03-28', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032804960019', '992023010100000001', 'fa411218-716c-427e-8543-e428afa9ba44', '302024121758390012', '20250328200336', '2025-03-28 20:03:38', 'D', '2025-03-28', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032811670003', '992023010100000001', '9c853442-0115-4371-96e6-42ac7b4e9dba', '302024121758390012', '20250328200215', '2025-03-28 20:02:16', 'D', '2025-03-28', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032819700008', '992023010100000001', 'ad6c5513-db63-4b5b-8ba1-b5212bf33a97', '302024121758390012', '20250328165109', '2025-03-28 16:51:10', 'D', '2025-03-28', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032825390006', '992023010100000001', 'dfde3f14-93e6-479c-943e-3e07ccf0a07b', '302024121758390012', '20250328200231', '2025-03-28 20:02:32', 'D', '2025-03-28', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032826960004', '992023010100000001', '21b5cce9-64c8-4062-9319-2c65f743dbf2', '30520751775595118592', '20250328164842', '2025-03-28 16:48:43', 'D', '2025-03-28', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032830480016', '992023010100000001', '57f87dec-043e-4f18-871d-048b5267c42e', '302024121758390012', '20250328200252', '2025-03-28 20:02:54', 'D', '2025-03-28', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032837230057', '992023010100000001', '3110ee3e-14eb-495a-982b-84f6f9457b30', '302024121758390012', '20250328174449', '2025-03-28 17:44:50', 'D', '2025-03-28', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032849770020', '992023010100000001', 'b94a61a5-4529-4085-bb1e-2e2201385134', '30520751775595118592', '20250328194510', '2025-03-28 19:45:11', 'D', '2025-03-28', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032860710040', '992023010100000001', '0658e245-be74-49a9-9481-d0f529224277', '302024121758390012', '20250328174322', '2025-03-28 17:43:23', 'D', '2025-03-28', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032861250022', '992023010100000001', '0ce559f8-d764-4d08-96cd-1f94de5b77c8', '302024121758390012', '20250328173841', '2025-03-28 17:38:42', 'D', '2025-03-28', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032864430019', '992023010100000001', 'd3e37480-b575-4a70-b8a9-bdf1c61be2b7', '302024121758390012', '20250328173749', '2025-03-28 17:37:50', 'D', '2025-03-28', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032875770034', '992023010100000001', 'de9de204-412a-455f-845d-c6f7e3806651', '302024121758390012', '20250328174247', '2025-03-28 17:42:48', 'D', '2025-03-28', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025032889710026', '992023010100000001', '756959fc-783f-4be7-a1a4-54b9a1e22364', '302024121758390012', '20250328173858', '2025-03-28 17:38:59', 'D', '2025-03-28', null, 'C');
-INSERT INTO `c_orders` VALUES ('102025040382170003', '992023010100000001', '0bc543c9-80fc-4a4e-afca-ff2d2d7d43e9', '30520751775595118592', '20250403231205', '2025-04-03 23:12:07', 'D', '2025-04-03', null, 'C');
-
--- ----------------------------
--- Table structure for c_route
--- ----------------------------
-DROP TABLE IF EXISTS `c_route`;
-CREATE TABLE `c_route` (
-  `id` varchar(30) NOT NULL COMMENT 'id',
-  `app_id` varchar(30) NOT NULL COMMENT '应用ID',
-  `service_id` varchar(30) NOT NULL COMMENT '服务ID',
-  `order_type_cd` varchar(4) NOT NULL COMMENT '订单类型，参考c_order_type表',
-  `invoke_limit_times` int DEFAULT NULL COMMENT '接口调用一分钟调用次数',
-  `invoke_model` varchar(1) NOT NULL COMMENT '1-同步方式 2-异步方式',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效，2 表示下线（当组件调用服务超过限制时自动下线）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of c_route
--- ----------------------------
-INSERT INTO `c_route` VALUES ('1', '992023010100000001', '1', 'Q', '100', 'S', '2023-02-11 16:26:01', '0');
-INSERT INTO `c_route` VALUES ('10', '992023010100000001', '10', 'Q', '100', 'S', '2023-02-11 16:26:02', '0');
-INSERT INTO `c_route` VALUES ('102023021211350036', '992023010100000001', '982023021223650035', 'Q', '1000', 'S', '2023-02-12 23:20:33', '0');
-INSERT INTO `c_route` VALUES ('102023021225690038', '992023010100000001', '982023021203470037', 'D', '1000', 'S', '2023-02-12 23:23:28', '0');
-INSERT INTO `c_route` VALUES ('102023021230340022', '992023010100000001', '982023021223940021', 'D', '1000', 'S', '2023-02-12 20:22:35', '0');
-INSERT INTO `c_route` VALUES ('102023021232260003', '992023010100000001', '982023021258190002', 'D', '1000', 'S', '2023-02-12 19:42:30', '0');
-INSERT INTO `c_route` VALUES ('102023021238440032', '992023010100000001', '982023021214060031', 'Q', '1000', 'S', '2023-02-12 20:40:39', '0');
-INSERT INTO `c_route` VALUES ('102023021240560020', '992023010100000001', '982023021227650019', 'D', '1000', 'S', '2023-02-12 20:21:16', '0');
-INSERT INTO `c_route` VALUES ('102023021242430005', '992023010100000001', '982023021248040004', 'D', '1000', 'S', '2023-02-12 23:35:41', '0');
-INSERT INTO `c_route` VALUES ('102023021249110013', '992023010100000001', '982023021204510012', 'Q', '1000', 'S', '2023-02-12 23:44:04', '0');
-INSERT INTO `c_route` VALUES ('102023021251050011', '992023010100000001', '982023021273350010', 'D', '1000', 'S', '2023-02-12 20:13:57', '0');
-INSERT INTO `c_route` VALUES ('102023021253270005', '992023010100000001', '982023021296170004', 'D', '1000', 'S', '2023-02-12 23:57:27', '0');
-INSERT INTO `c_route` VALUES ('102023021254470028', '992023010100000001', '982023021235240027', 'D', '1000', 'S', '2023-02-12 20:38:41', '0');
-INSERT INTO `c_route` VALUES ('102023021255530024', '992023010100000001', '982023021216390023', 'Q', '1000', 'S', '2023-02-12 20:26:31', '0');
-INSERT INTO `c_route` VALUES ('102023021259300015', '992023010100000001', '982023021256680014', 'Q', '1000', 'S', '2023-02-12 20:18:25', '0');
-INSERT INTO `c_route` VALUES ('102023021260040007', '992023010100000001', '982023021237010006', 'Q', '1000', 'S', '2023-02-12 20:11:01', '0');
-INSERT INTO `c_route` VALUES ('102023021263470013', '992023010100000001', '982023021260000012', 'D', '1000', 'S', '2023-02-12 20:14:58', '0');
-INSERT INTO `c_route` VALUES ('102023021268920026', '992023010100000001', '982023021296210025', 'D', '1000', 'S', '2023-02-12 20:32:22', '0');
-INSERT INTO `c_route` VALUES ('102023021273060001', '992023010100000001', '982023021245840003', 'D', '1000', 'S', '2023-02-12 16:05:21', '0');
-INSERT INTO `c_route` VALUES ('102023021275390003', '992023010100000001', '982023021241540002', 'Q', '1000', 'S', '2023-02-12 23:56:02', '0');
-INSERT INTO `c_route` VALUES ('102023021275500030', '992023010100000001', '982023021259860029', 'D', '1000', 'S', '2023-02-12 20:39:41', '0');
-INSERT INTO `c_route` VALUES ('102023021278870008', '992023010100000001', '982023021247300007', 'D', '1000', 'S', '2023-02-12 23:36:27', '0');
-INSERT INTO `c_route` VALUES ('102023021281530005', '992023010100000001', '982023021216270004', 'D', '1000', 'S', '2023-02-12 20:09:35', '0');
-INSERT INTO `c_route` VALUES ('102023021283770009', '992023010100000001', '982023021276940008', 'D', '1000', 'S', '2023-02-12 20:12:13', '0');
-INSERT INTO `c_route` VALUES ('102023021287430017', '992023010100000001', '982023021259400016', 'D', '1000', 'S', '2023-02-12 20:20:01', '0');
-INSERT INTO `c_route` VALUES ('102023021289240034', '992023010100000001', '982023021285420033', 'D', '1000', 'S', '2023-02-12 23:19:20', '0');
-INSERT INTO `c_route` VALUES ('102023021293120011', '992023010100000001', '982023021296240010', 'D', '1000', 'S', '2023-02-12 23:37:28', '0');
-INSERT INTO `c_route` VALUES ('102023021302460021', '992023010100000001', '982023021368120020', 'D', '1000', 'S', '2023-02-13 01:06:45', '0');
-INSERT INTO `c_route` VALUES ('102023021306950006', '992023010100000001', '982023021370120005', 'D', '1000', 'S', '2023-02-13 01:25:29', '0');
-INSERT INTO `c_route` VALUES ('102023021309550011', '992023010100000001', '982023021334130010', 'D', '1000', 'S', '2023-02-13 00:38:34', '0');
-INSERT INTO `c_route` VALUES ('102023021310890006', '992023010100000001', '982023021330160005', 'Q', '1000', 'S', '2023-02-13 23:51:04', '0');
-INSERT INTO `c_route` VALUES ('102023021312970002', '992023010100000001', '982023021310500001', 'Q', '1000', 'S', '2023-02-13 12:08:14', '0');
-INSERT INTO `c_route` VALUES ('102023021313230002', '992023010100000001', '982023021309900001', 'Q', '1000', 'S', '2023-02-13 15:10:28', '0');
-INSERT INTO `c_route` VALUES ('102023021319320013', '992023010100000001', '982023021357210012', 'D', '1000', 'S', '2023-02-13 00:40:03', '0');
-INSERT INTO `c_route` VALUES ('102023021320930010', '992023010100000001', '982023021328190009', 'D', '1000', 'S', '2023-02-13 01:37:13', '0');
-INSERT INTO `c_route` VALUES ('102023021325490006', '992023010100000001', '982023021336370005', 'D', '1000', 'S', '2023-02-13 12:16:15', '0');
-INSERT INTO `c_route` VALUES ('102023021326040008', '992023010100000001', '982023021323660007', 'D', '1000', 'S', '2023-02-13 01:28:53', '0');
-INSERT INTO `c_route` VALUES ('102023021331740005', '992023010100000001', '982023021374860004', 'D', '1000', 'S', '2023-02-13 12:26:37', '0');
-INSERT INTO `c_route` VALUES ('102023021335260008', '992023010100000001', '982023021377330007', 'D', '1000', 'S', '2023-02-13 12:16:47', '0');
-INSERT INTO `c_route` VALUES ('102023021336450004', '992023010100000001', '982023021322710003', 'D', '1000', 'S', '2023-02-13 12:15:43', '0');
-INSERT INTO `c_route` VALUES ('102023021341130010', '992023010100000001', '982023021321230009', 'Q', '1000', 'S', '2023-02-13 01:01:38', '0');
-INSERT INTO `c_route` VALUES ('102023021341480004', '992023010100000001', '982023021324220003', 'D', '1000', 'S', '2023-02-13 15:15:18', '0');
-INSERT INTO `c_route` VALUES ('102023021349350006', '992023010100000001', '982023021337250005', 'D', '1000', 'S', '2023-02-13 15:35:12', '0');
-INSERT INTO `c_route` VALUES ('102023021350340018', '992023010100000001', '982023021325460017', 'Q', '1000', 'S', '2023-02-13 01:05:44', '0');
-INSERT INTO `c_route` VALUES ('102023021353510007', '992023010100000001', '982023021360730006', 'D', '1000', 'S', '2023-02-13 12:27:07', '0');
-INSERT INTO `c_route` VALUES ('102023021363990004', '992023010100000001', '982023021312140003', 'Q', '1000', 'S', '2023-02-13 23:41:31', '0');
-INSERT INTO `c_route` VALUES ('102023021365630009', '992023010100000001', '982023021360120008', 'D', '1000', 'S', '2023-02-13 00:03:03', '0');
-INSERT INTO `c_route` VALUES ('102023021373790003', '992023010100000001', '982023021302420002', 'D', '1000', 'S', '2023-02-13 01:24:21', '0');
-INSERT INTO `c_route` VALUES ('102023021379350012', '992023010100000001', '982023021395440011', 'D', '1000', 'S', '2023-02-13 01:02:55', '0');
-INSERT INTO `c_route` VALUES ('102023021387790025', '992023010100000001', '982023021326930024', 'D', '1000', 'S', '2023-02-13 01:10:06', '0');
-INSERT INTO `c_route` VALUES ('102023021387900015', '992023010100000001', '982023021386140014', 'D', '1000', 'S', '2023-02-13 00:43:44', '0');
-INSERT INTO `c_route` VALUES ('102023021388470008', '992023010100000001', '982023021358370007', 'D', '1000', 'S', '2023-02-13 15:37:52', '0');
-INSERT INTO `c_route` VALUES ('102023021389730013', '992023010100000001', '982023021303060012', 'Q', '1000', 'S', '2023-02-13 02:07:24', '0');
-INSERT INTO `c_route` VALUES ('102023021390830015', '992023010100000001', '982023021372850014', 'D', '1000', 'S', '2023-02-13 01:03:44', '0');
-INSERT INTO `c_route` VALUES ('102023021391130003', '992023010100000001', '982023021395620002', 'Q', '1000', 'S', '2023-02-13 12:26:03', '0');
-INSERT INTO `c_route` VALUES ('102023021392960009', '992023010100000001', '982023021309160008', 'D', '1000', 'S', '2023-02-13 12:27:34', '0');
-INSERT INTO `c_route` VALUES ('102023021399890004', '992023010100000001', '982023021322750003', 'D', '1000', 'S', '2023-02-13 00:59:16', '0');
-INSERT INTO `c_route` VALUES ('102023021400750038', '992023010100000001', '982023021473350037', 'D', '1000', 'S', '2023-02-14 17:47:31', '0');
-INSERT INTO `c_route` VALUES ('102023021401770026', '992023010100000001', '982023021439850025', 'D', '1000', 'S', '2023-02-14 01:58:01', '0');
-INSERT INTO `c_route` VALUES ('102023021402080026', '992023010100000001', '982023021488540025', 'Q', '1000', 'S', '2023-02-14 16:56:35', '0');
-INSERT INTO `c_route` VALUES ('102023021402380010', '992023010100000001', '982023021405630009', 'D', '1000', 'S', '2023-02-14 00:30:47', '0');
-INSERT INTO `c_route` VALUES ('102023021402660028', '992023010100000001', '982023021439470027', 'Q', '1000', 'S', '2023-02-14 16:58:36', '0');
-INSERT INTO `c_route` VALUES ('102023021407460052', '992023010100000001', '982023021496750051', 'Q', '1000', 'S', '2023-02-14 18:57:59', '0');
-INSERT INTO `c_route` VALUES ('102023021410870036', '992023010100000001', '982023021482340035', 'D', '1000', 'S', '2023-02-14 02:49:34', '0');
-INSERT INTO `c_route` VALUES ('102023021415110016', '992023010100000001', '982023021450050015', 'D', '1000', 'S', '2023-02-14 01:41:56', '0');
-INSERT INTO `c_route` VALUES ('102023021416340032', '992023010100000001', '982023021419530031', 'Q', '1000', 'S', '2023-02-14 17:23:28', '0');
-INSERT INTO `c_route` VALUES ('102023021417040024', '992023010100000001', '982023021491480023', 'D', '1000', 'S', '2023-02-14 01:53:59', '0');
-INSERT INTO `c_route` VALUES ('102023021418480046', '992023010100000001', '982023021485940045', 'D', '1000', 'S', '2023-02-14 18:18:49', '0');
-INSERT INTO `c_route` VALUES ('102023021418670024', '992023010100000001', '982023021403550023', 'D', '1000', 'S', '2023-02-14 16:00:18', '0');
-INSERT INTO `c_route` VALUES ('102023021419550040', '992023010100000001', '982023021498420039', 'D', '1000', 'S', '2023-02-14 17:51:02', '0');
-INSERT INTO `c_route` VALUES ('102023021419940034', '992023010100000001', '982023021486110033', 'D', '1000', 'S', '2023-02-14 02:44:30', '0');
-INSERT INTO `c_route` VALUES ('102023021423490050', '992023010100000001', '982023021494870049', 'Q', '1000', 'S', '2023-02-14 18:46:52', '0');
-INSERT INTO `c_route` VALUES ('102023021425370048', '992023010100000001', '982023021487090047', 'D', '1000', 'S', '2023-02-14 18:32:35', '0');
-INSERT INTO `c_route` VALUES ('102023021430220034', '992023010100000001', '982023021447920033', 'D', '1000', 'S', '2023-02-14 17:24:32', '0');
-INSERT INTO `c_route` VALUES ('102023021432050030', '992023010100000001', '982023021453590029', 'D', '1000', 'S', '2023-02-14 17:00:38', '0');
-INSERT INTO `c_route` VALUES ('102023021436790032', '992023010100000001', '982023021469650031', 'Q', '1000', 'S', '2023-02-14 02:25:19', '0');
-INSERT INTO `c_route` VALUES ('102023021437730012', '992023010100000001', '982023021499840011', 'Q', '1000', 'S', '2023-02-14 13:43:57', '0');
-INSERT INTO `c_route` VALUES ('102023021438280010', '992023010100000001', '982023021466280009', 'Q', '1000', 'S', '2023-02-14 13:31:56', '0');
-INSERT INTO `c_route` VALUES ('102023021444180016', '992023010100000001', '982023021492500015', 'D', '1000', 'S', '2023-02-14 14:09:27', '0');
-INSERT INTO `c_route` VALUES ('102023021447420028', '992023010100000001', '982023021435790027', 'Q', '1000', 'S', '2023-02-14 02:07:36', '0');
-INSERT INTO `c_route` VALUES ('102023021452130022', '992023010100000001', '982023021497050021', 'D', '1000', 'S', '2023-02-14 15:19:11', '0');
-INSERT INTO `c_route` VALUES ('102023021462630036', '992023010100000001', '982023021431180035', 'Q', '1000', 'S', '2023-02-14 17:43:51', '0');
-INSERT INTO `c_route` VALUES ('102023021463570018', '992023010100000001', '982023021407670017', 'D', '1000', 'S', '2023-02-14 01:44:40', '0');
-INSERT INTO `c_route` VALUES ('102023021467660020', '992023010100000001', '982023021497030019', 'D', '1000', 'S', '2023-02-14 14:16:27', '0');
-INSERT INTO `c_route` VALUES ('102023021480340030', '992023010100000001', '982023021458210029', 'D', '1000', 'S', '2023-02-14 02:15:51', '0');
-INSERT INTO `c_route` VALUES ('102023021480970008', '992023010100000001', '982023021464680007', 'Q', '1000', 'S', '2023-02-14 00:04:40', '0');
-INSERT INTO `c_route` VALUES ('102023021486270014', '992023010100000001', '982023021408200013', 'Q', '1000', 'S', '2023-02-14 13:58:26', '0');
-INSERT INTO `c_route` VALUES ('102023021490760022', '992023010100000001', '982023021433280021', 'D', '1000', 'S', '2023-02-14 01:52:18', '0');
-INSERT INTO `c_route` VALUES ('102023021493040042', '992023010100000001', '982023021452340041', 'Q', '1000', 'S', '2023-02-14 18:04:55', '0');
-INSERT INTO `c_route` VALUES ('102023021493740044', '992023010100000001', '982023021487850043', 'Q', '1000', 'S', '2023-02-14 18:06:39', '0');
-INSERT INTO `c_route` VALUES ('102023021497310018', '992023010100000001', '982023021481320017', 'D', '1000', 'S', '2023-02-14 14:14:39', '0');
-INSERT INTO `c_route` VALUES ('102023021497830020', '992023010100000001', '982023021436810019', 'Q', '1000', 'S', '2023-02-14 01:47:02', '0');
-INSERT INTO `c_route` VALUES ('102023021616720002', '992023010100000001', '982023021601160001', 'D', '1000', 'S', '2023-02-16 00:02:44', '0');
-INSERT INTO `c_route` VALUES ('102023021650140004', '992023010100000001', '982023021648060003', 'D', '1000', 'S', '2023-02-16 00:04:40', '0');
-INSERT INTO `c_route` VALUES ('102023080903830003', '992023010100000001', '982023080921840002', 'D', '1000', 'S', '2023-08-09 11:21:45', '0');
-INSERT INTO `c_route` VALUES ('102023080909750007', '992023010100000001', '982023080951470006', 'D', '1000', 'S', '2023-08-09 11:24:41', '0');
-INSERT INTO `c_route` VALUES ('102023080910940003', '992023010100000001', '982023080915140002', 'D', '1000', 'S', '2023-08-09 22:06:22', '0');
-INSERT INTO `c_route` VALUES ('102023080913930008', '992023010100000001', '982023080979520007', 'D', '1000', 'S', '2023-08-09 14:25:58', '0');
-INSERT INTO `c_route` VALUES ('102023080919240002', '992023010100000001', '982023080921430001', 'D', '1000', 'S', '2023-08-09 10:54:07', '0');
-INSERT INTO `c_route` VALUES ('102023080922300002', '992023010100000001', '982023080933940001', 'Q', '1000', 'S', '2023-08-09 02:49:49', '0');
-INSERT INTO `c_route` VALUES ('102023080927200005', '992023010100000001', '982023080910140004', 'Q', '1000', 'S', '2023-08-09 18:10:49', '0');
-INSERT INTO `c_route` VALUES ('102023080927320005', '992023010100000001', '982023080988790004', 'Q', '1000', 'S', '2023-08-09 11:32:18', '0');
-INSERT INTO `c_route` VALUES ('102023080929950016', '992023010100000001', '982023080906630015', 'D', '1000', 'S', '2023-08-09 14:27:00', '0');
-INSERT INTO `c_route` VALUES ('102023080931590016', '992023010100000001', '982023080978720015', 'D', '1000', 'S', '2023-08-09 11:36:17', '0');
-INSERT INTO `c_route` VALUES ('102023080942870012', '992023010100000001', '982023080984110011', 'D', '1000', 'S', '2023-08-09 11:26:16', '0');
-INSERT INTO `c_route` VALUES ('102023080949160011', '992023010100000001', '982023080948440010', 'D', '1000', 'S', '2023-08-09 18:36:21', '0');
-INSERT INTO `c_route` VALUES ('102023080953650008', '992023010100000001', '982023080961400007', 'D', '1000', 'S', '2023-08-09 11:35:15', '0');
-INSERT INTO `c_route` VALUES ('102023080957710008', '992023010100000001', '982023080953980007', 'Q', '1000', 'S', '2023-08-09 11:09:28', '0');
-INSERT INTO `c_route` VALUES ('102023080966400021', '992023010100000001', '982023080903700020', 'D', '1000', 'S', '2023-08-09 11:48:40', '0');
-INSERT INTO `c_route` VALUES ('102023080971440024', '992023010100000001', '982023080910750023', 'D', '1000', 'S', '2023-08-09 17:15:42', '0');
-INSERT INTO `c_route` VALUES ('102023080984140011', '992023010100000001', '982023080966350010', 'Q', '1000', 'S', '2023-08-09 11:13:53', '0');
-INSERT INTO `c_route` VALUES ('102023080994010002', '992023010100000001', '982023080995670001', 'D', '1000', 'S', '2023-08-09 18:46:07', '0');
-INSERT INTO `c_route` VALUES ('102023080997700005', '992023010100000001', '982023080957850004', 'Q', '1000', 'S', '2023-08-09 11:07:42', '0');
-INSERT INTO `c_route` VALUES ('102023081427550002', '992023010100000001', '982023081417290001', 'Q', '1000', 'S', '2023-08-14 16:06:31', '0');
-INSERT INTO `c_route` VALUES ('102023081437530002', '992023010100000001', '982023081419530001', 'D', '1000', 'S', '2023-08-14 16:32:50', '0');
-INSERT INTO `c_route` VALUES ('102023081510470004', '992023010100000001', '982023081553090003', 'Q', '1000', 'S', '2023-08-15 18:37:12', '0');
-INSERT INTO `c_route` VALUES ('102023081518980008', '992023010100000001', '982023081569750007', 'D', '1000', 'S', '2023-08-15 01:25:26', '0');
-INSERT INTO `c_route` VALUES ('102023081519000007', '992023010100000001', '982023081561050006', 'D', '1000', 'S', '2023-08-15 21:35:45', '0');
-INSERT INTO `c_route` VALUES ('102023081523510021', '992023010100000001', '982023081552200020', 'Q', '1000', 'S', '2023-08-15 09:06:32', '0');
-INSERT INTO `c_route` VALUES ('102023081535970002', '992023010100000001', '982023081584920001', 'D', '1000', 'S', '2023-08-15 01:24:02', '0');
-INSERT INTO `c_route` VALUES ('102023081540790032', '992023010100000001', '982023081579150031', 'D', '1000', 'S', '2023-08-15 09:10:40', '0');
-INSERT INTO `c_route` VALUES ('102023081542830030', '992023010100000001', '982023081581350029', 'D', '1000', 'S', '2023-08-15 09:10:12', '0');
-INSERT INTO `c_route` VALUES ('102023081553290040', '992023010100000001', '982023081546790039', 'Q', '1000', 'S', '2023-08-15 09:39:13', '0');
-INSERT INTO `c_route` VALUES ('102023081561110013', '992023010100000001', '982023081590210012', 'Q', '1000', 'S', '2023-08-15 12:24:18', '0');
-INSERT INTO `c_route` VALUES ('102023081562690028', '992023010100000001', '982023081596860027', 'D', '1000', 'S', '2023-08-15 09:09:42', '0');
-INSERT INTO `c_route` VALUES ('102023081579850023', '992023010100000001', '982023081528910022', 'D', '1000', 'S', '2023-08-15 09:08:06', '0');
-INSERT INTO `c_route` VALUES ('102023081581760004', '992023010100000001', '982023081562520003', 'Q', '1000', 'S', '2023-08-15 01:24:29', '0');
-INSERT INTO `c_route` VALUES ('102023081588830006', '992023010100000001', '982023081545940005', 'D', '1000', 'S', '2023-08-15 01:25:00', '0');
-INSERT INTO `c_route` VALUES ('102023081621360002', '992023010100000001', '982023081672890001', 'D', '1000', 'S', '2023-08-16 10:59:52', '0');
-INSERT INTO `c_route` VALUES ('102023081636250003', '992023010100000001', '982023081646380002', 'D', '1000', 'S', '2023-08-16 10:35:40', '0');
-INSERT INTO `c_route` VALUES ('102023081651780011', '992023010100000001', '982023081607370010', 'D', '1000', 'S', '2023-08-16 11:19:00', '0');
-INSERT INTO `c_route` VALUES ('102023081670620009', '992023010100000001', '982023081643040008', 'Q', '1000', 'S', '2023-08-16 11:17:38', '0');
-INSERT INTO `c_route` VALUES ('102023081692680003', '992023010100000001', '982023081639070002', 'D', '1000', 'S', '2023-08-16 16:25:25', '0');
-INSERT INTO `c_route` VALUES ('102023081697760007', '992023010100000001', '982023081624290006', 'D', '1000', 'S', '2023-08-16 11:17:04', '0');
-INSERT INTO `c_route` VALUES ('102023081711750010', '992023010100000001', '982023081706060009', 'Q', '1000', 'S', '2023-08-17 09:17:44', '0');
-INSERT INTO `c_route` VALUES ('102023081711840017', '992023010100000001', '982023081781300016', 'D', '1000', 'S', '2023-08-17 09:42:15', '0');
-INSERT INTO `c_route` VALUES ('102023081726490006', '992023010100000001', '982023081726810005', 'Q', '1000', 'S', '2023-08-17 09:35:07', '0');
-INSERT INTO `c_route` VALUES ('102023081726630009', '992023010100000001', '982023081741300008', 'D', '1000', 'S', '2023-08-17 09:38:13', '0');
-INSERT INTO `c_route` VALUES ('102023081732830011', '992023010100000001', '982023081750380010', 'D', '1000', 'S', '2023-08-17 09:39:13', '0');
-INSERT INTO `c_route` VALUES ('102023081736230007', '992023010100000001', '982023081781500006', 'Q', '1000', 'S', '2023-08-17 09:07:28', '0');
-INSERT INTO `c_route` VALUES ('102023081745380015', '992023010100000001', '982023081769950014', 'D', '1000', 'S', '2023-08-17 09:41:12', '0');
-INSERT INTO `c_route` VALUES ('102023081767840004', '992023010100000001', '982023081726920003', 'Q', '1000', 'S', '2023-08-17 09:33:04', '0');
-INSERT INTO `c_route` VALUES ('102023081772160019', '992023010100000001', '982023081768670018', 'D', '1000', 'S', '2023-08-17 09:43:12', '0');
-INSERT INTO `c_route` VALUES ('102023081777700038', '992023010100000001', '982023081729000037', 'Q', '1000', 'S', '2023-08-17 11:00:46', '0');
-INSERT INTO `c_route` VALUES ('102023081786690013', '992023010100000001', '982023081701610012', 'D', '1000', 'S', '2023-08-17 09:40:09', '0');
-INSERT INTO `c_route` VALUES ('102023081810520035', '992023010100000001', '982023081889510034', 'D', '1000', 'S', '2023-08-18 15:24:09', '0');
-INSERT INTO `c_route` VALUES ('102023081810520041', '992023010100000001', '982023081862200040', 'D', '1000', 'S', '2023-08-18 15:26:23', '0');
-INSERT INTO `c_route` VALUES ('102023081814490043', '992023010100000001', '982023081832110042', 'D', '1000', 'S', '2023-08-18 15:27:03', '0');
-INSERT INTO `c_route` VALUES ('102023081841920028', '992023010100000001', '982023081864360027', 'Q', '1000', 'S', '2023-08-18 15:14:14', '0');
-INSERT INTO `c_route` VALUES ('102023081850360032', '992023010100000001', '982023081881490031', 'Q', '1000', 'S', '2023-08-18 15:15:56', '0');
-INSERT INTO `c_route` VALUES ('102023081852600021', '992023010100000001', '982023081874930020', 'Q', '1000', 'S', '2023-08-18 16:02:11', '0');
-INSERT INTO `c_route` VALUES ('102023081852870002', '992023010100000001', '982023081809840001', 'D', '1000', 'S', '2023-08-18 14:34:23', '0');
-INSERT INTO `c_route` VALUES ('102023081854520024', '992023010100000001', '982023081887340023', 'D', '1000', 'S', '2023-08-18 16:06:48', '0');
-INSERT INTO `c_route` VALUES ('102023081855480030', '992023010100000001', '982023081800230029', 'Q', '1000', 'S', '2023-08-18 15:15:07', '0');
-INSERT INTO `c_route` VALUES ('102023081861370003', '992023010100000001', '982023081896720002', 'Q', '1000', 'S', '2023-08-18 14:04:00', '0');
-INSERT INTO `c_route` VALUES ('102023081862610006', '992023010100000001', '982023081809110005', 'D', '1000', 'S', '2023-08-18 15:39:29', '0');
-INSERT INTO `c_route` VALUES ('102023081873780010', '992023010100000001', '982023081836950009', 'D', '1000', 'S', '2023-08-18 11:14:57', '0');
-INSERT INTO `c_route` VALUES ('102023081874980011', '992023010100000001', '982023081833930010', 'D', '1000', 'S', '2023-08-18 14:40:09', '0');
-INSERT INTO `c_route` VALUES ('102023081876270008', '992023010100000001', '982023081803910007', 'D', '1000', 'S', '2023-08-18 11:13:38', '0');
-INSERT INTO `c_route` VALUES ('102023081885940012', '992023010100000001', '982023081879880011', 'D', '1000', 'S', '2023-08-18 11:16:32', '0');
-INSERT INTO `c_route` VALUES ('102023081894260014', '992023010100000001', '982023081807430013', 'D', '1000', 'S', '2023-08-18 11:18:51', '0');
-INSERT INTO `c_route` VALUES ('102023082154050006', '992023010100000001', '982023082118290005', 'Q', '1000', 'S', '2023-08-21 13:34:08', '0');
-INSERT INTO `c_route` VALUES ('102023082213590006', '992023010100000001', '982023082259940005', 'Q', '1000', 'S', '2023-08-22 10:50:27', '0');
-INSERT INTO `c_route` VALUES ('102023082302930013', '992023010100000001', '982023082305810012', 'D', '1000', 'S', '2023-08-23 13:54:46', '0');
-INSERT INTO `c_route` VALUES ('102023082320790007', '992023010100000001', '982023082395390006', 'Q', '1000', 'S', '2023-08-23 13:53:01', '0');
-INSERT INTO `c_route` VALUES ('102023082322130009', '992023010100000001', '982023082331040008', 'D', '1000', 'S', '2023-08-23 08:51:22', '0');
-INSERT INTO `c_route` VALUES ('102023082324140009', '992023010100000001', '982023082333600008', 'D', '1000', 'S', '2023-08-23 13:53:36', '0');
-INSERT INTO `c_route` VALUES ('102023082327680011', '992023010100000001', '982023082378700010', 'D', '1000', 'S', '2023-08-23 13:54:10', '0');
-INSERT INTO `c_route` VALUES ('102023082334300002', '992023010100000001', '982023082358690001', 'Q', '1000', 'S', '2023-08-23 11:06:26', '1');
-INSERT INTO `c_route` VALUES ('102023082362280003', '992023010100000001', '982023082374690002', 'D', '1000', 'S', '2023-08-23 08:50:02', '0');
-INSERT INTO `c_route` VALUES ('102023082366200005', '992023010100000001', '982023082338070004', 'D', '1000', 'S', '2023-08-23 08:50:31', '0');
-INSERT INTO `c_route` VALUES ('102023082379050002', '992023010100000001', '982023082337440001', 'Q', '1000', 'S', '2023-08-23 14:31:22', '0');
-INSERT INTO `c_route` VALUES ('102023082389110007', '992023010100000001', '982023082302040006', 'D', '1000', 'S', '2023-08-23 08:50:57', '0');
-INSERT INTO `c_route` VALUES ('102023082441270002', '992023010100000001', '982023082481950001', 'Q', '1000', 'S', '2023-08-24 15:45:17', '0');
-INSERT INTO `c_route` VALUES ('102023082449930006', '992023010100000001', '982023082403230005', 'D', '1000', 'S', '2023-08-24 15:47:18', '0');
-INSERT INTO `c_route` VALUES ('102023082463500004', '992023010100000001', '982023082488900003', 'D', '1000', 'S', '2023-08-24 15:46:37', '0');
-INSERT INTO `c_route` VALUES ('102023082482150025', '992023010100000001', '982023082426580024', 'Q', '1000', 'S', '2023-08-24 16:41:32', '0');
-INSERT INTO `c_route` VALUES ('102023082497080008', '992023010100000001', '982023082402870007', 'D', '1000', 'S', '2023-08-24 15:48:04', '0');
-INSERT INTO `c_route` VALUES ('102023082497710003', '992023010100000001', '982023082429250002', 'Q', '1000', 'S', '2023-08-24 18:08:29', '0');
-INSERT INTO `c_route` VALUES ('102023082502310007', '992023010100000001', '982023082587180006', 'D', '1000', 'S', '2023-08-25 08:58:50', '0');
-INSERT INTO `c_route` VALUES ('102023082504170014', '992023010100000001', '982023082548480013', 'D', '1000', 'S', '2023-08-25 11:41:03', '0');
-INSERT INTO `c_route` VALUES ('102023082511900019', '992023010100000001', '982023082507660018', 'D', '1000', 'S', '2023-08-25 11:44:24', '0');
-INSERT INTO `c_route` VALUES ('102023082513040003', '992023010100000001', '982023082523510002', 'Q', '1000', 'S', '2023-08-25 08:56:48', '0');
-INSERT INTO `c_route` VALUES ('102023082527490009', '992023010100000001', '982023082581760008', 'D', '1000', 'S', '2023-08-25 08:59:42', '0');
-INSERT INTO `c_route` VALUES ('102023082528480005', '992023010100000001', '982023082548550004', 'D', '1000', 'S', '2023-08-25 08:58:11', '0');
-INSERT INTO `c_route` VALUES ('102023082558790009', '992023010100000001', '982023082591540008', 'Q', '1000', 'S', '2023-08-25 11:33:18', '0');
-INSERT INTO `c_route` VALUES ('102023082915940002', '992023010100000001', '982023082982310001', 'Q', '1000', 'S', '2023-08-29 11:26:51', '0');
-INSERT INTO `c_route` VALUES ('102023083119210002', '992023010100000001', '982023083164580001', 'D', '1000', 'S', '2023-08-31 09:42:13', '0');
-INSERT INTO `c_route` VALUES ('102023091528640002', '992023010100000001', '982023091556600001', 'Q', '1000', 'S', '2023-09-15 11:26:17', '0');
-INSERT INTO `c_route` VALUES ('102023091559990003', '992023010100000001', '982023091533750002', 'Q', '1000', 'S', '2023-09-15 16:02:00', '0');
-INSERT INTO `c_route` VALUES ('102023091802350007', '992023010100000001', '982023091841420006', 'D', '1000', 'S', '2023-09-18 17:34:22', '0');
-INSERT INTO `c_route` VALUES ('102023091803960043', '992023010100000001', '982023091896520042', 'D', '1000', 'S', '2023-09-18 16:07:40', '0');
-INSERT INTO `c_route` VALUES ('102023091806260005', '992023010100000001', '982023091881660004', 'Q', '1000', 'S', '2023-09-18 17:33:09', '0');
-INSERT INTO `c_route` VALUES ('102023091830480005', '992023010100000001', '982023091841790004', 'Q', '1000', 'S', '2023-09-18 16:26:35', '0');
-INSERT INTO `c_route` VALUES ('102023091840330013', '992023010100000001', '982023091830570012', 'D', '1000', 'S', '2023-09-18 17:13:25', '0');
-INSERT INTO `c_route` VALUES ('102023091853190010', '992023010100000001', '982023091804870009', 'D', '1000', 'S', '2023-09-18 16:51:07', '0');
-INSERT INTO `c_route` VALUES ('102023091855920008', '992023010100000001', '982023091865840007', 'D', '1000', 'S', '2023-09-18 16:50:12', '0');
-INSERT INTO `c_route` VALUES ('102023091911560002', '992023010100000001', '982023091994060001', 'D', '1000', 'S', '2023-09-19 17:50:29', '0');
-INSERT INTO `c_route` VALUES ('102023091915520009', '992023010100000001', '982023091952940008', 'D', '1000', 'S', '2023-09-19 10:55:49', '0');
-INSERT INTO `c_route` VALUES ('102023091917740013', '992023010100000001', '982023091910520012', 'D', '1000', 'S', '2023-09-19 10:57:41', '0');
-INSERT INTO `c_route` VALUES ('102023091917850002', '992023010100000001', '982023091913690001', 'Q', '1000', 'S', '2023-09-19 10:43:31', '0');
-INSERT INTO `c_route` VALUES ('102023091919360004', '992023010100000001', '982023091934370003', 'Q', '1000', 'S', '2023-09-19 10:44:29', '0');
-INSERT INTO `c_route` VALUES ('102023091931340004', '992023010100000001', '982023091983790003', 'D', '1000', 'S', '2023-09-19 17:39:39', '0');
-INSERT INTO `c_route` VALUES ('102023091936370011', '992023010100000001', '982023091919880010', 'D', '1000', 'S', '2023-09-19 10:56:44', '0');
-INSERT INTO `c_route` VALUES ('102023091947960004', '992023010100000001', '982023091973270003', 'D', '1000', 'S', '2023-09-19 17:27:35', '0');
-INSERT INTO `c_route` VALUES ('102023091950400009', '992023010100000001', '982023091935410008', 'Q', '1000', 'S', '2023-09-19 12:14:38', '0');
-INSERT INTO `c_route` VALUES ('102023091977190002', '992023010100000001', '982023091979020001', 'D', '1000', 'S', '2023-09-19 12:32:12', '0');
-INSERT INTO `c_route` VALUES ('102023091994620007', '992023010100000001', '982023091959660006', 'Q', '1000', 'S', '2023-09-19 10:54:59', '0');
-INSERT INTO `c_route` VALUES ('102023092052530002', '992023010100000001', '982023092013630001', 'D', '1000', 'S', '2023-09-20 16:31:02', '0');
-INSERT INTO `c_route` VALUES ('102023092096910004', '992023010100000001', '982023092044560003', 'D', '1000', 'S', '2023-09-20 10:05:38', '0');
-INSERT INTO `c_route` VALUES ('102023092101470040', '992023010100000001', '982023092101490039', 'D', '1000', 'S', '2023-09-21 15:07:21', '0');
-INSERT INTO `c_route` VALUES ('102023092101860009', '992023010100000001', '982023092171410008', 'D', '1000', 'S', '2023-09-21 16:21:51', '0');
-INSERT INTO `c_route` VALUES ('102023092102230033', '992023010100000001', '982023092196640032', 'D', '1000', 'S', '2023-09-21 14:45:01', '0');
-INSERT INTO `c_route` VALUES ('102023092102960013', '992023010100000001', '982023092150550012', 'D', '1000', 'S', '2023-09-21 13:24:58', '0');
-INSERT INTO `c_route` VALUES ('102023092104820006', '992023010100000001', '982023092103320005', 'Q', '1000', 'S', '2023-09-21 00:23:57', '0');
-INSERT INTO `c_route` VALUES ('102023092109160036', '992023010100000001', '982023092169120035', 'Q', '1000', 'S', '2023-09-21 15:05:51', '0');
-INSERT INTO `c_route` VALUES ('102023092122340008', '992023010100000001', '982023092122750007', 'D', '1000', 'S', '2023-09-21 00:24:41', '0');
-INSERT INTO `c_route` VALUES ('102023092124870010', '992023010100000001', '982023092154190009', 'D', '1000', 'S', '2023-09-21 00:25:15', '0');
-INSERT INTO `c_route` VALUES ('102023092133900011', '992023010100000001', '982023092112130010', 'D', '1000', 'S', '2023-09-21 16:22:46', '0');
-INSERT INTO `c_route` VALUES ('102023092136740016', '992023010100000001', '982023092131970015', 'Q', '1000', 'S', '2023-09-21 00:27:00', '0');
-INSERT INTO `c_route` VALUES ('102023092148790038', '992023010100000001', '982023092183370037', 'D', '1000', 'S', '2023-09-21 15:06:35', '0');
-INSERT INTO `c_route` VALUES ('102023092150050043', '992023010100000001', '982023092185410042', 'D', '1000', 'S', '2023-09-21 00:36:14', '0');
-INSERT INTO `c_route` VALUES ('102023092153810010', '992023010100000001', '982023092114040009', 'D', '1000', 'S', '2023-09-21 01:55:47', '0');
-INSERT INTO `c_route` VALUES ('102023092154330002', '992023010100000001', '982023092177360001', 'Q', '1000', 'S', '2023-09-21 23:20:49', '0');
-INSERT INTO `c_route` VALUES ('102023092154960007', '992023010100000001', '982023092178860006', 'D', '1000', 'S', '2023-09-21 13:22:22', '0');
-INSERT INTO `c_route` VALUES ('102023092158310012', '992023010100000001', '982023092151010011', 'D', '1000', 'S', '2023-09-21 00:25:40', '0');
-INSERT INTO `c_route` VALUES ('102023092164080014', '992023010100000001', '982023092154440013', 'D', '1000', 'S', '2023-09-21 00:26:25', '0');
-INSERT INTO `c_route` VALUES ('102023092164420018', '992023010100000001', '982023092156940017', 'D', '1000', 'S', '2023-09-21 00:27:39', '0');
-INSERT INTO `c_route` VALUES ('102023092166700014', '992023010100000001', '982023092115730013', 'D', '1000', 'S', '2023-09-21 01:57:14', '0');
-INSERT INTO `c_route` VALUES ('102023092176870009', '992023010100000001', '982023092156700008', 'Q', '1000', 'S', '2023-09-21 13:22:54', '0');
-INSERT INTO `c_route` VALUES ('102023092183290016', '992023010100000001', '982023092165230015', 'D', '1000', 'S', '2023-09-21 01:57:44', '0');
-INSERT INTO `c_route` VALUES ('102023092183480011', '992023010100000001', '982023092186810010', 'D', '1000', 'S', '2023-09-21 13:23:22', '0');
-INSERT INTO `c_route` VALUES ('102023092190070013', '992023010100000001', '982023092156670012', 'Q', '1000', 'S', '2023-09-21 16:23:48', '0');
-INSERT INTO `c_route` VALUES ('102023092197680012', '992023010100000001', '982023092100730011', 'Q', '1000', 'S', '2023-09-21 01:56:35', '0');
-INSERT INTO `c_route` VALUES ('102023092198140005', '992023010100000001', '982023092164030004', 'Q', '1000', 'S', '2023-09-21 22:36:33', '0');
-INSERT INTO `c_route` VALUES ('102023092205170002', '992023010100000001', '982023092279500001', 'Q', '1000', 'S', '2023-09-22 15:31:07', '0');
-INSERT INTO `c_route` VALUES ('102023092222720007', '992023010100000001', '982023092214980006', 'Q', '1000', 'S', '2023-09-22 14:51:10', '0');
-INSERT INTO `c_route` VALUES ('102023092229560006', '992023010100000001', '982023092208760005', 'D', '1000', 'S', '2023-09-22 14:07:26', '0');
-INSERT INTO `c_route` VALUES ('102023092231480008', '992023010100000001', '982023092226180007', 'D', '1000', 'S', '2023-09-22 14:08:01', '0');
-INSERT INTO `c_route` VALUES ('102023092241300002', '992023010100000001', '982023092238200001', 'Q', '1000', 'S', '2023-09-22 14:05:43', '0');
-INSERT INTO `c_route` VALUES ('102023092244680011', '992023010100000001', '982023092296000010', 'D', '1000', 'S', '2023-09-22 14:52:35', '0');
-INSERT INTO `c_route` VALUES ('102023092261260003', '992023010100000001', '982023092252040002', 'Q', '1000', 'S', '2023-09-22 22:08:32', '0');
-INSERT INTO `c_route` VALUES ('102023092271030009', '992023010100000001', '982023092271700008', 'D', '1000', 'S', '2023-09-22 14:52:01', '0');
-INSERT INTO `c_route` VALUES ('102023092284650004', '992023010100000001', '982023092294760003', 'D', '1000', 'S', '2023-09-22 14:06:25', '0');
-INSERT INTO `c_route` VALUES ('102023092287660013', '992023010100000001', '982023092232560012', 'D', '1000', 'S', '2023-09-22 15:10:18', '0');
-INSERT INTO `c_route` VALUES ('102023092288630002', '992023010100000001', '982023092282830001', 'Q', '1000', 'S', '2023-09-22 11:55:18', '0');
-INSERT INTO `c_route` VALUES ('102023092292470002', '992023010100000001', '982023092209070001', 'Q', '1000', 'S', '2023-09-22 16:38:38', '0');
-INSERT INTO `c_route` VALUES ('102023092504350002', '992023010100000001', '982023092558060001', 'D', '1000', 'S', '2023-09-25 16:55:19', '0');
-INSERT INTO `c_route` VALUES ('102023092664920004', '992023010100000001', '982023092644180003', 'D', '1000', 'S', '2023-09-26 09:23:34', '0');
-INSERT INTO `c_route` VALUES ('102023092666350002', '992023010100000001', '982023092646350001', 'Q', '1000', 'S', '2023-09-26 09:22:33', '0');
-INSERT INTO `c_route` VALUES ('102023092707320025', '992023010100000001', '982023092700250024', 'D', '1000', 'S', '2023-09-27 16:56:20', '0');
-INSERT INTO `c_route` VALUES ('102023092708130007', '992023010100000001', '982023092735400006', 'D', '1000', 'S', '2023-09-27 16:37:26', '0');
-INSERT INTO `c_route` VALUES ('102023092709370021', '992023010100000001', '982023092727360020', 'Q', '1000', 'S', '2023-09-27 16:52:55', '0');
-INSERT INTO `c_route` VALUES ('102023092709510019', '992023010100000001', '982023092700170018', 'D', '1000', 'S', '2023-09-27 16:42:43', '0');
-INSERT INTO `c_route` VALUES ('102023092714650017', '992023010100000001', '982023092717570016', 'D', '1000', 'S', '2023-09-27 16:41:46', '0');
-INSERT INTO `c_route` VALUES ('102023092719870036', '992023010100000001', '982023092706610035', 'D', '1000', 'S', '2023-09-27 10:57:06', '0');
-INSERT INTO `c_route` VALUES ('102023092723180023', '992023010100000001', '982023092719040022', 'D', '1000', 'S', '2023-09-27 16:55:34', '0');
-INSERT INTO `c_route` VALUES ('102023092724460005', '992023010100000001', '982023092724320004', 'Q', '1000', 'S', '2023-09-27 15:05:32', '0');
-INSERT INTO `c_route` VALUES ('102023092734200009', '992023010100000001', '982023092709840008', 'D', '1000', 'S', '2023-09-27 16:38:04', '0');
-INSERT INTO `c_route` VALUES ('102023092736160005', '992023010100000001', '982023092740550004', 'Q', '1000', 'S', '2023-09-27 16:36:45', '0');
-INSERT INTO `c_route` VALUES ('102023092737410026', '992023010100000001', '982023092770300025', 'Q', '1000', 'S', '2023-09-27 13:51:28', '0');
-INSERT INTO `c_route` VALUES ('102023092743860032', '992023010100000001', '982023092746910031', 'D', '1000', 'S', '2023-09-27 13:54:23', '0');
-INSERT INTO `c_route` VALUES ('102023092754060034', '992023010100000001', '982023092786220033', 'Q', '1000', 'S', '2023-09-27 10:56:16', '0');
-INSERT INTO `c_route` VALUES ('102023092760060012', '992023010100000001', '982023092722710011', 'Q', '1000', 'S', '2023-09-27 13:27:29', '0');
-INSERT INTO `c_route` VALUES ('102023092765060038', '992023010100000001', '982023092716470037', 'D', '1000', 'S', '2023-09-27 10:57:52', '0');
-INSERT INTO `c_route` VALUES ('102023092768280006', '992023010100000001', '982023092792030005', 'D', '1000', 'S', '2023-09-27 15:58:34', '0');
-INSERT INTO `c_route` VALUES ('102023092770240002', '992023010100000001', '982023092708060001', 'Q', '1000', 'S', '2023-09-27 15:51:57', '0');
-INSERT INTO `c_route` VALUES ('102023092772420013', '992023010100000001', '982023092786950012', 'Q', '1000', 'S', '2023-09-27 16:39:49', '0');
-INSERT INTO `c_route` VALUES ('102023092772680015', '992023010100000001', '982023092747550014', 'D', '1000', 'S', '2023-09-27 16:40:38', '0');
-INSERT INTO `c_route` VALUES ('102023092777170027', '992023010100000001', '982023092737630026', 'D', '1000', 'S', '2023-09-27 16:57:02', '0');
-INSERT INTO `c_route` VALUES ('102023092777610002', '992023010100000001', '982023092730940001', 'Q', '1000', 'S', '2023-09-27 14:51:53', '0');
-INSERT INTO `c_route` VALUES ('102023092781440011', '992023010100000001', '982023092796270010', 'D', '1000', 'S', '2023-09-27 16:38:52', '0');
-INSERT INTO `c_route` VALUES ('102023092782820002', '992023010100000001', '982023092721930001', 'Q', '1000', 'S', '2023-09-27 14:55:46', '0');
-INSERT INTO `c_route` VALUES ('102023092784670008', '992023010100000001', '982023092713170007', 'Q', '1000', 'S', '2023-09-27 12:26:24', '0');
-INSERT INTO `c_route` VALUES ('102023092784680030', '992023010100000001', '982023092797650029', 'D', '1000', 'S', '2023-09-27 13:53:11', '0');
-INSERT INTO `c_route` VALUES ('102023092789930028', '992023010100000001', '982023092778110027', 'D', '1000', 'S', '2023-09-27 13:52:21', '0');
-INSERT INTO `c_route` VALUES ('102023092798150040', '992023010100000001', '982023092700090039', 'D', '1000', 'S', '2023-09-27 10:58:39', '0');
-INSERT INTO `c_route` VALUES ('102023100805530012', '992023010100000001', '982023100860740011', 'D', '1000', 'S', '2023-10-08 15:44:09', '0');
-INSERT INTO `c_route` VALUES ('102023100809510010', '992023010100000001', '982023100805530009', 'D', '1000', 'S', '2023-10-08 15:43:16', '0');
-INSERT INTO `c_route` VALUES ('102023100878480014', '992023010100000001', '982023100842780013', 'D', '1000', 'S', '2023-10-08 15:44:46', '0');
-INSERT INTO `c_route` VALUES ('102023100897230010', '992023010100000001', '982023100888550009', 'Q', '1000', 'S', '2023-10-08 09:13:09', '0');
-INSERT INTO `c_route` VALUES ('102023100916130002', '992023010100000001', '982023100962650001', 'D', '1000', 'S', '2023-10-09 11:35:17', '0');
-INSERT INTO `c_route` VALUES ('102023100978440008', '992023010100000001', '982023100953390007', 'D', '1000', 'S', '2023-10-09 09:41:29', '0');
-INSERT INTO `c_route` VALUES ('102023100982810005', '992023010100000001', '982023100918850004', 'Q', '1000', 'S', '2023-10-09 08:40:11', '0');
-INSERT INTO `c_route` VALUES ('102023101273030002', '992023010100000001', '982023101231580001', 'Q', '1000', 'S', '2023-10-12 11:56:42', '0');
-INSERT INTO `c_route` VALUES ('102023101674610002', '992023010100000001', '982023101680480001', 'D', '1000', 'S', '2023-10-16 17:06:11', '0');
-INSERT INTO `c_route` VALUES ('102023101713930018', '992023010100000001', '982023101794500017', 'D', '1000', 'S', '2023-10-17 16:59:43', '0');
-INSERT INTO `c_route` VALUES ('102023101716470016', '992023010100000001', '982023101769190015', 'D', '1000', 'S', '2023-10-17 16:58:50', '0');
-INSERT INTO `c_route` VALUES ('102023101716720012', '992023010100000001', '982023101762070011', 'Q', '1000', 'S', '2023-10-17 16:56:47', '0');
-INSERT INTO `c_route` VALUES ('102023101747270014', '992023010100000001', '982023101727160013', 'D', '1000', 'S', '2023-10-17 16:57:50', '0');
-INSERT INTO `c_route` VALUES ('102023101806910064', '992023010100000001', '982023101887880063', 'D', '1000', 'S', '2023-10-18 10:01:13', '0');
-INSERT INTO `c_route` VALUES ('102023101821850068', '992023010100000001', '982023101804120067', 'D', '1000', 'S', '2023-10-18 10:02:48', '0');
-INSERT INTO `c_route` VALUES ('102023101830100039', '992023010100000001', '982023101851480038', 'D', '1000', 'S', '2023-10-18 15:57:42', '0');
-INSERT INTO `c_route` VALUES ('102023101843740035', '992023010100000001', '982023101830950034', 'D', '1000', 'S', '2023-10-18 15:56:18', '0');
-INSERT INTO `c_route` VALUES ('102023101843990033', '992023010100000001', '982023101882210032', 'Q', '1000', 'S', '2023-10-18 15:55:24', '0');
-INSERT INTO `c_route` VALUES ('102023101888670037', '992023010100000001', '982023101801400036', 'D', '1000', 'S', '2023-10-18 15:56:58', '0');
-INSERT INTO `c_route` VALUES ('102023101892000066', '992023010100000001', '982023101897800065', 'D', '1000', 'S', '2023-10-18 10:02:04', '0');
-INSERT INTO `c_route` VALUES ('102023101898280062', '992023010100000001', '982023101892950061', 'Q', '1000', 'S', '2023-10-18 09:59:56', '0');
-INSERT INTO `c_route` VALUES ('102023101928030022', '992023010100000001', '982023101998270021', 'Q', '1000', 'S', '2023-10-19 15:23:06', '0');
-INSERT INTO `c_route` VALUES ('102023101963510024', '992023010100000001', '982023101924650023', 'D', '1000', 'S', '2023-10-19 15:23:48', '0');
-INSERT INTO `c_route` VALUES ('102023101975860026', '992023010100000001', '982023101962330025', 'D', '1000', 'S', '2023-10-19 15:24:30', '0');
-INSERT INTO `c_route` VALUES ('102023102092270005', '992023010100000001', '982023102089120004', 'Q', '1000', 'S', '2023-10-20 10:17:07', '0');
-INSERT INTO `c_route` VALUES ('102023102357050002', '992023010100000001', '982023102300890001', 'Q', '1000', 'S', '2023-10-23 09:00:08', '0');
-INSERT INTO `c_route` VALUES ('102023102365810005', '992023010100000001', '982023102335040004', 'Q', '1000', 'S', '2023-10-23 11:04:16', '0');
-INSERT INTO `c_route` VALUES ('102023102665940012', '992023010100000001', '982023102644900011', 'Q', '1000', 'S', '2023-10-26 23:17:58', '0');
-INSERT INTO `c_route` VALUES ('102023102739840006', '992023010100000001', '982023102759210005', 'D', '1000', 'S', '2023-10-27 21:34:48', '0');
-INSERT INTO `c_route` VALUES ('102023102747750004', '992023010100000001', '982023102750370003', 'D', '1000', 'S', '2023-10-27 21:34:17', '0');
-INSERT INTO `c_route` VALUES ('102023102845380016', '992023010100000001', '982023102833380015', 'D', '1000', 'S', '2023-10-28 11:54:33', '0');
-INSERT INTO `c_route` VALUES ('102023102896510003', '992023010100000001', '982023102890790002', 'Q', '1000', 'S', '2023-10-28 12:03:59', '0');
-INSERT INTO `c_route` VALUES ('102023103001860036', '992023010100000001', '982023103006960035', 'Q', '1000', 'S', '2023-10-30 17:46:29', '0');
-INSERT INTO `c_route` VALUES ('102023103005850040', '992023010100000001', '982023103038610039', 'Q', '1000', 'S', '2023-10-30 04:41:27', '0');
-INSERT INTO `c_route` VALUES ('102023103007180043', '992023010100000001', '982023103084880042', 'D', '1000', 'S', '2023-10-30 00:42:05', '0');
-INSERT INTO `c_route` VALUES ('102023103008490038', '992023010100000001', '982023103016790037', 'D', '1000', 'S', '2023-10-30 17:47:14', '0');
-INSERT INTO `c_route` VALUES ('102023103011560037', '992023010100000001', '982023103086820036', 'Q', '1000', 'S', '2023-10-30 00:39:49', '0');
-INSERT INTO `c_route` VALUES ('102023103017400004', '992023010100000001', '982023103019560003', 'D', '1000', 'S', '2023-10-30 10:48:17', '0');
-INSERT INTO `c_route` VALUES ('102023103017450039', '992023010100000001', '982023103047790038', 'D', '1000', 'S', '2023-10-30 00:40:31', '0');
-INSERT INTO `c_route` VALUES ('102023103017450041', '992023010100000001', '982023103086830040', 'D', '1000', 'S', '2023-10-30 00:41:33', '0');
-INSERT INTO `c_route` VALUES ('102023103038860051', '992023010100000001', '982023103000230050', 'Q', '1000', 'S', '2023-10-30 04:49:43', '0');
-INSERT INTO `c_route` VALUES ('102023103043140004', '992023010100000001', '982023103037160003', 'D', '1000', 'S', '2023-10-30 13:56:08', '0');
-INSERT INTO `c_route` VALUES ('102023103058920063', '992023010100000001', '982023103065540062', 'D', '1000', 'S', '2023-10-30 04:21:43', '0');
-INSERT INTO `c_route` VALUES ('102023103060830040', '992023010100000001', '982023103013530039', 'D', '1000', 'S', '2023-10-30 17:47:55', '0');
-INSERT INTO `c_route` VALUES ('102023103060890042', '992023010100000001', '982023103007440041', 'D', '1000', 'S', '2023-10-30 17:48:41', '0');
-INSERT INTO `c_route` VALUES ('102023103070580008', '992023010100000001', '982023103098000007', 'D', '1000', 'S', '2023-10-30 10:49:49', '0');
-INSERT INTO `c_route` VALUES ('102023103071890006', '992023010100000001', '982023103085050005', 'D', '1000', 'S', '2023-10-30 13:56:57', '0');
-INSERT INTO `c_route` VALUES ('102023103072510060', '992023010100000001', '982023103085700059', 'Q', '1000', 'S', '2023-10-30 04:17:52', '0');
-INSERT INTO `c_route` VALUES ('102023103079000016', '992023010100000001', '982023103096630015', 'Q', '1000', 'S', '2023-10-30 01:54:07', '0');
-INSERT INTO `c_route` VALUES ('102023103086800002', '992023010100000001', '982023103033380001', 'Q', '1000', 'S', '2023-10-30 10:47:06', '0');
-INSERT INTO `c_route` VALUES ('102023103092420006', '992023010100000001', '982023103068040005', 'D', '1000', 'S', '2023-10-30 10:49:04', '0');
-INSERT INTO `c_route` VALUES ('102023103095000002', '992023010100000001', '982023103009090001', 'D', '1000', 'S', '2023-10-30 02:18:54', '0');
-INSERT INTO `c_route` VALUES ('102023103095320002', '992023010100000001', '982023103052370001', 'D', '1000', 'S', '2023-10-30 04:25:23', '0');
-INSERT INTO `c_route` VALUES ('102023103098140002', '992023010100000001', '982023103041530001', 'Q', '1000', 'S', '2023-10-30 13:55:20', '0');
-INSERT INTO `c_route` VALUES ('102023103105950008', '992023010100000001', '982023103113740007', 'D', '1000', 'S', '2023-10-31 09:42:48', '0');
-INSERT INTO `c_route` VALUES ('102023103121700005', '992023010100000001', '982023103179860004', 'Q', '1000', 'S', '2023-10-31 14:50:27', '0');
-INSERT INTO `c_route` VALUES ('102023103135110004', '992023010100000001', '982023103145360003', 'D', '1000', 'S', '2023-10-31 09:41:17', '0');
-INSERT INTO `c_route` VALUES ('102023103135230007', '992023010100000001', '982023103185880006', 'D', '1000', 'S', '2023-10-31 14:51:09', '0');
-INSERT INTO `c_route` VALUES ('102023103171010011', '992023010100000001', '982023103174880010', 'D', '1000', 'S', '2023-10-31 14:52:30', '0');
-INSERT INTO `c_route` VALUES ('102023103172420006', '992023010100000001', '982023103149660005', 'D', '1000', 'S', '2023-10-31 09:42:10', '0');
-INSERT INTO `c_route` VALUES ('102023103189000009', '992023010100000001', '982023103159240008', 'D', '1000', 'S', '2023-10-31 14:51:51', '0');
-INSERT INTO `c_route` VALUES ('102023103196950002', '992023010100000001', '982023103112460001', 'Q', '1000', 'S', '2023-10-31 09:40:35', '0');
-INSERT INTO `c_route` VALUES ('102023110113020020', '992023010100000001', '982023110165140019', 'D', '1000', 'S', '2023-11-01 17:32:28', '0');
-INSERT INTO `c_route` VALUES ('102023110117790397', '992023010100000001', '982023110166020396', 'Q', '1000', 'S', '2023-11-01 23:20:26', '0');
-INSERT INTO `c_route` VALUES ('102023110118550022', '992023010100000001', '982023110105060021', 'D', '1000', 'S', '2023-11-01 14:26:27', '0');
-INSERT INTO `c_route` VALUES ('102023110127850010', '992023010100000001', '982023110125260009', 'Q', '1000', 'S', '2023-11-01 16:23:55', '0');
-INSERT INTO `c_route` VALUES ('102023110143430005', '992023010100000001', '982023110194410004', 'Q', '1000', 'S', '2023-11-01 23:33:29', '0');
-INSERT INTO `c_route` VALUES ('102023110146320003', '992023010100000001', '982023110165530002', 'D', '1000', 'S', '2023-11-01 15:42:51', '0');
-INSERT INTO `c_route` VALUES ('102023110172050004', '992023010100000001', '982023110168710003', 'Q', '1000', 'S', '2023-11-01 23:58:07', '0');
-INSERT INTO `c_route` VALUES ('102023110178880002', '992023010100000001', '982023110148750001', 'Q', '1000', 'S', '2023-11-01 23:57:34', '0');
-INSERT INTO `c_route` VALUES ('102023110180620008', '992023010100000001', '982023110189450007', 'Q', '1000', 'S', '2023-11-01 16:23:08', '0');
-INSERT INTO `c_route` VALUES ('102023110186580395', '992023010100000001', '982023110184710394', 'Q', '1000', 'S', '2023-11-01 23:19:51', '0');
-INSERT INTO `c_route` VALUES ('102023110605740002', '992023010100000001', '982023110606400001', 'Q', '1000', 'S', '2023-11-06 00:26:03', '0');
-INSERT INTO `c_route` VALUES ('102023110632090039', '992023010100000001', '982023110609390038', 'Q', '1000', 'S', '2023-11-06 00:10:02', '0');
-INSERT INTO `c_route` VALUES ('102023110690190041', '992023010100000001', '982023110670170040', 'Q', '1000', 'S', '2023-11-06 00:15:11', '0');
-INSERT INTO `c_route` VALUES ('102023110985350005', '992023010100000001', '982023110918500004', 'Q', '1000', 'S', '2023-11-09 01:32:21', '0');
-INSERT INTO `c_route` VALUES ('102023111029520037', '992023010100000001', '982023111051920036', 'D', '1000', 'S', '2023-11-10 10:23:03', '0');
-INSERT INTO `c_route` VALUES ('102023111039360002', '992023010100000001', '982023111071170001', 'D', '1000', 'S', '2023-11-10 10:26:51', '0');
-INSERT INTO `c_route` VALUES ('102023111097600004', '992023010100000001', '982023111082910003', 'Q', '1000', 'S', '2023-11-10 23:57:33', '0');
-INSERT INTO `c_route` VALUES ('102023111818770013', '992023010100000001', '982023111809080012', 'Q', '1000', 'S', '2023-11-18 04:03:02', '0');
-INSERT INTO `c_route` VALUES ('102023111842090006', '992023111817510002', '982023111852930005', 'D', '1000', 'S', '2023-11-18 15:38:51', '0');
-INSERT INTO `c_route` VALUES ('102023111859590005', '992023010100000001', '982023111880690004', 'D', '1000', 'S', '2023-11-18 01:22:28', '0');
-INSERT INTO `c_route` VALUES ('102023111897100004', '992023111817510002', '982023111873780003', 'D', '1000', 'S', '2023-11-18 15:37:48', '0');
-INSERT INTO `c_route` VALUES ('102023112012740002', '992023111817510002', '982023081729000037', 'Q', '1000', 'S', '2023-11-20 09:57:38', '0');
-INSERT INTO `c_route` VALUES ('102023112020700004', '992023111817510002', '982023081896720002', 'Q', '1000', 'S', '2023-11-20 09:59:37', '0');
-INSERT INTO `c_route` VALUES ('102023112023120007', '992023111817510002', '982023112051660006', 'Q', '1000', 'S', '2023-11-20 10:36:56', '0');
-INSERT INTO `c_route` VALUES ('102023112032170034', '992023111817510002', '982023081864360027', 'Q', '1000', 'S', '2023-11-20 20:41:17', '0');
-INSERT INTO `c_route` VALUES ('102023112048090020', '992023111817510002', '982023112070050019', 'D', '1000', 'S', '2023-11-20 14:42:28', '0');
-INSERT INTO `c_route` VALUES ('102023112059800002', '992023111817510002', '982023112024490001', 'Q', '1000', 'S', '2023-11-20 12:14:56', '0');
-INSERT INTO `c_route` VALUES ('102023112063900039', '992023111817510002', '982023081881490031', 'Q', '1000', 'S', '2023-11-20 21:26:37', '0');
-INSERT INTO `c_route` VALUES ('102023112091370018', '992023111817510002', '982023112071440017', 'D', '1000', 'S', '2023-11-20 14:41:55', '0');
-INSERT INTO `c_route` VALUES ('102023112098800037', '992023111817510002', '982023081800230029', 'Q', '1000', 'S', '2023-11-20 21:22:01', '0');
-INSERT INTO `c_route` VALUES ('102023112129210014', '992023010100000001', '982023112177330013', 'Q', '1000', 'S', '2023-11-21 23:34:01', '0');
-INSERT INTO `c_route` VALUES ('102023112136370009', '992023010100000001', '982023112156620008', 'D', '1000', 'S', '2023-11-21 23:53:44', '0');
-INSERT INTO `c_route` VALUES ('102023112201790011', '992023111817510002', '982023112255190010', 'Q', '1000', 'S', '2023-11-22 18:57:28', '0');
-INSERT INTO `c_route` VALUES ('102023112214960007', '992023010100000001', '982023112279260006', 'Q', '1000', 'S', '2023-11-22 13:50:25', '0');
-INSERT INTO `c_route` VALUES ('102023112225870004', '992023111817510002', '982023112241880003', 'Q', '1000', 'S', '2023-11-22 11:45:00', '0');
-INSERT INTO `c_route` VALUES ('102023112227100006', '992023010100000001', '982023112258210005', 'D', '1000', 'S', '2023-11-22 16:55:56', '0');
-INSERT INTO `c_route` VALUES ('102023112260940005', '992023010100000001', '982023112257810004', 'D', '1000', 'S', '2023-11-22 13:49:19', '0');
-INSERT INTO `c_route` VALUES ('102023112264720003', '992023111817510002', '982023092792030005', 'D', '1000', 'S', '2023-11-22 11:20:22', '0');
-INSERT INTO `c_route` VALUES ('102023112269020004', '992023010100000001', '982023112293070003', 'D', '1000', 'S', '2023-11-22 16:55:03', '0');
-INSERT INTO `c_route` VALUES ('102023112274410009', '992023010100000001', '982023112251000008', 'D', '1000', 'S', '2023-11-22 13:51:24', '0');
-INSERT INTO `c_route` VALUES ('102023112283110011', '992023010100000001', '982023112254160010', 'D', '1000', 'S', '2023-11-22 13:52:07', '0');
-INSERT INTO `c_route` VALUES ('102023112288730009', '992023111817510002', '982023112208460008', 'Q', '1000', 'S', '2023-11-22 18:56:53', '0');
-INSERT INTO `c_route` VALUES ('102023112289340002', '992023010100000001', '982023112209130001', 'Q', '1000', 'S', '2023-11-22 16:54:12', '0');
-INSERT INTO `c_route` VALUES ('102023112317820024', '992023010100000001', '982023112330070023', 'D', '1000', 'S', '2023-11-23 17:35:41', '0');
-INSERT INTO `c_route` VALUES ('102023112333550002', '992023010100000001', '982023112324940001', 'Q', '1000', 'S', '2023-11-23 09:53:53', '0');
-INSERT INTO `c_route` VALUES ('102023112351580026', '992023010100000001', '982023112313810025', 'D', '1000', 'S', '2023-11-23 17:36:16', '0');
-INSERT INTO `c_route` VALUES ('102023112354910028', '992023010100000001', '982023112328570027', 'D', '1000', 'S', '2023-11-23 17:36:51', '0');
-INSERT INTO `c_route` VALUES ('102023112357610004', '992023010100000001', '982023112379730003', 'D', '1000', 'S', '2023-11-23 09:54:40', '0');
-INSERT INTO `c_route` VALUES ('102023112384840022', '992023010100000001', '982023112380470021', 'Q', '1000', 'S', '2023-11-23 17:34:59', '0');
-INSERT INTO `c_route` VALUES ('102023112386440008', '992023010100000001', '982023112356790007', 'D', '1000', 'S', '2023-11-23 09:56:06', '0');
-INSERT INTO `c_route` VALUES ('102023112390120006', '992023010100000001', '982023112365600005', 'D', '1000', 'S', '2023-11-23 09:55:21', '0');
-INSERT INTO `c_route` VALUES ('102023112412290064', '992023010100000001', '982023112414180063', 'D', '1000', 'S', '2023-11-24 17:48:58', '0');
-INSERT INTO `c_route` VALUES ('102023112419210028', '992023010100000001', '982023112484900027', 'D', '1000', 'S', '2023-11-24 01:09:17', '0');
-INSERT INTO `c_route` VALUES ('102023112419470018', '992023010100000001', '982023112413800017', 'D', '1000', 'S', '2023-11-24 01:05:50', '0');
-INSERT INTO `c_route` VALUES ('102023112421890060', '992023010100000001', '982023112457480059', 'Q', '1000', 'S', '2023-11-24 17:48:03', '0');
-INSERT INTO `c_route` VALUES ('102023112423610012', '992023010100000001', '982023112460090011', 'Q', '1000', 'S', '2023-11-24 00:58:09', '0');
-INSERT INTO `c_route` VALUES ('102023112431520066', '992023010100000001', '982023112457690065', 'D', '1000', 'S', '2023-11-24 17:49:26', '0');
-INSERT INTO `c_route` VALUES ('102023112438650006', '992023010100000001', '982023112478280005', 'Q', '1000', 'S', '2023-11-24 00:30:08', '0');
-INSERT INTO `c_route` VALUES ('102023112442260012', '992023010100000001', '982023112443190011', 'D', '1000', 'S', '2023-11-24 00:31:51', '0');
-INSERT INTO `c_route` VALUES ('102023112450450010', '992023010100000001', '982023112452770009', 'Q', '1000', 'S', '2023-11-24 00:57:23', '0');
-INSERT INTO `c_route` VALUES ('102023112463410008', '992023010100000001', '982023112478820007', 'D', '1000', 'S', '2023-11-24 00:30:46', '0');
-INSERT INTO `c_route` VALUES ('102023112465950062', '992023010100000001', '982023112417380061', 'D', '1000', 'S', '2023-11-24 17:48:30', '0');
-INSERT INTO `c_route` VALUES ('102023112471240030', '992023010100000001', '982023112437410029', 'D', '1000', 'S', '2023-11-24 01:10:06', '0');
-INSERT INTO `c_route` VALUES ('102023112479030010', '992023010100000001', '982023112445570009', 'D', '1000', 'S', '2023-11-24 00:31:20', '0');
-INSERT INTO `c_route` VALUES ('102023112479900015', '992023010100000001', '982023112400400014', 'Q', '1000', 'S', '2023-11-24 01:01:55', '0');
-INSERT INTO `c_route` VALUES ('102023112503170002', '992023010100000001', '982023112522500001', 'D', '1000', 'S', '2023-11-25 14:19:36', '0');
-INSERT INTO `c_route` VALUES ('102023112506660027', '992023010100000001', '982023112533940026', 'Q', '1000', 'S', '2023-11-25 14:14:24', '0');
-INSERT INTO `c_route` VALUES ('102023112534320016', '992023010100000001', '982023112560230015', 'Q', '1000', 'S', '2023-11-25 01:41:48', '0');
-INSERT INTO `c_route` VALUES ('102023112570890004', '992023010100000001', '982023112529890003', 'D', '1000', 'S', '2023-11-25 14:20:15', '0');
-INSERT INTO `c_route` VALUES ('102023112718860002', '992023010100000001', '982023112728960001', 'Q', '1000', 'S', '2023-11-27 08:57:04', '0');
-INSERT INTO `c_route` VALUES ('102023120153380002', '992023010100000001', '982023120179430001', 'Q', '1000', 'S', '2023-12-01 14:27:31', '0');
-INSERT INTO `c_route` VALUES ('102023120156770004', '992023010100000001', '982023120154500003', 'D', '1000', 'S', '2023-12-01 14:34:53', '0');
-INSERT INTO `c_route` VALUES ('102023120196420008', '992023010100000001', '982023120132530007', 'D', '1000', 'S', '2023-12-01 14:36:19', '0');
-INSERT INTO `c_route` VALUES ('102023120197610006', '992023010100000001', '982023120113850005', 'D', '1000', 'S', '2023-12-01 14:35:39', '0');
-INSERT INTO `c_route` VALUES ('102023120400460006', '992023010100000001', '982023120442680005', 'D', '1000', 'S', '2023-12-04 10:24:53', '0');
-INSERT INTO `c_route` VALUES ('102023120410890004', '992023010100000001', '982023120412830003', 'D', '1000', 'S', '2023-12-04 10:24:08', '0');
-INSERT INTO `c_route` VALUES ('102023120415420008', '992023010100000001', '982023120492460007', 'D', '1000', 'S', '2023-12-04 10:25:41', '0');
-INSERT INTO `c_route` VALUES ('102023120419550012', '992023010100000001', '982023120497750011', 'D', '1000', 'S', '2023-12-04 17:14:32', '0');
-INSERT INTO `c_route` VALUES ('102023120423310002', '992023010100000001', '982023120433820001', 'Q', '1000', 'S', '2023-12-04 16:55:29', '0');
-INSERT INTO `c_route` VALUES ('102023120429500002', '992023010100000001', '982023120429880001', 'Q', '1000', 'S', '2023-12-04 10:23:09', '0');
-INSERT INTO `c_route` VALUES ('102023120442350006', '992023010100000001', '982023120465940005', 'D', '1000', 'S', '2023-12-04 14:40:57', '0');
-INSERT INTO `c_route` VALUES ('102023120444460004', '992023010100000001', '982023120490000003', 'D', '1000', 'S', '2023-12-04 14:39:40', '0');
-INSERT INTO `c_route` VALUES ('102023120444990002', '992023010100000001', '982023120416660001', 'Q', '1000', 'S', '2023-12-04 14:38:05', '0');
-INSERT INTO `c_route` VALUES ('102023120449000009', '992023010100000001', '982023120485570008', 'Q', '1000', 'S', '2023-12-04 17:11:56', '0');
-INSERT INTO `c_route` VALUES ('102023120456420002', '992023010100000001', '982023120480640001', 'D', '1000', 'S', '2023-12-04 13:47:42', '0');
-INSERT INTO `c_route` VALUES ('102023120457330008', '992023010100000001', '982023120417690007', 'D', '1000', 'S', '2023-12-04 13:51:07', '0');
-INSERT INTO `c_route` VALUES ('102023120476450010', '992023010100000001', '982023120472570009', 'D', '1000', 'S', '2023-12-04 13:52:03', '0');
-INSERT INTO `c_route` VALUES ('102023120507540013', '992023010100000001', '982023120581160012', 'D', '1000', 'S', '2023-12-05 15:18:25', '0');
-INSERT INTO `c_route` VALUES ('102023120512230015', '992023010100000001', '982023120588350014', 'D', '1000', 'S', '2023-12-05 15:24:35', '0');
-INSERT INTO `c_route` VALUES ('102023120514700011', '992023010100000001', '982023120571420010', 'Q', '1000', 'S', '2023-12-05 14:59:57', '0');
-INSERT INTO `c_route` VALUES ('102023120515240031', '992023010100000001', '982023120546280030', 'D', '1000', 'S', '2023-12-05 14:45:36', '0');
-INSERT INTO `c_route` VALUES ('102023120517430005', '992023010100000001', '982023120531600004', 'D', '1000', 'S', '2023-12-05 14:58:17', '0');
-INSERT INTO `c_route` VALUES ('102023120559960002', '992023010100000001', '982023120567990001', 'Q', '1000', 'S', '2023-12-05 15:32:21', '0');
-INSERT INTO `c_route` VALUES ('102023120572820015', '992023010100000001', '982023120517900014', 'D', '1000', 'S', '2023-12-05 15:19:30', '0');
-INSERT INTO `c_route` VALUES ('102023120580940007', '992023010100000001', '982023120541700006', 'D', '1000', 'S', '2023-12-05 14:58:53', '0');
-INSERT INTO `c_route` VALUES ('102023120581560003', '992023010100000001', '982023120578000002', 'Q', '1000', 'S', '2023-12-05 14:57:29', '0');
-INSERT INTO `c_route` VALUES ('102023120587980017', '992023010100000001', '982023120580470016', 'D', '1000', 'S', '2023-12-05 15:25:22', '0');
-INSERT INTO `c_route` VALUES ('102023120593780029', '992023010100000001', '982023120500470028', 'D', '1000', 'S', '2023-12-05 14:44:43', '0');
-INSERT INTO `c_route` VALUES ('102023120596870009', '992023010100000001', '982023120551660008', 'D', '1000', 'S', '2023-12-05 14:59:22', '0');
-INSERT INTO `c_route` VALUES ('102023120599590027', '992023010100000001', '982023120580700026', 'D', '1000', 'S', '2023-12-05 14:43:55', '0');
-INSERT INTO `c_route` VALUES ('102023120940160048', '992023111817510002', '982023102644900011', 'Q', '1000', 'S', '2023-12-09 16:59:17', '0');
-INSERT INTO `c_route` VALUES ('102023120975430046', '992023111817510002', '982023120969520045', 'D', '1000', 'S', '2023-12-09 16:57:20', '0');
-INSERT INTO `c_route` VALUES ('102023121129980002', '992023010100000001', '982023121159610001', 'Q', '1000', 'S', '2023-12-11 17:08:49', '0');
-INSERT INTO `c_route` VALUES ('102023121139900008', '992023010100000001', '982023121195650007', 'D', '1000', 'S', '2023-12-11 17:11:08', '0');
-INSERT INTO `c_route` VALUES ('102023121156130004', '992023010100000001', '982023121132930003', 'D', '1000', 'S', '2023-12-11 17:09:44', '0');
-INSERT INTO `c_route` VALUES ('102023121175600006', '992023010100000001', '982023121124210005', 'D', '1000', 'S', '2023-12-11 17:10:29', '0');
-INSERT INTO `c_route` VALUES ('102023121218650007', '992023010100000001', '982023121272790006', 'D', '1000', 'S', '2023-12-12 10:47:57', '0');
-INSERT INTO `c_route` VALUES ('102023121234760009', '992023010100000001', '982023121240490008', 'D', '1000', 'S', '2023-12-12 10:48:41', '0');
-INSERT INTO `c_route` VALUES ('102023121284050005', '992023010100000001', '982023121215000004', 'Q', '1000', 'S', '2023-12-12 10:46:31', '0');
-INSERT INTO `c_route` VALUES ('102023121295710011', '992023010100000001', '982023121287520010', 'D', '1000', 'S', '2023-12-12 10:49:23', '0');
-INSERT INTO `c_route` VALUES ('102023121412170010', '992023121426830015', '982023121496340009', 'D', '1000', 'S', '2023-12-14 23:23:34', '0');
-INSERT INTO `c_route` VALUES ('102023121438040004', '992023010100000001', '982023121416250003', 'D', '1000', 'S', '2023-12-14 12:52:19', '0');
-INSERT INTO `c_route` VALUES ('102023121443810001', '992023121426830015', '982023103085700059', 'Q', '1000', 'S', '2023-12-14 23:15:22', '0');
-INSERT INTO `c_route` VALUES ('102023121447260014', '992023010100000001', '982023121471690013', 'D', '1000', 'S', '2023-12-14 12:55:14', '0');
-INSERT INTO `c_route` VALUES ('102023121452700008', '992023010100000001', '982023121462180007', 'Q', '1000', 'S', '2023-12-14 12:53:34', '0');
-INSERT INTO `c_route` VALUES ('102023121463010016', '992023121426830015', '982023080933940001', 'Q', '1000', 'S', '2023-12-14 21:39:56', '0');
-INSERT INTO `c_route` VALUES ('102023121464600002', '992023121426830015', '982023121429700001', 'Q', '1000', 'S', '2023-12-14 23:01:28', '0');
-INSERT INTO `c_route` VALUES ('102023121470470002', '992023010100000001', '982023121438440001', 'Q', '1000', 'S', '2023-12-14 12:51:42', '0');
-INSERT INTO `c_route` VALUES ('102023121473790020', '992023121426830015', '2', 'D', '1000', 'S', '2023-12-14 22:22:54', '0');
-INSERT INTO `c_route` VALUES ('102023121479810010', '992023010100000001', '982023121473890009', 'D', '1000', 'S', '2023-12-14 12:54:14', '0');
-INSERT INTO `c_route` VALUES ('102023121481050004', '992023121426830015', '982023121492620003', 'D', '1000', 'S', '2023-12-14 23:21:52', '0');
-INSERT INTO `c_route` VALUES ('102023121483860012', '992023010100000001', '982023121400750011', 'D', '1000', 'S', '2023-12-14 12:54:47', '0');
-INSERT INTO `c_route` VALUES ('102023121484240014', '992023121426830015', '982023102644900011', 'Q', '1000', 'S', '2023-12-14 23:24:55', '0');
-INSERT INTO `c_route` VALUES ('102023121489180006', '992023010100000001', '982023121495470005', 'D', '1000', 'S', '2023-12-14 12:52:56', '0');
-INSERT INTO `c_route` VALUES ('102023121489400017', '992023111817510002', '982023080933940001', 'Q', '1000', 'S', '2023-12-14 21:40:11', '0');
-INSERT INTO `c_route` VALUES ('102023121489600006', '992023010100000001', '982023121406640005', 'D', '1000', 'S', '2023-12-14 17:22:41', '0');
-INSERT INTO `c_route` VALUES ('102023121492430014', '992023010100000001', '982023121429410013', 'D', '1000', 'S', '2023-12-14 18:04:30', '0');
-INSERT INTO `c_route` VALUES ('102023121523210006', '992023010100000001', '982023121566180005', 'Q', '1000', 'S', '2023-12-15 12:00:43', '0');
-INSERT INTO `c_route` VALUES ('102023121526120005', '992023010100000001', '982023121521930004', 'Q', '1000', 'S', '2023-12-15 14:31:42', '0');
-INSERT INTO `c_route` VALUES ('102023121583550014', '992023010100000001', '982023121543000013', 'D', '1000', 'S', '2023-12-15 01:30:30', '0');
-INSERT INTO `c_route` VALUES ('102023121583590017', '992023111817510002', '982023121526710016', 'Q', '1000', 'S', '2023-12-15 11:58:39', '0');
-INSERT INTO `c_route` VALUES ('102023121588180004', '992023111817510002', '982023121509510003', 'Q', '1000', 'S', '2023-12-15 19:49:01', '0');
-INSERT INTO `c_route` VALUES ('102023121801870005', '992023010100000001', '982023121844320004', 'D', '1000', 'S', '2023-12-18 19:18:57', '0');
-INSERT INTO `c_route` VALUES ('102023121802090007', '992023111817510002', '982023121819520006', 'Q', '1000', 'S', '2023-12-18 11:21:26', '0');
-INSERT INTO `c_route` VALUES ('102023121811000016', '992023010100000001', '982023121811580015', 'Q', '1000', 'S', '2023-12-18 22:05:02', '0');
-INSERT INTO `c_route` VALUES ('102023121818480003', '992023121426830015', '982023121844870002', 'D', '1000', 'S', '2023-12-18 10:54:53', '0');
-INSERT INTO `c_route` VALUES ('102023121824780022', '992023010100000001', '982023121833800021', 'D', '1000', 'S', '2023-12-18 22:07:07', '0');
-INSERT INTO `c_route` VALUES ('102023121831330020', '992023010100000001', '982023121838920019', 'D', '1000', 'S', '2023-12-18 22:06:13', '0');
-INSERT INTO `c_route` VALUES ('102023121849130043', '992023111817510002', '982023121826360042', 'Q', '1000', 'S', '2023-12-18 13:51:10', '0');
-INSERT INTO `c_route` VALUES ('102023121876730011', '992023010100000001', '982023121841870010', 'D', '1000', 'S', '2023-12-18 19:20:20', '0');
-INSERT INTO `c_route` VALUES ('102023121886020002', '992023111817510002', '982023121894910001', 'D', '1000', 'S', '2023-12-18 11:02:19', '0');
-INSERT INTO `c_route` VALUES ('102023121891810009', '992023010100000001', '982023121879940008', 'D', '1000', 'S', '2023-12-18 19:19:53', '0');
-INSERT INTO `c_route` VALUES ('102023121893020008', '992023121426830015', '982023121822680007', 'D', '1000', 'A', '2023-12-18 10:21:03', '0');
-INSERT INTO `c_route` VALUES ('102023121895720018', '992023010100000001', '982023121850790017', 'D', '1000', 'S', '2023-12-18 22:05:40', '0');
-INSERT INTO `c_route` VALUES ('102023121895810007', '992023010100000001', '982023121815120006', 'Q', '1000', 'S', '2023-12-18 19:19:25', '0');
-INSERT INTO `c_route` VALUES ('102023121915270002', '992023111817510002', '982023080966350010', 'Q', '1000', 'S', '2023-12-19 14:43:48', '0');
-INSERT INTO `c_route` VALUES ('102023121931530003', '992023111817510002', '982023080988790004', 'Q', '1000', 'S', '2023-12-19 14:44:18', '0');
-INSERT INTO `c_route` VALUES ('102023121932510002', '992023111817510002', '982023121850790017', 'D', '1000', 'S', '2023-12-19 16:09:10', '0');
-INSERT INTO `c_route` VALUES ('102023121937820017', '992023111817510002', '982023121811580015', 'Q', '1000', 'S', '2023-12-19 16:40:00', '0');
-INSERT INTO `c_route` VALUES ('102023121945570006', '992023010100000001', '982023121902860005', 'D', '1000', 'S', '2023-12-19 14:35:59', '0');
-INSERT INTO `c_route` VALUES ('102023121946410004', '992023010100000001', '982023121953580003', 'D', '1000', 'S', '2023-12-19 14:35:08', '0');
-INSERT INTO `c_route` VALUES ('102023121951340008', '992023010100000001', '982023121957440007', 'D', '1000', 'S', '2023-12-19 14:36:51', '0');
-INSERT INTO `c_route` VALUES ('102023121973870002', '992023010100000001', '982023121933440001', 'Q', '1000', 'S', '2023-12-19 14:34:19', '0');
-INSERT INTO `c_route` VALUES ('102023121992620003', '992023111817510002', '982023121947500002', 'Q', '1000', 'S', '2023-12-19 14:20:35', '0');
-INSERT INTO `c_route` VALUES ('102023122021670016', '992023111817510002', '982023122051650015', 'D', '1000', 'S', '2023-12-20 12:50:05', '0');
-INSERT INTO `c_route` VALUES ('102023122029010010', '992023010100000001', '982023122017510009', 'Q', '1000', 'S', '2023-12-20 01:47:18', '0');
-INSERT INTO `c_route` VALUES ('102023122032640014', '992023010100000001', '982023122047180013', 'D', '1000', 'S', '2023-12-20 01:48:32', '0');
-INSERT INTO `c_route` VALUES ('102023122034820002', '992023111817510002', '982023122058900001', 'Q', '1000', 'S', '2023-12-20 14:49:20', '0');
-INSERT INTO `c_route` VALUES ('102023122037060003', '992023111817510002', '982023122038180002', 'Q', '1000', 'S', '2023-12-20 15:23:59', '0');
-INSERT INTO `c_route` VALUES ('102023122041240008', '992023010100000001', '982023122085820007', 'D', '1000', 'S', '2023-12-20 01:46:32', '0');
-INSERT INTO `c_route` VALUES ('102023122054330002', '992023010100000001', '982023122062270001', 'D', '1000', 'S', '2023-12-20 17:00:55', '0');
-INSERT INTO `c_route` VALUES ('102023122060610017', '992023010100000001', '982023122008450016', 'Q', '1000', 'S', '2023-12-20 19:46:27', '0');
-INSERT INTO `c_route` VALUES ('102023122068240006', '992023010100000001', '982023122082660005', 'D', '1000', 'S', '2023-12-20 01:45:41', '0');
-INSERT INTO `c_route` VALUES ('102023122073140002', '992023111817510002', '982023122047370001', 'Q', '1000', 'S', '2023-12-20 10:18:01', '0');
-INSERT INTO `c_route` VALUES ('102023122087770012', '992023010100000001', '982023122099500011', 'Q', '1000', 'S', '2023-12-20 01:47:48', '0');
-INSERT INTO `c_route` VALUES ('102023122096000002', '992023111817510002', '982023122052140001', 'D', '1000', 'S', '2023-12-20 14:06:43', '0');
-INSERT INTO `c_route` VALUES ('102023122096420016', '992023010100000001', '982023122066010015', 'D', '1000', 'S', '2023-12-20 01:49:01', '0');
-INSERT INTO `c_route` VALUES ('102023122100570009', '992023010100000001', '982023122147950008', 'Q', '1000', 'S', '2023-12-21 13:57:16', '0');
-INSERT INTO `c_route` VALUES ('102023122108760008', '992023010100000001', '982023122127000007', 'Q', '1000', 'S', '2023-12-21 11:45:08', '0');
-INSERT INTO `c_route` VALUES ('102023122115530014', '992023010100000001', '982023122119330013', 'Q', '1000', 'S', '2023-12-21 11:46:47', '0');
-INSERT INTO `c_route` VALUES ('102023122119430002', '992023010100000001', '982023122173110001', 'Q', '1000', 'S', '2023-12-21 09:59:03', '0');
-INSERT INTO `c_route` VALUES ('102023122137910010', '992023010100000001', '982023122193640009', 'Q', '1000', 'S', '2023-12-21 11:45:41', '0');
-INSERT INTO `c_route` VALUES ('102023122171990007', '992023010100000001', '982023122146210006', 'Q', '1000', 'S', '2023-12-21 09:12:32', '0');
-INSERT INTO `c_route` VALUES ('102023122174030007', '992023010100000001', '982023122140270006', 'Q', '1000', 'S', '2023-12-21 13:56:43', '0');
-INSERT INTO `c_route` VALUES ('102023122177270012', '992023010100000001', '982023122177680011', 'Q', '1000', 'S', '2023-12-21 11:46:17', '0');
-INSERT INTO `c_route` VALUES ('102023122188090006', '992023010100000001', '982023122174020005', 'Q', '1000', 'S', '2023-12-21 09:45:55', '0');
-INSERT INTO `c_route` VALUES ('102024012109990009', '992024012179880001', '982024012141030008', 'D', '1000', 'S', '2024-01-21 19:11:17', '0');
-INSERT INTO `c_route` VALUES ('102024012151600007', '992024012179880001', '982024012128580006', 'D', '1000', 'S', '2024-01-21 19:10:44', '0');
-INSERT INTO `c_route` VALUES ('102024012162530005', '992024012179880001', '982024012139130004', 'D', '1000', 'S', '2024-01-21 19:09:58', '0');
-INSERT INTO `c_route` VALUES ('102024012164520003', '992024012179880001', '982024012118760002', 'D', '1000', 'S', '2024-01-21 19:09:02', '0');
-INSERT INTO `c_route` VALUES ('102024012210570016', '992024012179880001', '982024012258280015', 'D', '1000', 'S', '2024-01-22 22:57:46', '0');
-INSERT INTO `c_route` VALUES ('102024012218160018', '992024012179880001', '982024012297000017', 'D', '1000', 'S', '2024-01-22 22:58:27', '0');
-INSERT INTO `c_route` VALUES ('102024012219410011', '992024012179880001', '2', 'D', '1000', 'S', '2024-01-22 11:17:12', '0');
-INSERT INTO `c_route` VALUES ('102024012418080004', '992023010100000001', '982024012430780003', 'D', '1000', 'S', '2024-01-24 15:47:17', '0');
-INSERT INTO `c_route` VALUES ('102024012434210019', '992023010100000001', '982024012457080018', 'D', '1000', 'S', '2024-01-24 17:24:37', '0');
-INSERT INTO `c_route` VALUES ('102024012437420002', '992024012179880001', '982024012445110001', 'D', '1000', 'S', '2024-01-24 12:00:30', '0');
-INSERT INTO `c_route` VALUES ('102024012442890008', '992023010100000001', '982024012452500007', 'D', '1000', 'S', '2024-01-24 15:48:16', '0');
-INSERT INTO `c_route` VALUES ('102024012457850017', '992023010100000001', '982024012478490016', 'D', '1000', 'S', '2024-01-24 17:24:00', '0');
-INSERT INTO `c_route` VALUES ('102024012468290013', '992023010100000001', '982024012406520012', 'Q', '1000', 'S', '2024-01-24 18:22:52', '0');
-INSERT INTO `c_route` VALUES ('102024012476010019', '992023010100000001', '982024012400000018', 'Q', '1000', 'S', '2024-01-24 18:42:08', '0');
-INSERT INTO `c_route` VALUES ('102024012482910006', '992023010100000001', '982024012496280005', 'D', '1000', 'S', '2024-01-24 15:47:44', '0');
-INSERT INTO `c_route` VALUES ('102024012489620002', '992023010100000001', '982024012460250001', 'Q', '1000', 'S', '2024-01-24 15:46:44', '0');
-INSERT INTO `c_route` VALUES ('102024012498680015', '992023010100000001', '982024012498230014', 'Q', '1000', 'S', '2024-01-24 17:20:09', '0');
-INSERT INTO `c_route` VALUES ('102024012511830006', '992024012179880001', '982024012533370005', 'D', '1000', 'S', '2024-01-25 04:42:01', '0');
-INSERT INTO `c_route` VALUES ('102024012539040011', '992023010100000001', '982024012569880010', 'D', '1000', 'S', '2024-01-25 13:19:50', '0');
-INSERT INTO `c_route` VALUES ('102024012588190004', '992024012179880001', '982024012527030003', 'D', '1000', 'S', '2024-01-25 04:41:29', '0');
-INSERT INTO `c_route` VALUES ('102024012596720009', '992024012179880001', '982024012565700008', 'D', '1000', 'S', '2024-01-25 13:19:11', '0');
-INSERT INTO `c_route` VALUES ('102024013109430013', '992023010100000001', '982024013166490012', 'D', '1000', 'S', '2024-01-31 11:38:02', '0');
-INSERT INTO `c_route` VALUES ('102024013117260016', '992024012179880001', '982024013109910015', 'D', '1000', 'S', '2024-01-31 14:59:30', '0');
-INSERT INTO `c_route` VALUES ('102024013120700009', '992023010100000001', '982024013169190008', 'Q', '1000', 'S', '2024-01-31 11:36:49', '0');
-INSERT INTO `c_route` VALUES ('102024013146520013', '992023010100000001', '982024013155030012', 'Q', '1000', 'S', '2024-01-31 12:04:20', '0');
-INSERT INTO `c_route` VALUES ('102024013185550011', '992023010100000001', '982024013150640010', 'D', '1000', 'S', '2024-01-31 11:37:30', '0');
-INSERT INTO `c_route` VALUES ('102024020514800004', '992023111817510002', '982024020526460003', 'Q', '1000', 'S', '2024-02-05 20:16:50', '0');
-INSERT INTO `c_route` VALUES ('102024020531480019', '992023111817510002', '982024020530720018', 'D', '1000', 'S', '2024-02-05 22:50:17', '0');
-INSERT INTO `c_route` VALUES ('102024020554760017', '992023111817510002', '982024020535860016', 'D', '1000', 'S', '2024-02-05 22:14:08', '0');
-INSERT INTO `c_route` VALUES ('102024020557080001', '992023111817510002', '982023111809080012', 'Q', '1000', 'S', '2024-02-05 18:48:16', '0');
-INSERT INTO `c_route` VALUES ('102024020580000004', '992023111817510002', '982024020569760003', 'D', '1000', 'S', '2024-02-05 17:54:23', '0');
-INSERT INTO `c_route` VALUES ('102024020604040002', '992023111817510002', '982024020692140001', 'D', '1000', 'S', '2024-02-06 22:44:25', '0');
-INSERT INTO `c_route` VALUES ('102024020629260006', '992023010100000001', '982024020626920005', 'D', '1000', 'S', '2024-02-06 12:22:29', '0');
-INSERT INTO `c_route` VALUES ('102024020635840001', '992023111817510002', '982023121566180005', 'Q', '1000', 'S', '2024-02-06 17:11:31', '0');
-INSERT INTO `c_route` VALUES ('102024020636180008', '992023111817510002', '982023021328190009', 'D', '1000', 'S', '2024-02-06 00:08:29', '0');
-INSERT INTO `c_route` VALUES ('102024020689020009', '992023111817510002', '982024020629050008', 'Q', '1000', 'S', '2024-02-06 22:20:28', '0');
-INSERT INTO `c_route` VALUES ('102024020828520002', '992023111817510002', '982024020837070001', 'D', '1000', 'S', '2024-02-08 04:00:48', '0');
-INSERT INTO `c_route` VALUES ('102024020840180079', '992023010100000001', '982024020841260078', 'D', '1000', 'S', '2024-02-08 02:18:37', '0');
-INSERT INTO `c_route` VALUES ('102024020841100002', '992023111817510002', '982024020816050001', 'Q', '1000', 'S', '2024-02-08 15:08:08', '0');
-INSERT INTO `c_route` VALUES ('102024020869240002', '992023111817510002', '982024020898490001', 'Q', '1000', 'S', '2024-02-08 15:33:08', '0');
-INSERT INTO `c_route` VALUES ('102024020871090010', '992023111817510002', '982024020830400009', 'Q', '1000', 'S', '2024-02-08 03:46:43', '0');
-INSERT INTO `c_route` VALUES ('102024020876500077', '992023010100000001', '982024020844280076', 'D', '1000', 'S', '2024-02-08 02:17:59', '0');
-INSERT INTO `c_route` VALUES ('102024021827250002', '992023111817510002', '982024021814580001', 'Q', '1000', 'S', '2024-02-18 10:02:29', '0');
-INSERT INTO `c_route` VALUES ('102024021830190011', '992023111817510002', '982024021854780010', 'Q', '1000', 'S', '2024-02-18 10:19:22', '0');
-INSERT INTO `c_route` VALUES ('102024021837530018', '992023111817510002', '982024021855830017', 'Q', '1000', 'S', '2024-02-18 09:58:34', '0');
-INSERT INTO `c_route` VALUES ('102024021840040101', '992023111817510002', '982024021853370100', 'Q', '1000', 'S', '2024-02-18 00:08:52', '0');
-INSERT INTO `c_route` VALUES ('102024021849030021', '992023111817510002', '982024021821810020', 'Q', '1000', 'S', '2024-02-18 13:47:45', '0');
-INSERT INTO `c_route` VALUES ('102024021856310020', '992023111817510002', '982024021862590019', 'Q', '1000', 'S', '2024-02-18 12:11:52', '0');
-INSERT INTO `c_route` VALUES ('102024021857150014', '992023111817510002', '982024021804290013', 'Q', '1000', 'S', '2024-02-18 11:38:53', '0');
-INSERT INTO `c_route` VALUES ('102024021859360023', '992023010100000001', '982024021857050022', 'D', '1000', 'S', '2024-02-18 16:19:10', '0');
-INSERT INTO `c_route` VALUES ('102024021897370002', '992023111817510002', '982024021841050001', 'D', '1000', 'S', '2024-02-18 15:38:32', '0');
-INSERT INTO `c_route` VALUES ('102024022902510008', '992023010100000001', '982024022998680007', 'Q', '1000', 'S', '2024-02-29 15:15:57', '0');
-INSERT INTO `c_route` VALUES ('102024022908560004', '992023010100000001', '982024022963210003', 'D', '1000', 'S', '2024-02-29 15:13:07', '0');
-INSERT INTO `c_route` VALUES ('102024022928220077', '992023010100000001', '982024022987610076', 'D', '1000', 'S', '2024-02-29 02:14:10', '0');
-INSERT INTO `c_route` VALUES ('102024022945380075', '992023010100000001', '982024022986980074', 'D', '1000', 'S', '2024-02-29 02:13:34', '0');
-INSERT INTO `c_route` VALUES ('102024022951120073', '992023010100000001', '982024022996270072', 'Q', '1000', 'S', '2024-02-29 02:13:01', '0');
-INSERT INTO `c_route` VALUES ('102024022951320002', '992023010100000001', '982024022990660001', 'D', '1000', 'S', '2024-02-29 15:12:25', '0');
-INSERT INTO `c_route` VALUES ('102024022956250006', '992023010100000001', '982024022963740005', 'Q', '1000', 'S', '2024-02-29 15:14:43', '0');
-INSERT INTO `c_route` VALUES ('102024022969500012', '992023010100000001', '982024022942580011', 'D', '1000', 'S', '2024-02-29 15:17:28', '0');
-INSERT INTO `c_route` VALUES ('102024022972010010', '992023010100000001', '982024022922880009', 'Q', '1000', 'S', '2024-02-29 15:16:56', '0');
-INSERT INTO `c_route` VALUES ('102024022998690071', '992023010100000001', '982024022995730070', 'D', '1000', 'S', '2024-02-29 02:12:30', '0');
-INSERT INTO `c_route` VALUES ('102024030138270022', '992023010100000001', '982024030188400021', 'D', '1000', 'S', '2024-03-01 17:32:38', '0');
-INSERT INTO `c_route` VALUES ('102024030506890022', '992023010100000001', '982024030568460021', 'Q', '1000', 'S', '2024-03-05 22:47:30', '0');
-INSERT INTO `c_route` VALUES ('102024030517950024', '992023010100000001', '982024030559260023', 'D', '1000', 'S', '2024-03-05 22:47:59', '0');
-INSERT INTO `c_route` VALUES ('102024030533850033', '992023010100000001', '982024030517080032', 'D', '1000', 'S', '2024-03-05 22:06:05', '0');
-INSERT INTO `c_route` VALUES ('102024030543740037', '992023010100000001', '982024030545520036', 'D', '1000', 'S', '2024-03-05 22:07:05', '0');
-INSERT INTO `c_route` VALUES ('102024030552680035', '992023010100000001', '982024030542580034', 'Q', '1000', 'S', '2024-03-05 22:06:31', '0');
-INSERT INTO `c_route` VALUES ('102024030571110028', '992023010100000001', '982024030536790027', 'D', '1000', 'S', '2024-03-05 22:49:05', '0');
-INSERT INTO `c_route` VALUES ('102024030594910026', '992023010100000001', '982024030542340025', 'D', '1000', 'S', '2024-03-05 22:48:34', '0');
-INSERT INTO `c_route` VALUES ('102024030598370039', '992023010100000001', '982024030590950038', 'D', '1000', 'S', '2024-03-05 22:07:30', '0');
-INSERT INTO `c_route` VALUES ('102024030701890164', '992023010100000001', '982024030759560163', 'D', '1000', 'S', '2024-03-07 19:17:31', '0');
-INSERT INTO `c_route` VALUES ('102024030733200162', '992023010100000001', '982024030711820161', 'Q', '1000', 'S', '2024-03-07 19:16:18', '0');
-INSERT INTO `c_route` VALUES ('102024030740630007', '992023111817510002', '982024030753340006', 'Q', '1000', 'S', '2024-03-07 00:21:09', '0');
-INSERT INTO `c_route` VALUES ('102024030784480168', '992023010100000001', '982024030766450167', 'D', '1000', 'S', '2024-03-07 19:18:34', '0');
-INSERT INTO `c_route` VALUES ('102024030796180166', '992023010100000001', '982024030746710165', 'D', '1000', 'S', '2024-03-07 19:18:00', '0');
-INSERT INTO `c_route` VALUES ('102024030960620091', '992023010100000001', '982024030928520090', 'Q', '1000', 'S', '2024-03-09 12:17:02', '0');
-INSERT INTO `c_route` VALUES ('102024031893630010', '992023010100000001', '982024031897040009', 'Q', '1000', 'S', '2024-03-18 12:17:17', '0');
-INSERT INTO `c_route` VALUES ('102024040150030182', '992023010100000001', '982024040109560181', 'D', '1000', 'S', '2024-04-01 23:01:53', '0');
-INSERT INTO `c_route` VALUES ('102024040289500184', '992023111817510002', '982024040284300183', 'D', '1000', 'S', '2024-04-02 13:50:11', '0');
-INSERT INTO `c_route` VALUES ('102024041206670006', '992023010100000001', '982024041291520005', 'D', '1000', 'S', '2024-04-12 01:38:27', '0');
-INSERT INTO `c_route` VALUES ('102024041231170335', '992023010100000001', '982024041293420334', 'Q', '1000', 'S', '2024-04-12 01:35:06', '0');
-INSERT INTO `c_route` VALUES ('102024041242130333', '992023010100000001', '982024041261200332', 'D', '1000', 'S', '2024-04-12 01:34:35', '0');
-INSERT INTO `c_route` VALUES ('102024041254960004', '992023010100000001', '982024041252320003', 'D', '1000', 'S', '2024-04-12 01:37:55', '0');
-INSERT INTO `c_route` VALUES ('102024041284480002', '992023010100000001', '982024041223290001', 'Q', '1000', 'S', '2024-04-12 01:37:26', '0');
-INSERT INTO `c_route` VALUES ('102024042011730068', '992023010100000001', '982024042017380067', 'D', '1000', 'S', '2024-04-20 03:05:55', '0');
-INSERT INTO `c_route` VALUES ('102024050612510018', '992023010100000001', '982024050678070017', 'D', '1000', 'S', '2024-05-06 17:35:46', '0');
-INSERT INTO `c_route` VALUES ('102024050629840031', '992023010100000001', '982024050693390030', 'D', '1000', 'S', '2024-05-06 17:37:32', '0');
-INSERT INTO `c_route` VALUES ('102024050636940009', '992023010100000001', '982024050620120008', 'Q', '1000', 'S', '2024-05-06 17:33:05', '0');
-INSERT INTO `c_route` VALUES ('102024050643080033', '992023010100000001', '982024050636240032', 'D', '1000', 'S', '2024-05-06 17:38:08', '0');
-INSERT INTO `c_route` VALUES ('102024050650760012', '992023010100000001', '982024050672950011', 'D', '1000', 'S', '2024-05-06 17:35:00', '0');
-INSERT INTO `c_route` VALUES ('102024050657310026', '992023010100000001', '982024050695560025', 'D', '1000', 'S', '2024-05-06 17:36:34', '0');
-INSERT INTO `c_route` VALUES ('102024050664800006', '992023010100000001', '982024050618900005', 'Q', '1000', 'S', '2024-05-06 17:31:58', '0');
-INSERT INTO `c_route` VALUES ('102024050673280003', '992023010100000001', '982024050658880002', 'Q', '1000', 'S', '2024-05-06 17:31:06', '0');
-INSERT INTO `c_route` VALUES ('102024050831410010', '992023010100000001', '982024050808090009', 'Q', '1000', 'S', '2024-05-08 16:27:03', '0');
-INSERT INTO `c_route` VALUES ('102024050880410042', '992023010100000001', '982024050881400041', 'D', '1000', 'A', '2024-05-08 15:45:39', '0');
-INSERT INTO `c_route` VALUES ('102024051055120019', '992023010100000001', '982024051005320018', 'D', '1000', 'S', '2024-05-10 15:25:32', '0');
-INSERT INTO `c_route` VALUES ('102024051901270004', '992023010100000001', '982024051937800003', 'Q', '1000', 'S', '2024-05-19 22:44:28', '0');
-INSERT INTO `c_route` VALUES ('102024051942960006', '992023010100000001', '982024051994860005', 'D', '1000', 'S', '2024-05-19 08:29:04', '0');
-INSERT INTO `c_route` VALUES ('102024053100190016', '992023010100000001', '982024053183550015', 'Q', '1000', 'S', '2024-05-31 23:17:24', '0');
-INSERT INTO `c_route` VALUES ('102024053134380003', '992023010100000001', '982024053162770002', 'Q', '1000', 'S', '2024-05-31 23:27:49', '0');
-INSERT INTO `c_route` VALUES ('102024053151700016', '992023010100000001', '982024053161880015', 'D', '1000', 'S', '2024-05-31 22:57:04', '0');
-INSERT INTO `c_route` VALUES ('102024053157730009', '992023010100000001', '982024053157220008', 'D', '1000', 'S', '2024-05-31 21:55:52', '0');
-INSERT INTO `c_route` VALUES ('102024053162830005', '992023010100000001', '982024053147450004', 'D', '1000', 'S', '2024-05-31 23:07:21', '0');
-INSERT INTO `c_route` VALUES ('102024053164490007', '992023010100000001', '982024053137640006', 'D', '1000', 'S', '2024-05-31 21:55:23', '0');
-INSERT INTO `c_route` VALUES ('102024053167580005', '992023010100000001', '982024053126890004', 'Q', '1000', 'S', '2024-05-31 21:51:16', '0');
-INSERT INTO `c_route` VALUES ('102024053181530011', '992023010100000001', '982024053145600010', 'D', '1000', 'S', '2024-05-31 21:56:34', '0');
-INSERT INTO `c_route` VALUES ('102024053182060018', '992023010100000001', '982024053116860017', 'Q', '1000', 'S', '2024-05-31 22:57:47', '0');
-INSERT INTO `c_route` VALUES ('102024060112200048', '992023010100000001', '982024060125180047', 'Q', '1000', 'S', '2024-06-01 17:27:59', '0');
-INSERT INTO `c_route` VALUES ('102024060145290050', '992023010100000001', '982024060186680049', 'D', '1000', 'S', '2024-06-01 17:28:23', '0');
-INSERT INTO `c_route` VALUES ('102024060178720046', '992023010100000001', '982024060166830045', 'D', '1000', 'S', '2024-06-01 17:27:32', '0');
-INSERT INTO `c_route` VALUES ('102024060187860052', '992023010100000001', '982024060147580051', 'D', '1000', 'S', '2024-06-01 17:28:49', '0');
-INSERT INTO `c_route` VALUES ('102024060552880007', '992023111817510002', '982024051937800003', 'Q', '1000', 'S', '2024-06-05 19:45:58', '0');
-INSERT INTO `c_route` VALUES ('102024070704130015', '992023010100000001', '982024070784860008', 'D', '1000', 'A', '2024-07-07 15:35:39', '0');
-INSERT INTO `c_route` VALUES ('102024070771520013', '992023010100000001', '982024070731150010', 'D', '1000', 'A', '2024-07-07 15:34:52', '0');
-INSERT INTO `c_route` VALUES ('102024070772030014', '992023010100000001', '982024070751420009', 'Q', '1000', 'S', '2024-07-07 15:35:15', '0');
-INSERT INTO `c_route` VALUES ('102024070792930012', '992023010100000001', '982024070764080011', 'D', '1000', 'A', '2024-07-07 15:34:29', '0');
-INSERT INTO `c_route` VALUES ('102024071513740014', '992023010100000001', '982024071566820013', 'D', '1000', 'S', '2024-07-15 21:30:13', '0');
-INSERT INTO `c_route` VALUES ('102024071544080010', '992023010100000001', '982024071560980009', 'Q', '1000', 'S', '2024-07-15 21:29:11', '0');
-INSERT INTO `c_route` VALUES ('102024071561180012', '992023010100000001', '982024071527820011', 'D', '1000', 'S', '2024-07-15 21:29:43', '0');
-INSERT INTO `c_route` VALUES ('102024071571280008', '992023010100000001', '982024071581310007', 'D', '1000', 'S', '2024-07-15 21:28:39', '0');
-INSERT INTO `c_route` VALUES ('102024071582950006', '992023010100000001', '982024071523780005', 'Q', '1000', 'S', '2024-07-15 23:47:55', '0');
-INSERT INTO `c_route` VALUES ('102024071700980008', '992023010100000001', '982024071796220007', 'Q', '1000', 'S', '2024-07-17 00:01:50', '0');
-INSERT INTO `c_route` VALUES ('102024071701050029', '992023010100000001', '982024071744880028', 'D', '1000', 'S', '2024-07-17 00:35:55', '0');
-INSERT INTO `c_route` VALUES ('102024071702040031', '992023010100000001', '982024071793600030', 'D', '1000', 'S', '2024-07-17 00:36:31', '0');
-INSERT INTO `c_route` VALUES ('102024071763100033', '992023010100000001', '982024071738280032', 'D', '1000', 'S', '2024-07-17 00:37:22', '0');
-INSERT INTO `c_route` VALUES ('102024071766490006', '992023010100000001', '982024071773860005', 'D', '1000', 'S', '2024-07-17 00:01:14', '0');
-INSERT INTO `c_route` VALUES ('102024071778210010', '992023010100000001', '982024071781320009', 'D', '1000', 'S', '2024-07-17 00:02:22', '0');
-INSERT INTO `c_route` VALUES ('102024071799350012', '992023010100000001', '982024071728920011', 'D', '1000', 'S', '2024-07-17 00:02:51', '0');
-INSERT INTO `c_route` VALUES ('102024071842650013', '992023010100000001', '982024071899800012', 'D', '1000', 'S', '2024-07-18 15:08:48', '0');
-INSERT INTO `c_route` VALUES ('102024072060380002', '992023010100000001', '982024072079190001', 'D', '1000', 'S', '2024-07-20 03:29:31', '0');
-INSERT INTO `c_route` VALUES ('102024072404510018', '992023010100000001', '982024072475180017', 'D', '1000', 'S', '2024-07-24 19:23:20', '0');
-INSERT INTO `c_route` VALUES ('102024072618820008', '992024012179880001', '982024072662650007', 'D', '1000', 'S', '2024-07-26 16:54:20', '1');
-INSERT INTO `c_route` VALUES ('102024072626950013', '992023010100000001', '982024072639820012', 'D', '1000', 'S', '2024-07-26 16:56:58', '0');
-INSERT INTO `c_route` VALUES ('102024072655500011', '992023010100000001', '982024072694650010', 'Q', '1000', 'S', '2024-07-26 16:55:31', '0');
-INSERT INTO `c_route` VALUES ('102024072669200009', '992023010100000001', '982024072662650007', 'D', '1000', 'S', '2024-07-26 16:54:41', '0');
-INSERT INTO `c_route` VALUES ('102024080839900007', '992023010100000001', '982024080821440006', 'Q', '1000', 'S', '2024-08-08 14:36:36', '0');
-INSERT INTO `c_route` VALUES ('102024080887000005', '992023010100000001', '982024080817380004', 'Q', '1000', 'S', '2024-08-08 15:30:15', '0');
-INSERT INTO `c_route` VALUES ('102024080903140003', '992023111817510002', '982024080940340002', 'D', '1000', 'A', '2024-08-09 14:09:56', '0');
-INSERT INTO `c_route` VALUES ('102024080982020004', '992023111817510002', '982024080960680001', 'D', '1000', 'A', '2024-08-09 14:10:18', '0');
-INSERT INTO `c_route` VALUES ('102024083001090012', '992023010100000001', '982024083007090011', 'D', '1000', 'A', '2024-08-30 15:28:58', '0');
-INSERT INTO `c_route` VALUES ('102024083013410013', '992023010100000001', '982024083084680010', 'D', '1000', 'A', '2024-08-30 15:29:32', '0');
-INSERT INTO `c_route` VALUES ('102024083014170018', '992023010100000001', '982024083023800005', 'Q', '1000', 'S', '2024-08-30 15:31:23', '0');
-INSERT INTO `c_route` VALUES ('102024083021710014', '992023010100000001', '982024083060810009', 'Q', '1000', 'S', '2024-08-30 15:29:40', '0');
-INSERT INTO `c_route` VALUES ('102024083035570017', '992023010100000001', '982024083050060006', 'D', '1000', 'A', '2024-08-30 15:30:55', '0');
-INSERT INTO `c_route` VALUES ('102024083045760022', '992023010100000001', '982024083024840001', 'D', '1000', 'A', '2024-08-30 15:34:31', '0');
-INSERT INTO `c_route` VALUES ('102024083047910020', '992023010100000001', '982024083017950003', 'D', '1000', 'A', '2024-08-30 15:33:30', '0');
-INSERT INTO `c_route` VALUES ('102024083068620015', '992023010100000001', '982024083099030008', 'D', '1000', 'A', '2024-08-30 15:30:00', '0');
-INSERT INTO `c_route` VALUES ('102024083084140016', '992023010100000001', '982024083041380007', 'D', '1000', 'A', '2024-08-30 15:30:19', '0');
-INSERT INTO `c_route` VALUES ('102024083093580019', '992023010100000001', '982024083059280004', 'D', '1000', 'A', '2024-08-30 15:32:45', '0');
-INSERT INTO `c_route` VALUES ('102024083097840021', '992023010100000001', '982024083022940002', 'Q', '1000', 'S', '2024-08-30 15:33:43', '0');
-INSERT INTO `c_route` VALUES ('102024090447290002', '992023010100000001', '982024090430200001', 'D', '1000', 'A', '2024-09-04 09:31:59', '1');
-INSERT INTO `c_route` VALUES ('102024091012630008', '992024012179880001', '982024091080390007', 'D', '1000', 'S', '2024-09-10 14:08:11', '0');
-INSERT INTO `c_route` VALUES ('102024091939470006', '992023010100000001', '982024091997820005', 'D', '1000', 'S', '2024-09-19 14:53:58', '0');
-INSERT INTO `c_route` VALUES ('102024091966080003', '992023111817510002', '982024091961010002', 'D', '1000', 'S', '2024-09-19 11:26:00', '0');
-INSERT INTO `c_route` VALUES ('102024091988440004', '992023010100000001', '982024091980400003', 'Q', '1000', 'S', '2024-09-19 14:46:45', '0');
-INSERT INTO `c_route` VALUES ('102024110512200025', '992023010100000001', '982024110596570024', 'Q', '1000', 'S', '2024-11-05 23:48:58', '0');
-INSERT INTO `c_route` VALUES ('102024110512680027', '992023010100000001', '982024110588670026', 'D', '1000', 'S', '2024-11-05 23:49:31', '0');
-INSERT INTO `c_route` VALUES ('102024110530760023', '992023010100000001', '982024110586520022', 'D', '1000', 'S', '2024-11-05 23:48:26', '0');
-INSERT INTO `c_route` VALUES ('102024110531350007', '992023010100000001', '982024110582600006', 'Q', '1000', 'S', '2024-11-05 22:23:10', '0');
-INSERT INTO `c_route` VALUES ('102024110547730008', '992023010100000001', '982024110556970007', 'Q', '1000', 'S', '2024-11-05 13:49:25', '0');
-INSERT INTO `c_route` VALUES ('102024112065080093', '992023111817510002', '982024112002020092', 'D', '1000', 'S', '2024-11-20 02:28:04', '0');
-INSERT INTO `c_route` VALUES ('102024112907721059', '992023111817510002', '982024112972771058', 'Q', '1000', 'S', '2024-11-29 01:04:14', '0');
-INSERT INTO `c_route` VALUES ('102024112999980006', '992023010100000001', '982024112953250005', 'Q', '1000', 'S', '2024-11-29 14:38:41', '0');
-INSERT INTO `c_route` VALUES ('102024120564840001', '992023111817510002', '982024112953250005', 'Q', '1000', 'S', '2024-12-05 22:23:50', '0');
-INSERT INTO `c_route` VALUES ('102024120623200006', '992023010100000001', '982024120687470005', 'Q', '1000', 'S', '2024-12-06 14:16:42', '0');
-INSERT INTO `c_route` VALUES ('102024120652810002', '992023010100000001', '982024120600410001', 'D', '1000', 'S', '2024-12-06 15:06:31', '0');
-INSERT INTO `c_route` VALUES ('102024120652850004', '992023010100000001', '982024120613080003', 'D', '1000', 'S', '2024-12-06 15:18:19', '0');
-INSERT INTO `c_route` VALUES ('102024120686080008', '992023010100000001', '982024120606850007', 'Q', '1000', 'S', '2024-12-06 15:48:44', '0');
-INSERT INTO `c_route` VALUES ('102024121318660037', '992023010100000001', '982024121397660036', 'Q', '1000', 'S', '2024-12-13 15:35:38', '0');
-INSERT INTO `c_route` VALUES ('102024121465840002', '992023010100000001', '982024121412750001', 'Q', '1000', 'S', '2024-12-14 02:41:08', '0');
-INSERT INTO `c_route` VALUES ('102024121470620002', '992023010100000001', '982024121475360001', 'Q', '1000', 'S', '2024-12-14 03:14:04', '0');
-INSERT INTO `c_route` VALUES ('102024121493470002', '992023010100000001', '982024121407310001', 'Q', '1000', 'S', '2024-12-14 02:47:54', '0');
-INSERT INTO `c_route` VALUES ('102024121627360006', '992023010100000001', '982024121634210005', 'D', '1000', 'S', '2024-12-16 15:18:46', '0');
-INSERT INTO `c_route` VALUES ('102024121628920013', '992023010100000001', '982024121675340012', 'D', '1000', 'S', '2024-12-16 13:29:16', '0');
-INSERT INTO `c_route` VALUES ('102024121789960006', '992023010100000001', '982024121711230005', 'Q', '1000', 'S', '2024-12-17 11:33:45', '0');
-INSERT INTO `c_route` VALUES ('102025012207460008', '992023010100000001', '982025012235010007', 'D', '1000', 'S', '2025-01-22 23:57:16', '0');
-INSERT INTO `c_route` VALUES ('102025012225270003', '992023111817510002', '982025012233540002', 'Q', '1000', 'S', '2025-01-22 10:55:39', '0');
-INSERT INTO `c_route` VALUES ('102025012235830006', '992023010100000001', '982025012224700005', 'Q', '1000', 'S', '2025-01-22 23:56:39', '0');
-INSERT INTO `c_route` VALUES ('102025012339060052', '992023010100000001', '982025012356360051', 'D', '1000', 'S', '2025-01-23 00:26:02', '0');
-INSERT INTO `c_route` VALUES ('102025012363880007', '992023111817510002', '982025012354130006', 'D', '1000', 'S', '2025-01-23 01:17:12', '0');
-INSERT INTO `c_route` VALUES ('102025012364810048', '992023010100000001', '982025012320700047', 'Q', '1000', 'S', '2025-01-23 00:24:15', '0');
-INSERT INTO `c_route` VALUES ('102025012366900005', '992023111817510002', '982025012380870004', 'Q', '1000', 'S', '2025-01-23 01:16:43', '0');
-INSERT INTO `c_route` VALUES ('102025012392830050', '992023010100000001', '982025012332820049', 'D', '1000', 'S', '2025-01-23 00:25:14', '0');
-INSERT INTO `c_route` VALUES ('102025022568860006', '992023010100000001', '982025022535130005', 'D', '1000', 'S', '2025-02-25 11:39:56', '0');
-INSERT INTO `c_route` VALUES ('102025030444580002', '992023010100000001', '982023112241880003', 'Q', '1000', 'S', '2025-03-04 16:42:27', '0');
-INSERT INTO `c_route` VALUES ('102025030824490009', '992023010100000001', '982025030834160008', 'D', '1000', 'S', '2025-03-08 12:21:33', '0');
-INSERT INTO `c_route` VALUES ('102025030834860015', '992023010100000001', '982025030872900014', 'D', '1000', 'S', '2025-03-08 12:22:53', '0');
-INSERT INTO `c_route` VALUES ('102025030842110011', '992023010100000001', '982025030896460010', 'Q', '1000', 'S', '2025-03-08 12:22:02', '0');
-INSERT INTO `c_route` VALUES ('102025030890130013', '992023010100000001', '982025030877680012', 'D', '1000', 'S', '2025-03-08 12:22:27', '0');
-INSERT INTO `c_route` VALUES ('102025031295830024', '992023010100000001', '982025031267090023', 'Q', '1000', 'S', '2025-03-12 20:33:40', '0');
-INSERT INTO `c_route` VALUES ('102025031318860002', '992023010100000001', '982025031324310001', 'Q', '1000', 'S', '2025-03-13 18:24:49', '0');
-INSERT INTO `c_route` VALUES ('102025031324590002', '992023010100000001', '982025031379920001', 'Q', '1000', 'S', '2025-03-13 18:39:40', '0');
-INSERT INTO `c_route` VALUES ('102025031334840002', '992023010100000001', '982025031313730001', 'Q', '1000', 'S', '2025-03-13 18:15:48', '0');
-INSERT INTO `c_route` VALUES ('102025031338970002', '992023010100000001', '982025031324010001', 'Q', '1000', 'S', '2025-03-13 14:28:05', '0');
-INSERT INTO `c_route` VALUES ('102025031341750005', '992023010100000001', '982025031387930004', 'Q', '1000', 'S', '2025-03-13 18:28:36', '0');
-INSERT INTO `c_route` VALUES ('102025031350630005', '992023010100000001', '982025031308290004', 'Q', '1000', 'S', '2025-03-13 22:46:10', '0');
-INSERT INTO `c_route` VALUES ('102025031352720002', '992023010100000001', '982025031365190001', 'Q', '1000', 'S', '2025-03-13 19:42:14', '0');
-INSERT INTO `c_route` VALUES ('102025031355250009', '992023010100000001', '982025031300250008', 'Q', '1000', 'S', '2025-03-13 22:37:29', '0');
-INSERT INTO `c_route` VALUES ('102025031366200002', '992023010100000001', '982025031392820001', 'Q', '1000', 'S', '2025-03-13 14:21:43', '0');
-INSERT INTO `c_route` VALUES ('102025031372940004', '992023010100000001', '982025031334340003', 'Q', '1000', 'S', '2025-03-13 18:21:00', '0');
-INSERT INTO `c_route` VALUES ('102025031373720002', '992023010100000001', '982025031318890001', 'Q', '1000', 'S', '2025-03-13 14:39:27', '0');
-INSERT INTO `c_route` VALUES ('102025031376630002', '992023010100000001', '982025031319360001', 'Q', '1000', 'S', '2025-03-13 18:34:36', '0');
-INSERT INTO `c_route` VALUES ('102025031392220002', '992023010100000001', '982025031331770001', 'Q', '1000', 'S', '2025-03-13 14:35:44', '0');
-INSERT INTO `c_route` VALUES ('102025031393740013', '992023010100000001', '982025031356050012', 'Q', '1000', 'S', '2025-03-13 17:51:36', '0');
-INSERT INTO `c_route` VALUES ('102025031395160013', '992023010100000001', '982025031306220012', 'Q', '1000', 'S', '2025-03-13 15:43:57', '0');
-INSERT INTO `c_route` VALUES ('102025031397030036', '992023010100000001', '982025031370960035', 'Q', '1000', 'S', '2025-03-13 21:39:21', '0');
-INSERT INTO `c_route` VALUES ('102025031397220004', '992023010100000001', '982025031330240003', 'Q', '1000', 'S', '2025-03-13 13:56:22', '0');
-INSERT INTO `c_route` VALUES ('102025031409820002', '992024012179880001', '982025031401190001', 'Q', '1000', 'S', '2025-03-14 12:46:58', '0');
-INSERT INTO `c_route` VALUES ('102025031459300023', '992023010100000001', '982025031402230022', 'Q', '1000', 'S', '2025-03-14 11:48:24', '0');
-INSERT INTO `c_route` VALUES ('102025031462440015', '992023010100000001', '982025031401240014', 'Q', '1000', 'S', '2025-03-14 11:08:52', '0');
-INSERT INTO `c_route` VALUES ('102025032832120003', '992023111817510002', '982025032852760002', 'D', '1000', 'S', '2025-03-28 16:48:39', '0');
-INSERT INTO `c_route` VALUES ('102025032854120019', '992023111817510002', '982025032893260018', 'Q', '1000', 'S', '2025-03-28 19:45:08', '0');
-INSERT INTO `c_route` VALUES ('102025040175370008', '992023111817510002', '982025040135040007', 'Q', '1000', 'S', '2025-04-01 09:45:18', '0');
-INSERT INTO `c_route` VALUES ('11', '992023010100000001', '11', 'Q', '100', 'S', '2023-02-11 16:26:03', '0');
-INSERT INTO `c_route` VALUES ('12', '992023010100000001', '12', 'Q', '100', 'S', '2023-02-11 16:26:04', '0');
-INSERT INTO `c_route` VALUES ('13', '992023010100000001', '13', 'Q', '100', 'S', '2023-02-11 16:26:05', '0');
-INSERT INTO `c_route` VALUES ('14', '992023010100000001', '14', 'Q', '100', 'S', '2023-02-11 16:26:06', '0');
-INSERT INTO `c_route` VALUES ('15', '992023010100000001', '15', 'Q', '100', 'S', '2023-02-11 16:26:07', '0');
-INSERT INTO `c_route` VALUES ('16', '992023010100000001', '16', 'Q', '100', 'S', '2023-02-11 16:26:08', '0');
-INSERT INTO `c_route` VALUES ('17', '992023010100000001', '17', 'Q', '100', 'S', '2023-02-11 16:26:09', '0');
-INSERT INTO `c_route` VALUES ('18', '992023010100000001', '982023021277800001', 'Q', '100', 'S', '2023-02-11 16:26:10', '0');
-INSERT INTO `c_route` VALUES ('19', '992023010100000001', '982023021278440002', 'Q', '100', 'S', '2023-02-11 16:26:11', '0');
-INSERT INTO `c_route` VALUES ('2', '992023010100000001', '2', 'Q', '100', 'S', '2023-02-11 16:26:12', '0');
-INSERT INTO `c_route` VALUES ('20', '992023010100000001', '982023021210330001', 'D', '100', 'S', '2023-02-11 16:26:13', '0');
-INSERT INTO `c_route` VALUES ('3', '992023010100000001', '3', 'Q', '100', 'S', '2023-02-11 16:26:14', '0');
-INSERT INTO `c_route` VALUES ('4', '992023010100000001', '4', 'Q', '100', 'S', '2023-02-11 16:26:15', '0');
-INSERT INTO `c_route` VALUES ('5', '992023010100000001', '5', 'Q', '100', 'S', '2023-02-11 16:26:16', '0');
-INSERT INTO `c_route` VALUES ('6', '992023010100000001', '6', 'Q', '100', 'S', '2023-02-11 16:26:17', '0');
-INSERT INTO `c_route` VALUES ('7', '992023010100000001', '7', 'Q', '100', 'S', '2023-02-11 16:26:18', '0');
-INSERT INTO `c_route` VALUES ('8', '992023010100000001', '8', 'Q', '100', 'S', '2023-02-11 16:26:19', '0');
-INSERT INTO `c_route` VALUES ('9', '992023010100000001', '9', 'Q', '100', 'S', '2023-02-11 16:26:53', '0');
-
--- ----------------------------
--- Table structure for c_service
--- ----------------------------
-DROP TABLE IF EXISTS `c_service`;
-CREATE TABLE `c_service` (
-  `service_id` varchar(30) NOT NULL COMMENT '服务ID',
-  `service_code` varchar(100) NOT NULL COMMENT '自定义，命名方式查询类query.+目标系统+.+业务名称 保存类 save.+目标系统+.+业务名称 修改类 modify.+目标系统+.+业务名称 删除类 remove.+目标系统+.+业务名称 例如：query.user.userinfo save.user.adduserinfo',
-  `business_type_cd` varchar(12) DEFAULT NULL,
-  `name` varchar(50) NOT NULL COMMENT '服务名称',
-  `seq` int DEFAULT '1' COMMENT '顺序 只有同步方式下根据seq从小到大调用接口',
-  `is_instance` varchar(12) NOT NULL DEFAULT 'CMD' COMMENT '是否Instance Y 需要，N不需要，NT透传类',
-  `url` varchar(200) DEFAULT NULL COMMENT '目标地址',
-  `method` varchar(50) DEFAULT NULL COMMENT '方法 空 为http post LOCAL_SERVICE 为调用本地服务 其他为webservice方式调用',
-  `timeout` int NOT NULL DEFAULT '60' COMMENT '超时时间',
-  `retry_count` int NOT NULL DEFAULT '3' COMMENT '重试次数',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
-  PRIMARY KEY (`service_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of c_service
--- ----------------------------
-INSERT INTO `c_service` VALUES ('1', 'login.generatorValidateCode', 'API', '验证码接口', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-11 16:25:53', '0');
-INSERT INTO `c_service` VALUES ('10', 'app.saveApp', 'API', '添加应用', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2019-07-03 15:31:30', '0');
-INSERT INTO `c_service` VALUES ('11', 'cache.listCache', 'API', '查询缓存', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2019-07-03 15:31:56', '0');
-INSERT INTO `c_service` VALUES ('12', 'cache.flushCache', 'API', '刷新缓存', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2019-07-03 15:31:51', '0');
-INSERT INTO `c_service` VALUES ('13', 'app.updateApp', 'API', '刷新缓存', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2019-07-03 15:31:44', '0');
-INSERT INTO `c_service` VALUES ('14', 'app.deleteApp', 'API', '刷新缓存', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2019-07-03 15:31:01', '0');
-INSERT INTO `c_service` VALUES ('15', 'service.listServices', 'API', '查询服务', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2019-07-03 15:31:02', '0');
-INSERT INTO `c_service` VALUES ('16', 'dict.listDict', 'API', '查询字典', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2019-07-03 15:31:03', '0');
-INSERT INTO `c_service` VALUES ('17', 'service.saveService', 'API', '添加服务', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2019-07-03 15:31:04', '0');
-INSERT INTO `c_service` VALUES ('2', 'login.pcUserLogin', 'API', '登录接口', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-11 16:25:06', '0');
-INSERT INTO `c_service` VALUES ('3', 'store.listMyStore', 'API', '查询我的商户', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-11 16:25:07', '0');
-INSERT INTO `c_service` VALUES ('4', 'privilege.queryStaffPrivileges', 'API', '查询员工权限', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-11 16:25:08', '0');
-INSERT INTO `c_service` VALUES ('5', 'community.listMyEnteredCommunitys', 'API', '查询入驻小区', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-02-11 16:25:09', '0');
-INSERT INTO `c_service` VALUES ('6', 'menu.listCatalog', 'API', '查询入驻小区', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-11 16:25:10', '0');
-INSERT INTO `c_service` VALUES ('7', 'user.getUserInfo', 'API', '查询登录用户', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-10 16:25:11', '0');
-INSERT INTO `c_service` VALUES ('8', 'menu.listCatalogMenus', 'API', '查询目录菜单', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-11 16:25:12', '0');
-INSERT INTO `c_service` VALUES ('9', 'app.listApps', 'API', '查询应用', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2019-07-03 15:31:14', '0');
-INSERT INTO `c_service` VALUES ('982023021203470037', 'menuGroupCatalog.saveMenuGroupCatalog', 'API', '保存菜单组目录', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 23:23:28', '0');
-INSERT INTO `c_service` VALUES ('982023021204510012', 'menu.listMenus', 'API', '查询菜单', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-12 23:44:04', '0');
-INSERT INTO `c_service` VALUES ('982023021210330001', 'service.bindingService', 'API', '服务绑定', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 15:34:55', '0');
-INSERT INTO `c_service` VALUES ('982023021214060031', 'menuGroupCatalog.listMenuGroupCatalog', 'API', '查询目录菜单组', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-12 20:40:39', '0');
-INSERT INTO `c_service` VALUES ('982023021216270004', 'serviceRegister.deleteServiceRegister', 'API', '删除服务注册', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 20:09:35', '0');
-INSERT INTO `c_service` VALUES ('982023021216390023', 'menuCatalog.listMenuCatalog', 'API', '查询菜单目录', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-12 20:26:31', '0');
-INSERT INTO `c_service` VALUES ('982023021223650035', 'menuGroup.listMenuGroups', 'API', '查询菜单组', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-12 23:20:33', '0');
-INSERT INTO `c_service` VALUES ('982023021223940021', 'businessTableHis.deleteBusinessTableHis', 'API', '删除业务轨迹', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 20:22:34', '0');
-INSERT INTO `c_service` VALUES ('982023021227650019', 'businessTableHis.updateBusinessTableHis', 'API', '修改业务轨迹', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 20:21:15', '0');
-INSERT INTO `c_service` VALUES ('982023021235240027', 'menuCatalog.saveMenuCatalog', 'API', '添加菜单目录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-12 20:38:41', '0');
-INSERT INTO `c_service` VALUES ('982023021237010006', 'serviceImpl.listServiceImpls', 'API', '查询服务实现', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-12 20:11:01', '0');
-INSERT INTO `c_service` VALUES ('982023021241540002', 'basePrivilege.listBasePrivileges', 'API', '查询菜单权限', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-12 23:56:02', '0');
-INSERT INTO `c_service` VALUES ('982023021245840003', 'service.deleteService', 'API', '删除服务', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 15:38:22', '0');
-INSERT INTO `c_service` VALUES ('982023021247300007', 'menuGroup.updateMenuGroup', 'API', '修改菜单组', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 23:36:27', '0');
-INSERT INTO `c_service` VALUES ('982023021248040004', 'menuGroup.saveMenuGroup', 'API', '添加菜单组', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 23:35:40', '0');
-INSERT INTO `c_service` VALUES ('982023021256680014', 'businessTableHis.listBusinessTableHis', 'API', '查询业务轨迹', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-12 20:18:25', '0');
-INSERT INTO `c_service` VALUES ('982023021258190002', 'serviceRegister.updateServiceRegister', 'API', '修改服务注册', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 19:42:29', '0');
-INSERT INTO `c_service` VALUES ('982023021259400016', 'businessTableHis.saveBusinessTableHis', 'API', '保存业务轨迹', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 20:20:01', '0');
-INSERT INTO `c_service` VALUES ('982023021259860029', 'menuCatalog.deleteMenuCatalog', 'API', '删除目录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-12 20:39:41', '0');
-INSERT INTO `c_service` VALUES ('982023021260000012', 'serviceImpl.deleteServiceImpl', 'API', '删除服务提供', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 20:14:58', '0');
-INSERT INTO `c_service` VALUES ('982023021264030002', '123', 'API', '123', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-02-12 15:37:37', '1');
-INSERT INTO `c_service` VALUES ('982023021273350010', 'serviceImpl.updateServiceImpl', 'API', '修改服务实现', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 20:13:57', '0');
-INSERT INTO `c_service` VALUES ('982023021276940008', 'serviceImpl.saveServiceImpl', 'API', '添加服务注册', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 20:12:13', '0');
-INSERT INTO `c_service` VALUES ('982023021277800001', 'service.updateService', 'API', '修改服务', '1', 'CMD', 'http://iot-dev', 'POST', '61', '3', '2023-02-12 15:22:43', '0');
-INSERT INTO `c_service` VALUES ('982023021278440002', 'serviceRegister.listServiceRegisters', 'API', '查询服务注册', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-12 15:23:18', '0');
-INSERT INTO `c_service` VALUES ('982023021285420033', 'menuGroupCatalog.deleteMenuGroupCatalog', 'API', '删除菜单组目录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-12 23:19:19', '0');
-INSERT INTO `c_service` VALUES ('982023021296170004', 'basePrivilege.saveBasePrivilege', 'API', '添加权限', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 23:57:27', '0');
-INSERT INTO `c_service` VALUES ('982023021296210025', 'menuCatalog.updateMenuCatalog', 'API', '修改菜单目录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-12 20:32:22', '0');
-INSERT INTO `c_service` VALUES ('982023021296240010', 'menuGroup.deleteMenuGroup', 'API', '删除菜单组', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 23:37:27', '0');
-INSERT INTO `c_service` VALUES ('982023021302420002', 'mapping.updateMapping', 'API', '修改映射', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 01:24:21', '0');
-INSERT INTO `c_service` VALUES ('982023021303060012', 'area.listAreas', 'API', '查询区域', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-13 02:07:24', '0');
-INSERT INTO `c_service` VALUES ('982023021309160008', 'attrValue.updateAttrValue', 'API', '修改属性值', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 12:27:34', '0');
-INSERT INTO `c_service` VALUES ('982023021309900001', 'community.listCommunitys', 'API', '查询小区', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-02-13 15:10:28', '0');
-INSERT INTO `c_service` VALUES ('982023021310500001', 'attrSpec.listAttrSpec', 'API', '查询属性', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-13 12:08:14', '0');
-INSERT INTO `c_service` VALUES ('982023021312140003', 'property.listProperty', 'API', '查询物业公司', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-13 23:41:31', '0');
-INSERT INTO `c_service` VALUES ('982023021321230009', 'mapping.listMappingDomain', 'API', '查询配置', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-13 01:01:38', '0');
-INSERT INTO `c_service` VALUES ('982023021322710003', 'attrSpec.deleteAttrSpec', 'API', '删除属性', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 12:15:42', '0');
-INSERT INTO `c_service` VALUES ('982023021322750003', 'menu.deleteMenu', 'API', '删除菜单', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 00:59:15', '0');
-INSERT INTO `c_service` VALUES ('982023021323660007', 'user.changeStaffPwd', 'API', '修改密码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-13 01:28:52', '0');
-INSERT INTO `c_service` VALUES ('982023021324220003', 'community.saveCommunity', 'API', '添加小区', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-02-13 15:15:18', '0');
-INSERT INTO `c_service` VALUES ('982023021325460017', 'mapping.listMappings', 'API', '查询配置', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-13 01:05:44', '0');
-INSERT INTO `c_service` VALUES ('982023021326930024', 'mapping.saveMapping', 'API', '添加映射', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 01:10:06', '0');
-INSERT INTO `c_service` VALUES ('982023021328190009', 'login.userLogout', 'API', '退出登录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-13 01:37:13', '0');
-INSERT INTO `c_service` VALUES ('982023021330160005', 'menuGroup.listMenuGroup', 'API', '查询菜单组', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-13 23:51:04', '0');
-INSERT INTO `c_service` VALUES ('982023021334130010', 'basePrivilege.updateBasePrivilege', 'API', '修改权限', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 00:38:33', '0');
-INSERT INTO `c_service` VALUES ('982023021336370005', 'attrSpec.saveAttrSpec', 'API', '保存属性', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 12:16:14', '0');
-INSERT INTO `c_service` VALUES ('982023021337250005', 'community.updateCommunity', 'API', '修改小区', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-02-13 15:35:12', '0');
-INSERT INTO `c_service` VALUES ('982023021357210012', 'menu.updateMenu', 'API', '修改菜单', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 00:40:03', '0');
-INSERT INTO `c_service` VALUES ('982023021358370007', 'community.deleteCommunity', 'API', '删除小区', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-02-13 15:37:51', '0');
-INSERT INTO `c_service` VALUES ('982023021360120008', 'basePrivilege.deleteBasePrivilege', 'API', '删除权限', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 00:03:02', '0');
-INSERT INTO `c_service` VALUES ('982023021360730006', 'attrValue.saveAttrValue', 'API', '保存属性值', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 12:27:07', '0');
-INSERT INTO `c_service` VALUES ('982023021368120020', 'mapping.deleteMappingDomain', 'API', '删除配置域', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 01:06:45', '0');
-INSERT INTO `c_service` VALUES ('982023021370120005', 'mapping.deleteMapping', 'API', '删除映射', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 01:25:29', '0');
-INSERT INTO `c_service` VALUES ('982023021372850014', 'mapping.updateMappingDomain', 'API', '修改配置域', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 01:03:43', '0');
-INSERT INTO `c_service` VALUES ('982023021374860004', 'attrValue.deleteAttrValue', 'API', '删除属性值', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 12:26:36', '0');
-INSERT INTO `c_service` VALUES ('982023021377330007', 'attrSpec.updateAttrSpec', 'API', '修改属性', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 12:16:47', '0');
-INSERT INTO `c_service` VALUES ('982023021386140014', 'menu.configMenu', 'API', '配置菜单', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 00:43:44', '0');
-INSERT INTO `c_service` VALUES ('982023021395440011', 'mapping.saveMappingDomain', 'API', '保存配置域', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 01:02:55', '0');
-INSERT INTO `c_service` VALUES ('982023021395620002', 'attrValue.listAttrValue', 'API', '查询属性值', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-13 12:26:03', '0');
-INSERT INTO `c_service` VALUES ('982023021403550023', 'user.staff.modify', 'API', '修改员工', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 16:00:18', '0');
-INSERT INTO `c_service` VALUES ('982023021405630009', 'property.saveProperty', 'API', '添加物业', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 00:30:47', '0');
-INSERT INTO `c_service` VALUES ('982023021407670017', 'property.deleteProperty', 'API', '删除物业', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 01:44:40', '0');
-INSERT INTO `c_service` VALUES ('982023021408200013', 'query.staff.infos', 'API', '查询员工', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 13:58:26', '0');
-INSERT INTO `c_service` VALUES ('982023021419530031', 'query.store.privilegeGroup', 'API', '查询角色', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 17:23:27', '0');
-INSERT INTO `c_service` VALUES ('982023021431180035', 'query.privilegeGroup.noAddPrivilege', 'API', '查询权限', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 17:43:51', '0');
-INSERT INTO `c_service` VALUES ('982023021433280021', 'menuGroupCommunity.updateMenuGroupCommunity', 'API', '修改菜单组小区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 01:52:18', '0');
-INSERT INTO `c_service` VALUES ('982023021435790027', 'storeStaff.listStoreStaff', 'API', '查询商户员工', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 02:07:36', '0');
-INSERT INTO `c_service` VALUES ('982023021436810019', 'menuGroupCommunity.listMenuGroupCommunity', 'API', '查询菜单组小区', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 01:47:01', '0');
-INSERT INTO `c_service` VALUES ('982023021439470027', 'user.listStaffRoles', 'API', '查询员工角色', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 16:58:36', '0');
-INSERT INTO `c_service` VALUES ('982023021439850025', 'member.join.community', 'API', '加入小区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 01:58:00', '0');
-INSERT INTO `c_service` VALUES ('982023021447920033', 'privilegeGroup.savePrivilegeGroup', 'API', '保存权限组', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 17:24:32', '0');
-INSERT INTO `c_service` VALUES ('982023021450050015', 'property.updateProperty', 'API', '修改物业公司', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 01:41:56', '0');
-INSERT INTO `c_service` VALUES ('982023021452340041', 'roleCommunity.listRoleCommunity', 'API', '查询小区授权', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 18:04:55', '0');
-INSERT INTO `c_service` VALUES ('982023021453590029', 'user.staff.delete', 'API', '删除员工', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 17:00:38', '0');
-INSERT INTO `c_service` VALUES ('982023021458210029', 'login.adminLoginProperty', 'API', 'admin登录物业', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 02:15:51', '0');
-INSERT INTO `c_service` VALUES ('982023021464680007', 'community.listFreeCommunity', 'API', '查询空闲小区', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-02-14 00:04:40', '0');
-INSERT INTO `c_service` VALUES ('982023021466280009', 'org.listOrgTree', 'API', '查询组织树', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 13:31:55', '0');
-INSERT INTO `c_service` VALUES ('982023021469650031', 'login.getSysInfo', 'API', '查询系统信息', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 02:25:19', '0');
-INSERT INTO `c_service` VALUES ('982023021473350037', 'add.privilege.PrivilegeGroup', 'API', '添加权限', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 17:47:31', '0');
-INSERT INTO `c_service` VALUES ('982023021481320017', 'org.updateOrg', 'API', '修改组织', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 14:14:39', '0');
-INSERT INTO `c_service` VALUES ('982023021482340035', 'property.updatePropertyState', 'API', '修改物业状态', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 02:49:34', '0');
-INSERT INTO `c_service` VALUES ('982023021485940045', 'roleCommunity.saveRoleCommunity', 'API', '添加角色小区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 18:18:49', '0');
-INSERT INTO `c_service` VALUES ('982023021486110033', 'user.resetStaffPwd', 'API', '重置密码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 02:44:30', '0');
-INSERT INTO `c_service` VALUES ('982023021487090047', 'roleCommunity.deleteRoleCommunity', 'API', '删除角色小区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 18:32:34', '0');
-INSERT INTO `c_service` VALUES ('982023021487850043', 'org.listOrgNoCommunitys', 'API', '查询未授权小区', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 18:06:38', '0');
-INSERT INTO `c_service` VALUES ('982023021488540025', 'user.listStaffOrgs', 'API', '查询员工组织', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 16:56:35', '0');
-INSERT INTO `c_service` VALUES ('982023021491480023', 'member.quit.community', 'API', '退出小区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 01:53:59', '0');
-INSERT INTO `c_service` VALUES ('982023021492500015', 'org.saveOrg', 'API', '添加组织', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 14:09:27', '0');
-INSERT INTO `c_service` VALUES ('982023021494870049', 'role.listRoleStaff', 'API', '查询角色员工', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 18:46:52', '0');
-INSERT INTO `c_service` VALUES ('982023021496750051', 'role.listStaffsNoRole', 'API', '查询员工', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 18:57:59', '0');
-INSERT INTO `c_service` VALUES ('982023021497030019', 'org.deleteOrg', 'API', '删除组织', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 14:16:27', '0');
-INSERT INTO `c_service` VALUES ('982023021497050021', 'user.staff.add', 'API', '添加员工', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 15:19:11', '0');
-INSERT INTO `c_service` VALUES ('982023021498420039', 'delete.privilege.PrivilegeGroup', 'API', '删除角色权限', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 17:51:02', '0');
-INSERT INTO `c_service` VALUES ('982023021499840011', 'org.listOrgs', 'API', '查询组织', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 13:43:57', '0');
-INSERT INTO `c_service` VALUES ('982023021601160001', 'role.saveRoleStaff', 'API', '保存角色员工', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-16 00:02:44', '0');
-INSERT INTO `c_service` VALUES ('982023021648060003', 'role.deleteRoleStaff', 'API', '删除角色员工', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-16 00:04:40', '0');
-INSERT INTO `c_service` VALUES ('982023080903700020', 'room.saveRoom', 'API', '保存房屋', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 11:48:39', '0');
-INSERT INTO `c_service` VALUES ('982023080906630015', 'room.deleteRoom', 'API', '删除房屋', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 14:27:00', '0');
-INSERT INTO `c_service` VALUES ('982023080910140004', 'owner.queryOwners', 'API', '查询人员', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-08-09 18:10:48', '0');
-INSERT INTO `c_service` VALUES ('982023080910750023', 'owner.saveOwner', 'API', '添加人员', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-08-09 17:15:42', '0');
-INSERT INTO `c_service` VALUES ('982023080915140002', 'room.sellRoom', 'API', '房屋绑定人员', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 22:06:22', '0');
-INSERT INTO `c_service` VALUES ('982023080921430001', 'floor.saveFloor', 'API', '保存楼栋', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 10:54:07', '0');
-INSERT INTO `c_service` VALUES ('982023080921840002', 'floor.editFloor', 'API', '修改楼栋', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 11:21:45', '0');
-INSERT INTO `c_service` VALUES ('982023080933940001', 'system.listSystemInfo', 'API', '查询系统信息', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-08-09 02:49:48', '0');
-INSERT INTO `c_service` VALUES ('982023080948440010', 'owner.editOwner', 'API', '修改人员', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-08-09 18:36:21', '0');
-INSERT INTO `c_service` VALUES ('982023080951470006', 'floor.deleteFloor', 'API', '删除楼栋', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 11:24:41', '0');
-INSERT INTO `c_service` VALUES ('982023080953980007', 'room.queryRooms', 'API', '查询房屋', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-08-09 11:09:28', '0');
-INSERT INTO `c_service` VALUES ('982023080957850004', 'floor.queryFloorAndUnits', 'API', '查询楼栋单元', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-08-09 11:07:42', '0');
-INSERT INTO `c_service` VALUES ('982023080961400007', 'unit.updateUnit', 'API', '修改单元', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 11:35:15', '0');
-INSERT INTO `c_service` VALUES ('982023080966350010', 'floor.queryFloors', 'API', '查询楼栋', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-08-09 11:13:53', '0');
-INSERT INTO `c_service` VALUES ('982023080978720015', 'unit.deleteUnit', 'API', '删除单元', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 11:36:16', '0');
-INSERT INTO `c_service` VALUES ('982023080979520007', 'room.updateRoom', 'API', '修改房屋', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 14:25:58', '0');
-INSERT INTO `c_service` VALUES ('982023080984110011', 'unit.saveUnit', 'API', '添加单元', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 11:26:16', '0');
-INSERT INTO `c_service` VALUES ('982023080988790004', 'unit.queryUnits', 'API', '查询单元', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-08-09 11:32:18', '0');
-INSERT INTO `c_service` VALUES ('982023080995670001', 'owner.deleteOwner', 'API', '删除人员', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-08-09 18:46:07', '0');
-INSERT INTO `c_service` VALUES ('982023081417290001', 'room.queryRoomOwner', 'API', '查询房屋人员', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-08-14 16:06:31', '0');
-INSERT INTO `c_service` VALUES ('982023081419530001', 'room.exitRoom', 'API', '房屋解绑人员', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-14 16:32:50', '0');
-INSERT INTO `c_service` VALUES ('982023081528910022', 'dict.updateDict', 'API', '修改字典', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-08-15 09:08:06', '0');
-INSERT INTO `c_service` VALUES ('982023081545940005', 'location.saveMachineLocation', 'API', '添加设备位置', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-15 01:25:00', '0');
-INSERT INTO `c_service` VALUES ('982023081546790039', 'hm.listHardwareManufacturer', 'API', '查询设备厂家', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-08-15 09:39:13', '0');
-INSERT INTO `c_service` VALUES ('982023081552200020', 'accessControl.listAccessControl', 'API', '查询门禁', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-08-15 09:06:32', '0');
-INSERT INTO `c_service` VALUES ('982023081553090003', 'accessControlFloor.listAccessControlFloor', 'API', '查询楼栋授权', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-08-15 18:37:12', '0');
-INSERT INTO `c_service` VALUES ('982023081561050006', 'accessControlFloor.saveAccessControlFloor', 'API', '楼栋门禁授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-15 21:35:45', '0');
-INSERT INTO `c_service` VALUES ('982023081562520003', 'location.listMachineLocation', 'API', '查询设备位置', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-08-15 01:24:29', '0');
-INSERT INTO `c_service` VALUES ('982023081569750007', 'location.updateMachineLocation', 'API', '修改设备位置', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-15 01:25:26', '0');
-INSERT INTO `c_service` VALUES ('982023081579150031', 'accessControl.updateAccessControl', 'API', '修改门禁', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-15 09:10:39', '0');
-INSERT INTO `c_service` VALUES ('982023081581350029', 'accessControl.saveAccessControl', 'API', '保存门禁', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-15 09:10:12', '0');
-INSERT INTO `c_service` VALUES ('982023081584920001', 'location.deleteMachineLocation', 'API', '删除设备位置', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-15 01:24:02', '0');
-INSERT INTO `c_service` VALUES ('982023081590210012', 'accessControlFace.listAccessControlFace', 'API', '查询门禁人员', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-08-15 12:24:18', '0');
-INSERT INTO `c_service` VALUES ('982023081596860027', 'accessControl.deleteAccessControl', 'API', '删除门禁', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-15 09:09:42', '0');
-INSERT INTO `c_service` VALUES ('982023081607370010', 'accessControlOrg.saveAccessControlOrg', 'API', '部门授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-16 11:19:00', '0');
-INSERT INTO `c_service` VALUES ('982023081624290006', 'accessControlOrg.deleteAccessControlOrg', 'API', '删除部门授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-16 11:17:04', '0');
-INSERT INTO `c_service` VALUES ('982023081639070002', 'accessControlFace.saveAccessControlFace', 'API', '人员授权人脸', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-16 16:25:25', '0');
-INSERT INTO `c_service` VALUES ('982023081643040008', 'accessControlOrg.listAccessControlOrg', 'API', '查询部门权限', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-08-16 11:17:38', '0');
-INSERT INTO `c_service` VALUES ('982023081646380002', 'accessControlFloor.deleteAccessControlFloor', 'API', '删除楼栋授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-16 10:35:40', '0');
-INSERT INTO `c_service` VALUES ('982023081672890001', 'accessControlFace.deleteAccessControlFace', 'API', '删除门禁人员', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-16 10:59:52', '0');
-INSERT INTO `c_service` VALUES ('982023081701610012', 'chargeRule.updateChargeRule', 'API', '修改充电规则', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-17 09:40:09', '0');
-INSERT INTO `c_service` VALUES ('982023081706060009', 'accessControlLog.listAccessControlLogParam', 'API', '查询门禁日志报文', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-08-17 09:17:44', '0');
-INSERT INTO `c_service` VALUES ('982023081726810005', 'chargeRule.listChargeRuleFee', 'API', '查询充电费用', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-17 09:35:07', '0');
-INSERT INTO `c_service` VALUES ('982023081726920003', 'chargeRule.listChargeRule', 'API', '查询充电规则', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-17 09:33:04', '0');
-INSERT INTO `c_service` VALUES ('982023081729000037', 'chargeMachine.listChargeMachine', 'API', '查询充电桩', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-17 11:00:46', '0');
-INSERT INTO `c_service` VALUES ('982023081741300008', 'chargeRule.saveChargeRule', 'API', '添加充电规则', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-17 09:38:13', '0');
-INSERT INTO `c_service` VALUES ('982023081750380010', 'chargeRule.saveChargeRuleFee', 'API', '保存充电费用', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-17 09:39:13', '0');
-INSERT INTO `c_service` VALUES ('982023081768670018', 'chargeRule.deleteChargeRuleFee', 'API', '删除充电费用', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-17 09:43:12', '0');
-INSERT INTO `c_service` VALUES ('982023081769950014', 'chargeRule.updateChargeRuleFee', 'API', '修改充电费用', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-17 09:41:12', '0');
-INSERT INTO `c_service` VALUES ('982023081781300016', 'chargeRule.deleteChargeRule', 'API', '删除充电规则', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-17 09:42:15', '0');
-INSERT INTO `c_service` VALUES ('982023081781500006', 'accessControlLog.listAccessControlLog', 'API', '查询门禁日志', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-08-17 09:07:28', '0');
-INSERT INTO `c_service` VALUES ('982023081800230029', 'chargeCard.listChargeMonthOrder', 'API', '查询充电充值订单', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-18 15:15:07', '0');
-INSERT INTO `c_service` VALUES ('982023081803910007', 'chargeMachine.saveChargeMachine', 'API', '保存充电桩', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 11:13:38', '0');
-INSERT INTO `c_service` VALUES ('982023081807430013', 'chargeMachine.deleteChargeMachine', 'API', '删除充电桩', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 11:18:51', '0');
-INSERT INTO `c_service` VALUES ('982023081809110005', 'chargeCard.saveChargeMonthOrder', 'API', '月卡充值', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 15:39:28', '0');
-INSERT INTO `c_service` VALUES ('982023081809840001', 'chargeMachine.saveChargeMachinePort', 'API', '保存充电桩插槽', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 14:34:23', '0');
-INSERT INTO `c_service` VALUES ('982023081832110042', 'chargeCard.deleteChargeMonthCard', 'API', '删除充电月卡设置', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 15:27:02', '0');
-INSERT INTO `c_service` VALUES ('982023081833930010', 'chargeMachine.deleteChargeMachinePort', 'API', '删除充电桩插槽', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 14:40:09', '0');
-INSERT INTO `c_service` VALUES ('982023081836950009', 'chargeMachine.listChargeMachineFactory', 'API', '查询充电桩厂家', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-18 11:14:57', '0');
-INSERT INTO `c_service` VALUES ('982023081862200040', 'chargeCard.updateChargeMonthCard', 'API', '修改充电月卡', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 15:26:23', '0');
-INSERT INTO `c_service` VALUES ('982023081864360027', 'chargeMachine.listChargeMachineOrder', 'API', '查询充电订单', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-18 15:14:14', '0');
-INSERT INTO `c_service` VALUES ('982023081874930020', 'chargeMachine.listChargeMachineOrderAcct', 'API', '充电扣款明细', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-18 16:02:11', '0');
-INSERT INTO `c_service` VALUES ('982023081879880011', 'chargeMachine.updateChargeMachine', 'API', '修改充电桩', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 11:16:32', '0');
-INSERT INTO `c_service` VALUES ('982023081881490031', 'chargeCard.listChargeMonthCard', 'API', '查询充电月卡设置', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-18 15:15:55', '0');
-INSERT INTO `c_service` VALUES ('982023081887340023', 'chargeMachine.stopCharge', 'API', '停止充电', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 16:06:48', '0');
-INSERT INTO `c_service` VALUES ('982023081889510034', 'chargeCard.saveChargeMonthCard', 'API', '保存充电月卡设置', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 15:24:09', '0');
-INSERT INTO `c_service` VALUES ('982023081896720002', 'chargeMachine.listChargeMachinePort', 'API', '查询插槽', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-18 14:04:00', '0');
-INSERT INTO `c_service` VALUES ('982023082118290005', 'accessControlInout.listAccessControlInout', 'API', '查询开门记录', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-08-21 13:34:08', '0');
-INSERT INTO `c_service` VALUES ('982023082259940005', 'log.listMqttLog', 'API', '查询日志', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-08-22 10:50:27', '0');
-INSERT INTO `c_service` VALUES ('982023082302040006', 'parkingArea.saveParkingArea', 'API', '保存停车场', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-08-23 08:50:57', '0');
-INSERT INTO `c_service` VALUES ('982023082305810012', 'parkingSpace.deleteParkingSpace', 'API', '删除停车位', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-08-23 13:54:46', '0');
-INSERT INTO `c_service` VALUES ('982023082331040008', 'parkingArea.updateParkingArea', 'API', '修改停车场', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-08-23 08:51:22', '0');
-INSERT INTO `c_service` VALUES ('982023082333600008', 'parkingSpace.saveParkingSpace', 'API', '添加停车位', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-08-23 13:53:36', '0');
-INSERT INTO `c_service` VALUES ('982023082337440001', 'account.queryOwnerAccount', 'API', '查询业主账户', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2023-08-23 14:31:22', '0');
-INSERT INTO `c_service` VALUES ('982023082338070004', 'parkingArea.listParkingArea', 'API', '查询停车场', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-08-23 08:50:31', '0');
-INSERT INTO `c_service` VALUES ('982023082358690001', 'account/queryOwnerAccount', 'API', '查看账户', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-23 11:06:26', '0');
-INSERT INTO `c_service` VALUES ('982023082374690002', 'parkingArea.deleteParkingArea', 'API', '删除停车场', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-08-23 08:50:02', '0');
-INSERT INTO `c_service` VALUES ('982023082378700010', 'parkingSpace.updateParkingSpace', 'API', '修改停车位', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-08-23 13:54:10', '0');
-INSERT INTO `c_service` VALUES ('982023082395390006', 'parkingSpace.listParkingSpace', 'API', '查询停车位', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-08-23 13:53:01', '0');
-INSERT INTO `c_service` VALUES ('982023082402870007', 'meterType.deleteMeterType', 'API', '删除抄表类型', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-24 15:48:04', '0');
-INSERT INTO `c_service` VALUES ('982023082403230005', 'meterType.updateMeterType', 'API', '更新抄表类型', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-24 15:47:18', '0');
-INSERT INTO `c_service` VALUES ('982023082426580024', 'meterMachine.listMeterMachineFactory', 'API', '查询智能水电表厂家', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-08-24 16:41:32', '0');
-INSERT INTO `c_service` VALUES ('982023082429250002', 'room.queryRoomsTree', 'API', '查询房屋树形', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-08-24 18:08:29', '0');
-INSERT INTO `c_service` VALUES ('982023082481950001', 'meterType.listMeterType', 'API', '查询抄表类型', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-08-24 15:45:17', '0');
-INSERT INTO `c_service` VALUES ('982023082488900003', 'meterType.saveMeterType', 'API', '保存抄表类型', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-24 15:46:37', '0');
-INSERT INTO `c_service` VALUES ('982023082507660018', 'meterMachine.settingMeterMachineRead', 'API', '设置查表日时', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-25 11:44:24', '0');
-INSERT INTO `c_service` VALUES ('982023082523510002', 'meterMachine.listMeterMachine', 'API', '查询智能电表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-08-25 08:56:48', '0');
-INSERT INTO `c_service` VALUES ('982023082548480013', 'meterMachine.customMeterMachineRead', 'API', '手工抄表', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-25 11:41:03', '0');
-INSERT INTO `c_service` VALUES ('982023082548550004', 'meterMachine.saveMeterMachine', 'API', '添加智能电表', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-25 08:58:11', '0');
-INSERT INTO `c_service` VALUES ('982023082581760008', 'meterMachine.deleteMeterMachine', 'API', '删除智能电表', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-25 08:59:42', '0');
-INSERT INTO `c_service` VALUES ('982023082587180006', 'meterMachine.updateMeterMachine', 'API', '修改智能电表', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-25 08:58:50', '0');
-INSERT INTO `c_service` VALUES ('982023082591540008', 'meterMachine.listMeterMachineDetail', 'API', '查询抄表明细', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-08-25 11:33:18', '0');
-INSERT INTO `c_service` VALUES ('982023082982310001', 'meterMachine.listMeterMachineReadOrRechargeDetail', 'API', '抄表/充值记录', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-08-29 11:26:50', '0');
-INSERT INTO `c_service` VALUES ('982023083164580001', 'meterMachine.meterMachineControlSwitch', 'API', '表开关阀', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-31 09:42:13', '0');
-INSERT INTO `c_service` VALUES ('982023091533750002', 'product.queryGoodsClass', 'API', '查询商品分类列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-09-15 16:02:00', '0');
-INSERT INTO `c_service` VALUES ('982023091556600001', 'product.queryProduct', 'API', '查询商城商品', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-09-15 11:26:17', '0');
-INSERT INTO `c_service` VALUES ('982023091804870009', 'liftMachineFactory.deleteLiftMachineFactory', 'API', '删除电梯厂家', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-18 16:51:07', '0');
-INSERT INTO `c_service` VALUES ('982023091830570012', 'liftMachineFactorySpec.saveLiftMachineFactorySpec', 'API', '新增电梯厂家规格', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-18 17:13:25', '0');
-INSERT INTO `c_service` VALUES ('982023091841420006', 'liftMachineFactorySpec.deleteLiftMachineFactorySpec', 'API', '删除电梯厂家规格', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-18 17:34:22', '0');
-INSERT INTO `c_service` VALUES ('982023091841790004', 'liftMachineFactory.listLiftMachineFactory', 'API', '电梯厂家列表', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2023-09-18 16:26:35', '0');
-INSERT INTO `c_service` VALUES ('982023091865840007', 'liftMachineFactory.updateLiftMachineFactory', 'API', '更新电梯厂家', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-18 16:50:12', '0');
-INSERT INTO `c_service` VALUES ('982023091881660004', 'liftMachineFactorySpec.listLiftMachineFactorySpec', 'API', '电梯厂家规格列表', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2023-09-18 17:33:09', '0');
-INSERT INTO `c_service` VALUES ('982023091896520042', 'liftMachineFactory.saveLiftMachineFactory', 'API', '新增电梯厂家', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-18 16:07:40', '0');
-INSERT INTO `c_service` VALUES ('982023091910520012', 'liftMachine.deleteLiftMachine', 'API', '删除电梯信息', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-19 10:57:41', '0');
-INSERT INTO `c_service` VALUES ('982023091913690001', 'liftMachineLog.listLiftMachineLog', 'API', '电梯日志列表', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2023-09-19 10:43:31', '0');
-INSERT INTO `c_service` VALUES ('982023091919880010', 'liftMachine.updateLiftMachine', 'API', '更新电梯信息', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-19 10:56:44', '0');
-INSERT INTO `c_service` VALUES ('982023091934370003', 'liftMachineReservation.listLiftMachineReservation', 'API', '电梯预约记录列表', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2023-09-19 10:44:28', '0');
-INSERT INTO `c_service` VALUES ('982023091935410008', 'ownerCar.queryOwnerCars', 'API', '查询车辆', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-09-19 12:14:38', '0');
-INSERT INTO `c_service` VALUES ('982023091952940008', 'liftMachine.saveLiftMachine', 'API', '新增电梯信息', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-19 10:55:49', '0');
-INSERT INTO `c_service` VALUES ('982023091959660006', 'liftMachine.listLiftMachine', 'API', '电梯信息列表', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2023-09-19 10:54:59', '0');
-INSERT INTO `c_service` VALUES ('982023091973270003', 'ownerCar.updateOwnerCar', 'API', '修改业主车辆', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-09-19 17:27:35', '0');
-INSERT INTO `c_service` VALUES ('982023091979020001', 'ownerCar.saveOwnerCar', 'API', '保存业主车辆', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-09-19 12:32:12', '0');
-INSERT INTO `c_service` VALUES ('982023091983790003', 'ownerCar.deleteCarParkingSpace', 'API', '释放车位', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-09-19 17:39:39', '0');
-INSERT INTO `c_service` VALUES ('982023091994060001', 'ownerCar.deleteOwnerCar', 'API', '删除业主车辆', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-09-19 17:50:29', '0');
-INSERT INTO `c_service` VALUES ('982023092013630001', 'liftMachine.reservationLiftMachine', 'API', '预约电梯', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-20 16:31:02', '0');
-INSERT INTO `c_service` VALUES ('982023092044560003', 'liftMachine.switchLiftState', 'API', '切换电梯状态', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-20 10:05:37', '0');
-INSERT INTO `c_service` VALUES ('982023092100730011', 'barrier.listBarrier', 'API', '查询道闸摄像头', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-21 01:56:35', '0');
-INSERT INTO `c_service` VALUES ('982023092101490039', 'lampMachineFactory.deleteLampMachineFactory', 'API', '删除路灯厂家', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-21 15:07:21', '0');
-INSERT INTO `c_service` VALUES ('982023092103320005', 'parkingBox.listParkingBox', 'API', '查询岗亭', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-21 00:23:57', '0');
-INSERT INTO `c_service` VALUES ('982023092112130010', 'lampMachineFactorySpec.deleteLampMachineFactorySpec', 'API', '删除电灯厂家规格', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-21 16:22:46', '0');
-INSERT INTO `c_service` VALUES ('982023092114040009', 'barrier.deleteBarrier', 'API', '删除道闸摄像头', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 01:55:47', '0');
-INSERT INTO `c_service` VALUES ('982023092115730013', 'barrier.saveBarrier', 'API', '保存道闸摄像头', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 01:57:14', '0');
-INSERT INTO `c_service` VALUES ('982023092122750007', 'parkingBox.deleteParkingBox', 'API', '删除岗亭', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 00:24:41', '0');
-INSERT INTO `c_service` VALUES ('982023092131970015', 'parkingBoxArea.listParkingBoxArea', 'API', '查询停车场岗亭', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-21 00:27:00', '0');
-INSERT INTO `c_service` VALUES ('982023092150550012', 'carBlackWhite.updateCarBlackWhite', 'API', '修改黑白名单', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-09-21 13:24:58', '0');
-INSERT INTO `c_service` VALUES ('982023092151010011', 'parkingBox.updateParkingBox', 'API', '修改岗亭', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 00:25:40', '0');
-INSERT INTO `c_service` VALUES ('982023092154190009', 'parkingBox.saveParkingBox', 'API', '保存岗亭', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 00:25:14', '0');
-INSERT INTO `c_service` VALUES ('982023092154440013', 'parkingBoxArea.deleteParkingBoxArea', 'API', '删除停车场岗亭', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 00:26:25', '0');
-INSERT INTO `c_service` VALUES ('982023092156670012', 'lampMachineFactorySpec.listLampMachineFactorySpec', 'API', '电灯厂家规格列表', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2023-09-21 16:23:47', '0');
-INSERT INTO `c_service` VALUES ('982023092156700008', 'carBlackWhite.listCarBlackWhites', 'API', '查询黑白名单', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-09-21 13:22:54', '0');
-INSERT INTO `c_service` VALUES ('982023092156940017', 'parkingBoxArea.saveParkingBoxArea', 'API', '保存停车场岗亭', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 00:27:39', '0');
-INSERT INTO `c_service` VALUES ('982023092164030004', 'carInout.listCarInParkingArea', 'API', '查询在场车辆', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-21 22:36:33', '0');
-INSERT INTO `c_service` VALUES ('982023092165230015', 'barrier.updateBarrier', 'API', '修改道闸摄像头', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 01:57:44', '0');
-INSERT INTO `c_service` VALUES ('982023092169120035', 'lampMachineFactory.listLampMachineFactory', 'API', '路灯厂家列表', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2023-09-21 15:05:50', '0');
-INSERT INTO `c_service` VALUES ('982023092171410008', 'lampMachineFactorySpec.saveLampMachineFactorySpec', 'API', '新增路灯厂家规格', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-21 16:21:51', '0');
-INSERT INTO `c_service` VALUES ('982023092177360001', 'carInoutDetail.listCarInoutDetail', 'API', '查询出入场明细', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-21 23:20:49', '0');
-INSERT INTO `c_service` VALUES ('982023092178860006', 'carBlackWhite.deleteCarBlackWhite', 'API', '删除黑白名单', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-09-21 13:22:22', '0');
-INSERT INTO `c_service` VALUES ('982023092183370037', 'lampMachineFactory.updateLampMachineFactory', 'API', '更新路灯厂家', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-21 15:06:35', '0');
-INSERT INTO `c_service` VALUES ('982023092185410042', 'parkingBoxArea.updateParkingBoxArea', 'API', '修改停车场岗亭', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 00:36:14', '0');
-INSERT INTO `c_service` VALUES ('982023092186810010', 'carBlackWhite.saveCarBlackWhite', 'API', '保存黑白名称', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-09-21 13:23:22', '0');
-INSERT INTO `c_service` VALUES ('982023092196640032', 'lampMachineFactory.saveLampMachineFactory', 'API', '新增路灯厂家', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-21 14:45:01', '0');
-INSERT INTO `c_service` VALUES ('982023092208760005', 'lampMachine.updateLampMachine', 'API', '更新路灯设备', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-22 14:07:25', '0');
-INSERT INTO `c_service` VALUES ('982023092209070001', 'lampMachineLog.listLampMachineLog', 'API', '路灯设备下发日志列表', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2023-09-22 16:38:38', '0');
-INSERT INTO `c_service` VALUES ('982023092214980006', 'fee.listTempCarFeeConfigs', 'API', '查询临时车费配置', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-22 14:51:10', '0');
-INSERT INTO `c_service` VALUES ('982023092226180007', 'lampMachine.deleteLampMachine', 'API', '删除路灯设备', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-22 14:08:01', '0');
-INSERT INTO `c_service` VALUES ('982023092232560012', 'fee.updateTempCarFeeConfig', 'API', '修改临时车费配置', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-22 15:10:18', '0');
-INSERT INTO `c_service` VALUES ('982023092238200001', 'lampMachine.listLampMachine', 'API', '路灯设备列表', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2023-09-22 14:05:43', '0');
-INSERT INTO `c_service` VALUES ('982023092252040002', 'tempCarFee.queryTempCarFeeRules', 'API', '查询临时车规则', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-22 22:08:32', '0');
-INSERT INTO `c_service` VALUES ('982023092271700008', 'fee.deleteTempCarFeeConfig', 'API', '删除临时车配置', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-22 14:52:01', '0');
-INSERT INTO `c_service` VALUES ('982023092279500001', 'user.listCommunityStaffsByCommunityId', 'API', '查询小区物业员工', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-09-22 15:31:07', '0');
-INSERT INTO `c_service` VALUES ('982023092282830001', 'lampMachineOperation.listLampMachineOperation', 'API', '路灯操作日志列表', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2023-09-22 11:55:18', '0');
-INSERT INTO `c_service` VALUES ('982023092294760003', 'lampMachine.saveLampMachine', 'API', '新增路灯设备', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-22 14:06:25', '0');
-INSERT INTO `c_service` VALUES ('982023092296000010', 'fee.saveTempCarFeeConfig', 'API', '保存临时车费配置', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-22 14:52:35', '0');
-INSERT INTO `c_service` VALUES ('982023092558060001', 'lampMachine.switchLampState', 'API', '切换路灯状态', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-25 16:55:18', '0');
-INSERT INTO `c_service` VALUES ('982023092644180003', 'lampMachineOpenClose.saveLampMachineOpenClose', 'API', '设置路灯开关时间', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-26 09:23:34', '0');
-INSERT INTO `c_service` VALUES ('982023092646350001', 'lampMachineOpenClose.listLampMachineOpenClose', 'API', '设置路灯开关时间列表', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2023-09-26 09:22:33', '0');
-INSERT INTO `c_service` VALUES ('982023092700090039', 'eventTemplate.deleteEventTemplate', 'API', '删除事件模板', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 10:58:39', '0');
-INSERT INTO `c_service` VALUES ('982023092700170018', 'eventObject.deleteEventObject', 'API', '删除事件对象', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:42:42', '0');
-INSERT INTO `c_service` VALUES ('982023092700250024', 'eventStaff.updateEventStaff', 'API', '更新事件通知员工', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:56:20', '0');
-INSERT INTO `c_service` VALUES ('982023092706610035', 'eventTemplate.saveEventTemplate', 'API', '新增事件模板', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 10:57:06', '0');
-INSERT INTO `c_service` VALUES ('982023092708060001', 'barrier.unlicensedCarMachineQrCodeUrl', 'API', '无牌车辆进场', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-27 15:51:57', '0');
-INSERT INTO `c_service` VALUES ('982023092709840008', 'eventRule.updateEventRule', 'API', '更新事件规则', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:38:04', '0');
-INSERT INTO `c_service` VALUES ('982023092713170007', 'carInoutPayment.listCarInoutPayment', 'API', '查询收费明细', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-27 12:26:24', '0');
-INSERT INTO `c_service` VALUES ('982023092716470037', 'eventTemplate.updateEventTemplate', 'API', '更新事件模板', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 10:57:52', '0');
-INSERT INTO `c_service` VALUES ('982023092717570016', 'eventObject.updateEventObject', 'API', '更新事件对象', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:41:46', '0');
-INSERT INTO `c_service` VALUES ('982023092719040022', 'eventStaff.saveEventStaff', 'API', '新增事件通知员工', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:55:34', '0');
-INSERT INTO `c_service` VALUES ('982023092721930001', 'carInoutPayment.listCarInoutPaymentSummary', 'API', '临时车收费统计', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-27 14:55:46', '0');
-INSERT INTO `c_service` VALUES ('982023092722710011', 'carInout.listCarInoutTempAuth', 'API', '查询临时车审核', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-27 13:27:29', '0');
-INSERT INTO `c_service` VALUES ('982023092724320004', 'carInout.listManualOpenDoorLog', 'API', '查询开闸记录', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-27 15:05:32', '0');
-INSERT INTO `c_service` VALUES ('982023092727360020', 'eventStaff.listEventStaff', 'API', '查询事件通知员工列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-09-27 16:52:55', '0');
-INSERT INTO `c_service` VALUES ('982023092730940001', 'carInout.getFreeParkingSpace', 'API', '查询空闲车位', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-27 14:51:53', '0');
-INSERT INTO `c_service` VALUES ('982023092735400006', 'eventRule.saveEventRule', 'API', '新增事件规则', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:37:26', '0');
-INSERT INTO `c_service` VALUES ('982023092737630026', 'eventStaff.deleteEventStaff', 'API', '删除事件通知员工', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:57:02', '0');
-INSERT INTO `c_service` VALUES ('982023092740550004', 'eventRule.listEventRule', 'API', '查询事件规则列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-09-27 16:36:45', '0');
-INSERT INTO `c_service` VALUES ('982023092746910031', 'eventTemplateParam.deleteEventTemplateParam', 'API', '删除事件模板参数', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 13:54:23', '0');
-INSERT INTO `c_service` VALUES ('982023092747550014', 'eventObject.saveEventObject', 'API', '新增事件对象', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:40:37', '0');
-INSERT INTO `c_service` VALUES ('982023092770300025', 'eventTemplateParam.listEventTemplateParam', 'API', '查询事件模板参数列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-09-27 13:51:28', '0');
-INSERT INTO `c_service` VALUES ('982023092778110027', 'eventTemplateParam.saveEventTemplateParam', 'API', '添加事件模板参数', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 13:52:21', '0');
-INSERT INTO `c_service` VALUES ('982023092786220033', 'eventTemplate.listEventTemplate', 'API', '查询事件模板列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-09-27 10:56:16', '0');
-INSERT INTO `c_service` VALUES ('982023092786950012', 'eventObject.listEventObject', 'API', '查询事件对象列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-09-27 16:39:49', '0');
-INSERT INTO `c_service` VALUES ('982023092792030005', 'barrier.customCarInOut', 'API', '手工进出场', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-27 15:58:34', '0');
-INSERT INTO `c_service` VALUES ('982023092796270010', 'eventRule.deleteEventRule', 'API', '删除事件规则', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:38:52', '0');
-INSERT INTO `c_service` VALUES ('982023092797650029', 'eventTemplateParam.updateEventTemplateParam', 'API', '更新事件模板参数', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 13:53:11', '0');
-INSERT INTO `c_service` VALUES ('982023100805530009', 'eventPool.saveEventPool', 'API', '新增事件池事件', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-10-08 15:43:15', '0');
-INSERT INTO `c_service` VALUES ('982023100842780013', 'eventPool.deleteEventPool', 'API', '删除事件池事件', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-10-08 15:44:46', '0');
-INSERT INTO `c_service` VALUES ('982023100860740011', 'eventPool.updateEventPool', 'API', '更新事件池事件', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-10-08 15:44:08', '0');
-INSERT INTO `c_service` VALUES ('982023100888550009', 'eventPool.listEventPool', 'API', '查询事件池列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-10-08 09:13:09', '0');
-INSERT INTO `c_service` VALUES ('982023100918850004', 'eventPoolStaff.listEventPoolStaff', 'API', '查询我的事件列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-10-09 08:40:11', '0');
-INSERT INTO `c_service` VALUES ('982023100953390007', 'eventPoolStaff.saveEventPoolStaff', 'API', '新增我的事件', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-10-09 09:41:29', '0');
-INSERT INTO `c_service` VALUES ('982023100962650001', 'eventPoolStaff.updateEventPoolStaff', 'API', '更新我的事件', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-10-09 11:35:17', '0');
-INSERT INTO `c_service` VALUES ('982023101231580001', 'eventTemplateParamKey.listEventTemplateParamKey', 'API', '获取通知模板参数规格列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-10-12 11:56:41', '0');
-INSERT INTO `c_service` VALUES ('982023101680480001', 'eventPool.cancelEventPoolStaff', 'API', '取消事件分配', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-10-16 17:06:11', '0');
-INSERT INTO `c_service` VALUES ('982023101727160013', 'monitorModel.saveMonitorModel', 'API', '新增监控模型', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-17 16:57:50', '0');
-INSERT INTO `c_service` VALUES ('982023101762070011', 'monitorModel.listMonitorModel', 'API', '查询监控模型列表', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2023-10-17 16:56:47', '0');
-INSERT INTO `c_service` VALUES ('982023101769190015', 'monitorModel.updateMonitorModel', 'API', '更新监控模型', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-17 16:58:50', '0');
-INSERT INTO `c_service` VALUES ('982023101794500017', 'monitorModel.deleteMonitorModel', 'API', '删除监控模型', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-17 16:59:43', '0');
-INSERT INTO `c_service` VALUES ('982023101801400036', 'monitorMachine.updateMonitorMachine', 'API', '更新监控设备', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-18 15:56:58', '0');
-INSERT INTO `c_service` VALUES ('982023101804120067', 'monitorArea.deleteMonitorArea', 'API', '删除监控区域', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-18 10:02:48', '0');
-INSERT INTO `c_service` VALUES ('982023101830950034', 'monitorMachine.saveMonitorMachine', 'API', '新增监控设备', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-18 15:56:17', '0');
-INSERT INTO `c_service` VALUES ('982023101851480038', 'monitorMachine.deleteMonitorMachine', 'API', '删除监控设备', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-18 15:57:41', '0');
-INSERT INTO `c_service` VALUES ('982023101882210032', 'monitorMachine.listMonitorMachine', 'API', '查询监控设备列表', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2023-10-18 15:55:24', '0');
-INSERT INTO `c_service` VALUES ('982023101887880063', 'monitorArea.saveMonitorArea', 'API', '新增监控区域', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-18 10:01:13', '0');
-INSERT INTO `c_service` VALUES ('982023101892950061', 'monitorArea.listMonitorArea', 'API', '查询监控区域列表', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2023-10-18 09:59:56', '0');
-INSERT INTO `c_service` VALUES ('982023101897800065', 'monitorArea.updateMonitorArea', 'API', '更新监控区域', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-18 10:02:04', '0');
-INSERT INTO `c_service` VALUES ('982023101924650023', 'monitorMachineModel.saveMonitorMachineModel', 'API', '新增监控分析', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-19 15:23:48', '0');
-INSERT INTO `c_service` VALUES ('982023101962330025', 'monitorMachineModel.deleteMonitorMachineModel', 'API', '删除监控分析', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-19 15:24:30', '0');
-INSERT INTO `c_service` VALUES ('982023101998270021', 'monitorMachineModel.listMonitorMachineModel', 'API', '查询监控分析列表', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2023-10-19 15:23:06', '0');
-INSERT INTO `c_service` VALUES ('982023102089120004', 'monitorPool.listMonitorPool', 'API', '查询监控告警列表', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2023-10-20 10:17:06', '0');
-INSERT INTO `c_service` VALUES ('982023102300890001', 'propertyIndex.queryPropertyAssetsIndex', 'API', '查询首页小区信息', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-10-23 09:00:08', '0');
-INSERT INTO `c_service` VALUES ('982023102335040004', 'propertyIndex.queryPropertyMachinesIndex', 'API', '查询首页设备信息', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-10-23 11:04:16', '0');
-INSERT INTO `c_service` VALUES ('982023102644900011', 'parkingCoupon.listParkingCouponCar', 'API', '查询车辆优惠券', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-10-26 23:17:58', '0');
-INSERT INTO `c_service` VALUES ('982023102750370003', 'barrier.openBarrierDoor', 'API', '道闸开门', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-10-27 21:34:17', '0');
-INSERT INTO `c_service` VALUES ('982023102759210005', 'barrier.closeBarrierDoor', 'API', '道闸关门', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-10-27 21:34:48', '0');
-INSERT INTO `c_service` VALUES ('982023102833380015', 'carInout.updateCarInoutNum', 'API', '修改进场车牌号', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-10-28 11:54:33', '0');
-INSERT INTO `c_service` VALUES ('982023102890790002', 'barrier.getCarMachineQrCodeUrl', 'API', '查询停车二维码', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-10-28 12:03:59', '0');
-INSERT INTO `c_service` VALUES ('982023103000230050', 'parkingCouponCar.listParkingCouponCarOrder', 'API', '查询停车券核销', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-10-30 04:49:43', '0');
-INSERT INTO `c_service` VALUES ('982023103006960035', 'lockMachine.listLockMachine', 'API', '查询门锁列表', '1', 'CMD', 'http://iot-lock', 'GET', '60', '3', '2023-10-30 17:46:28', '0');
-INSERT INTO `c_service` VALUES ('982023103007440041', 'lockMachine.deleteLockMachine', 'API', '删除门锁', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 17:48:40', '0');
-INSERT INTO `c_service` VALUES ('982023103009090001', 'store.propertySaveStoreAndShop', 'API', '添加商铺', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-10-30 02:18:54', '0');
-INSERT INTO `c_service` VALUES ('982023103013530039', 'lockMachine.updateLockMachine', 'API', '更新门锁', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 17:47:55', '0');
-INSERT INTO `c_service` VALUES ('982023103016790037', 'lockMachine.saveLockMachine', 'API', '新增门锁', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 17:47:13', '0');
-INSERT INTO `c_service` VALUES ('982023103019560003', 'lockMachineFactory.saveLockMachineFactory', 'API', '新增门锁厂家', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 10:48:17', '0');
-INSERT INTO `c_service` VALUES ('982023103033380001', 'lockMachineFactory.listLockMachineFactory', 'API', '查询门锁厂家列表', '1', 'CMD', 'http://iot-lock', 'GET', '60', '3', '2023-10-30 10:47:06', '0');
-INSERT INTO `c_service` VALUES ('982023103037160003', 'lockMachineFactorySpec.saveLockMachineFactorySpec', 'API', '新增门锁厂家规格', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 13:56:08', '0');
-INSERT INTO `c_service` VALUES ('982023103038610039', 'parkingCoupon.listParkingCouponOrder', 'API', '查询停车券', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-10-30 04:41:26', '0');
-INSERT INTO `c_service` VALUES ('982023103041530001', 'lockMachineFactorySpec.listLockMachineFactorySpec', 'API', '查询门锁厂家规格列表', '1', 'CMD', 'http://iot-lock', 'GET', '60', '3', '2023-10-30 13:55:20', '0');
-INSERT INTO `c_service` VALUES ('982023103047790038', 'parkingCoupon.saveParkingCoupon', 'API', '添加停车券', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-10-30 00:40:31', '0');
-INSERT INTO `c_service` VALUES ('982023103052370001', 'parkingCoupon.buyParkingCoupon', 'API', '购买停车券', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-10-30 04:25:23', '0');
-INSERT INTO `c_service` VALUES ('982023103065540062', 'store.propertyDeleteStoreAndShop', 'API', '物业删除商家', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-10-30 04:21:43', '0');
-INSERT INTO `c_service` VALUES ('982023103068040005', 'lockMachineFactory.updateLockMachineFactory', 'API', '更新门锁厂家', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 10:49:04', '0');
-INSERT INTO `c_service` VALUES ('982023103084880042', 'parkingCoupon.deleteParkingCoupon', 'API', '删除停车券', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-10-30 00:42:05', '0');
-INSERT INTO `c_service` VALUES ('982023103085050005', 'lockMachineFactorySpec.deleteLockMachineFactorySpec', 'API', '删除门锁厂家规格', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 13:56:56', '0');
-INSERT INTO `c_service` VALUES ('982023103085700059', 'parkingCoupon.listShopParkingCoupon', 'API', '查询商铺停车券', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-10-30 04:17:52', '0');
-INSERT INTO `c_service` VALUES ('982023103086820036', 'parkingCoupon.listParkingCoupon', 'API', '查询停车券', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-10-30 00:39:49', '0');
-INSERT INTO `c_service` VALUES ('982023103086830040', 'parkingCoupon.updateParkingCoupon', 'API', '修改停车券', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-10-30 00:41:33', '0');
-INSERT INTO `c_service` VALUES ('982023103096630015', 'store.listCommunityStoreShop', 'API', '查询小区商家', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-10-30 01:54:07', '0');
-INSERT INTO `c_service` VALUES ('982023103098000007', 'lockMachineFactory.deleteLockMachineFactory', 'API', '删除门锁厂家', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 10:49:49', '0');
-INSERT INTO `c_service` VALUES ('982023103112460001', 'lockMachine.listLockMachine', 'API', '查询门锁列表', '1', 'CMD', 'http://iot-lock', 'GET', '60', '3', '2023-10-31 09:40:34', '0');
-INSERT INTO `c_service` VALUES ('982023103113740007', 'lockMachine.deleteLockMachine', 'API', '删除门锁', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-31 09:42:48', '0');
-INSERT INTO `c_service` VALUES ('982023103145360003', 'lockMachine.saveLockMachine', 'API', '新增门锁', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-31 09:41:17', '0');
-INSERT INTO `c_service` VALUES ('982023103149660005', 'lockMachine.updateLockMachine', 'API', '更新门锁', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-31 09:42:09', '0');
-INSERT INTO `c_service` VALUES ('982023103159240008', 'lockPerson.updateLockPerson', 'API', '更新门锁授权', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-31 14:51:51', '0');
-INSERT INTO `c_service` VALUES ('982023103174880010', 'lockPerson.deleteLockPerson', 'API', '删除门锁授权', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-31 14:52:30', '0');
-INSERT INTO `c_service` VALUES ('982023103179860004', 'lockPerson.listLockPerson', 'API', '查询门锁授权列表', '1', 'CMD', 'http://iot-lock', 'GET', '60', '3', '2023-10-31 14:50:27', '0');
-INSERT INTO `c_service` VALUES ('982023103185880006', 'lockPerson.saveLockPerson', 'API', '新增门锁授权', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-31 14:51:09', '0');
-INSERT INTO `c_service` VALUES ('982023110105060021', 'lockPerson.resetLockPwd', 'API', '重置门锁密码', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-11-01 14:26:27', '0');
-INSERT INTO `c_service` VALUES ('982023110125260009', 'lockInout.listLockInout', 'API', '查询进出记录列表', '1', 'CMD', 'http://iot-lock', 'GET', '60', '3', '2023-11-01 16:23:55', '0');
-INSERT INTO `c_service` VALUES ('982023110148750001', 'admin.queryCommunityEvent', 'API', '查询小区事件统计', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-01 23:57:34', '0');
-INSERT INTO `c_service` VALUES ('982023110165140019', 'lockMachine.unLockMachine', 'API', '打开门锁', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-11-01 17:32:28', '0');
-INSERT INTO `c_service` VALUES ('982023110165530002', 'lockPerson.renewalLockPerson', 'API', '门锁授权续期', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-11-01 15:42:51', '0');
-INSERT INTO `c_service` VALUES ('982023110166020396', 'admin.queryDevCount', 'API', '查询开发统计', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-01 23:20:26', '0');
-INSERT INTO `c_service` VALUES ('982023110168710003', 'admin.queryCommunityMonitorPool', 'API', '查询小区监控告警', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-01 23:58:07', '0');
-INSERT INTO `c_service` VALUES ('982023110184710394', 'admin.queryAppServiceData', 'API', '查询应用接口', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-01 23:19:51', '0');
-INSERT INTO `c_service` VALUES ('982023110189450007', 'lockLog.listLockLog', 'API', '查询下发记录列表', '1', 'CMD', 'http://iot-lock', 'GET', '60', '3', '2023-11-01 16:23:08', '0');
-INSERT INTO `c_service` VALUES ('982023110194410004', 'admin.queryAdminCount', 'API', '查询运营数据', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-01 23:33:29', '0');
-INSERT INTO `c_service` VALUES ('982023110606400001', 'log.queryAssetImportLogType', 'API', '查询导入类型', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-06 00:26:03', '0');
-INSERT INTO `c_service` VALUES ('982023110609390038', 'log.queryAssetImportLog', 'API', '查询导入日志', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-06 00:10:02', '0');
-INSERT INTO `c_service` VALUES ('982023110670170040', 'log.queryAssetImportLogDetail', 'API', '查询导入日志详情', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-06 00:15:11', '0');
-INSERT INTO `c_service` VALUES ('982023110918500004', 'ownerCar.queryRoomCars', 'API', '查询房屋车辆', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-11-09 01:32:21', '0');
-INSERT INTO `c_service` VALUES ('982023111051920036', 'accessControl.openAccessControlDoor', 'API', '门禁开门', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-11-10 10:23:03', '0');
-INSERT INTO `c_service` VALUES ('982023111071170001', 'accessControl.restartAccessControlDoor', 'API', '重启门禁', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-11-10 10:26:51', '0');
-INSERT INTO `c_service` VALUES ('982023111082910003', 'room.queryRoomsByOwner', 'API', '查询业主房屋', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-11-10 23:57:33', '0');
-INSERT INTO `c_service` VALUES ('982023111809080012', 'appUser.listAppUser', 'API', '查询房产绑定', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-11-18 04:03:01', '0');
-INSERT INTO `c_service` VALUES ('982023111852930005', 'login.appUserLogin', 'API', '手机用户登录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-11-18 15:38:51', '0');
-INSERT INTO `c_service` VALUES ('982023111873780003', 'login.appUserRegister', 'API', '用户注册', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-11-18 15:37:48', '0');
-INSERT INTO `c_service` VALUES ('982023111880690004', 'chargeMachine.restartChargeMachine', 'API', '重启充电桩', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-11-18 01:22:28', '0');
-INSERT INTO `c_service` VALUES ('982023112024490001', 'account.queryAppUserAccount', 'API', '手机端查询账户', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2023-11-20 12:14:56', '0');
-INSERT INTO `c_service` VALUES ('982023112051660006', 'wechat.getCommunityWechatAppId', 'API', '根据小区查询公众号', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-11-20 10:36:56', '0');
-INSERT INTO `c_service` VALUES ('982023112070050019', 'chargeMachine.stopCharge', 'API', '停止充电', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-11-20 14:42:28', '0');
-INSERT INTO `c_service` VALUES ('982023112071440017', 'chargeMachine.startCharge', 'API', '开始充电', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-11-20 14:41:55', '0');
-INSERT INTO `c_service` VALUES ('982023112156620008', 'meterMachineCharge.chargeMeterMoney', 'API', '水电充值', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-21 23:53:44', '0');
-INSERT INTO `c_service` VALUES ('982023112177330013', 'meterMachineCharge.listMeterMachineCharge', 'API', '查询水电充值记录', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-11-21 23:34:01', '0');
-INSERT INTO `c_service` VALUES ('982023112208460008', 'wechat.wechatNotifyOpenId', 'API', '微信回调', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-11-22 18:56:53', '0');
-INSERT INTO `c_service` VALUES ('982023112209130001', 'instrumentFactorySpec.listInstrumentFactorySpec', 'API', '查询仪表厂家规格列表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-11-22 16:54:12', '0');
-INSERT INTO `c_service` VALUES ('982023112241880003', 'tempCarFee.getTempCarFeeOrder', 'API', '查询临时车订单', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-11-22 11:45:00', '0');
-INSERT INTO `c_service` VALUES ('982023112251000008', 'instrumentFactory.updateInstrumentFactory', 'API', '更新仪表厂家', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-22 13:51:24', '0');
-INSERT INTO `c_service` VALUES ('982023112254160010', 'instrumentFactory.deleteInstrumentFactory', 'API', '删除仪表厂家', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-22 13:52:07', '0');
-INSERT INTO `c_service` VALUES ('982023112255190010', 'wechat.wechatRefreshOpenId', 'API', '鉴权获取openId', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-11-22 18:57:28', '0');
-INSERT INTO `c_service` VALUES ('982023112257810004', 'instrumentFactory.saveInstrumentFactory', 'API', '新增仪表厂家', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-22 13:49:19', '0');
-INSERT INTO `c_service` VALUES ('982023112258210005', 'instrumentFactorySpec.deleteInstrumentFactorySpec', 'API', '删除仪表厂家规格', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-22 16:55:56', '0');
-INSERT INTO `c_service` VALUES ('982023112279260006', 'instrumentFactory.listInstrumentFactory', 'API', '查询仪表厂家列表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-11-22 13:50:24', '0');
-INSERT INTO `c_service` VALUES ('982023112293070003', 'instrumentFactorySpec.saveInstrumentFactorySpec', 'API', '新增仪表厂家规格', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-22 16:55:02', '0');
-INSERT INTO `c_service` VALUES ('982023112313810025', 'instrument.updateInstrument', 'API', '更新仪表', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-23 17:36:15', '0');
-INSERT INTO `c_service` VALUES ('982023112324940001', 'instrumentType.listInstrumentType', 'API', '查询仪表类型列表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-11-23 09:53:53', '0');
-INSERT INTO `c_service` VALUES ('982023112328570027', 'instrument.deleteInstrument', 'API', '删除仪表', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-23 17:36:51', '0');
-INSERT INTO `c_service` VALUES ('982023112330070023', 'instrument.saveInstrument', 'API', '新增仪表', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-23 17:35:40', '0');
-INSERT INTO `c_service` VALUES ('982023112356790007', 'instrumentType.deleteInstrumentType', 'API', '删除仪表类型', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-23 09:56:06', '0');
-INSERT INTO `c_service` VALUES ('982023112365600005', 'instrumentType.updateInstrumentType', 'API', '更新仪表类型', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-23 09:55:21', '0');
-INSERT INTO `c_service` VALUES ('982023112379730003', 'instrumentType.saveInstrumentType', 'API', '新增仪表类型', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-23 09:54:39', '0');
-INSERT INTO `c_service` VALUES ('982023112380470021', 'instrument.listInstrument', 'API', '查询仪表列表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-11-23 17:34:59', '0');
-INSERT INTO `c_service` VALUES ('982023112400400014', 'payment.listPaymentKey', 'API', '查询支付key', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2023-11-24 01:01:55', '0');
-INSERT INTO `c_service` VALUES ('982023112413800017', 'payment.savePaymentPool', 'API', '保存支付配置', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2023-11-24 01:05:50', '0');
-INSERT INTO `c_service` VALUES ('982023112414180063', 'dtScene.updateDtScene', 'API', '修改场景', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-24 17:48:57', '0');
-INSERT INTO `c_service` VALUES ('982023112417380061', 'dtScene.saveDtScene', 'API', '保存场景', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-24 17:48:30', '0');
-INSERT INTO `c_service` VALUES ('982023112437410029', 'payment.deletePaymentPool', 'API', '删除支付配置', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2023-11-24 01:10:06', '0');
-INSERT INTO `c_service` VALUES ('982023112443190011', 'smallWeChat.updateSmallWeChat', 'API', '修改公众号', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-24 00:31:51', '0');
-INSERT INTO `c_service` VALUES ('982023112445570009', 'smallWeChat.saveSmallWeChat', 'API', '保存公众号', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-24 00:31:20', '0');
-INSERT INTO `c_service` VALUES ('982023112452770009', 'payment.listPaymentAdapt', 'API', '查询支付适配器', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2023-11-24 00:57:23', '0');
-INSERT INTO `c_service` VALUES ('982023112457480059', 'dtScene.listDtScene', 'API', '查询3D场景', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-24 17:48:03', '0');
-INSERT INTO `c_service` VALUES ('982023112457690065', 'dtScene.deleteDtScene', 'API', '删除场景', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-24 17:49:26', '0');
-INSERT INTO `c_service` VALUES ('982023112460090011', 'payment.listPaymentPool', 'API', '查询支付配置', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2023-11-24 00:58:09', '0');
-INSERT INTO `c_service` VALUES ('982023112478280005', 'smallWeChat.listSmallWeChats', 'API', '查询公众号', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-24 00:30:08', '0');
-INSERT INTO `c_service` VALUES ('982023112478820007', 'smallWeChat.deleteSmallWeChat', 'API', '删除公众号', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-24 00:30:46', '0');
-INSERT INTO `c_service` VALUES ('982023112484900027', 'payment.updatePaymentPool', 'API', '修改支付配置', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2023-11-24 01:09:17', '0');
-INSERT INTO `c_service` VALUES ('982023112522500001', 'dtModal.updateDtModal', 'API', '修改模型', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-25 14:19:36', '0');
-INSERT INTO `c_service` VALUES ('982023112529890003', 'dtModal.deleteDtModal', 'API', '删除3D模型', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-25 14:20:15', '0');
-INSERT INTO `c_service` VALUES ('982023112533940026', 'dtModal.saveDtModal', 'API', '保存3D模型', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-25 14:14:24', '0');
-INSERT INTO `c_service` VALUES ('982023112560230015', 'dtModal.listDtModal', 'API', '查询3d模型', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-25 01:41:48', '0');
-INSERT INTO `c_service` VALUES ('982023112728960001', 'instrumentLog.listInstrumentLog', 'API', '查询仪表上报日志数据', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-11-27 08:57:04', '0');
-INSERT INTO `c_service` VALUES ('982023120113850005', 'meterMachineFactory.updateMeterMachineFactory', 'API', '更新水电厂家', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-01 14:35:39', '0');
-INSERT INTO `c_service` VALUES ('982023120132530007', 'meterMachineFactory.deleteMeterMachineFactory', 'API', '删除水电厂家', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-01 14:36:19', '0');
-INSERT INTO `c_service` VALUES ('982023120154500003', 'meterMachineFactory.saveMeterMachineFactory', 'API', '新增水电厂家', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-01 14:34:53', '0');
-INSERT INTO `c_service` VALUES ('982023120179430001', 'meterMachineFactory.listMeterMachineFactory', 'API', '查询水电厂家列表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-01 14:27:30', '0');
-INSERT INTO `c_service` VALUES ('982023120412830003', 'meterMachineFactorySpec.saveMeterMachineFactorySpec', 'API', '新增水电规格', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-04 10:24:08', '0');
-INSERT INTO `c_service` VALUES ('982023120416660001', 'chargeMachineFactorySpec.listChargeMachineFactorySpec', 'API', '查询充电规格列表', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-12-04 14:38:05', '0');
-INSERT INTO `c_service` VALUES ('982023120417690007', 'chargeMachine.updateChargeMachineFactory', 'API', '更新充电厂家', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-12-04 13:51:07', '0');
-INSERT INTO `c_service` VALUES ('982023120429880001', 'meterMachineFactorySpec.listMeterMachineFactorySpec', 'API', '查询水电规格列表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-04 10:23:08', '0');
-INSERT INTO `c_service` VALUES ('982023120433820001', 'export.exportData', 'API', '导出数据', '1', 'CMD', 'http://iot-job', 'GET', '60', '3', '2023-12-04 16:55:29', '0');
-INSERT INTO `c_service` VALUES ('982023120442680005', 'meterMachineFactorySpec.updateMeterMachineFactorySpec', 'API', '更新水电规格', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-04 10:24:53', '0');
-INSERT INTO `c_service` VALUES ('982023120465940005', 'chargeMachineFactorySpec.deleteChargeMachineFactorySpec', 'API', '删除充电规格', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-12-04 14:40:57', '0');
-INSERT INTO `c_service` VALUES ('982023120472570009', 'chargeMachine.deleteChargeMachineFactory', 'API', '删除充电厂家', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-12-04 13:52:03', '0');
-INSERT INTO `c_service` VALUES ('982023120480640001', 'chargeMachine.saveChargeMachineFactory', 'API', '新增充电厂家', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-12-04 13:47:41', '0');
-INSERT INTO `c_service` VALUES ('982023120485570008', 'userDownloadFile.listUserDownloadFile', 'API', '查询下载中心', '1', 'CMD', 'http://iot-job', 'GET', '60', '3', '2023-12-04 17:11:56', '0');
-INSERT INTO `c_service` VALUES ('982023120490000003', 'chargeMachineFactorySpec.saveChargeMachineFactorySpec', 'API', '新增充电规格', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-12-04 14:39:40', '0');
-INSERT INTO `c_service` VALUES ('982023120492460007', 'meterMachineFactorySpec.deleteMeterMachineFactorySpec', 'API', '删除水电规格', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-04 10:25:41', '0');
-INSERT INTO `c_service` VALUES ('982023120497750011', 'userDownloadFile.deleteUserDownloadFile', 'API', '删除下载中心', '1', 'CMD', 'http://iot-job', 'POST', '60', '3', '2023-12-04 17:14:32', '0');
-INSERT INTO `c_service` VALUES ('982023120500470028', 'hm.updateHardwareManufacturer', 'API', '更新门禁厂家', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 14:44:42', '0');
-INSERT INTO `c_service` VALUES ('982023120517900014', 'dtScript.deleteDtSceneObjScript', 'API', '删除对象脚本', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 15:19:30', '0');
-INSERT INTO `c_service` VALUES ('982023120531600004', 'dtScript.saveDtScript', 'API', '保存脚本', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 14:58:16', '0');
-INSERT INTO `c_service` VALUES ('982023120541700006', 'dtScript.updateDtScript', 'API', '修改脚本', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 14:58:53', '0');
-INSERT INTO `c_service` VALUES ('982023120546280030', 'hm.deleteHardwareManufacturer', 'API', '删除门禁厂家', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 14:45:36', '0');
-INSERT INTO `c_service` VALUES ('982023120551660008', 'dtScript.deleteDtScript', 'API', '删除脚本', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 14:59:22', '0');
-INSERT INTO `c_service` VALUES ('982023120567990001', 'hm.listHardwareManufacturerAttr', 'API', '查询门禁规格列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-12-05 15:32:21', '0');
-INSERT INTO `c_service` VALUES ('982023120571420010', 'dtScript.listDtSceneObjScript', 'API', '查询对象脚本', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-12-05 14:59:57', '0');
-INSERT INTO `c_service` VALUES ('982023120578000002', 'dtScript.listDtScript', 'API', '查询脚本', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-12-05 14:57:29', '0');
-INSERT INTO `c_service` VALUES ('982023120580470016', 'hm.deleteHardwareManufacturerAttr', 'API', '删除门禁规格', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 15:25:22', '0');
-INSERT INTO `c_service` VALUES ('982023120580700026', 'hm.saveHardwareManufacturer', 'API', '新增门禁厂家', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 14:43:55', '0');
-INSERT INTO `c_service` VALUES ('982023120581160012', 'dtScript.saveDtSceneObjScript', 'API', '保存对象脚本', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 15:18:25', '0');
-INSERT INTO `c_service` VALUES ('982023120588350014', 'hm.saveHardwareManufacturerAttr', 'API', '新增门禁规格', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 15:24:34', '0');
-INSERT INTO `c_service` VALUES ('982023120969520045', 'payment.cashier', 'API', '统一支付', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2023-12-09 16:57:20', '0');
-INSERT INTO `c_service` VALUES ('982023121124210005', 'visitType.updateVisitType', 'API', '更新访客类型', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-12-11 17:10:29', '0');
-INSERT INTO `c_service` VALUES ('982023121132930003', 'visitType.saveVisitType', 'API', '新增访客类型', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-12-11 17:09:44', '0');
-INSERT INTO `c_service` VALUES ('982023121159610001', 'visitType.listVisitType', 'API', '查询访客类型', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-11 17:08:49', '0');
-INSERT INTO `c_service` VALUES ('982023121195650007', 'visitType.deleteVisitType', 'API', '删除访客类型', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-12-11 17:11:08', '0');
-INSERT INTO `c_service` VALUES ('982023121215000004', 'visit.listVisit', 'API', '查询访客菜单', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-12 10:46:31', '0');
-INSERT INTO `c_service` VALUES ('982023121240490008', 'visit.updateVisit', 'API', '更新访客登记', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-12-12 10:48:41', '0');
-INSERT INTO `c_service` VALUES ('982023121272790006', 'visit.saveVisit', 'API', '新增访客登记', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-12-12 10:47:57', '0');
-INSERT INTO `c_service` VALUES ('982023121287520010', 'visit.deleteVisit', 'API', '删除访客登记', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-12-12 10:49:23', '0');
-INSERT INTO `c_service` VALUES ('982023121400750011', 'carMonth.saveCarMonthCard', 'API', '保存月卡', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-12-14 12:54:47', '0');
-INSERT INTO `c_service` VALUES ('982023121406640005', 'ownerCar.saveMemberCar', 'API', '添加成员车辆', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-12-14 17:22:41', '0');
-INSERT INTO `c_service` VALUES ('982023121416250003', 'carMonth.deleteCarMonthCard', 'API', '删除月卡', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-12-14 12:52:19', '0');
-INSERT INTO `c_service` VALUES ('982023121429410013', 'tempCarFee.tempCarAuth', 'API', '临时车审核', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-12-14 18:04:30', '0');
-INSERT INTO `c_service` VALUES ('982023121429700001', 'store.queryShop', 'API', '查询商户商铺', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-12-14 23:01:28', '0');
-INSERT INTO `c_service` VALUES ('982023121438440001', 'carMonth.listCarMonthCard', 'API', '查询月卡', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-12-14 12:51:42', '0');
-INSERT INTO `c_service` VALUES ('982023121462180007', 'carMonth.listCarMonthOrder', 'API', '查询月卡订单', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-12-14 12:53:34', '0');
-INSERT INTO `c_service` VALUES ('982023121471690013', 'carMonth.updateCarMonthCard', 'API', '修改月卡', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-12-14 12:55:14', '0');
-INSERT INTO `c_service` VALUES ('982023121473890009', 'carMonth.refundCarMonthOrder', 'API', '月卡退款', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-12-14 12:54:14', '0');
-INSERT INTO `c_service` VALUES ('982023121492620003', 'store.applyShopCode', 'API', '申请商家临时票据', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-14 23:21:52', '0');
-INSERT INTO `c_service` VALUES ('982023121495470005', 'carMonth.buyCarMonthOrder', 'API', '购买月卡', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-12-14 12:52:56', '0');
-INSERT INTO `c_service` VALUES ('982023121496340009', 'parkingCoupon.saveParkingCouponCar', 'API', '手工赠送停车劵', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-12-14 23:23:33', '0');
-INSERT INTO `c_service` VALUES ('982023121509510003', 'car.queryWaitPayFeeTempCar', 'API', '查询等待支付车辆', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-12-15 19:49:01', '0');
-INSERT INTO `c_service` VALUES ('982023121521930004', 'carMonth.getBuyCarMonthCardQrCodeUrl', 'API', '购买停车月卡二维码', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-12-15 14:31:42', '0');
-INSERT INTO `c_service` VALUES ('982023121526710016', 'carMonth.queryMonthCardByCarNum', 'API', '根据车牌号查询月卡', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-12-15 11:58:39', '0');
-INSERT INTO `c_service` VALUES ('982023121543000013', 'system.updateSystemInfo', 'API', '修改系统信息', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-15 01:30:30', '0');
-INSERT INTO `c_service` VALUES ('982023121566180005', 'visit.getVisitQrCodeUrl', 'API', '获取访客码', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-15 12:00:43', '0');
-INSERT INTO `c_service` VALUES ('982023121811580015', 'personFace.listPersonFace', 'API', '查询人脸审核', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-12-18 22:05:02', '0');
-INSERT INTO `c_service` VALUES ('982023121815120006', 'personFace.listPersonFaceQrcode', 'API', '查询人脸二维码', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-12-18 19:19:25', '0');
-INSERT INTO `c_service` VALUES ('982023121819520006', 'visitType.listVisitType', 'API', '查询访客类型', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-18 11:21:26', '0');
-INSERT INTO `c_service` VALUES ('982023121826360042', 'visit.listVisit', 'API', '查询访客人员', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-18 13:51:10', '0');
-INSERT INTO `c_service` VALUES ('982023121833800021', 'personFace.authPersonFace', 'API', '人脸审核', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-18 22:07:07', '0');
-INSERT INTO `c_service` VALUES ('982023121838920019', 'personFace.deletePersonFace', 'API', '删除人脸审核', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-18 22:06:13', '0');
-INSERT INTO `c_service` VALUES ('982023121841870010', 'personFace.updatePersonFaceQrcode', 'API', '修改人脸二维码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-18 19:20:20', '0');
-INSERT INTO `c_service` VALUES ('982023121844320004', 'personFace.deletePersonFaceQrcode', 'API', '删除人脸二维码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-18 19:18:57', '0');
-INSERT INTO `c_service` VALUES ('982023121850790017', 'personFace.savePersonFace', 'API', '保存人脸审核', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-18 22:05:40', '0');
-INSERT INTO `c_service` VALUES ('982023121879940008', 'personFace.savePersonFaceQrcode', 'API', '保存人脸二维码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-18 19:19:53', '0');
-INSERT INTO `c_service` VALUES ('982023121894910001', 'visit.saveVisit', 'API', '访客登记', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-12-18 11:02:19', '0');
-INSERT INTO `c_service` VALUES ('982023121902860005', 'meterQrcode.updateMeterQrcode', 'API', '更新水电二维码', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-19 14:35:59', '0');
-INSERT INTO `c_service` VALUES ('982023121933440001', 'meterQrcode.listMeterQrcode', 'API', '查询水电二维码', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-19 14:34:19', '0');
-INSERT INTO `c_service` VALUES ('982023121947500002', 'room.queryRoomsByApp', 'API', '查询房屋app专用', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-12-19 14:20:35', '0');
-INSERT INTO `c_service` VALUES ('982023121953580003', 'meterQrcode.saveMeterQrcode', 'API', '新增水电二维码', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-19 14:35:08', '0');
-INSERT INTO `c_service` VALUES ('982023121957440007', 'meterQrcode.deleteMeterQrcode', 'API', '删除水电二维码', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-19 14:36:51', '0');
-INSERT INTO `c_service` VALUES ('982023122008450016', 'accessControl.queryAcInoutStatistics', 'API', '查询进出统计', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-20 19:46:27', '0');
-INSERT INTO `c_service` VALUES ('982023122017510009', 'passcode.listPassQrcode', 'API', '查询通行码', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-12-20 01:47:18', '0');
-INSERT INTO `c_service` VALUES ('982023122038180002', 'meterMachineCharge.listMeterMachineCharge', 'API', '查询水电表充值记录', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-20 15:23:58', '0');
-INSERT INTO `c_service` VALUES ('982023122047180013', 'passcode.savePassQrcodeSetting', 'API', '保存通行码设置', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-20 01:48:32', '0');
-INSERT INTO `c_service` VALUES ('982023122047370001', 'meterQrcode.listMeterQrcode', 'API', '查询水电二维码', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-20 10:18:01', '0');
-INSERT INTO `c_service` VALUES ('982023122051650015', 'passcode.applyPassQrcode', 'API', '申请通行码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-20 12:50:05', '0');
-INSERT INTO `c_service` VALUES ('982023122052140001', 'passcode.refreshPassQrcode', 'API', '刷新通行二维码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-20 14:06:43', '0');
-INSERT INTO `c_service` VALUES ('982023122058900001', 'meterMachine.listMeterMachine', 'API', '查询水电表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-20 14:49:20', '0');
-INSERT INTO `c_service` VALUES ('982023122062270001', 'passcode.auditPassQrcode', 'API', '通行码审核', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-20 17:00:55', '0');
-INSERT INTO `c_service` VALUES ('982023122066010015', 'passcode.updatePassQrcodeSetting', 'API', '修改通行码设置', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-20 01:49:01', '0');
-INSERT INTO `c_service` VALUES ('982023122082660005', 'passcode.deletePassQrcode', 'API', '删除通行码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-20 01:45:41', '0');
-INSERT INTO `c_service` VALUES ('982023122085820007', 'passcode.deletePassQrcodeSetting', 'API', '删除通信码设置', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-20 01:46:32', '0');
-INSERT INTO `c_service` VALUES ('982023122099500011', 'passcode.listPassQrcodeSetting', 'API', '查询通行码设置', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-12-20 01:47:48', '0');
-INSERT INTO `c_service` VALUES ('982023122119330013', 'charge.queryOrderMoneyStatistics', 'API', '查询充电金额统计', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-12-21 11:46:47', '0');
-INSERT INTO `c_service` VALUES ('982023122127000007', 'charge.queryMonthCountStatistics', 'API', '查询月卡数统计', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-12-21 11:45:08', '0');
-INSERT INTO `c_service` VALUES ('982023122140270006', 'meter.queryMeterCountStatistics', 'API', '查询充值订单数统计', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-21 13:56:43', '0');
-INSERT INTO `c_service` VALUES ('982023122146210006', 'accessControl.queryAcLogStatistics', 'API', '查询下发人员统计', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-21 09:12:32', '0');
-INSERT INTO `c_service` VALUES ('982023122147950008', 'meter.queryMeterMoneyStatistics', 'API', '查询充值金额订单数', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-21 13:57:16', '0');
-INSERT INTO `c_service` VALUES ('982023122173110001', 'accessControl.queryAcFaceStatistics', 'API', '查询人脸审核统计', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-21 09:59:03', '0');
-INSERT INTO `c_service` VALUES ('982023122174020005', 'accessControl.queryAcVisitStatistics', 'API', '查询访客统计', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-21 09:45:55', '0');
-INSERT INTO `c_service` VALUES ('982023122177680011', 'charge.queryOrderCountStatistics', 'API', '查询充电订单统计', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-12-21 11:46:17', '0');
-INSERT INTO `c_service` VALUES ('982023122193640009', 'charge.queryMonthMoneyStatistics', 'API', '查询月卡金额统计', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-12-21 11:45:41', '0');
-INSERT INTO `c_service` VALUES ('982024012118760002', 'community.addCommunityApi', 'API', '同步小区', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-21 19:09:02', '0');
-INSERT INTO `c_service` VALUES ('982024012128580006', 'car.addCarApi', 'API', '同步车辆', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-21 19:10:44', '0');
-INSERT INTO `c_service` VALUES ('982024012139130004', 'owner.addOwnerApi', 'API', '同步业主', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-21 19:09:58', '0');
-INSERT INTO `c_service` VALUES ('982024012141030008', 'staff.addStaffApi', 'API', '同步员工', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-21 19:11:17', '0');
-INSERT INTO `c_service` VALUES ('982024012258280015', 'car.deleteCarApi', 'API', '同步删除车辆', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-22 22:57:46', '0');
-INSERT INTO `c_service` VALUES ('982024012297000017', 'owner.deleteOwnerApi', 'API', '同步删除业主', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-22 22:58:27', '0');
-INSERT INTO `c_service` VALUES ('982024012400000018', 'attendance.listAttendanceCheckin', 'API', '打卡记录', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-01-24 18:42:08', '0');
-INSERT INTO `c_service` VALUES ('982024012406520012', 'attendance.listAttendanceMachineLog', 'API', '查询考勤机下发日志', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-01-24 18:22:52', '0');
-INSERT INTO `c_service` VALUES ('982024012430780003', 'attendance.saveAttendanceMachine', 'API', '添加考勤设备', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-01-24 15:47:17', '0');
-INSERT INTO `c_service` VALUES ('982024012445110001', 'staff.deleteStaffApi', 'API', '删除员工接口', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-24 12:00:30', '0');
-INSERT INTO `c_service` VALUES ('982024012452500007', 'attendance.deleteAttendanceMachine', 'API', '删除考勤设备', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-01-24 15:48:16', '0');
-INSERT INTO `c_service` VALUES ('982024012457080018', 'attendance.deleteAttendanceStaff', 'API', '删除考勤人员', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-01-24 17:24:37', '0');
-INSERT INTO `c_service` VALUES ('982024012460250001', 'attendance.listAttendanceMachine', 'API', '查询考勤设备', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-01-24 15:46:44', '0');
-INSERT INTO `c_service` VALUES ('982024012478490016', 'attendance.saveAttendanceStaff', 'API', '添加考勤员工', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-01-24 17:23:59', '0');
-INSERT INTO `c_service` VALUES ('982024012496280005', 'attendance.updateAttendanceMachine', 'API', '修改考勤设备', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-01-24 15:47:44', '0');
-INSERT INTO `c_service` VALUES ('982024012498230014', 'attendance.listAttendanceStaff', 'API', '查询考勤员工', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-01-24 17:20:09', '0');
-INSERT INTO `c_service` VALUES ('982024012527030003', 'staff.addAttendanceStaffApi', 'API', '同步考勤员工', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-25 04:41:29', '0');
-INSERT INTO `c_service` VALUES ('982024012533370005', 'staff.deleteAttendanceStaffApi', 'API', '同步删除考勤员工', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-25 04:42:01', '0');
-INSERT INTO `c_service` VALUES ('982024012565700008', 'sso.getSsoToken', 'API', '获取临时票据', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-25 13:19:11', '0');
-INSERT INTO `c_service` VALUES ('982024012569880010', 'login.ssoTokenLogin', 'API', '单点登录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-01-25 13:19:50', '0');
-INSERT INTO `c_service` VALUES ('982024013109910015', 'common.openCommonApi', 'API', '通用接口', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-31 14:59:30', '0');
-INSERT INTO `c_service` VALUES ('982024013150640010', 'liftMachineAc.saveLiftMachineAc', 'API', '保存电梯门禁', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2024-01-31 11:37:30', '0');
-INSERT INTO `c_service` VALUES ('982024013155030012', 'liftMachineLog.listLiftRideLog', 'API', '查询电梯乘坐记录', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2024-01-31 12:04:20', '0');
-INSERT INTO `c_service` VALUES ('982024013166490012', 'liftMachineAc.deleteLiftMachineAc', 'API', '删除电梯门禁', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2024-01-31 11:38:02', '0');
-INSERT INTO `c_service` VALUES ('982024013169190008', 'liftMachineAc.listLiftMachineAc', 'API', '查询电梯门禁', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2024-01-31 11:36:49', '0');
-INSERT INTO `c_service` VALUES ('982024020526460003', 'appUser.queryBindRoom', 'API', '查询认证房屋', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2024-02-05 20:16:50', '0');
-INSERT INTO `c_service` VALUES ('982024020530720018', 'passcode.openPassQrcode', 'API', '开通通行码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-05 22:50:17', '0');
-INSERT INTO `c_service` VALUES ('982024020535860016', 'passcode.refreshUserPassQrcode', 'API', '用户通行码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-05 22:14:08', '0');
-INSERT INTO `c_service` VALUES ('982024020569760003', 'user.userSendSms', 'API', '发送验证码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-05 17:54:23', '0');
-INSERT INTO `c_service` VALUES ('982024020626920005', 'accessControl.reSendAccessControlFace', 'API', '重新全量下发人脸', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-02-06 12:22:29', '0');
-INSERT INTO `c_service` VALUES ('982024020629050008', 'accessControl.listOwnerAccessControl', 'API', '查询用户门禁', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-02-06 22:20:28', '0');
-INSERT INTO `c_service` VALUES ('982024020692140001', 'accessControl.ownerOpenAccessControlDoor', 'API', '业主开门', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-02-06 22:44:25', '0');
-INSERT INTO `c_service` VALUES ('982024020816050001', 'accessControlLog.listOwnerFaceDownload', 'API', '查询人脸下发', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-02-08 15:08:08', '0');
-INSERT INTO `c_service` VALUES ('982024020830400009', 'owner.listOwnerFace', 'API', '查询业主人脸', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2024-02-08 03:46:43', '0');
-INSERT INTO `c_service` VALUES ('982024020837070001', 'owner.uploadOwnerPhoto', 'API', '上传业主人脸', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-08 04:00:47', '0');
-INSERT INTO `c_service` VALUES ('982024020841260078', 'privilegeGroup.deletePrivilegeGroup', 'API', '删除角色', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-08 02:18:37', '0');
-INSERT INTO `c_service` VALUES ('982024020844280076', 'privilegeGroup.updatePrivilegeGroup', 'API', '修改角色', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-08 02:17:59', '0');
-INSERT INTO `c_service` VALUES ('982024020898490001', 'visit.listOwnerVisit', 'API', '查询业主访客', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-02-08 15:33:08', '0');
-INSERT INTO `c_service` VALUES ('982024021804290013', 'carMonth.listUserCarMonthOrder', 'API', '查询车辆月卡记录', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2024-02-18 11:38:53', '0');
-INSERT INTO `c_service` VALUES ('982024021814580001', 'community.listCommunitys', 'API', '物联网h5小区列表', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2024-02-18 10:02:29', '0');
-INSERT INTO `c_service` VALUES ('982024021821810020', 'car.listUserCar', 'API', '查询业主车辆', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2024-02-18 13:47:45', '0');
-INSERT INTO `c_service` VALUES ('982024021841050001', 'appUser.saveAppUser', 'API', '新增房屋认证', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-18 15:38:32', '0');
-INSERT INTO `c_service` VALUES ('982024021853370100', 'owner.listUserOwner', 'API', '查询用户业主信息', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2024-02-18 00:08:52', '0');
-INSERT INTO `c_service` VALUES ('982024021854780010', 'room.queryUserRoom', 'API', '查询业主房屋', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2024-02-18 10:19:22', '0');
-INSERT INTO `c_service` VALUES ('982024021855830017', 'store.listUserProperty', 'API', '查询用户物业', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2024-02-18 09:58:34', '0');
-INSERT INTO `c_service` VALUES ('982024021857050022', 'appUser.updateAppUser', 'API', '房屋认证审核', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-18 16:19:09', '0');
-INSERT INTO `c_service` VALUES ('982024021862590019', 'chargeCard.listUserChargeMonthOrder', 'API', '查询用户充值订单', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-02-18 12:11:52', '0');
-INSERT INTO `c_service` VALUES ('982024022922880009', 'workLicense.listWorkLicensePos', 'API', '查询工牌位置', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-02-29 15:16:56', '0');
-INSERT INTO `c_service` VALUES ('982024022942580011', 'workLicense.updateWorkLicenseMachine', 'API', '修改工牌', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-02-29 15:17:28', '0');
-INSERT INTO `c_service` VALUES ('982024022963210003', 'workLicense.deleteWorkLicenseMachine', 'API', '删除工牌', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-02-29 15:13:06', '0');
-INSERT INTO `c_service` VALUES ('982024022963740005', 'workLicense.listWorkLicenseLog', 'API', '查询工牌下发日志', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-02-29 15:14:43', '0');
-INSERT INTO `c_service` VALUES ('982024022986980074', 'workLicenseFactory.saveWorkLicenseFactory', 'API', '添加工牌厂家', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-02-29 02:13:34', '0');
-INSERT INTO `c_service` VALUES ('982024022987610076', 'workLicenseFactory.updateWorkLicenseFactory', 'API', '修改工牌厂家', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-02-29 02:14:10', '0');
-INSERT INTO `c_service` VALUES ('982024022990660001', 'workLicense.saveWorkLicenseMachine', 'API', '添加工牌', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-02-29 15:12:25', '0');
-INSERT INTO `c_service` VALUES ('982024022995730070', 'workLicenseFactory.deleteWorkLicenseFactory', 'API', '删除工作牌厂家', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-02-29 02:12:30', '0');
-INSERT INTO `c_service` VALUES ('982024022996270072', 'workLicenseFactory.listWorkLicenseFactory', 'API', '查询工牌厂家', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-02-29 02:13:01', '0');
-INSERT INTO `c_service` VALUES ('982024022998680007', 'workLicense.listWorkLicenseMachine', 'API', '查询工牌', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-02-29 15:15:57', '0');
-INSERT INTO `c_service` VALUES ('982024030188400021', 'workLicense.playPps', 'API', '工牌播放语音', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-03-01 17:32:38', '0');
-INSERT INTO `c_service` VALUES ('982024030517080032', 'spaceMachineFactory.deleteSpaceMachineFactory', 'API', '删除地磁厂家', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-05 22:06:05', '0');
-INSERT INTO `c_service` VALUES ('982024030536790027', 'parkingSpaceMachine.deleteParkingSpaceMachine', 'API', '删除车位地磁', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-05 22:49:05', '0');
-INSERT INTO `c_service` VALUES ('982024030542340025', 'parkingSpaceMachine.updateParkingSpaceMachine', 'API', '修改车位地磁', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-05 22:48:34', '0');
-INSERT INTO `c_service` VALUES ('982024030542580034', 'spaceMachineFactory.listSpaceMachineFactory', 'API', '查询地磁厂家', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2024-03-05 22:06:31', '0');
-INSERT INTO `c_service` VALUES ('982024030545520036', 'spaceMachineFactory.saveSpaceMachineFactory', 'API', '保存地磁厂家', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-05 22:07:05', '0');
-INSERT INTO `c_service` VALUES ('982024030559260023', 'parkingSpaceMachine.saveParkingSpaceMachine', 'API', '添加车位地磁', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-05 22:47:59', '0');
-INSERT INTO `c_service` VALUES ('982024030568460021', 'parkingSpaceMachine.listParkingSpaceMachine', 'API', '查询车位地磁', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2024-03-05 22:47:30', '0');
-INSERT INTO `c_service` VALUES ('982024030590950038', 'spaceMachineFactory.updateSpaceMachineFactory', 'API', '修改地磁厂家', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-05 22:07:30', '0');
-INSERT INTO `c_service` VALUES ('982024030711820161', 'parkingRegion.listParkingRegion', 'API', '查询停车区域', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2024-03-07 19:16:18', '0');
-INSERT INTO `c_service` VALUES ('982024030746710165', 'parkingRegion.saveParkingRegion', 'API', '保存停车区域', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-07 19:18:00', '0');
-INSERT INTO `c_service` VALUES ('982024030753340006', 'parkingArea.findCarInParkingArea', 'API', '停车场找车', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2024-03-07 00:21:09', '0');
-INSERT INTO `c_service` VALUES ('982024030759560163', 'parkingRegion.deleteParkingRegion', 'API', '删除停车区域', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-07 19:17:31', '0');
-INSERT INTO `c_service` VALUES ('982024030766450167', 'parkingRegion.updateParkingRegion', 'API', '修改停车区域', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-07 19:18:34', '0');
-INSERT INTO `c_service` VALUES ('982024030928520090', 'barrier.getCloudFlvVideo', 'API', '播放道闸云端视频', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2024-03-09 12:17:02', '0');
-INSERT INTO `c_service` VALUES ('982024031897040009', 'meterMachineLog.listMeterMachineLog', 'API', '开合闸记录', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2024-03-18 12:17:01', '0');
-INSERT INTO `c_service` VALUES ('982024040109560181', 'appUser.deleteAppUser', 'API', '删除房屋认证', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-04-01 23:01:53', '0');
-INSERT INTO `c_service` VALUES ('982024040284300183', 'owner.refreshAppUserBindingOwnerOpenId', 'API', '刷入openId', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-04-02 13:50:11', '0');
-INSERT INTO `c_service` VALUES ('982024041223290001', 'liftCamera.listLiftWarn', 'API', '查询电梯告警', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2024-04-12 01:37:26', '0');
-INSERT INTO `c_service` VALUES ('982024041252320003', 'liftCamera.saveLiftCamera', 'API', '保存电梯相机', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2024-04-12 01:37:55', '0');
-INSERT INTO `c_service` VALUES ('982024041261200332', 'liftCamera.deleteLiftCamera', 'API', '删除电梯相机', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2024-04-12 01:34:35', '0');
-INSERT INTO `c_service` VALUES ('982024041291520005', 'liftCamera.updateLiftCamera', 'API', '更新电梯相机', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2024-04-12 01:38:27', '0');
-INSERT INTO `c_service` VALUES ('982024041293420334', 'liftCamera.listLiftCamera', 'API', '查询电梯相机', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2024-04-12 01:35:06', '0');
-INSERT INTO `c_service` VALUES ('982024042017380067', 'initializeBuildingUnit.deleteBuildingUnit', 'API', '格式化小区', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2024-04-20 03:05:55', '0');
-INSERT INTO `c_service` VALUES ('982024050618900005', 'task.listTaskTemplate', 'API', '查询任务模版', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2024-05-06 17:31:58', '0');
-INSERT INTO `c_service` VALUES ('982024050620120008', 'task.listTaskTemplateSpec', 'API', '查询定时任务模版配置', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2024-05-06 17:33:05', '0');
-INSERT INTO `c_service` VALUES ('982024050636240032', 'task.stopTask', 'API', '停止任务', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2024-05-06 17:38:08', '0');
-INSERT INTO `c_service` VALUES ('982024050658880002', 'task.listTasks', 'API', '查询定时任务', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2024-05-06 17:31:05', '0');
-INSERT INTO `c_service` VALUES ('982024050672950011', 'task.saveTask', 'API', '保存定时任务', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2024-05-06 17:35:00', '0');
-INSERT INTO `c_service` VALUES ('982024050678070017', 'task.updateTask', 'API', '修改定时任务', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2024-05-06 17:35:46', '0');
-INSERT INTO `c_service` VALUES ('982024050693390030', 'task.startTask', 'API', '启动任务', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2024-05-06 17:37:32', '0');
-INSERT INTO `c_service` VALUES ('982024050695560025', 'task.deleteTask', 'API', '删除定时任务', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2024-05-06 17:36:34', '0');
-INSERT INTO `c_service` VALUES ('982024050808090009', 'whiteList.listWhiteList', 'API', '工牌白名单查询', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-05-08 16:26:42', '0');
-INSERT INTO `c_service` VALUES ('982024050881400041', 'workLicense.saveWhiteList', 'API', '工牌白名单设置', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-05-08 15:44:03', '0');
-INSERT INTO `c_service` VALUES ('982024051005320018', 'meterMachine.cleanMeterMachine', 'API', '清零', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2024-05-10 15:25:31', '0');
-INSERT INTO `c_service` VALUES ('982024051937800003', 'visit.queryWaitVisitCarNum', 'API', '查询待访客车辆', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-05-19 22:44:28', '0');
-INSERT INTO `c_service` VALUES ('982024051994860005', 'visit.propertyAuthVisit', 'API', '物业访客审核', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-05-19 08:29:04', '0');
-INSERT INTO `c_service` VALUES ('982024053116860017', 'telMachineUser.listTelMachineUser', 'API', '查询话机客服', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2024-05-31 22:57:47', '0');
-INSERT INTO `c_service` VALUES ('982024053126890004', 'telMachine.listTelMachine', 'API', '查询话机', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2024-05-31 21:51:16', '0');
-INSERT INTO `c_service` VALUES ('982024053137640006', 'telMachine.saveTelMachine', 'API', '保存话机', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-05-31 21:55:23', '0');
-INSERT INTO `c_service` VALUES ('982024053145600010', 'telMachine.updateTelMachine', 'API', '修改话机', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-05-31 21:56:34', '0');
-INSERT INTO `c_service` VALUES ('982024053147450004', 'telMachineUser.deleteTelMachineUser', 'API', '删除话机客服', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-05-31 23:07:21', '0');
-INSERT INTO `c_service` VALUES ('982024053157220008', 'telMachine.deleteTelMachine', 'API', '删除话机', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-05-31 21:55:52', '0');
-INSERT INTO `c_service` VALUES ('982024053161880015', 'telMachineUser.saveTelMachineUser', 'API', '保存话机客服', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-05-31 22:57:04', '0');
-INSERT INTO `c_service` VALUES ('982024053162770002', 'telSmsLog.listTelSmsLog', 'API', '查询短信记录', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2024-05-31 23:27:49', '0');
-INSERT INTO `c_service` VALUES ('982024053183550015', 'telCallLog.listTelCallLog', 'API', '查询通话记录', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2024-05-31 23:17:24', '0');
-INSERT INTO `c_service` VALUES ('982024060125180047', 'telTts.listTelTts', 'API', '查询语音tts', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2024-06-01 17:27:59', '0');
-INSERT INTO `c_service` VALUES ('982024060147580051', 'telTts.updateTelTts', 'API', '修改语音tts', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-06-01 17:28:49', '0');
-INSERT INTO `c_service` VALUES ('982024060166830045', 'telTts.saveTelTts', 'API', '添加电话tts', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-06-01 17:27:31', '0');
-INSERT INTO `c_service` VALUES ('982024060186680049', 'telTts.deleteTelTts', 'API', '删除语音tts', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-06-01 17:28:23', '0');
-INSERT INTO `c_service` VALUES ('982024070731150010', 'chargeRule.saveChargeRulePrice', 'API', '保存汽车充电费率', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-07-07 15:33:04', '0');
-INSERT INTO `c_service` VALUES ('982024070751420009', 'chargeRule.listChargeRulePrice', 'API', '汽车充电费用列表', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-07-07 15:32:37', '0');
-INSERT INTO `c_service` VALUES ('982024070764080011', 'chargeRule.updateChargeRulePrice', 'API', '更新汽车充电费率', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-07-07 15:33:46', '0');
-INSERT INTO `c_service` VALUES ('982024070784860008', 'chargeRule.deleteChargeRulePrice', 'API', '删除汽车充电费率', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-07-07 15:32:03', '0');
-INSERT INTO `c_service` VALUES ('982024071523780005', 'monitorMachine.getPlayVideoUrl', 'API', '查询监控播放视频', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-07-15 23:47:55', '0');
-INSERT INTO `c_service` VALUES ('982024071527820011', 'monitorManufactor.saveMonitorManufactor', 'API', '保存监控平台', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-07-15 21:29:43', '0');
-INSERT INTO `c_service` VALUES ('982024071560980009', 'monitorManufactor.listMonitorManufactor', 'API', '查询监控平台', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-07-15 21:29:11', '0');
-INSERT INTO `c_service` VALUES ('982024071566820013', 'monitorManufactor.updateMonitorManufactor', 'API', '修改监控平台', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-07-15 21:30:13', '0');
-INSERT INTO `c_service` VALUES ('982024071581310007', 'monitorManufactor.deleteMonitorManufactor', 'API', '删除监控平台', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-07-15 21:28:39', '0');
-INSERT INTO `c_service` VALUES ('982024071728920011', 'ad.updateAccessControlAd', 'API', '修改广告', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-07-17 00:02:51', '0');
-INSERT INTO `c_service` VALUES ('982024071738280032', 'ad.saveAccessControlAdRel', 'API', '删除广告门禁', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-07-17 00:37:22', '0');
-INSERT INTO `c_service` VALUES ('982024071744880028', 'ad.deleteAccessControlAdRel', 'API', '删除广告门禁', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-07-17 00:35:54', '0');
-INSERT INTO `c_service` VALUES ('982024071773860005', 'ad.deleteAccessControlAd', 'API', '删除广告', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-07-17 00:01:14', '0');
-INSERT INTO `c_service` VALUES ('982024071781320009', 'ad.saveAccessControlAd', 'API', '保存广告', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-07-17 00:02:22', '0');
-INSERT INTO `c_service` VALUES ('982024071793600030', 'ad.listAccessControlAdRel', 'API', '查询广告门禁', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-07-17 00:36:31', '0');
-INSERT INTO `c_service` VALUES ('982024071796220007', 'ad.listAccessControlAd', 'API', '查询广告', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-07-17 00:01:50', '0');
-INSERT INTO `c_service` VALUES ('982024071899800012', 'parkingSpace.carAddParkingSpace', 'API', '车位续租', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-07-18 15:08:48', '0');
-INSERT INTO `c_service` VALUES ('982024072079190001', 'monitorMachine.saveVideoPhoto', 'API', '监控照片', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-07-20 03:29:31', '0');
-INSERT INTO `c_service` VALUES ('982024072475180017', 'carInout.exceptionCarOut', 'API', '车辆异常出场', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2024-07-24 19:23:20', '0');
-INSERT INTO `c_service` VALUES ('982024072639820012', 'monitor.saveMonitorMachinePerson', 'API', '添加监控人员', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-07-26 16:56:58', '0');
-INSERT INTO `c_service` VALUES ('982024072662650007', 'monitor.deleteMonitorMachinePerson', 'API', '删除监控人员', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-07-26 16:54:19', '0');
-INSERT INTO `c_service` VALUES ('982024072694650010', 'monitor.listMonitorMachinePerson', 'API', '查询监控人员', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-07-26 16:55:31', '0');
-INSERT INTO `c_service` VALUES ('982024080817380004', 'monitorMachine.getRecordPlayVideoUrl', 'API', '查询监控录像地址', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-08-08 15:30:15', '0');
-INSERT INTO `c_service` VALUES ('982024080821440006', 'monitorMachine.listMonitorRecord', 'API', '查询监控录像', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-08-08 14:36:35', '0');
-INSERT INTO `c_service` VALUES ('982024080940340002', 'chargeMachine.stopCarCharge', 'API', '汽车停止充电', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-08-09 14:08:58', '0');
-INSERT INTO `c_service` VALUES ('982024080960680001', 'chargeMachine.startCarCharge', 'API', '汽车充电', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-08-09 14:08:25', '0');
-INSERT INTO `c_service` VALUES ('982024083007090011', 'callingPlatform.updateCallingPlatform', 'API', '更新呼叫平台', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:25:35', '0');
-INSERT INTO `c_service` VALUES ('982024083017950003', 'callingContact.saveCallingContact', 'API', '添加通讯录', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:19:22', '0');
-INSERT INTO `c_service` VALUES ('982024083022940002', 'callingContact.listCallingContact', 'API', '查询通讯录', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-08-30 15:18:52', '0');
-INSERT INTO `c_service` VALUES ('982024083023800005', 'callingDevice.listCallingDevice', 'API', '呼叫设备列表', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-08-30 15:21:05', '0');
-INSERT INTO `c_service` VALUES ('982024083024840001', 'callingContact.deleteCallingContact', 'API', '删除通讯录联系人', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:18:17', '0');
-INSERT INTO `c_service` VALUES ('982024083041380007', 'callingDevice.updateCallingDevice', 'API', '更新呼叫设备', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:23:33', '0');
-INSERT INTO `c_service` VALUES ('982024083050060006', 'callingDevice.saveCallingDevice', 'API', '添加呼叫设备', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:21:36', '0');
-INSERT INTO `c_service` VALUES ('982024083059280004', 'callingDevice.deleteCallingDevice', 'API', '删除呼叫设备', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:20:35', '0');
-INSERT INTO `c_service` VALUES ('982024083060810009', 'callingPlatform.listCallingPlatform', 'API', '呼叫平台列表', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-08-30 15:24:48', '0');
-INSERT INTO `c_service` VALUES ('982024083084680010', 'callingPlatform.saveCallingPlatform', 'API', '保存呼叫平台', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:25:13', '0');
-INSERT INTO `c_service` VALUES ('982024083099030008', 'callingPlatform.deleteCallingPlatform', 'API', '删除呼叫平台', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:24:21', '0');
-INSERT INTO `c_service` VALUES ('982024090430200001', 'api/sipex/cloud/openapi/account/query', 'API', '门禁机通讯录', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-09-04 09:31:41', '1');
-INSERT INTO `c_service` VALUES ('982024091080390007', 'owner.transforOwnerUser', 'API', '同步业主信息', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-09-10 14:08:11', '0');
-INSERT INTO `c_service` VALUES ('982024091961010002', 'user.ownerUserLoginByOpenId', 'API', '用户登录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-09-19 11:26:00', '0');
-INSERT INTO `c_service` VALUES ('982024091980400003', 'user.listStaffsNoInOrg', 'API', '查询组织', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2024-09-19 14:46:45', '0');
-INSERT INTO `c_service` VALUES ('982024091997820005', 'user.saveStaffOrgRel', 'API', '保存员工组织关系', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-09-19 14:53:58', '0');
-INSERT INTO `c_service` VALUES ('982024110556970007', 'monitorArea.getMonitorArea', 'API', '查询监控区域', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-11-05 13:49:25', '0');
-INSERT INTO `c_service` VALUES ('982024110582600006', 'ai.getAiAlter', 'API', 'AI告警', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-11-05 22:23:10', '0');
-INSERT INTO `c_service` VALUES ('982024110586520022', 'monitor.deleteMonitorCollect', 'API', '删除监控收藏', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-11-05 23:48:26', '0');
-INSERT INTO `c_service` VALUES ('982024110588670026', 'monitor.saveMonitorCollect', 'API', '保存收藏视频', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-11-05 23:49:31', '0');
-INSERT INTO `c_service` VALUES ('982024110596570024', 'monitor.listMonitorCollect', 'API', '查询收藏监控', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-11-05 23:48:57', '0');
-INSERT INTO `c_service` VALUES ('982024112002020092', 'chargeMachine.heartbeatCarCharge', 'API', '检查开启充电', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-11-20 02:28:04', '0');
-INSERT INTO `c_service` VALUES ('982024112953250005', 'coupon.listCouponPropertyUser', 'API', '查询用户优惠券', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2024-11-29 14:38:41', '0');
-INSERT INTO `c_service` VALUES ('982024112972771058', 'chargeMachine.queryCarChargeProcess', 'API', '查询车辆充电进度', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-11-29 01:04:14', '0');
-INSERT INTO `c_service` VALUES ('982024120600410001', 'account.deleteAccount', 'API', '删除账户', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2024-12-06 15:06:31', '0');
-INSERT INTO `c_service` VALUES ('982024120606850007', 'account.queryOwnerAccountDetail', 'API', '查询账户明细', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2024-12-06 15:48:44', '0');
-INSERT INTO `c_service` VALUES ('982024120613080003', 'account.ownerPrestoreAccount', 'API', '预存账户', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2024-12-06 15:18:19', '0');
-INSERT INTO `c_service` VALUES ('982024120687470005', 'account.queryCommunityAccount', 'API', '查询小区账户', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2024-12-06 14:16:41', '0');
-INSERT INTO `c_service` VALUES ('982024121397660036', 'ai.queryMonitorCamera', 'API', '查询监控相机', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-12-13 15:35:38', '0');
-INSERT INTO `c_service` VALUES ('982024121407310001', 'ai.getDispatchLog', 'API', '查询布控告警', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-12-14 02:47:53', '0');
-INSERT INTO `c_service` VALUES ('982024121412750001', 'ai.getPersonFace', 'API', '查询人员', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-12-14 02:41:07', '0');
-INSERT INTO `c_service` VALUES ('982024121475360001', 'ai.getFaceLog', 'API', '查询人脸抓拍记录', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-12-14 03:14:04', '0');
-INSERT INTO `c_service` VALUES ('982024121634210005', 'ai.deleteDispatchFace', 'API', '删除布控人员', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-12-16 15:18:46', '0');
-INSERT INTO `c_service` VALUES ('982024121675340012', 'ai.saveDispatchFace', 'API', '添加布控人员', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-12-16 13:29:16', '0');
-INSERT INTO `c_service` VALUES ('982024121711230005', 'ai.getIntercomLog', 'API', '查询呼叫记录', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-12-17 11:33:45', '0');
-INSERT INTO `c_service` VALUES ('982025012224700005', 'chargePeakAlleyPrice.listChargePeakAlleyPrice', 'API', '查询AlleyPrice', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-01-22 23:56:38', '0');
-INSERT INTO `c_service` VALUES ('982025012233540002', 'charge.queryMyChargeOrder', 'API', '查询我的充电订单', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-01-22 10:55:38', '0');
-INSERT INTO `c_service` VALUES ('982025012235010007', 'chargePeakAlleyPrice.saveChargePeakAlleyPrice', 'API', '保存AlleyPrice', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2025-01-22 23:57:15', '0');
-INSERT INTO `c_service` VALUES ('982025012320700047', 'parkingCoupon.listParkingCouponCharge', 'API', '查询充电停车券', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2025-01-23 00:24:15', '0');
-INSERT INTO `c_service` VALUES ('982025012332820049', 'parkingCoupon.saveParkingCouponCharge', 'API', '保存充电停车券', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2025-01-23 00:25:13', '0');
-INSERT INTO `c_service` VALUES ('982025012354130006', 'user.saveUserChargeCar', 'API', '添加用户充电车牌', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2025-01-23 01:17:12', '0');
-INSERT INTO `c_service` VALUES ('982025012356360051', 'parkingCoupon.deleteParkingCouponCharge', 'API', '删除充电停车券', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2025-01-23 00:26:02', '0');
-INSERT INTO `c_service` VALUES ('982025012380870004', 'user.getUserChargeCar', 'API', '查询用户充电车牌', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2025-01-23 01:16:43', '0');
-INSERT INTO `c_service` VALUES ('982025022535130005', 'chargeMachine.throwStopCharge', 'API', '异常结束订单', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2025-02-25 11:39:56', '0');
-INSERT INTO `c_service` VALUES ('982025030834160008', 'area.deleteCityArea', 'API', '删除地区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2025-03-08 12:21:32', '0');
-INSERT INTO `c_service` VALUES ('982025030872900014', 'area.updateCityArea', 'API', '修改地区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2025-03-08 12:22:52', '0');
-INSERT INTO `c_service` VALUES ('982025030877680012', 'area.saveCityArea', 'API', '添加地区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2025-03-08 12:22:27', '0');
-INSERT INTO `c_service` VALUES ('982025030896460010', 'area.queryAreaTree', 'API', '查询地区树', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2025-03-08 12:22:02', '0');
-INSERT INTO `c_service` VALUES ('982025031267090023', 'accessControl.listAdminAccessControl', 'API', '运营查询门禁', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2025-03-12 20:33:40', '0');
-INSERT INTO `c_service` VALUES ('982025031300250008', 'room.queryAdminRooms', 'API', '运营查询房屋', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2025-03-13 22:37:29', '0');
-INSERT INTO `c_service` VALUES ('982025031306220012', 'barrier.listAdminBarrier', 'API', '运营查询道闸相机', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2025-03-13 15:43:57', '0');
-INSERT INTO `c_service` VALUES ('982025031308290004', 'meterMachine.listAdminMeterReadRechargeDetail', 'API', '运营查询抄表记录', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2025-03-13 22:46:10', '0');
-INSERT INTO `c_service` VALUES ('982025031313730001', 'chargeMachine.listAdminChargeMachinePort', 'API', '运营查询充电端口', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-03-13 18:15:48', '0');
-INSERT INTO `c_service` VALUES ('982025031318890001', 'accessControlInout.listAdminAccessControlInout', 'API', '运营查询门禁进出', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2025-03-13 14:39:27', '0');
-INSERT INTO `c_service` VALUES ('982025031319360001', 'parkingCoupon.listAdminParkingCouponCharge', 'API', '运营查询充电券', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2025-03-13 18:34:36', '0');
-INSERT INTO `c_service` VALUES ('982025031324010001', 'accessControlOrg.listAdminAccessControlOrg', 'API', '运营查询门禁组织', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2025-03-13 14:28:04', '0');
-INSERT INTO `c_service` VALUES ('982025031324310001', 'chargeRule.listAdminChargeRulePrice', 'API', '运营查询充电价格', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-03-13 18:24:49', '0');
-INSERT INTO `c_service` VALUES ('982025031330240003', 'accessControlFace.listAdminAccessControlFace', 'API', '运营查询门禁人脸', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2025-03-13 13:56:22', '0');
-INSERT INTO `c_service` VALUES ('982025031331770001', 'accessControlLog.listAdminAccessControlLog', 'API', '运营查询门禁日志', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2025-03-13 14:35:44', '0');
-INSERT INTO `c_service` VALUES ('982025031334340003', 'chargeRule.listAdminChargeRuleFee', 'API', '运营查询充电规则', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-03-13 18:21:00', '0');
-INSERT INTO `c_service` VALUES ('982025031356050012', 'chargeMachine.listAdminChargeMachine', 'API', '运营查询充电桩', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-03-13 17:51:36', '0');
-INSERT INTO `c_service` VALUES ('982025031365190001', 'chargeMachine.listAdminChargeMachineOrderAcct', 'API', '运营查询充电订单账户', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-03-13 19:42:14', '0');
-INSERT INTO `c_service` VALUES ('982025031370960035', 'meterMachine.listAdminMeterMachine', 'API', '运营查询水电表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2025-03-13 21:39:21', '0');
-INSERT INTO `c_service` VALUES ('982025031379920001', 'account.queryAdminOwnerAccount', 'API', '运营查询业主账户', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2025-03-13 18:39:40', '0');
-INSERT INTO `c_service` VALUES ('982025031387930004', 'chargeMachine.listAdminChargeMachineOrder', 'API', '运营查询充电订单', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-03-13 18:28:36', '0');
-INSERT INTO `c_service` VALUES ('982025031392820001', 'accessControlFloor.listAdminAccessControlFloor', 'API', '运营访问门禁楼栋', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2025-03-13 14:21:43', '0');
-INSERT INTO `c_service` VALUES ('982025031401190001', 'common.openAdminApi', 'API', 'admin通用接口', '1', 'CMD', 'http://iot-openapi', 'GET', '60', '3', '2025-03-14 12:46:57', '0');
-INSERT INTO `c_service` VALUES ('982025031401240014', 'carInoutDetail.listAdminCarInoutDetail', 'API', '运营查询车辆进出', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2025-03-14 11:08:52', '0');
-INSERT INTO `c_service` VALUES ('982025031402230022', 'meterMachineCharge.listAdminMeterCharge', 'API', '运营查询充电记录', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2025-03-14 11:48:23', '0');
-INSERT INTO `c_service` VALUES ('982025032852760002', 'login.phoneWechatLogin', 'API', '微信一键登陆', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2025-03-28 16:48:39', '0');
-INSERT INTO `c_service` VALUES ('982025032893260018', 'wechat.getWechatMiniOpenId', 'API', '小程序查询openId', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2025-03-28 19:45:08', '0');
-INSERT INTO `c_service` VALUES ('982025040135040007', 'charge.queryPhoneChargeOrder', 'API', '用户查询充电订单', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-04-01 09:45:18', '0');
-
--- ----------------------------
--- Table structure for c_service_business
--- ----------------------------
-DROP TABLE IF EXISTS `c_service_business`;
-CREATE TABLE `c_service_business` (
-  `service_business_id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `business_type_cd` varchar(12) DEFAULT NULL,
-  `invoke_type` varchar(4) NOT NULL COMMENT '调用类型，1 http-post(微服务内应用) 2 webservice 3 http-post(微服务之外应用)',
-  `url` varchar(200) DEFAULT NULL COMMENT '目标地址',
-  `message_topic` varchar(50) DEFAULT NULL COMMENT '异步时的消息topic名称',
-  `timeout` int NOT NULL DEFAULT '60' COMMENT '超时时间',
-  `retry_count` int NOT NULL DEFAULT '3' COMMENT '重试次数',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
-  PRIMARY KEY (`service_business_id`),
-  UNIQUE KEY `business_type_cd` (`business_type_cd`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of c_service_business
--- ----------------------------
-INSERT INTO `c_service_business` VALUES ('1', 'abc', '1', 'sdf', 's', '60', '3', '2023-02-12 20:12:36', '1');
-
--- ----------------------------
--- Table structure for c_service_sql
--- ----------------------------
-DROP TABLE IF EXISTS `c_service_sql`;
-CREATE TABLE `c_service_sql` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `service_code` varchar(50) NOT NULL COMMENT '对应c_service表',
-  `name` varchar(50) NOT NULL COMMENT '名称',
-  `params` varchar(500) NOT NULL COMMENT '参数',
-  `query_model` varchar(1) NOT NULL COMMENT '查询方式 1、sql,2、存储过程',
-  `sql` longtext COMMENT '执行sql',
-  `proc` varchar(200) DEFAULT NULL COMMENT '存储过程名称',
-  `java_script` longtext COMMENT '执行java脚本代码',
-  `template` longtext COMMENT '输出模板',
-  `remark` varchar(200) DEFAULT NULL COMMENT '描述',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `service_code` (`service_code`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of c_service_sql
--- ----------------------------
-
--- ----------------------------
 -- Table structure for calling_contact
 -- ----------------------------
 DROP TABLE IF EXISTS `calling_contact`;
 CREATE TABLE `calling_contact` (
-  `contact_id` varchar(30)  NOT NULL COMMENT '设备ID',
-  `device_id` varchar(64)  NOT NULL COMMENT '设备名称',
-  `community_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '小区ID',
-  `platform_id` varchar(30)  NOT NULL COMMENT '呼叫平台id',
-  `machine_id` varchar(30)  NOT NULL COMMENT '门禁机',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '备注',
+  `contact_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `device_id` varchar(64) NOT NULL COMMENT '设备名称',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `platform_id` varchar(30) NOT NULL COMMENT '呼叫平台id',
+  `machine_id` varchar(30) NOT NULL COMMENT '门禁机',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`contact_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -2807,16 +881,16 @@ INSERT INTO `calling_contact` VALUES ('252024090591790012', '242024083005220021'
 -- ----------------------------
 DROP TABLE IF EXISTS `calling_device`;
 CREATE TABLE `calling_device` (
-  `device_id` varchar(30)  NOT NULL DEFAULT '1' COMMENT '设备ID',
-  `device_name` varchar(64)  NOT NULL COMMENT '设备名称',
-  `community_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '小区ID',
-  `platform_id` varchar(30)  NOT NULL COMMENT '呼叫平台id',
-  `calling_type` varchar(8)  DEFAULT '1' COMMENT '设备类型，1室内机，2 管理机',
-  `calling_num` varchar(30)  NOT NULL COMMENT '呼叫号码',
-  `password` varchar(20)  DEFAULT NULL COMMENT '用户密码（明文）',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '备注',
+  `device_id` varchar(30) NOT NULL DEFAULT '1' COMMENT '设备ID',
+  `device_name` varchar(64) NOT NULL COMMENT '设备名称',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `platform_id` varchar(30) NOT NULL COMMENT '呼叫平台id',
+  `calling_type` varchar(8) DEFAULT '1' COMMENT '设备类型，1室内机，2 管理机',
+  `calling_num` varchar(30) NOT NULL COMMENT '呼叫号码',
+  `password` varchar(20) DEFAULT NULL COMMENT '用户密码（明文）',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`device_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -2832,15 +906,15 @@ INSERT INTO `calling_device` VALUES ('242024090584230019', 'fs室内机', '20230
 -- ----------------------------
 DROP TABLE IF EXISTS `calling_platform`;
 CREATE TABLE `calling_platform` (
-  `platform_id` varchar(30)  NOT NULL COMMENT '平台ID',
-  `community_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '小区ID',
-  `platform_name` varchar(64)  NOT NULL COMMENT '平台名称',
-  `ip_addr` varchar(30)  NOT NULL COMMENT 'IP地址',
-  `port` varchar(8)  NOT NULL COMMENT '端口',
-  `port_type` varchar(8)  DEFAULT NULL COMMENT '通讯协议，1001 TCP，1002 UDP',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '备注',
+  `platform_id` varchar(30) NOT NULL COMMENT '平台ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `platform_name` varchar(64) NOT NULL COMMENT '平台名称',
+  `ip_addr` varchar(30) NOT NULL COMMENT 'IP地址',
+  `port` varchar(8) NOT NULL COMMENT '端口',
+  `port_type` varchar(8) DEFAULT NULL COMMENT '通讯协议，1001 TCP，1002 UDP',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`platform_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -2980,7 +1054,7 @@ DROP TABLE IF EXISTS `car_month_card`;
 CREATE TABLE `car_month_card` (
   `card_id` varchar(30) NOT NULL COMMENT '卡ID',
   `card_name` varchar(200) NOT NULL COMMENT '名称',
-  `card_month` int NOT NULL DEFAULT '1' COMMENT '月',
+  `card_month` int(11) NOT NULL DEFAULT '1' COMMENT '月',
   `card_price` decimal(10,2) NOT NULL COMMENT '月价',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `pa_id` varchar(30) NOT NULL COMMENT '车位ID',
@@ -3028,21 +1102,21 @@ CREATE TABLE `car_month_order` (
 -- ----------------------------
 DROP TABLE IF EXISTS `charge_coupon_park`;
 CREATE TABLE `charge_coupon_park` (
-  `ccp_id` varchar(30)  NOT NULL COMMENT '配置ID',
-  `community_id` varchar(30)  NOT NULL COMMENT '小区ID',
-  `name` varchar(100)  NOT NULL COMMENT '规则名称',
-  `machine_id` varchar(30)  NOT NULL COMMENT '充电桩ID',
-  `machine_name` varchar(200)  NOT NULL COMMENT '充电桩',
-  `shop_id` varchar(30)  NOT NULL COMMENT '商店ID',
-  `shop_name` varchar(100)  NOT NULL COMMENT '店铺名称',
-  `coupon_id` varchar(30)  NOT NULL COMMENT '优惠券ID',
-  `coupon_name` varchar(30)  NOT NULL COMMENT '优惠券名称',
-  `min_min` tinyint DEFAULT NULL COMMENT '最小分钟数',
-  `max_min` tinyint DEFAULT NULL COMMENT '最大分钟数',
-  `state` varchar(12)  NOT NULL DEFAULT 'W' COMMENT '状态 W 失效 C 有效',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '说明',
+  `ccp_id` varchar(30) NOT NULL COMMENT '配置ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `name` varchar(100) NOT NULL COMMENT '规则名称',
+  `machine_id` varchar(30) NOT NULL COMMENT '充电桩ID',
+  `machine_name` varchar(200) NOT NULL COMMENT '充电桩',
+  `shop_id` varchar(30) NOT NULL COMMENT '商店ID',
+  `shop_name` varchar(100) NOT NULL COMMENT '店铺名称',
+  `coupon_id` varchar(30) NOT NULL COMMENT '优惠券ID',
+  `coupon_name` varchar(30) NOT NULL COMMENT '优惠券名称',
+  `min_min` tinyint(4) DEFAULT NULL COMMENT '最小分钟数',
+  `max_min` tinyint(4) DEFAULT NULL COMMENT '最大分钟数',
+  `state` varchar(12) NOT NULL DEFAULT 'W' COMMENT '状态 W 失效 C 有效',
+  `remark` varchar(512) DEFAULT NULL COMMENT '说明',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`ccp_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='充电汽车停车券配置';
 
@@ -3056,17 +1130,17 @@ INSERT INTO `charge_coupon_park` VALUES ('1111', '102023021386560001', '规则1'
 -- ----------------------------
 DROP TABLE IF EXISTS `charge_machine`;
 CREATE TABLE `charge_machine` (
-  `machine_id` varchar(30)  NOT NULL COMMENT '设备ID',
-  `machine_name` varchar(200)  NOT NULL COMMENT '名称',
-  `machine_code` varchar(30)  NOT NULL COMMENT '设备编号',
-  `impl_bean` varchar(30)  NOT NULL COMMENT '厂家',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `machine_name` varchar(200) NOT NULL COMMENT '名称',
+  `machine_code` varchar(30) NOT NULL COMMENT '设备编号',
+  `impl_bean` varchar(30) NOT NULL COMMENT '厂家',
   `energy_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '用量电价',
-  `community_id` varchar(30)  NOT NULL COMMENT '小区ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `heartbeat_time` datetime NOT NULL COMMENT '设备心跳时间',
-  `charge_type` varchar(8)  NOT NULL COMMENT '充电类型，1001 电动摩托车，1002 电动汽车',
+  `charge_type` varchar(8) NOT NULL COMMENT '充电类型，1001 电动摩托车，1002 电动汽车',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `rule_id` varchar(30)  NOT NULL COMMENT '规则',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `rule_id` varchar(30) NOT NULL COMMENT '规则',
   `monitor_id` varchar(30) DEFAULT NULL COMMENT '监控ID',
   `monitor_name` varchar(64) DEFAULT NULL COMMENT '监控名称',
   PRIMARY KEY (`machine_id`) USING BTREE
@@ -3075,23 +1149,18 @@ CREATE TABLE `charge_machine` (
 -- ----------------------------
 -- Records of charge_machine
 -- ----------------------------
-INSERT INTO `charge_machine` VALUES ('102025012329880014', '测试摩托充电桩', '1002022', '102024060549080002', '1.00', '102024121715970003', '2025-01-23 15:34:01', '1001', '2025-01-23 15:34:02', '0', '102025012344760003', '-1', null);
-INSERT INTO `charge_machine` VALUES ('102025012371590041', '测试充电桩', '001', '102024080966670003', '1.00', '102024121715970003', '2025-01-23 00:09:01', '1002', '2025-01-23 00:09:04', '0', '102025012261730003', '-1', null);
-INSERT INTO `charge_machine` VALUES ('102025032835310058', '大胆的', '123443', '102024080966670003', '1.00', '2024122649870005', '2025-03-28 17:44:50', '1001', '2025-03-28 17:44:51', '0', '102025032826030035', '-1', null);
-INSERT INTO `charge_machine` VALUES ('102025032844700041', '111', '111', '102024080966670003', '1.00', '2024122649870005', '2025-03-28 17:43:22', '1001', '2025-03-28 17:43:24', '0', '102025032826030035', '', null);
-INSERT INTO `charge_machine` VALUES ('102025032865650020', '111', '11234', '102024080966670003', '1.00', '2024122649870005', '2025-03-28 20:03:37', '1002', '2025-03-28 20:03:39', '0', '102025032801650004', '-1', null);
 
 -- ----------------------------
 -- Table structure for charge_machine_factory
 -- ----------------------------
 DROP TABLE IF EXISTS `charge_machine_factory`;
 CREATE TABLE `charge_machine_factory` (
-  `factory_id` varchar(30)  NOT NULL COMMENT '厂家ID',
-  `factory_name` varchar(64)  NOT NULL COMMENT '厂家名称',
-  `bean_impl` varchar(512)  NOT NULL COMMENT '厂家处理类',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '备注',
+  `factory_id` varchar(30) NOT NULL COMMENT '厂家ID',
+  `factory_name` varchar(64) NOT NULL COMMENT '厂家名称',
+  `bean_impl` varchar(512) NOT NULL COMMENT '厂家处理类',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`factory_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -3111,12 +1180,12 @@ INSERT INTO `charge_machine_factory` VALUES ('3', '驴充充', 'lvCCChargeMachin
 -- ----------------------------
 DROP TABLE IF EXISTS `charge_machine_factory_spec`;
 CREATE TABLE `charge_machine_factory_spec` (
-  `spec_id` varchar(30)  NOT NULL COMMENT '规格ID',
-  `factory_id` varchar(64)  NOT NULL COMMENT '厂家名称',
-  `spec_name` varchar(64)  NOT NULL COMMENT '规格名称',
+  `spec_id` varchar(30) NOT NULL COMMENT '规格ID',
+  `factory_id` varchar(64) NOT NULL COMMENT '厂家名称',
+  `spec_name` varchar(64) NOT NULL COMMENT '规格名称',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态',
-  `remark` varchar(256)  DEFAULT NULL COMMENT '描述',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `remark` varchar(256) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`spec_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -3132,22 +1201,22 @@ INSERT INTO `charge_machine_factory_spec` VALUES ('102023120483550003', '1020231
 DROP TABLE IF EXISTS `charge_machine_order`;
 CREATE TABLE `charge_machine_order` (
   `order_id` varchar(64) NOT NULL COMMENT '订单ID',
-  `person_id` varchar(30)  NOT NULL COMMENT '充电人',
-  `person_name` varchar(64)  NOT NULL COMMENT '名称',
-  `person_tel` varchar(11)  NOT NULL COMMENT '手机号',
-  `machine_id` varchar(30)  NOT NULL COMMENT '设备ID',
-  `port_id` varchar(200)  NOT NULL COMMENT '插槽',
+  `person_id` varchar(30) NOT NULL COMMENT '充电人',
+  `person_name` varchar(64) NOT NULL COMMENT '名称',
+  `person_tel` varchar(11) NOT NULL COMMENT '手机号',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `port_id` varchar(200) NOT NULL COMMENT '插槽',
   `charge_hours` decimal(10,2) DEFAULT '0.00' COMMENT '充电小时',
   `energy` decimal(10,2) DEFAULT '0.00' COMMENT '充电量',
-  `community_id` varchar(30)  NOT NULL COMMENT '小区ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `start_time` datetime NOT NULL COMMENT '开始充电时间',
   `end_time` datetime DEFAULT NULL COMMENT '结束充电时间',
-  `acct_detail_id` varchar(30)  NOT NULL COMMENT '扣款账户明细',
+  `acct_detail_id` varchar(30) NOT NULL COMMENT '扣款账户明细',
   `amount` decimal(10,2) NOT NULL COMMENT '扣款金额',
-  `state` varchar(12)  NOT NULL DEFAULT 'FREE' COMMENT '插座状态，设备插座工作状态，1001 充电中  2002 充电完成 3003 充电失败',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '说明',
+  `state` varchar(12) NOT NULL DEFAULT 'FREE' COMMENT '插座状态，设备插座工作状态，1001 充电中  2002 充电完成 3003 充电失败',
+  `remark` varchar(512) DEFAULT NULL COMMENT '说明',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `duration_price` decimal(10,2) DEFAULT '0.00' COMMENT '小时电价',
   `service_price` decimal(10,2) DEFAULT '0.00' COMMENT '服务费',
   PRIMARY KEY (`order_id`) USING BTREE,
@@ -3166,18 +1235,18 @@ CREATE TABLE `charge_machine_order` (
 -- ----------------------------
 DROP TABLE IF EXISTS `charge_machine_order_acct`;
 CREATE TABLE `charge_machine_order_acct` (
-  `cmoa_id` varchar(30)  NOT NULL COMMENT '订单ID',
+  `cmoa_id` varchar(30) NOT NULL COMMENT '订单ID',
   `order_id` varchar(64) NOT NULL COMMENT '订单ID',
-  `acct_id` varchar(30)  NOT NULL COMMENT '账户ID',
-  `acct_detail_id` varchar(30)  NOT NULL COMMENT '账户明细ID',
+  `acct_id` varchar(30) NOT NULL COMMENT '账户ID',
+  `acct_detail_id` varchar(30) NOT NULL COMMENT '账户明细ID',
   `energy` decimal(10,2) DEFAULT '0.00' COMMENT '充电量',
-  `community_id` varchar(30)  NOT NULL COMMENT '小区ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `start_time` datetime NOT NULL COMMENT '扣款开始时间',
   `end_time` datetime NOT NULL COMMENT '扣款结束时间',
   `amount` decimal(10,2) NOT NULL COMMENT '扣款金额',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '说明',
+  `remark` varchar(512) DEFAULT NULL COMMENT '说明',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `duration_price` decimal(10,2) DEFAULT '0.00' COMMENT '小时电价',
   PRIMARY KEY (`cmoa_id`) USING BTREE,
   KEY `i_cmoa_order_id` (`order_id`)
@@ -3192,16 +1261,16 @@ CREATE TABLE `charge_machine_order_acct` (
 -- ----------------------------
 DROP TABLE IF EXISTS `charge_machine_order_coupon`;
 CREATE TABLE `charge_machine_order_coupon` (
-  `cmoc_id` varchar(30)  NOT NULL COMMENT '订单ID',
-  `order_id` varchar(30)  NOT NULL COMMENT '订单ID',
-  `coupon_id` varchar(30)  NOT NULL COMMENT '优惠券ID',
-  `coupon_name` varchar(30)  NOT NULL COMMENT '优惠券名称',
+  `cmoc_id` varchar(30) NOT NULL COMMENT '订单ID',
+  `order_id` varchar(30) NOT NULL COMMENT '订单ID',
+  `coupon_id` varchar(30) NOT NULL COMMENT '优惠券ID',
+  `coupon_name` varchar(30) NOT NULL COMMENT '优惠券名称',
   `hours` decimal(10,2) DEFAULT '0.00' COMMENT '优惠小时',
-  `community_id` varchar(30)  NOT NULL COMMENT '小区ID',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '说明',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `remark` varchar(512) DEFAULT NULL COMMENT '说明',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `state` varchar(12)  NOT NULL DEFAULT 'W' COMMENT '状态 W 待使用 C 已使用',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `state` varchar(12) NOT NULL DEFAULT 'W' COMMENT '状态 W 待使用 C 已使用',
   PRIMARY KEY (`cmoc_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -3214,45 +1283,34 @@ CREATE TABLE `charge_machine_order_coupon` (
 -- ----------------------------
 DROP TABLE IF EXISTS `charge_machine_port`;
 CREATE TABLE `charge_machine_port` (
-  `port_id` varchar(30)  NOT NULL COMMENT '表ID',
-  `machine_id` varchar(30)  NOT NULL COMMENT '表ID',
-  `port_name` varchar(200)  NOT NULL COMMENT '插座名称',
-  `port_code` varchar(30)  NOT NULL COMMENT '插座编号',
-  `state` varchar(12)  NOT NULL DEFAULT 'FREE' COMMENT '插座状态，设备插座工作状态，FREE 空闲，WORKING 忙碌，BREAKDOWN 故障',
-  `community_id` varchar(30)  NOT NULL COMMENT '小区ID',
+  `port_id` varchar(30) NOT NULL COMMENT '表ID',
+  `machine_id` varchar(30) NOT NULL COMMENT '表ID',
+  `port_name` varchar(200) NOT NULL COMMENT '插座名称',
+  `port_code` varchar(30) NOT NULL COMMENT '插座编号',
+  `state` varchar(12) NOT NULL DEFAULT 'FREE' COMMENT '插座状态，设备插座工作状态，FREE 空闲，WORKING 忙碌，BREAKDOWN 故障',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`port_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of charge_machine_port
 -- ----------------------------
-INSERT INTO `charge_machine_port` VALUES ('102025012320860018', '102025012329880014', '2号插座', '2', 'FREE', '102024121715970003', '2025-01-23 15:34:04', '0');
-INSERT INTO `charge_machine_port` VALUES ('102025012325910043', '102025012371590041', 'A桩', '1', 'FREE', '102024121715970003', '2025-01-23 00:09:05', '0');
-INSERT INTO `charge_machine_port` VALUES ('102025012362480045', '102025012371590041', 'B桩', '2', 'FREE', '102024121715970003', '2025-01-23 00:09:05', '0');
-INSERT INTO `charge_machine_port` VALUES ('102025012382170016', '102025012329880014', '1号插座', '1', 'FREE', '102024121715970003', '2025-01-23 15:34:03', '0');
-INSERT INTO `charge_machine_port` VALUES ('102025032809720043', '102025032844700041', '1号插座', '1', 'FREE', '2024122649870005', '2025-03-28 17:43:24', '0');
-INSERT INTO `charge_machine_port` VALUES ('102025032812880022', '102025032865650020', 'A桩', '1', 'FREE', '2024122649870005', '2025-03-28 20:03:39', '0');
-INSERT INTO `charge_machine_port` VALUES ('102025032814610062', '102025032835310058', '2号插座', '2', 'FREE', '2024122649870005', '2025-03-28 17:44:53', '0');
-INSERT INTO `charge_machine_port` VALUES ('102025032816930024', '102025032865650020', 'B桩', '2', 'FREE', '2024122649870005', '2025-03-28 20:03:40', '0');
-INSERT INTO `charge_machine_port` VALUES ('102025032831540060', '102025032835310058', '1号插座', '1', 'FREE', '2024122649870005', '2025-03-28 17:44:52', '0');
-INSERT INTO `charge_machine_port` VALUES ('102025032875130064', '102025032835310058', '3号插座', '3', 'FREE', '2024122649870005', '2025-03-28 17:44:54', '0');
-INSERT INTO `charge_machine_port` VALUES ('102025032878670045', '102025032844700041', '2号插座', '2', 'FREE', '2024122649870005', '2025-03-28 17:43:25', '0');
 
 -- ----------------------------
 -- Table structure for charge_machine_spec
 -- ----------------------------
 DROP TABLE IF EXISTS `charge_machine_spec`;
 CREATE TABLE `charge_machine_spec` (
-  `cms_id` varchar(30)  NOT NULL COMMENT '主键ID',
-  `machine_id` varchar(30)  NOT NULL COMMENT '设备ID',
-  `community_id` varchar(30)  NOT NULL COMMENT '小区ID',
-  `spec_id` varchar(30)  NOT NULL COMMENT '规格ID',
-  `spec_name` varchar(64)  NOT NULL COMMENT '规格名称',
-  `spec_value` varchar(30)  NOT NULL COMMENT '规格值',
+  `cms_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `spec_id` varchar(30) NOT NULL COMMENT '规格ID',
+  `spec_name` varchar(64) NOT NULL COMMENT '规格名称',
+  `spec_value` varchar(30) NOT NULL COMMENT '规格值',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`cms_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -3267,15 +1325,15 @@ INSERT INTO `charge_machine_spec` VALUES ('102023120483210016', '102023120490480
 -- ----------------------------
 DROP TABLE IF EXISTS `charge_month_card`;
 CREATE TABLE `charge_month_card` (
-  `card_id` varchar(30)  NOT NULL COMMENT '卡ID',
-  `card_name` varchar(200)  NOT NULL COMMENT '名称',
-  `card_month` int NOT NULL DEFAULT '1' COMMENT '月',
+  `card_id` varchar(30) NOT NULL COMMENT '卡ID',
+  `card_name` varchar(200) NOT NULL COMMENT '名称',
+  `card_month` int(11) NOT NULL DEFAULT '1' COMMENT '月',
   `card_price` decimal(10,2) NOT NULL COMMENT '月价',
-  `day_hours` varchar(30)  NOT NULL COMMENT '每日充电小时',
-  `community_id` varchar(30)  NOT NULL COMMENT '小区ID',
+  `day_hours` varchar(30) NOT NULL COMMENT '每日充电小时',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '备注',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`card_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -3288,19 +1346,19 @@ CREATE TABLE `charge_month_card` (
 -- ----------------------------
 DROP TABLE IF EXISTS `charge_month_order`;
 CREATE TABLE `charge_month_order` (
-  `order_id` varchar(30)  NOT NULL COMMENT '订单ID',
-  `card_id` varchar(30)  NOT NULL COMMENT '卡ID',
-  `person_name` varchar(64)  NOT NULL COMMENT '充电人',
-  `person_tel` varchar(11)  NOT NULL COMMENT '充电电话',
-  `community_id` varchar(30)  NOT NULL COMMENT '小区ID',
+  `order_id` varchar(30) NOT NULL COMMENT '订单ID',
+  `card_id` varchar(30) NOT NULL COMMENT '卡ID',
+  `person_name` varchar(64) NOT NULL COMMENT '充电人',
+  `person_tel` varchar(11) NOT NULL COMMENT '充电电话',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `prime_rate` decimal(10,2) NOT NULL COMMENT '支付方式',
   `receivable_amount` decimal(10,2) NOT NULL COMMENT '应收金额',
   `received_amount` decimal(10,2) NOT NULL COMMENT '实收金额',
   `start_time` datetime DEFAULT NULL COMMENT '费用开始时间',
   `end_time` datetime DEFAULT NULL COMMENT '费用结束时间',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '备注',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`order_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -3382,12 +1440,12 @@ CREATE TABLE `charge_process_analysis` (
 -- ----------------------------
 DROP TABLE IF EXISTS `charge_rule`;
 CREATE TABLE `charge_rule` (
-  `rule_id` varchar(30)  NOT NULL COMMENT '规则ID',
-  `rule_name` varchar(64)  NOT NULL COMMENT '规则名称',
-  `community_id` varchar(30)  NOT NULL COMMENT '小区ID',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '备注',
+  `rule_id` varchar(30) NOT NULL COMMENT '规则ID',
+  `rule_name` varchar(64) NOT NULL COMMENT '规则名称',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `charge_type` varchar(8) NOT NULL COMMENT '充电类型，1001 电动摩托车，1002 电动汽车',
   PRIMARY KEY (`rule_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
@@ -3395,28 +1453,24 @@ CREATE TABLE `charge_rule` (
 -- ----------------------------
 -- Records of charge_rule
 -- ----------------------------
-INSERT INTO `charge_rule` VALUES ('102025012261730003', '汽车充电桩', '102024121715970003', '1', '2025-01-22 23:54:36', '0', '1002');
-INSERT INTO `charge_rule` VALUES ('102025012344760003', '两轮充电桩', '102024121715970003', '是', '2025-01-23 13:24:46', '0', '1001');
-INSERT INTO `charge_rule` VALUES ('102025032801650004', '电动车', '2024122649870005', '', '2025-03-28 20:02:17', '0', '1002');
-INSERT INTO `charge_rule` VALUES ('102025032826030035', '1', '2024122649870005', '1', '2025-03-28 17:42:49', '0', '1001');
 
 -- ----------------------------
 -- Table structure for charge_rule_fee
 -- ----------------------------
 DROP TABLE IF EXISTS `charge_rule_fee`;
 CREATE TABLE `charge_rule_fee` (
-  `crf_id` varchar(30)  NOT NULL COMMENT '规则ID',
-  `rule_id` varchar(30)  NOT NULL COMMENT '规则ID',
+  `crf_id` varchar(30) NOT NULL COMMENT '规则ID',
+  `rule_id` varchar(30) NOT NULL COMMENT '规则ID',
   `min_energy_price` decimal(10,2) DEFAULT NULL COMMENT '最小功率',
   `max_energy_price` decimal(10,2) DEFAULT NULL COMMENT '最大功率',
   `start_time` time DEFAULT NULL COMMENT '时段开始时间',
   `end_time` time DEFAULT NULL COMMENT '时段结束时间',
   `duration_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '小时电价',
-  `community_id` varchar(30)  NOT NULL COMMENT '小区ID',
-  `charge_type` varchar(8)  NOT NULL COMMENT '充电类型，1001 电动摩托车，1002 电动汽车',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '备注',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `charge_type` varchar(8) NOT NULL COMMENT '充电类型，1001 电动摩托车，1002 电动汽车',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `service_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '服务单价',
   PRIMARY KEY (`crf_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
@@ -3424,10 +1478,6 @@ CREATE TABLE `charge_rule_fee` (
 -- ----------------------------
 -- Records of charge_rule_fee
 -- ----------------------------
-INSERT INTO `charge_rule_fee` VALUES ('102025012378840006', '102025012344760003', '1.00', '1.00', null, null, '1.00', '102024121715970003', '1001', '1', '2025-01-23 13:25:11', '1', '0.20');
-INSERT INTO `charge_rule_fee` VALUES ('102025012395020011', '102025012344760003', '0.00', '800.00', null, null, '0.30', '102024121715970003', '1001', '1', '2025-01-23 15:02:27', '0', '0.20');
-INSERT INTO `charge_rule_fee` VALUES ('102025012398110006', '102025012344760003', '0.00', '300.00', null, null, '0.35', '102024121715970003', '1001', '12', '2025-01-23 14:55:46', '1', '0.40');
-INSERT INTO `charge_rule_fee` VALUES ('102025032843410052', '102025032826030035', '0.00', '1000.00', null, null, '0.20', '2024122649870005', '1001', '111', '2025-03-28 17:44:08', '0', '0.50');
 
 -- ----------------------------
 -- Table structure for charge_rule_price
@@ -3451,8 +1501,6 @@ CREATE TABLE `charge_rule_price` (
 -- ----------------------------
 -- Records of charge_rule_price
 -- ----------------------------
-INSERT INTO `charge_rule_price` VALUES ('372025012350840036', '102025012261730003', '01:00', '23:50', '0.10', '0.20', '102024121715970003', '1', '2025-01-23 00:08:26', '0', '232025012341790023');
-INSERT INTO `charge_rule_price` VALUES ('372025032899520017', '102025032801650004', '00:00', '23:55', '1.00', '1.00', '2024122649870005', '是', '2025-03-28 20:02:54', '0', '232025032808260008');
 
 -- ----------------------------
 -- Table structure for city_area
@@ -3460,15 +1508,15 @@ INSERT INTO `charge_rule_price` VALUES ('372025032899520017', '10202503280165000
 DROP TABLE IF EXISTS `city_area`;
 CREATE TABLE `city_area` (
   `id` varchar(30) NOT NULL COMMENT '主键ID',
-  `area_code` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '城市编码',
-  `area_name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '城市名称',
-  `area_level` varchar(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '101 省级 202 市州 303 区县',
-  `parent_area_code` varchar(6) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '父级城市编码',
-  `parent_area_name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '父级城市名称',
-  `lon` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '经度',
-  `lat` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '维度',
+  `area_code` varchar(12) NOT NULL COMMENT '城市编码',
+  `area_name` varchar(64) NOT NULL COMMENT '城市名称',
+  `area_level` varchar(3) NOT NULL COMMENT '101 省级 202 市州 303 区县',
+  `parent_area_code` varchar(6) NOT NULL COMMENT '父级城市编码',
+  `parent_area_name` varchar(64) NOT NULL COMMENT '父级城市名称',
+  `lon` varchar(12) NOT NULL COMMENT '经度',
+  `lat` varchar(12) NOT NULL COMMENT '维度',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '数据状态 0 有效 1失效',
+  `status_cd` varchar(1) NOT NULL DEFAULT '0' COMMENT '数据状态 0 有效 1失效',
   PRIMARY KEY (`area_code`),
   KEY `index_ca_parent_area_code` (`parent_area_code`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -6866,13 +4914,13 @@ INSERT INTO `city_area` VALUES ('102025030834300006', 'e', '44', '101', '0', '�
 -- ----------------------------
 DROP TABLE IF EXISTS `coupon_key`;
 CREATE TABLE `coupon_key` (
-  `key_id` varchar(30)  NOT NULL COMMENT '编号',
-  `bean_name` varchar(64)  NOT NULL COMMENT '优惠券模板',
-  `name` varchar(64)  NOT NULL COMMENT '名称',
-  `column_key` varchar(64)  NOT NULL COMMENT '设置key',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '备注信息',
+  `key_id` varchar(30) NOT NULL COMMENT '编号',
+  `bean_name` varchar(64) NOT NULL COMMENT '优惠券模板',
+  `name` varchar(64) NOT NULL COMMENT '名称',
+  `column_key` varchar(64) NOT NULL COMMENT '设置key',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注信息',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态0正常1失效',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态0正常1失效',
   PRIMARY KEY (`key_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -6885,19 +4933,19 @@ CREATE TABLE `coupon_key` (
 -- ----------------------------
 DROP TABLE IF EXISTS `coupon_property_pool`;
 CREATE TABLE `coupon_property_pool` (
-  `cpp_id` varchar(30)  NOT NULL COMMENT '主键ID',
-  `coupon_name` varchar(64)  NOT NULL COMMENT '优惠券名称',
-  `from_type` varchar(12)  NOT NULL COMMENT '来自方式：1001 优惠券市场购买 2002 自己制作',
-  `from_id` varchar(30)  DEFAULT NULL COMMENT '来自对象ID',
-  `community_id` varchar(30)  NOT NULL COMMENT '小区ID',
-  `community_name` varchar(30)  NOT NULL COMMENT '小区名称',
-  `to_type` varchar(12)  NOT NULL COMMENT '用途 1001 购物 1011 内部购买 2002 缴费 3003 维修劵 4004 停车劵',
-  `stock` bigint NOT NULL COMMENT '库存',
-  `validity_day` bigint NOT NULL COMMENT '有效期',
+  `cpp_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `coupon_name` varchar(64) NOT NULL COMMENT '优惠券名称',
+  `from_type` varchar(12) NOT NULL COMMENT '来自方式：1001 优惠券市场购买 2002 自己制作',
+  `from_id` varchar(30) DEFAULT NULL COMMENT '来自对象ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `community_name` varchar(30) NOT NULL COMMENT '小区名称',
+  `to_type` varchar(12) NOT NULL COMMENT '用途 1001 购物 1011 内部购买 2002 缴费 3003 维修劵 4004 停车劵',
+  `stock` bigint(20) NOT NULL COMMENT '库存',
+  `validity_day` bigint(20) NOT NULL COMMENT '有效期',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `state` varchar(12)  NOT NULL DEFAULT 'Y' COMMENT 'Y 启用 N 停用',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '使用说明',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `state` varchar(12) NOT NULL DEFAULT 'Y' COMMENT 'Y 启用 N 停用',
+  `remark` varchar(512) DEFAULT NULL COMMENT '使用说明',
   PRIMARY KEY (`cpp_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -6910,12 +4958,12 @@ CREATE TABLE `coupon_property_pool` (
 -- ----------------------------
 DROP TABLE IF EXISTS `coupon_property_pool_config`;
 CREATE TABLE `coupon_property_pool_config` (
-  `config_id` varchar(30)  NOT NULL COMMENT '编号',
-  `coupon_id` varchar(30)  NOT NULL COMMENT '优惠券ID',
-  `column_key` varchar(64)  NOT NULL COMMENT '设置key',
-  `column_value` varchar(4000)  NOT NULL COMMENT '设置值',
+  `config_id` varchar(30) NOT NULL COMMENT '编号',
+  `coupon_id` varchar(30) NOT NULL COMMENT '优惠券ID',
+  `column_key` varchar(64) NOT NULL COMMENT '设置key',
+  `column_value` varchar(4000) NOT NULL COMMENT '设置值',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态0正常1失效',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态0正常1失效',
   PRIMARY KEY (`config_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -6928,20 +4976,20 @@ CREATE TABLE `coupon_property_pool_config` (
 -- ----------------------------
 DROP TABLE IF EXISTS `coupon_property_user`;
 CREATE TABLE `coupon_property_user` (
-  `coupon_id` varchar(30)  NOT NULL COMMENT '用户优惠券ID',
-  `cpp_id` varchar(30)  NOT NULL COMMENT '优惠券',
-  `coupon_name` varchar(64)  NOT NULL COMMENT '优惠券名称',
-  `value` varchar(64)  NOT NULL COMMENT '面值',
-  `validity_day` bigint NOT NULL COMMENT '有效期',
-  `user_id` varchar(30)  NOT NULL COMMENT '用户ID',
-  `user_name` varchar(64)  NOT NULL COMMENT '用户名称',
-  `tel` varchar(11)  NOT NULL COMMENT '手机号',
-  `to_type` varchar(12)  NOT NULL COMMENT '用途 1001 购物 1011 内部购买 2002 缴费 3003 维修劵 4004 停车劵',
-  `stock` bigint NOT NULL COMMENT '库存',
-  `state` varchar(12)  NOT NULL COMMENT '状态 1001 在用 2002 已使用',
+  `coupon_id` varchar(30) NOT NULL COMMENT '用户优惠券ID',
+  `cpp_id` varchar(30) NOT NULL COMMENT '优惠券',
+  `coupon_name` varchar(64) NOT NULL COMMENT '优惠券名称',
+  `value` varchar(64) NOT NULL COMMENT '面值',
+  `validity_day` bigint(20) NOT NULL COMMENT '有效期',
+  `user_id` varchar(30) NOT NULL COMMENT '用户ID',
+  `user_name` varchar(64) NOT NULL COMMENT '用户名称',
+  `tel` varchar(11) NOT NULL COMMENT '手机号',
+  `to_type` varchar(12) NOT NULL COMMENT '用途 1001 购物 1011 内部购买 2002 缴费 3003 维修劵 4004 停车劵',
+  `stock` bigint(20) NOT NULL COMMENT '库存',
+  `state` varchar(12) NOT NULL COMMENT '状态 1001 在用 2002 已使用',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `community_id` varchar(30)  DEFAULT NULL COMMENT '小区ID，商铺ID',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `community_id` varchar(30) DEFAULT NULL COMMENT '小区ID，商铺ID',
   `start_time` datetime NOT NULL COMMENT '优惠券生效时间',
   PRIMARY KEY (`coupon_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
@@ -6955,20 +5003,1879 @@ CREATE TABLE `coupon_property_user` (
 -- ----------------------------
 DROP TABLE IF EXISTS `coupon_property_user_detail`;
 CREATE TABLE `coupon_property_user_detail` (
-  `uo_id` varchar(30)  NOT NULL COMMENT '记录表',
-  `coupon_id` varchar(30)  NOT NULL COMMENT '优惠券ID',
-  `coupon_name` varchar(64)  NOT NULL COMMENT '优惠券名称',
-  `detail_type` varchar(12)  NOT NULL COMMENT '优惠券使用类型：1001 购物',
-  `business_key` varchar(30)  NOT NULL COMMENT '使用对象ID',
-  `remark` varchar(512)  NOT NULL COMMENT '使用说明',
+  `uo_id` varchar(30) NOT NULL COMMENT '记录表',
+  `coupon_id` varchar(30) NOT NULL COMMENT '优惠券ID',
+  `coupon_name` varchar(64) NOT NULL COMMENT '优惠券名称',
+  `detail_type` varchar(12) NOT NULL COMMENT '优惠券使用类型：1001 购物',
+  `business_key` varchar(30) NOT NULL COMMENT '使用对象ID',
+  `remark` varchar(512) NOT NULL COMMENT '使用说明',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `community_id` varchar(30)  DEFAULT NULL COMMENT '小区ID，商铺ID',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `community_id` varchar(30) DEFAULT NULL COMMENT '小区ID，商铺ID',
   PRIMARY KEY (`uo_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of coupon_property_user_detail
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for c_app
+-- ----------------------------
+DROP TABLE IF EXISTS `c_app`;
+CREATE TABLE `c_app` (
+  `app_id` varchar(30) NOT NULL COMMENT '应用ID',
+  `name` varchar(50) NOT NULL COMMENT '名称 对应系统名称',
+  `security_code` varchar(64) DEFAULT NULL COMMENT '签名码 sign签名时用',
+  `while_list_ip` varchar(200) DEFAULT NULL COMMENT '白名单ip 多个之间用;隔开',
+  `black_list_ip` varchar(200) DEFAULT NULL COMMENT '黑名单ip 多个之间用;隔开',
+  `remark` varchar(200) DEFAULT NULL COMMENT '描述',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
+  PRIMARY KEY (`app_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='应用ID';
+
+-- ----------------------------
+-- Records of c_app
+-- ----------------------------
+INSERT INTO `c_app` VALUES ('992023010100000001', '物联网web端', '', '', '', '物联网web端1', '2019-11-10 23:12:38', '0');
+INSERT INTO `c_app` VALUES ('992023021231380002', '测试应用', '', '', '', '1231234', '2023-02-12 14:19:41', '1');
+INSERT INTO `c_app` VALUES ('992023111817510002', '物联网用户', '', '', '', '物联网用户', '2023-11-18 15:36:22', '0');
+INSERT INTO `c_app` VALUES ('992023121426830015', '商家手机', '', '', '', '商家手机', '2023-12-14 21:37:29', '0');
+INSERT INTO `c_app` VALUES ('992024012179880001', '物业系统', 'localhost', '', '', '', '2024-01-21 19:01:42', '0');
+
+-- ----------------------------
+-- Table structure for c_business
+-- ----------------------------
+DROP TABLE IF EXISTS `c_business`;
+CREATE TABLE `c_business` (
+  `b_id` varchar(30) NOT NULL COMMENT '业务Id',
+  `o_id` varchar(30) NOT NULL COMMENT '订单ID',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `business_type_cd` varchar(12) DEFAULT NULL,
+  `finish_time` date DEFAULT NULL COMMENT '完成时间',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `status_cd` varchar(2) NOT NULL COMMENT '数据状态，详细参考c_status表',
+  UNIQUE KEY `b_id` (`b_id`) USING BTREE,
+  KEY `i_cb_o_id` (`o_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of c_business
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for c_business_databus
+-- ----------------------------
+DROP TABLE IF EXISTS `c_business_databus`;
+CREATE TABLE `c_business_databus` (
+  `databus_id` varchar(30) NOT NULL COMMENT 'databus ID',
+  `databus_name` varchar(128) NOT NULL COMMENT '名称',
+  `business_type_cd` varchar(255) NOT NULL COMMENT '业务类型',
+  `bean_name` varchar(256) NOT NULL COMMENT '适配器',
+  `seq` int(11) NOT NULL DEFAULT '1' COMMENT '顺序',
+  `state` varchar(12) NOT NULL DEFAULT '1001' COMMENT '1001 代表在用 2002 表示停用',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  PRIMARY KEY (`databus_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of c_business_databus
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for c_business_table_his
+-- ----------------------------
+DROP TABLE IF EXISTS `c_business_table_his`;
+CREATE TABLE `c_business_table_his` (
+  `his_id` varchar(30) NOT NULL COMMENT '历史ID',
+  `action` varchar(12) DEFAULT NULL COMMENT '动作表，ADD 添加记录 MOD 修改记录 DEL删除记录',
+  `action_obj` varchar(64) NOT NULL COMMENT '动作对象，一般为表名',
+  `action_obj_his` varchar(64) NOT NULL COMMENT 'his表',
+  `business_type_cd` varchar(64) NOT NULL COMMENT '业务动作',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表',
+  UNIQUE KEY `his_id` (`his_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of c_business_table_his
+-- ----------------------------
+INSERT INTO `c_business_table_his` VALUES ('102023021205810018', 'ADD', 'ss', 'ss', 'abcvb', 'ss', '2023-02-12 20:20:23', '1');
+
+-- ----------------------------
+-- Table structure for c_business_type
+-- ----------------------------
+DROP TABLE IF EXISTS `c_business_type`;
+CREATE TABLE `c_business_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `business_type_cd` varchar(12) NOT NULL COMMENT '业务项类型',
+  `name` varchar(50) NOT NULL COMMENT '名称',
+  `description` varchar(200) DEFAULT NULL COMMENT '描述',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `business_type_cd` (`business_type_cd`) USING BTREE,
+  UNIQUE KEY `business_type_cd_2` (`business_type_cd`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=293 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of c_business_type
+-- ----------------------------
+INSERT INTO `c_business_type` VALUES ('292', 'abc', 'abcn', 'sd', '2023-02-12 20:12:36');
+
+-- ----------------------------
+-- Table structure for c_cache
+-- ----------------------------
+DROP TABLE IF EXISTS `c_cache`;
+CREATE TABLE `c_cache` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '缓存ID',
+  `cache_code` varchar(10) NOT NULL COMMENT '缓存编码 开始于1001',
+  `service_code` varchar(50) NOT NULL COMMENT '调用服务编码 对应 c_service',
+  `name` varchar(50) NOT NULL COMMENT '前台显示名称',
+  `seq` int(11) NOT NULL COMMENT '列顺序',
+  `group` varchar(10) NOT NULL DEFAULT 'COMMON' COMMENT '组，缓存属于哪个组',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
+  `url` varchar(500) NOT NULL COMMENT '地址',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cache_code` (`cache_code`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of c_cache
+-- ----------------------------
+INSERT INTO `c_cache` VALUES ('1', '1001', 'flush.center.cache', '映射缓存（c_mapping表）', '1', 'COMMON', '2018-11-14 13:28:51', '0', 'MAPPING');
+INSERT INTO `c_cache` VALUES ('2', '1002', 'flush.center.cache', '业务配置缓存（c_app,c_service,c_route表）', '2', 'COMMON', '2018-11-14 13:28:51', '0', 'APP_ROUTE_SERVICE');
+INSERT INTO `c_cache` VALUES ('3', '1003', 'flush.center.cache', '公用服务缓存（c_service_sql表）', '3', 'COMMON', '2018-11-14 13:28:51', '0', 'SERVICE_SQL');
+INSERT INTO `c_cache` VALUES ('4', '1007', 'flush.center.cache', 'Databus（business_databus）', '4', 'COMMON', '2019-08-11 06:00:23', '0', 'DATABUS');
+INSERT INTO `c_cache` VALUES ('5', '1005', 'flush.center.cache', '服务业务信息（c_service_business）', '5', 'COMMON', '2019-08-11 06:00:23', '0', 'SERVICE_BUSINESS');
+INSERT INTO `c_cache` VALUES ('6', '1006', 'flush.center.cache', '基础权限信息（p_privilege）', '6', 'COMMON', '2019-08-11 06:00:23', '0', 'PRIVILEGE');
+INSERT INTO `c_cache` VALUES ('8', '1004', 'flush.center.cache', '刷新所有缓存（ALL）', '7', 'COMMON', '2019-08-11 05:44:40', '0', 'All');
+
+-- ----------------------------
+-- Table structure for c_mapping
+-- ----------------------------
+DROP TABLE IF EXISTS `c_mapping`;
+CREATE TABLE `c_mapping` (
+  `id` varchar(30) NOT NULL COMMENT 'id',
+  `domain` varchar(50) NOT NULL COMMENT '域',
+  `name` varchar(50) NOT NULL COMMENT '名称',
+  `mapping_key` varchar(100) NOT NULL COMMENT 'key',
+  `value` varchar(1000) NOT NULL COMMENT 'value',
+  `remark` longtext COMMENT '描述',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of c_mapping
+-- ----------------------------
+INSERT INTO `c_mapping` VALUES ('102023021308780004', 'DOMAIN.COMMON', '2333', '2', '2', '2', '2023-02-13 01:24:56', '1');
+INSERT INTO `c_mapping` VALUES ('102023021357700001', 'ENV_DOMAIN', '环境标识', 'HC_ENV', 'PROD', 'ENV1', '2023-02-13 01:22:20', '0');
+INSERT INTO `c_mapping` VALUES ('102023082203750005', 'OSS', 'bucket', 'bucketName', 'xx', '', '2023-08-22 16:56:46', '0');
+INSERT INTO `c_mapping` VALUES ('102023082236190012', 'FILE_DOMAIN', '静态资源域名', 'IMG_PATH', 'https://xx.oss-cn-beijing.aliyuncs.com/hc/iot/', '', '2023-08-22 17:02:24', '0');
+INSERT INTO `c_mapping` VALUES ('102023082245390006', 'OSS', 'accessKeySecret', 'accessKeySecret', 'xx', '', '2023-08-22 16:57:13', '0');
+INSERT INTO `c_mapping` VALUES ('102023082246810008', 'OSS', 'endpoint', 'endpoint', 'http://oss-cn-beijing.aliyuncs.com', '', '2023-08-22 16:57:56', '0');
+INSERT INTO `c_mapping` VALUES ('102023082294930007', 'OSS', 'accessKeyId', 'accessKeyId', 'xx', '', '2023-08-22 16:57:26', '0');
+INSERT INTO `c_mapping` VALUES ('102023102771040002', 'FILE_DOMAIN', 'OSS地址用于道闸', 'OSS_URL', 'https://xx.oss-cn-beijing.aliyuncs.com/', '', '2023-10-27 22:05:02', '0');
+INSERT INTO `c_mapping` VALUES ('102023111084740004', 'FILE_DOMAIN', '存储方式', 'OSS_SWITCH', 'OSS', '目前只支持OSS', '2023-11-10 17:26:36', '0');
+INSERT INTO `c_mapping` VALUES ('102023112127290055', 'TDDIANBIAO_DOMAIN', 'nonce', 'nonce', 'xx', '', '2023-11-21 01:26:38', '0');
+INSERT INTO `c_mapping` VALUES ('102023112164960056', 'TDDIANBIAO_DOMAIN', 'auth_code', 'auth_code', 'xx', '', '2023-11-21 01:27:11', '0');
+INSERT INTO `c_mapping` VALUES ('102024012402260026', 'WUYE', '物业系统地址', 'url', 'http://192.168.1.108:8008', '', '2024-01-24 22:04:17', '0');
+INSERT INTO `c_mapping` VALUES ('102024012442090025', 'WUYE', '物业秘钥', 'securityCode', 'g3kE9ggkM4Jqrs576rJS0CYg7dbtMXPT', '', '2024-01-24 22:03:41', '0');
+INSERT INTO `c_mapping` VALUES ('102024012445870024', 'WUYE', '应用ID', 'appId', '992020051967020024', '', '2024-01-24 22:03:11', '0');
+INSERT INTO `c_mapping` VALUES ('102024022631412822', 'WECHAT_PAY', '服务商开关', 'WECHAT_SERVICE_PAY_SWITCH', 'OFF', '', '2024-02-26 23:53:38', '0');
+INSERT INTO `c_mapping` VALUES ('102024022646552824', 'WECHAT_PAY', '服务商商户ID', 'SERVICE_MCH_ID', '1', '', '2024-02-26 23:54:22', '0');
+INSERT INTO `c_mapping` VALUES ('102024022695142823', 'WECHAT_PAY', '服务商appId', 'SERVICE_APP_ID', '1', '', '2024-02-26 23:54:02', '0');
+INSERT INTO `c_mapping` VALUES ('102024030954270097', 'VZICLOUD', 'AccessKey', 'AccessKey', 'xx', '', '2024-03-09 12:19:04', '1');
+INSERT INTO `c_mapping` VALUES ('102024030984490098', 'VZICLOUD', 'AccessKeySecret', 'AccessKeySecret', 'xx', '', '2024-03-09 12:19:16', '1');
+INSERT INTO `c_mapping` VALUES ('102024031316730024', 'HIK_GATEWAY', '网关地址', 'HIK_URL', 'http://192.168.1.108', '海康网关', '2024-03-13 21:13:05', '0');
+INSERT INTO `c_mapping` VALUES ('102024091035780003', 'WUYE', '物业开关', 'WUYE_SWITCH', 'ON', '', '2024-09-10 12:10:43', '0');
+INSERT INTO `c_mapping` VALUES ('102025040346940002', 'SYSTEM_SWITCH', '充电桩小程序', 'CHARGE_PAGE', 'OFF', 'MINI 小程序 OFF h5', '2025-04-03 23:12:04', '0');
+INSERT INTO `c_mapping` VALUES ('116', 'DEFAULT_PRIVILEGE_ADMIN', '商家对应的管理员权限组', '800900000005', '600201906009', '商家对应的管理员权限组', '2019-04-01 12:24:36', '0');
+INSERT INTO `c_mapping` VALUES ('201', 'MICROINDUSTRYPLATFORM_MALL', '供应链商城地址', 'url', 'http://shop.songbingcloud.com', '配置供应链商城地址或域名', '2023-09-15 14:04:35', '0');
+INSERT INTO `c_mapping` VALUES ('208', 'DING_DING_CHARGE', '应用ID', 'APP_ID', 'ss', '', '2023-03-17 12:17:38', '0');
+INSERT INTO `c_mapping` VALUES ('209', 'DING_DING_CHARGE', '应用秘钥', 'APP_SECURE', 'ss', '', '2023-03-17 12:18:06', '0');
+INSERT INTO `c_mapping` VALUES ('211', 'EVENT_WAY', '阿里云短信处理类', 'SMS-ALI', '', '配置阿里云短信处理类beanName', '2023-09-27 15:38:35', '0');
+INSERT INTO `c_mapping` VALUES ('212', 'EVENT_WAY', '钉钉群通知处理类', 'DINGDING', '', '配置钉钉群通知处理类beanName', '2023-09-27 15:38:35', '0');
+INSERT INTO `c_mapping` VALUES ('213', 'EVENT_WAY', '企业微信群通知处理类', 'WECHAT', '', '配置企业微信群通知处理类beanName', '2023-09-27 15:38:35', '0');
+INSERT INTO `c_mapping` VALUES ('28', 'DEFAULT_PRIVILEGE_ADMIN', '物业对应的管理员权限组', '800900000003', '600201904002', '物业对应的管理员权限组', '2019-04-01 12:24:36', '0');
+INSERT INTO `c_mapping` VALUES ('34', 'DEFAULT_PRIVILEGE_ADMIN', '运营团队对应的管理员权限组', '800900000001', '600201906005', '运营团队对应的管理员权限组', '2019-04-01 12:24:36', '0');
+INSERT INTO `c_mapping` VALUES ('37', 'DEFAULT_PRIVILEGE_ADMIN', '开发团队对应的管理员权限组', '800900000000', '600201906007', '开发团队对应的管理员权限组', '2019-04-01 12:24:36', '0');
+INSERT INTO `c_mapping` VALUES ('48', 'SMS_DOMAIN', '验证码开关', 'SMS_SEND_SWITCH', 'OFF', '验证码发送开关 ON 开启 OFF 关闭', '2019-09-16 11:56:44', '0');
+INSERT INTO `c_mapping` VALUES ('88', 'ALI_SMS', '区域', 'region', 'cn-hangzhou', '', '2020-06-29 09:08:57', '0');
+INSERT INTO `c_mapping` VALUES ('89', 'ALI_SMS', 'accessKeyId', 'accessKeyId', 'xxx', '', '2020-06-29 09:09:26', '0');
+INSERT INTO `c_mapping` VALUES ('90', 'ALI_SMS', '访问秘钥', 'accessSecret', 'xxx', '', '2020-06-29 09:09:49', '0');
+INSERT INTO `c_mapping` VALUES ('91', 'ALI_SMS', '短信签名', 'signName', 'xxx', '', '2020-06-29 09:10:28', '0');
+INSERT INTO `c_mapping` VALUES ('93', 'ALI_SMS', '模板编码', 'TemplateCode', 'xxx', '', '2020-06-29 10:16:15', '0');
+INSERT INTO `c_mapping` VALUES ('94', 'URL_DOMAIN', '业主公众号地址', 'OWNER_WECHAT_URL', 'http://ioth5.homecommunity.cn', '公众号时写 公众号域名\n\n小程序时写 小程序appId', '2020-07-20 14:59:38', '0');
+
+-- ----------------------------
+-- Table structure for c_mapping_domain
+-- ----------------------------
+DROP TABLE IF EXISTS `c_mapping_domain`;
+CREATE TABLE `c_mapping_domain` (
+  `id` varchar(30) NOT NULL COMMENT 'id',
+  `domain` varchar(50) NOT NULL COMMENT '域',
+  `domain_name` varchar(64) NOT NULL COMMENT '配置项',
+  `seq` int(11) NOT NULL COMMENT '排序',
+  `remark` longtext COMMENT '描述',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of c_mapping_domain
+-- ----------------------------
+INSERT INTO `c_mapping_domain` VALUES ('102023013033010027', 'ALI_SMS', '阿里短信配置', '13', '腾讯短信配置 开启验证码功能，搜索键为SMS_SEND_SWITCH的记录将值OFF改为ON 键为 SMS_COMPANY 的值 阿里为ALI', '2023-01-30 00:14:24', '0');
+INSERT INTO `c_mapping_domain` VALUES ('102023013081180032', 'SMS_DOMAIN', '短信配置', '12', '主要设置采用阿里云短信或者腾讯云服务商，阿里为 ALI 腾讯为TENCENT', '2023-01-30 00:20:29', '0');
+INSERT INTO `c_mapping_domain` VALUES ('102023021377130023', 'ENV_DOMAIN', '环境配置', '1', '环境相关配置，如演示环境 生产环境 切换', '2023-02-13 01:08:44', '0');
+INSERT INTO `c_mapping_domain` VALUES ('102023021380610022', 'SYSTEM_SWITCH', '系统开关', '2', '系统相关开关，比如日志开关，耗时开关等', '2023-02-13 01:08:19', '0');
+INSERT INTO `c_mapping_domain` VALUES ('102023021383440013', 'DOMAIN.COMMON', '通用配置', '10', '通用配置，一般很少配置1', '2023-02-13 01:03:08', '0');
+INSERT INTO `c_mapping_domain` VALUES ('102023082234410010', 'FILE_DOMAIN', '存储配置', '3', '存储配置', '2023-08-22 17:01:58', '0');
+INSERT INTO `c_mapping_domain` VALUES ('102023082296330003', 'OSS', '阿里云OSS', '4', '阿里云OSS', '2023-08-22 16:56:26', '0');
+INSERT INTO `c_mapping_domain` VALUES ('102023112061480002', 'URL_DOMAIN', '平台URL', '5', '平台URL', '2023-11-20 12:30:25', '0');
+INSERT INTO `c_mapping_domain` VALUES ('102023112115110053', 'TDDIANBIAO_DOMAIN', '智能水电表', '6', '智能水电表', '2023-11-21 01:24:58', '0');
+INSERT INTO `c_mapping_domain` VALUES ('102024012434290022', 'WUYE', '物业配置', '7', '物联网系统调用物业系统配置信息', '2024-01-24 22:02:41', '0');
+INSERT INTO `c_mapping_domain` VALUES ('102024022601992820', 'WECHAT_PAY', '微信支付', '8', '微信支付相关配置', '2024-02-26 23:53:04', '0');
+INSERT INTO `c_mapping_domain` VALUES ('102024030912650093', 'VZICLOUD', '臻识云', '9', '请填写臻云极致的AccessKeyId和AccessKeySecret，请到这里申请臻云极致(https://open.vzicloud.com)', '2024-03-09 12:17:36', '1');
+INSERT INTO `c_mapping_domain` VALUES ('102024031358100022', 'HIK_GATEWAY', '海康网关', '11', '海康网关，只有用海康网关的场景下，才需要配置，否则不用配置', '2024-03-13 21:11:10', '0');
+
+-- ----------------------------
+-- Table structure for c_orders
+-- ----------------------------
+DROP TABLE IF EXISTS `c_orders`;
+CREATE TABLE `c_orders` (
+  `o_id` varchar(30) NOT NULL COMMENT '订单ID',
+  `app_id` varchar(30) NOT NULL COMMENT '应用ID',
+  `ext_transaction_id` varchar(36) DEFAULT NULL,
+  `user_id` varchar(30) NOT NULL COMMENT '用户ID',
+  `request_time` varchar(16) NOT NULL COMMENT '外部系统请求时间',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `order_type_cd` varchar(4) NOT NULL COMMENT '订单类型，参考c_order_type表',
+  `finish_time` date DEFAULT NULL COMMENT '订单完成时间',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `status_cd` varchar(2) NOT NULL COMMENT '数据状态，详细参考c_status表',
+  UNIQUE KEY `o_id` (`o_id`) USING BTREE,
+  UNIQUE KEY `o_id_2` (`o_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of c_orders
+-- ----------------------------
+INSERT INTO `c_orders` VALUES ('102025040737340001', '992023010100000001', '6f33e50b-2078-4fe3-855f-fbb692d91089', '30518939884421922816', '20250407140403', '2025-04-07 14:04:06', 'D', '2025-04-07', null, 'C');
+INSERT INTO `c_orders` VALUES ('102025040752040004', '992023010100000001', '27d934f8-5dce-48a0-8433-de4c2c566aec', '30518939884421922816', '20250407140427', '2025-04-07 14:04:30', 'D', '2025-04-07', null, 'C');
+
+-- ----------------------------
+-- Table structure for c_order_item
+-- ----------------------------
+DROP TABLE IF EXISTS `c_order_item`;
+CREATE TABLE `c_order_item` (
+  `b_id` varchar(30) NOT NULL COMMENT '业务Id',
+  `o_id` varchar(30) NOT NULL COMMENT '订单ID',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `action` varchar(12) DEFAULT NULL COMMENT '动作表，ADD 添加记录 MOD 修改记录 DEL删除记录',
+  `action_obj` varchar(64) NOT NULL COMMENT '动作对象，一般为表名',
+  `finish_time` datetime DEFAULT NULL COMMENT '完成时间',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `status_cd` varchar(2) NOT NULL COMMENT '数据状态，详细参考c_status表',
+  UNIQUE KEY `b_id` (`b_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of c_order_item
+-- ----------------------------
+INSERT INTO `c_order_item` VALUES ('202025040710500014', '102025040752040004', '2025-04-07 14:04:30', 'ADD', 's_store_staff', '2025-04-07 14:04:31', null, 'C');
+INSERT INTO `c_order_item` VALUES ('202025040715370022', '102025040752040004', '2025-04-07 14:04:30', 'ADD', 's_community_member', '2025-04-07 14:04:31', null, 'C');
+INSERT INTO `c_order_item` VALUES ('202025040718570008', '102025040752040004', '2025-04-07 14:04:30', 'ADD', 's_store_attr', '2025-04-07 14:04:31', null, 'C');
+INSERT INTO `c_order_item` VALUES ('202025040727240016', '102025040752040004', '2025-04-07 14:04:30', 'ADD', 'u_org', '2025-04-07 14:04:31', null, 'C');
+INSERT INTO `c_order_item` VALUES ('202025040733370056', '102025040752040004', '2025-04-07 14:04:31', 'ADD', 'm_menu_group_community', '2025-04-07 14:04:31', null, 'C');
+INSERT INTO `c_order_item` VALUES ('202025040745550020', '102025040752040004', '2025-04-07 14:04:30', 'ADD', 'p_privilege_user', '2025-04-07 14:04:31', null, 'C');
+INSERT INTO `c_order_item` VALUES ('202025040758430003', '102025040737340001', '2025-04-07 14:04:06', 'ADD', 's_community', '2025-04-07 14:04:06', null, 'C');
+INSERT INTO `c_order_item` VALUES ('202025040763670010', '102025040752040004', '2025-04-07 14:04:30', 'ADD', 's_store_attr', '2025-04-07 14:04:31', null, 'C');
+INSERT INTO `c_order_item` VALUES ('202025040775700012', '102025040752040004', '2025-04-07 14:04:30', 'ADD', 'u_user', '2025-04-07 14:04:31', null, 'C');
+INSERT INTO `c_order_item` VALUES ('202025040779950018', '102025040752040004', '2025-04-07 14:04:30', 'ADD', 'u_org_staff_rel', '2025-04-07 14:04:31', null, 'C');
+INSERT INTO `c_order_item` VALUES ('202025040789520006', '102025040752040004', '2025-04-07 14:04:30', 'ADD', 's_store', '2025-04-07 14:04:31', null, 'C');
+
+-- ----------------------------
+-- Table structure for c_order_type
+-- ----------------------------
+DROP TABLE IF EXISTS `c_order_type`;
+CREATE TABLE `c_order_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `order_type_cd` varchar(4) NOT NULL COMMENT '订单类型',
+  `name` varchar(50) NOT NULL COMMENT '名称',
+  `description` varchar(200) DEFAULT NULL COMMENT '描述',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `order_type_cd` (`order_type_cd`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of c_order_type
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for c_route
+-- ----------------------------
+DROP TABLE IF EXISTS `c_route`;
+CREATE TABLE `c_route` (
+  `id` varchar(30) NOT NULL COMMENT 'id',
+  `app_id` varchar(30) NOT NULL COMMENT '应用ID',
+  `service_id` varchar(30) NOT NULL COMMENT '服务ID',
+  `order_type_cd` varchar(4) NOT NULL COMMENT '订单类型，参考c_order_type表',
+  `invoke_limit_times` int(11) DEFAULT NULL COMMENT '接口调用一分钟调用次数',
+  `invoke_model` varchar(1) NOT NULL COMMENT '1-同步方式 2-异步方式',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效，2 表示下线（当组件调用服务超过限制时自动下线）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of c_route
+-- ----------------------------
+INSERT INTO `c_route` VALUES ('1', '992023010100000001', '1', 'Q', '100', 'S', '2023-02-11 16:26:01', '0');
+INSERT INTO `c_route` VALUES ('10', '992023010100000001', '10', 'Q', '100', 'S', '2023-02-11 16:26:02', '0');
+INSERT INTO `c_route` VALUES ('102023021211350036', '992023010100000001', '982023021223650035', 'Q', '1000', 'S', '2023-02-12 23:20:33', '0');
+INSERT INTO `c_route` VALUES ('102023021225690038', '992023010100000001', '982023021203470037', 'D', '1000', 'S', '2023-02-12 23:23:28', '0');
+INSERT INTO `c_route` VALUES ('102023021230340022', '992023010100000001', '982023021223940021', 'D', '1000', 'S', '2023-02-12 20:22:35', '0');
+INSERT INTO `c_route` VALUES ('102023021232260003', '992023010100000001', '982023021258190002', 'D', '1000', 'S', '2023-02-12 19:42:30', '0');
+INSERT INTO `c_route` VALUES ('102023021238440032', '992023010100000001', '982023021214060031', 'Q', '1000', 'S', '2023-02-12 20:40:39', '0');
+INSERT INTO `c_route` VALUES ('102023021240560020', '992023010100000001', '982023021227650019', 'D', '1000', 'S', '2023-02-12 20:21:16', '0');
+INSERT INTO `c_route` VALUES ('102023021242430005', '992023010100000001', '982023021248040004', 'D', '1000', 'S', '2023-02-12 23:35:41', '0');
+INSERT INTO `c_route` VALUES ('102023021249110013', '992023010100000001', '982023021204510012', 'Q', '1000', 'S', '2023-02-12 23:44:04', '0');
+INSERT INTO `c_route` VALUES ('102023021251050011', '992023010100000001', '982023021273350010', 'D', '1000', 'S', '2023-02-12 20:13:57', '0');
+INSERT INTO `c_route` VALUES ('102023021253270005', '992023010100000001', '982023021296170004', 'D', '1000', 'S', '2023-02-12 23:57:27', '0');
+INSERT INTO `c_route` VALUES ('102023021254470028', '992023010100000001', '982023021235240027', 'D', '1000', 'S', '2023-02-12 20:38:41', '0');
+INSERT INTO `c_route` VALUES ('102023021255530024', '992023010100000001', '982023021216390023', 'Q', '1000', 'S', '2023-02-12 20:26:31', '0');
+INSERT INTO `c_route` VALUES ('102023021259300015', '992023010100000001', '982023021256680014', 'Q', '1000', 'S', '2023-02-12 20:18:25', '0');
+INSERT INTO `c_route` VALUES ('102023021260040007', '992023010100000001', '982023021237010006', 'Q', '1000', 'S', '2023-02-12 20:11:01', '0');
+INSERT INTO `c_route` VALUES ('102023021263470013', '992023010100000001', '982023021260000012', 'D', '1000', 'S', '2023-02-12 20:14:58', '0');
+INSERT INTO `c_route` VALUES ('102023021268920026', '992023010100000001', '982023021296210025', 'D', '1000', 'S', '2023-02-12 20:32:22', '0');
+INSERT INTO `c_route` VALUES ('102023021273060001', '992023010100000001', '982023021245840003', 'D', '1000', 'S', '2023-02-12 16:05:21', '0');
+INSERT INTO `c_route` VALUES ('102023021275390003', '992023010100000001', '982023021241540002', 'Q', '1000', 'S', '2023-02-12 23:56:02', '0');
+INSERT INTO `c_route` VALUES ('102023021275500030', '992023010100000001', '982023021259860029', 'D', '1000', 'S', '2023-02-12 20:39:41', '0');
+INSERT INTO `c_route` VALUES ('102023021278870008', '992023010100000001', '982023021247300007', 'D', '1000', 'S', '2023-02-12 23:36:27', '0');
+INSERT INTO `c_route` VALUES ('102023021281530005', '992023010100000001', '982023021216270004', 'D', '1000', 'S', '2023-02-12 20:09:35', '0');
+INSERT INTO `c_route` VALUES ('102023021283770009', '992023010100000001', '982023021276940008', 'D', '1000', 'S', '2023-02-12 20:12:13', '0');
+INSERT INTO `c_route` VALUES ('102023021287430017', '992023010100000001', '982023021259400016', 'D', '1000', 'S', '2023-02-12 20:20:01', '0');
+INSERT INTO `c_route` VALUES ('102023021289240034', '992023010100000001', '982023021285420033', 'D', '1000', 'S', '2023-02-12 23:19:20', '0');
+INSERT INTO `c_route` VALUES ('102023021293120011', '992023010100000001', '982023021296240010', 'D', '1000', 'S', '2023-02-12 23:37:28', '0');
+INSERT INTO `c_route` VALUES ('102023021302460021', '992023010100000001', '982023021368120020', 'D', '1000', 'S', '2023-02-13 01:06:45', '0');
+INSERT INTO `c_route` VALUES ('102023021306950006', '992023010100000001', '982023021370120005', 'D', '1000', 'S', '2023-02-13 01:25:29', '0');
+INSERT INTO `c_route` VALUES ('102023021309550011', '992023010100000001', '982023021334130010', 'D', '1000', 'S', '2023-02-13 00:38:34', '0');
+INSERT INTO `c_route` VALUES ('102023021310890006', '992023010100000001', '982023021330160005', 'Q', '1000', 'S', '2023-02-13 23:51:04', '0');
+INSERT INTO `c_route` VALUES ('102023021312970002', '992023010100000001', '982023021310500001', 'Q', '1000', 'S', '2023-02-13 12:08:14', '0');
+INSERT INTO `c_route` VALUES ('102023021313230002', '992023010100000001', '982023021309900001', 'Q', '1000', 'S', '2023-02-13 15:10:28', '0');
+INSERT INTO `c_route` VALUES ('102023021319320013', '992023010100000001', '982023021357210012', 'D', '1000', 'S', '2023-02-13 00:40:03', '0');
+INSERT INTO `c_route` VALUES ('102023021320930010', '992023010100000001', '982023021328190009', 'D', '1000', 'S', '2023-02-13 01:37:13', '0');
+INSERT INTO `c_route` VALUES ('102023021325490006', '992023010100000001', '982023021336370005', 'D', '1000', 'S', '2023-02-13 12:16:15', '0');
+INSERT INTO `c_route` VALUES ('102023021326040008', '992023010100000001', '982023021323660007', 'D', '1000', 'S', '2023-02-13 01:28:53', '0');
+INSERT INTO `c_route` VALUES ('102023021331740005', '992023010100000001', '982023021374860004', 'D', '1000', 'S', '2023-02-13 12:26:37', '0');
+INSERT INTO `c_route` VALUES ('102023021335260008', '992023010100000001', '982023021377330007', 'D', '1000', 'S', '2023-02-13 12:16:47', '0');
+INSERT INTO `c_route` VALUES ('102023021336450004', '992023010100000001', '982023021322710003', 'D', '1000', 'S', '2023-02-13 12:15:43', '0');
+INSERT INTO `c_route` VALUES ('102023021341130010', '992023010100000001', '982023021321230009', 'Q', '1000', 'S', '2023-02-13 01:01:38', '0');
+INSERT INTO `c_route` VALUES ('102023021341480004', '992023010100000001', '982023021324220003', 'D', '1000', 'S', '2023-02-13 15:15:18', '0');
+INSERT INTO `c_route` VALUES ('102023021349350006', '992023010100000001', '982023021337250005', 'D', '1000', 'S', '2023-02-13 15:35:12', '0');
+INSERT INTO `c_route` VALUES ('102023021350340018', '992023010100000001', '982023021325460017', 'Q', '1000', 'S', '2023-02-13 01:05:44', '0');
+INSERT INTO `c_route` VALUES ('102023021353510007', '992023010100000001', '982023021360730006', 'D', '1000', 'S', '2023-02-13 12:27:07', '0');
+INSERT INTO `c_route` VALUES ('102023021363990004', '992023010100000001', '982023021312140003', 'Q', '1000', 'S', '2023-02-13 23:41:31', '0');
+INSERT INTO `c_route` VALUES ('102023021365630009', '992023010100000001', '982023021360120008', 'D', '1000', 'S', '2023-02-13 00:03:03', '0');
+INSERT INTO `c_route` VALUES ('102023021373790003', '992023010100000001', '982023021302420002', 'D', '1000', 'S', '2023-02-13 01:24:21', '0');
+INSERT INTO `c_route` VALUES ('102023021379350012', '992023010100000001', '982023021395440011', 'D', '1000', 'S', '2023-02-13 01:02:55', '0');
+INSERT INTO `c_route` VALUES ('102023021387790025', '992023010100000001', '982023021326930024', 'D', '1000', 'S', '2023-02-13 01:10:06', '0');
+INSERT INTO `c_route` VALUES ('102023021387900015', '992023010100000001', '982023021386140014', 'D', '1000', 'S', '2023-02-13 00:43:44', '0');
+INSERT INTO `c_route` VALUES ('102023021388470008', '992023010100000001', '982023021358370007', 'D', '1000', 'S', '2023-02-13 15:37:52', '0');
+INSERT INTO `c_route` VALUES ('102023021389730013', '992023010100000001', '982023021303060012', 'Q', '1000', 'S', '2023-02-13 02:07:24', '0');
+INSERT INTO `c_route` VALUES ('102023021390830015', '992023010100000001', '982023021372850014', 'D', '1000', 'S', '2023-02-13 01:03:44', '0');
+INSERT INTO `c_route` VALUES ('102023021391130003', '992023010100000001', '982023021395620002', 'Q', '1000', 'S', '2023-02-13 12:26:03', '0');
+INSERT INTO `c_route` VALUES ('102023021392960009', '992023010100000001', '982023021309160008', 'D', '1000', 'S', '2023-02-13 12:27:34', '0');
+INSERT INTO `c_route` VALUES ('102023021399890004', '992023010100000001', '982023021322750003', 'D', '1000', 'S', '2023-02-13 00:59:16', '0');
+INSERT INTO `c_route` VALUES ('102023021400750038', '992023010100000001', '982023021473350037', 'D', '1000', 'S', '2023-02-14 17:47:31', '0');
+INSERT INTO `c_route` VALUES ('102023021401770026', '992023010100000001', '982023021439850025', 'D', '1000', 'S', '2023-02-14 01:58:01', '0');
+INSERT INTO `c_route` VALUES ('102023021402080026', '992023010100000001', '982023021488540025', 'Q', '1000', 'S', '2023-02-14 16:56:35', '0');
+INSERT INTO `c_route` VALUES ('102023021402380010', '992023010100000001', '982023021405630009', 'D', '1000', 'S', '2023-02-14 00:30:47', '0');
+INSERT INTO `c_route` VALUES ('102023021402660028', '992023010100000001', '982023021439470027', 'Q', '1000', 'S', '2023-02-14 16:58:36', '0');
+INSERT INTO `c_route` VALUES ('102023021407460052', '992023010100000001', '982023021496750051', 'Q', '1000', 'S', '2023-02-14 18:57:59', '0');
+INSERT INTO `c_route` VALUES ('102023021410870036', '992023010100000001', '982023021482340035', 'D', '1000', 'S', '2023-02-14 02:49:34', '0');
+INSERT INTO `c_route` VALUES ('102023021415110016', '992023010100000001', '982023021450050015', 'D', '1000', 'S', '2023-02-14 01:41:56', '0');
+INSERT INTO `c_route` VALUES ('102023021416340032', '992023010100000001', '982023021419530031', 'Q', '1000', 'S', '2023-02-14 17:23:28', '0');
+INSERT INTO `c_route` VALUES ('102023021417040024', '992023010100000001', '982023021491480023', 'D', '1000', 'S', '2023-02-14 01:53:59', '0');
+INSERT INTO `c_route` VALUES ('102023021418480046', '992023010100000001', '982023021485940045', 'D', '1000', 'S', '2023-02-14 18:18:49', '0');
+INSERT INTO `c_route` VALUES ('102023021418670024', '992023010100000001', '982023021403550023', 'D', '1000', 'S', '2023-02-14 16:00:18', '0');
+INSERT INTO `c_route` VALUES ('102023021419550040', '992023010100000001', '982023021498420039', 'D', '1000', 'S', '2023-02-14 17:51:02', '0');
+INSERT INTO `c_route` VALUES ('102023021419940034', '992023010100000001', '982023021486110033', 'D', '1000', 'S', '2023-02-14 02:44:30', '0');
+INSERT INTO `c_route` VALUES ('102023021423490050', '992023010100000001', '982023021494870049', 'Q', '1000', 'S', '2023-02-14 18:46:52', '0');
+INSERT INTO `c_route` VALUES ('102023021425370048', '992023010100000001', '982023021487090047', 'D', '1000', 'S', '2023-02-14 18:32:35', '0');
+INSERT INTO `c_route` VALUES ('102023021430220034', '992023010100000001', '982023021447920033', 'D', '1000', 'S', '2023-02-14 17:24:32', '0');
+INSERT INTO `c_route` VALUES ('102023021432050030', '992023010100000001', '982023021453590029', 'D', '1000', 'S', '2023-02-14 17:00:38', '0');
+INSERT INTO `c_route` VALUES ('102023021436790032', '992023010100000001', '982023021469650031', 'Q', '1000', 'S', '2023-02-14 02:25:19', '0');
+INSERT INTO `c_route` VALUES ('102023021437730012', '992023010100000001', '982023021499840011', 'Q', '1000', 'S', '2023-02-14 13:43:57', '0');
+INSERT INTO `c_route` VALUES ('102023021438280010', '992023010100000001', '982023021466280009', 'Q', '1000', 'S', '2023-02-14 13:31:56', '0');
+INSERT INTO `c_route` VALUES ('102023021444180016', '992023010100000001', '982023021492500015', 'D', '1000', 'S', '2023-02-14 14:09:27', '0');
+INSERT INTO `c_route` VALUES ('102023021447420028', '992023010100000001', '982023021435790027', 'Q', '1000', 'S', '2023-02-14 02:07:36', '0');
+INSERT INTO `c_route` VALUES ('102023021452130022', '992023010100000001', '982023021497050021', 'D', '1000', 'S', '2023-02-14 15:19:11', '0');
+INSERT INTO `c_route` VALUES ('102023021462630036', '992023010100000001', '982023021431180035', 'Q', '1000', 'S', '2023-02-14 17:43:51', '0');
+INSERT INTO `c_route` VALUES ('102023021463570018', '992023010100000001', '982023021407670017', 'D', '1000', 'S', '2023-02-14 01:44:40', '0');
+INSERT INTO `c_route` VALUES ('102023021467660020', '992023010100000001', '982023021497030019', 'D', '1000', 'S', '2023-02-14 14:16:27', '0');
+INSERT INTO `c_route` VALUES ('102023021480340030', '992023010100000001', '982023021458210029', 'D', '1000', 'S', '2023-02-14 02:15:51', '0');
+INSERT INTO `c_route` VALUES ('102023021480970008', '992023010100000001', '982023021464680007', 'Q', '1000', 'S', '2023-02-14 00:04:40', '0');
+INSERT INTO `c_route` VALUES ('102023021486270014', '992023010100000001', '982023021408200013', 'Q', '1000', 'S', '2023-02-14 13:58:26', '0');
+INSERT INTO `c_route` VALUES ('102023021490760022', '992023010100000001', '982023021433280021', 'D', '1000', 'S', '2023-02-14 01:52:18', '0');
+INSERT INTO `c_route` VALUES ('102023021493040042', '992023010100000001', '982023021452340041', 'Q', '1000', 'S', '2023-02-14 18:04:55', '0');
+INSERT INTO `c_route` VALUES ('102023021493740044', '992023010100000001', '982023021487850043', 'Q', '1000', 'S', '2023-02-14 18:06:39', '0');
+INSERT INTO `c_route` VALUES ('102023021497310018', '992023010100000001', '982023021481320017', 'D', '1000', 'S', '2023-02-14 14:14:39', '0');
+INSERT INTO `c_route` VALUES ('102023021497830020', '992023010100000001', '982023021436810019', 'Q', '1000', 'S', '2023-02-14 01:47:02', '0');
+INSERT INTO `c_route` VALUES ('102023021616720002', '992023010100000001', '982023021601160001', 'D', '1000', 'S', '2023-02-16 00:02:44', '0');
+INSERT INTO `c_route` VALUES ('102023021650140004', '992023010100000001', '982023021648060003', 'D', '1000', 'S', '2023-02-16 00:04:40', '0');
+INSERT INTO `c_route` VALUES ('102023080903830003', '992023010100000001', '982023080921840002', 'D', '1000', 'S', '2023-08-09 11:21:45', '0');
+INSERT INTO `c_route` VALUES ('102023080909750007', '992023010100000001', '982023080951470006', 'D', '1000', 'S', '2023-08-09 11:24:41', '0');
+INSERT INTO `c_route` VALUES ('102023080910940003', '992023010100000001', '982023080915140002', 'D', '1000', 'S', '2023-08-09 22:06:22', '0');
+INSERT INTO `c_route` VALUES ('102023080913930008', '992023010100000001', '982023080979520007', 'D', '1000', 'S', '2023-08-09 14:25:58', '0');
+INSERT INTO `c_route` VALUES ('102023080919240002', '992023010100000001', '982023080921430001', 'D', '1000', 'S', '2023-08-09 10:54:07', '0');
+INSERT INTO `c_route` VALUES ('102023080922300002', '992023010100000001', '982023080933940001', 'Q', '1000', 'S', '2023-08-09 02:49:49', '0');
+INSERT INTO `c_route` VALUES ('102023080927200005', '992023010100000001', '982023080910140004', 'Q', '1000', 'S', '2023-08-09 18:10:49', '0');
+INSERT INTO `c_route` VALUES ('102023080927320005', '992023010100000001', '982023080988790004', 'Q', '1000', 'S', '2023-08-09 11:32:18', '0');
+INSERT INTO `c_route` VALUES ('102023080929950016', '992023010100000001', '982023080906630015', 'D', '1000', 'S', '2023-08-09 14:27:00', '0');
+INSERT INTO `c_route` VALUES ('102023080931590016', '992023010100000001', '982023080978720015', 'D', '1000', 'S', '2023-08-09 11:36:17', '0');
+INSERT INTO `c_route` VALUES ('102023080942870012', '992023010100000001', '982023080984110011', 'D', '1000', 'S', '2023-08-09 11:26:16', '0');
+INSERT INTO `c_route` VALUES ('102023080949160011', '992023010100000001', '982023080948440010', 'D', '1000', 'S', '2023-08-09 18:36:21', '0');
+INSERT INTO `c_route` VALUES ('102023080953650008', '992023010100000001', '982023080961400007', 'D', '1000', 'S', '2023-08-09 11:35:15', '0');
+INSERT INTO `c_route` VALUES ('102023080957710008', '992023010100000001', '982023080953980007', 'Q', '1000', 'S', '2023-08-09 11:09:28', '0');
+INSERT INTO `c_route` VALUES ('102023080966400021', '992023010100000001', '982023080903700020', 'D', '1000', 'S', '2023-08-09 11:48:40', '0');
+INSERT INTO `c_route` VALUES ('102023080971440024', '992023010100000001', '982023080910750023', 'D', '1000', 'S', '2023-08-09 17:15:42', '0');
+INSERT INTO `c_route` VALUES ('102023080984140011', '992023010100000001', '982023080966350010', 'Q', '1000', 'S', '2023-08-09 11:13:53', '0');
+INSERT INTO `c_route` VALUES ('102023080994010002', '992023010100000001', '982023080995670001', 'D', '1000', 'S', '2023-08-09 18:46:07', '0');
+INSERT INTO `c_route` VALUES ('102023080997700005', '992023010100000001', '982023080957850004', 'Q', '1000', 'S', '2023-08-09 11:07:42', '0');
+INSERT INTO `c_route` VALUES ('102023081427550002', '992023010100000001', '982023081417290001', 'Q', '1000', 'S', '2023-08-14 16:06:31', '0');
+INSERT INTO `c_route` VALUES ('102023081437530002', '992023010100000001', '982023081419530001', 'D', '1000', 'S', '2023-08-14 16:32:50', '0');
+INSERT INTO `c_route` VALUES ('102023081510470004', '992023010100000001', '982023081553090003', 'Q', '1000', 'S', '2023-08-15 18:37:12', '0');
+INSERT INTO `c_route` VALUES ('102023081518980008', '992023010100000001', '982023081569750007', 'D', '1000', 'S', '2023-08-15 01:25:26', '0');
+INSERT INTO `c_route` VALUES ('102023081519000007', '992023010100000001', '982023081561050006', 'D', '1000', 'S', '2023-08-15 21:35:45', '0');
+INSERT INTO `c_route` VALUES ('102023081523510021', '992023010100000001', '982023081552200020', 'Q', '1000', 'S', '2023-08-15 09:06:32', '0');
+INSERT INTO `c_route` VALUES ('102023081535970002', '992023010100000001', '982023081584920001', 'D', '1000', 'S', '2023-08-15 01:24:02', '0');
+INSERT INTO `c_route` VALUES ('102023081540790032', '992023010100000001', '982023081579150031', 'D', '1000', 'S', '2023-08-15 09:10:40', '0');
+INSERT INTO `c_route` VALUES ('102023081542830030', '992023010100000001', '982023081581350029', 'D', '1000', 'S', '2023-08-15 09:10:12', '0');
+INSERT INTO `c_route` VALUES ('102023081553290040', '992023010100000001', '982023081546790039', 'Q', '1000', 'S', '2023-08-15 09:39:13', '0');
+INSERT INTO `c_route` VALUES ('102023081561110013', '992023010100000001', '982023081590210012', 'Q', '1000', 'S', '2023-08-15 12:24:18', '0');
+INSERT INTO `c_route` VALUES ('102023081562690028', '992023010100000001', '982023081596860027', 'D', '1000', 'S', '2023-08-15 09:09:42', '0');
+INSERT INTO `c_route` VALUES ('102023081579850023', '992023010100000001', '982023081528910022', 'D', '1000', 'S', '2023-08-15 09:08:06', '0');
+INSERT INTO `c_route` VALUES ('102023081581760004', '992023010100000001', '982023081562520003', 'Q', '1000', 'S', '2023-08-15 01:24:29', '0');
+INSERT INTO `c_route` VALUES ('102023081588830006', '992023010100000001', '982023081545940005', 'D', '1000', 'S', '2023-08-15 01:25:00', '0');
+INSERT INTO `c_route` VALUES ('102023081621360002', '992023010100000001', '982023081672890001', 'D', '1000', 'S', '2023-08-16 10:59:52', '0');
+INSERT INTO `c_route` VALUES ('102023081636250003', '992023010100000001', '982023081646380002', 'D', '1000', 'S', '2023-08-16 10:35:40', '0');
+INSERT INTO `c_route` VALUES ('102023081651780011', '992023010100000001', '982023081607370010', 'D', '1000', 'S', '2023-08-16 11:19:00', '0');
+INSERT INTO `c_route` VALUES ('102023081670620009', '992023010100000001', '982023081643040008', 'Q', '1000', 'S', '2023-08-16 11:17:38', '0');
+INSERT INTO `c_route` VALUES ('102023081692680003', '992023010100000001', '982023081639070002', 'D', '1000', 'S', '2023-08-16 16:25:25', '0');
+INSERT INTO `c_route` VALUES ('102023081697760007', '992023010100000001', '982023081624290006', 'D', '1000', 'S', '2023-08-16 11:17:04', '0');
+INSERT INTO `c_route` VALUES ('102023081711750010', '992023010100000001', '982023081706060009', 'Q', '1000', 'S', '2023-08-17 09:17:44', '0');
+INSERT INTO `c_route` VALUES ('102023081711840017', '992023010100000001', '982023081781300016', 'D', '1000', 'S', '2023-08-17 09:42:15', '0');
+INSERT INTO `c_route` VALUES ('102023081726490006', '992023010100000001', '982023081726810005', 'Q', '1000', 'S', '2023-08-17 09:35:07', '0');
+INSERT INTO `c_route` VALUES ('102023081726630009', '992023010100000001', '982023081741300008', 'D', '1000', 'S', '2023-08-17 09:38:13', '0');
+INSERT INTO `c_route` VALUES ('102023081732830011', '992023010100000001', '982023081750380010', 'D', '1000', 'S', '2023-08-17 09:39:13', '0');
+INSERT INTO `c_route` VALUES ('102023081736230007', '992023010100000001', '982023081781500006', 'Q', '1000', 'S', '2023-08-17 09:07:28', '0');
+INSERT INTO `c_route` VALUES ('102023081745380015', '992023010100000001', '982023081769950014', 'D', '1000', 'S', '2023-08-17 09:41:12', '0');
+INSERT INTO `c_route` VALUES ('102023081767840004', '992023010100000001', '982023081726920003', 'Q', '1000', 'S', '2023-08-17 09:33:04', '0');
+INSERT INTO `c_route` VALUES ('102023081772160019', '992023010100000001', '982023081768670018', 'D', '1000', 'S', '2023-08-17 09:43:12', '0');
+INSERT INTO `c_route` VALUES ('102023081777700038', '992023010100000001', '982023081729000037', 'Q', '1000', 'S', '2023-08-17 11:00:46', '0');
+INSERT INTO `c_route` VALUES ('102023081786690013', '992023010100000001', '982023081701610012', 'D', '1000', 'S', '2023-08-17 09:40:09', '0');
+INSERT INTO `c_route` VALUES ('102023081810520035', '992023010100000001', '982023081889510034', 'D', '1000', 'S', '2023-08-18 15:24:09', '0');
+INSERT INTO `c_route` VALUES ('102023081810520041', '992023010100000001', '982023081862200040', 'D', '1000', 'S', '2023-08-18 15:26:23', '0');
+INSERT INTO `c_route` VALUES ('102023081814490043', '992023010100000001', '982023081832110042', 'D', '1000', 'S', '2023-08-18 15:27:03', '0');
+INSERT INTO `c_route` VALUES ('102023081841920028', '992023010100000001', '982023081864360027', 'Q', '1000', 'S', '2023-08-18 15:14:14', '0');
+INSERT INTO `c_route` VALUES ('102023081850360032', '992023010100000001', '982023081881490031', 'Q', '1000', 'S', '2023-08-18 15:15:56', '0');
+INSERT INTO `c_route` VALUES ('102023081852600021', '992023010100000001', '982023081874930020', 'Q', '1000', 'S', '2023-08-18 16:02:11', '0');
+INSERT INTO `c_route` VALUES ('102023081852870002', '992023010100000001', '982023081809840001', 'D', '1000', 'S', '2023-08-18 14:34:23', '0');
+INSERT INTO `c_route` VALUES ('102023081854520024', '992023010100000001', '982023081887340023', 'D', '1000', 'S', '2023-08-18 16:06:48', '0');
+INSERT INTO `c_route` VALUES ('102023081855480030', '992023010100000001', '982023081800230029', 'Q', '1000', 'S', '2023-08-18 15:15:07', '0');
+INSERT INTO `c_route` VALUES ('102023081861370003', '992023010100000001', '982023081896720002', 'Q', '1000', 'S', '2023-08-18 14:04:00', '0');
+INSERT INTO `c_route` VALUES ('102023081862610006', '992023010100000001', '982023081809110005', 'D', '1000', 'S', '2023-08-18 15:39:29', '0');
+INSERT INTO `c_route` VALUES ('102023081873780010', '992023010100000001', '982023081836950009', 'D', '1000', 'S', '2023-08-18 11:14:57', '0');
+INSERT INTO `c_route` VALUES ('102023081874980011', '992023010100000001', '982023081833930010', 'D', '1000', 'S', '2023-08-18 14:40:09', '0');
+INSERT INTO `c_route` VALUES ('102023081876270008', '992023010100000001', '982023081803910007', 'D', '1000', 'S', '2023-08-18 11:13:38', '0');
+INSERT INTO `c_route` VALUES ('102023081885940012', '992023010100000001', '982023081879880011', 'D', '1000', 'S', '2023-08-18 11:16:32', '0');
+INSERT INTO `c_route` VALUES ('102023081894260014', '992023010100000001', '982023081807430013', 'D', '1000', 'S', '2023-08-18 11:18:51', '0');
+INSERT INTO `c_route` VALUES ('102023082154050006', '992023010100000001', '982023082118290005', 'Q', '1000', 'S', '2023-08-21 13:34:08', '0');
+INSERT INTO `c_route` VALUES ('102023082213590006', '992023010100000001', '982023082259940005', 'Q', '1000', 'S', '2023-08-22 10:50:27', '0');
+INSERT INTO `c_route` VALUES ('102023082302930013', '992023010100000001', '982023082305810012', 'D', '1000', 'S', '2023-08-23 13:54:46', '0');
+INSERT INTO `c_route` VALUES ('102023082320790007', '992023010100000001', '982023082395390006', 'Q', '1000', 'S', '2023-08-23 13:53:01', '0');
+INSERT INTO `c_route` VALUES ('102023082322130009', '992023010100000001', '982023082331040008', 'D', '1000', 'S', '2023-08-23 08:51:22', '0');
+INSERT INTO `c_route` VALUES ('102023082324140009', '992023010100000001', '982023082333600008', 'D', '1000', 'S', '2023-08-23 13:53:36', '0');
+INSERT INTO `c_route` VALUES ('102023082327680011', '992023010100000001', '982023082378700010', 'D', '1000', 'S', '2023-08-23 13:54:10', '0');
+INSERT INTO `c_route` VALUES ('102023082334300002', '992023010100000001', '982023082358690001', 'Q', '1000', 'S', '2023-08-23 11:06:26', '1');
+INSERT INTO `c_route` VALUES ('102023082362280003', '992023010100000001', '982023082374690002', 'D', '1000', 'S', '2023-08-23 08:50:02', '0');
+INSERT INTO `c_route` VALUES ('102023082366200005', '992023010100000001', '982023082338070004', 'D', '1000', 'S', '2023-08-23 08:50:31', '0');
+INSERT INTO `c_route` VALUES ('102023082379050002', '992023010100000001', '982023082337440001', 'Q', '1000', 'S', '2023-08-23 14:31:22', '0');
+INSERT INTO `c_route` VALUES ('102023082389110007', '992023010100000001', '982023082302040006', 'D', '1000', 'S', '2023-08-23 08:50:57', '0');
+INSERT INTO `c_route` VALUES ('102023082441270002', '992023010100000001', '982023082481950001', 'Q', '1000', 'S', '2023-08-24 15:45:17', '0');
+INSERT INTO `c_route` VALUES ('102023082449930006', '992023010100000001', '982023082403230005', 'D', '1000', 'S', '2023-08-24 15:47:18', '0');
+INSERT INTO `c_route` VALUES ('102023082463500004', '992023010100000001', '982023082488900003', 'D', '1000', 'S', '2023-08-24 15:46:37', '0');
+INSERT INTO `c_route` VALUES ('102023082482150025', '992023010100000001', '982023082426580024', 'Q', '1000', 'S', '2023-08-24 16:41:32', '0');
+INSERT INTO `c_route` VALUES ('102023082497080008', '992023010100000001', '982023082402870007', 'D', '1000', 'S', '2023-08-24 15:48:04', '0');
+INSERT INTO `c_route` VALUES ('102023082497710003', '992023010100000001', '982023082429250002', 'Q', '1000', 'S', '2023-08-24 18:08:29', '0');
+INSERT INTO `c_route` VALUES ('102023082502310007', '992023010100000001', '982023082587180006', 'D', '1000', 'S', '2023-08-25 08:58:50', '0');
+INSERT INTO `c_route` VALUES ('102023082504170014', '992023010100000001', '982023082548480013', 'D', '1000', 'S', '2023-08-25 11:41:03', '0');
+INSERT INTO `c_route` VALUES ('102023082511900019', '992023010100000001', '982023082507660018', 'D', '1000', 'S', '2023-08-25 11:44:24', '0');
+INSERT INTO `c_route` VALUES ('102023082513040003', '992023010100000001', '982023082523510002', 'Q', '1000', 'S', '2023-08-25 08:56:48', '0');
+INSERT INTO `c_route` VALUES ('102023082527490009', '992023010100000001', '982023082581760008', 'D', '1000', 'S', '2023-08-25 08:59:42', '0');
+INSERT INTO `c_route` VALUES ('102023082528480005', '992023010100000001', '982023082548550004', 'D', '1000', 'S', '2023-08-25 08:58:11', '0');
+INSERT INTO `c_route` VALUES ('102023082558790009', '992023010100000001', '982023082591540008', 'Q', '1000', 'S', '2023-08-25 11:33:18', '0');
+INSERT INTO `c_route` VALUES ('102023082915940002', '992023010100000001', '982023082982310001', 'Q', '1000', 'S', '2023-08-29 11:26:51', '0');
+INSERT INTO `c_route` VALUES ('102023083119210002', '992023010100000001', '982023083164580001', 'D', '1000', 'S', '2023-08-31 09:42:13', '0');
+INSERT INTO `c_route` VALUES ('102023091528640002', '992023010100000001', '982023091556600001', 'Q', '1000', 'S', '2023-09-15 11:26:17', '0');
+INSERT INTO `c_route` VALUES ('102023091559990003', '992023010100000001', '982023091533750002', 'Q', '1000', 'S', '2023-09-15 16:02:00', '0');
+INSERT INTO `c_route` VALUES ('102023091802350007', '992023010100000001', '982023091841420006', 'D', '1000', 'S', '2023-09-18 17:34:22', '0');
+INSERT INTO `c_route` VALUES ('102023091803960043', '992023010100000001', '982023091896520042', 'D', '1000', 'S', '2023-09-18 16:07:40', '0');
+INSERT INTO `c_route` VALUES ('102023091806260005', '992023010100000001', '982023091881660004', 'Q', '1000', 'S', '2023-09-18 17:33:09', '0');
+INSERT INTO `c_route` VALUES ('102023091830480005', '992023010100000001', '982023091841790004', 'Q', '1000', 'S', '2023-09-18 16:26:35', '0');
+INSERT INTO `c_route` VALUES ('102023091840330013', '992023010100000001', '982023091830570012', 'D', '1000', 'S', '2023-09-18 17:13:25', '0');
+INSERT INTO `c_route` VALUES ('102023091853190010', '992023010100000001', '982023091804870009', 'D', '1000', 'S', '2023-09-18 16:51:07', '0');
+INSERT INTO `c_route` VALUES ('102023091855920008', '992023010100000001', '982023091865840007', 'D', '1000', 'S', '2023-09-18 16:50:12', '0');
+INSERT INTO `c_route` VALUES ('102023091911560002', '992023010100000001', '982023091994060001', 'D', '1000', 'S', '2023-09-19 17:50:29', '0');
+INSERT INTO `c_route` VALUES ('102023091915520009', '992023010100000001', '982023091952940008', 'D', '1000', 'S', '2023-09-19 10:55:49', '0');
+INSERT INTO `c_route` VALUES ('102023091917740013', '992023010100000001', '982023091910520012', 'D', '1000', 'S', '2023-09-19 10:57:41', '0');
+INSERT INTO `c_route` VALUES ('102023091917850002', '992023010100000001', '982023091913690001', 'Q', '1000', 'S', '2023-09-19 10:43:31', '0');
+INSERT INTO `c_route` VALUES ('102023091919360004', '992023010100000001', '982023091934370003', 'Q', '1000', 'S', '2023-09-19 10:44:29', '0');
+INSERT INTO `c_route` VALUES ('102023091931340004', '992023010100000001', '982023091983790003', 'D', '1000', 'S', '2023-09-19 17:39:39', '0');
+INSERT INTO `c_route` VALUES ('102023091936370011', '992023010100000001', '982023091919880010', 'D', '1000', 'S', '2023-09-19 10:56:44', '0');
+INSERT INTO `c_route` VALUES ('102023091947960004', '992023010100000001', '982023091973270003', 'D', '1000', 'S', '2023-09-19 17:27:35', '0');
+INSERT INTO `c_route` VALUES ('102023091950400009', '992023010100000001', '982023091935410008', 'Q', '1000', 'S', '2023-09-19 12:14:38', '0');
+INSERT INTO `c_route` VALUES ('102023091977190002', '992023010100000001', '982023091979020001', 'D', '1000', 'S', '2023-09-19 12:32:12', '0');
+INSERT INTO `c_route` VALUES ('102023091994620007', '992023010100000001', '982023091959660006', 'Q', '1000', 'S', '2023-09-19 10:54:59', '0');
+INSERT INTO `c_route` VALUES ('102023092052530002', '992023010100000001', '982023092013630001', 'D', '1000', 'S', '2023-09-20 16:31:02', '0');
+INSERT INTO `c_route` VALUES ('102023092096910004', '992023010100000001', '982023092044560003', 'D', '1000', 'S', '2023-09-20 10:05:38', '0');
+INSERT INTO `c_route` VALUES ('102023092101470040', '992023010100000001', '982023092101490039', 'D', '1000', 'S', '2023-09-21 15:07:21', '0');
+INSERT INTO `c_route` VALUES ('102023092101860009', '992023010100000001', '982023092171410008', 'D', '1000', 'S', '2023-09-21 16:21:51', '0');
+INSERT INTO `c_route` VALUES ('102023092102230033', '992023010100000001', '982023092196640032', 'D', '1000', 'S', '2023-09-21 14:45:01', '0');
+INSERT INTO `c_route` VALUES ('102023092102960013', '992023010100000001', '982023092150550012', 'D', '1000', 'S', '2023-09-21 13:24:58', '0');
+INSERT INTO `c_route` VALUES ('102023092104820006', '992023010100000001', '982023092103320005', 'Q', '1000', 'S', '2023-09-21 00:23:57', '0');
+INSERT INTO `c_route` VALUES ('102023092109160036', '992023010100000001', '982023092169120035', 'Q', '1000', 'S', '2023-09-21 15:05:51', '0');
+INSERT INTO `c_route` VALUES ('102023092122340008', '992023010100000001', '982023092122750007', 'D', '1000', 'S', '2023-09-21 00:24:41', '0');
+INSERT INTO `c_route` VALUES ('102023092124870010', '992023010100000001', '982023092154190009', 'D', '1000', 'S', '2023-09-21 00:25:15', '0');
+INSERT INTO `c_route` VALUES ('102023092133900011', '992023010100000001', '982023092112130010', 'D', '1000', 'S', '2023-09-21 16:22:46', '0');
+INSERT INTO `c_route` VALUES ('102023092136740016', '992023010100000001', '982023092131970015', 'Q', '1000', 'S', '2023-09-21 00:27:00', '0');
+INSERT INTO `c_route` VALUES ('102023092148790038', '992023010100000001', '982023092183370037', 'D', '1000', 'S', '2023-09-21 15:06:35', '0');
+INSERT INTO `c_route` VALUES ('102023092150050043', '992023010100000001', '982023092185410042', 'D', '1000', 'S', '2023-09-21 00:36:14', '0');
+INSERT INTO `c_route` VALUES ('102023092153810010', '992023010100000001', '982023092114040009', 'D', '1000', 'S', '2023-09-21 01:55:47', '0');
+INSERT INTO `c_route` VALUES ('102023092154330002', '992023010100000001', '982023092177360001', 'Q', '1000', 'S', '2023-09-21 23:20:49', '0');
+INSERT INTO `c_route` VALUES ('102023092154960007', '992023010100000001', '982023092178860006', 'D', '1000', 'S', '2023-09-21 13:22:22', '0');
+INSERT INTO `c_route` VALUES ('102023092158310012', '992023010100000001', '982023092151010011', 'D', '1000', 'S', '2023-09-21 00:25:40', '0');
+INSERT INTO `c_route` VALUES ('102023092164080014', '992023010100000001', '982023092154440013', 'D', '1000', 'S', '2023-09-21 00:26:25', '0');
+INSERT INTO `c_route` VALUES ('102023092164420018', '992023010100000001', '982023092156940017', 'D', '1000', 'S', '2023-09-21 00:27:39', '0');
+INSERT INTO `c_route` VALUES ('102023092166700014', '992023010100000001', '982023092115730013', 'D', '1000', 'S', '2023-09-21 01:57:14', '0');
+INSERT INTO `c_route` VALUES ('102023092176870009', '992023010100000001', '982023092156700008', 'Q', '1000', 'S', '2023-09-21 13:22:54', '0');
+INSERT INTO `c_route` VALUES ('102023092183290016', '992023010100000001', '982023092165230015', 'D', '1000', 'S', '2023-09-21 01:57:44', '0');
+INSERT INTO `c_route` VALUES ('102023092183480011', '992023010100000001', '982023092186810010', 'D', '1000', 'S', '2023-09-21 13:23:22', '0');
+INSERT INTO `c_route` VALUES ('102023092190070013', '992023010100000001', '982023092156670012', 'Q', '1000', 'S', '2023-09-21 16:23:48', '0');
+INSERT INTO `c_route` VALUES ('102023092197680012', '992023010100000001', '982023092100730011', 'Q', '1000', 'S', '2023-09-21 01:56:35', '0');
+INSERT INTO `c_route` VALUES ('102023092198140005', '992023010100000001', '982023092164030004', 'Q', '1000', 'S', '2023-09-21 22:36:33', '0');
+INSERT INTO `c_route` VALUES ('102023092205170002', '992023010100000001', '982023092279500001', 'Q', '1000', 'S', '2023-09-22 15:31:07', '0');
+INSERT INTO `c_route` VALUES ('102023092222720007', '992023010100000001', '982023092214980006', 'Q', '1000', 'S', '2023-09-22 14:51:10', '0');
+INSERT INTO `c_route` VALUES ('102023092229560006', '992023010100000001', '982023092208760005', 'D', '1000', 'S', '2023-09-22 14:07:26', '0');
+INSERT INTO `c_route` VALUES ('102023092231480008', '992023010100000001', '982023092226180007', 'D', '1000', 'S', '2023-09-22 14:08:01', '0');
+INSERT INTO `c_route` VALUES ('102023092241300002', '992023010100000001', '982023092238200001', 'Q', '1000', 'S', '2023-09-22 14:05:43', '0');
+INSERT INTO `c_route` VALUES ('102023092244680011', '992023010100000001', '982023092296000010', 'D', '1000', 'S', '2023-09-22 14:52:35', '0');
+INSERT INTO `c_route` VALUES ('102023092261260003', '992023010100000001', '982023092252040002', 'Q', '1000', 'S', '2023-09-22 22:08:32', '0');
+INSERT INTO `c_route` VALUES ('102023092271030009', '992023010100000001', '982023092271700008', 'D', '1000', 'S', '2023-09-22 14:52:01', '0');
+INSERT INTO `c_route` VALUES ('102023092284650004', '992023010100000001', '982023092294760003', 'D', '1000', 'S', '2023-09-22 14:06:25', '0');
+INSERT INTO `c_route` VALUES ('102023092287660013', '992023010100000001', '982023092232560012', 'D', '1000', 'S', '2023-09-22 15:10:18', '0');
+INSERT INTO `c_route` VALUES ('102023092288630002', '992023010100000001', '982023092282830001', 'Q', '1000', 'S', '2023-09-22 11:55:18', '0');
+INSERT INTO `c_route` VALUES ('102023092292470002', '992023010100000001', '982023092209070001', 'Q', '1000', 'S', '2023-09-22 16:38:38', '0');
+INSERT INTO `c_route` VALUES ('102023092504350002', '992023010100000001', '982023092558060001', 'D', '1000', 'S', '2023-09-25 16:55:19', '0');
+INSERT INTO `c_route` VALUES ('102023092664920004', '992023010100000001', '982023092644180003', 'D', '1000', 'S', '2023-09-26 09:23:34', '0');
+INSERT INTO `c_route` VALUES ('102023092666350002', '992023010100000001', '982023092646350001', 'Q', '1000', 'S', '2023-09-26 09:22:33', '0');
+INSERT INTO `c_route` VALUES ('102023092707320025', '992023010100000001', '982023092700250024', 'D', '1000', 'S', '2023-09-27 16:56:20', '0');
+INSERT INTO `c_route` VALUES ('102023092708130007', '992023010100000001', '982023092735400006', 'D', '1000', 'S', '2023-09-27 16:37:26', '0');
+INSERT INTO `c_route` VALUES ('102023092709370021', '992023010100000001', '982023092727360020', 'Q', '1000', 'S', '2023-09-27 16:52:55', '0');
+INSERT INTO `c_route` VALUES ('102023092709510019', '992023010100000001', '982023092700170018', 'D', '1000', 'S', '2023-09-27 16:42:43', '0');
+INSERT INTO `c_route` VALUES ('102023092714650017', '992023010100000001', '982023092717570016', 'D', '1000', 'S', '2023-09-27 16:41:46', '0');
+INSERT INTO `c_route` VALUES ('102023092719870036', '992023010100000001', '982023092706610035', 'D', '1000', 'S', '2023-09-27 10:57:06', '0');
+INSERT INTO `c_route` VALUES ('102023092723180023', '992023010100000001', '982023092719040022', 'D', '1000', 'S', '2023-09-27 16:55:34', '0');
+INSERT INTO `c_route` VALUES ('102023092724460005', '992023010100000001', '982023092724320004', 'Q', '1000', 'S', '2023-09-27 15:05:32', '0');
+INSERT INTO `c_route` VALUES ('102023092734200009', '992023010100000001', '982023092709840008', 'D', '1000', 'S', '2023-09-27 16:38:04', '0');
+INSERT INTO `c_route` VALUES ('102023092736160005', '992023010100000001', '982023092740550004', 'Q', '1000', 'S', '2023-09-27 16:36:45', '0');
+INSERT INTO `c_route` VALUES ('102023092737410026', '992023010100000001', '982023092770300025', 'Q', '1000', 'S', '2023-09-27 13:51:28', '0');
+INSERT INTO `c_route` VALUES ('102023092743860032', '992023010100000001', '982023092746910031', 'D', '1000', 'S', '2023-09-27 13:54:23', '0');
+INSERT INTO `c_route` VALUES ('102023092754060034', '992023010100000001', '982023092786220033', 'Q', '1000', 'S', '2023-09-27 10:56:16', '0');
+INSERT INTO `c_route` VALUES ('102023092760060012', '992023010100000001', '982023092722710011', 'Q', '1000', 'S', '2023-09-27 13:27:29', '0');
+INSERT INTO `c_route` VALUES ('102023092765060038', '992023010100000001', '982023092716470037', 'D', '1000', 'S', '2023-09-27 10:57:52', '0');
+INSERT INTO `c_route` VALUES ('102023092768280006', '992023010100000001', '982023092792030005', 'D', '1000', 'S', '2023-09-27 15:58:34', '0');
+INSERT INTO `c_route` VALUES ('102023092770240002', '992023010100000001', '982023092708060001', 'Q', '1000', 'S', '2023-09-27 15:51:57', '0');
+INSERT INTO `c_route` VALUES ('102023092772420013', '992023010100000001', '982023092786950012', 'Q', '1000', 'S', '2023-09-27 16:39:49', '0');
+INSERT INTO `c_route` VALUES ('102023092772680015', '992023010100000001', '982023092747550014', 'D', '1000', 'S', '2023-09-27 16:40:38', '0');
+INSERT INTO `c_route` VALUES ('102023092777170027', '992023010100000001', '982023092737630026', 'D', '1000', 'S', '2023-09-27 16:57:02', '0');
+INSERT INTO `c_route` VALUES ('102023092777610002', '992023010100000001', '982023092730940001', 'Q', '1000', 'S', '2023-09-27 14:51:53', '0');
+INSERT INTO `c_route` VALUES ('102023092781440011', '992023010100000001', '982023092796270010', 'D', '1000', 'S', '2023-09-27 16:38:52', '0');
+INSERT INTO `c_route` VALUES ('102023092782820002', '992023010100000001', '982023092721930001', 'Q', '1000', 'S', '2023-09-27 14:55:46', '0');
+INSERT INTO `c_route` VALUES ('102023092784670008', '992023010100000001', '982023092713170007', 'Q', '1000', 'S', '2023-09-27 12:26:24', '0');
+INSERT INTO `c_route` VALUES ('102023092784680030', '992023010100000001', '982023092797650029', 'D', '1000', 'S', '2023-09-27 13:53:11', '0');
+INSERT INTO `c_route` VALUES ('102023092789930028', '992023010100000001', '982023092778110027', 'D', '1000', 'S', '2023-09-27 13:52:21', '0');
+INSERT INTO `c_route` VALUES ('102023092798150040', '992023010100000001', '982023092700090039', 'D', '1000', 'S', '2023-09-27 10:58:39', '0');
+INSERT INTO `c_route` VALUES ('102023100805530012', '992023010100000001', '982023100860740011', 'D', '1000', 'S', '2023-10-08 15:44:09', '0');
+INSERT INTO `c_route` VALUES ('102023100809510010', '992023010100000001', '982023100805530009', 'D', '1000', 'S', '2023-10-08 15:43:16', '0');
+INSERT INTO `c_route` VALUES ('102023100878480014', '992023010100000001', '982023100842780013', 'D', '1000', 'S', '2023-10-08 15:44:46', '0');
+INSERT INTO `c_route` VALUES ('102023100897230010', '992023010100000001', '982023100888550009', 'Q', '1000', 'S', '2023-10-08 09:13:09', '0');
+INSERT INTO `c_route` VALUES ('102023100916130002', '992023010100000001', '982023100962650001', 'D', '1000', 'S', '2023-10-09 11:35:17', '0');
+INSERT INTO `c_route` VALUES ('102023100978440008', '992023010100000001', '982023100953390007', 'D', '1000', 'S', '2023-10-09 09:41:29', '0');
+INSERT INTO `c_route` VALUES ('102023100982810005', '992023010100000001', '982023100918850004', 'Q', '1000', 'S', '2023-10-09 08:40:11', '0');
+INSERT INTO `c_route` VALUES ('102023101273030002', '992023010100000001', '982023101231580001', 'Q', '1000', 'S', '2023-10-12 11:56:42', '0');
+INSERT INTO `c_route` VALUES ('102023101674610002', '992023010100000001', '982023101680480001', 'D', '1000', 'S', '2023-10-16 17:06:11', '0');
+INSERT INTO `c_route` VALUES ('102023101713930018', '992023010100000001', '982023101794500017', 'D', '1000', 'S', '2023-10-17 16:59:43', '0');
+INSERT INTO `c_route` VALUES ('102023101716470016', '992023010100000001', '982023101769190015', 'D', '1000', 'S', '2023-10-17 16:58:50', '0');
+INSERT INTO `c_route` VALUES ('102023101716720012', '992023010100000001', '982023101762070011', 'Q', '1000', 'S', '2023-10-17 16:56:47', '0');
+INSERT INTO `c_route` VALUES ('102023101747270014', '992023010100000001', '982023101727160013', 'D', '1000', 'S', '2023-10-17 16:57:50', '0');
+INSERT INTO `c_route` VALUES ('102023101806910064', '992023010100000001', '982023101887880063', 'D', '1000', 'S', '2023-10-18 10:01:13', '0');
+INSERT INTO `c_route` VALUES ('102023101821850068', '992023010100000001', '982023101804120067', 'D', '1000', 'S', '2023-10-18 10:02:48', '0');
+INSERT INTO `c_route` VALUES ('102023101830100039', '992023010100000001', '982023101851480038', 'D', '1000', 'S', '2023-10-18 15:57:42', '0');
+INSERT INTO `c_route` VALUES ('102023101843740035', '992023010100000001', '982023101830950034', 'D', '1000', 'S', '2023-10-18 15:56:18', '0');
+INSERT INTO `c_route` VALUES ('102023101843990033', '992023010100000001', '982023101882210032', 'Q', '1000', 'S', '2023-10-18 15:55:24', '0');
+INSERT INTO `c_route` VALUES ('102023101888670037', '992023010100000001', '982023101801400036', 'D', '1000', 'S', '2023-10-18 15:56:58', '0');
+INSERT INTO `c_route` VALUES ('102023101892000066', '992023010100000001', '982023101897800065', 'D', '1000', 'S', '2023-10-18 10:02:04', '0');
+INSERT INTO `c_route` VALUES ('102023101898280062', '992023010100000001', '982023101892950061', 'Q', '1000', 'S', '2023-10-18 09:59:56', '0');
+INSERT INTO `c_route` VALUES ('102023101928030022', '992023010100000001', '982023101998270021', 'Q', '1000', 'S', '2023-10-19 15:23:06', '0');
+INSERT INTO `c_route` VALUES ('102023101963510024', '992023010100000001', '982023101924650023', 'D', '1000', 'S', '2023-10-19 15:23:48', '0');
+INSERT INTO `c_route` VALUES ('102023101975860026', '992023010100000001', '982023101962330025', 'D', '1000', 'S', '2023-10-19 15:24:30', '0');
+INSERT INTO `c_route` VALUES ('102023102092270005', '992023010100000001', '982023102089120004', 'Q', '1000', 'S', '2023-10-20 10:17:07', '0');
+INSERT INTO `c_route` VALUES ('102023102357050002', '992023010100000001', '982023102300890001', 'Q', '1000', 'S', '2023-10-23 09:00:08', '0');
+INSERT INTO `c_route` VALUES ('102023102365810005', '992023010100000001', '982023102335040004', 'Q', '1000', 'S', '2023-10-23 11:04:16', '0');
+INSERT INTO `c_route` VALUES ('102023102665940012', '992023010100000001', '982023102644900011', 'Q', '1000', 'S', '2023-10-26 23:17:58', '0');
+INSERT INTO `c_route` VALUES ('102023102739840006', '992023010100000001', '982023102759210005', 'D', '1000', 'S', '2023-10-27 21:34:48', '0');
+INSERT INTO `c_route` VALUES ('102023102747750004', '992023010100000001', '982023102750370003', 'D', '1000', 'S', '2023-10-27 21:34:17', '0');
+INSERT INTO `c_route` VALUES ('102023102845380016', '992023010100000001', '982023102833380015', 'D', '1000', 'S', '2023-10-28 11:54:33', '0');
+INSERT INTO `c_route` VALUES ('102023102896510003', '992023010100000001', '982023102890790002', 'Q', '1000', 'S', '2023-10-28 12:03:59', '0');
+INSERT INTO `c_route` VALUES ('102023103001860036', '992023010100000001', '982023103006960035', 'Q', '1000', 'S', '2023-10-30 17:46:29', '0');
+INSERT INTO `c_route` VALUES ('102023103005850040', '992023010100000001', '982023103038610039', 'Q', '1000', 'S', '2023-10-30 04:41:27', '0');
+INSERT INTO `c_route` VALUES ('102023103007180043', '992023010100000001', '982023103084880042', 'D', '1000', 'S', '2023-10-30 00:42:05', '0');
+INSERT INTO `c_route` VALUES ('102023103008490038', '992023010100000001', '982023103016790037', 'D', '1000', 'S', '2023-10-30 17:47:14', '0');
+INSERT INTO `c_route` VALUES ('102023103011560037', '992023010100000001', '982023103086820036', 'Q', '1000', 'S', '2023-10-30 00:39:49', '0');
+INSERT INTO `c_route` VALUES ('102023103017400004', '992023010100000001', '982023103019560003', 'D', '1000', 'S', '2023-10-30 10:48:17', '0');
+INSERT INTO `c_route` VALUES ('102023103017450039', '992023010100000001', '982023103047790038', 'D', '1000', 'S', '2023-10-30 00:40:31', '0');
+INSERT INTO `c_route` VALUES ('102023103017450041', '992023010100000001', '982023103086830040', 'D', '1000', 'S', '2023-10-30 00:41:33', '0');
+INSERT INTO `c_route` VALUES ('102023103038860051', '992023010100000001', '982023103000230050', 'Q', '1000', 'S', '2023-10-30 04:49:43', '0');
+INSERT INTO `c_route` VALUES ('102023103043140004', '992023010100000001', '982023103037160003', 'D', '1000', 'S', '2023-10-30 13:56:08', '0');
+INSERT INTO `c_route` VALUES ('102023103058920063', '992023010100000001', '982023103065540062', 'D', '1000', 'S', '2023-10-30 04:21:43', '0');
+INSERT INTO `c_route` VALUES ('102023103060830040', '992023010100000001', '982023103013530039', 'D', '1000', 'S', '2023-10-30 17:47:55', '0');
+INSERT INTO `c_route` VALUES ('102023103060890042', '992023010100000001', '982023103007440041', 'D', '1000', 'S', '2023-10-30 17:48:41', '0');
+INSERT INTO `c_route` VALUES ('102023103070580008', '992023010100000001', '982023103098000007', 'D', '1000', 'S', '2023-10-30 10:49:49', '0');
+INSERT INTO `c_route` VALUES ('102023103071890006', '992023010100000001', '982023103085050005', 'D', '1000', 'S', '2023-10-30 13:56:57', '0');
+INSERT INTO `c_route` VALUES ('102023103072510060', '992023010100000001', '982023103085700059', 'Q', '1000', 'S', '2023-10-30 04:17:52', '0');
+INSERT INTO `c_route` VALUES ('102023103079000016', '992023010100000001', '982023103096630015', 'Q', '1000', 'S', '2023-10-30 01:54:07', '0');
+INSERT INTO `c_route` VALUES ('102023103086800002', '992023010100000001', '982023103033380001', 'Q', '1000', 'S', '2023-10-30 10:47:06', '0');
+INSERT INTO `c_route` VALUES ('102023103092420006', '992023010100000001', '982023103068040005', 'D', '1000', 'S', '2023-10-30 10:49:04', '0');
+INSERT INTO `c_route` VALUES ('102023103095000002', '992023010100000001', '982023103009090001', 'D', '1000', 'S', '2023-10-30 02:18:54', '0');
+INSERT INTO `c_route` VALUES ('102023103095320002', '992023010100000001', '982023103052370001', 'D', '1000', 'S', '2023-10-30 04:25:23', '0');
+INSERT INTO `c_route` VALUES ('102023103098140002', '992023010100000001', '982023103041530001', 'Q', '1000', 'S', '2023-10-30 13:55:20', '0');
+INSERT INTO `c_route` VALUES ('102023103105950008', '992023010100000001', '982023103113740007', 'D', '1000', 'S', '2023-10-31 09:42:48', '0');
+INSERT INTO `c_route` VALUES ('102023103121700005', '992023010100000001', '982023103179860004', 'Q', '1000', 'S', '2023-10-31 14:50:27', '0');
+INSERT INTO `c_route` VALUES ('102023103135110004', '992023010100000001', '982023103145360003', 'D', '1000', 'S', '2023-10-31 09:41:17', '0');
+INSERT INTO `c_route` VALUES ('102023103135230007', '992023010100000001', '982023103185880006', 'D', '1000', 'S', '2023-10-31 14:51:09', '0');
+INSERT INTO `c_route` VALUES ('102023103171010011', '992023010100000001', '982023103174880010', 'D', '1000', 'S', '2023-10-31 14:52:30', '0');
+INSERT INTO `c_route` VALUES ('102023103172420006', '992023010100000001', '982023103149660005', 'D', '1000', 'S', '2023-10-31 09:42:10', '0');
+INSERT INTO `c_route` VALUES ('102023103189000009', '992023010100000001', '982023103159240008', 'D', '1000', 'S', '2023-10-31 14:51:51', '0');
+INSERT INTO `c_route` VALUES ('102023103196950002', '992023010100000001', '982023103112460001', 'Q', '1000', 'S', '2023-10-31 09:40:35', '0');
+INSERT INTO `c_route` VALUES ('102023110113020020', '992023010100000001', '982023110165140019', 'D', '1000', 'S', '2023-11-01 17:32:28', '0');
+INSERT INTO `c_route` VALUES ('102023110117790397', '992023010100000001', '982023110166020396', 'Q', '1000', 'S', '2023-11-01 23:20:26', '0');
+INSERT INTO `c_route` VALUES ('102023110118550022', '992023010100000001', '982023110105060021', 'D', '1000', 'S', '2023-11-01 14:26:27', '0');
+INSERT INTO `c_route` VALUES ('102023110127850010', '992023010100000001', '982023110125260009', 'Q', '1000', 'S', '2023-11-01 16:23:55', '0');
+INSERT INTO `c_route` VALUES ('102023110143430005', '992023010100000001', '982023110194410004', 'Q', '1000', 'S', '2023-11-01 23:33:29', '0');
+INSERT INTO `c_route` VALUES ('102023110146320003', '992023010100000001', '982023110165530002', 'D', '1000', 'S', '2023-11-01 15:42:51', '0');
+INSERT INTO `c_route` VALUES ('102023110172050004', '992023010100000001', '982023110168710003', 'Q', '1000', 'S', '2023-11-01 23:58:07', '0');
+INSERT INTO `c_route` VALUES ('102023110178880002', '992023010100000001', '982023110148750001', 'Q', '1000', 'S', '2023-11-01 23:57:34', '0');
+INSERT INTO `c_route` VALUES ('102023110180620008', '992023010100000001', '982023110189450007', 'Q', '1000', 'S', '2023-11-01 16:23:08', '0');
+INSERT INTO `c_route` VALUES ('102023110186580395', '992023010100000001', '982023110184710394', 'Q', '1000', 'S', '2023-11-01 23:19:51', '0');
+INSERT INTO `c_route` VALUES ('102023110605740002', '992023010100000001', '982023110606400001', 'Q', '1000', 'S', '2023-11-06 00:26:03', '0');
+INSERT INTO `c_route` VALUES ('102023110632090039', '992023010100000001', '982023110609390038', 'Q', '1000', 'S', '2023-11-06 00:10:02', '0');
+INSERT INTO `c_route` VALUES ('102023110690190041', '992023010100000001', '982023110670170040', 'Q', '1000', 'S', '2023-11-06 00:15:11', '0');
+INSERT INTO `c_route` VALUES ('102023110985350005', '992023010100000001', '982023110918500004', 'Q', '1000', 'S', '2023-11-09 01:32:21', '0');
+INSERT INTO `c_route` VALUES ('102023111029520037', '992023010100000001', '982023111051920036', 'D', '1000', 'S', '2023-11-10 10:23:03', '0');
+INSERT INTO `c_route` VALUES ('102023111039360002', '992023010100000001', '982023111071170001', 'D', '1000', 'S', '2023-11-10 10:26:51', '0');
+INSERT INTO `c_route` VALUES ('102023111097600004', '992023010100000001', '982023111082910003', 'Q', '1000', 'S', '2023-11-10 23:57:33', '0');
+INSERT INTO `c_route` VALUES ('102023111818770013', '992023010100000001', '982023111809080012', 'Q', '1000', 'S', '2023-11-18 04:03:02', '0');
+INSERT INTO `c_route` VALUES ('102023111842090006', '992023111817510002', '982023111852930005', 'D', '1000', 'S', '2023-11-18 15:38:51', '0');
+INSERT INTO `c_route` VALUES ('102023111859590005', '992023010100000001', '982023111880690004', 'D', '1000', 'S', '2023-11-18 01:22:28', '0');
+INSERT INTO `c_route` VALUES ('102023111897100004', '992023111817510002', '982023111873780003', 'D', '1000', 'S', '2023-11-18 15:37:48', '0');
+INSERT INTO `c_route` VALUES ('102023112012740002', '992023111817510002', '982023081729000037', 'Q', '1000', 'S', '2023-11-20 09:57:38', '0');
+INSERT INTO `c_route` VALUES ('102023112020700004', '992023111817510002', '982023081896720002', 'Q', '1000', 'S', '2023-11-20 09:59:37', '0');
+INSERT INTO `c_route` VALUES ('102023112023120007', '992023111817510002', '982023112051660006', 'Q', '1000', 'S', '2023-11-20 10:36:56', '0');
+INSERT INTO `c_route` VALUES ('102023112032170034', '992023111817510002', '982023081864360027', 'Q', '1000', 'S', '2023-11-20 20:41:17', '0');
+INSERT INTO `c_route` VALUES ('102023112048090020', '992023111817510002', '982023112070050019', 'D', '1000', 'S', '2023-11-20 14:42:28', '0');
+INSERT INTO `c_route` VALUES ('102023112059800002', '992023111817510002', '982023112024490001', 'Q', '1000', 'S', '2023-11-20 12:14:56', '0');
+INSERT INTO `c_route` VALUES ('102023112063900039', '992023111817510002', '982023081881490031', 'Q', '1000', 'S', '2023-11-20 21:26:37', '0');
+INSERT INTO `c_route` VALUES ('102023112091370018', '992023111817510002', '982023112071440017', 'D', '1000', 'S', '2023-11-20 14:41:55', '0');
+INSERT INTO `c_route` VALUES ('102023112098800037', '992023111817510002', '982023081800230029', 'Q', '1000', 'S', '2023-11-20 21:22:01', '0');
+INSERT INTO `c_route` VALUES ('102023112129210014', '992023010100000001', '982023112177330013', 'Q', '1000', 'S', '2023-11-21 23:34:01', '0');
+INSERT INTO `c_route` VALUES ('102023112136370009', '992023010100000001', '982023112156620008', 'D', '1000', 'S', '2023-11-21 23:53:44', '0');
+INSERT INTO `c_route` VALUES ('102023112201790011', '992023111817510002', '982023112255190010', 'Q', '1000', 'S', '2023-11-22 18:57:28', '0');
+INSERT INTO `c_route` VALUES ('102023112214960007', '992023010100000001', '982023112279260006', 'Q', '1000', 'S', '2023-11-22 13:50:25', '0');
+INSERT INTO `c_route` VALUES ('102023112225870004', '992023111817510002', '982023112241880003', 'Q', '1000', 'S', '2023-11-22 11:45:00', '0');
+INSERT INTO `c_route` VALUES ('102023112227100006', '992023010100000001', '982023112258210005', 'D', '1000', 'S', '2023-11-22 16:55:56', '0');
+INSERT INTO `c_route` VALUES ('102023112260940005', '992023010100000001', '982023112257810004', 'D', '1000', 'S', '2023-11-22 13:49:19', '0');
+INSERT INTO `c_route` VALUES ('102023112264720003', '992023111817510002', '982023092792030005', 'D', '1000', 'S', '2023-11-22 11:20:22', '0');
+INSERT INTO `c_route` VALUES ('102023112269020004', '992023010100000001', '982023112293070003', 'D', '1000', 'S', '2023-11-22 16:55:03', '0');
+INSERT INTO `c_route` VALUES ('102023112274410009', '992023010100000001', '982023112251000008', 'D', '1000', 'S', '2023-11-22 13:51:24', '0');
+INSERT INTO `c_route` VALUES ('102023112283110011', '992023010100000001', '982023112254160010', 'D', '1000', 'S', '2023-11-22 13:52:07', '0');
+INSERT INTO `c_route` VALUES ('102023112288730009', '992023111817510002', '982023112208460008', 'Q', '1000', 'S', '2023-11-22 18:56:53', '0');
+INSERT INTO `c_route` VALUES ('102023112289340002', '992023010100000001', '982023112209130001', 'Q', '1000', 'S', '2023-11-22 16:54:12', '0');
+INSERT INTO `c_route` VALUES ('102023112317820024', '992023010100000001', '982023112330070023', 'D', '1000', 'S', '2023-11-23 17:35:41', '0');
+INSERT INTO `c_route` VALUES ('102023112333550002', '992023010100000001', '982023112324940001', 'Q', '1000', 'S', '2023-11-23 09:53:53', '0');
+INSERT INTO `c_route` VALUES ('102023112351580026', '992023010100000001', '982023112313810025', 'D', '1000', 'S', '2023-11-23 17:36:16', '0');
+INSERT INTO `c_route` VALUES ('102023112354910028', '992023010100000001', '982023112328570027', 'D', '1000', 'S', '2023-11-23 17:36:51', '0');
+INSERT INTO `c_route` VALUES ('102023112357610004', '992023010100000001', '982023112379730003', 'D', '1000', 'S', '2023-11-23 09:54:40', '0');
+INSERT INTO `c_route` VALUES ('102023112384840022', '992023010100000001', '982023112380470021', 'Q', '1000', 'S', '2023-11-23 17:34:59', '0');
+INSERT INTO `c_route` VALUES ('102023112386440008', '992023010100000001', '982023112356790007', 'D', '1000', 'S', '2023-11-23 09:56:06', '0');
+INSERT INTO `c_route` VALUES ('102023112390120006', '992023010100000001', '982023112365600005', 'D', '1000', 'S', '2023-11-23 09:55:21', '0');
+INSERT INTO `c_route` VALUES ('102023112412290064', '992023010100000001', '982023112414180063', 'D', '1000', 'S', '2023-11-24 17:48:58', '0');
+INSERT INTO `c_route` VALUES ('102023112419210028', '992023010100000001', '982023112484900027', 'D', '1000', 'S', '2023-11-24 01:09:17', '0');
+INSERT INTO `c_route` VALUES ('102023112419470018', '992023010100000001', '982023112413800017', 'D', '1000', 'S', '2023-11-24 01:05:50', '0');
+INSERT INTO `c_route` VALUES ('102023112421890060', '992023010100000001', '982023112457480059', 'Q', '1000', 'S', '2023-11-24 17:48:03', '0');
+INSERT INTO `c_route` VALUES ('102023112423610012', '992023010100000001', '982023112460090011', 'Q', '1000', 'S', '2023-11-24 00:58:09', '0');
+INSERT INTO `c_route` VALUES ('102023112431520066', '992023010100000001', '982023112457690065', 'D', '1000', 'S', '2023-11-24 17:49:26', '0');
+INSERT INTO `c_route` VALUES ('102023112438650006', '992023010100000001', '982023112478280005', 'Q', '1000', 'S', '2023-11-24 00:30:08', '0');
+INSERT INTO `c_route` VALUES ('102023112442260012', '992023010100000001', '982023112443190011', 'D', '1000', 'S', '2023-11-24 00:31:51', '0');
+INSERT INTO `c_route` VALUES ('102023112450450010', '992023010100000001', '982023112452770009', 'Q', '1000', 'S', '2023-11-24 00:57:23', '0');
+INSERT INTO `c_route` VALUES ('102023112463410008', '992023010100000001', '982023112478820007', 'D', '1000', 'S', '2023-11-24 00:30:46', '0');
+INSERT INTO `c_route` VALUES ('102023112465950062', '992023010100000001', '982023112417380061', 'D', '1000', 'S', '2023-11-24 17:48:30', '0');
+INSERT INTO `c_route` VALUES ('102023112471240030', '992023010100000001', '982023112437410029', 'D', '1000', 'S', '2023-11-24 01:10:06', '0');
+INSERT INTO `c_route` VALUES ('102023112479030010', '992023010100000001', '982023112445570009', 'D', '1000', 'S', '2023-11-24 00:31:20', '0');
+INSERT INTO `c_route` VALUES ('102023112479900015', '992023010100000001', '982023112400400014', 'Q', '1000', 'S', '2023-11-24 01:01:55', '0');
+INSERT INTO `c_route` VALUES ('102023112503170002', '992023010100000001', '982023112522500001', 'D', '1000', 'S', '2023-11-25 14:19:36', '0');
+INSERT INTO `c_route` VALUES ('102023112506660027', '992023010100000001', '982023112533940026', 'Q', '1000', 'S', '2023-11-25 14:14:24', '0');
+INSERT INTO `c_route` VALUES ('102023112534320016', '992023010100000001', '982023112560230015', 'Q', '1000', 'S', '2023-11-25 01:41:48', '0');
+INSERT INTO `c_route` VALUES ('102023112570890004', '992023010100000001', '982023112529890003', 'D', '1000', 'S', '2023-11-25 14:20:15', '0');
+INSERT INTO `c_route` VALUES ('102023112718860002', '992023010100000001', '982023112728960001', 'Q', '1000', 'S', '2023-11-27 08:57:04', '0');
+INSERT INTO `c_route` VALUES ('102023120153380002', '992023010100000001', '982023120179430001', 'Q', '1000', 'S', '2023-12-01 14:27:31', '0');
+INSERT INTO `c_route` VALUES ('102023120156770004', '992023010100000001', '982023120154500003', 'D', '1000', 'S', '2023-12-01 14:34:53', '0');
+INSERT INTO `c_route` VALUES ('102023120196420008', '992023010100000001', '982023120132530007', 'D', '1000', 'S', '2023-12-01 14:36:19', '0');
+INSERT INTO `c_route` VALUES ('102023120197610006', '992023010100000001', '982023120113850005', 'D', '1000', 'S', '2023-12-01 14:35:39', '0');
+INSERT INTO `c_route` VALUES ('102023120400460006', '992023010100000001', '982023120442680005', 'D', '1000', 'S', '2023-12-04 10:24:53', '0');
+INSERT INTO `c_route` VALUES ('102023120410890004', '992023010100000001', '982023120412830003', 'D', '1000', 'S', '2023-12-04 10:24:08', '0');
+INSERT INTO `c_route` VALUES ('102023120415420008', '992023010100000001', '982023120492460007', 'D', '1000', 'S', '2023-12-04 10:25:41', '0');
+INSERT INTO `c_route` VALUES ('102023120419550012', '992023010100000001', '982023120497750011', 'D', '1000', 'S', '2023-12-04 17:14:32', '0');
+INSERT INTO `c_route` VALUES ('102023120423310002', '992023010100000001', '982023120433820001', 'Q', '1000', 'S', '2023-12-04 16:55:29', '0');
+INSERT INTO `c_route` VALUES ('102023120429500002', '992023010100000001', '982023120429880001', 'Q', '1000', 'S', '2023-12-04 10:23:09', '0');
+INSERT INTO `c_route` VALUES ('102023120442350006', '992023010100000001', '982023120465940005', 'D', '1000', 'S', '2023-12-04 14:40:57', '0');
+INSERT INTO `c_route` VALUES ('102023120444460004', '992023010100000001', '982023120490000003', 'D', '1000', 'S', '2023-12-04 14:39:40', '0');
+INSERT INTO `c_route` VALUES ('102023120444990002', '992023010100000001', '982023120416660001', 'Q', '1000', 'S', '2023-12-04 14:38:05', '0');
+INSERT INTO `c_route` VALUES ('102023120449000009', '992023010100000001', '982023120485570008', 'Q', '1000', 'S', '2023-12-04 17:11:56', '0');
+INSERT INTO `c_route` VALUES ('102023120456420002', '992023010100000001', '982023120480640001', 'D', '1000', 'S', '2023-12-04 13:47:42', '0');
+INSERT INTO `c_route` VALUES ('102023120457330008', '992023010100000001', '982023120417690007', 'D', '1000', 'S', '2023-12-04 13:51:07', '0');
+INSERT INTO `c_route` VALUES ('102023120476450010', '992023010100000001', '982023120472570009', 'D', '1000', 'S', '2023-12-04 13:52:03', '0');
+INSERT INTO `c_route` VALUES ('102023120507540013', '992023010100000001', '982023120581160012', 'D', '1000', 'S', '2023-12-05 15:18:25', '0');
+INSERT INTO `c_route` VALUES ('102023120512230015', '992023010100000001', '982023120588350014', 'D', '1000', 'S', '2023-12-05 15:24:35', '0');
+INSERT INTO `c_route` VALUES ('102023120514700011', '992023010100000001', '982023120571420010', 'Q', '1000', 'S', '2023-12-05 14:59:57', '0');
+INSERT INTO `c_route` VALUES ('102023120515240031', '992023010100000001', '982023120546280030', 'D', '1000', 'S', '2023-12-05 14:45:36', '0');
+INSERT INTO `c_route` VALUES ('102023120517430005', '992023010100000001', '982023120531600004', 'D', '1000', 'S', '2023-12-05 14:58:17', '0');
+INSERT INTO `c_route` VALUES ('102023120559960002', '992023010100000001', '982023120567990001', 'Q', '1000', 'S', '2023-12-05 15:32:21', '0');
+INSERT INTO `c_route` VALUES ('102023120572820015', '992023010100000001', '982023120517900014', 'D', '1000', 'S', '2023-12-05 15:19:30', '0');
+INSERT INTO `c_route` VALUES ('102023120580940007', '992023010100000001', '982023120541700006', 'D', '1000', 'S', '2023-12-05 14:58:53', '0');
+INSERT INTO `c_route` VALUES ('102023120581560003', '992023010100000001', '982023120578000002', 'Q', '1000', 'S', '2023-12-05 14:57:29', '0');
+INSERT INTO `c_route` VALUES ('102023120587980017', '992023010100000001', '982023120580470016', 'D', '1000', 'S', '2023-12-05 15:25:22', '0');
+INSERT INTO `c_route` VALUES ('102023120593780029', '992023010100000001', '982023120500470028', 'D', '1000', 'S', '2023-12-05 14:44:43', '0');
+INSERT INTO `c_route` VALUES ('102023120596870009', '992023010100000001', '982023120551660008', 'D', '1000', 'S', '2023-12-05 14:59:22', '0');
+INSERT INTO `c_route` VALUES ('102023120599590027', '992023010100000001', '982023120580700026', 'D', '1000', 'S', '2023-12-05 14:43:55', '0');
+INSERT INTO `c_route` VALUES ('102023120940160048', '992023111817510002', '982023102644900011', 'Q', '1000', 'S', '2023-12-09 16:59:17', '0');
+INSERT INTO `c_route` VALUES ('102023120975430046', '992023111817510002', '982023120969520045', 'D', '1000', 'S', '2023-12-09 16:57:20', '0');
+INSERT INTO `c_route` VALUES ('102023121129980002', '992023010100000001', '982023121159610001', 'Q', '1000', 'S', '2023-12-11 17:08:49', '0');
+INSERT INTO `c_route` VALUES ('102023121139900008', '992023010100000001', '982023121195650007', 'D', '1000', 'S', '2023-12-11 17:11:08', '0');
+INSERT INTO `c_route` VALUES ('102023121156130004', '992023010100000001', '982023121132930003', 'D', '1000', 'S', '2023-12-11 17:09:44', '0');
+INSERT INTO `c_route` VALUES ('102023121175600006', '992023010100000001', '982023121124210005', 'D', '1000', 'S', '2023-12-11 17:10:29', '0');
+INSERT INTO `c_route` VALUES ('102023121218650007', '992023010100000001', '982023121272790006', 'D', '1000', 'S', '2023-12-12 10:47:57', '0');
+INSERT INTO `c_route` VALUES ('102023121234760009', '992023010100000001', '982023121240490008', 'D', '1000', 'S', '2023-12-12 10:48:41', '0');
+INSERT INTO `c_route` VALUES ('102023121284050005', '992023010100000001', '982023121215000004', 'Q', '1000', 'S', '2023-12-12 10:46:31', '0');
+INSERT INTO `c_route` VALUES ('102023121295710011', '992023010100000001', '982023121287520010', 'D', '1000', 'S', '2023-12-12 10:49:23', '0');
+INSERT INTO `c_route` VALUES ('102023121412170010', '992023121426830015', '982023121496340009', 'D', '1000', 'S', '2023-12-14 23:23:34', '0');
+INSERT INTO `c_route` VALUES ('102023121438040004', '992023010100000001', '982023121416250003', 'D', '1000', 'S', '2023-12-14 12:52:19', '0');
+INSERT INTO `c_route` VALUES ('102023121443810001', '992023121426830015', '982023103085700059', 'Q', '1000', 'S', '2023-12-14 23:15:22', '0');
+INSERT INTO `c_route` VALUES ('102023121447260014', '992023010100000001', '982023121471690013', 'D', '1000', 'S', '2023-12-14 12:55:14', '0');
+INSERT INTO `c_route` VALUES ('102023121452700008', '992023010100000001', '982023121462180007', 'Q', '1000', 'S', '2023-12-14 12:53:34', '0');
+INSERT INTO `c_route` VALUES ('102023121463010016', '992023121426830015', '982023080933940001', 'Q', '1000', 'S', '2023-12-14 21:39:56', '0');
+INSERT INTO `c_route` VALUES ('102023121464600002', '992023121426830015', '982023121429700001', 'Q', '1000', 'S', '2023-12-14 23:01:28', '0');
+INSERT INTO `c_route` VALUES ('102023121470470002', '992023010100000001', '982023121438440001', 'Q', '1000', 'S', '2023-12-14 12:51:42', '0');
+INSERT INTO `c_route` VALUES ('102023121473790020', '992023121426830015', '2', 'D', '1000', 'S', '2023-12-14 22:22:54', '0');
+INSERT INTO `c_route` VALUES ('102023121479810010', '992023010100000001', '982023121473890009', 'D', '1000', 'S', '2023-12-14 12:54:14', '0');
+INSERT INTO `c_route` VALUES ('102023121481050004', '992023121426830015', '982023121492620003', 'D', '1000', 'S', '2023-12-14 23:21:52', '0');
+INSERT INTO `c_route` VALUES ('102023121483860012', '992023010100000001', '982023121400750011', 'D', '1000', 'S', '2023-12-14 12:54:47', '0');
+INSERT INTO `c_route` VALUES ('102023121484240014', '992023121426830015', '982023102644900011', 'Q', '1000', 'S', '2023-12-14 23:24:55', '0');
+INSERT INTO `c_route` VALUES ('102023121489180006', '992023010100000001', '982023121495470005', 'D', '1000', 'S', '2023-12-14 12:52:56', '0');
+INSERT INTO `c_route` VALUES ('102023121489400017', '992023111817510002', '982023080933940001', 'Q', '1000', 'S', '2023-12-14 21:40:11', '0');
+INSERT INTO `c_route` VALUES ('102023121489600006', '992023010100000001', '982023121406640005', 'D', '1000', 'S', '2023-12-14 17:22:41', '0');
+INSERT INTO `c_route` VALUES ('102023121492430014', '992023010100000001', '982023121429410013', 'D', '1000', 'S', '2023-12-14 18:04:30', '0');
+INSERT INTO `c_route` VALUES ('102023121523210006', '992023010100000001', '982023121566180005', 'Q', '1000', 'S', '2023-12-15 12:00:43', '0');
+INSERT INTO `c_route` VALUES ('102023121526120005', '992023010100000001', '982023121521930004', 'Q', '1000', 'S', '2023-12-15 14:31:42', '0');
+INSERT INTO `c_route` VALUES ('102023121583550014', '992023010100000001', '982023121543000013', 'D', '1000', 'S', '2023-12-15 01:30:30', '0');
+INSERT INTO `c_route` VALUES ('102023121583590017', '992023111817510002', '982023121526710016', 'Q', '1000', 'S', '2023-12-15 11:58:39', '0');
+INSERT INTO `c_route` VALUES ('102023121588180004', '992023111817510002', '982023121509510003', 'Q', '1000', 'S', '2023-12-15 19:49:01', '0');
+INSERT INTO `c_route` VALUES ('102023121801870005', '992023010100000001', '982023121844320004', 'D', '1000', 'S', '2023-12-18 19:18:57', '0');
+INSERT INTO `c_route` VALUES ('102023121802090007', '992023111817510002', '982023121819520006', 'Q', '1000', 'S', '2023-12-18 11:21:26', '0');
+INSERT INTO `c_route` VALUES ('102023121811000016', '992023010100000001', '982023121811580015', 'Q', '1000', 'S', '2023-12-18 22:05:02', '0');
+INSERT INTO `c_route` VALUES ('102023121818480003', '992023121426830015', '982023121844870002', 'D', '1000', 'S', '2023-12-18 10:54:53', '0');
+INSERT INTO `c_route` VALUES ('102023121824780022', '992023010100000001', '982023121833800021', 'D', '1000', 'S', '2023-12-18 22:07:07', '0');
+INSERT INTO `c_route` VALUES ('102023121831330020', '992023010100000001', '982023121838920019', 'D', '1000', 'S', '2023-12-18 22:06:13', '0');
+INSERT INTO `c_route` VALUES ('102023121849130043', '992023111817510002', '982023121826360042', 'Q', '1000', 'S', '2023-12-18 13:51:10', '0');
+INSERT INTO `c_route` VALUES ('102023121876730011', '992023010100000001', '982023121841870010', 'D', '1000', 'S', '2023-12-18 19:20:20', '0');
+INSERT INTO `c_route` VALUES ('102023121886020002', '992023111817510002', '982023121894910001', 'D', '1000', 'S', '2023-12-18 11:02:19', '0');
+INSERT INTO `c_route` VALUES ('102023121891810009', '992023010100000001', '982023121879940008', 'D', '1000', 'S', '2023-12-18 19:19:53', '0');
+INSERT INTO `c_route` VALUES ('102023121893020008', '992023121426830015', '982023121822680007', 'D', '1000', 'A', '2023-12-18 10:21:03', '0');
+INSERT INTO `c_route` VALUES ('102023121895720018', '992023010100000001', '982023121850790017', 'D', '1000', 'S', '2023-12-18 22:05:40', '0');
+INSERT INTO `c_route` VALUES ('102023121895810007', '992023010100000001', '982023121815120006', 'Q', '1000', 'S', '2023-12-18 19:19:25', '0');
+INSERT INTO `c_route` VALUES ('102023121915270002', '992023111817510002', '982023080966350010', 'Q', '1000', 'S', '2023-12-19 14:43:48', '0');
+INSERT INTO `c_route` VALUES ('102023121931530003', '992023111817510002', '982023080988790004', 'Q', '1000', 'S', '2023-12-19 14:44:18', '0');
+INSERT INTO `c_route` VALUES ('102023121932510002', '992023111817510002', '982023121850790017', 'D', '1000', 'S', '2023-12-19 16:09:10', '0');
+INSERT INTO `c_route` VALUES ('102023121937820017', '992023111817510002', '982023121811580015', 'Q', '1000', 'S', '2023-12-19 16:40:00', '0');
+INSERT INTO `c_route` VALUES ('102023121945570006', '992023010100000001', '982023121902860005', 'D', '1000', 'S', '2023-12-19 14:35:59', '0');
+INSERT INTO `c_route` VALUES ('102023121946410004', '992023010100000001', '982023121953580003', 'D', '1000', 'S', '2023-12-19 14:35:08', '0');
+INSERT INTO `c_route` VALUES ('102023121951340008', '992023010100000001', '982023121957440007', 'D', '1000', 'S', '2023-12-19 14:36:51', '0');
+INSERT INTO `c_route` VALUES ('102023121973870002', '992023010100000001', '982023121933440001', 'Q', '1000', 'S', '2023-12-19 14:34:19', '0');
+INSERT INTO `c_route` VALUES ('102023121992620003', '992023111817510002', '982023121947500002', 'Q', '1000', 'S', '2023-12-19 14:20:35', '0');
+INSERT INTO `c_route` VALUES ('102023122021670016', '992023111817510002', '982023122051650015', 'D', '1000', 'S', '2023-12-20 12:50:05', '0');
+INSERT INTO `c_route` VALUES ('102023122029010010', '992023010100000001', '982023122017510009', 'Q', '1000', 'S', '2023-12-20 01:47:18', '0');
+INSERT INTO `c_route` VALUES ('102023122032640014', '992023010100000001', '982023122047180013', 'D', '1000', 'S', '2023-12-20 01:48:32', '0');
+INSERT INTO `c_route` VALUES ('102023122034820002', '992023111817510002', '982023122058900001', 'Q', '1000', 'S', '2023-12-20 14:49:20', '0');
+INSERT INTO `c_route` VALUES ('102023122037060003', '992023111817510002', '982023122038180002', 'Q', '1000', 'S', '2023-12-20 15:23:59', '0');
+INSERT INTO `c_route` VALUES ('102023122041240008', '992023010100000001', '982023122085820007', 'D', '1000', 'S', '2023-12-20 01:46:32', '0');
+INSERT INTO `c_route` VALUES ('102023122054330002', '992023010100000001', '982023122062270001', 'D', '1000', 'S', '2023-12-20 17:00:55', '0');
+INSERT INTO `c_route` VALUES ('102023122060610017', '992023010100000001', '982023122008450016', 'Q', '1000', 'S', '2023-12-20 19:46:27', '0');
+INSERT INTO `c_route` VALUES ('102023122068240006', '992023010100000001', '982023122082660005', 'D', '1000', 'S', '2023-12-20 01:45:41', '0');
+INSERT INTO `c_route` VALUES ('102023122073140002', '992023111817510002', '982023122047370001', 'Q', '1000', 'S', '2023-12-20 10:18:01', '0');
+INSERT INTO `c_route` VALUES ('102023122087770012', '992023010100000001', '982023122099500011', 'Q', '1000', 'S', '2023-12-20 01:47:48', '0');
+INSERT INTO `c_route` VALUES ('102023122096000002', '992023111817510002', '982023122052140001', 'D', '1000', 'S', '2023-12-20 14:06:43', '0');
+INSERT INTO `c_route` VALUES ('102023122096420016', '992023010100000001', '982023122066010015', 'D', '1000', 'S', '2023-12-20 01:49:01', '0');
+INSERT INTO `c_route` VALUES ('102023122100570009', '992023010100000001', '982023122147950008', 'Q', '1000', 'S', '2023-12-21 13:57:16', '0');
+INSERT INTO `c_route` VALUES ('102023122108760008', '992023010100000001', '982023122127000007', 'Q', '1000', 'S', '2023-12-21 11:45:08', '0');
+INSERT INTO `c_route` VALUES ('102023122115530014', '992023010100000001', '982023122119330013', 'Q', '1000', 'S', '2023-12-21 11:46:47', '0');
+INSERT INTO `c_route` VALUES ('102023122119430002', '992023010100000001', '982023122173110001', 'Q', '1000', 'S', '2023-12-21 09:59:03', '0');
+INSERT INTO `c_route` VALUES ('102023122137910010', '992023010100000001', '982023122193640009', 'Q', '1000', 'S', '2023-12-21 11:45:41', '0');
+INSERT INTO `c_route` VALUES ('102023122171990007', '992023010100000001', '982023122146210006', 'Q', '1000', 'S', '2023-12-21 09:12:32', '0');
+INSERT INTO `c_route` VALUES ('102023122174030007', '992023010100000001', '982023122140270006', 'Q', '1000', 'S', '2023-12-21 13:56:43', '0');
+INSERT INTO `c_route` VALUES ('102023122177270012', '992023010100000001', '982023122177680011', 'Q', '1000', 'S', '2023-12-21 11:46:17', '0');
+INSERT INTO `c_route` VALUES ('102023122188090006', '992023010100000001', '982023122174020005', 'Q', '1000', 'S', '2023-12-21 09:45:55', '0');
+INSERT INTO `c_route` VALUES ('102024012109990009', '992024012179880001', '982024012141030008', 'D', '1000', 'S', '2024-01-21 19:11:17', '0');
+INSERT INTO `c_route` VALUES ('102024012151600007', '992024012179880001', '982024012128580006', 'D', '1000', 'S', '2024-01-21 19:10:44', '0');
+INSERT INTO `c_route` VALUES ('102024012162530005', '992024012179880001', '982024012139130004', 'D', '1000', 'S', '2024-01-21 19:09:58', '0');
+INSERT INTO `c_route` VALUES ('102024012164520003', '992024012179880001', '982024012118760002', 'D', '1000', 'S', '2024-01-21 19:09:02', '0');
+INSERT INTO `c_route` VALUES ('102024012210570016', '992024012179880001', '982024012258280015', 'D', '1000', 'S', '2024-01-22 22:57:46', '0');
+INSERT INTO `c_route` VALUES ('102024012218160018', '992024012179880001', '982024012297000017', 'D', '1000', 'S', '2024-01-22 22:58:27', '0');
+INSERT INTO `c_route` VALUES ('102024012219410011', '992024012179880001', '2', 'D', '1000', 'S', '2024-01-22 11:17:12', '0');
+INSERT INTO `c_route` VALUES ('102024012418080004', '992023010100000001', '982024012430780003', 'D', '1000', 'S', '2024-01-24 15:47:17', '0');
+INSERT INTO `c_route` VALUES ('102024012434210019', '992023010100000001', '982024012457080018', 'D', '1000', 'S', '2024-01-24 17:24:37', '0');
+INSERT INTO `c_route` VALUES ('102024012437420002', '992024012179880001', '982024012445110001', 'D', '1000', 'S', '2024-01-24 12:00:30', '0');
+INSERT INTO `c_route` VALUES ('102024012442890008', '992023010100000001', '982024012452500007', 'D', '1000', 'S', '2024-01-24 15:48:16', '0');
+INSERT INTO `c_route` VALUES ('102024012457850017', '992023010100000001', '982024012478490016', 'D', '1000', 'S', '2024-01-24 17:24:00', '0');
+INSERT INTO `c_route` VALUES ('102024012468290013', '992023010100000001', '982024012406520012', 'Q', '1000', 'S', '2024-01-24 18:22:52', '0');
+INSERT INTO `c_route` VALUES ('102024012476010019', '992023010100000001', '982024012400000018', 'Q', '1000', 'S', '2024-01-24 18:42:08', '0');
+INSERT INTO `c_route` VALUES ('102024012482910006', '992023010100000001', '982024012496280005', 'D', '1000', 'S', '2024-01-24 15:47:44', '0');
+INSERT INTO `c_route` VALUES ('102024012489620002', '992023010100000001', '982024012460250001', 'Q', '1000', 'S', '2024-01-24 15:46:44', '0');
+INSERT INTO `c_route` VALUES ('102024012498680015', '992023010100000001', '982024012498230014', 'Q', '1000', 'S', '2024-01-24 17:20:09', '0');
+INSERT INTO `c_route` VALUES ('102024012511830006', '992024012179880001', '982024012533370005', 'D', '1000', 'S', '2024-01-25 04:42:01', '0');
+INSERT INTO `c_route` VALUES ('102024012539040011', '992023010100000001', '982024012569880010', 'D', '1000', 'S', '2024-01-25 13:19:50', '0');
+INSERT INTO `c_route` VALUES ('102024012588190004', '992024012179880001', '982024012527030003', 'D', '1000', 'S', '2024-01-25 04:41:29', '0');
+INSERT INTO `c_route` VALUES ('102024012596720009', '992024012179880001', '982024012565700008', 'D', '1000', 'S', '2024-01-25 13:19:11', '0');
+INSERT INTO `c_route` VALUES ('102024013109430013', '992023010100000001', '982024013166490012', 'D', '1000', 'S', '2024-01-31 11:38:02', '0');
+INSERT INTO `c_route` VALUES ('102024013117260016', '992024012179880001', '982024013109910015', 'D', '1000', 'S', '2024-01-31 14:59:30', '0');
+INSERT INTO `c_route` VALUES ('102024013120700009', '992023010100000001', '982024013169190008', 'Q', '1000', 'S', '2024-01-31 11:36:49', '0');
+INSERT INTO `c_route` VALUES ('102024013146520013', '992023010100000001', '982024013155030012', 'Q', '1000', 'S', '2024-01-31 12:04:20', '0');
+INSERT INTO `c_route` VALUES ('102024013185550011', '992023010100000001', '982024013150640010', 'D', '1000', 'S', '2024-01-31 11:37:30', '0');
+INSERT INTO `c_route` VALUES ('102024020514800004', '992023111817510002', '982024020526460003', 'Q', '1000', 'S', '2024-02-05 20:16:50', '0');
+INSERT INTO `c_route` VALUES ('102024020531480019', '992023111817510002', '982024020530720018', 'D', '1000', 'S', '2024-02-05 22:50:17', '0');
+INSERT INTO `c_route` VALUES ('102024020554760017', '992023111817510002', '982024020535860016', 'D', '1000', 'S', '2024-02-05 22:14:08', '0');
+INSERT INTO `c_route` VALUES ('102024020557080001', '992023111817510002', '982023111809080012', 'Q', '1000', 'S', '2024-02-05 18:48:16', '0');
+INSERT INTO `c_route` VALUES ('102024020580000004', '992023111817510002', '982024020569760003', 'D', '1000', 'S', '2024-02-05 17:54:23', '0');
+INSERT INTO `c_route` VALUES ('102024020604040002', '992023111817510002', '982024020692140001', 'D', '1000', 'S', '2024-02-06 22:44:25', '0');
+INSERT INTO `c_route` VALUES ('102024020629260006', '992023010100000001', '982024020626920005', 'D', '1000', 'S', '2024-02-06 12:22:29', '0');
+INSERT INTO `c_route` VALUES ('102024020635840001', '992023111817510002', '982023121566180005', 'Q', '1000', 'S', '2024-02-06 17:11:31', '0');
+INSERT INTO `c_route` VALUES ('102024020636180008', '992023111817510002', '982023021328190009', 'D', '1000', 'S', '2024-02-06 00:08:29', '0');
+INSERT INTO `c_route` VALUES ('102024020689020009', '992023111817510002', '982024020629050008', 'Q', '1000', 'S', '2024-02-06 22:20:28', '0');
+INSERT INTO `c_route` VALUES ('102024020828520002', '992023111817510002', '982024020837070001', 'D', '1000', 'S', '2024-02-08 04:00:48', '0');
+INSERT INTO `c_route` VALUES ('102024020840180079', '992023010100000001', '982024020841260078', 'D', '1000', 'S', '2024-02-08 02:18:37', '0');
+INSERT INTO `c_route` VALUES ('102024020841100002', '992023111817510002', '982024020816050001', 'Q', '1000', 'S', '2024-02-08 15:08:08', '0');
+INSERT INTO `c_route` VALUES ('102024020869240002', '992023111817510002', '982024020898490001', 'Q', '1000', 'S', '2024-02-08 15:33:08', '0');
+INSERT INTO `c_route` VALUES ('102024020871090010', '992023111817510002', '982024020830400009', 'Q', '1000', 'S', '2024-02-08 03:46:43', '0');
+INSERT INTO `c_route` VALUES ('102024020876500077', '992023010100000001', '982024020844280076', 'D', '1000', 'S', '2024-02-08 02:17:59', '0');
+INSERT INTO `c_route` VALUES ('102024021827250002', '992023111817510002', '982024021814580001', 'Q', '1000', 'S', '2024-02-18 10:02:29', '0');
+INSERT INTO `c_route` VALUES ('102024021830190011', '992023111817510002', '982024021854780010', 'Q', '1000', 'S', '2024-02-18 10:19:22', '0');
+INSERT INTO `c_route` VALUES ('102024021837530018', '992023111817510002', '982024021855830017', 'Q', '1000', 'S', '2024-02-18 09:58:34', '0');
+INSERT INTO `c_route` VALUES ('102024021840040101', '992023111817510002', '982024021853370100', 'Q', '1000', 'S', '2024-02-18 00:08:52', '0');
+INSERT INTO `c_route` VALUES ('102024021849030021', '992023111817510002', '982024021821810020', 'Q', '1000', 'S', '2024-02-18 13:47:45', '0');
+INSERT INTO `c_route` VALUES ('102024021856310020', '992023111817510002', '982024021862590019', 'Q', '1000', 'S', '2024-02-18 12:11:52', '0');
+INSERT INTO `c_route` VALUES ('102024021857150014', '992023111817510002', '982024021804290013', 'Q', '1000', 'S', '2024-02-18 11:38:53', '0');
+INSERT INTO `c_route` VALUES ('102024021859360023', '992023010100000001', '982024021857050022', 'D', '1000', 'S', '2024-02-18 16:19:10', '0');
+INSERT INTO `c_route` VALUES ('102024021897370002', '992023111817510002', '982024021841050001', 'D', '1000', 'S', '2024-02-18 15:38:32', '0');
+INSERT INTO `c_route` VALUES ('102024022902510008', '992023010100000001', '982024022998680007', 'Q', '1000', 'S', '2024-02-29 15:15:57', '0');
+INSERT INTO `c_route` VALUES ('102024022908560004', '992023010100000001', '982024022963210003', 'D', '1000', 'S', '2024-02-29 15:13:07', '0');
+INSERT INTO `c_route` VALUES ('102024022928220077', '992023010100000001', '982024022987610076', 'D', '1000', 'S', '2024-02-29 02:14:10', '0');
+INSERT INTO `c_route` VALUES ('102024022945380075', '992023010100000001', '982024022986980074', 'D', '1000', 'S', '2024-02-29 02:13:34', '0');
+INSERT INTO `c_route` VALUES ('102024022951120073', '992023010100000001', '982024022996270072', 'Q', '1000', 'S', '2024-02-29 02:13:01', '0');
+INSERT INTO `c_route` VALUES ('102024022951320002', '992023010100000001', '982024022990660001', 'D', '1000', 'S', '2024-02-29 15:12:25', '0');
+INSERT INTO `c_route` VALUES ('102024022956250006', '992023010100000001', '982024022963740005', 'Q', '1000', 'S', '2024-02-29 15:14:43', '0');
+INSERT INTO `c_route` VALUES ('102024022969500012', '992023010100000001', '982024022942580011', 'D', '1000', 'S', '2024-02-29 15:17:28', '0');
+INSERT INTO `c_route` VALUES ('102024022972010010', '992023010100000001', '982024022922880009', 'Q', '1000', 'S', '2024-02-29 15:16:56', '0');
+INSERT INTO `c_route` VALUES ('102024022998690071', '992023010100000001', '982024022995730070', 'D', '1000', 'S', '2024-02-29 02:12:30', '0');
+INSERT INTO `c_route` VALUES ('102024030138270022', '992023010100000001', '982024030188400021', 'D', '1000', 'S', '2024-03-01 17:32:38', '0');
+INSERT INTO `c_route` VALUES ('102024030506890022', '992023010100000001', '982024030568460021', 'Q', '1000', 'S', '2024-03-05 22:47:30', '0');
+INSERT INTO `c_route` VALUES ('102024030517950024', '992023010100000001', '982024030559260023', 'D', '1000', 'S', '2024-03-05 22:47:59', '0');
+INSERT INTO `c_route` VALUES ('102024030533850033', '992023010100000001', '982024030517080032', 'D', '1000', 'S', '2024-03-05 22:06:05', '0');
+INSERT INTO `c_route` VALUES ('102024030543740037', '992023010100000001', '982024030545520036', 'D', '1000', 'S', '2024-03-05 22:07:05', '0');
+INSERT INTO `c_route` VALUES ('102024030552680035', '992023010100000001', '982024030542580034', 'Q', '1000', 'S', '2024-03-05 22:06:31', '0');
+INSERT INTO `c_route` VALUES ('102024030571110028', '992023010100000001', '982024030536790027', 'D', '1000', 'S', '2024-03-05 22:49:05', '0');
+INSERT INTO `c_route` VALUES ('102024030594910026', '992023010100000001', '982024030542340025', 'D', '1000', 'S', '2024-03-05 22:48:34', '0');
+INSERT INTO `c_route` VALUES ('102024030598370039', '992023010100000001', '982024030590950038', 'D', '1000', 'S', '2024-03-05 22:07:30', '0');
+INSERT INTO `c_route` VALUES ('102024030701890164', '992023010100000001', '982024030759560163', 'D', '1000', 'S', '2024-03-07 19:17:31', '0');
+INSERT INTO `c_route` VALUES ('102024030733200162', '992023010100000001', '982024030711820161', 'Q', '1000', 'S', '2024-03-07 19:16:18', '0');
+INSERT INTO `c_route` VALUES ('102024030740630007', '992023111817510002', '982024030753340006', 'Q', '1000', 'S', '2024-03-07 00:21:09', '0');
+INSERT INTO `c_route` VALUES ('102024030784480168', '992023010100000001', '982024030766450167', 'D', '1000', 'S', '2024-03-07 19:18:34', '0');
+INSERT INTO `c_route` VALUES ('102024030796180166', '992023010100000001', '982024030746710165', 'D', '1000', 'S', '2024-03-07 19:18:00', '0');
+INSERT INTO `c_route` VALUES ('102024030960620091', '992023010100000001', '982024030928520090', 'Q', '1000', 'S', '2024-03-09 12:17:02', '0');
+INSERT INTO `c_route` VALUES ('102024031893630010', '992023010100000001', '982024031897040009', 'Q', '1000', 'S', '2024-03-18 12:17:17', '0');
+INSERT INTO `c_route` VALUES ('102024040150030182', '992023010100000001', '982024040109560181', 'D', '1000', 'S', '2024-04-01 23:01:53', '0');
+INSERT INTO `c_route` VALUES ('102024040289500184', '992023111817510002', '982024040284300183', 'D', '1000', 'S', '2024-04-02 13:50:11', '0');
+INSERT INTO `c_route` VALUES ('102024041206670006', '992023010100000001', '982024041291520005', 'D', '1000', 'S', '2024-04-12 01:38:27', '0');
+INSERT INTO `c_route` VALUES ('102024041231170335', '992023010100000001', '982024041293420334', 'Q', '1000', 'S', '2024-04-12 01:35:06', '0');
+INSERT INTO `c_route` VALUES ('102024041242130333', '992023010100000001', '982024041261200332', 'D', '1000', 'S', '2024-04-12 01:34:35', '0');
+INSERT INTO `c_route` VALUES ('102024041254960004', '992023010100000001', '982024041252320003', 'D', '1000', 'S', '2024-04-12 01:37:55', '0');
+INSERT INTO `c_route` VALUES ('102024041284480002', '992023010100000001', '982024041223290001', 'Q', '1000', 'S', '2024-04-12 01:37:26', '0');
+INSERT INTO `c_route` VALUES ('102024042011730068', '992023010100000001', '982024042017380067', 'D', '1000', 'S', '2024-04-20 03:05:55', '0');
+INSERT INTO `c_route` VALUES ('102024050612510018', '992023010100000001', '982024050678070017', 'D', '1000', 'S', '2024-05-06 17:35:46', '0');
+INSERT INTO `c_route` VALUES ('102024050629840031', '992023010100000001', '982024050693390030', 'D', '1000', 'S', '2024-05-06 17:37:32', '0');
+INSERT INTO `c_route` VALUES ('102024050636940009', '992023010100000001', '982024050620120008', 'Q', '1000', 'S', '2024-05-06 17:33:05', '0');
+INSERT INTO `c_route` VALUES ('102024050643080033', '992023010100000001', '982024050636240032', 'D', '1000', 'S', '2024-05-06 17:38:08', '0');
+INSERT INTO `c_route` VALUES ('102024050650760012', '992023010100000001', '982024050672950011', 'D', '1000', 'S', '2024-05-06 17:35:00', '0');
+INSERT INTO `c_route` VALUES ('102024050657310026', '992023010100000001', '982024050695560025', 'D', '1000', 'S', '2024-05-06 17:36:34', '0');
+INSERT INTO `c_route` VALUES ('102024050664800006', '992023010100000001', '982024050618900005', 'Q', '1000', 'S', '2024-05-06 17:31:58', '0');
+INSERT INTO `c_route` VALUES ('102024050673280003', '992023010100000001', '982024050658880002', 'Q', '1000', 'S', '2024-05-06 17:31:06', '0');
+INSERT INTO `c_route` VALUES ('102024050831410010', '992023010100000001', '982024050808090009', 'Q', '1000', 'S', '2024-05-08 16:27:03', '0');
+INSERT INTO `c_route` VALUES ('102024050880410042', '992023010100000001', '982024050881400041', 'D', '1000', 'A', '2024-05-08 15:45:39', '0');
+INSERT INTO `c_route` VALUES ('102024051055120019', '992023010100000001', '982024051005320018', 'D', '1000', 'S', '2024-05-10 15:25:32', '0');
+INSERT INTO `c_route` VALUES ('102024051901270004', '992023010100000001', '982024051937800003', 'Q', '1000', 'S', '2024-05-19 22:44:28', '0');
+INSERT INTO `c_route` VALUES ('102024051942960006', '992023010100000001', '982024051994860005', 'D', '1000', 'S', '2024-05-19 08:29:04', '0');
+INSERT INTO `c_route` VALUES ('102024053100190016', '992023010100000001', '982024053183550015', 'Q', '1000', 'S', '2024-05-31 23:17:24', '0');
+INSERT INTO `c_route` VALUES ('102024053134380003', '992023010100000001', '982024053162770002', 'Q', '1000', 'S', '2024-05-31 23:27:49', '0');
+INSERT INTO `c_route` VALUES ('102024053151700016', '992023010100000001', '982024053161880015', 'D', '1000', 'S', '2024-05-31 22:57:04', '0');
+INSERT INTO `c_route` VALUES ('102024053157730009', '992023010100000001', '982024053157220008', 'D', '1000', 'S', '2024-05-31 21:55:52', '0');
+INSERT INTO `c_route` VALUES ('102024053162830005', '992023010100000001', '982024053147450004', 'D', '1000', 'S', '2024-05-31 23:07:21', '0');
+INSERT INTO `c_route` VALUES ('102024053164490007', '992023010100000001', '982024053137640006', 'D', '1000', 'S', '2024-05-31 21:55:23', '0');
+INSERT INTO `c_route` VALUES ('102024053167580005', '992023010100000001', '982024053126890004', 'Q', '1000', 'S', '2024-05-31 21:51:16', '0');
+INSERT INTO `c_route` VALUES ('102024053181530011', '992023010100000001', '982024053145600010', 'D', '1000', 'S', '2024-05-31 21:56:34', '0');
+INSERT INTO `c_route` VALUES ('102024053182060018', '992023010100000001', '982024053116860017', 'Q', '1000', 'S', '2024-05-31 22:57:47', '0');
+INSERT INTO `c_route` VALUES ('102024060112200048', '992023010100000001', '982024060125180047', 'Q', '1000', 'S', '2024-06-01 17:27:59', '0');
+INSERT INTO `c_route` VALUES ('102024060145290050', '992023010100000001', '982024060186680049', 'D', '1000', 'S', '2024-06-01 17:28:23', '0');
+INSERT INTO `c_route` VALUES ('102024060178720046', '992023010100000001', '982024060166830045', 'D', '1000', 'S', '2024-06-01 17:27:32', '0');
+INSERT INTO `c_route` VALUES ('102024060187860052', '992023010100000001', '982024060147580051', 'D', '1000', 'S', '2024-06-01 17:28:49', '0');
+INSERT INTO `c_route` VALUES ('102024060552880007', '992023111817510002', '982024051937800003', 'Q', '1000', 'S', '2024-06-05 19:45:58', '0');
+INSERT INTO `c_route` VALUES ('102024070704130015', '992023010100000001', '982024070784860008', 'D', '1000', 'A', '2024-07-07 15:35:39', '0');
+INSERT INTO `c_route` VALUES ('102024070771520013', '992023010100000001', '982024070731150010', 'D', '1000', 'A', '2024-07-07 15:34:52', '0');
+INSERT INTO `c_route` VALUES ('102024070772030014', '992023010100000001', '982024070751420009', 'Q', '1000', 'S', '2024-07-07 15:35:15', '0');
+INSERT INTO `c_route` VALUES ('102024070792930012', '992023010100000001', '982024070764080011', 'D', '1000', 'A', '2024-07-07 15:34:29', '0');
+INSERT INTO `c_route` VALUES ('102024071513740014', '992023010100000001', '982024071566820013', 'D', '1000', 'S', '2024-07-15 21:30:13', '0');
+INSERT INTO `c_route` VALUES ('102024071544080010', '992023010100000001', '982024071560980009', 'Q', '1000', 'S', '2024-07-15 21:29:11', '0');
+INSERT INTO `c_route` VALUES ('102024071561180012', '992023010100000001', '982024071527820011', 'D', '1000', 'S', '2024-07-15 21:29:43', '0');
+INSERT INTO `c_route` VALUES ('102024071571280008', '992023010100000001', '982024071581310007', 'D', '1000', 'S', '2024-07-15 21:28:39', '0');
+INSERT INTO `c_route` VALUES ('102024071582950006', '992023010100000001', '982024071523780005', 'Q', '1000', 'S', '2024-07-15 23:47:55', '0');
+INSERT INTO `c_route` VALUES ('102024071700980008', '992023010100000001', '982024071796220007', 'Q', '1000', 'S', '2024-07-17 00:01:50', '0');
+INSERT INTO `c_route` VALUES ('102024071701050029', '992023010100000001', '982024071744880028', 'D', '1000', 'S', '2024-07-17 00:35:55', '0');
+INSERT INTO `c_route` VALUES ('102024071702040031', '992023010100000001', '982024071793600030', 'D', '1000', 'S', '2024-07-17 00:36:31', '0');
+INSERT INTO `c_route` VALUES ('102024071763100033', '992023010100000001', '982024071738280032', 'D', '1000', 'S', '2024-07-17 00:37:22', '0');
+INSERT INTO `c_route` VALUES ('102024071766490006', '992023010100000001', '982024071773860005', 'D', '1000', 'S', '2024-07-17 00:01:14', '0');
+INSERT INTO `c_route` VALUES ('102024071778210010', '992023010100000001', '982024071781320009', 'D', '1000', 'S', '2024-07-17 00:02:22', '0');
+INSERT INTO `c_route` VALUES ('102024071799350012', '992023010100000001', '982024071728920011', 'D', '1000', 'S', '2024-07-17 00:02:51', '0');
+INSERT INTO `c_route` VALUES ('102024071842650013', '992023010100000001', '982024071899800012', 'D', '1000', 'S', '2024-07-18 15:08:48', '0');
+INSERT INTO `c_route` VALUES ('102024072060380002', '992023010100000001', '982024072079190001', 'D', '1000', 'S', '2024-07-20 03:29:31', '0');
+INSERT INTO `c_route` VALUES ('102024072404510018', '992023010100000001', '982024072475180017', 'D', '1000', 'S', '2024-07-24 19:23:20', '0');
+INSERT INTO `c_route` VALUES ('102024072618820008', '992024012179880001', '982024072662650007', 'D', '1000', 'S', '2024-07-26 16:54:20', '1');
+INSERT INTO `c_route` VALUES ('102024072626950013', '992023010100000001', '982024072639820012', 'D', '1000', 'S', '2024-07-26 16:56:58', '0');
+INSERT INTO `c_route` VALUES ('102024072655500011', '992023010100000001', '982024072694650010', 'Q', '1000', 'S', '2024-07-26 16:55:31', '0');
+INSERT INTO `c_route` VALUES ('102024072669200009', '992023010100000001', '982024072662650007', 'D', '1000', 'S', '2024-07-26 16:54:41', '0');
+INSERT INTO `c_route` VALUES ('102024080839900007', '992023010100000001', '982024080821440006', 'Q', '1000', 'S', '2024-08-08 14:36:36', '0');
+INSERT INTO `c_route` VALUES ('102024080887000005', '992023010100000001', '982024080817380004', 'Q', '1000', 'S', '2024-08-08 15:30:15', '0');
+INSERT INTO `c_route` VALUES ('102024080903140003', '992023111817510002', '982024080940340002', 'D', '1000', 'A', '2024-08-09 14:09:56', '0');
+INSERT INTO `c_route` VALUES ('102024080982020004', '992023111817510002', '982024080960680001', 'D', '1000', 'A', '2024-08-09 14:10:18', '0');
+INSERT INTO `c_route` VALUES ('102024083001090012', '992023010100000001', '982024083007090011', 'D', '1000', 'A', '2024-08-30 15:28:58', '0');
+INSERT INTO `c_route` VALUES ('102024083013410013', '992023010100000001', '982024083084680010', 'D', '1000', 'A', '2024-08-30 15:29:32', '0');
+INSERT INTO `c_route` VALUES ('102024083014170018', '992023010100000001', '982024083023800005', 'Q', '1000', 'S', '2024-08-30 15:31:23', '0');
+INSERT INTO `c_route` VALUES ('102024083021710014', '992023010100000001', '982024083060810009', 'Q', '1000', 'S', '2024-08-30 15:29:40', '0');
+INSERT INTO `c_route` VALUES ('102024083035570017', '992023010100000001', '982024083050060006', 'D', '1000', 'A', '2024-08-30 15:30:55', '0');
+INSERT INTO `c_route` VALUES ('102024083045760022', '992023010100000001', '982024083024840001', 'D', '1000', 'A', '2024-08-30 15:34:31', '0');
+INSERT INTO `c_route` VALUES ('102024083047910020', '992023010100000001', '982024083017950003', 'D', '1000', 'A', '2024-08-30 15:33:30', '0');
+INSERT INTO `c_route` VALUES ('102024083068620015', '992023010100000001', '982024083099030008', 'D', '1000', 'A', '2024-08-30 15:30:00', '0');
+INSERT INTO `c_route` VALUES ('102024083084140016', '992023010100000001', '982024083041380007', 'D', '1000', 'A', '2024-08-30 15:30:19', '0');
+INSERT INTO `c_route` VALUES ('102024083093580019', '992023010100000001', '982024083059280004', 'D', '1000', 'A', '2024-08-30 15:32:45', '0');
+INSERT INTO `c_route` VALUES ('102024083097840021', '992023010100000001', '982024083022940002', 'Q', '1000', 'S', '2024-08-30 15:33:43', '0');
+INSERT INTO `c_route` VALUES ('102024090447290002', '992023010100000001', '982024090430200001', 'D', '1000', 'A', '2024-09-04 09:31:59', '1');
+INSERT INTO `c_route` VALUES ('102024091012630008', '992024012179880001', '982024091080390007', 'D', '1000', 'S', '2024-09-10 14:08:11', '0');
+INSERT INTO `c_route` VALUES ('102024091939470006', '992023010100000001', '982024091997820005', 'D', '1000', 'S', '2024-09-19 14:53:58', '0');
+INSERT INTO `c_route` VALUES ('102024091966080003', '992023111817510002', '982024091961010002', 'D', '1000', 'S', '2024-09-19 11:26:00', '0');
+INSERT INTO `c_route` VALUES ('102024091988440004', '992023010100000001', '982024091980400003', 'Q', '1000', 'S', '2024-09-19 14:46:45', '0');
+INSERT INTO `c_route` VALUES ('102024110512200025', '992023010100000001', '982024110596570024', 'Q', '1000', 'S', '2024-11-05 23:48:58', '0');
+INSERT INTO `c_route` VALUES ('102024110512680027', '992023010100000001', '982024110588670026', 'D', '1000', 'S', '2024-11-05 23:49:31', '0');
+INSERT INTO `c_route` VALUES ('102024110530760023', '992023010100000001', '982024110586520022', 'D', '1000', 'S', '2024-11-05 23:48:26', '0');
+INSERT INTO `c_route` VALUES ('102024110531350007', '992023010100000001', '982024110582600006', 'Q', '1000', 'S', '2024-11-05 22:23:10', '0');
+INSERT INTO `c_route` VALUES ('102024110547730008', '992023010100000001', '982024110556970007', 'Q', '1000', 'S', '2024-11-05 13:49:25', '0');
+INSERT INTO `c_route` VALUES ('102024112065080093', '992023111817510002', '982024112002020092', 'D', '1000', 'S', '2024-11-20 02:28:04', '0');
+INSERT INTO `c_route` VALUES ('102024112907721059', '992023111817510002', '982024112972771058', 'Q', '1000', 'S', '2024-11-29 01:04:14', '0');
+INSERT INTO `c_route` VALUES ('102024112999980006', '992023010100000001', '982024112953250005', 'Q', '1000', 'S', '2024-11-29 14:38:41', '0');
+INSERT INTO `c_route` VALUES ('102024120564840001', '992023111817510002', '982024112953250005', 'Q', '1000', 'S', '2024-12-05 22:23:50', '0');
+INSERT INTO `c_route` VALUES ('102024120623200006', '992023010100000001', '982024120687470005', 'Q', '1000', 'S', '2024-12-06 14:16:42', '0');
+INSERT INTO `c_route` VALUES ('102024120652810002', '992023010100000001', '982024120600410001', 'D', '1000', 'S', '2024-12-06 15:06:31', '0');
+INSERT INTO `c_route` VALUES ('102024120652850004', '992023010100000001', '982024120613080003', 'D', '1000', 'S', '2024-12-06 15:18:19', '0');
+INSERT INTO `c_route` VALUES ('102024120686080008', '992023010100000001', '982024120606850007', 'Q', '1000', 'S', '2024-12-06 15:48:44', '0');
+INSERT INTO `c_route` VALUES ('102024121318660037', '992023010100000001', '982024121397660036', 'Q', '1000', 'S', '2024-12-13 15:35:38', '0');
+INSERT INTO `c_route` VALUES ('102024121465840002', '992023010100000001', '982024121412750001', 'Q', '1000', 'S', '2024-12-14 02:41:08', '0');
+INSERT INTO `c_route` VALUES ('102024121470620002', '992023010100000001', '982024121475360001', 'Q', '1000', 'S', '2024-12-14 03:14:04', '0');
+INSERT INTO `c_route` VALUES ('102024121493470002', '992023010100000001', '982024121407310001', 'Q', '1000', 'S', '2024-12-14 02:47:54', '0');
+INSERT INTO `c_route` VALUES ('102024121627360006', '992023010100000001', '982024121634210005', 'D', '1000', 'S', '2024-12-16 15:18:46', '0');
+INSERT INTO `c_route` VALUES ('102024121628920013', '992023010100000001', '982024121675340012', 'D', '1000', 'S', '2024-12-16 13:29:16', '0');
+INSERT INTO `c_route` VALUES ('102024121789960006', '992023010100000001', '982024121711230005', 'Q', '1000', 'S', '2024-12-17 11:33:45', '0');
+INSERT INTO `c_route` VALUES ('102025012207460008', '992023010100000001', '982025012235010007', 'D', '1000', 'S', '2025-01-22 23:57:16', '0');
+INSERT INTO `c_route` VALUES ('102025012225270003', '992023111817510002', '982025012233540002', 'Q', '1000', 'S', '2025-01-22 10:55:39', '0');
+INSERT INTO `c_route` VALUES ('102025012235830006', '992023010100000001', '982025012224700005', 'Q', '1000', 'S', '2025-01-22 23:56:39', '0');
+INSERT INTO `c_route` VALUES ('102025012339060052', '992023010100000001', '982025012356360051', 'D', '1000', 'S', '2025-01-23 00:26:02', '0');
+INSERT INTO `c_route` VALUES ('102025012363880007', '992023111817510002', '982025012354130006', 'D', '1000', 'S', '2025-01-23 01:17:12', '0');
+INSERT INTO `c_route` VALUES ('102025012364810048', '992023010100000001', '982025012320700047', 'Q', '1000', 'S', '2025-01-23 00:24:15', '0');
+INSERT INTO `c_route` VALUES ('102025012366900005', '992023111817510002', '982025012380870004', 'Q', '1000', 'S', '2025-01-23 01:16:43', '0');
+INSERT INTO `c_route` VALUES ('102025012392830050', '992023010100000001', '982025012332820049', 'D', '1000', 'S', '2025-01-23 00:25:14', '0');
+INSERT INTO `c_route` VALUES ('102025022568860006', '992023010100000001', '982025022535130005', 'D', '1000', 'S', '2025-02-25 11:39:56', '0');
+INSERT INTO `c_route` VALUES ('102025030444580002', '992023010100000001', '982023112241880003', 'Q', '1000', 'S', '2025-03-04 16:42:27', '0');
+INSERT INTO `c_route` VALUES ('102025030824490009', '992023010100000001', '982025030834160008', 'D', '1000', 'S', '2025-03-08 12:21:33', '0');
+INSERT INTO `c_route` VALUES ('102025030834860015', '992023010100000001', '982025030872900014', 'D', '1000', 'S', '2025-03-08 12:22:53', '0');
+INSERT INTO `c_route` VALUES ('102025030842110011', '992023010100000001', '982025030896460010', 'Q', '1000', 'S', '2025-03-08 12:22:02', '0');
+INSERT INTO `c_route` VALUES ('102025030890130013', '992023010100000001', '982025030877680012', 'D', '1000', 'S', '2025-03-08 12:22:27', '0');
+INSERT INTO `c_route` VALUES ('102025031295830024', '992023010100000001', '982025031267090023', 'Q', '1000', 'S', '2025-03-12 20:33:40', '0');
+INSERT INTO `c_route` VALUES ('102025031318860002', '992023010100000001', '982025031324310001', 'Q', '1000', 'S', '2025-03-13 18:24:49', '0');
+INSERT INTO `c_route` VALUES ('102025031324590002', '992023010100000001', '982025031379920001', 'Q', '1000', 'S', '2025-03-13 18:39:40', '0');
+INSERT INTO `c_route` VALUES ('102025031334840002', '992023010100000001', '982025031313730001', 'Q', '1000', 'S', '2025-03-13 18:15:48', '0');
+INSERT INTO `c_route` VALUES ('102025031338970002', '992023010100000001', '982025031324010001', 'Q', '1000', 'S', '2025-03-13 14:28:05', '0');
+INSERT INTO `c_route` VALUES ('102025031341750005', '992023010100000001', '982025031387930004', 'Q', '1000', 'S', '2025-03-13 18:28:36', '0');
+INSERT INTO `c_route` VALUES ('102025031350630005', '992023010100000001', '982025031308290004', 'Q', '1000', 'S', '2025-03-13 22:46:10', '0');
+INSERT INTO `c_route` VALUES ('102025031352720002', '992023010100000001', '982025031365190001', 'Q', '1000', 'S', '2025-03-13 19:42:14', '0');
+INSERT INTO `c_route` VALUES ('102025031355250009', '992023010100000001', '982025031300250008', 'Q', '1000', 'S', '2025-03-13 22:37:29', '0');
+INSERT INTO `c_route` VALUES ('102025031366200002', '992023010100000001', '982025031392820001', 'Q', '1000', 'S', '2025-03-13 14:21:43', '0');
+INSERT INTO `c_route` VALUES ('102025031372940004', '992023010100000001', '982025031334340003', 'Q', '1000', 'S', '2025-03-13 18:21:00', '0');
+INSERT INTO `c_route` VALUES ('102025031373720002', '992023010100000001', '982025031318890001', 'Q', '1000', 'S', '2025-03-13 14:39:27', '0');
+INSERT INTO `c_route` VALUES ('102025031376630002', '992023010100000001', '982025031319360001', 'Q', '1000', 'S', '2025-03-13 18:34:36', '0');
+INSERT INTO `c_route` VALUES ('102025031392220002', '992023010100000001', '982025031331770001', 'Q', '1000', 'S', '2025-03-13 14:35:44', '0');
+INSERT INTO `c_route` VALUES ('102025031393740013', '992023010100000001', '982025031356050012', 'Q', '1000', 'S', '2025-03-13 17:51:36', '0');
+INSERT INTO `c_route` VALUES ('102025031395160013', '992023010100000001', '982025031306220012', 'Q', '1000', 'S', '2025-03-13 15:43:57', '0');
+INSERT INTO `c_route` VALUES ('102025031397030036', '992023010100000001', '982025031370960035', 'Q', '1000', 'S', '2025-03-13 21:39:21', '0');
+INSERT INTO `c_route` VALUES ('102025031397220004', '992023010100000001', '982025031330240003', 'Q', '1000', 'S', '2025-03-13 13:56:22', '0');
+INSERT INTO `c_route` VALUES ('102025031409820002', '992024012179880001', '982025031401190001', 'Q', '1000', 'S', '2025-03-14 12:46:58', '0');
+INSERT INTO `c_route` VALUES ('102025031459300023', '992023010100000001', '982025031402230022', 'Q', '1000', 'S', '2025-03-14 11:48:24', '0');
+INSERT INTO `c_route` VALUES ('102025031462440015', '992023010100000001', '982025031401240014', 'Q', '1000', 'S', '2025-03-14 11:08:52', '0');
+INSERT INTO `c_route` VALUES ('102025032832120003', '992023111817510002', '982025032852760002', 'D', '1000', 'S', '2025-03-28 16:48:39', '0');
+INSERT INTO `c_route` VALUES ('102025032854120019', '992023111817510002', '982025032893260018', 'Q', '1000', 'S', '2025-03-28 19:45:08', '0');
+INSERT INTO `c_route` VALUES ('102025040175370008', '992023111817510002', '982025040135040007', 'Q', '1000', 'S', '2025-04-01 09:45:18', '0');
+INSERT INTO `c_route` VALUES ('11', '992023010100000001', '11', 'Q', '100', 'S', '2023-02-11 16:26:03', '0');
+INSERT INTO `c_route` VALUES ('12', '992023010100000001', '12', 'Q', '100', 'S', '2023-02-11 16:26:04', '0');
+INSERT INTO `c_route` VALUES ('13', '992023010100000001', '13', 'Q', '100', 'S', '2023-02-11 16:26:05', '0');
+INSERT INTO `c_route` VALUES ('14', '992023010100000001', '14', 'Q', '100', 'S', '2023-02-11 16:26:06', '0');
+INSERT INTO `c_route` VALUES ('15', '992023010100000001', '15', 'Q', '100', 'S', '2023-02-11 16:26:07', '0');
+INSERT INTO `c_route` VALUES ('16', '992023010100000001', '16', 'Q', '100', 'S', '2023-02-11 16:26:08', '0');
+INSERT INTO `c_route` VALUES ('17', '992023010100000001', '17', 'Q', '100', 'S', '2023-02-11 16:26:09', '0');
+INSERT INTO `c_route` VALUES ('18', '992023010100000001', '982023021277800001', 'Q', '100', 'S', '2023-02-11 16:26:10', '0');
+INSERT INTO `c_route` VALUES ('19', '992023010100000001', '982023021278440002', 'Q', '100', 'S', '2023-02-11 16:26:11', '0');
+INSERT INTO `c_route` VALUES ('2', '992023010100000001', '2', 'Q', '100', 'S', '2023-02-11 16:26:12', '0');
+INSERT INTO `c_route` VALUES ('20', '992023010100000001', '982023021210330001', 'D', '100', 'S', '2023-02-11 16:26:13', '0');
+INSERT INTO `c_route` VALUES ('3', '992023010100000001', '3', 'Q', '100', 'S', '2023-02-11 16:26:14', '0');
+INSERT INTO `c_route` VALUES ('4', '992023010100000001', '4', 'Q', '100', 'S', '2023-02-11 16:26:15', '0');
+INSERT INTO `c_route` VALUES ('5', '992023010100000001', '5', 'Q', '100', 'S', '2023-02-11 16:26:16', '0');
+INSERT INTO `c_route` VALUES ('6', '992023010100000001', '6', 'Q', '100', 'S', '2023-02-11 16:26:17', '0');
+INSERT INTO `c_route` VALUES ('7', '992023010100000001', '7', 'Q', '100', 'S', '2023-02-11 16:26:18', '0');
+INSERT INTO `c_route` VALUES ('8', '992023010100000001', '8', 'Q', '100', 'S', '2023-02-11 16:26:19', '0');
+INSERT INTO `c_route` VALUES ('9', '992023010100000001', '9', 'Q', '100', 'S', '2023-02-11 16:26:53', '0');
+
+-- ----------------------------
+-- Table structure for c_service
+-- ----------------------------
+DROP TABLE IF EXISTS `c_service`;
+CREATE TABLE `c_service` (
+  `service_id` varchar(30) NOT NULL COMMENT '服务ID',
+  `service_code` varchar(100) NOT NULL COMMENT '自定义，命名方式查询类query.+目标系统+.+业务名称 保存类 save.+目标系统+.+业务名称 修改类 modify.+目标系统+.+业务名称 删除类 remove.+目标系统+.+业务名称 例如：query.user.userinfo save.user.adduserinfo',
+  `business_type_cd` varchar(12) DEFAULT NULL,
+  `name` varchar(50) NOT NULL COMMENT '服务名称',
+  `seq` int(11) DEFAULT '1' COMMENT '顺序 只有同步方式下根据seq从小到大调用接口',
+  `is_instance` varchar(12) NOT NULL DEFAULT 'CMD' COMMENT '是否Instance Y 需要，N不需要，NT透传类',
+  `url` varchar(200) DEFAULT NULL COMMENT '目标地址',
+  `method` varchar(50) DEFAULT NULL COMMENT '方法 空 为http post LOCAL_SERVICE 为调用本地服务 其他为webservice方式调用',
+  `timeout` int(11) NOT NULL DEFAULT '60' COMMENT '超时时间',
+  `retry_count` int(11) NOT NULL DEFAULT '3' COMMENT '重试次数',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
+  PRIMARY KEY (`service_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of c_service
+-- ----------------------------
+INSERT INTO `c_service` VALUES ('1', 'login.generatorValidateCode', 'API', '验证码接口', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-11 16:25:53', '0');
+INSERT INTO `c_service` VALUES ('10', 'app.saveApp', 'API', '添加应用', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2019-07-03 15:31:30', '0');
+INSERT INTO `c_service` VALUES ('11', 'cache.listCache', 'API', '查询缓存', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2019-07-03 15:31:56', '0');
+INSERT INTO `c_service` VALUES ('12', 'cache.flushCache', 'API', '刷新缓存', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2019-07-03 15:31:51', '0');
+INSERT INTO `c_service` VALUES ('13', 'app.updateApp', 'API', '刷新缓存', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2019-07-03 15:31:44', '0');
+INSERT INTO `c_service` VALUES ('14', 'app.deleteApp', 'API', '刷新缓存', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2019-07-03 15:31:01', '0');
+INSERT INTO `c_service` VALUES ('15', 'service.listServices', 'API', '查询服务', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2019-07-03 15:31:02', '0');
+INSERT INTO `c_service` VALUES ('16', 'dict.listDict', 'API', '查询字典', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2019-07-03 15:31:03', '0');
+INSERT INTO `c_service` VALUES ('17', 'service.saveService', 'API', '添加服务', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2019-07-03 15:31:04', '0');
+INSERT INTO `c_service` VALUES ('2', 'login.pcUserLogin', 'API', '登录接口', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-11 16:25:06', '0');
+INSERT INTO `c_service` VALUES ('3', 'store.listMyStore', 'API', '查询我的商户', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-11 16:25:07', '0');
+INSERT INTO `c_service` VALUES ('4', 'privilege.queryStaffPrivileges', 'API', '查询员工权限', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-11 16:25:08', '0');
+INSERT INTO `c_service` VALUES ('5', 'community.listMyEnteredCommunitys', 'API', '查询入驻小区', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-02-11 16:25:09', '0');
+INSERT INTO `c_service` VALUES ('6', 'menu.listCatalog', 'API', '查询入驻小区', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-11 16:25:10', '0');
+INSERT INTO `c_service` VALUES ('7', 'user.getUserInfo', 'API', '查询登录用户', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-10 16:25:11', '0');
+INSERT INTO `c_service` VALUES ('8', 'menu.listCatalogMenus', 'API', '查询目录菜单', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-11 16:25:12', '0');
+INSERT INTO `c_service` VALUES ('9', 'app.listApps', 'API', '查询应用', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2019-07-03 15:31:14', '0');
+INSERT INTO `c_service` VALUES ('982023021203470037', 'menuGroupCatalog.saveMenuGroupCatalog', 'API', '保存菜单组目录', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 23:23:28', '0');
+INSERT INTO `c_service` VALUES ('982023021204510012', 'menu.listMenus', 'API', '查询菜单', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-12 23:44:04', '0');
+INSERT INTO `c_service` VALUES ('982023021210330001', 'service.bindingService', 'API', '服务绑定', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 15:34:55', '0');
+INSERT INTO `c_service` VALUES ('982023021214060031', 'menuGroupCatalog.listMenuGroupCatalog', 'API', '查询目录菜单组', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-12 20:40:39', '0');
+INSERT INTO `c_service` VALUES ('982023021216270004', 'serviceRegister.deleteServiceRegister', 'API', '删除服务注册', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 20:09:35', '0');
+INSERT INTO `c_service` VALUES ('982023021216390023', 'menuCatalog.listMenuCatalog', 'API', '查询菜单目录', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-12 20:26:31', '0');
+INSERT INTO `c_service` VALUES ('982023021223650035', 'menuGroup.listMenuGroups', 'API', '查询菜单组', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-12 23:20:33', '0');
+INSERT INTO `c_service` VALUES ('982023021223940021', 'businessTableHis.deleteBusinessTableHis', 'API', '删除业务轨迹', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 20:22:34', '0');
+INSERT INTO `c_service` VALUES ('982023021227650019', 'businessTableHis.updateBusinessTableHis', 'API', '修改业务轨迹', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 20:21:15', '0');
+INSERT INTO `c_service` VALUES ('982023021235240027', 'menuCatalog.saveMenuCatalog', 'API', '添加菜单目录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-12 20:38:41', '0');
+INSERT INTO `c_service` VALUES ('982023021237010006', 'serviceImpl.listServiceImpls', 'API', '查询服务实现', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-12 20:11:01', '0');
+INSERT INTO `c_service` VALUES ('982023021241540002', 'basePrivilege.listBasePrivileges', 'API', '查询菜单权限', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-12 23:56:02', '0');
+INSERT INTO `c_service` VALUES ('982023021245840003', 'service.deleteService', 'API', '删除服务', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 15:38:22', '0');
+INSERT INTO `c_service` VALUES ('982023021247300007', 'menuGroup.updateMenuGroup', 'API', '修改菜单组', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 23:36:27', '0');
+INSERT INTO `c_service` VALUES ('982023021248040004', 'menuGroup.saveMenuGroup', 'API', '添加菜单组', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 23:35:40', '0');
+INSERT INTO `c_service` VALUES ('982023021256680014', 'businessTableHis.listBusinessTableHis', 'API', '查询业务轨迹', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-12 20:18:25', '0');
+INSERT INTO `c_service` VALUES ('982023021258190002', 'serviceRegister.updateServiceRegister', 'API', '修改服务注册', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 19:42:29', '0');
+INSERT INTO `c_service` VALUES ('982023021259400016', 'businessTableHis.saveBusinessTableHis', 'API', '保存业务轨迹', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 20:20:01', '0');
+INSERT INTO `c_service` VALUES ('982023021259860029', 'menuCatalog.deleteMenuCatalog', 'API', '删除目录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-12 20:39:41', '0');
+INSERT INTO `c_service` VALUES ('982023021260000012', 'serviceImpl.deleteServiceImpl', 'API', '删除服务提供', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 20:14:58', '0');
+INSERT INTO `c_service` VALUES ('982023021264030002', '123', 'API', '123', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-02-12 15:37:37', '1');
+INSERT INTO `c_service` VALUES ('982023021273350010', 'serviceImpl.updateServiceImpl', 'API', '修改服务实现', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 20:13:57', '0');
+INSERT INTO `c_service` VALUES ('982023021276940008', 'serviceImpl.saveServiceImpl', 'API', '添加服务注册', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 20:12:13', '0');
+INSERT INTO `c_service` VALUES ('982023021277800001', 'service.updateService', 'API', '修改服务', '1', 'CMD', 'http://iot-dev', 'POST', '61', '3', '2023-02-12 15:22:43', '0');
+INSERT INTO `c_service` VALUES ('982023021278440002', 'serviceRegister.listServiceRegisters', 'API', '查询服务注册', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-12 15:23:18', '0');
+INSERT INTO `c_service` VALUES ('982023021285420033', 'menuGroupCatalog.deleteMenuGroupCatalog', 'API', '删除菜单组目录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-12 23:19:19', '0');
+INSERT INTO `c_service` VALUES ('982023021296170004', 'basePrivilege.saveBasePrivilege', 'API', '添加权限', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 23:57:27', '0');
+INSERT INTO `c_service` VALUES ('982023021296210025', 'menuCatalog.updateMenuCatalog', 'API', '修改菜单目录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-12 20:32:22', '0');
+INSERT INTO `c_service` VALUES ('982023021296240010', 'menuGroup.deleteMenuGroup', 'API', '删除菜单组', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-12 23:37:27', '0');
+INSERT INTO `c_service` VALUES ('982023021302420002', 'mapping.updateMapping', 'API', '修改映射', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 01:24:21', '0');
+INSERT INTO `c_service` VALUES ('982023021303060012', 'area.listAreas', 'API', '查询区域', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-13 02:07:24', '0');
+INSERT INTO `c_service` VALUES ('982023021309160008', 'attrValue.updateAttrValue', 'API', '修改属性值', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 12:27:34', '0');
+INSERT INTO `c_service` VALUES ('982023021309900001', 'community.listCommunitys', 'API', '查询小区', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-02-13 15:10:28', '0');
+INSERT INTO `c_service` VALUES ('982023021310500001', 'attrSpec.listAttrSpec', 'API', '查询属性', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-13 12:08:14', '0');
+INSERT INTO `c_service` VALUES ('982023021312140003', 'property.listProperty', 'API', '查询物业公司', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-13 23:41:31', '0');
+INSERT INTO `c_service` VALUES ('982023021321230009', 'mapping.listMappingDomain', 'API', '查询配置', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-13 01:01:38', '0');
+INSERT INTO `c_service` VALUES ('982023021322710003', 'attrSpec.deleteAttrSpec', 'API', '删除属性', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 12:15:42', '0');
+INSERT INTO `c_service` VALUES ('982023021322750003', 'menu.deleteMenu', 'API', '删除菜单', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 00:59:15', '0');
+INSERT INTO `c_service` VALUES ('982023021323660007', 'user.changeStaffPwd', 'API', '修改密码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-13 01:28:52', '0');
+INSERT INTO `c_service` VALUES ('982023021324220003', 'community.saveCommunity', 'API', '添加小区', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-02-13 15:15:18', '0');
+INSERT INTO `c_service` VALUES ('982023021325460017', 'mapping.listMappings', 'API', '查询配置', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-13 01:05:44', '0');
+INSERT INTO `c_service` VALUES ('982023021326930024', 'mapping.saveMapping', 'API', '添加映射', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 01:10:06', '0');
+INSERT INTO `c_service` VALUES ('982023021328190009', 'login.userLogout', 'API', '退出登录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-13 01:37:13', '0');
+INSERT INTO `c_service` VALUES ('982023021330160005', 'menuGroup.listMenuGroup', 'API', '查询菜单组', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-13 23:51:04', '0');
+INSERT INTO `c_service` VALUES ('982023021334130010', 'basePrivilege.updateBasePrivilege', 'API', '修改权限', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 00:38:33', '0');
+INSERT INTO `c_service` VALUES ('982023021336370005', 'attrSpec.saveAttrSpec', 'API', '保存属性', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 12:16:14', '0');
+INSERT INTO `c_service` VALUES ('982023021337250005', 'community.updateCommunity', 'API', '修改小区', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-02-13 15:35:12', '0');
+INSERT INTO `c_service` VALUES ('982023021357210012', 'menu.updateMenu', 'API', '修改菜单', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 00:40:03', '0');
+INSERT INTO `c_service` VALUES ('982023021358370007', 'community.deleteCommunity', 'API', '删除小区', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-02-13 15:37:51', '0');
+INSERT INTO `c_service` VALUES ('982023021360120008', 'basePrivilege.deleteBasePrivilege', 'API', '删除权限', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 00:03:02', '0');
+INSERT INTO `c_service` VALUES ('982023021360730006', 'attrValue.saveAttrValue', 'API', '保存属性值', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 12:27:07', '0');
+INSERT INTO `c_service` VALUES ('982023021368120020', 'mapping.deleteMappingDomain', 'API', '删除配置域', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 01:06:45', '0');
+INSERT INTO `c_service` VALUES ('982023021370120005', 'mapping.deleteMapping', 'API', '删除映射', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 01:25:29', '0');
+INSERT INTO `c_service` VALUES ('982023021372850014', 'mapping.updateMappingDomain', 'API', '修改配置域', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 01:03:43', '0');
+INSERT INTO `c_service` VALUES ('982023021374860004', 'attrValue.deleteAttrValue', 'API', '删除属性值', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 12:26:36', '0');
+INSERT INTO `c_service` VALUES ('982023021377330007', 'attrSpec.updateAttrSpec', 'API', '修改属性', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 12:16:47', '0');
+INSERT INTO `c_service` VALUES ('982023021386140014', 'menu.configMenu', 'API', '配置菜单', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 00:43:44', '0');
+INSERT INTO `c_service` VALUES ('982023021395440011', 'mapping.saveMappingDomain', 'API', '保存配置域', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-02-13 01:02:55', '0');
+INSERT INTO `c_service` VALUES ('982023021395620002', 'attrValue.listAttrValue', 'API', '查询属性值', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2023-02-13 12:26:03', '0');
+INSERT INTO `c_service` VALUES ('982023021403550023', 'user.staff.modify', 'API', '修改员工', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 16:00:18', '0');
+INSERT INTO `c_service` VALUES ('982023021405630009', 'property.saveProperty', 'API', '添加物业', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 00:30:47', '0');
+INSERT INTO `c_service` VALUES ('982023021407670017', 'property.deleteProperty', 'API', '删除物业', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 01:44:40', '0');
+INSERT INTO `c_service` VALUES ('982023021408200013', 'query.staff.infos', 'API', '查询员工', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 13:58:26', '0');
+INSERT INTO `c_service` VALUES ('982023021419530031', 'query.store.privilegeGroup', 'API', '查询角色', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 17:23:27', '0');
+INSERT INTO `c_service` VALUES ('982023021431180035', 'query.privilegeGroup.noAddPrivilege', 'API', '查询权限', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 17:43:51', '0');
+INSERT INTO `c_service` VALUES ('982023021433280021', 'menuGroupCommunity.updateMenuGroupCommunity', 'API', '修改菜单组小区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 01:52:18', '0');
+INSERT INTO `c_service` VALUES ('982023021435790027', 'storeStaff.listStoreStaff', 'API', '查询商户员工', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 02:07:36', '0');
+INSERT INTO `c_service` VALUES ('982023021436810019', 'menuGroupCommunity.listMenuGroupCommunity', 'API', '查询菜单组小区', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 01:47:01', '0');
+INSERT INTO `c_service` VALUES ('982023021439470027', 'user.listStaffRoles', 'API', '查询员工角色', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 16:58:36', '0');
+INSERT INTO `c_service` VALUES ('982023021439850025', 'member.join.community', 'API', '加入小区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 01:58:00', '0');
+INSERT INTO `c_service` VALUES ('982023021447920033', 'privilegeGroup.savePrivilegeGroup', 'API', '保存权限组', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 17:24:32', '0');
+INSERT INTO `c_service` VALUES ('982023021450050015', 'property.updateProperty', 'API', '修改物业公司', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 01:41:56', '0');
+INSERT INTO `c_service` VALUES ('982023021452340041', 'roleCommunity.listRoleCommunity', 'API', '查询小区授权', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 18:04:55', '0');
+INSERT INTO `c_service` VALUES ('982023021453590029', 'user.staff.delete', 'API', '删除员工', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 17:00:38', '0');
+INSERT INTO `c_service` VALUES ('982023021458210029', 'login.adminLoginProperty', 'API', 'admin登录物业', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 02:15:51', '0');
+INSERT INTO `c_service` VALUES ('982023021464680007', 'community.listFreeCommunity', 'API', '查询空闲小区', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-02-14 00:04:40', '0');
+INSERT INTO `c_service` VALUES ('982023021466280009', 'org.listOrgTree', 'API', '查询组织树', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 13:31:55', '0');
+INSERT INTO `c_service` VALUES ('982023021469650031', 'login.getSysInfo', 'API', '查询系统信息', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 02:25:19', '0');
+INSERT INTO `c_service` VALUES ('982023021473350037', 'add.privilege.PrivilegeGroup', 'API', '添加权限', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 17:47:31', '0');
+INSERT INTO `c_service` VALUES ('982023021481320017', 'org.updateOrg', 'API', '修改组织', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 14:14:39', '0');
+INSERT INTO `c_service` VALUES ('982023021482340035', 'property.updatePropertyState', 'API', '修改物业状态', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 02:49:34', '0');
+INSERT INTO `c_service` VALUES ('982023021485940045', 'roleCommunity.saveRoleCommunity', 'API', '添加角色小区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 18:18:49', '0');
+INSERT INTO `c_service` VALUES ('982023021486110033', 'user.resetStaffPwd', 'API', '重置密码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 02:44:30', '0');
+INSERT INTO `c_service` VALUES ('982023021487090047', 'roleCommunity.deleteRoleCommunity', 'API', '删除角色小区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 18:32:34', '0');
+INSERT INTO `c_service` VALUES ('982023021487850043', 'org.listOrgNoCommunitys', 'API', '查询未授权小区', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 18:06:38', '0');
+INSERT INTO `c_service` VALUES ('982023021488540025', 'user.listStaffOrgs', 'API', '查询员工组织', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 16:56:35', '0');
+INSERT INTO `c_service` VALUES ('982023021491480023', 'member.quit.community', 'API', '退出小区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 01:53:59', '0');
+INSERT INTO `c_service` VALUES ('982023021492500015', 'org.saveOrg', 'API', '添加组织', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 14:09:27', '0');
+INSERT INTO `c_service` VALUES ('982023021494870049', 'role.listRoleStaff', 'API', '查询角色员工', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 18:46:52', '0');
+INSERT INTO `c_service` VALUES ('982023021496750051', 'role.listStaffsNoRole', 'API', '查询员工', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 18:57:59', '0');
+INSERT INTO `c_service` VALUES ('982023021497030019', 'org.deleteOrg', 'API', '删除组织', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 14:16:27', '0');
+INSERT INTO `c_service` VALUES ('982023021497050021', 'user.staff.add', 'API', '添加员工', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 15:19:11', '0');
+INSERT INTO `c_service` VALUES ('982023021498420039', 'delete.privilege.PrivilegeGroup', 'API', '删除角色权限', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-14 17:51:02', '0');
+INSERT INTO `c_service` VALUES ('982023021499840011', 'org.listOrgs', 'API', '查询组织', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-02-14 13:43:57', '0');
+INSERT INTO `c_service` VALUES ('982023021601160001', 'role.saveRoleStaff', 'API', '保存角色员工', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-16 00:02:44', '0');
+INSERT INTO `c_service` VALUES ('982023021648060003', 'role.deleteRoleStaff', 'API', '删除角色员工', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-02-16 00:04:40', '0');
+INSERT INTO `c_service` VALUES ('982023080903700020', 'room.saveRoom', 'API', '保存房屋', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 11:48:39', '0');
+INSERT INTO `c_service` VALUES ('982023080906630015', 'room.deleteRoom', 'API', '删除房屋', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 14:27:00', '0');
+INSERT INTO `c_service` VALUES ('982023080910140004', 'owner.queryOwners', 'API', '查询人员', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-08-09 18:10:48', '0');
+INSERT INTO `c_service` VALUES ('982023080910750023', 'owner.saveOwner', 'API', '添加人员', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-08-09 17:15:42', '0');
+INSERT INTO `c_service` VALUES ('982023080915140002', 'room.sellRoom', 'API', '房屋绑定人员', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 22:06:22', '0');
+INSERT INTO `c_service` VALUES ('982023080921430001', 'floor.saveFloor', 'API', '保存楼栋', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 10:54:07', '0');
+INSERT INTO `c_service` VALUES ('982023080921840002', 'floor.editFloor', 'API', '修改楼栋', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 11:21:45', '0');
+INSERT INTO `c_service` VALUES ('982023080933940001', 'system.listSystemInfo', 'API', '查询系统信息', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-08-09 02:49:48', '0');
+INSERT INTO `c_service` VALUES ('982023080948440010', 'owner.editOwner', 'API', '修改人员', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-08-09 18:36:21', '0');
+INSERT INTO `c_service` VALUES ('982023080951470006', 'floor.deleteFloor', 'API', '删除楼栋', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 11:24:41', '0');
+INSERT INTO `c_service` VALUES ('982023080953980007', 'room.queryRooms', 'API', '查询房屋', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-08-09 11:09:28', '0');
+INSERT INTO `c_service` VALUES ('982023080957850004', 'floor.queryFloorAndUnits', 'API', '查询楼栋单元', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-08-09 11:07:42', '0');
+INSERT INTO `c_service` VALUES ('982023080961400007', 'unit.updateUnit', 'API', '修改单元', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 11:35:15', '0');
+INSERT INTO `c_service` VALUES ('982023080966350010', 'floor.queryFloors', 'API', '查询楼栋', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-08-09 11:13:53', '0');
+INSERT INTO `c_service` VALUES ('982023080978720015', 'unit.deleteUnit', 'API', '删除单元', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 11:36:16', '0');
+INSERT INTO `c_service` VALUES ('982023080979520007', 'room.updateRoom', 'API', '修改房屋', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 14:25:58', '0');
+INSERT INTO `c_service` VALUES ('982023080984110011', 'unit.saveUnit', 'API', '添加单元', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-09 11:26:16', '0');
+INSERT INTO `c_service` VALUES ('982023080988790004', 'unit.queryUnits', 'API', '查询单元', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-08-09 11:32:18', '0');
+INSERT INTO `c_service` VALUES ('982023080995670001', 'owner.deleteOwner', 'API', '删除人员', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-08-09 18:46:07', '0');
+INSERT INTO `c_service` VALUES ('982023081417290001', 'room.queryRoomOwner', 'API', '查询房屋人员', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-08-14 16:06:31', '0');
+INSERT INTO `c_service` VALUES ('982023081419530001', 'room.exitRoom', 'API', '房屋解绑人员', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-14 16:32:50', '0');
+INSERT INTO `c_service` VALUES ('982023081528910022', 'dict.updateDict', 'API', '修改字典', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2023-08-15 09:08:06', '0');
+INSERT INTO `c_service` VALUES ('982023081545940005', 'location.saveMachineLocation', 'API', '添加设备位置', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-15 01:25:00', '0');
+INSERT INTO `c_service` VALUES ('982023081546790039', 'hm.listHardwareManufacturer', 'API', '查询设备厂家', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-08-15 09:39:13', '0');
+INSERT INTO `c_service` VALUES ('982023081552200020', 'accessControl.listAccessControl', 'API', '查询门禁', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-08-15 09:06:32', '0');
+INSERT INTO `c_service` VALUES ('982023081553090003', 'accessControlFloor.listAccessControlFloor', 'API', '查询楼栋授权', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-08-15 18:37:12', '0');
+INSERT INTO `c_service` VALUES ('982023081561050006', 'accessControlFloor.saveAccessControlFloor', 'API', '楼栋门禁授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-15 21:35:45', '0');
+INSERT INTO `c_service` VALUES ('982023081562520003', 'location.listMachineLocation', 'API', '查询设备位置', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-08-15 01:24:29', '0');
+INSERT INTO `c_service` VALUES ('982023081569750007', 'location.updateMachineLocation', 'API', '修改设备位置', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-15 01:25:26', '0');
+INSERT INTO `c_service` VALUES ('982023081579150031', 'accessControl.updateAccessControl', 'API', '修改门禁', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-15 09:10:39', '0');
+INSERT INTO `c_service` VALUES ('982023081581350029', 'accessControl.saveAccessControl', 'API', '保存门禁', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-15 09:10:12', '0');
+INSERT INTO `c_service` VALUES ('982023081584920001', 'location.deleteMachineLocation', 'API', '删除设备位置', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2023-08-15 01:24:02', '0');
+INSERT INTO `c_service` VALUES ('982023081590210012', 'accessControlFace.listAccessControlFace', 'API', '查询门禁人员', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-08-15 12:24:18', '0');
+INSERT INTO `c_service` VALUES ('982023081596860027', 'accessControl.deleteAccessControl', 'API', '删除门禁', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-15 09:09:42', '0');
+INSERT INTO `c_service` VALUES ('982023081607370010', 'accessControlOrg.saveAccessControlOrg', 'API', '部门授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-16 11:19:00', '0');
+INSERT INTO `c_service` VALUES ('982023081624290006', 'accessControlOrg.deleteAccessControlOrg', 'API', '删除部门授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-16 11:17:04', '0');
+INSERT INTO `c_service` VALUES ('982023081639070002', 'accessControlFace.saveAccessControlFace', 'API', '人员授权人脸', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-16 16:25:25', '0');
+INSERT INTO `c_service` VALUES ('982023081643040008', 'accessControlOrg.listAccessControlOrg', 'API', '查询部门权限', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-08-16 11:17:38', '0');
+INSERT INTO `c_service` VALUES ('982023081646380002', 'accessControlFloor.deleteAccessControlFloor', 'API', '删除楼栋授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-16 10:35:40', '0');
+INSERT INTO `c_service` VALUES ('982023081672890001', 'accessControlFace.deleteAccessControlFace', 'API', '删除门禁人员', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-08-16 10:59:52', '0');
+INSERT INTO `c_service` VALUES ('982023081701610012', 'chargeRule.updateChargeRule', 'API', '修改充电规则', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-17 09:40:09', '0');
+INSERT INTO `c_service` VALUES ('982023081706060009', 'accessControlLog.listAccessControlLogParam', 'API', '查询门禁日志报文', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-08-17 09:17:44', '0');
+INSERT INTO `c_service` VALUES ('982023081726810005', 'chargeRule.listChargeRuleFee', 'API', '查询充电费用', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-17 09:35:07', '0');
+INSERT INTO `c_service` VALUES ('982023081726920003', 'chargeRule.listChargeRule', 'API', '查询充电规则', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-17 09:33:04', '0');
+INSERT INTO `c_service` VALUES ('982023081729000037', 'chargeMachine.listChargeMachine', 'API', '查询充电桩', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-17 11:00:46', '0');
+INSERT INTO `c_service` VALUES ('982023081741300008', 'chargeRule.saveChargeRule', 'API', '添加充电规则', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-17 09:38:13', '0');
+INSERT INTO `c_service` VALUES ('982023081750380010', 'chargeRule.saveChargeRuleFee', 'API', '保存充电费用', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-17 09:39:13', '0');
+INSERT INTO `c_service` VALUES ('982023081768670018', 'chargeRule.deleteChargeRuleFee', 'API', '删除充电费用', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-17 09:43:12', '0');
+INSERT INTO `c_service` VALUES ('982023081769950014', 'chargeRule.updateChargeRuleFee', 'API', '修改充电费用', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-17 09:41:12', '0');
+INSERT INTO `c_service` VALUES ('982023081781300016', 'chargeRule.deleteChargeRule', 'API', '删除充电规则', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-17 09:42:15', '0');
+INSERT INTO `c_service` VALUES ('982023081781500006', 'accessControlLog.listAccessControlLog', 'API', '查询门禁日志', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-08-17 09:07:28', '0');
+INSERT INTO `c_service` VALUES ('982023081800230029', 'chargeCard.listChargeMonthOrder', 'API', '查询充电充值订单', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-18 15:15:07', '0');
+INSERT INTO `c_service` VALUES ('982023081803910007', 'chargeMachine.saveChargeMachine', 'API', '保存充电桩', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 11:13:38', '0');
+INSERT INTO `c_service` VALUES ('982023081807430013', 'chargeMachine.deleteChargeMachine', 'API', '删除充电桩', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 11:18:51', '0');
+INSERT INTO `c_service` VALUES ('982023081809110005', 'chargeCard.saveChargeMonthOrder', 'API', '月卡充值', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 15:39:28', '0');
+INSERT INTO `c_service` VALUES ('982023081809840001', 'chargeMachine.saveChargeMachinePort', 'API', '保存充电桩插槽', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 14:34:23', '0');
+INSERT INTO `c_service` VALUES ('982023081832110042', 'chargeCard.deleteChargeMonthCard', 'API', '删除充电月卡设置', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 15:27:02', '0');
+INSERT INTO `c_service` VALUES ('982023081833930010', 'chargeMachine.deleteChargeMachinePort', 'API', '删除充电桩插槽', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 14:40:09', '0');
+INSERT INTO `c_service` VALUES ('982023081836950009', 'chargeMachine.listChargeMachineFactory', 'API', '查询充电桩厂家', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-18 11:14:57', '0');
+INSERT INTO `c_service` VALUES ('982023081862200040', 'chargeCard.updateChargeMonthCard', 'API', '修改充电月卡', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 15:26:23', '0');
+INSERT INTO `c_service` VALUES ('982023081864360027', 'chargeMachine.listChargeMachineOrder', 'API', '查询充电订单', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-18 15:14:14', '0');
+INSERT INTO `c_service` VALUES ('982023081874930020', 'chargeMachine.listChargeMachineOrderAcct', 'API', '充电扣款明细', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-18 16:02:11', '0');
+INSERT INTO `c_service` VALUES ('982023081879880011', 'chargeMachine.updateChargeMachine', 'API', '修改充电桩', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 11:16:32', '0');
+INSERT INTO `c_service` VALUES ('982023081881490031', 'chargeCard.listChargeMonthCard', 'API', '查询充电月卡设置', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-18 15:15:55', '0');
+INSERT INTO `c_service` VALUES ('982023081887340023', 'chargeMachine.stopCharge', 'API', '停止充电', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 16:06:48', '0');
+INSERT INTO `c_service` VALUES ('982023081889510034', 'chargeCard.saveChargeMonthCard', 'API', '保存充电月卡设置', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-08-18 15:24:09', '0');
+INSERT INTO `c_service` VALUES ('982023081896720002', 'chargeMachine.listChargeMachinePort', 'API', '查询插槽', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-18 14:04:00', '0');
+INSERT INTO `c_service` VALUES ('982023082118290005', 'accessControlInout.listAccessControlInout', 'API', '查询开门记录', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-08-21 13:34:08', '0');
+INSERT INTO `c_service` VALUES ('982023082259940005', 'log.listMqttLog', 'API', '查询日志', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-08-22 10:50:27', '0');
+INSERT INTO `c_service` VALUES ('982023082302040006', 'parkingArea.saveParkingArea', 'API', '保存停车场', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-08-23 08:50:57', '0');
+INSERT INTO `c_service` VALUES ('982023082305810012', 'parkingSpace.deleteParkingSpace', 'API', '删除停车位', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-08-23 13:54:46', '0');
+INSERT INTO `c_service` VALUES ('982023082331040008', 'parkingArea.updateParkingArea', 'API', '修改停车场', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-08-23 08:51:22', '0');
+INSERT INTO `c_service` VALUES ('982023082333600008', 'parkingSpace.saveParkingSpace', 'API', '添加停车位', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-08-23 13:53:36', '0');
+INSERT INTO `c_service` VALUES ('982023082337440001', 'account.queryOwnerAccount', 'API', '查询业主账户', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2023-08-23 14:31:22', '0');
+INSERT INTO `c_service` VALUES ('982023082338070004', 'parkingArea.listParkingArea', 'API', '查询停车场', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-08-23 08:50:31', '0');
+INSERT INTO `c_service` VALUES ('982023082358690001', 'account/queryOwnerAccount', 'API', '查看账户', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-08-23 11:06:26', '0');
+INSERT INTO `c_service` VALUES ('982023082374690002', 'parkingArea.deleteParkingArea', 'API', '删除停车场', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-08-23 08:50:02', '0');
+INSERT INTO `c_service` VALUES ('982023082378700010', 'parkingSpace.updateParkingSpace', 'API', '修改停车位', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-08-23 13:54:10', '0');
+INSERT INTO `c_service` VALUES ('982023082395390006', 'parkingSpace.listParkingSpace', 'API', '查询停车位', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-08-23 13:53:01', '0');
+INSERT INTO `c_service` VALUES ('982023082402870007', 'meterType.deleteMeterType', 'API', '删除抄表类型', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-24 15:48:04', '0');
+INSERT INTO `c_service` VALUES ('982023082403230005', 'meterType.updateMeterType', 'API', '更新抄表类型', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-24 15:47:18', '0');
+INSERT INTO `c_service` VALUES ('982023082426580024', 'meterMachine.listMeterMachineFactory', 'API', '查询智能水电表厂家', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-08-24 16:41:32', '0');
+INSERT INTO `c_service` VALUES ('982023082429250002', 'room.queryRoomsTree', 'API', '查询房屋树形', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-08-24 18:08:29', '0');
+INSERT INTO `c_service` VALUES ('982023082481950001', 'meterType.listMeterType', 'API', '查询抄表类型', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-08-24 15:45:17', '0');
+INSERT INTO `c_service` VALUES ('982023082488900003', 'meterType.saveMeterType', 'API', '保存抄表类型', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-24 15:46:37', '0');
+INSERT INTO `c_service` VALUES ('982023082507660018', 'meterMachine.settingMeterMachineRead', 'API', '设置查表日时', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-25 11:44:24', '0');
+INSERT INTO `c_service` VALUES ('982023082523510002', 'meterMachine.listMeterMachine', 'API', '查询智能电表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-08-25 08:56:48', '0');
+INSERT INTO `c_service` VALUES ('982023082548480013', 'meterMachine.customMeterMachineRead', 'API', '手工抄表', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-25 11:41:03', '0');
+INSERT INTO `c_service` VALUES ('982023082548550004', 'meterMachine.saveMeterMachine', 'API', '添加智能电表', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-25 08:58:11', '0');
+INSERT INTO `c_service` VALUES ('982023082581760008', 'meterMachine.deleteMeterMachine', 'API', '删除智能电表', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-25 08:59:42', '0');
+INSERT INTO `c_service` VALUES ('982023082587180006', 'meterMachine.updateMeterMachine', 'API', '修改智能电表', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-25 08:58:50', '0');
+INSERT INTO `c_service` VALUES ('982023082591540008', 'meterMachine.listMeterMachineDetail', 'API', '查询抄表明细', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-08-25 11:33:18', '0');
+INSERT INTO `c_service` VALUES ('982023082982310001', 'meterMachine.listMeterMachineReadOrRechargeDetail', 'API', '抄表/充值记录', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-08-29 11:26:50', '0');
+INSERT INTO `c_service` VALUES ('982023083164580001', 'meterMachine.meterMachineControlSwitch', 'API', '表开关阀', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-08-31 09:42:13', '0');
+INSERT INTO `c_service` VALUES ('982023091533750002', 'product.queryGoodsClass', 'API', '查询商品分类列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-09-15 16:02:00', '0');
+INSERT INTO `c_service` VALUES ('982023091556600001', 'product.queryProduct', 'API', '查询商城商品', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-09-15 11:26:17', '0');
+INSERT INTO `c_service` VALUES ('982023091804870009', 'liftMachineFactory.deleteLiftMachineFactory', 'API', '删除电梯厂家', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-18 16:51:07', '0');
+INSERT INTO `c_service` VALUES ('982023091830570012', 'liftMachineFactorySpec.saveLiftMachineFactorySpec', 'API', '新增电梯厂家规格', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-18 17:13:25', '0');
+INSERT INTO `c_service` VALUES ('982023091841420006', 'liftMachineFactorySpec.deleteLiftMachineFactorySpec', 'API', '删除电梯厂家规格', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-18 17:34:22', '0');
+INSERT INTO `c_service` VALUES ('982023091841790004', 'liftMachineFactory.listLiftMachineFactory', 'API', '电梯厂家列表', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2023-09-18 16:26:35', '0');
+INSERT INTO `c_service` VALUES ('982023091865840007', 'liftMachineFactory.updateLiftMachineFactory', 'API', '更新电梯厂家', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-18 16:50:12', '0');
+INSERT INTO `c_service` VALUES ('982023091881660004', 'liftMachineFactorySpec.listLiftMachineFactorySpec', 'API', '电梯厂家规格列表', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2023-09-18 17:33:09', '0');
+INSERT INTO `c_service` VALUES ('982023091896520042', 'liftMachineFactory.saveLiftMachineFactory', 'API', '新增电梯厂家', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-18 16:07:40', '0');
+INSERT INTO `c_service` VALUES ('982023091910520012', 'liftMachine.deleteLiftMachine', 'API', '删除电梯信息', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-19 10:57:41', '0');
+INSERT INTO `c_service` VALUES ('982023091913690001', 'liftMachineLog.listLiftMachineLog', 'API', '电梯日志列表', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2023-09-19 10:43:31', '0');
+INSERT INTO `c_service` VALUES ('982023091919880010', 'liftMachine.updateLiftMachine', 'API', '更新电梯信息', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-19 10:56:44', '0');
+INSERT INTO `c_service` VALUES ('982023091934370003', 'liftMachineReservation.listLiftMachineReservation', 'API', '电梯预约记录列表', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2023-09-19 10:44:28', '0');
+INSERT INTO `c_service` VALUES ('982023091935410008', 'ownerCar.queryOwnerCars', 'API', '查询车辆', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-09-19 12:14:38', '0');
+INSERT INTO `c_service` VALUES ('982023091952940008', 'liftMachine.saveLiftMachine', 'API', '新增电梯信息', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-19 10:55:49', '0');
+INSERT INTO `c_service` VALUES ('982023091959660006', 'liftMachine.listLiftMachine', 'API', '电梯信息列表', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2023-09-19 10:54:59', '0');
+INSERT INTO `c_service` VALUES ('982023091973270003', 'ownerCar.updateOwnerCar', 'API', '修改业主车辆', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-09-19 17:27:35', '0');
+INSERT INTO `c_service` VALUES ('982023091979020001', 'ownerCar.saveOwnerCar', 'API', '保存业主车辆', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-09-19 12:32:12', '0');
+INSERT INTO `c_service` VALUES ('982023091983790003', 'ownerCar.deleteCarParkingSpace', 'API', '释放车位', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-09-19 17:39:39', '0');
+INSERT INTO `c_service` VALUES ('982023091994060001', 'ownerCar.deleteOwnerCar', 'API', '删除业主车辆', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-09-19 17:50:29', '0');
+INSERT INTO `c_service` VALUES ('982023092013630001', 'liftMachine.reservationLiftMachine', 'API', '预约电梯', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-20 16:31:02', '0');
+INSERT INTO `c_service` VALUES ('982023092044560003', 'liftMachine.switchLiftState', 'API', '切换电梯状态', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2023-09-20 10:05:37', '0');
+INSERT INTO `c_service` VALUES ('982023092100730011', 'barrier.listBarrier', 'API', '查询道闸摄像头', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-21 01:56:35', '0');
+INSERT INTO `c_service` VALUES ('982023092101490039', 'lampMachineFactory.deleteLampMachineFactory', 'API', '删除路灯厂家', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-21 15:07:21', '0');
+INSERT INTO `c_service` VALUES ('982023092103320005', 'parkingBox.listParkingBox', 'API', '查询岗亭', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-21 00:23:57', '0');
+INSERT INTO `c_service` VALUES ('982023092112130010', 'lampMachineFactorySpec.deleteLampMachineFactorySpec', 'API', '删除电灯厂家规格', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-21 16:22:46', '0');
+INSERT INTO `c_service` VALUES ('982023092114040009', 'barrier.deleteBarrier', 'API', '删除道闸摄像头', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 01:55:47', '0');
+INSERT INTO `c_service` VALUES ('982023092115730013', 'barrier.saveBarrier', 'API', '保存道闸摄像头', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 01:57:14', '0');
+INSERT INTO `c_service` VALUES ('982023092122750007', 'parkingBox.deleteParkingBox', 'API', '删除岗亭', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 00:24:41', '0');
+INSERT INTO `c_service` VALUES ('982023092131970015', 'parkingBoxArea.listParkingBoxArea', 'API', '查询停车场岗亭', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-21 00:27:00', '0');
+INSERT INTO `c_service` VALUES ('982023092150550012', 'carBlackWhite.updateCarBlackWhite', 'API', '修改黑白名单', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-09-21 13:24:58', '0');
+INSERT INTO `c_service` VALUES ('982023092151010011', 'parkingBox.updateParkingBox', 'API', '修改岗亭', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 00:25:40', '0');
+INSERT INTO `c_service` VALUES ('982023092154190009', 'parkingBox.saveParkingBox', 'API', '保存岗亭', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 00:25:14', '0');
+INSERT INTO `c_service` VALUES ('982023092154440013', 'parkingBoxArea.deleteParkingBoxArea', 'API', '删除停车场岗亭', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 00:26:25', '0');
+INSERT INTO `c_service` VALUES ('982023092156670012', 'lampMachineFactorySpec.listLampMachineFactorySpec', 'API', '电灯厂家规格列表', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2023-09-21 16:23:47', '0');
+INSERT INTO `c_service` VALUES ('982023092156700008', 'carBlackWhite.listCarBlackWhites', 'API', '查询黑白名单', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-09-21 13:22:54', '0');
+INSERT INTO `c_service` VALUES ('982023092156940017', 'parkingBoxArea.saveParkingBoxArea', 'API', '保存停车场岗亭', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 00:27:39', '0');
+INSERT INTO `c_service` VALUES ('982023092164030004', 'carInout.listCarInParkingArea', 'API', '查询在场车辆', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-21 22:36:33', '0');
+INSERT INTO `c_service` VALUES ('982023092165230015', 'barrier.updateBarrier', 'API', '修改道闸摄像头', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 01:57:44', '0');
+INSERT INTO `c_service` VALUES ('982023092169120035', 'lampMachineFactory.listLampMachineFactory', 'API', '路灯厂家列表', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2023-09-21 15:05:50', '0');
+INSERT INTO `c_service` VALUES ('982023092171410008', 'lampMachineFactorySpec.saveLampMachineFactorySpec', 'API', '新增路灯厂家规格', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-21 16:21:51', '0');
+INSERT INTO `c_service` VALUES ('982023092177360001', 'carInoutDetail.listCarInoutDetail', 'API', '查询出入场明细', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-21 23:20:49', '0');
+INSERT INTO `c_service` VALUES ('982023092178860006', 'carBlackWhite.deleteCarBlackWhite', 'API', '删除黑白名单', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-09-21 13:22:22', '0');
+INSERT INTO `c_service` VALUES ('982023092183370037', 'lampMachineFactory.updateLampMachineFactory', 'API', '更新路灯厂家', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-21 15:06:35', '0');
+INSERT INTO `c_service` VALUES ('982023092185410042', 'parkingBoxArea.updateParkingBoxArea', 'API', '修改停车场岗亭', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-21 00:36:14', '0');
+INSERT INTO `c_service` VALUES ('982023092186810010', 'carBlackWhite.saveCarBlackWhite', 'API', '保存黑白名称', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-09-21 13:23:22', '0');
+INSERT INTO `c_service` VALUES ('982023092196640032', 'lampMachineFactory.saveLampMachineFactory', 'API', '新增路灯厂家', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-21 14:45:01', '0');
+INSERT INTO `c_service` VALUES ('982023092208760005', 'lampMachine.updateLampMachine', 'API', '更新路灯设备', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-22 14:07:25', '0');
+INSERT INTO `c_service` VALUES ('982023092209070001', 'lampMachineLog.listLampMachineLog', 'API', '路灯设备下发日志列表', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2023-09-22 16:38:38', '0');
+INSERT INTO `c_service` VALUES ('982023092214980006', 'fee.listTempCarFeeConfigs', 'API', '查询临时车费配置', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-22 14:51:10', '0');
+INSERT INTO `c_service` VALUES ('982023092226180007', 'lampMachine.deleteLampMachine', 'API', '删除路灯设备', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-22 14:08:01', '0');
+INSERT INTO `c_service` VALUES ('982023092232560012', 'fee.updateTempCarFeeConfig', 'API', '修改临时车费配置', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-22 15:10:18', '0');
+INSERT INTO `c_service` VALUES ('982023092238200001', 'lampMachine.listLampMachine', 'API', '路灯设备列表', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2023-09-22 14:05:43', '0');
+INSERT INTO `c_service` VALUES ('982023092252040002', 'tempCarFee.queryTempCarFeeRules', 'API', '查询临时车规则', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-22 22:08:32', '0');
+INSERT INTO `c_service` VALUES ('982023092271700008', 'fee.deleteTempCarFeeConfig', 'API', '删除临时车配置', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-22 14:52:01', '0');
+INSERT INTO `c_service` VALUES ('982023092279500001', 'user.listCommunityStaffsByCommunityId', 'API', '查询小区物业员工', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-09-22 15:31:07', '0');
+INSERT INTO `c_service` VALUES ('982023092282830001', 'lampMachineOperation.listLampMachineOperation', 'API', '路灯操作日志列表', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2023-09-22 11:55:18', '0');
+INSERT INTO `c_service` VALUES ('982023092294760003', 'lampMachine.saveLampMachine', 'API', '新增路灯设备', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-22 14:06:25', '0');
+INSERT INTO `c_service` VALUES ('982023092296000010', 'fee.saveTempCarFeeConfig', 'API', '保存临时车费配置', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-22 14:52:35', '0');
+INSERT INTO `c_service` VALUES ('982023092558060001', 'lampMachine.switchLampState', 'API', '切换路灯状态', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-25 16:55:18', '0');
+INSERT INTO `c_service` VALUES ('982023092644180003', 'lampMachineOpenClose.saveLampMachineOpenClose', 'API', '设置路灯开关时间', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2023-09-26 09:23:34', '0');
+INSERT INTO `c_service` VALUES ('982023092646350001', 'lampMachineOpenClose.listLampMachineOpenClose', 'API', '设置路灯开关时间列表', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2023-09-26 09:22:33', '0');
+INSERT INTO `c_service` VALUES ('982023092700090039', 'eventTemplate.deleteEventTemplate', 'API', '删除事件模板', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 10:58:39', '0');
+INSERT INTO `c_service` VALUES ('982023092700170018', 'eventObject.deleteEventObject', 'API', '删除事件对象', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:42:42', '0');
+INSERT INTO `c_service` VALUES ('982023092700250024', 'eventStaff.updateEventStaff', 'API', '更新事件通知员工', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:56:20', '0');
+INSERT INTO `c_service` VALUES ('982023092706610035', 'eventTemplate.saveEventTemplate', 'API', '新增事件模板', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 10:57:06', '0');
+INSERT INTO `c_service` VALUES ('982023092708060001', 'barrier.unlicensedCarMachineQrCodeUrl', 'API', '无牌车辆进场', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-27 15:51:57', '0');
+INSERT INTO `c_service` VALUES ('982023092709840008', 'eventRule.updateEventRule', 'API', '更新事件规则', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:38:04', '0');
+INSERT INTO `c_service` VALUES ('982023092713170007', 'carInoutPayment.listCarInoutPayment', 'API', '查询收费明细', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-27 12:26:24', '0');
+INSERT INTO `c_service` VALUES ('982023092716470037', 'eventTemplate.updateEventTemplate', 'API', '更新事件模板', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 10:57:52', '0');
+INSERT INTO `c_service` VALUES ('982023092717570016', 'eventObject.updateEventObject', 'API', '更新事件对象', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:41:46', '0');
+INSERT INTO `c_service` VALUES ('982023092719040022', 'eventStaff.saveEventStaff', 'API', '新增事件通知员工', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:55:34', '0');
+INSERT INTO `c_service` VALUES ('982023092721930001', 'carInoutPayment.listCarInoutPaymentSummary', 'API', '临时车收费统计', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-27 14:55:46', '0');
+INSERT INTO `c_service` VALUES ('982023092722710011', 'carInout.listCarInoutTempAuth', 'API', '查询临时车审核', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-27 13:27:29', '0');
+INSERT INTO `c_service` VALUES ('982023092724320004', 'carInout.listManualOpenDoorLog', 'API', '查询开闸记录', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-27 15:05:32', '0');
+INSERT INTO `c_service` VALUES ('982023092727360020', 'eventStaff.listEventStaff', 'API', '查询事件通知员工列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-09-27 16:52:55', '0');
+INSERT INTO `c_service` VALUES ('982023092730940001', 'carInout.getFreeParkingSpace', 'API', '查询空闲车位', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-09-27 14:51:53', '0');
+INSERT INTO `c_service` VALUES ('982023092735400006', 'eventRule.saveEventRule', 'API', '新增事件规则', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:37:26', '0');
+INSERT INTO `c_service` VALUES ('982023092737630026', 'eventStaff.deleteEventStaff', 'API', '删除事件通知员工', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:57:02', '0');
+INSERT INTO `c_service` VALUES ('982023092740550004', 'eventRule.listEventRule', 'API', '查询事件规则列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-09-27 16:36:45', '0');
+INSERT INTO `c_service` VALUES ('982023092746910031', 'eventTemplateParam.deleteEventTemplateParam', 'API', '删除事件模板参数', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 13:54:23', '0');
+INSERT INTO `c_service` VALUES ('982023092747550014', 'eventObject.saveEventObject', 'API', '新增事件对象', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:40:37', '0');
+INSERT INTO `c_service` VALUES ('982023092770300025', 'eventTemplateParam.listEventTemplateParam', 'API', '查询事件模板参数列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-09-27 13:51:28', '0');
+INSERT INTO `c_service` VALUES ('982023092778110027', 'eventTemplateParam.saveEventTemplateParam', 'API', '添加事件模板参数', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 13:52:21', '0');
+INSERT INTO `c_service` VALUES ('982023092786220033', 'eventTemplate.listEventTemplate', 'API', '查询事件模板列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-09-27 10:56:16', '0');
+INSERT INTO `c_service` VALUES ('982023092786950012', 'eventObject.listEventObject', 'API', '查询事件对象列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-09-27 16:39:49', '0');
+INSERT INTO `c_service` VALUES ('982023092792030005', 'barrier.customCarInOut', 'API', '手工进出场', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-09-27 15:58:34', '0');
+INSERT INTO `c_service` VALUES ('982023092796270010', 'eventRule.deleteEventRule', 'API', '删除事件规则', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 16:38:52', '0');
+INSERT INTO `c_service` VALUES ('982023092797650029', 'eventTemplateParam.updateEventTemplateParam', 'API', '更新事件模板参数', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-09-27 13:53:11', '0');
+INSERT INTO `c_service` VALUES ('982023100805530009', 'eventPool.saveEventPool', 'API', '新增事件池事件', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-10-08 15:43:15', '0');
+INSERT INTO `c_service` VALUES ('982023100842780013', 'eventPool.deleteEventPool', 'API', '删除事件池事件', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-10-08 15:44:46', '0');
+INSERT INTO `c_service` VALUES ('982023100860740011', 'eventPool.updateEventPool', 'API', '更新事件池事件', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-10-08 15:44:08', '0');
+INSERT INTO `c_service` VALUES ('982023100888550009', 'eventPool.listEventPool', 'API', '查询事件池列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-10-08 09:13:09', '0');
+INSERT INTO `c_service` VALUES ('982023100918850004', 'eventPoolStaff.listEventPoolStaff', 'API', '查询我的事件列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-10-09 08:40:11', '0');
+INSERT INTO `c_service` VALUES ('982023100953390007', 'eventPoolStaff.saveEventPoolStaff', 'API', '新增我的事件', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-10-09 09:41:29', '0');
+INSERT INTO `c_service` VALUES ('982023100962650001', 'eventPoolStaff.updateEventPoolStaff', 'API', '更新我的事件', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-10-09 11:35:17', '0');
+INSERT INTO `c_service` VALUES ('982023101231580001', 'eventTemplateParamKey.listEventTemplateParamKey', 'API', '获取通知模板参数规格列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-10-12 11:56:41', '0');
+INSERT INTO `c_service` VALUES ('982023101680480001', 'eventPool.cancelEventPoolStaff', 'API', '取消事件分配', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-10-16 17:06:11', '0');
+INSERT INTO `c_service` VALUES ('982023101727160013', 'monitorModel.saveMonitorModel', 'API', '新增监控模型', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-17 16:57:50', '0');
+INSERT INTO `c_service` VALUES ('982023101762070011', 'monitorModel.listMonitorModel', 'API', '查询监控模型列表', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2023-10-17 16:56:47', '0');
+INSERT INTO `c_service` VALUES ('982023101769190015', 'monitorModel.updateMonitorModel', 'API', '更新监控模型', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-17 16:58:50', '0');
+INSERT INTO `c_service` VALUES ('982023101794500017', 'monitorModel.deleteMonitorModel', 'API', '删除监控模型', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-17 16:59:43', '0');
+INSERT INTO `c_service` VALUES ('982023101801400036', 'monitorMachine.updateMonitorMachine', 'API', '更新监控设备', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-18 15:56:58', '0');
+INSERT INTO `c_service` VALUES ('982023101804120067', 'monitorArea.deleteMonitorArea', 'API', '删除监控区域', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-18 10:02:48', '0');
+INSERT INTO `c_service` VALUES ('982023101830950034', 'monitorMachine.saveMonitorMachine', 'API', '新增监控设备', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-18 15:56:17', '0');
+INSERT INTO `c_service` VALUES ('982023101851480038', 'monitorMachine.deleteMonitorMachine', 'API', '删除监控设备', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-18 15:57:41', '0');
+INSERT INTO `c_service` VALUES ('982023101882210032', 'monitorMachine.listMonitorMachine', 'API', '查询监控设备列表', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2023-10-18 15:55:24', '0');
+INSERT INTO `c_service` VALUES ('982023101887880063', 'monitorArea.saveMonitorArea', 'API', '新增监控区域', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-18 10:01:13', '0');
+INSERT INTO `c_service` VALUES ('982023101892950061', 'monitorArea.listMonitorArea', 'API', '查询监控区域列表', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2023-10-18 09:59:56', '0');
+INSERT INTO `c_service` VALUES ('982023101897800065', 'monitorArea.updateMonitorArea', 'API', '更新监控区域', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-18 10:02:04', '0');
+INSERT INTO `c_service` VALUES ('982023101924650023', 'monitorMachineModel.saveMonitorMachineModel', 'API', '新增监控分析', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-19 15:23:48', '0');
+INSERT INTO `c_service` VALUES ('982023101962330025', 'monitorMachineModel.deleteMonitorMachineModel', 'API', '删除监控分析', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2023-10-19 15:24:30', '0');
+INSERT INTO `c_service` VALUES ('982023101998270021', 'monitorMachineModel.listMonitorMachineModel', 'API', '查询监控分析列表', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2023-10-19 15:23:06', '0');
+INSERT INTO `c_service` VALUES ('982023102089120004', 'monitorPool.listMonitorPool', 'API', '查询监控告警列表', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2023-10-20 10:17:06', '0');
+INSERT INTO `c_service` VALUES ('982023102300890001', 'propertyIndex.queryPropertyAssetsIndex', 'API', '查询首页小区信息', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-10-23 09:00:08', '0');
+INSERT INTO `c_service` VALUES ('982023102335040004', 'propertyIndex.queryPropertyMachinesIndex', 'API', '查询首页设备信息', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-10-23 11:04:16', '0');
+INSERT INTO `c_service` VALUES ('982023102644900011', 'parkingCoupon.listParkingCouponCar', 'API', '查询车辆优惠券', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-10-26 23:17:58', '0');
+INSERT INTO `c_service` VALUES ('982023102750370003', 'barrier.openBarrierDoor', 'API', '道闸开门', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-10-27 21:34:17', '0');
+INSERT INTO `c_service` VALUES ('982023102759210005', 'barrier.closeBarrierDoor', 'API', '道闸关门', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-10-27 21:34:48', '0');
+INSERT INTO `c_service` VALUES ('982023102833380015', 'carInout.updateCarInoutNum', 'API', '修改进场车牌号', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-10-28 11:54:33', '0');
+INSERT INTO `c_service` VALUES ('982023102890790002', 'barrier.getCarMachineQrCodeUrl', 'API', '查询停车二维码', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-10-28 12:03:59', '0');
+INSERT INTO `c_service` VALUES ('982023103000230050', 'parkingCouponCar.listParkingCouponCarOrder', 'API', '查询停车券核销', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-10-30 04:49:43', '0');
+INSERT INTO `c_service` VALUES ('982023103006960035', 'lockMachine.listLockMachine', 'API', '查询门锁列表', '1', 'CMD', 'http://iot-lock', 'GET', '60', '3', '2023-10-30 17:46:28', '0');
+INSERT INTO `c_service` VALUES ('982023103007440041', 'lockMachine.deleteLockMachine', 'API', '删除门锁', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 17:48:40', '0');
+INSERT INTO `c_service` VALUES ('982023103009090001', 'store.propertySaveStoreAndShop', 'API', '添加商铺', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-10-30 02:18:54', '0');
+INSERT INTO `c_service` VALUES ('982023103013530039', 'lockMachine.updateLockMachine', 'API', '更新门锁', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 17:47:55', '0');
+INSERT INTO `c_service` VALUES ('982023103016790037', 'lockMachine.saveLockMachine', 'API', '新增门锁', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 17:47:13', '0');
+INSERT INTO `c_service` VALUES ('982023103019560003', 'lockMachineFactory.saveLockMachineFactory', 'API', '新增门锁厂家', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 10:48:17', '0');
+INSERT INTO `c_service` VALUES ('982023103033380001', 'lockMachineFactory.listLockMachineFactory', 'API', '查询门锁厂家列表', '1', 'CMD', 'http://iot-lock', 'GET', '60', '3', '2023-10-30 10:47:06', '0');
+INSERT INTO `c_service` VALUES ('982023103037160003', 'lockMachineFactorySpec.saveLockMachineFactorySpec', 'API', '新增门锁厂家规格', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 13:56:08', '0');
+INSERT INTO `c_service` VALUES ('982023103038610039', 'parkingCoupon.listParkingCouponOrder', 'API', '查询停车券', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-10-30 04:41:26', '0');
+INSERT INTO `c_service` VALUES ('982023103041530001', 'lockMachineFactorySpec.listLockMachineFactorySpec', 'API', '查询门锁厂家规格列表', '1', 'CMD', 'http://iot-lock', 'GET', '60', '3', '2023-10-30 13:55:20', '0');
+INSERT INTO `c_service` VALUES ('982023103047790038', 'parkingCoupon.saveParkingCoupon', 'API', '添加停车券', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-10-30 00:40:31', '0');
+INSERT INTO `c_service` VALUES ('982023103052370001', 'parkingCoupon.buyParkingCoupon', 'API', '购买停车券', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-10-30 04:25:23', '0');
+INSERT INTO `c_service` VALUES ('982023103065540062', 'store.propertyDeleteStoreAndShop', 'API', '物业删除商家', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-10-30 04:21:43', '0');
+INSERT INTO `c_service` VALUES ('982023103068040005', 'lockMachineFactory.updateLockMachineFactory', 'API', '更新门锁厂家', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 10:49:04', '0');
+INSERT INTO `c_service` VALUES ('982023103084880042', 'parkingCoupon.deleteParkingCoupon', 'API', '删除停车券', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-10-30 00:42:05', '0');
+INSERT INTO `c_service` VALUES ('982023103085050005', 'lockMachineFactorySpec.deleteLockMachineFactorySpec', 'API', '删除门锁厂家规格', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 13:56:56', '0');
+INSERT INTO `c_service` VALUES ('982023103085700059', 'parkingCoupon.listShopParkingCoupon', 'API', '查询商铺停车券', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-10-30 04:17:52', '0');
+INSERT INTO `c_service` VALUES ('982023103086820036', 'parkingCoupon.listParkingCoupon', 'API', '查询停车券', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-10-30 00:39:49', '0');
+INSERT INTO `c_service` VALUES ('982023103086830040', 'parkingCoupon.updateParkingCoupon', 'API', '修改停车券', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-10-30 00:41:33', '0');
+INSERT INTO `c_service` VALUES ('982023103096630015', 'store.listCommunityStoreShop', 'API', '查询小区商家', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-10-30 01:54:07', '0');
+INSERT INTO `c_service` VALUES ('982023103098000007', 'lockMachineFactory.deleteLockMachineFactory', 'API', '删除门锁厂家', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-30 10:49:49', '0');
+INSERT INTO `c_service` VALUES ('982023103112460001', 'lockMachine.listLockMachine', 'API', '查询门锁列表', '1', 'CMD', 'http://iot-lock', 'GET', '60', '3', '2023-10-31 09:40:34', '0');
+INSERT INTO `c_service` VALUES ('982023103113740007', 'lockMachine.deleteLockMachine', 'API', '删除门锁', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-31 09:42:48', '0');
+INSERT INTO `c_service` VALUES ('982023103145360003', 'lockMachine.saveLockMachine', 'API', '新增门锁', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-31 09:41:17', '0');
+INSERT INTO `c_service` VALUES ('982023103149660005', 'lockMachine.updateLockMachine', 'API', '更新门锁', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-31 09:42:09', '0');
+INSERT INTO `c_service` VALUES ('982023103159240008', 'lockPerson.updateLockPerson', 'API', '更新门锁授权', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-31 14:51:51', '0');
+INSERT INTO `c_service` VALUES ('982023103174880010', 'lockPerson.deleteLockPerson', 'API', '删除门锁授权', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-31 14:52:30', '0');
+INSERT INTO `c_service` VALUES ('982023103179860004', 'lockPerson.listLockPerson', 'API', '查询门锁授权列表', '1', 'CMD', 'http://iot-lock', 'GET', '60', '3', '2023-10-31 14:50:27', '0');
+INSERT INTO `c_service` VALUES ('982023103185880006', 'lockPerson.saveLockPerson', 'API', '新增门锁授权', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-10-31 14:51:09', '0');
+INSERT INTO `c_service` VALUES ('982023110105060021', 'lockPerson.resetLockPwd', 'API', '重置门锁密码', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-11-01 14:26:27', '0');
+INSERT INTO `c_service` VALUES ('982023110125260009', 'lockInout.listLockInout', 'API', '查询进出记录列表', '1', 'CMD', 'http://iot-lock', 'GET', '60', '3', '2023-11-01 16:23:55', '0');
+INSERT INTO `c_service` VALUES ('982023110148750001', 'admin.queryCommunityEvent', 'API', '查询小区事件统计', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-01 23:57:34', '0');
+INSERT INTO `c_service` VALUES ('982023110165140019', 'lockMachine.unLockMachine', 'API', '打开门锁', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-11-01 17:32:28', '0');
+INSERT INTO `c_service` VALUES ('982023110165530002', 'lockPerson.renewalLockPerson', 'API', '门锁授权续期', '1', 'CMD', 'http://iot-lock', 'POST', '60', '3', '2023-11-01 15:42:51', '0');
+INSERT INTO `c_service` VALUES ('982023110166020396', 'admin.queryDevCount', 'API', '查询开发统计', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-01 23:20:26', '0');
+INSERT INTO `c_service` VALUES ('982023110168710003', 'admin.queryCommunityMonitorPool', 'API', '查询小区监控告警', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-01 23:58:07', '0');
+INSERT INTO `c_service` VALUES ('982023110184710394', 'admin.queryAppServiceData', 'API', '查询应用接口', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-01 23:19:51', '0');
+INSERT INTO `c_service` VALUES ('982023110189450007', 'lockLog.listLockLog', 'API', '查询下发记录列表', '1', 'CMD', 'http://iot-lock', 'GET', '60', '3', '2023-11-01 16:23:08', '0');
+INSERT INTO `c_service` VALUES ('982023110194410004', 'admin.queryAdminCount', 'API', '查询运营数据', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-01 23:33:29', '0');
+INSERT INTO `c_service` VALUES ('982023110606400001', 'log.queryAssetImportLogType', 'API', '查询导入类型', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-06 00:26:03', '0');
+INSERT INTO `c_service` VALUES ('982023110609390038', 'log.queryAssetImportLog', 'API', '查询导入日志', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-06 00:10:02', '0');
+INSERT INTO `c_service` VALUES ('982023110670170040', 'log.queryAssetImportLogDetail', 'API', '查询导入日志详情', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-06 00:15:11', '0');
+INSERT INTO `c_service` VALUES ('982023110918500004', 'ownerCar.queryRoomCars', 'API', '查询房屋车辆', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-11-09 01:32:21', '0');
+INSERT INTO `c_service` VALUES ('982023111051920036', 'accessControl.openAccessControlDoor', 'API', '门禁开门', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-11-10 10:23:03', '0');
+INSERT INTO `c_service` VALUES ('982023111071170001', 'accessControl.restartAccessControlDoor', 'API', '重启门禁', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-11-10 10:26:51', '0');
+INSERT INTO `c_service` VALUES ('982023111082910003', 'room.queryRoomsByOwner', 'API', '查询业主房屋', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-11-10 23:57:33', '0');
+INSERT INTO `c_service` VALUES ('982023111809080012', 'appUser.listAppUser', 'API', '查询房产绑定', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-11-18 04:03:01', '0');
+INSERT INTO `c_service` VALUES ('982023111852930005', 'login.appUserLogin', 'API', '手机用户登录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-11-18 15:38:51', '0');
+INSERT INTO `c_service` VALUES ('982023111873780003', 'login.appUserRegister', 'API', '用户注册', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-11-18 15:37:48', '0');
+INSERT INTO `c_service` VALUES ('982023111880690004', 'chargeMachine.restartChargeMachine', 'API', '重启充电桩', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-11-18 01:22:28', '0');
+INSERT INTO `c_service` VALUES ('982023112024490001', 'account.queryAppUserAccount', 'API', '手机端查询账户', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2023-11-20 12:14:56', '0');
+INSERT INTO `c_service` VALUES ('982023112051660006', 'wechat.getCommunityWechatAppId', 'API', '根据小区查询公众号', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-11-20 10:36:56', '0');
+INSERT INTO `c_service` VALUES ('982023112070050019', 'chargeMachine.stopCharge', 'API', '停止充电', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-11-20 14:42:28', '0');
+INSERT INTO `c_service` VALUES ('982023112071440017', 'chargeMachine.startCharge', 'API', '开始充电', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-11-20 14:41:55', '0');
+INSERT INTO `c_service` VALUES ('982023112156620008', 'meterMachineCharge.chargeMeterMoney', 'API', '水电充值', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-21 23:53:44', '0');
+INSERT INTO `c_service` VALUES ('982023112177330013', 'meterMachineCharge.listMeterMachineCharge', 'API', '查询水电充值记录', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-11-21 23:34:01', '0');
+INSERT INTO `c_service` VALUES ('982023112208460008', 'wechat.wechatNotifyOpenId', 'API', '微信回调', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-11-22 18:56:53', '0');
+INSERT INTO `c_service` VALUES ('982023112209130001', 'instrumentFactorySpec.listInstrumentFactorySpec', 'API', '查询仪表厂家规格列表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-11-22 16:54:12', '0');
+INSERT INTO `c_service` VALUES ('982023112241880003', 'tempCarFee.getTempCarFeeOrder', 'API', '查询临时车订单', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2023-11-22 11:45:00', '0');
+INSERT INTO `c_service` VALUES ('982023112251000008', 'instrumentFactory.updateInstrumentFactory', 'API', '更新仪表厂家', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-22 13:51:24', '0');
+INSERT INTO `c_service` VALUES ('982023112254160010', 'instrumentFactory.deleteInstrumentFactory', 'API', '删除仪表厂家', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-22 13:52:07', '0');
+INSERT INTO `c_service` VALUES ('982023112255190010', 'wechat.wechatRefreshOpenId', 'API', '鉴权获取openId', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-11-22 18:57:28', '0');
+INSERT INTO `c_service` VALUES ('982023112257810004', 'instrumentFactory.saveInstrumentFactory', 'API', '新增仪表厂家', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-22 13:49:19', '0');
+INSERT INTO `c_service` VALUES ('982023112258210005', 'instrumentFactorySpec.deleteInstrumentFactorySpec', 'API', '删除仪表厂家规格', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-22 16:55:56', '0');
+INSERT INTO `c_service` VALUES ('982023112279260006', 'instrumentFactory.listInstrumentFactory', 'API', '查询仪表厂家列表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-11-22 13:50:24', '0');
+INSERT INTO `c_service` VALUES ('982023112293070003', 'instrumentFactorySpec.saveInstrumentFactorySpec', 'API', '新增仪表厂家规格', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-22 16:55:02', '0');
+INSERT INTO `c_service` VALUES ('982023112313810025', 'instrument.updateInstrument', 'API', '更新仪表', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-23 17:36:15', '0');
+INSERT INTO `c_service` VALUES ('982023112324940001', 'instrumentType.listInstrumentType', 'API', '查询仪表类型列表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-11-23 09:53:53', '0');
+INSERT INTO `c_service` VALUES ('982023112328570027', 'instrument.deleteInstrument', 'API', '删除仪表', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-23 17:36:51', '0');
+INSERT INTO `c_service` VALUES ('982023112330070023', 'instrument.saveInstrument', 'API', '新增仪表', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-23 17:35:40', '0');
+INSERT INTO `c_service` VALUES ('982023112356790007', 'instrumentType.deleteInstrumentType', 'API', '删除仪表类型', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-23 09:56:06', '0');
+INSERT INTO `c_service` VALUES ('982023112365600005', 'instrumentType.updateInstrumentType', 'API', '更新仪表类型', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-23 09:55:21', '0');
+INSERT INTO `c_service` VALUES ('982023112379730003', 'instrumentType.saveInstrumentType', 'API', '新增仪表类型', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-11-23 09:54:39', '0');
+INSERT INTO `c_service` VALUES ('982023112380470021', 'instrument.listInstrument', 'API', '查询仪表列表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-11-23 17:34:59', '0');
+INSERT INTO `c_service` VALUES ('982023112400400014', 'payment.listPaymentKey', 'API', '查询支付key', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2023-11-24 01:01:55', '0');
+INSERT INTO `c_service` VALUES ('982023112413800017', 'payment.savePaymentPool', 'API', '保存支付配置', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2023-11-24 01:05:50', '0');
+INSERT INTO `c_service` VALUES ('982023112414180063', 'dtScene.updateDtScene', 'API', '修改场景', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-24 17:48:57', '0');
+INSERT INTO `c_service` VALUES ('982023112417380061', 'dtScene.saveDtScene', 'API', '保存场景', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-24 17:48:30', '0');
+INSERT INTO `c_service` VALUES ('982023112437410029', 'payment.deletePaymentPool', 'API', '删除支付配置', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2023-11-24 01:10:06', '0');
+INSERT INTO `c_service` VALUES ('982023112443190011', 'smallWeChat.updateSmallWeChat', 'API', '修改公众号', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-24 00:31:51', '0');
+INSERT INTO `c_service` VALUES ('982023112445570009', 'smallWeChat.saveSmallWeChat', 'API', '保存公众号', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-24 00:31:20', '0');
+INSERT INTO `c_service` VALUES ('982023112452770009', 'payment.listPaymentAdapt', 'API', '查询支付适配器', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2023-11-24 00:57:23', '0');
+INSERT INTO `c_service` VALUES ('982023112457480059', 'dtScene.listDtScene', 'API', '查询3D场景', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-24 17:48:03', '0');
+INSERT INTO `c_service` VALUES ('982023112457690065', 'dtScene.deleteDtScene', 'API', '删除场景', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-24 17:49:26', '0');
+INSERT INTO `c_service` VALUES ('982023112460090011', 'payment.listPaymentPool', 'API', '查询支付配置', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2023-11-24 00:58:09', '0');
+INSERT INTO `c_service` VALUES ('982023112478280005', 'smallWeChat.listSmallWeChats', 'API', '查询公众号', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-24 00:30:08', '0');
+INSERT INTO `c_service` VALUES ('982023112478820007', 'smallWeChat.deleteSmallWeChat', 'API', '删除公众号', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-24 00:30:46', '0');
+INSERT INTO `c_service` VALUES ('982023112484900027', 'payment.updatePaymentPool', 'API', '修改支付配置', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2023-11-24 01:09:17', '0');
+INSERT INTO `c_service` VALUES ('982023112522500001', 'dtModal.updateDtModal', 'API', '修改模型', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-25 14:19:36', '0');
+INSERT INTO `c_service` VALUES ('982023112529890003', 'dtModal.deleteDtModal', 'API', '删除3D模型', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-25 14:20:15', '0');
+INSERT INTO `c_service` VALUES ('982023112533940026', 'dtModal.saveDtModal', 'API', '保存3D模型', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-11-25 14:14:24', '0');
+INSERT INTO `c_service` VALUES ('982023112560230015', 'dtModal.listDtModal', 'API', '查询3d模型', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-11-25 01:41:48', '0');
+INSERT INTO `c_service` VALUES ('982023112728960001', 'instrumentLog.listInstrumentLog', 'API', '查询仪表上报日志数据', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-11-27 08:57:04', '0');
+INSERT INTO `c_service` VALUES ('982023120113850005', 'meterMachineFactory.updateMeterMachineFactory', 'API', '更新水电厂家', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-01 14:35:39', '0');
+INSERT INTO `c_service` VALUES ('982023120132530007', 'meterMachineFactory.deleteMeterMachineFactory', 'API', '删除水电厂家', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-01 14:36:19', '0');
+INSERT INTO `c_service` VALUES ('982023120154500003', 'meterMachineFactory.saveMeterMachineFactory', 'API', '新增水电厂家', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-01 14:34:53', '0');
+INSERT INTO `c_service` VALUES ('982023120179430001', 'meterMachineFactory.listMeterMachineFactory', 'API', '查询水电厂家列表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-01 14:27:30', '0');
+INSERT INTO `c_service` VALUES ('982023120412830003', 'meterMachineFactorySpec.saveMeterMachineFactorySpec', 'API', '新增水电规格', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-04 10:24:08', '0');
+INSERT INTO `c_service` VALUES ('982023120416660001', 'chargeMachineFactorySpec.listChargeMachineFactorySpec', 'API', '查询充电规格列表', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-12-04 14:38:05', '0');
+INSERT INTO `c_service` VALUES ('982023120417690007', 'chargeMachine.updateChargeMachineFactory', 'API', '更新充电厂家', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-12-04 13:51:07', '0');
+INSERT INTO `c_service` VALUES ('982023120429880001', 'meterMachineFactorySpec.listMeterMachineFactorySpec', 'API', '查询水电规格列表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-04 10:23:08', '0');
+INSERT INTO `c_service` VALUES ('982023120433820001', 'export.exportData', 'API', '导出数据', '1', 'CMD', 'http://iot-job', 'GET', '60', '3', '2023-12-04 16:55:29', '0');
+INSERT INTO `c_service` VALUES ('982023120442680005', 'meterMachineFactorySpec.updateMeterMachineFactorySpec', 'API', '更新水电规格', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-04 10:24:53', '0');
+INSERT INTO `c_service` VALUES ('982023120465940005', 'chargeMachineFactorySpec.deleteChargeMachineFactorySpec', 'API', '删除充电规格', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-12-04 14:40:57', '0');
+INSERT INTO `c_service` VALUES ('982023120472570009', 'chargeMachine.deleteChargeMachineFactory', 'API', '删除充电厂家', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-12-04 13:52:03', '0');
+INSERT INTO `c_service` VALUES ('982023120480640001', 'chargeMachine.saveChargeMachineFactory', 'API', '新增充电厂家', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-12-04 13:47:41', '0');
+INSERT INTO `c_service` VALUES ('982023120485570008', 'userDownloadFile.listUserDownloadFile', 'API', '查询下载中心', '1', 'CMD', 'http://iot-job', 'GET', '60', '3', '2023-12-04 17:11:56', '0');
+INSERT INTO `c_service` VALUES ('982023120490000003', 'chargeMachineFactorySpec.saveChargeMachineFactorySpec', 'API', '新增充电规格', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2023-12-04 14:39:40', '0');
+INSERT INTO `c_service` VALUES ('982023120492460007', 'meterMachineFactorySpec.deleteMeterMachineFactorySpec', 'API', '删除水电规格', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-04 10:25:41', '0');
+INSERT INTO `c_service` VALUES ('982023120497750011', 'userDownloadFile.deleteUserDownloadFile', 'API', '删除下载中心', '1', 'CMD', 'http://iot-job', 'POST', '60', '3', '2023-12-04 17:14:32', '0');
+INSERT INTO `c_service` VALUES ('982023120500470028', 'hm.updateHardwareManufacturer', 'API', '更新门禁厂家', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 14:44:42', '0');
+INSERT INTO `c_service` VALUES ('982023120517900014', 'dtScript.deleteDtSceneObjScript', 'API', '删除对象脚本', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 15:19:30', '0');
+INSERT INTO `c_service` VALUES ('982023120531600004', 'dtScript.saveDtScript', 'API', '保存脚本', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 14:58:16', '0');
+INSERT INTO `c_service` VALUES ('982023120541700006', 'dtScript.updateDtScript', 'API', '修改脚本', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 14:58:53', '0');
+INSERT INTO `c_service` VALUES ('982023120546280030', 'hm.deleteHardwareManufacturer', 'API', '删除门禁厂家', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 14:45:36', '0');
+INSERT INTO `c_service` VALUES ('982023120551660008', 'dtScript.deleteDtScript', 'API', '删除脚本', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 14:59:22', '0');
+INSERT INTO `c_service` VALUES ('982023120567990001', 'hm.listHardwareManufacturerAttr', 'API', '查询门禁规格列表', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-12-05 15:32:21', '0');
+INSERT INTO `c_service` VALUES ('982023120571420010', 'dtScript.listDtSceneObjScript', 'API', '查询对象脚本', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-12-05 14:59:57', '0');
+INSERT INTO `c_service` VALUES ('982023120578000002', 'dtScript.listDtScript', 'API', '查询脚本', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2023-12-05 14:57:29', '0');
+INSERT INTO `c_service` VALUES ('982023120580470016', 'hm.deleteHardwareManufacturerAttr', 'API', '删除门禁规格', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 15:25:22', '0');
+INSERT INTO `c_service` VALUES ('982023120580700026', 'hm.saveHardwareManufacturer', 'API', '新增门禁厂家', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 14:43:55', '0');
+INSERT INTO `c_service` VALUES ('982023120581160012', 'dtScript.saveDtSceneObjScript', 'API', '保存对象脚本', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 15:18:25', '0');
+INSERT INTO `c_service` VALUES ('982023120588350014', 'hm.saveHardwareManufacturerAttr', 'API', '新增门禁规格', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-05 15:24:34', '0');
+INSERT INTO `c_service` VALUES ('982023120969520045', 'payment.cashier', 'API', '统一支付', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2023-12-09 16:57:20', '0');
+INSERT INTO `c_service` VALUES ('982023121124210005', 'visitType.updateVisitType', 'API', '更新访客类型', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-12-11 17:10:29', '0');
+INSERT INTO `c_service` VALUES ('982023121132930003', 'visitType.saveVisitType', 'API', '新增访客类型', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-12-11 17:09:44', '0');
+INSERT INTO `c_service` VALUES ('982023121159610001', 'visitType.listVisitType', 'API', '查询访客类型', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-11 17:08:49', '0');
+INSERT INTO `c_service` VALUES ('982023121195650007', 'visitType.deleteVisitType', 'API', '删除访客类型', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-12-11 17:11:08', '0');
+INSERT INTO `c_service` VALUES ('982023121215000004', 'visit.listVisit', 'API', '查询访客菜单', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-12 10:46:31', '0');
+INSERT INTO `c_service` VALUES ('982023121240490008', 'visit.updateVisit', 'API', '更新访客登记', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-12-12 10:48:41', '0');
+INSERT INTO `c_service` VALUES ('982023121272790006', 'visit.saveVisit', 'API', '新增访客登记', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-12-12 10:47:57', '0');
+INSERT INTO `c_service` VALUES ('982023121287520010', 'visit.deleteVisit', 'API', '删除访客登记', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-12-12 10:49:23', '0');
+INSERT INTO `c_service` VALUES ('982023121400750011', 'carMonth.saveCarMonthCard', 'API', '保存月卡', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-12-14 12:54:47', '0');
+INSERT INTO `c_service` VALUES ('982023121406640005', 'ownerCar.saveMemberCar', 'API', '添加成员车辆', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-12-14 17:22:41', '0');
+INSERT INTO `c_service` VALUES ('982023121416250003', 'carMonth.deleteCarMonthCard', 'API', '删除月卡', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-12-14 12:52:19', '0');
+INSERT INTO `c_service` VALUES ('982023121429410013', 'tempCarFee.tempCarAuth', 'API', '临时车审核', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2023-12-14 18:04:30', '0');
+INSERT INTO `c_service` VALUES ('982023121429700001', 'store.queryShop', 'API', '查询商户商铺', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-12-14 23:01:28', '0');
+INSERT INTO `c_service` VALUES ('982023121438440001', 'carMonth.listCarMonthCard', 'API', '查询月卡', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-12-14 12:51:42', '0');
+INSERT INTO `c_service` VALUES ('982023121462180007', 'carMonth.listCarMonthOrder', 'API', '查询月卡订单', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-12-14 12:53:34', '0');
+INSERT INTO `c_service` VALUES ('982023121471690013', 'carMonth.updateCarMonthCard', 'API', '修改月卡', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-12-14 12:55:14', '0');
+INSERT INTO `c_service` VALUES ('982023121473890009', 'carMonth.refundCarMonthOrder', 'API', '月卡退款', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-12-14 12:54:14', '0');
+INSERT INTO `c_service` VALUES ('982023121492620003', 'store.applyShopCode', 'API', '申请商家临时票据', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-14 23:21:52', '0');
+INSERT INTO `c_service` VALUES ('982023121495470005', 'carMonth.buyCarMonthOrder', 'API', '购买月卡', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-12-14 12:52:56', '0');
+INSERT INTO `c_service` VALUES ('982023121496340009', 'parkingCoupon.saveParkingCouponCar', 'API', '手工赠送停车劵', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2023-12-14 23:23:33', '0');
+INSERT INTO `c_service` VALUES ('982023121509510003', 'car.queryWaitPayFeeTempCar', 'API', '查询等待支付车辆', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-12-15 19:49:01', '0');
+INSERT INTO `c_service` VALUES ('982023121521930004', 'carMonth.getBuyCarMonthCardQrCodeUrl', 'API', '购买停车月卡二维码', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-12-15 14:31:42', '0');
+INSERT INTO `c_service` VALUES ('982023121526710016', 'carMonth.queryMonthCardByCarNum', 'API', '根据车牌号查询月卡', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2023-12-15 11:58:39', '0');
+INSERT INTO `c_service` VALUES ('982023121543000013', 'system.updateSystemInfo', 'API', '修改系统信息', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2023-12-15 01:30:30', '0');
+INSERT INTO `c_service` VALUES ('982023121566180005', 'visit.getVisitQrCodeUrl', 'API', '获取访客码', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-15 12:00:43', '0');
+INSERT INTO `c_service` VALUES ('982023121811580015', 'personFace.listPersonFace', 'API', '查询人脸审核', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-12-18 22:05:02', '0');
+INSERT INTO `c_service` VALUES ('982023121815120006', 'personFace.listPersonFaceQrcode', 'API', '查询人脸二维码', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-12-18 19:19:25', '0');
+INSERT INTO `c_service` VALUES ('982023121819520006', 'visitType.listVisitType', 'API', '查询访客类型', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-18 11:21:26', '0');
+INSERT INTO `c_service` VALUES ('982023121826360042', 'visit.listVisit', 'API', '查询访客人员', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-18 13:51:10', '0');
+INSERT INTO `c_service` VALUES ('982023121833800021', 'personFace.authPersonFace', 'API', '人脸审核', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-18 22:07:07', '0');
+INSERT INTO `c_service` VALUES ('982023121838920019', 'personFace.deletePersonFace', 'API', '删除人脸审核', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-18 22:06:13', '0');
+INSERT INTO `c_service` VALUES ('982023121841870010', 'personFace.updatePersonFaceQrcode', 'API', '修改人脸二维码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-18 19:20:20', '0');
+INSERT INTO `c_service` VALUES ('982023121844320004', 'personFace.deletePersonFaceQrcode', 'API', '删除人脸二维码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-18 19:18:57', '0');
+INSERT INTO `c_service` VALUES ('982023121850790017', 'personFace.savePersonFace', 'API', '保存人脸审核', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-18 22:05:40', '0');
+INSERT INTO `c_service` VALUES ('982023121879940008', 'personFace.savePersonFaceQrcode', 'API', '保存人脸二维码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-18 19:19:53', '0');
+INSERT INTO `c_service` VALUES ('982023121894910001', 'visit.saveVisit', 'API', '访客登记', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2023-12-18 11:02:19', '0');
+INSERT INTO `c_service` VALUES ('982023121902860005', 'meterQrcode.updateMeterQrcode', 'API', '更新水电二维码', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-19 14:35:59', '0');
+INSERT INTO `c_service` VALUES ('982023121933440001', 'meterQrcode.listMeterQrcode', 'API', '查询水电二维码', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-19 14:34:19', '0');
+INSERT INTO `c_service` VALUES ('982023121947500002', 'room.queryRoomsByApp', 'API', '查询房屋app专用', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2023-12-19 14:20:35', '0');
+INSERT INTO `c_service` VALUES ('982023121953580003', 'meterQrcode.saveMeterQrcode', 'API', '新增水电二维码', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-19 14:35:08', '0');
+INSERT INTO `c_service` VALUES ('982023121957440007', 'meterQrcode.deleteMeterQrcode', 'API', '删除水电二维码', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2023-12-19 14:36:51', '0');
+INSERT INTO `c_service` VALUES ('982023122008450016', 'accessControl.queryAcInoutStatistics', 'API', '查询进出统计', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-20 19:46:27', '0');
+INSERT INTO `c_service` VALUES ('982023122017510009', 'passcode.listPassQrcode', 'API', '查询通行码', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-12-20 01:47:18', '0');
+INSERT INTO `c_service` VALUES ('982023122038180002', 'meterMachineCharge.listMeterMachineCharge', 'API', '查询水电表充值记录', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-20 15:23:58', '0');
+INSERT INTO `c_service` VALUES ('982023122047180013', 'passcode.savePassQrcodeSetting', 'API', '保存通行码设置', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-20 01:48:32', '0');
+INSERT INTO `c_service` VALUES ('982023122047370001', 'meterQrcode.listMeterQrcode', 'API', '查询水电二维码', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-20 10:18:01', '0');
+INSERT INTO `c_service` VALUES ('982023122051650015', 'passcode.applyPassQrcode', 'API', '申请通行码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-20 12:50:05', '0');
+INSERT INTO `c_service` VALUES ('982023122052140001', 'passcode.refreshPassQrcode', 'API', '刷新通行二维码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-20 14:06:43', '0');
+INSERT INTO `c_service` VALUES ('982023122058900001', 'meterMachine.listMeterMachine', 'API', '查询水电表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-20 14:49:20', '0');
+INSERT INTO `c_service` VALUES ('982023122062270001', 'passcode.auditPassQrcode', 'API', '通行码审核', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-20 17:00:55', '0');
+INSERT INTO `c_service` VALUES ('982023122066010015', 'passcode.updatePassQrcodeSetting', 'API', '修改通行码设置', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-20 01:49:01', '0');
+INSERT INTO `c_service` VALUES ('982023122082660005', 'passcode.deletePassQrcode', 'API', '删除通行码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-20 01:45:41', '0');
+INSERT INTO `c_service` VALUES ('982023122085820007', 'passcode.deletePassQrcodeSetting', 'API', '删除通信码设置', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2023-12-20 01:46:32', '0');
+INSERT INTO `c_service` VALUES ('982023122099500011', 'passcode.listPassQrcodeSetting', 'API', '查询通行码设置', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2023-12-20 01:47:48', '0');
+INSERT INTO `c_service` VALUES ('982023122119330013', 'charge.queryOrderMoneyStatistics', 'API', '查询充电金额统计', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-12-21 11:46:47', '0');
+INSERT INTO `c_service` VALUES ('982023122127000007', 'charge.queryMonthCountStatistics', 'API', '查询月卡数统计', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-12-21 11:45:08', '0');
+INSERT INTO `c_service` VALUES ('982023122140270006', 'meter.queryMeterCountStatistics', 'API', '查询充值订单数统计', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-21 13:56:43', '0');
+INSERT INTO `c_service` VALUES ('982023122146210006', 'accessControl.queryAcLogStatistics', 'API', '查询下发人员统计', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-21 09:12:32', '0');
+INSERT INTO `c_service` VALUES ('982023122147950008', 'meter.queryMeterMoneyStatistics', 'API', '查询充值金额订单数', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2023-12-21 13:57:16', '0');
+INSERT INTO `c_service` VALUES ('982023122173110001', 'accessControl.queryAcFaceStatistics', 'API', '查询人脸审核统计', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-21 09:59:03', '0');
+INSERT INTO `c_service` VALUES ('982023122174020005', 'accessControl.queryAcVisitStatistics', 'API', '查询访客统计', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2023-12-21 09:45:55', '0');
+INSERT INTO `c_service` VALUES ('982023122177680011', 'charge.queryOrderCountStatistics', 'API', '查询充电订单统计', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-12-21 11:46:17', '0');
+INSERT INTO `c_service` VALUES ('982023122193640009', 'charge.queryMonthMoneyStatistics', 'API', '查询月卡金额统计', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2023-12-21 11:45:41', '0');
+INSERT INTO `c_service` VALUES ('982024012118760002', 'community.addCommunityApi', 'API', '同步小区', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-21 19:09:02', '0');
+INSERT INTO `c_service` VALUES ('982024012128580006', 'car.addCarApi', 'API', '同步车辆', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-21 19:10:44', '0');
+INSERT INTO `c_service` VALUES ('982024012139130004', 'owner.addOwnerApi', 'API', '同步业主', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-21 19:09:58', '0');
+INSERT INTO `c_service` VALUES ('982024012141030008', 'staff.addStaffApi', 'API', '同步员工', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-21 19:11:17', '0');
+INSERT INTO `c_service` VALUES ('982024012258280015', 'car.deleteCarApi', 'API', '同步删除车辆', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-22 22:57:46', '0');
+INSERT INTO `c_service` VALUES ('982024012297000017', 'owner.deleteOwnerApi', 'API', '同步删除业主', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-22 22:58:27', '0');
+INSERT INTO `c_service` VALUES ('982024012400000018', 'attendance.listAttendanceCheckin', 'API', '打卡记录', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-01-24 18:42:08', '0');
+INSERT INTO `c_service` VALUES ('982024012406520012', 'attendance.listAttendanceMachineLog', 'API', '查询考勤机下发日志', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-01-24 18:22:52', '0');
+INSERT INTO `c_service` VALUES ('982024012430780003', 'attendance.saveAttendanceMachine', 'API', '添加考勤设备', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-01-24 15:47:17', '0');
+INSERT INTO `c_service` VALUES ('982024012445110001', 'staff.deleteStaffApi', 'API', '删除员工接口', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-24 12:00:30', '0');
+INSERT INTO `c_service` VALUES ('982024012452500007', 'attendance.deleteAttendanceMachine', 'API', '删除考勤设备', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-01-24 15:48:16', '0');
+INSERT INTO `c_service` VALUES ('982024012457080018', 'attendance.deleteAttendanceStaff', 'API', '删除考勤人员', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-01-24 17:24:37', '0');
+INSERT INTO `c_service` VALUES ('982024012460250001', 'attendance.listAttendanceMachine', 'API', '查询考勤设备', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-01-24 15:46:44', '0');
+INSERT INTO `c_service` VALUES ('982024012478490016', 'attendance.saveAttendanceStaff', 'API', '添加考勤员工', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-01-24 17:23:59', '0');
+INSERT INTO `c_service` VALUES ('982024012496280005', 'attendance.updateAttendanceMachine', 'API', '修改考勤设备', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-01-24 15:47:44', '0');
+INSERT INTO `c_service` VALUES ('982024012498230014', 'attendance.listAttendanceStaff', 'API', '查询考勤员工', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-01-24 17:20:09', '0');
+INSERT INTO `c_service` VALUES ('982024012527030003', 'staff.addAttendanceStaffApi', 'API', '同步考勤员工', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-25 04:41:29', '0');
+INSERT INTO `c_service` VALUES ('982024012533370005', 'staff.deleteAttendanceStaffApi', 'API', '同步删除考勤员工', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-25 04:42:01', '0');
+INSERT INTO `c_service` VALUES ('982024012565700008', 'sso.getSsoToken', 'API', '获取临时票据', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-25 13:19:11', '0');
+INSERT INTO `c_service` VALUES ('982024012569880010', 'login.ssoTokenLogin', 'API', '单点登录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-01-25 13:19:50', '0');
+INSERT INTO `c_service` VALUES ('982024013109910015', 'common.openCommonApi', 'API', '通用接口', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-01-31 14:59:30', '0');
+INSERT INTO `c_service` VALUES ('982024013150640010', 'liftMachineAc.saveLiftMachineAc', 'API', '保存电梯门禁', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2024-01-31 11:37:30', '0');
+INSERT INTO `c_service` VALUES ('982024013155030012', 'liftMachineLog.listLiftRideLog', 'API', '查询电梯乘坐记录', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2024-01-31 12:04:20', '0');
+INSERT INTO `c_service` VALUES ('982024013166490012', 'liftMachineAc.deleteLiftMachineAc', 'API', '删除电梯门禁', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2024-01-31 11:38:02', '0');
+INSERT INTO `c_service` VALUES ('982024013169190008', 'liftMachineAc.listLiftMachineAc', 'API', '查询电梯门禁', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2024-01-31 11:36:49', '0');
+INSERT INTO `c_service` VALUES ('982024020526460003', 'appUser.queryBindRoom', 'API', '查询认证房屋', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2024-02-05 20:16:50', '0');
+INSERT INTO `c_service` VALUES ('982024020530720018', 'passcode.openPassQrcode', 'API', '开通通行码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-05 22:50:17', '0');
+INSERT INTO `c_service` VALUES ('982024020535860016', 'passcode.refreshUserPassQrcode', 'API', '用户通行码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-05 22:14:08', '0');
+INSERT INTO `c_service` VALUES ('982024020569760003', 'user.userSendSms', 'API', '发送验证码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-05 17:54:23', '0');
+INSERT INTO `c_service` VALUES ('982024020626920005', 'accessControl.reSendAccessControlFace', 'API', '重新全量下发人脸', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-02-06 12:22:29', '0');
+INSERT INTO `c_service` VALUES ('982024020629050008', 'accessControl.listOwnerAccessControl', 'API', '查询用户门禁', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-02-06 22:20:28', '0');
+INSERT INTO `c_service` VALUES ('982024020692140001', 'accessControl.ownerOpenAccessControlDoor', 'API', '业主开门', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-02-06 22:44:25', '0');
+INSERT INTO `c_service` VALUES ('982024020816050001', 'accessControlLog.listOwnerFaceDownload', 'API', '查询人脸下发', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-02-08 15:08:08', '0');
+INSERT INTO `c_service` VALUES ('982024020830400009', 'owner.listOwnerFace', 'API', '查询业主人脸', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2024-02-08 03:46:43', '0');
+INSERT INTO `c_service` VALUES ('982024020837070001', 'owner.uploadOwnerPhoto', 'API', '上传业主人脸', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-08 04:00:47', '0');
+INSERT INTO `c_service` VALUES ('982024020841260078', 'privilegeGroup.deletePrivilegeGroup', 'API', '删除角色', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-08 02:18:37', '0');
+INSERT INTO `c_service` VALUES ('982024020844280076', 'privilegeGroup.updatePrivilegeGroup', 'API', '修改角色', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-08 02:17:59', '0');
+INSERT INTO `c_service` VALUES ('982024020898490001', 'visit.listOwnerVisit', 'API', '查询业主访客', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-02-08 15:33:08', '0');
+INSERT INTO `c_service` VALUES ('982024021804290013', 'carMonth.listUserCarMonthOrder', 'API', '查询车辆月卡记录', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2024-02-18 11:38:53', '0');
+INSERT INTO `c_service` VALUES ('982024021814580001', 'community.listCommunitys', 'API', '物联网h5小区列表', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2024-02-18 10:02:29', '0');
+INSERT INTO `c_service` VALUES ('982024021821810020', 'car.listUserCar', 'API', '查询业主车辆', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2024-02-18 13:47:45', '0');
+INSERT INTO `c_service` VALUES ('982024021841050001', 'appUser.saveAppUser', 'API', '新增房屋认证', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-18 15:38:32', '0');
+INSERT INTO `c_service` VALUES ('982024021853370100', 'owner.listUserOwner', 'API', '查询用户业主信息', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2024-02-18 00:08:52', '0');
+INSERT INTO `c_service` VALUES ('982024021854780010', 'room.queryUserRoom', 'API', '查询业主房屋', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2024-02-18 10:19:22', '0');
+INSERT INTO `c_service` VALUES ('982024021855830017', 'store.listUserProperty', 'API', '查询用户物业', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2024-02-18 09:58:34', '0');
+INSERT INTO `c_service` VALUES ('982024021857050022', 'appUser.updateAppUser', 'API', '房屋认证审核', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-02-18 16:19:09', '0');
+INSERT INTO `c_service` VALUES ('982024021862590019', 'chargeCard.listUserChargeMonthOrder', 'API', '查询用户充值订单', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-02-18 12:11:52', '0');
+INSERT INTO `c_service` VALUES ('982024022922880009', 'workLicense.listWorkLicensePos', 'API', '查询工牌位置', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-02-29 15:16:56', '0');
+INSERT INTO `c_service` VALUES ('982024022942580011', 'workLicense.updateWorkLicenseMachine', 'API', '修改工牌', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-02-29 15:17:28', '0');
+INSERT INTO `c_service` VALUES ('982024022963210003', 'workLicense.deleteWorkLicenseMachine', 'API', '删除工牌', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-02-29 15:13:06', '0');
+INSERT INTO `c_service` VALUES ('982024022963740005', 'workLicense.listWorkLicenseLog', 'API', '查询工牌下发日志', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-02-29 15:14:43', '0');
+INSERT INTO `c_service` VALUES ('982024022986980074', 'workLicenseFactory.saveWorkLicenseFactory', 'API', '添加工牌厂家', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-02-29 02:13:34', '0');
+INSERT INTO `c_service` VALUES ('982024022987610076', 'workLicenseFactory.updateWorkLicenseFactory', 'API', '修改工牌厂家', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-02-29 02:14:10', '0');
+INSERT INTO `c_service` VALUES ('982024022990660001', 'workLicense.saveWorkLicenseMachine', 'API', '添加工牌', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-02-29 15:12:25', '0');
+INSERT INTO `c_service` VALUES ('982024022995730070', 'workLicenseFactory.deleteWorkLicenseFactory', 'API', '删除工作牌厂家', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-02-29 02:12:30', '0');
+INSERT INTO `c_service` VALUES ('982024022996270072', 'workLicenseFactory.listWorkLicenseFactory', 'API', '查询工牌厂家', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-02-29 02:13:01', '0');
+INSERT INTO `c_service` VALUES ('982024022998680007', 'workLicense.listWorkLicenseMachine', 'API', '查询工牌', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-02-29 15:15:57', '0');
+INSERT INTO `c_service` VALUES ('982024030188400021', 'workLicense.playPps', 'API', '工牌播放语音', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-03-01 17:32:38', '0');
+INSERT INTO `c_service` VALUES ('982024030517080032', 'spaceMachineFactory.deleteSpaceMachineFactory', 'API', '删除地磁厂家', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-05 22:06:05', '0');
+INSERT INTO `c_service` VALUES ('982024030536790027', 'parkingSpaceMachine.deleteParkingSpaceMachine', 'API', '删除车位地磁', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-05 22:49:05', '0');
+INSERT INTO `c_service` VALUES ('982024030542340025', 'parkingSpaceMachine.updateParkingSpaceMachine', 'API', '修改车位地磁', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-05 22:48:34', '0');
+INSERT INTO `c_service` VALUES ('982024030542580034', 'spaceMachineFactory.listSpaceMachineFactory', 'API', '查询地磁厂家', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2024-03-05 22:06:31', '0');
+INSERT INTO `c_service` VALUES ('982024030545520036', 'spaceMachineFactory.saveSpaceMachineFactory', 'API', '保存地磁厂家', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-05 22:07:05', '0');
+INSERT INTO `c_service` VALUES ('982024030559260023', 'parkingSpaceMachine.saveParkingSpaceMachine', 'API', '添加车位地磁', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-05 22:47:59', '0');
+INSERT INTO `c_service` VALUES ('982024030568460021', 'parkingSpaceMachine.listParkingSpaceMachine', 'API', '查询车位地磁', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2024-03-05 22:47:30', '0');
+INSERT INTO `c_service` VALUES ('982024030590950038', 'spaceMachineFactory.updateSpaceMachineFactory', 'API', '修改地磁厂家', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-05 22:07:30', '0');
+INSERT INTO `c_service` VALUES ('982024030711820161', 'parkingRegion.listParkingRegion', 'API', '查询停车区域', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2024-03-07 19:16:18', '0');
+INSERT INTO `c_service` VALUES ('982024030746710165', 'parkingRegion.saveParkingRegion', 'API', '保存停车区域', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-07 19:18:00', '0');
+INSERT INTO `c_service` VALUES ('982024030753340006', 'parkingArea.findCarInParkingArea', 'API', '停车场找车', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2024-03-07 00:21:09', '0');
+INSERT INTO `c_service` VALUES ('982024030759560163', 'parkingRegion.deleteParkingRegion', 'API', '删除停车区域', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-07 19:17:31', '0');
+INSERT INTO `c_service` VALUES ('982024030766450167', 'parkingRegion.updateParkingRegion', 'API', '修改停车区域', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-03-07 19:18:34', '0');
+INSERT INTO `c_service` VALUES ('982024030928520090', 'barrier.getCloudFlvVideo', 'API', '播放道闸云端视频', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2024-03-09 12:17:02', '0');
+INSERT INTO `c_service` VALUES ('982024031897040009', 'meterMachineLog.listMeterMachineLog', 'API', '开合闸记录', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2024-03-18 12:17:01', '0');
+INSERT INTO `c_service` VALUES ('982024040109560181', 'appUser.deleteAppUser', 'API', '删除房屋认证', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-04-01 23:01:53', '0');
+INSERT INTO `c_service` VALUES ('982024040284300183', 'owner.refreshAppUserBindingOwnerOpenId', 'API', '刷入openId', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-04-02 13:50:11', '0');
+INSERT INTO `c_service` VALUES ('982024041223290001', 'liftCamera.listLiftWarn', 'API', '查询电梯告警', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2024-04-12 01:37:26', '0');
+INSERT INTO `c_service` VALUES ('982024041252320003', 'liftCamera.saveLiftCamera', 'API', '保存电梯相机', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2024-04-12 01:37:55', '0');
+INSERT INTO `c_service` VALUES ('982024041261200332', 'liftCamera.deleteLiftCamera', 'API', '删除电梯相机', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2024-04-12 01:34:35', '0');
+INSERT INTO `c_service` VALUES ('982024041291520005', 'liftCamera.updateLiftCamera', 'API', '更新电梯相机', '1', 'CMD', 'http://iot-lift', 'POST', '60', '3', '2024-04-12 01:38:27', '0');
+INSERT INTO `c_service` VALUES ('982024041293420334', 'liftCamera.listLiftCamera', 'API', '查询电梯相机', '1', 'CMD', 'http://iot-lift', 'GET', '60', '3', '2024-04-12 01:35:06', '0');
+INSERT INTO `c_service` VALUES ('982024042017380067', 'initializeBuildingUnit.deleteBuildingUnit', 'API', '格式化小区', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2024-04-20 03:05:55', '0');
+INSERT INTO `c_service` VALUES ('982024050618900005', 'task.listTaskTemplate', 'API', '查询任务模版', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2024-05-06 17:31:58', '0');
+INSERT INTO `c_service` VALUES ('982024050620120008', 'task.listTaskTemplateSpec', 'API', '查询定时任务模版配置', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2024-05-06 17:33:05', '0');
+INSERT INTO `c_service` VALUES ('982024050636240032', 'task.stopTask', 'API', '停止任务', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2024-05-06 17:38:08', '0');
+INSERT INTO `c_service` VALUES ('982024050658880002', 'task.listTasks', 'API', '查询定时任务', '1', 'CMD', 'http://iot-dev', 'GET', '60', '3', '2024-05-06 17:31:05', '0');
+INSERT INTO `c_service` VALUES ('982024050672950011', 'task.saveTask', 'API', '保存定时任务', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2024-05-06 17:35:00', '0');
+INSERT INTO `c_service` VALUES ('982024050678070017', 'task.updateTask', 'API', '修改定时任务', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2024-05-06 17:35:46', '0');
+INSERT INTO `c_service` VALUES ('982024050693390030', 'task.startTask', 'API', '启动任务', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2024-05-06 17:37:32', '0');
+INSERT INTO `c_service` VALUES ('982024050695560025', 'task.deleteTask', 'API', '删除定时任务', '1', 'CMD', 'http://iot-dev', 'POST', '60', '3', '2024-05-06 17:36:34', '0');
+INSERT INTO `c_service` VALUES ('982024050808090009', 'whiteList.listWhiteList', 'API', '工牌白名单查询', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-05-08 16:26:42', '0');
+INSERT INTO `c_service` VALUES ('982024050881400041', 'workLicense.saveWhiteList', 'API', '工牌白名单设置', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-05-08 15:44:03', '0');
+INSERT INTO `c_service` VALUES ('982024051005320018', 'meterMachine.cleanMeterMachine', 'API', '清零', '1', 'CMD', 'http://iot-meter', 'POST', '60', '3', '2024-05-10 15:25:31', '0');
+INSERT INTO `c_service` VALUES ('982024051937800003', 'visit.queryWaitVisitCarNum', 'API', '查询待访客车辆', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-05-19 22:44:28', '0');
+INSERT INTO `c_service` VALUES ('982024051994860005', 'visit.propertyAuthVisit', 'API', '物业访客审核', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-05-19 08:29:04', '0');
+INSERT INTO `c_service` VALUES ('982024053116860017', 'telMachineUser.listTelMachineUser', 'API', '查询话机客服', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2024-05-31 22:57:47', '0');
+INSERT INTO `c_service` VALUES ('982024053126890004', 'telMachine.listTelMachine', 'API', '查询话机', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2024-05-31 21:51:16', '0');
+INSERT INTO `c_service` VALUES ('982024053137640006', 'telMachine.saveTelMachine', 'API', '保存话机', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-05-31 21:55:23', '0');
+INSERT INTO `c_service` VALUES ('982024053145600010', 'telMachine.updateTelMachine', 'API', '修改话机', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-05-31 21:56:34', '0');
+INSERT INTO `c_service` VALUES ('982024053147450004', 'telMachineUser.deleteTelMachineUser', 'API', '删除话机客服', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-05-31 23:07:21', '0');
+INSERT INTO `c_service` VALUES ('982024053157220008', 'telMachine.deleteTelMachine', 'API', '删除话机', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-05-31 21:55:52', '0');
+INSERT INTO `c_service` VALUES ('982024053161880015', 'telMachineUser.saveTelMachineUser', 'API', '保存话机客服', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-05-31 22:57:04', '0');
+INSERT INTO `c_service` VALUES ('982024053162770002', 'telSmsLog.listTelSmsLog', 'API', '查询短信记录', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2024-05-31 23:27:49', '0');
+INSERT INTO `c_service` VALUES ('982024053183550015', 'telCallLog.listTelCallLog', 'API', '查询通话记录', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2024-05-31 23:17:24', '0');
+INSERT INTO `c_service` VALUES ('982024060125180047', 'telTts.listTelTts', 'API', '查询语音tts', '1', 'CMD', 'http://iot-lamp', 'GET', '60', '3', '2024-06-01 17:27:59', '0');
+INSERT INTO `c_service` VALUES ('982024060147580051', 'telTts.updateTelTts', 'API', '修改语音tts', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-06-01 17:28:49', '0');
+INSERT INTO `c_service` VALUES ('982024060166830045', 'telTts.saveTelTts', 'API', '添加电话tts', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-06-01 17:27:31', '0');
+INSERT INTO `c_service` VALUES ('982024060186680049', 'telTts.deleteTelTts', 'API', '删除语音tts', '1', 'CMD', 'http://iot-lamp', 'POST', '60', '3', '2024-06-01 17:28:23', '0');
+INSERT INTO `c_service` VALUES ('982024070731150010', 'chargeRule.saveChargeRulePrice', 'API', '保存汽车充电费率', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-07-07 15:33:04', '0');
+INSERT INTO `c_service` VALUES ('982024070751420009', 'chargeRule.listChargeRulePrice', 'API', '汽车充电费用列表', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-07-07 15:32:37', '0');
+INSERT INTO `c_service` VALUES ('982024070764080011', 'chargeRule.updateChargeRulePrice', 'API', '更新汽车充电费率', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-07-07 15:33:46', '0');
+INSERT INTO `c_service` VALUES ('982024070784860008', 'chargeRule.deleteChargeRulePrice', 'API', '删除汽车充电费率', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-07-07 15:32:03', '0');
+INSERT INTO `c_service` VALUES ('982024071523780005', 'monitorMachine.getPlayVideoUrl', 'API', '查询监控播放视频', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-07-15 23:47:55', '0');
+INSERT INTO `c_service` VALUES ('982024071527820011', 'monitorManufactor.saveMonitorManufactor', 'API', '保存监控平台', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-07-15 21:29:43', '0');
+INSERT INTO `c_service` VALUES ('982024071560980009', 'monitorManufactor.listMonitorManufactor', 'API', '查询监控平台', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-07-15 21:29:11', '0');
+INSERT INTO `c_service` VALUES ('982024071566820013', 'monitorManufactor.updateMonitorManufactor', 'API', '修改监控平台', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-07-15 21:30:13', '0');
+INSERT INTO `c_service` VALUES ('982024071581310007', 'monitorManufactor.deleteMonitorManufactor', 'API', '删除监控平台', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-07-15 21:28:39', '0');
+INSERT INTO `c_service` VALUES ('982024071728920011', 'ad.updateAccessControlAd', 'API', '修改广告', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-07-17 00:02:51', '0');
+INSERT INTO `c_service` VALUES ('982024071738280032', 'ad.saveAccessControlAdRel', 'API', '删除广告门禁', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-07-17 00:37:22', '0');
+INSERT INTO `c_service` VALUES ('982024071744880028', 'ad.deleteAccessControlAdRel', 'API', '删除广告门禁', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-07-17 00:35:54', '0');
+INSERT INTO `c_service` VALUES ('982024071773860005', 'ad.deleteAccessControlAd', 'API', '删除广告', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-07-17 00:01:14', '0');
+INSERT INTO `c_service` VALUES ('982024071781320009', 'ad.saveAccessControlAd', 'API', '保存广告', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-07-17 00:02:22', '0');
+INSERT INTO `c_service` VALUES ('982024071793600030', 'ad.listAccessControlAdRel', 'API', '查询广告门禁', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-07-17 00:36:31', '0');
+INSERT INTO `c_service` VALUES ('982024071796220007', 'ad.listAccessControlAd', 'API', '查询广告', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-07-17 00:01:50', '0');
+INSERT INTO `c_service` VALUES ('982024071899800012', 'parkingSpace.carAddParkingSpace', 'API', '车位续租', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2024-07-18 15:08:48', '0');
+INSERT INTO `c_service` VALUES ('982024072079190001', 'monitorMachine.saveVideoPhoto', 'API', '监控照片', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-07-20 03:29:31', '0');
+INSERT INTO `c_service` VALUES ('982024072475180017', 'carInout.exceptionCarOut', 'API', '车辆异常出场', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2024-07-24 19:23:20', '0');
+INSERT INTO `c_service` VALUES ('982024072639820012', 'monitor.saveMonitorMachinePerson', 'API', '添加监控人员', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-07-26 16:56:58', '0');
+INSERT INTO `c_service` VALUES ('982024072662650007', 'monitor.deleteMonitorMachinePerson', 'API', '删除监控人员', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-07-26 16:54:19', '0');
+INSERT INTO `c_service` VALUES ('982024072694650010', 'monitor.listMonitorMachinePerson', 'API', '查询监控人员', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-07-26 16:55:31', '0');
+INSERT INTO `c_service` VALUES ('982024080817380004', 'monitorMachine.getRecordPlayVideoUrl', 'API', '查询监控录像地址', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-08-08 15:30:15', '0');
+INSERT INTO `c_service` VALUES ('982024080821440006', 'monitorMachine.listMonitorRecord', 'API', '查询监控录像', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-08-08 14:36:35', '0');
+INSERT INTO `c_service` VALUES ('982024080940340002', 'chargeMachine.stopCarCharge', 'API', '汽车停止充电', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-08-09 14:08:58', '0');
+INSERT INTO `c_service` VALUES ('982024080960680001', 'chargeMachine.startCarCharge', 'API', '汽车充电', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-08-09 14:08:25', '0');
+INSERT INTO `c_service` VALUES ('982024083007090011', 'callingPlatform.updateCallingPlatform', 'API', '更新呼叫平台', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:25:35', '0');
+INSERT INTO `c_service` VALUES ('982024083017950003', 'callingContact.saveCallingContact', 'API', '添加通讯录', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:19:22', '0');
+INSERT INTO `c_service` VALUES ('982024083022940002', 'callingContact.listCallingContact', 'API', '查询通讯录', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-08-30 15:18:52', '0');
+INSERT INTO `c_service` VALUES ('982024083023800005', 'callingDevice.listCallingDevice', 'API', '呼叫设备列表', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-08-30 15:21:05', '0');
+INSERT INTO `c_service` VALUES ('982024083024840001', 'callingContact.deleteCallingContact', 'API', '删除通讯录联系人', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:18:17', '0');
+INSERT INTO `c_service` VALUES ('982024083041380007', 'callingDevice.updateCallingDevice', 'API', '更新呼叫设备', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:23:33', '0');
+INSERT INTO `c_service` VALUES ('982024083050060006', 'callingDevice.saveCallingDevice', 'API', '添加呼叫设备', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:21:36', '0');
+INSERT INTO `c_service` VALUES ('982024083059280004', 'callingDevice.deleteCallingDevice', 'API', '删除呼叫设备', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:20:35', '0');
+INSERT INTO `c_service` VALUES ('982024083060810009', 'callingPlatform.listCallingPlatform', 'API', '呼叫平台列表', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2024-08-30 15:24:48', '0');
+INSERT INTO `c_service` VALUES ('982024083084680010', 'callingPlatform.saveCallingPlatform', 'API', '保存呼叫平台', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:25:13', '0');
+INSERT INTO `c_service` VALUES ('982024083099030008', 'callingPlatform.deleteCallingPlatform', 'API', '删除呼叫平台', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-08-30 15:24:21', '0');
+INSERT INTO `c_service` VALUES ('982024090430200001', 'api/sipex/cloud/openapi/account/query', 'API', '门禁机通讯录', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2024-09-04 09:31:41', '1');
+INSERT INTO `c_service` VALUES ('982024091080390007', 'owner.transforOwnerUser', 'API', '同步业主信息', '1', 'CMD', 'http://iot-openapi', 'POST', '60', '3', '2024-09-10 14:08:11', '0');
+INSERT INTO `c_service` VALUES ('982024091961010002', 'user.ownerUserLoginByOpenId', 'API', '用户登录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-09-19 11:26:00', '0');
+INSERT INTO `c_service` VALUES ('982024091980400003', 'user.listStaffsNoInOrg', 'API', '查询组织', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2024-09-19 14:46:45', '0');
+INSERT INTO `c_service` VALUES ('982024091997820005', 'user.saveStaffOrgRel', 'API', '保存员工组织关系', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-09-19 14:53:58', '0');
+INSERT INTO `c_service` VALUES ('982024110556970007', 'monitorArea.getMonitorArea', 'API', '查询监控区域', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-11-05 13:49:25', '0');
+INSERT INTO `c_service` VALUES ('982024110582600006', 'ai.getAiAlter', 'API', 'AI告警', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-11-05 22:23:10', '0');
+INSERT INTO `c_service` VALUES ('982024110586520022', 'monitor.deleteMonitorCollect', 'API', '删除监控收藏', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-11-05 23:48:26', '0');
+INSERT INTO `c_service` VALUES ('982024110588670026', 'monitor.saveMonitorCollect', 'API', '保存收藏视频', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-11-05 23:49:31', '0');
+INSERT INTO `c_service` VALUES ('982024110596570024', 'monitor.listMonitorCollect', 'API', '查询收藏监控', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-11-05 23:48:57', '0');
+INSERT INTO `c_service` VALUES ('982024112002020092', 'chargeMachine.heartbeatCarCharge', 'API', '检查开启充电', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2024-11-20 02:28:04', '0');
+INSERT INTO `c_service` VALUES ('982024112953250005', 'coupon.listCouponPropertyUser', 'API', '查询用户优惠券', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2024-11-29 14:38:41', '0');
+INSERT INTO `c_service` VALUES ('982024112972771058', 'chargeMachine.queryCarChargeProcess', 'API', '查询车辆充电进度', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2024-11-29 01:04:14', '0');
+INSERT INTO `c_service` VALUES ('982024120600410001', 'account.deleteAccount', 'API', '删除账户', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2024-12-06 15:06:31', '0');
+INSERT INTO `c_service` VALUES ('982024120606850007', 'account.queryOwnerAccountDetail', 'API', '查询账户明细', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2024-12-06 15:48:44', '0');
+INSERT INTO `c_service` VALUES ('982024120613080003', 'account.ownerPrestoreAccount', 'API', '预存账户', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2024-12-06 15:18:19', '0');
+INSERT INTO `c_service` VALUES ('982024120687470005', 'account.queryCommunityAccount', 'API', '查询小区账户', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2024-12-06 14:16:41', '0');
+INSERT INTO `c_service` VALUES ('982024121397660036', 'ai.queryMonitorCamera', 'API', '查询监控相机', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-12-13 15:35:38', '0');
+INSERT INTO `c_service` VALUES ('982024121407310001', 'ai.getDispatchLog', 'API', '查询布控告警', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-12-14 02:47:53', '0');
+INSERT INTO `c_service` VALUES ('982024121412750001', 'ai.getPersonFace', 'API', '查询人员', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-12-14 02:41:07', '0');
+INSERT INTO `c_service` VALUES ('982024121475360001', 'ai.getFaceLog', 'API', '查询人脸抓拍记录', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-12-14 03:14:04', '0');
+INSERT INTO `c_service` VALUES ('982024121634210005', 'ai.deleteDispatchFace', 'API', '删除布控人员', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-12-16 15:18:46', '0');
+INSERT INTO `c_service` VALUES ('982024121675340012', 'ai.saveDispatchFace', 'API', '添加布控人员', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-12-16 13:29:16', '0');
+INSERT INTO `c_service` VALUES ('982024121711230005', 'ai.getIntercomLog', 'API', '查询呼叫记录', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-12-17 11:33:45', '0');
+INSERT INTO `c_service` VALUES ('982025012224700005', 'chargePeakAlleyPrice.listChargePeakAlleyPrice', 'API', '查询AlleyPrice', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-01-22 23:56:38', '0');
+INSERT INTO `c_service` VALUES ('982025012233540002', 'charge.queryMyChargeOrder', 'API', '查询我的充电订单', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-01-22 10:55:38', '0');
+INSERT INTO `c_service` VALUES ('982025012235010007', 'chargePeakAlleyPrice.saveChargePeakAlleyPrice', 'API', '保存AlleyPrice', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2025-01-22 23:57:15', '0');
+INSERT INTO `c_service` VALUES ('982025012320700047', 'parkingCoupon.listParkingCouponCharge', 'API', '查询充电停车券', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2025-01-23 00:24:15', '0');
+INSERT INTO `c_service` VALUES ('982025012332820049', 'parkingCoupon.saveParkingCouponCharge', 'API', '保存充电停车券', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2025-01-23 00:25:13', '0');
+INSERT INTO `c_service` VALUES ('982025012354130006', 'user.saveUserChargeCar', 'API', '添加用户充电车牌', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2025-01-23 01:17:12', '0');
+INSERT INTO `c_service` VALUES ('982025012356360051', 'parkingCoupon.deleteParkingCouponCharge', 'API', '删除充电停车券', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2025-01-23 00:26:02', '0');
+INSERT INTO `c_service` VALUES ('982025012380870004', 'user.getUserChargeCar', 'API', '查询用户充电车牌', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2025-01-23 01:16:43', '0');
+INSERT INTO `c_service` VALUES ('982025022535130005', 'chargeMachine.throwStopCharge', 'API', '异常结束订单', '1', 'CMD', 'http://iot-charge', 'POST', '60', '3', '2025-02-25 11:39:56', '0');
+INSERT INTO `c_service` VALUES ('982025030834160008', 'area.deleteCityArea', 'API', '删除地区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2025-03-08 12:21:32', '0');
+INSERT INTO `c_service` VALUES ('982025030872900014', 'area.updateCityArea', 'API', '修改地区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2025-03-08 12:22:52', '0');
+INSERT INTO `c_service` VALUES ('982025030877680012', 'area.saveCityArea', 'API', '添加地区', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2025-03-08 12:22:27', '0');
+INSERT INTO `c_service` VALUES ('982025030896460010', 'area.queryAreaTree', 'API', '查询地区树', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2025-03-08 12:22:02', '0');
+INSERT INTO `c_service` VALUES ('982025031267090023', 'accessControl.listAdminAccessControl', 'API', '运营查询门禁', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2025-03-12 20:33:40', '0');
+INSERT INTO `c_service` VALUES ('982025031300250008', 'room.queryAdminRooms', 'API', '运营查询房屋', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2025-03-13 22:37:29', '0');
+INSERT INTO `c_service` VALUES ('982025031306220012', 'barrier.listAdminBarrier', 'API', '运营查询道闸相机', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2025-03-13 15:43:57', '0');
+INSERT INTO `c_service` VALUES ('982025031308290004', 'meterMachine.listAdminMeterReadRechargeDetail', 'API', '运营查询抄表记录', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2025-03-13 22:46:10', '0');
+INSERT INTO `c_service` VALUES ('982025031313730001', 'chargeMachine.listAdminChargeMachinePort', 'API', '运营查询充电端口', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-03-13 18:15:48', '0');
+INSERT INTO `c_service` VALUES ('982025031318890001', 'accessControlInout.listAdminAccessControlInout', 'API', '运营查询门禁进出', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2025-03-13 14:39:27', '0');
+INSERT INTO `c_service` VALUES ('982025031319360001', 'parkingCoupon.listAdminParkingCouponCharge', 'API', '运营查询充电券', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2025-03-13 18:34:36', '0');
+INSERT INTO `c_service` VALUES ('982025031324010001', 'accessControlOrg.listAdminAccessControlOrg', 'API', '运营查询门禁组织', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2025-03-13 14:28:04', '0');
+INSERT INTO `c_service` VALUES ('982025031324310001', 'chargeRule.listAdminChargeRulePrice', 'API', '运营查询充电价格', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-03-13 18:24:49', '0');
+INSERT INTO `c_service` VALUES ('982025031330240003', 'accessControlFace.listAdminAccessControlFace', 'API', '运营查询门禁人脸', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2025-03-13 13:56:22', '0');
+INSERT INTO `c_service` VALUES ('982025031331770001', 'accessControlLog.listAdminAccessControlLog', 'API', '运营查询门禁日志', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2025-03-13 14:35:44', '0');
+INSERT INTO `c_service` VALUES ('982025031334340003', 'chargeRule.listAdminChargeRuleFee', 'API', '运营查询充电规则', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-03-13 18:21:00', '0');
+INSERT INTO `c_service` VALUES ('982025031356050012', 'chargeMachine.listAdminChargeMachine', 'API', '运营查询充电桩', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-03-13 17:51:36', '0');
+INSERT INTO `c_service` VALUES ('982025031365190001', 'chargeMachine.listAdminChargeMachineOrderAcct', 'API', '运营查询充电订单账户', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-03-13 19:42:14', '0');
+INSERT INTO `c_service` VALUES ('982025031370960035', 'meterMachine.listAdminMeterMachine', 'API', '运营查询水电表', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2025-03-13 21:39:21', '0');
+INSERT INTO `c_service` VALUES ('982025031379920001', 'account.queryAdminOwnerAccount', 'API', '运营查询业主账户', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2025-03-13 18:39:40', '0');
+INSERT INTO `c_service` VALUES ('982025031387930004', 'chargeMachine.listAdminChargeMachineOrder', 'API', '运营查询充电订单', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-03-13 18:28:36', '0');
+INSERT INTO `c_service` VALUES ('982025031392820001', 'accessControlFloor.listAdminAccessControlFloor', 'API', '运营访问门禁楼栋', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2025-03-13 14:21:43', '0');
+INSERT INTO `c_service` VALUES ('982025031401190001', 'common.openAdminApi', 'API', 'admin通用接口', '1', 'CMD', 'http://iot-openapi', 'GET', '60', '3', '2025-03-14 12:46:57', '0');
+INSERT INTO `c_service` VALUES ('982025031401240014', 'carInoutDetail.listAdminCarInoutDetail', 'API', '运营查询车辆进出', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2025-03-14 11:08:52', '0');
+INSERT INTO `c_service` VALUES ('982025031402230022', 'meterMachineCharge.listAdminMeterCharge', 'API', '运营查询充电记录', '1', 'CMD', 'http://iot-meter', 'GET', '60', '3', '2025-03-14 11:48:23', '0');
+INSERT INTO `c_service` VALUES ('982025032852760002', 'login.phoneWechatLogin', 'API', '微信一键登陆', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2025-03-28 16:48:39', '0');
+INSERT INTO `c_service` VALUES ('982025032893260018', 'wechat.getWechatMiniOpenId', 'API', '小程序查询openId', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2025-03-28 19:45:08', '0');
+INSERT INTO `c_service` VALUES ('982025040135040007', 'charge.queryPhoneChargeOrder', 'API', '用户查询充电订单', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2025-04-01 09:45:18', '0');
+
+-- ----------------------------
+-- Table structure for c_service_business
+-- ----------------------------
+DROP TABLE IF EXISTS `c_service_business`;
+CREATE TABLE `c_service_business` (
+  `service_business_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `business_type_cd` varchar(12) DEFAULT NULL,
+  `invoke_type` varchar(4) NOT NULL COMMENT '调用类型，1 http-post(微服务内应用) 2 webservice 3 http-post(微服务之外应用)',
+  `url` varchar(200) DEFAULT NULL COMMENT '目标地址',
+  `message_topic` varchar(50) DEFAULT NULL COMMENT '异步时的消息topic名称',
+  `timeout` int(11) NOT NULL DEFAULT '60' COMMENT '超时时间',
+  `retry_count` int(11) NOT NULL DEFAULT '3' COMMENT '重试次数',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
+  PRIMARY KEY (`service_business_id`),
+  UNIQUE KEY `business_type_cd` (`business_type_cd`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of c_service_business
+-- ----------------------------
+INSERT INTO `c_service_business` VALUES ('1', 'abc', '1', 'sdf', 's', '60', '3', '2023-02-12 20:12:36', '1');
+
+-- ----------------------------
+-- Table structure for c_service_sql
+-- ----------------------------
+DROP TABLE IF EXISTS `c_service_sql`;
+CREATE TABLE `c_service_sql` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `service_code` varchar(50) NOT NULL COMMENT '对应c_service表',
+  `name` varchar(50) NOT NULL COMMENT '名称',
+  `params` varchar(500) NOT NULL COMMENT '参数',
+  `query_model` varchar(1) NOT NULL COMMENT '查询方式 1、sql,2、存储过程',
+  `sql` longtext COMMENT '执行sql',
+  `proc` varchar(200) DEFAULT NULL COMMENT '存储过程名称',
+  `java_script` longtext COMMENT '执行java脚本代码',
+  `template` longtext COMMENT '输出模板',
+  `remark` varchar(200) DEFAULT NULL COMMENT '描述',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `service_code` (`service_code`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of c_service_sql
 -- ----------------------------
 
 -- ----------------------------
@@ -7038,7 +6945,7 @@ CREATE TABLE `dt_scene` (
   `community_id` varchar(30) DEFAULT NULL COMMENT '小区ID',
   `modal_json` longtext COMMENT '场景模型',
   `state` varchar(12) NOT NULL DEFAULT 'Y' COMMENT '状态 Y 启用 N 停用',
-  `seq` int NOT NULL DEFAULT '1' COMMENT '场景顺序',
+  `seq` int(11) NOT NULL DEFAULT '1' COMMENT '场景顺序',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`scene_id`)
@@ -7148,7 +7055,7 @@ CREATE TABLE `event_pool` (
   `from_type` varchar(12) NOT NULL COMMENT '来自 PERSON 人员创建 SYSTEM 平台创建',
   `from_name` varchar(64) NOT NULL COMMENT '来自说明 PERSON 是人员名称 SYSTEM时平台名称',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `state` varchar(12)  NOT NULL DEFAULT 'W' COMMENT '状态 W 待处理 NC 正常处理完成 TC 超时处理完成 D 处理中',
+  `state` varchar(12) NOT NULL DEFAULT 'W' COMMENT '状态 W 待处理 NC 正常处理完成 TC 超时处理完成 D 处理中',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
@@ -7173,13 +7080,13 @@ DROP TABLE IF EXISTS `event_pool_staff`;
 CREATE TABLE `event_pool_staff` (
   `eps_id` varchar(30) NOT NULL COMMENT '主键ID',
   `event_id` varchar(30) NOT NULL COMMENT '事件ID',
-  `staff_id` varchar(30)  NOT NULL COMMENT '处理员工',
+  `staff_id` varchar(30) NOT NULL COMMENT '处理员工',
   `staff_name` varchar(64) NOT NULL COMMENT '处理员工',
   `event_reason` varchar(512) DEFAULT NULL COMMENT '事故原因',
   `event_result` varchar(512) DEFAULT NULL COMMENT '处理方案',
-  `event_hours` int DEFAULT '0' COMMENT '处理时长',
+  `event_hours` int(11) DEFAULT '0' COMMENT '处理时长',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `state` varchar(12)  NOT NULL DEFAULT 'W' COMMENT '状态 W 待处理 NC 正常处理完成 TC 超时处理完成 D 处理中',
+  `state` varchar(12) NOT NULL DEFAULT 'W' COMMENT '状态 W 待处理 NC 正常处理完成 TC 超时处理完成 D 处理中',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`eps_id`)
@@ -7202,7 +7109,7 @@ DROP TABLE IF EXISTS `event_rule`;
 CREATE TABLE `event_rule` (
   `rule_id` varchar(30) NOT NULL COMMENT '规则ID',
   `rule_name` varchar(64) NOT NULL COMMENT '规则名称',
-  `limit_time` int NOT NULL COMMENT '超时时间(min)',
+  `limit_time` int(11) NOT NULL COMMENT '超时时间(min)',
   `template_id` varchar(30) NOT NULL COMMENT '模板ID',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
@@ -7340,57 +7247,6 @@ INSERT INTO `event_template_param_key` VALUES ('32', 'WECHAT', 'AppKey', 'AppKey
 INSERT INTO `event_template_param_key` VALUES ('33', 'WECHAT', '通知模板', 'template', '必填，请输入通知模板', '2023-10-12 11:33:10', '0');
 
 -- ----------------------------
--- Table structure for f_floor
--- ----------------------------
-DROP TABLE IF EXISTS `f_floor`;
-CREATE TABLE `f_floor` (
-  `floor_id` varchar(30) NOT NULL COMMENT '楼ID',
-  `b_id` varchar(30) DEFAULT NULL COMMENT '业务ID',
-  `floor_num` varchar(64) NOT NULL COMMENT '楼编号',
-  `name` varchar(100) NOT NULL COMMENT '小区楼名称',
-  `user_id` varchar(30) NOT NULL COMMENT '用户ID',
-  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `community_id` varchar(30) NOT NULL DEFAULT '-1' COMMENT '小区ID',
-  `floor_area` decimal(10,2) NOT NULL COMMENT '建筑面积',
-  `seq` int NOT NULL DEFAULT '1' COMMENT '楼栋加入排序',
-  `lat` varchar(32) DEFAULT NULL COMMENT '精度',
-  `lng` varchar(32) DEFAULT NULL COMMENT '维度',
-  UNIQUE KEY `floor_id` (`floor_id`) USING BTREE,
-  UNIQUE KEY `idx_floor_id` (`floor_id`) USING BTREE,
-  KEY `idx_floor_b_id` (`b_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of f_floor
--- ----------------------------
-INSERT INTO `f_floor` VALUES ('732025010671110013', '-1', '1', '1栋', '30518939884421922816', '房产导入', '2025-03-24 19:20:57', '0', '2024122649870005', '1.00', '1', null, null);
-INSERT INTO `f_floor` VALUES ('732025031328880007', null, '1', '1号楼', '302024121758390012', '', '2025-03-13 21:30:01', '0', '2024122649870005', '1.00', '1', '0', '0');
-
--- ----------------------------
--- Table structure for f_floor_attr
--- ----------------------------
-DROP TABLE IF EXISTS `f_floor_attr`;
-CREATE TABLE `f_floor_attr` (
-  `b_id` varchar(30) NOT NULL COMMENT '订单ID',
-  `attr_id` varchar(30) NOT NULL COMMENT '属性id',
-  `floor_id` varchar(30) NOT NULL COMMENT '房屋ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `spec_cd` varchar(12) NOT NULL COMMENT '规格id,参考spec表',
-  `value` varchar(50) NOT NULL COMMENT '属性值',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  UNIQUE KEY `attr_id` (`attr_id`) USING BTREE,
-  KEY `idx_b_attr_b_id` (`b_id`) USING BTREE,
-  KEY `idx_attr_floor_id` (`floor_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of f_floor_attr
--- ----------------------------
-
--- ----------------------------
 -- Table structure for file_rel
 -- ----------------------------
 DROP TABLE IF EXISTS `file_rel`;
@@ -7424,6 +7280,55 @@ INSERT INTO `file_rel` VALUES ('912024071828060006', '-1', '10000', 'table', '77
 INSERT INTO `file_rel` VALUES ('912024083001440002', '-1', '10000', 'table', '772024041203090161', 'img/20240906/d47d6b0a-d562-4840-9d34-deb0110be112.jpg', 'img/20240906/d47d6b0a-d562-4840-9d34-deb0110be112.jpg', '2024-08-30 00:22:57', '0');
 INSERT INTO `file_rel` VALUES ('912024090806160004', '-1', '10000', 'table', '772024021994213006', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20240908/755c104a-9893-44df-b3d7-d535ca11350b.jpg', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20240908/755c104a-9893-44df-b3d7-d535ca11350b.jpg', '2024-09-08 13:57:00', '0');
 INSERT INTO `file_rel` VALUES ('912025032421290007', '-1', '10000', 'table', '772025031389520016', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20250324/34de48a6-cdf3-41e6-b34f-1a15b5d46cfc.jpg', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20250324/34de48a6-cdf3-41e6-b34f-1a15b5d46cfc.jpg', '2025-03-24 18:46:47', '0');
+
+-- ----------------------------
+-- Table structure for f_floor
+-- ----------------------------
+DROP TABLE IF EXISTS `f_floor`;
+CREATE TABLE `f_floor` (
+  `floor_id` varchar(30) NOT NULL COMMENT '楼ID',
+  `b_id` varchar(30) DEFAULT NULL COMMENT '业务ID',
+  `floor_num` varchar(64) NOT NULL COMMENT '楼编号',
+  `name` varchar(100) NOT NULL COMMENT '小区楼名称',
+  `user_id` varchar(30) NOT NULL COMMENT '用户ID',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `community_id` varchar(30) NOT NULL DEFAULT '-1' COMMENT '小区ID',
+  `floor_area` decimal(10,2) NOT NULL COMMENT '建筑面积',
+  `seq` int(11) NOT NULL DEFAULT '1' COMMENT '楼栋加入排序',
+  `lat` varchar(32) DEFAULT NULL COMMENT '精度',
+  `lng` varchar(32) DEFAULT NULL COMMENT '维度',
+  UNIQUE KEY `floor_id` (`floor_id`) USING BTREE,
+  UNIQUE KEY `idx_floor_id` (`floor_id`) USING BTREE,
+  KEY `idx_floor_b_id` (`b_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of f_floor
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for f_floor_attr
+-- ----------------------------
+DROP TABLE IF EXISTS `f_floor_attr`;
+CREATE TABLE `f_floor_attr` (
+  `b_id` varchar(30) NOT NULL COMMENT '订单ID',
+  `attr_id` varchar(30) NOT NULL COMMENT '属性id',
+  `floor_id` varchar(30) NOT NULL COMMENT '房屋ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `spec_cd` varchar(12) NOT NULL COMMENT '规格id,参考spec表',
+  `value` varchar(50) NOT NULL COMMENT '属性值',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  UNIQUE KEY `attr_id` (`attr_id`) USING BTREE,
+  KEY `idx_b_attr_b_id` (`b_id`) USING BTREE,
+  KEY `idx_attr_floor_id` (`floor_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of f_floor_attr
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for hardware_manufacturer
@@ -7532,8 +7437,8 @@ CREATE TABLE `instrument` (
   `type_id` varchar(30) NOT NULL COMMENT '仪表类型',
   `charge` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '剩余电量，百分比',
   `sign` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '信号强度',
-  `up_min` int NOT NULL DEFAULT '60' COMMENT '上报时间',
-  `check_sec` int NOT NULL DEFAULT '60' COMMENT '采样时间',
+  `up_min` int(11) NOT NULL DEFAULT '60' COMMENT '上报时间',
+  `check_sec` int(11) NOT NULL DEFAULT '60' COMMENT '采样时间',
   `impl_bean` varchar(30) NOT NULL COMMENT '仪表厂家',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
@@ -7575,7 +7480,7 @@ CREATE TABLE `instrument_factory_spec` (
   `spec_id` varchar(30) NOT NULL COMMENT '规格ID',
   `factory_id` varchar(64) NOT NULL COMMENT '厂家名称',
   `spec_name` varchar(64) NOT NULL COMMENT '规格名称',
-  `spec_cd` varchar(12)  NOT NULL COMMENT '规格编号',
+  `spec_cd` varchar(12) NOT NULL COMMENT '规格编号',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   `remark` varchar(256) DEFAULT NULL COMMENT '描述',
@@ -7686,7 +7591,7 @@ CREATE TABLE `instrument_sensor` (
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `min_value` decimal(10,2) DEFAULT NULL COMMENT '最小值',
   `max_value` decimal(10,2) DEFAULT NULL COMMENT '最大值',
-  `units` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '单位',
+  `units` varchar(12) DEFAULT NULL COMMENT '单位',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`sensor_id`),
@@ -7757,12 +7662,12 @@ CREATE TABLE `lamp_machine` (
 -- ----------------------------
 DROP TABLE IF EXISTS `lamp_machine_factory`;
 CREATE TABLE `lamp_machine_factory` (
-  `factory_id` varchar(30)  NOT NULL COMMENT '厂家ID',
-  `factory_name` varchar(64)  NOT NULL COMMENT '厂家名称',
-  `bean_impl` varchar(512)  NOT NULL COMMENT '厂家处理类',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '备注',
+  `factory_id` varchar(30) NOT NULL COMMENT '厂家ID',
+  `factory_name` varchar(64) NOT NULL COMMENT '厂家名称',
+  `bean_impl` varchar(512) NOT NULL COMMENT '厂家处理类',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`factory_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='路灯厂家';
 
@@ -7778,12 +7683,12 @@ INSERT INTO `lamp_machine_factory` VALUES ('102023103087700005', '111', '111', '
 -- ----------------------------
 DROP TABLE IF EXISTS `lamp_machine_factory_spec`;
 CREATE TABLE `lamp_machine_factory_spec` (
-  `spec_id` varchar(30)  NOT NULL COMMENT '规格ID',
-  `factory_id` varchar(64)  NOT NULL COMMENT '厂家ID',
-  `spec_name` varchar(64)  NOT NULL COMMENT '规格名称',
+  `spec_id` varchar(30) NOT NULL COMMENT '规格ID',
+  `factory_id` varchar(64) NOT NULL COMMENT '厂家ID',
+  `spec_name` varchar(64) NOT NULL COMMENT '规格名称',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态',
-  `remark` varchar(256)  DEFAULT NULL COMMENT '描述',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `remark` varchar(256) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`spec_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='路灯厂家参数';
 
@@ -7824,8 +7729,8 @@ CREATE TABLE `lamp_machine_open_close` (
   `lmo_id` varchar(30) NOT NULL COMMENT '主键ID',
   `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
   `type` varchar(12) NOT NULL DEFAULT 'open' COMMENT '类型 open 打开 close 关闭',
-  `hours` int NOT NULL DEFAULT '20' COMMENT '小时，打开或者关闭小时',
-  `min` int NOT NULL DEFAULT '1' COMMENT '分钟，打开或者关闭分钟',
+  `hours` int(11) NOT NULL DEFAULT '20' COMMENT '小时，打开或者关闭小时',
+  `min` int(11) NOT NULL DEFAULT '1' COMMENT '分钟，打开或者关闭分钟',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`lmo_id`) USING BTREE
@@ -7896,7 +7801,7 @@ CREATE TABLE `lift_machine` (
   `factory_id` varchar(30) NOT NULL COMMENT '厂家',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `heartbeat_time` datetime NOT NULL COMMENT '设备心跳时间',
-  `state` varchar(12)  NOT NULL COMMENT '电梯类型',
+  `state` varchar(12) NOT NULL COMMENT '电梯类型',
   `cur_layer` varchar(12) NOT NULL DEFAULT '1' COMMENT '当前楼层',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
@@ -7935,12 +7840,12 @@ CREATE TABLE `lift_machine_ac` (
 -- ----------------------------
 DROP TABLE IF EXISTS `lift_machine_factory`;
 CREATE TABLE `lift_machine_factory` (
-  `factory_id` varchar(30)  NOT NULL COMMENT '厂家ID',
-  `factory_name` varchar(64)  NOT NULL COMMENT '厂家名称',
-  `bean_impl` varchar(512)  NOT NULL COMMENT '厂家处理类',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '备注',
+  `factory_id` varchar(30) NOT NULL COMMENT '厂家ID',
+  `factory_name` varchar(64) NOT NULL COMMENT '厂家名称',
+  `bean_impl` varchar(512) NOT NULL COMMENT '厂家处理类',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`factory_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='电梯厂家';
 
@@ -7957,12 +7862,12 @@ INSERT INTO `lift_machine_factory` VALUES ('102024022659892348', '三菱', '三�
 -- ----------------------------
 DROP TABLE IF EXISTS `lift_machine_factory_spec`;
 CREATE TABLE `lift_machine_factory_spec` (
-  `spec_id` varchar(30)  NOT NULL COMMENT '规格ID',
-  `factory_id` varchar(64)  NOT NULL COMMENT '厂家名称',
-  `spec_name` varchar(64)  NOT NULL COMMENT '规格名称',
+  `spec_id` varchar(30) NOT NULL COMMENT '规格ID',
+  `factory_id` varchar(64) NOT NULL COMMENT '厂家名称',
+  `spec_name` varchar(64) NOT NULL COMMENT '规格名称',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态',
-  `remark` varchar(256)  DEFAULT NULL COMMENT '描述',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `remark` varchar(256) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`spec_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='电梯厂家参数';
 
@@ -8036,7 +7941,7 @@ CREATE TABLE `lift_ride_log` (
   `tel` varchar(20) DEFAULT NULL COMMENT '手机号',
   `person_type` varchar(12) NOT NULL COMMENT '人员类型 100 访客 200 员工 300 业主',
   `room_name` varchar(64) DEFAULT NULL COMMENT '房号',
-  `layer` int DEFAULT NULL COMMENT '楼层',
+  `layer` int(11) DEFAULT NULL COMMENT '楼层',
   `face_path` varchar(512) DEFAULT NULL COMMENT '人脸路劲',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -8062,9 +7967,9 @@ CREATE TABLE `lift_warn` (
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `warn_type` varchar(64) NOT NULL COMMENT '告警类型：people_block_door 人挡门 object_block_door 物挡门 door_always_open 无阻挡长开门 door_always_close 长时间关门 people_trapped 电梯困人 have_bicycle非机动车进电梯 people_no_mask 未带口罩 have_large_goods 大件物品 have_foreign_matter 电梯内异物 people_prancing 蹦跳打闹 people_fall 人员跌倒 people_smoking 吸烟 io_alarm io输入报警acceleration_alram 加速度异常 shake_alarm 震动异常',
   `warn_img` varchar(512) DEFAULT NULL COMMENT '告警图片',
-  `enter_people_num` int DEFAULT NULL COMMENT '进入电梯人数',
-  `leave_people_num` int DEFAULT NULL COMMENT '离开电梯人数',
-  `current_people_num` int DEFAULT NULL COMMENT '当前电梯人数',
+  `enter_people_num` int(11) DEFAULT NULL COMMENT '进入电梯人数',
+  `leave_people_num` int(11) DEFAULT NULL COMMENT '离开电梯人数',
+  `current_people_num` int(11) DEFAULT NULL COMMENT '当前电梯人数',
   `alarm_in_polarity` varchar(12) DEFAULT NULL COMMENT '开门状态',
   `have_bicycle` varchar(12) DEFAULT NULL COMMENT '非机动车，Y 是 N 否',
   `lift_door_state` varchar(12) DEFAULT NULL COMMENT '开门状态',
@@ -8088,8 +7993,8 @@ CREATE TABLE `lock_inout` (
   `inout_id` varchar(30) NOT NULL COMMENT '进出ID',
   `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
   `machine_code` varchar(30) NOT NULL COMMENT '设备编码',
-  `user_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'user_id',
-  `user_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名称',
+  `user_id` varchar(64) DEFAULT NULL COMMENT 'user_id',
+  `user_name` varchar(200) NOT NULL COMMENT '用户名称',
   `open_type_cd` varchar(12) NOT NULL COMMENT '开门方式，1001 密码开锁，2002 蓝牙开锁',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `tel` varchar(11) NOT NULL COMMENT '手机号',
@@ -8176,9 +8081,9 @@ INSERT INTO `lock_machine_factory` VALUES ('102024011606220031', '官方门锁�
 DROP TABLE IF EXISTS `lock_machine_factory_spec`;
 CREATE TABLE `lock_machine_factory_spec` (
   `spec_id` varchar(30) NOT NULL COMMENT '规格ID',
-  `factory_id` varchar(64)  NOT NULL COMMENT '厂家ID',
+  `factory_id` varchar(64) NOT NULL COMMENT '厂家ID',
   `spec_name` varchar(64) NOT NULL COMMENT '规格名称',
-  `spec_cd` varchar(12)  NOT NULL COMMENT '规格编号',
+  `spec_cd` varchar(12) NOT NULL COMMENT '规格编号',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   `remark` varchar(256) DEFAULT NULL COMMENT '描述',
@@ -8244,6 +8149,546 @@ CREATE TABLE `lock_person` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for machine_location
+-- ----------------------------
+DROP TABLE IF EXISTS `machine_location`;
+CREATE TABLE `machine_location` (
+  `location_id` varchar(30) NOT NULL COMMENT '位置ID',
+  `location_name` varchar(100) NOT NULL COMMENT '位置名称',
+  `community_id` varchar(30) NOT NULL COMMENT '小区',
+  `location_type` varchar(12) NOT NULL COMMENT '位置类型 1000 小区 2000 单元 3000 房屋, t_dict 表',
+  `location_obj_id` varchar(30) NOT NULL DEFAULT '-1' COMMENT '对象ID，大门时小区ID，单元门 时单元ID 房屋时房屋ID',
+  `location_obj_name` varchar(256) NOT NULL DEFAULT '位置' COMMENT '对象ID，大门时小区ID，单元门 时单元ID 房屋时房屋ID',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`location_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of machine_location
+-- ----------------------------
+INSERT INTO `machine_location` VALUES ('102023081575010002', '1号楼', '102023021386560001', '6000', '732023080900970002', '1号楼', '2023-08-15 02:06:36', '0');
+INSERT INTO `machine_location` VALUES ('102023081582550011', '1号楼位置1', '102023021386560001', '6000', '732023080900970002', '1号楼', '2023-08-15 01:53:40', '1');
+INSERT INTO `machine_location` VALUES ('102023120774050008', '1', '102023021386560001', '1000', '102023021386560001', '测试小区', '2023-12-07 01:45:12', '0');
+INSERT INTO `machine_location` VALUES ('102024020108990043', '11', '2024012252790005', '1000', '2024012252790005', '物联网同步小区', '2024-02-01 17:03:14', '0');
+INSERT INTO `machine_location` VALUES ('102024021877700004', '1', '102023021386560001', '1000', '102023021386560001', '测试小区', '2024-02-18 12:07:16', '0');
+INSERT INTO `machine_location` VALUES ('102024021934450315', '1', '102023021386560001', '6000', '732023112595880006', '2号楼', '2024-02-19 12:48:33', '1');
+INSERT INTO `machine_location` VALUES ('102024021961000449', '你好', '102023021386560001', '1000', '102023021386560001', '测试小区', '2024-02-19 20:52:03', '0');
+INSERT INTO `machine_location` VALUES ('102024030458000091', '1', '2023052267100146', '1000', '2023052267100146', 'HC演示小区3', '2024-03-04 00:47:25', '0');
+INSERT INTO `machine_location` VALUES ('102024072290020019', 'A位置', '2024041265850103', '1000', '2024041265850103', '另一个小区', '2024-07-22 19:01:19', '0');
+INSERT INTO `machine_location` VALUES ('102025031272110003', '大门位置', '102024121715970003', '1000', '102024121715970003', 'HC演示小区', '2025-03-12 16:40:28', '0');
+
+-- ----------------------------
+-- Table structure for machine_trans_log
+-- ----------------------------
+DROP TABLE IF EXISTS `machine_trans_log`;
+CREATE TABLE `machine_trans_log` (
+  `log_id` varchar(64) NOT NULL COMMENT '日志ID',
+  `machine_code` varchar(64) NOT NULL COMMENT '设备编号',
+  `busi_key` varchar(64) NOT NULL COMMENT '业务key',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `log_type` varchar(256) NOT NULL COMMENT '日志类型 CHARGE_CAR 汽车充电桩',
+  `log_cmd` varchar(64) DEFAULT NULL COMMENT '指令类型',
+  `req_param` longtext COMMENT '请求报文',
+  `res_param` longtext COMMENT '返回报文',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of machine_trans_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for manual_open_door_log
+-- ----------------------------
+DROP TABLE IF EXISTS `manual_open_door_log`;
+CREATE TABLE `manual_open_door_log` (
+  `log_id` varchar(64) NOT NULL COMMENT '开门ID',
+  `staff_id` varchar(64) NOT NULL COMMENT '员工ID',
+  `staff_name` varchar(128) NOT NULL COMMENT '员工',
+  `ext_staff_id` varchar(64) DEFAULT NULL COMMENT '外部员工ID',
+  `machine_id` varchar(64) NOT NULL COMMENT '摄像头ID',
+  `machine_name` varchar(128) NOT NULL COMMENT '摄像头名称',
+  `ext_machine_id` varchar(64) DEFAULT NULL COMMENT '外部摄像头ID',
+  `photo_jpg` varchar(512) DEFAULT NULL COMMENT '抓拍图片',
+  `community_id` varchar(64) DEFAULT NULL COMMENT '小区ID',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of manual_open_door_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for meter_machine
+-- ----------------------------
+DROP TABLE IF EXISTS `meter_machine`;
+CREATE TABLE `meter_machine` (
+  `machine_id` varchar(30) NOT NULL COMMENT '表ID',
+  `machine_name` varchar(200) NOT NULL COMMENT '名称',
+  `address` varchar(30) NOT NULL COMMENT '表号',
+  `meter_type` varchar(30) NOT NULL COMMENT '表类型，电表还是水表',
+  `machine_model` varchar(12) NOT NULL COMMENT '模式 1001 充值模式 2002 抄表模式',
+  `room_id` varchar(30) NOT NULL COMMENT '房屋ID',
+  `room_name` varchar(64) NOT NULL COMMENT '房屋名称',
+  `prestore_degrees` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '预存剩余读数',
+  `cur_degrees` decimal(10,2) NOT NULL COMMENT '本期度数',
+  `cur_reading_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '本期读表时间',
+  `fee_config_id` varchar(30) DEFAULT NULL COMMENT '费用项ID,充值模式时 公式选 用量乘以单价 抄表模式 上期读数-本期读数乘以单价',
+  `fee_config_name` varchar(64) DEFAULT NULL COMMENT '费用项名称',
+  `read_day` int(11) NOT NULL DEFAULT '1' COMMENT '每月抄表日',
+  `read_hours` int(11) NOT NULL DEFAULT '9' COMMENT '抄表小时',
+  `impl_bean` varchar(30) NOT NULL COMMENT '门禁厂家',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `heartbeat_time` datetime NOT NULL COMMENT '设备心跳时间',
+  `control_type` varchar(4) DEFAULT NULL COMMENT '开关闸 0关闸 1开闸',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`machine_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of meter_machine
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for meter_machine_charge
+-- ----------------------------
+DROP TABLE IF EXISTS `meter_machine_charge`;
+CREATE TABLE `meter_machine_charge` (
+  `charge_id` varchar(30) NOT NULL COMMENT '明细ID',
+  `machine_id` varchar(30) NOT NULL COMMENT '表ID',
+  `charge_money` decimal(10,2) DEFAULT '0.00' COMMENT '充值金额',
+  `charge_degrees` decimal(10,2) DEFAULT NULL COMMENT '充值度数',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `state` varchar(12) NOT NULL DEFAULT 'W' COMMENT '状态 W 充值中 C 充值成功',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of meter_machine_charge
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for meter_machine_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `meter_machine_detail`;
+CREATE TABLE `meter_machine_detail` (
+  `detail_id` varchar(30) NOT NULL COMMENT '明细ID',
+  `machine_id` varchar(30) NOT NULL COMMENT '表ID',
+  `detail_type` varchar(12) NOT NULL COMMENT '类型 1001 充值 2002 抄表',
+  `prestore_degrees` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '预存剩余读数',
+  `cur_degrees` decimal(10,2) NOT NULL COMMENT '本期度数',
+  `cur_reading_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '本期读表时间',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `state` varchar(12) NOT NULL DEFAULT 'W' COMMENT '状态',
+  PRIMARY KEY (`detail_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of meter_machine_detail
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for meter_machine_factory
+-- ----------------------------
+DROP TABLE IF EXISTS `meter_machine_factory`;
+CREATE TABLE `meter_machine_factory` (
+  `factory_id` varchar(30) NOT NULL COMMENT '厂家ID',
+  `factory_name` varchar(64) NOT NULL COMMENT '厂家名称',
+  `bean_impl` varchar(512) NOT NULL COMMENT '厂家处理类',
+  `machine_model` varchar(12) NOT NULL DEFAULT '' COMMENT '模式 1001 充值模式； 2002 抄表模式； 3003 都支持',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  PRIMARY KEY (`factory_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of meter_machine_factory
+-- ----------------------------
+INSERT INTO `meter_machine_factory` VALUES ('1', '拓强电表-单相单费率电表', 'tqDianBiaoDanxiangDanFeiLvFactoryAdaptImpl', '2002', 'http://www.tqdianbiao.com/', '2023-02-22 23:59:16', '0');
+INSERT INTO `meter_machine_factory` VALUES ('102023120105760007', '1', '1', '3003', '1', '2023-12-01 17:15:27', '1');
+INSERT INTO `meter_machine_factory` VALUES ('102024011697740005', '官方水电表充值协议（需要厂家支持）', 'hcPreFactoryAdaptImpl', '1001', '', '2024-01-16 12:12:46', '0');
+INSERT INTO `meter_machine_factory` VALUES ('2', '拓强电表-单相远程单费率预付费表', 'tqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl', '3003', 'http://www.tqdianbiao.com', '2023-02-23 18:23:38', '0');
+INSERT INTO `meter_machine_factory` VALUES ('3', '拓强水表-Lora无预付费水表', 'tqShuiBiaoLoraReadFactoryAdaptImpl', '2002', 'http://www.tqdianbiao.com', '2023-02-23 18:23:38', '0');
+INSERT INTO `meter_machine_factory` VALUES ('4', '拓强水表-Lora普通预付费水表', 'tqShuiBiaoLoraRechargeFactoryAdaptImpl', '3003', 'http://www.tqdianbiao.com', '2023-02-23 18:23:38', '0');
+
+-- ----------------------------
+-- Table structure for meter_machine_factory_spec
+-- ----------------------------
+DROP TABLE IF EXISTS `meter_machine_factory_spec`;
+CREATE TABLE `meter_machine_factory_spec` (
+  `spec_id` varchar(30) NOT NULL COMMENT '规格ID',
+  `factory_id` varchar(64) NOT NULL COMMENT '厂家名称',
+  `spec_name` varchar(64) NOT NULL COMMENT '规格名称',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `remark` varchar(256) DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`spec_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of meter_machine_factory_spec
+-- ----------------------------
+INSERT INTO `meter_machine_factory_spec` VALUES ('102023120452910012', '102023120105760007', '测试', '2023-12-04 10:26:42', '0', '必填，请填写测试');
+INSERT INTO `meter_machine_factory_spec` VALUES ('102023120464390018', '102023120105760007', '测试三', '2023-12-04 10:33:53', '0', '必填，请填写测试三');
+INSERT INTO `meter_machine_factory_spec` VALUES ('102024011667160008', '102024011697740005', '采集器', '2024-01-16 12:13:23', '0', '必填，请填写表采集器');
+INSERT INTO `meter_machine_factory_spec` VALUES ('120101', '1', '采集器ID', '2023-02-23 00:01:24', '0', '必填，请填写采集器ID');
+INSERT INTO `meter_machine_factory_spec` VALUES ('120102', '2', '采集器ID', '2023-02-23 00:01:24', '0', '必填，请填写采集器ID');
+INSERT INTO `meter_machine_factory_spec` VALUES ('120103', '3', '采集器ID', '2023-02-23 00:01:24', '0', '必填，请填写采集器ID');
+INSERT INTO `meter_machine_factory_spec` VALUES ('120104', '4', '采集器ID', '2023-02-23 00:01:24', '0', '必填，请填写采集器ID');
+
+-- ----------------------------
+-- Table structure for meter_machine_log
+-- ----------------------------
+DROP TABLE IF EXISTS `meter_machine_log`;
+CREATE TABLE `meter_machine_log` (
+  `log_id` varchar(64) NOT NULL COMMENT '日志ID',
+  `machine_id` varchar(64) NOT NULL COMMENT '设备ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `log_action` varchar(256) DEFAULT NULL COMMENT '日志动作 开闸 1001 关闸 2002',
+  `person_id` varchar(64) DEFAULT NULL COMMENT '操作人',
+  `person_name` varchar(200) DEFAULT NULL COMMENT '用户名称',
+  `req_param` longtext COMMENT '请求报文',
+  `res_param` longtext COMMENT '返回报文',
+  `state` varchar(12) NOT NULL COMMENT '状态，请求成功 10001,返回成功10002,操作失败 10003',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of meter_machine_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for meter_machine_spec
+-- ----------------------------
+DROP TABLE IF EXISTS `meter_machine_spec`;
+CREATE TABLE `meter_machine_spec` (
+  `mms_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `machine_id` varchar(30) NOT NULL COMMENT '打折ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `spec_id` varchar(30) NOT NULL COMMENT '规格ID',
+  `spec_name` varchar(64) NOT NULL COMMENT '规格名称',
+  `spec_value` varchar(30) NOT NULL COMMENT '规格值',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  PRIMARY KEY (`mms_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of meter_machine_spec
+-- ----------------------------
+INSERT INTO `meter_machine_spec` VALUES ('102023082513440018', '102023082580560016', '102023021386560001', '120104', '采集器ID', '2', '2023-08-25 10:35:30', '1');
+INSERT INTO `meter_machine_spec` VALUES ('102023082519230012', '102023082562090010', '102023021386560001', '120103', '采集器ID', '1001', '2023-08-25 10:33:32', '0');
+INSERT INTO `meter_machine_spec` VALUES ('102023082530570016', '102023082566670014', '102023021386560001', '120102', '采集器ID', '3', '2023-08-25 17:52:13', '0');
+INSERT INTO `meter_machine_spec` VALUES ('102023082531240011', '102023082532300009', '102023021386560001', '120104', '采集器ID', '1', '2023-08-25 17:51:42', '1');
+INSERT INTO `meter_machine_spec` VALUES ('102023082599410023', '102023082552280021', '102023021386560001', '120103', '采集器ID', '1', '2023-08-25 16:35:15', '1');
+INSERT INTO `meter_machine_spec` VALUES ('102023091990090012', '102023091988960010', '102023021386560001', '120101', '采集器ID', '123', '2023-09-19 14:03:04', '1');
+INSERT INTO `meter_machine_spec` VALUES ('102023110669060007', '102023110636080006', '102023021386560001', '120101', '采集器ID', '10102', '2023-11-06 00:42:51', '1');
+INSERT INTO `meter_machine_spec` VALUES ('102023112195200010', '102023112125260008', '102023021386560001', '120102', '采集器ID', '230407040554', '2023-11-21 02:04:17', '0');
+INSERT INTO `meter_machine_spec` VALUES ('102024020837750009', '102024020816810007', '2024012252790005', '102024011667160008', '采集器', '111', '2024-02-08 15:43:53', '0');
+INSERT INTO `meter_machine_spec` VALUES ('102024022105480853', '102024022133600851', '2023052267100146', '120102', '采集器ID', '111', '2024-02-21 16:12:31', '0');
+INSERT INTO `meter_machine_spec` VALUES ('102024022620202055', '102024022630492053', '102023021386560001', '120103', '采集器ID', '123456', '2024-02-26 08:59:18', '0');
+INSERT INTO `meter_machine_spec` VALUES ('102025031343320024', '102025031373800022', '102024121715970003', '102024011667160008', '采集器', '11', '2025-03-13 21:31:33', '0');
+
+-- ----------------------------
+-- Table structure for meter_qrcode
+-- ----------------------------
+DROP TABLE IF EXISTS `meter_qrcode`;
+CREATE TABLE `meter_qrcode` (
+  `mq_id` varchar(30) NOT NULL COMMENT '编号',
+  `qrcode_name` varchar(128) NOT NULL COMMENT '名称',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `query_way` varchar(12) NOT NULL DEFAULT 'ROOM' COMMENT '查询方式 房屋方式 ROOM 表号方式 ADDRESS',
+  `create_staff_id` varchar(30) NOT NULL COMMENT '员工ID',
+  `create_staff_name` varchar(30) NOT NULL COMMENT '员工',
+  `state` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '状态 ON 启用，OFF 停用',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态 1表示 失效 0 有效',
+  `remark` varchar(512) DEFAULT NULL COMMENT '说明',
+  PRIMARY KEY (`mq_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of meter_qrcode
+-- ----------------------------
+INSERT INTO `meter_qrcode` VALUES ('102023121925780018', '水电测试二维码2', '102023021386560001', 'ADDRESS', '302023021495090004', '演示物业', 'ON', '2023-12-19 14:39:12', '0', 'www');
+INSERT INTO `meter_qrcode` VALUES ('102023121954180011', '水电测试二维码', '102023021386560001', 'ROOM', '302023021495090004', '演示物业', 'ON', '2023-12-19 14:37:10', '0', 'qqq');
+INSERT INTO `meter_qrcode` VALUES ('102024020667430006', '1', '2024012252790005', 'ROOM', '302024012273480017', '物联网同步小区', 'ON', '2024-02-06 23:18:18', '0', '');
+INSERT INTO `meter_qrcode` VALUES ('102024021908420132', '111', '2023052267100146', 'ROOM', '302024012204210002', 'HC演示小区3', 'ON', '2024-02-19 10:06:05', '0', '');
+
+-- ----------------------------
+-- Table structure for meter_type
+-- ----------------------------
+DROP TABLE IF EXISTS `meter_type`;
+CREATE TABLE `meter_type` (
+  `type_id` varchar(30) NOT NULL COMMENT '类型ID',
+  `type_name` varchar(12) NOT NULL COMMENT '名称',
+  `price` decimal(10,2) NOT NULL COMMENT '单价',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `remark` varchar(200) DEFAULT NULL COMMENT '说明',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0, 在用 1失效',
+  `type_cd` varchar(12) NOT NULL DEFAULT '888800010016' COMMENT '电表类型，888800010016 电表，888800010015 水表，888800010009 煤气表',
+  PRIMARY KEY (`type_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of meter_type
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for monitor_area
+-- ----------------------------
+DROP TABLE IF EXISTS `monitor_area`;
+CREATE TABLE `monitor_area` (
+  `ma_id` varchar(30) NOT NULL COMMENT '区域ID',
+  `ma_name` varchar(64) NOT NULL COMMENT '区域名称',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  PRIMARY KEY (`ma_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of monitor_area
+-- ----------------------------
+INSERT INTO `monitor_area` VALUES ('102023101890550002', '西区-1012', '102023021386560001', 'qqq2', '2023-10-18 10:07:59', '0');
+INSERT INTO `monitor_area` VALUES ('102023101944660006', '东区-1001', '102023021386560001', '', '2023-10-19 10:24:57', '0');
+INSERT INTO `monitor_area` VALUES ('102024022219541155', '卧室', '102023021386560001', '', '2024-02-22 18:23:35', '1');
+INSERT INTO `monitor_area` VALUES ('102024071512320002', 'A区', '2023052267100146', 'A区', '2024-07-15 22:41:19', '0');
+INSERT INTO `monitor_area` VALUES ('102024072078880007', 'A', '2024041265850103', 'A', '2024-07-20 01:32:45', '0');
+INSERT INTO `monitor_area` VALUES ('102024121889200008', 'A', '102024121715970003', 'A', '2024-12-18 14:20:43', '0');
+
+-- ----------------------------
+-- Table structure for monitor_collect
+-- ----------------------------
+DROP TABLE IF EXISTS `monitor_collect`;
+CREATE TABLE `monitor_collect` (
+  `collect_id` varchar(64) NOT NULL COMMENT '收藏编号',
+  `machine_id` varchar(64) NOT NULL COMMENT '设备编号',
+  `machine_code` varchar(64) NOT NULL COMMENT '设备编号',
+  `machine_name` varchar(200) NOT NULL COMMENT '设备编号',
+  `community_id` varchar(64) NOT NULL COMMENT '小区ID',
+  `staff_id` varchar(64) NOT NULL COMMENT '员工ID',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`collect_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of monitor_collect
+-- ----------------------------
+INSERT INTO `monitor_collect` VALUES ('102024110525280002', '102024072019720004', '34020000001320000018', 'B监控', '2024041265850103', '302024012204210002', '2024-11-05 23:54:22', '1');
+INSERT INTO `monitor_collect` VALUES ('102024110558540007', '102024072019720004', '34020000001320000018', 'B监控', '2024041265850103', '302024012204210002', '2024-11-05 23:55:12', '0');
+INSERT INTO `monitor_collect` VALUES ('102024110568990010', '102024072005860010', '34020000001320000028', 'A监控', '2024041265850103', '302024012204210002', '2024-11-05 23:55:18', '0');
+
+-- ----------------------------
+-- Table structure for monitor_machine
+-- ----------------------------
+DROP TABLE IF EXISTS `monitor_machine`;
+CREATE TABLE `monitor_machine` (
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `machine_name` varchar(200) NOT NULL COMMENT '名称',
+  `machine_code` varchar(30) NOT NULL COMMENT '设备编号',
+  `location_name` varchar(64) NOT NULL COMMENT '位置',
+  `ma_id` varchar(30) NOT NULL COMMENT '区域ID',
+  `mm_id` varchar(64) NOT NULL COMMENT '厂家',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `heartbeat_time` datetime NOT NULL COMMENT '设备心跳时间',
+  `state` varchar(12) NOT NULL COMMENT '状态，1001 打开中，1002 关闭中',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `photo_url` varchar(512) DEFAULT NULL COMMENT '图片',
+  PRIMARY KEY (`machine_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of monitor_machine
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for monitor_machine_attrs
+-- ----------------------------
+DROP TABLE IF EXISTS `monitor_machine_attrs`;
+CREATE TABLE `monitor_machine_attrs` (
+  `attr_id` varchar(30) NOT NULL COMMENT '属性id',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `spec_cd` varchar(12) NOT NULL COMMENT '规格id,参考spec表',
+  `value` varchar(128) NOT NULL COMMENT '属性值',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`attr_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of monitor_machine_attrs
+-- ----------------------------
+INSERT INTO `monitor_machine_attrs` VALUES ('102023101918490013', '102023101931410009', '102023021386560001', '1001', 'GIURGI', '0');
+INSERT INTO `monitor_machine_attrs` VALUES ('102023101956310012', '102023101931410009', '102023021386560001', '1002', 'SD7642', '0');
+INSERT INTO `monitor_machine_attrs` VALUES ('102023101967530011', '102023101931410009', '102023021386560001', '1003', '80', '0');
+INSERT INTO `monitor_machine_attrs` VALUES ('102023101973350018', '102023101920930016', '102023021386560001', '2003', 'UYGI1', '0');
+INSERT INTO `monitor_machine_attrs` VALUES ('102023101981590020', '102023101920930016', '102023021386560001', '2001', '192.169.0.1-192.168.0.21', '0');
+INSERT INTO `monitor_machine_attrs` VALUES ('102023101983740019', '102023101920930016', '102023021386560001', '2002', '80', '0');
+INSERT INTO `monitor_machine_attrs` VALUES ('102023122223720021', '102023122221190002', '102023021386560001', '2001', '192.168.31.7:554', '0');
+INSERT INTO `monitor_machine_attrs` VALUES ('102023122228250019', '102023122221190002', '102023021386560001', '2004', '20001', '0');
+INSERT INTO `monitor_machine_attrs` VALUES ('102023122231460004', '102023122221190002', '102023021386560001', '2003', 'admin', '1');
+INSERT INTO `monitor_machine_attrs` VALUES ('102023122237190012', '102023122221190002', '102023021386560001', '2002', 'wuxw2015', '1');
+INSERT INTO `monitor_machine_attrs` VALUES ('102023122249290020', '102023122221190002', '102023021386560001', '2002', 'wuxw2015', '0');
+INSERT INTO `monitor_machine_attrs` VALUES ('102023122252050013', '102023122221190002', '102023021386560001', '2001', '192.168.31.7:554', '1');
+INSERT INTO `monitor_machine_attrs` VALUES ('102023122256900011', '102023122221190002', '102023021386560001', '2003', 'admin', '1');
+INSERT INTO `monitor_machine_attrs` VALUES ('102023122264510018', '102023122221190002', '102023021386560001', '2003', 'admin', '0');
+INSERT INTO `monitor_machine_attrs` VALUES ('102023122275980006', '102023122221190002', '102023021386560001', '2001', 'rtsp://192.168.31.7:554', '1');
+INSERT INTO `monitor_machine_attrs` VALUES ('102023122296870005', '102023122221190002', '102023021386560001', '2002', 'wuxw2015', '1');
+
+-- ----------------------------
+-- Table structure for monitor_machine_model
+-- ----------------------------
+DROP TABLE IF EXISTS `monitor_machine_model`;
+CREATE TABLE `monitor_machine_model` (
+  `mmm_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `model_id` varchar(200) NOT NULL COMMENT '模型ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`mmm_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of monitor_machine_model
+-- ----------------------------
+INSERT INTO `monitor_machine_model` VALUES ('102023101901120003', '102023101920930016', '102023101752680004', '102023021386560001', '2023-10-19 17:26:39', '1');
+INSERT INTO `monitor_machine_model` VALUES ('102023101918180003', '102023101920930016', '102023101914950019', '102023021386560001', '2023-10-19 17:31:46', '1');
+INSERT INTO `monitor_machine_model` VALUES ('102023101931830013', '102023101931410009', '102023101752680004', '102023021386560001', '2023-10-19 17:27:48', '0');
+INSERT INTO `monitor_machine_model` VALUES ('102023101956850008', '102023101931410009', '102023101752680004', '102023021386560001', '2023-10-19 17:27:15', '1');
+INSERT INTO `monitor_machine_model` VALUES ('102023101978720004', '102023101931410009', '102023101914950019', '102023021386560001', '2023-10-19 17:31:46', '0');
+INSERT INTO `monitor_machine_model` VALUES ('102023101979340012', '102023101920930016', '102023101752680004', '102023021386560001', '2023-10-19 17:27:48', '0');
+INSERT INTO `monitor_machine_model` VALUES ('102023101992770007', '102023101920930016', '102023101752680004', '102023021386560001', '2023-10-19 17:27:15', '1');
+INSERT INTO `monitor_machine_model` VALUES ('102024021515460027', '102023101920930016', '102023101914950019', '102023021386560001', '2024-02-15 16:24:38', '0');
+
+-- ----------------------------
+-- Table structure for monitor_machine_person
+-- ----------------------------
+DROP TABLE IF EXISTS `monitor_machine_person`;
+CREATE TABLE `monitor_machine_person` (
+  `mmu_id` varchar(30) NOT NULL COMMENT '监控用户',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `machine_name` varchar(200) NOT NULL COMMENT '名称',
+  `machine_code` varchar(30) NOT NULL COMMENT '设备编号',
+  `person_type` varchar(12) NOT NULL COMMENT '人员类型，1001 业主 2002 员工',
+  `person_id` varchar(30) NOT NULL COMMENT '人员ID',
+  `person_name` varchar(30) NOT NULL COMMENT '人员',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`mmu_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of monitor_machine_person
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for monitor_manufactor
+-- ----------------------------
+DROP TABLE IF EXISTS `monitor_manufactor`;
+CREATE TABLE `monitor_manufactor` (
+  `mm_id` varchar(30) NOT NULL COMMENT '厂家ID',
+  `mm_name` varchar(64) NOT NULL COMMENT '厂家名称',
+  `mm_url` varchar(64) NOT NULL COMMENT '厂家系统地址',
+  `mm_bean` varchar(64) NOT NULL COMMENT '厂家类型',
+  `app_id` varchar(64) NOT NULL COMMENT 'APP_ID',
+  `app_secure` varchar(64) NOT NULL COMMENT '秘钥',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  PRIMARY KEY (`mm_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of monitor_manufactor
+-- ----------------------------
+INSERT INTO `monitor_manufactor` VALUES ('102024071510100002', 'MVideo', 'http://120.46.79.208:9090/', 'mvideoAdaptImpl', '900745bd-5d45-44e2-a488-52cfbc0f52f2', '3720418e-2728-412c-ad50-fb9fcfb0129c', '2023052267100146', '', '2024-07-15 21:41:01', '0');
+INSERT INTO `monitor_manufactor` VALUES ('102024071521940005', '1', '1', 'mvideo', '1', '1', '2023052267100146', '', '2024-07-15 21:43:17', '1');
+INSERT INTO `monitor_manufactor` VALUES ('102024071862020003', 'oxtop', 'http://36.110.109.98:9000', 'oxtopAdaptImpl', 'admin', 'server@666666', '2023052267100146', '', '2024-07-18 00:10:35', '1');
+INSERT INTO `monitor_manufactor` VALUES ('102024072085900004', '测试平台', 'http://192.168.31.45:9090', 'mvideoAdaptImpl', '4765c709-7725-4154-b651-cb12ad666a49', '069e4aa8-2207-4f48-8190-95f8475f67a3', '2024041265850103', '', '2024-07-20 01:32:35', '0');
+INSERT INTO `monitor_manufactor` VALUES ('102024121813820005', 'mvideo', 'http://120.196.148.197:9090/', 'mvideoAdaptImpl', 'c488d54e-5503-44d1-a239-e421722dff5d', 'c488d54e-5503-44d1-a239-e421722dff5d', '102024121715970003', '', '2024-12-18 14:19:04', '0');
+
+-- ----------------------------
+-- Table structure for monitor_model
+-- ----------------------------
+DROP TABLE IF EXISTS `monitor_model`;
+CREATE TABLE `monitor_model` (
+  `model_id` varchar(30) NOT NULL COMMENT '模型ID',
+  `model_name` varchar(200) NOT NULL COMMENT '模型名称',
+  `model_adapt` varchar(64) NOT NULL COMMENT '模型处理类',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`model_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of monitor_model
+-- ----------------------------
+INSERT INTO `monitor_model` VALUES ('102023101752680004', '高空抛物', 'highAltitudeParabolicMotionModelAdaptImpl', '2023-10-17 17:10:48', '0');
+INSERT INTO `monitor_model` VALUES ('102023101914950019', '违规停车', 'illegalParkingModelAdaptImpl', '2023-10-19 13:49:46', '0');
+
+-- ----------------------------
+-- Table structure for monitor_pool
+-- ----------------------------
+DROP TABLE IF EXISTS `monitor_pool`;
+CREATE TABLE `monitor_pool` (
+  `mp_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `machine_code` varchar(30) NOT NULL COMMENT '设备编码',
+  `model_id` varchar(200) NOT NULL COMMENT '模型ID',
+  `monitor_type` varchar(12) NOT NULL COMMENT '监控类型 1001 高空抛物 2002 违规停车 3003 电动车进电梯',
+  `monitor_photo` varchar(128) DEFAULT NULL COMMENT '监控图片',
+  `remark` varchar(256) DEFAULT NULL COMMENT '描述',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`mp_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of monitor_pool
+-- ----------------------------
+INSERT INTO `monitor_pool` VALUES ('1', '102023101920930016', '5-5-01', '102023101752680004', '1001', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/img/20230731/59147afd-aa09-40f2-b6f6-e0398cad4b3b.jpg', 'garigioigowurgviusdiufgow', '102023021386560001', '2023-10-20 11:02:57', '0');
+
+-- ----------------------------
+-- Table structure for mqtt_log
+-- ----------------------------
+DROP TABLE IF EXISTS `mqtt_log`;
+CREATE TABLE `mqtt_log` (
+  `mqtt_id` varchar(64) NOT NULL COMMENT '主键ID',
+  `business_id` varchar(64) DEFAULT NULL COMMENT '业务ID',
+  `topic` varchar(256) DEFAULT NULL COMMENT 'topic',
+  `context` longtext COMMENT '内容',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
+  `business_key` varchar(64) DEFAULT NULL COMMENT '业务key',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`mqtt_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of mqtt_log
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for m_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `m_menu`;
@@ -8252,7 +8697,7 @@ CREATE TABLE `m_menu` (
   `name` varchar(10) NOT NULL COMMENT '菜单名称',
   `g_id` varchar(30) NOT NULL COMMENT '菜单组ID',
   `url` varchar(200) NOT NULL COMMENT '打开地址',
-  `seq` int NOT NULL COMMENT '列顺序',
+  `seq` int(11) NOT NULL COMMENT '列顺序',
   `p_id` varchar(30) NOT NULL COMMENT '权限ID',
   `description` varchar(200) DEFAULT NULL COMMENT '菜单描述',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -8442,7 +8887,7 @@ CREATE TABLE `m_menu_catalog` (
   `ca_id` varchar(30) NOT NULL COMMENT '目录名称',
   `name` varchar(10) NOT NULL COMMENT '菜单组名称',
   `icon` varchar(20) NOT NULL COMMENT '菜单图片',
-  `seq` int NOT NULL COMMENT '列顺序',
+  `seq` int(11) NOT NULL COMMENT '列顺序',
   `store_type` varchar(12) DEFAULT NULL COMMENT '商户类型',
   `url` varchar(256) NOT NULL DEFAULT '#' COMMENT '点击后进入那个页面，#表示不进入',
   `is_show` varchar(12) NOT NULL DEFAULT 'Y' COMMENT '是否显示 Y 是 F否',
@@ -8472,7 +8917,7 @@ CREATE TABLE `m_menu_group` (
   `name` varchar(10) NOT NULL COMMENT '菜单组名称',
   `icon` varchar(20) NOT NULL COMMENT '菜单图片',
   `label` varchar(20) NOT NULL COMMENT '菜单标签',
-  `seq` int NOT NULL COMMENT '列顺序',
+  `seq` int(11) NOT NULL COMMENT '列顺序',
   `description` varchar(200) DEFAULT NULL COMMENT '菜单描述',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
@@ -9034,543 +9479,39 @@ INSERT INTO `m_menu_group_community` VALUES ('102025032489600073', '802023121840
 INSERT INTO `m_menu_group_community` VALUES ('102025032489990066', '802021031653410070', '系统', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
 INSERT INTO `m_menu_group_community` VALUES ('102025032493010074', '802023021424270011', '小区', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
 INSERT INTO `m_menu_group_community` VALUES ('102025032497840061', '802020081417800208', '属性', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
-
--- ----------------------------
--- Table structure for machine_location
--- ----------------------------
-DROP TABLE IF EXISTS `machine_location`;
-CREATE TABLE `machine_location` (
-  `location_id` varchar(30) NOT NULL COMMENT '位置ID',
-  `location_name` varchar(100) NOT NULL COMMENT '位置名称',
-  `community_id` varchar(30) NOT NULL COMMENT '小区',
-  `location_type` varchar(12) NOT NULL COMMENT '位置类型 1000 小区 2000 单元 3000 房屋, t_dict 表',
-  `location_obj_id` varchar(30) NOT NULL DEFAULT '-1' COMMENT '对象ID，大门时小区ID，单元门 时单元ID 房屋时房屋ID',
-  `location_obj_name` varchar(256) NOT NULL DEFAULT '位置' COMMENT '对象ID，大门时小区ID，单元门 时单元ID 房屋时房屋ID',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`location_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of machine_location
--- ----------------------------
-INSERT INTO `machine_location` VALUES ('102023081575010002', '1号楼', '102023021386560001', '6000', '732023080900970002', '1号楼', '2023-08-15 02:06:36', '0');
-INSERT INTO `machine_location` VALUES ('102023081582550011', '1号楼位置1', '102023021386560001', '6000', '732023080900970002', '1号楼', '2023-08-15 01:53:40', '1');
-INSERT INTO `machine_location` VALUES ('102023120774050008', '1', '102023021386560001', '1000', '102023021386560001', '测试小区', '2023-12-07 01:45:12', '0');
-INSERT INTO `machine_location` VALUES ('102024020108990043', '11', '2024012252790005', '1000', '2024012252790005', '物联网同步小区', '2024-02-01 17:03:14', '0');
-INSERT INTO `machine_location` VALUES ('102024021877700004', '1', '102023021386560001', '1000', '102023021386560001', '测试小区', '2024-02-18 12:07:16', '0');
-INSERT INTO `machine_location` VALUES ('102024021934450315', '1', '102023021386560001', '6000', '732023112595880006', '2号楼', '2024-02-19 12:48:33', '1');
-INSERT INTO `machine_location` VALUES ('102024021961000449', '你好', '102023021386560001', '1000', '102023021386560001', '测试小区', '2024-02-19 20:52:03', '0');
-INSERT INTO `machine_location` VALUES ('102024030458000091', '1', '2023052267100146', '1000', '2023052267100146', 'HC演示小区3', '2024-03-04 00:47:25', '0');
-INSERT INTO `machine_location` VALUES ('102024072290020019', 'A位置', '2024041265850103', '1000', '2024041265850103', '另一个小区', '2024-07-22 19:01:19', '0');
-INSERT INTO `machine_location` VALUES ('102025031272110003', '大门位置', '102024121715970003', '1000', '102024121715970003', 'HC演示小区', '2025-03-12 16:40:28', '0');
-
--- ----------------------------
--- Table structure for machine_trans_log
--- ----------------------------
-DROP TABLE IF EXISTS `machine_trans_log`;
-CREATE TABLE `machine_trans_log` (
-  `log_id` varchar(64) NOT NULL COMMENT '日志ID',
-  `machine_code` varchar(64) NOT NULL COMMENT '设备编号',
-  `busi_key` varchar(64) NOT NULL COMMENT '业务key',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `log_type` varchar(256) NOT NULL COMMENT '日志类型 CHARGE_CAR 汽车充电桩',
-  `log_cmd` varchar(64) DEFAULT NULL COMMENT '指令类型',
-  `req_param` longtext COMMENT '请求报文',
-  `res_param` longtext COMMENT '返回报文',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of machine_trans_log
--- ----------------------------
-
--- ----------------------------
--- Table structure for manual_open_door_log
--- ----------------------------
-DROP TABLE IF EXISTS `manual_open_door_log`;
-CREATE TABLE `manual_open_door_log` (
-  `log_id` varchar(64) NOT NULL COMMENT '开门ID',
-  `staff_id` varchar(64) NOT NULL COMMENT '员工ID',
-  `staff_name` varchar(128) NOT NULL COMMENT '员工',
-  `ext_staff_id` varchar(64) DEFAULT NULL COMMENT '外部员工ID',
-  `machine_id` varchar(64) NOT NULL COMMENT '摄像头ID',
-  `machine_name` varchar(128) NOT NULL COMMENT '摄像头名称',
-  `ext_machine_id` varchar(64) DEFAULT NULL COMMENT '外部摄像头ID',
-  `photo_jpg` varchar(512) DEFAULT NULL COMMENT '抓拍图片',
-  `community_id` varchar(64) DEFAULT NULL COMMENT '小区ID',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for meter_machine
--- ----------------------------
-DROP TABLE IF EXISTS `meter_machine`;
-CREATE TABLE `meter_machine` (
-  `machine_id` varchar(30)  NOT NULL COMMENT '表ID',
-  `machine_name` varchar(200)  NOT NULL COMMENT '名称',
-  `address` varchar(30)  NOT NULL COMMENT '表号',
-  `meter_type` varchar(30)  NOT NULL COMMENT '表类型，电表还是水表',
-  `machine_model` varchar(12)  NOT NULL COMMENT '模式 1001 充值模式 2002 抄表模式',
-  `room_id` varchar(30)  NOT NULL COMMENT '房屋ID',
-  `room_name` varchar(64)  NOT NULL COMMENT '房屋名称',
-  `prestore_degrees` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '预存剩余读数',
-  `cur_degrees` decimal(10,2) NOT NULL COMMENT '本期度数',
-  `cur_reading_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '本期读表时间',
-  `fee_config_id` varchar(30)  DEFAULT NULL COMMENT '费用项ID,充值模式时 公式选 用量乘以单价 抄表模式 上期读数-本期读数乘以单价',
-  `fee_config_name` varchar(64)  DEFAULT NULL COMMENT '费用项名称',
-  `read_day` int NOT NULL DEFAULT '1' COMMENT '每月抄表日',
-  `read_hours` int NOT NULL DEFAULT '9' COMMENT '抄表小时',
-  `impl_bean` varchar(30)  NOT NULL COMMENT '门禁厂家',
-  `community_id` varchar(30)  NOT NULL COMMENT '小区ID',
-  `heartbeat_time` datetime NOT NULL COMMENT '设备心跳时间',
-  `control_type` varchar(4)  DEFAULT NULL COMMENT '开关闸 0关闸 1开闸',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`machine_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of meter_machine
--- ----------------------------
-INSERT INTO `meter_machine` VALUES ('102025031373800022', '1-1-2003', '12345623', '102025031345130004', '1001', '752025031305540013', '1-1-1001', '0.00', '0.00', '2025-03-13 21:31:30', null, null, '1', '1', '102024011697740005', '102024121715970003', '2025-03-13 21:31:30', null, '2025-03-13 21:31:32', '0');
-
--- ----------------------------
--- Table structure for meter_machine_charge
--- ----------------------------
-DROP TABLE IF EXISTS `meter_machine_charge`;
-CREATE TABLE `meter_machine_charge` (
-  `charge_id` varchar(30) NOT NULL COMMENT '明细ID',
-  `machine_id` varchar(30) NOT NULL COMMENT '表ID',
-  `charge_money` decimal(10,2) DEFAULT '0.00' COMMENT '充值金额',
-  `charge_degrees` decimal(10,2) DEFAULT NULL COMMENT '充值度数',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `state` varchar(12) NOT NULL DEFAULT 'W' COMMENT '状态 W 充值中 C 充值成功',
-  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of meter_machine_charge
--- ----------------------------
-
--- ----------------------------
--- Table structure for meter_machine_detail
--- ----------------------------
-DROP TABLE IF EXISTS `meter_machine_detail`;
-CREATE TABLE `meter_machine_detail` (
-  `detail_id` varchar(30)  NOT NULL COMMENT '明细ID',
-  `machine_id` varchar(30)  NOT NULL COMMENT '表ID',
-  `detail_type` varchar(12)  NOT NULL COMMENT '类型 1001 充值 2002 抄表',
-  `prestore_degrees` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '预存剩余读数',
-  `cur_degrees` decimal(10,2) NOT NULL COMMENT '本期度数',
-  `cur_reading_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '本期读表时间',
-  `community_id` varchar(30)  NOT NULL COMMENT '小区ID',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `state` varchar(12)  NOT NULL DEFAULT 'W' COMMENT '状态',
-  PRIMARY KEY (`detail_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
-
--- ----------------------------
--- Table structure for meter_machine_factory
--- ----------------------------
-DROP TABLE IF EXISTS `meter_machine_factory`;
-CREATE TABLE `meter_machine_factory` (
-  `factory_id` varchar(30)  NOT NULL COMMENT '厂家ID',
-  `factory_name` varchar(64)  NOT NULL COMMENT '厂家名称',
-  `bean_impl` varchar(512)  NOT NULL COMMENT '厂家处理类',
-  `machine_model` varchar(12)  NOT NULL DEFAULT '' COMMENT '模式 1001 充值模式； 2002 抄表模式； 3003 都支持',
-  `remark` varchar(512)  DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态',
-  PRIMARY KEY (`factory_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of meter_machine_factory
--- ----------------------------
-INSERT INTO `meter_machine_factory` VALUES ('1', '拓强电表-单相单费率电表', 'tqDianBiaoDanxiangDanFeiLvFactoryAdaptImpl', '2002', 'http://www.tqdianbiao.com/', '2023-02-22 23:59:16', '0');
-INSERT INTO `meter_machine_factory` VALUES ('102023120105760007', '1', '1', '3003', '1', '2023-12-01 17:15:27', '1');
-INSERT INTO `meter_machine_factory` VALUES ('102024011697740005', '官方水电表充值协议（需要厂家支持）', 'hcPreFactoryAdaptImpl', '1001', '', '2024-01-16 12:12:46', '0');
-INSERT INTO `meter_machine_factory` VALUES ('2', '拓强电表-单相远程单费率预付费表', 'tqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl', '3003', 'http://www.tqdianbiao.com', '2023-02-23 18:23:38', '0');
-INSERT INTO `meter_machine_factory` VALUES ('3', '拓强水表-Lora无预付费水表', 'tqShuiBiaoLoraReadFactoryAdaptImpl', '2002', 'http://www.tqdianbiao.com', '2023-02-23 18:23:38', '0');
-INSERT INTO `meter_machine_factory` VALUES ('4', '拓强水表-Lora普通预付费水表', 'tqShuiBiaoLoraRechargeFactoryAdaptImpl', '3003', 'http://www.tqdianbiao.com', '2023-02-23 18:23:38', '0');
-
--- ----------------------------
--- Table structure for meter_machine_factory_spec
--- ----------------------------
-DROP TABLE IF EXISTS `meter_machine_factory_spec`;
-CREATE TABLE `meter_machine_factory_spec` (
-  `spec_id` varchar(30)  NOT NULL COMMENT '规格ID',
-  `factory_id` varchar(64)  NOT NULL COMMENT '厂家名称',
-  `spec_name` varchar(64)  NOT NULL COMMENT '规格名称',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态',
-  `remark` varchar(256)  DEFAULT NULL COMMENT '描述',
-  PRIMARY KEY (`spec_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of meter_machine_factory_spec
--- ----------------------------
-INSERT INTO `meter_machine_factory_spec` VALUES ('102023120452910012', '102023120105760007', '测试', '2023-12-04 10:26:42', '0', '必填，请填写测试');
-INSERT INTO `meter_machine_factory_spec` VALUES ('102023120464390018', '102023120105760007', '测试三', '2023-12-04 10:33:53', '0', '必填，请填写测试三');
-INSERT INTO `meter_machine_factory_spec` VALUES ('102024011667160008', '102024011697740005', '采集器', '2024-01-16 12:13:23', '0', '必填，请填写表采集器');
-INSERT INTO `meter_machine_factory_spec` VALUES ('120101', '1', '采集器ID', '2023-02-23 00:01:24', '0', '必填，请填写采集器ID');
-INSERT INTO `meter_machine_factory_spec` VALUES ('120102', '2', '采集器ID', '2023-02-23 00:01:24', '0', '必填，请填写采集器ID');
-INSERT INTO `meter_machine_factory_spec` VALUES ('120103', '3', '采集器ID', '2023-02-23 00:01:24', '0', '必填，请填写采集器ID');
-INSERT INTO `meter_machine_factory_spec` VALUES ('120104', '4', '采集器ID', '2023-02-23 00:01:24', '0', '必填，请填写采集器ID');
-
--- ----------------------------
--- Table structure for meter_machine_log
--- ----------------------------
-DROP TABLE IF EXISTS `meter_machine_log`;
-CREATE TABLE `meter_machine_log` (
-  `log_id` varchar(64) NOT NULL COMMENT '日志ID',
-  `machine_id` varchar(64) NOT NULL COMMENT '设备ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `log_action` varchar(256)  DEFAULT NULL COMMENT '日志动作 开闸 1001 关闸 2002',
-  `person_id` varchar(64) DEFAULT NULL COMMENT '操作人',
-  `person_name` varchar(200) DEFAULT NULL COMMENT '用户名称',
-  `req_param` longtext COMMENT '请求报文',
-  `res_param` longtext COMMENT '返回报文',
-  `state` varchar(12) NOT NULL COMMENT '状态，请求成功 10001,返回成功10002,操作失败 10003',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of meter_machine_log
--- ----------------------------
-
--- ----------------------------
--- Table structure for meter_machine_spec
--- ----------------------------
-DROP TABLE IF EXISTS `meter_machine_spec`;
-CREATE TABLE `meter_machine_spec` (
-  `mms_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键ID',
-  `machine_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '打折ID',
-  `community_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '小区ID',
-  `spec_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规格ID',
-  `spec_name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规格名称',
-  `spec_value` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规格值',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '数据状态',
-  PRIMARY KEY (`mms_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of meter_machine_spec
--- ----------------------------
-INSERT INTO `meter_machine_spec` VALUES ('102023082513440018', '102023082580560016', '102023021386560001', '120104', '采集器ID', '2', '2023-08-25 10:35:30', '1');
-INSERT INTO `meter_machine_spec` VALUES ('102023082519230012', '102023082562090010', '102023021386560001', '120103', '采集器ID', '1001', '2023-08-25 10:33:32', '0');
-INSERT INTO `meter_machine_spec` VALUES ('102023082530570016', '102023082566670014', '102023021386560001', '120102', '采集器ID', '3', '2023-08-25 17:52:13', '0');
-INSERT INTO `meter_machine_spec` VALUES ('102023082531240011', '102023082532300009', '102023021386560001', '120104', '采集器ID', '1', '2023-08-25 17:51:42', '1');
-INSERT INTO `meter_machine_spec` VALUES ('102023082599410023', '102023082552280021', '102023021386560001', '120103', '采集器ID', '1', '2023-08-25 16:35:15', '1');
-INSERT INTO `meter_machine_spec` VALUES ('102023091990090012', '102023091988960010', '102023021386560001', '120101', '采集器ID', '123', '2023-09-19 14:03:04', '1');
-INSERT INTO `meter_machine_spec` VALUES ('102023110669060007', '102023110636080006', '102023021386560001', '120101', '采集器ID', '10102', '2023-11-06 00:42:51', '1');
-INSERT INTO `meter_machine_spec` VALUES ('102023112195200010', '102023112125260008', '102023021386560001', '120102', '采集器ID', '230407040554', '2023-11-21 02:04:17', '0');
-INSERT INTO `meter_machine_spec` VALUES ('102024020837750009', '102024020816810007', '2024012252790005', '102024011667160008', '采集器', '111', '2024-02-08 15:43:53', '0');
-INSERT INTO `meter_machine_spec` VALUES ('102024022105480853', '102024022133600851', '2023052267100146', '120102', '采集器ID', '111', '2024-02-21 16:12:31', '0');
-INSERT INTO `meter_machine_spec` VALUES ('102024022620202055', '102024022630492053', '102023021386560001', '120103', '采集器ID', '123456', '2024-02-26 08:59:18', '0');
-INSERT INTO `meter_machine_spec` VALUES ('102025031343320024', '102025031373800022', '102024121715970003', '102024011667160008', '采集器', '11', '2025-03-13 21:31:33', '0');
-
--- ----------------------------
--- Table structure for meter_qrcode
--- ----------------------------
-DROP TABLE IF EXISTS `meter_qrcode`;
-CREATE TABLE `meter_qrcode` (
-  `mq_id` varchar(30) NOT NULL COMMENT '编号',
-  `qrcode_name` varchar(128) NOT NULL COMMENT '名称',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `query_way` varchar(12) NOT NULL DEFAULT 'ROOM' COMMENT '查询方式 房屋方式 ROOM 表号方式 ADDRESS',
-  `create_staff_id` varchar(30) NOT NULL COMMENT '员工ID',
-  `create_staff_name` varchar(30) NOT NULL COMMENT '员工',
-  `state` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '状态 ON 启用，OFF 停用',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态 1表示 失效 0 有效',
-  `remark` varchar(512) DEFAULT NULL COMMENT '说明',
-  PRIMARY KEY (`mq_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of meter_qrcode
--- ----------------------------
-INSERT INTO `meter_qrcode` VALUES ('102023121925780018', '水电测试二维码2', '102023021386560001', 'ADDRESS', '302023021495090004', '演示物业', 'ON', '2023-12-19 14:39:12', '0', 'www');
-INSERT INTO `meter_qrcode` VALUES ('102023121954180011', '水电测试二维码', '102023021386560001', 'ROOM', '302023021495090004', '演示物业', 'ON', '2023-12-19 14:37:10', '0', 'qqq');
-INSERT INTO `meter_qrcode` VALUES ('102024020667430006', '1', '2024012252790005', 'ROOM', '302024012273480017', '物联网同步小区', 'ON', '2024-02-06 23:18:18', '0', '');
-INSERT INTO `meter_qrcode` VALUES ('102024021908420132', '111', '2023052267100146', 'ROOM', '302024012204210002', 'HC演示小区3', 'ON', '2024-02-19 10:06:05', '0', '');
-
--- ----------------------------
--- Table structure for meter_type
--- ----------------------------
-DROP TABLE IF EXISTS `meter_type`;
-CREATE TABLE `meter_type` (
-  `type_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '类型ID',
-  `type_name` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名称',
-  `price` decimal(10,2) NOT NULL COMMENT '单价',
-  `community_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '小区ID',
-  `remark` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '说明',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0, 在用 1失效',
-  `type_cd` varchar(12) NOT NULL DEFAULT '888800010016' COMMENT '电表类型，888800010016 电表，888800010015 水表，888800010009 煤气表',
-  PRIMARY KEY (`type_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of meter_type
--- ----------------------------
-INSERT INTO `meter_type` VALUES ('102025031345130004', '电表', '1.20', '102024121715970003', '是', '2025-03-13 21:29:21', '0', '888800010016');
-
--- ----------------------------
--- Table structure for monitor_area
--- ----------------------------
-DROP TABLE IF EXISTS `monitor_area`;
-CREATE TABLE `monitor_area` (
-  `ma_id` varchar(30) NOT NULL COMMENT '区域ID',
-  `ma_name` varchar(64) NOT NULL COMMENT '区域名称',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
-  PRIMARY KEY (`ma_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of monitor_area
--- ----------------------------
-INSERT INTO `monitor_area` VALUES ('102023101890550002', '西区-1012', '102023021386560001', 'qqq2', '2023-10-18 10:07:59', '0');
-INSERT INTO `monitor_area` VALUES ('102023101944660006', '东区-1001', '102023021386560001', '', '2023-10-19 10:24:57', '0');
-INSERT INTO `monitor_area` VALUES ('102024022219541155', '卧室', '102023021386560001', '', '2024-02-22 18:23:35', '1');
-INSERT INTO `monitor_area` VALUES ('102024071512320002', 'A区', '2023052267100146', 'A区', '2024-07-15 22:41:19', '0');
-INSERT INTO `monitor_area` VALUES ('102024072078880007', 'A', '2024041265850103', 'A', '2024-07-20 01:32:45', '0');
-INSERT INTO `monitor_area` VALUES ('102024121889200008', 'A', '102024121715970003', 'A', '2024-12-18 14:20:43', '0');
-
--- ----------------------------
--- Table structure for monitor_collect
--- ----------------------------
-DROP TABLE IF EXISTS `monitor_collect`;
-CREATE TABLE `monitor_collect` (
-  `collect_id` varchar(64) NOT NULL COMMENT '收藏编号',
-  `machine_id` varchar(64) NOT NULL COMMENT '设备编号',
-  `machine_code` varchar(64) NOT NULL COMMENT '设备编号',
-  `machine_name` varchar(200) NOT NULL COMMENT '设备编号',
-  `community_id` varchar(64) NOT NULL COMMENT '小区ID',
-  `staff_id` varchar(64) NOT NULL COMMENT '员工ID',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`collect_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of monitor_collect
--- ----------------------------
-INSERT INTO `monitor_collect` VALUES ('102024110525280002', '102024072019720004', '34020000001320000018', 'B监控', '2024041265850103', '302024012204210002', '2024-11-05 23:54:22', '1');
-INSERT INTO `monitor_collect` VALUES ('102024110558540007', '102024072019720004', '34020000001320000018', 'B监控', '2024041265850103', '302024012204210002', '2024-11-05 23:55:12', '0');
-INSERT INTO `monitor_collect` VALUES ('102024110568990010', '102024072005860010', '34020000001320000028', 'A监控', '2024041265850103', '302024012204210002', '2024-11-05 23:55:18', '0');
-
--- ----------------------------
--- Table structure for monitor_machine
--- ----------------------------
-DROP TABLE IF EXISTS `monitor_machine`;
-CREATE TABLE `monitor_machine` (
-  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
-  `machine_name` varchar(200) NOT NULL COMMENT '名称',
-  `machine_code` varchar(30) NOT NULL COMMENT '设备编号',
-  `location_name` varchar(64) NOT NULL COMMENT '位置',
-  `ma_id` varchar(30) NOT NULL COMMENT '区域ID',
-  `mm_id` varchar(64) NOT NULL COMMENT '厂家',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `heartbeat_time` datetime NOT NULL COMMENT '设备心跳时间',
-  `state` varchar(12) NOT NULL COMMENT '状态，1001 打开中，1002 关闭中',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `photo_url` varchar(512) DEFAULT NULL COMMENT '图片',
-  PRIMARY KEY (`machine_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of monitor_machine
--- ----------------------------
-INSERT INTO `monitor_machine` VALUES ('102024121834420011', '测试相机', '34020000001320000015', '1', '102024121889200008', '102024121813820005', '102024121715970003', '2024-12-18 14:20:51', '1002', '2024-12-18 14:20:52', '0', 'img/20241218/13ba8336-4055-4e0f-b7f6-0244f3f1e52e.jpg');
-
--- ----------------------------
--- Table structure for monitor_machine_attrs
--- ----------------------------
-DROP TABLE IF EXISTS `monitor_machine_attrs`;
-CREATE TABLE `monitor_machine_attrs` (
-  `attr_id` varchar(30) NOT NULL COMMENT '属性id',
-  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `spec_cd` varchar(12) NOT NULL COMMENT '规格id,参考spec表',
-  `value` varchar(128) NOT NULL COMMENT '属性值',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`attr_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of monitor_machine_attrs
--- ----------------------------
-INSERT INTO `monitor_machine_attrs` VALUES ('102023101918490013', '102023101931410009', '102023021386560001', '1001', 'GIURGI', '0');
-INSERT INTO `monitor_machine_attrs` VALUES ('102023101956310012', '102023101931410009', '102023021386560001', '1002', 'SD7642', '0');
-INSERT INTO `monitor_machine_attrs` VALUES ('102023101967530011', '102023101931410009', '102023021386560001', '1003', '80', '0');
-INSERT INTO `monitor_machine_attrs` VALUES ('102023101973350018', '102023101920930016', '102023021386560001', '2003', 'UYGI1', '0');
-INSERT INTO `monitor_machine_attrs` VALUES ('102023101981590020', '102023101920930016', '102023021386560001', '2001', '192.169.0.1-192.168.0.21', '0');
-INSERT INTO `monitor_machine_attrs` VALUES ('102023101983740019', '102023101920930016', '102023021386560001', '2002', '80', '0');
-INSERT INTO `monitor_machine_attrs` VALUES ('102023122223720021', '102023122221190002', '102023021386560001', '2001', '192.168.31.7:554', '0');
-INSERT INTO `monitor_machine_attrs` VALUES ('102023122228250019', '102023122221190002', '102023021386560001', '2004', '20001', '0');
-INSERT INTO `monitor_machine_attrs` VALUES ('102023122231460004', '102023122221190002', '102023021386560001', '2003', 'admin', '1');
-INSERT INTO `monitor_machine_attrs` VALUES ('102023122237190012', '102023122221190002', '102023021386560001', '2002', 'wuxw2015', '1');
-INSERT INTO `monitor_machine_attrs` VALUES ('102023122249290020', '102023122221190002', '102023021386560001', '2002', 'wuxw2015', '0');
-INSERT INTO `monitor_machine_attrs` VALUES ('102023122252050013', '102023122221190002', '102023021386560001', '2001', '192.168.31.7:554', '1');
-INSERT INTO `monitor_machine_attrs` VALUES ('102023122256900011', '102023122221190002', '102023021386560001', '2003', 'admin', '1');
-INSERT INTO `monitor_machine_attrs` VALUES ('102023122264510018', '102023122221190002', '102023021386560001', '2003', 'admin', '0');
-INSERT INTO `monitor_machine_attrs` VALUES ('102023122275980006', '102023122221190002', '102023021386560001', '2001', 'rtsp://192.168.31.7:554', '1');
-INSERT INTO `monitor_machine_attrs` VALUES ('102023122296870005', '102023122221190002', '102023021386560001', '2002', 'wuxw2015', '1');
-
--- ----------------------------
--- Table structure for monitor_machine_model
--- ----------------------------
-DROP TABLE IF EXISTS `monitor_machine_model`;
-CREATE TABLE `monitor_machine_model` (
-  `mmm_id` varchar(30) NOT NULL COMMENT '主键ID',
-  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
-  `model_id` varchar(200)  NOT NULL COMMENT '模型ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`mmm_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of monitor_machine_model
--- ----------------------------
-INSERT INTO `monitor_machine_model` VALUES ('102023101901120003', '102023101920930016', '102023101752680004', '102023021386560001', '2023-10-19 17:26:39', '1');
-INSERT INTO `monitor_machine_model` VALUES ('102023101918180003', '102023101920930016', '102023101914950019', '102023021386560001', '2023-10-19 17:31:46', '1');
-INSERT INTO `monitor_machine_model` VALUES ('102023101931830013', '102023101931410009', '102023101752680004', '102023021386560001', '2023-10-19 17:27:48', '0');
-INSERT INTO `monitor_machine_model` VALUES ('102023101956850008', '102023101931410009', '102023101752680004', '102023021386560001', '2023-10-19 17:27:15', '1');
-INSERT INTO `monitor_machine_model` VALUES ('102023101978720004', '102023101931410009', '102023101914950019', '102023021386560001', '2023-10-19 17:31:46', '0');
-INSERT INTO `monitor_machine_model` VALUES ('102023101979340012', '102023101920930016', '102023101752680004', '102023021386560001', '2023-10-19 17:27:48', '0');
-INSERT INTO `monitor_machine_model` VALUES ('102023101992770007', '102023101920930016', '102023101752680004', '102023021386560001', '2023-10-19 17:27:15', '1');
-INSERT INTO `monitor_machine_model` VALUES ('102024021515460027', '102023101920930016', '102023101914950019', '102023021386560001', '2024-02-15 16:24:38', '0');
-
--- ----------------------------
--- Table structure for monitor_machine_person
--- ----------------------------
-DROP TABLE IF EXISTS `monitor_machine_person`;
-CREATE TABLE `monitor_machine_person` (
-  `mmu_id` varchar(30) NOT NULL COMMENT '监控用户',
-  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
-  `machine_name` varchar(200) NOT NULL COMMENT '名称',
-  `machine_code` varchar(30) NOT NULL COMMENT '设备编号',
-  `person_type` varchar(12) NOT NULL COMMENT '人员类型，1001 业主 2002 员工',
-  `person_id` varchar(30) NOT NULL COMMENT '人员ID',
-  `person_name` varchar(30) NOT NULL COMMENT '人员',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`mmu_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of monitor_machine_person
--- ----------------------------
-INSERT INTO `monitor_machine_person` VALUES ('102024121823540016', '102024121834420011', '测试相机', '34020000001320000015', '1001', '9999', '全部业主', '102024121715970003', '2024-12-18 14:57:40', '0');
-
--- ----------------------------
--- Table structure for monitor_manufactor
--- ----------------------------
-DROP TABLE IF EXISTS `monitor_manufactor`;
-CREATE TABLE `monitor_manufactor` (
-  `mm_id` varchar(30) NOT NULL COMMENT '厂家ID',
-  `mm_name` varchar(64) NOT NULL COMMENT '厂家名称',
-  `mm_url` varchar(64) NOT NULL COMMENT '厂家系统地址',
-  `mm_bean` varchar(64) NOT NULL COMMENT '厂家类型',
-  `app_id` varchar(64) NOT NULL COMMENT 'APP_ID',
-  `app_secure` varchar(64) NOT NULL COMMENT '秘钥',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
-  PRIMARY KEY (`mm_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of monitor_manufactor
--- ----------------------------
-INSERT INTO `monitor_manufactor` VALUES ('102024071510100002', 'MVideo', 'http://120.46.79.208:9090/', 'mvideoAdaptImpl', '900745bd-5d45-44e2-a488-52cfbc0f52f2', '3720418e-2728-412c-ad50-fb9fcfb0129c', '2023052267100146', '', '2024-07-15 21:41:01', '0');
-INSERT INTO `monitor_manufactor` VALUES ('102024071521940005', '1', '1', 'mvideo', '1', '1', '2023052267100146', '', '2024-07-15 21:43:17', '1');
-INSERT INTO `monitor_manufactor` VALUES ('102024071862020003', 'oxtop', 'http://36.110.109.98:9000', 'oxtopAdaptImpl', 'admin', 'server@666666', '2023052267100146', '', '2024-07-18 00:10:35', '1');
-INSERT INTO `monitor_manufactor` VALUES ('102024072085900004', '测试平台', 'http://192.168.31.45:9090', 'mvideoAdaptImpl', '4765c709-7725-4154-b651-cb12ad666a49', '069e4aa8-2207-4f48-8190-95f8475f67a3', '2024041265850103', '', '2024-07-20 01:32:35', '0');
-INSERT INTO `monitor_manufactor` VALUES ('102024121813820005', 'mvideo', 'http://120.196.148.197:9090/', 'mvideoAdaptImpl', 'c488d54e-5503-44d1-a239-e421722dff5d', 'c488d54e-5503-44d1-a239-e421722dff5d', '102024121715970003', '', '2024-12-18 14:19:04', '0');
-
--- ----------------------------
--- Table structure for monitor_model
--- ----------------------------
-DROP TABLE IF EXISTS `monitor_model`;
-CREATE TABLE `monitor_model` (
-  `model_id` varchar(30) NOT NULL COMMENT '模型ID',
-  `model_name` varchar(200) NOT NULL COMMENT '模型名称',
-  `model_adapt` varchar(64) NOT NULL COMMENT '模型处理类',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`model_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of monitor_model
--- ----------------------------
-INSERT INTO `monitor_model` VALUES ('102023101752680004', '高空抛物', 'highAltitudeParabolicMotionModelAdaptImpl', '2023-10-17 17:10:48', '0');
-INSERT INTO `monitor_model` VALUES ('102023101914950019', '违规停车', 'illegalParkingModelAdaptImpl', '2023-10-19 13:49:46', '0');
-
--- ----------------------------
--- Table structure for monitor_pool
--- ----------------------------
-DROP TABLE IF EXISTS `monitor_pool`;
-CREATE TABLE `monitor_pool` (
-  `mp_id` varchar(30) NOT NULL COMMENT '主键ID',
-  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
-  `machine_code` varchar(30)  NOT NULL COMMENT '设备编码',
-  `model_id` varchar(200)  NOT NULL COMMENT '模型ID',
-  `monitor_type` varchar(12) NOT NULL COMMENT '监控类型 1001 高空抛物 2002 违规停车 3003 电动车进电梯',
-  `monitor_photo` varchar(128) DEFAULT NULL COMMENT '监控图片',
-  `remark` varchar(256) DEFAULT NULL COMMENT '描述',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`mp_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of monitor_pool
--- ----------------------------
-INSERT INTO `monitor_pool` VALUES ('1', '102023101920930016', '5-5-01', '102023101752680004', '1001', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/img/20230731/59147afd-aa09-40f2-b6f6-e0398cad4b3b.jpg', 'garigioigowurgviusdiufgow', '102023021386560001', '2023-10-20 11:02:57', '0');
-
--- ----------------------------
--- Table structure for mqtt_log
--- ----------------------------
-DROP TABLE IF EXISTS `mqtt_log`;
-CREATE TABLE `mqtt_log` (
-  `mqtt_id` varchar(64) NOT NULL COMMENT '主键ID',
-  `business_id` varchar(64) DEFAULT NULL COMMENT '业务ID',
-  `topic` varchar(256) DEFAULT NULL COMMENT 'topic',
-  `context` longtext COMMENT '内容',
-  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
-  `business_key` varchar(64) DEFAULT NULL COMMENT '业务key',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`mqtt_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of mqtt_log
--- ----------------------------
+INSERT INTO `m_menu_group_community` VALUES ('102025040702860040', '802023021424270011', '小区', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040706740051', '802023103063600003', '门锁', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040708500027', '802020081417800208', '属性', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040710140037', '802025031373300006', '进出', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040712690049', '802023021422680001', '组织', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040713050042', '802023081520910004', '门禁', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040719150039', '802023121840390001', '系统', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040729820026', '800201907016', '配置', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040731500054', '802023092784350001', '事件', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040732380029', '800201908018', '缓存', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040733750053', '802023110632150002', '系统', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040734450055', '802024012406520004', '考勤', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040737000038', '802025031448910011', '订单', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040738700043', '802023082372950010', '道闸', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040742930052', '802023112376120003', '仪表', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040743930045', '802023082455000001', '水电', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040750990023', '800201907014', '服务', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040751470036', '802023112492090051', '3D', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040764370041', '802023021604710005', '房产', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040764590044', '802023081695960001', '充电', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040769470034', '802023091899930009', '厂家', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040770030050', '802023103017170002', '优惠', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040772490031', '802020111618520004', '日志', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040773190048', '802023101718180007', '监控', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040778630047', '802023092136420001', '路灯', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040779930028', '802021110952690125', '报表', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040780560025', '800201908019', '菜单', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040781640030', '802019090224100001', '任务', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040784290024', '800201907015', '配置', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040785040032', '802021031653410070', '系统', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040793880033', '802023021272240006', '数据', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040794870046', '802023091881700008', '梯控', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025040799730035', '802025031267910009', '设备', '102025040731450002', 'HC演示小区', '2025-04-07 14:04:31', '0');
 
 -- ----------------------------
 -- Table structure for owner_car
@@ -9608,14 +9549,14 @@ CREATE TABLE `owner_car` (
 -- ----------------------------
 DROP TABLE IF EXISTS `owner_car_attr`;
 CREATE TABLE `owner_car_attr` (
-  `b_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订单ID',
-  `attr_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '属性id',
-  `car_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '车辆ID',
-  `community_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '小区ID',
-  `spec_cd` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规格id,参考spec表',
-  `value` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '属性值',
+  `b_id` varchar(30) NOT NULL COMMENT '订单ID',
+  `attr_id` varchar(30) NOT NULL COMMENT '属性id',
+  `car_id` varchar(30) NOT NULL COMMENT '车辆ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `spec_cd` varchar(12) NOT NULL COMMENT '规格id,参考spec表',
+  `value` varchar(50) NOT NULL COMMENT '属性值',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`attr_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -9642,6 +9583,554 @@ CREATE TABLE `owner_car_open_user` (
 -- ----------------------------
 -- Records of owner_car_open_user
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for parking_area
+-- ----------------------------
+DROP TABLE IF EXISTS `parking_area`;
+CREATE TABLE `parking_area` (
+  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `num` varchar(12) NOT NULL COMMENT '停车场编号',
+  `type_cd` varchar(12) NOT NULL COMMENT '停车场类型，1001 地上停车场 2001 地下停车场',
+  `remark` varchar(300) DEFAULT NULL COMMENT '备注',
+  `ext_pa_id` varchar(64) DEFAULT NULL COMMENT '三方停车场ID',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  UNIQUE KEY `pa_id` (`pa_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of parking_area
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for parking_box
+-- ----------------------------
+DROP TABLE IF EXISTS `parking_box`;
+CREATE TABLE `parking_box` (
+  `box_id` varchar(30) NOT NULL COMMENT '岗亭ID',
+  `box_name` varchar(64) NOT NULL COMMENT '岗亭名称',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `temp_car_in` varchar(12) NOT NULL COMMENT '临时车是否进场 Y 进场 N 不进场',
+  `fee` varchar(12) NOT NULL DEFAULT 'Y' COMMENT '岗亭是否 收费，主要考虑 岗亭嵌套问题 Y 收费 N 不收费',
+  `blue_car_in` varchar(12) NOT NULL COMMENT '蓝牌车是否可以进场 Y 进场 N 不进场',
+  `yelow_car_in` varchar(12) NOT NULL COMMENT '黄牌车是否可以进场 Y 进场 N 不进场',
+  `remark` varchar(300) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `temp_auth` varchar(12) NOT NULL DEFAULT 'N' COMMENT '临时车进入是否审核 Y 需要 N 不需',
+  PRIMARY KEY (`box_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of parking_box
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for parking_box_area
+-- ----------------------------
+DROP TABLE IF EXISTS `parking_box_area`;
+CREATE TABLE `parking_box_area` (
+  `ba_id` varchar(30) NOT NULL COMMENT '关系ID',
+  `box_id` varchar(30) NOT NULL COMMENT '岗亭ID',
+  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `default_area` varchar(12) NOT NULL COMMENT '是否默认停车场，主要用于临时车算费时的规则 Y 是 N 否',
+  `remark` varchar(300) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`ba_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of parking_box_area
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for parking_coupon
+-- ----------------------------
+DROP TABLE IF EXISTS `parking_coupon`;
+CREATE TABLE `parking_coupon` (
+  `coupon_id` varchar(30) NOT NULL COMMENT '优惠券ID',
+  `name` varchar(64) NOT NULL COMMENT '名称',
+  `type_cd` varchar(12) NOT NULL COMMENT '时长减免 1001 金额减免 2002 折扣减免 3003 全免 4004',
+  `community_id` varchar(30) NOT NULL COMMENT '小区',
+  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
+  `value` varchar(30) NOT NULL COMMENT '面值',
+  `value_price` decimal(10,2) NOT NULL COMMENT '售价',
+  `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `pa_name` varchar(64) NOT NULL COMMENT '停车场名称',
+  PRIMARY KEY (`coupon_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of parking_coupon
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for parking_coupon_car
+-- ----------------------------
+DROP TABLE IF EXISTS `parking_coupon_car`;
+CREATE TABLE `parking_coupon_car` (
+  `pcc_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `coupon_id` varchar(30) NOT NULL COMMENT '优惠券ID',
+  `coupon_shop_id` varchar(30) NOT NULL COMMENT '优惠券商户ID',
+  `shop_id` varchar(30) NOT NULL COMMENT '商铺ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区',
+  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
+  `car_num` varchar(12) NOT NULL COMMENT '车牌号',
+  `give_way` varchar(12) NOT NULL DEFAULT '1001' COMMENT '赠送方式 1001 扫码获取 2002 商家添加 3003 购物自动赠送',
+  `type_cd` varchar(12) NOT NULL COMMENT '时长减免 1001 金额减免 2002 折扣减免 3003 全免 4004',
+  `value` varchar(30) NOT NULL COMMENT '面值',
+  `state` varchar(12) NOT NULL DEFAULT '1001' COMMENT '状态 1001 未使用 2002 已使用 3003 作废',
+  `remark` varchar(512) DEFAULT NULL COMMENT '使用说明',
+  `start_time` datetime NOT NULL COMMENT '开始时间',
+  `end_time` datetime NOT NULL COMMENT '结束时间',
+  `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`pcc_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of parking_coupon_car
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for parking_coupon_car_order
+-- ----------------------------
+DROP TABLE IF EXISTS `parking_coupon_car_order`;
+CREATE TABLE `parking_coupon_car_order` (
+  `order_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `pcc_id` varchar(30) NOT NULL COMMENT '优惠券ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区',
+  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
+  `machine_id` varchar(30) NOT NULL COMMENT '停车设备ID',
+  `machine_name` varchar(64) NOT NULL COMMENT '设备名称',
+  `car_num` varchar(12) NOT NULL COMMENT '车牌号',
+  `car_out_id` varchar(30) NOT NULL COMMENT '对应car_inout_detail 中的detail_id',
+  `remark` varchar(512) DEFAULT NULL COMMENT '使用说明',
+  `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of parking_coupon_car_order
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for parking_coupon_charge
+-- ----------------------------
+DROP TABLE IF EXISTS `parking_coupon_charge`;
+CREATE TABLE `parking_coupon_charge` (
+  `pcc_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `coupon_shop_id` varchar(30) NOT NULL COMMENT '商铺优惠券ID',
+  `shop_id` varchar(64) NOT NULL COMMENT '商铺ID',
+  `shop_name` varchar(64) NOT NULL COMMENT '商铺名称',
+  `community_id` varchar(30) NOT NULL COMMENT '小区',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`pcc_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of parking_coupon_charge
+-- ----------------------------
+INSERT INTO `parking_coupon_charge` VALUES ('102025012353340010', '102025012381250031', '502025012327120018', '充电厂家', '102024121715970003', '102025012371590041', '0', '2025-01-23 02:26:14');
+INSERT INTO `parking_coupon_charge` VALUES ('102025012376800002', '102025012381250031', '502025012327120018', '充电厂家', '102024121715970003', '102025012371590041', '1', '2025-01-23 01:04:33');
+INSERT INTO `parking_coupon_charge` VALUES ('102025012399370002', '102025012381250031', '502025012327120018', '充电厂家', '102024121715970003', '102025012371590041', '1', '2025-01-23 00:56:58');
+
+-- ----------------------------
+-- Table structure for parking_coupon_order
+-- ----------------------------
+DROP TABLE IF EXISTS `parking_coupon_order`;
+CREATE TABLE `parking_coupon_order` (
+  `order_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `coupon_id` varchar(30) NOT NULL COMMENT '优惠券ID',
+  `shop_id` varchar(64) NOT NULL COMMENT '商铺ID',
+  `shop_name` varchar(64) NOT NULL COMMENT '商铺名称',
+  `community_id` varchar(30) NOT NULL COMMENT '小区',
+  `community_name` varchar(64) NOT NULL COMMENT '小区名称',
+  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
+  `pa_name` varchar(64) NOT NULL COMMENT '停车场名称',
+  `price` decimal(10,2) NOT NULL COMMENT '售价',
+  `quantity` int(11) NOT NULL COMMENT '数量',
+  `receivable_amount` decimal(10,2) NOT NULL COMMENT '应收金额',
+  `received_amount` decimal(10,2) NOT NULL COMMENT '实收金额',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
+  `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `pay_type` varchar(12) DEFAULT NULL COMMENT '支付方式 查看pay_fee_detail 支付方式',
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of parking_coupon_order
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for parking_coupon_shop
+-- ----------------------------
+DROP TABLE IF EXISTS `parking_coupon_shop`;
+CREATE TABLE `parking_coupon_shop` (
+  `coupon_shop_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `coupon_id` varchar(30) NOT NULL COMMENT '优惠券ID',
+  `shop_id` varchar(64) NOT NULL COMMENT '商铺ID',
+  `shop_name` varchar(64) NOT NULL COMMENT '商铺名称',
+  `community_id` varchar(30) NOT NULL COMMENT '小区',
+  `community_name` varchar(64) NOT NULL COMMENT '小区名称',
+  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
+  `quantity` int(11) NOT NULL COMMENT '数量',
+  `start_time` datetime NOT NULL COMMENT '开始时间',
+  `end_time` datetime NOT NULL COMMENT '结束时间',
+  `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `pa_name` varchar(64) NOT NULL COMMENT '停车场名称',
+  PRIMARY KEY (`coupon_shop_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of parking_coupon_shop
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for parking_region
+-- ----------------------------
+DROP TABLE IF EXISTS `parking_region`;
+CREATE TABLE `parking_region` (
+  `pr_id` varchar(30) NOT NULL COMMENT '区域ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `region_code` varchar(12) NOT NULL COMMENT '停车场编号',
+  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
+  `remark` varchar(300) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`pr_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of parking_region
+-- ----------------------------
+INSERT INTO `parking_region` VALUES ('102024030818090012', '2023052267100146', 'A', '102024022124196600', 'A区', '2024-03-08 02:42:12', '0');
+INSERT INTO `parking_region` VALUES ('102024030848470007', '2023052267100146', 'B', '102024022124196600', 'A区', '2024-03-08 02:40:13', '1');
+INSERT INTO `parking_region` VALUES ('102024030854040011', '2023052267100146', 'A', '102023061679340015', '', '2024-03-08 04:27:54', '0');
+INSERT INTO `parking_region` VALUES ('102024030857790014', '2023052267100146', 'B', '102023061679340015', '', '2024-03-08 04:27:59', '0');
+
+-- ----------------------------
+-- Table structure for parking_space
+-- ----------------------------
+DROP TABLE IF EXISTS `parking_space`;
+CREATE TABLE `parking_space` (
+  `ps_id` varchar(30) NOT NULL COMMENT '车位ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `num` varchar(12) NOT NULL COMMENT '车位编号',
+  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
+  `state` varchar(4) NOT NULL COMMENT '车位状态 出售 S，出租 H ，空闲 F',
+  `remark` varchar(300) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `parking_type` varchar(3) NOT NULL DEFAULT '1' COMMENT '1：普通车位  2：子母车位  3：豪华车位',
+  `pr_id` varchar(30) DEFAULT NULL COMMENT '区域ID',
+  `monitor_id` varchar(30) DEFAULT NULL COMMENT '监控ID',
+  `monitor_name` varchar(64) DEFAULT NULL COMMENT '监控名称',
+  PRIMARY KEY (`ps_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of parking_space
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for parking_space_machine
+-- ----------------------------
+DROP TABLE IF EXISTS `parking_space_machine`;
+CREATE TABLE `parking_space_machine` (
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `machine_code` varchar(30) NOT NULL COMMENT '设备编码',
+  `machine_name` varchar(200) NOT NULL COMMENT '设备名称',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `machine_ip` varchar(64) DEFAULT NULL COMMENT '设备IP',
+  `machine_mac` varchar(64) DEFAULT NULL COMMENT '设备mac',
+  `impl_bean` varchar(30) NOT NULL COMMENT '门禁厂家',
+  `heartbeat_time` datetime NOT NULL COMMENT '设备心跳时间',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`machine_id`),
+  KEY `i_m_community_id` (`community_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of parking_space_machine
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for parking_space_machine_rel
+-- ----------------------------
+DROP TABLE IF EXISTS `parking_space_machine_rel`;
+CREATE TABLE `parking_space_machine_rel` (
+  `rel_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `ps_id` varchar(30) NOT NULL COMMENT '车位ID',
+  `ps_name` varchar(64) NOT NULL COMMENT '车位名称',
+  `ps_state` varchar(12) NOT NULL COMMENT '车位状态，FREE 空闲 OCCUPY 占用',
+  `car_num` varchar(12) DEFAULT NULL COMMENT '车牌号',
+  `lock_battery` varchar(12) DEFAULT NULL COMMENT '地锁电量',
+  `lock_state` varchar(12) DEFAULT NULL COMMENT '地锁状态',
+  `image_photo` varchar(512) DEFAULT NULL COMMENT '车位图片',
+  `update_time` datetime NOT NULL COMMENT '修改时间',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`rel_id`),
+  KEY `i_m_community_id` (`community_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of parking_space_machine_rel
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for pass_qrcode
+-- ----------------------------
+DROP TABLE IF EXISTS `pass_qrcode`;
+CREATE TABLE `pass_qrcode` (
+  `pq_id` varchar(30) NOT NULL COMMENT '编号',
+  `person_name` varchar(64) NOT NULL COMMENT '名称',
+  `person_tel` varchar(64) NOT NULL COMMENT '手机号',
+  `owner_id` varchar(30) NOT NULL COMMENT '业主ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `open_id` varchar(64) NOT NULL COMMENT 'openId',
+  `qrcode` varchar(128) NOT NULL COMMENT '通信码',
+  `qrcode_time` datetime NOT NULL COMMENT '通信码刷新时间',
+  `state` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '状态 W 待审核，F 审核失败 C 审核完成',
+  `remark` varchar(512) DEFAULT NULL COMMENT '审核说明',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态 1表示 失效 0 有效',
+  PRIMARY KEY (`pq_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of pass_qrcode
+-- ----------------------------
+INSERT INTO `pass_qrcode` VALUES ('102023122047680009', '123', '18909714545', '772023111038450017', '102023021386560001', '123123123', 'd52a68866aa2416f8170605d2c615a78', '2023-12-20 14:43:03', 'C', '同意', '2023-12-20 14:18:10', '1');
+INSERT INTO `pass_qrcode` VALUES ('102023122058250008', '门禁测试人员', '18909712222', '772023111006680012', '102023021386560001', '123123123', 'eb40508e19c5447f8b75271f59594a99', '2023-12-20 18:39:29', 'C', '同意', '2023-12-20 17:49:25', '0');
+INSERT INTO `pass_qrcode` VALUES ('112024020620320001', '张飞3', '18922224444', '772024012299410005', '2024012252790005', '-1', 'd897a71f5ab0463c9dfc6aaaa29c5363', '2024-02-18 20:33:59', 'C', '用户自行开通', '2024-02-06 16:42:26', '0');
+
+-- ----------------------------
+-- Table structure for pass_qrcode_setting
+-- ----------------------------
+DROP TABLE IF EXISTS `pass_qrcode_setting`;
+CREATE TABLE `pass_qrcode_setting` (
+  `pqs_id` varchar(30) NOT NULL COMMENT '编号',
+  `qrcode_name` varchar(128) NOT NULL COMMENT '名称',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `sms_validate` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '验证，ON 短信验证码验证 OFF 不验证 ',
+  `audit` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '审核 Y 需要审核 N 不需要审核',
+  `expired` int(11) NOT NULL DEFAULT '120' COMMENT '失效时间，单位为分钟',
+  `create_staff_id` varchar(30) NOT NULL COMMENT '员工ID',
+  `create_staff_name` varchar(30) NOT NULL COMMENT '员工',
+  `state` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '状态 ON 启用，OFF 停用',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态 1表示 失效 0 有效',
+  `remark` varchar(512) DEFAULT NULL COMMENT '说明',
+  PRIMARY KEY (`pqs_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of pass_qrcode_setting
+-- ----------------------------
+INSERT INTO `pass_qrcode_setting` VALUES ('102023122066540002', '通行码', '102023021386560001', 'ON', 'ON', '121', '302023021495090004', '演示物业', 'ON', '2023-12-20 02:08:56', '0', '');
+INSERT INTO `pass_qrcode_setting` VALUES ('102023122072260007', '1', '102023021386560001', 'ON', 'ON', '1', '302023021495090004', '演示物业', 'ON', '2023-12-20 02:09:50', '1', '');
+INSERT INTO `pass_qrcode_setting` VALUES ('102024020329930012', '业主通行码', '2024012252790005', 'ON', 'ON', '120', '302024012273480017', '物联网同步小区', 'ON', '2024-02-03 16:58:28', '0', '');
+
+-- ----------------------------
+-- Table structure for payment_adapt
+-- ----------------------------
+DROP TABLE IF EXISTS `payment_adapt`;
+CREATE TABLE `payment_adapt` (
+  `adapt_id` varchar(30) NOT NULL COMMENT '编号',
+  `payment_type` varchar(64) NOT NULL COMMENT '支付厂家',
+  `name` varchar(64) NOT NULL COMMENT '名称',
+  `bean_jsapi` varchar(64) NOT NULL COMMENT 'jsapi 支付实现类',
+  `bean_qrcode` varchar(64) DEFAULT NULL COMMENT '二维码支付实现类',
+  `bean_native` varchar(64) DEFAULT NULL COMMENT 'native支付实现类',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态0正常1失效',
+  `bean_refund` varchar(128) DEFAULT NULL COMMENT '退费实现类',
+  PRIMARY KEY (`adapt_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of payment_adapt
+-- ----------------------------
+INSERT INTO `payment_adapt` VALUES ('1', 'WECHAT', '微信支付', 'wechatPaymentFactory', '', 'wechatNativeQrcodePaymentFactory', '2023-10-26 11:42:04', '0', 'wechatRefundMoney');
+INSERT INTO `payment_adapt` VALUES ('11', 'ALIPAY', '支付宝支付', 'aliPaymentFactory', '', '', '2023-10-26 14:42:23', '1', null);
+INSERT INTO `payment_adapt` VALUES ('2', 'PLUTUS', '云卓全景支付', 'plutusPaymentFactory', 'qrCodePlutusPaymentAdapt', null, '2023-10-26 11:43:34', '0', 'plutusRefundMoney');
+INSERT INTO `payment_adapt` VALUES ('4', 'BBG', '北部湾银行支付', 'bbgPaymentFactoryAdapt', 'qrCodeBbgPaymentAdapt', 'bbgNativeQrcodePaymentFactoryAdapt', '2023-10-26 14:42:23', '1', null);
+
+-- ----------------------------
+-- Table structure for payment_key
+-- ----------------------------
+DROP TABLE IF EXISTS `payment_key`;
+CREATE TABLE `payment_key` (
+  `key_id` varchar(30) NOT NULL COMMENT '编号',
+  `payment_type` varchar(64) NOT NULL COMMENT '支付厂家',
+  `name` varchar(64) NOT NULL COMMENT '名称',
+  `column_key` varchar(64) NOT NULL COMMENT '设置key',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注信息',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态0正常1失效',
+  PRIMARY KEY (`key_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of payment_key
+-- ----------------------------
+INSERT INTO `payment_key` VALUES ('1', 'WECHAT', '商户ID', 'WECHAT_MCHID', '请输入微信商户ID', '2023-10-25 16:24:32', '0');
+INSERT INTO `payment_key` VALUES ('10', 'BBG', 'productNo_SM4', 'productNo_SM4', '请输入productNo_SM4', '2023-10-26 14:11:55', '0');
+INSERT INTO `payment_key` VALUES ('11', 'BBG', 'publicKey_SM4', 'publicKey_SM4', '请输入publicKey_SM4', '2023-10-26 14:11:55', '0');
+INSERT INTO `payment_key` VALUES ('12', 'BBG', 'privateKey_SM4', 'privateKey_SM4', '请输入privateKey_SM4', '2023-10-26 14:11:55', '0');
+INSERT INTO `payment_key` VALUES ('13', 'ALIPAY', '商家私钥', 'ALIPAY_PRIVATE_KEY', '值请填写 商家私钥 ', '2023-10-25 16:26:46', '0');
+INSERT INTO `payment_key` VALUES ('14', 'ALIPAY', '支付宝公钥', 'ALIPAY_PUBLIC_KEY', '值请填写 支付宝公钥', '2023-10-25 16:27:06', '0');
+INSERT INTO `payment_key` VALUES ('15', 'ALIPAY', '支付宝appId', 'ALIPAY_APP_ID', '值请填写 APP_ID', '2023-10-25 16:27:24', '0');
+INSERT INTO `payment_key` VALUES ('2', 'WECHAT', '支付密码', 'WECHAT_KEY', '请输入微信v2支付秘钥', '2023-10-25 16:25:08', '0');
+INSERT INTO `payment_key` VALUES ('3', 'PLUTUS', '私钥', 'PLUTUS_PRIVATE_KEY', '值请填写1 开发者私钥 请填写在备注中', '2023-10-25 16:26:46', '0');
+INSERT INTO `payment_key` VALUES ('4', 'PLUTUS', '公钥', 'PLUTUS_PUBLIC_KEY', '值请填写1 云卓全景公钥 请填写在备注中', '2023-10-25 16:27:06', '0');
+INSERT INTO `payment_key` VALUES ('5', 'PLUTUS', '接入商ID', 'PLUTUS_DEV_ID', '值请填写 接入商ID', '2023-10-25 16:27:24', '0');
+INSERT INTO `payment_key` VALUES ('7', 'PLUTUS', '商户ID', 'PLUTUS_MCHID', '请输入商户ID', '2023-10-26 14:11:32', '0');
+INSERT INTO `payment_key` VALUES ('8', 'PLUTUS', '支付秘钥', 'PLUTUS_KEY', '请输入支付秘钥', '2023-10-26 14:11:55', '0');
+INSERT INTO `payment_key` VALUES ('9', 'BBG', 'mchtNo_SM4', 'mchtNo_SM4', '请输入mchtNo_SM4', '2023-10-26 14:11:55', '0');
+
+-- ----------------------------
+-- Table structure for payment_pool
+-- ----------------------------
+DROP TABLE IF EXISTS `payment_pool`;
+CREATE TABLE `payment_pool` (
+  `pp_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `payment_name` varchar(64) NOT NULL COMMENT '优惠券名称',
+  `payment_type` varchar(64) NOT NULL COMMENT '支付厂家',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `cert_path` varchar(512) DEFAULT NULL COMMENT '证书地址',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `state` varchar(12) NOT NULL DEFAULT 'Y' COMMENT 'Y 启用 N 停用',
+  `remark` varchar(512) DEFAULT NULL COMMENT '使用说明',
+  `pay_type` varchar(12) NOT NULL DEFAULT '1001' COMMENT '支付范围 1001 小区费用 2002 临时停车费 3003 选择费用项',
+  PRIMARY KEY (`pp_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of payment_pool
+-- ----------------------------
+INSERT INTO `payment_pool` VALUES ('102023112413860021', '微信', 'WECHAT', '102023021386560001', '', '2023-11-24 01:06:15', '1', 'Y', '2', '1001');
+INSERT INTO `payment_pool` VALUES ('102023112440040042', '微信支付', 'WECHAT', '102023021386560001', '', '2023-11-24 01:12:05', '1', 'Y', '1', '1001');
+
+-- ----------------------------
+-- Table structure for payment_pool_value
+-- ----------------------------
+DROP TABLE IF EXISTS `payment_pool_value`;
+CREATE TABLE `payment_pool_value` (
+  `value_id` varchar(30) NOT NULL COMMENT '编号',
+  `pp_id` varchar(30) NOT NULL COMMENT '支付ID',
+  `column_key` varchar(64) NOT NULL COMMENT '设置key',
+  `column_value` varchar(4000) NOT NULL COMMENT '设置值',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态0正常1失效',
+  PRIMARY KEY (`value_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of payment_pool_value
+-- ----------------------------
+INSERT INTO `payment_pool_value` VALUES ('112023112402050044', '102023112440040042', 'WECHAT_MCHID', '1', '102023021386560001', '2023-11-24 01:12:05', '1');
+INSERT INTO `payment_pool_value` VALUES ('112023112446590023', '102023112413860021', 'WECHAT_MCHID', '1', '102023021386560001', '2023-11-24 01:06:15', '1');
+INSERT INTO `payment_pool_value` VALUES ('112023112477180046', '102023112440040042', 'WECHAT_KEY', '1', '102023021386560001', '2023-11-24 01:12:05', '1');
+INSERT INTO `payment_pool_value` VALUES ('112023112485480025', '102023112413860021', 'WECHAT_KEY', '1', '102023021386560001', '2023-11-24 01:06:15', '1');
+INSERT INTO `payment_pool_value` VALUES ('112023112485910037', '102023112413860021', 'WECHAT_KEY', '2', '102023021386560001', '2023-11-24 01:10:32', '0');
+INSERT INTO `payment_pool_value` VALUES ('112023112492070035', '102023112413860021', 'WECHAT_MCHID', '1', '102023021386560001', '2023-11-24 01:10:32', '0');
+INSERT INTO `payment_pool_value` VALUES ('112023120901230055', '102023112440040042', 'WECHAT_KEY', '2', '102023021386560001', '2023-12-09 23:47:00', '0');
+INSERT INTO `payment_pool_value` VALUES ('112023120918980053', '102023112440040042', 'WECHAT_MCHID', '2', '102023021386560001', '2023-12-09 23:47:00', '0');
+
+-- ----------------------------
+-- Table structure for pay_fee_batch
+-- ----------------------------
+DROP TABLE IF EXISTS `pay_fee_batch`;
+CREATE TABLE `pay_fee_batch` (
+  `batch_id` varchar(30) NOT NULL COMMENT '批次号',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `create_user_id` varchar(30) NOT NULL COMMENT '创建人',
+  `create_user_name` varchar(64) NOT NULL COMMENT '创建人',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `state` varchar(12) NOT NULL DEFAULT '2007001' COMMENT '状态 2007001待审核 2008001 审核通过 2009001 审核失败',
+  `msg` varchar(512) NOT NULL COMMENT '审核说明',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of pay_fee_batch
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for person_face
+-- ----------------------------
+DROP TABLE IF EXISTS `person_face`;
+CREATE TABLE `person_face` (
+  `pf_id` varchar(30) NOT NULL COMMENT '编号',
+  `pfq_id` varchar(30) NOT NULL COMMENT '二维码ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `room_id` varchar(30) NOT NULL COMMENT '房屋ID',
+  `room_name` varchar(64) NOT NULL COMMENT '房屋名称',
+  `person_name` varchar(64) NOT NULL COMMENT '人员名称',
+  `person_tel` varchar(11) NOT NULL COMMENT '人员电话',
+  `owner_type_cd` varchar(4) NOT NULL DEFAULT '1001' COMMENT '1001 业主本人 1002 家庭成员',
+  `face_url` varchar(512) NOT NULL COMMENT '人脸',
+  `open_id` varchar(64) NOT NULL COMMENT 'openId',
+  `state` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '状态 W 待审核，F 审核失败 C 审核完成',
+  `remark` varchar(512) DEFAULT NULL COMMENT '审核说明',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态 1表示 失效 0 有效',
+  PRIMARY KEY (`pf_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of person_face
+-- ----------------------------
+INSERT INTO `person_face` VALUES ('102023121996160015', '102023121813910002', '102023021386560001', '752023080997680002', '1-1-1001', '吴学文2', '18909711443', '1001', 'img/20231219/839424af-c8ae-4779-b3b5-cce386475162.jpg', '123123123', 'C', '同意', '2023-12-19 16:16:06', '0');
+
+-- ----------------------------
+-- Table structure for person_face_qrcode
+-- ----------------------------
+DROP TABLE IF EXISTS `person_face_qrcode`;
+CREATE TABLE `person_face_qrcode` (
+  `pfq_id` varchar(30) NOT NULL COMMENT '编号',
+  `qrcode_name` varchar(128) NOT NULL COMMENT '名称',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `sms_validate` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '验证，ON 短信验证码验证 OFF 不验证 ',
+  `tel_validate` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '手机号验证，ON 验证，OFF不验证',
+  `audit` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '审核 Y 需要审核 N 不需要审核',
+  `invite` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '邀请开关，ON 需要邀请码 OFF 不需要邀请码',
+  `invite_code` varchar(64) DEFAULT NULL COMMENT '邀请码',
+  `create_staff_id` varchar(30) NOT NULL COMMENT '员工ID',
+  `create_staff_name` varchar(30) NOT NULL COMMENT '员工',
+  `state` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '状态 ON 启用，OFF 停用',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态 1表示 失效 0 有效',
+  `remark` varchar(512) DEFAULT NULL COMMENT '说明',
+  PRIMARY KEY (`pfq_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of person_face_qrcode
+-- ----------------------------
+INSERT INTO `person_face_qrcode` VALUES ('102023121813910002', '一号楼二维码', '102023021386560001', 'OFF', 'ON', 'ON', 'OFF', '123456', '302023021495090004', '演示物业', 'ON', '2023-12-18 21:35:15', '0', '123');
+INSERT INTO `person_face_qrcode` VALUES ('102023121876980007', '1', '102023021386560001', 'ON', 'ON', 'OFF', 'OFF', '', '302023021495090004', '演示物业', 'ON', '2023-12-18 21:40:46', '1', '1');
+INSERT INTO `person_face_qrcode` VALUES ('102024020397200006', '人脸二维码', '2024012252790005', 'ON', 'ON', 'ON', 'OFF', '', '302024012273480017', '物联网同步小区', 'ON', '2024-02-03 16:44:52', '0', '');
+INSERT INTO `person_face_qrcode` VALUES ('102024022185570825', '111', '102023021386560001', 'ON', 'ON', 'ON', 'OFF', '', '302023021495090004', '演示物业', 'ON', '2024-02-21 13:54:54', '0', 'aaa');
 
 -- ----------------------------
 -- Table structure for p_privilege
@@ -10283,634 +10772,79 @@ CREATE TABLE `p_privilege_user` (
 -- ----------------------------
 -- Records of p_privilege_user
 -- ----------------------------
-INSERT INTO `p_privilege_user` VALUES ('102024121786490020', '600201904002', '1', '302024121758390012', '2024-12-17 15:51:28', '0', '102024121756190006');
-INSERT INTO `p_privilege_user` VALUES ('102025012321860016', '600201906009', '1', '302025012378820004', '2025-01-23 00:39:47', '0', '102025012319250002');
+INSERT INTO `p_privilege_user` VALUES ('102025040793080019', '600201904002', '1', '302025040704800011', '2025-04-07 14:04:30', '0', '102025040700890005');
 INSERT INTO `p_privilege_user` VALUES ('42', '600201906007', '1', '30520751775595118592', '2019-04-01 08:37:00', '0', '400000000000000002');
 INSERT INTO `p_privilege_user` VALUES ('43', '600201906005', '1', '30518939884421922816', '2019-04-01 08:37:00', '0', '400000000000000001');
 
 -- ----------------------------
--- Table structure for parking_area
--- ----------------------------
-DROP TABLE IF EXISTS `parking_area`;
-CREATE TABLE `parking_area` (
-  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `num` varchar(12) NOT NULL COMMENT '停车场编号',
-  `type_cd` varchar(12) NOT NULL COMMENT '停车场类型，1001 地上停车场 2001 地下停车场',
-  `remark` varchar(300) DEFAULT NULL COMMENT '备注',
-  `ext_pa_id` varchar(64) DEFAULT NULL COMMENT '三方停车场ID',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  UNIQUE KEY `pa_id` (`pa_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of parking_area
--- ----------------------------
-INSERT INTO `parking_area` VALUES ('102025012303380025', '102024121715970003', '1', '1001', '1', '1', '2025-01-23 00:46:33', '0');
-
--- ----------------------------
--- Table structure for parking_box
--- ----------------------------
-DROP TABLE IF EXISTS `parking_box`;
-CREATE TABLE `parking_box` (
-  `box_id` varchar(30) NOT NULL COMMENT '岗亭ID',
-  `box_name` varchar(64) NOT NULL COMMENT '岗亭名称',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `temp_car_in` varchar(12) NOT NULL COMMENT '临时车是否进场 Y 进场 N 不进场',
-  `fee` varchar(12) NOT NULL DEFAULT 'Y' COMMENT '岗亭是否 收费，主要考虑 岗亭嵌套问题 Y 收费 N 不收费',
-  `blue_car_in` varchar(12) NOT NULL COMMENT '蓝牌车是否可以进场 Y 进场 N 不进场',
-  `yelow_car_in` varchar(12) NOT NULL COMMENT '黄牌车是否可以进场 Y 进场 N 不进场',
-  `remark` varchar(300) DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `temp_auth` varchar(12) NOT NULL DEFAULT 'N' COMMENT '临时车进入是否审核 Y 需要 N 不需',
-  PRIMARY KEY (`box_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of parking_box
--- ----------------------------
-INSERT INTO `parking_box` VALUES ('102025031363950002', 'A岗亭', '102024121715970003', 'Y', 'N', 'Y', 'Y', '', '2025-03-13 15:35:50', '0', 'Y');
-
--- ----------------------------
--- Table structure for parking_box_area
--- ----------------------------
-DROP TABLE IF EXISTS `parking_box_area`;
-CREATE TABLE `parking_box_area` (
-  `ba_id` varchar(30) NOT NULL COMMENT '关系ID',
-  `box_id` varchar(30) NOT NULL COMMENT '岗亭ID',
-  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `default_area` varchar(12) NOT NULL COMMENT '是否默认停车场，主要用于临时车算费时的规则 Y 是 N 否',
-  `remark` varchar(300) DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`ba_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of parking_box_area
--- ----------------------------
-INSERT INTO `parking_box_area` VALUES ('102025031301580004', '102025031363950002', '102025012303380025', '102024121715970003', 'T', null, '2025-03-13 15:35:51', '0');
-
--- ----------------------------
--- Table structure for parking_coupon
--- ----------------------------
-DROP TABLE IF EXISTS `parking_coupon`;
-CREATE TABLE `parking_coupon` (
-  `coupon_id` varchar(30) NOT NULL COMMENT '优惠券ID',
-  `name` varchar(64) NOT NULL COMMENT '名称',
-  `type_cd` varchar(12) NOT NULL COMMENT '时长减免 1001 金额减免 2002 折扣减免 3003 全免 4004',
-  `community_id` varchar(30) NOT NULL COMMENT '小区',
-  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
-  `value` varchar(30) NOT NULL COMMENT '面值',
-  `value_price` decimal(10,2) NOT NULL COMMENT '售价',
-  `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `pa_name` varchar(64) NOT NULL COMMENT '停车场名称',
-  PRIMARY KEY (`coupon_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of parking_coupon
--- ----------------------------
-INSERT INTO `parking_coupon` VALUES ('102025012347590028', '2小时券', '1001', '102024121715970003', '102025012303380025', '120', '1.00', '0', '2025-01-23 00:47:02', '1');
-
--- ----------------------------
--- Table structure for parking_coupon_car
--- ----------------------------
-DROP TABLE IF EXISTS `parking_coupon_car`;
-CREATE TABLE `parking_coupon_car` (
-  `pcc_id` varchar(30) NOT NULL COMMENT '主键ID',
-  `coupon_id` varchar(30) NOT NULL COMMENT '优惠券ID',
-  `coupon_shop_id` varchar(30) NOT NULL COMMENT '优惠券商户ID',
-  `shop_id` varchar(30) NOT NULL COMMENT '商铺ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区',
-  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
-  `car_num` varchar(12) NOT NULL COMMENT '车牌号',
-  `give_way` varchar(12) NOT NULL DEFAULT '1001' COMMENT '赠送方式 1001 扫码获取 2002 商家添加 3003 购物自动赠送',
-  `type_cd` varchar(12) NOT NULL COMMENT '时长减免 1001 金额减免 2002 折扣减免 3003 全免 4004',
-  `value` varchar(30) NOT NULL COMMENT '面值',
-  `state` varchar(12) NOT NULL DEFAULT '1001' COMMENT '状态 1001 未使用 2002 已使用 3003 作废',
-  `remark` varchar(512) DEFAULT NULL COMMENT '使用说明',
-  `start_time` datetime NOT NULL COMMENT '开始时间',
-  `end_time` datetime NOT NULL COMMENT '结束时间',
-  `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`pcc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of parking_coupon_car
--- ----------------------------
-
--- ----------------------------
--- Table structure for parking_coupon_car_order
--- ----------------------------
-DROP TABLE IF EXISTS `parking_coupon_car_order`;
-CREATE TABLE `parking_coupon_car_order` (
-  `order_id` varchar(30) NOT NULL COMMENT '主键ID',
-  `pcc_id` varchar(30) NOT NULL COMMENT '优惠券ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区',
-  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
-  `machine_id` varchar(30) NOT NULL COMMENT '停车设备ID',
-  `machine_name` varchar(64) NOT NULL COMMENT '设备名称',
-  `car_num` varchar(12) NOT NULL COMMENT '车牌号',
-  `car_out_id` varchar(30) NOT NULL COMMENT '对应car_inout_detail 中的detail_id',
-  `remark` varchar(512) DEFAULT NULL COMMENT '使用说明',
-  `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of parking_coupon_car_order
--- ----------------------------
-
--- ----------------------------
--- Table structure for parking_coupon_charge
--- ----------------------------
-DROP TABLE IF EXISTS `parking_coupon_charge`;
-CREATE TABLE `parking_coupon_charge` (
-  `pcc_id` varchar(30) NOT NULL COMMENT '主键ID',
-  `coupon_shop_id` varchar(30) NOT NULL COMMENT '商铺优惠券ID',
-  `shop_id` varchar(64) NOT NULL COMMENT '商铺ID',
-  `shop_name` varchar(64) NOT NULL COMMENT '商铺名称',
-  `community_id` varchar(30) NOT NULL COMMENT '小区',
-  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
-  `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`pcc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of parking_coupon_charge
--- ----------------------------
-INSERT INTO `parking_coupon_charge` VALUES ('102025012353340010', '102025012381250031', '502025012327120018', '充电厂家', '102024121715970003', '102025012371590041', '0', '2025-01-23 02:26:14');
-INSERT INTO `parking_coupon_charge` VALUES ('102025012376800002', '102025012381250031', '502025012327120018', '充电厂家', '102024121715970003', '102025012371590041', '1', '2025-01-23 01:04:33');
-INSERT INTO `parking_coupon_charge` VALUES ('102025012399370002', '102025012381250031', '502025012327120018', '充电厂家', '102024121715970003', '102025012371590041', '1', '2025-01-23 00:56:58');
-
--- ----------------------------
--- Table structure for parking_coupon_order
--- ----------------------------
-DROP TABLE IF EXISTS `parking_coupon_order`;
-CREATE TABLE `parking_coupon_order` (
-  `order_id` varchar(30) NOT NULL COMMENT '主键ID',
-  `coupon_id` varchar(30) NOT NULL COMMENT '优惠券ID',
-  `shop_id` varchar(64) NOT NULL COMMENT '商铺ID',
-  `shop_name` varchar(64) NOT NULL COMMENT '商铺名称',
-  `community_id` varchar(30) NOT NULL COMMENT '小区',
-  `community_name` varchar(64) NOT NULL COMMENT '小区名称',
-  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
-  `pa_name` varchar(64) NOT NULL COMMENT '停车场名称',
-  `price` decimal(10,2) NOT NULL COMMENT '售价',
-  `quantity` int NOT NULL COMMENT '数量',
-  `receivable_amount` decimal(10,2) NOT NULL COMMENT '应收金额',
-  `received_amount` decimal(10,2) NOT NULL COMMENT '实收金额',
-  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
-  `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `pay_type` varchar(12) DEFAULT NULL COMMENT '支付方式 查看pay_fee_detail 支付方式',
-  PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of parking_coupon_order
--- ----------------------------
-INSERT INTO `parking_coupon_order` VALUES ('112025012373120033', '102025012347590028', '502025012327120018', '充电厂家', '102024121715970003', 'HC演示小区', '102025012303380025', '1', '1.00', '1000', '1000.00', '1.00', '1', '0', '2025-01-23 00:47:18', '7');
-
--- ----------------------------
--- Table structure for parking_coupon_shop
--- ----------------------------
-DROP TABLE IF EXISTS `parking_coupon_shop`;
-CREATE TABLE `parking_coupon_shop` (
-  `coupon_shop_id` varchar(30) NOT NULL COMMENT '主键ID',
-  `coupon_id` varchar(30) NOT NULL COMMENT '优惠券ID',
-  `shop_id` varchar(64) NOT NULL COMMENT '商铺ID',
-  `shop_name` varchar(64) NOT NULL COMMENT '商铺名称',
-  `community_id` varchar(30) NOT NULL COMMENT '小区',
-  `community_name` varchar(64) NOT NULL COMMENT '小区名称',
-  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
-  `quantity` int NOT NULL COMMENT '数量',
-  `start_time` datetime NOT NULL COMMENT '开始时间',
-  `end_time` datetime NOT NULL COMMENT '结束时间',
-  `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `pa_name` varchar(64) NOT NULL COMMENT '停车场名称',
-  PRIMARY KEY (`coupon_shop_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of parking_coupon_shop
--- ----------------------------
-INSERT INTO `parking_coupon_shop` VALUES ('102025012381250031', '102025012347590028', '502025012327120018', '充电厂家', '102024121715970003', 'HC演示小区', '102025012303380025', '1000', '2025-01-23 00:47:15', '2050-01-01 00:00:00', '0', '2025-01-23 00:47:18', '1');
-
--- ----------------------------
--- Table structure for parking_region
--- ----------------------------
-DROP TABLE IF EXISTS `parking_region`;
-CREATE TABLE `parking_region` (
-  `pr_id` varchar(30) NOT NULL COMMENT '区域ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `region_code` varchar(12) NOT NULL COMMENT '停车场编号',
-  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
-  `remark` varchar(300) DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`pr_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of parking_region
--- ----------------------------
-INSERT INTO `parking_region` VALUES ('102024030818090012', '2023052267100146', 'A', '102024022124196600', 'A区', '2024-03-08 02:42:12', '0');
-INSERT INTO `parking_region` VALUES ('102024030848470007', '2023052267100146', 'B', '102024022124196600', 'A区', '2024-03-08 02:40:13', '1');
-INSERT INTO `parking_region` VALUES ('102024030854040011', '2023052267100146', 'A', '102023061679340015', '', '2024-03-08 04:27:54', '0');
-INSERT INTO `parking_region` VALUES ('102024030857790014', '2023052267100146', 'B', '102023061679340015', '', '2024-03-08 04:27:59', '0');
-
--- ----------------------------
--- Table structure for parking_space
--- ----------------------------
-DROP TABLE IF EXISTS `parking_space`;
-CREATE TABLE `parking_space` (
-  `ps_id` varchar(30) NOT NULL COMMENT '车位ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `num` varchar(12) NOT NULL COMMENT '车位编号',
-  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
-  `state` varchar(4) NOT NULL COMMENT '车位状态 出售 S，出租 H ，空闲 F',
-  `remark` varchar(300) DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `parking_type` varchar(3) NOT NULL DEFAULT '1' COMMENT '1：普通车位  2：子母车位  3：豪华车位',
-  `pr_id` varchar(30) DEFAULT NULL COMMENT '区域ID',
-  `monitor_id` varchar(30) DEFAULT NULL COMMENT '监控ID',
-  `monitor_name` varchar(64) DEFAULT NULL COMMENT '监控名称',
-  PRIMARY KEY (`ps_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of parking_space
--- ----------------------------
-
--- ----------------------------
--- Table structure for parking_space_machine
--- ----------------------------
-DROP TABLE IF EXISTS `parking_space_machine`;
-CREATE TABLE `parking_space_machine` (
-  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
-  `machine_code` varchar(30) NOT NULL COMMENT '设备编码',
-  `machine_name` varchar(200) NOT NULL COMMENT '设备名称',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `machine_ip` varchar(64) DEFAULT NULL COMMENT '设备IP',
-  `machine_mac` varchar(64) DEFAULT NULL COMMENT '设备mac',
-  `impl_bean` varchar(30) NOT NULL COMMENT '门禁厂家',
-  `heartbeat_time` datetime NOT NULL COMMENT '设备心跳时间',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`machine_id`),
-  KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of parking_space_machine
--- ----------------------------
-
--- ----------------------------
--- Table structure for parking_space_machine_rel
--- ----------------------------
-DROP TABLE IF EXISTS `parking_space_machine_rel`;
-CREATE TABLE `parking_space_machine_rel` (
-  `rel_id` varchar(30) NOT NULL COMMENT '设备ID',
-  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `ps_id` varchar(30) NOT NULL COMMENT '车位ID',
-  `ps_name` varchar(64) NOT NULL COMMENT '车位名称',
-  `ps_state` varchar(12) NOT NULL COMMENT '车位状态，FREE 空闲 OCCUPY 占用',
-  `car_num` varchar(12) DEFAULT NULL COMMENT '车牌号',
-  `lock_battery` varchar(12) DEFAULT NULL COMMENT '地锁电量',
-  `lock_state` varchar(12) DEFAULT NULL COMMENT '地锁状态',
-  `image_photo` varchar(512) DEFAULT NULL COMMENT '车位图片',
-  `update_time` datetime NOT NULL COMMENT '修改时间',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`rel_id`),
-  KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of parking_space_machine_rel
--- ----------------------------
-
--- ----------------------------
--- Table structure for pass_qrcode
--- ----------------------------
-DROP TABLE IF EXISTS `pass_qrcode`;
-CREATE TABLE `pass_qrcode` (
-  `pq_id` varchar(30) NOT NULL COMMENT '编号',
-  `person_name` varchar(64) NOT NULL COMMENT '名称',
-  `person_tel` varchar(64) NOT NULL COMMENT '手机号',
-  `owner_id` varchar(30) NOT NULL COMMENT '业主ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `open_id` varchar(64) NOT NULL COMMENT 'openId',
-  `qrcode` varchar(128) NOT NULL COMMENT '通信码',
-  `qrcode_time` datetime NOT NULL COMMENT '通信码刷新时间',
-  `state` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '状态 W 待审核，F 审核失败 C 审核完成',
-  `remark` varchar(512) DEFAULT NULL COMMENT '审核说明',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态 1表示 失效 0 有效',
-  PRIMARY KEY (`pq_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of pass_qrcode
--- ----------------------------
-INSERT INTO `pass_qrcode` VALUES ('102023122047680009', '123', '18909714545', '772023111038450017', '102023021386560001', '123123123', 'd52a68866aa2416f8170605d2c615a78', '2023-12-20 14:43:03', 'C', '同意', '2023-12-20 14:18:10', '1');
-INSERT INTO `pass_qrcode` VALUES ('102023122058250008', '门禁测试人员', '18909712222', '772023111006680012', '102023021386560001', '123123123', 'eb40508e19c5447f8b75271f59594a99', '2023-12-20 18:39:29', 'C', '同意', '2023-12-20 17:49:25', '0');
-INSERT INTO `pass_qrcode` VALUES ('112024020620320001', '张飞3', '18922224444', '772024012299410005', '2024012252790005', '-1', 'd897a71f5ab0463c9dfc6aaaa29c5363', '2024-02-18 20:33:59', 'C', '用户自行开通', '2024-02-06 16:42:26', '0');
-
--- ----------------------------
--- Table structure for pass_qrcode_setting
--- ----------------------------
-DROP TABLE IF EXISTS `pass_qrcode_setting`;
-CREATE TABLE `pass_qrcode_setting` (
-  `pqs_id` varchar(30) NOT NULL COMMENT '编号',
-  `qrcode_name` varchar(128) NOT NULL COMMENT '名称',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `sms_validate` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '验证，ON 短信验证码验证 OFF 不验证 ',
-  `audit` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '审核 Y 需要审核 N 不需要审核',
-  `expired` int NOT NULL DEFAULT '120' COMMENT '失效时间，单位为分钟',
-  `create_staff_id` varchar(30) NOT NULL COMMENT '员工ID',
-  `create_staff_name` varchar(30) NOT NULL COMMENT '员工',
-  `state` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '状态 ON 启用，OFF 停用',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态 1表示 失效 0 有效',
-  `remark` varchar(512) DEFAULT NULL COMMENT '说明',
-  PRIMARY KEY (`pqs_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of pass_qrcode_setting
--- ----------------------------
-INSERT INTO `pass_qrcode_setting` VALUES ('102023122066540002', '通行码', '102023021386560001', 'ON', 'ON', '121', '302023021495090004', '演示物业', 'ON', '2023-12-20 02:08:56', '0', '');
-INSERT INTO `pass_qrcode_setting` VALUES ('102023122072260007', '1', '102023021386560001', 'ON', 'ON', '1', '302023021495090004', '演示物业', 'ON', '2023-12-20 02:09:50', '1', '');
-INSERT INTO `pass_qrcode_setting` VALUES ('102024020329930012', '业主通行码', '2024012252790005', 'ON', 'ON', '120', '302024012273480017', '物联网同步小区', 'ON', '2024-02-03 16:58:28', '0', '');
-
--- ----------------------------
--- Table structure for pay_fee_batch
--- ----------------------------
-DROP TABLE IF EXISTS `pay_fee_batch`;
-CREATE TABLE `pay_fee_batch` (
-  `batch_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '批次号',
-  `community_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '小区ID',
-  `create_user_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
-  `create_user_name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `state` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '2007001' COMMENT '状态 2007001待审核 2008001 审核通过 2009001 审核失败',
-  `msg` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '审核说明',
-  `remark` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '备注'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of pay_fee_batch
--- ----------------------------
-
--- ----------------------------
--- Table structure for payment_adapt
--- ----------------------------
-DROP TABLE IF EXISTS `payment_adapt`;
-CREATE TABLE `payment_adapt` (
-  `adapt_id` varchar(30) NOT NULL COMMENT '编号',
-  `payment_type` varchar(64) NOT NULL COMMENT '支付厂家',
-  `name` varchar(64) NOT NULL COMMENT '名称',
-  `bean_jsapi` varchar(64) NOT NULL COMMENT 'jsapi 支付实现类',
-  `bean_qrcode` varchar(64) DEFAULT NULL COMMENT '二维码支付实现类',
-  `bean_native` varchar(64) DEFAULT NULL COMMENT 'native支付实现类',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态0正常1失效',
-  `bean_refund` varchar(128) DEFAULT NULL COMMENT '退费实现类',
-  PRIMARY KEY (`adapt_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of payment_adapt
--- ----------------------------
-INSERT INTO `payment_adapt` VALUES ('1', 'WECHAT', '微信支付', 'wechatPaymentFactory', '', 'wechatNativeQrcodePaymentFactory', '2023-10-26 11:42:04', '0', 'wechatRefundMoney');
-INSERT INTO `payment_adapt` VALUES ('11', 'ALIPAY', '支付宝支付', 'aliPaymentFactory', '', '', '2023-10-26 14:42:23', '1', null);
-INSERT INTO `payment_adapt` VALUES ('2', 'PLUTUS', '云卓全景支付', 'plutusPaymentFactory', 'qrCodePlutusPaymentAdapt', null, '2023-10-26 11:43:34', '0', 'plutusRefundMoney');
-INSERT INTO `payment_adapt` VALUES ('4', 'BBG', '北部湾银行支付', 'bbgPaymentFactoryAdapt', 'qrCodeBbgPaymentAdapt', 'bbgNativeQrcodePaymentFactoryAdapt', '2023-10-26 14:42:23', '1', null);
-
--- ----------------------------
--- Table structure for payment_key
--- ----------------------------
-DROP TABLE IF EXISTS `payment_key`;
-CREATE TABLE `payment_key` (
-  `key_id` varchar(30) NOT NULL COMMENT '编号',
-  `payment_type` varchar(64) NOT NULL COMMENT '支付厂家',
-  `name` varchar(64) NOT NULL COMMENT '名称',
-  `column_key` varchar(64) NOT NULL COMMENT '设置key',
-  `remark` varchar(512) DEFAULT NULL COMMENT '备注信息',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态0正常1失效',
-  PRIMARY KEY (`key_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of payment_key
--- ----------------------------
-INSERT INTO `payment_key` VALUES ('1', 'WECHAT', '商户ID', 'WECHAT_MCHID', '请输入微信商户ID', '2023-10-25 16:24:32', '0');
-INSERT INTO `payment_key` VALUES ('10', 'BBG', 'productNo_SM4', 'productNo_SM4', '请输入productNo_SM4', '2023-10-26 14:11:55', '0');
-INSERT INTO `payment_key` VALUES ('11', 'BBG', 'publicKey_SM4', 'publicKey_SM4', '请输入publicKey_SM4', '2023-10-26 14:11:55', '0');
-INSERT INTO `payment_key` VALUES ('12', 'BBG', 'privateKey_SM4', 'privateKey_SM4', '请输入privateKey_SM4', '2023-10-26 14:11:55', '0');
-INSERT INTO `payment_key` VALUES ('13', 'ALIPAY', '商家私钥', 'ALIPAY_PRIVATE_KEY', '值请填写 商家私钥 ', '2023-10-25 16:26:46', '0');
-INSERT INTO `payment_key` VALUES ('14', 'ALIPAY', '支付宝公钥', 'ALIPAY_PUBLIC_KEY', '值请填写 支付宝公钥', '2023-10-25 16:27:06', '0');
-INSERT INTO `payment_key` VALUES ('15', 'ALIPAY', '支付宝appId', 'ALIPAY_APP_ID', '值请填写 APP_ID', '2023-10-25 16:27:24', '0');
-INSERT INTO `payment_key` VALUES ('2', 'WECHAT', '支付密码', 'WECHAT_KEY', '请输入微信v2支付秘钥', '2023-10-25 16:25:08', '0');
-INSERT INTO `payment_key` VALUES ('3', 'PLUTUS', '私钥', 'PLUTUS_PRIVATE_KEY', '值请填写1 开发者私钥 请填写在备注中', '2023-10-25 16:26:46', '0');
-INSERT INTO `payment_key` VALUES ('4', 'PLUTUS', '公钥', 'PLUTUS_PUBLIC_KEY', '值请填写1 云卓全景公钥 请填写在备注中', '2023-10-25 16:27:06', '0');
-INSERT INTO `payment_key` VALUES ('5', 'PLUTUS', '接入商ID', 'PLUTUS_DEV_ID', '值请填写 接入商ID', '2023-10-25 16:27:24', '0');
-INSERT INTO `payment_key` VALUES ('7', 'PLUTUS', '商户ID', 'PLUTUS_MCHID', '请输入商户ID', '2023-10-26 14:11:32', '0');
-INSERT INTO `payment_key` VALUES ('8', 'PLUTUS', '支付秘钥', 'PLUTUS_KEY', '请输入支付秘钥', '2023-10-26 14:11:55', '0');
-INSERT INTO `payment_key` VALUES ('9', 'BBG', 'mchtNo_SM4', 'mchtNo_SM4', '请输入mchtNo_SM4', '2023-10-26 14:11:55', '0');
-
--- ----------------------------
--- Table structure for payment_pool
--- ----------------------------
-DROP TABLE IF EXISTS `payment_pool`;
-CREATE TABLE `payment_pool` (
-  `pp_id` varchar(30) NOT NULL COMMENT '主键ID',
-  `payment_name` varchar(64) NOT NULL COMMENT '优惠券名称',
-  `payment_type` varchar(64) NOT NULL COMMENT '支付厂家',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `cert_path` varchar(512) DEFAULT NULL COMMENT '证书地址',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `state` varchar(12) NOT NULL DEFAULT 'Y' COMMENT 'Y 启用 N 停用',
-  `remark` varchar(512) DEFAULT NULL COMMENT '使用说明',
-  `pay_type` varchar(12) NOT NULL DEFAULT '1001' COMMENT '支付范围 1001 小区费用 2002 临时停车费 3003 选择费用项',
-  PRIMARY KEY (`pp_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of payment_pool
--- ----------------------------
-INSERT INTO `payment_pool` VALUES ('102023112413860021', '微信', 'WECHAT', '102023021386560001', '', '2023-11-24 01:06:15', '1', 'Y', '2', '1001');
-INSERT INTO `payment_pool` VALUES ('102023112440040042', '微信支付', 'WECHAT', '102023021386560001', '', '2023-11-24 01:12:05', '1', 'Y', '1', '1001');
-
--- ----------------------------
--- Table structure for payment_pool_value
--- ----------------------------
-DROP TABLE IF EXISTS `payment_pool_value`;
-CREATE TABLE `payment_pool_value` (
-  `value_id` varchar(30) NOT NULL COMMENT '编号',
-  `pp_id` varchar(30) NOT NULL COMMENT '支付ID',
-  `column_key` varchar(64) NOT NULL COMMENT '设置key',
-  `column_value` varchar(4000) NOT NULL COMMENT '设置值',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态0正常1失效',
-  PRIMARY KEY (`value_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of payment_pool_value
--- ----------------------------
-INSERT INTO `payment_pool_value` VALUES ('112023112402050044', '102023112440040042', 'WECHAT_MCHID', '1', '102023021386560001', '2023-11-24 01:12:05', '1');
-INSERT INTO `payment_pool_value` VALUES ('112023112446590023', '102023112413860021', 'WECHAT_MCHID', '1', '102023021386560001', '2023-11-24 01:06:15', '1');
-INSERT INTO `payment_pool_value` VALUES ('112023112477180046', '102023112440040042', 'WECHAT_KEY', '1', '102023021386560001', '2023-11-24 01:12:05', '1');
-INSERT INTO `payment_pool_value` VALUES ('112023112485480025', '102023112413860021', 'WECHAT_KEY', '1', '102023021386560001', '2023-11-24 01:06:15', '1');
-INSERT INTO `payment_pool_value` VALUES ('112023112485910037', '102023112413860021', 'WECHAT_KEY', '2', '102023021386560001', '2023-11-24 01:10:32', '0');
-INSERT INTO `payment_pool_value` VALUES ('112023112492070035', '102023112413860021', 'WECHAT_MCHID', '1', '102023021386560001', '2023-11-24 01:10:32', '0');
-INSERT INTO `payment_pool_value` VALUES ('112023120901230055', '102023112440040042', 'WECHAT_KEY', '2', '102023021386560001', '2023-12-09 23:47:00', '0');
-INSERT INTO `payment_pool_value` VALUES ('112023120918980053', '102023112440040042', 'WECHAT_MCHID', '2', '102023021386560001', '2023-12-09 23:47:00', '0');
-
--- ----------------------------
--- Table structure for person_face
--- ----------------------------
-DROP TABLE IF EXISTS `person_face`;
-CREATE TABLE `person_face` (
-  `pf_id` varchar(30) NOT NULL COMMENT '编号',
-  `pfq_id` varchar(30) NOT NULL COMMENT '二维码ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `room_id` varchar(30) NOT NULL COMMENT '房屋ID',
-  `room_name` varchar(64) NOT NULL COMMENT '房屋名称',
-  `person_name` varchar(64) NOT NULL COMMENT '人员名称',
-  `person_tel` varchar(11) NOT NULL COMMENT '人员电话',
-  `owner_type_cd` varchar(4) NOT NULL DEFAULT '1001' COMMENT '1001 业主本人 1002 家庭成员',
-  `face_url` varchar(512) NOT NULL COMMENT '人脸',
-  `open_id` varchar(64) NOT NULL COMMENT 'openId',
-  `state` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '状态 W 待审核，F 审核失败 C 审核完成',
-  `remark` varchar(512) DEFAULT NULL COMMENT '审核说明',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态 1表示 失效 0 有效',
-  PRIMARY KEY (`pf_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of person_face
--- ----------------------------
-INSERT INTO `person_face` VALUES ('102023121996160015', '102023121813910002', '102023021386560001', '752023080997680002', '1-1-1001', '吴学文2', '18909711443', '1001', 'img/20231219/839424af-c8ae-4779-b3b5-cce386475162.jpg', '123123123', 'C', '同意', '2023-12-19 16:16:06', '0');
-
--- ----------------------------
--- Table structure for person_face_qrcode
--- ----------------------------
-DROP TABLE IF EXISTS `person_face_qrcode`;
-CREATE TABLE `person_face_qrcode` (
-  `pfq_id` varchar(30) NOT NULL COMMENT '编号',
-  `qrcode_name` varchar(128) NOT NULL COMMENT '名称',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `sms_validate` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '验证，ON 短信验证码验证 OFF 不验证 ',
-  `tel_validate` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '手机号验证，ON 验证，OFF不验证',
-  `audit` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '审核 Y 需要审核 N 不需要审核',
-  `invite` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '邀请开关，ON 需要邀请码 OFF 不需要邀请码',
-  `invite_code` varchar(64) DEFAULT NULL COMMENT '邀请码',
-  `create_staff_id` varchar(30) NOT NULL COMMENT '员工ID',
-  `create_staff_name` varchar(30) NOT NULL COMMENT '员工',
-  `state` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '状态 ON 启用，OFF 停用',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态 1表示 失效 0 有效',
-  `remark` varchar(512) DEFAULT NULL COMMENT '说明',
-  PRIMARY KEY (`pfq_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of person_face_qrcode
--- ----------------------------
-INSERT INTO `person_face_qrcode` VALUES ('102023121813910002', '一号楼二维码', '102023021386560001', 'OFF', 'ON', 'ON', 'OFF', '123456', '302023021495090004', '演示物业', 'ON', '2023-12-18 21:35:15', '0', '123');
-INSERT INTO `person_face_qrcode` VALUES ('102023121876980007', '1', '102023021386560001', 'ON', 'ON', 'OFF', 'OFF', '', '302023021495090004', '演示物业', 'ON', '2023-12-18 21:40:46', '1', '1');
-INSERT INTO `person_face_qrcode` VALUES ('102024020397200006', '人脸二维码', '2024012252790005', 'ON', 'ON', 'ON', 'OFF', '', '302024012273480017', '物联网同步小区', 'ON', '2024-02-03 16:44:52', '0', '');
-INSERT INTO `person_face_qrcode` VALUES ('102024022185570825', '111', '102023021386560001', 'ON', 'ON', 'ON', 'OFF', '', '302023021495090004', '演示物业', 'ON', '2024-02-21 13:54:54', '0', 'aaa');
-
--- ----------------------------
--- Table structure for QRTZ_BLOB_TRIGGERS
--- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_BLOB_TRIGGERS`;
-CREATE TABLE `QRTZ_BLOB_TRIGGERS` (
-  `SCHED_NAME` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `TRIGGER_NAME` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `TRIGGER_GROUP` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+-- Table structure for qrtz_blob_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_blob_triggers`;
+CREATE TABLE `qrtz_blob_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_NAME` varchar(200) NOT NULL,
+  `TRIGGER_GROUP` varchar(200) NOT NULL,
   `BLOB_DATA` blob,
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
   KEY `SCHED_NAME` (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`) USING BTREE,
-  CONSTRAINT `QRTZ_BLOB_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `QRTZ_TRIGGERS` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `QRTZ_BLOB_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of QRTZ_BLOB_TRIGGERS
+-- Records of qrtz_blob_triggers
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for QRTZ_CALENDARS
+-- Table structure for qrtz_calendars
 -- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_CALENDARS`;
-CREATE TABLE `QRTZ_CALENDARS` (
-  `SCHED_NAME` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `CALENDAR_NAME` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+DROP TABLE IF EXISTS `qrtz_calendars`;
+CREATE TABLE `qrtz_calendars` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `CALENDAR_NAME` varchar(200) NOT NULL,
   `CALENDAR` blob NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`CALENDAR_NAME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of QRTZ_CALENDARS
+-- Records of qrtz_calendars
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for QRTZ_CRON_TRIGGERS
+-- Table structure for qrtz_cron_triggers
 -- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_CRON_TRIGGERS`;
-CREATE TABLE `QRTZ_CRON_TRIGGERS` (
-  `SCHED_NAME` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `TRIGGER_NAME` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `TRIGGER_GROUP` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `CRON_EXPRESSION` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `TIME_ZONE_ID` varchar(80) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+DROP TABLE IF EXISTS `qrtz_cron_triggers`;
+CREATE TABLE `qrtz_cron_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_NAME` varchar(200) NOT NULL,
+  `TRIGGER_GROUP` varchar(200) NOT NULL,
+  `CRON_EXPRESSION` varchar(120) NOT NULL,
+  `TIME_ZONE_ID` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
-  CONSTRAINT `QRTZ_CRON_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `QRTZ_TRIGGERS` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `QRTZ_CRON_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of QRTZ_CRON_TRIGGERS
+-- Records of qrtz_cron_triggers
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for QRTZ_FIRED_TRIGGERS
+-- Table structure for qrtz_fired_triggers
 -- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_FIRED_TRIGGERS`;
-CREATE TABLE `QRTZ_FIRED_TRIGGERS` (
-  `SCHED_NAME` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `ENTRY_ID` varchar(95) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `TRIGGER_NAME` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `TRIGGER_GROUP` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `INSTANCE_NAME` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `FIRED_TIME` bigint NOT NULL,
-  `SCHED_TIME` bigint NOT NULL,
-  `PRIORITY` int NOT NULL,
-  `STATE` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `JOB_NAME` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `JOB_GROUP` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `IS_NONCONCURRENT` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `REQUESTS_RECOVERY` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+DROP TABLE IF EXISTS `qrtz_fired_triggers`;
+CREATE TABLE `qrtz_fired_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `ENTRY_ID` varchar(95) NOT NULL,
+  `TRIGGER_NAME` varchar(200) NOT NULL,
+  `TRIGGER_GROUP` varchar(200) NOT NULL,
+  `INSTANCE_NAME` varchar(200) NOT NULL,
+  `FIRED_TIME` bigint(20) NOT NULL,
+  `SCHED_TIME` bigint(20) NOT NULL,
+  `PRIORITY` int(11) NOT NULL,
+  `STATE` varchar(16) NOT NULL,
+  `JOB_NAME` varchar(200) DEFAULT NULL,
+  `JOB_GROUP` varchar(200) DEFAULT NULL,
+  `IS_NONCONCURRENT` varchar(1) DEFAULT NULL,
+  `REQUESTS_RECOVERY` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`SCHED_NAME`,`ENTRY_ID`),
   KEY `IDX_QRTZ_FT_TRIG_INST_NAME` (`SCHED_NAME`,`INSTANCE_NAME`) USING BTREE,
   KEY `IDX_QRTZ_FT_INST_JOB_REQ_RCVRY` (`SCHED_NAME`,`INSTANCE_NAME`,`REQUESTS_RECOVERY`) USING BTREE,
@@ -10921,23 +10855,23 @@ CREATE TABLE `QRTZ_FIRED_TRIGGERS` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of QRTZ_FIRED_TRIGGERS
+-- Records of qrtz_fired_triggers
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for QRTZ_JOB_DETAILS
+-- Table structure for qrtz_job_details
 -- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_JOB_DETAILS`;
-CREATE TABLE `QRTZ_JOB_DETAILS` (
-  `SCHED_NAME` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `JOB_NAME` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `JOB_GROUP` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `DESCRIPTION` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `JOB_CLASS_NAME` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `IS_DURABLE` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `IS_NONCONCURRENT` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `IS_UPDATE_DATA` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `REQUESTS_RECOVERY` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+DROP TABLE IF EXISTS `qrtz_job_details`;
+CREATE TABLE `qrtz_job_details` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `JOB_NAME` varchar(200) NOT NULL,
+  `JOB_GROUP` varchar(200) NOT NULL,
+  `DESCRIPTION` varchar(250) DEFAULT NULL,
+  `JOB_CLASS_NAME` varchar(250) NOT NULL,
+  `IS_DURABLE` varchar(1) NOT NULL,
+  `IS_NONCONCURRENT` varchar(1) NOT NULL,
+  `IS_UPDATE_DATA` varchar(1) NOT NULL,
+  `REQUESTS_RECOVERY` varchar(1) NOT NULL,
   `JOB_DATA` blob,
   PRIMARY KEY (`SCHED_NAME`,`JOB_NAME`,`JOB_GROUP`),
   KEY `IDX_QRTZ_J_REQ_RECOVERY` (`SCHED_NAME`,`REQUESTS_RECOVERY`) USING BTREE,
@@ -10945,125 +10879,125 @@ CREATE TABLE `QRTZ_JOB_DETAILS` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of QRTZ_JOB_DETAILS
+-- Records of qrtz_job_details
 -- ----------------------------
-INSERT INTO `QRTZ_JOB_DETAILS` VALUES ('quartzScheduler', 'task_522020072443280071', 'taskSystemJobGroup', '任务启动', 'com.java110.job.quartz.TaskSystemJob', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C770800000010000000047400107461736B53797374656D5461736B496474001235323230323030373234343332383030373174000E7461736B53797374656D5461736B7372001C636F6D2E6A6176613131302E64746F2E7461736B2E5461736B44746F1C68F10BDC9793A502000C4C0009636C6173734265616E7400124C6A6176612F6C616E672F537472696E673B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C0005737461746571007E000B4C000973746174654E616D6571007E000B4C0008737461747573436471007E000B4C00087461736B417474727400104C6A6176612F7574696C2F4C6973743B4C00087461736B43726F6E71007E000B4C00067461736B496471007E000B4C00087461736B4E616D6571007E000B4C000F7461736B54656D706C61746544746F7400264C636F6D2F6A6176613131302F64746F2F7461736B2F5461736B54656D706C61746544746F3B4C000A74656D706C617465496471007E000B4C000C74656D706C6174654E616D6571007E000B78720017636F6D2E6A6176613131302E64746F2E5061676544746FF388A10AAA87CF54020004490004706167654900077265636F726473490003726F77490005746F74616C78720013636F6D2E6A6176613131302E64746F2E44746F48C3AD937CBA35820200007870FFFFFFFF00000000000000000000000070737200126A6176612E73716C2E54696D657374616D702618D5C80153BF650200014900056E616E6F737872000E6A6176612E7574696C2E44617465686A81014B59741903000078707708000001738096A49878000000007400033030317074000130737200136A6176612E7574696C2E41727261794C6973747881D21D99C7619D03000149000473697A657870000000007704000000007874000D30202A2F31202A202A202A203F71007E0008740012E5B7A1E6A380E4BBBBE58AA1E7949FE6889073720024636F6D2E6A6176613131302E64746F2E7461736B2E5461736B54656D706C61746544746FF6B31C3F4E56A64A0200064C0009636C6173734265616E71007E000B4C000A63726561746554696D6571007E000C4C0008737461747573436471007E000B4C000C74656D706C6174654465736371007E000B4C000A74656D706C617465496471007E000B4C000C74656D706C6174654E616D6571007E000B7871007E000FFFFFFFFF00000000000000000000000074001F67656E657261746F72496E7370656374696F6E5461736B54656D706C6174657371007E0012770800000172C0E775F0780000000074000130740012E5B7A1E6A380E4BBBBE58AA1E7949FE6889074000431303131740012E5B7A1E6A380E4BBBBE58AA1E7949FE6889074000431303131740012E5B7A1E6A380E4BBBBE58AA1E7949FE688907400127461736B53797374656D5461736B4E616D6571007E001A7400127461736B53797374656D5461736B4174747271007E00117800);
-INSERT INTO `QRTZ_JOB_DETAILS` VALUES ('quartzScheduler', 'task_522020101715150264', 'taskSystemJobGroup', '任务启动', 'com.java110.job.quartz.TaskSystemJob', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C770800000010000000047400107461736B53797374656D5461736B496474001235323230323031303137313531353032363474000E7461736B53797374656D5461736B7372001C636F6D2E6A6176613131302E64746F2E7461736B2E5461736B44746F7A461D62679F00B102000B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C000573746174657400124C6A6176612F6C616E672F537472696E673B4C000973746174654E616D6571007E000C4C0008737461747573436471007E000C4C00087461736B417474727400104C6A6176612F7574696C2F4C6973743B4C00087461736B43726F6E71007E000C4C00067461736B496471007E000C4C00087461736B4E616D6571007E000C4C000F7461736B54656D706C61746544746F7400264C636F6D2F6A6176613131302F64746F2F7461736B2F5461736B54656D706C61746544746F3B4C000A74656D706C617465496471007E000C4C000C74656D706C6174654E616D6571007E000C78720017636F6D2E6A6176613131302E64746F2E5061676544746FF388A10AAA87CF54020004490004706167654900077265636F726473490003726F77490005746F74616C78720013636F6D2E6A6176613131302E64746F2E44746F48C3AD937CBA35820200007870FFFFFFFF000000000000000000000000737200126A6176612E73716C2E54696D657374616D702618D5C80153BF650200014900056E616E6F737872000E6A6176612E7574696C2E44617465686A81014B597419030000787077080000017534E6EAB078000000007400033030317074000130737200136A6176612E7574696C2E41727261794C6973747881D21D99C7619D03000149000473697A657870000000007704000000007874000D30203337203138202A202A203F71007E000874001AE8B4B9E794A8E68AA5E8A1A8E7BB9FE8AEA128E59FBAE7A1802973720024636F6D2E6A6176613131302E64746F2E7461736B2E5461736B54656D706C61746544746FF6B31C3F4E56A64A0200064C0009636C6173734265616E71007E000C4C000A63726561746554696D6571007E000B4C0008737461747573436471007E000C4C000C74656D706C6174654465736371007E000C4C000A74656D706C617465496471007E000C4C000C74656D706C6174654E616D6571007E000C7871007E000FFFFFFFFF00000000000000000000000074002267656E65726174654665654D6F6E74685374617469737469637354656D706C6174657371007E0012770800000172C0E775F0780000000074000130740012E8B4B9E794A8E68AA5E8A1A8E7BB9FE8AEA174000431303132740012E8B4B9E794A8E68AA5E8A1A8E7BB9FE8AEA174000431303132740012E8B4B9E794A8E68AA5E8A1A8E7BB9FE8AEA17400127461736B53797374656D5461736B4E616D6571007E001A7400127461736B53797374656D5461736B4174747271007E00117800);
-INSERT INTO `QRTZ_JOB_DETAILS` VALUES ('quartzScheduler', 'task_522021051552360003', 'taskSystemJobGroup', '任务启动', 'com.java110.job.quartz.TaskSystemJob', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C770800000010000000047400107461736B53797374656D5461736B496474001235323230323130353135353233363030303374000E7461736B53797374656D5461736B7372001C636F6D2E6A6176613131302E64746F2E7461736B2E5461736B44746F1C68F10BDC9793A502000C4C0009636C6173734265616E7400124C6A6176612F6C616E672F537472696E673B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C0005737461746571007E000B4C000973746174654E616D6571007E000B4C0008737461747573436471007E000B4C00087461736B417474727400104C6A6176612F7574696C2F4C6973743B4C00087461736B43726F6E71007E000B4C00067461736B496471007E000B4C00087461736B4E616D6571007E000B4C000F7461736B54656D706C61746544746F7400264C636F6D2F6A6176613131302F64746F2F7461736B2F5461736B54656D706C61746544746F3B4C000A74656D706C617465496471007E000B4C000C74656D706C6174654E616D6571007E000B78720017636F6D2E6A6176613131302E64746F2E5061676544746FF388A10AAA87CF54020004490004706167654900077265636F726473490003726F77490005746F74616C78720013636F6D2E6A6176613131302E64746F2E44746F48C3AD937CBA35820200007870FFFFFFFF00000000000000000000000070737200126A6176612E73716C2E54696D657374616D702618D5C80153BF650200014900056E616E6F737872000E6A6176612E7574696C2E44617465686A81014B59741903000078707708000001796E6F336078000000007400033030317074000130737200136A6176612E7574696C2E41727261794C6973747881D21D99C7619D03000149000473697A657870000000007704000000007874000D30203136203137202A202A203F71007E000874000CE6ACA0E8B4B9E7BB9FE8AEA173720024636F6D2E6A6176613131302E64746F2E7461736B2E5461736B54656D706C61746544746FF6B31C3F4E56A64A0200064C0009636C6173734265616E71007E000B4C000A63726561746554696D6571007E000C4C0008737461747573436471007E000B4C000C74656D706C6174654465736371007E000B4C000A74656D706C617465496471007E000B4C000C74656D706C6174654E616D6571007E000B7871007E000FFFFFFFFF00000000000000000000000074001967656E65726174654F77654665654E657754656D706C6174657371007E0012770800000172C0E775F078000000007400013074000CE6ACA0E8B4B9E7BB9FE8AEA17400043130313874000CE6ACA0E8B4B9E7BB9FE8AEA17400043130313874000CE6ACA0E8B4B9E7BB9FE8AEA17400127461736B53797374656D5461736B4E616D6571007E001A7400127461736B53797374656D5461736B4174747271007E00117800);
-INSERT INTO `QRTZ_JOB_DETAILS` VALUES ('quartzScheduler', 'task_522023051185951001', 'taskSystemJobGroup', '任务启动', 'com.java110.job.quartz.TaskSystemJob', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C770800000010000000047400107461736B53797374656D5461736B496474001235323230323330353131383539353130303174000E7461736B53797374656D5461736B7372001C636F6D2E6A6176613131302E64746F2E7461736B2E5461736B44746F1C68F10BDC9793A502000C4C0009636C6173734265616E7400124C6A6176612F6C616E672F537472696E673B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C0005737461746571007E000B4C000973746174654E616D6571007E000B4C0008737461747573436471007E000B4C00087461736B417474727400104C6A6176612F7574696C2F4C6973743B4C00087461736B43726F6E71007E000B4C00067461736B496471007E000B4C00087461736B4E616D6571007E000B4C000F7461736B54656D706C61746544746F7400264C636F6D2F6A6176613131302F64746F2F7461736B2F5461736B54656D706C61746544746F3B4C000A74656D706C617465496471007E000B4C000C74656D706C6174654E616D6571007E000B78720017636F6D2E6A6176613131302E64746F2E5061676544746FF388A10AAA87CF54020004490004706167654900077265636F726473490003726F77490005746F74616C78720013636F6D2E6A6176613131302E64746F2E44746F48C3AD937CBA35820200007870FFFFFFFF00000000000000000000000070737200126A6176612E73716C2E54696D657374616D702618D5C80153BF650200014900056E616E6F737872000E6A6176612E7574696C2E44617465686A81014B59741903000078707708000001880A5F170078000000007400033030317074000130737200136A6176612E7574696C2E41727261794C6973747881D21D99C7619D03000149000473697A657870000000007704000000007874000C302030203233202A202A203F71007E0008740021E69C88E5BA94E694B6E5AE9EE694B6E8B4B9E794A8E695B0E68DAEE7949FE6889073720024636F6D2E6A6176613131302E64746F2E7461736B2E5461736B54656D706C61746544746FF6B31C3F4E56A64A0200064C0009636C6173734265616E71007E000B4C000A63726561746554696D6571007E000C4C0008737461747573436471007E000B4C000C74656D706C6174654465736371007E000B4C000A74656D706C617465496471007E000B4C000C74656D706C6174654E616D6571007E000B7871007E000FFFFFFFFF00000000000000000000000074002167656E657261746550617946656544657461696C4D6F6E746854656D706C6174657371007E0012770800000172C0E775F0780000000074000130740021E69C88E5BA94E694B6E5AE9EE694B6E8B4B9E794A8E695B0E68DAEE7949FE6889074000431303334740021E69C88E5BA94E694B6E5AE9EE694B6E8B4B9E794A8E695B0E68DAEE7949FE6889074000431303334740021E69C88E5BA94E694B6E5AE9EE694B6E8B4B9E794A8E695B0E68DAEE7949FE688907400127461736B53797374656D5461736B4E616D6571007E001A7400127461736B53797374656D5461736B4174747271007E00117800);
-INSERT INTO `QRTZ_JOB_DETAILS` VALUES ('quartzScheduler', 'task_522024050669110015', 'taskSystemJobGroup', '任务启动', 'com.java110.job.quartz.TaskSystemJob', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C770800000010000000047400107461736B53797374656D5461736B496474001235323230323430353036363931313030313574000E7461736B53797374656D5461736B73720021636F6D2E6A6176613131302E6265616E2E64746F2E7461736B2E5461736B44746FE2226C397E2EA94B02000B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C000573746174657400124C6A6176612F6C616E672F537472696E673B4C000973746174654E616D6571007E000C4C0008737461747573436471007E000C4C00087461736B417474727400104C6A6176612F7574696C2F4C6973743B4C00087461736B43726F6E71007E000C4C00067461736B496471007E000C4C00087461736B4E616D6571007E000C4C000F7461736B54656D706C61746544746F74002B4C636F6D2F6A6176613131302F6265616E2F64746F2F7461736B2F5461736B54656D706C61746544746F3B4C000A74656D706C617465496471007E000C4C000C74656D706C6174654E616D6571007E000C7872001C636F6D2E6A6176613131302E6265616E2E64746F2E5061676544746F6DA7C7C24DF63C6C020004490004706167654900077265636F726473490003726F77490005746F74616C78720018636F6D2E6A6176613131302E6265616E2E64746F2E44746F2FE834BBFF4FD4F60200007870FFFFFFFF000000000000000000000000737200126A6176612E73716C2E54696D657374616D702618D5C80153BF650200014900056E616E6F737872000E6A6176612E7574696C2E44617465686A81014B597419030000787077080000018F4D41CCC878000000007400033030317074000130737200136A6176612E7574696C2E41727261794C6973747881D21D99C7619D03000149000473697A657870000000007704000000007874000D30202A2F31202A202A202A203F71007E000874001EE4BC8AE789B9E699BAE685A7E997A8E7A681E69FA5E8AFA2E5BF83E8B7B373720029636F6D2E6A6176613131302E6265616E2E64746F2E7461736B2E5461736B54656D706C61746544746FA191957E1C9C49CC0200064C0009636C6173734265616E71007E000C4C000A63726561746554696D6571007E000B4C0008737461747573436471007E000C4C000C74656D706C6174654465736371007E000C4C000A74656D706C617465496471007E000C4C000C74656D706C6174654E616D6571007E000C7871007E000FFFFFFFFF00000000000000000000000074002279697465416363657373436F6E74726F6C48656172746265617454656D706C6174657371007E001277080000018F4D384B30780000000074000130740012E4BC8AE789B9E699BAE685A7E997A8E7A6817400013174001EE4BC8AE789B9E699BAE685A7E997A8E7A681E69FA5E8AFA2E5BF83E8B7B37400013174001EE4BC8AE789B9E699BAE685A7E997A8E7A681E69FA5E8AFA2E5BF83E8B7B37400127461736B53797374656D5461736B4E616D6571007E001A7400127461736B53797374656D5461736B4174747271007E00117800);
+INSERT INTO `qrtz_job_details` VALUES ('quartzScheduler', 'task_522020072443280071', 'taskSystemJobGroup', '任务启动', 'com.java110.job.quartz.TaskSystemJob', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C770800000010000000047400107461736B53797374656D5461736B496474001235323230323030373234343332383030373174000E7461736B53797374656D5461736B7372001C636F6D2E6A6176613131302E64746F2E7461736B2E5461736B44746F1C68F10BDC9793A502000C4C0009636C6173734265616E7400124C6A6176612F6C616E672F537472696E673B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C0005737461746571007E000B4C000973746174654E616D6571007E000B4C0008737461747573436471007E000B4C00087461736B417474727400104C6A6176612F7574696C2F4C6973743B4C00087461736B43726F6E71007E000B4C00067461736B496471007E000B4C00087461736B4E616D6571007E000B4C000F7461736B54656D706C61746544746F7400264C636F6D2F6A6176613131302F64746F2F7461736B2F5461736B54656D706C61746544746F3B4C000A74656D706C617465496471007E000B4C000C74656D706C6174654E616D6571007E000B78720017636F6D2E6A6176613131302E64746F2E5061676544746FF388A10AAA87CF54020004490004706167654900077265636F726473490003726F77490005746F74616C78720013636F6D2E6A6176613131302E64746F2E44746F48C3AD937CBA35820200007870FFFFFFFF00000000000000000000000070737200126A6176612E73716C2E54696D657374616D702618D5C80153BF650200014900056E616E6F737872000E6A6176612E7574696C2E44617465686A81014B59741903000078707708000001738096A49878000000007400033030317074000130737200136A6176612E7574696C2E41727261794C6973747881D21D99C7619D03000149000473697A657870000000007704000000007874000D30202A2F31202A202A202A203F71007E0008740012E5B7A1E6A380E4BBBBE58AA1E7949FE6889073720024636F6D2E6A6176613131302E64746F2E7461736B2E5461736B54656D706C61746544746FF6B31C3F4E56A64A0200064C0009636C6173734265616E71007E000B4C000A63726561746554696D6571007E000C4C0008737461747573436471007E000B4C000C74656D706C6174654465736371007E000B4C000A74656D706C617465496471007E000B4C000C74656D706C6174654E616D6571007E000B7871007E000FFFFFFFFF00000000000000000000000074001F67656E657261746F72496E7370656374696F6E5461736B54656D706C6174657371007E0012770800000172C0E775F0780000000074000130740012E5B7A1E6A380E4BBBBE58AA1E7949FE6889074000431303131740012E5B7A1E6A380E4BBBBE58AA1E7949FE6889074000431303131740012E5B7A1E6A380E4BBBBE58AA1E7949FE688907400127461736B53797374656D5461736B4E616D6571007E001A7400127461736B53797374656D5461736B4174747271007E00117800);
+INSERT INTO `qrtz_job_details` VALUES ('quartzScheduler', 'task_522020101715150264', 'taskSystemJobGroup', '任务启动', 'com.java110.job.quartz.TaskSystemJob', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C770800000010000000047400107461736B53797374656D5461736B496474001235323230323031303137313531353032363474000E7461736B53797374656D5461736B7372001C636F6D2E6A6176613131302E64746F2E7461736B2E5461736B44746F7A461D62679F00B102000B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C000573746174657400124C6A6176612F6C616E672F537472696E673B4C000973746174654E616D6571007E000C4C0008737461747573436471007E000C4C00087461736B417474727400104C6A6176612F7574696C2F4C6973743B4C00087461736B43726F6E71007E000C4C00067461736B496471007E000C4C00087461736B4E616D6571007E000C4C000F7461736B54656D706C61746544746F7400264C636F6D2F6A6176613131302F64746F2F7461736B2F5461736B54656D706C61746544746F3B4C000A74656D706C617465496471007E000C4C000C74656D706C6174654E616D6571007E000C78720017636F6D2E6A6176613131302E64746F2E5061676544746FF388A10AAA87CF54020004490004706167654900077265636F726473490003726F77490005746F74616C78720013636F6D2E6A6176613131302E64746F2E44746F48C3AD937CBA35820200007870FFFFFFFF000000000000000000000000737200126A6176612E73716C2E54696D657374616D702618D5C80153BF650200014900056E616E6F737872000E6A6176612E7574696C2E44617465686A81014B597419030000787077080000017534E6EAB078000000007400033030317074000130737200136A6176612E7574696C2E41727261794C6973747881D21D99C7619D03000149000473697A657870000000007704000000007874000D30203337203138202A202A203F71007E000874001AE8B4B9E794A8E68AA5E8A1A8E7BB9FE8AEA128E59FBAE7A1802973720024636F6D2E6A6176613131302E64746F2E7461736B2E5461736B54656D706C61746544746FF6B31C3F4E56A64A0200064C0009636C6173734265616E71007E000C4C000A63726561746554696D6571007E000B4C0008737461747573436471007E000C4C000C74656D706C6174654465736371007E000C4C000A74656D706C617465496471007E000C4C000C74656D706C6174654E616D6571007E000C7871007E000FFFFFFFFF00000000000000000000000074002267656E65726174654665654D6F6E74685374617469737469637354656D706C6174657371007E0012770800000172C0E775F0780000000074000130740012E8B4B9E794A8E68AA5E8A1A8E7BB9FE8AEA174000431303132740012E8B4B9E794A8E68AA5E8A1A8E7BB9FE8AEA174000431303132740012E8B4B9E794A8E68AA5E8A1A8E7BB9FE8AEA17400127461736B53797374656D5461736B4E616D6571007E001A7400127461736B53797374656D5461736B4174747271007E00117800);
+INSERT INTO `qrtz_job_details` VALUES ('quartzScheduler', 'task_522021051552360003', 'taskSystemJobGroup', '任务启动', 'com.java110.job.quartz.TaskSystemJob', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C770800000010000000047400107461736B53797374656D5461736B496474001235323230323130353135353233363030303374000E7461736B53797374656D5461736B7372001C636F6D2E6A6176613131302E64746F2E7461736B2E5461736B44746F1C68F10BDC9793A502000C4C0009636C6173734265616E7400124C6A6176612F6C616E672F537472696E673B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C0005737461746571007E000B4C000973746174654E616D6571007E000B4C0008737461747573436471007E000B4C00087461736B417474727400104C6A6176612F7574696C2F4C6973743B4C00087461736B43726F6E71007E000B4C00067461736B496471007E000B4C00087461736B4E616D6571007E000B4C000F7461736B54656D706C61746544746F7400264C636F6D2F6A6176613131302F64746F2F7461736B2F5461736B54656D706C61746544746F3B4C000A74656D706C617465496471007E000B4C000C74656D706C6174654E616D6571007E000B78720017636F6D2E6A6176613131302E64746F2E5061676544746FF388A10AAA87CF54020004490004706167654900077265636F726473490003726F77490005746F74616C78720013636F6D2E6A6176613131302E64746F2E44746F48C3AD937CBA35820200007870FFFFFFFF00000000000000000000000070737200126A6176612E73716C2E54696D657374616D702618D5C80153BF650200014900056E616E6F737872000E6A6176612E7574696C2E44617465686A81014B59741903000078707708000001796E6F336078000000007400033030317074000130737200136A6176612E7574696C2E41727261794C6973747881D21D99C7619D03000149000473697A657870000000007704000000007874000D30203136203137202A202A203F71007E000874000CE6ACA0E8B4B9E7BB9FE8AEA173720024636F6D2E6A6176613131302E64746F2E7461736B2E5461736B54656D706C61746544746FF6B31C3F4E56A64A0200064C0009636C6173734265616E71007E000B4C000A63726561746554696D6571007E000C4C0008737461747573436471007E000B4C000C74656D706C6174654465736371007E000B4C000A74656D706C617465496471007E000B4C000C74656D706C6174654E616D6571007E000B7871007E000FFFFFFFFF00000000000000000000000074001967656E65726174654F77654665654E657754656D706C6174657371007E0012770800000172C0E775F078000000007400013074000CE6ACA0E8B4B9E7BB9FE8AEA17400043130313874000CE6ACA0E8B4B9E7BB9FE8AEA17400043130313874000CE6ACA0E8B4B9E7BB9FE8AEA17400127461736B53797374656D5461736B4E616D6571007E001A7400127461736B53797374656D5461736B4174747271007E00117800);
+INSERT INTO `qrtz_job_details` VALUES ('quartzScheduler', 'task_522023051185951001', 'taskSystemJobGroup', '任务启动', 'com.java110.job.quartz.TaskSystemJob', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C770800000010000000047400107461736B53797374656D5461736B496474001235323230323330353131383539353130303174000E7461736B53797374656D5461736B7372001C636F6D2E6A6176613131302E64746F2E7461736B2E5461736B44746F1C68F10BDC9793A502000C4C0009636C6173734265616E7400124C6A6176612F6C616E672F537472696E673B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C0005737461746571007E000B4C000973746174654E616D6571007E000B4C0008737461747573436471007E000B4C00087461736B417474727400104C6A6176612F7574696C2F4C6973743B4C00087461736B43726F6E71007E000B4C00067461736B496471007E000B4C00087461736B4E616D6571007E000B4C000F7461736B54656D706C61746544746F7400264C636F6D2F6A6176613131302F64746F2F7461736B2F5461736B54656D706C61746544746F3B4C000A74656D706C617465496471007E000B4C000C74656D706C6174654E616D6571007E000B78720017636F6D2E6A6176613131302E64746F2E5061676544746FF388A10AAA87CF54020004490004706167654900077265636F726473490003726F77490005746F74616C78720013636F6D2E6A6176613131302E64746F2E44746F48C3AD937CBA35820200007870FFFFFFFF00000000000000000000000070737200126A6176612E73716C2E54696D657374616D702618D5C80153BF650200014900056E616E6F737872000E6A6176612E7574696C2E44617465686A81014B59741903000078707708000001880A5F170078000000007400033030317074000130737200136A6176612E7574696C2E41727261794C6973747881D21D99C7619D03000149000473697A657870000000007704000000007874000C302030203233202A202A203F71007E0008740021E69C88E5BA94E694B6E5AE9EE694B6E8B4B9E794A8E695B0E68DAEE7949FE6889073720024636F6D2E6A6176613131302E64746F2E7461736B2E5461736B54656D706C61746544746FF6B31C3F4E56A64A0200064C0009636C6173734265616E71007E000B4C000A63726561746554696D6571007E000C4C0008737461747573436471007E000B4C000C74656D706C6174654465736371007E000B4C000A74656D706C617465496471007E000B4C000C74656D706C6174654E616D6571007E000B7871007E000FFFFFFFFF00000000000000000000000074002167656E657261746550617946656544657461696C4D6F6E746854656D706C6174657371007E0012770800000172C0E775F0780000000074000130740021E69C88E5BA94E694B6E5AE9EE694B6E8B4B9E794A8E695B0E68DAEE7949FE6889074000431303334740021E69C88E5BA94E694B6E5AE9EE694B6E8B4B9E794A8E695B0E68DAEE7949FE6889074000431303334740021E69C88E5BA94E694B6E5AE9EE694B6E8B4B9E794A8E695B0E68DAEE7949FE688907400127461736B53797374656D5461736B4E616D6571007E001A7400127461736B53797374656D5461736B4174747271007E00117800);
+INSERT INTO `qrtz_job_details` VALUES ('quartzScheduler', 'task_522024050669110015', 'taskSystemJobGroup', '任务启动', 'com.java110.job.quartz.TaskSystemJob', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C770800000010000000047400107461736B53797374656D5461736B496474001235323230323430353036363931313030313574000E7461736B53797374656D5461736B73720021636F6D2E6A6176613131302E6265616E2E64746F2E7461736B2E5461736B44746FE2226C397E2EA94B02000B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C000573746174657400124C6A6176612F6C616E672F537472696E673B4C000973746174654E616D6571007E000C4C0008737461747573436471007E000C4C00087461736B417474727400104C6A6176612F7574696C2F4C6973743B4C00087461736B43726F6E71007E000C4C00067461736B496471007E000C4C00087461736B4E616D6571007E000C4C000F7461736B54656D706C61746544746F74002B4C636F6D2F6A6176613131302F6265616E2F64746F2F7461736B2F5461736B54656D706C61746544746F3B4C000A74656D706C617465496471007E000C4C000C74656D706C6174654E616D6571007E000C7872001C636F6D2E6A6176613131302E6265616E2E64746F2E5061676544746F6DA7C7C24DF63C6C020004490004706167654900077265636F726473490003726F77490005746F74616C78720018636F6D2E6A6176613131302E6265616E2E64746F2E44746F2FE834BBFF4FD4F60200007870FFFFFFFF000000000000000000000000737200126A6176612E73716C2E54696D657374616D702618D5C80153BF650200014900056E616E6F737872000E6A6176612E7574696C2E44617465686A81014B597419030000787077080000018F4D41CCC878000000007400033030317074000130737200136A6176612E7574696C2E41727261794C6973747881D21D99C7619D03000149000473697A657870000000007704000000007874000D30202A2F31202A202A202A203F71007E000874001EE4BC8AE789B9E699BAE685A7E997A8E7A681E69FA5E8AFA2E5BF83E8B7B373720029636F6D2E6A6176613131302E6265616E2E64746F2E7461736B2E5461736B54656D706C61746544746FA191957E1C9C49CC0200064C0009636C6173734265616E71007E000C4C000A63726561746554696D6571007E000B4C0008737461747573436471007E000C4C000C74656D706C6174654465736371007E000C4C000A74656D706C617465496471007E000C4C000C74656D706C6174654E616D6571007E000C7871007E000FFFFFFFFF00000000000000000000000074002279697465416363657373436F6E74726F6C48656172746265617454656D706C6174657371007E001277080000018F4D384B30780000000074000130740012E4BC8AE789B9E699BAE685A7E997A8E7A6817400013174001EE4BC8AE789B9E699BAE685A7E997A8E7A681E69FA5E8AFA2E5BF83E8B7B37400013174001EE4BC8AE789B9E699BAE685A7E997A8E7A681E69FA5E8AFA2E5BF83E8B7B37400127461736B53797374656D5461736B4E616D6571007E001A7400127461736B53797374656D5461736B4174747271007E00117800);
 
 -- ----------------------------
--- Table structure for QRTZ_LOCKS
+-- Table structure for qrtz_locks
 -- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_LOCKS`;
-CREATE TABLE `QRTZ_LOCKS` (
-  `SCHED_NAME` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `LOCK_NAME` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+DROP TABLE IF EXISTS `qrtz_locks`;
+CREATE TABLE `qrtz_locks` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `LOCK_NAME` varchar(40) NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`LOCK_NAME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of QRTZ_LOCKS
+-- Records of qrtz_locks
 -- ----------------------------
-INSERT INTO `QRTZ_LOCKS` VALUES ('quartzScheduler', 'TRIGGER_ACCESS');
+INSERT INTO `qrtz_locks` VALUES ('quartzScheduler', 'TRIGGER_ACCESS');
 
 -- ----------------------------
--- Table structure for QRTZ_PAUSED_TRIGGER_GRPS
+-- Table structure for qrtz_paused_trigger_grps
 -- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_PAUSED_TRIGGER_GRPS`;
-CREATE TABLE `QRTZ_PAUSED_TRIGGER_GRPS` (
-  `SCHED_NAME` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `TRIGGER_GROUP` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+DROP TABLE IF EXISTS `qrtz_paused_trigger_grps`;
+CREATE TABLE `qrtz_paused_trigger_grps` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_GROUP` varchar(200) NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_GROUP`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of QRTZ_PAUSED_TRIGGER_GRPS
+-- Records of qrtz_paused_trigger_grps
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for QRTZ_SCHEDULER_STATE
+-- Table structure for qrtz_scheduler_state
 -- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_SCHEDULER_STATE`;
-CREATE TABLE `QRTZ_SCHEDULER_STATE` (
-  `SCHED_NAME` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `INSTANCE_NAME` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `LAST_CHECKIN_TIME` bigint NOT NULL,
-  `CHECKIN_INTERVAL` bigint NOT NULL,
+DROP TABLE IF EXISTS `qrtz_scheduler_state`;
+CREATE TABLE `qrtz_scheduler_state` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `INSTANCE_NAME` varchar(200) NOT NULL,
+  `LAST_CHECKIN_TIME` bigint(20) NOT NULL,
+  `CHECKIN_INTERVAL` bigint(20) NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`INSTANCE_NAME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of QRTZ_SCHEDULER_STATE
+-- Records of qrtz_scheduler_state
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for QRTZ_SIMPLE_TRIGGERS
+-- Table structure for qrtz_simple_triggers
 -- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_SIMPLE_TRIGGERS`;
-CREATE TABLE `QRTZ_SIMPLE_TRIGGERS` (
-  `SCHED_NAME` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `TRIGGER_NAME` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `TRIGGER_GROUP` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `REPEAT_COUNT` bigint NOT NULL,
-  `REPEAT_INTERVAL` bigint NOT NULL,
-  `TIMES_TRIGGERED` bigint NOT NULL,
+DROP TABLE IF EXISTS `qrtz_simple_triggers`;
+CREATE TABLE `qrtz_simple_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_NAME` varchar(200) NOT NULL,
+  `TRIGGER_GROUP` varchar(200) NOT NULL,
+  `REPEAT_COUNT` bigint(20) NOT NULL,
+  `REPEAT_INTERVAL` bigint(20) NOT NULL,
+  `TIMES_TRIGGERED` bigint(20) NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
-  CONSTRAINT `QRTZ_SIMPLE_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `QRTZ_TRIGGERS` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `QRTZ_SIMPLE_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of QRTZ_SIMPLE_TRIGGERS
+-- Records of qrtz_simple_triggers
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for QRTZ_SIMPROP_TRIGGERS
+-- Table structure for qrtz_simprop_triggers
 -- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_SIMPROP_TRIGGERS`;
-CREATE TABLE `QRTZ_SIMPROP_TRIGGERS` (
-  `SCHED_NAME` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `TRIGGER_NAME` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `TRIGGER_GROUP` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `STR_PROP_1` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `STR_PROP_2` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `STR_PROP_3` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `INT_PROP_1` int DEFAULT NULL,
-  `INT_PROP_2` int DEFAULT NULL,
-  `LONG_PROP_1` bigint DEFAULT NULL,
-  `LONG_PROP_2` bigint DEFAULT NULL,
+DROP TABLE IF EXISTS `qrtz_simprop_triggers`;
+CREATE TABLE `qrtz_simprop_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_NAME` varchar(200) NOT NULL,
+  `TRIGGER_GROUP` varchar(200) NOT NULL,
+  `STR_PROP_1` varchar(512) DEFAULT NULL,
+  `STR_PROP_2` varchar(512) DEFAULT NULL,
+  `STR_PROP_3` varchar(512) DEFAULT NULL,
+  `INT_PROP_1` int(11) DEFAULT NULL,
+  `INT_PROP_2` int(11) DEFAULT NULL,
+  `LONG_PROP_1` bigint(20) DEFAULT NULL,
+  `LONG_PROP_2` bigint(20) DEFAULT NULL,
   `DEC_PROP_1` decimal(13,4) DEFAULT NULL,
   `DEC_PROP_2` decimal(13,4) DEFAULT NULL,
-  `BOOL_PROP_1` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `BOOL_PROP_2` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `BOOL_PROP_1` varchar(1) DEFAULT NULL,
+  `BOOL_PROP_2` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
-  CONSTRAINT `QRTZ_SIMPROP_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `QRTZ_TRIGGERS` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `QRTZ_SIMPROP_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of QRTZ_SIMPROP_TRIGGERS
+-- Records of qrtz_simprop_triggers
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for QRTZ_TRIGGERS
+-- Table structure for qrtz_triggers
 -- ----------------------------
-DROP TABLE IF EXISTS `QRTZ_TRIGGERS`;
-CREATE TABLE `QRTZ_TRIGGERS` (
-  `SCHED_NAME` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `TRIGGER_NAME` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `TRIGGER_GROUP` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `JOB_NAME` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `JOB_GROUP` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `DESCRIPTION` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `NEXT_FIRE_TIME` bigint DEFAULT NULL,
-  `PREV_FIRE_TIME` bigint DEFAULT NULL,
-  `PRIORITY` int DEFAULT NULL,
-  `TRIGGER_STATE` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `TRIGGER_TYPE` varchar(8) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `START_TIME` bigint NOT NULL,
-  `END_TIME` bigint DEFAULT NULL,
-  `CALENDAR_NAME` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `MISFIRE_INSTR` smallint DEFAULT NULL,
+DROP TABLE IF EXISTS `qrtz_triggers`;
+CREATE TABLE `qrtz_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_NAME` varchar(200) NOT NULL,
+  `TRIGGER_GROUP` varchar(200) NOT NULL,
+  `JOB_NAME` varchar(200) NOT NULL,
+  `JOB_GROUP` varchar(200) NOT NULL,
+  `DESCRIPTION` varchar(250) DEFAULT NULL,
+  `NEXT_FIRE_TIME` bigint(20) DEFAULT NULL,
+  `PREV_FIRE_TIME` bigint(20) DEFAULT NULL,
+  `PRIORITY` int(11) DEFAULT NULL,
+  `TRIGGER_STATE` varchar(16) NOT NULL,
+  `TRIGGER_TYPE` varchar(8) NOT NULL,
+  `START_TIME` bigint(20) NOT NULL,
+  `END_TIME` bigint(20) DEFAULT NULL,
+  `CALENDAR_NAME` varchar(200) DEFAULT NULL,
+  `MISFIRE_INSTR` smallint(6) DEFAULT NULL,
   `JOB_DATA` blob,
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
   KEY `IDX_QRTZ_T_J` (`SCHED_NAME`,`JOB_NAME`,`JOB_GROUP`) USING BTREE,
@@ -11078,12 +11012,113 @@ CREATE TABLE `QRTZ_TRIGGERS` (
   KEY `IDX_QRTZ_T_NFT_MISFIRE` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`) USING BTREE,
   KEY `IDX_QRTZ_T_NFT_ST_MISFIRE` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`,`TRIGGER_STATE`) USING BTREE,
   KEY `IDX_QRTZ_T_NFT_ST_MISFIRE_GRP` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`,`TRIGGER_GROUP`,`TRIGGER_STATE`) USING BTREE,
-  CONSTRAINT `QRTZ_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`) REFERENCES `QRTZ_JOB_DETAILS` (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `QRTZ_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`) REFERENCES `qrtz_job_details` (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of QRTZ_TRIGGERS
+-- Records of qrtz_triggers
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for small_wechat
+-- ----------------------------
+DROP TABLE IF EXISTS `small_wechat`;
+CREATE TABLE `small_wechat` (
+  `wechat_id` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '微信ID',
+  `b_id` varchar(30) COLLATE utf8_bin DEFAULT '-1' COMMENT '业务ID',
+  `store_Id` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '商户ID',
+  `name` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '小程序名称',
+  `wechat_type` varchar(4) COLLATE utf8_bin NOT NULL COMMENT '配置类型1000微信小程序1100微信公众号',
+  `appId` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '小程序appid',
+  `appSecret` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '应用密钥',
+  `pay_password` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '支付密码',
+  `obj_id` varchar(30) COLLATE utf8_bin NOT NULL COMMENT 'obj_type为当前小区时为小区id，为所有小区时allCommunity表示作用与所有小区',
+  `obj_type` varchar(4) COLLATE utf8_bin NOT NULL COMMENT '配置作用范围 1000当前小区，1100所有小区',
+  `mch_id` varchar(200) COLLATE utf8_bin NOT NULL COMMENT 'mch_id',
+  `remarks` varchar(200) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(30) COLLATE utf8_bin NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `cert_path` varchar(512) COLLATE utf8_bin DEFAULT NULL COMMENT '证书地址',
+  `mch_name` varchar(128) COLLATE utf8_bin NOT NULL DEFAULT '无' COMMENT '商户名称',
+  PRIMARY KEY (`wechat_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of small_wechat
+-- ----------------------------
+INSERT INTO `small_wechat` VALUES ('712023112473040002', '-1', '102023021497100001', '业主', '1100', '2', '2', '1', '102023021386560001', '1000', '1', '1', '2023-11-24 00:41:55', '0', '', '1');
+INSERT INTO `small_wechat` VALUES ('712025012319230009', '-1', '102024121756190006', '1', '1100', '1', '1', '1', '102024121715970003', '1000', '1', '1', '2025-01-23 01:19:29', '0', '', '1');
+INSERT INTO `small_wechat` VALUES ('712025032824650020', '-1', '102024121756190006', '1', '1000', 'wx702e87d56708f858', '33af43993bb5fe4efa818c339d670366', '1', '2024122649870005', '1000', '1', '1', '2025-03-28 17:37:50', '0', '', '1');
+INSERT INTO `small_wechat` VALUES ('712025032884370009', '-1', '102024121756190006', 'xx', '1100', 'xx', 'xx', '1', '2024122649870005', '1000', '1', 'xx', '2025-03-28 16:51:10', '0', '', '1');
+
+-- ----------------------------
+-- Table structure for space_machine_factory
+-- ----------------------------
+DROP TABLE IF EXISTS `space_machine_factory`;
+CREATE TABLE `space_machine_factory` (
+  `factory_id` varchar(30) NOT NULL COMMENT '厂家ID',
+  `factory_name` varchar(64) NOT NULL COMMENT '厂家名称',
+  `bean_impl` varchar(512) NOT NULL COMMENT '厂家处理类',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  PRIMARY KEY (`factory_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of space_machine_factory
+-- ----------------------------
+INSERT INTO `space_machine_factory` VALUES ('102024030543190016', '松饼车位地磁', 'songBingParkingSpaceMachineAdapt', '设备对接由松饼团队完成，设备购买调试请联系松饼团队\nhttp://shop.songbingcloud.com/', '2024-03-05 22:30:07', '0');
+INSERT INTO `space_machine_factory` VALUES ('102024030544720007', '1', '2', '2', '2024-03-05 22:29:41', '1');
+
+-- ----------------------------
+-- Table structure for store_type
+-- ----------------------------
+DROP TABLE IF EXISTS `store_type`;
+CREATE TABLE `store_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `store_type_cd` varchar(12) NOT NULL COMMENT '店铺编码',
+  `name` varchar(50) NOT NULL COMMENT '店铺种类编码',
+  `description` varchar(200) DEFAULT NULL COMMENT '描述',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `is_show` varchar(2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `store_type_cd` (`store_type_cd`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of store_type
+-- ----------------------------
+INSERT INTO `store_type` VALUES ('1', '800900000001', '运营团队', '运营团队', '2018-12-12 12:09:02', '1');
+INSERT INTO `store_type` VALUES ('3', '800900000003', '物业', '物业', '2018-12-12 12:27:11', '0');
+INSERT INTO `store_type` VALUES ('9', '800900000000', '开发团队', '开发团队', '2018-12-12 12:09:02', '1');
+
+-- ----------------------------
+-- Table structure for system_info
+-- ----------------------------
+DROP TABLE IF EXISTS `system_info`;
+CREATE TABLE `system_info` (
+  `system_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `system_title` varchar(64) NOT NULL COMMENT '标题名称',
+  `sub_system_title` varchar(64) NOT NULL COMMENT '副标题',
+  `company_name` varchar(128) DEFAULT NULL COMMENT '公司名称',
+  `logo_url` varchar(200) DEFAULT NULL COMMENT 'logo地址',
+  `img_url` varchar(512) DEFAULT NULL COMMENT '静态url',
+  `default_community_id` varchar(30) DEFAULT NULL COMMENT '默认小区编号',
+  `owner_title` varchar(64) DEFAULT NULL COMMENT '业主标题',
+  `property_title` varchar(64) DEFAULT NULL COMMENT '物业手机标题',
+  `qq_map_key` varchar(64) DEFAULT NULL COMMENT 'qq地图key',
+  `mall_url` varchar(128) DEFAULT NULL COMMENT '商城地址',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `system_simple_title` varchar(64) NOT NULL COMMENT '简写名称',
+  PRIMARY KEY (`system_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of system_info
+-- ----------------------------
+INSERT INTO `system_info` VALUES ('1', 'HC物联网管理系统', '智慧物联网系统', 'java110团队', '/img/logo.png', 'http://iot.homecommunity.cn', '2022051971920001', 'xx', 'xx', '123123', 'http://mallapp.homecommunity.cn', '2022-08-17 01:13:25', '0', 'HCIOT');
 
 -- ----------------------------
 -- Table structure for s_community
@@ -11106,7 +11141,7 @@ CREATE TABLE `s_community` (
 -- ----------------------------
 -- Records of s_community
 -- ----------------------------
-INSERT INTO `s_community` VALUES ('2024122649870005', 'HC演示小区', '天津省天津市和平区无', '120101', '18909711443', '1', '2024-12-17 15:50:51', '0', '39.92833348668464', '116.38511254835191');
+INSERT INTO `s_community` VALUES ('102025040731450002', 'HC演示小区', '青海省西宁市城中区无', '630103', '18909711443', '', '2025-04-07 14:04:06', '0', '39.91582759727303', '116.39455326008044');
 
 -- ----------------------------
 -- Table structure for s_community_attr
@@ -11150,8 +11185,7 @@ CREATE TABLE `s_community_member` (
 -- ----------------------------
 -- Records of s_community_member
 -- ----------------------------
-INSERT INTO `s_community_member` VALUES ('102024121758070022', '2024122649870005', '102024121756190006', 'HC演示物业', '800900000003', '2024-12-17 15:51:29', '1', '2024-12-17 15:51:28', '2038-01-01 00:00:00');
-INSERT INTO `s_community_member` VALUES ('102025032434280095', '2024122649870005', '102024121756190006', 'HC演示物业', '800900000003', '2025-03-24 19:40:31', '0', '2025-03-24 19:40:31', '2038-01-01 00:00:00');
+INSERT INTO `s_community_member` VALUES ('102025040758440021', '102025040731450002', '102025040700890005', 'HC演示物业', '800900000003', '2025-04-07 14:04:30', '0', '2025-04-07 14:04:30', '2038-01-01 00:00:00');
 
 -- ----------------------------
 -- Table structure for s_shop
@@ -11232,8 +11266,7 @@ CREATE TABLE `s_store` (
 -- ----------------------------
 -- Records of s_store
 -- ----------------------------
-INSERT INTO `s_store` VALUES ('102024121756190006', 'HC演示物业', '无', '18909711443', '800900000003', '48001', '30518939884421922816', '2024-12-17 15:51:22', '0');
-INSERT INTO `s_store` VALUES ('102025012319250002', '充电厂家', '无', '18909714525', '800900000005', '48001', '302024121758390012', '2025-01-23 00:39:41', '0');
+INSERT INTO `s_store` VALUES ('102025040700890005', 'HC演示物业', '无', '18909711443', '800900000003', '48001', '30518939884421922816', '2025-04-07 14:04:30', '0');
 INSERT INTO `s_store` VALUES ('400000000000000001', 'HC小区运营团队', '广东省东莞市振兴路197号', '15818220066', '800900000001', '48001', '1', '2018-12-12 05:47:34', '0');
 INSERT INTO `s_store` VALUES ('400000000000000002', 'HC小区开发团队', '广东省东莞市振兴路197号', '15818220066', '800900000000', '48001', '1', '2018-12-12 05:47:34', '0');
 
@@ -11269,6 +11302,8 @@ INSERT INTO `s_store_attr` VALUES (null, '112024040200920007', '1020240402242600
 INSERT INTO `s_store_attr` VALUES (null, '112024040248530005', '102024040224260003', '100201903001', '李大猫', '2024-04-02 14:31:39', '0');
 INSERT INTO `s_store_attr` VALUES (null, '112024121744510008', '102024121756190006', '100201903001', '无', '2024-12-17 15:51:23', '0');
 INSERT INTO `s_store_attr` VALUES (null, '112024121784490010', '102024121756190006', '100201903003', '2024-12-01', '2024-12-17 15:51:24', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112025040762920009', '102025040700890005', '100201903003', '2025-04-07', '2025-04-07 14:04:30', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112025040784590007', '102025040700890005', '100201903001', '无', '2025-04-07 14:04:30', '0');
 
 -- ----------------------------
 -- Table structure for s_store_staff
@@ -11289,8 +11324,7 @@ CREATE TABLE `s_store_staff` (
 -- ----------------------------
 -- Records of s_store_staff
 -- ----------------------------
-INSERT INTO `s_store_staff` VALUES ('102024121771300014', '102024121756190006', '302024121758390012', 'HC演示物业', '18909711443', 'Y', '2024-12-17 15:51:25', '0');
-INSERT INTO `s_store_staff` VALUES ('102025012354910006', '102025012319250002', '302025012378820004', '充电厂家', '18909714525', 'Y', '2025-01-23 00:39:43', '0');
+INSERT INTO `s_store_staff` VALUES ('102025040713740013', '102025040700890005', '302025040704800011', 'HC演示物业', '18909711443', 'Y', '2025-04-07 14:04:30', '0');
 INSERT INTO `s_store_staff` VALUES ('112024021569640024', '400000000000000001', '302024021564470324', '张三', '13789564585', 'N', '2024-02-15 15:50:53', '0');
 INSERT INTO `s_store_staff` VALUES ('112024021958690356', '400000000000000001', '302024021914113246', 'wym', '15618611116', 'N', '2024-02-19 14:20:30', '0');
 INSERT INTO `s_store_staff` VALUES ('112024022199420796', '400000000000000001', '302024022170156996', '111', '22122', 'N', '2024-02-21 10:19:52', '0');
@@ -11299,112 +11333,360 @@ INSERT INTO `s_store_staff` VALUES ('452019013038670004', '400000000000000001', 
 INSERT INTO `s_store_staff` VALUES ('452019062708080001', '400000000000000002', '30520751775595118592', 'dev', '17797173944', 'Y', '2019-03-30 08:31:29', '0');
 
 -- ----------------------------
--- Table structure for small_wechat
+-- Table structure for task
 -- ----------------------------
-DROP TABLE IF EXISTS `small_wechat`;
-CREATE TABLE `small_wechat` (
-  `wechat_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '微信ID',
-  `b_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT '-1' COMMENT '业务ID',
-  `store_Id` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '商户ID',
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '小程序名称',
-  `wechat_type` varchar(4) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '配置类型1000微信小程序1100微信公众号',
-  `appId` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '小程序appid',
-  `appSecret` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '应用密钥',
-  `pay_password` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '支付密码',
-  `obj_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'obj_type为当前小区时为小区id，为所有小区时allCommunity表示作用与所有小区',
-  `obj_type` varchar(4) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '配置作用范围 1000当前小区，1100所有小区',
-  `mch_id` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'mch_id',
-  `remarks` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '0' COMMENT '数据状态',
-  `cert_path` varchar(512) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '证书地址',
-  `mch_name` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '无' COMMENT '商户名称',
-  PRIMARY KEY (`wechat_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of small_wechat
--- ----------------------------
-INSERT INTO `small_wechat` VALUES ('712023112473040002', '-1', '102023021497100001', '业主', '1100', '2', '2', '1', '102023021386560001', '1000', '1', '1', '2023-11-24 00:41:55', '0', '', '1');
-INSERT INTO `small_wechat` VALUES ('712025012319230009', '-1', '102024121756190006', '1', '1100', '1', '1', '1', '102024121715970003', '1000', '1', '1', '2025-01-23 01:19:29', '0', '', '1');
-INSERT INTO `small_wechat` VALUES ('712025032824650020', '-1', '102024121756190006', '1', '1000', 'wx702e87d56708f858', '33af43993bb5fe4efa818c339d670366', '1', '2024122649870005', '1000', '1', '1', '2025-03-28 17:37:50', '0', '', '1');
-INSERT INTO `small_wechat` VALUES ('712025032884370009', '-1', '102024121756190006', 'xx', '1100', 'xx', 'xx', '1', '2024122649870005', '1000', '1', 'xx', '2025-03-28 16:51:10', '0', '', '1');
-
--- ----------------------------
--- Table structure for space_machine_factory
--- ----------------------------
-DROP TABLE IF EXISTS `space_machine_factory`;
-CREATE TABLE `space_machine_factory` (
-  `factory_id` varchar(30) NOT NULL COMMENT '厂家ID',
-  `factory_name` varchar(64) NOT NULL COMMENT '厂家名称',
-  `bean_impl` varchar(512) NOT NULL COMMENT '厂家处理类',
-  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
-  PRIMARY KEY (`factory_id`) USING BTREE
+DROP TABLE IF EXISTS `task`;
+CREATE TABLE `task` (
+  `task_id` varchar(30) NOT NULL COMMENT '任务ID',
+  `b_id` varchar(30) DEFAULT '-1' COMMENT '业务ID',
+  `task_name` varchar(100) NOT NULL COMMENT '任务名称',
+  `template_id` varchar(30) NOT NULL COMMENT '模板ID',
+  `task_cron` varchar(50) NOT NULL COMMENT '定时时间',
+  `state` varchar(12) NOT NULL COMMENT '状态 001 停止 002 运行 ',
+  `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '状态',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of space_machine_factory
+-- Records of task
 -- ----------------------------
-INSERT INTO `space_machine_factory` VALUES ('102024030543190016', '松饼车位地磁', 'songBingParkingSpaceMachineAdapt', '设备对接由松饼团队完成，设备购买调试请联系松饼团队\nhttp://shop.songbingcloud.com/', '2024-03-05 22:30:07', '0');
-INSERT INTO `space_machine_factory` VALUES ('102024030544720007', '1', '2', '2', '2024-03-05 22:29:41', '1');
+INSERT INTO `task` VALUES ('522024050669110015', '-1', '伊特智慧门禁查询心跳', '1', '0 */1 * * * ?', '002', '0', '2024-05-06 17:35:09');
+INSERT INTO `task` VALUES ('522024050670050023', '-1', '12', '1', '1', '001', '1', '2024-05-06 17:36:03');
+INSERT INTO `task` VALUES ('522025032430450007', '-1', '门禁定时器（定时查询门禁心跳）', '2', '0 */1 * * * ?', '001', '0', '2025-03-24 13:34:41');
 
 -- ----------------------------
--- Table structure for store_type
+-- Table structure for task_attr
 -- ----------------------------
-DROP TABLE IF EXISTS `store_type`;
-CREATE TABLE `store_type` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `store_type_cd` varchar(12) NOT NULL COMMENT '店铺编码',
-  `name` varchar(50) NOT NULL COMMENT '店铺种类编码',
-  `description` varchar(200) DEFAULT NULL COMMENT '描述',
+DROP TABLE IF EXISTS `task_attr`;
+CREATE TABLE `task_attr` (
+  `task_id` varchar(30) NOT NULL COMMENT '任务ID',
+  `b_id` varchar(30) NOT NULL COMMENT '业务Id',
+  `attr_id` varchar(30) NOT NULL COMMENT '属性id',
+  `spec_cd` varchar(12) NOT NULL COMMENT '规格id,参考task_template_spec表',
+  `value` varchar(50) NOT NULL COMMENT '属性值',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `is_show` varchar(2) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `store_type_cd` (`store_type_cd`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+  `status_cd` varchar(12) NOT NULL COMMENT '数据有效状态 0 有效 1失效'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of store_type
+-- Records of task_attr
 -- ----------------------------
-INSERT INTO `store_type` VALUES ('1', '800900000001', '运营团队', '运营团队', '2018-12-12 12:09:02', '1');
-INSERT INTO `store_type` VALUES ('3', '800900000003', '物业', '物业', '2018-12-12 12:27:11', '0');
-INSERT INTO `store_type` VALUES ('9', '800900000000', '开发团队', '开发团队', '2018-12-12 12:09:02', '1');
 
 -- ----------------------------
--- Table structure for system_info
+-- Table structure for task_template
 -- ----------------------------
-DROP TABLE IF EXISTS `system_info`;
-CREATE TABLE `system_info` (
-  `system_id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `system_title` varchar(64) NOT NULL COMMENT '标题名称',
-  `sub_system_title` varchar(64) NOT NULL COMMENT '副标题',
-  `company_name` varchar(128) DEFAULT NULL COMMENT '公司名称',
-  `logo_url` varchar(200) DEFAULT NULL COMMENT 'logo地址',
-  `img_url` varchar(512) DEFAULT NULL COMMENT '静态url',
-  `default_community_id` varchar(30) DEFAULT NULL COMMENT '默认小区编号',
-  `owner_title` varchar(64) DEFAULT NULL COMMENT '业主标题',
-  `property_title` varchar(64) DEFAULT NULL COMMENT '物业手机标题',
-  `qq_map_key` varchar(64) DEFAULT NULL COMMENT 'qq地图key',
-  `mall_url` varchar(128) DEFAULT NULL COMMENT '商城地址',
+DROP TABLE IF EXISTS `task_template`;
+CREATE TABLE `task_template` (
+  `template_id` varchar(30) NOT NULL COMMENT '模板ID',
+  `template_name` varchar(100) NOT NULL COMMENT '模板名称',
+  `template_desc` varchar(200) NOT NULL COMMENT '描述',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(12) NOT NULL DEFAULT '0' COMMENT '状态 0 有效 1 失效',
+  `class_bean` varchar(200) NOT NULL COMMENT '模板处理spring bean 类',
+  PRIMARY KEY (`template_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of task_template
+-- ----------------------------
+INSERT INTO `task_template` VALUES ('1', '伊特智慧门禁查询心跳', '伊特智慧门禁', '2024-05-06 17:24:46', '0', 'yiteAccessControlHeartbeatTemplate');
+INSERT INTO `task_template` VALUES ('2', '门禁定时器', '门禁定时器', '2024-05-06 17:24:46', '0', 'accessControlTaskTemplate');
+
+-- ----------------------------
+-- Table structure for task_template_spec
+-- ----------------------------
+DROP TABLE IF EXISTS `task_template_spec`;
+CREATE TABLE `task_template_spec` (
+  `spec_id` varchar(30) NOT NULL COMMENT '规格ID',
+  `template_id` varchar(30) NOT NULL COMMENT '模板ID',
+  `spec_cd` varchar(12) NOT NULL COMMENT '规格',
+  `spec_name` varchar(100) NOT NULL COMMENT '规格名称',
+  `spec_desc` varchar(200) NOT NULL COMMENT '规格描述',
+  `is_show` varchar(12) NOT NULL DEFAULT 'T' COMMENT '页面是否展示，T就是展示 F 不展示',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(12) NOT NULL DEFAULT '0' COMMENT '状态 0 有效 1 失效'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of task_template_spec
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tel_call_log
+-- ----------------------------
+DROP TABLE IF EXISTS `tel_call_log`;
+CREATE TABLE `tel_call_log` (
+  `cl_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `call_type` varchar(12) NOT NULL DEFAULT 'CALL_IN' COMMENT '呼叫类型，CALL_IN 呼入 CALL_OUT 呼出',
+  `state` varchar(12) NOT NULL COMMENT '状态，呼叫状态',
+  `tel` varchar(20) NOT NULL COMMENT '电话号',
+  `talk_time` varchar(32) NOT NULL COMMENT '通话时间',
+  `ccid` varchar(64) DEFAULT NULL COMMENT 'CCID',
+  `voice_path` varchar(512) DEFAULT NULL COMMENT '录音地址',
+  `person_id` varchar(30) NOT NULL COMMENT '操作人',
+  `person_name` varchar(64) NOT NULL COMMENT '操作人',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `system_simple_title` varchar(64) NOT NULL COMMENT '简写名称',
-  PRIMARY KEY (`system_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`cl_id`),
+  KEY `i_m_community_id` (`community_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of system_info
+-- Records of tel_call_log
 -- ----------------------------
-INSERT INTO `system_info` VALUES ('1', 'HC物联网管理系统', '智慧物联网系统', 'java110团队', '/img/logo.png', 'http://iot.homecommunity.cn', '2022051971920001', 'xx', 'xx', '123123', 'http://mallapp.homecommunity.cn', '2022-08-17 01:13:25', '0', 'HCIOT');
+
+-- ----------------------------
+-- Table structure for tel_machine
+-- ----------------------------
+DROP TABLE IF EXISTS `tel_machine`;
+CREATE TABLE `tel_machine` (
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `machine_code` varchar(30) NOT NULL COMMENT '设备编码',
+  `machine_name` varchar(200) NOT NULL COMMENT '设备名称',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `machine_ip` varchar(64) DEFAULT NULL COMMENT '设备IP',
+  `machine_port` varchar(64) DEFAULT NULL COMMENT '设备端口',
+  `heartbeat_time` datetime NOT NULL COMMENT '设备心跳时间',
+  `impl_bean` varchar(30) NOT NULL COMMENT '门禁厂家',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `success_prompt` varchar(512) DEFAULT NULL COMMENT '接听提示语',
+  `fail_prompt` varchar(512) DEFAULT NULL COMMENT '未接听提示语',
+  PRIMARY KEY (`machine_id`),
+  KEY `i_m_community_id` (`community_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tel_machine
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tel_machine_user
+-- ----------------------------
+DROP TABLE IF EXISTS `tel_machine_user`;
+CREATE TABLE `tel_machine_user` (
+  `tmu_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `staff_id` varchar(30) NOT NULL COMMENT '操作人',
+  `staff_name` varchar(64) NOT NULL COMMENT '操作人',
+  `staff_tel` varchar(11) NOT NULL COMMENT '操作人',
+  `master_flag` varchar(12) NOT NULL COMMENT '默认客服，Y 是 N 否',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`tmu_id`),
+  KEY `i_m_community_id` (`community_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tel_machine_user
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tel_sms_log
+-- ----------------------------
+DROP TABLE IF EXISTS `tel_sms_log`;
+CREATE TABLE `tel_sms_log` (
+  `sl_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `call_type` varchar(12) NOT NULL DEFAULT 'CALL_IN' COMMENT '呼叫类型，CALL_IN 呼入 CALL_OUT 呼出',
+  `state` varchar(12) NOT NULL COMMENT '状态，呼叫状态',
+  `tel` varchar(20) NOT NULL COMMENT '电话号',
+  `person_id` varchar(30) NOT NULL COMMENT '操作人',
+  `person_name` varchar(64) NOT NULL COMMENT '操作人',
+  `sms_content` varchar(512) DEFAULT NULL COMMENT '短信内容',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`sl_id`),
+  KEY `i_m_community_id` (`community_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tel_sms_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tel_tts
+-- ----------------------------
+DROP TABLE IF EXISTS `tel_tts`;
+CREATE TABLE `tel_tts` (
+  `tt_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `tts_type` varchar(12) NOT NULL DEFAULT 'OWE_FEE' COMMENT '类型，欠费催缴 OWE_FEE',
+  `tts_name` varchar(128) NOT NULL COMMENT '语音名称',
+  `tts_path` varchar(200) NOT NULL COMMENT '语音地址',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`tt_id`),
+  KEY `i_m_community_id` (`community_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tel_tts
+-- ----------------------------
+INSERT INTO `tel_tts` VALUES ('102024060147360002', 'OWE_FEE', '业主催缴tts1', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20240601/6d9beae2-a273-4001-95a9-660ce9adae93.wav', '2024041265850103', '2024-06-01 17:31:30', '0', '业主催缴tts');
+
+-- ----------------------------
+-- Table structure for temp_car_fee_config
+-- ----------------------------
+DROP TABLE IF EXISTS `temp_car_fee_config`;
+CREATE TABLE `temp_car_fee_config` (
+  `config_id` varchar(30) NOT NULL COMMENT '临时车收费标准ID',
+  `fee_name` varchar(64) NOT NULL COMMENT '收费标准名称',
+  `b_id` varchar(30) DEFAULT '-1' COMMENT '业务ID',
+  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
+  `area_num` varchar(30) NOT NULL COMMENT '停车场编码',
+  `car_type` varchar(12) NOT NULL COMMENT '车辆类型',
+  `rule_id` varchar(30) NOT NULL COMMENT '收费规则',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `start_time` datetime NOT NULL COMMENT '开始时间',
+  `end_time` datetime NOT NULL COMMENT '结束时间',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`config_id`),
+  KEY `tcfc_community_id` (`community_id`),
+  KEY `tcfc_pa_id` (`pa_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of temp_car_fee_config
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for temp_car_fee_config_attr
+-- ----------------------------
+DROP TABLE IF EXISTS `temp_car_fee_config_attr`;
+CREATE TABLE `temp_car_fee_config_attr` (
+  `config_id` varchar(30) NOT NULL COMMENT '标准ID',
+  `b_id` varchar(30) DEFAULT '-1' COMMENT '业务ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `attr_id` varchar(30) NOT NULL COMMENT '属性id',
+  `spec_cd` varchar(12) NOT NULL COMMENT '规格id',
+  `value` varchar(500) NOT NULL COMMENT '属性值',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of temp_car_fee_config_attr
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for temp_car_fee_rule
+-- ----------------------------
+DROP TABLE IF EXISTS `temp_car_fee_rule`;
+CREATE TABLE `temp_car_fee_rule` (
+  `rule_id` varchar(30) NOT NULL COMMENT '收费规则ID',
+  `rule_name` varchar(64) NOT NULL COMMENT '收费规则，如标准收费，按次收费',
+  `bean_name` varchar(128) NOT NULL COMMENT '规则处理类',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`rule_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of temp_car_fee_rule
+-- ----------------------------
+INSERT INTO `temp_car_fee_rule` VALUES ('6700012001', '标准收费', '123123', '标准收费', '2021-01-16 14:18:42', '0');
+INSERT INTO `temp_car_fee_rule` VALUES ('6700012005', '标准收费2', '123123', '标准收费2', '2021-01-16 14:19:56', '0');
+INSERT INTO `temp_car_fee_rule` VALUES ('6700012006', '时段收费', '123123', '时段收费', '2021-01-16 14:19:56', '0');
+INSERT INTO `temp_car_fee_rule` VALUES ('6700012007', '时段收费2', '123123', '时段收费2', '2021-01-16 14:19:56', '0');
+INSERT INTO `temp_car_fee_rule` VALUES ('6700012008', '时段收费(24小时计费一次)', '123123', '时段收费(24小时计费一次)', '2021-01-16 14:19:56', '0');
+
+-- ----------------------------
+-- Table structure for temp_car_fee_rule_spec
+-- ----------------------------
+DROP TABLE IF EXISTS `temp_car_fee_rule_spec`;
+CREATE TABLE `temp_car_fee_rule_spec` (
+  `spec_id` varchar(30) NOT NULL COMMENT '规格ID',
+  `rule_id` varchar(64) NOT NULL COMMENT '规则ID',
+  `spec_name` varchar(64) NOT NULL COMMENT '规格名称',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `remark` varchar(256) DEFAULT NULL COMMENT '描述',
+  `seq` int(11) NOT NULL COMMENT '页面排序',
+  PRIMARY KEY (`spec_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of temp_car_fee_rule_spec
+-- ----------------------------
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012001', '6700012001', '免费时间(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写免费停车时间', '1');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012002', '6700012001', '首段时长(分钟)', '2021-01-16 14:36:26', '0', '必填,请填写首段时长', '3');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012003', '6700012001', '首段时长收费', '2021-01-16 14:36:51', '0', '必填,请填写首段时长收费', '4');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012004', '6700012001', '超过首段(分钟)', '2021-01-16 14:38:46', '0', '必填,请填写超过首段后每多少分钟', '5');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012005', '6700012001', '超过首段收费', '2021-01-16 14:38:46', '0', '必填,请填写超过首段后每多少分钟按多少收费', '6');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012006', '6700012001', '停车超过(分钟)', '2021-01-16 14:41:12', '0', '必填,请填写停车超过多少分钟后', '7');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012007', '6700012001', '每多少分钟', '2021-01-16 14:41:12', '0', '必填,请填写超过多少分钟后每多少分钟', '8');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012008', '6700012001', '停车超过收费', '2021-01-16 14:41:49', '0', '必填,请填写超过多少分钟后每多少分钟按多少收费', '9');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012009', '6700012001', '最高收费', '2021-01-16 14:42:34', '0', '必填,请填写单次进出最高收费', '2');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012010', '6700012005', '免费时间(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写免费停车时间', '1');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012011', '6700012005', '超过免费(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写超过免费后每多少分钟', '3');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012012', '6700012005', '超过免费收费', '2021-01-16 14:35:14', '0', '必填,请填写超过免费后每多少分钟按多少收费', '4');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012013', '6700012005', '首段最高时间(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写超过首段多少分钟', '5');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012014', '6700012005', '首段最高收费', '2021-01-16 14:35:14', '0', '必填,请填写首段最高收费', '6');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012015', '6700012005', '超过首段(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写超过首段后每多少分钟', '7');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012016', '6700012005', '超过首段收费', '2021-01-16 14:35:14', '0', '必填,请填写超过首段后每多少分钟按多少收费', '8');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012017', '6700012005', '最高时间(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写最高多少分钟', '9');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012018', '6700012005', '最高收费', '2021-01-16 14:35:14', '0', '必填,请填写最高收费', '2');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012019', '6700012006', '开始时段1', '2021-01-16 14:35:14', '0', '必填,请填写时段1开始时间，比如 07:00', '1');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012020', '6700012006', '结束时段1', '2021-01-16 14:35:14', '0', '必填,请填写时段1结束时间，比如 20:00', '2');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012021', '6700012006', '免费时间1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1免费时间（分钟），', '3');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012022', '6700012006', '最高收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1单次进出最高收费', '4');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012023', '6700012006', '首段时间1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1首段多少分钟', '5');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012024', '6700012006', '首段收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1首段收费', '6');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012025', '6700012006', '超过首段1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1超过首段后每多少分钟', '7');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012026', '6700012006', '超过首段收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1超过首段后每多少分钟按多少收费', '8');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012027', '6700012006', '开始时段2', '2021-01-16 14:35:14', '0', '必填,请填写时段2开始时间，比如 07:00', '9');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012028', '6700012006', '结束时段2', '2021-01-16 14:35:14', '0', '必填,请填写时段2结束时间，比如 20:00', '10');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012029', '6700012006', '免费时间2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2免费时间（分钟），', '11');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012030', '6700012006', '最高收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2单次进出最高收费', '12');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012031', '6700012006', '首段时间2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2首段多少分钟', '13');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012032', '6700012006', '首段收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2首段收费', '14');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012033', '6700012006', '超过首段2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2超过首段后每多少分钟', '15');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012034', '6700012006', '超过首段收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2超过首段后每多少分钟按多少收费', '16');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012035', '6700012007', '免费时间(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写免费时间（分钟）', '1');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012036', '6700012007', '最高收费', '2021-01-16 14:35:14', '0', '必填,请填写单次进出最高收费', '2');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012037', '6700012007', '开始时段1', '2021-01-16 14:35:14', '0', '必填,请填写时段1开始时间，比如 07:00', '3');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012038', '6700012007', '结束时段1', '2021-01-16 14:35:14', '0', '必填,请填写时段1结束时间，比如 20:00', '4');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012039', '6700012007', '首段时间1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1首段多少分钟', '5');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012040', '6700012007', '首段收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1首段收费', '6');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012041', '6700012007', '超过首段1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1超过首段后每多少分钟', '7');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012042', '6700012007', '超过首段收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1超过首段后每多少分钟按多少收费', '8');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012043', '6700012007', '开始时间2', '2021-01-16 14:35:14', '0', '必填,请填写时段2开始时间，比如 07:00', '9');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012044', '6700012007', '结束时间2', '2021-01-16 14:35:14', '0', '必填,请填写时段2结束时间，比如 20:00', '10');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012045', '6700012007', '首段时间2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2首段多少分钟', '11');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012046', '6700012007', '首段收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2首段收费', '12');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012047', '6700012007', '超过首段2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2超过首段后每多少分钟', '13');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012048', '6700012007', '超过首段收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2超过首段后每多少分钟按多少收费', '14');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012049', '6700012008', '开始时段1', '2021-01-16 14:35:14', '0', '必填,请填写时段1开始时间，比如 07:00', '1');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012050', '6700012008', '结束时段1', '2021-01-16 14:35:14', '0', '必填,请填写时段1结束时间，比如 20:00', '2');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012051', '6700012008', '免费时间1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1免费时间（分钟），', '3');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012052', '6700012008', '最高收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1单次进出最高收费', '4');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012053', '6700012008', '首段时间1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1首段多少分钟', '5');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012054', '6700012008', '首段收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1首段收费', '6');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012055', '6700012008', '超过首段1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1超过首段后每多少分钟', '7');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012056', '6700012008', '超过首段收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1超过首段后每多少分钟按多少收费', '8');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012057', '6700012008', '开始时段2', '2021-01-16 14:35:14', '0', '必填,请填写时段2开始时间，比如 07:00', '9');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012058', '6700012008', '结束时段2', '2021-01-16 14:35:14', '0', '必填,请填写时段2结束时间，比如 20:00', '10');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012059', '6700012008', '免费时间2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2免费时间（分钟），', '11');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012060', '6700012008', '最高收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2单次进出最高收费', '12');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012061', '6700012008', '首段时间2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2首段多少分钟', '13');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012062', '6700012008', '首段收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2首段收费', '14');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012063', '6700012008', '超过首段2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2超过首段后每多少分钟', '15');
+INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012064', '6700012008', '超过首段收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2超过首段后每多少分钟按多少收费', '16');
 
 -- ----------------------------
 -- Table structure for t_dict
 -- ----------------------------
 DROP TABLE IF EXISTS `t_dict`;
 CREATE TABLE `t_dict` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `status_cd` varchar(64) NOT NULL COMMENT '表字段状态 取值',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `description` varchar(200) DEFAULT NULL COMMENT '描述',
@@ -11702,349 +11984,58 @@ CREATE TABLE `t_dict_spec` (
 INSERT INTO `t_dict_spec` VALUES ('1', '门禁人员来源', 'access_control_face', 'come_type', '2023-08-16 10:47:55', '0');
 
 -- ----------------------------
--- Table structure for task
+-- Table structure for unitem_log
 -- ----------------------------
-DROP TABLE IF EXISTS `task`;
-CREATE TABLE `task` (
-  `task_id` varchar(30) NOT NULL COMMENT '任务ID',
-  `b_id` varchar(30) DEFAULT '-1' COMMENT '业务ID',
-  `task_name` varchar(100) NOT NULL COMMENT '任务名称',
-  `template_id` varchar(30) NOT NULL COMMENT '模板ID',
-  `task_cron` varchar(50) NOT NULL COMMENT '定时时间',
-  `state` varchar(12) NOT NULL COMMENT '状态 001 停止 002 运行 ',
-  `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '状态',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of task
--- ----------------------------
-INSERT INTO `task` VALUES ('522024050669110015', '-1', '伊特智慧门禁查询心跳', '1', '0 */1 * * * ?', '002', '0', '2024-05-06 17:35:09');
-INSERT INTO `task` VALUES ('522024050670050023', '-1', '12', '1', '1', '001', '1', '2024-05-06 17:36:03');
-INSERT INTO `task` VALUES ('522025032430450007', '-1', '门禁定时器（定时查询门禁心跳）', '2', '0 */1 * * * ?', '001', '0', '2025-03-24 13:34:41');
-
--- ----------------------------
--- Table structure for task_attr
--- ----------------------------
-DROP TABLE IF EXISTS `task_attr`;
-CREATE TABLE `task_attr` (
-  `task_id` varchar(30) NOT NULL COMMENT '任务ID',
+DROP TABLE IF EXISTS `unitem_log`;
+CREATE TABLE `unitem_log` (
   `b_id` varchar(30) NOT NULL COMMENT '业务Id',
-  `attr_id` varchar(30) NOT NULL COMMENT '属性id',
-  `spec_cd` varchar(12) NOT NULL COMMENT '规格id,参考task_template_spec表',
-  `value` varchar(50) NOT NULL COMMENT '属性值',
+  `o_id` varchar(30) NOT NULL COMMENT '订单ID',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(12) NOT NULL COMMENT '数据有效状态 0 有效 1失效'
+  `service_name` varchar(256) DEFAULT NULL COMMENT '服务名称，事务失败时回滚调用微服务名称',
+  `log_text` longtext NOT NULL COMMENT '回滚内容',
+  `status_cd` varchar(2) NOT NULL COMMENT '数据状态，详细参考c_status表',
+  UNIQUE KEY `b_id` (`b_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of task_attr
+-- Records of unitem_log
 -- ----------------------------
+INSERT INTO `unitem_log` VALUES ('202025040710500014', '102025040752040004', '2025-04-07 14:04:30', 'iot-boot', '{\"afterValue\":[{\"staff_name\":\"\'HC演示物业\'\",\"store_id\":\"\'102025040700890005\'\",\"admin_flag\":\"\'Y\'\",\"store_staff_id\":\"\'102025040713740013\'\",\"staff_id\":\"\'302025040704800011\'\",\"tel\":\"\'18909711443\'\"}],\"preValue\":[]}', '0');
+INSERT INTO `unitem_log` VALUES ('202025040715370022', '102025040752040004', '2025-04-07 14:04:30', 'iot-boot', '{\"afterValue\":[{\"member_id\":\"\'102025040700890005\'\",\"start_time\":\"\'2025-04-07 14:04:30\'\",\"community_id\":\"\'102025040731450002\'\",\"community_member_id\":\"\'102025040758440021\'\",\"member_type_cd\":\"\'800900000003\'\",\"end_time\":\"\'2038-01-01 00:00:00\'\",\"member_name\":\"\'HC演示物业\'\"}],\"preValue\":[]}', '0');
+INSERT INTO `unitem_log` VALUES ('202025040718570008', '102025040752040004', '2025-04-07 14:04:30', 'iot-boot', '{\"afterValue\":[{\"store_id\":\"\'102025040700890005\'\",\"spec_cd\":\"\'100201903001\'\",\"value\":\"\'无\'\",\"attr_id\":\"\'112025040784590007\'\"}],\"preValue\":[]}', '0');
+INSERT INTO `unitem_log` VALUES ('202025040727240016', '102025040752040004', '2025-04-07 14:04:30', 'iot-boot', '{\"afterValue\":[{\"store_id\":\"\'102025040700890005\'\",\"belong_community_id\":\"\'9999\'\",\"org_id\":\"\'842025040730250015\'\",\"org_level\":\"\'1\'\",\"org_name\":\"\'HC演示物业\'\",\"allow_operation\":\"\'F\'\",\"parent_org_id\":\"\'-1\'\"}],\"preValue\":[]}', '0');
+INSERT INTO `unitem_log` VALUES ('202025040733370056', '102025040752040004', '2025-04-07 14:04:31', 'iot-boot', '{\"afterValue\":[{\"community_id\":\"\'102025040731450002\'\",\"g_id\":\"\'800201907014\'\",\"community_name\":\"\'HC演示小区\'\",\"gc_id\":\"\'102025040750990023\'\",\"name\":\"\'服务\'\"}],\"preValue\":[]}', '0');
+INSERT INTO `unitem_log` VALUES ('202025040745550020', '102025040752040004', '2025-04-07 14:04:30', 'iot-boot', '{\"afterValue\":[{\"store_id\":\"\'102025040700890005\'\",\"pu_id\":\"\'102025040793080019\'\",\"user_id\":\"\'302025040704800011\'\",\"privilege_flag\":\"\'1\'\",\"p_id\":\"\'600201904002\'\"}],\"preValue\":[]}', '0');
+INSERT INTO `unitem_log` VALUES ('202025040758430003', '102025040737340001', '2025-04-07 14:04:06', 'iot-boot', '{\"afterValue\":[{\"community_id\":\"\'102025040731450002\'\",\"address\":\"\'青海省西宁市城中区无\'\",\"lng\":\"\'116.39455326008044\'\",\"name\":\"\'HC演示小区\'\",\"city_code\":\"\'630103\'\",\"tel\":\"\'18909711443\'\",\"lat\":\"\'39.91582759727303\'\"}],\"preValue\":[]}', '0');
+INSERT INTO `unitem_log` VALUES ('202025040763670010', '102025040752040004', '2025-04-07 14:04:30', 'iot-boot', '{\"afterValue\":[{\"store_id\":\"\'102025040700890005\'\",\"spec_cd\":\"\'100201903003\'\",\"value\":\"\'2025-04-07\'\",\"attr_id\":\"\'112025040762920009\'\"}],\"preValue\":[]}', '0');
+INSERT INTO `unitem_log` VALUES ('202025040775700012', '102025040752040004', '2025-04-07 14:04:30', 'iot-boot', '{\"afterValue\":[{\"password\":\"\'fe1eeb91266b4e9e3dba8039ccfb7c5f\'\",\"address\":\"\'无\'\",\"user_id\":\"\'302025040704800011\'\",\"sex\":\"\'1\'\",\"name\":\"\'HC演示物业\'\",\"tel\":\"\'18909711443\'\",\"level_cd\":\"\'00\'\",\"email\":\"\'无\'\"}],\"preValue\":[]}', '0');
+INSERT INTO `unitem_log` VALUES ('202025040779950018', '102025040752040004', '2025-04-07 14:04:30', 'iot-boot', '{\"afterValue\":[{\"store_id\":\"\'102025040700890005\'\",\"org_id\":\"\'842025040730250015\'\",\"staff_id\":\"\'302025040704800011\'\",\"rel_id\":\"\'102025040779620017\'\",\"rel_cd\":\"\'600311000001\'\"}],\"preValue\":[]}', '0');
+INSERT INTO `unitem_log` VALUES ('202025040789520006', '102025040752040004', '2025-04-07 14:04:30', 'iot-boot', '{\"afterValue\":[{\"store_id\":\"\'102025040700890005\'\",\"create_user_id\":\"\'30518939884421922816\'\",\"address\":\"\'无\'\",\"store_type_cd\":\"\'800900000003\'\",\"name\":\"\'HC演示物业\'\",\"tel\":\"\'18909711443\'\"}],\"preValue\":[]}', '0');
 
 -- ----------------------------
--- Table structure for task_template
+-- Table structure for user_download_file
 -- ----------------------------
-DROP TABLE IF EXISTS `task_template`;
-CREATE TABLE `task_template` (
-  `template_id` varchar(30) NOT NULL COMMENT '模板ID',
-  `template_name` varchar(100) NOT NULL COMMENT '模板名称',
-  `template_desc` varchar(200) NOT NULL COMMENT '描述',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(12) NOT NULL DEFAULT '0' COMMENT '状态 0 有效 1 失效',
-  `class_bean` varchar(200) NOT NULL COMMENT '模板处理spring bean 类',
-  PRIMARY KEY (`template_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of task_template
--- ----------------------------
-INSERT INTO `task_template` VALUES ('1', '伊特智慧门禁查询心跳', '伊特智慧门禁', '2024-05-06 17:24:46', '0', 'yiteAccessControlHeartbeatTemplate');
-INSERT INTO `task_template` VALUES ('2', '门禁定时器', '门禁定时器', '2024-05-06 17:24:46', '0', 'accessControlTaskTemplate');
-
--- ----------------------------
--- Table structure for task_template_spec
--- ----------------------------
-DROP TABLE IF EXISTS `task_template_spec`;
-CREATE TABLE `task_template_spec` (
-  `spec_id` varchar(30) NOT NULL COMMENT '规格ID',
-  `template_id` varchar(30) NOT NULL COMMENT '模板ID',
-  `spec_cd` varchar(12) NOT NULL COMMENT '规格',
-  `spec_name` varchar(100) NOT NULL COMMENT '规格名称',
-  `spec_desc` varchar(200) NOT NULL COMMENT '规格描述',
-  `is_show` varchar(12) NOT NULL DEFAULT 'T' COMMENT '页面是否展示，T就是展示 F 不展示',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(12) NOT NULL DEFAULT '0' COMMENT '状态 0 有效 1 失效'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of task_template_spec
--- ----------------------------
-
--- ----------------------------
--- Table structure for tel_call_log
--- ----------------------------
-DROP TABLE IF EXISTS `tel_call_log`;
-CREATE TABLE `tel_call_log` (
-  `cl_id` varchar(30) NOT NULL COMMENT '主键ID',
-  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+DROP TABLE IF EXISTS `user_download_file`;
+CREATE TABLE `user_download_file` (
+  `download_id` varchar(30) NOT NULL COMMENT '下载ID',
+  `name` varchar(50) NOT NULL COMMENT '名称',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `call_type` varchar(12) NOT NULL DEFAULT 'CALL_IN' COMMENT '呼叫类型，CALL_IN 呼入 CALL_OUT 呼出',
-  `state` varchar(12) NOT NULL COMMENT '状态，呼叫状态',
-  `tel` varchar(20) NOT NULL COMMENT '电话号',
-  `talk_time` varchar(32) NOT NULL COMMENT '通话时间',
-  `ccid` varchar(64) DEFAULT NULL COMMENT 'CCID',
-  `voice_path` varchar(512) DEFAULT NULL COMMENT '录音地址',
-  `person_id` varchar(30) NOT NULL COMMENT '操作人',
-  `person_name` varchar(64) NOT NULL COMMENT '操作人',
+  `download_user_id` varchar(30) DEFAULT NULL COMMENT '用户ID',
+  `download_user_name` varchar(200) DEFAULT NULL COMMENT '用户名称',
+  `file_type` varchar(128) DEFAULT NULL COMMENT '文件类型',
+  `state` varchar(12) NOT NULL DEFAULT '1001' COMMENT '等待 1001 生成中 2002 生成完成 3003',
+  `temp_url` varchar(1024) DEFAULT NULL COMMENT '文件地址',
+  `b_id` varchar(30) DEFAULT NULL COMMENT '业务ID',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`cl_id`),
-  KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `remark` varchar(1024) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`download_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of tel_call_log
+-- Records of user_download_file
 -- ----------------------------
-
--- ----------------------------
--- Table structure for tel_machine
--- ----------------------------
-DROP TABLE IF EXISTS `tel_machine`;
-CREATE TABLE `tel_machine` (
-  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
-  `machine_code` varchar(30) NOT NULL COMMENT '设备编码',
-  `machine_name` varchar(200) NOT NULL COMMENT '设备名称',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `machine_ip` varchar(64) DEFAULT NULL COMMENT '设备IP',
-  `machine_port` varchar(64) DEFAULT NULL COMMENT '设备端口',
-  `heartbeat_time` datetime NOT NULL COMMENT '设备心跳时间',
-  `impl_bean` varchar(30) NOT NULL COMMENT '门禁厂家',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `success_prompt` varchar(512) DEFAULT NULL COMMENT '接听提示语',
-  `fail_prompt` varchar(512) DEFAULT NULL COMMENT '未接听提示语',
-  PRIMARY KEY (`machine_id`),
-  KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of tel_machine
--- ----------------------------
-
--- ----------------------------
--- Table structure for tel_machine_user
--- ----------------------------
-DROP TABLE IF EXISTS `tel_machine_user`;
-CREATE TABLE `tel_machine_user` (
-  `tmu_id` varchar(30) NOT NULL COMMENT '主键ID',
-  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `staff_id` varchar(30) NOT NULL COMMENT '操作人',
-  `staff_name` varchar(64) NOT NULL COMMENT '操作人',
-  `staff_tel` varchar(11) NOT NULL COMMENT '操作人',
-  `master_flag` varchar(12) NOT NULL COMMENT '默认客服，Y 是 N 否',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`tmu_id`),
-  KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of tel_machine_user
--- ----------------------------
-
--- ----------------------------
--- Table structure for tel_sms_log
--- ----------------------------
-DROP TABLE IF EXISTS `tel_sms_log`;
-CREATE TABLE `tel_sms_log` (
-  `sl_id` varchar(30) NOT NULL COMMENT '主键ID',
-  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `call_type` varchar(12) NOT NULL DEFAULT 'CALL_IN' COMMENT '呼叫类型，CALL_IN 呼入 CALL_OUT 呼出',
-  `state` varchar(12) NOT NULL COMMENT '状态，呼叫状态',
-  `tel` varchar(20) NOT NULL COMMENT '电话号',
-  `person_id` varchar(30) NOT NULL COMMENT '操作人',
-  `person_name` varchar(64) NOT NULL COMMENT '操作人',
-  `sms_content` varchar(512) DEFAULT NULL COMMENT '短信内容',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`sl_id`),
-  KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of tel_sms_log
--- ----------------------------
-
--- ----------------------------
--- Table structure for tel_tts
--- ----------------------------
-DROP TABLE IF EXISTS `tel_tts`;
-CREATE TABLE `tel_tts` (
-  `tt_id` varchar(30) NOT NULL COMMENT '主键ID',
-  `tts_type` varchar(12) NOT NULL DEFAULT 'OWE_FEE' COMMENT '类型，欠费催缴 OWE_FEE',
-  `tts_name` varchar(128) NOT NULL COMMENT '语音名称',
-  `tts_path` varchar(200) NOT NULL COMMENT '语音地址',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`tt_id`),
-  KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of tel_tts
--- ----------------------------
-INSERT INTO `tel_tts` VALUES ('102024060147360002', 'OWE_FEE', '业主催缴tts1', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20240601/6d9beae2-a273-4001-95a9-660ce9adae93.wav', '2024041265850103', '2024-06-01 17:31:30', '0', '业主催缴tts');
-
--- ----------------------------
--- Table structure for temp_car_fee_config
--- ----------------------------
-DROP TABLE IF EXISTS `temp_car_fee_config`;
-CREATE TABLE `temp_car_fee_config` (
-  `config_id` varchar(30) NOT NULL COMMENT '临时车收费标准ID',
-  `fee_name` varchar(64) NOT NULL COMMENT '收费标准名称',
-  `b_id` varchar(30) DEFAULT '-1' COMMENT '业务ID',
-  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
-  `area_num` varchar(30) NOT NULL COMMENT '停车场编码',
-  `car_type` varchar(12) NOT NULL COMMENT '车辆类型',
-  `rule_id` varchar(30) NOT NULL COMMENT '收费规则',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `start_time` datetime NOT NULL COMMENT '开始时间',
-  `end_time` datetime NOT NULL COMMENT '结束时间',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`config_id`),
-  KEY `tcfc_community_id` (`community_id`),
-  KEY `tcfc_pa_id` (`pa_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of temp_car_fee_config
--- ----------------------------
-
--- ----------------------------
--- Table structure for temp_car_fee_config_attr
--- ----------------------------
-DROP TABLE IF EXISTS `temp_car_fee_config_attr`;
-CREATE TABLE `temp_car_fee_config_attr` (
-  `config_id` varchar(30) NOT NULL COMMENT '标准ID',
-  `b_id` varchar(30) DEFAULT '-1' COMMENT '业务ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `attr_id` varchar(30) NOT NULL COMMENT '属性id',
-  `spec_cd` varchar(12) NOT NULL COMMENT '规格id',
-  `value` varchar(500) NOT NULL COMMENT '属性值',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for temp_car_fee_rule
--- ----------------------------
-DROP TABLE IF EXISTS `temp_car_fee_rule`;
-CREATE TABLE `temp_car_fee_rule` (
-  `rule_id` varchar(30) NOT NULL COMMENT '收费规则ID',
-  `rule_name` varchar(64) NOT NULL COMMENT '收费规则，如标准收费，按次收费',
-  `bean_name` varchar(128) NOT NULL COMMENT '规则处理类',
-  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`rule_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of temp_car_fee_rule
--- ----------------------------
-INSERT INTO `temp_car_fee_rule` VALUES ('6700012001', '标准收费', '123123', '标准收费', '2021-01-16 14:18:42', '0');
-INSERT INTO `temp_car_fee_rule` VALUES ('6700012005', '标准收费2', '123123', '标准收费2', '2021-01-16 14:19:56', '0');
-INSERT INTO `temp_car_fee_rule` VALUES ('6700012006', '时段收费', '123123', '时段收费', '2021-01-16 14:19:56', '0');
-INSERT INTO `temp_car_fee_rule` VALUES ('6700012007', '时段收费2', '123123', '时段收费2', '2021-01-16 14:19:56', '0');
-INSERT INTO `temp_car_fee_rule` VALUES ('6700012008', '时段收费(24小时计费一次)', '123123', '时段收费(24小时计费一次)', '2021-01-16 14:19:56', '0');
-
--- ----------------------------
--- Table structure for temp_car_fee_rule_spec
--- ----------------------------
-DROP TABLE IF EXISTS `temp_car_fee_rule_spec`;
-CREATE TABLE `temp_car_fee_rule_spec` (
-  `spec_id` varchar(30) NOT NULL COMMENT '规格ID',
-  `rule_id` varchar(64) NOT NULL COMMENT '规则ID',
-  `spec_name` varchar(64) NOT NULL COMMENT '规格名称',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
-  `remark` varchar(256) DEFAULT NULL COMMENT '描述',
-  `seq` int NOT NULL COMMENT '页面排序',
-  PRIMARY KEY (`spec_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of temp_car_fee_rule_spec
--- ----------------------------
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012001', '6700012001', '免费时间(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写免费停车时间', '1');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012002', '6700012001', '首段时长(分钟)', '2021-01-16 14:36:26', '0', '必填,请填写首段时长', '3');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012003', '6700012001', '首段时长收费', '2021-01-16 14:36:51', '0', '必填,请填写首段时长收费', '4');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012004', '6700012001', '超过首段(分钟)', '2021-01-16 14:38:46', '0', '必填,请填写超过首段后每多少分钟', '5');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012005', '6700012001', '超过首段收费', '2021-01-16 14:38:46', '0', '必填,请填写超过首段后每多少分钟按多少收费', '6');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012006', '6700012001', '停车超过(分钟)', '2021-01-16 14:41:12', '0', '必填,请填写停车超过多少分钟后', '7');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012007', '6700012001', '每多少分钟', '2021-01-16 14:41:12', '0', '必填,请填写超过多少分钟后每多少分钟', '8');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012008', '6700012001', '停车超过收费', '2021-01-16 14:41:49', '0', '必填,请填写超过多少分钟后每多少分钟按多少收费', '9');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012009', '6700012001', '最高收费', '2021-01-16 14:42:34', '0', '必填,请填写单次进出最高收费', '2');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012010', '6700012005', '免费时间(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写免费停车时间', '1');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012011', '6700012005', '超过免费(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写超过免费后每多少分钟', '3');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012012', '6700012005', '超过免费收费', '2021-01-16 14:35:14', '0', '必填,请填写超过免费后每多少分钟按多少收费', '4');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012013', '6700012005', '首段最高时间(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写超过首段多少分钟', '5');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012014', '6700012005', '首段最高收费', '2021-01-16 14:35:14', '0', '必填,请填写首段最高收费', '6');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012015', '6700012005', '超过首段(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写超过首段后每多少分钟', '7');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012016', '6700012005', '超过首段收费', '2021-01-16 14:35:14', '0', '必填,请填写超过首段后每多少分钟按多少收费', '8');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012017', '6700012005', '最高时间(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写最高多少分钟', '9');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012018', '6700012005', '最高收费', '2021-01-16 14:35:14', '0', '必填,请填写最高收费', '2');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012019', '6700012006', '开始时段1', '2021-01-16 14:35:14', '0', '必填,请填写时段1开始时间，比如 07:00', '1');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012020', '6700012006', '结束时段1', '2021-01-16 14:35:14', '0', '必填,请填写时段1结束时间，比如 20:00', '2');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012021', '6700012006', '免费时间1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1免费时间（分钟），', '3');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012022', '6700012006', '最高收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1单次进出最高收费', '4');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012023', '6700012006', '首段时间1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1首段多少分钟', '5');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012024', '6700012006', '首段收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1首段收费', '6');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012025', '6700012006', '超过首段1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1超过首段后每多少分钟', '7');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012026', '6700012006', '超过首段收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1超过首段后每多少分钟按多少收费', '8');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012027', '6700012006', '开始时段2', '2021-01-16 14:35:14', '0', '必填,请填写时段2开始时间，比如 07:00', '9');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012028', '6700012006', '结束时段2', '2021-01-16 14:35:14', '0', '必填,请填写时段2结束时间，比如 20:00', '10');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012029', '6700012006', '免费时间2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2免费时间（分钟），', '11');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012030', '6700012006', '最高收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2单次进出最高收费', '12');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012031', '6700012006', '首段时间2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2首段多少分钟', '13');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012032', '6700012006', '首段收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2首段收费', '14');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012033', '6700012006', '超过首段2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2超过首段后每多少分钟', '15');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012034', '6700012006', '超过首段收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2超过首段后每多少分钟按多少收费', '16');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012035', '6700012007', '免费时间(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写免费时间（分钟）', '1');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012036', '6700012007', '最高收费', '2021-01-16 14:35:14', '0', '必填,请填写单次进出最高收费', '2');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012037', '6700012007', '开始时段1', '2021-01-16 14:35:14', '0', '必填,请填写时段1开始时间，比如 07:00', '3');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012038', '6700012007', '结束时段1', '2021-01-16 14:35:14', '0', '必填,请填写时段1结束时间，比如 20:00', '4');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012039', '6700012007', '首段时间1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1首段多少分钟', '5');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012040', '6700012007', '首段收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1首段收费', '6');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012041', '6700012007', '超过首段1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1超过首段后每多少分钟', '7');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012042', '6700012007', '超过首段收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1超过首段后每多少分钟按多少收费', '8');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012043', '6700012007', '开始时间2', '2021-01-16 14:35:14', '0', '必填,请填写时段2开始时间，比如 07:00', '9');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012044', '6700012007', '结束时间2', '2021-01-16 14:35:14', '0', '必填,请填写时段2结束时间，比如 20:00', '10');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012045', '6700012007', '首段时间2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2首段多少分钟', '11');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012046', '6700012007', '首段收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2首段收费', '12');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012047', '6700012007', '超过首段2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2超过首段后每多少分钟', '13');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012048', '6700012007', '超过首段收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2超过首段后每多少分钟按多少收费', '14');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012049', '6700012008', '开始时段1', '2021-01-16 14:35:14', '0', '必填,请填写时段1开始时间，比如 07:00', '1');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012050', '6700012008', '结束时段1', '2021-01-16 14:35:14', '0', '必填,请填写时段1结束时间，比如 20:00', '2');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012051', '6700012008', '免费时间1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1免费时间（分钟），', '3');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012052', '6700012008', '最高收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1单次进出最高收费', '4');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012053', '6700012008', '首段时间1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1首段多少分钟', '5');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012054', '6700012008', '首段收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1首段收费', '6');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012055', '6700012008', '超过首段1(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段1超过首段后每多少分钟', '7');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012056', '6700012008', '超过首段收费1', '2021-01-16 14:35:14', '0', '必填,请填写时段1超过首段后每多少分钟按多少收费', '8');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012057', '6700012008', '开始时段2', '2021-01-16 14:35:14', '0', '必填,请填写时段2开始时间，比如 07:00', '9');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012058', '6700012008', '结束时段2', '2021-01-16 14:35:14', '0', '必填,请填写时段2结束时间，比如 20:00', '10');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012059', '6700012008', '免费时间2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2免费时间（分钟），', '11');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012060', '6700012008', '最高收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2单次进出最高收费', '12');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012061', '6700012008', '首段时间2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2首段多少分钟', '13');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012062', '6700012008', '首段收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2首段收费', '14');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012063', '6700012008', '超过首段2(分钟)', '2021-01-16 14:35:14', '0', '必填,请填写时段2超过首段后每多少分钟', '15');
-INSERT INTO `temp_car_fee_rule_spec` VALUES ('5600012064', '6700012008', '超过首段收费2', '2021-01-16 14:35:14', '0', '必填,请填写时段2超过首段后每多少分钟按多少收费', '16');
+INSERT INTO `user_download_file` VALUES ('102023120588830022', '3196665cffe44152b2bb2d89eba9a770.xlsx', '102023021386560001', '302023021495090004', '演示物业', 'exportOwnerCar', '3003', 'hc/temp/export/data/exportOwnerCar/2023-12-05/3196665cffe44152b2bb2d89eba9a770.xlsx', null, '2023-12-05 11:25:21', '0', '下载完成');
 
 -- ----------------------------
 -- Table structure for u_org
@@ -12068,10 +12059,7 @@ CREATE TABLE `u_org` (
 -- ----------------------------
 -- Records of u_org
 -- ----------------------------
-INSERT INTO `u_org` VALUES ('842024121703170016', null, '102024121756190006', 'HC演示物业', '1', '-1', null, '2024-12-17 15:51:26', '0', '9999', 'F');
-INSERT INTO `u_org` VALUES ('842025012317050012', null, '102025012319250002', '总部办公室', '3', '842025012371620010', null, '2025-01-23 00:39:45', '0', '9999', 'F');
-INSERT INTO `u_org` VALUES ('842025012368590008', null, '102025012319250002', '充电厂家', '1', '842025012368590008', null, '2025-01-23 00:39:44', '0', '9999', 'F');
-INSERT INTO `u_org` VALUES ('842025012371620010', null, '102025012319250002', '公司总部', '2', '842025012368590008', null, '2025-01-23 00:39:44', '0', '9999', 'F');
+INSERT INTO `u_org` VALUES ('842025040730250015', null, '102025040700890005', 'HC演示物业', '1', '-1', null, '2025-04-07 14:04:30', '0', '9999', 'F');
 
 -- ----------------------------
 -- Table structure for u_org_community
@@ -12111,8 +12099,7 @@ CREATE TABLE `u_org_staff_rel` (
 -- ----------------------------
 -- Records of u_org_staff_rel
 -- ----------------------------
-INSERT INTO `u_org_staff_rel` VALUES ('102024121710960018', null, '842024121703170016', '302024121758390012', '600311000001', '2024-12-17 15:51:27', '0', '102024121756190006');
-INSERT INTO `u_org_staff_rel` VALUES ('102025012363510014', null, '842025012317050012', '302025012378820004', '600311000001', '2025-01-23 00:39:46', '0', '102025012319250002');
+INSERT INTO `u_org_staff_rel` VALUES ('102025040779620017', null, '842025040730250015', '302025040704800011', '600311000001', '2025-04-07 14:04:30', '0', '102025040700890005');
 
 -- ----------------------------
 -- Table structure for u_role_community
@@ -12157,21 +12144,16 @@ CREATE TABLE `u_user` (
 -- ----------------------------
 -- Records of u_user
 -- ----------------------------
-INSERT INTO `u_user` VALUES ('302024121758390012', 'HC演示物业', '无', '无', 'fe1eeb91266b4e9e3dba8039ccfb7c5f', '1', '18909711443', '00', '2024-12-17 15:51:25', '0', null);
-INSERT INTO `u_user` VALUES ('302025012355000012', '18909711234', null, null, '5b7ac7ba433dc0842fb8d3bc15e4b2aa', null, '18909711234', '04', '2025-01-23 01:33:42', '0', null);
-INSERT INTO `u_user` VALUES ('302025012378820004', '充电厂家', '无', '无', '5b7ac7ba433dc0842fb8d3bc15e4b2aa', '1', '18909714525', '00', '2025-01-23 00:39:42', '0', null);
-INSERT INTO `u_user` VALUES ('302025032468690041', '演示业主', null, '', '8b2b2413e6036293c9d432c449a9d585', null, '18909714526', '04', '2025-03-24 19:21:43', '0', null);
-INSERT INTO `u_user` VALUES ('302025032861730011', '13803478677', null, null, '62afe57f47fbd6c8db8d96ab997bc1e1', null, '13803478677', '04', '2025-03-28 16:51:30', '0', null);
-INSERT INTO `u_user` VALUES ('302025040152980001', '18909711443', null, null, '3f800b3dd74d815b225cc7631099b90d', null, '18909711443', '04', '2025-04-01 09:38:29', '0', null);
+INSERT INTO `u_user` VALUES ('302025040704800011', 'HC演示物业', '无', '无', 'fe1eeb91266b4e9e3dba8039ccfb7c5f', '1', '18909711443', '00', '2025-04-07 14:04:30', '0', null);
 INSERT INTO `u_user` VALUES ('30518939884421922816', 'admin', 'sss@sf.com', 'ccc地方都是', '3ad352384261cbc2c7462210dbb3ce61', '0', '17797173944', '00', '2018-12-02 16:01:50', '0', null);
-INSERT INTO `u_user` VALUES ('30520751775595118592', 'dev', '129@qq.com', 'Qingdao', '109c333b381580e1fe8a5ff630c398a7', '0', '17797173942', '00', '2018-12-07 16:01:38', '0', null);
+INSERT INTO `u_user` VALUES ('30520751775595118592', 'dev', '129@qq.com', 'Qingdao', '3ad352384261cbc2c7462210dbb3ce61', '0', '17797173942', '00', '2018-12-07 16:01:38', '0', null);
 
 -- ----------------------------
 -- Table structure for u_user_attr
 -- ----------------------------
 DROP TABLE IF EXISTS `u_user_attr`;
 CREATE TABLE `u_user_attr` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `attr_id` varchar(30) NOT NULL COMMENT '属性id',
   `user_id` varchar(30) NOT NULL COMMENT '用户ID',
   `spec_cd` varchar(12) NOT NULL COMMENT '规格id,参考spec表',
@@ -12189,45 +12171,6 @@ CREATE TABLE `u_user_attr` (
 -- ----------------------------
 INSERT INTO `u_user_attr` VALUES ('1', '112025012337710001', '302025012355000012', '100202501001', '青A88889', null, '2025-01-23 01:56:24', '0');
 INSERT INTO `u_user_attr` VALUES ('2', '112025040121320002', '302025040152980001', '100201911001', 'oWKMg7RXbCNOG8isYi3b4BeDVe7Y', null, '2025-04-01 09:38:32', '0');
-
--- ----------------------------
--- Table structure for unitem_log
--- ----------------------------
-DROP TABLE IF EXISTS `unitem_log`;
-CREATE TABLE `unitem_log` (
-  `b_id` varchar(30) NOT NULL COMMENT '业务Id',
-  `o_id` varchar(30) NOT NULL COMMENT '订单ID',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `service_name` varchar(256) DEFAULT NULL COMMENT '服务名称，事务失败时回滚调用微服务名称',
-  `log_text` longtext NOT NULL COMMENT '回滚内容',
-  `status_cd` varchar(2) NOT NULL COMMENT '数据状态，详细参考c_status表',
-  UNIQUE KEY `b_id` (`b_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for user_download_file
--- ----------------------------
-DROP TABLE IF EXISTS `user_download_file`;
-CREATE TABLE `user_download_file` (
-  `download_id` varchar(30)  NOT NULL COMMENT '下载ID',
-  `name` varchar(50)  NOT NULL COMMENT '名称',
-  `community_id` varchar(30)  NOT NULL COMMENT '小区ID',
-  `download_user_id` varchar(30)  DEFAULT NULL COMMENT '用户ID',
-  `download_user_name` varchar(200)  DEFAULT NULL COMMENT '用户名称',
-  `file_type` varchar(128)  DEFAULT NULL COMMENT '文件类型',
-  `state` varchar(12)  NOT NULL DEFAULT '1001' COMMENT '等待 1001 生成中 2002 生成完成 3003',
-  `temp_url` varchar(1024)  DEFAULT NULL COMMENT '文件地址',
-  `b_id` varchar(30)  DEFAULT NULL COMMENT '业务ID',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  `remark` varchar(1024)  DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`download_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of user_download_file
--- ----------------------------
-INSERT INTO `user_download_file` VALUES ('102023120588830022', '3196665cffe44152b2bb2d89eba9a770.xlsx', '102023021386560001', '302023021495090004', '演示物业', 'exportOwnerCar', '3003', 'hc/temp/export/data/exportOwnerCar/2023-12-05/3196665cffe44152b2bb2d89eba9a770.xlsx', null, '2023-12-05 11:25:21', '0', '下载完成');
 
 -- ----------------------------
 -- Table structure for visit
@@ -12286,7 +12229,7 @@ CREATE TABLE `visit_type` (
   `name` varchar(30) NOT NULL COMMENT '类型名称',
   `visit_way` varchar(12) NOT NULL COMMENT '通行方式，FACE 人脸 QRCODE 访客码',
   `audit_way` varchar(12) NOT NULL COMMENT '审核方式，1001 物业审核 2002 业主审核',
-  `visit_day` int NOT NULL DEFAULT '1' COMMENT '拜访天数，默认1天',
+  `visit_day` int(11) NOT NULL DEFAULT '1' COMMENT '拜访天数，默认1天',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -12342,6 +12285,10 @@ CREATE TABLE `work_license_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Records of work_license_log
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for work_license_machine
 -- ----------------------------
 DROP TABLE IF EXISTS `work_license_machine`;
@@ -12351,13 +12298,13 @@ CREATE TABLE `work_license_machine` (
   `machine_code` varchar(64) NOT NULL COMMENT '工牌编号',
   `staff_id` varchar(30) NOT NULL COMMENT '员工ID',
   `staff_name` varchar(64) NOT NULL COMMENT '员工名称',
-  `pos_upload_sec` int NOT NULL COMMENT '位置上报间隔，单位秒',
+  `pos_upload_sec` int(11) NOT NULL COMMENT '位置上报间隔，单位秒',
   `lat` varchar(32) DEFAULT NULL COMMENT '精度',
   `lon` varchar(32) DEFAULT NULL COMMENT '维度',
   `address` varchar(256) DEFAULT NULL COMMENT '位置',
   `charge` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '剩余电量，百分比',
   `impl_bean` varchar(30) NOT NULL COMMENT '工牌厂家',
-  `version` varchar(30)  NOT NULL COMMENT '工牌版本',
+  `version` varchar(30) NOT NULL COMMENT '工牌版本',
   `store_id` varchar(30) NOT NULL COMMENT '商户ID',
   `heartbeat_time` datetime NOT NULL COMMENT '设备心跳时间',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -12403,14 +12350,14 @@ CREATE TABLE `work_license_pos` (
 -- ----------------------------
 DROP TABLE IF EXISTS `work_license_white_list`;
 CREATE TABLE `work_license_white_list` (
-  `id` varchar(64)  NOT NULL COMMENT 'ID',
+  `id` varchar(64) NOT NULL COMMENT 'ID',
   `machine_id` varchar(64) NOT NULL COMMENT '设备ID',
-  `tel1` varchar(13)  DEFAULT NULL COMMENT '电话1',
-  `tel2` varchar(13)  DEFAULT NULL COMMENT '电话2',
-  `tel3` varchar(13)  DEFAULT NULL COMMENT '电话3',
-  `tel4` varchar(13)  DEFAULT NULL COMMENT '电话4',
+  `tel1` varchar(13) DEFAULT NULL COMMENT '电话1',
+  `tel2` varchar(13) DEFAULT NULL COMMENT '电话2',
+  `tel3` varchar(13) DEFAULT NULL COMMENT '电话3',
+  `tel4` varchar(13) DEFAULT NULL COMMENT '电话4',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2)  NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
