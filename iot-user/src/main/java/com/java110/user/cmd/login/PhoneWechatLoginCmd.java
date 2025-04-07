@@ -20,11 +20,14 @@ import com.java110.core.utils.StringUtil;
 import com.java110.dto.appUser.AppUserDto;
 import com.java110.dto.smallWeChat.SmallWeChatDto;
 import com.java110.dto.user.UserDto;
+import com.java110.dto.userAttr.UserAttrDto;
 import com.java110.intf.system.ISmallWechatV1InnerServiceSMO;
 import com.java110.intf.system.ISystemInfoV1InnerServiceSMO;
 import com.java110.intf.user.IAppUserV1InnerServiceSMO;
+import com.java110.intf.user.IUserAttrV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.user.UserPo;
+import com.java110.po.userAttr.UserAttrPo;
 import org.apache.commons.net.util.Base64;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +59,9 @@ public class PhoneWechatLoginCmd extends Cmd {
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
 
     @Autowired
+    private IUserAttrV1InnerServiceSMO userAttrV1InnerServiceSMOImpl;
+
+    @Autowired
     private IAppUserV1InnerServiceSMO appUserV1InnerServiceSMOImpl;
 
     @Autowired
@@ -78,7 +84,9 @@ public class PhoneWechatLoginCmd extends Cmd {
         String iv = reqJson.getString("iv");
         String appId = reqJson.getString("appId");
 
-        String sessionKey = getSessionKey(code,appId);
+        JSONObject paramOpen = getSessionKey(code,appId);
+        String sessionKey = paramOpen.getString("sessionKey");
+        String openId = paramOpen.getString("openId");
 
         if (sessionKey == null) {
             throw new CmdException("获取session_key失败");
@@ -105,6 +113,9 @@ public class PhoneWechatLoginCmd extends Cmd {
             registerUser(phoneNumber);
             userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
         }
+
+        // 刷入openId
+        saveOrUpdateOpenId(userDtos.get(0),openId);
 
         String communityId = "";
         //todo 查询业主是否 认证了，如果认证了获取小区ID
@@ -139,6 +150,7 @@ public class PhoneWechatLoginCmd extends Cmd {
         }
     }
 
+
     private void registerUser(String phoneNumber) {
         // 密码就随机数
         String userPassword = AuthenticationFactory.passwdMd5(GenerateCodeFactory.getRandomCode(6));
@@ -155,7 +167,16 @@ public class PhoneWechatLoginCmd extends Cmd {
         }
     }
 
-    private String getSessionKey(String code, String appId) {
+    /**
+     *
+     * @param code
+     * @param appId
+     * @return {
+     *     openId:'',
+     *     sessionKey
+     * }
+     */
+    private JSONObject getSessionKey(String code, String appId) {
 
         SmallWeChatDto smallWeChatDto = new SmallWeChatDto();
         smallWeChatDto.setAppId(appId);
@@ -175,7 +196,14 @@ public class PhoneWechatLoginCmd extends Cmd {
             throw new CmdException("微信接口调用失败");
         }
 
-        return response.getString("session_key");
+        String openId = response.getString("openid");
+
+        String sessionKey = response.getString("session_key");
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("openId",openId);
+        paramOut.put("sessionKey",sessionKey);
+
+        return paramOut;
     }
 
     public String decryptData(String encryptedData, String iv, String sessionKey) throws Exception {
@@ -199,5 +227,34 @@ public class PhoneWechatLoginCmd extends Cmd {
         // 实际项目中应该使用JSON解析库
         // 这里简化为直接返回
         return data.getString("purePhoneNumber");
+    }
+
+
+    private void saveOrUpdateOpenId(UserDto userDto, String openId) {
+
+        if (StringUtil.isEmpty(openId)) {
+            return;
+        }
+
+        UserAttrDto userAttrDto = new UserAttrDto();
+        userAttrDto.setUserId(userDto.getUserId());
+        userAttrDto.setSpecCd(UserAttrDto.SPEC_OPEN_ID);
+        List<UserAttrDto> userAttrDtos = userAttrV1InnerServiceSMOImpl.queryUserAttrs(userAttrDto);
+        if (ListUtil.isNull(userAttrDtos)) {
+            UserAttrPo userAttrPo = new UserAttrPo();
+            userAttrPo.setUserId(userDto.getUserId());
+            userAttrPo.setAttrId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_attrId));
+            userAttrPo.setSpecCd(UserAttrDto.SPEC_OPEN_ID);
+            userAttrPo.setValue(openId);
+            userAttrV1InnerServiceSMOImpl.saveUserAttr(userAttrPo);
+            return;
+        }
+        UserAttrPo userAttrPo = new UserAttrPo();
+        userAttrPo.setUserId(userDto.getUserId());
+        userAttrPo.setAttrId(userAttrDtos.get(0).getAttrId());
+        userAttrPo.setSpecCd(UserAttrDto.SPEC_OPEN_ID);
+        userAttrPo.setValue(openId);
+        userAttrV1InnerServiceSMOImpl.updateUserAttr(userAttrPo);
+
     }
 }

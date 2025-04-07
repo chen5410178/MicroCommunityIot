@@ -12,6 +12,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.smallWeChat.SmallWeChatDto;
 import com.java110.intf.charge.ISmallWeChatInnerServiceSMO;
 import com.java110.intf.user.IUserAttrV1InnerServiceSMO;
@@ -60,7 +61,7 @@ public class GetWechatMiniOpenIdCmd extends Cmd {
             List<SmallWeChatDto> smallWeChatDtos = smallWechatV1InnerServiceSMOImpl.querySmallWeChats(smallWeChatDto);
 
             //todo 读取全局
-            if (smallWeChatDtos == null || smallWeChatDtos.size() < 1) {
+            if (ListUtil.isNull(smallWeChatDtos)) {
                 appId = MappingCache.getValue(WechatConstant.WECHAT_DOMAIN, "appId");
                 appSecret = MappingCache.getValue(WechatConstant.WECHAT_DOMAIN, "appSecret");
             } else {
