@@ -15,7 +15,7 @@ const baseUrl = '/';
 
 // #ifndef H5
 //服务器域名 小程序 或者 app 时 后端地址
-const baseUrl = 'http://127.0.0.1:9999/';
+const baseUrl = 'http://iot.sxjly.com/';
 // #endif
 
 let commonBaseUrl = 'http://iot.homecommunity.cn/';

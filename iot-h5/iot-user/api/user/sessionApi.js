@@ -58,7 +58,7 @@ export function autoLogin(options) {
 		return;
 	}
 	//todo 如果是 h5 或者 微信小程序 ，检查是否做了配置，如果没有做配置不做自登陆
-	// #ifdef H5 || MP-MP-WEIXIN
+	// #ifdef H5 || MP-WEIXIN
 	autoLoginWechat(options);
 	// #endif
 
@@ -82,13 +82,16 @@ export function autoLoginWechat(options) {
 		_generatorOpenId(options, _wAppId);
 		return;
 	}
-	
+	let _communityId = getCommunityId();
+	if(options.communityId){
+		_communityId = options.communityId;
+	}
 	let _objType = "1100"; // todo public
 	// #ifdef MP-WEIXIN
 	_objType = "1000";
 	// #endif
 	getCommunityWechatAppId({
-		communityId: getCommunityId(),
+		communityId: _communityId,
 		objType: _objType
 	}).then(_data => {
 		if (!_data.data || _data.data.indexOf('wx') < 0) {

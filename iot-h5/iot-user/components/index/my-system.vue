@@ -100,7 +100,7 @@ import {userLogout} from '../../api/user/userApi.js';
 			},
 			_test:function(){
 				uni.navigateTo({
-					url:'/pages/charge/carChargePort?machineId=102025032865650020&portId=102025032812880022&communityId=2024122649870005'
+					url:'/pages/charge/carChargePort?machineId=1020241101764714927&portId=1020241101497714929&communityId=2024050914710254'
 				})
 			}
 		}
