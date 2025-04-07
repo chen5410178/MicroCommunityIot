@@ -130,7 +130,7 @@ public class BootApplicationStart {
         HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
         httpRequestFactory.setConnectionRequestTimeout(10000);
         httpRequestFactory.setConnectTimeout(10000);
-        httpRequestFactory.setReadTimeout(30000);
+        httpRequestFactory.setReadTimeout(10000);
         restTemplate.setRequestFactory(httpRequestFactory);
         return restTemplate;
     }
@@ -150,7 +150,7 @@ public class BootApplicationStart {
         HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
         httpRequestFactory.setConnectionRequestTimeout(10000);
         httpRequestFactory.setConnectTimeout(10000);
-        httpRequestFactory.setReadTimeout(30000);
+        httpRequestFactory.setReadTimeout(10000);
         restTemplate.setRequestFactory(httpRequestFactory);
         return restTemplate;
     }

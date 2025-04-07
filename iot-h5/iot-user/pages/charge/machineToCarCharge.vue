@@ -37,7 +37,8 @@
 	import charge from '@/components/charge/charge.vue';
 	import {
 		autoLogin,
-		hasLogin
+		hasLogin,
+		autoLoginMini
 	} from '@/api/user/sessionApi.js';
 	export default {
 		data() {
@@ -55,8 +56,15 @@
 		components: {
 			charge,
 		},
-		onLoad(options) {
+		async onLoad(options) {
+			// #ifdef H5
 			autoLogin(options);
+			// #endif
+			// #ifdef MP-WEIXIN
+			await autoLoginMini(options).catch(error => {
+				console.log('自动登录失败:', error);
+			});
+			// #endif
 			this.machineId = options.machineId;
 			this.communityId = options.communityId;
 			this.login = hasLogin();
@@ -64,7 +72,7 @@
 			this._loadChargeMachinePorts();
 		},
 		onShow: function(options) {
-			
+
 		},
 		methods: {
 			_loadChargeMachines: function() {
@@ -110,7 +118,7 @@
 					uni.setStorageSync("QRCODE_COMMUNITY_ID", this.communityId);
 				}
 				// #ifdef H5
-					uni.setStorageSync('targetUrl',location.hash.substr(1));
+				uni.setStorageSync('targetUrl', location.hash.substr(1));
 				// #endif
 				uni.navigateTo({
 					url: '/pages/user/login'
@@ -134,6 +142,7 @@
 		line-height: 60upx;
 		border-bottom: 2upx;
 	}
+
 	.mtc-machine-port {
 		background-color: #fff;
 		padding-left: 20upx;
@@ -141,6 +150,7 @@
 		padding-bottom: 20upx;
 		margin: 2upx 20upx 0upx 20upx;
 		flex-wrap: wrap;
+
 		.port-item {
 			width: 49%;
 			text-align: center;
@@ -161,10 +171,10 @@
 					font-size: 24upx;
 				}
 			}
+
 			.item-1-active {
 				background-color: #0FBA82;
 			}
 		}
 	}
-
 </style>

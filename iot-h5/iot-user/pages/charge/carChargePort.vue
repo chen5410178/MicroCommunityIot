@@ -79,7 +79,8 @@
 	import charge from '@/components/charge/charge.vue';
 	import {
 		autoLogin,
-		hasLogin
+		hasLogin,
+		autoLoginMini
 	} from '@/api/user/sessionApi.js';
 	import startCarCharge from '@/components/charge/startCarCharge.vue';
 	import carChargePrice from '@/components/charge/carChargePrice.vue';
@@ -131,8 +132,15 @@
 			chargeCarNumVue,
 			wechatLoginCharge
 		},
-		onLoad(options) {
+		async onLoad(options) {
+			// #ifdef H5
 			autoLogin(options);
+			// #endif
+			// #ifdef MP-WEIXIN
+			await autoLoginMini(options).catch(error => {
+				console.log('自动登录失败:', error);
+			});
+			// #endif
 			this.machineId = options.machineId;
 			this.communityId = options.communityId;
 			this.portId = options.portId;
