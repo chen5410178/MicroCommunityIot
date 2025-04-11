@@ -430,7 +430,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         BigDecimal pingDec = new BigDecimal(pingEnergy).multiply(new BigDecimal(pingServicePrice)).setScale(4, BigDecimal.ROUND_HALF_UP);
         BigDecimal guDec = new BigDecimal(guEnergy).multiply(new BigDecimal(guServicePrice)).setScale(4, BigDecimal.ROUND_HALF_UP);
         BigDecimal serviceFeeDec = jianDec.add(fenDec).add(pingDec).add(guDec);
-        BigDecimal feeDec = new BigDecimal(energy).subtract(serviceFeeDec);
+        BigDecimal feeDec = new BigDecimal(amount).subtract(serviceFeeDec);
 
         NotifyChargeOrderDto notifyChargeOrderDto = new NotifyChargeOrderDto();
         notifyChargeOrderDto.setOrderId(tradeNo);
