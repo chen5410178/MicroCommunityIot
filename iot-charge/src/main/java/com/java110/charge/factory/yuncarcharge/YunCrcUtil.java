@@ -1,8 +1,14 @@
 package com.java110.charge.factory.yuncarcharge;
 
 import com.java110.core.utils.BytesUtil;
+import com.java110.core.utils.ListUtil;
+import com.java110.dto.chargeMachine.ChargeMachineOrderDto;
+import com.java110.dto.chargePeakAlleyPrice.ChargePeakAlleyPriceDto;
+import com.java110.dto.data.NettyReplyDataDto;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.List;
 
 public class YunCrcUtil {
 
@@ -116,14 +122,119 @@ public static byte[] calculateCrcLH(byte[] data) {
         // 680d 00050004662024110100030100 649b
         // 680D 36000004550314127823050100 65B2 -- 心跳 对不上
         // 680d 00120004662024110100030200 5f50
+         String dataStr = "68a2cf24003b320106007839920220250411075540893201060078399202709437070b0419b80b31080b041920c50100000000000000000000000000409601003632010036320100f83d0100084c0100127f0000127f00006c6b0000d00101006840cf61001300000000000000000000000000000000320106007839920102020000000000320000000000000000003200000000000000000000000000000000000000000000";
+        // String dataStr = "68a2cf24003b320106007839920220250411075540893201060078399202709437070b0419b80b31080b041920c50100000000000000000000000000409601003632010036320100f83d0100084c0100127f0000127f00006c6b0000d0010100000000000000000000000000fe62300000461432000048b1010048b1010064a90100000000000000000000000000000000000001b80b31080b041942000000000000000035b3";
+        byte[] data =  BytesUtil.hexStringToByteArray(dataStr);
 
 
-        //680D8F3D
-        //680DF6CC
-        String hexString = "000000025503141278230500";
-        byte[] byteArray = BytesUtil.hexStringToByteArray(hexString);
-        System.out.println("生成的 CRC 校验码:" + BytesUtil.bytesToHex(calculateCrcLH(byteArray)));
+        int prexPos = 0; // 起始标志
+        int prexLen = 12;
+        int transId = prexPos + prexLen; // 交易流水号
+        int transLen = 32;
+        int machineCodePos = transId + transLen;
+        int machineCodeLen = 14;
+        int portCodePos = machineCodePos + machineCodeLen; // 桩编号
+        int portCodeLen = 2;
+        int startTimePos = portCodePos + portCodeLen;
+        int startTimeLen = 14;
+        int endTimePos = startTimePos + startTimeLen;
+        int endTimeLen = 14;
+        int jianPricePos = endTimePos + endTimeLen; //尖单价
+        int jianPriceLen = 8;
+        int jianEnergyPos = jianPricePos + jianPriceLen;
+        int jianEnergyLen = 8;
+        int jisunjianEnergyPos = jianEnergyPos + jianEnergyLen;
+        int jisunjianEnergyLen = 8;
+        int jianAmountPos = jisunjianEnergyPos + jisunjianEnergyLen; // 尖金额
+        int jianAmountLen = 8;
+        int fenPricePos = jianAmountPos + jianAmountLen; //峰单价
+        int fenPriceLen = 8;
+        int fenEnergyPos = fenPricePos + fenPriceLen;
+        int fenEnergyLen = 8;
+        int jisunfenEnergyPos = fenEnergyPos + fenEnergyLen;
+        int jisunfenEnergyLen = 8;
+        int fenAmountPos = jisunfenEnergyPos + jisunfenEnergyLen; // 尖金额
+        int fenAmountLen = 8;
+        int pingPricePos = fenAmountPos + fenAmountLen; //峰单价
+        int pingPriceLen = 8;
+        int pingEnergyPos = pingPricePos + pingPriceLen;
+        int pingEnergyLen = 8;
+        int jisunpingEnergyPos = pingEnergyPos + pingEnergyLen;
+        int jisunpingEnergyLen = 8;
+        int pingAmountPos = jisunpingEnergyPos + jisunpingEnergyLen; // 平金额
+        int pingAmountLen = 8;
+        int guPricePos = pingAmountPos + pingAmountLen; //峰单价
+        int guPriceLen = 8;
+        int guEnergyPos = guPricePos + guPriceLen;
+        int guEnergyLen = 8;
+        int jisunguEnergyPos = guEnergyPos + guEnergyLen;
+        int jisunguEnergyLen = 8;
+        int guAmountPos = jisunguEnergyPos + jisunguEnergyLen; // 平金额
+        int guAmountLen = 8;
+        int biaoStartValuePos = guAmountPos + guAmountLen;
+        int biaoStartValueLen = 10;
+        int biaoEndValuePos = biaoStartValuePos + biaoStartValueLen;
+        int biaoEndValueLen = 10;
+        int energyPos = biaoEndValuePos + biaoEndValueLen;
+        int energyLen = 8;
+        int sunEnergyPos = energyPos + energyLen;
+        int sunEnergyLen = 8;
+        int amountPos = sunEnergyPos + sunEnergyLen;
+        int amountLen = 8;
+        int carOnlyIdPos = amountPos + amountLen; // 电动汽车唯一标识
+        int carOnlyIdLen = 34;
+        int tranFlagPos = carOnlyIdPos + carOnlyIdLen;
+        int tranFlagLen = 2;
+        int transTimePos = tranFlagPos + tranFlagLen;
+        int transTimeLen = 14;
+        int stopReasonPos = transTimePos + transTimeLen;
+        int stopReasonLen = 2;
 
+        String portCode = YunCarUtil.getTargetString(data, portCodePos, portCodeLen);
+        String tradeNo = YunCarUtil.getTradeNo(data);
+        System.out.println("tradeNo="+tradeNo);
+        String amount = YunCarUtil.getTargetBin(data, amountPos, amountLen, 4);
+        String energy = YunCarUtil.getTargetBin(data, energyPos, energyLen, 4);
+        String reason = YunCarUtil.getTargetString(data, stopReasonPos, stopReasonLen);
+
+
+//        00	尖费率
+//        01	峰费率
+//        02	平费率
+//        03	谷费率
+        String jianServicePrice = "0";
+        String fenServicePrice = "0";
+        String pingServicePrice = "0";
+        String guServicePrice = "0";
+                jianServicePrice = "0.16";
+                fenServicePrice = "0.14";
+                pingServicePrice = "0.15";
+                guServicePrice = "0.16";
+
+        // 尖电量
+        String jianEnergy = YunCarUtil.getTargetBin(data, jianEnergyPos, jianEnergyLen, 4);
+        // 峰电量
+        String fenEnergy = YunCarUtil.getTargetBin(data, fenEnergyPos, fenEnergyLen, 4);
+        // 平电量
+        String pingEnergy = YunCarUtil.getTargetBin(data, pingEnergyPos, pingEnergyLen, 4);
+        // 谷电量
+        String guEnergy = YunCarUtil.getTargetBin(data, guEnergyPos, guEnergyLen, 4);
+
+        System.out.println("jianEnergy="+jianEnergy);
+        System.out.println("fenEnergy="+fenEnergy);
+        System.out.println("pingEnergy="+pingEnergy);
+        System.out.println("guEnergy="+guEnergy);
+        BigDecimal jianDec = new BigDecimal(jianEnergy).multiply(new BigDecimal(jianServicePrice)).setScale(4, BigDecimal.ROUND_HALF_UP);
+        BigDecimal fenDec = new BigDecimal(fenEnergy).multiply(new BigDecimal(fenServicePrice)).setScale(4, BigDecimal.ROUND_HALF_UP);
+        BigDecimal pingDec = new BigDecimal(pingEnergy).multiply(new BigDecimal(pingServicePrice)).setScale(4, BigDecimal.ROUND_HALF_UP);
+        BigDecimal guDec = new BigDecimal(guEnergy).multiply(new BigDecimal(guServicePrice)).setScale(4, BigDecimal.ROUND_HALF_UP);
+        BigDecimal serviceFeeDec = jianDec.add(fenDec).add(pingDec).add(guDec);
+        BigDecimal feeDec = new BigDecimal(amount).subtract(serviceFeeDec);
+
+
+        System.out.println(feeDec.doubleValue());
+        System.out.println("amount="+amount);
+        System.out.println("energy="+energy);
 
 
     }
