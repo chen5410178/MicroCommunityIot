@@ -45,12 +45,17 @@ public class CustomDecoder extends MessageToMessageDecoder<byte[]> {
             } else if(DataHeader.isWiegand(msg)){
                 totalLen = 64;// 微耕固定长度为64字节
             }
+            DataByteDto dataByteDto = null;
+            if(dataByteMap.containsKey(ip)){
+                dataByteDto = dataByteMap.get(ip);
+                totalLen = dataByteDto.getTotalLen();
+            }
             //todo 说明是完整包
             if (msg.length >= totalLen) {
                 out.add(msg);
                 return;
             }
-            DataByteDto dataByteDto = null;
+
             if (!dataByteMap.containsKey(ip)) {
                 byte[] data = new byte[1024 * 1024];
                 dataByteDto = new DataByteDto(ip, data, 0, totalLen);
