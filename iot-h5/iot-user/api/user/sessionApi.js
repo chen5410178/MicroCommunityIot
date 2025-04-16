@@ -111,6 +111,8 @@ export async function autoLoginMini(options) {
 				return;
 			}
 			return uni.login();
+		},_err=>{
+			reject(_err);
 		}).then(loginRes => {
 			console.log(loginRes[1])
 			if (!loginRes[1].code) {
@@ -124,6 +126,8 @@ export async function autoLoginMini(options) {
 				code: loginRes[1].code,
 				appId: appId,
 			});
+		},_err=>{
+			reject(_err);
 		}).then(_data => {
 			if (_data.code != 0) {
 				uni.showToast({
@@ -134,9 +138,13 @@ export async function autoLoginMini(options) {
 				return;
 			}
 			return loginByOpenId(_data.data);
+		},err=>{
+			reject(err);
 		}).then(_data=>{
 			console.log(_data);
 			resolve(_data);
+		},err=>{
+			reject(err);
 		})
 	});
 }
