@@ -114,7 +114,7 @@ public class UserStaffModifyCmd extends Cmd {
         userDto.setUserFlag("1");
         userDto.setLevelCd("01"); //员工
         List<UserDto> users = userInnerServiceSMOImpl.queryUsers(userDto);
-        if (users != null && users.size() > 0) {
+        if (!ListUtil.isNull(users)) {
             for (UserDto user : users) {
                 if (!user.getUserId().equals(userPo.getUserId())) {
                     throw new IllegalArgumentException("员工手机号不能重复，请重新输入");
@@ -172,13 +172,21 @@ public class UserStaffModifyCmd extends Cmd {
         accessControlFaceDto.setPersonId(reqJson.getString("userId"));
         List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
         AccessControlFacePo accessControlFacePo = null;
+        String photo  = "";
         if (!ListUtil.isNull(accessControlFaceDtos)) {
             for (AccessControlFaceDto tmpAccessControlFaceDto : accessControlFaceDtos) {
                 accessControlFacePo = BeanConvertUtil.covertBean(tmpAccessControlFaceDto, AccessControlFacePo.class);
                 accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
                 accessControlFacePo.setMessage("待下发到门禁");
                 String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN,"IMG_PATH");
-
+                photo = reqJson.getString("photo");
+                if(StringUtil.isEmpty(photo)){
+                    continue;
+                }
+                if(photo.startsWith("http")){
+                    accessControlFacePo.setFacePath(reqJson.getString("photo"));
+                    continue;
+                }
                 accessControlFacePo.setFacePath(imgUrl+reqJson.getString("photo"));
             }
             accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);

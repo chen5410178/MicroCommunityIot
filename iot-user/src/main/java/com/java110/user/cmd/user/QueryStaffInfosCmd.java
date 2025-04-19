@@ -14,6 +14,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.doc.annotation.*;
 import com.java110.dto.user.UserDto;
@@ -146,15 +147,21 @@ public class QueryStaffInfosCmd extends Cmd {
     }
 
     private void refreshOrgs(List<UserDto> staffs, String storeId) {
-        if (staffs == null || staffs.size() < 1) {
+        if (ListUtil.isNull(staffs)) {
             return;
         }
         List<String> staffIds = new ArrayList<>();
         String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
 
         for (UserDto apiStaffDataVo : staffs) {
-            apiStaffDataVo.setFaceUrl(imgUrl + apiStaffDataVo.getFaceUrl());
             staffIds.add(apiStaffDataVo.getUserId());
+            if(StringUtil.isEmpty(apiStaffDataVo.getFaceUrl())){
+                continue;
+            }
+            if(apiStaffDataVo.getFaceUrl().startsWith("http")){
+                continue;
+            }
+            apiStaffDataVo.setFaceUrl(imgUrl + apiStaffDataVo.getFaceUrl());
         }
         OrgDto orgDto = new OrgDto();
         orgDto.setStoreId(storeId);
