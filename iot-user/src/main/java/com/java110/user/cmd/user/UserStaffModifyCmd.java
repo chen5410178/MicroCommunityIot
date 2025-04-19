@@ -180,16 +180,14 @@ public class UserStaffModifyCmd extends Cmd {
                 accessControlFacePo.setMessage("待下发到门禁");
                 String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN,"IMG_PATH");
                 photo = reqJson.getString("photo");
-                if(StringUtil.isEmpty(photo)){
-                    continue;
+
+                if(!StringUtil.isEmpty(photo) && photo.startsWith("http")){
+                    accessControlFacePo.setFacePath(photo);
+                }else{
+                    accessControlFacePo.setFacePath(imgUrl+photo);
                 }
-                if(photo.startsWith("http")){
-                    accessControlFacePo.setFacePath(reqJson.getString("photo"));
-                    continue;
-                }
-                accessControlFacePo.setFacePath(imgUrl+reqJson.getString("photo"));
+                accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
             }
-            accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
             return;
         }
 
@@ -222,7 +220,12 @@ public class UserStaffModifyCmd extends Cmd {
 
         for (AccessControlOrgDto tmpAccessControlOrgDto : accessControlOrgDtos) {
             accessControlFacePo = new AccessControlFacePo();
-            accessControlFacePo.setFacePath(imgUrl + userDto.getFaceUrl());
+            photo = userDto.getFaceUrl();
+            accessControlFacePo.setFacePath(imgUrl + photo);
+            if(!StringUtil.isEmpty(photo) && photo.startsWith("http")){
+                accessControlFacePo.setFacePath(reqJson.getString("photo"));
+                continue;
+            }
             accessControlFacePo.setCommunityId(tmpAccessControlOrgDto.getCommunityId());
             accessControlFacePo.setIdNumber("");
             accessControlFacePo.setComeId(tmpAccessControlOrgDto.getAcoId());
