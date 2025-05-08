@@ -15,10 +15,10 @@ const baseUrl = '/';
 
 // #ifndef H5
 //服务器域名 小程序 或者 app 时 后端地址
-const baseUrl = 'http://iot.sxjly.com/';
+const baseUrl = 'https://iot.guanghuawuye.com/';
 // #endif
 
-let commonBaseUrl = 'http://iot.homecommunity.cn/';
+let commonBaseUrl = 'https://iot.guanghuawuye.com/';
 
 const logLevel = "DEBUG"; // 日志级别
 

@@ -406,6 +406,14 @@ public class AddOwnerApiCmd extends Cmd {
         ownerRoomRelPo.setOwnerId(reqJson.getString("memberId"));
         ownerRoomRelPo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_B));
         ownerRoomRelPo.setEndTime(DateUtil.LAST_TIME);
+        String startTime = reqJson.getString("startTime");
+        if(!StringUtil.isEmpty(startTime)){
+            ownerRoomRelPo.setStartTime(startTime);
+        }
+        String endTime = reqJson.getString("endTime");
+        if(!StringUtil.isEmpty(endTime)){
+            ownerRoomRelPo.setEndTime(endTime);
+        }
 
         int flag = ownerRoomRelV1InnerServiceSMOImpl.saveOwnerRoomRel(ownerRoomRelPo);
         if (flag < 1) {
