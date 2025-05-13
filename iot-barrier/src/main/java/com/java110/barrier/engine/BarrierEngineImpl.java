@@ -21,6 +21,7 @@ import com.java110.dto.fee.TempCarFeeResult;
 import com.java110.dto.fee.TempCarPayOrderDto;
 import com.java110.dto.manualOpenDoorLog.ManualOpenDoorLogDto;
 import com.java110.dto.parking.*;
+import com.java110.dto.payment.CarInoutPaymentDto;
 import com.java110.intf.barrier.*;
 import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
@@ -135,7 +136,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
                     = new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_IN_SUCCESS, reqJson.getString("carNum"),
                     "欢迎光临", "", "", reqJson.getString("carNum") + ",欢迎光临", reqJson.getString("carNum"));
         } else {
-            uploadcarout(machineDto, reqJson,"手工出场");
+            uploadcarout(machineDto, reqJson, "手工出场");
             parkingAreaTextDto
                     = new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_OUT_SUCCESS, reqJson.getString("carNum"),
                     "一路平安", "", "", reqJson.getString("carNum") + ",一路平安", reqJson.getString("carNum"));
@@ -226,10 +227,9 @@ public class BarrierEngineImpl implements IBarrierEngine {
         carInoutPo.setInTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         carInoutPo.setUnlicense("F");
         //无牌车标识
-        if(acceptJson.containsKey("unlicense")){
+        if (acceptJson.containsKey("unlicense")) {
             carInoutPo.setUnlicense("T");
         }
-
 
 
         carInoutV1InnerServiceSMOImpl.saveCarInout(carInoutPo);
@@ -245,7 +245,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
     }
 
 
-    private JSONObject uploadcarout(BarrierDto machineDto, JSONObject acceptJson,String remark) {
+    private JSONObject uploadcarout(BarrierDto machineDto, JSONObject acceptJson, String remark) {
 
         String paId = "";
 
@@ -351,6 +351,17 @@ public class BarrierEngineImpl implements IBarrierEngine {
 
         if (ListUtil.isNull(carInoutDtos)) {
             throw new IllegalArgumentException("未查询到进场记录");
+        }
+
+        if (CarInoutDto.STATE_PAY.equals(carInoutDtos.get(0).getState())) {
+            CarInoutPaymentDto carInoutPaymentDto = new CarInoutPaymentDto();
+            carInoutPaymentDto.setInoutId(carInoutDtos.get(0).getInoutId());
+            List<CarInoutPaymentDto> carInoutPaymentDtos = carInoutPaymentV1InnerServiceSMOImpl.queryCarInoutPayments(carInoutPaymentDto);
+            if (ListUtil.isNull(carInoutPaymentDtos)) { // 没有支付记录说明，异常了 将状态修改为进场状态
+                carInoutDtos.get(0).setState(CarInoutDto.STATE_IN);
+            } else {
+                carInoutDtos.get(0).setPayTime(carInoutPaymentDtos.get(0).getPayTime());
+            }
         }
 
 
@@ -557,7 +568,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
         param.put("payCharge", tempCarPayOrderDto.getPayCharge());
         param.put("amount", tempCarPayOrderDto.getAmount());
         param.put("payType", tempCarPayOrderDto.getPayType());
-        uploadcarout(machineDto, param,"岗亭口扫码");
+        uploadcarout(machineDto, param, "岗亭口扫码");
         ResultParkingAreaTextDto parkingAreaTextDto
                 = new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_OUT_SUCCESS, carInoutDtos.get(0).getCarNum(),
                 "一路平安", "", "", carInoutDtos.get(0).getCarNum() + ",一路平安", carInoutDtos.get(0).getCarNum());
@@ -587,7 +598,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
             parkingCouponCarDto = new ParkingCouponCarDto();
             parkingCouponCarDto.setPccId(extPccId);
             parkingCouponCarDtos = parkingCouponCarV1InnerServiceSMOImpl.queryParkingCouponCars(parkingCouponCarDto);
-            if(ListUtil.isNull(parkingCouponCarDtos)){
+            if (ListUtil.isNull(parkingCouponCarDtos)) {
                 continue;
             }
 

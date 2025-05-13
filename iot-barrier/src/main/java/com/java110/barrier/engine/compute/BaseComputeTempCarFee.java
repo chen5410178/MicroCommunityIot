@@ -7,6 +7,7 @@ import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.fee.TempCarFeeConfigAttrDto;
 import com.java110.dto.fee.TempCarFeeConfigDto;
 import com.java110.dto.fee.TempCarFeeResult;
+import com.java110.intf.barrier.ICarInoutPaymentV1InnerServiceSMO;
 import com.java110.intf.barrier.ITempCarFeeConfigAttrInnerServiceSMO;
 import com.java110.intf.barrier.ITempCarFeeConfigInnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public abstract class BaseComputeTempCarFee implements IComputeTempCarFee {
     private ITempCarFeeConfigAttrInnerServiceSMO tempCarFeeConfigAttrInnerServiceSMOImpl;
 
 
+
     @Override
     public TempCarFeeResult computeTempCarFee(CarInoutDto carInoutDto,
                                               TempCarFeeConfigDto tempCarFeeConfigDto,
@@ -31,6 +33,9 @@ public abstract class BaseComputeTempCarFee implements IComputeTempCarFee {
         tempCarFeeConfigAttrDto.setCommunityId(tempCarFeeConfigDto.getCommunityId());
 
         List<TempCarFeeConfigAttrDto> tempCarFeeConfigAttrDtos = tempCarFeeConfigAttrInnerServiceSMOImpl.queryTempCarFeeConfigAttrs(tempCarFeeConfigAttrDto);
+
+
+
         //long couponMin = getCouponMin(parkingCouponCarDtos);
         TempCarFeeResult result = doCompute(carInoutDto, tempCarFeeConfigDto, tempCarFeeConfigAttrDtos,parkingCouponCarDtos);
         //获取停车时间

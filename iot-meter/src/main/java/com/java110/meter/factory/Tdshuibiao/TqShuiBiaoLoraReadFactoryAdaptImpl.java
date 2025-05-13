@@ -239,7 +239,7 @@ public class TqShuiBiaoLoraReadFactoryAdaptImpl implements ISmartMeterFactoryAda
         meterMachineSpecDto.setCommunityId(meterMachineDto.getCommunityId());
         meterMachineSpecDto.setSpecId("120103");
         List<MeterMachineSpecDto> meterMachineSpecDtos = meterMachineSpecV1InnerServiceSMOImpl.queryMeterMachineSpecs(meterMachineSpecDto);
-        if (meterMachineSpecDtos == null || meterMachineSpecDtos.size() < 1) {
+        if (ListUtil.isNull(meterMachineSpecDtos)) {
             throw new CmdException(ResultVo.CODE_ERROR, "未配置采集器ID");
         }
 
@@ -280,7 +280,7 @@ public class TqShuiBiaoLoraReadFactoryAdaptImpl implements ISmartMeterFactoryAda
         meterMachineDetailDto.setDetailId(contentObject.getString("opr_id"));
         meterMachineDetailDto.setState(MeterMachineDetailDto.STATE_W);
         List<MeterMachineDetailDto> meterMachineDetailDtos = meterMachineDetailV1InnerServiceSMOImpl.queryMeterMachineDetails(meterMachineDetailDto);
-        if (meterMachineDetailDtos == null || meterMachineDetailDtos.size() < 1) {
+        if (ListUtil.isNull(meterMachineDetailDtos)) {
             return;
         }
 
