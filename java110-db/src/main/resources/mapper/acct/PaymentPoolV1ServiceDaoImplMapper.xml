@@ -52,6 +52,9 @@
         <if test="paymentType !=null and paymentType != ''">
             and t.payment_type= #{paymentType}
         </if>
+        <if test="noAliPay !=null and noAliPay != ''">
+            and t.payment_type != 'ALIPAY'
+        </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
@@ -117,14 +120,19 @@
         <if test="paymentName !=null and paymentName != ''">
             and t.payment_name= #{paymentName}
         </if>
+
         <if test="payType !=null and payType != ''">
             and t.pay_type= #{payType}
         </if>
+
         <if test="ppId !=null and ppId != ''">
             and t.pp_id= #{ppId}
         </if>
         <if test="paymentType !=null and paymentType != ''">
             and t.payment_type= #{paymentType}
+        </if>
+        <if test="noAliPay !=null and noAliPay != ''">
+            and t.payment_type != 'ALIPAY'
         </if>
     </select>
 

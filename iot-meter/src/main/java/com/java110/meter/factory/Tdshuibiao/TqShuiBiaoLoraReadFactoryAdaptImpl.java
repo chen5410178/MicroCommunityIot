@@ -7,6 +7,7 @@ import com.java110.bean.ResultVo;
 import com.java110.core.cache.UrlCache;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.utils.ListUtil;
 import com.java110.dto.meter.MeterMachineDetailDto;
 import com.java110.dto.meter.MeterMachineDto;
 import com.java110.dto.meter.MeterMachineSpecDto;
@@ -64,7 +65,7 @@ public class TqShuiBiaoLoraReadFactoryAdaptImpl implements ISmartMeterFactoryAda
         meterMachineSpecDto.setCommunityId(meterMachineDto.getCommunityId());
         meterMachineSpecDto.setSpecId("120103");
         List<MeterMachineSpecDto> meterMachineSpecDtos = meterMachineSpecV1InnerServiceSMOImpl.queryMeterMachineSpecs(meterMachineSpecDto);
-        if (meterMachineSpecDtos == null || meterMachineSpecDtos.size() < 1) {
+        if (ListUtil.isNull(meterMachineSpecDtos)) {
             return new ResultVo(ResultVo.CODE_ERROR, "未配置采集器ID");
         }
         String detailId = GenerateCodeFactory.getGeneratorId("11");
@@ -125,7 +126,7 @@ public class TqShuiBiaoLoraReadFactoryAdaptImpl implements ISmartMeterFactoryAda
             meterMachineSpecDto.setCommunityId(meterMachineDto.getCommunityId());
             meterMachineSpecDto.setSpecId("120103");
             List<MeterMachineSpecDto> meterMachineSpecDtos = meterMachineSpecV1InnerServiceSMOImpl.queryMeterMachineSpecs(meterMachineSpecDto);
-            if (meterMachineSpecDtos == null || meterMachineSpecDtos.size() < 1) {
+            if (ListUtil.isNull(meterMachineSpecDtos)) {
                 continue;
             }
             detailId = GenerateCodeFactory.getGeneratorId("11");

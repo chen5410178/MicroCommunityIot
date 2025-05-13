@@ -29,6 +29,8 @@ public class PaymentPoolDto extends PageDto implements Serializable {
     private String ppId;
     private String paymentType;
 
+    private String noAliPay;
+
     private String paymentTypeName;
 
     private String payType;
@@ -174,5 +176,13 @@ public class PaymentPoolDto extends PageDto implements Serializable {
 
     public void setBeanRefund(String beanRefund) {
         this.beanRefund = beanRefund;
+    }
+
+    public String getNoAliPay() {
+        return noAliPay;
+    }
+
+    public void setNoAliPay(String noAliPay) {
+        this.noAliPay = noAliPay;
     }
 }

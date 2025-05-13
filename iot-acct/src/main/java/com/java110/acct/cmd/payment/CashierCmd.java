@@ -164,6 +164,8 @@ public class CashierCmd extends Cmd {
         paymentPoolDto.setState("Y");
         if("ALIPAY".equals(wxAli)){
             paymentPoolDto.setPaymentType(wxAli);
+        }else{
+            paymentPoolDto.setNoAliPay("NOALIPAY");
         }
         List<PaymentPoolDto> paymentPoolDtos = paymentPoolV1InnerServiceSMOImpl.queryPaymentPools(paymentPoolDto);
         if (paymentPoolDtos == null || paymentPoolDtos.isEmpty()) {
@@ -192,6 +194,8 @@ public class CashierCmd extends Cmd {
         paymentPoolDto.setState("Y");
         if("ALIPAY".equals(wxAli)){
             paymentPoolDto.setPaymentType(wxAli);
+        }else{
+            paymentPoolDto.setNoAliPay("NOALIPAY");
         }
         List<PaymentPoolDto> paymentPoolDtos = paymentPoolV1InnerServiceSMOImpl.queryPaymentPools(paymentPoolDto);
         if (paymentPoolDtos == null || paymentPoolDtos.isEmpty()) {
