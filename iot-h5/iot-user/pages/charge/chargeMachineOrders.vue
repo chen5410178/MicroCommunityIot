@@ -67,7 +67,7 @@
 			_that._loadChargeMachineOrder();
 		},
 		onShow() {
-			_that._loadChargeMachineOrder();
+			this._loadChargeMachineOrder();
 		},
 		methods: {
 			_loadChargeMachineOrder: function() {
