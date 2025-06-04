@@ -66,6 +66,9 @@
 			let _that = this;
 			_that._loadChargeMachineOrder();
 		},
+		onShow() {
+			_that._loadChargeMachineOrder();
+		},
 		methods: {
 			_loadChargeMachineOrder: function() {
 				let _that = this;
