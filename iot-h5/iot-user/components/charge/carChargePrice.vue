@@ -96,41 +96,28 @@
 						_that.servicePrice = _p.servicePrice;
 					}
 				})
+				
 			},
-			isTimeBetween:function (startTime, endTime) {
+			isTimeBetween: function (startTime, endTime) {
 			    // 获取当前时间的小时和分钟
 			    const currentDate = new Date();
 			    const currentHour = currentDate.getHours();
 			    const currentMinute = currentDate.getMinutes();
 			    const currentTotalMinutes = currentHour * 60 + currentMinute;
-
+			
 			    // 将开始时间和结束时间转换为分钟数
 			    const [startHour, startMinute] = startTime.split(':').map(Number);
 			    const startTotalMinutes = startHour * 60 + startMinute;
 			
 			    const [endHour, endMinute] = endTime.split(':').map(Number);
-			    let endTotalMinutes;
+			    const endTotalMinutes = endHour * 60 + endMinute;
 			
-			    // 判断是否跨天
-			    if (endHour < startHour || (endHour === startHour && endMinute < startMinute)) {
-			        // 如果跨天，先计算当天结束时间对应的分钟数
-			        const endTodayTotalMinutes = (24 + endHour) * 60 + endMinute;
-			        // 再计算下一天开始时间对应的分钟数（即开始时间原本对应的分钟数）
-			        const startTomorrowTotalMinutes = startHour * 60 + startMinute;
-			
-			        // 判断当前时间是否在跨天的时间范围内
-			        if (currentTotalMinutes >= startTotalMinutes && currentTotalMinutes <= endTodayTotalMinutes) {
-			            return true;
-			        } else if (currentTotalMinutes >= 0 && currentTotalMinutes <= startTomorrowTotalMinutes) {
-			            return true;
-			        } else {
-			            return false;
-			        }
+			    // 判断是否跨天（结束时间小于开始时间）
+			    if (endTotalMinutes < startTotalMinutes) {
+			        // 跨天情况：当前时间 >= 开始时间（当天） 或 当前时间 <= 结束时间（次日）
+			        return currentTotalMinutes >= startTotalMinutes || currentTotalMinutes <= endTotalMinutes;
 			    } else {
-			        endTotalMinutes = endHour * 60 + endMinute;
-			        const currentTotalMinutes = currentHour * 60 + currentMinute;
-			
-			        // 判断当前时间是否在指定时间范围内
+			        // 不跨天情况：当前时间在 [start, end] 之间
 			        return currentTotalMinutes >= startTotalMinutes && currentTotalMinutes <= endTotalMinutes;
 			    }
 			}
