@@ -389,7 +389,7 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
         meterMachineSpecDto.setCommunityId(meterMachineDto.getCommunityId());
         meterMachineSpecDto.setSpecId("120104");
         List<MeterMachineSpecDto> meterMachineSpecDtos = meterMachineSpecV1InnerServiceSMOImpl.queryMeterMachineSpecs(meterMachineSpecDto);
-        if (meterMachineSpecDtos == null || meterMachineSpecDtos.size() < 1) {
+        if (ListUtil.isNull(meterMachineSpecDtos)) {
             throw new CmdException(ResultVo.CODE_ERROR, "未配置采集器ID");
         }
 

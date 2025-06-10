@@ -38,15 +38,15 @@ import java.util.*;
  * https://help.ruishengyi.com/doc/1/
  *
  *
- INSERT INTO `TT`.`payment_adapt` (`adapt_id`, `payment_type`, `name`, `bean_jsapi`, `bean_qrcode`, `bean_native`, `create_time`, `status_cd`, `bean_refund`)
+ INSERT INTO `payment_adapt` (`adapt_id`, `payment_type`, `name`, `bean_jsapi`, `bean_qrcode`, `bean_native`, `create_time`, `status_cd`, `bean_refund`)
  VALUES ('6', 'RUIPAY', '聚合支付', 'ruiPayPaymentFactoryAdapt', 'qrCodeRuiPayPaymentAdapt', NULL, '2025-4-10 17:00:08', '0', 'ruiPayRefundMoney');
 
 
- INSERT INTO `TT`.`payment_key` (`key_id`, `payment_type`, `name`, `column_key`, `remark`, `create_time`, `status_cd`)
+ INSERT INTO `payment_key` (`key_id`, `payment_type`, `name`, `column_key`, `remark`, `create_time`, `status_cd`)
  VALUES ('19', 'RUIPAY', 'APPKEY', 'RUI_APPKEY', '请输入应用键', '2023-10-26 14:11:55', '0');
- INSERT INTO `TT`.`payment_key` (`key_id`, `payment_type`, `name`, `column_key`, `remark`, `create_time`, `status_cd`)
+ INSERT INTO `payment_key` (`key_id`, `payment_type`, `name`, `column_key`, `remark`, `create_time`, `status_cd`)
  VALUES ('20', 'RUIPAY', 'SECRET', 'RUI_SECRET', '请输入应用秘钥', '2023-10-26 14:11:55', '0');
- INSERT INTO `TT`.`payment_key` (`key_id`, `payment_type`, `name`, `column_key`, `remark`, `create_time`, `status_cd`)
+ INSERT INTO `payment_key` (`key_id`, `payment_type`, `name`, `column_key`, `remark`, `create_time`, `status_cd`)
  VALUES ('21', 'RUIPAY', 'RPI_NO', 'RPI_NO', '请输入商户唯一编号', '2023-10-26 14:11:55', '0');
 
  */
