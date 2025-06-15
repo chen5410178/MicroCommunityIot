@@ -507,15 +507,6 @@ public class DateUtil {
         return maxDate;
     }
 
-    public static void main(String[] args) throws ParseException {
-
-//        SimpleDateFormat sf = new SimpleDateFormat(DateUtil.DATE_FORMATE_STRING_A);
-//        Calendar c = Calendar.getInstance();
-//        c.setTime(DateUtil.getDateFromString("2021-12-03",DateUtil.DATE_FORMATE_STRING_A));
-//        c.add(Calendar.DAY_OF_MONTH, 125);
-//        System.out.println("增加一天后日期:"+sf.format(c.getTime()));
-        System.out.println("2021-12-07".compareTo(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_B)));
-    }
 
     public static String getAddDayString(Date date, String pattern, int days) {
         SimpleDateFormat sf = new SimpleDateFormat(pattern);
@@ -843,6 +834,9 @@ public class DateUtil {
             LocalTime t1 = LocalTime.parse(time1, TIME_FORMATTER);
             LocalTime st = LocalTime.parse(startTime, TIME_FORMATTER);
             LocalTime et = LocalTime.parse(endTime, TIME_FORMATTER);
+            if(t1.equals(et)){
+                return false;
+            }
 
             // 处理跨天的情况（如23:30到01:30）
             if (et.isBefore(st)) {
@@ -856,4 +850,16 @@ public class DateUtil {
             throw new IllegalArgumentException("时间格式无效，请使用HH:mm格式");
         }
     }
+
+    public static void main(String[] args) throws ParseException {
+
+//        SimpleDateFormat sf = new SimpleDateFormat(DateUtil.DATE_FORMATE_STRING_A);
+//        Calendar c = Calendar.getInstance();
+//        c.setTime(DateUtil.getDateFromString("2021-12-03",DateUtil.DATE_FORMATE_STRING_A));
+//        c.add(Calendar.DAY_OF_MONTH, 125);
+//        System.out.println("增加一天后日期:"+sf.format(c.getTime()));
+        System.out.println(isTimeInRange("07:00","00:00","07:00"));
+    }
+
+
 }
