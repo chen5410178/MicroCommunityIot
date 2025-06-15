@@ -1,6 +1,7 @@
 package com.java110.charge.factory.yuncarcharge;
 
 import com.java110.core.utils.BytesUtil;
+import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.chargePeakAlleyPrice.ChargePeakAlleyPriceDto;
 import com.java110.dto.chargeRulePrice.ChargeRulePriceDto;
@@ -281,7 +282,7 @@ public class YunCarUtil {
             chargeRulePrice.setStartTime(time.format(formatter));
             for (int j = 0; j < chargeRulePriceDtos.size(); j++) {
                 ChargeRulePriceDto _tmpPrice = chargeRulePriceDtos.get(j);
-                if (chargeRulePrice.getStartTime().equals(_tmpPrice.getStartTime())) {//开始时间匹配上
+                if (DateUtil.isTimeInRange(chargeRulePrice.getStartTime(),_tmpPrice.getStartTime(),_tmpPrice.getEndTime())) {//开始时间匹配上
                     chargeRulePrice.setCpaType(_tmpPrice.getCpaType());
                 }
             }
