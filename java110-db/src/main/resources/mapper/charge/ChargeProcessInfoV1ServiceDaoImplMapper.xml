@@ -8,10 +8,10 @@
     <!-- 保存充电过程数据上报信息 add by wuxw 2018-07-03 -->
     <insert id="saveChargeProcessInfoInfo" parameterType="Map">
         insert into charge_process_info(
-cpi_id,machine_id,frame_type,community_id,type,content,order_id
-) values (
-#{cpiId},#{machineId},#{frameType},#{communityId},#{type},#{content},#{orderId}
-)
+        cpi_id,machine_id,frame_type,community_id,type,content,order_id
+        ) values (
+        #{cpiId},#{machineId},#{frameType},#{communityId},#{type},#{content},#{orderId}
+        )
     </insert>
 
 

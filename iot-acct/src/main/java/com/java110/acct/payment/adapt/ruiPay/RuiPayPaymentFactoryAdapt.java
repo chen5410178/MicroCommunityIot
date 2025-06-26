@@ -171,7 +171,7 @@ public class RuiPayPaymentFactoryAdapt implements IPaymentFactoryAdapt {
         Map<String, String> params = new HashMap<>();
         params.put("appkey", appKey);
         params.put("timestamp", String.valueOf(System.currentTimeMillis() / 1000));
-        params.put("method", "rsy.online.barcodepay");
+        params.put("method", "rsypay.online.pay");
         params.put("rpi_no", rpiNo);
         params.put("notify_url", notifyUrl + "?wId=" + WechatFactory.getWId(smallWeChatDto.getAppId()));
 
@@ -217,6 +217,12 @@ public class RuiPayPaymentFactoryAdapt implements IPaymentFactoryAdapt {
         JSONObject data = paramOut.getJSONObject("data").getJSONObject("rsy_online_pay_response");
         //wxWcPayData
         String wxWcPayData = data.getString("js_api");
+//        doSaveOnlinePay(smallWeChatDto, openid,
+//                orderNum,data.getString("order_code"),
+//                feeName,
+//                payAmount,
+//                OnlinePayDto.STATE_WAIT,
+//                "待支付", paymentPoolValueDtos.get(0).getPpId());
 
         return JSONObject.parseObject(wxWcPayData);
     }
@@ -256,7 +262,7 @@ public class RuiPayPaymentFactoryAdapt implements IPaymentFactoryAdapt {
         paymentOrderDto.setOrderId(outTradeNo);
         paymentOrderDto.setTransactionId(orderCode);
 
-       // doUpdateOnlinePay(outTradeNo, OnlinePayDto.STATE_COMPILE, "支付成功");
+        //doUpdateOnlinePay(outTradeNo, OnlinePayDto.STATE_COMPILE, "支付成功");
 
 
         paymentOrderDto.setResponseEntity(new ResponseEntity<String>("success", HttpStatus.OK));
