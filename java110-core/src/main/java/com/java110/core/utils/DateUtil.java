@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -35,6 +37,8 @@ public class DateUtil {
     public static final String DATE_FORMATE_STRING_O = "yyyyMMddHHmm";
     public static final String DATE_FORMATE_STRING_Q = "yyyy-MM";
     public static final String DATE_FORMATE_STRING_P = "HH:mm";
+
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
 
     static {
@@ -503,15 +507,6 @@ public class DateUtil {
         return maxDate;
     }
 
-    public static void main(String[] args) throws ParseException {
-
-//        SimpleDateFormat sf = new SimpleDateFormat(DateUtil.DATE_FORMATE_STRING_A);
-//        Calendar c = Calendar.getInstance();
-//        c.setTime(DateUtil.getDateFromString("2021-12-03",DateUtil.DATE_FORMATE_STRING_A));
-//        c.add(Calendar.DAY_OF_MONTH, 125);
-//        System.out.println("增加一天后日期:"+sf.format(c.getTime()));
-        System.out.println("2021-12-07".compareTo(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_B)));
-    }
 
     public static String getAddDayString(Date date, String pattern, int days) {
         SimpleDateFormat sf = new SimpleDateFormat(pattern);
@@ -826,4 +821,45 @@ public class DateUtil {
 
         return nTime.getTime() - pTime.getTime();
     }
+
+    /**
+     * 检查time1是否在startTime和endTime之间（包含边界）
+     * @param time1 要检查的时间，格式为HH:mm
+     * @param startTime 开始时间，格式为HH:mm
+     * @param endTime 结束时间，格式为HH:mm
+     * @return 如果time1在startTime和endTime之间（包含边界）返回true，否则返回false
+     */
+    public static boolean isTimeInRange(String time1, String startTime, String endTime) {
+        try {
+            LocalTime t1 = LocalTime.parse(time1, TIME_FORMATTER);
+            LocalTime st = LocalTime.parse(startTime, TIME_FORMATTER);
+            LocalTime et = LocalTime.parse(endTime, TIME_FORMATTER);
+            if(t1.equals(et)){
+                return false;
+            }
+
+            // 处理跨天的情况（如23:30到01:30）
+            if (et.isBefore(st)) {
+                // 时间范围跨越午夜，检查是否在st到23:59:59或00:00:00到et之间
+                return !t1.isBefore(st) || !t1.isAfter(et);
+            } else {
+                // 普通情况，检查是否在st和et之间
+                return !t1.isBefore(st) && !t1.isAfter(et);
+            }
+        } catch (Exception e) {
+            throw new IllegalArgumentException("时间格式无效，请使用HH:mm格式");
+        }
+    }
+
+    public static void main(String[] args) throws ParseException {
+
+//        SimpleDateFormat sf = new SimpleDateFormat(DateUtil.DATE_FORMATE_STRING_A);
+//        Calendar c = Calendar.getInstance();
+//        c.setTime(DateUtil.getDateFromString("2021-12-03",DateUtil.DATE_FORMATE_STRING_A));
+//        c.add(Calendar.DAY_OF_MONTH, 125);
+//        System.out.println("增加一天后日期:"+sf.format(c.getTime()));
+        System.out.println(isTimeInRange("07:00","00:00","07:00"));
+    }
+
+
 }
