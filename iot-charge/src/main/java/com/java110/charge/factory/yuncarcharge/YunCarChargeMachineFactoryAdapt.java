@@ -69,7 +69,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     public static final Map<String, String> resultMap = new HashMap<>();
 
     static {
-        resultMap.put("00", "报文错误");
+        resultMap.put("00", "请求成功");
         resultMap.put("40", "结束充电，APP 远程停止");
         resultMap.put("41", "结束充电，SOC 达到 100%");
         resultMap.put("42", "结束充电，充电电量满足设定条件");
