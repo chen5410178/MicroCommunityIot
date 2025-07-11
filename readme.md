@@ -51,7 +51,7 @@ java + vue + uni-app + maven + spring boot(cloud) 方式
 
 ## 接口文档
 
-地址为：http://localhost:9999/doc-ui.html
+地址为：http://api.homecommunity.cn/pages/iot/login/PcUserLoginCmd_iot.html
 
 [word接口文档](./document/protocol)
 
