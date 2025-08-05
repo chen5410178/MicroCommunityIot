@@ -18,7 +18,7 @@
 		</view>
 
 		<view class="cu-list menu margin-top">
-			<view class="cu-item" v-for="(room, idx) in rooms" :key="idx" >
+			<view class="cu-item" v-for="(room, idx) in rooms" :key="idx">
 				<view class="content padding-tb-sm" is-link @click="chooseRoom(room)">
 					<view>
 						<text class="cuIcon-clothesfill text-blue margin-right-xs"></text> {{room.roomName}}
@@ -98,8 +98,8 @@
 				this.unitId = this.units[this.unitIndex].unitId;
 				this._loadRooms();
 			},
-			chooseRoom:function(_room){
-				uni.setStorageSync("selectRoom",_room);
+			chooseRoom: function(_room) {
+				uni.setStorageSync("selectRoom", _room);
 				uni.navigateBack();
 			}
 		}

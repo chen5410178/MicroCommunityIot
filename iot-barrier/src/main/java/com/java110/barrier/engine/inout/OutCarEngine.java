@@ -368,7 +368,7 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         parkingCouponOwnerCarDto.setState(ParkingCouponCarDto.STATE_W);
         List<ParkingCouponCarDto> parkingCouponOwnerCarDtos = parkingCouponCarServiceImpl.queryParkingCouponCars(parkingCouponOwnerCarDto);
 
-        if (parkingCouponOwnerCarDtos == null || parkingCouponOwnerCarDtos.size() < 1) {
+        if (ListUtil.isNull(parkingCouponOwnerCarDtos)) {
             parkingCouponOwnerCarDtos = new ArrayList<>();
         }
 

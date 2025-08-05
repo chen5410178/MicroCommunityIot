@@ -34,7 +34,7 @@ public class ListCarInoutPaymentBmoImpl implements IIotCommonApiBmo {
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
         Assert.hasKeyAndValue(reqJson, "page", "未包含page");
         Assert.hasKeyAndValue(reqJson, "row", "未包含row");
-        Assert.hasKeyAndValue(reqJson, "paNum", "未包含paId");
+        Assert.hasKeyAndValue(reqJson, "paNum", "未包含paNum");
     }
 
     @Override
