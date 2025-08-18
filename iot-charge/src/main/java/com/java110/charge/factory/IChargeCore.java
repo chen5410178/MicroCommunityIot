@@ -66,4 +66,6 @@ public interface IChargeCore {
      * @return
      */
     ResultVo startChargeSuccess(NotifyChargeOrderDto notifyChargeOrderDto);
+
+    ResultVo orderRefund(String orderId,String returnMoney,String remark);
 }
