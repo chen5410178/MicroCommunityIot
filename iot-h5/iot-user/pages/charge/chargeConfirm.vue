@@ -14,7 +14,7 @@
 			<view class="suc-b-2"  >电费*电量+服务费*时间收费(最小1小时);</view>
 			<view class="suc-b-1">充电价格: </view>
 			<view class="suc-b-2"  >1、电费：{{fee.durationPrice}}元/度;</view>
-			<view class="suc-b-2"  >2、服务费：{{fee.servicePrice}}元/度;</view>
+			<view class="suc-b-2"  >2、服务费：{{fee.servicePrice}}元/小时;</view>
 			<view class="suc-b-1">算费流程: </view>
 			<view class="suc-b-2"  >1、开启充电时按充电桩最大功率电量服务费扣款;</view>
 			<view class="suc-b-2"  >2、结算时根据收费规则结算后退款;</view>
