@@ -25,6 +25,8 @@ public class HardwareManufacturerAttrDto extends PageDto implements Serializable
     private String protocolImpl;
     private String hmType;
 
+    private String defaultProtocol;
+
 
 
     private Date createTime;
@@ -103,5 +105,13 @@ public class HardwareManufacturerAttrDto extends PageDto implements Serializable
 
     public void setHmType(String hmType) {
         this.hmType = hmType;
+    }
+
+    public String getDefaultProtocol() {
+        return defaultProtocol;
+    }
+
+    public void setDefaultProtocol(String defaultProtocol) {
+        this.defaultProtocol = defaultProtocol;
     }
 }

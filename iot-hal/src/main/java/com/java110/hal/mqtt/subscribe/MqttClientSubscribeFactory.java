@@ -128,6 +128,10 @@ public class MqttClientSubscribeFactory {
         }
 
         String topic = manufacturerAttrDto.getValue();
+        String defaultProtocol = manufacturerAttrDto.getDefaultProtocol();
+        if(HardwareManufacturerDto.DEFAULT_PROTOCOL_SHARE.equals(defaultProtocol)){
+            topic = HardwareManufacturerDto.SHARE_REF+topic;
+        }
         if (StringUtil.isEmpty(topic)) {
             return;
         }

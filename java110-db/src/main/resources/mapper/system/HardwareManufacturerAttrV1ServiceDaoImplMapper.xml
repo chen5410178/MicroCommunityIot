@@ -18,7 +18,7 @@
     <!-- 查询厂家属性信息 add by wuxw 2018-07-03 -->
     <select id="getHardwareManufacturerAttrInfo" parameterType="Map" resultType="Map">
         select t.hm_id,t.hm_id hmId,t.attr_id,t.attr_id attrId,t.spec_cd,t.spec_cd specCd,t.status_cd,t.status_cd
-        statusCd,t.value,hm.hm_name hmName,hm.protocol_impl protocolImpl,hm.hm_type hmType,t.create_time createTime
+        statusCd,t.value,hm.hm_name hmName,hm.protocol_impl protocolImpl,hm.hm_type hmType,t.create_time createTime,hm.default_protocol defaultProtocol
         from hardware_manufacturer_attr t
         left join hardware_manufacturer hm on t.hm_id = hm.hm_id and hm.status_cd = '0'
         where 1 =1

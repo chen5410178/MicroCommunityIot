@@ -26,6 +26,9 @@ public class HardwareManufacturerDto extends PageDto implements Serializable {
 
     // 考勤机
     public static final String HM_TYPE_ATTENDANCE = "4004";
+    public static final String DEFAULT_PROTOCOL_SHARE = "SHARE";
+
+    public static  final String SHARE_REF="$share/hc/";
 
     private String hmId;
     private String license;
