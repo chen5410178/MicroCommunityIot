@@ -58,20 +58,20 @@
 						{{fee.servicePrice || 0}}元/小时
 					</view>
 				</view>
-				<view class="cu-item ">
+				<view class="cu-item " v-if="state == '2002'">
 					<view class="content">
 						<text class="text-grey">电费</text>
 					</view>
 					<view class="action">
-						{{durationPrice || 0}}元/度
+						{{durationPrice || 0}}元
 					</view>
 				</view>
-				<view class="cu-item ">
+				<view class="cu-item " v-if="state == '2002'">
 					<view class="content">
 						<text class="text-grey">服务费</text>
 					</view>
 					<view class="action">
-						{{servicePrice || 0}}元/小时
+						{{servicePrice || 0}}元
 					</view>
 				</view>
 				<view class="cu-item ">

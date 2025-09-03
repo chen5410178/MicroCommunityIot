@@ -859,4 +859,57 @@ public class ChargeCoreImpl implements IChargeCore {
 
     }
 
+
+    @Override
+    public ResultVo orderRefund(String orderId,String money,String remark) {
+        ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
+        chargeMachineOrderDto.setOrderId(orderId);
+        List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
+        AccountDto accountDto = new AccountDto();
+        accountDto.setAcctId(chargeMachineOrderDtos.get(0).getAcctDetailId());
+        List<AccountDto> accountDtos = accountInnerServiceSMOImpl.queryAccounts(accountDto);
+        if (ListUtil.isNull(accountDtos)) {
+            return new ResultVo(ResultVo.CODE_OK, "未查询到账户信息");
+        }
+
+        AccountDetailPo accountDetailPo = new AccountDetailPo();
+        accountDetailPo.setAcctId(accountDtos.get(0).getAcctId());
+        accountDetailPo.setObjId(accountDtos.get(0).getObjId());
+        accountDetailPo.setObjType(accountDtos.get(0).getObjType());
+        accountDetailPo.setDetailId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_detailId));
+        double returnMoney = Double.parseDouble(money);
+
+        if (returnMoney < 0) {
+            accountDetailPo.setAmount((-1 * returnMoney) + "");
+            accountDetailPo.setRemark("充电扣款金额-" + chargeMachineOrderDtos.get(0).getOrderId());
+            accountInnerServiceSMOImpl.withholdAccount(accountDetailPo);
+        } else {
+            accountDetailPo.setAmount(returnMoney + "");
+            accountDetailPo.setRemark(remark+"；充电退回金额："+ returnMoney +"元，" + chargeMachineOrderDtos.get(0).getOrderId());
+            accountInnerServiceSMOImpl.prestoreAccount(accountDetailPo);
+        }
+
+        //充电表中加入退款金额
+        ChargeMachineOrderAcctPo chargeMachineOrderAcctPo = new ChargeMachineOrderAcctPo();
+        chargeMachineOrderAcctPo.setAcctDetailId(accountDetailPo.getDetailId());
+        chargeMachineOrderAcctPo.setAmount((-1 * returnMoney) + "");
+
+        chargeMachineOrderAcctPo.setCmoaId(GenerateCodeFactory.getGeneratorId("11"));
+        chargeMachineOrderAcctPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
+        chargeMachineOrderAcctPo.setAcctId(accountDtos.get(0).getAcctId());
+        chargeMachineOrderAcctPo.setStartTime(chargeMachineOrderDtos.get(0).getStartTime());
+        chargeMachineOrderAcctPo.setEnergy("0");
+        chargeMachineOrderAcctPo.setEndTime(chargeMachineOrderDtos.get(0).getEndTime());
+        if (returnMoney < 0) {
+            chargeMachineOrderAcctPo.setRemark("账户扣款-" + remark);
+        } else {
+            chargeMachineOrderAcctPo.setRemark(remark+"；账户手动退款：" + returnMoney +"元，" + chargeMachineOrderDtos.get(0).getOrderId());
+        }
+        chargeMachineOrderAcctPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
+        //chargeMachineOrderAcctPo.setEnergy("0");
+        chargeMachineOrderAcctPo.setDurationPrice("0");
+
+        chargeMachineOrderAcctV1InnerServiceSMOImpl.saveChargeMachineOrderAcct(chargeMachineOrderAcctPo);
+        return new ResultVo(ResultVo.CODE_OK, "成功");
+    }
 }

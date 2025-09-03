@@ -36,6 +36,7 @@
                 vc.component._listChargeMachineOrderAcctss(_currentPage, DEFAULT_ROWS);
             });
         },
+        
         methods: {
             _listChargeMachineOrderAcctss: function(_page, _rows) {
 
@@ -67,7 +68,9 @@
                 vc.component._listChargeMachineOrderAcctss(DEFAULT_PAGE, DEFAULT_ROWS);
 
             },
-
+            _openReturnChargeMoneyModel: function() {
+                vc.emit('returnChargeMoney', 'openReturnChargeMoneyModal', vc.component.chargeMachineOrderAcctsInfo);
+            },
         }
     });
 })(window.vc);
