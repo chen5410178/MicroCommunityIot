@@ -47,7 +47,7 @@ public class DataHeader {
         try {
             String cmd = data.substring(10, 12);
             int num1 = Integer.parseInt(cmd, 16);
-            if (num1 < 19 || "33".equals(cmd)|| "35".equals(cmd)){
+            if (num1 < 19 || "33".equals(cmd)|| "35".equals(cmd)|| "91".equals(cmd)){
                 data = data.substring(12, 26);
             }else {
                 data = data.substring(44, 58);
