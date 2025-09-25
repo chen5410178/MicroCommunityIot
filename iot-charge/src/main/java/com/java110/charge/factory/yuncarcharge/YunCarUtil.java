@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class YunCarUtil {
 
@@ -30,7 +31,57 @@ public class YunCarUtil {
     public static final String CMD_STOP_CHARGE_UPLOAD = "19";//充电结束
     public static final String CMD_TRANSACTION_RECORD_UPLOAD = "3B";//交易记录
 
+    /**
+     * 序列号管理器：为每个设备维护独立的序列号计数器
+     * 符合云快充1.6协议要求：从0开始顺序增加，溢出后归0
+     */
+    private static final ConcurrentHashMap<String, Integer> SEQUENCE_MAP = new ConcurrentHashMap<>();
 
+
+    /**
+     * 获取下一个序列号（用于发送数据包）
+     * 符合云快充1.6协议要求：从0开始顺序增加，溢出后归0
+     * 
+     * @param machineCode 设备编码
+     * @return 下一个序列号（4位十六进制字符串）
+     */
+    public static synchronized String getNextSequenceNumber(String machineCode) {
+        if (StringUtil.isEmpty(machineCode)) {
+            machineCode = "DEFAULT";
+        }
+        
+        // 获取当前序列号，默认从0开始
+        Integer currentSeq = SEQUENCE_MAP.getOrDefault(machineCode, 0);
+        
+        // 增加序列号，如果超过65535（0xFFFF）则归0
+        int nextSeq = (currentSeq + 1) % 65536;
+        
+        // 更新序列号
+        SEQUENCE_MAP.put(machineCode, nextSeq);
+        
+        // 返回4位十六进制字符串
+        return String.format("%04X", nextSeq);
+    }
+    
+    /**
+     * 重置设备序列号（用于网络断开重连时）
+     * 符合云快充1.6协议要求：网络断开重新建立连接后归0
+     * 
+     * @param machineCode 设备编码
+     */
+    public static synchronized void resetSequenceNumber(String machineCode) {
+        if (StringUtil.isEmpty(machineCode)) {
+            machineCode = "DEFAULT";
+        }
+        SEQUENCE_MAP.put(machineCode, 0);
+    }
+    
+    /**
+     * 清除所有设备的序列号缓存（系统重启时使用）
+     */
+    public static synchronized void clearAllSequenceNumbers() {
+        SEQUENCE_MAP.clear();
+    }
     /**
      * 获取指令
      *
@@ -44,13 +95,19 @@ public class YunCarUtil {
     }
 
     /**
-     * 获取序列号阈
-     *
+     * 获取序列号域
+     * 云快充1.6协议：序列号域占2字节（4个十六进制字符）
+     * 数据帧结构：68（起始标志1字节）+ 数据长度（1字节）+ 序列号域（2字节）+ 加密标志（1字节）+ 类型（1字节）
+     * 
      * @param msg
      * @return
      */
     public static String getSerialNumber(byte[] msg) {
         String data = BytesUtil.bytesToHex(msg);
+        // 序列号域位置：起始标志(2) + 数据长度(2) = 位置4，长度4个字符（2字节）
+        if (data.length() < 8) {
+            return "0000"; // 默认序列号
+        }
         data = data.substring(4, 8);
         return data;
     }
@@ -299,7 +356,9 @@ public class YunCarUtil {
     //    68（起始标志）12（数据长度）00DF（序列号域）00（加密标志）56（类型）55031412782305
 //            （桩编码）98B70E11100314（当前时间：2020-03-16 17:14:47）8A13（帧校验域）
     public static String calibrationTime(String machineCode) {
-        String dataContent = "CDEF" + "00" + "56" + machineCode + dateToCP56Time2a();
+        // 使用下一个序列号，符合协议要求
+        String serialNumber = getNextSequenceNumber(machineCode);
+        String dataContent = serialNumber + "00" + "56" + machineCode + dateToCP56Time2a();
         String dataLength = calculateLength(dataContent);
         byte[] byteArray = BytesUtil.hexStringToByteArray(dataContent);
         String CRCCode = BytesUtil.bytesToHex(YunCrcUtil.calculateCrc(byteArray));
@@ -308,7 +367,9 @@ public class YunCarUtil {
 
     public static String sendQrCode(String machineCode, String url) {
         String urlASCII = getUrlASCII(url);
-        String dataContent = "00CE" + "00" + "F0" + machineCode + "01" + calculateLength(urlASCII) + urlASCII;
+        // 使用下一个序列号，符合协议要求
+        String serialNumber = getNextSequenceNumber(machineCode);
+        String dataContent = serialNumber + "00" + "F0" + machineCode + "01" + calculateLength(urlASCII) + urlASCII;
         String dataLength = calculateLength(dataContent);
         byte[] byteArray = BytesUtil.hexStringToByteArray(dataContent);
         String CRCCode = BytesUtil.bytesToHex(YunCrcUtil.calculateCrc(byteArray));
@@ -358,6 +419,7 @@ public class YunCarUtil {
 //        if (! billModeNo.equals("0100")){//0100 平台下发的固定值
 //            verifyResult = "01";
 //        }
+        // 计费模型校验应答使用与请求相同的序列号，符合协议要求
         String dataContent = serialNumber + "00" + "06" + machineCode + "0100" + verifyResult;
         String dataLength = calculateLength(dataContent);
         byte[] byteArray = BytesUtil.hexStringToByteArray(dataContent);
@@ -369,6 +431,7 @@ public class YunCarUtil {
 //    68（起始标志）0D（数据长度）3600（序列号域）00（加密标志）04（类型）55031412782305
 //            （桩编码）01(枪号) 00（心跳应答）65B2（帧校验域）
     public static String machineHeartbeatRespon(String serialNumber, String machineCode, String gunNo) {
+        // 心跳应答使用与请求相同的序列号，符合协议要求
         String dataContent = serialNumber + "00" + "04" + machineCode + gunNo + "00";
         String dataLength = calculateLength(dataContent);
         byte[] byteArray = BytesUtil.hexStringToByteArray(dataContent);
@@ -380,6 +443,7 @@ public class YunCarUtil {
     //        68（起始标志）15（数据长度）0002（序列号域）00（加密标志）40（类型）
 //            55031412782305012018061910262392（交易流水号）00（确认结果）48B1（帧校验域）
     public static String confirmTransactionRespon(String serialNumber, String tradeNo) {
+        // 交易确认应答使用与请求相同的序列号，符合协议要求
         String dataContent = serialNumber + "00" + "40" + tradeNo + "00";
         String dataLength = calculateLength(dataContent);
         byte[] byteArray = BytesUtil.hexStringToByteArray(dataContent);
@@ -388,6 +452,9 @@ public class YunCarUtil {
     }
 
     public static String machineRegisterRespon(String machineCode) {
+        // 注册响应使用固定序列号 0000，符合协议规范
+        // 注册成功后重置设备序列号计数器
+        resetSequenceNumber(machineCode);
         String dataContent = "0000" + "00" + "02" + machineCode + "00";
         String dataLength = calculateLength(dataContent);
         byte[] byteArray = BytesUtil.hexStringToByteArray(dataContent);
@@ -398,7 +465,9 @@ public class YunCarUtil {
     //    68（起始标志）0C（数据长度）0011（序列号域）00（加密标志）92（类型）32010200000001
 //            （桩编码）01（执行控制）C1A9（帧校验域）
     public static String restartMachine(String machineCode) {
-        String dataContent = "0011" + "00" + "92" + machineCode + "01";
+        // 重启命令使用下一个序列号，符合协议要求
+        String serialNumber = getNextSequenceNumber(machineCode);
+        String dataContent = serialNumber + "00" + "92" + machineCode + "01";
         String dataLength = calculateLength(dataContent);
         byte[] byteArray = BytesUtil.hexStringToByteArray(dataContent);
         String CRCCode = BytesUtil.bytesToHex(YunCrcUtil.calculateCrc(byteArray));
@@ -418,7 +487,9 @@ public class YunCarUtil {
 
     public static String startCharge(String serialNumber, String machineCode, String orderNo, String gunNo, String logicalCardNum, String physicalCardNum, String money) {
         money = cryptocurrencyAmount(money, 2);
-        String dataContent = serialNumber + "00" + "34" + orderNo + machineCode + gunNo + logicalCardNum + physicalCardNum + money;
+        // 启动充电命令使用下一个序列号，符合协议要求
+        String newSerialNumber = getNextSequenceNumber(machineCode);
+        String dataContent = newSerialNumber + "00" + "34" + orderNo + machineCode + gunNo + logicalCardNum + physicalCardNum + money;
         String dataLength = calculateLength(dataContent);
         byte[] byteArray = BytesUtil.hexStringToByteArray(dataContent);
         String CRCCode = BytesUtil.bytesToHex(YunCrcUtil.calculateCrc(byteArray));
@@ -428,20 +499,16 @@ public class YunCarUtil {
     //68（起始标志）0C（数据长度）0003（序列号域）00（加密标志）36（类型）32010200000001
     //            （桩编码）01（枪号：1枪）C1A9（帧校验域）
     public static String stopCharge(String serialNumber, String machineCode, String gunNo) {
-        String dataContent = serialNumber + "00" + "36" + machineCode + gunNo;
+        // 停止充电命令使用下一个序列号，符合协议要求
+        String newSerialNumber = getNextSequenceNumber(machineCode);
+        String dataContent = newSerialNumber + "00" + "36" + machineCode + gunNo;
         String dataLength = calculateLength(dataContent);
         byte[] byteArray = BytesUtil.hexStringToByteArray(dataContent);
         String CRCCode = BytesUtil.bytesToHex(YunCrcUtil.calculateCrc(byteArray));
         return YUN_KUAI_CHONG_HEAD + dataLength + dataContent + CRCCode;
     }
 
-    public static String generatorMsgId() {
 
-        Random random = new Random();
-        int msgId = random.nextInt(256);
-
-        return String.format("%04x", msgId);
-    }
 
 
     /**
