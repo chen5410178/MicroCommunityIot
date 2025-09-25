@@ -81,7 +81,7 @@ public class OwnerPrestoreAccountCmd extends Cmd {
         accountDetailPo.setRemark(reqJson.getString("remark"));
         accountDetailPo.setObjId(userDtos.get(0).getUserId());
         accountDetailPo.setAmount(reqJson.getString("amount"));
-
+        accountDetailPo.setSwipeCardNo(reqJson.getString("swipeCardNo"));
 
         //查询 业主是否有账户
         AccountDto accountDto = new AccountDto();
@@ -153,6 +153,7 @@ public class OwnerPrestoreAccountCmd extends Cmd {
         accountPo.setAcctName(userDto.getName());
         accountPo.setPartId(reqJson.getString("communityId"));
         accountPo.setLink(userDto.getTel());
+        accountPo.setSwipeCardNo(reqJson.getString("swipeCardNo"));
         accountInnerServiceSMOImpl.saveAccount(accountPo);
         return BeanConvertUtil.covertBean(accountPo, AccountDto.class);
     }

@@ -43,7 +43,7 @@ public class AccountDto extends PageDto implements Serializable {
     private String hasMoney; // 1 标识有
     private String link;
     private String idCard;
-
+    private String swipeCardNo;
 
     private Date createTime;
 
@@ -54,6 +54,14 @@ public class AccountDto extends PageDto implements Serializable {
 
     //积分账户抵扣比例
     private String deductionProportion;
+
+    public String getSwipeCardNo() {
+        return swipeCardNo;
+    }
+
+    public void setSwipeCardNo(String swipeCardNo) {
+        this.swipeCardNo = swipeCardNo;
+    }
 
     public String getAmount() {
         return amount;

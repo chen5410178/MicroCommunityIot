@@ -15,6 +15,7 @@ public class AccountDetailPo implements Serializable {
     private String remark;
     private String objType;
     private String bId;
+    private String swipeCardNo;
     private Date createTime;
     private String statusCd = "0";
 
@@ -112,5 +113,13 @@ public class AccountDetailPo implements Serializable {
 
     public void setStatusCd(String statusCd) {
         this.statusCd = statusCd;
+    }
+
+    public String getSwipeCardNo() {
+        return swipeCardNo;
+    }
+
+    public void setSwipeCardNo(String swipeCardNo) {
+        this.swipeCardNo = swipeCardNo;
     }
 }

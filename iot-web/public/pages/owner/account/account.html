@@ -39,7 +39,7 @@
             </h5>
             <div class="ibox-tools" style="top:10px;">
                 <button type="button" class="btn btn-primary btn-sm" v-on:click="_prestoreAccount()">
-                    <vc:i18n name="预存" namespace="account"></vc:i18n>
+                    <vc:i18n name="预存/维护" namespace="account"></vc:i18n>
                 </button>
             </div>
         </div>
@@ -63,6 +63,9 @@
                             <vc:i18n name="账户金额" namespace="account"></vc:i18n>
                         </th>
                         <th class="text-center">
+                            <vc:i18n name="卡号" namespace="account"></vc:i18n>
+                        </th>
+                        <th class="text-center">
                             <vc:i18n name="创建时间" namespace="account"></vc:i18n>
                         </th>
                         <th class="text-center">
@@ -77,6 +80,7 @@
                         <td class="text-center">{{account.link}}</td>
                         <td class="text-center">{{account.acctTypeName}}</td>
                         <td class="text-center">{{account.amount}}</td>
+                        <td class="text-center">{{account.swipeCardNo}}</td>
                         <td class="text-center">{{account.createTime}}</td>
                         <td class="text-center">
                             <div class="btn-group">

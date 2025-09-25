@@ -13,7 +13,7 @@ public class AccountPo implements Serializable {
     private String partId;
 
     private String link;
-
+    private String swipeCardNo;
     private String statusCd = "0";
 
 
@@ -23,6 +23,15 @@ public class AccountPo implements Serializable {
 
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+
+    public String getSwipeCardNo() {
+        return swipeCardNo;
+    }
+
+    public void setSwipeCardNo(String swipeCardNo) {
+        this.swipeCardNo = swipeCardNo;
     }
 
     public String getAcctType() {

@@ -31,6 +31,7 @@ public class ChargeMonthOrderDto extends ChargeMonthCardDto implements Serializa
     private String communityId;
 
     private String queryTime;
+    private String swipeCardNo;
 
 
     private Date createTime;
@@ -178,5 +179,13 @@ public class ChargeMonthOrderDto extends ChargeMonthCardDto implements Serializa
 
     public void setQueryEndTime(String queryEndTime) {
         this.queryEndTime = queryEndTime;
+    }
+
+    public String getSwipeCardNo() {
+        return swipeCardNo;
+    }
+
+    public void setSwipeCardNo(String swipeCardNo) {
+        this.swipeCardNo = swipeCardNo;
     }
 }

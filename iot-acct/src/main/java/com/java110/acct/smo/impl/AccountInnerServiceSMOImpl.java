@@ -151,6 +151,7 @@ public class AccountInnerServiceSMOImpl implements IAccountInnerServiceSMO {
             accountPo.setObjId(accountDetailPo.getObjId());
             accountPo.setAcctId(accountDetailPo.getAcctId());
             accountPo.setAmount(amount + "");
+            accountPo.setSwipeCardNo(accountDetailPo.getSwipeCardNo());
             flag = accountServiceDaoImpl.updateAccount(BeanConvertUtil.beanCovertMap(accountPo));
             if (flag < 1) {
                 throw new IllegalArgumentException("更新账户失败");
