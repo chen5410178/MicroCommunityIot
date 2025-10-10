@@ -111,5 +111,6 @@ public interface IUserV1InnerServiceSMO {
     @RequestMapping(value = "/queryStaffsNoInOrg", method = RequestMethod.POST)
     List<UserDto> queryStaffsNoInOrg(@RequestBody UserDto userDto);
 
-    List<UserDto> queryCommunityStaffsByCommunityId(Map map);
+    @RequestMapping(value = "/queryCommunityStaffsByCommunityId", method = RequestMethod.POST)
+    List<UserDto> queryCommunityStaffsByCommunityId(@RequestBody Map map);
 }

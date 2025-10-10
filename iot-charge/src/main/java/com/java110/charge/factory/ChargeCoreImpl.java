@@ -14,9 +14,13 @@ import com.java110.dto.account.AccountDto;
 import com.java110.dto.chargeMachine.*;
 import com.java110.dto.chargeMonthOrder.ChargeMonthOrderDto;
 import com.java110.dto.chargeRulePrice.ChargeRulePriceDto;
+import com.java110.dto.onlinePay.OnlinePayDto;
 import com.java110.dto.parkingCouponCharge.ParkingCouponChargeDto;
 import com.java110.dto.userAttr.UserAttrDto;
 import com.java110.intf.acct.IAccountInnerServiceSMO;
+import com.java110.intf.acct.IOnlinePayRefundV1InnerServiceSMO;
+import com.java110.intf.acct.IOnlinePayV1InnerServiceSMO;
+import com.java110.intf.acct.IReturnMoneyV1InnerServiceSMO;
 import com.java110.intf.car.IParkingCouponCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingCouponChargeV1InnerServiceSMO;
 import com.java110.intf.car.IParkingCouponShopV1InnerServiceSMO;
@@ -29,6 +33,8 @@ import com.java110.po.chargeMachineOrder.ChargeMachineOrderPo;
 import com.java110.po.chargeMachineOrderAcct.ChargeMachineOrderAcctPo;
 import com.java110.po.chargeMachineOrderCoupon.ChargeMachineOrderCouponPo;
 import com.java110.po.chargeMachinePort.ChargeMachinePortPo;
+import com.java110.po.onlinePay.OnlinePayPo;
+import com.java110.po.onlinePay.OnlinePayRefundPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -91,6 +97,16 @@ public class ChargeCoreImpl implements IChargeCore {
     private IParkingCouponShopV1InnerServiceSMO parkingCouponShopV1InnerServiceSMOImpl;
     @Autowired
     private IStoreShopV1InnerServiceSMO shopInnerServiceSMOImpl;
+
+    @Autowired
+    private IOnlinePayV1InnerServiceSMO onlinePayV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IReturnMoneyV1InnerServiceSMO returnMoneyV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IOnlinePayRefundV1InnerServiceSMO onlinePayRefundV1InnerServiceSMOImpl;
+
     @Override
     public ResultVo startCharge(ChargeMachineDto chargeMachineDto, ChargeMachinePortDto chargeMachinePortDto, String chargeType, double duration, String orderId) {
 
@@ -193,9 +209,14 @@ public class ChargeCoreImpl implements IChargeCore {
             accountDetailPo.setRemark("充电扣款金额-" + chargeMachineOrderDtos.get(0).getOrderId());
             accountInnerServiceSMOImpl.withholdAccount(accountDetailPo);
         } else {
-            accountDetailPo.setAmount(returnMoney + "");
-            accountDetailPo.setRemark("充电退回金额-" + chargeMachineOrderDtos.get(0).getOrderId());
-            accountInnerServiceSMOImpl.prestoreAccount(accountDetailPo);
+            //直接微信退回即可
+            try {
+                refundAmount(accountDtos.get(0).getAcctId(), returnMoney, chargeRulePriceDtos.get(0).getCommunityId());
+            }catch (Exception e){
+                accountDetailPo.setAmount(returnMoney + "");
+                accountDetailPo.setRemark("充电退回金额-" + chargeMachineOrderDtos.get(0).getOrderId());
+                accountInnerServiceSMOImpl.prestoreAccount(accountDetailPo);
+            }
         }
 
         //充电表中加入退款金额
@@ -218,6 +239,56 @@ public class ChargeCoreImpl implements IChargeCore {
         //chargeMachineOrderAcctPo.setEnergy("0");
         chargeMachineOrderAcctPo.setDurationPrice("1");
         chargeMachineOrderAcctV1InnerServiceSMOImpl.saveChargeMachineOrderAcct(chargeMachineOrderAcctPo);
+    }
+
+    private void refundAmount(String acctId, double returnMoney,String communityId) {
+        // 1. 根据acctId查询Online_pay表中的记录（busiId = acctId）
+        OnlinePayDto onlinePayDto = new OnlinePayDto();
+        onlinePayDto.setBusiId(acctId);
+        onlinePayDto.setPage(1);
+        onlinePayDto.setRow(100); // 查询足够多的记录
+
+        List<OnlinePayDto> onlinePayDtos = onlinePayV1InnerServiceSMOImpl.queryOnlinePays(onlinePayDto);
+
+        if (onlinePayDtos == null || onlinePayDtos.isEmpty()) {
+            throw new CmdException("未找到对应的支付记录");
+        }
+        String refundId = GenerateCodeFactory.getGeneratorId("10");
+        OnlinePayRefundPo refundPo = new OnlinePayRefundPo();
+        refundPo.setRefundId(refundId);
+        refundPo.setPayId(onlinePayDtos.get(0).getPayId());
+        refundPo.setRefundFee(new BigDecimal(returnMoney));
+        refundPo.setBusiId(acctId);
+        refundPo.setCommunityId(communityId);
+        refundPo.setState(OnlinePayDto.STATE_WT); // P-处理中
+        refundPo.setMessage("退款申请中");
+        refundPo.setRefundUserId("-1");
+
+        onlinePayRefundV1InnerServiceSMOImpl.saveOnlinePayRefund(refundPo);
+
+        //退款
+       ResultVo resultVo = returnMoneyV1InnerServiceSMOImpl.returnMoney(onlinePayDtos.get(0));
+        if(resultVo.getCode() != ResultVo.CODE_OK){
+            refundPo = new OnlinePayRefundPo();
+            refundPo.setRefundId(refundId);
+            refundPo.setCommunityId(communityId);
+            refundPo.setState(OnlinePayDto.STATE_FT); // P-处理中
+            refundPo.setMessage(resultVo.getMsg());
+            onlinePayRefundV1InnerServiceSMOImpl.updateOnlinePayRefund(refundPo);
+            throw new CmdException(resultVo.getMsg());
+        }
+        refundPo = new OnlinePayRefundPo();
+        refundPo.setRefundId(refundId);
+        refundPo.setCommunityId(communityId);
+        refundPo.setState(OnlinePayDto.STATE_C); // P-处理中
+        refundPo.setMessage(resultVo.getMsg());
+        onlinePayRefundV1InnerServiceSMOImpl.updateOnlinePayRefund(refundPo);
+
+        // 更新online_pay表中的剩余金额
+        OnlinePayPo onlinePayPo = new OnlinePayPo();
+        onlinePayPo.setPayId(onlinePayDtos.get(0).getPayId());
+        onlinePayPo.setRemainingFee(onlinePayDtos.get(0).getRemainingFee().subtract(new BigDecimal(returnMoney)).toString());
+        onlinePayV1InnerServiceSMOImpl.updateOnlinePay(onlinePayPo);
     }
 
     /**

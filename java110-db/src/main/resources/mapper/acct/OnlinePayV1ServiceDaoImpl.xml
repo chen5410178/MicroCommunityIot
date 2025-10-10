@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="onlinePayV1ServiceDaoImpl">
+
+    <!-- 保存在线支付订单信息 -->
+    <insert id="saveOnlinePayInfo" parameterType="java.util.Map">
+        INSERT INTO online_pay(
+            pay_id,
+            order_id,
+            transaction_id,
+            busi_id,
+            total_fee,
+            remaining_fee,
+            pay_name,
+            open_id,
+            state,
+            message,
+            payment_pool_id,
+            app_id
+        ) VALUES (
+            #{payId},
+            #{orderId},
+            #{transactionId},
+            #{busiId},
+            #{totalFee},
+            #{remainingFee},
+            #{payName},
+            #{openId},
+            #{state},
+            #{message},
+            #{paymentPoolId},
+            #{appId}
+        )
+    </insert>
+
+    <!-- 查询在线支付订单信息 -->
+    <select id="getOnlinePayInfo" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            t.pay_id payId,
+            t.order_id orderId,
+            t.transaction_id transactionId,
+            t.busi_id busiId,
+            t.total_fee totalFee,
+            t.remaining_fee remainingFee,
+            t.pay_name payName,
+            t.open_id openId,
+            t.state state,
+            t.message message,
+            t.create_time createTime,
+            t.status_cd statusCd,
+            t.payment_pool_id paymentPoolId,
+            t.app_id appId
+        FROM online_pay t
+        WHERE 1 = 1
+        <if test="payId != null and payId != ''">
+            AND t.pay_id = #{payId}
+        </if>
+        <if test="orderId != null and orderId != ''">
+            AND t.order_id = #{orderId}
+        </if>
+        <if test="transactionId != null and transactionId != ''">
+            AND t.transaction_id = #{transactionId}
+        </if>
+        <if test="busiId != null and busiId != ''">
+            AND t.busi_id = #{busiId}
+        </if>
+        <if test="state != null and state != ''">
+            AND t.state = #{state}
+        </if>
+        <if test="openId != null and openId != ''">
+            AND t.open_id = #{openId}
+        </if>
+        <if test="paymentPoolId != null and paymentPoolId != ''">
+            AND t.payment_pool_id = #{paymentPoolId}
+        </if>
+        <if test="appId != null and appId != ''">
+            AND t.app_id = #{appId}
+        </if>
+        <if test="statusCd != null and statusCd != ''">
+            AND t.status_cd = #{statusCd}
+        </if>
+        ORDER BY t.create_time DESC
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <!-- 修改在线支付订单信息 -->
+    <update id="updateOnlinePayInfo" parameterType="java.util.Map">
+        UPDATE online_pay t
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null and orderId != ''">
+                t.order_id = #{orderId},
+            </if>
+            <if test="transactionId != null and transactionId != ''">
+                t.transaction_id = #{transactionId},
+            </if>
+            <if test="busiId != null and busiId != ''">
+                t.busi_id = #{busiId},
+            </if>
+            <if test="totalFee != null">
+                t.total_fee = #{totalFee},
+            </if>
+            <if test="remainingFee != null">
+                t.remaining_fee = #{remainingFee},
+            </if>
+            <if test="payName != null and payName != ''">
+                t.pay_name = #{payName},
+            </if>
+            <if test="openId != null and openId != ''">
+                t.open_id = #{openId},
+            </if>
+            <if test="state != null and state != ''">
+                t.state = #{state},
+            </if>
+            <if test="message != null and message != ''">
+                t.message = #{message},
+            </if>
+            <if test="paymentPoolId != null and paymentPoolId != ''">
+                t.payment_pool_id = #{paymentPoolId},
+            </if>
+            <if test="appId != null and appId != ''">
+                t.app_id = #{appId},
+            </if>
+            <if test="statusCd != null and statusCd != ''">
+                t.status_cd = #{statusCd}
+            </if>
+        </trim>
+        WHERE 1=1
+        <if test="payId != null and payId != ''">
+            AND t.pay_id = #{payId}
+        </if>
+    </update>
+
+    <!-- 查询在线支付订单总数 -->
+    <select id="queryOnlinePaysCount" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT count(1) count
+        FROM online_pay t
+        WHERE 1 = 1
+        <if test="payId != null and payId != ''">
+            AND t.pay_id = #{payId}
+        </if>
+        <if test="orderId != null and orderId != ''">
+            AND t.order_id = #{orderId}
+        </if>
+        <if test="transactionId != null and transactionId != ''">
+            AND t.transaction_id = #{transactionId}
+        </if>
+        <if test="busiId != null and busiId != ''">
+            AND t.busi_id = #{busiId}
+        </if>
+        <if test="state != null and state != ''">
+            AND t.state = #{state}
+        </if>
+        <if test="openId != null and openId != ''">
+            AND t.open_id = #{openId}
+        </if>
+        <if test="paymentPoolId != null and paymentPoolId != ''">
+            AND t.payment_pool_id = #{paymentPoolId}
+        </if>
+        <if test="appId != null and appId != ''">
+            AND t.app_id = #{appId}
+        </if>
+        <if test="statusCd != null and statusCd != ''">
+            AND t.status_cd = #{statusCd}
+        </if>
+    </select>
+
+</mapper>

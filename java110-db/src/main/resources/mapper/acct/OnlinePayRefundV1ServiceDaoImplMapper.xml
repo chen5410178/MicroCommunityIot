@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="onlinePayRefundV1ServiceDaoImpl">
+
+
+    <!-- 保存在线支付退款信息 add by wuxw 2018-07-03 -->
+    <insert id="saveOnlinePayRefundInfo" parameterType="Map">
+        insert into online_pay_refund(
+        refund_id,pay_id,refund_fee,busi_id,community_id,state,message,refund_user_id
+        ) values (
+        #{refundId},#{payId},#{refundFee},#{busiId},#{communityId},#{state},#{message},#{refundUserId}
+        )
+    </insert>
+
+
+    <!-- 查询在线支付退款信息 add by wuxw 2018-07-03 -->
+    <select id="getOnlinePayRefundInfo" parameterType="Map" resultType="Map">
+        select t.refund_id,t.refund_id refundId,t.pay_id,t.pay_id payId,t.refund_fee,t.refund_fee
+        refundFee,t.busi_id,t.busi_id busiId,t.community_id,t.community_id communityId,t.state,t.message,t.create_time createTime,
+        t.status_cd,t.status_cd statusCd,t.refund_user_id,t.refund_user_id refundUserId
+        from online_pay_refund t
+        where 1 =1
+        <if test="refundId !=null and refundId != ''">
+            and t.refund_id= #{refundId}
+        </if>
+        <if test="payId !=null and payId != ''">
+            and t.pay_id= #{payId}
+        </if>
+        <if test="refundFee !=null and refundFee != ''">
+            and t.refund_fee= #{refundFee}
+        </if>
+        <if test="busiId !=null and busiId != ''">
+            and t.busi_id= #{busiId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="message !=null and message != ''">
+            and t.message= #{message}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="refundUserId !=null and refundUserId != ''">
+            and t.refund_user_id= #{refundUserId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
+
+    <!-- 修改在线支付退款信息 add by wuxw 2018-07-03 -->
+    <update id="updateOnlinePayRefundInfo" parameterType="Map">
+        update online_pay_refund t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="payId !=null and payId != ''">
+            , t.pay_id= #{payId}
+        </if>
+        <if test="refundFee !=null and refundFee != ''">
+            , t.refund_fee= #{refundFee}
+        </if>
+        <if test="busiId !=null and busiId != ''">
+            , t.busi_id= #{busiId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            , t.community_id= #{communityId}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="message !=null and message != ''">
+            , t.message= #{message}
+        </if>
+        <if test="refundUserId !=null and refundUserId != ''">
+            , t.refund_user_id= #{refundUserId}
+        </if>
+        where 1=1
+        <if test="refundId !=null and refundId != ''">
+            and t.refund_id= #{refundId}
+        </if>
+
+    </update>
+
+    <!-- 查询在线支付退款数量 add by wuxw 2018-07-03 -->
+    <select id="queryOnlinePayRefundsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from online_pay_refund t
+        where 1 =1
+        <if test="refundId !=null and refundId != ''">
+            and t.refund_id= #{refundId}
+        </if>
+        <if test="payId !=null and payId != ''">
+            and t.pay_id= #{payId}
+        </if>
+        <if test="refundFee !=null and refundFee != ''">
+            and t.refund_fee= #{refundFee}
+        </if>
+        <if test="busiId !=null and busiId != ''">
+            and t.busi_id= #{busiId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="message !=null and message != ''">
+            and t.message= #{message}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="refundUserId !=null and refundUserId != ''">
+            and t.refund_user_id= #{refundUserId}
+        </if>
+
+
+
+    </select>
+
+</mapper>
