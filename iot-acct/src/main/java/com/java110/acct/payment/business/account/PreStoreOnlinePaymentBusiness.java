@@ -103,7 +103,7 @@ public class PreStoreOnlinePaymentBusiness implements IPaymentBusiness {
         paymentOrderDto.setOrderId(GenerateCodeFactory.getOId());
         paymentOrderDto.setMoney(reqJson.getDoubleValue("receivedAmount"));
         paymentOrderDto.setName("账户充值");
-        reqJson.put("busiId", reqJson.getDoubleValue("acctId"));
+        reqJson.put("busiId", reqJson.getString("acctId"));
 
         reqJson.put("receivableAmount", reqJson.getDoubleValue("receivedAmount"));
         reqJson.put("receivedAmount", reqJson.getDoubleValue("receivedAmount"));
