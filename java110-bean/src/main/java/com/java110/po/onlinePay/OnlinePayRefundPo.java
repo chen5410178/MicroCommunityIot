@@ -37,7 +37,7 @@ public class OnlinePayRefundPo implements Serializable {
     private String state;
     private String message;
     private Date createTime;
-    private String statusCd;
+    private String statusCd = "0";
     private String refundUserId;
 
     public String getRefundId() {
