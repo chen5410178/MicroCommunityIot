@@ -174,7 +174,7 @@ public class WechatRefundMoneyAdapt implements IRefundMoneyAdapt {
 
     private byte[] getPkcs12(String fileName) {
         byte[] context = null;
-        String ftpPath = "hc/";
+        String ftpPath = "hc/iot/";
 
         context = ossUploadTemplate.downFileByte(ftpPath, fileName, "",
                 0, "",
