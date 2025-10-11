@@ -179,6 +179,8 @@ public class WechatRefundMoneyAdapt implements IRefundMoneyAdapt {
         context = ossUploadTemplate.downFileByte(ftpPath, fileName, "",
                 0, "",
                 "");
+        System.out.println("------------------------------读取证书：" + ftpPath+fileName+",读取到内容大小："+(context != null?context.length:0));
+
         return context;
     }
 
