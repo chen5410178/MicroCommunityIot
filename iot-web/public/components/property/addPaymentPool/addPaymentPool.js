@@ -33,7 +33,7 @@
                 $('#addPaymentPoolModel').modal('show');
             });
             vc.on('addPaymentPool', 'notifyCert', function (_param) {
-                $that.addPaymentPoolInfo.certPath = _param.realFileName;
+                $that.addPaymentPoolInfo.certPath = _param.fileName;
             })
         },
         methods: {

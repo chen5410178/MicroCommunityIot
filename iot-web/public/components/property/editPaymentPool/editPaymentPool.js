@@ -33,7 +33,7 @@
             });
 
             vc.on('editPaymentPool', 'notifyCert', function (_param) {
-                $that.editPaymentPoolInfo.certPath = _param.realFileName;
+                $that.editPaymentPoolInfo.certPath = _param.fileName;
             })
         },
         methods: {
