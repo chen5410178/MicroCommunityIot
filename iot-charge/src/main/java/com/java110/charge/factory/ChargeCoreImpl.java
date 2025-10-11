@@ -605,22 +605,28 @@ public class ChargeCoreImpl implements IChargeCore {
         }
 
         double returnMoney = Double.parseDouble(chargeMachineOrderAcctDtos.get(0).getAmount());
+        String detailId = GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_detailId);
+        //直接微信退回即可
+        try {
+            refundAmount(accountDtos.get(0).getAcctId(), returnMoney, chargeMachineOrderDtos.get(0).getCommunityId());
+        }catch (Exception e){
+            AccountDetailPo accountDetailPo = new AccountDetailPo();
+            accountDetailPo.setAcctId(accountDtos.get(0).getAcctId());
+            accountDetailPo.setObjId(accountDtos.get(0).getObjId());
+            accountDetailPo.setObjType(accountDtos.get(0).getObjType());
+            accountDetailPo.setDetailId(detailId);
+
+            accountDetailPo.setAmount(returnMoney + "");
+            accountDetailPo.setRemark("由于" + notifyChargeOrderDto.getReason() + "，充电退回金额-" + chargeMachineOrderDtos.get(0).getOrderId());
+            accountInnerServiceSMOImpl.prestoreAccount(accountDetailPo);
+        }
 
 
-        AccountDetailPo accountDetailPo = new AccountDetailPo();
-        accountDetailPo.setAcctId(accountDtos.get(0).getAcctId());
-        accountDetailPo.setObjId(accountDtos.get(0).getObjId());
-        accountDetailPo.setObjType(accountDtos.get(0).getObjType());
-        accountDetailPo.setDetailId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_detailId));
-
-        accountDetailPo.setAmount(returnMoney + "");
-        accountDetailPo.setRemark("由于" + notifyChargeOrderDto.getReason() + "，充电退回金额-" + chargeMachineOrderDtos.get(0).getOrderId());
-        accountInnerServiceSMOImpl.prestoreAccount(accountDetailPo);
 
 
         //充电表中加入退款金额
         ChargeMachineOrderAcctPo chargeMachineOrderAcctPo = new ChargeMachineOrderAcctPo();
-        chargeMachineOrderAcctPo.setAcctDetailId(accountDetailPo.getDetailId());
+        chargeMachineOrderAcctPo.setAcctDetailId(detailId);
         chargeMachineOrderAcctPo.setAmount((-1 * returnMoney) + "");
 
         chargeMachineOrderAcctPo.setCmoaId(GenerateCodeFactory.getGeneratorId("11"));
