@@ -167,7 +167,7 @@ public class WechatRefundMoneyAdapt implements IRefundMoneyAdapt {
         if ("SUCCESS".equals(resMap.get("return_code")) && "SUCCESS".equals(resMap.get("result_code"))) {
             return new ResultVo(ResultVo.CODE_OK, "退款完成");
         } else {
-            return new ResultVo(ResultVo.CODE_ERROR, resMap.get("return_msg"));
+            return new ResultVo(ResultVo.CODE_ERROR, resMap.get("return_msg")+resMap.get("err_code")+resMap.get("err_code_des"));
         }
 
     }
