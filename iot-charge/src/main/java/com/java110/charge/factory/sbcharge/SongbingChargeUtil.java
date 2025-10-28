@@ -125,7 +125,7 @@ public class SongbingChargeUtil {
 
 
     public static String startCharge(String machineCode, String portHex, String chargeType, String chargeTime) {
-        String dataBody = "0701010100000000070102" + machineCode + "130103" + "03010405" + "03013" + portHex + "01030159" + chargeType + "04015A" + chargeTime;
+        String dataBody = "0701010100000000070102" + machineCode + "130103" + "03010405" + "0301" + portHex + "01030159" + chargeType + "04015A" + chargeTime;
         String calculateBit = calculateBitGroupSum(dataBody);
         return SB_CHARGE_HEAD_6800 + calculateFrameHeaderLength(dataBody) + "68" + dataBody + calculateBit + "16";
     }
@@ -139,7 +139,7 @@ public class SongbingChargeUtil {
 
 
     public static String stopCharge(String machineCode,String portHex) {
-        String dataBody = "0701010100000000070102" + machineCode + "0A0103" + "03010405" + "03013" + portHex + "00";
+        String dataBody = "0701010100000000070102" + machineCode + "0A0103" + "03010405" + "0301" + portHex + "00";
         String calculateBit = calculateBitGroupSum(dataBody);
         return SB_CHARGE_HEAD_6800 + calculateFrameHeaderLength(dataBody) + "68" + dataBody + calculateBit + "16";
     }
