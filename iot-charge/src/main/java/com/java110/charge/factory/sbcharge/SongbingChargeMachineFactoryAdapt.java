@@ -191,7 +191,8 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
      */
     private void startChargeResponse(ChargeMachineDto chargeMachineDto, Map<String, String> decodedMap) {
         //  插座
-        int port = Integer.parseInt(decodedMap.get("key6").substring(6, 7), 16) + 1;
+        String portHex = decodedMap.get("key6").substring(0,2);
+        int port = Integer.parseInt(portHex, 16) - 47;
         //  状态
         int state = Integer.parseInt(decodedMap.get("key5").substring(6, 9), 16);
         ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
@@ -218,8 +219,8 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
      */
     private void stopChargeResponse(ChargeMachineDto chargeMachineDto, Map<String, String> decodedMap) {
         //插座
-        String portHex = decodedMap.get("key6").substring(1, 2);
-        int port = Integer.parseInt(portHex, 16) + 1;
+        String portHex = decodedMap.get("key6").substring(0,2);
+        int port = Integer.parseInt(portHex, 16) - 47;
 
         ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
         chargeMachinePortDto.setMachineId(chargeMachineDto.getMachineId());
@@ -425,7 +426,7 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
      */
     private void machineChangePortState(ChargeMachineDto chargeMachineDto, Map<String, String> decodedMap) {
         //  插座
-        int port = Integer.parseInt(decodedMap.get("key5").substring(1, 2), 16) + 1;
+        int port = Integer.parseInt(decodedMap.get("key5").substring(0,2), 16) - 47;
         //  状态
         int state = Integer.parseInt(decodedMap.get("key5").substring(3), 16);
         ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
