@@ -48,30 +48,9 @@ public class AppTest
      */
     public void testApp()
     {
-        String url = "http://192.168.31.41:80/ISAPI/AccessControl/RemoteControl/door/capabilities?format=json";
-        HttpClient client = new HttpClient();
 
-// 设置用户名和密码
-
-        UsernamePasswordCredentials creds = new UsernamePasswordCredentials("admin", "wuxw2015");
-        client.getState().setCredentials(AuthScope.ANY, creds);
-        GetMethod method = new GetMethod(url);
-
-        method.setDoAuthentication(true);
-
-        try {
-            int statusCode = client.executeMethod(method);
-
-            byte[] responseData = method.getResponseBodyAsString().getBytes(method.getResponseCharSet());
-            String strResponseData = new String(responseData, "utf-8");
-            method.releaseConnection();
-
-// 输出接收的消息
-
-            System.out.println(strResponseData);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        String port = String.format("%X", 15);
+        System.out.println(port);
     }
 
     public void testOpenDoor() throws UnsupportedEncodingException {

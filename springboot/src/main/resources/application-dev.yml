@@ -44,12 +44,12 @@ spring:
     default:
       topic: topic
     password: wuxw2015
-    url: tcp://192.168.31.45:1883
+    url: tcp://127.0.0.1:1883
     username: wuxw
     keepalive: 20
     poolSize: 20
   datasource:
-    url: jdbc:mysql://192.168.100.108:3306/hc_iot?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://127.0.0.1:3306/hc_iot?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: hc_iot
     password: hc_iot12345678
     type: com.alibaba.druid.pool.DruidDataSource
