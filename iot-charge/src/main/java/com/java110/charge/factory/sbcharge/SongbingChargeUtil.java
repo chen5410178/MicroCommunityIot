@@ -19,7 +19,7 @@ public class SongbingChargeUtil {
     public static final String CMD_SERVER_CONTROL = "05"; // todo 服务器控制  开启或者关闭
 
 
-    public static final String CMD_STOP_CHARGE = "0007"; // todo 停止充电
+    public static final String CMD_SWIPE = "11";
     public static final String CMD_CHARGE_END = "0010"; // todo 充电结束
     public static final String CMD_UPLOAD_CHARGE_DATA = "0030"; // todo 充电过程中 上报充电功率
     public static final String CMD_RESTART = "0017"; // todo 成功设备
@@ -125,14 +125,21 @@ public class SongbingChargeUtil {
 
 
     public static String startCharge(String machineCode, String portHex, String chargeType, String chargeTime) {
-        String dataBody = "0701010100000000070102" + machineCode + "130103" + "03010405" + "03013" + portHex + "01030159" + chargeType + "04015A" + chargeTime;
+        String dataBody = "0701010100000000070102" + machineCode + "130103" + "03010405" + "0301" + portHex + "01030159" + chargeType + "04015A" + chargeTime;
+        String calculateBit = calculateBitGroupSum(dataBody);
+        return SB_CHARGE_HEAD_6800 + calculateFrameHeaderLength(dataBody) + "68" + dataBody + calculateBit + "16";
+    }
+
+    //刷卡应答
+    public static String swiperResponseDate(String machineCode,String errcode) {
+        String dataBody = "0701010100000000070102" + machineCode + "120103" + "03010411" + "030105"+errcode+"07012101000003E8";
         String calculateBit = calculateBitGroupSum(dataBody);
         return SB_CHARGE_HEAD_6800 + calculateFrameHeaderLength(dataBody) + "68" + dataBody + calculateBit + "16";
     }
 
 
-    public static String stopCharge(String machineCode, String portHex) {
-        String dataBody = "0701010100000000070102" + machineCode + "0A0103" + "03010405" + "03013" + portHex + "00";
+    public static String stopCharge(String machineCode,String portHex) {
+        String dataBody = "0701010100000000070102" + machineCode + "0A0103" + "03010405" + "0301" + portHex + "00";
         String calculateBit = calculateBitGroupSum(dataBody);
         return SB_CHARGE_HEAD_6800 + calculateFrameHeaderLength(dataBody) + "68" + dataBody + calculateBit + "16";
     }

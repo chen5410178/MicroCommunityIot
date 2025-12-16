@@ -15,9 +15,9 @@
 
     <insert id="saveAccount" parameterType="Map">
         insert into account(
-        amount,acct_type,obj_id,acct_id,acct_name,b_id,obj_type,part_id,link
+        amount,acct_type,obj_id,acct_id,acct_name,b_id,obj_type,part_id,link,swipecard_no
         ) values (
-        #{amount},#{acctType},#{objId},#{acctId},#{acctName},'-1',#{objType},#{partId},#{link}
+        #{amount},#{acctType},#{objId},#{acctId},#{acctName},'-1',#{objType},#{partId},#{link},#{swipeCardNo}
         )
     </insert>
 
@@ -99,7 +99,7 @@
     <select id="getAccountInfo" parameterType="Map" resultType="Map">
         select t.amount,t.acct_type,t.acct_type acctType,t.obj_id,t.obj_id objId,t.acct_id,t.acct_id
         acctId,t.status_cd,t.status_cd statusCd,t.acct_name,t.acct_name acctName,t.b_id,t.b_id bId,t.obj_type,t.obj_type
-        objType,t.create_time createTime,td.`name` acctTypeName,t.part_id,t.part_id partId,t.link
+        objType,t.create_time createTime,td.`name` acctTypeName,t.part_id,t.part_id partId,t.link,t.swipecard_no,t.swipecard_no swipeCardNo
         from account t
         LEFT JOIN t_dict td on t.acct_type = td.status_cd and td.table_name = 'account' and td.table_columns =
         'acct_type'
@@ -149,6 +149,9 @@
         <if test="link !=null and link != ''">
             and t.link= #{link}
         </if>
+        <if test="swipeCardNo !=null and swipeCardNo != ''">
+            and t.swipecard_no= #{swipeCardNo}
+        </if>
         order by t.create_time desc
         <if test="page != -1 and page != null ">
             limit #{page}, #{row}
@@ -180,6 +183,9 @@
         </if>
         <if test="partId !=null and partId != ''">
             , t.obj_type= #{partId}
+        </if>
+        <if test="swipeCardNo !=null and swipeCardNo != ''">
+            , t.swipecard_no= #{swipeCardNo}
         </if>
         where 1=1
         <if test="acctId !=null and acctId != ''">
@@ -256,6 +262,9 @@
             </if>
             <if test="acctName !=null and acctName != ''">
                 t.acct_name= #{acctName},
+            </if>
+            <if test="swipeCardNo !=null and swipeCardNo != ''">
+                t.swipecard_no= #{swipeCardNo}
             </if>
         </set>
         where 1=1

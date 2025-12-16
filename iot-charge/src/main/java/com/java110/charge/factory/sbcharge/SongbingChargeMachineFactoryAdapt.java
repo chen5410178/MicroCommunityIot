@@ -1,19 +1,25 @@
 package com.java110.charge.factory.sbcharge;
 
+import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.charge.factory.IChargeCore;
 import com.java110.charge.factory.IChargeFactoryAdapt;
 import com.java110.charge.factory.lvcc.LvCCUtil;
 import com.java110.core.exception.CmdException;
-import com.java110.core.utils.BytesUtil;
-import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.ListUtil;
-import com.java110.core.utils.StringUtil;
+import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.utils.*;
+import com.java110.dto.account.AccountDto;
 import com.java110.dto.chargeMachine.*;
+import com.java110.dto.chargeMonthOrder.ChargeMonthOrderDto;
 import com.java110.dto.data.NettyReplyDataDto;
+import com.java110.dto.user.UserDto;
+import com.java110.intf.acct.IAccountInnerServiceSMO;
 import com.java110.intf.charge.*;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
+import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.chargeMachine.ChargeMachinePo;
 import com.java110.po.chargeMachineOrder.ChargeMachineOrderPo;
+import com.java110.po.chargeMachineOrderAcct.ChargeMachineOrderAcctPo;
 import com.java110.po.chargeMachinePort.ChargeMachinePortPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +55,21 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     @Autowired
     private IChargeRuleFeeV1InnerServiceSMO chargeRuleFeeV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IAccountInnerServiceSMO accountInnerServiceSMOImpl;
+
+    @Autowired
+    private IChargeMonthOrderV1InnerServiceSMO chargeMonthOrderV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IChargeMachineOrderAcctV1InnerServiceSMO chargeMachineOrderAcctV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IChargeCore chargeCoreImpl;
+
     public static final Map<String, String> resultMap = new HashMap<>();
 
     static {
@@ -80,7 +101,8 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         int maxEnergy = getMaxEnery(chargeMachineDto);
         // 插座
         int port = Integer.parseInt(chargeMachinePortDto.getPortCode()) - 1;
-        String portHex = String.format("%X", port);
+        port = port + 48;
+        String portHex = String.format("%02X", port);
         // 充电时间 分钟
         String chargeTime = String.format("%04X", (int) Math.round(duration * 60)-1);
 //        if (!chargeType.equals("1")) {//智能模式与免费模式
@@ -151,7 +173,8 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     public ResultVo stopCharge(ChargeMachineDto chargeMachineDto, ChargeMachinePortDto chargeMachinePortDto) {
         //插座
         int port = Integer.parseInt(chargeMachinePortDto.getPortCode()) - 1;
-        String portHex = String.format("%X", port);
+        port = port + 48;
+        String portHex = String.format("%02X", port);
 
         String paramOut = SongbingChargeUtil.stopCharge(chargeMachineDto.getMachineCode(), portHex);
 
@@ -168,7 +191,8 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
      */
     private void startChargeResponse(ChargeMachineDto chargeMachineDto, Map<String, String> decodedMap) {
         //  插座
-        int port = Integer.parseInt(decodedMap.get("key6").substring(6, 7), 16) + 1;
+        String portHex = decodedMap.get("key6").substring(0,2);
+        int port = Integer.parseInt(portHex, 16) - 47;
         //  状态
         int state = Integer.parseInt(decodedMap.get("key5").substring(6, 9), 16);
         ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
@@ -195,8 +219,8 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
      */
     private void stopChargeResponse(ChargeMachineDto chargeMachineDto, Map<String, String> decodedMap) {
         //插座
-        String portHex = decodedMap.get("key6").substring(1, 2);
-        int port = Integer.parseInt(portHex, 16) + 1;
+        String portHex = decodedMap.get("key6").substring(0,2);
+        int port = Integer.parseInt(portHex, 16) - 47;
 
         ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
         chargeMachinePortDto.setMachineId(chargeMachineDto.getMachineId());
@@ -298,13 +322,23 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         tmpChargeMachineDto.setMachineId(chargeMachineDto.getMachineId());
         tmpChargeMachineDto.setMachineCode(chargeMachineDto.getMachineCode());
         List<ChargeMachineDto> chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(tmpChargeMachineDto);
-
         if (ListUtil.isNull(chargeMachineDtos)) {
             throw new CmdException("设备不存在");
         }
         switch (cmd) {
             case SongbingChargeUtil.CMD_REGISTER: // 注册
                 machineRegisterResponse(chargeMachineDto);
+                break;
+            case SongbingChargeUtil.CMD_SWIPE: //刷卡
+                String cardNo = "";
+                if (decodedMap.size() ==5 ){//第一次刷卡
+                    cardNo = decodedMap.get("key5").substring(3);
+                    machineSwiperesponse(cardNo,chargeMachineDto);
+                }else if (decodedMap.size() == 6 ){//开启充电
+                    cardNo = decodedMap.get("key6").substring(4);//卡号
+                    int port = Integer.parseInt(decodedMap.get("key5").substring(4), 16) + 1;
+                    swipeStartCharging(machineCode,cardNo,chargeMachineDto.getCommunityId(),chargeMachineDto.getMachineId(),port+"");
+                }
                 break;
             case SongbingChargeUtil.CMD_HEARTBEAT_AND_CHANGE_PORT: // 07 心跳与插座状态改变
                 String type = decodedMap.get("key5").substring(0, 2) + decodedMap.get("key6").substring(0, 2);
@@ -392,7 +426,7 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
      */
     private void machineChangePortState(ChargeMachineDto chargeMachineDto, Map<String, String> decodedMap) {
         //  插座
-        int port = Integer.parseInt(decodedMap.get("key5").substring(1, 2), 16) + 1;
+        int port = Integer.parseInt(decodedMap.get("key5").substring(0,2), 16) - 47;
         //  状态
         int state = Integer.parseInt(decodedMap.get("key5").substring(3), 16);
         ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
@@ -541,6 +575,65 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
     }
 
+    /**
+     * 刷卡应答
+     * @param chargeMachineDto
+     */
+    private void machineSwiperesponse(String cardNo,ChargeMachineDto chargeMachineDto) {
+        AccountDto accountDto = new AccountDto();
+        accountDto.setSwipeCardNo(cardNo);
+        accountDto.setObjType(AccountDto.OBJ_TYPE_PERSON);
+        List<AccountDto> accountDtos = accountInnerServiceSMOImpl.queryAccounts(accountDto);
+        boolean flag = false;
+        String errCode = "01";
+        if (accountDtos.size() == 1){
+            flag = ifMonthCard(accountDtos.get(0).getLink(),chargeMachineDto.getCommunityId());
+        }
+        if (flag) {//可以充电
+            errCode = "00";
+        }
+        String paramOut = SongbingChargeUtil.swiperResponseDate(chargeMachineDto.getMachineCode(),errCode);
+        notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+    }
+
+    public boolean ifMonthCard(String personTel, String communityId) {
+
+        ChargeMonthOrderDto chargeMonthOrderDto = new ChargeMonthOrderDto();
+        chargeMonthOrderDto.setPersonTel(personTel);
+        chargeMonthOrderDto.setCommunityId(communityId);
+        chargeMonthOrderDto.setQueryTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        List<ChargeMonthOrderDto> chargeMonthOrderDtos = chargeMonthOrderV1InnerServiceSMOImpl.queryChargeMonthOrders(chargeMonthOrderDto);
+        if (ListUtil.isNull(chargeMonthOrderDtos)) {
+            return false;
+        }
+
+        //todo 今天是否又充过电
+        ChargeMachineOrderDto chargeMachineOrderDto = new ChargeMachineOrderDto();
+        chargeMachineOrderDto.setPersonTel(personTel);
+        chargeMachineOrderDto.setCommunityId(communityId);
+        //chargeMachineOrderDto.setQueryTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        chargeMachineOrderDto.setQueryStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_B));
+        chargeMachineOrderDto.setQueryEndTime(DateUtil.getAddDayStringB(new Date(), 1));
+        List<ChargeMachineOrderDto> chargeMachineOrderDtos = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrders(chargeMachineOrderDto);
+        if (ListUtil.isNull(chargeMachineOrderDtos)) {
+            return true;
+        }
+
+
+        Date startTime = DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getStartTime());
+        Date endTime = DateUtil.getDateFromStringA(chargeMachineOrderDtos.get(0).getEndTime());
+
+
+        double usedHours = (endTime.getTime() - startTime.getTime()) / (60 * 60 * 1000.00);
+
+        if (usedHours < 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+
     private static String[] splitIntoPairs(String input, int len) {
         if (input == null || input.isEmpty()) {
             return new String[0];
@@ -560,4 +653,101 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         System.out.println();
         return pairs;
     }
+
+    private void swipeStartCharging(String machineCode,String cardNo,String communityId,String machineId,String port) {
+        AccountDto accountDto = new AccountDto();
+        accountDto.setSwipeCardNo(cardNo);
+        accountDto.setPartId(communityId);
+        accountDto.setObjType(AccountDto.OBJ_TYPE_PERSON);
+        List<AccountDto> accountDtos = accountInnerServiceSMOImpl.queryAccounts(accountDto);
+        if (accountDtos.size() != 1){
+            String paramOut = SongbingChargeUtil.swiperResponseDate(machineCode,"01");
+            notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(machineCode, BytesUtil.hexStringToByteArray(paramOut)));
+            throw new CmdException("充电失败009888");
+        }
+        if (!ifMonthCard(accountDtos.get(0).getLink(),communityId)){
+            String paramOut = SongbingChargeUtil.swiperResponseDate(machineCode,"01");
+            notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(machineCode, BytesUtil.hexStringToByteArray(paramOut)));
+            throw new CmdException("充电失败009998");
+        }
+        ChargeMachineDto chargeMachineDto = new ChargeMachineDto();
+        chargeMachineDto.setCommunityId(communityId);
+        chargeMachineDto.setMachineId(machineId);
+        List<ChargeMachineDto> chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(chargeMachineDto);
+        String durationType = IChargeCore.CHARGE_TYPE_HOURS;
+        double durationHours = 8;
+
+        ChargeMachinePortDto chargeMachinePortDto = new ChargeMachinePortDto();
+        chargeMachinePortDto.setMachineId(machineId);
+        chargeMachinePortDto.setPortCode(port + "");
+        chargeMachinePortDto.setState(ChargeMachinePortDto.STATE_FREE);
+        List<ChargeMachinePortDto> chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
+
+
+        String orderId = GenerateCodeFactory.getGeneratorId("11");
+        //调用充电桩充电 todo: 汽车开始充电不能取到充电时长
+        ResultVo resultVo = chargeCoreImpl.startCharge(chargeMachineDtos.get(0), chargeMachinePortDtos.get(0), durationType, durationHours, orderId);
+        if (resultVo.getCode() != ResultVo.CODE_OK) {
+            String paramOut = SongbingChargeUtil.swiperResponseDate(machineCode,"01");
+            notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(machineCode, BytesUtil.hexStringToByteArray(paramOut)));
+            throw new CmdException("充电失败009988");
+        }
+        // todo 修改端口状态
+        ChargeMachinePortPo chargeMachinePortPo = new ChargeMachinePortPo();
+        chargeMachinePortPo.setPortId(chargeMachinePortDtos.get(0).getPortId());
+        chargeMachinePortPo.setCommunityId(chargeMachinePortDtos.get(0).getCommunityId());
+        chargeMachinePortPo.setState(ChargeMachinePortDto.STATE_WORKING);
+        chargeMachinePortV1InnerServiceSMOImpl.updateChargeMachinePort(chargeMachinePortPo);
+
+        // todo 生成 充电订单
+        ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
+        chargeMachineOrderPo.setAmount("0");
+        chargeMachineOrderPo.setOrderId(orderId);
+        chargeMachineOrderPo.setPortId(chargeMachinePortDtos.get(0).getPortId());
+        chargeMachineOrderPo.setPersonName(accountDtos.get(0).getAcctName());
+        chargeMachineOrderPo.setMachineId(chargeMachineDtos.get(0).getMachineId());
+        chargeMachineOrderPo.setAcctDetailId("-1");
+        chargeMachineOrderPo.setPersonId(accountDtos.get(0).getObjId());
+        chargeMachineOrderPo.setChargeHours(durationHours+"");
+        chargeMachineOrderPo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        chargeMachineOrderPo.setDurationPrice("0");
+        chargeMachineOrderPo.setServicePrice("0");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR, 8);
+        chargeMachineOrderPo.setEndTime(DateUtil.getFormatTimeString(calendar.getTime(), DateUtil.DATE_FORMATE_STRING_A));
+        chargeMachineOrderPo.setState(ChargeMachineOrderDto.STATE_DOING);
+        chargeMachineOrderPo.setPersonTel(accountDtos.get(0).getLink());
+        chargeMachineOrderPo.setCommunityId(chargeMachineDtos.get(0).getCommunityId());
+        chargeMachineOrderPo.setEnergy("1");
+        int flag = chargeMachineOrderV1InnerServiceSMOImpl.saveChargeMachineOrder(chargeMachineOrderPo);
+
+        if (flag < 1) {
+            chargeCoreImpl.stopCharge(chargeMachineDtos.get(0), chargeMachinePortDtos.get(0));
+            String paramOut = SongbingChargeUtil.swiperResponseDate(machineCode,"01");
+            notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(machineCode, BytesUtil.hexStringToByteArray(paramOut)));
+            throw new CmdException("充电失败");
+        }
+        resultVo.setData(orderId);
+        monthCardOrder(chargeMachineDtos, orderId, durationHours);
+    }
+
+    private void monthCardOrder(List<ChargeMachineDto> chargeMachineDtos, String orderId, double durationHours) {
+
+        ChargeMachineOrderAcctPo chargeMachineOrderAcctPo = new ChargeMachineOrderAcctPo();
+        chargeMachineOrderAcctPo.setAcctDetailId("-1");
+        chargeMachineOrderAcctPo.setAmount("0");
+
+        chargeMachineOrderAcctPo.setCmoaId(GenerateCodeFactory.getGeneratorId("11"));
+        chargeMachineOrderAcctPo.setOrderId(orderId);
+        chargeMachineOrderAcctPo.setAcctId("-1");
+        chargeMachineOrderAcctPo.setStartTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        chargeMachineOrderAcctPo.setEndTime(DateUtil.getAddHoursStringA(DateUtil.getCurrentDate(), new Double(Math.ceil(durationHours)).intValue()));
+        chargeMachineOrderAcctPo.setRemark("月卡抵扣");
+        chargeMachineOrderAcctPo.setCommunityId(chargeMachineDtos.get(0).getCommunityId());
+        chargeMachineOrderAcctPo.setEnergy("0");
+        chargeMachineOrderAcctPo.setDurationPrice("0.00");
+        chargeMachineOrderAcctV1InnerServiceSMOImpl.saveChargeMachineOrderAcct(chargeMachineOrderAcctPo);
+    }
+
+
 }

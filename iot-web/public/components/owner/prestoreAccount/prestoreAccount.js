@@ -5,6 +5,7 @@
                 tel: '',
                 ownerId: '',
                 amount: '',
+                swipeCardNo: '',
                 remark: '',
                 acctTypes: [],
                 acctType: '2003',
@@ -105,6 +106,7 @@
                 $that.prestoreAccountInfo = {
                     tel: '',
                     amount: '',
+                    swipeCardNo: '',
                     remark: '',
                     acctTypes: [],
                     acctType: '2003',

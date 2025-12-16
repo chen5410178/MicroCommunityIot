@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -206,7 +207,8 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
             } else {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(DateUtil.getDateFromString(heartbeatTime, DateUtil.DATE_FORMATE_STRING_A));
-                calendar.add(Calendar.MINUTE, 2);
+                // 云快充1.6协议建议的心跳超时时间为90秒（心跳间隔30秒 + 60秒容错）
+                calendar.add(Calendar.SECOND, 90);
                 if (calendar.getTime().getTime() <= DateUtil.getCurrentDate().getTime()) {
                     chargeMachineDto.setStateName("设备离线");
                     chargeMachineDto.setState("OFFLINE");
@@ -216,7 +218,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
                 }
             }
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error("解析心跳时间失败：{}", e.getMessage());
             chargeMachineDto.setStateName("设备离线");
             chargeMachineDto.setState("OFFLINE");
 
@@ -277,7 +279,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
                 chargingHandshake(chargeMachineDto, data);
                 break;
             case YunCarUtil.CMD_CHARGING_PROCESS_INFORMATION://充电过程BMS信息
-                chargingHandshake(chargeMachineDto, data);
+                chargingProcessInformation(chargeMachineDto, data);
                 break;
             case YunCarUtil.CMD_STOP_CHARGE_REPLY:
                 stopChargeReply(chargeMachineDto, data);
@@ -432,10 +434,10 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         String pingEnergy = YunCarUtil.getTargetBin(data, pingEnergyPos, pingEnergyLen, 4);
         // 谷电量
         String guEnergy = YunCarUtil.getTargetBin(data, guEnergyPos, guEnergyLen, 4);
-        BigDecimal jianDec = new BigDecimal(jianEnergy).multiply(new BigDecimal(jianServicePrice)).setScale(4, BigDecimal.ROUND_HALF_UP);
-        BigDecimal fenDec = new BigDecimal(fenEnergy).multiply(new BigDecimal(fenServicePrice)).setScale(4, BigDecimal.ROUND_HALF_UP);
-        BigDecimal pingDec = new BigDecimal(pingEnergy).multiply(new BigDecimal(pingServicePrice)).setScale(4, BigDecimal.ROUND_HALF_UP);
-        BigDecimal guDec = new BigDecimal(guEnergy).multiply(new BigDecimal(guServicePrice)).setScale(4, BigDecimal.ROUND_HALF_UP);
+        BigDecimal jianDec = new BigDecimal(jianEnergy).multiply(new BigDecimal(jianServicePrice)).setScale(4, RoundingMode.HALF_UP);
+        BigDecimal fenDec = new BigDecimal(fenEnergy).multiply(new BigDecimal(fenServicePrice)).setScale(4, RoundingMode.HALF_UP);
+        BigDecimal pingDec = new BigDecimal(pingEnergy).multiply(new BigDecimal(pingServicePrice)).setScale(4, RoundingMode.HALF_UP);
+        BigDecimal guDec = new BigDecimal(guEnergy).multiply(new BigDecimal(guServicePrice)).setScale(4, RoundingMode.HALF_UP);
         BigDecimal serviceFeeDec = jianDec.add(fenDec).add(pingDec).add(guDec);
         BigDecimal feeDec = new BigDecimal(amount).subtract(serviceFeeDec);
 
@@ -481,6 +483,17 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     //TODO 充电握手数据上报
     private void chargingHandshake(ChargeMachineDto chargeMachineDto, byte[] data) {
         recordedData(chargeMachineDto, data);
+    }
+
+    //TODO 充电过程BMS信息处理
+    private void chargingProcessInformation(ChargeMachineDto chargeMachineDto, byte[] data) {
+        recordedData(chargeMachineDto, data);
+        // TODO: 添加BMS信息的具体处理逻辑
+        // 根据云快充1.6协议，这里应该包含：
+        // - 电池状态信息
+        // - 充电电流电压信息  
+        // - BMS温度信息
+        // - SOC信息等
     }
 
     //记录上报数据
@@ -657,10 +670,11 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         chargeProcessAnalysisPo.setRemainingTime(YunCarUtil.getTargetBin(data, remainingTimePos, remainingTimeLen));//剩余时间单位：min；待机置零、交流桩置零
         String gunLineTem = YunCarUtil.getTargetBin(data, gunLineTemPos, gunLineTemLen);
         try {
-            int gunLineTemInt = Integer.parseInt(gunLineTem) - 50;
-            gunLineTem = gunLineTemInt + "";
+            // 云快充1.6协议：温度值需要除以10来获得实际温度（摄氏度）
+            double gunLineTemDouble = Double.parseDouble(gunLineTem) / 10.0;
+            gunLineTem = String.valueOf(gunLineTemDouble);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("解析枪线温度失败：{}", e.getMessage());
         }
         chargeProcessAnalysisPo.setGunLineTem(gunLineTem); //枪线温度
         chargeProcessAnalysisPo.setBackInPlace(YunCarUtil.getTargetBin(data, backInPlacePos, backInPlaceLen)); // 枪是否归位 0x00 否 0x01 是 0x02未知
@@ -771,6 +785,7 @@ public class YunCarChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
      * @param chargeMachineDto
      */
     private void machineRegisterRespon(ChargeMachineDto chargeMachineDto, byte[] data) {
+        // 设备注册时重置序列号，符合云快充1.6协议要求
         String paramOut = YunCarUtil.machineRegisterRespon(chargeMachineDto.getMachineCode());
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
 
