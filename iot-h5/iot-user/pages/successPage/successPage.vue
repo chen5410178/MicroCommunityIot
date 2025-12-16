@@ -13,7 +13,7 @@
 			</view>
 
 			<view class="padding flex flex-direction margin-top">
-				<button class="cu-btn bg-green lg" @click="_indexPage()">返回首页</button>
+				<button class="cu-btn bg-green lg" @click="_indexPage()">确认</button>
 			</view>
 		</view>
 
@@ -48,6 +48,20 @@
 		},
 		methods: {
 			_indexPage:function(){
+				// 优先检查是否有需要返回的业务页面（使用与登录一致的 targetUrl 字段）
+				try{
+					const _targetUrl = uni.getStorageSync('targetUrl');
+					if (_targetUrl) {
+						uni.removeStorageSync('targetUrl');
+						uni.redirectTo({
+							url: _targetUrl
+						});
+						return;
+					}
+				}catch(e){
+					console.error('读取 targetUrl 失败：', e);
+				}
+				// 默认返回首页
 				uni.switchTab({
 					url: "/pages/index/index"
 				});

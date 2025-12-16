@@ -58,20 +58,20 @@
 						{{fee.servicePrice || 0}}元/小时
 					</view>
 				</view>
-				<view class="cu-item " v-if="state == '2002'">
+				<view class="cu-item ">
 					<view class="content">
 						<text class="text-grey">电费</text>
 					</view>
 					<view class="action">
-						{{durationPrice || 0}}元
+						{{durationPrice || 0}}元/度
 					</view>
 				</view>
-				<view class="cu-item " v-if="state == '2002'">
+				<view class="cu-item ">
 					<view class="content">
 						<text class="text-grey">服务费</text>
 					</view>
 					<view class="action">
-						{{servicePrice || 0}}元
+						{{servicePrice || 0}}元/小时
 					</view>
 				</view>
 				<view class="cu-item ">
@@ -169,21 +169,32 @@
 			},
 			_stopCharge: function() {
 				let _that = this;
-				stopCharge({
-					orderId: this.orderId,
-					machineId:this.machineId,
-					portId:this.portId,
-					communityId:this.communityId
-				}).then(_data => {
-					if(_data.code != 0){
-						uni.showToast({
-							icon:'none',
-							title:_data.msg
-						});
-						return ;
+				uni.showModal({
+					title: '提示',
+					content: '确定要结束本次充电吗？',
+					cancelText: '取消',
+					confirmText: '确认',
+					success(res) {
+						if (!res.confirm) {
+							return;
+						}
+						stopCharge({
+							orderId: _that.orderId,
+							machineId: _that.machineId,
+							portId: _that.portId,
+							communityId: _that.communityId
+						}).then(_data => {
+							if (_data.code != 0) {
+								uni.showToast({
+									icon: 'none',
+									title: _data.msg
+								});
+								return;
+							}
+							_that._loadChargeMachineOrder();
+						})
 					}
-					_that._loadChargeMachineOrder();
-				})
+				});
 			}
 		}
 	}

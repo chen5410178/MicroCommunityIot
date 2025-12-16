@@ -151,6 +151,28 @@
 			if (isNotNull(options.portId)) {
 				this.curPort.portId = options.portId;
 			}
+			// 进入本页时记录当前路径及参数，供后续成功页返回使用（字段名为 targetUrl）
+			try {
+				let url = '/pages/charge/machineToCharge';
+				const queryArr = [];
+				if (this.machineId) {
+					queryArr.push('machineId=' + this.machineId);
+				}
+				if (this.communityId) {
+					queryArr.push('communityId=' + this.communityId);
+				}
+				if (this.curPort && this.curPort.portId) {
+					queryArr.push('portId=' + this.curPort.portId);
+				} else if (options.portId) {
+					queryArr.push('portId=' + options.portId);
+				}
+				if (queryArr.length > 0) {
+					url = url + '?' + queryArr.join('&');
+				}
+				uni.setStorageSync('targetUrl', url);
+			} catch (e) {
+				console.error('记录 targetUrl 失败：', e);
+			}
 			this._loadChargeMachines();
 			this._loadChargeMachinePorts();
 			let _that = this;
