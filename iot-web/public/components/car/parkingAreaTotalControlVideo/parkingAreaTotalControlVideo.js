@@ -1,6 +1,7 @@
 /**
  入驻小区
  **/
+import HuaXiaVideo from "api/3d/HuaXiaVideo.js";
 (function (vc) {
     vc.extends({
         data: {
@@ -64,6 +65,18 @@
                     }
                 })
             },
+            _showHuaXiaCameraVideo: function (wsUrl, _div) {
+                let jMap = $that.parkingAreaTotalControlVideoInfo.jessibuca;
+                let huaXiaVideo = jMap[_div];
+                if (huaXiaVideo) {
+                    huaXiaVideo.destroy();
+                }
+
+                let imgId = _div.replace('receiverDiv', 'receiver');
+                let _huaXiaVideo = new HuaXiaVideo(wsUrl, imgId);
+                _huaXiaVideo.playVideo();
+                jMap[_div] = _huaXiaVideo;
+            },
             _showCarInoutMachineInoutInfo: function (_data) {
                 if (_data.action != 'FEE_INFO') {
                     return;
@@ -126,6 +139,14 @@
                 let wsUrl = "";
 
                 wsUrl = _machine.machineIp;
+
+                let _hmId = _machine.hmId;
+
+                if (_hmId == "24") {
+                    wsUrl = "ws://" + wsUrl+":9999";
+                    $that._showHuaXiaCameraVideo(wsUrl, "receiverDiv" + _machine.machineId);
+                    return;
+                }
 
                 wsUrl = wsUrl.replace(':8131', ':9080');
                 let _protocol = window.location.protocol;
