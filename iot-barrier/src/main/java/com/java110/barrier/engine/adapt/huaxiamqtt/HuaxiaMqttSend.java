@@ -229,6 +229,20 @@ public class HuaxiaMqttSend {
         } catch (Exception e) {
             System.out.println("Error:" + e.getMessage());
         }
+
+
+    }
+
+    public static void  heartbeatAck(BarrierDto machineDto,String msgId){
+        JSONObject paramIn = new JSONObject();
+        paramIn.put("cmd", "heartbeatRsp");
+        paramIn.put("msgId", msgId);
+        paramIn.put("status", "ok");
+        try {
+            MqttFactory.publish(TOPIC_PUBLISH.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
+        } catch (Exception e) {
+            System.out.println("Error:" + e.getMessage());
+        }
     }
 
     public static String generateUniqueId() {
@@ -245,6 +259,8 @@ public class HuaxiaMqttSend {
         // 组合成20位的唯一标识符
         return timestamp + randomStr.toString();
     }
+
+
 
 
 }

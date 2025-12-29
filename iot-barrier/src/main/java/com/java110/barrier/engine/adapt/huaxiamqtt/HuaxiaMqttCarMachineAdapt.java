@@ -12,6 +12,7 @@ import com.java110.core.cache.MappingCache;
 import com.java110.core.constant.MappingConstant;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.factory.MqttFactory;
 import com.java110.core.utils.Base64Convert;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
@@ -113,6 +114,7 @@ public class HuaxiaMqttCarMachineAdapt extends BaseMachineAdapt implements ICarM
     private void doHeartBeat(String taskId, JSONObject reqData) {
 
         String machineCode = reqData.getString("devId");
+        String msgId = reqData.getString("msgId");
 
         BarrierDto machineDto = new BarrierDto();
         machineDto.setMachineCode(machineCode);
@@ -127,6 +129,10 @@ public class HuaxiaMqttCarMachineAdapt extends BaseMachineAdapt implements ICarM
         barrierPo.setMachineId(machineDtos.get(0).getMachineId());
         barrierPo.setHeartbeatTime(heartBeatTime);
         barrierV1InnerServiceSMOImpl.updateBarrier(barrierPo);
+
+        // 回复
+        HuaxiaMqttSend.heartbeatAck(machineDtos.get(0),msgId);
+
     }
 
     /**
