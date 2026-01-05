@@ -27,7 +27,8 @@
 
 	import {
 		hasLogin,
-		autoLogin
+		autoLogin,
+		autoLoginMini
 	} from '@/api/user/sessionApi.js';
 	import {
 		getAppUser
@@ -50,7 +51,14 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function(options) {
+			// #ifdef H5
 			autoLogin(options);
+			// #endif
+			// #ifdef MP-WEIXIN
+			await autoLoginMini(options).catch(error => {
+				console.log('自动登录失败:', error);
+			});
+			// #endif
 		},
 
 		onShareAppMessage: function() {
