@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tempInnerCarV1ServiceDaoImpl">
+
+    <!-- 保存临时内部车信息 add by wuxw 2024-01-01 -->
+    <insert id="saveTempInnerCarInfo" parameterType="Map">
+        insert into temp_inner_car(tic_id, car_num, start_time, end_time, config_id, fee_name, community_id, pa_id, remark, status_cd
+                                    )
+        values (#{ticId}, #{carNum}, #{startTime}, #{endTime}, #{configId}, #{feeName}, #{communityId}, #{paId}, #{remark}, #{statusCd}
+                )
+    </insert>
+
+    <!-- 查询临时内部车信息 add by wuxw 2024-01-01 -->
+    <select id="getTempInnerCarInfo" parameterType="Map" resultType="Map">
+        select t.tic_id,t.tic_id ticId,t.car_num,t.car_num
+        carNum,t.start_time,t.start_time startTime,t.end_time,t.end_time
+        endTime,t.config_id,t.config_id configId,t.fee_name,t.fee_name
+        feeName,t.community_id,t.community_id communityId,t.pa_id,t.pa_id paId,t.remark,t.status_cd,t.status_cd statusCd,t.create_time createTime
+        from temp_inner_car t
+        where 1 =1
+        <if test="ticId !=null and ticId != ''">
+            and t.tic_id= #{ticId}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            and t.car_num= #{carNum}
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            and t.start_time= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            and t.end_time= #{endTime}
+        </if>
+        <if test="configId !=null and configId != ''">
+            and t.config_id= #{configId}
+        </if>
+        <if test="feeName !=null and feeName != ''">
+            and t.fee_name= #{feeName}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="paId !=null and paId != ''">
+            and t.pa_id= #{paId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <!-- 修改临时内部车信息 add by wuxw 2024-01-01 -->
+    <update id="updateTempInnerCarInfo" parameterType="Map">
+        update temp_inner_car t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            , t.car_num= #{carNum}
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            , t.start_time= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            , t.end_time= #{endTime}
+        </if>
+        <if test="configId !=null and configId != ''">
+            , t.config_id= #{configId}
+        </if>
+        <if test="feeName !=null and feeName != ''">
+            , t.fee_name= #{feeName}
+        </if>
+        <if test="paId !=null and paId != ''">
+            , t.pa_id= #{paId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        where 1=1
+        <if test="ticId !=null and ticId != ''">
+            and t.tic_id= #{ticId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+    </update>
+
+    <!-- 查询临时内部车数量 add by wuxw 2024-01-01 -->
+    <select id="queryTempInnerCarsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from temp_inner_car t
+        where 1 =1
+        <if test="ticId !=null and ticId != ''">
+            and t.tic_id= #{ticId}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            and t.car_num= #{carNum}
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            and t.start_time= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            and t.end_time= #{endTime}
+        </if>
+        <if test="configId !=null and configId != ''">
+            and t.config_id= #{configId}
+        </if>
+        <if test="feeName !=null and feeName != ''">
+            and t.fee_name= #{feeName}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="paId !=null and paId != ''">
+            and t.pa_id= #{paId}
+        </if>
+    </select>
+</mapper>
+

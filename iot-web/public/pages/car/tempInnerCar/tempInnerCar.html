@@ -1,0 +1,125 @@
+<div>
+    <div class="row">
+        <div class="col-md-2 padding-r-0">
+            <div class=" border-radius ">
+                <div class="margin-xs-r  treeview ">
+                    <ul class="list-group text-center border-radius">
+                        <li class="list-group-item node-orgTree " v-for="(item,index) in tempInnerCarInfo.tempCarFeeConfigs"
+                            :key="index" @click="swatchTempCarFeeConfig(item)"
+                            :class="{'vc-node-selected':tempInnerCarInfo.conditions.configId == item.configId}">
+                            {{item.feeName}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="查询条件" namespace="tempInnerCar"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;"></div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <input type="text" :placeholder="vc.i18n('请输入车牌号','tempInnerCar')" v-model="tempInnerCarInfo.conditions.carNum" class=" form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="_queryTempInnerCarMethod()">
+                                <vc:i18n name="查询" namespace="tempInnerCar"></vc:i18n>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <vc:i18n name="临时内部车" namespace="tempInnerCar"></vc:i18n>
+                    </h5>
+                    <div class="ibox-tools" style="top:10px;">
+                        <button type="button" class="btn btn-primary btn-sm" v-on:click="_openAddTempInnerCarModal()">
+                            <vc:i18n name="添加" namespace="tempInnerCar"></vc:i18n>
+                        </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <vc:i18n name="编号" namespace="tempInnerCar"></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name="车牌号" namespace="tempInnerCar"></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name="停车场" namespace="tempInnerCar"></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name="收费名称" namespace="tempInnerCar"></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name="开始时间" namespace="tempInnerCar"></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name="结束时间" namespace="tempInnerCar"></vc:i18n>
+                                </th>
+                    
+                                
+                                <th class="text-center">
+                                    <vc:i18n name="说明" namespace="tempInnerCar"></vc:i18n>
+                                </th>
+                                <th class="text-center">
+                                    <vc:i18n name="操作" namespace="tempInnerCar"></vc:i18n>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="tempInnerCar in tempInnerCarInfo.tempInnerCars">
+                                <td class="text-center">{{tempInnerCar.ticId}}</td>
+                                <td class="text-center">{{tempInnerCar.carNum}}</td>
+                                <td class="text-center">{{tempInnerCar.paNum}}</td>
+                                <td class="text-center">{{tempInnerCar.feeName}}</td>
+                                <td class="text-center">{{tempInnerCar.startTime}}</td>
+                                <td class="text-center">{{tempInnerCar.endTime}}</td>
+                                <td class="text-center">{{tempInnerCar.remark}}</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openEditTempInnerCarModel(tempInnerCar)">
+                                            <vc:i18n name="修改" namespace="tempInnerCar"></vc:i18n>
+                                    </button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" v-on:click="_openDeleteTempInnerCarModel(tempInnerCar)">
+                                            <vc:i18n name="删除" namespace="tempInnerCar"></vc:i18n>
+                                    </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="9">
+                                    <ul class="pagination float-right"></ul>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <!-- 分页 -->
+                    <vc:create path="frame/pagination"></vc:create>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <vc:create path="car/addTempInnerCar" callBackListener="" callBackFunction=""></vc:create>
+    <vc:create path="car/editTempInnerCar"></vc:create>
+    <vc:create path="car/deleteTempInnerCar"></vc:create>
+</div>
+
