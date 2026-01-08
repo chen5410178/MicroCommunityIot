@@ -93,7 +93,7 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
         m.put("t", GenerateCodeFactory.getUUID());
         paramIn.put("m", m);
 
-        MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
+        // MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
 
         if (StringUtil.isEmpty(accessControlFacePo.getCardNumber())) {
             return true;
