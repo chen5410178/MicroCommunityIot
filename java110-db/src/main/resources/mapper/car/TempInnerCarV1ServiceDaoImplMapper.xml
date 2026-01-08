@@ -5,9 +5,9 @@
 
     <!-- 保存临时内部车信息 add by wuxw 2024-01-01 -->
     <insert id="saveTempInnerCarInfo" parameterType="Map">
-        insert into temp_inner_car(tic_id, car_num, start_time, end_time, config_id, fee_name, community_id, pa_id, remark, status_cd
+        insert into temp_inner_car(tic_id, car_num, start_time, end_time, config_id, fee_name, community_id, pa_id, pa_num, remark, status_cd
                                     )
-        values (#{ticId}, #{carNum}, #{startTime}, #{endTime}, #{configId}, #{feeName}, #{communityId}, #{paId}, #{remark}, #{statusCd}
+        values (#{ticId}, #{carNum}, #{startTime}, #{endTime}, #{configId}, #{feeName}, #{communityId}, #{paId}, #{paNum}, #{remark}, #{statusCd}
                 )
     </insert>
 
@@ -16,7 +16,7 @@
         select t.tic_id,t.tic_id ticId,t.car_num,t.car_num
         carNum,t.start_time,t.start_time startTime,t.end_time,t.end_time
         endTime,t.config_id,t.config_id configId,t.fee_name,t.fee_name
-        feeName,t.community_id,t.community_id communityId,t.pa_id,t.pa_id paId,t.remark,t.status_cd,t.status_cd statusCd,t.create_time createTime
+        feeName,t.community_id,t.community_id communityId,t.pa_id,t.pa_id paId,t.pa_num,t.pa_num paNum,t.remark,t.status_cd,t.status_cd statusCd,t.create_time createTime
         from temp_inner_car t
         where 1 =1
         <if test="ticId !=null and ticId != ''">
@@ -75,6 +75,9 @@
         </if>
         <if test="paId !=null and paId != ''">
             , t.pa_id= #{paId}
+        </if>
+        <if test="paNum !=null and paNum != ''">
+            , t.pa_num= #{paNum}
         </if>
         <if test="remark !=null and remark != ''">
             , t.remark= #{remark}

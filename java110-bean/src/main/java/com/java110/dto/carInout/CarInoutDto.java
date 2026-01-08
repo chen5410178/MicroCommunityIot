@@ -73,6 +73,8 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
 
     private String unlicense;
 
+    private String colorType;
+
 
     private List<ParkingCouponCarDto> parkingCouponCarDtos;
 
@@ -337,5 +339,13 @@ public class CarInoutDto extends CarInoutPaymentDto implements Serializable {
 
     public void setCommunityIds(String[] communityIds) {
         this.communityIds = communityIds;
+    }
+
+    public String getColorType() {
+        return colorType;
+    }
+
+    public void setColorType(String colorType) {
+        this.colorType = colorType;
     }
 }

@@ -35,6 +35,7 @@ public class TempInnerCarPo implements Serializable {
     private String feeName;
     private String communityId;
     private String paId;
+    private String paNum;
     private String remark;
     private String statusCd = "0";
 
@@ -100,6 +101,14 @@ public class TempInnerCarPo implements Serializable {
 
     public void setPaId(String paId) {
         this.paId = paId;
+    }
+
+    public String getPaNum() {
+        return paNum;
+    }
+
+    public void setPaNum(String paNum) {
+        this.paNum = paNum;
     }
 
     public String getRemark() {

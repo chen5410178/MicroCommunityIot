@@ -317,7 +317,10 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
         JSONObject result = AlarmInfoPlate.getJSONObject("result");
         JSONObject plateResult = result.getJSONObject("PlateResult");
         try {
-            String type = plateResult.getString("type");
+            String type = plateResult.getString("colorType");
+            if(StringUtil.isEmpty(type)){
+                type = "1";
+            }
             String license = plateResult.getString("license");
             license = Base64Convert.decoder(license);
             String imagePath = plateResult.getString("imagePath");

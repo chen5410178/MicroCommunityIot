@@ -88,9 +88,12 @@ public class CarOutLogEngine extends CarEngine{
 //            carInoutPo.setPayType(carInoutDtos.get(0).getPayType());
             carInoutPo.setInTime(carInoutDtos.get(0).getOpenTime());
             carInoutPo.setInoutId(carInoutDtos.get(0).getInoutId());
+            carInoutPo.setColorType(carInoutDtos.get(0).getColorType());
         } else {
             carInoutPo.setInTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
             carInoutPo.setInoutId(GenerateCodeFactory.getGeneratorId("11"));
+            carInoutPo.setColorType("1");// 蓝牌车
+
 
 //            carInoutPo.setPayCharge("0");
 //            carInoutPo.setRealCharge("0");

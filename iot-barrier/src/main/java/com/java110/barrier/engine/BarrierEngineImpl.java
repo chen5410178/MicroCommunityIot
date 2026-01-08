@@ -1,6 +1,7 @@
 package com.java110.barrier.engine;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.barrier.engine.inout.SelectTempFeeConfigEngine;
 import com.java110.barrier.engine.inout.SendInfoEngine;
 import com.java110.barrier.factory.BarrierGateControlDto;
 import com.java110.barrier.factory.CarMachineProcessFactory;
@@ -55,6 +56,9 @@ public class BarrierEngineImpl implements IBarrierEngine {
 
     @Autowired
     private SendInfoEngine sendInfoEngine;
+
+    @Autowired
+    private SelectTempFeeConfigEngine selectTempFeeConfigEngine;
 
     @Autowired
     private IManualOpenDoorLogV1InnerServiceSMO manualOpenDoorLogV1InnerServiceSMOImpl;
@@ -364,13 +368,14 @@ public class BarrierEngineImpl implements IBarrierEngine {
             }
         }
 
+        TempCarFeeConfigDto tempCarFeeConfigDto = selectTempFeeConfigEngine.getTempCarFeeConfig(carInoutDtos.get(0),parkingAreaDtos.get(0).getPaId());
 
-        TempCarFeeConfigDto tempCarFeeConfigDto = new TempCarFeeConfigDto();
-        tempCarFeeConfigDto.setPaId(parkingAreaDtos.get(0).getPaId());
-        tempCarFeeConfigDto.setCommunityId(machineDto.getCommunityId());
-        List<TempCarFeeConfigDto> tempCarFeeConfigDtos = tempCarFeeConfigV1InnerServiceSMOImpl.queryTempCarFeeConfigs(tempCarFeeConfigDto);
+//        TempCarFeeConfigDto tempCarFeeConfigDto = new TempCarFeeConfigDto();
+//        tempCarFeeConfigDto.setPaId(parkingAreaDtos.get(0).getPaId());
+//        tempCarFeeConfigDto.setCommunityId(machineDto.getCommunityId());
+//        List<TempCarFeeConfigDto> tempCarFeeConfigDtos = tempCarFeeConfigV1InnerServiceSMOImpl.queryTempCarFeeConfigs(tempCarFeeConfigDto);
 
-        if (tempCarFeeConfigDtos == null || tempCarFeeConfigDtos.isEmpty()) {
+        if (tempCarFeeConfigDto == null) {
             throw new IllegalArgumentException("未查询到临时车费用规则");
         }
 
@@ -378,8 +383,8 @@ public class BarrierEngineImpl implements IBarrierEngine {
 
         List<ParkingCouponCarDto> parkingCouponCarDtos = getCarCoupons(tempCarPayOrderDto);
 
-        IComputeTempCarFee computeTempCarFee = ApplicationContextFactory.getBean(tempCarFeeConfigDtos.get(0).getRuleId(), IComputeTempCarFee.class);
-        TempCarFeeResult result = computeTempCarFee.computeTempCarFee(carInoutDtos.get(0), tempCarFeeConfigDtos.get(0), getDurationCarCoupons(parkingCouponCarDtos));
+        IComputeTempCarFee computeTempCarFee = ApplicationContextFactory.getBean(tempCarFeeConfigDto.getRuleId(), IComputeTempCarFee.class);
+        TempCarFeeResult result = computeTempCarFee.computeTempCarFee(carInoutDtos.get(0), tempCarFeeConfigDto, getDurationCarCoupons(parkingCouponCarDtos));
 
 
         // 停车劵处理 这里主要处理 全免 打折 金额

@@ -48,6 +48,8 @@ public class CarInoutPo implements Serializable {
 
     private String unlicense;
 
+    private String colorType;
+
     public String getPaNum() {
         return paNum;
     }
@@ -190,5 +192,13 @@ public class CarInoutPo implements Serializable {
 
     public void setUnlicense(String unlicense) {
         this.unlicense = unlicense;
+    }
+
+    public String getColorType() {
+        return colorType;
+    }
+
+    public void setColorType(String colorType) {
+        this.colorType = colorType;
     }
 }

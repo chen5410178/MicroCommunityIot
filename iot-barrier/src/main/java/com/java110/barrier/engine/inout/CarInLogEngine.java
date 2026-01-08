@@ -74,6 +74,7 @@ public class CarInLogEngine extends CarEngine {
         carInoutPo.setInTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         carInoutPo.setCiId(GenerateCodeFactory.getGeneratorId("11"));
         carInoutPo.setPhotoJpg(machineDto.getPhotoJpg());
+        carInoutPo.setColorType(type);
         carInoutServiceImpl.saveCarInout(carInoutPo);
     }
 

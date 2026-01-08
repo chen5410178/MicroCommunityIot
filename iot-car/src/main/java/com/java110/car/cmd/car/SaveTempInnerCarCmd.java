@@ -86,9 +86,10 @@ public class SaveTempInnerCarCmd extends Cmd {
         if (ListUtil.isNull(tempCarFeeConfigDtos)) {
             throw new CmdException("临时停车费不存在");
         }
-        tempCarFeeConfigDto.setFeeName(tempCarFeeConfigDtos.get(0).getFeeName());
-        tempCarFeeConfigDto.setPaId(tempCarFeeConfigDtos.get(0).getPaId());
-        tempCarFeeConfigDto.setPaId(tempCarFeeConfigDtos.get(0).getAreaNum());
+        TempCarFeeConfigDto configDto = tempCarFeeConfigDtos.get(0);
+        tempInnerCarPo.setFeeName(configDto.getFeeName());
+        tempInnerCarPo.setPaId(configDto.getPaId());
+        tempInnerCarPo.setPaNum(configDto.getAreaNum());
         int flag = tempInnerCarV1InnerServiceSMOImpl.saveTempInnerCar(tempInnerCarPo);
 
         if (flag < 1) {

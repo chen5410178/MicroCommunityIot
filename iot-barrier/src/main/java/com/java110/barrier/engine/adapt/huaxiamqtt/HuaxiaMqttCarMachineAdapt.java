@@ -131,7 +131,7 @@ public class HuaxiaMqttCarMachineAdapt extends BaseMachineAdapt implements ICarM
         barrierV1InnerServiceSMOImpl.updateBarrier(barrierPo);
 
         // 回复
-        HuaxiaMqttSend.heartbeatAck(machineDtos.get(0),msgId);
+        HuaxiaMqttSend.heartbeatAck(machineDtos.get(0), msgId);
 
     }
 
@@ -180,7 +180,22 @@ public class HuaxiaMqttCarMachineAdapt extends BaseMachineAdapt implements ICarM
 
         JSONObject plateResult = reqData.getJSONObject("content");
         try {
-            String type = plateResult.getString("vehicleType");
+            String type = plateResult.getString("plateColor");
+            if ("蓝色".equals(type)) {
+                type = "1";
+            } else if ("黄色".equals(type)) {
+                type = "2";
+            } else if ("白色".equals(type)) {
+                type = "3";
+            } else if ("黑色".equals(type)) {
+                type = "4";
+            } else if ("绿色".equals(type)) {
+                type = "5";
+            } else if ("黄绿色".equals(type)) {
+                type = "6";
+            } else {
+                type = "0";
+            }
             String license = plateResult.getString("plateNum");
             if (plateResult.containsKey("fullPicPath")) {
                 String imagePath = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "OSS_URL") + plateResult.getString("fullPicPath");
