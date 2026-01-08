@@ -1,5 +1,8 @@
 package com.java110.hal.http.yiteSmart.bmo.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.java110.core.factory.MqttFactory;
+import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.bean.ResultVo;
 import com.java110.core.utils.ListUtil;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
@@ -74,6 +77,19 @@ public class SyncOneUserBmoImpl implements ISyncOneUserBmo {
             accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
         }
 
+
+		JSONObject paramIn = new JSONObject();
+		paramIn = new JSONObject();
+        paramIn.put("t", machineCode);
+        paramIn.put("c", "syncFace");
+        paramIn.put("f", "server_php");
+		JSONObject m = new JSONObject();
+        // m = new JSONObject();
+        m.put("p", "all");
+        m.put("t", GenerateCodeFactory.getUUID());
+        paramIn.put("m", m);
+
+        MqttFactory.publish("zghl_door/" + machineCode, paramIn.toJSONString());
 
 
 
