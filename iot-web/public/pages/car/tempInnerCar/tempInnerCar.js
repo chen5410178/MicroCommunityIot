@@ -38,6 +38,7 @@
                     params: {
                         page: 1,
                         row: 50,
+                        carType:'9902',
                         communityId: vc.getCurrentCommunity().communityId
                     }
                 };

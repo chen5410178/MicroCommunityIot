@@ -25,6 +25,8 @@ public class TempInnerCarDto extends PageDto implements Serializable {
     private String paId;
     private String paNum;
     private String remark;
+
+    private String valid;
     private Date createTime;
     private String statusCd = "0";
 
@@ -122,6 +124,14 @@ public class TempInnerCarDto extends PageDto implements Serializable {
 
     public void setPaNum(String paNum) {
         this.paNum = paNum;
+    }
+
+    public String getValid() {
+        return valid;
+    }
+
+    public void setValid(String valid) {
+        this.valid = valid;
     }
 }
 

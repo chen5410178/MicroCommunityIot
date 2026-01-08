@@ -30,6 +30,7 @@ public class SelectTempFeeConfigEngine {
         TempInnerCarDto tempInnerCarDto = new TempInnerCarDto();
         tempInnerCarDto.setCarNum(carNum);
         tempInnerCarDto.setPaId(paId);
+        tempInnerCarDto.setValid("Y");
         List<TempInnerCarDto> tempInnerCarDtos = tempInnerCarV1InnerServiceSMOImpl.queryTempInnerCars(tempInnerCarDto);
         if (!ListUtil.isNull(tempInnerCarDtos)) {
             //未缴费

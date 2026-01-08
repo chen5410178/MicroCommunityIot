@@ -31,6 +31,10 @@
         <if test="endTime !=null and endTime != ''">
             and t.end_time= #{endTime}
         </if>
+        <if test="valid !=null and valid != ''">
+            and t.end_time &gt; now()
+            and t.start_time &lt; now()
+        </if>
         <if test="configId !=null and configId != ''">
             and t.config_id= #{configId}
         </if>
@@ -107,6 +111,10 @@
         </if>
         <if test="endTime !=null and endTime != ''">
             and t.end_time= #{endTime}
+        </if>
+        <if test="valid !=null and valid != ''">
+            and t.end_time &gt; now()
+            and t.start_time &lt; now()
         </if>
         <if test="configId !=null and configId != ''">
             and t.config_id= #{configId}
