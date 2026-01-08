@@ -72,6 +72,7 @@ public class SelectTempFeeConfigEngine {
         //未缴费
         tempCarFeeConfigParamDto = new TempCarFeeConfigDto();
         tempCarFeeConfigParamDto.setPaId(paId);
+        tempCarFeeConfigParamDto.setCarType("9901");
         tempCarFeeConfigParamDto.setCommunityId(carInoutDto.getCommunityId());
         tempCarFeeConfigDtos = tempCarFeeConfigV1InnerServiceSMOImpl.queryTempCarFeeConfigs(tempCarFeeConfigDto);
         if (!ListUtil.isNull(tempCarFeeConfigDtos)) {
