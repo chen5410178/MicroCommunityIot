@@ -65,7 +65,7 @@ public class SelectTempFeeConfigEngine {
         tempCarFeeConfigParamDto.setPaId(paId);
         tempCarFeeConfigParamDto.setCarType(colorType);
         tempCarFeeConfigParamDto.setCommunityId(carInoutDto.getCommunityId());
-        List<TempCarFeeConfigDto> tempCarFeeConfigDtos = tempCarFeeConfigV1InnerServiceSMOImpl.queryTempCarFeeConfigs(tempCarFeeConfigDto);
+        List<TempCarFeeConfigDto> tempCarFeeConfigDtos = tempCarFeeConfigV1InnerServiceSMOImpl.queryTempCarFeeConfigs(tempCarFeeConfigParamDto);
         if (!ListUtil.isNull(tempCarFeeConfigDtos)) {
             return tempCarFeeConfigDtos.get(0);
         }
@@ -75,7 +75,7 @@ public class SelectTempFeeConfigEngine {
         tempCarFeeConfigParamDto.setPaId(paId);
         tempCarFeeConfigParamDto.setCarType("9901");
         tempCarFeeConfigParamDto.setCommunityId(carInoutDto.getCommunityId());
-        tempCarFeeConfigDtos = tempCarFeeConfigV1InnerServiceSMOImpl.queryTempCarFeeConfigs(tempCarFeeConfigDto);
+        tempCarFeeConfigDtos = tempCarFeeConfigV1InnerServiceSMOImpl.queryTempCarFeeConfigs(tempCarFeeConfigParamDto);
         if (!ListUtil.isNull(tempCarFeeConfigDtos)) {
             return tempCarFeeConfigDtos.get(0);
         }
