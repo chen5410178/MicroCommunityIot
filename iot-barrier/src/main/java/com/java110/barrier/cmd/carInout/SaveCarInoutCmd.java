@@ -75,6 +75,7 @@ public class SaveCarInoutCmd extends Cmd {
 
         CarInoutPo carInoutPo = BeanConvertUtil.covertBean(reqJson, CarInoutPo.class);
         carInoutPo.setCiId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        carInoutPo.setColorType("1");
         int flag = carInoutV1InnerServiceSMOImpl.saveCarInout(carInoutPo);
 
         if (flag < 1) {

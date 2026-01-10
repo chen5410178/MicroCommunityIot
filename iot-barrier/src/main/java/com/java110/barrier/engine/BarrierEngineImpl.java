@@ -230,6 +230,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
         carInoutPo.setCiId(GenerateCodeFactory.getGeneratorId("11"));
         carInoutPo.setInTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
         carInoutPo.setUnlicense("F");
+        carInoutPo.setColorType("1");
         //无牌车标识
         if (acceptJson.containsKey("unlicense")) {
             carInoutPo.setUnlicense("T");
@@ -304,6 +305,7 @@ public class BarrierEngineImpl implements IBarrierEngine {
         carInoutPo.setRemark(remark);
         carInoutPo.setCiId(GenerateCodeFactory.getGeneratorId("11"));
         carInoutPo.setInTime(inTime);
+        carInoutPo.setColorType("1");
 
 
 //        carInoutPo.setCarType(CarInoutDto.C);
