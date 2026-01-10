@@ -7,6 +7,7 @@ import com.java110.bean.po.coupon.ParkingCouponCarPo;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.parking.CarDayDto;
@@ -92,12 +93,12 @@ public class CarOutLogEngine extends CarEngine{
         } else {
             carInoutPo.setInTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
             carInoutPo.setInoutId(GenerateCodeFactory.getGeneratorId("11"));
-            carInoutPo.setColorType("1");// 蓝牌车
-
-
 //            carInoutPo.setPayCharge("0");
 //            carInoutPo.setRealCharge("0");
 //            carInoutPo.setPayType("1");
+        }
+        if(StringUtil.isEmpty(carInoutPo.getColorType())){
+            carInoutPo.setColorType("1");// 蓝牌车
         }
         carInoutDto.setMachineCode(machineDto.getMachineCode());
         //carInoutDto.setParkingCouponCarDtos(parkingCouponCarDtos);

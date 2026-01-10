@@ -218,7 +218,10 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
                 = new BarrierGateControlDto(BarrierGateControlDto.ACTION_FEE_INFO, carInoutTempAuthDto.getCarNum(), machineDto, inOutCarTextDto.getRemark(), "开门成功");
         sendInfoEngine.sendInfo(barrierGateControlDto, machineDto.getBoxId(), machineDto);
         //保存 进场记录
-        carInLogEngine.saveCarInLog(carInoutTempAuthDto.getCarNum(), carInoutTempAuthDto.getCarType(), machineDto, carInoutTempAuthDto.getPaId(), CarInoutDto.STATE_IN, inOutCarTextDto.getRemark());
+        carInLogEngine.saveCarInLog(carInoutTempAuthDto.getCarNum(), carInoutTempAuthDto.getCarType(),
+                machineDto,
+                carInoutTempAuthDto.getPaId(),
+                CarInoutDto.STATE_IN, inOutCarTextDto.getRemark());
         //播放语音
         ResultParkingAreaTextDto parkingAreaTextDto
                 = new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_IN_SUCCESS, inOutCarTextDto.getText1(),

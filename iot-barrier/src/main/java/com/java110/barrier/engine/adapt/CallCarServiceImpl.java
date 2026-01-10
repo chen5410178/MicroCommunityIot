@@ -123,53 +123,6 @@ public class CallCarServiceImpl implements ICallCarService {
         inCarEngine.tempCarAuthOpen(carInoutTempAuthDto);
     }
 
-    /**
-     * 车辆出场 记录
-     * 这里代码有问题
-     *
-     * @param carNum
-     */
-    private void carOut(String carNum, BarrierDto machineDto) throws Exception {
-        //查询是否有入场数据
-        CarInoutDto carInoutDto = new CarInoutDto();
-        carInoutDto.setCarNum(carNum);
-        carInoutDto.setPaId(machineDto.getBoxId());
-        carInoutDto.setStates(new String[]{CarInoutDto.STATE_IN, CarInoutDto.STATE_PAY});
-        carInoutDto.setCarInout(CarInoutDto.CAR_INOUT_OUT);
-        List<CarInoutDto> carInoutDtos = carInoutServiceImpl.queryCarInouts(carInoutDto);
-
-        if (carInoutDtos != null && carInoutDtos.size() > 0) {
-            CarInoutPo carInoutPo = new CarInoutPo();
-            carInoutPo.setCiId(carInoutDtos.get(0).getCiId());
-            carInoutPo.setState(CarInoutDto.STATE_OUT);
-            carInoutServiceImpl.updateCarInout(carInoutPo);
-        }
-        CarInoutPo carInoutPo = new CarInoutPo();
-        carInoutPo.setCarNum(carNum);
-        carInoutPo.setCarType("1");
-        carInoutPo.setCommunityId(machineDto.getCommunityId());
-        carInoutPo.setInoutId(carInoutDtos.get(0).getInoutId());
-        carInoutPo.setCarInout(CarInoutDto.CAR_INOUT_OUT);
-        carInoutPo.setMachineCode(machineDto.getMachineCode());
-        carInoutPo.setOpenTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
-        carInoutPo.setPaId(machineDto.getBoxId());
-        carInoutPo.setState(CarInoutDto.STATE_OUT);
-        carInoutPo.setRemark("正常出场");
-        if (carInoutDtos != null && carInoutDtos.size() > 0) {
-//            carInoutPo.setPayCharge(carInoutDtos.get(0).getPayCharge());
-//            carInoutPo.setRealCharge(carInoutDtos.get(0).getRealCharge());
-//            carInoutPo.setPayType(carInoutDtos.get(0).getPayType());
-        } else {
-//            carInoutPo.setPayCharge("0");
-//            carInoutPo.setRealCharge("0");
-//            carInoutPo.setPayType("1");
-        }
-        carInoutPo.setMachineCode(machineDto.getMachineCode());
-        carInoutServiceImpl.saveCarInout(carInoutPo);
-//        //异步上报HC小区管理系统
-//        carCallHcServiceImpl.carInout(carInoutDto);
-    }
-
 
 
 

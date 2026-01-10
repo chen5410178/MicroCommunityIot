@@ -107,6 +107,7 @@ public class CarInLogEngine extends CarEngine {
         } else {
             carInoutPo.setCarTypeName("临时车");
         }
+        carInoutPo.setColorType("1");
         carInoutPo.setCommunityId(machineDto.getCommunityId());
         carInoutPo.setMachineId(machineDto.getMachineId());
         carInoutPo.setMachineCode(machineDto.getMachineCode());
