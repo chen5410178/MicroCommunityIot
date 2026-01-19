@@ -317,7 +317,7 @@
         from car_inout t
         left join t_dict td on t.state = td.status_cd and td.table_columns='state' and td.table_name = 'car_inout'
         left join parking_area pa on t.pa_id = pa.pa_id and pa.status_cd = '0'
-        left join temp_car_fee_config tcfc on pa.pa_id = tcfc.pa_id and tcfc.status_cd = '0' and tcfc.color_type = t.color_type
+        left join temp_car_fee_config tcfc on pa.pa_id = tcfc.pa_id and tcfc.status_cd = '0' and tcfc.car_type = t.color_type
         left join barrier b on t.machine_id = b.machine_id and b.community_id = t.community_id
         where 1 =1
 

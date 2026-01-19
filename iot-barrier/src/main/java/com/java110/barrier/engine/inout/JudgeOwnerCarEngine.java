@@ -49,12 +49,15 @@ public class JudgeOwnerCarEngine {
 
 
         int day = DateUtil.differentDaysUp(DateUtil.getCurrentDate(), ownerCarDtos.get(0).getEndTime());
-        //来个五天 缴费期
-        if (day <= 0 && day > -5) {
-            return new CarDayDto(carNum, ownerCarDtos.get(0).getLeaseType(), -2);
-        }
-
-        if (day <= -5) {
+        //来个五天 缴费期,这里注释 实际使用中 有很多客户不太赞同这个逻辑 有需要的自己打开
+//        if (day <= 0 && day > -5) {
+//            return new CarDayDto(carNum, ownerCarDtos.get(0).getLeaseType(), -2);
+//        }
+//
+//        if (day <= -5) {
+//            return new CarDayDto(carNum, OwnerCarDto.LEASE_TYPE_TEMP, -1);
+//        }
+        if (day < 0) {
             return new CarDayDto(carNum, OwnerCarDto.LEASE_TYPE_TEMP, -1);
         }
         return new CarDayDto(carNum, ownerCarDtos.get(0).getLeaseType(), day);
