@@ -1052,7 +1052,7 @@ INSERT INTO `c_mapping` VALUES ('102023102771040002', 'FILE_DOMAIN', 'OSS地址�
 INSERT INTO `c_mapping` VALUES ('102023111084740004', 'FILE_DOMAIN', '存储方式', 'OSS_SWITCH', 'OSS', '目前只支持OSS', '2023-11-10 17:26:36', '0');
 INSERT INTO `c_mapping` VALUES ('102023112127290055', 'TDDIANBIAO_DOMAIN', 'nonce', 'nonce', 'xx', '', '2023-11-21 01:26:38', '0');
 INSERT INTO `c_mapping` VALUES ('102023112164960056', 'TDDIANBIAO_DOMAIN', 'auth_code', 'auth_code', 'xx', '', '2023-11-21 01:27:11', '0');
-INSERT INTO `c_mapping` VALUES ('102024012402260026', 'WUYE', '物业系统地址', 'url', 'http://192.168.1.108:8008', '', '2024-01-24 22:04:17', '0');
+INSERT INTO `c_mapping` VALUES ('102024012402260026', 'WUYE', '物业系统地址', 'url', 'http://127.0.0.1:8008', '', '2024-01-24 22:04:17', '0');
 INSERT INTO `c_mapping` VALUES ('102024012442090025', 'WUYE', '物业秘钥', 'securityCode', 'g3kE9ggkM4Jqrs576rJS0CYg7dbtMXPT', '', '2024-01-24 22:03:41', '0');
 INSERT INTO `c_mapping` VALUES ('102024012445870024', 'WUYE', '应用ID', 'appId', '992020051967020024', '', '2024-01-24 22:03:11', '0');
 INSERT INTO `c_mapping` VALUES ('102024022631412822', 'WECHAT_PAY', '服务商开关', 'WECHAT_SERVICE_PAY_SWITCH', 'OFF', '', '2024-02-26 23:53:38', '0');
@@ -1060,7 +1060,7 @@ INSERT INTO `c_mapping` VALUES ('102024022646552824', 'WECHAT_PAY', '服务商�
 INSERT INTO `c_mapping` VALUES ('102024022695142823', 'WECHAT_PAY', '服务商appId', 'SERVICE_APP_ID', '1', '', '2024-02-26 23:54:02', '0');
 INSERT INTO `c_mapping` VALUES ('102024030954270097', 'VZICLOUD', 'AccessKey', 'AccessKey', 'xx', '', '2024-03-09 12:19:04', '1');
 INSERT INTO `c_mapping` VALUES ('102024030984490098', 'VZICLOUD', 'AccessKeySecret', 'AccessKeySecret', 'xx', '', '2024-03-09 12:19:16', '1');
-INSERT INTO `c_mapping` VALUES ('102024031316730024', 'HIK_GATEWAY', '网关地址', 'HIK_URL', 'http://192.168.1.108', '海康网关', '2024-03-13 21:13:05', '0');
+INSERT INTO `c_mapping` VALUES ('102024031316730024', 'HIK_GATEWAY', '网关地址', 'HIK_URL', 'http://127.0.0.1', '海康网关', '2024-03-13 21:13:05', '0');
 INSERT INTO `c_mapping` VALUES ('102024091035780003', 'WUYE', '物业开关', 'WUYE_SWITCH', 'ON', '', '2024-09-10 12:10:43', '0');
 INSERT INTO `c_mapping` VALUES ('102025040346940002', 'SYSTEM_SWITCH', '充电桩小程序', 'CHARGE_PAGE', 'MINI', 'MINI 小程序 OFF h5', '2025-04-03 23:12:04', '0');
 INSERT INTO `c_mapping` VALUES ('102025052082730010', 'ENV_DOMAIN', 'w', '1', '1', '1', '2025-05-20 11:00:47', '1');
@@ -12409,7 +12409,7 @@ INSERT INTO `u_user` VALUES ('302025032468690041', '演示业主', null, '', '8b
 INSERT INTO `u_user` VALUES ('302025032861730011', '13803478677', null, null, '62afe57f47fbd6c8db8d96ab997bc1e1', null, '13803478677', '04', '2025-03-28 16:51:30', '0', null);
 INSERT INTO `u_user` VALUES ('302025040152980001', '18909711443', null, null, '3f800b3dd74d815b225cc7631099b90d', null, '18909711443', '04', '2025-04-01 09:38:29', '0', null);
 INSERT INTO `u_user` VALUES ('30518939884421922816', 'admin', 'sss@sf.com', 'ccc地方都是', '3ad352384261cbc2c7462210dbb3ce61', '0', '18909714555', '00', '2018-12-02 16:01:50', '0', null);
-INSERT INTO `u_user` VALUES ('30520751775595118592', 'dev', '129@qq.com', 'Qingdao', '109c333b381580e1fe8a5ff630c398a7', '0', '17797173942', '00', '2018-12-07 16:01:38', '0', null);
+INSERT INTO `u_user` VALUES ('30520751775595118592', 'dev', '129@qq.com', 'Qingdao', '3ad352384261cbc2c7462210dbb3ce61', '0', '17797173942', '00', '2018-12-07 16:01:38', '0', null);
 
 -- ----------------------------
 -- Table structure for u_user_attr

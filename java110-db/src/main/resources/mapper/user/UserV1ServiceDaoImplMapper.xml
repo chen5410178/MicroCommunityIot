@@ -269,7 +269,7 @@
                 #{item}
             </foreach>
             and uosr.status_cd =0
-            GROUP BY u.user_id, u.name,u.email,u.address,u.sex,u.tel,u.level_cd ,u.face_url
+            GROUP BY u.user_id, u.name,u.email,u.address,u.sex,u.tel,u.level_cd ,u.face_url,uosr.store_id ,uosr.rel_id
         </if>
         order by u.create_time desc
         <if test="page != -1 and page != null ">
