@@ -205,6 +205,8 @@ public class MqttPushCallback implements MqttCallbackExtended {
     @Override
     public void connectComplete(boolean reconnect, String serverURI) {
         try {
+            // 连接/重连完成后立即订阅所有主题
+            MqttClientSubscribeFactory.subscribe();
 //            IManufacturerService manufacturerServiceImpl = ApplicationContextFactory.getBean("manufacturerServiceImpl", IManufacturerService.class);
 //            ManufacturerAttrDto tmpManufacturerDto = new ManufacturerAttrDto();
 //            tmpManufacturerDto.setSpecCd(ManufacturerAttrDto.SPEC_TOPIC);
