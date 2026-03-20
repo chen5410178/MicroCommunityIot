@@ -17,6 +17,7 @@ import com.java110.intf.acct.IAccountInnerServiceSMO;
 import com.java110.intf.charge.*;
 import com.java110.intf.hal.INotifyNettyDataV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
+import com.java110.core.cache.CommonCache;
 import com.java110.po.chargeMachine.ChargeMachinePo;
 import com.java110.po.chargeMachineOrder.ChargeMachineOrderPo;
 import com.java110.po.chargeMachineOrderAcct.ChargeMachineOrderAcctPo;
@@ -71,6 +72,13 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
     private IChargeCore chargeCoreImpl;
 
     public static final Map<String, String> resultMap = new HashMap<>();
+    
+    // 缓存 key 前缀
+    private static final String CHARGE_POWER_CACHE_PREFIX = "CHARGE_POWER_";
+    // 缓存过期时间（秒）- 设置为 5 分钟，避免长期占用缓存
+    private static final int CACHE_EXPIRE_TIME = 300;
+    // 需要缓存的上报次数
+    private static final int CACHE_REPORT_COUNT = 3;
 
     static {
         /**
@@ -347,7 +355,10 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
                     String switchFlag = decodedMap.get("key5").substring(3);
                     if (switchFlag.contains("01")) {//有打开的开关
                         String powerFlag = decodedMap.get("key6").substring(3);
-                        machineUploadChargeData(chargeMachineDto, switchFlag, powerFlag);
+                        boolean shouldProcessLowPower = machineUploadChargeData(chargeMachineDto, switchFlag, powerFlag);
+                        if (shouldProcessLowPower) {
+                            machineChangePortState(chargeMachineDto, decodedMap);
+                        }
                     }
                 } else {
                     machineChangePortState(chargeMachineDto, decodedMap);
@@ -376,12 +387,15 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
      * @param chargeMachineDto
      * @param switchFlag
      * @param powerFlag
+     * @return 如果同一个订单的设备三次充电功率都小于 5W，返回 true；否则返回 false
      */
-    private void machineUploadChargeData(ChargeMachineDto chargeMachineDto, String switchFlag, String powerFlag) {
+    private boolean machineUploadChargeData(ChargeMachineDto chargeMachineDto, String switchFlag, String powerFlag) {
         String[] ports = splitIntoPairs(switchFlag, 2);
         String[] portPowers = splitIntoPairs(powerFlag, 4);
 
         int power = 0;
+        boolean allThreeTimesLessThan20W = false;
+        
         for (int port = 0; port < ports.length; port++) {
             if ("00".equals(portPowers[port])) {//开关未开放弃
                 continue;
@@ -405,16 +419,41 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
             if (ListUtil.isNull(chargeMachineOrderDtos)) {
                 continue;
             }
-            double lastPower = Double.parseDouble(chargeMachineOrderDtos.get(0).getEnergy());
-            double sum = power + lastPower;
+            
+            // 使用缓存累加功耗值，连续上报 3 次后才更新数据库
+            String orderId = chargeMachineOrderDtos.get(0).getOrderId();
+            double updatedEnergy = updatePowerWithCache(orderId, power);
+            
+            // 检查是否满足条件：三次上报且当前功率小于 5W
+            if (power < 20) {
+                // 检查缓存中的上报次数是否为 3 的倍数（表示已完成一个完整的三次上报周期）
+                String cacheKey = CHARGE_POWER_CACHE_PREFIX + orderId;
+                String cachedValue = CommonCache.getValue(cacheKey);
+                if (cachedValue != null && !cachedValue.isEmpty()) {
+                    String[] parts = cachedValue.split(":");
+                    if (parts.length == 2) {
+                        try {
+                            int reportCount = Integer.parseInt(parts[1]);
+                            // 当计数器为 0 时，表示刚完成一个完整的三次上报周期
+                            if (reportCount == 0) {
+                                allThreeTimesLessThan20W = true;
+                            }
+                        } catch (NumberFormatException e) {
+                        }
+                    }
+                }
+            }
+            
             ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
-            chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
-            chargeMachineOrderPo.setEnergy(sum + "");
+            chargeMachineOrderPo.setOrderId(orderId);
+            chargeMachineOrderPo.setEnergy(updatedEnergy + "");
             chargeMachineOrderPo.setCommunityId(chargeMachineOrderDtos.get(0).getCommunityId());
             chargeMachineOrderV1InnerServiceSMOImpl.updateChargeMachineOrder(chargeMachineOrderPo);
         }
         String paramOut = SongbingChargeUtil.heartBeatResponse(chargeMachineDto.getMachineCode());
         notifyNettyDataV1InnerServiceSMOImpl.sendData(new NettyReplyDataDto(chargeMachineDto.getMachineCode(), BytesUtil.hexStringToByteArray(paramOut)));
+        
+        return allThreeTimesLessThan20W;
     }
 
 
@@ -731,6 +770,54 @@ public class SongbingChargeMachineFactoryAdapt implements IChargeFactoryAdapt {
         monthCardOrder(chargeMachineDtos, orderId, durationHours);
     }
 
+    /**
+     * 使用缓存累加功耗值，连续上报 3 次后才更新数据库
+     * @param orderId 订单 ID
+     * @param currentPower 当前上报的功率值
+     * @return 更新后的总功耗值
+     */
+    private double updatePowerWithCache(String orderId, int currentPower) {
+        String cacheKey = CHARGE_POWER_CACHE_PREFIX + orderId;
+        
+        // 从缓存中获取已累加的功率值和上报次数
+        String cachedValue = CommonCache.getValue(cacheKey);
+        
+        double totalPower = 0.0;
+        int reportCount = 0;
+        
+        if (cachedValue != null && !cachedValue.isEmpty()) {
+            // 解析缓存值：格式为 "totalPower:reportCount"
+            String[] parts = cachedValue.split(":");
+            if (parts.length == 2) {
+                try {
+                    totalPower = Double.parseDouble(parts[0]);
+                    reportCount = Integer.parseInt(parts[1]);
+                } catch (NumberFormatException e) {
+                    logger.error("解析缓存数据失败", e);
+                    totalPower = 0.0;
+                    reportCount = 0;
+                }
+            }
+        }
+        
+        // 累加当前功率值
+        totalPower += currentPower;
+        reportCount++;
+        
+        // 如果达到 3 次上报，则更新缓存并返回累计值，同时清除计数
+        if (reportCount >= CACHE_REPORT_COUNT) {
+            // 保存累计后的总功耗到缓存，重置计数器
+            CommonCache.setValue(cacheKey, totalPower + ":0", CACHE_EXPIRE_TIME);
+            logger.info("订单 {} 累计上报{}次，更新功耗值：{}", orderId, CACHE_REPORT_COUNT, totalPower);
+        } else {
+            // 未达到 3 次，继续累加
+            CommonCache.setValue(cacheKey, totalPower + ":" + reportCount, CACHE_EXPIRE_TIME);
+            logger.debug("订单 {} 第{}次上报，累计功耗：{}", orderId, reportCount, totalPower);
+        }
+        
+        return totalPower;
+    }
+    
     private void monthCardOrder(List<ChargeMachineDto> chargeMachineDtos, String orderId, double durationHours) {
 
         ChargeMachineOrderAcctPo chargeMachineOrderAcctPo = new ChargeMachineOrderAcctPo();
