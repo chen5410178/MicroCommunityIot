@@ -11,10 +11,12 @@ import com.java110.core.utils.StringUtil;
 import com.java110.dto.importData.ImportMeterMachineDto;
 import com.java110.dto.log.AssetImportLogDetailDto;
 import com.java110.dto.meter.MeterTypeDto;
+import com.java110.dto.meter.MeterMachineFactorySpecDto;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterMachineSpecV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterMachineV1InnerServiceSMO;
 import com.java110.intf.meter.IMeterTypeV1InnerServiceSMO;
+import com.java110.intf.meter.IMeterMachineFactorySpecV1InnerServiceSMO;
 import com.java110.job.importData.DefaultImportData;
 import com.java110.job.importData.IImportDataAdapt;
 import com.java110.po.meter.MeterMachinePo;
@@ -41,6 +43,9 @@ public class ImportMeterMachineQueueDataAdapt extends DefaultImportData implemen
 
     @Autowired
     private IMeterTypeV1InnerServiceSMO meterTypeV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IMeterMachineFactorySpecV1InnerServiceSMO meterMachineFactorySpecV1InnerServiceSMOImpl;
 
     @Override
     public void importData(List<AssetImportLogDetailDto> assetImportLogDetailDtos) {
@@ -104,29 +109,28 @@ public class ImportMeterMachineQueueDataAdapt extends DefaultImportData implemen
             return;
         }
 
-        String specId = "120101";
+        // 根据 factory_id 查询对应的规格信息
+        MeterMachineFactorySpecDto specQuery = new MeterMachineFactorySpecDto();
+        specQuery.setFactoryId(meterMachinePo.getImplBean()); // 假设 implBean 对应 factory_id
+        specQuery.setStatusCd("0"); // 只查询有效的记录
+        List<MeterMachineFactorySpecDto> specList = meterMachineFactorySpecV1InnerServiceSMOImpl.queryMeterMachineFactorySpecs(specQuery);
 
-        //拓强电表-单相单费率电表
-        if("1".equals(meterMachinePo.getImplBean())){
-            specId = "120101";
-        }else if("2".equals(meterMachinePo.getImplBean())){ //拓强电表-单相远程单费率预付费表
-            specId = "120102";
-        }else if("3".equals(meterMachinePo.getImplBean())){ // 拓强水表-Lora无预付费水表
-            specId = "120103";
-        }else if("4".equals(meterMachinePo.getImplBean())){ //拓强水表-Lora普通预付费水表
-            specId = "120104";
+        if (specList == null || specList.isEmpty()) {
+            throw new CmdException("未找到对应的工厂规格信息，factoryId=" + meterMachinePo.getImplBean());
         }
 
-        MeterMachineSpecPo meterMachineSpecPo = null;
-        meterMachineSpecPo = new MeterMachineSpecPo();
+        // 取第一条符合条件的规格记录
+        MeterMachineFactorySpecDto factorySpec = specList.get(0);
+        String specId = factorySpec.getSpecId();
+        String specName = factorySpec.getSpecName();
+        MeterMachineSpecPo meterMachineSpecPo = new MeterMachineSpecPo();
         meterMachineSpecPo.setMachineId(meterMachinePo.getMachineId());
         meterMachineSpecPo.setSpecId(specId);
-        meterMachineSpecPo.setSpecName("采集器ID");
+        meterMachineSpecPo.setSpecName(specName); // 使用从数据库获取的 specName
         meterMachineSpecPo.setSpecValue(importMeterMachineDto.getValue1());
         meterMachineSpecPo.setMmsId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         meterMachineSpecPo.setCommunityId(meterMachinePo.getCommunityId());
         flag = meterMachineSpecV1InnerServiceSMOImpl.saveMeterMachineSpec(meterMachineSpecPo);
-
         if (flag < 1) {
             throw new CmdException("保存数据失败");
         }
