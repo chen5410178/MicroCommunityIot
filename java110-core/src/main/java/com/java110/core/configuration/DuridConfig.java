@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * durid 配置类
  */
-@Configuration
+//@Configuration
 public class DuridConfig {
 
 
