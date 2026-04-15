@@ -86,6 +86,9 @@
                 <th class="text-center">
                     <span><vc:i18n name="说明" namespace="parkingAreaControlCarInouts"></vc:i18n></span>
                 </th>
+                <th class="text-center">
+                    <span><vc:i18n name="操作" namespace="parkingAreaControlCarInouts"></vc:i18n></span>
+                </th>
             </tr>
             </thead>
             <tbody>
@@ -123,11 +126,17 @@
                         </span>
                 </td>
                 <td class="text-center">{{carIn.remark}}</td>
+                <td class="text-center">
+                    <button class="btn-white btn btn-xs" @click="_exceptionCarIn(carIn)"
+                            v-if="carIn.state == '100500' && carIn.carInout == '3306' && vc.hasPrivilege('502024072439940003')">
+                        <vc:i18n name='异常入场'></vc:i18n>
+                    </button>
+                </td>
             </tr>
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="7">
+                <td colspan="13">
                     <ul class="pagination float-right"></ul>
                 </td>
             </tr>
@@ -136,4 +145,25 @@
         <!-- 分页 -->
         <vc:create path="frame/paginationPlus" namespace="parkingAreaControlCarInouts"></vc:create>
     </div>
-</div>
+    <!-- 异常入场确认模态框 -->
+    <div class="modal fade" id="exceptionInModel" role="dialog" aria-labelledby="exceptionInLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exceptionInLabel"><vc:i18n name="请确认您的操作!"></vc:i18n></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <tr align="center">
+                        <th><vc:i18n name="请确定异常入场！" namespace="parkingAreaControlCarInouts"></vc:i18n></th>
+                    </tr>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><vc:i18n name="点错了"></vc:i18n></button>
+                    <button type="button" class="btn btn-primary" v-on:click="_doExceptionCarIn()"><vc:i18n name="确认!"></vc:i18n></button>
+                </div>
+            </div>
+        </div>
+    </div>
