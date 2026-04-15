@@ -15,7 +15,8 @@
                 startTime: '',
                 endTime: '',
                 carType: '',
-                machineId: ''
+                machineId: '',
+                curCarIn: null   // 存储当前操作的车辆记录
             }
         },
         _initMethod: function () {
@@ -195,7 +196,40 @@
                 vc.emit('viewImage', 'showImage', {
                     url: _url
                 });
-            }
+            },
+			// 异常入场
+			_exceptionCarIn: function(_carIn) {
+				$that.parkingAreaControlCarInoutsInfo.curCarIn = _carIn;
+				$('#exceptionInModel').modal('show');
+			},
+			_doExceptionCarIn: function() {
+				if (!$that.parkingAreaControlCarInoutsInfo.curCarIn) {
+					vc.toast('未选中任何记录');
+					return;
+				}
+				let _data = {
+					ciId: $that.parkingAreaControlCarInoutsInfo.curCarIn.ciId,
+					communityId: vc.getCurrentCommunity().communityId,
+					operateType: "IN" // 标识异常入场
+				};
+				vc.http.apiPost('/carInout.exceptionCarOut', JSON.stringify(_data), {
+						emulateJSON: true
+					},
+					function(json, res) {
+						let _data = JSON.parse(json);
+						if (_data.code != 0) {
+							vc.toast(_data.msg);
+						} else {
+							$('#exceptionInModel').modal('hide');
+							vc.toast(_data.msg);
+							$that._loadParkingAreaControlCarInouts(DEFAULT_PAGE, DEFAULT_ROWS);
+						}
+					},
+					function(errInfo, error) {
+						console.log('请求失败处理');
+						vc.toast(errInfo);
+					});
+			}
         }
     });
 })(window.vc);

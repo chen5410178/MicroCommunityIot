@@ -115,3 +115,9 @@ CREATE TABLE `temp_inner_car` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
+
+### 2026-01-15 停车场加入异常入场
+```sql
+INSERT INTO `p_privilege` VALUES ('502024072439940003', '异常入场', '', '2024-07-24 19:39:38', '0', '800900000003', '/iot/api/carInout.exceptionCarOut', '702023092199790001');
+INSERT INTO `p_privilege_rel` VALUES ('102024072471860004', '502024072439940003', '600201904002', '1001', '2024-07-24 19:39:38', '0');
+```
