@@ -96,7 +96,11 @@ public class LockCoreImpl implements ILockCore{
                 lockMachineDto.setState(LockMachineDto.STATE_OFFLINE);
                 lockMachineDto.setStateName("离线");
             }
-            lockMachineDto.setCharge(lockFactoryAdapt.queryElectricQuantity(lockMachineDto, lockMachineDtos.get(0).getLockMachineParamDtoList()).toString());
+            try {
+                lockMachineDto.setCharge(lockFactoryAdapt.queryElectricQuantity(lockMachineDto, lockMachineDtos.get(0).getLockMachineParamDtoList()).toString());
+            }catch (Exception e){
+                lockMachineDto.setCharge("0");
+            }
             LockMachinePo lockMachinePo = new LockMachinePo();
             BeanUtils.copyProperties(lockMachineDto, lockMachinePo);
             lockMachineV1InnerServiceSMOImpl.updateLockMachine(lockMachinePo);
