@@ -56,6 +56,7 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
     public static final String OPEN_TYPE_CARD = "2000"; // 开门方式，1000 人脸开门 2000 钥匙开门 3000 二维码开门 4000 密码开门
     public static final String OPEN_TYPE_QRCODE = "3000"; // 开门方式，1000 人脸开门 2000 钥匙开门 3000 二维码开门 4000 密码开门
     public static final String OPEN_TYPE_PASSWORD = "4000"; // 开门方式，1000 人脸开门 2000 钥匙开门 3000 二维码开门 4000 密码开门
+    public static final String OPEN_TYPE_APP = "5000"; // 开门方式，1000 人脸开门 2000 钥匙开门 3000 二维码开门 4000 密码开门
 
     @Autowired
     private IAccessControlLogV1InnerServiceSMO accessControlLogV1InnerServiceSMOImpl;

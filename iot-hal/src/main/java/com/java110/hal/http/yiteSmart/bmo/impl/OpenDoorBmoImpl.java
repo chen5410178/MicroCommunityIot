@@ -74,15 +74,23 @@ public class OpenDoorBmoImpl implements IOpenDoorBmo {
         String type = reqJson.getString("type");
         UserDto userDto = null;
         String openTypeCd = "";
-        if ("FACE".equals(type)) {
-            openTypeCd = "1000";
-            userDto = queryUserDtoByTel(reqJson.getString("data"), accessControlDtos.get(0).getCommunityId());
-        } else if ("CARD".equals(type)) {
-            openTypeCd = "2000";
+        // 类型映射：FACE=1000,CARD=2000,PWD=4000,QR=3000,APP=5000,GUEST=6000,TPWD=7000
+        switch (type) {
+            case "FACE": openTypeCd = "1000"; break;
+            case "CARD": openTypeCd = "2000"; break;
+            case "PWD": openTypeCd = "4000"; break;
+            case "QR": openTypeCd = "3000"; break;
+            case "APP": openTypeCd = "5000"; break;
+            case "GUEST": openTypeCd = "6000"; break;
+            case "TPWD": openTypeCd = "7000"; break;
+            default: return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        }
 
+// 只有 CARD 走卡号查询，其余全部走手机号查询
+        if ("CARD".equals(type)) {
             userDto = queryUserDtoByCardNumber(reqJson.getString("data"), accessControlDtos.get(0).getCommunityId());
         } else {
-            return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+            userDto = queryUserDtoByTel(reqJson.getString("data"), accessControlDtos.get(0).getCommunityId());
         }
 
         String facePath = reqJson.getString("photo");
@@ -167,9 +175,22 @@ public class OpenDoorBmoImpl implements IOpenDoorBmo {
 
         userDto.setUserId(accessControlFaceDtos.get(0).getPersonId());
         userDto.setName(accessControlFaceDtos.get(0).getName());
-        userDto.setTel(accessControlFaceDtos.get(0).getOwnerLink());
-        if (StringUtil.isEmpty(accessControlFaceDtos.get(0).getOwnerLink())) {
-            userDto.setTel(accessControlFaceDtos.get(0).getStaffLink());
+
+        String personId = accessControlFaceDtos.get(0).getPersonId();
+        String personType = accessControlFaceDtos.get(0).getPersonType();
+        if ("OWNER".equals(personType)) {
+            OwnerDto ownerDto = new OwnerDto();
+            ownerDto.setMemberId(personId);
+            List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
+            userDto.setTel(!ListUtil.isNull(ownerDtos) ? ownerDtos.get(0).getLink() : null);
+        } else if ("STAFF".equals(personType)) {
+            UserDto staffDto = new UserDto();
+            staffDto.setUserId(personId);
+            List<UserDto> staffDtos = userV1InnerServiceSMOImpl.queryUsers(staffDto);
+            userDto.setTel(!ListUtil.isNull(staffDtos) ? staffDtos.get(0).getTel() : null);
+        }
+        if (StringUtil.isEmpty(userDto.getTel())) {
+            userDto.setTel("11111111111");
         }
         return userDto;
     }

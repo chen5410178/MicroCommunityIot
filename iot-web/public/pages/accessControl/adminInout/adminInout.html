@@ -142,6 +142,13 @@
                                 <td class="text-center">{{adminInout.machineCode}}</td>
                                 <td class="text-center">{{adminInout.name}}</td>
                                 <td class="text-center">{{adminInout.openTypeCd == '1000'?'人脸':'其他'}}
+								{{
+								  adminInout.openTypeCd == '1000' ? '人脸' :
+								  adminInout.openTypeCd == '2000' ? '卡片' :
+								  adminInout.openTypeCd == '3000' ? '二维码' :
+								  adminInout.openTypeCd == '4000' ? '密码' :
+								  adminInout.openTypeCd == '5000' ? '远程' : '其他'
+								}}
                                 </td>
                                 <td class="text-center">{{adminInout.tel || '-'}}</td>
                                 <td class="text-center">{{adminInout.idCard || '-'}}</td>

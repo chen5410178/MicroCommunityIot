@@ -24,6 +24,9 @@
                 }, {
                     openTypeName: '密码开门',
                     openTypeCd: '4000',
+                }, {
+                    openTypeName: '远程开门',
+                    openTypeCd: '5000',
                 }],
                 total: 0,
                 records: 1,

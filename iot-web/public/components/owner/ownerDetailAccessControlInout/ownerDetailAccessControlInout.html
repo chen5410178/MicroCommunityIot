@@ -68,7 +68,14 @@
                     <td class="text-center">{{inout.machineName}}</td>
                     <td class="text-center">{{inout.machineCode}}</td>
                     <td class="text-center">{{inout.name}}</td>
-                    <td class="text-center">{{accessControlInout.openTypeCd == '1000'?'人脸':'其他'}}</td>
+                    <td class="text-center">
+					{{
+					  accessControlInout.openTypeCd == '1000' ? '人脸' :
+					  accessControlInout.openTypeCd == '2000' ? '卡片' :
+					  accessControlInout.openTypeCd == '3000' ? '二维码' :
+					  accessControlInout.openTypeCd == '4000' ? '密码' :
+					  accessControlInout.openTypeCd == '5000' ? '远程' : '其他'
+					}}</td>
                     <td class="text-center">{{inout.tel || '-'}}</td>
                     <td class="text-center">{{inout.idCard || '-'}}</td>
                     <td class="text-center">{{inout.similar}}</td>
