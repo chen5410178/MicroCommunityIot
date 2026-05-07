@@ -62,6 +62,7 @@ public class AccessControlDto extends PageDto implements Serializable {
     private String port;
     private String password;
     private String remark;
+    private String tel;
 
 
     public String getMachineMac() {
@@ -343,5 +344,13 @@ public class AccessControlDto extends PageDto implements Serializable {
 
     public void setCommunityIds(String[] communityIds) {
         this.communityIds = communityIds;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 }

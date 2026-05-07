@@ -62,8 +62,9 @@ public class OpenAccessControlDoorBmoImpl implements IIotCommonApiBmo {
 
         Assert.listOnlyOne(accessControlDtos, "门禁不存在");
 
-        accessControlDto.setUserId(memberId);
-        accessControlDto.setUserName(ownerDtos.get(0).getName());
+        accessControlDtos.get(0).setUserId(memberId);
+        accessControlDtos.get(0).setUserName(ownerDtos.get(0).getName());
+        accessControlDtos.get(0).setTel(ownerDtos.get(0).getLink());
 
 
         int openFlag = accessControlV1InnerServiceSMOImpl.openDoor(accessControlDtos.get(0));

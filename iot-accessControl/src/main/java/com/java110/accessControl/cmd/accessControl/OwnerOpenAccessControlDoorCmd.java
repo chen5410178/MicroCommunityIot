@@ -11,15 +11,19 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.CmdContextUtils;
+import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.appUser.AppUserDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
+import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.dto.user.UserDto;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
 import com.java110.intf.accessControl.IAccessControlV1InnerServiceSMO;
 import com.java110.intf.system.IHardwareManufacturerV1InnerServiceSMO;
 import com.java110.intf.user.IAppUserV1InnerServiceSMO;
+import com.java110.intf.user.IOwnerV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,6 +47,9 @@ public class OwnerOpenAccessControlDoorCmd extends Cmd {
 
     @Autowired
     private IAppUserV1InnerServiceSMO appUserV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IOwnerV1InnerServiceSMO ownerV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
@@ -90,6 +97,16 @@ public class OwnerOpenAccessControlDoorCmd extends Cmd {
 
         accessControlDtos.get(0).setUserId(userId);
         accessControlDtos.get(0).setUserName(userDtos.get(0).getName());
+        String tel = userDtos.get(0).getTel();
+        if (StringUtil.isEmpty(tel)) {
+            OwnerDto ownerDto = new OwnerDto();
+            ownerDto.setMemberId(appUserDtos.get(0).getMemberId());
+            List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
+            if (!ListUtil.isNull(ownerDtos)) {
+                tel = ownerDtos.get(0).getLink();
+            }
+        }
+        accessControlDtos.get(0).setTel(tel);
 
         IAccessControlManufactor accessControlManufactor = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
         boolean openFlag = accessControlManufactor.openDoor(accessControlDtos.get(0));

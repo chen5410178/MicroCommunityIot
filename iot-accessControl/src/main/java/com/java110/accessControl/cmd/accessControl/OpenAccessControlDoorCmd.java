@@ -11,6 +11,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.CmdContextUtils;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.hardwareManufacturer.HardwareManufacturerDto;
 import com.java110.dto.user.UserDto;
@@ -66,6 +67,11 @@ public class OpenAccessControlDoorCmd extends Cmd {
 
         accessControlDtos.get(0).setUserId(userId);
         accessControlDtos.get(0).setUserName(userDtos.get(0).getName());
+        String tel = userDtos.get(0).getTel();
+        if (StringUtil.isEmpty(tel)) {
+            tel = userDtos.get(0).getUserName();
+        }
+        accessControlDtos.get(0).setTel(tel);
 
         IAccessControlManufactor accessControlManufactor = ApplicationContextFactory.getBean(hardwareManufacturerDtos.get(0).getProtocolImpl(), IAccessControlManufactor.class);
         boolean openFlag = accessControlManufactor.openDoor(accessControlDtos.get(0));
