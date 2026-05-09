@@ -12239,6 +12239,9 @@ INSERT INTO `t_dict` VALUES ('626457', '4', '黑牌车', '黑牌车', '2019-10-1
 INSERT INTO `t_dict` VALUES ('626458', '5', '绿牌车', '绿牌车', '2019-10-15 09:47:21', 'temp_car_fee_config', 'car_type');
 INSERT INTO `t_dict` VALUES ('626459', '6', '黄绿牌车', '黄绿牌车', '2019-10-15 09:47:21', 'temp_car_fee_config', 'car_type');
 INSERT INTO `t_dict` VALUES ('626460', '9902', '内部临时车', '内部临时车', '2019-10-15 09:47:21', 'temp_car_fee_config', 'car_type');
+INSERT INTO `t_dict` VALUES ('626461', '5000', '远程开门', '远程开门', '2019-10-15 09:47:21', 'access_control_inout', 'open_type_cd');
+INSERT INTO `t_dict` VALUES ('626462', '6000', '访客开门', '访客开门', '2019-10-15 09:47:21', 'access_control_inout', 'open_type_cd');
+INSERT INTO `t_dict` VALUES ('626463', '7000', '临时密码开门', '临时密码开门', '2019-10-15 09:47:21', 'access_control_inout', 'open_type_cd');
 
 -- ----------------------------
 -- Table structure for t_dict_spec
