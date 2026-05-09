@@ -86,6 +86,7 @@ public class SyncAccessControlBMOImpl implements ISyncAccessControlBMO {
                 accessControlFacePo.setMfId(tmpAccessControlFaceDto.getMfId());
                 accessControlFacePo.setMachineId(tmpAccessControlFaceDto.getMachineId());
                 accessControlFacePo.setCommunityId(tmpAccessControlFaceDto.getCommunityId());
+                accessControlFacePo.setPersonId(tmpAccessControlFaceDto.getPersonId());
                 accessControlFaceV1InnerServiceSMOImpl.deleteAccessControlFace(accessControlFacePo);
             }
 
