@@ -4,5 +4,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface ISyncOneUserFaceBmo {
 
-    ResponseEntity syncUserFace(String machineCode,int page,int row);
+    ResponseEntity syncUserFace(String machineCode,int page,int row,String t);
 }

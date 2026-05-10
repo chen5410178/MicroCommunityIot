@@ -60,7 +60,7 @@ public class LoginBmoImpl implements ILoginBmo {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime() / 1000);
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
 

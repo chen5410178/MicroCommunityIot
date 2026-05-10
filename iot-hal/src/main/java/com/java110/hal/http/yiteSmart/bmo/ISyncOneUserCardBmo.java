@@ -4,5 +4,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface ISyncOneUserCardBmo {
 
-    ResponseEntity syncUserCard(String machineCode);
+    ResponseEntity syncUserCard(String machineCode, String t);
 }
