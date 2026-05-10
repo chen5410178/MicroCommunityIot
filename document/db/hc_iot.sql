@@ -12242,7 +12242,10 @@ INSERT INTO `t_dict` VALUES ('626460', '9902', '内部临时车', '内部临时�
 INSERT INTO `t_dict` VALUES ('626461', '5000', '远程开门', '远程开门', '2019-10-15 09:47:21', 'access_control_inout', 'open_type_cd');
 INSERT INTO `t_dict` VALUES ('626462', '6000', '访客开门', '访客开门', '2019-10-15 09:47:21', 'access_control_inout', 'open_type_cd');
 INSERT INTO `t_dict` VALUES ('626463', '7000', '临时密码开门', '临时密码开门', '2019-10-15 09:47:21', 'access_control_inout', 'open_type_cd');
-
+INSERT INTO `t_dict` VALUES ('626469', 'ADD_CARD', '添加卡片', '添加卡片', '2020-01-26 13:56:18', 'access_control_log', 'log_cmd');
+INSERT INTO `t_dict` VALUES ('626470', 'DELETE_CARD', '删除卡片', '删除卡片', '2020-01-26 13:56:18', 'access_control_log', 'log_cmd');
+INSERT INTO `t_dict` VALUES ('626471', 'ADD_USER', '添加人员', '添加人员', '2020-01-26 13:56:18', 'access_control_log', 'log_cmd');
+INSERT INTO `t_dict` VALUES ('626472', 'DELETE_USER', '删除人员', '删除人员', '2020-01-26 13:56:18', 'access_control_log', 'log_cmd');
 -- ----------------------------
 -- Table structure for t_dict_spec
 -- ----------------------------
