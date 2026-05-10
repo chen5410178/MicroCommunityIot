@@ -39,6 +39,9 @@ public final class MappingConstant {
     //拓强智能电表 域
     public static final String TDDIANBIAO_DOMAIN = "TDDIANBIAO_DOMAIN";
 
+    //FST智慧水务平台 域
+    public static final String FSTMETER_DOMAIN = "FSTMETER_DOMAIN";
+
     public  static final String KEY_LOG_ON_OFF = "LOG_ON_OFF";
 
     public  static final String KEY_COST_TIME_ON_OFF = "COST_TIME_ON_OFF";
