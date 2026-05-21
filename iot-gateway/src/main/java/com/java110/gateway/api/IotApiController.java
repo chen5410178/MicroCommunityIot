@@ -3,7 +3,7 @@ package com.java110.gateway.api;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.core.cache.MappingCache;
-import com.java110.core.client.OssUploadTemplate;
+import com.java110.core.client.S3UploadTemplate;
 import com.java110.core.constant.MappingConstant;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
@@ -34,7 +34,7 @@ public class IotApiController {
     private IApiService apiServiceImpl;
 
     @Autowired
-    private OssUploadTemplate ossUploadTemplate;
+    private S3UploadTemplate s3UploadTemplate;
 
     @Autowired
     private IAssetImportSMO assetImportSMOImpl;
@@ -123,7 +123,7 @@ public class IotApiController {
                                              HttpServletRequest request) {
         ResponseEntity<String> responseEntity = null;
 
-        String fileName = ossUploadTemplate.upload(uploadFile, ROOT_PATH);
+        String fileName = s3UploadTemplate.upload(uploadFile, ROOT_PATH);
 
 
         JSONObject outParam = new JSONObject();
@@ -148,7 +148,7 @@ public class IotApiController {
 
         JSONObject photoData = JSONObject.parseObject(postInfo);
 
-        String fileName = ossUploadTemplate.upload(photoData.getString("uploadFile"), ROOT_PATH);
+        String fileName = s3UploadTemplate.upload(photoData.getString("uploadFile"), ROOT_PATH);
 
 
         JSONObject outParam = new JSONObject();

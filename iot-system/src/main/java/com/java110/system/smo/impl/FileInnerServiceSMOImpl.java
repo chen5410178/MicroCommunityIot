@@ -5,9 +5,9 @@ import com.java110.bean.dto.file.FileDto;
 import com.java110.core.cache.MappingCache;
 import com.java110.core.client.FtpUploadTemplate;
 import com.java110.core.client.JSchFtpUploadTemplate;
-import com.java110.core.client.OssUploadTemplate;
+import com.java110.core.client.S3UploadTemplate;
 import com.java110.core.constant.MappingConstant;
-import com.java110.core.utils.OSSUtil;
+import com.java110.core.utils.S3Util;
 import com.java110.intf.system.IFileInnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +29,7 @@ public class FileInnerServiceSMOImpl  implements IFileInnerServiceSMO {
     private JSchFtpUploadTemplate jSchFtpUploadTemplate;
 
     @Autowired
-    private OssUploadTemplate ossUploadTemplate;
+    private S3UploadTemplate s3UploadTemplate;
 
 
 
@@ -38,10 +38,10 @@ public class FileInnerServiceSMOImpl  implements IFileInnerServiceSMO {
 
         //int saveFileFlag = fileServiceDaoImpl.saveFile(BeanConvertUtil.beanCovertMap(fileDto));
         String fileName = "";
-        String ossSwitch = MappingCache.getValue(MappingConstant.FILE_DOMAIN, OSSUtil.OSS_SWITCH);
+        String ossSwitch = MappingCache.getValue(MappingConstant.FILE_DOMAIN, S3Util.S3_SWITCH);
 
-        if (OSSUtil.OSS_SWITCH_OSS.equals(ossSwitch)) {
-            fileName = ossUploadTemplate.upload(fileDto.getContext(), ROOT_PATH);
+        if (S3Util.S3_SWITCH_S3.equals(ossSwitch)) {
+            fileName = s3UploadTemplate.upload(fileDto.getContext(), ROOT_PATH);
         } else {
             String ftpServer = MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_SERVER);
             int ftpPort = Integer.parseInt(MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_PORT));
@@ -68,9 +68,9 @@ public class FileInnerServiceSMOImpl  implements IFileInnerServiceSMO {
             fileName = fileName.substring(fileName.lastIndexOf("/") + 1, fileName.length());
         }
         String context = "";
-        String ossSwitch = MappingCache.getValue(MappingConstant.FILE_DOMAIN, OSSUtil.OSS_SWITCH);
-        if (OSSUtil.OSS_SWITCH_OSS.equals(ossSwitch)) {
-            context = ossUploadTemplate.download(ftpPath, fileName, "",
+        String ossSwitch = MappingCache.getValue(MappingConstant.FILE_DOMAIN, S3Util.S3_SWITCH);
+        if (S3Util.S3_SWITCH_S3.equals(ossSwitch)) {
+            context = s3UploadTemplate.download(ftpPath, fileName, "",
                     0, "",
                     "");
         } else {

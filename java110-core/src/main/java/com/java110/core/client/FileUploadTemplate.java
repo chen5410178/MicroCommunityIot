@@ -2,7 +2,7 @@ package com.java110.core.client;
 
 import com.java110.core.cache.MappingCache;
 import com.java110.core.constant.MappingConstant;
-import com.java110.core.utils.OSSUtil;
+import com.java110.core.utils.S3Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ public class FileUploadTemplate {
     private JSchFtpUploadTemplate jSchFtpUploadTemplate;
 
     @Autowired
-    private OssUploadTemplate ossUploadTemplate;
+    private S3UploadTemplate s3UploadTemplate;
 
 
 
@@ -29,10 +29,10 @@ public class FileUploadTemplate {
 
         String newfileName = ROOT_PATH+ fileName;
 
-        String ossSwitch = MappingCache.getValue(MappingConstant.FILE_DOMAIN, OSSUtil.OSS_SWITCH);
+        String ossSwitch = MappingCache.getValue(MappingConstant.FILE_DOMAIN, S3Util.S3_SWITCH);
 
-        if (OSSUtil.OSS_SWITCH_OSS.equals(ossSwitch)) {
-            newfileName = ossUploadTemplate.upload(inputStream, newfileName);
+        if (S3Util.S3_SWITCH_S3.equals(ossSwitch)) {
+            newfileName = s3UploadTemplate.upload(inputStream, newfileName);
         } else {
             String ftpServer = MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_SERVER);
             int ftpPort = Integer.parseInt(MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_PORT));
@@ -50,10 +50,10 @@ public class FileUploadTemplate {
 
         InputStream inputStream = null;
 
-        String ossSwitch = MappingCache.getValue(MappingConstant.FILE_DOMAIN, OSSUtil.OSS_SWITCH);
+        String ossSwitch = MappingCache.getValue(MappingConstant.FILE_DOMAIN, S3Util.S3_SWITCH);
 
-        if (OSSUtil.OSS_SWITCH_OSS.equals(ossSwitch)) {
-            inputStream = ossUploadTemplate.download(fileName);
+        if (S3Util.S3_SWITCH_S3.equals(ossSwitch)) {
+            inputStream = s3UploadTemplate.download(fileName);
         } else {
             String ftpServer = MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_SERVER);
             int ftpPort = Integer.parseInt(MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_PORT));

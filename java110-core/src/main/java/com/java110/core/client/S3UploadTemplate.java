@@ -1,31 +1,26 @@
 package com.java110.core.client;
 
-import com.aliyun.oss.OSSClient;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Base64Convert;
 import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.OSSUtil;
+import com.java110.core.utils.S3Util;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import java.io.*;
 import java.util.UUID;
 
 @Component
-public class OssUploadTemplate {
-    private static Logger logger = LoggerFactory.getLogger(OssUploadTemplate.class);
+public class S3UploadTemplate {
+    private static Logger logger = LoggerFactory.getLogger(S3UploadTemplate.class);
 
-    /*
-     * private static String server = "www.datasvisser.cn"; //地址 private static
-     * int port = 41023;//端口号 private static String userName = "jntechFTP1";//登录名
-     * private static String userPassword ="MXUsssMjhssE+*=a3C4\\0";//密码
-     */
-    private static String ftpPath = "uploadFiles"; // 文件上传目录
+    private static String ftpPath = "uploadFiles";
 
     private static String LOCAL_CHARSET = "GBK";
     private static String SERVER_CHARSET = "ISO-8859-1";
-    private final static String localpath = "F:/";//下载到F盘下
+    private final static String localpath = "F:/";
     private final static String fileSeparator = System.getProperty("file.separator");
 
     private final static String DEFAULT_IMG_SUFFIX = ".jpg";
@@ -38,11 +33,11 @@ public class OssUploadTemplate {
      */
     public String upload(String imageBase64,  String ftpPath) {
         String fileName = "";
-        OSSClient ossClient = null;
+        S3Client s3Client = null;
         ByteArrayInputStream is = null;
         String urlPath = "";
         try {
-            ossClient = OSSUtil.getOSSClient();
+            s3Client = S3Util.getS3Client();
             fileName = UUID.randomUUID().toString();
             if (imageBase64.contains("data:image/png;base64,")) {
                 imageBase64 = imageBase64.replace("data:image/png;base64,", "");
@@ -63,7 +58,7 @@ public class OssUploadTemplate {
             byte[] context = Base64Convert.base64ToByte(imageBase64);
             is = new ByteArrayInputStream(context);
 
-            OSSUtil.uploadByInputStream(ossClient, is, ftpPath + urlPath);
+            S3Util.uploadByInputStream(s3Client, is, ftpPath + urlPath);
         } catch (Exception e) {
             logger.error("上传文件失败", e);
             throw new IllegalArgumentException("上传文件失败");
@@ -85,14 +80,14 @@ public class OssUploadTemplate {
      */
     public String upload(MultipartFile uploadFile, String ftpPath) {
         String fileName = "";
-        OSSClient ossClient = null;
+        S3Client s3Client = null;
         InputStream is = null;
         try {
-            ossClient = OSSUtil.getOSSClient();
+            s3Client = S3Util.getS3Client();
             fileName = UUID.randomUUID().toString() + "." + uploadFile.getOriginalFilename().substring(uploadFile.getOriginalFilename().lastIndexOf(".") + 1);
             fileName = IMAGE_DEFAULT_PATH + DateUtil.getNowII() + "/" + fileName;
             is = uploadFile.getInputStream();
-            OSSUtil.uploadByInputStream(ossClient, is, ftpPath + fileName);
+            S3Util.uploadByInputStream(s3Client, is, ftpPath + fileName);
         } catch (Exception e) {
              logger.error("上传文件失败", e);
             throw new IllegalArgumentException("上传文件失败");
@@ -110,12 +105,11 @@ public class OssUploadTemplate {
     }
 
     public String upload(InputStream inputStream, String ftpPath) {
-        OSSClient ossClient = null;
+        S3Client s3Client = null;
         try {
-            ossClient = OSSUtil.getOSSClient();
-            OSSUtil.uploadByInputStream(ossClient, inputStream, ftpPath);
+            s3Client = S3Util.getS3Client();
+            S3Util.uploadByInputStream(s3Client, inputStream, ftpPath);
         } catch (Exception e) {
-            // logger.error("上传文件失败", e);
             throw new IllegalArgumentException("上传文件失败");
         } finally {
         }
@@ -127,13 +121,13 @@ public class OssUploadTemplate {
      */
     public byte[] downFileByte(String remotePath, String fileName, String server, int port, String userName, String userPassword) {
         byte[] return_arraybyte = null;
-        OSSClient ossClient = null;
+        S3Client s3Client = null;
         ByteArrayOutputStream byteOut = null;
         InputStream ins = null;
         ByteArrayInputStream fis = null;
         try {
-            ossClient = OSSUtil.getOSSClient();
-            ins = OSSUtil.getInputStreamByOSS(ossClient, remotePath + fileName);
+            s3Client = S3Util.getS3Client();
+            ins = S3Util.getInputStreamByS3(s3Client, remotePath + fileName);
             byteOut = new ByteArrayOutputStream();
             byte[] buf = new byte[2048];
             int bufsize = 0;
@@ -184,22 +178,14 @@ public class OssUploadTemplate {
         return return_arraybyte;
     }
 
-    public static void main(String[] args) {
-        OssUploadTemplate ftpUploadTemplate = new OssUploadTemplate();
-        String img = ftpUploadTemplate.download("/hc/img/20200518/", "ed05abae-2eca-40ff-81a8-b586ff2e6a36.jpg",
-                "118.89.243.11", 617, "hcdemo", "45j74jpWTf7bNhnC");
-
-        System.out.printf("img=" + img);
-    }
-
     public String download(String remotePath, String fileName, String server, int port, String userName, String userPassword) {
-        OSSClient ossClient = null;
+        S3Client s3Client = null;
         ByteArrayOutputStream bos = null;
         InputStream is = null;
         ByteArrayInputStream fis = null;
         try {
-            ossClient = OSSUtil.getOSSClient();
-            is = OSSUtil.getInputStreamByOSS(ossClient, remotePath + fileName);
+            s3Client = S3Util.getS3Client();
+            is = S3Util.getInputStreamByS3(s3Client, remotePath + fileName);
             if (null == is) {
                 throw new FileNotFoundException(remotePath);
             }
@@ -254,11 +240,11 @@ public class OssUploadTemplate {
 
 
     public InputStream download(String fileName) {
-        OSSClient ossClient = null;
+        S3Client s3Client = null;
         InputStream is = null;
         try {
-            ossClient = OSSUtil.getOSSClient();
-            is = OSSUtil.getInputStreamByOSS(ossClient, fileName);
+            s3Client = S3Util.getS3Client();
+            is = S3Util.getInputStreamByS3(s3Client, fileName);
             if (null == is) {
                 throw new FileNotFoundException(fileName);
             }

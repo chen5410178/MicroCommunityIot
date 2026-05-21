@@ -4,7 +4,7 @@ import com.java110.acct.payment.IRefundMoneyAdapt;
 import com.java110.bean.ResultVo;
 import com.java110.core.cache.MappingCache;
 import com.java110.core.client.FtpUploadTemplate;
-import com.java110.core.client.OssUploadTemplate;
+import com.java110.core.client.S3UploadTemplate;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.ListUtil;
@@ -78,7 +78,7 @@ public class WechatRefundMoneyAdapt implements IRefundMoneyAdapt {
     private FtpUploadTemplate ftpUploadTemplate;
 
     @Autowired
-    private OssUploadTemplate ossUploadTemplate;
+    private S3UploadTemplate s3UploadTemplate;
 
     @Autowired
     private IOnlinePayRefundV1InnerServiceSMO onlinePayRefundV1InnerServiceSMOImpl;
@@ -176,7 +176,7 @@ public class WechatRefundMoneyAdapt implements IRefundMoneyAdapt {
         byte[] context = null;
         String ftpPath = "hc/iot/";
 
-        context = ossUploadTemplate.downFileByte(ftpPath, fileName, "",
+        context = s3UploadTemplate.downFileByte(ftpPath, fileName, "",
                 0, "",
                 "");
         System.out.println("------------------------------读取证书：" + ftpPath+fileName+",读取到内容大小："+(context != null?context.length:0));
