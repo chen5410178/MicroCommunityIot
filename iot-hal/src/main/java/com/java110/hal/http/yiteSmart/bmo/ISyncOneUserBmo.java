@@ -4,5 +4,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface ISyncOneUserBmo {
 
-    ResponseEntity syncUser(String machineCode);
+    ResponseEntity syncUser(String machineCode, String t);
 }

@@ -62,7 +62,7 @@ public class OpenDoorBmoImpl implements IOpenDoorBmo {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime() / 1000);
 
         AccessControlDto accessControlDto = new AccessControlDto();
         accessControlDto.setMachineCode(machineCode);
@@ -120,7 +120,7 @@ public class OpenDoorBmoImpl implements IOpenDoorBmo {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime() / 1000);
 
         ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
 

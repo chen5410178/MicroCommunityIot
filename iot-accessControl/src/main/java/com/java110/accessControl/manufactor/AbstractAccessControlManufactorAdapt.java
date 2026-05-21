@@ -230,6 +230,42 @@ public abstract class AbstractAccessControlManufactorAdapt implements IAccessCon
                                   String userName) {
         saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName, AccessControlLogDto.CMD_ADD_FACE);
     }
+    protected void saveAddUserLog(String logId,
+                                  String machineId,
+                                  String logAction,
+                                  String communityId,
+                                  String reqParam,
+                                  String userId,
+                                  String userName) {
+        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName, AccessControlLogDto.CMD_ADD_USER);
+    }
+    protected void saveDeleUserLog(String logId,
+                                   String machineId,
+                                   String logAction,
+                                   String communityId,
+                                   String reqParam,
+                                   String userId,
+                                   String userName) {
+        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName, AccessControlLogDto.CMD_DELETE_USER);
+    }
+    protected void saveAddCardLog(String logId,
+                                  String machineId,
+                                  String logAction,
+                                  String communityId,
+                                  String reqParam,
+                                  String userId,
+                                  String userName) {
+        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName, AccessControlLogDto.CMD_ADD_CARD);
+    }
+    protected void saveDeleCardLog(String logId,
+                                   String machineId,
+                                   String logAction,
+                                   String communityId,
+                                   String reqParam,
+                                   String userId,
+                                   String userName) {
+        saveLog(logId, machineId, logAction, communityId, reqParam, "", AccessControlLogDto.STATE_REQ, userId, userName, AccessControlLogDto.CMD_DELETE_CARD);
+    }
 
     protected void saveUpdateFaceLog(String logId,
                                      String machineId,

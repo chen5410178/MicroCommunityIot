@@ -59,7 +59,7 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
 
         JSONObject param = syncUserImpl.getAddUser(accessControlDto, accessControlFacePo);
 
-        saveAddFaceLog("", accessControlDto.getMachineId(), "/v3_1/sync/users/add/",
+        saveAddUserLog("", accessControlDto.getMachineId(), "/v3_1/sync/users/add/",
                 accessControlDto.getCommunityId(),
                 param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 
@@ -104,7 +104,7 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
 
         param = syncUserCardImpl.getUserCard(accessControlDto, accessControlFacePo);
 
-        saveAddFaceLog("", accessControlDto.getMachineId(), "/v3_1/sync/cards/add/sync",
+        saveAddCardLog("", accessControlDto.getMachineId(), "/v3_1/sync/cards/add/sync",
                 accessControlDto.getCommunityId(),
                 param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 
@@ -154,7 +154,7 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
 
         param = syncUserCardImpl.getUserCard(accessControlDto, accessControlFacePo);
 
-        saveAddFaceLog("", accessControlDto.getMachineId(), "/v3_1/sync/cards/add/sync",
+        saveAddCardLog("", accessControlDto.getMachineId(), "/v3_1/sync/cards/add/sync",
                 accessControlDto.getCommunityId(),
                 param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 
@@ -181,7 +181,7 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
         try {
             JSONObject param = syncUserImpl.getDeleteUser(accessControlDto, accessControlFacePo);
 
-            saveAddFaceLog("", accessControlDto.getMachineId(), "/v3_1/sync/users/add/",
+            saveDeleUserLog("", accessControlDto.getMachineId(), "/v3_1/sync/users/add/",
                     accessControlDto.getCommunityId(),
                     param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 
@@ -201,7 +201,7 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
 
             param = syncUserCardImpl.getUserDeleteCard(accessControlDto, accessControlFacePo);
 
-            saveAddFaceLog("", accessControlDto.getMachineId(), "/v3_1/sync/cards/add/sync",
+            saveDeleCardLog("", accessControlDto.getMachineId(), "/v3_1/sync/cards/add/sync",
                     accessControlDto.getCommunityId(),
                     param.toJSONString(), accessControlFacePo.getPersonId(), accessControlFacePo.getName());
 
@@ -217,6 +217,11 @@ public class YiteSmartAccessControlProcessAdapt extends AbstractAccessControlMan
 
             MqttFactory.publish("zghl_door/" + accessControlDto.getMachineCode(), paramIn.toJSONString());
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 

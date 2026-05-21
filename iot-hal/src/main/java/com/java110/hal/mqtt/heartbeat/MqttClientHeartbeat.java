@@ -15,7 +15,7 @@ public class MqttClientHeartbeat implements Runnable {
 
     Logger logger = LoggerFactory.getLogger(MqttClientHeartbeat.class);
 
-    public static final long DEFAULT_WAIT_SECOND = 5*60 * 1000; // 默认15秒执行一次
+    public static final long DEFAULT_WAIT_SECOND = 30 * 1000; // 默认30秒执行一次
 
     @Override
     public void run() {
@@ -40,15 +40,11 @@ public class MqttClientHeartbeat implements Runnable {
         MqttClient mqttClient = MqttFactory.getMqttClient();
 
         if (mqttClient.isConnected()) {
-            logger.debug("CheckMqttConnectThread:==========================>mqtt connect success!!!<=============================================");
+            logger.debug("CheckMqttConnectThread:=====>mqtt connect success!!!<=====");
             MqttClientSubscribeFactory.subscribe();
             return;
         }
 
-        logger.debug("CheckMqttConnectThread:==========================>mqtt connect error, try reconnect<=============================================");
-
-        mqttClient.reconnect();
-        MqttClientSubscribeFactory.subscribe();
-
+        logger.warn("CheckMqttConnectThread:=====>mqtt disconnected, waiting for auto reconnect<=====");
     }
 }

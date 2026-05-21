@@ -25,6 +25,14 @@ public class AccessControlLogDto extends PageDto implements Serializable {
 
     public static final String CMD_DELETE_FACE = "DELETE_FACE"; // todo 删除人脸
 
+    public static final String CMD_ADD_CARD = "ADD_CARD"; // todo 添加卡片
+
+    public static final String CMD_DELETE_CARD = "DELETE_CARD"; // todo 删除卡片
+
+    public static final String CMD_ADD_USER = "ADD_USER"; // todo 添加人员
+
+    public static final String CMD_DELETE_USER = "DELETE_USER"; // todo 删除人员
+
     public static final String CMD_REBOOT = "REBOOT"; // todo 重启
 
     public static final String CMD_OPEN_DOOR = "OPEN_DOOR"; // todo 开门

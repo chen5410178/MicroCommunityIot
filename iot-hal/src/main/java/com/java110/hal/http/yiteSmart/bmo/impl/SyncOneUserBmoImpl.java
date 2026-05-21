@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.java110.core.factory.MqttFactory;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.bean.ResultVo;
+import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
 import com.java110.dto.accessControlLog.AccessControlLogDto;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,25 +32,41 @@ public class SyncOneUserBmoImpl implements ISyncOneUserBmo {
     private IAccessControlFaceV1InnerServiceSMO accessControlFaceV1InnerServiceSMOImpl;
 
     @Override
-    public ResponseEntity syncUser(String machineCode) {
+    public ResponseEntity syncUser(String machineCode, String t) {
 
 
         AccessControlLogDto accessControlLogDto = new AccessControlLogDto();
         accessControlLogDto.setState(AccessControlLogDto.STATE_REQ);
         accessControlLogDto.setLogAction("/v3_1/sync/users/add/");
         accessControlLogDto.setMachineCode(machineCode);
+        if (!"0".equals(t)) {
+            long ts = Long.parseLong(t);
+            if (ts > 9999999999L) {
+                ts = ts / 1000;
+            }
+            Date tsDate = new Date(ts * 1000);
+            accessControlLogDto.setQueryStartTime(DateUtil.getFormatTimeStringA(tsDate));
+        }
         List<AccessControlLogDto> accessControlLogDtos = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogs(accessControlLogDto);
 
         if (ListUtil.isNull(accessControlLogDtos)) {
-            throw new IllegalArgumentException("没有数据");
+            JSONObject noData = new JSONObject();
+            noData.put("code", 201);
+            noData.put("msg", "no data");
+            noData.put("timestamp", Long.parseLong("0".equals(t) ? "0" : t));
+            noData.put("data", new JSONObject());
+            return new ResponseEntity(noData.toJSONString(), HttpStatus.OK);
         }
 
-        String personId = accessControlLogDtos.get(0).getUserId();
-        String machineId = accessControlLogDtos.get(0).getMachineId();
+        AccessControlLogDto selectedLog = accessControlLogDtos.get(accessControlLogDtos.size() - 1);
+        String personId = selectedLog.getUserId();
+        String machineId = selectedLog.getMachineId();
+        String logCmd = selectedLog.getLogCmd();
+        Date createTime = selectedLog.getCreateTime();
 
         accessControlLogDto = new AccessControlLogDto();
-        accessControlLogDto.setLogId(accessControlLogDtos.get(0).getLogId());
-        accessControlLogDto.setCommunityId(accessControlLogDtos.get(0).getCommunityId());
+        accessControlLogDto.setLogId(selectedLog.getLogId());
+        accessControlLogDto.setCommunityId(selectedLog.getCommunityId());
         accessControlLogDtos = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogParams(accessControlLogDto);
         if (ListUtil.isNull(accessControlLogDtos)) {
             throw new IllegalArgumentException("没有数据");
@@ -77,22 +95,44 @@ public class SyncOneUserBmoImpl implements ISyncOneUserBmo {
             accessControlFaceV1InnerServiceSMOImpl.updateAccessControlFace(accessControlFacePo);
         }
 
-
-		JSONObject paramIn = new JSONObject();
-		paramIn = new JSONObject();
+        JSONObject paramIn = new JSONObject();
+        paramIn = new JSONObject();
         paramIn.put("t", machineCode);
-        paramIn.put("c", "syncFace");
+        paramIn.put("c", "syncUsers");
         paramIn.put("f", "server_php");
-		JSONObject m = new JSONObject();
-        // m = new JSONObject();
+        JSONObject m = new JSONObject();
         m.put("p", "all");
         m.put("t", GenerateCodeFactory.getUUID());
         paramIn.put("m", m);
 
         MqttFactory.publish("zghl_door/" + machineCode, paramIn.toJSONString());
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (!AccessControlLogDto.CMD_DELETE_USER.equals(logCmd)) {
+//            JSONObject paramIn = new JSONObject();
+            paramIn = new JSONObject();
+            paramIn.put("t", machineCode);
+            paramIn.put("c", "syncFace");
+            paramIn.put("f", "server_php");
+//            JSONObject m = new JSONObject();
+            m.put("p", "all");
+            m.put("t", GenerateCodeFactory.getUUID());
+            paramIn.put("m", m);
 
+            MqttFactory.publish("zghl_door/" + machineCode, paramIn.toJSONString());
+        }
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        long tsSec = createTime != null ? createTime.getTime() / 1000 : new Date().getTime() / 1000;
+        JSONObject result = JSONObject.parseObject(accessControlLogDtos.get(0).getReqParam());
+        result.put("timestamp", tsSec);
 
-
-        return new ResponseEntity(accessControlLogDtos.get(0).getReqParam(), HttpStatus.OK);
+        return new ResponseEntity(result.toJSONString(), HttpStatus.OK);
     }
 }

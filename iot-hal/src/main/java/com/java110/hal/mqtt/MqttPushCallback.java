@@ -35,32 +35,7 @@ public class MqttPushCallback implements MqttCallbackExtended {
 
     @Override
     public void connectionLost(Throwable cause) {
-        log.debug("断开连接，建议重连" + this);
-        log.error("连接断开", cause);
-        while (true) {
-            try {
-
-                if (client.isConnected()) {
-                    log.debug("MqttPushCallback:==========================>mqtt connect success!!!<=============================================");
-                    break;
-                }
-                log.debug("MqttPushCallback:==========================>mqtt connect error, try reconnect<=============================================");
-                // 重新连接
-                client.reconnect();
-                //重新订阅消息
-                MqttClientSubscribeFactory.subscribe();
-                Thread.sleep(3000);
-            } catch (Throwable e) {
-                e.printStackTrace();
-                //continue;
-                try {
-                    Thread.sleep(3000);
-                } catch (Throwable ex) {
-                    e.printStackTrace();
-                }
-            }
-
-        }
+        log.warn("MQTT连接断开，等待自动重连: {}", cause != null ? cause.getMessage() : "未知原因");
     }
 
 
@@ -204,25 +179,13 @@ public class MqttPushCallback implements MqttCallbackExtended {
 
     @Override
     public void connectComplete(boolean reconnect, String serverURI) {
-        try {
-            // 连接/重连完成后立即订阅所有主题
-            MqttClientSubscribeFactory.subscribe();
-//            IManufacturerService manufacturerServiceImpl = ApplicationContextFactory.getBean("manufacturerServiceImpl", IManufacturerService.class);
-//            ManufacturerAttrDto tmpManufacturerDto = new ManufacturerAttrDto();
-//            tmpManufacturerDto.setSpecCd(ManufacturerAttrDto.SPEC_TOPIC);
-//            List<ManufacturerAttrDto> manufacturerAttrDtos = manufacturerServiceImpl.getManufacturerAttr(tmpManufacturerDto);
-//
-//            if (manufacturerAttrDtos == null || manufacturerAttrDtos.size() < 1) {
-//                return;
-//            }
-//
-//            //批量订阅
-//            for (ManufacturerAttrDto manufacturerAttrDto : manufacturerAttrDtos) {
-//                MqttFactory.subscribe(manufacturerAttrDto.getValue());
-//            }
-        } catch (Exception e) {
-            // 第一次启动会 异常 不关注
-            e.printStackTrace();
+        log.info("MQTT连接完成, reconnect={}, serverURI={}", reconnect, serverURI);
+        if (reconnect) {
+            try {
+                MqttClientSubscribeFactory.subscribe();
+            } catch (Exception e) {
+                log.error("重连后重新订阅失败", e);
+            }
         }
     }
 }

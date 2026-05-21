@@ -105,7 +105,7 @@ public class YiteSmartHal {
         JSONObject result = new JSONObject();
         result.put("code", 200);
         result.put("msg", "ok");
-        result.put("timestamp", DateUtil.getCurrentDate().getTime());
+        result.put("timestamp", DateUtil.getCurrentDate().getTime() / 1000);
         return new ResponseEntity<>(result.toJSONString(), HttpStatus.OK);
     }
 
@@ -195,7 +195,7 @@ public class YiteSmartHal {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime() / 1000);
         JSONObject data = new JSONObject();
         data.put("gate_button_password", getSwitchs.split("-", 17)[0]); //门禁机密码开门开关
         data.put("gate_button_phone", getSwitchs.split("-", 17)[1]); //手机号呼叫开门开关
@@ -308,7 +308,7 @@ public class YiteSmartHal {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime() / 1000);
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
         logger.debug("/v3_1/sync/passwords/add/：{}", paramOut.toString());
@@ -336,16 +336,14 @@ public class YiteSmartHal {
         int row =  Integer.parseInt(request.getParameter("size"));
 
         String t = request.getParameter("t");
-        long curTimeTimeStamp = new Date().getTime();
-        curTimeTimeStamp = curTimeTimeStamp / 1000;
+        long curTimeTimeStamp = new Date().getTime() / 1000;
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
         paramOut.put("timestamp", curTimeTimeStamp);
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
-        ResponseEntity<String> responseEntity = null;
-        responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
         if ("0".equals(t)) {
             try {
                 responseEntity = syncFaceBmoImpl.sync(uuId,page,row);
@@ -353,11 +351,12 @@ public class YiteSmartHal {
                 e.printStackTrace();
             }
         } else {
-
             try {
-                responseEntity = syncOneUserFaceBmoImpl.syncUserFace(uuId,page,row);
+                responseEntity = syncOneUserFaceBmoImpl.syncUserFace(uuId,page,row,t);
             } catch (Exception e) {
                 e.printStackTrace();
+                paramOut.put("timestamp", Long.parseLong(t));
+                responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
             }
 
         }
@@ -377,7 +376,7 @@ public class YiteSmartHal {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime() / 1000);
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
         logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
@@ -397,7 +396,7 @@ public class YiteSmartHal {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timestamp", "0".equals(t) ? DateUtil.getCurrentDate().getTime() / 1000 : Long.parseLong(t));
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
         logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
@@ -416,7 +415,7 @@ public class YiteSmartHal {
 
         ResponseEntity<String> responseEntity = null;
         try {
-            responseEntity = syncOneUserBmoImpl.syncUser(uuId);
+            responseEntity = syncOneUserBmoImpl.syncUser(uuId, t);
         } catch (Exception e) {
             e.printStackTrace();
             responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
@@ -433,7 +432,7 @@ public class YiteSmartHal {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timestamp", "0".equals(t) ? DateUtil.getCurrentDate().getTime() / 1000 : Long.parseLong(t));
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
         logger.debug("/v3_1/sync/users/bid/：{}", paramOut.toString());
@@ -452,9 +451,10 @@ public class YiteSmartHal {
 
         ResponseEntity<String> responseEntity = null;
         try {
-            responseEntity = syncOneUserCardBmoImpl.syncUserCard(uuId);
+            responseEntity = syncOneUserCardBmoImpl.syncUserCard(uuId, t);
         } catch (Exception e) {
             e.printStackTrace();
+            paramOut.put("timestamp", Long.parseLong(t));
             responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
 
         }
@@ -476,7 +476,7 @@ public class YiteSmartHal {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime() / 1000);
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
         logger.debug("/v3_1/sync/user/add/：{}", paramOut.toString());
@@ -542,7 +542,7 @@ public class YiteSmartHal {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime() / 1000);
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
         logger.debug("/device/v1/face/users：{}", paramOut.toString());
@@ -564,7 +564,7 @@ public class YiteSmartHal {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime() / 1000);
 
         ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
         return responseEntity;
@@ -588,7 +588,7 @@ public class YiteSmartHal {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime() / 1000);
 
         ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
         return responseEntity;
@@ -600,7 +600,7 @@ public class YiteSmartHal {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime() / 1000);
 
         ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
         return responseEntity;
