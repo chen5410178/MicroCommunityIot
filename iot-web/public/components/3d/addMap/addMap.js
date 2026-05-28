@@ -45,6 +45,7 @@
                     zoom: 13
                 });
                 $that.addMapInfo.addMap = addMap;
+                document.getElementById("addMapContainer")._map = addMap;
                 let marker;
                 //添加监听事件  获取鼠标点击事件
                 addMap.on('click', function (event) {

@@ -22,6 +22,8 @@
                 monitorId:'',
                 callingNum:'',
                 remark:'',
+                lat: '',
+                lng: ''
             }
         },
         _initMethod: function () {
@@ -33,6 +35,11 @@
                 $that._listAddHms();
                 $that._listAddMonitors();
                 $('#addAccessControlModel').modal('show');
+                // 确保 addMap 容器在 add modal 内
+                setTimeout(function () {
+                    $('#addMapContainer').parent().appendTo('#addAccessControlModel .modal-body');
+                    vc.emit('addMap', 'showMap', $that.addAccessControlInfo);
+                }, 1000)
             });
         },
         methods: {
@@ -140,7 +147,9 @@
                     monitors:[],
                     monitorId:'',
                     callingNum:'',
-                    remark:''
+                    remark:'',
+                    lat: '',
+                    lng: ''
                 };
             },
             _listAddMachineLocations: function (_page, _rows) {

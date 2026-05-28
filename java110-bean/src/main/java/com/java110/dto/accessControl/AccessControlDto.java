@@ -50,6 +50,9 @@ public class AccessControlDto extends PageDto implements Serializable {
     private String normalPrompt;
     private String owePrompt;
 
+    private String lat;
+    private String lng;
+
     private String protocolImpl;
 
     private String monitorId;
@@ -248,6 +251,22 @@ public class AccessControlDto extends PageDto implements Serializable {
 
     public void setOwePrompt(String owePrompt) {
         this.owePrompt = owePrompt;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
     public String getProtocolImpl() {

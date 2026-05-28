@@ -21,7 +21,9 @@
                 monitors:[],
                 platformId: '',
                 callingNum: '',
-                remark:''
+                remark:'',
+                lat: '',
+                lng: ''
             }
         },
         _initMethod: function() {
@@ -36,6 +38,29 @@
                 $that._listEditHms();
                 $that._listEditMonitors();
                 $that.editAccessControlInfo.communityId = vc.getCurrentCommunity().communityId;
+                // 将 addMap 容器移入当前 edit modal
+                setTimeout(function () {
+                    $('#addMapContainer').parent().appendTo('#editMapContainer');
+                    vc.emit('addMap', 'showMap', $that.editAccessControlInfo);
+                    // 延迟等待地图就绪后创建初始标记（通过 addMap.js 暴露的 _map 引用）
+                    if ($that.editAccessControlInfo.lat && $that.editAccessControlInfo.lng) {
+                        setTimeout(function () {
+                            var container = document.getElementById('addMapContainer');
+                            if (container && container._map) {
+                                var pos = new TMap.LatLng(
+                                    parseFloat($that.editAccessControlInfo.lat),
+                                    parseFloat($that.editAccessControlInfo.lng)
+                                );
+                                new TMap.MultiMarker({
+                                    styleId: "marker",
+                                    position: pos,
+                                    map: container._map,
+                                    id: "edit_pos"
+                                });
+                            }
+                        }, 1500);
+                    }
+                }, 1000)
             });
         },
         methods: {
@@ -152,7 +177,9 @@
                     monitors:[],
                     platformId: '',
                     callingNum: '',
-                    remark:''
+                    remark:'',
+                    lat: '',
+                    lng: ''
                 }
             },
             _listEditMachineLocations: function(_page, _rows) {
