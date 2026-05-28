@@ -2,7 +2,9 @@ package com.java110.hal.http.yiteSmart;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
+import com.java110.core.factory.MqttFactory;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.RequestUtils;
@@ -64,6 +66,27 @@ public class YiteSmartHal {
 
     @Autowired
     private IAdBmo adBmoImpl;
+
+    @Autowired
+    private IManagerLoginBmo managerLoginBmoImpl;
+
+    @Autowired
+    private IManagerGateListBmo managerGateListBmoImpl;
+
+    @Autowired
+    private IManagerViewDataBmo managerViewDataBmoImpl;
+
+    @Autowired
+    private IManagerBuildingsBmo managerBuildingsBmoImpl;
+
+    @Autowired
+    private IManagerRoomsBmo managerRoomsBmoImpl;
+
+    @Autowired
+    private IManagerUsersBmo managerUsersBmoImpl;
+
+    @Autowired
+    private IStrangerCaptureBmo strangerCaptureBmoImpl;
 
     /**
      * 设备核验
@@ -143,7 +166,79 @@ public class YiteSmartHal {
         return responseEntity;
     }
 
+    @RequestMapping(path = "/device/v1/gate/adminSwitch", method = RequestMethod.GET)
+    public ResponseEntity<String> adminSwitch(HttpServletRequest request) {
+//        Map<String, String> headers = new HashMap<>();
+//        RequestUtils.initHeadParam(request, headers);
+//        RequestUtils.initUrlParam(request, headers);
+//        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+//        String uuId = reqJson.getString("uuid");
+        long curTimeTimeStamp = new Date().getTime();
+        curTimeTimeStamp = curTimeTimeStamp / 1000;
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", curTimeTimeStamp);
+        JSONObject data = new JSONObject();
+        data.put("isOpen",1);
+        paramOut.put("data", data);
+        logger.debug("登陆返回报文：{}", paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
 
+    @RequestMapping(path = "/property/v1/usergate/open")
+    public ResponseEntity<String> usergateopen(HttpServletRequest request) {
+
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        logger.debug("进入usergateopen,/property/v1/usergate/open/,{}", headers);
+//        String uuId = getDeviceUuid(request, headers);
+
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        return responseEntity;
+    }
+
+    @RequestMapping(path = "/v3_1/qiniu/token/")
+    public ResponseEntity<String> token(HttpServletRequest request) {
+
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        logger.debug("进入token,/v3_1/qiniu/token/,{}", headers);
+//        String uuId = getDeviceUuid(request, headers);
+
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        return responseEntity;
+    }
+
+    @RequestMapping(path = "/v3_1/qiniu/token/{filename}")
+    public ResponseEntity<String> tokenWithFilename(HttpServletRequest request, @PathVariable String filename) {
+
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        logger.debug("进入token,/v3_1/qiniu/token/{},filename={}", headers, filename);
+//        String uuId = getDeviceUuid(request, headers);
+
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime());
+
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        return responseEntity;
+    }
     /**
      * 实例:
      * {
@@ -594,15 +689,39 @@ public class YiteSmartHal {
         return responseEntity;
     }
 
-    @RequestMapping(path = "/device/v1/stranger/captures")
+    @RequestMapping(path = "/device/v1/stranger/captures", method = RequestMethod.POST)
     public ResponseEntity<String> captures(HttpServletRequest request) {
 
-        JSONObject paramOut = new JSONObject();
-        paramOut.put("code", 200);
-        paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime() / 1000);
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        logger.debug("陌生人抓拍接口,/device/v1/stranger/captures,{}", headers);
+        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
 
-        ResponseEntity<String> responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        String uuId = reqJson.getString("uuid");
+
+        JSONObject reqParam = new JSONObject();
+        reqParam.put("capture_type", request.getParameter("capture_type"));
+        reqParam.put("capture_photo", request.getParameter("capture_photo"));
+        reqParam.put("capture_time", request.getParameter("capture_time"));
+        reqParam.put("ext", request.getParameter("ext"));
+        reqParam.put("why", request.getParameter("why"));
+
+        ResponseEntity<String> responseEntity;
+        try {
+            responseEntity = strangerCaptureBmoImpl.capture(uuId, reqParam);
+            String image = request.getParameter("image");
+            if (!StringUtil.isEmpty(image)) {
+                openDoorBmoImpl.createPhoto(request.getParameter("capture_photo"), image);
+            }
+        } catch (Exception e) {
+            logger.error("陌生人抓拍异常", e);
+            JSONObject paramOut = new JSONObject();
+            paramOut.put("code", 500);
+            paramOut.put("msg", "内部错误");
+            paramOut.put("timestamp", DateUtil.getCurrentDate().getTime() / 1000);
+            responseEntity = new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        }
         return responseEntity;
     }
 
@@ -663,4 +782,321 @@ public class YiteSmartHal {
         return responseEntity;
     }
 
+    /**
+     * 管理机登录
+     */
+    @RequestMapping(path = "/property/v1/gate/login", method = RequestMethod.POST)
+
+    public ResponseEntity<String> managerLogin(@RequestBody String postInfo, HttpServletRequest request) {
+        ResponseEntity<String> responseEntity = null;
+        try {
+            Map<String, String> headers = new HashMap<>();
+            RequestUtils.initHeadParam(request, headers);
+            RequestUtils.initUrlParam(request, headers);
+            System.out.println("进入管理机登录接口,/property/v1/gate/login");
+            System.out.println("headers: " + headers);
+            System.out.println("请求方法: " + request.getMethod());
+            System.out.println("请求URL: " + request.getRequestURL());
+            System.out.println("请求参数: " + request.getQueryString());
+            System.out.println("Content-Type: " + request.getContentType());
+            System.out.println("Content-Length: " + request.getContentLength());
+            System.out.println("CharacterEncoding: " + request.getCharacterEncoding());
+
+            // 打印所有请求头
+            Enumeration<String> headerNames = request.getHeaderNames();
+            while (headerNames.hasMoreElements()) {
+                String headerName = headerNames.nextElement();
+                String headerValue = request.getHeader(headerName);
+                System.out.println("Header " + headerName + ": " + headerValue);
+            }
+
+            System.out.println("设备来登录，postInfo: " + postInfo);
+
+            JSONObject reqJson = JSONObject.parseObject(postInfo);
+            System.out.println("解析的JSON结构: " + reqJson.toJSONString());
+
+            // 从param对象中获取参数
+            JSONObject paramObj = reqJson.getJSONObject("param");
+            String uuid = null;
+            String appVer = null;
+            String systemVer = null;
+
+            if (paramObj != null) {
+                uuid = paramObj.getString("uuid");
+                appVer = paramObj.getString("app_ver");
+                systemVer = paramObj.getString("system_ver");
+                System.out.println("从param对象解析: uuid=" + uuid + ", appVer=" + appVer + ", systemVer=" + systemVer);
+            } else {
+                // 如果没有param对象，尝试直接从第一层获取
+                uuid = reqJson.getString("uuid");
+                appVer = reqJson.getString("app_ver");
+                systemVer = reqJson.getString("system_ver");
+                System.out.println("从第一层解析: uuid=" + uuid + ", appVer=" + appVer + ", systemVer=" + systemVer);
+            }
+
+            // 如果postInfo中没有uuid，尝试从header中获取
+            if (StringUtil.isEmpty(uuid)) {
+                JSONObject headerJson = JSONObject.parseObject(headers.get("header"));
+                if (headerJson != null) {
+                    uuid = headerJson.getString("uuid");
+                    System.out.println("从header解析到的uuid: " + uuid);
+                }
+            }
+
+            System.out.println("最终解析到的uuid: " + uuid + ", appVer: " + appVer + ", systemVer: " + systemVer);
+
+            if (StringUtil.isEmpty(uuid)) {
+                System.out.println("========== 错误：未包含设备ID ==========");
+                throw new IllegalArgumentException("未包含设备ID");
+            }
+            responseEntity = managerLoginBmoImpl.login(uuid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return responseEntity;
+    }
+
+    /**
+     * 管理机设备列表
+     */
+    @RequestMapping(path = "/property/v1/gate/list", method = RequestMethod.GET)
+    public ResponseEntity<String> managerGateList(HttpServletRequest request) {
+        ResponseEntity<String> responseEntity = null;
+        try {
+            String uuId = request.getParameter("uuid");
+            responseEntity = managerGateListBmoImpl.gateList(uuId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return responseEntity;
+    }
+
+    /**
+     * 管理机首页数据
+     */
+    @RequestMapping(path = "/property/v1/gate/viewdata", method = RequestMethod.GET)
+    public ResponseEntity<String> managerViewData(HttpServletRequest request) {
+        ResponseEntity<String> responseEntity = null;
+        try {
+            String uuId = request.getParameter("uuid");
+            responseEntity = managerViewDataBmoImpl.viewData(uuId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return responseEntity;
+    }
+
+    /**
+     * 管理机楼栋列表
+     */
+    @RequestMapping(path = "/property/v1/buildings", method = RequestMethod.GET)
+    public ResponseEntity<String> managerBuildings(HttpServletRequest request) {
+        ResponseEntity<String> responseEntity = null;
+        try {
+            String uuId = request.getParameter("uuid");
+            responseEntity = managerBuildingsBmoImpl.buildings(uuId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return responseEntity;
+    }
+
+    /**
+     * 管理机房间列表
+     */
+    @RequestMapping(path = "/property/v1/rooms", method = RequestMethod.GET)
+    public ResponseEntity<String> managerRooms(HttpServletRequest request) {
+        ResponseEntity<String> responseEntity = null;
+        try {
+            String buildingUid = request.getParameter("building_uid");
+            String uuId = request.getParameter("uuid");
+            responseEntity = managerRoomsBmoImpl.rooms(buildingUid, uuId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return responseEntity;
+    }
+
+    /**
+     * 管理机用户列表
+     */
+    @RequestMapping(path = "/property/v1/users", method = RequestMethod.GET)
+    public ResponseEntity<String> managerUsers(HttpServletRequest request) {
+        ResponseEntity<String> responseEntity = null;
+        try {
+            String buildingUid = request.getParameter("building_uid");
+            String roomUid = request.getParameter("room_uid");
+            String uuId = request.getParameter("uuid");
+            logger.debug("管理机用户列表请求：building_uid={}, room_uid={}, uuid={}", buildingUid, roomUid, uuId);
+            responseEntity = managerUsersBmoImpl.users(buildingUid, roomUid, uuId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return responseEntity;
+    }
+
+    /**
+     * 管理机CCTV呼叫门禁机
+     * GET /property/v1/cctv/call
+     * 参数：expire, gate_guid, model, sig, sign, ts, uuid
+     */
+    @RequestMapping(path = "/property/v1/cctv/call", method = RequestMethod.GET)
+    public ResponseEntity<String> cctvCall(HttpServletRequest request) {
+        System.out.println("========== CCTV呼叫请求开始 ==========");
+        System.out.println("请求URL: " + request.getRequestURL());
+        System.out.println("QueryString: " + request.getQueryString());
+
+        Map<String, String> params = new HashMap<>();
+        Enumeration<String> paramNames = request.getParameterNames();
+        while (paramNames.hasMoreElements()) {
+            String paramName = paramNames.nextElement();
+            String paramValue = request.getParameter(paramName);
+            params.put(paramName, paramValue);
+            System.out.println("URL参数 " + paramName + ": " + paramValue);
+        }
+
+        String uuid = params.get("uuid");
+        String gateGuid = params.get("gate_guid");
+        String sign = params.get("sign");
+
+        System.out.println("解析参数: uuid=" + uuid + ", gate_guid=" + gateGuid + ", sign=" + sign);
+
+        if (StringUtil.isEmpty(uuid)) {
+//            return buildErrorResponse(202, "未包含设备ID(uuid)", System.currentTimeMillis() / 1000);
+        }
+        if (StringUtil.isEmpty(gateGuid)) {
+//            return buildErrorResponse(202, "未包含门禁机编号(gate_guid)", System.currentTimeMillis() / 1000);
+        }
+
+        try {
+            // 1. 查询管理机设备信息（根据uuid）
+            AccessControlDto manageQuery = new AccessControlDto();
+            manageQuery.setMachineCode(uuid);
+            List<AccessControlDto> manageDevices = accessControlV1InnerServiceSMOImpl.queryAccessControls(manageQuery);
+            if (ListUtil.isNull(manageDevices)) {
+//                return buildErrorResponse(202, "管理机设备不存在", System.currentTimeMillis() / 1000);
+            }
+            AccessControlDto manageDevice = manageDevices.get(0);
+            System.out.println("管理机信息: machineCode=" + manageDevice.getMachineCode() + ", callingNum=" + manageDevice.getCallingNum());
+
+            // 2. 查询目标门禁机设备信息（根据gate_guid）
+            AccessControlDto doorQuery = new AccessControlDto();
+            doorQuery.setMachineCode(gateGuid);
+            List<AccessControlDto> doorDevices = accessControlV1InnerServiceSMOImpl.queryAccessControls(doorQuery);
+            if (ListUtil.isNull(doorDevices)) {
+//                return buildErrorResponse(202, "门禁机设备不存在", System.currentTimeMillis() / 1000);
+            }
+            AccessControlDto doorDevice = doorDevices.get(0);
+            System.out.println("门禁机信息: machineCode=" + doorDevice.getMachineCode() + ", machineName=" + doorDevice.getMachineName());
+
+            // 3. 发送MQTT消息到门禁机，通知管理机呼叫
+            JSONObject mqttMsg = new JSONObject();
+            mqttMsg.put("f", "server_php");
+            mqttMsg.put("t", gateGuid);
+            mqttMsg.put("c", "cctv");
+            JSONObject m = new JSONObject();
+            m.put("p", "物管机");
+            m.put("s", Integer.parseInt(manageDevice.getCallingNum()));
+            m.put("t", GenerateCodeFactory.getUUID());
+
+//            mqttMsg.put("f", "zghl_door/server_php");
+//            mqttMsg.put("t", "jwja250424696");
+//            mqttMsg.put("c", "callUp");
+//            JSONObject m = new JSONObject();
+//            m.put("g", "jwja250424696");
+//            m.put("u", "");
+//            m.put("n", "管理机");
+//            m.put("c", "小区");
+//            m.put("t", 1777126486);
+//            m.put("s", 10022);
+//            m.put("p", 10022);
+            mqttMsg.put("m", m);
+
+            System.out.println("发送MQTT消息: topic=zghl_door/" + gateGuid + ", msg=" + mqttMsg.toJSONString());
+            MqttFactory.publish("zghl_door/" + gateGuid, mqttMsg.toJSONString());
+
+            // 4. 返回成功响应
+            long curTimeTimeStamp = new Date().getTime();
+            curTimeTimeStamp = curTimeTimeStamp / 1000;
+            JSONObject paramOut = new JSONObject();
+            paramOut.put("code", 200);
+            paramOut.put("msg", "");
+            paramOut.put("timestamp", curTimeTimeStamp);
+
+            // 构造 data 数组（列表）
+            JSONArray dataArray = new JSONArray();
+
+            // 第一个对象
+            JSONObject data1 = new JSONObject();
+            data1.put("phone", "20250826123456789456");
+            data1.put("timeout", "55");
+            data1.put("sip", 21920);
+            data1.put("call_id", "call20250904132703U2y72331007635854R420020");
+            dataArray.add(data1);
+
+            // 第二个对象
+            JSONObject data2 = new JSONObject();
+            data2.put("phone", "ys01212202853610");
+            data2.put("timeout", "55");
+            data2.put("sip", 10011);
+            data2.put("call_id", "call20250904132703U2y72331007635854R420020");
+            dataArray.add(data2);
+
+            // 放入返回结果
+            paramOut.put("data", dataArray);
+
+            System.out.println("cctv返回报文"+ paramOut.toString());
+            return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+
+        } catch (Exception e) {
+            System.out.println("处理CCTV呼叫请求异常: " + e.getMessage());
+            e.printStackTrace();
+            return null ;
+        }
+    }
+    @RequestMapping(path = "/device/v1/call/callup", method = RequestMethod.POST)
+    public ResponseEntity<String> callCallup(HttpServletRequest request) {
+        //        Map<String, String> headers = new HashMap<>();
+        //        RequestUtils.initHeadParam(request, headers);
+        //        RequestUtils.initUrlParam(request, headers);
+        //        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+        //        String uuId = reqJson.getString("uuid");
+        long curTimeTimeStamp = new Date().getTime();
+        curTimeTimeStamp = curTimeTimeStamp / 1000;
+        JSONObject paramOut = new JSONObject();
+        paramOut.put("code", 200);
+        paramOut.put("msg", "");
+        paramOut.put("timestamp", curTimeTimeStamp);
+
+        // 构造 data 数组（列表）
+        JSONArray dataArray = new JSONArray();
+
+        // 第一个对象
+        JSONObject data1 = new JSONObject();
+        data1.put("phone", "20250826123456789456");
+        data1.put("timeout", "55");
+        data1.put("sip", 10011);
+        data1.put("call_id", "call20250904132703U2y72331007635854R420020");
+        dataArray.add(data1);
+
+//        // 第二个对象
+//        JSONObject data2 = new JSONObject();
+//        data2.put("phone", "ys01212202853610");
+//        data2.put("timeout", "55");
+//        data2.put("sip", 21920);
+//        data2.put("call_id", "call20250904132703U2y72331007635854R420020");
+//        dataArray.add(data2);
+
+        // 放入返回结果
+        paramOut.put("data", dataArray);
+
+        System.out.println("callup返回报文：{}"+ paramOut.toString());
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
 }

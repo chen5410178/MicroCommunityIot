@@ -29,7 +29,7 @@ public class SyncOneUserCardBmoImpl implements ISyncOneUserCardBmo {
 
 
         AccessControlLogDto accessControlLogDto = new AccessControlLogDto();
-        accessControlLogDto.setState(AccessControlLogDto.STATE_REQ);
+//        accessControlLogDto.setState(AccessControlLogDto.STATE_REQ);
         accessControlLogDto.setLogAction("/v3_1/sync/cards/add/sync");
         accessControlLogDto.setMachineCode(machineCode);
         if (!"0".equals(t)) {
@@ -38,6 +38,7 @@ public class SyncOneUserCardBmoImpl implements ISyncOneUserCardBmo {
                 ts = ts / 1000;
             }
             Date tsDate = new Date(ts * 1000);
+            tsDate.setTime(tsDate.getTime() + 1000);
             accessControlLogDto.setQueryStartTime(DateUtil.getFormatTimeStringA(tsDate));
         }
         List<AccessControlLogDto> accessControlLogDtos = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogs(accessControlLogDto);
