@@ -224,6 +224,16 @@
         and t.community_id = #{communityId}
     </select>
 
+    <!-- 用户走势聚合统计 -->
+    <select id="queryUserLineStats" parameterType="Map" resultType="Map">
+        select DATE_FORMAT(t.create_time,'%Y-%m') as month_str,
+               t.owner_type_cd,
+               count(1) as cnt
+        from building_owner t
+        where t.community_id = #{communityId}
+          and t.status_cd = '0'
+        group by DATE_FORMAT(t.create_time,'%Y-%m'), t.owner_type_cd
+    </select>
 
 
 </mapper>

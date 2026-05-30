@@ -48,6 +48,16 @@
             <groupId>org.cryptonode.jncryptor</groupId>
             <artifactId>jncryptor</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.java110</groupId>
+            <artifactId>iot-accessControl</artifactId>
+            <version>${microcommunity.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.java110</groupId>
+            <artifactId>iot-user</artifactId>
+            <version>${microcommunity.version}</version>
+        </dependency>
     </dependencies>
 
 

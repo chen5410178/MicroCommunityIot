@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类表述： 服务之前调用的接口类，不对外提供接口能力 只用于接口建调用
@@ -68,4 +69,7 @@ public interface IAccessControlInoutV1InnerServiceSMO {
 
     @RequestMapping(value = "/getPersonInCount", method = RequestMethod.POST)
     int getPersonInCount(@RequestBody AccessControlInoutDto accessControlInoutDto);
+
+    @RequestMapping(value = "/queryOpenDoorLineStats", method = RequestMethod.POST)
+    List<Map> queryOpenDoorLineStats(@RequestBody Map info);
 }

@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map;
 
 /**
  * 类表述： 服务之前调用的接口实现类，不对外提供接口能力 只用于接口建调用
@@ -130,5 +131,12 @@ public class OwnerV1InnerServiceSMOImpl  implements IOwnerV1InnerServiceSMO {
         syncAccessControlBMOImpl.syncDeleteAccessControl(memberId);
         return 1;
     }
+
+    @Override
+    public List<Map> queryUserLineStats(@RequestBody Map info) {
+        return ownerV1ServiceDaoImpl.queryUserLineStats(info);
+    }
+
+
 
 }

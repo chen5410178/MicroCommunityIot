@@ -9,6 +9,7 @@ import com.java110.bean.dto.unit.UnitDto;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
+import com.java110.core.cache.CommonCache;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControl.AccessControlDto;
 import com.java110.dto.accessControlInout.AccessControlInoutDto;
@@ -20,6 +21,8 @@ import com.java110.intf.user.IOwnerV1InnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.community.IUnitV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
+import com.java110.accessControl.dao.IAccessControlInoutV1ServiceDao;
+import com.java110.user.dao.IOwnerV1ServiceDao;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,6 +59,12 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
     @Autowired
     private IOwnerRoomRelV1InnerServiceSMO ownerRoomRelV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IAccessControlInoutV1ServiceDao accessControlInoutV1ServiceDaoImpl;
+
+    @Autowired
+    private IOwnerV1ServiceDao ownerV1ServiceDaoImpl;
+
     @Override
     public ResponseEntity<String> viewData(String uuid) {
 
@@ -68,6 +77,12 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
         }
 
         String communityId = accessControlDtos.get(0).getCommunityId();
+
+        String viewDataCacheKey = "viewData_" + communityId;
+        String viewDataCached = CommonCache.getValue(viewDataCacheKey);
+        if (viewDataCached != null) {
+            return new ResponseEntity<String>(viewDataCached, HttpStatus.OK);
+        }
 
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
@@ -209,7 +224,7 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
                 capture.put("time", String.valueOf(inout.getCreateTime() != null ? inout.getCreateTime().getTime() / 1000 : 0));
                 // 根据 similar 值（0~15）设置正确的原因
                 String similarCode = inout.getSimilar();
-                String similarName = "未知错误";
+                String similarName = "";
                 if ("0".equals(similarCode)) {
                     similarName = "门禁机未上报抓拍原因";
                 } else if ("1".equals(similarCode)) {
@@ -341,7 +356,7 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
 
 // 根据 similar 值（0~15）设置正确的原因
                 String similarCode = stranger.getSimilar();
-                String similarName = "未知错误";
+                String similarName = "";
                 if ("0".equals(similarCode)) {
                     similarName = "门禁机未上报抓拍原因";
                 } else if ("1".equals(similarCode)) {
@@ -393,7 +408,9 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
         data.put("notices", new JSONArray());
 
         logger.debug("管理机首页数据返回：{}", paramOut.toString());
-        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+        String result = paramOut.toJSONString();
+        CommonCache.setValue(viewDataCacheKey, result, 30);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     private boolean isOnline(String heartbeatTime) {
@@ -411,11 +428,17 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
     }
 
     private JSONObject buildUserLine(String communityId) {
+        String cacheKey = "userLine_" + communityId;
+        String cached = CommonCache.getValue(cacheKey);
+        if (cached != null) {
+            return JSONObject.parseObject(cached);
+        }
+
         JSONObject userLine = new JSONObject();
 
-        OwnerDto queryDto = new OwnerDto();
-        queryDto.setCommunityId(communityId);
-        List<OwnerDto> allOwners = ownerInnerServiceSMOImpl.queryAllOwners(queryDto);
+        Map<String, Object> param = new HashMap<>();
+        param.put("communityId", communityId);
+        List<Map> statsList = ownerV1ServiceDaoImpl.queryUserLineStats(param);
 
         Calendar cal = Calendar.getInstance();
         JSONArray monthArr = new JSONArray();
@@ -436,19 +459,23 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
             int ownerCount = 0;
             int tenantCount = 0;
 
-            if (!ListUtil.isNull(allOwners)) {
-                for (OwnerDto o : allOwners) {
-                    if (o.getCreateTime() == null) continue;
-                    Calendar oc = Calendar.getInstance();
-                    oc.setTime(o.getCreateTime());
-                    if (oc.get(Calendar.YEAR) == year && oc.get(Calendar.MONTH) == month) {
-                        String typeCd = o.getOwnerTypeCd();
+            if (!ListUtil.isNull(statsList)) {
+                for (Map stat : statsList) {
+                    String monthStr = (String) stat.get("month_str");
+                    if (monthStr == null) continue;
+                    String[] parts = monthStr.split("-");
+                    if (parts.length != 2) continue;
+                    int statYear = Integer.parseInt(parts[0]);
+                    int statMonth = Integer.parseInt(parts[1]) - 1;
+                    if (statYear == year && statMonth == month) {
+                        String typeCd = (String) stat.get("owner_type_cd");
+                        int cnt = ((Number) stat.get("cnt")).intValue();
                         if (OwnerDto.OWNER_TYPE_CD_OWNER.equals(typeCd)) {
-                            ownerCount++;
+                            ownerCount += cnt;
                         } else if (OwnerDto.OWNER_TYPE_CD_MEMBER.equals(typeCd)) {
-                            memberCount++;
+                            memberCount += cnt;
                         } else if (OwnerDto.OWNER_TYPE_CD_RENTING.equals(typeCd)) {
-                            tenantCount++;
+                            tenantCount += cnt;
                         }
                     }
                 }
@@ -464,10 +491,17 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
         userLine.put("member", memberArr);
         userLine.put("owner", ownerArr);
         userLine.put("tenant", tenantArr);
+        CommonCache.setValue(cacheKey, userLine.toJSONString(), 60);
         return userLine;
     }
 
     private JSONObject buildOpenDoorLine(String communityId) {
+        String cacheKey = "openDoorLine_" + communityId;
+        String cached = CommonCache.getValue(cacheKey);
+        if (cached != null) {
+            return JSONObject.parseObject(cached);
+        }
+
         JSONObject openDoorLine = new JSONObject();
 
         Calendar cal = Calendar.getInstance();
@@ -475,13 +509,12 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
         cal.add(Calendar.DAY_OF_MONTH, -90);
         String startDate = DateUtil.getFormatTimeStringA(cal.getTime());
 
-        AccessControlInoutDto inoutDto = new AccessControlInoutDto();
-        inoutDto.setCommunityId(communityId);
-        inoutDto.setQueryStartTime(startDate);
-        inoutDto.setQueryEndTime(endDate);
-        List<AccessControlInoutDto> inoutDtos = accessControlInoutV1InnerServiceSMOImpl.queryAccessControlInouts(inoutDto);
+        Map<String, Object> param = new HashMap<>();
+        param.put("communityId", communityId);
+        param.put("queryStartTime", startDate);
+        param.put("queryEndTime", endDate);
+        List<Map> statsList = accessControlInoutV1ServiceDaoImpl.queryOpenDoorLineStats(param);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Map<String, Map<String, Integer>> dateTypeMap = new LinkedHashMap<>();
         Calendar dayCal = Calendar.getInstance();
         for (int d = 89; d >= 0; d--) {
@@ -498,15 +531,16 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
             dateTypeMap.put(dateStr, typeMap);
         }
 
-        if (!ListUtil.isNull(inoutDtos)) {
-            for (AccessControlInoutDto inout : inoutDtos) {
-                if (inout.getCreateTime() == null) continue;
-                String dateStr = sdf.format(inout.getCreateTime());
+        if (!ListUtil.isNull(statsList)) {
+            for (Map stat : statsList) {
+                String dateStr = String.valueOf(stat.get("date_str"));
+                String openTypeCd = String.valueOf(stat.get("open_type_cd"));
+                int cnt = ((Number) stat.get("cnt")).intValue();
                 Map<String, Integer> typeMap = dateTypeMap.get(dateStr);
                 if (typeMap == null) continue;
-                typeMap.put("all", typeMap.get("all") + 1);
-                String type = mapOpenType(inout.getOpenTypeCd());
-                typeMap.put(type, typeMap.get(type) + 1);
+                typeMap.put("all", typeMap.get("all") + cnt);
+                String type = mapOpenType(openTypeCd);
+                typeMap.put(type, typeMap.get(type) + cnt);
             }
         }
 
@@ -547,6 +581,7 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
             openDoorLine.put(key, section);
         }
 
+        CommonCache.setValue(cacheKey, openDoorLine.toJSONString(), 60);
         return openDoorLine;
     }
 

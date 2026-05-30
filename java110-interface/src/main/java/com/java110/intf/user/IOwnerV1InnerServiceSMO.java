@@ -86,4 +86,7 @@ public interface IOwnerV1InnerServiceSMO {
 
     @RequestMapping(value = "/syncDeleteAccessControl", method = RequestMethod.POST)
     int syncDeleteAccessControl(@RequestBody String memberId);
+
+    @RequestMapping(value = "/queryUserLineStats", method = RequestMethod.POST)
+    List<Map> queryUserLineStats(@RequestBody Map info);
 }
