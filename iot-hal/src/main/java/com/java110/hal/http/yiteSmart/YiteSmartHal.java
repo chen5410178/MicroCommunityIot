@@ -88,6 +88,9 @@ public class YiteSmartHal {
     @Autowired
     private IStrangerCaptureBmo strangerCaptureBmoImpl;
 
+    @Autowired
+    private ICheckCardBmo checkCardBmoImpl;
+
     /**
      * 设备核验
      *
@@ -557,6 +560,64 @@ public class YiteSmartHal {
         return responseEntity;
     }
 
+    /**
+     * 在线验证卡
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/v3_1/check/card", method = RequestMethod.POST)
+    public ResponseEntity<String> checkCard(HttpServletRequest request) {
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        logger.debug("进入在线验证卡接口,/v3_1/check/card,{}", headers);
+
+        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+        String uuId = reqJson.getString("uuid");
+        String cardCode = request.getParameter("card_code");
+
+        ResponseEntity<String> responseEntity;
+        try {
+            if (StringUtil.isEmpty(uuId)) {
+                throw new IllegalArgumentException("未包含设备ID");
+            }
+
+            AccessControlDto accessControlDto = new AccessControlDto();
+            accessControlDto.setMachineCode(uuId);
+            List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+
+            if (ListUtil.isNull(accessControlDtos)) {
+                long timestamp = DateUtil.getCurrentDate().getTime() / 1000;
+                JSONObject result = new JSONObject();
+                result.put("code", 204);
+                result.put("msg", "设备不存在");
+                result.put("timestamp", timestamp);
+                return new ResponseEntity<>(result.toJSONString(), HttpStatus.OK);
+            }
+
+            if (StringUtil.isEmpty(cardCode)) {
+                long timestamp = DateUtil.getCurrentDate().getTime() / 1000;
+                JSONObject result = new JSONObject();
+                result.put("code", 204);
+                result.put("msg", "未包含卡号");
+                result.put("timestamp", timestamp);
+                return new ResponseEntity<>(result.toJSONString(), HttpStatus.OK);
+            }
+
+            String machineId = accessControlDtos.get(0).getMachineId();
+            responseEntity = checkCardBmoImpl.checkCard(uuId, machineId, cardCode);
+        } catch (Exception e) {
+            logger.error("在线验证卡异常", e);
+            long timestamp = DateUtil.getCurrentDate().getTime() / 1000;
+            JSONObject result = new JSONObject();
+            result.put("code", 204);
+            result.put("msg", "[" + cardCode + "] 卡号查询失败，请检查您的卡是否录入到物业系统，门卡是否能正常识别，设备是否支持门卡类型");
+            result.put("timestamp", timestamp);
+            responseEntity = new ResponseEntity<>(result.toJSONString(), HttpStatus.OK);
+        }
+        return responseEntity;
+    }
 
     /**
      * 实例:
