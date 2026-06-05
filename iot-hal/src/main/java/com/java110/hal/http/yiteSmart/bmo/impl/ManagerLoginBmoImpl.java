@@ -61,10 +61,10 @@ public class ManagerLoginBmoImpl implements IManagerLoginBmo {
 
         String token = GenerateCodeFactory.getUUID();
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, 10);
+        calendar.add(Calendar.DAY_OF_MONTH, 365);
         long expire = calendar.getTime().getTime() / 1000;
 
-        CommonCache.setValue("YITESMART_MANAGER_TOKEN_" + uuid, token, 10 * 24 * 60 * 60);
+        CommonCache.setValue("YITESMART_MANAGER_TOKEN_" + uuid, token);
 
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);

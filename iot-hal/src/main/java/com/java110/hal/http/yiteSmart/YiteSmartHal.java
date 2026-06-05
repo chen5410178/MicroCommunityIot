@@ -2,6 +2,7 @@ package com.java110.hal.http.yiteSmart;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.java110.core.cache.CommonCache;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.factory.MqttFactory;
@@ -90,6 +91,9 @@ public class YiteSmartHal {
 
     @Autowired
     private ICheckCardBmo checkCardBmoImpl;
+
+    @Autowired
+    private IManagerSignVerifyBmo managerSignVerifyBmoImpl;
 
     /**
      * 设备核验
@@ -854,29 +858,9 @@ public class YiteSmartHal {
             Map<String, String> headers = new HashMap<>();
             RequestUtils.initHeadParam(request, headers);
             RequestUtils.initUrlParam(request, headers);
-            System.out.println("进入管理机登录接口,/property/v1/gate/login");
-            System.out.println("headers: " + headers);
-            System.out.println("请求方法: " + request.getMethod());
-            System.out.println("请求URL: " + request.getRequestURL());
-            System.out.println("请求参数: " + request.getQueryString());
-            System.out.println("Content-Type: " + request.getContentType());
-            System.out.println("Content-Length: " + request.getContentLength());
-            System.out.println("CharacterEncoding: " + request.getCharacterEncoding());
-
-            // 打印所有请求头
-            Enumeration<String> headerNames = request.getHeaderNames();
-            while (headerNames.hasMoreElements()) {
-                String headerName = headerNames.nextElement();
-                String headerValue = request.getHeader(headerName);
-                System.out.println("Header " + headerName + ": " + headerValue);
-            }
-
-            System.out.println("设备来登录，postInfo: " + postInfo);
 
             JSONObject reqJson = JSONObject.parseObject(postInfo);
-            System.out.println("解析的JSON结构: " + reqJson.toJSONString());
 
-            // 从param对象中获取参数
             JSONObject paramObj = reqJson.getJSONObject("param");
             String uuid = null;
             String appVer = null;
@@ -884,31 +868,22 @@ public class YiteSmartHal {
 
             if (paramObj != null) {
                 uuid = paramObj.getString("uuid");
-                appVer = paramObj.getString("app_ver");
-                systemVer = paramObj.getString("system_ver");
-                System.out.println("从param对象解析: uuid=" + uuid + ", appVer=" + appVer + ", systemVer=" + systemVer);
             } else {
-                // 如果没有param对象，尝试直接从第一层获取
                 uuid = reqJson.getString("uuid");
-                appVer = reqJson.getString("app_ver");
-                systemVer = reqJson.getString("system_ver");
-                System.out.println("从第一层解析: uuid=" + uuid + ", appVer=" + appVer + ", systemVer=" + systemVer);
             }
 
-            // 如果postInfo中没有uuid，尝试从header中获取
             if (StringUtil.isEmpty(uuid)) {
                 JSONObject headerJson = JSONObject.parseObject(headers.get("header"));
                 if (headerJson != null) {
                     uuid = headerJson.getString("uuid");
-                    System.out.println("从header解析到的uuid: " + uuid);
                 }
             }
 
-            System.out.println("最终解析到的uuid: " + uuid + ", appVer: " + appVer + ", systemVer: " + systemVer);
-
             if (StringUtil.isEmpty(uuid)) {
-                System.out.println("========== 错误：未包含设备ID ==========");
                 throw new IllegalArgumentException("未包含设备ID");
+            }
+            if (paramObj != null) {
+                CommonCache.setValue("YITESMART_MANAGER_PARAM_" + uuid, paramObj.toJSONString(), 10 * 24 * 60 * 60);
             }
             responseEntity = managerLoginBmoImpl.login(uuid);
         } catch (Exception e) {
@@ -925,6 +900,10 @@ public class YiteSmartHal {
     public ResponseEntity<String> managerGateList(HttpServletRequest request) {
         ResponseEntity<String> responseEntity = null;
         try {
+            responseEntity = managerSignVerifyBmoImpl.verify(request);
+            if (responseEntity != null) {
+                return responseEntity;
+            }
             String uuId = request.getParameter("uuid");
             responseEntity = managerGateListBmoImpl.gateList(uuId);
         } catch (Exception e) {
@@ -941,6 +920,10 @@ public class YiteSmartHal {
     public ResponseEntity<String> managerViewData(HttpServletRequest request) {
         ResponseEntity<String> responseEntity = null;
         try {
+            responseEntity = managerSignVerifyBmoImpl.verify(request);
+            if (responseEntity != null) {
+                return responseEntity;
+            }
             String uuId = request.getParameter("uuid");
             responseEntity = managerViewDataBmoImpl.viewData(uuId);
         } catch (Exception e) {
@@ -957,6 +940,10 @@ public class YiteSmartHal {
     public ResponseEntity<String> managerBuildings(HttpServletRequest request) {
         ResponseEntity<String> responseEntity = null;
         try {
+            responseEntity = managerSignVerifyBmoImpl.verify(request);
+            if (responseEntity != null) {
+                return responseEntity;
+            }
             String uuId = request.getParameter("uuid");
             responseEntity = managerBuildingsBmoImpl.buildings(uuId);
         } catch (Exception e) {
@@ -973,6 +960,10 @@ public class YiteSmartHal {
     public ResponseEntity<String> managerRooms(HttpServletRequest request) {
         ResponseEntity<String> responseEntity = null;
         try {
+            responseEntity = managerSignVerifyBmoImpl.verify(request);
+            if (responseEntity != null) {
+                return responseEntity;
+            }
             String buildingUid = request.getParameter("building_uid");
             String uuId = request.getParameter("uuid");
             responseEntity = managerRoomsBmoImpl.rooms(buildingUid, uuId);
@@ -990,6 +981,10 @@ public class YiteSmartHal {
     public ResponseEntity<String> managerUsers(HttpServletRequest request) {
         ResponseEntity<String> responseEntity = null;
         try {
+            responseEntity = managerSignVerifyBmoImpl.verify(request);
+            if (responseEntity != null) {
+                return responseEntity;
+            }
             String buildingUid = request.getParameter("building_uid");
             String roomUid = request.getParameter("room_uid");
             String uuId = request.getParameter("uuid");
@@ -1009,9 +1004,20 @@ public class YiteSmartHal {
      */
     @RequestMapping(path = "/property/v1/cctv/call", method = RequestMethod.GET)
     public ResponseEntity<String> cctvCall(HttpServletRequest request) {
-        System.out.println("========== CCTV呼叫请求开始 ==========");
+//        System.out.println("========== CCTV呼叫请求开始 ==========");
+//        System.out.println("请求URL: " + request.getRequestURL());
+//        System.out.println("QueryString: " + request.getQueryString());
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        System.out.println("进入管理机登录接口,/property/v1/gate/login");
+        System.out.println("headers: " + headers);
+        System.out.println("请求方法: " + request.getMethod());
         System.out.println("请求URL: " + request.getRequestURL());
-        System.out.println("QueryString: " + request.getQueryString());
+        System.out.println("请求参数: " + request.getQueryString());
+        System.out.println("Content-Type: " + request.getContentType());
+        System.out.println("Content-Length: " + request.getContentLength());
+        System.out.println("CharacterEncoding: " + request.getCharacterEncoding());
 
         Map<String, String> params = new HashMap<>();
         Enumeration<String> paramNames = request.getParameterNames();

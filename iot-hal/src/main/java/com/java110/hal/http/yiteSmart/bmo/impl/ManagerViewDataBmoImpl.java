@@ -78,12 +78,24 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
 
         String communityId = accessControlDtos.get(0).getCommunityId();
 
-        String viewDataCacheKey = "viewData_" + communityId;
-        String viewDataCached = CommonCache.getValue(viewDataCacheKey);
-        if (viewDataCached != null) {
-            return new ResponseEntity<String>(viewDataCached, HttpStatus.OK);
+        String viewDataBaseKey = "viewDataBase_" + communityId;
+        String baseCached = CommonCache.getValue(viewDataBaseKey);
+        JSONObject paramOut;
+        if (baseCached != null) {
+            paramOut = JSONObject.parseObject(baseCached);
+        } else {
+            paramOut = buildBaseData(communityId);
+            CommonCache.setValue(viewDataBaseKey, paramOut.toJSONString(), 30);
         }
 
+        JSONObject data = paramOut.getJSONObject("data");
+        data.put("captures", buildCaptures(communityId));
+        data.put("strangers", buildStrangers(communityId));
+
+        return new ResponseEntity<>(paramOut.toJSONString(), HttpStatus.OK);
+    }
+
+    private JSONObject buildBaseData(String communityId) {
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
@@ -92,7 +104,6 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
         JSONObject data = new JSONObject();
         paramOut.put("data", data);
 
-        // room 房间统计
         JSONArray room = new JSONArray();
 
         RoomDto rentRoomDto = new RoomDto();
@@ -124,7 +135,6 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
         room.add(roomFree);
         data.put("room", room);
 
-        // user 用户统计
         JSONArray user = new JSONArray();
 
         OwnerDto tenantDto = new OwnerDto();
@@ -156,7 +166,6 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
         user.add(userMember);
         data.put("user", user);
 
-        // gate 设备状态统计
         JSONArray gate = new JSONArray();
 
         AccessControlDto allDto = new AccessControlDto();
@@ -185,232 +194,215 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
         gate.add(gateOffline);
         data.put("gate", gate);
 
-        // user_line 用户走势
         JSONObject userLine = buildUserLine(communityId);
         data.put("user_line", userLine);
 
-        // open_door_line 开门走势
         JSONObject openDoorLine = buildOpenDoorLine(communityId);
         data.put("open_door_line", openDoorLine);
 
-        // captures 抓拍记录
+        data.put("captures", new JSONArray());
+        data.put("strangers", new JSONArray());
+        data.put("notices", new JSONArray());
+
+        return paramOut;
+    }
+
+    private JSONArray buildCaptures(String communityId) {
         JSONArray captures = new JSONArray();
         AccessControlInoutDto inoutDto = new AccessControlInoutDto();
         inoutDto.setCommunityId(communityId);
-//        inoutDto.setState("C");
         inoutDto.setPage(1);
-        inoutDto.setRow(5);
+        inoutDto.setRow(20);
         List<AccessControlInoutDto> inoutDtos = accessControlInoutV1InnerServiceSMOImpl.queryAccessControlInouts(inoutDto);
 
-        if (!ListUtil.isNull(inoutDtos)) {
-            for (AccessControlInoutDto inout : inoutDtos) {
-                JSONObject capture = new JSONObject();
-                String openTypeName = "人脸开门";
-                if ("2000".equals(inout.getOpenTypeCd())) {
-                    openTypeName = "刷卡开门";
-                } else if ("4000".equals(inout.getOpenTypeCd())) {
-                    openTypeName = "密码开门";
-                } else if ("3000".equals(inout.getOpenTypeCd())) {
-                    openTypeName = "扫码开门";
-                } else if ("5000".equals(inout.getOpenTypeCd())) {
-                    openTypeName = "远程开门";
-                } else if ("6000".equals(inout.getOpenTypeCd())) {
-                    openTypeName = "访客密码开门";
-                } else if ("7000".equals(inout.getOpenTypeCd())) {
-                    openTypeName = "临时密码开门";
-                }
-                capture.put("open_type", openTypeName);
-                capture.put("image", inout.getFacePath() != null ? inout.getFacePath() : "");
-                capture.put("time", String.valueOf(inout.getCreateTime() != null ? inout.getCreateTime().getTime() / 1000 : 0));
-                // 根据 similar 值（0~15）设置正确的原因
-                String similarCode = inout.getSimilar();
-                String similarName = "";
-                if ("0".equals(similarCode)) {
-                    similarName = "门禁机未上报抓拍原因";
-                } else if ("1".equals(similarCode)) {
-                    similarName = "无网络";
-                } else if ("2".equals(similarCode)) {
-                    similarName = "在线识别返回数据为空";
-                } else if ("3".equals(similarCode)) {
-                    similarName = "在线识别找不到此人，判断为陌生人";
-                } else if ("4".equals(similarCode)) {
-                    similarName = "在线识别接口失败";
-                } else if ("5".equals(similarCode)) {
-                    similarName = "活体检测未通过";
-                } else if ("6".equals(similarCode)) {
-                    similarName = "对比识别线程未初始化";
-                } else if ("7".equals(similarCode)) {
-                    similarName = "离线识别找不到此人，判断为陌生人";
-                } else if ("8".equals(similarCode)) {
-                    similarName = "在线识别返回的人，本地识别已经排除了";
-                } else if ("9".equals(similarCode)) {
-                    similarName = "体温异常";
-                } else if ("10".equals(similarCode)) {
-                    similarName = "过期卡";
-                } else if ("11".equals(similarCode)) {
-                    similarName = "未授权卡";
-                } else if ("12".equals(similarCode)) {
-                    similarName = "无效异常卡";
-                } else if ("13".equals(similarCode)) {
-                    similarName = "业主密码错误";
-                } else if ("14".equals(similarCode)) {
-                    similarName = "访客密码错误";
-                } else if ("15".equals(similarCode)) {
-                    similarName = "密码错误";
-                }
-//                capture.put("device_name", inout.getMachineName() != null ? inout.getMachineName() : "" +similarName);
-                capture.put("device_name",
-                        (inout.getMachineName() == null ? "" : inout.getMachineName())
-//                                + " "+(openTypeName == null ? "" : openTypeName)
-                                + " "+(similarName)
+        if (ListUtil.isNull(inoutDtos)) {
+            return captures;
+        }
 
-                );
-                String userType = "陌生人";
-                String build = "";
-                String roomNum = "";
-                String tel = inout.getTel();
-                if (!StringUtil.isEmpty(tel)) {
-                    OwnerDto queryOwner = new OwnerDto();
-                    queryOwner.setLink(tel);
-                    queryOwner.setCommunityId(communityId);
-                    List<OwnerDto> owners = ownerInnerServiceSMOImpl.queryOwners(queryOwner);
-                    if (!ListUtil.isNull(owners)) {
-                        OwnerDto owner = owners.get(0);
-                        String typeCd = owner.getOwnerTypeCd();
-                        if (OwnerDto.OWNER_TYPE_CD_OWNER.equals(typeCd)) {
-                            userType = "业主";
-                        } else if (OwnerDto.OWNER_TYPE_CD_MEMBER.equals(typeCd)) {
-                            userType = "成员";
-                        } else if (OwnerDto.OWNER_TYPE_CD_RENTING.equals(typeCd)) {
-                            userType = "租户";
-                        }
+        Map<String, OwnerDto> telOwnerMap = new HashMap<>();
+        List<String> tels = new ArrayList<>();
+        for (AccessControlInoutDto inout : inoutDtos) {
+            String tel = inout.getTel();
+            if (!StringUtil.isEmpty(tel) && !telOwnerMap.containsKey(tel)) {
+                tels.add(tel);
+                telOwnerMap.put(tel, null);
+            }
+        }
+        for (String tel : tels) {
+            OwnerDto queryOwner = new OwnerDto();
+            queryOwner.setLink(tel);
+            queryOwner.setCommunityId(communityId);
+            List<OwnerDto> owners = ownerInnerServiceSMOImpl.queryOwners(queryOwner);
+            if (!ListUtil.isNull(owners)) {
+                telOwnerMap.put(tel, owners.get(0));
+            }
+        }
 
-                        OwnerRoomRelDto relDto = new OwnerRoomRelDto();
-                        relDto.setOwnerId(owner.getOwnerId());
-                        List<OwnerRoomRelDto> rels = ownerRoomRelV1InnerServiceSMOImpl.queryOwnerRoomRels(relDto);
-                        if (!ListUtil.isNull(rels)) {
-                            String roomId = rels.get(0).getRoomId();
-                            RoomDto queryRoom = new RoomDto();
-                            queryRoom.setRoomId(roomId);
-                            List<RoomDto> rooms = roomV1InnerServiceSMOImpl.queryRooms(queryRoom);
-                            if (!ListUtil.isNull(rooms)) {
-                                RoomDto r = rooms.get(0);
-                                roomNum = r.getRoomNum() != null ? r.getRoomNum() : "";
-                                String unitId = r.getUnitId();
-                                if (!StringUtil.isEmpty(unitId)) {
-                                    UnitDto queryUnit = new UnitDto();
-                                    queryUnit.setUnitId(unitId);
-                                    List<UnitDto> units = unitV1InnerServiceSMOImpl.queryUnits(queryUnit);
-                                    if (!ListUtil.isNull(units)) {
-                                        build = r.getFloorNum() != null ? r.getFloorNum() : "";
-                                        build += "栋" + units.get(0).getUnitNum() + "单元";
-                                    }
+        Set<String> ownerIds = new HashSet<>();
+        for (OwnerDto o : telOwnerMap.values()) {
+            if (o != null) {
+                ownerIds.add(o.getOwnerId());
+            }
+        }
+        Map<String, List<OwnerRoomRelDto>> ownerRelMap = new HashMap<>();
+        if (!ownerIds.isEmpty()) {
+            for (String ownerId : ownerIds) {
+                OwnerRoomRelDto relDto = new OwnerRoomRelDto();
+                relDto.setOwnerId(ownerId);
+                List<OwnerRoomRelDto> rels = ownerRoomRelV1InnerServiceSMOImpl.queryOwnerRoomRels(relDto);
+                if (!ListUtil.isNull(rels)) {
+                    ownerRelMap.put(ownerId, rels);
+                }
+            }
+        }
+
+        Set<String> roomIds = new HashSet<>();
+        for (List<OwnerRoomRelDto> rels : ownerRelMap.values()) {
+            for (OwnerRoomRelDto rel : rels) {
+                if (!StringUtil.isEmpty(rel.getRoomId())) {
+                    roomIds.add(rel.getRoomId());
+                }
+            }
+        }
+        Map<String, RoomDto> roomMap = new HashMap<>();
+        if (!roomIds.isEmpty()) {
+            for (String roomId : roomIds) {
+                RoomDto queryRoom = new RoomDto();
+                queryRoom.setRoomId(roomId);
+                List<RoomDto> rooms = roomV1InnerServiceSMOImpl.queryRooms(queryRoom);
+                if (!ListUtil.isNull(rooms)) {
+                    roomMap.put(roomId, rooms.get(0));
+                }
+            }
+        }
+
+        Set<String> unitIds = new HashSet<>();
+        for (RoomDto r : roomMap.values()) {
+            if (!StringUtil.isEmpty(r.getUnitId())) {
+                unitIds.add(r.getUnitId());
+            }
+        }
+        Map<String, UnitDto> unitMap = new HashMap<>();
+        if (!unitIds.isEmpty()) {
+            for (String unitId : unitIds) {
+                UnitDto queryUnit = new UnitDto();
+                queryUnit.setUnitId(unitId);
+                List<UnitDto> units = unitV1InnerServiceSMOImpl.queryUnits(queryUnit);
+                if (!ListUtil.isNull(units)) {
+                    unitMap.put(unitId, units.get(0));
+                }
+            }
+        }
+
+        for (AccessControlInoutDto inout : inoutDtos) {
+            JSONObject capture = new JSONObject();
+            capture.put("open_type", getOpenTypeName(inout.getOpenTypeCd()));
+            capture.put("image", inout.getFacePath() != null ? inout.getFacePath() : "");
+            capture.put("time", String.valueOf(inout.getCreateTime() != null ? inout.getCreateTime().getTime() / 1000 : 0));
+            capture.put("device_name",
+                    (inout.getMachineName() == null ? "" : inout.getMachineName())
+                            + " " + getSimilarName(inout.getSimilar()));
+
+            String userType = "其他";
+            String build = "";
+            String roomNum = "";
+            String tel = inout.getTel();
+            if (!StringUtil.isEmpty(tel)) {
+                OwnerDto owner = telOwnerMap.get(tel);
+                if (owner != null) {
+                    String typeCd = owner.getOwnerTypeCd();
+                    if (OwnerDto.OWNER_TYPE_CD_OWNER.equals(typeCd)) {
+                        userType = "业主";
+                    } else if (OwnerDto.OWNER_TYPE_CD_MEMBER.equals(typeCd)) {
+                        userType = "成员";
+                    } else if (OwnerDto.OWNER_TYPE_CD_RENTING.equals(typeCd)) {
+                        userType = "租户";
+                    }
+
+                    List<OwnerRoomRelDto> rels = ownerRelMap.get(owner.getOwnerId());
+                    if (rels != null && !rels.isEmpty()) {
+                        String roomId = rels.get(0).getRoomId();
+                        RoomDto r = roomMap.get(roomId);
+                        if (r != null) {
+                            roomNum = r.getRoomNum() != null ? r.getRoomNum() : "";
+                            String unitId = r.getUnitId();
+                            if (!StringUtil.isEmpty(unitId)) {
+                                UnitDto unit = unitMap.get(unitId);
+                                if (unit != null) {
+                                    build = r.getFloorNum() != null ? r.getFloorNum() : "";
+                                    build += "栋" + unit.getUnitNum() + "单元";
                                 }
                             }
                         }
                     }
-                }else {
-                    userType = "陌生人";
                 }
-                if ("陌生人".equals(userType)){
-
-                    capture.put("phone", "");
-                }else {
-
-                    capture.put("phone", inout.getTel() != null ? inout.getTel().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2") : "");
-                }
-
-                capture.put("user_type", userType);
-                capture.put("build", build);
-                capture.put("room", roomNum);
-                captures.add(capture);
             }
-        }
-        data.put("captures", captures);
+            if ("F".equals(inout.getState())) {
+                capture.put("user_type", "陌生人" + inout.getTel());
+                capture.put("phone", "");
+            } else {
+                capture.put("user_type", userType);
+                capture.put("phone", inout.getTel());
+            }
 
+            capture.put("build", build);
+            capture.put("room", roomNum);
+            captures.add(capture);
+        }
+        return captures;
+    }
+
+    private JSONArray buildStrangers(String communityId) {
         JSONArray strangers = new JSONArray();
         AccessControlInoutDto strangerDto = new AccessControlInoutDto();
         strangerDto.setCommunityId(communityId);
         strangerDto.setState("F");
         strangerDto.setPage(1);
-        strangerDto.setRow(2);
+        strangerDto.setRow(20);
         List<AccessControlInoutDto> strangerDtos = accessControlInoutV1InnerServiceSMOImpl.queryAccessControlInouts(strangerDto);
 
         if (!ListUtil.isNull(strangerDtos)) {
             for (AccessControlInoutDto stranger : strangerDtos) {
                 JSONObject strangerObj = new JSONObject();
-                String openTypeName = "人脸开门";
-                if ("2000".equals(stranger.getOpenTypeCd())) {
-                    openTypeName = "刷卡开门";
-                } else if ("4000".equals(stranger.getOpenTypeCd())) {
-                    openTypeName = "密码开门";
-                } else if ("3000".equals(stranger.getOpenTypeCd())) {
-                    openTypeName = "扫码开门";
-                } else if ("5000".equals(stranger.getOpenTypeCd())) {
-                    openTypeName = "远程开门";
-                } else if ("6000".equals(stranger.getOpenTypeCd())) {
-                    openTypeName = "访客密码开门";
-                } else if ("7000".equals(stranger.getOpenTypeCd())) {
-                    openTypeName = "临时密码开门";
-                }
-
-// 根据 similar 值（0~15）设置正确的原因
-                String similarCode = stranger.getSimilar();
-                String similarName = "";
-                if ("0".equals(similarCode)) {
-                    similarName = "门禁机未上报抓拍原因";
-                } else if ("1".equals(similarCode)) {
-                    similarName = "无网络";
-                } else if ("2".equals(similarCode)) {
-                    similarName = "在线识别返回数据为空";
-                } else if ("3".equals(similarCode)) {
-                    similarName = "在线识别找不到此人，判断为陌生人";
-                } else if ("4".equals(similarCode)) {
-                    similarName = "在线识别接口失败";
-                } else if ("5".equals(similarCode)) {
-                    similarName = "活体检测未通过";
-                } else if ("6".equals(similarCode)) {
-                    similarName = "对比识别线程未初始化";
-                } else if ("7".equals(similarCode)) {
-                    similarName = "离线识别找不到此人，判断为陌生人";
-                } else if ("8".equals(similarCode)) {
-                    similarName = "在线识别返回的人，本地识别已经排除了";
-                } else if ("9".equals(similarCode)) {
-                    similarName = "体温异常";
-                } else if ("10".equals(similarCode)) {
-                    similarName = "过期卡";
-                } else if ("11".equals(similarCode)) {
-                    similarName = "未授权卡";
-                } else if ("12".equals(similarCode)) {
-                    similarName = "无效异常卡";
-                } else if ("13".equals(similarCode)) {
-                    similarName = "业主密码错误";
-                } else if ("14".equals(similarCode)) {
-                    similarName = "访客密码错误";
-                } else if ("15".equals(similarCode)) {
-                    similarName = "密码错误";
-                }
-
-//                strangerObj.put("open_type", openTypeName);
                 strangerObj.put("image", stranger.getFacePath() != null ? stranger.getFacePath() : "");
                 strangerObj.put("time", String.valueOf(stranger.getCreateTime() != null ? stranger.getCreateTime().getTime() / 1000 : 0));
                 strangerObj.put("address",
                         (stranger.getMachineName() == null ? "" : stranger.getMachineName())
-//                                + " "+(openTypeName == null ? "" : openTypeName)
-                                + " "+(similarName)
-
-                );
-//                strangerObj.put("why", stranger.getSimilar() != null ? stranger.getSimilar() : "0");
+                                + " " + getSimilarName(stranger.getSimilar()));
                 strangers.add(strangerObj);
             }
         }
-        data.put("strangers", strangers);
-        data.put("notices", new JSONArray());
+        return strangers;
+    }
 
-        logger.debug("管理机首页数据返回：{}", paramOut.toString());
-        String result = paramOut.toJSONString();
-        CommonCache.setValue(viewDataCacheKey, result, 30);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    private String getOpenTypeName(String openTypeCd) {
+        if ("2000".equals(openTypeCd)) return "刷卡开门";
+        if ("4000".equals(openTypeCd)) return "密码开门";
+        if ("3000".equals(openTypeCd)) return "扫码开门";
+        if ("5000".equals(openTypeCd)) return "远程开门";
+        if ("6000".equals(openTypeCd)) return "访客密码开门";
+        if ("7000".equals(openTypeCd)) return "临时密码开门";
+        return "人脸开门";
+    }
+
+    private String getSimilarName(String similarCode) {
+        if ("0".equals(similarCode)) return "门禁机未上报抓拍原因";
+        if ("1".equals(similarCode)) return "无网络";
+        if ("2".equals(similarCode)) return "在线识别返回数据为空";
+        if ("3".equals(similarCode)) return "在线识别找不到此人，判断为陌生人";
+        if ("4".equals(similarCode)) return "在线识别接口失败";
+        if ("5".equals(similarCode)) return "活体检测未通过";
+        if ("6".equals(similarCode)) return "对比识别线程未初始化";
+        if ("7".equals(similarCode)) return "离线识别找不到此人，判断为陌生人";
+        if ("8".equals(similarCode)) return "在线识别返回的人，本地识别已经排除了";
+        if ("9".equals(similarCode)) return "体温异常";
+        if ("10".equals(similarCode)) return "过期卡";
+        if ("11".equals(similarCode)) return "未授权卡";
+        if ("12".equals(similarCode)) return "无效异常卡";
+        if ("13".equals(similarCode)) return "业主密码错误";
+        if ("14".equals(similarCode)) return "访客密码错误";
+        if ("15".equals(similarCode)) return "密码错误";
+        return "";
     }
 
     private boolean isOnline(String heartbeatTime) {
@@ -591,8 +583,8 @@ public class ManagerViewDataBmoImpl implements IManagerViewDataBmo {
             case "1000": return "face";
             case "2000": return "card";
             case "4000": return "user_pwd";
-            case "5000":
-            case "3000": return "app";
+            case "5000": return "app";
+            case "3000": return "card";
             case "6000": return "visitor_pwd";
             case "7000": return "user_pwd";
             default: return "all";
