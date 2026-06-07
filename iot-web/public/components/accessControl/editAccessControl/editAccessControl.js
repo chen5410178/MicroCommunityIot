@@ -38,29 +38,40 @@
                 $that._listEditHms();
                 $that._listEditMonitors();
                 $that.editAccessControlInfo.communityId = vc.getCurrentCommunity().communityId;
-                // 将 addMap 容器移入当前 edit modal
+
+                let _community = vc.getCurrentCommunity();
+                if (_community && _community.lat) {
+                    let _acLat = $that.editAccessControlInfo.lat;
+                    let _acLng = $that.editAccessControlInfo.lng;
+                    if (!_acLat || _acLat == '39.907881821019075' || _acLat == '39.916527') {
+                        $that.editAccessControlInfo.lat = _community.lat;
+                    }
+                    if (!_acLng || _acLng == '116.39803241981451' || _acLng == '116.397128') {
+                        $that.editAccessControlInfo.lng = _community.lng;
+                    }
+                }
+                if (!$that.editAccessControlInfo.lat || !$that.editAccessControlInfo.lng) {
+                    let _communityId = $that.editAccessControlInfo.communityId;
+                    if (_communityId) {
+                        vc.http.apiGet('/community.listCommunitys',
+                            { params: { communityId: _communityId, page: 1, row: 1 } },
+                            function (json) {
+                                let _data = JSON.parse(json).data;
+                                if (_data && _data.length > 0) {
+                                    let _c = _data[0];
+                                    if (!_c.lat && _c.mapY) { _c.lat = _c.mapY; }
+                                    if (!_c.lng && _c.mapX) { _c.lng = _c.mapX; }
+                                    if (_c.lat) { $that.editAccessControlInfo.lat = _c.lat; }
+                                    if (_c.lng) { $that.editAccessControlInfo.lng = _c.lng; }
+                                }
+                            }, function () {});
+                    }
+                }
+
                 setTimeout(function () {
                     $('#addMapContainer').parent().appendTo('#editMapContainer');
                     vc.emit('addMap', 'showMap', $that.editAccessControlInfo);
-                    // 延迟等待地图就绪后创建初始标记（通过 addMap.js 暴露的 _map 引用）
-                    if ($that.editAccessControlInfo.lat && $that.editAccessControlInfo.lng) {
-                        setTimeout(function () {
-                            var container = document.getElementById('addMapContainer');
-                            if (container && container._map) {
-                                var pos = new TMap.LatLng(
-                                    parseFloat($that.editAccessControlInfo.lat),
-                                    parseFloat($that.editAccessControlInfo.lng)
-                                );
-                                new TMap.MultiMarker({
-                                    styleId: "marker",
-                                    position: pos,
-                                    map: container._map,
-                                    id: "edit_pos"
-                                });
-                            }
-                        }, 1500);
-                    }
-                }, 1000)
+                }, 500)
             });
         },
         methods: {
