@@ -1,0 +1,122 @@
+<template>
+  <el-dialog
+    :visible.sync="dialogVisible"
+    title="授权门禁"
+    width="550px"
+    append-to-body
+    @close="handleClose"
+  >
+    <el-form :model="form" ref="formRef" label-width="100px">
+      <el-form-item label="门禁设备" prop="machineIds">
+        <el-checkbox-group v-model="form.machineIds">
+          <div v-for="item in machineList" :key="item.machineId" class="checkbox-item">
+            <el-checkbox :label="item.machineId">{{ item.machineName }}</el-checkbox>
+          </div>
+        </el-checkbox-group>
+      </el-form-item>
+      <el-form-item label="开始时间" prop="startDate">
+        <el-date-picker
+          v-model="form.startDate"
+          type="datetime"
+          placeholder="请选择开始时间"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          style="width: 100%"
+        />
+      </el-form-item>
+      <el-form-item label="结束时间" prop="endDate">
+        <el-date-picker
+          v-model="form.endDate"
+          type="datetime"
+          placeholder="请选择结束时间"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          style="width: 100%"
+        />
+      </el-form-item>
+    </el-form>
+    <span slot="footer">
+      <el-button @click="handleClose">取消</el-button>
+      <el-button type="primary" @click="handleSubmit" :loading="loading">授权</el-button>
+    </span>
+  </el-dialog>
+</template>
+
+<script>
+import { saveAccessControlOrg, listAccessControl } from '@/api/accessControl/accessControlApi'
+
+export default {
+  name: 'AuthorizeAccessControlOrg',
+  props: {
+    visible: { type: Boolean, default: false }
+  },
+  data() {
+    return {
+      dialogVisible: false,
+      loading: false,
+      machineList: [],
+      orgId: '',
+      form: {
+        machineIds: [],
+        startDate: '',
+        endDate: ''
+      }
+    }
+  },
+  watch: {
+    visible(val) { this.dialogVisible = val },
+    dialogVisible(val) { this.$emit('update:visible', val) }
+  },
+  methods: {
+    open(orgId) {
+      this.orgId = orgId || ''
+      this.form = { machineIds: [], startDate: '', endDate: '' }
+      this.loadMachines()
+      this.dialogVisible = true
+    },
+    async loadMachines() {
+      try {
+        const community = this.$store.state.app.currentCommunity || {}
+        const res = await listAccessControl({
+          page: 1,
+          row: 200,
+          communityId: community.communityId
+        })
+        this.machineList = res.data || []
+      } catch (e) {
+        console.error('加载门禁设备失败', e)
+      }
+    },
+    handleClose() {
+      this.dialogVisible = false
+      this.$refs.formRef && this.$refs.formRef.resetFields()
+    },
+    async handleSubmit() {
+      if (this.form.machineIds.length === 0) {
+        this.$message.warning('请选择门禁设备')
+        return
+      }
+      this.loading = true
+      try {
+        const community = this.$store.state.app.currentCommunity || {}
+        await saveAccessControlOrg({
+          orgId: this.orgId,
+          machineIds: this.form.machineIds,
+          startDate: this.form.startDate,
+          endDate: this.form.endDate,
+          communityId: community.communityId
+        })
+        this.$message.success('授权成功')
+        this.$emit('success')
+        this.handleClose()
+      } catch (e) {
+        this.$message.error(e.msg || '授权失败')
+      } finally {
+        this.loading = false
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+.checkbox-item { padding: 4px 0; }
+</style>

@@ -83,9 +83,35 @@ export function listAdminAccessControlLog(params) {
   return request({ url: '/accessControlLog.listAdminAccessControlLog', method: 'get', params })
 }
 
+// ===== 下发日志(全局) =====
+export function listAccessControlLogs(params) {
+  return request({ url: '/accessControlLog.listAccessControlLog', method: 'get', params })
+}
+
+export function listAccessControlLogParam(params) {
+  return request({ url: '/accessControlLog.listAccessControlLogParam', method: 'get', params })
+}
+
 // ===== 进出记录(按设备) =====
 export function listAdminAccessControlInout(params) {
   return request({ url: '/accessControlInout.listAdminAccessControlInout', method: 'get', params })
+}
+
+// ===== 访客类型 =====
+export function listVisitTypes(params) {
+  return request({ url: '/visitType.listVisitType', method: 'get', params })
+}
+
+export function saveVisitType(data) {
+  return request({ url: '/visitType.saveVisitType', method: 'post', data })
+}
+
+export function updateVisitType(data) {
+  return request({ url: '/visitType.updateVisitType', method: 'post', data })
+}
+
+export function deleteVisitType(data) {
+  return request({ url: '/visitType.deleteVisitType', method: 'post', data })
 }
 
 // ===== 下拉选项加载 =====
@@ -99,4 +125,104 @@ export function listHardwareManufacturer(params) {
 
 export function listMonitorMachine(params) {
   return request({ url: '/monitorMachine.listMonitorMachine', method: 'get', params })
+}
+
+// ===== 部门授权（独立页面，按组织视角） =====
+export function listAccessControlOrg(params) {
+  return request({ url: '/accessControlOrg.listAccessControlOrg', method: 'get', params })
+}
+
+export function saveAccessControlOrg(data) {
+  return request({ url: '/accessControlOrg.saveAccessControlOrg', method: 'post', data })
+}
+
+export function deleteAccessControlOrg(data) {
+  return request({ url: '/accessControlOrg.deleteAccessControlOrg', method: 'post', data })
+}
+
+// ===== 组织树 =====
+export function listOrgTree(params) {
+  return request({ url: '/org.listOrgTree', method: 'get', params })
+}
+
+// ===== 人脸二维码 =====
+export function listPersonFaceQrcodes(params) {
+  return request({ url: '/personFace.listPersonFaceQrcode', method: 'get', params })
+}
+
+export function savePersonFaceQrcode(data) {
+  return request({ url: '/personFace.savePersonFaceQrcode', method: 'post', data })
+}
+
+export function updatePersonFaceQrcode(data) {
+  return request({ url: '/personFace.updatePersonFaceQrcode', method: 'post', data })
+}
+
+export function deletePersonFaceQrcode(data) {
+  return request({ url: '/personFace.deletePersonFaceQrcode', method: 'post', data })
+}
+
+// ===== 通行码设置 =====
+export function listPassQrcodeSettings(params) {
+  return request({ url: '/passcode.listPassQrcodeSetting', method: 'get', params })
+}
+export function savePassQrcodeSetting(data) {
+  return request({ url: '/passcode.savePassQrcodeSetting', method: 'post', data })
+}
+export function updatePassQrcodeSetting(data) {
+  return request({ url: '/passcode.updatePassQrcodeSetting', method: 'post', data })
+}
+export function deletePassQrcodeSetting(data) {
+  return request({ url: '/passcode.deletePassQrcodeSetting', method: 'post', data })
+}
+
+// ===== 通行码 =====
+export function listPassQrcodes(params) {
+  return request({ url: '/passcode.listPassQrcode', method: 'get', params })
+}
+export function auditPassQrcode(data) {
+  return request({ url: '/passcode.auditPassQrcode', method: 'post', data })
+}
+export function deletePassQrcode(data) {
+  return request({ url: '/passcode.deletePassQrcode', method: 'post', data })
+}
+
+// ===== 访客管理 =====
+export function listVisits(params) {
+  return request({ url: '/visit.listVisit', method: 'get', params })
+}
+export function saveVisit(data) {
+  return request({ url: '/visit.saveVisit', method: 'post', data })
+}
+export function updateVisit(data) {
+  return request({ url: '/visit.updateVisit', method: 'post', data })
+}
+export function deleteVisit(data) {
+  return request({ url: '/visit.deleteVisit', method: 'post', data })
+}
+export function propertyAuthVisit(data) {
+  return request({ url: '/visit.propertyAuthVisit', method: 'post', data })
+}
+export function getVisitQrCodeUrl(params) {
+  return request({ url: '/visit.getVisitQrCodeUrl', method: 'get', params })
+}
+export function listAccessControlInout(params) {
+  return request({ url: '/accessControlInout.listAccessControlInout', method: 'get', params })
+}
+
+// ===== 门禁统计 =====
+export function queryAcInoutStatistics(data) {
+  return request({ url: '/accessControl.queryAcInoutStatistics', method: 'post', data })
+}
+
+export function queryAcLogStatistics(data) {
+  return request({ url: '/accessControl.queryAcLogStatistics', method: 'post', data })
+}
+
+export function queryAcVisitStatistics(data) {
+  return request({ url: '/accessControl.queryAcVisitStatistics', method: 'post', data })
+}
+
+export function queryAcFaceStatistics(data) {
+  return request({ url: '/accessControl.queryAcFaceStatistics', method: 'post', data })
 }
