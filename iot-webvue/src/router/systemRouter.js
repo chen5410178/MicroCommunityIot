@@ -12,10 +12,22 @@ const systemRoutes = [
     meta: { requiresAuth: true, title: '角色管理' }
   },
   {
+    path: 'pages/frame/staff',
+    name: 'StaffManage',
+    component: () => import('@/views/frame/staffManage.vue'),
+    meta: { requiresAuth: true, title: '员工管理' }
+  },
+  {
     path: 'pages/frame/staffDetail',
     name: 'StaffDetail',
     component: () => import('@/views/frame/staffDetail.vue'),
     meta: { requiresAuth: true, title: '员工详情' }
+  },
+  {
+    path: 'pages/charge/workLicenseMachine',
+    name: 'WorkLicenseMachine',
+    component: () => import('@/views/charge/listWorkLicenseMachine.vue'),
+    meta: { requiresAuth: true, title: '员工工牌' }
   },
   {
     path: 'pages/charge/workLicenseMap',

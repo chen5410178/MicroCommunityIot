@@ -39,7 +39,9 @@ export default {
       try {
         const community = this.$store.state.app.currentCommunity || {}
         const res = await listOrgTree({ communityId: community.communityId })
-        this.treeData = this.convertTree(res.data || [])
+        const data = res.data || res
+        const list = Array.isArray(data) ? data : (data.list || data.records || [])
+        this.treeData = this.convertTree(list)
       } catch (e) {
         console.error('加载组织树失败', e)
       }

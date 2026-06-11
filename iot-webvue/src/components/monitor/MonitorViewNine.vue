@@ -90,6 +90,7 @@ export default {
         loadingText: '加载中...',
         useMSE: false,
         debug: false,
+        hasAudio: false,
         isNotMute: false,
         supportDblclickFullscreen: true
       })

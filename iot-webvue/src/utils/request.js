@@ -47,6 +47,9 @@ service.interceptors.response.use(
       sessionStorage.clear()
       window.location.hash = '#/pages/frame/login'
     }
+    if (error.response && error.response.data) {
+      return Promise.reject(error.response.data)
+    }
     return Promise.reject(error)
   }
 )

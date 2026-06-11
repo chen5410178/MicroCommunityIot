@@ -111,10 +111,7 @@ export default {
     },
     changeCatalog(catalog) {
       if (catalog.url && catalog.url !== '#') {
-        if (catalog.url.startsWith('http')) {
-          window.open(catalog.url)
-          return
-        }
+        window.open(catalog.url)
       }
       this.catalogs.forEach(item => { item.active = '0' })
       catalog.active = '1'

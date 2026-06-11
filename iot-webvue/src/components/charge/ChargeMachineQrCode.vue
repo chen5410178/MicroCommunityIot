@@ -7,7 +7,7 @@
   >
     <div style="text-align: center; padding: 20px 0;">
       <div ref="qrcodeRef" style="display: inline-block" />
-      <p style="margin-top: 16px; font-size: 14px; color: #303133;">{{ qrData.machineName || '' }}</p>
+      <p style="margin-top: 16px; font-size: 14px; color: #303133;">{{ (qrData && qrData.machineName) || '' }}</p>
     </div>
     <span slot="footer">
       <el-button @click="dialogVisible = false">关闭</el-button>
@@ -43,7 +43,7 @@ export default {
   methods: {
     generateQRCode() {
       const el = this.$refs.qrcodeRef
-      if (!el) return
+      if (!el || !this.qrData) return
       el.innerHTML = ''
       new QRCode(el, {
         text: this.qrData.qrCode || this.qrData.machineCode || '',
