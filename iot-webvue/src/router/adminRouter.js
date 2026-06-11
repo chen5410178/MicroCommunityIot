@@ -94,6 +94,78 @@ const adminRoutes = [
     name: 'DtModalManage',
     component: () => import('@/views/3d/listDtModal.vue'),
     meta: { requiresAuth: true, title: '3D模型管理' }
+  },
+  {
+    path: 'pages/meter/adminMeterRecharge',
+    name: 'AdminMeterRecharge',
+    component: () => import('@/views/meter/listAdminMeterRecharge.vue'),
+    meta: { requiresAuth: true, title: '水电充值' }
+  },
+  {
+    path: 'pages/charge/adminChargeOrder',
+    name: 'AdminChargeOrder',
+    component: () => import('@/views/charge/listAdminChargeOrder.vue'),
+    meta: { requiresAuth: true, title: '充电订单' }
+  },
+  {
+    path: 'pages/charge/adminChargeOrderAccts',
+    name: 'AdminChargeOrderAccts',
+    component: () => import('@/views/charge/listAdminChargeOrderAccts.vue'),
+    meta: { requiresAuth: true, title: '扣款明细' }
+  },
+  {
+    path: 'pages/accessControl/adminInout',
+    name: 'AdminInout',
+    component: () => import('@/views/accessControl/listAdminInout.vue'),
+    meta: { requiresAuth: true, title: '门禁出入记录' }
+  },
+  {
+    path: 'pages/car/adminCarInout',
+    name: 'AdminCarInout',
+    component: () => import('@/views/car/listAdminCarInout.vue'),
+    meta: { requiresAuth: true, title: '车辆出入记录' }
+  },
+  {
+    path: 'pages/car/spaceMachineFactory',
+    name: 'SpaceMachineFactory',
+    component: () => import('@/views/car/listSpaceMachineFactory.vue'),
+    meta: { requiresAuth: true, title: '车位设备厂商' }
+  },
+  {
+    path: 'pages/charge/adminChargeMachine',
+    name: 'AdminChargeMachine',
+    component: () => import('@/views/charge/listAdminChargeMachine.vue'),
+    meta: { requiresAuth: true, title: '充电桩管理' }
+  },
+  {
+    path: 'pages/charge/workLicenseFactory',
+    name: 'WorkLicenseFactory',
+    component: () => import('@/views/charge/listWorkLicenseFactory.vue'),
+    meta: { requiresAuth: true, title: '充电桩厂商' }
+  },
+  {
+    path: 'pages/meter/adminMeter',
+    name: 'AdminMeter',
+    component: () => import('@/views/meter/listAdminMeter.vue'),
+    meta: { requiresAuth: true, title: '水电表管理' }
+  },
+  {
+    path: 'pages/lamp/lampMachineFactoryManage',
+    name: 'LampMachineFactoryManage',
+    component: () => import('@/views/lamp/listLampMachineFactoryManage.vue'),
+    meta: { requiresAuth: true, title: '灯杆设备厂商' }
+  },
+  {
+    path: 'pages/monitor/monitorModelManage',
+    name: 'MonitorModelManage',
+    component: () => import('@/views/monitor/monitorModelManage.vue'),
+    meta: { requiresAuth: true, title: '监控设备型号' }
+  },
+  {
+    path: 'pages/3d/dtScript',
+    name: 'DtScript',
+    component: () => import('@/views/3d/listDtScript.vue'),
+    meta: { requiresAuth: true, title: '3D脚本' }
   }
 ]
 

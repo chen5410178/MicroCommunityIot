@@ -76,7 +76,7 @@ export default {
       return menus
     },
     switchMenu(menu) {
-      this.menus = this.refreshMenuActive(this.menus, menu.id)
+      this.menus = this.refreshMenuActive(this.menus, menu.id).slice()
       this.$store.commit('app/SET_MENUS', this.menus)
       this.subMenus = menu.childs || []
       this.curMenuName = menu.name
@@ -85,24 +85,34 @@ export default {
       }
     },
     gotoPage(href, tabName) {
+      const targetPath = href ? href.replace(/^\/?#\//, '/') : ''
       this.subMenus.forEach(sub => {
-        sub.active = sub.href === href
+        const subPath = sub.href ? sub.href.replace(/^\/?#\//, '/') : ''
+        sub.active = subPath === targetPath
       })
-      const path = href ? href.replace(/^\/?#\//, '/') : ''
       this.menus.forEach(menu => {
-        if (menu.childs && menu.childs.some(c => c.href === href)) {
+        if (menu.childs && menu.childs.some(c => {
+          const childPath = c.href ? c.href.replace(/^\/?#\//, '/') : ''
+          return childPath === targetPath
+        })) {
           menu.active = true
         } else {
           menu.active = false
         }
       })
-      if (path) {
-        this.$router.push(path).catch(() => {})
+      if (targetPath) {
+        this.$router.push(targetPath).catch(() => {})
       }
     },
     syncActiveByRoute() {
       const currentPath = this.$route.path
       this.menus.forEach(menu => {
+        menu.active = false
+        if (menu.childs) {
+          menu.childs.forEach(sub => { sub.active = false })
+        }
+      })
+      for (const menu of this.menus) {
         if (menu.childs) {
           const matched = menu.childs.find(c => {
             const childPath = c.href ? c.href.replace(/^\/?#\//, '/') : ''
@@ -115,9 +125,10 @@ export default {
             this.subMenus.forEach(sub => {
               sub.active = sub.href === matched.href
             })
+            break
           }
         }
-      })
+      }
     }
   }
 }

@@ -13,3 +13,16 @@ export function listWorkLicenseFactorys(params) { return request({ url: '/workLi
 export function saveWorkLicenseFactory(data) { return request({ url: '/workLicenseFactory.saveWorkLicenseFactory', method: 'post', data }) }
 export function updateWorkLicenseFactory(data) { return request({ url: '/workLicenseFactory.updateWorkLicenseFactory', method: 'post', data }) }
 export function deleteWorkLicenseFactory(data) { return request({ url: '/workLicenseFactory.deleteWorkLicenseFactory', method: 'post', data }) }
+
+// ===== Admin 充电桩管理 =====
+export function listAdminChargeMachine(params) { return request({ url: '/chargeMachine.listAdminChargeMachine', method: 'get', params }) }
+export function listAdminChargeMachinePort(params) { return request({ url: '/chargeMachine.listAdminChargeMachinePort', method: 'get', params }) }
+export function listAdminChargeMachineOrder(params) { return request({ url: '/chargeMachine.listAdminChargeMachineOrder', method: 'get', params }) }
+export function listAdminChargeRuleFee(params) { return request({ url: '/chargeRule.listAdminChargeRuleFee', method: 'get', params }) }
+export function listAdminChargeRulePrice(params) { return request({ url: '/chargeRule.listAdminChargeRulePrice', method: 'get', params }) }
+export function listAdminParkingCouponCharge(params) { return request({ url: '/parkingCoupon.listAdminParkingCouponCharge', method: 'get', params }) }
+export function queryAdminOwnerAccount(params) { return request({ url: '/account.queryAdminOwnerAccount', method: 'get', params }) }
+export function listAdminChargeMachineOrderAcct(params) { return request({ url: '/chargeMachine.listAdminChargeMachineOrderAcct', method: 'get', params }) }
+export function stopCharge(data) { return request({ url: '/chargeMachine.stopCharge', method: 'post', data }) }
+export function throwStopCharge(data) { return request({ url: '/chargeMachine.throwStopCharge', method: 'post', data }) }
+export function orderRefundMoney(data) { return request({ url: '/chargeMachine.orderRefundMoney', method: 'post', data }) }

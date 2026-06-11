@@ -33,3 +33,26 @@ export function saveMeterMachineFactorySpec(data) {
 export function deleteMeterMachineFactorySpec(data) {
   return request({ url: '/meterMachineFactorySpec.deleteMeterMachineFactorySpec', method: 'post', data })
 }
+
+// ===== admin水电表 =====
+export function listAdminMeterMachine(params) {
+  return request({ url: '/meterMachine.listAdminMeterMachine', method: 'get', params })
+}
+export function listMeterMachineFactory(params) {
+  return request({ url: '/meterMachine.listMeterMachineFactory', method: 'get', params })
+}
+
+// ===== admin充值明细 =====
+export function listAdminMeterCharge(params) {
+  return request({ url: '/meterMachineCharge.listAdminMeterCharge', method: 'get', params })
+}
+
+// ===== admin水电表详情 =====
+export function listAdminMeterReadRechargeDetail(params) {
+  return request({ url: '/meterMachine.listAdminMeterReadRechargeDetail', method: 'get', params })
+}
+
+// ===== admin房屋查询 =====
+export function queryAdminRooms(params) {
+  return request({ url: '/room.queryAdminRooms', method: 'get', params })
+}

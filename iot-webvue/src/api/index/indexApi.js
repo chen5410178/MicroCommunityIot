@@ -31,3 +31,43 @@ export function listMonitorAlarm(params) {
     params
   })
 }
+
+export function queryAdminCount(params) {
+  return request({
+    url: '/admin.queryAdminCount',
+    method: 'get',
+    params
+  })
+}
+
+export function queryCommunityEvent(params) {
+  return request({
+    url: '/admin.queryCommunityEvent',
+    method: 'get',
+    params
+  })
+}
+
+export function queryCommunityMonitorPool(params) {
+  return request({
+    url: '/admin.queryCommunityMonitorPool',
+    method: 'get',
+    params
+  })
+}
+
+export function queryDevCount(params) {
+  return request({
+    url: '/admin.queryDevCount',
+    method: 'get',
+    params
+  })
+}
+
+export function queryAppServiceData(params) {
+  return request({
+    url: '/admin.queryAppServiceData',
+    method: 'get',
+    params
+  })
+}

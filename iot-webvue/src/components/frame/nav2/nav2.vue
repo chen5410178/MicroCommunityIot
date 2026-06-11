@@ -132,7 +132,7 @@ export default {
     },
     handleLogout() {
       this.$store.dispatch('user/logout').then(() => {
-        this.$router.push('/user')
+        this.$router.push('/pages/frame/login')
       })
     }
   }
