@@ -1,5 +1,8 @@
 <template>
-  <div class="city-area-tree bg-white padding border-radius">
+  <el-card shadow="never" class="tree-card">
+    <div slot="header" class="card-header">
+      <span>地区树</span>
+    </div>
     <div class="tree-actions">
       <el-button v-if="!isAreaLevel303" type="primary" size="small" @click="handleAdd">添加</el-button>
       <el-button v-if="!isRoot" type="primary" size="small" @click="handleEdit">修改</el-button>
@@ -15,7 +18,7 @@
       class="margin-top"
       @node-click="handleNodeClick"
     />
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -33,6 +36,9 @@ export default {
   computed: {
     isRoot() {
       return !this.currentNode || this.currentNode.areaCode === '0'
+    },
+    isAreaLevel303() {
+      return this.currentNode && this.currentNode.areaLevel === '303'
     }
   },
   mounted() {
@@ -102,17 +108,20 @@ export default {
 </script>
 
 <style scoped>
-.city-area-tree {
-  padding: 10px 0;
+.tree-card {
+  height: 100%;
 }
-.tree-header {
-  font-size: 14px;
-  font-weight: bold;
-  padding: 0 10px 10px;
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .tree-actions {
-  padding: 0 10px 10px;
   display: flex;
   gap: 6px;
+  margin-bottom: 12px;
+}
+.margin-top {
+  margin-top: 0;
 }
 </style>

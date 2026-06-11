@@ -1,65 +1,67 @@
 <template>
   <div class="city-area-manage">
-    <div class="row">
-      <div class="col-md-3">
-        <el-card shadow="never" class="tree-card">
-          <CityAreaTree
-            ref="treeRef"
-            @node-click="handleNodeClick"
-            @open-add="handleOpenAdd"
-            @open-edit="handleOpenEdit"
-            @open-delete="handleOpenDelete"
-          />
-        </el-card>
+    <div class="manage-container">
+      <div class="tree-panel">
+        <CityAreaTree
+          ref="treeRef"
+          @node-click="handleNodeClick"
+          @open-add="handleOpenAdd"
+          @open-edit="handleOpenEdit"
+          @open-delete="handleOpenDelete"
+        />
       </div>
-      <div class="col-md-9">
-        <el-card shadow="never" class="detail-card">
-          <div slot="header" class="card-header">
-            <span>地区详情</span>
+      <div class="detail-panel">
+        <div class="white-bg padding-left padding-right padding-top border-radius-top">
+          <div class="detail-header">
+            <div class="text-title">地区详情</div>
           </div>
-          <div v-if="detail.id" class="detail-content">
-            <el-form :model="detail" label-width="100px">
-              <el-row :gutter="20">
-                <el-col :span="8">
-                  <el-form-item label="地区名称：">
-                    <span>{{ detail.areaName || '-' }}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="地区编码：">
-                    <span>{{ detail.areaCode || '-' }}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="等级：">
-                    <span v-if="detail.areaLevel === '101'">省级</span>
-                    <span v-else-if="detail.areaLevel === '202'">市州</span>
-                    <span v-else-if="detail.areaLevel === '303'">区县</span>
-                    <span v-else>地区</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="父级编码：">
-                    <span>{{ detail.parentAreaCode || '-' }}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="父级名称：">
-                    <span>{{ detail.parentAreaName || '-' }}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="创建时间：">
-                    <span>{{ detail.createTime || '-' }}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
+          <div v-if="detail.id" class="margin-top">
+            <el-row>
+              <el-col :span="6">
+                <div class="form-group">
+                  <label class="col-form-label">地区名称：</label>
+                  <label>{{ detail.areaName || '-' }}</label>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="form-group">
+                  <label class="col-form-label">地区编码：</label>
+                  <label>{{ detail.areaCode || '-' }}</label>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="form-group">
+                  <label class="col-form-label">等级：</label>
+                  <label v-if="detail.areaLevel === '101'">省级</label>
+                  <label v-else-if="detail.areaLevel === '202'">市州</label>
+                  <label v-else-if="detail.areaLevel === '303'">区县</label>
+                  <label v-else>地区</label>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="form-group">
+                  <label class="col-form-label">父级编码：</label>
+                  <label>{{ detail.parentAreaCode || '-' }}</label>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="form-group">
+                  <label class="col-form-label">父级名称：</label>
+                  <label>{{ detail.parentAreaName || '-' }}</label>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="form-group">
+                  <label class="col-form-label">创建时间：</label>
+                  <label>{{ detail.createTime || '-' }}</label>
+                </div>
+              </el-col>
+            </el-row>
           </div>
           <div v-else class="empty-detail">
             <p>请选择左侧地区节点查看详情</p>
           </div>
-        </el-card>
+        </div>
       </div>
     </div>
 
@@ -133,18 +135,51 @@ export default {
 
 <style scoped>
 .city-area-manage {
-  padding: 16px;
+  height: 100%;
 }
-.tree-card {
+.manage-container {
+  display: flex;
+  height: 100%;
+  gap: 16px;
+}
+.tree-panel {
+  width: 240px;
+  flex-shrink: 0;
+}
+.detail-panel {
+  flex: 1;
+  min-width: 0;
+}
+.white-bg {
+  background: #fff;
   min-height: 500px;
 }
-.detail-card {
-  min-height: 500px;
-}
-.card-header {
+.padding-left { padding-left: 16px; }
+.padding-right { padding-right: 16px; }
+.padding-top { padding-top: 16px; }
+.border-radius-top { border-radius: 4px 4px 0 0; }
+.detail-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.text-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+.margin-top { margin-top: 16px; }
+.form-group {
+  margin-bottom: 16px;
+}
+.col-form-label {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 2px;
+}
+.form-group label:last-child {
+  font-size: 14px;
+  color: #333;
 }
 .empty-detail {
   text-align: center;

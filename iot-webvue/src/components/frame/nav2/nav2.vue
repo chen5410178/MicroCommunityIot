@@ -3,7 +3,7 @@
     <div class="nav-left">
       <ul class="nav-menu">
         <li class="title">
-          <a href="/">{{ systemInfo.logo || 'HCIOT' }}</a>
+          <a @click.prevent="goHome" style="cursor:pointer">{{ systemInfo.logo || 'HCIOT' }}</a>
         </li>
         <li
           v-for="(item, index) in catalogs"
@@ -130,9 +130,12 @@ export default {
       sessionStorage.setItem('iot_webvue_lang', lang.lang)
       location.reload()
     },
+    goHome() {
+      this.$router.push('/pages/index/index')
+    },
     handleLogout() {
       this.$store.dispatch('user/logout').then(() => {
-        this.$router.push('/pages/frame/login')
+        this.$router.push('/user')
       })
     }
   }

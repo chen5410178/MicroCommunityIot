@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import MainLayout from '@/layouts/mainLayout.vue'
 import devRouter from './devRouter'
 import adminRouter from './adminRouter'
+import accessControlRouter from './accessControlRouter'
+import propertyRouter from './propertyRouter'
 
 Vue.use(VueRouter)
 
@@ -16,8 +18,11 @@ const routes = [
   {
     path: '/',
     component: MainLayout,
-    redirect: '/pages/index/index',
     children: [
+      {
+        path: '',
+        redirect: '/pages/index/index'
+      },
       {
         path: 'pages/index/index',
         name: 'Dashboard',
@@ -26,6 +31,8 @@ const routes = [
       },
       ...devRouter,
       ...adminRouter,
+      ...accessControlRouter,
+      ...propertyRouter,
       {
         path: 'pages/frame/systemInfoManage',
         name: 'SystemInfoManage',
