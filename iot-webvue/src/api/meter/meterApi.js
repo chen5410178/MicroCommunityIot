@@ -153,9 +153,6 @@ export function updateInstrument(data) {
 export function deleteInstrument(data) {
   return request({ url: '/instrument.deleteInstrument', method: 'post', data })
 }
-export function listInstrumentTypes(params) {
-  return request({ url: '/instrumentType.listInstrumentType', method: 'get', params })
-}
 export function listInstrumentLogs(params) {
   return request({ url: '/instrumentLog.listInstrumentLog', method: 'get', params })
 }

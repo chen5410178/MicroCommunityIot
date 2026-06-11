@@ -82,3 +82,18 @@ export function queryMonthMoneyStatistics(params) { return request({ url: '/char
 
 // ===== 业主充电券 =====
 export function listCouponPropertyUser(params) { return request({ url: '/coupon.listCouponPropertyUser', method: 'get', params }) }
+
+// ===== 工牌位置 =====
+export function listWorkLicenseMachine(params) { return request({ url: '/workLicense.listWorkLicenseMachine', method: 'get', params }) }
+export function listWorkLicensePos(params) { return request({ url: '/workLicense.listWorkLicensePos', method: 'get', params }) }
+
+// ===== 员工工牌管理 =====
+export function listWorkLicenseMachines(params) { return request({ url: '/workLicense.listWorkLicenseMachine', method: 'get', params }) }
+export function saveWorkLicenseMachine(data) { return request({ url: '/workLicense.saveWorkLicenseMachine', method: 'post', data }) }
+export function updateWorkLicenseMachine(data) { return request({ url: '/workLicense.updateWorkLicenseMachine', method: 'post', data }) }
+export function deleteWorkLicenseMachine(data) { return request({ url: '/workLicense.deleteWorkLicenseMachine', method: 'post', data }) }
+export function playPps(data) { return request({ url: '/workLicense.playPps', method: 'post', data }) }
+export function saveWhiteList(data) { return request({ url: '/workLicense.saveWhiteList', method: 'post', data }) }
+export function listWhiteList(params) { return request({ url: '/whiteList.listWhiteList', method: 'get', params }) }
+export function listWorkLicenseLogs(params) { return request({ url: '/workLicense.listWorkLicenseLog', method: 'get', params }) }
+export function listWorkLicensePos(params) { return request({ url: '/workLicense.listWorkLicensePos', method: 'get', params }) }

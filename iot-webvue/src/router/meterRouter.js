@@ -112,6 +112,48 @@ const meterRoutes = [
     name: 'InstrumentLogManage',
     component: () => import('@/views/meter/instrumentLogManage.vue'),
     meta: { requiresAuth: true, title: '仪表上报数据' }
+  },
+  {
+    path: 'pages/event/eventPoolManage',
+    name: 'EventPoolManage',
+    component: () => import('@/views/event/eventPoolManage.vue'),
+    meta: { requiresAuth: true, title: '事件池' }
+  },
+  {
+    path: 'pages/event/addEventPoolManage',
+    name: 'AddEventPoolManage',
+    component: () => import('@/views/event/addEventPoolManage.vue'),
+    meta: { requiresAuth: true, title: '添加事件' }
+  },
+  {
+    path: 'pages/event/eventDetail',
+    name: 'EventDetail',
+    component: () => import('@/views/event/eventDetail.vue'),
+    meta: { requiresAuth: true, title: '事件详情' }
+  },
+  {
+    path: 'pages/event/eventPoolStaffManage',
+    name: 'EventPoolStaffManage',
+    component: () => import('@/views/event/eventPoolStaffManage.vue'),
+    meta: { requiresAuth: true, title: '我的事件' }
+  },
+  {
+    path: 'pages/event/eventRule',
+    name: 'EventRule',
+    component: () => import('@/views/event/eventRule.vue'),
+    meta: { requiresAuth: true, title: '事件规则' }
+  },
+  {
+    path: 'pages/event/addEventObject',
+    name: 'AddEventObject',
+    component: () => import('@/views/event/addEventObject.vue'),
+    meta: { requiresAuth: true, title: '添加事件对象' }
+  },
+  {
+    path: 'pages/event/addEventStaff',
+    name: 'AddEventStaff',
+    component: () => import('@/views/event/addEventStaff.vue'),
+    meta: { requiresAuth: true, title: '添加事件员工' }
   }
 ]
 

@@ -13,6 +13,8 @@ import lampRouter from './lampRouter'
 import monitorRouter from './monitorRouter'
 import couponRouter from './couponRouter'
 import lockRouter from './lockRouter'
+import attendanceRouter from './attendanceRouter'
+import systemRouter from './systemRouter'
 
 Vue.use(VueRouter)
 
@@ -49,6 +51,8 @@ const routes = [
       ...monitorRouter,
       ...couponRouter,
       ...lockRouter,
+      ...attendanceRouter,
+      ...systemRouter,
       {
         path: 'pages/frame/systemInfoManage',
         name: 'SystemInfoManage',
@@ -72,6 +76,18 @@ const routes = [
         name: 'MqttLog',
         component: () => import('@/views/log/mqttLog.vue'),
         meta: { requiresAuth: true, title: 'mqtt日志' }
+      },
+      {
+        path: 'pages/log/assetImportLog',
+        name: 'AssetImportLog',
+        component: () => import('@/views/log/assetImportLog.vue'),
+        meta: { requiresAuth: true, title: '批量导入日志' }
+      },
+      {
+        path: 'pages/log/assetImportLogDetail',
+        name: 'AssetImportLogDetail',
+        component: () => import('@/views/log/assetImportLogDetail.vue'),
+        meta: { requiresAuth: true, title: '导入日志详情' }
       },
       {
         path: '*',

@@ -132,6 +132,30 @@ const adminRoutes = [
     meta: { requiresAuth: true, title: '充电桩厂商' }
   },
   {
+    path: 'pages/charge/listWorkLicenseMachine',
+    name: 'ListWorkLicenseMachine',
+    component: () => import('@/views/charge/listWorkLicenseMachine.vue'),
+    meta: { requiresAuth: true, title: '员工工牌' }
+  },
+  {
+    path: 'pages/charge/addWorkLicenseMachine',
+    name: 'AddWorkLicenseMachine',
+    component: () => import('@/views/charge/addWorkLicenseMachine.vue'),
+    meta: { requiresAuth: true, title: '添加工牌' }
+  },
+  {
+    path: 'pages/charge/editWorkLicenseMachine',
+    name: 'EditWorkLicenseMachine',
+    component: () => import('@/views/charge/editWorkLicenseMachine.vue'),
+    meta: { requiresAuth: true, title: '修改工牌' }
+  },
+  {
+    path: 'pages/charge/listWorkLicenseLog',
+    name: 'ListWorkLicenseLog',
+    component: () => import('@/views/charge/listWorkLicenseLog.vue'),
+    meta: { requiresAuth: true, title: '工牌日志' }
+  },
+  {
     path: 'pages/meter/adminMeter',
     name: 'AdminMeter',
     component: () => import('@/views/meter/listAdminMeter.vue'),

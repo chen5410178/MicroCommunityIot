@@ -1,18 +1,20 @@
 <template>
-  <el-dialog :visible.sync="dialogVisible" title="请确认您的操作" width="400px">
+  <el-dialog :visible.sync="dialogVisible" title="重置密码" width="400px">
     <div style="text-align: center; padding: 20px 0;">
       <i class="el-icon-warning" style="font-size: 48px; color: #E6A23C" />
-      <p style="margin-top: 20px; font-size: 16px;">确认是否重置密码!</p>
+      <p style="margin-top: 20px; font-size: 16px;">
+        确认要重置员工 <strong>{{ staffInfo.username }}</strong> 的密码吗？
+      </p>
     </div>
     <span slot="footer">
-      <el-button @click="dialogVisible = false">点错了</el-button>
+      <el-button @click="dialogVisible = false">取消</el-button>
       <el-button type="primary" @click="handleSubmit" :loading="loading">确认重置</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
-import { listStoreStaff, resetStaffPwd } from '@/api/admin/propertyCompanyApi'
+import { resetStaffPwd, listStoreStaff } from '@/api/admin/propertyCompanyApi'
 
 export default {
   name: 'ResetStaffPwd',
@@ -24,15 +26,24 @@ export default {
     }
   },
   methods: {
-    async open(row) {
+    open(staffInfo) {
       this.dialogVisible = true
+      if (staffInfo.userId) {
+        this.staffInfo = {
+          userId: staffInfo.userId,
+          username: staffInfo.username || staffInfo.name || ''
+        }
+      } else if (staffInfo.storeId) {
+        this.loadStoreStaff(staffInfo.storeId)
+      }
+    },
+    async loadStoreStaff(storeId) {
       try {
-        const res = await listStoreStaff({ page: 1, row: 1, adminFlag: 'Y', storeId: row.storeId })
+        const res = await listStoreStaff({ page: 1, row: 1, adminFlag: 'Y', storeId })
         if (res.data && res.data.length > 0) {
           this.staffInfo = {
-            username: res.data[0].staffName,
             userId: res.data[0].staffId,
-            curUserName: (() => { const u = sessionStorage.getItem('iot_webvue_user'); return u ? JSON.parse(u).name || '' : '' })()
+            username: res.data[0].staffName || ''
           }
         }
       } catch { /* ignore */ }
@@ -47,11 +58,12 @@ export default {
           staffId: this.staffInfo.userId
         })
         if (res.pwd) {
-          this.$message.success('修改密码成功，密码为' + res.pwd + '请及时修改密码', 10000)
+          this.$message.success('重置成功，新密码为' + res.pwd + '，请及时修改', 10000)
         } else {
           this.$message.success('重置密码成功')
         }
         this.dialogVisible = false
+        this.$emit('success')
       } catch (e) {
         this.$message.error(e.msg || '重置失败')
       } finally {

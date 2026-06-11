@@ -1,0 +1,125 @@
+<template>
+  <div class="privilege-tree" v-loading="loading">
+    <el-tree
+      ref="treeRef"
+      :data="treeData"
+      node-key="id"
+      show-checkbox
+      :props="treeProps"
+      :default-expanded-keys="expandedKeys"
+      :default-checked-keys="checkedKeys"
+      check-strictly
+      @check="handleCheck"
+    />
+  </div>
+</template>
+
+<script>
+import { listPrivilegeTree, addPrivilegeToGroup, deletePrivilegeFromGroup } from '@/api/frame/roleApi'
+
+export default {
+  name: 'PrivilegeTree',
+  data() {
+    return {
+      loading: false,
+      treeData: [],
+      treeProps: { children: 'children', label: 'label' },
+      expandedKeys: [],
+      checkedKeys: [],
+      pgId: ''
+    }
+  },
+  methods: {
+    async loadPrivilege(pgId) {
+      this.pgId = pgId
+      this.loading = true
+      try {
+        const community = this.$store.state.app.currentCommunity || {}
+        const res = await listPrivilegeTree({ pgId, communityId: community.communityId })
+        const raw = Array.isArray(res.data) ? res.data : res || []
+        this.treeData = this.buildTree(raw)
+        this.expandedKeys = this.collectAllKeys(this.treeData)
+        this.checkedKeys = this.collectCheckedKeys(raw)
+      } finally {
+        this.loading = false
+      }
+    },
+    buildTree(list) {
+      const groupMap = {}
+      list.forEach(item => {
+        const gKey = item.gId
+        if (!groupMap[gKey]) {
+          groupMap[gKey] = {
+            id: 'g_' + item.gId,
+            label: item.gName,
+            gId: item.gId,
+            children: [],
+            menuMap: {}
+          }
+        }
+        const group = groupMap[gKey]
+        const mKey = item.mId
+        if (!group.menuMap[mKey]) {
+          const menuNode = {
+            id: 'm_' + item.mId,
+            label: item.mName,
+            mId: item.mId,
+            children: []
+          }
+          group.menuMap[mKey] = menuNode
+          group.children.push(menuNode)
+        }
+        const menu = group.menuMap[mKey]
+        const pNode = {
+          id: 'p_' + item.pId,
+          pId: item.pId,
+          label: item.pName
+        }
+        menu.children.push(pNode)
+      })
+      return Object.values(groupMap).map(g => {
+        delete g.menuMap
+        return g
+      })
+    },
+    collectCheckedKeys(raw) {
+      return raw.filter(item => item.pgId).map(item => 'p_' + item.pId)
+    },
+    collectAllKeys(nodes) {
+      let keys = []
+      nodes.forEach(n => {
+        keys.push(n.id)
+        if (n.children && n.children.length) {
+          keys = keys.concat(this.collectAllKeys(n.children))
+        }
+      })
+      return keys
+    },
+    async handleCheck(node, checkedInfo) {
+      const pId = node.pId
+      if (!pId) return
+      if (checkedInfo.checkedKeys.includes(node.id)) {
+        await this.doAddPrivilege(pId)
+      } else {
+        await this.doDeletePrivilege(pId)
+      }
+    },
+    async doAddPrivilege(pId) {
+      try {
+        await addPrivilegeToGroup({ pgId: this.pgId, pIds: [{ pId }] })
+      } catch (e) {
+        this.$message.error(e.msg || '授权失败')
+        this.$refs.treeRef.setChecked('p_' + pId, false, false)
+      }
+    },
+    async doDeletePrivilege(pId) {
+      try {
+        await deletePrivilegeFromGroup({ pgId: this.pgId, pIds: [{ pId }] })
+      } catch (e) {
+        this.$message.error(e.msg || '取消授权失败')
+        this.$refs.treeRef.setChecked('p_' + pId, true, false)
+      }
+    }
+  }
+}
+</script>
