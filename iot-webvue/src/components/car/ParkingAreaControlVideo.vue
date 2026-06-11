@@ -68,10 +68,10 @@
         <div class="capture-images" v-if="inImg !== '/img/carInout.jpg' || outImg !== '/img/carInout.jpg'">
           <el-row :gutter="16">
             <el-col :span="12">
-              <img :src="inImg" width="100%" height="350px" style="object-fit: cover" />
+              <img :src="inImg" width="100%" height="350" style="object-fit: cover" @error="onImgError" />
             </el-col>
             <el-col :span="12">
-              <img :src="outImg" width="100%" height="350px" style="object-fit: cover" />
+              <img :src="outImg" width="100%" height="350" style="object-fit: cover" @error="onImgError" />
             </el-col>
           </el-row>
         </div>
@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { listBarriers, openBarrierDoor, closeBarrierDoor, getCloudFlvVideo, getCarMachineQrCodeUrl } from '@/api/car/carApi'
+import { listBarriers, openBarrierDoor, closeBarrierDoor, getCloudFlvVideo } from '@/api/car/carApi'
 
 export default {
   name: 'ParkingAreaControlVideo',
@@ -384,6 +384,9 @@ export default {
     },
     refresh() {
       this.listMachines()
+    },
+    onImgError(e) {
+      e.target.src = '/img/init.jpg'
     }
   }
 }
