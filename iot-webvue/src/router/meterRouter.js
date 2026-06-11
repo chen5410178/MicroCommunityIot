@@ -100,6 +100,18 @@ const meterRoutes = [
     name: 'MeterMachineReadDetail',
     component: () => import('@/views/meter/meterMachineReadDetail.vue'),
     meta: { requiresAuth: true, title: '抄表记录' }
+  },
+  {
+    path: 'pages/meter/instrumentTypeManage',
+    name: 'InstrumentTypeManage',
+    component: () => import('@/views/meter/instrumentTypeManage.vue'),
+    meta: { requiresAuth: true, title: '仪表组' }
+  },
+  {
+    path: 'pages/meter/instrumentLogManage',
+    name: 'InstrumentLogManage',
+    component: () => import('@/views/meter/instrumentLogManage.vue'),
+    meta: { requiresAuth: true, title: '仪表上报数据' }
   }
 ]
 

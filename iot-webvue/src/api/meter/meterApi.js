@@ -126,10 +126,36 @@ export function deleteMeterQrcode(data) {
   return request({ url: '/meterQrcode.deleteMeterQrcode', method: 'post', data })
 }
 
+// ===== 仪表组 =====
+export function listInstrumentTypes(params) { return request({ url: '/instrumentType.listInstrumentType', method: 'get', params }) }
+export function saveInstrumentType(data) { return request({ url: '/instrumentType.saveInstrumentType', method: 'post', data }) }
+export function updateInstrumentType(data) { return request({ url: '/instrumentType.updateInstrumentType', method: 'post', data }) }
+export function deleteInstrumentType(data) { return request({ url: '/instrumentType.deleteInstrumentType', method: 'post', data }) }
+
 // ===== 水电统计 =====
 export function queryMeterCountStatistics(params) {
   return request({ url: '/meter.queryMeterCountStatistics', method: 'get', params })
 }
 export function queryMeterMoneyStatistics(params) {
   return request({ url: '/meter.queryMeterMoneyStatistics', method: 'get', params })
+}
+
+// ===== 仪表设备 =====
+export function listInstruments(params) {
+  return request({ url: '/instrument.listInstrument', method: 'get', params })
+}
+export function saveInstrument(data) {
+  return request({ url: '/instrument.saveInstrument', method: 'post', data })
+}
+export function updateInstrument(data) {
+  return request({ url: '/instrument.updateInstrument', method: 'post', data })
+}
+export function deleteInstrument(data) {
+  return request({ url: '/instrument.deleteInstrument', method: 'post', data })
+}
+export function listInstrumentTypes(params) {
+  return request({ url: '/instrumentType.listInstrumentType', method: 'get', params })
+}
+export function listInstrumentLogs(params) {
+  return request({ url: '/instrumentLog.listInstrumentLog', method: 'get', params })
 }

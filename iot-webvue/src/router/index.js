@@ -11,6 +11,8 @@ import meterRouter from './meterRouter'
 import liftRouter from './liftRouter'
 import lampRouter from './lampRouter'
 import monitorRouter from './monitorRouter'
+import couponRouter from './couponRouter'
+import lockRouter from './lockRouter'
 
 Vue.use(VueRouter)
 
@@ -45,6 +47,8 @@ const routes = [
       ...liftRouter,
       ...lampRouter,
       ...monitorRouter,
+      ...couponRouter,
+      ...lockRouter,
       {
         path: 'pages/frame/systemInfoManage',
         name: 'SystemInfoManage',

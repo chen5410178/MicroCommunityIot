@@ -22,8 +22,19 @@ export function getPlayVideoUrl(params) { return request({ url: '/monitorMachine
 export function saveVideoPhoto(data) { return request({ url: '/monitorMachine.saveVideoPhoto', method: 'post', data }) }
 
 export function listMonitorManufactors(params) { return request({ url: '/monitorManufactor.listMonitorManufactor', method: 'get', params }) }
+export function saveMonitorManufactor(data) { return request({ url: '/monitorManufactor.saveMonitorManufactor', method: 'post', data }) }
+export function updateMonitorManufactor(data) { return request({ url: '/monitorManufactor.updateMonitorManufactor', method: 'post', data }) }
+export function deleteMonitorManufactor(data) { return request({ url: '/monitorManufactor.deleteMonitorManufactor', method: 'post', data }) }
 
 export function listMonitorPools(params) { return request({ url: '/monitorPool.listMonitorPool', method: 'get', params }) }
 
 export function listMonitorRecords(params) { return request({ url: '/monitorMachine.listMonitorRecord', method: 'get', params }) }
 export function getRecordPlayVideoUrl(params) { return request({ url: '/monitorMachine.getRecordPlayVideoUrl', method: 'get', params }) }
+
+export function listMonitorMachinePersons(params) { return request({ url: '/monitor.listMonitorMachinePerson', method: 'get', params }) }
+export function saveMonitorMachinePerson(data) { return request({ url: '/monitor.saveMonitorMachinePerson', method: 'post', data }) }
+export function deleteMonitorMachinePerson(data) { return request({ url: '/monitor.deleteMonitorMachinePerson', method: 'post', data }) }
+
+export function listMonitorCollects(params) { return request({ url: '/monitor.listMonitorCollect', method: 'get', params }) }
+export function saveMonitorCollect(data) { return request({ url: '/monitor.saveMonitorCollect', method: 'post', data }) }
+export function deleteMonitorCollect(data) { return request({ url: '/monitor.deleteMonitorCollect', method: 'post', data }) }
