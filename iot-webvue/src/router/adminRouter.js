@@ -166,6 +166,54 @@ const adminRoutes = [
     name: 'DtScript',
     component: () => import('@/views/3d/listDtScript.vue'),
     meta: { requiresAuth: true, title: '3D脚本' }
+  },
+  {
+    path: 'pages/accessControl/hardwareManufacturerManage',
+    name: 'HardwareManufacturerManage',
+    component: () => import('@/views/accessControl/listHardwareManufacturer.vue'),
+    meta: { requiresAuth: true, title: '门禁厂家' }
+  },
+  {
+    path: 'pages/admin/dtScene',
+    name: 'DtScene',
+    component: () => import('@/views/admin/listDtScene.vue'),
+    meta: { requiresAuth: true, title: '3D场景' }
+  },
+  {
+    path: 'pages/accessControl/aAccessControl',
+    name: 'AAccessControl',
+    component: () => import('@/views/accessControl/aAccessControl.vue'),
+    meta: { requiresAuth: true, title: '门禁设备' }
+  },
+  {
+    path: 'pages/car/adminBarrier',
+    name: 'AdminBarrier',
+    component: () => import('@/views/car/listAdminBarrier.vue'),
+    meta: { requiresAuth: true, title: '道闸摄像头' }
+  },
+  {
+    path: 'pages/common/cityArea',
+    name: 'CityArea',
+    component: () => import('@/views/common/cityAreaManage.vue'),
+    meta: { requiresAuth: true, title: '地区管理' }
+  },
+  {
+    path: 'pages/meter/adminMeterDetail',
+    name: 'AdminMeterDetail',
+    component: () => import('@/views/meter/adminMeterDetail.vue'),
+    meta: { requiresAuth: true, title: '水电表详情' }
+  },
+  {
+    path: 'pages/charge/adminChargeDetail',
+    name: 'AdminChargeDetail',
+    component: () => import('@/views/charge/adminChargeDetail.vue'),
+    meta: { requiresAuth: true, title: '充电详情' }
+  },
+  {
+    path: 'pages/accessControl/aAccessControlDetail',
+    name: 'AAccessControlDetail',
+    component: () => import('@/views/accessControl/aAccessControlDetail.vue'),
+    meta: { requiresAuth: true, title: '门禁设备详情' }
   }
 ]
 

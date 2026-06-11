@@ -1,12 +1,9 @@
 <template>
-  <div class="city-area-tree">
-    <div class="tree-header">
-      <span>地区树</span>
-    </div>
+  <div class="city-area-tree bg-white padding border-radius">
     <div class="tree-actions">
-      <el-button type="primary" size="small" @click="handleAdd">添加</el-button>
-      <el-button type="primary" size="small" @click="handleEdit" :disabled="isRoot">修改</el-button>
-      <el-button type="danger" size="small" @click="handleDelete" :disabled="isRoot">删除</el-button>
+      <el-button v-if="!isAreaLevel303" type="primary" size="small" @click="handleAdd">添加</el-button>
+      <el-button v-if="!isRoot" type="primary" size="small" @click="handleEdit">修改</el-button>
+      <el-button v-if="!isRoot" type="danger" size="small" @click="handleDelete">删除</el-button>
     </div>
     <el-tree
       ref="treeRef"
@@ -15,6 +12,7 @@
       :props="treeProps"
       highlight-current
       :expand-on-click-node="false"
+      class="margin-top"
       @node-click="handleNodeClick"
     />
   </div>
