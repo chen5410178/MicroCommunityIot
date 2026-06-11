@@ -6,8 +6,6 @@ import adminRouter from './adminRouter'
 import accessControlRouter from './accessControlRouter'
 import propertyRouter from './propertyRouter'
 import carRouter from './carRouter'
-import carRouter from './carRouter'
-import carRouter from './carRouter'
 
 Vue.use(VueRouter)
 
@@ -36,8 +34,6 @@ const routes = [
       ...adminRouter,
       ...accessControlRouter,
       ...propertyRouter,
-      ...carRouter,
-      ...carRouter,
       ...carRouter,
       {
         path: 'pages/frame/systemInfoManage',

@@ -1,5 +1,19 @@
 import request from '@/utils/request'
 
+// ===== 车位地磁 =====
+export function listParkingSpaceMachines(params) {
+  return request({ url: '/parkingSpaceMachine.listParkingSpaceMachine', method: 'get', params })
+}
+export function saveParkingSpaceMachine(data) {
+  return request({ url: '/parkingSpaceMachine.saveParkingSpaceMachine', method: 'post', data })
+}
+export function updateParkingSpaceMachine(data) {
+  return request({ url: '/parkingSpaceMachine.updateParkingSpaceMachine', method: 'post', data })
+}
+export function deleteParkingSpaceMachine(data) {
+  return request({ url: '/parkingSpaceMachine.deleteParkingSpaceMachine', method: 'post', data })
+}
+
 // ===== 地磁厂家 =====
 export function listSpaceMachineFactorys(params) {
   return request({ url: '/spaceMachineFactory.listSpaceMachineFactory', method: 'get', params })
@@ -33,9 +47,32 @@ export function deleteBarrier(data) {
   return request({ url: '/barrier.deleteBarrier', method: 'post', data })
 }
 
-// ===== 岗亭列表 =====
+// ===== 岗亭 CRUD =====
 export function listParkingBoxs(params) {
   return request({ url: '/parkingBox.listParkingBox', method: 'get', params })
+}
+export function saveParkingBox(data) {
+  return request({ url: '/parkingBox.saveParkingBox', method: 'post', data })
+}
+export function updateParkingBox(data) {
+  return request({ url: '/parkingBox.updateParkingBox', method: 'post', data })
+}
+export function deleteParkingBox(data) {
+  return request({ url: '/parkingBox.deleteParkingBox', method: 'post', data })
+}
+
+// ===== 岗亭-停车场关联 =====
+export function listParkingBoxAreas(params) {
+  return request({ url: '/parkingBoxArea.listParkingBoxArea', method: 'get', params })
+}
+export function saveParkingBoxArea(data) {
+  return request({ url: '/parkingBoxArea.saveParkingBoxArea', method: 'post', data })
+}
+export function updateParkingBoxArea(data) {
+  return request({ url: '/parkingBoxArea.updateParkingBoxArea', method: 'post', data })
+}
+export function deleteParkingBoxArea(data) {
+  return request({ url: '/parkingBoxArea.deleteParkingBoxArea', method: 'post', data })
 }
 
 // ===== 厂家列表（道闸类型 hmType=2002） =====
@@ -94,9 +131,6 @@ export function updateParkingSpace(data) {
 export function deleteParkingSpace(data) {
   return request({ url: '/parkingSpace.deleteParkingSpace', method: 'post', data })
 }
-export function listParkingRegions(params) {
-  return request({ url: '/parkingRegion.listParkingRegion', method: 'get', params })
-}
 
 // ===== 手动出场相关 =====
 export function listCarInParkingArea(params) {
@@ -110,4 +144,115 @@ export function listParkingCouponCars(params) {
 }
 export function getTempCarFeeOrder(params) {
   return request({ url: '/tempCarFee.getTempCarFeeOrder', method: 'get', params })
+}
+
+// ===== 业主车辆 =====
+export function queryOwnerCars(params) {
+  return request({ url: '/ownerCar.queryOwnerCars', method: 'get', params })
+}
+export function saveOwnerCar(data) {
+  return request({ url: '/ownerCar.saveOwnerCar', method: 'post', data })
+}
+export function updateOwnerCar(data) {
+  return request({ url: '/ownerCar.updateOwnerCar', method: 'post', data })
+}
+export function deleteOwnerCar(data) {
+  return request({ url: '/ownerCar.deleteOwnerCar', method: 'post', data })
+}
+export function deleteCarParkingSpace(data) {
+  return request({ url: '/ownerCar.deleteCarParkingSpace', method: 'post', data })
+}
+export function carAddParkingSpace(data) {
+  return request({ url: '/parkingSpace.carAddParkingSpace', method: 'post', data })
+}
+
+// ===== 黑白名单 =====
+export function listCarBlackWhites(params) {
+  return request({ url: '/carBlackWhite.listCarBlackWhites', method: 'get', params })
+}
+export function saveCarBlackWhite(data) {
+  return request({ url: '/carBlackWhite.saveCarBlackWhite', method: 'post', data })
+}
+export function updateCarBlackWhite(data) {
+  return request({ url: '/carBlackWhite.updateCarBlackWhite', method: 'post', data })
+}
+export function deleteCarBlackWhite(data) {
+  return request({ url: '/carBlackWhite.deleteCarBlackWhite', method: 'post', data })
+}
+
+// ===== 导出 =====
+export function exportData(params) {
+  return request({ url: '/export.exportData', method: 'get', params })
+}
+
+// ===== 业主/成员车辆查询 =====
+export function queryOwnerCarsByOwner(params) {
+  return request({ url: '/owner.queryOwnerCars', method: 'get', params })
+}
+export function queryOwners(params) {
+  return request({ url: '/owner.queryOwners', method: 'get', params })
+}
+
+// ===== 导入 =====
+export function assetImport(data) {
+  return request({ url: '/assetImport', method: 'post', data, headers: { 'Content-Type': 'multipart/form-data' } })
+}
+
+// ===== 停车月卡 =====
+export function listCarMonthCards(params) {
+  return request({ url: '/carMonth.listCarMonthCard', method: 'get', params })
+}
+export function saveCarMonthCard(data) {
+  return request({ url: '/carMonth.saveCarMonthCard', method: 'post', data })
+}
+export function updateCarMonthCard(data) {
+  return request({ url: '/carMonth.updateCarMonthCard', method: 'post', data })
+}
+export function deleteCarMonthCard(data) {
+  return request({ url: '/carMonth.deleteCarMonthCard', method: 'post', data })
+}
+
+// ===== 月卡订单 =====
+export function listCarMonthOrders(params) {
+  return request({ url: '/carMonth.listCarMonthOrder', method: 'get', params })
+}
+export function buyCarMonthOrder(data) {
+  return request({ url: '/carMonth.buyCarMonthOrder', method: 'post', data })
+}
+export function refundCarMonthOrder(data) {
+  return request({ url: '/carMonth.refundCarMonthOrder', method: 'post', data })
+}
+export function getBuyCarMonthCardQrCodeUrl(params) {
+  return request({ url: '/carMonth.getBuyCarMonthCardQrCodeUrl', method: 'get', params })
+}
+
+// ===== 临时车收费标准 =====
+export function listTempCarFeeConfigs(params) {
+  return request({ url: '/fee.listTempCarFeeConfigs', method: 'get', params })
+}
+export function saveTempCarFeeConfig(data) {
+  return request({ url: '/fee.saveTempCarFeeConfig', method: 'post', data })
+}
+export function updateTempCarFeeConfig(data) {
+  return request({ url: '/fee.updateTempCarFeeConfig', method: 'post', data })
+}
+export function deleteTempCarFeeConfig(data) {
+  return request({ url: '/fee.deleteTempCarFeeConfig', method: 'post', data })
+}
+export function queryTempCarFeeRules(params) {
+  return request({ url: '/tempCarFee.queryTempCarFeeRules', method: 'get', params })
+}
+
+// ===== 临时内部车 =====
+export function listTempInnerCars(params) {
+  return request({ url: '/car.listTempInnerCars', method: 'get', params })
+}
+export function saveTempInnerCar(data) {
+  return request({ url: '/car.saveTempInnerCar', method: 'post', data })
+}
+export function updateTempInnerCar(data) {
+  return request({ url: '/car.updateTempInnerCar', method: 'post', data })
+}
+export function deleteTempInnerCar(data) {
+  return request({ url: '/car.deleteTempInnerCar', method: 'post', data })
 }
