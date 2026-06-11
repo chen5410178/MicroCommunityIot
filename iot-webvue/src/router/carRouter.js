@@ -82,6 +82,30 @@ const carRoutes = [
     name: 'TempInnerCar',
     component: () => import('@/views/car/listTempInnerCar.vue'),
     meta: { requiresAuth: true, title: '内部临时车' }
+  },
+  {
+    path: 'pages/car/parkingArea',
+    name: 'ParkingArea',
+    component: () => import('@/views/car/parkingArea.vue'),
+    meta: { requiresAuth: true, title: '停车区域' }
+  },
+  {
+    path: 'pages/car/parkingBox',
+    name: 'ParkingBox',
+    component: () => import('@/views/car/parkingBox.vue'),
+    meta: { requiresAuth: true, title: '道闸岗亭' }
+  },
+  {
+    path: 'pages/car/tempCarFeeConfig',
+    name: 'TempCarFeeConfig',
+    component: () => import('@/views/car/tempCarFeeConfig.vue'),
+    meta: { requiresAuth: true, title: '临车收费' }
+  },
+  {
+    path: 'pages/car/parkingRegion',
+    name: 'ParkingRegion',
+    component: () => import('@/views/car/parkingRegion.vue'),
+    meta: { requiresAuth: true, title: '区域管理' }
   }
 ]
 

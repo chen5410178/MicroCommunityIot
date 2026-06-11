@@ -140,7 +140,7 @@
 </template>
 
 <script>
-import { queryRooms, queryOwners, queryOwnerCars } from '@/api/3d/cockpitApi'
+import { queryRooms, queryOwners, queryOwnerCars, queryFloors } from '@/api/3d/cockpitApi'
 import { eventBus } from '@/utils/three/CockpitCore'
 
 const emptyInfo = {
@@ -243,7 +243,7 @@ export default {
     },
     async _loadRoomFloor() {
       try {
-        const res = await queryRooms({
+        const res = await queryFloors({
           page: 1,
           row: 1,
           communityId: this.$store.state.app.currentCommunity.communityId,

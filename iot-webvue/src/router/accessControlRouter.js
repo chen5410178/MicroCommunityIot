@@ -94,6 +94,48 @@ const accessControlRoutes = [
     name: 'IntercomLog',
     component: () => import('@/views/accessControl/listIntercomLog.vue'),
     meta: { requiresAuth: true, title: '呼叫记录' }
+  },
+  {
+    path: 'pages/accessControl/acInoutStatistics',
+    name: 'AcInoutStatistics',
+    component: () => import('@/views/accessControl/acInoutStatistics.vue'),
+    meta: { requiresAuth: true, title: '进出统计' }
+  },
+  {
+    path: 'pages/accessControl/accessControlFloor',
+    name: 'AccessControlFloor',
+    component: () => import('@/views/accessControl/listAccessControlFloor.vue'),
+    meta: { requiresAuth: true, title: '门禁楼层' }
+  },
+  {
+    path: 'pages/accessControl/visitManage',
+    name: 'VisitManage',
+    component: () => import('@/views/accessControl/listVisitManage.vue'),
+    meta: { requiresAuth: true, title: '访客管理' }
+  },
+  {
+    path: 'pages/accessControl/personFaceQrcode',
+    name: 'PersonFaceQrcode',
+    component: () => import('@/views/accessControl/listPersonFaceQrcode.vue'),
+    meta: { requiresAuth: true, title: '人脸二维码' }
+  },
+  {
+    path: 'pages/accessControl/personFace',
+    name: 'PersonFace',
+    component: () => import('@/views/accessControl/listPersonFace.vue'),
+    meta: { requiresAuth: true, title: '人脸上传' }
+  },
+  {
+    path: 'pages/accessControl/passQrcodeSetting',
+    name: 'PassQrcodeSetting',
+    component: () => import('@/views/accessControl/listPassQrcodeSetting.vue'),
+    meta: { requiresAuth: true, title: '通行码设置' }
+  },
+  {
+    path: 'pages/accessControl/passQrcode',
+    name: 'PassQrcode',
+    component: () => import('@/views/accessControl/listPassQrcode.vue'),
+    meta: { requiresAuth: true, title: '通行二维码' }
   }
 ]
 

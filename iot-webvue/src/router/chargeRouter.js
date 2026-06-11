@@ -40,6 +40,18 @@ const chargeRoutes = [
     name: 'ChargeUserCoupon',
     component: () => import('@/views/charge/chargeUserCoupon.vue'),
     meta: { requiresAuth: true, title: '充电券' }
+  },
+  {
+    path: 'pages/charge/chargeMachineOrder',
+    name: 'ChargeMachineOrder',
+    component: () => import('@/views/charge/chargeMachineOrder.vue'),
+    meta: { requiresAuth: true, title: '充电订单' }
+  },
+  {
+    path: 'pages/charge/chargeMonthCardManage',
+    name: 'ChargeMonthCardManage',
+    component: () => import('@/views/charge/chargeMonthCardManage.vue'),
+    meta: { requiresAuth: true, title: '充电月卡管理' }
   }
 ]
 

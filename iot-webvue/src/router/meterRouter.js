@@ -154,6 +154,24 @@ const meterRoutes = [
     name: 'AddEventStaff',
     component: () => import('@/views/event/addEventStaff.vue'),
     meta: { requiresAuth: true, title: '添加事件员工' }
+  },
+  {
+    path: 'pages/event/eventTemplateManage',
+    name: 'EventTemplateManage',
+    component: () => import('@/views/event/eventTemplateManage.vue'),
+    meta: { requiresAuth: true, title: '事件模板' }
+  },
+  {
+    path: 'pages/meter/meterStatistics',
+    name: 'MeterStatistics',
+    component: () => import('@/views/meter/meterStatistics.vue'),
+    meta: { requiresAuth: true, title: '水电统计' }
+  },
+  {
+    path: 'pages/meter/instrumentManage',
+    name: 'InstrumentManage',
+    component: () => import('@/views/meter/instrumentManage.vue'),
+    meta: { requiresAuth: true, title: '仪表管理' }
   }
 ]
 

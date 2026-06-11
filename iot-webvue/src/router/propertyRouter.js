@@ -22,6 +22,24 @@ const propertyRoutes = [
     name: 'ListAppUser',
     component: () => import('@/views/owner/listAppUser.vue'),
     meta: { requiresAuth: true, title: '房屋认证' }
+  },
+  {
+    path: 'pages/common/enterCommunity',
+    name: 'EnterCommunity',
+    component: () => import('@/views/common/enterCommunity.vue'),
+    meta: { requiresAuth: true, title: '入驻小区' }
+  },
+  {
+    path: 'pages/property/room',
+    name: 'Room',
+    component: () => import('@/views/property/listRoomManage.vue'),
+    meta: { requiresAuth: true, title: '房屋管理' }
+  },
+  {
+    path: 'pages/owner/account',
+    name: 'Account',
+    component: () => import('@/views/owner/listAccount.vue'),
+    meta: { requiresAuth: true, title: '账户管理' }
   }
 ]
 

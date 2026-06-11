@@ -40,6 +40,24 @@ const lampRoutes = [
     name: 'TelTts',
     component: () => import('@/views/lamp/listTelTts.vue'),
     meta: { requiresAuth: true, title: '话机语音' }
+  },
+  {
+    path: 'pages/lamp/lampMachineManage',
+    name: 'LampMachineManage',
+    component: () => import('@/views/lamp/lampMachineManage.vue'),
+    meta: { requiresAuth: true, title: '路灯设备' }
+  },
+  {
+    path: 'pages/lamp/lampMachineOperationManage',
+    name: 'LampMachineOperationManage',
+    component: () => import('@/views/lamp/lampMachineOperationManage.vue'),
+    meta: { requiresAuth: true, title: '路灯操作' }
+  },
+  {
+    path: 'pages/lamp/lampMachineLogManage',
+    name: 'LampMachineLogManage',
+    component: () => import('@/views/lamp/lampMachineLogManage.vue'),
+    meta: { requiresAuth: true, title: '路灯日志' }
   }
 ]
 

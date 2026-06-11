@@ -82,6 +82,24 @@ const monitorRoutes = [
     name: 'MachineCollect',
     component: () => import('@/views/monitor/machineCollect.vue'),
     meta: { requiresAuth: true, title: '收藏视频' }
+  },
+  {
+    path: 'pages/monitor/monitorMachineManage',
+    name: 'MonitorMachineManage',
+    component: () => import('@/views/monitor/monitorMachineManage.vue'),
+    meta: { requiresAuth: true, title: '监控设备' }
+  },
+  {
+    path: 'pages/monitor/monitorPoolManage',
+    name: 'MonitorPoolManage',
+    component: () => import('@/views/monitor/monitorPoolManage.vue'),
+    meta: { requiresAuth: true, title: '监控池管理' }
+  },
+  {
+    path: 'pages/ai/dispatchFace',
+    name: 'DispatchFace',
+    component: () => import('@/views/ai/listDispatchFace.vue'),
+    meta: { requiresAuth: true, title: '人脸布控' }
   }
 ]
 

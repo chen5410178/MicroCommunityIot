@@ -70,7 +70,7 @@ export default class Cockpit3d {
     }
     animate()
 
-    addEventListener('click', function (event) {
+    window.addEventListener('click', function (event) {
       _that.onMouseDblclick(event, _that)
     }, false)
     window.addEventListener('mousemove', function (event) {

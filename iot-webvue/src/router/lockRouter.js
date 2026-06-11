@@ -16,6 +16,24 @@ const lockRoutes = [
     name: 'LockLogManage',
     component: () => import('@/views/lock/lockLogManage.vue'),
     meta: { requiresAuth: true, title: '下发记录' }
+  },
+  {
+    path: 'pages/lock/lockMachineManage',
+    name: 'LockMachineManage',
+    component: () => import('@/views/lock/lockMachineManage.vue'),
+    meta: { requiresAuth: true, title: '门锁设备' }
+  },
+  {
+    path: 'pages/lock/lockInoutManage',
+    name: 'LockInoutManage',
+    component: () => import('@/views/lock/lockInoutManage.vue'),
+    meta: { requiresAuth: true, title: '门锁进出记录' }
+  },
+  {
+    path: 'pages/lock/lockPersonManage',
+    name: 'LockPersonManage',
+    component: () => import('@/views/lock/listLockPerson.vue'),
+    meta: { requiresAuth: true, title: '门锁人员' }
   }
 ]
 
