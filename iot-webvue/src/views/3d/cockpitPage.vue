@@ -137,7 +137,7 @@ export default {
   z-index: 2;
   width: 100%;
   height: 7.6vh;
-  background: url('/img/bg-top.png') no-repeat;
+  background: url('~@/assets/bg-top.png') no-repeat;
   background-size: 100% 100%;
   text-align: center;
   line-height: 7.6vh;
@@ -172,7 +172,7 @@ export default {
   position: absolute;
   width: 24rem;
   height: 91.14vh;
-  background: url('/img/3d/bg-right.png') no-repeat;
+  background: url('~@/assets/3d/bg-right.png') no-repeat;
   background-size: 100% 100%;
   right: 0.175rem;
   top: 8.036vh;
@@ -205,7 +205,7 @@ export default {
   color: #c17e14;
 }
 .cockpit-menu .active .bg-a {
-  background: url('/img/3d/active.png');
+  background: url('~@/assets/3d/active.png');
   background-size: 100% 100%;
 }
 .cockpit-menu .title {

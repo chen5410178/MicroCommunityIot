@@ -96,4 +96,3 @@ export function playPps(data) { return request({ url: '/workLicense.playPps', me
 export function saveWhiteList(data) { return request({ url: '/workLicense.saveWhiteList', method: 'post', data }) }
 export function listWhiteList(params) { return request({ url: '/whiteList.listWhiteList', method: 'get', params }) }
 export function listWorkLicenseLogs(params) { return request({ url: '/workLicense.listWorkLicenseLog', method: 'get', params }) }
-export function listWorkLicensePos(params) { return request({ url: '/workLicense.listWorkLicensePos', method: 'get', params }) }

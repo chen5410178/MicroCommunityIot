@@ -65,6 +65,18 @@ export function deleteEventStaff(data) {
 export function listEventTemplates(params) {
   return request({ url: '/eventTemplate.listEventTemplate', method: 'get', params })
 }
+export function saveEventTemplate(data) {
+  return request({ url: '/eventTemplate.saveEventTemplate', method: 'post', data })
+}
+export function updateEventTemplate(data) {
+  return request({ url: '/eventTemplate.updateEventTemplate', method: 'post', data })
+}
+export function deleteEventTemplate(data) {
+  return request({ url: '/eventTemplate.deleteEventTemplate', method: 'post', data })
+}
+export function listEventTemplateParamKeys(params) {
+  return request({ url: '/eventTemplateParamKey.listEventTemplateParamKey', method: 'get', params })
+}
 
 export function listCommunityStaffs(params) {
   return request({ url: '/user.listCommunityStaffsByCommunityId', method: 'get', params })

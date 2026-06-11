@@ -9,6 +9,9 @@ export function listAttendanceCheckin(params) {
 export function listAttendanceMachines(params) {
   return request({ url: '/attendance.listAttendanceMachine', method: 'get', params })
 }
+export function listAttendanceMachine(params) {
+  return request({ url: '/attendance.listAttendanceMachine', method: 'get', params })
+}
 export function saveAttendanceMachine(data) {
   return request({ url: '/attendance.saveAttendanceMachine', method: 'post', data })
 }
@@ -17,6 +20,19 @@ export function updateAttendanceMachine(data) {
 }
 export function deleteAttendanceMachine(data) {
   return request({ url: '/attendance.deleteAttendanceMachine', method: 'post', data })
+}
+
+// ===== 考勤人员 =====
+export function listAttendanceStaffs(params) {
+  return request({ url: '/attendance.listAttendanceStaff', method: 'get', params })
+}
+export function deleteAttendanceStaff(data) {
+  return request({ url: '/attendance.deleteAttendanceStaff', method: 'post', data })
+}
+
+// ===== 设备日志 =====
+export function listAttendanceMachineLog(params) {
+  return request({ url: '/attendance.listAttendanceMachineLog', method: 'get', params })
 }
 
 // ===== 下拉选项加载 =====

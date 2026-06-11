@@ -56,7 +56,7 @@
               :src="row.photoUrl"
               fit="cover"
               style="width: 60px; height: 60px; border-radius: 4px"
-              @click="$alert('<img style=\\'max-width:100%\\' src=\\'' + row.photoUrl + '\\' />', '画面', { dangerouslyUseHTMLString: true })"
+              @click="handleImagePreview(row)"
             />
             <img v-else src="/img/noPhoto.jpg" style="width: 60px; height: 60px; border-radius: 4px" />
           </template>
@@ -185,6 +185,10 @@ export default {
     handleDelete(row) {
       this.currentRow = { ...row }
       this.delVisible = true
+    },
+    handleImagePreview(row) {
+      const html = '<img style="max-width:100%" src="' + row.photoUrl + '" />'
+      this.$alert(html, '画面', { dangerouslyUseHTMLString: true })
     },
     handlePreview(row) {
       this.currentRow = { ...row }
