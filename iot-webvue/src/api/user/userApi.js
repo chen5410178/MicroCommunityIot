@@ -7,3 +7,11 @@ export function getUserInfo(params) {
     params
   })
 }
+
+export function changeStaffPwd(data) {
+  return request({
+    url: '/user.changeStaffPwd',
+    method: 'post',
+    data
+  })
+}
