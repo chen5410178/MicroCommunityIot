@@ -1,94 +1,116 @@
 <template>
-  <div class="owner-detail">
-    <div class="header-bar">
-      <h3>人员信息</h3>
-      <el-button type="default" size="small" icon="el-icon-back" @click="$router.back()">返回</el-button>
-    </div>
-    <el-card shadow="never" class="info-card">
-      <el-row>
-        <el-col :span="4" style="text-align: center;">
-          <img v-if="info.url" :src="info.url" style="width: 120px; height: 140px; border-radius: 4px;" @error="info.url = ''" />
-          <img v-else src="/img/noPhoto.jpg" style="width: 120px; height: 140px; border-radius: 4px;" />
+  <div class="white-bg border-radius padding-sm">
+    <el-row type="flex" justify="space-between">
+      <div class="text-title">人员信息</div>
+      <div>
+        <el-button type="default" size="small" icon="el-icon-back" @click="$router.back()">返回</el-button>
+      </div>
+    </el-row>
+
+    <div class="margin-top">
+      <el-row style="min-height: 160px;">
+        <el-col :span="3">
+          <div class="text-center" style="width: 150px;" v-if="info.faceUrl">
+            <img width="120px" height="140px" class="border-radius" :src="info.faceUrl" @error="errorLoadImg" />
+          </div>
+          <div class="text-center" style="width: 150px;" v-else>
+            <img width="120px" height="140px" class="border-radius" src="/img/noPhoto.jpg" />
+          </div>
         </el-col>
-        <el-col :span="20">
-          <el-row :gutter="20">
-            <el-col :span="6">
-              <div class="info-item"><label>人员ID：</label><span>{{ info.memberId }}</span></div>
-            </el-col>
-            <el-col :span="6">
-              <div class="info-item"><label>名称：</label><span>{{ info.name }}</span></div>
-            </el-col>
-            <el-col :span="6">
-              <div class="info-item"><label>电话：</label><span>{{ info.link }}</span></div>
-            </el-col>
-            <el-col :span="6">
-              <div class="info-item"><label>性别：</label><span>{{ info.sex == '0' ? '男' : '女' }}</span></div>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" style="margin-top: 12px;">
-            <el-col :span="6">
-              <div class="info-item"><label>身份证：</label><span>{{ info.idCard || '-' }}</span></div>
-            </el-col>
-            <el-col :span="6">
-              <div class="info-item"><label>家庭住址：</label><span>{{ info.address || '-' }}</span></div>
-            </el-col>
-            <el-col :span="6">
-              <div class="info-item"><label>人员类型：</label><span>{{ info.ownerTypeName || '-' }}</span></div>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" style="margin-top: 12px;" v-if="info.ownerAttrDtos && info.ownerAttrDtos.length > 0">
-            <el-col :span="6" v-for="attr in info.ownerAttrDtos" :key="attr.attrId">
-              <div class="info-item"><label>{{ attr.specName }}：</label><span>{{ attr.valueName || '-' }}</span></div>
-            </el-col>
-          </el-row>
+        <el-col :span="21" class="text-left">
+          <el-form label-width="110px">
+            <el-row>
+              <el-col :span="6">
+                <el-form-item label="人员ID：">
+                  <div>{{ info.memberId }}</div>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="名称：">
+                  <div>{{ info.name }}</div>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="电话：">
+                  <div>{{ info.link }}</div>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="性别：">
+                  <div>{{ info.sex == '0' ? '男' : '女' }}</div>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="6">
+                <el-form-item label="身份证：">
+                  <div>{{ info.idCard || '-' }}</div>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="家庭住址：">
+                  <div>{{ info.address || '-' }}</div>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="人员类型：">
+                  <div>{{ info.ownerTypeName || '-' }}</div>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <div v-for="(item, index) in info.ownerAttrDtos" :key="item.attrId">
+              <el-row v-if="index % 4 == 0">
+                <el-col :span="6">
+                  <el-form-item :label="item.specName + '：'">
+                    <div>{{ item.valueName || '-' }}</div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6" v-if="index < info.ownerAttrDtos.length - 1">
+                  <el-form-item :label="info.ownerAttrDtos[index + 1].specName + '：'">
+                    <div>{{ info.ownerAttrDtos[index + 1].valueName || '-' }}</div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6" v-if="index < info.ownerAttrDtos.length - 2">
+                  <el-form-item :label="info.ownerAttrDtos[index + 2].specName + '：'">
+                    <div>{{ info.ownerAttrDtos[index + 2].valueName || '-' }}</div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6" v-if="index < info.ownerAttrDtos.length - 3">
+                  <el-form-item :label="info.ownerAttrDtos[index + 3].specName + '：'">
+                    <div>{{ info.ownerAttrDtos[index + 3].valueName || '-' }}</div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+          </el-form>
         </el-col>
       </el-row>
-    </el-card>
-    <el-tabs v-model="activeTab" class="tab-card" @tab-click="handleTabClick">
-      <el-tab-pane label="房屋" name="ownerDetailRoom" />
-      <el-tab-pane label="家庭人员" name="ownerDetailMember" />
-      <el-tab-pane label="车辆" name="ownerDetailCar" />
-      <el-tab-pane label="授权门禁" name="ownerDetailAccessControlFace" />
-      <el-tab-pane label="人脸下发" name="ownerDetailAccessControlLog" />
-      <el-tab-pane label="门禁开门" name="ownerDetailAccessControlInout" />
-      <el-tab-pane label="门锁授权" name="ownerDetailLockPerson" />
-      <el-tab-pane label="门锁下发" name="ownerDetailLockLog" />
-      <el-tab-pane label="门锁进出" name="ownerDetailLockInout" />
-      <el-tab-pane label="充电订单" name="ownerDetailChargeOrder" />
-    </el-tabs>
-    <div v-if="activeTab === 'ownerDetailRoom'" class="tab-content">
-      <OwnerDetailRoom :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
     </div>
-    <div v-else-if="activeTab === 'ownerDetailMember'" class="tab-content">
-      <OwnerDetailMember :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
+
+    <div class="divider-line"></div>
+
+    <div class="margin-top-sm">
+      <el-tabs v-model="activeTab" @tab-click="handleTabClick">
+        <el-tab-pane label="房屋" name="OwnerDetailRoom" />
+        <el-tab-pane label="家庭人员" name="OwnerDetailMember" />
+        <el-tab-pane label="车辆" name="OwnerDetailCar" />
+        <el-tab-pane label="授权门禁" name="OwnerDetailAccessControlFace" />
+        <el-tab-pane label="人脸下发" name="OwnerDetailAccessControlLog" />
+        <el-tab-pane label="门禁开门" name="OwnerDetailAccessControlInout" />
+        <el-tab-pane label="门锁授权" name="OwnerDetailLockPerson" />
+        <el-tab-pane label="门锁下发" name="OwnerDetailLockLog" />
+        <el-tab-pane label="门锁进出" name="OwnerDetailLockInout" />
+        <el-tab-pane label="充电订单" name="OwnerDetailChargeOrder" />
+      </el-tabs>
     </div>
-    <div v-else-if="activeTab === 'ownerDetailCar'" class="tab-content">
-      <OwnerDetailCar :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
-    </div>
-    <div v-else-if="activeTab === 'ownerDetailAccessControlFace'" class="tab-content">
-      <OwnerDetailAccessControlFace :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
-    </div>
-    <div v-else-if="activeTab === 'ownerDetailAccessControlLog'" class="tab-content">
-      <OwnerDetailAccessControlLog :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
-    </div>
-    <div v-else-if="activeTab === 'ownerDetailAccessControlInout'" class="tab-content">
-      <OwnerDetailAccessControlInout :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
-    </div>
-    <div v-else-if="activeTab === 'ownerDetailLockPerson'" class="tab-content">
-      <OwnerDetailLockPerson :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
-    </div>
-    <div v-else-if="activeTab === 'ownerDetailLockLog'" class="tab-content">
-      <OwnerDetailLockLog :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
-    </div>
-    <div v-else-if="activeTab === 'ownerDetailLockInout'" class="tab-content">
-      <OwnerDetailLockInout :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
-    </div>
-    <div v-else-if="activeTab === 'ownerDetailChargeOrder'" class="tab-content">
-      <OwnerDetailChargeOrder :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
-    </div>
-    <div v-else class="tab-content">
-      <el-empty description="该功能暂未实现，敬请期待" />
-    </div>
+
+    <component
+      :is="activeTab"
+      :owner-id="info.ownerId"
+      :member-id="info.memberId"
+      :owner-name="info.name"
+      :link="info.link"
+    />
   </div>
 </template>
 
@@ -131,10 +153,10 @@ export default {
         idCard: '',
         address: '',
         ownerTypeName: '',
-        url: '',
+        faceUrl: '',
         ownerAttrDtos: []
       },
-      activeTab: 'ownerDetailRoom'
+      activeTab: 'OwnerDetailRoom'
     }
   },
   mounted() {
@@ -151,21 +173,35 @@ export default {
         const res = await queryOwners({ memberId: this.info.memberId, page: 1, row: 1, communityId: community ? community.communityId : '' })
         const list = res.data || []
         if (list.length > 0) {
-          Object.assign(this.info, list[0])
+          const data = list[0]
+          Object.assign(this.info, data)
+          this.info.faceUrl = data.faceUrl || data.url || ''
+          this.info.ownerAttrDtos = data.ownerAttrDtos || []
         }
       } catch (e) { /* ignore */ }
     },
-    handleTabClick() {}
+    handleTabClick() {},
+    errorLoadImg() {
+      this.info.faceUrl = ''
+    }
   }
 }
 </script>
 
 <style scoped>
-.header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.header-bar h3 { margin: 0; font-size: 16px; }
-.info-card { margin-bottom: 16px; }
-.info-item { line-height: 32px; }
-.info-item label { color: #909399; }
-.tab-card { margin-bottom: 16px; }
-.tab-content { min-height: 200px; }
+.white-bg { background-color: #fff; }
+.padding-sm { padding: 16px; }
+.border-radius { border-radius: 4px; }
+.margin-top { margin-top: 16px; }
+.margin-top-sm { margin-top: 10px; }
+.text-title { font-size: 18px; font-weight: bold; }
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+
+.divider-line {
+  margin: 20px 0;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, rgba(64, 158, 255, 0) 0%, rgba(64, 158, 255, 0.3) 20%, rgba(64, 158, 255, 1) 50%, rgba(64, 158, 255, 0.3) 80%, rgba(64, 158, 255, 0) 100%);
+}
 </style>

@@ -243,9 +243,56 @@ export function queryTempCarFeeRules(params) {
   return request({ url: '/tempCarFee.queryTempCarFeeRules', method: 'get', params })
 }
 
+// ===== 开/关闸 =====
+export function openBarrierDoor(data) {
+  return request({ url: '/barrier.openBarrierDoor', method: 'post', data })
+}
+export function closeBarrierDoor(data) {
+  return request({ url: '/barrier.closeBarrierDoor', method: 'post', data })
+}
+// ===== 云FLV视频 =====
+export function getCloudFlvVideo(params) {
+  return request({ url: '/barrier.getCloudFlvVideo', method: 'get', params })
+}
+// ===== 剩余车位数 =====
+export function getFreeParkingSpace(params) {
+  return request({ url: '/carInout.getFreeParkingSpace', method: 'get', params })
+}
+// ===== 修改车牌号 =====
+export function updateCarInoutNum(data) {
+  return request({ url: '/carInout.updateCarInoutNum', method: 'post', data })
+}
+// ===== 异常出场 =====
+export function exceptionCarOut(data) {
+  return request({ url: '/carInout.exceptionCarOut', method: 'post', data })
+}
+// ===== 设备二维码 =====
+export function getCarMachineQrCodeUrl(params) {
+  return request({ url: '/barrier.getCarMachineQrCodeUrl', method: 'get', params })
+}
+// ===== 收费明细 =====
+export function listCarInoutPayments(params) {
+  return request({ url: '/carInoutPayment.listCarInoutPayment', method: 'get', params })
+}
+// ===== 收费统计 =====
+export function listCarInoutPaymentSummary(params) {
+  return request({ url: '/carInoutPayment.listCarInoutPaymentSummary', method: 'get', params })
+}
+// ===== 开闸日志 =====
+export function listManualOpenDoorLogs(params) {
+  return request({ url: '/carInout.listManualOpenDoorLog', method: 'get', params })
+}
+
 // ===== 临时内部车 =====
 export function listTempInnerCars(params) {
   return request({ url: '/car.listTempInnerCars', method: 'get', params })
+}
+// ===== 临时车审核 =====
+export function listCarInoutTempAuth(params) {
+  return request({ url: '/carInout.listCarInoutTempAuth', method: 'get', params })
+}
+export function tempCarAuth(data) {
+  return request({ url: '/tempCarFee.tempCarAuth', method: 'post', data })
 }
 export function saveTempInnerCar(data) {
   return request({ url: '/car.saveTempInnerCar', method: 'post', data })

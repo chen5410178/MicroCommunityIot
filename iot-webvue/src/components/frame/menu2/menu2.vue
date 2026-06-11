@@ -205,6 +205,7 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: none;
+  position: relative;
 }
 .vc-menu-sub::-webkit-scrollbar {
   display: none;
@@ -213,6 +214,7 @@ export default {
   list-style: none;
   margin: 0;
   padding: 0;
+  padding-bottom: 40px;
 }
 .vc-menu-sub li {
   height: 40px;
@@ -249,8 +251,11 @@ export default {
 .vc-menu-sub li.sub-footer {
   background: #F6F6F7;
   text-align: center;
-  position: sticky;
+  position: absolute;
   bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   padding-left: 0;
 }
 .vc-menu-sub li.sub-footer:hover {

@@ -106,6 +106,18 @@ const carRoutes = [
     name: 'ParkingRegion',
     component: () => import('@/views/car/parkingRegion.vue'),
     meta: { requiresAuth: true, title: '区域管理' }
+  },
+  {
+    path: 'pages/car/parkingAreaTotalControl',
+    name: 'ParkingAreaTotalControl',
+    component: () => import('@/views/car/parkingAreaTotalControl.vue'),
+    meta: { requiresAuth: true, title: '停车场总控台' }
+  },
+  {
+    path: 'pages/car/parkingAreaControl',
+    name: 'ParkingAreaControl',
+    component: () => import('@/views/car/parkingAreaControl.vue'),
+    meta: { requiresAuth: true, title: '岗亭控制台' }
   }
 ]
 
