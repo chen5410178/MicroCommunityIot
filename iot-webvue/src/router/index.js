@@ -7,6 +7,10 @@ import accessControlRouter from './accessControlRouter'
 import propertyRouter from './propertyRouter'
 import carRouter from './carRouter'
 import chargeRouter from './chargeRouter'
+import meterRouter from './meterRouter'
+import liftRouter from './liftRouter'
+import lampRouter from './lampRouter'
+import monitorRouter from './monitorRouter'
 
 Vue.use(VueRouter)
 
@@ -37,6 +41,10 @@ const routes = [
       ...propertyRouter,
       ...carRouter,
       ...chargeRouter,
+      ...meterRouter,
+      ...liftRouter,
+      ...lampRouter,
+      ...monitorRouter,
       {
         path: 'pages/frame/systemInfoManage',
         name: 'SystemInfoManage',

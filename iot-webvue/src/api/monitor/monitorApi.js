@@ -10,7 +10,20 @@ export function saveMonitorMachineModel(data) { return request({ url: '/monitorM
 export function deleteMonitorMachineModel(data) { return request({ url: '/monitorMachineModel.deleteMonitorMachineModel', method: 'post', data }) }
 
 export function listMonitorAreas(params) { return request({ url: '/monitorArea.listMonitorArea', method: 'get', params }) }
+export function saveMonitorArea(data) { return request({ url: '/monitorArea.saveMonitorArea', method: 'post', data }) }
+export function updateMonitorArea(data) { return request({ url: '/monitorArea.updateMonitorArea', method: 'post', data }) }
+export function deleteMonitorArea(data) { return request({ url: '/monitorArea.deleteMonitorArea', method: 'post', data }) }
 
 export function listMonitorMachines(params) { return request({ url: '/monitorMachine.listMonitorMachine', method: 'get', params }) }
+export function saveMonitorMachine(data) { return request({ url: '/monitorMachine.saveMonitorMachine', method: 'post', data }) }
+export function updateMonitorMachine(data) { return request({ url: '/monitorMachine.updateMonitorMachine', method: 'post', data }) }
+export function deleteMonitorMachine(data) { return request({ url: '/monitorMachine.deleteMonitorMachine', method: 'post', data }) }
 export function getPlayVideoUrl(params) { return request({ url: '/monitorMachine.getPlayVideoUrl', method: 'get', params }) }
 export function saveVideoPhoto(data) { return request({ url: '/monitorMachine.saveVideoPhoto', method: 'post', data }) }
+
+export function listMonitorManufactors(params) { return request({ url: '/monitorManufactor.listMonitorManufactor', method: 'get', params }) }
+
+export function listMonitorPools(params) { return request({ url: '/monitorPool.listMonitorPool', method: 'get', params }) }
+
+export function listMonitorRecords(params) { return request({ url: '/monitorMachine.listMonitorRecord', method: 'get', params }) }
+export function getRecordPlayVideoUrl(params) { return request({ url: '/monitorMachine.getRecordPlayVideoUrl', method: 'get', params }) }

@@ -15,3 +15,11 @@ export function changeStaffPwd(data) {
     data
   })
 }
+
+export function listCommunityStaffs(params) {
+  return request({
+    url: '/user.listCommunityStaffsByCommunityId',
+    method: 'get',
+    params
+  })
+}

@@ -150,18 +150,6 @@ const adminRoutes = [
     meta: { requiresAuth: true, title: '水电表管理' }
   },
   {
-    path: 'pages/lamp/lampMachineFactoryManage',
-    name: 'LampMachineFactoryManage',
-    component: () => import('@/views/lamp/listLampMachineFactoryManage.vue'),
-    meta: { requiresAuth: true, title: '灯杆设备厂商' }
-  },
-  {
-    path: 'pages/monitor/monitorModelManage',
-    name: 'MonitorModelManage',
-    component: () => import('@/views/monitor/monitorModelManage.vue'),
-    meta: { requiresAuth: true, title: '监控设备型号' }
-  },
-  {
     path: 'pages/3d/dtScript',
     name: 'DtScript',
     component: () => import('@/views/3d/listDtScript.vue'),

@@ -34,6 +34,12 @@ const chargeRoutes = [
     name: 'ChargeStatistics',
     component: () => import('@/views/charge/chargeStatistics.vue'),
     meta: { requiresAuth: true, title: '充电统计' }
+  },
+  {
+    path: 'pages/charge/chargeUserCoupon',
+    name: 'ChargeUserCoupon',
+    component: () => import('@/views/charge/chargeUserCoupon.vue'),
+    meta: { requiresAuth: true, title: '充电券' }
   }
 ]
 

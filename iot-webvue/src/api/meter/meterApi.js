@@ -56,3 +56,80 @@ export function listAdminMeterReadRechargeDetail(params) {
 export function queryAdminRooms(params) {
   return request({ url: '/room.queryAdminRooms', method: 'get', params })
 }
+
+// ===== 水电类型 =====
+export function listMeterTypes(params) {
+  return request({ url: '/meterType.listMeterType', method: 'get', params })
+}
+export function saveMeterType(data) {
+  return request({ url: '/meterType.saveMeterType', method: 'post', data })
+}
+export function updateMeterType(data) {
+  return request({ url: '/meterType.updateMeterType', method: 'post', data })
+}
+export function deleteMeterType(data) {
+  return request({ url: '/meterType.deleteMeterType', method: 'post', data })
+}
+
+// ===== 水电表管理（物业端） =====
+export function listMeterMachines(params) {
+  return request({ url: '/meterMachine.listMeterMachine', method: 'get', params })
+}
+export function saveMeterMachine(data) {
+  return request({ url: '/meterMachine.saveMeterMachine', method: 'post', data })
+}
+export function updateMeterMachine(data) {
+  return request({ url: '/meterMachine.updateMeterMachine', method: 'post', data })
+}
+export function deleteMeterMachine(data) {
+  return request({ url: '/meterMachine.deleteMeterMachine', method: 'post', data })
+}
+export function cleanMeterMachine(data) {
+  return request({ url: '/meterMachine.cleanMeterMachine', method: 'post', data })
+}
+export function meterMachineControlSwitch(data) {
+  return request({ url: '/meterMachine.meterMachineControlSwitch', method: 'post', data })
+}
+
+// ===== 抄表设置 =====
+export function settingMeterMachineRead(data) {
+  return request({ url: '/meterMachine.settingMeterMachineRead', method: 'post', data })
+}
+export function customMeterMachineRead(data) {
+  return request({ url: '/meterMachine.customMeterMachineRead', method: 'post', data })
+}
+
+// ===== 开合闸记录 =====
+export function listMeterMachineLog(params) {
+  return request({ url: '/meterMachineLog.listMeterMachineLog', method: 'get', params })
+}
+
+// ===== 充值 =====
+export function chargeMeterMoney(data) {
+  return request({ url: '/meterMachineCharge.chargeMeterMoney', method: 'post', data })
+}
+export function listMeterMachineCharges(params) {
+  return request({ url: '/meterMachineCharge.listMeterMachineCharge', method: 'get', params })
+}
+
+// ===== 水电二维码 =====
+export function listMeterQrcodes(params) {
+  return request({ url: '/meterQrcode.listMeterQrcode', method: 'get', params })
+}
+export function saveMeterQrcode(data) {
+  return request({ url: '/meterQrcode.saveMeterQrcode', method: 'post', data })
+}
+export function updateMeterQrcode(data) {
+  return request({ url: '/meterQrcode.updateMeterQrcode', method: 'post', data })
+}
+export function deleteMeterQrcode(data) {
+  return request({ url: '/meterQrcode.deleteMeterQrcode', method: 'post', data })
+}
+
+// ===== 水电统计 =====
+export function queryMeterCountStatistics(params) {
+  return request({ url: '/meter.queryMeterCountStatistics', method: 'get', params })
+}
+export function queryMeterMoneyStatistics(params) {
+  return request({ url: '/meter.queryMeterMoneyStatistics', method: 'get', params })
+}

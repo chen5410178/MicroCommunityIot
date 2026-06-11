@@ -79,3 +79,6 @@ export function queryOrderCountStatistics(params) { return request({ url: '/char
 export function queryOrderMoneyStatistics(params) { return request({ url: '/charge.queryOrderMoneyStatistics', method: 'get', params }) }
 export function queryMonthCountStatistics(params) { return request({ url: '/charge.queryMonthCountStatistics', method: 'get', params }) }
 export function queryMonthMoneyStatistics(params) { return request({ url: '/charge.queryMonthMoneyStatistics', method: 'get', params }) }
+
+// ===== 业主充电券 =====
+export function listCouponPropertyUser(params) { return request({ url: '/coupon.listCouponPropertyUser', method: 'get', params }) }
