@@ -1,18 +1,19 @@
 <template>
-  <el-card shadow="never" class="index-card">
-    <template #header>
-      <span>监控告警</span>
-    </template>
-    <div class="alarm-list" ref="alarmList">
-      <div v-if="alarms.length === 0" class="empty-tip">当前没有告警</div>
-      <div v-for="(item, index) in alarms" :key="index" class="alarm-item">
-        <div class="alarm-title">
+  <div class="index-alarm-card">
+    <div class="index-title">监控告警</div>
+    <ul ref="alarmList" class="alarm-list">
+      <li v-if="alarms.length === 0" class="flex justify-between padding-top-sm">
+        <div class="alarm-notice-title">当前没有告警</div>
+        <div class="alarm-notice-time"></div>
+      </li>
+      <li v-for="(item, index) in alarms" :key="index" class="flex justify-between padding-top-sm">
+        <div class="alarm-notice-title">
           {{ item.machineName }}({{ item.maName }}-{{ item.locationName }})发生{{ item.monitorTypeName }}
         </div>
-        <div class="alarm-time">{{ item.createTime }}</div>
-      </div>
-    </div>
-  </el-card>
+        <div class="alarm-notice-time">{{ item.createTime }}</div>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -54,39 +55,45 @@ export default {
 </script>
 
 <style scoped>
-.index-card {
-  height: 100%;
+.index-alarm-card {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  height: 350px;
+  padding: 15px;
+  overflow-y: hidden;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+}
+.index-title {
+  color: #404357;
+  font-size: 20px;
+  font-weight: bold;
 }
 .alarm-list {
-  max-height: 280px;
-  overflow-y: auto;
+  overflow-y: scroll;
+  height: calc(100% - 30px);
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
-.alarm-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 10px 0;
-  border-bottom: 1px solid #f5f5f5;
+.alarm-list li {
+  list-style: none;
 }
-.alarm-item:last-child {
-  border-bottom: none;
-}
-.alarm-title {
-  flex: 1;
-  font-size: 13px;
-  color: #f5222d;
-  line-height: 1.6;
-}
-.alarm-time {
-  font-size: 12px;
-  color: #999;
-  white-space: nowrap;
-  margin-left: 12px;
-}
-.empty-tip {
-  text-align: center;
-  color: #999;
-  padding: 40px 0;
+.alarm-notice-title {
   font-size: 14px;
+  color: #544E42;
+  width: 60%;
+}
+.alarm-notice-time {
+  font-size: 14px;
+  color: #9D9D9F;
+}
+.padding-top-sm {
+  padding-top: 10px;
+}
+.flex {
+  display: flex;
+}
+.justify-between {
+  justify-content: space-between;
 }
 </style>

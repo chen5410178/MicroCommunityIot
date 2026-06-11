@@ -1,18 +1,18 @@
 <template>
   <div class="dashboard" v-if="currentCommunity && currentCommunity.communityId">
     <el-row :gutter="16" class="dashboard-row">
-      <el-col :span="12">
+      <el-col :span="15">
         <index-community ref="indexCommunity" :community-id="currentCommunity.communityId" />
       </el-col>
-      <el-col :span="12">
+      <el-col :span="9">
         <index-event ref="indexEvent" :community-id="currentCommunity.communityId" />
       </el-col>
     </el-row>
     <el-row :gutter="16" class="dashboard-row">
-      <el-col :span="12">
+      <el-col :span="15">
         <index-machine ref="indexMachine" :community-id="currentCommunity.communityId" />
       </el-col>
-      <el-col :span="12">
+      <el-col :span="9">
         <index-monitor-alarm ref="indexMonitorAlarm" :community-id="currentCommunity.communityId" />
       </el-col>
     </el-row>

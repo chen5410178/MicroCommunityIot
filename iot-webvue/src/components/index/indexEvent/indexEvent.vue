@@ -1,24 +1,26 @@
 <template>
-  <el-card shadow="never" class="index-card">
-    <template #header>
-      <span>事件</span>
-    </template>
-    <div class="event-list" ref="eventList">
-      <div v-if="events.length === 0" class="empty-tip">当前没有事件发生</div>
-      <div v-for="(item, index) in events" :key="index" class="event-item">
-        <div class="event-title">
+  <div class="index-event-card">
+    <div class="index-title">事件</div>
+    <ul ref="eventList" class="event-list">
+      <li v-if="events.length === 0" class="flex justify-between padding-top-sm">
+        <div class="event-notice-title">当前没有事件发生</div>
+        <div class="event-notice-time"></div>
+      </li>
+      <li v-for="(item, index) in events" :key="index" class="flex justify-between padding-top-sm">
+        <div class="event-notice-title">
           {{ item.objTypeName }}({{ item.objectName }}){{ item.eventTypeName }}({{ item.fromType === 'PERSON' ? '人员创建' : '平台创建' }})
           <span v-if="item.eventPoolStaffList && item.eventPoolStaffList.length > 0">
             {{ item.eventPoolStaffList[0].staffName || '暂未分配' }}
           </span>
-          <span class="event-state" :class="stateClass(item.state)">
-            {{ stateName(item.state) }}
-          </span>
+          (<span v-if="item.state === 'W'">待处理</span>
+          <span v-else-if="item.state === 'D'">处理中</span>
+          <span v-else-if="item.state === 'TC'">正常处理完成</span>
+          <span v-else-if="item.state === 'NC'">超时处理完成</span>)
         </div>
-        <div class="event-time">{{ item.createTime }}</div>
-      </div>
-    </div>
-  </el-card>
+        <div class="event-notice-time">{{ item.createTime }}</div>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -54,64 +56,51 @@ export default {
           this.events = res
         }
       }).catch(() => {})
-    },
-    stateName(state) {
-      const map = { W: '待处理', D: '处理中', TC: '正常处理完成', NC: '超时处理完成' }
-      return map[state] || state
-    },
-    stateClass(state) {
-      const map = { W: 'state-pending', D: 'state-processing', TC: 'state-done', NC: 'state-timeout' }
-      return map[state] || ''
     }
   }
 }
 </script>
 
 <style scoped>
-.index-card {
-  height: 100%;
+.index-event-card {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  height: 350px;
+  padding: 15px;
+  overflow-y: hidden;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+}
+.index-title {
+  color: #404357;
+  font-size: 20px;
+  font-weight: bold;
 }
 .event-list {
-  max-height: 280px;
-  overflow-y: auto;
+  overflow-y: scroll;
+  height: calc(100% - 30px);
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
-.event-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 10px 0;
-  border-bottom: 1px solid #f5f5f5;
+.event-list li {
+  list-style: none;
 }
-.event-item:last-child {
-  border-bottom: none;
-}
-.event-title {
-  flex: 1;
-  font-size: 13px;
-  color: #333;
-  line-height: 1.6;
-}
-.event-time {
-  font-size: 12px;
-  color: #999;
-  white-space: nowrap;
-  margin-left: 12px;
-}
-.event-state {
-  display: inline-block;
-  padding: 2px 6px;
-  border-radius: 2px;
-  font-size: 12px;
-  margin-left: 6px;
-}
-.state-pending { color: #faad14; background: #fffbe6; }
-.state-processing { color: #1890ff; background: #e6f7ff; }
-.state-done { color: #52c41a; background: #f6ffed; }
-.state-timeout { color: #f5222d; background: #fff1f0; }
-.empty-tip {
-  text-align: center;
-  color: #999;
-  padding: 40px 0;
+.event-notice-title {
   font-size: 14px;
+  color: #544E42;
+  width: 60%;
+}
+.event-notice-time {
+  font-size: 14px;
+  color: #9D9D9F;
+}
+.padding-top-sm {
+  padding-top: 10px;
+}
+.flex {
+  display: flex;
+}
+.justify-between {
+  justify-content: space-between;
 }
 </style>

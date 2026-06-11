@@ -26,6 +26,12 @@ const routes = [
     meta: { title: '登录' }
   },
   {
+    path: '/pages/frame/sso',
+    name: 'SsoPage',
+    component: () => import('@/views/frame/sso.vue'),
+    meta: { title: 'SSO认证' }
+  },
+  {
     path: '/',
     component: MainLayout,
     children: [
@@ -114,7 +120,7 @@ VueRouter.prototype.push = function push(location) {
   })
 }
 
-const whiteList = ['/pages/frame/login']
+const whiteList = ['/pages/frame/login', '/pages/frame/sso']
 
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title || '小区物联网系统'

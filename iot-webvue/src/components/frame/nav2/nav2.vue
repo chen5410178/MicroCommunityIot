@@ -1,51 +1,62 @@
 <template>
   <div class="vc-nav">
     <div class="nav-left">
-      <ul class="nav-menu">
-        <li class="title">
-          <a @click.prevent="goHome" style="cursor:pointer">{{ systemInfo.logo || 'HCIOT' }}</a>
-        </li>
-        <li
+      <div class="logo" @click="goHome">{{ systemInfo.logo || 'HCIOT' }}</div>
+      <el-menu
+        mode="horizontal"
+        :default-active="activeCatalog"
+        class="nav-catalog-menu"
+        background-color="#1e2132"
+        text-color="#fff"
+        active-text-color="#409EFF"
+        @select="handleCatalogSelect"
+      >
+        <el-menu-item
           v-for="(item, index) in catalogs"
           :key="index"
-          :class="{ active: item.active == '1' }"
-          @click="changeCatalog(item)"
+          :index="item.caId"
         >
-          <i :class="item.icon"></i>{{ item.name }}
-        </li>
-      </ul>
+          <i v-if="item.icon" :class="item.icon"></i>{{ item.name }}
+        </el-menu-item>
+      </el-menu>
     </div>
     <div class="nav-right">
-      <ul class="nav-actions">
-        <li v-if="canShowCommunity" class="dropdown">
-          <span class="dropdown-toggle">
-            {{ (currentCommunity && currentCommunity.name) || '暂无小区' }}
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
-          <div class="dropdown-menu">
-            <a
-              v-for="(c, index) in communityList"
-              :key="index"
-              class="dropdown-item"
-              @click="changeCommunity(c)"
-            >{{ c.name }}</a>
-          </div>
-        </li>
-        <li><i class="el-icon-user"></i> {{ userInfo.name || '' }}</li>
-        <li class="dropdown">
-          <span class="dropdown-toggle">
-            {{ langName }}
-          </span>
-          <ul class="dropdown-menu">
-            <li v-for="(lang, index) in langs" :key="index">
-              <a class="dropdown-item" @click="changeLang(lang)">{{ lang.name }}</a>
-            </li>
-          </ul>
-        </li>
-        <li @click="handleLogout">
-          <i class="el-icon-switch-button"></i> 退出
-        </li>
-      </ul>
+      <el-dropdown @command="handleSwitchLang" class="nav-dropdown">
+        <span class="nav-user-text">
+          <i class="el-icon-global"></i> {{ langName }}
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="zh-cn">中文</el-dropdown-item>
+          <el-dropdown-item command="cn">繁体</el-dropdown-item>
+          <el-dropdown-item command="en">English</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <el-dropdown
+        v-if="canShowCommunity"
+        @command="handleCommunityCmd"
+        class="nav-dropdown"
+      >
+        <span class="nav-user-text">
+          {{ (currentCommunity && currentCommunity.name) || '暂无小区' }}
+          <i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item
+            v-for="(c, index) in communityList"
+            :key="index"
+            :command="c"
+          >{{ c.name }}</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <el-dropdown @command="handleUserCommand" class="nav-dropdown">
+        <span class="nav-user-text">
+          {{ userInfo.name || '' }}
+          <i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
   </div>
 </template>
@@ -60,6 +71,7 @@ export default {
   data() {
     return {
       catalogs: [],
+      activeCatalog: '',
       langs: [
         { name: '中文', lang: 'zh-cn' },
         { name: '繁体', lang: 'cn' },
@@ -89,6 +101,7 @@ export default {
         }
         if (Array.isArray(data) && data.length > 0) {
           data[0].active = '1'
+          this.activeCatalog = data[0].caId
         }
         this.catalogs = data || []
         this.$store.commit('app/SET_CATALOGS', this.catalogs)
@@ -109,31 +122,41 @@ export default {
         this.$store.commit('user/SET_USER_INFO', userInfo)
       }).catch(() => {})
     },
-    changeCatalog(catalog) {
+    handleCatalogSelect(index) {
+      const catalog = this.catalogs.find(c => c.caId === index)
+      if (!catalog) return
       if (catalog.url && catalog.url !== '#') {
-        window.open(catalog.url)
+        if (catalog.url !== 'IOT' && catalog.url !== 'MALL') {
+          window.open(catalog.url)
+        }
       }
       this.catalogs.forEach(item => { item.active = '0' })
       catalog.active = '1'
+      this.activeCatalog = index
       this.$emit('load-menu', catalog)
     },
-    changeCommunity(community) {
+    handleCommunityCmd(community) {
       this.$store.commit('app/SET_CURRENT_COMMUNITY', community)
       this.$router.go(0)
     },
-    changeLang(lang) {
-      this.langName = lang.name
-      this.$store.commit('app/SET_LANGUAGE', lang.lang)
-      sessionStorage.setItem('iot_webvue_lang', lang.lang)
+    handleSwitchLang(command) {
+      const lang = this.langs.find(l => l.lang === command)
+      if (lang) {
+        this.langName = lang.name
+      }
+      this.$store.commit('app/SET_LANGUAGE', command)
+      sessionStorage.setItem('iot_webvue_lang', command)
       location.reload()
     },
     goHome() {
       this.$router.push('/pages/index/index')
     },
-    handleLogout() {
-      this.$store.dispatch('user/logout').then(() => {
-        this.$router.push('/user')
-      })
+    handleUserCommand(command) {
+      if (command === 'logout') {
+        this.$store.dispatch('user/logout').then(() => {
+          this.$router.push('/user')
+        })
+      }
     }
   }
 }
@@ -141,80 +164,63 @@ export default {
 
 <style scoped>
 .vc-nav {
-  height: 50px;
-  background: #001529;
+  height: 60px;
+  background: #1e2132;
   color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 16px;
+  padding: 0;
   flex-shrink: 0;
   overflow: hidden;
 }
-.nav-left, .nav-right {
-  overflow: hidden;
-}
-.nav-left ul, .nav-right ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.nav-left {
   display: flex;
   align-items: center;
+  height: 100%;
 }
-.nav-menu li, .nav-actions li {
-  padding: 0 12px;
-  height: 50px;
-  line-height: 50px;
-  cursor: pointer;
-  color: rgba(255,255,255,0.65);
-  white-space: nowrap;
-}
-.nav-menu li:hover, .nav-actions li:hover {
-  color: #fff;
-  background: rgba(255,255,255,0.1);
-}
-.nav-menu li.active {
-  color: #fff;
-  background: #1890ff;
-}
-.nav-menu li.title {
+.logo {
+  width: 100px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  font-size: 20px;
   font-weight: bold;
-  font-size: 16px;
-  color: #fff;
-  padding-right: 24px;
-}
-.nav-menu li.title a {
-  color: #fff;
-  text-decoration: none;
-}
-.dropdown {
-  position: relative;
-}
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 50px;
-  left: 0;
-  background: #fff;
-  color: #333;
-  min-width: 120px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  border-radius: 4px;
-  z-index: 1000;
-  padding: 4px 0;
-}
-.dropdown:hover .dropdown-menu {
-  display: block;
-}
-.dropdown-item {
-  display: block;
-  padding: 8px 16px;
+  color: #409EFF;
   cursor: pointer;
-  color: #333;
-  text-decoration: none;
-  white-space: nowrap;
+  flex-shrink: 0;
 }
-.dropdown-item:hover {
-  background: #f5f5f5;
+.nav-catalog-menu {
+  border-bottom: none !important;
+  background: transparent;
+}
+.nav-catalog-menu >>> .el-menu-item {
+  height: 60px;
+  line-height: 60px;
+  border-bottom: none !important;
+}
+.nav-catalog-menu >>> .el-menu-item:hover {
+  background-color: rgba(255,255,255,0.08) !important;
+}
+.nav-catalog-menu >>> .el-menu-item.is-active {
+  border-bottom: 2px solid #409EFF !important;
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  gap: 8px;
+}
+.nav-dropdown {
+  cursor: pointer;
+}
+.nav-user-text {
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0 8px;
+}
+.nav-user-text:hover {
+  color: #409EFF;
 }
 </style>

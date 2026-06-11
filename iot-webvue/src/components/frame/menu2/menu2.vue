@@ -9,8 +9,7 @@
           :class="{ active: menu.active }"
           @click="switchMenu(menu)"
         >
-          <i :class="menu.icon"></i>
-          <span class="menu-name">{{ menu.name }}</span>
+          <i :class="menu.icon"></i><span class="menu-name">{{ menu.name }}</span>
         </li>
       </ul>
     </div>
@@ -25,6 +24,9 @@
           @click="gotoPage(sub.href, sub.name)"
         >
           {{ sub.name }}
+        </li>
+        <li class="sub-footer" @click="closeSubMenu">
+          <i class="el-icon-back"></i>
         </li>
       </ul>
     </div>
@@ -129,6 +131,10 @@ export default {
           }
         }
       }
+    },
+    closeSubMenu() {
+      this.subMenus = []
+      this.curMenuName = ''
     }
   }
 }
@@ -139,11 +145,20 @@ export default {
   display: flex;
   height: 100%;
   flex-shrink: 0;
+  border-right: 1px solid #EFEFF0;
 }
 .vc-menu-main {
   width: 80px;
-  background: #001529;
+  background: #1F2339;
+  color: #838A9B;
+  text-align: center;
+  font-size: 14px;
   overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+.vc-menu-main::-webkit-scrollbar {
+  display: none;
 }
 .vc-menu-main ul {
   list-style: none;
@@ -151,65 +166,95 @@ export default {
   padding: 0;
 }
 .vc-menu-main li {
-  padding: 16px 8px;
-  text-align: center;
-  color: rgba(255,255,255,0.65);
+  height: 45px;
+  line-height: 45px;
   cursor: pointer;
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .vc-menu-main li:hover {
-  color: #fff;
-  background: rgba(255,255,255,0.1);
+  background: #3E77FC;
+  color: #FFFFFF;
 }
 .vc-menu-main li.active {
-  color: #fff;
-  background: #1890ff;
+  background: #3E77FC;
+  color: #FFFFFF;
 }
 .vc-menu-main li i {
   font-size: 18px;
 }
 .menu-name {
-  font-size: 12px;
+  font-size: 14px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 72px;
+  max-width: 60px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 4px;
 }
 .vc-menu-sub {
-  width: 200px;
-  background: #fafafa;
-  border-right: 1px solid #e8e8e8;
+  width: 110px;
+  background: #FFFFFF;
+  color: #545761;
+  font-size: 14px;
   overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+.vc-menu-sub::-webkit-scrollbar {
+  display: none;
 }
 .vc-menu-sub ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.vc-menu-sub .sub-title {
-  padding: 16px;
-  font-weight: bold;
-  font-size: 14px;
-  color: #333;
-  border-bottom: 1px solid #e8e8e8;
-}
 .vc-menu-sub li {
-  padding: 12px 16px;
+  height: 40px;
+  line-height: 40px;
+  padding-left: 15px;
   cursor: pointer;
-  color: #666;
-  font-size: 13px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.vc-menu-sub li.sub-title {
+  color: #4F525C;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  text-align: center;
+  padding-left: 0;
+  border-bottom: 1px solid #F2F2F3;
+  margin-bottom: 10px;
+  cursor: default;
 }
 .vc-menu-sub li:hover {
-  color: #1890ff;
-  background: #e6f7ff;
+  background: #EAF0FE;
+  color: #3E77FC;
 }
 .vc-menu-sub li.active {
-  color: #1890ff;
-  background: #e6f7ff;
-  border-right: 3px solid #1890ff;
+  background: #EAF0FE;
+  color: #3E77FC;
+}
+.vc-menu-sub li.sub-title:hover {
+  background: transparent;
+  color: #4F525C;
+}
+.vc-menu-sub li.sub-footer {
+  background: #F6F6F7;
+  text-align: center;
+  position: sticky;
+  bottom: 0;
+  padding-left: 0;
+}
+.vc-menu-sub li.sub-footer:hover {
+  background: #EAF0FE;
+  color: #3E77FC;
 }
 </style>

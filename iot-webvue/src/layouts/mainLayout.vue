@@ -2,7 +2,7 @@
   <div class="main-layout">
     <nav2 @load-menu="onLoadMenu" />
     <div class="vc-page">
-      <menu2 ref="menu2" :catalog="currentCatalog" />
+      <menu2 ref="menu2" />
       <div class="vc-main">
         <div class="vc-main-content">
           <breadcrumb />
@@ -23,14 +23,8 @@ import Breadcrumb from '@/components/frame/breadcrumb/breadcrumb.vue'
 export default {
   name: 'MainLayout',
   components: { Nav2, Menu2, Breadcrumb },
-  data() {
-    return {
-      currentCatalog: null
-    }
-  },
   methods: {
     onLoadMenu(catalog) {
-      this.currentCatalog = catalog
       this.$nextTick(() => {
         if (this.$refs.menu2) {
           this.$refs.menu2.getMenus(catalog)

@@ -1,47 +1,59 @@
 <template>
-  <el-card shadow="never" class="index-card">
-    <template #header>
-      <span>小区信息</span>
-    </template>
-    <div class="index-grid">
-      <div class="index-item">
-        <div class="index-icon"><i class="el-icon-office-building"></i></div>
-        <div class="index-number">{{ data.floorCount || 0 }}</div>
-        <div class="index-label">楼宇</div>
+  <div class="index-community-card">
+    <div class="index-title">小区信息</div>
+    <div class="index-top">
+      <div class="index-top-item">
+        <div class="index-icon-box"><i class="el-icon-office-building"></i></div>
+        <div>
+          <div class="index-number">{{ data.floorCount || 0 }}</div>
+          <div class="index-label">楼宇</div>
+        </div>
       </div>
-      <div class="index-item">
-        <div class="index-icon"><i class="el-icon-house"></i></div>
-        <div class="index-number">{{ data.roomCount || 0 }}</div>
-        <div class="index-label">房屋</div>
+      <div class="index-top-item">
+        <div class="index-icon-box"><i class="el-icon-s-home"></i></div>
+        <div>
+          <div class="index-number">{{ data.roomCount || 0 }}</div>
+          <div class="index-label">房屋</div>
+        </div>
       </div>
-      <div class="index-item">
-        <div class="index-icon"><i class="el-icon-shopping-bag-2"></i></div>
-        <div class="index-number">{{ data.shopCount || 0 }}</div>
-        <div class="index-label">商铺</div>
+      <div class="index-top-item">
+        <div class="index-icon-box"><i class="el-icon-shopping-bag-2"></i></div>
+        <div>
+          <div class="index-number">{{ data.shopCount || 0 }}</div>
+          <div class="index-label">商铺</div>
+        </div>
       </div>
-      <div class="index-item">
-        <div class="index-icon"><i class="el-icon-truck"></i></div>
-        <div class="index-number">{{ data.spaceCount || 0 }}</div>
-        <div class="index-label">车位</div>
+      <div class="index-top-item">
+        <div class="index-icon-box"><i class="el-icon-truck"></i></div>
+        <div>
+          <div class="index-number">{{ data.spaceCount || 0 }}</div>
+          <div class="index-label">车位</div>
+        </div>
       </div>
     </div>
     <div class="index-bottom">
       <div class="index-bottom-item">
-        <div class="index-sub-icon"><i class="el-icon-user"></i></div>
-        <div>
-          <div class="index-number">{{ data.ownerCount || 0 }} <span class="index-unit">个</span></div>
-          <div class="index-link">登记住户</div>
+        <div class="index-bottom-left">
+          <div class="index-name">住户登记</div>
+          <div class="index-name-icon"><i class="el-icon-user"></i></div>
+        </div>
+        <div class="index-bottom-right">
+          <div class="index-number">{{ data.ownerCount || 0 }}<span class="index-unit">个</span></div>
+          <div class="index-link" @click="toOwner">登记住户&gt;</div>
         </div>
       </div>
       <div class="index-bottom-item">
-        <div class="index-sub-icon"><i class="el-icon-finished"></i></div>
-        <div>
-          <div class="index-number">{{ data.carCount || 0 }} <span class="index-unit">个</span></div>
-          <div class="index-link">车辆</div>
+        <div class="index-bottom-left">
+          <div class="index-name">车辆</div>
+          <div class="index-name-icon"><i class="el-icon-truck"></i></div>
+        </div>
+        <div class="index-bottom-right">
+          <div class="index-number">{{ data.carCount || 0 }}<span class="index-unit">个</span></div>
+          <div class="index-link" @click="toCar">查看车辆&gt;</div>
         </div>
       </div>
     </div>
-  </el-card>
+  </div>
 </template>
 
 <script>
@@ -77,67 +89,98 @@ export default {
           this.data = res || {}
         }
       }).catch(() => {})
+    },
+    toOwner() {
+      this.$router.push('/pages/property/listOwner?tab=业主信息')
+    },
+    toCar() {
+      this.$router.push('/pages/car/listOwnerCar?tab=业主车辆')
     }
   }
 }
 </script>
 
 <style scoped>
-.index-card {
-  height: 100%;
+.index-community-card {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  height: 350px;
+  padding: 15px;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
 }
-.index-grid {
+.index-title {
+  color: #404357;
+  font-size: 20px;
+  font-weight: bold;
+}
+.index-top {
   display: flex;
   justify-content: space-around;
-  padding: 8px 0 16px;
+  padding: 50px 0;
   border-bottom: 1px solid #f0f0f0;
 }
-.index-item {
-  text-align: center;
-  flex: 1;
+.index-top-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
-.index-icon {
-  font-size: 32px;
-  color: #1890ff;
-  margin-bottom: 8px;
+.index-icon-box {
+  background-color: #F6F6F6;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  text-align: center;
+  line-height: 60px;
+  margin-right: 10px;
+}
+.index-icon-box i {
+  color: #00BF6F;
+  font-weight: bold;
+  font-size: 24px;
 }
 .index-number {
-  font-size: 24px;
+  color: #404357;
+  font-size: 26px;
   font-weight: bold;
-  color: #333;
 }
 .index-label {
-  font-size: 13px;
-  color: #999;
-  margin-top: 4px;
+  color: #9D9D9F;
 }
 .index-bottom {
+  width: 90%;
+  margin: 40px auto;
   display: flex;
-  padding-top: 16px;
-  gap: 16px;
+  justify-content: space-between;
 }
 .index-bottom-item {
-  flex: 1;
+  width: 45%;
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  background: #fafafa;
-  border-radius: 4px;
+  justify-content: space-between;
 }
-.index-sub-icon {
-  font-size: 28px;
-  color: #1890ff;
+.index-bottom-left {
+  text-align: center;
+}
+.index-bottom-right {
+  text-align: center;
+}
+.index-name {
+  color: #404357;
+  font-size: 20px;
+  font-weight: bold;
+}
+.index-name-icon {
+  font-size: 30px;
+  color: #00BF6F;
+  font-weight: bold;
+  margin-top: 5px;
 }
 .index-unit {
+  color: #9D9D9F;
   font-size: 14px;
-  font-weight: normal;
-  color: #999;
 }
 .index-link {
-  font-size: 13px;
-  color: #1890ff;
+  color: #9D9D9F;
+  margin-top: 5px;
   cursor: pointer;
-  margin-top: 4px;
 }
 </style>
