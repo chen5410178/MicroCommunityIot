@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import MainLayout from '@/layouts/mainLayout.vue'
 import devRouter from './devRouter'
+import adminRouter from './adminRouter'
 
 Vue.use(VueRouter)
 
@@ -24,6 +25,7 @@ const routes = [
         meta: { requiresAuth: true, title: '首页' }
       },
       ...devRouter,
+      ...adminRouter,
       {
         path: 'pages/frame/systemInfoManage',
         name: 'SystemInfoManage',
