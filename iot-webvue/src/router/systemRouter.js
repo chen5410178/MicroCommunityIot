@@ -41,6 +41,13 @@ const systemRoutes = [
     component: () => import('@/views/property/paymentPool.vue'),
     meta: { requiresAuth: true, title: '支付配置' }
   },
+  // ===== 小程序管理 =====
+  {
+    path: 'pages/property/smallWeChatManage',
+    name: 'SmallWeChatManage',
+    component: () => import('@/views/property/listSmallWeChatManage.vue'),
+    meta: { requiresAuth: true, title: '我的小程序' }
+  },
   // ===== 公众号管理 =====
   {
     path: 'pages/property/publicWeChatManage',
@@ -59,6 +66,12 @@ const systemRoutes = [
     name: 'WechatSmsTemplateManage',
     component: () => import('@/views/property/listWechatSmsTemplate.vue'),
     meta: { requiresAuth: true, title: '微信模板' }
+  },
+  {
+    path: 'pages/3d/cockpit',
+    name: 'CockpitPage',
+    component: () => import('@/views/3d/cockpitPage.vue'),
+    meta: { requiresAuth: true, title: '3D驾驶舱' }
   }
 ]
 
