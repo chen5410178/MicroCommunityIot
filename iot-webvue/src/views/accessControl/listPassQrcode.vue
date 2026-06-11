@@ -19,13 +19,13 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="名称">
+            <el-form-item>
               <el-input v-model="queryParams.personName" placeholder="请输入名称" clearable style="width: 160px" />
             </el-form-item>
-            <el-form-item label="手机号">
+            <el-form-item>
               <el-input v-model="queryParams.personTel" placeholder="请输入手机号" clearable style="width: 160px" />
             </el-form-item>
-            <el-form-item label="开始时间">
+            <el-form-item>
               <el-date-picker
                 v-model="queryParams.queryStartTime"
                 type="datetime"
@@ -34,7 +34,7 @@
                 style="width: 180px"
               />
             </el-form-item>
-            <el-form-item label="结束时间">
+            <el-form-item>
               <el-date-picker
                 v-model="queryParams.queryEndTime"
                 type="datetime"

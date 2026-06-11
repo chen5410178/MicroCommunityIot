@@ -25,14 +25,14 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="预约方式">
+            <el-form-item>
               <el-select v-model="queryParams.resWay" placeholder="请选择预约方式" clearable style="width: 160px">
                 <el-option label="全部" value="" />
                 <el-option label="室内机" value="1001" />
                 <el-option label="业主手机" value="2002" />
               </el-select>
             </el-form-item>
-            <el-form-item label="人员类型">
+            <el-form-item>
               <el-select v-model="queryParams.personWay" placeholder="请选择人员类型" clearable style="width: 160px">
                 <el-option label="全部" value="" />
                 <el-option label="访客" value="1001" />
@@ -40,13 +40,13 @@
                 <el-option label="员工" value="3003" />
               </el-select>
             </el-form-item>
-            <el-form-item label="人员名称">
+            <el-form-item>
               <el-input v-model="queryParams.personName" placeholder="请输入人员名称" clearable style="width: 160px" />
             </el-form-item>
-            <el-form-item label="预约房号">
+            <el-form-item>
               <el-input v-model="queryParams.roomName" placeholder="请输入预约房号" clearable style="width: 160px" />
             </el-form-item>
-            <el-form-item label="开始时间">
+            <el-form-item>
               <el-date-picker
                 v-model="queryParams.queryStartTime"
                 type="datetime"
@@ -56,7 +56,7 @@
                 style="width: 200px"
               />
             </el-form-item>
-            <el-form-item label="结束时间">
+            <el-form-item>
               <el-date-picker
                 v-model="queryParams.queryEndTime"
                 type="datetime"

@@ -27,7 +27,7 @@
       <el-col :span="20">
         <el-card shadow="never" class="search-card">
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="员工名称">
+            <el-form-item>
               <el-input v-model="queryParams.personName" placeholder="请输入员工名称" clearable style="width: 180px" />
             </el-form-item>
             <el-form-item>

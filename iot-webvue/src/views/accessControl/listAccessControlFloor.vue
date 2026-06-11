@@ -14,7 +14,7 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="门禁名称">
+            <el-form-item>
               <el-input v-model="queryParams.machineName" placeholder="请输入门禁名称" clearable style="width: 180px" />
             </el-form-item>
             <el-form-item>

@@ -25,30 +25,30 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="审核状态">
+            <el-form-item>
               <el-select v-model="queryParams.state" placeholder="请选择审核状态" clearable style="width: 160px">
                 <el-option v-for="item in stateList" :key="item.statusCd" :label="item.statusName" :value="item.statusCd" />
               </el-select>
             </el-form-item>
-            <el-form-item label="访客姓名">
+            <el-form-item>
               <el-input v-model="queryParams.nameLike" placeholder="请输入访客姓名" clearable style="width: 160px" />
             </el-form-item>
-            <el-form-item label="性别">
+            <el-form-item>
               <el-select v-model="queryParams.visitGender" placeholder="请选择性别" clearable style="width: 120px">
                 <el-option label="男" value="0" />
                 <el-option label="女" value="1" />
               </el-select>
             </el-form-item>
-            <el-form-item label="电话号码">
+            <el-form-item>
               <el-input v-model="queryParams.phoneNumberLike" placeholder="请输入电话号码" clearable style="width: 160px" />
             </el-form-item>
-            <el-form-item label="拜访房屋">
+            <el-form-item>
               <el-input v-model="queryParams.roomNameLike" placeholder="楼栋-单元-房屋" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="拜访业主">
+            <el-form-item>
               <el-input v-model="queryParams.ownerNameLike" placeholder="请输入拜访业主" clearable style="width: 160px" />
             </el-form-item>
-            <el-form-item label="开始时间">
+            <el-form-item>
               <el-date-picker
                 v-model="queryParams.queryStartTime"
                 type="datetime"
@@ -58,7 +58,7 @@
                 style="width: 200px"
               />
             </el-form-item>
-            <el-form-item label="结束时间">
+            <el-form-item>
               <el-date-picker
                 v-model="queryParams.queryEndTime"
                 type="datetime"

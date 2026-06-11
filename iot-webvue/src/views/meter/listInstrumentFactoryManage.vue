@@ -5,13 +5,13 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="厂家ID">
+        <el-form-item>
           <el-input v-model="queryParams.factoryId" placeholder="请输入厂家ID" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="厂家名称">
+        <el-form-item>
           <el-input v-model="queryParams.factoryName" placeholder="请输入厂家名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="厂家处理类">
+        <el-form-item>
           <el-input v-model="queryParams.beanImpl" placeholder="请输入厂家处理类" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

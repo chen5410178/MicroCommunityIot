@@ -59,6 +59,33 @@
     <div v-if="activeTab === 'ownerDetailRoom'" class="tab-content">
       <OwnerDetailRoom :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
     </div>
+    <div v-else-if="activeTab === 'ownerDetailMember'" class="tab-content">
+      <OwnerDetailMember :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
+    </div>
+    <div v-else-if="activeTab === 'ownerDetailCar'" class="tab-content">
+      <OwnerDetailCar :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
+    </div>
+    <div v-else-if="activeTab === 'ownerDetailAccessControlFace'" class="tab-content">
+      <OwnerDetailAccessControlFace :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
+    </div>
+    <div v-else-if="activeTab === 'ownerDetailAccessControlLog'" class="tab-content">
+      <OwnerDetailAccessControlLog :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
+    </div>
+    <div v-else-if="activeTab === 'ownerDetailAccessControlInout'" class="tab-content">
+      <OwnerDetailAccessControlInout :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
+    </div>
+    <div v-else-if="activeTab === 'ownerDetailLockPerson'" class="tab-content">
+      <OwnerDetailLockPerson :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
+    </div>
+    <div v-else-if="activeTab === 'ownerDetailLockLog'" class="tab-content">
+      <OwnerDetailLockLog :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
+    </div>
+    <div v-else-if="activeTab === 'ownerDetailLockInout'" class="tab-content">
+      <OwnerDetailLockInout :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
+    </div>
+    <div v-else-if="activeTab === 'ownerDetailChargeOrder'" class="tab-content">
+      <OwnerDetailChargeOrder :owner-id="info.ownerId" :member-id="info.memberId" :owner-name="info.name" :link="info.link" />
+    </div>
     <div v-else class="tab-content">
       <el-empty description="该功能暂未实现，敬请期待" />
     </div>
@@ -69,10 +96,30 @@
 import { queryOwners } from '@/api/property/ownerApi'
 import { getCurrentCommunity } from '@/utils/auth'
 import OwnerDetailRoom from '@/views/owner/tabs/OwnerDetailRoom.vue'
+import OwnerDetailMember from '@/views/owner/tabs/OwnerDetailMember.vue'
+import OwnerDetailCar from '@/views/owner/tabs/OwnerDetailCar.vue'
+import OwnerDetailAccessControlFace from '@/views/owner/tabs/OwnerDetailAccessControlFace.vue'
+import OwnerDetailAccessControlLog from '@/views/owner/tabs/OwnerDetailAccessControlLog.vue'
+import OwnerDetailAccessControlInout from '@/views/owner/tabs/OwnerDetailAccessControlInout.vue'
+import OwnerDetailLockPerson from '@/views/owner/tabs/OwnerDetailLockPerson.vue'
+import OwnerDetailLockLog from '@/views/owner/tabs/OwnerDetailLockLog.vue'
+import OwnerDetailLockInout from '@/views/owner/tabs/OwnerDetailLockInout.vue'
+import OwnerDetailChargeOrder from '@/views/owner/tabs/OwnerDetailChargeOrder.vue'
 
 export default {
   name: 'OwnerDetail',
-  components: { OwnerDetailRoom },
+  components: {
+    OwnerDetailRoom,
+    OwnerDetailMember,
+    OwnerDetailCar,
+    OwnerDetailAccessControlFace,
+    OwnerDetailAccessControlLog,
+    OwnerDetailAccessControlInout,
+    OwnerDetailLockPerson,
+    OwnerDetailLockLog,
+    OwnerDetailLockInout,
+    OwnerDetailChargeOrder
+  },
   data() {
     return {
       info: {

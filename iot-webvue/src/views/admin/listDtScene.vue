@@ -24,10 +24,10 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="场景名称">
+            <el-form-item>
               <el-input v-model="queryParams.sceneName" placeholder="请输入场景名称" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="状态">
+            <el-form-item>
               <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 120px">
                 <el-option label="启用中" value="Y" />
                 <el-option label="停用中" value="N" />

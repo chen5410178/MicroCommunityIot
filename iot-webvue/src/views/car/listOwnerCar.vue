@@ -21,25 +21,25 @@
           <span>查询条件</span>
         </div>
         <el-form :inline="true" :model="queryParams">
-          <el-form-item label="车牌号">
+          <el-form-item>
             <el-input v-model="queryParams.carNumLike" placeholder="请输入车牌号" clearable style="width: 160px" />
           </el-form-item>
-          <el-form-item label="车位编号">
+          <el-form-item>
             <el-input v-model="queryParams.num" placeholder="请填写车位编号" clearable style="width: 160px" />
           </el-form-item>
-          <el-form-item label="车位状态">
+          <el-form-item>
             <el-select v-model="queryParams.valid" placeholder="请选择车位状态" clearable style="width: 160px">
               <el-option label="正常" value="1" />
               <el-option label="无车位" value="2" />
             </el-select>
           </el-form-item>
-          <el-form-item label="业主名称">
+          <el-form-item>
             <el-input v-model="queryParams.ownerName" placeholder="请填写业主名称" clearable style="width: 160px" />
           </el-form-item>
-          <el-form-item label="联系方式">
+          <el-form-item>
             <el-input v-model="queryParams.link" placeholder="请输入联系方式" clearable style="width: 160px" />
           </el-form-item>
-          <el-form-item label="成员车牌号">
+          <el-form-item>
             <el-input v-model="queryParams.memberCarNumLike" placeholder="请输入成员车牌号" clearable style="width: 160px" />
           </el-form-item>
           <el-form-item>

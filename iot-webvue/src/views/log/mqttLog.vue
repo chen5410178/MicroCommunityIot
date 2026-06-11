@@ -5,7 +5,7 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="开始时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.startTime"
             type="datetime"
@@ -15,7 +15,7 @@
             style="width: 200px"
           />
         </el-form-item>
-        <el-form-item label="结束时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.endTime"
             type="datetime"

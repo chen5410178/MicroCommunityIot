@@ -23,7 +23,7 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="车牌号">
+            <el-form-item>
               <el-input v-model="queryParams.carNum" placeholder="请输入车牌号" clearable style="width: 180px" />
             </el-form-item>
             <el-form-item>

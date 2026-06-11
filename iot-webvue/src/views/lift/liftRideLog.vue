@@ -25,13 +25,13 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="门禁名称">
+            <el-form-item>
               <el-input v-model="queryParams.acMachineName" placeholder="请输入门禁名称" clearable style="width: 160px" />
             </el-form-item>
-            <el-form-item label="门禁编号">
+            <el-form-item>
               <el-input v-model="queryParams.acMachineCode" placeholder="请输入门禁编号" clearable style="width: 160px" />
             </el-form-item>
-            <el-form-item label="乘坐类型">
+            <el-form-item>
               <el-select v-model="queryParams.rideType" placeholder="请选择乘坐类型" clearable style="width: 160px">
                 <el-option label="全部" value="" />
                 <el-option label="人脸" value="1001" />
@@ -39,10 +39,10 @@
                 <el-option label="二维码" value="3003" />
               </el-select>
             </el-form-item>
-            <el-form-item label="用户名称">
+            <el-form-item>
               <el-input v-model="queryParams.name" placeholder="请输入用户名称" clearable style="width: 160px" />
             </el-form-item>
-            <el-form-item label="人员类型">
+            <el-form-item>
               <el-select v-model="queryParams.personType" placeholder="请选择人员类型" clearable style="width: 160px">
                 <el-option label="全部" value="" />
                 <el-option label="访客" value="100" />

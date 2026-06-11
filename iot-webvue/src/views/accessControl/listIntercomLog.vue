@@ -5,13 +5,13 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="设备号码">
+        <el-form-item>
           <el-input v-model="queryParams.machineCode" placeholder="请输入设备号码" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="设备名称">
+        <el-form-item>
           <el-input v-model="queryParams.machineName" placeholder="请输入设备名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item>
           <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 160px">
             <el-option label="全部" value="" />
             <el-option label="呼叫中" value="W" />

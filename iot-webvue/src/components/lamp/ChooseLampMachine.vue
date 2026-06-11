@@ -6,13 +6,13 @@
     @close="handleClose"
   >
     <el-form :inline="true" :model="queryParams">
-      <el-form-item label="名称">
+      <el-form-item>
         <el-input v-model="queryParams.machineName" placeholder="请输入名称" clearable style="width: 160px" />
       </el-form-item>
-      <el-form-item label="设备编号">
+      <el-form-item>
         <el-input v-model="queryParams.machineCode" placeholder="请输入设备编号" clearable style="width: 160px" />
       </el-form-item>
-      <el-form-item label="位置">
+      <el-form-item>
         <el-input v-model="queryParams.locationName" placeholder="请输入位置" clearable style="width: 160px" />
       </el-form-item>
       <el-form-item>

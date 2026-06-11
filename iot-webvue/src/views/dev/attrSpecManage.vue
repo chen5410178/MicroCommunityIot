@@ -6,10 +6,10 @@
         <el-button type="text" @click="showMore = !showMore">{{ showMore ? '隐藏' : '更多' }}</el-button>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="规格名称">
+        <el-form-item>
           <el-input v-model="queryParams.specName" placeholder="请输入规格名称" clearable style="width: 160px" />
         </el-form-item>
-        <el-form-item label="属性表">
+        <el-form-item>
           <el-select v-model="queryParams.tableName" placeholder="请选择属性表" clearable style="width: 160px">
             <el-option label="房屋属性" value="building_room_attr" />
             <el-option label="业主属性" value="building_owner_attr" />
@@ -19,10 +19,10 @@
             <el-option label="车辆属性" value="owner_car_attr" />
           </el-select>
         </el-form-item>
-        <el-form-item label="规格编码">
+        <el-form-item>
           <el-input v-model="queryParams.specCd" placeholder="请输入规格编码" clearable style="width: 160px" />
         </el-form-item>
-        <el-form-item v-if="showMore" label="域">
+        <el-form-item v-if="showMore">
           <el-input v-model="queryParams.domain" placeholder="请输入域" clearable style="width: 160px" />
         </el-form-item>
         <el-form-item>

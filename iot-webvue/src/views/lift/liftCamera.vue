@@ -5,13 +5,13 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="相机名称">
+        <el-form-item>
           <el-input v-model="queryParams.cameraName" placeholder="请输入相机名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="相机编号">
+        <el-form-item>
           <el-input v-model="queryParams.cameraCode" placeholder="请输入相机编号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="电梯名称">
+        <el-form-item>
           <el-input v-model="queryParams.liftName" placeholder="请输入电梯名称" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

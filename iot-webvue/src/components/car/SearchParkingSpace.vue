@@ -7,12 +7,12 @@
   >
     <el-card shadow="never" class="search-card">
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="停车场">
+        <el-form-item>
           <el-select v-model="queryParams.paId" placeholder="请选择停车场" clearable style="width: 180px">
             <el-option v-for="item in parkingAreas" :key="item.paId" :label="item.num" :value="item.paId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="车位编号">
+        <el-form-item>
           <el-input v-model="queryParams.num" placeholder="请输入停车位编号" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

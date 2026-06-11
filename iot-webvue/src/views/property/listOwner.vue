@@ -5,19 +5,19 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="人员名称">
+        <el-form-item>
           <el-input v-model="queryParams.name" placeholder="请输入人员名称" clearable style="width: 160px" />
         </el-form-item>
-        <el-form-item label="房屋">
+        <el-form-item>
           <el-input v-model="queryParams.roomName" placeholder="楼栋-单元-房屋" clearable style="width: 160px" />
         </el-form-item>
-        <el-form-item label="联系方式">
+        <el-form-item>
           <el-input v-model="queryParams.link" placeholder="请输入联系方式" clearable style="width: 160px" />
         </el-form-item>
-        <el-form-item label="人员ID">
+        <el-form-item>
           <el-input v-model="queryParams.ownerId" placeholder="请输入人员ID" clearable style="width: 160px" />
         </el-form-item>
-        <el-form-item label="身份证号">
+        <el-form-item>
           <el-input v-model="queryParams.idCard" placeholder="请输入身份证号" clearable style="width: 160px" />
         </el-form-item>
         <el-form-item>

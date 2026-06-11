@@ -5,13 +5,13 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="业务类型">
+        <el-form-item>
           <el-input v-model="queryParams.businessTypeCd" placeholder="请输入业务类型" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="业务名称">
+        <el-form-item>
           <el-input v-model="queryParams.name" placeholder="请输入业务名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="调用方式">
+        <el-form-item>
           <el-select v-model="queryParams.invokeType" placeholder="请选择调用方式" clearable style="width: 180px">
             <el-option label="微服务POST方式" value="1" />
             <el-option label="webservice方式" value="2" />
@@ -19,7 +19,7 @@
           </el-select>
         </el-form-item>
         <el-form-item v-show="showMore">
-          <el-form-item label="kafka主题">
+          <el-form-item>
             <el-input v-model="queryParams.messageTopic" placeholder="请输入kafka主题" clearable style="width: 180px" />
           </el-form-item>
         </el-form-item>

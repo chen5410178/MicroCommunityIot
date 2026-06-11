@@ -7,10 +7,10 @@
   >
     <el-card shadow="never" class="search-card">
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="业主名称">
+        <el-form-item>
           <el-input v-model="queryParams.name" placeholder="请输入业主名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="联系方式">
+        <el-form-item>
           <el-input v-model="queryParams.link" placeholder="请输入联系方式" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

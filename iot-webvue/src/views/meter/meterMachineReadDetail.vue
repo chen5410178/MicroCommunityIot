@@ -10,23 +10,23 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="名称">
+            <el-form-item>
               <el-input v-model="queryParams.machineNameLike" placeholder="请输入名称" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="表号">
+            <el-form-item>
               <el-input v-model="queryParams.addressLike" placeholder="请输入表号" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="抄表状态">
+            <el-form-item>
               <el-select v-model="queryParams.state" placeholder="请选择抄表状态" clearable style="width: 150px">
                 <el-option label="等待" value="W" />
                 <el-option label="失败" value="F" />
                 <el-option label="完成" value="C" />
               </el-select>
             </el-form-item>
-            <el-form-item label="房屋编号">
+            <el-form-item>
               <el-input v-model="queryParams.roomNameLike" placeholder="楼栋-单元-房屋" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="开始时间">
+            <el-form-item>
               <el-date-picker
                 v-model="queryParams.queryStartTime"
                 type="datetime"
@@ -35,7 +35,7 @@
                 style="width: 190px"
               />
             </el-form-item>
-            <el-form-item label="结束时间">
+            <el-form-item>
               <el-date-picker
                 v-model="queryParams.queryEndTime"
                 type="datetime"

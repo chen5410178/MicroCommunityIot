@@ -4,7 +4,7 @@
       <el-button type="primary" size="small" @click="handleAdd">关联小区</el-button>
     </div>
     <el-form :inline="true" :model="queryParams" class="search-form">
-      <el-form-item label="小区名称">
+      <el-form-item>
         <el-input v-model="queryParams.communityName" placeholder="请输入小区名称" clearable style="width: 180px" />
       </el-form-item>
       <el-form-item>

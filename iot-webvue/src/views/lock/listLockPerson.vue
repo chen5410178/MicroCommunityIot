@@ -5,11 +5,11 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="业主名称">
+        <el-form-item>
           <el-input v-model="queryParams.name" placeholder="请选择业主" readonly clearable style="width: 180px" />
           <el-button size="small" style="margin-left: 4px" @click="searchVisible = true">选择</el-button>
         </el-form-item>
-        <el-form-item label="有效期">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.queryTime"
             type="date"
@@ -18,22 +18,22 @@
             style="width: 180px"
           />
         </el-form-item>
-        <el-form-item label="授权状态">
+        <el-form-item>
           <el-select v-model="queryParams.state" placeholder="请选择授权状态" clearable style="width: 180px">
             <el-option label="可用" value="1001" />
             <el-option label="冻结" value="2002" />
           </el-select>
         </el-form-item>
-        <el-form-item label="开锁方式">
+        <el-form-item>
           <el-select v-model="queryParams.openModel" placeholder="请选择开锁方式" clearable style="width: 180px">
             <el-option label="密码开锁" value="1001" />
             <el-option label="蓝牙开锁" value="2002" />
           </el-select>
         </el-form-item>
-        <el-form-item label="门锁名称">
+        <el-form-item>
           <el-input v-model="queryParams.machineName" placeholder="请输入门锁名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="门锁编号">
+        <el-form-item>
           <el-input v-model="queryParams.machineCode" placeholder="请输入门锁编号" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

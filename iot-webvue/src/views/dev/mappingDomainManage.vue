@@ -5,10 +5,10 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="域">
+        <el-form-item>
           <el-input v-model="queryParams.domain" placeholder="请选择域" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="排序">
+        <el-form-item>
           <el-input v-model="queryParams.seq" placeholder="请选择排序" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

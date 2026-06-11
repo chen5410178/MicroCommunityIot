@@ -10,29 +10,29 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="订单编号">
+            <el-form-item>
               <el-input v-model="queryParams.orderId" placeholder="请输入订单编号" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="名称">
+            <el-form-item>
               <el-input v-model="queryParams.personName" placeholder="请输入名称" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="手机号">
+            <el-form-item>
               <el-input v-model="queryParams.personTel" placeholder="请输入手机号" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="充电桩">
+            <el-form-item>
               <el-input v-model="queryParams.machineName" placeholder="请输入充电桩名称" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="插槽">
+            <el-form-item>
               <el-input v-model="queryParams.portName" placeholder="请输入插槽名称" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="插座状态">
+            <el-form-item>
               <el-select v-model="queryParams.state" placeholder="请选择插座状态" clearable style="width: 180px">
                 <el-option label="充电中" value="1001" />
                 <el-option label="充电完成" value="2002" />
                 <el-option label="充电失败" value="3003" />
               </el-select>
             </el-form-item>
-            <el-form-item label="开始时间">
+            <el-form-item>
               <el-date-picker
                 v-model="queryParams.queryStartTime"
                 type="datetime"
@@ -41,7 +41,7 @@
                 style="width: 190px"
               />
             </el-form-item>
-            <el-form-item label="结束时间">
+            <el-form-item>
               <el-date-picker
                 v-model="queryParams.queryEndTime"
                 type="datetime"

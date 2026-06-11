@@ -5,10 +5,10 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="停车场编号">
+        <el-form-item>
           <el-input v-model="queryParams.num" placeholder="请输入编号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="类型">
+        <el-form-item>
           <el-select v-model="queryParams.typeCd" placeholder="请选择类型" clearable style="width: 180px">
             <el-option label="地上停车场" value="1001" />
             <el-option label="地下停车场" value="2002" />

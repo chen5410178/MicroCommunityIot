@@ -5,22 +5,22 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="车位编号">
+        <el-form-item>
           <el-input v-model="queryParams.num" placeholder="请输入车位编号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="停车场">
+        <el-form-item>
           <el-select v-model="queryParams.paId" placeholder="请选择停车场" clearable style="width: 180px">
             <el-option v-for="item in parkingAreas" :key="item.paId" :label="item.num" :value="item.paId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="车位状态">
+        <el-form-item>
           <el-select v-model="queryParams.state" placeholder="请选择车位状态" clearable style="width: 180px">
             <el-option label="空闲" value="F" />
             <el-option label="出售" value="S" />
             <el-option label="出租" value="H" />
           </el-select>
         </el-form-item>
-        <el-form-item label="车位类型">
+        <el-form-item>
           <el-select v-model="queryParams.parkingType" placeholder="请选择车位类型" clearable style="width: 180px">
             <el-option label="普通车位" value="1" />
             <el-option label="子母车位" value="2" />

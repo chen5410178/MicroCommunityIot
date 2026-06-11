@@ -5,20 +5,20 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="车牌号">
+        <el-form-item>
           <el-input v-model="queryParams.carNumLike" placeholder="请输入车牌号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="商家名称">
+        <el-form-item>
           <el-input v-model="queryParams.shopNameLike" placeholder="请输入商家店铺名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item>
           <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 180px">
             <el-option label="未使用" value="1001" />
             <el-option label="已使用" value="2002" />
             <el-option label="作废" value="3003" />
           </el-select>
         </el-form-item>
-        <el-form-item label="开始时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.queryStartTime"
             type="datetime"
@@ -27,7 +27,7 @@
             style="width: 180px"
           />
         </el-form-item>
-        <el-form-item label="结束时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.queryEndTime"
             type="datetime"

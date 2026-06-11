@@ -30,20 +30,20 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="房屋编号">
+            <el-form-item>
               <el-input v-model="queryParams.roomId" placeholder="楼栋-单元-房屋" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="状态">
+            <el-form-item>
               <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 140px">
                 <el-option v-for="item in stateOptions" :key="item.statusCd" :label="item.name" :value="item.statusCd" />
               </el-select>
             </el-form-item>
-            <el-form-item label="房屋类型">
+            <el-form-item>
               <el-select v-model="queryParams.roomSubType" placeholder="请选择类型" clearable style="width: 140px">
                 <el-option v-for="item in roomSubTypeOptions" :key="item.statusCd" :label="item.name" :value="item.statusCd" />
               </el-select>
             </el-form-item>
-            <el-form-item label="范围">
+            <el-form-item>
               <el-select v-model="queryParams.isAll" style="width: 140px" @change="handleIsAllChange">
                 <el-option label="当前楼栋单元" value="N" />
                 <el-option label="全部楼栋单元" value="Y" />

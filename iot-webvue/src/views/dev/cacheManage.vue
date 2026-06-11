@@ -5,10 +5,10 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="缓存编码">
+        <el-form-item>
           <el-input v-model="queryParams.cacheCode" placeholder="请输入缓存编码" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="缓存名称">
+        <el-form-item>
           <el-input v-model="queryParams.name" placeholder="请输入缓存名称" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

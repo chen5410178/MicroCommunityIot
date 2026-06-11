@@ -5,22 +5,22 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="优惠券编号">
+        <el-form-item>
           <el-input v-model="queryParams.couponId" placeholder="请填写优惠券编号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="优惠券名称">
+        <el-form-item>
           <el-input v-model="queryParams.couponName" placeholder="请填写优惠券名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="有效期">
+        <el-form-item>
           <el-input v-model="queryParams.validityDay" placeholder="请填写有效期" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="用户名称">
+        <el-form-item>
           <el-input v-model="queryParams.userName" placeholder="请填写用户名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="手机号">
+        <el-form-item>
           <el-input v-model="queryParams.tel" placeholder="请填写手机号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item>
           <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 180px">
             <el-option label="未使用" value="1001" />
             <el-option label="已使用" value="2002" />

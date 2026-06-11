@@ -5,18 +5,18 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="仪表编码">
+        <el-form-item>
           <el-input v-model="queryParams.machineCode" placeholder="请输入仪表编码" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="仪表名称">
+        <el-form-item>
           <el-input v-model="queryParams.machineName" placeholder="请输入仪表名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="仪表类型">
+        <el-form-item>
           <el-select v-model="queryParams.typeId" placeholder="请选择仪表类型" clearable style="width: 180px">
             <el-option v-for="item in instrumentTypeList" :key="item.typeId" :label="item.name" :value="item.typeId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="仪表厂家">
+        <el-form-item>
           <el-select v-model="queryParams.implBean" placeholder="请选择仪表厂家" clearable style="width: 180px">
             <el-option v-for="item in factoryList" :key="item.factoryId" :label="item.factoryName" :value="item.factoryId" />
           </el-select>

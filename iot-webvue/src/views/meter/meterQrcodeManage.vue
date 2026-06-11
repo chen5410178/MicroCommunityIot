@@ -5,10 +5,10 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="名称">
+        <el-form-item>
           <el-input v-model="queryParams.qrcodeNameLike" placeholder="请输入名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="查询方式">
+        <el-form-item>
           <el-select v-model="queryParams.queryWay" placeholder="请选择查询方式" clearable style="width: 180px">
             <el-option
               v-for="item in queryWayList"
@@ -18,7 +18,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item>
           <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 140px">
             <el-option label="启用" value="ON" />
             <el-option label="停用" value="OFF" />

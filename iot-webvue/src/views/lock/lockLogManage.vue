@@ -5,21 +5,21 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="门锁编号">
+        <el-form-item>
           <el-input v-model="queryParams.machineCode" placeholder="请输入门锁编号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="业主">
+        <el-form-item>
           <el-input v-model="queryParams.userName" placeholder="请选择业主" clearable style="width: 180px" />
           <el-button type="primary" style="margin-left: 8px" @click="handleChooseOwner">选择</el-button>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item>
           <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 180px">
             <el-option label="请求成功" value="10001" />
             <el-option label="返回成功" value="10002" />
             <el-option label="操作失败" value="10003" />
           </el-select>
         </el-form-item>
-        <el-form-item label="开始时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.queryStartTime"
             type="datetime"
@@ -28,7 +28,7 @@
             style="width: 180px"
           />
         </el-form-item>
-        <el-form-item label="结束时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.queryEndTime"
             type="datetime"

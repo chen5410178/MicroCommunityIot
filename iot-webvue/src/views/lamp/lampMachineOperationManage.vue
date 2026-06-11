@@ -5,7 +5,7 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="路灯设备">
+        <el-form-item>
           <el-select v-model="queryParams.machineId" placeholder="请选择路灯设备" clearable style="width: 180px">
             <el-option
               v-for="item in machineList"
@@ -15,7 +15,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="操作人员">
+        <el-form-item>
           <el-select v-model="queryParams.personId" placeholder="请选择操作人员" clearable style="width: 180px">
             <el-option
               v-for="item in personList"
@@ -25,7 +25,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="操作类型">
+        <el-form-item>
           <el-select v-model="queryParams.type" placeholder="请选择操作类型" clearable style="width: 180px">
             <el-option
               v-for="item in operateTypes"
@@ -35,7 +35,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="开始时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.queryStartTime"
             type="datetime"
@@ -45,7 +45,7 @@
             style="width: 180px"
           />
         </el-form-item>
-        <el-form-item label="结束时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.queryEndTime"
             type="datetime"

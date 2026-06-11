@@ -6,7 +6,7 @@
     @close="handleClose"
   >
     <el-form :inline="true" :model="searchForm">
-      <el-form-item label="应用名称">
+      <el-form-item>
         <el-input v-model="searchForm.name" placeholder="请输入应用名称" clearable style="width: 200px" />
       </el-form-item>
       <el-form-item>

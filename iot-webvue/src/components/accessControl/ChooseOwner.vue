@@ -6,10 +6,10 @@
     append-to-body
   >
     <el-form :inline="true" :model="queryParams">
-      <el-form-item label="房屋编号">
+      <el-form-item>
         <el-input v-model="queryParams.roomName" placeholder="楼栋-单元-房屋" clearable style="width: 200px" />
       </el-form-item>
-      <el-form-item label="业主名称">
+      <el-form-item>
         <el-input v-model="queryParams.name" placeholder="请输入业主名称" clearable style="width: 200px" />
       </el-form-item>
       <el-form-item>

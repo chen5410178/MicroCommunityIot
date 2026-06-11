@@ -5,13 +5,13 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="业主">
+        <el-form-item>
           <el-input v-model="queryParams.userName" placeholder="请选择业主" readonly clearable style="width: 180px" @clear="handleClearOwner" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleOpenSearchOwner">选择业主</el-button>
         </el-form-item>
-        <el-form-item label="开门方式">
+        <el-form-item>
           <el-select v-model="queryParams.openTypeCd" placeholder="请选择开门方式" clearable style="width: 160px">
             <el-option label="全部" value="" />
             <el-option label="密码开锁" value="1001" />
@@ -19,17 +19,17 @@
             <el-option label="远程开锁" value="3003" />
           </el-select>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item>
           <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 160px">
             <el-option label="全部" value="" />
             <el-option label="开门成功" value="C" />
             <el-option label="开门失败" value="F" />
           </el-select>
         </el-form-item>
-        <el-form-item label="门锁编号">
+        <el-form-item>
           <el-input v-model="queryParams.machineCode" placeholder="请输入门锁编号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="开始时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.queryStartTime"
             type="datetime"
@@ -39,7 +39,7 @@
             style="width: 200px"
           />
         </el-form-item>
-        <el-form-item label="结束时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.queryEndTime"
             type="datetime"

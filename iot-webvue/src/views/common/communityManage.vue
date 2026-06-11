@@ -5,13 +5,13 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="小区ID">
+        <el-form-item>
           <el-input v-model="queryParams.communityId" placeholder="请输入小区ID" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="小区名称">
+        <el-form-item>
           <el-input v-model="queryParams.name" placeholder="请输入小区名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="小区地区">
+        <el-form-item>
           <AreaSelect ref="searchAreaRef" v-model="queryParams.cityCode" />
         </el-form-item>
         <el-form-item>

@@ -3,16 +3,16 @@
     <el-card shadow="never" class="search-card">
       <div slot="header" class="card-header"><span>查询条件</span></div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="值">
+        <el-form-item>
           <el-input v-model="queryParams.value" placeholder="请输入值" clearable style="width: 160px" />
         </el-form-item>
-        <el-form-item label="显示">
+        <el-form-item>
           <el-select v-model="queryParams.valueShow" placeholder="请选择显示" clearable style="width: 160px">
             <el-option label="是" value="Y" />
             <el-option label="否" value="N" />
           </el-select>
         </el-form-item>
-        <el-form-item label="值名称">
+        <el-form-item>
           <el-input v-model="queryParams.valueName" placeholder="请输入值名称" clearable style="width: 160px" />
         </el-form-item>
         <el-form-item>

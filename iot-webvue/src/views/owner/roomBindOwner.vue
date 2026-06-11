@@ -6,10 +6,10 @@
         <el-button size="small" @click="$router.go(-1)">返回</el-button>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="业主名称">
+        <el-form-item>
           <el-input v-model="queryParams.name" placeholder="请输入名称" clearable />
         </el-form-item>
-        <el-form-item label="联系方式">
+        <el-form-item>
           <el-input v-model="queryParams.link" placeholder="请输入联系方式" clearable />
         </el-form-item>
         <el-form-item>

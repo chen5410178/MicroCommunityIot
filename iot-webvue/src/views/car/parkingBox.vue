@@ -5,13 +5,13 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="岗亭编号">
+        <el-form-item>
           <el-input v-model="queryParams.boxId" placeholder="请输入岗亭编号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="岗亭名称">
+        <el-form-item>
           <el-input v-model="queryParams.boxName" placeholder="请输入岗亭名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="临时车进场">
+        <el-form-item>
           <el-select v-model="queryParams.tempCarIn" placeholder="请选择" clearable style="width: 180px">
             <el-option label="是" value="Y" />
             <el-option label="否" value="N" />

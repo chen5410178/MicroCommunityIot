@@ -5,10 +5,10 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="名称">
+        <el-form-item>
           <el-input v-model="queryParams.name" placeholder="请输入名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="类型">
+        <el-form-item>
           <el-select v-model="queryParams.typeCd" placeholder="请选择类型" clearable style="width: 180px">
             <el-option label="时长减免" value="1001" />
             <el-option label="金额减免" value="2002" />

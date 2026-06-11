@@ -10,7 +10,7 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="用户名称">
+            <el-form-item>
               <el-input v-model="queryParams.personName" placeholder="请输入用户名称" clearable style="width: 180px" />
             </el-form-item>
             <el-form-item>

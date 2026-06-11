@@ -5,16 +5,16 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="名称">
+        <el-form-item>
           <el-input v-model="queryParams.machineName" placeholder="请输入名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="设备编号">
+        <el-form-item>
           <el-input v-model="queryParams.machineCode" placeholder="请输入设备编号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="位置">
+        <el-form-item>
           <el-input v-model="queryParams.locationName" placeholder="请输入位置" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="厂家">
+        <el-form-item>
           <el-select v-model="queryParams.factoryId" placeholder="请选择厂家" clearable style="width: 180px">
             <el-option
               v-for="item in factoryList"
@@ -24,7 +24,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="设备状态">
+        <el-form-item>
           <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 180px">
             <el-option
               v-for="item in stateList"

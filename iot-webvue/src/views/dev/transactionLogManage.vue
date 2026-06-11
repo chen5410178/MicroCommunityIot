@@ -5,13 +5,13 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="流水号">
+        <el-form-item>
           <el-input v-model="queryParams.transactionId" placeholder="请输入流水号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="应用编码">
+        <el-form-item>
           <el-input v-model="queryParams.appId" placeholder="请输入应用编码" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="服务编码">
+        <el-form-item>
           <el-input v-model="queryParams.serviceCode" placeholder="请输入服务编码" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

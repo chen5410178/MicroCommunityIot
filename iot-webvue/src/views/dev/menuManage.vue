@@ -5,22 +5,22 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="商户类型">
+        <el-form-item>
           <el-select v-model="queryParams.domain" placeholder="请选择商户类型" clearable style="width: 180px">
             <el-option label="运营团队" value="800900000001" />
             <el-option label="物业" value="800900000003" />
             <el-option label="开发团队" value="800900000000" />
           </el-select>
         </el-form-item>
-        <el-form-item label="菜单组名称">
+        <el-form-item>
           <el-input v-model="queryParams.gName" placeholder="请选择菜单组名称" clearable style="width: 180px">
             <el-button slot="append" @click="openChooseMenuGroup">选择</el-button>
           </el-input>
         </el-form-item>
-        <el-form-item label="菜单名称">
+        <el-form-item>
           <el-input v-model="queryParams.mName" placeholder="请输入菜单名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="权限名称">
+        <el-form-item>
           <el-input v-model="queryParams.pName" placeholder="请输入权限名称" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

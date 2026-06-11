@@ -10,22 +10,22 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="上报级别">
+            <el-form-item>
               <el-select v-model="queryParams.action" placeholder="请选择" clearable style="width: 160px">
                 <el-option label="实时数据" value="1001" />
                 <el-option label="事件数据" value="2002" />
               </el-select>
             </el-form-item>
-            <el-form-item label="设备编码">
+            <el-form-item>
               <el-input v-model="queryParams.machineCode" placeholder="请输入设备编码" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="设备名称">
+            <el-form-item>
               <el-input v-model="queryParams.machineName" placeholder="请输入设备名称" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="开始时间">
+            <el-form-item>
               <el-date-picker v-model="queryParams.queryStartTime" type="datetime" placeholder="选择开始时间" value-format="yyyy-MM-dd HH:mm:ss" style="width: 180px" />
             </el-form-item>
-            <el-form-item label="结束时间">
+            <el-form-item>
               <el-date-picker v-model="queryParams.queryEndTime" type="datetime" placeholder="选择结束时间" value-format="yyyy-MM-dd HH:mm:ss" style="width: 180px" />
             </el-form-item>
             <el-form-item>

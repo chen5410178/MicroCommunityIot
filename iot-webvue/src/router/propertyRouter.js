@@ -40,6 +40,12 @@ const propertyRoutes = [
     name: 'Account',
     component: () => import('@/views/owner/listAccount.vue'),
     meta: { requiresAuth: true, title: '账户管理' }
+  },
+  {
+    path: 'pages/property/roomDetail',
+    name: 'RoomDetail',
+    component: () => import('@/views/property/roomDetail.vue'),
+    meta: { requiresAuth: true, title: '房屋详情' }
   }
 ]
 

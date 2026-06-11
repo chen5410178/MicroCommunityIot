@@ -5,17 +5,17 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="动作">
+        <el-form-item>
           <el-select v-model="queryParams.action" placeholder="请选择动作" clearable style="width: 180px">
             <el-option label="ADD" value="ADD" />
             <el-option label="MOD" value="MOD" />
             <el-option label="DEL" value="DEL" />
           </el-select>
         </el-form-item>
-        <el-form-item label="表名">
+        <el-form-item>
           <el-input v-model="queryParams.actionObj" placeholder="请输入表名" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="业务类型">
+        <el-form-item>
           <el-input v-model="queryParams.businessTypeCd" placeholder="请输入业务类型" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

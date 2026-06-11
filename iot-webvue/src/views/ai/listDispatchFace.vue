@@ -5,10 +5,10 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="人员名称">
+        <el-form-item>
           <el-input v-model="queryParams.personName" placeholder="请输入人员名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="手机号">
+        <el-form-item>
           <el-input v-model="queryParams.personLink" placeholder="请输入手机号" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

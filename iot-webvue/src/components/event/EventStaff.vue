@@ -1,10 +1,10 @@
 <template>
   <div class="event-staff">
     <el-form :inline="true" :model="queryParams" class="search-form">
-      <el-form-item label="员工名称">
+      <el-form-item>
         <el-input v-model="queryParams.staffName" placeholder="请输入员工名称" clearable style="width: 180px" />
       </el-form-item>
-      <el-form-item label="状态">
+      <el-form-item>
         <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 120px">
           <el-option label="生效" value="ON" />
           <el-option label="失效" value="OFF" />

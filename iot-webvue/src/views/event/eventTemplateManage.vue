@@ -5,10 +5,10 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="模板名称">
+        <el-form-item>
           <el-input v-model="queryParams.templateName" placeholder="请输入模板名称" clearable style="width: 200px" />
         </el-form-item>
-        <el-form-item label="通知方式">
+        <el-form-item>
           <el-select v-model="queryParams.eventWay" placeholder="请选择通知方式" clearable style="width: 200px">
             <el-option v-for="item in eventWayList" :key="item.statusCd" :label="item.name" :value="item.statusCd" />
           </el-select>

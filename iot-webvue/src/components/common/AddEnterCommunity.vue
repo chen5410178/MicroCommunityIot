@@ -1,7 +1,7 @@
 <template>
   <el-dialog :visible.sync="dialogVisible" title="申请入驻" width="800px" @close="handleClose">
     <el-form :inline="true" :model="searchForm">
-      <el-form-item label="小区名称">
+      <el-form-item>
         <el-input v-model="searchForm.communityName" placeholder="请输入小区名称" clearable style="width: 200px" />
       </el-form-item>
       <el-form-item>

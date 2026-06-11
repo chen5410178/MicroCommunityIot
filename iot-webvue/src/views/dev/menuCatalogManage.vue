@@ -5,10 +5,10 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="名称">
+        <el-form-item>
           <el-input v-model="queryParams.name" placeholder="请输入菜单组名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="商户类型">
+        <el-form-item>
           <el-select v-model="queryParams.storeType" placeholder="请选择商户类型" clearable style="width: 180px">
             <el-option label="运营团队" value="800900000001" />
             <el-option label="物业" value="800900000003" />
@@ -16,7 +16,7 @@
             <el-option label="开发团队" value="800900000000" />
           </el-select>
         </el-form-item>
-        <el-form-item label="是否显示">
+        <el-form-item>
           <el-select v-model="queryParams.isShow" placeholder="请选择是否显示" clearable style="width: 180px">
             <el-option label="是" value="Y" />
             <el-option label="否" value="N" />

@@ -5,10 +5,10 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="位置名称">
+        <el-form-item>
           <el-input v-model="queryParams.locationName" placeholder="请输入位置名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="位置类型">
+        <el-form-item>
           <el-select v-model="queryParams.locationType" placeholder="请选择位置类型" clearable style="width: 180px">
             <el-option label="小区" value="1000" />
             <el-option label="楼栋" value="6000" />

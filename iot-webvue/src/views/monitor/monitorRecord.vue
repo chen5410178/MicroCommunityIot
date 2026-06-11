@@ -22,7 +22,7 @@
       <el-col :span="20">
         <el-card shadow="never" class="search-card">
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="人名">
+            <el-form-item>
               <el-input v-model="queryParams.personName" placeholder="请输入人名搜索" clearable style="width: 200px" />
             </el-form-item>
             <el-form-item>

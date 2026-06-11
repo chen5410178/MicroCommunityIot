@@ -5,7 +5,7 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="处理状态">
+        <el-form-item>
           <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 180px">
             <el-option label="待处理" value="W" />
             <el-option label="处理中" value="D" />
@@ -13,7 +13,7 @@
             <el-option label="超时处理完成" value="TC" />
           </el-select>
         </el-form-item>
-        <el-form-item label="时间">
+        <el-form-item>
           <el-date-picker
             v-model="dateRange"
             type="daterange"

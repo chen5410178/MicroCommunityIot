@@ -5,7 +5,7 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="小区">
+        <el-form-item>
           <el-select v-model="queryParams.communityId" placeholder="请选择小区" clearable style="width: 180px" @change="handleSearch">
             <el-option
               v-for="item in communityList"
@@ -15,13 +15,13 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="名称">
+        <el-form-item>
           <el-input v-model="queryParams.machineNameLike" placeholder="请输入名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="表号">
+        <el-form-item>
           <el-input v-model="queryParams.address" placeholder="请输入表号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="厂家">
+        <el-form-item>
           <el-select v-model="queryParams.implBean" placeholder="请选择厂家" clearable style="width: 180px">
             <el-option
               v-for="item in factoryList"
@@ -31,13 +31,13 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="模式">
+        <el-form-item>
           <el-select v-model="queryParams.machineModel" placeholder="请选择模式" clearable style="width: 150px">
             <el-option label="充值模式" value="1001" />
             <el-option label="抄表模式" value="2002" />
           </el-select>
         </el-form-item>
-        <el-form-item label="房屋编号">
+        <el-form-item>
           <el-input v-model="queryParams.roomNameLike" placeholder="楼栋-单元-房屋" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

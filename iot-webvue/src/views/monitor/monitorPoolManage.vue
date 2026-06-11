@@ -5,25 +5,25 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="监控设备">
+        <el-form-item>
           <el-select v-model="queryParams.machineId" placeholder="请选择监控设备" clearable filterable style="width: 180px">
             <el-option v-for="item in machineList" :key="item.machineId" :label="item.machineName" :value="item.machineId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="监控模型">
+        <el-form-item>
           <el-select v-model="queryParams.modelId" placeholder="请选择监控模型" clearable style="width: 180px">
             <el-option v-for="item in modelList" :key="item.modelId" :label="item.modelName" :value="item.modelId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="监控类型">
+        <el-form-item>
           <el-select v-model="queryParams.monitorType" placeholder="请选择监控类型" clearable style="width: 180px">
             <el-option v-for="item in monitorTypeList" :key="item.statusCd" :label="item.name" :value="item.statusCd" />
           </el-select>
         </el-form-item>
-        <el-form-item label="开始时间">
+        <el-form-item>
           <el-date-picker v-model="queryParams.queryStartTime" type="datetime" placeholder="请选择开始时间" value-format="yyyy-MM-dd HH:mm:ss" style="width: 180px" />
         </el-form-item>
-        <el-form-item label="结束时间">
+        <el-form-item>
           <el-date-picker v-model="queryParams.queryEndTime" type="datetime" placeholder="请选择结束时间" value-format="yyyy-MM-dd HH:mm:ss" style="width: 180px" />
         </el-form-item>
         <el-form-item>

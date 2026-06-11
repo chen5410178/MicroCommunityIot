@@ -5,7 +5,7 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="名称">
+        <el-form-item>
           <el-input v-model="queryParams.qrcodeName" placeholder="请输入名称" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

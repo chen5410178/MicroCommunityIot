@@ -5,25 +5,25 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="考勤机">
+        <el-form-item>
           <el-select v-model="queryParams.machineId" placeholder="请选择考勤机" clearable style="width: 200px">
             <el-option v-for="item in machines" :key="item.machineId" :label="item.machineName" :value="item.machineId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="用户名称">
+        <el-form-item>
           <el-input v-model="queryParams.staffName" placeholder="请输入用户名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="手机号">
+        <el-form-item>
           <el-input v-model="queryParams.tel" placeholder="请输入手机号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item>
           <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 160px">
             <el-option label="全部" value="" />
             <el-option label="考勤成功" value="C" />
             <el-option label="考勤失败" value="F" />
           </el-select>
         </el-form-item>
-        <el-form-item label="开始时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.queryStartTime"
             type="datetime"
@@ -33,7 +33,7 @@
             style="width: 200px"
           />
         </el-form-item>
-        <el-form-item label="结束时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.queryEndTime"
             type="datetime"

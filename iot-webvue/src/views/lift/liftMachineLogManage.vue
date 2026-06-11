@@ -5,19 +5,19 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="电梯名称">
+        <el-form-item>
           <el-input v-model="queryParams.machineName" placeholder="请输入电梯名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="电梯编号">
+        <el-form-item>
           <el-input v-model="queryParams.machineCode" placeholder="请输入电梯编号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="日志动作">
+        <el-form-item>
           <el-input v-model="queryParams.logAction" placeholder="请输入日志动作" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item>
           <el-input v-model="queryParams.state" placeholder="请输入状态" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="创建时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.createTime"
             type="date"
@@ -27,7 +27,7 @@
             style="width: 180px"
           />
         </el-form-item>
-        <el-form-item label="开始时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.queryStartTime"
             type="datetime"
@@ -37,7 +37,7 @@
             style="width: 200px"
           />
         </el-form-item>
-        <el-form-item label="结束时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.queryEndTime"
             type="datetime"

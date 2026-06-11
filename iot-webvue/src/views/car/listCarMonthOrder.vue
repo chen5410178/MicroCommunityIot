@@ -5,15 +5,15 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="月卡">
+        <el-form-item>
           <el-select v-model="queryParams.cardId" placeholder="请选择月卡" clearable style="width: 180px">
             <el-option v-for="item in cards" :key="item.cardId" :label="item.cardName" :value="item.cardId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="车牌号">
+        <el-form-item>
           <el-input v-model="queryParams.carNum" placeholder="请输入车牌号" clearable style="width: 160px" />
         </el-form-item>
-        <el-form-item label="支付方式">
+        <el-form-item>
           <el-select v-model="queryParams.primeRate" placeholder="请选择支付方式" clearable style="width: 160px">
             <el-option
               v-for="item in primeRates"
@@ -24,13 +24,13 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item>
           <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 140px">
             <el-option label="正常" value="1001" />
             <el-option label="退费" value="2002" />
           </el-select>
         </el-form-item>
-        <el-form-item label="订单编号">
+        <el-form-item>
           <el-input v-model="queryParams.orderId" placeholder="请输入订单编号" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>
@@ -39,7 +39,7 @@
         </el-form-item>
       </el-form>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="开始时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.queryStartTime"
             type="datetime"
@@ -48,7 +48,7 @@
             style="width: 180px"
           />
         </el-form-item>
-        <el-form-item label="结束时间">
+        <el-form-item>
           <el-date-picker
             v-model="queryParams.queryEndTime"
             type="datetime"

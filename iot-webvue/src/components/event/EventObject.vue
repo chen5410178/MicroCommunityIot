@@ -1,15 +1,15 @@
 <template>
   <div class="event-object">
     <el-form :inline="true" :model="queryParams" class="search-form">
-      <el-form-item label="对象类型">
+      <el-form-item>
         <el-select v-model="queryParams.objType" placeholder="请选择对象类型" clearable style="width: 180px">
           <el-option v-for="item in objTypeList" :key="item.statusCd" :label="item.name" :value="item.statusCd" />
         </el-select>
       </el-form-item>
-      <el-form-item label="对象名称">
+      <el-form-item>
         <el-input v-model="queryParams.objectName" placeholder="请输入对象名称" clearable style="width: 180px" />
       </el-form-item>
-      <el-form-item label="状态">
+      <el-form-item>
         <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 120px">
           <el-option label="生效" value="ON" />
           <el-option label="失效" value="OFF" />

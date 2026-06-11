@@ -25,25 +25,25 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="房屋名称">
+            <el-form-item>
               <el-input v-model="queryParams.roomName" placeholder="请输入房屋名称" clearable style="width: 160px" />
             </el-form-item>
-            <el-form-item label="人员名称">
+            <el-form-item>
               <el-input v-model="queryParams.personName" placeholder="请输入人员名称" clearable style="width: 160px" />
             </el-form-item>
-            <el-form-item label="人员电话">
+            <el-form-item>
               <el-input v-model="queryParams.personTel" placeholder="请输入人员电话" clearable style="width: 160px" />
             </el-form-item>
-            <el-form-item label="人员类型">
+            <el-form-item>
               <el-select v-model="queryParams.ownerTypeCd" placeholder="请选择人员类型" clearable style="width: 140px">
                 <el-option label="业主本人" value="1001" />
                 <el-option label="家庭成员" value="1002" />
               </el-select>
             </el-form-item>
-            <el-form-item label="开始时间">
+            <el-form-item>
               <el-date-picker v-model="queryParams.queryStartTime" type="date" placeholder="请选择开始时间" value-format="yyyy-MM-dd" style="width: 160px" />
             </el-form-item>
-            <el-form-item label="结束时间">
+            <el-form-item>
               <el-date-picker v-model="queryParams.queryEndTime" type="date" placeholder="请选择结束时间" value-format="yyyy-MM-dd" style="width: 160px" />
             </el-form-item>
             <el-form-item>

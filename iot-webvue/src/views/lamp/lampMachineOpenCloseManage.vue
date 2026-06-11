@@ -5,13 +5,13 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="路灯编号">
+        <el-form-item>
           <el-input v-model="queryParams.machineCode" placeholder="请输入路灯编号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="路灯名称">
+        <el-form-item>
           <el-input v-model="queryParams.machineName" placeholder="请输入路灯名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="类型">
+        <el-form-item>
           <el-select v-model="queryParams.typeCd" placeholder="请选择类型" clearable style="width: 180px">
             <el-option
               v-for="item in typeList"

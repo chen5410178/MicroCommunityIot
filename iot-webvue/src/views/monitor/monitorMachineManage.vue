@@ -5,13 +5,13 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="监控名称">
+        <el-form-item>
           <el-input v-model="queryParams.machineName" placeholder="请输入监控名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="监控编号">
+        <el-form-item>
           <el-input v-model="queryParams.machineCode" placeholder="请输入监控编号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="监控区域">
+        <el-form-item>
           <el-select v-model="queryParams.maId" placeholder="请选择区域" clearable style="width: 180px">
             <el-option
               v-for="item in areaList"
@@ -21,7 +21,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="监控协议">
+        <el-form-item>
           <el-select v-model="queryParams.protocol" placeholder="请选择协议" clearable style="width: 180px">
             <el-option
               v-for="item in protocolList"
@@ -31,7 +31,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item>
           <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 180px">
             <el-option label="打开中" value="1001" />
             <el-option label="关闭中" value="1002" />

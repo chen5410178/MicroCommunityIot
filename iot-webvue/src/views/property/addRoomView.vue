@@ -118,10 +118,10 @@
     <!-- 选择业主弹窗 -->
     <el-dialog :visible.sync="searchOwnerVisible" title="选择业主" width="700px" append-to-body>
       <el-form :inline="true" :model="ownerQuery">
-        <el-form-item label="名称">
+        <el-form-item>
           <el-input v-model="ownerQuery.name" placeholder="业主名称" />
         </el-form-item>
-        <el-form-item label="联系方式">
+        <el-form-item>
           <el-input v-model="ownerQuery.link" placeholder="联系方式" />
         </el-form-item>
         <el-form-item>

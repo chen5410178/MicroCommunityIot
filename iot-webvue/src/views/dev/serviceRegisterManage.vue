@@ -5,17 +5,17 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="应用名称">
+        <el-form-item>
           <el-input v-model="queryParams.appName" placeholder="请选择应用" readonly style="width: 180px" />
           <el-button style="margin-left: 8px" @click="handleChooseApp">选择</el-button>
         </el-form-item>
-        <el-form-item label="服务名称">
+        <el-form-item>
           <el-input v-model="queryParams.serviceName" placeholder="请输入服务名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="服务编码">
+        <el-form-item>
           <el-input v-model="queryParams.serviceCode" placeholder="请输入服务编码" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="调用地址">
+        <el-form-item>
           <el-input v-model="queryParams.serviceUrl" placeholder="请输入调用地址" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

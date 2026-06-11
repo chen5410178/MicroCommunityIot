@@ -5,17 +5,17 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="门锁名称">
+        <el-form-item>
           <el-input v-model="queryParams.machineName" placeholder="请输入门锁名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="门锁编号">
+        <el-form-item>
           <el-input v-model="queryParams.machineCode" placeholder="请输入门锁编号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="房屋编号">
+        <el-form-item>
           <el-input v-model="queryParams.roomId" placeholder="请选择房屋编号" readonly style="width: 180px" />
           <el-button style="margin-left: 4px" @click="roomVisible = true">选择</el-button>
         </el-form-item>
-        <el-form-item label="门禁厂家">
+        <el-form-item>
           <el-select v-model="queryParams.implBean" placeholder="请选择门禁厂家" clearable style="width: 180px">
             <el-option v-for="item in factoryList" :key="item.factoryId" :label="item.factoryName" :value="item.factoryId" />
           </el-select>

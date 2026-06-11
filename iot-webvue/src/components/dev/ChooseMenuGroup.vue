@@ -6,7 +6,7 @@
     @close="handleClose"
   >
     <el-form :inline="true" :model="queryParams" class="search-form">
-      <el-form-item label="菜单组名称">
+      <el-form-item>
         <el-input v-model="queryParams.name" placeholder="请输入菜单组名称" clearable style="width: 220px" />
       </el-form-item>
       <el-form-item>

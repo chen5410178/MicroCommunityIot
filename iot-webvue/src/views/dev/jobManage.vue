@@ -5,13 +5,13 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="任务ID">
+        <el-form-item>
           <el-input v-model="queryParams.taskId" placeholder="请输入任务ID" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="任务名称">
+        <el-form-item>
           <el-input v-model="queryParams.taskName" placeholder="请输入任务名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="模板名称">
+        <el-form-item>
           <el-input v-model="queryParams.templateName" placeholder="请输入模板名称" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

@@ -5,7 +5,7 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="小区">
+        <el-form-item>
           <el-select v-model="queryParams.communityId" placeholder="请选择小区" clearable style="width: 180px" @change="handleSearch">
             <el-option
               v-for="item in communityList"
@@ -15,10 +15,10 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="车牌号">
+        <el-form-item>
           <el-input v-model="queryParams.carNumLike" placeholder="请输入车牌号" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="车辆状态">
+        <el-form-item>
           <el-select v-model="queryParams.state" placeholder="请选择车辆状态" clearable style="width: 180px">
             <el-option label="进场状态" value="100300" />
             <el-option label="支付完成" value="100400" />
@@ -26,7 +26,7 @@
             <el-option label="支付超时重新支付" value="100600" />
           </el-select>
         </el-form-item>
-        <el-form-item label="车牌类型">
+        <el-form-item>
           <el-select v-model="queryParams.carType" placeholder="请选择车牌类型" clearable style="width: 180px">
             <el-option label="临时车" value="T" />
             <el-option label="出售车辆" value="S" />
@@ -37,10 +37,10 @@
             <el-option label="免费车" value="NM" />
           </el-select>
         </el-form-item>
-        <el-form-item label="开始时间">
+        <el-form-item>
           <el-date-picker v-model="queryParams.startTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择开始时间" style="width: 180px" />
         </el-form-item>
-        <el-form-item label="结束时间">
+        <el-form-item>
           <el-date-picker v-model="queryParams.endTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择结束时间" style="width: 180px" />
         </el-form-item>
         <el-form-item>

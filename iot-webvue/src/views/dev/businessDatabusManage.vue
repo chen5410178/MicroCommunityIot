@@ -5,13 +5,13 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="ID">
+        <el-form-item>
           <el-input v-model="queryParams.databusId" placeholder="请输入ID" clearable style="width: 150px" />
         </el-form-item>
-        <el-form-item label="业务类型">
+        <el-form-item>
           <el-input v-model="queryParams.businessTypeCd" placeholder="请输入业务类型" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="适配器">
+        <el-form-item>
           <el-input v-model="queryParams.beanName" placeholder="请输入适配器" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

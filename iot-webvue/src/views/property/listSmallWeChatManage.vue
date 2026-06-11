@@ -5,10 +5,10 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="名称">
+        <el-form-item>
           <el-input v-model="queryParams.name" placeholder="请输入名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="APPID">
+        <el-form-item>
           <el-input v-model="queryParams.appId" placeholder="请输入APPID" clearable style="width: 180px" />
         </el-form-item>
         <el-form-item>

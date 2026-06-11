@@ -25,13 +25,13 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="用户名称">
+            <el-form-item>
               <el-input v-model="queryParams.userName" placeholder="请输入用户名" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="日志动作">
+            <el-form-item>
               <el-input v-model="queryParams.logAction" placeholder="请输入日志动作" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="状态">
+            <el-form-item>
               <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 160px">
                 <el-option label="全部" value="" />
                 <el-option label="请求成功" value="10001" />
@@ -39,7 +39,7 @@
                 <el-option label="操作失败" value="10003" />
               </el-select>
             </el-form-item>
-            <el-form-item label="开始时间">
+            <el-form-item>
               <el-date-picker
                 v-model="queryParams.queryStartTime"
                 type="datetime"
@@ -49,7 +49,7 @@
                 style="width: 200px"
               />
             </el-form-item>
-            <el-form-item label="结束时间">
+            <el-form-item>
               <el-date-picker
                 v-model="queryParams.queryEndTime"
                 type="datetime"

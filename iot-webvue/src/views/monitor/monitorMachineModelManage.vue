@@ -28,13 +28,13 @@
       <el-col :span="20">
         <el-card shadow="never" class="search-card">
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="监控名称">
+            <el-form-item>
               <el-input v-model="queryParams.machineName" placeholder="请输入监控名称" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="监控位置">
+            <el-form-item>
               <el-input v-model="queryParams.locationName" placeholder="请输入监控位置" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="监控区域">
+            <el-form-item>
               <el-select v-model="queryParams.maId" placeholder="请选择区域" clearable style="width: 180px">
                 <el-option
                   v-for="item in monitorAreaList"

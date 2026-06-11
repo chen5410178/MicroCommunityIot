@@ -5,13 +5,13 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="服务编码">
+        <el-form-item>
           <el-input v-model="queryParams.serviceCode" placeholder="请输入服务编码" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="服务名称">
+        <el-form-item>
           <el-input v-model="queryParams.name" placeholder="请输入服务名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="实现方式">
+        <el-form-item>
           <el-select v-model="queryParams.queryModel" placeholder="请选择实现方式" clearable style="width: 180px">
             <el-option label="全部" value="" />
             <el-option label="sql方式" value="1" />

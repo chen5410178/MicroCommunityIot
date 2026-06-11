@@ -6,16 +6,16 @@
         <el-button type="text" size="small" @click="handleReset">重置</el-button>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="优惠券ID">
+        <el-form-item>
           <el-input v-model="queryParams.couponId" placeholder="请输入优惠券ID" clearable style="width: 160px" />
         </el-form-item>
-        <el-form-item label="商家店铺">
+        <el-form-item>
           <el-input v-model="queryParams.shopName" placeholder="请输入商家店铺名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="开始时间">
+        <el-form-item>
           <el-date-picker v-model="queryParams.queryStartTime" type="datetime" placeholder="选择开始时间" value-format="yyyy-MM-dd HH:mm:ss" style="width: 180px" />
         </el-form-item>
-        <el-form-item label="结束时间">
+        <el-form-item>
           <el-date-picker v-model="queryParams.queryEndTime" type="datetime" placeholder="选择结束时间" value-format="yyyy-MM-dd HH:mm:ss" style="width: 180px" />
         </el-form-item>
         <el-form-item>

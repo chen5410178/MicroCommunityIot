@@ -30,10 +30,10 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="门禁设备名称">
+            <el-form-item>
               <el-input v-model="queryParams.acMachineName" placeholder="请输入门禁设备名称" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="门禁设备编号">
+            <el-form-item>
               <el-input v-model="queryParams.acMachineCode" placeholder="请输入门禁设备编号" clearable style="width: 180px" />
             </el-form-item>
             <el-form-item>

@@ -4,7 +4,7 @@
       <el-button type="primary" size="small" @click="handleAdd">关联员工</el-button>
     </div>
     <el-form :inline="true" :model="queryParams" class="search-form">
-      <el-form-item label="员工名称">
+      <el-form-item>
         <el-input v-model="queryParams.userName" placeholder="请输入员工名称" clearable style="width: 180px" />
       </el-form-item>
       <el-form-item>

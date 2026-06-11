@@ -25,29 +25,29 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="状态">
+            <el-form-item>
               <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 140px">
                 <el-option label="待下发" value="W" />
                 <el-option label="下发成功" value="C" />
                 <el-option label="下发设备" value="F" />
               </el-select>
             </el-form-item>
-            <el-form-item label="人员类型">
+            <el-form-item>
               <el-select v-model="queryParams.personType" placeholder="请选择人员类型" clearable style="width: 140px">
                 <el-option label="人员" value="OWNER" />
                 <el-option label="员工" value="STAFF" />
               </el-select>
             </el-form-item>
-            <el-form-item label="用户名称">
+            <el-form-item>
               <el-input v-model="queryParams.name" placeholder="请输入用户名称" clearable style="width: 160px" />
             </el-form-item>
-            <el-form-item label="开始时间">
+            <el-form-item>
               <el-date-picker v-model="queryParams.queryStartTime" type="date" placeholder="请选择开始时间" value-format="yyyy-MM-dd" style="width: 160px" />
             </el-form-item>
-            <el-form-item label="结束时间">
+            <el-form-item>
               <el-date-picker v-model="queryParams.queryEndTime" type="date" placeholder="请选择结束时间" value-format="yyyy-MM-dd" style="width: 160px" />
             </el-form-item>
-            <el-form-item label="来自类型">
+            <el-form-item>
               <el-select v-model="queryParams.comeType" placeholder="请选择来自类型" clearable style="width: 140px">
                 <el-option label="楼栋授权" value="FLOOR" />
                 <el-option label="人员授权" value="OWNER" />

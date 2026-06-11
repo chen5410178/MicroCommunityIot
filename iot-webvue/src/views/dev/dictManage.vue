@@ -7,7 +7,7 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="dictQuery">
-            <el-form-item label="字典类型">
+            <el-form-item>
               <el-select v-model="dictQuery.specId" placeholder="请选择类型" clearable style="width: 180px">
                 <el-option
                   v-for="item in specList"
@@ -17,10 +17,10 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="名称">
+            <el-form-item>
               <el-input v-model="dictQuery.name" placeholder="请输入名称" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="值">
+            <el-form-item>
               <el-input v-model="dictQuery.statusCd" placeholder="请输入值" clearable style="width: 180px" />
             </el-form-item>
             <el-form-item>
@@ -65,7 +65,7 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="specQuery">
-            <el-form-item label="类型名称">
+            <el-form-item>
               <el-input v-model="specQuery.specName" placeholder="请输入类型名称" clearable style="width: 180px" />
             </el-form-item>
             <el-form-item>

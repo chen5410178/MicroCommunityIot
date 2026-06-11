@@ -33,7 +33,7 @@
             <span>查询条件</span>
           </div>
           <el-form :inline="true" :model="queryParams">
-            <el-form-item label="规则">
+            <el-form-item>
               <el-select v-model="queryParams.ruleId" placeholder="请选择规则" clearable style="width: 180px">
                 <el-option
                   v-for="item in ruleList"
@@ -43,7 +43,7 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="事件类型">
+            <el-form-item>
               <el-select v-model="queryParams.eventType" placeholder="请选择事件类型" clearable style="width: 180px">
                 <el-option
                   v-for="item in eventTypeList"
@@ -53,7 +53,7 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="事件状态">
+            <el-form-item>
               <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 160px">
                 <el-option label="待处理" value="W" />
                 <el-option label="处理中" value="D" />
@@ -61,16 +61,16 @@
                 <el-option label="超时处理完成" value="TC" />
               </el-select>
             </el-form-item>
-            <el-form-item label="对象名称">
+            <el-form-item>
               <el-input v-model="queryParams.objectName" placeholder="请输入对象名称" clearable style="width: 180px" />
             </el-form-item>
-            <el-form-item label="事件来源">
+            <el-form-item>
               <el-select v-model="queryParams.fromType" placeholder="请选择来源" clearable style="width: 160px">
                 <el-option label="人员创建" value="PERSON" />
                 <el-option label="平台创建" value="SYSTEM" />
               </el-select>
             </el-form-item>
-            <el-form-item label="时间">
+            <el-form-item>
               <el-date-picker
                 v-model="dateRange"
                 type="daterange"

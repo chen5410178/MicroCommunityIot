@@ -5,10 +5,10 @@
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item label="支付名称">
+        <el-form-item>
           <el-input v-model="queryParams.paymentName" placeholder="请输入名称" clearable style="width: 180px" />
         </el-form-item>
-        <el-form-item label="支付厂家">
+        <el-form-item>
           <el-select v-model="queryParams.paymentType" placeholder="请选择支付厂家" clearable style="width: 180px">
             <el-option
               v-for="item in paymentTypes"
@@ -18,7 +18,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item>
           <el-select v-model="queryParams.state" placeholder="请选择状态" clearable style="width: 140px">
             <el-option value="Y" label="启用" />
             <el-option value="N" label="停用" />
