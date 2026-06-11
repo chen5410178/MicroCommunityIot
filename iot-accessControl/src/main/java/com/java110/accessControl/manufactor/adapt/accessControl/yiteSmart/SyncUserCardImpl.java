@@ -200,14 +200,14 @@ public class SyncUserCardImpl implements ISyncUserCard {
         JSONArray addCards = new JSONArray();
         card.put("add", addCards);
         JSONArray del = new JSONArray();
-        if (!ListUtil.isNull(accessControlYiteCardDtos)) {
-            //JSONObject delCard = null;
-            for (AccessControlYiteCardDto tmpAccessControlYiteCardDto : accessControlYiteCardDtos) {
-                // delCard = new JSONObject();
-                // delCard.put("card", tmpAccessControlYiteCardDto.getCardNum());
-                del.add(tmpAccessControlYiteCardDto.getCardNum());
-            }
-        }
+//        if (!ListUtil.isNull(accessControlYiteCardDtos)) {
+//            //JSONObject delCard = null;
+//            for (AccessControlYiteCardDto tmpAccessControlYiteCardDto : accessControlYiteCardDtos) {
+//                // delCard = new JSONObject();
+//                // delCard.put("card", tmpAccessControlYiteCardDto.getCardNum());
+//                del.add(tmpAccessControlYiteCardDto.getCardNum());
+//            }
+//        }
         card.put("del", del);
 
         cards.add(card);

@@ -22,6 +22,8 @@
                 monitorId:'',
                 callingNum:'',
                 remark:'',
+                lat: '',
+                lng: ''
             }
         },
         _initMethod: function () {
@@ -33,6 +35,34 @@
                 $that._listAddHms();
                 $that._listAddMonitors();
                 $('#addAccessControlModel').modal('show');
+                let _community = vc.getCurrentCommunity();
+                if (_community && _community.lat) {
+                    $that.addAccessControlInfo.lat = _community.lat;
+                }
+                if (_community && _community.lng) {
+                    $that.addAccessControlInfo.lng = _community.lng;
+                }
+                if (!$that.addAccessControlInfo.lat || !$that.addAccessControlInfo.lng) {
+                    let _communityId = _community ? _community.communityId : '';
+                    if (_communityId) {
+                        vc.http.apiGet('/community.listCommunitys',
+                            { params: { communityId: _communityId, page: 1, row: 1 } },
+                            function (json) {
+                                let _data = JSON.parse(json).data;
+                                if (_data && _data.length > 0) {
+                                    let _c = _data[0];
+                                    if (!_c.lat && _c.mapY) { _c.lat = _c.mapY; }
+                                    if (!_c.lng && _c.mapX) { _c.lng = _c.mapX; }
+                                    if (_c.lat) { $that.addAccessControlInfo.lat = _c.lat; }
+                                    if (_c.lng) { $that.addAccessControlInfo.lng = _c.lng; }
+                                }
+                            }, function () {});
+                    }
+                }
+                setTimeout(function () {
+                    $('#addMapContainer').parent().appendTo('#addAccessControlModel .modal-body');
+                    vc.emit('addMap', 'showMap', $that.addAccessControlInfo);
+                }, 500)
             });
         },
         methods: {
@@ -140,7 +170,9 @@
                     monitors:[],
                     monitorId:'',
                     callingNum:'',
-                    remark:''
+                    remark:'',
+                    lat: '',
+                    lng: ''
                 };
             },
             _listAddMachineLocations: function (_page, _rows) {

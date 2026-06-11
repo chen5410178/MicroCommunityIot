@@ -41,6 +41,8 @@ CREATE TABLE `access_control` (
   `owe_prompt` varchar(512) DEFAULT NULL COMMENT '欠费提示语',
   `monitor_id` varchar(30) DEFAULT NULL COMMENT '监控ID',
   `monitor_name` varchar(64) DEFAULT NULL COMMENT '监控名称',
+  `lat` varchar(32) NOT NULL DEFAULT '39.907881821019075' COMMENT '经度',
+  `lng` varchar(32) NOT NULL DEFAULT '116.39803241981451' COMMENT '纬度',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`machine_id`),
   KEY `i_m_community_id` (`community_id`)

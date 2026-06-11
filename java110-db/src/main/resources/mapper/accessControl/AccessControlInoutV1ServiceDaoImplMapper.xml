@@ -204,4 +204,17 @@
         and t.create_time &lt; #{queryEndTime}
         and t.status_cd = '0'
     </select>
+
+    <!-- 开门走势聚合统计 -->
+    <select id="queryOpenDoorLineStats" parameterType="Map" resultType="Map">
+        select DATE_FORMAT(t.create_time,'%Y-%m-%d') as date_str,
+               t.open_type_cd,
+               count(1) as cnt
+        from access_control_inout t
+        where t.community_id = #{communityId}
+          and t.status_cd = '0'
+          and t.create_time &gt;= #{queryStartTime}
+          and t.create_time &lt;= #{queryEndTime}
+        group by DATE_FORMAT(t.create_time,'%Y-%m-%d'), t.open_type_cd
+    </select>
 </mapper>

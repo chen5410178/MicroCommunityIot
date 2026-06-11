@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类表述： 服务之前调用的接口实现类，不对外提供接口能力 只用于接口建调用
@@ -86,6 +87,11 @@ public class AccessControlInoutV1InnerServiceSMOImpl  implements IAccessControlI
     @Override
     public int getPersonInCount(@RequestBody AccessControlInoutDto accessControlInoutDto) {
         return accessControlInoutV1ServiceDaoImpl.getPersonInCount(BeanConvertUtil.beanCovertMap(accessControlInoutDto));
+    }
+
+    @Override
+    public List<Map> queryOpenDoorLineStats(@RequestBody Map info) {
+        return accessControlInoutV1ServiceDaoImpl.queryOpenDoorLineStats(info);
     }
 
 }

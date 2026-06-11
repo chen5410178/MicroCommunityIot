@@ -9,10 +9,10 @@
     <insert id="saveAccessControlInfo" parameterType="Map">
         insert into access_control(
         machine_mac,heartbeat_time,impl_bean,machine_id,machine_code,location_name,location_id,community_id,machine_name,machine_ip,direction,
-        prompt_switch,normal_prompt,owe_prompt,monitor_id,monitor_name,platform_id,calling_num,password,remark
+        prompt_switch,normal_prompt,owe_prompt,monitor_id,monitor_name,platform_id,calling_num,password,remark,lat,lng
         ) values (
         #{machineMac},#{heartbeatTime},#{implBean},#{machineId},#{machineCode},#{locationName},#{locationId},#{communityId},#{machineName},#{machineIp},#{direction},
-        #{promptSwitch},#{normalPrompt},#{owePrompt},#{monitorId},#{monitorName},#{platformId},#{callingNum},#{password},#{remark}
+        #{promptSwitch},#{normalPrompt},#{owePrompt},#{monitorId},#{monitorName},#{platformId},#{callingNum},#{password},#{remark},#{lat},#{lng}
         )
     </insert>
 
@@ -25,7 +25,7 @@
         locationId,t.status_cd,t.status_cd statusCd,t.create_time createTime,t.community_id,t.password,t.remark,t.community_id
         communityId,t.machine_name,t.machine_name machineName,t.machine_ip,t.machine_ip machineIp,t.direction,hm.hm_name
         implBeanName,t.prompt_switch promptSwitch,t.normal_prompt normalPrompt,t.owe_prompt owePrompt,hm.protocol_impl protocolImpl,
-        t.monitor_id monitorId,t.monitor_name monitorName,t.platform_id platformId,cp.platform_name platformName,t.calling_num callingNum,cp.ip_addr ipAddr,cp.`port` port
+        t.monitor_id monitorId,t.monitor_name monitorName,t.platform_id platformId,cp.platform_name platformName,t.calling_num callingNum,cp.ip_addr ipAddr,cp.`port` port,t.lat,t.lat lat,t.lng,t.lng lng
         from access_control t
         left join hardware_manufacturer hm on t.impl_bean = hm.hm_id and hm.status_cd = '0'
         left join calling_platform cp on t.platform_id = cp.platform_id and cp.status_cd = '0'
@@ -156,6 +156,12 @@
         </if>
         <if test="remark !=null and remark != ''">
             , t.remark= #{remark}
+        </if>
+        <if test="lat !=null and lat != ''">
+            , t.lat= #{lat}
+        </if>
+        <if test="lng !=null and lng != ''">
+            , t.lng= #{lng}
         </if>
         where 1=1
         <if test="machineId !=null and machineId != ''">

@@ -51,7 +51,6 @@ public class SyncAccessControlBMOImpl implements ISyncAccessControlBMO {
 
     @Override
     public void syncAccessControl(String memberId) {
-
         OwnerDto ownerDto = new OwnerDto();
         ownerDto.setMemberId(memberId);
         List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
@@ -91,6 +90,11 @@ public class SyncAccessControlBMOImpl implements ISyncAccessControlBMO {
                 accessControlFaceV1InnerServiceSMOImpl.deleteAccessControlFace(accessControlFacePo);
             }
 
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         // todo 查询业主房屋
 

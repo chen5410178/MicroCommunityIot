@@ -40,25 +40,37 @@
                     _lng = _community.lng;
                 }
 
+                if ($that.addMapInfo.latLng.lat && $that.addMapInfo.latLng.lng) {
+                    _lat = $that.addMapInfo.latLng.lat;
+                    _lng = $that.addMapInfo.latLng.lng;
+                }
+
                 let addMap = new TMap.Map(document.getElementById("addMapContainer"), {
-                    center: new TMap.LatLng(_lat, _lng),
+                    center: new TMap.LatLng(parseFloat(_lat), parseFloat(_lng)),
                     zoom: 13
                 });
                 $that.addMapInfo.addMap = addMap;
+                document.getElementById("addMapContainer")._map = addMap;
+
                 let marker;
-                //添加监听事件  获取鼠标点击事件
-                addMap.on('click', function (event) {
-                    if (!marker) {
-                        marker = new TMap.MultiMarker({
-                            styleId: "marker",
-                            position: event.latLng,
-                            map: addMap,
-                            id: "1",
-                        });
-                        return;
+                marker = new TMap.MultiMarker({
+                    map: addMap,
+                    id: "1",
+                });
+                marker.updateGeometries([
+                    {
+                        "styleId": "marker",
+                        "id": "1",
+                        "position": new TMap.LatLng(parseFloat(_lat), parseFloat(_lng)),
                     }
-                    console.log(event)
-                    //marker.setPosition(event.latLng);
+                ]);
+
+                if (!$that.addMapInfo.latLng.lat || !$that.addMapInfo.latLng.lng) {
+                    $that.addMapInfo.latLng.lat = _lat;
+                    $that.addMapInfo.latLng.lng = _lng;
+                }
+
+                addMap.on('click', function (event) {
                     $that.addMapInfo.latLng.lat = event.latLng.lat;
                     $that.addMapInfo.latLng.lng = event.latLng.lng;
 

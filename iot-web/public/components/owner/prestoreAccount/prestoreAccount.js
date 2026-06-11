@@ -46,11 +46,6 @@
                             limit: "required",
                             param: "",
                             errInfo: "金额不能为空"
-                        },
-                        {
-                            limit: "money",
-                            param: "",
-                            errInfo: "金额格式错误"
                         }
                     ],
                     'prestoreAccountInfo.acctType': [

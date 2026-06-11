@@ -77,6 +77,9 @@ public class LoginBmoImpl implements ILoginBmo {
         String username= MappingCache.getValue("YI_TE","YI_USERNAME");
         String port= MappingCache.getValue("YI_TE","YI_PORT");
 
+        String sipip = MappingCache.getValue("YI_TE", "SIP_IP"); // 修正键名
+        String sipport = MappingCache.getValue("YI_TE", "SIP_PORT"); // 修正键名
+
         JSONObject mqtt = new JSONObject();
         mqtt.put("client_id", machineCode);
         mqtt.put("mqtt_pwd", password);
@@ -102,10 +105,15 @@ public class LoginBmoImpl implements ILoginBmo {
          *                 "\t\t},\n" +
          */
         JSONObject sip = new JSONObject();
-        sip.put("ip", "39.108.64.137");
-        sip.put("port", 6050);
-        sip.put("username", 101011);
-        sip.put("sip", "Z$Xiaowo");
+        sip.put("ip", sipip != null ? sipip : "39.108.64.137");
+        sip.put("port", sipport != null ? sipport : "6050");
+        String callingNum = accessControlDtos.get(0).getCallingNum();
+        if (callingNum != null && !callingNum.isEmpty()) {
+            sip.put("username", Integer.parseInt(callingNum));
+        } else {
+            sip.put("username", 21920);
+        }
+        sip.put("sip", callingNum != null ? callingNum : "Z$Xiaowo");
         data.put("sip", sip);
         data.put("secret_key", "023917234");
 

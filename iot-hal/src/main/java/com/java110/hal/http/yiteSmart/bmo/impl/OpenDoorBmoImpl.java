@@ -127,6 +127,7 @@ public class OpenDoorBmoImpl implements IOpenDoorBmo {
         String inoutId = CommonCache.getAndRemoveValue(facePath);
 
         if(StringUtil.isEmpty(inoutId)){
+            CommonCache.setValue(facePath + "_image", image, CommonCache.defaultExpireTime);
             return responseEntity;
         }
 

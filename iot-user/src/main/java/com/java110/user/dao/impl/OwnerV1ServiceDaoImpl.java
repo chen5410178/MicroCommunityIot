@@ -132,5 +132,12 @@ public class OwnerV1ServiceDaoImpl extends BaseServiceDao implements IOwnerV1Ser
         return result;
     }
 
+    @Override
+    public List<Map> queryUserLineStats(Map info) {
+        logger.debug("查询 queryUserLineStats 入参 info : {}",info);
+
+        return sqlSessionTemplate.selectList("ownerV1ServiceDaoImpl.queryUserLineStats", info);
+    }
+
 
 }

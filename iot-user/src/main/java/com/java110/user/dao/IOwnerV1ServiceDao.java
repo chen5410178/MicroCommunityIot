@@ -79,4 +79,6 @@ public interface IOwnerV1ServiceDao {
      * @return
      */
     List<Map> queryRoomOwners(Map info);
+
+    List<Map> queryUserLineStats(Map info);
 }

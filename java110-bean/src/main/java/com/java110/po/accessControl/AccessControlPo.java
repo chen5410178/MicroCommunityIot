@@ -53,6 +53,9 @@ public class AccessControlPo implements Serializable {
     private String password;
     private String remark;
 
+    private String lat;
+    private String lng;
+
     public String getMachineMac() {
         return machineMac;
     }
@@ -227,5 +230,21 @@ public class AccessControlPo implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 }

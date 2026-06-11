@@ -71,4 +71,6 @@ public interface IAccessControlInoutV1ServiceDao {
     int queryAccessControlInoutsCount(Map info);
 
     int getPersonInCount(Map info);
+
+    List<Map> queryOpenDoorLineStats(Map info);
 }

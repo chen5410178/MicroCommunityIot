@@ -28,7 +28,7 @@ public class SyncOneUserFaceBmoImpl implements ISyncOneUserFaceBmo {
 
 
         AccessControlLogDto accessControlLogDto = new AccessControlLogDto();
-        accessControlLogDto.setState(AccessControlLogDto.STATE_REQ);
+//        accessControlLogDto.setState(AccessControlLogDto.STATE_REQ);
         accessControlLogDto.setLogAction("/device/v2/face/sync");
         accessControlLogDto.setMachineCode(machineCode);
         accessControlLogDto.setPage(page);
@@ -39,6 +39,7 @@ public class SyncOneUserFaceBmoImpl implements ISyncOneUserFaceBmo {
                 ts = ts / 1000;
             }
             Date tsDate = new Date(ts * 1000);
+            tsDate.setTime(tsDate.getTime() + 1000);
             accessControlLogDto.setQueryStartTime(DateUtil.getFormatTimeStringA(tsDate));
         }
         List<AccessControlLogDto> accessControlLogDtos = accessControlLogV1InnerServiceSMOImpl.queryAccessControlLogs(accessControlLogDto);

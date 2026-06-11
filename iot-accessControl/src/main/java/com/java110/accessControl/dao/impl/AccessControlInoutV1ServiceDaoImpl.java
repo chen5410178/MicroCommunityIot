@@ -117,5 +117,12 @@ public class AccessControlInoutV1ServiceDaoImpl extends BaseServiceDao implement
         return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> queryOpenDoorLineStats(Map info) {
+        logger.debug("查询 queryOpenDoorLineStats 入参 info : {}",info);
+
+        return sqlSessionTemplate.selectList("accessControlInoutV1ServiceDaoImpl.queryOpenDoorLineStats", info);
+    }
+
 
 }
