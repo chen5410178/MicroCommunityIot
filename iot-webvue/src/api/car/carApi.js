@@ -43,6 +43,34 @@ export function listHms(params) {
   return request({ url: '/hm.listHardwareManufacturer', method: 'get', params })
 }
 
+// ===== 停车场 =====
+export function listParkingAreas(params) {
+  return request({ url: '/parkingArea.listParkingArea', method: 'get', params })
+}
+export function saveParkingArea(data) {
+  return request({ url: '/parkingArea.saveParkingArea', method: 'post', data })
+}
+export function updateParkingArea(data) {
+  return request({ url: '/parkingArea.updateParkingArea', method: 'post', data })
+}
+export function deleteParkingArea(data) {
+  return request({ url: '/parkingArea.deleteParkingArea', method: 'post', data })
+}
+
+// ===== 停车区域 =====
+export function listParkingRegions(params) {
+  return request({ url: '/parkingRegion.listParkingRegion', method: 'get', params })
+}
+export function saveParkingRegion(data) {
+  return request({ url: '/parkingRegion.saveParkingRegion', method: 'post', data })
+}
+export function updateParkingRegion(data) {
+  return request({ url: '/parkingRegion.updateParkingRegion', method: 'post', data })
+}
+export function deleteParkingRegion(data) {
+  return request({ url: '/parkingRegion.deleteParkingRegion', method: 'post', data })
+}
+
 // ===== 访客码 =====
 export function getVisitQrCodeUrl(params) {
   return request({ url: '/visit.getVisitQrCodeUrl', method: 'get', params })
@@ -51,6 +79,23 @@ export function getVisitQrCodeUrl(params) {
 // ===== 车辆进出记录 =====
 export function listAdminCarInoutDetails(params) {
   return request({ url: '/carInoutDetail.listAdminCarInoutDetail', method: 'get', params })
+}
+
+// ===== 停车位 =====
+export function listParkingSpaces(params) {
+  return request({ url: '/parkingSpace.listParkingSpace', method: 'get', params })
+}
+export function saveParkingSpace(data) {
+  return request({ url: '/parkingSpace.saveParkingSpace', method: 'post', data })
+}
+export function updateParkingSpace(data) {
+  return request({ url: '/parkingSpace.updateParkingSpace', method: 'post', data })
+}
+export function deleteParkingSpace(data) {
+  return request({ url: '/parkingSpace.deleteParkingSpace', method: 'post', data })
+}
+export function listParkingRegions(params) {
+  return request({ url: '/parkingRegion.listParkingRegion', method: 'get', params })
 }
 
 // ===== 手动出场相关 =====

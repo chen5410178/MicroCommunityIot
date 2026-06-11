@@ -210,6 +210,36 @@ export function listAccessControlInout(params) {
   return request({ url: '/accessControlInout.listAccessControlInout', method: 'get', params })
 }
 
+// ===== 广告管理 =====
+export function listAccessControlAds(params) {
+  return request({ url: '/ad.listAccessControlAd', method: 'get', params })
+}
+
+export function saveAccessControlAd(data) {
+  return request({ url: '/ad.saveAccessControlAd', method: 'post', data })
+}
+
+export function updateAccessControlAd(data) {
+  return request({ url: '/ad.updateAccessControlAd', method: 'post', data })
+}
+
+export function deleteAccessControlAd(data) {
+  return request({ url: '/ad.deleteAccessControlAd', method: 'post', data })
+}
+
+// ===== 广告门禁关联 =====
+export function listAccessControlAdRels(params) {
+  return request({ url: '/ad.listAccessControlAdRel', method: 'get', params })
+}
+
+export function saveAccessControlAdRel(data) {
+  return request({ url: '/ad.saveAccessControlAdRel', method: 'post', data })
+}
+
+export function deleteAccessControlAdRel(data) {
+  return request({ url: '/ad.deleteAccessControlAdRel', method: 'post', data })
+}
+
 // ===== 门禁统计 =====
 export function queryAcInoutStatistics(data) {
   return request({ url: '/accessControl.queryAcInoutStatistics', method: 'post', data })
@@ -225,4 +255,56 @@ export function queryAcVisitStatistics(data) {
 
 export function queryAcFaceStatistics(data) {
   return request({ url: '/accessControl.queryAcFaceStatistics', method: 'post', data })
+}
+
+// ===== 云呼平台 =====
+export function listCallingPlatform(params) {
+  return request({ url: '/callingPlatform.listCallingPlatform', method: 'get', params })
+}
+
+export function saveCallingPlatform(data) {
+  return request({ url: '/callingPlatform.saveCallingPlatform', method: 'post', data })
+}
+
+export function updateCallingPlatform(data) {
+  return request({ url: '/callingPlatform.updateCallingPlatform', method: 'post', data })
+}
+
+export function deleteCallingPlatform(data) {
+  return request({ url: '/callingPlatform.deleteCallingPlatform', method: 'post', data })
+}
+
+// ===== 呼叫设备 =====
+export function listCallingDevice(params) {
+  return request({ url: '/callingDevice.listCallingDevice', method: 'get', params })
+}
+
+export function saveCallingDevice(data) {
+  return request({ url: '/callingDevice.saveCallingDevice', method: 'post', data })
+}
+
+export function updateCallingDevice(data) {
+  return request({ url: '/callingDevice.updateCallingDevice', method: 'post', data })
+}
+
+export function deleteCallingDevice(data) {
+  return request({ url: '/callingDevice.deleteCallingDevice', method: 'post', data })
+}
+
+// ===== 通讯录 =====
+export function listCallingContact(params) {
+  return request({ url: '/callingContact.listCallingContact', method: 'get', params })
+}
+
+export function saveCallingContact(data) {
+  return request({ url: '/callingContact.saveCallingContact', method: 'post', data })
+}
+
+export function deleteCallingContact(data) {
+  return request({ url: '/callingContact.deleteCallingContact', method: 'post', data })
+}
+
+// ===== 呼叫记录 =====
+export function listIntercomLog(params) {
+  return request({ url: '/ai.getIntercomLog', method: 'get', params })
 }

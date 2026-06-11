@@ -1,14 +1,12 @@
 <template>
   <el-dialog
     :visible.sync="dialogVisible"
-    :title="title"
+    :title="title || '二维码'"
     width="400px"
-    append-to-body
-    @close="handleClose"
   >
-    <div style="text-align: center;">
-      <div ref="qrCodeDiv" style="display: inline-block; width: 200px; height: 200px;" />
-      <p style="margin-top: 16px; color: #606266;">{{ remark }}</p>
+    <div style="text-align: center; padding: 20px 0;">
+      <div ref="qrcodeRef" style="width: 200px; height: 200px; margin: 0 auto;" />
+      <p style="margin-top: 20px; color: #909399; font-size: 14px;" v-if="remark">{{ remark }}</p>
     </div>
     <span slot="footer">
       <el-button @click="dialogVisible = false">关闭</el-button>
@@ -24,52 +22,38 @@ export default {
   props: {
     visible: { type: Boolean, default: false },
     title: { type: String, default: '' },
-    url: { type: String, default: '' },
+    qrUrl: { type: String, default: '' },
     remark: { type: String, default: '' }
   },
   data() {
     return {
-      dialogVisible: false,
-      qrcodeInstance: null
+      dialogVisible: false
     }
   },
   watch: {
     visible(val) {
       this.dialogVisible = val
-      if (val) {
+      if (val && this.qrUrl) {
         this.$nextTick(() => {
-          this.generateQrCode()
+          this._genQrCode()
         })
       }
     },
     dialogVisible(val) { this.$emit('update:visible', val) }
   },
-  beforeDestroy() {
-    this.clearQrCode()
-  },
   methods: {
-    generateQrCode() {
-      this.clearQrCode()
-      const el = this.$refs.qrCodeDiv
-      if (!el || !this.url) return
-      this.qrcodeInstance = new QRCode(el, {
-        text: this.url,
+    _genQrCode() {
+      const el = this.$refs.qrcodeRef
+      if (!el) return
+      el.innerHTML = ''
+      const qrcode = new QRCode(el, {
+        text: this.qrUrl,
         width: 200,
         height: 200,
         colorDark: '#000000',
         colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.L
       })
-    },
-    clearQrCode() {
-      if (this.$refs.qrCodeDiv) {
-        this.$refs.qrCodeDiv.innerHTML = ''
-      }
-      this.qrcodeInstance = null
-    },
-    handleClose() {
-      this.dialogVisible = false
-      this.clearQrCode()
     }
   }
 }

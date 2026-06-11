@@ -54,28 +54,46 @@ const accessControlRoutes = [
     meta: { requiresAuth: true, title: '部门授权' }
   },
   {
-    path: 'pages/accessControl/visitManage',
-    name: 'VisitManage',
-    component: () => import('@/views/accessControl/listVisitManage.vue'),
-    meta: { requiresAuth: true, title: '访客人员' }
-  },
-  {
-    path: 'pages/accessControl/addVisit',
-    name: 'AddVisit',
-    component: () => import('@/views/accessControl/addVisit.vue'),
-    meta: { requiresAuth: true, title: '登记访客' }
-  },
-  {
-    path: 'pages/accessControl/editVisit',
-    name: 'EditVisit',
-    component: () => import('@/views/accessControl/editVisit.vue'),
-    meta: { requiresAuth: true, title: '修改访客' }
-  },
-  {
     path: 'pages/accessControl/visitDetail',
     name: 'VisitDetail',
     component: () => import('@/views/accessControl/listVisitDetail.vue'),
     meta: { requiresAuth: true, title: '访客详情' }
+  },
+  {
+    path: 'pages/accessControl/accessControlAd',
+    name: 'AccessControlAd',
+    component: () => import('@/views/accessControl/listAccessControlAd.vue'),
+    meta: { requiresAuth: true, title: '广告' }
+  },
+  {
+    path: 'pages/accessControl/accessControlAdRel',
+    name: 'AccessControlAdRel',
+    component: () => import('@/views/accessControl/accessControlAdRel.vue'),
+    meta: { requiresAuth: true, title: '广告门禁' }
+  },
+  {
+    path: 'pages/accessControl/callingPlatformManage',
+    name: 'CallingPlatformManage',
+    component: () => import('@/views/accessControl/callingPlatformManage.vue'),
+    meta: { requiresAuth: true, title: '云呼平台' }
+  },
+  {
+    path: 'pages/accessControl/callingDeviceManage',
+    name: 'CallingDeviceManage',
+    component: () => import('@/views/accessControl/callingDeviceManage.vue'),
+    meta: { requiresAuth: true, title: '呼叫设备' }
+  },
+  {
+    path: 'pages/accessControl/callingContactManage',
+    name: 'CallingContactManage',
+    component: () => import('@/views/accessControl/callingContactManage.vue'),
+    meta: { requiresAuth: true, title: '通讯录' }
+  },
+  {
+    path: 'pages/accessControl/intercomLog',
+    name: 'IntercomLog',
+    component: () => import('@/views/accessControl/listIntercomLog.vue'),
+    meta: { requiresAuth: true, title: '呼叫记录' }
   }
 ]
 

@@ -12,3 +12,5 @@ export function deleteMonitorMachineModel(data) { return request({ url: '/monito
 export function listMonitorAreas(params) { return request({ url: '/monitorArea.listMonitorArea', method: 'get', params }) }
 
 export function listMonitorMachines(params) { return request({ url: '/monitorMachine.listMonitorMachine', method: 'get', params }) }
+export function getPlayVideoUrl(params) { return request({ url: '/monitorMachine.getPlayVideoUrl', method: 'get', params }) }
+export function saveVideoPhoto(data) { return request({ url: '/monitorMachine.saveVideoPhoto', method: 'post', data }) }
