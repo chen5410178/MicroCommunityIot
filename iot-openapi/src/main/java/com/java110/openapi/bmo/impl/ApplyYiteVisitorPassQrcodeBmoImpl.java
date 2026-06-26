@@ -103,7 +103,9 @@ public class ApplyYiteVisitorPassQrcodeBmoImpl implements IIotCommonApiBmo {
                 filteredFaces.add(face);
             }
         }
-        Assert.listOnlyOne(filteredFaces, "未找到该人员在该房屋的门禁授权信息");
+        if (filteredFaces.isEmpty()) {
+            throw new IllegalArgumentException("未找到该人员在该房屋的门禁授权信息");
+        }
 
         AccessControlFaceDto faceDto = filteredFaces.get(0);
         String machineCode = faceDto.getMachineCode();
