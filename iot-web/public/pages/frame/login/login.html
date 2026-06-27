@@ -2,10 +2,10 @@
     <!-- 账户密码登录 -->
     <div class="log">
         <h3 class="java110-logo"></h3>
-        <div>
+        <div class="input-wrap">
             <input type="text" v-model="loginInfo.username" :placeholder="vc.i18n('请输入用户名','login')" @keyup.enter="doLogin">
         </div>
-        <div>
+        <div class="input-wrap">
             <input type="password" v-model="loginInfo.passwd" maxlength="64" :placeholder="vc.i18n('请输入密码','login')" @keyup.enter="doLogin">
         </div>
 

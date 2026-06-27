@@ -24,7 +24,6 @@
 
             $that.$on('sliderVerifySuccess', function(sliderX) {
                 $that.loginInfo.sliderX = sliderX;
-                $that.doLogin();
             });
 
             vc.on('login', 'doLogin', function() {

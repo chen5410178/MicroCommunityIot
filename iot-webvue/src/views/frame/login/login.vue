@@ -10,7 +10,7 @@
       </div>
       <div class="log">
         <h3>{{ systemTitle || 'HCIOT' }}</h3>
-        <div>
+        <div class="input-wrap">
           <input
             type="text"
             v-model="loginForm.username"
@@ -18,7 +18,7 @@
             @keyup.enter="handleLogin"
           />
         </div>
-        <div>
+        <div class="input-wrap">
           <input
             type="password"
             v-model="loginForm.passwd"
@@ -87,7 +87,6 @@ export default {
     },
     onSliderSuccess(sliderX) {
       this.sliderX = sliderX
-      this.handleLogin()
     },
     handleLogin() {
       if (!this.loginForm.username) {

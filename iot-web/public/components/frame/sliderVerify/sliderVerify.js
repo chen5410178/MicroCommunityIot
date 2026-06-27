@@ -7,7 +7,8 @@
             sliderWidth: 50,
             sliderHeight: 50,
             bgWidth: 300,
-            sliderText: '按住滑块，拖动到最右边',
+            showDialog: false,
+            dialogSliderText: '向右拖动滑块完成验证',
             dragging: false,
             startX: 0,
             currentX: 0,
@@ -17,19 +18,7 @@
             $that.loadSliderCode();
         },
         _initEvent: function() {
-            var self = this;
-            document.addEventListener('mousemove', function(e) {
-                $that.onDragMove(e);
-            });
-            document.addEventListener('mouseup', function(e) {
-                $that.onDragEnd(e);
-            });
-            document.addEventListener('touchmove', function(e) {
-                $that.onDragMove(e);
-            }, { passive: false });
-            document.addEventListener('touchend', function(e) {
-                $that.onDragEnd(e);
-            });
+
         },
         methods: {
             loadSliderCode: function() {
@@ -51,7 +40,7 @@
                             vc.component.bgWidth = 300;
                             vc.component.currentX = 0;
                             vc.component.verified = false;
-                            vc.component.sliderText = '按住滑块，拖动到最右边';
+                            vc.component.dialogSliderText = '向右拖动滑块完成验证';
                         }
                     },
                     function(errInfo, error) {
@@ -61,33 +50,62 @@
             refresh: function() {
                 $that.loadSliderCode();
             },
-            onDragStart: function(e) {
+            openDialog: function() {
+                if (vc.component.verified) return;
+                vc.component.showDialog = true;
+                vc.component.currentX = 0;
+                setTimeout(function() {
+                    var btn = document.querySelector('.slider-dialog-btn');
+                    if (btn) btn.style.left = '0px';
+                }, 50);
+            },
+            closeDialog: function() {
+                if (vc.component.dragging) return;
+                vc.component.showDialog = false;
+            },
+            onDialogDragStart: function(e) {
                 if (vc.component.verified) return;
                 vc.component.dragging = true;
                 var clientX = e.clientX || (e.touches && e.touches[0].clientX);
                 vc.component.startX = clientX;
+
+                var self = this;
+                document.addEventListener('mousemove', $that._dialogDragMove);
+                document.addEventListener('mouseup', $that._dialogDragEnd);
+                document.addEventListener('touchmove', $that._dialogDragMove, { passive: false });
+                document.addEventListener('touchend', $that._dialogDragEnd);
             },
-            onDragMove: function(e) {
+            _dialogDragMove: function(e) {
                 if (!vc.component.dragging || vc.component.verified) return;
+                e.preventDefault();
                 var clientX = e.clientX || (e.touches && e.touches[0].clientX);
                 var dx = clientX - vc.component.startX;
                 var maxX = vc.component.bgWidth - vc.component.sliderWidth;
                 vc.component.currentX = Math.max(0, Math.min(dx, maxX));
-                var btn = document.querySelector('.slider-verify .slider-btn');
+                var btn = document.querySelector('.slider-dialog-btn');
                 if (btn) {
                     btn.style.left = vc.component.currentX + 'px';
                 }
             },
-            onDragEnd: function(e) {
+            _dialogDragEnd: function(e) {
                 if (!vc.component.dragging || vc.component.verified) return;
                 vc.component.dragging = false;
-                var btn = document.querySelector('.slider-verify .slider-btn');
+                document.removeEventListener('mousemove', $that._dialogDragMove);
+                document.removeEventListener('mouseup', $that._dialogDragEnd);
+                document.removeEventListener('touchmove', $that._dialogDragMove);
+                document.removeEventListener('touchend', $that._dialogDragEnd);
+
+                var btn = document.querySelector('.slider-dialog-btn');
                 if (btn) {
                     btn.style.left = '0px';
                 }
                 if (vc.component.currentX > 0) {
                     var sliderX = Math.round(vc.component.currentX);
+                    vc.component.verified = true;
+                    vc.component.showDialog = false;
                     vc.component.$emit('sliderVerifySuccess', sliderX);
+                } else {
+                    vc.component.currentX = 0;
                 }
             }
         },
