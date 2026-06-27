@@ -115,7 +115,8 @@ public class LoginBmoImpl implements ILoginBmo {
         }
         sip.put("sip", callingNum != null ? callingNum : "Z$Xiaowo");
         data.put("sip", sip);
-        data.put("secret_key", "023917234");
+        String secret_key= MappingCache.getValue("YI_TE","secret_key");
+        data.put("secret_key", secret_key);
 
         /**
          *                 "\t\t\"ad_config\": {\n" +
