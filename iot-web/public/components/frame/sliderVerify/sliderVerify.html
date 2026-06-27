@@ -1,0 +1,10 @@
+<div class="slider-verify">
+  <div class="slider-bg-wrap">
+    <img v-bind:src="bgImage" class="slider-bg" />
+    <img v-bind:src="sliderImage" class="slider-block" v-bind:style="{ top: sliderY + 'px', left: currentX + 'px' }" />
+  </div>
+  <div class="slider-bar">
+    <div class="slider-btn" v-on:mousedown="onDragStart" v-on:touchstart="onDragStart"></div>
+    <span class="slider-text">{{ sliderText }}</span>
+  </div>
+</div>

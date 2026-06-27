@@ -16,6 +16,14 @@ export function generatorValidateCode(params) {
   })
 }
 
+export function generatorSliderCode(params) {
+  return request({
+    url: '/login.generatorSliderCode',
+    method: 'get',
+    params
+  })
+}
+
 export function pcUserLogin(data) {
   return request({
     url: '/login.pcUserLogin',

@@ -60,13 +60,19 @@ public class PcUserLoginCmd extends Cmd {
 
         String appId = CmdContextUtils.getAppId(cmdDataFlowContext);
 
-        // web端需要 图片验证码校验
+        // web端需要 滑块验证码校验
         if (AppDto.WEB_APP_ID.equals(appId)) {
-            Assert.hasKeyAndValue(reqJson, "validateCode", "未包含图片验证码");
-            String code = CommonCache.getValue(CmdContextUtils.getSessionId(cmdDataFlowContext) + "_validateCode");
-            if (!reqJson.getString("validateCode").toLowerCase().equals(code)) {
-                throw new IllegalArgumentException("验证码错误或失效");
+            Assert.hasKeyAndValue(reqJson, "sliderX", "未包含滑块验证码");
+            String correctX = CommonCache.getValue(CmdContextUtils.getSessionId(cmdDataFlowContext) + "_sliderCode");
+            if (StringUtil.isEmpty(correctX)) {
+                throw new IllegalArgumentException("验证码已过期，请刷新重试");
             }
+            int sliderX = reqJson.getIntValue("sliderX");
+            int correctXInt = Integer.parseInt(correctX);
+            if (Math.abs(sliderX - correctXInt) > 5) {
+                throw new IllegalArgumentException("验证码校验失败");
+            }
+            CommonCache.removeValue(CmdContextUtils.getSessionId(cmdDataFlowContext) + "_sliderCode");
         }
     }
 

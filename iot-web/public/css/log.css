@@ -347,3 +347,77 @@ a:hover {
 .no_display {
     display: none;
 }
+
+/* 滑块验证码 */
+.slider-verify-wrap {
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+.slider-verify {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.slider-bg-wrap {
+    position: relative;
+    width: 300px;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background: #eee;
+}
+
+.slider-bg {
+    width: 300px;
+    height: 150px;
+    display: block;
+}
+
+.slider-block {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.slider-bar {
+    position: relative;
+    width: 300px;
+    height: 40px;
+    background: #e8e8e8;
+    border-radius: 20px;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.slider-text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    line-height: 40px;
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.slider-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    cursor: pointer;
+    z-index: 3;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.slider-btn:hover {
+    background: #3158e5;
+    border-color: #3158e5;
+}
