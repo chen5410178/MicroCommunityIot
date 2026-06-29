@@ -53,7 +53,7 @@
     </div>
     <div class="copyright">
       &copy;2020-2025
-      <span>{{ companyName || 'java110团队' }}</span>
+      <span v-html="companyName || 'java110团队'"></span>
     </div>
   </div>
 </template>
