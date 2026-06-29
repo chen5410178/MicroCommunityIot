@@ -5,16 +5,15 @@
                 logo: '',
                 username: '',
                 passwd: '',
-                validateCode: '',
                 errorInfo: '',
                 codeImage: '',
                 systemTitle:'',
+                sliderX: null
             }
         },
         _initMethod: function() {
             $that.clearCacheData();
             $that._loadSysInfo();
-            $that.generateCode();
 
         },
         _initEvent: function() {
@@ -23,12 +22,10 @@
                 console.log('errorInfoEvent 事件被监听', _errorInfo)
             });
 
-            $that.$on('validate_code_component_param_change_event', function(params) {
-                for (var tmpAttr in params) {
-                    $that.loginInfo[tmpAttr] = params[tmpAttr];
-                }
-                console.log('errorInfoEvent 事件被监听', params)
+            $that.$on('sliderVerifySuccess', function(sliderX) {
+                $that.loginInfo.sliderX = sliderX;
             });
+
             vc.on('login', 'doLogin', function() {
                 $that.doLogin();
             })
@@ -74,20 +71,26 @@
                     vc.toast('密码不能为空');
                     return;
                 }
-                if (!vc.notNull($that.loginInfo.validateCode)) {
-                    vc.toast('验证码不能为空');
+                if ($that.loginInfo.sliderX === null) {
+                    vc.toast('请完成滑块验证');
                     return;
                 }
+                var loginData = {
+                    username: $that.loginInfo.username,
+                    passwd: $that.loginInfo.passwd,
+                    sliderX: $that.loginInfo.sliderX
+                };
                 vc.http.apiPost(
                     '/login.pcUserLogin',
-                    JSON.stringify($that.loginInfo), {
+                    JSON.stringify(loginData), {
                         emulateJSON: true
                     },
                     function(json, res) {
                         //vm.menus = vm.refreshMenuActive(JSON.parse(json),0);
-                        let _data = JSON.parse(json);
+                        var _data = JSON.parse(json);
                         if (_data.hasOwnProperty('code') && _data.code != '0') {
                             vc.toast(_data.msg);
+                            $that.loginInfo.sliderX = null;
                             return;
                         }
                         if (res.status == 200) {
@@ -97,11 +100,13 @@
                             return;
                         }
                         vc.toast(json);
+                        $that.loginInfo.sliderX = null;
                         $that.loginInfo.errorInfo = json;
                     },
                     function(errInfo, error) {
                         console.log('请求失败处理');
                         vc.toast(errInfo);
+                        $that.loginInfo.sliderX = null;
                         $that.loginInfo.errorInfo = errInfo;
                     });
 

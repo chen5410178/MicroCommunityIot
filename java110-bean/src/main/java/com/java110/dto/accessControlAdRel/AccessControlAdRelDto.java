@@ -27,6 +27,7 @@ public class AccessControlAdRelDto extends PageDto implements Serializable {
     private String machineId;
     private String machineCode;
     private String remark;
+    private String adRemark;
     private String communityId;
     private String machineName;
 
@@ -75,6 +76,14 @@ public class AccessControlAdRelDto extends PageDto implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getAdRemark() {
+        return adRemark;
+    }
+
+    public void setAdRemark(String adRemark) {
+        this.adRemark = adRemark;
     }
 
     public String getCommunityId() {

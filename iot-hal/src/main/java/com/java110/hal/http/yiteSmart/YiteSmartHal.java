@@ -63,6 +63,9 @@ public class YiteSmartHal {
     private ISyncOneUserCardBmo syncOneUserCardBmoImpl;
 
     @Autowired
+    private ISyncPasswordsAddBmo syncPasswordsAddBmoImpl;
+
+    @Autowired
     private IOpenDoorBmo openDoorBmoImpl;
 
     @Autowired
@@ -276,24 +279,24 @@ public class YiteSmartHal {
      * @param request
      * @return
      */
-	
-	
+
+
     @RequestMapping(path = "/device/v1/gate/getSwitch", method = RequestMethod.GET)
     public ResponseEntity<String> getSwitch(HttpServletRequest request) {
-		Map<String, String> headers = new HashMap<>();
-		RequestUtils.initHeadParam(request, headers);
-		RequestUtils.initUrlParam(request, headers);
-		JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
-		
-		String uuId = reqJson.getString("uuid");
-		
-		AccessControlDto accessControlDto = new AccessControlDto();
-		accessControlDto.setMachineCode(uuId);
-		List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
-		String getSwitchs = accessControlDtos.get(0).getRemark();
-		if(getSwitchs.split("-", 17).length != 17){
-			getSwitchs = "0-0-1-1-0-1-0-1-1-0-0-0-0-0-0-1-3";
-		}
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
+        JSONObject reqJson = JSONObject.parseObject(headers.get("header"));
+
+        String uuId = reqJson.getString("uuid");
+
+        AccessControlDto accessControlDto = new AccessControlDto();
+        accessControlDto.setMachineCode(uuId);
+        List<AccessControlDto> accessControlDtos = accessControlV1InnerServiceSMOImpl.queryAccessControls(accessControlDto);
+        String getSwitchs = accessControlDtos.get(0).getRemark();
+        if(getSwitchs.split("-", 17).length != 17){
+            getSwitchs = "0-0-1-1-0-1-0-1-1-0-0-0-0-0-0-1-3";
+        }
         JSONObject paramOut = new JSONObject();
         paramOut.put("code", 200);
         paramOut.put("msg", "");
@@ -629,69 +632,36 @@ public class YiteSmartHal {
      * @param request
      * @return
      */
-    @RequestMapping(path = "/v3_1/sync/passwords/add/{userId}", method = RequestMethod.GET)
+    @RequestMapping(path = "/v3_1/sync/passwords/add/{t}", method = RequestMethod.GET)
     public ResponseEntity<String> syncPasswordsAdd(
-            @PathVariable String userId,
+            @PathVariable String t,
             HttpServletRequest request) {
-        JSONObject paramOut = new JSONObject();
-        paramOut.put("code", 200);
-        paramOut.put("msg", "");
-        paramOut.put("timestamp", DateUtil.getCurrentDate().getTime() / 1000);
-        JSONObject data = new JSONObject();
-        paramOut.put("data", data);
-        logger.debug("/v3_1/sync/user/add/：{}", paramOut.toString());
+        logger.debug("/v3_1/sync/passwords/add/, t={}", t);
 
-        // logger.debug("进入设备同步人脸,/device/v1/face/users,t={},{}", t, headers.toString());
-        long timestrap = DateUtil.getDateFromStringB("2050-01-01").getTime();
-        timestrap = timestrap / 1000;
+        Map<String, String> headers = new HashMap<>();
+        RequestUtils.initHeadParam(request, headers);
+        RequestUtils.initUrlParam(request, headers);
 
-        long curTimeTimeStamp = new Date().getTime();
-        curTimeTimeStamp = curTimeTimeStamp / 1000;
+        String machineCode = null;
+        if (headers.containsKey("header")) {
+            JSONObject headerJson = JSONObject.parseObject(headers.get("header"));
+            if (headerJson != null) {
+                machineCode = headerJson.getString("uuid");
+            }
+        }
+        if (StringUtil.isEmpty(machineCode)) {
+            machineCode = headers.get("uuid");
+        }
+        if (StringUtil.isEmpty(machineCode)) {
+            JSONObject error = new JSONObject();
+            error.put("code", 202);
+            error.put("msg", "未包含设备ID(uuid)");
+            error.put("timestamp", System.currentTimeMillis() / 1000);
+            error.put("data", new JSONObject());
+            return new ResponseEntity<>(error.toJSONString(), HttpStatus.OK);
+        }
 
-        String body = "{\n" +
-                "    \"code\": 200,\n" +
-                "    \"msg\": \"success\",\n" +
-                "    \"data\": {\n" +
-                "        \"rooms\": [\n" +
-                "            {\n" +
-                "                \"b_id\": \"742023120517690335\",\n" +
-                "                \"b_name\": [\n" +
-                "                    \"1栋1单元\"\n" +
-                "                ],\n" +
-                "                \"add\": [\n" +
-                "                    {\n" +
-                "                        \"id\": 392188,\n" +
-                "                        \"uid\": \"20ce9b7368ad918515650baee75420fd\",\n" +
-                "                        \"name\": \"1003\",\n" +
-                "                        \"num\": \"0101-1003\",\n" +
-                "                        \"user\": [\n" +
-                "                            {\n" +
-                "                                \"id\": 416290,\n" +
-                "                                \"uid\": \"6003e234c6f988a6fc7ab5275f766d1e\",\n" +
-                "                                \"phone\": \"17782426083\",\n" +
-                "                                \"expired\": " + timestrap + "\n" +
-                "                            },\n" +
-                "                            {\n" +
-                "                                \"id\": 1004352,\n" +
-                "                                \"uid\": \"7247871cfb24f48bf1877d8f6795cc23\",\n" +
-                "                                \"phone\": \"17728043791\",\n" +
-                "                                \"expired\": " + timestrap + "\n" +
-                "                            }\n" +
-                "                        ]\n" +
-                "                    }],\n" +
-                "                \"del\": {\n" +
-                "                    \"del_room\": [],\n" +
-                "                    \"del_user\": []\n" +
-                "                }\n" +
-                "            }\n" +
-                "        ]\n" +
-                "    },\n" +
-                "    \"timestamp\": " + curTimeTimeStamp + "\n" +
-                "}";
-        JSONObject result = JSONObject.parseObject(body);
-
-        logger.debug("用户返回报文：{}", result.toString());
-        return new ResponseEntity<>(result.toJSONString(), HttpStatus.OK);
+        return syncPasswordsAddBmoImpl.syncPasswordsAdd(machineCode, t);
     }
 
 

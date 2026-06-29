@@ -30,6 +30,7 @@ public class ServiceConfiguration {
 
 
         exclusions.append("/iot/api/login.generatorValidateCode,");
+        exclusions.append("/iot/api/login.generatorSliderCode,");
         exclusions.append("/iot/api/chargeMachine.listChargeMachine,");//查询充电桩
         exclusions.append("/iot/api/chargeMachine.listChargeMachinePort,");//查询充电桩插槽
 

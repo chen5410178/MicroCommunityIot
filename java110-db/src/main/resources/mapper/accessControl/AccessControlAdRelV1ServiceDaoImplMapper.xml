@@ -18,9 +18,9 @@
     <!-- 查询广告门禁信息 add by wuxw 2018-07-03 -->
     <select id="getAccessControlAdRelInfo" parameterType="Map" resultType="Map">
         select t.rel_id,t.rel_id relId,t.ad_id,t.ad_id adId,t.machine_id,t.machine_id
-        machineId,t.machine_code,t.machine_code machineCode,t.remark,t.status_cd,t.status_cd
+        machineId,t.machine_code,t.machine_code machineCode,t.remark relRemark,t.status_cd,t.status_cd
         statusCd,t.community_id,t.community_id communityId,t.machine_name,t.machine_name machineName,
-        aca.ad_name adName,aca.ad_type adType,aca.url,aca.state,t.create_time createTime
+        aca.ad_name adName,aca.ad_type adType,aca.url,aca.state,aca.remark adRemark,t.create_time createTime
         from access_control_ad_rel t
         left join access_control_ad aca on t.ad_id = aca.ad_id and aca.status_cd = '0'
         where 1 =1

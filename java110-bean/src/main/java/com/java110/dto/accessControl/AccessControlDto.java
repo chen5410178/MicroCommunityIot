@@ -46,6 +46,7 @@ public class AccessControlDto extends PageDto implements Serializable {
     private String personId;
 
     private String personType;
+    private String roomId;
     private String promptSwitch;
     private String normalPrompt;
     private String owePrompt;
@@ -227,6 +228,14 @@ public class AccessControlDto extends PageDto implements Serializable {
 
     public void setPersonType(String personType) {
         this.personType = personType;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
     }
 
     public String getPromptSwitch() {

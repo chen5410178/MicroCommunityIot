@@ -66,8 +66,6 @@
   font-size: 16px;
   margin-bottom: 14px;
   text-align: left;
-  background-color: #DDDDDD;
-  padding: 1px;
   border-radius: 5px;
 }
 
@@ -78,12 +76,17 @@
   height: 50px;
 }
 
-.log div:hover {
+.log .input-wrap {
+  background-color: #DDDDDD;
+  padding: 1px;
+}
+
+.log .input-wrap:hover {
   color: #fff;
   background-color: #3158e5;
 }
 
-.log input {
+.log .input-wrap input {
   width: 100%;
   padding: 0 5px;
   text-align: left;
@@ -100,7 +103,7 @@
   box-sizing: border-box;
 }
 
-.log input:hover {
+.log .input-wrap input:hover {
   color: #377FB2;
 }
 
@@ -139,4 +142,9 @@
   color: #fff;
   font-size: 16px;
   bottom: 0;
+}
+
+.slider-verify-wrapper {
+  padding: 0 !important;
+  margin-bottom: 14px !important;
 }

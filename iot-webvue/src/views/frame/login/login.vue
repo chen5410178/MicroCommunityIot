@@ -10,7 +10,7 @@
       </div>
       <div class="log">
         <h3>{{ systemTitle || 'HCIOT' }}</h3>
-        <div>
+        <div class="input-wrap">
           <input
             type="text"
             v-model="loginForm.username"
@@ -18,7 +18,7 @@
             @keyup.enter="handleLogin"
           />
         </div>
-        <div>
+        <div class="input-wrap">
           <input
             type="password"
             v-model="loginForm.passwd"
@@ -27,22 +27,8 @@
             @keyup.enter="handleLogin"
           />
         </div>
-        <div>
-          <input
-            type="text"
-            v-model="loginForm.validateCode"
-            placeholder="验证码"
-            style="width: 270px"
-            @keyup.enter="handleLogin"
-          />
-          <img
-            :src="codeImage"
-            style="cursor: pointer"
-            alt="点击刷新验证码"
-            width="118"
-            height="38"
-            @click="loadValidateCode"
-          />
+        <div class="slider-verify-wrapper">
+          <SliderVerify ref="sliderRef" @success="onSliderSuccess" />
         </div>
         <div class="p-button">
           <button @click="handleLogin" :disabled="loading">
@@ -59,28 +45,28 @@
 </template>
 
 <script>
-import { getSysInfo, generatorValidateCode } from '@/api/login/loginApi'
+import { getSysInfo } from '@/api/login/loginApi'
 import { listSystemInfo } from '@/api/login/systemApi'
 import { listMyStore, listMyEnteredCommunitys, queryStaffPrivileges } from '@/api/community/communityApi'
+import SliderVerify from '@/components/frame/SliderVerify'
 
 export default {
   name: 'Login',
+  components: { SliderVerify },
   data() {
     return {
       systemTitle: '',
       companyName: '',
-      codeImage: '',
+      sliderX: null,
       loginForm: {
         username: '',
-        passwd: '',
-        validateCode: ''
+        passwd: ''
       },
       loading: false
     }
   },
   mounted() {
     this.loadSysInfo()
-    this.loadValidateCode()
   },
   methods: {
     loadSysInfo() {
@@ -99,12 +85,8 @@ export default {
         this.systemTitle = 'HCIOT'
       })
     },
-    loadValidateCode() {
-      generatorValidateCode({ _uId: '123' }).then(res => {
-        this.codeImage = res
-      }).catch(() => {
-        this.codeImage = ''
-      })
+    onSliderSuccess(sliderX) {
+      this.sliderX = sliderX
     },
     handleLogin() {
       if (!this.loginForm.username) {
@@ -115,22 +97,23 @@ export default {
         this.$message.warning('密码不能为空')
         return
       }
-      if (!this.loginForm.validateCode) {
-        this.$message.warning('验证码不能为空')
+      if (!this.sliderX && this.sliderX !== 0) {
+        this.$message.warning('请完成滑块验证')
         return
       }
       this.loading = true
       this.$store.dispatch('user/login', {
         username: this.loginForm.username,
         passwd: this.loginForm.passwd,
-        validateCode: this.loginForm.validateCode
+        sliderX: this.sliderX
       }).then(() => {
         this.loadPostLoginData()
       }).catch(err => {
         this.loading = false
+        this.sliderX = null
         const msg = err && err.msg ? err.msg : '登录失败'
         this.$message.error(msg)
-        this.loadValidateCode()
+        this.$refs.sliderRef && this.$refs.sliderRef.refresh()
       })
     },
     loadPostLoginData() {
@@ -156,9 +139,10 @@ export default {
         }
       }).catch(err => {
         this.loading = false
+        this.sliderX = null
         const msg = err && err.msg ? err.msg : '初始化数据失败'
         this.$message.error(msg)
-        this.loadValidateCode()
+        this.$refs.sliderRef && this.$refs.sliderRef.refresh()
       })
     }
   }
