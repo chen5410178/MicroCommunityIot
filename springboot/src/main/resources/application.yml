@@ -1,3 +1,6 @@
 spring:
   profiles:
-    active: debug
+    active: debug, share
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
