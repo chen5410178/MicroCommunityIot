@@ -15,7 +15,7 @@ job:
       package_name: iotBoot
       path: ff885693-0115-46bd-b90c-371fd5f54488/iot-boot.jar
       dockerfile_name: iotboot
-      dockerfile: "# 指定源于一个基础镜像\nFROM registry.cn-beijing.aliyuncs.com/sxd/ubuntu-java8:1.0\n# 维护者/拥有者\nMAINTAINER xxx <xxx@xx.com>\n# 从宿主机上传文件 ，这里上传一个脚本，\n# 点击选择业务包上传\n# ADD bin/start_api.sh /root/\nADD ff885693-0115-46bd-b90c-371fd5f54488/iot-boot.jar /root \nADD ff778e719-4b76-4e68-98bb-e6de41644477/start_iot_jar.sh /root \n\n# 容器内执行相应指令\nRUN chmod u+x /root/start_iot_jar.sh\n# 运行命令\n# CMD <command>   or CMD [<command>]\n# 整个Dockerfile 中只能有一个,多个会被覆盖的\nCMD [\"/root/start_iot_jar.sh\", \"iot-boot\"]"
+      dockerfile: "# 指定源于一个基础镜像\nFROM registry.cn-qingdao.aliyuncs.com/homecommunity/ubuntu-java17:1.0\n# 维护者/拥有者\nMAINTAINER xxx <xxx@xx.com>\n# 从宿主机上传文件 ，这里上传一个脚本，\n# 点击选择业务包上传\n# ADD bin/start_api.sh /root/\nADD ff885693-0115-46bd-b90c-371fd5f54488/iot-boot.jar /root \nADD ff778e719-4b76-4e68-98bb-e6de41644477/start_iot_jar.sh /root \n\n# 容器内执行相应指令\nRUN chmod u+x /root/start_iot_jar.sh\n# 运行命令\n# CMD <command>   or CMD [<command>]\n# 整个Dockerfile 中只能有一个,多个会被覆盖的\nCMD [\"/root/start_iot_jar.sh\", \"iot-boot\"]"
       start_shell: |-
         #!/bin/bash
         
