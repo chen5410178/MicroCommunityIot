@@ -2,6 +2,7 @@ package com.java110.core.utils;
 
 import com.java110.core.cache.BaseCache;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.params.SetParams;
 
 import java.util.Collections;
 import java.util.UUID;
@@ -13,8 +14,6 @@ import java.util.UUID;
 public class DistributedLock extends BaseCache {
 
     private static final String LOCK_SUCCESS = "OK";
-    private static final String SET_IF_NOT_EXIST = "NX";
-    private static final String SET_WITH_EXPIRE_TIME = "PX";
     private static final int DEFAULT_EXPIRE_TIME = 1000;
 
 
@@ -66,7 +65,8 @@ public class DistributedLock extends BaseCache {
      * @return 是否获取成功
      */
     private static boolean tryGetDistributedLock(Jedis redis, String lockKey, String requestId, int expireTime) {
-        String result = redis.set(lockKey, requestId, SET_IF_NOT_EXIST, SET_WITH_EXPIRE_TIME, expireTime);
+        SetParams setParams = new SetParams().nx().px(expireTime);
+        String result = redis.set(lockKey, requestId, setParams);
 
         if (LOCK_SUCCESS.equals(result)) {
             return true;

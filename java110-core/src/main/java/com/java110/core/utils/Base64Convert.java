@@ -1,11 +1,8 @@
 package com.java110.core.utils;
 
-import org.apache.commons.codec.binary.Base64;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 
 public class Base64Convert {
 
@@ -14,25 +11,15 @@ public class Base64Convert {
     }
 
     public static String decoder(String data){
-        Base64 decoder = new Base64();
-        return new String(decoder.decode(data));
+        return new String(Base64.getDecoder().decode(data));
     }
 
-    /**
-     * 流转换为字符串
-     *
-     * @param in
-     * @return
-     * @throws IOException
-     */
     public static String ioToBase64(InputStream in) throws IOException {
         String strBase64 = null;
         try {
-            // in.available()返回文件的字节长度
             byte[] bytes = new byte[in.available()];
-            // 将文件中的内容读入到数组中
             in.read(bytes);
-            strBase64 = new BASE64Encoder().encode(bytes);      //将字节流数组转换为字符串
+            strBase64 = Base64.getEncoder().encodeToString(bytes);
         } finally {
             if (in != null) {
                 in.close();
@@ -42,34 +29,14 @@ public class Base64Convert {
         return strBase64;
     }
 
-
-   
-
-    /**
-     * 将base64 转为字节
-     *
-     * @param strBase64
-     * @return
-     * @throws IOException
-     */
     public static byte[] base64ToByte(String strBase64) throws IOException {
-        // 解码，然后将字节转换为文件
         strBase64 = strBase64.replaceAll("\r|\n", "");
-        byte[] bytes = new BASE64Decoder().decodeBuffer(strBase64);   //将字符串转换为byte数组
+        byte[] bytes = Base64.getDecoder().decode(strBase64);
         return bytes;
     }
 
-    /**
-     * 将base64 转为字节
-     *
-     * @param strBase64
-     * @return
-     * @throws IOException
-     */
-    public static String  byteTobase64(byte[] strBase64)  {
-        // 解码，然后将字节转换为文件
-
-        String bytes = new BASE64Encoder().encode(strBase64);   //将字符串转换为byte数组
+    public static String byteTobase64(byte[] strBase64) {
+        String bytes = Base64.getEncoder().encodeToString(strBase64);
         return bytes;
     }
 
