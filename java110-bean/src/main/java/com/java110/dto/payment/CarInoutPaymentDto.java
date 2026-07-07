@@ -18,7 +18,7 @@ public class CarInoutPaymentDto extends PageDto implements Serializable {
 
     public static final String PAY_TYPE_CRASH = "1";
     public static final String PAY_TYPE_WECHAT = "2";
-    public static final String PAY_TYPE_ALIPAY = "1";
+    public static final String PAY_TYPE_ALIPAY = "3";
 
     private String realCharge;
     private String realChargeTotal;

@@ -90,7 +90,12 @@ public class TempCarFeePaymentBusiness implements IPaymentBusiness {
 
         JSONObject paramIn = new JSONObject();
         paramIn.put("oId", paymentOrderDto.getOrderId());
-        paramIn.put("payType", TempCarPayOrderDto.PAY_TYPE_WECHAT);
+        String wxAli = reqJson.getString("wxAli");
+        if ("ALIPAY".equals(wxAli)) {
+            paramIn.put("payType", TempCarPayOrderDto.PAY_TYPE_ALIPAY);
+        } else {
+            paramIn.put("payType", TempCarPayOrderDto.PAY_TYPE_WECHAT);
+        }
         tempCarFeeCreateOrderV1InnerServiceSMOImpl.notifyOrder(paramIn);
 
     }
