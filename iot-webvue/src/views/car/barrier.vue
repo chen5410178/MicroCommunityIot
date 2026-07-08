@@ -3,9 +3,6 @@
     <div class="barrier-layout">
       <div class="barrier-left">
         <el-card shadow="never" class="box-card">
-          <div slot="header" class="card-header">
-            <span>岗亭列表</span>
-          </div>
           <ul class="box-list">
             <li
               v-for="item in parkingBoxs"
@@ -202,9 +199,9 @@ export default {
 .barrier-right { flex: 1; min-width: 0; }
 .box-card { margin-bottom: 0; }
 .box-list { list-style: none; margin: 0; padding: 0; }
-.box-list li { padding: 8px 12px; cursor: pointer; border-radius: 4px; color: #606266; }
-.box-list li:hover { background: #f5f7fa; }
-.box-list li.active { background: #ecf5ff; color: #409eff; }
+.box-list li { padding: 8px 12px; cursor: pointer; border-radius: 4px; margin-bottom: 5px; text-align: center; color: #606266; transition: all 0.3s; }
+.box-list li:hover { background-color: #f5f7fa; }
+.box-list li.active { background-color: #409eff; color: white; font-weight: bold; }
 .search-card { margin-bottom: 16px; }
 .table-card { margin-bottom: 0; }
 .card-header { display: flex; justify-content: space-between; align-items: center; }

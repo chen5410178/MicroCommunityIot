@@ -118,14 +118,16 @@ export default {
 .rule-item {
   padding: 10px 16px;
   cursor: pointer;
-  border-bottom: 1px solid #f0f0f0;
+  border-radius: 4px;
+  margin-bottom: 4px;
   font-size: 14px;
   color: #303133;
-  transition: background-color 0.2s;
+  transition: all 0.3s;
 }
 .rule-item:hover { background-color: #f5f7fa; }
 .rule-item-active {
-  background-color: #ecf5ff;
-  color: #409EFF;
+  background-color: #409eff;
+  color: white;
+  font-weight: 600;
 }
 </style>

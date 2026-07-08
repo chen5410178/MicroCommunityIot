@@ -3,9 +3,6 @@
     <el-row :gutter="16">
       <el-col :span="3">
         <el-card shadow="never" class="left-type-card">
-          <div slot="header" class="card-header">
-            <span>水电类型</span>
-          </div>
           <div class="type-list">
             <div
               class="type-item"
@@ -141,19 +138,19 @@ export default {
 
 <style scoped>
 .left-type-card { height: calc(100vh - 120px); overflow-y: auto; }
-.left-type-card .card-header { display: flex; justify-content: space-between; align-items: center; }
 .left-type-card .type-list { padding: 0; }
 .left-type-card .type-item {
   padding: 10px 12px;
   cursor: pointer;
   border-radius: 4px;
-  margin-bottom: 4px;
-  transition: all 0.2s;
+  margin-bottom: 5px;
+  text-align: center;
+  transition: all 0.3s;
   font-size: 13px;
   color: #303133;
 }
-.left-type-card .type-item:hover { background-color: #ecf5ff; color: #409eff; }
-.left-type-card .type-item.type-active { background-color: #ecf5ff; color: #409eff; font-weight: bold; }
+.left-type-card .type-item:hover { background-color: #f5f7fa; }
+.left-type-card .type-item.type-active { background-color: #409eff; color: white; font-weight: bold; }
 .left-type-card .empty-tip { padding: 20px; text-align: center; color: #909399; font-size: 13px; }
 
 .chart-card { margin-bottom: 16px; }

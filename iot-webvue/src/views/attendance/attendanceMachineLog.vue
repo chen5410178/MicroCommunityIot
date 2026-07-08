@@ -202,9 +202,9 @@ export default {
 .content-wrapper { display: flex; height: 100%; }
 .sidebar { width: 200px; min-width: 200px; background: #fff; border-right: 1px solid #ebeef5; overflow-y: auto; }
 .device-list { list-style: none; padding: 0; margin: 0; }
-.device-list li { padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #ebeef5; font-size: 14px; color: #303133; transition: all 0.2s; }
+.device-list li { padding: 12px 16px; cursor: pointer; border-radius: 4px; margin-bottom: 5px; font-size: 14px; color: #303133; transition: all 0.3s; }
 .device-list li:hover { background: #f5f7fa; }
-.device-list li.active { background: #ecf5ff; color: #409eff; border-left: 3px solid #409eff; }
+.device-list li.active { background: #409eff; color: white; font-weight: 600; }
 .main-content { flex: 1; overflow-y: auto; padding: 16px; }
 .search-card { margin-bottom: 16px; }
 .table-card { margin-bottom: 0; }

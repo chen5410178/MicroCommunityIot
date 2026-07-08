@@ -3,9 +3,6 @@
     <el-row :gutter="16">
       <el-col :span="5">
         <el-card shadow="never" class="left-card">
-          <div slot="header" class="card-header">
-            <span>电梯设备列表</span>
-          </div>
           <el-menu
             :default-active="selectedMachineId"
             class="lift-menu"

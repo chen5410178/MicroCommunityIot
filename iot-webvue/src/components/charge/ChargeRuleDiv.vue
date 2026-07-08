@@ -98,17 +98,19 @@ export default {
 .rule-list li {
   padding: 10px 12px;
   cursor: pointer;
-  border-bottom: 1px solid #ebeef5;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  text-align: center;
   font-size: 14px;
   color: #303133;
-  transition: background-color 0.2s;
+  transition: all 0.3s;
 }
 .rule-list li:hover {
   background-color: #f5f7fa;
 }
 .rule-list li.active {
-  background-color: #ecf5ff;
-  color: #409eff;
+  background-color: #409eff;
+  color: white;
   font-weight: bold;
 }
 .empty-tip {

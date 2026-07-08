@@ -3,9 +3,6 @@
     <el-row :gutter="16">
       <el-col :span="4">
         <el-card shadow="never" class="left-card">
-          <div slot="header" class="card-header">
-            <span>充电类型</span>
-          </div>
           <div class="type-list">
             <div
               v-for="item in chargeTypes"
@@ -288,9 +285,9 @@ export default {
 <style scoped>
 .left-card { margin-bottom: 16px; }
 .type-list { padding: 0; }
-.type-item { padding: 10px 15px; cursor: pointer; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
-.type-item:hover { background: #f5f7fa; }
-.type-item.active { background: var(--color-primary); color: #fff; }
+.type-item { padding: 10px 15px; cursor: pointer; border-radius: 4px; margin-bottom: 5px; text-align: center; font-size: 14px; transition: all 0.3s; color: #606266; }
+.type-item:hover { background-color: #f5f7fa; }
+.type-item.active { background-color: #409eff; color: white; font-weight: bold; }
 .search-card { margin-bottom: 16px; }
 .table-card { margin-bottom: 0; }
 .card-header { display: flex; justify-content: space-between; align-items: center; }

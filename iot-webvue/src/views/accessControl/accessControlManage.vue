@@ -91,7 +91,7 @@
 
 <script>
 import {
-  listAdminAccessControl,
+  listAccessControl,
   openAccessControlDoor,
   restartAccessControlDoor,
   startAccessControlDoor,
@@ -101,6 +101,7 @@ import AddAccessControl from '@/components/accessControl/AddAccessControl.vue'
 import EditAccessControl from '@/components/accessControl/EditAccessControl.vue'
 import DeleteAccessControl from '@/components/accessControl/DeleteAccessControl.vue'
 import ReSendAccessControlFace from '@/components/accessControl/ReSendAccessControlFace.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListAccessControlManage',
@@ -132,7 +133,11 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const res = await listAdminAccessControl(this.queryParams)
+        const community = getCurrentCommunity()
+        const res = await listAccessControl({
+          ...this.queryParams,
+          communityId: community ? community.communityId : ''
+        })
         this.list = res.data || []
         this.total = res.records || 0
       } finally {

@@ -3,9 +3,6 @@
     <el-row :gutter="16" class="content-row">
       <el-col :span="4">
         <el-card shadow="never" class="left-card">
-          <div slot="header" class="card-header">
-            <span>监控设备</span>
-          </div>
           <ul class="machine-list">
             <li
               v-for="item in machineList"
@@ -179,13 +176,14 @@ export default {
 .machine-list li {
   padding: 10px 12px;
   cursor: pointer;
-  border-bottom: 1px solid #ebeef5;
-  font-size: 14px;
-  color: #606266;
-  transition: all 0.2s;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  font-size: 13px;
+  color: #303133;
+  transition: all 0.3s;
 }
 .machine-list li:hover { background-color: #f5f7fa; }
-.machine-list li.active { background-color: #ecf5ff; color: #409eff; font-weight: 600; border-left: 3px solid #409eff; }
+.machine-list li.active { background-color: #409eff; color: white; font-weight: 600; }
 .machine-list li.empty-tip { cursor: default; color: #c0c4cc; text-align: center; padding: 20px; }
 .search-card { margin-bottom: 16px; }
 .table-card { margin-bottom: 0; }

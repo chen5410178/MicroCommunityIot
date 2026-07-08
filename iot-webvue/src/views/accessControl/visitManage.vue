@@ -3,9 +3,6 @@
     <el-row :gutter="16">
       <el-col :span="3">
         <el-card shadow="never" class="left-type-card">
-          <div slot="header" class="card-header">
-            <span>访客类型</span>
-          </div>
           <div class="type-list">
             <div
               v-for="item in visitTypeList"
@@ -269,18 +266,19 @@ export default {
 
 <style scoped>
 .left-type-card { margin-bottom: 16px; }
-.type-list { }
 .type-item {
   padding: 8px 12px;
   cursor: pointer;
   border-radius: 4px;
+  margin-bottom: 5px;
+  text-align: center;
   font-size: 13px;
   color: #606266;
-  transition: all 0.2s;
+  transition: all 0.3s;
 }
-.type-item:hover { background: #ecf5ff; color: #409eff; }
-.type-active { background: #409eff; color: #fff; }
-.type-active:hover { background: #409eff; color: #fff; }
+.type-item:hover { background-color: #f5f7fa; }
+.type-active { background-color: #409eff; color: white; font-weight: bold; }
+.type-active:hover { background-color: #409eff; color: white; }
 .search-card { margin-bottom: 16px; }
 .table-card { margin-bottom: 0; }
 .card-header { display: flex; justify-content: space-between; align-items: center; }

@@ -2,9 +2,6 @@
   <div class="list-owner-car" style="display: flex; gap: 16px;">
     <div class="left-sidebar" style="width: 180px; flex-shrink: 0;">
       <el-card shadow="never">
-        <div slot="header" class="card-header">
-          <span>租期类型</span>
-        </div>
         <ul class="lease-type-list">
           <li
             v-for="item in leaseTypes"
@@ -293,16 +290,19 @@ export default {
 .lease-type-list li {
   padding: 10px 12px;
   cursor: pointer;
-  border-bottom: 1px solid #ebeef5;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  text-align: center;
   font-size: 14px;
   color: #606266;
+  transition: all 0.3s;
 }
 .lease-type-list li:hover {
-  background: #f5f7fa;
+  background-color: #f5f7fa;
 }
 .lease-type-list li.active {
-  color: #409eff;
-  background: #ecf5ff;
+  color: white;
+  background-color: #409eff;
   font-weight: bold;
 }
 .search-card { margin-bottom: 16px; }

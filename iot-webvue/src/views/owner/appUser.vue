@@ -2,7 +2,6 @@
   <div class="list-app-user">
     <div class="app-user-container">
       <div class="status-sidebar">
-        <div class="sidebar-title">状态筛选</div>
         <div
           class="status-item"
           :class="{ active: activeState === '' }"
@@ -169,34 +168,27 @@ export default {
   flex-shrink: 0;
   background: #fff;
   border-radius: 4px;
-  padding: 16px 0;
+  padding: 8px 0;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   align-self: flex-start;
-}
-.sidebar-title {
-  font-size: 14px;
-  font-weight: bold;
-  color: #303133;
-  padding: 0 16px 12px;
-  border-bottom: 1px solid #ebeef5;
-  margin-bottom: 8px;
 }
 .status-item {
   padding: 10px 16px;
   cursor: pointer;
+  border-radius: 4px;
+  margin: 0 8px 5px;
+  text-align: center;
   font-size: 14px;
   color: #606266;
-  transition: all 0.2s;
+  transition: all 0.3s;
 }
 .status-item:hover {
-  background: #ecf5ff;
-  color: #409eff;
+  background-color: #f5f7fa;
 }
 .status-item.active {
-  background: #ecf5ff;
-  color: #409eff;
+  background-color: #409eff;
+  color: white;
   font-weight: bold;
-  border-right: 3px solid #409eff;
 }
 .main-content {
   flex: 1;

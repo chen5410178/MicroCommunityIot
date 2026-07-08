@@ -3,9 +3,6 @@
     <el-row :gutter="16">
       <el-col :span="4">
         <el-card shadow="never" class="sidebar-card">
-          <div slot="header" class="card-header">
-            <span>告警类型</span>
-          </div>
           <ul class="warn-type-list">
             <li
               v-for="(item, index) in warnTypes"
@@ -166,15 +163,17 @@ export default {
   margin: 0;
 }
 .warn-type-list li {
-  padding: 10px 16px;
+  padding: 10px 12px;
   cursor: pointer;
   text-align: center;
-  border-bottom: 1px solid #ebeef5;
-  color: #606266;
-  font-size: 14px;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  color: #303133;
+  font-size: 13px;
+  transition: all 0.3s;
 }
-.warn-type-list li:hover { color: #409eff; background-color: #ecf5ff; }
-.warn-type-list li.active { color: #409eff; background-color: #ecf5ff; font-weight: bold; }
+.warn-type-list li:hover { background-color: #f5f7fa; }
+.warn-type-list li.active { background-color: #409eff; color: white; font-weight: 600; }
 .search-card { margin-bottom: 16px; }
 .table-card { margin-bottom: 0; }
 .card-header { display: flex; justify-content: space-between; align-items: center; }

@@ -3,7 +3,6 @@
     <el-row :gutter="16">
       <el-col :span="4">
         <div class="left-nav">
-          <div class="nav-title">收费名称</div>
           <ul class="nav-list">
             <li
               v-for="(item, index) in configs"
@@ -181,27 +180,20 @@ export default {
 .left-nav {
   background: #fff;
   border-radius: 4px;
-  border: 1px solid #ebeef5;
-  overflow: hidden;
-}
-.nav-title {
-  padding: 14px 20px;
-  font-size: 15px;
-  font-weight: bold;
-  color: #303133;
-  border-bottom: 1px solid #ebeef5;
-  background-color: #fafafa;
+  padding: 8px 0;
 }
 .nav-list { list-style: none; margin: 0; padding: 0; }
 .nav-item {
   padding: 14px 20px;
   cursor: pointer;
-  border-bottom: 1px solid #ebeef5;
+  border-radius: 4px;
+  margin: 0 8px 5px;
+  text-align: center;
   font-size: 14px;
   color: #606266;
-  transition: all 0.2s;
+  transition: all 0.3s;
 }
 .nav-item:last-child { border-bottom: none; }
-.nav-item:hover { background-color: #f5f7fa; color: #409eff; }
-.nav-item-active { background-color: #ecf5ff; color: #409eff; font-weight: bold; border-left: 3px solid #409eff; }
+.nav-item:hover { background-color: #f5f7fa; }
+.nav-item-active { background-color: #409eff; color: white; font-weight: bold; }
 </style>

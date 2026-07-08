@@ -3,9 +3,6 @@
     <el-row :gutter="16">
       <el-col :span="4">
         <el-card shadow="never" class="tree-card">
-          <div slot="header" class="card-header">
-            <span>停车场</span>
-          </div>
           <ul class="parking-tree">
             <li
               v-for="item in parkingAreas"
@@ -182,8 +179,8 @@ export default {
 .table-wrapper { overflow-x: auto; }
 .pagination-container { margin-top: 16px; text-align: right; }
 .parking-tree { list-style: none; margin: 0; padding: 0; }
-.tree-item { padding: 10px 15px; cursor: pointer; border-bottom: 1px solid #eee; font-size: 14px; color: #606266; }
+.tree-item { padding: 10px 15px; cursor: pointer; border-radius: 4px; margin-bottom: 5px; text-align: center; font-size: 14px; color: #606266; transition: all 0.3s; }
 .tree-item:hover { background-color: #f5f7fa; }
-.tree-item.active { background-color: #ecf5ff; color: #409eff; font-weight: bold; }
+.tree-item.active { background-color: #409eff; color: white; font-weight: bold; }
 .tree-item-empty { padding: 20px; text-align: center; color: #c0c4cc; font-size: 13px; }
 </style>

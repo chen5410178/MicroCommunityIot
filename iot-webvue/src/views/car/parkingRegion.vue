@@ -3,9 +3,6 @@
     <el-row :gutter="16">
       <el-col :span="6">
         <el-card shadow="never" class="tree-card">
-          <div slot="header" class="card-header">
-            <span>停车场列表</span>
-          </div>
           <el-menu
             :default-active="activePaId"
             class="parking-area-menu"

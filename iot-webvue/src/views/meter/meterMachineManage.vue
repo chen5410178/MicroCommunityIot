@@ -3,7 +3,6 @@
     <el-row :gutter="16">
       <el-col :span="4">
         <div class="type-tree-card">
-          <div class="type-tree-title">水电类型</div>
           <ul class="type-list">
             <li
               class="type-item"
@@ -319,16 +318,8 @@ export default {
 .pagination-container { margin-top: 16px; text-align: right; }
 .type-tree-card {
   background: #fff;
-  border: 1px solid #EBEEF5;
   border-radius: 4px;
-  min-height: 400px;
-}
-.type-tree-title {
-  padding: 12px 16px;
-  font-size: 16px;
-  font-weight: bold;
-  border-bottom: 1px solid #EBEEF5;
-  color: #303133;
+  padding: 8px 0;
 }
 .type-list {
   list-style: none;
@@ -338,14 +329,17 @@ export default {
 .type-item {
   padding: 10px 16px;
   cursor: pointer;
-  border-bottom: 1px solid #f0f0f0;
+  border-radius: 4px;
+  margin: 0 8px 5px;
+  text-align: center;
   font-size: 14px;
   color: #303133;
-  transition: background-color 0.2s;
+  transition: all 0.3s;
 }
 .type-item:hover { background-color: #f5f7fa; }
 .type-item-active {
-  background-color: #ecf5ff;
-  color: #409EFF;
+  background-color: #409eff;
+  color: white;
+  font-weight: bold;
 }
 </style>

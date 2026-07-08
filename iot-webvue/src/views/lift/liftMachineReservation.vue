@@ -3,9 +3,6 @@
     <el-row :gutter="16">
       <el-col :span="3">
         <el-card shadow="never" class="left-machine-card">
-          <div slot="header" class="card-header">
-            <span>电梯设备</span>
-          </div>
           <div class="machine-list">
             <div
               v-for="item in machines"
@@ -216,8 +213,8 @@ export default {
   font-size: 14px;
   color: #303133;
 }
-.left-machine-card .machine-item:hover { background-color: #ecf5ff; color: #409eff; }
-.left-machine-card .machine-item.machine-active { background-color: #ecf5ff; color: #409eff; font-weight: bold; }
+.left-machine-card .machine-item:hover { background-color: #f5f7fa; }
+.left-machine-card .machine-item.machine-active { background-color: #409eff; color: white; font-weight: 600; }
 .search-card { margin-bottom: 16px; }
 .table-card { margin-bottom: 0; }
 .card-header { display: flex; justify-content: space-between; align-items: center; }

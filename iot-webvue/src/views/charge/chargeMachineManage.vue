@@ -3,7 +3,6 @@
     <el-row :gutter="16">
       <el-col :span="4">
         <div class="left-card">
-          <div class="left-card-header">充电类型</div>
           <ul class="charge-type-list">
             <li
               v-for="item in chargeTypeList"
@@ -222,17 +221,9 @@ export default {
 .card-header { display: flex; justify-content: space-between; align-items: center; }
 .pagination-container { margin-top: 16px; text-align: right; }
 .left-card {
-  border: 1px solid #EBEEF5;
   border-radius: 4px;
   background: #fff;
-  overflow: hidden;
-}
-.left-card-header {
-  padding: 12px 16px;
-  font-size: 14px;
-  font-weight: 500;
-  border-bottom: 1px solid #EBEEF5;
-  background: #fafafa;
+  padding: 8px 0;
 }
 .charge-type-list {
   list-style: none;
@@ -242,11 +233,13 @@ export default {
 .charge-type-list li {
   padding: 10px 16px;
   cursor: pointer;
-  border-bottom: 1px solid #f0f0f0;
+  border-radius: 4px;
+  margin: 0 8px 5px;
+  text-align: center;
   font-size: 14px;
   color: #303133;
-  transition: background-color 0.2s;
+  transition: all 0.3s;
 }
 .charge-type-list li:hover { background-color: #f5f7fa; }
-.charge-type-list li.active { background-color: #ecf5ff; color: #409EFF; }
+.charge-type-list li.active { background-color: #409eff; color: white; font-weight: bold; }
 </style>

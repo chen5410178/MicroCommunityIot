@@ -3,9 +3,6 @@
     <div class="content-wrap">
       <div class="left-tree">
         <el-card shadow="never" class="tree-card">
-          <div slot="header" class="card-header">
-            <span>门禁设备</span>
-          </div>
           <div class="tree-body">
             <div
               v-for="item in deviceList"
@@ -204,14 +201,19 @@ export default {
   padding: 10px 12px;
   cursor: pointer;
   border-radius: 4px;
-  transition: background-color 0.2s;
+  margin-bottom: 5px;
+  text-align: center;
+  font-size: 14px;
+  color: #606266;
+  transition: all 0.3s;
 }
 .tree-item:hover {
   background-color: #f5f7fa;
 }
 .tree-item-active {
-  background-color: #ecf5ff;
-  color: #409eff;
+  background-color: #409eff;
+  color: white;
+  font-weight: bold;
 }
 .tree-empty {
   padding: 20px;
