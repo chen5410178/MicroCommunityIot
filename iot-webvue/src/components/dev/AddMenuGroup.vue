@@ -51,7 +51,8 @@ import { saveMenuGroup } from '@/api/dev/devApi'
 export default {
   name: 'AddMenuGroup',
   props: {
-    visible: { type: Boolean, default: false }
+    visible: { type: Boolean, default: false },
+    storeType: { type: String, default: '' }
   },
   data() {
     return {
@@ -85,7 +86,12 @@ export default {
     }
   },
   watch: {
-    visible(val) { this.dialogVisible = val },
+    visible(val) {
+      this.dialogVisible = val
+      if (val && this.storeType) {
+        this.form.storeType = this.storeType
+      }
+    },
     dialogVisible(val) { this.$emit('update:visible', val) }
   },
   methods: {

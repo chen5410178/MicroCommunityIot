@@ -50,6 +50,7 @@
           <el-dropdown-item command="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+      <span class="nav-version">{{ version }}</span>
     </div>
   </div>
 </template>
@@ -66,6 +67,7 @@ import {
   setUserInfo,
   clearAll
 } from '@/utils/auth'
+import config from '@/conf/config'
 
 export default {
   name: 'Nav2',
@@ -81,7 +83,8 @@ export default {
         { name: '繁体', lang: 'cn' },
         { name: 'English', lang: 'en' }
       ],
-      langName: '中文'
+      langName: '中文',
+      version: ''
     }
   },
   computed: {
@@ -96,6 +99,7 @@ export default {
     this.loadSystemInfo()
     this.loadCatalogs()
     this.loadUserInfo()
+    this.version = config.version
   },
   methods: {
     loadCatalogs() {
@@ -256,5 +260,10 @@ export default {
 }
 .nav-user-text:hover {
   color: #409EFF;
+}
+.nav-version {
+  color: #fff;
+  font-size: 12px;
+  padding: 0 8px;
 }
 </style>

@@ -3,6 +3,7 @@
     :visible.sync="dialogVisible"
     title="修改菜单"
     width="600px"
+    append-to-body
     @close="handleClose"
   >
     <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
@@ -80,6 +81,7 @@ export default {
       this.dialogVisible = val
       if (val && this.editData) {
         this.form = { ...this.editData }
+        this.form.seq = this.form.seq !== '' && this.form.seq != null ? Number(this.form.seq) : ''
       }
     },
     dialogVisible(val) { this.$emit('update:visible', val) }

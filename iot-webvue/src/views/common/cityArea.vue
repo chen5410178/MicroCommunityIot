@@ -11,49 +11,53 @@
         />
       </div>
       <div class="detail-panel">
-        <div class="white-bg padding-left padding-right padding-top border-radius-top">
-          <div class="detail-header">
-            <div class="text-title">地区详情</div>
+        <el-card shadow="never" class="detail-card">
+          <div slot="header" class="detail-header">
+            <span class="text-title">地区详情</span>
+            <div v-if="currentNode && !isRootNode" class="detail-actions">
+              <el-button type="primary" size="small" @click="handleEditClick">修改</el-button>
+              <el-button type="danger" size="small" @click="handleDeleteClick">删除</el-button>
+            </div>
           </div>
-          <div v-if="detail.id" class="margin-top">
-            <el-row>
+          <div v-if="detail.id">
+            <el-row :gutter="16">
               <el-col :span="6">
                 <div class="form-group">
-                  <label class="col-form-label">地区名称：</label>
-                  <label>{{ detail.areaName || '-' }}</label>
+                  <span class="col-form-label">地区名称：</span>
+                  <span class="col-form-value">{{ detail.areaName || '-' }}</span>
                 </div>
               </el-col>
               <el-col :span="6">
                 <div class="form-group">
-                  <label class="col-form-label">地区编码：</label>
-                  <label>{{ detail.areaCode || '-' }}</label>
+                  <span class="col-form-label">地区编码：</span>
+                  <span class="col-form-value">{{ detail.areaCode || '-' }}</span>
                 </div>
               </el-col>
               <el-col :span="6">
                 <div class="form-group">
-                  <label class="col-form-label">等级：</label>
-                  <label v-if="detail.areaLevel === '101'">省级</label>
-                  <label v-else-if="detail.areaLevel === '202'">市州</label>
-                  <label v-else-if="detail.areaLevel === '303'">区县</label>
-                  <label v-else>地区</label>
+                  <span class="col-form-label">等级：</span>
+                  <span class="col-form-value" v-if="detail.areaLevel === '101'">省级</span>
+                  <span class="col-form-value" v-else-if="detail.areaLevel === '202'">市州</span>
+                  <span class="col-form-value" v-else-if="detail.areaLevel === '303'">区县</span>
+                  <span class="col-form-value" v-else>地区</span>
                 </div>
               </el-col>
               <el-col :span="6">
                 <div class="form-group">
-                  <label class="col-form-label">父级编码：</label>
-                  <label>{{ detail.parentAreaCode || '-' }}</label>
+                  <span class="col-form-label">父级编码：</span>
+                  <span class="col-form-value">{{ detail.parentAreaCode || '-' }}</span>
                 </div>
               </el-col>
               <el-col :span="6">
                 <div class="form-group">
-                  <label class="col-form-label">父级名称：</label>
-                  <label>{{ detail.parentAreaName || '-' }}</label>
+                  <span class="col-form-label">父级名称：</span>
+                  <span class="col-form-value">{{ detail.parentAreaName || '-' }}</span>
                 </div>
               </el-col>
               <el-col :span="6">
                 <div class="form-group">
-                  <label class="col-form-label">创建时间：</label>
-                  <label>{{ detail.createTime || '-' }}</label>
+                  <span class="col-form-label">创建时间：</span>
+                  <span class="col-form-value">{{ detail.createTime || '-' }}</span>
                 </div>
               </el-col>
             </el-row>
@@ -61,7 +65,7 @@
           <div v-else class="empty-detail">
             <p>请选择左侧地区节点查看详情</p>
           </div>
-        </div>
+        </el-card>
       </div>
     </div>
 
@@ -84,6 +88,7 @@ export default {
   data() {
     return {
       detail: {},
+      currentNode: null,
       addVisible: false,
       editVisible: false,
       delVisible: false,
@@ -92,8 +97,14 @@ export default {
       delData: null
     }
   },
+  computed: {
+    isRootNode() {
+      return !this.currentNode || this.currentNode.areaCode === '0'
+    }
+  },
   methods: {
     async handleNodeClick(node) {
+      this.currentNode = node
       try {
         const res = await listAreas({ id: node.id, areaCode: node.areaCode, page: 1, row: 1 })
         if (res.data && res.data.length > 0) {
@@ -125,9 +136,18 @@ export default {
       this.delData = { ...data }
       this.delVisible = true
     },
+    handleEditClick() {
+      if (!this.currentNode) return
+      this.handleOpenEdit(this.currentNode)
+    },
+    handleDeleteClick() {
+      if (!this.currentNode) return
+      this.handleOpenDelete(this.currentNode)
+    },
     handleSuccess() {
       this.$refs.treeRef && this.$refs.treeRef.refresh()
       this.detail = {}
+      this.currentNode = null
     }
   }
 }
@@ -150,34 +170,33 @@ export default {
   flex: 1;
   min-width: 0;
 }
-.white-bg {
-  background: #fff;
-  min-height: 500px;
+.detail-card {
+  height: auto;
 }
-.padding-left { padding-left: 16px; }
-.padding-right { padding-right: 16px; }
-.padding-top { padding-top: 16px; }
-.border-radius-top { border-radius: 4px 4px 0 0; }
 .detail-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 .text-title {
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 14px;
 }
-.margin-top { margin-top: 16px; }
+.detail-actions {
+  display: flex;
+  gap: 6px;
+}
 .form-group {
   margin-bottom: 16px;
+  display: flex;
+  align-items: center;
 }
 .col-form-label {
-  display: block;
   font-size: 13px;
   color: #666;
-  margin-bottom: 2px;
+  margin-right: 4px;
+  white-space: nowrap;
 }
-.form-group label:last-child {
+.col-form-value {
   font-size: 14px;
   color: #333;
 }

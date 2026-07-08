@@ -1,13 +1,11 @@
 <template>
   <el-card shadow="never" class="tree-card">
     <div slot="header" class="card-header">
-      <span>地区树</span>
+      <div class="tree-actions">
+        <el-button v-if="!isAreaLevel303" type="primary" size="small" @click="handleAdd">添加</el-button>
+      </div>
     </div>
-    <div class="tree-actions">
-      <el-button v-if="!isAreaLevel303" type="primary" size="small" @click="handleAdd">添加</el-button>
-      <el-button v-if="!isRoot" type="primary" size="small" @click="handleEdit">修改</el-button>
-      <el-button v-if="!isRoot" type="danger" size="small" @click="handleDelete">删除</el-button>
-    </div>
+    <div class="tree-body">
     <el-tree
       ref="treeRef"
       :data="treeData"
@@ -18,6 +16,7 @@
       class="margin-top"
       @node-click="handleNodeClick"
     />
+    </div>
   </el-card>
 </template>
 
@@ -48,7 +47,8 @@ export default {
     async loadTree() {
       try {
         const res = await queryAreaTree({ hc: 1.8 })
-        this.treeData = res.data || []
+        const data = res.data
+        this.treeData = data ? (Array.isArray(data) ? data : [data]) : []
       } catch { /* ignore */ }
     },
     handleNodeClick(data) {
@@ -110,6 +110,14 @@ export default {
 <style scoped>
 .tree-card {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.tree-card >>> .el-card__body {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .card-header {
   display: flex;
@@ -119,7 +127,10 @@ export default {
 .tree-actions {
   display: flex;
   gap: 6px;
-  margin-bottom: 12px;
+}
+.tree-body {
+  flex: 1;
+  overflow-y: auto;
 }
 .margin-top {
   margin-top: 0;

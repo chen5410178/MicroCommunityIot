@@ -42,6 +42,12 @@ const devRoutes = [
     meta: { requiresAuth: true, title: '服务注册' }
   },
   {
+    path: 'pages/dev/addServiceBind',
+    name: 'AddServiceBind',
+    component: () => import('@/views/dev/addServiceBind.vue'),
+    meta: { requiresAuth: true, title: '服务绑定' }
+  },
+  {
     path: 'pages/dev/serviceImplManage',
     name: 'ServiceImplManage',
     component: () => import('@/views/dev/serviceImplManage.vue'),
@@ -142,6 +148,12 @@ const devRoutes = [
     name: 'InitializeCommunityManage',
     component: () => import('@/views/dev/initializeCommunityManage.vue'),
     meta: { requiresAuth: true, title: '初始化小区' }
+  },
+  {
+    path: 'pages/dev/addServiceBind',
+    name: 'AddServiceBind',
+    component: () => import('@/views/dev/addServiceBind.vue'),
+    meta: { requiresAuth: true, title: '服务绑定' }
   }
 ]
 

@@ -118,7 +118,7 @@ export default {
 
 <style scoped>
 .dev-dashboard {
-  padding: 16px;
+  padding: 0;
 }
 .vc-index-nav {
   margin-bottom: 16px;
@@ -129,6 +129,9 @@ export default {
 .margin-right-sm { margin-right: 8px; }
 .stat-row {
   margin-bottom: 16px;
+}
+.stat-row:last-child {
+  margin-bottom: 0;
 }
 .stat-col {
   margin-bottom: 16px;
@@ -154,6 +157,9 @@ export default {
   color: #666;
 }
 .bottom-row {
+  margin-bottom: 16px;
+}
+.bottom-row:last-child {
   margin-bottom: 0;
 }
 .quick-panel {

@@ -185,6 +185,7 @@ export function listAppsAll(params) { return request({ url: '/app.listApps', met
 
 // ===== 32. 服务绑定 =====
 export function saveRoute(data) { return request({ url: '/route.saveRoute', method: 'post', data }) }
+export function bindingService(data) { return request({ url: '/service.bindingService', method: 'post', data }) }
 
 // ===== 33. 服务字典 =====
 export function listCServiceDict(params) { return request({ url: '/dict.listDict', method: 'get', params: { ...params, tableName: 'c_service', columnName: 'url' } }) }

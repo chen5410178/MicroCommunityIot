@@ -86,7 +86,7 @@ public class JwtFilter implements Filter {
         String type = request.getHeader("X-Requested-With");// XMLHttpRequest     HttpServletRequest -> request
         String unauthorizedUrl = request.getHeader("unauthorized-url");
         if (StringUtil.isEmpty(unauthorizedUrl)) {
-            unauthorizedUrl = "/user.html#/pages/frame/login";
+            unauthorizedUrl = "/#/pages/frame/login";
         }
         if ("XMLHttpRequest".equals(type)) {
             //是ajax请求
