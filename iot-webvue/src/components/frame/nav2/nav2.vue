@@ -1,24 +1,17 @@
 <template>
   <div class="vc-nav">
     <div class="nav-left">
-      <div class="logo" @click="goHome">{{ systemInfo.logo || 'HCIOT' }}</div>
-      <el-menu
-        mode="horizontal"
-        :default-active="activeCatalog"
-        class="nav-catalog-menu"
-        background-color="#1e2132"
-        text-color="#fff"
-        active-text-color="#409EFF"
-        @select="handleCatalogSelect"
-      >
-        <el-menu-item
+      <div class="nav-logo" @click="goHome">{{ systemInfo.logo || 'HCIOT' }}</div>
+      <div class="nav-catalog-menu">
+        <span
           v-for="(item, index) in catalogs"
           :key="index"
-          :index="item.caId"
+          :class="{ 'catalog-item': true, 'is-active': activeCatalog === item.caId }"
+          @click="handleCatalogSelect(item.caId)"
         >
           <i v-if="item.icon" :class="item.icon"></i>{{ item.name }}
-        </el-menu-item>
-      </el-menu>
+        </span>
+      </div>
     </div>
     <div class="nav-right">
       <el-dropdown @command="handleSwitchLang" class="nav-dropdown">
@@ -78,7 +71,7 @@ export default {
   name: 'Nav2',
   data() {
     return {
-      systemInfo: {},
+      systemInfo: {logo:''},
       userInfo: {},
       catalogs: [],
       activeCatalog: '',
@@ -100,9 +93,9 @@ export default {
     }
   },
   mounted() {
+    this.loadSystemInfo()
     this.loadCatalogs()
     this.loadUserInfo()
-    this.loadSystemInfo()
   },
   methods: {
     loadCatalogs() {
@@ -209,7 +202,7 @@ export default {
   align-items: center;
   height: 100%;
 }
-.logo {
+.nav-logo {
   width: 100px;
   height: 60px;
   line-height: 60px;
@@ -218,22 +211,33 @@ export default {
   font-weight: bold;
   color: #409EFF;
   cursor: pointer;
-  flex-shrink: 0;
 }
 .nav-catalog-menu {
-  border-bottom: none !important;
-  background: transparent;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  overflow: hidden;
 }
-.nav-catalog-menu >>> .el-menu-item {
+
+.catalog-item {
   height: 60px;
   line-height: 60px;
-  border-bottom: none !important;
+  padding: 0 20px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s, background-color 0.3s;
 }
-.nav-catalog-menu >>> .el-menu-item:hover {
-  background-color: rgba(255,255,255,0.08) !important;
+
+.catalog-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
 }
-.nav-catalog-menu >>> .el-menu-item.is-active {
-  border-bottom: 2px solid #409EFF !important;
+
+.catalog-item.is-active {
+  border-bottom-color: #409EFF;
+  color: #409EFF;
 }
 .nav-right {
   display: flex;
