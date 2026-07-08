@@ -128,7 +128,10 @@
 </template>
 
 <script>
-import { queryRooms, listDicts, listAttrSpecs, queryFloors, queryUnits } from '@/api/property/propertyApi'
+import { queryRooms } from '@/api/property/roomApi'
+import { listDicts, listAttrSpecs } from '@/api/property/propertyApi'
+import { queryFloors } from '@/api/property/floorApi'
+import { queryUnits } from '@/api/property/unitApi'
 import FloorUnitTree from '@/components/property/FloorUnitTree.vue'
 import EditRoom from '@/components/property/EditRoom.vue'
 import DeleteRoom from '@/components/property/DeleteRoom.vue'
@@ -210,7 +213,7 @@ export default {
         this.roomList = res.data || []
         this.total = res.records || 0
         this.buildDynamicColumns()
-      } catch (e) { this.$message.error(e.msg || '查询失败') }
+      } catch (e) { this.$message.error(e.message || '查询失败') }
       finally { this.loading = false }
     },
     async buildDynamicColumns() {

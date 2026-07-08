@@ -4,6 +4,18 @@
       <el-form-item label="单元编号" prop="unitNum">
         <el-input v-model="form.unitNum" placeholder="请填写单元编号" />
       </el-form-item>
+      <el-form-item label="楼层数" prop="layerCount">
+        <el-input v-model="form.layerCount" placeholder="请填写楼层数" />
+      </el-form-item>
+      <el-form-item label="是否有电梯" prop="lift">
+        <el-select v-model="form.lift" placeholder="请选择" style="width: 100%">
+          <el-option label="是" value="Y" />
+          <el-option label="否" value="N" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="建筑面积" prop="unitArea">
+        <el-input v-model="form.unitArea" placeholder="请填写建筑面积" />
+      </el-form-item>
       <el-form-item label="备注">
         <el-input v-model="form.remark" type="textarea" placeholder="请填写备注" maxlength="200" />
       </el-form-item>
@@ -16,8 +28,7 @@
 </template>
 
 <script>
-import { updateUnit } from '@/api/property/propertyApi'
-import { getCurrentCommunity } from '@/utils/auth'
+import { updateUnit } from '@/api/property/unitApi'
 
 export default {
   name: 'EditUnit',
@@ -26,9 +37,12 @@ export default {
     return {
       dialogVisible: false,
       loading: false,
-      form: { unitId: '', unitNum: '', remark: '' },
+      form: { unitId: '', floorId: '', unitNum: '', layerCount: '', lift: '', unitArea: '', remark: '' },
       rules: {
-        unitNum: [{ required: true, message: '单元编号不能为空', trigger: 'blur' }]
+        unitNum: [{ required: true, message: '单元编号不能为空', trigger: 'blur' }],
+        layerCount: [{ required: true, message: '楼层数不能为空', trigger: 'blur' }],
+        lift: [{ required: true, message: '请选择是否有电梯', trigger: 'change' }],
+        unitArea: [{ required: true, message: '建筑面积不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -39,7 +53,12 @@ export default {
       immediate: true,
       handler(val) {
         if (val && val.unitId) {
-          this.form = { unitId: val.unitId, unitNum: val.unitNum || '', remark: val.remark || '' }
+          this.form = {
+            unitId: val.unitId, floorId: val.floorId || '',
+            unitNum: val.unitNum || '', layerCount: val.layerCount || '',
+            lift: val.lift || '', unitArea: val.unitArea || '',
+            remark: val.remark || ''
+          }
         }
       }
     }
@@ -53,12 +72,11 @@ export default {
       try { await this.$refs.formRef.validate() } catch { return }
       this.loading = true
       try {
-        const communityInfo = getCurrentCommunity() || {}
-        await updateUnit({ ...this.form, communityId: communityInfo.communityId })
+        await updateUnit(this.form)
         this.$message.success('修改成功')
         this.$emit('success')
         this.handleClose()
-      } catch (e) { this.$message.error(e.msg || '修改失败') }
+      } catch (e) { this.$message.error(e.message || '修改失败') }
       finally { this.loading = false }
     }
   }

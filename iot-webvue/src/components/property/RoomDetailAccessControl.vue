@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { listAccessControlFloor } from '@/api/property/propertyApi'
+import { listAccessControlFloor } from '@/api/property/accessControlApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

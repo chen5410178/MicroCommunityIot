@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { listLockPerson } from '@/api/property/propertyApi'
+import { listLockPerson } from '@/api/property/lockApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

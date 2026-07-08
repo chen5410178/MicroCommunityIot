@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { listOwnerMembers } from '@/api/property/propertyApi'
+import { listOwnerMembers } from '@/api/property/ownerApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

@@ -76,6 +76,11 @@ export function setSystemInfo(info) {
   sessionStorage.setItem(SYSTEM_INFO_KEY, JSON.stringify(info))
 }
 
+export function getCommunityId() {
+  const community = getCurrentCommunity()
+  return community ? community.communityId : '-1'
+}
+
 export function clearAll() {
   sessionStorage.clear()
 }

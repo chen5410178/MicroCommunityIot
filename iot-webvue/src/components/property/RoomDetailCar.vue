@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { listOwnerCars } from '@/api/property/propertyApi'
+import { listOwnerCars } from '@/api/property/ownerCarApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

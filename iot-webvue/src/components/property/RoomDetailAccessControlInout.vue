@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { listAccessControlInout } from '@/api/property/propertyApi'
+import { listAccessControlInout } from '@/api/property/accessControlApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { listAccessControlLog } from '@/api/property/propertyApi'
+import { listAccessControlLog } from '@/api/property/accessControlApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

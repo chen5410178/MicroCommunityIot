@@ -1,21 +1,78 @@
 import request from '@/utils/request'
+import { getCommunityId } from '@/utils/auth'
 
 export function queryOwners(params) {
-  return request({ url: '/owner.queryOwners', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    params.communityId = getCommunityId()
+    request({
+      url: '/owner.queryOwners',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code === 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询业主失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
-export function saveOwner(data) {
-  return request({ url: '/owner.saveOwner', method: 'post', data })
+export function saveOwnerRoomRel(data) {
+  return new Promise((resolve, reject) => {
+    data.communityId = getCommunityId()
+    request({
+      url: '/owner.saveOwnerRoomRel',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code === 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '绑定房屋失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
-export function updateOwner(data) {
-  return request({ url: '/owner.editOwner', method: 'post', data })
+export function deleteOwnerRoomRel(data) {
+  return new Promise((resolve, reject) => {
+    data.communityId = getCommunityId()
+    request({
+      url: '/owner.deleteOwnerRoomRel',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code === 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '解除绑定失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
-export function deleteOwner(data) {
-  return request({ url: '/owner.deleteOwner', method: 'post', data })
-}
-
-export function queryRoomsByOwner(params) {
-  return request({ url: '/room.queryRoomsByOwner', method: 'get', params })
+export function listOwnerMembers(params) {
+  return new Promise((resolve, reject) => {
+    params.communityId = getCommunityId()
+    request({
+      url: '/owner.listOwnerMember',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code === 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询家庭成员失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }

@@ -19,8 +19,7 @@
 </template>
 
 <script>
-import { queryFloorAndUnits } from '@/api/property/propertyApi'
-import { getCurrentCommunity } from '@/utils/auth'
+import { queryFloorAndUnits } from '@/api/property/floorApi'
 
 export default {
   name: 'FloorUnitTree',
@@ -36,8 +35,7 @@ export default {
   methods: {
     async loadTree(floorId) {
       try {
-        const communityInfo = getCurrentCommunity() || {}
-        const res = await queryFloorAndUnits({ communityId: communityInfo.communityId })
+        const res = await queryFloorAndUnits({})
         this.rawUnits = res.data || []
         this.buildTreeData()
         if (floorId && this.rawUnits.length > 0) {

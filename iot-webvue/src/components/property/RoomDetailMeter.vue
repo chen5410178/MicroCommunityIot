@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { listMeterMachine } from '@/api/property/propertyApi'
+import { listMeterMachine } from '@/api/property/meterApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

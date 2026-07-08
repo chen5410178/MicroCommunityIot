@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { queryOwners, saveOwnerRoomRel } from '@/api/property/propertyApi'
+import { queryOwners, saveOwnerRoomRel } from '@/api/property/ownerApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -55,7 +55,7 @@ export default {
         const communityInfo = getCurrentCommunity() || {}
         const res = await queryOwners({ ...this.queryParams, communityId: communityInfo.communityId, ownerTypeCd: '1001' })
         this.ownerList = Array.isArray(res) ? res : (res.data || [])
-      } catch (e) { this.$message.error(e.msg || '查询失败') }
+      } catch (e) { this.$message.error(e.message || '查询失败') }
       finally { this.loading = false }
     },
     async handleBind(row) {
@@ -69,7 +69,7 @@ export default {
         })
         this.$message.success('绑定成功')
         this.$router.go(-1)
-      } catch (e) { this.$message.error(e.msg || '绑定失败') }
+      } catch (e) { this.$message.error(e.message || '绑定失败') }
     }
   }
 }

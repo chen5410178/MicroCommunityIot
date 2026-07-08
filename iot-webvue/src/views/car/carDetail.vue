@@ -156,7 +156,7 @@
 
 <script>
 import { queryOwnerCars, queryOwnerCarsByOwner, queryOwners, listAdminCarInoutDetails } from '@/api/car/carApi'
-import { queryRooms } from '@/api/property/propertyApi'
+import { queryRooms } from '@/api/property/roomApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

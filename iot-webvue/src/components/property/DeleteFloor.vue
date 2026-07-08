@@ -9,8 +9,7 @@
 </template>
 
 <script>
-import { deleteFloorItem } from '@/api/property/propertyApi'
-import { getCurrentCommunity } from '@/utils/auth'
+import { deleteFloorItem } from '@/api/property/floorApi'
 
 export default {
   name: 'DeleteFloor',
@@ -27,12 +26,11 @@ export default {
     async handleConfirm() {
       this.loading = true
       try {
-        const communityInfo = getCurrentCommunity() || {}
-        await deleteFloorItem({ floorId: this.delData.floorId, communityId: communityInfo.communityId })
+        await deleteFloorItem({ floorId: this.delData.floorId })
         this.$message.success('删除成功')
         this.$emit('success')
         this.handleClose()
-      } catch (e) { this.$message.error(e.msg || '删除失败') }
+      } catch (e) { this.$message.error(e.message || '删除失败') }
       finally { this.loading = false }
     }
   }

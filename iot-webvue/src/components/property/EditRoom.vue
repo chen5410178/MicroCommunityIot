@@ -86,7 +86,9 @@
 </template>
 
 <script>
-import { updateRoom, queryUnits, listDicts, listAttrSpecs, listAttrValues } from '@/api/property/propertyApi'
+import { updateRoom } from '@/api/property/roomApi'
+import { queryUnits } from '@/api/property/unitApi'
+import { listDicts, listAttrSpecs, listAttrValues } from '@/api/property/propertyApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -186,7 +188,7 @@ export default {
         this.$message.success('修改成功')
         this.$emit('success')
         this.handleClose()
-      } catch (e) { this.$message.error(e.msg || '修改失败') }
+      } catch (e) { this.$message.error(e.message || '修改失败') }
       finally { this.loading = false }
     }
   }

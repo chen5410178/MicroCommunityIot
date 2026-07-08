@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import { queryRooms } from '@/api/property/propertyApi'
+import { queryRooms } from '@/api/property/roomApi'
 import RoomDetailOwner from '@/components/property/RoomDetailOwner.vue'
 import RoomDetailCar from '@/components/property/RoomDetailCar.vue'
 import RoomDetailAccessControl from '@/components/property/RoomDetailAccessControl.vue'

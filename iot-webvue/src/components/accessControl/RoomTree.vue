@@ -27,7 +27,9 @@
 </template>
 
 <script>
-import { queryFloors, queryUnits, queryRoomsTree } from '@/api/property/propertyApi'
+import { queryFloors } from '@/api/property/floorApi'
+import { queryUnits } from '@/api/property/unitApi'
+import { queryRoomsTree } from '@/api/property/roomApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

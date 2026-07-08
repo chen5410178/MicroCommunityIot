@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { listLockLog } from '@/api/property/propertyApi'
+import { listLockLog } from '@/api/property/lockApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

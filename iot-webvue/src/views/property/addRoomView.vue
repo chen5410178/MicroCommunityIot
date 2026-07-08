@@ -142,7 +142,11 @@
 </template>
 
 <script>
-import { saveRoom, queryFloors, queryUnits, listDicts, listAttrSpecs, listAttrValues, queryOwners } from '@/api/property/propertyApi'
+import { saveRoom } from '@/api/property/roomApi'
+import { queryFloors } from '@/api/property/floorApi'
+import { queryUnits } from '@/api/property/unitApi'
+import { listDicts, listAttrSpecs, listAttrValues } from '@/api/property/propertyApi'
+import { queryOwners } from '@/api/property/ownerApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -231,7 +235,7 @@ export default {
         await saveRoom(this.form)
         this.$message.success('添加成功')
         this.$router.go(-1)
-      } catch (e) { this.$message.error(e.msg || '添加失败') }
+      } catch (e) { this.$message.error(e.message || '添加失败') }
       finally { this.loading = false }
     }
   }

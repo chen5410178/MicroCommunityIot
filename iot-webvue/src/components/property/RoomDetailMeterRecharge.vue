@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { listMeterMachineReadOrRechargeDetail } from '@/api/property/propertyApi'
+import { listMeterMachineReadOrRechargeDetail } from '@/api/property/meterApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

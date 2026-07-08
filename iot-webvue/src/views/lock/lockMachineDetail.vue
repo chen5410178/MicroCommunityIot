@@ -134,7 +134,8 @@
 
 <script>
 import { listLockMachines } from '@/api/lock/lockApi'
-import { queryRooms, listLockPerson, listLockLog, listLockInout } from '@/api/property/propertyApi'
+import { queryRooms } from '@/api/property/roomApi'
+import { listLockPerson, listLockLog, listLockInout } from '@/api/property/lockApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { queryOwners, deleteOwnerRoomRel } from '@/api/property/propertyApi'
+import { queryOwners, deleteOwnerRoomRel } from '@/api/property/ownerApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -53,7 +53,7 @@ export default {
         const communityInfo = getCurrentCommunity() || {}
         const res = await queryOwners({ communityId: communityInfo.communityId, roomId: this.roomId, page: 1, row: 50 })
         this.ownerList = Array.isArray(res) ? res : (res.data || [])
-      } catch (e) { this.$message.error(e.msg || '查询失败') }
+      } catch (e) { this.$message.error(e.message || '查询失败') }
       finally { this.loading = false }
     },
     async handleUnbind(row) {
@@ -66,7 +66,7 @@ export default {
         })
         this.$message.success('解绑成功')
         this.loadOwners()
-      } catch (e) { this.$message.error(e.msg || '解绑失败') }
+      } catch (e) { this.$message.error(e.message || '解绑失败') }
     }
   }
 }

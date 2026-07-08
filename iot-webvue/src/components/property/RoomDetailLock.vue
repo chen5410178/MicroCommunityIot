@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { listLockMachine } from '@/api/property/propertyApi'
+import { listLockMachine } from '@/api/property/lockApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { listLockInout } from '@/api/property/propertyApi'
+import { listLockInout } from '@/api/property/lockApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

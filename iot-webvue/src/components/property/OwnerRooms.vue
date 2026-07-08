@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { queryRooms } from '@/api/property/propertyApi'
+import { queryRooms } from '@/api/property/roomApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
