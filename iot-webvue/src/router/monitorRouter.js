@@ -1,5 +1,17 @@
 const monitorRoutes = [
   {
+    path: 'pages/index/monitorVideo',
+    name: 'MonitorVideo',
+    component: () => import('@/views/index/monitorVideo.vue'),
+    meta: { requiresAuth: true, title: '监控视频' }
+  },
+  {
+    path: 'pages/index/monitorMap',
+    name: 'MonitorMap',
+    component: () => import('@/views/index/monitorMap.vue'),
+    meta: { requiresAuth: true, title: '监控地图' }
+  },
+  {
     path: 'pages/monitor/monitorManufactor',
     name: 'MonitorManufactor',
     component: () => import('@/views/monitor/monitorManufactor.vue'),

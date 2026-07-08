@@ -3,7 +3,7 @@
     <el-card shadow="never" class="table-card">
       <div slot="header" class="card-header">
         <span>我的小区</span>
-        <el-button size="small" @click="handleVisual">可视化</el-button>
+        <!-- <el-button size="small" @click="handleVisual">可视化</el-button> -->
       </div>
       <el-table :data="list" v-loading="loading" border stripe>
         <el-table-column prop="name" label="小区名称" min-width="150" />

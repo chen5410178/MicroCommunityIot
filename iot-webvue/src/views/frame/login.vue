@@ -38,7 +38,7 @@
       </div>
     </div>
     <div class="copyright">
-      &copy;2020-2025
+      &copy;2020-2026
       <span v-html="companyName || 'java110团队'"></span>
     </div>
   </div>
@@ -60,8 +60,8 @@ export default {
       companyName: '',
       sliderX: null,
       loginForm: {
-        username: '',
-        passwd: ''
+        username: 'wuxw',
+        passwd: 'admin'
       },
       loading: false
     }

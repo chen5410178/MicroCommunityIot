@@ -16,7 +16,7 @@
 <script>
 import { ssoTokenLogin } from '@/api/frame/ssoApi'
 import { listMyEnteredCommunitys } from '@/api/community/communityApi'
-import { setUserInfo, setCommunityList, setCurrentCommunity } from '@/utils/auth'
+import { setToken, setUserInfo, setCommunityList, setCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'SsoPage',
@@ -51,14 +51,15 @@ export default {
         if (typeof data === 'string') {
           try { data = JSON.parse(data) } catch (e) { data = res }
         }
-        if (data.code !== 0) {
+        if (data.code != 0) {
           this.errMsg = data.msg || '认证失败'
           this.loading = false
           return
         }
-        if (data.data) {
-          setUserInfo(data.data)
+        if (data.token) {
+          setToken(data.token)
         }
+        setUserInfo(data)
         this.loadCommunityInfo(targetUrl, communityId)
       }).catch(err => {
         const msg = (err && err.msg) ? err.msg : '认证失败'
@@ -83,10 +84,10 @@ export default {
           setCurrentCommunity(targetCommunity)
         }
         const decodedUrl = decodeURIComponent(targetUrl)
-        this.$router.replace(decodedUrl)
+        window.location.replace(decodedUrl)
       }).catch(() => {
         const decodedUrl = decodeURIComponent(targetUrl)
-        this.$router.replace(decodedUrl)
+        window.location.replace(decodedUrl)
       })
     }
   }

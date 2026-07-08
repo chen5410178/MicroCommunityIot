@@ -26,23 +26,22 @@
         <el-button type="primary" size="small" @click="handleAdd">添加小区</el-button>
       </div>
       <el-table :data="list" v-loading="loading" border stripe>
-        <el-table-column prop="communityId" label="小区ID" width="180" />
-        <el-table-column prop="name" label="小区名称" min-width="150" />
-        <el-table-column prop="cityName" label="城市编码" width="120" />
-        <el-table-column prop="tel" label="客服电话" width="120" />
-        <el-table-column prop="extCommunityId" label="外部ID" width="120" />
+        <el-table-column prop="communityId" label="小区ID"  />
+        <el-table-column prop="name" label="小区名称"  />
+        <el-table-column prop="cityName" label="城市编码"  />
+        <el-table-column prop="tel" label="客服电话"  />
+        <el-table-column prop="extCommunityId" label="外部ID"  />
         <el-table-column
           v-for="spec in showAttrSpecs"
           :key="spec.specCd"
           :prop="'attr_' + spec.specCd"
           :label="spec.specName"
-          min-width="120"
         >
           <template slot-scope="{ row }">
             {{ getAttrValue(row, spec.specCd) }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="150" fixed="right" align="center">
+        <el-table-column label="操作" fixed="right" align="center">
           <template slot-scope="{ row }">
             <el-button size="small" type="text" @click="handleEdit(row)">修改</el-button>
             <el-button

@@ -3,9 +3,6 @@
     <el-row :gutter="16">
       <el-col :span="4">
         <el-card shadow="never" class="tree-card">
-          <div slot="header" class="card-header">
-            <span>小区列表</span>
-          </div>
           <ul class="community-list">
             <li
               v-for="item in communitys"
@@ -195,5 +192,5 @@ export default {
   transition: all 0.2s;
 }
 .community-list li:hover { background-color: #f5f7fa; }
-.community-list li.active { background-color: #ecf5ff; color: #409eff; font-weight: bold; }
+.community-list li.active { background-color: #409eff; color: white; font-weight: 600; }
 </style>

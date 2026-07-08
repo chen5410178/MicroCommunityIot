@@ -3,9 +3,6 @@
     <el-row :gutter="16">
       <el-col :span="4">
         <el-card shadow="never" class="tree-card">
-          <div slot="header" class="card-header">
-            <span>脚本类型</span>
-          </div>
           <ul class="type-list">
             <li
               v-for="item in scriptTypes"
@@ -175,5 +172,5 @@ export default {
   transition: all 0.2s;
 }
 .type-list li:hover { background-color: #f5f7fa; }
-.type-list li.active { background-color: #ecf5ff; color: #409eff; font-weight: bold; }
+.type-list li.active { background-color: #409eff; color: white; font-weight: 600; }
 </style>
