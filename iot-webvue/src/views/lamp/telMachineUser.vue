@@ -3,9 +3,6 @@
     <el-row :gutter="16">
       <el-col :span="5">
         <el-card shadow="never" class="device-card">
-          <div slot="header" class="card-header">
-            <span>话机设备列表</span>
-          </div>
           <div class="device-list" v-loading="deviceLoading">
             <div
               v-for="item in machines"
@@ -178,17 +175,19 @@ export default {
 .device-item {
   padding: 12px 16px;
   cursor: pointer;
-  border-bottom: 1px solid #f0f0f0;
+  border-radius: 4px;
+  margin-bottom: 5px;
   font-size: 14px;
   display: flex;
   align-items: center;
+  transition: all 0.3s;
 }
 .device-item:hover {
   background-color: #f5f7fa;
 }
 .device-item.active {
-  background-color: #ecf5ff;
-  color: #409eff;
+  background-color: #409eff;
+  color: white;
   font-weight: bold;
 }
 .empty-tip {

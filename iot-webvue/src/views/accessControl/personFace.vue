@@ -3,9 +3,6 @@
     <div class="page-container">
       <div class="left-panel">
         <el-card shadow="never" class="state-card">
-          <div slot="header" class="card-header">
-            <span>审核状态</span>
-          </div>
           <div class="state-list">
             <div
               v-for="item in stateList"
@@ -215,9 +212,9 @@ export default {
 .state-card { height: 100%; }
 .state-card .card-header { display: flex; justify-content: space-between; align-items: center; }
 .state-list { max-height: calc(100vh - 200px); overflow-y: auto; }
-.state-item { padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #ebeef5; font-size: 13px; transition: all 0.2s; }
-.state-item:hover { background: #ecf5ff; color: #409eff; }
-.state-item.active { background: #ecf5ff; color: #409eff; font-weight: 600; }
+.state-item { padding: 10px 12px; cursor: pointer; border-radius: 4px; margin-bottom: 5px; text-align: center; font-size: 13px; transition: all 0.3s; }
+.state-item:hover { background-color: #f5f7fa; }
+.state-item.active { background-color: #409eff; color: white; font-weight: 600; }
 .search-card { margin-bottom: 16px; }
 .search-card .card-header { display: flex; justify-content: space-between; align-items: center; }
 .table-card { margin-bottom: 0; }

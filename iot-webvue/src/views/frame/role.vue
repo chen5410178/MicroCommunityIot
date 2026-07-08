@@ -3,9 +3,6 @@
     <div class="page-container">
       <div class="left-panel">
         <el-card shadow="never" class="role-list-card">
-          <div slot="header" class="card-header">
-            <span>角色列表</span>
-          </div>
           <div class="role-actions">
             <el-button type="primary" size="small" @click="handleAddRole">添加</el-button>
             <el-button type="warning" size="small" @click="handleEditRole" :disabled="!currentRole">修改</el-button>
@@ -145,9 +142,9 @@ export default {
 .role-actions { display: flex; gap: 4px; margin-bottom: 12px; }
 .role-actions .el-button { flex: 1; padding: 7px 4px; font-size: 12px; }
 .role-list { list-style: none; padding: 0; margin: 0; }
-.role-list li { padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #ebeef5; font-size: 14px; }
+.role-list li { padding: 10px 12px; cursor: pointer; border-radius: 4px; margin-bottom: 5px; text-align: center; font-size: 14px; transition: all 0.3s; }
 .role-list li:hover { background-color: #f5f7fa; }
-.role-list li.active { background-color: #ecf5ff; color: #409eff; font-weight: bold; }
+.role-list li.active { background-color: #409eff; color: white; font-weight: bold; }
 .detail-card { height: 100%; display: flex; flex-direction: column; }
 .role-header { padding-bottom: 12px; border-bottom: 1px solid #ebeef5; }
 .role-header h4 { margin: 0 0 8px 0; font-size: 16px; }

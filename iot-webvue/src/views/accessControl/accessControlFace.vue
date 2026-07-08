@@ -3,9 +3,6 @@
     <div class="page-container">
       <div class="left-panel">
         <el-card shadow="never" class="device-card">
-          <div slot="header" class="card-header">
-            <span>门禁设备</span>
-          </div>
           <div class="device-list">
             <div
               v-for="item in devices"
@@ -223,9 +220,9 @@ export default {
 .device-card { height: 100%; }
 .device-card .card-header { display: flex; justify-content: space-between; align-items: center; }
 .device-list { max-height: calc(100vh - 200px); overflow-y: auto; }
-.device-item { padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #ebeef5; font-size: 13px; transition: all 0.2s; }
-.device-item:hover { background: #ecf5ff; color: #409eff; }
-.device-item.active { background: #ecf5ff; color: #409eff; font-weight: 600; }
+.device-item { padding: 10px 12px; cursor: pointer; border-radius: 4px; margin-bottom: 5px; text-align: center; font-size: 13px; transition: all 0.3s; }
+.device-item:hover { background-color: #f5f7fa; }
+.device-item.active { background-color: #409eff; color: white; font-weight: 600; }
 .search-card { margin-bottom: 16px; }
 .search-card .card-header { display: flex; justify-content: space-between; align-items: center; }
 .table-card { margin-bottom: 0; }

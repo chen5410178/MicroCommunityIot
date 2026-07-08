@@ -210,10 +210,10 @@ export default {
 .layout-container { display: flex; gap: 16px; }
 .left-panel { width: 160px; flex-shrink: 0; }
 .right-panel { flex: 1; min-width: 0; }
-.state-list { list-style: none; padding: 0; margin: 0; background: #fff; border-radius: 4px; overflow: hidden; }
-.state-list li { padding: 10px 16px; cursor: pointer; border-bottom: 1px solid #ebeef5; color: #606266; font-size: 14px; }
-.state-list li:hover { color: #409eff; background: #ecf5ff; }
-.state-list li.state-active { color: #409eff; background: #ecf5ff; font-weight: bold; }
+.state-list { list-style: none; padding: 0; margin: 0; background: #fff; border-radius: 4px; }
+.state-list li { padding: 10px 16px; cursor: pointer; border-radius: 4px; margin-bottom: 5px; text-align: center; color: #606266; font-size: 14px; transition: all 0.3s; }
+.state-list li:hover { background-color: #f5f7fa; }
+.state-list li.state-active { background-color: #409eff; color: white; font-weight: bold; }
 .search-card { margin-bottom: 16px; }
 .table-card { margin-bottom: 0; }
 .card-header { display: flex; justify-content: space-between; align-items: center; }

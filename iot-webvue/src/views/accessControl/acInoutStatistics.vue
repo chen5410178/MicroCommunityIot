@@ -3,9 +3,6 @@
     <el-row :gutter="16">
       <el-col :span="3">
         <el-card shadow="never" class="left-device-card">
-          <div slot="header" class="card-header">
-            <span>门禁设备</span>
-          </div>
           <div class="device-list">
             <div
               v-for="item in accessControls"
@@ -173,13 +170,14 @@ export default {
   padding: 10px 12px;
   cursor: pointer;
   border-radius: 4px;
-  margin-bottom: 4px;
-  transition: all 0.2s;
+  margin-bottom: 5px;
+  text-align: center;
+  transition: all 0.3s;
   font-size: 13px;
   color: #303133;
 }
-.left-device-card .device-item:hover { background-color: #ecf5ff; color: #409eff; }
-.left-device-card .device-item.device-active { background-color: #ecf5ff; color: #409eff; font-weight: bold; }
+.left-device-card .device-item:hover { background-color: #f5f7fa; }
+.left-device-card .device-item.device-active { background-color: #409eff; color: white; font-weight: bold; }
 .left-device-card .empty-tip { padding: 20px; text-align: center; color: #909399; font-size: 13px; }
 
 .chart-card { margin-bottom: 16px; }
