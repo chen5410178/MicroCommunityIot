@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { queryRoomsByOwner } from '@/api/property/ownerApi'
+import { queryRoomsByOwner } from '@/api/owner/ownerApi'
 import { listAttrSpecs } from '@/api/dev/devApi'
 import { getCurrentCommunity } from '@/utils/auth'
 

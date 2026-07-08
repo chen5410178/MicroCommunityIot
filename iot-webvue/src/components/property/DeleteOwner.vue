@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { deleteOwner } from '@/api/property/ownerApi'
+import { deleteOwner } from '@/api/owner/ownerApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

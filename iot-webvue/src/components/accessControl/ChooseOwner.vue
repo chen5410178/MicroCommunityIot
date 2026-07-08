@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { queryOwners } from '@/api/property/ownerApi'
+import { queryOwners } from '@/api/owner/ownerApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

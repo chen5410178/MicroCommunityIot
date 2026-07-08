@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import { queryOwners } from '@/api/property/ownerApi'
+import { queryOwners } from '@/api/owner/ownerApi'
 import { getCurrentCommunity } from '@/utils/auth'
 import OwnerDetailRoom from '@/views/owner/tabs/OwnerDetailRoom.vue'
 import OwnerDetailMember from '@/views/owner/tabs/OwnerDetailMember.vue'

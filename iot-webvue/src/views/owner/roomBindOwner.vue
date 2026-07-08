@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { queryOwners, saveOwnerRoomRel } from '@/api/property/ownerApi'
+import { queryOwners, saveOwnerRoomRel } from '@/api/owner/ownerApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { saveOwner } from '@/api/property/ownerApi'
+import { saveOwner } from '@/api/owner/ownerApi'
 import { listAttrSpecs, listAttrValues } from '@/api/dev/devApi'
 import { getCurrentCommunity } from '@/utils/auth'
 import request from '@/utils/request'

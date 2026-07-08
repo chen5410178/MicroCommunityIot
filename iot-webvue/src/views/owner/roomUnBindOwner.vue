@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { queryOwners, deleteOwnerRoomRel } from '@/api/property/ownerApi'
+import { queryOwners, deleteOwnerRoomRel } from '@/api/owner/ownerApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {

@@ -85,7 +85,7 @@ export function queryRoomsTree(params) {
       method: 'get',
       params
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code === 0 || Array.isArray(res)) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '查询房屋树失败'))

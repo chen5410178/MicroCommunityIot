@@ -9,8 +9,8 @@
       </el-form-item>
       <el-form-item label="是否有电梯" prop="lift">
         <el-select v-model="form.lift" placeholder="请选择" style="width: 100%">
-          <el-option label="是" value="Y" />
-          <el-option label="否" value="N" />
+          <el-option label="是" value="1010" />
+          <el-option label="否" value="2020" />
         </el-select>
       </el-form-item>
       <el-form-item label="建筑面积" prop="unitArea">

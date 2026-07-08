@@ -1,4 +1,3 @@
-import { getCurrentCommunity } from '@/utils/auth'
 <template>
   <el-dialog :visible.sync="dialogVisible" title="房产导入" width="500px" @close="handleClose">
     <el-upload
@@ -22,6 +21,8 @@ import { getCurrentCommunity } from '@/utils/auth'
 </template>
 
 <script>
+import { getCurrentCommunity } from '@/utils/auth'
+
 export default {
   name: 'ImportOwnerRoom',
   props: { visible: { type: Boolean, default: false } },

@@ -146,7 +146,7 @@ import { saveRoom } from '@/api/property/roomApi'
 import { queryFloors } from '@/api/property/floorApi'
 import { queryUnits } from '@/api/property/unitApi'
 import { listDicts, listAttrSpecs, listAttrValues } from '@/api/property/propertyApi'
-import { queryOwners } from '@/api/property/ownerApi'
+import { queryOwners } from '@/api/owner/ownerApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
