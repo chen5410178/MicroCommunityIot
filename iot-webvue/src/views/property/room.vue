@@ -185,14 +185,13 @@ export default {
   methods: {
     async loadDicts() {
       try {
-        const communityInfo = getCurrentCommunity() || {}
         const [stateRes, typeRes] = await Promise.all([
-          listDicts({ communityId: communityInfo.communityId, tableName: 'building_room', columnName: 'state' }),
-          listDicts({ communityId: communityInfo.communityId, tableName: 'building_room', columnName: 'room_sub_type' })
+          listDicts({ tableName: 'building_room', tableColumns: 'state', page: 1, row: 100 }),
+          listDicts({ tableName: 'building_room', tableColumns: 'room_sub_type', page: 1, row: 100 })
         ])
         this.stateOptions = stateRes.data || []
         this.roomSubTypeOptions = typeRes.data || []
-      } catch (e) { /* ignore */ }
+      } catch (e) { this.$message.error('加载字典失败') }
     },
     async fetchRooms() {
       this.loading = true

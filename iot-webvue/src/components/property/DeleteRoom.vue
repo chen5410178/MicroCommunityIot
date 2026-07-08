@@ -26,7 +26,7 @@ export default {
     async handleConfirm() {
       this.loading = true
       try {
-        await deleteRoom({ roomId: this.delData.roomId })
+        await deleteRoom({ roomId: this.delData.roomId, unitId: this.delData.unitId })
         this.$message.success('删除成功')
         this.$emit('success')
         this.handleClose()

@@ -81,18 +81,17 @@
           <el-col :span="12">
             <el-form-item label="房屋状态" prop="state">
               <el-select v-model="form.state" style="width: 100%">
+                <el-option label="未销售" value="2002" />
                 <el-option label="已入住" value="2001" />
-                <el-option label="未入住" value="2002" />
-                <el-option label="已交定金" value="2003" />
-                <el-option label="已出租" value="2004" />
+                <el-option label="已交房" value="2003" />
                 <el-option label="已装修" value="2005" />
-                <el-option label="空闲" value="2008" />
+                <el-option label="未入住" value="2004" />
                 <el-option label="装修中" value="2009" />
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="业主">
+        <el-form-item label="业主" v-if="form.state !== '2002'">
           <el-input v-model="form.ownerName" placeholder="点击选择业主" readonly @focus="searchOwnerVisible = true">
             <el-button slot="append" icon="el-icon-search" @click="searchOwnerVisible = true" />
           </el-input>
@@ -184,18 +183,29 @@ export default {
   mounted() {
     this.initData()
   },
+  watch: {
+    searchOwnerVisible(val) {
+      if (val) {
+        this.ownerQuery = { name: '', link: '' }
+        this.ownerList = []
+        this.searchOwners()
+      }
+    }
+  },
   methods: {
     async initData() {
       const communityInfo = getCurrentCommunity() || {}
       this.form.communityId = communityInfo.communityId
       try {
-        const [floorRes, dictRes, specRes] = await Promise.all([
-          queryFloors({ communityId: communityInfo.communityId, page: 1, row: 300 }),
-          listDicts({ communityId: communityInfo.communityId, tableName: 'building_room', columnName: 'room_sub_type' }),
-          listAttrSpecs({ tableName: 'building_room_attr', page: 1, row: 100 })
-        ])
+        const floorRes = await queryFloors({ page: 1, row: 300 })
         this.floors = floorRes.data || []
+      } catch (e) { /* ignore */ }
+      try {
+        const dictRes = await listDicts({ tableName: 'building_room', tableColumns: 'room_sub_type', page: 1, row: 500 })
         this.roomSubTypes = dictRes.data || []
+      } catch (e) { /* ignore */ }
+      try {
+        const specRes = await listAttrSpecs({ tableName: 'building_room_attr', page: 1, row: 100 })
         const specs = Array.isArray(specRes) ? specRes : (specRes.data || [])
         this.form.attrs = specs.filter(s => s.specShow === 'Y').map(s => ({ ...s, value: '', values: [] }))
         for (const attr of this.form.attrs) {

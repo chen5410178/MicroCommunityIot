@@ -12,11 +12,12 @@
         style="margin-bottom: 16px"
       />
       <el-table :data="ownerList" v-loading="loading" border stripe>
-        <el-table-column prop="ownerId" label="业主ID" width="120" />
-        <el-table-column prop="name" label="名称" width="100" />
-        <el-table-column prop="link" label="联系方式" width="120" />
-        <el-table-column prop="idCard" label="身份证" width="180" />
-        <el-table-column prop="ownerTypeCdName" label="类型" width="80" />
+        <el-table-column prop="name" label="人员名称" min-width="100" align="center" />
+        <el-table-column label="人员性别" width="80" align="center">
+          <template slot-scope="{ row }">{{ row.sex === 0 ? '男' : '女' }}</template>
+        </el-table-column>
+        <el-table-column prop="ownerTypeName" label="人员类型" min-width="100" align="center" />
+        <el-table-column prop="link" label="联系电话" min-width="120" align="center" />
         <el-table-column label="操作" width="80" align="center">
           <template slot-scope="{ row }">
             <el-button type="text" size="small" style="color: #f56c6c" @click="handleUnbind(row)">解绑</el-button>
@@ -28,8 +29,8 @@
 </template>
 
 <script>
-import { queryOwners, deleteOwnerRoomRel } from '@/api/owner/ownerApi'
-import { getCurrentCommunity } from '@/utils/auth'
+import { queryOwners } from '@/api/owner/ownerApi'
+import { exitRoom } from '@/api/property/roomApi'
 
 export default {
   name: 'RoomUnBindOwner',
@@ -50,19 +51,26 @@ export default {
     async loadOwners() {
       this.loading = true
       try {
-        const communityInfo = getCurrentCommunity() || {}
-        const res = await queryOwners({ communityId: communityInfo.communityId, roomId: this.roomId, page: 1, row: 50 })
-        this.ownerList = Array.isArray(res) ? res : (res.data || [])
+        const res = await queryOwners({ roomId: this.roomId, page: 1, row: 50 })
+        this.ownerList = res.data || []
       } catch (e) { this.$message.error(e.message || '查询失败') }
       finally { this.loading = false }
     },
     async handleUnbind(row) {
       try {
-        const communityInfo = getCurrentCommunity() || {}
-        await deleteOwnerRoomRel({
+        await this.$confirm(`确定要解除 <strong>${row.name}</strong> 与当前房屋的绑定关系吗？`, '解绑确认', {
+          confirmButtonText: '确定解绑',
+          cancelButtonText: '取消',
+          type: 'warning',
+          dangerouslyUseHTMLString: true
+        })
+      } catch {
+        return
+      }
+      try {
+        await exitRoom({
           ownerId: row.ownerId,
-          roomId: this.roomId,
-          communityId: communityInfo.communityId
+          roomId: this.roomId
         })
         this.$message.success('解绑成功')
         this.loadOwners()

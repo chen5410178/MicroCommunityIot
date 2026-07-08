@@ -96,6 +96,44 @@ export function queryRoomsTree(params) {
   })
 }
 
+export function sellRoom(data) {
+  return new Promise((resolve, reject) => {
+    data.communityId = getCommunityId()
+    request({
+      url: '/room.sellRoom',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code === 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '绑定房屋失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+export function exitRoom(data) {
+  return new Promise((resolve, reject) => {
+    data.communityId = getCommunityId()
+    request({
+      url: '/room.exitRoom',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code === 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '解绑失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
 export function importOwnerRoom(data) {
   return new Promise((resolve, reject) => {
     data.communityId = getCommunityId()

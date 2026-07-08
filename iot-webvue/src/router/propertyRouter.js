@@ -46,6 +46,24 @@ const propertyRoutes = [
     name: 'RoomDetail',
     component: () => import('@/views/property/roomDetail.vue'),
     meta: { requiresAuth: true, title: '房屋详情' }
+  },
+  {
+    path: 'pages/property/addRoomView',
+    name: 'AddRoomView',
+    component: () => import('@/views/property/addRoomView.vue'),
+    meta: { requiresAuth: true, title: '添加房屋' }
+  },
+  {
+    path: 'pages/owner/roomBindOwner',
+    name: 'RoomBindOwner',
+    component: () => import('@/views/owner/roomBindOwner.vue'),
+    meta: { requiresAuth: true, title: '房屋绑定人员' }
+  },
+  {
+    path: 'pages/owner/roomUnBindOwner',
+    name: 'RoomUnBindOwner',
+    component: () => import('@/views/owner/roomUnBindOwner.vue'),
+    meta: { requiresAuth: true, title: '房屋解绑人员' }
   }
 ]
 
