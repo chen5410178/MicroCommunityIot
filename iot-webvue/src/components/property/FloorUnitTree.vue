@@ -1,17 +1,6 @@
 <template>
   <div class="floor-unit-tree">
     <el-card shadow="never" class="tree-card">
-      <div slot="header" class="card-header">
-        <span>楼栋单元</span>
-        <div class="tree-actions">
-          <el-button type="text" icon="el-icon-plus" title="添加楼栋" @click="$emit('addFloor')" />
-          <el-button type="text" icon="el-icon-edit" title="修改楼栋" style="color: #409eff" @click="$emit('editFloor')" />
-          <el-button type="text" icon="el-icon-delete" title="删除楼栋" style="color: #f56c6c" @click="$emit('deleteFloor')" />
-          <el-button type="text" icon="el-icon-circle-plus-outline" title="添加单元" style="margin-left: 8px" @click="$emit('addUnit')" />
-          <el-button type="text" icon="el-icon-edit-outline" title="修改单元" style="color: #409eff" @click="$emit('editUnit')" />
-          <el-button type="text" icon="el-icon-delete" title="删除单元" style="color: #f56c6c" @click="$emit('deleteUnit')" />
-        </div>
-      </div>
       <el-tree
         ref="tree"
         :data="treeData"
@@ -107,17 +96,5 @@ export default {
 .tree-card {
   height: 100%;
 }
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.tree-actions {
-  display: flex;
-  flex-wrap: wrap;
-}
-.tree-actions .el-button--text {
-  padding: 2px 5px;
-}
+
 </style>

@@ -68,7 +68,7 @@ const monitorRoutes = [
   {
     path: 'pages/ai/listDispatchFace',
     name: 'ListDispatchFace',
-    component: () => import('@/views/ai/listDispatchFace.vue'),
+    component: () => import('@/views/ai/dispatchFace.vue'),
     meta: { requiresAuth: true, title: '人员布控' }
   },
   {
@@ -98,7 +98,7 @@ const monitorRoutes = [
   {
     path: 'pages/ai/dispatchFace',
     name: 'DispatchFace',
-    component: () => import('@/views/ai/listDispatchFace.vue'),
+    component: () => import('@/views/ai/dispatchFace.vue'),
     meta: { requiresAuth: true, title: '人脸布控' }
   }
 ]

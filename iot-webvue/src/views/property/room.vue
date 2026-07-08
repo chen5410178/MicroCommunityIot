@@ -334,7 +334,7 @@ export default {
   display: flex;
   flex: 1;
   overflow: hidden;
-  padding: 16px;
+  margin-top: 10px;
 }
 .tree-panel {
   margin-right: 16px;

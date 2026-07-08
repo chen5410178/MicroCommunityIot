@@ -26,7 +26,7 @@ const carRoutes = [
   {
     path: 'pages/car/barrier',
     name: 'Barrier',
-    component: () => import('@/views/car/listBarrier.vue'),
+    component: () => import('@/views/car/barrier.vue'),
     meta: { requiresAuth: true, title: '道闸摄像头' }
   },
   {
@@ -62,13 +62,13 @@ const carRoutes = [
   {
     path: 'pages/car/carMonthCard',
     name: 'CarMonthCard',
-    component: () => import('@/views/car/listCarMonthCard.vue'),
+    component: () => import('@/views/car/carMonthCard.vue'),
     meta: { requiresAuth: true, title: '停车月卡' }
   },
   {
     path: 'pages/car/carMonthOrder',
     name: 'CarMonthOrder',
-    component: () => import('@/views/car/listCarMonthOrder.vue'),
+    component: () => import('@/views/car/carMonthOrder.vue'),
     meta: { requiresAuth: true, title: '月卡订单' }
   },
   {
@@ -80,7 +80,7 @@ const carRoutes = [
   {
     path: 'pages/car/tempInnerCar',
     name: 'TempInnerCar',
-    component: () => import('@/views/car/listTempInnerCar.vue'),
+    component: () => import('@/views/car/tempInnerCar.vue'),
     meta: { requiresAuth: true, title: '内部临时车' }
   },
   {

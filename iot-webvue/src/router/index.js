@@ -22,7 +22,7 @@ const routes = [
   {
     path: '/pages/frame/login',
     name: 'Login',
-    component: () => import('@/views/frame/login/login.vue'),
+      component: () => import('@/views/frame/login.vue'),
     meta: { title: '登录' }
   },
   {
@@ -42,7 +42,7 @@ const routes = [
       {
         path: 'pages/index/index',
         name: 'Dashboard',
-        component: () => import('@/views/index/dashboard.vue'),
+        component: () => import('@/views/index/index.vue'),
         meta: { requiresAuth: true, title: '首页' }
       },
       ...devRouter,
@@ -74,7 +74,7 @@ const routes = [
       {
         path: 'pages/frame/registerProtocol',
         name: 'RegisterProtocol',
-        component: () => import('@/views/frame/registerProtocol/registerProtocol.vue'),
+        component: () => import('@/views/frame/registerProtocol.vue'),
         meta: { requiresAuth: true, title: '注册协议' }
       },
       {

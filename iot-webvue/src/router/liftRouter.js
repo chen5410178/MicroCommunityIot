@@ -20,7 +20,7 @@ const liftRoutes = [
   {
     path: 'pages/lift/liftCameraManage',
     name: 'LiftCameraManage',
-    component: () => import('@/views/lift/liftCamera.vue'),
+    component: () => import('@/views/lift/liftCameraManage.vue'),
     meta: { requiresAuth: true, title: '电梯相机' }
   },
   {

@@ -32,7 +32,7 @@ const lockRoutes = [
   {
     path: 'pages/lock/lockPersonManage',
     name: 'LockPersonManage',
-    component: () => import('@/views/lock/listLockPerson.vue'),
+    component: () => import('@/views/lock/lockPersonManage.vue'),
     meta: { requiresAuth: true, title: '门锁人员' }
   }
 ]

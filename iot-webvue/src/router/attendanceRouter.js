@@ -20,7 +20,7 @@ const attendanceRoutes = [
   {
     path: 'pages/attendance/attendanceStaff',
     name: 'AttendanceStaff',
-    component: () => import('@/views/attendance/attendanceStaffManage.vue'),
+    component: () => import('@/views/attendance/attendanceStaff.vue'),
     meta: { requiresAuth: true, title: '考勤员工' }
   }
 ]

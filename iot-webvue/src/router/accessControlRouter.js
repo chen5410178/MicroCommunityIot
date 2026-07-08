@@ -2,7 +2,7 @@ const accessControlRoutes = [
   {
     path: 'pages/accessControl/accessControlManage',
     name: 'AccessControlManage',
-    component: () => import('@/views/accessControl/listAccessControlManage.vue'),
+    component: () => import('@/views/accessControl/accessControlManage.vue'),
     meta: { requiresAuth: true, title: '门禁设备' }
   },
   {
@@ -14,13 +14,13 @@ const accessControlRoutes = [
   {
     path: 'pages/accessControl/accessControlFace',
     name: 'AccessControlFace',
-    component: () => import('@/views/accessControl/listAccessControlFace.vue'),
+    component: () => import('@/views/accessControl/accessControlFace.vue'),
     meta: { requiresAuth: true, title: '门禁人员' }
   },
   {
     path: 'pages/accessControl/accessControlPerson',
     name: 'AccessControlPerson',
-    component: () => import('@/views/accessControl/addAccessControlPerson.vue'),
+    component: () => import('@/views/accessControl/accessControlPerson.vue'),
     meta: { requiresAuth: true, title: '人员授权' }
   },
   {
@@ -32,37 +32,37 @@ const accessControlRoutes = [
   {
     path: 'pages/accessControl/visitTypeManage',
     name: 'VisitTypeManage',
-    component: () => import('@/views/accessControl/listVisitType.vue'),
+    component: () => import('@/views/accessControl/visitTypeManage.vue'),
     meta: { requiresAuth: true, title: '访客类型' }
   },
   {
     path: 'pages/accessControl/accessControlLog',
     name: 'AccessControlLog',
-    component: () => import('@/views/accessControl/listAccessControlLog.vue'),
+    component: () => import('@/views/accessControl/accessControlLog.vue'),
     meta: { requiresAuth: true, title: '下发日志' }
   },
   {
     path: 'pages/accessControl/hardwareManufacturerAttrManage',
     name: 'HardwareManufacturerAttrManage',
-    component: () => import('@/views/accessControl/listHardwareManufacturerAttr.vue'),
+    component: () => import('@/views/accessControl/hardwareManufacturerAttrManage.vue'),
     meta: { requiresAuth: true, title: '门禁厂家属性' }
   },
   {
     path: 'pages/accessControl/accessControlOrg',
     name: 'AccessControlOrg',
-    component: () => import('@/views/accessControl/listAccessControlOrg.vue'),
+    component: () => import('@/views/accessControl/accessControlOrg.vue'),
     meta: { requiresAuth: true, title: '部门授权' }
   },
   {
     path: 'pages/accessControl/visitDetail',
     name: 'VisitDetail',
-    component: () => import('@/views/accessControl/listVisitDetail.vue'),
+    component: () => import('@/views/accessControl/visitDetail.vue'),
     meta: { requiresAuth: true, title: '访客详情' }
   },
   {
     path: 'pages/accessControl/accessControlAd',
     name: 'AccessControlAd',
-    component: () => import('@/views/accessControl/listAccessControlAd.vue'),
+    component: () => import('@/views/accessControl/accessControlAd.vue'),
     meta: { requiresAuth: true, title: '广告' }
   },
   {
@@ -92,7 +92,7 @@ const accessControlRoutes = [
   {
     path: 'pages/accessControl/intercomLog',
     name: 'IntercomLog',
-    component: () => import('@/views/accessControl/listIntercomLog.vue'),
+    component: () => import('@/views/accessControl/intercomLog.vue'),
     meta: { requiresAuth: true, title: '呼叫记录' }
   },
   {
@@ -104,37 +104,37 @@ const accessControlRoutes = [
   {
     path: 'pages/accessControl/accessControlFloor',
     name: 'AccessControlFloor',
-    component: () => import('@/views/accessControl/listAccessControlFloor.vue'),
+    component: () => import('@/views/accessControl/accessControlFloor.vue'),
     meta: { requiresAuth: true, title: '门禁楼层' }
   },
   {
     path: 'pages/accessControl/visitManage',
     name: 'VisitManage',
-    component: () => import('@/views/accessControl/listVisitManage.vue'),
+    component: () => import('@/views/accessControl/visitManage.vue'),
     meta: { requiresAuth: true, title: '访客管理' }
   },
   {
     path: 'pages/accessControl/personFaceQrcode',
     name: 'PersonFaceQrcode',
-    component: () => import('@/views/accessControl/listPersonFaceQrcode.vue'),
+    component: () => import('@/views/accessControl/personFaceQrcode.vue'),
     meta: { requiresAuth: true, title: '人脸二维码' }
   },
   {
     path: 'pages/accessControl/personFace',
     name: 'PersonFace',
-    component: () => import('@/views/accessControl/listPersonFace.vue'),
+    component: () => import('@/views/accessControl/personFace.vue'),
     meta: { requiresAuth: true, title: '人脸上传' }
   },
   {
     path: 'pages/accessControl/passQrcodeSetting',
     name: 'PassQrcodeSetting',
-    component: () => import('@/views/accessControl/listPassQrcodeSetting.vue'),
+    component: () => import('@/views/accessControl/passQrcodeSetting.vue'),
     meta: { requiresAuth: true, title: '通行码设置' }
   },
   {
     path: 'pages/accessControl/passQrcode',
     name: 'PassQrcode',
-    component: () => import('@/views/accessControl/listPassQrcode.vue'),
+    component: () => import('@/views/accessControl/passQrcode.vue'),
     meta: { requiresAuth: true, title: '通行二维码' }
   }
 ]

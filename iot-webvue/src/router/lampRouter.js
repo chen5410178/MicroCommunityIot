@@ -2,7 +2,7 @@ const lampRoutes = [
   {
     path: 'pages/lamp/lampMachineFactoryManage',
     name: 'LampMachineFactoryManage',
-    component: () => import('@/views/lamp/listLampMachineFactoryManage.vue'),
+    component: () => import('@/views/lamp/lampMachineFactoryManage.vue'),
     meta: { requiresAuth: true, title: '灯杆设备厂商' }
   },
   {
@@ -14,13 +14,13 @@ const lampRoutes = [
   {
     path: 'pages/lamp/telCallLog',
     name: 'TelCallLog',
-    component: () => import('@/views/lamp/listTelCallLog.vue'),
+    component: () => import('@/views/lamp/telCallLog.vue'),
     meta: { requiresAuth: true, title: '呼叫记录' }
   },
   {
     path: 'pages/lamp/telMachine',
     name: 'TelMachine',
-    component: () => import('@/views/lamp/listTelMachine.vue'),
+    component: () => import('@/views/lamp/telMachine.vue'),
     meta: { requiresAuth: true, title: '话机管理' }
   },
   {
@@ -32,13 +32,13 @@ const lampRoutes = [
   {
     path: 'pages/lamp/telSmsLog',
     name: 'TelSmsLog',
-    component: () => import('@/views/lamp/listTelSmsLog.vue'),
+    component: () => import('@/views/lamp/telSmsLog.vue'),
     meta: { requiresAuth: true, title: '短信记录' }
   },
   {
     path: 'pages/lamp/telTts',
     name: 'TelTts',
-    component: () => import('@/views/lamp/listTelTts.vue'),
+    component: () => import('@/views/lamp/telTts.vue'),
     meta: { requiresAuth: true, title: '话机语音' }
   },
   {

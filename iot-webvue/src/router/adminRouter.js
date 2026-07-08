@@ -14,13 +14,13 @@ const adminRoutes = [
   {
     path: 'pages/admin/propertyCompanyManage',
     name: 'PropertyCompanyManage',
-    component: () => import('@/views/admin/listPropertyCompany.vue'),
+    component: () => import('@/views/admin/propertyCompanyManage.vue'),
     meta: { requiresAuth: true, title: '物业公司管理' }
   },
   {
     path: 'pages/admin/propertyCommunityManage',
     name: 'PropertyCommunityManage',
-    component: () => import('@/views/admin/listPropertyCommunity.vue'),
+    component: () => import('@/views/admin/propertyCommunityManage.vue'),
     meta: { requiresAuth: true, title: '管理小区' }
   },
   {
@@ -50,13 +50,13 @@ const adminRoutes = [
   {
     path: 'pages/meter/instrumentFactoryManage',
     name: 'InstrumentFactoryManage',
-    component: () => import('@/views/meter/listInstrumentFactoryManage.vue'),
+    component: () => import('@/views/meter/instrumentFactoryManage.vue'),
     meta: { requiresAuth: true, title: '仪表厂家' }
   },
   {
     path: 'pages/meter/instrumentFactorySpecManage',
     name: 'InstrumentFactorySpecManage',
-    component: () => import('@/views/meter/listInstrumentFactorySpecManage.vue'),
+    component: () => import('@/views/meter/instrumentFactorySpecManage.vue'),
     meta: { requiresAuth: true, title: '厂家规格' }
   },
   {
@@ -80,49 +80,49 @@ const adminRoutes = [
   {
     path: 'pages/3d/dtModal',
     name: 'DtModalManage',
-    component: () => import('@/views/3d/listDtModal.vue'),
+    component: () => import('@/views/3d/dtModal.vue'),
     meta: { requiresAuth: true, title: '3D模型管理' }
   },
   {
     path: 'pages/meter/adminMeterRecharge',
     name: 'AdminMeterRecharge',
-    component: () => import('@/views/meter/listAdminMeterRecharge.vue'),
+    component: () => import('@/views/meter/adminMeterRecharge.vue'),
     meta: { requiresAuth: true, title: '水电充值' }
   },
   {
     path: 'pages/charge/adminChargeOrder',
     name: 'AdminChargeOrder',
-    component: () => import('@/views/charge/listAdminChargeOrder.vue'),
+    component: () => import('@/views/charge/adminChargeOrder.vue'),
     meta: { requiresAuth: true, title: '充电订单' }
   },
   {
     path: 'pages/charge/adminChargeOrderAccts',
     name: 'AdminChargeOrderAccts',
-    component: () => import('@/views/charge/listAdminChargeOrderAccts.vue'),
+    component: () => import('@/views/charge/adminChargeOrderAccts.vue'),
     meta: { requiresAuth: true, title: '扣款明细' }
   },
   {
     path: 'pages/accessControl/adminInout',
     name: 'AdminInout',
-    component: () => import('@/views/accessControl/listAdminInout.vue'),
+    component: () => import('@/views/accessControl/adminInout.vue'),
     meta: { requiresAuth: true, title: '门禁出入记录' }
   },
   {
     path: 'pages/car/adminCarInout',
     name: 'AdminCarInout',
-    component: () => import('@/views/car/listAdminCarInout.vue'),
+    component: () => import('@/views/car/adminCarInout.vue'),
     meta: { requiresAuth: true, title: '车辆出入记录' }
   },
   {
     path: 'pages/car/spaceMachineFactory',
     name: 'SpaceMachineFactory',
-    component: () => import('@/views/car/listSpaceMachineFactory.vue'),
+    component: () => import('@/views/car/spaceMachineFactory.vue'),
     meta: { requiresAuth: true, title: '车位设备厂商' }
   },
   {
     path: 'pages/charge/adminChargeMachine',
     name: 'AdminChargeMachine',
-    component: () => import('@/views/charge/listAdminChargeMachine.vue'),
+    component: () => import('@/views/charge/adminChargeMachine.vue'),
     meta: { requiresAuth: true, title: '充电桩管理' }
   },
   {
@@ -158,25 +158,25 @@ const adminRoutes = [
   {
     path: 'pages/meter/adminMeter',
     name: 'AdminMeter',
-    component: () => import('@/views/meter/listAdminMeter.vue'),
+    component: () => import('@/views/meter/adminMeter.vue'),
     meta: { requiresAuth: true, title: '水电表管理' }
   },
   {
     path: 'pages/3d/dtScript',
     name: 'DtScript',
-    component: () => import('@/views/3d/listDtScript.vue'),
+    component: () => import('@/views/3d/dtScript.vue'),
     meta: { requiresAuth: true, title: '3D脚本' }
   },
   {
     path: 'pages/accessControl/hardwareManufacturerManage',
     name: 'HardwareManufacturerManage',
-    component: () => import('@/views/accessControl/listHardwareManufacturer.vue'),
+    component: () => import('@/views/accessControl/hardwareManufacturerManage.vue'),
     meta: { requiresAuth: true, title: '门禁厂家' }
   },
   {
     path: 'pages/admin/dtScene',
     name: 'DtScene',
-    component: () => import('@/views/admin/listDtScene.vue'),
+    component: () => import('@/views/admin/dtScene.vue'),
     meta: { requiresAuth: true, title: '3D场景' }
   },
   {
@@ -188,13 +188,13 @@ const adminRoutes = [
   {
     path: 'pages/car/adminBarrier',
     name: 'AdminBarrier',
-    component: () => import('@/views/car/listAdminBarrier.vue'),
+    component: () => import('@/views/car/adminBarrier.vue'),
     meta: { requiresAuth: true, title: '道闸摄像头' }
   },
   {
     path: 'pages/common/cityArea',
     name: 'CityArea',
-    component: () => import('@/views/common/cityAreaManage.vue'),
+    component: () => import('@/views/common/cityArea.vue'),
     meta: { requiresAuth: true, title: '地区管理' }
   },
   {

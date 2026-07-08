@@ -8,13 +8,13 @@ const systemRoutes = [
   {
     path: 'pages/frame/role',
     name: 'RoleManage',
-    component: () => import('@/views/frame/role/role.vue'),
+    component: () => import('@/views/frame/role.vue'),
     meta: { requiresAuth: true, title: '角色管理' }
   },
   {
     path: 'pages/frame/staff',
     name: 'StaffManage',
-    component: () => import('@/views/frame/staffManage.vue'),
+    component: () => import('@/views/frame/staff.vue'),
     meta: { requiresAuth: true, title: '员工管理' }
   },
   {
@@ -26,7 +26,7 @@ const systemRoutes = [
   {
     path: 'pages/charge/workLicenseMachine',
     name: 'WorkLicenseMachine',
-    component: () => import('@/views/charge/listWorkLicenseMachine.vue'),
+    component: () => import('@/views/charge/workLicenseMachine.vue'),
     meta: { requiresAuth: true, title: '员工工牌' }
   },
   {
@@ -57,32 +57,32 @@ const systemRoutes = [
   {
     path: 'pages/property/smallWeChatManage',
     name: 'SmallWeChatManage',
-    component: () => import('@/views/property/listSmallWeChatManage.vue'),
+    component: () => import('@/views/property/smallWeChatManage.vue'),
     meta: { requiresAuth: true, title: '我的小程序' }
   },
   // ===== 公众号管理 =====
   {
     path: 'pages/property/publicWeChatManage',
     name: 'PublicWeChatManage',
-    component: () => import('@/views/property/listPublicWeChat.vue'),
+    component: () => import('@/views/property/publicWeChatManage.vue'),
     meta: { requiresAuth: true, title: '公众号管理' }
   },
   {
     path: 'pages/property/wechatMenuManage',
     name: 'WechatMenuManage',
-    component: () => import('@/views/property/listWechatMenu.vue'),
+    component: () => import('@/views/property/wechatMenuManage.vue'),
     meta: { requiresAuth: true, title: '微信菜单' }
   },
   {
     path: 'pages/property/wechatSmsTemplateManage',
     name: 'WechatSmsTemplateManage',
-    component: () => import('@/views/property/listWechatSmsTemplate.vue'),
+    component: () => import('@/views/property/wechatSmsTemplateManage.vue'),
     meta: { requiresAuth: true, title: '微信模板' }
   },
   {
     path: 'pages/3d/cockpit',
     name: 'CockpitPage',
-    component: () => import('@/views/3d/cockpitPage.vue'),
+    component: () => import('@/views/3d/cockpit.vue'),
     meta: { requiresAuth: true, title: '3D驾驶舱' }
   }
 ]

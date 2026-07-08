@@ -2,7 +2,7 @@ const propertyRoutes = [
   {
     path: 'pages/machine/machineLocation',
     name: 'MachineLocation',
-    component: () => import('@/views/machine/listMachineLocation.vue'),
+    component: () => import('@/views/machine/machineLocation.vue'),
     meta: { requiresAuth: true, title: '设备位置' }
   },
   {
@@ -20,7 +20,7 @@ const propertyRoutes = [
   {
     path: 'pages/owner/appUser',
     name: 'ListAppUser',
-    component: () => import('@/views/owner/listAppUser.vue'),
+    component: () => import('@/views/owner/appUser.vue'),
     meta: { requiresAuth: true, title: '房屋认证' }
   },
   {
@@ -32,13 +32,13 @@ const propertyRoutes = [
   {
     path: 'pages/property/room',
     name: 'Room',
-    component: () => import('@/views/property/listRoomManage.vue'),
+    component: () => import('@/views/property/room.vue'),
     meta: { requiresAuth: true, title: '房屋管理' }
   },
   {
     path: 'pages/owner/account',
     name: 'Account',
-    component: () => import('@/views/owner/listAccount.vue'),
+    component: () => import('@/views/owner/account.vue'),
     meta: { requiresAuth: true, title: '账户管理' }
   },
   {
