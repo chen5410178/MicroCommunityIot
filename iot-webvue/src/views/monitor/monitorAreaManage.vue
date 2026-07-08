@@ -57,6 +57,7 @@ import { listMonitorAreas } from '@/api/monitor/monitorApi'
 import AddMonitorArea from '@/components/monitor/AddMonitorArea.vue'
 import EditMonitorArea from '@/components/monitor/EditMonitorArea.vue'
 import DeleteMonitorArea from '@/components/monitor/DeleteMonitorArea.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'MonitorAreaManage',
@@ -85,7 +86,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         this.queryParams.communityId = communityId
         const res = await listMonitorAreas(this.queryParams)
         this.list = res.data || []

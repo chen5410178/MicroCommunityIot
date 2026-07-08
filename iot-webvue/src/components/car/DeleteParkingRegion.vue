@@ -20,6 +20,7 @@
 
 <script>
 import { deleteParkingRegion } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteParkingRegion',
@@ -41,7 +42,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await deleteParkingRegion({ prId: this.delData.prId, communityId })
         this.$message.success('删除成功')
         this.$emit('success')

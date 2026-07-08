@@ -37,6 +37,7 @@
 
 <script>
 import { tempCarAuth } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ParkingAreaControlTempCarAuthConfirm',
@@ -94,7 +95,7 @@ export default {
         this.authInfo.msg = this.authInfo.msg || '禁止通行'
       }
       this.authInfo.state = state
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       this.loading = true
       try {
         const res = await tempCarAuth({ ...this.authInfo, communityId })

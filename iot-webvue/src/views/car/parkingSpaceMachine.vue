@@ -65,6 +65,7 @@
 <script>
 import { listParkingSpaceMachines } from '@/api/car/carApi'
 import DeleteParkingSpaceMachine from '@/components/car/DeleteParkingSpaceMachine.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ParkingSpaceMachine',
@@ -92,7 +93,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingSpaceMachines({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0

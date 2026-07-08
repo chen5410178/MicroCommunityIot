@@ -93,6 +93,7 @@
 <script>
 import { listWorkLicenseLogs, listWorkLicenseMachines } from '@/api/charge/chargeApi'
 import ShowWorkLicenseLog from '@/components/charge/ShowWorkLicenseLog.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'WorkLicenseLog',
@@ -126,7 +127,7 @@ export default {
       try {
         const params = {
           ...this.queryParams,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         const res = await listWorkLicenseLogs(params)
         this.list = res.data || []

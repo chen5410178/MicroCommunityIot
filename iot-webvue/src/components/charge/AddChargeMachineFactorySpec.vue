@@ -22,6 +22,7 @@
 
 <script>
 import { saveChargeMachineFactorySpec } from '@/api/charge/chargeApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddChargeMachineFactorySpec',
@@ -63,7 +64,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveChargeMachineFactorySpec({ factoryId: this.factoryId, specName: this.form.specName, remark: this.form.remark, communityId })
         this.$message.success('添加成功')
         this.$emit('success')

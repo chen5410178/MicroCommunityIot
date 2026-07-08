@@ -16,6 +16,7 @@
 
 <script>
 import { getFreeParkingSpace } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ParkingAreaControlRemaining',
@@ -30,7 +31,7 @@ export default {
   methods: {
     async loadData() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await getFreeParkingSpace({ paId: this.paId, communityId })
         const data = res.data || {}
         this.info.total = data.total || 0

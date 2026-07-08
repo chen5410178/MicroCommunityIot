@@ -15,6 +15,7 @@
 
 <script>
 import { listMonitorAreas, listMonitorMachines } from '@/api/monitor/monitorApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'VideoTree',
@@ -30,7 +31,7 @@ export default {
     }
   },
   mounted() {
-    this.communityId = this.$store.state.app.currentCommunity.communityId || ''
+    this.communityId = (getCurrentCommunity() || {}).communityId || ''
     this.loadAreas()
   },
   methods: {

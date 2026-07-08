@@ -19,6 +19,7 @@
 
 <script>
 import { restartChargeMachine } from '@/api/charge/chargeApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'RestartChargeMachine',
@@ -40,7 +41,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await restartChargeMachine({ machineId: this.restartData.machineId, communityId })
         this.$message.success('重启成功')
         this.$emit('success')

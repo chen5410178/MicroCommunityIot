@@ -28,6 +28,7 @@
 
 <script>
 import { saveChargeRule } from '@/api/charge/chargeApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddChargeRule',
@@ -72,7 +73,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveChargeRule({ ...this.form, communityId })
         this.$message.success('添加成功')
         this.$emit('success')

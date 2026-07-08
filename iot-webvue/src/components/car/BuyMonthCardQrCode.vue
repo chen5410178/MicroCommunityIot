@@ -18,6 +18,7 @@
 <script>
 import QRCode from 'qrcodejs2'
 import { getBuyCarMonthCardQrCodeUrl } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'BuyMonthCardQrCode',
@@ -47,7 +48,7 @@ export default {
   methods: {
     async loadQrCodeUrl() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await getBuyCarMonthCardQrCodeUrl({ communityId })
         const url = res.data && res.data.url ? res.data.url : res.url || ''
         if (url) {

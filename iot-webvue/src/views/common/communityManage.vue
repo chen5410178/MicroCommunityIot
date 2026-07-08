@@ -76,6 +76,7 @@
 <script>
 import { listCommunitys } from '@/api/community/communityApi'
 import { listAttrSpecs } from '@/api/dev/devApi'
+import { getUserInfo } from '@/utils/auth'
 import AreaSelect from '@/components/common/AreaSelect.vue'
 import AddCommunity from '@/components/common/AddCommunity.vue'
 import EditCommunity from '@/components/common/EditCommunity.vue'
@@ -106,7 +107,7 @@ export default {
   },
   computed: {
     isAdmin() {
-      const userInfo = this.$store.state.user.userInfo
+      const userInfo = getUserInfo() || {}
       return userInfo && userInfo.storeTypeCd === '800900000001'
     }
   },

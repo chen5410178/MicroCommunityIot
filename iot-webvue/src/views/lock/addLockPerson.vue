@@ -71,6 +71,7 @@
 <script>
 import { saveLockPerson, listLockMachines } from '@/api/lock/lockApi'
 import SearchOwner from '@/components/monitor/SearchOwner.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddLockPerson',
@@ -107,7 +108,7 @@ export default {
   methods: {
     async fetchLockMachines() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listLockMachines({ page: -1, row: 1000, communityId })
         this.lockMachineList = res.data || []
       } catch { /* ignore */ }
@@ -124,7 +125,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveLockPerson({ ...this.form, communityId })
         this.$message.success('授权成功')
         this.$router.back()

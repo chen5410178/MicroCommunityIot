@@ -20,6 +20,7 @@
 
 <script>
 import { deletePaymentPool } from '@/api/property/paymentPoolApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeletePaymentPool',
@@ -43,7 +44,7 @@ export default {
       try {
         await deletePaymentPool({
           ppId: this.delData.ppId,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         this.$message.success('删除成功')
         this.$emit('success')

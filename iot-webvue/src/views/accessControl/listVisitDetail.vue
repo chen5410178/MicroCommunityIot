@@ -92,6 +92,7 @@
 <script>
 import { listVisits } from '@/api/accessControl/accessControlApi'
 import VisitDetailAccessControlInout from '@/components/accessControl/VisitDetailAccessControlInout.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'VisitDetail',
@@ -131,7 +132,7 @@ export default {
           visitId: visitId,
           page: 1,
           row: 1,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         const data = res.data || []
         if (data.length > 0) {

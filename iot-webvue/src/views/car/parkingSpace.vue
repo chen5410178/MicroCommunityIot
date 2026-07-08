@@ -141,6 +141,7 @@ import AddParkingSpace from '@/components/car/AddParkingSpace.vue'
 import EditParkingSpace from '@/components/car/EditParkingSpace.vue'
 import DeleteParkingSpace from '@/components/car/DeleteParkingSpace.vue'
 import PlayMonitorVideo from '@/components/monitor/PlayMonitorVideo.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ParkingSpace',
@@ -175,7 +176,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingSpaces({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0
@@ -185,7 +186,7 @@ export default {
     },
     async fetchParkingAreas() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingAreas({ page: 1, row: 100, communityId })
         this.parkingAreas = res.data || []
       } catch (e) { /* ignore */ }

@@ -65,6 +65,7 @@
 <script>
 import { listParkingSpaceMachines, updateParkingSpaceMachine, listSpaceMachineFactorys } from '@/api/car/carApi'
 import SearchParkingSpace from '@/components/car/SearchParkingSpace.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditParkingSpaceMachine',
@@ -106,7 +107,7 @@ export default {
       const machineId = this.$route.query.machineId
       if (!machineId) return
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingSpaceMachines({ page: 1, row: 1, machineId, communityId })
         if (res.data && res.data.length > 0) {
           const detail = res.data[0]
@@ -149,7 +150,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await updateParkingSpaceMachine({ ...this.form, communityId })
         this.$message.success('修改成功')
         this.$router.back()

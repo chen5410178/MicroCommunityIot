@@ -35,6 +35,7 @@
 
 <script>
 import { listCatalogMenus } from '@/api/menu/menuApi'
+import { getCurrentCommunity, setMenus } from '@/utils/auth'
 
 export default {
   name: 'Menu2',
@@ -55,7 +56,7 @@ export default {
       if (!catalog || !catalog.caId) return
       listCatalogMenus({
         caId: catalog.caId,
-        communityId: this.$store.state.app.currentCommunity.communityId
+        communityId: (getCurrentCommunity() || {}).communityId || ''
       }).then(res => {
         let data = res
         if (data && data.data) {
@@ -64,7 +65,7 @@ export default {
         if (!data || data.length === 0) return
         data.sort((a, b) => a.seq - b.seq)
         this.menus = this.refreshMenuActive(data, '')
-        this.$store.commit('app/SET_MENUS', this.menus)
+        setMenus(this.menus)
         this.syncActiveByRoute()
       }).catch(() => {})
     },
@@ -79,7 +80,7 @@ export default {
     },
     switchMenu(menu) {
       this.menus = this.refreshMenuActive(this.menus, menu.id).slice()
-      this.$store.commit('app/SET_MENUS', this.menus)
+      setMenus(this.menus)
       this.subMenus = menu.childs || []
       this.curMenuName = menu.name
       if (menu.childs && menu.childs.length > 0) {

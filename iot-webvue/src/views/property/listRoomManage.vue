@@ -56,33 +56,33 @@
         </el-card>
         <el-card shadow="never" class="table-card">
           <el-table :data="roomList" v-loading="loading" border stripe style="width: 100%">
-            <el-table-column label="房屋" min-width="130" fixed="left">
+            <el-table-column label="房屋"  fixed="left">
               <template slot-scope="{ row }">
                 {{ row.floorNum }}-{{ row.unitNum }}-{{ row.roomNum }}
               </template>
             </el-table-column>
-            <el-table-column label="楼层" width="80">
+            <el-table-column label="楼层" >
               <template slot-scope="{ row }">{{ row.layer }}层</template>
             </el-table-column>
-            <el-table-column prop="ownerName" label="业主" width="100">
+            <el-table-column prop="ownerName" label="业主">
               <template slot-scope="{ row }">{{ row.ownerName || '-' }}</template>
             </el-table-column>
-            <el-table-column prop="roomSubTypeName" label="类型" width="80" />
-            <el-table-column label="建筑/室内面积" width="130">
+            <el-table-column prop="roomSubTypeName" label="类型" />
+            <el-table-column label="建筑/室内面积">
               <template slot-scope="{ row }">{{ row.builtUpArea }}/{{ row.roomArea }}㎡</template>
             </el-table-column>
-            <el-table-column prop="stateName" label="状态" width="80" />
-            <el-table-column label="入住时间" width="100">
+            <el-table-column prop="stateName" label="状态"/>
+            <el-table-column label="入住时间">
               <template slot-scope="{ row }">{{ row.startTime || '-' }}</template>
             </el-table-column>
-            <el-table-column label="住户" width="60" align="center">
+            <el-table-column label="住户"  align="center">
               <template slot-scope="{ row }">
                 <el-button type="text" size="small" @click="handleViewMembers(row)">
                   {{ row.memberCount || 0 }}
                 </el-button>
               </template>
             </el-table-column>
-            <el-table-column v-for="col in dynamicColumns" :key="col" :label="col" width="100">
+            <el-table-column v-for="col in dynamicColumns" :key="col" :label="col" >
               <template slot-scope="{ row }">
                 {{ getDynamicColumnValue(row, col) }}
               </template>
@@ -142,6 +142,7 @@ import ImportOwnerRoom from '@/components/property/ImportOwnerRoom.vue'
 import OwnerRooms from '@/components/property/OwnerRooms.vue'
 import OwnerMembers from '@/components/property/OwnerMembers.vue'
 import OwnerCars from '@/components/property/OwnerCars.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListRoomManage',
@@ -181,7 +182,7 @@ export default {
   methods: {
     async loadDicts() {
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const [stateRes, typeRes] = await Promise.all([
           listDicts({ communityId: communityInfo.communityId, tableName: 'building_room', columnName: 'state' }),
           listDicts({ communityId: communityInfo.communityId, tableName: 'building_room', columnName: 'room_sub_type' })
@@ -193,7 +194,7 @@ export default {
     async fetchRooms() {
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const params = { ...this.queryParams, communityId: communityInfo.communityId }
         const allNum = this.queryParams.roomId || ''
         const allNums = allNum.split('-')
@@ -266,7 +267,7 @@ export default {
     async handleEditFloor() {
       if (!this.queryParams.floorId) { this.$message.warning('请先选择楼栋'); return }
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await queryFloors({ communityId: communityInfo.communityId, floorId: this.queryParams.floorId, page: 1, row: 1 })
         if (res.data && res.data.length) { this.currentFloor = { ...res.data[0] }; this.editFloorVisible = true }
       } catch (e) { this.$message.error('加载楼栋信息失败') }
@@ -274,7 +275,7 @@ export default {
     async handleDeleteFloor() {
       if (!this.queryParams.floorId) { this.$message.warning('请先选择楼栋'); return }
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await queryFloors({ communityId: communityInfo.communityId, floorId: this.queryParams.floorId, page: 1, row: 1 })
         if (res.data && res.data.length) { this.currentFloor = { ...res.data[0] }; this.delFloorVisible = true }
       } catch (e) { this.$message.error('加载楼栋信息失败') }
@@ -288,7 +289,7 @@ export default {
     async handleEditUnit() {
       if (!this.queryParams.unitId) { this.$message.warning('请先选择单元'); return }
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await queryUnits({ communityId: communityInfo.communityId, unitId: this.queryParams.unitId })
         const units = Array.isArray(res) ? res : (res.data || [])
         if (units.length) { this.currentUnit = { ...units[0] }; this.editUnitVisible = true }
@@ -297,7 +298,7 @@ export default {
     async handleDeleteUnit() {
       if (!this.queryParams.unitId) { this.$message.warning('请先选择单元'); return }
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await queryUnits({ communityId: communityInfo.communityId, unitId: this.queryParams.unitId })
         const units = Array.isArray(res) ? res : (res.data || [])
         if (units.length) { this.currentUnit = { ...units[0] }; this.delUnitVisible = true }

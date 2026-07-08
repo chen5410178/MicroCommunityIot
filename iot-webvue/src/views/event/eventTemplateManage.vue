@@ -67,6 +67,7 @@ import { listDicts } from '@/api/property/propertyApi'
 import AddEventTemplate from '@/components/event/AddEventTemplate.vue'
 import EditEventTemplate from '@/components/event/EditEventTemplate.vue'
 import DeleteEventTemplate from '@/components/event/DeleteEventTemplate.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EventTemplateManage',
@@ -105,7 +106,7 @@ export default {
       try {
         const params = {
           ...this.queryParams,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         const res = await listEventTemplates(params)
         this.list = res.data || []
@@ -126,11 +127,11 @@ export default {
       this.addVisible = true
     },
     handleEdit(row) {
-      this.currentRow = { ...row, communityId: this.$store.state.app.currentCommunity.communityId }
+      this.currentRow = { ...row, communityId: (getCurrentCommunity() || {}).communityId }
       this.editVisible = true
     },
     handleDelete(row) {
-      this.currentRow = { ...row, communityId: this.$store.state.app.currentCommunity.communityId }
+      this.currentRow = { ...row, communityId: (getCurrentCommunity() || {}).communityId }
       this.delVisible = true
     },
     handleSuccess() {

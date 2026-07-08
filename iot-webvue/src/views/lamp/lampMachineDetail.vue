@@ -100,6 +100,7 @@
 
 <script>
 import { listLampMachine, listLampMachineOperation, listLampMachineLog } from '@/api/lamp/lampApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'LampMachineDetail',
@@ -130,7 +131,7 @@ export default {
   methods: {
     async loadMachineInfo() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listLampMachine({ machineId: this.machineId, page: 1, row: 1, communityId })
         if (res.data && res.data.length > 0) {
           this.info = res.data[0]

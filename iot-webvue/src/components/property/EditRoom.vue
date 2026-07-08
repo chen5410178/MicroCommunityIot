@@ -87,6 +87,7 @@
 
 <script>
 import { updateRoom, queryUnits, listDicts, listAttrSpecs, listAttrValues } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditRoom',
@@ -128,7 +129,7 @@ export default {
   },
   methods: {
     async initForm(data) {
-      const communityInfo = this.$store.state.app.currentCommunity || {}
+      const communityInfo = getCurrentCommunity() || {}
       this.form = {
         roomId: data.roomId || '', unitId: data.unitId || '', roomNum: data.roomNum || '',
         layer: data.layer || '', section: data.section || '0',
@@ -167,7 +168,7 @@ export default {
     },
     async loadUnits(floorId) {
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await queryUnits({ communityId: communityInfo.communityId, floorId, page: 1, row: 100 })
         this.units = Array.isArray(res) ? res : (res.data || [])
       } catch (e) { this.units = [] }

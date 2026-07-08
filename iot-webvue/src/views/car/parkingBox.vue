@@ -97,6 +97,7 @@ import { listParkingBoxs } from '@/api/car/carApi'
 import AddParkingBox from '@/components/car/AddParkingBox.vue'
 import EditParkingBox from '@/components/car/EditParkingBox.vue'
 import DeleteParkingBox from '@/components/car/DeleteParkingBox.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ParkingBox',
@@ -126,7 +127,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingBoxs({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0

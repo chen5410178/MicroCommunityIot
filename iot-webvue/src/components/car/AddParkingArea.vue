@@ -31,6 +31,7 @@
 
 <script>
 import { saveParkingArea } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddParkingArea',
@@ -79,7 +80,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveParkingArea(this.form)
         this.$message.success('添加成功')
         this.$emit('success')

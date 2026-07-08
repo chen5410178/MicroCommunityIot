@@ -67,6 +67,7 @@ import AddCommunityShop from '@/components/coupon/AddCommunityShop.vue'
 import BuyParkingCoupon from '@/components/coupon/BuyParkingCoupon.vue'
 import DeleteCommunityShop from '@/components/coupon/DeleteCommunityShop.vue'
 import ViewShopCoupons from '@/components/coupon/ViewShopCoupons.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListCommunityShop',
@@ -97,7 +98,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId
+        const communityId = (getCurrentCommunity() || {}).communityId
         const res = await listCommunityShops({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0

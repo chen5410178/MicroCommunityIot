@@ -28,6 +28,7 @@
 <script>
 import { saveMonitorMachinePerson } from '@/api/monitor/monitorApi'
 import ChooseStaff from '@/components/monitor/ChooseStaff.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddMonitorMachineStaff',
@@ -66,7 +67,7 @@ export default {
       }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveMonitorMachinePerson({
           machineId: this.machineId,
           personId: this.form.staffId,

@@ -59,6 +59,7 @@ import { listPublicWeChats } from '@/api/property/publicWeChatApi'
 import AddPublicWeChat from '@/components/property/AddPublicWeChat.vue'
 import EditPublicWeChat from '@/components/property/EditPublicWeChat.vue'
 import DeletePublicWeChat from '@/components/property/DeletePublicWeChat.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListPublicWeChat',
@@ -87,7 +88,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId
+        const communityId = (getCurrentCommunity() || {}).communityId
         const params = {
           ...this.queryParams,
           communityId,

@@ -83,6 +83,7 @@
 import { propertyAuthVisit } from '@/api/accessControl/accessControlApi'
 import { listVisitTypes } from '@/api/accessControl/accessControlApi'
 import { listDicts } from '@/api/dev/devApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'VisitAuth',
@@ -132,7 +133,7 @@ export default {
       try {
         const [dictRes, typeRes] = await Promise.all([
           listDicts({ tableName: 'visit', columnName: 'state' }),
-          listVisitTypes({ page: -1, row: 100, communityId: this.$store.state.app.currentCommunity.communityId })
+          listVisitTypes({ page: -1, row: 100, communityId: (getCurrentCommunity() || {}).communityId })
         ])
         this.stateList = dictRes.data || []
         this.visitTypeList = typeRes.data || []
@@ -152,7 +153,7 @@ export default {
       try {
         await propertyAuthVisit({
           ...this.form,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         this.$message.success('审核成功')
         this.$emit('success')

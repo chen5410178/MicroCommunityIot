@@ -28,6 +28,7 @@
 
 <script>
 import { savePublicWeChat } from '@/api/property/publicWeChatApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddPublicWeChat',
@@ -77,7 +78,7 @@ export default {
         await this.$refs.formRef.validate()
       } catch { return }
       this.loading = true
-      const communityId = this.$store.state.app.currentCommunity.communityId
+      const communityId = (getCurrentCommunity() || {}).communityId
       try {
         await savePublicWeChat({
           ...this.form,

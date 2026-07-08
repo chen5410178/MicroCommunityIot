@@ -31,6 +31,7 @@
 <script>
 import { saveEventTemplate, listEventTemplateParamKeys } from '@/api/event/eventApi'
 import { listDicts } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddEventTemplate',
@@ -102,7 +103,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const data = { ...this.form, communityId: this.$store.state.app.currentCommunity.communityId }
+        const data = { ...this.form, communityId: (getCurrentCommunity() || {}).communityId }
         await saveEventTemplate(data)
         this.$message.success('添加成功')
         this.$emit('success')

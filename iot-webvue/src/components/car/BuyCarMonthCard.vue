@@ -45,6 +45,7 @@
 <script>
 import { buyCarMonthOrder, listCarMonthCards, queryOwnerCars } from '@/api/car/carApi'
 import { listDicts } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'BuyCarMonthCard',
@@ -120,7 +121,7 @@ export default {
     },
     async handleCarNumBlur() {
       if (!this.form.carNum) return
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const res = await queryOwnerCars({ page: 1, row: 1, communityId, carNum: this.form.carNum, carTypeCd: '1001' })
         if (!res.data || res.data.length === 0) {
@@ -140,7 +141,7 @@ export default {
       }
     },
     async loadCards(paId) {
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const res = await listCarMonthCards({ page: 1, row: 100, communityId, paId })
         this.cards = res.data || []
@@ -159,7 +160,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         await buyCarMonthOrder(this.form)
         this.$message.success('购买成功')
         this.$emit('success')

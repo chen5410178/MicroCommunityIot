@@ -22,6 +22,7 @@
 
 <script>
 import { saveMonitorModel } from '@/api/monitor/monitorApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddMonitorModel',
@@ -63,7 +64,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveMonitorModel({ ...this.form, communityId })
         this.$message.success('添加成功')
         this.$emit('success')

@@ -34,6 +34,7 @@
 
 <script>
 import { listCarBlackWhites } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ParkingAreaControlWhiteCar',
@@ -48,7 +49,7 @@ export default {
     async loadData() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listCarBlackWhites({ ...this.queryParams, paId: this.paId, communityId, blackWhite: '2222' })
         this.list = res.data || []
         this.total = res.records || 0

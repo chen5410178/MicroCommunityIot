@@ -68,6 +68,7 @@
 import { saveTempCarFeeConfig, queryTempCarFeeRules } from '@/api/car/carApi'
 import { listParkingAreas } from '@/api/car/carApi'
 import { listDicts } from '@/api/dev/devApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddTempCarFeeConfig',
@@ -133,7 +134,7 @@ export default {
   methods: {
     async loadInitData() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const [parkRes, ruleRes, dictRes] = await Promise.all([
           listParkingAreas({ page: 1, row: 50, communityId }),
           queryTempCarFeeRules({ page: 1, row: 100 }),
@@ -185,7 +186,7 @@ export default {
       }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveTempCarFeeConfig({ ...this.form, communityId })
         this.$message.success('添加成功')
         this.$emit('success')

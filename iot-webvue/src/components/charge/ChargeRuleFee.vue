@@ -38,6 +38,7 @@ import { listChargeRuleFee } from '@/api/charge/chargeApi'
 import AddChargeRuleFee from '@/components/charge/AddChargeRuleFee.vue'
 import EditChargeRuleFee from '@/components/charge/EditChargeRuleFee.vue'
 import DeleteChargeRuleFee from '@/components/charge/DeleteChargeRuleFee.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ChargeRuleFee',
@@ -74,7 +75,7 @@ export default {
       if (!this.ruleId) return
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listChargeRuleFee({ ...this.queryParams, ruleId: this.ruleId, chargeType: this.chargeType, communityId })
         this.list = res.data || []
         this.total = res.records || 0

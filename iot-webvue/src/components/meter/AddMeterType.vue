@@ -32,6 +32,7 @@
 
 <script>
 import { saveMeterType } from '@/api/meter/meterApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddMeterType',
@@ -82,7 +83,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveMeterType({ ...this.form, communityId })
         this.$message.success('添加成功')
         this.$emit('success')

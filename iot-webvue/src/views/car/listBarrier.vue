@@ -95,6 +95,7 @@ import AddBarrier from '@/components/car/AddBarrier.vue'
 import EditBarrier from '@/components/car/EditBarrier.vue'
 import DeleteBarrier from '@/components/car/DeleteBarrier.vue'
 import ViewQrCode from '@/components/common/ViewQrCode.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListBarrier',
@@ -130,7 +131,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listBarriers({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0
@@ -140,7 +141,7 @@ export default {
     },
     async fetchParkingBoxs() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingBoxs({ page: 1, row: 50, communityId })
         this.parkingBoxs = [{ boxId: '', boxName: '全部' }, ...(res.data || [])]
       } catch (e) { /* ignore */ }
@@ -169,7 +170,7 @@ export default {
       this.delVisible = true
     },
     handleQrCode(row) {
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       getVisitQrCodeUrl({ communityId }).then(res => {
         const baseUrl = (res.data && res.data.url) || ''
         this.qrTitle = (row.machineName || '') + '访客码'

@@ -54,6 +54,7 @@ import { listCallingPlatform } from '@/api/accessControl/accessControlApi'
 import AddCallingPlatform from '@/components/accessControl/AddCallingPlatform.vue'
 import EditCallingPlatform from '@/components/accessControl/EditCallingPlatform.vue'
 import DeleteCallingPlatform from '@/components/accessControl/DeleteCallingPlatform.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'CallingPlatformManage',
@@ -83,7 +84,7 @@ export default {
       try {
         const params = {
           ...this.queryParams,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         const res = await listCallingPlatform(params)
         this.list = res.data || []

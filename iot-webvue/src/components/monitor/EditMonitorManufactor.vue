@@ -42,6 +42,7 @@
 <script>
 import { updateMonitorManufactor } from '@/api/monitor/monitorApi'
 import request from '@/utils/request'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditMonitorManufactor',
@@ -127,7 +128,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await updateMonitorManufactor({ ...this.form, communityId })
         this.$message.success('修改成功')
         this.$emit('success')

@@ -15,6 +15,7 @@
 
 <script>
 import { listOwnerMembers } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'OwnerMembers',
@@ -35,7 +36,7 @@ export default {
       if (!this.ownerData.ownerId && !this.ownerData.roomId) { this.memberList = []; return }
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const params = { communityId: communityInfo.communityId, page: 1, row: 50 }
         if (this.ownerData.ownerId) params.memberId = this.ownerData.ownerId
         const res = await listOwnerMembers(params)

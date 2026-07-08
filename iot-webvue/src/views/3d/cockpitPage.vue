@@ -39,6 +39,7 @@ import { initEvent, computeSceneObject, eventBus } from '@/utils/three/CockpitCo
 import { listDtScenes } from '@/api/3d/cockpitApi'
 import CockpitRightFloor from '@/components/3d/CockpitRightFloor.vue'
 import CockpitRightRoom from '@/components/3d/CockpitRightRoom.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'CockpitPage',
@@ -52,7 +53,7 @@ export default {
     }
   },
   mounted() {
-    const communityId = this.$store.state.app.currentCommunity.communityId
+    const communityId = (getCurrentCommunity() || {}).communityId
     this.communityId = communityId
 
     const _scene = new Cockpit3d('webgl-scene')

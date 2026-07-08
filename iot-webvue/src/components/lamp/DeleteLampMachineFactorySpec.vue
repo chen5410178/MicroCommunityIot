@@ -20,6 +20,7 @@
 
 <script>
 import { deleteLampMachineFactorySpec } from '@/api/lamp/lampApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteLampMachineFactorySpec',
@@ -41,7 +42,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await deleteLampMachineFactorySpec({ specId: this.delData.specId, communityId })
         this.$message.success('删除成功')
         this.$emit('success')

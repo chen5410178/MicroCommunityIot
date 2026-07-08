@@ -18,6 +18,7 @@
 
 <script>
 import { getAiAlter } from '@/api/index/monitorVideoApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'CameraAlter',
@@ -42,7 +43,7 @@ export default {
   methods: {
     async loadAlters() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await getAiAlter({ page: 1, row: 10, communityId })
         if (res.code === 0) {
           this.videoAlters = res.data || []

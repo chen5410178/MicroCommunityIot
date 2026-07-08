@@ -16,7 +16,7 @@
 <script>
 import { ssoTokenLogin } from '@/api/frame/ssoApi'
 import { listMyEnteredCommunitys } from '@/api/community/communityApi'
-import { setUserInfo } from '@/utils/auth'
+import { setUserInfo, setCommunityList, setCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'SsoPage',
@@ -74,13 +74,13 @@ export default {
         }
         const communityList = (data && data.data) ? data.data : []
         if (communityList.length > 0) {
-          this.$store.commit('app/SET_COMMUNITY_LIST', communityList)
+          setCommunityList(communityList)
           let targetCommunity = communityList[0]
           if (communityId) {
             const matched = communityList.find(c => c.communityId === communityId)
             if (matched) targetCommunity = matched
           }
-          this.$store.commit('app/SET_CURRENT_COMMUNITY', targetCommunity)
+          setCurrentCommunity(targetCommunity)
         }
         const decodedUrl = decodeURIComponent(targetUrl)
         this.$router.replace(decodedUrl)

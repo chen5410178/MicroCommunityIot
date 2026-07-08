@@ -57,6 +57,7 @@
 <script>
 import { queryFloors } from '@/api/3d/cockpitApi'
 import { eventBus } from '@/utils/three/CockpitCore'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'CockpitRightFloor',
@@ -94,7 +95,7 @@ export default {
         const res = await queryFloors({
           page: 1,
           row: 1,
-          communityId: this.$store.state.app.currentCommunity.communityId,
+          communityId: (getCurrentCommunity() || {}).communityId,
           floorId: this.info.floorId
         })
         if (res.data && res.data[0]) {

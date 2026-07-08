@@ -21,6 +21,7 @@
 
 <script>
 import { deleteCallingPlatform } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteCallingPlatform',
@@ -44,7 +45,7 @@ export default {
       try {
         await deleteCallingPlatform({
           platformId: this.delData.platformId,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         this.$message.success('删除成功')
         this.$emit('success')

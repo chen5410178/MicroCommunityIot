@@ -101,6 +101,7 @@
 <script>
 import { listLockInouts } from '@/api/lock/lockApi'
 import SearchOwner from '@/components/monitor/SearchOwner.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'LockInoutManage',
@@ -127,7 +128,7 @@ export default {
   },
   computed: {
     currentCommunityId() {
-      return this.$store.state.app.currentCommunity.communityId || ''
+      return (getCurrentCommunity() || {}).communityId || ''
     }
   },
   watch: {

@@ -20,6 +20,7 @@
 
 <script>
 import { deleteParkingBox } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteParkingBox',
@@ -41,7 +42,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await deleteParkingBox({ boxId: this.delData.boxId, communityId })
         this.$message.success('删除成功')
         this.$emit('success')

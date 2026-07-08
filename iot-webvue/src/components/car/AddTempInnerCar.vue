@@ -43,6 +43,7 @@
 
 <script>
 import { saveTempInnerCar } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddTempInnerCar',
@@ -120,7 +121,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveTempInnerCar(this.form)
         this.$message.success('添加成功')
         this.$emit('success')

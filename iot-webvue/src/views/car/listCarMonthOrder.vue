@@ -135,6 +135,7 @@ import { listDicts } from '@/api/property/propertyApi'
 import BuyCarMonthCard from '@/components/car/BuyCarMonthCard.vue'
 import RetundCarMonthOrder from '@/components/car/RetundCarMonthOrder.vue'
 import BuyMonthCardQrCode from '@/components/car/BuyMonthCardQrCode.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'CarMonthOrder',
@@ -172,7 +173,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listCarMonthOrders({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0
@@ -182,7 +183,7 @@ export default {
     },
     async fetchCards() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listCarMonthCards({ page: 1, row: 100, communityId })
         this.cards = res.data || []
       } catch (e) { /* ignore */ }

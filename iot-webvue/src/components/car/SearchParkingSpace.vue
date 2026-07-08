@@ -53,6 +53,7 @@
 <script>
 import { listParkingSpaces } from '@/api/car/carApi'
 import { listParkingAreas } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'SearchParkingSpace',
@@ -90,7 +91,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingSpaces({
           ...this.queryParams,
           communityId,
@@ -104,7 +105,7 @@ export default {
     },
     async fetchParkingAreas() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingAreas({ page: 1, row: 100, communityId })
         this.parkingAreas = res.data || []
       } catch { /* ignore */ }

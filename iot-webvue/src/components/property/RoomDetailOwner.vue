@@ -14,6 +14,7 @@
 
 <script>
 import { listOwnerMembers } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'RoomDetailOwner',
@@ -29,7 +30,7 @@ export default {
       if (!this.roomId) { this.ownerList = []; return }
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await listOwnerMembers({ communityId: communityInfo.communityId, roomId: this.roomId, page: 1, row: 50 })
         this.ownerList = Array.isArray(res) ? res : (res.data || [])
       } catch (e) { this.ownerList = [] }

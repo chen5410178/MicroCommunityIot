@@ -48,6 +48,7 @@
 <script>
 import { saveBarrier, listParkingBoxs, listHms } from '@/api/car/carApi'
 import { listMonitorMachines } from '@/api/monitor/monitorApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddBarrier',
@@ -108,7 +109,7 @@ export default {
       this.$refs.formRef && this.$refs.formRef.resetFields()
     },
     async loadOptions() {
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const [hmsRes, boxsRes, monitorsRes] = await Promise.all([
           listHms({ page: 1, row: 50, hmType: '2002' }),
@@ -126,7 +127,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveBarrier(this.form)
         this.$message.success('添加成功')
         this.$emit('success')

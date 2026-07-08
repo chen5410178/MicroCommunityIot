@@ -20,6 +20,7 @@
 
 <script>
 import { deleteBarrier } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteBarrier',
@@ -43,7 +44,7 @@ export default {
       try {
         const params = {
           machineId: this.delData.machineId,
-          communityId: this.delData.communityId || this.$store.state.app.currentCommunity.communityId || ''
+          communityId: this.delData.communityId || (getCurrentCommunity() || {}).communityId || ''
         }
         await deleteBarrier(params)
         this.$message.success('删除成功')

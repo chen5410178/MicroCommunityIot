@@ -34,6 +34,7 @@
 
 <script>
 import { renewalLockPerson } from '@/api/lock/lockApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'RenewalLockPerson',
@@ -75,7 +76,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await renewalLockPerson({ ...this.editData, startTime: this.form.startTime, endTime: this.form.endTime, communityId })
         this.$message.success('续期成功')
         this.$emit('success')

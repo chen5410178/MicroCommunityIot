@@ -73,6 +73,7 @@
 
 <script>
 import { listParkingCouponCarOrders } from '@/api/coupon/couponApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListParkingCouponCarOrder',
@@ -93,7 +94,7 @@ export default {
   },
   computed: {
     communityId() {
-      return this.$store.state.app.currentCommunity.communityId || ''
+      return (getCurrentCommunity() || {}).communityId || ''
     }
   },
   watch: {

@@ -28,6 +28,7 @@
 
 <script>
 import { updateEventPoolStaff } from '@/api/event/eventApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditEventPoolStaff',
@@ -69,7 +70,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await updateEventPoolStaff({
           epsId: this.epsData.epsId,
           eventReason: this.form.eventReason,

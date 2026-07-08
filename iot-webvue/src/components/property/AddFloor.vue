@@ -20,6 +20,7 @@
 
 <script>
 import { saveFloor } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddFloor',
@@ -48,7 +49,7 @@ export default {
       try { await this.$refs.formRef.validate() } catch { return }
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         await saveFloor({ ...this.form, communityId: communityInfo.communityId })
         this.$message.success('添加成功')
         this.$emit('success')

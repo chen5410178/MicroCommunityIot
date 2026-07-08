@@ -60,6 +60,7 @@
 import { listParkingBoxAreas, updateParkingBoxArea } from '@/api/car/carApi'
 import AddParkingBoxArea from '@/components/car/AddParkingBoxArea.vue'
 import DeleteParkingBoxArea from '@/components/car/DeleteParkingBoxArea.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ParkingBoxArea',
@@ -94,7 +95,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingBoxAreas({ ...this.queryParams, boxId: this.boxId, communityId })
         this.list = res.data || []
         this.total = res.records || 0
@@ -114,7 +115,7 @@ export default {
     },
     async handleSetDefault(row) {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await updateParkingBoxArea({ baId: row.baId, boxId: this.boxId, paId: row.paId, defaultArea: 'T', communityId })
         this.$message.success('设置成功')
         this.fetchList()

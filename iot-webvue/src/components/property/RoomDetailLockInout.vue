@@ -29,6 +29,7 @@
 
 <script>
 import { listLockInout } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'RoomDetailLockInout',
@@ -44,7 +45,7 @@ export default {
       if (!this.roomId) { this.list = []; return }
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await listLockInout({ communityId: communityInfo.communityId, roomId: this.roomId, page: this.page, row: this.row })
         this.list = res.data || []
         this.total = res.records || 0

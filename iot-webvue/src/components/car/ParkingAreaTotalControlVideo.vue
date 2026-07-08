@@ -50,6 +50,7 @@
 
 <script>
 import { listBarriers, openBarrierDoor, closeBarrierDoor, getCloudFlvVideo } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 let HuaXiaVideo = null
 try {
@@ -88,7 +89,7 @@ export default {
     async listMachines() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listBarriers({ paId: this.paId, page: 1, row: 100, communityId })
         const data = res.data || []
         data.forEach(item => {
@@ -204,7 +205,7 @@ export default {
       this.huaXiaMap[divId] = { ws, destroy: () => { try { ws.close() } catch (e) { /* */ } } }
     },
     openDoor(machine) {
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       const data = {
         machineCode: machine.machineCode,
         stateName: '开门',
@@ -224,7 +225,7 @@ export default {
       })
     },
     closeDoor(machine) {
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       const data = {
         machineCode: machine.machineCode,
         stateName: '关门',
@@ -252,7 +253,7 @@ export default {
       })
     },
     async openCloudFlvVideo(machineId) {
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const res = await getCloudFlvVideo({ machineId, communityId })
         if (res.code === 0 && res.data && res.data.url) {

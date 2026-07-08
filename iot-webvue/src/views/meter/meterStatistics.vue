@@ -48,6 +48,7 @@
 <script>
 import echarts from 'echarts'
 import { listMeterTypes, queryMeterCountStatistics, queryMeterMoneyStatistics } from '@/api/meter/meterApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'MeterStatistics',
@@ -63,7 +64,7 @@ export default {
   },
   computed: {
     currentCommunityId() {
-      return this.$store.state.app.currentCommunity.communityId || ''
+      return (getCurrentCommunity() || {}).communityId || ''
     }
   },
   watch: {

@@ -74,6 +74,7 @@ import AddLockMachine from '@/components/lock/AddLockMachine.vue'
 import EditLockMachine from '@/components/lock/EditLockMachine.vue'
 import DeleteLockMachine from '@/components/lock/DeleteLockMachine.vue'
 import RoomTree from '@/components/accessControl/RoomTree.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'LockMachineManage',
@@ -109,7 +110,7 @@ export default {
       try {
         const params = {
           ...this.queryParams,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         const res = await listLockMachines(params)
         this.list = res.data || []
@@ -161,7 +162,7 @@ export default {
         return
       }
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId
+        const communityId = (getCurrentCommunity() || {}).communityId
         await unLockMachine({ machineId: row.machineId, communityId })
         this.$message.success('开锁成功')
       } catch (e) {

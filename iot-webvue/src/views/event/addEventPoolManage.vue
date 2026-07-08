@@ -56,6 +56,7 @@
 <script>
 import { saveEventPool, listEventRules } from '@/api/event/eventApi'
 import { listDicts } from '@/api/dev/devApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddEventPoolManage',
@@ -87,7 +88,7 @@ export default {
   methods: {
     async loadDicts() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const [eventTypeRes, objTypeRes, ruleRes] = await Promise.all([
           listDicts({ tableName: 'event_pool', columnName: 'event_type' }),
           listDicts({ tableName: 'event_object', columnName: 'obj_type' }),
@@ -107,7 +108,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveEventPool({
           ...this.form,
           communityId,

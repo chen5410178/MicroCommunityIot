@@ -157,6 +157,7 @@
 <script>
 import { queryOwnerCars, queryOwnerCarsByOwner, queryOwners, listAdminCarInoutDetails } from '@/api/car/carApi'
 import { queryRooms } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'CarDetail',
@@ -186,7 +187,7 @@ export default {
         const res = await queryOwnerCars({
           page: 1, row: 1,
           memberId: this.memberId,
-          communityId: this.$store.state.app.currentCommunity.communityId || ''
+          communityId: (getCurrentCommunity() || {}).communityId || ''
         })
         const data = res.data
         if (data && data.length > 0) {
@@ -209,7 +210,7 @@ export default {
           page: 1, row: 100,
           carId: this.carInfo.carId,
           carTypeCd: '1002',
-          communityId: this.$store.state.app.currentCommunity.communityId || ''
+          communityId: (getCurrentCommunity() || {}).communityId || ''
         })
         this.memberCars = res.data || []
       } catch { /* ignore */ } finally {
@@ -224,7 +225,7 @@ export default {
           page: 1, row: 100,
           memberId: this.carInfo.ownerId,
           ownerTypeCd: '1001',
-          communityId: this.$store.state.app.currentCommunity.communityId || ''
+          communityId: (getCurrentCommunity() || {}).communityId || ''
         })
         this.ownerInfo = res.owners || res.data || []
       } catch { /* ignore */ } finally {
@@ -238,7 +239,7 @@ export default {
         const res = await queryRooms({
           page: 1, row: 100,
           ownerId: this.carInfo.ownerId,
-          communityId: this.$store.state.app.currentCommunity.communityId || ''
+          communityId: (getCurrentCommunity() || {}).communityId || ''
         })
         this.ownerRooms = res.data || []
       } catch { /* ignore */ } finally {
@@ -252,7 +253,7 @@ export default {
         const res = await queryOwnerCarsByOwner({
           page: 1, row: 100,
           ownerId: this.carInfo.ownerId,
-          communityId: this.$store.state.app.currentCommunity.communityId || ''
+          communityId: (getCurrentCommunity() || {}).communityId || ''
         })
         this.ownerCars = res.data || []
       } catch { /* ignore */ } finally {
@@ -265,7 +266,7 @@ export default {
         const res = await listAdminCarInoutDetails({
           ...this.inoutPage,
           carNum: this.carInfo.carNum,
-          communityId: this.$store.state.app.currentCommunity.communityId || ''
+          communityId: (getCurrentCommunity() || {}).communityId || ''
         })
         this.carInoutList = res.data || []
         this.inoutPage.total = res.records || 0

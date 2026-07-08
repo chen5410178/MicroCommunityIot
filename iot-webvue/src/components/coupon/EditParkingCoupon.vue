@@ -44,6 +44,7 @@
 
 <script>
 import { updateParkingCoupon, listParkingAreas } from '@/api/coupon/couponApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditParkingCoupon',
@@ -106,7 +107,7 @@ export default {
   methods: {
     async loadParkingAreas() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingAreas({ page: 1, row: 100, communityId })
         this.parkingAreas = res.data || []
       } catch { /* ignore */ }
@@ -124,7 +125,7 @@ export default {
       }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await updateParkingCoupon({ ...this.form, communityId })
         this.$message.success('修改成功')
         this.$emit('success')

@@ -60,6 +60,7 @@ import { listSmallWeChats } from '@/api/property/smallWeChatApi'
 import AddSmallWeChat from '@/components/property/AddSmallWeChat.vue'
 import EditSmallWeChat from '@/components/property/EditSmallWeChat.vue'
 import DeleteSmallWeChat from '@/components/property/DeleteSmallWeChat.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListSmallWeChatManage',
@@ -88,7 +89,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId
+        const communityId = (getCurrentCommunity() || {}).communityId
         const params = {
           ...this.queryParams,
           communityId,

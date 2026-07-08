@@ -18,6 +18,7 @@
 <script>
 import QRCode from 'qrcodejs2'
 import { getCarMachineQrCodeUrl } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'BarrierGateQrCode',
@@ -38,7 +39,7 @@ export default {
       this.dialogVisible = false
     },
     async loadQrCode(data) {
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const res = await getCarMachineQrCodeUrl({
           communityId,

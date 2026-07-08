@@ -52,6 +52,7 @@
 
 <script>
 import { listLampMachine } from '@/api/lamp/lampApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ChooseLampMachine',
@@ -87,7 +88,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listLampMachine({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0

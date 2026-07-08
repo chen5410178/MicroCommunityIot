@@ -115,6 +115,7 @@
 
 <script>
 import { listMonitorMachines, listMonitorAreas, listMonitorMachineModels, listMonitorPools } from '@/api/monitor/monitorApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'MonitorMachineDetail',
@@ -151,7 +152,7 @@ export default {
   methods: {
     async loadMachineInfo() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listMonitorMachines({ machineId: this.machineId, page: 1, row: 1, communityId })
         if (res.data && res.data.length > 0) {
           this.info = res.data[0]
@@ -163,7 +164,7 @@ export default {
     async loadAreaData() {
       this.areaLoading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listMonitorAreas({
           maId: this.maId,
           page: this.areaPage.page,
@@ -181,7 +182,7 @@ export default {
     async loadModelData() {
       this.modelLoading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listMonitorMachineModels({
           machineId: this.machineId,
           page: this.modelPage.page,
@@ -199,7 +200,7 @@ export default {
     async loadPoolData() {
       this.poolLoading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listMonitorPools({
           machineId: this.machineId,
           page: this.poolPage.page,

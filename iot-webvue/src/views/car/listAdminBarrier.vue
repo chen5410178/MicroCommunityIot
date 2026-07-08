@@ -64,12 +64,12 @@
 
 <script>
 import { listAdminBarriers } from '@/api/car/carApi'
-import { mapState } from 'vuex'
+import { getCommunityList } from '@/utils/auth'
 
 export default {
   name: 'ListAdminBarrier',
   computed: {
-    ...mapState('app', ['communityList'])
+    communityList() { return getCommunityList() || [] }
   },
   data() {
     return {

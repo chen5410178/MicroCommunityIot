@@ -97,6 +97,7 @@ import { listEventPoolStaffs } from '@/api/event/eventApi'
 import ViewData from '@/components/event/ViewData.vue'
 import EditEventPoolStaff from '@/components/event/EditEventPoolStaff.vue'
 import ViewEventPoolStaffInfo from '@/components/event/ViewEventPoolStaffInfo.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EventPoolStaffManage',
@@ -131,7 +132,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const params = { ...this.queryParams, communityId }
         if (this.dateRange && this.dateRange.length === 2) {
           params.startTime = this.dateRange[0]

@@ -21,6 +21,7 @@
 
 <script>
 import { getPlayVideoUrl, saveVideoPhoto } from '@/api/monitor/monitorApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'MonitorViewNine',
@@ -67,7 +68,7 @@ export default {
     },
     async fetchAndPlay(slot, machineId) {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await getPlayVideoUrl({ communityId, machineId })
         if (res.code === 0 && res.data) {
           slot.url = res.data
@@ -107,7 +108,7 @@ export default {
     },
     async savePhoto(machineId, photo) {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveVideoPhoto({ communityId, machineId, photo })
       } catch (e) { /* ignore */ }
     },

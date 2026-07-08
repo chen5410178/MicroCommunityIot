@@ -83,6 +83,7 @@
 <script>
 import { listEventPools } from '@/api/event/eventApi'
 import { listEventRules } from '@/api/event/eventApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EventDetail',
@@ -109,7 +110,7 @@ export default {
     async loadDetail() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listEventPools({ communityId, eventId: this.eventId, page: 1, row: 1 })
         if (res.data && res.data.length > 0) {
           this.detail = res.data[0]

@@ -90,6 +90,7 @@
 import { listLockLogs } from '@/api/lock/lockApi'
 import SearchOwner from '@/components/monitor/SearchOwner.vue'
 import ShowLockLog from '@/components/lock/ShowLockLog.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'LockLogManage',
@@ -121,7 +122,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listLockLogs({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0

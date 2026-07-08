@@ -45,6 +45,7 @@
 
 <script>
 import { updateMonitorMachine, listMonitorAreas, listMonitorManufactors } from '@/api/monitor/monitorApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditMonitorMachine',
@@ -109,14 +110,14 @@ export default {
   methods: {
     async fetchAreaList() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listMonitorAreas({ page: 1, row: 100, communityId })
         this.areaList = res.data || []
       } catch { /* ignore */ }
     },
     async fetchManufactorList() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listMonitorManufactors({ page: 1, row: 100, communityId })
         this.manufactorList = res.data || []
       } catch { /* ignore */ }
@@ -131,7 +132,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await updateMonitorMachine({ ...this.form, communityId })
         this.$message.success('修改成功')
         this.$emit('success')

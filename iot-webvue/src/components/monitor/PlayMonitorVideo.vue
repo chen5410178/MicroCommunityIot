@@ -17,6 +17,7 @@
 
 <script>
 import { getPlayVideoUrl, saveVideoPhoto } from '@/api/monitor/monitorApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'PlayMonitorVideo',
@@ -43,7 +44,7 @@ export default {
   methods: {
     async fetchVideoUrl() {
       try {
-        const communityId = this.videoInfo.communityId || this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = this.videoInfo.communityId || (getCurrentCommunity() || {}).communityId || ''
         const res = await getPlayVideoUrl({ communityId, machineId: this.videoInfo.machineId })
         if (res.code === 0 && res.data) {
           this.playVideo(res.data)
@@ -98,7 +99,7 @@ export default {
     },
     async savePhoto(machineId, photo) {
       try {
-        const communityId = this.videoInfo.communityId || this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = this.videoInfo.communityId || (getCurrentCommunity() || {}).communityId || ''
         await saveVideoPhoto({ communityId, machineId, photo })
       } catch (e) { /* ignore */ }
     },

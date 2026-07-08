@@ -86,6 +86,7 @@ import AddPersonFaceQrcode from '@/components/accessControl/AddPersonFaceQrcode.
 import EditPersonFaceQrcode from '@/components/accessControl/EditPersonFaceQrcode.vue'
 import DeletePersonFaceQrcode from '@/components/accessControl/DeletePersonFaceQrcode.vue'
 import ViewQrCode from '@/components/common/ViewQrCode.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListPersonFaceQrcode',
@@ -119,7 +120,7 @@ export default {
       try {
         const params = {
           ...this.queryParams,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         const res = await listPersonFaceQrcodes(params)
         this.list = res.data || []

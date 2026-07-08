@@ -30,6 +30,7 @@
 
 <script>
 import { updateEventRule } from '@/api/event/eventApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditEventRule',
@@ -93,7 +94,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.editData.communityId || this.$store.state.app.currentCommunity.communityId
+        const communityId = this.editData.communityId || (getCurrentCommunity() || {}).communityId
         await updateEventRule({ ...this.form, communityId })
         this.$message.success('修改成功')
         this.$emit('success')

@@ -22,6 +22,7 @@
 
 <script>
 import { updatePrivilegeGroup } from '@/api/frame/roleApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditRole',
@@ -71,7 +72,7 @@ export default {
       try { await this.$refs.formRef.validate() } catch { return }
       this.loading = true
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         await updatePrivilegeGroup({ ...this.form, communityId: community.communityId })
         this.$message.success('修改成功')
         this.$emit('success')

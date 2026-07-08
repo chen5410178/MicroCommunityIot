@@ -102,6 +102,7 @@
 
 <script>
 import { listAdminCarInoutDetails, listTempCarFeeConfigs } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ParkingAreaControlCarInouts',
@@ -126,7 +127,7 @@ export default {
     async loadData() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listAdminCarInoutDetails({
           ...this.queryParams,
           paId: this.paId,
@@ -148,7 +149,7 @@ export default {
     handleSizeChange(val) { this.queryParams.row = val; this.loadData() },
     handlePageChange(val) { this.queryParams.page = val; this.loadData() },
     async viewFeeConfig(configId) {
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const res = await listTempCarFeeConfigs({ page: 1, row: 1, communityId, configId })
         const data = (res.data || [])[0]

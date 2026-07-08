@@ -27,13 +27,13 @@ import IndexCommunity from '@/components/index/indexCommunity/indexCommunity.vue
 import IndexEvent from '@/components/index/indexEvent/indexEvent.vue'
 import IndexMachine from '@/components/index/indexMachine/indexMachine.vue'
 import IndexMonitorAlarm from '@/components/index/indexMonitorAlarm/indexMonitorAlarm.vue'
-import { mapState } from 'vuex'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'PropertyDashboard',
   components: { IndexCommunity, IndexEvent, IndexMachine, IndexMonitorAlarm },
   computed: {
-    ...mapState('app', ['currentCommunity'])
+    currentCommunity() { return getCurrentCommunity() || {} }
   }
 }
 </script>

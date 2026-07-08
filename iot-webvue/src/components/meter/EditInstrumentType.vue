@@ -25,6 +25,7 @@
 
 <script>
 import { updateInstrumentType } from '@/api/meter/meterApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditInstrumentType',
@@ -72,7 +73,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await updateInstrumentType({ ...this.form, communityId })
         this.$message.success('修改成功')
         this.$emit('success')

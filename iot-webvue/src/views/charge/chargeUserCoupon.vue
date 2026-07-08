@@ -70,6 +70,7 @@
 
 <script>
 import { listCouponPropertyUser } from '@/api/charge/chargeApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ChargeUserCoupon',
@@ -93,7 +94,7 @@ export default {
   },
   computed: {
     communityId() {
-      return this.$store.state.app.currentCommunity.communityId || ''
+      return (getCurrentCommunity() || {}).communityId || ''
     }
   },
   watch: {

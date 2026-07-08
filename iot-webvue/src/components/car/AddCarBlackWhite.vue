@@ -53,6 +53,7 @@
 
 <script>
 import { saveCarBlackWhite, listParkingAreas } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddCarBlackWhite',
@@ -111,7 +112,7 @@ export default {
   methods: {
     async loadParkingAreas() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingAreas({ page: 1, row: 50, communityId })
         this.parkingAreas = res.data || []
       } catch { /* ignore */ }
@@ -126,7 +127,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveCarBlackWhite(this.form)
         this.$message.success('添加成功')
         this.$emit('success')

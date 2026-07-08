@@ -59,6 +59,7 @@
 import { queryOwnerCarsByOwner } from '@/api/car/carApi'
 import EditCar from '@/components/car/EditCar.vue'
 import DeleteOwnerCar from '@/components/car/DeleteOwnerCar.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListOwnerCarMember',
@@ -90,7 +91,7 @@ export default {
           row: this.queryParams.row,
           carId: this.carId,
           carTypeCd: '1002',
-          communityId: this.$store.state.app.currentCommunity.communityId || ''
+          communityId: (getCurrentCommunity() || {}).communityId || ''
         })
         this.list = res.data || []
         this.total = res.records || 0

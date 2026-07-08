@@ -59,6 +59,7 @@
 
 <script>
 import { queryOwners } from '@/api/property/ownerApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'SearchOwner',
@@ -92,7 +93,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await queryOwners({ ...this.queryParams, communityId, ownerTypeCd: '1001' })
         this.list = res.data || []
         this.total = res.records || 0

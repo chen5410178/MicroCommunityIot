@@ -113,14 +113,14 @@
 
 <script>
 import { listAdminCarInoutDetails } from '@/api/car/carApi'
-import { mapState } from 'vuex'
+import { getCommunityList } from '@/utils/auth'
 import CustomCarInout from '@/components/car/CustomCarInout.vue'
 
 export default {
   name: 'ListAdminCarInout',
   components: { CustomCarInout },
   computed: {
-    ...mapState('app', ['communityList'])
+    communityList() { return getCommunityList() || [] }
   },
   data() {
     return {

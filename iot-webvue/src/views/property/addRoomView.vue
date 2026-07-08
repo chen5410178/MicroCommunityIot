@@ -143,6 +143,7 @@
 
 <script>
 import { saveRoom, queryFloors, queryUnits, listDicts, listAttrSpecs, listAttrValues, queryOwners } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddRoomView',
@@ -181,7 +182,7 @@ export default {
   },
   methods: {
     async initData() {
-      const communityInfo = this.$store.state.app.currentCommunity || {}
+      const communityInfo = getCurrentCommunity() || {}
       this.form.communityId = communityInfo.communityId
       try {
         const [floorRes, dictRes, specRes] = await Promise.all([
@@ -204,14 +205,14 @@ export default {
     async loadUnits() {
       if (!this.form.floorId) { this.units = []; return }
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await queryUnits({ communityId: communityInfo.communityId, floorId: this.form.floorId, page: 1, row: 300 })
         this.units = Array.isArray(res) ? res : (res.data || [])
       } catch (e) { this.units = [] }
     },
     async searchOwners() {
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await queryOwners({ ...this.ownerQuery, communityId: communityInfo.communityId, page: 1, row: 50, ownerTypeCd: '1001' })
         this.ownerList = Array.isArray(res) ? res : (res.data || [])
       } catch (e) { this.ownerList = [] }

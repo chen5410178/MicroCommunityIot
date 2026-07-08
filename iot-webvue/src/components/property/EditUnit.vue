@@ -17,6 +17,7 @@
 
 <script>
 import { updateUnit } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditUnit',
@@ -52,7 +53,7 @@ export default {
       try { await this.$refs.formRef.validate() } catch { return }
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         await updateUnit({ ...this.form, communityId: communityInfo.communityId })
         this.$message.success('修改成功')
         this.$emit('success')

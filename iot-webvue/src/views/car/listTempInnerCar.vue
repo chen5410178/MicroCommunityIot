@@ -75,6 +75,7 @@ import { listTempInnerCars, listTempCarFeeConfigs } from '@/api/car/carApi'
 import AddTempInnerCar from '@/components/car/AddTempInnerCar.vue'
 import EditTempInnerCar from '@/components/car/EditTempInnerCar.vue'
 import DeleteTempInnerCar from '@/components/car/DeleteTempInnerCar.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListTempInnerCar',
@@ -105,7 +106,7 @@ export default {
   methods: {
     async loadConfigs() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listTempCarFeeConfigs({ page: 1, row: 50, carType: '9902', communityId })
         this.configs = [{ configId: '', feeName: '全部' }]
         if (res.data) {
@@ -126,7 +127,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listTempInnerCars({
           ...this.queryParams,
           configId: this.currentConfigId,

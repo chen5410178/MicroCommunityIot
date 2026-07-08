@@ -48,6 +48,7 @@
 
 <script>
 import { listStaffsNoInOrg, saveStaffOrgRel } from '@/api/frame/orgApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'OrgRelStaff',
@@ -85,7 +86,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         const res = await listStaffsNoInOrg({
           ...this.queryParams,
           orgId: this.orgId,
@@ -128,7 +129,7 @@ export default {
       }
       this.submitLoading = true
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         const staffIds = this.selectedRows.map(item => item.userId || item.staffId || item.id)
         await saveStaffOrgRel({
           orgId: this.orgId,

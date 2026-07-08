@@ -20,6 +20,7 @@
 
 <script>
 import { deleteOrgRelStaff } from '@/api/frame/orgApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteOrgRelStaff',
@@ -41,7 +42,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         await deleteOrgRelStaff({
           osrId: this.delData.osrId || this.delData.id,
           communityId: community.communityId

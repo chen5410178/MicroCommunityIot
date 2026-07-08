@@ -89,6 +89,7 @@
 <script>
 import { listLampMachineOperation, listLampMachine, listCommunityStaffs } from '@/api/lamp/lampApi'
 import { listDicts } from '@/api/dev/devApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'LampMachineOperationManage',
@@ -118,7 +119,7 @@ export default {
   methods: {
     async loadDictionaries() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const [machineRes, personRes, dictRes] = await Promise.all([
           listLampMachine({ communityId, page: -1, row: 100 }),
           listCommunityStaffs({ communityId }),
@@ -132,7 +133,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listLampMachineOperation({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0

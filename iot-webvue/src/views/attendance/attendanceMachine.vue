@@ -76,6 +76,7 @@ import AddAttendanceMachine from '@/components/attendance/AddAttendanceMachine.v
 import EditAttendanceMachine from '@/components/attendance/EditAttendanceMachine.vue'
 import DeleteAttendanceMachine from '@/components/attendance/DeleteAttendanceMachine.vue'
 import PlayMonitorVideo from '@/components/monitor/PlayMonitorVideo.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AttendanceMachine',
@@ -137,7 +138,7 @@ export default {
       this.videoInfo = {
         machineId: row.monitorId,
         machineName: row.monitorName || '监控视频',
-        communityId: this.$store.state.app.currentCommunity.communityId
+        communityId: (getCurrentCommunity() || {}).communityId
       }
       this.videoVisible = true
     },

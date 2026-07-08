@@ -58,6 +58,7 @@
 
 <script>
 import { listTelMachine, listTelSmsLog } from '@/api/lamp/lampApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListTelSmsLog',
@@ -82,7 +83,7 @@ export default {
     async fetchMachines() {
       this.deviceLoading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listTelMachine({ page: 1, row: 100, communityId })
         this.machines = res.data || []
         if (this.machines.length > 0) {
@@ -100,7 +101,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listTelSmsLog({
           ...this.queryParams,
           machineId: this.activeMachineId,

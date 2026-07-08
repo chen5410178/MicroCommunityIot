@@ -21,6 +21,7 @@
 
 <script>
 import { deletePersonFaceQrcode } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeletePersonFaceQrcode',
@@ -42,7 +43,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        await deletePersonFaceQrcode({ pfqId: this.delData.pfqId, communityId: this.$store.state.app.currentCommunity.communityId })
+        await deletePersonFaceQrcode({ pfqId: this.delData.pfqId, communityId: (getCurrentCommunity() || {}).communityId })
         this.$message.success('删除成功')
         this.$emit('success')
         this.dialogVisible = false

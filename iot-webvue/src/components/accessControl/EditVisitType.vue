@@ -37,6 +37,7 @@
 <script>
 import { updateVisitType } from '@/api/accessControl/accessControlApi'
 import { listDicts } from '@/api/dev/devApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditVisitType',
@@ -127,7 +128,7 @@ export default {
       try {
         const data = {
           ...this.form,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         await updateVisitType(data)
         this.$message.success('修改成功')

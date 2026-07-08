@@ -28,6 +28,7 @@
 
 <script>
 import { saveWhiteList, listWhiteList } from '@/api/charge/chargeApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'WorklicenseWhiteLine',
@@ -71,7 +72,7 @@ export default {
   methods: {
     async loadWhiteList() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listWhiteList({ page: 1, row: 1, machineId: this.form.machineId, communityId })
         if (res.data && res.data.length > 0) {
           const item = res.data[0]
@@ -91,7 +92,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveWhiteList({ ...this.form, communityId })
         this.$message.success('保存成功')
         this.$emit('success')

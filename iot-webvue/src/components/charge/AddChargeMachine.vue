@@ -56,6 +56,7 @@ import { saveChargeMachine, listChargeMachineFactory, listChargeMachineFactorySp
 import { listChargeRule } from '@/api/charge/chargeApi'
 import { listDicts } from '@/api/dev/devApi'
 import { listMonitorMachine } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddChargeMachine',
@@ -111,7 +112,7 @@ export default {
   methods: {
     async loadDropdownData() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const [factoryRes, dictRes, monitorRes] = await Promise.all([
           listChargeMachineFactory({ page: 1, row: 100 }),
           listDicts({ tableName: 'charge_machine', columnName: 'charge_type' }),
@@ -144,7 +145,7 @@ export default {
       this.ruleList = []
       if (!val) return
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listChargeRule({ chargeType: val, communityId, page: 1, row: 100 })
         this.ruleList = res.data || []
       } catch (e) {
@@ -163,7 +164,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const specsStr = JSON.stringify(this.form.specs)
         await saveChargeMachine({ ...this.form, specs: specsStr, communityId })
         this.$message.success('添加成功')

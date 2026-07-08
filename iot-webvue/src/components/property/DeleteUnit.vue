@@ -10,6 +10,7 @@
 
 <script>
 import { deleteUnitItem } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteUnit',
@@ -26,7 +27,7 @@ export default {
     async handleConfirm() {
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         await deleteUnitItem({ unitId: this.delData.unitId, communityId: communityInfo.communityId })
         this.$message.success('删除成功')
         this.$emit('success')

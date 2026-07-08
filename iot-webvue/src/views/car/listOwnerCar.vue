@@ -137,6 +137,7 @@ import { listDicts } from '@/api/dev/devApi'
 import EditCar from '@/components/car/EditCar.vue'
 import DeleteOwnerCar from '@/components/car/DeleteOwnerCar.vue'
 import ImportOwnerCar from '@/components/car/ImportOwnerCar.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListOwnerCar',
@@ -187,7 +188,7 @@ export default {
       this.loading = true
       try {
         const params = { ...this.queryParams }
-        params.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        params.communityId = (getCurrentCommunity() || {}).communityId || ''
         if (params.leaseType === 'expireCar') {
           params.leaseType = ''
           params.valid = '3'
@@ -220,7 +221,7 @@ export default {
     handleExport() {
       const params = {
         ...this.queryParams,
-        communityId: this.$store.state.app.currentCommunity.communityId || '',
+        communityId: (getCurrentCommunity() || {}).communityId || '',
         pagePath: 'exportOwnerCar'
       }
       exportData(params).then(res => {
@@ -242,7 +243,7 @@ export default {
     },
     handleRelease(row) {
       this.$confirm('确认释放该车辆的车位吗？', '提示', { type: 'warning' }).then(() => {
-        const data = { ...row, communityId: this.$store.state.app.currentCommunity.communityId || '' }
+        const data = { ...row, communityId: (getCurrentCommunity() || {}).communityId || '' }
         deleteCarParkingSpace(data).then(res => {
           if (res.code === 0) {
             this.$message.success('释放成功')

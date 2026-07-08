@@ -51,6 +51,7 @@
 <script>
 import echarts from 'echarts'
 import { listAccessControl, queryAcInoutStatistics, queryAcLogStatistics, queryAcVisitStatistics, queryAcFaceStatistics } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AcInoutStatistics',
@@ -68,7 +69,7 @@ export default {
   },
   computed: {
     currentCommunityId() {
-      return this.$store.state.app.currentCommunity.communityId || ''
+      return (getCurrentCommunity() || {}).communityId || ''
     }
   },
   watch: {

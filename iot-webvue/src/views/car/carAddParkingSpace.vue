@@ -32,6 +32,7 @@
 
 <script>
 import { queryOwnerCars, carAddParkingSpace } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'CarAddParkingSpace',
@@ -63,13 +64,13 @@ export default {
         const res = await queryOwnerCars({
           page: 1, row: 1,
           carId: this.form.carId,
-          communityId: this.$store.state.app.currentCommunity.communityId || ''
+          communityId: (getCurrentCommunity() || {}).communityId || ''
         })
         const data = res.data
         if (data && data.length > 0) {
           const car = data[0]
           this.form.carNum = car.carNum || ''
-          this.form.communityId = car.communityId || this.$store.state.app.currentCommunity.communityId || ''
+          this.form.communityId = car.communityId || (getCurrentCommunity() || {}).communityId || ''
           this.form.memberId = car.memberId || ''
         }
       } catch { /* ignore */ }
@@ -80,7 +81,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await carAddParkingSpace(this.form)
         if (res.code === 0) {
           this.$message.success('续租成功')

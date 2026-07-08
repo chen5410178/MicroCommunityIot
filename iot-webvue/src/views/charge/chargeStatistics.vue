@@ -28,6 +28,7 @@
 <script>
 import echarts from 'echarts'
 import { queryOrderCountStatistics, queryOrderMoneyStatistics, queryMonthCountStatistics, queryMonthMoneyStatistics } from '@/api/charge/chargeApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ChargeStatistics',
@@ -43,7 +44,7 @@ export default {
   },
   computed: {
     currentCommunityId() {
-      return this.$store.state.app.currentCommunity.communityId || ''
+      return (getCurrentCommunity() || {}).communityId || ''
     }
   },
   watch: {

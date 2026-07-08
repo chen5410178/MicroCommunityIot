@@ -101,6 +101,7 @@
 <script>
 import { updateInstrument, listInstruments, listInstrumentTypes, listInstrumentFactory } from '@/api/meter/meterApi'
 import { listDicts } from '@/api/dev/devApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 let sensorId = 0
 
@@ -145,7 +146,7 @@ export default {
   methods: {
     async fetchInstrument() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listInstruments({ page: -1, row: 100, communityId, machineId: this.machineId })
         const data = res.data && res.data[0]
         if (data) {
@@ -171,7 +172,7 @@ export default {
     },
     async fetchInstrumentTypes() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listInstrumentTypes({ page: -1, row: 500, communityId })
         this.instrumentTypeList = res.data || []
       } catch (e) {
@@ -233,7 +234,7 @@ export default {
         if (!valid) return
         this.submitting = true
         try {
-          const communityId = this.$store.state.app.currentCommunity.communityId || ''
+          const communityId = (getCurrentCommunity() || {}).communityId || ''
           await updateInstrument({ ...this.form, machineId: this.machineId, communityId })
           this.$message.success('修改成功')
           this.$router.go(-1)

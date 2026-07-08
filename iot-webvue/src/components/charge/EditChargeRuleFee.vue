@@ -30,6 +30,7 @@
 
 <script>
 import { updateChargeRuleFee } from '@/api/charge/chargeApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditChargeRuleFee',
@@ -85,7 +86,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await updateChargeRuleFee({ ...this.form, communityId })
         this.$message.success('修改成功')
         this.$emit('success')

@@ -100,6 +100,7 @@
 
 <script>
 import { listLiftMachines, listLiftRideLogs } from '@/api/lift/liftApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'LiftRideLog',
@@ -127,7 +128,7 @@ export default {
   },
   computed: {
     currentCommunityId() {
-      return this.$store.state.app.currentCommunity.communityId || ''
+      return (getCurrentCommunity() || {}).communityId || ''
     }
   },
   watch: {

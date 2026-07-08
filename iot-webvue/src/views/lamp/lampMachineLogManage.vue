@@ -108,6 +108,7 @@ import { listLampMachineLog, listLampMachine } from '@/api/lamp/lampApi'
 import { listDicts } from '@/api/dev/devApi'
 import { listCommunityStaffs } from '@/api/user/userApi'
 import ShowLampMachineLog from '@/components/lamp/ShowLampMachineLog.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'LampMachineLogManage',
@@ -138,7 +139,7 @@ export default {
   },
   computed: {
     currentCommunityId() {
-      const community = this.$store.state.app.currentCommunity || {}
+      const community = getCurrentCommunity() || {}
       return community.communityId || ''
     }
   },

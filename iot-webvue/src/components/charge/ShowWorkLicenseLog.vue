@@ -21,6 +21,7 @@
 
 <script>
 import { listWorkLicenseLogs } from '@/api/charge/chargeApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ShowWorkLicenseLog',
@@ -44,7 +45,7 @@ export default {
       try {
         const res = await listWorkLicenseLogs({
           logId,
-          communityId: this.$store.state.app.currentCommunity.communityId,
+          communityId: (getCurrentCommunity() || {}).communityId,
           page: 1,
           row: 1
         })

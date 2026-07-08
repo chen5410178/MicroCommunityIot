@@ -20,6 +20,7 @@
 
 <script>
 import { deleteParkingCoupon } from '@/api/coupon/couponApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteParkingCoupon',
@@ -41,7 +42,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await deleteParkingCoupon({ couponId: this.delData.couponId, communityId })
         this.$message.success('删除成功')
         this.$emit('success')

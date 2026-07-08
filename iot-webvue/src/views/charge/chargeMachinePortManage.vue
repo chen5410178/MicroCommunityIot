@@ -53,6 +53,7 @@ import AddChargeMachinePort from '@/components/charge/AddChargeMachinePort.vue'
 import DeleteChargeMachinePort from '@/components/charge/DeleteChargeMachinePort.vue'
 import ChargeMachineQrCode from '@/components/charge/ChargeMachineQrCode.vue'
 import StopChargeMachine from '@/components/charge/StopChargeMachine.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ChargeMachinePortManage',
@@ -83,7 +84,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listChargeMachinePort({
           machineId: this.machineId,
           communityId,

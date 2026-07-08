@@ -40,6 +40,7 @@
 
 <script>
 import { listAssetImportLogs } from '@/api/log/logApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AssetImportLog',
@@ -66,7 +67,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId
+        const communityId = (getCurrentCommunity() || {}).communityId
         const res = await listAssetImportLogs({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.total || 0

@@ -46,6 +46,7 @@
 <script>
 import { saveParkingSpace, listParkingAreas, listParkingRegions } from '@/api/car/carApi'
 import { listMonitorMachines } from '@/api/monitor/monitorApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddParkingSpace',
@@ -97,7 +98,7 @@ export default {
       this.$refs.formRef && this.$refs.formRef.resetFields()
     },
     async loadOptions() {
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const [areasRes, monitorsRes] = await Promise.all([
           listParkingAreas({ page: 1, row: 100, communityId }),
@@ -114,7 +115,7 @@ export default {
         return
       }
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingRegions({ page: 1, row: 100, communityId, paId: this.form.paId })
         this.parkingRegions = res.data || []
       } catch (e) { /* ignore */ }
@@ -125,7 +126,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         this.form.state = 'F'
         await saveParkingSpace(this.form)
         this.$message.success('添加成功')

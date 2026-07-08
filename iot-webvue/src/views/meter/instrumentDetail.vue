@@ -60,6 +60,7 @@
 
 <script>
 import { listInstruments, listInstrumentLogs } from '@/api/meter/meterApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'InstrumentDetail',
@@ -86,7 +87,7 @@ export default {
   methods: {
     async fetchDetail() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listInstruments({ page: 1, row: 10, communityId, machineId: this.machineId })
         const data = res.data && res.data[0]
         if (data) {
@@ -99,7 +100,7 @@ export default {
     async fetchLogs() {
       this.logLoading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listInstrumentLogs({ ...this.logQuery, communityId, machineId: this.machineId })
         this.logList = res.data || []
         this.logTotal = res.records || 0

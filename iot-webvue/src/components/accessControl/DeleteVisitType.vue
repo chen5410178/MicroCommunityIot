@@ -21,6 +21,7 @@
 
 <script>
 import { deleteVisitType } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteVisitType',
@@ -42,7 +43,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        await deleteVisitType({ typeId: this.delData.typeId, communityId: this.$store.state.app.currentCommunity.communityId })
+        await deleteVisitType({ typeId: this.delData.typeId, communityId: (getCurrentCommunity() || {}).communityId })
         this.$message.success('删除成功')
         this.$emit('success')
         this.dialogVisible = false

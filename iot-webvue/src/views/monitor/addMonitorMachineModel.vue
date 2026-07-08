@@ -39,6 +39,7 @@
 <script>
 import { listMonitorModels, saveMonitorMachineModel } from '@/api/monitor/monitorApi'
 import ChooseMonitorMachine from '@/components/monitor/ChooseMonitorMachine.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddMonitorMachineModel',
@@ -89,7 +90,7 @@ export default {
       }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveMonitorMachineModel({ modelId: this.form.modelId, machineIdList: this.form.machineIdList.join(','), communityId })
         this.$message.success('添加成功')
         this.form = { modelId: '', machineIdList: [] }

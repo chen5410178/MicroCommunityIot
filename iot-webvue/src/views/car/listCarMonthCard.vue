@@ -86,6 +86,7 @@ import { listCarMonthCards, listParkingAreas } from '@/api/car/carApi'
 import AddCarMonthCard from '@/components/car/AddCarMonthCard.vue'
 import EditCarMonthCard from '@/components/car/EditCarMonthCard.vue'
 import DeleteCarMonthCard from '@/components/car/DeleteCarMonthCard.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'CarMonthCard',
@@ -116,7 +117,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listCarMonthCards({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0
@@ -126,7 +127,7 @@ export default {
     },
     async fetchParkingAreas() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingAreas({ page: 1, row: 100, communityId })
         this.parkingAreas = res.data || []
       } catch (e) { /* ignore */ }

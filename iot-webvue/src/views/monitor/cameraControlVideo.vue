@@ -46,6 +46,7 @@
 <script>
 import { getPlayVideoUrl, saveVideoPhoto } from '@/api/monitor/monitorApi'
 import SelectVideoMachine from '@/components/monitor/SelectVideoMachine.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'CameraControlVideo',
@@ -102,7 +103,7 @@ export default {
       slot.playing = false
 
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await getPlayVideoUrl({ communityId, machineId: machine.machineId })
         if (res.code === 0 && res.data) {
           this.playVideo(slot, res.data)
@@ -154,7 +155,7 @@ export default {
     },
     async savePhoto(machineId, photo) {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveVideoPhoto({ communityId, machineId, photo })
       } catch (e) { /* ignore */ }
     },

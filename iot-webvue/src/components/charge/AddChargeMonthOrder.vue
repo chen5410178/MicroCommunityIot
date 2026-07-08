@@ -42,6 +42,7 @@
 <script>
 import { saveChargeMonthOrder, listChargeMonthCards } from '@/api/charge/chargeApi'
 import { listDicts } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddChargeMonthOrder',
@@ -114,7 +115,7 @@ export default {
       } catch (e) { /* ignore */ }
     },
     async loadCards() {
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const res = await listChargeMonthCards({ page: 1, row: 100, communityId })
         this.cards = res.data || []
@@ -132,7 +133,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveChargeMonthOrder(this.form)
         this.$message.success('购买成功')
         this.$emit('success')

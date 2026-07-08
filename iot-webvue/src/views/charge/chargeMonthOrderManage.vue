@@ -86,6 +86,7 @@
 <script>
 import { listChargeMonthOrders } from '@/api/charge/chargeApi'
 import AddChargeMonthOrder from '@/components/charge/AddChargeMonthOrder.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ChargeMonthOrderManage',
@@ -113,7 +114,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listChargeMonthOrders({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0

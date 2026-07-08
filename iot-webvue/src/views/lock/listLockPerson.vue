@@ -107,6 +107,7 @@ import SearchOwner from '@/components/monitor/SearchOwner.vue'
 import DeleteLockPerson from '@/components/lock/DeleteLockPerson.vue'
 import RenewalLockPerson from '@/components/lock/RenewalLockPerson.vue'
 import ResetLockPwd from '@/components/lock/ResetLockPwd.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListLockPerson',
@@ -141,7 +142,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listLockPersons({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0
@@ -183,7 +184,7 @@ export default {
     async handleSwitchState(row) {
       const newState = row.state === '1001' ? '2002' : '1001'
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await updateLockPerson({ ...row, state: newState, communityId })
         this.$message.success('操作成功')
         this.fetchList()

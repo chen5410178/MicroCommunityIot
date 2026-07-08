@@ -94,6 +94,7 @@
 <script>
 import { getDispatchLog } from '@/api/ai/dispatchApi'
 import { listMonitorMachines } from '@/api/monitor/monitorApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DispatchLog',
@@ -121,7 +122,7 @@ export default {
   methods: {
     async fetchMachines() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listMonitorMachines({ page: 1, row: 100, communityId })
         this.machineList = res.data || []
       } catch { /* ignore */ }
@@ -129,7 +130,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         this.queryParams.communityId = communityId
         const res = await getDispatchLog(this.queryParams)
         this.list = res.data || []

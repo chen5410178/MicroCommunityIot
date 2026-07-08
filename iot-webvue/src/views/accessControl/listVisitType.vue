@@ -71,6 +71,7 @@ import { listDicts } from '@/api/dev/devApi'
 import AddVisitType from '@/components/accessControl/AddVisitType.vue'
 import EditVisitType from '@/components/accessControl/EditVisitType.vue'
 import DeleteVisitType from '@/components/accessControl/DeleteVisitType.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListVisitType',
@@ -117,7 +118,7 @@ export default {
       try {
         const params = {
           ...this.queryParams,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         const res = await listVisitTypes(params)
         this.list = res.data || []

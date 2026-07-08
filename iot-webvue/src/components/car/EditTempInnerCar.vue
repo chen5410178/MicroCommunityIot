@@ -40,6 +40,7 @@
 
 <script>
 import { updateTempInnerCar } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditTempInnerCar',
@@ -119,7 +120,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         await updateTempInnerCar(this.form)
         this.$message.success('修改成功')
         this.$emit('success')

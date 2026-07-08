@@ -49,6 +49,7 @@
 import { saveLampMachineOpenClose } from '@/api/lamp/lampApi'
 import { listDicts } from '@/api/dev/devApi'
 import ChooseLampMachine from '@/components/lamp/ChooseLampMachine.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddLampMachineOpenClose',
@@ -131,7 +132,7 @@ export default {
       }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveLampMachineOpenClose({ ...this.form, communityId })
         this.$message.success('设置成功')
         this.$emit('success')

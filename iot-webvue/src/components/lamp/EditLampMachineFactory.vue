@@ -25,6 +25,7 @@
 
 <script>
 import { updateLampMachineFactory } from '@/api/lamp/lampApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditLampMachineFactory',
@@ -77,7 +78,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await updateLampMachineFactory({ ...this.form, communityId })
         this.$message.success('修改成功')
         this.$emit('success')

@@ -106,6 +106,7 @@ import EditChargeMachine from '@/components/charge/EditChargeMachine.vue'
 import DeleteChargeMachine from '@/components/charge/DeleteChargeMachine.vue'
 import RestartChargeMachine from '@/components/charge/RestartChargeMachine.vue'
 import ChargeMachineQrCode from '@/components/charge/ChargeMachineQrCode.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ChargeMachineManage',
@@ -149,7 +150,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listChargeMachine({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0

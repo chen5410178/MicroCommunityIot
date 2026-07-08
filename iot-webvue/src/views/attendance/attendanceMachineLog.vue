@@ -99,6 +99,7 @@
 <script>
 import { listAttendanceMachineLog, listAttendanceMachine } from '@/api/attendance/attendanceApi'
 import ShowAttendanceMachineLog from '@/components/attendance/ShowAttendanceMachineLog.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AttendanceMachineLog',
@@ -124,7 +125,7 @@ export default {
   },
   computed: {
     currentCommunityId() {
-      return this.$store.state.app.currentCommunity.communityId || ''
+      return (getCurrentCommunity() || {}).communityId || ''
     }
   },
   watch: {

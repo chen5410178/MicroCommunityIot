@@ -20,6 +20,7 @@
 
 <script>
 import { deleteParkingSpace } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteParkingSpace',
@@ -43,7 +44,7 @@ export default {
       try {
         const params = {
           psId: this.delData.psId,
-          communityId: this.delData.communityId || this.$store.state.app.currentCommunity.communityId || ''
+          communityId: this.delData.communityId || (getCurrentCommunity() || {}).communityId || ''
         }
         await deleteParkingSpace(params)
         this.$message.success('删除成功')

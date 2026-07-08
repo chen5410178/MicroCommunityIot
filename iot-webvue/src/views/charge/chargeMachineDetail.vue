@@ -80,6 +80,7 @@ import AdminChargeDetailOrder from '@/components/charge/AdminChargeDetailOrder.v
 import AdminChargeDetailParking from '@/components/charge/AdminChargeDetailParking.vue'
 import AdminChargeDetailAcct from '@/components/charge/AdminChargeDetailAcct.vue'
 import AdminChargeDetailOrderAccts from '@/components/charge/AdminChargeDetailOrderAccts.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ChargeMachineDetail',
@@ -114,7 +115,7 @@ export default {
   methods: {
     async loadMachineInfo() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listChargeMachine({
           machineId: this.machineId,
           communityId,

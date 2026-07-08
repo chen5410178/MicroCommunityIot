@@ -101,6 +101,7 @@
 <script>
 import { saveInstrument, listInstrumentTypes, listInstrumentFactory } from '@/api/meter/meterApi'
 import { listDicts } from '@/api/dev/devApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 let sensorId = 0
 
@@ -140,7 +141,7 @@ export default {
   methods: {
     async fetchInstrumentTypes() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listInstrumentTypes({ page: -1, row: 500, communityId })
         this.instrumentTypeList = res.data || []
       } catch (e) {
@@ -203,7 +204,7 @@ export default {
         if (!valid) return
         this.submitting = true
         try {
-          const communityId = this.$store.state.app.currentCommunity.communityId || ''
+          const communityId = (getCurrentCommunity() || {}).communityId || ''
           await saveInstrument({ ...this.form, communityId })
           this.$message.success('添加成功')
           this.$router.go(-1)

@@ -26,6 +26,7 @@
 
 <script>
 import { saveParkingCouponCharge, listCommunityShops, listShopParkingCoupons } from '@/api/coupon/couponApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddParkingCouponCharge',
@@ -65,7 +66,7 @@ export default {
   methods: {
     async loadShops() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listCommunityShops({ page: 1, row: 100, communityId })
         this.shops = res.data || []
       } catch { /* ignore */ }
@@ -77,7 +78,7 @@ export default {
         return
       }
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listShopParkingCoupons({ page: 1, row: 100, communityId, shopId })
         this.coupons = res.data || []
         this.form.couponShopId = ''
@@ -94,7 +95,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveParkingCouponCharge({
           ...this.form,
           machineId: this.machineId,

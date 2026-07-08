@@ -25,6 +25,7 @@
 import VideoTree from './VideoTree.vue'
 import DeleteMachineCollect from './DeleteMachineCollect.vue'
 import { listMonitorCollects } from '@/api/monitor/monitorApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'MonitorCamera',
@@ -51,7 +52,7 @@ export default {
     },
     async loadCollects() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listMonitorCollects({ page: 1, row: 1000, communityId })
         if (res.code === 0) {
           this.collects = res.data || []

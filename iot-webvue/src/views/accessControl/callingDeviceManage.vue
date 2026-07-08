@@ -57,6 +57,7 @@ import { listCallingDevice } from '@/api/accessControl/accessControlApi'
 import AddCallingDevice from '@/components/accessControl/AddCallingDevice.vue'
 import EditCallingDevice from '@/components/accessControl/EditCallingDevice.vue'
 import DeleteCallingDevice from '@/components/accessControl/DeleteCallingDevice.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'CallingDeviceManage',
@@ -87,7 +88,7 @@ export default {
       try {
         const params = {
           ...this.queryParams,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         const res = await listCallingDevice(params)
         this.list = res.data || []

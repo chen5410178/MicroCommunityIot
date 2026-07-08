@@ -30,6 +30,7 @@
 
 <script>
 import { saveEventRule } from '@/api/event/eventApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddEventRule',
@@ -80,7 +81,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId
+        const communityId = (getCurrentCommunity() || {}).communityId
         await saveEventRule({ ...this.form, communityId })
         this.$message.success('添加成功')
         this.$emit('success')

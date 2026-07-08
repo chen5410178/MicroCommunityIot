@@ -67,6 +67,7 @@
 import { listDispatchFaces } from '@/api/ai/dispatchFaceApi'
 import AddDispatchFace from '@/components/ai/AddDispatchFace.vue'
 import DeleteDispatchFace from '@/components/ai/DeleteDispatchFace.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListDispatchFace',
@@ -95,7 +96,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         this.queryParams.communityId = communityId
         const res = await listDispatchFaces(this.queryParams)
         this.list = res.data || []

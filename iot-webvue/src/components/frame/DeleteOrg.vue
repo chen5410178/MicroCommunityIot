@@ -20,6 +20,7 @@
 
 <script>
 import { deleteOrg } from '@/api/frame/orgApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteOrg',
@@ -41,7 +42,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         await deleteOrg({ orgId: this.delData.orgId || this.delData.id, communityId: community.communityId })
         this.$message.success('删除成功')
         this.$emit('success')

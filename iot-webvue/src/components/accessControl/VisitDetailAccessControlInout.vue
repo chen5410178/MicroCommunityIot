@@ -50,6 +50,7 @@
 
 <script>
 import { listAccessControlInout } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'VisitDetailAccessControlInout',
@@ -81,7 +82,7 @@ export default {
       if (!this.phoneNumber) return
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await listAccessControlInout({
           ...this.queryParams,
           tel: this.phoneNumber,

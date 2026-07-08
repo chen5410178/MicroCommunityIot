@@ -180,6 +180,7 @@ import ViewData from '@/components/event/ViewData.vue'
 import DeleteEventPool from '@/components/event/DeleteEventPool.vue'
 import AddEventPoolStaff from '@/components/event/AddEventPoolStaff.vue'
 import ViewEventPoolStaffInfo from '@/components/event/ViewEventPoolStaffInfo.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EventPoolManage',
@@ -239,7 +240,7 @@ export default {
     },
     async loadRules() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listEventRules({ communityId, page: 1, row: 200 })
         this.ruleList = res.data || []
       } catch { /* ignore */ }
@@ -247,7 +248,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const params = { ...this.queryParams, communityId, objType: this.currentObjType }
         if (this.dateRange && this.dateRange.length === 2) {
           params.startTime = this.dateRange[0]
@@ -330,7 +331,7 @@ export default {
         await this.$confirm('确定要模拟完成该事件吗？', '确认操作', { type: 'info' })
       } catch { return }
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await updateEventPool({ eventId: row.eventId, communityId, state: 'NC' })
         this.$message.success('操作成功')
         this.fetchList()

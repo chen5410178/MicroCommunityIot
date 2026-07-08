@@ -12,6 +12,7 @@
 
 <script>
 import { listOwnerCars } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'RoomDetailCar',
@@ -27,7 +28,7 @@ export default {
       if (!this.roomId) { this.carList = []; return }
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await listOwnerCars({ communityId: communityInfo.communityId, roomId: this.roomId, page: 1, row: 50 })
         this.carList = res.data || []
       } catch (e) { this.carList = [] }

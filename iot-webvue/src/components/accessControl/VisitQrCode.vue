@@ -19,6 +19,7 @@
 <script>
 import QRCode from 'qrcodejs2'
 import { getVisitQrCodeUrl } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'VisitQrCode',
@@ -48,7 +49,7 @@ export default {
   methods: {
     async loadQrCodeUrl() {
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await getVisitQrCodeUrl({ communityId: communityInfo.communityId })
         const url = res.data && res.data.url ? res.data.url : res.url || ''
         if (url) {

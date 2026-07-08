@@ -73,6 +73,7 @@ import { listParkingCoupons } from '@/api/coupon/couponApi'
 import AddParkingCoupon from '@/components/coupon/AddParkingCoupon.vue'
 import EditParkingCoupon from '@/components/coupon/EditParkingCoupon.vue'
 import DeleteParkingCoupon from '@/components/coupon/DeleteParkingCoupon.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListParkingCoupon',
@@ -96,7 +97,7 @@ export default {
   },
   computed: {
     communityId() {
-      return this.$store.state.app.currentCommunity.communityId || ''
+      return (getCurrentCommunity() || {}).communityId || ''
     }
   },
   watch: {

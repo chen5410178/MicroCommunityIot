@@ -61,6 +61,7 @@
 import { listLampMachineOpenClose } from '@/api/lamp/lampApi'
 import { listDicts } from '@/api/dev/devApi'
 import AddLampMachineOpenClose from '@/components/lamp/AddLampMachineOpenClose.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'LampMachineOpenCloseManage',
@@ -97,7 +98,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listLampMachineOpenClose({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0

@@ -20,6 +20,7 @@
 
 <script>
 import { deleteMeterType } from '@/api/meter/meterApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteMeterType',
@@ -41,7 +42,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await deleteMeterType({ typeId: this.delData.typeId, communityId })
         this.$message.success('删除成功')
         this.$emit('success')

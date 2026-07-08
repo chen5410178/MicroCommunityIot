@@ -72,6 +72,7 @@
 import { listAccessControlAds, listAccessControlAdRels } from '@/api/accessControl/accessControlApi'
 import AddAccessControlAdRel from '@/components/accessControl/AddAccessControlAdRel.vue'
 import DeleteAccessControlAdRel from '@/components/accessControl/DeleteAccessControlAdRel.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AccessControlAdRel',
@@ -102,7 +103,7 @@ export default {
         const res = await listAccessControlAds({
           page: 1,
           row: 100,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         this.ads = res.data || []
         if (this.ads.length > 0) {
@@ -124,7 +125,7 @@ export default {
         const params = {
           ...this.queryParams,
           adId: this.currentAdId,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         const res = await listAccessControlAdRels(params)
         this.list = res.data || []

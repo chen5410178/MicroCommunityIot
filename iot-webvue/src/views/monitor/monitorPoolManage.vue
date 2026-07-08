@@ -73,6 +73,7 @@
 <script>
 import { listMonitorPools, listMonitorMachines, listMonitorModels } from '@/api/monitor/monitorApi'
 import { listDicts } from '@/api/dev/devApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'MonitorPoolManage',
@@ -106,7 +107,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         this.queryParams.communityId = communityId
         const res = await listMonitorPools(this.queryParams)
         this.list = res.data || []
@@ -117,7 +118,7 @@ export default {
     },
     async fetchMachines() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listMonitorMachines({ page: 1, row: 100, communityId })
         this.machineList = res.data || []
       } catch (e) {
@@ -126,7 +127,7 @@ export default {
     },
     async fetchModels() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listMonitorModels({ page: 1, row: 100, communityId })
         this.modelList = res.data || []
       } catch (e) {

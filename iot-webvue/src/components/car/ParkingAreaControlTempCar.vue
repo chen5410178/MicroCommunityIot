@@ -36,6 +36,7 @@
 
 <script>
 import { listTempInnerCars } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ParkingAreaControlTempCar',
@@ -57,7 +58,7 @@ export default {
     async loadData() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listTempInnerCars({
           ...this.queryParams,
           paId: this.paId,

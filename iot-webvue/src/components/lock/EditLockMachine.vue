@@ -40,6 +40,7 @@
 <script>
 import { updateLockMachine, listLockMachineFactorys } from '@/api/lock/lockApi'
 import RoomTree from '@/components/accessControl/RoomTree.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditLockMachine',
@@ -159,7 +160,7 @@ export default {
       this.loading = true
       try {
         const data = { ...this.form }
-        data.communityId = this.$store.state.app.currentCommunity.communityId
+        data.communityId = (getCurrentCommunity() || {}).communityId
         await updateLockMachine(data)
         this.$message.success('修改成功')
         this.$emit('success')

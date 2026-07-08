@@ -104,6 +104,7 @@
 <script>
 import { listAccessControlLogs, listAdminAccessControl } from '@/api/accessControl/accessControlApi'
 import ShowAccessControlLog from '@/components/accessControl/ShowAccessControlLog.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListAccessControlLog',
@@ -129,7 +130,7 @@ export default {
   },
   computed: {
     currentCommunityId() {
-      return this.$store.state.app.currentCommunity.communityId || ''
+      return (getCurrentCommunity() || {}).communityId || ''
     }
   },
   watch: {

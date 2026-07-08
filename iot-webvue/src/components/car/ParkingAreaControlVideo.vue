@@ -83,6 +83,7 @@
 
 <script>
 import { listBarriers, openBarrierDoor, closeBarrierDoor, getCloudFlvVideo } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ParkingAreaControlVideo',
@@ -128,7 +129,7 @@ export default {
     async listMachines() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listBarriers({ boxId: this.boxId, page: 1, row: 100, communityId })
         const data = res.data || []
         this.inMachines = data.filter(item => item.direction === '3306')
@@ -279,7 +280,7 @@ export default {
           machineCode = item.machineCode
         }
       })
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       openBarrierDoor({ machineCode, stateName: '开门', state: '1500', url: '/barrier.openBarrierDoor', userRole: 'staff', communityId }).then(res => {
         if (res.code === 0) {
           this.$message.success('已请求设备')
@@ -301,7 +302,7 @@ export default {
           machineCode = item.machineCode
         }
       })
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       closeBarrierDoor({ machineCode, stateName: '关门', state: '1500', url: '/barrier.closeBarrierDoor', userRole: 'staff', communityId }).then(res => {
         if (res.code === 0) {
           this.$message.success('已请求设备')
@@ -334,7 +335,7 @@ export default {
     },
     async openCloudFlvVideo(inOut) {
       let machineId = inOut === 'receiver1' ? this.inMachineId : this.outMachineId
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const res = await getCloudFlvVideo({ machineId, communityId })
         if (res.code === 0 && res.data && res.data.url) {

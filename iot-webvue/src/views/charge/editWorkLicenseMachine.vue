@@ -58,6 +58,7 @@
 <script>
 import { updateWorkLicenseMachine, listWorkLicenseMachines } from '@/api/charge/chargeApi'
 import { listWorkLicenseFactorys } from '@/api/charge/chargeApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditWorkLicenseMachine',
@@ -114,7 +115,7 @@ export default {
       const machineId = this.$route.query.machineId
       if (!machineId) return
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listWorkLicenseMachines({ page: 1, row: 1, machineId, communityId })
         if (res.data && res.data.length > 0) {
           const item = res.data[0]
@@ -137,7 +138,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const data = { ...this.form, staffId: this.form.staffName, communityId }
         await updateWorkLicenseMachine(data)
         this.$message.success('修改成功')

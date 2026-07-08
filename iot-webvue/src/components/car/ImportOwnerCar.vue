@@ -33,6 +33,7 @@
 
 <script>
 import { assetImport } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ImportOwnerCar',
@@ -83,7 +84,7 @@ export default {
       try {
         const formData = new FormData()
         formData.append('uploadFile', this.file)
-        formData.append('communityId', this.$store.state.app.currentCommunity.communityId || '')
+        formData.append('communityId', (getCurrentCommunity() || {}).communityId || '')
         formData.append('importAdapt', 'importOwnerCar')
         const res = await assetImport(formData)
         if (res.code === 0) {

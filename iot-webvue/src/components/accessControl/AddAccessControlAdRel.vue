@@ -26,6 +26,7 @@
 <script>
 import { saveAccessControlAdRel } from '@/api/accessControl/accessControlApi'
 import { listAccessControl } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddAccessControlAdRel',
@@ -57,7 +58,7 @@ export default {
         const res = await listAccessControl({
           page: 1,
           row: 1000,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         this.machines = res.data || []
       } catch {
@@ -74,7 +75,7 @@ export default {
         await saveAccessControlAdRel({
           adId: this.adId,
           machineIds: this.selectedMachineIds,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         this.$message.success('关联成功')
         this.$emit('success')

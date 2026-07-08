@@ -21,6 +21,7 @@
 
 <script>
 import { deletePersonFace } from '@/api/accessControl/personFaceApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeletePersonFace',
@@ -44,7 +45,7 @@ export default {
       try {
         await deletePersonFace({
           pfId: this.delData.pfId,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         this.$message.success('删除成功')
         this.$emit('success')

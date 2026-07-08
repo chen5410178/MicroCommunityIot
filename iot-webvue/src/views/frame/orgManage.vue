@@ -76,6 +76,7 @@ import EditOrg from '@/components/frame/EditOrg.vue'
 import DeleteOrg from '@/components/frame/DeleteOrg.vue'
 import OrgRelStaff from '@/components/frame/OrgRelStaff.vue'
 import DeleteOrgRelStaff from '@/components/frame/DeleteOrgRelStaff.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'OrgManage',
@@ -105,7 +106,7 @@ export default {
       if (!this.queryParams.orgId) return
       this.loading = true
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         const res = await listStaffs({
           ...this.queryParams,
           communityId: community.communityId

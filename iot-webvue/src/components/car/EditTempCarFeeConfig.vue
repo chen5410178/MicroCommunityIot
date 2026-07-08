@@ -65,6 +65,7 @@
 <script>
 import { updateTempCarFeeConfig, queryTempCarFeeRules } from '@/api/car/carApi'
 import { listDicts } from '@/api/dev/devApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 function formatDate(str) {
   if (!str) return ''
@@ -195,7 +196,7 @@ export default {
       }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await updateTempCarFeeConfig({ ...this.form, communityId })
         this.$message.success('修改成功')
         this.$emit('success')

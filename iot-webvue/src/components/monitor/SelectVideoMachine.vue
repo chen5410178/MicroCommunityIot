@@ -38,6 +38,7 @@
 
 <script>
 import { listMonitorAreas, listMonitorMachines } from '@/api/monitor/monitorApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'SelectVideoMachine',
@@ -64,7 +65,7 @@ export default {
   methods: {
     async loadAreas() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listMonitorAreas({ page: 1, row: 100, communityId })
         if (res.code === 0) {
           this.areas = res.data || []
@@ -76,7 +77,7 @@ export default {
     },
     async loadMachines() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listMonitorMachines({ page: 1, row: 100, communityId, maId: this.currentAreaId })
         if (res.code === 0) {
           this.machines = res.data || []

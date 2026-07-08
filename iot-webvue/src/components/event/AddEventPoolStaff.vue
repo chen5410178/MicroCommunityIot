@@ -29,6 +29,7 @@
 
 <script>
 import { saveEventPoolStaff, listCommunityStaffs } from '@/api/event/eventApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddEventPoolStaff',
@@ -61,7 +62,7 @@ export default {
   methods: {
     async loadStaffs() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listCommunityStaffs({ communityId, page: 1, row: 200 })
         this.staffList = res.data || []
       } catch { /* ignore */ }
@@ -76,7 +77,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveEventPoolStaff({
           eventId: this.eventId,
           staffId: this.form.staffId,

@@ -60,6 +60,7 @@ import { listMachineLocations } from '@/api/machine/machineApi'
 import AddMachineLocation from '@/components/machine/AddMachineLocation.vue'
 import EditMachineLocation from '@/components/machine/EditMachineLocation.vue'
 import DeleteMachineLocation from '@/components/machine/DeleteMachineLocation.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListMachineLocation',
@@ -81,7 +82,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const params = { ...this.queryParams, communityId: communityInfo.communityId }
         const res = await listMachineLocations(params)
         this.list = res.data || []

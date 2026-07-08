@@ -96,6 +96,7 @@
 
 <script>
 import { listCarInParkingArea, updateCarInoutNum, exceptionCarOut, listTempCarFeeConfigs } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ParkingAreaControlInCar',
@@ -124,7 +125,7 @@ export default {
     async loadData() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listCarInParkingArea({
           ...this.queryParams,
           paId: this.paId,
@@ -164,7 +165,7 @@ export default {
         this.$message.warning('未包含车牌号')
         return
       }
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const res = await updateCarInoutNum({ carNum: this.updateCarNum, ciId: this.currentCiId, communityId })
         if (res.code === 0) {
@@ -179,7 +180,7 @@ export default {
       }
     },
     async viewFeeConfig(configId) {
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const res = await listTempCarFeeConfigs({ page: 1, row: 1, communityId, configId })
         const data = (res.data || [])[0]
@@ -216,7 +217,7 @@ export default {
     },
     async doExceptionCarOut() {
       if (!this.currentCarIn.ciId) return
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const res = await exceptionCarOut({ ciId: this.currentCarIn.ciId, communityId })
         if (res.code === 0) {

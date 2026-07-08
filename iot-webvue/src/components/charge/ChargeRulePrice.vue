@@ -43,6 +43,7 @@ import AddChargeRulePrice from '@/components/charge/AddChargeRulePrice.vue'
 import EditChargeRulePrice from '@/components/charge/EditChargeRulePrice.vue'
 import DeleteChargeRulePrice from '@/components/charge/DeleteChargeRulePrice.vue'
 import AddChargePeakAlleyPrice from '@/components/charge/AddChargePeakAlleyPrice.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ChargeRulePrice',
@@ -80,7 +81,7 @@ export default {
       if (!this.ruleId) return
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listChargeRulePrice({ ...this.queryParams, ruleId: this.ruleId, chargeType: this.chargeType, communityId })
         this.list = res.data || []
         this.total = res.records || 0

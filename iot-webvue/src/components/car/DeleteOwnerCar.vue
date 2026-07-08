@@ -21,6 +21,7 @@
 
 <script>
 import { deleteOwnerCar } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteOwnerCar',
@@ -50,7 +51,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await deleteOwnerCar(this.form)
         if (res.code === 0) {
           this.$message.success('删除成功')

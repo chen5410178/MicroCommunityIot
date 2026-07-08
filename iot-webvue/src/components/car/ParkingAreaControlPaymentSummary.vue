@@ -22,6 +22,7 @@
 <script>
 import { listCarInoutPaymentSummary } from '@/api/car/carApi'
 import * as echarts from 'echarts'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ParkingAreaControlPaymentSummary',
@@ -44,7 +45,7 @@ export default {
   methods: {
     async loadData() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listCarInoutPaymentSummary({
           page: 1, row: 100,
           paId: this.paId,

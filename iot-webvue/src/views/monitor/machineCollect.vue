@@ -35,6 +35,7 @@
 import { listMonitorCollects, saveMonitorCollect } from '@/api/monitor/monitorApi'
 import SelectVideoMachine from '@/components/monitor/SelectVideoMachine.vue'
 import DeleteMachineCollect from '@/components/monitor/DeleteMachineCollect.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'MachineCollect',
@@ -61,7 +62,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         this.queryParams.communityId = communityId
         const res = await listMonitorCollects(this.queryParams)
         this.list = res.data || []
@@ -79,7 +80,7 @@ export default {
     },
     async handleSelected(item) {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveMonitorCollect({
           machineId: item.machineId,
           machineName: item.machineName,

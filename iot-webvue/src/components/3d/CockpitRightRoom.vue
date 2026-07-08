@@ -142,6 +142,7 @@
 <script>
 import { queryRooms, queryOwners, queryOwnerCars, queryFloors } from '@/api/3d/cockpitApi'
 import { eventBus } from '@/utils/three/CockpitCore'
+import { getCurrentCommunity } from '@/utils/auth'
 
 const emptyInfo = {
   roomId: '',
@@ -199,7 +200,7 @@ export default {
         const res = await queryRooms({
           page: 1,
           row: 1,
-          communityId: this.$store.state.app.currentCommunity.communityId,
+          communityId: (getCurrentCommunity() || {}).communityId,
           roomId: this.info.roomId
         })
         if (res.data && res.data[0]) {
@@ -218,7 +219,7 @@ export default {
         const res = await queryOwners({
           page: 1,
           row: 1,
-          communityId: this.$store.state.app.currentCommunity.communityId,
+          communityId: (getCurrentCommunity() || {}).communityId,
           ownerId: this.info.ownerId
         })
         if (res.data && res.data[0]) {
@@ -233,7 +234,7 @@ export default {
         const res = await queryOwnerCars({
           page: 1,
           row: 10,
-          communityId: this.$store.state.app.currentCommunity.communityId,
+          communityId: (getCurrentCommunity() || {}).communityId,
           ownerId: this.info.ownerId
         })
         this.info.cars = res.data || []
@@ -246,7 +247,7 @@ export default {
         const res = await queryFloors({
           page: 1,
           row: 1,
-          communityId: this.$store.state.app.currentCommunity.communityId,
+          communityId: (getCurrentCommunity() || {}).communityId,
           floorId: this.info.floorId
         })
         if (res.data && res.data[0]) {

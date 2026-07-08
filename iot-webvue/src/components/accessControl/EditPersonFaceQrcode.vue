@@ -56,6 +56,7 @@
 
 <script>
 import { updatePersonFaceQrcode } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditPersonFaceQrcode',
@@ -130,7 +131,7 @@ export default {
       try {
         const data = {
           ...this.form,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         await updatePersonFaceQrcode(data)
         this.$message.success('修改成功')

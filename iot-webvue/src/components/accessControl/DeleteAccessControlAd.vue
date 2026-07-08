@@ -21,6 +21,7 @@
 
 <script>
 import { deleteAccessControlAd } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteAccessControlAd',
@@ -44,7 +45,7 @@ export default {
       try {
         await deleteAccessControlAd({
           adId: this.delData.adId,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         this.$message.success('删除成功')
         this.$emit('success')

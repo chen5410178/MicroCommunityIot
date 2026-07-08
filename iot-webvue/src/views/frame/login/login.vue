@@ -45,9 +45,10 @@
 </template>
 
 <script>
-import { getSysInfo } from '@/api/login/loginApi'
+import { pcUserLogin } from '@/api/login/loginApi'
 import { listSystemInfo } from '@/api/login/systemApi'
 import { listMyStore, listMyEnteredCommunitys, queryStaffPrivileges } from '@/api/community/communityApi'
+import { setSystemInfo, setCommunityList, setCurrentCommunity, setUserInfo } from '@/utils/auth'
 import SliderVerify from '@/components/frame/SliderVerify'
 
 export default {
@@ -79,7 +80,7 @@ export default {
           const sysInfo = data.data[0]
           this.systemTitle = sysInfo.systemTitle
           this.companyName = sysInfo.companyName
-          this.$store.commit('app/SET_SYSTEM_INFO', sysInfo)
+          setSystemInfo(sysInfo)
         }
       }).catch(() => {
         this.systemTitle = 'HCIOT'
@@ -102,11 +103,12 @@ export default {
         return
       }
       this.loading = true
-      this.$store.dispatch('user/login', {
+      pcUserLogin({
         username: this.loginForm.username,
         passwd: this.loginForm.passwd,
         sliderX: this.sliderX
       }).then(() => {
+        setUserInfo({ username: this.loginForm.username })
         this.loadPostLoginData()
       }).catch(err => {
         this.loading = false
@@ -120,17 +122,12 @@ export default {
       listMyStore({ _uId: 'ccdd00opikookjuhyyttvhnnjuuu' }).then(() => {
         return queryStaffPrivileges({ a: 'HC' })
       }).then(res => {
-        const privileges = []
-        if (res && res.datas) {
-          res.datas.forEach(item => privileges.push(item.pId))
-        }
-        this.$store.commit('user/SET_PRIVILEGES', privileges)
         return listMyEnteredCommunitys({ _uId: 'ccdd00opikookjuhyyttvhnnjuuu', page: 1, row: 3 })
       }).then(res => {
         const communityList = res && res.data ? res.data : []
         if (communityList.length > 0) {
-          this.$store.commit('app/SET_COMMUNITY_LIST', communityList)
-          this.$store.commit('app/SET_CURRENT_COMMUNITY', communityList[0])
+          setCommunityList(communityList)
+          setCurrentCommunity(communityList[0])
           const redirect = this.$route.query.redirect || '/pages/index/index'
           this.$router.push(redirect)
         } else {

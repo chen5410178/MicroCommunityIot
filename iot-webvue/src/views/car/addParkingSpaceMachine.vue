@@ -65,6 +65,7 @@
 <script>
 import { saveParkingSpaceMachine, listSpaceMachineFactorys } from '@/api/car/carApi'
 import SearchParkingSpace from '@/components/car/SearchParkingSpace.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddParkingSpaceMachine',
@@ -127,7 +128,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveParkingSpaceMachine({ ...this.form, communityId })
         this.$message.success('添加成功')
         this.$router.back()

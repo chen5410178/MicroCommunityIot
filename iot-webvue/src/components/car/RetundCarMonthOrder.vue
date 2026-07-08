@@ -20,6 +20,7 @@
 
 <script>
 import { refundCarMonthOrder } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'RetundCarMonthOrder',
@@ -43,7 +44,7 @@ export default {
       try {
         const params = {
           orderId: this.orderData.orderId,
-          communityId: this.orderData.communityId || this.$store.state.app.currentCommunity.communityId || ''
+          communityId: this.orderData.communityId || (getCurrentCommunity() || {}).communityId || ''
         }
         await refundCarMonthOrder(params)
         this.$message.success('退款成功')

@@ -135,6 +135,7 @@
 <script>
 import { listLockMachines } from '@/api/lock/lockApi'
 import { queryRooms, listLockPerson, listLockLog, listLockInout } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'LockMachineDetail',
@@ -162,7 +163,7 @@ export default {
   },
   computed: {
     communityId() {
-      return this.$store.state.app.currentCommunity.communityId
+      return (getCurrentCommunity() || {}).communityId
     },
     machineId() {
       return this.$route.query.machineId || ''

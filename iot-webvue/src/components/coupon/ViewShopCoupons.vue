@@ -28,6 +28,7 @@
 
 <script>
 import { listShopParkingCoupons } from '@/api/coupon/couponApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ViewShopCoupons',
@@ -53,7 +54,7 @@ export default {
   methods: {
     async loadCoupons() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listShopParkingCoupons({
           page: 1,
           row: 100,

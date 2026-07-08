@@ -60,6 +60,7 @@ import { listInstrumentTypes } from '@/api/meter/meterApi'
 import AddInstrumentType from '@/components/meter/AddInstrumentType.vue'
 import EditInstrumentType from '@/components/meter/EditInstrumentType.vue'
 import DeleteInstrumentType from '@/components/meter/DeleteInstrumentType.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'InstrumentTypeManage',
@@ -88,7 +89,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listInstrumentTypes({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0

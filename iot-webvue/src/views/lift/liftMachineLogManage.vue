@@ -89,6 +89,7 @@
 <script>
 import { listLiftMachineLogs } from '@/api/lift/liftApi'
 import ShowLiftMachineLog from '@/components/lift/ShowLiftMachineLog.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'LiftMachineLogManage',
@@ -116,7 +117,7 @@ export default {
   },
   computed: {
     currentCommunityId() {
-      const community = this.$store.state.app.currentCommunity || {}
+      const community = getCurrentCommunity() || {}
       return community.communityId || ''
     }
   },

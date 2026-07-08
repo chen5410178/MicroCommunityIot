@@ -79,6 +79,7 @@
 <script>
 import { listVisits, updateVisit, listVisitTypes } from '@/api/accessControl/accessControlApi'
 import RoomTree from '@/components/accessControl/RoomTree.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditVisit',
@@ -130,7 +131,7 @@ export default {
   methods: {
     async loadVisitTypes() {
       try {
-        const res = await listVisitTypes({ page: -1, row: 100, communityId: this.$store.state.app.currentCommunity.communityId })
+        const res = await listVisitTypes({ page: -1, row: 100, communityId: (getCurrentCommunity() || {}).communityId })
         this.visitTypeList = res.data || []
       } catch (e) {
         console.error('加载访客类型失败', e)
@@ -143,7 +144,7 @@ export default {
           visitId: this.form.visitId,
           page: 1,
           row: 1,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         const data = res.data || []
         if (data.length > 0) {
@@ -175,7 +176,7 @@ export default {
       try {
         await updateVisit({
           ...this.form,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         this.$message.success('修改成功')
         this.$router.go(-1)

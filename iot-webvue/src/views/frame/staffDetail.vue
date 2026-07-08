@@ -81,6 +81,7 @@
 
 <script>
 import { listStaffs, queryStaffPrivileges, listStaffOrgs, listStaffRoles } from '@/api/frame/orgApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'StaffDetail',
@@ -107,7 +108,7 @@ export default {
     async fetchStaffInfo() {
       this.loading = true
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         const res = await listStaffs({
           page: 1,
           row: 1,
@@ -122,7 +123,7 @@ export default {
     },
     async fetchStaffOrgs() {
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         const res = await listStaffOrgs({
           staffId: this.staffId,
           communityId: community.communityId
@@ -134,7 +135,7 @@ export default {
     },
     async fetchStaffRoles() {
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         const res = await listStaffRoles({
           staffId: this.staffId,
           communityId: community.communityId

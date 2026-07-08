@@ -4,6 +4,7 @@ const COMMUNITY_KEY = 'iot_webvue_current_community'
 const COMMUNITY_LIST_KEY = 'iot_webvue_community_list'
 const MENUS_KEY = 'iot_webvue_menus'
 const TABS_KEY = 'iot_webvue_tabs'
+const SYSTEM_INFO_KEY = 'iot_webvue_systemInfo'
 
 export function getToken() {
   return sessionStorage.getItem(TOKEN_KEY)
@@ -64,6 +65,15 @@ export function getTabs() {
 
 export function setTabs(tabs) {
   sessionStorage.setItem(TABS_KEY, JSON.stringify(tabs))
+}
+
+export function getSystemInfo() {
+  const info = sessionStorage.getItem(SYSTEM_INFO_KEY)
+  return info ? JSON.parse(info) : null
+}
+
+export function setSystemInfo(info) {
+  sessionStorage.setItem(SYSTEM_INFO_KEY, JSON.stringify(info))
 }
 
 export function clearAll() {

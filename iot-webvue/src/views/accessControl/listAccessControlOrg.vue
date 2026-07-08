@@ -69,6 +69,7 @@ import { listAccessControlOrg } from '@/api/accessControl/accessControlApi'
 import OrgTree from '@/components/accessControl/OrgTree.vue'
 import AuthorizeAccessControlOrg from '@/components/accessControl/AuthorizeAccessControlOrg.vue'
 import DeleteAccessControlOrg from '@/components/accessControl/DeleteAccessControlOrg.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListAccessControlOrg',
@@ -95,7 +96,7 @@ export default {
       if (!this.queryParams.orgId) return
       this.loading = true
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         const res = await listAccessControlOrg({
           ...this.queryParams,
           communityId: community.communityId

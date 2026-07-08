@@ -102,12 +102,12 @@
 
 <script>
 import { listAdminMeterMachine, listMeterMachineFactory } from '@/api/meter/meterApi'
-import { mapState } from 'vuex'
+import { getCommunityList } from '@/utils/auth'
 
 export default {
   name: 'ListAdminMeter',
   computed: {
-    ...mapState('app', ['communityList'])
+    communityList() { return getCommunityList() || [] }
   },
   data() {
     return {

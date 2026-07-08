@@ -42,6 +42,7 @@
 <script>
 import { updateOwnerCar } from '@/api/car/carApi'
 import { listDicts } from '@/api/dev/devApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditCar',
@@ -105,7 +106,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await updateOwnerCar(this.form)
         if (res.code === 0) {
           this.$message.success('修改成功')

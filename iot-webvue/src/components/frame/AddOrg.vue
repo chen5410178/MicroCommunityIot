@@ -25,6 +25,7 @@
 
 <script>
 import { saveOrg } from '@/api/frame/orgApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddOrg',
@@ -72,7 +73,7 @@ export default {
       try { await this.$refs.formRef.validate() } catch { return }
       this.loading = true
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         await saveOrg({ ...this.form, communityId: community.communityId })
         this.$message.success('添加成功')
         this.$emit('success')

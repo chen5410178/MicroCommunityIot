@@ -28,6 +28,7 @@
 
 <script>
 import { queryFloors, queryUnits, queryRoomsTree } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'RoomTree',
@@ -54,7 +55,7 @@ export default {
   methods: {
     async loadFloors() {
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await queryFloors({ communityId: communityInfo.communityId, page: 1, row: 1000 })
         const floors = res.data || []
         this.treeData = floors.map(f => ({
@@ -70,7 +71,7 @@ export default {
     async loadNode(node, resolve) {
       const id = node.data.id
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         if (id.startsWith('f_')) {
           const res = await queryUnits({ communityId: communityInfo.communityId, floorId: node.data.floorId, page: 1, row: 1000 })
           const units = res.data || []

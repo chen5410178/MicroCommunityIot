@@ -18,6 +18,7 @@
 
 <script>
 import { deleteAccessControlFloor } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteAccessControlFloor',
@@ -43,7 +44,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         await deleteAccessControlFloor({
           acfId: this.rowData.acfId,
           communityId: community.communityId

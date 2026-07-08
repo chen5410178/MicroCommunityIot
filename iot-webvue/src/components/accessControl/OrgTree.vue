@@ -23,6 +23,7 @@
 
 <script>
 import { listOrgTree } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'OrgTree',
@@ -37,7 +38,7 @@ export default {
   methods: {
     async loadTree() {
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         const res = await listOrgTree({ communityId: community.communityId })
         const data = res.data || res
         const list = Array.isArray(data) ? data : (data.list || data.records || [])

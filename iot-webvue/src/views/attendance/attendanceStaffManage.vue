@@ -79,6 +79,7 @@
 <script>
 import { listAttendanceStaffs, listAttendanceMachines } from '@/api/attendance/attendanceApi'
 import DeleteAttendanceStaff from '@/components/attendance/DeleteAttendanceStaff.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AttendanceStaffManage',
@@ -106,7 +107,7 @@ export default {
   methods: {
     async loadMachines() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId
+        const communityId = (getCurrentCommunity() || {}).communityId
         const res = await listAttendanceMachines({ page: 1, row: 100, communityId })
         this.machines = res.data || []
         if (this.machines.length > 0) {
@@ -126,7 +127,7 @@ export default {
       if (!this.queryParams.machineId) return
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId
+        const communityId = (getCurrentCommunity() || {}).communityId
         const res = await listAttendanceStaffs({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0

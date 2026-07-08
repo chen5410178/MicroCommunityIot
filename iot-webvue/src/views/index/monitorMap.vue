@@ -67,6 +67,7 @@ import ViewImage from '@/components/common/viewImage.vue'
 import { listDispatchFaces } from '@/api/ai/dispatchFaceApi'
 import { getDispatchLog } from '@/api/ai/dispatchApi'
 import { getFaceLog, queryMonitorCamera } from '@/api/ai/faceLogApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'MonitorMap',
@@ -90,7 +91,7 @@ export default {
   },
   computed: {
     communityId() {
-      return this.$store.state.app.currentCommunity.communityId || ''
+      return (getCurrentCommunity() || {}).communityId || ''
     }
   },
   mounted() {

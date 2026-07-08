@@ -20,6 +20,7 @@
 
 <script>
 import { editFloor } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditFloor',
@@ -56,7 +57,7 @@ export default {
       try { await this.$refs.formRef.validate() } catch { return }
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         await editFloor({ ...this.form, communityId: communityInfo.communityId })
         this.$message.success('修改成功')
         this.$emit('success')

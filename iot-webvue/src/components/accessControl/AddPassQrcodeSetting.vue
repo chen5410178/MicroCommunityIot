@@ -44,6 +44,7 @@
 
 <script>
 import { savePassQrcodeSetting } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddPassQrcodeSetting',
@@ -92,7 +93,7 @@ export default {
       try {
         const data = {
           ...this.form,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         await savePassQrcodeSetting(data)
         this.$message.success('添加成功')

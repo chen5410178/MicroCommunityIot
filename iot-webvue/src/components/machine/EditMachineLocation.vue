@@ -25,6 +25,7 @@
 
 <script>
 import { updateMachineLocation } from '@/api/machine/machineApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditMachineLocation',
@@ -74,7 +75,7 @@ export default {
       try { await this.$refs.formRef.validate() } catch { return }
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         await updateMachineLocation({
           locationId: this.form.locationId,
           locationName: this.form.locationName,

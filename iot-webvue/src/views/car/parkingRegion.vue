@@ -69,7 +69,7 @@
 
 <script>
 import { listParkingRegions, listParkingAreas } from '@/api/car/carApi'
-import { mapState } from 'vuex'
+import { getCurrentCommunity } from '@/utils/auth'
 import AddParkingRegion from '@/components/car/AddParkingRegion.vue'
 import EditParkingRegion from '@/components/car/EditParkingRegion.vue'
 import DeleteParkingRegion from '@/components/car/DeleteParkingRegion.vue'
@@ -78,7 +78,7 @@ export default {
   name: 'ParkingRegion',
   components: { AddParkingRegion, EditParkingRegion, DeleteParkingRegion },
   computed: {
-    ...mapState('app', ['currentCommunity'])
+    currentCommunity() { return getCurrentCommunity() || {} }
   },
   data() {
     return {

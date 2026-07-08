@@ -37,6 +37,7 @@
 <script>
 import { saveVisitType } from '@/api/accessControl/accessControlApi'
 import { listDicts } from '@/api/dev/devApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddVisitType',
@@ -113,7 +114,7 @@ export default {
       try {
         const data = {
           ...this.form,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         await saveVisitType(data)
         this.$message.success('添加成功')

@@ -25,6 +25,7 @@
 
 <script>
 import { saveInstrumentFactorySpec } from '@/api/meter/meterApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddInstrumentFactorySpec',
@@ -71,7 +72,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveInstrumentFactorySpec({ factoryId: this.factoryId, specName: this.form.specName, specCd: this.form.specCd, remark: this.form.remark, communityId })
         this.$message.success('添加成功')
         this.$emit('success')

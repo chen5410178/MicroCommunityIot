@@ -39,6 +39,7 @@
 
 <script>
 import { saveTelMachine } from '@/api/lamp/lampApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddTelMachine',
@@ -104,7 +105,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveTelMachine({ ...this.form, communityId })
         this.$message.success('添加成功')
         this.$emit('success')

@@ -29,6 +29,7 @@
 
 <script>
 import { updateCallingPlatform } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditCallingPlatform',
@@ -94,7 +95,7 @@ export default {
       try {
         const data = {
           ...this.form,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         await updateCallingPlatform(data)
         this.$message.success('修改成功')

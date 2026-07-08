@@ -1,3 +1,4 @@
+import { getCurrentCommunity } from '@/utils/auth'
 <template>
   <el-dialog :visible.sync="dialogVisible" title="房产导入" width="500px" @close="handleClose">
     <el-upload
@@ -35,7 +36,7 @@ export default {
       }
     },
     uploadData() {
-      const communityInfo = this.$store.state.app.currentCommunity || {}
+      const communityInfo = getCurrentCommunity() || {}
       return { communityId: communityInfo.communityId }
     }
   },

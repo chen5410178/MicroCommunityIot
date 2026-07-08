@@ -49,6 +49,7 @@
 <script>
 import { saveAccessControlAd } from '@/api/accessControl/accessControlApi'
 import request from '@/utils/request'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddAccessControlAd',
@@ -89,7 +90,7 @@ export default {
     async handleUpload(param) {
       const formData = new FormData()
       formData.append('uploadFile', param.file)
-      formData.append('communityId', this.$store.state.app.currentCommunity.communityId)
+      formData.append('communityId', (getCurrentCommunity() || {}).communityId)
       try {
         const res = await request({
           url: '/upload/uploadFile',
@@ -119,7 +120,7 @@ export default {
       try {
         const data = {
           ...this.form,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         await saveAccessControlAd(data)
         this.$message.success('添加成功')

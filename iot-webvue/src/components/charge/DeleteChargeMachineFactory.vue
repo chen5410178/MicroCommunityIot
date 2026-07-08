@@ -20,6 +20,7 @@
 
 <script>
 import { deleteChargeMachineFactory } from '@/api/charge/chargeApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteChargeMachineFactory',
@@ -41,7 +42,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await deleteChargeMachineFactory({ factoryId: this.delData.factoryId, communityId })
         this.$message.success('删除成功')
         this.$emit('success')

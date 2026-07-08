@@ -59,6 +59,7 @@ import { listMonitorManufactors } from '@/api/monitor/monitorApi'
 import AddMonitorManufactor from '@/components/monitor/AddMonitorManufactor.vue'
 import EditMonitorManufactor from '@/components/monitor/EditMonitorManufactor.vue'
 import DeleteMonitorManufactor from '@/components/monitor/DeleteMonitorManufactor.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'MonitorManufactor',
@@ -87,7 +88,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         this.queryParams.communityId = communityId
         const res = await listMonitorManufactors(this.queryParams)
         this.list = res.data || []

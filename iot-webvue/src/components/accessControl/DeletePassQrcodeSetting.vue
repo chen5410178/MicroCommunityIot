@@ -21,6 +21,7 @@
 
 <script>
 import { deletePassQrcodeSetting } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeletePassQrcodeSetting',
@@ -42,7 +43,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        await deletePassQrcodeSetting({ pqsId: this.delData.pqsId, communityId: this.$store.state.app.currentCommunity.communityId })
+        await deletePassQrcodeSetting({ pqsId: this.delData.pqsId, communityId: (getCurrentCommunity() || {}).communityId })
         this.$message.success('删除成功')
         this.$emit('success')
         this.dialogVisible = false

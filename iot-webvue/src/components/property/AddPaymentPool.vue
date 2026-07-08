@@ -63,6 +63,7 @@
 <script>
 import { savePaymentPool, listPaymentAdapt, listPaymentKey } from '@/api/property/paymentPoolApi'
 import request from '@/utils/request'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddPaymentPool',
@@ -135,7 +136,7 @@ export default {
     handleUpload(param) {
       const formData = new FormData()
       formData.append('uploadFile', param.file)
-      formData.append('communityId', this.$store.state.app.currentCommunity.communityId)
+      formData.append('communityId', (getCurrentCommunity() || {}).communityId)
       formData.append('fileType', 'PAYMENT_CERT')
       request({
         url: '/file.uploadFile',
@@ -177,7 +178,7 @@ export default {
           payType: this.form.payType,
           remark: this.form.remark,
           state: 'Y',
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         await savePaymentPool(data)
         this.$message.success('添加成功')

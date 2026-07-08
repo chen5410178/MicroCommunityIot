@@ -110,6 +110,7 @@
 import { listPersonFaces } from '@/api/accessControl/personFaceApi'
 import AuditPersonFace from '@/components/accessControl/AuditPersonFace.vue'
 import DeletePersonFace from '@/components/accessControl/DeletePersonFace.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListPersonFace',
@@ -151,7 +152,7 @@ export default {
       try {
         const params = {
           ...this.queryParams,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         const res = await listPersonFaces(params)
         this.list = res.data || []

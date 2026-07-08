@@ -53,6 +53,7 @@
 <script>
 import { listCarInParkingArea, listBarriers, listParkingCouponCars, getTempCarFeeOrder, customCarInOut } from '@/api/car/carApi'
 import { listDicts } from '@/api/dev/devApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'CustomCarInout',
@@ -142,7 +143,7 @@ export default {
     },
     async queryCarMoney() {
       if (!this.form.carNum) return
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const res = await listCarInParkingArea({
           page: 1, row: 1,
@@ -167,7 +168,7 @@ export default {
       this.loadOutCoupons()
     },
     async loadOutMachines() {
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const res = await listBarriers({
           paId: this.form.paId,
@@ -179,7 +180,7 @@ export default {
       } catch { /* ignore */ }
     },
     async loadOutCoupons() {
-      const communityId = this.$store.state.app.currentCommunity.communityId || ''
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const res = await listParkingCouponCars({
           paId: this.form.paId,
@@ -216,7 +217,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         await customCarInOut(this.form)
         this.$message.success('操作成功')
         this.$emit('success')

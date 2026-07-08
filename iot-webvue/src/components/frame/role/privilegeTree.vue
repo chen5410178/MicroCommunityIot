@@ -16,6 +16,7 @@
 
 <script>
 import { listPrivilegeTree, addPrivilegeToGroup, deletePrivilegeFromGroup } from '@/api/frame/roleApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'PrivilegeTree',
@@ -34,7 +35,7 @@ export default {
       this.pgId = pgId
       this.loading = true
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         const res = await listPrivilegeTree({ pgId, communityId: community.communityId })
         const raw = Array.isArray(res.data) ? res.data : res || []
         this.treeData = this.buildTree(raw)

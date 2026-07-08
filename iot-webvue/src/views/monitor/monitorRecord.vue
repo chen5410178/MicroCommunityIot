@@ -69,6 +69,7 @@
 <script>
 import { listMonitorMachines, listMonitorRecords } from '@/api/monitor/monitorApi'
 import PlayRecordMonitorVideo from '@/components/monitor/PlayRecordMonitorVideo.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'MonitorRecord',
@@ -98,7 +99,7 @@ export default {
   methods: {
     async fetchMonitorMachines() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listMonitorMachines({ page: 1, row: 100, communityId })
         this.monitorList = res.data || []
         if (this.monitorList.length > 0) {
@@ -110,7 +111,7 @@ export default {
       if (!this.currentMonitor) return
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const params = { ...this.queryParams, machineId: this.currentMonitor.machineId, communityId }
         const res = await listMonitorRecords(params)
         this.videoList = res.data || []
@@ -139,7 +140,7 @@ export default {
         machineId: this.currentMonitor.machineId,
         machineName: row.machineName || this.currentMonitor.machineName,
         rvId: row.rvId,
-        communityId: this.$store.state.app.currentCommunity.communityId || ''
+        communityId: (getCurrentCommunity() || {}).communityId || ''
       }
       this.playVisible = true
     },

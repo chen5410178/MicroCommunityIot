@@ -22,6 +22,7 @@
 
 <script>
 import { saveParkingRegion } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddParkingRegion',
@@ -64,7 +65,7 @@ export default {
       this.loading = true
       try {
         this.form.paId = this.paId
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveParkingRegion(this.form)
         this.$message.success('添加成功')
         this.$emit('success')

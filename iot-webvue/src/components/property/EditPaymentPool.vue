@@ -79,6 +79,7 @@
 <script>
 import { updatePaymentPool, listPaymentAdapt, listPaymentKey, listFeeConfig, listPaymentPool } from '@/api/property/paymentPoolApi'
 import request from '@/utils/request'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditPaymentPool',
@@ -141,7 +142,7 @@ export default {
 
         const poolRes = await listPaymentPool({
           ppId: this.editData.ppId,
-          communityId: this.$store.state.app.currentCommunity.communityId,
+          communityId: (getCurrentCommunity() || {}).communityId,
           page: 1,
           row: 1
         })
@@ -166,7 +167,7 @@ export default {
 
         if (this.editData.payType === '3003') {
           try {
-            const feeRes = await listFeeConfig({ page: 1, row: 100, communityId: this.$store.state.app.currentCommunity.communityId })
+            const feeRes = await listFeeConfig({ page: 1, row: 100, communityId: (getCurrentCommunity() || {}).communityId })
             this.feeConfigs = feeRes.data || []
           } catch { /* ignore */ }
         }
@@ -199,7 +200,7 @@ export default {
     handleUpload(param) {
       const formData = new FormData()
       formData.append('uploadFile', param.file)
-      formData.append('communityId', this.$store.state.app.currentCommunity.communityId)
+      formData.append('communityId', (getCurrentCommunity() || {}).communityId)
       formData.append('fileType', 'PAYMENT_CERT')
       request({
         url: '/file.uploadFile',
@@ -244,7 +245,7 @@ export default {
           state: this.form.state,
           remark: this.form.remark,
           configIds: this.form.configIds,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         await updatePaymentPool(data)
         this.$message.success('修改成功')

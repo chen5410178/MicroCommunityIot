@@ -76,6 +76,7 @@
 import { listCallingContact, saveCallingContact, listAccessControl } from '@/api/accessControl/accessControlApi'
 import ChooseCallingDevice from '@/components/accessControl/ChooseCallingDevice.vue'
 import DeleteCallingContact from '@/components/accessControl/DeleteCallingContact.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'CallingContactManage',
@@ -108,7 +109,7 @@ export default {
         const res = await listAccessControl({
           page: 1,
           row: 50,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         this.deviceList = res.data || []
       } catch { /* ignore */ }
@@ -119,7 +120,7 @@ export default {
         const params = {
           ...this.queryParams,
           machineId: this.selectedMachineId,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         const res = await listCallingContact(params)
         this.list = res.data || []
@@ -152,7 +153,7 @@ export default {
           deviceId: row.deviceId,
           platformId: row.platformId,
           machineId: this.selectedMachineId,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         this.$message.success('添加成功')
         this.fetchList()

@@ -20,6 +20,7 @@
 
 <script>
 import { deleteCarMonthCard } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteCarMonthCard',
@@ -43,7 +44,7 @@ export default {
       try {
         const params = {
           cardId: this.delData.cardId,
-          communityId: this.delData.communityId || this.$store.state.app.currentCommunity.communityId || ''
+          communityId: this.delData.communityId || (getCurrentCommunity() || {}).communityId || ''
         }
         await deleteCarMonthCard(params)
         this.$message.success('删除成功')

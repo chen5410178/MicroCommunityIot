@@ -20,6 +20,7 @@
 
 <script>
 import { deleteEventPool } from '@/api/event/eventApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteEventPool',
@@ -41,7 +42,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await deleteEventPool({ eventId: this.delData.eventId, communityId })
         this.$message.success('删除成功')
         this.$emit('success')

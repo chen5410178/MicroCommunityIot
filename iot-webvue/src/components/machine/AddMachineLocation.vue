@@ -36,6 +36,7 @@
 
 <script>
 import { saveMachineLocation, queryFloors, queryUnits } from '@/api/machine/machineApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddMachineLocation',
@@ -98,14 +99,14 @@ export default {
       }
     },
     async loadFloors() {
-      const communityInfo = this.$store.state.app.currentCommunity || {}
+      const communityInfo = getCurrentCommunity() || {}
       try {
         const res = await queryFloors({ communityId: communityInfo.communityId, page: 1, row: 100 })
         this.floors = res.data || []
       } catch (e) { /* 加载失败静默处理 */ }
     },
     async loadUnits() {
-      const communityInfo = this.$store.state.app.currentCommunity || {}
+      const communityInfo = getCurrentCommunity() || {}
       try {
         const res = await queryUnits({ communityId: communityInfo.communityId, floorId: this.form.floorId, page: 1, row: 100 })
         this.units = Array.isArray(res) ? res : (res.data || [])
@@ -115,7 +116,7 @@ export default {
       try { await this.$refs.formRef.validate() } catch { return }
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const data = {
           communityId: communityInfo.communityId,
           locationName: this.form.locationName,

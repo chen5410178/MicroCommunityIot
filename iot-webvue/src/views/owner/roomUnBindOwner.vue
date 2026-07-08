@@ -29,6 +29,7 @@
 
 <script>
 import { queryOwners, deleteOwnerRoomRel } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'RoomUnBindOwner',
@@ -49,7 +50,7 @@ export default {
     async loadOwners() {
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await queryOwners({ communityId: communityInfo.communityId, roomId: this.roomId, page: 1, row: 50 })
         this.ownerList = Array.isArray(res) ? res : (res.data || [])
       } catch (e) { this.$message.error(e.msg || '查询失败') }
@@ -57,7 +58,7 @@ export default {
     },
     async handleUnbind(row) {
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         await deleteOwnerRoomRel({
           ownerId: row.ownerId,
           roomId: this.roomId,

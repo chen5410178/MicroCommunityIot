@@ -52,6 +52,7 @@
 <script>
 import { saveDispatchFace } from '@/api/ai/dispatchFaceApi'
 import request from '@/utils/request'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddDispatchFace',
@@ -90,7 +91,7 @@ export default {
     async handleUpload(param) {
       const formData = new FormData()
       formData.append('uploadFile', param.file)
-      formData.append('communityId', this.$store.state.app.currentCommunity.communityId)
+      formData.append('communityId', (getCurrentCommunity() || {}).communityId)
       try {
         const res = await request({
           url: '/upload/uploadFile',
@@ -118,7 +119,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveDispatchFace({
           ...this.form,
           personType: 'dispatch',

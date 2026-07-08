@@ -82,6 +82,7 @@ import { listPaymentPool, listPaymentAdapt } from '@/api/property/paymentPoolApi
 import AddPaymentPool from '@/components/property/AddPaymentPool.vue'
 import EditPaymentPool from '@/components/property/EditPaymentPool.vue'
 import DeletePaymentPool from '@/components/property/DeletePaymentPool.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'PaymentPool',
@@ -121,7 +122,7 @@ export default {
       try {
         const params = {
           ...this.queryParams,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         const res = await listPaymentPool(params)
         this.list = res.data || []

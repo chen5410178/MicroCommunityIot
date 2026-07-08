@@ -73,6 +73,7 @@ import { listCarBlackWhites } from '@/api/car/carApi'
 import AddCarBlackWhite from '@/components/car/AddCarBlackWhite.vue'
 import EditCarBlackWhite from '@/components/car/EditCarBlackWhite.vue'
 import DeleteCarBlackWhite from '@/components/car/DeleteCarBlackWhite.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'CarBlackWhite',
@@ -106,7 +107,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listCarBlackWhites({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0

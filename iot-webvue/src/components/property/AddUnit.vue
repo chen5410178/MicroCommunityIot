@@ -17,6 +17,7 @@
 
 <script>
 import { saveUnit } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddUnit',
@@ -44,7 +45,7 @@ export default {
       try { await this.$refs.formRef.validate() } catch { return }
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         await saveUnit({ ...this.form, floorId: this.floorId, communityId: communityInfo.communityId })
         this.$message.success('添加成功')
         this.$emit('success')

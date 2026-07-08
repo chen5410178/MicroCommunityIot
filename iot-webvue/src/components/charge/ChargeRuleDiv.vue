@@ -27,6 +27,7 @@ import { listChargeRule } from '@/api/charge/chargeApi'
 import AddChargeRule from '@/components/charge/AddChargeRule.vue'
 import EditChargeRule from '@/components/charge/EditChargeRule.vue'
 import DeleteChargeRule from '@/components/charge/DeleteChargeRule.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ChargeRuleDiv',
@@ -46,7 +47,7 @@ export default {
   methods: {
     async fetchRules() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listChargeRule({ page: 1, row: 100, communityId })
         this.rules = res.data || []
         if (this.rules.length > 0 && !this.curRule) {

@@ -42,6 +42,7 @@
 <script>
 import { saveMonitorManufactor } from '@/api/monitor/monitorApi'
 import request from '@/utils/request'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddMonitorManufactor',
@@ -114,7 +115,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await saveMonitorManufactor({ ...this.form, communityId })
         this.$message.success('添加成功')
         this.$emit('success')

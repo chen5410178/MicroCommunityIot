@@ -20,6 +20,7 @@
 
 <script>
 import { deleteInstrumentFactory } from '@/api/meter/meterApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteInstrumentFactory',
@@ -41,7 +42,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await deleteInstrumentFactory({ factoryId: this.delData.factoryId, communityId })
         this.$message.success('删除成功')
         this.$emit('success')

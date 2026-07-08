@@ -21,6 +21,7 @@
 
 <script>
 import { deleteLockMachine } from '@/api/lock/lockApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteLockMachine',
@@ -42,7 +43,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId
+        const communityId = (getCurrentCommunity() || {}).communityId
         await deleteLockMachine({ machineId: this.delData.machineId, communityId })
         this.$message.success('删除成功')
         this.$emit('success')

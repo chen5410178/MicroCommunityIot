@@ -102,6 +102,7 @@ import AddMonitorMachine from '@/components/monitor/AddMonitorMachine.vue'
 import EditMonitorMachine from '@/components/monitor/EditMonitorMachine.vue'
 import DeleteMonitorMachine from '@/components/monitor/DeleteMonitorMachine.vue'
 import PlayMonitorVideo from '@/components/monitor/PlayMonitorVideo.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'MonitorMachineManage',
@@ -138,7 +139,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listMonitorMachines({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0
@@ -148,7 +149,7 @@ export default {
     },
     async fetchAreaList() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listMonitorAreas({ page: 1, row: 100, communityId })
         this.areaList = res.data || []
       } catch { /* ignore */ }

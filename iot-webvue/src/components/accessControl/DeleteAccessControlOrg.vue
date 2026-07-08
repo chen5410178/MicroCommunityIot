@@ -18,6 +18,7 @@
 
 <script>
 import { deleteAccessControlOrg } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteAccessControlOrg',
@@ -43,7 +44,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         await deleteAccessControlOrg({
           acoId: this.rowData.acoId,
           communityId: community.communityId

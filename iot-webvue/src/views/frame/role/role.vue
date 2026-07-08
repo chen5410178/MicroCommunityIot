@@ -68,6 +68,7 @@ import DeleteRole from '@/components/frame/role/deleteRole.vue'
 import PrivilegeTree from '@/components/frame/role/privilegeTree.vue'
 import RoleCommunity from '@/components/frame/role/roleCommunity.vue'
 import RoleStaff from '@/components/frame/role/roleStaff.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'RoleManage',
@@ -88,7 +89,7 @@ export default {
   methods: {
     async fetchRoleList() {
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         const res = await listPrivilegeGroup({ communityId: community.communityId })
         this.roleList = Array.isArray(res) ? res : (res.data || [])
         if (this.roleList.length > 0 && !this.currentRole) {

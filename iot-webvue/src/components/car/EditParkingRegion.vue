@@ -22,6 +22,7 @@
 
 <script>
 import { updateParkingRegion } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditParkingRegion',
@@ -70,7 +71,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         await updateParkingRegion(this.form)
         this.$message.success('修改成功')
         this.$emit('success')

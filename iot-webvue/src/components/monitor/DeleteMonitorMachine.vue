@@ -20,6 +20,7 @@
 
 <script>
 import { deleteMonitorMachine } from '@/api/monitor/monitorApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteMonitorMachine',
@@ -41,7 +42,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await deleteMonitorMachine({ machineId: this.delData.machineId, communityId })
         this.$message.success('删除成功')
         this.$emit('success')

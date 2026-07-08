@@ -58,6 +58,7 @@
 
 <script>
 import { listAssetImportLogDetails, listAssetImportLogTypes } from '@/api/log/logApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AssetImportLogDetail',
@@ -109,7 +110,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId
+        const communityId = (getCurrentCommunity() || {}).communityId
         const params = {
           ...this.queryParams,
           logId: this.logId,

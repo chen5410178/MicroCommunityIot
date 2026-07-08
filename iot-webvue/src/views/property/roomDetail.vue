@@ -114,6 +114,7 @@ import RoomDetailLock from '@/components/property/RoomDetailLock.vue'
 import RoomDetailLockPerson from '@/components/property/RoomDetailLockPerson.vue'
 import RoomDetailLockLog from '@/components/property/RoomDetailLockLog.vue'
 import RoomDetailLockInout from '@/components/property/RoomDetailLockInout.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'RoomDetail',
@@ -137,7 +138,7 @@ export default {
   methods: {
     async loadRoomInfo() {
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await queryRooms({ communityId: communityInfo.communityId, roomId: this.roomId, page: 1, row: 1 })
         if (res.data && res.data.length) {
           this.roomInfo = res.data[0]

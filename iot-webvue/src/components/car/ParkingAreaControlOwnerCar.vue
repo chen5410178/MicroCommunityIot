@@ -39,6 +39,7 @@
 
 <script>
 import { listCarMonthCards } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ParkingAreaControlOwnerCar',
@@ -60,7 +61,7 @@ export default {
     async loadData() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listCarMonthCards({
           ...this.queryParams,
           paId: this.paId,

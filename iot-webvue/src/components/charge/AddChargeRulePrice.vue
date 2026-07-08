@@ -48,6 +48,7 @@
 
 <script>
 import { saveChargeRulePrice, listChargePeakAlleyPrice } from '@/api/charge/chargeApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddChargeRulePrice',
@@ -97,7 +98,7 @@ export default {
     },
     async fetchPeakAlleyPrices() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listChargePeakAlleyPrice({ page: 1, row: 4, communityId })
         this.peakAlleyPrices = res.data || []
       } catch (e) {
@@ -110,7 +111,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         let price = ''
         let servicePrice = ''
         this.peakAlleyPrices.forEach((item) => {

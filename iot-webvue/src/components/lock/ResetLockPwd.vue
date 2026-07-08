@@ -19,6 +19,7 @@
 
 <script>
 import { resetLockPwd } from '@/api/lock/lockApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ResetLockPwd',
@@ -60,7 +61,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await resetLockPwd({ ...this.editData, cardNumber: this.form.cardNumber, communityId })
         this.$message.success('密码重置成功')
         this.$emit('success')

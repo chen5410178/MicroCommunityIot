@@ -16,6 +16,7 @@
 
 <script>
 import { listAccessControlLogParam } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ShowAccessControlLog',
@@ -38,7 +39,7 @@ export default {
           page: 1,
           row: 1,
           logId: this.logId,
-          communityId: this.$store.state.app.currentCommunity.communityId || ''
+          communityId: (getCurrentCommunity() || {}).communityId || ''
         })
         if (res.data && res.data.length > 0) {
           this.reqParam = res.data[0].reqParam || ''

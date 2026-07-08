@@ -34,6 +34,7 @@
 <script>
 import { saveMonitorMachinePerson } from '@/api/monitor/monitorApi'
 import SearchOwner from '@/components/monitor/SearchOwner.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddMonitorMachineOwner',
@@ -81,7 +82,7 @@ export default {
       }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const data = {
           machineId: this.machineId,
           personType: '1001',

@@ -40,6 +40,7 @@
 <script>
 import { saveLockMachine, listLockMachineFactorys } from '@/api/lock/lockApi'
 import RoomTree from '@/components/accessControl/RoomTree.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddLockMachine',
@@ -127,7 +128,7 @@ export default {
       this.loading = true
       try {
         const data = { ...this.form }
-        data.communityId = this.$store.state.app.currentCommunity.communityId
+        data.communityId = (getCurrentCommunity() || {}).communityId
         await saveLockMachine(data)
         this.$message.success('添加成功')
         this.$emit('success')

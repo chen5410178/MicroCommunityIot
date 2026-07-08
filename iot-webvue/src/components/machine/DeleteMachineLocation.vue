@@ -20,6 +20,7 @@
 
 <script>
 import { deleteMachineLocation } from '@/api/machine/machineApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteMachineLocation',
@@ -41,7 +42,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         await deleteMachineLocation({
           locationId: this.delData.locationId,
           communityId: communityInfo.communityId

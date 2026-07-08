@@ -147,6 +147,7 @@ import { listDicts } from '@/api/dev/devApi'
 import DeleteVisit from '@/components/accessControl/DeleteVisit.vue'
 import VisitAuth from '@/components/accessControl/VisitAuth.vue'
 import VisitQrCode from '@/components/accessControl/VisitQrCode.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListVisitManage',
@@ -186,7 +187,7 @@ export default {
       try {
         const [dictRes, typeRes] = await Promise.all([
           listDicts({ tableName: 'visit', columnName: 'state' }),
-          listVisitTypes({ page: -1, row: 100, communityId: this.$store.state.app.currentCommunity.communityId })
+          listVisitTypes({ page: -1, row: 100, communityId: (getCurrentCommunity() || {}).communityId })
         ])
         this.stateList = dictRes.data || []
         const types = typeRes.data || []
@@ -200,7 +201,7 @@ export default {
       try {
         const params = {
           ...this.queryParams,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         const res = await listVisits(params)
         this.list = res.data || []

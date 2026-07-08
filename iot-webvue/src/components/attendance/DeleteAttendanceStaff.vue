@@ -20,6 +20,7 @@
 
 <script>
 import { deleteAttendanceStaff } from '@/api/attendance/attendanceApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteAttendanceStaff',
@@ -43,7 +44,7 @@ export default {
       try {
         await deleteAttendanceStaff({
           asId: this.delData.asId,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         this.$message.success('删除成功')
         this.$emit('success')

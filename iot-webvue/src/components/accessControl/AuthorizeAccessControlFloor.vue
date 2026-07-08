@@ -42,6 +42,7 @@
 
 <script>
 import { saveAccessControlFloor, listAccessControl } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AuthorizeAccessControlFloor',
@@ -76,7 +77,7 @@ export default {
     },
     async loadMachines() {
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         const res = await listAccessControl({
           page: 1,
           row: 200,
@@ -98,7 +99,7 @@ export default {
       }
       this.loading = true
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         await saveAccessControlFloor({
           floorId: this.floorId,
           unitId: this.unitId,

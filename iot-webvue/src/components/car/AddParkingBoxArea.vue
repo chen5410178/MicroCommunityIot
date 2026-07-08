@@ -30,6 +30,7 @@
 
 <script>
 import { saveParkingBoxArea, listParkingAreas } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddParkingBoxArea',
@@ -71,7 +72,7 @@ export default {
     },
     async loadParkingAreas() {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingAreas({ page: 1, row: 100, communityId })
         this.parkingAreas = res.data || []
       } catch (e) { /* ignore */ }
@@ -82,7 +83,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         this.form.boxId = this.boxId
         await saveParkingBoxArea(this.form)
         this.$message.success('添加成功')

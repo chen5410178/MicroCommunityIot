@@ -58,6 +58,7 @@
 <script>
 import { saveWorkLicenseMachine } from '@/api/charge/chargeApi'
 import { listWorkLicenseFactorys } from '@/api/charge/chargeApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddWorkLicenseMachine',
@@ -117,7 +118,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const data = { ...this.form, staffId: this.form.staffName, communityId }
         await saveWorkLicenseMachine(data)
         this.$message.success('添加成功')

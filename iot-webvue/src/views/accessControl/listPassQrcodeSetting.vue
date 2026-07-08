@@ -79,6 +79,7 @@ import AddPassQrcodeSetting from '@/components/accessControl/AddPassQrcodeSettin
 import EditPassQrcodeSetting from '@/components/accessControl/EditPassQrcodeSetting.vue'
 import DeletePassQrcodeSetting from '@/components/accessControl/DeletePassQrcodeSetting.vue'
 import ViewQrCode from '@/components/common/ViewQrCode.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListPassQrcodeSetting',
@@ -110,7 +111,7 @@ export default {
       try {
         const params = {
           ...this.queryParams,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         const res = await listPassQrcodeSettings(params)
         this.list = res.data || []

@@ -99,6 +99,7 @@ import { listDicts } from '@/api/dev/devApi'
 import AuditPassQrcode from '@/components/accessControl/AuditPassQrcode.vue'
 import DeletePassQrcode from '@/components/accessControl/DeletePassQrcode.vue'
 import ViewQrCode from '@/components/common/ViewQrCode.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListPassQrcode',
@@ -147,7 +148,7 @@ export default {
       try {
         const params = {
           ...this.queryParams,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         const res = await listPassQrcodes(params)
         this.list = res.data || []

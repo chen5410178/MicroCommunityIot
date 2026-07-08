@@ -71,6 +71,7 @@ import { listAdminAccessControlFloor } from '@/api/accessControl/accessControlAp
 import FloorUnitTree from '@/components/property/FloorUnitTree.vue'
 import AuthorizeAccessControlFloor from '@/components/accessControl/AuthorizeAccessControlFloor.vue'
 import DeleteAccessControlFloor from '@/components/accessControl/DeleteAccessControlFloor.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListAccessControlFloor',
@@ -99,7 +100,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const community = this.$store.state.app.currentCommunity || {}
+        const community = getCurrentCommunity() || {}
         const res = await listAdminAccessControlFloor({
           ...this.queryParams,
           communityId: community.communityId

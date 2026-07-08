@@ -54,6 +54,7 @@
 
 <script>
 import { authPersonFace } from '@/api/accessControl/personFaceApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AuditPersonFace',
@@ -114,7 +115,7 @@ export default {
           pfId: this.form.pfId,
           state: this.form.state,
           remark: this.form.remark,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         this.$message.success('审核成功')
         this.$emit('success')

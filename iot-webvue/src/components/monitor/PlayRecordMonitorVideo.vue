@@ -17,6 +17,7 @@
 
 <script>
 import { getRecordPlayVideoUrl } from '@/api/monitor/monitorApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'PlayRecordMonitorVideo',
@@ -43,7 +44,7 @@ export default {
   methods: {
     async fetchVideoUrl() {
       try {
-        const communityId = this.videoInfo.communityId || this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = this.videoInfo.communityId || (getCurrentCommunity() || {}).communityId || ''
         const res = await getRecordPlayVideoUrl({ communityId, machineId: this.videoInfo.machineId, rvId: this.videoInfo.rvId })
         if (res.code === 0 && res.data) {
           this.playVideo(res.data)

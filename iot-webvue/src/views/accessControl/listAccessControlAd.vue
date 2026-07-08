@@ -62,6 +62,7 @@ import { listAccessControlAds } from '@/api/accessControl/accessControlApi'
 import AddAccessControlAd from '@/components/accessControl/AddAccessControlAd.vue'
 import EditAccessControlAd from '@/components/accessControl/EditAccessControlAd.vue'
 import DeleteAccessControlAd from '@/components/accessControl/DeleteAccessControlAd.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListAccessControlAd',
@@ -91,7 +92,7 @@ export default {
       try {
         const params = {
           ...this.queryParams,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         }
         const res = await listAccessControlAds(params)
         this.list = res.data || []

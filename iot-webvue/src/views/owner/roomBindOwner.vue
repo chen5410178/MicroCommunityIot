@@ -34,6 +34,7 @@
 
 <script>
 import { queryOwners, saveOwnerRoomRel } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'RoomBindOwner',
@@ -51,7 +52,7 @@ export default {
     async handleSearch() {
       this.loading = true
       try {
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         const res = await queryOwners({ ...this.queryParams, communityId: communityInfo.communityId, ownerTypeCd: '1001' })
         this.ownerList = Array.isArray(res) ? res : (res.data || [])
       } catch (e) { this.$message.error(e.msg || '查询失败') }
@@ -60,7 +61,7 @@ export default {
     async handleBind(row) {
       try {
         const roomId = this.$route.query.roomId
-        const communityInfo = this.$store.state.app.currentCommunity || {}
+        const communityInfo = getCurrentCommunity() || {}
         await saveOwnerRoomRel({
           ownerId: row.ownerId,
           roomId: roomId,

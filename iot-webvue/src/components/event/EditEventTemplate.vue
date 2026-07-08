@@ -31,6 +31,7 @@
 <script>
 import { updateEventTemplate, listEventTemplateParamKeys } from '@/api/event/eventApi'
 import { listDicts } from '@/api/property/propertyApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditEventTemplate',
@@ -126,7 +127,7 @@ export default {
       try {
         const data = {
           ...this.form,
-          communityId: this.editData.communityId || this.$store.state.app.currentCommunity.communityId
+          communityId: this.editData.communityId || (getCurrentCommunity() || {}).communityId
         }
         await updateEventTemplate(data)
         this.$message.success('修改成功')

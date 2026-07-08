@@ -80,6 +80,7 @@ import AddParkingArea from '@/components/car/AddParkingArea.vue'
 import EditParkingArea from '@/components/car/EditParkingArea.vue'
 import DeleteParkingArea from '@/components/car/DeleteParkingArea.vue'
 import ViewQrCode from '@/components/common/ViewQrCode.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ParkingArea',
@@ -112,7 +113,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingAreas({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0

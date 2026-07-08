@@ -80,6 +80,7 @@
 <script>
 import { saveOwnerCar } from '@/api/car/carApi'
 import { listDicts } from '@/api/dev/devApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'HireParkingSpace',
@@ -131,7 +132,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        this.form.communityId = this.$store.state.app.currentCommunity.communityId || ''
+        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await saveOwnerCar(this.form)
         if (res.code === 0) {
           this.$message.success('请记得收费哦！')

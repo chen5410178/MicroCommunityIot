@@ -21,6 +21,7 @@
 
 <script>
 import { deleteAccessControlAdRel } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteAccessControlAdRel',
@@ -44,7 +45,7 @@ export default {
       try {
         await deleteAccessControlAdRel({
           relId: this.delData.relId,
-          communityId: this.$store.state.app.currentCommunity.communityId
+          communityId: (getCurrentCommunity() || {}).communityId
         })
         this.$message.success('取消授权成功')
         this.$emit('success')

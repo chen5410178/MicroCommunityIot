@@ -64,14 +64,25 @@
 <script>
 import { listCatalog } from '@/api/menu/menuApi'
 import { getUserInfo } from '@/api/user/userApi'
-import { mapState } from 'vuex'
+import { listSystemInfo } from '@/api/login/systemApi'
+import { userLogout } from '@/api/login/loginApi'
+import {
+  setSystemInfo,
+  getCurrentCommunity, setCurrentCommunity,
+  getCommunityList, setCommunityList,
+  setUserInfo,
+  clearAll
+} from '@/utils/auth'
 
 export default {
   name: 'Nav2',
   data() {
     return {
+      systemInfo: {},
+      userInfo: {},
       catalogs: [],
       activeCatalog: '',
+      language: 'zh-cn',
       langs: [
         { name: '中文', lang: 'zh-cn' },
         { name: '繁体', lang: 'cn' },
@@ -81,8 +92,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('app', ['systemInfo', 'currentCommunity', 'communityList']),
-    ...mapState('user', ['userInfo']),
+    currentCommunity() { return getCurrentCommunity() || {} },
+    communityList() { return getCommunityList() || [] },
     canShowCommunity() {
       const storeTypeCd = this.userInfo.storeTypeCd
       return storeTypeCd !== '800900000001' && storeTypeCd !== '800900000002' && storeTypeCd !== '800900000000'
@@ -91,6 +102,7 @@ export default {
   mounted() {
     this.loadCatalogs()
     this.loadUserInfo()
+    this.loadSystemInfo()
   },
   methods: {
     loadCatalogs() {
@@ -104,7 +116,6 @@ export default {
           this.activeCatalog = data[0].caId
         }
         this.catalogs = data || []
-        this.$store.commit('app/SET_CATALOGS', this.catalogs)
         if (data && data.length > 0) {
           this.$emit('load-menu', data[0])
         }
@@ -119,7 +130,22 @@ export default {
         if (userInfo && userInfo.data) {
           userInfo = userInfo.data
         }
-        this.$store.commit('user/SET_USER_INFO', userInfo)
+        this.userInfo = userInfo
+        setUserInfo(userInfo)
+      }).catch(() => {})
+    },
+    loadSystemInfo() {
+      listSystemInfo({ page: 1, row: 1 }).then(res => {
+        let data = JSON.parse(JSON.stringify(res))
+        console.log('systemInfo', data)
+        if (data && data.data && data.data.length > 0) {
+          const sysInfo = data.data[0]
+          this.systemInfo = {
+            ...sysInfo,
+            logo: sysInfo.systemSimpleTitle || sysInfo.systemTitle
+          }
+          setSystemInfo(this.systemInfo)
+        }
       }).catch(() => {})
     },
     handleCatalogSelect(index) {
@@ -136,7 +162,7 @@ export default {
       this.$emit('load-menu', catalog)
     },
     handleCommunityCmd(community) {
-      this.$store.commit('app/SET_CURRENT_COMMUNITY', community)
+      setCurrentCommunity(community)
       this.$router.go(0)
     },
     handleSwitchLang(command) {
@@ -144,7 +170,7 @@ export default {
       if (lang) {
         this.langName = lang.name
       }
-      this.$store.commit('app/SET_LANGUAGE', command)
+      this.language = command
       sessionStorage.setItem('iot_webvue_lang', command)
       location.reload()
     },
@@ -153,8 +179,12 @@ export default {
     },
     handleUserCommand(command) {
       if (command === 'logout') {
-        this.$store.dispatch('user/logout').then(() => {
-          this.$router.push('/user')
+        userLogout({ msg: 123 }).then(() => {
+          clearAll()
+          this.$router.push('/pages/frame/login')
+        }).catch(() => {
+          clearAll()
+          this.$router.push('/pages/frame/login')
         })
       }
     }

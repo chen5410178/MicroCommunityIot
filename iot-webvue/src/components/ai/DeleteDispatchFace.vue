@@ -20,6 +20,7 @@
 
 <script>
 import { deleteDispatchFace } from '@/api/ai/dispatchFaceApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteDispatchFace',
@@ -41,7 +42,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await deleteDispatchFace({ personId: this.delData.personId, communityId })
         this.$message.success('删除成功')
         this.$emit('success')

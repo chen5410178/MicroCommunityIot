@@ -73,6 +73,7 @@ import { listWorkLicenseMachines } from '@/api/charge/chargeApi'
 import WorklicensePps from '@/components/charge/WorklicensePps.vue'
 import WorklicenseWhiteLine from '@/components/charge/WorklicenseWhiteLine.vue'
 import DeleteWorkLicenseMachine from '@/components/charge/DeleteWorkLicenseMachine.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListWorkLicenseMachine',
@@ -102,7 +103,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listWorkLicenseMachines({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0

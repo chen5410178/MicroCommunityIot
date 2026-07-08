@@ -22,6 +22,7 @@
 
 <script>
 import { updateMonitorModel } from '@/api/monitor/monitorApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditMonitorModel',
@@ -74,7 +75,7 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await updateMonitorModel({ ...this.form, communityId })
         this.$message.success('修改成功')
         this.$emit('success')

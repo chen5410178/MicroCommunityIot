@@ -104,6 +104,7 @@ import { listDicts } from '@/api/dev/devApi'
 import AddLampMachine from '@/components/lamp/AddLampMachine.vue'
 import EditLampMachine from '@/components/lamp/EditLampMachine.vue'
 import DeleteLampMachine from '@/components/lamp/DeleteLampMachine.vue'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'LampMachineManage',
@@ -148,7 +149,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listLampMachine({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0
@@ -183,7 +184,7 @@ export default {
     },
     async handleSwitchState(row, state) {
       try {
-        const communityId = this.$store.state.app.currentCommunity.communityId || ''
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
         await switchLampState({ machineId: row.machineId, state, communityId })
         this.$message.success('操作成功')
         this.fetchList()
