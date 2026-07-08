@@ -3,13 +3,14 @@
     :visible.sync="dialogVisible"
     title="添加人员"
     width="700px"
+    append-to-body
     @close="handleClose"
   >
     <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
       <el-row>
         <el-col :span="12">
           <el-form-item label="姓名" prop="name">
-            <el-input v-model="form.name" placeholder="必填，请填写姓名" maxLength="10" />
+            <el-input v-model="form.name" placeholder="必填，请填写姓名" maxLength="10" @input="form.name = form.name.replace(/\s+/g, '')" />
           </el-form-item>
           <el-form-item label="手机" prop="link">
             <el-input v-model="form.link" placeholder="必填，请填写联系方式" maxLength="11" />
@@ -31,13 +32,26 @@
               <el-option label="其他" value="1005" />
             </el-select>
           </el-form-item>
+          <el-form-item label="年龄" v-if="form.age">
+            <span>{{ form.age }}</span>
+          </el-form-item>
         </el-col>
         <el-col :span="12" style="text-align:center">
           <div style="width: 100%; min-height: 150px;">
-            <img v-if="form.ownerPhotoUrl" width="80%" height="150" :src="form.ownerPhotoUrl" alt="人员照片" />
-            <img v-else width="80%" height="150" src="/img/noPhoto.jpg" alt="默认照片" />
+            <div v-show="form.ownerPhotoUrl">
+              <img width="80%" height="150" :src="form.ownerPhotoUrl" alt="人员照片" />
+            </div>
+            <div v-show="!form.ownerPhotoUrl && videoPlaying">
+              <video ref="videoRef" style="width: 80%; height: 150px;" autoplay playsinline />
+              <canvas ref="canvasRef" style="display:none;" />
+            </div>
+            <div v-show="!form.ownerPhotoUrl && !videoPlaying">
+              <img width="80%" height="150" src="/img/noPhoto.jpg" alt="默认照片" />
+            </div>
           </div>
           <div style="margin: 10px auto 0 auto;">
+            <el-button size="small" v-if="form.ownerPhotoUrl" @click="reOpenCamera">重新拍照</el-button>
+            <el-button size="small" type="primary" v-if="videoPlaying && !form.ownerPhotoUrl" @click="takePhoto">拍照</el-button>
             <el-button size="small" @click="handleUploadClick">上传照片</el-button>
             <input type="file" accept=".jpg" ref="fileInput" hidden @change="handleFileChange" />
           </div>
@@ -101,7 +115,8 @@ import request from '@/utils/request'
 export default {
   name: 'AddOwner',
   props: {
-    visible: { type: Boolean, default: false }
+    visible: { type: Boolean, default: false },
+    ownerId: { type: String, default: '' }
   },
   data() {
     const validatePhone = (rule, value, callback) => {
@@ -138,10 +153,13 @@ export default {
       dialogVisible: false,
       loading: false,
       attrs: [],
+      videoPlaying: false,
+      mediaStream: null,
       form: {
         name: '',
         link: '',
         idCard: '',
+        age: '',
         sex: '',
         ownerTypeCd: '',
         address: '',
@@ -162,11 +180,94 @@ export default {
   watch: {
     visible(val) {
       this.dialogVisible = val
-      if (val) { this.loadAttrSpecs() }
+      if (val) {
+        this.loadAttrSpecs()
+        this.$nextTick(() => { this.startCamera() })
+      }
     },
     dialogVisible(val) { this.$emit('update:visible', val) }
   },
   methods: {
+    startCamera() {
+      const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
+      if (!getUserMedia) {
+        this.videoPlaying = false
+        return
+      }
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
+          this.handleStream(stream)
+        }).catch(() => {
+          this.videoPlaying = false
+        })
+      } else {
+        getUserMedia.call(navigator, { video: true, audio: false }, stream => {
+          this.handleStream(stream)
+        }, () => {
+          this.videoPlaying = false
+        })
+      }
+    },
+    handleStream(stream) {
+      this.mediaStream = stream
+      this.videoPlaying = true
+      this.$nextTick(() => {
+        const video = this.$refs.videoRef
+        if (!video) return
+        try {
+          video.srcObject = stream
+        } catch (e) {
+          const url = window.URL || window.webkitURL
+          video.src = url ? url.createObjectURL(stream) : stream
+        }
+        video.play()
+      })
+    },
+    closeCamera() {
+      if (this.mediaStream) {
+        this.mediaStream.getTracks().forEach(track => track.stop())
+        this.mediaStream = null
+      }
+      this.videoPlaying = false
+    },
+    takePhoto() {
+      const video = this.$refs.videoRef
+      const canvas = this.$refs.canvasRef
+      if (!video || !canvas) return
+      let w = video.videoWidth
+      let h = video.videoHeight
+      if (h > 1080 || w > 1080) {
+        const rate = h > w ? h / 1080 : w / 1080
+        h = Math.floor(h / rate)
+        w = Math.floor(w / rate)
+      }
+      canvas.width = w
+      canvas.height = h
+      canvas.getContext('2d').drawImage(video, 0, 0, w, h)
+      canvas.toBlob(blob => {
+        if (blob) { this.uploadBlob(blob) }
+      }, 'image/jpeg', 0.3)
+      this.closeCamera()
+    },
+    reOpenCamera() {
+      this.form.ownerPhoto = ''
+      this.form.ownerPhotoUrl = ''
+      this.$nextTick(() => { this.startCamera() })
+    },
+    uploadBlob(blob) {
+      const formData = new FormData()
+      formData.append('uploadFile', blob, 'photo.jpg')
+      const community = getCurrentCommunity()
+      if (community) { formData.append('communityId', community.communityId) }
+      request({ url: '/upload/uploadFile', method: 'post', data: formData, headers: { 'Content-Type': 'multipart/form-data' } }).then(res => {
+        if (res.code === 0) {
+          this.form.ownerPhoto = res.data && res.data.fileId
+          this.form.ownerPhotoUrl = res.data && res.data.url
+        } else {
+          this.$message.error(res.msg || '上传失败')
+        }
+      }).catch(() => { this.$message.error('上传失败') })
+    },
     async loadAttrSpecs() {
       try {
         const res = await listAttrSpecs({ specCd: 'building_owner_attr', page: 1, row: 100 })
@@ -206,6 +307,7 @@ export default {
         if (res.code === 0) {
           this.form.ownerPhoto = res.data && res.data.fileId
           this.form.ownerPhotoUrl = res.data && res.data.url
+          this.closeCamera()
         } else {
           this.$message.error(res.msg || '上传失败')
         }
@@ -231,6 +333,14 @@ export default {
       for (let k = 0; k < 17; k++) { sum += parseInt(idArray[k]) * c[k] }
       if (idArray[17].toUpperCase() !== b[sum % 11].toUpperCase()) return
       this.form.sex = (parseInt(idCard.substr(16, 1)) % 2 === 0) ? '1' : '0'
+      const birthYear = parseInt(year)
+      const birthMonth = parseInt(month)
+      const birthDate = parseInt(date)
+      const today = new Date()
+      let age = today.getFullYear() - birthYear
+      const m = today.getMonth() + 1
+      if (m < birthMonth || (m === birthMonth && today.getDate() < birthDate)) { age-- }
+      this.form.age = String(age)
     },
     async handleSubmit() {
       try { await this.$refs.formRef.validate() } catch { return }
@@ -238,6 +348,13 @@ export default {
       try {
         const community = getCurrentCommunity()
         const data = { ...this.form, communityId: community ? community.communityId : '' }
+        if (this.ownerId) { data.ownerId = this.ownerId }
+        if (data.name) data.name = data.name.trim()
+        if (data.link) data.link = data.link.trim()
+        if (data.idCard) data.idCard = data.idCard.trim()
+        if (data.address) data.address = data.address.trim()
+        if (data.remark) data.remark = data.remark.trim()
+        if (data.cardNumber) data.cardNumber = data.cardNumber.trim()
         data.attrs = this.attrs.map(attr => ({ specCd: attr.specCd, value: attr.value, specId: attr.specId }))
         await saveOwner(data)
         this.$message.success('添加成功')
@@ -248,9 +365,10 @@ export default {
     },
     handleClose() {
       this.dialogVisible = false
+      this.closeCamera()
       this.$refs.formRef && this.$refs.formRef.resetFields()
       this.form = {
-        name: '', link: '', idCard: '', sex: '', ownerTypeCd: '',
+        name: '', link: '', idCard: '', age: '', sex: '', ownerTypeCd: '',
         address: '', remark: '', cardNumber: '', ownerPhoto: '', ownerPhotoUrl: ''
       }
       this.attrs = []

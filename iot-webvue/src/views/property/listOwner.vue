@@ -23,13 +23,27 @@
         <el-form-item>
           <el-button type="primary" @click="handleSearch">搜索</el-button>
           <el-button @click="handleReset">重置</el-button>
+          <el-button type="text" @click="moreCondition = !moreCondition">{{ moreCondition ? '收起' : '更多' }}</el-button>
         </el-form-item>
+        <el-row v-if="moreCondition">
+          <el-form-item>
+            <el-select v-model="queryParams.ownerTypeCd" placeholder="请选择人员类型" clearable style="width: 160px">
+              <el-option label="业主" value="1001" />
+              <el-option label="家庭成员" value="1002" />
+              <el-option label="租客" value="1003" />
+              <el-option label="其他" value="1005" />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-input v-model="queryParams.address" placeholder="请输入家庭住址" clearable style="width: 160px" />
+          </el-form-item>
+        </el-row>
       </el-form>
     </el-card>
     <el-card shadow="never" class="table-card">
       <div slot="header" class="card-header">
         <span>人员信息</span>
-        <el-button type="primary" size="small" @click="handleAdd">添加人员</el-button>
+        <el-button type="primary" size="small" @click="handleAdd" v-if="hasPrivilege('502024030453950120')">添加人员</el-button>
       </div>
       <el-table :data="list" v-loading="loading" border stripe>
         <el-table-column label="人员人脸" width="100" align="center">
@@ -42,7 +56,7 @@
           <template slot-scope="{ row }">{{ row.name }}({{ row.link }})</template>
         </el-table-column>
         <el-table-column label="性别" width="70" align="center">
-          <template slot-scope="{ row }">{{ row.sex == '0' ? '男' : '女' }}</template>
+          <template slot-scope="{ row }">{{ row.sex == 0 ? '男' : '女' }}</template>
         </el-table-column>
         <el-table-column prop="idCard" label="身份证" min-width="160">
           <template slot-scope="{ row }">{{ row.idCard || '-' }}</template>
@@ -61,12 +75,12 @@
           <template slot-scope="{ row }">{{ row.carCount || 0 }}</template>
         </el-table-column>
         <el-table-column v-for="col in dynamicColumns" :key="col.specCd" :label="col.specName" min-width="120">
-          <template slot-scope="{ row }">{{ getDynamicValue(row, col.specCd) }}</template>
+          <template slot-scope="{ row }">{{ getDynamicValue(row, col) }}</template>
         </el-table-column>
         <el-table-column label="操作" width="160" fixed="right" align="center">
           <template slot-scope="{ row }">
-            <el-button size="small" type="text" @click="handleEdit(row)">修改</el-button>
-            <el-button size="small" type="text" style="color: #f56c6c" @click="handleDelete(row)">删除</el-button>
+            <el-button size="small" type="text" @click="handleEdit(row)" v-if="hasPrivilege('502024030499740122')">修改</el-button>
+            <el-button size="small" type="text" style="color: #f56c6c" @click="handleDelete(row)" v-if="hasPrivilege('502024030400040124')">删除</el-button>
             <el-button size="small" type="text" @click="handleDetail(row)">详情</el-button>
           </template>
         </el-table-column>
@@ -93,8 +107,9 @@
 
 <script>
 import { queryOwners } from '@/api/owner/ownerApi'
+import { queryStaffPrivileges } from '@/api/community/communityApi'
 import { listAttrSpecs } from '@/api/dev/devApi'
-import { getCurrentCommunity } from '@/utils/auth'
+import { getCurrentCommunity, hasPrivilege, setPrivileges } from '@/utils/auth'
 import AddOwner from '@/components/property/AddOwner.vue'
 import EditOwner from '@/components/property/EditOwner.vue'
 import DeleteOwner from '@/components/property/DeleteOwner.vue'
@@ -107,6 +122,7 @@ export default {
       loading: false,
       list: [],
       total: 0,
+      moreCondition: false,
       dynamicColumns: [],
       addVisible: false,
       editVisible: false,
@@ -114,13 +130,28 @@ export default {
       currentRow: null,
       imageVisible: false,
       imageUrl: '',
-      queryParams: { page: 1, row: 10, name: '', roomName: '', link: '', ownerId: '', idCard: '' }
+      queryParams: { page: 1, row: 10, name: '', roomName: '', link: '', ownerId: '', idCard: '', ownerTypeCd: '', address: '', floorId: '', unitId: '', roomId: '' }
     }
   },
   mounted() {
-    this.loadDynamicColumns().then(() => this.fetchList())
+    this.loadPrivileges().then(() => this.loadDynamicColumns().then(() => this.fetchList()))
+    this.$root.$on('listOwnerNotify', this.handleNotify)
+  },
+  beforeDestroy() {
+    this.$root.$off('listOwnerNotify', this.handleNotify)
   },
   methods: {
+    async loadPrivileges() {
+      try {
+        const res = await queryStaffPrivileges({ a: 'HC' })
+        const datas = (res && res.datas) || []
+        const codes = datas.map(p => p.pId)
+        setPrivileges(codes)
+      } catch (e) { /* ignore */ }
+    },
+    hasPrivilege(code) {
+      return hasPrivilege(code)
+    },
     async loadDynamicColumns() {
       try {
         const res = await listAttrSpecs({ specCd: 'building_owner_attr', page: 1, row: 100 })
@@ -135,23 +166,43 @@ export default {
       this.loading = true
       try {
         const community = getCurrentCommunity()
-        const params = {
-          ...this.queryParams,
-          communityId: community ? community.communityId : ''
-        }
+        const params = { ...this.queryParams }
+        if (params.name) params.name = params.name.trim()
+        if (params.roomName) params.roomName = params.roomName.trim()
+        if (params.link) params.link = params.link.trim()
+        if (params.ownerId) params.ownerId = params.ownerId.trim()
+        if (params.idCard) params.idCard = params.idCard.trim()
+        if (params.address) params.address = params.address.trim()
+        params.communityId = community ? community.communityId : ''
         const res = await queryOwners(params)
         this.list = res.data || []
         this.total = res.records || 0
       } finally { this.loading = false }
     },
-    getDynamicValue(row, specCd) {
+    getDynamicValue(row, col) {
       if (!row.ownerAttrDtos || row.ownerAttrDtos.length === 0) return '-'
-      const attr = row.ownerAttrDtos.find(item => item.specCd === specCd)
+      let attr = row.ownerAttrDtos.find(item => item.specCd === col.specCd)
+      if (!attr) {
+        attr = row.ownerAttrDtos.find(item => item.specName === col.specName)
+      }
       return attr ? (attr.valueName || attr.value || '-') : '-'
+    },
+    handleNotify(_param) {
+      if (_param.hasOwnProperty('floorId')) {
+        this.queryParams.floorId = _param.floorId
+      }
+      if (_param.hasOwnProperty('unitId')) {
+        this.queryParams.unitId = _param.unitId
+      }
+      if (_param.hasOwnProperty('roomId')) {
+        this.queryParams.roomId = _param.roomId
+        this.fetchList()
+      }
     },
     handleSearch() { this.queryParams.page = 1; this.fetchList() },
     handleReset() {
-      this.queryParams = { page: 1, row: 10, name: '', roomName: '', link: '', ownerId: '', idCard: '' }
+      this.queryParams = { page: 1, row: 10, name: '', roomName: '', link: '', ownerId: '', idCard: '', ownerTypeCd: '', address: '', floorId: '', unitId: '', roomId: '' }
+      this.moreCondition = false
       this.fetchList()
     },
     handleAdd() { this.addVisible = true },

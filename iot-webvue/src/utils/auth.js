@@ -81,6 +81,25 @@ export function getCommunityId() {
   return community ? community.communityId : '-1'
 }
 
+const PRIVILEGES_KEY = 'iot_webvue_privileges'
+
+export function getPrivileges() {
+  try {
+    return JSON.parse(sessionStorage.getItem(PRIVILEGES_KEY) || '[]')
+  } catch {
+    return []
+  }
+}
+
+export function setPrivileges(privileges) {
+  sessionStorage.setItem(PRIVILEGES_KEY, JSON.stringify(privileges))
+}
+
+export function hasPrivilege(code) {
+  const codes = getPrivileges()
+  return codes.includes(code)
+}
+
 export function clearAll() {
   sessionStorage.clear()
 }

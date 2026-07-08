@@ -43,7 +43,7 @@ export function updateOwner(data) {
   return new Promise((resolve, reject) => {
     data.communityId = getCommunityId()
     request({
-      url: '/owner.updateOwner',
+      url: '/owner.editOwner',
       method: 'post',
       data
     }).then(res => {
