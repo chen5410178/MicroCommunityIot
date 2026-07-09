@@ -1,60 +1,257 @@
 import request from '@/utils/request'
 
-// ===== 路灯厂家 =====
-export function listLampMachineFactory(params) { return request({ url: '/lampMachineFactory.listLampMachineFactory', method: 'get', params }) }
-export function saveLampMachineFactory(data) { return request({ url: '/lampMachineFactory.saveLampMachineFactory', method: 'post', data }) }
-export function updateLampMachineFactory(data) { return request({ url: '/lampMachineFactory.updateLampMachineFactory', method: 'post', data }) }
-export function deleteLampMachineFactory(data) { return request({ url: '/lampMachineFactory.deleteLampMachineFactory', method: 'post', data }) }
+export function listLampMachineFactory(params) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachineFactory.listLampMachineFactory', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
 
-// ===== 路灯厂家规格 =====
-export function listLampMachineFactorySpec(params) { return request({ url: '/lampMachineFactorySpec.listLampMachineFactorySpec', method: 'get', params }) }
-export function saveLampMachineFactorySpec(data) { return request({ url: '/lampMachineFactorySpec.saveLampMachineFactorySpec', method: 'post', data }) }
-export function deleteLampMachineFactorySpec(data) { return request({ url: '/lampMachineFactorySpec.deleteLampMachineFactorySpec', method: 'post', data }) }
+export function saveLampMachineFactory(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachineFactory.saveLampMachineFactory', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '操作失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
 
-// 话机设备
-export function listTelMachine(params) { return request({ url: '/telMachine.listTelMachine', method: 'get', params }) }
+export function updateLampMachineFactory(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachineFactory.updateLampMachineFactory', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '操作失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
 
-// 话机客服
-export function listTelMachineUser(params) { return request({ url: '/telMachineUser.listTelMachineUser', method: 'get', params }) }
-export function saveTelMachineUser(data) { return request({ url: '/telMachineUser.saveTelMachineUser', method: 'post', data }) }
-export function deleteTelMachineUser(data) { return request({ url: '/telMachineUser.deleteTelMachineUser', method: 'post', data }) }
+export function deleteLampMachineFactory(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachineFactory.deleteLampMachineFactory', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '删除失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
 
-// 员工查询
-export function listStaffs(params) { return request({ url: '/query.staff.infos', method: 'get', params }) }
+export function listLampMachineFactorySpec(params) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachineFactorySpec.listLampMachineFactorySpec', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
 
-export function listTelMachines(params) { return request({ url: '/telMachine.listTelMachine', method: 'get', params }) }
-export function saveTelMachine(data) { return request({ url: '/telMachine.saveTelMachine', method: 'post', data }) }
-export function updateTelMachine(data) { return request({ url: '/telMachine.updateTelMachine', method: 'post', data }) }
-export function deleteTelMachine(data) { return request({ url: '/telMachine.deleteTelMachine', method: 'post', data }) }
+export function saveLampMachineFactorySpec(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachineFactorySpec.saveLampMachineFactorySpec', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '操作失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
 
-// ===== 路灯设备 CRUD =====
-export function listLampMachine(params) { return request({ url: '/lampMachine.listLampMachine', method: 'get', params }) }
-export function saveLampMachine(data) { return request({ url: '/lampMachine.saveLampMachine', method: 'post', data }) }
-export function updateLampMachine(data) { return request({ url: '/lampMachine.updateLampMachine', method: 'post', data }) }
-export function deleteLampMachine(data) { return request({ url: '/lampMachine.deleteLampMachine', method: 'post', data }) }
-export function switchLampState(data) { return request({ url: '/lampMachine.switchLampState', method: 'post', data }) }
+export function deleteLampMachineFactorySpec(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachineFactorySpec.deleteLampMachineFactorySpec', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '删除失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
 
-// ===== 开关灯时间 =====
-export function listLampMachineOpenClose(params) { return request({ url: '/lampMachineOpenClose.listLampMachineOpenClose', method: 'get', params }) }
-export function saveLampMachineOpenClose(data) { return request({ url: '/lampMachineOpenClose.saveLampMachineOpenClose', method: 'post', data }) }
+export function listTelMachine(params) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/telMachine.listTelMachine', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
 
-// ===== 操作日志 =====
-export function listLampMachineOperation(params) { return request({ url: '/lampMachineOperation.listLampMachineOperation', method: 'get', params }) }
+export function listTelMachineUser(params) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/telMachineUser.listTelMachineUser', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
 
-// ===== 下发日志 =====
-export function listLampMachineLog(params) { return request({ url: '/lampMachineLog.listLampMachineLog', method: 'get', params }) }
+export function saveTelMachineUser(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/telMachineUser.saveTelMachineUser', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '操作失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
 
-// ===== 呼叫记录 =====
-export function listTelCallLog(params) { return request({ url: '/telCallLog.listTelCallLog', method: 'get', params }) }
+export function deleteTelMachineUser(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/telMachineUser.deleteTelMachineUser', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '删除失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
 
-// ===== 短信记录 =====
-export function listTelSmsLog(params) { return request({ url: '/telSmsLog.listTelSmsLog', method: 'get', params }) }
+export function listStaffs(params) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/query.staff.infos', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
 
-// ===== 话机语音 =====
-export function listTelTts(params) { return request({ url: '/telTts.listTelTts', method: 'get', params }) }
-export function saveTelTts(data) { return request({ url: '/telTts.saveTelTts', method: 'post', data }) }
-export function updateTelTts(data) { return request({ url: '/telTts.updateTelTts', method: 'post', data }) }
-export function deleteTelTts(data) { return request({ url: '/telTts.deleteTelTts', method: 'post', data }) }
+export function listTelMachines(params) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/telMachine.listTelMachine', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
 
-// ===== 操作人员 =====
-export function listCommunityStaffs(params) { return request({ url: '/user.listCommunityStaffsByCommunityId', method: 'get', params }) }
+export function saveTelMachine(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/telMachine.saveTelMachine', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '操作失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function updateTelMachine(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/telMachine.updateTelMachine', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '操作失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function deleteTelMachine(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/telMachine.deleteTelMachine', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '删除失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function listLampMachine(params) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachine.listLampMachine', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function saveLampMachine(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachine.saveLampMachine', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '操作失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function updateLampMachine(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachine.updateLampMachine', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '操作失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function deleteLampMachine(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachine.deleteLampMachine', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '删除失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function switchLampState(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachine.switchLampState', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '操作失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function listLampMachineOpenClose(params) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachineOpenClose.listLampMachineOpenClose', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function saveLampMachineOpenClose(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachineOpenClose.saveLampMachineOpenClose', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '操作失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function listLampMachineOperation(params) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachineOperation.listLampMachineOperation', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function listLampMachineLog(params) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/lampMachineLog.listLampMachineLog', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function listTelCallLog(params) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/telCallLog.listTelCallLog', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function listTelSmsLog(params) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/telSmsLog.listTelSmsLog', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function listTelTts(params) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/telTts.listTelTts', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function saveTelTts(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/telTts.saveTelTts', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '操作失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function updateTelTts(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/telTts.updateTelTts', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '操作失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function deleteTelTts(data) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/telTts.deleteTelTts', method: 'post', data }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '删除失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
+export function listCommunityStaffs(params) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/user.listCommunityStaffsByCommunityId', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
+  })
+}

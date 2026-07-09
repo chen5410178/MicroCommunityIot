@@ -1,25 +1,109 @@
 import request from '@/utils/request'
 
 export function listCommunityStoreShop(params) {
-  return request({ url: '/store.listCommunityStoreShop', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/store.listCommunityStoreShop',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function saveStoreAndShop(data) {
-  return request({ url: '/store.propertySaveStoreAndShop', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/store.propertySaveStoreAndShop',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function deleteStoreAndShop(data) {
-  return request({ url: '/store.propertyDeleteStoreAndShop', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/store.propertyDeleteStoreAndShop',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function listShopParkingCoupon(params) {
-  return request({ url: '/parkingCoupon.listShopParkingCoupon', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/parkingCoupon.listShopParkingCoupon',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function listParkingCoupon(params) {
-  return request({ url: '/parkingCoupon.listParkingCoupon', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/parkingCoupon.listParkingCoupon',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function buyParkingCoupon(data) {
-  return request({ url: '/parkingCoupon.buyParkingCoupon', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/parkingCoupon.buyParkingCoupon',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }

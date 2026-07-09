@@ -1,73 +1,73 @@
 import request from '@/utils/request'
 
 export function queryPropertyAssetsIndex(params) {
-  return request({
-    url: '/propertyIndex.queryPropertyAssetsIndex',
-    method: 'get',
-    params
+  return new Promise((resolve, reject) => {
+    request({ url: '/propertyIndex.queryPropertyAssetsIndex', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询失败')) }
+    }).catch(error => { reject(error) })
   })
 }
 
 export function listEvent(params) {
-  return request({
-    url: '/eventPool.listEventPool',
-    method: 'get',
-    params
+  return new Promise((resolve, reject) => {
+    request({ url: '/eventPool.listEventPool', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
   })
 }
 
 export function queryMachineIndex(params) {
-  return request({
-    url: '/propertyIndex.queryPropertyMachinesIndex',
-    method: 'get',
-    params
+  return new Promise((resolve, reject) => {
+    request({ url: '/propertyIndex.queryPropertyMachinesIndex', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询失败')) }
+    }).catch(error => { reject(error) })
   })
 }
 
 export function listMonitorAlarm(params) {
-  return request({
-    url: '/monitorPool.listMonitorPool',
-    method: 'get',
-    params
+  return new Promise((resolve, reject) => {
+    request({ url: '/monitorPool.listMonitorPool', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
   })
 }
 
 export function queryAdminCount(params) {
-  return request({
-    url: '/admin.queryAdminCount',
-    method: 'get',
-    params
+  return new Promise((resolve, reject) => {
+    request({ url: '/admin.queryAdminCount', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询失败')) }
+    }).catch(error => { reject(error) })
   })
 }
 
 export function queryCommunityEvent(params) {
-  return request({
-    url: '/admin.queryCommunityEvent',
-    method: 'get',
-    params
+  return new Promise((resolve, reject) => {
+    request({ url: '/admin.queryCommunityEvent', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询失败')) }
+    }).catch(error => { reject(error) })
   })
 }
 
 export function queryCommunityMonitorPool(params) {
-  return request({
-    url: '/admin.queryCommunityMonitorPool',
-    method: 'get',
-    params
+  return new Promise((resolve, reject) => {
+    request({ url: '/admin.queryCommunityMonitorPool', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询失败')) }
+    }).catch(error => { reject(error) })
   })
 }
 
 export function queryDevCount(params) {
-  return request({
-    url: '/admin.queryDevCount',
-    method: 'get',
-    params
+  return new Promise((resolve, reject) => {
+    request({ url: '/admin.queryDevCount', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询失败')) }
+    }).catch(error => { reject(error) })
   })
 }
 
 export function queryAppServiceData(params) {
-  return request({
-    url: '/admin.queryAppServiceData',
-    method: 'get',
-    params
+  return new Promise((resolve, reject) => {
+    request({ url: '/admin.queryAppServiceData', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询失败')) }
+    }).catch(error => { reject(error) })
   })
 }
