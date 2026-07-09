@@ -131,7 +131,7 @@
 
 <script>
 import { listCarMonthOrders, listCarMonthCards } from '@/api/car/carApi'
-import { listDicts } from '@/api/property/propertyApi'
+import { listDicts } from '@/api/system/systemApi'
 import BuyCarMonthCard from '@/components/car/BuyCarMonthCard.vue'
 import RetundCarMonthOrder from '@/components/car/RetundCarMonthOrder.vue'
 import BuyMonthCardQrCode from '@/components/car/BuyMonthCardQrCode.vue'
@@ -190,8 +190,8 @@ export default {
     },
     async fetchDicts() {
       try {
-        const res = await listDicts({ page: 1, row: 100, tableName: 'pay_fee_detail', columnName: 'prime_rate' })
-        this.primeRates = res.data || []
+        const res = await listDicts({ tableName: 'pay_fee_detail', tableColumns: 'prime_rate' })
+        this.primeRates = res || []
       } catch (e) { /* ignore */ }
     },
     handleSearch() {

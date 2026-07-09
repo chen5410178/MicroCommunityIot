@@ -35,12 +35,12 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        await deleteProperty({ storeId: this.delData.storeId })
+        await deleteProperty({ ...this.delData })
         this.$message.success('删除成功')
         this.$emit('success')
         this.dialogVisible = false
       } catch (e) {
-        this.$message.error(e.msg || '删除失败')
+        this.$message.error(e.message || '删除失败')
       } finally {
         this.loading = false
       }

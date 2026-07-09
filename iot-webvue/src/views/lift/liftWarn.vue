@@ -74,7 +74,7 @@
 
 <script>
 import { listLiftWarns } from '@/api/lift/liftApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -115,8 +115,8 @@ export default {
     },
     async loadWarnTypes() {
       try {
-        const res = await listDicts({ tableName: 'lift_warn', columnName: 'warn_type' })
-        const dictList = res.data || []
+        const res = await listDicts({ tableName: 'lift_warn', tableColumns: 'warn_type' })
+        const dictList = res || []
         this.warnTypes = [{ name: '全部', statusCd: '' }, ...dictList]
       } catch (e) {
         console.error('获取告警类型失败', e)

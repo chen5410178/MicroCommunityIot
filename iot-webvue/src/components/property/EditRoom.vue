@@ -88,7 +88,8 @@
 <script>
 import { updateRoom } from '@/api/property/roomApi'
 import { queryUnits } from '@/api/property/unitApi'
-import { listDicts, listAttrSpecs, listAttrValues } from '@/api/property/propertyApi'
+import { listDicts } from '@/api/system/systemApi'
+import { listAttrSpecs, listAttrValues } from '@/api/property/propertyApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -147,10 +148,9 @@ export default {
       }
       try {
         const [dictRes, specRes] = await Promise.all([
-          listDicts({ communityId: communityInfo.communityId, tableName: 'building_room', columnName: 'room_sub_type' }),
-          listAttrSpecs({ tableName: 'building_room_attr', page: 1, row: 100 })
+          listDicts({ communityId: communityInfo.communityId, tableName: 'building_room', tableColumns: 'room_sub_type' }),
         ])
-        this.roomSubTypes = dictRes.data || []
+        this.roomSubTypes = dictRes || []
         const specs = Array.isArray(specRes) ? specRes : (specRes.data || [])
         this.form.attrs = specs.filter(s => s.specShow === 'Y').map(s => ({ ...s, value: '', values: [], attrId: '' }))
         for (const attr of this.form.attrs) {

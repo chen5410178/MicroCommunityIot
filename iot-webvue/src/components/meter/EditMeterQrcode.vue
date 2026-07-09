@@ -38,7 +38,7 @@
 
 <script>
 import { updateMeterQrcode } from '@/api/meter/meterApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 
 export default {
   name: 'EditMeterQrcode',
@@ -95,8 +95,8 @@ export default {
     async loadQueryWays() {
       if (this.queryWayList.length > 0) return
       try {
-        const res = await listDicts({ tableName: 'meter_qrcode', columnName: 'query_way' })
-        this.queryWayList = res.data || []
+        const res = await listDicts({ tableName: 'meter_qrcode', tableColumns: 'query_way' })
+        this.queryWayList = res || []
       } catch (e) {
         console.error('加载查询方式字典失败', e)
       }

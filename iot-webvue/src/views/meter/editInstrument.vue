@@ -100,7 +100,7 @@
 
 <script>
 import { updateInstrument, listInstruments, listInstrumentTypes, listInstrumentFactory } from '@/api/meter/meterApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 let sensorId = 0
@@ -189,8 +189,8 @@ export default {
     },
     async fetchSensorTypes() {
       try {
-        const res = await listDicts({ tableName: 'instrument_sensor', columnName: 'sensor_type' })
-        this.sensorTypeList = res.data || []
+        const res = await listDicts({ tableName: 'instrument_sensor', tableColumns: 'sensor_type' })
+        this.sensorTypeList = res || []
       } catch (e) {
         console.log('获取传感器类型失败')
       }

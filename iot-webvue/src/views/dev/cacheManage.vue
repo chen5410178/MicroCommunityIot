@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { listCache, refreshCache } from '@/api/dev/devApi'
+import { listCache, flushCache } from '@/api/dev/devApi'
 
 export default {
   name: 'ListCacheManage',
@@ -88,7 +88,7 @@ export default {
     handleRefresh(row) {
       this.$confirm('确定要刷新该缓存吗？', '提示', { type: 'warning' }).then(async () => {
         try {
-          await refreshCache({ cache: row.url })
+          await flushCache({ cache: row.url })
           this.$message.success('刷新缓存成功')
         } catch (e) {
           this.$message.error((e && e.message) || '刷新缓存失败')

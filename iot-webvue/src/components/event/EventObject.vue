@@ -69,7 +69,7 @@
 
 <script>
 import { listEventObjects, updateEventObject } from '@/api/event/eventApi'
-import { listDicts } from '@/api/property/propertyApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 import DeleteEventObject from '@/components/event/DeleteEventObject.vue'
 
@@ -110,8 +110,8 @@ export default {
   methods: {
     async loadObjTypeDict() {
       try {
-        const res = await listDicts({ tableName: 'event_object', columnName: 'obj_type' })
-        this.objTypeList = res.data || []
+        const res = await listDicts({ tableName: 'event_object', tableColumns: 'obj_type' })
+        this.objTypeList = res || []
       } catch { /* ignore */ }
     },
     async fetchList() {

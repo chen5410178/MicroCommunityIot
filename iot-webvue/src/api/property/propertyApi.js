@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 import { getCommunityId } from '@/utils/auth'
 
+/** @deprecated 请使用 @/api/system/systemApi 中的 listDicts */
 export function listDicts(params) {
   return new Promise((resolve, reject) => {
     params.communityId = getCommunityId()

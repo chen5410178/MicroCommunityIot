@@ -99,7 +99,7 @@
 
 <script>
 import { listChargeMachine } from '@/api/charge/chargeApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import AddChargeMachine from '@/components/charge/AddChargeMachine.vue'
 import EditChargeMachine from '@/components/charge/EditChargeMachine.vue'
 import DeleteChargeMachine from '@/components/charge/DeleteChargeMachine.vue'
@@ -138,9 +138,9 @@ export default {
   methods: {
     async loadChargeTypes() {
       try {
-        const res = await listDicts({ tableName: 'charge_machine', columnName: 'charge_type' })
-        if (res.data) {
-          this.chargeTypeList = [{ name: '全部', statusCd: '' }, ...res.data]
+        const res = await listDicts({ tableName: 'charge_machine', tableColumns: 'charge_type' })
+        if (res && res.length) {
+          this.chargeTypeList = [{ name: '全部', statusCd: '' }, ...res]
         }
       } catch (e) {
         console.error('加载充电类型失败', e)

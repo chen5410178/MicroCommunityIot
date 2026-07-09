@@ -140,7 +140,7 @@
 
 <script>
 import { listVisits, listVisitTypes } from '@/api/accessControl/accessControlApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import DeleteVisit from '@/components/accessControl/DeleteVisit.vue'
 import VisitAuth from '@/components/accessControl/VisitAuth.vue'
 import VisitQrCode from '@/components/accessControl/VisitQrCode.vue'
@@ -183,10 +183,9 @@ export default {
     async loadDicts() {
       try {
         const [dictRes, typeRes] = await Promise.all([
-          listDicts({ tableName: 'visit', columnName: 'state' }),
-          listVisitTypes({ page: -1, row: 100, communityId: (getCurrentCommunity() || {}).communityId })
+          listDicts({ tableName: 'visit', tableColumns: 'state' }),
         ])
-        this.stateList = dictRes.data || []
+        this.stateList = dictRes || []
         const types = typeRes.data || []
         this.visitTypeList = [{ name: '全部', typeId: '' }, ...types]
       } catch (e) {

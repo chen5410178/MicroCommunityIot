@@ -105,7 +105,7 @@
 
 <script>
 import { listLampMachineLog, listLampMachine } from '@/api/lamp/lampApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { listCommunityStaffs } from '@/api/user/userApi'
 import ShowLampMachineLog from '@/components/lamp/ShowLampMachineLog.vue'
 import { getCurrentCommunity } from '@/utils/auth'
@@ -158,13 +158,12 @@ export default {
       try {
         const [machineRes, typesRes, stateRes, staffRes] = await Promise.all([
           listLampMachine({ page: 1, row: 100, communityId }),
-          listDicts({ tableName: 'lamp_machine_operation', columnName: 'type' }),
-          listDicts({ tableName: 'lift_machine_log', columnName: 'state' }),
-          listCommunityStaffs({ communityId })
+          listDicts({ tableName: 'lamp_machine_operation', tableColumns: 'type' }),
+          listDicts({ tableName: 'lift_machine_log', tableColumns: 'state' }),
         ])
         this.lampMachineList = machineRes.data || []
-        this.operateTypes = typesRes.data || []
-        this.reqStateList = stateRes.data || []
+        this.operateTypes = typesRes || []
+        this.reqStateList = stateRes || []
         this.operatePersonList = staffRes.data || []
       } catch { /* ignore */ }
     },

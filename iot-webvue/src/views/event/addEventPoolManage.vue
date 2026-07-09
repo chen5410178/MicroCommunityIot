@@ -55,7 +55,7 @@
 
 <script>
 import { saveEventPool, listEventRules } from '@/api/event/eventApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -90,12 +90,11 @@ export default {
       try {
         const communityId = (getCurrentCommunity() || {}).communityId || ''
         const [eventTypeRes, objTypeRes, ruleRes] = await Promise.all([
-          listDicts({ tableName: 'event_pool', columnName: 'event_type' }),
-          listDicts({ tableName: 'event_object', columnName: 'obj_type' }),
-          listEventRules({ communityId, page: 1, row: 200 })
+          listDicts({ tableName: 'event_pool', tableColumns: 'event_type' }),
+          listDicts({ tableName: 'event_object', tableColumns: 'obj_type' }),
         ])
-        this.eventTypeList = eventTypeRes.data || []
-        this.objTypeList = objTypeRes.data || []
+        this.eventTypeList = eventTypeRes || []
+        this.objTypeList = objTypeRes || []
         this.ruleList = ruleRes.data || []
       } catch { /* ignore */ }
     },

@@ -68,7 +68,7 @@
 
 <script>
 import { listDtScripts } from '@/api/3d/dtScriptApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import AddDtScript from '@/components/3d/AddDtScript.vue'
 import EditDtScript from '@/components/3d/EditDtScript.vue'
 import DeleteDtScript from '@/components/3d/DeleteDtScript.vue'
@@ -101,8 +101,8 @@ export default {
   methods: {
     async loadScriptTypes() {
       try {
-        const res = await listDicts({ tableName: 'dt_modal', columnName: 'modal_type' })
-        const dicts = res.data || []
+        const res = await listDicts({ tableName: 'dt_modal', tableColumns: 'modal_type' })
+        const dicts = res || []
         this.scriptTypes = [{ name: '全部类型', statusCd: '' }, ...dicts]
       } catch { /* ignore */ }
     },
@@ -112,6 +112,8 @@ export default {
         const res = await listDtScripts(this.queryParams)
         this.list = res.data || []
         this.total = res.records || 0
+      } catch (e) {
+        this.$message.error(e.message || '查询失败')
       } finally {
         this.loading = false
       }

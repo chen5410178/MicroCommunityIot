@@ -41,7 +41,7 @@
 
 <script>
 import { updateOwnerCar } from '@/api/car/carApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -76,8 +76,8 @@ export default {
   methods: {
     async loadCarTypes() {
       try {
-        const res = await listDicts({ page: 1, row: 100, tableName: 'owner_car', columnName: 'car_type' })
-        this.carTypes = res.data || []
+        const res = await listDicts({ tableName: 'owner_car', tableColumns: 'car_type' })
+        this.carTypes = res || []
       } catch { /* ignore */ }
     },
     open(car) {

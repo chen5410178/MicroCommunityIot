@@ -41,7 +41,7 @@
 
 <script>
 import { saveChargeMonthOrder, listChargeMonthCards } from '@/api/charge/chargeApi'
-import { listDicts } from '@/api/property/propertyApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -110,8 +110,8 @@ export default {
     },
     async loadDicts() {
       try {
-        const res = await listDicts({ page: 1, row: 100, tableName: 'pay_fee_detail', columnName: 'prime_rate' })
-        this.primeRates = res.data || []
+        const res = await listDicts({ tableName: 'pay_fee_detail', tableColumns: 'prime_rate' })
+        this.primeRates = res || []
       } catch (e) { /* ignore */ }
     },
     async loadCards() {

@@ -144,7 +144,8 @@
 import { saveRoom } from '@/api/property/roomApi'
 import { queryFloors } from '@/api/property/floorApi'
 import { queryUnits } from '@/api/property/unitApi'
-import { listDicts, listAttrSpecs, listAttrValues } from '@/api/property/propertyApi'
+import { listDicts } from '@/api/system/systemApi'
+import { listAttrSpecs, listAttrValues } from '@/api/property/propertyApi'
 import { queryOwners } from '@/api/owner/ownerApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
@@ -201,8 +202,8 @@ export default {
         this.floors = floorRes.data || []
       } catch (e) { /* ignore */ }
       try {
-        const dictRes = await listDicts({ tableName: 'building_room', tableColumns: 'room_sub_type', page: 1, row: 500 })
-        this.roomSubTypes = dictRes.data || []
+        const dictRes = await listDicts({ tableName: 'building_room', tableColumns: 'room_sub_type' })
+        this.roomSubTypes = dictRes || []
       } catch (e) { /* ignore */ }
       try {
         const specRes = await listAttrSpecs({ tableName: 'building_room_attr', page: 1, row: 100 })

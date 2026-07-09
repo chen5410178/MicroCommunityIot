@@ -82,7 +82,7 @@
 <script>
 import { propertyAuthVisit } from '@/api/accessControl/accessControlApi'
 import { listVisitTypes } from '@/api/accessControl/accessControlApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -132,10 +132,9 @@ export default {
     async loadDicts() {
       try {
         const [dictRes, typeRes] = await Promise.all([
-          listDicts({ tableName: 'visit', columnName: 'state' }),
-          listVisitTypes({ page: -1, row: 100, communityId: (getCurrentCommunity() || {}).communityId })
+          listDicts({ tableName: 'visit', tableColumns: 'state' }),
         ])
-        this.stateList = dictRes.data || []
+        this.stateList = dictRes || []
         this.visitTypeList = typeRes.data || []
       } catch (e) {
         console.error('加载字典失败', e)

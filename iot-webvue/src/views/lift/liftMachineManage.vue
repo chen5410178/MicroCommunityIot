@@ -108,7 +108,7 @@
 
 <script>
 import { listLiftMachines, listLiftMachineFactorys, switchLiftState } from '@/api/lift/liftApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 import AddLiftMachine from '@/components/lift/AddLiftMachine.vue'
 import EditLiftMachine from '@/components/lift/EditLiftMachine.vue'
@@ -173,8 +173,8 @@ export default {
     },
     async loadStateDict() {
       try {
-        const res = await listDicts({ tableName: 'lift_machine', columnName: 'state' })
-        this.stateList = res.data || []
+        const res = await listDicts({ tableName: 'lift_machine', tableColumns: 'state' })
+        this.stateList = res || []
       } catch (e) {
         console.error('获取状态字典失败', e)
       }

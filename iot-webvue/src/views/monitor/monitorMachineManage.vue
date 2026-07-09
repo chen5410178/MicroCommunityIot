@@ -97,7 +97,7 @@
 
 <script>
 import { listMonitorMachines, listMonitorAreas } from '@/api/monitor/monitorApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import AddMonitorMachine from '@/components/monitor/AddMonitorMachine.vue'
 import EditMonitorMachine from '@/components/monitor/EditMonitorMachine.vue'
 import DeleteMonitorMachine from '@/components/monitor/DeleteMonitorMachine.vue'
@@ -156,8 +156,8 @@ export default {
     },
     async fetchProtocolList() {
       try {
-        const res = await listDicts({ tableName: 'monitor_machine', columnName: 'protocol', page: 1, row: 100 })
-        this.protocolList = res.data || []
+        const res = await listDicts({ tableName: 'monitor_machine', tableColumns: 'protocol' })
+        this.protocolList = res || []
       } catch { /* ignore */ }
     },
     handleSearch() {

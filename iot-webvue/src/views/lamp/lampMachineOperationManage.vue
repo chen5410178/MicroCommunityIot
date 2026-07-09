@@ -88,7 +88,7 @@
 
 <script>
 import { listLampMachineOperation, listLampMachine, listCommunityStaffs } from '@/api/lamp/lampApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -123,11 +123,11 @@ export default {
         const [machineRes, personRes, dictRes] = await Promise.all([
           listLampMachine({ communityId, page: -1, row: 100 }),
           listCommunityStaffs({ communityId }),
-          listDicts({ tableName: 'lamp_machine_operation', columnName: 'type' })
+          listDicts({ tableName: 'lamp_machine_operation', tableColumns: 'type' })
         ])
         this.machineList = machineRes.data || []
         this.personList = personRes.data || []
-        this.operateTypes = dictRes.data || []
+        this.operateTypes = dictRes || []
       } catch { /* ignore */ }
     },
     async fetchList() {

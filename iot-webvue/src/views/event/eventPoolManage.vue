@@ -172,7 +172,7 @@
 import {
   listEventPools, updateEventPool, listEventRules
 } from '@/api/event/eventApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import ViewData from '@/components/event/ViewData.vue'
 import DeleteEventPool from '@/components/event/DeleteEventPool.vue'
 import AddEventPoolStaff from '@/components/event/AddEventPoolStaff.vue'
@@ -225,14 +225,14 @@ export default {
   methods: {
     async loadObjTypes() {
       try {
-        const res = await listDicts({ tableName: 'event_object', columnName: 'obj_type' })
-        this.objTypeList = res.data || []
+        const res = await listDicts({ tableName: 'event_object', tableColumns: 'obj_type' })
+        this.objTypeList = res || []
       } catch { /* ignore */ }
     },
     async loadEventTypes() {
       try {
-        const res = await listDicts({ tableName: 'event_pool', columnName: 'event_type' })
-        this.eventTypeList = res.data || []
+        const res = await listDicts({ tableName: 'event_pool', tableColumns: 'event_type' })
+        this.eventTypeList = res || []
       } catch { /* ignore */ }
     },
     async loadRules() {

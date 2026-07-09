@@ -80,7 +80,7 @@
 
 <script>
 import { listMeterQrcodes } from '@/api/meter/meterApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 import AddMeterQrcode from '@/components/meter/AddMeterQrcode.vue'
 import EditMeterQrcode from '@/components/meter/EditMeterQrcode.vue'
@@ -118,8 +118,8 @@ export default {
   methods: {
     async loadQueryWays() {
       try {
-        const res = await listDicts({ tableName: 'meter_qrcode', columnName: 'query_way' })
-        this.queryWayList = res.data || []
+        const res = await listDicts({ tableName: 'meter_qrcode', tableColumns: 'query_way' })
+        this.queryWayList = res || []
       } catch (e) {
         console.error('加载查询方式字典失败', e)
       }

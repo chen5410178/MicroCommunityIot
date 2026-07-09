@@ -67,7 +67,7 @@
 <script>
 import { saveTempCarFeeConfig, queryTempCarFeeRules } from '@/api/car/carApi'
 import { listParkingAreas } from '@/api/car/carApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -138,11 +138,11 @@ export default {
         const [parkRes, ruleRes, dictRes] = await Promise.all([
           listParkingAreas({ page: 1, row: 50, communityId }),
           queryTempCarFeeRules({ page: 1, row: 100 }),
-          listDicts({ page: 1, row: 100, tableName: 'temp_car_fee_config', columnName: 'car_type' })
+          listDicts({ tableName: 'temp_car_fee_config', tableColumns: 'car_type' })
         ])
         this.parkingAreas = parkRes.data || []
         this.rules = ruleRes.data || []
-        this.carTypes = dictRes.data || []
+        this.carTypes = dictRes || []
       } catch (e) {
         console.error('加载初始化数据失败', e)
       }

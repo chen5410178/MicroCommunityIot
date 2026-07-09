@@ -48,7 +48,7 @@
 
 <script>
 import { ownerPrestoreAccount } from '@/api/owner/ownerApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -91,11 +91,11 @@ export default {
     async loadDicts() {
       try {
         const [acctRes, payRes] = await Promise.all([
-          listDicts({ page: 1, row: 100, tableName: 'account', columnName: 'acct_type' }),
-          listDicts({ page: 1, row: 100, tableName: 'pay_fee_detail', columnName: 'prime_rate' })
+          listDicts({ tableName: 'account', tableColumns: 'acct_type' }),
+          listDicts({ tableName: 'pay_fee_detail', tableColumns: 'prime_rate' })
         ])
-        this.acctTypeList = acctRes.data || []
-        this.payTypeList = payRes.data || []
+        this.acctTypeList = acctRes || []
+        this.payTypeList = payRes || []
       } catch { /* ignore */ }
     },
     handleClose() {

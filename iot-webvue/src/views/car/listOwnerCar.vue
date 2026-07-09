@@ -130,7 +130,7 @@
 
 <script>
 import { queryOwnerCars, deleteCarParkingSpace, exportData } from '@/api/car/carApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import EditCar from '@/components/car/EditCar.vue'
 import DeleteOwnerCar from '@/components/car/DeleteOwnerCar.vue'
 import ImportOwnerCar from '@/components/car/ImportOwnerCar.vue'
@@ -167,8 +167,8 @@ export default {
   methods: {
     async loadLeaseTypes() {
       try {
-        const res = await listDicts({ page: 1, row: 100, tableName: 'owner_car', columnName: 'lease_type' })
-        const data = res.data || []
+        const res = await listDicts({ tableName: 'owner_car', tableColumns: 'lease_type' })
+        const data = res || []
         this.leaseTypes = [{ statusCd: '', name: '全部车辆' }]
         data.forEach(item => {
           this.leaseTypes.push({ statusCd: item.statusCd, name: item.name })

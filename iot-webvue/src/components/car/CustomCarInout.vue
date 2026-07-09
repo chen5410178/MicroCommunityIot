@@ -52,7 +52,7 @@
 
 <script>
 import { listCarInParkingArea, listBarriers, listParkingCouponCars, getTempCarFeeOrder, customCarInOut } from '@/api/car/carApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -92,8 +92,8 @@ export default {
   methods: {
     async loadPayTypes() {
       try {
-        const res = await listDicts({ page: 1, row: 100, tableName: 'car_inout_payment', columnName: 'pay_type' })
-        this.payTypes = res.data || []
+        const res = await listDicts({ tableName: 'car_inout_payment', tableColumns: 'pay_type' })
+        this.payTypes = res || []
       } catch { /* ignore */ }
     },
     open(data) {

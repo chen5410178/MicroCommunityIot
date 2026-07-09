@@ -46,7 +46,7 @@
 
 <script>
 import { reservationLiftMachine } from '@/api/lift/liftApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import RoomTree from '@/components/accessControl/RoomTree.vue'
 
 export default {
@@ -89,11 +89,11 @@ export default {
     async loadDicts() {
       try {
         const [resWayRes, personWayRes] = await Promise.all([
-          listDicts({ tableName: 'lift_machine_reservation', columnName: 'res_way' }),
-          listDicts({ tableName: 'lift_machine_reservation', columnName: 'person_way' })
+          listDicts({ tableName: 'lift_machine_reservation', tableColumns: 'res_way' }),
+          listDicts({ tableName: 'lift_machine_reservation', tableColumns: 'person_way' })
         ])
-        this.resWayList = resWayRes.data || []
-        this.personWayList = personWayRes.data || []
+        this.resWayList = resWayRes || []
+        this.personWayList = personWayRes || []
       } catch (e) {
         console.error('加载字典失败', e)
       }

@@ -159,7 +159,7 @@ export default {
         this.$emit('success')
         this.handleClose()
       } catch (e) {
-        this.$message.error(e.msg || '添加失败')
+        this.$message.error(e || '添加失败')
       } finally {
         this.loading = false
       }

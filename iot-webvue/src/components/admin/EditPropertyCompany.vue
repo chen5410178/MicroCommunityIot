@@ -93,7 +93,7 @@ export default {
         this.$emit('success')
         this.handleClose()
       } catch (e) {
-        this.$message.error(e.msg || '修改失败')
+        this.$message.error(e.message || '修改失败')
       } finally {
         this.loading = false
       }

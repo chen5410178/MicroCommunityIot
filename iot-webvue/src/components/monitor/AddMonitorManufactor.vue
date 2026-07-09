@@ -41,7 +41,7 @@
 
 <script>
 import { saveMonitorManufactor } from '@/api/monitor/monitorApi'
-import request from '@/utils/request'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -101,8 +101,8 @@ export default {
     async fetchMmBeans() {
       if (this.mmBeanOptions.length) return
       try {
-        const res = await request({ url: '/dict.listDict', method: 'get', params: { tableName: 'monitor_manufactor', tableKey: 'mm_bean' } })
-        this.mmBeanOptions = res.data || []
+        const res = await listDicts({ tableName: 'monitor_manufactor', tableColumns: 'mm_bean' })
+        this.mmBeanOptions = res || []
       } catch { /* ignore */ }
     },
     handleClose() {

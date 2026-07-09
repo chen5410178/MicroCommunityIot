@@ -46,7 +46,7 @@ export default {
         this.$emit('success')
         this.dialogVisible = false
       } catch (e) {
-        this.$message.error(e.msg || '删除失败')
+        this.$message.error(e || '删除失败')
       } finally {
         this.loading = false
       }

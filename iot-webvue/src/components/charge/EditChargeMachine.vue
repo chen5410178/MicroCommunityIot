@@ -54,7 +54,7 @@
 <script>
 import { updateChargeMachine, listChargeMachineFactory, listChargeMachineFactorySpec } from '@/api/charge/chargeApi'
 import { listChargeRule } from '@/api/charge/chargeApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { listMonitorMachine } from '@/api/accessControl/accessControlApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
@@ -134,11 +134,10 @@ export default {
         const communityId = (getCurrentCommunity() || {}).communityId || ''
         const [factoryRes, dictRes, monitorRes] = await Promise.all([
           listChargeMachineFactory({ page: 1, row: 100 }),
-          listDicts({ tableName: 'charge_machine', columnName: 'charge_type' }),
-          listMonitorMachine({ page: 1, row: 100, communityId })
+          listDicts({ tableName: 'charge_machine', tableColumns: 'charge_type' }),
         ])
         this.factoryList = factoryRes.data || []
-        this.chargeTypeList = dictRes.data || []
+        this.chargeTypeList = dictRes || []
         this.monitorList = monitorRes.data || []
       } catch (e) {
         console.error('加载下拉数据失败', e)

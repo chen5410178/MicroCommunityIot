@@ -32,7 +32,7 @@
 
 <script>
 import { updateDtScript } from '@/api/3d/dtScriptApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 
 export default {
   name: 'EditDtScript',
@@ -78,8 +78,8 @@ export default {
   methods: {
     async loadScriptTypes() {
       try {
-        const res = await listDicts({ tableName: 'dt_modal', columnName: 'modal_type' })
-        this.scriptTypeOptions = res.data || []
+        const res = await listDicts({ tableName: 'dt_modal', tableColumns: 'modal_type' })
+        this.scriptTypeOptions = res || []
       } catch { /* ignore */ }
     },
     handleClose() {
@@ -97,7 +97,7 @@ export default {
         this.$emit('success')
         this.handleClose()
       } catch (e) {
-        this.$message.error(e.msg || '修改失败')
+        this.$message.error(e.message || '修改失败')
       } finally {
         this.loading = false
       }

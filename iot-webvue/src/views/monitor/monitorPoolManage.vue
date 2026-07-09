@@ -72,7 +72,7 @@
 
 <script>
 import { listMonitorPools, listMonitorMachines, listMonitorModels } from '@/api/monitor/monitorApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -136,8 +136,8 @@ export default {
     },
     async fetchMonitorTypes() {
       try {
-        const res = await listDicts({ tableName: 'monitor_pool', columnName: 'monitor_type' })
-        this.monitorTypeList = res.data || []
+        const res = await listDicts({ tableName: 'monitor_pool', tableColumns: 'monitor_type' })
+        this.monitorTypeList = res || []
       } catch (e) {
         console.error('获取监控类型字典失败', e)
       }

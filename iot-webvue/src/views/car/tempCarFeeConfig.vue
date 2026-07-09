@@ -61,7 +61,7 @@
 
 <script>
 import { listTempCarFeeConfigs } from '@/api/car/carApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import AddTempCarFeeConfig from '@/components/car/AddTempCarFeeConfig.vue'
 import EditTempCarFeeConfig from '@/components/car/EditTempCarFeeConfig.vue'
 import DeleteTempCarFeeConfig from '@/components/car/DeleteTempCarFeeConfig.vue'
@@ -96,8 +96,8 @@ export default {
   methods: {
     async fetchCarTypes() {
       try {
-        const res = await listDicts({ page: 1, row: 100, tableName: 'temp_car_fee_config', columnName: 'car_type' })
-        this.carTypes = res.data || []
+        const res = await listDicts({ tableName: 'temp_car_fee_config', tableColumns: 'car_type' })
+        this.carTypes = res || []
       } catch (e) {
         console.error('加载车辆类型字典失败', e)
       }

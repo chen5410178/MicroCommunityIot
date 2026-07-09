@@ -64,7 +64,7 @@
 
 <script>
 import { updateTempCarFeeConfig, queryTempCarFeeRules } from '@/api/car/carApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 function formatDate(str) {
@@ -130,10 +130,9 @@ export default {
     async loadInitData() {
       try {
         const [dictRes, ruleRes] = await Promise.all([
-          listDicts({ page: 1, row: 100, tableName: 'temp_car_fee_config', columnName: 'car_type' }),
-          queryTempCarFeeRules({ page: 1, row: 100, ruleId: this.editData.ruleId })
+          listDicts({ tableName: 'temp_car_fee_config', tableColumns: 'car_type' }),
         ])
-        this.carTypes = dictRes.data || []
+        this.carTypes = dictRes || []
         this.rules = ruleRes.data || []
         this.fillForm()
       } catch (e) {

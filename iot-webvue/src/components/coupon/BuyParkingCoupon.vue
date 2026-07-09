@@ -38,7 +38,7 @@
 
 <script>
 import { buyParkingCoupon, listParkingCoupons } from '@/api/coupon/couponApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -92,8 +92,8 @@ export default {
     async loadPayTypes() {
       try {
         const communityId = (getCurrentCommunity() || {}).communityId || ''
-        const res = await listDicts({ tableName: 'parking_coupon_order', columnName: 'pay_type', page: 1, row: 100, communityId })
-        this.payTypes = res.data || []
+        const res = await listDicts({ tableName: 'parking_coupon_order', tableColumns: 'pay_type', communityId })
+        this.payTypes = res || []
       } catch { /* ignore */ }
     },
     async loadCoupons() {

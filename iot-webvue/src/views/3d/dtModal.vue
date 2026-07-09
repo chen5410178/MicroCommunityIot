@@ -69,7 +69,7 @@
 
 <script>
 import { listDtModals } from '@/api/3d/dtModalApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import AddDtModal from '@/components/3d/AddDtModal.vue'
 import EditDtModal from '@/components/3d/EditDtModal.vue'
 import DeleteDtModal from '@/components/3d/DeleteDtModal.vue'
@@ -102,8 +102,8 @@ export default {
   methods: {
     async loadModalTypes() {
       try {
-        const res = await listDicts({ tableName: 'dt_modal', columnName: 'modal_type' })
-        const dicts = res.data || []
+        const res = await listDicts({ tableName: 'dt_modal', tableColumns: 'modal_type' })
+        const dicts = res || []
         this.modalTypes = [{ name: '全部类型', statusCd: '' }, ...dicts]
       } catch { /* ignore */ }
     },
@@ -113,6 +113,8 @@ export default {
         const res = await listDtModals(this.queryParams)
         this.list = res.data || []
         this.total = res.records || 0
+      } catch (e) {
+        this.$message.error(e.message || '查询失败')
       } finally {
         this.loading = false
       }

@@ -63,7 +63,7 @@
 
 <script>
 import { listEventTemplates } from '@/api/event/eventApi'
-import { listDicts } from '@/api/property/propertyApi'
+import { listDicts } from '@/api/system/systemApi'
 import AddEventTemplate from '@/components/event/AddEventTemplate.vue'
 import EditEventTemplate from '@/components/event/EditEventTemplate.vue'
 import DeleteEventTemplate from '@/components/event/DeleteEventTemplate.vue'
@@ -97,8 +97,8 @@ export default {
   methods: {
     async loadEventWayDict() {
       try {
-        const res = await listDicts({ tableName: 'event_template', columnName: 'event_way' })
-        this.eventWayList = res.data || []
+        const res = await listDicts({ tableName: 'event_template', tableColumns: 'event_way' })
+        this.eventWayList = res || []
       } catch { /* ignore */ }
     },
     async fetchList() {

@@ -35,7 +35,7 @@
 
 <script>
 import { updateDtModal } from '@/api/3d/dtModalApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 
 export default {
   name: 'EditDtModal',
@@ -87,8 +87,8 @@ export default {
   methods: {
     async loadModalTypes() {
       try {
-        const res = await listDicts({ tableName: 'dt_modal', columnName: 'modal_type' })
-        this.modalTypeOptions = res.data || []
+        const res = await listDicts({ tableName: 'dt_modal', tableColumns: 'modal_type' })
+        this.modalTypeOptions = res || []
       } catch { /* ignore */ }
     },
     handleClose() {
@@ -106,7 +106,7 @@ export default {
         this.$emit('success')
         this.handleClose()
       } catch (e) {
-        this.$message.error(e.msg || '修改失败')
+        this.$message.error(e.message || '修改失败')
       } finally {
         this.loading = false
       }

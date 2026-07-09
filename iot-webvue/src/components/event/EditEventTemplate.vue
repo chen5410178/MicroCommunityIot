@@ -30,7 +30,7 @@
 
 <script>
 import { updateEventTemplate, listEventTemplateParamKeys } from '@/api/event/eventApi'
-import { listDicts } from '@/api/property/propertyApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -82,8 +82,8 @@ export default {
   methods: {
     async loadEventWayDict() {
       try {
-        const res = await listDicts({ tableName: 'event_template', columnName: 'event_way' })
-        this.eventWayList = res.data || []
+        const res = await listDicts({ tableName: 'event_template', tableColumns: 'event_way' })
+        this.eventWayList = res || []
       } catch { /* ignore */ }
     },
     async loadParamKeys() {

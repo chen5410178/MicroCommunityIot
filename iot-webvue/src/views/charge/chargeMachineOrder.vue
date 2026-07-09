@@ -156,7 +156,7 @@
 
 <script>
 import { listChargeMachineOrder, queryOwnerAccount } from '@/api/charge/chargeApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 import StopChargeMachine from '@/components/charge/StopChargeMachine.vue'
 import ThrowStopChargeMachine from '@/components/charge/ThrowStopChargeMachine.vue'
@@ -199,9 +199,9 @@ export default {
   methods: {
     async loadChargeTypes() {
       try {
-        const res = await listDicts({ tableName: 'charge_machine', columnName: 'charge_type' })
-        if (res.data) {
-          res.data.forEach(item => {
+        const res = await listDicts({ tableName: 'charge_machine', tableColumns: 'charge_type' })
+        if (res && res.length) {
+          res.forEach(item => {
             this.chargeTypes.push(item)
           })
         }

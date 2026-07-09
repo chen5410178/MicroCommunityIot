@@ -129,7 +129,8 @@
 
 <script>
 import { queryRooms } from '@/api/property/roomApi'
-import { listDicts, listAttrSpecs } from '@/api/property/propertyApi'
+import { listDicts } from '@/api/system/systemApi'
+import { listAttrSpecs } from '@/api/property/propertyApi'
 import { queryFloors } from '@/api/property/floorApi'
 import { queryUnits } from '@/api/property/unitApi'
 import FloorUnitTree from '@/components/property/FloorUnitTree.vue'
@@ -186,11 +187,11 @@ export default {
     async loadDicts() {
       try {
         const [stateRes, typeRes] = await Promise.all([
-          listDicts({ tableName: 'building_room', tableColumns: 'state', page: 1, row: 100 }),
-          listDicts({ tableName: 'building_room', tableColumns: 'room_sub_type', page: 1, row: 100 })
+          listDicts({ tableName: 'building_room', tableColumns: 'state' }),
+          listDicts({ tableName: 'building_room', tableColumns: 'room_sub_type' })
         ])
-        this.stateOptions = stateRes.data || []
-        this.roomSubTypeOptions = typeRes.data || []
+        this.stateOptions = stateRes || []
+        this.roomSubTypeOptions = typeRes || []
       } catch (e) { this.$message.error('加载字典失败') }
     },
     async fetchRooms() {

@@ -100,7 +100,7 @@
 
 <script>
 import { listLampMachine, listLampMachineFactory, switchLampState } from '@/api/lamp/lampApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import AddLampMachine from '@/components/lamp/AddLampMachine.vue'
 import EditLampMachine from '@/components/lamp/EditLampMachine.vue'
 import DeleteLampMachine from '@/components/lamp/DeleteLampMachine.vue'
@@ -140,10 +140,10 @@ export default {
       try {
         const [factoryRes, stateRes] = await Promise.all([
           listLampMachineFactory({ page: 1, row: 100 }),
-          listDicts({ tableName: 'lamp_machine', columnName: 'state' })
+          listDicts({ tableName: 'lamp_machine', tableColumns: 'state' })
         ])
         this.factoryList = factoryRes.data || []
-        this.stateList = stateRes.data || []
+        this.stateList = stateRes || []
       } catch { /* ignore */ }
     },
     async fetchList() {

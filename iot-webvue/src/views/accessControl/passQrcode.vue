@@ -95,7 +95,7 @@
 
 <script>
 import { listPassQrcodes } from '@/api/accessControl/accessControlApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import AuditPassQrcode from '@/components/accessControl/AuditPassQrcode.vue'
 import DeletePassQrcode from '@/components/accessControl/DeletePassQrcode.vue'
 import ViewQrCode from '@/components/common/ViewQrCode.vue'
@@ -134,8 +134,8 @@ export default {
   methods: {
     async loadStates() {
       try {
-        const res = await listDicts({ tableName: 'person_face', columnName: 'state' })
-        const dicts = res.data || []
+        const res = await listDicts({ tableName: 'person_face', tableColumns: 'state' })
+        const dicts = res || []
         dicts.forEach(item => {
           this.stateList.push(item)
         })

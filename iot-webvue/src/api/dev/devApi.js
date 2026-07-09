@@ -43,9 +43,13 @@ export function updateComponentCondition(data) { return request({ url: '/reportC
 export function deleteComponentCondition(data) { return request({ url: '/reportCustomComponentCondition.deleteReportCustomComponentCondition', method: 'post', data }) }
 
 // ===== 8. 字典管理 =====
+/** @deprecated 请使用 @/api/system/systemApi 中的 listDicts */
 export function listDicts(params) { return request({ url: '/dict.listDict', method: 'get', params }) }
+/** @deprecated 请使用 @/api/system/systemApi 中的 saveDict */
 export function saveDict(data) { return request({ url: '/dict.saveDict', method: 'post', data }) }
+/** @deprecated 请使用 @/api/system/systemApi 中的 updateDict */
 export function updateDict(data) { return request({ url: '/dict.updateDict', method: 'post', data }) }
+/** @deprecated 请使用 @/api/system/systemApi 中的 deleteDict */
 export function deleteDict(data) { return request({ url: '/dict.deleteDict', method: 'post', data }) }
 
 // ===== 8-1. 字典类型管理 =====
@@ -161,7 +165,7 @@ export function deleteSysDocument(data) { return request({ url: '/sysDocument/de
 
 // ===== 26. 缓存管理 =====
 export function listCache(params) { return request({ url: '/cache.listCache', method: 'get', params }) }
-export function refreshCache(data) { return request({ url: '/cache.refreshCache', method: 'post', data }) }
+export function flushCache(params) { return request({ url: '/cache.flushCache', method: 'get', params }) }
 
 // ===== 27. 列表演示 =====
 export function queryDemoConfig(params) { return request({ url: '/demo.queryDemoConfig', method: 'get', params }) }

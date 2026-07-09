@@ -67,7 +67,7 @@
 
 <script>
 import { listVisitTypes } from '@/api/accessControl/accessControlApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import AddVisitType from '@/components/accessControl/AddVisitType.vue'
 import EditVisitType from '@/components/accessControl/EditVisitType.vue'
 import DeleteVisitType from '@/components/accessControl/DeleteVisitType.vue'
@@ -104,11 +104,11 @@ export default {
     async loadDicts() {
       try {
         const [wayRes, auditRes] = await Promise.all([
-          listDicts({ tableName: 'visit_type', columnName: 'visit_way' }),
-          listDicts({ tableName: 'visit_type', columnName: 'audit_way' })
+          listDicts({ tableName: 'visit_type', tableColumns: 'visit_way' }),
+          listDicts({ tableName: 'visit_type', tableColumns: 'audit_way' })
         ])
-        this.visitWayList = wayRes.data || []
-        this.auditWayList = auditRes.data || []
+        this.visitWayList = wayRes || []
+        this.auditWayList = auditRes || []
       } catch (e) {
         console.error('加载字典失败', e)
       }

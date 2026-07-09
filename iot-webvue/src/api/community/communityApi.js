@@ -3,7 +3,6 @@ import { getCommunityId } from '@/utils/auth'
 
 export function listMyEnteredCommunitys(params) {
   return new Promise((resolve, reject) => {
-    params.communityId = getCommunityId()
     request({
       url: '/community.listMyEnteredCommunitys',
       method: 'get',
@@ -22,7 +21,6 @@ export function listMyEnteredCommunitys(params) {
 
 export function listMyStore(params) {
   return new Promise((resolve, reject) => {
-    params.communityId = getCommunityId()
     request({
       url: '/store.listMyStore',
       method: 'get',
@@ -41,17 +39,12 @@ export function listMyStore(params) {
 
 export function queryStaffPrivileges(params) {
   return new Promise((resolve, reject) => {
-    params.communityId = getCommunityId()
     request({
       url: '/privilege.queryStaffPrivileges',
       method: 'get',
       params
     }).then(res => {
-      if (res.code == 0) {
         resolve(res)
-      } else {
-        reject(new Error(res.msg || '查询权限失败'))
-      }
     }).catch(error => {
       reject(error)
     })
@@ -60,7 +53,6 @@ export function queryStaffPrivileges(params) {
 
 export function listCommunitys(params) {
   return new Promise((resolve, reject) => {
-    params.communityId = getCommunityId()
     request({
       url: '/community.listCommunitys',
       method: 'get',
@@ -79,7 +71,6 @@ export function listCommunitys(params) {
 
 export function saveCommunity(data) {
   return new Promise((resolve, reject) => {
-    data.communityId = getCommunityId()
     request({
       url: '/community.saveCommunity',
       method: 'post',
@@ -98,7 +89,6 @@ export function saveCommunity(data) {
 
 export function updateCommunity(data) {
   return new Promise((resolve, reject) => {
-    data.communityId = getCommunityId()
     request({
       url: '/community.updateCommunity',
       method: 'post',
@@ -117,7 +107,6 @@ export function updateCommunity(data) {
 
 export function deleteCommunity(data) {
   return new Promise((resolve, reject) => {
-    data.communityId = getCommunityId()
     request({
       url: '/community.deleteCommunity',
       method: 'post',

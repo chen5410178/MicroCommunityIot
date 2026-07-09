@@ -47,7 +47,7 @@
 
 <script>
 import { saveLampMachineOpenClose } from '@/api/lamp/lampApi'
-import { listDicts } from '@/api/dev/devApi'
+import { listDicts } from '@/api/system/systemApi'
 import ChooseLampMachine from '@/components/lamp/ChooseLampMachine.vue'
 import { getCurrentCommunity } from '@/utils/auth'
 
@@ -95,9 +95,9 @@ export default {
   methods: {
     async loadTypes() {
       try {
-        const res = await listDicts({ tableName: 'lamp_machine_operation', columnName: 'type' })
-        if (res.data) {
-          this.typeList = res.data
+        const res = await listDicts({ tableName: 'lamp_machine_operation', tableColumns: 'type' })
+        if (res && res.length) {
+          this.typeList = res
         }
       } catch { /* ignore */ }
     },
