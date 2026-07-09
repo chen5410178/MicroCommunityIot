@@ -13,7 +13,8 @@ function formatDateTime(date) {
 
 const service = axios.create({
   baseURL: '/iot/api',
-  timeout: 30000
+  timeout: 30000,
+  withCredentials: true
 })
 
 service.interceptors.request.use(config => {

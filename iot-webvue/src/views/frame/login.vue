@@ -58,7 +58,7 @@ export default {
     return {
       systemTitle: '',
       companyName: '',
-      sliderX: null,
+      sliderData: null,
       loginForm: {
         username: 'wuxw',
         passwd: 'admin'
@@ -86,8 +86,8 @@ export default {
         this.systemTitle = 'HCIOT'
       })
     },
-    onSliderSuccess(sliderX) {
-      this.sliderX = sliderX
+    onSliderSuccess(data) {
+      this.sliderData = data
     },
     handleLogin() {
       if (!this.loginForm.username) {
@@ -98,7 +98,7 @@ export default {
         this.$message.warning('密码不能为空')
         return
       }
-      if (!this.sliderX && this.sliderX !== 0) {
+      if (!this.sliderData) {
         this.$message.warning('请完成滑块验证')
         return
       }
@@ -106,13 +106,14 @@ export default {
       pcUserLogin({
         username: this.loginForm.username,
         passwd: this.loginForm.passwd,
-        sliderX: this.sliderX
+        sliderX: this.sliderData.sliderX,
+        sliderKey: this.sliderData.sliderKey
       }).then(() => {
         setUserInfo({ username: this.loginForm.username })
         this.loadPostLoginData()
       }).catch(err => {
         this.loading = false
-        this.sliderX = null
+        this.sliderData = null
         const msg = err && err.msg ? err.msg : '登录失败'
         this.$message.error(msg)
         this.$refs.sliderRef && this.$refs.sliderRef.refresh()
@@ -136,7 +137,7 @@ export default {
         }
       }).catch(err => {
         this.loading = false
-        this.sliderX = null
+        this.sliderData = null
         const msg = err && err.msg ? err.msg : '初始化数据失败'
         this.$message.error(msg)
         this.$refs.sliderRef && this.$refs.sliderRef.refresh()

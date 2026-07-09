@@ -1,38 +1,135 @@
 import request from '@/utils/request'
+import { getCommunityId } from '@/utils/auth'
 
 export function listMyEnteredCommunitys(params) {
-  return request({
-    url: '/community.listMyEnteredCommunitys',
-    method: 'get',
-    params
+  return new Promise((resolve, reject) => {
+    params.communityId = getCommunityId()
+    request({
+      url: '/community.listMyEnteredCommunitys',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询小区列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
   })
 }
 
 export function listMyStore(params) {
-  return request({
-    url: '/store.listMyStore',
-    method: 'get',
-    params
+  return new Promise((resolve, reject) => {
+    params.communityId = getCommunityId()
+    request({
+      url: '/store.listMyStore',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询商户失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
   })
 }
 
 export function queryStaffPrivileges(params) {
-  return request({
-    url: '/privilege.queryStaffPrivileges',
-    method: 'get',
-    params
+  return new Promise((resolve, reject) => {
+    params.communityId = getCommunityId()
+    request({
+      url: '/privilege.queryStaffPrivileges',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询权限失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
   })
 }
 
 export function listCommunitys(params) {
-  return request({ url: '/community.listCommunitys', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    params.communityId = getCommunityId()
+    request({
+      url: '/community.listCommunitys',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询小区失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
+
 export function saveCommunity(data) {
-  return request({ url: '/community.saveCommunity', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    data.communityId = getCommunityId()
+    request({
+      url: '/community.saveCommunity',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '添加小区失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
+
 export function updateCommunity(data) {
-  return request({ url: '/community.updateCommunity', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    data.communityId = getCommunityId()
+    request({
+      url: '/community.updateCommunity',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '修改小区失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
+
 export function deleteCommunity(data) {
-  return request({ url: '/community.deleteCommunity', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    data.communityId = getCommunityId()
+    request({
+      url: '/community.deleteCommunity',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除小区失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }

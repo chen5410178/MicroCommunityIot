@@ -63,7 +63,9 @@ public class PcUserLoginCmd extends Cmd {
         // web端需要 滑块验证码校验
         if (AppDto.WEB_APP_ID.equals(appId)) {
             Assert.hasKeyAndValue(reqJson, "sliderX", "未包含滑块验证码");
-            String correctX = CommonCache.getValue(CmdContextUtils.getSessionId(cmdDataFlowContext) + "_sliderCode");
+            Assert.hasKeyAndValue(reqJson, "sliderKey", "未包含滑块验证码key");
+            String sliderKey = reqJson.getString("sliderKey");
+            String correctX = CommonCache.getValue(sliderKey);
             if (StringUtil.isEmpty(correctX)) {
                 throw new IllegalArgumentException("验证码已过期，请刷新重试");
             }
@@ -72,7 +74,7 @@ public class PcUserLoginCmd extends Cmd {
             if (Math.abs(sliderX - correctXInt) > 5) {
                 throw new IllegalArgumentException("验证码校验失败");
             }
-            CommonCache.removeValue(CmdContextUtils.getSessionId(cmdDataFlowContext) + "_sliderCode");
+            CommonCache.removeValue(sliderKey);
         }
     }
 

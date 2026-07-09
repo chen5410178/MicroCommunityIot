@@ -1,8 +1,8 @@
 <template>
   <div class="slider-verify-compact">
-    <div class="slider-bar" :class="{ verified: verified }" @mousedown="openDialog" @touchstart.prevent="openDialog">
+    <div class="slider-bar" :class="{ verified: verified, failed: loadFailed }" @mousedown="openDialog" @touchstart.prevent="openDialog">
       <div class="slider-btn"></div>
-      <span class="slider-text">{{ verified ? '验证通过' : '请按住滑块拖动' }}</span>
+      <span class="slider-text">{{ loadFailed ? '验证码加载失败，请刷新页面' : (verified ? '验证通过' : '请按住滑块拖动') }}</span>
     </div>
 
     <el-dialog
@@ -47,7 +47,9 @@ export default {
       dragging: false,
       startX: 0,
       currentX: 0,
-      verified: false
+      verified: false,
+      loadFailed: false,
+      sliderKey: null
     }
   },
   computed: {
@@ -63,6 +65,7 @@ export default {
   },
   methods: {
     loadSliderCode() {
+      this.loadFailed = false
       generatorSliderCode({ _uId: '123' }).then(res => {
         if (typeof res === 'string') {
           try { res = JSON.parse(res) } catch (e) {}
@@ -72,11 +75,14 @@ export default {
         this.sliderY = res.y
         this.sliderWidth = res.sliderWidth
         this.sliderHeight = res.sliderHeight
+        this.sliderKey = res.sliderKey
         this.bgWidth = 300
         this.currentX = 0
         this.verified = false
+        this.loadFailed = false
         this.dialogSliderText = '向右拖动滑块完成验证'
       }).catch(() => {
+        this.loadFailed = true
         this.$emit('refresh')
       })
     },
@@ -84,7 +90,7 @@ export default {
       this.loadSliderCode()
     },
     openDialog() {
-      if (this.verified) return
+      if (this.verified || this.loadFailed) return
       this.showDialog = true
       this.currentX = 0
       this.$nextTick(() => {
@@ -134,7 +140,7 @@ export default {
         const sliderX = Math.round(this.currentX)
         this.verified = true
         this.showDialog = false
-        this.$emit('success', sliderX)
+        this.$emit('success', { sliderX, sliderKey: this.sliderKey })
       } else {
         // 没拖动，重置位置
         this.currentX = 0
@@ -191,6 +197,14 @@ export default {
 }
 .slider-verify-compact .slider-bar.verified .slider-text {
   color: #3158e5;
+}
+.slider-verify-compact .slider-bar.failed .slider-text {
+  color: #f56c6c;
+}
+.slider-verify-compact .slider-bar.failed {
+  background: #fef0f0;
+  border: 1px solid #f56c6c;
+  cursor: default;
 }
 
 /* dialog content */

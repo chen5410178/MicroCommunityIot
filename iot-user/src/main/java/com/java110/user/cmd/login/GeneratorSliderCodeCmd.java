@@ -10,12 +10,12 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.factory.SliderCodeFactory;
 import com.java110.core.factory.SliderCodeFactory.SliderCodeData;
-import com.java110.core.utils.CmdContextUtils;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.text.ParseException;
+import java.util.UUID;
 
 @Java110Cmd(serviceCode = "login.generatorSliderCode")
 public class GeneratorSliderCodeCmd extends Cmd {
@@ -36,8 +36,8 @@ public class GeneratorSliderCodeCmd extends Cmd {
         try {
             SliderCodeData data = SliderCodeFactory.generateSliderCode(bgWidth, bgHeight, sliderWidth, sliderHeight);
 
-            CommonCache.setValue(CmdContextUtils.getSessionId(context) + "_sliderCode",
-                    String.valueOf(data.getX()), CommonCache.defaultExpireTime);
+            String sliderKey = UUID.randomUUID().toString();
+            CommonCache.setValue(sliderKey, String.valueOf(data.getX()), CommonCache.defaultExpireTime);
 
             JSONObject result = new JSONObject();
             result.put("bgImage", data.getBgImage());
@@ -45,6 +45,7 @@ public class GeneratorSliderCodeCmd extends Cmd {
             result.put("y", data.getY());
             result.put("sliderWidth", data.getSliderWidth());
             result.put("sliderHeight", data.getSliderHeight());
+            result.put("sliderKey", sliderKey);
 
             context.setResponseEntity(new ResponseEntity<>(result.toJSONString(), HttpStatus.OK));
         } catch (Exception e) {
