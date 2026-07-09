@@ -2,309 +2,1356 @@ import request from '@/utils/request'
 
 // ===== 门禁设备 =====
 export function listAdminAccessControl(params) {
-  return request({ url: '/accessControl.listAdminAccessControl', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControl.listAdminAccessControl',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function saveAccessControl(data) {
-  return request({ url: '/accessControl.saveAccessControl', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControl.saveAccessControl',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function updateAccessControl(data) {
-  return request({ url: '/accessControl.updateAccessControl', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControl.updateAccessControl',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function deleteAccessControl(data) {
-  return request({ url: '/accessControl.deleteAccessControl', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControl.deleteAccessControl',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 门禁设备操作 =====
 export function openAccessControlDoor(data) {
-  return request({ url: '/accessControl.openAccessControlDoor', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControl.openAccessControlDoor',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function restartAccessControlDoor(data) {
-  return request({ url: '/accessControl.restartAccessControlDoor', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControl.restartAccessControlDoor',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function startAccessControlDoor(data) {
-  return request({ url: '/accessControl.StartAccessControlDoor', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControl.StartAccessControlDoor',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function stopAccessControlDoor(data) {
-  return request({ url: '/accessControl.StopAccessControlDoor', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControl.StopAccessControlDoor',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function reSendAccessControlFace(data) {
-  return request({ url: '/accessControl.reSendAccessControlFace', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControl.reSendAccessControlFace',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 门禁人员(按设备) =====
 export function listAdminAccessControlFace(params) {
-  return request({ url: '/accessControlFace.listAdminAccessControlFace', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlFace.listAdminAccessControlFace',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 门禁人员（独立页面） =====
 export function listAccessControlFace(params) {
-  return request({ url: '/accessControlFace.listAccessControlFace', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlFace.listAccessControlFace',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function saveAccessControlFace(data) {
-  return request({ url: '/accessControlFace.saveAccessControlFace', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlFace.saveAccessControlFace',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function deleteAccessControlFace(data) {
-  return request({ url: '/accessControlFace.deleteAccessControlFace', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlFace.deleteAccessControlFace',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function listAccessControl(params) {
-  return request({ url: '/accessControl.listAccessControl', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControl.listAccessControl',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 楼栋授权(按设备) =====
 export function listAdminAccessControlFloor(params) {
-  return request({ url: '/accessControlFloor.listAdminAccessControlFloor', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlFloor.listAdminAccessControlFloor',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function saveAccessControlFloor(data) {
-  return request({ url: '/accessControlFloor.saveAccessControlFloor', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlFloor.saveAccessControlFloor',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function deleteAccessControlFloor(data) {
-  return request({ url: '/accessControlFloor.deleteAccessControlFloor', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlFloor.deleteAccessControlFloor',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 部门授权(按设备) =====
 export function listAdminAccessControlOrg(params) {
-  return request({ url: '/accessControlOrg.listAdminAccessControlOrg', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlOrg.listAdminAccessControlOrg',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 下发日志(按设备) =====
 export function listAdminAccessControlLog(params) {
-  return request({ url: '/accessControlLog.listAdminAccessControlLog', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlLog.listAdminAccessControlLog',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 下发日志(全局) =====
 export function listAccessControlLogs(params) {
-  return request({ url: '/accessControlLog.listAccessControlLog', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlLog.listAccessControlLog',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function listAccessControlLogParam(params) {
-  return request({ url: '/accessControlLog.listAccessControlLogParam', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlLog.listAccessControlLogParam',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 进出记录(按设备) =====
 export function listAdminAccessControlInout(params) {
-  return request({ url: '/accessControlInout.listAdminAccessControlInout', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlInout.listAdminAccessControlInout',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 访客类型 =====
 export function listVisitTypes(params) {
-  return request({ url: '/visitType.listVisitType', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/visitType.listVisitType',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function saveVisitType(data) {
-  return request({ url: '/visitType.saveVisitType', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/visitType.saveVisitType',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function updateVisitType(data) {
-  return request({ url: '/visitType.updateVisitType', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/visitType.updateVisitType',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function deleteVisitType(data) {
-  return request({ url: '/visitType.deleteVisitType', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/visitType.deleteVisitType',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 下拉选项加载 =====
 export function listMachineLocation(params) {
-  return request({ url: '/location.listMachineLocation', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/location.listMachineLocation',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function listHardwareManufacturer(params) {
-  return request({ url: '/hm.listHardwareManufacturer', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/hm.listHardwareManufacturer',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function listMonitorMachine(params) {
-  return request({ url: '/monitorMachine.listMonitorMachine', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/monitorMachine.listMonitorMachine',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 部门授权（独立页面，按组织视角） =====
 export function listAccessControlOrg(params) {
-  return request({ url: '/accessControlOrg.listAccessControlOrg', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlOrg.listAccessControlOrg',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function saveAccessControlOrg(data) {
-  return request({ url: '/accessControlOrg.saveAccessControlOrg', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlOrg.saveAccessControlOrg',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function deleteAccessControlOrg(data) {
-  return request({ url: '/accessControlOrg.deleteAccessControlOrg', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlOrg.deleteAccessControlOrg',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 组织树 =====
 export function listOrgTree(params) {
-  return request({ url: '/org.listOrgTree', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/org.listOrgTree',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 人脸二维码 =====
 export function listPersonFaceQrcodes(params) {
-  return request({ url: '/personFace.listPersonFaceQrcode', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/personFace.listPersonFaceQrcode',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function savePersonFaceQrcode(data) {
-  return request({ url: '/personFace.savePersonFaceQrcode', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/personFace.savePersonFaceQrcode',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function updatePersonFaceQrcode(data) {
-  return request({ url: '/personFace.updatePersonFaceQrcode', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/personFace.updatePersonFaceQrcode',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function deletePersonFaceQrcode(data) {
-  return request({ url: '/personFace.deletePersonFaceQrcode', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/personFace.deletePersonFaceQrcode',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 通行码设置 =====
 export function listPassQrcodeSettings(params) {
-  return request({ url: '/passcode.listPassQrcodeSetting', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/passcode.listPassQrcodeSetting',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
+
 export function savePassQrcodeSetting(data) {
-  return request({ url: '/passcode.savePassQrcodeSetting', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/passcode.savePassQrcodeSetting',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
+
 export function updatePassQrcodeSetting(data) {
-  return request({ url: '/passcode.updatePassQrcodeSetting', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/passcode.updatePassQrcodeSetting',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
+
 export function deletePassQrcodeSetting(data) {
-  return request({ url: '/passcode.deletePassQrcodeSetting', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/passcode.deletePassQrcodeSetting',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 通行码 =====
 export function listPassQrcodes(params) {
-  return request({ url: '/passcode.listPassQrcode', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/passcode.listPassQrcode',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
+
 export function auditPassQrcode(data) {
-  return request({ url: '/passcode.auditPassQrcode', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/passcode.auditPassQrcode',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
+
 export function deletePassQrcode(data) {
-  return request({ url: '/passcode.deletePassQrcode', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/passcode.deletePassQrcode',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 访客管理 =====
 export function listVisits(params) {
-  return request({ url: '/visit.listVisit', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/visit.listVisit',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
+
 export function saveVisit(data) {
-  return request({ url: '/visit.saveVisit', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/visit.saveVisit',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
+
 export function updateVisit(data) {
-  return request({ url: '/visit.updateVisit', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/visit.updateVisit',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
+
 export function deleteVisit(data) {
-  return request({ url: '/visit.deleteVisit', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/visit.deleteVisit',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
+
 export function propertyAuthVisit(data) {
-  return request({ url: '/visit.propertyAuthVisit', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/visit.propertyAuthVisit',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
+
 export function getVisitQrCodeUrl(params) {
-  return request({ url: '/visit.getVisitQrCodeUrl', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/visit.getVisitQrCodeUrl',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
+
 export function listAccessControlInout(params) {
-  return request({ url: '/accessControlInout.listAccessControlInout', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlInout.listAccessControlInout',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 广告管理 =====
 export function listAccessControlAds(params) {
-  return request({ url: '/ad.listAccessControlAd', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/ad.listAccessControlAd',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function saveAccessControlAd(data) {
-  return request({ url: '/ad.saveAccessControlAd', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/ad.saveAccessControlAd',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function updateAccessControlAd(data) {
-  return request({ url: '/ad.updateAccessControlAd', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/ad.updateAccessControlAd',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function deleteAccessControlAd(data) {
-  return request({ url: '/ad.deleteAccessControlAd', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/ad.deleteAccessControlAd',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 广告门禁关联 =====
 export function listAccessControlAdRels(params) {
-  return request({ url: '/ad.listAccessControlAdRel', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/ad.listAccessControlAdRel',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function saveAccessControlAdRel(data) {
-  return request({ url: '/ad.saveAccessControlAdRel', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/ad.saveAccessControlAdRel',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function deleteAccessControlAdRel(data) {
-  return request({ url: '/ad.deleteAccessControlAdRel', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/ad.deleteAccessControlAdRel',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 门禁统计 =====
 export function queryAcInoutStatistics(data) {
-  return request({ url: '/accessControl.queryAcInoutStatistics', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControl.queryAcInoutStatistics',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function queryAcLogStatistics(data) {
-  return request({ url: '/accessControl.queryAcLogStatistics', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControl.queryAcLogStatistics',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function queryAcVisitStatistics(data) {
-  return request({ url: '/accessControl.queryAcVisitStatistics', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControl.queryAcVisitStatistics',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function queryAcFaceStatistics(data) {
-  return request({ url: '/accessControl.queryAcFaceStatistics', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControl.queryAcFaceStatistics',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 云呼平台 =====
 export function listCallingPlatform(params) {
-  return request({ url: '/callingPlatform.listCallingPlatform', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/callingPlatform.listCallingPlatform',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function saveCallingPlatform(data) {
-  return request({ url: '/callingPlatform.saveCallingPlatform', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/callingPlatform.saveCallingPlatform',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function updateCallingPlatform(data) {
-  return request({ url: '/callingPlatform.updateCallingPlatform', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/callingPlatform.updateCallingPlatform',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function deleteCallingPlatform(data) {
-  return request({ url: '/callingPlatform.deleteCallingPlatform', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/callingPlatform.deleteCallingPlatform',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 呼叫设备 =====
 export function listCallingDevice(params) {
-  return request({ url: '/callingDevice.listCallingDevice', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/callingDevice.listCallingDevice',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function saveCallingDevice(data) {
-  return request({ url: '/callingDevice.saveCallingDevice', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/callingDevice.saveCallingDevice',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function updateCallingDevice(data) {
-  return request({ url: '/callingDevice.updateCallingDevice', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/callingDevice.updateCallingDevice',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function deleteCallingDevice(data) {
-  return request({ url: '/callingDevice.deleteCallingDevice', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/callingDevice.deleteCallingDevice',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 通讯录 =====
 export function listCallingContact(params) {
-  return request({ url: '/callingContact.listCallingContact', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/callingContact.listCallingContact',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function saveCallingContact(data) {
-  return request({ url: '/callingContact.saveCallingContact', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/callingContact.saveCallingContact',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 export function deleteCallingContact(data) {
-  return request({ url: '/callingContact.deleteCallingContact', method: 'post', data })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/callingContact.deleteCallingContact',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
 
 // ===== 呼叫记录 =====
 export function listIntercomLog(params) {
-  return request({ url: '/ai.getIntercomLog', method: 'get', params })
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/ai.getIntercomLog',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
