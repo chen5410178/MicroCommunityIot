@@ -1,25 +1,23 @@
 <template>
   <div class="parking-region-manage">
-    <el-row :gutter="16">
-      <el-col :span="6">
-        <el-card shadow="never" class="tree-card">
-          <el-menu
-            :default-active="activePaId"
-            class="parking-area-menu"
-            @select="handleSelectArea"
-          >
-            <el-menu-item
+    <div class="page-container">
+      <div class="left-panel">
+        <el-card shadow="never" class="area-card">
+          <div class="area-list">
+            <div
               v-for="item in parkingAreas"
               :key="item.paId"
-              :index="item.paId"
+              class="area-item"
+              :class="{ active: activePaId === item.paId }"
+              @click="handleSelectArea(item.paId)"
             >
-              <span>{{ item.num }}</span>
-            </el-menu-item>
-          </el-menu>
+              {{ item.num }}
+            </div>
+          </div>
           <div v-if="parkingAreas.length === 0" class="empty-tip">暂无停车场数据</div>
         </el-card>
-      </el-col>
-      <el-col :span="18">
+      </div>
+      <div class="right-panel">
         <el-card shadow="never" class="table-card">
           <div slot="header" class="card-header">
             <span>停车区域</span>
@@ -56,8 +54,8 @@
             class="pagination-container"
           />
         </el-card>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
     <AddParkingRegion :visible.sync="addVisible" :pa-id="activePaId" @success="handleSuccess" />
     <EditParkingRegion :visible.sync="editVisible" :edit-data="currentRow" @success="handleSuccess" />
     <DeleteParkingRegion :visible.sync="delVisible" :del-data="currentRow" @success="handleSuccess" />
@@ -157,10 +155,16 @@ export default {
 </script>
 
 <style scoped>
-.tree-card { height: 100%; }
+.page-container { display: flex; gap: 16px; }
+.left-panel { width: 200px; flex-shrink: 0; }
+.right-panel { flex: 1; min-width: 0; }
+.area-card { height: 100%; }
+.area-list { max-height: calc(100vh - 200px); overflow-y: auto; }
+.area-item { padding: 10px 12px; cursor: pointer; border-radius: 4px; margin-bottom: 5px; text-align: center; font-size: 13px; transition: all 0.3s; }
+.area-item:hover { background-color: #f5f7fa; }
+.area-item.active { background-color: #409eff; color: white; font-weight: 600; }
 .table-card { margin-bottom: 0; }
 .card-header { display: flex; justify-content: space-between; align-items: center; }
 .pagination-container { margin-top: 16px; text-align: right; }
-.parking-area-menu { border-right: none; }
 .empty-tip { text-align: center; color: #909399; padding: 20px 0; }
 </style>

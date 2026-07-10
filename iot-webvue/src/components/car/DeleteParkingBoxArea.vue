@@ -3,6 +3,7 @@
     :visible.sync="dialogVisible"
     title="删除确认"
     width="400px"
+    append-to-body
   >
     <div style="text-align: center; padding: 20px 0;">
       <i class="el-icon-warning" style="font-size: 48px; color: #f56c6c" />
@@ -48,7 +49,7 @@ export default {
         this.$emit('success')
         this.dialogVisible = false
       } catch (e) {
-        this.$message.error(e.msg || '删除失败')
+        this.$message.error(e || '删除失败')
       } finally {
         this.loading = false
       }

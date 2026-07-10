@@ -1,9 +1,5 @@
 <template>
   <div class="parking-area-total-control">
-    <div class="total-control-header">
-      <span class="title">停车场总控台</span>
-      <el-tag type="info">{{ paId }}</el-tag>
-    </div>
     <el-row :gutter="16">
       <el-col :span="18">
         <el-card shadow="never">
@@ -221,17 +217,5 @@ export default {
 .parking-area-total-control {
   min-height: calc(100vh - 100px);
 }
-.total-control-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  background: #fff;
-  margin-bottom: 16px;
-  border-radius: 4px;
-}
-.total-control-header .title {
-  font-size: 18px;
-  font-weight: 600;
-}
+
 </style>

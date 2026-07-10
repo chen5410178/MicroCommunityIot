@@ -74,6 +74,8 @@
         </el-form-item>
       </el-form>
     </el-card>
+    <SearchOwner :visible.sync="searchOwnerVisible" @selected="handleOwnerSelected" />
+    <SearchParkingSpace :visible.sync="searchParkingSpaceVisible" parkingSpaceFlag="F" @choose="handleParkingSpaceChoose" />
   </div>
 </template>
 
@@ -81,13 +83,18 @@
 import { saveOwnerCar } from '@/api/car/carApi'
 import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
+import SearchOwner from '@/components/monitor/SearchOwner.vue'
+import SearchParkingSpace from '@/components/car/SearchParkingSpace.vue'
 
 export default {
   name: 'HireParkingSpace',
+  components: { SearchOwner, SearchParkingSpace },
   data() {
     return {
       loading: false,
       carTypes: [],
+      searchOwnerVisible: false,
+      searchParkingSpaceVisible: false,
       form: {
         carNum: '',
         carBrand: '',
@@ -147,12 +154,20 @@ export default {
       }
     },
     openChooseOwner() {
-      // TODO: 打开选择业主弹窗 - 需要searchOwner组件
-      this.$message.info('请先通过业主列表进入，或后续开发选择业主弹窗')
+      this.searchOwnerVisible = true
+    },
+    handleOwnerSelected(row) {
+      this.form.ownerId = row.memberId
+      this.form.ownerName = row.name
+      this.searchOwnerVisible = false
     },
     openChooseParkingSpace() {
-      // TODO: 打开选择车位弹窗 - 需要searchParkingSpace组件
-      this.$message.info('请后续开发选择车位弹窗')
+      this.searchParkingSpaceVisible = true
+    },
+    handleParkingSpaceChoose(row) {
+      this.form.psId = row.psId
+      this.form.psName = row.paNum + '-' + row.num
+      this.searchParkingSpaceVisible = false
     }
   }
 }

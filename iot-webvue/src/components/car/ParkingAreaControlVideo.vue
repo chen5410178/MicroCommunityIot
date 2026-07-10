@@ -1,9 +1,6 @@
 <template>
   <div class="parking-area-control-video">
     <el-card shadow="never">
-      <div slot="header" class="card-header">
-        <span>岗亭视频</span>
-      </div>
       <div v-loading="loading">
         <el-row :gutter="16">
           <el-col :span="12">
@@ -75,7 +72,7 @@
             </el-col>
           </el-row>
         </div>
-        <div v-if="inMachines.length === 0 && outMachines.length === 0 && !loading" class="empty-tip">暂无道闸设备</div>
+
       </div>
     </el-card>
   </div>
@@ -428,18 +425,16 @@ function HuaXiaVideoWrapper(url, imageId) {
 
 <style scoped>
 .parking-area-control-video { }
-.video-section { margin-bottom: 16px; }
+.video-section { margin-bottom: 8px; }
 .control-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px; }
 .control-buttons { display: flex; gap: 4px; flex-wrap: wrap; }
-.video-container { position: relative; width: 100%; height: 280px; background: #000; cursor: pointer; overflow: hidden; }
+.video-container { position: relative; width: 100%; height: 280px; background: #000; cursor: pointer; overflow: hidden; border: 1px solid #dcdfe6; }
 .video-container img { display: block; }
 .camera-icon { position: absolute; right: 8px; top: 8px; color: #fff; font-size: 20px; cursor: pointer; opacity: 0.7; z-index: 2; }
 .camera-icon:hover { opacity: 1; }
 .machine-info { padding: 8px 12px; font-size: 13px; background: #fff; }
 .machine-info i { margin-right: 4px; }
 .machine-info-empty { color: #909399; }
-.card-header { display: flex; justify-content: space-between; align-items: center; }
-.empty-tip { text-align: center; padding: 40px 0; color: #909399; }
 .capture-images { margin-top: 16px; }
 .capture-images img { border: 1px solid #dee2e6; border-radius: 4px; }
 </style>

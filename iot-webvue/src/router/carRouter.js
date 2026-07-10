@@ -96,6 +96,12 @@ const carRoutes = [
     meta: { requiresAuth: true, title: '道闸岗亭' }
   },
   {
+    path: 'pages/car/parkingBoxArea',
+    name: 'ParkingBoxArea',
+    component: () => import('@/views/car/parkingBoxArea.vue'),
+    meta: { requiresAuth: true, title: '共享岗亭' }
+  },
+  {
     path: 'pages/car/tempCarFeeConfig',
     name: 'TempCarFeeConfig',
     component: () => import('@/views/car/tempCarFeeConfig.vue'),

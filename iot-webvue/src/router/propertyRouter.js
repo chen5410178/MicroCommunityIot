@@ -70,6 +70,12 @@ const propertyRoutes = [
     name: 'RoomUnBindOwner',
     component: () => import('@/views/owner/roomUnBindOwner.vue'),
     meta: { requiresAuth: true, title: '房屋解绑人员' }
+  },
+  {
+    path: 'pages/property/downloadTempFile',
+    name: 'DownloadTempFile',
+    component: () => import('@/views/property/downloadTempFile.vue'),
+    meta: { requiresAuth: true, title: '下载中心' }
   }
 ]
 

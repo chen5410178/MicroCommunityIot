@@ -27,18 +27,22 @@
         </el-form-item>
       </el-form>
     </el-card>
+    <SearchParkingSpace :visible.sync="searchParkingSpaceVisible" parkingSpaceFlag="F" @choose="handleParkingSpaceChoose" />
   </div>
 </template>
 
 <script>
 import { queryOwnerCars, carAddParkingSpace } from '@/api/car/carApi'
 import { getCurrentCommunity } from '@/utils/auth'
+import SearchParkingSpace from '@/components/car/SearchParkingSpace.vue'
 
 export default {
   name: 'CarAddParkingSpace',
+  components: { SearchParkingSpace },
   data() {
     return {
       loading: false,
+      searchParkingSpaceVisible: false,
       form: {
         carNum: '',
         startTime: '',
@@ -96,8 +100,12 @@ export default {
       }
     },
     openChooseParkingSpace() {
-      // TODO: 打开选择车位弹窗
-      this.$message.info('请后续开发选择车位弹窗')
+      this.searchParkingSpaceVisible = true
+    },
+    handleParkingSpaceChoose(row) {
+      this.form.psId = row.psId
+      this.form.psName = row.paNum + '-' + row.num
+      this.searchParkingSpaceVisible = false
     }
   }
 }

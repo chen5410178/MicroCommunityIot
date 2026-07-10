@@ -3,6 +3,7 @@
     :visible.sync="dialogVisible"
     title="添加共享岗亭"
     width="500px"
+    append-to-body
     @close="handleClose"
   >
     <el-form :model="form" :rules="rules" ref="formRef" label-width="120px">
@@ -90,7 +91,7 @@ export default {
         this.$emit('success')
         this.handleClose()
       } catch (e) {
-        this.$message.error(e.msg || '添加失败')
+        this.$message.error(e || '添加失败')
       } finally {
         this.loading = false
       }

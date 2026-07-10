@@ -1,18 +1,10 @@
 <template>
   <div class="parking-area-control">
-    <div class="control-header">
-      <span class="title">岗亭控制台</span>
-      <div>
-        <el-tag type="info" style="margin-right: 8px">岗亭：{{ boxId }}</el-tag>
-        <el-tag type="info">停车场：{{ paId }}</el-tag>
-      </div>
-    </div>
     <el-row :gutter="16">
       <el-col :span="18">
         <ParkingAreaControlVideo ref="videoRef" :boxId="boxId" :paId="paId" @ws-data="onVideoWsData" @show-custom-inout="showCustomCarInout" @show-qrcode="showBarrierGateQrCode" @unlicensed-car-in="handleUnlicensedCarIn" @changeMachine="onChangeMachine" />
         <div class="vc-line-primary"></div>
-        <el-card shadow="never" class="tabs-card">
-          <el-tabs v-model="activeTab" @tab-click="handleTabClick">
+        <el-tabs v-model="activeTab" @tab-click="handleTabClick">
             <el-tab-pane label="在场车辆" name="parkingAreaControlInCar">
               <ParkingAreaControlInCar ref="parkingAreaControlInCar" :paId="paId" @show-custom-inout="showCustomCarInout" />
             </el-tab-pane>
@@ -46,8 +38,7 @@
             <el-tab-pane label="开闸日志" name="parkingAreaControlManualOpenDoorLog">
               <ParkingAreaControlManualOpenDoorLog ref="parkingAreaControlManualOpenDoorLog" :paId="paId" />
             </el-tab-pane>
-          </el-tabs>
-        </el-card>
+        </el-tabs>
       </el-col>
       <el-col :span="6">
         <ParkingAreaControlFee ref="feeRef" :boxId="boxId" :paId="paId" @show-qrcode="showBarrierGateQrCode" @show-custom-inout="showCustomCarInout" />
@@ -101,7 +92,7 @@ export default {
     return {
       boxId: '',
       paId: '',
-      activeTab: 'parkingAreaControlInCar',
+      activeTab: 'parkingAreaControlCarInouts',
       websocket: null,
       wsPingTimer: null,
       wsPingInterval: null
@@ -248,26 +239,12 @@ export default {
 <style scoped>
 .parking-area-control {
   min-height: calc(100vh - 100px);
-}
-.control-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
   background: #fff;
-  margin-bottom: 16px;
-  border-radius: 4px;
-}
-.control-header .title {
-  font-size: 18px;
-  font-weight: 600;
+  padding: 16px;
 }
 .vc-line-primary {
   height: 1px;
   background-color: #409EFF;
   margin: 12px 0;
-}
-.tabs-card {
-  margin-top: 0;
 }
 </style>
