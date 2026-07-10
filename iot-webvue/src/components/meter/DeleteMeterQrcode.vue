@@ -20,6 +20,7 @@
 
 <script>
 import { deleteMeterQrcode } from '@/api/meter/meterApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteMeterQrcode',
@@ -41,7 +42,9 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        await deleteMeterQrcode(this.delData)
+        const community = getCurrentCommunity()
+        const data = { ...this.delData, communityId: this.delData.communityId || (community ? community.communityId : '') }
+        await deleteMeterQrcode(data)
         this.$message.success('删除成功')
         this.$emit('success')
         this.dialogVisible = false

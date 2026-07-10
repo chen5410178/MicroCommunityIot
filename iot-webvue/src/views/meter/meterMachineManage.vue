@@ -210,7 +210,8 @@ export default {
     },
     async loadMeterTypes() {
       try {
-        const res = await listMeterTypes({ page: 1, row: 100 })
+        const community = getCurrentCommunity()
+        const res = await listMeterTypes({ page: 1, row: 100, communityId: community.communityId })
         this.meterTypes = res.data || []
       } catch (e) {
         console.error('加载类型列表失败', e)
@@ -218,7 +219,8 @@ export default {
     },
     async loadFactorys() {
       try {
-        const res = await listMeterMachineFactory({ page: 1, row: 500 })
+        const community = getCurrentCommunity()
+        const res = await listMeterMachineFactory({ page: 1, row: 500, communityId: community.communityId })
         this.factorys = res.data || []
       } catch (e) {
         console.error('加载厂家列表失败', e)

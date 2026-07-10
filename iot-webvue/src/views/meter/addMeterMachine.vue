@@ -82,18 +82,18 @@
         </el-row>
       </el-form>
     </el-card>
-    <RoomTree :visible.sync="roomVisible" @confirm="handleRoomConfirm" />
+    <RoomSelect :visible.sync="roomVisible" @confirm="handleRoomConfirm" />
   </div>
 </template>
 
 <script>
 import { saveMeterMachine, listMeterTypes, listMeterMachineFactory } from '@/api/meter/meterApi'
 import { getCurrentCommunity } from '@/utils/auth'
-import RoomTree from '@/components/accessControl/RoomTree.vue'
+import RoomSelect from '@/components/accessControl/RoomSelect.vue'
 
 export default {
   name: 'AddMeterMachine',
-  components: { RoomTree },
+  components: { RoomSelect },
   data() {
     return {
       loading: false,
@@ -129,7 +129,8 @@ export default {
   methods: {
     async loadMeterTypes() {
       try {
-        const res = await listMeterTypes({ page: 1, row: 100 })
+        const community = getCurrentCommunity()
+        const res = await listMeterTypes({ page: 1, row: 100, communityId: community.communityId })
         this.meterTypes = res.data || []
       } catch (e) {
         console.error('加载类型列表失败', e)
@@ -137,7 +138,8 @@ export default {
     },
     async loadFactorys() {
       try {
-        const res = await listMeterMachineFactory({ page: 1, row: 500 })
+        const community = getCurrentCommunity()
+        const res = await listMeterMachineFactory({ page: 1, row: 500, communityId: community.communityId })
         this.factorys = res.data || []
       } catch (e) {
         console.error('加载厂家列表失败', e)

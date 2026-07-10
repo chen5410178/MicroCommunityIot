@@ -39,6 +39,7 @@
 <script>
 import { updateMeterQrcode } from '@/api/meter/meterApi'
 import { listDicts } from '@/api/system/systemApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditMeterQrcode',
@@ -54,6 +55,7 @@ export default {
       form: {
         mqId: '',
         qrcodeName: '',
+        communityId: '',
         queryWay: '',
         state: 'ON',
         remark: ''
@@ -82,6 +84,7 @@ export default {
         this.form = {
           mqId: this.editData.mqId || '',
           qrcodeName: this.editData.qrcodeName || '',
+          communityId: this.editData.communityId || '',
           queryWay: this.editData.queryWay || '',
           state: this.editData.state || 'ON',
           remark: this.editData.remark || ''
@@ -111,6 +114,8 @@ export default {
       } catch { return }
       this.loading = true
       try {
+        const community = getCurrentCommunity()
+        this.form.communityId = this.form.communityId || (community ? community.communityId : '')
         await updateMeterQrcode(this.form)
         this.$message.success('修改成功')
         this.$emit('success')

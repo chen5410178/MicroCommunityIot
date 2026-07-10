@@ -39,6 +39,7 @@
 <script>
 import { saveMeterQrcode } from '@/api/meter/meterApi'
 import { listDicts } from '@/api/system/systemApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddMeterQrcode',
@@ -52,6 +53,7 @@ export default {
       queryWayList: [],
       form: {
         qrcodeName: '',
+        communityId: '',
         queryWay: '',
         state: 'ON',
         remark: ''
@@ -102,6 +104,8 @@ export default {
       } catch { return }
       this.loading = true
       try {
+        const community = getCurrentCommunity()
+        this.form.communityId = community ? community.communityId : ''
         await saveMeterQrcode(this.form)
         this.$message.success('添加成功')
         this.$emit('success')
