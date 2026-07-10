@@ -50,7 +50,7 @@
       </el-row>
       <el-row :gutter="20" v-for="(row, idx) in attrRows" :key="idx">
         <el-col :span="12" v-for="(item, colIdx) in row" :key="colIdx">
-          <el-form-item :label="item.specName" :prop="'attr_' + (idx * 2 + colIdx)" :rules="[{ required: true, message: item.specName + '不能为空', trigger: 'blur' }]">
+          <el-form-item :label="item.specName">
             <el-input v-model="item.value" :placeholder="'必填，请填写' + item.specName" />
             <span v-if="item.remark" style="color: #909399; font-size: 12px;">{{ item.remark }}</span>
           </el-form-item>
@@ -158,6 +158,9 @@ export default {
       } else {
         this.form.attrs = []
       }
+      this.$nextTick(() => {
+        this.$refs.formRef && this.$refs.formRef.clearValidate()
+      })
     },
     handleClose() {
       this.dialogVisible = false
@@ -166,7 +169,8 @@ export default {
     validateAttrs() {
       if (!this.form.attrs || this.form.attrs.length === 0) return true
       for (let i = 0; i < this.form.attrs.length; i++) {
-        if (!this.form.attrs[i].value || this.form.attrs[i].value.trim() === '') {
+        const val = this.form.attrs[i].value
+        if (val === null || val === undefined || String(val).trim() === '') {
           this.$message.warning(this.form.attrs[i].specName + '不能为空')
           return false
         }

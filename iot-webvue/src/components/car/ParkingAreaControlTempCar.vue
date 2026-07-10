@@ -1,6 +1,6 @@
 <template>
   <div class="tab-component">
-    <el-card shadow="never" class="search-card">
+    <el-card shadow="never">
       <el-form :inline="true" :model="queryParams" size="small">
         <el-form-item>
           <el-input v-model="queryParams.carNum" placeholder="必填，请填写车牌号" clearable style="width: 180px" />
@@ -10,8 +10,6 @@
           <el-button @click="handleReset">重置</el-button>
         </el-form-item>
       </el-form>
-    </el-card>
-    <el-card shadow="never" class="table-card">
       <el-table :data="list" v-loading="loading" border stripe size="small">
         <el-table-column prop="tiId" label="编号" min-width="100" align="center" />
         <el-table-column prop="carNum" label="车牌号" min-width="120" align="center" />
@@ -82,7 +80,5 @@ export default {
 
 <style scoped>
 .tab-component { padding: 0; }
-.search-card { margin-bottom: 16px; }
-.table-card { margin-top: 0; }
 .pagination-container { text-align: right; margin-top: 16px; }
 </style>
