@@ -1,25 +1,27 @@
 <template>
   <div class="list-attendance-machine-log">
-    <div class="content-wrapper">
-      <div class="sidebar">
-        <ul class="device-list">
-          <li
-            :class="{ active: queryParams.machineId === '' }"
-            @click="switchDevice('')"
-          >
-            全部
-          </li>
-          <li
-            v-for="item in machines"
-            :key="item.machineId"
-            :class="{ active: queryParams.machineId === item.machineId }"
-            @click="switchDevice(item.machineId)"
-          >
-            {{ item.machineName }}
-          </li>
-        </ul>
+    <div class="page-container">
+      <div class="left-panel">
+        <el-card shadow="never" class="device-card">
+          <ul class="device-list">
+            <li
+              :class="{ active: queryParams.machineId === '' }"
+              @click="switchDevice('')"
+            >
+              全部
+            </li>
+            <li
+              v-for="item in machines"
+              :key="item.machineId"
+              :class="{ active: queryParams.machineId === item.machineId }"
+              @click="switchDevice(item.machineId)"
+            >
+              {{ item.machineName }}
+            </li>
+          </ul>
+        </el-card>
       </div>
-      <div class="main-content">
+      <div class="right-panel">
         <el-card shadow="never" class="search-card">
           <div slot="header" class="card-header">
             <span>查询条件</span>
@@ -97,7 +99,7 @@
 </template>
 
 <script>
-import { listAttendanceMachineLog, listAttendanceMachine } from '@/api/attendance/attendanceApi'
+import { listAttendanceMachineLog, listAttendanceMachines } from '@/api/attendance/attendanceApi'
 import ShowAttendanceMachineLog from '@/components/attendance/ShowAttendanceMachineLog.vue'
 import { getCurrentCommunity } from '@/utils/auth'
 
@@ -123,22 +125,10 @@ export default {
       }
     }
   },
-  computed: {
-    currentCommunityId() {
-      return (getCurrentCommunity() || {}).communityId || ''
-    }
-  },
-  watch: {
-    currentCommunityId: {
-      immediate: true,
-      handler(val) {
-        this.queryParams.communityId = val
-        if (val) {
-          this.loadMachines()
-          this.fetchList()
-        }
-      }
-    }
+  mounted() {
+    this.queryParams.communityId = (getCurrentCommunity() || {}).communityId || ''
+    this.loadMachines()
+    this.fetchList()
   },
   methods: {
     async fetchList() {
@@ -153,7 +143,7 @@ export default {
     },
     async loadMachines() {
       try {
-        const res = await listAttendanceMachine({ page: 1, row: 100, communityId: this.queryParams.communityId })
+        const res = await listAttendanceMachines({ page: 1, row: 100, communityId: this.queryParams.communityId })
         this.machines = res.data || []
       } catch (e) {
         this.machines = []
@@ -198,14 +188,15 @@ export default {
 </script>
 
 <style scoped>
-.list-attendance-machine-log { height: 100%; }
-.content-wrapper { display: flex; height: 100%; }
-.sidebar { width: 200px; min-width: 200px; background: #fff; border-right: 1px solid #ebeef5; overflow-y: auto; }
-.device-list { list-style: none; padding: 0; margin: 0; }
-.device-list li { padding: 12px 16px; cursor: pointer; border-radius: 4px; margin-bottom: 5px; font-size: 14px; color: #303133; transition: all 0.3s; }
-.device-list li:hover { background: #f5f7fa; }
-.device-list li.active { background: #409eff; color: white; font-weight: 600; }
-.main-content { flex: 1; overflow-y: auto; padding: 16px; }
+.list-attendance-machine-log { padding: 0; }
+.page-container { display: flex; gap: 16px; }
+.left-panel { width: 200px; flex-shrink: 0; }
+.right-panel { flex: 1; min-width: 0; }
+.device-card { height: 100%; }
+.device-list { list-style: none; padding: 0; margin: 0; max-height: calc(100vh - 200px); overflow-y: auto; }
+.device-list li { padding: 10px 12px; cursor: pointer; border-radius: 4px; margin-bottom: 5px; text-align: center; font-size: 14px; color: #606266; transition: all 0.3s; }
+.device-list li:hover { background-color: #f5f7fa; }
+.device-list li.active { background-color: #409eff; color: white; font-weight: 600; }
 .search-card { margin-bottom: 16px; }
 .table-card { margin-bottom: 0; }
 .card-header { display: flex; justify-content: space-between; align-items: center; }

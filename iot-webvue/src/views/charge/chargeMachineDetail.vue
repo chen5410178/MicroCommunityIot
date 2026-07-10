@@ -46,25 +46,25 @@
     <el-card shadow="never" class="tab-card">
       <el-tabs v-model="currentTab" @tab-click="handleTabClick">
         <el-tab-pane label="插槽" name="chargeDetailPort">
-          <AdminChargeDetailPort :machine-id="machineId" :port-id="portId" />
+          <ChargeDetailPort :machine-id="machineId" :port-id="portId" />
         </el-tab-pane>
         <el-tab-pane v-if="info.chargeType === '1001'" label="充电规则" name="chargeDetailRule">
-          <AdminChargeDetailRule :rule-id="info.ruleId" />
+          <ChargeDetailRule :rule-id="info.ruleId" />
         </el-tab-pane>
         <el-tab-pane v-if="info.chargeType === '1002'" label="充电规则" name="chargeDetailPrice">
-          <AdminChargeDetailPrice :rule-id="info.ruleId" />
+          <ChargeDetailPrice :rule-id="info.ruleId" />
         </el-tab-pane>
         <el-tab-pane label="充电订单" name="chargeDetailOrder">
-          <AdminChargeDetailOrder :machine-id="machineId" :order-id="orderId" />
+          <ChargeDetailOrder :machine-id="machineId" :order-id="orderId" />
         </el-tab-pane>
         <el-tab-pane label="停车券" name="chargeDetailParking">
-          <AdminChargeDetailParking :machine-id="machineId" :order-id="orderId" />
+          <ChargeDetailParking :machine-id="machineId" :order-id="orderId" />
         </el-tab-pane>
         <el-tab-pane v-if="acctId" label="账户详情" name="chargeDetailAcct">
-          <AdminChargeDetailAcct :acct-id="acctId" />
+          <ChargeDetailAcct :acct-id="acctId" />
         </el-tab-pane>
         <el-tab-pane v-if="orderId" label="扣款明细" name="chargeDetailOrderAccts">
-          <AdminChargeDetailOrderAccts :order-id="orderId" />
+          <ChargeDetailOrderAccts :order-id="orderId" />
         </el-tab-pane>
       </el-tabs>
     </el-card>
@@ -73,25 +73,25 @@
 
 <script>
 import { listChargeMachine } from '@/api/charge/chargeApi'
-import AdminChargeDetailPort from '@/components/charge/AdminChargeDetailPort.vue'
-import AdminChargeDetailRule from '@/components/charge/AdminChargeDetailRule.vue'
-import AdminChargeDetailPrice from '@/components/charge/AdminChargeDetailPrice.vue'
-import AdminChargeDetailOrder from '@/components/charge/AdminChargeDetailOrder.vue'
-import AdminChargeDetailParking from '@/components/charge/AdminChargeDetailParking.vue'
-import AdminChargeDetailAcct from '@/components/charge/AdminChargeDetailAcct.vue'
-import AdminChargeDetailOrderAccts from '@/components/charge/AdminChargeDetailOrderAccts.vue'
+import ChargeDetailPort from '@/components/charge/ChargeDetailPort.vue'
+import ChargeDetailRule from '@/components/charge/ChargeDetailRule.vue'
+import ChargeDetailPrice from '@/components/charge/ChargeDetailPrice.vue'
+import ChargeDetailOrder from '@/components/charge/ChargeDetailOrder.vue'
+import ChargeDetailParking from '@/components/charge/ChargeDetailParking.vue'
+import ChargeDetailAcct from '@/components/charge/ChargeDetailAcct.vue'
+import ChargeDetailOrderAccts from '@/components/charge/ChargeDetailOrderAccts.vue'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ChargeMachineDetail',
   components: {
-    AdminChargeDetailPort,
-    AdminChargeDetailRule,
-    AdminChargeDetailPrice,
-    AdminChargeDetailOrder,
-    AdminChargeDetailParking,
-    AdminChargeDetailAcct,
-    AdminChargeDetailOrderAccts
+    ChargeDetailPort,
+    ChargeDetailRule,
+    ChargeDetailPrice,
+    ChargeDetailOrder,
+    ChargeDetailParking,
+    ChargeDetailAcct,
+    ChargeDetailOrderAccts
   },
   data() {
     return {

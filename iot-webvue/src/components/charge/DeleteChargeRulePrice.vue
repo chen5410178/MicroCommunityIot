@@ -43,7 +43,7 @@ export default {
       this.loading = true
       try {
         const communityId = (getCurrentCommunity() || {}).communityId || ''
-        await deleteChargeRulePrice({ crpId: this.delData.crpId, communityId })
+        await deleteChargeRulePrice({ crpId: this.delData.crpId, ruleId: this.delData.ruleId, communityId })
         this.$message.success('删除成功')
         this.$emit('success')
         this.dialogVisible = false

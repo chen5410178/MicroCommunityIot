@@ -14,15 +14,13 @@
       </el-form-item>
       <el-form-item label="厂家" prop="implBean">
         <el-select v-model="form.implBean" placeholder="请选择厂家" clearable style="width: 100%" @change="handleFactoryChange">
-          <el-option v-for="item in factoryList" :key="item.implBean" :label="item.factoryName" :value="item.implBean" />
+          <el-option v-for="item in factoryList" :key="item.factoryId" :label="item.factoryName" :value="item.factoryId" />
         </el-select>
       </el-form-item>
-      <el-form-item label="厂家规格" prop="specs">
+      <el-form-item label="厂家规格" v-if="specList.length > 0">
         <div v-for="(item, index) in specList" :key="index" class="spec-item">
           <span class="spec-name">{{ item.specName }}：</span>
-          <el-radio-group v-model="form.specs[item.specCd]" size="small">
-            <el-radio-button v-for="val in item.specValues" :key="val" :label="val">{{ val }}</el-radio-button>
-          </el-radio-group>
+          <el-input v-model="item.specValue" :placeholder="item.remark || '请输入' + item.specName" style="width: 300px" maxlength="64" />
         </div>
       </el-form-item>
       <el-form-item label="插座个数" prop="portCount">
@@ -52,8 +50,7 @@
 </template>
 
 <script>
-import { saveChargeMachine, listChargeMachineFactory, listChargeMachineFactorySpec } from '@/api/charge/chargeApi'
-import { listChargeRule } from '@/api/charge/chargeApi'
+import { saveChargeMachine, listChargeMachineFactory, listChargeRule } from '@/api/charge/chargeApi'
 import { listDicts } from '@/api/system/systemApi'
 import { listMonitorMachine } from '@/api/accessControl/accessControlApi'
 import { getCurrentCommunity } from '@/utils/auth'
@@ -76,7 +73,7 @@ export default {
         machineName: '',
         machineCode: '',
         implBean: '',
-        specs: {},
+        energyPrice: '1',
         portCount: 0,
         chargeType: '',
         ruleId: '',
@@ -116,6 +113,7 @@ export default {
         const [factoryRes, dictRes, monitorRes] = await Promise.all([
           listChargeMachineFactory({ page: 1, row: 100 }),
           listDicts({ tableName: 'charge_machine', tableColumns: 'charge_type' }),
+          listMonitorMachine({ communityId, page: 1, row: 100 })
         ])
         this.factoryList = factoryRes.data || []
         this.chargeTypeList = dictRes || []
@@ -124,19 +122,15 @@ export default {
         console.error('加载下拉数据失败', e)
       }
     },
-    async handleFactoryChange(val) {
-      this.form.specs = {}
+    handleFactoryChange(val) {
       this.specList = []
       if (!val) return
-      try {
-        const res = await listChargeMachineFactorySpec({ implBean: val, page: 1, row: 100 })
-        const data = res.data || []
-        data.forEach(item => {
-          this.$set(this.form.specs, item.specCd, '')
+      const factory = this.factoryList.find(item => item.factoryId == val)
+      if (factory && factory.specs) {
+        factory.specs.forEach(specItem => {
+          specItem.specValue = ''
         })
-        this.specList = data
-      } catch (e) {
-        console.error('加载厂家规格失败', e)
+        this.specList = factory.specs
       }
     },
     async handleChargeTypeChange(val) {
@@ -155,7 +149,6 @@ export default {
       this.dialogVisible = false
       this.$refs.formRef && this.$refs.formRef.resetFields()
       this.specList = []
-      this.form.specs = {}
     },
     async handleSubmit() {
       try {
@@ -164,8 +157,7 @@ export default {
       this.loading = true
       try {
         const communityId = (getCurrentCommunity() || {}).communityId || ''
-        const specsStr = JSON.stringify(this.form.specs)
-        await saveChargeMachine({ ...this.form, specs: specsStr, communityId })
+        await saveChargeMachine({ ...this.form, specs: this.specList, communityId })
         this.$message.success('添加成功')
         this.$emit('success')
         this.handleClose()

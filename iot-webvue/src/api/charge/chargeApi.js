@@ -544,6 +544,14 @@ export function listWhiteList(params) {
   })
 }
 
+export function listParkingCouponCharge(params) {
+  return new Promise((resolve, reject) => {
+    request({ url: '/parkingCoupon.listParkingCouponCharge', method: 'get', params }).then(res => {
+      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '查询列表失败')) }
+    }).catch(error => { reject(error) })
+  })
+}
+
 export function listWorkLicenseLogs(params) {
   return new Promise((resolve, reject) => {
     request({ url: '/workLicense.listWorkLicenseLog', method: 'get', params }).then(res => {

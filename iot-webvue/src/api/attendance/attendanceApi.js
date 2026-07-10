@@ -38,24 +38,6 @@ export function listAttendanceMachines(params) {
   })
 }
 
-export function listAttendanceMachine(params) {
-  return new Promise((resolve, reject) => {
-    request({
-      url: '/attendance.listAttendanceMachine',
-      method: 'get',
-      params
-    }).then(res => {
-      if (res.code == 0) {
-        resolve(res)
-      } else {
-        reject(new Error(res.msg || '查询列表失败'))
-      }
-    }).catch(error => {
-      reject(error)
-    })
-  })
-}
-
 export function saveAttendanceMachine(data) {
   return new Promise((resolve, reject) => {
     request({
@@ -122,6 +104,24 @@ export function listAttendanceStaffs(params) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+export function saveAttendanceStaff(data) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/attendance.saveAttendanceStaff',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
       }
     }).catch(error => {
       reject(error)

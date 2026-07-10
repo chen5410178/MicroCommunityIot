@@ -3,6 +3,7 @@
     :visible.sync="dialogVisible"
     title="删除确认"
     width="400px"
+    append-to-body
   >
     <div style="text-align: center; padding: 20px 0;">
       <i class="el-icon-warning" style="font-size: 48px; color: #f56c6c" />
@@ -20,6 +21,7 @@
 
 <script>
 import { deleteAttendanceMachine } from '@/api/attendance/attendanceApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteAttendanceMachine',
@@ -41,7 +43,8 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        await deleteAttendanceMachine({ machineId: this.delData.machineId })
+        const communityId = (getCurrentCommunity() || {}).communityId
+        await deleteAttendanceMachine({ machineId: this.delData.machineId, communityId })
         this.$message.success('删除成功')
         this.$emit('success')
         this.dialogVisible = false

@@ -63,8 +63,8 @@
         class="pagination-container"
       />
     </el-card>
-    <AddAttendanceMachine :visible.sync="addVisible" @success="handleSuccess" />
-    <EditAttendanceMachine :visible.sync="editVisible" :edit-data="currentRow" @success="handleSuccess" />
+    <AddAttendanceMachine ref="addRef" @success="handleSuccess" />
+    <EditAttendanceMachine ref="editRef" @success="handleSuccess" />
     <DeleteAttendanceMachine :visible.sync="delVisible" :del-data="currentRow" @success="handleSuccess" />
     <PlayMonitorVideo :visible.sync="videoVisible" :video-info="videoInfo" />
   </div>
@@ -86,8 +86,6 @@ export default {
       loading: false,
       list: [],
       total: 0,
-      addVisible: false,
-      editVisible: false,
       delVisible: false,
       videoVisible: false,
       currentRow: null,
@@ -108,7 +106,8 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const res = await listAttendanceMachines(this.queryParams)
+        const communityId = (getCurrentCommunity() || {}).communityId
+        const res = await listAttendanceMachines({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0
       } finally {
@@ -124,11 +123,10 @@ export default {
       this.fetchList()
     },
     handleAdd() {
-      this.addVisible = true
+      this.$refs.addRef.open()
     },
     handleEdit(row) {
-      this.currentRow = { ...row }
-      this.editVisible = true
+      this.$refs.editRef.open(row)
     },
     handleDelete(row) {
       this.currentRow = { ...row }

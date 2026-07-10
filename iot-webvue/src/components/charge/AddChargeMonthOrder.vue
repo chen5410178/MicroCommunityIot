@@ -139,7 +139,7 @@ export default {
         this.$emit('success')
         this.handleClose()
       } catch (e) {
-        this.$message.error(e.msg || '购买失败')
+        this.$message.error(e || '购买失败')
       } finally {
         this.loading = false
       }

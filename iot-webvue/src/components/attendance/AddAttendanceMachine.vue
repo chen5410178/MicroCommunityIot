@@ -43,12 +43,10 @@
 
 <script>
 import { saveAttendanceMachine, listHardwareManufacturers, listMonitorMachines } from '@/api/attendance/attendanceApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddAttendanceMachine',
-  props: {
-    visible: { type: Boolean, default: false }
-  },
   data() {
     return {
       dialogVisible: false,
@@ -79,19 +77,17 @@ export default {
       }
     }
   },
-  watch: {
-    visible(val) { this.dialogVisible = val },
-    dialogVisible(val) { this.$emit('update:visible', val) }
-  },
-  mounted() {
-    this.loadOptions()
-  },
   methods: {
+    open() {
+      this.dialogVisible = true
+      this.loadOptions()
+    },
     async loadOptions() {
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const [hmRes, monitorRes] = await Promise.all([
           listHardwareManufacturers({ hmType: '4004', page: 1, row: 100 }),
-          listMonitorMachines({ page: 1, row: 100 })
+          listMonitorMachines({ page: 1, row: 100, communityId })
         ])
         this.hmList = hmRes.data || []
         this.monitorList = monitorRes.data || []
@@ -110,7 +106,8 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        await saveAttendanceMachine(this.form)
+        const communityId = (getCurrentCommunity() || {}).communityId
+        await saveAttendanceMachine({ ...this.form, communityId })
         this.$message.success('添加成功')
         this.$emit('success')
         this.handleClose()

@@ -1,7 +1,7 @@
 <template>
   <div class="attendance-staff-manage">
-    <el-row :gutter="16">
-      <el-col :span="6">
+    <div class="page-container">
+      <div class="left-panel">
         <el-card shadow="never" class="device-card">
           <ul class="device-list">
             <li
@@ -15,8 +15,8 @@
             </li>
           </ul>
         </el-card>
-      </el-col>
-      <el-col :span="18">
+      </div>
+      <div class="right-panel">
         <el-card shadow="never" class="search-card">
           <div slot="header" class="card-header">
             <span>查询条件</span>
@@ -67,8 +67,8 @@
             class="pagination-container"
           />
         </el-card>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
     <DeleteAttendanceStaff :visible.sync="delVisible" :del-data="currentRow" @success="handleSuccess" />
   </div>
 </template>
@@ -165,11 +165,14 @@ export default {
 
 <style scoped>
 .attendance-staff-manage { padding: 0; }
+.page-container { display: flex; gap: 16px; }
+.left-panel { width: 200px; flex-shrink: 0; }
+.right-panel { flex: 1; min-width: 0; }
 .search-card { margin-bottom: 16px; }
 .table-card { margin-bottom: 0; }
 .card-header { display: flex; justify-content: space-between; align-items: center; }
 .pagination-container { margin-top: 16px; text-align: right; }
-.device-list { list-style: none; padding: 0; margin: 0; }
+.device-list { list-style: none; padding: 0; margin: 0; max-height: calc(100vh - 200px); overflow-y: auto; }
 .device-item {
   padding: 10px 12px;
   cursor: pointer;

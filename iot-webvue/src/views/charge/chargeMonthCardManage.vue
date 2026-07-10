@@ -56,6 +56,7 @@
 
 <script>
 import { listChargeMonthCard } from '@/api/charge/chargeApi'
+import { getCurrentCommunity } from '@/utils/auth'
 import AddChargeMonthCard from '@/components/charge/AddChargeMonthCard.vue'
 import EditChargeMonthCard from '@/components/charge/EditChargeMonthCard.vue'
 import DeleteChargeMonthCard from '@/components/charge/DeleteChargeMonthCard.vue'
@@ -86,7 +87,8 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const res = await listChargeMonthCard(this.queryParams)
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
+        const res = await listChargeMonthCard({ ...this.queryParams, communityId })
         this.list = res.data || []
         this.total = res.records || 0
       } finally {

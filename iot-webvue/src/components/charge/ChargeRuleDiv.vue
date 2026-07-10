@@ -1,10 +1,5 @@
 <template>
   <div>
-    <div style="margin-bottom: 16px;">
-      <el-button type="primary" size="small" @click="handleAdd">添加</el-button>
-      <el-button size="small" @click="handleEdit">修改</el-button>
-      <el-button size="small" type="danger" @click="handleDelete">删除</el-button>
-    </div>
     <ul class="rule-list" v-if="rules && rules.length > 0">
       <li
         v-for="(rule, index) in rules"
@@ -94,6 +89,8 @@ export default {
   list-style: none;
   padding: 0;
   margin: 0;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
 }
 .rule-list li {
   padding: 10px 12px;

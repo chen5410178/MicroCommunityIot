@@ -43,13 +43,10 @@
 
 <script>
 import { updateAttendanceMachine, listHardwareManufacturers, listMonitorMachines } from '@/api/attendance/attendanceApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditAttendanceMachine',
-  props: {
-    visible: { type: Boolean, default: false },
-    editData: { type: Object, default: null }
-  },
   data() {
     return {
       dialogVisible: false,
@@ -64,7 +61,8 @@ export default {
         implBean: '',
         classesId: '',
         classesName: '',
-        monitorId: -1
+        monitorId: -1,
+        communityId: ''
       },
       rules: {
         machineCode: [
@@ -81,33 +79,28 @@ export default {
       }
     }
   },
-  watch: {
-    visible(val) {
-      this.dialogVisible = val
-      if (val && this.editData) {
-        this.form = {
-          machineId: this.editData.machineId || '',
-          machineCode: this.editData.machineCode || '',
-          machineName: this.editData.machineName || '',
-          machineIp: this.editData.machineIp || '',
-          implBean: this.editData.implBean || '',
-          classesId: this.editData.classesId || '',
-          classesName: this.editData.classesName || '',
-          monitorId: this.editData.monitorId != null ? this.editData.monitorId : -1
-        }
-      }
-    },
-    dialogVisible(val) { this.$emit('update:visible', val) }
-  },
-  mounted() {
-    this.loadOptions()
-  },
   methods: {
+    open(row) {
+      this.form = {
+        machineId: row.machineId || '',
+        machineCode: row.machineCode || '',
+        machineName: row.machineName || '',
+        machineIp: row.machineIp || '',
+        implBean: row.implBean || '',
+        classesId: row.classesId || '',
+        classesName: row.classesName || '',
+        monitorId: row.monitorId != null ? row.monitorId : -1,
+        communityId: row.communityId || (getCurrentCommunity() || {}).communityId || ''
+      }
+      this.dialogVisible = true
+      this.loadOptions()
+    },
     async loadOptions() {
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
       try {
         const [hmRes, monitorRes] = await Promise.all([
           listHardwareManufacturers({ hmType: '4004', page: 1, row: 100 }),
-          listMonitorMachines({ page: 1, row: 100 })
+          listMonitorMachines({ page: 1, row: 100, communityId })
         ])
         this.hmList = hmRes.data || []
         this.monitorList = monitorRes.data || []

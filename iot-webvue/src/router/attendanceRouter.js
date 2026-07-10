@@ -22,6 +22,12 @@ const attendanceRoutes = [
     name: 'AttendanceStaff',
     component: () => import('@/views/attendance/attendanceStaff.vue'),
     meta: { requiresAuth: true, title: '考勤员工' }
+  },
+  {
+    path: 'pages/attendance/addAttendanceStaff',
+    name: 'AddAttendanceStaff',
+    component: () => import('@/views/attendance/addAttendanceStaff.vue'),
+    meta: { requiresAuth: true, title: '添加考勤员工' }
   }
 ]
 
