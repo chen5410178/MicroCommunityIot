@@ -9,7 +9,7 @@ export function queryOwners(params) {
       method: 'get',
       params
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code == 0) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '查询业主失败'))
@@ -28,7 +28,7 @@ export function saveOwner(data) {
       method: 'post',
       data
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code == 0) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '添加人员失败'))
@@ -47,7 +47,7 @@ export function updateOwner(data) {
       method: 'post',
       data
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code == 0) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '修改人员失败'))
@@ -66,7 +66,7 @@ export function deleteOwner(data) {
       method: 'post',
       data
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code == 0) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '删除人员失败'))
@@ -85,7 +85,7 @@ export function queryRoomsByOwner(params) {
       method: 'get',
       params
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code == 0) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '查询房屋失败'))
@@ -104,7 +104,7 @@ export function saveOwnerRoomRel(data) {
       method: 'post',
       data
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code == 0) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '绑定房屋失败'))
@@ -123,7 +123,7 @@ export function deleteOwnerRoomRel(data) {
       method: 'post',
       data
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code == 0) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '解除绑定失败'))
@@ -142,7 +142,7 @@ export function listOwnerMembers(params) {
       method: 'get',
       params
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code == 0) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '查询家庭成员失败'))
@@ -161,7 +161,7 @@ export function queryCommunityAccount(params) {
       method: 'get',
       params
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code == 0) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '查询小区账户失败'))
@@ -180,7 +180,7 @@ export function queryOwnerAccountDetail(params) {
       method: 'get',
       params
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code == 0) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '查询账户详情失败'))
@@ -199,7 +199,7 @@ export function ownerPrestoreAccount(data) {
       method: 'post',
       data
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code == 0) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '预充值失败'))
@@ -218,7 +218,7 @@ export function deleteAccount(data) {
       method: 'post',
       data
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code == 0) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '删除账户失败'))
@@ -237,7 +237,7 @@ export function listAppUsers(params) {
       method: 'get',
       params
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code == 0) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '查询用户失败'))
@@ -256,7 +256,7 @@ export function updateAppUser(data) {
       method: 'post',
       data
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code == 0) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '修改用户失败'))
@@ -275,7 +275,7 @@ export function deleteAppUser(data) {
       method: 'post',
       data
     }).then(res => {
-      if (res.code === 0) {
+      if (res.code == 0) {
         resolve(res)
       } else {
         reject(new Error(res.msg || '删除用户失败'))

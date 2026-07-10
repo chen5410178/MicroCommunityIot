@@ -257,6 +257,24 @@ export function listAccessControl(params) {
 }
 
 // ===== 楼栋授权(按设备) =====
+export function listAccessControlFloor(params) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlFloor.listAccessControlFloor',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
 export function listAdminAccessControlFloor(params) {
   return new Promise((resolve, reject) => {
     request({

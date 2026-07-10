@@ -76,7 +76,7 @@
     <AddPersonFaceQrcode :visible.sync="addVisible" @success="handleSuccess" />
     <EditPersonFaceQrcode :visible.sync="editVisible" :edit-data="currentRow" @success="handleSuccess" />
     <DeletePersonFaceQrcode :visible.sync="delVisible" :del-data="currentRow" @success="handleSuccess" />
-    <ViewQrCode :visible.sync="qrVisible" :title="qrTitle" :url="qrUrl" :remark="qrRemark" />
+    <ViewQrCode :visible.sync="qrVisible" :title="qrTitle" :qr-url="qrUrl" :remark="qrRemark" />
   </div>
 </template>
 

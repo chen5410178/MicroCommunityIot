@@ -44,11 +44,7 @@ export function queryStaffPrivileges(params) {
       method: 'get',
       params
     }).then(res => {
-      if (res.code == 0) {
         resolve(res)
-      } else {
-        reject(new Error(res.msg || '查询失败'))
-      }
     }).catch(error => {
       reject(error)
     })

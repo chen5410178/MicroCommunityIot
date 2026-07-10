@@ -20,28 +20,28 @@
 
 <script>
 import { reSendAccessControlFace } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ReSendAccessControlFace',
-  props: {
-    visible: { type: Boolean, default: false },
-    resendData: { type: Object, default: null }
-  },
   data() {
     return {
       dialogVisible: false,
-      loading: false
+      loading: false,
+      resendData: {}
     }
   },
-  watch: {
-    visible(val) { this.dialogVisible = val },
-    dialogVisible(val) { this.$emit('update:visible', val) }
-  },
   methods: {
+    open(row) {
+      this.resendData = row
+      this.dialogVisible = true
+    },
     async handleSubmit() {
       this.loading = true
       try {
-        await reSendAccessControlFace({ machineId: this.resendData.machineId })
+        const community = getCurrentCommunity()
+        const communityId = community ? community.communityId : ''
+        await reSendAccessControlFace({ ...this.resendData, communityId })
         this.$message.success('重新下发成功')
         this.$emit('success')
         this.dialogVisible = false

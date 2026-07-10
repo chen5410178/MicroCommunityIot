@@ -1,14 +1,14 @@
 <template>
   <div class="room-detail-lock-person">
     <el-table :data="list" v-loading="loading" border stripe>
-      <el-table-column prop="personId" label="编号" width="100" />
-      <el-table-column prop="machineName" label="设备名称" min-width="120" />
-      <el-table-column prop="machineCode" label="设备编码" width="120" />
-      <el-table-column prop="name" label="用户名称" width="100" />
-      <el-table-column prop="link" label="联系方式" width="120" />
-      <el-table-column prop="idCard" label="身份证" width="180" />
-      <el-table-column prop="stateName" label="状态" width="80" />
-      <el-table-column prop="createTime" label="授权时间" width="160" />
+      <el-table-column prop="personId" label="编号" />
+      <el-table-column prop="machineName" label="设备名称" />
+      <el-table-column prop="machineCode" label="设备编码" />
+      <el-table-column prop="name" label="用户名称" />
+      <el-table-column prop="link" label="联系方式" />
+      <el-table-column prop="idCard" label="身份证" />
+      <el-table-column prop="stateName" label="状态" />
+      <el-table-column prop="createTime" label="授权时间" />
     </el-table>
     <el-pagination
       :current-page="page" :page-size="row" :total="total"

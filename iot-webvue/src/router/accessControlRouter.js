@@ -12,6 +12,12 @@ const accessControlRoutes = [
     meta: { requiresAuth: true, title: '门禁设备详情' }
   },
   {
+    path: 'pages/accessControl/accessControlDetail',
+    name: 'AccessControlDetail',
+    component: () => import('@/views/accessControl/accessControlDetail.vue'),
+    meta: { requiresAuth: true, title: '门禁设备详情(物业)' }
+  },
+  {
     path: 'pages/accessControl/accessControlFace',
     name: 'AccessControlFace',
     component: () => import('@/views/accessControl/accessControlFace.vue'),
@@ -112,6 +118,18 @@ const accessControlRoutes = [
     name: 'VisitManage',
     component: () => import('@/views/accessControl/visitManage.vue'),
     meta: { requiresAuth: true, title: '访客管理' }
+  },
+  {
+    path: 'pages/accessControl/addVisit',
+    name: 'AddVisit',
+    component: () => import('@/views/accessControl/addVisit.vue'),
+    meta: { requiresAuth: true, title: '登记访客' }
+  },
+  {
+    path: 'pages/accessControl/editVisit',
+    name: 'EditVisit',
+    component: () => import('@/views/accessControl/editVisit.vue'),
+    meta: { requiresAuth: true, title: '修改访客' }
   },
   {
     path: 'pages/accessControl/personFaceQrcode',

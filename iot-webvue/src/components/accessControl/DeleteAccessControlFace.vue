@@ -45,7 +45,7 @@ export default {
       try {
         const community = getCurrentCommunity()
         await deleteAccessControlFace({
-          faceId: this.delData.faceId,
+          mfId: this.delData.mfId,
           communityId: community ? community.communityId : ''
         })
         this.$message.success('删除成功')

@@ -10,12 +10,12 @@
         </el-form-item>
         <el-form-item>
           <el-select v-model="queryParams.visitWay" placeholder="请选择通行方式" clearable style="width: 180px">
-            <el-option v-for="item in visitWayList" :key="item.statusCd" :label="item.statusName" :value="item.statusCd" />
+            <el-option v-for="item in visitWayList" :key="item.statusCd" :label="item.name" :value="item.statusCd" />
           </el-select>
         </el-form-item>
         <el-form-item>
           <el-select v-model="queryParams.auditWay" placeholder="请选择审核方式" clearable style="width: 180px">
-            <el-option v-for="item in auditWayList" :key="item.statusCd" :label="item.statusName" :value="item.statusCd" />
+            <el-option v-for="item in auditWayList" :key="item.statusCd" :label="item.name" :value="item.statusCd" />
           </el-select>
         </el-form-item>
         <el-form-item>

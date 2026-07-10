@@ -1,29 +1,29 @@
 <template>
   <div class="room-detail-meter">
     <el-table :data="list" v-loading="loading" border stripe>
-      <el-table-column prop="machineId" label="编号" width="100" />
-      <el-table-column prop="machineName" label="名称" min-width="120" />
-      <el-table-column prop="address" label="表号" width="120" />
-      <el-table-column prop="meterTypeName" label="表类型" width="80" />
-      <el-table-column label="模式" width="100" align="center">
+      <el-table-column prop="machineId" label="编号" />
+      <el-table-column prop="machineName" label="名称" />
+      <el-table-column prop="address" label="表号" />
+      <el-table-column prop="meterTypeName" label="表类型" />
+      <el-table-column label="模式" align="center">
         <template slot-scope="{ row }">{{ row.machineModel === '1001' ? '充值模式' : '抄表模式' }}</template>
       </el-table-column>
-      <el-table-column prop="roomName" label="房屋" min-width="120" />
-      <el-table-column prop="implBeanName" label="设备厂家" width="120" />
-      <el-table-column label="剩余度数" width="100" align="center">
+      <el-table-column prop="roomName" label="房屋" />
+      <el-table-column prop="implBeanName" label="设备厂家" />
+      <el-table-column label="剩余度数" align="center">
         <template slot-scope="{ row }">
           {{ row.machineModel === '1001' ? (row.degree || row.prestoreDegrees) : '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="当前度数" width="150">
+      <el-table-column label="当前度数">
         <template slot-scope="{ row }">
           <template v-if="row.machineModel === '1001'">-</template>
           <template v-else>{{ row.curDegrees }}(每月{{ row.readDay }}日{{ row.readHours }}时抄表)</template>
         </template>
       </el-table-column>
-      <el-table-column prop="curReadingTime" label="读表时间" width="160" />
-      <el-table-column prop="stateName" label="状态" width="80" />
-      <el-table-column prop="heartbeatTime" label="心跳时间" width="160" />
+      <el-table-column prop="curReadingTime" label="读表时间" />
+      <el-table-column prop="stateName" label="状态" />
+      <el-table-column prop="heartbeatTime" label="心跳时间" />
     </el-table>
     <el-pagination
       :current-page="page" :page-size="row" :total="total"

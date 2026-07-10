@@ -1,14 +1,14 @@
 <template>
   <div class="room-detail-lock-log">
     <el-table :data="list" v-loading="loading" border stripe>
-      <el-table-column prop="logId" label="编号" width="100" />
-      <el-table-column prop="machineName" label="设备名称" min-width="120" />
-      <el-table-column prop="machineCode" label="设备编码" width="120" />
-      <el-table-column prop="logAction" label="日志动作" width="100" />
-      <el-table-column prop="userId" label="用户ID" width="100" />
-      <el-table-column prop="userName" label="用户名称" width="100" />
-      <el-table-column prop="stateName" label="状态" width="80" />
-      <el-table-column prop="createTime" label="下发时间" width="160" />
+      <el-table-column prop="logId" label="编号" />
+      <el-table-column prop="machineName" label="设备名称" />
+      <el-table-column prop="machineCode" label="设备编码" />
+      <el-table-column prop="logAction" label="日志动作" />
+      <el-table-column prop="userId" label="用户ID" />
+      <el-table-column prop="userName" label="用户名称" />
+      <el-table-column prop="stateName" label="状态" />
+      <el-table-column prop="createTime" label="下发时间" />
       <el-table-column label="报文" width="60" align="center">
         <template slot-scope="{ row }">
           <el-button v-if="row.context" type="text" size="small" @click="viewContext(row)">查看</el-button>

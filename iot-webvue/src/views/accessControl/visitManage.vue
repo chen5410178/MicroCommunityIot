@@ -24,7 +24,7 @@
           <el-form :inline="true" :model="queryParams">
             <el-form-item>
               <el-select v-model="queryParams.state" placeholder="请选择审核状态" clearable style="width: 160px">
-                <el-option v-for="item in stateList" :key="item.statusCd" :label="item.statusName" :value="item.statusCd" />
+                <el-option v-for="item in stateList" :key="item.statusCd" :label="item.name" :value="item.statusCd" />
               </el-select>
             </el-form-item>
             <el-form-item>
@@ -182,11 +182,13 @@ export default {
   methods: {
     async loadDicts() {
       try {
+        const communityId = (getCurrentCommunity() || {}).communityId
         const [dictRes, typeRes] = await Promise.all([
           listDicts({ tableName: 'visit', tableColumns: 'state' }),
+          listVisitTypes({ page: -1, row: 100, communityId })
         ])
         this.stateList = dictRes || []
-        const types = typeRes.data || []
+        const types = (typeRes && typeRes.data) || []
         this.visitTypeList = [{ name: '全部', typeId: '' }, ...types]
       } catch (e) {
         console.error('加载字典失败', e)

@@ -1,9 +1,9 @@
 <template>
   <div class="room-detail-access-control">
     <el-table :data="list" v-loading="loading" border stripe>
-      <el-table-column prop="machineName" label="门禁名称" min-width="150" />
-      <el-table-column prop="machineCode" label="门禁编号" width="150" />
-      <el-table-column prop="personCount" label="人员数" width="100" align="center" />
+      <el-table-column prop="machineName" label="门禁名称" />
+      <el-table-column prop="machineCode" label="门禁编号" />
+      <el-table-column prop="personCount" label="人员数" align="center" />
     </el-table>
     <el-pagination
       :current-page="page" :page-size="row" :total="total"

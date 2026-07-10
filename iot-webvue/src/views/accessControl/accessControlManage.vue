@@ -82,10 +82,10 @@
         class="pagination-container"
       />
     </el-card>
-    <AddAccessControl :visible.sync="addVisible" @success="handleSuccess" />
-    <EditAccessControl :visible.sync="editVisible" :edit-data="currentRow" @success="handleSuccess" />
-    <DeleteAccessControl :visible.sync="delVisible" :del-data="currentRow" @success="handleSuccess" />
-    <ReSendAccessControlFace :visible.sync="resendVisible" :resend-data="currentRow" @success="handleSuccess" />
+    <AddAccessControl ref="addRef" @success="handleSuccess" />
+    <EditAccessControl ref="editRef" @success="handleSuccess" />
+    <DeleteAccessControl ref="delRef" @success="handleSuccess" />
+    <ReSendAccessControlFace ref="resendRef" @success="handleSuccess" />
   </div>
 </template>
 
@@ -111,10 +111,6 @@ export default {
       loading: false,
       list: [],
       total: 0,
-      addVisible: false,
-      editVisible: false,
-      delVisible: false,
-      resendVisible: false,
       currentRow: null,
       btnLoading: {},
       queryParams: {
@@ -153,28 +149,26 @@ export default {
       this.fetchList()
     },
     handleAdd() {
-      this.addVisible = true
+      this.$refs.addRef.open()
     },
     handleEdit(row) {
-      this.currentRow = { ...row }
-      this.editVisible = true
+      this.$refs.editRef.open(row)
     },
     handleDelete(row) {
-      this.currentRow = { ...row }
-      this.delVisible = true
+      this.$refs.delRef.open(row)
     },
     handleReSend(row) {
-      this.currentRow = { ...row }
-      this.resendVisible = true
+      this.$refs.resendRef.open(row)
     },
     handleDetail(row) {
-      this.$router.push(`/pages/accessControl/aAccessControlDetail?machineId=${row.machineId}`)
+      this.$router.push(`/pages/accessControl/accessControlDetail?machineId=${row.machineId}`)
     },
     async handleOpen(row) {
       const key = 'open_' + row.machineId
       this.$set(this.btnLoading, key, true)
       try {
-        await openAccessControlDoor({ machineId: row.machineId })
+        const community = getCurrentCommunity()
+        await openAccessControlDoor({ machineId: row.machineId, communityId: community ? community.communityId : '' })
         this.$message.success('开门成功')
       } catch (e) {
         this.$message.error(e.msg || '开门失败')
@@ -186,7 +180,8 @@ export default {
       const key = 'restart_' + row.machineId
       this.$set(this.btnLoading, key, true)
       try {
-        await restartAccessControlDoor({ machineId: row.machineId })
+        const community = getCurrentCommunity()
+        await restartAccessControlDoor({ machineId: row.machineId, communityId: community ? community.communityId : '' })
         this.$message.success('重启成功')
       } catch (e) {
         this.$message.error(e.msg || '重启失败')
@@ -198,7 +193,8 @@ export default {
       const key = 'startEle_' + row.machineId
       this.$set(this.btnLoading, key, true)
       try {
-        await startAccessControlDoor({ machineId: row.machineId })
+        const community = getCurrentCommunity()
+        await startAccessControlDoor({ machineId: row.machineId, communityId: community ? community.communityId : '' })
         this.$message.success('开放电梯成功')
       } catch (e) {
         this.$message.error(e.msg || '开放电梯失败')
@@ -210,7 +206,8 @@ export default {
       const key = 'stopEle_' + row.machineId
       this.$set(this.btnLoading, key, true)
       try {
-        await stopAccessControlDoor({ machineId: row.machineId })
+        const community = getCurrentCommunity()
+        await stopAccessControlDoor({ machineId: row.machineId, communityId: community ? community.communityId : '' })
         this.$message.success('限制电梯成功')
       } catch (e) {
         this.$message.error(e.msg || '限制电梯失败')

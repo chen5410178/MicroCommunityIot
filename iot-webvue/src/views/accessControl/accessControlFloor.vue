@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { listAdminAccessControlFloor } from '@/api/accessControl/accessControlApi'
+import { listAccessControlFloor } from '@/api/accessControl/accessControlApi'
 import FloorUnitTree from '@/components/property/FloorUnitTree.vue'
 import AuthorizeAccessControlFloor from '@/components/accessControl/AuthorizeAccessControlFloor.vue'
 import DeleteAccessControlFloor from '@/components/accessControl/DeleteAccessControlFloor.vue'
@@ -101,7 +101,7 @@ export default {
       this.loading = true
       try {
         const community = getCurrentCommunity() || {}
-        const res = await listAdminAccessControlFloor({
+        const res = await listAccessControlFloor({
           ...this.queryParams,
           communityId: community.communityId
         })
@@ -136,7 +136,13 @@ export default {
       this.fetchList()
     },
     handleAuthorize() {
-      this.$refs.authorizeRef.open(this.queryParams.floorId, this.queryParams.unitId)
+      const floorId = this.queryParams.floorId
+      const unitId = this.queryParams.unitId
+      if (!floorId && !unitId) {
+        this.$message.warning('请选择左边需要授权的楼栋或者单元')
+        return
+      }
+      this.$refs.authorizeRef.open(floorId, unitId)
     },
     handleDelete(row) {
       this.$refs.deleteRef.open(row)

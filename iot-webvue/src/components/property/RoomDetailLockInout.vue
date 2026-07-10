@@ -1,22 +1,22 @@
 <template>
   <div class="room-detail-lock-inout">
     <el-table :data="list" v-loading="loading" border stripe>
-      <el-table-column prop="inoutId" label="编号" width="100" />
-      <el-table-column prop="machineName" label="设备名称" min-width="120" />
-      <el-table-column prop="machineCode" label="设备编码" width="120" />
-      <el-table-column prop="name" label="用户名称" width="100" />
-      <el-table-column label="开门方式" width="100" align="center">
+      <el-table-column prop="inoutId" label="编号" />
+      <el-table-column prop="machineName" label="设备名称" />
+      <el-table-column prop="machineCode" label="设备编码" />
+      <el-table-column prop="name" label="用户名称" />
+      <el-table-column label="开门方式" align="center">
         <template slot-scope="{ row }">{{ row.openTypeName || '-' }}</template>
       </el-table-column>
-      <el-table-column prop="tel" label="手机号" width="120" />
-      <el-table-column label="开门状态" width="100" align="center">
+      <el-table-column prop="tel" label="手机号" />
+      <el-table-column label="开门状态" align="center">
         <template slot-scope="{ row }">
           <el-tag :type="row.state === 'C' ? 'success' : 'danger'" size="small">
             {{ row.state === 'C' ? '开门成功' : '开门失败' }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="开门时间" width="160" />
+      <el-table-column prop="createTime" label="开门时间" />
     </el-table>
     <el-pagination
       :current-page="page" :page-size="row" :total="total"

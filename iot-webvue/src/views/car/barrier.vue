@@ -79,8 +79,8 @@
     <DeleteBarrier :visible.sync="delVisible" :del-data="currentRow" @success="handleSuccess" />
     <ViewQrCode
       :visible.sync="qrVisible"
-      :qrcode-title="qrTitle"
-      :url="qrUrl"
+      :title="qrTitle"
+      :qr-url="qrUrl"
       :remark="qrRemark"
     />
   </div>

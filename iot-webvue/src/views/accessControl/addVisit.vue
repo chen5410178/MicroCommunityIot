@@ -72,18 +72,18 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <RoomTree :visible="roomVisible" @confirm="onRoomSelected" />
+    <RoomSelect :visible.sync="roomVisible" @confirm="onRoomSelected" />
   </div>
 </template>
 
 <script>
 import { saveVisit, listVisitTypes } from '@/api/accessControl/accessControlApi'
-import RoomTree from '@/components/accessControl/RoomTree.vue'
+import RoomSelect from '@/components/accessControl/RoomSelect.vue'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddVisit',
-  components: { RoomTree },
+  components: { RoomSelect },
   data() {
     return {
       loading: false,
@@ -116,12 +116,6 @@ export default {
         roomName: [{ required: true, message: '请选择拜访房屋', trigger: 'change' }],
         visitCase: [{ max: 255, message: '拜访事由不能超过255', trigger: 'blur' }]
       }
-    }
-  },
-  watch: {
-    roomVisible(val) {
-      if (!val) return
-      this.$emit('update:roomVisible', val)
     }
   },
   mounted() {

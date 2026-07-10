@@ -21,6 +21,7 @@
 
 <script>
 import { deleteCallingDevice } from '@/api/accessControl/callingDeviceApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteCallingDevice',
@@ -42,7 +43,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        await deleteCallingDevice({ deviceId: this.delData.deviceId })
+        await deleteCallingDevice({ deviceId: this.delData.deviceId, communityId: (getCurrentCommunity() || {}).communityId })
         this.$message.success('删除成功')
         this.$emit('success')
         this.dialogVisible = false

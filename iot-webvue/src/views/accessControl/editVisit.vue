@@ -72,18 +72,18 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <RoomTree :visible="roomVisible" @confirm="onRoomSelected" />
+    <RoomSelect :visible.sync="roomVisible" @confirm="onRoomSelected" />
   </div>
 </template>
 
 <script>
 import { listVisits, updateVisit, listVisitTypes } from '@/api/accessControl/accessControlApi'
-import RoomTree from '@/components/accessControl/RoomTree.vue'
+import RoomSelect from '@/components/accessControl/RoomSelect.vue'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditVisit',
-  components: { RoomTree },
+  components: { RoomSelect },
   data() {
     return {
       pageLoading: false,

@@ -31,6 +31,7 @@
 
 <script>
 import { saveCallingDevice, listCallingPlatform } from '@/api/accessControl/callingDeviceApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'AddCallingDevice',
@@ -91,7 +92,10 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        await saveCallingDevice(this.form)
+        await saveCallingDevice({
+          ...this.form,
+          communityId: (getCurrentCommunity() || {}).communityId
+        })
         this.$message.success('添加成功')
         this.$emit('success')
         this.handleClose()

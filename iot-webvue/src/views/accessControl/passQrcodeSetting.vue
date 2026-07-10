@@ -69,7 +69,7 @@
     <AddPassQrcodeSetting :visible.sync="addVisible" @success="handleSuccess" />
     <EditPassQrcodeSetting :visible.sync="editVisible" :edit-data="currentRow" @success="handleSuccess" />
     <DeletePassQrcodeSetting :visible.sync="delVisible" :del-data="currentRow" @success="handleSuccess" />
-    <ViewQrCode :visible.sync="qrcodeVisible" :url="qrcodeUrl" title="通行码申请" remark="请将二维码解码后，地址绑定到公众号菜单" />
+    <ViewQrCode :visible.sync="qrcodeVisible" :qr-url="qrcodeUrl" title="通行码申请" remark="请将二维码解码后，地址绑定到公众号菜单" />
   </div>
 </template>
 

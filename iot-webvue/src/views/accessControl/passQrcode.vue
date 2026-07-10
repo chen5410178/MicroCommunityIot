@@ -89,7 +89,7 @@
     </div>
     <AuditPassQrcode :visible.sync="auditVisible" :audit-data="currentRow" @success="handleSuccess" />
     <DeletePassQrcode :visible.sync="delVisible" :del-data="currentRow" @success="handleSuccess" />
-    <ViewQrCode :visible.sync="qrcodeVisible" :url="qrcodeUrl" title="通行码" :remark="qrcodeRemark" />
+    <ViewQrCode :visible.sync="qrcodeVisible" :qr-url="qrcodeUrl" title="通行码" :remark="qrcodeRemark" />
   </div>
 </template>
 

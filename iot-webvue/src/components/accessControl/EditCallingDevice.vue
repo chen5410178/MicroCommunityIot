@@ -31,6 +31,7 @@
 
 <script>
 import { updateCallingDevice, listCallingPlatform } from '@/api/accessControl/callingDeviceApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'EditCallingDevice',
@@ -104,7 +105,10 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        await updateCallingDevice(this.form)
+        await updateCallingDevice({
+          ...this.form,
+          communityId: (getCurrentCommunity() || {}).communityId
+        })
         this.$message.success('修改成功')
         this.$emit('success')
         this.handleClose()

@@ -21,28 +21,28 @@
 
 <script>
 import { deleteAccessControl } from '@/api/accessControl/accessControlApi'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'DeleteAccessControl',
-  props: {
-    visible: { type: Boolean, default: false },
-    delData: { type: Object, default: null }
-  },
   data() {
     return {
       dialogVisible: false,
-      loading: false
+      loading: false,
+      delData: {}
     }
   },
-  watch: {
-    visible(val) { this.dialogVisible = val },
-    dialogVisible(val) { this.$emit('update:visible', val) }
-  },
   methods: {
+    open(row) {
+      this.delData = row
+      this.dialogVisible = true
+    },
     async handleSubmit() {
       this.loading = true
       try {
-        await deleteAccessControl({ machineId: this.delData.machineId })
+        const community = getCurrentCommunity()
+        const communityId = community ? community.communityId : ''
+        await deleteAccessControl({ machineId: this.delData.machineId, communityId })
         this.$message.success('删除成功')
         this.$emit('success')
         this.dialogVisible = false

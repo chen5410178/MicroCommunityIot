@@ -109,7 +109,7 @@
         </el-card>
       </div>
     </div>
-    <ReSendAccessControlFace :visible.sync="resendVisible" :resend-data="currentFace" @success="fetchList" />
+    <ReSendAccessControlFace ref="resendRef" @success="fetchList" />
     <DeleteAccessControlFace :visible.sync="delVisible" :del-data="currentFace" @success="fetchList" />
   </div>
 </template>
@@ -131,7 +131,6 @@ export default {
       devices: [{ machineId: '', machineName: '全部人脸' }],
       currentMachineId: '',
       currentFace: null,
-      resendVisible: false,
       delVisible: false,
       queryParams: {
         page: 1,
@@ -202,8 +201,7 @@ export default {
       this.$router.push({ name: 'AccessControlPerson' })
     },
     handleReSend(row) {
-      this.currentFace = row
-      this.resendVisible = true
+      this.$refs.resendRef.open(row)
     },
     handleDelete(row) {
       this.currentFace = row

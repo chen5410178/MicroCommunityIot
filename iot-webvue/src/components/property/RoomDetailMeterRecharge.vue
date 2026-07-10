@@ -1,15 +1,15 @@
 <template>
   <div class="room-detail-meter-recharge">
     <el-table :data="list" v-loading="loading" border stripe>
-      <el-table-column prop="detailId" label="编号" width="100" />
-      <el-table-column prop="machineName" label="设备名称" min-width="120" />
-      <el-table-column prop="machineCode" label="设备编码" width="120" />
-      <el-table-column prop="detailTypeName" label="类型" width="80" />
-      <el-table-column prop="amount" label="金额" width="100" align="center" />
-      <el-table-column prop="beforeDegrees" label="充值前度数" width="120" align="center" />
-      <el-table-column prop="afterDegrees" label="充值后度数" width="120" align="center" />
-      <el-table-column prop="stateName" label="状态" width="80" />
-      <el-table-column prop="createTime" label="充值时间" width="160" />
+      <el-table-column prop="detailId" label="编号" />
+      <el-table-column prop="machineName" label="设备名称" />
+      <el-table-column prop="machineCode" label="设备编码" />
+      <el-table-column prop="detailTypeName" label="类型" />
+      <el-table-column prop="amount" label="金额" align="center" />
+      <el-table-column prop="beforeDegrees" label="充值前度数" align="center" />
+      <el-table-column prop="afterDegrees" label="充值后度数" align="center" />
+      <el-table-column prop="stateName" label="状态" />
+      <el-table-column prop="createTime" label="充值时间" />
     </el-table>
     <el-pagination
       :current-page="page" :page-size="row" :total="total"

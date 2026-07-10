@@ -1,17 +1,17 @@
 <template>
   <div class="room-detail-lock">
     <el-table :data="list" v-loading="loading" border stripe>
-      <el-table-column prop="machineId" label="门锁ID" width="100" />
-      <el-table-column prop="machineName" label="门锁名称" min-width="120" />
-      <el-table-column prop="machineCode" label="门锁编号" width="120" />
-      <el-table-column prop="roomName" label="房屋名称" min-width="120" />
-      <el-table-column label="剩余电量" width="120" align="center">
+      <el-table-column prop="machineId" label="门锁ID" />
+      <el-table-column prop="machineName" label="门锁名称" />
+      <el-table-column prop="machineCode" label="门锁编号" />
+      <el-table-column prop="roomName" label="房屋名称" />
+      <el-table-column label="剩余电量" align="center">
         <template slot-scope="{ row }">{{ row.charge }}%</template>
       </el-table-column>
-      <el-table-column prop="factoryName" label="门禁厂家" width="120" />
-      <el-table-column prop="stateName" label="在线状态" width="80" />
-      <el-table-column prop="heartbeatTime" label="心跳时间" width="160" />
-      <el-table-column prop="createTime" label="创建时间" width="160" />
+      <el-table-column prop="factoryName" label="门禁厂家" />
+      <el-table-column prop="stateName" label="在线状态" />
+      <el-table-column prop="heartbeatTime" label="心跳时间" />
+      <el-table-column prop="createTime" label="创建时间" />
     </el-table>
     <el-pagination
       :current-page="page" :page-size="row" :total="total"

@@ -3,6 +3,7 @@
     :visible.sync="dialogVisible"
     :title="title || '二维码'"
     width="400px"
+    append-to-body
   >
     <div style="text-align: center; padding: 20px 0;">
       <div ref="qrcodeRef" style="width: 200px; height: 200px; margin: 0 auto;" />

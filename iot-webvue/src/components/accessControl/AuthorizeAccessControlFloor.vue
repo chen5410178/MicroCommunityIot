@@ -103,7 +103,7 @@ export default {
         await saveAccessControlFloor({
           floorId: this.floorId,
           unitId: this.unitId,
-          machineIds: this.form.machineIds.join(','),
+          machineIds: this.form.machineIds,
           startDate: this.form.startDate,
           endDate: this.form.endDate,
           communityId: community.communityId
