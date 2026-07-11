@@ -25,7 +25,7 @@
     >
       <el-table-column type="selection" width="55" />
       <el-table-column prop="communityId" label="小区ID" min-width="120" />
-      <el-table-column prop="name" label="小区名称" min-width="150" />
+      <el-table-column prop="communityName" label="小区名称" min-width="150" />
     </el-table>
     <el-pagination
       :current-page="queryParams.page"
@@ -124,7 +124,7 @@ export default {
       try {
         const communitys = this.selectedRows.map(item => ({
           communityId: item.communityId,
-          communityName: item.name
+          communityName: item.communityName
         }))
         await saveRoleCommunity({ roleId: this.roleId, communitys })
         this.$message.success('关联成功')

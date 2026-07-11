@@ -20,9 +20,9 @@
         <el-button type="primary" size="small" @click="handleAdd">添加</el-button>
       </div>
       <el-table :data="list" v-loading="loading" border stripe>
-        <el-table-column prop="maId" label="区域编号" width="120" />
-        <el-table-column prop="maName" label="区域名称" min-width="180" />
-        <el-table-column label="备注" width="100">
+        <el-table-column prop="maId" label="区域编号"  />
+        <el-table-column prop="maName" label="区域名称" />
+        <el-table-column label="备注" >
           <template slot-scope="{ row }">
             <el-button type="text" @click="viewRemark(row.remark)">查看</el-button>
           </template>

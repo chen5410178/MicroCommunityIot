@@ -18,6 +18,12 @@ const systemRoutes = [
     meta: { requiresAuth: true, title: '员工管理' }
   },
   {
+    path: 'pages/frame/addStaff',
+    name: 'AddStaff',
+    component: () => import('@/views/frame/addStaff.vue'),
+    meta: { requiresAuth: true, title: '添加员工' }
+  },
+  {
     path: 'pages/frame/staffDetail',
     name: 'StaffDetail',
     component: () => import('@/views/frame/staffDetail.vue'),

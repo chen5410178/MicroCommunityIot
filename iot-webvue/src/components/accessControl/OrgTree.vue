@@ -2,7 +2,9 @@
   <div class="org-tree">
     <el-card shadow="never" class="tree-card">
       <div slot="header" class="card-header">
-        <span>组织架构</span>
+        <slot name="header">
+          <span>组织架构</span>
+        </slot>
       </div>
       <el-tree
         ref="tree"

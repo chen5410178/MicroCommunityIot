@@ -1,12 +1,7 @@
 <template>
   <div class="monitor-machine-owner">
-    <el-card shadow="never" class="header-card">
-      <div slot="header" class="card-header">
-        <span>业主授权</span>
-      </div>
-    </el-card>
-    <el-row :gutter="16" class="content-row">
-      <el-col :span="4">
+    <div class="page-container">
+      <div class="left-panel">
         <el-card shadow="never" class="left-card">
           <ul class="machine-list">
             <li
@@ -20,9 +15,12 @@
             <li v-if="monitors.length === 0" class="empty-tip">暂无设备数据</li>
           </ul>
         </el-card>
-      </el-col>
-      <el-col :span="20">
+      </div>
+      <div class="right-panel">
         <el-card shadow="never" class="search-card">
+          <div slot="header" class="card-header">
+            <span>查询条件</span>
+          </div>
           <el-form :inline="true" :model="queryParams">
             <el-form-item>
               <el-input v-model="queryParams.personName" placeholder="请输入人员名称" clearable style="width: 180px" />
@@ -34,7 +32,7 @@
         </el-card>
         <el-card shadow="never" class="table-card">
           <div slot="header" class="card-header">
-            <span>授权业主列表</span>
+            <span>业主监控</span>
             <el-button type="primary" size="small" @click="handleAdd">授权</el-button>
           </div>
           <el-table :data="list" v-loading="loading" border stripe>
@@ -58,8 +56,8 @@
             class="pagination-container"
           />
         </el-card>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
     <DeleteMonitorMachinePerson :visible.sync="delVisible" :del-data="currentRow" @success="handleSuccess" />
   </div>
 </template>
@@ -149,10 +147,11 @@ export default {
 </script>
 
 <style scoped>
-.header-card { margin-bottom: 16px; }
-.content-row { margin-bottom: 0; }
-.left-card { min-height: 300px; }
-.machine-list { list-style: none; padding: 0; margin: 0; }
+.page-container { display: flex; gap: 16px; }
+.left-panel { width: 200px; flex-shrink: 0; }
+.right-panel { flex: 1; min-width: 0; }
+.left-card { height: 100%; }
+.machine-list { list-style: none; padding: 0; margin: 0; max-height: calc(100vh - 200px); overflow-y: auto; }
 .machine-list li {
   padding: 10px 12px;
   cursor: pointer;
@@ -166,7 +165,8 @@ export default {
 .machine-list li.active { background-color: #409eff; color: white; font-weight: 600; }
 .machine-list li.empty-tip { cursor: default; color: #c0c4cc; text-align: center; padding: 20px; }
 .search-card { margin-bottom: 16px; }
+.search-card .card-header { display: flex; justify-content: space-between; align-items: center; }
 .table-card { margin-bottom: 0; }
-.card-header { display: flex; justify-content: space-between; align-items: center; }
+.table-card .card-header { display: flex; justify-content: space-between; align-items: center; }
 .pagination-container { margin-top: 16px; text-align: right; }
 </style>

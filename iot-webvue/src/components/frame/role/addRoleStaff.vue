@@ -123,10 +123,14 @@ export default {
       }
       this.submitLoading = true
       try {
-        const staffIds = this.selectedRows.map(item => item.userId || item.staffId || item.id)
+        const staffs = this.selectedRows.map(item => ({
+          staffId: item.userId || item.staffId || item.id,
+          staffName: item.userName || item.name || ''
+        }))
         await saveRoleStaff({
           roleId: this.roleId,
-          staffIds
+          orgName: '',
+          staffs
         })
         this.$message.success('关联成功')
         this.$emit('success')

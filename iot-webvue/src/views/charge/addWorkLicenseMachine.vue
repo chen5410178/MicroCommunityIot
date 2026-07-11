@@ -20,7 +20,8 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="员工" prop="staffName">
-              <el-input v-model="form.staffName" placeholder="必填，请填写员工名称" maxlength="64" />
+              <el-input v-model="form.staffName" placeholder="请选择员工" readonly :disabled="true" style="width: calc(100% - 80px)" />
+              <el-button style="margin-left: 8px" @click="chooseStaffVisible = true">选择</el-button>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -52,6 +53,7 @@
         </el-form-item>
       </el-form>
     </el-card>
+    <ChooseStaff :visible.sync="chooseStaffVisible" @selected="onStaffSelected" />
   </div>
 </template>
 
@@ -59,16 +61,20 @@
 import { saveWorkLicenseMachine } from '@/api/charge/chargeApi'
 import { listWorkLicenseFactorys } from '@/api/charge/chargeApi'
 import { getCurrentCommunity } from '@/utils/auth'
+import ChooseStaff from '@/components/monitor/ChooseStaff.vue'
 
 export default {
   name: 'AddWorkLicenseMachine',
+  components: { ChooseStaff },
   data() {
     return {
       loading: false,
       factoryList: [],
+      chooseStaffVisible: false,
       form: {
         machineName: '',
         machineCode: '',
+        staffId: '',
         staffName: '',
         posUploadSec: '',
         implBean: '',
@@ -84,8 +90,7 @@ export default {
           { max: 64, message: '工牌编号不能超过64', trigger: 'blur' }
         ],
         staffName: [
-          { required: true, message: '员工不能为空', trigger: 'blur' },
-          { max: 64, message: '员工不能超过64', trigger: 'blur' }
+          { required: true, message: '员工不能为空', trigger: 'change' }
         ],
         posUploadSec: [
           { required: true, message: '位置上报间隔不能为空', trigger: 'blur' }
@@ -112,6 +117,11 @@ export default {
     handleCancel() {
       this.$router.go(-1)
     },
+    onStaffSelected(row) {
+      this.form.staffId = row.userId
+      this.form.staffName = row.userName
+      this.$refs.formRef && this.$refs.formRef.validateField('staffName')
+    },
     async handleSubmit() {
       try {
         await this.$refs.formRef.validate()
@@ -119,7 +129,7 @@ export default {
       this.loading = true
       try {
         const communityId = (getCurrentCommunity() || {}).communityId || ''
-        const data = { ...this.form, staffId: this.form.staffName, communityId }
+        const data = { ...this.form, communityId }
         await saveWorkLicenseMachine(data)
         this.$message.success('添加成功')
         this.$router.go(-1)

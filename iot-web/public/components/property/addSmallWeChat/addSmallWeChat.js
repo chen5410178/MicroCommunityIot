@@ -95,7 +95,7 @@
                 }
                 $that.addSmallWeChatInfo.objId = vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
-                    'smallWeChat.saveSmallWeChat',
+                    '/smallWeChat.saveSmallWeChat',
                     JSON.stringify($that.addSmallWeChatInfo), {
                         emulateJSON: true
                     },

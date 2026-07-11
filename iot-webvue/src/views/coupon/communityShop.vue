@@ -26,10 +26,10 @@
         <el-button type="primary" size="small" @click="handleAdd">添加</el-button>
       </div>
       <el-table :data="list" v-loading="loading" border stripe>
-        <el-table-column prop="shopName" label="商家店铺" min-width="150" />
-        <el-table-column prop="shopId" label="商家编号" width="180" />
-        <el-table-column prop="returnLink" label="联系电话" width="140" />
-        <el-table-column label="停车劵" width="120" align="center">
+        <el-table-column prop="shopName" label="商家店铺" />
+        <el-table-column prop="shopId" label="商家编号" />
+        <el-table-column prop="returnLink" label="联系电话" />
+        <el-table-column label="停车劵"  align="center">
           <template slot-scope="{ row }">
             {{ row.parkingCouponCount || 0 }}
             <el-button type="text" size="small" @click="handleView(row)">查看</el-button>

@@ -1,13 +1,7 @@
 <template>
   <div class="monitor-machine-model-manage">
-    <el-card shadow="never" class="header-card">
-      <div slot="header" class="card-header">
-        <span>监控分析</span>
-        <el-button size="small" @click="$router.push('/pages/monitor/monitorModelManage')">返回</el-button>
-      </div>
-    </el-card>
-    <el-row :gutter="16" class="content-row">
-      <el-col :span="4">
+    <div class="page-container">
+      <div class="left-panel">
         <el-card shadow="never" class="left-card">
           <ul class="model-list">
             <li
@@ -21,9 +15,12 @@
             <li v-if="monitorModelList.length === 0" class="empty-tip">暂无模型数据</li>
           </ul>
         </el-card>
-      </el-col>
-      <el-col :span="20">
+      </div>
+      <div class="right-panel">
         <el-card shadow="never" class="search-card">
+          <div slot="header" class="card-header">
+            <span>查询条件</span>
+          </div>
           <el-form :inline="true" :model="queryParams">
             <el-form-item>
               <el-input v-model="queryParams.machineName" placeholder="请输入监控名称" clearable style="width: 180px" />
@@ -49,7 +46,7 @@
         </el-card>
         <el-card shadow="never" class="table-card">
           <div slot="header" class="card-header">
-            <span>设备列表</span>
+            <span>监控分析</span>
             <el-button type="primary" size="small" @click="$router.push('/pages/monitor/addMonitorMachineModel')">添加</el-button>
           </div>
           <el-table :data="list" v-loading="loading" border stripe>
@@ -75,8 +72,8 @@
             class="pagination-container"
           />
         </el-card>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
     <DeleteMonitorMachineModel :visible.sync="delVisible" :del-data="currentRow" @success="handleSuccess" />
   </div>
 </template>
@@ -182,10 +179,11 @@ export default {
 </script>
 
 <style scoped>
-.header-card { margin-bottom: 16px; }
-.content-row { margin-bottom: 0; }
-.left-card { min-height: 300px; }
-.model-list { list-style: none; padding: 0; margin: 0; }
+.page-container { display: flex; gap: 16px; }
+.left-panel { width: 200px; flex-shrink: 0; }
+.right-panel { flex: 1; min-width: 0; }
+.left-card { height: 100%; }
+.model-list { list-style: none; padding: 0; margin: 0; max-height: calc(100vh - 200px); overflow-y: auto; }
 .model-list li {
   padding: 10px 12px;
   cursor: pointer;
@@ -199,7 +197,8 @@ export default {
 .model-list li.active { background-color: #409eff; color: white; font-weight: 600; }
 .model-list li.empty-tip { cursor: default; color: #c0c4cc; text-align: center; padding: 20px; }
 .search-card { margin-bottom: 16px; }
+.search-card .card-header { display: flex; justify-content: space-between; align-items: center; }
 .table-card { margin-bottom: 0; }
-.card-header { display: flex; justify-content: space-between; align-items: center; }
+.table-card .card-header { display: flex; justify-content: space-between; align-items: center; }
 .pagination-container { margin-top: 16px; text-align: right; }
 </style>

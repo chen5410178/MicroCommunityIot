@@ -120,10 +120,10 @@ export default {
       this.fetchList()
     },
     handleAdd() {
-      this.$router.push({ path: '/admin/pages/charge/addWorkLicenseMachine' })
+      this.$router.push({ path: '/pages/charge/addWorkLicenseMachine' })
     },
     handleEdit(row) {
-      this.$router.push({ path: '/admin/pages/charge/editWorkLicenseMachine', query: { machineId: row.machineId } })
+      this.$router.push({ path: '/pages/charge/editWorkLicenseMachine', query: { machineId: row.machineId } })
     },
     handleDelete(row) {
       this.currentRow = { ...row }

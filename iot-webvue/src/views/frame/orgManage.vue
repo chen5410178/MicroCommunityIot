@@ -2,14 +2,13 @@
   <div class="org-manage">
     <div class="page-container">
       <div class="left-panel">
-        <OrgTree ref="orgTreeRef" @switchOrg="handleSwitchOrg" />
-        <el-card shadow="never" class="tree-action-card">
-          <div class="tree-actions">
+        <OrgTree ref="orgTreeRef" @switchOrg="handleSwitchOrg">
+          <template #header>
             <el-button type="primary" size="small" @click="handleAddOrg">添加</el-button>
             <el-button type="warning" size="small" @click="handleEditOrg" :disabled="!currentOrg">修改</el-button>
             <el-button type="danger" size="small" @click="handleDeleteOrgClick" :disabled="!currentOrg">删除</el-button>
-          </div>
-        </el-card>
+          </template>
+        </OrgTree>
       </div>
       <div class="right-panel">
         <el-card shadow="never" class="search-card">
@@ -179,9 +178,6 @@ export default {
 .page-container { display: flex; gap: 16px; }
 .left-panel { width: 240px; min-width: 240px; }
 .right-panel { flex: 1; min-width: 0; }
-.tree-action-card { margin-top: 12px; }
-.tree-actions { display: flex; justify-content: space-between; gap: 8px; }
-.tree-actions .el-button { flex: 1; }
 .search-card { margin-bottom: 16px; }
 .search-card .card-header { display: flex; justify-content: space-between; align-items: center; }
 .table-card { margin-bottom: 0; }

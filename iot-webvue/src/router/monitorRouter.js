@@ -112,6 +112,12 @@ const monitorRoutes = [
     name: 'DispatchFace',
     component: () => import('@/views/ai/dispatchFace.vue'),
     meta: { requiresAuth: true, title: '人脸布控' }
+  },
+  {
+    path: 'pages/monitor/monitorMachineDetail',
+    name: 'MonitorMachineDetail',
+    component: () => import('@/views/monitor/monitorMachineDetail.vue'),
+    meta: { requiresAuth: true, title: '监控设备详情' }
   }
 ]
 

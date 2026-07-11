@@ -41,6 +41,11 @@
           <div class="info-item"><span class="info-label">创建时间：</span>{{ info.createTime }}</div>
         </el-col>
       </el-row>
+      <el-row :gutter="20" class="info-row" v-if="info.lockMachineParamDtoList && info.lockMachineParamDtoList.length > 0">
+        <el-col :span="6" v-for="(item, index) in info.lockMachineParamDtoList" :key="index">
+          <div class="info-item"><span class="info-label">{{ item.specName }}：</span>{{ item.value }}</div>
+        </el-col>
+      </el-row>
     </el-card>
 
     <el-card shadow="never" class="tab-card">
@@ -74,8 +79,10 @@
           <div v-loading="modelLoading">
             <el-table :data="modelList" border stripe>
               <el-table-column prop="modelName" label="模型名称" min-width="150" />
-              <el-table-column prop="modelAdapt" label="模型处理类" min-width="200" show-overflow-tooltip />
-              <el-table-column prop="createTime" label="创建时间" min-width="160" />
+              <el-table-column prop="machineName" label="监控名称" min-width="150" />
+              <el-table-column prop="machineCode" label="监控编号" min-width="150" />
+              <el-table-column prop="locationName" label="监控位置" min-width="150" />
+              <el-table-column prop="maName" label="监控区域" min-width="150" />
             </el-table>
             <el-pagination
               :current-page="modelPage.page"
@@ -92,9 +99,30 @@
         <el-tab-pane label="监控告警" name="pool">
           <div v-loading="poolLoading">
             <el-table :data="poolList" border stripe>
-              <el-table-column prop="poolId" label="告警ID" min-width="150" />
-              <el-table-column prop="poolName" label="告警名称" min-width="150" />
+              <el-table-column prop="mpId" label="编号" min-width="120" />
+              <el-table-column prop="machineName" label="监控名称" min-width="150" />
+              <el-table-column prop="machineCode" label="监控编码" min-width="150" />
+              <el-table-column prop="modelName" label="监控模型" min-width="150" />
+              <el-table-column prop="monitorTypeName" label="监控类型" min-width="120" />
+              <el-table-column label="监控图片" width="100" align="center">
+                <template slot-scope="{ row }">
+                  <el-image
+                    v-if="row.monitorPhoto"
+                    style="width: 50px; height: 50px; border-radius: 4px;"
+                    :src="row.monitorPhoto"
+                    :preview-src-list="[row.monitorPhoto]"
+                    fit="cover"
+                  />
+                  <span v-else>-</span>
+                </template>
+              </el-table-column>
               <el-table-column prop="createTime" label="创建时间" min-width="160" />
+              <el-table-column label="描述" min-width="100" align="center">
+                <template slot-scope="{ row }">
+                  <el-button v-if="row.remark" size="small" type="text" @click="$alert(row.remark, '描述')">查看</el-button>
+                  <span v-else>-</span>
+                </template>
+              </el-table-column>
             </el-table>
             <el-pagination
               :current-page="poolPage.page"
@@ -123,6 +151,7 @@ export default {
     return {
       machineId: '',
       maId: '',
+      needBack: false,
       currentTab: 'area',
       info: {},
       areaLoading: false,
@@ -142,6 +171,7 @@ export default {
   mounted() {
     this.machineId = this.$route.query.machineId || ''
     this.maId = this.$route.query.maId || ''
+    this.needBack = this.$route.query.needBack === 'true' || this.$route.query.needBack === true
     if (!this.machineId) {
       this.$router.go(-1)
       return

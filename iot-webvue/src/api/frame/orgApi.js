@@ -108,6 +108,24 @@ export function updateOrg(data) {
   })
 }
 
+export function listOrgs(params) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/org.listOrgs',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
 export function deleteOrg(data) {
   return new Promise((resolve, reject) => {
     request({

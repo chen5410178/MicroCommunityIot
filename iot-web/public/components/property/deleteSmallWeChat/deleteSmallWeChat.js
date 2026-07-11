@@ -19,7 +19,7 @@
             deleteSmallWeChat:function(){
                 $that.deleteSmallWeChatInfo.communityId=vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
-                    'smallWeChat.deleteSmallWeChat',
+                    '/smallWeChat.deleteSmallWeChat',
                     JSON.stringify($that.deleteSmallWeChatInfo),
                     {
                         emulateJSON:true

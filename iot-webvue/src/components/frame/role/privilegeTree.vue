@@ -8,7 +8,6 @@
       :props="treeProps"
       :default-expanded-keys="expandedKeys"
       :default-checked-keys="checkedKeys"
-      check-strictly
       @check="handleCheck"
     />
   </div>
@@ -97,28 +96,43 @@ export default {
       return keys
     },
     async handleCheck(node, checkedInfo) {
-      const pId = node.pId
-      if (!pId) return
-      if (checkedInfo.checkedKeys.includes(node.id)) {
-        await this.doAddPrivilege(pId)
+      const pIds = []
+      this.collectLeafPIds(node, pIds)
+      if (pIds.length === 0) return
+      const isChecked = checkedInfo.checkedKeys.includes(node.id)
+      if (isChecked) {
+        await this.doAddPrivilege(pIds)
       } else {
-        await this.doDeletePrivilege(pId)
+        await this.doDeletePrivilege(pIds)
       }
     },
-    async doAddPrivilege(pId) {
+    collectLeafPIds(node, result) {
+      if (node.pId) {
+        result.push(node.pId)
+        return
+      }
+      if (node.children && node.children.length) {
+        node.children.forEach(child => this.collectLeafPIds(child, result))
+      }
+    },
+    async doAddPrivilege(pIds) {
       try {
-        await addPrivilegeToGroup({ pgId: this.pgId, pIds: [{ pId }] })
+        await addPrivilegeToGroup({ pgId: this.pgId, pIds: pIds.map(pId => ({ pId })) })
       } catch (e) {
         this.$message.error(e.msg || '授权失败')
-        this.$refs.treeRef.setChecked('p_' + pId, false, false)
+        pIds.forEach(pId => {
+          this.$refs.treeRef.setChecked('p_' + pId, false, false)
+        })
       }
     },
-    async doDeletePrivilege(pId) {
+    async doDeletePrivilege(pIds) {
       try {
-        await deletePrivilegeFromGroup({ pgId: this.pgId, pIds: [{ pId }] })
+        await deletePrivilegeFromGroup({ pgId: this.pgId, pIds: pIds.map(pId => ({ pId })) })
       } catch (e) {
         this.$message.error(e.msg || '取消授权失败')
-        this.$refs.treeRef.setChecked('p_' + pId, true, false)
+        pIds.forEach(pId => {
+          this.$refs.treeRef.setChecked('p_' + pId, true, false)
+        })
       }
     }
   }

@@ -24,14 +24,7 @@
           <el-input v-model="form.address" placeholder="必填，不超过200位" maxlength="200" />
         </el-form-item>
         <el-form-item label="关联组织" prop="orgId">
-          <el-select v-model="form.orgId" placeholder="请选择组织" clearable style="width: 100%" @change="handleOrgChange">
-            <el-option
-              v-for="org in orgList"
-              :key="org.orgId"
-              :label="org.orgName"
-              :value="org.orgId"
-            />
-          </el-select>
+          <el-input v-model="form.orgName" readonly placeholder="必填，请选择关联组织" @focus="chooseOrgVisible = true" />
         </el-form-item>
         <el-form-item label="员工照片">
           <el-upload
@@ -53,21 +46,23 @@
         </el-form-item>
       </el-form>
     </el-card>
+    <ChooseOrgTree :visible.sync="chooseOrgVisible" @switchOrg="handleSwitchOrg" />
   </div>
 </template>
 
 <script>
 import { addStaff } from '@/api/frame/staffApi'
-import { listOrgs } from '@/api/frame/orgApi'
+import ChooseOrgTree from '@/components/frame/ChooseOrgTree.vue'
 
 export default {
   name: 'AddStaff',
+  components: { ChooseOrgTree },
   data() {
     return {
       loading: false,
       uploadUrl: '/iot/api/upload/uploadFile',
       photoList: [],
-      orgList: [],
+      chooseOrgVisible: false,
       form: {
         username: '',
         sex: '',
@@ -114,22 +109,11 @@ export default {
     }
   },
   mounted() {
-    this.loadOrgs()
   },
   methods: {
-    async loadOrgs() {
-      try {
-        const res = await listOrgs({ page: 1, row: 100 })
-        this.orgList = res.data || []
-      } catch { /* ignore */ }
-    },
-    handleOrgChange(val) {
-      if (val) {
-        const org = this.orgList.find(o => o.orgId === val)
-        this.form.orgName = org ? org.orgName : ''
-      } else {
-        this.form.orgName = ''
-      }
+    handleSwitchOrg({ orgId, orgName }) {
+      this.form.orgId = orgId
+      this.form.orgName = orgName
     },
     handleUploadSuccess(res) {
       if (res.code === 0) {
@@ -171,6 +155,7 @@ export default {
           orgId: this.form.orgId,
           orgName: this.form.orgName,
           photo: this.form.photo,
+          relCd: '',
           adminFlag: 'N'
         }
         await addStaff(data)

@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { listAttendanceCheckin, listAttendanceMachine } from '@/api/attendance/attendanceApi'
+import { listAttendanceCheckin, listAttendanceMachines } from '@/api/attendance/attendanceApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -147,7 +147,7 @@ export default {
     },
     async loadMachines() {
       try {
-        const res = await listAttendanceMachine({ page: 1, row: 100, communityId: this.queryParams.communityId })
+        const res = await listAttendanceMachines({ page: 1, row: 100, communityId: this.queryParams.communityId })
         this.machines = res.data || []
       } catch (e) {
         this.machines = []

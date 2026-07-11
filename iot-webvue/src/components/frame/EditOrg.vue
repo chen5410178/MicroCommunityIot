@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { updateOrg } from '@/api/frame/orgApi'
+import { updateOrg, listOrgs } from '@/api/frame/orgApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -41,8 +41,11 @@ export default {
       form: {
         orgId: '',
         orgName: '',
+        orgLevel: '',
         parentOrgId: '',
-        description: ''
+        parentOrgName: '',
+        description: '',
+        belongCommunityId: ''
       },
       rules: {
         orgName: [{ required: true, message: '组织名称不能为空', trigger: 'blur' }]
@@ -53,18 +56,35 @@ export default {
     visible(val) {
       this.dialogVisible = val
       if (val && this.editData) {
-        this.form = {
-          orgId: this.editData.orgId || this.editData.id || '',
-          orgName: this.editData.orgName || this.editData.label || '',
-          parentOrgId: this.editData.parentOrgId || '',
-          description: this.editData.description || ''
-        }
-        this.parentOrgName = this.editData.parentOrgName || ''
+        this.loadOrgDetail()
       }
     },
     dialogVisible(val) { this.$emit('update:visible', val) }
   },
   methods: {
+    async loadOrgDetail() {
+      const orgId = this.editData.orgId || this.editData.id || ''
+      if (!orgId) return
+      try {
+        const community = getCurrentCommunity() || {}
+        const res = await listOrgs({ page: 1, row: 1, orgId, communityId: community.communityId })
+        const orgData = res.data && res.data.length > 0 ? res.data[0] : null
+        if (orgData) {
+          this.form = {
+            orgId: orgData.orgId || '',
+            orgName: orgData.orgName || '',
+            orgLevel: orgData.orgLevel || '',
+            parentOrgId: orgData.parentOrgId || '',
+            parentOrgName: orgData.parentOrgName || '',
+            description: orgData.description || '',
+            belongCommunityId: orgData.belongCommunityId || ''
+          }
+          this.parentOrgName = orgData.parentOrgName || ''
+        }
+      } catch (e) {
+        this.$message.error(e.msg || '查询组织详情失败')
+      }
+    },
     handleClose() {
       this.dialogVisible = false
       this.$refs.formRef && this.$refs.formRef.resetFields()

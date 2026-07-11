@@ -99,7 +99,7 @@
                 //1000表示改小程序作用于当前小区 否则作用于所有小区
                 $that.editSmallWeChatInfo.objId = vc.getCurrentCommunity().communityId;
                 vc.http.apiPost(
-                    'smallWeChat.updateSmallWeChat',
+                    '/smallWeChat.updateSmallWeChat',
                     JSON.stringify($that.editSmallWeChatInfo), {
                         emulateJSON: true
                     },
