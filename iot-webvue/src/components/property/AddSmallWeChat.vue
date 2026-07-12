@@ -43,7 +43,11 @@ export default {
         name: '',
         appId: '',
         appSecret: '',
-        remarks: ''
+        remarks: '',
+        payPassword: '1',
+        objType: '1000',
+        mchId: '1',
+        mchName: '1'
       },
       rules: {
         name: [
@@ -83,8 +87,7 @@ export default {
         await saveSmallWeChat({
           ...this.form,
           weChatType: '1000',
-          objId: communityId,
-          objType: '1000'
+          objId: communityId
         })
         this.$message.success('添加成功')
         this.$emit('success')

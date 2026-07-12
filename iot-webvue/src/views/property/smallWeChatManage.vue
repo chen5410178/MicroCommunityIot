@@ -29,10 +29,8 @@
           <template slot-scope="{ row }">{{ row.appSecret ? '********' : '' }}</template>
         </el-table-column>
         <el-table-column prop="remarks" label="描述" min-width="150" show-overflow-tooltip />
-        <el-table-column label="操作" width="280" fixed="right" align="center">
+        <el-table-column label="操作" width="150" fixed="right" align="center">
           <template slot-scope="{ row }">
-            <el-button size="small" type="text" @click="handleMenu(row)">菜单</el-button>
-            <el-button size="small" type="text" @click="handleTemplate(row)">模板</el-button>
             <el-button size="small" type="text" @click="handleEdit(row)">修改</el-button>
             <el-button size="small" type="text" style="color: #f56c6c" @click="handleDelete(row)">删除</el-button>
           </template>
@@ -120,12 +118,6 @@ export default {
     handleDelete(row) {
       this.currentRow = { ...row }
       this.delVisible = true
-    },
-    handleMenu(row) {
-      this.$router.push(`/pages/property/wechatMenuManage?wechatId=${row.wechatId}`)
-    },
-    handleTemplate(row) {
-      this.$router.push(`/pages/property/wechatSmsTemplateManage?wechatId=${row.wechatId}`)
     },
     handleSuccess() {
       this.fetchList()

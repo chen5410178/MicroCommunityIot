@@ -30,8 +30,6 @@
         <el-table-column prop="createTime" label="创建时间" min-width="160" />
         <el-table-column label="操作" width="280" fixed="right" align="center">
           <template slot-scope="{ row }">
-            <el-button size="small" type="text" @click="handleMenu(row)">菜单</el-button>
-            <el-button size="small" type="text" @click="handleTemplate(row)">模板</el-button>
             <el-button size="small" type="text" @click="handleEdit(row)">修改</el-button>
             <el-button size="small" type="text" style="color: #f56c6c" @click="handleDelete(row)">删除</el-button>
           </template>

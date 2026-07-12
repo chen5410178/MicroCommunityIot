@@ -1,10 +1,5 @@
 <template>
-  <el-dialog
-    :visible.sync="dialogVisible"
-    title="添加公众号"
-    width="600px"
-    @close="handleClose"
-  >
+  <el-dialog :visible.sync="dialogVisible" title="添加公众号" width="600px" @close="handleClose">
     <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name" placeholder="必填，请填写公众号名称" maxlength="100" />
@@ -43,7 +38,11 @@ export default {
         name: '',
         appId: '',
         appSecret: '',
-        remarks: ''
+        remarks: '',
+        payPassword: '1',
+        objType: '1000',
+        mchId: '1',
+        mchName: '1',
       },
       rules: {
         name: [

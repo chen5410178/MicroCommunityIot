@@ -41,7 +41,7 @@ export default {
     async handleSubmit() {
       this.loading = true
       try {
-        await deletePublicWeChat({ wechatId: this.delData.wechatId })
+        await deletePublicWeChat({ wechatId: this.delData.wechatId, objId: this.delData.objId })
         this.$message.success('删除成功')
         this.$emit('success')
         this.dialogVisible = false

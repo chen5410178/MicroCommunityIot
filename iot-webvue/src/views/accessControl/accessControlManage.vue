@@ -26,7 +26,6 @@
         <el-button type="primary" size="small" @click="handleAdd">添加门禁</el-button>
       </div>
       <el-table :data="list" v-loading="loading" border stripe>
-        <el-table-column prop="communityName" label="小区名称" min-width="120" />
         <el-table-column prop="machineCode" label="门禁编码" min-width="120" />
         <el-table-column prop="machineName" label="门禁名称" min-width="120" />
         <el-table-column prop="machineIp" label="IP" min-width="130" />

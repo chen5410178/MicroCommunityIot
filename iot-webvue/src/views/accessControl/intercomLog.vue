@@ -137,7 +137,7 @@ export default {
 </script>
 
 <style scoped>
-.list-intercom-log { padding: 16px; }
+.list-intercom-log {  }
 .search-card { margin-bottom: 16px; }
 .table-card { margin-bottom: 0; }
 .card-header { display: flex; justify-content: space-between; align-items: center; }
