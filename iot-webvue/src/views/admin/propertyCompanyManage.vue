@@ -69,6 +69,8 @@
 
 <script>
 import { listProperty } from '@/api/admin/propertyCompanyApi'
+import { listMyStore, listMyEnteredCommunitys, queryStaffPrivileges } from '@/api/community/communityApi'
+import { setToken, setUserInfo, setCommunityList, setCurrentCommunity } from '@/utils/auth'
 import AddPropertyCompany from '@/components/admin/AddPropertyCompany.vue'
 import EditPropertyCompany from '@/components/admin/EditPropertyCompany.vue'
 import DeletePropertyCompany from '@/components/admin/DeletePropertyCompany.vue'
@@ -139,9 +141,29 @@ export default {
     handleResetPwd(row) {
       this.$refs.resetPwdRef.open(row)
     },
-    handleLoginSuccess() {
-      sessionStorage.clear()
-      window.location.hash = '#/pages/index/index'
+    handleLoginSuccess(res) {
+      setToken(res.token)
+      setUserInfo({
+        userId: res.userId,
+        name: res.name,
+        tel: res.tel,
+        levelCd: res.levelCd
+      })
+      listMyStore({ _uId: 'ccdd00opikookjuhyyttvhnnjuuu' }).then(() => {
+        return queryStaffPrivileges({ a: 'HC' })
+      }).then(() => {
+        return listMyEnteredCommunitys({ _uId: 'ccdd00opikookjuhyyttvhnnjuuu', page: 1, row: 3 })
+      }).then(res => {
+        const communityList = res && res.data ? res.data : []
+        if (communityList.length > 0) {
+          setCommunityList(communityList)
+          setCurrentCommunity(communityList[0])
+        }
+        this.$router.push('/pages/index/index')
+      }).catch(err => {
+        const msg = err && err.msg ? err.msg : '初始化数据失败'
+        this.$message.error(msg)
+      })
     },
     handleSizeChange(val) {
       this.queryParams.row = val

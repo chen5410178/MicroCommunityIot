@@ -57,9 +57,9 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        await adminLoginProperty(this.form)
+        const res = await adminLoginProperty(this.form)
         this.$message.success('登录成功')
-        this.$emit('success')
+        this.$emit('success', res)
         this.handleClose()
       } catch (e) {
         this.$message.error(e.msg || '登录失败')
