@@ -133,3 +133,25 @@ alter table access_control add lng varchar(32) NOT NULL DEFAULT '116.39803241981
 INSERT INTO `c_service` VALUES ('982026062700010001', 'login.generatorSliderCode', 'API', '滑块验证码接口', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2026-06-27 11:35:35', '0');
 INSERT INTO `c_route` VALUES ('102026062700010001', '992023010100000001', '982026062700010001', 'Q', '1000', 'S', '2026-06-27 11:35:35', '0');
 ```
+
+### 2026-07-24 无牌车扫码自动生成车牌号
+```sql
+CREATE TABLE `unlicensed_car_plate` (
+  `plate_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `open_id` varchar(200) NOT NULL COMMENT '微信/支付宝 openId',
+  `car_num` varchar(16) NOT NULL COMMENT '自动生成的车牌号',
+  `community_id` varchar(30) DEFAULT NULL COMMENT '小区ID',
+  `open_type` varchar(10) DEFAULT 'WECHAT' COMMENT '开放平台类型 WECHAT/ALIPAY',
+  `status_cd` varchar(2) DEFAULT '0' COMMENT '状态 0有效 1删除',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`plate_id`),
+  KEY `idx_open_id` (`open_id`),
+  KEY `idx_car_num` (`car_num`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='无牌车虚拟车牌号映射表';
+
+-- c_service 注册（service_id 需用 GenerateCodeFactory 生成后替换）
+INSERT INTO `c_service` VALUES ('{serviceId}', 'car.getOrGenerateUnlicensedCarNum', 'API', '获取或生成无牌车车牌号', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', NOW(), '0');
+
+-- c_route 注册（关联到物联网用户 appId: 992023111817510002）
+INSERT INTO `c_route` VALUES ('{routeId}', '992023111817510002', '{serviceId}', 'Q', '1000', 'S', NOW(), '0');
+```

@@ -42,6 +42,7 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/parkingCoupon.saveParkingCouponCar,");//根据小区查询appId
         exclusions.append("/iot/api/carMonth.queryMonthCardByCarNum,");//根据小区查询appId
         exclusions.append("/iot/api/car.queryWaitPayFeeTempCar,");//根据小区查询appId
+        exclusions.append("/iot/api/car.getOrGenerateUnlicensedCarNum,");//无牌车获取或生成车牌号
 
         exclusions.append("/iot/api/parkingArea.findCarInParkingArea,");// 停车场找车
 

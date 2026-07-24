@@ -80,6 +80,7 @@ export default {
 	queryMyChargeOrder: baseUrl+"iot/api/charge.queryMyChargeOrder",
 	saveUserChargeCar: baseUrl+"iot/api/user.saveUserChargeCar",
 	getUserChargeCar: baseUrl+"iot/api/user.getUserChargeCar",
+	getOrGenerateUnlicensedCarNum: baseUrl+"iot/api/car.getOrGenerateUnlicensedCarNum",
 
 
 

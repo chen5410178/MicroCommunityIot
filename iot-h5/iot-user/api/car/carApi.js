@@ -152,6 +152,34 @@ export function getUserCar(_objData){
 }
 
 /**
+ * 获取或生成无牌车虚拟车牌号
+ * @param {Object} _objData { openId, openType, communityId }
+ */
+export function getOrGenerateUnlicensedCarNum(_objData){
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.getOrGenerateUnlicensedCarNum,
+			data: _objData,
+			method: "GET",
+			success: function(res) {
+				if (res.statusCode == 200) {
+					let _json = res.data;
+					if (_json.code == 0) {
+						resolve(_json.data);
+						return;
+					}
+					reject(_json);
+				}
+				reject(res);
+			},
+			fail: function(e) {
+				reject(e);
+			}
+		});
+	})
+}
+
+/**
  * 停车场找车
  * @param {Object} _objData{
 	 * carNum:'',
