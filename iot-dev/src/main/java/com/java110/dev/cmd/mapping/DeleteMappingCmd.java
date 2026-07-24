@@ -13,8 +13,7 @@ import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.dev.IMappingV1InnerServiceSMO;
 import com.java110.po.mapping.MappingPo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.java110.bean.ResultVo;
 
 @Java110Cmd(serviceCode = "mapping.deleteMapping")
 public class DeleteMappingCmd extends Cmd {
@@ -35,8 +34,6 @@ public class DeleteMappingCmd extends Cmd {
             throw new CmdException(ResponseConstant.RESULT_CODE_ERROR, "编辑数据失败");
         }
 
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>("", HttpStatus.OK);
-
-        context.setResponseEntity(responseEntity);
+        context.setResponseEntity(ResultVo.success());
     }
 }
