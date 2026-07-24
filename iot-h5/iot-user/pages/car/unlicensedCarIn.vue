@@ -104,7 +104,7 @@
 					if (_data.data.code != 0) {
 						uni.showToast({
 							icon: 'none',
-							title: '车牌号提交失败！'
+							title: _data.data.msg ||'车牌号提交失败！'
 						})
 						return;
 					}
