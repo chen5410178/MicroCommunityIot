@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="carInoutHisV1ServiceDaoImpl">
+
+    <insert id="saveCarInoutHisInfo" parameterType="Map">
+        insert into car_inout_his(
+        pa_num,machine_code,car_inout,photo_jpg,car_num,remark,ci_id,inout_id,machine_id,car_type,pa_id,state,
+        community_id,in_time,open_time,car_type_name,unlicense,color_type
+        ) values (
+        #{paNum},#{machineCode},#{carInout},#{photoJpg},#{carNum},#{remark},#{ciId},#{inoutId},#{machineId},#{carType},#{paId},#{state},
+        #{communityId},#{inTime},#{openTime},#{carTypeName},#{unlicense},#{colorType}
+        )
+    </insert>
+
+    <insert id="saveCarInoutHisInfos" parameterType="Map">
+        insert into car_inout_his(
+        pa_num,machine_code,car_inout,photo_jpg,car_num,remark,ci_id,inout_id,machine_id,car_type,pa_id,state,
+        community_id,in_time,open_time,car_type_name,unlicense,color_type
+        )
+        select pa_num,machine_code,car_inout,photo_jpg,car_num,remark,ci_id,inout_id,machine_id,car_type,pa_id,state,
+        community_id,in_time,open_time,car_type_name,unlicense,color_type
+        from car_inout t
+        where t.ci_id in
+        <foreach collection="ciIds" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </insert>
+
+    <select id="getCarInoutHisInfo" parameterType="Map" resultType="Map">
+        select t.pa_num paNum,t.machine_code machineCode,t.car_inout carInout,t.photo_jpg photoJpg,
+        t.car_num carNum,t.remark,t.status_cd statusCd,t.ci_id ciId,t.inout_id inoutId,
+        t.machine_id machineId,t.car_type carType,t.pa_id paId,t.state,t.community_id communityId,
+        t.open_time openTime,t.in_time inTime,t.car_type_name carTypeName,
+        td.name stateName,tcfc.fee_name feeName,tcfc.config_id configId,
+        t.unlicense,t.color_type colorType,b.machine_name machineName,
+        cm.name communityName
+        from car_inout_his t
+        left join t_dict td on t.state = td.status_cd and td.table_columns='state' and td.table_name = 'car_inout'
+        left join parking_area pa on t.pa_id = pa.pa_id and pa.status_cd = '0'
+        left join temp_car_fee_config tcfc on pa.pa_id = tcfc.pa_id and tcfc.status_cd = '0' and tcfc.car_type = t.color_type
+        left join barrier b on t.machine_id = b.machine_id and b.community_id = t.community_id
+        left join community cm on t.community_id = cm.community_id and cm.status_cd = '0'
+        where 1=1
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            and t.car_num like concat('%',#{carNum},'%')
+        </if>
+        <if test="carNumLike !=null and carNumLike != ''">
+            and t.car_num like concat('%',#{carNumLike},'%')
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            and t.open_time &gt;= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            and t.open_time &lt;= #{endTime}
+        </if>
+        order by t.open_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <select id="queryCarInoutHisCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from car_inout_his t
+        where 1=1
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            and t.car_num like concat('%',#{carNum},'%')
+        </if>
+        <if test="carNumLike !=null and carNumLike != ''">
+            and t.car_num like concat('%',#{carNumLike},'%')
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            and t.open_time &gt;= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            and t.open_time &lt;= #{endTime}
+        </if>
+    </select>
+
+    <delete id="deleteCarInoutHisInfo" parameterType="Map">
+        delete from car_inout_his
+        where 1=1
+        <if test="communityId !=null and communityId != ''">
+            and community_id = #{communityId}
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            and open_time &gt;= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            and open_time &lt;= #{endTime}
+        </if>
+    </delete>
+
+</mapper>

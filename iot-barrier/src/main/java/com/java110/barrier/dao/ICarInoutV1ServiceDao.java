@@ -80,4 +80,10 @@ public interface ICarInoutV1ServiceDao {
     int getCarInCount(Map info);
 
     int getCarOutCount(Map info);
+
+    List<Map> queryMigrationCarInouts(Map info);
+
+    List<Map> queryMigrationOutCarInouts(Map info);
+
+    int deleteCarInoutByIds(Map info);
 }

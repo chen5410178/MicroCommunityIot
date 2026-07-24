@@ -1563,3 +1563,40 @@ export function deleteTempInnerCar(data) {
     })
   })
 }
+
+// ===== 车辆出入历史记录 =====
+export function listCarInoutHisDetails(params) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/carInoutHis.listCarInoutHis',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+export function deleteCarInoutHis(data) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/carInoutHis.deleteCarInoutHis',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}

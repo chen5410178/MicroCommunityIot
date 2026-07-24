@@ -180,4 +180,22 @@ public class CarInoutV1ServiceDaoImpl extends BaseServiceDao implements ICarInou
         return Integer.parseInt(infos.get(0).get("count").toString());
     }
 
+    @Override
+    public List<Map> queryMigrationCarInouts(Map info) {
+        logger.debug("查询 queryMigrationCarInouts 入参 info : {}", info);
+        return sqlSessionTemplate.selectList("carInoutV1ServiceDaoImpl.queryMigrationCarInouts", info);
+    }
+
+    @Override
+    public List<Map> queryMigrationOutCarInouts(Map info) {
+        logger.debug("查询 queryMigrationOutCarInouts 入参 info : {}", info);
+        return sqlSessionTemplate.selectList("carInoutV1ServiceDaoImpl.queryMigrationOutCarInouts", info);
+    }
+
+    @Override
+    public int deleteCarInoutByIds(Map info) {
+        logger.debug("删除 deleteCarInoutByIds 入参 info : {}", info);
+        return sqlSessionTemplate.delete("carInoutV1ServiceDaoImpl.deleteCarInoutByIds", info);
+    }
+
 }

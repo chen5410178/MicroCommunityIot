@@ -156,3 +156,23 @@ INSERT INTO `hc_iot`.`c_service` (`service_id`, `service_code`, `business_type_c
 INSERT INTO `hc_iot`.`c_route` (`id`, `app_id`, `service_id`, `order_type_cd`, `invoke_limit_times`, `invoke_model`, `create_time`, `status_cd`) VALUES ('102026072463810012', '992023111817510002', '982026072424600009', 'Q', '1000', 'S', '2026-07-24 15:49:32', '0');
 
 ```
+
+### 2026-07-24 车辆出入场记录历史归档
+```sql
+-- 创建历史表
+CREATE TABLE `car_inout_his` LIKE `car_inout`;
+CREATE INDEX idx_car_inout_his_car_num ON car_inout_his(car_num);
+CREATE INDEX idx_car_inout_his_community ON car_inout_his(community_id);
+CREATE INDEX idx_car_inout_his_open_time ON car_inout_his(open_time);
+CREATE INDEX idx_car_inout_his_create_time ON car_inout_his(create_time);
+
+-- c_service 历史查询
+INSERT INTO `hc_iot`.`c_service` (`service_id`, `service_code`, `business_type_cd`, `name`, `seq`, `is_instance`, `url`, `method`, `timeout`, `retry_count`, `create_time`, `status_cd`) VALUES ('982026072400000001', 'carInoutHis.listCarInoutHis', 'API', '车辆出入历史记录查询', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', now(), '0');
+-- c_service 历史删除
+INSERT INTO `hc_iot`.`c_service` (`service_id`, `service_code`, `business_type_cd`, `name`, `seq`, `is_instance`, `url`, `method`, `timeout`, `retry_count`, `create_time`, `status_cd`) VALUES ('982026072400000002', 'carInoutHis.deleteCarInoutHis', 'API', '车辆出入历史记录删除', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', now(), '0');
+
+-- c_route 历史查询路由
+INSERT INTO `hc_iot`.`c_route` (`id`, `app_id`, `service_id`, `order_type_cd`, `invoke_limit_times`, `invoke_model`, `create_time`, `status_cd`) VALUES ('102026072400000001', '992023010100000001', '982026072400000001', 'Q', '1000', 'S', now(), '0');
+-- c_route 历史删除路由
+INSERT INTO `hc_iot`.`c_route` (`id`, `app_id`, `service_id`, `order_type_cd`, `invoke_limit_times`, `invoke_model`, `create_time`, `status_cd`) VALUES ('102026072400000002', '992023010100000001', '982026072400000002', 'D', '1000', 'S', now(), '0');
+```

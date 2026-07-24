@@ -114,6 +114,12 @@ const adminRoutes = [
     meta: { requiresAuth: true, title: '车辆出入记录' }
   },
   {
+    path: 'pages/car/adminCarInoutHis',
+    name: 'AdminCarInoutHis',
+    component: () => import('@/views/car/adminCarInoutHis.vue'),
+    meta: { requiresAuth: true, title: '车辆出入历史记录' }
+  },
+  {
     path: 'pages/car/spaceMachineFactory',
     name: 'SpaceMachineFactory',
     component: () => import('@/views/car/spaceMachineFactory.vue'),
