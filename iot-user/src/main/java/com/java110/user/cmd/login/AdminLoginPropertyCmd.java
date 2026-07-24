@@ -133,6 +133,8 @@ public class AdminLoginPropertyCmd extends Cmd {
             String token = AuthenticationFactory.createAndSaveToken(userMap);
             userInfo.remove("password");
             userInfo.put("token", token);
+            userInfo.put("code", "0");
+            userInfo.put("msg", "成功");
             //记录登录日志
 //            UserLoginPo userLoginPo = new UserLoginPo();
 //            userLoginPo.setLoginId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_loginId));
