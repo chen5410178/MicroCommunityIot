@@ -46,6 +46,7 @@
     </el-row>
     <CustomCarInout ref="customCarInoutRef" @success="onCustomCarInoutSuccess" />
     <BarrierGateQrCode ref="barrierGateQrCodeRef" />
+    <UnlicensedCarQrCode ref="unlicensedCarQrCodeRef" />
     <ParkingAreaControlTempCarAuthConfirm ref="tempCarAuthConfirmRef" @success="onTempCarAuthSuccess" />
   </div>
 </template>
@@ -67,6 +68,7 @@ import ParkingAreaControlPaymentSummary from '@/components/car/ParkingAreaContro
 import ParkingAreaControlManualOpenDoorLog from '@/components/car/ParkingAreaControlManualOpenDoorLog.vue'
 import CustomCarInout from '@/components/car/CustomCarInout.vue'
 import BarrierGateQrCode from '@/components/car/BarrierGateQrCode.vue'
+import UnlicensedCarQrCode from '@/components/car/UnlicensedCarQrCode.vue'
 
 export default {
   name: 'ParkingAreaControl',
@@ -86,7 +88,8 @@ export default {
     ParkingAreaControlPaymentSummary,
     ParkingAreaControlManualOpenDoorLog,
     CustomCarInout,
-    BarrierGateQrCode
+    BarrierGateQrCode,
+    UnlicensedCarQrCode
   },
   data() {
     return {
@@ -219,8 +222,9 @@ export default {
       }
     },
     handleUnlicensedCarIn(data) {
-      // TODO: unlicensed car entry - low priority
-      this.$message.info('无牌车进场功能待开发')
+      if (this.$refs.unlicensedCarQrCodeRef) {
+        this.$refs.unlicensedCarQrCodeRef.open(data)
+      }
     },
     onCustomCarInoutSuccess() {
       if (this.$refs.videoRef) {
