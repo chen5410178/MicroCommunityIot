@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { listAdminCarInoutDetails, listTempCarFeeConfigs } from '@/api/car/carApi'
+import { listCarInoutDetails, listTempCarFeeConfigs } from '@/api/car/carApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -126,7 +126,7 @@ export default {
       this.loading = true
       try {
         const communityId = (getCurrentCommunity() || {}).communityId || ''
-        const res = await listAdminCarInoutDetails({
+        const res = await listCarInoutDetails({
           ...this.queryParams,
           paId: this.paId,
           communityId

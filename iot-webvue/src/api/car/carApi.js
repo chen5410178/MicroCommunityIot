@@ -569,6 +569,24 @@ export function getVisitQrCodeUrl(params) {
 }
 
 // ===== 车辆进出记录 =====
+export function listCarInoutDetails(params) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/carInoutDetail.listCarInoutDetail',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
 export function listAdminCarInoutDetails(params) {
   return new Promise((resolve, reject) => {
     request({

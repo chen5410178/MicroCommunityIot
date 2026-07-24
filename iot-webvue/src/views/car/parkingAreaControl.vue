@@ -195,6 +195,10 @@ export default {
     },
     handleTabClick(tab) {
       this.activeTab = tab.name
+      const ref = this.$refs[tab.name]
+      if (ref && typeof ref.loadData === 'function') {
+        ref.loadData()
+      }
     },
     onVideoWsData(data) {
       if (this.$refs.feeRef) {
