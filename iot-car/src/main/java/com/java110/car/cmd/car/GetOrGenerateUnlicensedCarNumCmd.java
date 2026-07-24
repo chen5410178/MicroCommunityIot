@@ -45,7 +45,7 @@ public class GetOrGenerateUnlicensedCarNumCmd extends Cmd {
         } else {
             carNum = generateNewCarNum();
             UnlicensedCarPlatePo po = new UnlicensedCarPlatePo();
-            po.setPlateId(GenerateCodeFactory.getUUID());
+            po.setPlateId(GenerateCodeFactory.getGeneratorId("11"));
             po.setOpenId(openId);
             po.setCarNum(carNum);
             po.setCommunityId(communityId);

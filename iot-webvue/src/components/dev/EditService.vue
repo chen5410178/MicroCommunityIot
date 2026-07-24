@@ -114,8 +114,8 @@ export default {
       try {
         const res = await listCServiceDict()
         this.urlOptions = (res.data || []).map(item => ({
-          label: item.name || item.value,
-          value: item.name || item.value
+          label: item.statusCd,
+          value: item.statusCd
         }))
       } catch { /* ignore */ }
     },

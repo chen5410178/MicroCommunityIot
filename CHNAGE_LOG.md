@@ -150,8 +150,9 @@ CREATE TABLE `unlicensed_car_plate` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='无牌车虚拟车牌号映射表';
 
 -- c_service 注册（service_id 需用 GenerateCodeFactory 生成后替换）
-INSERT INTO `c_service` VALUES ('{serviceId}', 'car.getOrGenerateUnlicensedCarNum', 'API', '获取或生成无牌车车牌号', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', NOW(), '0');
+INSERT INTO `hc_iot`.`c_service` (`service_id`, `service_code`, `business_type_cd`, `name`, `seq`, `is_instance`, `url`, `method`, `timeout`, `retry_count`, `create_time`, `status_cd`) VALUES ('982026072424600009', 'car.getOrGenerateUnlicensedCarNum', 'API', '生成无牌车车牌号', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2026-07-24 15:47:38', '0');
 
 -- c_route 注册（关联到物联网用户 appId: 992023111817510002）
-INSERT INTO `c_route` VALUES ('{routeId}', '992023111817510002', '{serviceId}', 'Q', '1000', 'S', NOW(), '0');
+INSERT INTO `hc_iot`.`c_route` (`id`, `app_id`, `service_id`, `order_type_cd`, `invoke_limit_times`, `invoke_model`, `create_time`, `status_cd`) VALUES ('102026072463810012', '992023111817510002', '982026072424600009', 'Q', '1000', 'S', '2026-07-24 15:49:32', '0');
+
 ```

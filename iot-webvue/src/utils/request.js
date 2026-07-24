@@ -35,9 +35,15 @@ service.interceptors.response.use(
       window.location.href = response.headers['location']
     }
     if (typeof response.data === 'string') {
+      if (response.data === '') {
+        return { code: 0, msg: '成功' }
+      }
       try {
         response.data = JSON.parse(response.data)
       } catch (e) {
+        if (response.data === '成功') {
+          return { code: 0, msg: '成功' }
+        }
         return response.data
       }
     }
