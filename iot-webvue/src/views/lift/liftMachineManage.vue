@@ -226,6 +226,7 @@ export default {
       const data = {
         machineId: row.machineId,
         state: row.state,
+        communityId: row.communityId,
         userId: userInfo.userId || '',
         userName: userInfo.name || ''
       }
