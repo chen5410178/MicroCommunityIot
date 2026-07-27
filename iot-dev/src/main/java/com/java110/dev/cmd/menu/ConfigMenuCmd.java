@@ -2,6 +2,7 @@ package com.java110.dev.cmd.menu;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
 import com.java110.bean.dto.basePrivilege.BasePrivilegeDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cmd.Cmd;
@@ -21,8 +22,6 @@ import com.java110.intf.user.IPrivilegeV1InnerServiceSMO;
 import com.java110.po.menu.MenuPo;
 import com.java110.po.menuGroup.MenuGroupPo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
 
@@ -86,10 +85,7 @@ public class ConfigMenuCmd extends Cmd {
         outParam.put("pId", addPrivilegeView.getString("pId"));
         outParam.put("mId", addMenuView.getString("mId"));
 
-
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(outParam.toString(), HttpStatus.OK);
-
-        context.setResponseEntity(responseEntity);
+        context.setResponseEntity(ResultVo.createResponseEntity(outParam));
 
     }
 

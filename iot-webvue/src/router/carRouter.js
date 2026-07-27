@@ -124,6 +124,12 @@ const carRoutes = [
     name: 'ParkingAreaControl',
     component: () => import('@/views/car/parkingAreaControl.vue'),
     meta: { requiresAuth: true, title: '岗亭控制台' }
+  },
+  {
+    path: 'pages/car/listCarInoutHis',
+    name: 'ListCarInoutHis',
+    component: () => import('@/views/car/listCarInoutHis.vue'),
+    meta: { requiresAuth: true, title: '车辆出入历史记录' }
   }
 ]
 

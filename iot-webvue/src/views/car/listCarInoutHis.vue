@@ -1,20 +1,10 @@
 <template>
-  <div class="list-admin-car-inout-his">
+  <div class="list-car-inout-his">
     <el-card shadow="never" class="search-card">
       <div slot="header" class="card-header">
         <span>查询条件</span>
       </div>
       <el-form :inline="true" :model="queryParams">
-        <el-form-item>
-          <el-select v-model="queryParams.communityId" placeholder="请选择小区" clearable style="width: 180px" @change="handleSearch">
-            <el-option
-              v-for="item in communityList"
-              :key="item.communityId"
-              :label="item.name"
-              :value="item.communityId"
-            />
-          </el-select>
-        </el-form-item>
         <el-form-item>
           <el-input v-model="queryParams.carNumLike" placeholder="请输入车牌号" clearable style="width: 180px" />
         </el-form-item>
@@ -87,16 +77,6 @@
 
     <el-dialog :visible.sync="deleteVisible" title="删除历史数据" width="500px" append-to-body @close="handleDeleteClose">
       <el-form :model="deleteForm" ref="deleteFormRef" label-width="100px">
-        <el-form-item label="小区" prop="communityId">
-          <el-select v-model="deleteForm.communityId" placeholder="请选择小区" clearable style="width: 100%">
-            <el-option
-              v-for="item in communityList"
-              :key="item.communityId"
-              :label="item.name"
-              :value="item.communityId"
-            />
-          </el-select>
-        </el-form-item>
         <el-form-item label="开始时间" prop="startTime">
           <el-date-picker v-model="deleteForm.startTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择开始时间" style="width: 100%" />
         </el-form-item>
@@ -118,13 +98,10 @@
 
 <script>
 import { listCarInoutHisDetails, deleteCarInoutHis } from '@/api/car/carApi'
-import { getCommunityList } from '@/utils/auth'
+import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
-  name: 'ListAdminCarInoutHis',
-  computed: {
-    communityList() { return getCommunityList() || [] }
-  },
+  name: 'ListCarInoutHis',
   data() {
     return {
       loading: false,
@@ -133,7 +110,6 @@ export default {
       queryParams: {
         page: 1,
         row: 10,
-        communityId: '',
         carNumLike: '',
         startTime: '',
         endTime: ''
@@ -141,7 +117,6 @@ export default {
       deleteVisible: false,
       deleteLoading: false,
       deleteForm: {
-        communityId: '',
         startTime: '',
         endTime: ''
       }
@@ -154,7 +129,9 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const res = await listCarInoutHisDetails(this.queryParams)
+        const params = { ...this.queryParams }
+        params.communityId = (getCurrentCommunity() || {}).communityId || ''
+        const res = await listCarInoutHisDetails(params)
         this.list = res.data || []
         this.total = res.records || 0
       } catch (e) {
@@ -170,7 +147,7 @@ export default {
     handleReset() {
       this.queryParams = {
         page: 1, row: 10,
-        communityId: '', carNumLike: '',
+        carNumLike: '',
         startTime: '', endTime: ''
       }
       this.fetchList()
@@ -185,20 +162,15 @@ export default {
     },
     handleDeleteData() {
       this.deleteForm = {
-        communityId: this.queryParams.communityId || '',
         startTime: '',
         endTime: ''
       }
       this.deleteVisible = true
     },
     handleDeleteClose() {
-      this.deleteForm = { communityId: '', startTime: '', endTime: '' }
+      this.deleteForm = { startTime: '', endTime: '' }
     },
     async handleDeleteConfirm() {
-      if (!this.deleteForm.communityId) {
-        this.$message.warning('请选择小区')
-        return
-      }
       if (!this.deleteForm.startTime || !this.deleteForm.endTime) {
         this.$message.warning('请选择时间段')
         return
@@ -214,7 +186,9 @@ export default {
       }
       this.deleteLoading = true
       try {
-        await deleteCarInoutHis(this.deleteForm)
+        const params = { ...this.deleteForm }
+        params.communityId = (getCurrentCommunity() || {}).communityId || ''
+        await deleteCarInoutHis(params)
         this.$message.success('删除成功')
         this.deleteVisible = false
         this.fetchList()
