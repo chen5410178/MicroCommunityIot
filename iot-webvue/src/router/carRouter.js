@@ -130,6 +130,18 @@ const carRoutes = [
     name: 'ListCarInoutHis',
     component: () => import('@/views/car/listCarInoutHis.vue'),
     meta: { requiresAuth: true, title: '车辆出入历史记录' }
+  },
+  {
+    path: 'pages/car/listCarInoutEvasionConfig',
+    name: 'ListCarInoutEvasionConfig',
+    component: () => import('@/views/car/listCarInoutEvasionConfig.vue'),
+    meta: { requiresAuth: true, title: '逃费检测设置' }
+  },
+  {
+    path: 'pages/car/listCarInoutEvasion',
+    name: 'ListCarInoutEvasion',
+    component: () => import('@/views/car/listCarInoutEvasion.vue'),
+    meta: { requiresAuth: true, title: '车辆逃费记录' }
   }
 ]
 

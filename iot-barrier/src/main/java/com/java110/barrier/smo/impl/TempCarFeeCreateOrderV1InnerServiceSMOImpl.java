@@ -1,5 +1,6 @@
 package com.java110.barrier.smo.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.barrier.bmo.IGetTempCarFeeRules;
 import com.java110.bean.ResultVo;
@@ -67,12 +68,22 @@ public class TempCarFeeCreateOrderV1InnerServiceSMOImpl implements ITempCarFeeCr
         //money = money.subtract(new BigDecimal(couponPrice)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
 
         double receivedAmount = money.doubleValue();
+
+        JSONArray evasionIds = reqJson.getJSONArray("evasionIds");
+        double evasionAmount = 0.0;
+        if (evasionIds != null && !evasionIds.isEmpty()) {
+            evasionAmount = reqJson.getDoubleValue("evasionAmount");
+            receivedAmount += evasionAmount;
+        }
+
         //所有 优惠折扣计算完后，如果总金额小于等于0，则返回总扣款为0
         if (receivedAmount <= 0) {
             receivedAmount = 0.0;
         }
         fee.put("receivedAmount", receivedAmount);
         fee.put("oId", GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_oId));
+        fee.put("evasionIds", evasionIds);
+        fee.put("evasionAmount", evasionAmount);
         JSONObject outParm = new JSONObject();
         outParm.put("data", fee);
         outParm.put("code", "0");
@@ -101,6 +112,13 @@ public class TempCarFeeCreateOrderV1InnerServiceSMOImpl implements ITempCarFeeCr
         }
         paramObj.putAll(reqJson);
         TempCarPayOrderDto tempCarPayOrderDto = BeanConvertUtil.covertBean(paramObj, TempCarPayOrderDto.class);
+        if (paramObj.containsKey("evasionIds")) {
+            JSONArray evasionIds = paramObj.getJSONArray("evasionIds");
+            if (evasionIds != null && !evasionIds.isEmpty()) {
+                tempCarPayOrderDto.setEvasionIds(evasionIds.toArray(new String[0]));
+                tempCarPayOrderDto.setEvasionAmount(paramObj.getDoubleValue("evasionAmount"));
+            }
+        }
         dealParkingCouponCar(paramObj, tempCarPayOrderDto);
         ResponseEntity<String> responseEntity = getTempCarFeeRulesImpl.notifyTempCarFeeOrder(tempCarPayOrderDto);
         return responseEntity;

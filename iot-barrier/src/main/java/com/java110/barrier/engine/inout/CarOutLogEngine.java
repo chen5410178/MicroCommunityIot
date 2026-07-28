@@ -1,5 +1,6 @@
 package com.java110.barrier.engine.inout;
 
+import com.java110.barrier.engine.CarInoutEvasionEngine;
 import com.java110.bean.dto.car.OwnerCarDto;
 import com.java110.bean.dto.coupon.ParkingCouponCarDto;
 import com.java110.bean.po.coupon.ParkingCouponCarOrderPo;
@@ -36,6 +37,9 @@ public class CarOutLogEngine extends CarEngine{
 
     @Autowired
     private JudgeOwnerCarEngine judgeOwnerCarEngine;
+
+    @Autowired
+    private CarInoutEvasionEngine carInoutEvasionEngine;
 
 
     public void saveCarOutLog(String carNum,
@@ -105,6 +109,7 @@ public class CarOutLogEngine extends CarEngine{
         carInoutServiceImpl.saveCarInout(carInoutPo);
 
         if (CarInoutDto.STATE_IN_FAIL.equals(state)) {
+            carInoutEvasionEngine.detectTailgatingEvasion(machineDto, carNum);
             return;
         }
 

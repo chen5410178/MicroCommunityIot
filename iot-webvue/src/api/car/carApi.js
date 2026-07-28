@@ -1600,3 +1600,77 @@ export function deleteCarInoutHis(data) {
     })
   })
 }
+
+// ===== 逃费检测配置 =====
+export function saveCarInoutEvasionConfig(data) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/carInoutEvasionConfig.saveCarInoutEvasionConfig',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+export function listCarInoutEvasionConfig(params) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/carInoutEvasionConfig.listCarInoutEvasionConfig',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+// ===== 车辆逃费记录 =====
+export function listCarInoutEvasion(params) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/carInoutEvasion.listCarInoutEvasion',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+export function deleteCarInoutEvasion(data) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/carInoutEvasion.deleteCarInoutEvasion',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}

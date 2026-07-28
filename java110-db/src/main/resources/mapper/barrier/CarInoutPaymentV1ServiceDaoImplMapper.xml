@@ -8,9 +8,9 @@
     <!-- 保存车辆支付信息 add by wuxw 2018-07-03 -->
     <insert id="saveCarInoutPaymentInfo" parameterType="Map">
         insert into car_inout_payment(
-        real_charge,inout_id,pay_type,payment_id,pa_id,community_id,pay_charge
+        real_charge,inout_id,pay_type,payment_id,pa_id,community_id,pay_charge,remark
         ) values (
-        #{realCharge},#{inoutId},#{payType},#{paymentId},#{paId},#{communityId},#{payCharge}
+        #{realCharge},#{inoutId},#{payType},#{paymentId},#{paId},#{communityId},#{payCharge},#{remark}
         )
     </insert>
 
@@ -19,7 +19,7 @@
     <select id="getCarInoutPaymentInfo" parameterType="Map" resultType="Map">
         select t.real_charge,t.real_charge realCharge,t.inout_id,t.inout_id inoutId,t.pay_type,t.pay_type
         payType,t.payment_id,t.payment_id paymentId,t.pa_id,t.pa_id paId,t.status_cd,t.status_cd
-        statusCd,t.community_id,t.community_id communityId,t.pay_charge,t.pay_charge payCharge,ci.car_num carNum,ci.in_time inTime,ci.state,
+        statusCd,t.community_id,t.community_id communityId,t.pay_charge,t.pay_charge payCharge,t.remark,t.remark remark,ci.car_num carNum,ci.in_time inTime,ci.state,
         td.`name` stateName,td1.name payTypeName,t.create_time createTime
         from car_inout_payment t
         left join car_inout ci on t.inout_id = ci.inout_id and ci.status_cd = '0' and t.community_id = ci.community_id and ci.car_inout = '3306'

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="carInoutEvasionV1ServiceDaoImpl">
+
+    <insert id="saveCarInoutEvasionInfo" parameterType="Map">
+        insert into car_inout_evasion(
+        evasion_id,car_num,community_id,pa_id,pa_num,box_id,inout_id,ci_id,in_time,evasion_time,amount,state,remark,photo_jpg
+        ) values (
+        #{evasionId},#{carNum},#{communityId},#{paId},#{paNum},#{boxId},#{inoutId},#{ciId},#{inTime},#{evasionTime},#{amount},#{state},#{remark},#{photoJpg}
+        )
+    </insert>
+
+    <select id="getCarInoutEvasionInfo" parameterType="Map" resultType="Map">
+        select t.evasion_id evasionId,t.car_num carNum,t.community_id communityId,
+        t.pa_id paId,t.pa_num paNum,t.box_id boxId,t.inout_id inoutId,t.ci_id ciId,
+        t.in_time inTime,t.evasion_time evasionTime,t.amount amount,t.state state,
+        t.remark remark,t.status_cd statusCd,t.create_time createTime,
+        t.photo_jpg photoJpg
+        from car_inout_evasion t
+        where 1=1
+        and t.status_cd = '0'
+        <if test="evasionId !=null and evasionId != ''">
+            and t.evasion_id= #{evasionId}
+        </if>
+        <if test="carNum !=null and carNum != ''">
+            and t.car_num like concat('%', #{carNum}, '%')
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="evasionTimeStart !=null and evasionTimeStart != ''">
+            and t.evasion_time &gt;= #{evasionTimeStart}
+        </if>
+        <if test="evasionTimeEnd !=null and evasionTimeEnd != ''">
+            and t.evasion_time &lt;= #{evasionTimeEnd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state = #{state}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <update id="updateCarInoutEvasionInfo" parameterType="Map">
+        update car_inout_evasion t set t.status_cd = #{statusCd}
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        where 1=1
+        <if test="evasionId !=null and evasionId != ''">
+            and t.evasion_id= #{evasionId}
+        </if>
+    </update>
+
+    <select id="queryCarInoutEvasionsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from car_inout_evasion t
+        where 1=1
+        and t.status_cd = '0'
+        <if test="carNum !=null and carNum != ''">
+            and t.car_num like concat('%', #{carNum}, '%')
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="evasionTimeStart !=null and evasionTimeStart != ''">
+            and t.evasion_time &gt;= #{evasionTimeStart}
+        </if>
+        <if test="evasionTimeEnd !=null and evasionTimeEnd != ''">
+            and t.evasion_time &lt;= #{evasionTimeEnd}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state = #{state}
+        </if>
+    </select>
+
+</mapper>

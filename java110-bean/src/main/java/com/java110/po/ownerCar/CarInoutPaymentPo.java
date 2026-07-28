@@ -35,6 +35,7 @@ public class CarInoutPaymentPo implements Serializable {
     private String statusCd = "0";
     private String communityId;
     private String payCharge;
+    private String remark;
 
     public String getRealCharge() {
         return realCharge;
@@ -98,6 +99,14 @@ public class CarInoutPaymentPo implements Serializable {
 
     public void setPayCharge(String payCharge) {
         this.payCharge = payCharge;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
 

@@ -43,6 +43,18 @@
 						<text class="text-grey text-sm">{{amount + '元' }}</text>
 					</view>
 				</view>
+				<view class="cu-list menu" v-if="evasions.length > 0">
+					<view class="cu-item" v-for="(item, index) in evasions" :key="item.evasionId">
+						<view class="content">
+							<text class="text-grey">逃费记录 {{ index + 1 }}</text>
+							<text class="text-sm">{{ item.evasionTime }} 金额: {{ item.amount || '0.00' }}元</text>
+						</view>
+						<view class="action">
+							<checkbox :checked="evasionIds.includes(item.evasionId)" 
+								@click="toggleEvasion(item)"/>
+						</view>
+					</view>
+				</view>
 				<view class="cu-list menu margin-top" @click="_selectCoupons">
 					<view class="cu-item arrow">
 						<view class="content padding-tb-sm">
@@ -95,7 +107,7 @@
 	
 	export default {
 		data() {
-			return {
+		return {
 				paId: '',
 				carNum: '',
 				machineId:'',
@@ -110,7 +122,10 @@
 				couponCount: 0,
 				communityId:'',
 				couponList: [],
-				wxAli:'WECHAT'
+				wxAli:'WECHAT',
+				evasions: [],
+				evasionIds: [],
+				evasionAmount: 0
 			};
 		},
 		/**
@@ -155,6 +170,12 @@
 					_that.amount = data.amount;
 					_that.queryTime = data.queryTime;
 					_that.inoutId = data.orderId;
+					if (data.evasions && data.evasions.length > 0) {
+						_that.evasions = data.evasions;
+						_that.evasionIds = data.evasions.map(e => e.evasionId);
+						_that.evasionAmount = data.evasions.reduce((sum, e) => sum + parseFloat(e.amount || 0), 0);
+						_that.amount = (parseFloat(_that.amount) + _that.evasionAmount).toFixed(2);
+					}
 				})
 			},
 			_dealCarCoupons: function() {
@@ -194,7 +215,9 @@
 					cashierUserId:'-1',
 					machineId:this.machineId,
 					communityId:this.communityId,
-					wxAli : this.wxAli
+					wxAli : this.wxAli,
+					evasionIds: this.evasionIds,
+					evasionAmount: this.evasionAmount
 				};
 				let _that = this;
 				toPayTempCarFee(_objData)
@@ -234,6 +257,18 @@
 						duration: 2000
 					});
 				})
+			},
+			toggleEvasion: function(item) {
+				let idx = this.evasionIds.indexOf(item.evasionId);
+				let itemAmount = parseFloat(item.amount || 0);
+				if (idx >= 0) {
+					this.evasionIds.splice(idx, 1);
+					this.evasionAmount -= itemAmount;
+				} else {
+					this.evasionIds.push(item.evasionId);
+					this.evasionAmount += itemAmount;
+				}
+				this.amount = (parseFloat(this.amount) + (idx >= 0 ? -itemAmount : itemAmount)).toFixed(2);
 			},
 			onReQuery:function(){
 				// uni.navigateTo({

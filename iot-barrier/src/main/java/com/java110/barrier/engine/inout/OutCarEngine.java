@@ -1,5 +1,6 @@
 package com.java110.barrier.engine.inout;
 
+import com.java110.barrier.engine.CarInoutEvasionEngine;
 import com.java110.barrier.engine.IComputeTempCarFee;
 import com.java110.barrier.engine.IInOutCarTextEngine;
 import com.java110.barrier.engine.IOutCarEngine;
@@ -69,6 +70,9 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
     @Autowired
     private ICarInoutPaymentV1InnerServiceSMO carInoutPaymentV1InnerServiceSMOImpl;
 
+    @Autowired
+    private CarInoutEvasionEngine carInoutEvasionEngine;
+
 
     @Override
     public ResultParkingAreaTextDto outParkingArea(String type, String carNum, BarrierDto machineDto,
@@ -83,6 +87,12 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         carInoutDto.setStates(new String[]{CarInoutDto.STATE_IN, CarInoutDto.STATE_PAY});
         List<CarInoutDto> carInoutDtos = carInoutServiceImpl.queryCarInouts(carInoutDto);
         CarDayDto carDayDto = judgeOwnerCarEngine.judgeOwnerCar(machineDto, carNum, parkingAreaDtos);
+
+        // 场景2：无进场记录时尝试补录进场记录
+        if (ListUtil.isNull(carInoutDtos)) {
+            carInoutDtos = carInoutEvasionEngine.tryFillEntryAndReQuery(
+                carNum, machineDto, getDefaultPaId(parkingAreaDtos));
+        }
 
         if (ListUtil.isNull(carInoutDtos)) {
             if ("N".equals(parkingAreaDtos.get(0).getYelowCarIn())) {

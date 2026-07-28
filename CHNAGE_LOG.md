@@ -182,3 +182,122 @@ INSERT INTO `hc_iot`.`p_privilege` (`p_id`, `name`, `description`, `create_time`
 INSERT INTO `hc_iot`.`p_privilege_rel` (`rel_id`, `p_id`, `pg_id`, `level_cd`, `create_time`, `status_cd`) VALUES ('102026072743270003', '502026072706260002', '600201904002', '1001', '2026-07-27 09:02:56', '0');
 
 ```
+
+## 2026-07-28 - 逃费检测功能
+
+### 场景说明
+
+**逃费检测**：车辆出厂失败（未缴费/跟车）时触发尾随逃费检测，若后续有其他车辆在同一岗亭正常出厂，则判定前车为尾随逃费，自动生成逃费记录。
+
+**无进场记录补录**：车辆出厂时查不到进场记录的，系统根据历史出场数据推算进场时间并补录虚拟进场记录，避免因缺失进场数据导致无法计费。
+
+**逃费补缴**：用户支付临停费时，前端展示该车未处理的逃费记录，用户可勾选一并支付。支付完成后逃费记录状态变更为"已处理"。
+
+### DDL
+
+```sql
+-- 逃费检测配置表
+CREATE TABLE `car_inout_evasion_config` (
+  `config_id` varchar(30) NOT NULL COMMENT '配置ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `evasion_open` varchar(2) NOT NULL DEFAULT 'N' COMMENT '是否开启逃费检测 Y/N',
+  `query_days` varchar(4) NOT NULL DEFAULT '1' COMMENT '查询天数',
+  `query_minutes` varchar(4) NOT NULL DEFAULT '30' COMMENT '停车时长阈值（分钟）',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '状态 0在用 1失效',
+  PRIMARY KEY (`config_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='逃费检测配置表';
+
+-- 逃费记录表
+CREATE TABLE `car_inout_evasion` (
+  `evasion_id` varchar(30) NOT NULL COMMENT '逃费记录ID',
+  `car_num` varchar(16) NOT NULL COMMENT '车牌号',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
+  `pa_num` varchar(12) NOT NULL COMMENT '停车场编号',
+  `box_id` varchar(30) DEFAULT NULL COMMENT '岗亭ID',
+  `inout_id` varchar(30) DEFAULT NULL COMMENT '出场记录ID',
+  `ci_id` varchar(30) DEFAULT NULL COMMENT '进场记录ID',
+  `in_time` datetime DEFAULT NULL COMMENT '进场时间',
+  `evasion_time` datetime NOT NULL COMMENT '逃费时间',
+  `amount` decimal(10,2) DEFAULT NULL COMMENT '应缴金额',
+  `state` varchar(2) NOT NULL DEFAULT 'W' COMMENT '状态 W待处理 D已处理',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `photo_jpg` varchar(500) DEFAULT NULL COMMENT '抓拍图片URL',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '状态 0在用 1失效',
+  PRIMARY KEY (`evasion_id`),
+  KEY `idx_car_num` (`car_num`),
+  KEY `idx_community_id` (`community_id`),
+  KEY `idx_evasion_time` (`evasion_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='车辆逃费记录表';
+
+-- car_inout_payment 增加 remark 字段
+ALTER TABLE `car_inout_payment` ADD COLUMN `remark` varchar(500) DEFAULT NULL COMMENT '备注';
+```
+
+### c_service
+
+```sql
+INSERT INTO `hc_iot`.`c_service` (`service_id`, `service_code`, `business_type_cd`, `name`, `seq`, `is_instance`, `url`, `method`, `timeout`, `retry_count`, `create_time`, `status_cd`) VALUES ('98202607280000001', 'carInoutEvasionConfig.listCarInoutEvasionConfig', 'API', '查询逃费检测配置', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', now(), '0');
+INSERT INTO `hc_iot`.`c_service` (`service_id`, `service_code`, `business_type_cd`, `name`, `seq`, `is_instance`, `url`, `method`, `timeout`, `retry_count`, `create_time`, `status_cd`) VALUES ('98202607280000002', 'carInoutEvasionConfig.saveCarInoutEvasionConfig', 'API', '保存逃费检测配置', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', now(), '0');
+INSERT INTO `hc_iot`.`c_service` (`service_id`, `service_code`, `business_type_cd`, `name`, `seq`, `is_instance`, `url`, `method`, `timeout`, `retry_count`, `create_time`, `status_cd`) VALUES ('98202607280000003', 'carInoutEvasion.listCarInoutEvasion', 'API', '查询车辆逃费记录', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', now(), '0');
+INSERT INTO `hc_iot`.`c_service` (`service_id`, `service_code`, `business_type_cd`, `name`, `seq`, `is_instance`, `url`, `method`, `timeout`, `retry_count`, `create_time`, `status_cd`) VALUES ('98202607280000004', 'carInoutEvasion.deleteCarInoutEvasion', 'API', '删除车辆逃费记录', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', now(), '0');
+```
+
+### c_route
+
+```sql
+INSERT INTO `hc_iot`.`c_route` (`id`, `app_id`, `service_id`, `order_type_cd`, `invoke_limit_times`, `invoke_model`, `create_time`, `status_cd`) VALUES ('10202607280000001', '992023010100000001', '98202607280000001', 'Q', '1000', 'S', now(), '0');
+INSERT INTO `hc_iot`.`c_route` (`id`, `app_id`, `service_id`, `order_type_cd`, `invoke_limit_times`, `invoke_model`, `create_time`, `status_cd`) VALUES ('10202607280000002', '992023010100000001', '98202607280000002', 'D', '1000', 'S', now(), '0');
+INSERT INTO `hc_iot`.`c_route` (`id`, `app_id`, `service_id`, `order_type_cd`, `invoke_limit_times`, `invoke_model`, `create_time`, `status_cd`) VALUES ('10202607280000003', '992023010100000001', '98202607280000003', 'Q', '1000', 'S', now(), '0');
+INSERT INTO `hc_iot`.`c_route` (`id`, `app_id`, `service_id`, `order_type_cd`, `invoke_limit_times`, `invoke_model`, `create_time`, `status_cd`) VALUES ('10202607280000004', '992023010100000001', '98202607280000004', 'D', '1000', 'S', now(), '0');
+```
+
+### 菜单 & 权限
+
+```sql
+INSERT INTO `hc_iot`.`m_menu` (`m_id`, `name`, `g_id`, `url`, `seq`, `p_id`, `description`, `create_time`, `status_cd`, `is_show`) VALUES ('70202607280000001', '逃费检测设置', '802023082372950010', '/#/pages/car/listCarInoutEvasionConfig', '14', '50202607280000001', '', now(), '0', 'Y');
+INSERT INTO `hc_iot`.`m_menu` (`m_id`, `name`, `g_id`, `url`, `seq`, `p_id`, `description`, `create_time`, `status_cd`, `is_show`) VALUES ('70202607280000002', '逃费记录', '802023082372950010', '/#/pages/car/listCarInoutEvasion', '15', '50202607280000002', '', now(), '0', 'Y');
+
+INSERT INTO `hc_iot`.`p_privilege` (`p_id`, `name`, `description`, `create_time`, `status_cd`, `domain`, `resource`, `m_id`) VALUES ('50202607280000001', '逃费检测设置', '', now(), '0', '800900000003', '/#/pages/car/listCarInoutEvasionConfig', '70202607280000001');
+INSERT INTO `hc_iot`.`p_privilege` (`p_id`, `name`, `description`, `create_time`, `status_cd`, `domain`, `resource`, `m_id`) VALUES ('50202607280000002', '逃费记录', '', now(), '0', '800900000003', '/#/pages/car/listCarInoutEvasion', '70202607280000002');
+
+INSERT INTO `hc_iot`.`p_privilege_rel` (`rel_id`, `p_id`, `pg_id`, `level_cd`, `create_time`, `status_cd`) VALUES ('10202607280000005', '50202607280000001', '600201904002', '1001', now(), '0');
+INSERT INTO `hc_iot`.`p_privilege_rel` (`rel_id`, `p_id`, `pg_id`, `level_cd`, `create_time`, `status_cd`) VALUES ('10202607280000006', '50202607280000002', '600201904002', '1001', now(), '0');
+```
+
+### 变更说明
+
+**后端**：
+- **新建表** `car_inout_evasion_config`：逃费检测配置（开启开关、查询天数、停车时长阈值）
+- **新建表** `car_inout_evasion`：逃费记录（车牌、岗亭、进出时间、金额、状态、抓拍图片）
+- **新建引擎** `CarInoutEvasionEngine`：
+  - `detectTailgatingEvasion()`：出厂失败时检测尾随逃费，自动生成逃费记录
+  - `tryFillEntryAndReQuery()`：无进场记录时补录虚拟进场记录
+- **新建Cmd**：
+  - `ListCarInoutEvasionConfigCmd`：查询逃费配置
+  - `SaveCarInoutEvasionConfigCmd`：保存/修改逃费配置
+  - `ListCarInoutEvasionCmd`：查询逃费记录列表
+  - `DeleteCarInoutEvasionCmd`：删除逃费记录
+- **引擎集成**：
+  - `CarOutLogEngine.saveCarOutLog()`：出厂失败后触发逃费检测
+  - `OutCarEngine.outParkingArea()`：无进场记录时尝试补录
+  - `BarrierEngineImpl`：查询出场记录时补录；支付时处理逃费补缴
+- **支付链路**：`TempCarFeeCreateOrderV1InnerServiceSMOImpl` 支持 `evasionIds`/`evasionAmount` 参数
+- `CarInoutEvasionPo`：新增 `photoJpg` 字段
+- `CarInoutEvasionDto`：新增 `photoJpg` 字段
+- `TempCarPayOrderDto`：新增 `evasionIds`、`evasionAmount` 字段
+- `CarInoutPaymentPo`：新增 `remark` 字段
+- `CarInoutDto`：新增 `boxId` 字段用于岗亭级查询
+- Mapper XML 同步更新：`CarInoutEvasionV1ServiceDaoImplMapper.xml`、`CarInoutEvasionConfigV1ServiceDaoImplMapper.xml`、`CarInoutPaymentV1ServiceDaoImplMapper.xml`、`CarInoutV1ServiceDaoImplMapper.xml`
+
+**前端（PC端）**：
+- `listCarInoutEvasionConfig.vue`：逃费检测设置页面（开关、查询天数、阈值）
+- `listCarInoutEvasion.vue`：逃费记录列表页（含抓拍图片预览列）
+- `parkingBox.vue`：岗亭页增加"逃费设置"按钮入口
+- `carApi.js`：新增 4 个 API 函数（配置保存/查询、记录查询/删除）
+- `carRouter.js`：新增 2 条路由（逃费检测设置、逃费记录）
+
+**前端（H5/小程序）**：
+- `tempCarFee.vue`：临停缴费页展示逃费记录列表，支持勾选逃费记录一并支付

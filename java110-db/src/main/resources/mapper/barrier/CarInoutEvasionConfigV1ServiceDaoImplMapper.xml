@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="carInoutEvasionConfigV1ServiceDaoImpl">
+
+    <insert id="saveCarInoutEvasionConfigInfo" parameterType="Map">
+        insert into car_inout_evasion_config(
+        config_id,community_id,evasion_open,query_days,query_minutes
+        ) values (
+        #{configId},#{communityId},#{evasionOpen},#{queryDays},#{queryMinutes}
+        )
+    </insert>
+
+    <select id="getCarInoutEvasionConfigInfo" parameterType="Map" resultType="Map">
+        select t.config_id configId,t.community_id communityId,t.evasion_open evasionOpen,
+        t.query_days queryDays,t.query_minutes queryMinutes,t.status_cd statusCd
+        from car_inout_evasion_config t
+        where 1=1
+        and t.status_cd = '0'
+        <if test="configId !=null and configId != ''">
+            and t.config_id= #{configId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="evasionOpen !=null and evasionOpen != ''">
+            and t.evasion_open= #{evasionOpen}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <update id="updateCarInoutEvasionConfigInfo" parameterType="Map">
+        update car_inout_evasion_config t set t.status_cd = #{statusCd}
+        <if test="evasionOpen !=null and evasionOpen != ''">
+            , t.evasion_open= #{evasionOpen}
+        </if>
+        <if test="queryDays !=null and queryDays != ''">
+            , t.query_days= #{queryDays}
+        </if>
+        <if test="queryMinutes !=null and queryMinutes != ''">
+            , t.query_minutes= #{queryMinutes}
+        </if>
+        where 1=1
+        <if test="configId !=null and configId != ''">
+            and t.config_id= #{configId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+    </update>
+
+</mapper>

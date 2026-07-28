@@ -27,7 +27,10 @@
     <el-card shadow="never" class="table-card">
       <div slot="header" class="card-header">
         <span>岗亭信息</span>
-        <el-button type="primary" size="small" @click="handleAdd">添加</el-button>
+        <div>
+          <el-button type="primary" size="small" @click="handleAdd">添加</el-button>
+          <el-button type="warning" size="small" @click="handleEvasionConfig">逃费设置</el-button>
+        </div>
       </div>
       <el-table :data="list" v-loading="loading" border stripe>
         <el-table-column prop="boxId" label="岗亭编号" min-width="120" />
@@ -159,6 +162,9 @@ export default {
     },
     handleControl(row) {
       this.$router.push({ path: '/pages/car/parkingAreaControl', query: { boxId: row.boxId, paId: row.paId } })
+    },
+    handleEvasionConfig() {
+      this.$router.push({ path: '/pages/car/listCarInoutEvasionConfig' })
     },
     handleSuccess() {
       this.fetchList()

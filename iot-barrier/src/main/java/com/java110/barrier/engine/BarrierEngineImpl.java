@@ -17,6 +17,7 @@ import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.*;
 import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.carInout.CarInoutDto;
+import com.java110.dto.carInoutEvasion.CarInoutEvasionDto;
 import com.java110.dto.fee.TempCarFeeConfigDto;
 import com.java110.dto.fee.TempCarFeeResult;
 import com.java110.dto.fee.TempCarPayOrderDto;
@@ -29,6 +30,7 @@ import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
 import com.java110.intf.car.IParkingCouponCarOrderV1InnerServiceSMO;
 import com.java110.intf.car.IParkingCouponCarV1InnerServiceSMO;
 import com.java110.po.carInout.CarInoutPo;
+import com.java110.po.carInoutEvasion.CarInoutEvasionPo;
 import com.java110.po.manualOpenDoorLog.ManualOpenDoorLogPo;
 import com.java110.po.ownerCar.CarInoutPaymentPo;
 import org.slf4j.Logger;
@@ -78,6 +80,12 @@ public class BarrierEngineImpl implements IBarrierEngine {
     @Autowired
     private IParkingCouponCarOrderV1InnerServiceSMO parkingCouponCarOrderV1InnerServiceSMOImpl;
 
+    @Autowired
+    private CarInoutEvasionEngine carInoutEvasionEngine;
+
+    @Autowired
+    private ICarInoutEvasionV1InnerServiceSMO carInoutEvasionV1InnerServiceSMOImpl;
+
     @Override
     public ResultVo getTempCarFeeOrder(TempCarPayOrderDto tempCarPayOrderDto) {
 
@@ -99,6 +107,16 @@ public class BarrierEngineImpl implements IBarrierEngine {
         JSONObject data = JSONObject.parseObject(JSONObject.toJSONString(tempCarPayOrderDto));
         data.put("inTime", DateUtil.getFormatTimeString(tempCarPayOrderDto.getInTime(), DateUtil.DATE_FORMATE_STRING_A));
         data.put("queryTime", DateUtil.getFormatTimeString(tempCarPayOrderDto.getQueryTime(), DateUtil.DATE_FORMATE_STRING_A));
+
+        CarInoutEvasionDto evasionDto = new CarInoutEvasionDto();
+        evasionDto.setCarNum(tempCarPayOrderDto.getCarNum());
+        evasionDto.setCommunityId(machineDtos.get(0).getCommunityId());
+        evasionDto.setState(CarInoutEvasionDto.STATE_W);
+        evasionDto.setPage(1);
+        evasionDto.setRow(100);
+        List<CarInoutEvasionDto> evasions = carInoutEvasionV1InnerServiceSMOImpl.queryCarInoutEvasions(evasionDto);
+        data.put("evasions", evasions);
+
         return new ResultVo(ResultVo.CODE_OK, ResultVo.MSG_OK, data);
 
     }
@@ -274,6 +292,12 @@ public class BarrierEngineImpl implements IBarrierEngine {
         carInoutDto.setPaId(paId);
         carInoutDto.setStates(new String[]{CarInoutDto.STATE_IN, CarInoutDto.STATE_PAY});
         List<CarInoutDto> carInoutDtos = carInoutV1InnerServiceSMOImpl.queryCarInouts(carInoutDto);
+
+        // 场景2：无进场记录时补录
+        if (ListUtil.isNull(carInoutDtos)) {
+            carInoutDtos = carInoutEvasionEngine.tryFillEntryAndReQuery(
+                acceptJson.getString("carNum"), machineDto, paId);
+        }
 
         String inoutId = "";
         String inTime = "";
@@ -542,6 +566,26 @@ public class BarrierEngineImpl implements IBarrierEngine {
 
         carInoutPaymentV1InnerServiceSMOImpl.saveCarInoutPayment(carInoutPaymentPo);
 
+        // 逃费补缴处理
+        if (tempCarPayOrderDto.getEvasionIds() != null && tempCarPayOrderDto.getEvasionIds().length > 0) {
+            for (String evasionId : tempCarPayOrderDto.getEvasionIds()) {
+                CarInoutEvasionPo evasionPo = new CarInoutEvasionPo();
+                evasionPo.setEvasionId(evasionId);
+                evasionPo.setState(CarInoutEvasionDto.STATE_D);
+                carInoutEvasionV1InnerServiceSMOImpl.updateCarInoutEvasion(evasionPo);
+
+                CarInoutPaymentPo evasionPaymentPo = new CarInoutPaymentPo();
+                evasionPaymentPo.setPaymentId(GenerateCodeFactory.getGeneratorId("9"));
+                evasionPaymentPo.setCommunityId(carInoutDtos.get(0).getCommunityId());
+                evasionPaymentPo.setInoutId(evasionId);
+                evasionPaymentPo.setPaId(carInoutDtos.get(0).getPaId());
+                evasionPaymentPo.setPayType(tempCarPayOrderDto.getPayType());
+                evasionPaymentPo.setPayCharge("0");
+                evasionPaymentPo.setRealCharge("0");
+                evasionPaymentPo.setRemark("逃费补缴");
+                carInoutPaymentV1InnerServiceSMOImpl.saveCarInoutPayment(evasionPaymentPo);
+            }
+        }
 
         //判断是否有停车劵
         dealParkingCouponCar(tempCarPayOrderDto);
