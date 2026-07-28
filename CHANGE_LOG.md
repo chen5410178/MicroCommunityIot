@@ -276,3 +276,28 @@ INSERT INTO `hc_iot`.`c_mapping` (`id`, `domain`, `name`, `mapping_key`, `value`
 INSERT INTO `hc_iot`.`c_mapping` (`id`, `domain`, `name`, `mapping_key`, `value`, `remark`, `create_time`, `status_cd`) VALUES ('102026072872680004', 'VZICLOUD', 'AccessKey', 'AccessKey', 'xx', '', '2026-07-28 15:27:34', '0');
 
 ```
+
+### 2026-07-28 - MQTT下发日志记录与自动清理
+
+```sql
+-- MQTT下发日志表
+CREATE TABLE `mqtt_send_log` (
+  `log_id` varchar(64) NOT NULL COMMENT '主键ID',
+  `business_id` varchar(64) DEFAULT NULL COMMENT '业务ID（taskId）',
+  `machine_code` varchar(64) DEFAULT NULL COMMENT '相机编码（设备序列号）',
+  `car_num` varchar(16) DEFAULT NULL COMMENT '车牌号',
+  `cmd_type` varchar(16) NOT NULL COMMENT '指令类型：OPEN_DOOR-开闸 CLOSE_DOOR-关闸 VOICE-语音 TEXT-文字显示 SNAPSHOT-抓拍',
+  `topic` varchar(256) DEFAULT NULL COMMENT 'MQTT topic',
+  `context` longtext COMMENT '下发内容（JSON）',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`log_id`),
+  KEY `idx_machine_create` (`machine_code`, `create_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='MQTT下发日志表';
+
+-- c_service
+INSERT INTO `hc_iot`.`c_service` (`service_id`, `service_code`, `business_type_cd`, `name`, `seq`, `is_instance`, `url`, `method`, `timeout`, `retry_count`, `create_time`, `status_cd`) VALUES ('982026072810010001', 'barrier.listMqttSendLog', 'API', 'MQTT下发日志查询', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', now(), '0');
+
+-- c_route
+INSERT INTO `hc_iot`.`c_route` (`id`, `app_id`, `service_id`, `order_type_cd`, `invoke_limit_times`, `invoke_model`, `create_time`, `status_cd`) VALUES ('102026072810010001', '992023010100000001', '982026072810010001', 'Q', '1000', 'S', now(), '0');
+```

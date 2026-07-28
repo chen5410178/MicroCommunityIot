@@ -366,7 +366,7 @@ public class JinjieScreenMqttFactory {
         serialDataObj.put("serialChannel", "1");
         JSONArray serialData = paramIn.getJSONObject("Response_AlarmInfoPlate").getJSONArray("serialData");
         serialData.add(serialDataObj);
-        ZhenshiMqttSend.sendCmd(taskId, carNum, machineDto, paramIn.toJSONString());
+        ZhenshiMqttSend.sendCmd(taskId, carNum, machineDto, "VOICE", paramIn.toJSONString());
     }
 
 

@@ -57,6 +57,7 @@
               <template slot-scope="{ row }">
                 <el-button v-if="row.direction == '3306'" size="small" type="text" @click="handleQrCode(row)">访客码</el-button>
                 <el-button size="small" type="text" @click="handleCameraConsole(row)">管理相机</el-button>
+                <el-button size="small" type="text" @click="handleMqttLog(row)">下发日志</el-button>
                 <el-button size="small" type="text" @click="handleEdit(row)">修改</el-button>
                 <el-button size="small" type="text" style="color: #f56c6c" @click="handleDelete(row)">删除</el-button>
               </template>
@@ -178,6 +179,9 @@ export default {
       }).catch(e => {
         this.$message.error(e.msg || '获取访客码失败')
       })
+    },
+    handleMqttLog(row) {
+      this.$router.push({ path: '/pages/car/mqttSendLog', query: { machineCode: row.machineCode } })
     },
     handleCameraConsole(row) {
       const communityId = (getCurrentCommunity() || {}).communityId || ''

@@ -1,7 +1,8 @@
 package com.java110.barrier.engine.adapt.zhenshiMqtt;
 
+import com.java110.barrier.engine.inout.MqttSendLogEngine;
+import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.MqttFactory;
-import com.java110.core.factory.MqttLogFactory;
 import com.java110.dto.barrier.BarrierDto;
 
 /**
@@ -21,16 +22,20 @@ public class ZhenshiMqttSend {
      * @param cmd
      * @return
      */
-    public static boolean sendCmd(String taskId, String carNum, BarrierDto machineDto, String cmd) {
+    public static boolean sendCmd(String taskId, String carNum, BarrierDto machineDto, String cmdType, String cmd) {
         try {
             MqttFactory.publish(PUBLISH_TOPIC.replace(SN, machineDto.getMachineCode()), cmd);
 
-            MqttLogFactory.saveSendLog(taskId,carNum,PUBLISH_TOPIC.replace(SN, machineDto.getMachineCode()),cmd);
+            getMqttSendLogEngine().saveSendLog(taskId, machineDto.getMachineCode(), carNum, cmdType, PUBLISH_TOPIC.replace(SN, machineDto.getMachineCode()), cmd);
         } catch (Exception e) {
             System.out.println("Error:" + e.getMessage());
             return false;
         }
         return true;
+    }
+
+    private static MqttSendLogEngine getMqttSendLogEngine() {
+        return ApplicationContextFactory.getBean("mqttSendLogEngine", MqttSendLogEngine.class);
     }
 
 }

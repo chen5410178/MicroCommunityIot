@@ -141,7 +141,7 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
                 "}\n" +
                 "}");
         String taskId = GenerateCodeFactory.getUUID();
-        ZhenshiMqttSend.sendCmd(taskId, "无", machineDto, data.toJSONString());
+        ZhenshiMqttSend.sendCmd(taskId, "无", machineDto, "SNAPSHOT", data.toJSONString());
     }
 
     @Override
@@ -154,7 +154,7 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
                 "    }\n" +
                 "}");
         String taskId = GenerateCodeFactory.getUUID();
-        ZhenshiMqttSend.sendCmd(taskId, "手工开闸", machineDto, data.toJSONString());
+        ZhenshiMqttSend.sendCmd(taskId, "手工开闸", machineDto, "SNAPSHOT", data.toJSONString());
     }
 
     @Override
@@ -263,7 +263,7 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
                         "        \"msgId\": \"" + GenerateCodeFactory.getUUID() + "\"\n" +
                         "    }\n" +
                         "}";
-                ZhenshiMqttSend.sendCmd(taskId, license, machineDto, triggerCmd);
+                ZhenshiMqttSend.sendCmd(taskId, license, machineDto, "OPEN_DOOR", triggerCmd);
             }
 
             Thread.sleep(400); //这里停一秒
@@ -338,7 +338,7 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
                 Thread.sleep(400); //这里停一秒
                 JinjieScreenMqttFactory.downloadTempTexts(taskId, carNum, machineDto, 0, "欢迎光临");
                 Thread.sleep(500); //这里停一秒
-                ZhenshiMqttSend.sendCmd(taskId, carNum, machineDto, triggerCmd);
+                ZhenshiMqttSend.sendCmd(taskId, carNum, machineDto, "OPEN_DOOR", triggerCmd);
                 return;
             }
             JinjieScreenMqttFactory.pay(taskId, carNum, machineDto, parkingAreaTextDto.getVoice());
@@ -360,7 +360,7 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
                 JinjieScreenMqttFactory.downloadTempTexts(taskId, carNum, machineDto, 3, parkingAreaTextDto.getText4());
             }
             Thread.sleep(500); //这里停一秒
-            ZhenshiMqttSend.sendCmd(taskId, carNum, machineDto, triggerCmd);
+            ZhenshiMqttSend.sendCmd(taskId, carNum, machineDto, "OPEN_DOOR", triggerCmd);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -378,7 +378,7 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
                 "    }\n" +
                 "}";
         String taskId = GenerateCodeFactory.getUUID();
-        ZhenshiMqttSend.sendCmd(taskId, "手动关门", machineDto, triggerCmd);
+        ZhenshiMqttSend.sendCmd(taskId, "手动关门", machineDto, "CLOSE_DOOR", triggerCmd);
 
     }
 

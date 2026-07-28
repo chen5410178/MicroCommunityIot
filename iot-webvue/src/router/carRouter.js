@@ -142,6 +142,12 @@ const carRoutes = [
     name: 'ListCarInoutEvasion',
     component: () => import('@/views/car/listCarInoutEvasion.vue'),
     meta: { requiresAuth: true, title: '车辆逃费记录' }
+  },
+  {
+    path: 'pages/car/mqttSendLog',
+    name: 'MqttSendLog',
+    component: () => import('@/views/car/mqttSendLog.vue'),
+    meta: { requiresAuth: true, title: 'MQTT下发日志' }
   }
 ]
 

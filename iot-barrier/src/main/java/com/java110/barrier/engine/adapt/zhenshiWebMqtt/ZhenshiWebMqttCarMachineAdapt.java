@@ -139,7 +139,7 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
                 "}\n" +
                 "}");
         String taskId = GenerateCodeFactory.getUUID();
-        ZhenshiMqttSend.sendCmd(taskId, "无", machineDto, data.toJSONString());
+        ZhenshiMqttSend.sendCmd(taskId, "无", machineDto, "SNAPSHOT", data.toJSONString());
     }
 
     /**

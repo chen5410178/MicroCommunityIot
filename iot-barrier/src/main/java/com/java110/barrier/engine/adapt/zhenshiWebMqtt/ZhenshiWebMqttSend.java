@@ -4,8 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.barrier.engine.adapt.kafaScreen.KeFaScreenFactory;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.barrier.engine.inout.MqttSendLogEngine;
+import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.MqttFactory;
-import com.java110.core.factory.MqttLogFactory;
 import com.java110.core.utils.DateUtil;
 import com.java110.dto.barrier.BarrierDto;
 
@@ -56,7 +57,7 @@ public class ZhenshiWebMqttSend {
 
         try {
             MqttFactory.publish(TOPIC_GPIO.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
-            MqttLogFactory.saveSendLog(taskId, carNum, TOPIC_GPIO.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
+            getMqttSendLogEngine().saveSendLog(taskId, machineDto.getMachineCode(), carNum, "OPEN_DOOR", TOPIC_GPIO.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
         } catch (Exception e) {
             System.out.println("Error:" + e.getMessage());
         }
@@ -87,7 +88,7 @@ public class ZhenshiWebMqttSend {
 
         try {
             MqttFactory.publish(TOPIC_GPIO.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
-            MqttLogFactory.saveSendLog(taskId, carNum, TOPIC_GPIO.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
+            getMqttSendLogEngine().saveSendLog(taskId, machineDto.getMachineCode(), carNum, "CLOSE_DOOR", TOPIC_GPIO.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
         } catch (Exception e) {
             System.out.println("Error:" + e.getMessage());
         }
@@ -152,7 +153,7 @@ public class ZhenshiWebMqttSend {
         paramIn.put("payload", payload);
         try {
             MqttFactory.publish(TOPIC_SERIAL_DATA.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
-            MqttLogFactory.saveSendLog(taskId, carNum, TOPIC_SERIAL_DATA.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
+            getMqttSendLogEngine().saveSendLog(taskId, machineDto.getMachineCode(), carNum, "VOICE", TOPIC_SERIAL_DATA.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
         } catch (Exception e) {
             System.out.println("Error:" + e.getMessage());
         }
@@ -195,7 +196,7 @@ public class ZhenshiWebMqttSend {
         paramIn.put("payload", payload);
         try {
             MqttFactory.publish(TOPIC_SERIAL_DATA.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
-            MqttLogFactory.saveSendLog(taskId, carNum, TOPIC_SERIAL_DATA.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
+            getMqttSendLogEngine().saveSendLog(taskId, machineDto.getMachineCode(), carNum, "TEXT", TOPIC_SERIAL_DATA.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
         } catch (Exception e) {
             System.out.println("Error:" + e.getMessage());
         }
@@ -235,9 +236,13 @@ public class ZhenshiWebMqttSend {
         paramIn.put("payload", payload);
         try {
             MqttFactory.publish(TOPIC_SNAPSHOT.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
-            MqttLogFactory.saveSendLog(taskId, carNum, TOPIC_SNAPSHOT.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
+            getMqttSendLogEngine().saveSendLog(taskId, machineDto.getMachineCode(), carNum, "SNAPSHOT", TOPIC_SNAPSHOT.replace(SN, machineDto.getMachineCode()), paramIn.toJSONString());
         } catch (Exception e) {
             System.out.println("Error:" + e.getMessage());
         }
+    }
+
+    private static MqttSendLogEngine getMqttSendLogEngine() {
+        return ApplicationContextFactory.getBean("mqttSendLogEngine", MqttSendLogEngine.class);
     }
 }
