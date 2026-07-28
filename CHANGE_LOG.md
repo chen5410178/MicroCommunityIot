@@ -271,4 +271,8 @@ INSERT INTO `hc_iot`.`c_service` (`service_id`, `service_code`, `business_type_c
 
 -- c_route
 INSERT INTO `hc_iot`.`c_route` (`id`, `app_id`, `service_id`, `order_type_cd`, `invoke_limit_times`, `invoke_model`, `create_time`, `status_cd`) VALUES ('10202607281550001', '992023010100000001', '98202607281550001', 'Q', '1000', 'S', now(), '0');
+INSERT INTO `hc_iot`.`c_mapping_domain` (`id`, `domain`, `domain_name`, `seq`, `remark`, `create_time`, `status_cd`) VALUES ('102026072872520002', 'VZICLOUD', '臻识云', '15', '主要用于 管理相机', '2026-07-28 15:27:18', '0');
+INSERT INTO `hc_iot`.`c_mapping` (`id`, `domain`, `name`, `mapping_key`, `value`, `remark`, `create_time`, `status_cd`) VALUES ('102026072861120005', 'VZICLOUD', 'AccessKeySecret', 'AccessKeySecret', 'xx', '', '2026-07-28 15:27:45', '0');
+INSERT INTO `hc_iot`.`c_mapping` (`id`, `domain`, `name`, `mapping_key`, `value`, `remark`, `create_time`, `status_cd`) VALUES ('102026072872680004', 'VZICLOUD', 'AccessKey', 'AccessKey', 'xx', '', '2026-07-28 15:27:34', '0');
+
 ```
