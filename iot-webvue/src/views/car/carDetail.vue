@@ -269,7 +269,7 @@ export default {
           communityId: (getCurrentCommunity() || {}).communityId || ''
         })
         this.carInoutList = res.data || []
-        this.inoutPage.total = res.records || 0
+        this.inoutPage.total = res.total || 0
       } catch { /* ignore */ } finally {
         this.tabLoading = false
       }

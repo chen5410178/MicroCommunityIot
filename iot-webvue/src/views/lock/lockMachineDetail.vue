@@ -210,7 +210,7 @@ export default {
           row: this.roomPage.row
         })
         this.roomList = res.data || []
-        this.roomTotal = res.records || 0
+        this.roomTotal = res.total || 0
       } catch (e) {
         console.error('获取房屋信息失败', e)
       } finally {
@@ -227,7 +227,7 @@ export default {
           row: this.lockPersonPage.row
         })
         this.lockPersonList = res.data || []
-        this.lockPersonTotal = res.records || 0
+        this.lockPersonTotal = res.total || 0
       } catch (e) {
         console.error('获取门锁授权失败', e)
       } finally {
@@ -244,7 +244,7 @@ export default {
           row: this.lockLogPage.row
         })
         this.lockLogList = res.data || []
-        this.lockLogTotal = res.records || 0
+        this.lockLogTotal = res.total || 0
       } catch (e) {
         console.error('获取下发日志失败', e)
       } finally {
@@ -261,7 +261,7 @@ export default {
           row: this.lockInoutPage.row
         })
         this.lockInoutList = res.data || []
-        this.lockInoutTotal = res.records || 0
+        this.lockInoutTotal = res.total || 0
       } catch (e) {
         console.error('获取开门记录失败', e)
       } finally {

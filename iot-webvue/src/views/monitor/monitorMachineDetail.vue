@@ -202,7 +202,7 @@ export default {
           communityId
         })
         this.areaList = res.data || []
-        this.areaTotal = res.records || 0
+        this.areaTotal = res.total || 0
       } catch (e) {
         console.error('加载监控区域失败', e)
       } finally {
@@ -220,7 +220,7 @@ export default {
           communityId
         })
         this.modelList = res.data || []
-        this.modelTotal = res.records || 0
+        this.modelTotal = res.total || 0
       } catch (e) {
         console.error('加载监控模型失败', e)
       } finally {
@@ -238,7 +238,7 @@ export default {
           communityId
         })
         this.poolList = res.data || []
-        this.poolTotal = res.records || 0
+        this.poolTotal = res.total || 0
       } catch (e) {
         console.error('加载监控告警失败', e)
       } finally {

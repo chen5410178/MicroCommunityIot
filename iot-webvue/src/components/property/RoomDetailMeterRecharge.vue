@@ -41,7 +41,7 @@ export default {
         const communityInfo = getCurrentCommunity() || {}
         const res = await listMeterMachineReadOrRechargeDetail({ communityId: communityInfo.communityId, roomId: this.roomId, detailType: '1001', page: this.page, row: this.row })
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } catch (e) { this.list = [] }
       finally { this.loading = false }
     },

@@ -149,7 +149,7 @@ export default {
           row: this.operationPage.row
         })
         this.operationList = res.data || []
-        this.operationTotal = res.records || 0
+        this.operationTotal = res.total || 0
       } catch (e) {
         console.error('加载操作日志失败', e)
       } finally {
@@ -165,7 +165,7 @@ export default {
           row: this.logPage.row
         })
         this.logList = res.data || []
-        this.logTotal = res.records || 0
+        this.logTotal = res.total || 0
       } catch (e) {
         console.error('加载下发日志失败', e)
       } finally {

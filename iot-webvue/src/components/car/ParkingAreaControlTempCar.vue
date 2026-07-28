@@ -63,7 +63,7 @@ export default {
           communityId
         })
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } catch (e) {
         console.error('获取临时车失败', e)
       } finally {

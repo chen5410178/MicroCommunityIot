@@ -139,7 +139,7 @@ export default {
         const params = { ...this.queryParams, machineId: this.selectedMachineId, communityId: community ? community.communityId : '' }
         const res = await listLiftMachineAcs(params)
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } finally {
         this.loading = false
       }

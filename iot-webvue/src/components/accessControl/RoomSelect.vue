@@ -121,7 +121,7 @@ export default {
         const params = { ...this.queryParams }
         const res = await queryRooms(params)
         this.roomList = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } finally {
         this.loading = false
       }

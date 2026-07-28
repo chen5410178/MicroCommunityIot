@@ -86,7 +86,7 @@ export default {
         const params = { ...this.queryParams, communityId: communityInfo.communityId }
         const res = await listMachineLocations(params)
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } finally { this.loading = false }
     },
     handleSearch() { this.queryParams.page = 1; this.fetchList() },

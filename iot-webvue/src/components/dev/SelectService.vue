@@ -79,7 +79,7 @@ export default {
         }
         const res = await listServices(params)
         this.tableData = res.data || []
-        this.page.total = res.records || 0
+        this.page.total = res.total || 0
       } finally {
         this.loading = false
       }

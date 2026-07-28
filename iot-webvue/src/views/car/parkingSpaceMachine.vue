@@ -96,7 +96,7 @@ export default {
         const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listParkingSpaceMachines({ ...this.queryParams, communityId })
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } finally {
         this.loading = false
       }

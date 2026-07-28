@@ -69,7 +69,7 @@ export default {
         const params = { ...this.queryParams, communityId: community ? community.communityId : '' }
         const res = await listUserDownloadFile(params)
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } finally {
         this.loading = false
       }

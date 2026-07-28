@@ -140,7 +140,7 @@ export default {
       try {
         const res = await queryOwners({ ...this.queryParams, ownerTypeCd: '1001' })
         this.ownerList = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } catch (e) {
         this.$message.error(e.message || '查询失败')
       } finally {

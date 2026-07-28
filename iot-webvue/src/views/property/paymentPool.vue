@@ -126,7 +126,7 @@ export default {
         }
         const res = await listPaymentPool(params)
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } catch (e) {
         this.$message.error(e.msg || '查询失败')
       } finally {

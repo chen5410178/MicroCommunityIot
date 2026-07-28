@@ -103,7 +103,7 @@ export default {
         const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listInstrumentLogs({ ...this.logQuery, communityId, machineId: this.machineId })
         this.logList = res.data || []
-        this.logTotal = res.records || 0
+        this.logTotal = res.total || 0
       } catch (e) {
         console.log('获取上报日志失败')
       } finally {

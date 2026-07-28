@@ -133,7 +133,7 @@ export default {
       try {
         const res = await listServices(this.serviceSearch)
         this.serviceList = res.data || []
-        this.serviceTotal = res.records || 0
+        this.serviceTotal = res.total || 0
       } finally {
         this.serviceLoading = false
       }

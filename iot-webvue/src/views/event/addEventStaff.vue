@@ -137,7 +137,7 @@ export default {
           communityId: community.communityId
         })
         this.staffList = res.data || []
-        this.staffTotal = res.records || 0
+        this.staffTotal = res.total || 0
       } catch {
         this.staffList = []
         this.staffTotal = 0

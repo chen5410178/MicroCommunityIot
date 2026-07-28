@@ -112,7 +112,7 @@ export default {
         const params = { ...this.queryParams, machineId: this.currentMonitor.machineId, communityId }
         const res = await listMonitorRecords(params)
         this.videoList = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } finally {
         this.loading = false
       }

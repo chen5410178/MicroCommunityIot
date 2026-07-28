@@ -211,7 +211,7 @@ export default {
         }
         const res = await queryRooms(params)
         this.roomList = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
         this.buildDynamicColumns()
       } catch (e) { this.$message.error(e.message || '查询失败') }
       finally { this.loading = false }

@@ -165,7 +165,7 @@ export default {
           }
         })
         this.deviceList = res.data || []
-        this.deviceTotal = res.records || 0
+        this.deviceTotal = res.total || 0
       } catch {
         this.deviceList = []
         this.deviceTotal = 0

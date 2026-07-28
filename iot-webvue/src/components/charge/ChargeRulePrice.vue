@@ -84,7 +84,7 @@ export default {
         const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listChargeRulePrice({ ...this.queryParams, ruleId: this.ruleId, chargeType: this.chargeType, communityId })
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } finally {
         this.loading = false
       }

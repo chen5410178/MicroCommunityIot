@@ -89,7 +89,7 @@ export default {
           communityId: communityInfo.communityId
         })
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } catch (e) {
         console.error('加载进出记录失败', e)
       } finally {

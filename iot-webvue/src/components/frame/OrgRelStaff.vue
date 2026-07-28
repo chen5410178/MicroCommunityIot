@@ -93,7 +93,7 @@ export default {
           communityId: community.communityId
         })
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
         this.$nextTick(() => {
           if (this.$refs.tableRef) {
             this.$refs.tableRef.clearSelection()

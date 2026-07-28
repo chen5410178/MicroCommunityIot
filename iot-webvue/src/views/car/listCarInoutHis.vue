@@ -133,7 +133,7 @@ export default {
         params.communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listCarInoutHisDetails(params)
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } catch (e) {
         this.$message.error(e.message || '查询失败')
       } finally {

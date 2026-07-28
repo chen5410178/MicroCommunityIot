@@ -261,7 +261,7 @@ export default {
           row: this.acPage.row
         })
         this.acList = res.data || []
-        this.acTotal = res.records || 0
+        this.acTotal = res.total || 0
       } catch (e) {
         console.error('加载门禁列表失败', e)
       } finally {
@@ -277,7 +277,7 @@ export default {
           row: this.reservationPage.row
         })
         this.reservationList = res.data || []
-        this.reservationTotal = res.records || 0
+        this.reservationTotal = res.total || 0
       } catch (e) {
         console.error('加载预约记录失败', e)
       } finally {
@@ -293,7 +293,7 @@ export default {
           row: this.logPage.row
         })
         this.logList = res.data || []
-        this.logTotal = res.records || 0
+        this.logTotal = res.total || 0
       } catch (e) {
         console.error('加载日志失败', e)
       } finally {
@@ -309,7 +309,7 @@ export default {
           row: this.ridePage.row
         })
         this.rideList = res.data || []
-        this.rideTotal = res.records || 0
+        this.rideTotal = res.total || 0
       } catch (e) {
         console.error('加载乘坐记录失败', e)
       } finally {

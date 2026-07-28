@@ -67,7 +67,7 @@ export default {
           row: this.row
         })
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } finally { this.loading = false }
     },
     handleSizeChange(val) { this.row = val; this.page = 1; this.fetchList() },

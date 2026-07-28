@@ -48,7 +48,7 @@ export default {
         const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listCarBlackWhites({ ...this.queryParams, paId: this.paId, communityId, blackWhite: '3333' })
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } catch (e) { console.error('获取黑名单失败', e) } finally { this.loading = false }
     },
     handleSearch() { this.queryParams.page = 1; this.loadData() },

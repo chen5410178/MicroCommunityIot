@@ -130,7 +130,7 @@ export default {
       try {
         const res = await listMenuGroups({ ...this.queryParams, storeType: this.currentStoreType })
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } finally {
         this.loading = false
       }

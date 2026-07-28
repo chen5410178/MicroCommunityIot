@@ -183,7 +183,7 @@ export default {
       try {
         const res = await listDicts(this.dictQuery)
         this.dictList = res.data || []
-        this.dictTotal = res.records || 0
+        this.dictTotal = res.total || 0
       } finally {
         this.dictLoading = false
       }
@@ -225,7 +225,7 @@ export default {
       try {
         const res = await listDictSpecs(this.specQuery)
         this.specListPage = res.data || []
-        this.specTotal = res.records || 0
+        this.specTotal = res.total || 0
       } finally {
         this.specLoading = false
       }

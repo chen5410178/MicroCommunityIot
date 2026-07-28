@@ -65,7 +65,7 @@ export default {
           row: this.row
         })
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
         if (this.list.length && this.list[0].listColumns) {
           this.dynamicColumns = this.list[0].listColumns
         }

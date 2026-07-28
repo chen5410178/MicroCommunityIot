@@ -56,7 +56,7 @@ export default {
           communityId
         })
         this.list = res.data || []
-        this.total = res.records || 0
+        this.total = res.total || 0
       } catch (e) { console.error('获取开闸日志失败', e) } finally { this.loading = false }
     },
     handleSearch() { this.queryParams.page = 1; this.loadData() },

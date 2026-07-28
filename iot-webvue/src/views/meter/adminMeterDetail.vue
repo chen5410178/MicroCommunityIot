@@ -184,7 +184,7 @@ export default {
           row: this.roomPage.row
         })
         this.roomList = res.data || []
-        this.roomTotal = res.records || 0
+        this.roomTotal = res.total || 0
       } catch (e) {
         console.error('加载房屋信息失败', e)
       } finally {
@@ -201,7 +201,7 @@ export default {
           row: this.readPage.row
         })
         this.readList = res.data || []
-        this.readTotal = res.records || 0
+        this.readTotal = res.total || 0
       } catch (e) {
         console.error('加载抄表记录失败', e)
       } finally {
