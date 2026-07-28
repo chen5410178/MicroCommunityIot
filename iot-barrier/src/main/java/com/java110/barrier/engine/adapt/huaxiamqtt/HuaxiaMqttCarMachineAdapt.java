@@ -350,5 +350,10 @@ public class HuaxiaMqttCarMachineAdapt extends BaseMachineAdapt implements ICarM
         return null;
     }
 
+    @Override
+    public ResultVo getDeviceWebUrl(BarrierDto barrierDto) {
+        return new ResultVo(ResultVo.CODE_ERROR, "当前设备厂家不支持远程管理控制台");
+    }
+
 
 }

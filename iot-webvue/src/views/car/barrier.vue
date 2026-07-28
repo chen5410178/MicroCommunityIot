@@ -53,9 +53,10 @@
             <el-table-column prop="monitorName" label="监控" min-width="120" />
             <el-table-column prop="heartbeatTime" label="心跳时间" min-width="150" />
             <el-table-column prop="createTime" label="创建时间" min-width="150" />
-            <el-table-column label="操作" width="180" fixed="right" align="center">
+            <el-table-column label="操作" width="260" fixed="right" align="center">
               <template slot-scope="{ row }">
                 <el-button v-if="row.direction == '3306'" size="small" type="text" @click="handleQrCode(row)">访客码</el-button>
+                <el-button size="small" type="text" @click="handleCameraConsole(row)">管理相机</el-button>
                 <el-button size="small" type="text" @click="handleEdit(row)">修改</el-button>
                 <el-button size="small" type="text" style="color: #f56c6c" @click="handleDelete(row)">删除</el-button>
               </template>
@@ -87,7 +88,7 @@
 </template>
 
 <script>
-import { listBarriers, listParkingBoxs, getVisitQrCodeUrl } from '@/api/car/carApi'
+import { listBarriers, listParkingBoxs, getVisitQrCodeUrl, openBarrierCameraConsole } from '@/api/car/carApi'
 import AddBarrier from '@/components/car/AddBarrier.vue'
 import EditBarrier from '@/components/car/EditBarrier.vue'
 import DeleteBarrier from '@/components/car/DeleteBarrier.vue'
@@ -176,6 +177,19 @@ export default {
         this.qrVisible = true
       }).catch(e => {
         this.$message.error(e.msg || '获取访客码失败')
+      })
+    },
+    handleCameraConsole(row) {
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
+      openBarrierCameraConsole({ machineId: row.machineId, communityId }).then(res => {
+        const url = (res.data && res.data.url) || ''
+        if (url) {
+          window.open(url)
+        } else {
+          this.$message.error('未获取到设备控制台地址')
+        }
+      }).catch(e => {
+        this.$message.error(e.msg || '获取设备控制台地址失败')
       })
     },
     handleSuccess() {

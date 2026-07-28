@@ -1302,6 +1302,25 @@ export function getCloudFlvVideo(params) {
   })
 }
 
+// ===== 管理相机(远程控制台) =====
+export function openBarrierCameraConsole(params) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/barrier.openBarrierCameraConsole',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '获取设备控制台地址失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
 // ===== 剩余车位数 =====
 export function getFreeParkingSpace(params) {
   return new Promise((resolve, reject) => {

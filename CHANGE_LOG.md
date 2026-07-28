@@ -263,3 +263,12 @@ INSERT INTO `hc_iot`.`p_privilege` (`p_id`, `name`, `description`, `create_time`
 INSERT INTO `hc_iot`.`p_privilege_rel` (`rel_id`, `p_id`, `pg_id`, `level_cd`, `create_time`, `status_cd`) VALUES ('102026072805330003', '502026072865190002', '600201904002', '1001', '2026-07-28 14:50:06', '0');
 ```
 
+### 2026-07-28 - 道闸摄像头远程管理控制台
+
+```sql
+-- c_service
+INSERT INTO `hc_iot`.`c_service` (`service_id`, `service_code`, `business_type_cd`, `name`, `seq`, `is_instance`, `url`, `method`, `timeout`, `retry_count`, `create_time`, `status_cd`) VALUES ('98202607281550001', 'barrier.openBarrierCameraConsole', 'API', '道闸摄像头远程管理控制台', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', now(), '0');
+
+-- c_route
+INSERT INTO `hc_iot`.`c_route` (`id`, `app_id`, `service_id`, `order_type_cd`, `invoke_limit_times`, `invoke_model`, `create_time`, `status_cd`) VALUES ('10202607281550001', '992023010100000001', '98202607281550001', 'Q', '1000', 'S', now(), '0');
+```

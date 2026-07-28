@@ -268,4 +268,9 @@ public class HcCarMachineAdapt extends BaseMachineAdapt implements ICarMachinePr
     public ResultVo getCloudFlvVideo(BarrierDto barrierDto) {
         return new ResultVo(ResultVo.CODE_OK, ResultVo.MSG_OK);
     }
+
+    @Override
+    public ResultVo getDeviceWebUrl(BarrierDto barrierDto) {
+        return new ResultVo(ResultVo.CODE_ERROR, "当前设备厂家不支持远程管理控制台");
+    }
 }

@@ -58,4 +58,11 @@ public interface ICarMachineProcess {
      * @return
      */
     ResultVo getCloudFlvVideo(BarrierDto barrierDto);
+
+    /**
+     * 获取设备远程管理网页URL
+     * @param barrierDto 设备信息
+     * @return ResultVo，data中包含 url 字段
+     */
+    ResultVo getDeviceWebUrl(BarrierDto barrierDto);
 }

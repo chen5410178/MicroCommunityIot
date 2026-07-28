@@ -182,6 +182,27 @@ public class ZhenshiMqttCarMachineAdapt extends BaseMachineAdapt implements ICar
         return new ResultVo(ResultVo.CODE_OK,ResultVo.MSG_OK,JSONObject.parseObject(result));
     }
 
+    @Override
+    public ResultVo getDeviceWebUrl(BarrierDto barrierDto) {
+        String accessKey = MappingCache.getValue("VZICLOUD", "AccessKey");
+        String AccessKeySecret = MappingCache.getValue("VZICLOUD", "AccessKeySecret");
+        String baseUrl = "https://open.vzicloud.com";
+        HttpClient client = new HttpClient(baseUrl, accessKey, AccessKeySecret);
+        String path = "/openapi/v1/stp/user/devices/pdns/web";
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, path);
+        request.addParam("sn", barrierDto.getMachineCode());
+        request.addParam("type", "json");
+
+        HttpResponse response = client.doRequest(request);
+        int status = response.getStatus();
+        if (status != 200) {
+            return new ResultVo(ResultVo.CODE_ERROR, "调用臻识云获取设备网页异常:" + response.getBodyStr());
+        }
+        String result = response.getBodyStr();
+        return new ResultVo(ResultVo.CODE_OK, ResultVo.MSG_OK, JSONObject.parseObject(result));
+    }
+
     private void dealCmd(String taskId, JSONObject reqData, BarrierDto machineDto) {
         String cmd = reqData.getString("cmd");
         switch (cmd) {
