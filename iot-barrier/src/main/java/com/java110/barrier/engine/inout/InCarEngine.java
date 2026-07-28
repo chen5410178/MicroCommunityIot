@@ -110,7 +110,7 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
         }
 
         //判断车辆是否为月租车
-        CarDayDto carDayDto = judgeOwnerCarEngine.judgeOwnerCar(machineDto, carNum, parkingAreaDtos);
+        CarDayDto carDayDto = judgeOwnerCarEngine.judgeOwnerCarIn(machineDto, carNum, parkingAreaDtos);
         //判断车辆是否在 场内
         CarInoutDto inoutDto = new CarInoutDto();
         inoutDto.setCarNum(carNum);
@@ -190,7 +190,11 @@ public class InCarEngine extends CarEngine implements IInCarEngine {
         }
 
 
-        inOutCarTextDto = inOutCarTextEngine.carInTempCar(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto);
+        if ("PRIMARY_CAR_IN".equals(carDayDto.getTempCarReason())) {
+            inOutCarTextDto = inOutCarTextEngine.carInPrimaryCarIn(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto);
+        } else {
+            inOutCarTextDto = inOutCarTextEngine.carInTempCar(carNum, machineDto, getDefaultPaId(parkingAreaDtos), carDayDto);
+        }
         saveCarInInfo(carNum, machineDto, inOutCarTextDto, "开门成功", type, parkingAreaDtos, CarInoutDto.STATE_IN);
         return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_IN_SUCCESS, inOutCarTextDto, carNum);
     }

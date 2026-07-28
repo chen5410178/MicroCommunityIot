@@ -154,6 +154,20 @@ public class ZhenshiMqttInOutCarTextEngine implements IInOutCarTextEngine {
     }
 
     /**
+     * 8.1入场：主副车已有车在场内，按临时车处理
+     *
+     * @param carNum
+     * @param machineDto
+     * @param paId
+     * @param carDayDto
+     * @return
+     */
+    @Override
+    public InOutCarTextDto carInPrimaryCarIn(String carNum, BarrierDto machineDto, String paId, CarDayDto carDayDto) {
+        return new InOutCarTextDto("临时车", carNum, "车位已占用", "欢迎光临", "临时车," + carNum + "车位已占用,本次按临时车进场");
+    }
+
+    /**
      * 9.0入场：临时车进场
      *
      * @param carNum

@@ -139,6 +139,17 @@ public interface IInOutCarTextEngine {
     InOutCarTextDto visitCarAuthIn(String carNum, BarrierDto machineDto, String paId);
 
     /**
+     * 主副车已有车在场内，按临时车进场
+     *
+     * @param carNum
+     * @param machineDto
+     * @param paId
+     * @param carDayDto
+     * @return
+     */
+    InOutCarTextDto carInPrimaryCarIn(String carNum, BarrierDto machineDto, String paId, CarDayDto carDayDto);
+
+    /**
      * 临时车进场
      *
      * @param carNum

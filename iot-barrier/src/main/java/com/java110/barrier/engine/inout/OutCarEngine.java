@@ -86,7 +86,7 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         carInoutDto.setCommunityId(machineDto.getCommunityId());
         carInoutDto.setStates(new String[]{CarInoutDto.STATE_IN, CarInoutDto.STATE_PAY});
         List<CarInoutDto> carInoutDtos = carInoutServiceImpl.queryCarInouts(carInoutDto);
-        CarDayDto carDayDto = judgeOwnerCarEngine.judgeOwnerCar(machineDto, carNum, parkingAreaDtos);
+        CarDayDto carDayDto = judgeOwnerCarEngine.judgeOwnerCarOut(machineDto, carNum, parkingAreaDtos);
 
         // 场景2：无进场记录时尝试补录进场记录
         if (ListUtil.isNull(carInoutDtos)) {

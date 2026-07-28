@@ -46,7 +46,7 @@ public class CarInLogEngine extends CarEngine {
      */
     public void saveCarInLog(String carNum, String type, BarrierDto machineDto, List<ParkingAreaDto> parkingAreaDtos, String state, String remark) throws Exception {
 
-        CarDayDto carDayDto = judgeOwnerCarEngine.judgeOwnerCar(machineDto, carNum, parkingAreaDtos);
+        CarDayDto carDayDto = judgeOwnerCarEngine.judgeOwnerCarIn(machineDto, carNum, parkingAreaDtos);
 
         //2.0 进场
         CarInoutPo carInoutPo = new CarInoutPo();

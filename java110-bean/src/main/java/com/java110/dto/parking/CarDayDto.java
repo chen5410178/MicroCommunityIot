@@ -15,6 +15,7 @@ public class CarDayDto implements Serializable {
     private String carNum;
     private String leaseType;
     private int day;
+    private String tempCarReason;
 
     public String getCarNum() {
         return carNum;
@@ -38,5 +39,13 @@ public class CarDayDto implements Serializable {
 
     public void setDay(int day) {
         this.day = day;
+    }
+
+    public String getTempCarReason() {
+        return tempCarReason;
+    }
+
+    public void setTempCarReason(String tempCarReason) {
+        this.tempCarReason = tempCarReason;
     }
 }

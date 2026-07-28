@@ -56,7 +56,7 @@ public class CarOutLogEngine extends CarEngine{
                               String state,
                               String remark,
                               List<ParkingCouponCarDto> parkingCouponCarDtos) throws Exception {
-        CarDayDto carDayDto = judgeOwnerCarEngine.judgeOwnerCar(machineDto, carNum, parkingAreaDtos);
+        CarDayDto carDayDto = judgeOwnerCarEngine.judgeOwnerCarOut(machineDto, carNum, parkingAreaDtos);
 
         //查询是否有入场数据
         CarInoutDto carInoutDto = new CarInoutDto();

@@ -28,7 +28,7 @@ public class JudgeOwnerCarEngine {
     private ICarInoutV1InnerServiceSMO carInoutServiceImpl;
 
 
-    public CarDayDto judgeOwnerCar(BarrierDto machineDto, String carNum, List<ParkingAreaDto> parkingAreaDtos) throws Exception {
+    public CarDayDto judgeOwnerCarIn(BarrierDto machineDto, String carNum, List<ParkingAreaDto> parkingAreaDtos) throws Exception {
         List<String> paIds = new ArrayList<>();
         for (ParkingAreaDto parkingAreaDto : parkingAreaDtos) {
             paIds.add(parkingAreaDto.getPaId());
@@ -44,23 +44,55 @@ public class JudgeOwnerCarEngine {
 
         //主副车辆中 有一个车辆在场，这个车场当做临时车处理
         if (hasInParkingArea(ownerCarDtos.get(0).getCarId(), carNum, paIds)) {
-            return new CarDayDto(carNum, OwnerCarDto.LEASE_TYPE_TEMP, -1);
+            CarDayDto carDayDto = new CarDayDto(carNum, OwnerCarDto.LEASE_TYPE_TEMP, -1);
+            carDayDto.setTempCarReason("PRIMARY_CAR_IN");
+            return carDayDto;
         }
 
 
         int day = DateUtil.differentDaysUp(DateUtil.getCurrentDate(), ownerCarDtos.get(0).getEndTime());
-        //来个五天 缴费期,这里注释 实际使用中 有很多客户不太赞同这个逻辑 有需要的自己打开
-//        if (day <= 0 && day > -5) {
-//            return new CarDayDto(carNum, ownerCarDtos.get(0).getLeaseType(), -2);
-//        }
-//
-//        if (day <= -5) {
-//            return new CarDayDto(carNum, OwnerCarDto.LEASE_TYPE_TEMP, -1);
-//        }
+        if (day < 0) {
+            CarDayDto carDayDto = new CarDayDto(carNum, OwnerCarDto.LEASE_TYPE_TEMP, -1);
+            carDayDto.setTempCarReason("EXPIRE");
+            return carDayDto;
+        }
+        return new CarDayDto(carNum, ownerCarDtos.get(0).getLeaseType(), day);
+    }
+
+    public CarDayDto judgeOwnerCarOut(BarrierDto machineDto, String carNum, List<ParkingAreaDto> parkingAreaDtos) throws Exception {
+        List<String> paIds = new ArrayList<>();
+        for (ParkingAreaDto parkingAreaDto : parkingAreaDtos) {
+            paIds.add(parkingAreaDto.getPaId());
+        }
+        OwnerCarDto ownerCarDto = new OwnerCarDto();
+        ownerCarDto.setPaIds(paIds.toArray(new String[paIds.size()]));
+        ownerCarDto.setCarNum(carNum);
+        List<OwnerCarDto> ownerCarDtos = carServiceImpl.queryOwnerCars(ownerCarDto);
+
+        if (ListUtil.isNull(ownerCarDtos)) {
+            return new CarDayDto(carNum, OwnerCarDto.LEASE_TYPE_TEMP, -1);
+        }
+
+        //查car_inout表：该车在当前停车场是否有carType=1003的进场记录
+        if (hasTempCarInRecord(carNum, paIds)) {
+            return new CarDayDto(carNum, OwnerCarDto.LEASE_TYPE_TEMP, -1);
+        }
+
+        int day = DateUtil.differentDaysUp(DateUtil.getCurrentDate(), ownerCarDtos.get(0).getEndTime());
         if (day < 0) {
             return new CarDayDto(carNum, OwnerCarDto.LEASE_TYPE_TEMP, -1);
         }
         return new CarDayDto(carNum, ownerCarDtos.get(0).getLeaseType(), day);
+    }
+
+    private boolean hasTempCarInRecord(String carNum, List<String> paIds) throws Exception {
+        CarInoutDto inoutDto = new CarInoutDto();
+        inoutDto.setCarNum(carNum);
+        inoutDto.setPaIds(paIds.toArray(new String[paIds.size()]));
+        inoutDto.setCarType(CarInoutDto.CAR_TYPE_TEMP);
+        inoutDto.setStates(new String[]{CarInoutDto.STATE_IN, CarInoutDto.STATE_PAY});
+        List<CarInoutDto> carInoutDtos = carInoutServiceImpl.queryCarInouts(inoutDto);
+        return carInoutDtos != null && carInoutDtos.size() > 0;
     }
 
     /**
