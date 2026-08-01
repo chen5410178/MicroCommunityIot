@@ -49,6 +49,9 @@
     <el-card shadow="never" class="tab-card">
       <el-tabs v-model="activeTab" @tab-click="handleTabClick">
         <el-tab-pane label="成员车辆" name="carDetailMember">
+          <div style="margin-bottom: 12px; text-align: right;">
+            <el-button type="primary" size="small" @click="handleMemberAdd">添加成员车辆</el-button>
+          </div>
           <div v-loading="tabLoading">
             <el-table :data="memberCars" border stripe>
               <el-table-column prop="carNum" label="车牌号" min-width="120" />
@@ -68,6 +71,12 @@
               <el-table-column prop="startTime" label="起租时间" min-width="150" />
               <el-table-column prop="endTime" label="截止时间" min-width="150" />
               <el-table-column prop="stateName" label="状态" min-width="100" />
+              <el-table-column label="操作" width="150" fixed="right" align="center">
+                <template slot-scope="{ row }">
+                  <el-button size="mini" type="text" @click="handleMemberEdit(row)">修改</el-button>
+                  <el-button size="mini" type="text" style="color: #f56c6c" @click="handleMemberDelete(row)">删除</el-button>
+                </template>
+              </el-table-column>
             </el-table>
           </div>
         </el-tab-pane>
@@ -151,16 +160,24 @@
         </el-tab-pane>
       </el-tabs>
     </el-card>
+
+    <AddMemberCar ref="addMemberCarRef" @success="loadMemberCars" />
+    <EditMemberCar ref="editMemberCarRef" @success="loadMemberCars" />
+    <DeleteMemberCar ref="delMemberCarRef" @success="loadMemberCars" />
   </div>
 </template>
 
 <script>
-import { queryOwnerCars, queryOwnerCarsByOwner, queryOwners, listAdminCarInoutDetails } from '@/api/car/carApi'
+import { queryOwnerCars, queryOwners, listAdminCarInoutDetails } from '@/api/car/carApi'
 import { queryRooms } from '@/api/property/roomApi'
+import AddMemberCar from '@/components/car/AddMemberCar.vue'
+import EditMemberCar from '@/components/car/EditMemberCar.vue'
+import DeleteMemberCar from '@/components/car/DeleteMemberCar.vue'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'CarDetail',
+  components: { AddMemberCar, EditMemberCar, DeleteMemberCar },
   data() {
     return {
       activeTab: 'carDetailMember',
@@ -178,7 +195,9 @@ export default {
   mounted() {
     this.memberId = this.$route.query.memberId || ''
     if (this.memberId) {
-      this.loadCarDetail()
+      this.loadCarDetail().then(() => {
+        this.loadMemberCars()
+      })
     }
   },
   methods: {
@@ -206,7 +225,7 @@ export default {
     async loadMemberCars() {
       this.tabLoading = true
       try {
-        const res = await queryOwnerCarsByOwner({
+        const res = await queryOwnerCars({
           page: 1, row: 100,
           carId: this.carInfo.carId,
           carTypeCd: '1002',
@@ -250,7 +269,7 @@ export default {
       this.tabLoading = true
       try {
         if (!this.carInfo.ownerId) { this.ownerCars = []; return }
-        const res = await queryOwnerCarsByOwner({
+        const res = await queryOwnerCars({
           page: 1, row: 100,
           ownerId: this.carInfo.ownerId,
           communityId: (getCurrentCommunity() || {}).communityId || ''
@@ -259,6 +278,15 @@ export default {
       } catch { /* ignore */ } finally {
         this.tabLoading = false
       }
+    },
+    handleMemberAdd() {
+      this.$refs.addMemberCarRef.open({ carId: this.carInfo.carId })
+    },
+    handleMemberEdit(row) {
+      this.$refs.editMemberCarRef.open(row)
+    },
+    handleMemberDelete(row) {
+      this.$refs.delMemberCarRef.open(row)
     },
     async loadCarInout() {
       this.tabLoading = true

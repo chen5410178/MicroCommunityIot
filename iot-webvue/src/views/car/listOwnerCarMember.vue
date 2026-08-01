@@ -50,20 +50,22 @@
       />
     </el-card>
 
-    <EditCar ref="editCarRef" @success="fetchList" />
-    <DeleteOwnerCar ref="delCarRef" @success="fetchList" />
+    <AddMemberCar ref="addMemberCarRef" @success="fetchList" />
+    <EditMemberCar ref="editMemberCarRef" @success="fetchList" />
+    <DeleteMemberCar ref="delMemberCarRef" @success="fetchList" />
   </div>
 </template>
 
 <script>
-import { queryOwnerCarsByOwner } from '@/api/car/carApi'
-import EditCar from '@/components/car/EditCar.vue'
-import DeleteOwnerCar from '@/components/car/DeleteOwnerCar.vue'
+import { queryOwnerCars } from '@/api/car/carApi'
+import AddMemberCar from '@/components/car/AddMemberCar.vue'
+import EditMemberCar from '@/components/car/EditMemberCar.vue'
+import DeleteMemberCar from '@/components/car/DeleteMemberCar.vue'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListOwnerCarMember',
-  components: { EditCar, DeleteOwnerCar },
+  components: { AddMemberCar, EditMemberCar, DeleteMemberCar },
   data() {
     return {
       loading: false,
@@ -86,7 +88,7 @@ export default {
     async fetchList() {
       this.loading = true
       try {
-        const res = await queryOwnerCarsByOwner({
+        const res = await queryOwnerCars({
           page: this.queryParams.page,
           row: this.queryParams.row,
           carId: this.carId,
@@ -100,13 +102,13 @@ export default {
       }
     },
     handleAdd() {
-      this.$message.info('添加成员车辆功能待开发')
+      this.$refs.addMemberCarRef.open({ carId: this.carId })
     },
     handleEdit(row) {
-      this.$refs.editCarRef.open(row)
+      this.$refs.editMemberCarRef.open(row)
     },
     handleDelete(row) {
-      this.$refs.delCarRef.open(row)
+      this.$refs.delMemberCarRef.open(row)
     },
     viewIotState(car) {
       this.$alert(car.iotRemark || '无', car.carNum + ' 同步物联网详情', { confirmButtonText: '确定' })

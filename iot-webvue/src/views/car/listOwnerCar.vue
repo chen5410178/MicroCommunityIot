@@ -61,7 +61,11 @@
               <el-button type="text" @click="goDetail(row)">{{ row.carNum }}</el-button>
             </template>
           </el-table-column>
-          <el-table-column prop="memberCarCount" label="成员车辆" width="80" align="center" />
+          <el-table-column label="成员车辆" width="80" align="center">
+            <template slot-scope="{ row }">
+              <el-button type="text" @click="goMemberCar(row)">{{ row.memberCarCount }}</el-button>
+            </template>
+          </el-table-column>
           <el-table-column prop="roomName" label="房屋号" min-width="120" />
           <el-table-column label="车牌类型" min-width="100">
             <template slot-scope="{ row }">
@@ -186,6 +190,7 @@ export default {
       try {
         const params = { ...this.queryParams }
         params.communityId = (getCurrentCommunity() || {}).communityId || ''
+        params.carTypeCd = '1001'
         if (params.leaseType === 'expireCar') {
           params.leaseType = ''
           params.valid = '3'
@@ -257,8 +262,10 @@ export default {
       this.$router.push('/pages/car/carAddParkingSpace?carId=' + row.carId)
     },
     goDetail(row) {
-      const route = this.$router.resolve({ path: '/pages/car/carDetail', query: { memberId: row.memberId } })
-      window.open(route.href, '_blank')
+      this.$router.push({ path: '/pages/car/carDetail', query: { memberId: row.memberId } })
+    },
+    goMemberCar(row) {
+      this.$router.push({ path: '/pages/car/listOwnerCarMember', query: { carId: row.carId, carNum: row.carNum } })
     },
     getCarState(car) {
       if (car.state === '3003') return '到期'
