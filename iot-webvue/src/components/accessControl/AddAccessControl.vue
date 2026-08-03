@@ -60,7 +60,7 @@
           <el-form-item label="监控视频" prop="monitorId">
             <el-select v-model="form.monitorId" placeholder="请选择监控视频" style="width: 100%">
               <el-option label="没有监控" :value="-1" />
-              <el-option v-for="item in monitorList" :key="item.monitorId" :label="item.monitorName" :value="item.monitorId" />
+              <el-option v-for="item in monitorList" :key="item.machineId" :label="item.machineName" :value="item.machineId" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -76,7 +76,9 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="呼叫平台" prop="platformId">
-            <el-input v-model="form.platformId" placeholder="请填写呼叫平台" maxlength="64" />
+            <el-select v-model="form.platformId" placeholder="选填，请选择呼叫平台" clearable style="width: 100%">
+              <el-option v-for="item in platformList" :key="item.platformId" :label="item.platformName" :value="item.platformId" />
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -113,7 +115,7 @@
 </template>
 
 <script>
-import { saveAccessControl, listMachineLocation, listHardwareManufacturer, listMonitorMachine } from '@/api/accessControl/accessControlApi'
+import { saveAccessControl, listMachineLocation, listHardwareManufacturer, listMonitorMachine, listCallingPlatform } from '@/api/accessControl/accessControlApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -125,16 +127,17 @@ export default {
       locationList: [],
       hmList: [],
       monitorList: [],
+      platformList: [],
       form: {
         machineCode: '',
         machineName: '',
         machineIp: '',
         machineMac: '',
-        direction: '3306',
+        direction: '',
         locationId: '',
         implBean: '',
         monitorId: -1,
-        promptSwitch: 'ON',
+        promptSwitch: 'OFF',
         normalPrompt: '',
         owePrompt: '',
         platformId: '',
@@ -150,6 +153,8 @@ export default {
           { required: true, message: '门禁名称不能为空', trigger: 'blur' },
           { max: 200, message: '门禁名称不能超过200', trigger: 'blur' }
         ],
+        machineIp: [{ max: 64, message: '设备IP不能超过64', trigger: 'blur' }],
+        machineMac: [{ max: 64, message: '设备Mac不能超过64', trigger: 'blur' }],
         direction: [{ required: true, message: '请选择方向', trigger: 'change' }],
         locationId: [{ required: true, message: '请选择位置', trigger: 'change' }],
         implBean: [{ required: true, message: '请选择门禁厂家', trigger: 'change' }],
@@ -177,14 +182,16 @@ export default {
       const community = getCurrentCommunity()
       const communityId = community ? community.communityId : ''
       try {
-        const [locRes, hmRes, monitorRes] = await Promise.all([
+        const [locRes, hmRes, monitorRes, platformRes] = await Promise.all([
           listMachineLocation({ page: 1, row: 100, communityId }),
           listHardwareManufacturer({ hmType: '1001', page: 1, row: 100 }),
-          listMonitorMachine({ page: 1, row: 100, communityId })
+          listMonitorMachine({ page: 1, row: 100, communityId }),
+          listCallingPlatform({ page: 1, row: 100, communityId })
         ])
         this.locationList = locRes.data || []
         this.hmList = hmRes.data || []
         this.monitorList = monitorRes.data || []
+        this.platformList = platformRes.data || []
       } catch (e) {
         console.error('加载下拉选项失败', e)
       }

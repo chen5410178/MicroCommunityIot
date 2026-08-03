@@ -47,7 +47,7 @@
         <el-table-column label="监控视频" width="120" align="center">
           <template slot-scope="{ row }">
             <div>
-              <span v-if="row.monitorMachineName">{{ row.monitorMachineName }}</span>
+              <span v-if="row.monitorName">{{ row.monitorName }}</span>
               <span v-else>-</span>
             </div>
             <el-button v-if="row.monitorId && row.monitorId != -1" type="text" size="small" @click="handleWatch(row)">观看</el-button>
