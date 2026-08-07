@@ -37,6 +37,7 @@
                             vc.component.sliderY = data.y;
                             vc.component.sliderWidth = data.sliderWidth;
                             vc.component.sliderHeight = data.sliderHeight;
+                            vc.component.sliderKey = data.sliderKey;
                             vc.component.bgWidth = 300;
                             vc.component.currentX = 0;
                             vc.component.verified = false;
@@ -103,7 +104,7 @@
                     var sliderX = Math.round(vc.component.currentX);
                     vc.component.verified = true;
                     vc.component.showDialog = false;
-                    vc.component.$emit('sliderVerifySuccess', sliderX);
+                    vc.component.$emit('sliderVerifySuccess', {sliderX,vc.component.sliderKey});
                 } else {
                     vc.component.currentX = 0;
                 }

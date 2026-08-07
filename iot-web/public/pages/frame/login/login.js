@@ -8,7 +8,8 @@
                 errorInfo: '',
                 codeImage: '',
                 systemTitle:'',
-                sliderX: null
+                sliderX: null,
+                sliderKey:''
             }
         },
         _initMethod: function() {
@@ -22,8 +23,9 @@
                 console.log('errorInfoEvent 事件被监听', _errorInfo)
             });
 
-            $that.$on('sliderVerifySuccess', function(sliderX) {
-                $that.loginInfo.sliderX = sliderX;
+            $that.$on('sliderVerifySuccess', function(_data) {
+                $that.loginInfo.sliderX = data.sliderX;
+                $that.loginInfo.sliderKey = data.sliderKey;
             });
 
             vc.on('login', 'doLogin', function() {
@@ -78,7 +80,8 @@
                 var loginData = {
                     username: $that.loginInfo.username,
                     passwd: $that.loginInfo.passwd,
-                    sliderX: $that.loginInfo.sliderX
+                    sliderX: $that.loginInfo.sliderX,
+                    sliderKey:$that.loginInfo.sliderKey
                 };
                 vc.http.apiPost(
                     '/login.pcUserLogin',
