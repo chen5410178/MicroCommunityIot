@@ -83,6 +83,11 @@ export default {
           newPwd: this.form.newPwd,
           reNewPwd: this.form.reNewPwd
         }).then(res => {
+          if (!res || res.code !== 0) {
+            this.loading = false
+            this.$message.error((res && res.msg) || '修改失败')
+            return
+          }
           this.$message.success('修改成功，请重新登录')
           this.form = { oldPwd: '', newPwd: '', reNewPwd: '' }
           sessionStorage.clear()
