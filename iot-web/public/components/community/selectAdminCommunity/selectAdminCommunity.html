@@ -1,9 +1,0 @@
-<div class=" border-radius">
-    <div class="margin-xs-r  treeview attendance-staff" style="height: 650px;">
-        <ul class="list-group text-center border-radius">
-            <li class="list-group-item node-orgTree " v-for="(item,index) in selectAdminCommunityInfo.communitys" :key="index" @click="_swatchAdminCommunity(item)" :class="{'vc-node-selected':selectAdminCommunityInfo.communityId == item.communityId}">
-                {{item.name}}
-            </li>
-        </ul>
-    </div>
-</div>

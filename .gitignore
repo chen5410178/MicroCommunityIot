@@ -42,3 +42,5 @@ logs
 *target/
 docs
 nul
+# iot-web 已废弃，与后端不匹配，停止跟踪
+iot-web/

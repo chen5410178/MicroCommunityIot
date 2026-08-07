@@ -1,5 +1,0 @@
-{
-    "src":"./public",
-    "dist":"./dist",
-    "minJs":["./dist/api","./dist/components","./dist/vcCore"]
-}
