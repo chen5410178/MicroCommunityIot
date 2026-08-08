@@ -69,6 +69,7 @@ import ParkingAreaControlManualOpenDoorLog from '@/components/car/ParkingAreaCon
 import CustomCarInout from '@/components/car/CustomCarInout.vue'
 import BarrierGateQrCode from '@/components/car/BarrierGateQrCode.vue'
 import UnlicensedCarQrCode from '@/components/car/UnlicensedCarQrCode.vue'
+import ParkingWebSocket from '@/utils/parkingWebSocket'
 
 export default {
   name: 'ParkingAreaControl',
@@ -96,101 +97,32 @@ export default {
       boxId: '',
       paId: '',
       activeTab: 'parkingAreaControlCarInouts',
-      websocket: null,
-      wsPingTimer: null,
-      wsPingInterval: null
+      parkingWs: null
     }
   },
   mounted() {
     this.boxId = this.$route.query.boxId || ''
     this.paId = this.$route.query.paId || ''
     if (this.boxId) {
-      this.initWebSocket()
+      this.parkingWs = new ParkingWebSocket(this.boxId, this.onWsData)
     }
   },
   beforeDestroy() {
-    this.releaseWebSocket()
+    if (this.parkingWs) {
+      this.parkingWs.release()
+      this.parkingWs = null
+    }
   },
   methods: {
-    initWebSocket() {
-      const protocol = window.location.protocol
-      const host = window.location.host
-      const wsProtocol = protocol.startsWith('https') ? 'wss' : 'ws'
-      const url = `${wsProtocol}://${host}/ws/parkingBox/${this.boxId}`
-      try {
-        this.websocket = new WebSocket(url)
-        this.websocket.onopen = () => {
-          this.startHeartbeat()
-        }
-        this.websocket.onmessage = (event) => {
-          this.resetHeartbeat()
-          try {
-            const data = JSON.parse(event.data)
-            if (this.$refs.videoRef) {
-              this.$refs.videoRef.onWsMessage(data)
-            }
-            if (this.$refs.feeRef) {
-              this.$refs.feeRef.onWsNotify(data)
-            }
-            if (this.$refs.tempCarAuthConfirmRef) {
-              this.$refs.tempCarAuthConfirmRef.onWsNotify(data)
-            }
-          } catch (e) {
-            // ignore non-JSON
-          }
-        }
-        this.websocket.onclose = () => {
-          this.stopHeartbeat()
-          setTimeout(() => {
-            if (!this._destroyed) {
-              this.initWebSocket()
-            }
-          }, 3000)
-        }
-        this.websocket.onerror = () => {
-          this.websocket && this.websocket.close()
-        }
-      } catch (e) {
-        setTimeout(() => {
-          if (!this._destroyed) {
-            this.initWebSocket()
-          }
-        }, 3000)
+    onWsData(data) {
+      if (this.$refs.videoRef) {
+        this.$refs.videoRef.onWsMessage(data)
       }
-    },
-    startHeartbeat() {
-      const that = this
-      this.wsPingTimer = new Date().getTime()
-      this.wsPingInterval = setInterval(function () {
-        if (that.websocket && that.websocket.readyState === 1) {
-          const now = new Date().getTime()
-          if (now - that.wsPingTimer > 15000) {
-            that.websocket.send("{'cmd':'ping'}")
-            that.wsPingTimer = now
-          }
-        } else {
-          that.releaseWebSocket()
-          if (!that._destroyed) {
-            that.initWebSocket()
-          }
-        }
-      }, 30000)
-    },
-    resetHeartbeat() {
-      this.wsPingTimer = new Date().getTime()
-    },
-    stopHeartbeat() {
-      if (this.wsPingInterval) {
-        clearInterval(this.wsPingInterval)
-        this.wsPingInterval = null
+      if (this.$refs.feeRef) {
+        this.$refs.feeRef.onWsNotify(data)
       }
-    },
-    releaseWebSocket() {
-      this._destroyed = true
-      this.stopHeartbeat()
-      if (this.websocket) {
-        this.websocket.close()
-        this.websocket = null
+      if (this.$refs.tempCarAuthConfirmRef) {
+        this.$refs.tempCarAuthConfirmRef.onWsNotify(data)
       }
     },
     handleTabClick(tab) {
