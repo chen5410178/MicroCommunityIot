@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Version 1.0
  * add by wuxw 2020/6/5
  **/
-@ServerEndpoint("/ws/message/{userId}/{clientId}")
+@ServerEndpoint("/iot/ws/message/{userId}/{clientId}")
 @Component
 public class MessageWebsocket {
     private final static Logger logger = LoggerFactory.getLogger(MessageWebsocket.class);

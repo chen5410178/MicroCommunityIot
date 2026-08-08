@@ -9,7 +9,7 @@ module.exports = {
         target: 'http://192.168.101.109:9999',
         changeOrigin: true
       },
-      '/ws': {
+      '/iot/ws': {
         target: 'http://192.168.101.109:9999',
         changeOrigin: true,
         ws: true

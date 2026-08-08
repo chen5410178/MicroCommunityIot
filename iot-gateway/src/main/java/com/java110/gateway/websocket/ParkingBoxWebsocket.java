@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Version 1.0
  * add by wuxw 2020/5/25
  **/
-@ServerEndpoint("/ws/parkingBox/{boxId}/{clientId}")
+@ServerEndpoint("/iot/ws/parkingBox/{boxId}/{clientId}")
 @Component
 public class ParkingBoxWebsocket {
 

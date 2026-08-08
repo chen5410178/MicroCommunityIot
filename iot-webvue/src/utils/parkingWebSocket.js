@@ -21,7 +21,7 @@ export default class ParkingWebSocket {
 
   init() {
     const wsProtocol = window.location.protocol.startsWith('https') ? 'wss' : 'ws'
-    const url = `${wsProtocol}://${window.location.host}/ws/parkingBox/${this.boxId}/${this.clientId}`
+    const url = `${wsProtocol}://${window.location.host}/iot/ws/parkingBox/${this.boxId}/${this.clientId}`
     try {
       this.websocket = new WebSocket(url)
     } catch (e) {
