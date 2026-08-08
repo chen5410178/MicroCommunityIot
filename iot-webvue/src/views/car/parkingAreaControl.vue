@@ -104,7 +104,7 @@ export default {
     this.boxId = this.$route.query.boxId || ''
     this.paId = this.$route.query.paId || ''
     if (this.boxId) {
-      this.parkingWs = new ParkingWebSocket(this.boxId, this.onWsData)
+      this.parkingWs = new ParkingWebSocket('parkingBox', this.boxId, this.onWsData)
     }
   },
   beforeDestroy() {

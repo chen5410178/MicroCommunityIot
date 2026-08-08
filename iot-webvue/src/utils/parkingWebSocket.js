@@ -1,6 +1,7 @@
 export default class ParkingWebSocket {
-  constructor(boxId, onData) {
-    this.boxId = boxId
+  constructor(endpoint, id, onData) {
+    this.endpoint = endpoint || 'parkingBox'
+    this.id = id
     this.onData = onData
     this.clientId = this._uuid()
     this.websocket = null
@@ -21,7 +22,7 @@ export default class ParkingWebSocket {
 
   init() {
     const wsProtocol = window.location.protocol.startsWith('https') ? 'wss' : 'ws'
-    const url = `${wsProtocol}://${window.location.host}/iot/ws/parkingBox/${this.boxId}/${this.clientId}`
+    const url = `${wsProtocol}://${window.location.host}/iot/ws/${this.endpoint}/${this.id}/${this.clientId}`
     try {
       this.websocket = new WebSocket(url)
     } catch (e) {

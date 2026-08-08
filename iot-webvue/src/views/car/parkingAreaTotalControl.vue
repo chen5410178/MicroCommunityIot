@@ -64,6 +64,7 @@ import ParkingAreaControlPaymentSummary from '@/components/car/ParkingAreaContro
 import ParkingAreaControlManualOpenDoorLog from '@/components/car/ParkingAreaControlManualOpenDoorLog.vue'
 import CustomCarInout from '@/components/car/CustomCarInout.vue'
 import BarrierGateQrCode from '@/components/car/BarrierGateQrCode.vue'
+import ParkingWebSocket from '@/utils/parkingWebSocket'
 
 export default {
   name: 'ParkingAreaTotalControl',
@@ -87,112 +88,36 @@ export default {
     return {
       paId: '',
       activeTab: 'parkingAreaTotalControlVideo',
-      websocket: null,
-      wsPingTimer: null,
-      wsPingInterval: null,
-      clientId: ''
+      parkingWs: null
     }
   },
   mounted() {
     this.paId = this.$route.query.paId || ''
-    this.clientId = this.generateUUID()
     if (this.paId) {
-      this.initWebSocket()
+      this.parkingWs = new ParkingWebSocket('parkingArea', this.paId, (data) => {
+        if (this.$refs.videoRef) {
+          this.$refs.videoRef.onWsMessage(data)
+        }
+        if (this.$refs.feeRef) {
+          this.$refs.feeRef.onWsNotify(data)
+        }
+      })
     }
   },
   beforeDestroy() {
-    this.releaseWebSocket()
+    if (this.parkingWs) {
+      this.parkingWs.release()
+      this.parkingWs = null
+    }
   },
   methods: {
-    generateUUID() {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        const r = Math.random() * 16 | 0
-        const v = c === 'x' ? r : (r & 0x3 | 0x8)
-        return v.toString(16)
-      })
-    },
-    initWebSocket() {
-      const protocol = window.location.protocol
-      const host = window.location.host
-      const wsProtocol = protocol.startsWith('https') ? 'wss' : 'ws'
-      const url = `${wsProtocol}://${host}/ws/parkingArea/${this.paId}/${this.clientId}`
-      try {
-        this.websocket = new WebSocket(url)
-        this.websocket.onopen = () => {
-          this.startHeartbeat()
-        }
-        this.websocket.onmessage = (event) => {
-          this.resetHeartbeat()
-          try {
-            const data = JSON.parse(event.data)
-            if (this.$refs.videoRef) {
-              this.$refs.videoRef.onWsMessage(data)
-            }
-          } catch (e) {
-            // ignore non-JSON
-          }
-        }
-        this.websocket.onclose = () => {
-          this.stopHeartbeat()
-          setTimeout(() => {
-            if (!this._destroyed) {
-              this.initWebSocket()
-            }
-          }, 3000)
-        }
-        this.websocket.onerror = () => {
-          this.websocket && this.websocket.close()
-        }
-      } catch (e) {
-        setTimeout(() => {
-          if (!this._destroyed) {
-            this.initWebSocket()
-          }
-        }, 3000)
-      }
-    },
-    startHeartbeat() {
-      const that = this
-      this.wsPingTimer = new Date().getTime()
-      this.wsPingInterval = setInterval(function () {
-        if (that.websocket && that.websocket.readyState === 1) {
-          const now = new Date().getTime()
-          if (now - that.wsPingTimer > 15000) {
-            that.websocket.send("{'cmd':'ping'}")
-            that.wsPingTimer = now
-          }
-        } else {
-          that.releaseWebSocket()
-          if (!that._destroyed) {
-            that.initWebSocket()
-          }
-        }
-      }, 30000)
-    },
-    resetHeartbeat() {
-      this.wsPingTimer = new Date().getTime()
-    },
-    stopHeartbeat() {
-      if (this.wsPingInterval) {
-        clearInterval(this.wsPingInterval)
-        this.wsPingInterval = null
-      }
-    },
-    releaseWebSocket() {
-      this._destroyed = true
-      this.stopHeartbeat()
-      if (this.websocket) {
-        this.websocket.close()
-        this.websocket = null
-      }
+    handleTabClick(tab) {
+      this.activeTab = tab.name
     },
     onWsData(data) {
       if (this.$refs.feeRef) {
         this.$refs.feeRef.onWsNotify(data)
       }
-    },
-    handleTabClick(tab) {
-      this.activeTab = tab.name
     },
     showBarrierGateQrCode(data) {
       if (this.$refs.barrierGateQrCodeRef) {

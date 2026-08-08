@@ -24,8 +24,8 @@
     }, 4000)
   }
   const uid = (crypto.randomUUID) ? crypto.randomUUID() : '87651e3a-db7f-4c50-8456-3612b76f759c'
-  test('A-proxy3002', 'ws://localhost:3002/ws/parkingBox/' + boxId + '/' + uid)
-  test('B-direct9999', 'ws://192.168.101.109:9999/ws/parkingBox/' + boxId + '/' + uid)
+  test('A-proxy3002', 'ws://localhost:3002/iot/ws/parkingBox/' + boxId + '/' + uid)
+  test('B-direct9999', 'ws://192.168.101.109:9999/iot/ws/parkingBox/' + boxId + '/' + uid)
   setTimeout(() => { log.textContent = results.join(' | ') }, 9000)
 </script>
 </body>
