@@ -90,9 +90,12 @@
               {{ row.tel || '-' }}
             </template>
           </el-table-column>
+          <el-table-column label="停车场" min-width="130">
+            <template slot-scope="{ row }">{{ row.paNum || '-' }}</template>
+          </el-table-column>
           <el-table-column label="车位" min-width="130">
             <template slot-scope="{ row }">
-              <template v-if="row.state === '1001' && row.psId && row.psId !== '-1'">{{ row.paNum }}-{{ row.num }}</template>
+              <template v-if="row.state === '1001' && row.psId && row.psId !== '-1'">{{ row.num }}</template>
               <template v-else-if="row.state === '1001'">无固定车位</template>
               <template v-else>车位已释放</template>
             </template>

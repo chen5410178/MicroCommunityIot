@@ -49,6 +49,19 @@ public class CarAddParkingSpaceCmd extends Cmd {
         List<OwnerCarDto> ownerCarDtos = ownerCarInnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
         Assert.listOnlyOne(ownerCarDtos, "未找到车辆信息");
 
+        //校验所选车位归属停车场与提交 paId 一致（防绕过前端过滤造成 pa_id/ps_id 归属不一致）
+        String paId = reqJson.getString("paId");
+        String psId = reqJson.getString("psId");
+        if (!StringUtil.isEmpty(paId) && !StringUtil.isEmpty(psId) && !"-1".equals(psId)) {
+            ParkingSpaceDto checkParkingSpaceDto = new ParkingSpaceDto();
+            checkParkingSpaceDto.setPsId(psId);
+            List<ParkingSpaceDto> checkParkingSpaceDtos = parkingSpaceV1InnerServiceSMOImpl.queryParkingSpaces(checkParkingSpaceDto);
+            Assert.listOnlyOne(checkParkingSpaceDtos, "查询车位信息错误！");
+            if (!paId.equals(checkParkingSpaceDtos.get(0).getPaId())) {
+                throw new IllegalArgumentException("所选车位不属于所选停车场！");
+            }
+        }
+
 //        String state = ownerCarDtos.get(0).getState();
 //
 //        if (!StringUtil.isEmpty(state) && !state.equals(OwnerCarDto.STATE_FINISH)) {

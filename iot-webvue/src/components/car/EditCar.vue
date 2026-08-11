@@ -2,57 +2,91 @@
   <el-dialog
     :visible.sync="dialogVisible"
     title="修改车辆"
-    width="550px"
+    width="650px"
     @close="handleClose"
   >
     <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
-      <el-form-item label="车牌号" prop="carNum">
-        <el-input v-model="form.carNum" placeholder="必填，请填写车牌号" maxlength="64" />
-      </el-form-item>
-      <el-form-item label="车类型" prop="carType">
-        <el-select v-model="form.carType" placeholder="必填，请选择类型" style="width: 100%">
-          <el-option v-for="item in carTypes" :key="item.statusCd" :label="item.name" :value="item.statusCd" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="车牌类型" prop="leaseType">
-        <el-select v-model="form.leaseType" placeholder="必填，请选择车牌类型" style="width: 100%">
-          <el-option label="月租车" value="H" />
-          <el-option label="出售车辆" value="S" />
-          <el-option label="内部车" value="I" />
-          <el-option label="免费车" value="NM" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="停车场" prop="paId">
-        <el-select v-model="form.paId" placeholder="请选择停车场" style="width: 100%" @change="onParkingAreaChange">
-          <el-option v-for="item in parkingAreas" :key="item.paId" :label="item.num" :value="item.paId" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="车位">
-        <el-input v-model="form.psName" disabled placeholder="选填，请选择车位">
-          <el-button slot="append" @click="openChooseParkingSpace">选择车位</el-button>
-        </el-input>
-      </el-form-item>
-      <el-form-item label="联系人">
-        <el-input v-model="form.contact" placeholder="请填写联系人" maxlength="64" />
-      </el-form-item>
-      <el-form-item label="联系电话" prop="tel">
-        <el-input v-model="form.tel" placeholder="请填写联系电话" maxlength="20" />
-      </el-form-item>
-      <el-form-item label="起租时间" prop="startTime" v-if="form.leaseType === 'H'">
-        <el-date-picker v-model="form.startTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="必填，请填写起租时间" style="width: 100%" />
-      </el-form-item>
-      <el-form-item label="结租时间" prop="endTime" v-if="form.leaseType === 'H'">
-        <el-date-picker v-model="form.endTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="必填，请填写结租时间" style="width: 100%" />
-      </el-form-item>
-      <el-form-item label="备注">
-        <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请填写备注信息" maxlength="300" />
-      </el-form-item>
+      <el-row :gutter="16">
+        <el-col :span="12">
+          <el-form-item label="车牌号" prop="carNum">
+            <el-input v-model="form.carNum" placeholder="必填，请填写车牌号" maxlength="64" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="车类型" prop="carType">
+            <el-select v-model="form.carType" placeholder="必填，请选择类型" style="width: 100%">
+              <el-option v-for="item in carTypes" :key="item.statusCd" :label="item.name" :value="item.statusCd" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="16">
+        <el-col :span="12">
+          <el-form-item label="车牌类型" prop="leaseType">
+            <el-select v-model="form.leaseType" placeholder="必填，请选择车牌类型" style="width: 100%">
+              <el-option label="月租车" value="H" />
+              <el-option label="出售车辆" value="S" />
+              <el-option label="内部车" value="I" />
+              <el-option label="免费车" value="NM" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="停车场" prop="paId">
+            <el-select v-model="form.paId" placeholder="请选择停车场" style="width: 100%" @change="onParkingAreaChange">
+              <el-option v-for="item in parkingAreas" :key="item.paId" :label="item.num" :value="item.paId" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="16">
+        <el-col :span="12">
+          <el-form-item label="车位">
+            <el-input :value="form.psName || '无固定车位'" disabled />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="联系人">
+            <el-input v-model="form.contact" placeholder="请填写联系人" maxlength="64" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="16">
+        <el-col :span="12">
+          <el-form-item label="联系电话" prop="tel">
+            <el-input v-model="form.tel" placeholder="请填写联系电话" maxlength="20" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12" v-if="form.leaseType === 'H'">
+          <el-form-item label="起租时间" prop="startTime">
+            <el-date-picker v-model="form.startTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="必填，请填写起租时间" style="width: 100%" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="16" v-if="form.leaseType === 'H'">
+        <el-col :span="12">
+          <el-form-item label="结租时间" prop="endTime">
+            <el-date-picker v-model="form.endTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="必填，请填写结租时间" style="width: 100%" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="备注">
+            <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请填写备注信息" maxlength="300" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="16" v-else>
+        <el-col :span="24">
+          <el-form-item label="备注">
+            <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请填写备注信息" maxlength="300" />
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
     <span slot="footer">
       <el-button @click="handleClose">取消</el-button>
       <el-button type="primary" @click="handleSubmit" :loading="loading">保存</el-button>
     </span>
-    <SearchParkingSpace :visible.sync="searchParkingSpaceVisible" :pa-id="form.paId" parkingSpaceFlag="F" @choose="handleParkingSpaceChoose" />
   </el-dialog>
 </template>
 
@@ -60,18 +94,15 @@
 import { updateOwnerCar, listParkingAreas } from '@/api/car/carApi'
 import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
-import SearchParkingSpace from '@/components/car/SearchParkingSpace.vue'
 
 export default {
   name: 'EditCar',
-  components: { SearchParkingSpace },
   data() {
     return {
       dialogVisible: false,
       loading: false,
       carTypes: [],
       parkingAreas: [],
-      searchParkingSpaceVisible: false,
       form: {
         carId: '',
         memberId: '',
@@ -141,24 +172,8 @@ export default {
       this.$refs.formRef && this.$refs.formRef.resetFields()
     },
     onParkingAreaChange() {
-      this.form.psId = ''
+      //仅清空展示态，psId 保持原值提交，避免触发后端空 psId 置 -1 误释放原车位
       this.form.psName = ''
-    },
-    openChooseParkingSpace() {
-      if (!this.form.paId) {
-        this.$message.warning('请先选择停车场')
-        return
-      }
-      this.searchParkingSpaceVisible = true
-    },
-    handleParkingSpaceChoose(row) {
-      if (row.paId !== this.form.paId) {
-        this.$message.error('所选车位不属于所选停车场')
-        return
-      }
-      this.form.psId = row.psId
-      this.form.psName = row.paNum + '-' + row.num
-      this.searchParkingSpaceVisible = false
     },
     async handleSubmit() {
       try {
@@ -166,8 +181,11 @@ export default {
       } catch { return }
       this.loading = true
       try {
-        this.form.communityId = (getCurrentCommunity() || {}).communityId || ''
-        const res = await updateOwnerCar(this.form)
+        const params = { ...this.form }
+        params.communityId = (getCurrentCommunity() || {}).communityId || ''
+        if (!params.contact) delete params.contact
+        if (!params.tel) delete params.tel
+        const res = await updateOwnerCar(params)
         if (res.code === 0) {
           this.$message.success('修改成功')
           this.$emit('success')
