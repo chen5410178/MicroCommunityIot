@@ -9112,6 +9112,9 @@ CREATE TABLE `owner_car` (
   `car_num` varchar(12) NOT NULL COMMENT '车牌号',
   `car_type` varchar(4) NOT NULL COMMENT '9901 家用小汽车，9902 客车，9903 货车',
   `ps_id` varchar(30) NOT NULL COMMENT '车位ID',
+  `pa_id` varchar(30) NOT NULL DEFAULT '-1' COMMENT '停车场ID',
+  `contact` varchar(64) DEFAULT '' COMMENT '联系人',
+  `tel` varchar(20) DEFAULT '' COMMENT '联系电话',
   `car_type_cd` varchar(4) NOT NULL DEFAULT '1001' COMMENT '1001 主车辆 1002 成员车辆',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `start_time` datetime NOT NULL COMMENT '起租时间',
@@ -9125,7 +9128,8 @@ CREATE TABLE `owner_car` (
   KEY `i_oc_car_num` (`car_num`),
   KEY `i_oc_community_id` (`community_id`),
   KEY `i_oc_ps_id` (`ps_id`),
-  KEY `i_oc_car_id` (`car_id`)
+  KEY `i_oc_car_id` (`car_id`),
+  KEY `idx_oc_pa_id` (`pa_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------

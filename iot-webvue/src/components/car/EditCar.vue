@@ -22,6 +22,22 @@
           <el-option label="免费车" value="NM" />
         </el-select>
       </el-form-item>
+      <el-form-item label="停车场" prop="paId">
+        <el-select v-model="form.paId" placeholder="请选择停车场" style="width: 100%" @change="onParkingAreaChange">
+          <el-option v-for="item in parkingAreas" :key="item.paId" :label="item.num" :value="item.paId" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="车位">
+        <el-input v-model="form.psName" disabled placeholder="选填，请选择车位">
+          <el-button slot="append" @click="openChooseParkingSpace">选择车位</el-button>
+        </el-input>
+      </el-form-item>
+      <el-form-item label="联系人">
+        <el-input v-model="form.contact" placeholder="请填写联系人" maxlength="64" />
+      </el-form-item>
+      <el-form-item label="联系电话" prop="tel">
+        <el-input v-model="form.tel" placeholder="请填写联系电话" maxlength="20" />
+      </el-form-item>
       <el-form-item label="起租时间" prop="startTime" v-if="form.leaseType === 'H'">
         <el-date-picker v-model="form.startTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="必填，请填写起租时间" style="width: 100%" />
       </el-form-item>
@@ -36,21 +52,26 @@
       <el-button @click="handleClose">取消</el-button>
       <el-button type="primary" @click="handleSubmit" :loading="loading">保存</el-button>
     </span>
+    <SearchParkingSpace :visible.sync="searchParkingSpaceVisible" :pa-id="form.paId" parkingSpaceFlag="F" @choose="handleParkingSpaceChoose" />
   </el-dialog>
 </template>
 
 <script>
-import { updateOwnerCar } from '@/api/car/carApi'
+import { updateOwnerCar, listParkingAreas } from '@/api/car/carApi'
 import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
+import SearchParkingSpace from '@/components/car/SearchParkingSpace.vue'
 
 export default {
   name: 'EditCar',
+  components: { SearchParkingSpace },
   data() {
     return {
       dialogVisible: false,
       loading: false,
       carTypes: [],
+      parkingAreas: [],
+      searchParkingSpaceVisible: false,
       form: {
         carId: '',
         memberId: '',
@@ -59,6 +80,11 @@ export default {
         leaseType: '',
         startTime: '',
         endTime: '',
+        paId: '',
+        psId: '',
+        psName: '',
+        contact: '',
+        tel: '',
         remark: ''
       },
       rules: {
@@ -66,18 +92,27 @@ export default {
         carType: [{ required: true, message: '车类型不能为空', trigger: 'change' }],
         leaseType: [{ required: true, message: '车牌类型不能为空', trigger: 'change' }],
         startTime: [{ required: true, message: '起租时间不能为空', trigger: 'change' }],
-        endTime: [{ required: true, message: '结租时间不能为空', trigger: 'change' }]
+        endTime: [{ required: true, message: '结租时间不能为空', trigger: 'change' }],
+        tel: [{ pattern: /^1[3-9]\d{9}$/, message: '联系电话格式不正确', trigger: 'blur' }]
       }
     }
   },
   mounted() {
     this.loadCarTypes()
+    this.loadParkingAreas()
   },
   methods: {
     async loadCarTypes() {
       try {
         const res = await listDicts({ tableName: 'owner_car', tableColumns: 'car_type' })
         this.carTypes = res || []
+      } catch { /* ignore */ }
+    },
+    async loadParkingAreas() {
+      try {
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
+        const res = await listParkingAreas({ page: 1, row: 100, communityId })
+        this.parkingAreas = res.data || []
       } catch { /* ignore */ }
     },
     open(car) {
@@ -90,6 +125,11 @@ export default {
         leaseType: car.leaseType || '',
         startTime: car.startTime || '',
         endTime: car.endTime || '',
+        paId: car.paId || '',
+        psId: car.psId || '',
+        psName: (car.state === '1001' && car.psId && car.psId !== '-1') ? ((car.paNum || '') + '-' + (car.num || '')) : '',
+        contact: car.contact || '',
+        tel: car.tel || '',
         remark: car.remark || ''
       }
       this.$nextTick(() => {
@@ -99,6 +139,26 @@ export default {
     handleClose() {
       this.dialogVisible = false
       this.$refs.formRef && this.$refs.formRef.resetFields()
+    },
+    onParkingAreaChange() {
+      this.form.psId = ''
+      this.form.psName = ''
+    },
+    openChooseParkingSpace() {
+      if (!this.form.paId) {
+        this.$message.warning('请先选择停车场')
+        return
+      }
+      this.searchParkingSpaceVisible = true
+    },
+    handleParkingSpaceChoose(row) {
+      if (row.paId !== this.form.paId) {
+        this.$message.error('所选车位不属于所选停车场')
+        return
+      }
+      this.form.psId = row.psId
+      this.form.psName = row.paNum + '-' + row.num
+      this.searchParkingSpaceVisible = false
     },
     async handleSubmit() {
       try {

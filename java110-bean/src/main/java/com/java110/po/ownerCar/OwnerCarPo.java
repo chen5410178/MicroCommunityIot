@@ -30,6 +30,9 @@ public class OwnerCarPo implements Serializable {
 
     private String carNum;
     private String psId;
+    private String paId;
+    private String contact;
+    private String tel;
     private String remark;
     private String statusCd = "0";
     private String ownerId;
@@ -57,6 +60,30 @@ public class OwnerCarPo implements Serializable {
 
     public void setPsId(String psId) {
         this.psId = psId;
+    }
+
+    public String getPaId() {
+        return paId;
+    }
+
+    public void setPaId(String paId) {
+        this.paId = paId;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 
     public String getRemark() {

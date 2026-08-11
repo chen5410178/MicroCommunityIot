@@ -80,9 +80,20 @@
               {{ row.ownerName }}({{ row.link }})
             </template>
           </el-table-column>
+          <el-table-column label="联系人" min-width="100">
+            <template slot-scope="{ row }">
+              {{ row.contact || '-' }}
+            </template>
+          </el-table-column>
+          <el-table-column label="联系电话" min-width="120">
+            <template slot-scope="{ row }">
+              {{ row.tel || '-' }}
+            </template>
+          </el-table-column>
           <el-table-column label="车位" min-width="130">
             <template slot-scope="{ row }">
-              <template v-if="row.state === '1001'">{{ row.paNum }}-{{ row.num }}</template>
+              <template v-if="row.state === '1001' && row.psId && row.psId !== '-1'">{{ row.paNum }}-{{ row.num }}</template>
+              <template v-else-if="row.state === '1001'">无固定车位</template>
               <template v-else>车位已释放</template>
             </template>
           </el-table-column>

@@ -12,6 +12,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.CmdContextUtils;
 import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.parking.ParkingAreaDto;
 import com.java110.dto.parking.ParkingSpaceDto;
 import com.java110.dto.store.StoreDto;
@@ -122,6 +123,9 @@ public class AddCarApiCmd extends Cmd {
         //获取房屋名称
         ownerCarPo.setCarTypeCd(car.getString("carTypeCd")); //主车辆
         ownerCarPo.setPsId(car.getString("psId"));
+        ownerCarPo.setPaId(car.getString("paId"));
+        ownerCarPo.setContact(StringUtil.isEmpty(car.getString("contact")) ? "" : car.getString("contact"));
+        ownerCarPo.setTel(StringUtil.isEmpty(car.getString("tel")) ? "" : car.getString("tel"));
         ownerCarPo.setOwnerId(car.getString("ownerId"));
         ownerCarPo.setCommunityId(car.getString("communityId"));
         ownerCarPo.setCarId(car.getString("carId"));

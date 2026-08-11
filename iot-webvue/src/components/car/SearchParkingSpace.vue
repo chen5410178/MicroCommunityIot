@@ -3,12 +3,13 @@
     :visible.sync="dialogVisible"
     title="选择停车位"
     width="900px"
+    append-to-body
     @close="handleClose"
   >
     <el-card shadow="never" class="search-card">
       <el-form :inline="true" :model="queryParams">
         <el-form-item>
-          <el-select v-model="queryParams.paId" placeholder="请选择停车场" clearable style="width: 180px">
+          <el-select v-model="queryParams.paId" placeholder="请选择停车场" clearable style="width: 180px" :disabled="fixedPaId">
             <el-option v-for="item in parkingAreas" :key="item.paId" :label="item.num" :value="item.paId" />
           </el-select>
         </el-form-item>
@@ -59,7 +60,8 @@ export default {
   name: 'SearchParkingSpace',
   props: {
     visible: { type: Boolean, default: false },
-    parkingSpaceFlag: { type: String, default: '' }
+    parkingSpaceFlag: { type: String, default: '' },
+    paId: { type: String, default: '' }
   },
   data() {
     return {
@@ -76,11 +78,17 @@ export default {
       }
     }
   },
+  computed: {
+    fixedPaId() {
+      return !!this.paId
+    }
+  },
   watch: {
     visible(val) {
       this.dialogVisible = val
       if (val) {
         this.queryParams.num = ''
+        this.queryParams.paId = this.paId || ''
         this.fetchList()
         this.fetchParkingAreas()
       }

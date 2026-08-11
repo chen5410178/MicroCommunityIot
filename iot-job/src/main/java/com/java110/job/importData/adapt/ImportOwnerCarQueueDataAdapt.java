@@ -149,6 +149,7 @@ public class ImportOwnerCarQueueDataAdapt extends DefaultImportData implements I
             throw new IllegalArgumentException(ownerCarDto.getAreaNum() + "停车场-" + ownerCarDto.getNum() + "停车位不是空闲状态！");
         }
         ownerCarPo.setPsId(psId);
+        ownerCarPo.setPaId(paId);
         ownerCarPo.setOwnerId(ownerCarDto.getOwnerId());
         ownerCarPo.setCommunityId(ownerCarDto.getCommunityId());
         ownerCarPo.setCarId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_carId));

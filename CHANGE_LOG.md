@@ -301,3 +301,13 @@ INSERT INTO `hc_iot`.`c_service` (`service_id`, `service_code`, `business_type_c
 -- c_route
 INSERT INTO `hc_iot`.`c_route` (`id`, `app_id`, `service_id`, `order_type_cd`, `invoke_limit_times`, `invoke_model`, `create_time`, `status_cd`) VALUES ('102026072810010001', '992023010100000001', '982026072810010001', 'Q', '1000', 'S', now(), '0');
 ```
+
+### 2026-08-11 - 车辆与停车场关联升级（pa_id/contact/tel）
+
+```sql
+ALTER TABLE `owner_car`
+  ADD COLUMN `pa_id` varchar(30) NOT NULL DEFAULT '-1' COMMENT '停车场ID' AFTER `ps_id`,
+  ADD COLUMN `contact` varchar(64) DEFAULT '' COMMENT '联系人' AFTER `pa_id`,
+  ADD COLUMN `tel` varchar(20) DEFAULT '' COMMENT '联系电话' AFTER `contact`,
+  ADD KEY `idx_oc_pa_id` (`pa_id`);
+```

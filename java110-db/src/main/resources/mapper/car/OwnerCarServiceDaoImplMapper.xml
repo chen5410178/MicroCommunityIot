@@ -105,7 +105,7 @@
     <select id="getOwnerCarInfo" parameterType="Map" resultType="Map">
         select t.car_type,t.car_type carType,t1.name
         carTypeName,
-        t.car_num,t.car_num carNum,t.ps_id,t.ps_id psId,t.remark,t.status_cd,t.status_cd statusCd,t.owner_id,
+        t.car_num,t.car_num carNum,t.ps_id,t.ps_id psId,t.pa_id,t.pa_id paId,t.contact,t.contact contact,t.tel,t.tel tel,t.remark,t.status_cd,t.status_cd statusCd,t.owner_id,
         t.owner_id ownerId,t.car_id,t.car_id carId ,t.create_time
         createTime,t.community_id communityId,bow.name ownerName,bow.id_card idCard,bow.link,t2.name stateName,
         t.start_time,t.start_time startTime,t.end_time,t.end_time endTime,t.state,
@@ -144,7 +144,7 @@
             </foreach>
         </if>
         <if test="paIds !=null">
-            and pa.pa_id in
+            and t.pa_id in
             <foreach collection="paIds" item="item" index="index" open="(" close=")" separator=",">
                 #{item}
             </foreach>
@@ -235,7 +235,7 @@
         </if>
         <if test="carTypeCd != '1003'">
         GROUP BY t.car_type,t1.name,
-        t.car_num,t.ps_id,t.remark,t.status_cd,t.owner_id,
+        t.car_num,t.ps_id,t.pa_id,t.contact,t.tel,t.remark,t.status_cd,t.owner_id,
         t.car_id,t.create_time
         ,t.community_id ,bow.name,bow.id_card ,bow.link,t2.name,t.start_time,t.end_time,t.state,
         t.car_type_cd,t.member_id,ps.num,t.lease_type ,
