@@ -3,12 +3,12 @@ package com.java110.barrier.smo.impl;
 
 import com.java110.barrier.dao.ITempCarFeeConfigServiceDao;
 import com.java110.barrier.engine.IComputeTempCarFee;
+import com.java110.barrier.engine.inout.SelectTempFeeConfigEngine;
 import com.java110.bean.dto.PageDto;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.ListUtil;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.fee.*;
 import com.java110.intf.barrier.ITempCarFeeConfigAttrInnerServiceSMO;
@@ -39,6 +39,9 @@ public class TempCarFeeConfigInnerServiceSMOImpl implements ITempCarFeeConfigInn
 
     @Autowired
     private ITempCarFeeConfigAttrInnerServiceSMO tempCarFeeConfigAttrInnerServiceSMOImpl;
+
+    @Autowired
+    private SelectTempFeeConfigEngine selectTempFeeConfigEngine;
 
 
     @Override
@@ -110,23 +113,17 @@ public class TempCarFeeConfigInnerServiceSMOImpl implements ITempCarFeeConfigInn
     public List<CarInoutDto> computeTempCarFee(@RequestBody List<CarInoutDto> carInoutDtos) {
         for (CarInoutDto carInoutDto : carInoutDtos) {
             try {
-                TempCarFeeConfigDto tempCarFeeConfigDto = new TempCarFeeConfigDto();
-                tempCarFeeConfigDto.setPaId(carInoutDto.getPaId());
-                tempCarFeeConfigDto.setCommunityId(carInoutDto.getCommunityId());
-                List<TempCarFeeConfigDto> tempCarFeeConfigDtos = queryTempCarFeeConfigs(tempCarFeeConfigDto);
+                //与出场计费保持一致的选费标准逻辑：内部临时车绑定 > 车牌颜色专属标准 > 通用车辆(9901)标准
+                //不能按paId查全部配置取create_time最新的一条，多标准时会选错（如内部临时车标准被误用到普通临停车）
+                TempCarFeeConfigDto tempCarFeeConfigDto = selectTempFeeConfigEngine.getTempCarFeeConfig(carInoutDto, carInoutDto.getPaId());
 
-                if (ListUtil.isNull(tempCarFeeConfigDtos)) {
+                if (tempCarFeeConfigDto == null) {
                     continue;
                 }
-//                TempCarFeeConfigAttrDto tempCarFeeConfigAttrDto = new TempCarFeeConfigAttrDto();
-//                tempCarFeeConfigAttrDto.setConfigId(tempCarFeeConfigDtos.get(0).getConfigId());
-//                tempCarFeeConfigAttrDto.setCommunityId(tempCarFeeConfigDto.getCommunityId());
-//
-//                List<TempCarFeeConfigAttrDto> tempCarFeeConfigAttrDtos = tempCarFeeConfigAttrInnerServiceSMOImpl.queryTempCarFeeConfigAttrs(tempCarFeeConfigAttrDto);
-                IComputeTempCarFee computeTempCarFee = ApplicationContextFactory.getBean(tempCarFeeConfigDtos.get(0).getRuleId(), IComputeTempCarFee.class);
+                IComputeTempCarFee computeTempCarFee = ApplicationContextFactory.getBean(tempCarFeeConfigDto.getRuleId(), IComputeTempCarFee.class);
 
 
-                TempCarFeeResult result = computeTempCarFee.computeTempCarFee(carInoutDto, tempCarFeeConfigDtos.get(0), null);
+                TempCarFeeResult result = computeTempCarFee.computeTempCarFee(carInoutDto, tempCarFeeConfigDto, null);
                 carInoutDto.setMin(result.getMin());
                 carInoutDto.setHours(result.getHours());
                 if (CarInoutDto.CAR_TYPE_MONTH.equals(carInoutDto.getCarType())) {
@@ -144,20 +141,6 @@ public class TempCarFeeConfigInnerServiceSMOImpl implements ITempCarFeeConfigInn
 
     @Override
     public List<CarInoutDto> computeTempCarInoutDetailFee(@RequestBody List<CarInoutDto> carInoutDtos) {
-        TempCarFeeConfigDto tempCarFeeConfigDto = new TempCarFeeConfigDto();
-        tempCarFeeConfigDto.setPaId(carInoutDtos.get(0).getPaId());
-        tempCarFeeConfigDto.setCommunityId(carInoutDtos.get(0).getCommunityId());
-        List<TempCarFeeConfigDto> tempCarFeeConfigDtos = queryTempCarFeeConfigs(tempCarFeeConfigDto);
-
-        if (tempCarFeeConfigDtos == null || tempCarFeeConfigDtos.size() < 1) {
-            return carInoutDtos;
-        }
-        TempCarFeeConfigAttrDto tempCarFeeConfigAttrDto = new TempCarFeeConfigAttrDto();
-        tempCarFeeConfigAttrDto.setConfigId(tempCarFeeConfigDto.getConfigId());
-        tempCarFeeConfigAttrDto.setCommunityId(tempCarFeeConfigDto.getCommunityId());
-
-        List<TempCarFeeConfigAttrDto> tempCarFeeConfigAttrDtos = tempCarFeeConfigAttrInnerServiceSMOImpl.queryTempCarFeeConfigAttrs(tempCarFeeConfigAttrDto);
-        IComputeTempCarFee computeTempCarFee = ApplicationContextFactory.getBean(tempCarFeeConfigDtos.get(0).getRuleId(), IComputeTempCarFee.class);
         for (CarInoutDto carInoutDto : carInoutDtos) {
             try {
                 if (CarInoutDto.CAR_INOUT_IN.equals(carInoutDto.getCarInout())
@@ -170,7 +153,13 @@ public class TempCarFeeConfigInnerServiceSMOImpl implements ITempCarFeeConfigInn
                         carInoutDto.setPayCharge(0 + "");
                         continue;
                     }
-                    TempCarFeeResult result = computeTempCarFee.computeTempCarFee(carInoutDto, tempCarFeeConfigDtos.get(0), null);
+                    //与出场计费保持一致的选费标准逻辑：内部临时车绑定 > 车牌颜色专属标准 > 通用车辆(9901)标准
+                    TempCarFeeConfigDto tempCarFeeConfigDto = selectTempFeeConfigEngine.getTempCarFeeConfig(carInoutDto, carInoutDto.getPaId());
+                    if (tempCarFeeConfigDto == null) {
+                        continue;
+                    }
+                    IComputeTempCarFee computeTempCarFee = ApplicationContextFactory.getBean(tempCarFeeConfigDto.getRuleId(), IComputeTempCarFee.class);
+                    TempCarFeeResult result = computeTempCarFee.computeTempCarFee(carInoutDto, tempCarFeeConfigDto, null);
                     carInoutDto.setMin(result.getMin());
                     carInoutDto.setHours(result.getHours());
                     carInoutDto.setPayCharge(result.getPayCharge() + "");
