@@ -22,8 +22,7 @@ public class DeleteStaffOrgRelCmd extends Cmd {
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
         Assert.hasKeyAndValue(reqJson, "userId", "未包含用户信息");
-        Assert.hasKeyAndValue(reqJson, "storeId", "未包含商户信息");
-        Assert.hasKeyAndValue(reqJson, "orgId", "未包含组织信息");
+        Assert.hasKeyAndValue(reqJson, "relId", "未包含组织关系信息");
     }
 
     @Override
@@ -35,6 +34,8 @@ public class DeleteStaffOrgRelCmd extends Cmd {
         if (orgStaffRelDtos1.size() < 2) {
             throw new CmdException("至少保留一个组织关系，暂时无法删除！");
         }
+        orgStaffRelDto = new OrgStaffRelDto();
+        orgStaffRelDto.setStaffId(reqJson.getString("userId"));
         orgStaffRelDto.setRelId(reqJson.getString("relId"));
         List<OrgStaffRelDto> orgStaffRelDtos = orgStaffRelV1InnerServiceSMOImpl.queryOrgStaffRels(orgStaffRelDto);
         if (orgStaffRelDtos == null || orgStaffRelDtos.size() < 1) {

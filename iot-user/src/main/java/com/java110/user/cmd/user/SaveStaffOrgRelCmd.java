@@ -1,5 +1,6 @@
 package com.java110.user.cmd.user;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.dto.org.OrgStaffRelDto;
 import com.java110.bean.po.org.OrgStaffRelPo;
@@ -11,8 +12,12 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.StringUtil;
 import com.java110.intf.user.IOrgStaffRelV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 保存 员工 组织关系
@@ -33,18 +38,18 @@ public class SaveStaffOrgRelCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
 
-        String[] staffIds = reqJson.getString("staffIds").split(",");
+        List<String> staffIdList = getStaffIds(reqJson);
 
         String storeId = context.getReqHeaders().get("store-id");
 
-        if (staffIds == null || staffIds.length < 1) {
+        if (staffIdList.size() < 1) {
             throw new CmdException("未包含员工信息");
         }
         OrgStaffRelDto orgRelDto = null;
         int count = 0;
         OrgStaffRelPo orgStaffRelPo = null;
         int flag = 0;
-        for(String staffId : staffIds){
+        for(String staffId : staffIdList){
             orgRelDto = new OrgStaffRelDto();
             orgRelDto.setOrgId(reqJson.getString("orgId"));
             orgRelDto.setStaffId(staffId);
@@ -65,5 +70,31 @@ public class SaveStaffOrgRelCmd extends Cmd {
             }
         }
 
+    }
+
+    /**
+     * 获取员工ID 列表，兼容 staffIds 传 JSON数组 和 逗号分隔字符串 两种格式
+     * @param reqJson
+     * @return
+     */
+    private List<String> getStaffIds(JSONObject reqJson) {
+        List<String> staffIdList = new ArrayList<String>();
+        Object staffIdsObj = reqJson.get("staffIds");
+        if (staffIdsObj instanceof JSONArray) {
+            JSONArray staffIdsArray = (JSONArray) staffIdsObj;
+            for (int i = 0; i < staffIdsArray.size(); i++) {
+                if (!StringUtil.isEmpty(staffIdsArray.getString(i))) {
+                    staffIdList.add(staffIdsArray.getString(i));
+                }
+            }
+            return staffIdList;
+        }
+        String[] staffIds = reqJson.getString("staffIds").split(",");
+        for (String staffId : staffIds) {
+            if (!StringUtil.isEmpty(staffId.trim())) {
+                staffIdList.add(staffId.trim());
+            }
+        }
+        return staffIdList;
     }
 }
