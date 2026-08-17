@@ -159,7 +159,10 @@ export default {
           setCommunityList(communityList)
           setCurrentCommunity(communityList[0])
         }
-        this.$router.push('/pages/index/index')
+        // 已切换为物业账号身份，顶部导航与左侧菜单只在布局挂载时按会话加载，
+        // 需整页刷新重建主布局才能进入物业控制台（与sso登录、切换小区的处理方式一致）
+        window.location.hash = '#/pages/index/index'
+        window.location.reload()
       }).catch(err => {
         const msg = err && err.msg ? err.msg : '初始化数据失败'
         this.$message.error(msg)
