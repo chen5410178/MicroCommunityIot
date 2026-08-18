@@ -30,6 +30,12 @@
         <if test="gId !=null and gId != ''">
             and t.g_id= #{gId}
         </if>
+        <if test="gIds !=null">
+            and t.g_id in
+            <foreach collection="gIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
         <if test="name !=null and name != ''">
             and t.name= #{name}
         </if>
@@ -103,6 +109,12 @@
         </if>
         <if test="gId !=null and gId != ''">
             and t.g_id= #{gId}
+        </if>
+        <if test="gIds !=null">
+            and t.g_id in
+            <foreach collection="gIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
         </if>
         <if test="name !=null and name != ''">
             and t.name= #{name}
