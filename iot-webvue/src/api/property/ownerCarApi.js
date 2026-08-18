@@ -5,7 +5,7 @@ export function listOwnerCars(params) {
   return new Promise((resolve, reject) => {
     params.communityId = getCommunityId()
     request({
-      url: '/car.queryCar',
+      url: '/ownerCar.queryOwnerCars',
       method: 'get',
       params
     }).then(res => {

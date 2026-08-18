@@ -311,3 +311,33 @@ ALTER TABLE `owner_car`
   ADD COLUMN `tel` varchar(20) DEFAULT '' COMMENT '联系电话' AFTER `contact`,
   ADD KEY `idx_oc_pa_id` (`pa_id`);
 ```
+
+### 2026-08-13 - 商铺管理功能（位置/商铺/业主关联）
+
+DDL 与 11 条 c_service/c_route 注册 SQL、菜单权限 SQL 已追加到 `document/db/hc_iot.sql` 尾部，此处仅记录变更说明：
+
+```sql
+-- 1. 建表（详见 hc_iot.sql）：shop_location / building_shop / building_shop_owner
+-- 2. c_service 注册 11 条：shop.listShopLocations、shop.saveShopLocation、shop.updateShopLocation、
+--    shop.deleteShopLocation、shop.listBuildingShops、shop.saveBuildingShop、shop.updateBuildingShop、
+--    shop.deleteBuildingShop、shop.listBuildingShopOwners、shop.saveBuildingShopOwner、shop.deleteBuildingShopOwner
+--    （url = http://iot-community，查询 GET / 写 POST）
+-- 3. c_route 注册 11 条：app_id = 992023010100000001，查询 order_type_cd='Q' / 写 'D'，invoke_model='S'
+-- 4. 菜单权限：p_privilege（商铺管理，resource=/iot/api/shop.listBuildingShops）+ m_menu（挂 802023021604710005 房产组，
+--    url=/#/pages/shop/listShopManage）+ p_privilege_rel（600201904002 物业权限组）
+```
+
+### 2026-08-13 - 商铺功能补齐（详情页 5 Tab + updateBuildingShopOwner）
+
+```sql
+-- 1. 商铺详情页 5 Tab（业主/房屋/成员/车辆/商铺）仅前端改造，复用现有接口，无新增后端
+-- 2. 新增 c_service：shop.updateBuildingShopOwner（修改商铺租赁，只更新 building_shop_owner，不改商铺状态）
+INSERT INTO `c_service` VALUES ('982026081300000012', 'shop.updateBuildingShopOwner', 'API', '修改商铺租赁', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 14:00:12', '0');
+-- 3. 新增 c_route（app_id = 992023010100000001，写操作 order_type_cd='D'）
+INSERT INTO `c_route` VALUES ('102026081300000012', '992023010100000001', '982026081300000012', 'D', '1000', 'S', '2026-08-13 14:00:12', '0');
+-- 4. 前端：components/shop 新增 ShopDetailOwner/Room/Member/Car/Shop 5 个内嵌组件，
+--    views/shop/shopDetail.vue 重构为 5 Tab；listShopManage.vue 树宽拖拽 + 编号/业主链接；AddShop.vue 补齐 shopArea/shopRent 必填 + 位置全路径
+-- 5. 详情 Tab 复用接口明细：业主/成员 Tab 走 owner.queryOwners（ownerTypeCd=1001 人员 / 2002 家庭成员），
+--    房屋 Tab 走 room.queryRoomsByOwner，车辆 Tab 走 ownerCar.queryOwnerCars，商铺 Tab 走 shop.listBuildingShops（ownerId 过滤）
+--    （owner.listOwnerMember 后端无注册，未采用）；RoomServiceDaoImplMapper.getRoomInfoByOwner 补齐 stateName/roomSubTypeName 字典列
+```

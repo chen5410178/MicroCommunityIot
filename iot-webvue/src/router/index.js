@@ -15,6 +15,7 @@ import couponRouter from './couponRouter'
 import lockRouter from './lockRouter'
 import attendanceRouter from './attendanceRouter'
 import systemRouter from './systemRouter'
+import shopRouter from './shopRouter'
 
 Vue.use(VueRouter)
 
@@ -59,6 +60,7 @@ const routes = [
       ...lockRouter,
       ...attendanceRouter,
       ...systemRouter,
+      ...shopRouter,
       {
         path: 'pages/frame/systemInfoManage',
         name: 'SystemInfoManage',

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shopLocationV1ServiceDaoImpl">
+
+    <insert id="saveShopLocationInfo" parameterType="Map">
+        insert into shop_location(location_id, location_name, parent_id, level, remark, community_id, seq, status_cd)
+        values (#{locationId}, #{locationName}, #{parentId}, #{level}, #{remark}, #{communityId}, #{seq}, #{statusCd})
+    </insert>
+
+    <select id="getShopLocationInfo" parameterType="Map" resultType="Map">
+        select t.location_id locationId, t.location_name locationName, t.parent_id parentId,
+               t.level, t.remark, t.community_id communityId, t.seq, t.status_cd statusCd
+        from shop_location t
+        where 1 = 1 and t.status_cd = '0'
+        <if test="locationId != null and locationId != ''">
+            and t.location_id = #{locationId}
+        </if>
+        <if test="locationIds != null and locationIds.length > 0">
+            and t.location_id in
+            <foreach collection="locationIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="parentId != null and parentId != ''">
+            and t.parent_id = #{parentId}
+        </if>
+        <if test="communityId != null and communityId != ''">
+            and t.community_id = #{communityId}
+        </if>
+        <if test="level > 0">
+            and t.level = #{level}
+        </if>
+        <if test="locationName != null and locationName != ''">
+            and t.location_name = #{locationName}
+        </if>
+        <if test="locationNameLike != null and locationNameLike != ''">
+            and t.location_name like concat('%', #{locationNameLike}, '%')
+        </if>
+        order by t.seq asc, t.create_time desc
+        <if test="page != -1 and page != null">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <select id="queryShopLocationsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from shop_location t
+        where 1 = 1 and t.status_cd = '0'
+        <if test="locationId != null and locationId != ''">
+            and t.location_id = #{locationId}
+        </if>
+        <if test="parentId != null and parentId != ''">
+            and t.parent_id = #{parentId}
+        </if>
+        <if test="communityId != null and communityId != ''">
+            and t.community_id = #{communityId}
+        </if>
+        <if test="level > 0">
+            and t.level = #{level}
+        </if>
+        <if test="locationName != null and locationName != ''">
+            and t.location_name = #{locationName}
+        </if>
+        <if test="locationNameLike != null and locationNameLike != ''">
+            and t.location_name like concat('%', #{locationNameLike}, '%')
+        </if>
+    </select>
+
+    <update id="updateShopLocationInfo" parameterType="Map">
+        update shop_location t set t.status_cd = #{statusCd}
+        <if test="locationName != null and locationName != ''">
+            , t.location_name = #{locationName}
+        </if>
+        <if test="parentId != null and parentId != ''">
+            , t.parent_id = #{parentId}
+        </if>
+        <if test="level > 0">
+            , t.level = #{level}
+        </if>
+        <if test="remark != null and remark != ''">
+            , t.remark = #{remark}
+        </if>
+        <if test="seq != null and seq >= 0">
+            , t.seq = #{seq}
+        </if>
+        where 1 = 1
+        <if test="locationId != null and locationId != ''">
+            and t.location_id = #{locationId}
+        </if>
+    </update>
+
+</mapper>

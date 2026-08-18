@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="buildingShopV1ServiceDaoImpl">
+
+    <insert id="saveBuildingShopInfo" parameterType="Map">
+        insert into building_shop(shop_id, shop_num, location_id, location_name, built_up_area, shop_area, remark, state, community_id, shop_rent, status_cd)
+        values (#{shopId}, #{shopNum}, #{locationId}, #{locationName}, #{builtUpArea}, #{shopArea}, #{remark}, #{state}, #{communityId}, #{shopRent}, #{statusCd})
+    </insert>
+
+    <select id="getBuildingShopInfo" parameterType="Map" resultType="Map">
+        select t.shop_id shopId, t.shop_num shopNum, t.location_id locationId, t.location_name locationName,
+               t.built_up_area builtUpArea, t.shop_area shopArea, t.remark,
+               t.state, t.community_id communityId, t.shop_rent shopRent, t.status_cd statusCd,
+               o.owner_id ownerId, o.owner_name ownerName, o.link, o.start_time startTime, o.end_time endTime,
+               t.create_time createTime
+        from building_shop t
+        left join building_shop_owner o on t.shop_id = o.shop_id and o.status_cd = '0'
+        where 1 = 1
+        and t.status_cd = '0'
+        <if test="shopId != null and shopId != ''">
+            and t.shop_id = #{shopId}
+        </if>
+        <if test="shopIds != null and shopIds.length > 0">
+            and t.shop_id in
+            <foreach collection="shopIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="shopNum != null and shopNum != ''">
+            and t.shop_num like concat('%', #{shopNum}, '%')
+        </if>
+        <if test="locationId != null and locationId != ''">
+            and t.location_id = #{locationId}
+        </if>
+        <if test="ownerId != null and ownerId != ''">
+            and o.owner_id = #{ownerId}
+        </if>
+        <if test="ownerName != null and ownerName != ''">
+            and o.owner_name like concat('%', #{ownerName}, '%')
+        </if>
+        <if test="link != null and link != ''">
+            and o.link like concat('%', #{link}, '%')
+        </if>
+        <if test="rentTimeStart != null and rentTimeStart != ''">
+            and o.create_time &gt;= #{rentTimeStart}
+        </if>
+        <if test="rentTimeEnd != null and rentTimeEnd != ''">
+            and o.create_time &lt;= #{rentTimeEnd}
+        </if>
+        <if test="state != null and state != ''">
+            and t.state = #{state}
+        </if>
+        <if test="communityId != null and communityId != ''">
+            and t.community_id = #{communityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <select id="queryBuildingShopsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from building_shop t
+        left join building_shop_owner o on t.shop_id = o.shop_id and o.status_cd = '0'
+        where 1 = 1 and t.status_cd = '0'
+        <if test="shopId != null and shopId != ''">
+            and t.shop_id = #{shopId}
+        </if>
+        <if test="shopNum != null and shopNum != ''">
+            and t.shop_num like concat('%', #{shopNum}, '%')
+        </if>
+        <if test="locationId != null and locationId != ''">
+            and t.location_id = #{locationId}
+        </if>
+        <if test="ownerId != null and ownerId != ''">
+            and o.owner_id = #{ownerId}
+        </if>
+        <if test="ownerName != null and ownerName != ''">
+            and o.owner_name like concat('%', #{ownerName}, '%')
+        </if>
+        <if test="link != null and link != ''">
+            and o.link like concat('%', #{link}, '%')
+        </if>
+        <if test="rentTimeStart != null and rentTimeStart != ''">
+            and o.create_time &gt;= #{rentTimeStart}
+        </if>
+        <if test="rentTimeEnd != null and rentTimeEnd != ''">
+            and o.create_time &lt;= #{rentTimeEnd}
+        </if>
+        <if test="state != null and state != ''">
+            and t.state = #{state}
+        </if>
+        <if test="communityId != null and communityId != ''">
+            and t.community_id = #{communityId}
+        </if>
+    </select>
+
+    <update id="updateBuildingShopInfo" parameterType="Map">
+        update building_shop t set t.status_cd = #{statusCd}
+        <if test="shopNum != null and shopNum != ''">
+            , t.shop_num = #{shopNum}
+        </if>
+        <if test="locationId != null and locationId != ''">
+            , t.location_id = #{locationId}
+        </if>
+        <if test="locationName != null and locationName != ''">
+            , t.location_name = #{locationName}
+        </if>
+        <if test="builtUpArea != null and builtUpArea != ''">
+            , t.built_up_area = #{builtUpArea}
+        </if>
+        <if test="shopArea != null and shopArea != ''">
+            , t.shop_area = #{shopArea}
+        </if>
+        <if test="remark != null and remark != ''">
+            , t.remark = #{remark}
+        </if>
+        <if test="state != null and state != ''">
+            , t.state = #{state}
+        </if>
+        <if test="shopRent != null and shopRent != ''">
+            , t.shop_rent = #{shopRent}
+        </if>
+        where 1 = 1
+        <if test="shopId != null and shopId != ''">
+            and t.shop_id = #{shopId}
+        </if>
+        <if test="communityId != null and communityId != ''">
+            and t.community_id = #{communityId}
+        </if>
+    </update>
+
+</mapper>

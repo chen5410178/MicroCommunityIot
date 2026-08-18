@@ -819,9 +819,11 @@
         t.room_num roomNum,t.unit_id,t.unit_id unitId,t.b_id,t.b_id bId,t.apartment,t.state,u.`unit_num`
         unitNum,f.`floor_num` floorNum,t.room_type roomType,t.room_type,f.floor_id floorId
         ,t.room_sub_type,t.room_rent,t.room_area,t.room_sub_type roomSubType,t.room_rent roomRent,t.room_area
-        roomArea,bo.name ownerName
+        roomArea,bo.name ownerName,td.name stateName,td1.name roomSubTypeName
         FROM
         building_owner bo,building_room t,building_owner_room_rel borr,building_unit u,f_floor f
+        left join t_dict td on t.state = td.status_cd and td.table_name = 'building_room' and td.table_columns = 'state'
+        left join t_dict td1 on t.room_sub_type = td1.status_cd and td1.table_name = 'building_room' and td1.table_columns = 'room_sub_type'
         WHERE
         bo.`owner_id` = borr.`owner_id`
         AND borr.`room_id` = t.`room_id`
