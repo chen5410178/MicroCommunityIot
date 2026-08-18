@@ -100,9 +100,11 @@ export default {
       parkingWs: null
     }
   },
-  mounted() {
+  created() {
     this.boxId = this.$route.query.boxId || ''
     this.paId = this.$route.query.paId || ''
+  },
+  mounted() {
     if (this.boxId) {
       this.parkingWs = new ParkingWebSocket('parkingBox', this.boxId, this.onWsData)
     }

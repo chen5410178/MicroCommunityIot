@@ -91,8 +91,10 @@ export default {
       parkingWs: null
     }
   },
-  mounted() {
+  created() {
     this.paId = this.$route.query.paId || ''
+  },
+  mounted() {
     if (this.paId) {
       this.parkingWs = new ParkingWebSocket('parkingArea', this.paId, (data) => {
         if (this.$refs.videoRef) {
