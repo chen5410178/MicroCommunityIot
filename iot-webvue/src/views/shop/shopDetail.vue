@@ -132,6 +132,8 @@ export default {
         const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listBuildingShops({
           shopId: this.$route.query.shopId,
+          page:1,
+          row:1,
           communityId
         })
         this.shop = (res.data || [])[0] || {}

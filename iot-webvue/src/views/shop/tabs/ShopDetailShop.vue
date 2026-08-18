@@ -104,9 +104,7 @@ export default {
           row: this.query.row
         })
         let list = res.data || []
-        if (this.currentShopId) {
-          list = list.filter(item => item.shopId !== this.currentShopId)
-        }
+        
         this.shopList = list
         this.total = res.total || 0
       } catch (e) {
