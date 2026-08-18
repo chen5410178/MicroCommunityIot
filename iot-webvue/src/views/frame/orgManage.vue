@@ -63,7 +63,7 @@
     <EditOrg :visible.sync="editVisible" :edit-data="currentOrg" @success="handleOrgSuccess" />
     <DeleteOrg :visible.sync="deleteVisible" :del-data="currentOrg" @success="handleOrgSuccess" />
     <OrgRelStaff :visible.sync="relStaffVisible" :org-id="currentOrg ? currentOrg.orgId || currentOrg.id : ''" @success="fetchList" />
-    <DeleteOrgRelStaff :visible.sync="deleteRelStaffVisible" :del-data="currentRelStaff" @success="fetchList" />
+    <DeleteOrgRelStaff :visible.sync="deleteRelStaffVisible" :del-data="currentRelStaff" :org-id="queryParams.orgId" @success="fetchList" />
   </div>
 </template>
 

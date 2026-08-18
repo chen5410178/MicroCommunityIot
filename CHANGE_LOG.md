@@ -311,3 +311,10 @@ ALTER TABLE `owner_car`
   ADD COLUMN `tel` varchar(20) DEFAULT '' COMMENT '联系电话' AFTER `contact`,
   ADD KEY `idx_oc_pa_id` (`pa_id`);
 ```
+
+### 2026-08-17 - 修复组织删除员工报错 `请求发生异常，AppId 没有权限访问 serviceCode = org.deleteOrgRelStaff` 的 bug
+
+```sql
+INSERT INTO `c_route` VALUES ('102026081732260102', '992023010100000001', '982026081732260101', 'D', '1000', 'S', '2026-08-17 16:40:00', '0');
+INSERT INTO `c_service` VALUES ('982026081732260101', 'org.deleteOrgRelStaff', 'API', '删除组织员工关系', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-08-17 16:40:00', '0');
+```

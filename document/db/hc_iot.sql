@@ -5925,6 +5925,7 @@ INSERT INTO `c_route` VALUES ('102024083097840021', '992023010100000001', '98202
 INSERT INTO `c_route` VALUES ('102024090447290002', '992023010100000001', '982024090430200001', 'D', '1000', 'A', '2024-09-04 09:31:59', '1');
 INSERT INTO `c_route` VALUES ('102024091012630008', '992024012179880001', '982024091080390007', 'D', '1000', 'S', '2024-09-10 14:08:11', '0');
 INSERT INTO `c_route` VALUES ('102024091939470006', '992023010100000001', '982024091997820005', 'D', '1000', 'S', '2024-09-19 14:53:58', '0');
+INSERT INTO `c_route` VALUES ('102026081732260102', '992023010100000001', '982026081732260101', 'D', '1000', 'S', '2026-08-17 16:40:00', '0');
 INSERT INTO `c_route` VALUES ('102024091966080003', '992023111817510002', '982024091961010002', 'D', '1000', 'S', '2024-09-19 11:26:00', '0');
 INSERT INTO `c_route` VALUES ('102024091988440004', '992023010100000001', '982024091980400003', 'Q', '1000', 'S', '2024-09-19 14:46:45', '0');
 INSERT INTO `c_route` VALUES ('102024110512200025', '992023010100000001', '982024110596570024', 'Q', '1000', 'S', '2024-11-05 23:48:58', '0');
@@ -6707,6 +6708,7 @@ INSERT INTO `c_service` VALUES ('982024091080390007', 'owner.transforOwnerUser',
 INSERT INTO `c_service` VALUES ('982024091961010002', 'user.ownerUserLoginByOpenId', 'API', '用户登录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-09-19 11:26:00', '0');
 INSERT INTO `c_service` VALUES ('982024091980400003', 'user.listStaffsNoInOrg', 'API', '查询组织', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2024-09-19 14:46:45', '0');
 INSERT INTO `c_service` VALUES ('982024091997820005', 'user.saveStaffOrgRel', 'API', '保存员工组织关系', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-09-19 14:53:58', '0');
+INSERT INTO `c_service` VALUES ('982026081732260101', 'org.deleteOrgRelStaff', 'API', '删除组织员工关系', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-08-17 16:40:00', '0');
 INSERT INTO `c_service` VALUES ('982024110556970007', 'monitorArea.getMonitorArea', 'API', '查询监控区域', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-11-05 13:49:25', '0');
 INSERT INTO `c_service` VALUES ('982024110582600006', 'ai.getAiAlter', 'API', 'AI告警', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-11-05 22:23:10', '0');
 INSERT INTO `c_service` VALUES ('982024110586520022', 'monitor.deleteMonitorCollect', 'API', '删除监控收藏', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-11-05 23:48:26', '0');
