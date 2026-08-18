@@ -1,44 +1,50 @@
 <template>
-  <el-dialog :visible.sync="dialogVisible" title="房产导入" width="500px" @close="handleClose">
-    <el-upload
-      ref="uploadRef"
-      drag
-      action="/iot/api/room.importOwnerRoom"
-      :headers="uploadHeaders"
-      :data="uploadData"
-      :on-success="handleUploadSuccess"
-      :on-error="handleUploadError"
-      accept=".xls,.xlsx"
-    >
-      <i class="el-icon-upload" />
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      <div class="el-upload__tip" slot="tip">只能上传 xls/xlsx 文件</div>
-    </el-upload>
+  <el-dialog
+    :visible.sync="dialogVisible"
+    title="房产导入"
+    width="550px"
+    @close="handleClose"
+  >
+    <el-form :model="form" ref="formRef" label-width="100px">
+      <el-form-item label="选择文件" prop="excelTemplate" :rules="[{ required: true, message: '文件不能为空', trigger: 'change' }]">
+        <el-upload
+          ref="uploadRef"
+          :auto-upload="false"
+          :limit="1"
+          accept=".xls,.xlsx"
+          :on-change="handleFileChange"
+          :on-remove="handleFileRemove"
+          :file-list="fileList"
+          action=""
+        >
+          <el-button size="small" type="primary">选择文件</el-button>
+        </el-upload>
+      </el-form-item>
+      <el-form-item label="下载模板">
+        <span>请先下载 <a href="/import/importRoom.xlsx" target="_blank">导入模板</a> 准备数据后，上传导入</span>
+      </el-form-item>
+    </el-form>
     <span slot="footer">
-      <el-button @click="handleClose">关闭</el-button>
+      <el-button @click="handleClose">取消</el-button>
+      <el-button type="primary" @click="handleSubmit" :loading="loading">导入</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
+import { importOwnerRoom } from '@/api/property/roomApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ImportOwnerRoom',
   props: { visible: { type: Boolean, default: false } },
   data() {
-    return { dialogVisible: false }
-  },
-  computed: {
-    uploadHeaders() {
-      return {
-        'APP-ID': '992023010100000001',
-        'USER-ID': (JSON.parse(sessionStorage.getItem('iot_webvue_user') || '{}')).userId || '-1'
-      }
-    },
-    uploadData() {
-      const communityInfo = getCurrentCommunity() || {}
-      return { communityId: communityInfo.communityId }
+    return {
+      dialogVisible: false,
+      loading: false,
+      file: null,
+      fileList: [],
+      form: {}
     }
   },
   watch: {
@@ -46,14 +52,55 @@ export default {
     dialogVisible(val) { this.$emit('update:visible', val) }
   },
   methods: {
-    handleClose() { this.dialogVisible = false },
-    handleUploadSuccess() {
-      this.$message.success('导入成功')
-      this.$emit('success')
-      this.handleClose()
+    handleFileChange(file) {
+      if (!file || !file.raw) return
+      const acceptTypes = ['xlsx', 'xls']
+      const ext = file.name.split('.').pop()
+      if (!acceptTypes.includes(ext)) {
+        this.$message.error('不是有效的Excel格式')
+        this.fileList = []
+        return
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        this.$message.error('Excel文件大小不能超过2M')
+        this.fileList = []
+        return
+      }
+      this.file = file.raw
     },
-    handleUploadError(err) {
-      this.$message.error('导入失败')
+    handleFileRemove() {
+      this.file = null
+    },
+    handleClose() {
+      this.dialogVisible = false
+      this.file = null
+      this.fileList = []
+    },
+    async handleSubmit() {
+      if (!this.file) {
+        this.$message.warning('请选择文件')
+        return
+      }
+      this.loading = true
+      try {
+        const formData = new FormData()
+        formData.append('uploadFile', this.file)
+        formData.append('communityId', (getCurrentCommunity() || {}).communityId || '')
+        formData.append('importAdapt', 'importRoomOwner')
+        const res = await importOwnerRoom(formData)
+        this.$message.success('导入任务提交成功')
+        this.$emit('success')
+        this.handleClose()
+        this.$router.push('/pages/log/assetImportLogDetail?logId=' + res.data.logId + '&logType=importRoomOwner')
+      } catch (e) {
+        if (typeof e === 'string') {
+          this.$message.error(e)
+        } else {
+          this.$message.error((e && e.message) || '导入失败')
+        }
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
