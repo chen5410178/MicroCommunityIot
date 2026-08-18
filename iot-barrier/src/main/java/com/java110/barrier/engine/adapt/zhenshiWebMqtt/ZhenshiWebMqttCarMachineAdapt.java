@@ -347,7 +347,11 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
             String imagePath = plateResult.getString("imagePath");
             if (!StringUtil.isEmpty(imagePath)) {
                 imagePath = Base64Convert.decoder(imagePath);
-                imagePath = imagePath.substring(0,imagePath.indexOf("?"));
+                // 图片路径中带有 Expires 和 Signature 等查询参数，Expires 过期后无法加载，这里去掉查询参数
+                int pos = imagePath.indexOf("?");
+                if (pos != -1) {
+                    imagePath = imagePath.substring(0, pos);
+                }
                 //String imagePath = ImageFactory.getBase64ByImgUrl(MappingCacheFactory.getValue("OSS_URL") + plateResult.getString("imagePath"));
                 machineDto.setPhotoJpg(imagePath);
             }
@@ -355,7 +359,11 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
 
             if (!StringUtil.isEmpty(imageFragmentPath)) {
                 imageFragmentPath = Base64Convert.decoder(imageFragmentPath);
-                imageFragmentPath = imageFragmentPath.substring(0,imageFragmentPath.indexOf("?"));
+                // 图片路径中带有 Expires 和 Signature 等查询参数，Expires 过期后无法加载，这里去掉查询参数
+                int pos = imageFragmentPath.indexOf("?");
+                if (pos != -1) {
+                    imageFragmentPath = imageFragmentPath.substring(0, pos);
+                }
                 //String imagePath = ImageFactory.getBase64ByImgUrl(MappingCacheFactory.getValue("OSS_URL") + plateResult.getString("imagePath"));
                 machineDto.setPhotoFragment(imageFragmentPath);
             }
@@ -477,9 +485,15 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
         ManualOpenDoorLogPo manualOpenDoorLogPo = new ManualOpenDoorLogPo();
         manualOpenDoorLogPo.setLogId(id);
         String imagePath = payload.getString("imgPath");
-        imagePath = Base64Convert.decoder(imagePath);
-
-        manualOpenDoorLogPo.setPhotoJpg(imagePath);
+        if (!StringUtil.isEmpty(imagePath)) {
+            imagePath = Base64Convert.decoder(imagePath);
+            // 图片路径中带有 Expires 和 Signature 等查询参数，Expires 过期后无法加载，这里去掉查询参数
+            int pos = imagePath.indexOf("?");
+            if (pos != -1) {
+                imagePath = imagePath.substring(0, pos);
+            }
+            manualOpenDoorLogPo.setPhotoJpg(imagePath);
+        }
         manualOpenDoorLogServiceImpl.updateManualOpenDoorLog(manualOpenDoorLogPo);
     }
 
