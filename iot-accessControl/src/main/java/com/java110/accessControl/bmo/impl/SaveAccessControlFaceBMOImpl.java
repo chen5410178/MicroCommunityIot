@@ -14,9 +14,12 @@ import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.accessControlFace.AccessControlFaceDto;
+import com.java110.dto.shop.BuildingShopOwnerDto;
 import com.java110.dto.user.UserDto;
 import com.java110.intf.accessControl.IAccessControlFaceV1InnerServiceSMO;
+import com.java110.intf.community.IBuildingShopOwnerV1InnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.system.IFileRelInnerServiceSMO;
 import com.java110.intf.user.IOrgStaffRelV1InnerServiceSMO;
@@ -25,6 +28,7 @@ import com.java110.intf.user.IUserV1InnerServiceSMO;
 import com.java110.po.accessControlFace.AccessControlFacePo;
 import com.java110.po.accessControlFloor.AccessControlFloorPo;
 import com.java110.po.accessControlOrg.AccessControlOrgPo;
+import com.java110.po.accessControlShop.AccessControlShopPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -54,6 +58,9 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
 
     @Autowired
     private IFileRelInnerServiceSMO fileRelInnerServiceSMOImpl;
+
+    @Autowired
+    private IBuildingShopOwnerV1InnerServiceSMO buildingShopOwnerV1InnerServiceSMOImpl;
 
     /**
      * 将单元下的房屋
@@ -106,6 +113,29 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
             }
         }
 
+    }
+
+    @Override
+    @Async
+    public void saveShopOwner(AccessControlShopPo accessControlShopPo, String machineId, String startDate, String endDate) {
+
+        BuildingShopOwnerDto buildingShopOwnerDto = new BuildingShopOwnerDto();
+        buildingShopOwnerDto.setLocationId(accessControlShopPo.getLocationId());
+        buildingShopOwnerDto.setCommunityId(accessControlShopPo.getCommunityId());
+        buildingShopOwnerDto.setPage(-1);
+        List<BuildingShopOwnerDto> buildingShopOwnerDtos = buildingShopOwnerV1InnerServiceSMOImpl.queryBuildingShopOwners(buildingShopOwnerDto);
+
+        if (ListUtil.isNull(buildingShopOwnerDtos)) {
+            return;
+        }
+
+        for (BuildingShopOwnerDto tmpBuildingShopOwnerDto : buildingShopOwnerDtos) {
+            try {
+                doShopOwner(accessControlShopPo, tmpBuildingShopOwnerDto, machineId, startDate, endDate);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -169,6 +199,70 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
         accessControlFacePo.setPersonType(AccessControlFaceDto.PERSON_TYPE_STAFF);
         accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
         accessControlFacePo.setRoomName("");
+        accessControlFaceV1InnerServiceSMOImpl.saveAccessControlFace(accessControlFacePo);
+    }
+
+    private void doShopOwner(AccessControlShopPo accessControlShopPo, BuildingShopOwnerDto tmpBuildingShopOwnerDto, String machineId, String startDate, String endDate) {
+
+        if (StringUtil.isEmpty(tmpBuildingShopOwnerDto.getOwnerId())) {
+            return;
+        }
+
+        //todo 去重检查：该人员已存在于该门禁（status_cd='0'）则跳过
+        AccessControlFaceDto checkDto = new AccessControlFaceDto();
+        checkDto.setMachineId(machineId);
+        checkDto.setPersonId(tmpBuildingShopOwnerDto.getOwnerId());
+        checkDto.setCommunityId(accessControlShopPo.getCommunityId());
+        checkDto.setPage(-1);
+        List<AccessControlFaceDto> checkDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(checkDto);
+        if (!ListUtil.isNull(checkDtos)) {
+            return;
+        }
+
+        //todo 查询业主信息（身份证、卡号）
+        OwnerDto ownerDto = new OwnerDto();
+        ownerDto.setMemberId(tmpBuildingShopOwnerDto.getOwnerId());
+        ownerDto.setCommunityId(accessControlShopPo.getCommunityId());
+        List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
+
+        String idCard = "";
+        String cardNumber = "";
+        if (!ListUtil.isNull(ownerDtos)) {
+            idCard = ownerDtos.get(0).getIdCard();
+            cardNumber = ownerDtos.get(0).getCardNumber();
+        }
+
+        //todo 查询业主照片
+        String imgUrl = MappingCache.getValue(MappingConstant.FILE_DOMAIN, "IMG_PATH");
+        String url = "";
+        FileRelDto fileRelDto = new FileRelDto();
+        fileRelDto.setObjId(tmpBuildingShopOwnerDto.getOwnerId());
+        fileRelDto.setRelTypeCd("10000"); //人员照片
+        List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
+        if (!ListUtil.isNull(fileRelDtos)) {
+            url = fileRelDtos.get(0).getFileRealName();
+            if (!url.startsWith("http")) {
+                url = imgUrl + url;
+            }
+        }
+
+        AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
+        accessControlFacePo.setFacePath(url);
+        accessControlFacePo.setCommunityId(accessControlShopPo.getCommunityId());
+        accessControlFacePo.setIdNumber(idCard);
+        accessControlFacePo.setComeId(accessControlShopPo.getAcsId());
+        accessControlFacePo.setComeType(AccessControlFaceDto.COME_TYPE_SHOP);
+        accessControlFacePo.setEndTime(endDate);
+        accessControlFacePo.setStartTime(startDate);
+        accessControlFacePo.setCardNumber(cardNumber);
+        accessControlFacePo.setMachineId(machineId);
+        accessControlFacePo.setMessage("待下发到门禁");
+        accessControlFacePo.setMfId(GenerateCodeFactory.getGeneratorId("11"));
+        accessControlFacePo.setName(tmpBuildingShopOwnerDto.getOwnerName());
+        accessControlFacePo.setPersonId(tmpBuildingShopOwnerDto.getOwnerId());
+        accessControlFacePo.setPersonType(AccessControlFaceDto.PERSON_TYPE_OWNER);
+        accessControlFacePo.setState(AccessControlFaceDto.STATE_WAIT);
+        accessControlFacePo.setRoomName(tmpBuildingShopOwnerDto.getShopNum());
         accessControlFaceV1InnerServiceSMOImpl.saveAccessControlFace(accessControlFacePo);
     }
 

@@ -275,6 +275,61 @@ export function listAccessControlFloor(params) {
   })
 }
 
+// ===== 商铺授权(按位置) =====
+export function listAccessControlShop(params) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlShop.listAccessControlShop',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询列表失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+export function saveAccessControlShop(data) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlShop.saveAccessControlShop',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+export function deleteAccessControlShop(data) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/accessControlShop.deleteAccessControlShop',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '删除失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
 export function listAdminAccessControlFloor(params) {
   return new Promise((resolve, reject) => {
     request({

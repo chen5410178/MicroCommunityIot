@@ -3,6 +3,7 @@ package com.java110.accessControl.bmo;
 import com.java110.bean.dto.unit.UnitDto;
 import com.java110.po.accessControlFloor.AccessControlFloorPo;
 import com.java110.po.accessControlOrg.AccessControlOrgPo;
+import com.java110.po.accessControlShop.AccessControlShopPo;
 
 public interface ISaveAccessControlFaceBMO {
 
@@ -21,6 +22,16 @@ public interface ISaveAccessControlFaceBMO {
      * @param machineId
      */
     void saveOrgStaff(AccessControlOrgPo accessControlOrgPo, String machineId,String startDate,String endDate);
+
+    /**
+     * 商铺业主 下发门禁（按位置维度，含去重）
+     *
+     * @param accessControlShopPo
+     * @param machineId
+     * @param startDate
+     * @param endDate
+     */
+    void saveShopOwner(AccessControlShopPo accessControlShopPo, String machineId,String startDate,String endDate);
 
     /**
      * 异步重新下发人脸

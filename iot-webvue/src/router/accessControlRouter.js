@@ -114,6 +114,12 @@ const accessControlRoutes = [
     meta: { requiresAuth: true, title: '门禁楼层' }
   },
   {
+    path: 'pages/accessControl/accessControlShop',
+    name: 'AccessControlShop',
+    component: () => import('@/views/accessControl/accessControlShop.vue'),
+    meta: { requiresAuth: true, title: '商铺授权' }
+  },
+  {
     path: 'pages/accessControl/visitManage',
     name: 'VisitManage',
     component: () => import('@/views/accessControl/visitManage.vue'),

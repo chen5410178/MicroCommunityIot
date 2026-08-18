@@ -314,17 +314,95 @@ ALTER TABLE `owner_car`
 
 ### 2026-08-13 - 商铺管理功能（位置/商铺/业主关联）
 
-DDL 与 11 条 c_service/c_route 注册 SQL、菜单权限 SQL 已追加到 `document/db/hc_iot.sql` 尾部，此处仅记录变更说明：
+DDL 与 11 条 c_service/c_route 注册 SQL、菜单权限 SQL 已追加到 `document/db/hc_iot.sql` 尾部，此处完整记录变更脚本：
 
 ```sql
--- 1. 建表（详见 hc_iot.sql）：shop_location / building_shop / building_shop_owner
--- 2. c_service 注册 11 条：shop.listShopLocations、shop.saveShopLocation、shop.updateShopLocation、
---    shop.deleteShopLocation、shop.listBuildingShops、shop.saveBuildingShop、shop.updateBuildingShop、
---    shop.deleteBuildingShop、shop.listBuildingShopOwners、shop.saveBuildingShopOwner、shop.deleteBuildingShopOwner
---    （url = http://iot-community，查询 GET / 写 POST）
--- 3. c_route 注册 11 条：app_id = 992023010100000001，查询 order_type_cd='Q' / 写 'D'，invoke_model='S'
--- 4. 菜单权限：p_privilege（商铺管理，resource=/iot/api/shop.listBuildingShops）+ m_menu（挂 802023021604710005 房产组，
---    url=/#/pages/shop/listShopManage）+ p_privilege_rel（600201904002 物业权限组）
+-- 1. 建表：商铺位置表
+CREATE TABLE `shop_location` (
+  `location_id` varchar(50) NOT NULL COMMENT '位置ID',
+  `location_name` varchar(100) NOT NULL COMMENT '位置名称',
+  `parent_id` varchar(50) NOT NULL DEFAULT '-1' COMMENT '父位置ID',
+  `level` int NOT NULL DEFAULT 1 COMMENT '层级',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `community_id` varchar(50) NOT NULL COMMENT '小区ID',
+  `seq` int NOT NULL DEFAULT 1 COMMENT '排序',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '状态',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`location_id`),
+  KEY `idx_community` (`community_id`),
+  KEY `idx_parent` (`parent_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商铺位置表';
+
+-- 2. 建表：商铺表
+CREATE TABLE `building_shop` (
+  `shop_id` varchar(50) NOT NULL COMMENT '商铺ID',
+  `shop_num` varchar(50) NOT NULL COMMENT '商铺编号',
+  `location_id` varchar(50) DEFAULT NULL COMMENT '位置ID',
+  `location_name` varchar(100) DEFAULT NULL COMMENT '位置名称',
+  `built_up_area` varchar(20) DEFAULT NULL COMMENT '建筑面积',
+  `shop_area` varchar(20) DEFAULT NULL COMMENT '使用面积',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `state` varchar(4) NOT NULL DEFAULT '2008' COMMENT '状态 2006已出租 2007已出售 2008空置',
+  `community_id` varchar(50) NOT NULL COMMENT '小区ID',
+  `shop_rent` varchar(20) DEFAULT NULL COMMENT '租金',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '状态',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`shop_id`),
+  KEY `idx_community` (`community_id`),
+  KEY `idx_location` (`location_id`),
+  KEY `idx_shop_num` (`shop_num`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商铺表';
+
+-- 3. 建表：商铺业主关联表（租赁/出售记录）
+CREATE TABLE `building_shop_owner` (
+  `shop_owner_id` varchar(50) NOT NULL COMMENT '关联ID',
+  `shop_id` varchar(50) NOT NULL COMMENT '商铺ID',
+  `owner_id` varchar(50) DEFAULT NULL COMMENT '业主ID',
+  `owner_name` varchar(100) DEFAULT NULL COMMENT '业主姓名',
+  `link` varchar(20) DEFAULT NULL COMMENT '联系电话',
+  `state` varchar(4) DEFAULT NULL COMMENT '状态 2006已出租 2007已出售',
+  `start_time` timestamp NULL DEFAULT NULL COMMENT '开始时间',
+  `end_time` timestamp NULL DEFAULT NULL COMMENT '结束时间',
+  `community_id` varchar(50) NOT NULL COMMENT '小区ID',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '状态',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`shop_owner_id`),
+  KEY `idx_shop` (`shop_id`),
+  KEY `idx_owner` (`owner_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商铺业主关联表';
+
+-- 4. c_service 注册 11 条（url = http://iot-community，查询 GET / 写 POST）
+INSERT INTO `c_service` VALUES ('982026081300000001', 'shop.listShopLocations', 'API', '查询商铺位置', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2026-08-13 12:00:01', '0');
+INSERT INTO `c_service` VALUES ('982026081300000002', 'shop.saveShopLocation', 'API', '添加商铺位置', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:02', '0');
+INSERT INTO `c_service` VALUES ('982026081300000003', 'shop.updateShopLocation', 'API', '修改商铺位置', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:03', '0');
+INSERT INTO `c_service` VALUES ('982026081300000004', 'shop.deleteShopLocation', 'API', '删除商铺位置', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:04', '0');
+INSERT INTO `c_service` VALUES ('982026081300000005', 'shop.listBuildingShops', 'API', '查询商铺', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2026-08-13 12:00:05', '0');
+INSERT INTO `c_service` VALUES ('982026081300000006', 'shop.saveBuildingShop', 'API', '保存商铺', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:06', '0');
+INSERT INTO `c_service` VALUES ('982026081300000007', 'shop.updateBuildingShop', 'API', '修改商铺', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:07', '0');
+INSERT INTO `c_service` VALUES ('982026081300000008', 'shop.deleteBuildingShop', 'API', '删除商铺', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:08', '0');
+INSERT INTO `c_service` VALUES ('982026081300000009', 'shop.listBuildingShopOwners', 'API', '查询商铺业主', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2026-08-13 12:00:09', '0');
+INSERT INTO `c_service` VALUES ('982026081300000010', 'shop.saveBuildingShopOwner', 'API', '交铺', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:10', '0');
+INSERT INTO `c_service` VALUES ('982026081300000011', 'shop.deleteBuildingShopOwner', 'API', '退铺', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:11', '0');
+
+-- 5. c_route 注册 11 条（app_id = 992023010100000001，查询 order_type_cd='Q' / 写 'D'，invoke_model='S'）
+INSERT INTO `c_route` VALUES ('102026081300000001', '992023010100000001', '982026081300000001', 'Q', '1000', 'S', '2026-08-13 12:00:01', '0');
+INSERT INTO `c_route` VALUES ('102026081300000002', '992023010100000001', '982026081300000002', 'D', '1000', 'S', '2026-08-13 12:00:02', '0');
+INSERT INTO `c_route` VALUES ('102026081300000003', '992023010100000001', '982026081300000003', 'D', '1000', 'S', '2026-08-13 12:00:03', '0');
+INSERT INTO `c_route` VALUES ('102026081300000004', '992023010100000001', '982026081300000004', 'D', '1000', 'S', '2026-08-13 12:00:04', '0');
+INSERT INTO `c_route` VALUES ('102026081300000005', '992023010100000001', '982026081300000005', 'Q', '1000', 'S', '2026-08-13 12:00:05', '0');
+INSERT INTO `c_route` VALUES ('102026081300000006', '992023010100000001', '982026081300000006', 'D', '1000', 'S', '2026-08-13 12:00:06', '0');
+INSERT INTO `c_route` VALUES ('102026081300000007', '992023010100000001', '982026081300000007', 'D', '1000', 'S', '2026-08-13 12:00:07', '0');
+INSERT INTO `c_route` VALUES ('102026081300000008', '992023010100000001', '982026081300000008', 'D', '1000', 'S', '2026-08-13 12:00:08', '0');
+INSERT INTO `c_route` VALUES ('102026081300000009', '992023010100000001', '982026081300000009', 'Q', '1000', 'S', '2026-08-13 12:00:09', '0');
+INSERT INTO `c_route` VALUES ('102026081300000010', '992023010100000001', '982026081300000010', 'D', '1000', 'S', '2026-08-13 12:00:10', '0');
+INSERT INTO `c_route` VALUES ('102026081300000011', '992023010100000001', '982026081300000011', 'D', '1000', 'S', '2026-08-13 12:00:11', '0');
+
+-- 6. 菜单权限：p_privilege + m_menu（挂 802023021604710005 房产组，url=/#/pages/shop/listShopManage）+ p_privilege_rel（600201904002 物业权限组）
+INSERT INTO `p_privilege` VALUES ('502026081300000001', '商铺管理', '商铺管理', '2026-08-13 12:00:00', '0', '800900000003', '/iot/api/shop.listBuildingShops', '702026081300000001');
+INSERT INTO `m_menu` VALUES ('702026081300000001', '商铺管理', '802023021604710005', '/#/pages/shop/listShopManage', '4', '502026081300000001', '', '2026-08-13 12:00:00', '0', 'Y');
+INSERT INTO `p_privilege_rel` VALUES ('102026081300000001', '502026081300000001', '600201904002', '1001', '2026-08-13 12:00:00', '0');
+
+-- 注：shop.updateBuildingShopOwner（第 12 条 c_service/c_route）注册见下一节「商铺功能补齐」
 ```
 
 ### 2026-08-13 - 商铺功能补齐（详情页 5 Tab + updateBuildingShopOwner）
@@ -340,11 +418,49 @@ INSERT INTO `c_route` VALUES ('102026081300000012', '992023010100000001', '98202
 -- 5. 详情 Tab 复用接口明细：业主/成员 Tab 走 owner.queryOwners（ownerTypeCd=1001 人员 / 2002 家庭成员），
 --    房屋 Tab 走 room.queryRoomsByOwner，车辆 Tab 走 ownerCar.queryOwnerCars，商铺 Tab 走 shop.listBuildingShops（ownerId 过滤）
 --    （owner.listOwnerMember 后端无注册，未采用）；RoomServiceDaoImplMapper.getRoomInfoByOwner 补齐 stateName/roomSubTypeName 字典列
+```
 
 ### 2026-08-17 - 修复组织删除员工报错 `请求发生异常，AppId 没有权限访问 serviceCode = org.deleteOrgRelStaff` 的 bug
 
 ```sql
 INSERT INTO `c_route` VALUES ('102026081732260102', '992023010100000001', '982026081732260101', 'D', '1000', 'S', '2026-08-17 16:40:00', '0');
 INSERT INTO `c_service` VALUES ('982026081732260101', 'org.deleteOrgRelStaff', 'API', '删除组织员工关系', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-08-17 16:40:00', '0');
->>>>>>> 32465e0d06add9b85350877106d77d15463f1aa0
+```
+
+
+### 2026-08-18 - 商铺授权门禁（accessControlShop）
+
+```sql
+-- 1. 新增商铺门禁授权表
+DROP TABLE IF EXISTS `access_control_shop`;
+CREATE TABLE `access_control_shop` (
+  `acs_id` varchar(30) NOT NULL COMMENT '编号',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `location_id` varchar(30) NOT NULL COMMENT '位置ID',
+  `location_name` varchar(64) NOT NULL COMMENT '位置名称',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，0在用 1失效',
+  PRIMARY KEY (`acs_id`),
+  KEY `i_m_community_id` (`community_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- 2. 服务注册（c_service）
+INSERT INTO `c_service` VALUES ('982026081800000001', 'accessControlShop.listAccessControlShop', 'API', '查询商铺授权', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2026-08-18 12:00:01', '0');
+INSERT INTO `c_service` VALUES ('982026081800000002', 'accessControlShop.saveAccessControlShop', 'API', '商铺门禁授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2026-08-18 12:00:02', '0');
+INSERT INTO `c_service` VALUES ('982026081800000003', 'accessControlShop.deleteAccessControlShop', 'API', '删除商铺授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2026-08-18 12:00:03', '0');
+INSERT INTO `c_service` VALUES ('982026081800000004', 'accessControlShop.listAdminAccessControlShop', 'API', '运营访问商铺授权', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2026-08-18 12:00:04', '0');
+-- 3. 路由注册（c_route，app_id=992023010100000001）
+INSERT INTO `c_route` VALUES ('102026081800000001', '992023010100000001', '982026081800000001', 'Q', '1000', 'S', '2026-08-18 12:00:01', '0');
+INSERT INTO `c_route` VALUES ('102026081800000002', '992023010100000001', '982026081800000002', 'D', '1000', 'S', '2026-08-18 12:00:02', '0');
+INSERT INTO `c_route` VALUES ('102026081800000003', '992023010100000001', '982026081800000003', 'D', '1000', 'S', '2026-08-18 12:00:03', '0');
+INSERT INTO `c_route` VALUES ('102026081800000004', '992023010100000001', '982026081800000004', 'Q', '1000', 'S', '2026-08-18 12:00:04', '0');
+-- 4. 菜单权限（挂在门禁管理组下）
+INSERT INTO `p_privilege` VALUES ('502026081800000001', '商铺授权', '商铺授权', '2026-08-18 12:00:00', '0', '800900000003', '/#/pages/accessControl/accessControlShop', '702026081800000001');
+INSERT INTO `m_menu` VALUES ('702026081800000001', '商铺授权', '802023081520910004', '/#/pages/accessControl/accessControlShop', '11', '502026081800000001', '', '2026-08-18 12:00:00', '0', 'Y');
+INSERT INTO `p_privilege_rel` VALUES ('102026081800000001', '502026081800000001', '600201904002', '1001', '2026-08-18 12:00:00', '0');
+```
+
+### 2026-08-18 水电表支持绑定商铺（对象类型）
+```sql
+alter table meter_machine add COLUMN `obj_type` varchar(2) NOT NULL DEFAULT '0' COMMENT '对象类型 0 房屋 1 商铺' AFTER `room_name`;
 ```

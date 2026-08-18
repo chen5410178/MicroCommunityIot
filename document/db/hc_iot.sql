@@ -8194,6 +8194,7 @@ CREATE TABLE `meter_machine` (
   `machine_model` varchar(12) NOT NULL COMMENT '模式 1001 充值模式 2002 抄表模式',
   `room_id` varchar(30) NOT NULL COMMENT '房屋ID',
   `room_name` varchar(64) NOT NULL COMMENT '房屋名称',
+  `obj_type` varchar(2) NOT NULL DEFAULT '0' COMMENT '对象类型 0 房屋 1 商铺',
   `prestore_degrees` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '预存剩余读数',
   `cur_degrees` decimal(10,2) NOT NULL COMMENT '本期度数',
   `cur_reading_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '本期读表时间',
@@ -8213,9 +8214,9 @@ CREATE TABLE `meter_machine` (
 -- ----------------------------
 -- Records of meter_machine
 -- ----------------------------
-INSERT INTO `meter_machine` VALUES ('102026032689531069', '123', '123', '102026032641041066', '2002', '7520260325286622095', '1-0-2-32-31', '0.00', '0.00', '2026-03-26 17:17:05', null, null, '1', '9', '1', '20260324548723980', '2026-03-26 17:17:05', null, '2026-03-26 17:17:06', '0');
-INSERT INTO `meter_machine` VALUES ('102026040729220199', '33', '3444', '102026032479910756', '1001', '7520260325016821971', '1-erer-1-101', '0.00', '0.00', '2026-04-07 11:28:50', null, null, '1', '1', '102024011697740005', '20260324548723980', '2026-04-07 11:28:50', null, '2026-04-07 11:28:50', '0');
-INSERT INTO `meter_machine` VALUES ('102026040883099298', 'test0408', '007', '102026040843219283', '2002', '7520260325286622095', '1-1-2-32-31', '0.00', '0.00', '2026-04-08 08:53:29', null, null, '1', '1', '3', '20260324548723980', '2026-04-08 08:53:29', null, '2026-04-08 08:53:29', '0');
+INSERT INTO `meter_machine` VALUES ('102026032689531069', '123', '123', '102026032641041066', '2002', '7520260325286622095', '1-0-2-32-31', '0', '0.00', '0.00', '2026-03-26 17:17:05', null, null, '1', '9', '1', '20260324548723980', '2026-03-26 17:17:05', null, '2026-03-26 17:17:06', '0');
+INSERT INTO `meter_machine` VALUES ('102026040729220199', '33', '3444', '102026032479910756', '1001', '7520260325016821971', '1-erer-1-101', '0', '0.00', '0.00', '2026-04-07 11:28:50', null, null, '1', '1', '102024011697740005', '20260324548723980', '2026-04-07 11:28:50', null, '2026-04-07 11:28:50', '0');
+INSERT INTO `meter_machine` VALUES ('102026040883099298', 'test0408', '007', '102026040843219283', '2002', '7520260325286622095', '1-1-2-32-31', '0', '0.00', '0.00', '2026-04-08 08:53:29', null, null, '1', '1', '3', '20260324548723980', '2026-04-08 08:53:29', null, '2026-04-08 08:53:29', '0');
 
 -- ----------------------------
 -- Table structure for meter_machine_charge
@@ -12764,3 +12765,36 @@ INSERT INTO `c_route` VALUES ('102026081300000012', '992023010100000001', '98202
 INSERT INTO `p_privilege` VALUES ('502026081300000001', '商铺管理', '商铺管理', '2026-08-13 12:00:00', '0', '800900000003', '/iot/api/shop.listBuildingShops', '702026081300000001');
 INSERT INTO `m_menu` VALUES ('702026081300000001', '商铺管理', '802023021604710005', '/#/pages/shop/listShopManage', '4', '502026081300000001', '', '2026-08-13 12:00:00', '0', 'Y');
 INSERT INTO `p_privilege_rel` VALUES ('102026081300000001', '502026081300000001', '600201904002', '1001', '2026-08-13 12:00:00', '0');
+
+-- 商铺门禁授权表
+DROP TABLE IF EXISTS `access_control_shop`;
+CREATE TABLE `access_control_shop` (
+  `acs_id` varchar(30) NOT NULL COMMENT '编号',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `location_id` varchar(30) NOT NULL COMMENT '位置ID',
+  `location_name` varchar(64) NOT NULL COMMENT '位置名称',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，0在用 1失效',
+  PRIMARY KEY (`acs_id`),
+  KEY `i_m_community_id` (`community_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 商铺授权门禁服务注册（c_service）
+INSERT INTO `c_service` VALUES ('982026081800000001', 'accessControlShop.listAccessControlShop', 'API', '查询商铺授权', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2026-08-18 12:00:01', '0');
+INSERT INTO `c_service` VALUES ('982026081800000002', 'accessControlShop.saveAccessControlShop', 'API', '商铺门禁授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2026-08-18 12:00:02', '0');
+INSERT INTO `c_service` VALUES ('982026081800000003', 'accessControlShop.deleteAccessControlShop', 'API', '删除商铺授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2026-08-18 12:00:03', '0');
+INSERT INTO `c_service` VALUES ('982026081800000004', 'accessControlShop.listAdminAccessControlShop', 'API', '运营访问商铺授权', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2026-08-18 12:00:04', '0');
+
+-- 商铺授权门禁路由注册（c_route）
+INSERT INTO `c_route` VALUES ('102026081800000001', '992023010100000001', '982026081800000001', 'Q', '1000', 'S', '2026-08-18 12:00:01', '0');
+INSERT INTO `c_route` VALUES ('102026081800000002', '992023010100000001', '982026081800000002', 'D', '1000', 'S', '2026-08-18 12:00:02', '0');
+INSERT INTO `c_route` VALUES ('102026081800000003', '992023010100000001', '982026081800000003', 'D', '1000', 'S', '2026-08-18 12:00:03', '0');
+INSERT INTO `c_route` VALUES ('102026081800000004', '992023010100000001', '982026081800000004', 'Q', '1000', 'S', '2026-08-18 12:00:04', '0');
+
+-- 商铺授权门禁菜单权限（挂在门禁管理组下）
+INSERT INTO `p_privilege` VALUES ('502026081800000001', '商铺授权', '商铺授权', '2026-08-18 12:00:00', '0', '800900000003', '/#/pages/accessControl/accessControlShop', '702026081800000001');
+INSERT INTO `m_menu` VALUES ('702026081800000001', '商铺授权', '802023081520910004', '/#/pages/accessControl/accessControlShop', '11', '502026081800000001', '', '2026-08-18 12:00:00', '0', 'Y');
+INSERT INTO `p_privilege_rel` VALUES ('102026081800000001', '502026081800000001', '600201904002', '1001', '2026-08-18 12:00:00', '0');
+-- 水电表对象类型（0房屋 1商铺）
+ALTER TABLE `meter_machine` ADD COLUMN `obj_type` varchar(2) NOT NULL DEFAULT '0' COMMENT '对象类型 0 房屋 1 商铺' AFTER `room_name`;

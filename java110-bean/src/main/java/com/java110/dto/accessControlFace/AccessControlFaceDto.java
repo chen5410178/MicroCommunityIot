@@ -18,6 +18,7 @@ public class AccessControlFaceDto extends PageDto implements Serializable {
     public static final String COME_TYPE_FLOOR = "FLOOR"; //来自类型 FLOOR 楼栋授权 OWNER 人员授权 STAFF 员工授权
     public static final String COME_TYPE_OWNER = "OWNER"; //来自类型 FLOOR 楼栋授权 OWNER 人员授权 STAFF 员工授权
     public static final String COME_TYPE_STAFF = "STAFF"; //来自类型 FLOOR 楼栋授权 OWNER 人员授权 STAFF 员工授权
+    public static final String COME_TYPE_SHOP = "SHOP"; //来自类型 SHOP 商铺授权
 
     public static final String PERSON_TYPE_OWNER = "OWNER"; //OWNER 业主 STAFF
     public static final String PERSON_TYPE_STAFF = "STAFF"; //OWNER 业主 STAFF
