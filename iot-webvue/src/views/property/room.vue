@@ -14,6 +14,7 @@
       <div class="tree-panel">
         <FloorUnitTree
           ref="floorUnitTree"
+          @loaded="handleFloorUnitsLoaded"
           @switchFloor="handleSwitchFloor"
           @switchUnit="handleSwitchUnit"
           @addFloor="handleAddFloor"
@@ -159,6 +160,7 @@ export default {
   data() {
     return {
       loading: false,
+      floorUnitsEmpty: false,
       roomList: [],
       total: 0,
       stateOptions: [],
@@ -181,7 +183,6 @@ export default {
   },
   mounted() {
     this.loadDicts()
-    this.fetchRooms()
   },
   methods: {
     async loadDicts() {
@@ -194,7 +195,30 @@ export default {
         this.roomSubTypeOptions = typeRes || []
       } catch (e) { this.$message.error('加载字典失败') }
     },
+    handleFloorUnitsLoaded(units) {
+      if (!units) {
+        // 楼栋单元树加载失败，保持原有查询逻辑
+        this.fetchRooms()
+        return
+      }
+      if (!units.length) {
+        // 无楼栋单元时不再请求房屋查询接口
+        this.floorUnitsEmpty = true
+        this.queryParams.floorId = ''
+        this.queryParams.unitId = ''
+        this.roomList = []
+        this.total = 0
+        return
+      }
+      this.floorUnitsEmpty = false
+      this.fetchRooms()
+    },
     async fetchRooms() {
+      if (this.floorUnitsEmpty && this.queryParams.isAll !== 'Y') {
+        this.roomList = []
+        this.total = 0
+        return
+      }
       this.loading = true
       try {
         const communityInfo = getCurrentCommunity() || {}
@@ -308,10 +332,15 @@ export default {
       } catch (e) { this.$message.error('加载单元信息失败') }
     },
     handleImportRoom() { this.importVisible = true },
-    handleSuccess() { this.fetchRooms() },
+    handleSuccess() {
+      if (this.$refs.floorUnitTree) {
+        this.$refs.floorUnitTree.refresh()
+      } else {
+        this.fetchRooms()
+      }
+    },
     handleFloorSuccess() {
       this.$refs.floorUnitTree && this.$refs.floorUnitTree.refresh()
-      this.fetchRooms()
     },
     handleSizeChange(val) { this.queryParams.row = val; this.fetchRooms() },
     handlePageChange(val) { this.queryParams.page = val; this.fetchRooms() }

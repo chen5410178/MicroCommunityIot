@@ -46,8 +46,10 @@ export default {
             })
           }
         }
+        this.$emit('loaded', this.rawUnits)
       } catch (e) {
         /* 加载失败 */
+        this.$emit('loaded', null)
       }
     },
     buildTreeData() {
