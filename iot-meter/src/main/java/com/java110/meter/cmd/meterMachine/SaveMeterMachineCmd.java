@@ -112,6 +112,7 @@ public class SaveMeterMachineCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "machineModel", "请求报文中未包含machineModel");
         Assert.hasKeyAndValue(reqJson, "roomId", "请求报文中未包含roomId");
         Assert.hasKeyAndValue(reqJson, "roomName", "请求报文中未包含房屋名称");
+        Assert.hasKeyAndValue(reqJson, "objType", "对象类型不能为空");
         //Assert.hasKeyAndValue(reqJson, "feeConfigId", "请求报文中未包含feeConfigId");
         Assert.hasKeyAndValue(reqJson, "implBean", "请求报文中未包含implBean");
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
@@ -155,6 +156,9 @@ public class SaveMeterMachineCmd extends Cmd {
         Assert.listOnlyOne(feeConfigDtos, "费用项不存在");*/
 
         MeterMachinePo meterMachinePo = BeanConvertUtil.covertBean(reqJson, MeterMachinePo.class);
+        if (StringUtil.isEmpty(meterMachinePo.getObjType())) {
+            meterMachinePo.setObjType("0");
+        }
         meterMachinePo.setMachineId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
         //meterMachinePo.setFeeConfigName(feeConfigDtos.get(0).getFeeName());
         meterMachinePo.setCurDegrees("0");

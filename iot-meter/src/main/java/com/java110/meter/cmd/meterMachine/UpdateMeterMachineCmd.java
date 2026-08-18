@@ -104,6 +104,7 @@ public class UpdateMeterMachineCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "machineId", "machineId不能为空");
         Assert.hasKeyAndValue(reqJson, "communityId", "communityId不能为空");
         Assert.hasKeyAndValue(reqJson, "implBean", "请求报文中未包含implBean");
+        Assert.hasKeyAndValue(reqJson, "objType", "对象类型不能为空");
 
         MeterMachineFactoryDto meterMachineFactoryDto = new MeterMachineFactoryDto();
         meterMachineFactoryDto.setFactoryId(reqJson.getString("implBean"));

@@ -52,6 +52,12 @@
               </el-select>
             </el-form-item>
             <el-form-item>
+              <el-select v-model="queryParams.objType" placeholder="对象类型" clearable style="width: 130px">
+                <el-option label="房屋" value="0" />
+                <el-option label="商铺" value="1" />
+              </el-select>
+            </el-form-item>
+            <el-form-item>
               <el-input v-model="queryParams.roomNameLike" placeholder="楼栋-单元-房屋" clearable style="width: 180px" />
             </el-form-item>
             <el-form-item>
@@ -84,7 +90,11 @@
                 {{ row.machineModel == '1001' ? '充值模式' : '抄表模式' }}
               </template>
             </el-table-column>
-            <el-table-column prop="roomName" label="房屋" min-width="120" />
+            <el-table-column label="对象" min-width="120">
+              <template slot-scope="{ row }">
+                {{ row.objType == '1' ? '商铺-' + row.roomName : row.roomName }}
+              </template>
+            </el-table-column>
             <el-table-column prop="implBeanName" label="设备厂家" min-width="120" />
             <el-table-column label="当前度数" width="100" align="center">
               <template slot-scope="{ row }">
@@ -180,6 +190,7 @@ export default {
         address: '',
         implBean: '',
         machineModel: '',
+        objType: '',
         roomNameLike: ''
       }
     }
@@ -243,6 +254,7 @@ export default {
         address: '',
         implBean: '',
         machineModel: '',
+        objType: '',
         roomNameLike: ''
       }
       this.fetchList()

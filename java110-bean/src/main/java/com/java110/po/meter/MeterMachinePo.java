@@ -35,6 +35,7 @@ public class MeterMachinePo implements Serializable {
     private String machineName;
     private String roomId;
     private String roomName;
+    private String objType = "0";
     private String curReadingTime;
     private String machineModel;
     private String curDegrees;
@@ -111,6 +112,14 @@ public class MeterMachinePo implements Serializable {
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+
+    public String getObjType() {
+        return objType;
+    }
+
+    public void setObjType(String objType) {
+        this.objType = objType;
     }
 
     public String getCurReadingTime() {

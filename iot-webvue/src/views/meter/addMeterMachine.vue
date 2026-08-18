@@ -35,6 +35,16 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="对象类型" prop="objType">
+              <el-select v-model="form.objType" placeholder="必填，请选择对象类型" style="width: 100%" @change="handleObjTypeChange">
+                <el-option value="0" label="房屋" />
+                <el-option value="1" label="商铺" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row :gutter="20" v-if="form.machineModel == '2002'">
           <el-col :span="12">
             <el-form-item label="抄表日" prop="readDay" :rules="[{ required: form.machineModel == '2002', message: '请选择抄表日', trigger: 'change' }]">
@@ -53,9 +63,9 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="房屋" prop="roomId">
-              <el-input v-model="form.roomName" disabled placeholder="必填，请选择房屋">
-                <el-button slot="append" @click="roomVisible = true">选择</el-button>
+            <el-form-item :label="form.objType == '1' ? '商铺' : '房屋'" prop="roomId">
+              <el-input v-model="form.roomName" :disabled="true" :placeholder="form.objType == '1' ? '必填，请选择商铺' : '必填，请选择房屋'">
+                <el-button slot="append" @click="handleSelectRoom">选择</el-button>
               </el-input>
             </el-form-item>
           </el-col>
@@ -83,6 +93,7 @@
       </el-form>
     </el-card>
     <RoomSelect :visible.sync="roomVisible" @confirm="handleRoomConfirm" />
+    <ShopSelect :visible.sync="shopVisible" @confirm="handleShopConfirm" />
   </div>
 </template>
 
@@ -90,14 +101,16 @@
 import { saveMeterMachine, listMeterTypes, listMeterMachineFactory } from '@/api/meter/meterApi'
 import { getCurrentCommunity } from '@/utils/auth'
 import RoomSelect from '@/components/accessControl/RoomSelect.vue'
+import ShopSelect from '@/components/shop/ShopSelect.vue'
 
 export default {
   name: 'AddMeterMachine',
-  components: { RoomSelect },
+  components: { RoomSelect, ShopSelect },
   data() {
     return {
       loading: false,
       roomVisible: false,
+      shopVisible: false,
       meterTypes: [],
       factorys: [],
       form: {
@@ -107,6 +120,7 @@ export default {
         machineModel: '',
         readDay: '',
         readHours: '',
+        objType: '0',
         roomId: '',
         roomName: '',
         implBean: '',
@@ -118,6 +132,7 @@ export default {
         meterType: [{ required: true, message: '请选择表类型', trigger: 'change' }],
         machineModel: [{ required: true, message: '请选择模式', trigger: 'change' }],
         implBean: [{ required: true, message: '请选择厂家设备', trigger: 'change' }],
+        objType: [{ required: true, message: '请选择对象类型', trigger: 'change' }],
         roomId: [{ required: true, message: '请选择房屋', trigger: 'change' }]
       }
     }
@@ -153,9 +168,24 @@ export default {
         this.form.specs = []
       }
     },
+    handleObjTypeChange() {
+      this.form.roomId = ''
+      this.form.roomName = ''
+    },
     handleRoomConfirm(data) {
       this.form.roomId = data.roomId
       this.form.roomName = data.roomName
+    },
+    handleShopConfirm(data) {
+      this.form.roomId = data.roomId
+      this.form.roomName = data.roomName
+    },
+    handleSelectRoom() {
+      if (this.form.objType == '1') {
+        this.shopVisible = true
+      } else {
+        this.roomVisible = true
+      }
     },
     handleBack() {
       this.$router.go(-1)

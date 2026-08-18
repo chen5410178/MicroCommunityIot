@@ -31,6 +31,7 @@ public class MeterMachineDto extends PageDto implements Serializable {
     private String roomId;
     private String roomName;
     private String roomNameLike;
+    private String objType;
     private String curReadingTime;
     private String machineModel;
     private String curDegrees;
@@ -127,6 +128,14 @@ public class MeterMachineDto extends PageDto implements Serializable {
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+
+    public String getObjType() {
+        return objType;
+    }
+
+    public void setObjType(String objType) {
+        this.objType = objType;
     }
 
     public String getCurReadingTime() {

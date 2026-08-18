@@ -8,10 +8,10 @@
     <!-- 保存智能水电表信息 add by wuxw 2018-07-03 -->
     <insert id="saveMeterMachineInfo" parameterType="Map">
         insert into meter_machine(
-        heartbeat_time,impl_bean,address,prestore_degrees,machine_name,room_id,room_name,cur_reading_time,machine_model,
+        heartbeat_time,impl_bean,address,prestore_degrees,machine_name,room_id,room_name,obj_type,cur_reading_time,machine_model,
         cur_degrees,machine_id,meter_type,fee_config_name,community_id,fee_config_id,read_day,read_hours
         ) values (
-        #{heartbeatTime},#{implBean},#{address},#{prestoreDegrees},#{machineName},#{roomId},#{roomName},#{curReadingTime},
+        #{heartbeatTime},#{implBean},#{address},#{prestoreDegrees},#{machineName},#{roomId},#{roomName},#{objType},#{curReadingTime},
         #{machineModel},#{curDegrees},#{machineId},#{meterType},#{feeConfigName},#{communityId},#{feeConfigId},#{readDay},#{readHours}
         )
     </insert>
@@ -22,7 +22,7 @@
         select t.heartbeat_time,t.heartbeat_time heartbeatTime,t.impl_bean,t.impl_bean
         implBean,t.address,t.prestore_degrees,t.prestore_degrees prestoreDegrees,t.status_cd,t.status_cd
         statusCd,t.machine_name,t.machine_name machineName,t.room_id,t.room_id roomId,t.room_name,t.room_name
-        roomName,t.cur_reading_time,t.cur_reading_time curReadingTime,t.machine_model,t.machine_model
+        roomName,t.obj_type,t.obj_type objType,t.cur_reading_time,t.cur_reading_time curReadingTime,t.machine_model,t.machine_model
         machineModel,t.cur_degrees,t.cur_degrees curDegrees,t.machine_id,t.machine_id
         machineId,t.meter_type,t.meter_type meterType,t.fee_config_name,t.fee_config_name
         feeConfigName,t.community_id,t.community_id communityId,t.fee_config_id,t.fee_config_id feeConfigId,
@@ -67,6 +67,9 @@
         </if>
         <if test="roomNameLike !=null and roomNameLike != ''">
             and t.room_name like concat('%', #{roomNameLike},'%')
+        </if>
+        <if test="objType !=null and objType != ''">
+            and t.obj_type= #{objType}
         </if>
         <if test="curReadingTime !=null and curReadingTime != ''">
             and t.cur_reading_time= #{curReadingTime}
@@ -136,6 +139,9 @@
         </if>
         <if test="roomName !=null and roomName != ''">
             , t.room_name= #{roomName}
+        </if>
+        <if test="objType !=null and objType != ''">
+            , t.obj_type= #{objType}
         </if>
         <if test="curReadingTime !=null and curReadingTime != ''">
             , t.cur_reading_time= #{curReadingTime}
@@ -212,6 +218,9 @@
         </if>
         <if test="roomNameLike !=null and roomNameLike != ''">
             and t.room_name like concat('%', #{roomNameLike},'%')
+        </if>
+        <if test="objType !=null and objType != ''">
+            and t.obj_type= #{objType}
         </if>
         <if test="curReadingTime !=null and curReadingTime != ''">
             and t.cur_reading_time= #{curReadingTime}
