@@ -129,7 +129,7 @@
 
 <script>
 import { listMeterMachines, listMeterMachineCharges } from '@/api/meter/meterApi'
-import { queryAdminRooms } from '@/api/meter/meterApi'
+import { queryRooms } from '@/api/property/roomApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -183,7 +183,7 @@ export default {
       this.roomLoading = true
       try {
         const community = getCurrentCommunity()
-        const res = await queryAdminRooms({
+        const res = await queryRooms({
           roomId: this.roomId,
           communityId: community.communityId,
           page: this.roomPage.page,

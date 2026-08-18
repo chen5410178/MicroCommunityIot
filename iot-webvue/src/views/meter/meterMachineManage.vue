@@ -92,7 +92,7 @@
             </el-table-column>
             <el-table-column label="对象" min-width="120">
               <template slot-scope="{ row }">
-                {{ row.objType == '1' ? '商铺-' + row.roomName : row.roomName }}
+                {{ row.objType == '1' ? row.roomName + '(商铺)' : row.roomName+'(房屋)' }}
               </template>
             </el-table-column>
             <el-table-column prop="implBeanName" label="设备厂家" min-width="120" />
