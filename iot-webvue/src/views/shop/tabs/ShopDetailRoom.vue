@@ -12,6 +12,15 @@
         </el-table-column>
       </el-table>
       <el-empty v-if="!loading && roomList.length === 0" description="暂无数据" />
+      <el-pagination
+        v-if="total > 0"
+        :current-page="query.page"
+        :page-size="query.row"
+        :total="total"
+        layout="total, prev, pager, next"
+        @current-change="handlePageChange"
+        class="pagination-container"
+      />
     </div>
   </div>
 </template>
@@ -21,31 +30,62 @@ import { queryRoomsByOwner } from '@/api/owner/ownerApi'
 
 export default {
   name: 'ShopDetailRoom',
+  props: {
+    ownerId: { type: String, default: '' },
+    memberId: { type: String, default: '' },
+    ownerName: { type: String, default: '' },
+    link: { type: String, default: '' }
+  },
   data() {
     return {
       loading: false,
       roomList: [],
-      ownerId: ''
+      total: 0,
+      query: { page: 1, row: 10 }
+    }
+  },
+  mounted() {
+    this.loadRooms()
+  },
+  watch: {
+    ownerId: {
+      handler() {
+        this.roomList = []
+        this.total = 0
+        this.query.page = 1
+        this.loadRooms()
+      }
     }
   },
   methods: {
-    async open(ownerId) {
-      this.ownerId = ownerId || ''
-      this.roomList = []
-      if (!this.ownerId) return
-      await this.loadRooms()
-    },
     async loadRooms() {
+      if (!this.ownerId) return
       this.loading = true
       try {
-        const res = await queryRoomsByOwner({ ownerId: this.ownerId })
+        const res = await queryRoomsByOwner({
+          ownerId: this.ownerId,
+          page: this.query.page,
+          row: this.query.row
+        })
         this.roomList = res.data || []
+        this.total = res.total || 0
       } catch (e) {
         this.roomList = []
       } finally {
         this.loading = false
       }
+    },
+    handlePageChange(val) {
+      this.query.page = val
+      this.loadRooms()
     }
   }
 }
 </script>
+
+<style scoped>
+.pagination-container {
+  margin-top: 16px;
+  text-align: right;
+}
+</style>

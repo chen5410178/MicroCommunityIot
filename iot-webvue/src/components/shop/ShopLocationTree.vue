@@ -1,9 +1,18 @@
 <template>
   <div class="shop-location-tree">
     <el-card shadow="never" class="tree-card">
-      <div slot="header" class="card-header">
-        <span>商铺位置</span>
-        <el-button type="text" size="small" @click="loadTree">刷新</el-button>
+      <div slot="header" class="card-header" v-if="showActions">
+        <div class="header-actions">
+          <el-tooltip content="新增位置" placement="top">
+            <el-button type="text" size="small" icon="el-icon-plus" @click="handleAdd" />
+          </el-tooltip>
+          <el-tooltip content="修改位置" placement="top">
+            <el-button type="text" size="small" icon="el-icon-edit" @click="handleEdit" />
+          </el-tooltip>
+          <el-tooltip content="删除位置" placement="top">
+            <el-button type="text" size="small" icon="el-icon-delete" style="color: #f56c6c" @click="handleDelete" />
+          </el-tooltip>
+        </div>
       </div>
       <el-tree
         ref="tree"
@@ -14,14 +23,7 @@
         :expand-on-click-node="true"
         :props="{ label: 'locationName', children: 'children' }"
         @node-click="handleNodeClick"
-      >
-        <span class="custom-tree-node" slot-scope="{ node, data }">
-          <span>{{ data.locationName }}</span>
-          <span class="tree-node-op" v-if="data.locationId !== 'all'">
-            <el-button type="text" size="mini" @click.stop="handleAddChild(data)">+</el-button>
-          </span>
-        </span>
-      </el-tree>
+      />
     </el-card>
   </div>
 </template>
@@ -32,9 +34,14 @@ import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ShopLocationTree',
+  props: {
+    showAll: { type: Boolean, default: true },
+    showActions: { type: Boolean, default: true }
+  },
   data() {
     return {
-      treeData: []
+      treeData: [],
+      currentNode: null
     }
   },
   mounted() {
@@ -45,19 +52,20 @@ export default {
       try {
         const communityId = (getCurrentCommunity() || {}).communityId || ''
         const res = await listShopLocations({ communityId })
-        this.treeData = [{
-          locationId: 'all',
-          locationName: '全部位置',
-          children: res.data || []
-        }]
+        const locations = res.data || []
+        this.treeData = this.showAll ? [{ locationId: 'all', locationName: '全部' }, ...locations] : locations
         this.$nextTick(() => {
-          this.$refs.tree && this.$refs.tree.setCurrentKey('all')
+          if (this.$refs.tree) {
+            this.$refs.tree.setCurrentKey(this.showAll ? 'all' : '')
+            this.currentNode = this.showAll ? { locationId: 'all', locationName: '全部' } : null
+          }
         })
       } catch (e) {
         /* 加载失败 */
       }
     },
     handleNodeClick(data) {
+      this.currentNode = data
       if (data.locationId === 'all') {
         this.$emit('select', { locationId: '', locationName: '' })
       } else {
@@ -68,8 +76,31 @@ export default {
         })
       }
     },
-    handleAddChild(data) {
-      this.$emit('addChild', data)
+    handleAdd() {
+      if (!this.currentNode || this.currentNode.locationId === 'all') {
+        this.$emit('add', { addType: 'top' })
+      } else {
+        this.$emit('add', {
+          addType: 'child',
+          locationId: this.currentNode.locationId,
+          locationName: this.currentNode.locationName,
+          level: this.currentNode.level
+        })
+      }
+    },
+    handleEdit() {
+      if (!this.currentNode || this.currentNode.locationId === 'all') {
+        this.$message.warning('请先选择要修改的位置')
+        return
+      }
+      this.$emit('edit', this.currentNode)
+    },
+    handleDelete() {
+      if (!this.currentNode || this.currentNode.locationId === 'all') {
+        this.$message.warning('请先选择要删除的位置')
+        return
+      }
+      this.$emit('delete', this.currentNode)
     },
     refresh() {
       this.loadTree()
@@ -90,8 +121,8 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-.tree-node-op {
-  float: right;
-  margin-right: 6px;
+.header-actions {
+  display: flex;
+  align-items: center;
 }
 </style>

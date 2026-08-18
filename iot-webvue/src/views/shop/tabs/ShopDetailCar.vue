@@ -26,25 +26,36 @@ import { listOwnerCars } from '@/api/property/ownerCarApi'
 
 export default {
   name: 'ShopDetailCar',
+  props: {
+    ownerId: { type: String, default: '' },
+    memberId: { type: String, default: '' },
+    ownerName: { type: String, default: '' },
+    link: { type: String, default: '' }
+  },
   data() {
     return {
       loading: false,
       carList: [],
       total: 0,
-      ownerId: '',
       query: { page: 1, row: 10 }
     }
   },
+  mounted() {
+    this.loadCars()
+  },
+  watch: {
+    ownerId: {
+      handler() {
+        this.carList = []
+        this.total = 0
+        this.query.page = 1
+        this.loadCars()
+      }
+    }
+  },
   methods: {
-    async open(ownerId) {
-      this.ownerId = ownerId || ''
-      this.carList = []
-      this.total = 0
-      this.query.page = 1
-      if (!this.ownerId) return
-      await this.loadCars()
-    },
     async loadCars() {
+      if (!this.ownerId) return
       this.loading = true
       try {
         const res = await listOwnerCars({

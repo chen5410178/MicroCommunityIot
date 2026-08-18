@@ -56,13 +56,18 @@ import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ShopDetailShop',
+  props: {
+    ownerId: { type: String, default: '' },
+    memberId: { type: String, default: '' },
+    ownerName: { type: String, default: '' },
+    link: { type: String, default: '' },
+    currentShopId: { type: String, default: '' }
+  },
   data() {
     return {
       loading: false,
       shopList: [],
       total: 0,
-      ownerId: '',
-      currentShopId: '',
       stateMap: {
         '2006': { name: '已出租', type: 'warning' },
         '2007': { name: '已出售', type: 'info' },
@@ -71,18 +76,23 @@ export default {
       query: { page: 1, row: 10, shopNum: '' }
     }
   },
+  mounted() {
+    this.loadShops()
+  },
+  watch: {
+    ownerId: {
+      handler() {
+        this.shopList = []
+        this.total = 0
+        this.query.page = 1
+        this.query.shopNum = ''
+        this.loadShops()
+      }
+    }
+  },
   methods: {
-    async open(ownerId, currentShopId) {
-      this.ownerId = ownerId || ''
-      this.currentShopId = currentShopId || ''
-      this.shopList = []
-      this.total = 0
-      this.query.page = 1
-      this.query.shopNum = ''
-      if (!this.ownerId) return
-      await this.loadShops()
-    },
     async loadShops() {
+      if (!this.ownerId) return
       this.loading = true
       try {
         const communityId = (getCurrentCommunity() || {}).communityId || ''

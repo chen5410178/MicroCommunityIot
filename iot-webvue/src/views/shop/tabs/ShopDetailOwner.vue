@@ -42,20 +42,34 @@ import { queryOwners } from '@/api/owner/ownerApi'
 
 export default {
   name: 'ShopDetailOwner',
+  props: {
+    ownerId: { type: String, default: '' },
+    memberId: { type: String, default: '' },
+    ownerName: { type: String, default: '' },
+    link: { type: String, default: '' }
+  },
   data() {
     return {
       loading: false,
       owner: null
     }
   },
+  mounted() {
+    this.loadOwner()
+  },
+  watch: {
+    ownerId: {
+      handler() { this.loadOwner() }
+    }
+  },
   methods: {
-    async open(ownerId) {
+    async loadOwner() {
       this.owner = null
-      if (!ownerId) return
+      if (!this.ownerId) return
       this.loading = true
       try {
         const res = await queryOwners({
-          ownerId,
+          ownerId: this.ownerId,
           ownerTypeCd: '1001',
           page: 1,
           row: 1
@@ -66,7 +80,7 @@ export default {
           this.owner.memberCount = 0
           const memberRes = await queryOwners({
             ownerTypeCd: '2002',
-            ownerId,
+            ownerId: this.ownerId,
             page: 1,
             row: 100
           })

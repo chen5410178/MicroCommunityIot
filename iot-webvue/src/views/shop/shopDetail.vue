@@ -1,68 +1,120 @@
 <template>
-  <div class="shop-detail">
-    <el-card shadow="never">
-      <div slot="header" class="card-header">
-        <span>商铺详情</span>
-        <el-button size="small" @click="$router.back()">返回</el-button>
+  <div class="white-bg border-radius padding-sm">
+    <el-row type="flex" justify="space-between">
+      <div class="text-title">商铺详情</div>
+      <div>
+        <el-button type="default" size="small" icon="el-icon-back" @click="$router.back()">返回</el-button>
       </div>
-      <el-descriptions :column="2" border>
-        <el-descriptions-item label="商铺编号">{{ shop.shopNum || '-' }}</el-descriptions-item>
-        <el-descriptions-item label="所在位置">{{ shop.locationName || '-' }}</el-descriptions-item>
-        <el-descriptions-item label="建筑面积">{{ shop.builtUpArea || '-' }}㎡</el-descriptions-item>
-        <el-descriptions-item label="使用面积">{{ shop.shopArea || '-' }}㎡</el-descriptions-item>
-        <el-descriptions-item label="租金">{{ shop.shopRent || '0.00' }}</el-descriptions-item>
-        <el-descriptions-item label="状态">
-          <el-tag :type="stateMap[shop.state] && stateMap[shop.state].type" size="small">
-            {{ (stateMap[shop.state] && stateMap[shop.state].name) || shop.state }}
-          </el-tag>
-        </el-descriptions-item>
-        <el-descriptions-item label="业主">
-          <el-link v-if="shop.ownerId" type="primary" :underline="false" @click="goToOwnerDetail">{{ shop.ownerName }}</el-link>
-          <span v-else>-</span>
-        </el-descriptions-item>
-        <el-descriptions-item label="联系电话">{{ shop.link || '-' }}</el-descriptions-item>
-        <el-descriptions-item label="租赁起止时间">
-          <span v-if="shop.startTime">{{ shop.startTime }} ~ {{ shop.endTime || '' }}</span>
-          <span v-else>-</span>
-        </el-descriptions-item>
-        <el-descriptions-item label="建档时间">{{ shop.createTime || '-' }}</el-descriptions-item>
-        <el-descriptions-item label="备注" :span="2">{{ shop.remark || '-' }}</el-descriptions-item>
-      </el-descriptions>
-    </el-card>
+    </el-row>
 
-    <el-card shadow="never" class="tab-card">
+    <div class="margin-top">
+      <el-form label-width="110px">
+        <el-row>
+          <el-col :span="6">
+            <el-form-item label="商铺编号：">
+              <div>{{ shop.shopNum || '-' }}</div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="所在位置：">
+              <div>{{ shop.locationName || '-' }}</div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="建筑面积：">
+              <div>{{ shop.builtUpArea || '-' }}㎡</div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="使用面积：">
+              <div>{{ shop.shopArea || '-' }}㎡</div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6">
+            <el-form-item label="租金：">
+              <div>{{ shop.shopRent || '0.00' }}</div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="状态：">
+              <el-tag :type="stateMap[shop.state] && stateMap[shop.state].type" size="small">
+                {{ (stateMap[shop.state] && stateMap[shop.state].name) || shop.state }}
+              </el-tag>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="业主：">
+              <el-link v-if="shop.ownerId" type="primary" :underline="false" @click="goToOwnerDetail">{{ shop.ownerName }}</el-link>
+              <span v-else>-</span>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="联系电话：">
+              <div>{{ shop.link || '-' }}</div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6">
+            <el-form-item label="租赁起止时间：">
+              <div v-if="shop.startTime">{{ shop.startTime }} ~ {{ shop.endTime || '' }}</div>
+              <div v-else>-</div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="建档时间：">
+              <div>{{ shop.createTime || '-' }}</div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="备注：">
+              <div>{{ shop.remark || '-' }}</div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
+
+    <div class="divider-line"></div>
+
+    <div class="margin-top-sm">
       <el-tabs v-model="activeTab" @tab-click="handleTabClick">
-        <el-tab-pane label="业主" name="shopDetailOwner"></el-tab-pane>
-        <el-tab-pane label="房屋" name="shopDetailRoom"></el-tab-pane>
-        <el-tab-pane label="成员" name="shopDetailMember"></el-tab-pane>
-        <el-tab-pane label="车辆" name="shopDetailCar"></el-tab-pane>
-        <el-tab-pane label="商铺" name="shopDetailShop"></el-tab-pane>
+        <el-tab-pane label="业主" name="ShopDetailOwner" />
+        <el-tab-pane label="房屋" name="ShopDetailRoom" />
+        <el-tab-pane label="成员" name="ShopDetailMember" />
+        <el-tab-pane label="车辆" name="ShopDetailCar" />
+        <el-tab-pane label="商铺" name="ShopDetailShop" />
       </el-tabs>
+    </div>
 
-      <ShopDetailOwner v-show="activeTab === 'shopDetailOwner'" ref="shopDetailOwner" />
-      <ShopDetailRoom v-show="activeTab === 'shopDetailRoom'" ref="shopDetailRoom" />
-      <ShopDetailMember v-show="activeTab === 'shopDetailMember'" ref="shopDetailMember" />
-      <ShopDetailCar v-show="activeTab === 'shopDetailCar'" ref="shopDetailCar" />
-      <ShopDetailShop v-show="activeTab === 'shopDetailShop'" ref="shopDetailShop" />
-    </el-card>
+    <component
+      :is="activeTab"
+      :owner-id="shop.ownerId"
+      :member-id="shop.memberId"
+      :owner-name="shop.ownerName"
+      :link="shop.link"
+      :current-shop-id="shop.shopId"
+    />
   </div>
 </template>
 
 <script>
 import { listBuildingShops } from '@/api/shop/shopApi'
 import { getCurrentCommunity } from '@/utils/auth'
-import ShopDetailOwner from '@/components/shop/ShopDetailOwner.vue'
-import ShopDetailRoom from '@/components/shop/ShopDetailRoom.vue'
-import ShopDetailMember from '@/components/shop/ShopDetailMember.vue'
-import ShopDetailCar from '@/components/shop/ShopDetailCar.vue'
-import ShopDetailShop from '@/components/shop/ShopDetailShop.vue'
+import ShopDetailOwner from '@/views/shop/tabs/ShopDetailOwner.vue'
+import ShopDetailRoom from '@/views/shop/tabs/ShopDetailRoom.vue'
+import ShopDetailMember from '@/views/shop/tabs/ShopDetailMember.vue'
+import ShopDetailCar from '@/views/shop/tabs/ShopDetailCar.vue'
+import ShopDetailShop from '@/views/shop/tabs/ShopDetailShop.vue'
 
 export default {
   name: 'ShopDetail',
   components: { ShopDetailOwner, ShopDetailRoom, ShopDetailMember, ShopDetailCar, ShopDetailShop },
   data() {
     return {
-      activeTab: 'shopDetailOwner',
+      activeTab: 'ShopDetailOwner',
       shop: {},
       stateMap: {
         '2006': { name: '已出租', type: 'warning' },
@@ -83,26 +135,9 @@ export default {
           communityId
         })
         this.shop = (res.data || [])[0] || {}
-        this.changeTab(this.activeTab)
       } catch (e) { this.$message.error(e.message || '查询失败') }
     },
-    handleTabClick(tab) {
-      this.changeTab(tab.name)
-    },
-    changeTab(tabName) {
-      const ownerId = this.shop.ownerId || ''
-      if (tabName === 'shopDetailOwner' && this.$refs.shopDetailOwner) {
-        this.$refs.shopDetailOwner.open(ownerId)
-      } else if (tabName === 'shopDetailRoom' && this.$refs.shopDetailRoom) {
-        this.$refs.shopDetailRoom.open(ownerId)
-      } else if (tabName === 'shopDetailMember' && this.$refs.shopDetailMember) {
-        this.$refs.shopDetailMember.open(ownerId)
-      } else if (tabName === 'shopDetailCar' && this.$refs.shopDetailCar) {
-        this.$refs.shopDetailCar.open(ownerId)
-      } else if (tabName === 'shopDetailShop' && this.$refs.shopDetailShop) {
-        this.$refs.shopDetailShop.open(ownerId, this.shop.shopId || '')
-      }
-    },
+    handleTabClick() {},
     goToOwnerDetail() {
       this.$router.push({
         path: '/pages/owner/ownerDetail',
@@ -114,12 +149,17 @@ export default {
 </script>
 
 <style scoped>
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.tab-card {
-  margin-top: 16px;
+.white-bg { background-color: #fff; }
+.padding-sm { padding: 16px; }
+.border-radius { border-radius: 4px; }
+.margin-top { margin-top: 16px; }
+.margin-top-sm { margin-top: 10px; }
+.text-title { font-size: 18px; font-weight: bold; }
+
+.divider-line {
+  margin: 20px 0;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, rgba(64, 158, 255, 0) 0%, rgba(64, 158, 255, 0.3) 20%, rgba(64, 158, 255, 1) 50%, rgba(64, 158, 255, 0.3) 80%, rgba(64, 158, 255, 0) 100%);
 }
 </style>

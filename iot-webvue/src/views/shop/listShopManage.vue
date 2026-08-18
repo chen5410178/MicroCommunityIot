@@ -1,18 +1,13 @@
 <template>
   <div class="list-shop-manage">
-    <div class="toolbar">
-      <el-button size="mini" @click="handleAddLocation">新增位置</el-button>
-      <el-button size="mini" @click="handleEditLocation">修改位置</el-button>
-      <el-button size="mini" style="color: #f56c6c" @click="handleDeleteLocation">删除位置</el-button>
-      <el-button size="mini" style="margin-left: 12px" @click="handleImportShop">商铺导入</el-button>
-      <el-button size="mini" type="primary" @click="handleAddShop">新增商铺</el-button>
-    </div>
     <div class="content-wrapper">
       <div class="tree-panel" :style="{ width: treeWidth + 'px', minWidth: treeWidth + 'px' }">
         <ShopLocationTree
           ref="shopLocationTree"
           @select="handleSelectLocation"
-          @addChild="handleAddChildLocation"
+          @add="handleAddLocation"
+          @edit="handleEditLocation"
+          @delete="handleDeleteLocation"
         />
       </div>
       <div class="resize-handle" @mousedown="startResize">
@@ -61,6 +56,13 @@
           </el-form>
         </el-card>
         <el-card shadow="never" class="table-card">
+          <div slot="header" class="card-header">
+            <span>商铺信息</span>
+            <div>
+              <el-button size="small" @click="handleImportShop">商铺导入</el-button>
+              <el-button size="small" type="primary" @click="handleAddShop">新增商铺</el-button>
+            </div>
+          </div>
           <el-table :data="shopList" v-loading="loading" border stripe style="width: 100%">
             <el-table-column prop="shopNum" label="商铺编号" min-width="110" fixed="left">
               <template slot-scope="{ row }">
@@ -102,7 +104,7 @@
             <el-table-column label="操作" width="230" fixed="right" align="center">
               <template slot-scope="{ row }">
                 <el-button type="text" size="small" @click="handleEditShop(row)">修改</el-button>
-                <el-button v-if="row.state === '2008'" type="text" size="small" @click="handleBindOwner(row)">移交</el-button>
+                <el-button v-if="row.state === '2008'" type="text" size="small" @click="handleBindOwner(row)">交铺</el-button>
                 <el-button v-else type="text" size="small" style="color: #f56c6c" @click="handleUnbindOwner(row)">退租</el-button>
                 <el-button type="text" size="small" style="color: #f56c6c" @click="handleDeleteShop(row)">删除</el-button>
                 <el-button type="text" size="small" @click="handleShopDetail(row)">详情</el-button>
@@ -246,30 +248,24 @@ export default {
       this.queryParams.page = 1
       this.fetchList()
     },
-    handleAddChildLocation(data) {
-      this.addParentId = data.locationId
-      this.addParentName = data.locationName
-      this.addParentLevel = data.level || 0
-      this.addLocationVisible = true
-    },
-    handleAddLocation() {
-      this.addParentId = '-1'
-      this.addParentName = ''
-      this.addParentLevel = 0
-      this.addLocationVisible = true
-    },
-    handleEditLocation() {
-      if (!this.currentLocation.locationId) {
-        this.$message.warning('请先在左侧选择要修改的位置')
-        return
+    handleAddLocation(data) {
+      if (data && data.addType === 'child') {
+        this.addParentId = data.locationId
+        this.addParentName = data.locationName
+        this.addParentLevel = data.level || 0
+      } else {
+        this.addParentId = '-1'
+        this.addParentName = ''
+        this.addParentLevel = 0
       }
+      this.addLocationVisible = true
+    },
+    handleEditLocation(node) {
+      this.currentLocation = { ...node }
       this.editLocationVisible = true
     },
-    handleDeleteLocation() {
-      if (!this.currentLocation.locationId) {
-        this.$message.warning('请先在左侧选择要删除的位置')
-        return
-      }
+    handleDeleteLocation(node) {
+      this.currentLocation = { ...node }
       this.delLocationVisible = true
     },
     handleLocationSuccess() {
@@ -391,9 +387,6 @@ export default {
 </script>
 
 <style scoped>
-.toolbar {
-  margin-bottom: 12px;
-}
 .content-wrapper {
   display: flex;
   gap: 4px;

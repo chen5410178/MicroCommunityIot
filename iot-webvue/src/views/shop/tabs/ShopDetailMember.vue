@@ -29,25 +29,36 @@ import { queryOwners } from '@/api/owner/ownerApi'
 
 export default {
   name: 'ShopDetailMember',
+  props: {
+    ownerId: { type: String, default: '' },
+    memberId: { type: String, default: '' },
+    ownerName: { type: String, default: '' },
+    link: { type: String, default: '' }
+  },
   data() {
     return {
       loading: false,
       memberList: [],
       total: 0,
-      ownerId: '',
       query: { page: 1, row: 10 }
     }
   },
+  mounted() {
+    this.loadMembers()
+  },
+  watch: {
+    ownerId: {
+      handler() {
+        this.memberList = []
+        this.total = 0
+        this.query.page = 1
+        this.loadMembers()
+      }
+    }
+  },
   methods: {
-    async open(ownerId) {
-      this.ownerId = ownerId || ''
-      this.memberList = []
-      this.total = 0
-      this.query.page = 1
-      if (!this.ownerId) return
-      await this.loadMembers()
-    },
     async loadMembers() {
+      if (!this.ownerId) return
       this.loading = true
       try {
         const res = await queryOwners({
