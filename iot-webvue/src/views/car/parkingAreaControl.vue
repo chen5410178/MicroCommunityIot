@@ -120,9 +120,6 @@ export default {
       if (this.$refs.videoRef) {
         this.$refs.videoRef.onWsMessage(data)
       }
-      if (this.$refs.feeRef) {
-        this.$refs.feeRef.onWsNotify(data)
-      }
       if (this.$refs.tempCarAuthConfirmRef) {
         this.$refs.tempCarAuthConfirmRef.onWsNotify(data)
       }
@@ -136,7 +133,7 @@ export default {
     },
     onVideoWsData(data) {
       if (this.$refs.feeRef) {
-        this.$refs.feeRef.onWsNotify(data._data || data)
+        this.$refs.feeRef.onWsNotify(data._data || data, data._direction)
       }
     },
     onChangeMachine(data) {
