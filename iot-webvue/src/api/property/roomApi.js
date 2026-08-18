@@ -136,11 +136,11 @@ export function exitRoom(data) {
 
 export function importOwnerRoom(data) {
   return new Promise((resolve, reject) => {
-    data.communityId = getCommunityId()
     request({
-      url: '/room.importOwnerRoom',
+      url: '/assetImport',
       method: 'post',
-      data
+      data,
+      headers: { 'Content-Type': 'multipart/form-data' }
     }).then(res => {
       if (res.code === 0) {
         resolve(res)
