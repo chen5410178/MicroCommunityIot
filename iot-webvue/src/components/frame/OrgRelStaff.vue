@@ -140,7 +140,7 @@ export default {
         this.$emit('success')
         this.handleClose()
       } catch (e) {
-        this.$message.error(e.msg || '关联失败')
+        this.$message.error(e.msg || e.message || '关联失败')
       } finally {
         this.submitLoading = false
       }

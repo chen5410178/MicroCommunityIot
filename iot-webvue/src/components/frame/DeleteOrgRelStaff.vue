@@ -26,7 +26,8 @@ export default {
   name: 'DeleteOrgRelStaff',
   props: {
     visible: { type: Boolean, default: false },
-    delData: { type: Object, default: null }
+    delData: { type: Object, default: null },
+    orgId: { type: String, default: '' }
   },
   data() {
     return {
@@ -44,14 +45,16 @@ export default {
       try {
         const community = getCurrentCommunity() || {}
         await deleteOrgRelStaff({
-          osrId: this.delData.osrId || this.delData.id,
+          orgId: this.orgId,
+          userId: this.delData.userId,
+          relId: this.delData.relId,
           communityId: community.communityId
         })
         this.$message.success('移除成功')
         this.$emit('success')
         this.dialogVisible = false
       } catch (e) {
-        this.$message.error(e.msg || '移除失败')
+        this.$message.error(e.msg || e.message || '移除失败')
       } finally {
         this.loading = false
       }

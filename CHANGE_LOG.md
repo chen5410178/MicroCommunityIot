@@ -340,4 +340,11 @@ INSERT INTO `c_route` VALUES ('102026081300000012', '992023010100000001', '98202
 -- 5. 详情 Tab 复用接口明细：业主/成员 Tab 走 owner.queryOwners（ownerTypeCd=1001 人员 / 2002 家庭成员），
 --    房屋 Tab 走 room.queryRoomsByOwner，车辆 Tab 走 ownerCar.queryOwnerCars，商铺 Tab 走 shop.listBuildingShops（ownerId 过滤）
 --    （owner.listOwnerMember 后端无注册，未采用）；RoomServiceDaoImplMapper.getRoomInfoByOwner 补齐 stateName/roomSubTypeName 字典列
+
+### 2026-08-17 - 修复组织删除员工报错 `请求发生异常，AppId 没有权限访问 serviceCode = org.deleteOrgRelStaff` 的 bug
+
+```sql
+INSERT INTO `c_route` VALUES ('102026081732260102', '992023010100000001', '982026081732260101', 'D', '1000', 'S', '2026-08-17 16:40:00', '0');
+INSERT INTO `c_service` VALUES ('982026081732260101', 'org.deleteOrgRelStaff', 'API', '删除组织员工关系', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-08-17 16:40:00', '0');
+>>>>>>> 32465e0d06add9b85350877106d77d15463f1aa0
 ```
