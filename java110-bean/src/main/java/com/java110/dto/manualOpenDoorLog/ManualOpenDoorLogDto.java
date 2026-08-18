@@ -24,6 +24,7 @@ public class ManualOpenDoorLogDto extends PageDto implements Serializable {
     private String staffId;
     private String extStaffId;
     private String machineName;
+    private String paId;
 
 
     private Date createTime;
@@ -101,6 +102,14 @@ public class ManualOpenDoorLogDto extends PageDto implements Serializable {
 
     public void setMachineName(String machineName) {
         this.machineName = machineName;
+    }
+
+    public String getPaId() {
+        return paId;
+    }
+
+    public void setPaId(String paId) {
+        this.paId = paId;
     }
 
 

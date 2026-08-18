@@ -22,7 +22,15 @@
         communityId,t.staff_id,t.staff_id staffId,t.ext_staff_id,t.ext_staff_id extStaffId,t.machine_name,t.machine_name
         machineName,t.create_time createTime
         from manual_open_door_log t
+        <if test="paId !=null and paId != ''">
+            left join barrier b on t.machine_id = b.machine_id
+            left join parking_box pb on b.box_id = pb.box_id and pb.status_cd = '0'
+            left join parking_box_area boa on pb.box_id = boa.box_id and boa.default_area = 'T'
+        </if>
         where 1 =1
+        <if test="paId !=null and paId != ''">
+            and boa.pa_id = #{paId}
+        </if>
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}
         </if>
@@ -99,7 +107,15 @@
     <select id="queryManualOpenDoorLogsCount" parameterType="Map" resultType="Map">
         select count(1) count
         from manual_open_door_log t
+        <if test="paId !=null and paId != ''">
+            left join barrier b on t.machine_id = b.machine_id
+            left join parking_box pb on b.box_id = pb.box_id and pb.status_cd = '0'
+            left join parking_box_area boa on pb.box_id = boa.box_id and boa.default_area = 'T'
+        </if>
         where 1 =1
+        <if test="paId !=null and paId != ''">
+            and boa.pa_id = #{paId}
+        </if>
         <if test="machineId !=null and machineId != ''">
             and t.machine_id= #{machineId}
         </if>
