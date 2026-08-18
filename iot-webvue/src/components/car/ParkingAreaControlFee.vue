@@ -75,23 +75,19 @@ export default {
     }
   },
   methods: {
-    onWsNotify(data) {
+    onWsNotify(data, direction) {
       if (!data || data.action !== 'FEE_INFO') return
-      const outMachineId = this.feeInfo.outMachineId
-      const oldPayCharge = this.feeInfo.payCharge
-      this.feeInfo.openMsg = data.remark || ''
-
-      let inoutType = '2002'
-      if (outMachineId === data.machineId) {
+      const isOut = direction === 'out'
+      if (isOut) {
+        if (data.machineId) {
+          this.feeInfo.outMachineId = data.machineId
+        }
         this.feeInfo.feeCarNum = data.carNum || ''
         const hours = data.hours || '0'
         const min = data.min || '0'
         this.feeInfo.costMin = hours + '小时' + min + '分钟'
         this.feeInfo.pay = data.payCharge || 0
         this.feeInfo.payCharge = data.payCharge || '0'
-      } else {
-        this.feeInfo.payCharge = oldPayCharge
-        inoutType = '1001'
       }
 
       const infos = [...this.feeInfo.carInoutInfos].reverse()
@@ -100,7 +96,7 @@ export default {
         inOutTime: data.inOutTime,
         open: data.open,
         openMsg: data.remark,
-        inoutType: inoutType,
+        inoutType: isOut ? '2002' : '1001',
         payCharge: data.payCharge
       })
       this.feeInfo.carInoutInfos = infos.reverse().slice(0, 10)
