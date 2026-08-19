@@ -173,6 +173,7 @@ export default {
         link: [{ required: true, validator: validatePhone, trigger: 'blur' }],
         idCard: [{ validator: validateIdCard, trigger: 'change' }],
         sex: [{ required: true, message: '性别不能为空', trigger: 'change' }],
+        ownerTypeCd: [{ required: true, message: '类型不能为空', trigger: 'change' }],
         remark: [{ max: 200, message: '备注长度不能超过200位', trigger: 'blur' }]
       }
     }

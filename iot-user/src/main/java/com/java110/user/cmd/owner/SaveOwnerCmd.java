@@ -124,6 +124,7 @@ public class SaveOwnerCmd extends Cmd {
         Assert.jsonObjectHaveKey(reqJson, "link", "请求报文中未包含link");
         Assert.jsonObjectHaveKey(reqJson, "sex", "请求报文中未包含sex");
         Assert.jsonObjectHaveKey(reqJson, "ownerTypeCd", "请求报文中未包含类型");
+        Assert.hasLength(reqJson.getString("ownerTypeCd"), "类型不能为空");
         Assert.jsonObjectHaveKey(reqJson, "communityId", "请求报文中未包含communityId");
         //Assert.jsonObjectHaveKey(paramIn, "idCard", "请求报文中未包含身份证号");
         if (reqJson.containsKey("roomId")) {
