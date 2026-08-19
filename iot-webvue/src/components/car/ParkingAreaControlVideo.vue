@@ -358,6 +358,7 @@ export default {
           this.inMachineInOutTime = data.inOutTime
           this.inMachineOpen = data.open
           this.inMachineOpenMsg = data.remark || ''
+          this.$emit('ws-data', { _direction: 'in', _data: data })
         }
       } else if (data.action === 'IN_OUT') {
         setTimeout(() => {
