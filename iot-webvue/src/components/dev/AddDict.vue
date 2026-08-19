@@ -7,9 +7,15 @@
   >
     <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
       <el-form-item label="类型" prop="specId">
-        <el-select v-model="form.specId" placeholder="必填，请选择类型" style="width: 100%" @visible-change="loadSpecs">
+        <el-select
+          v-model="form.specId"
+          placeholder="必填，请选择类型"
+          style="width: 100%"
+          :disabled="isSpecLocked"
+          @visible-change="loadSpecs"
+        >
           <el-option
-            v-for="item in specList"
+            v-for="item in innerSpecList"
             :key="item.specId"
             :label="item.specName"
             :value="item.specId"
@@ -39,13 +45,15 @@ import { saveDict, listDictSpecs } from '@/api/dev/devApi'
 export default {
   name: 'AddDict',
   props: {
-    visible: { type: Boolean, default: false }
+    visible: { type: Boolean, default: false },
+    specList: { type: Array, default: () => [] },
+    defaultSpecId: { type: String, default: '' }
   },
   data() {
     return {
       dialogVisible: false,
       loading: false,
-      specList: [],
+      innerSpecList: [],
       form: {
         specId: '',
         name: '',
@@ -71,16 +79,39 @@ export default {
       }
     }
   },
+  computed: {
+    isSpecLocked() {
+      return !!this.defaultSpecId
+    }
+  },
   watch: {
-    visible(val) { this.dialogVisible = val },
-    dialogVisible(val) { this.$emit('update:visible', val) }
+    visible(val) {
+      if (val) {
+        this.innerSpecList = (this.specList && this.specList.length > 0) ? this.specList : []
+        if (this.defaultSpecId) {
+          this.form.specId = this.defaultSpecId
+        }
+      } else {
+        this.form.specId = ''
+      }
+      this.dialogVisible = val
+    },
+    dialogVisible(val) { this.$emit('update:visible', val) },
+    specList: {
+      handler(val) {
+        if (val && val.length > 0) {
+          this.innerSpecList = val
+        }
+      },
+      deep: true
+    }
   },
   methods: {
     async loadSpecs(show) {
-      if (show && this.specList.length === 0) {
+      if (show && this.innerSpecList.length === 0) {
         try {
-          const res = await listDictSpecs({ page: 1, row: 1000 })
-          this.specList = res.data || []
+          const res = await listDictSpecs({ page: 1, row: 1000, statusCd: '0' })
+          this.innerSpecList = res.data || []
         } catch { /* ignore */ }
       }
     },

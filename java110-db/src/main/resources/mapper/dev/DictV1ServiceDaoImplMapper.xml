@@ -109,7 +109,7 @@
     </select>
 
 
-    <!-- 查询字典表数量 add by wuxw 2018-07-03 -->
+<!-- 查询字典表数量 add by wuxw 2018-07-03 -->
     <select id="queryDictsAndSpecCount" parameterType="Map" resultType="Map">
         select count(1) count
         from t_dict t
@@ -126,6 +126,9 @@
         </if>
         <if test="description !=null and description != ''">
             and t.description= #{description}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd = #{statusCd}
         </if>
         <if test="id !=null and id != ''">
             and t.id= #{id}
@@ -155,6 +158,9 @@
         </if>
         <if test="description !=null and description != ''">
             and t.description= #{description}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd = #{statusCd}
         </if>
         <if test="id !=null and id != ''">
             and t.id= #{id}

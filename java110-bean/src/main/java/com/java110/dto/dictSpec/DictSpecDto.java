@@ -23,7 +23,7 @@ public class DictSpecDto extends PageDto implements Serializable {
 
     private Date createTime;
 
-    private String statusCd = "0";
+    private String statusCd;
 
 
     public String getSpecId() {

@@ -1,22 +1,44 @@
 <template>
   <div class="list-dict-manage">
-    <el-tabs v-model="activeTab" @tab-click="handleTabClick">
-      <el-tab-pane label="字典" name="dict">
-        <el-card shadow="never" class="search-card">
+    <el-row :gutter="16">
+      <el-col :span="5">
+        <el-card shadow="never" class="spec-card">
           <div slot="header" class="card-header">
-            <span>查询条件</span>
+            <span>字典类型</span>
+            <el-button type="primary" size="small" @click="handleAddSpec">添加</el-button>
           </div>
+          <el-menu
+            :default-active="curSpec.specId"
+            class="spec-menu"
+            @select="handleSpecSelect"
+          >
+            <el-menu-item index="">
+              <span>全部</span>
+            </el-menu-item>
+            <el-menu-item
+              v-for="item in specs"
+              :key="item.specId"
+              :index="item.specId"
+            >
+              <span>{{ item.specName }}</span>
+              <span class="spec-actions" @click.stop>
+                <el-button type="text" size="mini" @click.stop="handleEditSpec(item)">修改</el-button>
+                <el-button type="text" size="mini" style="color: #f56c6c" @click.stop="handleDeleteSpec(item)">删除</el-button>
+              </span>
+            </el-menu-item>
+          </el-menu>
+        </el-card>
+      </el-col>
+      <el-col :span="19">
+        <el-card v-if="curSpec.specId" shadow="never" class="info-card">
+          <div slot="header" class="card-header">
+            <span>{{ curSpec.specName }}</span>
+          </div>
+          <div>表名：{{ curSpec.tableName || '-' }} | 字段：{{ curSpec.tableColumns || '-' }}</div>
+        </el-card>
+        <el-card shadow="never" class="search-card">
+          <div slot="header" class="card-header"><span>查询条件</span></div>
           <el-form :inline="true" :model="dictQuery">
-            <el-form-item>
-              <el-select v-model="dictQuery.specId" placeholder="请选择类型" clearable style="width: 180px">
-                <el-option
-                  v-for="item in specList"
-                  :key="item.specId"
-                  :label="item.specName"
-                  :value="item.specId"
-                />
-              </el-select>
-            </el-form-item>
             <el-form-item>
               <el-input v-model="dictQuery.name" placeholder="请输入名称" clearable style="width: 180px" />
             </el-form-item>
@@ -39,7 +61,7 @@
             <el-table-column prop="name" label="名称" min-width="120" />
             <el-table-column prop="statusCd" label="值" min-width="120" />
             <el-table-column prop="description" label="描述" min-width="200" />
-            <el-table-column label="操作" width="150" fixed="right" align="center">
+            <el-table-column label="操作" width="200" fixed="right" align="center">
               <template slot-scope="{ row }">
                 <el-button size="small" type="text" @click="handleEditDict(row)">修改</el-button>
                 <el-button size="small" type="text" style="color: #f56c6c" @click="handleDeleteDict(row)">删除</el-button>
@@ -57,53 +79,10 @@
             class="pagination-container"
           />
         </el-card>
-      </el-tab-pane>
+      </el-col>
+    </el-row>
 
-      <el-tab-pane label="字典类型" name="dictSpec">
-        <el-card shadow="never" class="search-card">
-          <div slot="header" class="card-header">
-            <span>查询条件</span>
-          </div>
-          <el-form :inline="true" :model="specQuery">
-            <el-form-item>
-              <el-input v-model="specQuery.specName" placeholder="请输入类型名称" clearable style="width: 180px" />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="handleSpecSearch">搜索</el-button>
-              <el-button @click="handleSpecReset">重置</el-button>
-            </el-form-item>
-          </el-form>
-        </el-card>
-        <el-card shadow="never" class="table-card">
-          <div slot="header" class="card-header">
-            <span>字典类型</span>
-            <el-button type="primary" size="small" @click="handleAddSpec">添加</el-button>
-          </div>
-          <el-table :data="specListPage" v-loading="specLoading" border stripe>
-            <el-table-column prop="specId" label="类型ID" width="200" />
-            <el-table-column prop="specName" label="类型名称" min-width="200" />
-            <el-table-column label="操作" width="150" fixed="right" align="center">
-              <template slot-scope="{ row }">
-                <el-button size="small" type="text" @click="handleEditSpec(row)">修改</el-button>
-                <el-button size="small" type="text" style="color: #f56c6c" @click="handleDeleteSpec(row)">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-          <el-pagination
-            :current-page="specQuery.page"
-            :page-size="specQuery.row"
-            :total="specTotal"
-            :page-sizes="[10, 20, 50]"
-            layout="total, sizes, prev, pager, next, jumper"
-            @size-change="handleSpecSizeChange"
-            @current-change="handleSpecPageChange"
-            class="pagination-container"
-          />
-        </el-card>
-      </el-tab-pane>
-    </el-tabs>
-
-    <AddDict :visible.sync="addDictVisible" @success="handleDictSuccess" />
+    <AddDict :visible.sync="addDictVisible" :spec-list="specs" :default-spec-id="curSpec.specId" @success="handleDictSuccess" />
     <EditDict :visible.sync="editDictVisible" :edit-data="currentDictRow" @success="handleDictSuccess" />
     <DeleteDict :visible.sync="delDictVisible" :del-data="currentDictRow" @success="handleDictSuccess" />
     <AddDictSpec :visible.sync="addSpecVisible" @success="handleSpecSuccess" />
@@ -113,8 +92,7 @@
 </template>
 
 <script>
-import { listDicts } from '@/api/dev/devApi'
-import { listDictSpecs } from '@/api/dev/devApi'
+import { listDicts, listDictSpecs } from '@/api/dev/devApi'
 import AddDict from '@/components/dev/AddDict.vue'
 import EditDict from '@/components/dev/EditDict.vue'
 import DeleteDict from '@/components/dev/DeleteDict.vue'
@@ -127,9 +105,8 @@ export default {
   components: { AddDict, EditDict, DeleteDict, AddDictSpec, EditDictSpec, DeleteDictSpec },
   data() {
     return {
-      activeTab: 'dict',
-      specList: [],
-      // Dict
+      specs: [],
+      curSpec: { specId: '', specName: '', tableName: '', tableColumns: '' },
       dictLoading: false,
       dictList: [],
       dictTotal: 0,
@@ -138,11 +115,6 @@ export default {
       editDictVisible: false,
       delDictVisible: false,
       currentDictRow: null,
-      // DictSpec
-      specLoading: false,
-      specListPage: [],
-      specTotal: 0,
-      specQuery: { page: 1, row: 10, specName: '' },
       addSpecVisible: false,
       editSpecVisible: false,
       delSpecVisible: false,
@@ -150,34 +122,27 @@ export default {
     }
   },
   mounted() {
-    const tab = this.$route.query.tab
-    if (tab === '字典类型') {
-      this.activeTab = 'dictSpec'
-    }
     this.loadSpecs()
-    if (this.activeTab === 'dict') {
-      this.fetchDicts()
-    } else {
-      this.fetchDictSpecs()
-    }
+    this.fetchDicts()
   },
   methods: {
     async loadSpecs() {
       try {
-        const res = await listDictSpecs({ page: 1, row: 1000 })
-        this.specList = res.data || []
+        const res = await listDictSpecs({ page: 1, row: 1000, statusCd: '0' })
+        this.specs = res.data || []
       } catch { /* ignore */ }
     },
-    handleTabClick() {
-      const tabMap = { dict: '字典', dictSpec: '字典类型' }
-      this.$router.replace({ query: { ...this.$route.query, tab: tabMap[this.activeTab] } })
-      if (this.activeTab === 'dict') {
-        this.fetchDicts()
+    handleSpecSelect(specId) {
+      if (!specId) {
+        this.curSpec = { specId: '', specName: '', tableName: '', tableColumns: '' }
       } else {
-        this.fetchDictSpecs()
+        const found = this.specs.find(s => s.specId === specId)
+        this.curSpec = found ? { ...found } : { specId: specId, specName: '', tableName: '', tableColumns: '' }
       }
+      this.dictQuery.specId = this.curSpec.specId
+      this.dictQuery.page = 1
+      this.fetchDicts()
     },
-    // Dict methods
     async fetchDicts() {
       this.dictLoading = true
       try {
@@ -193,7 +158,7 @@ export default {
       this.fetchDicts()
     },
     handleDictReset() {
-      this.dictQuery = { page: 1, row: 10, specId: '', name: '', statusCd: '' }
+      this.dictQuery = { page: 1, row: 10, specId: this.curSpec.specId, name: '', statusCd: '' }
       this.fetchDicts()
     },
     handleAddDict() {
@@ -209,7 +174,6 @@ export default {
     },
     handleDictSuccess() {
       this.fetchDicts()
-      this.loadSpecs()
     },
     handleDictSizeChange(val) {
       this.dictQuery.row = val
@@ -218,25 +182,6 @@ export default {
     handleDictPageChange(val) {
       this.dictQuery.page = val
       this.fetchDicts()
-    },
-    // DictSpec methods
-    async fetchDictSpecs() {
-      this.specLoading = true
-      try {
-        const res = await listDictSpecs(this.specQuery)
-        this.specListPage = res.data || []
-        this.specTotal = res.total || 0
-      } finally {
-        this.specLoading = false
-      }
-    },
-    handleSpecSearch() {
-      this.specQuery.page = 1
-      this.fetchDictSpecs()
-    },
-    handleSpecReset() {
-      this.specQuery = { page: 1, row: 10, specName: '' }
-      this.fetchDictSpecs()
     },
     handleAddSpec() {
       this.addSpecVisible = true
@@ -250,23 +195,24 @@ export default {
       this.delSpecVisible = true
     },
     handleSpecSuccess() {
-      this.fetchDictSpecs()
       this.loadSpecs()
-    },
-    handleSpecSizeChange(val) {
-      this.specQuery.row = val
-      this.fetchDictSpecs()
-    },
-    handleSpecPageChange(val) {
-      this.specQuery.page = val
-      this.fetchDictSpecs()
     }
   }
 }
 </script>
 
 <style scoped>
+.spec-card { margin-bottom: 16px; }
+.spec-menu { border-right: none; }
+.spec-menu .el-menu-item { height: 40px; line-height: 40px; }
+.spec-actions {
+  float: right;
+  margin-right: 8px;
+  display: none;
+}
+.spec-menu .el-menu-item:hover .spec-actions { display: inline-block; }
 .search-card { margin-bottom: 16px; }
+.info-card { margin-bottom: 16px; }
 .table-card { margin-bottom: 0; }
 .card-header { display: flex; justify-content: space-between; align-items: center; }
 .pagination-container { margin-top: 16px; text-align: right; }
