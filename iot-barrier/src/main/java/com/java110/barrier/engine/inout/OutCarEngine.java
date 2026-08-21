@@ -95,7 +95,8 @@ public class OutCarEngine extends CarEngine implements IOutCarEngine {
         }
 
         if (ListUtil.isNull(carInoutDtos)) {
-            if ("N".equals(parkingAreaDtos.get(0).getYelowCarIn())) {
+            //只有临时车 才 不让出，因为 摄像头 车牌识别错的概率比较大
+            if ("N".equals(parkingAreaDtos.get(0).getYelowCarIn()) &&  OwnerCarDto.LEASE_TYPE_TEMP.equals(carDayDto.getLeaseType())) {
                 inOutCarTextDto = inOutCarTextEngine.carNotInParkingArea(carNum, machineDto, getDefaultPaId(parkingAreaDtos));
                 saveCarOutInfo(carNum, machineDto, inOutCarTextDto, 0, "开门失败", null, parkingAreaDtos, CarInoutDto.STATE_IN_FAIL);
                 return new ResultParkingAreaTextDto(ResultParkingAreaTextDto.CODE_CAR_NO_IN, inOutCarTextDto, carNum);
