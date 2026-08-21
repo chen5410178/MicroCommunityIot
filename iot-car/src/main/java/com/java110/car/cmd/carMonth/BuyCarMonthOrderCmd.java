@@ -93,7 +93,13 @@ public class BuyCarMonthOrderCmd extends Cmd {
         CarMonthCardDto carMonthCardDto = new CarMonthCardDto();
         carMonthCardDto.setCardId(reqJson.getString("cardId"));
         carMonthCardDto.setCommunityId(reqJson.getString("communityId"));
-        carMonthCardDto.setPaId(ownerCarDtos.get(0).getPaId());
+        // 前端月卡列表以车牌查询返回的paId过滤（ownerCar.queryOwnerCars 会用车位所属停车场刷新paId），
+        // 此处优先使用请求中的paId，避免 owner_car 原始pa_id 与车位所属停车场不一致时误报"月卡不存在"
+        String paId = reqJson.getString("paId");
+        if (StringUtil.isEmpty(paId)) {
+            paId = ownerCarDtos.get(0).getPaId();
+        }
+        carMonthCardDto.setPaId(paId);
         List<CarMonthCardDto> carMonthCardDtos = carMonthCardV1InnerServiceSMOImpl.queryCarMonthCards(carMonthCardDto);
         if (ListUtil.isNull(carMonthCardDtos)) {
             throw new CmdException("月卡不存在");
