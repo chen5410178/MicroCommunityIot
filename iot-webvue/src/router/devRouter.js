@@ -18,6 +18,12 @@ const devRoutes = [
     meta: { requiresAuth: true, title: '菜单组' }
   },
   {
+    path: 'pages/dev/menuGroupCatalogManage',
+    name: 'MenuGroupCatalogManage',
+    component: () => import('@/views/dev/menuGroupCatalogManage.vue'),
+    meta: { requiresAuth: true, title: '菜单组目录' }
+  },
+  {
     path: 'pages/dev/mappingDomainManage',
     name: 'MappingDomainManage',
     component: () => import('@/views/dev/mappingDomainManage.vue'),
