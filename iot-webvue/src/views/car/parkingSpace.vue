@@ -73,12 +73,6 @@
               <el-table-column label="业主名称" min-width="100" align="center">
                 <template slot-scope="{ row }">{{ row.ownerName || '-' }}</template>
               </el-table-column>
-              <el-table-column label="业主ID" min-width="140" align="center">
-                <template slot-scope="{ row }">{{ row.ownerId || '-' }}</template>
-              </el-table-column>
-              <el-table-column label="车辆ID" min-width="140" align="center">
-                <template slot-scope="{ row }">{{ row.carId || '-' }}</template>
-              </el-table-column>
               <el-table-column label="车牌号" min-width="100" align="center">
                 <template slot-scope="{ row }">{{ row.carNum || '-' }}</template>
               </el-table-column>
