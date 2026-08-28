@@ -66,7 +66,6 @@ public class ImportOwnerCarDataCleaningAdapt extends DefaultImportDataAdapt impl
             Assert.hasValue(os[2], (osIndex + 1) + "手机号不能为空");
             Assert.hasValue(os[3], (osIndex + 1) + "车辆品牌不能为空");
             Assert.hasValue(os[4], (osIndex + 1) + "车辆类型不能为空");
-            Assert.hasValue(os[5], (osIndex + 1) + "颜色不能为空");
             Assert.hasValue(os[6], (osIndex + 1) + "停车场不能为空");
             Assert.hasValue(os[7], (osIndex + 1) + "车位不能为空");
             Assert.hasValue(os[8], (osIndex + 1) + "起租时间不能为空");
@@ -83,7 +82,6 @@ public class ImportOwnerCarDataCleaningAdapt extends DefaultImportDataAdapt impl
             importOwnerCar.setLink(os[2].toString());
             importOwnerCar.setCarBrand(os[3].toString());
             importOwnerCar.setCarType(os[4].toString());
-            importOwnerCar.setCarColor(os[5].toString());
             importOwnerCar.setAreaNum(os[6].toString());
             //获取车位
             String parkingLot = os[7].toString();

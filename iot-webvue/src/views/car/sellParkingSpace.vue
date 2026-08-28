@@ -20,16 +20,29 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="车牌号" prop="carId">
-              <div class="car-select-wrap">
-                <el-input :value="selectedCarNum" disabled placeholder="请选择车辆" />
-                <el-button type="primary" class="car-select-btn" @click="openCarDialog">选择车辆</el-button>
+            <el-form-item label="业主" prop="ownerId">
+              <div class="owner-select-wrap">
+                <el-input :value="form.ownerName" disabled placeholder="请选择业主" />
+                <el-button type="primary" class="owner-select-btn" @click="openOwnerDialog">选择业主</el-button>
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="业主" prop="ownerName">
-              <el-input :value="form.ownerName" disabled placeholder="请先选择车辆" />
+            <el-form-item label="车牌号" prop="carId">
+              <el-select
+                v-model="form.carId"
+                filterable
+                remote
+                reserve-keyword
+                :remote-method="loadCars"
+                :disabled="!form.ownerId"
+                placeholder="请先选择业主"
+                style="width: 100%"
+                clearable
+                @change="onCarChange"
+              >
+                <el-option v-for="item in carOptions" :key="item.carId" :label="item.carNum" :value="item.carId" />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -39,34 +52,35 @@
         <el-button type="primary" :loading="saving" @click="submitSell">提交</el-button>
       </div>
     </el-card>
-    <SelectNoPsCar :visible.sync="carVisible" @select="onSelectCar" />
+    <SearchOwner :visible.sync="ownerVisible" @selected="onSelectOwner" />
   </div>
 </template>
 
 <script>
-import SelectNoPsCar from '@/components/car/SelectNoPsCar.vue'
-import { sellParkingSpace } from '@/api/car/carApi'
+import SearchOwner from '@/components/monitor/SearchOwner.vue'
+import { sellParkingSpace, queryCarsWithoutParkingSpace } from '@/api/car/carApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'SellParkingSpace',
-  components: { SelectNoPsCar },
+  components: { SearchOwner },
   data() {
     return {
       saving: false,
-      carVisible: false,
-      selectedCarNum: '',
+      ownerVisible: false,
+      carOptions: [],
       form: {
         psId: '',
         num: '',
         paNum: '',
         carId: '',
+        carNum: '',
         ownerId: '',
         ownerName: ''
       },
       rules: {
-        carId: [
-          { required: true, message: '请选择车辆', trigger: 'change' }
+        ownerId: [
+          { required: true, message: '请选择业主', trigger: 'change' }
         ]
       }
     }
@@ -78,14 +92,35 @@ export default {
     this.form.paNum = query.paNum || ''
   },
   methods: {
-    openCarDialog() {
-      this.carVisible = true
+    openOwnerDialog() {
+      this.ownerVisible = true
     },
-    onSelectCar(row) {
-      this.form.carId = row.carId || ''
-      this.form.ownerId = row.ownerId || ''
-      this.form.ownerName = row.ownerName || ''
-      this.selectedCarNum = row.carNum || ''
+    onSelectOwner(row) {
+      this.form.ownerId = row.memberId || ''
+      this.form.ownerName = row.name || ''
+      this.form.carId = ''
+      this.form.carNum = ''
+      this.carOptions = []
+      this.loadCars('')
+    },
+    loadCars(keyword) {
+      if (!this.form.ownerId) return
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
+      queryCarsWithoutParkingSpace({
+        page: 1,
+        row: 20,
+        communityId,
+        ownerId: this.form.ownerId,
+        carNumLike: keyword || ''
+      }).then(res => {
+        this.carOptions = res.data || []
+      }).catch(() => {
+        this.carOptions = []
+      })
+    },
+    onCarChange(carId) {
+      const found = this.carOptions.find(item => item.carId === carId)
+      this.form.carNum = found ? found.carNum : ''
     },
     goBack() {
       this.$router.go(-1)
@@ -98,7 +133,7 @@ export default {
         sellParkingSpace({
           communityId,
           psId: this.form.psId,
-          carId: this.form.carId,
+          carId: this.form.carId || '',
           ownerId: this.form.ownerId,
           sellOrHire: 'S'
         }).then(() => {
@@ -117,6 +152,6 @@ export default {
 
 <style scoped>
 .card-header { display: flex; justify-content: space-between; align-items: center; }
-.car-select-wrap { display: flex; }
-.car-select-btn { margin-left: 10px; flex-shrink: 0; }
+.owner-select-wrap { display: flex; }
+.owner-select-btn { margin-left: 10px; flex-shrink: 0; }
 </style>

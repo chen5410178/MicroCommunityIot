@@ -31,11 +31,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="车颜色">
-              <el-input v-model="form.carColor" placeholder="请填写车颜色" maxlength="12" />
-            </el-form-item>
-          </el-col>
         </el-row>
         <el-row :gutter="20" v-if="form.leaseType === 'H'">
           <el-col :span="12">
@@ -109,7 +104,6 @@ export default {
         carNum: '',
         carBrand: '',
         carType: '',
-        carColor: '',
         leaseType: 'H',
         startTime: '',
         endTime: '',

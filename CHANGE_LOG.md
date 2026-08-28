@@ -513,3 +513,12 @@ ALTER TABLE `car_month_order` CHANGE COLUMN `ps_id` `pa_id` varchar(30) DEFAULT 
 -- 2. 历史订单 ps_id 原为车位ID，无停车场语义，统一置空
 UPDATE `car_month_order` SET `pa_id` = NULL WHERE `pa_id` IS NOT NULL;
 ```
+
+### 2026-08-28 车辆颜色字段下线（business_owner_car 删除 car_color）
+
+```sql
+-- 1. business_owner_car 删除颜色字段（owner_car 表文档结构中无 car_color 列）
+ALTER TABLE `business_owner_car` DROP COLUMN `car_color`;
+-- 2. 若生产环境 owner_car 表存在 car_color 字段，请一并执行：
+ALTER TABLE `owner_car` DROP COLUMN `car_color`;
+```

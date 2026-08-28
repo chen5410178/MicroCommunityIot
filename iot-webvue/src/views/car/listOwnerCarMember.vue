@@ -13,7 +13,6 @@
         <el-table-column prop="roomName" label="房屋号" min-width="120" />
         <el-table-column prop="carBrand" label="车辆品牌" min-width="100" />
         <el-table-column prop="carTypeName" label="车辆类型" min-width="100" />
-        <el-table-column prop="carColor" label="颜色" width="80" />
         <el-table-column label="业主" min-width="120">
           <template slot-scope="{ row }">{{ row.ownerName }}({{ row.link }})</template>
         </el-table-column>

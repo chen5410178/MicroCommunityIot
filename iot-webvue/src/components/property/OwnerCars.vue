@@ -4,7 +4,6 @@
       <el-table-column prop="carNum" label="车牌号" width="120" />
       <el-table-column prop="carBrand" label="品牌" width="100" />
       <el-table-column prop="carType" label="类型" width="80" />
-      <el-table-column prop="carColor" label="颜色" width="80" />
       <el-table-column prop="createTime" label="登记时间" width="160" />
     </el-table>
     <span slot="footer">

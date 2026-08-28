@@ -15,8 +15,10 @@ import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
 import com.java110.dto.parking.ParkingSpaceDto;
 import com.java110.intf.car.IOwnerCarInnerServiceSMO;
+import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerInnerServiceSMO;
+import com.java110.po.ownerCar.OwnerCarPo;
 import com.java110.po.parking.ParkingSpacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,9 @@ public class UpdateParkingSpaceCarCmd extends Cmd {
 
     @Autowired
     private IOwnerCarInnerServiceSMO ownerCarInnerServiceSMOImpl;
+
+    @Autowired
+    private IOwnerCarV1InnerServiceSMO ownerCarV1InnerServiceSMOImpl;
 
     @Autowired
     private IOwnerInnerServiceSMO ownerInnerServiceSMOImpl;
@@ -99,9 +104,11 @@ public class UpdateParkingSpaceCarCmd extends Cmd {
         parkingSpacePo.setOwnerName(queryOwnerName(ownerId, communityId));
         parkingSpacePo.setCarId(carId);
         parkingSpacePo.setCarNum(tOwnerCar.getCarNum());
+        boolean hireState = false;
         if (ParkingSpaceDto.STATE_HIRE.equals(tParkingSpace.getState())) {
             parkingSpacePo.setStartTime(reqJson.getString("startTime"));
             parkingSpacePo.setEndTime(reqJson.getString("endTime"));
+            hireState = true;
         } else {
             parkingSpacePo.setStartTime("");
             parkingSpacePo.setEndTime("");
@@ -109,6 +116,18 @@ public class UpdateParkingSpaceCarCmd extends Cmd {
         int flag = parkingSpaceV1InnerServiceSMOImpl.updateParkingSpace(parkingSpacePo);
         if (flag < 1) {
             throw new CmdException("修改车位失败");
+        }
+
+        //出租状态修改车辆时，同步新车辆租期与租赁类型（出售状态维持原逻辑，不同步车辆租期）
+        if (hireState) {
+            OwnerCarPo ownerCarPo = new OwnerCarPo();
+            ownerCarPo.setMemberId(tOwnerCar.getMemberId());
+            ownerCarPo.setOwnerId(tOwnerCar.getOwnerId());
+            ownerCarPo.setCommunityId(communityId);
+            ownerCarPo.setStartTime(reqJson.getString("startTime"));
+            ownerCarPo.setEndTime(reqJson.getString("endTime"));
+            ownerCarPo.setLeaseType(ParkingSpaceDto.STATE_HIRE);
+            ownerCarV1InnerServiceSMOImpl.updateOwnerCar(ownerCarPo);
         }
 
         context.setResponseEntity(ResultVo.success());

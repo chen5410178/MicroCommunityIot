@@ -12841,3 +12841,8 @@ DELETE FROM `c_route` WHERE `route_id` = '102024071842650013';
 DELETE FROM `c_service` WHERE `service_id` = '982024071899800012';
 DELETE FROM `p_privilege` WHERE `privilege_id` = '502024030416050066';
 DELETE FROM `p_privilege_rel` WHERE `privilege_id` = '502024030416050066';
+
+-- 2026-08-28 车辆颜色字段下线：business_owner_car 删除 car_color
+ALTER TABLE `business_owner_car` DROP COLUMN `car_color`;
+-- 注：owner_car 表文档结构中无 car_color；若生产环境存在该字段请执行：
+-- ALTER TABLE `owner_car` DROP COLUMN `car_color`;

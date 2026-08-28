@@ -13,10 +13,13 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.parking.ParkingSpaceDto;
 import com.java110.intf.car.IOwnerCarInnerServiceSMO;
+import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerInnerServiceSMO;
+import com.java110.po.ownerCar.OwnerCarPo;
 import com.java110.po.parking.ParkingSpacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,13 +37,15 @@ public class SellParkingSpaceCmd extends Cmd {
     private IOwnerCarInnerServiceSMO ownerCarInnerServiceSMOImpl;
 
     @Autowired
+    private IOwnerCarV1InnerServiceSMO ownerCarV1InnerServiceSMOImpl;
+
+    @Autowired
     private IOwnerInnerServiceSMO ownerInnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
         Assert.hasKeyAndValue(reqJson, "communityId", "未包含小区ID");
         Assert.hasKeyAndValue(reqJson, "psId", "未包含psId");
-        Assert.hasKeyAndValue(reqJson, "carId", "未包含carId");
         Assert.hasKeyAndValue(reqJson, "ownerId", "未包含ownerId");
         Assert.hasKeyAndValue(reqJson, "sellOrHire", "未包含sellOrHire");
 
@@ -82,6 +87,11 @@ public class SellParkingSpaceCmd extends Cmd {
         String carId = reqJson.getString("carId");
         String sellOrHire = reqJson.getString("sellOrHire");
 
+        //carId 选填：为空时车位仅绑业主，不绑车辆
+        if (StringUtil.isNullOrNone(carId)) {
+            carId = "";
+        }
+
         //查询车位信息
         ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
         parkingSpaceDto.setCommunityId(communityId);
@@ -91,15 +101,22 @@ public class SellParkingSpaceCmd extends Cmd {
             throw new CmdException("未查询到停车位信息");
         }
 
-        //按 carId 查询车辆信息，以车辆表为准取车牌号及 memberId
-        OwnerCarDto ownerCarDto = new OwnerCarDto();
-        ownerCarDto.setCarId(carId);
-        ownerCarDto.setCommunityId(communityId);
-        List<OwnerCarDto> ownerCarDtos = ownerCarInnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
-        if (ListUtil.isNull(ownerCarDtos) || ownerCarDtos.size() != 1) {
-            throw new CmdException("未查询到车辆信息");
+        //按 carId 查询车辆信息，以车辆表为准取车牌号及 memberId（carId 选填，为空时仅绑业主）
+        OwnerCarDto tOwnerCar = null;
+        if (!StringUtil.isNullOrNone(carId)) {
+            tOwnerCar = queryOwnerCar(carId, communityId);
+            if (!reqJson.getString("ownerId").equals(tOwnerCar.getOwnerId())) {
+                throw new CmdException("所选车辆不属于该业主");
+            }
+            //校验车辆未绑定其他车位
+            ParkingSpaceDto checkPsDto = new ParkingSpaceDto();
+            checkPsDto.setCommunityId(communityId);
+            checkPsDto.setCarId(carId);
+            List<ParkingSpaceDto> checkPsDtos = parkingSpaceV1InnerServiceSMOImpl.queryParkingSpaces(checkPsDto);
+            if (!ListUtil.isNull(checkPsDtos)) {
+                throw new CmdException("所选车辆已绑定车位");
+            }
         }
-        OwnerCarDto tOwnerCar = ownerCarDtos.get(0);
 
         String startTime = "";
         String endTime = "";
@@ -118,7 +135,7 @@ public class SellParkingSpaceCmd extends Cmd {
         parkingSpacePo.setOwnerId(reqJson.getString("ownerId"));
         parkingSpacePo.setOwnerName(queryOwnerName(reqJson.getString("ownerId"), communityId));
         parkingSpacePo.setCarId(carId);
-        parkingSpacePo.setCarNum(tOwnerCar.getCarNum());
+        parkingSpacePo.setCarNum(tOwnerCar == null ? "" : tOwnerCar.getCarNum());
         parkingSpacePo.setStartTime(startTime);
         parkingSpacePo.setEndTime(endTime);
         int flag = parkingSpaceV1InnerServiceSMOImpl.updateParkingSpace(parkingSpacePo);
@@ -126,7 +143,37 @@ public class SellParkingSpaceCmd extends Cmd {
             throw new CmdException("修改车位失败");
         }
 
+        //选择了车辆时，同步车辆租期与租赁类型（未选车辆跳过）
+        if (tOwnerCar != null) {
+            OwnerCarPo ownerCarPo = new OwnerCarPo();
+            ownerCarPo.setMemberId(tOwnerCar.getMemberId());
+            ownerCarPo.setOwnerId(tOwnerCar.getOwnerId());
+            ownerCarPo.setCommunityId(communityId);
+            ownerCarPo.setStartTime(startTime);
+            ownerCarPo.setEndTime(endTime);
+            ownerCarPo.setLeaseType(sellOrHire);
+            ownerCarV1InnerServiceSMOImpl.updateOwnerCar(ownerCarPo);
+        }
+
         context.setResponseEntity(ResultVo.success());
+    }
+
+    /**
+     * 按 carId 查询车辆信息
+     *
+     * @param carId       车辆ID
+     * @param communityId 小区ID
+     * @return 车辆信息
+     */
+    private OwnerCarDto queryOwnerCar(String carId, String communityId) {
+        OwnerCarDto ownerCarDto = new OwnerCarDto();
+        ownerCarDto.setCarId(carId);
+        ownerCarDto.setCommunityId(communityId);
+        List<OwnerCarDto> ownerCarDtos = ownerCarInnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
+        if (ListUtil.isNull(ownerCarDtos) || ownerCarDtos.size() != 1) {
+            throw new CmdException("未查询到车辆信息");
+        }
+        return ownerCarDtos.get(0);
     }
 
     /**

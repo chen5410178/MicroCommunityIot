@@ -14,9 +14,6 @@
       <el-table-column label="车辆类型" min-width="100">
         <template slot-scope="{ row }">{{ row.carTypeName || '-' }}</template>
       </el-table-column>
-      <el-table-column label="颜色" width="80">
-        <template slot-scope="{ row }">{{ row.carColor || '-' }}</template>
-      </el-table-column>
       <el-table-column label="业主" min-width="120">
         <template slot-scope="{ row }">{{ row.ownerName }}({{ row.link }})</template>
       </el-table-column>

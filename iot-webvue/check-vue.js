@@ -17,9 +17,14 @@ const files = [
   'src/views/car/updateParkingSpaceCar.vue',
   'src/views/car/parkingSpace.vue',
   'src/views/car/listOwnerCar.vue',
+  'src/views/car/carDetail.vue',
+  'src/views/car/listOwnerCarMember.vue',
   'src/components/car/EditCar.vue',
   'src/views/car/hireParkingSpace.vue',
-  'src/views/car/carMonthOrder.vue'
+  'src/views/car/carMonthOrder.vue',
+  'src/components/property/OwnerCars.vue',
+  'src/components/property/RoomDetailCar.vue',
+  'src/views/owner/tabs/OwnerDetailCar.vue'
 ]
 
 let failed = false

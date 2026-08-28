@@ -71,7 +71,6 @@
             </template>
           </el-table-column>
           <el-table-column prop="carTypeName" label="车辆类型" min-width="100" />
-          <el-table-column prop="carColor" label="颜色" width="80" />
           <el-table-column label="业主" min-width="120">
             <template slot-scope="{ row }">
               {{ row.ownerName }}({{ row.link }})
