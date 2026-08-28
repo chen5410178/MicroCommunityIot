@@ -122,7 +122,6 @@ public class AddCarApiCmd extends Cmd {
         ownerCarPo.setEndTime(car.getString("endTime"));
         //获取房屋名称
         ownerCarPo.setCarTypeCd(car.getString("carTypeCd")); //主车辆
-        ownerCarPo.setPsId(car.getString("psId"));
         ownerCarPo.setPaId(car.getString("paId"));
         ownerCarPo.setContact(StringUtil.isEmpty(car.getString("contact")) ? "" : car.getString("contact"));
         ownerCarPo.setTel(StringUtil.isEmpty(car.getString("tel")) ? "" : car.getString("tel"));

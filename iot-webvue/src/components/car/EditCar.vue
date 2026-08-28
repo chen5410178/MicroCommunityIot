@@ -33,7 +33,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="停车场" prop="paId">
-            <el-select v-model="form.paId" placeholder="请选择停车场" style="width: 100%" @change="onParkingAreaChange">
+            <el-select v-model="form.paId" placeholder="请选择停车场" style="width: 100%">
               <el-option v-for="item in parkingAreas" :key="item.paId" :label="item.num" :value="item.paId" />
             </el-select>
           </el-form-item>
@@ -41,47 +41,31 @@
       </el-row>
       <el-row :gutter="16">
         <el-col :span="12">
-          <el-form-item label="车位">
-            <el-input :value="form.psName || '无固定车位'" disabled />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
           <el-form-item label="联系人">
             <el-input v-model="form.contact" placeholder="请填写联系人" maxlength="64" />
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row :gutter="16">
         <el-col :span="12">
           <el-form-item label="联系电话" prop="tel">
             <el-input v-model="form.tel" placeholder="请填写联系电话" maxlength="20" />
           </el-form-item>
         </el-col>
-        <el-col :span="12" v-if="form.leaseType === 'H'">
+      </el-row>
+      <el-row :gutter="16" v-if="form.leaseType === 'H'">
+        <el-col :span="12">
           <el-form-item label="起租时间" prop="startTime">
             <el-date-picker v-model="form.startTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="必填，请填写起租时间" style="width: 100%" />
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row :gutter="16" v-if="form.leaseType === 'H'">
         <el-col :span="12">
           <el-form-item label="结租时间" prop="endTime">
             <el-date-picker v-model="form.endTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="必填，请填写结租时间" style="width: 100%" />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="备注">
-            <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请填写备注信息" maxlength="300" />
-          </el-form-item>
-        </el-col>
       </el-row>
-      <el-row :gutter="16" v-else>
-        <el-col :span="24">
-          <el-form-item label="备注">
-            <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请填写备注信息" maxlength="300" />
-          </el-form-item>
-        </el-col>
-      </el-row>
+      <el-form-item label="备注">
+        <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请填写备注信息" maxlength="300" />
+      </el-form-item>
     </el-form>
     <span slot="footer">
       <el-button @click="handleClose">取消</el-button>
@@ -112,8 +96,6 @@ export default {
         startTime: '',
         endTime: '',
         paId: '',
-        psId: '',
-        psName: '',
         contact: '',
         tel: '',
         remark: ''
@@ -157,8 +139,6 @@ export default {
         startTime: car.startTime || '',
         endTime: car.endTime || '',
         paId: car.paId || '',
-        psId: car.psId || '',
-        psName: (car.state === '1001' && car.psId && car.psId !== '-1') ? ((car.paNum || '') + '-' + (car.num || '')) : '',
         contact: car.contact || '',
         tel: car.tel || '',
         remark: car.remark || ''
@@ -170,10 +150,6 @@ export default {
     handleClose() {
       this.dialogVisible = false
       this.$refs.formRef && this.$refs.formRef.resetFields()
-    },
-    onParkingAreaChange() {
-      //仅清空展示态，psId 保持原值提交，避免触发后端空 psId 置 -1 误释放原车位
-      this.form.psName = ''
     },
     async handleSubmit() {
       try {

@@ -52,20 +52,11 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="停车场" prop="paId" :rules="[{ required: true, message: '停车场不能为空', trigger: 'change' }]">
-              <el-select v-model="form.paId" placeholder="必填，请选择停车场" style="width: 100%" @change="onParkingAreaChange">
+              <el-select v-model="form.paId" placeholder="必填，请选择停车场" style="width: 100%">
                 <el-option v-for="item in parkingAreas" :key="item.paId" :label="item.num" :value="item.paId" />
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="车位" prop="psName">
-              <el-input v-model="form.psName" disabled placeholder="选填，请选择车位">
-                <el-button slot="append" @click="openChooseParkingSpace">选择车位</el-button>
-              </el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="业主" prop="ownerName" :rules="[{ required: true, message: '请选择业主', trigger: 'change' }]">
               <el-input v-model="form.ownerName" disabled placeholder="必填，请选择业主">
@@ -73,15 +64,19 @@
               </el-input>
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="联系电话" prop="tel" :rules="[{ pattern: /^1[3-9]\d{9}$/, message: '联系电话格式不正确', trigger: 'blur' }]">
               <el-input v-model="form.tel" placeholder="选填，选择业主后自动带出" maxlength="20" />
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="联系人">
+              <el-input v-model="form.contact" placeholder="选填，选择业主后自动带出" maxlength="64" />
+            </el-form-item>
+          </el-col>
         </el-row>
-        <el-form-item label="联系人">
-          <el-input v-model="form.contact" placeholder="选填，选择业主后自动带出" maxlength="64" />
-        </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="选填，请填写备注" maxlength="300" />
         </el-form-item>
@@ -92,7 +87,6 @@
       </el-form>
     </el-card>
     <SearchOwner :visible.sync="searchOwnerVisible" @selected="handleOwnerSelected" />
-    <SearchParkingSpace :visible.sync="searchParkingSpaceVisible" :pa-id="form.paId" parkingSpaceFlag="F" @choose="handleParkingSpaceChoose" />
   </div>
 </template>
 
@@ -101,18 +95,16 @@ import { saveOwnerCar, listParkingAreas } from '@/api/car/carApi'
 import { listDicts } from '@/api/system/systemApi'
 import { getCurrentCommunity } from '@/utils/auth'
 import SearchOwner from '@/components/monitor/SearchOwner.vue'
-import SearchParkingSpace from '@/components/car/SearchParkingSpace.vue'
 
 export default {
   name: 'HireParkingSpace',
-  components: { SearchOwner, SearchParkingSpace },
+  components: { SearchOwner },
   data() {
     return {
       loading: false,
       carTypes: [],
       parkingAreas: [],
       searchOwnerVisible: false,
-      searchParkingSpaceVisible: false,
       form: {
         carNum: '',
         carBrand: '',
@@ -124,8 +116,6 @@ export default {
         ownerId: '',
         ownerName: '',
         paId: '',
-        psId: '',
-        psName: '',
         contact: '',
         tel: '',
         remark: ''
@@ -158,10 +148,6 @@ export default {
     onLeaseTypeChange() {
       this.form.startTime = ''
       this.form.endTime = ''
-    },
-    onParkingAreaChange() {
-      this.form.psId = ''
-      this.form.psName = ''
     },
     goBack() {
       this.$router.go(-1)
@@ -199,22 +185,6 @@ export default {
         this.form.tel = row.link || ''
       }
       this.searchOwnerVisible = false
-    },
-    openChooseParkingSpace() {
-      if (!this.form.paId) {
-        this.$message.warning('请先选择停车场')
-        return
-      }
-      this.searchParkingSpaceVisible = true
-    },
-    handleParkingSpaceChoose(row) {
-      if (row.paId !== this.form.paId) {
-        this.$message.error('所选车位不属于所选停车场')
-        return
-      }
-      this.form.psId = row.psId
-      this.form.psName = row.paNum + '-' + row.num
-      this.searchParkingSpaceVisible = false
     }
   }
 }

@@ -23,7 +23,7 @@ public class CarMonthOrderDto extends PageDto implements Serializable {
     private String orderId;
     private String carNum;
     private String receivableAmount;
-    private String psId;
+    private String paId;
     private String remark;
     private String receivedAmount;
     private String carId;
@@ -31,7 +31,7 @@ public class CarMonthOrderDto extends PageDto implements Serializable {
 
     private String cardName;
 
-    private String psNum;
+    private String paNum;
 
     private String primeRateName;
 
@@ -88,12 +88,12 @@ public class CarMonthOrderDto extends PageDto implements Serializable {
         this.receivableAmount = receivableAmount;
     }
 
-    public String getPsId() {
-        return psId;
+    public String getPaId() {
+        return paId;
     }
 
-    public void setPsId(String psId) {
-        this.psId = psId;
+    public void setPaId(String paId) {
+        this.paId = paId;
     }
 
     public String getRemark() {
@@ -201,12 +201,12 @@ public class CarMonthOrderDto extends PageDto implements Serializable {
         this.cardName = cardName;
     }
 
-    public String getPsNum() {
-        return psNum;
+    public String getPaNum() {
+        return paNum;
     }
 
-    public void setPsNum(String psNum) {
-        this.psNum = psNum;
+    public void setPaNum(String paNum) {
+        this.paNum = paNum;
     }
 
     public String getPrimeRateName() {

@@ -29,7 +29,6 @@ import java.util.Date;
 public class OwnerCarPo implements Serializable {
 
     private String carNum;
-    private String psId;
     private String paId;
     private String contact;
     private String tel;
@@ -52,14 +51,6 @@ public class OwnerCarPo implements Serializable {
 
     public void setCarNum(String carNum) {
         this.carNum = carNum;
-    }
-
-    public String getPsId() {
-        return psId;
-    }
-
-    public void setPsId(String psId) {
-        this.psId = psId;
     }
 
     public String getPaId() {

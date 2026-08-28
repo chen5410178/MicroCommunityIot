@@ -90,7 +90,7 @@ public class BuyCarMonthCardBusiness implements IPaymentBusiness {
         reqJson.put("cardMonth",carMonthCardDtos.get(0).getCardMonth());
         reqJson.put("carMemberId",ownerCarDtos.get(0).getMemberId());
         reqJson.put("endTime",ownerCarDtos.get(0).getEndTime());
-        reqJson.put("psId",ownerCarDtos.get(0).getPsId());
+        reqJson.put("paId",ownerCarDtos.get(0).getPaId());
 
         return paymentOrderDto;
 

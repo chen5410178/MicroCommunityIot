@@ -915,42 +915,6 @@ export function deleteOwnerCar(data) {
   })
 }
 
-export function deleteCarParkingSpace(data) {
-  return new Promise((resolve, reject) => {
-    request({
-      url: '/ownerCar.deleteCarParkingSpace',
-      method: 'post',
-      data
-    }).then(res => {
-      if (res.code == 0) {
-        resolve(res)
-      } else {
-        reject(new Error(res.msg || '操作失败'))
-      }
-    }).catch(error => {
-      reject(error)
-    })
-  })
-}
-
-export function carAddParkingSpace(data) {
-  return new Promise((resolve, reject) => {
-    request({
-      url: '/parkingSpace.carAddParkingSpace',
-      method: 'post',
-      data
-    }).then(res => {
-      if (res.code == 0) {
-        resolve(res)
-      } else {
-        reject(new Error(res.msg || '操作失败'))
-      }
-    }).catch(error => {
-      reject(error)
-    })
-  })
-}
-
 // ===== 黑白名单 =====
 export function listCarBlackWhites(params) {
   return new Promise((resolve, reject) => {

@@ -15,7 +15,11 @@ const files = [
   'src/views/car/rentParkingSpace.vue',
   'src/views/car/sellParkingSpace.vue',
   'src/views/car/updateParkingSpaceCar.vue',
-  'src/views/car/parkingSpace.vue'
+  'src/views/car/parkingSpace.vue',
+  'src/views/car/listOwnerCar.vue',
+  'src/components/car/EditCar.vue',
+  'src/views/car/hireParkingSpace.vue',
+  'src/views/car/carMonthOrder.vue'
 ]
 
 let failed = false

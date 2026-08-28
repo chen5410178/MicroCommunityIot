@@ -72,7 +72,7 @@
         <el-table-column prop="orderId" label="订单编号" min-width="220" />
         <el-table-column prop="cardName" label="月卡" min-width="100" />
         <el-table-column prop="carNum" label="车牌号" min-width="100" />
-        <el-table-column prop="psNum" label="车位" min-width="100" align="center" />
+        <el-table-column prop="paNum" label="停车场" min-width="100" align="center" />
         <el-table-column prop="primeRateName" label="支付方式" min-width="100" align="center" />
         <el-table-column prop="receivableAmount" label="应收金额" min-width="100" align="center" />
         <el-table-column prop="receivedAmount" label="实收金额" min-width="100" align="center" />

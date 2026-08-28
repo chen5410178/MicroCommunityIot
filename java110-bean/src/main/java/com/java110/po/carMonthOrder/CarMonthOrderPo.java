@@ -32,7 +32,7 @@ public class CarMonthOrderPo implements Serializable {
     private String orderId;
     private String carNum;
     private String receivableAmount;
-    private String psId;
+    private String paId;
     private String statusCd = "0";
     private String remark;
     private String receivedAmount;
@@ -77,12 +77,12 @@ public class CarMonthOrderPo implements Serializable {
         this.receivableAmount = receivableAmount;
     }
 
-    public String getPsId() {
-        return psId;
+    public String getPaId() {
+        return paId;
     }
 
-    public void setPsId(String psId) {
-        this.psId = psId;
+    public void setPaId(String paId) {
+        this.paId = paId;
     }
 
     public String getStatusCd() {

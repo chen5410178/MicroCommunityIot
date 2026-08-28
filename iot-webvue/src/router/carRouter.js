@@ -48,12 +48,6 @@ const carRoutes = [
     meta: { requiresAuth: true, title: '添加车辆' }
   },
   {
-    path: 'pages/car/carAddParkingSpace',
-    name: 'CarAddParkingSpace',
-    component: () => import('@/views/car/carAddParkingSpace.vue'),
-    meta: { requiresAuth: true, title: '续租车位' }
-  },
-  {
     path: 'pages/car/listOwnerCarMember',
     name: 'ListOwnerCarMember',
     component: () => import('@/views/car/listOwnerCarMember.vue'),

@@ -8,16 +8,16 @@
     <!-- 保存车辆信息 add by wuxw 2018-07-03 -->
     <insert id="saveOwnerCarInfo" parameterType="Map">
         insert into owner_car(
-        car_num,ps_id,pa_id,contact,tel,remark,owner_id,car_type_cd,car_id,lease_type,car_type,start_time,end_time,state,community_id,member_id
+        car_num,pa_id,contact,tel,remark,owner_id,car_type_cd,car_id,lease_type,car_type,start_time,end_time,state,community_id,member_id
         ) values (
-        #{carNum},#{psId},#{paId},#{contact},#{tel},#{remark},#{ownerId},#{carTypeCd},#{carId},#{leaseType},#{carType},#{startTime},#{endTime},#{state},#{communityId},#{memberId}
+        #{carNum},#{paId},#{contact},#{tel},#{remark},#{ownerId},#{carTypeCd},#{carId},#{leaseType},#{carType},#{startTime},#{endTime},#{state},#{communityId},#{memberId}
         )
     </insert>
 
 
     <!-- 查询车辆信息 add by wuxw 2018-07-03 -->
     <select id="getOwnerCarInfo" parameterType="Map" resultType="Map">
-        select t.car_num,t.car_num carNum,t.ps_id,t.ps_id psId,t.pa_id,t.pa_id paId,t.contact,t.tel,t.remark,t.status_cd,t.status_cd
+        select t.car_num,t.car_num carNum,t.pa_id,t.pa_id paId,t.contact,t.tel,t.remark,t.status_cd,t.status_cd
         statusCd,t.owner_id,t.owner_id ownerId,t.car_type_cd,t.car_type_cd carTypeCd,t.car_id,t.car_id
         carId,t.lease_type,t.lease_type leaseType,t.car_type,t.car_type carType,t.start_time,t.start_time
         startTime,t.end_time,t.end_time endTime,t.state,t.community_id,t.community_id
@@ -36,9 +36,6 @@
 
         <if test="carNum !=null and carNum != ''">
             and t.car_num= #{carNum}
-        </if>
-        <if test="psId !=null and psId != ''">
-            and t.ps_id= #{psId}
         </if>
         <if test="remark !=null and remark != ''">
             and t.remark= #{remark}
@@ -99,9 +96,6 @@
         <if test="carNum !=null and carNum != ''">
             , t.car_num= #{carNum}
         </if>
-        <if test="psId !=null and psId != ''">
-            , t.ps_id= #{psId}
-        </if>
         <if test="paId !=null and paId != ''">
             , t.pa_id= #{paId}
         </if>
@@ -156,9 +150,6 @@
         where 1 =1
         <if test="carNum !=null and carNum != ''">
             and t.car_num= #{carNum}
-        </if>
-        <if test="psId !=null and psId != ''">
-            and t.ps_id= #{psId}
         </if>
         <if test="remark !=null and remark != ''">
             and t.remark= #{remark}

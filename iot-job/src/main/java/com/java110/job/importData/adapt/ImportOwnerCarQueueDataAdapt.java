@@ -16,14 +16,11 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
-import com.java110.core.utils.StringUtil;
 import com.java110.dto.importData.ImportOwnerRoomDto;
 import com.java110.dto.log.AssetImportLogDetailDto;
 import com.java110.dto.parking.ParkingAreaDto;
-import com.java110.dto.parking.ParkingSpaceDto;
 import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
-import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
 import com.java110.intf.community.IFloorV1InnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.community.IUnitV1InnerServiceSMO;
@@ -33,7 +30,6 @@ import com.java110.job.importData.DefaultImportData;
 import com.java110.job.importData.IImportDataAdapt;
 import com.java110.po.ownerCar.OwnerCarPo;
 import com.java110.po.parking.ParkingAreaPo;
-import com.java110.po.parking.ParkingSpacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,9 +50,6 @@ public class ImportOwnerCarQueueDataAdapt extends DefaultImportData implements I
     @Autowired
     private IOwnerV1InnerServiceSMO ownerV1InnerServiceSMOImpl;
 
-
-    @Autowired
-    private IParkingSpaceV1InnerServiceSMO parkingSpaceV1InnerServiceSMOImpl;
 
     @Autowired
     private IParkingAreaV1InnerServiceSMO parkingAreaV1InnerServiceSMOImpl;
@@ -119,36 +112,7 @@ public class ImportOwnerCarQueueDataAdapt extends DefaultImportData implements I
         } else {
             paId = parkingAreaDtos.get(0).getPaId();
         }
-        ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
-        parkingSpaceDto.setNum(ownerCarDto.getNum());
-        parkingSpaceDto.setCommunityId(ownerCarDto.getCommunityId());
-        parkingSpaceDto.setPaId(paId);
-        //查询停车位
-        List<ParkingSpaceDto> parkingSpaceDtos = parkingSpaceV1InnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
-        String state = "";
-        String psId = "";
-        if (ListUtil.isNull(parkingSpaceDtos)) {
-            psId = GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_psId);
-            ParkingSpacePo parkingSpacePo = new ParkingSpacePo();
-            parkingSpacePo.setCommunityId(ownerCarDto.getCommunityId());
-            parkingSpacePo.setNum(ownerCarDto.getNum());
-            parkingSpacePo.setPaId(paId);
-            parkingSpacePo.setParkingType(ParkingSpaceDto.TYPE_CD_COMMON);
-            parkingSpacePo.setState(ParkingSpaceDto.STATE_FREE);
-            parkingSpacePo.setPsId(psId);
-            parkingSpacePo.setRemark("导入数据");
-            parkingSpaceV1InnerServiceSMOImpl.saveParkingSpace(parkingSpacePo);
-            state = ParkingSpaceDto.STATE_FREE;
-        } else {
-            psId = parkingSpaceDtos.get(0).getPsId();
-            //获取停车位状态(出售 S，出租 H ，空闲 F)
-            state = parkingSpaceDtos.get(0).getState();
-        }
 
-        if (!StringUtil.isEmpty(state) && !state.equals("F")) {
-            throw new IllegalArgumentException(ownerCarDto.getAreaNum() + "停车场-" + ownerCarDto.getNum() + "停车位不是空闲状态！");
-        }
-        ownerCarPo.setPsId(psId);
         ownerCarPo.setPaId(paId);
         ownerCarPo.setOwnerId(ownerCarDto.getOwnerId());
         ownerCarPo.setCommunityId(ownerCarDto.getCommunityId());
@@ -157,10 +121,6 @@ public class ImportOwnerCarQueueDataAdapt extends DefaultImportData implements I
         ownerCarPo.setState("1001"); //1001 正常状态，2002 车位释放欠费状态，3003 车位释放
         ownerCarPo.setLeaseType(ownerCarDto.getSpaceSate());
         ownerCarV1InnerServiceSMOImpl.saveOwnerCar(ownerCarPo);
-        ParkingSpacePo parkingSpacePo = new ParkingSpacePo();
-        parkingSpacePo.setPsId(psId); //车位id
-        parkingSpacePo.setState(ownerCarDto.getSpaceSate());
-        parkingSpaceV1InnerServiceSMOImpl.updateParkingSpace(parkingSpacePo);
     }
 
     private void importOwnerData(OwnerCarDto ownerCarDto) {

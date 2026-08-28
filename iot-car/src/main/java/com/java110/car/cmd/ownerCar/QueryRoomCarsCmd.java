@@ -12,11 +12,8 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.ListUtil;
-import com.java110.core.utils.StringUtil;
-import com.java110.dto.parking.ParkingSpaceDto;
 import com.java110.intf.car.IOwnerCarInnerServiceSMO;
 import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
-import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,9 +34,6 @@ public class QueryRoomCarsCmd extends Cmd {
 
     @Autowired
     private IOwnerCarInnerServiceSMO ownerCarInnerServiceSMOImpl;
-
-    @Autowired
-    private IParkingSpaceV1InnerServiceSMO parkingSpaceInnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
@@ -82,10 +76,6 @@ public class QueryRoomCarsCmd extends Cmd {
         List<OwnerCarDto> ownerCarDtoList = null;
         if (total > 0) {
             ownerCarDtoList = ownerCarInnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
-            //小区20条时刷房屋和车位信息
-            if (row < 20) {
-                freshPs(ownerCarDtoList);
-            }
         } else {
             ownerCarDtoList = new ArrayList<>();
         }
@@ -94,31 +84,5 @@ public class QueryRoomCarsCmd extends Cmd {
         ResponseEntity<String> responseEntity = ResultVo.createResponseEntity((int) Math.ceil((double) total / (double) row), total, ownerCarDtoList);
         context.setResponseEntity(responseEntity);
 
-    }
-
-    private void freshPs(List<OwnerCarDto> ownerCarDtoList) {
-        if (ownerCarDtoList == null || ownerCarDtoList.size() < 1) {
-            return;
-        }
-        List<String> psIds = new ArrayList<>();
-        for (OwnerCarDto ownerCarDto : ownerCarDtoList) {
-            if (StringUtil.isEmpty(ownerCarDto.getPsId())) {
-                continue;
-            }
-            psIds.add(ownerCarDto.getPsId());
-        }
-        ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
-        parkingSpaceDto.setCommunityId(ownerCarDtoList.get(0).getCommunityId());
-        parkingSpaceDto.setPsIds(psIds.toArray(new String[psIds.size()]));
-        List<ParkingSpaceDto> parkingSpaceDtos = parkingSpaceInnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
-        for (ParkingSpaceDto tmpParkingSpaceDto : parkingSpaceDtos) {
-            for (OwnerCarDto ownerCarDto : ownerCarDtoList) {
-                if (tmpParkingSpaceDto.getPsId().equals(ownerCarDto.getPsId())) {
-                    ownerCarDto.setAreaNum(tmpParkingSpaceDto.getAreaNum());
-                    ownerCarDto.setNum(tmpParkingSpaceDto.getNum());
-                    ownerCarDto.setParkingType(tmpParkingSpaceDto.getParkingType());
-                }
-            }
-        }
     }
 }

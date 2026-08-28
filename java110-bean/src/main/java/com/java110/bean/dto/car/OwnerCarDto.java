@@ -48,11 +48,9 @@ public class OwnerCarDto extends PageDto implements Serializable {
     private String memberCarNumLike;
     private String[] carNums;
     private String communityId;
-    private String psId;
     private String paId;
     private String contact;
     private String tel;
-    private String[] psIds;
     private String[] paIds;
     private String remark;
     private String ownerId;
@@ -145,14 +143,6 @@ public class OwnerCarDto extends PageDto implements Serializable {
         this.carNum = carNum;
     }
 
-    public String getPsId() {
-        return psId;
-    }
-
-    public void setPsId(String psId) {
-        this.psId = psId;
-    }
-
     public String getRemark() {
         return remark;
     }
@@ -223,14 +213,6 @@ public class OwnerCarDto extends PageDto implements Serializable {
 
     public void setCarNums(String[] carNums) {
         this.carNums = carNums;
-    }
-
-    public String[] getPsIds() {
-        return psIds;
-    }
-
-    public void setPsIds(String[] psIds) {
-        this.psIds = psIds;
     }
 
     public boolean isWithOwner() {

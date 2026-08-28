@@ -1000,7 +1000,7 @@ CREATE TABLE `car_month_order` (
   `card_id` varchar(30) NOT NULL COMMENT '卡ID',
   `car_num` varchar(12) NOT NULL COMMENT '车牌号',
   `car_id` varchar(30) NOT NULL COMMENT '汽车ID',
-  `ps_id` varchar(30) NOT NULL COMMENT '车位ID',
+  `pa_id` varchar(30) DEFAULT NULL COMMENT '停车场ID',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `prime_rate` decimal(10,2) NOT NULL COMMENT '支付方式',
   `receivable_amount` decimal(10,2) NOT NULL COMMENT '应收金额',
@@ -12821,3 +12821,23 @@ INSERT INTO `c_route` VALUES ('102026082800000002', '992023010100000001', '98202
 INSERT INTO `c_route` VALUES ('102026082800000003', '992023010100000001', '982026082800000003', 'D', '1000', 'S', '2026-08-28 10:00:03', '0');
 INSERT INTO `c_route` VALUES ('102026082800000004', '992023010100000001', '982026082800000004', 'D', '1000', 'S', '2026-08-28 10:00:04', '0');
 INSERT INTO `c_route` VALUES ('102026082800000005', '992023010100000001', '982026082800000005', 'Q', '1000', 'S', '2026-08-28 10:00:05', '0');
+
+-- 2026-08-28 车辆与车位解耦：owner_car 删除车位ID字段及索引
+ALTER TABLE `owner_car` DROP INDEX `i_oc_ps_id`;
+ALTER TABLE `owner_car` DROP COLUMN `ps_id`;
+
+-- 2026-08-28 月卡订单停车场化：car_month_order ps_id（车位ID）改为 pa_id（停车场ID）
+-- 若父方案 ALTER DROP ps_id 尚未执行：
+ALTER TABLE `car_month_order` CHANGE COLUMN `ps_id` `pa_id` varchar(30) DEFAULT NULL COMMENT '停车场ID';
+-- 若父方案 ALTER DROP ps_id 已执行（ps_id 列已删），则改为：
+-- ALTER TABLE `car_month_order` ADD COLUMN `pa_id` varchar(30) DEFAULT NULL COMMENT '停车场ID' AFTER `car_id`;
+-- 历史订单 ps_id 原为车位ID，无停车场语义，统一置空
+UPDATE `car_month_order` SET `pa_id` = NULL WHERE `pa_id` IS NOT NULL;
+
+-- 2026-08-28 车辆与车位解耦：废弃车辆绑车位/释放车位接口（车辆不再绑车位，释放统一走 parkingSpace.releaseParkingSpace）
+DELETE FROM `c_route` WHERE `route_id` = '102023091931340004';
+DELETE FROM `c_service` WHERE `service_id` = '982023091983790003';
+DELETE FROM `c_route` WHERE `route_id` = '102024071842650013';
+DELETE FROM `c_service` WHERE `service_id` = '982024071899800012';
+DELETE FROM `p_privilege` WHERE `privilege_id` = '502024030416050066';
+DELETE FROM `p_privilege_rel` WHERE `privilege_id` = '502024030416050066';

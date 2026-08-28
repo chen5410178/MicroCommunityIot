@@ -2,7 +2,6 @@ package com.java110.car.cmd.parkingSpace;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
-import com.java110.bean.dto.car.OwnerCarDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.cmd.Cmd;
@@ -11,12 +10,8 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.ListUtil;
-import com.java110.core.utils.StringUtil;
 import com.java110.dto.parking.ParkingSpaceDto;
-import com.java110.intf.car.IOwnerCarInnerServiceSMO;
-import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
-import com.java110.po.ownerCar.OwnerCarPo;
 import com.java110.po.parking.ParkingSpacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,12 +24,6 @@ public class ReleaseParkingSpaceCmd extends Cmd {
 
     @Autowired
     private IParkingSpaceV1InnerServiceSMO parkingSpaceV1InnerServiceSMOImpl;
-
-    @Autowired
-    private IOwnerCarInnerServiceSMO ownerCarInnerServiceSMOImpl;
-
-    @Autowired
-    private IOwnerCarV1InnerServiceSMO ownerCarV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
@@ -61,7 +50,7 @@ public class ReleaseParkingSpaceCmd extends Cmd {
         String communityId = reqJson.getString("communityId");
         String psId = reqJson.getString("psId");
 
-        //查询车位当前绑定车辆，释放后同步清空车辆车位绑定
+        //查询车位信息
         ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
         parkingSpaceDto.setCommunityId(communityId);
         parkingSpaceDto.setPsId(psId);
@@ -69,8 +58,6 @@ public class ReleaseParkingSpaceCmd extends Cmd {
         if (ListUtil.isNull(parkingSpaceDtos) || parkingSpaceDtos.size() != 1) {
             throw new CmdException("未查询到停车位信息");
         }
-        String oldCarId = parkingSpaceDtos.get(0).getCarId();
-        String oldOwnerId = parkingSpaceDtos.get(0).getOwnerId();
 
         //释放车位：状态置为空闲 F，清空业主、车辆、租期字段
         ParkingSpacePo parkingSpacePo = new ParkingSpacePo();
@@ -86,23 +73,6 @@ public class ReleaseParkingSpaceCmd extends Cmd {
         int flag = parkingSpaceV1InnerServiceSMOImpl.updateParkingSpace(parkingSpacePo);
         if (flag < 1) {
             throw new CmdException("修改车位失败");
-        }
-
-        //同步清空车辆绑定（psId 置 -1 表示无车位）
-        if (!StringUtil.isEmpty(oldCarId) && !StringUtil.isEmpty(oldOwnerId)) {
-            OwnerCarDto ownerCarDto = new OwnerCarDto();
-            ownerCarDto.setCarId(oldCarId);
-            ownerCarDto.setCommunityId(communityId);
-            List<OwnerCarDto> ownerCarDtos = ownerCarInnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
-            if (!ListUtil.isNull(ownerCarDtos) && ownerCarDtos.size() == 1) {
-                OwnerCarPo ownerCarPo = new OwnerCarPo();
-                ownerCarPo.setMemberId(ownerCarDtos.get(0).getMemberId());
-                ownerCarPo.setOwnerId(oldOwnerId);
-                ownerCarPo.setCommunityId(communityId);
-                ownerCarPo.setPsId("-1");
-                ownerCarPo.setPaId("-1");
-                ownerCarV1InnerServiceSMOImpl.updateOwnerCar(ownerCarPo);
-            }
         }
 
         context.setResponseEntity(ResultVo.success());

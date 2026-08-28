@@ -11,16 +11,12 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
-import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DateUtil;
 import com.java110.core.utils.ListUtil;
-import com.java110.core.utils.StringUtil;
 import com.java110.dto.parking.ParkingSpaceDto;
 import com.java110.intf.car.IOwnerCarInnerServiceSMO;
-import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerInnerServiceSMO;
-import com.java110.po.ownerCar.OwnerCarPo;
 import com.java110.po.parking.ParkingSpacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +32,6 @@ public class SellParkingSpaceCmd extends Cmd {
 
     @Autowired
     private IOwnerCarInnerServiceSMO ownerCarInnerServiceSMOImpl;
-
-    @Autowired
-    private IOwnerCarV1InnerServiceSMO ownerCarV1InnerServiceSMOImpl;
 
     @Autowired
     private IOwnerInnerServiceSMO ownerInnerServiceSMOImpl;
@@ -89,7 +82,7 @@ public class SellParkingSpaceCmd extends Cmd {
         String carId = reqJson.getString("carId");
         String sellOrHire = reqJson.getString("sellOrHire");
 
-        //查询车位信息（取停车场ID，同步车辆绑定时使用）
+        //查询车位信息
         ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
         parkingSpaceDto.setCommunityId(communityId);
         parkingSpaceDto.setPsId(psId);
@@ -97,7 +90,6 @@ public class SellParkingSpaceCmd extends Cmd {
         if (ListUtil.isNull(parkingSpaceDtos) || parkingSpaceDtos.size() != 1) {
             throw new CmdException("未查询到停车位信息");
         }
-        ParkingSpaceDto tParkingSpace = parkingSpaceDtos.get(0);
 
         //按 carId 查询车辆信息，以车辆表为准取车牌号及 memberId
         OwnerCarDto ownerCarDto = new OwnerCarDto();
@@ -134,32 +126,7 @@ public class SellParkingSpaceCmd extends Cmd {
             throw new CmdException("修改车位失败");
         }
 
-        //同步车辆绑定车位信息（保持 owner_car 与 parking_space 一致）
-        updateOwnerCarPs(tOwnerCar.getMemberId(), reqJson.getString("ownerId"), communityId, psId, tParkingSpace.getPaId());
-
         context.setResponseEntity(ResultVo.success());
-    }
-
-    /**
-     * 同步 owner_car 的车位绑定信息
-     *
-     * @param memberId    车辆 memberId
-     * @param ownerId     业主ID
-     * @param communityId 小区ID
-     * @param psId        车位ID（-1 表示清空）
-     * @param paId        停车场ID（-1 表示清空）
-     */
-    private void updateOwnerCarPs(String memberId, String ownerId, String communityId, String psId, String paId) {
-        if (StringUtil.isEmpty(memberId) || StringUtil.isEmpty(ownerId)) {
-            return;
-        }
-        OwnerCarPo ownerCarPo = new OwnerCarPo();
-        ownerCarPo.setMemberId(memberId);
-        ownerCarPo.setOwnerId(ownerId);
-        ownerCarPo.setCommunityId(communityId);
-        ownerCarPo.setPsId(psId);
-        ownerCarPo.setPaId(paId);
-        ownerCarV1InnerServiceSMOImpl.updateOwnerCar(ownerCarPo);
     }
 
     /**

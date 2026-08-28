@@ -55,6 +55,9 @@
         <if test="psId !=null and psId != ''">
             and t.ps_id= #{psId}
         </if>
+        <if test="carId !=null and carId != ''">
+            and t.car_id= #{carId}
+        </if>
         <if test="remark !=null and remark != ''">
             and t.remark= #{remark}
         </if>
@@ -168,6 +171,9 @@
         </if>
         <if test="psId !=null and psId != ''">
             and t.ps_id= #{psId}
+        </if>
+        <if test="carId !=null and carId != ''">
+            and t.car_id= #{carId}
         </if>
         <if test="remark !=null and remark != ''">
             and t.remark= #{remark}

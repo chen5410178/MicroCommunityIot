@@ -27,13 +27,10 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.*;
 import com.java110.dto.parking.ParkingAreaDto;
-import com.java110.dto.parking.ParkingSpaceDto;
 import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
-import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
 import com.java110.intf.car.IOwnerCarInnerServiceSMO;
 import com.java110.po.ownerCar.OwnerCarPo;
-import com.java110.po.parking.ParkingSpacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,17 +54,11 @@ public class SaveOwnerCarCmd extends Cmd {
     private static Logger logger = LoggerFactory.getLogger(SaveOwnerCarCmd.class);
 
     @Autowired
-    private IParkingSpaceV1InnerServiceSMO parkingSpaceInnerServiceSMOImpl;
-
-    @Autowired
     private IOwnerCarInnerServiceSMO ownerCarInnerServiceSMOImpl;
 
 
     @Autowired
     private IOwnerCarV1InnerServiceSMO ownerCarV1InnerServiceSMOImpl;
-
-    @Autowired
-    private IParkingSpaceV1InnerServiceSMO parkingSpaceV1InnerServiceSMOImpl;
 
     @Autowired
     private IParkingAreaV1InnerServiceSMO parkingAreaV1InnerServiceSMOImpl;
@@ -97,23 +88,6 @@ public class SaveOwnerCarCmd extends Cmd {
         //联系电话格式校验
         if (!StringUtil.isEmpty(reqJson.getString("tel")) && !ValidatorUtil.isMobile(reqJson.getString("tel"))) {
             throw new IllegalArgumentException("联系电话格式不正确");
-        }
-
-        //检查车位是否是空闲状态（psId 为空或 -1 时跳过）
-        if (!StringUtil.isEmpty(reqJson.getString("psId")) && !"-1".equals(reqJson.getString("psId"))) {
-            ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
-            parkingSpaceDto.setPsId(reqJson.getString("psId"));
-            List<ParkingSpaceDto> parkingSpaceDtos = parkingSpaceInnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
-            Assert.listOnlyOne(parkingSpaceDtos, "查询车位错误！");
-            //获取车位状态
-            String state = parkingSpaceDtos.get(0).getState();
-            if (StringUtil.isEmpty(state) || !state.equals("F")) {
-                throw new IllegalArgumentException("该车位不是空闲状态！");
-            }
-            //校验所选车位是否属于所选停车场
-            if (!reqJson.getString("paId").equals(parkingSpaceDtos.get(0).getPaId())) {
-                throw new IllegalArgumentException("所选车位不属于所选停车场！");
-            }
         }
 
         //校验车牌号是否存在
@@ -165,11 +139,6 @@ public class SaveOwnerCarCmd extends Cmd {
             reqJson.put("endTime", "2050-01-01");
         }
 
-        //没有选择车位时置为 -1
-        if (StringUtil.isEmpty(reqJson.getString("psId"))) {
-            reqJson.put("psId", "-1");
-        }
-
         JSONObject businessOwnerCar = new JSONObject();
         businessOwnerCar.putAll(reqJson);
         businessOwnerCar.put("memberId", GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_carId));
@@ -192,33 +161,6 @@ public class SaveOwnerCarCmd extends Cmd {
         int flag = ownerCarV1InnerServiceSMOImpl.saveOwnerCar(ownerCarPo);
         if (flag < 1) {
             throw new CmdException("保存车辆属性失败");
-        }
-
-        //没有选择车位时，不更新车位状态
-        if (StringUtil.isEmpty(ownerCarPo.getPsId()) || "-1".equals(ownerCarPo.getPsId())) {
-            return;
-        }
-
-        ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
-        parkingSpaceDto.setCommunityId(reqJson.getString("communityId"));
-        parkingSpaceDto.setPsId(reqJson.getString("psId"));
-        List<ParkingSpaceDto> parkingSpaceDtos = parkingSpaceInnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
-
-        if (parkingSpaceDtos == null || parkingSpaceDtos.size() != 1) {
-            //throw new ListenerExecuteException(ResponseConstant.RESULT_CODE_ERROR, "未查询到停车位信息" + JSONObject.toJSONString(parkingSpaceDto));
-            return;
-        }
-
-        parkingSpaceDto = parkingSpaceDtos.get(0);
-
-        JSONObject businessParkingSpace = new JSONObject();
-
-        businessParkingSpace.putAll(BeanConvertUtil.beanCovertMap(parkingSpaceDto));
-        ParkingSpacePo parkingSpacePo = BeanConvertUtil.covertBean(businessParkingSpace, ParkingSpacePo.class);
-        parkingSpacePo.setState("H"); //S 出售  H 出租  F 空闲
-        flag = parkingSpaceV1InnerServiceSMOImpl.updateParkingSpace(parkingSpacePo);
-        if (flag < 1) {
-            throw new CmdException("修改车位状态失败");
         }
 
     }

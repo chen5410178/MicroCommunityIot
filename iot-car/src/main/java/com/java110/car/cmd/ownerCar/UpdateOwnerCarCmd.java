@@ -27,16 +27,12 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.DateUtil;
-import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.core.utils.ValidatorUtil;
 import com.java110.dto.parking.ParkingAreaDto;
-import com.java110.dto.parking.ParkingSpaceDto;
 import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
-import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
 import com.java110.po.ownerCar.OwnerCarPo;
-import com.java110.po.parking.ParkingSpacePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,9 +61,6 @@ public class UpdateOwnerCarCmd extends Cmd {
 
     @Autowired
     private IParkingAreaV1InnerServiceSMO parkingAreaV1InnerServiceSMOImpl;
-
-    @Autowired
-    private IParkingSpaceV1InnerServiceSMO parkingSpaceV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
@@ -99,25 +92,6 @@ public class UpdateOwnerCarCmd extends Cmd {
             Assert.listOnlyOne(parkingAreaDtos, "查询停车场错误！");
         }
 
-        //选择了有效车位时校验车位空闲及归属停车场（保持原车位不重复校验）
-        if (!StringUtil.isEmpty(reqJson.getString("psId")) && !"-1".equals(reqJson.getString("psId"))) {
-            ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
-            parkingSpaceDto.setPsId(reqJson.getString("psId"));
-            List<ParkingSpaceDto> parkingSpaceDtos = parkingSpaceV1InnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
-            Assert.listOnlyOne(parkingSpaceDtos, "查询车位错误！");
-            //原车位继续使用时不校验空闲状态
-            boolean keepOriginPs = !StringUtil.isEmpty(ownerCarDtos.get(0).getPsId()) && ownerCarDtos.get(0).getPsId().equals(reqJson.getString("psId"));
-            if (!keepOriginPs) {
-                String state = parkingSpaceDtos.get(0).getState();
-                if (StringUtil.isEmpty(state) || !"F".equals(state)) {
-                    throw new IllegalArgumentException("该车位不是空闲状态！");
-                }
-                if (!StringUtil.isEmpty(reqJson.getString("paId")) && !reqJson.getString("paId").equals(parkingSpaceDtos.get(0).getPaId())) {
-                    throw new IllegalArgumentException("所选车位不属于所选停车场！");
-                }
-            }
-        }
-
     }
 
     @Override
@@ -133,53 +107,11 @@ public class UpdateOwnerCarCmd extends Cmd {
             reqJson.put("endTime", "2037-01-01");
         }
 
-        //没有选择车位时置为 -1
-        if (StringUtil.isEmpty(reqJson.getString("psId"))) {
-            reqJson.put("psId", "-1");
-        }
-
-        //查询原车辆信息，用于释放原车位
-        OwnerCarDto originCarDto = new OwnerCarDto();
-        originCarDto.setMemberId(reqJson.getString("memberId"));
-        originCarDto.setCommunityId(reqJson.getString("communityId"));
-        originCarDto.setCarId(reqJson.getString("carId"));
-        List<OwnerCarDto> originCarDtos = ownerCarV1InnerServiceSMOImpl.queryOwnerCars(originCarDto);
-
         OwnerCarPo ownerCarPo = BeanConvertUtil.covertBean(reqJson, OwnerCarPo.class);
         int flag = ownerCarV1InnerServiceSMOImpl.updateOwnerCar(ownerCarPo);
 
         if (flag < 1) {
             throw new CmdException("修改数据失败");
-        }
-
-        //原车位不再使用时恢复空闲状态
-        String newPsId = ownerCarPo.getPsId();
-        if (!ListUtil.isNull(originCarDtos)
-                && !StringUtil.isEmpty(originCarDtos.get(0).getPsId())
-                && !"-1".equals(originCarDtos.get(0).getPsId())
-                && !originCarDtos.get(0).getPsId().equals(newPsId)) {
-            ParkingSpaceDto originParkingSpaceDto = new ParkingSpaceDto();
-            originParkingSpaceDto.setCommunityId(ownerCarPo.getCommunityId());
-            originParkingSpaceDto.setPsId(originCarDtos.get(0).getPsId());
-            List<ParkingSpaceDto> originParkingSpaceDtos = parkingSpaceV1InnerServiceSMOImpl.queryParkingSpaces(originParkingSpaceDto);
-            if (originParkingSpaceDtos != null && originParkingSpaceDtos.size() == 1) {
-                ParkingSpacePo originParkingSpacePo = BeanConvertUtil.covertBean(BeanConvertUtil.beanCovertMap(originParkingSpaceDtos.get(0)), ParkingSpacePo.class);
-                originParkingSpacePo.setState(ParkingSpaceDto.STATE_FREE);
-                parkingSpaceV1InnerServiceSMOImpl.updateParkingSpace(originParkingSpacePo);
-            }
-        }
-
-        //选择了有效车位时更新车位状态为出租
-        if (!"-1".equals(newPsId)) {
-            ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
-            parkingSpaceDto.setCommunityId(ownerCarPo.getCommunityId());
-            parkingSpaceDto.setPsId(ownerCarPo.getPsId());
-            List<ParkingSpaceDto> parkingSpaceDtos = parkingSpaceV1InnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
-            if (parkingSpaceDtos != null && parkingSpaceDtos.size() == 1) {
-                ParkingSpacePo parkingSpacePo = BeanConvertUtil.covertBean(BeanConvertUtil.beanCovertMap(parkingSpaceDtos.get(0)), ParkingSpacePo.class);
-                parkingSpacePo.setState("H"); //S 出售  H 出租  F 空闲
-                parkingSpaceV1InnerServiceSMOImpl.updateParkingSpace(parkingSpacePo);
-            }
         }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());

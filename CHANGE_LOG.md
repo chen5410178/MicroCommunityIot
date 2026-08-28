@@ -490,3 +490,26 @@ INSERT INTO `c_route` VALUES ('102026082800000004', '992023010100000001', '98202
 INSERT INTO `c_route` VALUES ('102026082800000005', '992023010100000001', '982026082800000005', 'Q', '1000', 'S', '2026-08-28 10:00:05', '0');
 
 ```
+
+### 2026-08-28 业主车辆与车位解耦（owner_car 删除 ps_id）
+
+```sql
+-- 1. owner_car 删除车位ID字段及索引（车辆不再绑定车位，只保留 pa_id 关联停车场；车辆-车位绑定由 parking_space.car_id 单向维护）
+ALTER TABLE `owner_car` DROP INDEX `i_oc_ps_id`;
+ALTER TABLE `owner_car` DROP COLUMN `ps_id`;
+-- 2. car_month_order 删除车位ID字段（月卡订单记录车辆购卡，不再写车位）
+-- 3. 废弃车辆绑车位/释放车位接口（车辆不再绑车位，释放统一走 parkingSpace.releaseParkingSpace）
+
+```
+
+### 2026-08-28 月卡订单停车场化（car_month_order ps_id → pa_id）
+
+```sql
+-- 1. car_month_order 表定义 ps_id（车位ID）改为 pa_id（停车场ID）
+-- 若父方案（2026-08-28 业主车辆与车位解耦）ALTER DROP ps_id 尚未执行，执行：
+ALTER TABLE `car_month_order` CHANGE COLUMN `ps_id` `pa_id` varchar(30) DEFAULT NULL COMMENT '停车场ID';
+-- 若父方案 ALTER DROP ps_id 已执行（ps_id 列已删），则改为执行：
+-- ALTER TABLE `car_month_order` ADD COLUMN `pa_id` varchar(30) DEFAULT NULL COMMENT '停车场ID' AFTER `car_id`;
+-- 2. 历史订单 ps_id 原为车位ID，无停车场语义，统一置空
+UPDATE `car_month_order` SET `pa_id` = NULL WHERE `pa_id` IS NOT NULL;
+```
