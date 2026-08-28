@@ -24,9 +24,11 @@ import com.java110.core.smo.IPhotoSMO;
 import com.java110.core.utils.*;
 import com.java110.dto.parking.ParkingAreaDto;
 import com.java110.dto.parking.ParkingSpaceDto;
+import com.java110.dto.parkingRegion.ParkingRegionDto;
 import com.java110.dto.store.StoreDto;
 import com.java110.intf.car.IOwnerCarV1InnerServiceSMO;
 import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
+import com.java110.intf.car.IParkingRegionV1InnerServiceSMO;
 import com.java110.intf.car.IParkingSpaceV1InnerServiceSMO;
 import com.java110.intf.community.IFloorV1InnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
@@ -35,6 +37,7 @@ import com.java110.intf.user.*;
 import com.java110.po.ownerCar.OwnerCarPo;
 import com.java110.po.parking.ParkingAreaPo;
 import com.java110.po.parking.ParkingSpacePo;
+import com.java110.po.parkingRegion.ParkingRegionPo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
@@ -82,6 +85,9 @@ public class AddOwnerApiCmd extends Cmd {
     private IParkingSpaceV1InnerServiceSMO parkingSpaceV1InnerServiceSMOImpl;
 
     @Autowired
+    private IParkingRegionV1InnerServiceSMO parkingRegionV1InnerServiceSMOImpl;
+
+    @Autowired
     private IPhotoSMO photoSMOImpl;
 
     @Override
@@ -113,6 +119,9 @@ public class AddOwnerApiCmd extends Cmd {
         //todo 如果包含车辆信息
         JSONArray cars = reqJson.getJSONArray("cars");
         JSONObject car = null;
+        JSONObject parkingArea = null;
+        JSONObject parkingSpace = null;
+        JSONObject parkingRegion = null;
 
         if (!ListUtil.isNull(cars)) {
             for (int carIndex = 0; carIndex < cars.size(); carIndex++) {
@@ -120,14 +129,47 @@ public class AddOwnerApiCmd extends Cmd {
                 Assert.hasKeyAndValue(car, "carMemberId", "未包含carMemberId");
                 Assert.hasKeyAndValue(car, "carId", "未包含carId");
                 Assert.hasKeyAndValue(car, "carNum", "未包含carNum");
-                Assert.hasKeyAndValue(car, "paId", "未包含paId");
-                Assert.hasKeyAndValue(car, "psId", "未包含psId");
-                Assert.hasKeyAndValue(car, "paNum", "未包含paNum");
-                Assert.hasKeyAndValue(car, "psNum", "未包含psNum");
                 Assert.hasKeyAndValue(car, "carTypeCd", "未包含carTypeCd");
                 Assert.hasKeyAndValue(car, "startTime", "未包含startTime");
                 Assert.hasKeyAndValue(car, "endTime", "未包含endTime");
                 Assert.hasKeyAndValue(car, "leaseType", "未包含leaseType");
+
+                //todo 停车场信息（必带节点）
+                parkingArea = car.getJSONObject("parkingArea");
+                if (parkingArea == null) {
+                    //兼容平铺参数
+                    Assert.hasKeyAndValue(car, "paId", "未包含paId");
+                    Assert.hasKeyAndValue(car, "paNum", "未包含paNum");
+                    parkingArea = new JSONObject();
+                    parkingArea.put("paId", car.getString("paId"));
+                    parkingArea.put("paNum", car.getString("paNum"));
+                    car.put("parkingArea", parkingArea);
+                } else {
+                    Assert.hasKeyAndValue(parkingArea, "paId", "未包含paId");
+                    Assert.hasKeyAndValue(parkingArea, "paNum", "未包含paNum");
+                }
+
+                //todo 停车位信息（有绑定车位才校验）
+                parkingSpace = car.getJSONObject("parkingSpace");
+                if (parkingSpace == null) {
+                    //兼容平铺参数
+                    if (!StringUtil.isEmpty(car.getString("psId")) || !StringUtil.isEmpty(car.getString("psNum"))) {
+                        parkingSpace = new JSONObject();
+                        parkingSpace.put("psId", car.getString("psId"));
+                        parkingSpace.put("psNum", car.getString("psNum"));
+                        car.put("parkingSpace", parkingSpace);
+                    }
+                } else {
+                    Assert.hasKeyAndValue(parkingSpace, "psId", "未包含psId");
+                    Assert.hasKeyAndValue(parkingSpace, "psNum", "未包含psNum");
+                }
+
+                //todo 停车区域信息（有停车区域才校验）
+                parkingRegion = car.getJSONObject("parkingRegion");
+                if (parkingRegion != null) {
+                    Assert.hasKeyAndValue(parkingRegion, "prId", "未包含prId");
+                    Assert.hasKeyAndValue(parkingRegion, "regionCode", "未包含regionCode");
+                }
             }
 
         }
@@ -205,8 +247,18 @@ public class AddOwnerApiCmd extends Cmd {
 
     private void doOneCar(JSONObject reqJson, JSONObject car, ICmdDataFlowContext context) {
 
+        //todo 同步停车场信息到顶层
+        JSONObject parkingArea = car.getJSONObject("parkingArea");
+        if (parkingArea != null) {
+            car.put("paId", parkingArea.getString("paId"));
+            car.put("paNum", parkingArea.getString("paNum"));
+        }
+
         //todo 保存停车场
         toSaveParkingArea(car, context, reqJson.getString("communityId"));
+
+        //todo 保存停车区域
+        toSaveParkingRegion(car, context, reqJson.getString("communityId"));
 
         //todo 保存车位
         toSaveParkingSpace(car, context, reqJson.getString("communityId"));
@@ -285,17 +337,22 @@ public class AddOwnerApiCmd extends Cmd {
      * @param communityId
      */
     private void toSaveParkingSpace(JSONObject car, ICmdDataFlowContext context, String communityId) {
+        JSONObject parkingSpace = car.getJSONObject("parkingSpace");
+        if (parkingSpace == null) {
+            return;
+        }
         ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
-        parkingSpaceDto.setPsId(car.getString("psId"));
+        parkingSpaceDto.setPsId(parkingSpace.getString("psId"));
         parkingSpaceDto.setStatusCd("");
         //查询停车位
         List<ParkingSpaceDto> parkingSpaceDtos = parkingSpaceV1InnerServiceSMOImpl.queryParkingSpaces(parkingSpaceDto);
 
         ParkingSpacePo parkingSpacePo = new ParkingSpacePo();
         parkingSpacePo.setCommunityId(communityId);
-        parkingSpacePo.setNum(car.getString("psNum"));
+        parkingSpacePo.setNum(parkingSpace.getString("psNum"));
         parkingSpacePo.setPaId(car.getString("paId"));
-        parkingSpacePo.setPsId(car.getString("psId"));
+        parkingSpacePo.setPsId(parkingSpace.getString("psId"));
+        parkingSpacePo.setPrId(parkingSpace.getString("prId"));
         parkingSpacePo.setRemark("导入数据");
         if (!ListUtil.isNull(parkingSpaceDtos)) {
             parkingSpaceV1InnerServiceSMOImpl.updateParkingSpace(parkingSpacePo);
@@ -304,6 +361,52 @@ public class AddOwnerApiCmd extends Cmd {
         parkingSpacePo.setParkingType(ParkingSpaceDto.TYPE_CD_COMMON);
         parkingSpacePo.setState(ParkingSpaceDto.STATE_HIRE);
         parkingSpaceV1InnerServiceSMOImpl.saveParkingSpace(parkingSpacePo);
+
+    }
+
+    /**
+     * 保存停车区域
+     *
+     * @param car
+     * @param context
+     * @param communityId
+     */
+    private void toSaveParkingRegion(JSONObject car, ICmdDataFlowContext context, String communityId) {
+        JSONObject parkingRegion = car.getJSONObject("parkingRegion");
+        if (parkingRegion == null) {
+            return;
+        }
+        String prId = parkingRegion.getString("prId");
+        String regionCode = parkingRegion.getString("regionCode");
+
+        //按 prId 查询停车区域
+        ParkingRegionDto parkingRegionDto = new ParkingRegionDto();
+        parkingRegionDto.setPrId(prId);
+        parkingRegionDto.setCommunityId(communityId);
+        parkingRegionDto.setStatusCd("");
+        List<ParkingRegionDto> parkingRegionDtos = parkingRegionV1InnerServiceSMOImpl.queryParkingRegions(parkingRegionDto);
+
+        if (ListUtil.isNull(parkingRegionDtos) && !StringUtil.isEmpty(regionCode)) {
+            //按 regionCode + paId 查询停车区域
+            parkingRegionDto = new ParkingRegionDto();
+            parkingRegionDto.setRegionCode(regionCode);
+            parkingRegionDto.setPaId(car.getString("paId"));
+            parkingRegionDto.setCommunityId(communityId);
+            parkingRegionDto.setStatusCd("");
+            parkingRegionDtos = parkingRegionV1InnerServiceSMOImpl.queryParkingRegions(parkingRegionDto);
+        }
+
+        ParkingRegionPo parkingRegionPo = new ParkingRegionPo();
+        parkingRegionPo.setPrId(prId);
+        parkingRegionPo.setRegionCode(regionCode);
+        parkingRegionPo.setPaId(car.getString("paId"));
+        parkingRegionPo.setCommunityId(communityId);
+        parkingRegionPo.setRemark("导入数据");
+        if (!ListUtil.isNull(parkingRegionDtos)) {
+            parkingRegionV1InnerServiceSMOImpl.updateParkingRegion(parkingRegionPo);
+            return;
+        }
+        parkingRegionV1InnerServiceSMOImpl.saveParkingRegion(parkingRegionPo);
 
     }
 
