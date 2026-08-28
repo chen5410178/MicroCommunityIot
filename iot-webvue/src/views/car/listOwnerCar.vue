@@ -55,7 +55,7 @@
         <el-table :data="list" v-loading="loading" border stripe>
           <el-table-column label="车牌号" min-width="120">
             <template slot-scope="{ row }">
-              <el-button type="text" @click="goDetail(row)">{{ row.carNum }}</el-button>
+              <el-button type="text">{{ row.carNum }}</el-button>
             </template>
           </el-table-column>
           <el-table-column label="成员车辆" width="80" align="center">
