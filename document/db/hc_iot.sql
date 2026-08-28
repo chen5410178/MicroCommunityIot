@@ -12798,3 +12798,26 @@ INSERT INTO `m_menu` VALUES ('702026081800000001', '商铺授权', '802023081520
 INSERT INTO `p_privilege_rel` VALUES ('102026081800000001', '502026081800000001', '600201904002', '1001', '2026-08-18 12:00:00', '0');
 -- 水电表对象类型（0房屋 1商铺）
 ALTER TABLE `meter_machine` ADD COLUMN `obj_type` varchar(2) NOT NULL DEFAULT '0' COMMENT '对象类型 0 房屋 1 商铺' AFTER `room_name`;
+
+-- 2026-08-28 停车位租售功能：parking_space 表新增业主/车辆/租期字段
+ALTER TABLE `parking_space`
+  ADD COLUMN `owner_id` varchar(30) DEFAULT NULL COMMENT '业主ID' AFTER `pr_id`,
+  ADD COLUMN `owner_name` varchar(64) DEFAULT NULL COMMENT '业主名称' AFTER `owner_id`,
+  ADD COLUMN `car_id` varchar(30) DEFAULT NULL COMMENT '车辆ID' AFTER `owner_name`,
+  ADD COLUMN `car_num` varchar(12) DEFAULT NULL COMMENT '车牌号' AFTER `car_id`,
+  ADD COLUMN `start_time` datetime DEFAULT NULL COMMENT '出租开始时间' AFTER `car_num`,
+  ADD COLUMN `end_time` datetime DEFAULT NULL COMMENT '出租结束时间' AFTER `start_time`;
+
+-- 停车位租售功能服务注册（c_service）
+INSERT INTO `c_service` VALUES ('982026082800000001', 'parkingArea.queryParkingAreaAndRegions', 'API', '查询停车场及区域', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2026-08-28 10:00:01', '0');
+INSERT INTO `c_service` VALUES ('982026082800000002', 'parkingSpace.sellParkingSpace', 'API', '出租/出售车位', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2026-08-28 10:00:02', '0');
+INSERT INTO `c_service` VALUES ('982026082800000003', 'parkingSpace.releaseParkingSpace', 'API', '释放车位', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2026-08-28 10:00:03', '0');
+INSERT INTO `c_service` VALUES ('982026082800000004', 'parkingSpace.updateParkingSpaceCar', 'API', '修改车位绑定车辆', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2026-08-28 10:00:04', '0');
+INSERT INTO `c_service` VALUES ('982026082800000005', 'ownerCar.queryCarsWithoutParkingSpace', 'API', '查询无车位车辆', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2026-08-28 10:00:05', '0');
+
+-- 停车位租售功能路由注册（c_route）
+INSERT INTO `c_route` VALUES ('102026082800000001', '992023010100000001', '982026082800000001', 'Q', '1000', 'S', '2026-08-28 10:00:01', '0');
+INSERT INTO `c_route` VALUES ('102026082800000002', '992023010100000001', '982026082800000002', 'D', '1000', 'S', '2026-08-28 10:00:02', '0');
+INSERT INTO `c_route` VALUES ('102026082800000003', '992023010100000001', '982026082800000003', 'D', '1000', 'S', '2026-08-28 10:00:03', '0');
+INSERT INTO `c_route` VALUES ('102026082800000004', '992023010100000001', '982026082800000004', 'D', '1000', 'S', '2026-08-28 10:00:04', '0');
+INSERT INTO `c_route` VALUES ('102026082800000005', '992023010100000001', '982026082800000005', 'Q', '1000', 'S', '2026-08-28 10:00:05', '0');

@@ -1,0 +1,205 @@
+<template>
+  <div class="update-parking-space-car">
+    <el-card shadow="never">
+      <div slot="header" class="card-header">
+        <span>修改车辆</span>
+        <el-button type="primary" size="small" icon="el-icon-close" @click="goBack">返回</el-button>
+      </div>
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px" label-position="right">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="车位编号" prop="num">
+              <el-input :value="form.num" disabled />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="当前业主">
+              <el-input :value="form.currentOwnerName" disabled />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="当前车牌号">
+              <el-input :value="form.currentCarNum" disabled />
+            </el-form-item>
+          </el-col>
+          <el-col v-if="form.state === 'H'" :span="12">
+            <el-form-item label="当前租期">
+              <el-input :value="form.currentRentTime" disabled />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-divider />
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="新车牌号" prop="carId">
+              <div class="car-select-wrap">
+                <el-input :value="selectedCarNum" disabled placeholder="请选择车辆" />
+                <el-button type="primary" class="car-select-btn" @click="openCarDialog">选择车辆</el-button>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="业主" prop="ownerName">
+              <el-input :value="form.ownerName" disabled placeholder="请先选择车辆" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row v-if="form.state === 'H'" :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="开始时间" prop="startTime">
+              <el-date-picker
+                v-model="form.startTime"
+                type="datetime"
+                format="yyyy-MM-dd HH:mm:ss"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                style="width: 100%"
+                placeholder="请选择开始时间"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="结束时间" prop="endTime">
+              <el-date-picker
+                v-model="form.endTime"
+                type="datetime"
+                format="yyyy-MM-dd HH:mm:ss"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                style="width: 100%"
+                placeholder="请选择结束时间"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div style="text-align: right; margin-top: 20px">
+        <el-button @click="goBack">取消</el-button>
+        <el-button type="primary" :loading="saving" @click="submitUpdate">提交</el-button>
+      </div>
+    </el-card>
+    <SelectNoPsCar :visible.sync="carVisible" @select="onSelectCar" />
+  </div>
+</template>
+
+<script>
+import SelectNoPsCar from '@/components/car/SelectNoPsCar.vue'
+import { listParkingSpaces, updateParkingSpaceCar } from '@/api/car/carApi'
+import { getCurrentCommunity } from '@/utils/auth'
+
+export default {
+  name: 'UpdateParkingSpaceCar',
+  components: { SelectNoPsCar },
+  data() {
+    return {
+      saving: false,
+      carVisible: false,
+      selectedCarNum: '',
+      form: {
+        psId: '',
+        num: '',
+        state: '',
+        currentOwnerName: '',
+        currentCarNum: '',
+        currentRentTime: '',
+        carId: '',
+        ownerId: '',
+        ownerName: '',
+        startTime: '',
+        endTime: ''
+      },
+      rules: {
+        carId: [
+          { required: true, message: '请选择车辆', trigger: 'change' }
+        ],
+        startTime: [
+          { required: true, message: '请选择开始时间', trigger: 'change' }
+        ],
+        endTime: [
+          { required: true, message: '请选择结束时间', trigger: 'change' }
+        ]
+      }
+    }
+  },
+  created() {
+    this.form.psId = this.$route.query.psId || ''
+    this.loadParkingSpace()
+  },
+  methods: {
+    loadParkingSpace() {
+      const communityId = (getCurrentCommunity() || {}).communityId || ''
+      listParkingSpaces({
+        communityId,
+        psId: this.form.psId,
+        page: 1,
+        row: 10
+      }).then(res => {
+        const parkingSpaces = res.data || []
+        if (parkingSpaces.length < 1) {
+          this.$message.error('未查询到车位信息')
+          return
+        }
+        const ps = parkingSpaces[0]
+        this.form.num = ps.num || ''
+        this.form.state = ps.state || ''
+        this.form.currentOwnerName = ps.ownerName || ''
+        this.form.currentCarNum = ps.carNum || ''
+        if (ps.startTime && ps.endTime) {
+          this.form.currentRentTime = ps.startTime + ' ~ ' + ps.endTime
+          this.form.startTime = ps.startTime
+          this.form.endTime = ps.endTime
+        }
+      }).catch(error => {
+        this.$message.error(error.message || '加载车位信息失败')
+      })
+    },
+    openCarDialog() {
+      this.carVisible = true
+    },
+    onSelectCar(row) {
+      this.form.carId = row.carId || ''
+      this.form.ownerId = row.ownerId || ''
+      this.form.ownerName = row.ownerName || ''
+      this.selectedCarNum = row.carNum || ''
+    },
+    goBack() {
+      this.$router.go(-1)
+    },
+    submitUpdate() {
+      this.$refs.form.validate(valid => {
+        if (!valid) return
+        if (this.form.state === 'H' && this.form.endTime <= this.form.startTime) {
+          this.$message.error('结束时间必须晚于开始时间')
+          return
+        }
+        this.saving = true
+        const communityId = (getCurrentCommunity() || {}).communityId || ''
+        const params = {
+          communityId,
+          psId: this.form.psId,
+          carId: this.form.carId,
+          ownerId: this.form.ownerId
+        }
+        if (this.form.state === 'H') {
+          params.startTime = this.form.startTime
+          params.endTime = this.form.endTime
+        }
+        updateParkingSpaceCar(params).then(() => {
+          this.$message.success('修改车辆成功')
+          this.goBack()
+        }).catch(error => {
+          this.$message.error(error.message || '修改车辆失败')
+        }).finally(() => {
+          this.saving = false
+        })
+      })
+    }
+  }
+}
+</script>
+
+<style scoped>
+.card-header { display: flex; justify-content: space-between; align-items: center; }
+.car-select-wrap { display: flex; }
+.car-select-btn { margin-left: 10px; flex-shrink: 0; }
+</style>

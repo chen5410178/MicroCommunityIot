@@ -56,4 +56,22 @@ public interface IOwnerCarInnerServiceSMO {
      */
     @RequestMapping(value = "/queryOwnerParkingSpaceCount", method = RequestMethod.POST)
     long queryOwnerParkingSpaceCount(@RequestBody OwnerCarDto ownerCarDto);
+
+    /**
+     * 查询无车位车辆列表（出租/出售/修改车辆选择使用）
+     *
+     * @param ownerCarDto 数据对象分享
+     * @return 无车位车辆列表
+     */
+    @RequestMapping(value = "/queryCarsWithoutParkingSpace", method = RequestMethod.POST)
+    List<OwnerCarDto> queryCarsWithoutParkingSpace(@RequestBody OwnerCarDto ownerCarDto);
+
+    /**
+     * 查询无车位车辆总数（出租/出售/修改车辆选择使用）
+     *
+     * @param ownerCarDto 数据对象分享
+     * @return 无车位车辆总数
+     */
+    @RequestMapping(value = "/queryCarsWithoutParkingSpaceCount", method = RequestMethod.POST)
+    int queryCarsWithoutParkingSpaceCount(@RequestBody OwnerCarDto ownerCarDto);
 }

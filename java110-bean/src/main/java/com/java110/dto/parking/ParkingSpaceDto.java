@@ -58,6 +58,14 @@ public class ParkingSpaceDto extends PageDto implements Serializable {
 
     private String statusCd = "0";
 
+    private String ownerId;
+    private String ownerName;
+    private String carId;
+    private String carNum;
+    private String startTime;
+    private String endTime;
+
+
 
     public String getParkingType() {
         return parkingType;
@@ -274,5 +282,53 @@ public class ParkingSpaceDto extends PageDto implements Serializable {
 
     public void setMonitorName(String monitorName) {
         this.monitorName = monitorName;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public String getCarId() {
+        return carId;
+    }
+
+    public void setCarId(String carId) {
+        this.carId = carId;
+    }
+
+    public String getCarNum() {
+        return carNum;
+    }
+
+    public void setCarNum(String carNum) {
+        this.carNum = carNum;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

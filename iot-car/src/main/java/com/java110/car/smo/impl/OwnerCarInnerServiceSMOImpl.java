@@ -203,6 +203,24 @@ public class OwnerCarInnerServiceSMOImpl implements IOwnerCarInnerServiceSMO {
         return ownerCarServiceDaoImpl.queryOwnerParkingSpaceCount(BeanConvertUtil.beanCovertMap(ownerCarDto));
     }
 
+    @Override
+    public List<OwnerCarDto> queryCarsWithoutParkingSpace(@RequestBody OwnerCarDto ownerCarDto) {
+
+        int page = ownerCarDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            ownerCarDto.setPage((page - 1) * ownerCarDto.getRow());
+        }
+
+        return BeanConvertUtil.covertBeanList(ownerCarServiceDaoImpl.getOwnerCarInfoWithoutParkingSpace(BeanConvertUtil.beanCovertMap(ownerCarDto)), OwnerCarDto.class);
+    }
+
+    @Override
+    public int queryCarsWithoutParkingSpaceCount(@RequestBody OwnerCarDto ownerCarDto) {
+        return ownerCarServiceDaoImpl.queryCarsWithoutParkingSpaceCount(BeanConvertUtil.beanCovertMap(ownerCarDto));
+    }
+
+
     public IOwnerCarServiceDao getOwnerCarServiceDaoImpl() {
         return ownerCarServiceDaoImpl;
     }

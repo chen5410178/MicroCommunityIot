@@ -678,6 +678,97 @@ export function deleteParkingSpace(data) {
   })
 }
 
+// ===== 停车位租售 =====
+export function queryParkingAreaAndRegions(params) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/parkingArea.queryParkingAreaAndRegions',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询停车场及区域失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+export function sellParkingSpace(data) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/parkingSpace.sellParkingSpace',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+export function releaseParkingSpace(data) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/parkingSpace.releaseParkingSpace',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+export function updateParkingSpaceCar(data) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/parkingSpace.updateParkingSpaceCar',
+      method: 'post',
+      data
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '操作失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+export function queryCarsWithoutParkingSpace(params) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/ownerCar.queryCarsWithoutParkingSpace',
+      method: 'get',
+      params
+    }).then(res => {
+      if (res.code == 0) {
+        resolve(res)
+      } else {
+        reject(new Error(res.msg || '查询无车位车辆失败'))
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
 // ===== 手动出场相关 =====
 export function listCarInParkingArea(params) {
   return new Promise((resolve, reject) => {

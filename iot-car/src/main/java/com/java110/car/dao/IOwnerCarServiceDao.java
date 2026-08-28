@@ -74,4 +74,21 @@ public interface IOwnerCarServiceDao {
     int queryOwnerCarsCount(Map info);
 
     long queryOwnerParkingSpaceCount(Map beanCovertMap);
+
+    /**
+     * 查询无车位车辆列表（出租/出售/修改车辆选择使用）
+     *
+     * @param info 查询条件
+     * @return 车辆列表
+     * @throws DAOException DAO异常
+     */
+    List<Map> getOwnerCarInfoWithoutParkingSpace(Map info) throws DAOException;
+
+    /**
+     * 查询无车位车辆总数（出租/出售/修改车辆选择使用）
+     *
+     * @param info 查询条件
+     * @return 车辆总数
+     */
+    int queryCarsWithoutParkingSpaceCount(Map info);
 }

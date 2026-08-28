@@ -148,6 +148,24 @@ const carRoutes = [
     name: 'MqttSendLog',
     component: () => import('@/views/car/mqttSendLog.vue'),
     meta: { requiresAuth: true, title: 'MQTT下发日志' }
+  },
+  {
+    path: 'pages/car/rentParkingSpace',
+    name: 'RentParkingSpace',
+    component: () => import('@/views/car/rentParkingSpace.vue'),
+    meta: { requiresAuth: true, title: '出租车位' }
+  },
+  {
+    path: 'pages/car/sellParkingSpace',
+    name: 'SellParkingSpace',
+    component: () => import('@/views/car/sellParkingSpace.vue'),
+    meta: { requiresAuth: true, title: '出售车位' }
+  },
+  {
+    path: 'pages/car/updateParkingSpaceCar',
+    name: 'UpdateParkingSpaceCar',
+    component: () => import('@/views/car/updateParkingSpaceCar.vue'),
+    meta: { requiresAuth: true, title: '修改车辆' }
   }
 ]
 

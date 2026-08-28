@@ -419,4 +419,47 @@
             and t.community_id= #{communityId}
         </if>
     </select>
+
+    <!-- 查询无车位车辆列表（出租/出售/修改车辆选择使用） add by txcode 2026-08-28 -->
+    <select id="getOwnerCarInfoWithoutParkingSpace" parameterType="Map" resultType="Map">
+        select t.car_id carId, t.car_num carNum, t.owner_id ownerId, t.member_id memberId,
+               t.car_type_cd carTypeCd, t.lease_type leaseType, bow.name ownerName, bow.link link
+        from owner_car t
+        left join building_owner bow on t.owner_id = bow.member_id and bow.status_cd = '0'
+             and bow.community_id = t.community_id
+        where t.status_cd = '0'
+        and not exists (
+            select 1 from parking_space ps
+            where ps.car_id = t.car_id
+              and ps.status_cd = '0'
+        )
+        <if test="carNumLike !=null and carNumLike != ''">
+            and t.car_num like concat('%', #{carNumLike}, '%')
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id = #{communityId}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <!-- 查询无车位车辆总数（出租/出售/修改车辆选择使用） add by txcode 2026-08-28 -->
+    <select id="queryCarsWithoutParkingSpaceCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from owner_car t
+        where t.status_cd = '0'
+        and not exists (
+            select 1 from parking_space ps
+            where ps.car_id = t.car_id
+              and ps.status_cd = '0'
+        )
+        <if test="carNumLike !=null and carNumLike != ''">
+            and t.car_num like concat('%', #{carNumLike}, '%')
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id = #{communityId}
+        </if>
+    </select>
 </mapper>

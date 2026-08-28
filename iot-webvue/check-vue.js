@@ -9,7 +9,13 @@ const files = [
   'src/views/shop/tabs/ShopDetailRoom.vue',
   'src/views/shop/tabs/ShopDetailMember.vue',
   'src/views/shop/tabs/ShopDetailCar.vue',
-  'src/views/shop/tabs/ShopDetailShop.vue'
+  'src/views/shop/tabs/ShopDetailShop.vue',
+  'src/components/car/ParkingAreaRegionTree.vue',
+  'src/components/car/SelectNoPsCar.vue',
+  'src/views/car/rentParkingSpace.vue',
+  'src/views/car/sellParkingSpace.vue',
+  'src/views/car/updateParkingSpaceCar.vue',
+  'src/views/car/parkingSpace.vue'
 ]
 
 let failed = false
