@@ -402,6 +402,7 @@
         left join building_owner bow on t.owner_id = bow.member_id and bow.status_cd = '0'
              and bow.community_id = t.community_id
         where t.status_cd = '0'
+        and t.car_type_cd = '1001'
         and not exists (
             select 1 from parking_space ps
             where ps.car_id = t.car_id
@@ -427,6 +428,7 @@
         select count(1) count
         from owner_car t
         where t.status_cd = '0'
+        and t.car_type_cd = '1001'
         and not exists (
             select 1 from parking_space ps
             where ps.car_id = t.car_id

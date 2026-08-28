@@ -169,6 +169,7 @@ public class SellParkingSpaceCmd extends Cmd {
         OwnerCarDto ownerCarDto = new OwnerCarDto();
         ownerCarDto.setCarId(carId);
         ownerCarDto.setCommunityId(communityId);
+        ownerCarDto.setCarTypeCd(OwnerCarDto.CAR_TYPE_PRIMARY);
         List<OwnerCarDto> ownerCarDtos = ownerCarInnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
         if (ListUtil.isNull(ownerCarDtos) || ownerCarDtos.size() != 1) {
             throw new CmdException("未查询到车辆信息");
