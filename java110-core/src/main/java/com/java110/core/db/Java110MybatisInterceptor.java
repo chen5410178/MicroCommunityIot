@@ -333,7 +333,9 @@ public class Java110MybatisInterceptor implements Interceptor {
             }
         } else if (sqlCommandType == SqlCommandType.UPDATE) {
             String tmpKey = orgSql.substring(sql.indexOf("set") + 3, orgSql.indexOf("where"));
-            String[] tmpKeys = tmpKey.split(",");
+            // set 片段切分规则：仅在逗号后紧跟"表名.列名="或"列名="时切分，
+            // 避免误切函数（如 nullif(#{x}, '')、concat(a, b)、if(x, y, z)）内部的逗号
+            String[] tmpKeys = tmpKey.split(",\\s*(?=[\\w.]+\\s*=)");
 //            if (values.size() < tmpKeys.length) {
 //                throw new IllegalArgumentException("sql 错误 key 和value 个数不等" + sql);
 //            }
