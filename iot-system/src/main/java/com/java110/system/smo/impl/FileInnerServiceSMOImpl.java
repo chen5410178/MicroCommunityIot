@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class FileInnerServiceSMOImpl  implements IFileInnerServiceSMO {
+public class FileInnerServiceSMOImpl implements IFileInnerServiceSMO {
 
     private static final String ROOT_PATH = "hc/iot/";
 
@@ -32,27 +32,14 @@ public class FileInnerServiceSMOImpl  implements IFileInnerServiceSMO {
     private S3UploadTemplate s3UploadTemplate;
 
 
-
     @Override
     public String saveFile(@RequestBody FileDto fileDto) {
 
         //int saveFileFlag = fileServiceDaoImpl.saveFile(BeanConvertUtil.beanCovertMap(fileDto));
         String fileName = "";
-        String ossSwitch = MappingCache.getValue(MappingConstant.FILE_DOMAIN, S3Util.S3_SWITCH);
 
-        if (S3Util.S3_SWITCH_S3.equals(ossSwitch)) {
-            fileName = s3UploadTemplate.upload(fileDto.getContext(), ROOT_PATH);
-        } else {
-            String ftpServer = MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_SERVER);
-            int ftpPort = Integer.parseInt(MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_PORT));
-            String ftpUserName = MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_USERNAME);
-            String ftpUserPassword = MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_USERPASSWORD);
-            //String ftpPath = "hc/";
+        fileName = s3UploadTemplate.upload(fileDto.getContext(), ROOT_PATH);
 
-            fileName = ftpUploadTemplate.upload(fileDto.getContext(), ftpServer,
-                        ftpPort, ftpUserName,
-                        ftpUserPassword, ROOT_PATH);
-        }
         return fileName;
     }
 
@@ -68,27 +55,15 @@ public class FileInnerServiceSMOImpl  implements IFileInnerServiceSMO {
             fileName = fileName.substring(fileName.lastIndexOf("/") + 1, fileName.length());
         }
         String context = "";
-        String ossSwitch = MappingCache.getValue(MappingConstant.FILE_DOMAIN, S3Util.S3_SWITCH);
-        if (S3Util.S3_SWITCH_S3.equals(ossSwitch)) {
-            context = s3UploadTemplate.download(ftpPath, fileName, "",
-                    0, "",
-                    "");
-        } else {
-            String ftpServer = MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_SERVER);
-            int ftpPort = Integer.parseInt(MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_PORT));
-            String ftpUserName = MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_USERNAME);
-            String ftpUserPassword = MappingCache.getValue(FtpUploadTemplate.FTP_DOMAIN, FtpUploadTemplate.FTP_USERPASSWORD);
-            context = ftpUploadTemplate.download(ftpPath, fileName, ftpServer,
-                    ftpPort, ftpUserName,
-                    ftpUserPassword);
-        }
+        context = s3UploadTemplate.download(ftpPath, fileName, "",
+                0, "",
+                "");
 
         fileDto.setContext(context);
         fileDto.setSuffix(suffix);
         fileDtos.add(fileDto);
         return fileDtos;
     }
-
 
 
 }
