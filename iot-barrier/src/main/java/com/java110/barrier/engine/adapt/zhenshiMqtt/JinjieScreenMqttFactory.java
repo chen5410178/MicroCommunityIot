@@ -362,7 +362,7 @@ public class JinjieScreenMqttFactory {
 
         JSONObject serialDataObj = new JSONObject();
         serialDataObj.put("datalen", newData.length);
-        serialDataObj.put("data", Base64Convert.byteTobase64(newData));
+        serialDataObj.put("data", Base64Convert.byteToBase64(newData));
         serialDataObj.put("serialChannel", "1");
         JSONArray serialData = paramIn.getJSONObject("Response_AlarmInfoPlate").getJSONArray("serialData");
         serialData.add(serialDataObj);

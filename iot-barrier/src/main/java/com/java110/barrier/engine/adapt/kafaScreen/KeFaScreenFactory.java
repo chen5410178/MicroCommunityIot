@@ -172,7 +172,7 @@ public class KeFaScreenFactory {
         newData = ArrayUtils.addAll(newData, crc);
         System.out.println("语音数据" + bytes2hex03(newData));
 
-        return Base64Convert.byteTobase64(newData);
+        return Base64Convert.byteToBase64(newData);
     }
 
 

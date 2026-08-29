@@ -81,7 +81,7 @@ public class AuthenticationFactory {
             cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
             byte[] encrypted = cipher.doFinal(sSrc.getBytes("utf-8"));
 
-            return Base64Convert.byteTobase64(encrypted);//此处使用BASE64做转码功能，同时能起到2次加密的作用。
+            return Base64Convert.byteToBase64(encrypted);//此处使用BASE64做转码功能，同时能起到2次加密的作用。
         } catch (Exception e) {
             e.printStackTrace();
         }
