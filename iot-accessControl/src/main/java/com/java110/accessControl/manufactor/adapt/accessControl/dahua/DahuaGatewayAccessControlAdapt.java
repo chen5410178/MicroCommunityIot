@@ -105,6 +105,8 @@ public class DahuaGatewayAccessControlAdapt extends AbstractAccessControlManufac
         param.put("faceData", accessControlFacePo.getFacePath());
         param.put("idNumber", accessControlFacePo.getCardNumber());
         param.put("userType", accessControlFacePo.getPersonType());
+        param.put("startTime", accessControlFacePo.getStartTime());
+        param.put("endTime", accessControlFacePo.getEndTime());
 
         if (AccessControlFaceDto.PERSON_TYPE_OWNER.equals(accessControlFacePo.getState())) {
             getOwnerRooms(accessControlFacePo, param);
