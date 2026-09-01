@@ -153,6 +153,11 @@
 		margin-top: 24rpx;
 	}
 
+	/* 卡片建立 BFC，防止最后一个子元素 margin-bottom 被折叠出卡片外 */
+	.pd-page .c-card {
+		overflow: hidden;
+	}
+
 	.pd-pile-head {
 		display: flex;
 		align-items: center;

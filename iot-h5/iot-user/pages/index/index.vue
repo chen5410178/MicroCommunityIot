@@ -1,26 +1,5 @@
 <template>
 	<view class="home-page" :class="{ 'charge-theme-dark': themeDark }">
-		<!-- 顶部导航（模拟胶囊 + 主题/消息） -->
-		<view class="home-nav">
-			<text class="home-nav-title">充电服务</text>
-			<view class="home-nav-right">
-				<view class="home-nav-ic" @click="openMsg" style="position:relative;">
-					<image src="/static/h5/images/common/ic-bell.png" class="home-nav-ic-img" mode="aspectFit"></image>
-					<view class="home-msg-badge" v-if="unread > 0">{{ unread > 99 ? '99+' : unread }}</view>
-				</view>
-				<view class="home-capsule">
-					<view class="home-capsule-dots">
-						<text class="home-dot"></text><text class="home-dot"></text><text class="home-dot"></text>
-					</view>
-					<view class="home-capsule-divider"></view>
-					<view class="home-capsule-theme" @click="themeMenuShow = !themeMenuShow">
-						<image v-if="themeDark" src="/static/h5/images/common/ic-sun.png" class="home-capsule-theme-img" mode="aspectFit"></image>
-						<image v-else src="/static/h5/images/common/ic-moon-dark.png" class="home-capsule-theme-img" mode="aspectFit"></image>
-					</view>
-				</view>
-			</view>
-		</view>
-
 		<!-- 在充订单提示条 -->
 		<view class="home-running-badge" v-if="runningOrder" @click="openRunningOrder">
 			<view class="home-rb-head">
@@ -56,7 +35,7 @@
 			<text class="home-bc-label">余额</text>
 			<view class="home-bc-balance-row">
 				<text class="home-bc-balance">¥{{ balance.toFixed(2) }}</text>
-				<view class="home-recharge-btn" @click="goWallet">去充值</view>
+				<view class="home-recharge-btn" @click="goRecharge">去充值</view>
 			</view>
 			<view class="home-bc-stats">
 				<view class="home-bc-stat" @click="openMonthRecords">
@@ -140,67 +119,6 @@
 			</view>
 		</view>
 
-		<!-- 小区切换弹层 -->
-		<view class="c-mask" v-if="commShow" @click="commShow = false"></view>
-		<view class="c-sheet" v-if="commShow">
-			<view class="home-sheet-head">
-				<text class="c-title" style="font-size:28rpx;">切换小区</text>
-				<text class="home-sheet-close" @click="commShow = false">关闭</text>
-			</view>
-			<view class="home-sheet-body">
-				<view class="home-locate-btn" @click="locateComm">
-					<image src="/static/h5/images/common/ic-pin-green.png" class="home-locate-ic" mode="aspectFit"></image>
-					<view style="flex:1;text-align:left;">
-						<text class="home-locate-title">{{ locating ? '正在定位…' : (locateTxt || '定位附近小区') }}</text>
-						<text class="home-locate-sub">{{ locating ? '获取当前位置中，请稍候' : (locateSub || '根据当前位置自动匹配最近小区') }}</text>
-					</view>
-					<text class="home-locate-action">{{ locating ? '定位中' : (locateTxt ? '重新定位' : '定位') }}</text>
-				</view>
-				<text class="home-sheet-tip">小区列表 · 切换后充电桩列表与月卡适用范围随小区变化</text>
-			<view class="home-comm-list">
-				<view v-if="!sortedComms.length" class="home-comm-empty">
-					<image src="/static/h5/images/common/ic-home.png" class="home-comm-empty-ic" mode="aspectFit"></image>
-					<text class="c-text-sub" style="margin-top:12rpx;">暂无小区数据</text>
-				</view>
-				<view v-for="(c, i) in sortedComms" :key="i" class="home-comm-item" :class="{ current: i === commIdx }"
-					@click="pickComm(i)">
-					<image src="/static/h5/images/common/ic-pin.png" class="home-comm-ic" mode="aspectFit"></image>
-					<view style="flex:1;min-width:0;">
-						<view class="home-comm-name-row">
-							<text class="c-text-bold" style="font-size:24rpx;font-weight:700;color:#1e293b;">{{ c.name }}</text>
-							<text class="home-comm-current-tag" v-if="i === commIdx">当前</text>
-						</view>
-						<text class="c-text-sub" style="margin-top:4rpx;display:block;">{{ c.address || c.cityName || '' }}{{ c.dist ? ' · 距您 ' + fmtDist(c.dist) : '' }}</text>
-					</view>
-					<view class="home-go-btn" @click.stop="goComm(i)">去这儿</view>
-				</view>
-			</view>
-			</view>
-		</view>
-
-		<!-- 导航模拟弹层 -->
-		<view class="c-mask" v-if="navShow" @click="navShow = false"></view>
-		<view class="c-dialog" v-if="navShow" style="text-align:center;">
-			<text class="c-text-sub">正在导航至</text>
-			<text class="c-text-bold" style="font-size:30rpx;font-weight:700;color:#0f172a;margin-top:8rpx;display:block;">{{ navComm.name }}</text>
-			<text class="home-nav-dist" v-if="navComm.dist">距您 {{ fmtDist(navComm.dist) }}</text>
-			<view class="home-nav-map">
-				<view class="home-nav-route"></view>
-				<image src="/static/h5/images/charge/ic-car-nav.png" class="home-nav-car" :style="{ left: navProgress + '%' }" mode="aspectFit"></image>
-				<text class="home-nav-demo">模拟导航路线 · 演示环境</text>
-			</view>
-			<view class="home-nav-progress-row">
-				<text class="c-text-sub" style="font-size:18rpx;">出发</text>
-				<text class="c-text-sub" style="font-size:18rpx;">{{ navEta }}</text>
-				<text class="c-text-sub" style="font-size:18rpx;">到达</text>
-			</view>
-			<view class="home-nav-bar-wrap">
-				<view class="home-nav-bar" :style="{ width: navProgress + '%' }"></view>
-			</view>
-			<text class="home-nav-status">{{ navStatus }}</text>
-			<view class="home-nav-btn" :class="{ done: navDone }" @click="closeNav">{{ navDone ? '完成' : '导航中…' }}</view>
-		</view>
-
 		<!-- 月卡详情弹窗 -->
 		<view class="c-mask" v-if="cardDetailShow" @click="cardDetailShow = false"></view>
 		<view class="c-dialog" v-if="cardDetailShow">
@@ -269,6 +187,9 @@
 	import {
 		hasLogin
 	} from '@/api/user/sessionApi.js'
+	import {
+		adaptOrder
+	} from '@/api/charge/orderAdapter.js'
 
 	export default {
 		components: {
@@ -276,19 +197,9 @@
 		},
 		data() {
 			return {
-				commShow: false,
-				navShow: false,
-				navComm: {},
-				navProgress: 0,
-				navEta: '',
-				navStatus: '正在导航…',
-				navDone: false,
 				cardDetailShow: false,
 				askBuyShow: false,
 				themeMenuShow: false,
-				locating: false,
-				locateTxt: '',
-				locateSub: '',
 				toastMsg: '',
 				curCommId: '',
 				pilesLoading: false,
@@ -302,15 +213,6 @@
 			curCommunity() {
 				this.storeVersion
 				return chargeStore.curCommunity()
-			},
-			sortedComms() {
-				this.storeVersion
-				const list = chargeStore.communities.slice()
-				return list.some(c => c.dist) ? list.sort((a, b) => (a.dist || 0) - (b.dist || 0)) : list
-			},
-			commIdx() {
-				this.storeVersion
-				return chargeStore.commIdx
 			},
 			chgType() {
 				this.storeVersion
@@ -428,14 +330,36 @@
 				uni.switchTab({ url: '/pages/charge/scanCharge' })
 			},
 			goMonth() {
+				if (!hasLogin()) {
+					this._toast('登录后才能使用')
+					return
+				}
 				chargeStore.planFilter = null
 				uni.navigateTo({ url: '/packageCharge/pages/charge/chargeMonth' })
 			},
 			goWallet() {
+				if (!hasLogin()) {
+					this._toast('登录后才能使用')
+					return
+				}
 				uni.navigateTo({ url: '/packageCharge/pages/charge/wallet' })
 			},
 			goOrders() {
+				if (!hasLogin()) {
+					this._toast('登录后才能使用')
+					return
+				}
 				uni.navigateTo({ url: '/packageCharge/pages/charge/chargeOrders' })
+			},
+			// 余额卡"去充值"→ 账户充值页面
+			goRecharge() {
+				if (!hasLogin()) {
+					this._toast('登录后才能使用')
+					return
+				}
+				uni.navigateTo({
+					url: '/packageAccount/pages/account/preStoreAccount?communityId=' + getCommunityId()
+				})
 			},
 			openMsg() {
 				uni.navigateTo({ url: '/packageCharge/pages/charge/message' })
@@ -473,68 +397,15 @@
 				uni.navigateTo({ url: '/packageCharge/pages/charge/chargeMonth' })
 			},
 			editHomeCar() {
-				uni.navigateTo({ url: '/packageCharge/pages/charge/carService' })
-			},
-			pickComm(i) {
-				const list = chargeStore.communities
-				if (!list[i]) return
-				chargeStore.setCommIdx(i)
-				this.commShow = false
-				this.curCommId = list[i].communityId || this.curCommId
-				this.storeVersion++
-				this._toast('已切换至「' + list[i].name + '」· 充电桩列表已更新')
-				this._loadPiles()
-				this._loadCard()
-			},
-			locateComm() {
-				if (this.locating) return
-				const list = chargeStore.communities
-				if (!list.length) {
-					this._toast('暂无小区数据')
+				if (!hasLogin()) {
+					this._toast('登录后才能使用')
 					return
 				}
-				if (!list.some(c => c.dist)) {
-					this._toast('无距离数据，请手动选择小区')
-					return
-				}
-				this.locating = true
-				this.locateTxt = ''
-				setTimeout(() => {
-					this.locating = false
-					const nearest = chargeStore.communities.reduce((best, c, i) => (c.dist < chargeStore.communities[best]
-						.dist ? i : best), 0)
-					this.locateTxt = '已定位 · ' + chargeStore.communities[nearest].name
-					this.locateSub = '距您 ' + this.fmtDist(chargeStore.communities[nearest].dist) + ' · 已自动选择最近小区'
-					chargeStore.setCommIdx(nearest)
-					this.curCommId = chargeStore.communities[nearest].communityId || this.curCommId
-					this.storeVersion++
-					this._loadPiles()
-					this._loadCard()
-					this._toast('已定位至「' + chargeStore.communities[nearest].name + '」· 距您 ' + this.fmtDist(chargeStore
-						.communities[nearest].dist))
-				}, 900)
+				uni.navigateTo({ url: '/packageCar/pages/car/selectCar' })
 			},
-			goComm(i) {
-				if (this.navShow) return
-				this.navComm = chargeStore.communities[i]
-				this.navProgress = 0
-				this.navEta = this.navComm && this.navComm.dist ? '预计 ' + Math.max(2, Math.round(this.navComm.dist / 120)) +
-					' 分钟' : '即将到达'
-				this.navStatus = '正在导航…'
-				this.navDone = false
-				this.navShow = true
-				setTimeout(() => {
-					this.navProgress = 100
-				}, 60)
-				setTimeout(() => {
-					this.navStatus = '已到达 · ' + this.navComm.name
-					this.navDone = true
-					this._toast('导航结束 · 已到达「' + this.navComm.name + '」')
-				}, 3000)
-			},
-			closeNav() {
-				if (!this.navDone) return
-				this.navShow = false
+			// 打开切换小区页面（独立页面，非弹层）
+			goChangeCommunity() {
+				uni.navigateTo({ url: '/packageProperty/pages/property/changeCommunity' })
 			},
 			// ================= 接口数据加载 =================
 			_loadHomeData() {
@@ -544,8 +415,31 @@
 				this._loadCars()
 				this._loadMonthOrders()
 			},
-			// 小区列表（成功后联动桩列表与月卡）
+			// 小区列表：先查缓存，有缓存不加载直接用；无缓存才查询并把第一个设为默认
 			_loadCommunitys() {
+				// 1) 先检查是否有当前小区缓存
+				const cached = uni.getStorageSync('currentCommunityInfo')
+				if (cached && cached.communityId) {
+					// 有缓存：不加载小区列表，直接用缓存小区
+					// （chargeStore.communities 为空时（如 H5 刷新后首次进入）用缓存构造展示列表，
+					//   保证 curPiles() 的 machineListCommId 校验通过）
+					if (!chargeStore.communities.length) {
+						chargeStore.communities = [{
+							communityId: cached.communityId,
+							name: cached.communityName || '无',
+							address: '',
+							cityName: '',
+							dist: 0
+						}]
+						chargeStore.setCommIdx(0)
+					}
+					this.curCommId = cached.communityId || getCommunityId()
+					this.storeVersion++
+					this._loadPiles()
+					this._loadCard()
+					return
+				}
+				// 2) 无缓存：加载小区列表，把第一个小区设置为默认小区
 				queryCommunitys({
 					page: 1,
 					row: 50
@@ -553,18 +447,32 @@
 					if (!res || res.code != 0 || !res.data) throw new Error('加载失败')
 					const list = res.data.map(c => this._adaptComm(c))
 					chargeStore.communities = list
-					// commIdx 越界时定位：优先登录小区，否则取第一个
-					if (chargeStore.commIdx >= list.length) {
-						const curId = getCommunityId()
-						const idx = list.findIndex(c => c.communityId === curId)
-						chargeStore.setCommIdx(idx >= 0 ? idx : 0)
+					if (!list.length) {
+						// 查询无数据：缓存"无"小区（-1）
+						saveCurrentCommunity({
+							communityId: '-1',
+							communityName: '无'
+						})
+						chargeStore.setCommIdx(0)
+					} else {
+						// 缓存第一个小区为默认小区
+						saveCurrentCommunity(list[0])
+						chargeStore.setCommIdx(0)
 					}
-					this.curCommId = list.length ? (list[chargeStore.commIdx] || list[0]).communityId : getCommunityId()
+					this.curCommId = (chargeStore.communities[chargeStore.commIdx] || list[0] || {}).communityId || getCommunityId()
 					this.storeVersion++
 					this._loadPiles()
 					this._loadCard()
 				}).catch(() => {
 					chargeStore.communities = []
+					// 接口失败：无缓存时缓存"无"小区，有缓存时保留原缓存
+					if (!uni.getStorageSync('currentCommunityInfo')) {
+						saveCurrentCommunity({
+							communityId: '-1',
+							communityName: '无'
+						})
+					}
+					chargeStore.setCommIdx(0)
 					this.curCommId = getCommunityId()
 					this.storeVersion++
 					this._toast('小区列表加载失败')
@@ -620,7 +528,7 @@
 					page: 1,
 					row: 50
 				}).then(list => {
-					chargeStore.records = (list || []).map(o => this._adaptOrder(o))
+					chargeStore.records = (list || []).map(o => adaptOrder(o))
 					chargeStore.saveRecords()
 					this.storeVersion++
 				}).catch(() => {
@@ -741,24 +649,6 @@
 					guns: []
 				}
 			},
-			_adaptOrder(o) {
-				const state = o.state || ''
-				const hours = parseFloat(o.chargeHours || 0)
-				return {
-					orderId: o.orderId || '',
-					pile: o.machineName || '',
-					date: this._fmtTime(o.createTime),
-					mins: isNaN(hours) ? 0 : Math.round(hours * 60),
-					fee: parseFloat(o.amount || 0) || 0,
-					way: '余额',
-					st: state === '2002' ? '已完成' : state === '1001' ? '充电中' : state === '3003' ? '充电失败' : (o.stateName ||
-						''),
-					state: state,
-					type: o.chargeType === '1002' ? 'car' : 'bike',
-					kwh: parseFloat(o.energy || 0) || 0,
-					held: 0
-				}
-			},
 			_adaptCard(c) {
 				const end = this._parseDate(c.endTime)
 				const days = end ? Math.max(0, Math.ceil((end.getTime() - Date.now()) / 86400000)) : 0
@@ -786,22 +676,6 @@
 				if (typeof s === 'string') t = s.replace(/-/g, '/')
 				const d = new Date(t)
 				return isNaN(d.getTime()) ? null : d
-			},
-			_fmtTime(t) {
-				if (!t) return ''
-				if (typeof t === 'number') {
-					const d = new Date(t < 1e12 ? t * 1000 : t)
-					if (isNaN(d.getTime())) return String(t)
-					return this._pad(d.getMonth() + 1) + '-' + this._pad(d.getDate()) + ' ' + this._pad(d.getHours()) + ':' + this
-						._pad(d.getMinutes())
-				}
-				const s = String(t)
-				const m = /^(\d{4})[-/](\d{2})[-/](\d{2})[ T](\d{2}):(\d{2})/.exec(s)
-				if (m) return m[2] + '-' + m[3] + ' ' + m[4] + ':' + m[5]
-				return s
-			},
-			_pad(n) {
-				return ('0' + n).slice(-2)
 			},
 			_toast(msg) {
 				this.toastMsg = msg
@@ -980,6 +854,7 @@
 		height: 160rpx;
 		opacity: .12;
 		transform: rotate(12deg);
+		pointer-events: none;
 	}
 
 	.home-bc-ic {
@@ -1000,6 +875,7 @@
 		height: 280rpx;
 		border-radius: 50%;
 		border: 20rpx solid rgba(255, 255, 255, .08);
+		pointer-events: none;
 	}
 
 	.home-bc-head {
@@ -1278,224 +1154,6 @@
 		background: #f1f5f9;
 		color: #64748b;
 		border: 1rpx solid #e2e8f0;
-	}
-
-	/* 小区切换弹层 */
-	.home-sheet-head {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 28rpx 36rpx 16rpx;
-	}
-
-	.home-sheet-close {
-		font-size: 20rpx;
-		color: #94a3b8;
-		padding: 8rpx;
-	}
-
-	.home-sheet-body {
-		padding: 0 36rpx 60rpx;
-	}
-
-	.home-locate-btn {
-		display: flex;
-		align-items: center;
-		gap: 16rpx;
-		border: 1rpx solid rgba(16, 185, 129, .3);
-		background: rgba(16, 185, 129, .05);
-		border-radius: 20rpx;
-		padding: 20rpx 24rpx;
-	}
-
-	.home-locate-ic {
-		width: 30rpx;
-		height: 30rpx;
-		flex-shrink: 0;
-	}
-
-	.home-locate-title {
-		display: block;
-		font-size: 24rpx;
-		font-weight: 700;
-		color: #047857;
-	}
-
-	.home-locate-sub {
-		display: block;
-		font-size: 18rpx;
-		color: rgba(16, 185, 129, .8);
-		margin-top: 4rpx;
-	}
-
-	.home-locate-action {
-		font-size: 20rpx;
-		color: #059669;
-		font-weight: 600;
-	}
-
-	.home-sheet-tip {
-		display: block;
-		font-size: 20rpx;
-		color: #94a3b8;
-		margin: 20rpx 0 12rpx;
-	}
-
-	.home-comm-list {
-		display: flex;
-		flex-direction: column;
-		gap: 16rpx;
-	}
-
-	.home-comm-empty {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		padding: 60rpx 0;
-	}
-
-	.home-comm-empty-ic {
-		width: 60rpx;
-		height: 60rpx;
-	}
-
-	.home-comm-item {
-		display: flex;
-		align-items: center;
-		gap: 16rpx;
-		border: 1rpx solid #e2e8f0;
-		border-radius: 20rpx;
-		padding: 20rpx;
-	}
-
-	.home-comm-ic {
-		width: 30rpx;
-		height: 30rpx;
-		flex-shrink: 0;
-	}
-
-	.home-comm-item.current {
-		border-color: #10b981;
-		background: rgba(16, 185, 129, .05);
-	}
-
-	.home-comm-name-row {
-		display: flex;
-		align-items: center;
-		gap: 10rpx;
-	}
-
-	.home-comm-current-tag {
-		font-size: 16rpx;
-		color: #059669;
-		background: rgba(16, 185, 129, .1);
-		border-radius: 999rpx;
-		padding: 2rpx 12rpx;
-	}
-
-	.home-go-btn {
-		font-size: 20rpx;
-		font-weight: 700;
-		color: #059669;
-		border: 1rpx solid rgba(16, 185, 129, .3);
-		background: rgba(16, 185, 129, .05);
-		border-radius: 16rpx;
-		padding: 10rpx 20rpx;
-		flex-shrink: 0;
-	}
-
-	/* 导航模拟 */
-	.home-nav-dist {
-		display: block;
-		font-size: 20rpx;
-		color: #059669;
-		font-weight: 600;
-		margin-top: 8rpx;
-	}
-
-	.home-nav-map {
-		position: relative;
-		margin-top: 32rpx;
-		border-radius: 20rpx;
-		background: linear-gradient(180deg, #ecfdf5, #eff6ff);
-		border: 1rpx solid #f1f5f9;
-		height: 200rpx;
-		overflow: hidden;
-	}
-
-	.home-nav-route {
-		position: absolute;
-		left: 24rpx;
-		right: 24rpx;
-		top: 24rpx;
-		bottom: 24rpx;
-		border: 2rpx dashed rgba(16, 185, 129, .3);
-		border-radius: 16rpx;
-	}
-
-	.home-nav-car {
-		position: absolute;
-		top: 50%;
-		transform: translate(-50%, -50%);
-		width: 44rpx;
-		height: 44rpx;
-		transition: left 3s linear;
-		z-index: 2;
-	}
-
-	.home-nav-demo {
-		position: absolute;
-		left: 50%;
-		transform: translateX(-50%);
-		bottom: 12rpx;
-		font-size: 16rpx;
-		color: #059669;
-	}
-
-	.home-nav-progress-row {
-		display: flex;
-		justify-content: space-between;
-		margin-top: 24rpx;
-	}
-
-	.home-nav-bar-wrap {
-		height: 12rpx;
-		border-radius: 999rpx;
-		background: #f1f5f9;
-		overflow: hidden;
-		margin-top: 8rpx;
-	}
-
-	.home-nav-bar {
-		height: 100%;
-		border-radius: 999rpx;
-		background: linear-gradient(90deg, #34d399, #059669);
-		transition: width 3s linear;
-	}
-
-	.home-nav-status {
-		display: block;
-		font-size: 22rpx;
-		font-weight: 600;
-		color: #334155;
-		margin-top: 20rpx;
-	}
-
-	.home-nav-btn {
-		margin-top: 20rpx;
-		height: 84rpx;
-		line-height: 84rpx;
-		text-align: center;
-		border-radius: 20rpx;
-		background: #10b981;
-		color: #fff;
-		font-size: 24rpx;
-		font-weight: 700;
-		opacity: .5;
-	}
-
-	.home-nav-btn.done {
-		opacity: 1;
 	}
 
 	/* 月卡详情 */

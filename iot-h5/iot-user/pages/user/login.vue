@@ -10,7 +10,7 @@
 			<!-- Tab0 验证码登录 -->
 			<view v-if="loginTab === 0" class="lg-form">
 				<text class="lg-title">手机号快捷登录</text>
-				<text class="lg-sub">未注册的手机号验证通过后将自动注册</text>
+				<text class="lg-sub">请输入手机号验证码登录</text>
 
 				<view class="c-form-input lg-form-row">
 					<text style="font-size:24rpx;font-weight:600;color:#94a3b8;">+86</text>
@@ -18,13 +18,11 @@
 					<input v-model="phone" type="number" maxlength="11" placeholder="请输入手机号" placeholder-class="c-placeholder" />
 				</view>
 				<view class="c-form-input lg-form-row">
-					<input v-model="code" type="number" maxlength="4" placeholder="请输入验证码" placeholder-class="c-placeholder" />
+					<input v-model="code" type="number" maxlength="6" placeholder="请输入验证码" placeholder-class="c-placeholder" />
 					<text class="lg-sms-btn" :class="{ disabled: btnDisabled }" @click="sendMsg">{{ btnText }}</text>
 				</view>
 
 				<view class="lg-submit-btn" :class="{ ready: agreeChk }" @click="smsLogin">登录</view>
-
-				<view class="lg-quick-btn" @click="quickLogin">手机号快捷登录</view>
 
 				<label class="lg-agree" @click="agreeChk = !agreeChk">
 					<view class="lg-check" :class="{ on: agreeChk }"><text v-if="agreeChk">✓</text></view>
@@ -56,8 +54,6 @@
 
 				<view class="lg-submit-btn" :class="{ ready: agreeChk2 }" @click="pwdLogin">登录</view>
 
-				<view class="lg-quick-btn" @click="quickLogin">手机号快捷登录</view>
-
 				<label class="lg-agree" @click="agreeChk2 = !agreeChk2">
 					<view class="lg-check" :class="{ on: agreeChk2 }"><text v-if="agreeChk2">✓</text></view>
 					<text style="font-size:20rpx;color:#64748b;line-height:1.5;">已阅读并同意
@@ -67,6 +63,10 @@
 				</label>
 				<text class="lg-register-link">还没有账号？<text style="color:#059669;font-weight:600;" @click="goRegister">立即注册</text></text>
 			</view>
+
+			<!-- #ifdef MP-WEIXIN -->
+			<wechat-login ref="wechatLoginRef" class="lg-quick-login"></wechat-login>
+			<!-- #endif -->
 		</view>
 
 		<!-- 协议弹层 -->
@@ -87,6 +87,7 @@
 
 <script>
 	import chargeStore from '@/api/charge/chargeStore.js'
+	import wechatLogin from '@/components/user/wechat-login.vue'
 	import {
 		agreeTexts
 	} from '@/api/mock/invoiceData.js'
@@ -100,6 +101,9 @@
 	} from '@/lib/java110/utils/StorageUtil.js'
 
 	export default {
+		components: {
+			wechatLogin
+		},
 		data() {
 			return {
 				loginTab: 1,
@@ -128,6 +132,11 @@
 			uni.removeStorageSync("currentCommunityInfo")
 			uni.removeStorageSync("ownerInfo")
 			removeUserLoginInfo()
+			// #ifdef MP-WEIXIN
+			setTimeout(() => {
+				this.$refs.wechatLoginRef && this.$refs.wechatLoginRef._initWechatLogin()
+			}, 1000)
+			// #endif
 		},
 		methods: {
 			switchTab(i) {
@@ -157,29 +166,29 @@
 					}
 				}, 1000)
 			},
-			quickLogin() {
-				const chk = this.loginTab === 0 ? this.agreeChk : this.agreeChk2
-				if (!chk) {
-					this._toast('请先阅读并同意《用户服务协议》')
-					return
-				}
-				this._toast('已获取微信绑定手机号 · 138****1234')
-				this._loginSuccess('138****1234', '手机号快捷登录')
-			},
 			smsLogin() {
 				if (!/^1\d{10}$/.test(this.phone)) {
 					this._toast('请输入正确的手机号')
 					return
 				}
-				if (this.code !== '1234') {
-					this._toast('验证码错误')
+				if (!this.code) {
+					this._toast('请输入验证码')
 					return
 				}
 				if (!this.agreeChk) {
 					this._toast('请先阅读并同意《用户服务协议》')
 					return
 				}
-				this._loginSuccess(this._maskPhone(this.phone), '手机号快捷登录')
+				ownerLogin({
+					link: this.phone,
+					passwd: this.code,
+					loginByPhone: true
+				}).then(_user => {
+					saveUserLoginInfo(_user.userId, _user.token, _user.key)
+					this._loginSuccess()
+				}).catch(err => {
+					this._toast(err || '登录失败')
+				})
 			},
 			pwdLogin() {
 				if (!this.username) {
@@ -201,26 +210,18 @@
 					loginByPhone: false
 				}).then(_user => {
 					saveUserLoginInfo(_user.userId, _user.token, _user.key)
-					this._loginSuccess(/^1\d{10}$/.test(this.username) ? this._maskPhone(this.username) : this.username, '账号密码登录')
+					this._loginSuccess()
 				}).catch(err => {
-					// 演示环境兜底：任意账号 + 6 位以上密码均可登录
-					this._loginSuccess(this.username, '账号密码登录')
+					this._toast(err || '登录失败')
 				})
 			},
-			_loginSuccess(name, mode) {
-				uni.setStorageSync('charge_demo_user', {
-					name: name,
-					mode: mode
-				})
+			_loginSuccess() {
 				this._toast('登录成功 · 欢迎回来')
 				setTimeout(() => {
 					uni.switchTab({
 						url: '/pages/index/index'
 					})
 				}, 800)
-			},
-			_maskPhone(p) {
-				return p.replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2')
 			},
 			goRegister() {
 				uni.navigateTo({
@@ -369,21 +370,8 @@
 		box-shadow: 0 8rpx 20rpx rgba(16, 185, 129, .3);
 	}
 
-	.lg-quick-btn {
-		margin-top: 20rpx;
-		height: 88rpx;
-		line-height: 88rpx;
-		text-align: center;
-		border-radius: 28rpx;
-		border: 1rpx solid #10b981;
-		color: #059669;
-		font-size: 26rpx;
-		font-weight: 700;
-		background: #fff;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 10rpx;
+	.lg-quick-login {
+		margin-top: 24rpx;
 	}
 
 	.lg-agree {

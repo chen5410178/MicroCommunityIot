@@ -1,11 +1,11 @@
 <template>
 	<view class="co-page" :class="{ 'charge-theme-dark': themeDark }">
-		<!-- 在充订单标记 -->
-		<view class="co-running-badge" v-if="runningOrder" @click="openRunningOrder">
+		<!-- 在充订单标记（接口查询 state=1001） -->
+		<view class="co-running-badge" v-if="runningCard" @click="openRunningOrder">
 			<view class="co-rb-head">
 				<view class="co-rb-title-row">
 					<view class="c-pulse-dot" style="width:16rpx;height:16rpx;border-radius:50%;background:#fff;"></view>
-					<text class="co-rb-title">订单充电中 · {{ runningOrder.pile }}</text>
+					<text class="co-rb-title">订单充电中 · {{ runningCard.pile }}</text>
 				</view>
 				<text class="co-rb-slot">{{ rbSlotText }}</text>
 			</view>
@@ -16,7 +16,7 @@
 		</view>
 
 		<!-- 统计卡 -->
-		<view class="c-card co-mx co-mt">
+		<view class="c-card co-mx co-mt co-stat-card">
 			<view class="co-stat-left">
 				<view class="co-stat-ic">
 					<image src="/static/h5/images/charge/ic-bolt.png" class="co-stat-ic-img" mode="aspectFit"></image>
@@ -24,7 +24,7 @@
 				<view>
 					<view class="co-stat-title">
 						<text class="c-title">{{ recTitle }}</text>
-						<text class="co-stat-count">{{ list.length }}</text>
+						<text class="co-stat-count">{{ total }}</text>
 						<text class="c-title">单</text>
 					</view>
 					<text class="c-text-sub" style="margin-top:6rpx;display:block;">累计消费 ¥{{ feeSum.toFixed(2) }} · 在充订单可进入停止充电</text>
@@ -52,9 +52,39 @@
 			<view class="c-rec-fbtn" :class="{ active: recType === 'car' }" @click="setType('car')">汽车</view>
 		</view>
 
+		<!-- 在充订单置顶大卡片（接口 state=1001） -->
+		<view class="co-running-card co-mx co-mt" v-if="runningCard" @click="openRunningOrder">
+			<view class="co-rc-head">
+				<view class="co-rc-title-row">
+					<view class="c-pulse-dot" style="width:16rpx;height:16rpx;border-radius:50%;background:#fff;"></view>
+					<text class="co-rc-title">充电中 · {{ runningCard.pile }}</text>
+					<text class="co-rc-slot" v-if="runningCard.slot">{{ runningCard.type === 'car' ? '枪 ' : '插座 ' }}{{ runningCard.slot }}</text>
+				</view>
+				<text class="co-rc-power-tag">{{ runningCard.type === 'car' ? '7kW 慢充' : '220W' }}</text>
+			</view>
+			<view class="co-rc-stats">
+				<view class="co-rc-stat">
+					<text class="co-rc-stat-label">已充时长</text>
+					<text class="co-rc-stat-val">{{ rbTime }}</text>
+				</view>
+				<view class="co-rc-stat">
+					<text class="co-rc-stat-label">当前功率</text>
+					<text class="co-rc-stat-val">{{ runningCard.type === 'car' ? '7.0kW' : '220W' }}</text>
+				</view>
+				<view class="co-rc-stat">
+					<text class="co-rc-stat-label">已充费用</text>
+					<text class="co-rc-stat-val">¥{{ runningCard.fee.toFixed(2) }}</text>
+				</view>
+			</view>
+			<view class="co-rc-foot">
+				<text class="co-rc-note">点击查看详情 · 以结束结算为准</text>
+				<text class="co-rc-link">停止充电 ›</text>
+			</view>
+		</view>
+
 		<!-- 订单列表 -->
-		<view class="co-list co-mx co-mt" v-if="list.length">
-			<view class="c-card co-item" v-for="(r, i) in list" :key="i" @click="openOrder(i)">
+		<view class="co-list co-mx co-mt" v-if="orders.length">
+			<view class="c-card co-item" v-for="(r, i) in orders" :key="r.orderId || i" @click="openOrder(i)">
 				<view class="co-item-head">
 					<view class="co-item-ic">
 						<image v-if="r.type === 'car'" src="/static/h5/images/charge/ic-car.png" class="co-item-ic-img" mode="aspectFit"></image>
@@ -74,9 +104,9 @@
 				</view>
 			</view>
 		</view>
-		<view class="c-card co-empty" v-else>
+		<view class="c-card co-empty co-mx co-mt" v-else>
 			<image src="/static/h5/images/charge/ic-chart.png" class="co-empty-ic" mode="aspectFit"></image>
-			<text class="c-text-sub" style="margin-top:16rpx;">暂无{{ rangeName }}{{ recType === 'car' ? '汽车' : recType === 'bike' ? '电瓶车' : '' }}充电订单</text>
+			<text class="c-text-sub" style="margin-top:16rpx;">{{ loading ? '订单加载中…' : '暂无' + rangeName + (recType === 'car' ? '汽车' : recType === 'bike' ? '电瓶车' : '') + '充电订单' }}</text>
 		</view>
 
 		<view class="c-toast" v-if="toastMsg" :style="{ opacity: 1 }">{{ toastMsg }}</view>
@@ -85,6 +115,15 @@
 
 <script>
 	import chargeStore from '@/api/charge/chargeStore.js'
+	import {
+		adaptOrderList
+	} from '@/api/charge/orderAdapter.js'
+	import {
+		queryPhoneChargeOrder
+	} from '@/packageCharge/api/chargeApi.js'
+	import {
+		hasLogin
+	} from '@/api/user/sessionApi.js'
 
 	export default {
 		data() {
@@ -106,57 +145,57 @@
 					val: 'month'
 				}],
 				rangeMenu: false,
-				toastMsg: ''
+				toastMsg: '',
+				recRange: chargeStore.recRange || 'all',
+				recType: chargeStore.recType || 'all',
+				orders: [],
+				total: 0,
+				page: 1,
+				loading: false,
+				runningCard: null,
+				tick: 0
 			}
 		},
 		computed: {
 			themeDark() {
 				return chargeStore.themeDark
 			},
-			recRange() {
-				return chargeStore.recRange
-			},
-			recType() {
-				return chargeStore.recType
-			},
 			rangeName() {
 				const r = this.rangeOptions.find(x => x.val === this.recRange)
 				return r ? r.name : '全部时间'
 			},
-			runningOrder() {
-				return chargeStore.runningOrder
-			},
 			rbSlotText() {
-				const r = this.runningOrder
+				const r = this.runningCard
 				if (!r) return ''
 				return (r.type === 'car' ? '枪 ' : '插座 ') + (r.slot || '—') + ' · ' + (r.type === 'car' ? '7kW 慢充' : '220W')
 			},
 			rbTime() {
-				const sec = Math.max(0, Math.floor((Date.now() - chargeStore.chgStart) / 1000))
+				this.tick
+				const s = this.runningCard && this.runningCard.startTime
+				if (!s) return '00:00'
+				const t = new Date(String(s).replace(/-/g, '/')).getTime()
+				const sec = isNaN(t) ? 0 : Math.max(0, Math.floor((Date.now() - t) / 1000))
 				return ('0' + Math.floor(sec / 60)).slice(-2) + ':' + ('0' + sec % 60).slice(-2)
 			},
 			rbFee() {
-				return chargeStore.chgFee.toFixed(2)
-			},
-			list() {
-				return this._rangeRecords().filter(r => this.recType === 'all' || r.type === this.recType)
+				const r = this.runningCard
+				return r ? r.fee.toFixed(2) : '0.00'
 			},
 			recTitle() {
 				const t = this.recRange === 'month' ? '本月订单' : this.recRange === 'all' ? '全部订单' : this.rangeName + '订单'
 				return t + (this.recType !== 'all' ? ' · ' + (this.recType === 'car' ? '汽车' : '电瓶车') : '')
 			},
 			feeSum() {
-				return this.list.reduce((s, r) => s + (r.fee || 0), 0)
+				return this.orders.reduce((s, r) => s + (r.fee || 0), 0)
 			}
 		},
 		onShow() {
-			// 充电中实时刷新在充标记
-			if (chargeStore.runningOrder) {
-				chargeStore.simulateTick()
-			}
+			this._loadOrders()
+			this._loadRunning()
 			if (this._timer) clearInterval(this._timer)
 			this._timer = setInterval(() => {
-				chargeStore.simulateTick()
+				// 仅刷新在充卡片「已充时长」，不产生本地假数据
+				this.tick++
 			}, 1000)
 		},
 		onHide() {
@@ -166,64 +205,113 @@
 			if (this._timer) clearInterval(this._timer)
 		},
 		methods: {
-			_rangeRecords() {
-				const records = chargeStore.records
-				const range = this.recRange
-				if (range === 'month') return records.filter(r => this._isThisMonth(r.date))
-				if (range === 'all') return records
+			// 时间范围 → 接口 queryStartTime（yyyy-MM-dd HH:mm:ss），全部时间不传
+			_rangeStart(range) {
 				const now = new Date()
-				const today0 = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime()
-				const limit = range === 'today' ? 0 : range === '7d' ? 6 : 29
-				return records.filter(r => {
-					const t = this._parseDate(r.date).getTime()
-					return t >= today0 - limit * 86400000
+				const fmt = d => {
+					return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2) +
+						' ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2) + ':' + ('0' + d.getSeconds())
+						.slice(-2)
+				}
+				if (range === 'today') {
+					const d = new Date(now)
+					d.setHours(0, 0, 0, 0)
+					return fmt(d)
+				}
+				if (range === '7d') {
+					const d = new Date(now)
+					d.setDate(d.getDate() - 7)
+					d.setHours(0, 0, 0, 0)
+					return fmt(d)
+				}
+				if (range === '30d') {
+					const d = new Date(now)
+					d.setDate(d.getDate() - 30)
+					d.setHours(0, 0, 0, 0)
+					return fmt(d)
+				}
+				if (range === 'month') {
+					const d = new Date(now.getFullYear(), now.getMonth(), 1)
+					d.setHours(0, 0, 0, 0)
+					return fmt(d)
+				}
+				return ''
+			},
+			_buildQueryParams() {
+				const p = {
+					page: this.page,
+					row: 100
+				}
+				const start = this._rangeStart(this.recRange)
+				if (start) p.queryStartTime = start
+				const ct = this.recType === 'car' ? '1002' : this.recType === 'bike' ? '1001' : ''
+				if (ct) p.chargeType = ct
+				return p
+			},
+			_loadOrders() {
+				if (!hasLogin()) {
+					this.orders = []
+					this.total = 0
+					this.loading = false
+					return
+				}
+				this.loading = true
+				queryPhoneChargeOrder(this._buildQueryParams()).then(res => {
+					this.orders = adaptOrderList(res.data)
+					this.total = res.records || this.orders.length
+					this.loading = false
+				}).catch(() => {
+					this.orders = []
+					this.total = 0
+					this.loading = false
+					this._toast('订单加载失败')
 				})
 			},
-			_isThisMonth(dateStr) {
-				if (!dateStr) return false
-				if (dateStr.indexOf('今天') === 0 || dateStr.indexOf('昨天') === 0) return true
-				const m = /^(\d{2})-/.exec(dateStr)
-				return m ? +m[1] === new Date().getMonth() + 1 : true
-			},
-			_parseDate(dateStr) {
-				const now = new Date()
-				let m = /^今天 (\d+):(\d+)/.exec(dateStr)
-				if (m) {
-					const d = new Date(now)
-					d.setHours(+m[1], +m[2], 0, 0)
-					return d
+			// 在充订单（置顶大卡片 + 顶部横幅）
+			_loadRunning() {
+				if (!hasLogin()) {
+					this.runningCard = null
+					return
 				}
-				m = /^昨天 (\d+):(\d+)/.exec(dateStr)
-				if (m) {
-					const d = new Date(now)
-					d.setDate(d.getDate() - 1)
-					d.setHours(+m[1], +m[2], 0, 0)
-					return d
-				}
-				m = /^(\d{2})-(\d{2}) (\d+):(\d+)/.exec(dateStr)
-				if (m) return new Date(2026, +m[1] - 1, +m[2], +m[3], +m[4], 0, 0)
-				return now
+				queryPhoneChargeOrder({
+					page: 1,
+					row: 10,
+					state: '1001'
+				}).then(res => {
+					const list = adaptOrderList(res.data)
+					this.runningCard = list.length ? list[0] : null
+				}).catch(() => {
+					this.runningCard = null
+				})
 			},
 			setRange(val) {
+				this.recRange = val
 				chargeStore.recRange = val
 				uni.setStorageSync('charge_rec_range', val)
 				this.rangeMenu = false
+				this.page = 1
+				this._loadOrders()
 				this._toast('已按「' + this.rangeName + '」筛选')
 			},
 			setType(t) {
+				this.recType = t
 				chargeStore.recType = t
 				uni.setStorageSync('charge_rec_type', t)
+				this.page = 1
+				this._loadOrders()
 			},
 			openOrder(i) {
-				const r = this.list[i]
-				const realIdx = chargeStore.records.indexOf(r)
+				const r = this.orders[i]
+				if (!r || !r.orderId) return
 				uni.navigateTo({
-					url: '/packageCharge/pages/charge/orderDetail?orderIdx=' + realIdx
+					url: '/packageCharge/pages/charge/orderDetail?orderId=' + r.orderId
 				})
 			},
 			openRunningOrder() {
+				const r = this.runningCard
+				if (!r) return
 				uni.navigateTo({
-					url: '/packageCharge/pages/charge/orderDetail?mode=running'
+					url: '/packageCharge/pages/charge/orderDetail?mode=running&orderId=' + r.orderId
 				})
 			},
 			_toast(msg) {
@@ -301,11 +389,19 @@
 		font-weight: 700;
 	}
 
+	.co-stat-card {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
 	.co-stat-left {
 		display: flex;
 		align-items: center;
 		gap: 20rpx;
 		padding: 26rpx;
+		flex: 1;
+		min-width: 0;
 	}
 
 	.co-stat-ic {
@@ -337,7 +433,8 @@
 
 	.co-range-wrap {
 		position: relative;
-		padding: 0 26rpx 26rpx;
+		padding: 0 26rpx;
+		flex-shrink: 0;
 	}
 
 	.co-range-btn {
@@ -480,5 +577,98 @@
 	.co-empty-ic {
 		width: 64rpx;
 		height: 64rpx;
+	}
+
+	/* 在充订单置顶大卡片 */
+	.co-running-card {
+		border-radius: 28rpx;
+		background: linear-gradient(135deg, #10b981, #059669);
+		padding: 28rpx;
+		color: #fff;
+		box-shadow: 0 10rpx 24rpx rgba(16, 185, 129, .25);
+	}
+
+	.co-rc-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.co-rc-title-row {
+		display: flex;
+		align-items: center;
+		gap: 12rpx;
+		flex: 1;
+		min-width: 0;
+	}
+
+	.co-rc-title {
+		font-size: 24rpx;
+		font-weight: 700;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.co-rc-slot {
+		font-size: 18rpx;
+		background: rgba(255, 255, 255, .15);
+		border-radius: 999rpx;
+		padding: 4rpx 14rpx;
+		white-space: nowrap;
+	}
+
+	.co-rc-power-tag {
+		font-size: 18rpx;
+		font-weight: 600;
+		background: rgba(255, 255, 255, .2);
+		border-radius: 999rpx;
+		padding: 4rpx 16rpx;
+		white-space: nowrap;
+	}
+
+	.co-rc-stats {
+		display: flex;
+		gap: 12rpx;
+		margin-top: 24rpx;
+	}
+
+	.co-rc-stat {
+		flex: 1;
+		background: rgba(255, 255, 255, .1);
+		border-radius: 20rpx;
+		padding: 16rpx 0;
+		text-align: center;
+	}
+
+	.co-rc-stat-label {
+		display: block;
+		color: rgba(255, 255, 255, .6);
+		font-size: 16rpx;
+	}
+
+	.co-rc-stat-val {
+		display: block;
+		color: #fff;
+		font-size: 24rpx;
+		font-weight: 700;
+		margin-top: 6rpx;
+	}
+
+	.co-rc-foot {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-top: 20rpx;
+	}
+
+	.co-rc-note {
+		font-size: 20rpx;
+		color: rgba(255, 255, 255, .8);
+	}
+
+	.co-rc-link {
+		font-size: 20rpx;
+		font-weight: 700;
 	}
 </style>

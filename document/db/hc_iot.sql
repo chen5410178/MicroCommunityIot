@@ -12846,3 +12846,7 @@ DELETE FROM `p_privilege_rel` WHERE `privilege_id` = '502024030416050066';
 ALTER TABLE `business_owner_car` DROP COLUMN `car_color`;
 -- 注：owner_car 表文档结构中无 car_color；若生产环境存在该字段请执行：
 -- ALTER TABLE `owner_car` DROP COLUMN `car_color`;
+
+-- 2026-09-01 业主端账户明细专用接口（account.queryAppUserAccountDetail）服务注册（c_service/c_route）
+INSERT INTO `c_service` VALUES ('982026090100000001', 'account.queryAppUserAccountDetail', 'API', '手机端查询账户明细', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-01 10:00:00', '0');
+INSERT INTO `c_route` VALUES ('102026090100000001', '992023111817510002', '982026090100000001', 'Q', '1000', 'S', '2026-09-01 10:00:00', '0');

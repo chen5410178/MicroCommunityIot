@@ -55,6 +55,13 @@
 				"navigationBarTitleText": "找回密码",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/user/changePwd",
+			"style": {
+				"navigationBarTitleText": "修改密码",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"subPackages": [
@@ -591,7 +598,7 @@
 				"pagePath": "pages/charge/scanCharge",
 				"text": "扫码",
 				"iconPath": "static/images/qrcode.png",
-				"selectedIconPath": "static/images/qrcode-visit.png"
+				"selectedIconPath": "static/images/qrcode-selected.png"
 			},
 			{
 				"pagePath": "pages/index/my",

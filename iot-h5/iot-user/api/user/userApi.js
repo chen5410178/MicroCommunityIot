@@ -242,6 +242,28 @@ export function queryOwnerAccount(_objData){
 	})
 }
 
+export function queryAppUserAccountDetail(_objData){
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.queryAppUserAccountDetail,
+			method: "GET",
+			data: _objData,
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code != 0) {
+					reject(_json.msg);
+					return;
+				}
+				resolve(_json.data);
+			},
+			fail: function(res) {
+				reject(res);
+			}
+		});
+	
+	})
+}
+
 /**
  * 刷新用户
  * @param {Object} _objData

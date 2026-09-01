@@ -530,3 +530,32 @@ ALTER TABLE `owner_car` DROP COLUMN `car_color`;
 1. `api/charge/chargeStore.js`：移除 mock 数据依赖（communities/vehicles/records/myCard/balance/messages 等初始值置空），新增 `machineList`/`machineListCommId` 字段与 `setMachineList()`，`curPiles()`/`pilesByType()` 改为返回接口桩数据（按 chargeType 过滤，无数据返回空数组）；
 2. `pages/index/index.vue`：`onShow` 并行加载余额（`account.queryAppUserAccount`）、我的车辆（`car.listUserCar`）、本月充电（`charge.queryPhoneChargeOrder`）、我的月卡（`chargeCard.listUserChargeMonthOrder`）、小区列表（`community.listCommunitys`）、充电桩列表（`chargeMachine.listChargeMachine`）与端口（`chargeMachine.listChargeMachinePort`）；类型切换/小区切换联动刷新并 Toast 反馈；`openPile` 改传 `machineId`；接口失败仅 Toast + 置空对应数据块，不做 mock 兜底；
 3. `packageCharge/pages/charge/pileDetail.vue`：`onLoad` 支持按 `machineId` 查找桩，无数据提示"充电桩不存在"并返回。
+
+### 2026-09-01 充电订单页（chargeOrders）对齐原型 + 真实接口改造
+
+纯前端 + iot-charge 小改动（无 SQL 变更，接口已注册 c_service 982025040135040007）：
+
+1. 后端 `iot-charge/.../cmd/charge/QueryPhoneChargeOrderCmd.java`：透传 `state`（在充 1001）、`chargeType`（1001 电瓶车 / 1002 汽车）、`queryStartTime`/`queryEndTime`（时间范围）到查询 Dto（Mapper 已支持对应过滤，仅补 Cmd 透传）；
+2. 新增 `iot-h5/iot-user/api/charge/orderAdapter.js`：充电订单接口字段 → 页面字段公共适配函数 `adaptOrder`/`adaptOrderList`（迁移首页 `_adaptOrder` 逻辑，补充 startTime/slot/portName 等，在充卡片复用）；
+3. `packageCharge/api/chargeApi.js`：`queryPhoneChargeOrder` 改为返回完整响应 `{code, msg, data, records}`（供订单页取分页总数）；
+4. `packageCharge/pages/charge/chargeOrders.vue`：历史订单列表改走真实接口（page/row=100，时间范围 → queryStartTime，类型 → chargeType），统计卡订单数取接口 records、累计消费按接口列表求和；新增「在充订单置顶大卡片」（接口 state=1001 查询，桩名 + 插座/枪号 + 功率标签 + 三列统计 + 停止充电入口）；1s 定时器仅刷新在充时长（Date.now() - startTime），不再调用本地 simulateTick；点击历史订单跳 `orderDetail?orderId=xxx`、在充卡片跳 `orderDetail?mode=running&orderId=xxx`；
+5. `packageCharge/pages/charge/orderDetail.vue`：历史订单按 `orderId` 查真实接口展示（订单编号取接口 orderId）；在充模式本地 runningOrder 优先、无本地时按 orderId 查接口只读展示（隐藏停止充电按钮，提示前往「充电中」页面操作）；
+6. `pages/index/index.vue`：`_loadMonthOrders` 改用公共 `adaptOrder`，删除本地 `_adaptOrder`/`_fmtTime`/`_pad` 重复实现（行为不变）。
+
+### 2026-09-01 充电订单页 UI/交互修复（3 个问题）
+
+纯前端（`iot-h5/iot-user/packageCharge/pages/charge/chargeOrders.vue`，无 SQL 变更）：
+
+1. 统计卡布局：外层新增 `co-stat-card`（flex + space-between），「全部时间」下拉按钮从统计卡下方移到右侧；
+2. 筛选不切换修复：`recRange`/`recType` 由 computed（读非响应式 chargeStore，无法失效）改为 data 本地响应式字段（初始化读 chargeStore），`setRange`/`setType` 同步更新本地字段 + chargeStore + storage，点击「全部/电瓶车/汽车」立即刷新列表与统计；
+3. 空态卡片补 `co-mx co-mt` 类，与左右（以及统计卡）产生间距。
+
+### 2026-09-01 业主端账户明细专用接口（account.queryAppUserAccountDetail）
+
+后端 `iot-acct` 新增 Cmd `QueryAppUserAccountDetailCmd`（serviceCode `account.queryAppUserAccountDetail`）：按登录态 userId → 手机号 link → 账户（partId=communityId、acctType 默认 2003）自动定位，一步查询 `account_detail` 明细（支持 detailType 过滤），账户不存在返回空列表，前端无需也不允许传 acctId，杜绝越权。前端 `iot-h5/iot-user` 钱包页（wallet.vue）、账户明细页（myAccountDetail.vue）改调新接口，`myAccount.vue`/`chargeCard.vue` 跳转传 `acctType` 替代 `acctId`，`url.js`/`userApi.js` 中 `queryOwnerAccountDetail` 移除（PC 管理端 iot-webvue 仍用旧接口不受影响）。
+
+```sql
+-- 服务注册（需在运行库执行）
+INSERT INTO `c_service` VALUES ('982026090100000001', 'account.queryAppUserAccountDetail', 'API', '手机端查询账户明细', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-01 10:00:00', '0');
+INSERT INTO `c_route` VALUES ('102026090100000001', '992023111817510002', '982026090100000001', 'Q', '1000', 'S', '2026-09-01 10:00:00', '0');
+```

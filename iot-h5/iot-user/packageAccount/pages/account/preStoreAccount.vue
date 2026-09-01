@@ -68,6 +68,7 @@
 		},
 		onLoad(options) {
 			this.communityId = options.communityId;
+			this.amount = options.amount || '';
 			this.loadOwnerAccount();
 		},
 		methods: {

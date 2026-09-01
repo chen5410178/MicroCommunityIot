@@ -62,21 +62,21 @@ export function saveUserLoginInfo(_userId,_token,_key){
 	let m = date.getMinutes(); //获取分钟
 	let s = date.getSeconds(); //获取秒
 	let afterOneHourDate = new Date(year, mon, da, h, m, s); //30s之后的时间
-	wx.setStorageSync(LOGIN_FLAG, {
+	uni.setStorageSync(LOGIN_FLAG, {
 		sessionKey: _userId,
 		expireTime: afterOneHourDate.getTime()
 	});
-	wx.setStorageSync(TOKEN, _token);
+	uni.setStorageSync(TOKEN, _token);
 	//保存临时 钥匙
 	if(_key){
-		wx.setStorageSync(OWNER_KEY, _key);
+		uni.setStorageSync(OWNER_KEY, _key);
 	}
 }
 
 export function removeUserLoginInfo(){
-	wx.removeStorageSync(LOGIN_FLAG);
-	wx.removeStorageSync(TOKEN);
-	wx.removeStorageSync(OWNER_KEY);
+	uni.removeStorageSync(LOGIN_FLAG);
+	uni.removeStorageSync(TOKEN);
+	uni.removeStorageSync(OWNER_KEY);
 }
 
 /**
@@ -85,21 +85,21 @@ export function removeUserLoginInfo(){
  * add by wuxw 2019-12-28
  */
 export function getUserInfo() {
-	let _userInfo = wx.getStorageSync(USER_INFO);
+	let _userInfo = uni.getStorageSync(USER_INFO);
 	return _userInfo;
 };
 
 export function getToken(){
-	return wx.getStorageSync(TOKEN)
+	return uni.getStorageSync(TOKEN)
 }
 
 export function getLoginFlag(){
-	let loginFlag = wx.getStorageSync(LOGIN_FLAG);
+	let loginFlag = uni.getStorageSync(LOGIN_FLAG);
 	return loginFlag;
 }
 
 export function getOwnerKey(){
-	let ownerKey = wx.getStorageSync(OWNER_KEY);
+	let ownerKey = uni.getStorageSync(OWNER_KEY);
 	return ownerKey;
 }
 

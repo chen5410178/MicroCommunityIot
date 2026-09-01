@@ -1,50 +1,107 @@
 <template>
 	<view class="od-page" :class="{ 'charge-theme-dark': themeDark }">
 		<!-- 在充订单 -->
-		<template v-if="mode === 'running' && runningOrder">
-			<view class="od-running-hero">
-				<view class="od-head">
-					<view class="od-title-row">
-						<view class="c-pulse-dot" style="width:16rpx;height:16rpx;border-radius:50%;background:#fff;"></view>
-						<text class="od-title">充电中 · {{ runningOrder.pile }}</text>
-						<text class="od-slot-tag" v-if="runningOrder.slot">{{ runningOrder.type === 'car' ? '枪 ' : '插座 ' }}{{ runningOrder.slot }}</text>
+		<template v-if="mode === 'running'">
+			<!-- 本地充电流程在充订单（可停止充电） -->
+			<template v-if="runningOrder">
+				<view class="od-running-hero">
+					<view class="od-head">
+						<view class="od-title-row">
+							<view class="c-pulse-dot" style="width:16rpx;height:16rpx;border-radius:50%;background:#fff;"></view>
+							<text class="od-title">充电中 · {{ runningOrder.pile }}</text>
+							<text class="od-slot-tag" v-if="runningOrder.slot">{{ runningOrder.type === 'car' ? '枪 ' : '插座 ' }}{{ runningOrder.slot }}</text>
+						</view>
+						<text class="od-mode">{{ payModeText }}</text>
 					</view>
-					<text class="od-mode">{{ payModeText }}</text>
+					<view class="od-stats">
+						<view class="od-stat">
+							<text class="od-stat-label">已充时长</text>
+							<text class="od-stat-val">{{ timeText }}</text>
+						</view>
+						<view class="od-stat">
+							<text class="od-stat-label">当前功率</text>
+							<text class="od-stat-val">{{ powerText }}</text>
+						</view>
+						<view class="od-stat">
+							<text class="od-stat-label">已用电量</text>
+							<text class="od-stat-val">{{ kwhText }}</text>
+						</view>
+						<view class="od-stat">
+							<text class="od-stat-label">已充费用</text>
+							<text class="od-stat-val">¥{{ fee.toFixed(2) }}</text>
+						</view>
+					</view>
+					<view class="od-note">{{ note }}</view>
 				</view>
-				<view class="od-stats">
-					<view class="od-stat">
-						<text class="od-stat-label">已充时长</text>
-						<text class="od-stat-val">{{ timeText }}</text>
-					</view>
-					<view class="od-stat">
-						<text class="od-stat-label">当前功率</text>
-						<text class="od-stat-val">{{ powerText }}</text>
-					</view>
-					<view class="od-stat">
-						<text class="od-stat-label">已用电量</text>
-						<text class="od-stat-val">{{ kwhText }}</text>
-					</view>
-					<view class="od-stat">
-						<text class="od-stat-label">已充费用</text>
-						<text class="od-stat-val">¥{{ fee.toFixed(2) }}</text>
-					</view>
-				</view>
-				<view class="od-note">{{ note }}</view>
-			</view>
 
-			<view class="c-card od-mx od-mt">
-				<text class="c-title">充电订单</text>
-				<view class="od-info">
-					<view class="od-info-row"><text class="c-text-sub">订单类型</text><text class="od-info-val">{{ runningOrder.type === 'car' ? '电动车 · 7kW 交流慢充' : '电瓶车 · 220W' }}</text></view>
-					<view class="od-info-row"><text class="c-text-sub">支付方式</text><text class="od-info-val">{{ runningOrder.type === 'car' ? '余额 · 预算 ¥' + (runningOrder.amt || 0).toFixed(2) : (runningOrder.way === 'balance' ? '余额' : '月卡') }}</text></view>
-					<view class="od-info-row"><text class="c-text-sub">当前费率</text><text class="od-info-val">{{ rateText }}</text></view>
-					<view class="od-info-row"><text class="c-text-sub">保护机制</text><text class="od-info-val">{{ protectText }}</text></view>
+				<view class="c-card od-mx od-mt">
+					<text class="c-title">充电订单</text>
+					<view class="od-info">
+						<view class="od-info-row"><text class="c-text-sub">订单类型</text><text class="od-info-val">{{ runningOrder.type === 'car' ? '电动车 · 7kW 交流慢充' : '电瓶车 · 220W' }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">支付方式</text><text class="od-info-val">{{ runningOrder.type === 'car' ? '余额 · 预算 ¥' + (runningOrder.amt || 0).toFixed(2) : (runningOrder.way === 'balance' ? '余额' : '月卡') }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">当前费率</text><text class="od-info-val">{{ rateText }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">保护机制</text><text class="od-info-val">{{ protectText }}</text></view>
+					</view>
 				</view>
-			</view>
 
-			<view class="od-mx od-mt" style="padding-bottom:80rpx;">
-				<view class="c-btn-danger" @click="askStop">停止充电</view>
-				<text class="od-stop-tip">停止后按实际充电量结算 · 剩余金额自动退还余额</text>
+				<view class="od-mx od-mt" style="padding-bottom:80rpx;">
+					<view class="c-btn-danger" @click="askStop">停止充电</view>
+					<text class="od-stop-tip">停止后按实际充电量结算 · 剩余金额自动退还余额</text>
+				</view>
+			</template>
+
+			<!-- 接口确认的在充订单（只读，不可停止） -->
+			<template v-else-if="runningApi">
+				<view class="od-running-hero">
+					<view class="od-head">
+						<view class="od-title-row">
+							<view class="c-pulse-dot" style="width:16rpx;height:16rpx;border-radius:50%;background:#fff;"></view>
+							<text class="od-title">充电中 · {{ runningApi.pile }}</text>
+							<text class="od-slot-tag" v-if="runningApi.slot">{{ runningApi.type === 'car' ? '枪 ' : '插座 ' }}{{ runningApi.slot }}</text>
+						</view>
+						<text class="od-mode">余额支付</text>
+					</view>
+					<view class="od-stats">
+						<view class="od-stat">
+							<text class="od-stat-label">已充时长</text>
+							<text class="od-stat-val">{{ timeText }}</text>
+						</view>
+						<view class="od-stat">
+							<text class="od-stat-label">当前功率</text>
+							<text class="od-stat-val">{{ powerText }}</text>
+						</view>
+						<view class="od-stat">
+							<text class="od-stat-label">已用电量</text>
+							<text class="od-stat-val">{{ kwhText }}</text>
+						</view>
+						<view class="od-stat">
+							<text class="od-stat-label">已充费用</text>
+							<text class="od-stat-val">¥{{ fee.toFixed(2) }}</text>
+						</view>
+					</view>
+					<view class="od-note">{{ note }}</view>
+				</view>
+
+				<view class="c-card od-mx od-mt">
+					<text class="c-title">充电订单</text>
+					<view class="od-info">
+						<view class="od-info-row"><text class="c-text-sub">订单编号</text><text class="od-info-val">{{ runningApi.orderId }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">订单类型</text><text class="od-info-val">{{ runningApi.type === 'car' ? '电动车 · 7kW 交流慢充' : '电瓶车 · 220W' }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">支付方式</text><text class="od-info-val">余额</text></view>
+						<view class="od-info-row"><text class="c-text-sub">充电开始时间</text><text class="od-info-val">{{ runningApi.startTime || '—' }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">订单状态</text><text class="od-info-val">充电中</text></view>
+						<view class="od-info-row"><text class="c-text-sub">已充费用</text><text class="od-info-val" :style="{ color: '#059669', fontWeight: 700 }">¥{{ runningApi.fee.toFixed(2) }}</text></view>
+					</view>
+				</view>
+
+				<view class="od-mx od-mt" style="padding-bottom:80rpx;">
+					<text class="od-readonly-tip">该订单为接口确认的充电中订单 · 如需停止请前往「充电中」页面操作</text>
+				</view>
+			</template>
+
+			<view class="c-card co-empty od-mx od-mt" v-else>
+				<image src="/static/h5/images/charge/ic-chart.png" class="co-empty-ic" mode="aspectFit"></image>
+				<text class="c-text-sub" style="margin-top:16rpx;">未找到充电中的订单</text>
 			</view>
 		</template>
 
@@ -69,7 +126,7 @@
 			<view class="c-card od-mx od-mt">
 				<text class="c-title">订单信息</text>
 				<view class="od-info">
-					<view class="od-info-row"><text class="c-text-sub">订单编号</text><text class="od-info-val">CHG2026{{ String(orderIdx + 1).padStart(4, '0') }}</text></view>
+					<view class="od-info-row"><text class="c-text-sub">订单编号</text><text class="od-info-val">{{ order.orderId }}</text></view>
 					<view class="od-info-row"><text class="c-text-sub">充电开始时间</text><text class="od-info-val">{{ order.date }}</text></view>
 					<view class="od-info-row"><text class="c-text-sub">充电结束时间</text><text class="od-info-val">{{ orderEndText }}</text></view>
 					<view class="od-info-row"><text class="c-text-sub">充电时长</text><text class="od-info-val">{{ order.mins }} 分钟</text></view>
@@ -82,6 +139,12 @@
 				</view>
 			</view>
 		</template>
+
+		<!-- 历史订单加载失败/未找到 -->
+		<view class="c-card co-empty od-mx od-mt" v-else-if="mode !== 'running' && orderLoaded">
+			<image src="/static/h5/images/charge/ic-chart.png" class="co-empty-ic" mode="aspectFit"></image>
+			<text class="c-text-sub" style="margin-top:16rpx;">未找到该订单</text>
+		</view>
 
 		<!-- 停止充电确认 -->
 		<view class="c-mask" v-if="stopShow" @click="stopShow = false"></view>
@@ -136,6 +199,15 @@
 <script>
 	import chargeStore from '@/api/charge/chargeStore.js'
 	import {
+		adaptOrderList
+	} from '@/api/charge/orderAdapter.js'
+	import {
+		queryPhoneChargeOrder
+	} from '@/packageCharge/api/chargeApi.js'
+	import {
+		hasLogin
+	} from '@/api/user/sessionApi.js'
+	import {
 		chgTypes,
 		tariffAt,
 		defaultTariffs
@@ -146,7 +218,10 @@
 			return {
 				chgTypes,
 				mode: 'done',
-				orderIdx: -1,
+				orderId: '',
+				order: null,
+				orderLoaded: false,
+				runningApi: null,
 				timeText: '00:00',
 				powerText: '0W',
 				kwhText: '—',
@@ -166,9 +241,6 @@
 			},
 			runningOrder() {
 				return chargeStore.runningOrder
-			},
-			order() {
-				return this.orderIdx >= 0 ? chargeStore.records[this.orderIdx] : null
 			},
 			payModeText() {
 				const r = this.runningOrder
@@ -199,10 +271,15 @@
 		},
 		onLoad(options) {
 			this.mode = options.mode || 'done'
+			this.orderId = options.orderId || ''
 			if (this.mode === 'running') {
-				this._refreshRunning()
+				if (chargeStore.runningOrder) {
+					this._refreshRunning()
+				} else if (this.orderId) {
+					this._loadRunningByApi()
+				}
 			} else {
-				this.orderIdx = parseInt(options.orderIdx || 0)
+				this._loadOrder()
 			}
 		},
 		onShow() {
@@ -224,6 +301,60 @@
 					chargeStore.simulateTick()
 					this._refreshRunning()
 				}, 1000)
+			},
+			// 历史订单：按 orderId 查真实接口
+			_loadOrder() {
+				if (!hasLogin()) {
+					this.orderLoaded = true
+					return
+				}
+				if (!this.orderId) {
+					this.orderLoaded = true
+					return
+				}
+				queryPhoneChargeOrder({
+					orderId: this.orderId,
+					page: 1,
+					row: 10
+				}).then(res => {
+					const list = adaptOrderList(res.data)
+					this.order = list.length ? list[0] : null
+					this.orderLoaded = true
+				}).catch(() => {
+					this.order = null
+					this.orderLoaded = true
+				})
+			},
+			// 在充订单：本地无 runningOrder 时按 orderId 查接口只读展示
+			_loadRunningByApi() {
+				if (!hasLogin()) return
+				queryPhoneChargeOrder({
+					orderId: this.orderId,
+					page: 1,
+					row: 10,
+					state: '1001'
+				}).then(res => {
+					const list = adaptOrderList(res.data)
+					if (!list.length) return
+					this.runningApi = list[0]
+					this.powerText = this.runningApi.type === 'car' ? '7.0kW' : '220W'
+					this.kwhText = this.runningApi.kwh > 0 ? this.runningApi.kwh.toFixed(2) + ' 度' : '—'
+					this.fee = this.runningApi.fee
+					this.note = this.runningApi.type === 'car' ? '按电量计费 · 金额耗尽自动断电' : '充满自停 / 定时断电'
+					this._refreshRunningApi()
+					if (this.timer) clearInterval(this.timer)
+					this.timer = setInterval(() => {
+						this._refreshRunningApi()
+					}, 1000)
+				}).catch(() => {})
+			},
+			// 接口在充时长实时刷新（仅刷新时长，无本地假数据）
+			_refreshRunningApi() {
+				const r = this.runningApi
+				if (!r || !r.startTime) return
+				const t = new Date(String(r.startTime).replace(/-/g, '/')).getTime()
+				const sec = isNaN(t) ? 0 : Math.max(0, Math.floor((Date.now() - t) / 1000))
+				this.timeText = ('0' + Math.floor(sec / 60)).slice(-2) + ':' + ('0' + sec % 60).slice(-2)
 			},
 			_refreshRunning() {
 				const r = chargeStore.runningOrder
@@ -518,5 +649,16 @@
 		font-size: 30rpx;
 		font-weight: 700;
 		color: #059669;
+	}
+
+	.od-readonly-tip {
+		display: block;
+		text-align: center;
+		border-radius: 20rpx;
+		background: rgba(16, 185, 129, .08);
+		padding: 24rpx;
+		color: #059669;
+		font-size: 22rpx;
+		line-height: 1.6;
 	}
 </style>

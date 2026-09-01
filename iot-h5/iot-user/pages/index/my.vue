@@ -8,7 +8,7 @@
 					<text class="my-name">{{ user.name }}</text>
 					<text class="c-text-sub" style="margin-top:6rpx;display:block;">{{ user.mode }} · {{ user.home }}</text>
 				</view>
-				<text class="my-pwd-btn" @click.stop="openPwd">
+				<text class="my-pwd-btn" @click.stop="goChangePwd">
 					<image src="/static/h5/images/common/ic-lock-green.png" class="my-pwd-btn-ic" mode="aspectFit"></image>
 					修改密码
 				</text>
@@ -51,12 +51,6 @@
 				<text class="c-text-sub" style="font-size:20rpx;">开票记录</text>
 				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
 			</view>
-			<view class="my-menu-item" @click="goTariff">
-				<image src="/static/h5/images/charge/ic-clock.png" class="my-menu-ic" mode="aspectFit"></image>
-				<text class="my-menu-text">分时电价</text>
-				<text class="c-text-sub" style="font-size:20rpx;">尖峰平谷</text>
-				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
-			</view>
 			<view class="my-menu-item" @click="goService">
 				<image src="/static/h5/images/common/ic-phone.png" class="my-menu-ic" mode="aspectFit"></image>
 				<text class="my-menu-text">联系客服</text>
@@ -87,36 +81,6 @@
 			</view>
 		</view>
 
-		<!-- 修改密码弹层 -->
-		<view class="c-mask" v-if="pwdShow" @click="pwdShow = false"></view>
-		<view class="c-dialog" v-if="pwdShow">
-			<view class="my-pwd-head">
-				<view class="my-pwd-ic">
-					<image src="/static/h5/images/common/ic-lock-green.png" class="my-pwd-ic-img" mode="aspectFit"></image>
-				</view>
-				<view>
-					<text class="c-title" style="display:block;">修改密码</text>
-					<text class="c-text-sub" style="display:block;margin-top:6rpx;">请设置新密码（6-20 位）</text>
-				</view>
-			</view>
-			<view class="c-form-input my-pwd-row">
-				<text class="c-text-sub">原密码</text>
-				<input v-model="pwdOld" type="password" maxlength="20" placeholder="请输入原密码" />
-			</view>
-			<view class="c-form-input my-pwd-row">
-				<text class="c-text-sub">新密码</text>
-				<input v-model="pwdNew" type="password" maxlength="20" placeholder="6-20 位新密码" />
-			</view>
-			<view class="c-form-input my-pwd-row">
-				<text class="c-text-sub">确认</text>
-				<input v-model="pwdNew2" type="password" maxlength="20" placeholder="再次输入新密码" />
-			</view>
-			<view class="my-pwd-btns">
-				<view class="c-btn-ghost" style="flex:1;" @click="pwdShow = false">取消</view>
-				<view class="c-btn-primary" style="flex:1;" @click="submitPwd">确认修改</view>
-			</view>
-		</view>
-
 		<view class="c-toast" v-if="toastMsg" :style="{ opacity: 1 }">{{ toastMsg }}</view>
 	</view>
 </template>
@@ -142,19 +106,13 @@
 					home: '阳光花园 3 栋业主'
 				},
 				logoutShow: false,
-				pwdShow: false,
-				pwdOld: '',
-				pwdNew: '',
-				pwdNew2: '',
+				isLogin: false,
 				toastMsg: ''
 			}
 		},
 		computed: {
 			themeDark() {
 				return chargeStore.themeDark
-			},
-			isLogin() {
-				return hasLogin()
 			},
 			userInitial() {
 				return (this.user.name || '李').charAt(0)
@@ -173,8 +131,15 @@
 			}
 		},
 		onShow() {
+			// 每次进入 Tab 页重新判定登录态（登录/退出/过期后切换回来均生效）
+			this.isLogin = hasLogin()
+			// 用户名三级数据源：userInfo（真实用户）→ charge_demo_user（演示数据）→ 默认值
+			const userInfo = uni.getStorageSync('userInfo')
 			const demo = uni.getStorageSync('charge_demo_user')
-			if (demo) {
+			if (userInfo && userInfo.name) {
+				this.user.name = userInfo.name
+				this.user.mode = '账号密码登录'
+			} else if (demo) {
 				this.user.name = demo.name
 				this.user.mode = demo.mode
 			}
@@ -196,9 +161,6 @@
 			goInvoice() {
 				uni.navigateTo({ url: '/packageCharge/pages/charge/invoice' })
 			},
-			goTariff() {
-				uni.navigateTo({ url: '/packageCharge/pages/charge/tariff' })
-			},
 			goService() {
 				uni.navigateTo({ url: '/packageCharge/pages/charge/customerService' })
 			},
@@ -210,29 +172,14 @@
 				userLogout({}).catch(() => {})
 				removeUserLoginInfo()
 				uni.removeStorageSync('charge_demo_user')
+				this.isLogin = false
 				this._toast('已退出登录')
+				setTimeout(() => {
+					uni.navigateTo({ url: '/pages/user/login' })
+				}, 500)
 			},
-			openPwd() {
-				this.pwdOld = ''
-				this.pwdNew = ''
-				this.pwdNew2 = ''
-				this.pwdShow = true
-			},
-			submitPwd() {
-				if (!this.pwdOld) {
-					this._toast('请输入原密码')
-					return
-				}
-				if (this.pwdNew.length < 6 || this.pwdNew.length > 20) {
-					this._toast('新密码长度需 6-20 位')
-					return
-				}
-				if (this.pwdNew !== this.pwdNew2) {
-					this._toast('两次输入的新密码不一致')
-					return
-				}
-				this.pwdShow = false
-				this._toast('密码修改成功')
+			goChangePwd() {
+				uni.navigateTo({ url: '/pages/user/changePwd' })
 			},
 			_toast(msg) {
 				this.toastMsg = msg
@@ -398,36 +345,5 @@
 		height: 84rpx;
 		line-height: 84rpx;
 		text-align: center;
-	}
-
-	.my-pwd-head {
-		display: flex;
-		align-items: center;
-		gap: 20rpx;
-	}
-
-	.my-pwd-ic {
-		width: 68rpx;
-		height: 68rpx;
-		border-radius: 50%;
-		background: rgba(16, 185, 129, .1);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.my-pwd-ic-img {
-		width: 32rpx;
-		height: 32rpx;
-	}
-
-	.my-pwd-row {
-		margin-top: 20rpx;
-	}
-
-	.my-pwd-btns {
-		display: flex;
-		gap: 20rpx;
-		margin-top: 32rpx;
 	}
 </style>

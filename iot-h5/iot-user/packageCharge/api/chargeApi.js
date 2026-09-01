@@ -108,7 +108,8 @@ export function queryMyChargeOrder(_objData) {
 }
 
 /**
- * 查询充电订单（按手机号，历史）
+ * 查询充电订单（按手机号，历史/在充，分页）
+ * 返回完整响应 { code, msg, data, records }，data 为订单数组
  */
 export function queryPhoneChargeOrder(_objData) {
 	return new Promise((resolve, reject) => {
@@ -121,7 +122,7 @@ export function queryPhoneChargeOrder(_objData) {
 					reject(res.data.msg)
 					return
 				}
-				resolve(res.data.data)
+				resolve(res.data)
 			},
 			fail: function(res) {
 				reject(res)

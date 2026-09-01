@@ -95,6 +95,32 @@ export default {
 		this.myCard = card
 		save(CARD_KEY, card)
 	},
+	// 按接口月卡订单回填 myCard（取 endTime 晚于当前的最新一条有效订单）
+	// orders: chargeCard.listUserChargeMonthOrder 返回的订单数组
+	updateMyCardFromApi(orders) {
+		const list = orders || []
+		const now = Date.now()
+		let valid = null
+		list.forEach(o => {
+			const end = new Date(String(o.endTime || '').replace(/-/g, '/')).getTime()
+			if (isNaN(end) || end <= now) return
+			const cur = valid ? new Date(String(valid.endTime).replace(/-/g, '/')).getTime() : 0
+			if (!valid || end > cur) valid = o
+		})
+		if (!valid) {
+			this.setMyCard(null)
+			return
+		}
+		const endTime = valid.endTime || ''
+		const end = new Date(String(endTime).replace(/-/g, '/'))
+		this.setMyCard({
+			name: valid.cardName || '',
+			type: 'month',
+			left: isNaN(end.getTime()) ? 0 : Math.max(0, Math.ceil((end.getTime() - now) / 86400000)),
+			expire: isNaN(end.getTime()) ? '' : (end.getMonth() + 1) + '月' + end.getDate() + '日',
+			endTime: endTime
+		})
+	},
 	setCommIdx(i) {
 		this.commIdx = i
 		uni.setStorageSync('charge_comm_idx', i)

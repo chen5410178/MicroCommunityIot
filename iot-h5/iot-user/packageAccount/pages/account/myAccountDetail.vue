@@ -43,7 +43,7 @@
 
 <script>
 	import context from '@/lib/java110/Java110Context.js';
-	import {queryOwnerAccountDetail} from '@/api/user/userApi.js'
+	import {queryAppUserAccountDetail} from '@/api/user/userApi.js'
 	import noDataPage from '@/components/no-data-page/no-data-page.vue'
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 
@@ -52,7 +52,7 @@
 	export default {
 		data() {
 			return {
-				acctId: '',
+				acctType: '2003',
 				accountDetails: [],
 				communityId: '',
 				noData: false,
@@ -75,7 +75,7 @@
 		 */
 		onLoad: function(options) {
 			context.onLoad(options);
-			this.acctId = options.acctId;
+			this.acctType = options.acctType || '2003';
 			let _that = this;
 			context.getOwner(function(_owner) {
 				_that.communityId = _owner.communityId;
@@ -97,14 +97,15 @@
 				let _objData = {
 					page: _that.page,
 					row: 10,
-					acctId: _that.acctId,
+					acctType: _that.acctType,
 					communityId: _that.communityId
 				}
-				queryOwnerAccountDetail(_objData).then((res) => {
+				queryAppUserAccountDetail(_objData).then((res) => {
 					console.log(res);
-					_that.accountDetails = _that.accountDetails.concat(res.data.data);
+					let _list = res.data || res || [];
+					_that.accountDetails = _that.accountDetails.concat(_list);
 					_that.page ++;
-					if(_that.accountDetails.length == res.data.total){
+					if(_list.length < 10){
 						_that.loadingStatus = 'noMore';
 						return;
 					}

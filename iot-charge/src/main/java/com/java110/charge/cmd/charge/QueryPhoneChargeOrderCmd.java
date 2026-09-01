@@ -51,6 +51,10 @@ public class QueryPhoneChargeOrderCmd extends Cmd {
         chargeMachineOrderDto.setPage(reqJson.getIntValue("page"));
         chargeMachineOrderDto.setRow(reqJson.getIntValue("row"));
         chargeMachineOrderDto.setOrderId(reqJson.getString("orderId"));
+        chargeMachineOrderDto.setState(reqJson.getString("state"));
+        chargeMachineOrderDto.setChargeType(reqJson.getString("chargeType"));
+        chargeMachineOrderDto.setQueryStartTime(reqJson.getString("queryStartTime"));
+        chargeMachineOrderDto.setQueryEndTime(reqJson.getString("queryEndTime"));
 
         int count = chargeMachineOrderV1InnerServiceSMOImpl.queryChargeMachineOrdersCount(chargeMachineOrderDto);
 
