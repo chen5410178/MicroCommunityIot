@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { listSystemInfo, updateSystemInfo } from '@/api/login/systemApi'
+import { listRegisterProtocol, updateRegisterProtocol } from '@/api/login/systemApi'
 
 export default {
   name: 'RegisterProtocol',
@@ -33,7 +33,6 @@ export default {
       loading: false,
       submitting: false,
       form: {
-        systemId: '',
         userProtocol: '',
         merchantProtocol: ''
       }
@@ -46,9 +45,10 @@ export default {
     async fetchData() {
       this.loading = true
       try {
-        const res = await listSystemInfo({ page: 1, row: 1 })
+        const res = await listRegisterProtocol({ page: 1, row: 1 })
         if (res.data && res.data.length > 0) {
-          this.form = { ...res.data[0] }
+          this.form.userProtocol = res.data[0].userProtocol || ''
+          this.form.merchantProtocol = res.data[0].merchantProtocol || ''
         }
       } finally {
         this.loading = false
@@ -57,8 +57,7 @@ export default {
     async handleSubmit() {
       this.submitting = true
       try {
-        const res = await updateSystemInfo({
-          systemId: this.form.systemId,
+        const res = await updateRegisterProtocol({
           userProtocol: this.form.userProtocol,
           merchantProtocol: this.form.merchantProtocol
         })

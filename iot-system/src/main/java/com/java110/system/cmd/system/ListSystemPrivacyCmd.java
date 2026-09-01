@@ -17,6 +17,7 @@ package com.java110.system.cmd.system;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.registerProtocol.RegisterProtocolDto;
 import com.java110.bean.dto.systemInfo.SystemInfoDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cmd.Cmd;
@@ -26,6 +27,7 @@ import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.dto.community.CommunityDto;
 import com.java110.intf.community.ICommunityInnerServiceSMO;
+import com.java110.intf.system.IRegisterProtocolV1InnerServiceSMO;
 import com.java110.intf.system.ISystemInfoV1InnerServiceSMO;
 import com.java110.system.AppInfo;
 import org.slf4j.Logger;
@@ -52,6 +54,9 @@ public class ListSystemPrivacyCmd extends Cmd {
 
     @Autowired
     private ISystemInfoV1InnerServiceSMO systemInfoV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IRegisterProtocolV1InnerServiceSMO registerProtocolV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
@@ -80,14 +85,20 @@ public class ListSystemPrivacyCmd extends Cmd {
         if (systemInfoDtos != null && !systemInfoDtos.isEmpty()) {
             SystemInfoDto systemInfo = systemInfoDtos.get(0);
             data.put("version", AppInfo.VERSION);
-            data.put("userProtocol", systemInfo.getUserProtocol());
-            data.put("merchantProtocol", systemInfo.getMerchantProtocol());
-            data.put("copyrightInfo", systemInfo.getCopyrightInfo());
+            data.put("copyrightInfo", systemInfo.getCompanyName());
             data.put("companyName", systemInfo.getCompanyName());
             data.put("systemTitle", systemInfo.getSystemTitle());
             data.put("subSystemTitle", systemInfo.getSubSystemTitle());
             data.put("logoUrl", systemInfo.getLogoUrl());
             data.put("imgUrl", systemInfo.getImgUrl());
+            // 协议内容从 register_protocol 表读取
+            RegisterProtocolDto registerProtocolDto = new RegisterProtocolDto();
+            registerProtocolDto.setStatusCd("0");
+            List<RegisterProtocolDto> protocols = registerProtocolV1InnerServiceSMOImpl.queryRegisterProtocols(registerProtocolDto);
+            if (protocols != null && !protocols.isEmpty()) {
+                data.put("userProtocol", protocols.get(0).getUserProtocol());
+                data.put("merchantProtocol", protocols.get(0).getMerchantProtocol());
+            }
         }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.createResponseEntity(data));

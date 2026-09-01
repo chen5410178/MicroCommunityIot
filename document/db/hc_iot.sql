@@ -12851,21 +12851,30 @@ ALTER TABLE `business_owner_car` DROP COLUMN `car_color`;
 INSERT INTO `c_service` VALUES ('982026090100000001', 'account.queryAppUserAccountDetail', 'API', '手机端查询账户明细', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-01 10:00:00', '0');
 INSERT INTO `c_route` VALUES ('102026090100000001', '992023111817510002', '982026090100000001', 'Q', '1000', 'S', '2026-09-01 10:00:00', '0');
 
--- 2026-09-01 系统信息/隐私协议：system_info 表扩展用户服务协议、隐私保护指引、版权信息字段
+-- 2026-09-01 注册协议独立 register_protocol 表：协议内容不再扩展 system_info 表（保持原结构不变），改由独立表存储（全局单份，protolcol_id='1'）
 -- 注：系统版本号由后端 AppInfo.java 常量提供（VERSION = "2.0"），不建表字段；
+-- 若运行库此前已按旧方案误加 user_protocol/merchant_protocol/copyright_info 列，请按需执行：
+-- ALTER TABLE `system_info` DROP COLUMN `user_protocol`, DROP COLUMN `merchant_protocol`, DROP COLUMN `copyright_info`;
 -- 若运行库此前已误加 version 列，请按需执行：ALTER TABLE `system_info` DROP COLUMN `version`;
-ALTER TABLE `system_info`
-  ADD COLUMN `user_protocol` text COMMENT '用户服务协议全文' AFTER `system_simple_title`,
-  ADD COLUMN `merchant_protocol` text COMMENT '隐私保护指引全文' AFTER `user_protocol`,
-  ADD COLUMN `copyright_info` varchar(200) DEFAULT NULL COMMENT '版权信息' AFTER `merchant_protocol`;
+CREATE TABLE `register_protocol` (
+  `protolcol_id` varchar(30) NOT NULL COMMENT '协议ID',
+  `user_protocol` longtext COMMENT '用户注册协议',
+  `merchant_protocol` longtext COMMENT '商家注册协议',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`protolcol_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 填充默认协议/隐私/版权文案
-UPDATE `system_info` SET
-  `user_protocol` = '欢迎使用本系统提供的各项服务。\n\n1. 服务说明：本系统为智慧社区物联网服务平台，提供门禁、充电、停车、水电充值等服务。\n2. 用户义务：请合法使用本服务，因违规操作造成的损失由用户承担。\n3. 隐私保护：我们仅收集服务所必需的信息，具体见《隐私保护指引》。\n4. 其他：本协议最终解释权归服务提供方所有。',
-  `merchant_protocol` = '1. 信息收集：为提供服务，我们可能收集手机号、所在小区、设备使用记录、支付信息等。\n2. 信息使用：所收集信息仅用于账户核验、计费结算、记录展示与安全风控。\n3. 信息共享：我们不会向第三方出售您的个人信息，仅在法律要求或支付结算必要时提供。\n4. 您的权利：您可通过客服渠道查看、导出或删除个人信息。',
-  `copyright_info` = '© 2026 java110团队'
-  WHERE `system_id` = '1';
+-- 初始协议记录（管理端保存时按 protolcol_id='1' 更新）
+INSERT INTO `register_protocol` (`protolcol_id`, `user_protocol`, `merchant_protocol`, `status_cd`)
+VALUES ('1', '', '', '0');
 
 -- 2026-09-01 系统隐私查询接口（system.listSystemPrivacy）服务注册（c_service/c_route）
 INSERT INTO `c_service` VALUES ('982026090100000002', 'system.listSystemPrivacy', 'API', '查询系统隐私信息', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2026-09-01 14:12:52', '0');
 INSERT INTO `c_route` VALUES ('102026090100000002', '992023111817510002', '982026090100000002', 'Q', '1000', 'S', '2026-09-01 14:12:52', '0');
+
+-- 2026-09-01 注册协议查询/保存接口（system.listRegisterProtocol / system.updateRegisterProtocol）服务注册（c_service/c_route，管理端 appId 992023010100000001）
+INSERT INTO `c_service` VALUES ('982026090100000003', 'system.listRegisterProtocol', 'API', '查询注册协议', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2026-09-01 15:07:07', '0');
+INSERT INTO `c_service` VALUES ('982026090100000004', 'system.updateRegisterProtocol', 'API', '修改注册协议', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2026-09-01 15:07:07', '0');
+INSERT INTO `c_route` VALUES ('102026090100000003', '992023010100000001', '982026090100000003', 'Q', '1000', 'S', '2026-09-01 15:07:07', '0');
+INSERT INTO `c_route` VALUES ('102026090100000004', '992023010100000001', '982026090100000004', 'D', '1000', 'S', '2026-09-01 15:07:07', '0');

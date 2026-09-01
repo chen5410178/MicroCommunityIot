@@ -17,6 +17,7 @@ package com.java110.system.cmd.system;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
+import com.java110.bean.dto.registerProtocol.RegisterProtocolDto;
 import com.java110.bean.dto.systemInfo.SystemInfoDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cache.UrlCache;
@@ -25,6 +26,7 @@ import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.intf.system.IRegisterProtocolV1InnerServiceSMO;
 import com.java110.intf.system.ISystemInfoV1InnerServiceSMO;
 import com.java110.system.AppInfo;
 import org.slf4j.Logger;
@@ -54,6 +56,9 @@ public class ListSystemInfoCmd extends Cmd {
     @Autowired
     private ISystemInfoV1InnerServiceSMO systemInfoV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IRegisterProtocolV1InnerServiceSMO registerProtocolV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -72,6 +77,16 @@ public class ListSystemInfoCmd extends Cmd {
             systemInfoDtos = systemInfoV1InnerServiceSMOImpl.querySystemInfos(systemInfoDto);
             systemInfoDtos.get(0).setOwnerUrl(UrlCache.getOwnerUrl());
             systemInfoDtos.get(0).setVersion(AppInfo.VERSION);
+            // 版权信息直接取 company_name
+            systemInfoDtos.get(0).setCopyrightInfo(systemInfoDtos.get(0).getCompanyName());
+            // 协议内容从 register_protocol 表读取
+            RegisterProtocolDto registerProtocolDto = new RegisterProtocolDto();
+            registerProtocolDto.setStatusCd("0");
+            List<RegisterProtocolDto> protocols = registerProtocolV1InnerServiceSMOImpl.queryRegisterProtocols(registerProtocolDto);
+            if (protocols != null && !protocols.isEmpty()) {
+                systemInfoDtos.get(0).setUserProtocol(protocols.get(0).getUserProtocol());
+                systemInfoDtos.get(0).setMerchantProtocol(protocols.get(0).getMerchantProtocol());
+            }
 
         } else {
             systemInfoDtos = new ArrayList<>();

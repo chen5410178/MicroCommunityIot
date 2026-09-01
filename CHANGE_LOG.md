@@ -608,3 +608,21 @@ INSERT INTO `c_route` VALUES ('102026090100000002', '992023111817510002', '98202
 -- 若运行库此前已执行过含 version 列的 ALTER，请按需执行：
 ALTER TABLE `system_info` DROP COLUMN `version`;
 ```
+
+### 2026-09-01 注册协议独立 register_protocol 表存储改造
+
+后端 + 管理端，注册协议/隐私保护指引由扩展 `system_info` 表方案改为独立 `register_protocol` 表存储（`system_info` 表保持原结构不扩展）：
+
+1. **数据库**：`document/db/hc_iot.sql` 新增 `register_protocol` 表（`protolcol_id`/`user_protocol`/`merchant_protocol`/`create_time`/`status_cd`，全局单份 `protolcol_id='1'`）+ 初始空记录 + `system.listRegisterProtocol`/`system.updateRegisterProtocol` 的 `c_service`/`c_route` 注册（管理端 appId `992023010100000001`）；移除旧方案 `system_info` 表 ALTER 扩展语句（含误加列的按需 DROP 提示）。
+2. **后端数据层**：新增 `RegisterProtocolPo`/`RegisterProtocolDto`、`IRegisterProtocolV1InnerServiceSMO` + 实现、`IRegisterProtocolV1ServiceDao` + 实现、`RegisterProtocolV1ServiceDaoImplMapper.xml`；`SystemInfoPo` 移除 userProtocol/merchantProtocol/copyrightInfo 字段，`SystemInfoV1ServiceDaoImplMapper.xml` select/insert/update 移除对应 3 列引用（修复 Unknown column 隐患），`SystemInfoDto` 保留三字段作接口返回载体。
+3. **后端接口**：新增 `ListRegisterProtocolCmd`（`system.listRegisterProtocol` 查询回填）、`UpdateRegisterProtocolCmd`（`system.updateRegisterProtocol` 无记录插入/有记录更新，支持空串清空）；`ListSystemInfoCmd`/`ListSystemPrivacyCmd` 的 userProtocol/merchantProtocol 改从 `register_protocol` 表读取，copyrightInfo 直接取 `company_name`。
+4. **管理端**：`registerProtocol.vue` 查询改调 `listRegisterProtocol({ page: 1, row: 1 })` 回填，保存改调 `updateRegisterProtocol({ userProtocol, merchantProtocol })`（去掉 systemId 依赖），保存成功后重新查询。
+5. **业主端**：about.vue 走 `system.listSystemInfo` 返回协议字段不变，无需改动。
+
+```sql
+-- 服务注册（需在运行库执行）
+INSERT INTO `c_service` VALUES ('982026090100000003', 'system.listRegisterProtocol', 'API', '查询注册协议', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2026-09-01 15:07:07', '0');
+INSERT INTO `c_service` VALUES ('982026090100000004', 'system.updateRegisterProtocol', 'API', '修改注册协议', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2026-09-01 15:07:07', '0');
+INSERT INTO `c_route` VALUES ('102026090100000003', '992023010100000001', '982026090100000003', 'Q', '1000', 'S', '2026-09-01 15:07:07', '0');
+INSERT INTO `c_route` VALUES ('102026090100000004', '992023010100000001', '982026090100000004', 'D', '1000', 'S', '2026-09-01 15:07:07', '0');
+```
