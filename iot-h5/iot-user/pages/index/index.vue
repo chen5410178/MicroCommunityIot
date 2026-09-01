@@ -41,7 +41,7 @@
 			<image src="/static/h5/images/charge/ic-bolt-white.png" class="home-bc-decor1" mode="aspectFit"></image>
 			<view class="home-bc-decor2"></view>
 			<view class="home-bc-head">
-				<view class="home-comm-btn" @click="commShow = true">
+				<view class="home-comm-btn" @click="goChangeCommunity">
 					<image src="/static/h5/images/common/ic-pin-white.png" class="home-bc-ic" mode="aspectFit"></image>
 					<text class="home-comm-name">{{ curCommunity.name || '选择小区' }}</text>
 					<text class="home-comm-dist" v-if="curCommunity.dist">{{ fmtDist(curCommunity.dist) }}</text>
@@ -263,7 +263,8 @@
 	} from '@/api/machine/machineApi.js'
 	import {
 		queryCommunitys,
-		getCommunityId
+		getCommunityId,
+		saveCurrentCommunity
 	} from '@/api/community/communityApi.js'
 	import {
 		hasLogin
@@ -416,9 +417,11 @@
 			openPile(i) {
 				const p = this.curPiles[i]
 				if (!p) return
+				const url = chargeStore.chgType === 'car'
+					? '/packageCharge/pages/charge/carPileDetail?machineId=' + (p.machineId || '') + '&pileIdx=' + i
+					: '/packageCharge/pages/charge/bikePileDetail?machineId=' + (p.machineId || '') + '&pileIdx=' + i
 				uni.navigateTo({
-					url: '/packageCharge/pages/charge/pileDetail?chgType=' + chargeStore.chgType + '&machineId=' + (p.machineId ||
-						'') + '&pileIdx=' + i + '&fromScan=0'
+					url: url
 				})
 			},
 			goScan() {

@@ -203,9 +203,15 @@
 				this._toPile(realIdx >= 0 ? realIdx : 0, true)
 			},
 			_toPile(pileIdx, fromScan) {
+				const piles = chargeStore.curPiles()
+				const p = piles[pileIdx] || {}
+				const url = this.chgType === 'car'
+					? '/packageCharge/pages/charge/machineToCarCharge?machineId=' + (p.machineId || '') + '&communityId=' +
+						chargeStore.curCommId()
+					: '/packageCharge/pages/charge/machineToCharge?machineId=' + (p.machineId || '') + '&communityId=' +
+						chargeStore.curCommId()
 				uni.navigateTo({
-					url: '/packageCharge/pages/charge/pileDetail?chgType=' + this.chgType + '&pileIdx=' + pileIdx +
-						'&fromScan=' + (fromScan ? 1 : 0)
+					url: url
 				})
 			},
 			_toast(msg) {

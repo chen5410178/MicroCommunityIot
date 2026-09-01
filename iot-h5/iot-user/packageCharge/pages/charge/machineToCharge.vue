@@ -1,79 +1,104 @@
 <template>
-	<view class="">
-
-		<view class="flex justify-between mtc-machine">
-			<view>{{machineName}}({{machineCode}})</view>
-			<view>插槽数:{{portCount}}</view>
-		</view>
-		<view class="flex justify-start mtc-machine-port">
-			<view v-for="(item,index) in  ports" :key="index" class="port-item">
-				<view class="item-1"
-					:class="{'item-1-active':curPort.portId == item.portId,'item-1-working':item.state=='WORKING'}"
-					@click="_switchPort(item)">
-					<view class="port-name">
-						{{item.portName}}
-					</view>
-					<view class="port-state">({{item.stateName}})</view>
+	<view class="mtc-page" :class="{ 'charge-theme-dark': themeDark }">
+		<!-- 桩信息卡 -->
+		<view class="c-card mtc-mx mtc-mt">
+			<view class="mtc-pile-head">
+				<view class="mtc-pile-ic">
+					<image src="/static/h5/images/charge/ic-bolt.png" class="mtc-pile-ic-img" mode="aspectFit"></image>
 				</view>
-			</view>
-		</view>
-		<view class=" mtc-hours-title">
-			<view>充电时长</view>
-		</view>
-		<view class="flex justify-start mtc-machine-hours">
-			<view v-for="(item,index) in  hours" :key="index" class="hours-item">
-				<view class="item-1" :class="{'item-1-active':curHours.duration == item.duration}"
-					@click="_switchHours(item)">
-					<view class="port-name">
-						{{item.name}}
-					</view>
-				</view>
-			</view>
-		</view>
-
-		<view class="cu-list menu margin-sm" @click="_selectCoupons" v-if="curHours.duration && curPort.portId">
-			<view class="cu-item arrow">
-				<view class="content padding-tb-sm">
-					<view>
-						<view class="text-cut" style="width:220px">使用充电劵抵扣</view>
-					</view>
-				</view>
-				<view v-if="couponCount == 0">请选择</view>
-				<view v-else>{{couponCount+ '张' }}</view>
-			</view>
-		</view>
-		<view class="margin-sm" v-show="login">
-			<account ref="accRef"></account>
-		</view>
-		<view class="margin-sm" v-show="login">
-			<charge ref="chargeRef"></charge>
-		</view>
-		<view class="margin-sm" v-show="login">
-			<view class="cu-list menu">
-				<view class="cu-item arrow" @click="_toChargeOrder()">
-					<view class="content padding-tb-sm">
-						<view>
-							<text class="cuIcon-formfill text-green margin-right-xs"></text> 充电订单
+				<view class="mtc-pile-info">
+					<view class="mtc-pile-name-row">
+						<text class="c-title mtc-pile-name">{{ machineName }}</text>
+						<view class="mtc-online" :class="online === false ? 'off' : 'on'">
+							<view class="mtc-dot"></view>
+							<text>{{ online === false ? '离线' : '在线' }}</text>
 						</view>
 					</view>
-					<view class="action">
-						去查看
-					</view>
+					<text class="c-text-sub mtc-pile-code">{{ machineCode }}</text>
+				</view>
+				<view class="mtc-pile-side">
+					<text class="c-text-sub">插槽数</text>
+					<text class="mtc-port-count">{{ portCount }}</text>
 				</view>
 			</view>
 		</view>
-		<view class="plat-btn-black"></view>
-		<view class="cu-bar btn-group" style="margin-top: 30px;" v-if="login">
-			<button @click="_toCharge" :disabled="!curHours.duration || !curPort.portId"
-				class="cu-btn bg-green shadow-blur round lg">去充电</button>
+
+		<!-- 选择插座 -->
+		<view class="c-card mtc-mx mtc-mt">
+			<view class="mtc-sec-head">
+				<text class="c-title">选择插座</text>
+				<text class="c-text-sub">{{ slotTip }}</text>
+			</view>
+			<view class="mtc-slot-grid">
+				<view v-for="(item, index) in ports" :key="index" class="c-slot-btn"
+					:class="{ busy: item.state == 'WORKING', active: curPort.portId == item.portId }" @click="_switchPort(item)">
+					<text class="c-slot-num">{{ item.portCode }}</text>
+				</view>
+			</view>
+		</view>
+
+		<!-- 充电时长 -->
+		<view class="c-card mtc-mx mtc-mt">
+			<view class="mtc-sec-head">
+				<text class="c-title">充电时长</text>
+				<text class="c-text-sub">充满自停更省心</text>
+			</view>
+			<view class="mtc-hours-grid">
+				<view v-for="(item, index) in hours" :key="index" class="c-chip"
+					:class="{ active: curHours.duration == item.duration }" @click="_switchHours(item)">
+					{{ item.name }}
+				</view>
+			</view>
+		</view>
+
+		<!-- 优惠券入口 -->
+		<view class="c-card mtc-mx mtc-mt" v-if="curHours.duration && curPort.portId" @click="_selectCoupons">
+			<view class="mtc-row">
+				<view class="mtc-row-left">
+					<image src="/static/h5/images/charge/ic-card.png" class="mtc-row-ic" mode="aspectFit"></image>
+					<text class="c-text-bold mtc-row-name">使用充电劵抵扣</text>
+				</view>
+				<view class="mtc-row-right">
+					<text class="c-text-sub">{{ couponCount == 0 ? '请选择' : couponCount + ' 张' }}</text>
+					<text class="mtc-arrow">›</text>
+				</view>
+			</view>
+		</view>
+
+		<!-- 余额 / 月卡 -->
+		<view class="c-card mtc-mx mtc-mt" v-show="login">
+			<account ref="accRef"></account>
+		</view>
+		<view class="c-card mtc-mx mtc-mt" v-show="login">
+			<charge ref="chargeRef"></charge>
+		</view>
+
+		<!-- 充电订单入口 -->
+		<view class="c-card mtc-mx mtc-mt" v-show="login" @click="_toChargeOrder">
+			<view class="mtc-row">
+				<view class="mtc-row-left">
+					<image src="/static/h5/images/charge/ic-chart.png" class="mtc-row-ic" mode="aspectFit"></image>
+					<text class="c-text-bold mtc-row-name">充电订单</text>
+				</view>
+				<view class="mtc-row-right">
+					<text class="c-text-sub">去查看</text>
+					<text class="mtc-arrow">›</text>
+				</view>
+			</view>
+		</view>
+
+		<!-- 去充电 -->
+		<view class="mtc-mx mtc-mt mtc-foot" v-if="login">
+			<view class="c-btn-primary" :class="{ 'mtc-btn-disabled': !curHours.duration || !curPort.portId }"
+				@click="_toCharge">去充电</view>
 		</view>
 		<!-- #ifdef H5 -->
-		<view class="cu-bar btn-group" style="margin-top: 30px;" v-else>
-			<button @click="_toLogin" class="cu-btn bg-green shadow-blur round lg">请先登录</button>
+		<view class="mtc-mx mtc-mt mtc-foot" v-else>
+			<view class="c-btn-primary" @click="_toLogin">请先登录</view>
 		</view>
 		<!-- #endif -->
 		<!-- #ifdef MP-WEIXIN -->
-		<view class="padding flex flex-direction" v-else>
+		<view class="mtc-mx mtc-mt mtc-foot" v-else>
 			<wechat-login-charge ref="wechatLoginChargeRel" @getWechatLogin="getWechatLogin"></wechat-login-charge>
 		</view>
 		<!-- #endif -->
@@ -96,6 +121,7 @@
 		autoLoginMini
 	} from '@/api/user/sessionApi.js';
 	import wechatLoginCharge from '@/packageCharge/components/user/wechat-login-charge.vue';
+	import chargeStore from '@/api/charge/chargeStore.js';
 	export default {
 		data() {
 			return {
@@ -105,6 +131,7 @@
 				machineName: '',
 				portCount: '',
 				durationPrice: '',
+				online: true,
 				ports: [],
 				curPort: {},
 				curHours: {},
@@ -136,6 +163,15 @@
 			charge,
 			account,
 			wechatLoginCharge
+		},
+		computed: {
+			themeDark() {
+				return chargeStore.themeDark
+			},
+			slotTip() {
+				const free = this.ports.filter(p => p.state == 'FREE').length
+				return free + ' 个空闲 · 点击选择'
+			}
 		},
 		async onLoad(options) {
 			// #ifdef H5
@@ -218,6 +254,7 @@
 					_that.machineName = _data.data[0].machineName;
 					_that.portCount = _data.data[0].portCount;
 					_that.durationPrice = _data.data[0].durationPrice;
+					_that.online = _data.data[0].state !== 'OFFLINE';
 				})
 			},
 			_loadChargeMachinePorts: function() {
@@ -306,105 +343,221 @@
 </script>
 
 <style lang="scss">
-	.mtc-machine {
-		background-color: #fff;
-		font-size: 28upx;
-		color: #000;
-		padding-left: 20upx;
-		padding-right: 20upx;
-		margin: 20upx 20upx 0upx 20upx;
-		border-top-left-radius: 20upx;
-		border-top-right-radius: 20upx;
-		height: 60upx;
-		line-height: 60upx;
-		border-bottom: 2upx;
+	.mtc-page {
+		padding-bottom: 60rpx;
 	}
 
-	.mtc-machine-port {
-		background-color: #fff;
-		padding-left: 20upx;
-		padding-right: 20upx;
-		padding-bottom: 20upx;
-		margin: 2upx 20upx 0upx 20upx;
-
-		flex-wrap: wrap;
-
-		.port-item {
-			width: 33.33%;
-			text-align: center;
-
-			.item-1 {
-				background-color: #B1E8DA;
-				width: 90%;
-				margin: 0upx auto;
-				margin-top: 20upx;
-				border-radius: 10upx;
-				color: #fff;
-
-				.port-name {
-					font-size: 28upx;
-				}
-
-				.port-state {
-					font-size: 24upx;
-				}
-			}
-
-			.item-1-active {
-				background-color: #0FBA82;
-			}
-
-			.item-1-working {
-				background-color: #e54d42;
-			}
-		}
+	.mtc-mx {
+		margin-left: 28rpx;
+		margin-right: 28rpx;
 	}
 
-	.mtc-hours-title {
-		background-color: #fff;
-		font-size: 28upx;
-		color: #000;
-		padding-left: 20upx;
-		padding-right: 20upx;
-		margin: 20upx 20upx 0upx 20upx;
-		border-top-left-radius: 20upx;
-		border-top-right-radius: 20upx;
-		height: 60upx;
-		line-height: 60upx;
-		border-bottom: 2upx;
+	.mtc-mt {
+		margin-top: 24rpx;
 	}
 
-	.mtc-machine-hours {
-		background-color: #fff;
-		padding-left: 20upx;
-		padding-right: 20upx;
-		padding-bottom: 20upx;
-		margin: 2upx 20upx 0upx 20upx;
+	.mtc-pile-head {
+		display: flex;
+		align-items: center;
+		gap: 20rpx;
+		padding: 32rpx 28rpx;
+	}
 
-		flex-wrap: wrap;
+	.mtc-pile-ic {
+		width: 88rpx;
+		height: 88rpx;
+		border-radius: 24rpx;
+		background: rgba(16, 185, 129, .1);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
 
-		.hours-item {
-			width: 33.33%;
-			text-align: center;
+	.mtc-pile-ic-img {
+		width: 44rpx;
+		height: 44rpx;
+	}
 
-			.item-1 {
-				border: 1px solid #000;
-				width: 90%;
-				margin: 0upx auto;
-				margin-top: 20upx;
-				border-radius: 10upx;
-				color: #000;
+	.mtc-pile-info {
+		flex: 1;
+		min-width: 0;
+	}
 
-				.port-name {
-					font-size: 28upx;
-				}
-			}
+	.mtc-pile-name-row {
+		display: flex;
+		align-items: center;
+		gap: 12rpx;
+	}
 
-			.item-1-active {
-				border: 1px solid #0FBA82;
-				background-color: #0FBA82;
-				color: #fff;
-			}
-		}
+	.mtc-pile-name {
+		font-size: 28rpx;
+	}
+
+	.mtc-pile-code {
+		margin-top: 6rpx;
+		display: block;
+		font-size: 22rpx;
+	}
+
+	.mtc-online {
+		display: flex;
+		align-items: center;
+		gap: 8rpx;
+		font-size: 18rpx;
+		font-weight: 600;
+	}
+
+	.mtc-online.on {
+		color: #059669;
+	}
+
+	.mtc-online.off {
+		color: #64748b;
+	}
+
+	.mtc-dot {
+		width: 12rpx;
+		height: 12rpx;
+		border-radius: 50%;
+		background: #10b981;
+	}
+
+	.mtc-online.off .mtc-dot {
+		background: #cbd5e1;
+	}
+
+	.mtc-pile-side {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 6rpx;
+	}
+
+	.mtc-port-count {
+		font-size: 32rpx;
+		font-weight: 700;
+		color: #10b981;
+		line-height: 1;
+	}
+
+	.mtc-sec-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 28rpx 28rpx 20rpx;
+	}
+
+	.mtc-slot-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 16rpx;
+		padding: 0 28rpx 28rpx;
+	}
+
+	.mtc-slot-grid .c-slot-btn {
+		border-radius: 24rpx;
+		padding: 32rpx 0;
+		gap: 8rpx;
+	}
+
+	.mtc-slot-grid .c-slot-num {
+		font-size: 32rpx;
+	}
+
+	.mtc-slot-grid .c-slot-btn:not(.busy) .c-slot-num {
+		color: #10b981;
+	}
+
+	.mtc-slot-grid .c-slot-btn.active .c-slot-num {
+		color: #fff;
+	}
+
+	.mtc-slot-grid .c-slot-btn.busy {
+		border-color: #fecaca;
+		background: #fef2f2;
+	}
+
+	.mtc-slot-grid .c-slot-btn.busy .c-slot-num {
+		color: #f87171;
+	}
+
+	.mtc-hours-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 16rpx;
+		padding: 0 28rpx 28rpx;
+	}
+
+	.mtc-hours-grid .c-chip {
+		width: 100%;
+		padding: 20rpx 0;
+	}
+
+	.mtc-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 26rpx 28rpx;
+	}
+
+	.mtc-row-left {
+		display: flex;
+		align-items: center;
+		gap: 16rpx;
+	}
+
+	.mtc-row-ic {
+		width: 36rpx;
+		height: 36rpx;
+		flex-shrink: 0;
+	}
+
+	.mtc-row-name {
+		font-size: 24rpx;
+		font-weight: 600;
+	}
+
+	.mtc-row-right {
+		display: flex;
+		align-items: center;
+		gap: 8rpx;
+	}
+
+	.mtc-arrow {
+		font-size: 28rpx;
+		color: #cbd5e1;
+		line-height: 1;
+	}
+
+	.mtc-foot {
+		padding-bottom: 40rpx;
+	}
+
+	.mtc-foot .c-btn-primary {
+		border-radius: 32rpx;
+		height: 104rpx;
+		line-height: 104rpx;
+		font-size: 30rpx;
+		box-shadow: 0 12rpx 32rpx rgba(16, 185, 129, .3);
+	}
+
+	.mtc-btn-disabled {
+		opacity: .4;
+		pointer-events: none;
+	}
+
+	/* ===== 黑夜主题覆盖（对齐原型 phone.theme-dark） ===== */
+	.charge-theme-dark .mtc-pile-ic {
+		background: rgba(16, 185, 129, .18) !important;
+	}
+
+	.charge-theme-dark .mtc-slot-grid .c-slot-btn.busy {
+		background: #182338 !important;
+		border-color: #7f1d1d !important;
+	}
+
+	.charge-theme-dark .mtc-slot-grid .c-slot-btn.busy .c-slot-num {
+		color: #f87171 !important;
 	}
 </style>

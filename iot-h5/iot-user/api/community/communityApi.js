@@ -20,6 +20,18 @@ export function getCommunityId() {
 	return "-1"
 }
 
+/**
+ * 保存当前小区缓存（规范化为 {communityId, communityName}）
+ * @param {Object} _community 小区对象（兼容 {communityId,name} 与 {communityId,communityName}）
+ */
+export function saveCurrentCommunity(_community) {
+	if (!_community) return;
+	uni.setStorageSync("currentCommunityInfo", {
+		communityId: _community.communityId || '-1',
+		communityName: _community.communityName || _community.name || '无'
+	});
+}
+
 
 export function queryFloors(_objData) {
 	return new Promise((resolve, reject) => {

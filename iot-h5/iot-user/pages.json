@@ -152,9 +152,16 @@
 					}
 				},
 				{
-					"path": "pages/charge/pileDetail",
+					"path": "pages/charge/bikePileDetail",
 					"style": {
-						"navigationBarTitleText": "充电桩详情",
+						"navigationBarTitleText": "电瓶车充电桩详情",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/carPileDetail",
+					"style": {
+						"navigationBarTitleText": "汽车充电桩详情",
 						"enablePullDownRefresh": false
 					}
 				},
