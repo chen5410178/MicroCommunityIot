@@ -3,7 +3,7 @@
 		<!-- 车牌键盘 -->
 		<view class="pk-mask" v-if="show" @click="close"></view>
 		<view class="pk-board" v-if="show">
-			<text class="pk-label">{{ splitMode ? '请选择省份汉字' : '请选择省份汉字' }}</text>
+			<text class="pk-label">{{ splitMode ? '请选择车牌字母数字' : '请选择省份汉字' }}</text>
 			<scroll-view scroll-x class="pk-provinces" v-if="!splitMode">
 				<view v-for="(c, i) in KB_PROVINCES" :key="i" class="pk-key prov" @click="kbChar(c)">{{ c }}</view>
 			</scroll-view>

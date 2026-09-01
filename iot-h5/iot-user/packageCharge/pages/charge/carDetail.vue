@@ -36,7 +36,7 @@
 			</view>
 			<text class="cd-rent-label">当前有效期至</text>
 			<text class="cd-rent-expire">{{ car.expire || '未开通' }}</text>
-			<text class="cd-rent-tip">{{ car.expire ? '到期前可随时续费，续费后有效期自动顺延' : '开通月租后，车辆进出小区按月租计费' }}</text>
+			<text class="cd-rent-tip">{{ car.expire ? '剩余 ' + leftDays + ' 天 · 到期前可随时续费，续费后有效期自动顺延' : '开通月租后，车辆进出小区按月租计费' }}</text>
 		</view>
 
 		<!-- 月租套餐 -->
@@ -45,16 +45,19 @@
 			<text class="c-text-sub">支持余额 / 微信支付</text>
 		</view>
 		<view class="cd-plans cd-mx">
-			<view v-for="(p, i) in carPlans" :key="i" class="cd-plan" :class="{ active: planIdx === i }" @click="pickPlan(i)">
+			<view v-for="(p, i) in cards" :key="i" class="cd-plan" :class="{ active: planIdx === i }" @click="pickPlan(i)">
 				<view style="flex:1;min-width:0;">
 					<view class="cd-plan-name-row">
 						<text class="c-text-bold" style="font-size:26rpx;font-weight:700;color:#0f172a;">{{ p.name }}</text>
 						<text class="cd-plan-tag" v-if="p.tag">{{ p.tag }}</text>
 					</view>
-					<text class="c-text-sub" style="margin-top:4rpx;display:block;">{{ p.months }} 个月 · 平均 ¥{{ (p.price / p.months).toFixed(0) }}/月</text>
+					<text class="c-text-sub" style="margin-top:4rpx;display:block;">{{ p.months }} 个月 · 平均 ¥{{ p.months ? (p.price / p.months).toFixed(0) : 0 }}/月</text>
 				</view>
 				<text class="cd-plan-price">¥{{ p.price }}</text>
 				<view class="cd-plan-radio" :class="{ on: planIdx === i }"></view>
+			</view>
+			<view v-if="!cards.length" class="c-card cd-plan-empty">
+				<text class="c-text-sub">暂无可用月卡套餐</text>
 			</view>
 		</view>
 
@@ -100,25 +103,34 @@
 <script>
 	import chargeStore from '@/api/charge/chargeStore.js'
 	import {
-		carPlans,
-		mockVehicles
-	} from '@/api/mock/chargeMockData.js'
+		queryMonthCardByCarNum
+	} from '@/packageCharge/api/chargeApi.js'
 	import {
 		isNewEnergy
 	} from '@/packageCharge/api/mock/carPlateData.js'
 	import {
 		hasLogin
 	} from '@/api/user/sessionApi.js'
+	import {
+		getCommunityId
+	} from '@/api/community/communityApi.js'
+	import {
+		getUserId
+	} from '@/api/user/userApi.js'
 
 	export default {
 		data() {
 			return {
-				carPlans,
+				plate: '',
+				carId: '',
+				model: '',
+				comm: '',
+				bindDate: '',
+				cards: [],
 				planIdx: 0,
 				rentShow: false,
 				newExpire: '',
-				curCar: null,
-				curTemp: false,
+				carExpire: '',
 				toastMsg: ''
 			}
 		},
@@ -127,40 +139,57 @@
 				return chargeStore.themeDark
 			},
 			car() {
-				return this.curCar || this.curTempCar || {}
-			},
-			curTempCar() {
-				// 未绑定车辆直接续费时的临时车辆
-				if (this.curTemp) {
-					return {
-						plate: this.plate,
-						model: this.isNewEnergy ? '新能源小型汽车' : '燃油小型汽车',
-						comm: chargeStore.curCommunity().name,
-						bindDate: '',
-						expire: ''
-					}
+				const isNew = isNewEnergy(this.plate.replace(/·/g, ''))
+				return {
+					plate: this.plate,
+					model: this.model || (isNew ? '新能源小型汽车' : '燃油小型汽车'),
+					comm: this.comm || this._commName(),
+					bindDate: this.bindDate || '',
+					expire: this.carExpire
 				}
-				return null
 			},
 			isNewEnergy() {
 				return isNewEnergy((this.car.plate || '').replace(/·/g, ''))
 			},
+			leftDays() {
+				return this.car.expire ? this._leftDays(this.car.expire) : 0
+			},
 			curPlan() {
-				return this.carPlans[this.planIdx]
+				return this.cards[this.planIdx] || null
 			}
 		},
 		onLoad(options) {
-			this.plate = decodeURIComponent(options.plate || '')
-			const bare = this.plate.replace(/·/g, '')
-			const idx = chargeStore.vehicles.findIndex(c => c.plate.replace(/·/g, '') === bare)
-			if (idx >= 0) {
-				this.curCar = chargeStore.vehicles[idx]
-				this.curTemp = false
-			} else {
-				this.curTemp = true
-			}
+			this.plate = decodeURIComponent(options.carNum || '')
+			this.carId = decodeURIComponent(options.carId || '')
+			this.model = decodeURIComponent(options.model || '')
+			this.comm = decodeURIComponent(options.comm || '')
+			this.bindDate = decodeURIComponent(options.bindDate || '')
+			this._loadMonthCards()
 		},
 		methods: {
+			_loadMonthCards() {
+				const bare = this.plate.replace(/·/g, '')
+				queryMonthCardByCarNum({
+					carNum: bare,
+					communityId: getCommunityId()
+				}).then(data => {
+					this.carId = data.carId || this.carId
+					this.carExpire = this._expireDate(data.endTime)
+					this.cards = (data.cards || []).map(c => ({
+						cardId: c.cardId,
+						name: c.cardName || '',
+						months: parseInt(c.cardMonth) || 0,
+						price: parseFloat(c.cardPrice) || 0
+					}))
+					this.planIdx = 0
+				}).catch(e => {
+					const msg = (typeof e === 'string' ? e : (e && e.message)) || '查询月卡失败'
+					this._toast(msg)
+					setTimeout(() => {
+						uni.navigateBack({ delta: 1 })
+					}, 1500)
+				})
+			},
 			pickPlan(i) {
 				this.planIdx = i
 			},
@@ -171,48 +200,36 @@
 					return
 				}
 				const p = this.curPlan
+				if (!p) {
+					this._toast('套餐加载中，请稍候')
+					return
+				}
 				this.newExpire = this._addMonths(this.car.expire || this._today(), p.months)
 				this.rentShow = true
 			},
 			confirmRenew() {
 				const p = this.curPlan
-				const oldExpire = this.car.expire || this._today()
-				const newExpire = this._addMonths(oldExpire, p.months)
-				if (!this.curTemp) {
-					// 已绑定车辆：更新有效期
-					this.curCar.expire = newExpire
-					chargeStore.saveVehicles()
-				} else {
-					// 未绑定：直接开通（生成车辆）
-					chargeStore.vehicles.push({
-						id: Date.now(),
-						plate: this.plate,
-						model: this.isNewEnergy ? '新能源小型汽车' : '燃油小型汽车',
-						comm: chargeStore.curCommunity().name,
-						bindDate: this._today(),
-						expire: newExpire
-					})
-					chargeStore.saveVehicles()
-					this.curTemp = false
-					this.curCar = chargeStore.vehicles[chargeStore.vehicles.length - 1]
+				if (!p) return
+				const communityId = getCommunityId()
+				const cashierUserId = getUserId()
+				const objData = {
+					business: 'buyCarMonthCard',
+					carNum: this.plate.replace(/·/g, ''),
+					carId: this.carId,
+					cardId: p.cardId,
+					feeName: '停车月卡费',
+					tradeType: 'JSAPI',
+					communityId: communityId,
+					receivedAmount: p.price,
+					cashierUserId: cashierUserId
 				}
-				// 追加月租续费订单
-				const d = new Date()
-				const hm = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2)
-				chargeStore.rentOrders.unshift({
-					id: Date.now(),
-					plate: this.plate,
-					plan: p.name,
-					months: p.months,
-					fee: p.price,
-					from: oldExpire,
-					to: newExpire,
-					time: this._today() + ' ' + hm,
-					st: '已完成'
-				})
-				chargeStore.saveRentOrders()
+				uni.setStorageSync('doing_cashier', objData)
 				this.rentShow = false
-				this._toast('续费成功 · 有效期至 ' + newExpire)
+				uni.navigateTo({
+					url: '/packageFee/pages/fee/cashier?money=' + p.price +
+						'&business=buyCarMonthCard&communityId=' + communityId +
+						'&cashierUserId=' + cashierUserId
+				})
 			},
 			_addMonths(dateStr, n) {
 				const d = new Date(dateStr.replace(/-/g, '/'))
@@ -222,6 +239,30 @@
 			_today() {
 				const d = new Date()
 				return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2)
+			},
+			_expireDate(v) {
+				const d = this._toDate(v)
+				if (!d) return ''
+				const end = new Date(d.replace(/-/g, '/')).getTime()
+				if (isNaN(end) || end <= Date.now()) return ''
+				return d
+			},
+			_leftDays(dateStr) {
+				const end = new Date(dateStr.replace(/-/g, '/')).getTime()
+				if (isNaN(end)) return 0
+				return Math.max(0, Math.ceil((end - Date.now()) / 86400000))
+			},
+			_toDate(v) {
+				if (!v) return ''
+				const s = String(v)
+				if (s.indexOf('-') >= 0) return s.slice(0, 10)
+				const d = new Date(Number(s))
+				if (isNaN(d.getTime())) return ''
+				return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2)
+			},
+			_commName() {
+				const c = uni.getStorageSync('currentCommunityInfo')
+				return (c && (c.communityName || c.name)) || '无'
 			},
 			_toast(msg) {
 				this.toastMsg = msg
@@ -434,6 +475,11 @@
 		height: 20rpx;
 		border-radius: 50%;
 		background: #3b82f6;
+	}
+
+	.cd-plan-empty {
+		padding: 40rpx 0;
+		text-align: center;
 	}
 
 	.cd-tip {

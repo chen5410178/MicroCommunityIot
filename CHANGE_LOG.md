@@ -559,3 +559,27 @@ ALTER TABLE `owner_car` DROP COLUMN `car_color`;
 INSERT INTO `c_service` VALUES ('982026090100000001', 'account.queryAppUserAccountDetail', 'API', '手机端查询账户明细', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-01 10:00:00', '0');
 INSERT INTO `c_route` VALUES ('102026090100000001', '992023111817510002', '982026090100000001', 'Q', '1000', 'S', '2026-09-01 10:00:00', '0');
 ```
+
+### 2026-09-01 车辆服务页对接真实接口（月租续费走收银台）
+
+纯前端（`iot-h5/iot-user/packageCharge/pages/charge/`，无 SQL 变更）：
+
+1. `carService.vue`：车辆列表与月租订单由 chargeStore mock 改为真实接口（`car.listUserCar`、`carMonth.listUserCarMonthOrder`），onShow 登录校验 + 并行加载（loading/空态占位）；车辆字段适配（carNum 去分隔符、carTypeName 缺省按 D/F 判定新能源、comm 取当前小区名、bindDate 截取 createTime、endTime 仅保留未来日期并计算剩余天数）；搜索命中改为本地匹配真实车辆，跳 carDetail 传 carNum/carId/model/comm/bindDate；订单卡片按 orderId 跳 rentOrderDetail；底部新增"添加车辆"入口（提示到物业前台申请绑定）。
+2. `carDetail.vue`：套餐由 mock carPlans 改为 `carMonth.queryMonthCardByCarNum` 按车牌实时查询（cards 渲染、平均月价、空套餐占位）；续费确认弹窗组装 `doing_cashier`（business=buyCarMonthCard）后跳收银台 `/packageFee/pages/fee/cashier`；查询失败 toast 后端 msg 并 1.5s 返回上一页。
+3. `rentOrderDetail.vue`：由 mock 订单改为 `carMonth.listUserCarMonthOrder` 按 orderId 匹配展示（未传/未匹配取第一条）。
+
+### 2026-09-01 系统信息/隐私协议查询接口与「关于页、联系客服」改造
+
+后端 + 管理端 + 业主端（`iot-h5/iot-user`）：
+
+1. **后端数据层**：`system_info` 表新增 `version`（版本号）、`user_protocol`（用户服务协议）、`merchant_protocol`（隐私保护指引）、`copyright_info`（版权信息）4 字段（SQL 已追加 `document/db/hc_iot.sql` 尾部，含默认文案 UPDATE 与 `c_service`/`c_route` 注册）；`SystemInfoPo`/`SystemInfoDto` 增加对应驼峰字段；`SystemInfoV1ServiceDaoImplMapper.xml` select/insert/update 同步新字段（`system.listSystemInfo` 免登录接口自动返回新字段）。
+2. **后端新接口**：`iot-system` 新增 `ListSystemPrivacyCmd`（serviceCode `system.listSystemPrivacy`，入参 `communityId`）：按小区ID 查 `s_community.tel` + 查系统信息，合并返回 `{tel, version, userProtocol, merchantProtocol, copyrightInfo, companyName, systemTitle, subSystemTitle, logoUrl, imgUrl}`；`iot-gateway` `ServiceConfiguration.exclusions` 已追加免登录。
+3. **管理端**：`iot-webvue/src/views/frame/registerProtocol.vue` 由未实现的 `system.listRegisterProtocol`/`system.updateRegisterProtocol` 改为调用 `system.listSystemInfo`/`system.updateSystemInfo`（查询取 `res.data[0]` 回填，保存提交 `systemId + userProtocol + merchantProtocol`），第二个输入框标签由「商家协议」改为「隐私保护指引」。
+4. **业主端 API 层**：`conf/url.js` 补充 `listSystemInfo`（修复 App.vue 引用 undefined 缺陷）并新增 `listSystemPrivacy`；新增 `api/system/systemApi.js`（`getSystemInfo`/`getSystemPrivacy`，免登录）。
+5. **业主端页面**：`about.vue` 删除「检查更新」按钮，名称/版本/版权/协议/隐私全文改接 `getSystemInfo()`（协议为空提示「暂无内容」）；`my.vue` 联系客服电话与拨打按钮改接 `getSystemPrivacy()` 返回的小区联系电话（`chargeStore.serviceTel`，`uni.makePhoneCall` 拨号），关于行版本号取 `java110SystemConfig` 缓存；`customerService.vue` 客服名称/电话改接接口数据，拨号改 `uni.makePhoneCall`，电话为空时隐藏拨打按钮。
+
+```sql
+-- 服务注册（需在运行库执行）
+INSERT INTO `c_service` VALUES ('982026090100000002', 'system.listSystemPrivacy', 'API', '查询系统隐私信息', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2026-09-01 14:12:52', '0');
+INSERT INTO `c_route` VALUES ('102026090100000002', '992023111817510002', '982026090100000002', 'Q', '1000', 'S', '2026-09-01 14:12:52', '0');
+```

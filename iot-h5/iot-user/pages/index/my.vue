@@ -54,13 +54,13 @@
 			<view class="my-menu-item" @click="goService">
 				<image src="/static/h5/images/common/ic-phone.png" class="my-menu-ic" mode="aspectFit"></image>
 				<text class="my-menu-text">联系客服</text>
-				<text class="my-menu-phone">400-880-1234</text>
-				<view class="my-call-btn" @click.stop="goService">拨打</view>
+				<text class="my-menu-phone" v-if="serviceTel">{{ serviceTel }}</text>
+				<view class="my-call-btn" v-if="serviceTel" @click.stop="callService">拨打</view>
 			</view>
 			<view class="my-menu-item" @click="goAbout">
 				<image src="/static/h5/images/common/ic-info.png" class="my-menu-ic" mode="aspectFit"></image>
 				<text class="my-menu-text">关于充电服务</text>
-				<text class="c-text-sub" style="font-size:20rpx;">v1.3.0</text>
+				<text class="c-text-sub" style="font-size:20rpx;" v-if="appVersion">{{ appVersion }}</text>
 				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
 			</view>
 		</view>
@@ -96,6 +96,12 @@
 	import {
 		removeUserLoginInfo
 	} from '@/lib/java110/utils/StorageUtil.js'
+	import {
+		getCommunityId
+	} from '@/api/community/communityApi.js'
+	import {
+		getSystemPrivacy
+	} from '@/api/system/systemApi.js'
 
 	export default {
 		data() {
@@ -107,7 +113,8 @@
 				},
 				logoutShow: false,
 				isLogin: false,
-				toastMsg: ''
+				toastMsg: '',
+				appVersion: ''
 			}
 		},
 		computed: {
@@ -128,6 +135,9 @@
 			},
 			vehicles() {
 				return chargeStore.vehicles
+			},
+			serviceTel() {
+				return chargeStore.serviceTel
 			}
 		},
 		onShow() {
@@ -143,8 +153,25 @@
 				this.user.name = demo.name
 				this.user.mode = demo.mode
 			}
+			// 关于页版本号取系统配置缓存（App.vue 启动时拉取）
+			const sysConfig = uni.getStorageSync('java110SystemConfig')
+			this.appVersion = (sysConfig && sysConfig.version) || ''
+			this._loadService()
 		},
 		methods: {
+			_loadService() {
+				getSystemPrivacy(getCommunityId()).then(_res => {
+					if (_res && _res.data) {
+						chargeStore.setService(_res.data)
+					}
+				}).catch(() => {})
+			},
+			callService() {
+				if (!chargeStore.serviceTel) return
+				uni.makePhoneCall({
+					phoneNumber: chargeStore.serviceTel
+				})
+			},
 			goLogin() {
 				uni.navigateTo({ url: '/pages/user/login' })
 			},

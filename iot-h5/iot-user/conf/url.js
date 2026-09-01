@@ -2,6 +2,8 @@ import conf from '../conf/config.js'
 const baseUrl = conf.baseUrl;
 export default {
 	baseUrl: baseUrl,
+	listSystemInfo: baseUrl + "iot/api/system.listSystemInfo", // 查询系统信息（免登录）
+	listSystemPrivacy: baseUrl + "iot/api/system.listSystemPrivacy", // 查询隐私/小区联系电话（免登录）
 	wechatRefrashToken: baseUrl + "iot/api/refreshToken", // 公众号刷新token
 	appUserRegister: baseUrl + "iot/api/login.appUserRegister", // 用户注册
 	appUserLogin: baseUrl + "iot/api/login.appUserLogin", // 用户注册

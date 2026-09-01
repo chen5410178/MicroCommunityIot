@@ -8,9 +8,9 @@
     <!-- 保存系统配置信息 add by wuxw 2018-07-03 -->
     <insert id="saveSystemInfoInfo" parameterType="Map">
         insert into system_info(
-        img_url,system_id,owner_title,default_community_id,system_title,qq_map_key,sub_system_title,company_name,mall_url,logo_url,property_title,system_simple_title
+        img_url,system_id,owner_title,default_community_id,system_title,qq_map_key,sub_system_title,company_name,mall_url,logo_url,property_title,system_simple_title,version,user_protocol,merchant_protocol,copyright_info
         ) values (
-        #{imgUrl},#{systemId},#{ownerTitle},#{defaultCommunityId},#{systemTitle},#{qqMapKey},#{subSystemTitle},#{companyName},#{mallUrl},#{logoUrl},#{propertyTitle} #{systemSimpleTitle}
+        #{imgUrl},#{systemId},#{ownerTitle},#{defaultCommunityId},#{systemTitle},#{qqMapKey},#{subSystemTitle},#{companyName},#{mallUrl},#{logoUrl},#{propertyTitle},#{systemSimpleTitle},#{version},#{userProtocol},#{merchantProtocol},#{copyrightInfo}
         )
     </insert>
 
@@ -21,7 +21,7 @@
         ownerTitle,t.default_community_id,t.default_community_id defaultCommunityId,t.system_title,t.system_title
         systemTitle,t.qq_map_key,t.qq_map_key qqMapKey,t.sub_system_title,t.sub_system_title
         subSystemTitle,t.company_name,t.company_name companyName,t.mall_url,t.mall_url mallUrl,t.status_cd,t.status_cd
-        statusCd,t.logo_url,t.logo_url logoUrl,t.property_title,t.property_title propertyTitle,t.system_simple_title systemSimpleTitle
+        statusCd,t.logo_url,t.logo_url logoUrl,t.property_title,t.property_title propertyTitle,t.system_simple_title systemSimpleTitle,t.version version,t.user_protocol userProtocol,t.merchant_protocol merchantProtocol,t.copyright_info copyrightInfo
         from system_info t
         where 1 =1
         <if test="imgUrl !=null and imgUrl != ''">
@@ -106,6 +106,18 @@
         </if>
         <if test="propertyTitle !=null and propertyTitle != ''">
             , t.property_title= #{propertyTitle}
+        </if>
+        <if test="version !=null and version != ''">
+            , t.version= #{version}
+        </if>
+        <if test="userProtocol !=null and userProtocol != ''">
+            , t.user_protocol= #{userProtocol}
+        </if>
+        <if test="merchantProtocol !=null and merchantProtocol != ''">
+            , t.merchant_protocol= #{merchantProtocol}
+        </if>
+        <if test="copyrightInfo !=null and copyrightInfo != ''">
+            , t.copyright_info= #{copyrightInfo}
         </if>
         where 1=1
         <if test="systemId !=null and systemId != ''">

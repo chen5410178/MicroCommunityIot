@@ -79,6 +79,10 @@ export default {
 	recRange: load(REC_RANGE_KEY, 'all'),
 	recType: load(REC_TYPE_KEY, 'all'),
 
+	// 客服电话/客服名称（system.listSystemPrivacy 接口数据）
+	serviceTel: '',
+	serviceName: '',
+
 	// 主题
 	themeDark: load(THEME_KEY, false),
 	themeSched: load(THEME_SCHED_KEY, { on: false, start: '22:00', end: '07:00' }),
@@ -94,6 +98,11 @@ export default {
 	setMyCard(card) {
 		this.myCard = card
 		save(CARD_KEY, card)
+	},
+	// 保存客服信息（小区联系电话/客服名称），供我的页与客服页共用
+	setService(data) {
+		this.serviceTel = (data && data.tel) || ''
+		this.serviceName = (data && (data.companyName || data.subSystemTitle)) || ''
 	},
 	// 按接口月卡订单回填 myCard（取 endTime 晚于当前的最新一条有效订单）
 	// orders: chargeCard.listUserChargeMonthOrder 返回的订单数组

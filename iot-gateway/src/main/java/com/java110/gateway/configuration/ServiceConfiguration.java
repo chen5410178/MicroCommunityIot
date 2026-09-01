@@ -27,6 +27,7 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/wechat.wechatNotifyOpenId/*,");
         exclusions.append("/app/payment/notify/*,");// 通用通知放开
         exclusions.append("/iot/api/system.listSystemInfo,");
+        exclusions.append("/iot/api/system.listSystemPrivacy,");
 
 
         exclusions.append("/iot/api/login.generatorValidateCode,");

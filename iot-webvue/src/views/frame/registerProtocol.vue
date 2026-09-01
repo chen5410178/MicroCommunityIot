@@ -10,9 +10,9 @@
             <p class="input-tip">请直接输入 HTML 内容</p>
             <el-input v-model="form.userProtocol" type="textarea" :rows="15" placeholder="请填写用户协议" />
           </el-form-item>
-          <el-form-item label="商家协议">
+          <el-form-item label="隐私保护指引">
             <p class="input-tip">请直接输入 HTML 内容</p>
-            <el-input v-model="form.merchantProtocol" type="textarea" :rows="15" placeholder="请填写商家协议" />
+            <el-input v-model="form.merchantProtocol" type="textarea" :rows="15" placeholder="请填写隐私保护指引" />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleSubmit" :loading="submitting">修改</el-button>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { listRegisterProtocol, updateRegisterProtocol } from '@/api/login/systemApi'
+import { listSystemInfo, updateSystemInfo } from '@/api/login/systemApi'
 
 export default {
   name: 'RegisterProtocol',
@@ -33,7 +33,7 @@ export default {
       loading: false,
       submitting: false,
       form: {
-        protolcolId: '',
+        systemId: '',
         userProtocol: '',
         merchantProtocol: ''
       }
@@ -46,7 +46,7 @@ export default {
     async fetchData() {
       this.loading = true
       try {
-        const res = await listRegisterProtocol({ page: 1, row: 1 })
+        const res = await listSystemInfo({ page: 1, row: 1 })
         if (res.data && res.data.length > 0) {
           this.form = { ...res.data[0] }
         }
@@ -57,11 +57,18 @@ export default {
     async handleSubmit() {
       this.submitting = true
       try {
-        await updateRegisterProtocol(this.form)
+        const res = await updateSystemInfo({
+          systemId: this.form.systemId,
+          userProtocol: this.form.userProtocol,
+          merchantProtocol: this.form.merchantProtocol
+        })
+        if (res.code != 0) {
+          throw new Error(res.msg || '修改失败')
+        }
         this.$message.success('修改成功')
         this.fetchData()
       } catch (e) {
-        this.$message.error(e.msg || '修改失败')
+        this.$message.error(e.msg || e.message || '修改失败')
       } finally {
         this.submitting = false
       }

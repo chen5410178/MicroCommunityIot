@@ -1,47 +1,74 @@
 <template>
 	<view class="cs-page" :class="{ 'charge-theme-dark': themeDark }">
-		<view class="c-card cs-mx cs-mt">
+		<view class="c-card cs-mx cs-mt" v-if="serviceTel">
 			<view class="cs-card-head">
 				<view class="cs-card-ic">
 					<image src="/static/h5/images/charge/ic-phone-white.png" class="cs-card-ic-img" mode="aspectFit"></image>
 				</view>
 				<view style="flex:1;">
-					<text class="c-text-bold" style="font-size:28rpx;font-weight:700;color:#0f172a;display:block;">云充电客服</text>
-					<text class="c-text-bold" style="font-size:32rpx;font-weight:700;color:#0f172a;margin-top:8rpx;display:block;">400-880-1234</text>
+					<text class="c-text-bold" style="font-size:28rpx;font-weight:700;color:#0f172a;display:block;">{{ serviceName || '小区客服' }}</text>
+					<text class="c-text-bold" style="font-size:32rpx;font-weight:700;color:#0f172a;margin-top:8rpx;display:block;">{{ serviceTel }}</text>
 					<text class="c-text-sub" style="margin-top:6rpx;display:block;">服务时间 8:00-22:00 · 全年无休</text>
 				</view>
-				<view class="cs-call-btn" @click="callShow = true">拨打</view>
+				<view class="cs-call-btn" @click="callService">拨打</view>
 			</view>
 		</view>
-
-		<!-- 拨号模拟弹窗 -->
-		<view class="c-mask" v-if="callShow" @click="callShow = false"></view>
-		<view class="c-dialog" v-if="callShow" style="text-align:center;">
-			<view class="cs-call-ic">
-				<image src="/static/h5/images/charge/ic-phone.png" class="cs-call-ic-img" mode="aspectFit"></image>
+		<view class="c-card cs-mx cs-mt" v-else>
+			<view class="cs-card-head">
+				<view class="cs-card-ic">
+					<image src="/static/h5/images/charge/ic-phone-white.png" class="cs-card-ic-img" mode="aspectFit"></image>
+				</view>
+				<view style="flex:1;">
+					<text class="c-text-bold" style="font-size:28rpx;font-weight:700;color:#0f172a;display:block;">{{ serviceName || '小区客服' }}</text>
+					<text class="c-text-sub" style="margin-top:8rpx;display:block;">暂无联系电话</text>
+				</view>
 			</view>
-			<text class="c-text-bold" style="font-size:30rpx;font-weight:700;color:#0f172a;margin-top:20rpx;display:block;letter-spacing:4rpx;">400-880-1234</text>
-			<view class="cs-call-status">
-				<view class="c-pulse-dot" style="width:12rpx;height:12rpx;border-radius:50%;background:#10b981;"></view>
-				<text class="c-text-sub">正在呼叫客服 · 请稍候…</text>
-			</view>
-			<view class="c-btn-ghost" style="margin-top:28rpx;" @click="callShow = false">取消</view>
 		</view>
 	</view>
 </template>
 
 <script>
 	import chargeStore from '@/api/charge/chargeStore.js'
+	import {
+		getCommunityId
+	} from '@/api/community/communityApi.js'
+	import {
+		getSystemPrivacy
+	} from '@/api/system/systemApi.js'
 
 	export default {
 		data() {
-			return {
-				callShow: false
-			}
+			return {}
 		},
 		computed: {
 			themeDark() {
 				return chargeStore.themeDark
+			},
+			serviceTel() {
+				return chargeStore.serviceTel
+			},
+			serviceName() {
+				return chargeStore.serviceName
+			}
+		},
+		onShow() {
+			if (!chargeStore.serviceTel) {
+				this._loadService()
+			}
+		},
+		methods: {
+			_loadService() {
+				getSystemPrivacy(getCommunityId()).then(_res => {
+					if (_res && _res.data) {
+						chargeStore.setService(_res.data)
+					}
+				}).catch(() => {})
+			},
+			callService() {
+				if (!chargeStore.serviceTel) return
+				uni.makePhoneCall({
+					phoneNumber: chargeStore.serviceTel
+				})
 			}
 		}
 	}
@@ -91,29 +118,5 @@
 		border-radius: 999rpx;
 		padding: 12rpx 32rpx;
 		flex-shrink: 0;
-	}
-
-	.cs-call-ic {
-		width: 104rpx;
-		height: 104rpx;
-		border-radius: 50%;
-		background: rgba(99, 102, 241, .1);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin: 20rpx auto 0;
-	}
-
-	.cs-call-ic-img {
-		width: 52rpx;
-		height: 52rpx;
-	}
-
-	.cs-call-status {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 10rpx;
-		margin-top: 16rpx;
 	}
 </style>

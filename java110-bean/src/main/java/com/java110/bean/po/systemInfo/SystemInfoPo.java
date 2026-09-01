@@ -41,6 +41,42 @@ public class SystemInfoPo implements Serializable {
     private String statusCd = "0";
     private String logoUrl;
     private String propertyTitle;
+    private String version;
+    private String userProtocol;
+    private String merchantProtocol;
+    private String copyrightInfo;
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getUserProtocol() {
+        return userProtocol;
+    }
+
+    public void setUserProtocol(String userProtocol) {
+        this.userProtocol = userProtocol;
+    }
+
+    public String getMerchantProtocol() {
+        return merchantProtocol;
+    }
+
+    public void setMerchantProtocol(String merchantProtocol) {
+        this.merchantProtocol = merchantProtocol;
+    }
+
+    public String getCopyrightInfo() {
+        return copyrightInfo;
+    }
+
+    public void setCopyrightInfo(String copyrightInfo) {
+        this.copyrightInfo = copyrightInfo;
+    }
 
     public String getImgUrl() {
         return imgUrl;

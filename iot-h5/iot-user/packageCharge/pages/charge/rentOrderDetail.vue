@@ -15,11 +15,11 @@
 		<view class="c-card rd-mx rd-mt">
 			<text class="c-title">订单信息</text>
 			<view class="rd-info">
-				<view class="rd-info-row"><text class="c-text-sub">订单编号</text><text class="rd-info-val">RO{{ String(order.id).padStart(8, '0') }}</text></view>
-				<view class="rd-info-row"><text class="c-text-sub">车牌号码</text><text class="rd-info-val">{{ order.plate }}</text></view>
-				<view class="rd-info-row"><text class="c-text-sub">月租套餐</text><text class="rd-info-val">{{ order.plan }}（{{ order.months }} 个月）</text></view>
+				<view class="rd-info-row"><text class="c-text-sub">订单编号</text><text class="rd-info-val">{{ order.orderId || '—' }}</text></view>
+				<view class="rd-info-row"><text class="c-text-sub">车牌号码</text><text class="rd-info-val">{{ order.plate || '—' }}</text></view>
+				<view class="rd-info-row"><text class="c-text-sub">月租套餐</text><text class="rd-info-val">{{ order.plan || '—' }}{{ order.months ? '（' + order.months + ' 个月）' : '' }}</text></view>
 				<view class="rd-info-row"><text class="c-text-sub">支付方式</text><text class="rd-info-val">微信支付</text></view>
-				<view class="rd-info-row"><text class="c-text-sub">支付时间</text><text class="rd-info-val">{{ order.time }}</text></view>
+				<view class="rd-info-row"><text class="c-text-sub">支付时间</text><text class="rd-info-val">{{ order.time || '—' }}</text></view>
 				<view class="rd-info-row"><text class="c-text-sub">订单状态</text><text class="rd-info-val" style="color:#059669;">{{ order.st }}</text></view>
 				<view class="rd-info-row"><text class="c-text-sub">实付金额</text><text class="rd-info-val" style="font-weight:700;">¥{{ order.fee }}</text></view>
 			</view>
@@ -28,16 +28,26 @@
 		<view class="rd-tip rd-mx rd-mt">
 			<text style="font-size:20rpx;line-height:1.6;color:#3b82f6;">月租生效期间车辆进出小区按套餐计费，到期前可随时在车辆服务页续费。</text>
 		</view>
+
+		<view class="c-toast" v-if="toastMsg" :style="{ opacity: 1 }">{{ toastMsg }}</view>
 	</view>
 </template>
 
 <script>
 	import chargeStore from '@/api/charge/chargeStore.js'
+	import {
+		listUserCarMonthOrder
+	} from '@/packageCharge/api/chargeApi.js'
+	import {
+		getCommunityId
+	} from '@/api/community/communityApi.js'
 
 	export default {
 		data() {
 			return {
-				order: {}
+				orderId: '',
+				order: {},
+				toastMsg: ''
 			}
 		},
 		computed: {
@@ -46,8 +56,72 @@
 			}
 		},
 		onLoad(options) {
-			const idx = parseInt(options.idx || 0)
-			this.order = chargeStore.rentOrders[idx] || chargeStore.rentOrders[0] || {}
+			this.orderId = options.orderId || ''
+			this._loadOrder()
+		},
+		methods: {
+			_loadOrder() {
+				listUserCarMonthOrder({
+					communityId: getCommunityId()
+				}).then(list => {
+					const orders = list || []
+					let target = null
+					if (this.orderId) {
+						target = orders.find(o => o.orderId === this.orderId) || null
+					}
+					if (!target) target = orders[0] || null
+					this.order = this._adapterOrder(target)
+				}).catch(e => {
+					this._toast((typeof e === 'string' ? e : (e && e.message)) || '订单加载失败')
+				})
+			},
+			_adapterOrder(o) {
+				if (!o) return {}
+				return {
+					orderId: o.orderId || '',
+					plate: o.carNum || '',
+					plan: o.cardName || '',
+					months: this._monthSpan(o.startTime, o.endTime),
+					fee: o.receivedAmount || o.receivableAmount || 0,
+					from: this._toDate(o.startTime),
+					to: this._toDate(o.endTime),
+					time: this._toDateTime(o.createTime),
+					st: o.stateName || (o.state === '1001' ? '正常' : (o.state === '2002' ? '已退费' : '—'))
+				}
+			},
+			_monthSpan(from, to) {
+				const a = this._toDate(from)
+				const b = this._toDate(to)
+				if (!a || !b) return ''
+				const d1 = new Date(a.replace(/-/g, '/'))
+				const d2 = new Date(b.replace(/-/g, '/'))
+				if (isNaN(d1.getTime()) || isNaN(d2.getTime())) return ''
+				return Math.max(1, (d2.getFullYear() - d1.getFullYear()) * 12 + (d2.getMonth() - d1.getMonth()))
+			},
+			_toDate(v) {
+				if (!v) return ''
+				const s = String(v)
+				if (s.indexOf('-') >= 0) return s.slice(0, 10)
+				const d = new Date(Number(s))
+				if (isNaN(d.getTime())) return ''
+				return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2)
+			},
+			_toDateTime(v) {
+				if (!v) return ''
+				const s = String(v)
+				if (s.indexOf('-') >= 0) return s.slice(0, 16)
+				const d = new Date(Number(s))
+				if (isNaN(d.getTime())) return ''
+				return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2) +
+					' ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2)
+			},
+			_toast(msg) {
+				this.toastMsg = msg
+				clearTimeout(this._toastTimer)
+				this._toastTimer = setTimeout(() => {
+					this.toastMsg = ''
+				}, 2000)
+			}
 		}
 	}
 </script>

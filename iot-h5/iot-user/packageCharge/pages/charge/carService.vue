@@ -1,7 +1,7 @@
 <template>
 	<view class="cs-page" :class="{ 'charge-theme-dark': themeDark }">
 		<view class="cs-head">
-			<text class="c-title">车辆服务 <text class="c-text-sub" style="font-weight:400;">共 {{ vehicles.length }} 辆</text></text>
+			<text class="c-title">车辆服务 <text class="c-text-sub" style="font-weight:400;" v-if="!loading">共 {{ vehicles.length }} 辆</text><text class="c-text-sub" style="font-weight:400;" v-else>加载中...</text></text>
 		</view>
 
 		<!-- 车牌搜索（两框输入） -->
@@ -49,7 +49,7 @@
 					<view style="flex:1;min-width:0;">
 						<view class="cs-hit-plate-row">
 							<text class="cs-hit-plate">{{ hitCar.plate }}</text>
-							<text class="cs-hit-tag" :class="hitCar.expire ? 'on' : 'off'">{{ hitCar.expire ? '月租生效中' : '未开通月租' }}</text>
+							<text class="cs-hit-tag" :class="hitCar.expire ? 'on' : 'off'">{{ hitCar.expire ? '月租生效中 · 剩余 ' + hitCar.expireTip + ' 天' : '未开通月租' }}</text>
 						</view>
 						<text class="c-text-sub" style="margin-top:8rpx;display:block;">{{ hitCar.model }} · {{ hitCar.comm }}{{ hitCar.expire ? ' · 有效期至 ' + hitCar.expire : '' }}</text>
 					</view>
@@ -58,7 +58,7 @@
 			</view>
 			<view v-else class="cs-unbound">
 				<text class="cs-unbound-title">车牌「{{ searchKw }}」未绑定车辆</text>
-				<view class="cs-unbound-btn" @click="goDetailByPlate(searchKw)">月卡续费 · {{ isNewEnergyPlate ? '新能源' : '燃油' }}</view>
+				<view class="cs-unbound-btn" @click="goDetailByPlate(searchKw)">月卡续费 · {{ _isNewEnergy(searchKw) ? '新能源' : '燃油' }}</view>
 			</view>
 		</view>
 
@@ -69,7 +69,8 @@
 		<!-- 月租续费订单 -->
 		<view class="cs-order-head">
 			<text class="c-title">月租续费订单</text>
-			<text class="c-text-sub">共 {{ rentOrders.length }} 笔</text>
+			<text class="c-text-sub" v-if="!loading">共 {{ rentOrders.length }} 笔</text>
+			<text class="c-text-sub" v-else>加载中...</text>
 		</view>
 		<view class="cs-orders cs-mx">
 			<view class="c-card cs-order" v-for="(o, i) in rentOrders" :key="i" @click="openRentOrder(i)">
@@ -92,7 +93,12 @@
 		</view>
 
 		<!-- 车牌键盘 -->
-		<plate-keyboard :show.sync="keyShow" :split-mode="true" @change="onKeyChange" />
+		<plate-keyboard ref="plateKey" :show.sync="keyShow" :split-mode="true" @change="onKeyChange" />
+
+		<!-- 添加车辆（车辆由物业前台录入） -->
+		<view class="cs-add-bar" @click="addCar">
+			<text class="cs-add-txt">＋ 添加车辆</text>
+		</view>
 
 		<view class="c-toast" v-if="toastMsg" :style="{ opacity: 1 }">{{ toastMsg }}</view>
 	</view>
@@ -101,6 +107,16 @@
 <script>
 	import chargeStore from '@/api/charge/chargeStore.js'
 	import plateKeyboard from '@/packageCharge/components/charge/plate-keyboard.vue'
+	import {
+		listUserCar,
+		listUserCarMonthOrder
+	} from '@/packageCharge/api/chargeApi.js'
+	import {
+		getCommunityId
+	} from '@/api/community/communityApi.js'
+	import {
+		hasLogin
+	} from '@/api/user/sessionApi.js'
 	import {
 		KB_PROVINCES,
 		getPlateHistory,
@@ -117,6 +133,7 @@
 		data() {
 			return {
 				KB_PROVINCES,
+				themeDark: false,
 				searchProv: '',
 				searchRest: '',
 				provPanel: false,
@@ -124,36 +141,22 @@
 				keyShow: false,
 				searchKw: '',
 				searchResult: false,
+				hitCar: null,
+				suggestList: [],
+				vehicles: [],
+				rentOrders: [],
+				loading: false,
 				toastMsg: ''
 			}
 		},
-		computed: {
-			themeDark() {
-				return chargeStore.themeDark
-			},
-			vehicles() {
-				return chargeStore.vehicles
-			},
-			rentOrders() {
-				return chargeStore.rentOrders
-			},
-			hitCar() {
-				if (!this.searchKw) return null
-				const bare = this.searchKw.replace(/·/g, '')
-				return this.vehicles.find(c => c.plate.replace(/·/g, '') === bare) || null
-			},
-			isNewEnergyPlate() {
-				return isNewEnergy(this.searchKw)
-			},
-			suggestList() {
-				return getPlateHistory().slice(0, 6)
-			}
-		},
-		onLoad() {
-			// 从车辆详情返回时刷新
-		},
 		onShow() {
-			// 返回时保留搜索状态
+			// 每次显示刷新（支付返回后联动车辆/订单）
+			if (!hasLogin()) {
+				uni.navigateTo({ url: '/pages/user/login' })
+				return
+			}
+			this.themeDark = chargeStore.themeDark
+			this._loadData()
 		},
 		methods: {
 			openProvPanel() {
@@ -164,13 +167,13 @@
 			pickProv(c) {
 				this.searchProv = c
 				this.provPanel = false
-				this.keyShow = true
+				this.$refs.plateKey.open(c, this.searchRest)
 				this._keyChange()
 			},
 			openSearchKey() {
 				this.provPanel = false
 				this.suggestShow = false
-				this.keyShow = true
+				this.$refs.plateKey.open(this.searchProv, this.searchRest)
 			},
 			onKeyChange(e) {
 				this.searchProv = e.prov
@@ -183,6 +186,7 @@
 			},
 			renderSuggest(kw) {
 				const hist = getPlateHistory().filter(p => p.indexOf(kw) > -1 || kw.indexOf(p) > -1)
+				this.suggestList = hist.slice(0, 6)
 				this.suggestShow = hist.length > 0 && !this.keyShow
 			},
 			toggleSearchSuggest() {
@@ -190,6 +194,7 @@
 					this.suggestShow = false
 				} else {
 					this.provPanel = false
+					this.suggestList = getPlateHistory().slice(0, 6)
 					this.suggestShow = true
 				}
 			},
@@ -199,12 +204,14 @@
 				this.searchRest = bare.slice(1)
 				this.suggestShow = false
 				this.searchKw = bare
+				this.hitCar = this.vehicles.find(c => c.plate === bare) || null
 				this.searchResult = true
 				savePlateHistory(p)
 			},
 			delHistory(p) {
 				delPlateHistory(p)
 				this._toast('已删除历史车牌 ' + p)
+				this.suggestList = getPlateHistory().slice(0, 6)
 				this.suggestShow = false
 			},
 			searchCar() {
@@ -221,18 +228,131 @@
 					return
 				}
 				this.searchKw = kw
+				this.hitCar = this.vehicles.find(c => c.plate === kw) || null
 				this.searchResult = true
+				this.suggestList = getPlateHistory().slice(0, 6)
 				savePlateHistory(kw)
 			},
 			goDetailByPlate(bare) {
+				const hit = this.hitCar
 				uni.navigateTo({
-					url: '/packageCharge/pages/charge/carDetail?plate=' + encodeURIComponent(bare)
+					url: '/packageCharge/pages/charge/carDetail?carNum=' + encodeURIComponent(bare) +
+						'&carId=' + (hit ? hit.carId : '') +
+						'&model=' + encodeURIComponent(hit ? hit.model : '') +
+						'&comm=' + encodeURIComponent(hit ? hit.comm : '') +
+						'&bindDate=' + encodeURIComponent(hit ? hit.bindDate : '')
 				})
 			},
 			openRentOrder(i) {
+				const o = this.rentOrders[i]
+				if (!o) return
 				uni.navigateTo({
-					url: '/packageCharge/pages/charge/rentOrderDetail?idx=' + i
+					url: '/packageCharge/pages/charge/rentOrderDetail?orderId=' + (o.orderId || '')
 				})
+			},
+			addCar() {
+				this._toast('请到物业前台申请车位绑定车辆')
+			},
+			_loadData() {
+				const communityId = getCommunityId()
+				this.loading = true
+				this._pending = 2
+				listUserCar({
+					communityId
+				}).then(list => {
+					this.vehicles = (list || []).map(c => this._adapterCar(c))
+				}).catch(e => {
+					this._toast((typeof e === 'string' ? e : (e && e.message)) || '车辆列表加载失败')
+				}).then(() => {
+					this._doneLoad()
+				})
+				listUserCarMonthOrder({
+					communityId
+				}).then(list => {
+					this.rentOrders = (list || []).map(o => this._adapterOrder(o))
+				}).catch(e => {
+					this._toast((typeof e === 'string' ? e : (e && e.message)) || '订单加载失败')
+				}).then(() => {
+					this._doneLoad()
+				})
+			},
+			_doneLoad() {
+				this._pending--
+				if (this._pending <= 0) {
+					this.loading = false
+				}
+			},
+			_isNewEnergy(kw) {
+				return isNewEnergy(kw)
+			},
+			_adapterCar(c) {
+				const bare = (c.carNum || '').replace(/·/g, '')
+				const isNew = isNewEnergy(bare)
+				const expire = this._expireDate(c.endTime)
+				return {
+					carId: c.carId || '',
+					plate: bare,
+					model: c.carTypeName || (isNew ? '新能源小型汽车' : '燃油小型汽车'),
+					comm: this._commName(),
+					bindDate: this._toDate(c.createTime),
+					expire: expire,
+					expireTip: expire ? this._leftDays(expire) : 0
+				}
+			},
+			_adapterOrder(o) {
+				return {
+					orderId: o.orderId || '',
+					plate: o.carNum || '',
+					plan: o.cardName || '',
+					months: this._monthSpan(o.startTime, o.endTime),
+					fee: o.receivedAmount || o.receivableAmount || 0,
+					from: this._toDate(o.startTime),
+					to: this._toDate(o.endTime),
+					time: this._toDateTime(o.createTime),
+					st: o.stateName || (o.state === '1001' ? '正常' : (o.state === '2002' ? '已退费' : '—'))
+				}
+			},
+			_expireDate(v) {
+				const d = this._toDate(v)
+				if (!d) return ''
+				const end = new Date(d.replace(/-/g, '/')).getTime()
+				if (isNaN(end) || end <= Date.now()) return ''
+				return d
+			},
+			_leftDays(dateStr) {
+				const end = new Date(dateStr.replace(/-/g, '/')).getTime()
+				if (isNaN(end)) return 0
+				return Math.max(0, Math.ceil((end - Date.now()) / 86400000))
+			},
+			_monthSpan(from, to) {
+				const a = this._toDate(from)
+				const b = this._toDate(to)
+				if (!a || !b) return ''
+				const d1 = new Date(a.replace(/-/g, '/'))
+				const d2 = new Date(b.replace(/-/g, '/'))
+				if (isNaN(d1.getTime()) || isNaN(d2.getTime())) return ''
+				return Math.max(1, (d2.getFullYear() - d1.getFullYear()) * 12 + (d2.getMonth() - d1.getMonth()))
+			},
+			_toDate(v) {
+				if (!v) return ''
+				const s = String(v)
+				if (s.indexOf('-') >= 0) return s.slice(0, 10)
+				const d = new Date(Number(s))
+				if (isNaN(d.getTime())) return ''
+				return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2)
+			},
+			_toDateTime(v) {
+				if (!v) return ''
+				const s = String(v)
+				if (s.indexOf('-') >= 0) return s.slice(0, 16)
+				const d = new Date(Number(s))
+				if (isNaN(d.getTime())) return ''
+				return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2) +
+					' ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2)
+			},
+			_commName() {
+				const c = uni.getStorageSync('currentCommunityInfo')
+				return (c && (c.communityName || c.name)) || '无'
 			},
 			_toast(msg) {
 				this.toastMsg = msg
@@ -247,7 +367,28 @@
 
 <style>
 	.cs-page {
-		padding-bottom: 60rpx;
+		padding-bottom: 160rpx;
+	}
+
+	.cs-add-bar {
+		position: fixed;
+		left: 28rpx;
+		right: 28rpx;
+		bottom: 30rpx;
+		height: 88rpx;
+		border-radius: 20rpx;
+		background: #fff;
+		border: 1rpx solid #e2e8f0;
+		box-shadow: 0 8rpx 24rpx rgba(15, 23, 42, .08);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.cs-add-txt {
+		font-size: 26rpx;
+		font-weight: 700;
+		color: #3b82f6;
 	}
 
 	.cs-mx {
@@ -256,11 +397,11 @@
 	}
 
 	.cs-mt {
-		margin-top: 20rpx;
+		margin-top: 28rpx;
 	}
 
 	.cs-head {
-		margin: 28rpx 28rpx 0;
+		margin: 28rpx 28rpx 24rpx;
 	}
 
 	.cs-search-row {

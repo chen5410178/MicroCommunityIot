@@ -4,8 +4,8 @@
 			<view class="ab-logo">
 				<image src="/static/h5/images/charge/ic-bolt-white.png" class="ab-logo-img" mode="aspectFit"></image>
 			</view>
-			<text class="ab-name">云充电</text>
-			<text class="c-text-sub" style="margin-top:8rpx;">版本 v1.3.0 · 智慧出行</text>
+			<text class="ab-name">{{ appName }}</text>
+			<text class="c-text-sub" style="margin-top:8rpx;" v-if="appVersion">版本 {{ appVersion }} · 智慧出行</text>
 		</view>
 
 		<view class="ab-menu c-card ab-mx">
@@ -21,11 +21,7 @@
 			</view>
 		</view>
 
-		<view class="ab-mx ab-mt">
-			<view class="c-btn-ghost" style="height:96rpx;line-height:96rpx;font-size:26rpx;font-weight:700;color:#334155;" @click="checkUpdate">检查更新</view>
-		</view>
-		<text class="ab-footer">云充电科技有限公司 · 粤ICP备2026000000号</text>
-		<text class="ab-footer-sub">本页面为原型演示 · 最终以实际上线版本为准</text>
+		<text class="ab-footer" v-if="copyright">{{ copyright }}</text>
 
 		<!-- 协议弹层 -->
 		<view class="c-mask" v-if="agreeShow" @click="agreeShow = false"></view>
@@ -44,15 +40,20 @@
 <script>
 	import chargeStore from '@/api/charge/chargeStore.js'
 	import {
-		agreeTexts
-	} from '@/api/mock/invoiceData.js'
+		getSystemInfo
+	} from '@/api/system/systemApi.js'
 
 	export default {
 		data() {
 			return {
 				agreeShow: false,
 				agreeTitle: '',
-				agreeText: ''
+				agreeText: '',
+				appName: '云充电',
+				appVersion: '',
+				copyright: '',
+				userProtocol: '',
+				merchantProtocol: ''
 			}
 		},
 		computed: {
@@ -60,17 +61,24 @@
 				return chargeStore.themeDark
 			}
 		},
+		onLoad() {
+			this._loadSystemInfo()
+		},
 		methods: {
+			_loadSystemInfo() {
+				getSystemInfo().then(_info => {
+					if (!_info) return
+					this.appName = _info.subSystemTitle || _info.systemTitle || this.appName
+					this.appVersion = _info.version || ''
+					this.copyright = (_info.copyrightInfo ? _info.copyrightInfo + ' · ' : '') + (_info.companyName || '')
+					this.userProtocol = _info.userProtocol || ''
+					this.merchantProtocol = _info.merchantProtocol || ''
+				}).catch(() => {})
+			},
 			openAgree(type) {
 				this.agreeTitle = type
-				this.agreeText = agreeTexts[type] || '暂无内容'
+				this.agreeText = (type === '用户服务协议' ? this.userProtocol : this.merchantProtocol) || '暂无内容'
 				this.agreeShow = true
-			},
-			checkUpdate() {
-				uni.showToast({
-					title: '当前已是最新版本 v1.3.0',
-					icon: 'none'
-				})
 			}
 		}
 	}
