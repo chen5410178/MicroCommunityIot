@@ -14,7 +14,7 @@
 				<text class="scan-tip-main">对准充电桩上的二维码</text>
 				<text class="scan-tip-sub">扫码后将自动识别桩位并开始充电配置</text>
 				<view class="scan-recognizing">
-					<text class="scan-rec-icon">＋</text>
+					<image src="/static/h5/images/common/ic-plus.png" class="scan-rec-icon" mode="aspectFit"></image>
 					<text class="scan-rec-text" id="scan-tip">{{ scanTip }}</text>
 				</view>
 			</view>
@@ -23,8 +23,14 @@
 			<view class="scan-test">
 				<text class="scan-test-label">扫码测试 · 选择桩类型：</text>
 				<view class="scan-test-row">
-					<view class="scan-test-btn car" @click="scanTest('car')">🚗 电动车桩</view>
-					<view class="scan-test-btn bike" @click="scanTest('bike')">🛵 电瓶车桩</view>
+					<view class="scan-test-btn car" @click="scanTest('car')">
+						<image src="/static/h5/images/charge/ic-car-light.png" class="scan-test-ic" mode="aspectFit"></image>
+						<text>电动车桩</text>
+					</view>
+					<view class="scan-test-btn bike" @click="scanTest('bike')">
+						<image src="/static/h5/images/charge/ic-bike-light.png" class="scan-test-ic" mode="aspectFit"></image>
+						<text>电瓶车桩</text>
+					</view>
 				</view>
 			</view>
 
@@ -267,7 +273,8 @@
 	}
 
 	.scan-rec-icon {
-		font-size: 22rpx;
+		width: 24rpx;
+		height: 24rpx;
 	}
 
 	.scan-test {
@@ -300,8 +307,15 @@
 		font-size: 24rpx;
 		font-weight: 600;
 		height: 88rpx;
-		line-height: 88rpx;
-		text-align: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 10rpx;
+	}
+
+	.scan-test-ic {
+		width: 30rpx;
+		height: 30rpx;
 	}
 
 	.scan-test-btn.bike {

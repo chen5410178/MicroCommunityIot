@@ -5,19 +5,19 @@
 			<view class="tm-arrow"></view>
 			<text class="tm-label">外观模式</text>
 			<view class="tm-item" :class="{ on: !dark }" @click="pick(false)">
-				<text style="font-size:28rpx;">☀️</text>
+				<image src="/static/h5/images/common/ic-sun.png" class="tm-ic" mode="aspectFit"></image>
 				<text class="tm-item-text">白天模式</text>
-				<text class="tm-check" v-if="!dark">✓</text>
+				<image v-if="!dark" src="/static/h5/images/common/ic-check.png" class="tm-check-ic" mode="aspectFit"></image>
 			</view>
 			<view class="tm-item" :class="{ on: dark }" @click="pick(true)">
-				<text style="font-size:28rpx;">🌙</text>
+				<image src="/static/h5/images/common/ic-moon.png" class="tm-ic" mode="aspectFit"></image>
 				<text class="tm-item-text">黑夜模式</text>
-				<text class="tm-check" v-if="dark">✓</text>
+				<image v-if="dark" src="/static/h5/images/common/ic-check.png" class="tm-check-ic" mode="aspectFit"></image>
 			</view>
 			<view class="tm-divider"></view>
 			<text class="tm-label">定时</text>
 			<view class="tm-item" @click="openSched">
-				<text style="font-size:28rpx;">⏰</text>
+				<image src="/static/h5/images/common/ic-clock-green.png" class="tm-ic" mode="aspectFit"></image>
 				<text class="tm-item-text">定时切换黑夜</text>
 				<text class="tm-sched-desc">{{ sched.on ? sched.start + '-' + sched.end : '关闭' }}</text>
 			</view>
@@ -27,7 +27,9 @@
 		<view class="c-mask" v-if="schedShow" @click="schedShow = false"></view>
 		<view class="c-dialog" v-if="schedShow">
 			<view class="tm-sched-head">
-				<view class="tm-sched-ic">⏰</view>
+				<view class="tm-sched-ic">
+					<image src="/static/h5/images/common/ic-clock-green.png" class="tm-sched-ic-img" mode="aspectFit"></image>
+				</view>
 				<view style="flex:1;">
 					<text class="c-title" style="display:block;">定时切换黑夜</text>
 					<text class="c-text-sub" style="display:block;margin-top:6rpx;">到点自动切换主题，支持跨天时段</text>
@@ -200,6 +202,18 @@
 		font-size: 24rpx;
 	}
 
+	.tm-ic {
+		width: 28rpx;
+		height: 28rpx;
+		flex-shrink: 0;
+	}
+
+	.tm-check-ic {
+		width: 26rpx;
+		height: 26rpx;
+		flex-shrink: 0;
+	}
+
 	.tm-check {
 		color: #10b981;
 		font-size: 22rpx;
@@ -231,7 +245,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 32rpx;
+	}
+
+	.tm-sched-ic-img {
+		width: 32rpx;
+		height: 32rpx;
 	}
 
 	.tm-toggle {

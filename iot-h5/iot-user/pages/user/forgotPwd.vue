@@ -1,7 +1,9 @@
 <template>
 	<view class="fp-page">
 		<view class="fp-body">
-			<view class="fp-logo">🔑</view>
+			<view class="fp-logo">
+				<image src="/static/h5/images/common/ic-lock-white.png" class="fp-logo-img" mode="aspectFit"></image>
+			</view>
 			<text class="fp-title">手机验证码找回密码</text>
 			<text class="fp-sub">输入注册手机号，验证通过后重置登录密码</text>
 
@@ -140,9 +142,13 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 52rpx;
 		margin: 0 auto;
 		box-shadow: 0 12rpx 30rpx rgba(245, 158, 11, .3);
+	}
+
+	.fp-logo-img {
+		width: 60rpx;
+		height: 60rpx;
 	}
 
 	.fp-title {

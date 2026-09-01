@@ -2,7 +2,7 @@
 	<!-- 月卡套餐卡（购买/续费 · 供充电月卡页使用） -->
 	<view class="c-card cmp-card">
 		<view class="cmp-ic" :style="{ background: plan.color }">
-			<text style="font-size:28rpx;">📇</text>
+			<image src="/static/h5/images/charge/ic-calendar-white.png" class="cmp-ic-img" mode="aspectFit"></image>
 			<text class="cmp-ic-name">{{ plan.name.replace(' · ', '') }}</text>
 		</view>
 		<view style="flex:1;min-width:0;">
@@ -54,6 +54,11 @@
 		justify-content: center;
 		gap: 4rpx;
 		box-shadow: 0 6rpx 16rpx rgba(0, 0, 0, .08);
+	}
+
+	.cmp-ic-img {
+		width: 40rpx;
+		height: 40rpx;
 	}
 
 	.cmp-ic-name {

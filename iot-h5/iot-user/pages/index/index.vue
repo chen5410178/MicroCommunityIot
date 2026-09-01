@@ -5,7 +5,7 @@
 			<text class="home-nav-title">充电服务</text>
 			<view class="home-nav-right">
 				<view class="home-nav-ic" @click="openMsg" style="position:relative;">
-					<text style="font-size:32rpx;">🔔</text>
+					<image src="/static/h5/images/common/ic-bell.png" class="home-nav-ic-img" mode="aspectFit"></image>
 					<view class="home-msg-badge" v-if="unread > 0">{{ unread > 99 ? '99+' : unread }}</view>
 				</view>
 				<view class="home-capsule">
@@ -14,7 +14,8 @@
 					</view>
 					<view class="home-capsule-divider"></view>
 					<view class="home-capsule-theme" @click="themeMenuShow = !themeMenuShow">
-						<text style="font-size:26rpx;">{{ themeDark ? '☀️' : '🌙' }}</text>
+						<image v-if="themeDark" src="/static/h5/images/common/ic-sun.png" class="home-capsule-theme-img" mode="aspectFit"></image>
+						<image v-else src="/static/h5/images/common/ic-moon-dark.png" class="home-capsule-theme-img" mode="aspectFit"></image>
 					</view>
 				</view>
 			</view>
@@ -37,17 +38,17 @@
 
 		<!-- 小区切换 + 余额卡 -->
 		<view class="home-balance-card">
-			<view class="home-bc-decor1">⚡</view>
+			<image src="/static/h5/images/charge/ic-bolt-white.png" class="home-bc-decor1" mode="aspectFit"></image>
 			<view class="home-bc-decor2"></view>
 			<view class="home-bc-head">
 				<view class="home-comm-btn" @click="commShow = true">
-					<text style="font-size:22rpx;">📍</text>
+					<image src="/static/h5/images/common/ic-pin-white.png" class="home-bc-ic" mode="aspectFit"></image>
 					<text class="home-comm-name">{{ curCommunity.name || '选择小区' }}</text>
 					<text class="home-comm-dist" v-if="curCommunity.dist">{{ fmtDist(curCommunity.dist) }}</text>
-					<text style="font-size:18rpx;">▾</text>
+					<image src="/static/h5/images/common/ic-chevron-down-white.png" class="home-bc-arrow" mode="aspectFit"></image>
 				</view>
 				<view class="home-car-btn" @click="editHomeCar">
-					<text style="font-size:22rpx;">🚗</text>
+					<image src="/static/h5/images/charge/ic-car-white.png" class="home-bc-ic" mode="aspectFit"></image>
 					<text class="home-car-label">我的车辆</text>
 					<text class="home-car-plate">{{ vehicles.length ? vehicles[0].plate : '去添加' }}</text>
 				</view>
@@ -72,27 +73,43 @@
 		<!-- 快捷入口 -->
 		<view class="home-quick c-card">
 			<view class="home-quick-item" @click="goScan">
-				<view class="home-quick-ic green">📷</view>
+				<view class="home-quick-ic green">
+					<image src="/static/h5/images/charge/ic-scan.png" class="home-quick-ic-img" mode="aspectFit"></image>
+				</view>
 				<text class="home-quick-text">扫码充电</text>
 			</view>
 			<view class="home-quick-item" @click="goMonth">
-				<view class="home-quick-ic orange">📇</view>
+				<view class="home-quick-ic orange">
+					<image src="/static/h5/images/charge/ic-calendar.png" class="home-quick-ic-img" mode="aspectFit"></image>
+				</view>
 				<text class="home-quick-text">充电月卡</text>
 			</view>
 			<view class="home-quick-item" @click="goWallet">
-				<view class="home-quick-ic blue">💰</view>
+				<view class="home-quick-ic blue">
+					<image src="/static/h5/images/charge/ic-wallet.png" class="home-quick-ic-img" mode="aspectFit"></image>
+				</view>
 				<text class="home-quick-text">钱包余额</text>
 			</view>
 			<view class="home-quick-item" @click="goOrders">
-				<view class="home-quick-ic violet">📊</view>
+				<view class="home-quick-ic violet">
+					<image src="/static/h5/images/charge/ic-chart.png" class="home-quick-ic-img" mode="aspectFit"></image>
+				</view>
 				<text class="home-quick-text">充电订单</text>
 			</view>
 		</view>
 
 		<!-- 充电类型切换 -->
 		<view class="home-type-tabs c-card">
-			<view class="home-type-tab" :class="{ active: chgType === 'bike' }" @click="switchType('bike')">🛵 电瓶车充电桩</view>
-			<view class="home-type-tab" :class="{ active: chgType === 'car' }" @click="switchType('car')">🚗 电动车充电桩</view>
+			<view class="home-type-tab" :class="{ active: chgType === 'bike' }" @click="switchType('bike')">
+				<image v-if="chgType === 'bike'" src="/static/h5/images/charge/ic-bike-white.png" class="home-type-tab-ic" mode="aspectFit"></image>
+				<image v-else src="/static/h5/images/charge/ic-bike.png" class="home-type-tab-ic" mode="aspectFit"></image>
+				<text>电瓶车充电桩</text>
+			</view>
+			<view class="home-type-tab" :class="{ active: chgType === 'car' }" @click="switchType('car')">
+				<image v-if="chgType === 'car'" src="/static/h5/images/charge/ic-car-white.png" class="home-type-tab-ic" mode="aspectFit"></image>
+				<image v-else src="/static/h5/images/charge/ic-car.png" class="home-type-tab-ic" mode="aspectFit"></image>
+				<text>电动车充电桩</text>
+			</view>
 		</view>
 
 		<!-- 小区充电桩 -->
@@ -102,12 +119,13 @@
 		</view>
 		<view class="home-piles">
 			<view v-if="!curPiles.length && !pilesLoading" class="c-card home-pile-empty">
-				<text style="font-size:40rpx;">🔌</text>
+				<image src="/static/h5/images/charge/ic-plug.png" class="home-empty-ic" mode="aspectFit"></image>
 				<text class="c-text-sub" style="margin-top:12rpx;">暂无{{ chgType === 'car' ? '电动车' : '电瓶车' }}充电桩</text>
 			</view>
 			<view class="c-card home-pile" v-for="(p, i) in curPiles" :key="p.machineId || i" @click="openPile(i)">
 				<view class="home-pile-ic" :class="p.free ? (chgType === 'car' ? 'car' : 'bike') : 'busy'">
-					<text>{{ chgType === 'car' ? '🚗' : '🛵' }}</text>
+					<image v-if="chgType === 'car'" src="/static/h5/images/charge/ic-car.png" class="home-pile-ic-img" mode="aspectFit"></image>
+					<image v-else src="/static/h5/images/charge/ic-bike.png" class="home-pile-ic-img" mode="aspectFit"></image>
 				</view>
 				<view style="flex:1;min-width:0;">
 					<view class="home-pile-name-row">
@@ -131,7 +149,7 @@
 			</view>
 			<view class="home-sheet-body">
 				<view class="home-locate-btn" @click="locateComm">
-					<text style="font-size:28rpx;">📍</text>
+					<image src="/static/h5/images/common/ic-pin-green.png" class="home-locate-ic" mode="aspectFit"></image>
 					<view style="flex:1;text-align:left;">
 						<text class="home-locate-title">{{ locating ? '正在定位…' : (locateTxt || '定位附近小区') }}</text>
 						<text class="home-locate-sub">{{ locating ? '获取当前位置中，请稍候' : (locateSub || '根据当前位置自动匹配最近小区') }}</text>
@@ -141,12 +159,12 @@
 				<text class="home-sheet-tip">小区列表 · 切换后充电桩列表与月卡适用范围随小区变化</text>
 			<view class="home-comm-list">
 				<view v-if="!sortedComms.length" class="home-comm-empty">
-					<text style="font-size:36rpx;">🏘️</text>
+					<image src="/static/h5/images/common/ic-home.png" class="home-comm-empty-ic" mode="aspectFit"></image>
 					<text class="c-text-sub" style="margin-top:12rpx;">暂无小区数据</text>
 				</view>
 				<view v-for="(c, i) in sortedComms" :key="i" class="home-comm-item" :class="{ current: i === commIdx }"
 					@click="pickComm(i)">
-					<text style="font-size:28rpx;">📍</text>
+					<image src="/static/h5/images/common/ic-pin.png" class="home-comm-ic" mode="aspectFit"></image>
 					<view style="flex:1;min-width:0;">
 						<view class="home-comm-name-row">
 							<text class="c-text-bold" style="font-size:24rpx;font-weight:700;color:#1e293b;">{{ c.name }}</text>
@@ -168,7 +186,7 @@
 			<text class="home-nav-dist" v-if="navComm.dist">距您 {{ fmtDist(navComm.dist) }}</text>
 			<view class="home-nav-map">
 				<view class="home-nav-route"></view>
-				<text class="home-nav-car" :style="{ left: navProgress + '%' }">🚗</text>
+				<image src="/static/h5/images/charge/ic-car-nav.png" class="home-nav-car" :style="{ left: navProgress + '%' }" mode="aspectFit"></image>
 				<text class="home-nav-demo">模拟导航路线 · 演示环境</text>
 			</view>
 			<view class="home-nav-progress-row">
@@ -209,7 +227,9 @@
 		<!-- 未开通月卡引导 -->
 		<view class="c-mask" v-if="askBuyShow" @click="askBuyShow = false"></view>
 		<view class="c-dialog" v-if="askBuyShow" style="text-align:center;">
-			<view class="home-ask-ic">📇</view>
+			<view class="home-ask-ic">
+				<image src="/static/h5/images/charge/ic-calendar.png" class="home-ask-ic-img" mode="aspectFit"></image>
+			</view>
 			<text class="c-text-bold" style="font-size:28rpx;font-weight:700;color:#0f172a;margin-top:20rpx;display:block;">尚未开通充电月卡</text>
 			<text class="c-text-sub" style="margin-top:12rpx;display:block;line-height:1.6;">开通月卡后充电更省钱 · 是否前往购买？</text>
 			<view class="home-ask-btns">
@@ -826,6 +846,16 @@
 		background: #f1f5f9;
 	}
 
+	.home-nav-ic-img {
+		width: 32rpx;
+		height: 32rpx;
+	}
+
+	.home-capsule-theme-img {
+		width: 26rpx;
+		height: 26rpx;
+	}
+
 	.home-msg-badge {
 		position: absolute;
 		top: -4rpx;
@@ -943,9 +973,20 @@
 		position: absolute;
 		right: -40rpx;
 		top: -40rpx;
-		font-size: 160rpx;
+		width: 160rpx;
+		height: 160rpx;
 		opacity: .12;
 		transform: rotate(12deg);
+	}
+
+	.home-bc-ic {
+		width: 22rpx;
+		height: 22rpx;
+	}
+
+	.home-bc-arrow {
+		width: 18rpx;
+		height: 18rpx;
 	}
 
 	.home-bc-decor2 {
@@ -1087,7 +1128,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 38rpx;
+	}
+
+	.home-quick-ic-img {
+		width: 44rpx;
+		height: 44rpx;
 	}
 
 	.home-quick-ic.green {
@@ -1122,13 +1167,21 @@
 	.home-type-tab {
 		flex: 1;
 		height: 76rpx;
-		line-height: 76rpx;
-		text-align: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8rpx;
 		font-size: 24rpx;
 		font-weight: 600;
 		color: #64748b;
 		border-radius: 20rpx;
 		transition: all .2s;
+	}
+
+	.home-type-tab-ic {
+		width: 28rpx;
+		height: 28rpx;
+		flex-shrink: 0;
 	}
 
 	.home-type-tab.active {
@@ -1173,8 +1226,17 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 36rpx;
 		flex-shrink: 0;
+	}
+
+	.home-pile-ic-img {
+		width: 40rpx;
+		height: 40rpx;
+	}
+
+	.home-empty-ic {
+		width: 56rpx;
+		height: 56rpx;
 	}
 
 	.home-pile-ic.bike {
@@ -1243,6 +1305,12 @@
 		padding: 20rpx 24rpx;
 	}
 
+	.home-locate-ic {
+		width: 30rpx;
+		height: 30rpx;
+		flex-shrink: 0;
+	}
+
 	.home-locate-title {
 		display: block;
 		font-size: 24rpx;
@@ -1283,6 +1351,11 @@
 		padding: 60rpx 0;
 	}
 
+	.home-comm-empty-ic {
+		width: 60rpx;
+		height: 60rpx;
+	}
+
 	.home-comm-item {
 		display: flex;
 		align-items: center;
@@ -1290,6 +1363,12 @@
 		border: 1rpx solid #e2e8f0;
 		border-radius: 20rpx;
 		padding: 20rpx;
+	}
+
+	.home-comm-ic {
+		width: 30rpx;
+		height: 30rpx;
+		flex-shrink: 0;
 	}
 
 	.home-comm-item.current {
@@ -1355,7 +1434,8 @@
 		position: absolute;
 		top: 50%;
 		transform: translate(-50%, -50%);
-		font-size: 44rpx;
+		width: 44rpx;
+		height: 44rpx;
 		transition: left 3s linear;
 		z-index: 2;
 	}
@@ -1491,12 +1571,15 @@
 		height: 88rpx;
 		border-radius: 50%;
 		background: rgba(249, 115, 22, .1);
-		color: #f97316;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 40rpx;
 		margin: 16rpx auto 0;
+	}
+
+	.home-ask-ic-img {
+		width: 44rpx;
+		height: 44rpx;
 	}
 
 	.home-ask-btns {

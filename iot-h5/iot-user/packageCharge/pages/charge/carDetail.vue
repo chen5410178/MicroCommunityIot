@@ -3,7 +3,9 @@
 		<!-- 车辆信息 -->
 		<view class="c-card cd-mx cd-mt">
 			<view class="cd-car-head">
-				<view class="cd-car-ic">🚗</view>
+				<view class="cd-car-ic">
+					<image src="/static/h5/images/charge/ic-car-full.png" class="cd-car-ic-img" mode="aspectFit"></image>
+				</view>
 				<view style="flex:1;">
 					<text class="c-text-sub">车辆服务</text>
 					<text class="cd-plate">{{ car.plate }}</text>
@@ -68,7 +70,9 @@
 		<view class="c-mask" v-if="rentShow" @click="rentShow = false"></view>
 		<view class="c-dialog" v-if="rentShow">
 			<view class="cd-dialog-head">
-				<view class="cd-dialog-ic">🚗</view>
+				<view class="cd-dialog-ic">
+					<image src="/static/h5/images/charge/ic-car-full.png" class="cd-dialog-ic-img" mode="aspectFit"></image>
+				</view>
 				<view>
 					<text class="c-title" style="display:block;">月租续费</text>
 					<text class="c-text-sub" style="display:block;margin-top:6rpx;">{{ car.plate }} · {{ car.comm }}</text>
@@ -259,7 +263,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 40rpx;
+	}
+
+	.cd-car-ic-img {
+		width: 44rpx;
+		height: 44rpx;
 	}
 
 	.cd-plate {
@@ -450,7 +458,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 32rpx;
+	}
+
+	.cd-dialog-ic-img {
+		width: 34rpx;
+		height: 34rpx;
 	}
 
 	.cd-rent-box {

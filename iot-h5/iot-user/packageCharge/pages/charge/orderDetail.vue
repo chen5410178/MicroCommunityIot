@@ -52,7 +52,10 @@
 		<template v-else-if="order">
 			<view class="c-card od-mx od-mt">
 				<view class="od-done-head">
-					<view class="od-done-ic">{{ order.type === 'car' ? '🚗' : '⚡' }}</view>
+					<view class="od-done-ic">
+						<image v-if="order.type === 'car'" src="/static/h5/images/charge/ic-car.png" class="od-done-ic-img" mode="aspectFit"></image>
+						<image v-else src="/static/h5/images/charge/ic-bolt.png" class="od-done-ic-img" mode="aspectFit"></image>
+					</view>
 					<view style="flex:1;min-width:0;">
 						<view class="od-done-name-row">
 							<text class="c-title">{{ order.pile }}</text>
@@ -84,7 +87,9 @@
 		<view class="c-mask" v-if="stopShow" @click="stopShow = false"></view>
 		<view class="c-dialog" v-if="stopShow">
 			<view class="od-dialog-head">
-				<view class="od-dialog-ic">!</view>
+				<view class="od-dialog-ic">
+					<image src="/static/h5/images/common/ic-alert.png" class="od-dialog-ic-img" mode="aspectFit"></image>
+				</view>
 				<view>
 					<text class="c-title" style="display:block;">停止充电</text>
 					<text class="c-text-sub" style="display:block;margin-top:6rpx;">确定要停止本次充电吗？</text>
@@ -101,7 +106,9 @@
 		<view class="c-mask" v-if="settleShow" @click="cancelSettle"></view>
 		<view class="c-dialog" v-if="settleShow">
 			<view class="od-dialog-head">
-				<view class="od-dialog-ic success">✓</view>
+				<view class="od-dialog-ic success">
+					<image src="/static/h5/images/common/ic-check.png" class="od-dialog-ic-img" mode="aspectFit"></image>
+				</view>
 				<view>
 					<text class="c-title" style="display:block;">充电完成</text>
 					<text class="c-text-sub" style="display:block;margin-top:6rpx;">本次充电已结束</text>
@@ -430,7 +437,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 40rpx;
+	}
+
+	.od-done-ic-img {
+		width: 44rpx;
+		height: 44rpx;
 	}
 
 	.od-done-name-row {
@@ -463,17 +474,18 @@
 		height: 68rpx;
 		border-radius: 50%;
 		background: rgba(239, 68, 68, .1);
-		color: #ef4444;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 32rpx;
-		font-weight: 700;
+	}
+
+	.od-dialog-ic-img {
+		width: 32rpx;
+		height: 32rpx;
 	}
 
 	.od-dialog-ic.success {
 		background: rgba(16, 185, 129, .1);
-		color: #059669;
 	}
 
 	.od-dialog-warn {

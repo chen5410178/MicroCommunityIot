@@ -5,7 +5,9 @@
 		<view class="c-dialog" v-if="show">
 			<template v-if="step === 'form'">
 				<view class="wr-head">
-					<view class="wr-ic">📁</view>
+					<view class="wr-ic">
+						<image src="/static/h5/images/charge/ic-receipt.png" class="wr-ic-img" mode="aspectFit"></image>
+					</view>
 					<view>
 						<text class="c-title" style="display:block;">微信退款</text>
 						<text class="c-text-sub" style="display:block;margin-top:6rpx;">原路退回至微信支付账户</text>
@@ -43,7 +45,9 @@
 			</template>
 			<template v-else>
 				<view style="display:flex;flex-direction:column;align-items:center;padding:20rpx 0;">
-					<view class="wr-done-ic">✓</view>
+					<view class="wr-done-ic">
+						<image src="/static/h5/images/common/ic-check.png" class="wr-done-ic-img" mode="aspectFit"></image>
+					</view>
 					<text class="c-text-bold" style="font-size:28rpx;font-weight:700;color:#0f172a;margin-top:20rpx;">退款成功</text>
 					<text class="wr-done-amt">¥{{ doneAmt.toFixed(2) }}</text>
 					<text class="c-text-sub" style="margin-top:12rpx;">微信退款接口返回成功 · 原路退回微信零钱</text>
@@ -131,11 +135,14 @@
 		height: 68rpx;
 		border-radius: 50%;
 		background: rgba(16, 185, 129, .1);
-		color: #059669;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 32rpx;
+	}
+
+	.wr-ic-img {
+		width: 34rpx;
+		height: 34rpx;
 	}
 
 	.wr-box {
@@ -209,12 +216,14 @@
 		height: 96rpx;
 		border-radius: 50%;
 		background: rgba(16, 185, 129, .1);
-		color: #059669;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 44rpx;
-		font-weight: 700;
+	}
+
+	.wr-done-ic-img {
+		width: 48rpx;
+		height: 48rpx;
 	}
 
 	.wr-done-amt {

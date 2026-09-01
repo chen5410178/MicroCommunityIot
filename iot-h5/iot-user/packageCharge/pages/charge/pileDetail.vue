@@ -3,10 +3,12 @@
 		<!-- 桩信息卡 -->
 		<view class="c-card pd-mx pd-mt">
 			<view class="pd-pile-head">
-				<view class="pd-pile-icon">⚡</view>
+				<view class="pd-pile-icon">
+					<image src="/static/h5/images/charge/ic-bolt.png" class="pd-pile-icon-img" mode="aspectFit"></image>
+				</view>
 				<view class="pd-pile-info">
 					<view class="pd-pile-name-row">
-						<text class="c-title">{{ pile.name }}</text>
+						<text class="c-title pd-pile-name">{{ pile.name }}</text>
 						<text class="c-badge" :class="pile.free ? 'c-badge-green' : 'c-badge-orange'">{{ pile.free ? '空闲' : '使用中' }}</text>
 					</view>
 					<text class="c-text-sub pd-pile-loc">{{ pile.loc }}</text>
@@ -29,8 +31,8 @@
 				<text class="pd-price-text">{{ bikePriceText(cfg) }}</text>
 			</view>
 
-			<!-- 选择充电枪（电动车） -->
-			<view class="pd-gun-box" v-if="chgType === 'car' && guns.length > 0">
+			<!-- 选择充电枪（电动车：双枪桩可选 · 单枪桩仅只读模式展示状态） -->
+			<view class="pd-gun-box" v-if="chgType === 'car' && guns.length > 0 && (guns.length > 1 || !fromScan)">
 				<view class="pd-sec-head">
 					<text class="c-title">{{ fromScan ? '选择充电枪' : '充电枪状态' }}</text>
 					<text class="c-text-sub">{{ gunTip }}</text>
@@ -38,8 +40,8 @@
 				<view class="pd-gun-list">
 					<view v-for="(g, k) in guns" :key="k" class="c-gun-btn" :class="{ active: curGun === k, disabled: g.busy }"
 						@click="pickGun(k)">
-						<text style="font-size:28rpx;font-weight:700;">{{ g.n }} 枪</text>
-						<text style="font-size:18rpx;" :style="{ color: g.busy ? '#f87171' : '#10b981' }">{{ g.busy ? '使用中' : '空闲' }}</text>
+						<text style="font-size:32rpx;font-weight:700;">{{ g.n }} 枪</text>
+						<text style="font-size:20rpx;" :style="{ color: g.busy ? '#f87171' : '#10b981' }">{{ g.busy ? '使用中' : '空闲' }}</text>
 					</view>
 				</view>
 			</view>
@@ -57,29 +59,31 @@
 					<text class="pd-arrow" :class="{ open: tariffMore }">▾</text>
 				</view>
 			</view>
-			<view class="pd-tariff-current" :style="{ background: curTariff.color + '18' }">
+			<view class="pd-tariff-current">
 				<view class="pd-tc-left">
 					<view class="pd-tc-name-row">
 						<view class="pd-tc-dot" :style="{ background: curTariff.color }"></view>
-						<text class="c-text-bold" style="font-size:24rpx;font-weight:700;color:#1e293b;">{{ curTariff.name }}段</text>
+						<text class="c-text-bold pd-tc-name-text">{{ curTariff.name }}段</text>
 						<text class="pd-tc-now-tag">当前</text>
 					</view>
 					<text class="c-text-sub" style="margin-top:6rpx;display:block;">{{ curTariff.time }}</text>
 				</view>
 				<view class="pd-tc-rate" :style="{ color: curTariff.color }">
-					<text style="font-size:44rpx;font-weight:700;">¥{{ curTariff.rate.toFixed(2) }}</text>
-					<text class="c-text-sub">/度</text>
+					<view style="display:flex;align-items:baseline;gap:4rpx;">
+						<text style="font-size:48rpx;font-weight:700;line-height:1;">¥{{ curTariff.rate.toFixed(2) }}</text>
+						<text class="c-text-sub">/度</text>
+					</view>
 					<text class="pd-tc-rate-sub">电费 ¥{{ curTariff.elec.toFixed(2) }} + 服务费 ¥{{ curTariff.serv.toFixed(2) }}</text>
 				</view>
 			</view>
 			<view v-if="tariffMore" class="pd-tariff-more">
 				<view class="pd-tariff-more-item" v-for="(t, i) in otherTariffs" :key="i">
 					<view class="pd-tc-dot" :style="{ background: t.color }"></view>
-					<text class="c-text-bold" style="font-size:22rpx;font-weight:700;color:#334155;width:80rpx;">{{ t.name }}段</text>
-					<text class="c-text-sub" style="flex:1;">{{ t.time }}</text>
+					<text class="c-text-bold pd-tm-name">{{ t.name }}段</text>
+					<text class="c-text-sub pd-tm-time">{{ t.time }}</text>
 					<view style="text-align:right;">
-						<text class="c-text-bold" style="font-size:22rpx;font-weight:700;color:#334155;">¥{{ t.rate.toFixed(2) }}/度</text>
-						<text class="c-text-sub" style="display:block;">电 ¥{{ t.elec.toFixed(2) }} + 服 ¥{{ t.serv.toFixed(2) }}</text>
+						<text class="c-text-bold pd-tm-rate">¥{{ t.rate.toFixed(2) }}/度</text>
+						<text class="c-text-sub pd-tm-sub" style="display:block;">电 ¥{{ t.elec.toFixed(2) }} + 服 ¥{{ t.serv.toFixed(2) }}</text>
 					</view>
 				</view>
 			</view>
@@ -97,16 +101,16 @@
 				<text class="c-title">选择插座</text>
 				<text class="c-text-sub">{{ slotTip }}</text>
 			</view>
-			<view class="pd-slot-grid">
-				<view v-for="(s, k) in pile.slots || []" :key="k" class="c-slot-btn" :class="{ busy: s.busy, active: curSlot === k }"
-					@click="pickSlot(k)">
-					<text class="c-slot-num">{{ s.n }}</text>
-					<text class="c-slot-sub" :class="s.busy ? '' : ''" style="color:#10b981;">{{ s.busy ? '使用中' : '空闲' }}</text>
+				<view class="pd-slot-grid">
+					<view v-for="(s, k) in pile.slots || []" :key="k" class="c-slot-btn" :class="{ busy: s.busy, active: curSlot === k }"
+						@click="pickSlot(k)">
+						<text class="c-slot-num">{{ s.n }}</text>
+						<text class="c-slot-sub">{{ s.busy ? '使用中' : '空闲' }}</text>
+					</view>
 				</view>
-			</view>
 			<view class="pd-slot-state">
 				<text class="c-text-sub">插座状态</text>
-				<text class="c-text-bold" style="font-size:22rpx;font-weight:600;color:#334155;">{{ slotState }}</text>
+				<text class="c-text-bold pd-slot-state-text">{{ slotState }}</text>
 			</view>
 		</view>
 
@@ -116,8 +120,8 @@
 				<text class="c-title">{{ chgType === 'car' ? '充电金额' : '充电时长' }}</text>
 				<text class="c-text-sub">{{ chgType === 'car' ? '按金额充电 · 剩余退还' : '充满自停更省心' }}</text>
 			</view>
-			<!-- 电瓶车：时长选择 -->
-			<view class="pd-chips" v-if="chgType === 'bike'">
+			<!-- 电瓶车：时长选择（3 列网格 · 默认充满自停） -->
+			<view class="pd-chips pd-dur-grid" v-if="chgType === 'bike'">
 				<view v-for="(h, i) in durOptions" :key="i" class="c-chip" :class="{ active: dur === h }" @click="setDur(h)">
 					{{ h === 0 ? '充满自停' : h + ' 小时' }}
 				</view>
@@ -130,8 +134,8 @@
 					</view>
 				</view>
 				<view class="pd-amt-custom" v-if="amtCustomShow">
-					<text class="c-text-bold" style="font-size:24rpx;font-weight:700;color:#334155;">¥</text>
-					<input v-model="amtInput" type="digit" placeholder="输入 1~500 元" style="flex:1;font-size:24rpx;font-weight:600;color:#0f172a;" />
+					<text class="c-text-bold pd-amt-symbol">¥</text>
+					<input v-model="amtInput" type="digit" placeholder="输入 1~500 元" placeholder-class="pd-amt-ph" class="pd-amt-input" style="flex:1;" />
 					<view class="pd-amt-confirm" @click="confirmAmt">确认</view>
 				</view>
 			</view>
@@ -141,9 +145,9 @@
 		<view class="c-card pd-mx pd-mt" v-if="chgType === 'bike' && fromScan && pile.online !== false">
 			<view class="pd-sec-head">
 				<text class="c-title">预扣金额</text>
-				<text class="c-text-sub">按 220W 最高功率 · {{ dur > 0 ? dur + ' 小时' : '充满自停按 8 小时' }}估算</text>
+				<text class="c-text-sub">{{ preholdNote }}</text>
 			</view>
-			<text class="c-price-lg">¥{{ deposit.toFixed(2) }}</text>
+			<text class="pd-prehold-amt">¥{{ deposit.toFixed(2) }}</text>
 			<text class="c-text-sub" style="display:block;margin-top:12rpx;">启动后预扣 · 结束后按实际结算 · 剩余自动退还</text>
 		</view>
 
@@ -152,15 +156,15 @@
 			<text class="c-title">支付方式</text>
 			<view class="pd-pay-row" :class="{ checked: payWay === 'balance' }" @click="payWay = 'balance'">
 				<view class="pd-pay-radio" :class="{ on: payWay === 'balance' }"></view>
-				<text class="pd-pay-ic" style="color:#10b981;">💳</text>
-				<text class="c-text-bold" style="flex:1;font-size:24rpx;font-weight:600;color:#334155;">余额</text>
+				<image src="/static/h5/images/charge/ic-credit.png" class="pd-pay-ic" mode="aspectFit"></image>
+				<text class="c-text-bold pd-pay-name" style="flex:1;">余额</text>
 				<text class="c-text-sub">余额 ¥{{ balance.toFixed(2) }}</text>
 				<view class="pd-recharge-btn" @click.stop="goWallet">充值</view>
 			</view>
 			<view class="pd-pay-row" :class="{ checked: payWay === 'card' }" v-if="chgType === 'bike'" @click="payWay = 'card'">
 				<view class="pd-pay-radio" :class="{ on: payWay === 'card' }"></view>
-				<text class="pd-pay-ic" style="color:#f59e0b;">📇</text>
-				<text class="c-text-bold" style="flex:1;font-size:24rpx;font-weight:600;color:#334155;">充电月卡</text>
+				<image src="/static/h5/images/charge/ic-card.png" class="pd-pay-ic" mode="aspectFit"></image>
+				<text class="c-text-bold pd-pay-name" style="flex:1;">充电月卡</text>
 				<text class="c-text-sub">{{ cardTip }}</text>
 				<view class="pd-card-btn" @click.stop="goMonth">{{ hasCard ? '续费' : '去购买' }}</view>
 			</view>
@@ -168,8 +172,8 @@
 
 		<!-- 立即充电 -->
 		<view class="pd-mx pd-mt" v-if="!readonlyMode" style="padding-bottom:60rpx;">
-			<view class="c-btn-primary" @click="startCharge">立即充电</view>
-			<text class="c-text-sub pd-start-tip" v-if="chgType === 'bike'">请您选择充电插座号和充电时间后点击「立即充电」，启动后按设置最大功率预扣金额 · 剩余自动退还</text>
+			<view class="c-btn-primary pd-start-btn" @click="startCharge">立即充电</view>
+			<text class="c-text-sub pd-start-tip" v-if="chgType === 'bike'">{{ startTip }}</text>
 		</view>
 
 		<view class="c-toast" v-if="toastMsg" :style="{ opacity: 1 }">{{ toastMsg }}</view>
@@ -203,6 +207,7 @@
 				curSlot: null,
 				curGun: null,
 				dur: 0,
+				durTouched: false,
 				chgAmt: 20,
 				customAmt: null,
 				amtInput: '',
@@ -241,6 +246,16 @@
 			},
 			deposit() {
 				return calcBikeDeposit(this.dur)
+			},
+			preholdNote() {
+				return '按 220W 最高功率 · ' + (this.dur > 0 ? this.dur + ' 小时' : '充满自停按 8 小时') + '估算'
+			},
+			startTip() {
+				if (this.durTouched) {
+					return '启动后按设置最大功率预扣 ¥' + this.deposit.toFixed(2) + '（' + (this.dur > 0 ? '所选 ' + this.dur +
+						' 小时' : '充满自停按 8 小时') + '）· 剩余自动退还'
+				}
+				return '请您选择充电插座号和充电时间后点击「立即充电」，启动后按设置最大功率预扣金额 · 剩余自动退还'
 			},
 			balance() {
 				return chargeStore.balance
@@ -323,6 +338,7 @@
 			setDur(h) {
 				if (this.readonlyMode) return
 				this.dur = h
+				this.durTouched = true
 			},
 			setAmt(a) {
 				if (this.readonlyMode) return
@@ -432,19 +448,22 @@
 		display: flex;
 		align-items: center;
 		gap: 20rpx;
-		padding: 28rpx;
+		padding: 36rpx 28rpx;
 	}
 
 	.pd-pile-icon {
-		width: 88rpx;
-		height: 88rpx;
-		border-radius: 24rpx;
+		width: 100rpx;
+		height: 100rpx;
+		border-radius: 28rpx;
 		background: rgba(16, 185, 129, .1);
-		color: #059669;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 40rpx;
+	}
+
+	.pd-pile-icon-img {
+		width: 52rpx;
+		height: 52rpx;
 	}
 
 	.pd-pile-info {
@@ -458,9 +477,14 @@
 		gap: 12rpx;
 	}
 
+	.pd-pile-name {
+		font-size: 30rpx;
+	}
+
 	.pd-pile-loc {
 		margin-top: 6rpx;
 		display: block;
+		font-size: 22rpx;
 	}
 
 	.pd-pile-side {
@@ -551,11 +575,40 @@
 		padding: 0 28rpx 20rpx;
 	}
 
+	.pd-gun-list .c-gun-btn {
+		border-radius: 32rpx;
+		padding: 24rpx 0;
+		gap: 6rpx;
+	}
+
 	.pd-slot-grid {
 		display: grid;
-		grid-template-columns: repeat(5, 1fr);
-		gap: 14rpx;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 16rpx;
 		padding: 0 28rpx;
+	}
+
+	.pd-slot-grid .c-slot-btn {
+		border-radius: 28rpx;
+		padding: 32rpx 0;
+		gap: 10rpx;
+	}
+
+	.pd-slot-grid .c-slot-num {
+		font-size: 32rpx;
+	}
+
+	.pd-slot-grid .c-slot-sub {
+		font-size: 20rpx;
+	}
+
+	.pd-slot-grid .c-slot-btn:not(.busy) .c-slot-sub {
+		color: #10b981;
+	}
+
+	.pd-slot-state-text {
+		font-size: 23rpx;
+		font-weight: 600;
 	}
 
 	.pd-slot-state {
@@ -575,6 +628,16 @@
 		padding: 0 28rpx 28rpx;
 	}
 
+	.pd-dur-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 16rpx;
+	}
+
+	.pd-dur-grid .c-chip {
+		width: 100%;
+	}
+
 	.pd-amt-custom {
 		display: flex;
 		align-items: center;
@@ -583,6 +646,21 @@
 		border-radius: 20rpx;
 		background: #f8fafc;
 		padding: 18rpx 24rpx;
+	}
+
+	.pd-amt-symbol {
+		font-size: 26rpx;
+		font-weight: 700;
+	}
+
+	.pd-amt-input {
+		font-size: 26rpx;
+		font-weight: 600;
+		color: #0f172a;
+	}
+
+	.pd-amt-ph {
+		color: #cbd5e1;
 	}
 
 	.pd-amt-confirm {
@@ -624,7 +702,23 @@
 	}
 
 	.pd-pay-ic {
-		font-size: 36rpx;
+		width: 38rpx;
+		height: 38rpx;
+		flex-shrink: 0;
+	}
+
+	.pd-pay-name {
+		font-size: 25rpx;
+		font-weight: 600;
+	}
+
+	.pd-prehold-amt {
+		display: block;
+		margin-top: 12rpx;
+		font-size: 64rpx;
+		font-weight: 700;
+		color: #10b981;
+		line-height: 1;
 	}
 
 	.pd-recharge-btn {
@@ -650,6 +744,14 @@
 		display: block;
 		text-align: center;
 		margin-top: 16rpx;
+	}
+
+	.pd-start-btn {
+		height: 104rpx;
+		line-height: 104rpx;
+		border-radius: 32rpx;
+		font-size: 30rpx;
+		box-shadow: 0 12rpx 32rpx rgba(16, 185, 129, .3);
 	}
 
 	.pd-tariff-title-row {
@@ -688,6 +790,7 @@
 		justify-content: space-between;
 		margin: 0 28rpx;
 		border-radius: 20rpx;
+		background: #f1f5f9;
 		padding: 24rpx;
 	}
 
@@ -695,6 +798,11 @@
 		display: flex;
 		align-items: center;
 		gap: 10rpx;
+	}
+
+	.pd-tc-name-text {
+		font-size: 26rpx;
+		font-weight: 700;
 	}
 
 	.pd-tc-dot {
@@ -717,10 +825,11 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
+		gap: 8rpx;
 	}
 
 	.pd-tc-rate-sub {
-		font-size: 16rpx;
+		font-size: 20rpx;
 	}
 
 	.pd-tariff-more {
@@ -739,6 +848,26 @@
 		padding: 16rpx 20rpx;
 	}
 
+	.pd-tm-name {
+		font-size: 23rpx;
+		font-weight: 700;
+		width: 80rpx;
+	}
+
+	.pd-tm-time {
+		flex: 1;
+		font-size: 20rpx;
+	}
+
+	.pd-tm-rate {
+		font-size: 24rpx;
+		font-weight: 700;
+	}
+
+	.pd-tm-sub {
+		font-size: 18rpx;
+	}
+
 	.pd-tariff-note {
 		display: block;
 		font-size: 16rpx;
@@ -753,5 +882,51 @@
 		border: 1rpx solid rgba(239, 68, 68, .15);
 		padding: 20rpx 24rpx;
 		color: #ef4444;
+	}
+
+	/* ===== 黑夜主题覆盖（对齐原型 phone.theme-dark） ===== */
+	.charge-theme-dark .pd-tariff-current {
+		background: #182338 !important;
+	}
+
+	.charge-theme-dark .pd-tariff-more-item,
+	.charge-theme-dark .pd-slot-state,
+	.charge-theme-dark .pd-amt-custom {
+		background: #182338 !important;
+	}
+
+	.charge-theme-dark .pd-amt-input {
+		color: #e2e8f0 !important;
+	}
+
+	.charge-theme-dark .pd-amt-ph {
+		color: #64748b !important;
+	}
+
+	.charge-theme-dark .pd-pay-row {
+		border-color: #334155 !important;
+		background: transparent !important;
+	}
+
+	.charge-theme-dark .pd-pay-row.checked {
+		border-color: #10b981 !important;
+		background: rgba(16, 185, 129, .12) !important;
+	}
+
+	.charge-theme-dark .pd-price-row {
+		background: rgba(16, 185, 129, .14) !important;
+		border-color: rgba(16, 185, 129, .28) !important;
+	}
+
+	.charge-theme-dark .pd-offline-tip {
+		background: rgba(239, 68, 68, .12) !important;
+	}
+
+	.charge-theme-dark .pd-pile-icon {
+		background: rgba(16, 185, 129, .18) !important;
+	}
+
+	.charge-theme-dark .pd-tariff-note {
+		color: #64748b !important;
 	}
 </style>

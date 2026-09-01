@@ -18,7 +18,9 @@
 		<!-- 统计卡 -->
 		<view class="c-card co-mx co-mt">
 			<view class="co-stat-left">
-				<view class="co-stat-ic">⚡</view>
+				<view class="co-stat-ic">
+					<image src="/static/h5/images/charge/ic-bolt.png" class="co-stat-ic-img" mode="aspectFit"></image>
+				</view>
 				<view>
 					<view class="co-stat-title">
 						<text class="c-title">{{ recTitle }}</text>
@@ -54,7 +56,10 @@
 		<view class="co-list co-mx co-mt" v-if="list.length">
 			<view class="c-card co-item" v-for="(r, i) in list" :key="i" @click="openOrder(i)">
 				<view class="co-item-head">
-					<view class="co-item-ic">{{ r.type === 'car' ? '🚗' : '🛵' }}</view>
+					<view class="co-item-ic">
+						<image v-if="r.type === 'car'" src="/static/h5/images/charge/ic-car.png" class="co-item-ic-img" mode="aspectFit"></image>
+						<image v-else src="/static/h5/images/charge/ic-bike.png" class="co-item-ic-img" mode="aspectFit"></image>
+					</view>
 					<view style="flex:1;min-width:0;">
 						<view class="co-item-name-row">
 							<text class="c-text-bold" style="font-size:24rpx;font-weight:700;color:#0f172a;">{{ r.pile }}</text>
@@ -70,7 +75,7 @@
 			</view>
 		</view>
 		<view class="c-card co-empty" v-else>
-			<text style="font-size:48rpx;">📋</text>
+			<image src="/static/h5/images/charge/ic-chart.png" class="co-empty-ic" mode="aspectFit"></image>
 			<text class="c-text-sub" style="margin-top:16rpx;">暂无{{ rangeName }}{{ recType === 'car' ? '汽车' : recType === 'bike' ? '电瓶车' : '' }}充电订单</text>
 		</view>
 
@@ -311,7 +316,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 32rpx;
+	}
+
+	.co-stat-ic-img {
+		width: 34rpx;
+		height: 34rpx;
 	}
 
 	.co-stat-title {
@@ -418,7 +427,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 32rpx;
+	}
+
+	.co-item-ic-img {
+		width: 36rpx;
+		height: 36rpx;
 	}
 
 	.co-item-name-row {
@@ -462,5 +475,10 @@
 		flex-direction: column;
 		align-items: center;
 		padding: 80rpx 0;
+	}
+
+	.co-empty-ic {
+		width: 64rpx;
+		height: 64rpx;
 	}
 </style>

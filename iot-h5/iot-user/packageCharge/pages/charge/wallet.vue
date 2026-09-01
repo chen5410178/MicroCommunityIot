@@ -72,7 +72,9 @@
 			</view>
 			<view style="padding:32rpx;">
 				<view class="wl-pay-row">
-					<view class="wl-pay-ic">📞</view>
+					<view class="wl-pay-ic">
+						<image src="/static/h5/images/charge/ic-wallet.png" class="wl-pay-ic-img" mode="aspectFit"></image>
+					</view>
 					<view style="flex:1;">
 						<text class="c-text-bold" style="font-size:24rpx;font-weight:700;color:#0f172a;display:block;">微信支付</text>
 						<text class="c-text-sub">使用零钱支付</text>
@@ -562,7 +564,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 36rpx;
+	}
+
+	.wl-pay-ic-img {
+		width: 38rpx;
+		height: 38rpx;
 	}
 
 	.wl-pay-demo-tip {

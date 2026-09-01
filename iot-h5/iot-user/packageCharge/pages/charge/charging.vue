@@ -22,7 +22,9 @@
 					<text class="chg-ring-pct">{{ ringPct }}%</text>
 					<text class="chg-ring-label">充电进度</text>
 				</view>
-				<view class="chg-bolt c-bolt-spin">⚡</view>
+				<view class="chg-bolt c-bolt-spin">
+					<image src="/static/h5/images/charge/ic-bolt-white.png" class="chg-bolt-img" mode="aspectFit"></image>
+				</view>
 			</view>
 
 			<view class="chg-stats">
@@ -51,15 +53,21 @@
 			<text class="c-title">充电状态</text>
 			<view class="chg-steps">
 				<view class="chg-step">
-					<view class="chg-step-ic done">✓</view>
+					<view class="chg-step-ic done">
+						<image src="/static/h5/images/common/ic-check.png" class="chg-step-ic-img" mode="aspectFit"></image>
+					</view>
 					<text class="chg-step-text">已连接车辆 · 插座已锁定</text>
 				</view>
 				<view class="chg-step">
-					<view class="chg-step-ic done">✓</view>
+					<view class="chg-step-ic done">
+						<image src="/static/h5/images/common/ic-check.png" class="chg-step-ic-img" mode="aspectFit"></image>
+					</view>
 					<text class="chg-step-text">正常充电 · 实时计费</text>
 				</view>
 				<view class="chg-step">
-					<view class="chg-step-ic waiting">✓</view>
+					<view class="chg-step-ic waiting">
+						<image src="/static/h5/images/common/ic-check-gray.png" class="chg-step-ic-img" mode="aspectFit"></image>
+					</view>
 					<text class="chg-step-text" style="color:#94a3b8;">{{ protectText }}</text>
 				</view>
 			</view>
@@ -75,7 +83,9 @@
 		<view class="c-mask" v-if="stopShow" @click="stopShow = false"></view>
 		<view class="c-dialog" v-if="stopShow">
 			<view class="chg-dialog-head">
-				<view class="chg-dialog-ic danger">!</view>
+				<view class="chg-dialog-ic danger">
+					<image src="/static/h5/images/common/ic-alert.png" class="chg-dialog-ic-img" mode="aspectFit"></image>
+				</view>
 				<view>
 					<text class="c-title" style="display:block;">停止充电</text>
 					<text class="c-text-sub" style="display:block;margin-top:6rpx;">确定要停止本次充电吗？</text>
@@ -92,7 +102,9 @@
 		<view class="c-mask" v-if="settleShow" @click="cancelSettle"></view>
 		<view class="c-dialog" v-if="settleShow">
 			<view class="chg-dialog-head">
-				<view class="chg-dialog-ic success">✓</view>
+				<view class="chg-dialog-ic success">
+					<image src="/static/h5/images/common/ic-check.png" class="chg-dialog-ic-img" mode="aspectFit"></image>
+				</view>
 				<view>
 					<text class="c-title" style="display:block;">充电完成</text>
 					<text class="c-text-sub" style="display:block;margin-top:6rpx;">本次充电已结束</text>
@@ -117,7 +129,9 @@
 		<!-- 顶部消息横幅 -->
 		<view class="c-top-msg" v-if="topMsgShow" @click="openTopMsg">
 			<view class="chg-topmsg-body">
-				<view class="chg-topmsg-ic">{{ topMsgIcon }}</view>
+				<view class="chg-topmsg-ic">
+					<image :src="topMsgIcon" class="chg-topmsg-ic-img" mode="aspectFit"></image>
+				</view>
 				<view style="flex:1;min-width:0;">
 					<view class="chg-topmsg-title-row">
 						<text class="chg-topmsg-title">{{ topMsgTitle }}</text>
@@ -162,7 +176,7 @@
 				topMsgShow: false,
 				topMsgTitle: '',
 				topMsgText: '',
-				topMsgIcon: '⚡',
+				topMsgIcon: '/static/h5/images/charge/ic-bolt.png',
 				tariffs: JSON.parse(JSON.stringify(defaultTariffs)),
 				toastMsg: '',
 				timer: null,
@@ -352,7 +366,7 @@
 			_showTopMsg(title, text, type) {
 				this.topMsgTitle = title
 				this.topMsgText = text
-				this.topMsgIcon = type === 'charge' ? '⚡' : '📇'
+				this.topMsgIcon = type === 'charge' ? '/static/h5/images/charge/ic-bolt.png' : '/static/h5/images/charge/ic-card.png'
 				this.topMsgShow = true
 				chargeStore.addMsg(type || 'charge', title, text)
 				clearTimeout(this._topMsgTimer)
@@ -475,8 +489,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 24rpx;
 		box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, .2);
+	}
+
+	.chg-bolt-img {
+		width: 26rpx;
+		height: 26rpx;
 	}
 
 	.chg-stats {
@@ -545,8 +563,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 20rpx;
-		font-weight: 700;
+	}
+
+	.chg-step-ic-img {
+		width: 22rpx;
+		height: 22rpx;
 	}
 
 	.chg-step-ic.done {
@@ -585,8 +606,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 32rpx;
-		font-weight: 700;
+	}
+
+	.chg-dialog-ic-img {
+		width: 32rpx;
+		height: 32rpx;
 	}
 
 	.chg-dialog-ic.danger {
@@ -657,7 +681,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 30rpx;
+	}
+
+	.chg-topmsg-ic-img {
+		width: 32rpx;
+		height: 32rpx;
 	}
 
 	.chg-topmsg-title-row {

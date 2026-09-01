@@ -1,19 +1,21 @@
 <template>
 	<view class="ab-page" :class="{ 'charge-theme-dark': themeDark }">
 		<view class="ab-logo-area">
-			<view class="ab-logo">⚡</view>
+			<view class="ab-logo">
+				<image src="/static/h5/images/charge/ic-bolt-white.png" class="ab-logo-img" mode="aspectFit"></image>
+			</view>
 			<text class="ab-name">云充电</text>
 			<text class="c-text-sub" style="margin-top:8rpx;">版本 v1.3.0 · 智慧出行</text>
 		</view>
 
 		<view class="ab-menu c-card ab-mx">
 			<view class="ab-menu-item" @click="openAgree('用户服务协议')">
-				<text style="font-size:30rpx;">📄</text>
+				<image src="/static/h5/images/common/ic-doc.png" class="ab-menu-ic" mode="aspectFit"></image>
 				<text class="ab-menu-text">用户服务协议</text>
 				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
 			</view>
 			<view class="ab-menu-item" @click="openAgree('隐私保护指引')">
-				<text style="font-size:30rpx;">🛡</text>
+				<image src="/static/h5/images/common/ic-shield.png" class="ab-menu-ic" mode="aspectFit"></image>
 				<text class="ab-menu-text">隐私保护指引</text>
 				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
 			</view>
@@ -103,8 +105,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 64rpx;
 		box-shadow: 0 16rpx 40rpx rgba(16, 185, 129, .3);
+	}
+
+	.ab-logo-img {
+		width: 80rpx;
+		height: 80rpx;
 	}
 
 	.ab-name {
@@ -125,6 +131,12 @@
 		gap: 20rpx;
 		padding: 28rpx;
 		border-bottom: 1rpx solid #f1f5f9;
+	}
+
+	.ab-menu-ic {
+		width: 34rpx;
+		height: 34rpx;
+		flex-shrink: 0;
 	}
 
 	.ab-menu-item:last-child {

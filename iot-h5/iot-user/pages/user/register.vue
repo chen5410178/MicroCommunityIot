@@ -1,7 +1,9 @@
 <template>
 	<view class="rg-page">
 		<view class="rg-body">
-			<view class="rg-logo">👤</view>
+			<view class="rg-logo">
+				<image src="/static/h5/images/common/ic-user-plus.png" class="rg-logo-img" mode="aspectFit"></image>
+			</view>
 			<text class="rg-title">注册充电账号</text>
 			<text class="rg-sub">注册成功后自动登录 · 充电记录与余额同步</text>
 
@@ -168,9 +170,13 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 52rpx;
 		margin: 0 auto;
 		box-shadow: 0 12rpx 30rpx rgba(16, 185, 129, .3);
+	}
+
+	.rg-logo-img {
+		width: 60rpx;
+		height: 60rpx;
 	}
 
 	.rg-title {

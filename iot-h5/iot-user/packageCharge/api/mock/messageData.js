@@ -9,27 +9,23 @@ import {
 // 消息中心初始数据（与 chargeMockData.mockMessages 同源，便于后续替换）
 export const initMessages = mockMessages.slice()
 
-// 消息类型图标元信息
+// 消息类型图标元信息（icon 为 PNG 图标路径，与原型 SVG 对应）
 export const msgMeta = {
 	charge: {
 		bg: 'rgba(16,185,129,.12)',
-		fg: '#10b981',
-		icon: '⚡'
+		icon: '/static/h5/images/charge/ic-bolt.png'
 	},
 	wallet: {
 		bg: 'rgba(59,130,246,.12)',
-		fg: '#3b82f6',
-		icon: '💰'
+		icon: '/static/h5/images/charge/ic-wallet.png'
 	},
 	card: {
 		bg: 'rgba(249,115,22,.12)',
-		fg: '#f97316',
-		icon: '📇'
+		icon: '/static/h5/images/charge/ic-card.png'
 	},
 	sys: {
 		bg: 'rgba(139,92,246,.12)',
-		fg: '#8b5cf6',
-		icon: '🔔'
+		icon: '/static/h5/images/common/ic-bell-violet.png'
 	}
 }
 

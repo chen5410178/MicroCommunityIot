@@ -4,8 +4,14 @@
 		<view class="msg-toolbar" v-if="!editMode">
 			<text class="c-text-sub">共 <text style="color:#0f172a;font-weight:700;">{{ list.length }}</text> 条消息</text>
 			<view class="msg-toolbar-actions">
-				<text class="msg-action" style="color:#059669;" @click="markAllRead">👁 全部已读</text>
-				<text class="msg-action" @click="enterEditMode">✏️ 管理</text>
+				<text class="msg-action" style="color:#059669;" @click="markAllRead">
+					<image src="/static/h5/images/common/ic-eye.png" class="msg-action-ic" mode="aspectFit"></image>
+					全部已读
+				</text>
+				<text class="msg-action" @click="enterEditMode">
+					<image src="/static/h5/images/common/ic-edit.png" class="msg-action-ic" mode="aspectFit"></image>
+					管理
+				</text>
 			</view>
 		</view>
 		<!-- 管理模式工具栏 -->
@@ -17,7 +23,10 @@
 				全选
 			</text>
 			<view class="msg-toolbar-actions">
-				<text class="msg-action" style="color:#f43f5e;" @click="delSelected">🗑 删除 <text style="font-weight:700;">{{ selected.size }}</text></text>
+				<text class="msg-action" style="color:#f43f5e;" @click="delSelected">
+					<image src="/static/h5/images/common/ic-trash.png" class="msg-action-ic" mode="aspectFit"></image>
+					删除 <text style="font-weight:700;">{{ selected.size }}</text>
+				</text>
 				<text class="msg-action" style="color:#3b82f6;" @click="exitEditMode">完成</text>
 			</view>
 		</view>
@@ -25,8 +34,8 @@
 		<!-- 消息列表 -->
 		<view class="msg-list">
 			<view v-for="m in list" :key="m.id" class="msg-item" :class="{ unread: !m.read }" @click="onItemClick(m)">
-				<view class="msg-ic" :style="{ background: msgMeta[m.type] ? msgMeta[m.type].bg : '#f1f5f9', color: msgMeta[m.type] ? msgMeta[m.type].fg : '#64748b' }">
-					<text>{{ msgMeta[m.type] ? msgMeta[m.type].icon : '🔔' }}</text>
+				<view class="msg-ic" :style="{ background: msgMeta[m.type] ? msgMeta[m.type].bg : '#f1f5f9' }">
+					<image :src="msgMeta[m.type] ? msgMeta[m.type].icon : '/static/h5/images/common/ic-bell.png'" class="msg-ic-img" mode="aspectFit"></image>
 				</view>
 				<view style="flex:1;min-width:0;">
 					<view class="msg-title-row">
@@ -41,7 +50,7 @@
 				</view>
 			</view>
 			<view class="msg-empty" v-if="!list.length">
-				<text style="font-size:48rpx;">📭</text>
+				<image src="/static/h5/images/common/ic-inbox.png" class="msg-empty-ic" mode="aspectFit"></image>
 				<text class="c-text-sub" style="margin-top:16rpx;">暂无消息</text>
 			</view>
 		</view>
@@ -50,7 +59,9 @@
 		<view class="c-mask" v-if="delShow" @click="delShow = false"></view>
 		<view class="c-dialog" v-if="delShow">
 			<view class="msg-dialog-head">
-				<view class="msg-dialog-ic">🗑</view>
+				<view class="msg-dialog-ic">
+					<image src="/static/h5/images/common/ic-trash.png" class="msg-dialog-ic-img" mode="aspectFit"></image>
+				</view>
 				<view>
 					<text class="c-title" style="display:block;">删除选中消息</text>
 					<text class="c-text-sub" style="display:block;margin-top:6rpx;">删除后不可恢复，确定删除吗？</text>
@@ -67,8 +78,8 @@
 		<view class="c-mask" v-if="detail" @click="detail = null"></view>
 		<view class="c-dialog" v-if="detail">
 			<view class="msg-detail-head">
-				<view class="msg-detail-ic" :style="{ background: msgMeta[detail.type] ? msgMeta[detail.type].bg : '#f1f5f9', color: msgMeta[detail.type] ? msgMeta[detail.type].fg : '#64748b' }">
-					<text style="font-size:36rpx;">{{ msgMeta[detail.type] ? msgMeta[detail.type].icon : '🔔' }}</text>
+				<view class="msg-detail-ic" :style="{ background: msgMeta[detail.type] ? msgMeta[detail.type].bg : '#f1f5f9' }">
+					<image :src="msgMeta[detail.type] ? msgMeta[detail.type].icon : '/static/h5/images/common/ic-bell.png'" class="msg-detail-ic-img" mode="aspectFit"></image>
 				</view>
 				<view style="flex:1;min-width:0;">
 					<text class="c-title" style="display:block;font-size:36rpx;">{{ detail.title }}</text>
@@ -203,6 +214,11 @@
 		gap: 8rpx;
 	}
 
+	.msg-action-ic {
+		width: 24rpx;
+		height: 24rpx;
+	}
+
 	.msg-sel-box {
 		width: 32rpx;
 		height: 32rpx;
@@ -249,8 +265,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 32rpx;
 		flex-shrink: 0;
+	}
+
+	.msg-ic-img {
+		width: 34rpx;
+		height: 34rpx;
 	}
 
 	.msg-title-row {
@@ -331,6 +351,11 @@
 		align-items: center;
 	}
 
+	.msg-empty-ic {
+		width: 64rpx;
+		height: 64rpx;
+	}
+
 	.msg-dialog-head {
 		display: flex;
 		align-items: center;
@@ -342,11 +367,14 @@
 		height: 68rpx;
 		border-radius: 50%;
 		background: rgba(239, 68, 68, .1);
-		color: #ef4444;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 32rpx;
+	}
+
+	.msg-dialog-ic-img {
+		width: 32rpx;
+		height: 32rpx;
 	}
 
 	.msg-dialog-warn {
@@ -390,6 +418,11 @@
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
+	}
+
+	.msg-detail-ic-img {
+		width: 44rpx;
+		height: 44rpx;
 	}
 
 	.msg-detail-close {

@@ -8,10 +8,15 @@
 					<text class="my-name">{{ user.name }}</text>
 					<text class="c-text-sub" style="margin-top:6rpx;display:block;">{{ user.mode }} · {{ user.home }}</text>
 				</view>
-				<text class="my-pwd-btn" @click.stop="openPwd">🔒 修改密码</text>
+				<text class="my-pwd-btn" @click.stop="openPwd">
+					<image src="/static/h5/images/common/ic-lock-green.png" class="my-pwd-btn-ic" mode="aspectFit"></image>
+					修改密码
+				</text>
 			</view>
 			<view class="c-card my-user-card" v-else>
-				<view class="my-avatar" style="background:#f1f5f9;color:#94a3b8;">👤</view>
+				<view class="my-avatar" style="background:#f1f5f9;">
+					<image src="/static/h5/images/common/ic-user.png" class="my-avatar-img" mode="aspectFit"></image>
+				</view>
 				<view style="flex:1;">
 					<text class="my-name" style="color:#0f172a;">点击登录</text>
 					<text class="c-text-sub" style="margin-top:6rpx;display:block;">登录后同步充电记录 / 余额 / 月卡</text>
@@ -35,31 +40,31 @@
 		<!-- 功能入口 -->
 		<view class="c-card my-mx my-mt my-menu">
 			<view class="my-menu-item" @click="goCarService">
-				<text style="font-size:32rpx;">🚗</text>
+				<image src="/static/h5/images/charge/ic-car-full.png" class="my-menu-ic" mode="aspectFit"></image>
 				<text class="my-menu-text">车辆服务</text>
 				<text class="c-text-sub" style="font-size:20rpx;">{{ vehicles.length ? vehicles[0].plate : '去添加' }}</text>
 				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
 			</view>
 			<view class="my-menu-item" @click="goInvoice">
-				<text style="font-size:32rpx;">🧾</text>
+				<image src="/static/h5/images/charge/ic-invoice.png" class="my-menu-ic" mode="aspectFit"></image>
 				<text class="my-menu-text">电子发票</text>
 				<text class="c-text-sub" style="font-size:20rpx;">开票记录</text>
 				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
 			</view>
 			<view class="my-menu-item" @click="goTariff">
-				<text style="font-size:32rpx;">⏱</text>
+				<image src="/static/h5/images/charge/ic-clock.png" class="my-menu-ic" mode="aspectFit"></image>
 				<text class="my-menu-text">分时电价</text>
 				<text class="c-text-sub" style="font-size:20rpx;">尖峰平谷</text>
 				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
 			</view>
 			<view class="my-menu-item" @click="goService">
-				<text style="font-size:32rpx;">📞</text>
+				<image src="/static/h5/images/common/ic-phone.png" class="my-menu-ic" mode="aspectFit"></image>
 				<text class="my-menu-text">联系客服</text>
 				<text class="my-menu-phone">400-880-1234</text>
 				<view class="my-call-btn" @click.stop="goService">拨打</view>
 			</view>
 			<view class="my-menu-item" @click="goAbout">
-				<text style="font-size:32rpx;">ℹ️</text>
+				<image src="/static/h5/images/common/ic-info.png" class="my-menu-ic" mode="aspectFit"></image>
 				<text class="my-menu-text">关于充电服务</text>
 				<text class="c-text-sub" style="font-size:20rpx;">v1.3.0</text>
 				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
@@ -86,7 +91,9 @@
 		<view class="c-mask" v-if="pwdShow" @click="pwdShow = false"></view>
 		<view class="c-dialog" v-if="pwdShow">
 			<view class="my-pwd-head">
-				<view class="my-pwd-ic">🔒</view>
+				<view class="my-pwd-ic">
+					<image src="/static/h5/images/common/ic-lock-green.png" class="my-pwd-ic-img" mode="aspectFit"></image>
+				</view>
 				<view>
 					<text class="c-title" style="display:block;">修改密码</text>
 					<text class="c-text-sub" style="display:block;margin-top:6rpx;">请设置新密码（6-20 位）</text>
@@ -272,6 +279,11 @@
 		flex-shrink: 0;
 	}
 
+	.my-avatar-img {
+		width: 48rpx;
+		height: 48rpx;
+	}
+
 	.my-name {
 		font-size: 28rpx;
 		font-weight: 700;
@@ -285,6 +297,11 @@
 		display: flex;
 		align-items: center;
 		gap: 6rpx;
+	}
+
+	.my-pwd-btn-ic {
+		width: 22rpx;
+		height: 22rpx;
 	}
 
 	.my-grid {
@@ -319,6 +336,12 @@
 		gap: 20rpx;
 		padding: 28rpx;
 		border-bottom: 1rpx solid #f1f5f9;
+	}
+
+	.my-menu-ic {
+		width: 34rpx;
+		height: 34rpx;
+		flex-shrink: 0;
 	}
 
 	.my-menu-item:last-child {
@@ -391,7 +414,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 32rpx;
+	}
+
+	.my-pwd-ic-img {
+		width: 32rpx;
+		height: 32rpx;
 	}
 
 	.my-pwd-row {

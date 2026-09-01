@@ -11,7 +11,7 @@
 					<input :value="searchProv" readonly placeholder="省" class="cs-prov-input" />
 				</view>
 				<view class="cs-rest-box">
-					<text class="cs-search-ic">🔍</text>
+					<image src="/static/h5/images/common/ic-search.png" class="cs-search-ic" mode="aspectFit"></image>
 					<input :value="searchRest" readonly placeholder="输入字母数字" class="cs-rest-input" @click="openSearchKey" />
 					<text class="cs-suggest-toggle" @click="toggleSearchSuggest">▾</text>
 				</view>
@@ -30,7 +30,7 @@
 			<view class="cs-suggest" v-if="suggestShow">
 				<view v-for="(p, i) in suggestList" :key="i" class="cs-suggest-item">
 					<view class="cs-suggest-main" @click="pickSearchPlate(p)">
-						<text style="font-size:18rpx;color:#94a3b8;">🚗</text>
+						<image src="/static/h5/images/charge/ic-car-full.png" class="cs-suggest-ic" mode="aspectFit"></image>
 						<text class="cs-suggest-plate">{{ p }}</text>
 						<text class="cs-suggest-tag">历史</text>
 					</view>
@@ -43,7 +43,9 @@
 		<view class="cs-mx cs-mt" v-if="searchResult">
 			<view v-if="hitCar" class="c-card cs-hit">
 				<view class="cs-hit-head">
-					<view class="cs-hit-ic">🚗</view>
+					<view class="cs-hit-ic">
+						<image src="/static/h5/images/charge/ic-car-full.png" class="cs-hit-ic-img" mode="aspectFit"></image>
+					</view>
 					<view style="flex:1;min-width:0;">
 						<view class="cs-hit-plate-row">
 							<text class="cs-hit-plate">{{ hitCar.plate }}</text>
@@ -300,7 +302,9 @@
 	}
 
 	.cs-search-ic {
-		font-size: 26rpx;
+		width: 28rpx;
+		height: 28rpx;
+		flex-shrink: 0;
 	}
 
 	.cs-rest-input {
@@ -397,6 +401,12 @@
 		min-width: 0;
 	}
 
+	.cs-suggest-ic {
+		width: 26rpx;
+		height: 26rpx;
+		flex-shrink: 0;
+	}
+
 	.cs-suggest-plate {
 		flex: 1;
 		font-size: 24rpx;
@@ -434,7 +444,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 36rpx;
+	}
+
+	.cs-hit-ic-img {
+		width: 40rpx;
+		height: 40rpx;
 	}
 
 	.cs-hit-plate-row {

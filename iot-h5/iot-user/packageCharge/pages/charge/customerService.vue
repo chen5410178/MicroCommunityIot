@@ -2,7 +2,9 @@
 	<view class="cs-page" :class="{ 'charge-theme-dark': themeDark }">
 		<view class="c-card cs-mx cs-mt">
 			<view class="cs-card-head">
-				<view class="cs-card-ic">📞</view>
+				<view class="cs-card-ic">
+					<image src="/static/h5/images/charge/ic-phone-white.png" class="cs-card-ic-img" mode="aspectFit"></image>
+				</view>
 				<view style="flex:1;">
 					<text class="c-text-bold" style="font-size:28rpx;font-weight:700;color:#0f172a;display:block;">云充电客服</text>
 					<text class="c-text-bold" style="font-size:32rpx;font-weight:700;color:#0f172a;margin-top:8rpx;display:block;">400-880-1234</text>
@@ -15,7 +17,9 @@
 		<!-- 拨号模拟弹窗 -->
 		<view class="c-mask" v-if="callShow" @click="callShow = false"></view>
 		<view class="c-dialog" v-if="callShow" style="text-align:center;">
-			<view class="cs-call-ic">📞</view>
+			<view class="cs-call-ic">
+				<image src="/static/h5/images/charge/ic-phone.png" class="cs-call-ic-img" mode="aspectFit"></image>
+			</view>
 			<text class="c-text-bold" style="font-size:30rpx;font-weight:700;color:#0f172a;margin-top:20rpx;display:block;letter-spacing:4rpx;">400-880-1234</text>
 			<view class="cs-call-status">
 				<view class="c-pulse-dot" style="width:12rpx;height:12rpx;border-radius:50%;background:#10b981;"></view>
@@ -72,7 +76,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 40rpx;
+	}
+
+	.cs-card-ic-img {
+		width: 44rpx;
+		height: 44rpx;
 	}
 
 	.cs-call-btn {
@@ -93,8 +101,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 44rpx;
 		margin: 20rpx auto 0;
+	}
+
+	.cs-call-ic-img {
+		width: 52rpx;
+		height: 52rpx;
 	}
 
 	.cs-call-status {
