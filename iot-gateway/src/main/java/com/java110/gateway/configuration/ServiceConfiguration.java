@@ -53,6 +53,10 @@ public class ServiceConfiguration {
 
 
         exclusions.append("/app/charge/*,");// 通用充电桩通知放开
+        exclusions.append("/app/chargeBikeMini/*,");// 充电桩小程序二维码转跳放开
+        exclusions.append("/app/chargeBikeH5/*,");// 充电桩公众号二维码转跳放开
+        exclusions.append("/app/chargeCarMini/*,");// 充电桩小程序二维码转跳放开
+        exclusions.append("/app/chargeCarH5/*,");// 充电桩公众号二维码转跳放开
         exclusions.append("/app/equipments/*,");// 叮叮充电桩通知放开
         exclusions.append("/app/charge/kehang/*,");// 科航充电桩通知放开
         exclusions.append("/app/smartMeter/notify/*,");// 水电表通知放开
@@ -73,6 +77,7 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/passcode.applyPassQrcode,");// 申请通行码
         exclusions.append("/iot/api/passcode.refreshPassQrcode,");// 查询通信码
         exclusions.append("/iot/api/user.userSendSms,");// 发送验证码
+        exclusions.append("/iot/api/user.resetUserPwd,");// 忘记密码重置（免登录）
 
         exclusions.append("/iot/api/meterQrcode.listMeterQrcode,");// 查询水电二维码
         exclusions.append("/iot/api/meterMachine.listMeterMachine,");// 查询水电表

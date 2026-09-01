@@ -2,13 +2,13 @@ package com.java110.gateway.app.charge;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
-import com.java110.core.cache.MappingCache;
 import com.java110.core.cache.UrlCache;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.factory.WechatFactory;
 import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
 import com.java110.dto.chargeMachine.ChargeMachinePortDto;
 import com.java110.dto.chargeMachine.NotifyChargeOrderDto;
@@ -86,12 +86,12 @@ public class ChangeQrcodeController {
         String ownerUrl = UrlCache.getOwnerUrl();
         String url = "";
         if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDtos.get(0).getChargeType())) {
-            url = ownerUrl + "/#/pages/charge/machineToCharge?machineId="
+            url = ownerUrl + "/#/packageCharge/pages/charge/machineToCharge?machineId="
                     + chargeMachineDtos.get(0).getMachineId()
                     + "&communityId=" + chargeMachineDtos.get(0).getCommunityId()
                     + "&wAppId=" + appId;
         } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDtos.get(0).getChargeType())) {
-            url = ownerUrl + "/#/pages/charge/carChargePort?machineId="
+            url = ownerUrl + "/#/packageCharge/pages/charge/carChargePort?machineId="
                     + chargeMachineDtos.get(0).getMachineId()
                     + "&communityId=" + chargeMachineDtos.get(0).getCommunityId()
                     + "&wAppId=" + appId + "&portId=" + chargeMachinePortDtos.get(0).getPortId();
@@ -150,7 +150,7 @@ public class ChangeQrcodeController {
         String ownerUrl = UrlCache.getOwnerUrl();
         String url = "";
         if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDtos.get(0).getChargeType())) {
-            url = ownerUrl + "/#/pages/charge/machineToCharge?machineId="
+            url = ownerUrl + "/#/packageCharge/pages/charge/machineToCharge?machineId="
                     + chargeMachineDtos.get(0).getMachineId()
                     + "&communityId=" + chargeMachineDtos.get(0).getCommunityId()
                     + "&wAppId=" + appId;
@@ -181,38 +181,14 @@ public class ChangeQrcodeController {
             return ResultVo.error("设备不存在");
         }
 
-        String chargePath = MappingCache.getValue("SYSTEM_SWITCH","CHARGE_PAGE");
-        if("MINI".equals(chargePath)){
-            return pageMiniPage(chargeMachineDtos.get(0));
-        }
-
-        SmallWeChatDto smallWeChatDto = new SmallWeChatDto();
-        smallWeChatDto.setObjId(chargeMachineDtos.get(0).getCommunityId());
-        smallWeChatDto.setWeChatType(SmallWeChatDto.WECHAT_TYPE_PUBLIC);
-        List<SmallWeChatDto> smallWeChatDtos = smallWeChatInnerServiceSMOImpl.querySmallWeChats(smallWeChatDto);
-        String appId = "";
-        if (ListUtil.isNull(smallWeChatDtos)) {
-            return ResultVo.error("小区未配置公众号信息");
-        }
-        appId = smallWeChatDtos.get(0).getAppId();
-
         String ownerUrl = UrlCache.getOwnerUrl();
-        String url = "";
         if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDtos.get(0).getChargeType())) {
-            url = ownerUrl + "/#/pages/charge/machineToCharge?machineId="
-                    + chargeMachineDtos.get(0).getMachineId()
-                    + "&communityId=" + chargeMachineDtos.get(0).getCommunityId()
-                    + "&wAppId=" + appId;
+            return ResultVo.redirectPage(ownerUrl + "/app/chargeBikeMini/" + machineCode);
         } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDtos.get(0).getChargeType())) {
-            url = ownerUrl + "/#/pages/charge/machineToCarCharge?machineId="
-                    + chargeMachineDtos.get(0).getMachineId()
-                    + "&communityId=" + chargeMachineDtos.get(0).getCommunityId()
-                    + "&wAppId=" + appId;
+            return ResultVo.redirectPage(ownerUrl + "/app/chargeCarMini/" + machineCode);
         } else {
             return ResultVo.error("不支持的设备");
         }
-
-        return ResultVo.redirectPage(url);
 
     }
 
@@ -235,38 +211,7 @@ public class ChangeQrcodeController {
             return ResultVo.error("设备不存在");
         }
 
-        String chargePath = MappingCache.getValue("SYSTEM_SWITCH","CHARGE_PAGE");
-        if("MINI".equals(chargePath)){
-            return pageMiniPagePort(chargeMachineDtos.get(0),portId);
-        }
-
-        SmallWeChatDto smallWeChatDto = new SmallWeChatDto();
-        smallWeChatDto.setObjId(chargeMachineDtos.get(0).getCommunityId());
-        smallWeChatDto.setWeChatType(SmallWeChatDto.WECHAT_TYPE_PUBLIC);
-        List<SmallWeChatDto> smallWeChatDtos = smallWeChatInnerServiceSMOImpl.querySmallWeChats(smallWeChatDto);
-        String appId = "";
-        if (ListUtil.isNull(smallWeChatDtos)) {
-            return ResultVo.error("小区未配置公众号信息");
-        }
-        appId = smallWeChatDtos.get(0).getAppId();
-
-        String ownerUrl = UrlCache.getOwnerUrl();
-        String url = "";
-        if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDtos.get(0).getChargeType())) {
-            url = ownerUrl + "/#/pages/charge/machineToCharge?machineId="
-                    + chargeMachineDtos.get(0).getMachineId()
-                    + "&communityId=" + chargeMachineDtos.get(0).getCommunityId()
-                    + "&wAppId=" + appId + "&portId=" + portId;
-        } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDtos.get(0).getChargeType())) {
-            url = ownerUrl + "/#/pages/charge/carChargePort?machineId="
-                    + chargeMachineDtos.get(0).getMachineId()
-                    + "&communityId=" + chargeMachineDtos.get(0).getCommunityId()
-                    + "&wAppId=" + appId + "&portId=" + portId;
-        } else {
-            return ResultVo.error("不支持的设备");
-        }
-
-        return ResultVo.redirectPage(url);
+        return pageMiniPagePort(chargeMachineDtos.get(0), portId);
 
     }
 
@@ -276,18 +221,21 @@ public class ChangeQrcodeController {
         String query = "";
 
         if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDto.getChargeType())) {
-            path = "/pages/charge/machineToCharge";
+            path = "/packageCharge/pages/charge/machineToCharge";
             query = "machineId=" + chargeMachineDto.getMachineId()
                     + "&communityId=" + chargeMachineDto.getCommunityId()
                     + "&portId=" + portId;
         } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDto.getChargeType())) {
-            path = "/pages/charge/carChargePort";
+            path = "/packageCharge/pages/charge/carChargePort";
             query = "machineId=" + chargeMachineDto.getMachineId()
                     + "&communityId=" + chargeMachineDto.getCommunityId()
                     + "&portId=" + portId;
         }
 
         urlScheme = getWechatURLScheme(chargeMachineDto.getCommunityId(), path, query);
+        if (StringUtil.isEmpty(urlScheme)) {
+            return ResultVo.error("未配置小程序");
+        }
 
         String html = getHtmlPage(urlScheme);
 
@@ -301,17 +249,20 @@ public class ChangeQrcodeController {
         String path = "";
         String query = "";
         if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDto.getChargeType())) {
-            path = "/pages/charge/machineToCharge";
+            path = "/packageCharge/pages/charge/machineToCharge";
             query = "machineId="
                     + chargeMachineDto.getMachineId()
                     + "&communityId=" + chargeMachineDto.getCommunityId();
         } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDto.getChargeType())) {
-            path = "/pages/charge/machineToCarCharge";
+            path = "/packageCharge/pages/charge/machineToCarCharge";
             query = "machineId="
                     + chargeMachineDto.getMachineId()
                     + "&communityId=" + chargeMachineDto.getCommunityId();
         }
         urlScheme = getWechatURLScheme(chargeMachineDto.getCommunityId(),path,query);
+        if (StringUtil.isEmpty(urlScheme)) {
+            return ResultVo.error("未配置小程序");
+        }
         String html = getHtmlPage(urlScheme);
 
         return ResponseEntity.ok().body(html);

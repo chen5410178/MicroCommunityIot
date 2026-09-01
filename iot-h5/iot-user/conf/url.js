@@ -56,6 +56,8 @@ export default {
 	listMeterMachine: baseUrl + "iot/api/meterMachine.listMeterMachine",
 	listMeterMachineCharge: baseUrl + "iot/api/meterMachineCharge.listMeterMachineCharge",
 	userSendSms: baseUrl + "iot/api/user.userSendSms",
+	updateUserPwd: baseUrl + "iot/api/user.updateUserPwd", // 修改登录密码（需登录）
+	resetUserPwd: baseUrl + "iot/api/user.resetUserPwd", // 忘记密码重置（免登录）
 	queryBindRoom: baseUrl + "iot/api/appUser.queryBindRoom",
 	getVisitQrCodeUrl: baseUrl + "iot/api/visit.getVisitQrCodeUrl",
 	listOwnerAccessControl: baseUrl + "iot/api/accessControl.listOwnerAccessControl",

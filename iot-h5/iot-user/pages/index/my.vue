@@ -31,9 +31,9 @@
 				<text class="c-text-sub">余额</text>
 				<text class="my-grid-val">¥{{ balance.toFixed(2) }}</text>
 			</view>
-			<view class="c-card my-grid-item" @click="goMonth">
-				<text class="c-text-sub">充电月卡</text>
-				<text class="my-grid-val orange">{{ myCard ? (myCard.left + (myCard.type === 'month' ? ' 天' : ' 次')) : '未开通' }}</text>
+			<view class="c-card my-grid-item" :class="{ 'my-grid-item-disabled': certifyState === 'D' }" @click="goRoomCertification">
+				<text class="c-text-sub">业主认证</text>
+				<text class="my-grid-val">{{ certifyState === 'D' ? '认证审核中' : '去认证' }}</text>
 			</view>
 		</view>
 
@@ -102,6 +102,9 @@
 	import {
 		getSystemPrivacy
 	} from '@/api/system/systemApi.js'
+	import {
+		getAppUser
+	} from '@/api/user/appUser.js'
 
 	export default {
 		data() {
@@ -114,7 +117,8 @@
 				logoutShow: false,
 				isLogin: false,
 				toastMsg: '',
-				appVersion: ''
+				appVersion: '',
+				certifyState: 'N' // 业主认证状态 N 未认证 / D 认证审核中 / Y 已认证
 			}
 		},
 		computed: {
@@ -129,9 +133,6 @@
 			},
 			balance() {
 				return chargeStore.balance
-			},
-			myCard() {
-				return chargeStore.myCard
 			},
 			vehicles() {
 				return chargeStore.vehicles
@@ -157,8 +158,20 @@
 			const sysConfig = uni.getStorageSync('java110SystemConfig')
 			this.appVersion = (sysConfig && sysConfig.version) || ''
 			this._loadService()
+			this._loadCertifyState()
 		},
 		methods: {
+			_loadCertifyState() {
+				if (!this.isLogin) {
+					this.certifyState = 'N'
+					return
+				}
+				getAppUser().then(() => {
+					this.certifyState = 'Y'
+				}).catch(err => {
+					this.certifyState = (err && err.code == -101) ? 'D' : 'N'
+				})
+			},
 			_loadService() {
 				getSystemPrivacy(getCommunityId()).then(_res => {
 					if (_res && _res.data) {
@@ -178,14 +191,26 @@
 			goWallet() {
 				uni.navigateTo({ url: '/packageCharge/pages/charge/wallet' })
 			},
-			goMonth() {
-				chargeStore.planFilter = null
-				uni.navigateTo({ url: '/packageCharge/pages/charge/chargeMonth' })
+			goRoomCertification() {
+				if (!this.isLogin) {
+					this._toast('登录后使用此功能')
+					return
+				}
+				if (this.certifyState === 'D') return
+				uni.navigateTo({ url: '/packageProperty/pages/roomCertification/roomCertification' })
 			},
 			goCarService() {
+				if (!this.isLogin) {
+					this._toast('登录后使用此功能')
+					return
+				}
 				uni.navigateTo({ url: '/packageCharge/pages/charge/carService' })
 			},
 			goInvoice() {
+				if (!this.isLogin) {
+					this._toast('登录后使用此功能')
+					return
+				}
 				uni.navigateTo({ url: '/packageCharge/pages/charge/invoice' })
 			},
 			goService() {
@@ -288,16 +313,16 @@
 		padding: 26rpx;
 	}
 
+	.my-grid-item-disabled {
+		opacity: .6;
+	}
+
 	.my-grid-val {
 		display: block;
 		font-size: 32rpx;
 		font-weight: 700;
 		color: #0f172a;
 		margin-top: 8rpx;
-	}
-
-	.my-grid-val.orange {
-		color: #f97316;
 	}
 
 	.my-menu {

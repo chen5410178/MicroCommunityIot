@@ -112,14 +112,10 @@
 		methods: {
 			// #ifdef H5
 			_startScan() {
-				// H5 端 uni.scanCode 不可用，模拟识别第一根桩
+				// H5 端 uni.scanCode 不可用，提示引导使用微信扫一扫充电，保留手动输入桩编号兜底
 				clearTimeout(this.scanTimer)
-				this.scanTip = '正在识别…'
-				this.scanTimer = setTimeout(() => {
-					const p = chargeStore.curPiles()[0]
-					this.scanTip = '识别成功 · ' + this.chgTypes[this.chgType].label + '桩 ' + (p ? p.name : '')
-					this._toPile(0, true)
-				}, 2200)
+				this.scanTip = '请使用微信扫一扫充电'
+				this._toast('请使用微信扫一扫充电')
 			},
 			// #endif
 			// #ifdef MP-WEIXIN

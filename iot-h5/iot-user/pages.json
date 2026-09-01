@@ -187,6 +187,13 @@
 					}
 				},
 				{
+					"path": "pages/charge/addChargeCar",
+					"style": {
+						"navigationBarTitleText": "添加充电车辆",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
 					"path": "pages/charge/carDetail",
 					"style": {
 						"navigationBarTitleText": "车辆详情",
@@ -594,12 +601,14 @@
 				"iconPath": "static/images/home.png",
 				"selectedIconPath": "static/images/home-selected.png"
 			},
+			// #ifdef MP-WEIXIN
 			{
 				"pagePath": "pages/charge/scanCharge",
 				"text": "扫码",
 				"iconPath": "static/images/qrcode.png",
 				"selectedIconPath": "static/images/qrcode-selected.png"
 			},
+			// #endif
 			{
 				"pagePath": "pages/index/my",
 				"text": "我的",

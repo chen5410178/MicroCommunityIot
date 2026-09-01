@@ -626,3 +626,19 @@ INSERT INTO `c_service` VALUES ('982026090100000004', 'system.updateRegisterProt
 INSERT INTO `c_route` VALUES ('102026090100000003', '992023010100000001', '982026090100000003', 'Q', '1000', 'S', '2026-09-01 15:07:07', '0');
 INSERT INTO `c_route` VALUES ('102026090100000004', '992023010100000001', '982026090100000004', 'D', '1000', 'S', '2026-09-01 15:07:07', '0');
 ```
+
+### 2026-09-01 用户修改密码/忘记密码重置功能
+
+后端 + 业主端（`iot-h5/iot-user`），实现真实改密/重置链路（`user.updateUserPwd` 需登录、`user.resetUserPwd` 免登录），复用 `user` 表及 `IUserV1InnerServiceSMO`/`ISmsInnerServiceSMO`/`AuthenticationFactory.passwdMd5`，无表结构变更：
+
+1. **后端**：`iot-user` 新增 `UpdateUserPwdCmd`（`user.updateUserPwd`：userId 取登录上下文，校验原密码后 `updateUser` 更新，原密码错误抛"原始密码错误"）、`ResetUserPwdCmd`（`user.resetUserPwd`：校验手机号格式 + `validateCode` 短信验证码（短信开关 ON 时强校验）后按 `tel + LEVEL_CD_PHONE` 查用户，未注册抛"该手机号未注册"，重置密码）。
+2. **网关**：`ServiceConfiguration.java` 排除名单追加 `/iot/api/user.resetUserPwd`（免登录，`user.updateUserPwd` 不加白名单）。
+3. **业主端**：`conf/url.js` 新增两 URL；`api/user/userApi.js` 新增 `updateUserPwd`（request）/`resetUserPwd`（requestNoAuth）；`changePwd.vue` 接入接口，成功后 `removeUserLoginInfo()` + 清 `userInfo`/`charge_demo_user` 并 reLaunch 登录页；`forgotPwd.vue` 验证码输入框 `maxlength` 4→6，删除写死 `'1234'` 校验，接入 `resetUserPwd` 成功后跳登录页。
+
+```sql
+-- 服务注册（需在运行库执行）
+INSERT INTO `c_service` VALUES ('982026090100000005', 'user.updateUserPwd', 'API', '修改登录密码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-09-01 16:04:17', '0');
+INSERT INTO `c_service` VALUES ('982026090100000006', 'user.resetUserPwd', 'API', '忘记密码重置', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-09-01 16:04:17', '0');
+INSERT INTO `c_route` VALUES ('102026090100000005', '992023111817510002', '982026090100000005', 'D', '1000', 'S', '2026-09-01 16:04:17', '0');
+INSERT INTO `c_route` VALUES ('102026090100000006', '992023111817510002', '982026090100000006', 'D', '1000', 'S', '2026-09-01 16:04:17', '0');
+```

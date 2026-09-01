@@ -12878,3 +12878,9 @@ INSERT INTO `c_service` VALUES ('982026090100000003', 'system.listRegisterProtoc
 INSERT INTO `c_service` VALUES ('982026090100000004', 'system.updateRegisterProtocol', 'API', '修改注册协议', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2026-09-01 15:07:07', '0');
 INSERT INTO `c_route` VALUES ('102026090100000003', '992023010100000001', '982026090100000003', 'Q', '1000', 'S', '2026-09-01 15:07:07', '0');
 INSERT INTO `c_route` VALUES ('102026090100000004', '992023010100000001', '982026090100000004', 'D', '1000', 'S', '2026-09-01 15:07:07', '0');
+
+-- 2026-09-01 用户修改密码/忘记密码重置接口（user.updateUserPwd / user.resetUserPwd）服务注册（c_service/c_route，用户端 appId 992023111817510002）
+INSERT INTO `c_service` VALUES ('982026090100000005', 'user.updateUserPwd', 'API', '修改登录密码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-09-01 16:04:17', '0');
+INSERT INTO `c_service` VALUES ('982026090100000006', 'user.resetUserPwd', 'API', '忘记密码重置', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-09-01 16:04:17', '0');
+INSERT INTO `c_route` VALUES ('102026090100000005', '992023111817510002', '982026090100000005', 'D', '1000', 'S', '2026-09-01 16:04:17', '0');
+INSERT INTO `c_route` VALUES ('102026090100000006', '992023111817510002', '982026090100000006', 'D', '1000', 'S', '2026-09-01 16:04:17', '0');

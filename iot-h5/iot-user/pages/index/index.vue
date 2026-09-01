@@ -28,7 +28,7 @@
 				</view>
 				<view class="home-car-btn" @click="editHomeCar">
 					<image src="/static/h5/images/charge/ic-car-white.png" class="home-bc-ic" mode="aspectFit"></image>
-					<text class="home-car-label">我的车辆</text>
+					<text class="home-car-label">充电车辆</text>
 					<text class="home-car-plate">{{ vehicles.length ? vehicles[0].plate : '去添加' }}</text>
 				</view>
 			</view>
@@ -168,7 +168,8 @@
 	import chargeStore from '@/api/charge/chargeStore.js'
 	import themeMenu from '@/components/charge/theme-menu.vue'
 	import {
-		queryOwnerAccount
+		queryOwnerAccount,
+		getUserChargeCar
 	} from '@/api/user/userApi.js'
 	import {
 		getUserCar
@@ -327,7 +328,14 @@
 				})
 			},
 			goScan() {
+				// #ifdef H5
+				// H5 无法调用 uni.scanCode，提示用户使用微信扫一扫充电
+				this._toast('请使用微信扫一扫充电')
+				// #endif
+				// #ifdef MP-WEIXIN
+				// 小程序：进入扫码页，页面 onShow 自动调起微信原生扫一扫（uni.scanCode）
 				uni.switchTab({ url: '/pages/charge/scanCharge' })
+				// #endif
 			},
 			goMonth() {
 				if (!hasLogin()) {
@@ -401,7 +409,7 @@
 					this._toast('登录后才能使用')
 					return
 				}
-				uni.navigateTo({ url: '/packageCar/pages/car/selectCar' })
+				uni.navigateTo({ url: '/packageCharge/pages/charge/addChargeCar' })
 			},
 			// 打开切换小区页面（独立页面，非弹层）
 			goChangeCommunity() {
@@ -499,23 +507,34 @@
 					this._toast('余额加载失败')
 				})
 			},
-			// 我的车辆（需登录，未登录展示默认空）
+			// 我的车辆（需登录，未登录展示默认空；充电车牌已设置时置顶展示）
 			_loadCars() {
 				if (!hasLogin()) {
 					chargeStore.vehicles = []
 					return
 				}
 				const commId = this.curCommId || getCommunityId()
-				getUserCar({
+				const carP = getUserCar({
 					communityId: commId
-				}).then(list => {
-					chargeStore.vehicles = (list || []).map(c => this._adaptCar(c))
+				}).then(list => (list || []).map(c => this._adaptCar(c))).catch(() => {
+					this._toast('车辆加载失败')
+					return []
+				})
+				const chargeCarP = getUserChargeCar({
+					page: 1,
+					row: 1
+				}).then(res => (res && res.code == '0' && res.data) ? String(res.data).replace(/·/g, '') : '').catch(() => '')
+				Promise.all([carP, chargeCarP]).then(([list, plate]) => {
+					chargeStore.vehicles = list.filter(v => v.plate !== plate)
+					if (plate) {
+						chargeStore.vehicles.unshift({
+							carId: '',
+							plate: plate,
+							type: 'car'
+						})
+					}
 					chargeStore.saveVehicles()
 					this.storeVersion++
-				}).catch(() => {
-					chargeStore.vehicles = []
-					this.storeVersion++
-					this._toast('车辆加载失败')
 				})
 			},
 			// 本月充电（需登录，未登录展示默认空，统计由 monthRecords/monthFee 完成）

@@ -408,3 +408,55 @@ export function saveUserChargeCar(_objData){
 	})
 }
 
+/**
+ * 修改登录密码（需登录）
+ * @param {Object} _objData { oldPwd, newPwd }
+ */
+export function updateUserPwd(_objData){
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.updateUserPwd,
+			method: "POST",
+			data: JSON.stringify(_objData),
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code != 0) {
+					reject(_json.msg);
+					return;
+				}
+				resolve();
+			},
+			fail: function(res) {
+				reject(res);
+			}
+		});
+	
+	})
+}
+
+/**
+ * 忘记密码重置（免登录）
+ * @param {Object} _objData { link, msgCode, newPwd }
+ */
+export function resetUserPwd(_objData){
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.resetUserPwd,
+			method: "POST",
+			data: JSON.stringify(_objData),
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code != 0) {
+					reject(_json.msg);
+					return;
+				}
+				resolve();
+			},
+			fail: function(res) {
+				reject(res);
+			}
+		});
+	
+	})
+}
+

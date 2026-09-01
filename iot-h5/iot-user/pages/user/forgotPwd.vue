@@ -13,7 +13,7 @@
 				<input v-model="phone" type="number" maxlength="11" placeholder="请输入注册手机号" />
 			</view>
 			<view class="c-form-input fp-form-row">
-				<input v-model="code" type="number" maxlength="4" placeholder="请输入验证码" />
+				<input v-model="code" type="number" maxlength="6" placeholder="请输入验证码" />
 				<text class="fp-sms-btn" :class="{ disabled: btnDisabled }" @click="sendSms">{{ btnText }}</text>
 			</view>
 			<view class="c-form-input fp-form-row">
@@ -36,7 +36,8 @@
 
 <script>
 	import {
-		sendSmsCode
+		sendSmsCode,
+		resetUserPwd
 	} from '@/api/user/userApi.js'
 
 	export default {
@@ -88,8 +89,8 @@
 					this._toast('请输入正确的手机号')
 					return
 				}
-				if (this.code !== '1234') {
-					this._toast('验证码错误')
+				if (!this.code) {
+					this._toast('请输入验证码')
 					return
 				}
 				if (this.password.length < 6) {
@@ -100,13 +101,20 @@
 					this._toast('两次输入的密码不一致')
 					return
 				}
-				// TODO 后端重置密码接口就绪后替换
-				this._toast('密码已重置 · 请使用新密码登录')
-				setTimeout(() => {
-					uni.navigateBack({
-						delta: 1
-					})
-				}, 1200)
+				resetUserPwd({
+					link: this.phone,
+					msgCode: this.code,
+					newPwd: this.password
+				}).then(() => {
+					this._toast('密码已重置 · 请使用新密码登录')
+					setTimeout(() => {
+						uni.reLaunch({
+							url: '/pages/user/login'
+						})
+					}, 1200)
+				}).catch(err => {
+					this._toast(err || '重置失败')
+				})
 			},
 			goLogin() {
 				uni.navigateBack({

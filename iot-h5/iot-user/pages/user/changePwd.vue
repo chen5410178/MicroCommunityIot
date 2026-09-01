@@ -5,16 +5,16 @@
 			<text class="cp-sub">修改后请使用新密码登录</text>
 			<view class="c-form-input cp-form-row">
 				<text class="cuIcon-lock cp-input-ic"></text>
-				<input v-model="oldPwd" type="password" maxlength="20" placeholder="请输入原密码" placeholder-class="c-placeholder" />
+				<input class="cp-pwd-input" v-model="oldPwd" type="password" maxlength="20" placeholder="请输入原密码" placeholder-class="c-placeholder" />
 			</view>
 			<view class="c-form-input cp-form-row">
 				<text class="cuIcon-lock cp-input-ic"></text>
-				<input v-model="newPwd" :type="showPwd ? 'text' : 'password'" maxlength="20" placeholder="设置新密码（6-20 位）" placeholder-class="c-placeholder" />
+				<input class="cp-pwd-input" v-model="newPwd" :type="showPwd ? 'text' : 'password'" maxlength="20" placeholder="设置新密码（6-20 位）" placeholder-class="c-placeholder" />
 				<text class="cp-pwd-toggle" @click="showPwd = !showPwd">{{ showPwd ? '隐藏' : '显示' }}</text>
 			</view>
 			<view class="c-form-input cp-form-row">
 				<text class="cuIcon-lock cp-input-ic"></text>
-				<input v-model="newPwd2" :type="showPwd ? 'text' : 'password'" maxlength="20" placeholder="确认新密码" placeholder-class="c-placeholder" />
+				<input class="cp-pwd-input" v-model="newPwd2" :type="showPwd ? 'text' : 'password'" maxlength="20" placeholder="确认新密码" placeholder-class="c-placeholder" />
 			</view>
 			<view class="c-btn-primary cp-submit" @click="submitPwd">确认修改</view>
 		</view>
@@ -24,6 +24,13 @@
 </template>
 
 <script>
+	import {
+		updateUserPwd
+	} from '@/api/user/userApi.js'
+	import {
+		removeUserLoginInfo
+	} from '@/lib/java110/utils/StorageUtil.js'
+
 	export default {
 		data() {
 			return {
@@ -48,13 +55,22 @@
 					this._toast('两次输入的新密码不一致')
 					return
 				}
-				// TODO 后端改密接口就绪后替换：updateUserPwd({ oldPwd, newPwd }) 成功后登出重登
-				this._toast('密码修改成功')
-				setTimeout(() => {
-					uni.navigateBack({
-						delta: 1
-					})
-				}, 1200)
+				updateUserPwd({
+					oldPwd: this.oldPwd,
+					newPwd: this.newPwd
+				}).then(() => {
+					this._toast('密码修改成功，请重新登录')
+					setTimeout(() => {
+						removeUserLoginInfo()
+						uni.removeStorageSync('userInfo')
+						uni.removeStorageSync('charge_demo_user')
+						uni.reLaunch({
+							url: '/pages/user/login'
+						})
+					}, 1200)
+				}).catch(err => {
+					this._toast(err || '修改失败')
+				})
 			},
 			_toast(msg) {
 				this.toastMsg = msg
@@ -108,6 +124,16 @@
 		color: #94a3b8;
 		flex-shrink: 0;
 		padding: 8rpx;
+	}
+
+	.cp-pwd-input {
+		flex: 1 !important;
+		min-width: 0 !important;
+		width: 100%;
+		border: none !important;
+		outline: none !important;
+		-webkit-appearance: none;
+		appearance: none;
 	}
 
 	.cp-submit {

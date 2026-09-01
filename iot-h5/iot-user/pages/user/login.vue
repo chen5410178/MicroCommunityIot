@@ -92,6 +92,12 @@
 		agreeTexts
 	} from '@/api/mock/invoiceData.js'
 	import {
+		getSystemPrivacy
+	} from '@/api/system/systemApi.js'
+	import {
+		getCommunityId
+	} from '@/api/community/communityApi.js'
+	import {
 		sendSmsCode,
 		ownerLogin
 	} from '@/api/user/userApi.js'
@@ -119,6 +125,8 @@
 				agreeShow: false,
 				agreeTitle: '',
 				agreeText: '',
+				userProtocol: '',
+				merchantProtocol: '',
 				toastMsg: ''
 			}
 		},
@@ -128,10 +136,13 @@
 			}
 		},
 		onLoad() {
+			// 清除缓存前先取小区ID，用于拉取用户服务协议/隐私保护指引
+			const communityId = getCommunityId()
 			uni.removeStorageSync("JAVA110_USER_INFO")
 			uni.removeStorageSync("currentCommunityInfo")
 			uni.removeStorageSync("ownerInfo")
 			removeUserLoginInfo()
+			this._loadPrivacy(communityId)
 			// #ifdef MP-WEIXIN
 			setTimeout(() => {
 				this.$refs.wechatLoginRef && this.$refs.wechatLoginRef._initWechatLogin()
@@ -139,6 +150,14 @@
 			// #endif
 		},
 		methods: {
+			_loadPrivacy(communityId) {
+				getSystemPrivacy(communityId).then(_res => {
+					if (_res && _res.data) {
+						this.userProtocol = _res.data.userProtocol || ''
+						this.merchantProtocol = _res.data.merchantProtocol || ''
+					}
+				}).catch(() => {})
+			},
 			switchTab(i) {
 				this.loginTab = i
 			},
@@ -235,7 +254,13 @@
 			},
 			openAgree(type) {
 				this.agreeTitle = type
-				this.agreeText = agreeTexts[type] || '暂无内容'
+				let text = ''
+				if (type === '用户服务协议') {
+					text = this.userProtocol
+				} else if (type === '隐私保护指引') {
+					text = this.merchantProtocol
+				}
+				this.agreeText = text || agreeTexts[type] || '暂无内容'
 				this.agreeShow = true
 			},
 			_toast(msg) {
