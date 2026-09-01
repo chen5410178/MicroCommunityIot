@@ -61,6 +61,14 @@ public class ServiceConfiguration {
         exclusions.append("/app/chargeBikeH5Port/*/*,");// 充电桩端口公众号二维码转跳放开
         exclusions.append("/app/chargeCarMiniPort/*/*,");// 充电桩端口小程序二维码转跳放开
         exclusions.append("/app/chargeCarH5Port/*/*,");// 充电桩端口公众号二维码转跳放开
+        exclusions.append("/app/visitMini/*/*,");// 访客小程序二维码转跳放开
+        exclusions.append("/app/visitH5/*/*,");// 访客公众号二维码转跳放开
+        exclusions.append("/app/parkingInMini/*/*,");// 场内小程序二维码转跳放开
+        exclusions.append("/app/parkingInH5/*/*,");// 场内公众号二维码转跳放开
+        exclusions.append("/app/parkingOutMini/*/*,");// 出口小程序二维码转跳放开
+        exclusions.append("/app/parkingOutH5/*/*,");// 出口公众号二维码转跳放开
+        exclusions.append("/app/unlicensedCarMini/*/*,");// 无牌车小程序二维码转跳放开
+        exclusions.append("/app/unlicensedCarH5/*/*,");// 无牌车公众号二维码转跳放开
         exclusions.append("/app/equipments/*,");// 叮叮充电桩通知放开
         exclusions.append("/app/charge/kehang/*,");// 科航充电桩通知放开
         exclusions.append("/app/smartMeter/notify/*,");// 水电表通知放开

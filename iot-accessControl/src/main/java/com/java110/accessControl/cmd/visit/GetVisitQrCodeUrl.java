@@ -25,7 +25,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
-import com.java110.core.utils.CmdContextUtils;
+import com.java110.core.utils.StringUtil;
 import org.slf4j.Logger;
 
 /**
@@ -51,10 +51,13 @@ public class GetVisitQrCodeUrl extends Cmd {
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        String userId = CmdContextUtils.getUserId(cmdDataFlowContext);
         String ownerUrl = UrlCache.getOwnerUrl();
-        ownerUrl += ("/#/pages/visit/addVisit?createUserId=" + userId +"&communityId="+reqJson.getString("communityId"));
-        reqJson.put("url", ownerUrl);
+        String machineId = reqJson.containsKey("machineId") ? reqJson.getString("machineId") : "-1";
+        if (StringUtil.isEmpty(machineId)) {
+            machineId = "-1";
+        }
+        reqJson.put("miniUrl", ownerUrl + "/app/visitMini/" + reqJson.getString("communityId") + "/" + machineId);
+        reqJson.put("url", ownerUrl + "/app/visitH5/" + reqJson.getString("communityId") + "/" + machineId);
         cmdDataFlowContext.setResponseEntity(ResultVo.createResponseEntity(reqJson));
     }
 

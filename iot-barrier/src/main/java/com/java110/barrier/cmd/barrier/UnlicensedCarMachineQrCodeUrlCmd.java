@@ -25,11 +25,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
-import com.java110.intf.barrier.IParkingBoxAreaV1InnerServiceSMO;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 /**
  * 类表述：保存
@@ -47,8 +43,6 @@ public class UnlicensedCarMachineQrCodeUrlCmd extends Cmd {
     private static Logger logger = LoggerFactory.getLogger(UnlicensedCarMachineQrCodeUrlCmd.class);
 
     public static final String CODE_PREFIX_ID = "10";
-    @Autowired
-    private IParkingBoxAreaV1InnerServiceSMO parkingBoxAreaV1InnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
@@ -61,10 +55,8 @@ public class UnlicensedCarMachineQrCodeUrlCmd extends Cmd {
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
         String ownerUrl = UrlCache.getOwnerUrl();
-        ownerUrl += ("/#/pages/car/unlicensedCarIn?communityId=" +
-                reqJson.getString("communityId") + "&machineId=" +
-                reqJson.getString("machineId"));
-        reqJson.put("url", ownerUrl);
+        reqJson.put("miniUrl", ownerUrl + "/app/unlicensedCarMini/" + reqJson.getString("communityId") + "/" + reqJson.getString("machineId"));
+        reqJson.put("url", ownerUrl + "/app/unlicensedCarH5/" + reqJson.getString("communityId") + "/" + reqJson.getString("machineId"));
         cmdDataFlowContext.setResponseEntity(ResultVo.createResponseEntity(reqJson));
     }
 }

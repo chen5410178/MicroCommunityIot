@@ -107,7 +107,7 @@ export default {
       }
     },
     showQrCode() {
-      this.$emit('show-qrcode', { paId: this.paId, boxId: this.boxId })
+      this.$emit('show-qrcode', { paId: this.paId, boxId: this.boxId, title: '场内收费二维码' })
     },
     tempCarFee() {
       this.$emit('show-custom-inout', {

@@ -328,7 +328,7 @@ export default {
         this.$message.warning('请选择出场摄像头')
         return
       }
-      this.$emit('show-qrcode', { machineId: this.outMachineId, boxId: this.boxId })
+      this.$emit('show-qrcode', { machineId: this.outMachineId, boxId: this.boxId, title: '出口收费二维码' })
     },
     async openCloudFlvVideo(inOut) {
       let machineId = inOut === 'receiver1' ? this.inMachineId : this.outMachineId

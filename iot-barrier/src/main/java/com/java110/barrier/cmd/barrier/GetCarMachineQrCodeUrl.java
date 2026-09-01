@@ -23,14 +23,11 @@ import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
-import com.java110.core.factory.CommunitySettingFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.parking.ParkingBoxAreaDto;
-import com.java110.dto.smallWeChat.SmallWeChatDto;
 import com.java110.intf.barrier.IParkingBoxAreaV1InnerServiceSMO;
-import com.java110.intf.charge.ISmallWeChatInnerServiceSMO;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -55,8 +52,6 @@ public class GetCarMachineQrCodeUrl extends Cmd {
 
 
     @Autowired
-    private ISmallWeChatInnerServiceSMO smallWeChatInnerServiceSMOImpl;
-    @Autowired
     private IParkingBoxAreaV1InnerServiceSMO parkingBoxAreaV1InnerServiceSMOImpl;
 
     @Override
@@ -71,25 +66,23 @@ public class GetCarMachineQrCodeUrl extends Cmd {
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-        SmallWeChatDto smallWeChatDto = new SmallWeChatDto();
-        smallWeChatDto.setObjId(reqJson.getString("communityId"));
-        smallWeChatDto.setWeChatType(SmallWeChatDto.WECHAT_TYPE_PUBLIC);
-        List<SmallWeChatDto> smallWeChatDtos = smallWeChatInnerServiceSMOImpl.querySmallWeChats(smallWeChatDto);
         String ownerUrl = UrlCache.getOwnerUrl();
-        ownerUrl += ("/#/pages/fee/tempParkingFee?paId=" + getPaIds(reqJson)+"&communityId="+reqJson.getString("communityId"));
-        if (smallWeChatDtos != null && !smallWeChatDtos.isEmpty()) {
-            ownerUrl += ("&appId=" + smallWeChatDtos.get(0).getAppId());
+        String communityId = reqJson.getString("communityId");
+        String machineId = reqJson.containsKey("machineId") ? reqJson.getString("machineId") : "-1";
+        if (StringUtil.isEmpty(machineId)) {
+            machineId = "-1";
         }
 
-        if (reqJson.containsKey("machineId") && !"-1".equals(reqJson.getString("machineId"))) {
-            ownerUrl += ("&machineId=" + reqJson.getString("machineId"));
+        if ("-1".equals(machineId)) {
+            // 场内场景：paId 必填（boxId 时经 getPaIds 反查）
+            String paId = getPaIds(reqJson);
+            reqJson.put("miniUrl", ownerUrl + "/app/parkingInMini/" + communityId + "/" + paId);
+            reqJson.put("url", ownerUrl + "/app/parkingInH5/" + communityId + "/" + paId);
+        } else {
+            // 出口场景：machineId 必填
+            reqJson.put("miniUrl", ownerUrl + "/app/parkingOutMini/" + communityId + "/" + machineId);
+            reqJson.put("url", ownerUrl + "/app/parkingOutH5/" + communityId + "/" + machineId);
         }
-
-        String aliAppId = CommunitySettingFactory.getValue(reqJson.getString("communityId"),"APP_ID");
-       if( !StringUtil.isEmpty(aliAppId)){
-           ownerUrl += ("&aliAppId=" + aliAppId);
-       }
-        reqJson.put("url", ownerUrl);
         cmdDataFlowContext.setResponseEntity(ResultVo.createResponseEntity(reqJson));
     }
 

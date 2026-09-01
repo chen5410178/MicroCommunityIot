@@ -79,12 +79,7 @@
     <AddBarrier :visible.sync="addVisible" @success="handleSuccess" />
     <EditBarrier :visible.sync="editVisible" :edit-data="currentRow" @success="handleSuccess" />
     <DeleteBarrier :visible.sync="delVisible" :del-data="currentRow" @success="handleSuccess" />
-    <ViewQrCode
-      :visible.sync="qrVisible"
-      :title="qrTitle"
-      :qr-url="qrUrl"
-      :remark="qrRemark"
-    />
+    <BarrierVisitQrCode :visible.sync="qrVisible" :qr-data="qrData" />
   </div>
 </template>
 
@@ -93,12 +88,12 @@ import { listBarriers, listParkingBoxs, getVisitQrCodeUrl, openBarrierCameraCons
 import AddBarrier from '@/components/car/AddBarrier.vue'
 import EditBarrier from '@/components/car/EditBarrier.vue'
 import DeleteBarrier from '@/components/car/DeleteBarrier.vue'
-import ViewQrCode from '@/components/common/ViewQrCode.vue'
+import BarrierVisitQrCode from '@/components/car/BarrierVisitQrCode.vue'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
   name: 'ListBarrier',
-  components: { AddBarrier, EditBarrier, DeleteBarrier, ViewQrCode },
+  components: { AddBarrier, EditBarrier, DeleteBarrier, BarrierVisitQrCode },
   data() {
     return {
       loading: false,
@@ -109,9 +104,7 @@ export default {
       editVisible: false,
       delVisible: false,
       qrVisible: false,
-      qrTitle: '',
-      qrUrl: '',
-      qrRemark: '',
+      qrData: { miniUrl: '', url: '' },
       currentRow: null,
       queryParams: {
         page: 1,
@@ -170,11 +163,11 @@ export default {
     },
     handleQrCode(row) {
       const communityId = (getCurrentCommunity() || {}).communityId || ''
-      getVisitQrCodeUrl({ communityId }).then(res => {
-        const baseUrl = (res.data && res.data.url) || ''
-        this.qrTitle = (row.machineName || '') + '访客码'
-        this.qrUrl = baseUrl + '&machineId=' + row.machineId
-        this.qrRemark = '道闸口访客码，扫码后自动关联待进场车辆信息'
+      getVisitQrCodeUrl({ communityId, machineId: row.machineId }).then(res => {
+        this.qrData = {
+          miniUrl: (res.data && res.data.miniUrl) || '',
+          url: (res.data && res.data.url) || ''
+        }
         this.qrVisible = true
       }).catch(e => {
         this.$message.error(e.msg || '获取访客码失败')
