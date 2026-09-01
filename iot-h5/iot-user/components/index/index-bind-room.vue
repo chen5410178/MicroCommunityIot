@@ -51,7 +51,7 @@
 					return;
 				}
 				uni.navigateTo({
-					url: '/pages/roomCertification/roomCertification'
+					url: '/packageProperty/pages/roomCertification/roomCertification'
 				})
 			}
 		}

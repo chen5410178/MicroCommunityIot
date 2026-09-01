@@ -39,17 +39,17 @@ import {getRoomId,getRoomName} from '@/api/community/roomApi.js';
 					{
 						icon:'/static/images/ac.png',
 						name:'门禁人脸',
-						url:'/pages/user/personFaceCollection'
+						url:'/packageUser/pages/user/personFaceCollection'
 					},
 					{
 						icon:'/static/images/ac.png',
 						name:'人脸下发',
-						url:'/pages/user/faceDownloadAc'
+						url:'/packageUser/pages/user/faceDownloadAc'
 					},
 					{
 						icon:'/static/images/ac.png',
 						name:'访客记录',
-						url:'/pages/visit/ownerVisit'
+						url:'/packageVisit/pages/visit/ownerVisit'
 					}
 				],
 				charges:[
@@ -93,7 +93,7 @@ import {getRoomId,getRoomName} from '@/api/community/roomApi.js';
 			toUrl:function(_item){
 				let _url = _item.url;
 				if(_item.url == 'chargeMeter'){
-					_url = "/pages/meter/selectMeter?communityId="+getCommunityId()
+					_url = "/packageMeter/pages/meter/selectMeter?communityId="+getCommunityId()
 					+"&createStaffId="+getUserId()+"&roomId="+getRoomId()+"&roomName="+getRoomName()
 					uni.navigateTo({
 						url:_url
@@ -101,14 +101,14 @@ import {getRoomId,getRoomName} from '@/api/community/roomApi.js';
 					return ;
 				}
 				if(_item.url == 'buyMonthCarCard'){
-					_url = "/pages/car/selectCar"
+					_url = "/packageCar/pages/car/selectCar"
 					uni.navigateTo({
 						url:_url
 					});
 					return ;
 				}
 				if(_item.url == 'buyMonthChardCard'){
-					_url = "/pages/charge/prestoreChargeCard?communityId="+getCommunityId()+"&personTel="+getUserTel()
+					_url = "/packageCharge/pages/charge/prestoreChargeCard?communityId="+getCommunityId()+"&personTel="+getUserTel()
 					uni.navigateTo({
 						url:_url
 					});

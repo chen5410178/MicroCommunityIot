@@ -130,7 +130,7 @@ export function getParkingCarCoupon(_objData) {
  */
 export function cashierPayFee(_that, _data, _successUrl) {
 	if (!_successUrl) {
-		_successUrl = "/pages/successPage/successPage?msg=支付成功&objType=3003";
+		_successUrl = "/packageProperty/pages/successPage/successPage?msg=支付成功&objType=3003";
 	}
 	wx.showLoading({
 		title: '支付中'

@@ -1,137 +1,406 @@
 <template>
-	<view>
-		<my-person ref="myPersonRef"></my-person>
-		<my-menu ref="myMenuRef"></my-menu>
-		<my-system ref="mySystem"></my-system>
+	<view class="my-page" :class="{ 'charge-theme-dark': themeDark }">
+		<!-- 用户卡片 -->
+		<view class="my-mx my-mt" @click="!isLogin && goLogin()">
+			<view class="c-card my-user-card" v-if="isLogin">
+				<view class="my-avatar" :style="{ background: avatarBg }">{{ userInitial }}</view>
+				<view style="flex:1;">
+					<text class="my-name">{{ user.name }}</text>
+					<text class="c-text-sub" style="margin-top:6rpx;display:block;">{{ user.mode }} · {{ user.home }}</text>
+				</view>
+				<text class="my-pwd-btn" @click.stop="openPwd">🔒 修改密码</text>
+			</view>
+			<view class="c-card my-user-card" v-else>
+				<view class="my-avatar" style="background:#f1f5f9;color:#94a3b8;">👤</view>
+				<view style="flex:1;">
+					<text class="my-name" style="color:#0f172a;">点击登录</text>
+					<text class="c-text-sub" style="margin-top:6rpx;display:block;">登录后同步充电记录 / 余额 / 月卡</text>
+				</view>
+				<text style="color:#cbd5e1;font-size:26rpx;">›</text>
+			</view>
+		</view>
+
+		<!-- 余额 / 月卡宫格 -->
+		<view class="my-grid my-mx my-mt">
+			<view class="c-card my-grid-item" @click="goWallet">
+				<text class="c-text-sub">余额</text>
+				<text class="my-grid-val">¥{{ balance.toFixed(2) }}</text>
+			</view>
+			<view class="c-card my-grid-item" @click="goMonth">
+				<text class="c-text-sub">充电月卡</text>
+				<text class="my-grid-val orange">{{ myCard ? (myCard.left + (myCard.type === 'month' ? ' 天' : ' 次')) : '未开通' }}</text>
+			</view>
+		</view>
+
+		<!-- 功能入口 -->
+		<view class="c-card my-mx my-mt my-menu">
+			<view class="my-menu-item" @click="goCarService">
+				<text style="font-size:32rpx;">🚗</text>
+				<text class="my-menu-text">车辆服务</text>
+				<text class="c-text-sub" style="font-size:20rpx;">{{ vehicles.length ? vehicles[0].plate : '去添加' }}</text>
+				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
+			</view>
+			<view class="my-menu-item" @click="goInvoice">
+				<text style="font-size:32rpx;">🧾</text>
+				<text class="my-menu-text">电子发票</text>
+				<text class="c-text-sub" style="font-size:20rpx;">开票记录</text>
+				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
+			</view>
+			<view class="my-menu-item" @click="goTariff">
+				<text style="font-size:32rpx;">⏱</text>
+				<text class="my-menu-text">分时电价</text>
+				<text class="c-text-sub" style="font-size:20rpx;">尖峰平谷</text>
+				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
+			</view>
+			<view class="my-menu-item" @click="goService">
+				<text style="font-size:32rpx;">📞</text>
+				<text class="my-menu-text">联系客服</text>
+				<text class="my-menu-phone">400-880-1234</text>
+				<view class="my-call-btn" @click.stop="goService">拨打</view>
+			</view>
+			<view class="my-menu-item" @click="goAbout">
+				<text style="font-size:32rpx;">ℹ️</text>
+				<text class="my-menu-text">关于充电服务</text>
+				<text class="c-text-sub" style="font-size:20rpx;">v1.3.0</text>
+				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
+			</view>
+		</view>
+
+		<!-- 退出登录 -->
+		<view class="my-mx my-mt" v-if="isLogin">
+			<view class="my-logout-btn" @click="logoutShow = true">退出登录</view>
+		</view>
+
+		<!-- 退出确认 -->
+		<view class="c-mask" v-if="logoutShow" @click="logoutShow = false"></view>
+		<view class="c-dialog" v-if="logoutShow" style="text-align:center;">
+			<text class="c-title" style="font-size:30rpx;display:block;">退出登录</text>
+			<text class="c-text-sub" style="margin-top:16rpx;display:block;line-height:1.6;">退出后需重新登录<br />充电记录 · 余额与月卡数据将保留</text>
+			<view class="my-logout-btns">
+				<view class="c-btn-ghost" style="flex:1;" @click="logoutShow = false">取消</view>
+				<view class="my-logout-confirm" style="flex:1;" @click="confirmLogout">退出登录</view>
+			</view>
+		</view>
+
+		<!-- 修改密码弹层 -->
+		<view class="c-mask" v-if="pwdShow" @click="pwdShow = false"></view>
+		<view class="c-dialog" v-if="pwdShow">
+			<view class="my-pwd-head">
+				<view class="my-pwd-ic">🔒</view>
+				<view>
+					<text class="c-title" style="display:block;">修改密码</text>
+					<text class="c-text-sub" style="display:block;margin-top:6rpx;">请设置新密码（6-20 位）</text>
+				</view>
+			</view>
+			<view class="c-form-input my-pwd-row">
+				<text class="c-text-sub">原密码</text>
+				<input v-model="pwdOld" type="password" maxlength="20" placeholder="请输入原密码" />
+			</view>
+			<view class="c-form-input my-pwd-row">
+				<text class="c-text-sub">新密码</text>
+				<input v-model="pwdNew" type="password" maxlength="20" placeholder="6-20 位新密码" />
+			</view>
+			<view class="c-form-input my-pwd-row">
+				<text class="c-text-sub">确认</text>
+				<input v-model="pwdNew2" type="password" maxlength="20" placeholder="再次输入新密码" />
+			</view>
+			<view class="my-pwd-btns">
+				<view class="c-btn-ghost" style="flex:1;" @click="pwdShow = false">取消</view>
+				<view class="c-btn-primary" style="flex:1;" @click="submitPwd">确认修改</view>
+			</view>
+		</view>
+
+		<view class="c-toast" v-if="toastMsg" :style="{ opacity: 1 }">{{ toastMsg }}</view>
 	</view>
 </template>
 
 <script>
-	/** index.js **/
-
-	import conf from '@/conf/config.js';
-
+	import chargeStore from '@/api/charge/chargeStore.js'
 	import {
-		hasOwner
-	} from '@/api/owner/ownerApi.js'
+		hasLogin
+	} from '@/api/user/sessionApi.js'
 	import {
-		queryOwnerAccount
+		userLogout
 	} from '@/api/user/userApi.js'
+	import {
+		removeUserLoginInfo
+	} from '@/lib/java110/utils/StorageUtil.js'
 
-	import myPerson from '@/components/index/my-person.vue'
-	import mySystem from '@/components/index/my-system.vue';
-	import myMenu from '@/components/index/my-menu.vue';
 	export default {
 		data() {
 			return {
-				property: {},
-				// 用户信息	
-			};
-		},
-		components: {
-			myPerson,
-			myMenu,
-			mySystem
-		},
-		onLoad: function(options) {
-			// this.vc.onLoad(options, () => {
-			// 	this.loadOwnerAccount();
-			// });
-		},
-		onShow: function() {
-			let _that = this; //查询用户信息
-			if (this.$refs.myPersonRef) {
-				this.$refs.myPersonRef.refreshPageLoginInfo();
+				user: {
+					name: '李明',
+					mode: '账号密码登录',
+					home: '阳光花园 3 栋业主'
+				},
+				logoutShow: false,
+				pwdShow: false,
+				pwdOld: '',
+				pwdNew: '',
+				pwdNew2: '',
+				toastMsg: ''
 			}
-			if (this.$refs.mySystem) {
-				this.$refs.mySystem._judgeHasLogin();
+		},
+		computed: {
+			themeDark() {
+				return chargeStore.themeDark
+			},
+			isLogin() {
+				return hasLogin()
+			},
+			userInitial() {
+				return (this.user.name || '李').charAt(0)
+			},
+			avatarBg() {
+				return 'linear-gradient(135deg,#34d399,#059669)'
+			},
+			balance() {
+				return chargeStore.balance
+			},
+			myCard() {
+				return chargeStore.myCard
+			},
+			vehicles() {
+				return chargeStore.vehicles
 			}
-
+		},
+		onShow() {
+			const demo = uni.getStorageSync('charge_demo_user')
+			if (demo) {
+				this.user.name = demo.name
+				this.user.mode = demo.mode
+			}
 		},
 		methods: {
-			// 原onShow方法
-			// 自动登录后 刷新页面登录信息
-			onGotUserInfo: function(e) {
-				console.log("nickname=" + JSON.stringify(e.detail.userInfo));
+			goLogin() {
+				uni.navigateTo({ url: '/pages/user/login' })
 			},
-			// 我的服务跳转
-			to_serve(v) {
-				this.vc.navigateTo({
-					url: v.href,
-				})
+			goWallet() {
+				uni.navigateTo({ url: '/packageCharge/pages/charge/wallet' })
 			},
+			goMonth() {
+				chargeStore.planFilter = null
+				uni.navigateTo({ url: '/packageCharge/pages/charge/chargeMonth' })
+			},
+			goCarService() {
+				uni.navigateTo({ url: '/packageCharge/pages/charge/carService' })
+			},
+			goInvoice() {
+				uni.navigateTo({ url: '/packageCharge/pages/charge/invoice' })
+			},
+			goTariff() {
+				uni.navigateTo({ url: '/packageCharge/pages/charge/tariff' })
+			},
+			goService() {
+				uni.navigateTo({ url: '/packageCharge/pages/charge/customerService' })
+			},
+			goAbout() {
+				uni.navigateTo({ url: '/packageCharge/pages/charge/about' })
+			},
+			confirmLogout() {
+				this.logoutShow = false
+				userLogout({}).catch(() => {})
+				removeUserLoginInfo()
+				uni.removeStorageSync('charge_demo_user')
+				this._toast('已退出登录')
+			},
+			openPwd() {
+				this.pwdOld = ''
+				this.pwdNew = ''
+				this.pwdNew2 = ''
+				this.pwdShow = true
+			},
+			submitPwd() {
+				if (!this.pwdOld) {
+					this._toast('请输入原密码')
+					return
+				}
+				if (this.pwdNew.length < 6 || this.pwdNew.length > 20) {
+					this._toast('新密码长度需 6-20 位')
+					return
+				}
+				if (this.pwdNew !== this.pwdNew2) {
+					this._toast('两次输入的新密码不一致')
+					return
+				}
+				this.pwdShow = false
+				this._toast('密码修改成功')
+			},
+			_toast(msg) {
+				this.toastMsg = msg
+				clearTimeout(this._toastTimer)
+				this._toastTimer = setTimeout(() => {
+					this.toastMsg = ''
+				}, 2000)
+			}
 		}
-	};
+	}
 </script>
-<style lang="less">
-	/**index.wxss**/
-	.user-container {
-		padding: 50rpx 0;
-		/*border: 1px solid black;*/
+
+<style>
+	.my-page {
+		padding-bottom: 60rpx;
 	}
-	
-	.userinfo {
-	  display: flex;
-	  flex-direction: column;
-	  align-items: center;
+
+	.my-mx {
+		margin-left: 28rpx;
+		margin-right: 28rpx;
 	}
-	
-	.userinfo-avatar {
-	  display:block; 
-		overflow:hidden; 
-		border-radius: 50%;
-		width: 200rpx;
-		height: 200rpx;
+
+	.my-mt {
+		margin-top: 24rpx;
 	}
-	
-	.userinfo-nickname {
-	  color: #aaa;
-	}
-	
-	.tab-container {
-		/*border: 1px solid black;*/
-		
-		margin-top: 30rpx;
-	}
-	
-	.tab-item {
-		padding: 20rpx 30rpx;
-	
+
+	.my-user-card {
 		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
 		align-items: center;
+		gap: 20rpx;
+		padding: 28rpx;
 	}
-	
-	.tab-item-hover {
-		background-color: #e6e6e6;
+
+	.my-avatar {
+		width: 104rpx;
+		height: 104rpx;
+		border-radius: 50%;
+		color: #fff;
+		font-size: 40rpx;
+		font-weight: 700;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
 	}
-	
-	.tab-icon {
-		width: 30rpx;
-		height: 30rpx;
+
+	.my-name {
+		font-size: 28rpx;
+		font-weight: 700;
+		color: #0f172a;
 	}
-	
-	.tab-text {
-		display: inline-block;
-		margin-left: 10rpx;
-		color: #1e1e1e;
+
+	.my-pwd-btn {
+		font-size: 20rpx;
+		color: #059669;
+		font-weight: 600;
+		display: flex;
+		align-items: center;
+		gap: 6rpx;
 	}
-	
-	.tab-arrow {
-		display: inline-block;
-		width: 20rpx;
-		height: 20rpx;
-		border: 1px solid #cdcdcd;
-	
-		border-left: none;
+
+	.my-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 20rpx;
+	}
+
+	.my-grid-item {
+		padding: 26rpx;
+	}
+
+	.my-grid-val {
+		display: block;
+		font-size: 32rpx;
+		font-weight: 700;
+		color: #0f172a;
+		margin-top: 8rpx;
+	}
+
+	.my-grid-val.orange {
+		color: #f97316;
+	}
+
+	.my-menu {
+		overflow: hidden;
+	}
+
+	.my-menu-item {
+		display: flex;
+		align-items: center;
+		gap: 20rpx;
+		padding: 28rpx;
+		border-bottom: 1rpx solid #f1f5f9;
+	}
+
+	.my-menu-item:last-child {
 		border-bottom: none;
-	
-		transform: rotate(45deg);
 	}
-	
-	.border-bottom .icon{
-	  font-size: 38rpx;
-	  line-height: 38rpx;
+
+	.my-menu-text {
+		flex: 1;
+		font-size: 24rpx;
+		font-weight: 500;
+		color: #334155;
+	}
+
+	.my-menu-phone {
+		font-size: 22rpx;
+		font-weight: 700;
+		color: #059669;
+		letter-spacing: 2rpx;
+	}
+
+	.my-call-btn {
+		background: #10b981;
+		color: #fff;
+		font-size: 20rpx;
+		font-weight: 700;
+		border-radius: 999rpx;
+		padding: 8rpx 24rpx;
+	}
+
+	.my-logout-btn {
+		background: #fff;
+		border-radius: 28rpx;
+		height: 96rpx;
+		line-height: 96rpx;
+		text-align: center;
+		font-size: 26rpx;
+		font-weight: 600;
+		color: #ef4444;
+		box-shadow: 0 2rpx 12rpx rgba(15, 23, 42, .05);
+	}
+
+	.my-logout-btns {
+		display: flex;
+		gap: 20rpx;
+		margin-top: 32rpx;
+	}
+
+	.my-logout-confirm {
+		background: #ef4444;
+		color: #fff;
+		font-size: 26rpx;
+		font-weight: 700;
+		border-radius: 24rpx;
+		height: 84rpx;
+		line-height: 84rpx;
+		text-align: center;
+	}
+
+	.my-pwd-head {
+		display: flex;
+		align-items: center;
+		gap: 20rpx;
+	}
+
+	.my-pwd-ic {
+		width: 68rpx;
+		height: 68rpx;
+		border-radius: 50%;
+		background: rgba(16, 185, 129, .1);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 32rpx;
+	}
+
+	.my-pwd-row {
+		margin-top: 20rpx;
+	}
+
+	.my-pwd-btns {
+		display: flex;
+		gap: 20rpx;
+		margin-top: 32rpx;
 	}
 </style>

@@ -82,6 +82,12 @@ export default {
 	getUserChargeCar: baseUrl+"iot/api/user.getUserChargeCar",
 	getOrGenerateUnlicensedCarNum: baseUrl+"iot/api/car.getOrGenerateUnlicensedCarNum",
 
+	listChargePeakAlleyPrice: baseUrl + "iot/api/chargePeakAlleyPrice.listChargePeakAlleyPrice", // 分时电价
+	listChargeRule: baseUrl + "iot/api/chargeRule.listChargeRule", // 费率规则
+	saveChargeMonthOrder: baseUrl + "iot/api/chargeCard.saveChargeMonthOrder", // 购买/续费充电月卡
+	orderRefundMoney: baseUrl + "iot/api/chargeMachine.orderRefundMoney", // 充电订单退款
+	listChargeProcessInfo: baseUrl + "iot/api/chargeProcessInfo.listChargeProcessInfo", // 充电进度信息
+
 
 
 

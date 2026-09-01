@@ -1,0 +1,542 @@
+/**
+ * 充电小程序公共样式（对应原型 0818充电微信小程序_app(1).html）
+ * 白天/黑夜主题通过 page 根节点 class="charge-theme-dark" 切换
+ */
+
+/* ===== 基础卡片 ===== */
+.c-card {
+	background: #fff;
+	border-radius: 28rpx;
+	box-shadow: 0 2rpx 12rpx rgba(15, 23, 42, .05);
+}
+
+/* ===== 主题切换（白天 / 黑夜） ===== */
+page.charge-theme-dark {
+	background: #0f172a !important;
+}
+.charge-theme-dark .c-card {
+	background: #1e293b !important;
+}
+.charge-theme-dark .c-title,
+.charge-theme-dark .c-text-bold {
+	color: #e2e8f0 !important;
+}
+.charge-theme-dark .c-text {
+	color: #cbd5e1 !important;
+}
+.charge-theme-dark .c-text-sub {
+	color: #94a3b8 !important;
+}
+.charge-theme-dark .c-border {
+	border-color: #334155 !important;
+}
+.charge-theme-dark .c-bg-slate {
+	background: #182338 !important;
+}
+
+/* ===== 文本 ===== */
+.c-title {
+	font-size: 26rpx;
+	font-weight: 700;
+	color: #0f172a;
+}
+.c-text {
+	font-size: 22rpx;
+	color: #475569;
+}
+.c-text-sub {
+	font-size: 20rpx;
+	color: #94a3b8;
+}
+.c-price-lg {
+	font-size: 40rpx;
+	font-weight: 700;
+	color: #10b981;
+}
+
+/* ===== 徽章 ===== */
+.c-badge {
+	font-size: 18rpx;
+	padding: 4rpx 14rpx;
+	border-radius: 999rpx;
+	display: inline-flex;
+	align-items: center;
+}
+.c-badge-green {
+	background: rgba(16, 185, 129, .1);
+	color: #059669;
+	border: 1rpx solid rgba(16, 185, 129, .3);
+}
+.c-badge-orange {
+	background: rgba(245, 158, 11, .1);
+	color: #d97706;
+	border: 1rpx solid rgba(245, 158, 11, .3);
+}
+.c-badge-gray {
+	background: #f1f5f9;
+	color: #64748b;
+	border: 1rpx solid #e2e8f0;
+}
+
+/* ===== chips 选择 ===== */
+.c-chip {
+	padding: 14rpx 26rpx;
+	border-radius: 999rpx;
+	font-size: 22rpx;
+	font-weight: 600;
+	border: 1rpx solid #e5e7eb;
+	background: #fff;
+	color: #4b5563;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	white-space: nowrap;
+	transition: all .2s;
+}
+.c-chip.active {
+	background: #10b981;
+	color: #fff;
+	border-color: #10b981;
+	box-shadow: 0 4rpx 10rpx rgba(16, 185, 129, .35);
+}
+
+/* ===== 插座按钮（电瓶车） ===== */
+.c-slot-btn {
+	padding: 26rpx 0;
+	border-radius: 22rpx;
+	font-size: 26rpx;
+	font-weight: 700;
+	border: 1.5rpx solid #e2e8f0;
+	background: #fff;
+	color: #475569;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8rpx;
+}
+.c-slot-btn.busy {
+	border-color: #f1f5f9;
+	background: #f8fafc;
+	color: #cbd5e1;
+}
+.c-slot-btn.active {
+	background: #10b981;
+	color: #fff;
+	border-color: #10b981;
+	box-shadow: 0 4rpx 10rpx rgba(16, 185, 129, .3);
+}
+.c-slot-btn.active .c-slot-sub {
+	color: #fff;
+}
+.c-slot-sub {
+	font-size: 18rpx;
+	line-height: 1;
+}
+.c-slot-num {
+	font-size: 28rpx;
+	font-weight: 700;
+	line-height: 1;
+}
+
+/* ===== 充电枪按钮（电动车） ===== */
+.c-gun-btn {
+	flex: 1;
+	border-radius: 24rpx;
+	border: 2rpx solid #e2e8f0;
+	background: #fff;
+	color: #475569;
+	padding: 22rpx 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6rpx;
+}
+.c-gun-btn.active {
+	border-color: #10b981;
+	background: #f0fdf4;
+	color: #059669;
+	box-shadow: 0 4rpx 12rpx rgba(16, 185, 129, .18);
+}
+.c-gun-btn.disabled {
+	opacity: .4;
+	pointer-events: none;
+}
+
+/* ===== 主按钮 ===== */
+.c-btn-primary {
+	background: #10b981;
+	color: #fff;
+	font-size: 28rpx;
+	font-weight: 700;
+	border-radius: 28rpx;
+	height: 96rpx;
+	line-height: 96rpx;
+	text-align: center;
+	box-shadow: 0 8rpx 20rpx rgba(16, 185, 129, .25);
+}
+.c-btn-danger {
+	background: #ef4444;
+	color: #fff;
+	font-size: 28rpx;
+	font-weight: 700;
+	border-radius: 28rpx;
+	height: 96rpx;
+	line-height: 96rpx;
+	text-align: center;
+	box-shadow: 0 8rpx 20rpx rgba(239, 68, 68, .25);
+}
+.c-btn-ghost {
+	background: #fff;
+	color: #64748b;
+	font-size: 26rpx;
+	font-weight: 600;
+	border-radius: 24rpx;
+	height: 84rpx;
+	line-height: 84rpx;
+	text-align: center;
+	border: 1rpx solid #e2e8f0;
+}
+
+/* ===== 弹层 ===== */
+.c-mask {
+	position: fixed;
+	inset: 0;
+	z-index: 900;
+	background: rgba(2, 6, 23, .45);
+}
+.c-sheet {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 901;
+	background: #fff;
+	border-radius: 32rpx 32rpx 0 0;
+	animation: cSlideUp .3s cubic-bezier(.2, .9, .3, 1);
+}
+.c-dialog {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 86%;
+	z-index: 901;
+	background: #fff;
+	border-radius: 28rpx;
+	padding: 32rpx;
+	box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, .3);
+}
+@keyframes cSlideUp {
+	from {
+		transform: translateY(100%);
+	}
+	to {
+		transform: none;
+	}
+}
+
+/* ===== 表单输入 ===== */
+.c-form-input {
+	display: flex;
+	align-items: center;
+	gap: 16rpx;
+	border: 1rpx solid #e2e8f0;
+	background: #fff;
+	border-radius: 20rpx;
+	padding: 0 24rpx;
+	height: 88rpx;
+}
+.c-form-input input,
+.c-form-input .uni-input-input {
+	flex: 1;
+	min-width: 0;
+	font-size: 26rpx;
+	color: #0f172a;
+	background: transparent;
+	border: none;
+	outline: none;
+	-webkit-appearance: none;
+	appearance: none;
+}
+.c-form-input input::placeholder,
+.c-form-input .uni-input-input::placeholder {
+	color: #cbd5e1;
+}
+.c-form-input .c-placeholder {
+	color: #cbd5e1;
+}
+
+/* ===== 登录方式 Tab ===== */
+.c-ltab {
+	color: #64748b;
+	transition: all .2s;
+}
+.c-ltab-active {
+	background: #fff;
+	color: #0f172a;
+	font-weight: 700;
+	box-shadow: 0 2rpx 6rpx rgba(15, 23, 42, .08);
+}
+
+/* ===== 充电类型切换 ===== */
+.c-type-tab {
+	color: #64748b;
+}
+.c-type-tab-active {
+	background: #10b981;
+	color: #fff;
+	box-shadow: 0 4rpx 10rpx rgba(16, 185, 129, .35);
+}
+
+/* ===== 月卡页三段 Tab ===== */
+.c-mtab-btn {
+	color: #64748b;
+}
+.c-mtab-btn.active {
+	background: #fff;
+	color: #f97316;
+	box-shadow: 0 1rpx 3rpx rgba(15, 23, 42, .08);
+}
+
+/* ===== 钱包 Tab / 时间范围 ===== */
+.c-wtab {
+	color: #94a3b8;
+	border-bottom: 2rpx solid transparent;
+}
+.c-wtab.active {
+	color: #10b981;
+	border-bottom-color: #10b981;
+	background: #f0fdf4;
+}
+.c-wallet-rng {
+	color: #64748b;
+	background: #f1f5f9;
+	border: 1rpx solid transparent;
+}
+.c-wallet-rng.active {
+	color: #fff;
+	background: #10b981;
+	box-shadow: 0 2rpx 8rpx rgba(16, 185, 129, .3);
+}
+
+/* ===== 订单类型筛选 ===== */
+.c-rec-fbtn {
+	background: #fff;
+	border: 1rpx solid #e2e8f0;
+	color: #64748b;
+	border-radius: 20rpx;
+	font-size: 24rpx;
+	font-weight: 600;
+	height: 72rpx;
+	line-height: 72rpx;
+	text-align: center;
+	transition: all .2s;
+}
+.c-rec-fbtn.active {
+	background: #10b981;
+	border-color: #10b981;
+	color: #fff;
+	box-shadow: 0 4rpx 10rpx rgba(16, 185, 129, .3);
+}
+
+/* ===== 顶部消息横幅 ===== */
+.c-top-msg {
+	position: fixed;
+	top: 20rpx;
+	right: 20rpx;
+	left: 20rpx;
+	z-index: 950;
+	border-radius: 28rpx;
+	background: #fff;
+	box-shadow: 0 10rpx 40rpx rgba(15, 23, 42, .25);
+	overflow: hidden;
+	animation: cTopMsgIn .35s cubic-bezier(.2, .9, .3, 1.1);
+}
+@keyframes cTopMsgIn {
+	from {
+		opacity: 0;
+		transform: translateY(-28rpx) scale(.96);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+/* ===== Toast ===== */
+.c-toast {
+	position: fixed;
+	left: 50%;
+	bottom: 15%;
+	transform: translateX(-50%);
+	z-index: 999;
+	background: rgba(17, 24, 39, .92);
+	color: #fff;
+	font-size: 24rpx;
+	padding: 16rpx 34rpx;
+	border-radius: 999rpx;
+	max-width: 80%;
+	text-align: center;
+	transition: opacity .3s;
+}
+
+/* ===== 扫码动画 ===== */
+.c-scan-frame {
+	position: relative;
+	width: 440rpx;
+	height: 440rpx;
+	margin: 0 auto;
+}
+.c-scan-frame .corner {
+	position: absolute;
+	width: 60rpx;
+	height: 60rpx;
+	border: 4rpx solid #10b981;
+}
+.c-scan-frame .c1 {
+	top: 0;
+	left: 0;
+	border-right: none;
+	border-bottom: none;
+	border-radius: 16rpx 0 0 0;
+}
+.c-scan-frame .c2 {
+	top: 0;
+	right: 0;
+	border-left: none;
+	border-bottom: none;
+	border-radius: 0 16rpx 0 0;
+}
+.c-scan-frame .c3 {
+	bottom: 0;
+	left: 0;
+	border-right: none;
+	border-top: none;
+	border-radius: 0 0 0 16rpx;
+}
+.c-scan-frame .c4 {
+	bottom: 0;
+	right: 0;
+	border-left: none;
+	border-top: none;
+	border-radius: 0 0 16rpx 0;
+}
+.c-scan-line {
+	position: absolute;
+	left: 6%;
+	right: 6%;
+	top: 8%;
+	height: 4rpx;
+	background: linear-gradient(90deg, transparent, #10b981, transparent);
+	box-shadow: 0 0 16rpx 2rpx rgba(16, 185, 129, .9);
+	animation: cScan 2.2s linear infinite;
+	border-radius: 99rpx;
+}
+@keyframes cScan {
+	0% {
+		top: 6%;
+	}
+	50% {
+		top: 92%;
+	}
+	100% {
+		top: 6%;
+	}
+}
+
+/* ===== 脉冲点 / 旋转 ===== */
+.c-pulse-dot {
+	animation: cPd 1.6s ease-in-out infinite;
+}
+@keyframes cPd {
+	0%,
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	50% {
+		opacity: .4;
+		transform: scale(.85);
+	}
+}
+.c-bolt-spin {
+	animation: cSpin 3s linear infinite;
+}
+@keyframes cSpin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* ===== 进度环 ===== */
+.c-ring {
+	transition: stroke-dashoffset .8s ease;
+}
+
+/* ===== 黑夜主题覆盖 ===== */
+.charge-theme-dark .c-sheet,
+.charge-theme-dark .c-dialog {
+	background: #1e293b !important;
+}
+.charge-theme-dark .c-form-input {
+	background: #182338 !important;
+	border-color: #334155 !important;
+}
+.charge-theme-dark .c-form-input input {
+	color: #e2e8f0 !important;
+}
+.charge-theme-dark .c-ltab-active {
+	background: #334155 !important;
+	color: #e2e8f0 !important;
+	box-shadow: none !important;
+}
+.charge-theme-dark .c-chip {
+	background: #1e293b !important;
+	border-color: #334155 !important;
+	color: #cbd5e1 !important;
+}
+.charge-theme-dark .c-chip.active {
+	background: #10b981 !important;
+	border-color: #10b981 !important;
+	color: #fff !important;
+}
+.charge-theme-dark .c-slot-btn {
+	background: #1e293b !important;
+	border-color: #334155 !important;
+	color: #e2e8f0 !important;
+}
+.charge-theme-dark .c-slot-btn.busy {
+	background: #182338 !important;
+	border-color: #1f2b40 !important;
+	color: #64748b !important;
+}
+.charge-theme-dark .c-slot-btn.active {
+	background: #10b981 !important;
+	border-color: #10b981 !important;
+	color: #fff !important;
+}
+.charge-theme-dark .c-gun-btn {
+	background: #1e293b !important;
+	border-color: #334155 !important;
+	color: #e2e8f0 !important;
+}
+.charge-theme-dark .c-gun-btn.active {
+	background: rgba(16, 185, 129, .18) !important;
+	border-color: #10b981 !important;
+	color: #34d399 !important;
+}
+.charge-theme-dark .c-rec-fbtn {
+	background: #1e293b !important;
+	border-color: #334155 !important;
+	color: #cbd5e1 !important;
+}
+.charge-theme-dark .c-rec-fbtn.active {
+	background: #10b981 !important;
+	border-color: #10b981 !important;
+	color: #fff !important;
+}
+.charge-theme-dark .c-btn-ghost {
+	background: #1e293b !important;
+	border-color: #334155 !important;
+	color: #e2e8f0 !important;
+}

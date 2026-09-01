@@ -1,143 +1,243 @@
 <template>
-	<view>
-		<view class="block__title">注册信息</view>
-		<view class="cu-form-group">
-			<view class="title">手机号</view>
-			<input v-model="link" required label="手机号" clearable placeholder="请输入手机号"></input>
-		</view>
-		<view class="cu-form-group">
-			<view class="title">密码</view>
-			<input v-model="password" required type="password" label="密码" clearable placeholder="请输入密码"></input>
-		</view>
-		<view class="cu-form-group">
-			<view class="title">确认密码</view>
-			<input v-model="rePassword" required type="password" label="确认密码" clearable placeholder="请输入确认密码"></input>
-		</view>
-		<view class="cu-form-group">
-			<view class="title">验证码</view>
-			<input v-model="msgCode" placeholder="请输入短信验证码" name="input"></input>
-			<button class='cu-btn bg-blue shadow' :disabled="btnDisabled" @click="_sendMsgCode()">{{btnValue}}</button>
-		</view>
-		<!-- <view class="padding flex justify-start">
-			<checkbox-group @change="_changeReadme">
-				<checkbox style="transform: scale(0.7)" value="readme"></checkbox>
-			</checkbox-group>
-			<view class="read-me">
-				<text class="margin-left-xs">我已阅读</text>
-				<text class="user-read" @click="_readMe">《用户须知》</text>
+	<view class="rg-page">
+		<view class="rg-body">
+			<view class="rg-logo">👤</view>
+			<text class="rg-title">注册充电账号</text>
+			<text class="rg-sub">注册成功后自动登录 · 充电记录与余额同步</text>
+
+			<view class="c-form-input rg-form-row">
+				<text style="font-size:24rpx;font-weight:600;color:#94a3b8;">+86</text>
+				<text style="width:1rpx;height:32rpx;background:#e2e8f0;"></text>
+				<input v-model="phone" type="number" maxlength="11" placeholder="请输入手机号" placeholder-class="c-placeholder" />
 			</view>
-		</view> -->
-		<view class="padding flex flex-direction margin-top">
-			<button class="cu-btn bg-blue   lg" @click="_doRegister()">注册</button>
+			<view class="c-form-input rg-form-row">
+				<input v-model="code" type="number" maxlength="4" placeholder="请输入验证码" placeholder-class="c-placeholder" />
+				<text class="rg-sms-btn" :class="{ disabled: btnDisabled }" @click="sendMsg">{{ btnText }}</text>
+			</view>
+			<view class="c-form-input rg-form-row">
+				<text class="cuIcon-lock rg-input-ic"></text>
+				<input class="rg-pwd-input" v-model="password" :type="showPwd ? 'text' : 'password'" maxlength="20" placeholder="设置密码（6-20 位）" placeholder-class="c-placeholder" />
+				<text class="rg-pwd-toggle" @click="showPwd = !showPwd">{{ showPwd ? '隐藏' : '显示' }}</text>
+			</view>
+			<view class="c-form-input rg-form-row">
+				<text class="cuIcon-lock rg-input-ic"></text>
+				<input class="rg-pwd-input" v-model="password2" :type="showPwd2 ? 'text' : 'password'" maxlength="20" placeholder="确认密码" placeholder-class="c-placeholder" />
+				<text class="rg-pwd-toggle" @click="showPwd2 = !showPwd2">{{ showPwd2 ? '隐藏' : '显示' }}</text>
+			</view>
+
+			<view class="c-btn-primary rg-submit" @click="doRegister">注册并登录</view>
+			<text class="rg-login-link">已有账号？<text style="color:#059669;font-weight:600;" @click="goLogin">去登录</text></text>
 		</view>
+
+		<view class="c-toast" v-if="toastMsg" :style="{ opacity: 1 }">{{ toastMsg }}</view>
 	</view>
 </template>
 
 <script>
-	import conf from '@/conf/config';
-	
-	import {sendSmsCode,userRegister} from '@/api/user/userApi.js';
+	import {
+		sendSmsCode,
+		userRegister,
+		ownerLogin
+	} from '@/api/user/userApi.js'
+	import {
+		saveUserLoginInfo
+	} from '@/lib/java110/utils/StorageUtil.js'
 
 	export default {
 		data() {
 			return {
-				link: '',
-				second: 60,
-				codeMsg: '',
-				msgCode: '',
-				areaShow: false,
-				btnValue: '验证码',
-				btnDisabled: false,
+				phone: '',
+				code: '',
 				password: '',
-				rePassword: '',
-				readme:false,
-			};
-		},
-		/**
-		 * 生命周期函数--监听页面加载
-		 */
-		onLoad: function(options) {
-			let _that = this;
+				password2: '',
+				showPwd: false,
+				showPwd2: false,
+				btnDisabled: false,
+				btnText: '获取验证码',
+				toastMsg: ''
+			}
 		},
 		methods: {
-			_sendMsgCode: function() {
-				sendSmsCode(this.link,this);
-			},
-			_changeReadme:function(e){
-				if(e.detail.value && e.detail.value.length>0){
-					this.readme = true;
-				}else{
-					this.readme =false;
+			sendMsg() {
+				if (!/^1\d{10}$/.test(this.phone)) {
+					this._toast('请输入正确的手机号')
+					return
 				}
-			},
-			_doRegister: function(e) {
-				let obj = {
-					"link": this.link,
-					"msgCode": this.msgCode,
-					"password": this.password,
-				}
-				// if(!this.readme){
-				// 	wx.showToast({
-				// 		title: '未选择我已阅读《用户须知》',
-				// 		icon: 'none',
-				// 		duration: 2000
-				// 	})
-				// 	return;
-				// }
-				let msg = "";
-				if (!this.password || this.password != this.rePassword) {
-					msg = "密码和重置密码不一致";
-				} else if (!obj.link) {
-					msg = "请填写手机号";
-				} else if (!obj.msgCode) {
-					msg = "请填写验证码";
-				}
-				if (msg != "") {
-					wx.showToast({
-						title: msg,
-						icon: 'none',
-						duration: 2000
-					})
-					return;
-				}
-				userRegister(obj)
-				.then(_data=>{
-					if (_data.code == 0) {
-						wx.redirectTo({
-							url: "/pages/user/login"
-						});
-						return;
+				sendSmsCode(this.phone, {
+					second: 60,
+					btnValue: '获取验证码',
+					btnDisabled: false
+				}).catch(() => {})
+				this.btnDisabled = true
+				let left = 60
+				this.btnText = left + 's 后重发'
+				this._smsTimer = setInterval(() => {
+					left--
+					if (left <= 0) {
+						clearInterval(this._smsTimer)
+						this.btnDisabled = false
+						this.btnText = '获取验证码'
+					} else {
+						this.btnText = left + 's 后重发'
 					}
+				}, 1000)
+			},
+			doRegister() {
+				if (!/^1\d{10}$/.test(this.phone)) {
+					this._toast('请输入正确的手机号')
+					return
+				}
+				if (!this.code) {
+					this._toast('请输入验证码')
+					return
+				}
+				if (this.password.length < 6 || this.password.length > 20) {
+					this._toast('密码长度需 6-20 位')
+					return
+				}
+				if (this.password !== this.password2) {
+					this._toast('两次输入的密码不一致')
+					return
+				}
+				userRegister({
+					link: this.phone,
+					msgCode: this.code,
+					password: this.password
+				}).then(() => {
+					// 注册成功后自动登录
+					ownerLogin({
+						link: this.phone,
+						passwd: this.password,
+						loginByPhone: false
+					}).then(_user => {
+						saveUserLoginInfo(_user.userId, _user.token, _user.key)
+						uni.setStorageSync('charge_demo_user', {
+							name: this._maskPhone(this.phone),
+							mode: '手机号快捷登录'
+						})
+						this._toast('注册成功 · 已自动登录')
+						setTimeout(() => {
+							uni.switchTab({
+								url: '/pages/index/index'
+							})
+						}, 800)
+					}).catch(() => {
+						this._toast('注册成功 · 请登录')
+						setTimeout(() => {
+							uni.navigateBack({
+								delta: 1
+							})
+						}, 800)
+					})
+				}).catch(() => {})
+			},
+			_maskPhone(p) {
+				return p.replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2')
+			},
+			goLogin() {
+				uni.navigateBack({
+					delta: 1
 				})
 			},
-			_readMe:function(){
-				uni.navigateTo({
-					url:'/pages/login/registerProtocol'
-				})
+			_toast(msg) {
+				this.toastMsg = msg
+				clearTimeout(this._toastTimer)
+				this._toastTimer = setTimeout(() => {
+					this.toastMsg = ''
+				}, 2000)
 			}
 		}
-	};
+	}
 </script>
+
 <style>
-	.block__title {
-		margin: 0;
-		font-weight: 400;
-		font-size: 14px;
-		color: rgba(69, 90, 100, .6);
-		padding: 40rpx 30rpx 20rpx;
+	.rg-page {
+		min-height: 100vh;
+		background: #fff;
 	}
 
-	.button_up_blank {
-		height: 40rpx;
+	.rg-body {
+		padding: 64rpx 48rpx 0;
+	}
+
+	.rg-logo {
+		width: 120rpx;
+		height: 120rpx;
+		border-radius: 32rpx;
+		background: linear-gradient(135deg, #34d399, #10b981);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 52rpx;
+		margin: 0 auto;
+		box-shadow: 0 12rpx 30rpx rgba(16, 185, 129, .3);
+	}
+
+	.rg-title {
+		display: block;
 		text-align: center;
+		font-size: 32rpx;
+		font-weight: 700;
+		color: #0f172a;
+		margin-top: 28rpx;
 	}
-	
-	.read-me{
-		line-height: 64upx;
+
+	.rg-sub {
+		display: block;
+		text-align: center;
+		font-size: 22rpx;
+		color: #94a3b8;
+		margin-top: 10rpx;
 	}
-	
-	.user-read{
-		margin-left: 10upx;
-		color: darkgreen;
+
+	.rg-form-row {
+		margin-top: 24rpx;
+	}
+
+	.rg-input-ic {
+		font-size: 30rpx;
+		color: #94a3b8;
+		flex-shrink: 0;
+	}
+
+	.rg-sms-btn {
+		font-size: 22rpx;
+		font-weight: 600;
+		color: #059669;
+		flex-shrink: 0;
+		padding: 8rpx;
+	}
+
+	.rg-sms-btn.disabled {
+		color: #94a3b8;
+	}
+
+	.rg-pwd-toggle {
+		font-size: 22rpx;
+		color: #94a3b8;
+		flex-shrink: 0;
+		padding: 8rpx;
+	}
+
+	.rg-pwd-input {
+		flex: 1 !important;
+		min-width: 0 !important;
+		width: 100%;
+		border: none !important;
+		outline: none !important;
+		-webkit-appearance: none;
+		appearance: none;
+	}
+
+	.rg-submit {
+		margin-top: 48rpx;
+	}
+
+	.rg-login-link {
+		display: block;
+		text-align: center;
+		font-size: 22rpx;
+		color: #94a3b8;
+		margin-top: 40rpx;
 	}
 </style>

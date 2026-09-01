@@ -1,267 +1,32 @@
 {
-	"pages": [{
+	"pages": [
+		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "业主版",
 				"backgroundColor": "#ffffff"
 			}
-		}, {
+		},
+		{
 			"path": "pages/user/login",
 			"style": {
 				"navigationBarTitleText": "用户登录",
 				"enablePullDownRefresh": false
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/user/register",
 			"style": {
 				"navigationBarTitleText": "用户注册",
 				"enablePullDownRefresh": false
 			}
-		}, {
+		},
+		{
 			"path": "pages/index/my",
 			"style": {
 				"navigationBarTitleText": "个人中心",
 				"enablePullDownRefresh": false
 			}
-		},
-		{
-			"path": "pages/charge/chargeMachines",
-			"style": {
-				"navigationBarTitleText": "智能充电",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/charge/machineToCharge",
-			"style": {
-				"navigationBarTitleText": "电动自行车充电",
-				"enablePullDownRefresh": false
-			}
-
-		},{
-			"path": "pages/charge/carChargePort",
-			"style": {
-				"navigationBarTitleText": "汽车充电端口",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/charge/machineToCarCharge",
-			"style": {
-				"navigationBarTitleText": "汽车充电",
-				"enablePullDownRefresh": false
-			}
-
-		},{
-			"path": "pages/charge/chargeConfirm",
-			"style": {
-				"navigationBarTitleText": "充电确认",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/charge/chargeMachineOrder",
-			"style": {
-				"navigationBarTitleText": "充电订单详情",
-				"enablePullDownRefresh": false
-			}
-		},{
-			"path": "pages/charge/chargeCarOrder",
-			"style": {
-				"navigationBarTitleText": "汽车充电订单详情",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/charge/chargeMachineOrders",
-			"style": {
-				"navigationBarTitleText": "充电订单",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/charge/chargeCard",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/charge/prestoreChargeCard",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/account/myAccount",
-			"style": {
-				"navigationBarTitleText": "我的账户",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/account/myAccountDetail",
-			"style": {
-				"navigationBarTitleText": "账户明细",
-				"enablePullDownRefresh": false
-			}
-		}, {
-			"path": "pages/account/preStoreAccount",
-			"style": {
-				"navigationBarTitleText": "账户充值",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/car/unlicensedCarIn",
-			"style": {
-				"navigationBarTitleText": "无牌车进场",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/fee/tempCarFee",
-			"style": {
-				"navigationBarTitleText": "临时停车费",
-				"enablePullDownRefresh": false
-			}
-		}, {
-			"path": "pages/fee/tempParkingFee",
-			"style": {
-				"navigationBarTitleText": "临时停车费",
-				"enablePullDownRefresh": false
-			}
-		}, {
-			"path": "pages/coupon/chargeCoupon",
-			"style": {
-				"navigationBarTitleText": "充电优惠券",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/coupon/tempCarCoupon",
-			"style": {
-				"navigationBarTitleText": "停车劵",
-				"enablePullDownRefresh": false
-			}
-		}, {
-			"path": "pages/coupon/getParkingCoupon",
-			"style": {
-				"navigationBarTitleText": "领取优惠券",
-				"enablePullDownRefresh": false
-			}
-		}, {
-			"path": "pages/coupon/giftParkingCoupon",
-			"style": {
-				"navigationBarTitleText": "送停车券",
-				"enablePullDownRefresh": false
-			}
-		}, {
-			"path": "pages/fee/cashier",
-			"style": {
-				"navigationBarTitleText": "支付订单",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/successPage/successPage",
-			"style": {
-				"navigationBarTitleText": "支付成功",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/fee/buyCarMonthCard",
-			"style": {
-				"navigationBarTitleText": "购买月卡",
-				"enablePullDownRefresh": false
-			}
-		}, {
-			"path": "pages/fee/queryBuyCardCar",
-			"style": {
-				"navigationBarTitleText": "购买月卡",
-				"enablePullDownRefresh": false
-			}
-
-		},
-		{
-			"path": "pages/visit/addVisit",
-			"style": {
-				"navigationBarTitleText": "访客登记",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/visit/visitDetail",
-			"style": {
-				"navigationBarTitleText": "登记详情",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/visit/visitList",
-			"style": {
-				"navigationBarTitleText": "登记列表",
-				"enablePullDownRefresh": false
-			}
-		}, {
-			"path": "pages/user/personFace",
-			"style": {
-				"navigationBarTitleText": "人脸申请",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/room/selectRoom",
-			"style": {
-				"navigationBarTitleText": "选择房屋",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/user/passQrcode",
-			"style": {
-				"navigationBarTitleText": "通行码",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/meter/meterCharge",
-			"style": {
-				"navigationBarTitleText": "水电充值",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/meter/meterRechargeRecords",
-			"style": {
-				"navigationBarTitleText": "充值记录",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/meter/meterRechargeRecord",
-			"style": {
-				"navigationBarTitleText": "充值记录",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/meter/preStoreMeter",
-			"style": {
-				"navigationBarTitleText": "水电充值",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/meter/selectMeter",
-			"style": {
-				"navigationBarTitleText": "选择水电表",
-				"enablePullDownRefresh": false
-			}
-
 		},
 		{
 			"path": "pages/index/func",
@@ -271,151 +36,555 @@
 			}
 		},
 		{
-			"path": "pages/user/userPassQrcode",
+			"path": "pages/charge/scanCharge",
 			"style": {
-				"navigationBarTitleText": "用户通信码",
+				"navigationBarTitleText": "扫码充电",
 				"enablePullDownRefresh": false
 			}
 		},
 		{
-			"path": "pages/user/visitQrcode",
+			"path": "pages/user/loginInitWechat",
 			"style": {
-				"navigationBarTitleText": "访客码",
+				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
 		},
 		{
-			"path": "pages/user/personFaceCollection",
+			"path": "pages/user/forgotPwd",
 			"style": {
-				"navigationBarTitleText": "人脸采集",
+				"navigationBarTitleText": "找回密码",
 				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/user/faceDownloadAc",
-			"style": {
-				"navigationBarTitleText": "人脸下发",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/visit/ownerVisit",
-			"style": {
-				"navigationBarTitleText": "访客",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/user/owner",
-			"style": {
-				"navigationBarTitleText": "业主信息",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/property/property",
-			"style": {
-				"navigationBarTitleText": "物业公司",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path" : "pages/room/room",
-			"style" :
-			{
-				"navigationBarTitleText" : "业主房屋",
-				"enablePullDownRefresh" : false
-			}
-		},
-		{
-			"path" : "pages/car/carMonthOrder",
-			"style" :
-			{
-				"navigationBarTitleText" : "车辆月卡订单",
-				"enablePullDownRefresh" : false
-			}
-		},
-		{
-			"path" : "pages/charge/chargeMonthOrder",
-			"style" :
-			{
-				"navigationBarTitleText" : "充电月卡订单",
-				"enablePullDownRefresh" : false
-			}
-		},
-		{
-			"path" : "pages/property/changeCommunity",
-			"style" :
-			{
-				"navigationBarTitleText" : "切换小区",
-				"enablePullDownRefresh" : false
-			}
-		},
-		{
-			"path" : "pages/car/selectCar",
-			"style" :
-			{
-				"navigationBarTitleText" : "选择车辆",
-				"enablePullDownRefresh" : false
-			}
-		}
-		,{
-		    "path" : "pages/roomCertification/roomCertification",
-		    "style" :
-		    {
-		        "navigationBarTitleText": "房屋认证",
-		        "enablePullDownRefresh": false
-		    }
-
-		},
-		{
-			"path" : "pages/car/findCarInParkingArea",
-			"style" : 
-			{
-				"navigationBarTitleText" : "找车",
-				"enablePullDownRefresh" : false
-			}
-		},
-		{
-			"path" : "pages/car/findCarInParkingAreaDetail",
-			"style" : 
-			{
-				"navigationBarTitleText" : "",
-				"enablePullDownRefresh" : false
-			}
-		},
-		{
-			"path" : "pages/user/loginInitWechat",
-			"style" : 
-			{
-				"navigationBarTitleText" : "",
-				"enablePullDownRefresh" : false
-			}
-		},
-		{
-			"path" : "pages/charge/carChargging",
-			"style" : 
-			{
-				"navigationBarTitleText" : "充电中"
 			}
 		}
 	],
+	"subPackages": [
+		{
+			"root": "packageCharge",
+			"pages": [
+				{
+					"path": "pages/charge/chargeMachines",
+					"style": {
+						"navigationBarTitleText": "智能充电",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/machineToCharge",
+					"style": {
+						"navigationBarTitleText": "电动自行车充电",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/carChargePort",
+					"style": {
+						"navigationBarTitleText": "汽车充电端口",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/machineToCarCharge",
+					"style": {
+						"navigationBarTitleText": "汽车充电",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/chargeConfirm",
+					"style": {
+						"navigationBarTitleText": "充电确认",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/chargeMachineOrder",
+					"style": {
+						"navigationBarTitleText": "充电订单详情",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/chargeCarOrder",
+					"style": {
+						"navigationBarTitleText": "汽车充电订单详情",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/chargeMachineOrders",
+					"style": {
+						"navigationBarTitleText": "充电订单",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/chargeCard",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/prestoreChargeCard",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/chargeMonthOrder",
+					"style": {
+						"navigationBarTitleText": "充电月卡订单",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/chargeMonth",
+					"style": {
+						"navigationBarTitleText": "充电月卡",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/carChargging",
+					"style": {
+						"navigationBarTitleText": "充电中"
+					}
+				},
+				{
+					"path": "pages/charge/pileDetail",
+					"style": {
+						"navigationBarTitleText": "充电桩详情",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/charging",
+					"style": {
+						"navigationBarTitleText": "充电中",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/carService",
+					"style": {
+						"navigationBarTitleText": "车辆服务",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/carDetail",
+					"style": {
+						"navigationBarTitleText": "车辆详情",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/rentOrderDetail",
+					"style": {
+						"navigationBarTitleText": "月租订单详情",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/wallet",
+					"style": {
+						"navigationBarTitleText": "钱包余额",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/chargeOrders",
+					"style": {
+						"navigationBarTitleText": "充电订单",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/orderDetail",
+					"style": {
+						"navigationBarTitleText": "订单详情",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/invoice",
+					"style": {
+						"navigationBarTitleText": "电子发票",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/message",
+					"style": {
+						"navigationBarTitleText": "消息中心",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/customerService",
+					"style": {
+						"navigationBarTitleText": "联系客服",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/about",
+					"style": {
+						"navigationBarTitleText": "关于充电服务",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/charge/tariff",
+					"style": {
+						"navigationBarTitleText": "分时电价",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		},
+		{
+			"root": "packageUser",
+			"pages": [
+				{
+					"path": "pages/user/personFace",
+					"style": {
+						"navigationBarTitleText": "人脸申请",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/user/personFaceCollection",
+					"style": {
+						"navigationBarTitleText": "人脸采集",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/user/faceDownloadAc",
+					"style": {
+						"navigationBarTitleText": "人脸下发",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/user/passQrcode",
+					"style": {
+						"navigationBarTitleText": "通行码",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/user/userPassQrcode",
+					"style": {
+						"navigationBarTitleText": "用户通信码",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/user/visitQrcode",
+					"style": {
+						"navigationBarTitleText": "访客码",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/user/owner",
+					"style": {
+						"navigationBarTitleText": "业主信息",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		},
+		{
+			"root": "packageMeter",
+			"pages": [
+				{
+					"path": "pages/meter/meterCharge",
+					"style": {
+						"navigationBarTitleText": "水电充值",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/meter/meterRechargeRecords",
+					"style": {
+						"navigationBarTitleText": "充值记录",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/meter/meterRechargeRecord",
+					"style": {
+						"navigationBarTitleText": "充值记录",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/meter/preStoreMeter",
+					"style": {
+						"navigationBarTitleText": "水电充值",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/meter/selectMeter",
+					"style": {
+						"navigationBarTitleText": "选择水电表",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		},
+		{
+			"root": "packageCar",
+			"pages": [
+				{
+					"path": "pages/car/unlicensedCarIn",
+					"style": {
+						"navigationBarTitleText": "无牌车进场",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/car/carMonthOrder",
+					"style": {
+						"navigationBarTitleText": "车辆月卡订单",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/car/selectCar",
+					"style": {
+						"navigationBarTitleText": "选择车辆",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/car/findCarInParkingArea",
+					"style": {
+						"navigationBarTitleText": "找车",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/car/findCarInParkingAreaDetail",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		},
+		{
+			"root": "packageFee",
+			"pages": [
+				{
+					"path": "pages/fee/tempCarFee",
+					"style": {
+						"navigationBarTitleText": "临时停车费",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/fee/tempParkingFee",
+					"style": {
+						"navigationBarTitleText": "临时停车费",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/fee/cashier",
+					"style": {
+						"navigationBarTitleText": "支付订单",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/fee/buyCarMonthCard",
+					"style": {
+						"navigationBarTitleText": "购买月卡",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/fee/queryBuyCardCar",
+					"style": {
+						"navigationBarTitleText": "购买月卡",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		},
+		{
+			"root": "packageCoupon",
+			"pages": [
+				{
+					"path": "pages/coupon/chargeCoupon",
+					"style": {
+						"navigationBarTitleText": "充电优惠券",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/coupon/tempCarCoupon",
+					"style": {
+						"navigationBarTitleText": "停车劵",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/coupon/getParkingCoupon",
+					"style": {
+						"navigationBarTitleText": "领取优惠券",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/coupon/giftParkingCoupon",
+					"style": {
+						"navigationBarTitleText": "送停车券",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		},
+		{
+			"root": "packageVisit",
+			"pages": [
+				{
+					"path": "pages/visit/addVisit",
+					"style": {
+						"navigationBarTitleText": "访客登记",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/visit/ownerVisit",
+					"style": {
+						"navigationBarTitleText": "访客",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/visit/visitDetail",
+					"style": {
+						"navigationBarTitleText": "登记详情",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/visit/visitList",
+					"style": {
+						"navigationBarTitleText": "登记列表",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		},
+		{
+			"root": "packageAccount",
+			"pages": [
+				{
+					"path": "pages/account/myAccount",
+					"style": {
+						"navigationBarTitleText": "我的账户",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/account/myAccountDetail",
+					"style": {
+						"navigationBarTitleText": "账户明细",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/account/preStoreAccount",
+					"style": {
+						"navigationBarTitleText": "账户充值",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		},
+		{
+			"root": "packageProperty",
+			"pages": [
+				{
+					"path": "pages/property/property",
+					"style": {
+						"navigationBarTitleText": "物业公司",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/property/changeCommunity",
+					"style": {
+						"navigationBarTitleText": "切换小区",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/room/selectRoom",
+					"style": {
+						"navigationBarTitleText": "选择房屋",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/room/room",
+					"style": {
+						"navigationBarTitleText": "业主房屋",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/roomCertification/roomCertification",
+					"style": {
+						"navigationBarTitleText": "房屋认证",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/successPage/successPage",
+					"style": {
+						"navigationBarTitleText": "支付成功",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		}
+	],
+	"preloadRule": {
+		"pages/index/index": {
+			"network": "all",
+			"packages": [
+				"packageCharge",
+				"packageUser",
+				"packageFee"
+			]
+		}
+	},
 	"tabBar": {
 		"color": "#272636",
 		"selectedColor": "#00AA00",
 		"backgroundColor": "#fff",
 		"borderStyle": "black",
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/index/index",
 				"text": "首页",
 				"iconPath": "static/images/home.png",
 				"selectedIconPath": "static/images/home-selected.png"
 			},
 			{
-				"pagePath": "pages/index/func",
-				"text": "服务",
-				"iconPath": "static/images/rent.png",
-				"selectedIconPath": "static/images/rent-selected.png"
+				"pagePath": "pages/charge/scanCharge",
+				"text": "扫码",
+				"iconPath": "static/images/qrcode.png",
+				"selectedIconPath": "static/images/qrcode-visit.png"
 			},
 			{
 				"pagePath": "pages/index/my",
@@ -437,18 +606,17 @@
 		"navigationBarTextStyle": "white",
 		"navigationBarBackgroundColor": "#2B7FF0",
 		"navigationBarTitleText": "用户端",
-		"usingComponents": { //这里为方便，全局引入了所有组件，也可以在某个page下单独引用某个组件
-
-		},
+		"usingComponents": {},
 		"onReachBottonDistance": 50
 	},
-	"condition": { //模式配置，仅开发期间生效
-		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [{
-			"name": "", //模式名称
-			"path": "", //启动页面，必选
-			"query": "" //启动参数，在页面的onLoad函数里面得到
-		}]
-	},
-	"subPackages": []
+	"condition": {
+		"current": 0,
+		"list": [
+			{
+				"name": "",
+				"path": "",
+				"query": ""
+			}
+		]
+	}
 }

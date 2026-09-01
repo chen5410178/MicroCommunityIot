@@ -43,6 +43,7 @@
 </script>
 <style>
 	@import "./app.css";
+	@import "./style/charge.css";
 
 	/* #ifdef H5 */
 	uni-page-head {

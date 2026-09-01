@@ -23,32 +23,32 @@
 				serve_list: [{
 						name: '业主信息',
 						src: this.imgUrl+'/h5/images/serve/my1.png',
-						href: '/pages/user/owner'
+						href: '/packageUser/pages/user/owner'
 					},
 					{
 						name: '我的物业',
 						src: this.imgUrl+'/h5/images/serve/my2.png',
-						href: '/pages/property/property'
+						href: '/packageProperty/pages/property/property'
 					},
 					{
 						name: '我的房屋',
 						src: this.imgUrl+'/h5/images/serve/my3.png',
-						href: '/pages/room/room'
+						href: '/packageProperty/pages/room/room'
 					},
 					{
 						name: '停车月卡记录',
 						src: this.imgUrl+'/h5/images/serve/my4.png',
-						href: '/pages/car/carMonthOrder'
+						href: '/packageCar/pages/car/carMonthOrder'
 					},
 					{
 						name: '充电月卡记录',
 						src: this.imgUrl+'/h5/images/serve/my5.png',
-						href: '/pages/charge/chargeMonthOrder'
+						href: '/packageCharge/pages/charge/chargeMonthOrder'
 					},
 					{
 						name: '充电订单',
 						src: this.imgUrl+'/h5/images/serve/my5.png',
-						href: '/pages/charge/chargeMachineOrders'
+						href: '/packageCharge/pages/charge/chargeMachineOrders'
 					},
 				]
 			};

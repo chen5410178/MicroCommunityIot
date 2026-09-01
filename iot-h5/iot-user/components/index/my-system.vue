@@ -77,7 +77,7 @@ import {userLogout} from '../../api/user/userApi.js';
 					return;
 				}
 				this.vc.navigateTo({
-					url: '/pages/property/changeCommunity',
+					url: '/packageProperty/pages/property/changeCommunity',
 				});
 			},
 			//退出系统
@@ -100,7 +100,7 @@ import {userLogout} from '../../api/user/userApi.js';
 			},
 			_test:function(){
 				uni.navigateTo({
-					url:'/pages/charge/carChargePort?machineId=1020241101764714927&portId=1020241101497714929&communityId=2024050914710254'
+					url:'/packageCharge/pages/charge/carChargePort?machineId=1020241101764714927&portId=1020241101497714929&communityId=2024050914710254'
 				})
 			}
 		}

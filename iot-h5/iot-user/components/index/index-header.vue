@@ -61,12 +61,12 @@
 			},
 			passQrcode: function(_data) {
 				uni.navigateTo({
-					url: '/pages/user/userPassQrcode'
+					url: '/packageUser/pages/user/userPassQrcode'
 				})
 			},
 			visitQrcode: function(_data) {
 				uni.navigateTo({
-					url: '/pages/user/visitQrcode'
+					url: '/packageUser/pages/user/visitQrcode'
 				})
 			}
 		}

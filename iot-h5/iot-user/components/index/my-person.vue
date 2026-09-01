@@ -226,7 +226,7 @@
 					return;
 				}
 				this.vc.navigateTo({
-					url: '/pages/account/myAccount',
+					url: '/packageAccount/pages/account/myAccount',
 				});
 			},
 			//优惠券
