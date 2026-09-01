@@ -42,8 +42,8 @@
 			<view class="home-bc-head">
 				<view class="home-comm-btn" @click="commShow = true">
 					<text style="font-size:22rpx;">📍</text>
-					<text class="home-comm-name">{{ curCommunity.name }}</text>
-					<text class="home-comm-dist">{{ fmtDist(curCommunity.dist) }}</text>
+					<text class="home-comm-name">{{ curCommunity.name || '选择小区' }}</text>
+					<text class="home-comm-dist" v-if="curCommunity.dist">{{ fmtDist(curCommunity.dist) }}</text>
 					<text style="font-size:18rpx;">▾</text>
 				</view>
 				<view class="home-car-btn" @click="editHomeCar">
@@ -98,10 +98,14 @@
 		<!-- 小区充电桩 -->
 		<view class="home-pile-head">
 			<text class="c-title">小区充电桩</text>
-			<text class="c-text-sub">{{ freeCount }} 个可用</text>
+			<text class="c-text-sub">{{ curPiles.length ? freeCount + ' 个可用' : (pilesLoading ? '加载中…' : '暂无数据') }}</text>
 		</view>
 		<view class="home-piles">
-			<view class="c-card home-pile" v-for="(p, i) in curPiles" :key="i" @click="openPile(i)">
+			<view v-if="!curPiles.length && !pilesLoading" class="c-card home-pile-empty">
+				<text style="font-size:40rpx;">🔌</text>
+				<text class="c-text-sub" style="margin-top:12rpx;">暂无{{ chgType === 'car' ? '电动车' : '电瓶车' }}充电桩</text>
+			</view>
+			<view class="c-card home-pile" v-for="(p, i) in curPiles" :key="p.machineId || i" @click="openPile(i)">
 				<view class="home-pile-ic" :class="p.free ? (chgType === 'car' ? 'car' : 'bike') : 'busy'">
 					<text>{{ chgType === 'car' ? '🚗' : '🛵' }}</text>
 				</view>
@@ -134,21 +138,25 @@
 					</view>
 					<text class="home-locate-action">{{ locating ? '定位中' : (locateTxt ? '重新定位' : '定位') }}</text>
 				</view>
-				<text class="home-sheet-tip">附近小区（按距离排序）· 切换后充电桩列表与月卡适用范围随小区变化</text>
-				<view class="home-comm-list">
-					<view v-for="(c, i) in sortedComms" :key="i" class="home-comm-item" :class="{ current: i === commIdx }"
-						@click="pickComm(i)">
-						<text style="font-size:28rpx;">📍</text>
-						<view style="flex:1;min-width:0;">
-							<view class="home-comm-name-row">
-								<text class="c-text-bold" style="font-size:24rpx;font-weight:700;color:#1e293b;">{{ c.name }}</text>
-								<text class="home-comm-current-tag" v-if="i === commIdx">当前</text>
-							</view>
-							<text class="c-text-sub" style="margin-top:4rpx;display:block;">{{ c.zone }} · {{ c.piles.length }} 个充电区 · 距您 <text style="color:#059669;font-weight:600;">{{ fmtDist(c.dist) }}</text></text>
-						</view>
-						<view class="home-go-btn" @click.stop="goComm(i)">去这儿</view>
-					</view>
+				<text class="home-sheet-tip">小区列表 · 切换后充电桩列表与月卡适用范围随小区变化</text>
+			<view class="home-comm-list">
+				<view v-if="!sortedComms.length" class="home-comm-empty">
+					<text style="font-size:36rpx;">🏘️</text>
+					<text class="c-text-sub" style="margin-top:12rpx;">暂无小区数据</text>
 				</view>
+				<view v-for="(c, i) in sortedComms" :key="i" class="home-comm-item" :class="{ current: i === commIdx }"
+					@click="pickComm(i)">
+					<text style="font-size:28rpx;">📍</text>
+					<view style="flex:1;min-width:0;">
+						<view class="home-comm-name-row">
+							<text class="c-text-bold" style="font-size:24rpx;font-weight:700;color:#1e293b;">{{ c.name }}</text>
+							<text class="home-comm-current-tag" v-if="i === commIdx">当前</text>
+						</view>
+						<text class="c-text-sub" style="margin-top:4rpx;display:block;">{{ c.address || c.cityName || '' }}{{ c.dist ? ' · 距您 ' + fmtDist(c.dist) : '' }}</text>
+					</view>
+					<view class="home-go-btn" @click.stop="goComm(i)">去这儿</view>
+				</view>
+			</view>
 			</view>
 		</view>
 
@@ -157,7 +165,7 @@
 		<view class="c-dialog" v-if="navShow" style="text-align:center;">
 			<text class="c-text-sub">正在导航至</text>
 			<text class="c-text-bold" style="font-size:30rpx;font-weight:700;color:#0f172a;margin-top:8rpx;display:block;">{{ navComm.name }}</text>
-			<text class="home-nav-dist">距您 {{ fmtDist(navComm.dist) }}</text>
+			<text class="home-nav-dist" v-if="navComm.dist">距您 {{ fmtDist(navComm.dist) }}</text>
 			<view class="home-nav-map">
 				<view class="home-nav-route"></view>
 				<text class="home-nav-car" :style="{ left: navProgress + '%' }">🚗</text>
@@ -221,6 +229,25 @@
 <script>
 	import chargeStore from '@/api/charge/chargeStore.js'
 	import themeMenu from '@/components/charge/theme-menu.vue'
+	import {
+		queryOwnerAccount
+	} from '@/api/user/userApi.js'
+	import {
+		getUserCar
+	} from '@/api/car/carApi.js'
+	import {
+		getChargeMachines,
+		getChargeMachinePort,
+		getUserChargeMonthOrder,
+		getChargeMachineOrder
+	} from '@/api/machine/machineApi.js'
+	import {
+		queryCommunitys,
+		getCommunityId
+	} from '@/api/community/communityApi.js'
+	import {
+		hasLogin
+	} from '@/api/user/sessionApi.js'
 
 	export default {
 		components: {
@@ -241,7 +268,10 @@
 				locating: false,
 				locateTxt: '',
 				locateSub: '',
-				toastMsg: ''
+				toastMsg: '',
+				curCommId: '',
+				pilesLoading: false,
+				storeVersion: 0
 			}
 		},
 		computed: {
@@ -249,36 +279,48 @@
 				return chargeStore.themeDark
 			},
 			curCommunity() {
+				this.storeVersion
 				return chargeStore.curCommunity()
 			},
 			sortedComms() {
-				return chargeStore.communities.slice().sort((a, b) => a.dist - b.dist)
+				this.storeVersion
+				const list = chargeStore.communities.slice()
+				return list.some(c => c.dist) ? list.sort((a, b) => (a.dist || 0) - (b.dist || 0)) : list
 			},
 			commIdx() {
+				this.storeVersion
 				return chargeStore.commIdx
 			},
 			chgType() {
+				this.storeVersion
 				return chargeStore.chgType
 			},
 			curPiles() {
+				this.storeVersion
 				return chargeStore.curPiles()
 			},
 			freeCount() {
+				this.storeVersion
 				return this.curPiles.filter(p => p.free).length
 			},
 			balance() {
+				this.storeVersion
 				return chargeStore.balance
 			},
 			myCard() {
+				this.storeVersion
 				return chargeStore.myCard
 			},
 			vehicles() {
+				this.storeVersion
 				return chargeStore.vehicles
 			},
 			runningOrder() {
+				this.storeVersion
 				return chargeStore.runningOrder
 			},
 			unread() {
+				this.storeVersion
 				return chargeStore.messages.filter(m => !m.read).length
 			},
 			rbSlotText() {
@@ -294,7 +336,8 @@
 				return chargeStore.chgFee.toFixed(2)
 			},
 			monthRecords() {
-				return chargeStore.records.filter(r => this._isThisMonth(r.date))
+				this.storeVersion
+				return chargeStore.records.filter(r => this._isThisMonth(r.date) && r.state === '2002')
 			},
 			monthFee() {
 				return this.monthRecords.reduce((s, r) => s + (r.fee || 0), 0)
@@ -316,6 +359,8 @@
 			this._timer = setInterval(() => {
 				chargeStore.simulateTick()
 			}, 1000)
+			// 首页数据加载：余额/车辆/订单/小区/桩/月卡
+			this._loadHomeData()
 		},
 		onHide() {
 			if (this._timer) clearInterval(this._timer)
@@ -338,15 +383,22 @@
 				return m ? +m[1] === new Date().getMonth() + 1 : true
 			},
 			fmtDist(m) {
+				if (!m && m !== 0) return ''
 				return m >= 1000 ? (m / 1000).toFixed(1) + ' km' : m + ' m'
 			},
 			switchType(t) {
 				if (t === chargeStore.chgType) return
 				chargeStore.setChgType(t)
+				this.storeVersion++
+				this._toast('已切换至' + (t === 'car' ? '电动车' : '电瓶车') + '充电桩')
+				this._loadPiles()
 			},
 			openPile(i) {
+				const p = this.curPiles[i]
+				if (!p) return
 				uni.navigateTo({
-					url: '/packageCharge/pages/charge/pileDetail?chgType=' + chargeStore.chgType + '&pileIdx=' + i + '&fromScan=0'
+					url: '/packageCharge/pages/charge/pileDetail?chgType=' + chargeStore.chgType + '&machineId=' + (p.machineId ||
+						'') + '&pileIdx=' + i + '&fromScan=0'
 				})
 			},
 			goScan() {
@@ -401,12 +453,27 @@
 				uni.navigateTo({ url: '/packageCharge/pages/charge/carService' })
 			},
 			pickComm(i) {
+				const list = chargeStore.communities
+				if (!list[i]) return
 				chargeStore.setCommIdx(i)
 				this.commShow = false
-				this._toast('已切换至「' + chargeStore.communities[i].name + '」· 充电桩列表已更新')
+				this.curCommId = list[i].communityId || this.curCommId
+				this.storeVersion++
+				this._toast('已切换至「' + list[i].name + '」· 充电桩列表已更新')
+				this._loadPiles()
+				this._loadCard()
 			},
 			locateComm() {
 				if (this.locating) return
+				const list = chargeStore.communities
+				if (!list.length) {
+					this._toast('暂无小区数据')
+					return
+				}
+				if (!list.some(c => c.dist)) {
+					this._toast('无距离数据，请手动选择小区')
+					return
+				}
 				this.locating = true
 				this.locateTxt = ''
 				setTimeout(() => {
@@ -416,6 +483,10 @@
 					this.locateTxt = '已定位 · ' + chargeStore.communities[nearest].name
 					this.locateSub = '距您 ' + this.fmtDist(chargeStore.communities[nearest].dist) + ' · 已自动选择最近小区'
 					chargeStore.setCommIdx(nearest)
+					this.curCommId = chargeStore.communities[nearest].communityId || this.curCommId
+					this.storeVersion++
+					this._loadPiles()
+					this._loadCard()
 					this._toast('已定位至「' + chargeStore.communities[nearest].name + '」· 距您 ' + this.fmtDist(chargeStore
 						.communities[nearest].dist))
 				}, 900)
@@ -424,7 +495,8 @@
 				if (this.navShow) return
 				this.navComm = chargeStore.communities[i]
 				this.navProgress = 0
-				this.navEta = '预计 ' + Math.max(2, Math.round(this.navComm.dist / 120)) + ' 分钟'
+				this.navEta = this.navComm && this.navComm.dist ? '预计 ' + Math.max(2, Math.round(this.navComm.dist / 120)) +
+					' 分钟' : '即将到达'
 				this.navStatus = '正在导航…'
 				this.navDone = false
 				this.navShow = true
@@ -440,6 +512,273 @@
 			closeNav() {
 				if (!this.navDone) return
 				this.navShow = false
+			},
+			// ================= 接口数据加载 =================
+			_loadHomeData() {
+				this.curCommId = this.curCommId || getCommunityId()
+				this._loadCommunitys()
+				this._loadBalance()
+				this._loadCars()
+				this._loadMonthOrders()
+			},
+			// 小区列表（成功后联动桩列表与月卡）
+			_loadCommunitys() {
+				queryCommunitys({
+					page: 1,
+					row: 50
+				}).then(res => {
+					if (!res || res.code != 0 || !res.data) throw new Error('加载失败')
+					const list = res.data.map(c => this._adaptComm(c))
+					chargeStore.communities = list
+					// commIdx 越界时定位：优先登录小区，否则取第一个
+					if (chargeStore.commIdx >= list.length) {
+						const curId = getCommunityId()
+						const idx = list.findIndex(c => c.communityId === curId)
+						chargeStore.setCommIdx(idx >= 0 ? idx : 0)
+					}
+					this.curCommId = list.length ? (list[chargeStore.commIdx] || list[0]).communityId : getCommunityId()
+					this.storeVersion++
+					this._loadPiles()
+					this._loadCard()
+				}).catch(() => {
+					chargeStore.communities = []
+					this.curCommId = getCommunityId()
+					this.storeVersion++
+					this._toast('小区列表加载失败')
+					this._loadPiles()
+					this._loadCard()
+				})
+			},
+			// 余额（需登录，未登录展示默认值 0）
+			_loadBalance() {
+				if (!hasLogin()) {
+					chargeStore.setBalance(0)
+					return
+				}
+				const commId = this.curCommId || getCommunityId()
+				queryOwnerAccount({
+					communityId: commId
+				}).then(list => {
+					const amt = list && list.length ? parseFloat(list[0].amount || 0) : 0
+					chargeStore.setBalance(isNaN(amt) ? 0 : amt)
+					this.storeVersion++
+				}).catch(() => {
+					chargeStore.setBalance(0)
+					this.storeVersion++
+					this._toast('余额加载失败')
+				})
+			},
+			// 我的车辆（需登录，未登录展示默认空）
+			_loadCars() {
+				if (!hasLogin()) {
+					chargeStore.vehicles = []
+					return
+				}
+				const commId = this.curCommId || getCommunityId()
+				getUserCar({
+					communityId: commId
+				}).then(list => {
+					chargeStore.vehicles = (list || []).map(c => this._adaptCar(c))
+					chargeStore.saveVehicles()
+					this.storeVersion++
+				}).catch(() => {
+					chargeStore.vehicles = []
+					this.storeVersion++
+					this._toast('车辆加载失败')
+				})
+			},
+			// 本月充电（需登录，未登录展示默认空，统计由 monthRecords/monthFee 完成）
+			_loadMonthOrders() {
+				if (!hasLogin()) {
+					chargeStore.records = []
+					return
+				}
+				getChargeMachineOrder({
+					page: 1,
+					row: 50
+				}).then(list => {
+					chargeStore.records = (list || []).map(o => this._adaptOrder(o))
+					chargeStore.saveRecords()
+					this.storeVersion++
+				}).catch(() => {
+					chargeStore.records = []
+					this.storeVersion++
+					this._toast('充电订单加载失败')
+				})
+			},
+			// 充电桩列表（按当前小区 + 类型）
+			_loadPiles() {
+				const commId = this.curCommId || getCommunityId()
+				if (!commId || commId === '-1') return
+				const seq = (this._pileSeq = (this._pileSeq || 0) + 1)
+				this.pilesLoading = true
+				getChargeMachines({
+					communityId: commId,
+					chargeType: chargeStore.chgType === 'car' ? '1002' : '1001',
+					page: 1,
+					row: 100
+				}).then(res => {
+					if (seq !== this._pileSeq) return
+					if (!res || res.code != 0 || !res.data) throw new Error('加载失败')
+					const list = res.data.map(m => this._adaptMachine(m))
+					chargeStore.setMachineList(list, commId)
+					this.storeVersion++
+					this._loadPilePorts(list, commId, seq)
+				}).catch(() => {
+					if (seq !== this._pileSeq) return
+					chargeStore.setMachineList([], commId)
+					this.storeVersion++
+					this._toast('充电桩加载失败，请重试')
+				}).then(() => {
+					this.pilesLoading = false
+				})
+			},
+			// 充电桩端口（插座/枪）统计：失败时显示 0 使用中 / portCount 空闲
+			_loadPilePorts(list, commId, seq) {
+				if (!list || !list.length) return
+				if (list.length > 10) return
+				list.forEach(m => {
+					getChargeMachinePort({
+						communityId: commId,
+						machineId: m.machineId,
+						page: 1,
+						row: 100
+					}).then(res => {
+						if (seq !== this._pileSeq || chargeStore.machineListCommId !== commId) return
+						if (!res || res.code != 0 || !res.data || !res.data.length) return
+						const busy = res.data.filter(p => p.state !== 'FREE').length
+						const ports = res.data.map(p => ({
+							n: p.portName || p.portCode || '',
+							busy: p.state !== 'FREE'
+						}))
+						m.used = busy
+						m.free = busy < (m.sockets || 1)
+						m.slots = ports
+						m.guns = ports
+						chargeStore.setMachineList(chargeStore.machineList.slice(), commId)
+						this.storeVersion++
+					}).catch(() => {
+						if (seq !== this._pileSeq || chargeStore.machineListCommId !== commId) return
+						m.used = 0
+						m.free = true
+						this.storeVersion++
+					})
+				})
+			},
+			// 我的月卡（需登录，未登录展示默认"未开通"，取未过期的最新一条）
+			_loadCard() {
+				if (!hasLogin()) {
+					chargeStore.setMyCard(null)
+					return
+				}
+				const commId = this.curCommId || getCommunityId()
+				getUserChargeMonthOrder({
+					communityId: commId,
+					page: 1,
+					row: 30
+				}).then(list => {
+					const now = new Date()
+					now.setHours(0, 0, 0, 0)
+					const valid = (list || [])
+						.map(o => ({ o: o, t: this._parseDate(o.endTime) }))
+						.filter(x => x.t && x.t.getTime() >= now.getTime())
+						.sort((a, b) => b.t.getTime() - a.t.getTime())
+					chargeStore.setMyCard(valid.length ? this._adaptCard(valid[0].o) : null)
+					this.storeVersion++
+				}).catch(() => {
+					chargeStore.setMyCard(null)
+					this.storeVersion++
+					this._toast('月卡加载失败')
+				})
+			},
+			// ================= 字段适配 =================
+			_adaptComm(c) {
+				return {
+					communityId: c.communityId || '',
+					name: c.name || '',
+					address: c.address || '',
+					cityName: c.cityName || '',
+					dist: c.dist || 0
+				}
+			},
+			_adaptMachine(m) {
+				const portCount = parseInt(m.portCount || 0, 10) || 0
+				return {
+					machineId: m.machineId || '',
+					name: m.machineName || '',
+					code: m.machineCode || '',
+					online: m.state !== 'OFFLINE',
+					sockets: portCount,
+					used: 0,
+					free: true,
+					loc: (m.communityName || '') + (m.machineCode ? ' · ' + m.machineCode : ''),
+					type: m.chargeType === '1002' ? 'car' : 'bike',
+					chargeType: m.chargeType || '',
+					slots: [],
+					guns: []
+				}
+			},
+			_adaptOrder(o) {
+				const state = o.state || ''
+				const hours = parseFloat(o.chargeHours || 0)
+				return {
+					orderId: o.orderId || '',
+					pile: o.machineName || '',
+					date: this._fmtTime(o.createTime),
+					mins: isNaN(hours) ? 0 : Math.round(hours * 60),
+					fee: parseFloat(o.amount || 0) || 0,
+					way: '余额',
+					st: state === '2002' ? '已完成' : state === '1001' ? '充电中' : state === '3003' ? '充电失败' : (o.stateName ||
+						''),
+					state: state,
+					type: o.chargeType === '1002' ? 'car' : 'bike',
+					kwh: parseFloat(o.energy || 0) || 0,
+					held: 0
+				}
+			},
+			_adaptCard(c) {
+				const end = this._parseDate(c.endTime)
+				const days = end ? Math.max(0, Math.ceil((end.getTime() - Date.now()) / 86400000)) : 0
+				return {
+					name: c.cardName || '',
+					type: 'month',
+					left: days,
+					expire: c.endTime ? String(c.endTime).slice(0, 10) : '',
+					orderId: c.orderId || '',
+					cardId: c.cardId || '',
+					endTime: c.endTime || '',
+					startTime: c.startTime || ''
+				}
+			},
+			_adaptCar(c) {
+				return {
+					carId: c.carId || '',
+					plate: c.carNum || '',
+					type: 'car'
+				}
+			},
+			_parseDate(s) {
+				if (!s) return null
+				let t = s
+				if (typeof s === 'string') t = s.replace(/-/g, '/')
+				const d = new Date(t)
+				return isNaN(d.getTime()) ? null : d
+			},
+			_fmtTime(t) {
+				if (!t) return ''
+				if (typeof t === 'number') {
+					const d = new Date(t < 1e12 ? t * 1000 : t)
+					if (isNaN(d.getTime())) return String(t)
+					return this._pad(d.getMonth() + 1) + '-' + this._pad(d.getDate()) + ' ' + this._pad(d.getHours()) + ':' + this
+						._pad(d.getMinutes())
+				}
+				const s = String(t)
+				const m = /^(\d{4})[-/](\d{2})[-/](\d{2})[ T](\d{2}):(\d{2})/.exec(s)
+				if (m) return m[2] + '-' + m[3] + ' ' + m[4] + ':' + m[5]
+				return s
+			},
+			_pad(n) {
+				return ('0' + n).slice(-2)
 			},
 			_toast(msg) {
 				this.toastMsg = msg
@@ -820,6 +1159,13 @@
 		padding: 24rpx;
 	}
 
+	.home-pile-empty {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 60rpx 0;
+	}
+
 	.home-pile-ic {
 		width: 80rpx;
 		height: 80rpx;
@@ -928,6 +1274,13 @@
 		display: flex;
 		flex-direction: column;
 		gap: 16rpx;
+	}
+
+	.home-comm-empty {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 60rpx 0;
 	}
 
 	.home-comm-item {

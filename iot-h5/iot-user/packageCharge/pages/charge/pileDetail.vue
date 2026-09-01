@@ -271,10 +271,25 @@
 		onLoad(options) {
 			this.chgType = options.chgType || chargeStore.chgType || 'bike'
 			chargeStore.setChgType(this.chgType)
-			const pileIdx = parseInt(options.pileIdx || 0)
 			this.fromScan = options.fromScan == 1
+			const machineId = options.machineId || ''
+			const pileIdx = parseInt(options.pileIdx || 0)
 			const piles = chargeStore.curPiles()
-			this.pile = piles[pileIdx] || piles[0] || {}
+			let pile = null
+			// 优先按 machineId 查找（首页/扫码进入）
+			if (machineId) {
+				pile = piles.find(p => p.machineId === machineId) || null
+			}
+			// 未命中则按原 pileIdx 兜底
+			if (!pile && piles.length) {
+				pile = piles[pileIdx] || piles[0] || null
+			}
+			if (!pile) {
+				this._toast('充电桩不存在')
+				setTimeout(() => uni.navigateBack(), 1200)
+				return
+			}
+			this.pile = pile
 			this._initDefault()
 		},
 		methods: {

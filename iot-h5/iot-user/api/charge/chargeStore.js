@@ -1,19 +1,8 @@
 /**
- * 充电业务共享状态（页面间共享：在充订单/余额/月卡/演示数据）
+ * 充电业务共享状态（页面间共享：在充订单/余额/月卡/接口桩列表）
  * 使用模块级单例 + uni.storage 持久化，保证首页/订单页/充电中页联动
- * // TODO 后端接口就绪后替换为接口数据
+ * 数据以接口为准：首页接口成功后回填，无 mock 兜底
  */
-import {
-	mockCommunities,
-	mockPlans,
-	mockVehicles,
-	mockRentOrders,
-	mockCardOrders,
-	mockRecords,
-	mockWalletLogs,
-	mockMessages
-} from '../mock/chargeMockData.js'
-
 const RUNNING_KEY = 'charge_running_order'
 const BALANCE_KEY = 'charge_balance'
 const CARD_KEY = 'charge_my_card'
@@ -44,10 +33,14 @@ function save(key, val) {
 }
 
 export default {
-	// 小区/桩（演示数据，切换小区后持久化当前索引）
-	communities: mockCommunities,
+	// 小区（接口数据，切换小区后持久化当前索引）
+	communities: [],
 	commIdx: load('charge_comm_idx', 0),
 	chgType: load('charge_chg_type', 'bike'),
+
+	// 充电桩列表（接口数据，machineListCommId 记录所属小区防切换串数据）
+	machineList: [],
+	machineListCommId: '',
 
 	// 在充订单
 	runningOrder: load(RUNNING_KEY, null),
@@ -64,23 +57,23 @@ export default {
 	chargeTimer: null,
 
 	// 余额
-	balance: load(BALANCE_KEY, 26.5),
+	balance: 0,
 
 	// 月卡
-	myCard: load(CARD_KEY, null),
+	myCard: null,
 	planFilter: null,
 
 	// 车辆
-	vehicles: load(VEHICLES_KEY, mockVehicles),
-	rentOrders: load(RENT_ORDERS_KEY, mockRentOrders),
+	vehicles: [],
+	rentOrders: [],
 	curCarIdx: 0,
 	curTempCar: null,
 
 	// 订单/流水/消息
-	cardOrders: load(CARD_ORDERS_KEY, mockCardOrders),
-	records: load(RECORDS_KEY, mockRecords),
-	walletLogs: load(WALLET_LOGS_KEY, mockWalletLogs),
-	messages: load(MESSAGES_KEY, mockMessages),
+	cardOrders: [],
+	records: [],
+	walletLogs: [],
+	messages: [],
 
 	// 订单筛选
 	recRange: load(REC_RANGE_KEY, 'all'),
@@ -110,6 +103,10 @@ export default {
 		this.chgType = t
 		uni.setStorageSync('charge_chg_type', t)
 	},
+	setMachineList(list, communityId) {
+		this.machineList = list || []
+		this.machineListCommId = communityId || ''
+	},
 	saveRecords() {
 		save(RECORDS_KEY, this.records)
 	},
@@ -135,19 +132,28 @@ export default {
 
 	// 当前小区
 	curCommunity() {
-		return this.communities[this.commIdx] || this.communities[0]
+		return this.communities[this.commIdx] || this.communities[0] || {
+			communityId: '',
+			name: ''
+		}
 	},
 
-	// 当前类型桩列表
-	curPiles() {
+	// 当前小区ID
+	curCommId() {
 		const c = this.curCommunity()
-		return this.chgType === 'car' ? (c.carPiles || []) : c.piles
+		return c && c.communityId ? c.communityId : ''
+	},
+
+	// 当前类型桩列表（接口数据，无接口数据或所属小区不一致时返回空数组）
+	curPiles() {
+		if (!this.machineList.length || this.machineListCommId !== this.curCommId()) return []
+		return this.machineList.filter(m => (this.chgType === 'car' ? m.chargeType === '1002' : m.chargeType === '1001'))
 	},
 
 	// 按类型取桩列表
 	pilesByType(type) {
-		const c = this.curCommunity()
-		return type === 'car' ? (c.carPiles || []) : c.piles
+		if (!this.machineList.length || this.machineListCommId !== this.curCommId()) return []
+		return this.machineList.filter(m => (type === 'car' ? m.chargeType === '1002' : m.chargeType === '1001'))
 	},
 
 	// 根据充电中订单找到对应桩

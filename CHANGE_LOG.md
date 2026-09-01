@@ -522,3 +522,11 @@ ALTER TABLE `business_owner_car` DROP COLUMN `car_color`;
 -- 2. 若生产环境 owner_car 表存在 car_color 字段，请一并执行：
 ALTER TABLE `owner_car` DROP COLUMN `car_color`;
 ```
+
+### 2026-09-01 iot-user首页数据对接真实接口
+
+纯前端改造（无 SQL 变更），涉及 `iot-h5/iot-user`：
+
+1. `api/charge/chargeStore.js`：移除 mock 数据依赖（communities/vehicles/records/myCard/balance/messages 等初始值置空），新增 `machineList`/`machineListCommId` 字段与 `setMachineList()`，`curPiles()`/`pilesByType()` 改为返回接口桩数据（按 chargeType 过滤，无数据返回空数组）；
+2. `pages/index/index.vue`：`onShow` 并行加载余额（`account.queryAppUserAccount`）、我的车辆（`car.listUserCar`）、本月充电（`charge.queryPhoneChargeOrder`）、我的月卡（`chargeCard.listUserChargeMonthOrder`）、小区列表（`community.listCommunitys`）、充电桩列表（`chargeMachine.listChargeMachine`）与端口（`chargeMachine.listChargeMachinePort`）；类型切换/小区切换联动刷新并 Toast 反馈；`openPile` 改传 `machineId`；接口失败仅 Toast + 置空对应数据块，不做 mock 兜底；
+3. `packageCharge/pages/charge/pileDetail.vue`：`onLoad` 支持按 `machineId` 查找桩，无数据提示"充电桩不存在"并返回。
