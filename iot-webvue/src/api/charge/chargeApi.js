@@ -200,15 +200,6 @@ export function listChargeMachine(params) {
   })
 }
 
-// GET — 获取充电桩小程序/公众号双二维码短码地址（入参仅 machineCode，后端按设备类型返回对应前缀）
-export function getChargeMachineQrCodeUrl(params) {
-  return new Promise((resolve, reject) => {
-    request({ url: '/chargeMachine.getChargeMachineQrCodeUrl', method: 'get', params }).then(res => {
-      if (res.code == 0) { resolve(res) } else { reject(new Error(res.msg || '获取二维码失败')) }
-    }).catch(error => { reject(error) })
-  })
-}
-
 export function queryOwnerAccount(params) {
   return new Promise((resolve, reject) => {
     request({ url: '/account.queryOwnerAccount', method: 'get', params }).then(res => {

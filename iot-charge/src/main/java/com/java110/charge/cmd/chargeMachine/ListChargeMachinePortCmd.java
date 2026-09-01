@@ -18,15 +18,19 @@ package com.java110.charge.cmd.chargeMachine;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.core.annotation.Java110Cmd;
+import com.java110.core.cache.UrlCache;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.ListUtil;
 import com.java110.doc.annotation.*;
+import com.java110.dto.chargeMachine.ChargeMachineDto;
 import com.java110.dto.chargeMachine.ChargeMachinePortDto;
 import com.java110.intf.charge.IChargeMachinePortV1InnerServiceSMO;
+import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +91,9 @@ public class ListChargeMachinePortCmd extends Cmd {
     @Autowired
     private IChargeMachinePortV1InnerServiceSMO chargeMachinePortV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IChargeMachineV1InnerServiceSMO chargeMachineV1InnerServiceSMOImpl;
+
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
         super.validatePageInfo(reqJson);
@@ -105,6 +112,7 @@ public class ListChargeMachinePortCmd extends Cmd {
 
         if (count > 0) {
             chargeMachinePortDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(chargeMachinePortDto);
+            freshQrCodeUrl(chargeMachinePortDtos);
 
             //调用 第三方查询 插槽状态
            // queryPortState(chargeMachinePortDtos);
@@ -129,4 +137,37 @@ public class ListChargeMachinePortCmd extends Cmd {
 //            chargeMachinePortDto.setStateName("空闲");
 //        }
 //    }
+
+    /**
+     * 端口双码地址（小程序/公众号）
+     *
+     * @param chargeMachinePortDtos
+     */
+    private void freshQrCodeUrl(List<ChargeMachinePortDto> chargeMachinePortDtos) {
+
+        if (ListUtil.isNull(chargeMachinePortDtos)) {
+            return;
+        }
+
+        // 按 machineId 查设备，取 chargeType 与 machineCode
+        ChargeMachineDto chargeMachineDto = new ChargeMachineDto();
+        chargeMachineDto.setMachineId(chargeMachinePortDtos.get(0).getMachineId());
+        List<ChargeMachineDto> chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(chargeMachineDto);
+        if (ListUtil.isNull(chargeMachineDtos)) {
+            return;
+        }
+
+        ChargeMachineDto machine = chargeMachineDtos.get(0);
+        String ownerUrl = UrlCache.getOwnerUrl();
+        for (ChargeMachinePortDto port : chargeMachinePortDtos) {
+            if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(machine.getChargeType())) {
+                port.setMiniUrl(ownerUrl + "/app/chargeBikeMiniPort/" + machine.getMachineCode() + "/" + port.getPortCode());
+                port.setUrl(ownerUrl + "/app/chargeBikeH5Port/" + machine.getMachineCode() + "/" + port.getPortCode());
+            } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(machine.getChargeType())) {
+                port.setMiniUrl(ownerUrl + "/app/chargeCarMiniPort/" + machine.getMachineCode() + "/" + port.getPortCode());
+                port.setUrl(ownerUrl + "/app/chargeCarH5Port/" + machine.getMachineCode() + "/" + port.getPortCode());
+            }
+            // 其他类型不设置（保持空，前端显示"暂无二维码"）
+        }
+    }
 }

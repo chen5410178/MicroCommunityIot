@@ -192,21 +192,15 @@ public class ListChargeMachineCmd extends Cmd {
 
         String ownerUrl = UrlCache.getOwnerUrl();
         for (ChargeMachineDto chargeMachineDto : chargeMachineDtos) {
-//            if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDto.getChargeType())){
-//                chargeMachineDto.setQrCode(ownerUrl + "/#/pages/charge/machineToCharge?machineId="
-//                        + chargeMachineDto.getMachineId()
-//                        + "&communityId=" + chargeMachineDto.getCommunityId()
-//                        + "&wAppId=" + appId
-//                );
-//            }else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDto.getChargeType())){
-//                chargeMachineDto.setQrCode(ownerUrl + "/#/pages/charge/machineToCarCharge?machineId="
-//                        + chargeMachineDto.getMachineId()
-//                        + "&communityId=" + chargeMachineDto.getCommunityId()
-//                        + "&wAppId=" + appId
-//                );
-//            }
             //todo 修改为短号
             chargeMachineDto.setQrCode(ownerUrl + "/app/charge/"+ chargeMachineDto.getMachineCode());
+            if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDto.getChargeType())) {
+                chargeMachineDto.setMiniUrl(ownerUrl + "/app/chargeBikeMini/" + chargeMachineDto.getMachineCode());
+                chargeMachineDto.setUrl(ownerUrl + "/app/chargeBikeH5/" + chargeMachineDto.getMachineCode());
+            } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDto.getChargeType())) {
+                chargeMachineDto.setMiniUrl(ownerUrl + "/app/chargeCarMini/" + chargeMachineDto.getMachineCode());
+                chargeMachineDto.setUrl(ownerUrl + "/app/chargeCarH5/" + chargeMachineDto.getMachineCode());
+            }
         }
     }
 }

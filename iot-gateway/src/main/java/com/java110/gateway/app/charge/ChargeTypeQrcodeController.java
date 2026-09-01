@@ -9,7 +9,9 @@ import com.java110.core.factory.WechatFactory;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.chargeMachine.ChargeMachineDto;
+import com.java110.dto.chargeMachine.ChargeMachinePortDto;
 import com.java110.dto.smallWeChat.SmallWeChatDto;
+import com.java110.intf.charge.IChargeMachinePortV1InnerServiceSMO;
 import com.java110.intf.charge.IChargeMachineV1InnerServiceSMO;
 import com.java110.intf.charge.ISmallWeChatInnerServiceSMO;
 import org.slf4j.Logger;
@@ -33,6 +35,9 @@ public class ChargeTypeQrcodeController {
 
     @Autowired
     private IChargeMachineV1InnerServiceSMO chargeMachineV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IChargeMachinePortV1InnerServiceSMO chargeMachinePortV1InnerServiceSMOImpl;
 
     @Autowired
     private ISmallWeChatInnerServiceSMO smallWeChatInnerServiceSMOImpl;
@@ -136,6 +141,126 @@ public class ChargeTypeQrcodeController {
     }
 
     /**
+     * 两轮充电桩端口 - 小程序转跳（扫码自动选中端口）
+     *
+     * @param machineCode 设备编码
+     * @param port        端口号（portCode）
+     */
+    @RequestMapping(path = "/app/chargeBikeMiniPort/{machineCode}/{port}", method = RequestMethod.GET)
+    public ResponseEntity<String> chargeBikeMiniPort(@PathVariable String machineCode, @PathVariable String port, HttpServletRequest request) {
+        ChargeMachineDto chargeMachineDto = queryMachine(machineCode);
+        if (chargeMachineDto == null) {
+            return ResultVo.error("设备不存在");
+        }
+        if (!ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDto.getChargeType())) {
+            return ResultVo.error("不支持的设备");
+        }
+        ChargeMachinePortDto portDto = queryPort(machineCode, port);
+        if (portDto == null) {
+            return ResultVo.error("端口不存在");
+        }
+        String urlScheme = getWechatURLScheme(chargeMachineDto.getCommunityId(),
+                "/packageCharge/pages/charge/machineToCharge",
+                "machineId=" + chargeMachineDto.getMachineId() + "&communityId=" + chargeMachineDto.getCommunityId() + "&portId=" + portDto.getPortId());
+        if (StringUtil.isEmpty(urlScheme)) {
+            return ResultVo.error("未配置小程序");
+        }
+        return ResponseEntity.ok().body(getHtmlPage(urlScheme));
+    }
+
+    /**
+     * 两轮充电桩端口 - 公众号转跳（扫码自动选中端口）
+     *
+     * @param machineCode 设备编码
+     * @param port        端口号（portCode）
+     */
+    @RequestMapping(path = "/app/chargeBikeH5Port/{machineCode}/{port}", method = RequestMethod.GET)
+    public ResponseEntity<String> chargeBikeH5Port(@PathVariable String machineCode, @PathVariable String port, HttpServletRequest request) {
+        ChargeMachineDto chargeMachineDto = queryMachine(machineCode);
+        if (chargeMachineDto == null) {
+            return ResultVo.error("设备不存在");
+        }
+        if (!ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDto.getChargeType())) {
+            return ResultVo.error("不支持的设备");
+        }
+        String appId = getPublicAppId(chargeMachineDto.getCommunityId());
+        if (StringUtil.isEmpty(appId)) {
+            return ResultVo.error("未配置公众号");
+        }
+        ChargeMachinePortDto portDto = queryPort(machineCode, port);
+        if (portDto == null) {
+            return ResultVo.error("端口不存在");
+        }
+        String ownerUrl = UrlCache.getOwnerUrl();
+        String url = ownerUrl + "/#/packageCharge/pages/charge/machineToCharge?machineId="
+                + chargeMachineDto.getMachineId()
+                + "&communityId=" + chargeMachineDto.getCommunityId()
+                + "&portId=" + portDto.getPortId()
+                + "&wAppId=" + appId;
+        return ResultVo.redirectPage(url);
+    }
+
+    /**
+     * 四轮充电桩端口 - 小程序转跳（直达端口充电页）
+     *
+     * @param machineCode 设备编码
+     * @param port        端口号（portCode）
+     */
+    @RequestMapping(path = "/app/chargeCarMiniPort/{machineCode}/{port}", method = RequestMethod.GET)
+    public ResponseEntity<String> chargeCarMiniPort(@PathVariable String machineCode, @PathVariable String port, HttpServletRequest request) {
+        ChargeMachineDto chargeMachineDto = queryMachine(machineCode);
+        if (chargeMachineDto == null) {
+            return ResultVo.error("设备不存在");
+        }
+        if (!ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDto.getChargeType())) {
+            return ResultVo.error("不支持的设备");
+        }
+        ChargeMachinePortDto portDto = queryPort(machineCode, port);
+        if (portDto == null) {
+            return ResultVo.error("端口不存在");
+        }
+        String urlScheme = getWechatURLScheme(chargeMachineDto.getCommunityId(),
+                "/packageCharge/pages/charge/carChargePort",
+                "machineId=" + chargeMachineDto.getMachineId() + "&communityId=" + chargeMachineDto.getCommunityId() + "&portId=" + portDto.getPortId());
+        if (StringUtil.isEmpty(urlScheme)) {
+            return ResultVo.error("未配置小程序");
+        }
+        return ResponseEntity.ok().body(getHtmlPage(urlScheme));
+    }
+
+    /**
+     * 四轮充电桩端口 - 公众号转跳（直达端口充电页）
+     *
+     * @param machineCode 设备编码
+     * @param port        端口号（portCode）
+     */
+    @RequestMapping(path = "/app/chargeCarH5Port/{machineCode}/{port}", method = RequestMethod.GET)
+    public ResponseEntity<String> chargeCarH5Port(@PathVariable String machineCode, @PathVariable String port, HttpServletRequest request) {
+        ChargeMachineDto chargeMachineDto = queryMachine(machineCode);
+        if (chargeMachineDto == null) {
+            return ResultVo.error("设备不存在");
+        }
+        if (!ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDto.getChargeType())) {
+            return ResultVo.error("不支持的设备");
+        }
+        String appId = getPublicAppId(chargeMachineDto.getCommunityId());
+        if (StringUtil.isEmpty(appId)) {
+            return ResultVo.error("未配置公众号");
+        }
+        ChargeMachinePortDto portDto = queryPort(machineCode, port);
+        if (portDto == null) {
+            return ResultVo.error("端口不存在");
+        }
+        String ownerUrl = UrlCache.getOwnerUrl();
+        String url = ownerUrl + "/#/packageCharge/pages/charge/carChargePort?machineId="
+                + chargeMachineDto.getMachineId()
+                + "&communityId=" + chargeMachineDto.getCommunityId()
+                + "&portId=" + portDto.getPortId()
+                + "&wAppId=" + appId;
+        return ResultVo.redirectPage(url);
+    }
+
+    /**
      * 按设备编码查充电桩
      */
     private ChargeMachineDto queryMachine(String machineCode) {
@@ -146,6 +271,26 @@ public class ChargeTypeQrcodeController {
             return null;
         }
         return chargeMachineDtos.get(0);
+    }
+
+    /**
+     * 按设备编码 + 端口号（portCode）查端口
+     */
+    private ChargeMachinePortDto queryPort(String machineCode, String port) {
+        ChargeMachineDto chargeMachineDto = new ChargeMachineDto();
+        chargeMachineDto.setMachineCode(machineCode);
+        List<ChargeMachineDto> chargeMachineDtos = chargeMachineV1InnerServiceSMOImpl.queryChargeMachines(chargeMachineDto);
+        if (ListUtil.isNull(chargeMachineDtos)) {
+            return null;
+        }
+        ChargeMachinePortDto portDto = new ChargeMachinePortDto();
+        portDto.setMachineId(chargeMachineDtos.get(0).getMachineId());
+        portDto.setPortCode(port);
+        List<ChargeMachinePortDto> portDtos = chargeMachinePortV1InnerServiceSMOImpl.queryChargeMachinePorts(portDto);
+        if (ListUtil.isNull(portDtos)) {
+            return null;
+        }
+        return portDtos.get(0);
     }
 
     /**

@@ -127,6 +127,7 @@
 			return {
 				machineId: '',
 				communityId: '',
+				portId: '',
 				machineCode: '',
 				machineName: '',
 				portCount: '',
@@ -184,9 +185,7 @@
 			// #endif
 			this.machineId = options.machineId;
 			this.communityId = options.communityId;
-			if (isNotNull(options.portId)) {
-				this.curPort.portId = options.portId;
-			}
+			this.portId = options.portId || '';
 			// 进入本页时记录当前路径及参数，供后续成功页返回使用（字段名为 targetUrl）
 			try {
 				let url = '/packageCharge/pages/charge/machineToCharge';
@@ -266,6 +265,25 @@
 					communityId: this.communityId
 				}).then(_data => {
 					_that.ports = _data.data;
+					// 扫码进入时按 portId 自动选中端口（仅空闲端口）
+					if (isNotNull(_that.portId)) {
+						let target = null;
+						for (let i = 0; i < _that.ports.length; i++) {
+							if (_that.ports[i].portId == _that.portId) {
+								target = _that.ports[i];
+								break;
+							}
+						}
+						if (target && target.state === 'FREE') {
+							_that.curPort = target;
+						} else {
+							uni.showToast({
+								title: '该插座不可用，请手动选择',
+								icon: 'none',
+								duration: 2000
+							});
+						}
+					}
 				})
 			},
 			_toCharge: function() {

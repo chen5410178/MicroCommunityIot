@@ -1,19 +1,23 @@
 <template>
   <el-dialog
     :visible.sync="dialogVisible"
-    title="充电桩二维码"
+    :title="dialogTitle"
     :width="isDualCode ? '760px' : '400px'"
     @close="handleClose"
   >
     <!-- 双码场景：小程序二维码 + 公众号二维码 -->
     <div v-if="isDualCode" class="dual-code-content">
       <div class="qr-col">
-        <div ref="miniQrcodeRef" class="qr-box" />
+        <div ref="miniQrcodeRef" class="qr-box">
+          <span v-if="!qrData.miniUrl" class="qr-empty">暂无二维码</span>
+        </div>
         <p class="qr-name">小程序二维码</p>
         <p class="qr-tip">微信扫码打开小程序充电</p>
       </div>
       <div class="qr-col">
-        <div ref="publicQrcodeRef" class="qr-box" />
+        <div ref="publicQrcodeRef" class="qr-box">
+          <span v-if="!qrData.url" class="qr-empty">暂无二维码</span>
+        </div>
         <p class="qr-name">公众号二维码</p>
         <p class="qr-tip">微信扫码打开公众号充电</p>
       </div>
@@ -31,7 +35,6 @@
 
 <script>
 import QRCode from 'qrcodejs2'
-import { getChargeMachineQrCodeUrl } from '@/api/charge/chargeApi'
 
 export default {
   name: 'ChargeMachineQrCode',
@@ -41,14 +44,15 @@ export default {
   },
   data() {
     return {
-      dialogVisible: false,
-      miniQrCode: null,
-      publicQrCode: null
+      dialogVisible: false
     }
   },
   computed: {
     isDualCode() {
-      return !!(this.qrData && this.qrData.machineCode)
+      return !!(this.qrData && (this.qrData.miniUrl || this.qrData.url))
+    },
+    dialogTitle() {
+      return this.qrData && this.qrData.portCode ? '端口二维码' : '充电桩二维码'
     }
   },
   watch: {
@@ -67,31 +71,14 @@ export default {
     dialogVisible(val) { this.$emit('update:visible', val) }
   },
   methods: {
-    async generateDualQRCode() {
+    generateDualQRCode() {
       const miniEl = this.$refs.miniQrcodeRef
       const publicEl = this.$refs.publicQrcodeRef
       if (!miniEl || !publicEl) return
       miniEl.innerHTML = ''
       publicEl.innerHTML = ''
-      try {
-        const res = await getChargeMachineQrCodeUrl({ machineCode: this.qrData.machineCode })
-        if (res.code === 0 && res.data) {
-          this.renderQRCode(miniEl, res.data.miniUrl || '')
-          this.renderQRCode(publicEl, res.data.url || '')
-          if (!res.data.miniUrl) {
-            this.$message.error('获取小程序二维码失败')
-          }
-          if (!res.data.url) {
-            this.$message.error('获取公众号二维码失败')
-          }
-        } else {
-          throw new Error(res.msg || '获取二维码失败')
-        }
-      } catch (e) {
-        this.$message.error(e.message || '获取二维码失败')
-        publicEl.innerHTML = '<span style="color: #909399; font-size: 14px;">获取二维码失败</span>'
-        this.renderQRCode(miniEl, this.qrData.qrCode || this.qrData.machineCode || '')
-      }
+      this.renderQRCode(miniEl, this.qrData.miniUrl || '')
+      this.renderQRCode(publicEl, this.qrData.url || '')
     },
     renderQRCode(el, text) {
       if (!el || !text) return
@@ -142,6 +129,10 @@ export default {
   justify-content: center;
   border: 1px solid #ebeef5;
   border-radius: 4px;
+}
+.qr-empty {
+  font-size: 14px;
+  color: #909399;
 }
 .qr-name {
   margin-top: 12px;

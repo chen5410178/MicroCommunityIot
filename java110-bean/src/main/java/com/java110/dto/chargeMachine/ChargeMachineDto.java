@@ -48,6 +48,10 @@ public class ChargeMachineDto extends PageDto implements Serializable {
 
     private String qrCode;
 
+    private String miniUrl;
+
+    private String url;
+
     private String state;
 
     private String stateName;
@@ -171,6 +175,22 @@ public class ChargeMachineDto extends PageDto implements Serializable {
 
     public void setQrCode(String qrCode) {
         this.qrCode = qrCode;
+    }
+
+    public String getMiniUrl() {
+        return miniUrl;
+    }
+
+    public void setMiniUrl(String miniUrl) {
+        this.miniUrl = miniUrl;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getState() {
