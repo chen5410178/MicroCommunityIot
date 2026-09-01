@@ -142,6 +142,7 @@ export default {
             logo: sysInfo.systemSimpleTitle || sysInfo.systemTitle
           }
           setSystemInfo(this.systemInfo)
+          this.version = sysInfo.version || config.version
         }
       }).catch(() => {})
     },

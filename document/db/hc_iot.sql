@@ -12851,16 +12851,16 @@ ALTER TABLE `business_owner_car` DROP COLUMN `car_color`;
 INSERT INTO `c_service` VALUES ('982026090100000001', 'account.queryAppUserAccountDetail', 'API', '手机端查询账户明细', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-01 10:00:00', '0');
 INSERT INTO `c_route` VALUES ('102026090100000001', '992023111817510002', '982026090100000001', 'Q', '1000', 'S', '2026-09-01 10:00:00', '0');
 
--- 2026-09-01 系统信息/隐私协议：system_info 表扩展版本号、用户服务协议、隐私保护指引、版权信息字段
+-- 2026-09-01 系统信息/隐私协议：system_info 表扩展用户服务协议、隐私保护指引、版权信息字段
+-- 注：系统版本号由后端 AppInfo.java 常量提供（VERSION = "2.0"），不建表字段；
+-- 若运行库此前已误加 version 列，请按需执行：ALTER TABLE `system_info` DROP COLUMN `version`;
 ALTER TABLE `system_info`
-  ADD COLUMN `version` varchar(32) DEFAULT NULL COMMENT '系统版本号（如 v1.0.0）' AFTER `system_simple_title`,
-  ADD COLUMN `user_protocol` text COMMENT '用户服务协议全文' AFTER `version`,
+  ADD COLUMN `user_protocol` text COMMENT '用户服务协议全文' AFTER `system_simple_title`,
   ADD COLUMN `merchant_protocol` text COMMENT '隐私保护指引全文' AFTER `user_protocol`,
   ADD COLUMN `copyright_info` varchar(200) DEFAULT NULL COMMENT '版权信息' AFTER `merchant_protocol`;
 
--- 填充默认版本/协议/隐私/版权文案
+-- 填充默认协议/隐私/版权文案
 UPDATE `system_info` SET
-  `version` = 'v1.0.0',
   `user_protocol` = '欢迎使用本系统提供的各项服务。\n\n1. 服务说明：本系统为智慧社区物联网服务平台，提供门禁、充电、停车、水电充值等服务。\n2. 用户义务：请合法使用本服务，因违规操作造成的损失由用户承担。\n3. 隐私保护：我们仅收集服务所必需的信息，具体见《隐私保护指引》。\n4. 其他：本协议最终解释权归服务提供方所有。',
   `merchant_protocol` = '1. 信息收集：为提供服务，我们可能收集手机号、所在小区、设备使用记录、支付信息等。\n2. 信息使用：所收集信息仅用于账户核验、计费结算、记录展示与安全风控。\n3. 信息共享：我们不会向第三方出售您的个人信息，仅在法律要求或支付结算必要时提供。\n4. 您的权利：您可通过客服渠道查看、导出或删除个人信息。',
   `copyright_info` = '© 2026 java110团队'

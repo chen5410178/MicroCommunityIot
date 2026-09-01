@@ -583,3 +583,28 @@ INSERT INTO `c_route` VALUES ('102026090100000001', '992023111817510002', '98202
 INSERT INTO `c_service` VALUES ('982026090100000002', 'system.listSystemPrivacy', 'API', '查询系统隐私信息', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2026-09-01 14:12:52', '0');
 INSERT INTO `c_route` VALUES ('102026090100000002', '992023111817510002', '982026090100000002', 'Q', '1000', 'S', '2026-09-01 14:12:52', '0');
 ```
+
+### 2026-09-01 carService 车辆服务页 UI 间距与车牌输入 Bug 修复
+
+纯前端（`iot-h5/iot-user/packageCharge/`，无 SQL 变更）：
+
+1. `carService.vue`：
+   - 样式间距：`.cs-head` 底部 margin 由 0 调为 24rpx（标题与搜索框拉开间距）；`.cs-mt` 由 20rpx 加大到 28rpx（搜索按钮/搜索结果区与提示条间距）。
+   - 省份选择联动键盘：模板 `<plate-keyboard>` 增加 `ref="plateKey"`；`pickProv` / `openSearchKey` 改为调用 `$refs.plateKey.open(prov, rest)` 将已选省份同步进键盘内部 `prov`，修复"选省后点字母误报请先选择省份"Bug（`open` 内部 `$emit('update:show', true)` 联动 `keyShow`）。
+   - 去除 computed：`themeDark`（onShow 赋值 `chargeStore.themeDark`）、`hitCar`（`searchCar` / `pickSearchPlate` 按车辆列表匹配赋值，`goDetailByPlate` 直接复用 `this.hitCar`）、`isNewEnergyPlate`（改为 methods `_isNewEnergy`，模板改调 `_isNewEnergy(searchKw)`）、`suggestList`（`renderSuggest` / `toggleSearchSuggest` / `delHistory` / `searchCar` 中赋值历史车牌 `getPlateHistory().slice(0, 6)`）。
+2. `plate-keyboard.vue`：splitMode 下键盘顶部文案由"请选择省份汉字"改为"请选择车牌字母数字"（省份由页面面板选择，键盘只负责字母数字）。
+
+### 2026-09-01 系统版本号改造：废弃 system_info.version 字段，改为后端 AppInfo.java 常量提供
+
+后端 + 管理端（PC 端），修复 `system.listSystemInfo` 报 `Unknown column 't.version'`：
+
+1. `iot-system` 新增 `AppInfo.java`（`VERSION = "2.0"`）作为系统版本号唯一来源（不入数据库表/前端配置文件）；
+2. `SystemInfoPo` 移除 version 字段及 getter/setter；`SystemInfoV1ServiceDaoImplMapper.xml` select/insert/update 移除 version 列（保留 user_protocol/merchant_protocol/copyright_info 三列）；
+3. `ListSystemInfoCmd` 查询返回前 `setVersion(AppInfo.VERSION)`；`ListSystemPrivacyCmd` 改为 `data.put("version", AppInfo.VERSION)`，不再依赖数据库字段；
+4. `document/db/hc_iot.sql` 移除 system_info 的 version 列 ALTER/UPDATE 语句，追加说明注释（含按需 DROP COLUMN 提示）；
+5. 管理端 `nav2.vue` 顶栏版本号改取接口 `systemInfo.version`（兜底本地 `config.version`）；用户端 about.vue/my.vue 已读接口 version，自动生效无需改动。
+
+```sql
+-- 若运行库此前已执行过含 version 列的 ALTER，请按需执行：
+ALTER TABLE `system_info` DROP COLUMN `version`;
+```

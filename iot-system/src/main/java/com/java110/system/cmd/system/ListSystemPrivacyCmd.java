@@ -27,6 +27,7 @@ import com.java110.core.utils.Assert;
 import com.java110.dto.community.CommunityDto;
 import com.java110.intf.community.ICommunityInnerServiceSMO;
 import com.java110.intf.system.ISystemInfoV1InnerServiceSMO;
+import com.java110.system.AppInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +79,7 @@ public class ListSystemPrivacyCmd extends Cmd {
 
         if (systemInfoDtos != null && !systemInfoDtos.isEmpty()) {
             SystemInfoDto systemInfo = systemInfoDtos.get(0);
-            data.put("version", systemInfo.getVersion());
+            data.put("version", AppInfo.VERSION);
             data.put("userProtocol", systemInfo.getUserProtocol());
             data.put("merchantProtocol", systemInfo.getMerchantProtocol());
             data.put("copyrightInfo", systemInfo.getCopyrightInfo());

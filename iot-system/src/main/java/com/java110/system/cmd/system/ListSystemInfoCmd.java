@@ -26,6 +26,7 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.exception.CmdException;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.intf.system.ISystemInfoV1InnerServiceSMO;
+import com.java110.system.AppInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,7 @@ public class ListSystemInfoCmd extends Cmd {
         if (count > 0) {
             systemInfoDtos = systemInfoV1InnerServiceSMOImpl.querySystemInfos(systemInfoDto);
             systemInfoDtos.get(0).setOwnerUrl(UrlCache.getOwnerUrl());
+            systemInfoDtos.get(0).setVersion(AppInfo.VERSION);
 
         } else {
             systemInfoDtos = new ArrayList<>();

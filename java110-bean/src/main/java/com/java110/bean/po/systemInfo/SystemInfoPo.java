@@ -41,18 +41,9 @@ public class SystemInfoPo implements Serializable {
     private String statusCd = "0";
     private String logoUrl;
     private String propertyTitle;
-    private String version;
     private String userProtocol;
     private String merchantProtocol;
     private String copyrightInfo;
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
 
     public String getUserProtocol() {
         return userProtocol;
