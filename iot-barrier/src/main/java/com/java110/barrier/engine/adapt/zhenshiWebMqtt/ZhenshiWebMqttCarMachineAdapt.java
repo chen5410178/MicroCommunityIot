@@ -343,7 +343,7 @@ public class ZhenshiWebMqttCarMachineAdapt extends BaseMachineAdapt implements I
                 type = "1";
             }
             String license = plateResult.getString("license");
-            license = Base64Convert.decoderGBK(license);
+            license = Base64Convert.decoderUTF8(license);
             String imagePath = plateResult.getString("imagePath");
             if (!StringUtil.isEmpty(imagePath)) {
                 imagePath = Base64Convert.decoder(imagePath);
