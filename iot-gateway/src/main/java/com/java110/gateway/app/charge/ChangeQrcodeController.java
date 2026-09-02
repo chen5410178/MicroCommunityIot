@@ -73,33 +73,16 @@ public class ChangeQrcodeController {
             throw new CmdException("枪不存在");
         }
 
-        SmallWeChatDto smallWeChatDto = new SmallWeChatDto();
-        smallWeChatDto.setObjId(chargeMachineDtos.get(0).getCommunityId());
-        smallWeChatDto.setWeChatType(SmallWeChatDto.WECHAT_TYPE_PUBLIC);
-        List<SmallWeChatDto> smallWeChatDtos = smallWeChatInnerServiceSMOImpl.querySmallWeChats(smallWeChatDto);
-        String appId = "";
-        if (ListUtil.isNull(smallWeChatDtos)) {
-            return ResultVo.error("小区未配置公众号信息");
-        }
-        appId = smallWeChatDtos.get(0).getAppId();
 
-        String ownerUrl = UrlCache.getOwnerUrl();
-        String url = "";
-        if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(chargeMachineDtos.get(0).getChargeType())) {
-            url = ownerUrl + "/#/packageCharge/pages/charge/machineToCharge?machineId="
-                    + chargeMachineDtos.get(0).getMachineId()
-                    + "&communityId=" + chargeMachineDtos.get(0).getCommunityId()
-                    + "&wAppId=" + appId;
-        } else if (ChargeMachineDto.CHARGE_TYPE_CAR.equals(chargeMachineDtos.get(0).getChargeType())) {
-            url = ownerUrl + "/#/packageCharge/pages/charge/carChargePort?machineId="
-                    + chargeMachineDtos.get(0).getMachineId()
-                    + "&communityId=" + chargeMachineDtos.get(0).getCommunityId()
-                    + "&wAppId=" + appId + "&portId=" + chargeMachinePortDtos.get(0).getPortId();
-        } else {
-            return ResultVo.error("不支持的设备");
+        String urlScheme = getWechatURLScheme(chargeMachineDto.getCommunityId(),
+                "/packageCharge/pages/charge/carChargePort",
+                "machineId=" + chargeMachineDtos.get(0).getMachineId()
+                        + "&communityId=" + chargeMachineDtos.get(0).getCommunityId()
+                        + "&portId=" + chargeMachinePortDtos.get(0).getPortId());
+        if (StringUtil.isEmpty(urlScheme)) {
+            return ResultVo.error("未配置小程序");
         }
-
-        return ResultVo.redirectPage(url);
+        return ResponseEntity.ok().body(getHtmlPage(urlScheme));
 
     }
 //    桩二维码：域名  + /app/charge/songbing?No= + 设备编码
