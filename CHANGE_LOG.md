@@ -523,36 +523,7 @@ ALTER TABLE `business_owner_car` DROP COLUMN `car_color`;
 ALTER TABLE `owner_car` DROP COLUMN `car_color`;
 ```
 
-### 2026-09-01 iot-user首页数据对接真实接口
-
-纯前端改造（无 SQL 变更），涉及 `iot-h5/iot-user`：
-
-1. `api/charge/chargeStore.js`：移除 mock 数据依赖（communities/vehicles/records/myCard/balance/messages 等初始值置空），新增 `machineList`/`machineListCommId` 字段与 `setMachineList()`，`curPiles()`/`pilesByType()` 改为返回接口桩数据（按 chargeType 过滤，无数据返回空数组）；
-2. `pages/index/index.vue`：`onShow` 并行加载余额（`account.queryAppUserAccount`）、我的车辆（`car.listUserCar`）、本月充电（`charge.queryPhoneChargeOrder`）、我的月卡（`chargeCard.listUserChargeMonthOrder`）、小区列表（`community.listCommunitys`）、充电桩列表（`chargeMachine.listChargeMachine`）与端口（`chargeMachine.listChargeMachinePort`）；类型切换/小区切换联动刷新并 Toast 反馈；`openPile` 改传 `machineId`；接口失败仅 Toast + 置空对应数据块，不做 mock 兜底；
-3. `packageCharge/pages/charge/pileDetail.vue`：`onLoad` 支持按 `machineId` 查找桩，无数据提示"充电桩不存在"并返回。
-
 ### 2026-09-01 充电订单页（chargeOrders）对齐原型 + 真实接口改造
-
-纯前端 + iot-charge 小改动（无 SQL 变更，接口已注册 c_service 982025040135040007）：
-
-1. 后端 `iot-charge/.../cmd/charge/QueryPhoneChargeOrderCmd.java`：透传 `state`（在充 1001）、`chargeType`（1001 电瓶车 / 1002 汽车）、`queryStartTime`/`queryEndTime`（时间范围）到查询 Dto（Mapper 已支持对应过滤，仅补 Cmd 透传）；
-2. 新增 `iot-h5/iot-user/api/charge/orderAdapter.js`：充电订单接口字段 → 页面字段公共适配函数 `adaptOrder`/`adaptOrderList`（迁移首页 `_adaptOrder` 逻辑，补充 startTime/slot/portName 等，在充卡片复用）；
-3. `packageCharge/api/chargeApi.js`：`queryPhoneChargeOrder` 改为返回完整响应 `{code, msg, data, records}`（供订单页取分页总数）；
-4. `packageCharge/pages/charge/chargeOrders.vue`：历史订单列表改走真实接口（page/row=100，时间范围 → queryStartTime，类型 → chargeType），统计卡订单数取接口 records、累计消费按接口列表求和；新增「在充订单置顶大卡片」（接口 state=1001 查询，桩名 + 插座/枪号 + 功率标签 + 三列统计 + 停止充电入口）；1s 定时器仅刷新在充时长（Date.now() - startTime），不再调用本地 simulateTick；点击历史订单跳 `orderDetail?orderId=xxx`、在充卡片跳 `orderDetail?mode=running&orderId=xxx`；
-5. `packageCharge/pages/charge/orderDetail.vue`：历史订单按 `orderId` 查真实接口展示（订单编号取接口 orderId）；在充模式本地 runningOrder 优先、无本地时按 orderId 查接口只读展示（隐藏停止充电按钮，提示前往「充电中」页面操作）；
-6. `pages/index/index.vue`：`_loadMonthOrders` 改用公共 `adaptOrder`，删除本地 `_adaptOrder`/`_fmtTime`/`_pad` 重复实现（行为不变）。
-
-### 2026-09-01 充电订单页 UI/交互修复（3 个问题）
-
-纯前端（`iot-h5/iot-user/packageCharge/pages/charge/chargeOrders.vue`，无 SQL 变更）：
-
-1. 统计卡布局：外层新增 `co-stat-card`（flex + space-between），「全部时间」下拉按钮从统计卡下方移到右侧；
-2. 筛选不切换修复：`recRange`/`recType` 由 computed（读非响应式 chargeStore，无法失效）改为 data 本地响应式字段（初始化读 chargeStore），`setRange`/`setType` 同步更新本地字段 + chargeStore + storage，点击「全部/电瓶车/汽车」立即刷新列表与统计；
-3. 空态卡片补 `co-mx co-mt` 类，与左右（以及统计卡）产生间距。
-
-### 2026-09-01 业主端账户明细专用接口（account.queryAppUserAccountDetail）
-
-后端 `iot-acct` 新增 Cmd `QueryAppUserAccountDetailCmd`（serviceCode `account.queryAppUserAccountDetail`）：按登录态 userId → 手机号 link → 账户（partId=communityId、acctType 默认 2003）自动定位，一步查询 `account_detail` 明细（支持 detailType 过滤），账户不存在返回空列表，前端无需也不允许传 acctId，杜绝越权。前端 `iot-h5/iot-user` 钱包页（wallet.vue）、账户明细页（myAccountDetail.vue）改调新接口，`myAccount.vue`/`chargeCard.vue` 跳转传 `acctType` 替代 `acctId`，`url.js`/`userApi.js` 中 `queryOwnerAccountDetail` 移除（PC 管理端 iot-webvue 仍用旧接口不受影响）。
 
 ```sql
 -- 服务注册（需在运行库执行）
@@ -560,23 +531,8 @@ INSERT INTO `c_service` VALUES ('982026090100000001', 'account.queryAppUserAccou
 INSERT INTO `c_route` VALUES ('102026090100000001', '992023111817510002', '982026090100000001', 'Q', '1000', 'S', '2026-09-01 10:00:00', '0');
 ```
 
-### 2026-09-01 车辆服务页对接真实接口（月租续费走收银台）
-
-纯前端（`iot-h5/iot-user/packageCharge/pages/charge/`，无 SQL 变更）：
-
-1. `carService.vue`：车辆列表与月租订单由 chargeStore mock 改为真实接口（`car.listUserCar`、`carMonth.listUserCarMonthOrder`），onShow 登录校验 + 并行加载（loading/空态占位）；车辆字段适配（carNum 去分隔符、carTypeName 缺省按 D/F 判定新能源、comm 取当前小区名、bindDate 截取 createTime、endTime 仅保留未来日期并计算剩余天数）；搜索命中改为本地匹配真实车辆，跳 carDetail 传 carNum/carId/model/comm/bindDate；订单卡片按 orderId 跳 rentOrderDetail；底部新增"添加车辆"入口（提示到物业前台申请绑定）。
-2. `carDetail.vue`：套餐由 mock carPlans 改为 `carMonth.queryMonthCardByCarNum` 按车牌实时查询（cards 渲染、平均月价、空套餐占位）；续费确认弹窗组装 `doing_cashier`（business=buyCarMonthCard）后跳收银台 `/packageFee/pages/fee/cashier`；查询失败 toast 后端 msg 并 1.5s 返回上一页。
-3. `rentOrderDetail.vue`：由 mock 订单改为 `carMonth.listUserCarMonthOrder` 按 orderId 匹配展示（未传/未匹配取第一条）。
 
 ### 2026-09-01 系统信息/隐私协议查询接口与「关于页、联系客服」改造
-
-后端 + 管理端 + 业主端（`iot-h5/iot-user`）：
-
-1. **后端数据层**：`system_info` 表新增 `version`（版本号）、`user_protocol`（用户服务协议）、`merchant_protocol`（隐私保护指引）、`copyright_info`（版权信息）4 字段（SQL 已追加 `document/db/hc_iot.sql` 尾部，含默认文案 UPDATE 与 `c_service`/`c_route` 注册）；`SystemInfoPo`/`SystemInfoDto` 增加对应驼峰字段；`SystemInfoV1ServiceDaoImplMapper.xml` select/insert/update 同步新字段（`system.listSystemInfo` 免登录接口自动返回新字段）。
-2. **后端新接口**：`iot-system` 新增 `ListSystemPrivacyCmd`（serviceCode `system.listSystemPrivacy`，入参 `communityId`）：按小区ID 查 `s_community.tel` + 查系统信息，合并返回 `{tel, version, userProtocol, merchantProtocol, copyrightInfo, companyName, systemTitle, subSystemTitle, logoUrl, imgUrl}`；`iot-gateway` `ServiceConfiguration.exclusions` 已追加免登录。
-3. **管理端**：`iot-webvue/src/views/frame/registerProtocol.vue` 由未实现的 `system.listRegisterProtocol`/`system.updateRegisterProtocol` 改为调用 `system.listSystemInfo`/`system.updateSystemInfo`（查询取 `res.data[0]` 回填，保存提交 `systemId + userProtocol + merchantProtocol`），第二个输入框标签由「商家协议」改为「隐私保护指引」。
-4. **业主端 API 层**：`conf/url.js` 补充 `listSystemInfo`（修复 App.vue 引用 undefined 缺陷）并新增 `listSystemPrivacy`；新增 `api/system/systemApi.js`（`getSystemInfo`/`getSystemPrivacy`，免登录）。
-5. **业主端页面**：`about.vue` 删除「检查更新」按钮，名称/版本/版权/协议/隐私全文改接 `getSystemInfo()`（协议为空提示「暂无内容」）；`my.vue` 联系客服电话与拨打按钮改接 `getSystemPrivacy()` 返回的小区联系电话（`chargeStore.serviceTel`，`uni.makePhoneCall` 拨号），关于行版本号取 `java110SystemConfig` 缓存；`customerService.vue` 客服名称/电话改接接口数据，拨号改 `uni.makePhoneCall`，电话为空时隐藏拨打按钮。
 
 ```sql
 -- 服务注册（需在运行库执行）
@@ -586,56 +542,14 @@ INSERT INTO `c_route` VALUES ('102026090100000002', '992023111817510002', '98202
 
 ### 2026-09-01 carService 车辆服务页 UI 间距与车牌输入 Bug 修复
 
-纯前端（`iot-h5/iot-user/packageCharge/`，无 SQL 变更）：
-
-1. `carService.vue`：
-   - 样式间距：`.cs-head` 底部 margin 由 0 调为 24rpx（标题与搜索框拉开间距）；`.cs-mt` 由 20rpx 加大到 28rpx（搜索按钮/搜索结果区与提示条间距）。
-   - 省份选择联动键盘：模板 `<plate-keyboard>` 增加 `ref="plateKey"`；`pickProv` / `openSearchKey` 改为调用 `$refs.plateKey.open(prov, rest)` 将已选省份同步进键盘内部 `prov`，修复"选省后点字母误报请先选择省份"Bug（`open` 内部 `$emit('update:show', true)` 联动 `keyShow`）。
-   - 去除 computed：`themeDark`（onShow 赋值 `chargeStore.themeDark`）、`hitCar`（`searchCar` / `pickSearchPlate` 按车辆列表匹配赋值，`goDetailByPlate` 直接复用 `this.hitCar`）、`isNewEnergyPlate`（改为 methods `_isNewEnergy`，模板改调 `_isNewEnergy(searchKw)`）、`suggestList`（`renderSuggest` / `toggleSearchSuggest` / `delHistory` / `searchCar` 中赋值历史车牌 `getPlateHistory().slice(0, 6)`）。
-2. `plate-keyboard.vue`：splitMode 下键盘顶部文案由"请选择省份汉字"改为"请选择车牌字母数字"（省份由页面面板选择，键盘只负责字母数字）。
-
-### 2026-09-01 系统版本号改造：废弃 system_info.version 字段，改为后端 AppInfo.java 常量提供
-
-后端 + 管理端（PC 端），修复 `system.listSystemInfo` 报 `Unknown column 't.version'`：
-
-1. `iot-system` 新增 `AppInfo.java`（`VERSION = "2.0"`）作为系统版本号唯一来源（不入数据库表/前端配置文件）；
-2. `SystemInfoPo` 移除 version 字段及 getter/setter；`SystemInfoV1ServiceDaoImplMapper.xml` select/insert/update 移除 version 列（保留 user_protocol/merchant_protocol/copyright_info 三列）；
-3. `ListSystemInfoCmd` 查询返回前 `setVersion(AppInfo.VERSION)`；`ListSystemPrivacyCmd` 改为 `data.put("version", AppInfo.VERSION)`，不再依赖数据库字段；
-4. `document/db/hc_iot.sql` 移除 system_info 的 version 列 ALTER/UPDATE 语句，追加说明注释（含按需 DROP COLUMN 提示）；
-5. 管理端 `nav2.vue` 顶栏版本号改取接口 `systemInfo.version`（兜底本地 `config.version`）；用户端 about.vue/my.vue 已读接口 version，自动生效无需改动。
-
 ```sql
--- 若运行库此前已执行过含 version 列的 ALTER，请按需执行：
-ALTER TABLE `system_info` DROP COLUMN `version`;
-```
 
-### 2026-09-01 注册协议独立 register_protocol 表存储改造
-
-后端 + 管理端，注册协议/隐私保护指引由扩展 `system_info` 表方案改为独立 `register_protocol` 表存储（`system_info` 表保持原结构不扩展）：
-
-1. **数据库**：`document/db/hc_iot.sql` 新增 `register_protocol` 表（`protolcol_id`/`user_protocol`/`merchant_protocol`/`create_time`/`status_cd`，全局单份 `protolcol_id='1'`）+ 初始空记录 + `system.listRegisterProtocol`/`system.updateRegisterProtocol` 的 `c_service`/`c_route` 注册（管理端 appId `992023010100000001`）；移除旧方案 `system_info` 表 ALTER 扩展语句（含误加列的按需 DROP 提示）。
-2. **后端数据层**：新增 `RegisterProtocolPo`/`RegisterProtocolDto`、`IRegisterProtocolV1InnerServiceSMO` + 实现、`IRegisterProtocolV1ServiceDao` + 实现、`RegisterProtocolV1ServiceDaoImplMapper.xml`；`SystemInfoPo` 移除 userProtocol/merchantProtocol/copyrightInfo 字段，`SystemInfoV1ServiceDaoImplMapper.xml` select/insert/update 移除对应 3 列引用（修复 Unknown column 隐患），`SystemInfoDto` 保留三字段作接口返回载体。
-3. **后端接口**：新增 `ListRegisterProtocolCmd`（`system.listRegisterProtocol` 查询回填）、`UpdateRegisterProtocolCmd`（`system.updateRegisterProtocol` 无记录插入/有记录更新，支持空串清空）；`ListSystemInfoCmd`/`ListSystemPrivacyCmd` 的 userProtocol/merchantProtocol 改从 `register_protocol` 表读取，copyrightInfo 直接取 `company_name`。
-4. **管理端**：`registerProtocol.vue` 查询改调 `listRegisterProtocol({ page: 1, row: 1 })` 回填，保存改调 `updateRegisterProtocol({ userProtocol, merchantProtocol })`（去掉 systemId 依赖），保存成功后重新查询。
-5. **业主端**：about.vue 走 `system.listSystemInfo` 返回协议字段不变，无需改动。
-
-```sql
 -- 服务注册（需在运行库执行）
 INSERT INTO `c_service` VALUES ('982026090100000003', 'system.listRegisterProtocol', 'API', '查询注册协议', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2026-09-01 15:07:07', '0');
 INSERT INTO `c_service` VALUES ('982026090100000004', 'system.updateRegisterProtocol', 'API', '修改注册协议', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2026-09-01 15:07:07', '0');
 INSERT INTO `c_route` VALUES ('102026090100000003', '992023010100000001', '982026090100000003', 'Q', '1000', 'S', '2026-09-01 15:07:07', '0');
 INSERT INTO `c_route` VALUES ('102026090100000004', '992023010100000001', '982026090100000004', 'D', '1000', 'S', '2026-09-01 15:07:07', '0');
-```
 
-### 2026-09-01 用户修改密码/忘记密码重置功能
-
-后端 + 业主端（`iot-h5/iot-user`），实现真实改密/重置链路（`user.updateUserPwd` 需登录、`user.resetUserPwd` 免登录），复用 `user` 表及 `IUserV1InnerServiceSMO`/`ISmsInnerServiceSMO`/`AuthenticationFactory.passwdMd5`，无表结构变更：
-
-1. **后端**：`iot-user` 新增 `UpdateUserPwdCmd`（`user.updateUserPwd`：userId 取登录上下文，校验原密码后 `updateUser` 更新，原密码错误抛"原始密码错误"）、`ResetUserPwdCmd`（`user.resetUserPwd`：校验手机号格式 + `validateCode` 短信验证码（短信开关 ON 时强校验）后按 `tel + LEVEL_CD_PHONE` 查用户，未注册抛"该手机号未注册"，重置密码）。
-2. **网关**：`ServiceConfiguration.java` 排除名单追加 `/iot/api/user.resetUserPwd`（免登录，`user.updateUserPwd` 不加白名单）。
-3. **业主端**：`conf/url.js` 新增两 URL；`api/user/userApi.js` 新增 `updateUserPwd`（request）/`resetUserPwd`（requestNoAuth）；`changePwd.vue` 接入接口，成功后 `removeUserLoginInfo()` + 清 `userInfo`/`charge_demo_user` 并 reLaunch 登录页；`forgotPwd.vue` 验证码输入框 `maxlength` 4→6，删除写死 `'1234'` 校验，接入 `resetUserPwd` 成功后跳登录页。
-
-```sql
 -- 服务注册（需在运行库执行）
 INSERT INTO `c_service` VALUES ('982026090100000005', 'user.updateUserPwd', 'API', '修改登录密码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-09-01 16:04:17', '0');
 INSERT INTO `c_service` VALUES ('982026090100000006', 'user.resetUserPwd', 'API', '忘记密码重置', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-09-01 16:04:17', '0');
