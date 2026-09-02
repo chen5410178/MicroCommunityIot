@@ -22,6 +22,9 @@
 
 <script>
 	import chargeStore from '@/api/charge/chargeStore.js'
+	import {
+		getChargeMachineByCode
+	} from '@/api/machine/machineApi.js'
 
 	export default {
 		data() {
@@ -70,7 +73,7 @@
 					onlyFromCamera: false,
 					scanType: ['qrCode', 'barCode'],
 					success: (res) => {
-						this._matchScanResult(res.result)
+						this._handleScanResult(res.result)
 					},
 					fail: () => {
 						// 用户取消扫码：停留在本页，可点击「扫一扫」按钮重新扫码
@@ -79,27 +82,75 @@
 				})
 			},
 			// #endif
-			_matchScanResult(result) {
-				// 扫码结果匹配桩编号：支持桩名/编号/位置关键字
-				const no = String(result || '').replace(/\s/g, '')
-				const list = chargeStore.curPiles()
-				if (!list.length) {
-					this._toast('暂无可识别的充电桩，请先回首页加载数据')
+			_parseScanResult(result) {
+				// 解析二维码内容：仅解析小程序端地址（chargeBikeMini(Port)/chargeCarMini(Port)）+ 纯文本编号
+				// H5 地址（chargeBikeH5(Port)/chargeCarH5(Port)）及 songbing/ykc 等格式返回 null
+				const raw = String(result || '').replace(/\s+/g, '')
+				if (!raw) return null
+				// 提取 URL 路径部分（去掉协议/域名与 query/hash）
+				let path = raw
+				const urlMatch = raw.match(/^https?:\/\/[^/]+([^?#]*)/i)
+				if (urlMatch) {
+					path = urlMatch[1]
+				}
+				path = path.split('?')[0].split('#')[0]
+				// 小程序端端口地址：/app/chargeBikeMiniPort/{mc}/{pc}、/app/chargeCarMiniPort/{mc}/{pc}
+				let mPort = path.match(/^\/app\/charge(Bike|Car)MiniPort\/([^/]+)\/([^/]+)$/i)
+				if (mPort) {
+					return { machineCode: mPort[2], portCode: mPort[3] }
+				}
+				// 小程序端整桩地址：/app/chargeBikeMini/{mc}、/app/chargeCarMini/{mc}
+				let mMini = path.match(/^\/app\/charge(Bike|Car)Mini\/([^/]+)$/i)
+				if (mMini) {
+					return { machineCode: mMini[2] }
+				}
+				// 带 URL 特征的地址（H5/公众号/songbing/ykc 等）不解析
+				if (urlMatch || path.indexOf('/') >= 0) {
+					return null
+				}
+				// 纯文本编码：整个结果作为 machineCode
+				return { machineCode: raw }
+			},
+			_handleScanResult(result) {
+				// 扫码结果解析 → 调免登录接口按编码查桩 → 直达充电页
+				const parsed = this._parseScanResult(result)
+				if (!parsed || !parsed.machineCode) {
+					this._toast('未识别到有效二维码')
 					return
 				}
-				let idx = list.findIndex(p => p.name.replace(/[^\w]/g, '') === no || p.machineId === no)
-				if (idx < 0) idx = list.findIndex(p => p.name.replace(/[^\w]/g, '').indexOf(no) > -1)
-				if (idx < 0) idx = 0
-				this._toPile(idx, true)
+				const params = { machineCode: parsed.machineCode }
+				if (parsed.portCode) {
+					params.portCode = parsed.portCode
+				}
+				getChargeMachineByCode(params).then(_data => {
+					const d = (_data && _data.data) || {}
+					if (!_data || _data.code !== 0 || !d.machineId) {
+						this._toast('未找到该充电桩')
+						return
+					}
+					this._toPile(d)
+				}).catch(() => {
+					this._toast('未找到该充电桩')
+				})
 			},
-			_toPile(pileIdx, fromScan) {
-				const piles = chargeStore.curPiles()
-				const p = piles[pileIdx] || {}
-				const url = this.chgType === 'car'
-					? '/packageCharge/pages/charge/machineToCarCharge?machineId=' + (p.machineId || '') + '&communityId=' +
-						chargeStore.curCommId()
-					: '/packageCharge/pages/charge/machineToCharge?machineId=' + (p.machineId || '') + '&communityId=' +
-						chargeStore.curCommId()
+			_toPile(d) {
+				// 按接口返回组装充电页 URL（不再依赖本地桩列表）
+				let url = ''
+				if (d.chargeType === '1002') {
+					// 汽车充电桩：有端口直达 carChargePort，无端口进入 machineToCarCharge
+					url = d.portId
+						? '/packageCharge/pages/charge/carChargePort?machineId=' + (d.machineId || '') + '&communityId=' +
+							(d.communityId || '') + '&portId=' + d.portId
+						: '/packageCharge/pages/charge/machineToCarCharge?machineId=' + (d.machineId || '') + '&communityId=' +
+							(d.communityId || '')
+				} else {
+					// 两轮充电桩：进入 machineToCharge（带 portId 自动选中插座）
+					url = '/packageCharge/pages/charge/machineToCharge?machineId=' + (d.machineId || '') + '&communityId=' +
+						(d.communityId || '')
+					if (d.portId) {
+						url += '&portId=' + d.portId
+					}
+				}
 				// 先切回首页 tab，再打开充电页：从充电页返回时回到首页
 				uni.switchTab({
 					url: '/pages/index/index',

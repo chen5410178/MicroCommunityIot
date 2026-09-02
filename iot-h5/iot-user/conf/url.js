@@ -10,6 +10,7 @@ export default {
 	phoneWechatLogin: baseUrl + "iot/api/login.phoneWechatLogin",
 	listChargeMachine: baseUrl + "iot/api/chargeMachine.listChargeMachine", // 用户注册
 	listChargeMachinePort: baseUrl + "iot/api/chargeMachine.listChargeMachinePort", // 用户注册
+	getChargeMachineByCode: baseUrl + "iot/api/chargeMachine.getAppChargeMachineByCode", // 按设备编码查询充电桩（扫码直达充电页，免登录）
 	getCommunityWechatAppId: baseUrl + "iot/api/wechat.getCommunityWechatAppId", // 用户注册
 	queryAppUserAccount: baseUrl + "iot/api/account.queryAppUserAccount", // 查询用户账户
 	queryAppUserAccountDetail: baseUrl + "iot/api/account.queryAppUserAccountDetail", // 查询账户交易明细（业主端）

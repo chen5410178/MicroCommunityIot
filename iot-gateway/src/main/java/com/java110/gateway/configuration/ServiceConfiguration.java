@@ -34,6 +34,7 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/login.generatorSliderCode,");
         exclusions.append("/iot/api/chargeMachine.listChargeMachine,");//查询充电桩
         exclusions.append("/iot/api/chargeMachine.listChargeMachinePort,");//查询充电桩插槽
+        exclusions.append("/iot/api/chargeMachine.getAppChargeMachineByCode,");//按设备编码查询充电桩（扫码直达充电页）
 
         exclusions.append("/iot/api/wechat.getCommunityWechatAppId,");//根据小区查询appId
         // todo 道闸相关

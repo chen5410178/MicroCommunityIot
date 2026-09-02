@@ -47,6 +47,23 @@ export function getChargeMachinePort(_objData) {
 	});
 };
 
+export function getChargeMachineByCode(_objData) {
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.getChargeMachineByCode,
+			method: "GET",
+			data: _objData,
+			success: function(res) {
+				let _data = res.data;
+				resolve(_data);
+			},
+			fail: function(res) {
+				reject(res);
+			}
+		});
+	});
+};
+
 export function startCharge(_objData) {
 	return new Promise((resolve, reject) => {
 		request({

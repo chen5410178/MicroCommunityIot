@@ -12884,3 +12884,7 @@ INSERT INTO `c_service` VALUES ('982026090100000005', 'user.updateUserPwd', 'API
 INSERT INTO `c_service` VALUES ('982026090100000006', 'user.resetUserPwd', 'API', '忘记密码重置', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-09-01 16:04:17', '0');
 INSERT INTO `c_route` VALUES ('102026090100000005', '992023111817510002', '982026090100000005', 'D', '1000', 'S', '2026-09-01 16:04:17', '0');
 INSERT INTO `c_route` VALUES ('102026090100000006', '992023111817510002', '982026090100000006', 'D', '1000', 'S', '2026-09-01 16:04:17', '0');
+
+-- 2026-09-02 扫码充电「扫码即打开内容」改造（chargeMachine.getAppChargeMachineByCode）服务注册（c_service/c_route，用户端 appId 992023111817510002）
+INSERT INTO `c_service` VALUES ('982026090200000001', 'chargeMachine.getAppChargeMachineByCode', 'API', '按设备编码查询充电桩', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2026-09-02 23:26:45', '0');
+INSERT INTO `c_route` VALUES ('102026090200000001', '992023111817510002', '982026090200000001', 'Q', '1000', 'S', '2026-09-02 23:26:45', '0');
