@@ -5,6 +5,8 @@ import org.apache.commons.codec.binary.Base64;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class Base64Convert {
 
@@ -21,6 +23,11 @@ public class Base64Convert {
     public static String decoder(String data) {
         byte[] decodedBytes = BASE_64.decode(data);
         return new String(decodedBytes);
+    }
+
+    public static String decoderGBK(String data) {
+        byte[] decodedBytes = BASE_64.decode(data);
+        return new String(decodedBytes,  Charset.forName("GBK"));
     }
 
     /**

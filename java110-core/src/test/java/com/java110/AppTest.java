@@ -1,5 +1,6 @@
 package com.java110;
 
+import com.java110.core.utils.Base64Convert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -33,6 +34,8 @@ public class AppTest
      */
     public void testApp()
     {
+        String xx = Base64Convert.decoder("AGT//2IbAgEBABABAQMB/wAAAAAAAAAACL371rnNqNDQvV0=");
+        System.out.println(xx);
         assertTrue( true );
     }
 }
