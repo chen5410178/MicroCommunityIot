@@ -34,7 +34,7 @@ public class AppTest
      */
     public void testApp()
     {
-        String xx = Base64Convert.decoder("AGT//2IbAgEBABABAQMB/wAAAAAAAAAACL371rnNqNDQvV0=");
+        String xx = Base64Convert.decoderUTF8("6LWjR1o3UzEz");
         System.out.println(xx);
         assertTrue( true );
     }

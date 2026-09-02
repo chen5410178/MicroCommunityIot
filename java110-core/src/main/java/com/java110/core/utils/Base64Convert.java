@@ -25,10 +25,6 @@ public class Base64Convert {
         return new String(decodedBytes);
     }
 
-    public static String decoderUTF8(String data) {
-        byte[] decodedBytes = BASE_64.decode(data);
-        return new String(decodedBytes, StandardCharsets.UTF_8);
-    }
 
     /**
      * 将 InputStream 转换为 Base64 字符串
