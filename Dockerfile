@@ -2,6 +2,15 @@ FROM registry.cn-qingdao.aliyuncs.com/homecommunity/ubuntu-java17:1.0
 
 MAINTAINER xxx <xxx@xx.com>
 
+# 设置时区为东八区（Asia/Shanghai）
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV LANGUAGE=C.UTF-8
+ENV JAVA_OPTS="-Dfile.encoding=UTF-8"
+
 ENV MIN_MEM=-Xms256m
 ENV MAX_MEM=-Xmx512m
 ENV ACTIVE=dev
