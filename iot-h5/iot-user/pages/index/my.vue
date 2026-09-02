@@ -9,13 +9,13 @@
 					<text class="c-text-sub" style="margin-top:6rpx;display:block;">{{ user.mode }} · {{ user.home }}</text>
 				</view>
 				<text class="my-pwd-btn" @click.stop="goChangePwd">
-					<image src="/static/h5/images/common/ic-lock-green.png" class="my-pwd-btn-ic" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/common/ic-lock-green.png'" class="my-pwd-btn-ic" mode="aspectFit"></image>
 					修改密码
 				</text>
 			</view>
 			<view class="c-card my-user-card" v-else>
 				<view class="my-avatar" style="background:#f1f5f9;">
-					<image src="/static/h5/images/common/ic-user.png" class="my-avatar-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/common/ic-user.png'" class="my-avatar-img" mode="aspectFit"></image>
 				</view>
 				<view style="flex:1;">
 					<text class="my-name" style="color:#0f172a;">点击登录</text>
@@ -40,25 +40,25 @@
 		<!-- 功能入口 -->
 		<view class="c-card my-mx my-mt my-menu">
 			<view class="my-menu-item" @click="goCarService">
-				<image src="/static/h5/images/charge/ic-car-full.png" class="my-menu-ic" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/charge/ic-car-full.png'" class="my-menu-ic" mode="aspectFit"></image>
 				<text class="my-menu-text">车辆服务</text>
 				<text class="c-text-sub" style="font-size:20rpx;">{{ vehicles.length ? vehicles[0].plate : '去添加' }}</text>
 				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
 			</view>
 			<view class="my-menu-item" @click="goInvoice">
-				<image src="/static/h5/images/charge/ic-invoice.png" class="my-menu-ic" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/charge/ic-invoice.png'" class="my-menu-ic" mode="aspectFit"></image>
 				<text class="my-menu-text">电子发票</text>
 				<text class="c-text-sub" style="font-size:20rpx;">开票记录</text>
 				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
 			</view>
 			<view class="my-menu-item" @click="goService">
-				<image src="/static/h5/images/common/ic-phone.png" class="my-menu-ic" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/common/ic-phone.png'" class="my-menu-ic" mode="aspectFit"></image>
 				<text class="my-menu-text">联系客服</text>
 				<text class="my-menu-phone" v-if="serviceTel">{{ serviceTel }}</text>
 				<view class="my-call-btn" v-if="serviceTel" @click.stop="callService">拨打</view>
 			</view>
 			<view class="my-menu-item" @click="goAbout">
-				<image src="/static/h5/images/common/ic-info.png" class="my-menu-ic" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/common/ic-info.png'" class="my-menu-ic" mode="aspectFit"></image>
 				<text class="my-menu-text">关于充电服务</text>
 				<text class="c-text-sub" style="font-size:20rpx;" v-if="appVersion">{{ appVersion }}</text>
 				<text style="color:#cbd5e1;font-size:24rpx;">›</text>

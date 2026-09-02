@@ -3,7 +3,7 @@
 		<view class="c-card cs-mx cs-mt" v-if="serviceTel">
 			<view class="cs-card-head">
 				<view class="cs-card-ic">
-					<image src="/static/h5/images/charge/ic-phone-white.png" class="cs-card-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-phone-white.png'" class="cs-card-ic-img" mode="aspectFit"></image>
 				</view>
 				<view style="flex:1;">
 					<text class="c-text-bold" style="font-size:28rpx;font-weight:700;color:#0f172a;display:block;">{{ serviceName || '小区客服' }}</text>
@@ -16,7 +16,7 @@
 		<view class="c-card cs-mx cs-mt" v-else>
 			<view class="cs-card-head">
 				<view class="cs-card-ic">
-					<image src="/static/h5/images/charge/ic-phone-white.png" class="cs-card-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-phone-white.png'" class="cs-card-ic-img" mode="aspectFit"></image>
 				</view>
 				<view style="flex:1;">
 					<text class="c-text-bold" style="font-size:28rpx;font-weight:700;color:#0f172a;display:block;">{{ serviceName || '小区客服' }}</text>

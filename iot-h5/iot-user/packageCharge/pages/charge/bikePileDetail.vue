@@ -4,7 +4,7 @@
 		<view class="c-card pd-mx pd-mt">
 			<view class="pd-pile-head">
 				<view class="pd-pile-icon">
-					<image src="/static/h5/images/charge/ic-bolt.png" class="pd-pile-icon-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-bolt.png'" class="pd-pile-icon-img" mode="aspectFit"></image>
 				</view>
 				<view class="pd-pile-info">
 					<view class="pd-pile-name-row">

@@ -4,7 +4,7 @@
 		<view class="c-card mtc-mx mtc-mt">
 			<view class="mtc-pile-head">
 				<view class="mtc-pile-ic">
-					<image src="/static/h5/images/charge/ic-bolt.png" class="mtc-pile-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-bolt.png'" class="mtc-pile-ic-img" mode="aspectFit"></image>
 				</view>
 				<view class="mtc-pile-info">
 					<view class="mtc-pile-name-row">

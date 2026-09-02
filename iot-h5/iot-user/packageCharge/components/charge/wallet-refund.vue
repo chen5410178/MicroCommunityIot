@@ -6,7 +6,7 @@
 			<template v-if="step === 'form'">
 				<view class="wr-head">
 					<view class="wr-ic">
-						<image src="/static/h5/images/charge/ic-receipt.png" class="wr-ic-img" mode="aspectFit"></image>
+						<image :src="imgUrl + '/h5/images/charge/ic-receipt.png'" class="wr-ic-img" mode="aspectFit"></image>
 					</view>
 					<view>
 						<text class="c-title" style="display:block;">微信退款</text>
@@ -46,7 +46,7 @@
 			<template v-else>
 				<view style="display:flex;flex-direction:column;align-items:center;padding:20rpx 0;">
 					<view class="wr-done-ic">
-						<image src="/static/h5/images/common/ic-check.png" class="wr-done-ic-img" mode="aspectFit"></image>
+						<image :src="imgUrl + '/h5/images/common/ic-check.png'" class="wr-done-ic-img" mode="aspectFit"></image>
 					</view>
 					<text class="c-text-bold" style="font-size:28rpx;font-weight:700;color:#0f172a;margin-top:20rpx;">退款成功</text>
 					<text class="wr-done-amt">¥{{ doneAmt.toFixed(2) }}</text>

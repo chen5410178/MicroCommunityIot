@@ -4,7 +4,7 @@
 		<view class="c-card mtc-mx mtc-mt">
 			<view class="mtc-pile-head">
 				<view class="mtc-pile-ic">
-					<image src="/static/h5/images/charge/ic-bolt.png" class="mtc-pile-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-bolt.png'" class="mtc-pile-ic-img" mode="aspectFit"></image>
 				</view>
 				<view class="mtc-pile-info">
 					<view class="mtc-pile-name-row">
@@ -55,7 +55,7 @@
 		<view class="c-card mtc-mx mtc-mt" v-if="curHours.duration && curPort.portId" @click="_selectCoupons">
 			<view class="mtc-row">
 				<view class="mtc-row-left">
-					<image src="/static/h5/images/charge/ic-card.png" class="mtc-row-ic" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-card.png'" class="mtc-row-ic" mode="aspectFit"></image>
 					<text class="c-text-bold mtc-row-name">使用充电劵抵扣</text>
 				</view>
 				<view class="mtc-row-right">
@@ -77,7 +77,7 @@
 		<view class="c-card mtc-mx mtc-mt" v-show="login" @click="_toChargeOrder">
 			<view class="mtc-row">
 				<view class="mtc-row-left">
-					<image src="/static/h5/images/charge/ic-chart.png" class="mtc-row-ic" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-chart.png'" class="mtc-row-ic" mode="aspectFit"></image>
 					<text class="c-text-bold mtc-row-name">充电订单</text>
 				</view>
 				<view class="mtc-row-right">

@@ -8,7 +8,7 @@
 					<text class="ac-new-tag" v-if="curNewEnergy">新能源</text>
 				</view>
 				<view class="ac-current-row">
-					<image src="/static/h5/images/charge/ic-car-full.png" class="ac-current-ic" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-car-full.png'" class="ac-current-ic" mode="aspectFit"></image>
 					<text class="ac-current-plate" v-if="curCarNum">{{ curCarNum }}</text>
 					<text class="c-text-sub" v-else>未设置</text>
 				</view>
@@ -42,7 +42,7 @@
 				</view>
 				<view class="ac-history-list">
 					<view v-for="(p, i) in historyList" :key="i" class="ac-history-item" @click="pickHistory(p)">
-						<image src="/static/h5/images/charge/ic-car-full.png" class="ac-history-ic" mode="aspectFit"></image>
+						<image :src="imgUrl + '/h5/images/charge/ic-car-full.png'" class="ac-history-ic" mode="aspectFit"></image>
 						<text class="ac-history-plate">{{ p }}</text>
 						<text class="ac-history-tag" v-if="_isNewEnergy(p)">新能源</text>
 					</view>

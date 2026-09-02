@@ -2,7 +2,7 @@
  * 批量 SVG → PNG 图标渲染脚本（方案 4.2 方案 A：Chrome headless）
  * 用法：node scripts/svg2png.js
  * 输入：下方 icons 定义（SVG path 取自原型 0818充电微信小程序_app(1).html）
- * 输出：static/h5/images/{common,charge}/*.png（200×200 透明底，内容 150×150 居中）
+ * 输出：../../iot-webvue/public/h5/images/{common,charge}/*.png（200×200 透明底，内容 150×150 居中）
  */
 const { execSync } = require('child_process');
 const fs = require('fs');
@@ -10,8 +10,8 @@ const path = require('path');
 
 const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const ROOT = path.resolve(__dirname, '..');
-const SRC_DIR = path.join(ROOT, 'static/h5/images/_svg-src');
-const OUT_DIR = path.join(ROOT, 'static/h5/images');
+const SRC_DIR = path.join(__dirname, '_svg-src');
+const OUT_DIR = path.join(ROOT, '..', '..', 'iot-webvue', 'public', 'h5', 'images');
 
 // 图标定义：[子目录, 文件名, 颜色, 是否填充, path d 数组（含 rect/circle/line 前缀标记）]
 const icons = [

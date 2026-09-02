@@ -11,7 +11,7 @@
 					<input :value="searchProv" readonly placeholder="省" class="cs-prov-input" />
 				</view>
 				<view class="cs-rest-box">
-					<image src="/static/h5/images/common/ic-search.png" class="cs-search-ic" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/common/ic-search.png'" class="cs-search-ic" mode="aspectFit"></image>
 					<input :value="searchRest" readonly placeholder="输入字母数字" class="cs-rest-input" @click="openSearchKey" />
 					<text class="cs-suggest-toggle" @click="toggleSearchSuggest">▾</text>
 				</view>
@@ -30,7 +30,7 @@
 			<view class="cs-suggest" v-if="suggestShow">
 				<view v-for="(p, i) in suggestList" :key="i" class="cs-suggest-item">
 					<view class="cs-suggest-main" @click="pickSearchPlate(p)">
-						<image src="/static/h5/images/charge/ic-car-full.png" class="cs-suggest-ic" mode="aspectFit"></image>
+						<image :src="imgUrl + '/h5/images/charge/ic-car-full.png'" class="cs-suggest-ic" mode="aspectFit"></image>
 						<text class="cs-suggest-plate">{{ p }}</text>
 						<text class="cs-suggest-tag">历史</text>
 					</view>
@@ -44,7 +44,7 @@
 			<view v-if="hitCar" class="c-card cs-hit">
 				<view class="cs-hit-head">
 					<view class="cs-hit-ic">
-						<image src="/static/h5/images/charge/ic-car-full.png" class="cs-hit-ic-img" mode="aspectFit"></image>
+						<image :src="imgUrl + '/h5/images/charge/ic-car-full.png'" class="cs-hit-ic-img" mode="aspectFit"></image>
 					</view>
 					<view style="flex:1;min-width:0;">
 						<view class="cs-hit-plate-row">

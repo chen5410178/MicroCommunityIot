@@ -2,7 +2,7 @@
 	<view class="rg-page">
 		<view class="rg-body">
 			<view class="rg-logo">
-				<image src="/static/h5/images/common/ic-user-plus.png" class="rg-logo-img" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/common/ic-user-plus.png'" class="rg-logo-img" mode="aspectFit"></image>
 			</view>
 			<text class="rg-title">注册充电账号</text>
 			<text class="rg-sub">注册成功后自动登录 · 充电记录与余额同步</text>

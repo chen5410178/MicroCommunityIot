@@ -100,7 +100,7 @@
 			</template>
 
 			<view class="c-card co-empty od-mx od-mt" v-else>
-				<image src="/static/h5/images/charge/ic-chart.png" class="co-empty-ic" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/charge/ic-chart.png'" class="co-empty-ic" mode="aspectFit"></image>
 				<text class="c-text-sub" style="margin-top:16rpx;">未找到充电中的订单</text>
 			</view>
 		</template>
@@ -110,8 +110,8 @@
 			<view class="c-card od-mx od-mt">
 				<view class="od-done-head">
 					<view class="od-done-ic">
-						<image v-if="order.type === 'car'" src="/static/h5/images/charge/ic-car.png" class="od-done-ic-img" mode="aspectFit"></image>
-						<image v-else src="/static/h5/images/charge/ic-bolt.png" class="od-done-ic-img" mode="aspectFit"></image>
+						<image v-if="order.type === 'car'" :src="imgUrl + '/h5/images/charge/ic-car.png'" class="od-done-ic-img" mode="aspectFit"></image>
+						<image v-else :src="imgUrl + '/h5/images/charge/ic-bolt.png'" class="od-done-ic-img" mode="aspectFit"></image>
 					</view>
 					<view style="flex:1;min-width:0;">
 						<view class="od-done-name-row">
@@ -142,7 +142,7 @@
 
 		<!-- 历史订单加载失败/未找到 -->
 		<view class="c-card co-empty od-mx od-mt" v-else-if="mode !== 'running' && orderLoaded">
-			<image src="/static/h5/images/charge/ic-chart.png" class="co-empty-ic" mode="aspectFit"></image>
+			<image :src="imgUrl + '/h5/images/charge/ic-chart.png'" class="co-empty-ic" mode="aspectFit"></image>
 			<text class="c-text-sub" style="margin-top:16rpx;">未找到该订单</text>
 		</view>
 
@@ -151,7 +151,7 @@
 		<view class="c-dialog" v-if="stopShow">
 			<view class="od-dialog-head">
 				<view class="od-dialog-ic">
-					<image src="/static/h5/images/common/ic-alert.png" class="od-dialog-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/common/ic-alert.png'" class="od-dialog-ic-img" mode="aspectFit"></image>
 				</view>
 				<view>
 					<text class="c-title" style="display:block;">停止充电</text>
@@ -170,7 +170,7 @@
 		<view class="c-dialog" v-if="settleShow">
 			<view class="od-dialog-head">
 				<view class="od-dialog-ic success">
-					<image src="/static/h5/images/common/ic-check.png" class="od-dialog-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/common/ic-check.png'" class="od-dialog-ic-img" mode="aspectFit"></image>
 				</view>
 				<view>
 					<text class="c-title" style="display:block;">充电完成</text>

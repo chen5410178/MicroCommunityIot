@@ -17,17 +17,17 @@
 
 		<!-- 小区切换 + 余额卡 -->
 		<view class="home-balance-card">
-			<image src="/static/h5/images/charge/ic-bolt-white.png" class="home-bc-decor1" mode="aspectFit"></image>
+			<image :src="imgUrl + '/h5/images/charge/ic-bolt-white.png'" class="home-bc-decor1" mode="aspectFit"></image>
 			<view class="home-bc-decor2"></view>
 			<view class="home-bc-head">
 				<view class="home-comm-btn" @click="goChangeCommunity">
-					<image src="/static/h5/images/common/ic-pin-white.png" class="home-bc-ic" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/common/ic-pin-white.png'" class="home-bc-ic" mode="aspectFit"></image>
 					<text class="home-comm-name">{{ curCommunity.name || '选择小区' }}</text>
 					<text class="home-comm-dist" v-if="curCommunity.dist">{{ fmtDist(curCommunity.dist) }}</text>
-					<image src="/static/h5/images/common/ic-chevron-down-white.png" class="home-bc-arrow" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/common/ic-chevron-down-white.png'" class="home-bc-arrow" mode="aspectFit"></image>
 				</view>
 				<view class="home-car-btn" @click="editHomeCar">
-					<image src="/static/h5/images/charge/ic-car-white.png" class="home-bc-ic" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-car-white.png'" class="home-bc-ic" mode="aspectFit"></image>
 					<text class="home-car-label">充电车辆</text>
 					<text class="home-car-plate">{{ vehicles.length ? vehicles[0].plate : '去添加' }}</text>
 				</view>
@@ -53,25 +53,25 @@
 		<view class="home-quick c-card">
 			<view class="home-quick-item" @click="goScan">
 				<view class="home-quick-ic green">
-					<image src="/static/h5/images/charge/ic-scan.png" class="home-quick-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-scan.png'" class="home-quick-ic-img" mode="aspectFit"></image>
 				</view>
 				<text class="home-quick-text">扫码充电</text>
 			</view>
 			<view class="home-quick-item" @click="goMonth">
 				<view class="home-quick-ic orange">
-					<image src="/static/h5/images/charge/ic-calendar.png" class="home-quick-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-calendar.png'" class="home-quick-ic-img" mode="aspectFit"></image>
 				</view>
 				<text class="home-quick-text">充电月卡</text>
 			</view>
 			<view class="home-quick-item" @click="goWallet">
 				<view class="home-quick-ic blue">
-					<image src="/static/h5/images/charge/ic-wallet.png" class="home-quick-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-wallet.png'" class="home-quick-ic-img" mode="aspectFit"></image>
 				</view>
 				<text class="home-quick-text">钱包余额</text>
 			</view>
 			<view class="home-quick-item" @click="goOrders">
 				<view class="home-quick-ic violet">
-					<image src="/static/h5/images/charge/ic-chart.png" class="home-quick-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-chart.png'" class="home-quick-ic-img" mode="aspectFit"></image>
 				</view>
 				<text class="home-quick-text">充电订单</text>
 			</view>
@@ -80,13 +80,13 @@
 		<!-- 充电类型切换 -->
 		<view class="home-type-tabs c-card">
 			<view class="home-type-tab" :class="{ active: chgType === 'bike' }" @click="switchType('bike')">
-				<image v-if="chgType === 'bike'" src="/static/h5/images/charge/ic-bike-white.png" class="home-type-tab-ic" mode="aspectFit"></image>
-				<image v-else src="/static/h5/images/charge/ic-bike.png" class="home-type-tab-ic" mode="aspectFit"></image>
+				<image v-if="chgType === 'bike'" :src="imgUrl + '/h5/images/charge/ic-bike-white.png'" class="home-type-tab-ic" mode="aspectFit"></image>
+				<image v-else :src="imgUrl + '/h5/images/charge/ic-bike.png'" class="home-type-tab-ic" mode="aspectFit"></image>
 				<text>电瓶车充电桩</text>
 			</view>
 			<view class="home-type-tab" :class="{ active: chgType === 'car' }" @click="switchType('car')">
-				<image v-if="chgType === 'car'" src="/static/h5/images/charge/ic-car-white.png" class="home-type-tab-ic" mode="aspectFit"></image>
-				<image v-else src="/static/h5/images/charge/ic-car.png" class="home-type-tab-ic" mode="aspectFit"></image>
+				<image v-if="chgType === 'car'" :src="imgUrl + '/h5/images/charge/ic-car-white.png'" class="home-type-tab-ic" mode="aspectFit"></image>
+				<image v-else :src="imgUrl + '/h5/images/charge/ic-car.png'" class="home-type-tab-ic" mode="aspectFit"></image>
 				<text>电动车充电桩</text>
 			</view>
 		</view>
@@ -98,13 +98,13 @@
 		</view>
 		<view class="home-piles">
 			<view v-if="!curPiles.length && !pilesLoading" class="c-card home-pile-empty">
-				<image src="/static/h5/images/charge/ic-plug.png" class="home-empty-ic" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/charge/ic-plug.png'" class="home-empty-ic" mode="aspectFit"></image>
 				<text class="c-text-sub" style="margin-top:12rpx;">暂无{{ chgType === 'car' ? '电动车' : '电瓶车' }}充电桩</text>
 			</view>
 			<view class="c-card home-pile" v-for="(p, i) in curPiles" :key="p.machineId || i" @click="openPile(i)">
 				<view class="home-pile-ic" :class="p.free ? (chgType === 'car' ? 'car' : 'bike') : 'busy'">
-					<image v-if="chgType === 'car'" src="/static/h5/images/charge/ic-car.png" class="home-pile-ic-img" mode="aspectFit"></image>
-					<image v-else src="/static/h5/images/charge/ic-bike.png" class="home-pile-ic-img" mode="aspectFit"></image>
+					<image v-if="chgType === 'car'" :src="imgUrl + '/h5/images/charge/ic-car.png'" class="home-pile-ic-img" mode="aspectFit"></image>
+					<image v-else :src="imgUrl + '/h5/images/charge/ic-bike.png'" class="home-pile-ic-img" mode="aspectFit"></image>
 				</view>
 				<view style="flex:1;min-width:0;">
 					<view class="home-pile-name-row">
@@ -146,7 +146,7 @@
 		<view class="c-mask" v-if="askBuyShow" @click="askBuyShow = false"></view>
 		<view class="c-dialog" v-if="askBuyShow" style="text-align:center;">
 			<view class="home-ask-ic">
-				<image src="/static/h5/images/charge/ic-calendar.png" class="home-ask-ic-img" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/charge/ic-calendar.png'" class="home-ask-ic-img" mode="aspectFit"></image>
 			</view>
 			<text class="c-text-bold" style="font-size:28rpx;font-weight:700;color:#0f172a;margin-top:20rpx;display:block;">尚未开通充电月卡</text>
 			<text class="c-text-sub" style="margin-top:12rpx;display:block;line-height:1.6;">开通月卡后充电更省钱 · 是否前往购买？</text>

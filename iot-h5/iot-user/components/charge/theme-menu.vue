@@ -5,19 +5,19 @@
 			<view class="tm-arrow"></view>
 			<text class="tm-label">外观模式</text>
 			<view class="tm-item" :class="{ on: !dark }" @click="pick(false)">
-				<image src="/static/h5/images/common/ic-sun.png" class="tm-ic" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/common/ic-sun.png'" class="tm-ic" mode="aspectFit"></image>
 				<text class="tm-item-text">白天模式</text>
-				<image v-if="!dark" src="/static/h5/images/common/ic-check.png" class="tm-check-ic" mode="aspectFit"></image>
+				<image v-if="!dark" :src="imgUrl + '/h5/images/common/ic-check.png'" class="tm-check-ic" mode="aspectFit"></image>
 			</view>
 			<view class="tm-item" :class="{ on: dark }" @click="pick(true)">
-				<image src="/static/h5/images/common/ic-moon.png" class="tm-ic" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/common/ic-moon.png'" class="tm-ic" mode="aspectFit"></image>
 				<text class="tm-item-text">黑夜模式</text>
-				<image v-if="dark" src="/static/h5/images/common/ic-check.png" class="tm-check-ic" mode="aspectFit"></image>
+				<image v-if="dark" :src="imgUrl + '/h5/images/common/ic-check.png'" class="tm-check-ic" mode="aspectFit"></image>
 			</view>
 			<view class="tm-divider"></view>
 			<text class="tm-label">定时</text>
 			<view class="tm-item" @click="openSched">
-				<image src="/static/h5/images/common/ic-clock-green.png" class="tm-ic" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/common/ic-clock-green.png'" class="tm-ic" mode="aspectFit"></image>
 				<text class="tm-item-text">定时切换黑夜</text>
 				<text class="tm-sched-desc">{{ sched.on ? sched.start + '-' + sched.end : '关闭' }}</text>
 			</view>
@@ -28,7 +28,7 @@
 		<view class="c-dialog" v-if="schedShow">
 			<view class="tm-sched-head">
 				<view class="tm-sched-ic">
-					<image src="/static/h5/images/common/ic-clock-green.png" class="tm-sched-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/common/ic-clock-green.png'" class="tm-sched-ic-img" mode="aspectFit"></image>
 				</view>
 				<view style="flex:1;">
 					<text class="c-title" style="display:block;">定时切换黑夜</text>

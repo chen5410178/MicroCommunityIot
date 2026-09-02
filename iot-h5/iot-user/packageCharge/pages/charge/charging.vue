@@ -23,7 +23,7 @@
 					<text class="chg-ring-label">充电进度</text>
 				</view>
 				<view class="chg-bolt c-bolt-spin">
-					<image src="/static/h5/images/charge/ic-bolt-white.png" class="chg-bolt-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-bolt-white.png'" class="chg-bolt-img" mode="aspectFit"></image>
 				</view>
 			</view>
 
@@ -54,19 +54,19 @@
 			<view class="chg-steps">
 				<view class="chg-step">
 					<view class="chg-step-ic done">
-						<image src="/static/h5/images/common/ic-check.png" class="chg-step-ic-img" mode="aspectFit"></image>
+						<image :src="imgUrl + '/h5/images/common/ic-check.png'" class="chg-step-ic-img" mode="aspectFit"></image>
 					</view>
 					<text class="chg-step-text">已连接车辆 · 插座已锁定</text>
 				</view>
 				<view class="chg-step">
 					<view class="chg-step-ic done">
-						<image src="/static/h5/images/common/ic-check.png" class="chg-step-ic-img" mode="aspectFit"></image>
+						<image :src="imgUrl + '/h5/images/common/ic-check.png'" class="chg-step-ic-img" mode="aspectFit"></image>
 					</view>
 					<text class="chg-step-text">正常充电 · 实时计费</text>
 				</view>
 				<view class="chg-step">
 					<view class="chg-step-ic waiting">
-						<image src="/static/h5/images/common/ic-check-gray.png" class="chg-step-ic-img" mode="aspectFit"></image>
+						<image :src="imgUrl + '/h5/images/common/ic-check-gray.png'" class="chg-step-ic-img" mode="aspectFit"></image>
 					</view>
 					<text class="chg-step-text" style="color:#94a3b8;">{{ protectText }}</text>
 				</view>
@@ -84,7 +84,7 @@
 		<view class="c-dialog" v-if="stopShow">
 			<view class="chg-dialog-head">
 				<view class="chg-dialog-ic danger">
-					<image src="/static/h5/images/common/ic-alert.png" class="chg-dialog-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/common/ic-alert.png'" class="chg-dialog-ic-img" mode="aspectFit"></image>
 				</view>
 				<view>
 					<text class="c-title" style="display:block;">停止充电</text>
@@ -103,7 +103,7 @@
 		<view class="c-dialog" v-if="settleShow">
 			<view class="chg-dialog-head">
 				<view class="chg-dialog-ic success">
-					<image src="/static/h5/images/common/ic-check.png" class="chg-dialog-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/common/ic-check.png'" class="chg-dialog-ic-img" mode="aspectFit"></image>
 				</view>
 				<view>
 					<text class="c-title" style="display:block;">充电完成</text>
@@ -176,7 +176,7 @@
 				topMsgShow: false,
 				topMsgTitle: '',
 				topMsgText: '',
-				topMsgIcon: '/static/h5/images/charge/ic-bolt.png',
+				topMsgIcon: this.imgUrl + '/h5/images/charge/ic-bolt.png',
 				tariffs: JSON.parse(JSON.stringify(defaultTariffs)),
 				toastMsg: '',
 				timer: null,
@@ -366,7 +366,7 @@
 			_showTopMsg(title, text, type) {
 				this.topMsgTitle = title
 				this.topMsgText = text
-				this.topMsgIcon = type === 'charge' ? '/static/h5/images/charge/ic-bolt.png' : '/static/h5/images/charge/ic-card.png'
+				this.topMsgIcon = type === 'charge' ? this.imgUrl + '/h5/images/charge/ic-bolt.png' : this.imgUrl + '/h5/images/charge/ic-card.png'
 				this.topMsgShow = true
 				chargeStore.addMsg(type || 'charge', title, text)
 				clearTimeout(this._topMsgTimer)

@@ -2,7 +2,7 @@
 	<view class="fp-page">
 		<view class="fp-body">
 			<view class="fp-logo">
-				<image src="/static/h5/images/common/ic-lock-white.png" class="fp-logo-img" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/common/ic-lock-white.png'" class="fp-logo-img" mode="aspectFit"></image>
 			</view>
 			<text class="fp-title">手机验证码找回密码</text>
 			<text class="fp-sub">输入注册手机号，验证通过后重置登录密码</text>

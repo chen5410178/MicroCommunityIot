@@ -19,7 +19,7 @@
 		<view class="c-card co-mx co-mt co-stat-card">
 			<view class="co-stat-left">
 				<view class="co-stat-ic">
-					<image src="/static/h5/images/charge/ic-bolt.png" class="co-stat-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-bolt.png'" class="co-stat-ic-img" mode="aspectFit"></image>
 				</view>
 				<view>
 					<view class="co-stat-title">
@@ -87,8 +87,8 @@
 			<view class="c-card co-item" v-for="(r, i) in orders" :key="r.orderId || i" @click="openOrder(i)">
 				<view class="co-item-head">
 					<view class="co-item-ic">
-						<image v-if="r.type === 'car'" src="/static/h5/images/charge/ic-car.png" class="co-item-ic-img" mode="aspectFit"></image>
-						<image v-else src="/static/h5/images/charge/ic-bike.png" class="co-item-ic-img" mode="aspectFit"></image>
+						<image v-if="r.type === 'car'" :src="imgUrl + '/h5/images/charge/ic-car.png'" class="co-item-ic-img" mode="aspectFit"></image>
+						<image v-else :src="imgUrl + '/h5/images/charge/ic-bike.png'" class="co-item-ic-img" mode="aspectFit"></image>
 					</view>
 					<view style="flex:1;min-width:0;">
 						<view class="co-item-name-row">
@@ -105,7 +105,7 @@
 			</view>
 		</view>
 		<view class="c-card co-empty co-mx co-mt" v-else>
-			<image src="/static/h5/images/charge/ic-chart.png" class="co-empty-ic" mode="aspectFit"></image>
+			<image :src="imgUrl + '/h5/images/charge/ic-chart.png'" class="co-empty-ic" mode="aspectFit"></image>
 			<text class="c-text-sub" style="margin-top:16rpx;">{{ loading ? '订单加载中…' : '暂无' + rangeName + (recType === 'car' ? '汽车' : recType === 'bike' ? '电瓶车' : '') + '充电订单' }}</text>
 		</view>
 

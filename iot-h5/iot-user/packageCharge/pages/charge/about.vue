@@ -2,7 +2,7 @@
 	<view class="ab-page" :class="{ 'charge-theme-dark': themeDark }">
 		<view class="ab-logo-area">
 			<view class="ab-logo">
-				<image src="/static/h5/images/charge/ic-bolt-white.png" class="ab-logo-img" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/charge/ic-bolt-white.png'" class="ab-logo-img" mode="aspectFit"></image>
 			</view>
 			<text class="ab-name">{{ appName }}</text>
 			<text class="c-text-sub" style="margin-top:8rpx;" v-if="appVersion">版本 {{ appVersion }} · 智慧出行</text>
@@ -10,12 +10,12 @@
 
 		<view class="ab-menu c-card ab-mx">
 			<view class="ab-menu-item" @click="openAgree('用户服务协议')">
-				<image src="/static/h5/images/common/ic-doc.png" class="ab-menu-ic" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/common/ic-doc.png'" class="ab-menu-ic" mode="aspectFit"></image>
 				<text class="ab-menu-text">用户服务协议</text>
 				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
 			</view>
 			<view class="ab-menu-item" @click="openAgree('隐私保护指引')">
-				<image src="/static/h5/images/common/ic-shield.png" class="ab-menu-ic" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/common/ic-shield.png'" class="ab-menu-ic" mode="aspectFit"></image>
 				<text class="ab-menu-text">隐私保护指引</text>
 				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
 			</view>

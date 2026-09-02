@@ -2,6 +2,7 @@
  * 消息中心 mock 数据（本地 mock + uni.storage 保存已读/删除状态）
  * // TODO 后端接口就绪后替换
  */
+import conf from '@/conf/config.js'
 import {
 	mockMessages
 } from '@/api/mock/chargeMockData.js'
@@ -13,19 +14,19 @@ export const initMessages = mockMessages.slice()
 export const msgMeta = {
 	charge: {
 		bg: 'rgba(16,185,129,.12)',
-		icon: '/static/h5/images/charge/ic-bolt.png'
+		icon: conf.commonBaseUrl + '/h5/images/charge/ic-bolt.png'
 	},
 	wallet: {
 		bg: 'rgba(59,130,246,.12)',
-		icon: '/static/h5/images/charge/ic-wallet.png'
+		icon: conf.commonBaseUrl + '/h5/images/charge/ic-wallet.png'
 	},
 	card: {
 		bg: 'rgba(249,115,22,.12)',
-		icon: '/static/h5/images/charge/ic-card.png'
+		icon: conf.commonBaseUrl + '/h5/images/charge/ic-card.png'
 	},
 	sys: {
 		bg: 'rgba(139,92,246,.12)',
-		icon: '/static/h5/images/common/ic-bell-violet.png'
+		icon: conf.commonBaseUrl + '/h5/images/common/ic-bell-violet.png'
 	}
 }
 

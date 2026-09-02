@@ -4,7 +4,7 @@
 		<view class="c-card cd-mx cd-mt">
 			<view class="cd-car-head">
 				<view class="cd-car-ic">
-					<image src="/static/h5/images/charge/ic-car-full.png" class="cd-car-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-car-full.png'" class="cd-car-ic-img" mode="aspectFit"></image>
 				</view>
 				<view style="flex:1;">
 					<text class="c-text-sub">车辆服务</text>
@@ -74,7 +74,7 @@
 		<view class="c-dialog" v-if="rentShow">
 			<view class="cd-dialog-head">
 				<view class="cd-dialog-ic">
-					<image src="/static/h5/images/charge/ic-car-full.png" class="cd-dialog-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-car-full.png'" class="cd-dialog-ic-img" mode="aspectFit"></image>
 				</view>
 				<view>
 					<text class="c-title" style="display:block;">月租续费</text>

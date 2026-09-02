@@ -44,7 +44,7 @@
 			<view class="cm-plans">
 				<view class="c-card cm-plan" v-for="(p, i) in showPlans" :key="i">
 					<view class="cm-plan-ic" :style="{ background: p.color }">
-						<image src="/static/h5/images/charge/ic-calendar-white.png" class="cm-plan-ic-img" mode="aspectFit"></image>
+						<image :src="imgUrl + '/h5/images/charge/ic-calendar-white.png'" class="cm-plan-ic-img" mode="aspectFit"></image>
 						<text class="cm-plan-ic-name">{{ p.name.replace(' · ', '') }}</text>
 					</view>
 					<view style="flex:1;min-width:0;">
@@ -72,7 +72,7 @@
 		<template v-else-if="tab === 'orders'">
 			<view class="c-card cm-stat-card">
 				<view class="cm-stat-ic">
-					<image src="/static/h5/images/charge/ic-card.png" class="cm-stat-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-card.png'" class="cm-stat-ic-img" mode="aspectFit"></image>
 				</view>
 				<view>
 					<text class="c-text-bold" style="font-size:24rpx;font-weight:700;color:#0f172a;">月卡订单 <text style="color:#f97316;">{{ cardOrders.length }}</text> 笔</text>
@@ -83,7 +83,7 @@
 			<view class="cm-orders">
 				<view class="c-card cm-order" v-for="(o, i) in cardOrders" :key="i">
 					<view class="cm-order-ic">
-						<image src="/static/h5/images/charge/ic-card.png" class="cm-order-ic-img" mode="aspectFit"></image>
+						<image :src="imgUrl + '/h5/images/charge/ic-card.png'" class="cm-order-ic-img" mode="aspectFit"></image>
 					</view>
 					<view style="flex:1;min-width:0;">
 						<text class="c-text-bold" style="font-size:24rpx;font-weight:700;color:#0f172a;">{{ o.name }} <text class="c-text-sub" style="font-size:18rpx;">{{ o.date }}</text></text>
@@ -105,7 +105,7 @@
 		<template v-else>
 			<view class="c-card cm-stat-card">
 				<view class="cm-stat-ic" style="background:rgba(16,185,129,.1);">
-					<image src="/static/h5/images/charge/ic-bolt.png" class="cm-stat-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/charge/ic-bolt.png'" class="cm-stat-ic-img" mode="aspectFit"></image>
 				</view>
 				<view>
 					<text class="c-text-bold" style="font-size:24rpx;font-weight:700;color:#0f172a;">月卡使用 <text style="color:#059669;">{{ records.length }}</text> 笔</text>
@@ -116,7 +116,7 @@
 			<view class="cm-orders">
 				<view class="c-card cm-order" v-for="(r, i) in records" :key="i" @click="openOrder(r)">
 					<view class="cm-order-ic" style="background:rgba(16,185,129,.1);">
-						<image src="/static/h5/images/charge/ic-bolt.png" class="cm-order-ic-img" mode="aspectFit"></image>
+						<image :src="imgUrl + '/h5/images/charge/ic-bolt.png'" class="cm-order-ic-img" mode="aspectFit"></image>
 					</view>
 					<view style="flex:1;min-width:0;">
 						<text class="c-text-bold" style="font-size:24rpx;font-weight:700;color:#0f172a;">{{ r.pile }} <text class="c-text-sub" style="font-size:18rpx;">{{ r.date }}</text></text>

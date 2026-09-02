@@ -5,11 +5,11 @@
 			<text class="c-text-sub">共 <text style="color:#0f172a;font-weight:700;">{{ list.length }}</text> 条消息</text>
 			<view class="msg-toolbar-actions">
 				<text class="msg-action" style="color:#059669;" @click="markAllRead">
-					<image src="/static/h5/images/common/ic-eye.png" class="msg-action-ic" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/common/ic-eye.png'" class="msg-action-ic" mode="aspectFit"></image>
 					全部已读
 				</text>
 				<text class="msg-action" @click="enterEditMode">
-					<image src="/static/h5/images/common/ic-edit.png" class="msg-action-ic" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/common/ic-edit.png'" class="msg-action-ic" mode="aspectFit"></image>
 					管理
 				</text>
 			</view>
@@ -24,7 +24,7 @@
 			</text>
 			<view class="msg-toolbar-actions">
 				<text class="msg-action" style="color:#f43f5e;" @click="delSelected">
-					<image src="/static/h5/images/common/ic-trash.png" class="msg-action-ic" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/common/ic-trash.png'" class="msg-action-ic" mode="aspectFit"></image>
 					删除 <text style="font-weight:700;">{{ selected.size }}</text>
 				</text>
 				<text class="msg-action" style="color:#3b82f6;" @click="exitEditMode">完成</text>
@@ -35,7 +35,7 @@
 		<view class="msg-list">
 			<view v-for="m in list" :key="m.id" class="msg-item" :class="{ unread: !m.read }" @click="onItemClick(m)">
 				<view class="msg-ic" :style="{ background: msgMeta[m.type] ? msgMeta[m.type].bg : '#f1f5f9' }">
-					<image :src="msgMeta[m.type] ? msgMeta[m.type].icon : '/static/h5/images/common/ic-bell.png'" class="msg-ic-img" mode="aspectFit"></image>
+					<image :src="msgMeta[m.type] ? msgMeta[m.type].icon : (imgUrl + '/h5/images/common/ic-bell.png')" class="msg-ic-img" mode="aspectFit"></image>
 				</view>
 				<view style="flex:1;min-width:0;">
 					<view class="msg-title-row">
@@ -50,7 +50,7 @@
 				</view>
 			</view>
 			<view class="msg-empty" v-if="!list.length">
-				<image src="/static/h5/images/common/ic-inbox.png" class="msg-empty-ic" mode="aspectFit"></image>
+				<image :src="imgUrl + '/h5/images/common/ic-inbox.png'" class="msg-empty-ic" mode="aspectFit"></image>
 				<text class="c-text-sub" style="margin-top:16rpx;">暂无消息</text>
 			</view>
 		</view>
@@ -60,7 +60,7 @@
 		<view class="c-dialog" v-if="delShow">
 			<view class="msg-dialog-head">
 				<view class="msg-dialog-ic">
-					<image src="/static/h5/images/common/ic-trash.png" class="msg-dialog-ic-img" mode="aspectFit"></image>
+					<image :src="imgUrl + '/h5/images/common/ic-trash.png'" class="msg-dialog-ic-img" mode="aspectFit"></image>
 				</view>
 				<view>
 					<text class="c-title" style="display:block;">删除选中消息</text>
@@ -79,7 +79,7 @@
 		<view class="c-dialog" v-if="detail">
 			<view class="msg-detail-head">
 				<view class="msg-detail-ic" :style="{ background: msgMeta[detail.type] ? msgMeta[detail.type].bg : '#f1f5f9' }">
-					<image :src="msgMeta[detail.type] ? msgMeta[detail.type].icon : '/static/h5/images/common/ic-bell.png'" class="msg-detail-ic-img" mode="aspectFit"></image>
+					<image :src="msgMeta[detail.type] ? msgMeta[detail.type].icon : (imgUrl + '/h5/images/common/ic-bell.png')" class="msg-detail-ic-img" mode="aspectFit"></image>
 				</view>
 				<view style="flex:1;min-width:0;">
 					<text class="c-title" style="display:block;font-size:36rpx;">{{ detail.title }}</text>
