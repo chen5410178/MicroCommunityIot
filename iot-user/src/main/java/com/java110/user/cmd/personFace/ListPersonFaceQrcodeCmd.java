@@ -112,7 +112,7 @@ public class ListPersonFaceQrcodeCmd extends Cmd {
             appId = smallWeChatDtos.get(0).getAppId();
         }
 
-        String ownerUrl = UrlCache.getOwnerUrl() + "/#/pages/user/personFace?communityId=" + personFaceQrcodeDtos.get(0).getCommunityId() +"&appId="+appId+ "&pfqId=";
+        String ownerUrl = UrlCache.getOwnerUrl() + "/#/packageUser/pages/user/personFace?communityId=" + personFaceQrcodeDtos.get(0).getCommunityId() +"&appId="+appId+ "&pfqId=";
         for (PersonFaceQrcodeDto personFaceQrcodeDto : personFaceQrcodeDtos) {
             personFaceQrcodeDto.setQrCodeUrl(ownerUrl + personFaceQrcodeDto.getPfqId());
         }
