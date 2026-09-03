@@ -10,8 +10,10 @@ import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.parking.ParkingAreaDto;
+import com.java110.dto.parking.ParkingBoxAreaDto;
 import com.java110.dto.smallWeChat.SmallWeChatDto;
 import com.java110.intf.barrier.IBarrierV1InnerServiceSMO;
+import com.java110.intf.barrier.IParkingBoxAreaV1InnerServiceSMO;
 import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
 import com.java110.intf.charge.ISmallWeChatInnerServiceSMO;
 import org.slf4j.Logger;
@@ -43,6 +45,9 @@ public class BarrierQrcodeController {
 
     @Autowired
     private IParkingAreaV1InnerServiceSMO parkingAreaV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IParkingBoxAreaV1InnerServiceSMO parkingBoxAreaV1InnerServiceSMOImpl;
 
     /**
      * 场内 - 小程序转跳
@@ -209,7 +214,21 @@ public class BarrierQrcodeController {
         if (ListUtil.isNull(barrierDtos)) {
             return null;
         }
-        return barrierDtos.get(0);
+        BarrierDto tmpBarrierDto = barrierDtos.get(0);
+        String boxId = tmpBarrierDto.getBoxId();
+        if (StringUtil.isEmpty(boxId)) {
+            return tmpBarrierDto;
+        }
+        ParkingBoxAreaDto parkingBoxAreaDto = new ParkingBoxAreaDto();
+        parkingBoxAreaDto.setBoxId(boxId);
+        parkingBoxAreaDto.setDefaultArea("T");
+        parkingBoxAreaDto.setStatusCd("0");
+        List<ParkingBoxAreaDto> parkingBoxAreaDtos = parkingBoxAreaV1InnerServiceSMOImpl.queryParkingBoxAreas(parkingBoxAreaDto);
+        if (ListUtil.isNull(parkingBoxAreaDtos)) {
+            return tmpBarrierDto;
+        }
+        tmpBarrierDto.setPaId(parkingBoxAreaDtos.get(0).getPaId());
+        return tmpBarrierDto;
     }
 
     /**
@@ -262,11 +281,11 @@ public class BarrierQrcodeController {
                 "        <div class=\"loading\"></div>\n" +
                 "        <h1>正在为您跳转小程序...</h1>\n" +
                 "        <p>如果跳转失败，请点击下方按钮</p>\n" +
-                "        <a href=\""+urlScheme+"\" class=\"btn\">立即跳转</a>\n" +
+                "        <a href=\"" + urlScheme + "\" class=\"btn\">立即跳转</a>\n" +
                 "    </div>\n" +
                 "    <script>\n" +
                 "        setTimeout(function() {\n" +
-                "            window.location.href = \""+urlScheme+"\";\n" +
+                "            window.location.href = \"" + urlScheme + "\";\n" +
                 "        }, 1500);\n" +
                 "    </script>\n" +
                 "</body>\n" +
