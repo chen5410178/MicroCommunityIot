@@ -71,7 +71,7 @@ public class GetBuyCarMonthCardQrCodeUrlCmd extends Cmd {
 
         String userId = CmdContextUtils.getUserId(cmdDataFlowContext);
         String ownerUrl = UrlCache.getOwnerUrl();
-        ownerUrl += ("/#/pages/fee/queryBuyCardCar?createUserId=" + userId +"&communityId="+reqJson.getString("communityId"));
+        ownerUrl += ("/#/packageFee/pages/fee/queryBuyCardCar?createUserId=" + userId +"&communityId="+reqJson.getString("communityId"));
         reqJson.put("url", ownerUrl);
         cmdDataFlowContext.setResponseEntity(ResultVo.createResponseEntity(reqJson));
     }

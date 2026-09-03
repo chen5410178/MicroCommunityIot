@@ -99,7 +99,7 @@ public class ListPassQrcodeSettingCmd extends Cmd {
             return;
         }
 
-        String ownerUrl = UrlCache.getOwnerUrl() + "/#/pages/user/passQrcode?communityId=" + passQrcodeSettingDtos.get(0).getCommunityId() + "&pqsId=";
+        String ownerUrl = UrlCache.getOwnerUrl() + "/#/packageUser/pages/user/passQrcode?communityId=" + passQrcodeSettingDtos.get(0).getCommunityId() + "&pqsId=";
         for (PassQrcodeSettingDto passQrcodeSettingDto : passQrcodeSettingDtos) {
             passQrcodeSettingDto.setQrcodeUrl(ownerUrl + passQrcodeSettingDto.getPqsId());
         }

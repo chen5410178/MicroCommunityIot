@@ -148,7 +148,7 @@ public class AliPaymentFactoryAdapt implements IPaymentFactoryAdapt {
 //异步接收地址，仅支持http/https，公网可访问
         request.setNotifyUrl(notifyUrl);
 //同步跳转地址，仅支持http/https
-        request.setReturnUrl(UrlCache.getOwnerUrl() + "/#/pages/successPage/successPage?msg=支付成功&objType=3003");
+        request.setReturnUrl(UrlCache.getOwnerUrl() + "/#/packageProperty/pages/successPage/successPage?msg=支付成功&objType=3003");
 /******必传参数******/
         JSONObject bizContent = new JSONObject();
 //商户订单号，商家自定义，保持唯一性
