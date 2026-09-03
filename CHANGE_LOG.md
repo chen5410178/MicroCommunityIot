@@ -564,3 +564,74 @@ INSERT INTO `c_route` VALUES ('102026090100000006', '992023111817510002', '98202
 INSERT INTO `c_service` VALUES ('982026090200000001', 'chargeMachine.getAppChargeMachineByCode', 'API', '按设备编码查询充电桩', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2026-09-02 23:26:45', '0');
 INSERT INTO `c_route` VALUES ('102026090200000001', '992023111817510002', '982026090200000001', 'Q', '1000', 'S', '2026-09-02 23:26:45', '0');
 ```
+
+### 2026-09-03 充电小程序电子发票（invoice_order / invoice_order_item）
+
+```sql
+-- 1. 建表 invoice_order（开票订单，通用开票表，充电业务复用）
+CREATE TABLE `invoice_order` (
+  `invoice_order_id` varchar(30) NOT NULL COMMENT '开票订单ID',
+  `user_id`          varchar(30)          COMMENT '用户ID',
+  `phone`            varchar(16)  NOT NULL COMMENT '登录账号手机号',
+  `community_id`     varchar(30)          COMMENT '小区ID(communityId)',
+  `heading_id`       varchar(32)          COMMENT '商城抬头ID(同步后回写)',
+  `heading_type`     varchar(8)           COMMENT '抬头类型 个人/公司',
+  `buyer_name`       varchar(128)         COMMENT '购买方名称(抬头名称)',
+  `buyer_tax_no`     varchar(64)          COMMENT '税号',
+  `buyer_address`    varchar(256)         COMMENT '地址(选填)',
+  `buyer_bank`       varchar(128)         COMMENT '开户行(选填)',
+  `buyer_bank_no`    varchar(64)          COMMENT '银行账号(选填)',
+  `email`            varchar(128)         COMMENT '邮箱(接收发票)',
+  `invoice_type`     varchar(8)   DEFAULT '普票' COMMENT '普票/专票',
+  `biz_category`     varchar(64)  DEFAULT '充电费' COMMENT '业务类目',
+  `amount`           decimal(14,2) NOT NULL COMMENT '开票金额(元)',
+  `invoice_id`       varchar(32)          COMMENT '商城开票单号(INV..)',
+  `state`            varchar(8)   DEFAULT 'WAIT' COMMENT 'WAIT-待开票 DONE-已开票 FAIL-开票失败',
+  `invoice_no`       varchar(64)          COMMENT '发票号码',
+  `invoice_code`     varchar(64)          COMMENT '发票代码',
+  `pdf_url`          varchar(256)         COMMENT '发票PDF地址',
+  `fail_reason`      varchar(512)         COMMENT '失败原因',
+  `remark`           varchar(512)         COMMENT '幂等标记(业务前缀:orderId1,orderId2 如 CHARGE:...)',
+  `status_cd`        varchar(2)   DEFAULT '0' COMMENT '0-正常 1-删除',
+  `create_time`      datetime     DEFAULT CURRENT_TIMESTAMP,
+  `update_time`      datetime     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`invoice_order_id`),
+  KEY idx_user (user_id, phone, status_cd),
+  KEY idx_state (state, status_cd)
+) COMMENT='开票订单';
+
+-- 2. 建表 invoice_order_item（开票明细）
+CREATE TABLE `invoice_order_item` (
+  `item_id`          varchar(30) NOT NULL COMMENT '明细ID',
+  `invoice_order_id` varchar(30) NOT NULL COMMENT '开票订单ID',
+  `order_id`         varchar(64) NOT NULL COMMENT '业务订单ID(充电订单 charge_machine_order.order_id)',
+  `community_id`     varchar(30)         COMMENT '小区ID(冗余)',
+  `biz_category`     varchar(64) DEFAULT '充电费' COMMENT '业务类目',
+  `invoice_category` varchar(64)         COMMENT '开票类目(商城回填)',
+  `tax_code`         varchar(32)         COMMENT '税收分类编码',
+  `tax_rate`         varchar(8)          COMMENT '税率',
+  `amount`           decimal(14,2) NOT NULL COMMENT '明细金额(元)',
+  `seq`              int         DEFAULT 1 COMMENT '明细序号',
+  `status_cd`        varchar(2)  DEFAULT '0' COMMENT '0-正常 1-删除',
+  `create_time`      datetime    DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`item_id`),
+  KEY idx_order (order_id, status_cd),
+  KEY idx_invoice (invoice_order_id)
+) COMMENT='开票明细';
+
+-- 3. 服务注册（用户端 appId 992023111817510002）
+INSERT INTO `c_service` VALUES ('982026090300000001', 'invoice.listMyInvoiceOrders', 'API', '查询我的开票订单(未开票/已开票)', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-03 10:00:01', '0');
+INSERT INTO `c_service` VALUES ('982026090300000002', 'invoice.getMyInvoiceHeading', 'API', '按登录手机号查询商城发票抬头', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-03 10:00:02', '0');
+INSERT INTO `c_service` VALUES ('982026090300000003', 'invoice.saveInvoice', 'API', '提交开票申请', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2026-09-03 10:00:03', '0');
+INSERT INTO `c_route` VALUES ('102026090300000001', '992023111817510002', '982026090300000001', 'Q', '1000', 'S', '2026-09-03 10:00:01', '0');
+INSERT INTO `c_route` VALUES ('102026090300000002', '992023111817510002', '982026090300000002', 'Q', '1000', 'S', '2026-09-03 10:00:02', '0');
+INSERT INTO `c_route` VALUES ('102026090300000003', '992023111817510002', '982026090300000003', 'D', '1000', 'S', '2026-09-03 10:00:03', '0');
+
+-- 4. 商城接入配置（c_mapping MALL 域；MALL_SWITCH=ON 才会调用商城，其余为商城接入参数）
+INSERT INTO `c_mapping` VALUES ('102026090300000004', 'MALL', '商城开关', 'MALL_SWITCH', 'OFF', 'ON 开启，OFF 关闭', '2026-09-03 10:00:04', '0');
+INSERT INTO `c_mapping` VALUES ('102026090300000005', 'MALL', '商城网关地址', 'MALL_URL', 'https://mall.homecommunity.cn', '', '2026-09-03 10:00:05', '0');
+INSERT INTO `c_mapping` VALUES ('102026090300000006', 'MALL', '调用方应用ID', 'APP_ID', '', '', '2026-09-03 10:00:06', '0');
+INSERT INTO `c_mapping` VALUES ('102026090300000007', 'MALL', '调用方应用秘钥', 'APP_SECRET', '', '', '2026-09-03 10:00:07', '0');
+INSERT INTO `c_mapping` VALUES ('102026090300000008', 'MALL', '商城管理员账号', 'MALL_USERNAME', '', '', '2026-09-03 10:00:08', '0');
+INSERT INTO `c_mapping` VALUES ('102026090300000009', 'MALL', '商城管理员密码', 'MALL_PASSWORD', '', '', '2026-09-03 10:00:09', '0');
+```

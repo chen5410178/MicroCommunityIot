@@ -1,5 +1,5 @@
 <template>
-	<view class="iv-page" :class="{ 'charge-theme-dark': themeDark }">
+	<view class="iv-page">
 		<!-- 可开票金额卡 -->
 		<view class="iv-hero">
 			<view class="iv-hero-head">
@@ -14,37 +14,40 @@
 		<!-- 未开票订单 -->
 		<view class="iv-sec-head">
 			<text class="c-title">未开票订单 <text style="color:#059669;">{{ unbilled.length }}</text> 单</text>
-			<text class="iv-select-all" @click="selectAllInv">{{ allSelected ? '取消全选' : '全选' }}</text>
+			<text class="iv-select-all" v-if="unbilled.length" @click="selectAllInv">{{ allSelected ? '取消全选' : '全选' }}</text>
 		</view>
 		<view class="iv-list iv-mx">
-			<view class="c-card iv-order" v-for="(o, i) in unbilled" :key="i" @click="toggleSel(o)">
-				<view class="iv-check" :class="{ on: invSel[o.orderIdx] }">
-					<text v-if="invSel[o.orderIdx]">✓</text>
+			<view class="c-card iv-order" v-for="(o, i) in unbilled" :key="o.orderId" @click="toggleSel(o)">
+				<view class="iv-check" :class="{ on: invSel[o.orderId] }">
+					<text v-if="invSel[o.orderId]">✓</text>
 				</view>
 				<view style="flex:1;min-width:0;">
-					<text class="c-text-bold" style="font-size:24rpx;font-weight:600;color:#1e293b;">{{ o.r.pile }} <text class="c-text-sub" style="font-size:18rpx;">{{ o.r.date }}</text></text>
-					<text class="c-text-sub" style="margin-top:4rpx;display:block;">{{ o.r.way }} · {{ o.r.mins }} 分钟 · {{ o.r.st }}</text>
+					<text class="c-text-bold" style="font-size:24rpx;font-weight:600;color:#1e293b;">{{ o.machineName || o.machineCode || '充电桩' }} <text class="c-text-sub" style="font-size:18rpx;">{{ o.portName || '' }}</text></text>
+					<text class="c-text-sub" style="margin-top:4rpx;display:block;">{{ o.startTime || '' }} · {{ o.endTime || '' }} · 已完成</text>
 				</view>
-				<text class="iv-fee">¥{{ o.r.fee.toFixed(2) }}</text>
+				<text class="iv-fee">¥{{ Number(o.amount || 0).toFixed(2) }}</text>
 			</view>
 			<view class="c-card iv-empty" v-if="!unbilled.length">
-				<text class="c-text-sub">暂无未开票订单</text>
+				<text class="c-text-sub">{{ communityTip }}</text>
 			</view>
 		</view>
 
-		<!-- 已开票订单 -->
+		<!-- 已开票记录 -->
 		<view class="iv-sec-head">
 			<text class="c-title">已开票订单 <text class="c-text-sub" style="font-weight:400;">{{ billed.length }}</text> 单</text>
 		</view>
 		<view class="iv-list iv-mx">
-			<view class="c-card iv-order" v-for="(o, i) in billed" :key="i">
-				<view class="iv-billed-ic">✓</view>
+			<view class="c-card iv-order" v-for="(o, i) in billed" :key="o.invoiceOrderId">
+				<view class="iv-billed-ic" :class="{ fail: o.state === 'FAIL' }">{{ o.state === 'FAIL' ? '!' : '✓' }}</view>
 				<view style="flex:1;min-width:0;">
-					<text class="c-text-bold" style="font-size:24rpx;font-weight:600;color:#1e293b;">{{ o.r.pile }} <text class="c-text-sub" style="font-size:18rpx;">{{ o.r.date }}</text></text>
-					<text class="c-text-sub" style="margin-top:4rpx;display:block;">{{ o.r.invTitle || '个人 · 李明' }} · 发票号 {{ o.r.invNo || '—' }}</text>
-					<text class="iv-billed-time">{{ o.r.invTime || '' }} 已开具 · 已推送微信卡包</text>
+					<text class="c-text-bold" style="font-size:24rpx;font-weight:600;color:#1e293b;">{{ o.buyerName || '—' }} <text class="c-text-sub" style="font-size:18rpx;">{{ o.headingType || '' }}</text></text>
+					<text class="c-text-sub" style="margin-top:4rpx;display:block;">{{ stateText(o.state) }}
+						<template v-if="o.state === 'DONE' && o.invoiceNo"> · 发票号 {{ o.invoiceNo }}</template>
+						<template v-if="o.state === 'FAIL' && o.failReason"> · {{ o.failReason }}</template>
+					</text>
+					<text class="iv-billed-time" v-if="o.createTime">{{ formatTime(o.createTime) }}</text>
 				</view>
-				<text class="iv-fee">¥{{ o.r.fee.toFixed(2) }}</text>
+				<text class="iv-fee">¥{{ Number(o.amount || 0).toFixed(2) }}</text>
 			</view>
 			<view class="c-card iv-empty" v-if="!billed.length">
 				<text class="c-text-sub">暂无已开票订单</text>
@@ -93,6 +96,10 @@
 					</view>
 				</view>
 				<view class="c-form-input iv-form-row">
+					<text class="c-text-sub">接收手机号</text>
+					<input v-model="invPhone" type="number" maxlength="11" placeholder="用于接收开票结果短信" />
+				</view>
+				<view class="c-form-input iv-form-row">
 					<text class="c-text-sub">邮箱</text>
 					<input v-model="invMail" placeholder="接收电子发票" />
 				</view>
@@ -102,7 +109,7 @@
 					<text style="font-size:28rpx;font-weight:700;color:#d97706;">¥{{ selSum.toFixed(2) }}</text>
 				</view>
 				<view class="c-btn-primary" @click="submitInvoice">提交开票申请</view>
-				<text class="iv-sheet-tip">电子发票开具后自动推送至微信卡包与邮箱</text>
+				<text class="iv-sheet-tip">开票成功后短信推送至接收手机号 · 电子发票同步至邮箱</text>
 			</view>
 		</view>
 
@@ -111,7 +118,11 @@
 </template>
 
 <script>
-	import chargeStore from '@/api/charge/chargeStore.js'
+	import {
+		listMyInvoiceOrders,
+		getMyInvoiceHeading,
+		saveInvoice
+	} from '@/api/charge/invoiceApi.js'
 	import {
 		hasLogin
 	} from '@/api/user/sessionApi.js'
@@ -119,6 +130,11 @@
 	export default {
 		data() {
 			return {
+				communityId: '',
+				communityTip: '加载中...',
+				unbilled: [],
+				billed: [],
+				invAmount: 0,
 				invSel: {},
 				invType: 'personal',
 				invShow: false,
@@ -126,56 +142,82 @@
 				invPersonId: '',
 				invCompanyName: '',
 				invCompanyTax: '',
+				invPhone: '',
 				invMail: '',
 				toastMsg: ''
 			}
 		},
 		computed: {
-			themeDark() {
-				return chargeStore.themeDark
-			},
-			unbilled() {
-				return chargeStore.records.map((r, i) => ({ r, i })).filter(o => !o.r.inv && o.r.fee > 0).map(o => ({
-					r: o.r,
-					orderIdx: o.i
-				}))
-			},
-			billed() {
-				return chargeStore.records.map((r, i) => ({ r, i })).filter(o => o.r.inv).map(o => ({
-					r: o.r,
-					orderIdx: o.i
-				}))
-			},
-			invAmount() {
-				return this.unbilled.reduce((s, o) => s + o.r.fee, 0)
-			},
 			selCount() {
 				return Object.keys(this.invSel).filter(k => this.invSel[k]).length
 			},
 			selSum() {
 				let sum = 0
 				this.unbilled.forEach(o => {
-					if (this.invSel[o.orderIdx]) sum += o.r.fee
+					if (this.invSel[o.orderId]) sum += Number(o.amount || 0)
 				})
 				return sum
 			},
 			allSelected() {
-				return this.unbilled.length > 0 && this.unbilled.every(o => this.invSel[o.orderIdx])
+				return this.unbilled.length > 0 && this.unbilled.every(o => this.invSel[o.orderId])
 			}
 		},
+		onShow() {
+			this._loadData()
+		},
 		methods: {
-			toggleSel(o) {
-				if (this.invSel[o.orderIdx]) {
-					this.$set(this.invSel, o.orderIdx, false)
-				} else {
-					this.$set(this.invSel, o.orderIdx, true)
+			async _loadData() {
+				if (!hasLogin()) {
+					this.unbilled = []
+					this.billed = []
+					this.invAmount = 0
+					this.communityTip = '请先登录'
+					this._toast('请先登录')
+					uni.navigateTo({ url: '/pages/user/login' })
+					return
 				}
+				const community = uni.getStorageSync('currentCommunityInfo')
+				if (!community || !community.communityId) {
+					this.unbilled = []
+					this.billed = []
+					this.invAmount = 0
+					this.communityTip = '请先选择小区后再申请开票'
+					this._toast('请先切换小区')
+					return
+				}
+				this.communityId = community.communityId
+				try {
+					const data = await listMyInvoiceOrders({
+						communityId: this.communityId,
+						bizCategory: '充电费'
+					})
+					this.unbilled = (data && data.unInvoiceOrders) || []
+					this.billed = (data && data.invoiceOrders) || []
+					this.invAmount = Number(data && data.totalAmount || 0)
+					this.communityTip = this.communityId ? '暂无未开票订单' : '请先选择小区后再申请开票'
+					// 清理已失效勾选
+					const ids = this.unbilled.map(o => o.orderId)
+					Object.keys(this.invSel).forEach(k => {
+						if (ids.indexOf(k) < 0 && this.invSel[k]) {
+							this.$set(this.invSel, k, false)
+						}
+					})
+				} catch (e) {
+					this.unbilled = []
+					this.billed = []
+					this.invAmount = 0
+					this.communityTip = '暂无未开票订单'
+					this._toast(typeof e === 'string' ? e : '查询开票订单失败')
+				}
+			},
+			toggleSel(o) {
+				this.$set(this.invSel, o.orderId, !this.invSel[o.orderId])
 			},
 			selectAllInv() {
 				if (this.allSelected) {
-					this.unbilled.forEach(o => this.$set(this.invSel, o.orderIdx, false))
+					this.unbilled.forEach(o => this.$set(this.invSel, o.orderId, false))
 				} else {
-					this.unbilled.forEach(o => this.$set(this.invSel, o.orderIdx, true))
+					this.unbilled.forEach(o => this.$set(this.invSel, o.orderId, true))
 				}
 			},
 			openInvoice() {
@@ -188,61 +230,117 @@
 					this._toast('请先勾选需要开票的订单')
 					return
 				}
-				this.invMail = ''
-				this.invPersonName = '李明'
+				this._resetForm()
+				this.invShow = true
+				// 按登录手机号查商城抬头回填（无则为空）
+				getMyInvoiceHeading().then(data => {
+					const heading = data && data.heading
+					if (!heading) return
+					if (heading.headingType === '公司') {
+						this.invType = 'company'
+						this.invCompanyName = heading.headingName || ''
+						this.invCompanyTax = heading.taxNo || ''
+					} else {
+						this.invType = 'personal'
+						this.invPersonName = heading.headingName || ''
+					}
+					if (heading.email) this.invMail = heading.email
+				}).catch(() => {
+					// 查询抬头失败不阻塞表单（显示为空）
+				})
+			},
+			_resetForm() {
+				const userInfo = uni.getStorageSync('userInfo') || {}
+				this.invPersonName = ''
 				this.invPersonId = ''
 				this.invCompanyName = ''
 				this.invCompanyTax = ''
-				this.invShow = true
+				this.invMail = ''
+				this.invPhone = userInfo.tel || ''
+				this.invType = 'personal'
 			},
 			submitInvoice() {
-				let title
+				let headingName
+				let taxNo = ''
 				if (this.invType === 'personal') {
-					if (!this.invPersonName.trim()) {
+					headingName = this.invPersonName || ''
+					if (!headingName.trim()) {
 						this._toast('请输入个人姓名')
 						return
 					}
-					title = '个人 · ' + this.invPersonName.trim() + (this.invPersonId.trim() ? '（' + this.invPersonId.trim() + '）' : '')
 				} else {
-					if (!this.invCompanyName.trim()) {
+					headingName = this.invCompanyName || ''
+					taxNo = this.invCompanyTax || ''
+					if (!headingName.trim()) {
 						this._toast('请输入企业名称')
 						return
 					}
-					if (!this.invCompanyTax.trim()) {
+					if (!taxNo.trim()) {
 						this._toast('请输入税号')
 						return
 					}
-					title = '企业 · ' + this.invCompanyName.trim() + '（' + this.invCompanyTax.trim() + '）'
 				}
-				if (!this.invMail.trim()) {
-					this._toast('请输入接收邮箱')
+				const phone = this.invPhone || ''
+				if (!/^1\d{10}$/.test(phone)) {
+					this._toast('请输入正确的接收手机号')
 					return
 				}
-				const now = new Date()
-				const mm = ('0' + (now.getMonth() + 1)).slice(-2)
-				const dd = ('0' + now.getDate()).slice(-2)
-				const hh = ('0' + now.getHours()).slice(-2)
-				const mi = ('0' + now.getMinutes()).slice(-2)
-				const no = 'INV' + now.getFullYear() + mm + dd + String(Math.floor(Math.random() * 9000) + 1000)
-				this.unbilled.forEach(o => {
-					if (this.invSel[o.orderIdx]) {
-						chargeStore.records[o.orderIdx].inv = 1
-						chargeStore.records[o.orderIdx].invNo = no
-						chargeStore.records[o.orderIdx].invTime = mm + '-' + dd + ' ' + hh + ':' + mi
-						chargeStore.records[o.orderIdx].invTitle = title
+				const orderIds = this.unbilled.filter(o => this.invSel[o.orderId]).map(o => o.orderId)
+				if (!orderIds.length) {
+					this._toast('请先勾选需要开票的订单')
+					return
+				}
+				saveInvoice({
+					communityId: this.communityId,
+					bizCategory: '充电费',
+					orderIds: orderIds,
+					headingType: this.invType === 'personal' ? '个人' : '公司',
+					headingName: headingName.trim(),
+					taxNo: taxNo.trim(),
+					email: this.invMail || '',
+					invoiceType: '普票',
+					phone: phone
+				}).then(data => {
+					const state = data && data.state
+					if (state === 'FAIL') {
+						this._toast('开票失败：' + (data.failReason || '请稍后重试'))
+						this.invShow = false
+						this._loadData()
+						return
 					}
+					if (state === 'DONE') {
+						this._toast('开票成功 · 电子发票将推送至 ' + this.invMail || '接收手机号')
+					} else {
+						this._toast('开票申请已提交 · 开票结果稍后查看')
+					}
+					this.invSel = {}
+					this.invShow = false
+					this._loadData()
+				}).catch(e => {
+					this._toast(typeof e === 'string' ? e : '提交开票失败，请稍后重试')
 				})
-				chargeStore.saveRecords()
-				this.invSel = {}
-				this.invShow = false
-				this._toast('开票申请已提交 · 电子发票将推送至 ' + this.invMail.trim())
+			},
+			stateText(state) {
+				if (state === 'DONE') return '已开票'
+				if (state === 'WAIT') return '待开票'
+				if (state === 'FAIL') return '开票失败'
+				return state || '—'
+			},
+			formatTime(ts) {
+				if (!ts) return ''
+				const d = new Date(Number(ts))
+				const mm = ('0' + (d.getMonth() + 1)).slice(-2)
+				const dd = ('0' + d.getDate()).slice(-2)
+				const hh = ('0' + d.getHours()).slice(-2)
+				const mi = ('0' + d.getMinutes()).slice(-2)
+				return mm + '-' + dd + ' ' + hh + ':' + mi
 			},
 			_toast(msg) {
 				this.toastMsg = msg
 				clearTimeout(this._toastTimer)
 				this._toastTimer = setTimeout(() => {
 					this.toastMsg = ''
-				}, 2000)
+				}, 2600)
 			}
 		}
 	}
@@ -379,6 +477,11 @@
 		font-size: 28rpx;
 		font-weight: 700;
 		flex-shrink: 0;
+	}
+
+	.iv-billed-ic.fail {
+		background: rgba(239, 68, 68, .1);
+		color: #dc2626;
 	}
 
 	.iv-billed-time {

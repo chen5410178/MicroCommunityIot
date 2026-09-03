@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="invoiceOrderV1ServiceDaoImpl">
+
+    <!-- 保存开票订单 add by 2026-09-03 -->
+    <insert id="saveInvoiceOrderInfo" parameterType="Map">
+        insert into invoice_order(
+        invoice_order_id,user_id,phone,community_id,heading_id,heading_type,buyer_name,buyer_tax_no,
+        buyer_address,buyer_bank,buyer_bank_no,email,invoice_type,biz_category,amount,invoice_id,state,
+        invoice_no,invoice_code,pdf_url,fail_reason,remark,status_cd
+        ) values (
+        #{invoiceOrderId},#{userId},#{phone},#{communityId},#{headingId},#{headingType},#{buyerName},#{buyerTaxNo},
+        #{buyerAddress},#{buyerBank},#{buyerBankNo},#{email},#{invoiceType},#{bizCategory},#{amount},#{invoiceId},#{state},
+        #{invoiceNo},#{invoiceCode},#{pdfUrl},#{failReason},#{remark},#{statusCd}
+        )
+    </insert>
+
+    <!-- 查询开票订单 add by 2026-09-03 -->
+    <select id="getInvoiceOrderInfo" parameterType="Map" resultType="Map">
+        select t.invoice_order_id invoiceOrderId,t.user_id userId,t.phone,t.community_id communityId,
+        t.heading_id headingId,t.heading_type headingType,t.buyer_name buyerName,t.buyer_tax_no buyerTaxNo,
+        t.buyer_address buyerAddress,t.buyer_bank buyerBank,t.buyer_bank_no buyerBankNo,t.email,
+        t.invoice_type invoiceType,t.biz_category bizCategory,t.amount,t.invoice_id invoiceId,t.state,
+        t.invoice_no invoiceNo,t.invoice_code invoiceCode,t.pdf_url pdfUrl,t.fail_reason failReason,t.remark,
+        t.status_cd statusCd,t.create_time createTime,t.update_time updateTime
+        from invoice_order t
+        where 1 = 1
+        <if test="invoiceOrderId !=null and invoiceOrderId != ''">
+            and t.invoice_order_id= #{invoiceOrderId}
+        </if>
+        <if test="invoiceOrderIds !=null">
+            and t.invoice_order_id in
+            <foreach collection="invoiceOrderIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="userId !=null and userId != ''">
+            and t.user_id= #{userId}
+        </if>
+        <if test="phone !=null and phone != ''">
+            and t.phone= #{phone}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="headingId !=null and headingId != ''">
+            and t.heading_id= #{headingId}
+        </if>
+        <if test="headingType !=null and headingType != ''">
+            and t.heading_type= #{headingType}
+        </if>
+        <if test="buyerName !=null and buyerName != ''">
+            and t.buyer_name= #{buyerName}
+        </if>
+        <if test="invoiceType !=null and invoiceType != ''">
+            and t.invoice_type= #{invoiceType}
+        </if>
+        <if test="bizCategory !=null and bizCategory != ''">
+            and t.biz_category= #{bizCategory}
+        </if>
+        <if test="invoiceId !=null and invoiceId != ''">
+            and t.invoice_id= #{invoiceId}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="states !=null">
+            and t.state in
+            <foreach collection="states" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="invoiceNo !=null and invoiceNo != ''">
+            and t.invoice_no= #{invoiceNo}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <!-- 修改开票订单 add by 2026-09-03 -->
+    <update id="updateInvoiceOrderInfo" parameterType="Map">
+        update invoice_order t set t.status_cd = #{statusCd}
+        <if test="headingId !=null and headingId != ''">
+            , t.heading_id= #{headingId}
+        </if>
+        <if test="headingType !=null and headingType != ''">
+            , t.heading_type= #{headingType}
+        </if>
+        <if test="buyerName !=null and buyerName != ''">
+            , t.buyer_name= #{buyerName}
+        </if>
+        <if test="buyerTaxNo !=null and buyerTaxNo != ''">
+            , t.buyer_tax_no= #{buyerTaxNo}
+        </if>
+        <if test="buyerAddress !=null and buyerAddress != ''">
+            , t.buyer_address= #{buyerAddress}
+        </if>
+        <if test="buyerBank !=null and buyerBank != ''">
+            , t.buyer_bank= #{buyerBank}
+        </if>
+        <if test="buyerBankNo !=null and buyerBankNo != ''">
+            , t.buyer_bank_no= #{buyerBankNo}
+        </if>
+        <if test="email !=null and email != ''">
+            , t.email= #{email}
+        </if>
+        <if test="invoiceType !=null and invoiceType != ''">
+            , t.invoice_type= #{invoiceType}
+        </if>
+        <if test="bizCategory !=null and bizCategory != ''">
+            , t.biz_category= #{bizCategory}
+        </if>
+        <if test="amount !=null and amount != ''">
+            , t.amount= #{amount}
+        </if>
+        <if test="invoiceId !=null and invoiceId != ''">
+            , t.invoice_id= #{invoiceId}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="invoiceNo !=null and invoiceNo != ''">
+            , t.invoice_no= #{invoiceNo}
+        </if>
+        <if test="invoiceCode !=null and invoiceCode != ''">
+            , t.invoice_code= #{invoiceCode}
+        </if>
+        <if test="pdfUrl !=null and pdfUrl != ''">
+            , t.pdf_url= #{pdfUrl}
+        </if>
+        <if test="failReason !=null and failReason != ''">
+            , t.fail_reason= #{failReason}
+        </if>
+        where 1=1
+        <if test="invoiceOrderId !=null and invoiceOrderId != ''">
+            and t.invoice_order_id= #{invoiceOrderId}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+    </update>
+
+    <!-- 查询开票订单数量 add by 2026-09-03 -->
+    <select id="queryInvoiceOrdersCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from invoice_order t
+        where 1 = 1
+        <if test="invoiceOrderId !=null and invoiceOrderId != ''">
+            and t.invoice_order_id= #{invoiceOrderId}
+        </if>
+        <if test="invoiceOrderIds !=null">
+            and t.invoice_order_id in
+            <foreach collection="invoiceOrderIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="userId !=null and userId != ''">
+            and t.user_id= #{userId}
+        </if>
+        <if test="phone !=null and phone != ''">
+            and t.phone= #{phone}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="states !=null">
+            and t.state in
+            <foreach collection="states" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+    </select>
+
+</mapper>

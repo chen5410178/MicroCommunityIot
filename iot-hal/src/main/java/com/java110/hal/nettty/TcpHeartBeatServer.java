@@ -48,7 +48,7 @@ public class TcpHeartBeatServer {
         //绑定并开始接受传入的连接。
         ChannelFuture future = bootstrap.bind().sync();
         if (future.isSuccess()) {
-            LOGGER.info("启动 Netty 成功");
+            LOGGER.info("启动 Netty TCP 服务成功, 端口: {}", nettyPort);
         }
     }
 

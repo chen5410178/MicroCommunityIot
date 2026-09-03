@@ -43,6 +43,7 @@ import java.util.concurrent.TimeUnit;
 })
 @EnableFeignClients(basePackages = {
         "com.java110.intf.user",
+        "com.java110.intf.charge",
 })
 @Java110CmdDiscovery(cmdPublishClass = ServiceCmdEventPublishing.class,
         basePackages = {"com.java110.acct.cmd"})

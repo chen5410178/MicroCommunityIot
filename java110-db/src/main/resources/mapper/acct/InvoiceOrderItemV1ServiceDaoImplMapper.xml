@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="invoiceOrderItemV1ServiceDaoImpl">
+
+    <!-- 保存开票明细 add by 2026-09-03 -->
+    <insert id="saveInvoiceOrderItemInfo" parameterType="Map">
+        insert into invoice_order_item(
+        item_id,invoice_order_id,order_id,community_id,biz_category,invoice_category,tax_code,tax_rate,
+        amount,seq,status_cd
+        ) values (
+        #{itemId},#{invoiceOrderId},#{orderId},#{communityId},#{bizCategory},#{invoiceCategory},#{taxCode},#{taxRate},
+        #{amount},#{seq},#{statusCd}
+        )
+    </insert>
+
+    <!-- 查询开票明细 add by 2026-09-03 -->
+    <select id="getInvoiceOrderItemInfo" parameterType="Map" resultType="Map">
+        select t.item_id itemId,t.invoice_order_id invoiceOrderId,t.order_id orderId,t.community_id communityId,
+        t.biz_category bizCategory,t.invoice_category invoiceCategory,t.tax_code taxCode,t.tax_rate taxRate,
+        t.amount,t.seq,t.status_cd statusCd,t.create_time createTime
+        from invoice_order_item t
+        where 1 = 1
+        <if test="itemId !=null and itemId != ''">
+            and t.item_id= #{itemId}
+        </if>
+        <if test="invoiceOrderId !=null and invoiceOrderId != ''">
+            and t.invoice_order_id= #{invoiceOrderId}
+        </if>
+        <if test="invoiceOrderIds !=null">
+            and t.invoice_order_id in
+            <foreach collection="invoiceOrderIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="orderId !=null and orderId != ''">
+            and t.order_id= #{orderId}
+        </if>
+        <if test="orderIds !=null">
+            and t.order_id in
+            <foreach collection="orderIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="bizCategory !=null and bizCategory != ''">
+            and t.biz_category= #{bizCategory}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <!-- 查询开票明细数量 add by 2026-09-03 -->
+    <select id="queryInvoiceOrderItemsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from invoice_order_item t
+        where 1 = 1
+        <if test="itemId !=null and itemId != ''">
+            and t.item_id= #{itemId}
+        </if>
+        <if test="invoiceOrderId !=null and invoiceOrderId != ''">
+            and t.invoice_order_id= #{invoiceOrderId}
+        </if>
+        <if test="invoiceOrderIds !=null">
+            and t.invoice_order_id in
+            <foreach collection="invoiceOrderIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="orderId !=null and orderId != ''">
+            and t.order_id= #{orderId}
+        </if>
+        <if test="orderIds !=null">
+            and t.order_id in
+            <foreach collection="orderIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="bizCategory !=null and bizCategory != ''">
+            and t.biz_category= #{bizCategory}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+    </select>
+
+</mapper>
