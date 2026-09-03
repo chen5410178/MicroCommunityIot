@@ -24,6 +24,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.List;
 
@@ -92,7 +94,8 @@ public class WechatNotifyOpenIdCmd extends Cmd {
         ownerCarOpenUserDto.setOpenId(openId);
         List<OwnerCarOpenUserDto> ownerCarOpenUserDtos = ownerCarOpenUserV1InnerServiceSMOImpl.queryOwnerCarOpenUsers(ownerCarOpenUserDto);
         if (ownerCarOpenUserDtos != null && ownerCarOpenUserDtos.size() > 0) {
-            redirectUrl += ("&carNum=" + ownerCarOpenUserDtos.get(0).getCarNum());
+            String encodedCarNum = URLEncoder.encode(ownerCarOpenUserDtos.get(0).getCarNum(), StandardCharsets.UTF_8);
+            redirectUrl += ("&carNum=" + encodedCarNum);
         }
 
         context.setResponseEntity(ResultVo.redirectPage(redirectUrl));
