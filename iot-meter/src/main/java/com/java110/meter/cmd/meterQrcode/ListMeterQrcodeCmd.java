@@ -92,7 +92,7 @@ public class ListMeterQrcodeCmd extends Cmd {
             return;
         }
 
-        String ownerUrl = UrlCache.getOwnerUrl() + "/#/pages/meter/meterCharge?communityId=" + meterQrcodeDtos.get(0).getCommunityId() + "&mqId=";
+        String ownerUrl = UrlCache.getOwnerUrl() + "/#/packageMeter/pages/meter/meterCharge?communityId=" + meterQrcodeDtos.get(0).getCommunityId() + "&mqId=";
         for (MeterQrcodeDto meterQrcodeDto : meterQrcodeDtos) {
             meterQrcodeDto.setQrcodeUrl(ownerUrl + meterQrcodeDto.getMqId());
         }

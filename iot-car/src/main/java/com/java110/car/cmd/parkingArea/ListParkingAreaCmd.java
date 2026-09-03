@@ -147,7 +147,7 @@ public class ListParkingAreaCmd extends Cmd {
             return;
         }
 
-        String ownerUrl = UrlCache.getOwnerUrl() + "/#/pages/car/findCarInParkingArea?communityId=" + parkingAreaDtos.get(0).getCommunityId() + "&paId=";
+        String ownerUrl = UrlCache.getOwnerUrl() + "/#/packageCar/pages/car/findCarInParkingArea?communityId=" + parkingAreaDtos.get(0).getCommunityId() + "&paId=";
         for (ParkingAreaDto parkingAreaDto : parkingAreaDtos) {
             parkingAreaDto.setFindQrcodeUrl(ownerUrl + parkingAreaDto.getPaId());
         }

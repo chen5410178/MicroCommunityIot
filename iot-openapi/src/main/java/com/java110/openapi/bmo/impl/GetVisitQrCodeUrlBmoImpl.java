@@ -20,7 +20,7 @@ public class GetVisitQrCodeUrlBmoImpl implements IIotCommonApiBmo {
     public void doCmd(ICmdDataFlowContext context, JSONObject reqJson) {
         String userId = CmdContextUtils.getUserId(context);
         String ownerUrl = UrlCache.getOwnerUrl();
-        ownerUrl += ("/#/pages/visit/addVisit?createUserId=" + userId +"&communityId="+reqJson.getString("communityId"));
+        ownerUrl += ("/#/packageVisit/pages/visit/addVisit?createUserId=" + userId +"&communityId="+reqJson.getString("communityId"));
         reqJson.put("url", ownerUrl);
         context.setResponseEntity(ResultVo.createResponseEntity(reqJson));
     }
