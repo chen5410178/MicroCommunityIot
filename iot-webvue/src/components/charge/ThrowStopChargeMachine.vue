@@ -32,7 +32,9 @@ export default {
       try {
         const res = await throwStopCharge({
           orderId: this.orderData.orderId,
-          communityId: this.orderData.communityId
+          communityId: this.orderData.communityId,
+          machineId: this.orderData.machineId,
+          portId: this.orderData.portId
         })
         if (res.code === 0) {
           this.visible = false

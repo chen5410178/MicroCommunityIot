@@ -62,8 +62,10 @@ export default {
       if (!this.orderId) return
       this.loading = true
       try {
+        const community = getCurrentCommunity()
         const res = await listChargeMachineOrderAcct({
           orderId: this.orderId,
+          communityId: community ? community.communityId : '',
           page: this.queryParams.page,
           row: this.queryParams.row
         })

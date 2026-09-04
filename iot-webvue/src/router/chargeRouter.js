@@ -52,6 +52,12 @@ const chargeRoutes = [
     name: 'ChargeMonthCardManage',
     component: () => import('@/views/charge/chargeMonthCardManage.vue'),
     meta: { requiresAuth: true, title: '充电月卡管理' }
+  },
+  {
+    path: 'pages/charge/chargeMachineOrderAccts',
+    name: 'ChargeMachineOrderAccts',
+    component: () => import('@/views/charge/chargeMachineOrderAccts.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 
