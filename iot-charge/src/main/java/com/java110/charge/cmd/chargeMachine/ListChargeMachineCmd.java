@@ -83,6 +83,8 @@ import java.util.List;
                 @Java110ParamDoc(parentNodeName = "data", name = "machineName", type = "String", remark = "设备名称"),
                 @Java110ParamDoc(parentNodeName = "data", name = "machineCode", type = "String", remark = "设备编码"),
                 @Java110ParamDoc(parentNodeName = "data", name = "chargeType", type = "String", remark = "充电类型"),
+                @Java110ParamDoc(parentNodeName = "data", name = "portCount", type = "String", remark = "插座总数"),
+                @Java110ParamDoc(parentNodeName = "data", name = "usingPortCount", type = "String", remark = "使用中插座数")
         }
 )
 

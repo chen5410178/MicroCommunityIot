@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : hc_iot_109
-Source Server Version : 50651
-Source Host           : 192.168.31.250:3306
+Source Server         : 122.51.27.46
+Source Server Version : 80045
+Source Host           : 122.51.27.46:3306
 Source Database       : hc_iot
 
 Target Server Type    : MYSQL
-Target Server Version : 50651
+Target Server Version : 80045
 File Encoding         : 65001
 
-Date: 2026-04-29 09:45:06
+Date: 2026-09-04 15:52:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -41,13 +41,16 @@ CREATE TABLE `access_control` (
   `owe_prompt` varchar(512) DEFAULT NULL COMMENT '欠费提示语',
   `monitor_id` varchar(30) DEFAULT NULL COMMENT '监控ID',
   `monitor_name` varchar(64) DEFAULT NULL COMMENT '监控名称',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `lat` varchar(32) NOT NULL DEFAULT '39.907881821019075' COMMENT '经度',
   `lng` varchar(32) NOT NULL DEFAULT '116.39803241981451' COMMENT '纬度',
-  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`machine_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+-- ----------------------------
+-- Records of access_control
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for access_control_ad
@@ -65,7 +68,11 @@ CREATE TABLE `access_control_ad` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`ad_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of access_control_ad
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for access_control_ad_rel
@@ -83,7 +90,11 @@ CREATE TABLE `access_control_ad_rel` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`rel_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of access_control_ad_rel
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for access_control_attr
@@ -98,7 +109,7 @@ CREATE TABLE `access_control_attr` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0在用，1失效',
   PRIMARY KEY (`attr_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of access_control_attr
@@ -128,7 +139,11 @@ CREATE TABLE `access_control_face` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `room_name` varchar(64) DEFAULT NULL COMMENT '房屋名称',
   PRIMARY KEY (`mf_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of access_control_face
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for access_control_floor
@@ -146,7 +161,11 @@ CREATE TABLE `access_control_floor` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`acf_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of access_control_floor
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for access_control_inout
@@ -167,7 +186,7 @@ CREATE TABLE `access_control_inout` (
   `similar` varchar(12) DEFAULT '1.0' COMMENT '相似度',
   `state` varchar(12) NOT NULL COMMENT '开门状态，C 开门成功 F 开门失败',
   PRIMARY KEY (`inout_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of access_control_inout
@@ -190,8 +209,11 @@ CREATE TABLE `access_control_log` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `log_cmd` varchar(12) DEFAULT NULL COMMENT 'cmd',
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+-- ----------------------------
+-- Records of access_control_log
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for access_control_org
@@ -207,8 +229,32 @@ CREATE TABLE `access_control_org` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`aco_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+-- ----------------------------
+-- Records of access_control_org
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for access_control_shop
+-- ----------------------------
+DROP TABLE IF EXISTS `access_control_shop`;
+CREATE TABLE `access_control_shop` (
+  `acs_id` varchar(30) NOT NULL COMMENT '编号',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `location_id` varchar(30) NOT NULL COMMENT '位置ID',
+  `location_name` varchar(64) NOT NULL COMMENT '位置名称',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，0在用 1失效',
+  PRIMARY KEY (`acs_id`),
+  KEY `i_m_community_id` (`community_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of access_control_shop
+-- ----------------------------
+INSERT INTO `access_control_shop` VALUES ('102026081875600032', '102026080398750015', '20260512817111252', '742026081839370014', '1号楼', '2026-08-18 13:37:41', '1');
 
 -- ----------------------------
 -- Table structure for access_control_yite_card
@@ -222,7 +268,7 @@ CREATE TABLE `access_control_yite_card` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`acyc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of access_control_yite_card
@@ -244,13 +290,13 @@ CREATE TABLE `account` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `part_id` varchar(30) DEFAULT NULL COMMENT '局部ID',
   `link` varchar(11) DEFAULT NULL COMMENT '账户手机号',
+  `swipecard_no` varchar(11) DEFAULT NULL COMMENT '刷卡卡号',
   PRIMARY KEY (`acct_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES ('312026032476520826', '18909711443', '2003', '0.00', '6006', '302026032483220824', '-1', '2026-03-24 20:14:44', '0', '-1', '18909711443');
 
 -- ----------------------------
 -- Table structure for account_detail
@@ -270,7 +316,7 @@ CREATE TABLE `account_detail` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`detail_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of account_detail
@@ -299,9 +345,11 @@ CREATE TABLE `app_user` (
   PRIMARY KEY (`au_id`),
   KEY `i_oau_community_id` (`community_id`),
   KEY `i_oau_member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-
+-- ----------------------------
+-- Records of app_user
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for asset_import_log
@@ -311,15 +359,20 @@ CREATE TABLE `asset_import_log` (
   `log_id` varchar(30) NOT NULL COMMENT '日志ID',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `log_type` varchar(128) NOT NULL COMMENT '导入类型 1001 资产导入 2002 缴费历史导入',
-  `success_count` bigint(20) NOT NULL COMMENT '成功条数',
-  `error_count` bigint(20) NOT NULL COMMENT '失败条数',
+  `success_count` bigint NOT NULL COMMENT '成功条数',
+  `error_count` bigint NOT NULL COMMENT '失败条数',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '异常时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   `state` varchar(12) NOT NULL DEFAULT 'W' COMMENT '状态 W 待处理 D 处理中 C 处理完成',
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+-- ----------------------------
+-- Records of asset_import_log
+-- ----------------------------
+INSERT INTO `asset_import_log` VALUES ('102025123113559899', '2025072783670006', 'importRoomOwner', '0', '0', null, '2025-12-31 15:18:26', '0', 'C');
+INSERT INTO `asset_import_log` VALUES ('102025123155939903', '2025072783670006', 'importRoomOwner', '0', '0', null, '2025-12-31 15:20:30', '0', 'C');
 
 -- ----------------------------
 -- Table structure for asset_import_log_detail
@@ -335,7 +388,7 @@ CREATE TABLE `asset_import_log_detail` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '异常时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`detail_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of asset_import_log_detail
@@ -354,7 +407,7 @@ CREATE TABLE `asset_import_log_type` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '异常时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of asset_import_log_type
@@ -380,7 +433,7 @@ CREATE TABLE `attendance_checkin` (
   `state` varchar(12) NOT NULL COMMENT '考勤状态，C 考勤成功 F 考勤失败',
   `remark` varchar(256) DEFAULT NULL COMMENT '考勤说明',
   PRIMARY KEY (`checkin_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of attendance_checkin
@@ -406,12 +459,11 @@ CREATE TABLE `attendance_machine` (
   `monitor_name` varchar(64) DEFAULT NULL COMMENT '监控名称',
   PRIMARY KEY (`machine_id`),
   KEY `i_am_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of attendance_machine
 -- ----------------------------
-INSERT INTO `attendance_machine` VALUES ('102026041106643767', '10030', '考勤门禁', '102026041001793653', '10.108.108.107', '2026-04-11 10:34:19', '27', '888', 'test', '2026-04-11 10:34:19', '0', '', null);
 
 -- ----------------------------
 -- Table structure for attendance_machine_log
@@ -429,12 +481,11 @@ CREATE TABLE `attendance_machine_log` (
   `state` varchar(12) NOT NULL COMMENT '状态，请求成功 10001,返回成功10002,操作失败 10003',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of attendance_machine_log
 -- ----------------------------
-INSERT INTO `attendance_machine_log` VALUES ('112026041171553773', '102026041106643767', '102026041001793653', 'mgateway/request', '302026041168493747', '名称', '{\"faceData\":\"\",\"pass\":\"\",\"action\":\"HIK_ATTENDANCE\",\"cmd\":\"addUser\",\"sn\":\"10030\",\"userName\":\"名称\",\"userId\":\"302026041168493747\",\"taskId\":\"112026041171553773\"}', '', '10001', '2026-04-11 10:34:40');
 
 -- ----------------------------
 -- Table structure for attendance_staff
@@ -452,12 +503,11 @@ CREATE TABLE `attendance_staff` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`ms_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of attendance_staff
 -- ----------------------------
-INSERT INTO `attendance_staff` VALUES ('102026041130773771', '102026041106643767', '302026041168493747', '名称', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20260411/e11042a9-0cec-4e4f-80c2-eec6d3bbc06c.jpeg', 'W', '待下发设备', '102026041001793653', '2026-04-11 10:34:40', '0');
 
 -- ----------------------------
 -- Table structure for attr_spec
@@ -478,7 +528,7 @@ CREATE TABLE `attr_spec` (
   `domain` varchar(64) NOT NULL COMMENT '域',
   `spec_id` varchar(30) NOT NULL COMMENT '主键ID',
   PRIMARY KEY (`spec_cd`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of attr_spec
@@ -506,7 +556,7 @@ CREATE TABLE `attr_value` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   UNIQUE KEY `value_id` (`value_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of attr_value
@@ -534,9 +584,11 @@ CREATE TABLE `barrier` (
   `monitor_name` varchar(64) DEFAULT NULL COMMENT '监控名称',
   PRIMARY KEY (`machine_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-
+-- ----------------------------
+-- Records of barrier
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for building_owner
@@ -565,8 +617,11 @@ CREATE TABLE `building_owner` (
   UNIQUE KEY `idx_owner_id` (`member_id`) USING BTREE,
   KEY `idx_owner_b_id` (`b_id`) USING BTREE,
   KEY `i_bo_owner_id` (`owner_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
+-- ----------------------------
+-- Records of building_owner
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for building_owner_attr
@@ -582,7 +637,7 @@ CREATE TABLE `building_owner_attr` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID 分片ID',
   UNIQUE KEY `attr_id` (`attr_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of building_owner_attr
@@ -611,9 +666,11 @@ CREATE TABLE `building_owner_room_rel` (
   KEY `idx_orr_b_id` (`b_id`) USING BTREE,
   KEY `i_borr_owner_id` (`owner_id`) USING BTREE,
   KEY `i_borr_room_id` (`room_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-
+-- ----------------------------
+-- Records of building_owner_room_rel
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for building_room
@@ -625,7 +682,7 @@ CREATE TABLE `building_room` (
   `room_num` varchar(64) NOT NULL COMMENT '房屋编号',
   `unit_id` varchar(30) NOT NULL COMMENT '单元ID',
   `layer` varchar(12) NOT NULL COMMENT '层数',
-  `section` int(11) DEFAULT NULL COMMENT '室',
+  `section` int DEFAULT NULL COMMENT '室',
   `apartment` varchar(20) NOT NULL COMMENT '户型',
   `built_up_area` decimal(12,2) NOT NULL COMMENT '建筑面积',
   `fee_coefficient` decimal(12,2) NOT NULL DEFAULT '1.00' COMMENT '算费系数',
@@ -643,7 +700,11 @@ CREATE TABLE `building_room` (
   UNIQUE KEY `idx_room_id` (`room_id`) USING BTREE,
   KEY `idx_room_b_id` (`b_id`) USING BTREE,
   KEY `i_br_unit_id` (`unit_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of building_room
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for building_room_attr
@@ -660,11 +721,67 @@ CREATE TABLE `building_room_attr` (
   UNIQUE KEY `attr_id` (`attr_id`) USING BTREE,
   KEY `idx_b_attr_b_id` (`b_id`) USING BTREE,
   KEY `idx_attr_room_id` (`room_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of building_room_attr
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for building_shop
+-- ----------------------------
+DROP TABLE IF EXISTS `building_shop`;
+CREATE TABLE `building_shop` (
+  `shop_id` varchar(50) NOT NULL COMMENT '商铺ID',
+  `shop_num` varchar(50) NOT NULL COMMENT '商铺编号',
+  `location_id` varchar(50) DEFAULT NULL COMMENT '位置ID',
+  `location_name` varchar(100) DEFAULT NULL COMMENT '位置名称',
+  `built_up_area` varchar(20) DEFAULT NULL COMMENT '建筑面积',
+  `shop_area` varchar(20) DEFAULT NULL COMMENT '使用面积',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `state` varchar(4) NOT NULL DEFAULT '2008' COMMENT '状态 2006已出租 2007已出售 2008空置',
+  `community_id` varchar(50) NOT NULL COMMENT '小区ID',
+  `shop_rent` varchar(20) DEFAULT NULL COMMENT '租金',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '状态',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`shop_id`),
+  KEY `idx_community` (`community_id`),
+  KEY `idx_location` (`location_id`),
+  KEY `idx_shop_num` (`shop_num`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商铺表';
+
+-- ----------------------------
+-- Records of building_shop
+-- ----------------------------
+INSERT INTO `building_shop` VALUES ('502026081853760027', '1003', '742026081839370014', '1号楼', '100', '99', '', '2006', '20260512817111252', '100', '0', '2026-08-18 12:36:56');
+INSERT INTO `building_shop` VALUES ('502026081866720019', '1001', '742026081839370014', '1号楼', '100', '99', '', '2008', '20260512817111252', '1200', '1', '2026-08-18 12:33:30');
+
+-- ----------------------------
+-- Table structure for building_shop_owner
+-- ----------------------------
+DROP TABLE IF EXISTS `building_shop_owner`;
+CREATE TABLE `building_shop_owner` (
+  `shop_owner_id` varchar(50) NOT NULL COMMENT '关联ID',
+  `shop_id` varchar(50) NOT NULL COMMENT '商铺ID',
+  `owner_id` varchar(50) DEFAULT NULL COMMENT '业主ID',
+  `owner_name` varchar(100) DEFAULT NULL COMMENT '业主姓名',
+  `link` varchar(20) DEFAULT NULL COMMENT '联系电话',
+  `state` varchar(4) DEFAULT NULL COMMENT '状态 2006已出租 2007已出售',
+  `start_time` datetime DEFAULT NULL COMMENT '开始时间',
+  `end_time` datetime DEFAULT NULL COMMENT '结束时间',
+  `community_id` varchar(50) NOT NULL COMMENT '小区ID',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '状态',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`shop_owner_id`),
+  KEY `idx_shop` (`shop_id`),
+  KEY `idx_owner` (`owner_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商铺业主关联表';
+
+-- ----------------------------
+-- Records of building_shop_owner
+-- ----------------------------
+INSERT INTO `building_shop_owner` VALUES ('502026081815770017', '502026081853760027', '772026072093704422', '孙**', '13823456789', '2006', '2026-08-18 00:00:00', '2050-01-01 00:00:00', '20260512817111252', '1', '2026-08-18 13:33:46');
+INSERT INTO `building_shop_owner` VALUES ('502026081867630025', '502026081853760027', '772026072093704422', '孙**', '13823456789', '2006', '2026-08-18 00:00:00', '2050-01-01 00:00:00', '20260512817111252', '0', '2026-08-18 13:34:03');
 
 -- ----------------------------
 -- Table structure for building_unit
@@ -675,7 +792,7 @@ CREATE TABLE `building_unit` (
   `b_id` varchar(30) DEFAULT NULL COMMENT '业务ID',
   `unit_num` varchar(12) NOT NULL COMMENT '单元编号',
   `floor_id` varchar(30) NOT NULL COMMENT '楼ID',
-  `layer_count` int(11) NOT NULL COMMENT '总层数',
+  `layer_count` int NOT NULL COMMENT '总层数',
   `lift` varchar(4) NOT NULL COMMENT '是否有电梯 1010有 2020 无',
   `user_id` varchar(30) NOT NULL COMMENT '用户ID',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
@@ -687,30 +804,34 @@ CREATE TABLE `building_unit` (
   UNIQUE KEY `unit_id_2` (`unit_id`),
   KEY `idx_unit_b_id` (`b_id`) USING BTREE,
   KEY `i_bu_floor_id` (`floor_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of building_unit
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for buiness_small_wechat
 -- ----------------------------
 DROP TABLE IF EXISTS `buiness_small_wechat`;
 CREATE TABLE `buiness_small_wechat` (
-  `wechat_id` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '微信ID',
-  `b_id` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '业务ID',
-  `store_Id` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '商户ID',
-  `name` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '小程序名称',
-  `appId` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '小程序appid',
-  `appSecret` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '应用密钥',
-  `pay_password` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '支付密码',
-  `remarks` varchar(200) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `wechat_id` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '微信ID',
+  `b_id` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '业务ID',
+  `store_Id` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '商户ID',
+  `name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '小程序名称',
+  `appId` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '小程序appid',
+  `appSecret` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '应用密钥',
+  `pay_password` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '支付密码',
+  `remarks` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL COMMENT '备注信息',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `operate` varchar(4) COLLATE utf8_bin NOT NULL COMMENT '数据状态，添加ADD，修改MOD 删除DEL',
-  `obj_id` varchar(30) COLLATE utf8_bin NOT NULL,
-  `obj_type` varchar(4) COLLATE utf8_bin NOT NULL,
-  `mch_id` varchar(200) COLLATE utf8_bin NOT NULL,
-  `wechat_type` varchar(4) COLLATE utf8_bin DEFAULT NULL,
-  `cert_path` varchar(512) COLLATE utf8_bin DEFAULT NULL COMMENT '证书地址',
-  `mch_name` varchar(128) COLLATE utf8_bin NOT NULL DEFAULT '无' COMMENT '商户名称'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
+  `operate` varchar(4) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '数据状态，添加ADD，修改MOD 删除DEL',
+  `obj_id` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `obj_type` varchar(4) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `mch_id` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `wechat_type` varchar(4) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL,
+  `cert_path` varchar(512) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL COMMENT '证书地址',
+  `mch_name` varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL DEFAULT '无' COMMENT '商户名称'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of buiness_small_wechat
@@ -732,7 +853,7 @@ CREATE TABLE `business_account` (
   `operate` varchar(3) NOT NULL COMMENT '数据状态，添加ADD，修改MOD 删除DEL',
   `part_id` varchar(30) DEFAULT NULL COMMENT '局部ID',
   `link` varchar(11) DEFAULT NULL COMMENT '账户手机号'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of business_account
@@ -755,7 +876,7 @@ CREATE TABLE `business_account_detail` (
   `remark` varchar(1024) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `operate` varchar(3) NOT NULL COMMENT '数据状态，添加ADD，修改MOD 删除DEL'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of business_account_detail
@@ -772,7 +893,6 @@ CREATE TABLE `business_owner_car` (
   `car_num` varchar(12) NOT NULL COMMENT '车牌号',
   `car_brand` varchar(50) DEFAULT NULL COMMENT '汽车品牌',
   `car_type` varchar(4) NOT NULL COMMENT '9901 家用小汽车，9902 客车，9903 货车',
-  `car_color` varchar(12) DEFAULT NULL COMMENT '颜色',
   `ps_id` varchar(30) NOT NULL COMMENT '车位ID',
   `user_id` varchar(30) NOT NULL COMMENT '用户ID',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
@@ -787,7 +907,7 @@ CREATE TABLE `business_owner_car` (
   `lease_type` varchar(12) NOT NULL DEFAULT 'H' COMMENT '租赁类型，H 月租车 S 出售车 I 内部车 NM 免费车',
   KEY `idx_boc_car_id` (`car_id`) USING BTREE,
   KEY `idx_boc_b_id` (`b_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of business_owner_car
@@ -807,7 +927,7 @@ CREATE TABLE `business_owner_car_attr` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `operate` varchar(3) NOT NULL COMMENT '数据状态，添加ADD，修改MOD 删除DEL',
   PRIMARY KEY (`attr_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of business_owner_car_attr
@@ -827,8 +947,29 @@ CREATE TABLE `calling_contact` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`contact_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+-- ----------------------------
+-- Records of calling_contact
+-- ----------------------------
+INSERT INTO `calling_contact` VALUES ('252024083116590003', '242024083005220021', '2025072783670006', '282024083006140006', '102024030437870004', null, '2024-08-31 02:28:15', '1');
+INSERT INTO `calling_contact` VALUES ('252024090453930009', '242024090483700006', '2023052267100146', '282024083006140006', '102024071894860002', null, '2024-09-04 16:56:30', '0');
+INSERT INTO `calling_contact` VALUES ('252024090515250007', '242024090483700006', '2023052267100146', '282024083006140006', '102024090565700004', null, '2024-09-05 09:57:22', '0');
+INSERT INTO `calling_contact` VALUES ('252024090521740010', '242024083005220021', '2023052267100146', '282024083006140006', '102024090565700004', null, '2024-09-05 09:57:26', '0');
+INSERT INTO `calling_contact` VALUES ('252024090554370002', '242024090584230019', '2023052267100146', '282024083006140006', '102024090565700004', null, '2024-09-05 18:41:55', '0');
+INSERT INTO `calling_contact` VALUES ('252024090591790012', '242024083005220021', '2023052267100146', '282024083006140006', '102024071894860002', null, '2024-09-05 10:35:18', '0');
+INSERT INTO `calling_contact` VALUES ('252025121830313808', '242025121867503415', '2025072783670006', '282025121811713412', '102025121811233472', null, '2025-12-18 23:58:51', '0');
+INSERT INTO `calling_contact` VALUES ('252025121844423814', '242025121867503415', '2025072783670006', '282025121811713412', '102025121839123465', null, '2025-12-18 23:59:07', '1');
+INSERT INTO `calling_contact` VALUES ('252025121877483421', '242025121867503415', '2025072783670006', '282025121811713412', '102025121286481552', null, '2025-12-18 21:44:41', '0');
+INSERT INTO `calling_contact` VALUES ('252025121882583811', '242025120809276277', '20251127410920449', '', '102025121839123465', null, '2025-12-18 23:59:00', '0');
+INSERT INTO `calling_contact` VALUES ('252025121894323424', '242025120809276277', '20251127410920449', '', '102025121286481552', null, '2025-12-18 21:45:03', '0');
+INSERT INTO `calling_contact` VALUES ('252026040836569716', '242026040867979672', '20260324548723980', '282026040831269662', '102026040112362116', null, '2026-04-08 09:27:19', '0');
+INSERT INTO `calling_contact` VALUES ('252026040849349724', '242026040867979672', '20260324548723980', '282026040831269662', '102026040178242119', null, '2026-04-08 09:27:47', '0');
+INSERT INTO `calling_contact` VALUES ('252026040867319731', '242026040867979672', '20260324548723980', '282026040831269662', '102026040101632113', null, '2026-04-08 09:28:13', '0');
+INSERT INTO `calling_contact` VALUES ('252026071084620906', '242026071032560903', '20260512817111252', '282026040831269662', '102026071059520813', null, '2026-07-10 15:55:56', '0');
+INSERT INTO `calling_contact` VALUES ('252026080308090030', '242026080396470027', '2026070812860502', '282026080371740136', '102026080331040148', null, '2026-08-03 22:20:53', '1');
+INSERT INTO `calling_contact` VALUES ('252026080337300047', '242026080396470027', '2026070812860502', '282026080371740136', '102026080331040148', null, '2026-08-03 22:46:43', '0');
+INSERT INTO `calling_contact` VALUES ('252026080350760151', '242026080349850141', '2026070812860502', '282026080371740136', '102026080331040148', null, '2026-08-03 10:29:22', '0');
 
 -- ----------------------------
 -- Table structure for calling_device
@@ -846,8 +987,21 @@ CREATE TABLE `calling_device` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`device_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+-- ----------------------------
+-- Records of calling_device
+-- ----------------------------
+INSERT INTO `calling_device` VALUES ('242024083005220021', '1-108家的电话2', '2023052267100146', '282024083006140006', null, '1081', null, '123456', '2024-08-30 18:43:56', '0');
+INSERT INTO `calling_device` VALUES ('242024090483700006', '曾总室内机', '2023052267100146', '282024083006140006', null, '1823124153171226624', null, '123456', '2024-09-04 16:56:20', '0');
+INSERT INTO `calling_device` VALUES ('242024090584230019', 'fs室内机', '2023052267100146', '282024083006140006', null, '10815', null, '10815', '2024-09-05 17:19:22', '0');
+INSERT INTO `calling_device` VALUES ('242025120809276277', '1', '20251127410920449', '', null, '123', null, '123', '2025-12-08 21:53:58', '0');
+INSERT INTO `calling_device` VALUES ('242025121867503415', '闪光灯v发', '2025072783670006', '282025121811713412', null, '啊v发展的v', null, '上班的地方', '2025-12-18 21:44:04', '0');
+INSERT INTO `calling_device` VALUES ('242026040867979672', '设备名称', '20260324548723980', '282026040831269662', null, '1888888', null, '设备名称', '2026-04-08 09:23:29', '0');
+INSERT INTO `calling_device` VALUES ('242026071032560903', 'ss', '20260512817111252', '282026040831269662', null, '18909714526', null, 'ss', '2026-07-10 15:55:45', '0');
+INSERT INTO `calling_device` VALUES ('242026080349850141', '室内机', '2026070812860502', '282026080371740136', null, '1823045616068243466', null, '1', '2026-08-03 10:27:00', '0');
+INSERT INTO `calling_device` VALUES ('242026080370460144', '测试门禁机', '2026070812860502', '282026080371740136', null, '1823045616068243456', null, '6', '2026-08-03 10:27:15', '0');
+INSERT INTO `calling_device` VALUES ('242026080396470027', '手机', '2026070812860502', '282026080371740136', null, '1823045616068243467', null, 'ss', '2026-08-03 22:20:47', '0');
 
 -- ----------------------------
 -- Table structure for calling_platform
@@ -864,7 +1018,18 @@ CREATE TABLE `calling_platform` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`platform_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of calling_platform
+-- ----------------------------
+INSERT INTO `calling_platform` VALUES ('282024083006140006', '2023052267100146', 'HC官方SIP服务器', '120.46.79.208', '5060', null, '6666', '2024-08-30 18:17:23', '0');
+INSERT INTO `calling_platform` VALUES ('282024083063380010', '2023052267100146', 'hc平台2', '192.168.3.18', '5060', null, '测试', '2024-08-30 18:00:39', '1');
+INSERT INTO `calling_platform` VALUES ('282024120317390010', '102023021386560001', 'test', 'www', '80', null, '80', '2024-12-03 11:19:44', '0');
+INSERT INTO `calling_platform` VALUES ('282025121811713412', '2025072783670006', '安平', '1351653223', '332', null, '船袜', '2025-12-18 21:43:48', '0');
+INSERT INTO `calling_platform` VALUES ('282026040831269662', '20260324548723980', '平台名称', '127.1.1.1', '6001', null, '平台名称', '2026-04-08 09:22:48', '0');
+INSERT INTO `calling_platform` VALUES ('282026071044220898', '20260512817111252', 'ss', '192.168.1.103', '3000', null, 'ss', '2026-07-10 15:50:18', '0');
+INSERT INTO `calling_platform` VALUES ('282026080371740136', '2026070812860502', 'testMvideo', '192.168.31.45', '5060', null, '999', '2026-08-03 10:24:36', '0');
 
 -- ----------------------------
 -- Table structure for car_black_white
@@ -881,7 +1046,7 @@ CREATE TABLE `car_black_white` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `pa_id` varchar(30) NOT NULL COMMENT '停车场ID'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of car_black_white
@@ -917,10 +1082,101 @@ CREATE TABLE `car_inout` (
   KEY `cid_community_id` (`community_id`),
   KEY `cid_car_num` (`car_num`),
   KEY `cid_pa_id` (`pa_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of car_inout
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for car_inout_evasion
+-- ----------------------------
+DROP TABLE IF EXISTS `car_inout_evasion`;
+CREATE TABLE `car_inout_evasion` (
+  `evasion_id` varchar(30) NOT NULL COMMENT '逃费记录ID',
+  `car_num` varchar(16) NOT NULL COMMENT '车牌号',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
+  `pa_num` varchar(12) NOT NULL COMMENT '停车场编号',
+  `box_id` varchar(30) DEFAULT NULL COMMENT '岗亭ID',
+  `inout_id` varchar(30) DEFAULT NULL COMMENT '出场记录ID',
+  `ci_id` varchar(30) DEFAULT NULL COMMENT '进场记录ID',
+  `in_time` datetime DEFAULT NULL COMMENT '进场时间',
+  `evasion_time` datetime NOT NULL COMMENT '逃费时间',
+  `amount` decimal(10,2) DEFAULT NULL COMMENT '应缴金额',
+  `state` varchar(2) NOT NULL DEFAULT 'W' COMMENT '状态 W待处理 D已处理',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `photo_jpg` varchar(500) DEFAULT NULL COMMENT '抓拍图片URL',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '状态 0在用 1失效',
+  PRIMARY KEY (`evasion_id`),
+  KEY `idx_car_num` (`car_num`),
+  KEY `idx_community_id` (`community_id`),
+  KEY `idx_evasion_time` (`evasion_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='车辆逃费记录表';
+
+-- ----------------------------
+-- Records of car_inout_evasion
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for car_inout_evasion_config
+-- ----------------------------
+DROP TABLE IF EXISTS `car_inout_evasion_config`;
+CREATE TABLE `car_inout_evasion_config` (
+  `config_id` varchar(30) NOT NULL COMMENT '配置ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `evasion_open` varchar(2) NOT NULL DEFAULT 'N' COMMENT '是否开启逃费检测 Y/N',
+  `query_days` varchar(4) NOT NULL DEFAULT '1' COMMENT '查询天数',
+  `query_minutes` varchar(4) NOT NULL DEFAULT '30' COMMENT '停车时长阈值（分钟）',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '状态 0在用 1失效',
+  PRIMARY KEY (`config_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='逃费检测配置表';
+
+-- ----------------------------
+-- Records of car_inout_evasion_config
+-- ----------------------------
+INSERT INTO `car_inout_evasion_config` VALUES ('112026072819750005', '20260512817111252', 'Y', '1', '30', '2026-07-28 14:50:50', '0');
+
+-- ----------------------------
+-- Table structure for car_inout_his
+-- ----------------------------
+DROP TABLE IF EXISTS `car_inout_his`;
+CREATE TABLE `car_inout_his` (
+  `ci_id` varchar(64) NOT NULL COMMENT '主键ID',
+  `inout_id` varchar(64) NOT NULL COMMENT '进出ID',
+  `community_id` varchar(64) NOT NULL COMMENT '小区ID',
+  `car_num` varchar(64) NOT NULL COMMENT '车牌号',
+  `car_inout` varchar(12) NOT NULL COMMENT '3306 进场 3307 出场',
+  `open_time` datetime NOT NULL COMMENT '时间',
+  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
+  `machine_code` varchar(30) NOT NULL COMMENT '设备编码',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `pa_id` varchar(64) NOT NULL COMMENT '停车场ID',
+  `pa_num` varchar(64) NOT NULL COMMENT '停车场编号',
+  `state` varchar(12) NOT NULL COMMENT '状态，100300 进场状态 100400 支付完成 100500 离场状态 100600 支付超时重新支付',
+  `car_type` varchar(12) NOT NULL COMMENT '车辆类型，1001 月租车 1003 临时车',
+  `car_type_name` varchar(128) NOT NULL COMMENT '类型名称',
+  `photo_jpg` varchar(512) DEFAULT NULL COMMENT '开门图片',
+  `in_time` datetime NOT NULL COMMENT '进场时间',
+  `unlicense` varchar(12) DEFAULT 'F' COMMENT '无牌车 T 无牌车 F 有牌车',
+  `color_type` varchar(12) NOT NULL DEFAULT '1' COMMENT '车牌颜色',
+  PRIMARY KEY (`ci_id`),
+  KEY `cid_inout_id` (`inout_id`),
+  KEY `cid_community_id` (`community_id`),
+  KEY `cid_car_num` (`car_num`),
+  KEY `cid_pa_id` (`pa_id`),
+  KEY `idx_car_inout_his_car_num` (`car_num`),
+  KEY `idx_car_inout_his_community` (`community_id`),
+  KEY `idx_car_inout_his_open_time` (`open_time`),
+  KEY `idx_car_inout_his_create_time` (`create_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of car_inout_his
 -- ----------------------------
 
 -- ----------------------------
@@ -937,13 +1193,24 @@ CREATE TABLE `car_inout_payment` (
   `real_charge` varchar(12) DEFAULT NULL COMMENT '实收金额',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`payment_id`),
   KEY `cip_inout_id` (`inout_id`),
   KEY `cip_community_id` (`community_id`),
   KEY `cip_pa_id` (`pa_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-
+-- ----------------------------
+-- Records of car_inout_payment
+-- ----------------------------
+INSERT INTO `car_inout_payment` VALUES ('92024020166870034', '112024020147010001', '2024012252790005', '102024012226070099', '1', null, '0.0', '2024-02-01 15:45:39', '0', null);
+INSERT INTO `car_inout_payment` VALUES ('92025120339054514', '112025120382284484', '20251127410920449', '1020251128375824048', '2', '3.0', '3.0', '2025-12-03 15:19:05', '0', null);
+INSERT INTO `car_inout_payment` VALUES ('92025120464435083', '112025120462745081', '20251127410920449', '1020251128375824048', '2', '3.0', '3.0', '2025-12-04 16:31:34', '0', null);
+INSERT INTO `car_inout_payment` VALUES ('92025122619367401', '112025122665377397', '20251127410920449', '1020251128375824048', '1', '3.0', '3.0', '2025-12-26 10:56:56', '0', null);
+INSERT INTO `car_inout_payment` VALUES ('92025122680777388', '112025122677767373', '20251127410920449', '1020251128375824048', '1', '3.0', '3.0', '2025-12-26 10:30:29', '0', null);
+INSERT INTO `car_inout_payment` VALUES ('92026011987603989', '112026011916163981', '2025072783670006', '102025122200983006', '2', '9.0', '9.0', '2026-01-19 10:08:44', '0', null);
+INSERT INTO `car_inout_payment` VALUES ('92026011991353974', '112026011991043921', '2025072783670006', '102025122200983006', '2', '9.0', '9.0', '2026-01-19 10:07:07', '0', null);
+INSERT INTO `car_inout_payment` VALUES ('92026012854180746', '112026011507371067', '2025072783670006', '102025122200983006', '2', '260.0', '260.0', '2026-01-28 12:17:13', '0', null);
 
 -- ----------------------------
 -- Table structure for car_inout_temp_auth
@@ -966,7 +1233,25 @@ CREATE TABLE `car_inout_temp_auth` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`auth_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of car_inout_temp_auth
+-- ----------------------------
+INSERT INTO `car_inout_temp_auth` VALUES ('112024040912720011', '_无_', '0', '2023052267100146', '102023061679340015', '1', '102024022027080770', '926bc310-29b221e1', '测试设备入', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20240409/23/20240409_232000_128.jpg', 'W', null, '临时车,_无_,请等待人工放行', '2024-04-09 23:20:00', '0');
+INSERT INTO `car_inout_temp_auth` VALUES ('112024040937980015', '晋M9J821', '1', '2023052267100146', '102023061679340015', '1', '102024022027080770', '926bc310-29b221e1', '测试设备入', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20240409/23/20240409_235533_533.jpg', 'W', null, '临时车,晋M9J821,请等待人工放行', '2024-04-09 23:55:34', '0');
+INSERT INTO `car_inout_temp_auth` VALUES ('112024040947320010', '_无_', '0', '2023052267100146', '102023061679340015', '1', '102024022027080770', '926bc310-29b221e1', '测试设备入', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20240409/23/20240409_231800_304.jpg', 'W', null, '临时车,_无_,请等待人工放行', '2024-04-09 23:18:01', '0');
+INSERT INTO `car_inout_temp_auth` VALUES ('112024040949590014', '晋M9J821', '1', '2023052267100146', '102023061679340015', '1', '102024022027080770', '926bc310-29b221e1', '测试设备入', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20240409/23/20240409_235400_173.jpg', 'W', null, '临时车,晋M9J821,请等待人工放行', '2024-04-09 23:54:00', '0');
+INSERT INTO `car_inout_temp_auth` VALUES ('112024040950200006', '晋M9J821', '1', '2023052267100146', '102023061679340015', '1', '102024022027080770', '926bc310-29b221e1', '测试设备入', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20240409/23/20240409_235731_488.jpg', 'W', null, '临时车,晋M9J821,请等待人工放行', '2024-04-09 23:57:32', '0');
+INSERT INTO `car_inout_temp_auth` VALUES ('112024040950790013', '晋M9J821', '1', '2023052267100146', '102023061679340015', '1', '102024022027080770', '926bc310-29b221e1', '测试设备入', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20240409/23/20240409_235221_666.jpg', 'W', null, '临时车,晋M9J821,请等待人工放行', '2024-04-09 23:52:22', '0');
+INSERT INTO `car_inout_temp_auth` VALUES ('112024040952680004', '鲁M9J021', '1', '2023052267100146', '102023061679340015', '1', '102024022027080770', '926bc310-29b221e1', '测试设备入', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20240409/23/20240409_235715_852.jpg', 'W', null, '临时车,鲁M9J021,请等待人工放行', '2024-04-09 23:57:16', '0');
+INSERT INTO `car_inout_temp_auth` VALUES ('112024040961980012', '_无_', '0', '2023052267100146', '102023061679340015', '1', '102024022027080770', '926bc310-29b221e1', '测试设备入', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20240409/23/20240409_233117_202.jpg', 'W', null, '临时车,_无_,请等待人工放行', '2024-04-09 23:31:17', '0');
+INSERT INTO `car_inout_temp_auth` VALUES ('112024040965200003', '晋M9J821', '1', '2023052267100146', '102023061679340015', '1', '102024022027080770', '926bc310-29b221e1', '测试设备入', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20240409/23/20240409_235706_850.jpg', 'C', '允许通行', '临时车,晋M9J821,请等待人工放行', '2024-04-09 23:57:07', '0');
+INSERT INTO `car_inout_temp_auth` VALUES ('112024040975730002', '晋M9J821', '1', '2023052267100146', '102023061679340015', '1', '102024022027080770', '926bc310-29b221e1', '测试设备入', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20240409/23/20240409_235656_796.jpg', 'W', null, '临时车,晋M9J821,请等待人工放行', '2024-04-09 23:56:57', '0');
+INSERT INTO `car_inout_temp_auth` VALUES ('112024040986050005', '晋M9J821', '1', '2023052267100146', '102023061679340015', '1', '102024022027080770', '926bc310-29b221e1', '测试设备入', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20240409/23/20240409_235718_871.jpg', 'C', '允许通行', '临时车,晋M9J821,请等待人工放行', '2024-04-09 23:57:19', '0');
+INSERT INTO `car_inout_temp_auth` VALUES ('112024040992330001', '晋M9J821', '1', '2023052267100146', '102023061679340015', '1', '102024022027080770', '926bc310-29b221e1', '测试设备入', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20240409/23/20240409_235646_449.jpg', 'W', null, '临时车,晋M9J821,请等待人工放行', '2024-04-09 23:56:47', '0');
+INSERT INTO `car_inout_temp_auth` VALUES ('112024060554160001', '浙ABG7358', '19', '2024041265850103', '102024052316490006', '1', '102024060531560008', 'dee850eb-4bef4b9c', '进场摄像头', 'http://zhongxiangxc.oss-cn-beijing.aliyuncs.com/dee850eb-4bef4b9c/1717587043_dee850eb-4bef4b9c_233352_38486_full.jpg', 'W', null, '临时车,浙ABG7358,请等待人工放行', '2024-06-05 19:37:49', '0');
+INSERT INTO `car_inout_temp_auth` VALUES ('112024060574560028', '浙ABG7358', '19', '2024041265850103', '102024052316490006', '1', '102024060531560008', 'dee850eb-4bef4b9c', '进场摄像头', 'http://zhongxiangxc.oss-cn-beijing.aliyuncs.com/dee850eb-4bef4b9c/1717587043_dee850eb-4bef4b9c_233352_38486_full.jpg?Expires=1717590643&OSSAccessKeyId=LTAI5tKfibenHQgBWJBhoHVy&Signature=GEwuVLZcpwVjRRxywtssUQI%2bVXQ%3d', 'W', null, '临时车,浙ABG7358,请等待人工放行', '2024-06-05 19:37:48', '0');
 
 -- ----------------------------
 -- Table structure for car_month_card
@@ -975,7 +1260,7 @@ DROP TABLE IF EXISTS `car_month_card`;
 CREATE TABLE `car_month_card` (
   `card_id` varchar(30) NOT NULL COMMENT '卡ID',
   `card_name` varchar(200) NOT NULL COMMENT '名称',
-  `card_month` int(11) NOT NULL DEFAULT '1' COMMENT '月',
+  `card_month` int NOT NULL DEFAULT '1' COMMENT '月',
   `card_price` decimal(10,2) NOT NULL COMMENT '月价',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `pa_id` varchar(30) NOT NULL COMMENT '车位ID',
@@ -983,13 +1268,11 @@ CREATE TABLE `car_month_card` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`card_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of car_month_card
 -- ----------------------------
-INSERT INTO `car_month_card` VALUES ('102026032718061104', '5050', '3', '300.00', '20260324548723980', '102026032433580737', '2026-03-27 06:24:20', '0', '');
-INSERT INTO `car_month_card` VALUES ('102026040811189906', '1', '1', '300.00', '20260324548723980', '102026040863729757', '2026-04-08 09:41:17', '0', '1');
 
 -- ----------------------------
 -- Table structure for car_month_order
@@ -1014,11 +1297,67 @@ CREATE TABLE `car_month_order` (
   `cashier_id` varchar(30) DEFAULT NULL COMMENT '收银员ID，员工ID',
   `cashier_name` varchar(30) DEFAULT NULL COMMENT '收银员,员工',
   PRIMARY KEY (`order_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of car_month_order
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for car_savings
+-- ----------------------------
+DROP TABLE IF EXISTS `car_savings`;
+CREATE TABLE `car_savings` (
+  `savings_id` varchar(30) NOT NULL COMMENT '储蓄ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
+  `pa_name` varchar(64) NOT NULL COMMENT '停车场名称',
+  `car_num` varchar(12) NOT NULL COMMENT '车牌号',
+  `contact_name` varchar(64) DEFAULT NULL COMMENT '联系人',
+  `contact_phone` varchar(20) DEFAULT NULL COMMENT '联系电话',
+  `balance` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '余额',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，0在用 1失效',
+  PRIMARY KEY (`savings_id`),
+  KEY `i_cs_community_id` (`community_id`),
+  KEY `i_cs_pa_id` (`pa_id`),
+  KEY `i_cs_car_num` (`car_num`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='车辆储蓄表';
+
+-- ----------------------------
+-- Records of car_savings
+-- ----------------------------
+INSERT INTO `car_savings` VALUES ('102026061233540008', '20260324548723980', '102026040863729757', '001', '青A88488', '无线也', '18909714526', '900.00', '2026-06-12 14:59:41', '0');
+
+-- ----------------------------
+-- Table structure for car_savings_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `car_savings_detail`;
+CREATE TABLE `car_savings_detail` (
+  `detail_id` varchar(30) NOT NULL COMMENT '明细ID',
+  `savings_id` varchar(30) NOT NULL COMMENT '储蓄ID',
+  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
+  `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
+  `car_num` varchar(12) NOT NULL COMMENT '车牌号',
+  `change_type` varchar(12) NOT NULL COMMENT '变更类型: 1001充值 2002扣款 2003手动调整',
+  `change_amount` decimal(10,2) NOT NULL COMMENT '变更金额（正数为增加，负数为减少）',
+  `balance_before` decimal(10,2) NOT NULL COMMENT '变更前余额',
+  `balance_after` decimal(10,2) NOT NULL COMMENT '变更后余额',
+  `pay_type` varchar(4) DEFAULT NULL COMMENT '支付方式: 1微信 2支付宝 3现金 4转账 5其他',
+  `remark` varchar(256) DEFAULT NULL COMMENT '备注',
+  `inout_id` varchar(30) DEFAULT NULL COMMENT '关联进出场ID（扣款时记录）',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，0在用 1失效',
+  PRIMARY KEY (`detail_id`),
+  KEY `i_csd_savings_id` (`savings_id`),
+  KEY `i_csd_car_num` (`car_num`),
+  KEY `i_csd_inout_id` (`inout_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='车辆储蓄明细表';
+
+-- ----------------------------
+-- Records of car_savings_detail
+-- ----------------------------
+INSERT INTO `car_savings_detail` VALUES ('102026061203580008', '102026061233540008', '20260324548723980', '102026040863729757', '青A88488', '1001', '100.00', '800.00', '900.00', '2', '', null, '2026-06-12 15:54:13', '0');
 
 -- ----------------------------
 -- Table structure for charge_coupon_park
@@ -1034,14 +1373,14 @@ CREATE TABLE `charge_coupon_park` (
   `shop_name` varchar(100) NOT NULL COMMENT '店铺名称',
   `coupon_id` varchar(30) NOT NULL COMMENT '优惠券ID',
   `coupon_name` varchar(30) NOT NULL COMMENT '优惠券名称',
-  `min_min` tinyint(4) DEFAULT NULL COMMENT '最小分钟数',
-  `max_min` tinyint(4) DEFAULT NULL COMMENT '最大分钟数',
+  `min_min` tinyint DEFAULT NULL COMMENT '最小分钟数',
+  `max_min` tinyint DEFAULT NULL COMMENT '最大分钟数',
   `state` varchar(12) NOT NULL DEFAULT 'W' COMMENT '状态 W 失效 C 有效',
   `remark` varchar(512) DEFAULT NULL COMMENT '说明',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`ccp_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='充电汽车停车券配置';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='充电汽车停车券配置';
 
 -- ----------------------------
 -- Records of charge_coupon_park
@@ -1067,7 +1406,7 @@ CREATE TABLE `charge_machine` (
   `monitor_id` varchar(30) DEFAULT NULL COMMENT '监控ID',
   `monitor_name` varchar(64) DEFAULT NULL COMMENT '监控名称',
   PRIMARY KEY (`machine_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of charge_machine
@@ -1085,7 +1424,7 @@ CREATE TABLE `charge_machine_factory` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`factory_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of charge_machine_factory
@@ -1095,6 +1434,7 @@ INSERT INTO `charge_machine_factory` VALUES ('102023120469860005', 'test', 'test
 INSERT INTO `charge_machine_factory` VALUES ('102024011641490014', '官方充电桩协议（需要厂家支持）', 'hcChargeMachineFactory', '', '2024-01-16 16:46:47', '0');
 INSERT INTO `charge_machine_factory` VALUES ('102024060549080002', '松饼供应链', 'songbingChargeMachineFactory', '松饼供应链定制充电桩', '2024-06-05 03:04:23', '0');
 INSERT INTO `charge_machine_factory` VALUES ('102024080966670003', '松饼汽车供应链', 'yunCarChargeMachineFactory', '松饼汽车充电桩', '2024-08-09 17:26:45', '0');
+INSERT INTO `charge_machine_factory` VALUES ('102026082120400998', 'test', 'test', 'teset', '2026-08-21 20:22:32', '1');
 INSERT INTO `charge_machine_factory` VALUES ('2', '通用充电桩', 'commonChargeMachineFactory', '通用充电桩', '2023-03-08 00:56:04', '1');
 INSERT INTO `charge_machine_factory` VALUES ('3', '驴充充', 'lvCCChargeMachineFactory', '驴充充', '2023-03-08 00:56:04', '0');
 
@@ -1110,7 +1450,7 @@ CREATE TABLE `charge_machine_factory_spec` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   `remark` varchar(256) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`spec_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of charge_machine_factory_spec
@@ -1147,7 +1487,7 @@ CREATE TABLE `charge_machine_order` (
   KEY `i_cmo_machine_id` (`machine_id`),
   KEY `i_cmo_port_id` (`port_id`),
   KEY `i_cmo_order_id` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of charge_machine_order
@@ -1173,7 +1513,7 @@ CREATE TABLE `charge_machine_order_acct` (
   `duration_price` decimal(10,2) DEFAULT '0.00' COMMENT '小时电价',
   PRIMARY KEY (`cmoa_id`) USING BTREE,
   KEY `i_cmoa_order_id` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of charge_machine_order_acct
@@ -1195,7 +1535,7 @@ CREATE TABLE `charge_machine_order_coupon` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `state` varchar(12) NOT NULL DEFAULT 'W' COMMENT '状态 W 待使用 C 已使用',
   PRIMARY KEY (`cmoc_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of charge_machine_order_coupon
@@ -1215,7 +1555,7 @@ CREATE TABLE `charge_machine_port` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`port_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of charge_machine_port
@@ -1235,7 +1575,7 @@ CREATE TABLE `charge_machine_spec` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`cms_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of charge_machine_spec
@@ -1250,7 +1590,7 @@ DROP TABLE IF EXISTS `charge_month_card`;
 CREATE TABLE `charge_month_card` (
   `card_id` varchar(30) NOT NULL COMMENT '卡ID',
   `card_name` varchar(200) NOT NULL COMMENT '名称',
-  `card_month` int(11) NOT NULL DEFAULT '1' COMMENT '月',
+  `card_month` int NOT NULL DEFAULT '1' COMMENT '月',
   `card_price` decimal(10,2) NOT NULL COMMENT '月价',
   `day_hours` varchar(30) NOT NULL COMMENT '每日充电小时',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
@@ -1258,12 +1598,11 @@ CREATE TABLE `charge_month_card` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`card_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of charge_month_card
 -- ----------------------------
-INSERT INTO `charge_month_card` VALUES ('102026033094461232', '月卡1', '30', '200.00', '10', '20260324548723980', '2026-03-30 16:51:48', '0', '');
 
 -- ----------------------------
 -- Table structure for charge_month_order
@@ -1284,7 +1623,7 @@ CREATE TABLE `charge_month_order` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`order_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of charge_month_order
@@ -1305,7 +1644,43 @@ CREATE TABLE `charge_peak_alley_price` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`cpa_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of charge_peak_alley_price
+-- ----------------------------
+INSERT INTO `charge_peak_alley_price` VALUES ('232025012300610025', '102025012261730003', '01', '0.20', '0.20', '102024121715970003', '', '2025-01-23 00:06:42', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025012301890029', '102025012261730003', '03', '0.40', '0.20', '102024121715970003', '', '2025-01-23 00:06:43', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025012341790023', '102025012261730003', '00', '0.10', '0.20', '102024121715970003', '', '2025-01-23 00:06:41', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025012351840013', '102025012261730003', '00', '0.10', '0.20', '102024121715970003', '', '2025-01-23 00:03:51', '1');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025012367490019', '102025012261730003', '03', '0.40', '0.20', '102024121715970003', '', '2025-01-23 00:03:53', '1');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025012372030017', '102025012261730003', '02', '0.30', '0.20', '102024121715970003', '', '2025-01-23 00:03:52', '1');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025012377510015', '102025012261730003', '01', '0.20', '0.20', '102024121715970003', '', '2025-01-23 00:03:52', '1');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025012383870027', '102025012261730003', '02', '0.40', '0.20', '102024121715970003', '', '2025-01-23 00:06:43', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025032808260008', '102025032801650004', '00', '1.00', '1.00', '2024122649870005', '1', '2025-03-28 20:02:34', '1');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025032808700012', '102025032801650004', '02', '1.00', '1.00', '2024122649870005', '1', '2025-03-28 20:02:36', '1');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025032891630014', '102025032801650004', '03', '1.00', '1.00', '2024122649870005', '1', '2025-03-28 20:02:36', '1');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025032898250010', '102025032801650004', '01', '1.00', '1.00', '2024122649870005', '1', '2025-03-28 20:02:35', '1');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025112521970625', '102025032801650004', '00', '1.00', '1.00', '2024122649870005', '1', '2025-11-25 10:57:17', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025112573030629', '102025032801650004', '02', '1.00', '1.00', '2024122649870005', '1', '2025-11-25 10:57:17', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025112575970627', '102025032801650004', '01', '1.00', '1.00', '2024122649870005', '1', '2025-11-25 10:57:17', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025112595770631', '102025032801650004', '03', '1.00', '1.00', '2024122649870005', '1', '2025-11-25 10:57:17', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025121105588286', '102025121139998274', '02', '1.00', '1.00', '2025072783670006', '', '2025-12-11 10:31:20', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025121113224636', '102025121167053012', '02', '1.00', '1.00', '20251127410920449', '', '2025-12-11 10:48:46', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025121124398282', '102025121139998274', '00', '1.00', '1.00', '2025072783670006', '', '2025-12-11 10:31:20', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025121150938288', '102025121139998274', '03', '1.00', '1.00', '2025072783670006', '', '2025-12-11 10:31:20', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025121156054630', '102025121167053012', '01', '1.00', '1.00', '20251127410920449', '', '2025-12-11 10:48:46', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025121178834624', '102025121167053012', '00', '1.00', '1.00', '20251127410920449', '', '2025-12-11 10:48:46', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025121193054642', '102025121167053012', '03', '1.00', '1.00', '20251127410920449', '', '2025-12-11 10:48:46', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232025121194408284', '102025121139998274', '01', '1.00', '1.00', '2025072783670006', '', '2025-12-11 10:31:20', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232026012447128588', '102026012437208547', '00', '12.00', '88.00', '-1', '', '2026-01-24 19:34:41', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232026012460298590', '102026012437208547', '01', '20.00', '58.00', '-1', '', '2026-01-24 19:34:41', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232026012465368592', '102026012437208547', '02', '15.00', '30.00', '-1', '', '2026-01-24 19:34:41', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232026012470508594', '102026012437208547', '03', '2.00', '5.00', '-1', '', '2026-01-24 19:34:41', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232026071034540088', '102026071013930082', '01', '0.20', '0.30', '20260512817111252', '', '2026-07-11 00:45:40', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232026071045750090', '102026071013930082', '02', '0.20', '0.30', '20260512817111252', '', '2026-07-11 00:45:40', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232026071083960092', '102026071013930082', '03', '0.20', '0.30', '20260512817111252', '', '2026-07-11 00:45:40', '0');
+INSERT INTO `charge_peak_alley_price` VALUES ('232026071085220086', '102026071013930082', '00', '0.20', '0.30', '20260512817111252', '', '2026-07-11 00:45:40', '0');
 
 -- ----------------------------
 -- Table structure for charge_process_analysis
@@ -1337,7 +1712,7 @@ CREATE TABLE `charge_process_analysis` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`cpa_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='充电过程解析0x13';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='充电过程解析0x13';
 
 -- ----------------------------
 -- Records of charge_process_analysis
@@ -1358,7 +1733,7 @@ CREATE TABLE `charge_process_info` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`cpi_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='充电过程解析0x13';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='充电过程解析0x13';
 
 -- ----------------------------
 -- Records of charge_process_info
@@ -1377,12 +1752,11 @@ CREATE TABLE `charge_rule` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `charge_type` varchar(8) NOT NULL COMMENT '充电类型，1001 电动摩托车，1002 电动汽车',
   PRIMARY KEY (`rule_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of charge_rule
 -- ----------------------------
-INSERT INTO `charge_rule` VALUES ('102026040163651910', '测试', '20260324548723980', '', '2026-04-01 10:15:13', '0', '1001');
 
 -- ----------------------------
 -- Table structure for charge_rule_fee
@@ -1403,12 +1777,11 @@ CREATE TABLE `charge_rule_fee` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `service_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '服务单价',
   PRIMARY KEY (`crf_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of charge_rule_fee
 -- ----------------------------
-INSERT INTO `charge_rule_fee` VALUES ('102026040876119239', '102026040163651910', '0.00', '20.00', null, null, '1.20', '20260324548723980', '1001', '', '2026-04-08 08:48:16', '0', '0.20');
 
 -- ----------------------------
 -- Table structure for charge_rule_price
@@ -1427,7 +1800,7 @@ CREATE TABLE `charge_rule_price` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `cpa_id` varchar(30) DEFAULT NULL COMMENT '尖峰谷平价格规则ID',
   PRIMARY KEY (`crp_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of charge_rule_price
@@ -1450,12 +1823,12 @@ CREATE TABLE `city_area` (
   `status_cd` varchar(1) NOT NULL DEFAULT '0' COMMENT '数据状态 0 有效 1失效',
   PRIMARY KEY (`area_code`),
   KEY `index_ca_parent_area_code` (`parent_area_code`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of city_area
 -- ----------------------------
-INSERT INTO `city_area` VALUES ('1', '110000', '北京省', '101', '0', '中国', '116.405285', '39.904989', '2019-11-24 12:59:28', '0');
+INSERT INTO `city_area` VALUES ('1', '110000', '北京市', '101', '0', '中国', '116.405285', '39.904989', '2019-11-24 12:59:28', '0');
 INSERT INTO `city_area` VALUES ('32', '110100', '北京市', '202', '110000', '北京省', '116.405285', '39.904989', '2019-11-24 12:59:28', '0');
 INSERT INTO `city_area` VALUES ('375', '110101', '东城区', '303', '110100', '北京市', '116.418757', '39.917544', '2019-11-24 12:59:28', '0');
 INSERT INTO `city_area` VALUES ('376', '110102', '西城区', '303', '110100', '北京市', '116.366794', '39.915309', '2019-11-24 12:59:28', '0');
@@ -3258,7 +3631,7 @@ INSERT INTO `city_area` VALUES ('199', '419000', '省直辖县级行政区划', 
 INSERT INTO `city_area` VALUES ('1991', '419001', '济源市', '303', '419000', '省直辖县级行政区划', '112.509', '35.0243', '2019-11-24 12:59:28', '0');
 INSERT INTO `city_area` VALUES ('17', '420000', '湖北省', '101', '0', '中国', '114.298572', '30.584355', '2019-11-24 12:59:28', '0');
 INSERT INTO `city_area` VALUES ('200', '420100', '武汉市', '202', '420000', '湖北省', '114.298572', '30.584355', '2019-11-24 12:59:28', '0');
-INSERT INTO `city_area` VALUES ('1992', '420102', '江岸区', '303', '420100', '武汉市', '114.30304', '30.594911', '2019-11-24 12:59:28', '0');
+INSERT INTO `city_area` VALUES ('1992', '420102', '江岸区1', '303', '420100', '武汉市', '114.30304', '30.594911', '2019-11-24 12:59:28', '0');
 INSERT INTO `city_area` VALUES ('1993', '420103', '江汉区', '303', '420100', '武汉市', '114.283109', '30.578771', '2019-11-24 12:59:28', '0');
 INSERT INTO `city_area` VALUES ('1994', '420104', '硚口区', '303', '420100', '武汉市', '114.264568', '30.57061', '2019-11-24 12:59:28', '0');
 INSERT INTO `city_area` VALUES ('1995', '420105', '汉阳区', '303', '420100', '武汉市', '114.265807', '30.549326', '2019-11-24 12:59:28', '0');
@@ -4854,7 +5227,7 @@ CREATE TABLE `coupon_key` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态0正常1失效',
   PRIMARY KEY (`key_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of coupon_key
@@ -4872,14 +5245,14 @@ CREATE TABLE `coupon_property_pool` (
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `community_name` varchar(30) NOT NULL COMMENT '小区名称',
   `to_type` varchar(12) NOT NULL COMMENT '用途 1001 购物 1011 内部购买 2002 缴费 3003 维修劵 4004 停车劵',
-  `stock` bigint(20) NOT NULL COMMENT '库存',
-  `validity_day` bigint(20) NOT NULL COMMENT '有效期',
+  `stock` bigint NOT NULL COMMENT '库存',
+  `validity_day` bigint NOT NULL COMMENT '有效期',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `state` varchar(12) NOT NULL DEFAULT 'Y' COMMENT 'Y 启用 N 停用',
   `remark` varchar(512) DEFAULT NULL COMMENT '使用说明',
   PRIMARY KEY (`cpp_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of coupon_property_pool
@@ -4897,7 +5270,7 @@ CREATE TABLE `coupon_property_pool_config` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态0正常1失效',
   PRIMARY KEY (`config_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of coupon_property_pool_config
@@ -4912,19 +5285,19 @@ CREATE TABLE `coupon_property_user` (
   `cpp_id` varchar(30) NOT NULL COMMENT '优惠券',
   `coupon_name` varchar(64) NOT NULL COMMENT '优惠券名称',
   `value` varchar(64) NOT NULL COMMENT '面值',
-  `validity_day` bigint(20) NOT NULL COMMENT '有效期',
+  `validity_day` bigint NOT NULL COMMENT '有效期',
   `user_id` varchar(30) NOT NULL COMMENT '用户ID',
   `user_name` varchar(64) NOT NULL COMMENT '用户名称',
   `tel` varchar(11) NOT NULL COMMENT '手机号',
   `to_type` varchar(12) NOT NULL COMMENT '用途 1001 购物 1011 内部购买 2002 缴费 3003 维修劵 4004 停车劵',
-  `stock` bigint(20) NOT NULL COMMENT '库存',
+  `stock` bigint NOT NULL COMMENT '库存',
   `state` varchar(12) NOT NULL COMMENT '状态 1001 在用 2002 已使用',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `community_id` varchar(30) DEFAULT NULL COMMENT '小区ID，商铺ID',
   `start_time` datetime NOT NULL COMMENT '优惠券生效时间',
   PRIMARY KEY (`coupon_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of coupon_property_user
@@ -4946,7 +5319,7 @@ CREATE TABLE `coupon_property_user_detail` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `community_id` varchar(30) DEFAULT NULL COMMENT '小区ID，商铺ID',
   PRIMARY KEY (`uo_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of coupon_property_user_detail
@@ -4966,7 +5339,7 @@ CREATE TABLE `c_app` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   PRIMARY KEY (`app_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='应用ID';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='应用ID';
 
 -- ----------------------------
 -- Records of c_app
@@ -4992,7 +5365,7 @@ CREATE TABLE `c_business` (
   `status_cd` varchar(2) NOT NULL COMMENT '数据状态，详细参考c_status表',
   UNIQUE KEY `b_id` (`b_id`) USING BTREE,
   KEY `i_cb_o_id` (`o_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of c_business
@@ -5007,12 +5380,12 @@ CREATE TABLE `c_business_databus` (
   `databus_name` varchar(128) NOT NULL COMMENT '名称',
   `business_type_cd` varchar(255) NOT NULL COMMENT '业务类型',
   `bean_name` varchar(256) NOT NULL COMMENT '适配器',
-  `seq` int(11) NOT NULL DEFAULT '1' COMMENT '顺序',
+  `seq` int NOT NULL DEFAULT '1' COMMENT '顺序',
   `state` varchar(12) NOT NULL DEFAULT '1001' COMMENT '1001 代表在用 2002 表示停用',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`databus_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of c_business_databus
@@ -5033,7 +5406,7 @@ CREATE TABLE `c_business_table_his` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表',
   UNIQUE KEY `his_id` (`his_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of c_business_table_his
@@ -5046,7 +5419,7 @@ INSERT INTO `c_business_table_his` VALUES ('102025051920720003', 'ADD', 'xxdd', 
 -- ----------------------------
 DROP TABLE IF EXISTS `c_business_type`;
 CREATE TABLE `c_business_type` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
   `business_type_cd` varchar(12) NOT NULL COMMENT '业务项类型',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `description` varchar(200) DEFAULT NULL COMMENT '描述',
@@ -5054,7 +5427,7 @@ CREATE TABLE `c_business_type` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `business_type_cd` (`business_type_cd`) USING BTREE,
   UNIQUE KEY `business_type_cd_2` (`business_type_cd`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=294 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=294 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of c_business_type
@@ -5067,18 +5440,18 @@ INSERT INTO `c_business_type` VALUES ('293', '123123', 'xxx', null, '2025-05-19 
 -- ----------------------------
 DROP TABLE IF EXISTS `c_cache`;
 CREATE TABLE `c_cache` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '缓存ID',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '缓存ID',
   `cache_code` varchar(10) NOT NULL COMMENT '缓存编码 开始于1001',
   `service_code` varchar(50) NOT NULL COMMENT '调用服务编码 对应 c_service',
   `name` varchar(50) NOT NULL COMMENT '前台显示名称',
-  `seq` int(11) NOT NULL COMMENT '列顺序',
+  `seq` int NOT NULL COMMENT '列顺序',
   `group` varchar(10) NOT NULL DEFAULT 'COMMON' COMMENT '组，缓存属于哪个组',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   `url` varchar(500) NOT NULL COMMENT '地址',
   PRIMARY KEY (`id`),
   UNIQUE KEY `cache_code` (`cache_code`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of c_cache
@@ -5105,7 +5478,7 @@ CREATE TABLE `c_mapping` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of c_mapping
@@ -5113,15 +5486,15 @@ CREATE TABLE `c_mapping` (
 INSERT INTO `c_mapping` VALUES ('102023021308780004', 'DOMAIN.COMMON', '2333', '2', '2', '2', '2023-02-13 01:24:56', '1');
 INSERT INTO `c_mapping` VALUES ('102023021357700001', 'ENV_DOMAIN', '环境标识', 'HC_ENV', 'DEV', 'ENV1', '2023-02-13 01:22:20', '0');
 INSERT INTO `c_mapping` VALUES ('102023082203750005', 'OSS', 'bucket', 'bucketName', 'java110', '', '2023-08-22 16:56:46', '0');
-INSERT INTO `c_mapping` VALUES ('102023082236190012', 'FILE_DOMAIN', '静态资源域名', 'IMG_PATH', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/', '', '2023-08-22 17:02:24', '0');
-INSERT INTO `c_mapping` VALUES ('102023082245390006', 'OSS', 'accessKeySecret', 'accessKeySecret', 'V7GKQCPAwdqBGMQiXmmmhq8ug8I5YY', '', '2023-08-22 16:57:13', '0');
-INSERT INTO `c_mapping` VALUES ('102023082246810008', 'OSS', 'endpoint', 'endpoint', 'http://oss-cn-beijing.aliyuncs.com', '', '2023-08-22 16:57:56', '0');
-INSERT INTO `c_mapping` VALUES ('102023082294930007', 'OSS', 'accessKeyId', 'accessKeyId', 'LTAI4G1igMSwnbMnRBAvtGH7', '', '2023-08-22 16:57:26', '0');
-INSERT INTO `c_mapping` VALUES ('102023102771040002', 'FILE_DOMAIN', 'OSS地址用于道闸', 'OSS_URL', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/', '', '2023-10-27 22:05:02', '0');
+INSERT INTO `c_mapping` VALUES ('102023082236190012', 'FILE_DOMAIN', '静态资源域名', 'IMG_PATH', 'https://oss.homecommunity.cn/java110/hc/iot/', '', '2023-08-22 17:02:24', '0');
+INSERT INTO `c_mapping` VALUES ('102023082245390006', 'OSS', 'accessKeySecret', 'accessKeySecret', 'h4IqNT5ndCzaC4Fx1uIQITiHwVGscneepB8ZFzQu', '', '2023-08-22 16:57:13', '0');
+INSERT INTO `c_mapping` VALUES ('102023082246810008', 'OSS', 'endpoint', 'endpoint', 'http://192.168.101.109:9000', '', '2023-08-22 16:57:56', '0');
+INSERT INTO `c_mapping` VALUES ('102023082294930007', 'OSS', 'accessKeyId', 'accessKeyId', 'OOgGaXJ8XD4k4Ok0iaOu', '', '2023-08-22 16:57:26', '0');
+INSERT INTO `c_mapping` VALUES ('102023102771040002', 'FILE_DOMAIN', 'OSS地址用于道闸', 'OSS_URL', 'https://oss.homecommunity.cn/', '', '2023-10-27 22:05:02', '0');
 INSERT INTO `c_mapping` VALUES ('102023111084740004', 'FILE_DOMAIN', '存储方式', 'OSS_SWITCH', 'OSS', '目前只支持OSS', '2023-11-10 17:26:36', '0');
 INSERT INTO `c_mapping` VALUES ('102023112127290055', 'TDDIANBIAO_DOMAIN', 'nonce', 'nonce', 'xx', '', '2023-11-21 01:26:38', '0');
 INSERT INTO `c_mapping` VALUES ('102023112164960056', 'TDDIANBIAO_DOMAIN', 'auth_code', 'auth_code', 'xx', '', '2023-11-21 01:27:11', '0');
-INSERT INTO `c_mapping` VALUES ('102024012402260026', 'WUYE', '物业系统地址', 'url', 'http://192.168.1.108:8008', '', '2024-01-24 22:04:17', '0');
+INSERT INTO `c_mapping` VALUES ('102024012402260026', 'WUYE', '物业系统地址', 'url', 'http://127.0.0.1:8008', '', '2024-01-24 22:04:17', '0');
 INSERT INTO `c_mapping` VALUES ('102024012442090025', 'WUYE', '物业秘钥', 'securityCode', 'g3kE9ggkM4Jqrs576rJS0CYg7dbtMXPT', '', '2024-01-24 22:03:41', '0');
 INSERT INTO `c_mapping` VALUES ('102024012445870024', 'WUYE', '应用ID', 'appId', '992020051967020024', '', '2024-01-24 22:03:11', '0');
 INSERT INTO `c_mapping` VALUES ('102024022631412822', 'WECHAT_PAY', '服务商开关', 'WECHAT_SERVICE_PAY_SWITCH', 'OFF', '', '2024-02-26 23:53:38', '0');
@@ -5133,6 +5506,14 @@ INSERT INTO `c_mapping` VALUES ('102024031316730024', 'HIK_GATEWAY', '网关地�
 INSERT INTO `c_mapping` VALUES ('102024091035780003', 'WUYE', '物业开关', 'WUYE_SWITCH', 'ON', '', '2024-09-10 12:10:43', '0');
 INSERT INTO `c_mapping` VALUES ('102025040346940002', 'SYSTEM_SWITCH', '充电桩小程序', 'CHARGE_PAGE', 'OFF', 'MINI 小程序 OFF h5', '2025-04-03 23:12:04', '0');
 INSERT INTO `c_mapping` VALUES ('102025052082730010', 'ENV_DOMAIN', 'w', '1', '1', '1', '2025-05-20 11:00:47', '1');
+INSERT INTO `c_mapping` VALUES ('102026072861120005', 'VZICLOUD', 'AccessKeySecret', 'AccessKeySecret', 'xx', '', '2026-07-28 15:27:45', '0');
+INSERT INTO `c_mapping` VALUES ('102026072872680004', 'VZICLOUD', 'AccessKey', 'AccessKey', 'xx', '', '2026-07-28 15:27:34', '0');
+INSERT INTO `c_mapping` VALUES ('102026090300000004', 'MALL', '商城开关', 'MALL_SWITCH', 'OFF', 'ON 开启，OFF 关闭', '2026-09-03 10:00:04', '0');
+INSERT INTO `c_mapping` VALUES ('102026090300000005', 'MALL', '商城网关地址', 'MALL_URL', 'http://127.0.0.1:8015', '', '2026-09-03 10:00:05', '0');
+INSERT INTO `c_mapping` VALUES ('102026090300000006', 'MALL', '调用方应用ID', 'APP_ID', '992024042167560001', '', '2026-09-03 10:00:06', '0');
+INSERT INTO `c_mapping` VALUES ('102026090300000007', 'MALL', '调用方应用秘钥', 'APP_SECRET', 'localhost', '', '2026-09-03 10:00:07', '0');
+INSERT INTO `c_mapping` VALUES ('102026090300000008', 'MALL', '商城管理员账号', 'MALL_USERNAME', 'admin', '', '2026-09-03 10:00:08', '0');
+INSERT INTO `c_mapping` VALUES ('102026090300000009', 'MALL', '商城管理员密码', 'MALL_PASSWORD', 'admin', '', '2026-09-03 10:00:09', '0');
 INSERT INTO `c_mapping` VALUES ('116', 'DEFAULT_PRIVILEGE_ADMIN', '商家对应的管理员权限组', '800900000005', '600201906009', '商家对应的管理员权限组', '2019-04-01 12:24:36', '0');
 INSERT INTO `c_mapping` VALUES ('201', 'MICROINDUSTRYPLATFORM_MALL', '供应链商城地址', 'url', 'http://shop.songbingcloud.com', '配置供应链商城地址或域名', '2023-09-15 14:04:35', '0');
 INSERT INTO `c_mapping` VALUES ('208', 'DING_DING_CHARGE', '应用ID', 'APP_ID', 'ss', '', '2023-03-17 12:17:38', '0');
@@ -5149,7 +5530,7 @@ INSERT INTO `c_mapping` VALUES ('89', 'ALI_SMS', 'accessKeyId', 'accessKeyId', '
 INSERT INTO `c_mapping` VALUES ('90', 'ALI_SMS', '访问秘钥', 'accessSecret', 'xxx', '', '2020-06-29 09:09:49', '0');
 INSERT INTO `c_mapping` VALUES ('91', 'ALI_SMS', '短信签名', 'signName', 'xxx', '', '2020-06-29 09:10:28', '0');
 INSERT INTO `c_mapping` VALUES ('93', 'ALI_SMS', '模板编码', 'TemplateCode', 'xxx', '', '2020-06-29 10:16:15', '0');
-INSERT INTO `c_mapping` VALUES ('94', 'URL_DOMAIN', '业主公众号地址', 'OWNER_WECHAT_URL', 'http://ioth5.homecommunity.cn', '公众号时写 公众号域名\n\n小程序时写 小程序appId', '2020-07-20 14:59:38', '0');
+INSERT INTO `c_mapping` VALUES ('94', 'URL_DOMAIN', '业主公众号地址', 'OWNER_WECHAT_URL', 'http://ioth5.homecommunity.cn', '公众号时写 公众号域名.\n\n小程序时写 小程序appId', '2020-07-20 14:59:38', '0');
 
 -- ----------------------------
 -- Table structure for c_mapping_domain
@@ -5159,12 +5540,12 @@ CREATE TABLE `c_mapping_domain` (
   `id` varchar(30) NOT NULL COMMENT 'id',
   `domain` varchar(50) NOT NULL COMMENT '域',
   `domain_name` varchar(64) NOT NULL COMMENT '配置项',
-  `seq` int(11) NOT NULL COMMENT '排序',
+  `seq` int NOT NULL COMMENT '排序',
   `remark` longtext COMMENT '描述',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of c_mapping_domain
@@ -5175,7 +5556,7 @@ INSERT INTO `c_mapping_domain` VALUES ('102023021377130023', 'ENV_DOMAIN', '环�
 INSERT INTO `c_mapping_domain` VALUES ('102023021380610022', 'SYSTEM_SWITCH', '系统开关', '2', '系统相关开关，比如日志开关，耗时开关等', '2023-02-13 01:08:19', '0');
 INSERT INTO `c_mapping_domain` VALUES ('102023021383440013', 'DOMAIN.COMMON', '通用配置', '10', '通用配置，一般很少配置1', '2023-02-13 01:03:08', '0');
 INSERT INTO `c_mapping_domain` VALUES ('102023082234410010', 'FILE_DOMAIN', '存储配置', '3', '存储配置', '2023-08-22 17:01:58', '0');
-INSERT INTO `c_mapping_domain` VALUES ('102023082296330003', 'OSS', '阿里云OSS', '4', '阿里云OSS', '2023-08-22 16:56:26', '0');
+INSERT INTO `c_mapping_domain` VALUES ('102023082296330003', 'OSS', '阿里云OSS/MINIO', '4', '阿里云OSS', '2023-08-22 16:56:26', '0');
 INSERT INTO `c_mapping_domain` VALUES ('102023112061480002', 'URL_DOMAIN', '平台URL', '5', '平台URL', '2023-11-20 12:30:25', '0');
 INSERT INTO `c_mapping_domain` VALUES ('102023112115110053', 'TDDIANBIAO_DOMAIN', '智能水电表', '6', '智能水电表', '2023-11-21 01:24:58', '0');
 INSERT INTO `c_mapping_domain` VALUES ('102024012434290022', 'WUYE', '物业配置', '7', '物联网系统调用物业系统配置信息', '2024-01-24 22:02:41', '0');
@@ -5183,6 +5564,8 @@ INSERT INTO `c_mapping_domain` VALUES ('102024022601992820', 'WECHAT_PAY', '微�
 INSERT INTO `c_mapping_domain` VALUES ('102024030912650093', 'VZICLOUD', '臻识云', '9', '请填写臻云极致的AccessKeyId和AccessKeySecret，请到这里申请臻云极致(https://open.vzicloud.com)', '2024-03-09 12:17:36', '1');
 INSERT INTO `c_mapping_domain` VALUES ('102024031358100022', 'HIK_GATEWAY', '海康网关', '11', '海康网关，只有用海康网关的场景下，才需要配置，否则不用配置', '2024-03-13 21:11:10', '0');
 INSERT INTO `c_mapping_domain` VALUES ('102025052001580003', '2', '1', '1', '1', '2025-05-20 10:43:42', '1');
+INSERT INTO `c_mapping_domain` VALUES ('102026072872520002', 'VZICLOUD', '臻识云', '15', '主要用于 管理相机', '2026-07-28 15:27:18', '0');
+INSERT INTO `c_mapping_domain` VALUES ('102026090369030036', 'MALL', '商城', '9', '商城', '2026-09-03 18:05:53', '0');
 
 -- ----------------------------
 -- Table structure for c_orders
@@ -5201,8 +5584,11 @@ CREATE TABLE `c_orders` (
   `status_cd` varchar(2) NOT NULL COMMENT '数据状态，详细参考c_status表',
   UNIQUE KEY `o_id` (`o_id`) USING BTREE,
   UNIQUE KEY `o_id_2` (`o_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+-- ----------------------------
+-- Records of c_orders
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for c_order_item
@@ -5218,21 +5604,25 @@ CREATE TABLE `c_order_item` (
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
   `status_cd` varchar(2) NOT NULL COMMENT '数据状态，详细参考c_status表',
   UNIQUE KEY `b_id` (`b_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of c_order_item
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for c_order_type
 -- ----------------------------
 DROP TABLE IF EXISTS `c_order_type`;
 CREATE TABLE `c_order_type` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
   `order_type_cd` varchar(4) NOT NULL COMMENT '订单类型',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `description` varchar(200) DEFAULT NULL COMMENT '描述',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `order_type_cd` (`order_type_cd`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of c_order_type
@@ -5247,12 +5637,12 @@ CREATE TABLE `c_route` (
   `app_id` varchar(30) NOT NULL COMMENT '应用ID',
   `service_id` varchar(30) NOT NULL COMMENT '服务ID',
   `order_type_cd` varchar(4) NOT NULL COMMENT '订单类型，参考c_order_type表',
-  `invoke_limit_times` int(11) DEFAULT NULL COMMENT '接口调用一分钟调用次数',
+  `invoke_limit_times` int DEFAULT NULL COMMENT '接口调用一分钟调用次数',
   `invoke_model` varchar(1) NOT NULL COMMENT '1-同步方式 2-异步方式',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效，2 表示下线（当组件调用服务超过限制时自动下线）',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of c_route
@@ -5925,7 +6315,6 @@ INSERT INTO `c_route` VALUES ('102024083097840021', '992023010100000001', '98202
 INSERT INTO `c_route` VALUES ('102024090447290002', '992023010100000001', '982024090430200001', 'D', '1000', 'A', '2024-09-04 09:31:59', '1');
 INSERT INTO `c_route` VALUES ('102024091012630008', '992024012179880001', '982024091080390007', 'D', '1000', 'S', '2024-09-10 14:08:11', '0');
 INSERT INTO `c_route` VALUES ('102024091939470006', '992023010100000001', '982024091997820005', 'D', '1000', 'S', '2024-09-19 14:53:58', '0');
-INSERT INTO `c_route` VALUES ('102026081732260102', '992023010100000001', '982026081732260101', 'D', '1000', 'S', '2026-08-17 16:40:00', '0');
 INSERT INTO `c_route` VALUES ('102024091966080003', '992023111817510002', '982024091961010002', 'D', '1000', 'S', '2024-09-19 11:26:00', '0');
 INSERT INTO `c_route` VALUES ('102024091988440004', '992023010100000001', '982024091980400003', 'Q', '1000', 'S', '2024-09-19 14:46:45', '0');
 INSERT INTO `c_route` VALUES ('102024110512200025', '992023010100000001', '982024110596570024', 'Q', '1000', 'S', '2024-11-05 23:48:58', '0');
@@ -6001,6 +6390,49 @@ INSERT INTO `c_route` VALUES ('102026010825150010', '992023010100000001', '98202
 INSERT INTO `c_route` VALUES ('102026010829850008', '992023010100000001', '982026010849220007', 'Q', '1000', 'S', '2026-01-08 16:07:01', '0');
 INSERT INTO `c_route` VALUES ('102026010832310006', '992023010100000001', '982026010873860005', 'D', '1000', 'S', '2026-01-08 16:06:35', '0');
 INSERT INTO `c_route` VALUES ('102026010838440012', '992023010100000001', '982026010876460011', 'Q', '1000', 'S', '2026-01-08 16:07:56', '0');
+INSERT INTO `c_route` VALUES ('102026062700010001', '992023010100000001', '982026062700010001', 'Q', '1000', 'S', '2026-06-27 11:35:35', '0');
+INSERT INTO `c_route` VALUES ('102026070822500366', '992023121426830015', '982026062700010001', '1', '1000', 'S', '2026-07-08 14:14:42', '1');
+INSERT INTO `c_route` VALUES ('102026072400000001', '992023010100000001', '982026072400000001', 'Q', '1000', 'S', '2026-07-27 09:10:14', '0');
+INSERT INTO `c_route` VALUES ('102026072400000002', '992023010100000001', '982026072400000002', 'D', '1000', 'S', '2026-07-27 09:10:14', '0');
+INSERT INTO `c_route` VALUES ('102026072463810012', '992023111817510002', '982026072424600009', 'Q', '1000', 'S', '2026-07-24 15:49:32', '0');
+INSERT INTO `c_route` VALUES ('10202607280000001', '992023010100000001', '98202607280000001', 'Q', '1000', 'S', '2026-07-28 14:42:07', '0');
+INSERT INTO `c_route` VALUES ('10202607280000002', '992023010100000001', '98202607280000002', 'D', '1000', 'S', '2026-07-28 14:42:07', '0');
+INSERT INTO `c_route` VALUES ('10202607280000003', '992023010100000001', '98202607280000003', 'Q', '1000', 'S', '2026-07-28 14:42:07', '0');
+INSERT INTO `c_route` VALUES ('10202607280000004', '992023010100000001', '98202607280000004', 'D', '1000', 'S', '2026-07-28 14:42:07', '0');
+INSERT INTO `c_route` VALUES ('102026072810010001', '992023010100000001', '982026072810010001', 'Q', '1000', 'S', '2026-07-28 17:58:35', '0');
+INSERT INTO `c_route` VALUES ('10202607281550001', '992023010100000001', '98202607281550001', 'Q', '1000', 'S', '2026-07-28 15:17:05', '0');
+INSERT INTO `c_route` VALUES ('102026081300000001', '992023010100000001', '982026081300000001', 'Q', '1000', 'S', '2026-08-13 12:00:01', '0');
+INSERT INTO `c_route` VALUES ('102026081300000002', '992023010100000001', '982026081300000002', 'D', '1000', 'S', '2026-08-13 12:00:02', '0');
+INSERT INTO `c_route` VALUES ('102026081300000003', '992023010100000001', '982026081300000003', 'D', '1000', 'S', '2026-08-13 12:00:03', '0');
+INSERT INTO `c_route` VALUES ('102026081300000004', '992023010100000001', '982026081300000004', 'D', '1000', 'S', '2026-08-13 12:00:04', '0');
+INSERT INTO `c_route` VALUES ('102026081300000005', '992023010100000001', '982026081300000005', 'Q', '1000', 'S', '2026-08-13 12:00:05', '0');
+INSERT INTO `c_route` VALUES ('102026081300000006', '992023010100000001', '982026081300000006', 'D', '1000', 'S', '2026-08-13 12:00:06', '0');
+INSERT INTO `c_route` VALUES ('102026081300000007', '992023010100000001', '982026081300000007', 'D', '1000', 'S', '2026-08-13 12:00:07', '0');
+INSERT INTO `c_route` VALUES ('102026081300000008', '992023010100000001', '982026081300000008', 'D', '1000', 'S', '2026-08-13 12:00:08', '0');
+INSERT INTO `c_route` VALUES ('102026081300000009', '992023010100000001', '982026081300000009', 'Q', '1000', 'S', '2026-08-13 12:00:09', '0');
+INSERT INTO `c_route` VALUES ('102026081300000010', '992023010100000001', '982026081300000010', 'D', '1000', 'S', '2026-08-13 12:00:10', '0');
+INSERT INTO `c_route` VALUES ('102026081300000011', '992023010100000001', '982026081300000011', 'D', '1000', 'S', '2026-08-13 12:00:11', '0');
+INSERT INTO `c_route` VALUES ('102026081300000012', '992023010100000001', '982026081300000012', 'D', '1000', 'S', '2026-08-13 14:00:12', '0');
+INSERT INTO `c_route` VALUES ('102026081732260102', '992023010100000001', '982026081732260101', 'D', '1000', 'S', '2026-08-17 16:40:00', '0');
+INSERT INTO `c_route` VALUES ('102026081800000001', '992023010100000001', '982026081800000001', 'Q', '1000', 'S', '2026-08-18 12:00:01', '0');
+INSERT INTO `c_route` VALUES ('102026081800000002', '992023010100000001', '982026081800000002', 'D', '1000', 'S', '2026-08-18 12:00:02', '0');
+INSERT INTO `c_route` VALUES ('102026081800000003', '992023010100000001', '982026081800000003', 'D', '1000', 'S', '2026-08-18 12:00:03', '0');
+INSERT INTO `c_route` VALUES ('102026081800000004', '992023010100000001', '982026081800000004', 'Q', '1000', 'S', '2026-08-18 12:00:04', '0');
+INSERT INTO `c_route` VALUES ('102026082800000001', '992023010100000001', '982026082800000001', 'Q', '1000', 'S', '2026-08-28 10:00:01', '0');
+INSERT INTO `c_route` VALUES ('102026082800000002', '992023010100000001', '982026082800000002', 'D', '1000', 'S', '2026-08-28 10:00:02', '0');
+INSERT INTO `c_route` VALUES ('102026082800000003', '992023010100000001', '982026082800000003', 'D', '1000', 'S', '2026-08-28 10:00:03', '0');
+INSERT INTO `c_route` VALUES ('102026082800000004', '992023010100000001', '982026082800000004', 'D', '1000', 'S', '2026-08-28 10:00:04', '0');
+INSERT INTO `c_route` VALUES ('102026082800000005', '992023010100000001', '982026082800000005', 'Q', '1000', 'S', '2026-08-28 10:00:05', '0');
+INSERT INTO `c_route` VALUES ('102026090100000001', '992023111817510002', '982026090100000001', 'Q', '1000', 'S', '2026-09-01 10:00:00', '0');
+INSERT INTO `c_route` VALUES ('102026090100000003', '992023010100000001', '982026090100000003', 'Q', '1000', 'S', '2026-09-01 15:07:07', '0');
+INSERT INTO `c_route` VALUES ('102026090100000004', '992023010100000001', '982026090100000004', 'D', '1000', 'S', '2026-09-01 15:07:07', '0');
+INSERT INTO `c_route` VALUES ('102026090100000005', '992023111817510002', '982026090100000005', 'D', '1000', 'S', '2026-09-01 16:04:17', '0');
+INSERT INTO `c_route` VALUES ('102026090100000006', '992023111817510002', '982026090100000006', 'D', '1000', 'S', '2026-09-01 16:04:17', '0');
+INSERT INTO `c_route` VALUES ('102026090114980435', '992023111817510002', '982026090176500434', '1', '1000', 'S', '2026-09-01 14:33:55', '0');
+INSERT INTO `c_route` VALUES ('102026090200000001', '992023111817510002', '982026090200000001', 'Q', '1000', 'S', '2026-09-02 23:26:45', '0');
+INSERT INTO `c_route` VALUES ('102026090300000001', '992023111817510002', '982026090300000001', 'Q', '1000', 'S', '2026-09-03 10:00:01', '0');
+INSERT INTO `c_route` VALUES ('102026090300000002', '992023111817510002', '982026090300000002', 'Q', '1000', 'S', '2026-09-03 10:00:02', '0');
+INSERT INTO `c_route` VALUES ('102026090300000003', '992023111817510002', '982026090300000003', 'D', '1000', 'S', '2026-09-03 10:00:03', '0');
 INSERT INTO `c_route` VALUES ('11', '992023010100000001', '11', 'Q', '100', 'S', '2023-02-11 16:26:03', '0');
 INSERT INTO `c_route` VALUES ('12', '992023010100000001', '12', 'Q', '100', 'S', '2023-02-11 16:26:04', '0');
 INSERT INTO `c_route` VALUES ('13', '992023010100000001', '13', 'Q', '100', 'S', '2023-02-11 16:26:05', '0');
@@ -6029,16 +6461,16 @@ CREATE TABLE `c_service` (
   `service_code` varchar(100) NOT NULL COMMENT '自定义，命名方式查询类query.+目标系统+.+业务名称 保存类 save.+目标系统+.+业务名称 修改类 modify.+目标系统+.+业务名称 删除类 remove.+目标系统+.+业务名称 例如：query.user.userinfo save.user.adduserinfo',
   `business_type_cd` varchar(12) DEFAULT NULL,
   `name` varchar(50) NOT NULL COMMENT '服务名称',
-  `seq` int(11) DEFAULT '1' COMMENT '顺序 只有同步方式下根据seq从小到大调用接口',
+  `seq` int DEFAULT '1' COMMENT '顺序 只有同步方式下根据seq从小到大调用接口',
   `is_instance` varchar(12) NOT NULL DEFAULT 'CMD' COMMENT '是否Instance Y 需要，N不需要，NT透传类',
   `url` varchar(200) DEFAULT NULL COMMENT '目标地址',
   `method` varchar(50) DEFAULT NULL COMMENT '方法 空 为http post LOCAL_SERVICE 为调用本地服务 其他为webservice方式调用',
-  `timeout` int(11) NOT NULL DEFAULT '60' COMMENT '超时时间',
-  `retry_count` int(11) NOT NULL DEFAULT '3' COMMENT '重试次数',
+  `timeout` int NOT NULL DEFAULT '60' COMMENT '超时时间',
+  `retry_count` int NOT NULL DEFAULT '3' COMMENT '重试次数',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   PRIMARY KEY (`service_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of c_service
@@ -6708,7 +7140,6 @@ INSERT INTO `c_service` VALUES ('982024091080390007', 'owner.transforOwnerUser',
 INSERT INTO `c_service` VALUES ('982024091961010002', 'user.ownerUserLoginByOpenId', 'API', '用户登录', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-09-19 11:26:00', '0');
 INSERT INTO `c_service` VALUES ('982024091980400003', 'user.listStaffsNoInOrg', 'API', '查询组织', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2024-09-19 14:46:45', '0');
 INSERT INTO `c_service` VALUES ('982024091997820005', 'user.saveStaffOrgRel', 'API', '保存员工组织关系', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2024-09-19 14:53:58', '0');
-INSERT INTO `c_service` VALUES ('982026081732260101', 'org.deleteOrgRelStaff', 'API', '删除组织员工关系', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-08-17 16:40:00', '0');
 INSERT INTO `c_service` VALUES ('982024110556970007', 'monitorArea.getMonitorArea', 'API', '查询监控区域', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-11-05 13:49:25', '0');
 INSERT INTO `c_service` VALUES ('982024110582600006', 'ai.getAiAlter', 'API', 'AI告警', '1', 'CMD', 'http://iot-monitor', 'GET', '60', '3', '2024-11-05 22:23:10', '0');
 INSERT INTO `c_service` VALUES ('982024110586520022', 'monitor.deleteMonitorCollect', 'API', '删除监控收藏', '1', 'CMD', 'http://iot-monitor', 'POST', '60', '3', '2024-11-05 23:48:26', '0');
@@ -6780,24 +7211,66 @@ INSERT INTO `c_service` VALUES ('982026010833940009', 'car.saveTempInnerCar', 'A
 INSERT INTO `c_service` VALUES ('982026010849220007', 'car.listTempInnerCars', 'API', '查询内部临时车', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2026-01-08 16:07:00', '0');
 INSERT INTO `c_service` VALUES ('982026010873860005', 'car.deleteTempInnerCar', 'API', '删除内部临时车', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2026-01-08 16:06:35', '0');
 INSERT INTO `c_service` VALUES ('982026010876460011', 'car.updateTempInnerCar', 'API', '修改内部临时车', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2026-01-08 16:07:56', '0');
+INSERT INTO `c_service` VALUES ('982026062700010001', 'login.generatorSliderCode', 'API', '滑块验证码接口', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2026-06-27 11:35:35', '0');
+INSERT INTO `c_service` VALUES ('982026072400000001', 'carInoutHis.listCarInoutHis', 'API', '车辆出入历史记录查询', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2026-07-27 09:09:24', '0');
+INSERT INTO `c_service` VALUES ('982026072400000002', 'carInoutHis.deleteCarInoutHis', 'API', '车辆出入历史记录删除', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2026-07-27 09:09:33', '0');
+INSERT INTO `c_service` VALUES ('982026072424600009', 'car.getOrGenerateUnlicensedCarNum', 'API', '生成无牌车车牌号', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2026-07-24 15:47:38', '0');
+INSERT INTO `c_service` VALUES ('98202607280000001', 'carInoutEvasionConfig.listCarInoutEvasionConfig', 'API', '查询逃费检测配置', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2026-07-28 14:41:53', '0');
+INSERT INTO `c_service` VALUES ('98202607280000002', 'carInoutEvasionConfig.saveCarInoutEvasionConfig', 'API', '保存逃费检测配置', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2026-07-28 14:41:53', '0');
+INSERT INTO `c_service` VALUES ('98202607280000003', 'carInoutEvasion.listCarInoutEvasion', 'API', '查询车辆逃费记录', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2026-07-28 14:41:53', '0');
+INSERT INTO `c_service` VALUES ('98202607280000004', 'carInoutEvasion.deleteCarInoutEvasion', 'API', '删除车辆逃费记录', '1', 'CMD', 'http://iot-barrier', 'POST', '60', '3', '2026-07-28 14:41:53', '0');
+INSERT INTO `c_service` VALUES ('982026072810010001', 'barrier.listMqttSendLog', 'API', 'MQTT下发日志查询', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2026-07-28 17:58:29', '0');
+INSERT INTO `c_service` VALUES ('98202607281550001', 'barrier.openBarrierCameraConsole', 'API', '道闸摄像头远程管理控制台', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2026-07-28 15:16:59', '0');
+INSERT INTO `c_service` VALUES ('982026081300000001', 'shop.listShopLocations', 'API', '查询商铺位置', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2026-08-13 12:00:01', '0');
+INSERT INTO `c_service` VALUES ('982026081300000002', 'shop.saveShopLocation', 'API', '添加商铺位置', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:02', '0');
+INSERT INTO `c_service` VALUES ('982026081300000003', 'shop.updateShopLocation', 'API', '修改商铺位置', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:03', '0');
+INSERT INTO `c_service` VALUES ('982026081300000004', 'shop.deleteShopLocation', 'API', '删除商铺位置', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:04', '0');
+INSERT INTO `c_service` VALUES ('982026081300000005', 'shop.listBuildingShops', 'API', '查询商铺', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2026-08-13 12:00:05', '0');
+INSERT INTO `c_service` VALUES ('982026081300000006', 'shop.saveBuildingShop', 'API', '保存商铺', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:06', '0');
+INSERT INTO `c_service` VALUES ('982026081300000007', 'shop.updateBuildingShop', 'API', '修改商铺', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:07', '0');
+INSERT INTO `c_service` VALUES ('982026081300000008', 'shop.deleteBuildingShop', 'API', '删除商铺', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:08', '0');
+INSERT INTO `c_service` VALUES ('982026081300000009', 'shop.listBuildingShopOwners', 'API', '查询商铺业主', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2026-08-13 12:00:09', '0');
+INSERT INTO `c_service` VALUES ('982026081300000010', 'shop.saveBuildingShopOwner', 'API', '交铺', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:10', '0');
+INSERT INTO `c_service` VALUES ('982026081300000011', 'shop.deleteBuildingShopOwner', 'API', '退铺', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:11', '0');
+INSERT INTO `c_service` VALUES ('982026081300000012', 'shop.updateBuildingShopOwner', 'API', '修改商铺租赁', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 14:00:12', '0');
+INSERT INTO `c_service` VALUES ('982026081732260101', 'org.deleteOrgRelStaff', 'API', '删除组织员工关系', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-08-17 16:40:00', '0');
+INSERT INTO `c_service` VALUES ('982026081800000001', 'accessControlShop.listAccessControlShop', 'API', '查询商铺授权', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2026-08-18 12:00:01', '0');
+INSERT INTO `c_service` VALUES ('982026081800000002', 'accessControlShop.saveAccessControlShop', 'API', '商铺门禁授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2026-08-18 12:00:02', '0');
+INSERT INTO `c_service` VALUES ('982026081800000003', 'accessControlShop.deleteAccessControlShop', 'API', '删除商铺授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2026-08-18 12:00:03', '0');
+INSERT INTO `c_service` VALUES ('982026081800000004', 'accessControlShop.listAdminAccessControlShop', 'API', '运营访问商铺授权', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2026-08-18 12:00:04', '0');
+INSERT INTO `c_service` VALUES ('982026082800000001', 'parkingArea.queryParkingAreaAndRegions', 'API', '查询停车场及区域', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2026-08-28 10:00:01', '0');
+INSERT INTO `c_service` VALUES ('982026082800000002', 'parkingSpace.sellParkingSpace', 'API', '出租/出售车位', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2026-08-28 10:00:02', '0');
+INSERT INTO `c_service` VALUES ('982026082800000003', 'parkingSpace.releaseParkingSpace', 'API', '释放车位', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2026-08-28 10:00:03', '0');
+INSERT INTO `c_service` VALUES ('982026082800000004', 'parkingSpace.updateParkingSpaceCar', 'API', '修改车位绑定车辆', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2026-08-28 10:00:04', '0');
+INSERT INTO `c_service` VALUES ('982026082800000005', 'ownerCar.queryCarsWithoutParkingSpace', 'API', '查询无车位车辆', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2026-08-28 10:00:05', '0');
+INSERT INTO `c_service` VALUES ('982026090100000001', 'account.queryAppUserAccountDetail', 'API', '手机端查询账户明细', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-01 10:00:00', '0');
+INSERT INTO `c_service` VALUES ('982026090100000003', 'system.listRegisterProtocol', 'API', '查询注册协议', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2026-09-01 15:07:07', '0');
+INSERT INTO `c_service` VALUES ('982026090100000004', 'system.updateRegisterProtocol', 'API', '修改注册协议', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2026-09-01 15:07:07', '0');
+INSERT INTO `c_service` VALUES ('982026090100000005', 'user.updateUserPwd', 'API', '修改登录密码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-09-01 16:04:17', '0');
+INSERT INTO `c_service` VALUES ('982026090100000006', 'user.resetUserPwd', 'API', '忘记密码重置', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-09-01 16:04:17', '0');
+INSERT INTO `c_service` VALUES ('982026090176500434', 'system.listSystemPrivacy', 'API', '查询用户协议和隐私协议', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2026-09-01 14:33:43', '0');
+INSERT INTO `c_service` VALUES ('982026090200000001', 'chargeMachine.getAppChargeMachineByCode', 'API', '按设备编码查询充电桩', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2026-09-02 23:26:45', '0');
+INSERT INTO `c_service` VALUES ('982026090300000001', 'invoice.listMyInvoiceOrders', 'API', '查询我的开票订单(未开票/已开票)', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-03 10:00:01', '0');
+INSERT INTO `c_service` VALUES ('982026090300000002', 'invoice.getMyInvoiceHeading', 'API', '按登录手机号查询商城发票抬头', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-03 10:00:02', '0');
+INSERT INTO `c_service` VALUES ('982026090300000003', 'invoice.saveInvoice', 'API', '提交开票申请', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2026-09-03 10:00:03', '0');
 
 -- ----------------------------
 -- Table structure for c_service_business
 -- ----------------------------
 DROP TABLE IF EXISTS `c_service_business`;
 CREATE TABLE `c_service_business` (
-  `service_business_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `service_business_id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
   `business_type_cd` varchar(12) DEFAULT NULL,
   `invoke_type` varchar(4) NOT NULL COMMENT '调用类型，1 http-post(微服务内应用) 2 webservice 3 http-post(微服务之外应用)',
   `url` varchar(200) DEFAULT NULL COMMENT '目标地址',
   `message_topic` varchar(50) DEFAULT NULL COMMENT '异步时的消息topic名称',
-  `timeout` int(11) NOT NULL DEFAULT '60' COMMENT '超时时间',
-  `retry_count` int(11) NOT NULL DEFAULT '3' COMMENT '重试次数',
+  `timeout` int NOT NULL DEFAULT '60' COMMENT '超时时间',
+  `retry_count` int NOT NULL DEFAULT '3' COMMENT '重试次数',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   PRIMARY KEY (`service_business_id`),
   UNIQUE KEY `business_type_cd` (`business_type_cd`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of c_service_business
@@ -6810,7 +7283,7 @@ INSERT INTO `c_service_business` VALUES ('2', '123123', '1', '12eee', '122', '60
 -- ----------------------------
 DROP TABLE IF EXISTS `c_service_sql`;
 CREATE TABLE `c_service_sql` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
   `service_code` varchar(50) NOT NULL COMMENT '对应c_service表',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `params` varchar(500) NOT NULL COMMENT '参数',
@@ -6824,7 +7297,7 @@ CREATE TABLE `c_service_sql` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   PRIMARY KEY (`id`),
   UNIQUE KEY `service_code` (`service_code`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of c_service_sql
@@ -6843,7 +7316,7 @@ CREATE TABLE `dt_modal` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`modal_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of dt_modal
@@ -6883,7 +7356,7 @@ CREATE TABLE `dt_modal_param` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`param_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of dt_modal_param
@@ -6899,11 +7372,11 @@ CREATE TABLE `dt_scene` (
   `community_id` varchar(30) DEFAULT NULL COMMENT '小区ID',
   `modal_json` longtext COMMENT '场景模型',
   `state` varchar(12) NOT NULL DEFAULT 'Y' COMMENT '状态 Y 启用 N 停用',
-  `seq` int(11) NOT NULL DEFAULT '1' COMMENT '场景顺序',
+  `seq` int NOT NULL DEFAULT '1' COMMENT '场景顺序',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`scene_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of dt_scene
@@ -6916,6 +7389,10 @@ INSERT INTO `dt_scene` VALUES ('102026011345470047', '测试场景', '-1', null,
 INSERT INTO `dt_scene` VALUES ('102026011362870073', '演示场景', '-1', null, 'Y', '1', '2026-01-13 16:10:05', '1');
 INSERT INTO `dt_scene` VALUES ('102026012919014171', 'TEST', '-1', null, 'Y', '1', '2026-01-29 17:24:32', '0');
 INSERT INTO `dt_scene` VALUES ('102026012974573573', 'TEST', '-1', null, 'Y', '1', '2026-01-29 12:00:07', '1');
+INSERT INTO `dt_scene` VALUES ('102026050652020471', '11', '102026041001793653', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20260526/75d586ea-a65a-49c3-88d7-ca4ddf439170.blob', 'Y', '1', '2026-05-06 22:03:29', '0');
+INSERT INTO `dt_scene` VALUES ('102026051476650102', '222', '20260324548723980', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20260624/8b007834-60f2-48e5-8b63-024c3edd6d66.blob', 'Y', '1', '2026-05-14 11:03:44', '0');
+INSERT INTO `dt_scene` VALUES ('102026051682060167', '212121', '102026041794544972', null, 'Y', '1', '2026-05-16 16:16:13', '0');
+INSERT INTO `dt_scene` VALUES ('102026060881701783', '密密麻麻', '-1', null, 'Y', '1', '2026-06-08 22:41:40', '1');
 
 -- ----------------------------
 -- Table structure for dt_scene_obj_script
@@ -6932,7 +7409,7 @@ CREATE TABLE `dt_scene_obj_script` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`dsms_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of dt_scene_obj_script
@@ -6955,7 +7432,7 @@ CREATE TABLE `dt_script` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`script_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of dt_script
@@ -6979,7 +7456,7 @@ CREATE TABLE `event_object` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`eo_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='事件对象';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='事件对象';
 
 -- ----------------------------
 -- Records of event_object
@@ -7021,7 +7498,7 @@ CREATE TABLE `event_pool` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`event_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='事件';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='事件';
 
 -- ----------------------------
 -- Records of event_pool
@@ -7050,13 +7527,13 @@ CREATE TABLE `event_pool_staff` (
   `staff_name` varchar(64) NOT NULL COMMENT '处理员工',
   `event_reason` varchar(512) DEFAULT NULL COMMENT '事故原因',
   `event_result` varchar(512) DEFAULT NULL COMMENT '处理方案',
-  `event_hours` int(11) DEFAULT '0' COMMENT '处理时长',
+  `event_hours` int DEFAULT '0' COMMENT '处理时长',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `state` varchar(12) NOT NULL DEFAULT 'W' COMMENT '状态 W 待处理 NC 正常处理完成 TC 超时处理完成 D 处理中',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`eps_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='事件处理';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='事件处理';
 
 -- ----------------------------
 -- Records of event_pool_staff
@@ -7077,14 +7554,14 @@ DROP TABLE IF EXISTS `event_rule`;
 CREATE TABLE `event_rule` (
   `rule_id` varchar(30) NOT NULL COMMENT '规则ID',
   `rule_name` varchar(64) NOT NULL COMMENT '规则名称',
-  `limit_time` int(11) NOT NULL COMMENT '超时时间(min)',
+  `limit_time` int NOT NULL COMMENT '超时时间(min)',
   `template_id` varchar(30) NOT NULL COMMENT '模板ID',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`rule_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='事件规则';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='事件规则';
 
 -- ----------------------------
 -- Records of event_rule
@@ -7115,7 +7592,7 @@ CREATE TABLE `event_staff` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`es_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='事件通知员工';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='事件通知员工';
 
 -- ----------------------------
 -- Records of event_staff
@@ -7138,7 +7615,7 @@ CREATE TABLE `event_template` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`template_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='事件模板';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='事件模板';
 
 -- ----------------------------
 -- Records of event_template
@@ -7167,7 +7644,7 @@ CREATE TABLE `event_template_param` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`param_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='通知模板参数';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='通知模板参数';
 
 -- ----------------------------
 -- Records of event_template_param
@@ -7219,7 +7696,7 @@ CREATE TABLE `event_template_param_key` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`key_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='通知模板参数规格';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='通知模板参数规格';
 
 -- ----------------------------
 -- Records of event_template_param_key
@@ -7250,7 +7727,67 @@ CREATE TABLE `file_rel` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考t_dict表，0, 在用 1失效',
   KEY `idx_file_rel_id` (`file_rel_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of file_rel
+-- ----------------------------
+INSERT INTO `file_rel` VALUES ('912023082265720004', '-1', '10000', 'table', '772023082271670002', 'img/20230822/99d27151-7b69-4d79-bfaa-ec5210e95856.jpg', 'img/20230822/99d27151-7b69-4d79-bfaa-ec5210e95856.jpg', '2023-08-22 18:26:59', '0');
+INSERT INTO `file_rel` VALUES ('912023111028740014', '-1', '10000', 'table', '772023111006680012', 'img/20231110/feac4222-f417-4c4e-829e-b29191adb4c6.jpg', 'img/20231110/feac4222-f417-4c4e-829e-b29191adb4c6.jpg', '2023-11-10 12:52:33', '0');
+INSERT INTO `file_rel` VALUES ('912023111047690019', '-1', '10000', 'table', '772023111038450017', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20231110/4d26af4d-e232-4958-961a-e02ff113f450.jpg', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20231110/4d26af4d-e232-4958-961a-e02ff113f450.jpg', '2023-11-10 12:54:30', '0');
+INSERT INTO `file_rel` VALUES ('912023121972180003', '-1', '10000', 'table', '772023110609760004', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20231219/839424af-c8ae-4779-b3b5-cce386475162.jpg', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20231219/839424af-c8ae-4779-b3b5-cce386475162.jpg', '2023-12-19 22:53:40', '0');
+INSERT INTO `file_rel` VALUES ('912024020525880002', '-1', '10000', 'table', '772024012296540095', 'img/20240223/0cc61621-0a3b-4d23-9599-d9ad7330b7ee.jpg', 'img/20240223/0cc61621-0a3b-4d23-9599-d9ad7330b7ee.jpg', '2024-02-05 16:05:22', '0');
+INSERT INTO `file_rel` VALUES ('912024020500380007', '-1', '10000', 'table', '772024012299410005', 'img/20240223/a566e0be-abae-459d-a593-6284146242d9.jpg', 'img/20240223/a566e0be-abae-459d-a593-6284146242d9.jpg', '2024-02-05 22:06:56', '0');
+INSERT INTO `file_rel` VALUES ('912024020518150006', '-1', '10000', 'table', '772024020516840034', 'img/20240223/8b14daf2-0de7-41ab-b4e6-53fab07c18e6.jpg', 'img/20240223/8b14daf2-0de7-41ab-b4e6-53fab07c18e6.jpg', '2024-02-05 23:36:52', '0');
+INSERT INTO `file_rel` VALUES ('912024020670930003', '-1', '10000', 'table', '772024012292610085', 'img/20240223/2da5e227-7fdf-4445-ab02-2226b1295dfb.jpg', 'img/20240223/2da5e227-7fdf-4445-ab02-2226b1295dfb.jpg', '2024-02-06 02:22:57', '0');
+INSERT INTO `file_rel` VALUES ('912024021976240009', '-1', '10000', 'upload', '772024021916390005', 'img/20240219/184eab8f-dfdb-44e8-9aa1-4886bf26ad05.jpg', 'img/20240219/184eab8f-dfdb-44e8-9aa1-4886bf26ad05.jpg', '2024-02-19 09:02:17', '0');
+INSERT INTO `file_rel` VALUES ('912024021956740012', '-1', '10000', 'upload', '772024021911550008', 'img/20240219/500d3736-e329-4dd2-9b19-a1a4bbc3de65.jpg', 'img/20240219/500d3736-e329-4dd2-9b19-a1a4bbc3de65.jpg', '2024-02-19 09:14:09', '0');
+INSERT INTO `file_rel` VALUES ('912024071828060006', '-1', '10000', 'table', '772024021975863681', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20240908/2dac7559-279e-4e2a-bb8a-8a72533e9550.jpg', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20240908/2dac7559-279e-4e2a-bb8a-8a72533e9550.jpg', '2024-07-18 17:47:01', '0');
+INSERT INTO `file_rel` VALUES ('912024083001440002', '-1', '10000', 'table', '772024041203090161', 'img/20240906/d47d6b0a-d562-4840-9d34-deb0110be112.jpg', 'img/20240906/d47d6b0a-d562-4840-9d34-deb0110be112.jpg', '2024-08-30 00:22:57', '0');
+INSERT INTO `file_rel` VALUES ('912024090806160004', '-1', '10000', 'table', '772024021994213006', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20240908/755c104a-9893-44df-b3d7-d535ca11350b.jpg', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20240908/755c104a-9893-44df-b3d7-d535ca11350b.jpg', '2024-09-08 13:57:00', '0');
+INSERT INTO `file_rel` VALUES ('912025032421290007', '-1', '10000', 'table', '772025031389520016', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20250324/34de48a6-cdf3-41e6-b34f-1a15b5d46cfc.jpg', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20250324/34de48a6-cdf3-41e6-b34f-1a15b5d46cfc.jpg', '2025-03-24 18:46:47', '0');
+INSERT INTO `file_rel` VALUES ('912025112434010006', '-1', '10000', 'table', '772025112422220212', 'img/20260116/25d4eab5-e50f-4068-9cf4-0b086f1d52de.jpg', 'img/20260116/25d4eab5-e50f-4068-9cf4-0b086f1d52de.jpg', '2025-11-24 13:43:02', '0');
+INSERT INTO `file_rel` VALUES ('912025112473190099', '-1', '10000', 'table', '772025112425951519', 'img/20251125/d369ef8e-a13c-499b-ac44-edc7a1dab195.jpg', 'img/20251125/d369ef8e-a13c-499b-ac44-edc7a1dab195.jpg', '2025-11-24 17:07:05', '0');
+INSERT INTO `file_rel` VALUES ('912025112477610184', '-1', '10000', 'table', '772025112433493163', 'img/20251124/6acbd96d-5280-4231-ad07-6a9e395d5274.jpg', 'img/20251124/6acbd96d-5280-4231-ad07-6a9e395d5274.jpg', '2025-11-24 20:25:07', '0');
+INSERT INTO `file_rel` VALUES ('912025112529420475', '-1', '10000', 'table', '772025112548703594', 'img/20260305/4b5745f9-6a08-4f8b-8aec-e1856bf0b040.jpg', 'img/20260305/4b5745f9-6a08-4f8b-8aec-e1856bf0b040.jpg', '2025-11-25 08:50:50', '0');
+INSERT INTO `file_rel` VALUES ('912025112613981566', '-1', '10000', 'table', '7720251126603614836', 'img/20260202/8378bcc7-a23c-4080-9817-2d710ba0a4fe.jpg', 'img/20260202/8378bcc7-a23c-4080-9817-2d710ba0a4fe.jpg', '2025-11-26 19:13:00', '0');
+INSERT INTO `file_rel` VALUES ('912025112611801575', '-1', '10000', 'table', '7720251126239115403', 'img/20260202/f91b533c-5fbd-48d5-8080-849e31541ddb.jpg', 'img/20260202/f91b533c-5fbd-48d5-8080-849e31541ddb.jpg', '2025-11-26 19:38:40', '0');
+INSERT INTO `file_rel` VALUES ('912025120283133896', '-1', '10000', 'table', '7720251202656630161', 'img/20260108/fa9e55e6-5505-4cfa-b118-e65cdc967c24.jpg', 'img/20260108/fa9e55e6-5505-4cfa-b118-e65cdc967c24.jpg', '2025-12-02 15:11:37', '0');
+INSERT INTO `file_rel` VALUES ('912025121671150365', '-1', '10000', 'table', '7720251209284517501', 'img/20260108/92b95bff-6c12-4ac3-bc96-875e3459f1f0.jpg', 'img/20260108/92b95bff-6c12-4ac3-bc96-875e3459f1f0.jpg', '2025-12-16 09:36:14', '0');
+INSERT INTO `file_rel` VALUES ('912025121977874106', '-1', '10000', 'table', '7720251127444218663', 'img/20251219/9c9a23c6-a767-4d24-aa0f-f2cfc6fc76f2.jpg', 'img/20251219/9c9a23c6-a767-4d24-aa0f-f2cfc6fc76f2.jpg', '2025-12-19 14:35:30', '0');
+INSERT INTO `file_rel` VALUES ('912025122034720007', '-1', '10000', 'table', '772025122076110022', 'img/20251230/3a9f08d6-e177-4bdc-a4bc-1890f10df86c.jpg', 'img/20251230/3a9f08d6-e177-4bdc-a4bc-1890f10df86c.jpg', '2025-12-20 10:55:20', '0');
+INSERT INTO `file_rel` VALUES ('912025122338835194', '-1', '10000', 'table', '772025122336277355', 'img/20251223/2f5019c8-5e1a-43d8-a846-8cb70c1c6180.jpg', 'img/20251223/2f5019c8-5e1a-43d8-a846-8cb70c1c6180.jpg', '2025-12-23 12:50:52', '0');
+INSERT INTO `file_rel` VALUES ('912025123078909187', '-1', '10000', 'table', '7720251128310822193', 'img/20260110/0d3a5b60-bb9e-48c5-afd5-6b718b331739.jpg', 'img/20260110/0d3a5b60-bb9e-48c5-afd5-6b718b331739.jpg', '2025-12-30 09:01:18', '0');
+INSERT INTO `file_rel` VALUES ('912026010421101352', '-1', '10000', 'table', '772026010431037192', 'img/20260104/fbb21728-afa4-47ec-9c10-0c55d8dbc200.jpg', 'img/20260104/fbb21728-afa4-47ec-9c10-0c55d8dbc200.jpg', '2026-01-04 11:56:20', '0');
+INSERT INTO `file_rel` VALUES ('912026010552262501', '-1', '10000', 'table', '772026010509112499', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20260105/5f94c10b-8866-41cb-8b95-bffe776bdfeb.webp', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20260105/5f94c10b-8866-41cb-8b95-bffe776bdfeb.webp', '2026-01-05 12:34:55', '0');
+INSERT INTO `file_rel` VALUES ('912026010598382582', '-1', '10000', 'table', '772026010561432518', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20260105/c8b62e09-eb62-486a-9d2b-5f1b60c9794c.jpg', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20260105/c8b62e09-eb62-486a-9d2b-5f1b60c9794c.jpg', '2026-01-05 13:31:55', '0');
+INSERT INTO `file_rel` VALUES ('912026010653543207', '-1', '10000', 'table', '772026010561370008', 'img/20260305/197ce0ca-36f3-4c7d-9ae0-1f745ba0cdd8.jpg', 'img/20260305/197ce0ca-36f3-4c7d-9ae0-1f745ba0cdd8.jpg', '2026-01-06 14:57:33', '0');
+INSERT INTO `file_rel` VALUES ('912026010898556744', '-1', '10000', 'table', '772026010848204524', 'img/20260112/b79ce231-acfb-4d36-a35e-ef3e8a9f26aa.jpg', 'img/20260112/b79ce231-acfb-4d36-a35e-ef3e8a9f26aa.jpg', '2026-01-08 11:24:12', '0');
+INSERT INTO `file_rel` VALUES ('912026010982978304', '-1', '10000', 'table', '772025122501456559', 'img/20260109/6fb047c1-6c93-4844-bed0-6f64cf74dd34.png', 'img/20260109/6fb047c1-6c93-4844-bed0-6f64cf74dd34.png', '2026-01-09 13:24:56', '0');
+INSERT INTO `file_rel` VALUES ('912026011965035327', '-1', '10000', 'table', '772026011694121898', 'img/20260120/fdc9a688-9671-43f1-8179-4363e0a17531.jpg', 'img/20260120/fdc9a688-9671-43f1-8179-4363e0a17531.jpg', '2026-01-19 13:47:56', '0');
+INSERT INTO `file_rel` VALUES ('912026013182384504', '-1', '10000', 'table', '7720260130231726306', 'img/20260131/05147f62-9a48-4d60-9531-32cf371c511b.jpg', 'img/20260131/05147f62-9a48-4d60-9531-32cf371c511b.jpg', '2026-01-31 22:21:37', '0');
+INSERT INTO `file_rel` VALUES ('912026020792080731', '-1', '10000', 'table', '7720260204371030177', 'img/20260207/7fbdcf58-1f0a-445a-86ce-71e86c10e795.jpg', 'img/20260207/7fbdcf58-1f0a-445a-86ce-71e86c10e795.jpg', '2026-02-07 23:06:32', '0');
+INSERT INTO `file_rel` VALUES ('912026031480004827', '-1', '10000', 'table', '7720260310923422538', 'img/20260314/91f1ab81-4923-48ba-9c59-2e2d050f6aa8.jpg', 'img/20260314/91f1ab81-4923-48ba-9c59-2e2d050f6aa8.jpg', '2026-03-14 11:24:23', '0');
+INSERT INTO `file_rel` VALUES ('912026031457035077', '-1', '10000', 'table', '772026031404035764', 'img/20260314/4d9693a7-19f4-4a0c-be6e-c1521160df37.jpg', 'img/20260314/4d9693a7-19f4-4a0c-be6e-c1521160df37.jpg', '2026-03-14 23:04:47', '0');
+INSERT INTO `file_rel` VALUES ('912026031628535333', '-1', '10000', 'table', '772026031485805241', 'img/20260322/36970dab-e0b3-4150-8780-4a740250dc09.jpg', 'img/20260322/36970dab-e0b3-4150-8780-4a740250dc09.jpg', '2026-03-16 12:55:32', '0');
+INSERT INTO `file_rel` VALUES ('912026031801786288', '-1', '10000', 'table', '772026031463234217', 'img/20260318/992691f6-8cd9-45af-b768-035074f3c5e5.jpg', 'img/20260318/992691f6-8cd9-45af-b768-035074f3c5e5.jpg', '2026-03-18 09:36:21', '0');
+INSERT INTO `file_rel` VALUES ('912026040140372099', '-1', '10000', 'table', '772026040125962097', 'img/20260401/072513d6-473e-4114-aab3-f2ed36dcb529.jpg', 'img/20260401/072513d6-473e-4114-aab3-f2ed36dcb529.jpg', '2026-04-01 19:37:27', '0');
+INSERT INTO `file_rel` VALUES ('912026040891550535', '-1', '10000', 'table', '772026040354854675', 'img/20260408/e005496f-b839-46f6-83d0-567ff9285a92.jpg', 'img/20260408/e005496f-b839-46f6-83d0-567ff9285a92.jpg', '2026-04-08 10:58:12', '0');
+INSERT INTO `file_rel` VALUES ('912026040893492327', '-1', '10000', 'table', '7720260324344823871', 'img/20260525/d7c60ef0-18ea-4349-aa6d-aafa6ba70432.jpg', 'img/20260525/d7c60ef0-18ea-4349-aa6d-aafa6ba70432.jpg', '2026-04-08 16:49:29', '0');
+INSERT INTO `file_rel` VALUES ('912026041059833185', '-1', '10000', 'table', '772026041029198568', 'img/20260410/c2fe4f25-4c80-4e04-8813-b08ad18bb526.jpg', 'img/20260410/c2fe4f25-4c80-4e04-8813-b08ad18bb526.jpg', '2026-04-10 16:15:20', '0');
+INSERT INTO `file_rel` VALUES ('912026041304744454', '-1', '10000', 'table', '7720260413998417897', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20260414/7f1d102a-4821-48b2-8b2c-1ef8e2c4eb29.jpg', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20260414/7f1d102a-4821-48b2-8b2c-1ef8e2c4eb29.jpg', '2026-04-13 21:30:41', '0');
+INSERT INTO `file_rel` VALUES ('912026050820090574', '-1', '10000', 'table', '772026042035435293', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20260508/0356063a-b2d7-4450-a815-ce90c5b9797a.jpg', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20260508/0356063a-b2d7-4450-a815-ce90c5b9797a.jpg', '2026-05-08 14:55:41', '0');
+INSERT INTO `file_rel` VALUES ('912026052317170481', '-1', '10000', 'table', '772026052337260479', 'img/20260523/88efa069-9b42-446b-b910-7f7a32053fa3.jpg', 'img/20260523/88efa069-9b42-446b-b910-7f7a32053fa3.jpg', '2026-05-23 10:27:43', '0');
+INSERT INTO `file_rel` VALUES ('912026052832100902', '-1', '10000', 'table', '7720260528816611604', 'img/20260609/9d9e9e2d-3f0b-4956-a009-27d73a9cacec.jpg', 'img/20260609/9d9e9e2d-3f0b-4956-a009-27d73a9cacec.jpg', '2026-05-28 13:21:33', '0');
+INSERT INTO `file_rel` VALUES ('912026060876421779', '-1', '10000', 'table', '772026042105731839', 'img/20260608/b8c7db9a-424e-4c7d-b89c-9c75f66c7959.jpg', 'img/20260608/b8c7db9a-424e-4c7d-b89c-9c75f66c7959.jpg', '2026-06-08 22:38:07', '0');
+INSERT INTO `file_rel` VALUES ('912026060980061963', '-1', '10000', 'table', '7720260521036313822', 'img/20260609/48c73fc8-3290-403b-8872-64c923343fc2.jpg', 'img/20260609/48c73fc8-3290-403b-8872-64c923343fc2.jpg', '2026-06-09 16:43:37', '0');
+INSERT INTO `file_rel` VALUES ('912026060969701982', '-1', '10000', 'table', '7720260521651212719', 'img/20260609/725a3144-a224-4070-b488-9c5716cf953e.jpg', 'img/20260609/725a3144-a224-4070-b488-9c5716cf953e.jpg', '2026-06-09 16:43:38', '0');
+INSERT INTO `file_rel` VALUES ('912026072051874450', '-1', '10000', 'table', '772026072093704422', 'http://192.168.31.45:9000/java110/hc/iot/img/20260720/0578dcdb-98df-403a-910b-5933f4e0cc2c.jpg', 'http://192.168.31.45:9000/java110/hc/iot/img/20260720/0578dcdb-98df-403a-910b-5933f4e0cc2c.jpg', '2026-07-20 23:31:09', '0');
+INSERT INTO `file_rel` VALUES ('912026082921690007', '-1', '10000', 'table', '112026080754690996', 'img/20260829/ba4c7467-ffae-40e8-9b38-eac6ddcb864c.jpg', 'img/20260829/ba4c7467-ffae-40e8-9b38-eac6ddcb864c.jpg', '2026-08-29 17:46:47', '0');
+INSERT INTO `file_rel` VALUES ('912026083132220155', '-1', '10000', 'table', '772026083082920544', 'img/20260831/0a25ce00-0c95-4405-a45e-861d4b0e115b.jpg', 'img/20260831/0a25ce00-0c95-4405-a45e-861d4b0e115b.jpg', '2026-08-31 09:59:56', '0');
+INSERT INTO `file_rel` VALUES ('912026090322090190', '-1', '10000', 'table', '7720260902240830314', 'img/20260903/dcb1fe80-17e8-47d9-8e68-947500bd2976.jpg', 'img/20260903/dcb1fe80-17e8-47d9-8e68-947500bd2976.jpg', '2026-09-03 10:26:03', '0');
+INSERT INTO `file_rel` VALUES ('912026090324160195', '-1', '10000', 'table', '7720260901022130126', 'img/20260903/687da497-2d09-4d2f-a6ed-67af0fc91308.jpg', 'img/20260903/687da497-2d09-4d2f-a6ed-67af0fc91308.jpg', '2026-09-03 10:26:08', '0');
+INSERT INTO `file_rel` VALUES ('912026090303601933', '-1', '10000', 'table', '7720260707544821929', 'img/20260903/3f55fc24-3026-4a5f-8a46-07e43aa400e8.jpg', 'img/20260903/3f55fc24-3026-4a5f-8a46-07e43aa400e8.jpg', '2026-09-03 10:27:58', '0');
 
 -- ----------------------------
 -- Table structure for f_floor
@@ -7267,13 +7804,17 @@ CREATE TABLE `f_floor` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `community_id` varchar(30) NOT NULL DEFAULT '-1' COMMENT '小区ID',
   `floor_area` decimal(10,2) NOT NULL COMMENT '建筑面积',
-  `seq` int(11) NOT NULL DEFAULT '1' COMMENT '楼栋加入排序',
+  `seq` int NOT NULL DEFAULT '1' COMMENT '楼栋加入排序',
   `lat` varchar(32) DEFAULT NULL COMMENT '精度',
   `lng` varchar(32) DEFAULT NULL COMMENT '维度',
   UNIQUE KEY `floor_id` (`floor_id`) USING BTREE,
   UNIQUE KEY `idx_floor_id` (`floor_id`) USING BTREE,
   KEY `idx_floor_b_id` (`b_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of f_floor
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for f_floor_attr
@@ -7291,7 +7832,7 @@ CREATE TABLE `f_floor_attr` (
   UNIQUE KEY `attr_id` (`attr_id`) USING BTREE,
   KEY `idx_b_attr_b_id` (`b_id`) USING BTREE,
   KEY `idx_attr_floor_id` (`floor_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of f_floor_attr
@@ -7315,7 +7856,7 @@ CREATE TABLE `hardware_manufacturer` (
   `prod_url` varchar(500) NOT NULL COMMENT '产品官网',
   `default_protocol` varchar(12) NOT NULL DEFAULT 'F' COMMENT '是否启用该协议，T是，F否',
   PRIMARY KEY (`hm_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of hardware_manufacturer
@@ -7328,6 +7869,8 @@ INSERT INTO `hardware_manufacturer` VALUES ('102024082906880003', '宇泛内网�
 INSERT INTO `hardware_manufacturer` VALUES ('102024111278980003', '大华门禁（网关）', 'v2.0', 'dahuaGatewayAccessControlAdapt', '2024-11-12 00:05:16', '0', '1001', 'wmm', '18909711234', '免费', 'http://demo.com', 'F');
 INSERT INTO `hardware_manufacturer` VALUES ('102024113053140003', 'MVideo监控平台', 'v0.2', 'mvideoAssessControlProcessAdapt', '2024-11-30 15:18:24', '0', '1001', '吴学文', '17797173942', 'MIT', 'www.homecommunity.cn', 'F');
 INSERT INTO `hardware_manufacturer` VALUES ('102025032420940003', '微耕门禁', 'v1.0', 'wiegandGatewayAccessControlAdapt', '2025-03-24 09:32:08', '0', '1001', '王世杰', '18909714526', '请参考微耕官方协议', 'http://www.wiegand.com.cn/', 'F');
+INSERT INTO `hardware_manufacturer` VALUES ('102026052123810288', 'amns', '111', '111', '2026-05-21 11:02:35', '1', '1001', 'zbc', '17711117777', '111', 'http：//amns.cn', 'F');
+INSERT INTO `hardware_manufacturer` VALUES ('102026082102301003', 'test', 'test', 'test', '2026-08-21 20:22:54', '1', '1001', 'teset', '15099877545', 'este', 'test', 'F');
 INSERT INTO `hardware_manufacturer` VALUES ('15', '官方道闸协议(需要厂家支持)', 'v1.0', 'hcCarMachineAdapt', '2020-12-20 17:36:28', '0', '2002', '吴学文', '17797173942', '官方暂无说明', 'http://www.homecommunity.cn', 'F');
 INSERT INTO `hardware_manufacturer` VALUES ('17', '臻识道闸二开MQTT协议', 'v1.0', 'zhenshiMqttCarMachineAdapt', '2020-12-20 17:36:28', '0', '2002', '吴学文', '17797173942', '官方暂无说明', 'http://vzenith.com/case/ivs-fc-productpage/', 'F');
 INSERT INTO `hardware_manufacturer` VALUES ('20', '官方考勤协议(需要厂家支持)', 'v1.0', 'hcAttendanceProcessAdapt', '2020-12-20 17:36:28', '0', '4004', '吴学文', '17797173942', '官方暂无说明', 'http://www.homecommunity.cn', 'F');
@@ -7352,7 +7895,7 @@ CREATE TABLE `hardware_manufacturer_attr` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   PRIMARY KEY (`attr_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of hardware_manufacturer_attr
@@ -7404,14 +7947,14 @@ CREATE TABLE `instrument` (
   `type_id` varchar(30) NOT NULL COMMENT '仪表类型',
   `charge` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '剩余电量，百分比',
   `sign` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '信号强度',
-  `up_min` int(11) NOT NULL DEFAULT '60' COMMENT '上报时间',
-  `check_sec` int(11) NOT NULL DEFAULT '60' COMMENT '采样时间',
+  `up_min` int NOT NULL DEFAULT '60' COMMENT '上报时间',
+  `check_sec` int NOT NULL DEFAULT '60' COMMENT '采样时间',
   `impl_bean` varchar(30) NOT NULL COMMENT '仪表厂家',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`machine_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of instrument
@@ -7432,13 +7975,14 @@ CREATE TABLE `instrument_factory` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`factory_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of instrument_factory
 -- ----------------------------
 INSERT INTO `instrument_factory` VALUES ('102023112242490002', '通用仪表厂家', 'commonInstrumentFactoryAdaptImpl', '通用仪表厂家', '2023-11-22 14:10:05', '0');
-INSERT INTO `instrument_factory` VALUES ('102023112394000018', '111', '111', '', '2023-11-23 15:13:59', '0');
+INSERT INTO `instrument_factory` VALUES ('102023112394000018', '111', '111', '', '2023-11-23 15:13:59', '1');
+INSERT INTO `instrument_factory` VALUES ('102026082173771031', 'test', 'teset', 'test', '2026-08-21 20:25:19', '1');
 
 -- ----------------------------
 -- Table structure for instrument_factory_spec
@@ -7453,7 +7997,7 @@ CREATE TABLE `instrument_factory_spec` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   `remark` varchar(256) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`spec_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of instrument_factory_spec
@@ -7476,7 +8020,7 @@ CREATE TABLE `instrument_log` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`log_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of instrument_log
@@ -7502,7 +8046,7 @@ CREATE TABLE `instrument_log_sensor` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`ls_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of instrument_log_sensor
@@ -7526,7 +8070,7 @@ CREATE TABLE `instrument_param` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`param_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of instrument_param
@@ -7566,7 +8110,7 @@ CREATE TABLE `instrument_sensor` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`sensor_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of instrument_sensor
@@ -7597,7 +8141,144 @@ CREATE TABLE `instrument_type` (
   `remark` varchar(256) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`type_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of instrument_type
+-- ----------------------------
+INSERT INTO `instrument_type` VALUES ('102023112330650011', '测试类型1', '102023021386560001', '2023-11-23 09:57:11', '0', '测试类型1');
+INSERT INTO `instrument_type` VALUES ('102023112467040009', '测试类型2', '102023021386560001', '2023-11-24 16:44:25', '0', '');
+INSERT INTO `instrument_type` VALUES ('102024021932620135', '1111', '2023052267100146', '2024-02-19 10:07:11', '0', '');
+INSERT INTO `instrument_type` VALUES ('102025112528910672', '温湿度', '2024122649870005', '2025-11-25 11:26:23', '0', '');
+INSERT INTO `instrument_type` VALUES ('102025120418644677', '1', '2025072783670006', '2025-12-04 10:49:58', '1', '1');
+INSERT INTO `instrument_type` VALUES ('102026012300287835', '522821533381421514', '2025072783670006', '2026-01-23 19:07:57', '0', '');
+INSERT INTO `instrument_type` VALUES ('102026012303607680', '00000000000000000000000', '2025072783670006', '2026-01-23 10:40:21', '1', '1111');
+INSERT INTO `instrument_type` VALUES ('102026012309207823', '781663217488932719', '2025072783670006', '2026-01-23 18:54:46', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012311157817', '959549515813268935', '2025072783670006', '2026-01-23 18:49:35', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012320187832', '383921137262939561', '2025072783670006', '2026-01-23 19:02:27', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012364127677', '123456789012345678', '2025072783670006', '2026-01-23 10:39:15', '1', '0000');
+INSERT INTO `instrument_type` VALUES ('102026012383607828', '351182781494414431', '2025072783670006', '2026-01-23 18:55:51', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012384887683', '21458963.0', '2025072783670006', '2026-01-23 10:40:44', '1', '2154');
+INSERT INTO `instrument_type` VALUES ('102026012400298040', '675721957488554166', '2025072783670006', '2026-01-24 14:13:57', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012402797999', '358327674847679296', '2025072783670006', '2026-01-24 13:37:00', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012404358005', '857966228859838279', '2025072783670006', '2026-01-24 13:53:20', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012404498043', '734721794892481685', '2025072783670006', '2026-01-24 14:16:33', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012406068172', '358327674847679296', '2025072783670006', '2026-01-24 15:28:16', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012408338228', '类型681437281994616457', '2025072783670006', '2026-01-24 16:16:38', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012409228235', '类型128853177589393949', '2025072783670006', '2026-01-24 16:21:14', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012409358263', '229541489776164483', '2025072783670006', '2026-01-24 16:37:19', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012410218017', '274777742886439221', '2025072783670006', '2026-01-24 14:02:46', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012410458146', '185325357453167291', '2025072783670006', '2026-01-24 15:17:14', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012414098317', '766291467653346124', '2025072783670006', '2026-01-24 16:49:05', '0', '');
+INSERT INTO `instrument_type` VALUES ('102026012415318242', '类型474736948965746473', '2025072783670006', '2026-01-24 16:27:53', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012423498029', '834359185713412433', '2025072783670006', '2026-01-24 14:08:53', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012427348046', '157121464874983422', '2025072783670006', '2026-01-24 14:24:00', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012429298026', '239867129844785741', '2025072783670006', '2026-01-24 14:07:23', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012435828249', '类型412532459693294971', '2025072783670006', '2026-01-24 16:29:25', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012439707975', '毛巾612142918184937567', '2025072783670006', '2026-01-24 12:01:36', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012441998056', '备注747797758642489321', '2025072783670006', '2026-01-24 14:29:21', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012446498165', '471987194477735954', '2025072783670006', '2026-01-24 15:24:09', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012447498256', '类型321943767586961457', '2025072783670006', '2026-01-24 16:31:24', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012450068106', '类型377198115538926148', '2025072783670006', '2026-01-24 15:00:01', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012450438008', '528876961911244787', '2025072783670006', '2026-01-24 13:56:46', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012455878002', '毛巾229541489776164483', '2025072783670006', '2026-01-24 13:48:36', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012461397966', '746416332237877122', '2025072783670006', '2026-01-24 11:46:11', '0', '');
+INSERT INTO `instrument_type` VALUES ('102026012463497969', '毛巾766291467653346124', '2025072783670006', '2026-01-24 11:50:38', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012464448126', '625643594282666896', '2025072783670006', '2026-01-24 15:11:14', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012467298113', '116467763472871732', '2025072783670006', '2026-01-24 15:05:16', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012468338051', '备注583343924233492915', '2025072783670006', '2026-01-24 14:28:25', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012468738023', '494344318558352154', '2025072783670006', '2026-01-24 14:05:41', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012468838153', '548191779921325146', '2025072783670006', '2026-01-24 15:21:30', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012473068185', '类型976116172193672959', '2025072783670006', '2026-01-24 15:32:37', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012476628035', '971341145749685449', '2025072783670006', '2026-01-24 14:11:01', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012477858011', '165753572364518821', '2025072783670006', '2026-01-24 13:57:43', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012481138278', '679454662491768899', '2025072783670006', '2026-01-24 16:40:48', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012481408020', '746568992476779859', '2025072783670006', '2026-01-24 14:04:04', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012485567972', '毛巾679454662491768899', '2025072783670006', '2026-01-24 11:55:15', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012486627963', '838697623258276183', '2025072783670006', '2026-01-24 11:38:41', '0', '');
+INSERT INTO `instrument_type` VALUES ('102026012486738221', '类型791945448916528916', '2025072783670006', '2026-01-24 16:15:54', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012488347980', '727963481984144241', '2025072783670006', '2026-01-24 13:35:45', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012488848301', '464293365184432764', '2025072783670006', '2026-01-24 16:44:16', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012492548287', '213494378874177617', '2025072783670006', '2026-01-24 16:41:47', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012492608014', '157222345573119664', '2025072783670006', '2026-01-24 14:00:19', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012495968139', '987557879975683157', '2025072783670006', '2026-01-24 15:16:13', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012496458192', '类型496813113648242589', '2025072783670006', '2026-01-24 15:33:31', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012497738099', '类型612168331891683687', '2025072783670006', '2026-01-24 14:57:13', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012498648116', '377884831856399514', '2025072783670006', '2026-01-24 15:06:33', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012499278177', '487958764289583915', '2025072783670006', '2026-01-24 15:29:07', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012697349157', '293245246286887997', '2025072783670006', '2026-01-26 09:29:00', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012719109502', '类型572453436352596249', '2025072783670006', '2026-01-27 15:00:35', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012725769422', '612142918184937567', '2025072783670006', '2026-01-27 10:00:35', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012739409556', '毛巾121541153883764677', '2025072783670006', '2026-01-27 15:44:01', '0', '');
+INSERT INTO `instrument_type` VALUES ('102026012760819509', '类型532464463229448865', '2025072783670006', '2026-01-27 15:03:47', '1', '');
+INSERT INTO `instrument_type` VALUES ('102026012790869533', '毛巾842948358169351212', '2025072783670006', '2026-01-27 15:28:17', '0', '');
+INSERT INTO `instrument_type` VALUES ('102026061137332546', '11', '20260324548723980', '2026-06-11 18:08:14', '1', '11');
+INSERT INTO `instrument_type` VALUES ('102026080660970060', '测试组', '2026070788800612', '2026-08-06 16:32:24', '0', '');
+
+-- ----------------------------
+-- Table structure for invoice_order
+-- ----------------------------
+DROP TABLE IF EXISTS `invoice_order`;
+CREATE TABLE `invoice_order` (
+  `invoice_order_id` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '开票订单ID',
+  `user_id` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户ID',
+  `phone` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '登录账号手机号',
+  `community_id` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '小区ID(communityId)',
+  `heading_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商城抬头ID(同步后回写)',
+  `heading_type` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '抬头类型 个人/公司',
+  `buyer_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '购买方名称(抬头名称)',
+  `buyer_tax_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '税号',
+  `buyer_address` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '地址(选填)',
+  `buyer_bank` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '开户行(选填)',
+  `buyer_bank_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '银行账号(选填)',
+  `email` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '邮箱(接收发票)',
+  `invoice_type` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '普票' COMMENT '普票/专票',
+  `biz_category` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '充电费' COMMENT '业务类目',
+  `amount` decimal(14,2) NOT NULL COMMENT '开票金额(元)',
+  `invoice_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商城开票单号(INV..)',
+  `state` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'WAIT' COMMENT 'WAIT-待开票 DONE-已开票 FAIL-开票失败',
+  `invoice_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发票号码',
+  `invoice_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发票代码',
+  `pdf_url` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发票PDF地址',
+  `fail_reason` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '失败原因',
+  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '幂等标记(业务前缀:orderId1,orderId2 如 CHARGE:...)',
+  `status_cd` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '0-正常 1-删除',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`invoice_order_id`),
+  KEY `idx_user` (`user_id`,`phone`,`status_cd`),
+  KEY `idx_state` (`state`,`status_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='开票订单';
+
+-- ----------------------------
+-- Records of invoice_order
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for invoice_order_item
+-- ----------------------------
+DROP TABLE IF EXISTS `invoice_order_item`;
+CREATE TABLE `invoice_order_item` (
+  `item_id` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '明细ID',
+  `invoice_order_id` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '开票订单ID',
+  `order_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '业务订单ID(充电订单 charge_machine_order.order_id)',
+  `community_id` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '小区ID(冗余)',
+  `biz_category` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '充电费' COMMENT '业务类目',
+  `invoice_category` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '开票类目(商城回填)',
+  `tax_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '税收分类编码',
+  `tax_rate` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '税率',
+  `amount` decimal(14,2) NOT NULL COMMENT '明细金额(元)',
+  `seq` int DEFAULT '1' COMMENT '明细序号',
+  `status_cd` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '0-正常 1-删除',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`item_id`),
+  KEY `idx_order` (`order_id`,`status_cd`),
+  KEY `idx_invoice` (`invoice_order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='开票明细';
+
+-- ----------------------------
+-- Records of invoice_order_item
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for lamp_machine
@@ -7615,7 +8296,7 @@ CREATE TABLE `lamp_machine` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`machine_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='路灯管理';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='路灯管理';
 
 -- ----------------------------
 -- Records of lamp_machine
@@ -7633,7 +8314,7 @@ CREATE TABLE `lamp_machine_factory` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`factory_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='路灯厂家';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='路灯厂家';
 
 -- ----------------------------
 -- Records of lamp_machine_factory
@@ -7641,6 +8322,7 @@ CREATE TABLE `lamp_machine_factory` (
 INSERT INTO `lamp_machine_factory` VALUES ('102023092167800040', '111', '111', '', '2023-09-21 16:40:11', '1');
 INSERT INTO `lamp_machine_factory` VALUES ('102023092199890002', '通用路灯', 'commonLampFactoryAdaptImpl', '', '2023-09-21 15:38:46', '1');
 INSERT INTO `lamp_machine_factory` VALUES ('102023103087700005', '111', '111', '', '2023-10-30 10:59:51', '1');
+INSERT INTO `lamp_machine_factory` VALUES ('102026082191431018', '兴亮', 'xingliang', '', '2026-08-21 20:24:06', '1');
 
 -- ----------------------------
 -- Table structure for lamp_machine_factory_spec
@@ -7654,7 +8336,7 @@ CREATE TABLE `lamp_machine_factory_spec` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   `remark` varchar(256) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`spec_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='路灯厂家参数';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='路灯厂家参数';
 
 -- ----------------------------
 -- Records of lamp_machine_factory_spec
@@ -7679,7 +8361,7 @@ CREATE TABLE `lamp_machine_log` (
   `state` varchar(12) NOT NULL COMMENT '状态，请求成功 10001,返回成功10002,操作失败 10003',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='下发设备日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='下发设备日志';
 
 -- ----------------------------
 -- Records of lamp_machine_log
@@ -7693,12 +8375,12 @@ CREATE TABLE `lamp_machine_open_close` (
   `lmo_id` varchar(30) NOT NULL COMMENT '主键ID',
   `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
   `type` varchar(12) NOT NULL DEFAULT 'open' COMMENT '类型 open 打开 close 关闭',
-  `hours` int(11) NOT NULL DEFAULT '20' COMMENT '小时，打开或者关闭小时',
-  `min` int(11) NOT NULL DEFAULT '1' COMMENT '分钟，打开或者关闭分钟',
+  `hours` int NOT NULL DEFAULT '20' COMMENT '小时，打开或者关闭小时',
+  `min` int NOT NULL DEFAULT '1' COMMENT '分钟，打开或者关闭分钟',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`lmo_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='路灯控制';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='路灯控制';
 
 -- ----------------------------
 -- Records of lamp_machine_open_close
@@ -7718,7 +8400,7 @@ CREATE TABLE `lamp_machine_operation` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`lmo_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='操作日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='操作日志';
 
 -- ----------------------------
 -- Records of lamp_machine_operation
@@ -7740,7 +8422,7 @@ CREATE TABLE `lift_camera` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`lc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of lift_camera
@@ -7751,6 +8433,7 @@ INSERT INTO `lift_camera` VALUES ('102025121602360588', 'B11-相机', '0001', 's
 INSERT INTO `lift_camera` VALUES ('102026020821460992', 'B12-相机', '102025121602360589', 'sbLiftCamera', '102026011204389622', '测试', '2025072783670006', '2026-02-08 04:31:32', '2026-02-08 04:31:32', '0');
 INSERT INTO `lift_camera` VALUES ('102026020871550995', 'B11-相机', '102025121602360577', 'sbLiftCamera', '102026011204389622', '测试', '2025072783670006', '2026-02-08 04:32:00', '2026-02-08 04:32:00', '1');
 INSERT INTO `lift_camera` VALUES ('102026040777810193', 'ww', '2', 'sbLiftCamera', '102026032503120924', '1', '20260324548723980', '2026-04-07 11:26:37', '2026-04-07 11:26:37', '0');
+INSERT INTO `lift_camera` VALUES ('102026061829793375', '测试', '20260618', 'sbLiftCamera', '102026061552913176', '111', '20260512631111312', '2026-06-18 11:36:42', '2026-06-18 11:36:42', '0');
 
 -- ----------------------------
 -- Table structure for lift_machine
@@ -7776,13 +8459,11 @@ CREATE TABLE `lift_machine` (
   `monitor_id` varchar(30) DEFAULT NULL COMMENT '监控ID',
   `monitor_name` varchar(64) DEFAULT NULL COMMENT '监控名称',
   PRIMARY KEY (`machine_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='电梯管理';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='电梯管理';
 
 -- ----------------------------
 -- Records of lift_machine
 -- ----------------------------
-INSERT INTO `lift_machine` VALUES ('102026032503120924', '1', '1', '1', '15', '', '', '', '', '102026011220509619', '20260324548723980', '2026-03-25 16:01:14', '2002', '1', '2026-03-25 16:01:14', '0', '-1', null);
-INSERT INTO `lift_machine` VALUES ('102026040837639961', '电梯1', '0001', '无', '1', '', '', '', '', '102026011220509619', '20260324548723980', '2026-04-08 09:45:30', '2002', '1', '2026-04-08 09:45:30', '0', '-1', null);
 
 -- ----------------------------
 -- Table structure for lift_machine_ac
@@ -7799,15 +8480,11 @@ CREATE TABLE `lift_machine_ac` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`lma_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of lift_machine_ac
 -- ----------------------------
-INSERT INTO `lift_machine_ac` VALUES ('102026040745010135', '102026032503120924', '102026040178242119', '南门', 'A04', '2002', '20260324548723980', '2026-04-07 10:36:47', '0');
-INSERT INTO `lift_machine_ac` VALUES ('102026040801119978', '102026040837639961', '102026040112362116', '西门', 'A03', '1001', '20260324548723980', '2026-04-08 09:46:32', '0');
-INSERT INTO `lift_machine_ac` VALUES ('102026040862429984', '102026040837639961', '102026040178242119', '南门', 'A04', '1001', '20260324548723980', '2026-04-08 09:46:48', '0');
-INSERT INTO `lift_machine_ac` VALUES ('102026040866209974', '102026040837639961', '102026040112362116', '西门', 'A03', '1001', '20260324548723980', '2026-04-08 09:46:23', '0');
 
 -- ----------------------------
 -- Table structure for lift_machine_factory
@@ -7821,7 +8498,7 @@ CREATE TABLE `lift_machine_factory` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`factory_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='电梯厂家';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='电梯厂家';
 
 -- ----------------------------
 -- Records of lift_machine_factory
@@ -7832,7 +8509,10 @@ INSERT INTO `lift_machine_factory` VALUES ('102023092137410031', 'asd', 'asd', '
 INSERT INTO `lift_machine_factory` VALUES ('102024022659892348', '三菱', '三菱', '啊啊啊啊', '2024-02-26 13:20:20', '1');
 INSERT INTO `lift_machine_factory` VALUES ('102025121629920575', '三菱电梯厂商', '测试', '', '2025-12-16 15:07:39', '1');
 INSERT INTO `lift_machine_factory` VALUES ('102026011220509619', '电梯厂商', '1', '', '2026-01-12 16:15:56', '1');
-INSERT INTO `lift_machine_factory` VALUES ('102026042061690008', '1', '2', '3', '2026-04-20 16:01:23', '0');
+INSERT INTO `lift_machine_factory` VALUES ('102026042061690008', '1', '2', '3', '2026-04-20 16:01:23', '1');
+INSERT INTO `lift_machine_factory` VALUES ('102026052176480389', '电器厂家', '电器类', '', '2026-05-21 11:40:52', '0');
+INSERT INTO `lift_machine_factory` VALUES ('102026070945360161', 'xx', 'ss', 'ss', '2026-07-09 09:38:26', '1');
+INSERT INTO `lift_machine_factory` VALUES ('102026082144281013', 'test', 'test', 'etre', '2026-08-21 20:23:40', '1');
 
 -- ----------------------------
 -- Table structure for lift_machine_factory_spec
@@ -7846,7 +8526,7 @@ CREATE TABLE `lift_machine_factory_spec` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   `remark` varchar(256) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`spec_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='电梯厂家参数';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='电梯厂家参数';
 
 -- ----------------------------
 -- Records of lift_machine_factory_spec
@@ -7856,6 +8536,7 @@ INSERT INTO `lift_machine_factory_spec` VALUES ('102023092136980037', '102023092
 INSERT INTO `lift_machine_factory_spec` VALUES ('102023092169850009', '102023092014420010', 'qqq', '2023-09-21 08:59:40', '1', '');
 INSERT INTO `lift_machine_factory_spec` VALUES ('102024022629812351', '102024022659892348', '规格一', '2024-02-26 13:20:34', '0', '');
 INSERT INTO `lift_machine_factory_spec` VALUES ('102026042082040011', '102026042061690008', '2333', '2026-04-20 16:01:32', '0', '444');
+INSERT INTO `lift_machine_factory_spec` VALUES ('102026070984290164', '102026070945360161', 'ss', '2026-07-09 09:38:32', '1', 'ss');
 
 -- ----------------------------
 -- Table structure for lift_machine_log
@@ -7873,7 +8554,7 @@ CREATE TABLE `lift_machine_log` (
   `state` varchar(12) NOT NULL COMMENT '状态，请求成功 10001,返回成功10002,操作失败 10003',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='电梯日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='电梯日志';
 
 -- ----------------------------
 -- Records of lift_machine_log
@@ -7897,7 +8578,7 @@ CREATE TABLE `lift_machine_reservation` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`lmr_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='电梯预约记录';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='电梯预约记录';
 
 -- ----------------------------
 -- Records of lift_machine_reservation
@@ -7919,13 +8600,13 @@ CREATE TABLE `lift_ride_log` (
   `tel` varchar(20) DEFAULT NULL COMMENT '手机号',
   `person_type` varchar(12) NOT NULL COMMENT '人员类型 100 访客 200 员工 300 业主',
   `room_name` varchar(64) DEFAULT NULL COMMENT '房号',
-  `layer` int(11) DEFAULT NULL COMMENT '楼层',
+  `layer` int DEFAULT NULL COMMENT '楼层',
   `face_path` varchar(512) DEFAULT NULL COMMENT '人脸路劲',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of lift_ride_log
@@ -7945,9 +8626,9 @@ CREATE TABLE `lift_warn` (
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `warn_type` varchar(64) NOT NULL COMMENT '告警类型：people_block_door 人挡门 object_block_door 物挡门 door_always_open 无阻挡长开门 door_always_close 长时间关门 people_trapped 电梯困人 have_bicycle非机动车进电梯 people_no_mask 未带口罩 have_large_goods 大件物品 have_foreign_matter 电梯内异物 people_prancing 蹦跳打闹 people_fall 人员跌倒 people_smoking 吸烟 io_alarm io输入报警acceleration_alram 加速度异常 shake_alarm 震动异常',
   `warn_img` varchar(512) DEFAULT NULL COMMENT '告警图片',
-  `enter_people_num` int(11) DEFAULT NULL COMMENT '进入电梯人数',
-  `leave_people_num` int(11) DEFAULT NULL COMMENT '离开电梯人数',
-  `current_people_num` int(11) DEFAULT NULL COMMENT '当前电梯人数',
+  `enter_people_num` int DEFAULT NULL COMMENT '进入电梯人数',
+  `leave_people_num` int DEFAULT NULL COMMENT '离开电梯人数',
+  `current_people_num` int DEFAULT NULL COMMENT '当前电梯人数',
   `alarm_in_polarity` varchar(12) DEFAULT NULL COMMENT '开门状态',
   `have_bicycle` varchar(12) DEFAULT NULL COMMENT '非机动车，Y 是 N 否',
   `lift_door_state` varchar(12) DEFAULT NULL COMMENT '开门状态',
@@ -7957,7 +8638,7 @@ CREATE TABLE `lift_warn` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`lw_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of lift_warn
@@ -7980,7 +8661,7 @@ CREATE TABLE `lock_inout` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `state` varchar(12) NOT NULL COMMENT '开门状态，C 开门成功 F 开门失败',
   PRIMARY KEY (`inout_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of lock_inout
@@ -8002,7 +8683,7 @@ CREATE TABLE `lock_log` (
   `state` varchar(12) NOT NULL COMMENT '状态，请求成功 10001,返回成功10002,操作失败 10003',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of lock_log
@@ -8025,19 +8706,11 @@ CREATE TABLE `lock_machine` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`machine_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of lock_machine
 -- ----------------------------
-INSERT INTO `lock_machine` VALUES ('123456789', '123456789', '123456789', '7520260325286622095', '1-0-2-32-31', '-1.00', '102023103060260011', '20260324548723980', '2026-04-16 12:36:13', '2026-04-16 12:36:12', '0');
-INSERT INTO `lock_machine` VALUES ('456789', '456789', '456789', '752026042053795186', '1-1-101', '-1.00', '102023103060260011', '102026042019245120', '2026-04-20 10:01:07', '2026-04-20 10:01:06', '0');
-INSERT INTO `lock_machine` VALUES ('S8503_dfa323', '测试2', 'S8503_dfa325', '752026042053795186', '1-1-101', '0.00', '102023103060260011', '102026042019245120', '2026-04-20 10:00:01', '2026-04-20 10:00:01', '0');
-INSERT INTO `lock_machine` VALUES ('S8503_dfa325', '测试', 'S8503_dfa325', '7520260325286622095', '1-0-2-32-31', '-1.00', '102023103060260011', '20260324548723980', '2026-04-16 12:54:17', '2026-04-16 12:54:16', '0');
-INSERT INTO `lock_machine` VALUES ('S8504_DFA325', '测试门锁', 'S8504_DFA325', '752026042053795186', '1-1-101', '-1.00', '102023103060260011', '102026042019245120', '2026-04-20 09:56:22', '2026-04-20 09:56:22', '0');
-INSERT INTO `lock_machine` VALUES ('测试123456', '测试门锁', '测试123456', '752026042039165290', '1-1-101', '-1.00', '102023103060260011', '102026042023715244', '2026-04-20 10:15:14', '2026-04-20 10:15:14', '0');
-INSERT INTO `lock_machine` VALUES ('测试123456789', '测试123456789', '测试123456789', '752026042039165290', '1-1-101', '-1.00', '102023103060260011', '102026042023715244', '2026-04-20 10:22:51', '2026-04-20 10:22:50', '1');
-INSERT INTO `lock_machine` VALUES ('测试2345678', '测试2345678', '测试2345678', '752026042053795186', '1-1-101', '-1.00', '102023103060260011', '102026042019245120', '2026-04-20 10:39:14', '2026-04-20 10:39:14', '0');
 
 -- ----------------------------
 -- Table structure for lock_machine_factory
@@ -8051,7 +8724,7 @@ CREATE TABLE `lock_machine_factory` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`factory_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of lock_machine_factory
@@ -8061,6 +8734,7 @@ INSERT INTO `lock_machine_factory` VALUES ('102023103069830002', 'qqq1', 'qqq1',
 INSERT INTO `lock_machine_factory` VALUES ('102023120619600016', 'www', 'www', 'www', '2023-12-06 14:41:48', '1');
 INSERT INTO `lock_machine_factory` VALUES ('102024011606220031', '官方门锁协议（厂家需要支持）', 'hcLockFactoryAdaptImpl', '', '2024-01-16 23:19:34', '0');
 INSERT INTO `lock_machine_factory` VALUES ('102025113060833668', 'TEST', 'QWEQW', 'TEST', '2025-11-30 21:35:52', '1');
+INSERT INTO `lock_machine_factory` VALUES ('102026082160031026', 'test', 'test', 'test', '2026-08-21 20:25:08', '1');
 
 -- ----------------------------
 -- Table structure for lock_machine_factory_spec
@@ -8076,7 +8750,7 @@ CREATE TABLE `lock_machine_factory_spec` (
   `remark` varchar(256) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`spec_id`) USING BTREE,
   UNIQUE KEY `spec_cd` (`spec_cd`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of lock_machine_factory_spec
@@ -8086,6 +8760,7 @@ INSERT INTO `lock_machine_factory_spec` VALUES ('102023110798310013', '102023103
 INSERT INTO `lock_machine_factory_spec` VALUES ('102023110819920002', '102023103060260011', 'username', '1003', '2023-11-08 16:47:38', '0', '必填，请填写username');
 INSERT INTO `lock_machine_factory_spec` VALUES ('102023110853030005', '102023103060260011', 'password', '1004', '2023-11-08 16:48:12', '0', '必填，请填写password');
 INSERT INTO `lock_machine_factory_spec` VALUES ('102023110906500031', '102023103060260011', 'refreshToken', '1005', '2023-11-09 14:12:03', '0', '必填，请填写refreshToken');
+INSERT INTO `lock_machine_factory_spec` VALUES ('102026050686150478', '102024011606220031', 'HUICA', '12345608', '2026-05-06 23:51:32', '0', '');
 
 -- ----------------------------
 -- Table structure for lock_machine_param
@@ -8100,7 +8775,132 @@ CREATE TABLE `lock_machine_param` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`param_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of lock_machine_param
+-- ----------------------------
+INSERT INTO `lock_machine_param` VALUES ('102023111336320006', '11802165', '102023021386560001', '1004', '5afb7b5360ab76ae55734560b574845d', '2023-11-13 14:20:20', '0');
+INSERT INTO `lock_machine_param` VALUES ('102023111343600005', '11802165', '102023021386560001', '1003', '13345513582', '2023-11-13 14:20:20', '0');
+INSERT INTO `lock_machine_param` VALUES ('102023111352080003', '11802165', '102023021386560001', '1001', '34647ee13033440dbb9410e6021e9612', '2023-11-13 14:20:20', '0');
+INSERT INTO `lock_machine_param` VALUES ('102023111353910004', '11802165', '102023021386560001', '1002', '2b709b6d3e12b8bf380ee914369b5949', '2023-11-13 14:20:20', '0');
+INSERT INTO `lock_machine_param` VALUES ('102023111392250007', '11802165', '102023021386560001', '1005', 'f9bb35f56f38d54335cf61998944bcaa', '2023-11-13 14:20:20', '0');
+INSERT INTO `lock_machine_param` VALUES ('102025112402810038', '1', '2024122649870005', '1004', '1', '2025-11-24 14:37:30', '0');
+INSERT INTO `lock_machine_param` VALUES ('102025112457850037', '1', '2024122649870005', '1005', '1', '2025-11-24 14:37:30', '0');
+INSERT INTO `lock_machine_param` VALUES ('102025112464770040', '1', '2024122649870005', '1002', '1', '2025-11-24 14:37:30', '0');
+INSERT INTO `lock_machine_param` VALUES ('102025112476920041', '1', '2024122649870005', '1001', '1', '2025-11-24 14:37:30', '0');
+INSERT INTO `lock_machine_param` VALUES ('102025112484190039', '1', '2024122649870005', '1003', '1', '2025-11-24 14:37:30', '0');
+INSERT INTO `lock_machine_param` VALUES ('102025112829642453', '12', '2024122649870005', '1002', '12', '2025-11-28 15:25:00', '0');
+INSERT INTO `lock_machine_param` VALUES ('102025112837892454', '12', '2024122649870005', '1001', '123', '2025-11-28 15:25:00', '0');
+INSERT INTO `lock_machine_param` VALUES ('102025112840112450', '12', '2024122649870005', '1005', '123', '2025-11-28 15:25:00', '0');
+INSERT INTO `lock_machine_param` VALUES ('102025112854632452', '12', '2024122649870005', '1003', '123', '2025-11-28 15:25:00', '0');
+INSERT INTO `lock_machine_param` VALUES ('102025112884452451', '12', '2024122649870005', '1004', '123', '2025-11-28 15:25:00', '0');
+INSERT INTO `lock_machine_param` VALUES ('102025113065563686', '123', '2025072783670006', '1003', '1', '2025-11-30 22:25:18', '0');
+INSERT INTO `lock_machine_param` VALUES ('102025113070433687', '123', '2025072783670006', '1002', '1', '2025-11-30 22:25:18', '0');
+INSERT INTO `lock_machine_param` VALUES ('102025113093143684', '123', '2025072783670006', '1005', '1', '2025-11-30 22:25:18', '0');
+INSERT INTO `lock_machine_param` VALUES ('102025113095443688', '123', '2025072783670006', '1001', '1', '2025-11-30 22:25:18', '0');
+INSERT INTO `lock_machine_param` VALUES ('102025113096393685', '123', '2025072783670006', '1004', '1', '2025-11-30 22:25:18', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012205377492', '124', '2025072783670006', '1004', '1', '2026-01-22 16:13:45', '1');
+INSERT INTO `lock_machine_param` VALUES ('102026012215837491', '124', '2025072783670006', '1005', '1', '2026-01-22 16:13:45', '1');
+INSERT INTO `lock_machine_param` VALUES ('102026012256487494', '124', '2025072783670006', '1002', '1', '2026-01-22 16:13:45', '1');
+INSERT INTO `lock_machine_param` VALUES ('102026012260777493', '124', '2025072783670006', '1003', '1', '2026-01-22 16:13:45', '1');
+INSERT INTO `lock_machine_param` VALUES ('102026012294387495', '124', '2025072783670006', '1001', '1', '2026-01-22 16:13:45', '1');
+INSERT INTO `lock_machine_param` VALUES ('102026012310267773', '1001', '2025072783670006', '1005', '1', '2026-01-23 17:15:39', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012316367786', '11', '2025072783670006', '1005', '1', '2026-01-23 17:20:40', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012316637790', '11', '2025072783670006', '1001', '1', '2026-01-23 17:20:40', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012320167777', '1001', '2025072783670006', '1001', '1', '2026-01-23 17:15:39', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012324687776', '1001', '2025072783670006', '1002', '1', '2026-01-23 17:15:39', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012360497788', '11', '2025072783670006', '1003', '1', '2026-01-23 17:20:40', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012364107775', '1001', '2025072783670006', '1003', '1', '2026-01-23 17:15:39', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012383887787', '11', '2025072783670006', '1004', '1', '2026-01-23 17:20:40', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012386777789', '11', '2025072783670006', '1002', '1', '2026-01-23 17:20:40', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012390417774', '1001', '2025072783670006', '1004', '1', '2026-01-23 17:15:39', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012402327945', '111', '2025072783670006', '1005', '1', '2026-01-24 11:05:37', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012412758412', '127', '2025072783670006', '1002', '1', '2026-01-24 18:05:52', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012414328409', '127', '2025072783670006', '1005', '1', '2026-01-24 18:05:52', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012415098423', '111111', '2025072783670006', '1004', '1', '2026-01-24 18:06:56', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012421557947', '111', '2025072783670006', '1003', '1', '2026-01-24 11:05:37', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012423597946', '111', '2025072783670006', '1004', '1', '2026-01-24 11:05:37', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012426598413', '127', '2025072783670006', '1001', '1', '2026-01-24 18:05:52', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012428507956', '128', '2025072783670006', '1003', '1', '2026-01-24 11:14:10', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012428917954', '128', '2025072783670006', '1005', '1', '2026-01-24 11:14:10', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012428928424', '111111', '2025072783670006', '1003', '1', '2026-01-24 18:06:56', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012436677958', '128', '2025072783670006', '1001', '1', '2026-01-24 11:14:10', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012442218426', '111111', '2025072783670006', '1001', '1', '2026-01-24 18:06:56', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012442417955', '128', '2025072783670006', '1004', '1', '2026-01-24 11:14:10', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012448928411', '127', '2025072783670006', '1003', '1', '2026-01-24 18:05:52', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012454728425', '111111', '2025072783670006', '1002', '1', '2026-01-24 18:06:56', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012454817957', '128', '2025072783670006', '1002', '1', '2026-01-24 11:14:10', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012486027948', '111', '2025072783670006', '1002', '1', '2026-01-24 11:05:37', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012494298422', '111111', '2025072783670006', '1005', '1', '2026-01-24 18:06:56', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012494478410', '127', '2025072783670006', '1004', '1', '2026-01-24 18:05:52', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012494937949', '111', '2025072783670006', '1001', '1', '2026-01-24 11:05:37', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012503088736', '124', '2025072783670006', '1004', '1', '2026-01-25 10:11:56', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012562618737', '124', '2025072783670006', '1003', '1', '2026-01-25 10:11:56', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012567398738', '124', '2025072783670006', '1002', '1', '2026-01-25 10:11:56', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012569468735', '124', '2025072783670006', '1005', '1', '2026-01-25 10:11:56', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012570638739', '124', '2025072783670006', '1001', '1', '2026-01-25 10:11:56', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012701859573', '121', '2025072783670006', '1003', '1', '2026-01-27 15:50:45', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012720979585', '126', '2025072783670006', '1002', '1', '2026-01-27 15:55:41', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012724639529', '129', '2025072783670006', '1002', '1', '2026-01-27 15:25:00', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012725279582', '126', '2025072783670006', '1005', '1', '2026-01-27 15:55:41', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012728139530', '129', '2025072783670006', '1001', '1', '2026-01-27 15:25:00', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012729029574', '121', '2025072783670006', '1002', '1', '2026-01-27 15:50:45', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012739089527', '129', '2025072783670006', '1004', '1', '2026-01-27 15:25:00', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012749229575', '121', '2025072783670006', '1001', '1', '2026-01-27 15:50:45', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012750369583', '126', '2025072783670006', '1004', '1', '2026-01-27 15:55:41', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012756369528', '129', '2025072783670006', '1003', '1', '2026-01-27 15:25:00', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012772909571', '121', '2025072783670006', '1005', '1', '2026-01-27 15:50:45', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012774029586', '126', '2025072783670006', '1001', '1', '2026-01-27 15:55:41', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012780089526', '129', '2025072783670006', '1005', '1', '2026-01-27 15:25:00', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012780259572', '121', '2025072783670006', '1004', '1', '2026-01-27 15:50:45', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026012797069584', '126', '2025072783670006', '1003', '1', '2026-01-27 15:55:41', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026041601754901', 'S8503_dfa325', '20260324548723980', '1005', 'ff62cb73e06f5f19b28609d48a9c71a3', '2026-04-16 12:54:16', '1');
+INSERT INTO `lock_machine_param` VALUES ('102026041603464896', '123456789', '20260324548723980', '1002', '1215215', '2026-04-16 12:36:13', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026041609614895', '123456789', '20260324548723980', '1003', '123448', '2026-04-16 12:36:13', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026041617514902', 'S8503_dfa325', '20260324548723980', '1004', '2f0b843fe55ba0294274febfeb0f05ea', '2026-04-16 12:54:16', '1');
+INSERT INTO `lock_machine_param` VALUES ('102026041631414894', '123456789', '20260324548723980', '1004', '123456789', '2026-04-16 12:36:13', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026041658254903', 'S8503_dfa325', '20260324548723980', '1003', '13391620725', '2026-04-16 12:54:16', '1');
+INSERT INTO `lock_machine_param` VALUES ('102026041679104904', 'S8503_dfa325', '20260324548723980', '1002', '3de604c7e84928d88ed1a51d6bb3acfd', '2026-04-16 12:54:16', '1');
+INSERT INTO `lock_machine_param` VALUES ('102026041691974897', '123456789', '20260324548723980', '1001', '123545', '2026-04-16 12:36:13', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026041695124905', 'S8503_dfa325', '20260324548723980', '1001', 'f55ffbd6347945c6bd24daee17dc0d7e', '2026-04-16 12:54:16', '1');
+INSERT INTO `lock_machine_param` VALUES ('102026041698894893', '123456789', '20260324548723980', '1005', '123456789', '2026-04-16 12:36:13', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042000345225', '456789', '102026042019245120', '1005', 'sxsxs', '2026-04-20 10:01:06', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042000985209', 'S8503_dfa323', '102026042019245120', '1003', '13391620725', '2026-04-20 10:00:01', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042014265303', '测试123456', '102026042023715244', '1002', 'ABC123456', '2026-04-20 10:15:14', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042018115199', 'S8504_DFA325', '102026042019245120', '1002', '3de604c7e84928d88ed1a51d6bb3acfd', '2026-04-20 09:56:22', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042029235301', '测试123456', '102026042023715244', '1004', 'ABC123456', '2026-04-20 10:15:14', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042032375339', '测试2345678', '102026042019245120', '1001', 'ABC2345678', '2026-04-20 10:39:14', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042038125336', '测试2345678', '102026042019245120', '1004', 'ABC2345678', '2026-04-20 10:39:14', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042041855314', '测试123456789', '102026042023715244', '1002', 'ABC123456789', '2026-04-20 10:22:50', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042046835211', 'S8503_dfa323', '102026042019245120', '1001', 'f55ffbd6347945c6bd24daee17dc0d7e', '2026-04-20 10:00:01', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042052435198', 'S8504_DFA325', '102026042019245120', '1003', '13391620720', '2026-04-20 09:56:22', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042053785207', 'S8503_dfa323', '102026042019245120', '1005', 'ff62cb73e06f5f19b28609d48a9c71a3', '2026-04-20 10:00:01', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042054385335', '测试2345678', '102026042019245120', '1005', 'ABC2345678', '2026-04-20 10:39:14', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042057775200', 'S8504_DFA325', '102026042019245120', '1001', 'f55ffbd6347945c6bd24daee17dc0d7e', '2026-04-20 09:56:22', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042063315228', '456789', '102026042019245120', '1002', 'dadscadsca', '2026-04-20 10:01:06', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042064305210', 'S8503_dfa323', '102026042019245120', '1002', '3de604c7e84928d88ed1a51d6bb3acfd', '2026-04-20 10:00:01', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042065045196', 'S8504_DFA325', '102026042019245120', '1005', 'ff62cb73e06f5f19b28609d48a9c71a3', '2026-04-20 09:56:22', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042065115304', '测试123456', '102026042023715244', '1001', 'ABC123456', '2026-04-20 10:15:14', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042065375302', '测试123456', '102026042023715244', '1003', '13391620720', '2026-04-20 10:15:14', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042071725227', '456789', '102026042019245120', '1003', 'dadsadsa', '2026-04-20 10:01:06', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042079115337', '测试2345678', '102026042019245120', '1003', '13391620720', '2026-04-20 10:39:14', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042081565300', '测试123456', '102026042023715244', '1005', 'ABC123456', '2026-04-20 10:15:14', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042083065311', '测试123456789', '102026042023715244', '1005', 'ABC123456789', '2026-04-20 10:22:50', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042083145226', '456789', '102026042019245120', '1004', 'csdcaa', '2026-04-20 10:01:06', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042083555313', '测试123456789', '102026042023715244', '1003', '13391620720', '2026-04-20 10:22:50', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042084865338', '测试2345678', '102026042019245120', '1002', 'ABC2345678', '2026-04-20 10:39:14', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042084875208', 'S8503_dfa323', '102026042019245120', '1004', '2f0b843fe55ba0294274febfeb0f05ea', '2026-04-20 10:00:01', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042088315315', '测试123456789', '102026042023715244', '1001', 'ABC123456789', '2026-04-20 10:22:50', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042090235197', 'S8504_DFA325', '102026042019245120', '1004', '2f0b843fe55ba0294274febfeb0f05ea', '2026-04-20 09:56:22', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042094545229', '456789', '102026042019245120', '1001', 'CSDSVS', '2026-04-20 10:01:06', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026042096305312', '测试123456789', '102026042023715244', '1004', 'ABC123456789', '2026-04-20 10:22:50', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026061090382433', '12', '20260512631111312', '12345608', '1212', '2026-06-10 13:44:22', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026063041530162', 'S8503_dfa325', '20260324548723980', '1001', 'f55ffbd6347945c6bd24daee17dc0d7e', '2026-06-30 10:56:17', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026063045420158', 'S8503_dfa325', '20260324548723980', '1005', 'ff62cb73e06f5f19b28609d48a9c71a3', '2026-06-30 10:56:17', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026063053970160', 'S8503_dfa325', '20260324548723980', '1003', '13391620725', '2026-06-30 10:56:17', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026063076060161', 'S8503_dfa325', '20260324548723980', '1002', '3de604c7e84928d88ed1a51d6bb3acfd', '2026-06-30 10:56:17', '0');
+INSERT INTO `lock_machine_param` VALUES ('102026063083380159', 'S8503_dfa325', '20260324548723980', '1004', '2f0b843fe55ba0294274febfeb0f05ea', '2026-06-30 10:56:17', '0');
 
 -- ----------------------------
 -- Table structure for lock_person
@@ -8120,7 +8920,7 @@ CREATE TABLE `lock_person` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`lp_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of lock_person
@@ -8140,7 +8940,45 @@ CREATE TABLE `machine_location` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`location_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of machine_location
+-- ----------------------------
+INSERT INTO `machine_location` VALUES ('102023081575010002', '1号楼', '102023021386560001', '6000', '732023080900970002', '1号楼', '2023-08-15 02:06:36', '0');
+INSERT INTO `machine_location` VALUES ('102023081582550011', '1号楼位置1', '102023021386560001', '6000', '732023080900970002', '1号楼', '2023-08-15 01:53:40', '1');
+INSERT INTO `machine_location` VALUES ('102023120774050008', '1', '102023021386560001', '1000', '102023021386560001', '测试小区', '2023-12-07 01:45:12', '0');
+INSERT INTO `machine_location` VALUES ('102024020108990043', '11', '2024012252790005', '1000', '2024012252790005', '物联网同步小区', '2024-02-01 17:03:14', '0');
+INSERT INTO `machine_location` VALUES ('102024021877700004', '1', '102023021386560001', '1000', '102023021386560001', '测试小区', '2024-02-18 12:07:16', '0');
+INSERT INTO `machine_location` VALUES ('102024021934450315', '1', '102023021386560001', '6000', '732023112595880006', '2号楼', '2024-02-19 12:48:33', '1');
+INSERT INTO `machine_location` VALUES ('102024021961000449', '你好', '102023021386560001', '1000', '102023021386560001', '测试小区', '2024-02-19 20:52:03', '0');
+INSERT INTO `machine_location` VALUES ('102024030458000091', '1', '2023052267100146', '1000', '2023052267100146', 'HC演示小区3', '2024-03-04 00:47:25', '0');
+INSERT INTO `machine_location` VALUES ('102024072290020019', 'A位置', '2024041265850103', '1000', '2024041265850103', '另一个小区', '2024-07-22 19:01:19', '0');
+INSERT INTO `machine_location` VALUES ('102025031272110003', '大门位置', '102024121715970003', '1000', '102024121715970003', 'HC演示小区', '2025-03-12 16:40:28', '0');
+INSERT INTO `machine_location` VALUES ('102025112459440137', '1栋位置', '2024122649870005', '6000', '732025010671110013', '1栋', '2025-11-24 17:57:22', '0');
+INSERT INTO `machine_location` VALUES ('102025112482150133', '123123', '2024122649870005', '1000', '2024122649870005', 'HC演示小区', '2025-11-24 17:56:18', '0');
+INSERT INTO `machine_location` VALUES ('102025113012993679', '321', '2025072783670006', '6000', '732025112554486674', '4栋', '2025-11-30 22:24:07', '1');
+INSERT INTO `machine_location` VALUES ('102025120269063970', '东门1', '20251127410920449', '6000', '7320251128731421278', '01栋', '2025-12-02 23:08:57', '1');
+INSERT INTO `machine_location` VALUES ('102025121901793829', '111', '2025072783670006', '1000', '2025072783670006', '演示小区', '2025-12-19 01:50:14', '0');
+INSERT INTO `machine_location` VALUES ('102025123019109249', '测试位置', '20251127410920449', '1000', '20251127410920449', '广州花园小区', '2025-12-30 10:40:05', '0');
+INSERT INTO `machine_location` VALUES ('102025123094839246', '1111', '20251127410920449', '1000', '20251127410920449', '广州花园小区', '2025-12-30 10:39:06', '0');
+INSERT INTO `machine_location` VALUES ('102026012213597244', '翻斗花园', '2025072783670006', '1000', '2025072783670006', '六安***小区', '2026-01-22 09:21:25', '1');
+INSERT INTO `machine_location` VALUES ('102026030502296454', '1111', '2025072783670006', '6000', '732026010784766949', '周某人1栋', '2026-03-05 14:41:30', '1');
+INSERT INTO `machine_location` VALUES ('102026032335317877', '123', '20251127410920449', '1000', '20251127410920449', '广州花园小区', '2026-03-23 17:42:13', '0');
+INSERT INTO `machine_location` VALUES ('102026032704451077', '333', '20260324548723980', '1000', '20260324548723980', 'HC演示小区', '2026-03-27 06:20:19', '0');
+INSERT INTO `machine_location` VALUES ('102026032749721080', '222', '20260324548723980', '1000', '20260324548723980', 'HC演示小区', '2026-03-27 06:20:30', '0');
+INSERT INTO `machine_location` VALUES ('102026041136763756', '位置名称', '102026041001793653', '1000', '102026041001793653', '中骏鱼进胎', '2026-04-11 09:53:34', '0');
+INSERT INTO `machine_location` VALUES ('102026042004475296', '单元设备', '102026042023715244', '2000', '742026042090045287', '1', '2026-04-20 10:12:31', '0');
+INSERT INTO `machine_location` VALUES ('102026042056645192', '1单元', '102026042019245120', '2000', '742026042064355183', '1', '2026-04-20 09:54:32', '0');
+INSERT INTO `machine_location` VALUES ('102026052926130983', '1', '2025040746580017', '6000', '732026041361380102', '01栋', '2026-05-29 11:11:17', '0');
+INSERT INTO `machine_location` VALUES ('102026061855803404', ' 正门', '20260512631111312', '1000', '20260512631111312', '优才雅苑', '2026-06-18 16:00:45', '0');
+INSERT INTO `machine_location` VALUES ('102026070685850014', '11', '20260324548723980', '1000', '20260324548723980', 'HC演示小区', '2026-07-06 12:55:55', '0');
+INSERT INTO `machine_location` VALUES ('102026071014420764', '小区大门口', '20260512817111252', '1000', '20260512817111252', '优才雅苑', '2026-07-10 11:23:20', '0');
+INSERT INTO `machine_location` VALUES ('102026071049040753', '小区大门口1', '20260512817111252', '2000', '7420260528971311133', '1', '2026-07-10 11:22:49', '1');
+INSERT INTO `machine_location` VALUES ('102026072040014265', '333', '2026070812860502', '2000', '7420260717452611059', '1单元', '2026-07-20 11:14:41', '1');
+INSERT INTO `machine_location` VALUES ('102026072040784462', '北门东边', '20260512817111252', '1000', '20260512817111252', '优才雅苑', '2026-07-20 23:35:28', '0');
+INSERT INTO `machine_location` VALUES ('102026072090644302', '444', '2026070812860502', '2000', '7420260717452611059', '1单元', '2026-07-20 11:27:20', '0');
+INSERT INTO `machine_location` VALUES ('102026080633740041', '东门', '2026070788800612', '1000', '2026070788800612', 'HC演示小区', '2026-08-06 16:23:26', '0');
 
 -- ----------------------------
 -- Table structure for machine_trans_log
@@ -8158,7 +8996,7 @@ CREATE TABLE `machine_trans_log` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of machine_trans_log
@@ -8180,7 +9018,116 @@ CREATE TABLE `manual_open_door_log` (
   `community_id` varchar(64) DEFAULT NULL COMMENT '小区ID',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of manual_open_door_log
+-- ----------------------------
+INSERT INTO `manual_open_door_log` VALUES ('112023102719070003', '-1', '演示物业', '302023021495090004', '102023102693150008', '观阁学府停车场出口', '102023102693150008', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/c1ec21c5-dceb2daf/20231027/22/20231027_221259_383.jpg', '102023021386560001', '2023-10-27 22:12:58');
+INSERT INTO `manual_open_door_log` VALUES ('112023102730490001', '-1', '演示物业', '302023021495090004', '102023092152400003', '观阁学府停车场进口', '102023092152400003', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20231027/22/20231027_221017_386.jpg', '102023021386560001', '2023-10-27 22:10:17');
+INSERT INTO `manual_open_door_log` VALUES ('112023102737430001', '-1', '演示物业', '302023021495090004', '102023092152400003', '观阁学府停车场进口', '102023092152400003', null, '102023021386560001', '2023-10-27 21:47:07');
+INSERT INTO `manual_open_door_log` VALUES ('112023102741540002', '-1', '演示物业', '302023021495090004', '102023092152400003', '观阁学府停车场进口', '102023092152400003', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20231027/22/20231027_221240_492.jpg', '102023021386560001', '2023-10-27 22:12:40');
+INSERT INTO `manual_open_door_log` VALUES ('112023102741770001', '-1', '演示物业', '302023021495090004', '102023092152400003', '观阁学府停车场进口', '102023092152400003', 'picture/1001/926bc310-29b221e1/20231027/22/20231027_220038_335.jpg', '102023021386560001', '2023-10-27 22:00:39');
+INSERT INTO `manual_open_door_log` VALUES ('112023102749860002', '-1', '演示物业', '302023021495090004', '102023102693150008', '观阁学府停车场出口', '102023102693150008', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/c1ec21c5-dceb2daf/20231027/22/20231027_223522_886.jpg', '102023021386560001', '2023-10-27 22:35:22');
+INSERT INTO `manual_open_door_log` VALUES ('112023102760750001', '-1', '演示物业', '302023021495090004', '102023092152400003', '观阁学府停车场进口', '102023092152400003', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20231027/22/20231027_223515_649.jpg', '102023021386560001', '2023-10-27 22:35:15');
+INSERT INTO `manual_open_door_log` VALUES ('112023102765850001', '-1', '演示物业', '302023021495090004', '102023092152400003', '观阁学府停车场进口', '102023092152400003', null, '102023021386560001', '2023-10-27 21:56:47');
+INSERT INTO `manual_open_door_log` VALUES ('112023102839280001', '-1', '演示物业', '302023021495090004', '102023092152400003', '观阁学府停车场进口', '102023092152400003', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20231028/12/20231028_120941_362.jpg', '102023021386560001', '2023-10-28 12:09:41');
+INSERT INTO `manual_open_door_log` VALUES ('112023102916890172', '-1', '演示物业', '302023021495090004', '102023102693150008', '观阁学府停车场出口', '102023102693150008', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/c1ec21c5-dceb2daf/20231029/23/20231029_234513_915.jpg', '102023021386560001', '2023-10-29 23:45:14');
+INSERT INTO `manual_open_door_log` VALUES ('112023102979690173', '-1', '演示物业', '302023021495090004', '102023092152400003', '观阁学府停车场进口', '102023092152400003', 'https://wuhaofhc.oss-cn-beijing.aliyuncs.com/picture/1001/926bc310-29b221e1/20231029/23/20231029_234538_027.jpg', '102023021386560001', '2023-10-29 23:45:39');
+INSERT INTO `manual_open_door_log` VALUES ('112024020143590008', '-1', '物联网同步小区', '302024012273480017', '102024020186650002', '1', '102024020186650002', null, '2024012252790005', '2024-02-01 14:07:33');
+INSERT INTO `manual_open_door_log` VALUES ('112024021483820015', '-1', '演示物业', '302023021495090004', '102023102693150008', '观阁学府停车场出口', '102023102693150008', null, '102023021386560001', '2024-02-14 21:04:39');
+INSERT INTO `manual_open_door_log` VALUES ('112024021783990045', '-1', '演示物业', '302023021495090004', '102023102693150008', '观阁学府停车场出口', '102023102693150008', null, '102023021386560001', '2024-02-17 14:37:01');
+INSERT INTO `manual_open_door_log` VALUES ('112024021928820298', '-1', '演示物业', '302023021495090004', '102023102693150008', '观阁学府停车场出口', '102023102693150008', null, '102023021386560001', '2024-02-19 12:17:58');
+INSERT INTO `manual_open_door_log` VALUES ('112024021934140443', '-1', '演示物业', '302023021495090004', '102023092152400003', '观阁学府停车场进口', '102023092152400003', null, '102023021386560001', '2024-02-19 20:00:24');
+INSERT INTO `manual_open_door_log` VALUES ('112024021950330171', '-1', '演示物业', '302023021495090004', '102023092152400003', '观阁学府停车场进口', '102023092152400003', null, '102023021386560001', '2024-02-19 10:29:05');
+INSERT INTO `manual_open_door_log` VALUES ('112024021953240088', '-1', '演示物业', '302023021495090004', '102023092152400003', '观阁学府停车场进口', '102023092152400003', null, '102023021386560001', '2024-02-19 09:07:46');
+INSERT INTO `manual_open_door_log` VALUES ('112024021966070444', '-1', '演示物业', '302023021495090004', '102023102693150008', '观阁学府停车场出口', '102023102693150008', null, '102023021386560001', '2024-02-19 20:00:42');
+INSERT INTO `manual_open_door_log` VALUES ('112024022038950749', '-1', '演示物业', '302023021495090004', '102023102693150008', '观阁学府停车场出口', '102023102693150008', null, '102023021386560001', '2024-02-20 18:04:24');
+INSERT INTO `manual_open_door_log` VALUES ('112024022109790909', '-1', 'HC演示物业2', '302024012204210002', '102024022008200773', '测试设备出', '102024022008200773', null, '2023052267100146', '2024-02-21 21:45:47');
+INSERT INTO `manual_open_door_log` VALUES ('112024022141690789', '-1', 'HC演示物业2', '302024012204210002', '102024022008200773', '测试设备出', '102024022008200773', null, '2023052267100146', '2024-02-21 09:06:52');
+INSERT INTO `manual_open_door_log` VALUES ('112024022144680900', '-1', '演示物业', '302023021495090004', '102024022052020499', '002', '102024022052020499', null, '102023021386560001', '2024-02-21 21:42:54');
+INSERT INTO `manual_open_door_log` VALUES ('112024022158010803', '-1', 'HC演示物业2', '302024012204210002', '102024022008200773', '测试设备出', '102024022008200773', null, '2023052267100146', '2024-02-21 10:33:36');
+INSERT INTO `manual_open_door_log` VALUES ('112024022163030791', '-1', '演示物业', '302023021495090004', '102024022077040502', '003', '102024022077040502', null, '102023021386560001', '2024-02-21 09:09:16');
+INSERT INTO `manual_open_door_log` VALUES ('112024022176760904', '-1', 'HC演示物业2', '302024012204210002', '102024022008200773', '测试设备出', '102024022008200773', null, '2023052267100146', '2024-02-21 21:45:36');
+INSERT INTO `manual_open_door_log` VALUES ('112024022293610991', '-1', 'HC演示物业2', '302024012204210002', '102024022008200773', '测试设备出', '102024022008200773', null, '2023052267100146', '2024-02-22 11:54:22');
+INSERT INTO `manual_open_door_log` VALUES ('112024022350231343', '-1', '演示物业', '302023021495090004', '102024021910180441', '57', '102024021910180441', null, '102023021386560001', '2024-02-23 10:50:41');
+INSERT INTO `manual_open_door_log` VALUES ('112024022644912308', '-1', 'HC演示物业2', '302024012204210002', '102024022027080770', '测试设备入', '102024022027080770', null, '2023052267100146', '2024-02-26 10:19:02');
+INSERT INTO `manual_open_door_log` VALUES ('112024022740792833', '-1', '演示物业', '302023021495090004', '102024022008200773', '测试设备出', '102024022008200773', null, '2023052267100146', '2024-02-27 08:47:15');
+INSERT INTO `manual_open_door_log` VALUES ('112024040901800013', '-1', '演示物业', '302023021495090004', '102024022027080770', '测试设备入', '102024022027080770', null, '2023052267100146', '2024-04-09 23:58:55');
+INSERT INTO `manual_open_door_log` VALUES ('112024040907910004', '-1', '演示物业', '302023021495090004', '102024022027080770', '测试设备入', '102024022027080770', null, '2023052267100146', '2024-04-09 22:46:13');
+INSERT INTO `manual_open_door_log` VALUES ('112024040910690010', '-1', '演示物业', '302023021495090004', '102024022027080770', '测试设备入', '102024022027080770', null, '2023052267100146', '2024-04-09 23:58:01');
+INSERT INTO `manual_open_door_log` VALUES ('112024040930460003', '-1', '演示物业', '302023021495090004', '102024022027080770', '测试设备入', '102024022027080770', null, '2023052267100146', '2024-04-09 22:46:10');
+INSERT INTO `manual_open_door_log` VALUES ('112024040959070008', '-1', '演示物业', '302023021495090004', '102024022027080770', '测试设备入', '102024022027080770', null, '2023052267100146', '2024-04-09 23:15:17');
+INSERT INTO `manual_open_door_log` VALUES ('112024040963510001', '-1', '演示物业', '302023021495090004', '102024022027080770', '测试设备入', '102024022027080770', null, '2023052267100146', '2024-04-09 22:43:48');
+INSERT INTO `manual_open_door_log` VALUES ('112024040969560007', '-1', '演示物业', '302023021495090004', '102024022027080770', '测试设备入', '102024022027080770', null, '2023052267100146', '2024-04-09 23:14:53');
+INSERT INTO `manual_open_door_log` VALUES ('112024040970410002', '-1', '演示物业', '302023021495090004', '102024022027080770', '测试设备入', '102024022027080770', null, '2023052267100146', '2024-04-09 22:45:18');
+INSERT INTO `manual_open_door_log` VALUES ('112024040973580009', '-1', '演示物业', '302023021495090004', '102024022027080770', '测试设备入', '102024022027080770', null, '2023052267100146', '2024-04-09 23:17:42');
+INSERT INTO `manual_open_door_log` VALUES ('112024040973670005', '-1', '演示物业', '302023021495090004', '102024022027080770', '测试设备入', '102024022027080770', null, '2023052267100146', '2024-04-09 22:46:16');
+INSERT INTO `manual_open_door_log` VALUES ('112024041008420003', '-1', '演示物业', '302023021495090004', '102024022008200773', '测试设备出', '102024022008200773', null, '2023052267100146', '2024-04-10 02:30:34');
+INSERT INTO `manual_open_door_log` VALUES ('112024041010100006', '-1', '演示物业', '302023021495090004', '102024022027080770', '测试设备入', '102024022027080770', 'http://wuhaofhc.oss-cn-beijing.aliyuncs.com/483a35ac-8799aa7c/20240410025651_483a35ac-8799aa7c_3.jpg?Expires=1712692611&OSSAccessKeyId=LTAI5t895z8KZ16NWgGPPpUB&Signature=4siVVmsTKOpTjYreQcpA%2fOE3wKY%3d', '2023052267100146', '2024-04-10 02:56:52');
+INSERT INTO `manual_open_door_log` VALUES ('112024041020360008', '-1', '演示物业', '302023021495090004', '102024022008200773', '测试设备出', '102024022008200773', null, '2023052267100146', '2024-04-10 02:08:43');
+INSERT INTO `manual_open_door_log` VALUES ('112024041022950020', '-1', '演示物业', '302023021495090004', '102024022027080770', '测试设备入', '102024022027080770', null, '2023052267100146', '2024-04-10 00:02:32');
+INSERT INTO `manual_open_door_log` VALUES ('112024041026200003', '-1', '演示物业', '302023021495090004', '102024022027080770', '测试设备入', '102024022027080770', 'http://wuhaofhc.oss-cn-beijing.aliyuncs.com/483a35ac-8799aa7c/20240410020556_483a35ac-8799aa7c_2.jpg?Expires=1712689556&OSSAccessKeyId=LTAI5t895z8KZ16NWgGPPpUB&Signature=9OkAobTzSeqDFTcWqh7dSK%2bKcQU%3d', '2023052267100146', '2024-04-10 02:05:56');
+INSERT INTO `manual_open_door_log` VALUES ('112024041037040002', '-1', '演示物业', '302023021495090004', '102024022008200773', '测试设备出', '102024022008200773', null, '2023052267100146', '2024-04-10 02:30:16');
+INSERT INTO `manual_open_door_log` VALUES ('112024041051900004', '-1', '演示物业', '302023021495090004', '102024022008200773', '测试设备出', '102024022008200773', null, '2023052267100146', '2024-04-10 02:06:13');
+INSERT INTO `manual_open_door_log` VALUES ('112024041076470005', '-1', '演示物业', '302023021495090004', '102024022008200773', '测试设备出', '102024022008200773', null, '2023052267100146', '2024-04-10 02:07:14');
+INSERT INTO `manual_open_door_log` VALUES ('112024041089450001', '-1', '演示物业', '302023021495090004', '102024022008200773', '测试设备出', '102024022008200773', null, '2023052267100146', '2024-04-10 02:43:13');
+INSERT INTO `manual_open_door_log` VALUES ('112024041091670003', '-1', '演示物业', '302023021495090004', '102024022027080770', '测试设备入', '102024022027080770', 'http://wuhaofhc.oss-cn-beijing.aliyuncs.com/483a35ac-8799aa7c/20240410002153_483a35ac-8799aa7c_0.jpg?Expires=1712683313&OSSAccessKeyId=LTAI5t895z8KZ16NWgGPPpUB&Signature=9czj0hNE97E1Uy%2ftvsgVCia5eBk%3d', '2023052267100146', '2024-04-10 00:21:54');
+INSERT INTO `manual_open_door_log` VALUES ('112024042927460003', '-1', '演示物业', '302023021495090004', '102024022008200773', '测试设备入', '102024022008200773', null, '2023052267100146', '2024-04-29 11:03:21');
+INSERT INTO `manual_open_door_log` VALUES ('112024042941620009', '-1', '演示物业', '302023021495090004', '102024022008200773', '测试设备入', '102024022008200773', null, '2023052267100146', '2024-04-29 11:04:58');
+INSERT INTO `manual_open_door_log` VALUES ('112024042969130008', '-1', '演示物业', '302023021495090004', '102024022008200773', '测试设备入', '102024022008200773', null, '2023052267100146', '2024-04-29 11:04:31');
+INSERT INTO `manual_open_door_log` VALUES ('112025120191963768', '-1', 'HC演示物业', '302025112802812473', '102025120139623698', '123', '102025120139623698', null, '20251127410920449', '2025-12-01 18:25:44');
+INSERT INTO `manual_open_door_log` VALUES ('112025120448544782', '-1', 'HC演示物业', '302025112802812473', '102025120139623698', '123', '102025120139623698', null, '20251127410920449', '2025-12-04 15:36:14');
+INSERT INTO `manual_open_door_log` VALUES ('112025120536615437', '-1', 'HC演示物业', '302025112802812473', '102025120319684487', '432', '102025120319684487', null, '20251127410920449', '2025-12-05 11:50:39');
+INSERT INTO `manual_open_door_log` VALUES ('112025120935266378', '-1', 'HC演示物业', '302025112802812473', '102025120319684487', '432', '102025120319684487', null, '20251127410920449', '2025-12-09 14:40:40');
+INSERT INTO `manual_open_door_log` VALUES ('112025121023916929', '-1', 'HC演示物业', '302025112802812473', '102025120139623698', '123', '102025120139623698', null, '20251127410920449', '2025-12-10 14:34:44');
+INSERT INTO `manual_open_door_log` VALUES ('112025121094756930', '-1', 'HC演示物业', '302025112802812473', '102025120139623698', '123', '102025120139623698', null, '20251127410920449', '2025-12-10 14:34:52');
+INSERT INTO `manual_open_door_log` VALUES ('112025121159290030', '-1', 'HC演示物业', '302025112802812473', '102025120319684487', '432', '102025120319684487', null, '20251127410920449', '2025-12-11 11:53:36');
+INSERT INTO `manual_open_door_log` VALUES ('112025121861912344', '-1', 'HC演示物业', '302025112802812473', '102025120139623698', '123', '102025120139623698', null, '20251127410920449', '2025-12-18 14:57:21');
+INSERT INTO `manual_open_door_log` VALUES ('112025122205773882', '-1', 'HC演示物业', '302025112802812473', '102025122217523110', 'A001', '102025122217523110', null, '2025072783670006', '2025-12-22 16:03:11');
+INSERT INTO `manual_open_door_log` VALUES ('112025122234093275', '-1', '保利物业', '302025122243013235', '102025122246073270', 'A0001', '102025122246073270', null, '2025122258513939', '2025-12-22 11:33:56');
+INSERT INTO `manual_open_door_log` VALUES ('112025122236753878', '-1', 'HC演示物业', '302025112802812473', '102025122217523110', 'A001', '102025122217523110', null, '2025072783670006', '2025-12-22 16:02:55');
+INSERT INTO `manual_open_door_log` VALUES ('112025122275983883', '-1', 'HC演示物业', '302025112802812473', '102025122217523110', 'A001', '102025122217523110', null, '2025072783670006', '2025-12-22 16:03:43');
+INSERT INTO `manual_open_door_log` VALUES ('112025122619627424', '-1', 'HC演示物业', '302025112802812473', '102025120139623698', '123', '102025120139623698', null, '20251127410920449', '2025-12-26 12:11:39');
+INSERT INTO `manual_open_door_log` VALUES ('112025122656877403', '-1', 'HC演示物业', '302025112802812473', '102025120139623698', '123', '102025120139623698', null, '20251127410920449', '2025-12-26 10:57:23');
+INSERT INTO `manual_open_door_log` VALUES ('112025122667927375', '-1', 'HC演示物业', '302025112802812473', '102025120139623698', '123', '102025120139623698', null, '20251127410920449', '2025-12-26 10:22:32');
+INSERT INTO `manual_open_door_log` VALUES ('112025122925188969', '-1', 'HC演示物业', '302025112802812473', '102025122217523110', 'A001', '102025122217523110', null, '2025072783670006', '2025-12-29 17:35:24');
+INSERT INTO `manual_open_door_log` VALUES ('112026010715195588', '-1', 'HC演示物业', '302025112802812473', '102025120139623698', '123', '102025120139623698', null, '20251127410920449', '2026-01-07 19:41:01');
+INSERT INTO `manual_open_door_log` VALUES ('112026010718656080', '-1', 'HC演示物业', '302025112802812473', '102025122217523110', 'A001', '102025122217523110', null, '2025072783670006', '2026-01-07 21:38:21');
+INSERT INTO `manual_open_door_log` VALUES ('112026010768685596', '-1', 'HC演示物业', '302025112802812473', '102025120139623698', '123', '102025120139623698', null, '20251127410920449', '2026-01-07 19:41:39');
+INSERT INTO `manual_open_door_log` VALUES ('112026011149459333', '-1', 'HC演示物业', '302025112802812473', '102025120139623698', '123', '102025120139623698', null, '20251127410920449', '2026-01-11 19:55:07');
+INSERT INTO `manual_open_door_log` VALUES ('112026011626271534', '-1', 'HC演示物业', '302025112802812473', '102026011499290704', 'ceshi', '102026011499290704', null, '2025072783670006', '2026-01-16 16:01:09');
+INSERT INTO `manual_open_door_log` VALUES ('112026011630971540', '-1', 'HC演示物业', '302025112802812473', '102026011499290704', 'ceshi', '102026011499290704', null, '2025072783670006', '2026-01-16 16:12:31');
+INSERT INTO `manual_open_door_log` VALUES ('112026011650191572', '-1', 'HC演示物业', '302025112802812473', '102026011499290704', 'ceshi', '102026011499290704', null, '2025072783670006', '2026-01-16 17:08:52');
+INSERT INTO `manual_open_door_log` VALUES ('112026011655541533', '-1', 'HC演示物业', '302025112802812473', '102026011499290704', 'ceshi', '102026011499290704', null, '2025072783670006', '2026-01-16 16:00:42');
+INSERT INTO `manual_open_door_log` VALUES ('112026011960943994', '-1', 'HC演示物业', '302025112802812473', '102025122217523110', 'A001', '102025122217523110', null, '2025072783670006', '2026-01-19 10:09:04');
+INSERT INTO `manual_open_door_log` VALUES ('112026033008731171', '-1', 'HC演示物业', '302026032417280460', '102026032596360936', '人', '102026032596360936', null, '20260324548723980', '2026-03-30 10:19:45');
+INSERT INTO `manual_open_door_log` VALUES ('112026033080211247', '-1', 'HC演示物业', '302026032417280460', '102026032596360936', '人', '102026032596360936', null, '20260324548723980', '2026-03-30 19:55:36');
+INSERT INTO `manual_open_door_log` VALUES ('112026033137391283', '-1', '18909711443', '302026032483220824', '102026032596360936', '人', '102026032596360936', null, '20260324548723980', '2026-03-31 14:04:54');
+INSERT INTO `manual_open_door_log` VALUES ('112026033180081284', '-1', '18909711443', '302026032483220824', '102026032596360936', '人', '102026032596360936', null, '20260324548723980', '2026-03-31 14:04:58');
+INSERT INTO `manual_open_door_log` VALUES ('112026040261312484', '-1', '18909711443', '302026032483220824', '102026032596360936', '人', '102026032596360936', null, '20260324548723980', '2026-04-02 11:33:52');
+INSERT INTO `manual_open_door_log` VALUES ('112026040641004484', '-1', 'HC演示物业', '302026032417280460', '102026032596360936', '人', '102026032596360936', null, '20260324548723980', '2026-04-06 11:13:13');
+INSERT INTO `manual_open_door_log` VALUES ('112026040791390508', '-1', 'HC演示物业', '302026032417280460', '102026032596360936', '人', '102026032596360936', null, '20260324548723980', '2026-04-07 15:48:39');
+INSERT INTO `manual_open_door_log` VALUES ('112026040800100288', '-1', 'HC演示物业', '302026032417280460', '102026032596360936', '人', '102026032596360936', null, '20260324548723980', '2026-04-08 10:32:47');
+INSERT INTO `manual_open_door_log` VALUES ('112026040872900395', '-1', 'HC演示物业', '302026032417280460', '102026040803239883', '设备1', '102026040803239883', null, '20260324548723980', '2026-04-08 10:44:38');
+INSERT INTO `manual_open_door_log` VALUES ('112026040897452353', '-1', '18909711443', '302026032483220824', '102026032596360936', '人', '102026032596360936', null, '20260324548723980', '2026-04-08 16:51:24');
+INSERT INTO `manual_open_door_log` VALUES ('112026040897732750', '-1', 'HC演示物业', '302026032417280460', '102026032596360936', '人', '102026032596360936', null, '20260324548723980', '2026-04-08 18:14:24');
+INSERT INTO `manual_open_door_log` VALUES ('112026040911612902', '-1', 'HC演示物业', '302026032417280460', '102026040803239883', '设备1', '102026040803239883', null, '20260324548723980', '2026-04-09 14:46:04');
+INSERT INTO `manual_open_door_log` VALUES ('112026041005823731', '-1', '18909711443', '302026032483220824', '102026032596360936', '人', '102026032596360936', null, '20260324548723980', '2026-04-10 22:24:40');
+INSERT INTO `manual_open_door_log` VALUES ('112026041057863070', '-1', 'HC演示物业', '302026032417280460', '102026040866049896', '设备2', '102026040866049896', null, '20260324548723980', '2026-04-10 07:55:25');
+INSERT INTO `manual_open_door_log` VALUES ('112026041099743730', '-1', '18909711443', '302026032483220824', '102026032596360936', '人', '102026032596360936', null, '20260324548723980', '2026-04-10 22:24:39');
+INSERT INTO `manual_open_door_log` VALUES ('112026071485870174', '-1', 'wuxw', '302026052662970595', '102026071002520125', 'cc', '102026071002520125', null, '20260512817111252', '2026-07-14 14:09:12');
+INSERT INTO `manual_open_door_log` VALUES ('112026071904454052', '-1', 'HC演示物业', '302026071900532044', '102026071902533855', '测试', '102026071902533855', null, '2026070788800612', '2026-07-19 21:08:30');
+INSERT INTO `manual_open_door_log` VALUES ('112026072300024882', '-1', 'wuxw', '302026052662970595', '102026071002520125', 'cc', '102026071002520125', null, '20260512817111252', '2026-07-23 17:46:19');
+INSERT INTO `manual_open_door_log` VALUES ('112026072306904877', '-1', 'wuxw', '302026052662970595', '102026071002520125', 'cc', '102026071002520125', null, '20260512817111252', '2026-07-23 17:46:18');
+INSERT INTO `manual_open_door_log` VALUES ('112026072311144820', '-1', 'HC演示物业', '302026071900532044', '102026071902533855', '测试', '102026071902533855', null, '2026070788800612', '2026-07-23 16:36:14');
+INSERT INTO `manual_open_door_log` VALUES ('112026072726830021', '-1', 'HC演示物业', '302026071900532044', '102026071902533855', '测试', '102026071902533855', null, '2026070788800612', '2026-07-27 10:38:57');
+INSERT INTO `manual_open_door_log` VALUES ('112026072744800139', '-1', 'wuxw', '302026052662970595', '102026072431560006', 'dd', '102026072431560006', null, '20260512817111252', '2026-07-27 17:16:49');
+INSERT INTO `manual_open_door_log` VALUES ('112026072751290019', '-1', 'HC演示物业', '302026071900532044', '102026071902533855', '测试', '102026071902533855', null, '2026070788800612', '2026-07-27 10:38:55');
+INSERT INTO `manual_open_door_log` VALUES ('112026072759250020', '-1', 'HC演示物业', '302026071900532044', '102026071902533855', '测试', '102026071902533855', null, '2026070788800612', '2026-07-27 10:38:57');
+INSERT INTO `manual_open_door_log` VALUES ('112026081147480041', '-1', 'HC演示物业', '302026071900532044', '102026071902533855', '测试', '102026071902533855', null, '2026070788800612', '2026-08-11 21:11:26');
+INSERT INTO `manual_open_door_log` VALUES ('112026081180190036', '-1', 'HC演示物业', '302026071900532044', '102026071902533855', '测试', '102026071902533855', null, '2026070788800612', '2026-08-11 21:11:03');
+INSERT INTO `manual_open_door_log` VALUES ('112026081190090046', '-1', 'HC演示物业', '302026071900532044', '102026071902533855', '测试', '102026071902533855', null, '2026070788800612', '2026-08-11 21:11:34');
 
 -- ----------------------------
 -- Table structure for meter_machine
@@ -8200,8 +9147,8 @@ CREATE TABLE `meter_machine` (
   `cur_reading_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '本期读表时间',
   `fee_config_id` varchar(30) DEFAULT NULL COMMENT '费用项ID,充值模式时 公式选 用量乘以单价 抄表模式 上期读数-本期读数乘以单价',
   `fee_config_name` varchar(64) DEFAULT NULL COMMENT '费用项名称',
-  `read_day` int(11) NOT NULL DEFAULT '1' COMMENT '每月抄表日',
-  `read_hours` int(11) NOT NULL DEFAULT '9' COMMENT '抄表小时',
+  `read_day` int NOT NULL DEFAULT '1' COMMENT '每月抄表日',
+  `read_hours` int NOT NULL DEFAULT '9' COMMENT '抄表小时',
   `impl_bean` varchar(30) NOT NULL COMMENT '门禁厂家',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `heartbeat_time` datetime NOT NULL COMMENT '设备心跳时间',
@@ -8209,14 +9156,11 @@ CREATE TABLE `meter_machine` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`machine_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of meter_machine
 -- ----------------------------
-INSERT INTO `meter_machine` VALUES ('102026032689531069', '123', '123', '102026032641041066', '2002', '7520260325286622095', '1-0-2-32-31', '0', '0.00', '0.00', '2026-03-26 17:17:05', null, null, '1', '9', '1', '20260324548723980', '2026-03-26 17:17:05', null, '2026-03-26 17:17:06', '0');
-INSERT INTO `meter_machine` VALUES ('102026040729220199', '33', '3444', '102026032479910756', '1001', '7520260325016821971', '1-erer-1-101', '0', '0.00', '0.00', '2026-04-07 11:28:50', null, null, '1', '1', '102024011697740005', '20260324548723980', '2026-04-07 11:28:50', null, '2026-04-07 11:28:50', '0');
-INSERT INTO `meter_machine` VALUES ('102026040883099298', 'test0408', '007', '102026040843219283', '2002', '7520260325286622095', '1-1-2-32-31', '0', '0.00', '0.00', '2026-04-08 08:53:29', null, null, '1', '1', '3', '20260324548723980', '2026-04-08 08:53:29', null, '2026-04-08 08:53:29', '0');
 
 -- ----------------------------
 -- Table structure for meter_machine_charge
@@ -8232,12 +9176,11 @@ CREATE TABLE `meter_machine_charge` (
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of meter_machine_charge
 -- ----------------------------
-INSERT INTO `meter_machine_charge` VALUES ('112026040753860205', '102026040729220199', '333.00', '27.75', '20260324548723980', 'W', '平台发起成功，等待拓强响应结果', '2026-04-07 11:29:00', '0');
 
 -- ----------------------------
 -- Table structure for meter_machine_detail
@@ -8256,8 +9199,11 @@ CREATE TABLE `meter_machine_detail` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `state` varchar(12) NOT NULL DEFAULT 'W' COMMENT '状态',
   PRIMARY KEY (`detail_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
+-- ----------------------------
+-- Records of meter_machine_detail
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for meter_machine_factory
@@ -8272,7 +9218,7 @@ CREATE TABLE `meter_machine_factory` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`factory_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of meter_machine_factory
@@ -8280,6 +9226,9 @@ CREATE TABLE `meter_machine_factory` (
 INSERT INTO `meter_machine_factory` VALUES ('1', '拓强电表-单相单费率电表', 'tqDianBiaoDanxiangDanFeiLvFactoryAdaptImpl', '2002', 'http://www.tqdianbiao.com/', '2023-02-22 23:59:16', '0');
 INSERT INTO `meter_machine_factory` VALUES ('102023120105760007', '1', '1', '3003', '1', '2023-12-01 17:15:27', '1');
 INSERT INTO `meter_machine_factory` VALUES ('102024011697740005', '官方水电表充值协议（需要厂家支持）', 'hcPreFactoryAdaptImpl', '1001', '', '2024-01-16 12:12:46', '0');
+INSERT INTO `meter_machine_factory` VALUES ('102026082111720991', '嘉荣华', 'jrhMeterFactoryAdaptImpl', '1001', '嘉荣华-漫步下雨天', '2026-08-21 20:22:06', '0');
+INSERT INTO `meter_machine_factory` VALUES ('102026082169541044', 'testtt', 'teset', '3003', 'teste', '2026-08-21 20:26:00', '0');
+INSERT INTO `meter_machine_factory` VALUES ('102026082190001040', 'test', 'test', '2002', 'test', '2026-08-21 20:25:52', '0');
 INSERT INTO `meter_machine_factory` VALUES ('2', '拓强电表-单相远程单费率预付费表', 'tqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl', '3003', 'http://www.tqdianbiao.com', '2023-02-23 18:23:38', '0');
 INSERT INTO `meter_machine_factory` VALUES ('3', '拓强水表-Lora无预付费水表', 'tqShuiBiaoLoraReadFactoryAdaptImpl', '2002', 'http://www.tqdianbiao.com', '2023-02-23 18:23:38', '0');
 INSERT INTO `meter_machine_factory` VALUES ('4', '拓强水表-Lora普通预付费水表', 'tqShuiBiaoLoraRechargeFactoryAdaptImpl', '3003', 'http://www.tqdianbiao.com', '2023-02-23 18:23:38', '0');
@@ -8296,7 +9245,7 @@ CREATE TABLE `meter_machine_factory_spec` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   `remark` varchar(256) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`spec_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of meter_machine_factory_spec
@@ -8325,7 +9274,7 @@ CREATE TABLE `meter_machine_log` (
   `state` varchar(12) NOT NULL COMMENT '状态，请求成功 10001,返回成功10002,操作失败 10003',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of meter_machine_log
@@ -8345,7 +9294,7 @@ CREATE TABLE `meter_machine_spec` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`mms_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of meter_machine_spec
@@ -8372,6 +9321,10 @@ INSERT INTO `meter_machine_spec` VALUES ('102026031696645265', '1020260316314452
 INSERT INTO `meter_machine_spec` VALUES ('102026032690691071', '102026032689531069', '20260324548723980', '120101', '采集器ID', '123', '2026-03-26 17:17:06', '0');
 INSERT INTO `meter_machine_spec` VALUES ('102026040791530201', '102026040729220199', '20260324548723980', '102024011667160008', '采集器', '333', '2026-04-07 11:28:50', '0');
 INSERT INTO `meter_machine_spec` VALUES ('102026040863889300', '102026040883099298', '20260324548723980', '120103', '采集器ID', '0408007', '2026-04-08 08:53:29', '0');
+INSERT INTO `meter_machine_spec` VALUES ('102026052538500510', '102026052554310508', '102026052198240394', '120104', '采集器ID', '111', '2026-05-25 09:24:36', '0');
+INSERT INTO `meter_machine_spec` VALUES ('102026071099660004', '102026071052340002', '20260512817111252', '102024011667160008', '采集器', 'dddd', '2026-07-11 01:18:53', '0');
+INSERT INTO `meter_machine_spec` VALUES ('102026081860510046', '102026081824390044', '20260512817111252', '102024011667160008', '采集器', 'sss', '2026-08-18 13:38:48', '0');
+INSERT INTO `meter_machine_spec` VALUES ('102026082237472763', '102026082234182761', '20260512817111252', '120101', '采集器ID', 'test', '2026-08-22 23:28:29', '0');
 
 -- ----------------------------
 -- Table structure for meter_qrcode
@@ -8389,7 +9342,7 @@ CREATE TABLE `meter_qrcode` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态 1表示 失效 0 有效',
   `remark` varchar(512) DEFAULT NULL COMMENT '说明',
   PRIMARY KEY (`mq_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of meter_qrcode
@@ -8401,6 +9354,11 @@ INSERT INTO `meter_qrcode` VALUES ('102024021908420132', '111', '202305226710014
 INSERT INTO `meter_qrcode` VALUES ('102025112700881598', '132132', '2024122649870005', 'ADDRESS', '302024121758390012', 'HC演示物业', 'ON', '2025-11-27 09:06:16', '0', '');
 INSERT INTO `meter_qrcode` VALUES ('102025120487554639', 'd', '2025072783670006', 'ADDRESS', '302025112802812473', 'HC演示物业', 'ON', '2025-12-04 10:39:15', '0', '1');
 INSERT INTO `meter_qrcode` VALUES ('102025122294673337', '1111', '2025122258513939', 'ROOM', '302025122243013235', '保利物业', 'ON', '2025-12-22 12:20:12', '0', '');
+INSERT INTO `meter_qrcode` VALUES ('102026062627144890', '123', '20260512631111312', 'ADDRESS', '302026052662970595', 'HC演示物业', 'ON', '2026-06-26 10:20:19', '0', '');
+INSERT INTO `meter_qrcode` VALUES ('102026071014880036', 'ddee', '20260512817111252', 'ADDRESS', '302026052662970595', 'wuxw', 'ON', '2026-07-11 01:32:50', '0', 'dd');
+INSERT INTO `meter_qrcode` VALUES ('102026071065420041', 'fff', '20260512817111252', 'ADDRESS', '302026052662970595', 'wuxw', 'ON', '2026-07-11 01:33:05', '1', 'dd');
+INSERT INTO `meter_qrcode` VALUES ('102026081731542158', '听音乐', '2025040746580017', 'ROOM', '302026052662970595', 'wuxw', 'ON', '2026-08-17 19:16:47', '0', '');
+INSERT INTO `meter_qrcode` VALUES ('102026081818760026', '请-添加-水电费-1--', '2026070812860502', 'ADDRESS', '302026071900532044', 'HC演示物业', 'ON', '2026-08-18 16:33:09', '0', '1');
 
 -- ----------------------------
 -- Table structure for meter_type
@@ -8416,14 +9374,11 @@ CREATE TABLE `meter_type` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0, 在用 1失效',
   `type_cd` varchar(12) NOT NULL DEFAULT '888800010016' COMMENT '电表类型，888800010016 电表，888800010015 水表，888800010009 煤气表',
   PRIMARY KEY (`type_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of meter_type
 -- ----------------------------
-INSERT INTO `meter_type` VALUES ('102026032479910756', '123', '12.00', '20260324548723980', '2112', '2026-03-24 16:08:51', '0', '888800010016');
-INSERT INTO `meter_type` VALUES ('102026032641041066', '电表1', '1.00', '20260324548723980', '1', '2026-03-26 17:16:34', '0', '888800010016');
-INSERT INTO `meter_type` VALUES ('102026040843219283', '0408test', '0.80', '20260324548723980', '民电', '2026-04-08 08:52:22', '0', '888800010016');
 
 -- ----------------------------
 -- Table structure for monitor_area
@@ -8437,7 +9392,7 @@ CREATE TABLE `monitor_area` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`ma_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of monitor_area
@@ -8456,6 +9411,10 @@ INSERT INTO `monitor_area` VALUES ('102025120281293948', 'A区', '20251127410920
 INSERT INTO `monitor_area` VALUES ('102026020935961219', '请问', '2025072783670006', '请问', '2026-02-09 15:10:33', '0');
 INSERT INTO `monitor_area` VALUES ('102026032501000980', '公共区域', '20260324548723980', '', '2026-03-25 23:21:42', '1');
 INSERT INTO `monitor_area` VALUES ('102026033171351300', '1', '20260324548723980', '1', '2026-03-31 16:15:07', '0');
+INSERT INTO `monitor_area` VALUES ('102026051233490060', '小区北花园', '102026041794544972', '小区北花园备注', '2026-05-12 14:36:31', '0');
+INSERT INTO `monitor_area` VALUES ('102026062918740102', '门口', '20260512631111312', '', '2026-06-29 18:14:35', '0');
+INSERT INTO `monitor_area` VALUES ('102026071164720008', '222', '20260512817111252', '1', '2026-07-11 11:00:07', '0');
+INSERT INTO `monitor_area` VALUES ('102026081098670052', '楼宇门', '20260512817111252', '楼宇门测试', '2026-08-10 09:44:47', '0');
 
 -- ----------------------------
 -- Table structure for monitor_collect
@@ -8471,7 +9430,7 @@ CREATE TABLE `monitor_collect` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`collect_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of monitor_collect
@@ -8503,14 +9462,11 @@ CREATE TABLE `monitor_machine` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `photo_url` varchar(512) DEFAULT NULL COMMENT '图片',
   PRIMARY KEY (`machine_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of monitor_machine
 -- ----------------------------
-INSERT INTO `monitor_machine` VALUES ('102026032577570983', '测试', '34020000001320000011', '陈述事实', '102026032501000980', '102026032504100977', '20260324548723980', '2026-03-25 23:22:12', '1002', '2026-03-25 23:22:11', '1', null);
-INSERT INTO `monitor_machine` VALUES ('102026032643031006', '测试', '34020000001320000011', '测试位置', '102026032501000980', '102026032600661003', '20260324548723980', '2026-03-26 00:01:41', '1002', '2026-03-26 00:01:40', '1', 'https://java110.oss-cn-beijing.aliyuncs.com/hc/iot/img/20260326/29985f3a-7196-43ce-931d-ac487ee79759.jpg');
-INSERT INTO `monitor_machine` VALUES ('102026033105621306', '1', '1', '1', '102026033171351300', '102026033114681303', '20260324548723980', '2026-03-31 16:15:32', '1002', '2026-03-31 16:15:31', '0', null);
 
 -- ----------------------------
 -- Table structure for monitor_machine_attrs
@@ -8524,7 +9480,7 @@ CREATE TABLE `monitor_machine_attrs` (
   `value` varchar(128) NOT NULL COMMENT '属性值',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`attr_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of monitor_machine_attrs
@@ -8558,7 +9514,7 @@ CREATE TABLE `monitor_machine_model` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`mmm_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of monitor_machine_model
@@ -8595,12 +9551,11 @@ CREATE TABLE `monitor_machine_person` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`mmu_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of monitor_machine_person
 -- ----------------------------
-INSERT INTO `monitor_machine_person` VALUES ('102026032661721019', '102026032643031006', '测试', '34020000001320000011', '1001', '7720260324344823871', '演示业主', '20260324548723980', '2026-03-26 00:18:37', '0');
 
 -- ----------------------------
 -- Table structure for monitor_manufactor
@@ -8618,7 +9573,7 @@ CREATE TABLE `monitor_manufactor` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`mm_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of monitor_manufactor
@@ -8645,6 +9600,10 @@ INSERT INTO `monitor_manufactor` VALUES ('102026012765749565', '李1', 'l1c', 'm
 INSERT INTO `monitor_manufactor` VALUES ('102026032504100977', 'mv', 'http://http://103.217.192.88:9090', 'mvideoAdaptImpl', '6fbc109d-4f2c-4a8d-893d-cc6983ae0afa', '949769d4-865e-4a26-96bc-f530630b48e7', '20260324548723980', '', '2026-03-25 23:21:22', '1');
 INSERT INTO `monitor_manufactor` VALUES ('102026032600661003', 'MV', 'http://103.217.192.88:9090', 'mvideoAdaptImpl', '6fbc109d-4f2c-4a8d-893d-cc6983ae0afa', '949769d4-865e-4a26-96bc-f530630b48e7', '20260324548723980', '', '2026-03-26 00:00:31', '1');
 INSERT INTO `monitor_manufactor` VALUES ('102026033114681303', '1', 'http://192.168.31.250', 'mvideoAdaptImpl', '1', '1', '20260324548723980', '', '2026-03-31 16:15:23', '0');
+INSERT INTO `monitor_manufactor` VALUES ('102026051226440063', '大华', '浙江大华', 'mvideoAdaptImpl', '000001', '0000001', '102026041794544972', '浙江大华', '2026-05-12 14:37:36', '0');
+INSERT INTO `monitor_manufactor` VALUES ('102026062988040105', '123', '1234154', 'mvideoAdaptImpl', 'qqwefgz', 'sfdafsd2132', '20260512631111312', '', '2026-06-29 18:15:08', '0');
+INSERT INTO `monitor_manufactor` VALUES ('102026071192370003', 'xx1', 'http://192.168.101.5:9090', 'mvideoAdaptImpl', 'd48e28d11311417cbbda62e2b87e4fde', '4722989cb48f4b61a09e6a1284706f65', '20260512817111252', '', '2026-07-11 10:59:53', '0');
+INSERT INTO `monitor_manufactor` VALUES ('102026080699140066', 'hk', 'www.baidu.com', 'mvideoAdaptImpl', 'dwafwa', 'sa-dwaFesfesfesfesgq', '2026070788800612', '', '2026-08-06 16:33:33', '0');
 
 -- ----------------------------
 -- Table structure for monitor_model
@@ -8657,14 +9616,14 @@ CREATE TABLE `monitor_model` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`model_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of monitor_model
 -- ----------------------------
 INSERT INTO `monitor_model` VALUES ('102023101752680004', '高空抛物', 'highAltitudeParabolicMotionModelAdaptImpl', '2023-10-17 17:10:48', '1');
 INSERT INTO `monitor_model` VALUES ('102023101914950019', '违规停车', 'illegalParkingModelAdaptImpl', '2023-10-19 13:49:46', '1');
-INSERT INTO `monitor_model` VALUES ('102026041653964914', 'hj', 'h', '2026-04-16 16:25:11', '0');
+INSERT INTO `monitor_model` VALUES ('102026041653964914', '监控', 'jiankong', '2026-04-16 16:25:11', '0');
 
 -- ----------------------------
 -- Table structure for monitor_pool
@@ -8682,7 +9641,7 @@ CREATE TABLE `monitor_pool` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`mp_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of monitor_pool
@@ -8702,11 +9661,45 @@ CREATE TABLE `mqtt_log` (
   `business_key` varchar(64) DEFAULT NULL COMMENT '业务key',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`mqtt_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of mqtt_log
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for mqtt_send_log
+-- ----------------------------
+DROP TABLE IF EXISTS `mqtt_send_log`;
+CREATE TABLE `mqtt_send_log` (
+  `log_id` varchar(64) NOT NULL COMMENT '主键ID',
+  `business_id` varchar(64) DEFAULT NULL COMMENT '业务ID（taskId）',
+  `machine_code` varchar(64) DEFAULT NULL COMMENT '相机编码（设备序列号）',
+  `car_num` varchar(16) DEFAULT NULL COMMENT '车牌号',
+  `cmd_type` varchar(16) NOT NULL COMMENT '指令类型：OPEN_DOOR-开闸 CLOSE_DOOR-关闸 VOICE-语音 TEXT-文字显示 SNAPSHOT-抓拍',
+  `topic` varchar(256) DEFAULT NULL COMMENT 'MQTT topic',
+  `context` longtext COMMENT '下发内容（JSON）',
+  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`log_id`),
+  KEY `idx_machine_create` (`machine_code`,`create_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='MQTT下发日志表';
+
+-- ----------------------------
+-- Records of mqtt_send_log
+-- ----------------------------
+INSERT INTO `mqtt_send_log` VALUES ('102026081102560034', '11a4b2dffacd4906b9ec9b0c4cfa321d', 'bsbs', '手工开门', 'VOICE', '/device/bsbs/command', '{\"Response_AlarmInfoPlate\":{\"serialData\":[{\"data\":\"AGT//2IbAAEBABABAQMB/wAAAAAAAAAACLu206254sHZmRA=\",\"serialChannel\":\"1\",\"datalen\":35}]}}', null, '2026-08-11 21:11:02');
+INSERT INTO `mqtt_send_log` VALUES ('102026081105460042', '94abc454eb9c4373b82b5fe0c490edae', 'bsbs', '手工开闸', 'SNAPSHOT', '/device/bsbs/command', '{\"Response_AlarmInfoPlate\":{\"msgId\":\"112026081147480041\",\"TriggerImage\":\"ok\"}}', null, '2026-08-11 21:11:26');
+INSERT INTO `mqtt_send_log` VALUES ('102026081108270047', 'a11420aeef8646a78af3d75ebd57c06c', 'bsbs', '手工开闸', 'SNAPSHOT', '/device/bsbs/command', '{\"Response_AlarmInfoPlate\":{\"msgId\":\"112026081190090046\",\"TriggerImage\":\"ok\"}}', null, '2026-08-11 21:11:34');
+INSERT INTO `mqtt_send_log` VALUES ('102026081120770037', '9ccfc01ba1074bd1bd0d52fe7397e7a3', 'bsbs', '手工开闸', 'SNAPSHOT', '/device/bsbs/command', '{\"Response_AlarmInfoPlate\":{\"msgId\":\"112026081180190036\",\"TriggerImage\":\"ok\"}}', null, '2026-08-11 21:11:03');
+INSERT INTO `mqtt_send_log` VALUES ('102026081120970044', '44741854f4eb4e718ff58d47ac4cfd4b', 'bsbs', '手工开门', 'VOICE', '/device/bsbs/command', '{\"Response_AlarmInfoPlate\":{\"serialData\":[{\"data\":\"AGT//2IbAAEBABABAQMB/wAAAAAAAAAACLu206254sHZmRA=\",\"serialChannel\":\"1\",\"datalen\":35}]}}', null, '2026-08-11 21:11:34');
+INSERT INTO `mqtt_send_log` VALUES ('102026081121050045', '44741854f4eb4e718ff58d47ac4cfd4b', 'bsbs', '手工开门', 'OPEN_DOOR', '/device/bsbs/command', '{\n    \"Response_AlarmInfoPlate\": {\n        \"channelNum\": 0,\n        \"delay\": 1000,\n        \"info\": \"ok\",\n        \"msgId\": \"1176da7420eb43ec9f191baa81ba887f\"\n    }\n}', null, '2026-08-11 21:11:34');
+INSERT INTO `mqtt_send_log` VALUES ('102026081129520035', '11a4b2dffacd4906b9ec9b0c4cfa321d', 'bsbs', '手工开门', 'OPEN_DOOR', '/device/bsbs/command', '{\n    \"Response_AlarmInfoPlate\": {\n        \"channelNum\": 0,\n        \"delay\": 1000,\n        \"info\": \"ok\",\n        \"msgId\": \"e360d76876134a9bbe5f7953b4a7f5bf\"\n    }\n}', null, '2026-08-11 21:11:03');
+INSERT INTO `mqtt_send_log` VALUES ('102026081163360043', '44741854f4eb4e718ff58d47ac4cfd4b', 'bsbs', '手工开门', 'VOICE', '/device/bsbs/command', '{\"Response_AlarmInfoPlate\":{\"serialData\":[{\"data\":\"AGT//zAJAbu206254sHZMlg=\",\"serialChannel\":\"1\",\"datalen\":17}]}}', null, '2026-08-11 21:11:33');
+INSERT INTO `mqtt_send_log` VALUES ('102026081163390039', 'c80399aa139643fbbcc698e4b341c190', 'bsbs', '手工开门', 'VOICE', '/device/bsbs/command', '{\"Response_AlarmInfoPlate\":{\"serialData\":[{\"data\":\"AGT//2IbAAEBABABAQMB/wAAAAAAAAAACLu206254sHZmRA=\",\"serialChannel\":\"1\",\"datalen\":35}]}}', null, '2026-08-11 21:11:25');
+INSERT INTO `mqtt_send_log` VALUES ('102026081175490040', 'c80399aa139643fbbcc698e4b341c190', 'bsbs', '手工开门', 'OPEN_DOOR', '/device/bsbs/command', '{\n    \"Response_AlarmInfoPlate\": {\n        \"channelNum\": 0,\n        \"delay\": 1000,\n        \"info\": \"ok\",\n        \"msgId\": \"261184a724764587a44b2c6cddefde76\"\n    }\n}', null, '2026-08-11 21:11:26');
+INSERT INTO `mqtt_send_log` VALUES ('102026081175870033', '11a4b2dffacd4906b9ec9b0c4cfa321d', 'bsbs', '手工开门', 'VOICE', '/device/bsbs/command', '{\"Response_AlarmInfoPlate\":{\"serialData\":[{\"data\":\"AGT//zAJAbu206254sHZMlg=\",\"serialChannel\":\"1\",\"datalen\":17}]}}', null, '2026-08-11 21:11:02');
+INSERT INTO `mqtt_send_log` VALUES ('102026081193960038', 'c80399aa139643fbbcc698e4b341c190', 'bsbs', '手工开门', 'VOICE', '/device/bsbs/command', '{\"Response_AlarmInfoPlate\":{\"serialData\":[{\"data\":\"AGT//zAJAbu206254sHZMlg=\",\"serialChannel\":\"1\",\"datalen\":17}]}}', null, '2026-08-11 21:11:25');
 
 -- ----------------------------
 -- Table structure for m_menu
@@ -8717,7 +9710,7 @@ CREATE TABLE `m_menu` (
   `name` varchar(10) NOT NULL COMMENT '菜单名称',
   `g_id` varchar(30) NOT NULL COMMENT '菜单组ID',
   `url` varchar(200) NOT NULL COMMENT '打开地址',
-  `seq` int(11) NOT NULL COMMENT '列顺序',
+  `seq` int NOT NULL COMMENT '列顺序',
   `p_id` varchar(30) NOT NULL COMMENT '权限ID',
   `description` varchar(200) DEFAULT NULL COMMENT '菜单描述',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -8726,7 +9719,7 @@ CREATE TABLE `m_menu` (
   PRIMARY KEY (`m_id`),
   KEY `index_m_id` (`m_id`) USING BTREE,
   KEY `index_g_id` (`g_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of m_menu
@@ -8754,9 +9747,9 @@ INSERT INTO `m_menu` VALUES ('702021031606850071', '修改密码', '802021031653
 INSERT INTO `m_menu` VALUES ('702021060521430094', '手机商城菜单', '800201908019', '/#/pages/admin/housekeepingTypeManage', '4', '-1', '', '2021-06-05 15:38:42', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702021080500070003', '初始化小区', '802021031653410070', '/#/pages/dev/initializeCommunityManage', '6', '-1', '', '2021-08-05 19:09:43', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702021091240630201', '业务轨迹', '800201907014', '/#/pages/dev/businessTableHisManage', '6', '-1', '', '2021-09-12 15:48:39', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702021110981050126', '报表组', '802021110952690125', '/#/pages/dev/reportCustomGroupManage', '1', '-1', '', '2021-11-09 14:38:40', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702021111211780405', '报表组件', '802021110952690125', '/#/pages/dev/reportCustomComponentManage', '3', '-1', '报表组件', '2021-11-12 10:00:34', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702021111293630375', '报表信息', '802021110952690125', '/#/pages/dev/reportCustomManage', '2', '-1', '', '2021-11-12 09:03:45', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702021110981050126', '报表组', '802021110952690125', '/#/pages/dev/reportCustomGroupManage', '1', '-1', '', '2021-11-09 14:38:40', '1', 'Y');
+INSERT INTO `m_menu` VALUES ('702021111211780405', '报表组件', '802021110952690125', '/#/pages/dev/reportCustomComponentManage', '3', '-1', '报表组件', '2021-11-12 10:00:34', '1', 'Y');
+INSERT INTO `m_menu` VALUES ('702021111293630375', '报表信息', '802021110952690125', '/#/pages/dev/reportCustomManage', '2', '-1', '', '2021-11-12 09:03:45', '1', 'Y');
 INSERT INTO `m_menu` VALUES ('702022022626440646', '菜单目录', '800201908019', '/#/pages/dev/menuCatalogManage', '1', '-1', '', '2022-02-26 10:32:55', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702022070767920037', '字典', '800201907016', '/#/pages/dev/dictManage', '4', '-1', '字典', '2022-07-07 09:26:35', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702022081723230003', '系统配置', '802021031653410070', '/#/pages/frame/systemInfoManage', '2', '-1', '', '2022-08-17 00:15:09', '0', 'Y');
@@ -8776,11 +9769,11 @@ INSERT INTO `m_menu` VALUES ('702023081549120007', '楼栋授权', '802023081520
 INSERT INTO `m_menu` VALUES ('702023081558630009', '门禁人员', '802023081520910004', '/#/pages/accessControl/accessControlFace', '2', '502023081501740010', '', '2023-08-15 12:20:47', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023081628900013', '部门授权', '802023081520910004', '/#/pages/accessControl/accessControlOrg', '4', '502023081608800014', '', '2023-08-16 11:32:16', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023081657290002', '充电规则', '802023081695960001', '/#/pages/charge/chargeRule', '1', '502023081681540003', '', '2023-08-16 16:48:51', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702023081785750003', '下发日志', '802023081520910004', '/#/pages/accessControl/accessControlLog', '5', '502023081770940004', '', '2023-08-17 09:02:32', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702023081785750003', '下发日志', '802023081520910004', '/#/pages/accessControl/accessControlLog', '6', '502023081770940004', '', '2023-08-17 09:02:32', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023081789540034', '充电桩', '802023081695960001', '/#/pages/charge/chargeMachineManage', '2', '502023081767580035', '', '2023-08-17 10:55:35', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023081882570004', '充电月卡', '802023081695960001', '/#/pages/charge/chargeMonthOrderManage', '5', '502023081865750005', '', '2023-08-18 11:04:30', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023081891210001', '充电订单', '802023081695960001', '/#/pages/charge/chargeMachineOrder', '3', '502023081803040002', '', '2023-08-18 11:03:42', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702023082179470002', '进出记录', '802023081520910004', '/#/pages/accessControl/accessControlInout', '6', '502023082122760003', '', '2023-08-21 13:32:18', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702023082179470002', '进出记录', '802023081520910004', '/#/pages/accessControl/accessControlInout', '7', '502023082122760003', '', '2023-08-21 13:32:18', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023082205380002', 'mqtt日志', '802020111618520004', '/#/pages/log/mqttLog', '2', '502023082214500003', '', '2023-08-22 10:49:42', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023082303880011', '停车场', '802023082372950010', '/#/pages/car/parkingArea', '1', '502023082348060012', '', '2023-08-23 09:05:14', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023082371460002', '停车位', '802023082372950010', '/#/pages/car/parkingSpace', '3', '502023082382910003', '', '2023-08-23 13:43:22', '0', 'Y');
@@ -8823,7 +9816,7 @@ INSERT INTO `m_menu` VALUES ('702023110124480004', '进出记录', '802023103063
 INSERT INTO `m_menu` VALUES ('702023110146240001', '下发记录', '802023103063600003', '/#/pages/lock/lockLogManage', '3', '502023110119240002', '', '2023-11-01 16:20:17', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023110606940006', '导入日志', '802023110632150002', '/#/pages/log/assetImportLog', '1', '502023110668420007', '', '2023-11-06 00:04:47', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023110631880008', '修改密码', '802023110632150002', '/#/pages/frame/changeStaffPwd', '2', '502023110622750009', '', '2023-11-06 00:46:28', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702023111814580009', '房屋认证', '802023021604710005', '/#/pages/owner/appUser', '3', '502023111878100010', '', '2023-11-18 04:01:29', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702023111814580009', '房屋认证', '802023021604710005', '/#/pages/owner/appUser', '4', '502023111878100010', '', '2023-11-18 04:01:29', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023112254930001', '仪表厂家', '802023091899930009', '/#/pages/meter/instrumentFactoryManage', '5', '502023112205230002', '', '2023-11-22 11:36:24', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023112360010001', '仪表设备', '802023112376120003', '/#/pages/meter/instrumentManage', '2', '502023112327010002', '', '2023-11-23 11:43:24', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023112372650007', '仪表组', '802023112376120003', '/#/pages/meter/instrumentTypeManage', '1', '502023112379810008', '', '2023-11-23 09:10:33', '0', 'Y');
@@ -8836,18 +9829,18 @@ INSERT INTO `m_menu` VALUES ('702023120137070002', '水电厂家', '802023091899
 INSERT INTO `m_menu` VALUES ('702023120407300051', '充电厂家', '802023091899930009', '/#/pages/charge/chargeMachineFactoryManage', '7', '502023120423430052', '', '2023-12-04 11:51:32', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023120532800017', '3D脚本', '802023112492090051', '/#/pages/3d/dtScript', '2', '502023120512870018', '', '2023-12-05 15:42:36', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023120541870023', '门禁厂家', '802023091899930009', '/#/pages/accessControl/hardwareManufacturerManage', '8', '502023120554470024', '', '2023-12-05 11:55:22', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702023121100030019', '访客类型', '802023081520910004', '/#/pages/accessControl/visitTypeManage', '7', '502023121149860020', '', '2023-12-11 16:18:41', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702023121265420001', '访客人员', '802023081520910004', '/#/pages/accessControl/visitManage', '8', '502023121209000002', '', '2023-12-12 10:16:53', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702023121100030019', '访客类型', '802023081520910004', '/#/pages/accessControl/visitTypeManage', '8', '502023121149860020', '', '2023-12-11 16:18:41', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702023121265420001', '访客人员', '802023081520910004', '/#/pages/accessControl/visitManage', '9', '502023121209000002', '', '2023-12-12 10:16:53', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023121428660004', '月卡订单', '802023082372950010', '/#/pages/car/carMonthOrder', '10', '502023121472950005', '', '2023-12-14 14:22:00', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023121437250015', '停车月卡', '802023082372950010', '/#/pages/car/carMonthCard', '9', '502023121481930016', '', '2023-12-14 12:33:51', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023121443380002', '月卡设置', '802023081695960001', '/#/pages/charge/chargeMonthCardManage', '4', '502023121436330003', '', '2023-12-14 16:36:36', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702023121807070001', '人脸二维码', '802023081520910004', '/#/pages/accessControl/personFaceQrcode', '9', '502023121859400002', '', '2023-12-18 19:17:49', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702023121807070001', '人脸二维码', '802023081520910004', '/#/pages/accessControl/personFaceQrcode', '10', '502023121859400002', '', '2023-12-18 19:17:49', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023121812420005', '修改密码', '802023121840390001', '/#/pages/frame/changeStaffPwd', '1', '502023121828420006', '', '2023-12-18 23:39:17', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702023121890710012', '人脸审核', '802023081520910004', '/#/pages/accessControl/personFace', '10', '502023121895380013', '', '2023-12-18 22:04:17', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702023121890710012', '人脸审核', '802023081520910004', '/#/pages/accessControl/personFace', '11', '502023121895380013', '', '2023-12-18 22:04:17', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023121970630007', '水电二维码', '802023082455000001', '/#/pages/meter/meterQrcodeManage', '5', '502023121937420008', '', '2023-12-19 11:45:20', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702023122073070002', '通行码设置', '802023081520910004', '/#/pages/accessControl/passQrcodeSetting', '11', '502023122063680003', '', '2023-12-20 01:44:51', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702023122096840011', '通行码', '802023081520910004', '/#/pages/accessControl/passQrcode', '12', '502023122080310012', '', '2023-12-20 09:55:24', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702023122099900013', '门禁统计', '802023081520910004', '/#/pages/accessControl/acInoutStatistics', '13', '502023122041190014', '', '2023-12-20 19:27:29', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702023122073070002', '通行码设置', '802023081520910004', '/#/pages/accessControl/passQrcodeSetting', '12', '502023122063680003', '', '2023-12-20 01:44:51', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702023122096840011', '通行码', '802023081520910004', '/#/pages/accessControl/passQrcode', '13', '502023122080310012', '', '2023-12-20 09:55:24', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702023122099900013', '门禁统计', '802023081520910004', '/#/pages/accessControl/acInoutStatistics', '14', '502023122041190014', '', '2023-12-20 19:27:29', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023122165550003', '水电统计', '802023082455000001', '/#/pages/meter/meterStatistics', '6', '502023122133950004', '', '2023-12-21 13:45:58', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702023122190860002', '充电统计', '802023081695960001', '/#/pages/charge/chargeStatistics', '6', '502023122157190003', '', '2023-12-21 11:26:23', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702024012411670008', '考勤设备', '802024012406520004', '/#/pages/attendance/attendanceMachine', '1', '502024012427440009', '', '2024-01-24 14:50:07', '0', 'Y');
@@ -8872,19 +9865,19 @@ INSERT INTO `m_menu` VALUES ('702024053171760001', '固定电话', '802023092136
 INSERT INTO `m_menu` VALUES ('702024053181320012', '话机客服', '802023092136420001', '/#/pages/lamp/telMachineUser', '5', '502024053126920013', '', '2024-05-31 22:41:46', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702024060166020042', '话机语音', '802023092136420001', '/#/pages/lamp/telTts', '8', '502024060106980043', '', '2024-06-01 17:17:17', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702024071514900004', '监控平台', '802023101718180007', '/#/pages/monitor/monitorManufactor', '1', '502024071531420005', '', '2024-07-15 21:26:39', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702024071739930025', '广告门禁', '802023081520910004', '/#/pages/accessControl/accessControlAdRel', '15', '502024071726010026', '', '2024-07-17 00:31:38', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702024071742800002', '广告', '802023081520910004', '/#/pages/accessControl/accessControlAd', '14', '502024071756720003', '', '2024-07-17 00:00:26', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702024071739930025', '广告门禁', '802023081520910004', '/#/pages/accessControl/accessControlAdRel', '16', '502024071726010026', '', '2024-07-17 00:31:38', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702024071742800002', '广告', '802023081520910004', '/#/pages/accessControl/accessControlAd', '15', '502024071756720003', '', '2024-07-17 00:00:26', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702024071807930005', '监控预览', '802023101718180007', '/#/pages/monitor/cameraControlVideo', '4', '502024071881130006', '', '2024-07-18 10:31:49', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702024072681880004', '员工授权', '802023101718180007', '/#/pages/monitor/monitorMachineStaff', '8', '502024072644520005', '', '2024-07-26 16:52:14', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702024073119300022', '业主授权', '802023101718180007', '/#/pages/monitor/monitorMachineOwner', '9', '502024073105410023', '', '2024-07-31 12:17:18', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702024080878150003', '监控录像', '802023101718180007', '/#/pages/monitor/monitorRecord', '5', '502024080852050004', '', '2024-08-08 13:47:40', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702024083039700023', '云呼平台', '802023081520910004', '/#/pages/accessControl/callingPlatformManage', '16', '502024083017720024', '', '2024-08-30 16:55:29', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702024083039700023', '云呼平台', '802023081520910004', '/#/pages/accessControl/callingPlatformManage', '17', '502024083017720024', '', '2024-08-30 16:55:29', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702024083046590029', '通讯录', '802023081520910004', '/#/pages/accessControl/callingContactManage', '18', '502024083065930030', '', '2024-08-30 16:58:00', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702024083059420026', '呼叫设备', '802023081520910004', '/#/pages/accessControl/callingDeviceManage', '17', '502024083023700027', '', '2024-08-30 16:56:26', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702024083059420026', '呼叫设备', '802023081520910004', '/#/pages/accessControl/callingDeviceManage', '20', '502024083023700027', '', '2024-08-30 16:56:26', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702024110596590019', '收藏视频', '802023101718180007', '/#/pages/monitor/machineCollect', '10', '502024110507910020', '', '2024-11-05 23:47:41', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702024112904730002', '充电券', '802023081695960001', '/#/pages/charge/chargeUserCoupon', '7', '502024112928150003', '', '2024-11-29 14:37:44', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702024120322330005', '云呼平台', '802023081520910004', '/#/pages/accessControl/callingPlatformManage', '1', '502024120350870006', '', '2024-12-03 11:18:45', '1', 'Y');
-INSERT INTO `m_menu` VALUES ('702024120639860002', '业主账户', '802023021604710005', '/#/pages/owner/account', '4', '502024120695340003', '', '2024-12-06 14:02:17', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702024120639860002', '业主账户', '802023021604710005', '/#/pages/owner/account', '5', '502024120695340003', '', '2024-12-06 14:02:17', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702024121628880002', '布控告警', '802023101718180007', '/#/pages/ai/dispatchLog', '12', '502024121612860003', '', '2024-12-16 09:47:37', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702024121688430008', '人员布控', '802023101718180007', '/#/pages/ai/dispatchFace', '11', '502024121694690009', '', '2024-12-16 10:54:05', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702024121785020002', '呼叫记录', '802023081520910004', '/#/pages/accessControl/intercomLog', '19', '502024121711440003', '', '2024-12-17 11:23:23', '0', 'Y');
@@ -8898,8 +9891,12 @@ INSERT INTO `m_menu` VALUES ('702025031432650003', '车辆出入', '802025031373
 INSERT INTO `m_menu` VALUES ('702025031450800018', '水电充值', '802025031448910011', '/#/pages/meter/adminMeterRecharge', '2', '502025031493900019', '', '2025-03-14 11:43:56', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702025031494860015', '充电订单', '802025031448910011', '/#/pages/charge/adminChargeOrder', '1', '502025031479190016', '', '2025-03-14 11:28:36', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702025032859670016', '小程序', '802023110632150002', '/#/pages/property/smallWeChatManage', '5', '502025032893860017', '', '2025-03-28 17:37:33', '0', 'Y');
-INSERT INTO `m_menu` VALUES ('702025052049200021', 'ss', '802021031653410070', 'ddd', '1', '502025052045800022', '2', '2025-05-20 14:58:41', '1', 'Y');
 INSERT INTO `m_menu` VALUES ('702026010862210002', '内部临时车', '802023082372950010', '/#/pages/car/tempInnerCar', '12', '502026010844150003', '', '2026-01-08 16:05:05', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702026070822000376', 'ssss', '802021031653410070', 'ddd', '5', '502026070818780377', '55', '2026-07-08 14:33:03', '1', 'Y');
+INSERT INTO `m_menu` VALUES ('702026072731800001', '历史进出', '802023082372950010', '/#/pages/car/listCarInoutHis', '13', '502026072706260002', '', '2026-07-27 09:02:56', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702026072836750001', '逃费车辆', '802023082372950010', '/#/pages/car/listCarInoutEvasion', '14', '502026072865190002', '', '2026-07-28 14:50:06', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702026081800000001', '商铺授权', '802023081520910004', '/#/pages/accessControl/accessControlShop', '5', '502026081800000001', '', '2026-08-18 12:00:00', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702026081884350001', '商铺管理', '802023021604710005', '/#/pages/shop/listShopManage', '3', '502026081895580002', '', '2026-08-18 12:27:26', '0', 'Y');
 
 -- ----------------------------
 -- Table structure for m_menu_catalog
@@ -8909,14 +9906,14 @@ CREATE TABLE `m_menu_catalog` (
   `ca_id` varchar(30) NOT NULL COMMENT '目录名称',
   `name` varchar(10) NOT NULL COMMENT '菜单组名称',
   `icon` varchar(20) NOT NULL COMMENT '菜单图片',
-  `seq` int(11) NOT NULL COMMENT '列顺序',
+  `seq` int NOT NULL COMMENT '列顺序',
   `store_type` varchar(12) DEFAULT NULL COMMENT '商户类型',
   `url` varchar(256) NOT NULL DEFAULT '#' COMMENT '点击后进入那个页面，#表示不进入',
   `is_show` varchar(12) NOT NULL DEFAULT 'Y' COMMENT '是否显示 Y 是 F否',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   PRIMARY KEY (`ca_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of m_menu_catalog
@@ -8926,8 +9923,8 @@ INSERT INTO `m_menu_catalog` VALUES ('102023021260140001', '首页', 'fa fa-home
 INSERT INTO `m_menu_catalog` VALUES ('102023021279740001', 'sss', 'ss', '1', '800900000001', 's', 'Y', '2023-02-12 20:39:04', '1');
 INSERT INTO `m_menu_catalog` VALUES ('102023021402390004', '设置', 'fa fa-gear', '3', '800900000003', '#', 'Y', '2023-02-14 12:27:36', '0');
 INSERT INTO `m_menu_catalog` VALUES ('102023021439450002', '首页', 'fa fa-home', '1', '800900000003', '/', 'Y', '2023-02-14 00:31:58', '0');
-INSERT INTO `m_menu_catalog` VALUES ('102023120259930006', '驾驶舱', 'fa fa-calculator', '2', '800900000003', '/3d.html#/pages/3d/cockpit?tab=驾驶舱', 'Y', '2023-12-02 01:29:08', '0');
-INSERT INTO `m_menu_catalog` VALUES ('102024110525700003', '监控大屏', 'fa fa-camera', '4', '800900000003', '/mv.html#/pages/index/monitorVideo', 'Y', '2024-11-05 10:17:32', '0');
+INSERT INTO `m_menu_catalog` VALUES ('102023120259930006', '驾驶舱', 'fa fa-calculator', '2', '800900000003', '/#/pages/3d/cockpit?tab=驾驶舱', 'Y', '2023-12-02 01:29:08', '0');
+INSERT INTO `m_menu_catalog` VALUES ('102024110525700003', '监控大屏', 'fa fa-camera', '4', '800900000003', '/#/pages/index/monitorVideo', 'Y', '2024-11-05 10:17:32', '0');
 INSERT INTO `m_menu_catalog` VALUES ('102024121311730011', '监控地图', 'fa fa-map', '5', '800900000003', '/#/pages/index/monitorMap', 'Y', '2024-12-13 15:08:29', '0');
 INSERT INTO `m_menu_catalog` VALUES ('102025052040870014', 'xx', 'xxw', '1', '800900000001', 'xx', 'Y', '2025-05-20 00:30:41', '1');
 
@@ -8940,14 +9937,14 @@ CREATE TABLE `m_menu_group` (
   `name` varchar(10) NOT NULL COMMENT '菜单组名称',
   `icon` varchar(20) NOT NULL COMMENT '菜单图片',
   `label` varchar(20) NOT NULL COMMENT '菜单标签',
-  `seq` int(11) NOT NULL COMMENT '列顺序',
+  `seq` int NOT NULL COMMENT '列顺序',
   `description` varchar(200) DEFAULT NULL COMMENT '菜单描述',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   `group_type` varchar(12) NOT NULL DEFAULT 'P_WEB' COMMENT ' 菜单类型',
   `store_type` varchar(12) DEFAULT NULL COMMENT '商户类型',
   PRIMARY KEY (`g_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of m_menu_group
@@ -8961,7 +9958,7 @@ INSERT INTO `m_menu_group` VALUES ('802019090224100001', '任务', 'fa fa-diamon
 INSERT INTO `m_menu_group` VALUES ('802020081417800208', '属性', 'fa-flash', '', '4', '', '2020-08-14 22:16:28', '0', 'P_WEB', '800900000000');
 INSERT INTO `m_menu_group` VALUES ('802020111618520004', '日志', 'fa fa-diamond', '', '18', '', '2020-11-16 01:08:07', '0', 'P_WEB', '800900000000');
 INSERT INTO `m_menu_group` VALUES ('802021031653410070', '系统', 'fa fa-globe', '', '19', '', '2021-03-16 11:13:47', '0', 'P_WEB', '800900000000');
-INSERT INTO `m_menu_group` VALUES ('802021110952690125', '报表', 'fa fa-globe', '', '4', '', '2021-11-09 14:34:45', '0', 'P_WEB', '800900000000');
+INSERT INTO `m_menu_group` VALUES ('802021110952690125', '报表', 'fa fa-globe', '', '4', '', '2021-11-09 14:34:45', '1', 'P_WEB', '800900000000');
 INSERT INTO `m_menu_group` VALUES ('802023021272240006', '数据', 'fa fa-laptop', '', '1', '1', '2023-02-12 23:35:51', '0', 'P_WEB', '800900000001');
 INSERT INTO `m_menu_group` VALUES ('802023021279410009', 'ss', 'ss', '', '1', 'ss', '2023-02-12 23:36:53', '1', 'P_WEB', '800900000002');
 INSERT INTO `m_menu_group` VALUES ('802023021422680001', '组织', 'fa-desktop', '', '10', '', '2023-02-14 12:28:53', '0', 'P_WEB', '800900000003');
@@ -9000,7 +9997,7 @@ CREATE TABLE `m_menu_group_catalog` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   PRIMARY KEY (`gc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of m_menu_group_catalog
@@ -9054,7 +10051,1382 @@ CREATE TABLE `m_menu_group_community` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   PRIMARY KEY (`gc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of m_menu_group_community
+-- ----------------------------
+INSERT INTO `m_menu_group_community` VALUES ('102024012306550049', '802023021424270011', '小区', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012308620055', '802023091881700008', '梯控', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012310730039', '802020081417800208', '属性', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012311870061', '802023112376120003', '仪表', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012312980037', '800201907014', '服务', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012313630038', '800201907016', '配置', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012315680045', '802023021272240006', '数据', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012316000052', '802023082372950010', '道闸', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012318060057', '802023101718180007', '监控', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012319980060', '802023103063600003', '门锁', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012322200046', '802023091899930009', '厂家', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012323900042', '802019090224100001', '任务', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012324640050', '802023021604710005', '房产', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012326350053', '802023081695960001', '充电', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012327260043', '802020111618520004', '日志', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012335710036', '800201908019', '菜单', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012338180062', '802023110632150002', '系统', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012344180040', '802021110952690125', '报表', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012346910044', '802021031653410070', '系统', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012354530058', '802023021422680001', '组织', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012355150059', '802023103017170002', '优惠', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012359830056', '802023092136420001', '路灯', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012381140054', '802023082455000001', '水电', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012385010041', '800201908018', '缓存', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012386230035', '800201907015', '配置', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012387880047', '802023112492090051', '3D', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012388990048', '802023121840390001', '系统', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012389960051', '802023081520910004', '门禁', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012395830063', '802023092784350001', '事件', '2023052267100146', 'HC演示小区3', '2024-01-23 02:09:56', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024012403410026', '802023121840390001', '系统', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012408160034', '802023092136420001', '路灯', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012409540014', '800201907014', '服务', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012413230025', '802023112492090051', '3D', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012413510018', '800201907016', '配置', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012415390019', '800201908018', '缓存', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012416360029', '802023081520910004', '门禁', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012419220024', '802023091899930009', '厂家', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012421170030', '802023082372950010', '道闸', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012426460017', '802020081417800208', '属性', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012435140013', '800201907015', '配置', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012435400040', '802023110632150002', '系统', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012436430036', '802023021422680001', '组织', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012437310039', '802023112376120003', '仪表', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012439080023', '802023021272240006', '数据', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012440250042', '802024012406520004', '考勤', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012442140027', '802023021424270011', '小区', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012444350037', '802023103017170002', '优惠', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012445140016', '802021110952690125', '报表', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012454220022', '802021031653410070', '系统', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012455460020', '802019090224100001', '任务', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012460480032', '802023082455000001', '水电', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012463010021', '802020111618520004', '日志', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012471060033', '802023091881700008', '梯控', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012477750015', '800201908019', '菜单', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012482430038', '802023103063600003', '门锁', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012484560035', '802023101718180007', '监控', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012485620031', '802023081695960001', '充电', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012489180028', '802023021604710005', '房产', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024012491220041', '802023092784350001', '事件', '102023021386560001', '测试小区', '2024-01-24 14:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020816030054', '802023103017170002', '优惠', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020822610051', '802023092136420001', '路灯', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020829200058', '802023092784350001', '事件', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020836410052', '802023101718180007', '监控', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020837900053', '802023021422680001', '组织', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020840630049', '802023082455000001', '水电', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020843680057', '802023110632150002', '系统', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020849210044', '802023021424270011', '小区', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020851200046', '802023081520910004', '门禁', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020874550050', '802023091881700008', '梯控', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020882910059', '802024012406520004', '考勤', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020883770055', '802023103063600003', '门锁', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020888450056', '802023112376120003', '仪表', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020889280045', '802023021604710005', '房产', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020889940048', '802023081695960001', '充电', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024020891170047', '802023082372950010', '道闸', '2023062100700008', 'xxx2', '2024-02-08 02:03:37', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022000130525', '802023082455000001', '水电', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022017660521', '802023021604710005', '房产', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022025280533', '802023110632150002', '系统', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022029190534', '802023092784350001', '事件', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022038120531', '802023103063600003', '门锁', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022044480532', '802023112376120003', '仪表', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022046880528', '802023101718180007', '监控', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022060970526', '802023091881700008', '梯控', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022062860520', '802023021424270011', '小区', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022063320524', '802023081695960001', '充电', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022067740523', '802023082372950010', '道闸', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022072850530', '802023103017170002', '优惠', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022077010529', '802023021422680001', '组织', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022077260522', '802023081520910004', '门禁', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022090780535', '802024012406520004', '考勤', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022094280527', '802023092136420001', '路灯', '2024021911282483', '万科森林公园', '2024-02-20 09:38:34', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022306601307', '802023101718180007', '监控', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022311451299', '802023021424270011', '小区', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022314361311', '802023112376120003', '仪表', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022320521301', '802023081520910004', '门禁', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022333231300', '802023021604710005', '房产', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022335941305', '802023091881700008', '梯控', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022342461303', '802023081695960001', '充电', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022355131309', '802023103017170002', '优惠', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022361051310', '802023103063600003', '门锁', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022361851302', '802023082372950010', '道闸', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022363791308', '802023021422680001', '组织', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022379841314', '802024012406520004', '考勤', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022383301304', '802023082455000001', '水电', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022391931313', '802023092784350001', '事件', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022398671306', '802023092136420001', '路灯', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022399651312', '802023110632150002', '系统', '2024022327180323', '三国小区', '2024-02-23 10:09:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022601742595', '800201908019', '菜单', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022602312777', '802023082372950010', '道闸', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022603432755', '802023021604710005', '房产', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022604292676', '802023112492090051', '3D', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022605262601', '802020111618520004', '日志', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022605262756', '802023081520910004', '门禁', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022606032689', '802023103063600003', '门锁', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022606212730', '802024012406520004', '考勤', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022606762599', '800201908018', '缓存', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022608502613', '802023091881700008', '梯控', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022609222746', '800201908018', '缓存', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022610372706', '800201907016', '配置', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022610402670', '800201908018', '缓存', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022611082742', '800201908019', '菜单', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022611252761', '802023092136420001', '路灯', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022612872692', '802023092784350001', '事件', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022613002764', '802023103017170002', '优惠', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022613082749', '802021031653410070', '系统', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022613182725', '802023103017170002', '优惠', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022613952711', '802023021272240006', '数据', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022614752785', '802023103063600003', '门锁', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022616892729', '802023092784350001', '事件', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022617082710', '802021031653410070', '系统', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022617402672', '802020111618520004', '日志', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022617752769', '802024012406520004', '考勤', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022618202674', '802023021272240006', '数据', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022619002593', '800201907015', '配置', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022619212682', '802023081695960001', '充电', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022619502712', '802023091899930009', '厂家', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022621992776', '802023081520910004', '门禁', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022622282720', '802023082455000001', '水电', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022623032684', '802023091881700008', '梯控', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022624812783', '802023021422680001', '组织', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022624922789', '802024012406520004', '考勤', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022625092716', '802023021604710005', '房产', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022626132622', '802024012406520004', '考勤', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022626762614', '802023092136420001', '路灯', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022626802727', '802023112376120003', '仪表', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022627002600', '802019090224100001', '任务', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022628222788', '802023092784350001', '事件', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022628362606', '802023121840390001', '系统', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022628932612', '802023082455000001', '水电', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022629732602', '802021031653410070', '系统', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022630432713', '802023112492090051', '3D', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022630912690', '802023112376120003', '仪表', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022631052685', '802023092136420001', '路灯', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022631102741', '800201907014', '服务', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022631932750', '802023021272240006', '数据', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022632892687', '802023021422680001', '组织', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022632972701', '800201907015', '配置', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022633322665', '800201907014', '服务', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022634142784', '802023103017170002', '优惠', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022634192751', '802023091899930009', '厂家', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022634422609', '802023081520910004', '门禁', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022634612768', '802023092784350001', '事件', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022634682754', '802023021424270011', '小区', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022636132679', '802023021604710005', '房产', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022636972598', '800201907016', '配置', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022637002728', '802023110632150002', '系统', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022637322778', '802023081695960001', '充电', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022638052616', '802023021422680001', '组织', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022638512780', '802023091881700008', '梯控', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022638522671', '802019090224100001', '任务', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022638582753', '802023121840390001', '系统', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022638692702', '800201907014', '服务', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022638722683', '802023082455000001', '水电', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022639552610', '802023082372950010', '道闸', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022639792718', '802023082372950010', '道闸', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022640092775', '802023021604710005', '房产', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022640302759', '802023082455000001', '水电', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022644062767', '802023110632150002', '系统', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022645262704', '802021110952690125', '报表', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022646192678', '802023021424270011', '小区', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022646432608', '802023021604710005', '房产', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022647772621', '802023092784350001', '事件', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022648532758', '802023081695960001', '充电', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022651662757', '802023082372950010', '道闸', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022651762619', '802023112376120003', '仪表', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022653952620', '802023110632150002', '系统', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022654252722', '802023092136420001', '路灯', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022654922611', '802023081695960001', '充电', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022655202781', '802023092136420001', '路灯', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022656262607', '802023021424270011', '小区', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022657152719', '802023081695960001', '充电', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022657912681', '802023082372950010', '道闸', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022659872766', '802023112376120003', '仪表', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022660922604', '802023091899930009', '厂家', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022661002717', '802023081520910004', '门禁', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022661632669', '800201907016', '配置', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022661972715', '802023021424270011', '小区', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022662362617', '802023103017170002', '优惠', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022662652594', '800201907014', '服务', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022663292686', '802023101718180007', '监控', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022666262740', '800201907015', '配置', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022666412705', '802020081417800208', '属性', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022666472596', '802021110952690125', '报表', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022666962691', '802023110632150002', '系统', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022667552675', '802023091899930009', '厂家', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022668422707', '800201908018', '缓存', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022671862745', '800201907016', '配置', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022672032615', '802023101718180007', '监控', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022672072688', '802023103017170002', '优惠', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022672452743', '802021110952690125', '报表', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022672812709', '802020111618520004', '日志', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022673152744', '802020081417800208', '属性', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022673802748', '802020111618520004', '日志', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022674072677', '802023121840390001', '系统', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022674472721', '802023091881700008', '梯控', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022674982787', '802023110632150002', '系统', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022674992714', '802023121840390001', '系统', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022675672667', '802021110952690125', '报表', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022676082762', '802023101718180007', '监控', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022676302765', '802023103063600003', '门锁', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022677642708', '802019090224100001', '任务', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022678782666', '800201908019', '菜单', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022679242786', '802023112376120003', '仪表', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022680002782', '802023101718180007', '监控', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022680122673', '802021031653410070', '系统', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022680692680', '802023081520910004', '门禁', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022681982603', '802023021272240006', '数据', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022682222664', '800201907015', '配置', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022684092668', '802020081417800208', '属性', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022686112618', '802023103063600003', '门锁', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022686462726', '802023103063600003', '门锁', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022687722723', '802023101718180007', '监控', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022688282779', '802023082455000001', '水电', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022692412605', '802023112492090051', '3D', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022692712703', '800201908019', '菜单', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022693012760', '802023091881700008', '梯控', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022694222693', '802024012406520004', '考勤', '102024022629692424', '西游小区', '2024-02-26 14:18:08', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022695002763', '802023021422680001', '组织', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022695192724', '802023021422680001', '组织', '2024022647620054', '西游小区', '2024-02-26 14:18:17', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022697272774', '802023021424270011', '小区', '2024022643710121', '一刀测试', '2024-02-26 14:35:16', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022698382752', '802023112492090051', '3D', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022699092747', '802019090224100001', '任务', '2023052267100146', 'HC演示小区3', '2024-02-26 14:20:09', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102024022699482597', '802020081417800208', '属性', '102024022629692424', '西游小区', '2024-02-26 14:17:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022907210038', '800201907015', '配置', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022907590034', '802023103063600003', '门锁', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022911610029', '802023091881700008', '梯控', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022913540063', '802023103063600003', '门锁', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022917260058', '802023091881700008', '梯控', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022917720032', '802023021422680001', '组织', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022918830011', '800201908019', '菜单', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022920070036', '802023110632150002', '系统', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022920550017', '802020111618520004', '日志', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022922700053', '802023021604710005', '房产', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022923740031', '802023101718180007', '监控', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022924600014', '800201907016', '配置', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022925410059', '802023092136420001', '路灯', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022925590060', '802023101718180007', '监控', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022926590028', '802023082455000001', '水电', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022926810062', '802023103017170002', '优惠', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022930190013', '802020081417800208', '属性', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022931450012', '802021110952690125', '报表', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022932960064', '802023112376120003', '仪表', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022935050044', '800201908018', '缓存', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022936150052', '802023021424270011', '小区', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022937680019', '802023021272240006', '数据', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022938310048', '802023021272240006', '数据', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022938750038', '802024012406520004', '考勤', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022939970046', '802020111618520004', '日志', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022941500045', '802019090224100001', '任务', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022942840042', '802020081417800208', '属性', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022943830051', '802023121840390001', '系统', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022946680024', '802023021604710005', '房产', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022947090025', '802023081520910004', '门禁', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022947800022', '802023121840390001', '系统', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022949690033', '802023103017170002', '优惠', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022951850055', '802023082372950010', '道闸', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022952440049', '802023091899930009', '厂家', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022952990027', '802023081695960001', '充电', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022954530023', '802023021424270011', '小区', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022954840067', '802024012406520004', '考勤', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022956300037', '802023092784350001', '事件', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022959000020', '802023091899930009', '厂家', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022961030021', '802023112492090051', '3D', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022961150018', '802021031653410070', '系统', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022965400030', '802023092136420001', '路灯', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022968530035', '802023112376120003', '仪表', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022970100026', '802023082372950010', '道闸', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022971910040', '800201908019', '菜单', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022972020056', '802023081695960001', '充电', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022973160065', '802023110632150002', '系统', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022973450010', '800201907014', '服务', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022973830039', '800201907014', '服务', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022974700066', '802023092784350001', '事件', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022978790016', '802019090224100001', '任务', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022981510015', '800201908018', '缓存', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022982910041', '802021110952690125', '报表', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022984310043', '800201907016', '配置', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022985270061', '802023021422680001', '组织', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022988760050', '802023112492090051', '3D', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022989790009', '800201907015', '配置', '2023052267100146', 'HC演示小区3', '2024-02-29 10:29:45', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022990440047', '802021031653410070', '系统', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022995900057', '802023082455000001', '水电', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024022999700054', '802023081520910004', '门禁', '2024012252790005', '物联网同步小区', '2024-02-29 00:15:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040203650040', '802023081695960001', '充电', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040207290035', '802023121840390001', '系统', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040212750044', '802023101718180007', '监控', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040213760031', '802021031653410070', '系统', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040218440037', '802023021604710005', '房产', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040219480034', '802023112492090051', '3D', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040220020048', '802023112376120003', '仪表', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040220120024', '800201908019', '菜单', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040224610038', '802023081520910004', '门禁', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040226030050', '802023092784350001', '事件', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040227750047', '802023103063600003', '门锁', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040234160033', '802023091899930009', '厂家', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040244570043', '802023092136420001', '路灯', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040251930046', '802023103017170002', '优惠', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040256870022', '800201907015', '配置', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040258650051', '802024012406520004', '考勤', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040268980041', '802023082455000001', '水电', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040273270036', '802023021424270011', '小区', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040274320027', '800201907016', '配置', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040277070030', '802020111618520004', '日志', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040281250042', '802023091881700008', '梯控', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040284270023', '800201907014', '服务', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040285710025', '802021110952690125', '报表', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040287440026', '802020081417800208', '属性', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040287700045', '802023021422680001', '组织', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040290410029', '802019090224100001', '任务', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040291950039', '802023082372950010', '道闸', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040296710049', '802023110632150002', '系统', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040298140032', '802023021272240006', '数据', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024040299420028', '800201908018', '缓存', '102023021386560001', '测试小区', '2024-04-02 14:33:58', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060107800012', '802023103063600003', '门锁', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060111380004', '802023082372950010', '道闸', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060113400003', '802023081520910004', '门禁', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060120820001', '802023021424270011', '小区', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060128180007', '802023091881700008', '梯控', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060134280009', '802023101718180007', '监控', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060137380006', '802023082455000001', '水电', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060145990008', '802023092136420001', '路灯', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060160480014', '802023110632150002', '系统', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060176600010', '802023021422680001', '组织', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060183700011', '802023103017170002', '优惠', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060183940005', '802023081695960001', '充电', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060190070015', '802023092784350001', '事件', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060190210016', '802024012406520004', '考勤', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060191490013', '802023112376120003', '仪表', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024060193300002', '802023021604710005', '房产', '2024041265850103', '另一个小区', '2024-06-01 00:42:09', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121701860047', '802023021422680001', '组织', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121702270043', '802023082455000001', '水电', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121703280024', '800201907015', '配置', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121705860030', '800201908018', '缓存', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121706720033', '802021031653410070', '系统', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121710640045', '802023092136420001', '路灯', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121710820044', '802023091881700008', '梯控', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121715370037', '802023121840390001', '系统', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121717110053', '802024012406520004', '考勤', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121727210040', '802023081520910004', '门禁', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121738860026', '800201908019', '菜单', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121739770039', '802023021604710005', '房产', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121740590041', '802023082372950010', '道闸', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121742420036', '802023112492090051', '3D', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121745810050', '802023112376120003', '仪表', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121752190032', '802020111618520004', '日志', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121753210051', '802023110632150002', '系统', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121753980049', '802023103063600003', '门锁', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121755420029', '800201907016', '配置', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121758200034', '802023021272240006', '数据', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121766300052', '802023092784350001', '事件', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121773540027', '802021110952690125', '报表', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121774780042', '802023081695960001', '充电', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121775720028', '802020081417800208', '属性', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121783320035', '802023091899930009', '厂家', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121784020046', '802023101718180007', '监控', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121788870031', '802019090224100001', '任务', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121788890038', '802023021424270011', '小区', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121791480025', '800201907014', '服务', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102024121794560048', '802023103017170002', '优惠', '102024121715970003', 'HC演示小区', '2024-12-17 15:51:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032402990114', '802023021424270011', '小区', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032404400077', '802023082372950010', '道闸', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032405760124', '802023103017170002', '优惠', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032409130098', '800201908019', '菜单', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032411150083', '802023021422680001', '组织', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032412440071', '802025031373300006', '进出', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032412680126', '802023112376120003', '仪表', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032413260063', '800201908018', '缓存', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032415000085', '802023103063600003', '门锁', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032417160111', '802025031373300006', '进出', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032417330106', '802021031653410070', '系统', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032417730062', '802021110952690125', '报表', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032418150104', '802019090224100001', '任务', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032419990103', '800201908018', '缓存', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032421110110', '802023112492090051', '3D', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032423230059', '800201907014', '服务', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032423770084', '802023103017170002', '优惠', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032423870102', '802021110952690125', '报表', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032425200064', '802019090224100001', '任务', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032425460127', '802023110632150002', '系统', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032425650129', '802024012406520004', '考勤', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032428220078', '802023081695960001', '充电', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032429050072', '802025031448910011', '订单', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032429080123', '802023021422680001', '组织', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032433800089', '802024012406520004', '考勤', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032433870079', '802023082455000001', '水电', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032435090081', '802023092136420001', '路灯', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032436900117', '802023082372950010', '道闸', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032439830086', '802023112376120003', '仪表', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032443060099', '800201907014', '服务', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032444060097', '800201907015', '配置', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032445770082', '802023101718180007', '监控', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032452950109', '802025031267910009', '设备', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032455990068', '802023091899930009', '厂家', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032457280076', '802023081520910004', '门禁', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032457310070', '802023112492090051', '3D', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032459060121', '802023092136420001', '路灯', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032459550060', '800201907016', '配置', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032465280057', '800201907015', '配置', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032465470087', '802023110632150002', '系统', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032466140112', '802025031448910011', '订单', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032467610122', '802023101718180007', '监控', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032468020080', '802023091881700008', '梯控', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032468310108', '802023091899930009', '厂家', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032469170100', '800201907016', '配置', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032470260118', '802023081695960001', '充电', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032471530058', '800201908019', '菜单', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032472120119', '802023082455000001', '水电', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032472370069', '802025031267910009', '设备', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032473450065', '802020111618520004', '日志', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032476380115', '802023021604710005', '房产', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032477260116', '802023081520910004', '门禁', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032478680120', '802023091881700008', '梯控', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032479210125', '802023103063600003', '门锁', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032479550067', '802023021272240006', '数据', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032481920101', '802020081417800208', '属性', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032481960088', '802023092784350001', '事件', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032482490128', '802023092784350001', '事件', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032486660113', '802023121840390001', '系统', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032486920075', '802023021604710005', '房产', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032489010105', '802020111618520004', '日志', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032489190107', '802023021272240006', '数据', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:33', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025032489600073', '802023121840390001', '系统', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032489990066', '802021031653410070', '系统', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032493010074', '802023021424270011', '小区', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025032497840061', '802020081417800208', '属性', '2024122649870005', 'HC演示小区', '2025-03-24 19:40:19', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102025112809662514', '802023112376120003', '仪表', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112809782508', '802023091881700008', '梯控', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112810362469', '802023110632150002', '系统', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112811422470', '802023092784350001', '事件', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112811612462', '802023091881700008', '梯控', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112811982506', '802023081695960001', '充电', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112815252466', '802023103017170002', '优惠', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112816562510', '802023101718180007', '监控', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112826742517', '802024012406520004', '考勤', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112827392503', '802023021604710005', '房产', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112837252502', '802023021424270011', '小区', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112838132513', '802023103063600003', '门锁', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112840402515', '802023110632150002', '系统', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112840432512', '802023103017170002', '优惠', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112841042471', '802024012406520004', '考勤', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112842912509', '802023092136420001', '路灯', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112845232460', '802023081695960001', '充电', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112848362461', '802023082455000001', '水电', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112853592458', '802023081520910004', '门禁', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112855422467', '802023103063600003', '门锁', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112858032463', '802023092136420001', '路灯', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112863772507', '802023082455000001', '水电', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112865002457', '802023021604710005', '房产', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112870252456', '802023021424270011', '小区', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112871132504', '802023081520910004', '门禁', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112878162465', '802023021422680001', '组织', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112879482511', '802023021422680001', '组织', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112885482516', '802023092784350001', '事件', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112890662468', '802023112376120003', '仪表', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112893312459', '802023082372950010', '道闸', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112894472464', '802023101718180007', '监控', '20251127410920449', '广州花园小区', '2025-11-28 15:33:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025112895902505', '802023082372950010', '道闸', '2025072783670006', '演示小区', '2025-11-28 15:34:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120415914936', '802023081695960001', '充电', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120416594947', '802024012406520004', '考勤', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120427574941', '802023021422680001', '组织', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120431084944', '802023112376120003', '仪表', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120432704945', '802023110632150002', '系统', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120447404935', '802023082372950010', '道闸', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120453294946', '802023092784350001', '事件', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120455584932', '802023021424270011', '小区', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120456114940', '802023101718180007', '监控', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120459134939', '802023092136420001', '路灯', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120465234934', '802023081520910004', '门禁', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120477364938', '802023091881700008', '梯控', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120479364933', '802023021604710005', '房产', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120481034943', '802023103063600003', '门锁', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120485724937', '802023082455000001', '水电', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025120485944942', '802023103017170002', '优惠', '2025112439450050', '王的小区', '2025-12-04 16:00:44', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121104010619', '802023092784350001', '事件', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121104350647', '802023092784350001', '事件', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121106190614', '802023021422680001', '组织', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121107550617', '802023112376120003', '仪表', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121108070637', '802023081695960001', '充电', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121111910641', '802023101718180007', '监控', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121113510646', '802023110632150002', '系统', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121119750608', '802023082372950010', '道闸', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121119980605', '802023021424270011', '小区', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121120180606', '802023021604710005', '房产', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121121270634', '802023021604710005', '房产', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121123830648', '802024012406520004', '考勤', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121125230607', '802023081520910004', '门禁', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121130790633', '802023021424270011', '小区', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121132020618', '802023110632150002', '系统', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121132360609', '802023081695960001', '充电', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121141840613', '802023101718180007', '监控', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121145720640', '802023092136420001', '路灯', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121146670612', '802023092136420001', '路灯', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121148650645', '802023112376120003', '仪表', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121156170638', '802023082455000001', '水电', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121162940639', '802023091881700008', '梯控', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121163710636', '802023082372950010', '道闸', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121168560611', '802023091881700008', '梯控', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121175340616', '802023103063600003', '门锁', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121179170644', '802023103063600003', '门锁', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121179480642', '802023021422680001', '组织', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121185560620', '802024012406520004', '考勤', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121186100643', '802023103017170002', '优惠', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121190440610', '802023082455000001', '水电', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121190720615', '802023103017170002', '优惠', '20251128456721988', '0公里', '2025-12-11 20:13:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121196260635', '802023081520910004', '门禁', '2025112406210330', '翻斗花园', '2025-12-11 20:18:05', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121702591387', '802023101718180007', '监控', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121703391368', '800201908018', '缓存', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121704031362', '800201907014', '服务', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121704471372', '802023021272240006', '数据', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121706151373', '802023091899930009', '厂家', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121707891374', '802025031267910009', '设备', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121711061383', '802023081695960001', '充电', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121713941367', '802021110952690125', '报表', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121714771376', '802025031373300006', '进出', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121715331380', '802023021604710005', '房产', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121719951377', '802025031448910011', '订单', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121720511386', '802023092136420001', '路灯', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121734331379', '802023021424270011', '小区', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121735171364', '800201908019', '菜单', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121742361384', '802023082455000001', '水电', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121743081378', '802023121840390001', '系统', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121744611394', '802024012406520004', '考勤', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121746661391', '802023112376120003', '仪表', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121746931365', '800201907016', '配置', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121755751370', '802020111618520004', '日志', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121762851363', '800201907015', '配置', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121767611392', '802023110632150002', '系统', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121769561382', '802023082372950010', '道闸', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121773271371', '802021031653410070', '系统', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121773851381', '802023081520910004', '门禁', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121774921390', '802023103063600003', '门锁', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121787431388', '802023021422680001', '组织', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121788811369', '802019090224100001', '任务', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121790121366', '802020081417800208', '属性', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121791661389', '802023103017170002', '优惠', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121791671385', '802023091881700008', '梯控', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121796801393', '802023092784350001', '事件', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025121799441375', '802023112492090051', '3D', '102025112720391954', '宫园墅', '2025-12-17 11:23:21', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122200554301', '802023103063600003', '门锁', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122207643231', '802023110632150002', '系统', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122208403222', '802023081695960001', '充电', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122210074285', '802025031267910009', '设备', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122210613233', '802024012406520004', '考勤', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122214474302', '802023112376120003', '仪表', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122219133229', '802023103063600003', '门锁', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122219404299', '802023021422680001', '组织', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122220894293', '802023082372950010', '道闸', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122225364279', '800201908018', '缓存', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122225894287', '802025031373300006', '进出', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122226384280', '802019090224100001', '任务', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122228394291', '802023021604710005', '房产', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122231294273', '800201907014', '服务', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122243913223', '802023082455000001', '水电', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122243934294', '802023081695960001', '充电', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122245614292', '802023081520910004', '门禁', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122248993221', '802023082372950010', '道闸', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122249054303', '802023110632150002', '系统', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122250073225', '802023092136420001', '路灯', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122252454288', '802025031448910011', '订单', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122253433227', '802023021422680001', '组织', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122259464305', '802024012406520004', '考勤', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122259784276', '800201907016', '配置', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122260423219', '802023021604710005', '房产', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122260873218', '802023021424270011', '小区', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122262274277', '802020081417800208', '属性', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122263754274', '800201907015', '配置', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122265264304', '802023092784350001', '事件', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122267413226', '802023101718180007', '监控', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122271054300', '802023103017170002', '优惠', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122271464275', '800201908019', '菜单', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122271524278', '802021110952690125', '报表', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122272003220', '802023081520910004', '门禁', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122272604284', '802023091899930009', '厂家', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122272933232', '802023092784350001', '事件', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122273313224', '802023091881700008', '梯控', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122276504281', '802020111618520004', '日志', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122279174282', '802021031653410070', '系统', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122280993228', '802023103017170002', '优惠', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122282184296', '802023091881700008', '梯控', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122282344289', '802023121840390001', '系统', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122283814283', '802023021272240006', '数据', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122288924297', '802023092136420001', '路灯', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122290144295', '802023082455000001', '水电', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122292874286', '802023112492090051', '3D', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122297813230', '802023112376120003', '仪表', '2025122258513939', '保利花园1期', '2025-12-22 11:28:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122299324298', '802023101718180007', '监控', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122299534290', '802023021424270011', '小区', '102025122298014252', '碧桂园', '2025-12-22 18:16:46', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122503555768', '802023092136420001', '路灯', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122504115773', '802023112376120003', '仪表', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122505265774', '802023110632150002', '系统', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122519335766', '802023082455000001', '水电', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122529565761', '802023021424270011', '小区', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122529735770', '802023021422680001', '组织', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122554415764', '802023082372950010', '道闸', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122555255769', '802023101718180007', '监控', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122557805763', '802023081520910004', '门禁', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122559275767', '802023091881700008', '梯控', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122560665776', '802024012406520004', '考勤', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122570525765', '802023081695960001', '充电', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122570995762', '802023021604710005', '房产', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122574975775', '802023092784350001', '事件', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122584995772', '802023103063600003', '门锁', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102025122598425771', '802023103017170002', '优惠', '2025122408721042', '银枫佳苑', '2025-12-25 00:35:01', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011203359570', '802023110632150002', '系统', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011207229567', '802023103017170002', '优惠', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011211269564', '802023092136420001', '路灯', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011211789569', '802023112376120003', '仪表', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011217429563', '802023091881700008', '梯控', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011219019568', '802023103063600003', '门锁', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011244639561', '802023081695960001', '充电', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011251449562', '802023082455000001', '水电', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011253399558', '802023021604710005', '房产', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011256769557', '802023021424270011', '小区', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011261279571', '802023092784350001', '事件', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011270489566', '802023021422680001', '组织', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011279679572', '802024012406520004', '考勤', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011283459559', '802023081520910004', '门禁', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011284669560', '802023082372950010', '道闸', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026011292009565', '802023101718180007', '监控', '2026010864204196', '土楼新村御景园', '2026-01-12 15:05:55', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020602500534', '802023103063600003', '门锁', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020617170526', '802023082372950010', '道闸', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020626890530', '802023092136420001', '路灯', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020638040537', '802023092784350001', '事件', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020639090523', '802023021424270011', '小区', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020643190525', '802023081520910004', '门禁', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020649010531', '802023101718180007', '监控', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020651120535', '802023112376120003', '仪表', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020652150538', '802024012406520004', '考勤', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020654450529', '802023091881700008', '梯控', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020654490533', '802023103017170002', '优惠', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020659770532', '802023021422680001', '组织', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020676180524', '802023021604710005', '房产', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020687310528', '802023082455000001', '水电', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020691120536', '802023110632150002', '系统', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026020696250527', '802023081695960001', '充电', '20260206559517851', '智慧商场11', '2026-02-06 16:50:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022605823456', '802023021424270011', '小区', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022627143468', '802023112376120003', '仪表', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022636953459', '802023082372950010', '道闸', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022639103462', '802023091881700008', '梯控', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022641973469', '802023110632150002', '系统', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022645453470', '802023092784350001', '事件', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022646173460', '802023081695960001', '充电', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022646653461', '802023082455000001', '水电', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022646813465', '802023021422680001', '组织', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022647913467', '802023103063600003', '门锁', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022651003457', '802023021604710005', '房产', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022663523463', '802023092136420001', '路灯', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022667003464', '802023101718180007', '监控', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022669073466', '802023103017170002', '优惠', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022671633458', '802023081520910004', '门禁', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026022684363471', '802024012406520004', '考勤', '2026022431055701', '复旦软件园', '2026-02-26 17:57:36', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030507756607', '802023082372950010', '道闸', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030524616612', '802023101718180007', '监控', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030526956609', '802023082455000001', '水电', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030527436608', '802023081695960001', '充电', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030527766604', '802023021424270011', '小区', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030556516619', '802024012406520004', '考勤', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030557766618', '802023092784350001', '事件', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030560356617', '802023110632150002', '系统', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030563876615', '802023103063600003', '门锁', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030567496616', '802023112376120003', '仪表', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030567886613', '802023021422680001', '组织', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030571396605', '802023021604710005', '房产', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030584126614', '802023103017170002', '优惠', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030589866611', '802023092136420001', '路灯', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030590506610', '802023091881700008', '梯控', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026030592696606', '802023081520910004', '门禁', '20260303221920029', '2', '2026-03-05 15:51:40', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032005986760', '802023021424270011', '小区', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032006666765', '802023082455000001', '水电', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032016246770', '802023103017170002', '优惠', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032023966771', '802023103063600003', '门锁', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032046646766', '802023091881700008', '梯控', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032050056764', '802023081695960001', '充电', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032057316772', '802023112376120003', '仪表', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032058686767', '802023092136420001', '路灯', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032059826773', '802023110632150002', '系统', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032064016761', '802023021604710005', '房产', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032065306763', '802023082372950010', '道闸', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032076166774', '802023092784350001', '事件', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032080126762', '802023081520910004', '门禁', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032086156775', '802024012406520004', '考勤', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032087766769', '802023021422680001', '组织', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032093696768', '802023101718180007', '监控', '20260318691714624', '韩美小区', '2026-03-20 10:02:14', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032400070457', '802023092784350001', '事件', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032419340445', '802023081520910004', '门禁', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032420300451', '802023101718180007', '监控', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032422150444', '802023021604710005', '房产', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032429390443', '802023021424270011', '小区', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032432100456', '802023110632150002', '系统', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032432940458', '802024012406520004', '考勤', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032458460447', '802023081695960001', '充电', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032459580452', '802023021422680001', '组织', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032462470454', '802023103063600003', '门锁', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032469720453', '802023103017170002', '优惠', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032472590448', '802023082455000001', '水电', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032472820446', '802023082372950010', '道闸', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032494020449', '802023091881700008', '梯控', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032494730450', '802023092136420001', '路灯', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032499160455', '802023112376120003', '仪表', '20260324548723980', 'HC演示小区', '2026-03-24 13:57:26', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026032500400887', '802025031267910009', '设备', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032505690906', '802023092784350001', '事件', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032505820892', '802023021424270011', '小区', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032506060880', '802021110952690125', '报表', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032512880897', '802023082455000001', '水电', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032513580903', '802023103063600003', '门锁', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032514690895', '802023082372950010', '道闸', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032516810889', '802025031373300006', '进出', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032517320905', '802023110632150002', '系统', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032519590882', '802019090224100001', '任务', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032533290896', '802023081695960001', '充电', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032536180898', '802023091881700008', '梯控', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032539680878', '800201907016', '配置', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032543890890', '802025031448910011', '订单', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032543890900', '802023101718180007', '监控', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032544180894', '802023081520910004', '门禁', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032544370875', '800201907014', '服务', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032550050901', '802023021422680001', '组织', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032553120883', '802020111618520004', '日志', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032553310884', '802021031653410070', '系统', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032553750888', '802023112492090051', '3D', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032560940902', '802023103017170002', '优惠', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032563940877', '800201908019', '菜单', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032572840879', '802020081417800208', '属性', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032575510893', '802023021604710005', '房产', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032580110899', '802023092136420001', '路灯', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032582820885', '802023021272240006', '数据', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032584850891', '802023121840390001', '系统', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032588050904', '802023112376120003', '仪表', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032588240876', '800201907015', '配置', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032593140907', '802024012406520004', '考勤', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032594810881', '800201908018', '缓存', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026032598450886', '802023091899930009', '厂家', '102026032585800870', 'HBBCY', '2026-03-25 12:01:32', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040801254047', '802023110632150002', '系统', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040807504034', '802023021424270011', '小区', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040807914043', '802023021422680001', '组织', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040810664042', '802023101718180007', '监控', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040818184040', '802023091881700008', '梯控', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040820704041', '802023092136420001', '路灯', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040828504036', '802023081520910004', '门禁', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040837544037', '802023082372950010', '道闸', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040841654039', '802023082455000001', '水电', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040861514049', '802024012406520004', '考勤', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040863704046', '802023112376120003', '仪表', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040869194048', '802023092784350001', '事件', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040869374045', '802023103063600003', '门锁', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040873494044', '802023103017170002', '优惠', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040879064038', '802023081695960001', '充电', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040883164035', '802023021604710005', '房产', '2026040591113646', '翠北小区', '2026-04-08 00:22:29', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040901322994', '802023082372950010', '道闸', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040901632993', '802023081520910004', '门禁', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040905082997', '802023091881700008', '梯控', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040925512999', '802023101718180007', '监控', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040925902996', '802023082455000001', '水电', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040928072995', '802023081695960001', '充电', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040931983000', '802023021422680001', '组织', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040937913002', '802023103063600003', '门锁', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040938452991', '802023021424270011', '小区', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040938972992', '802023021604710005', '房产', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040954033004', '802023110632150002', '系统', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040957623005', '802023092784350001', '事件', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040972463001', '802023103017170002', '优惠', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040983973003', '802023112376120003', '仪表', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040997452998', '802023092136420001', '路灯', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026040999273006', '802024012406520004', '考勤', '2026040928916346', '九月府', '2026-04-09 21:29:53', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041009633688', '802025031373300006', '进出', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041009953683', '802021031653410070', '系统', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041027263676', '800201908019', '菜单', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041028823689', '802025031448910011', '订单', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041032223675', '800201907015', '配置', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041032323682', '802020111618520004', '日志', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041033223681', '802019090224100001', '任务', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041034913694', '802023082372950010', '道闸', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041036723679', '802021110952690125', '报表', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041037413698', '802023092136420001', '路灯', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041037663696', '802023082455000001', '水电', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041039223680', '800201908018', '缓存', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041040433684', '802023021272240006', '数据', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041040443685', '802023091899930009', '厂家', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041043483677', '800201907016', '配置', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041047813705', '802023092784350001', '事件', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041049423702', '802023103063600003', '门锁', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041051953700', '802023021422680001', '组织', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041053143695', '802023081695960001', '充电', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041056603697', '802023091881700008', '梯控', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041057703690', '802023121840390001', '系统', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041065583678', '802020081417800208', '属性', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041072593693', '802023081520910004', '门禁', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041082173706', '802024012406520004', '考勤', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041083803692', '802023021604710005', '房产', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041083943703', '802023112376120003', '仪表', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041085093701', '802023103017170002', '优惠', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041085703686', '802025031267910009', '设备', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041093473699', '802023101718180007', '监控', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041095993674', '800201907014', '服务', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041096573691', '802023021424270011', '小区', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041096643687', '802023112492090051', '3D', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041099723704', '802023110632150002', '系统', '102026041001793653', '中骏鱼进胎', '2026-04-10 17:26:11', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041700205062', '802023021424270011', '小区', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041701355074', '802023112376120003', '仪表', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041701585050', '802021110952690125', '报表', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041702935001', '802023092136420001', '路灯', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041704885052', '802019090224100001', '任务', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041706574999', '802023082455000001', '水电', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041707435061', '802023121840390001', '系统', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041708145000', '802023091881700008', '梯控', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041708225073', '802023103063600003', '门锁', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041709025045', '800201907014', '服务', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041712734986', '802021031653410070', '系统', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041714704979', '800201908019', '菜单', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041715885076', '802023092784350001', '事件', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041718545051', '800201908018', '缓存', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041718815056', '802023091899930009', '厂家', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041719545009', '802024012406520004', '考勤', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041722185048', '800201907016', '配置', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041722225007', '802023110632150002', '系统', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041722475068', '802023091881700008', '梯控', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041723875058', '802023112492090051', '3D', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041724665003', '802023021422680001', '组织', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041726644994', '802023021424270011', '小区', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041727164988', '802023091899930009', '厂家', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041729925002', '802023101718180007', '监控', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041734055064', '802023081520910004', '门禁', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041735125053', '802020111618520004', '日志', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041737034985', '802020111618520004', '日志', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041738035072', '802023103017170002', '优惠', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041739104995', '802023021604710005', '房产', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041739505075', '802023110632150002', '系统', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041740355057', '802025031267910009', '设备', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041740915004', '802023103017170002', '优惠', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041741825059', '802025031373300006', '进出', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041743255008', '802023092784350001', '事件', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041747065067', '802023082455000001', '水电', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041748245055', '802023021272240006', '数据', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041751024984', '802019090224100001', '任务', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041752154990', '802023112492090051', '3D', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041755644997', '802023082372950010', '道闸', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041762485077', '802024012406520004', '考勤', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041764665049', '802020081417800208', '属性', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041767414980', '800201907016', '配置', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041774554978', '800201907015', '配置', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041775274982', '802021110952690125', '报表', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041776394991', '802025031373300006', '进出', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041776854983', '800201908018', '缓存', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041779304996', '802023081520910004', '门禁', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041780265066', '802023081695960001', '充电', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041782444989', '802025031267910009', '设备', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041784125046', '800201907015', '配置', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041784555047', '800201908019', '菜单', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041786645005', '802023103063600003', '门锁', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041788555071', '802023021422680001', '组织', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041788914977', '800201907014', '服务', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041790644993', '802023121840390001', '系统', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041790695063', '802023021604710005', '房产', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041790785060', '802025031448910011', '订单', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041790904981', '802020081417800208', '属性', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041791935070', '802023101718180007', '监控', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041793784998', '802023081695960001', '充电', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041794285006', '802023112376120003', '仪表', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041795415054', '802021031653410070', '系统', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041797284992', '802025031448910011', '订单', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041797964987', '802023021272240006', '数据', '102026041794544972', '演示的', '2026-04-17 09:29:41', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041799105065', '802023082372950010', '道闸', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026041799355069', '802023092136420001', '路灯', '102026041724455023', '天下康', '2026-04-17 17:46:15', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042001595165', '802023082372950010', '道闸', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042002965260', '802023091899930009', '厂家', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042003335249', '800201907014', '服务', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042004165149', '802020081417800208', '属性', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042004335158', '802023112492090051', '3D', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042004765276', '802023103017170002', '优惠', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042007115264', '802025031448910011', '订单', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042009775278', '802023112376120003', '仪表', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042012495273', '802023092136420001', '路灯', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042017135259', '802023021272240006', '数据', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042018555176', '802023092784350001', '事件', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042023075151', '800201908018', '缓存', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042024065174', '802023112376120003', '仪表', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042024235270', '802023081695960001', '充电', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042024715266', '802023021424270011', '小区', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042025195269', '802023082372950010', '道闸', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042026015169', '802023092136420001', '路灯', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042027415281', '802024012406520004', '考勤', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042030365173', '802023103063600003', '门锁', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042032395147', '800201908019', '菜单', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042032665168', '802023091881700008', '梯控', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042033355163', '802023021604710005', '房产', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042034965171', '802023021422680001', '组织', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042036515263', '802025031373300006', '进出', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042036515268', '802023081520910004', '门禁', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042036565251', '800201908019', '菜单', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042036715275', '802023021422680001', '组织', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042036795253', '802020081417800208', '属性', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042039785254', '802021110952690125', '报表', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042042815170', '802023101718180007', '监控', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042043155255', '800201908018', '缓存', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042045645166', '802023081695960001', '充电', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042046235159', '802025031373300006', '进出', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042046595280', '802023092784350001', '事件', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042048195267', '802023021604710005', '房产', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042050895146', '800201907015', '配置', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042052595261', '802025031267910009', '设备', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042053085164', '802023081520910004', '门禁', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042054485257', '802020111618520004', '日志', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042055215258', '802021031653410070', '系统', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042059475279', '802023110632150002', '系统', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042060535145', '800201907014', '服务', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042061525272', '802023091881700008', '梯控', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042062625154', '802021031653410070', '系统', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042069325262', '802023112492090051', '3D', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042071305172', '802023103017170002', '优惠', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042072185271', '802023082455000001', '水电', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042075755177', '802024012406520004', '考勤', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042078955153', '802020111618520004', '日志', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042080195277', '802023103063600003', '门锁', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042080225148', '800201907016', '配置', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042081215150', '802021110952690125', '报表', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042081425274', '802023101718180007', '监控', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042083885167', '802023082455000001', '水电', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042088135156', '802023091899930009', '厂家', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042088625160', '802025031448910011', '订单', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042090625157', '802025031267910009', '设备', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042091035250', '800201907015', '配置', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042091845256', '802019090224100001', '任务', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042091985162', '802023021424270011', '小区', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042092275161', '802023121840390001', '系统', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042093335155', '802023021272240006', '数据', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042093455265', '802023121840390001', '系统', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042095615252', '800201907016', '配置', '102026042023715244', '测试小区', '2026-04-20 10:05:49', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042097235175', '802023110632150002', '系统', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026042098125152', '802019090224100001', '任务', '102026042019245120', '周庄嘉园', '2026-04-20 09:51:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052101490431', '802023121840390001', '系统', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052104140441', '802023021422680001', '组织', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052104150384', '802023110632150002', '系统', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052104530382', '802023103063600003', '门锁', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052105380375', '802023081695960001', '充电', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052107050442', '802023103017170002', '优惠', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052107830363', '802021031653410070', '系统', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052108730427', '802025031267910009', '设备', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052109480418', '800201907016', '配置', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052111260365', '802023091899930009', '厂家', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052112560422', '802019090224100001', '任务', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052112680356', '800201908019', '菜单', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052113120436', '802023081695960001', '充电', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052113720354', '800201907014', '服务', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052116480368', '802025031373300006', '进出', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052120640429', '802025031373300006', '进出', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052122810430', '802025031448910011', '订单', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052122890434', '802023081520910004', '门禁', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052123110364', '802023021272240006', '数据', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052123800367', '802023112492090051', '3D', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052124280358', '802020081417800208', '属性', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052125810433', '802023021604710005', '房产', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052127600423', '802020111618520004', '日志', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052129340438', '802023091881700008', '梯控', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052130850447', '802024012406520004', '考勤', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052130940439', '802023092136420001', '路灯', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052131060381', '802023103017170002', '优惠', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052133180373', '802023081520910004', '门禁', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052133780443', '802023103063600003', '门锁', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052134330370', '802023121840390001', '系统', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052136910419', '802020081417800208', '属性', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052138410357', '800201907016', '配置', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052139130428', '802023112492090051', '3D', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052143210366', '802025031267910009', '设备', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052143970361', '802019090224100001', '任务', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052145000425', '802023021272240006', '数据', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052146830369', '802025031448910011', '订单', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052148290426', '802023091899930009', '厂家', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052149680432', '802023021424270011', '小区', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052150600377', '802023091881700008', '梯控', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052151540374', '802023082372950010', '道闸', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052152570421', '800201908018', '缓存', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052154940372', '802023021604710005', '房产', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052155990383', '802023112376120003', '仪表', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052156100362', '802020111618520004', '日志', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052157520440', '802023101718180007', '监控', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052157870376', '802023082455000001', '水电', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052157870379', '802023101718180007', '监控', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052158860444', '802023112376120003', '仪表', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052167560416', '800201907015', '配置', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052171540446', '802023092784350001', '事件', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052172220415', '800201907014', '服务', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052172360355', '800201907015', '配置', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052173350360', '800201908018', '缓存', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052175860378', '802023092136420001', '路灯', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052178570437', '802023082455000001', '水电', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052179190380', '802023021422680001', '组织', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052179360386', '802024012406520004', '考勤', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052179790424', '802021031653410070', '系统', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052185500445', '802023110632150002', '系统', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052186410385', '802023092784350001', '事件', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052188150435', '802023082372950010', '道闸', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052192940420', '802021110952690125', '报表', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052193180417', '800201908019', '菜单', '102026052198240394', 'test', '2026-05-21 11:46:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052194520371', '802023021424270011', '小区', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052197140359', '802021110952690125', '报表', '102026052114720327', 'xx小区', '2026-05-21 11:39:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052600340587', '802023021422680001', '组织', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052601070589', '802023103063600003', '门锁', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052608040586', '802023101718180007', '监控', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052608340585', '802023092136420001', '路灯', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052624860590', '802023112376120003', '仪表', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052631310592', '802023092784350001', '事件', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052635640591', '802023110632150002', '系统', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052645380583', '802023082455000001', '水电', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052645420578', '802023021424270011', '小区', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052647060580', '802023081520910004', '门禁', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052655390579', '802023021604710005', '房产', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052657190588', '802023103017170002', '优惠', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052661410593', '802024012406520004', '考勤', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052661950581', '802023082372950010', '道闸', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052674540582', '802023081695960001', '充电', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052699010584', '802023091881700008', '梯控', '2025040746580017', 'HC演示小区1', '2026-05-26 13:56:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052701790764', '802023091899930009', '厂家', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052702760779', '802023021422680001', '组织', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052708800770', '802023021424270011', '小区', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052716220784', '802023092784350001', '事件', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052727140768', '802025031448910011', '订单', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052727960772', '802023081520910004', '门禁', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052736400762', '802021031653410070', '系统', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052737780767', '802025031373300006', '进出', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052738240758', '802021110952690125', '报表', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052741370776', '802023091881700008', '梯控', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052742720775', '802023082455000001', '水电', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052748570778', '802023101718180007', '监控', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052749010753', '800201907014', '服务', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052750540765', '802025031267910009', '设备', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052750830755', '800201908019', '菜单', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052750920769', '802023121840390001', '系统', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052752520785', '802024012406520004', '考勤', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052759900761', '802020111618520004', '日志', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052765260757', '802020081417800208', '属性', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052765270754', '800201907015', '配置', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052767000782', '802023112376120003', '仪表', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052767720780', '802023103017170002', '优惠', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052769420760', '802019090224100001', '任务', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052772340759', '800201908018', '缓存', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052775740766', '802023112492090051', '3D', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052777350756', '800201907016', '配置', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052777870763', '802023021272240006', '数据', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052781780773', '802023082372950010', '道闸', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052783430777', '802023092136420001', '路灯', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052787530774', '802023081695960001', '充电', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052787900783', '802023110632150002', '系统', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052796000781', '802023103063600003', '门锁', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026052797220771', '802023021604710005', '房产', '102026052709770732', '家蜜悦居', '2026-05-27 11:03:03', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060200061247', '800201907016', '配置', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060200781249', '802021110952690125', '报表', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060200851213', '802023103017170002', '优惠', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060201851274', '802023110632150002', '系统', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060202911199', '802023112492090051', '3D', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060205671263', '802023081520910004', '门禁', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060209191258', '802025031373300006', '进出', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060213441273', '802023112376120003', '仪表', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060216131206', '802023082372950010', '道闸', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060216361244', '800201907014', '服务', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060217351208', '802023082455000001', '水电', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060217481257', '802023112492090051', '3D', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060218121196', '802023021272240006', '数据', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060218661211', '802023101718180007', '监控', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060221701190', '802020081417800208', '属性', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060222331212', '802023021422680001', '组织', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060222801267', '802023091881700008', '梯控', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060223031214', '802023103063600003', '门锁', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060226221265', '802023081695960001', '充电', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060226881209', '802023091881700008', '梯控', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060228361270', '802023021422680001', '组织', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060229261248', '802020081417800208', '属性', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060229751207', '802023081695960001', '充电', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060229801268', '802023092136420001', '路灯', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060231901204', '802023021604710005', '房产', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060235161187', '800201907015', '配置', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060237071251', '802019090224100001', '任务', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060237911192', '800201908018', '缓存', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060240421275', '802023092784350001', '事件', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060240821253', '802021031653410070', '系统', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060242821266', '802023082455000001', '水电', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060246101218', '802024012406520004', '考勤', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060249171216', '802023110632150002', '系统', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060253941245', '800201907015', '配置', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060256441272', '802023103063600003', '门锁', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060256531254', '802023021272240006', '数据', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060257751202', '802023121840390001', '系统', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060258241255', '802023091899930009', '厂家', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060258431262', '802023021604710005', '房产', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060258911217', '802023092784350001', '事件', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060259181256', '802025031267910009', '设备', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060261091269', '802023101718180007', '监控', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060261511188', '800201908019', '菜单', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060261581271', '802023103017170002', '优惠', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060262521205', '802023081520910004', '门禁', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060264171203', '802023021424270011', '小区', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060265401250', '800201908018', '缓存', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060266371200', '802025031373300006', '进出', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060268641201', '802025031448910011', '订单', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060270281210', '802023092136420001', '路灯', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060273411252', '802020111618520004', '日志', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060278631215', '802023112376120003', '仪表', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060280301189', '800201907016', '配置', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060280501276', '802024012406520004', '考勤', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060281621259', '802025031448910011', '订单', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060284531261', '802023021424270011', '小区', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060286781186', '800201907014', '服务', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060288901198', '802025031267910009', '设备', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060290051264', '802023082372950010', '道闸', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060290471260', '802023121840390001', '系统', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060290491194', '802020111618520004', '日志', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060292781191', '802021110952690125', '报表', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060293581195', '802021031653410070', '系统', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060294611246', '800201908019', '菜单', '102026060205091238', '空港经济开发区', '2026-06-02 10:07:38', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060296021197', '802023091899930009', '厂家', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060296581193', '802019090224100001', '任务', '102026060251251181', '荣禾城', '2026-06-02 09:47:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060313791380', '800201907014', '服务', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060315001401', '802023081695960001', '充电', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060316131405', '802023101718180007', '监控', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060316961384', '802020081417800208', '属性', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060317221390', '802023021272240006', '数据', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060319591408', '802023103063600003', '门锁', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060319791406', '802023021422680001', '组织', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060322691394', '802025031373300006', '进出', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060324151389', '802021031653410070', '系统', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060329331392', '802025031267910009', '设备', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060330121388', '802020111618520004', '日志', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060331121397', '802023021424270011', '小区', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060332301409', '802023112376120003', '仪表', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060332871383', '800201907016', '配置', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060334091381', '800201907015', '配置', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060335511395', '802025031448910011', '订单', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060336451385', '802021110952690125', '报表', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060350341400', '802023082372950010', '道闸', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060351401386', '800201908018', '缓存', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060360641382', '800201908019', '菜单', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060361751404', '802023092136420001', '路灯', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060374121403', '802023091881700008', '梯控', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060374401402', '802023082455000001', '水电', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060375941399', '802023081520910004', '门禁', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060376841396', '802023121840390001', '系统', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060377261391', '802023091899930009', '厂家', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060380441410', '802023110632150002', '系统', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060381451387', '802019090224100001', '任务', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060381861411', '802023092784350001', '事件', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060382591393', '802023112492090051', '3D', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060383001412', '802024012406520004', '考勤', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060391851407', '802023103017170002', '优惠', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060392811398', '802023021604710005', '房产', '102026060385961375', '明君', '2026-06-03 10:22:51', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060902901884', '802023103017170002', '优惠', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060906241879', '802023082455000001', '水电', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060909131816', '802023082372950010', '道闸', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060915371821', '802023101718180007', '监控', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060916461820', '802023092136420001', '路灯', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060916641877', '802023082372950010', '道闸', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060916881881', '802023092136420001', '路灯', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060917681819', '802023091881700008', '梯控', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060922251814', '802023021604710005', '房产', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060926861824', '802023103063600003', '门锁', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060940801890', '802024012406520004', '考勤', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060940901815', '802023081520910004', '门禁', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060941431880', '802023091881700008', '梯控', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060944751889', '802023092784350001', '事件', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060944871874', '802023021424270011', '小区', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060945671888', '802023110632150002', '系统', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060947481813', '802023021424270011', '小区', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060950331887', '802023112376120003', '仪表', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060951801825', '802023112376120003', '仪表', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060954751826', '802023110632150002', '系统', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060963891875', '802023021604710005', '房产', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060970511817', '802023081695960001', '充电', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060977001822', '802023021422680001', '组织', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060978941828', '802024012406520004', '考勤', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060981931883', '802023021422680001', '组织', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060982121818', '802023082455000001', '水电', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060983741885', '802023103063600003', '门锁', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060984791878', '802023081695960001', '充电', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060992901827', '802023092784350001', '事件', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060994021882', '802023101718180007', '监控', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060996841823', '802023103017170002', '优惠', '20260512631111312', '优才雅苑', '2026-06-09 16:43:13', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026060997871876', '802023081520910004', '门禁', '20260512817111252', '优才雅苑', '2026-06-09 16:43:23', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026061606553250', '802023092784350001', '事件', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026061610333243', '802023092136420001', '路灯', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026061630353238', '802023081520910004', '门禁', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026061647363244', '802023101718180007', '监控', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026061649623245', '802023021422680001', '组织', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026061650273246', '802023103017170002', '优惠', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026061665443236', '802023021424270011', '小区', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026061674013240', '802023081695960001', '充电', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026061675823247', '802023103063600003', '门锁', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026061679623241', '802023082455000001', '水电', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026061685613237', '802023021604710005', '房产', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026061689843242', '802023091881700008', '梯控', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026061689893249', '802023110632150002', '系统', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026061690193248', '802023112376120003', '仪表', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026061691663251', '802024012406520004', '考勤', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026061694473239', '802023082372950010', '道闸', '2026061680036891', '北苑小区', '2026-06-16 22:36:25', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070900590152', '802024012406520004', '考勤', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070901850093', '802023110632150002', '系统', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070902010150', '802023110632150002', '系统', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070902310071', '802020111618520004', '日志', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070904480129', '802021031653410070', '系统', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070905260087', '802023092136420001', '路灯', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070907220068', '802020081417800208', '属性', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070910720132', '802025031267910009', '设备', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070911110076', '802023112492090051', '3D', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070911710122', '800201907015', '配置', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070912710095', '802024012406520004', '考勤', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070913400146', '802023021422680001', '组织', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070917590126', '800201908018', '缓存', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070920470077', '802025031373300006', '进出', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070926380067', '800201907016', '配置', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070928750078', '802025031448910011', '订单', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070931800080', '802023021424270011', '小区', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070932280124', '800201907016', '配置', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070935540140', '802023082372950010', '道闸', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070936300136', '802023121840390001', '系统', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070937090070', '802019090224100001', '任务', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070944140084', '802023081695960001', '充电', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070944730134', '802025031373300006', '进出', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070944950085', '802023082455000001', '水电', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070947330142', '802023082455000001', '水电', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070947360091', '802023103063600003', '门锁', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070948310133', '802023112492090051', '3D', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070949130123', '800201908019', '菜单', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070949780139', '802023081520910004', '门禁', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070949900075', '802025031267910009', '设备', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070953080069', '800201908018', '缓存', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070956210094', '802023092784350001', '事件', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070958840125', '802020081417800208', '属性', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070961730066', '800201908019', '菜单', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070962470088', '802023101718180007', '监控', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070962750130', '802023021272240006', '数据', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070963370147', '802023103017170002', '优惠', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070964400143', '802023091881700008', '梯控', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070965010092', '802023112376120003', '仪表', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070965950064', '800201907014', '服务', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070966180127', '802019090224100001', '任务', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070967170148', '802023103063600003', '门锁', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070967340082', '802023081520910004', '门禁', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070967710074', '802023091899930009', '厂家', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070968510128', '802020111618520004', '日志', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070968770081', '802023021604710005', '房产', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070969890086', '802023091881700008', '梯控', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070970160149', '802023112376120003', '仪表', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070979660144', '802023092136420001', '路灯', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070980850131', '802023091899930009', '厂家', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070982740090', '802023103017170002', '优惠', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070984430073', '802023021272240006', '数据', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070987290083', '802023082372950010', '道闸', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070987580121', '800201907014', '服务', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070987690072', '802021031653410070', '系统', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070990670141', '802023081695960001', '充电', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070990840151', '802023092784350001', '事件', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070992820089', '802023021422680001', '组织', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070994030135', '802025031448910011', '订单', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070994580138', '802023021604710005', '房产', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070995560137', '802023021424270011', '小区', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070996020145', '802023101718180007', '监控', '2026061680036891', '北苑小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026070998740065', '800201907015', '配置', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026070999890079', '802023121840390001', '系统', '2026061680036891', '北苑小区', '2026-07-09 09:36:54', '1');
+INSERT INTO `m_menu_group_community` VALUES ('102026071906782031', '802023081695960001', '充电', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071907172035', '802023101718180007', '监控', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071908122062', '802023103017170002', '优惠', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071908952057', '802023082455000001', '水电', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071912642039', '802023112376120003', '仪表', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071913312042', '802024012406520004', '考勤', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071921182056', '802023081695960001', '充电', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071926222028', '802023021604710005', '房产', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071927072036', '802023021422680001', '组织', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071927232063', '802023103063600003', '门锁', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071927292033', '802023091881700008', '梯控', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071933432066', '802023092784350001', '事件', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071933612060', '802023101718180007', '监控', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071933692053', '802023021604710005', '房产', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071939002058', '802023091881700008', '梯控', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071950232034', '802023092136420001', '路灯', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071953942030', '802023082372950010', '道闸', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071955432064', '802023112376120003', '仪表', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071955482029', '802023081520910004', '门禁', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071958662065', '802023110632150002', '系统', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071960792052', '802023021424270011', '小区', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071962192040', '802023110632150002', '系统', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071965412054', '802023081520910004', '门禁', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071966332037', '802023103017170002', '优惠', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071969262032', '802023082455000001', '水电', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071969832038', '802023103063600003', '门锁', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071974472055', '802023082372950010', '道闸', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071982732067', '802024012406520004', '考勤', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071996102059', '802023092136420001', '路灯', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071996782041', '802023092784350001', '事件', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071999322027', '802023021424270011', '小区', '2026070812860502', '测试积分小区', '2026-07-19 17:07:31', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026071999692061', '802023021422680001', '组织', '2026070788800612', 'HC演示小区', '2026-07-19 17:07:47', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081200270142', '802023112376120003', '仪表', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081200640122', '802021031653410070', '系统', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081203780125', '802025031267910009', '设备', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081207220126', '802023112492090051', '3D', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081211130128', '802025031448910011', '订单', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081211670141', '802023103063600003', '门锁', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081219590124', '802023091899930009', '厂家', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081219860116', '800201908019', '菜单', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081222970129', '802023121840390001', '系统', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081229190120', '802019090224100001', '任务', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081233850130', '802023021424270011', '小区', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081237510115', '800201907015', '配置', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081241480127', '802025031373300006', '进出', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081244730114', '800201907014', '服务', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081255270143', '802023110632150002', '系统', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081257040117', '800201907016', '配置', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081259690140', '802023103017170002', '优惠', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081260240145', '802024012406520004', '考勤', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081261580131', '802023021604710005', '房产', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081263380138', '802023101718180007', '监控', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081263670119', '800201908018', '缓存', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081266560123', '802023021272240006', '数据', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081272980135', '802023082455000001', '水电', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081275760137', '802023092136420001', '路灯', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081276100132', '802023081520910004', '门禁', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081279990118', '802020081417800208', '属性', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081282690134', '802023081695960001', '充电', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081283370136', '802023091881700008', '梯控', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081286080144', '802023092784350001', '事件', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081286550139', '802023021422680001', '组织', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081290630121', '802020111618520004', '日志', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026081299080133', '802023082372950010', '道闸', '20260324548723980', 'HC演示小区', '2026-08-12 11:43:27', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082814900044', '802023101718180007', '监控', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082815410047', '802023103063600003', '门锁', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082815720041', '802023082455000001', '水电', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082818830040', '802023081695960001', '充电', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082818960046', '802023103017170002', '优惠', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082835420038', '802023081520910004', '门禁', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082837810051', '802024012406520004', '考勤', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082846300039', '802023082372950010', '道闸', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082847120036', '802023021424270011', '小区', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082854110042', '802023091881700008', '梯控', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082859190050', '802023092784350001', '事件', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082859440045', '802023021422680001', '组织', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082869820037', '802023021604710005', '房产', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082882780049', '802023110632150002', '系统', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082896530043', '802023092136420001', '路灯', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082898850048', '802023112376120003', '仪表', '102026082888150015', '厦门软件 三期', '2026-08-28 11:53:42', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082919660017', '802023110632150002', '系统', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082927580014', '802023103017170002', '优惠', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082929630009', '802023082455000001', '水电', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082930940016', '802023112376120003', '仪表', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082936490019', '802024012406520004', '考勤', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082942560018', '802023092784350001', '事件', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082944350010', '802023091881700008', '梯控', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082948250008', '802023081695960001', '充电', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082956110007', '802023082372950010', '道闸', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082959720005', '802023021604710005', '房产', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082967530006', '802023081520910004', '门禁', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082968390015', '802023103063600003', '门锁', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082968590011', '802023092136420001', '路灯', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082975070004', '802023021424270011', '小区', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082978060013', '802023021422680001', '组织', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
+INSERT INTO `m_menu_group_community` VALUES ('102026082981390012', '802023101718180007', '监控', '2026072199249235', '1733713', '2026-08-29 11:40:30', '0');
 
 -- ----------------------------
 -- Table structure for online_pay
@@ -9076,7 +11448,7 @@ CREATE TABLE `online_pay` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   `payment_pool_id` varchar(30) DEFAULT NULL COMMENT '支付配置ID',
   PRIMARY KEY (`pay_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of online_pay
@@ -9098,7 +11470,7 @@ CREATE TABLE `online_pay_refund` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   PRIMARY KEY (`refund_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of online_pay_refund
@@ -9114,7 +11486,6 @@ CREATE TABLE `owner_car` (
   `owner_id` varchar(30) NOT NULL COMMENT '业主ID',
   `car_num` varchar(12) NOT NULL COMMENT '车牌号',
   `car_type` varchar(4) NOT NULL COMMENT '9901 家用小汽车，9902 客车，9903 货车',
-  `ps_id` varchar(30) NOT NULL COMMENT '车位ID',
   `pa_id` varchar(30) NOT NULL DEFAULT '-1' COMMENT '停车场ID',
   `contact` varchar(64) DEFAULT '' COMMENT '联系人',
   `tel` varchar(20) DEFAULT '' COMMENT '联系电话',
@@ -9130,10 +11501,13 @@ CREATE TABLE `owner_car` (
   PRIMARY KEY (`member_id`),
   KEY `i_oc_car_num` (`car_num`),
   KEY `i_oc_community_id` (`community_id`),
-  KEY `i_oc_ps_id` (`ps_id`),
   KEY `i_oc_car_id` (`car_id`),
   KEY `idx_oc_pa_id` (`pa_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of owner_car
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for owner_car_attr
@@ -9149,7 +11523,7 @@ CREATE TABLE `owner_car_attr` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`attr_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of owner_car_attr
@@ -9169,7 +11543,7 @@ CREATE TABLE `owner_car_open_user` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0, 在用 1失效',
   PRIMARY KEY (`open_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of owner_car_open_user
@@ -9193,18 +11567,11 @@ CREATE TABLE `parking_area` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   UNIQUE KEY `pa_id` (`pa_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of parking_area
 -- ----------------------------
-INSERT INTO `parking_area` VALUES ('102026032433580737', '20260324548723980', '001', '1001', '', '', '2026-03-24 16:05:33', '0');
-INSERT INTO `parking_area` VALUES ('1020260325266021769', '20260324548723980', '1', '1001', '导入数据', null, '2026-03-25 16:53:27', '0');
-INSERT INTO `parking_area` VALUES ('1020260325870519981', '20260325588620897', '停车场1', '1001', '导入数据', null, '2026-03-25 18:21:18', '0');
-INSERT INTO `parking_area` VALUES ('102026040148781902', '20260324548723980', '5555000000', '2002', '', '5050', '2026-04-01 07:05:58', '0');
-INSERT INTO `parking_area` VALUES ('102026040295226622', '2026040233568395', '1', '1001', '导入数据', null, '2026-04-02 16:15:35', '0');
-INSERT INTO `parking_area` VALUES ('102026040863729757', '20260324548723980', '001', '2002', '', '', '2026-04-08 09:30:35', '0');
-INSERT INTO `parking_area` VALUES ('102026041727175080', '102026041724455023', '1212', '1001', '123123', '3123123', '2026-04-17 17:47:04', '0');
 
 -- ----------------------------
 -- Table structure for parking_box
@@ -9223,13 +11590,11 @@ CREATE TABLE `parking_box` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `temp_auth` varchar(12) NOT NULL DEFAULT 'N' COMMENT '临时车进入是否审核 Y 需要 N 不需',
   PRIMARY KEY (`box_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of parking_box
 -- ----------------------------
-INSERT INTO `parking_box` VALUES ('102026032512990931', '11111', '20260324548723980', 'Y', 'Y', 'Y', 'Y', '', '2026-03-25 17:36:53', '0', 'N');
-INSERT INTO `parking_box` VALUES ('102026040871479850', '岗亭', '20260324548723980', 'Y', 'Y', 'Y', 'Y', '', '2026-04-08 09:37:11', '0', 'Y');
 
 -- ----------------------------
 -- Table structure for parking_box_area
@@ -9245,13 +11610,11 @@ CREATE TABLE `parking_box_area` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`ba_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of parking_box_area
 -- ----------------------------
-INSERT INTO `parking_box_area` VALUES ('102026032530120933', '102026032512990931', '1020260325266021769', '20260324548723980', 'T', null, '2026-03-25 17:36:53', '0');
-INSERT INTO `parking_box_area` VALUES ('102026040846159852', '102026040871479850', '102026040863729757', '20260324548723980', 'T', null, '2026-04-08 09:37:11', '0');
 
 -- ----------------------------
 -- Table structure for parking_coupon
@@ -9269,12 +11632,11 @@ CREATE TABLE `parking_coupon` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `pa_name` varchar(64) NOT NULL COMMENT '停车场名称',
   PRIMARY KEY (`coupon_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of parking_coupon
 -- ----------------------------
-INSERT INTO `parking_coupon` VALUES ('102026040780120397', '1111', '1001', '20260324548723980', '1020260325266021769', '60', '5.00', '0', '2026-04-07 14:47:28', '1');
 
 -- ----------------------------
 -- Table structure for parking_coupon_car
@@ -9298,7 +11660,7 @@ CREATE TABLE `parking_coupon_car` (
   `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`pcc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of parking_coupon_car
@@ -9321,7 +11683,7 @@ CREATE TABLE `parking_coupon_car_order` (
   `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of parking_coupon_car_order
@@ -9341,7 +11703,7 @@ CREATE TABLE `parking_coupon_charge` (
   `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`pcc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of parking_coupon_charge
@@ -9364,7 +11726,7 @@ CREATE TABLE `parking_coupon_order` (
   `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
   `pa_name` varchar(64) NOT NULL COMMENT '停车场名称',
   `price` decimal(10,2) NOT NULL COMMENT '售价',
-  `quantity` int(11) NOT NULL COMMENT '数量',
+  `quantity` int NOT NULL COMMENT '数量',
   `receivable_amount` decimal(10,2) NOT NULL COMMENT '应收金额',
   `received_amount` decimal(10,2) NOT NULL COMMENT '实收金额',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
@@ -9372,7 +11734,7 @@ CREATE TABLE `parking_coupon_order` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `pay_type` varchar(12) DEFAULT NULL COMMENT '支付方式 查看pay_fee_detail 支付方式',
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of parking_coupon_order
@@ -9390,18 +11752,41 @@ CREATE TABLE `parking_coupon_shop` (
   `community_id` varchar(30) NOT NULL COMMENT '小区',
   `community_name` varchar(64) NOT NULL COMMENT '小区名称',
   `pa_id` varchar(30) NOT NULL COMMENT '停车场ID',
-  `quantity` int(11) NOT NULL COMMENT '数量',
+  `quantity` int NOT NULL COMMENT '数量',
   `start_time` datetime NOT NULL COMMENT '开始时间',
   `end_time` datetime NOT NULL COMMENT '结束时间',
   `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '数据状态',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `pa_name` varchar(64) NOT NULL COMMENT '停车场名称',
   PRIMARY KEY (`coupon_shop_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of parking_coupon_shop
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for parking_coupon_static_qrcode
+-- ----------------------------
+DROP TABLE IF EXISTS `parking_coupon_static_qrcode`;
+CREATE TABLE `parking_coupon_static_qrcode` (
+  `qrcode_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `coupon_shop_id` varchar(30) NOT NULL COMMENT '关联 parking_coupon_shop.coupon_shop_id',
+  `shop_id` varchar(64) NOT NULL COMMENT '商铺ID',
+  `code` varchar(64) NOT NULL COMMENT '静态码（UUID）',
+  `expired_time` datetime NOT NULL COMMENT '截止时间',
+  `state` varchar(12) NOT NULL DEFAULT '1001' COMMENT '状态 1001=有效 2002=失效',
+  `status_cd` varchar(4) NOT NULL DEFAULT '0' COMMENT '数据状态 0=正常 1=删除',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`qrcode_id`),
+  KEY `idx_coupon_shop_id` (`coupon_shop_id`),
+  KEY `idx_code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='停车券固定二维码';
+
+-- ----------------------------
+-- Records of parking_coupon_static_qrcode
+-- ----------------------------
+INSERT INTO `parking_coupon_static_qrcode` VALUES ('102026061299630022', '102026061297412851', '502026061239252844', 'dea959266e6843589145ef7f7a2fc3c4', '2028-06-12 15:38:54', '1001', '0', '2026-06-12 15:39:09');
 
 -- ----------------------------
 -- Table structure for parking_region
@@ -9416,7 +11801,7 @@ CREATE TABLE `parking_region` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`pr_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of parking_region
@@ -9435,6 +11820,14 @@ INSERT INTO `parking_region` VALUES ('102026012725669542', '2025072783670006', '
 INSERT INTO `parking_region` VALUES ('102026032477140741', '20260324548723980', 'a', '102026032433580737', '', '2026-03-24 16:05:41', '0');
 INSERT INTO `parking_region` VALUES ('102026040822289774', '20260324548723980', 'A区', '102026040863729757', '', '2026-04-08 09:31:52', '0');
 INSERT INTO `parking_region` VALUES ('102026040871779783', '20260324548723980', 'B区', '102026040863729757', '', '2026-04-08 09:32:17', '0');
+INSERT INTO `parking_region` VALUES ('102026052848360947', '2025040746580017', '001-01', '102026052886930944', '', '2026-05-28 18:17:39', '0');
+INSERT INTO `parking_region` VALUES ('102026071059330021', '20260512817111252', '001', '102026071046660009', '12', '2026-07-10 16:09:05', '1');
+INSERT INTO `parking_region` VALUES ('102026072853960221', '2026070812860502', 'A区', '102026072842900218', '', '2026-07-28 10:19:10', '0');
+INSERT INTO `parking_region` VALUES ('102026072869140224', '2026070812860502', 'B区', '102026072842900218', '', '2026-07-28 10:19:17', '0');
+INSERT INTO `parking_region` VALUES ('102026072981380010', '20260512817111252', '123', '102026071046660009', '123', '2026-07-29 10:42:35', '0');
+INSERT INTO `parking_region` VALUES ('102026080100700016', '20260512817111252', '地面区域', '102026080108280002', '地面区域', '2026-08-01 15:47:20', '0');
+INSERT INTO `parking_region` VALUES ('102026080171820008', '20260512817111252', '地下室A', '102026080108280002', '', '2026-08-01 15:45:07', '0');
+INSERT INTO `parking_region` VALUES ('372026082707180005', '2026070812860502', 'B', '102026082791140002', '导入数据', '2026-08-28 15:04:33', '0');
 
 -- ----------------------------
 -- Table structure for parking_space
@@ -9451,25 +11844,20 @@ CREATE TABLE `parking_space` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `parking_type` varchar(3) NOT NULL DEFAULT '1' COMMENT '1：普通车位  2：子母车位  3：豪华车位',
   `pr_id` varchar(30) DEFAULT NULL COMMENT '区域ID',
+  `owner_id` varchar(30) DEFAULT NULL COMMENT '业主ID',
+  `owner_name` varchar(64) DEFAULT NULL COMMENT '业主名称',
+  `car_id` varchar(30) DEFAULT NULL COMMENT '车辆ID',
+  `car_num` varchar(12) DEFAULT NULL COMMENT '车牌号',
+  `start_time` datetime DEFAULT NULL COMMENT '出租开始时间',
+  `end_time` datetime DEFAULT NULL COMMENT '出租结束时间',
   `monitor_id` varchar(30) DEFAULT NULL COMMENT '监控ID',
   `monitor_name` varchar(64) DEFAULT NULL COMMENT '监控名称',
   PRIMARY KEY (`ps_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of parking_space
 -- ----------------------------
-INSERT INTO `parking_space` VALUES ('102026032458350745', '20260324548723980', 'a001', '102026032433580737', 'F', '', '2026-03-24 16:06:13', '0', '1', '102026032477140741', '', null);
-INSERT INTO `parking_space` VALUES ('102026040847649796', '20260324548723980', '皖AE6S11', '102026040863729757', 'F', '', '2026-04-08 09:32:51', '0', '1', '102026040822289774', '-1', null);
-INSERT INTO `parking_space` VALUES ('7920260325104619967', '20260325588620897', '车位1', '1020260325870519981', 'H', '导入数据', '2026-03-25 18:21:18', '0', '1', null, null, null);
-INSERT INTO `parking_space` VALUES ('7920260325170820700', '20260324548723980', '22', '1020260325266021769', 'H', '导入数据', '2026-03-27 05:38:09', '0', '1', null, null, null);
-INSERT INTO `parking_space` VALUES ('7920260325824820699', '20260324548723980', '123', '1020260325266021769', 'H', '导入数据', '2026-03-25 16:53:27', '0', '1', null, null, null);
-INSERT INTO `parking_space` VALUES ('792026040111059364', '20260324548723980', 'A001', '1020260325266021769', 'H', '导入数据', '2026-04-07 05:01:59', '0', '1', null, null, null);
-INSERT INTO `parking_space` VALUES ('792026040168469363', '20260324548723980', 'A002', '1020260325266021769', 'F', '导入数据', '2026-04-07 11:59:09', '0', '1', null, null, null);
-INSERT INTO `parking_space` VALUES ('792026040223696590', '2026040233568395', 'B10', '102026040295226622', 'H', '导入数据', '2026-04-02 16:19:14', '0', '1', null, null, null);
-INSERT INTO `parking_space` VALUES ('792026040230536606', '2026040233568395', 'A01', '102026040295226622', 'H', '导入数据', '2026-04-02 16:15:35', '0', '1', null, null, null);
-INSERT INTO `parking_space` VALUES ('792026040822203071', '20260324548723980', '003', '1020260325266021769', 'H', '导入数据', '2026-04-08 10:53:58', '0', '1', null, null, null);
-INSERT INTO `parking_space` VALUES ('7920260413846213567', '20260324548723980', '3eda2s', '1020260325266021769', 'H', '导入数据', '2026-04-13 09:14:30', '0', '1', null, null, null);
 
 -- ----------------------------
 -- Table structure for parking_space_machine
@@ -9488,7 +11876,7 @@ CREATE TABLE `parking_space_machine` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`machine_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of parking_space_machine
@@ -9514,7 +11902,7 @@ CREATE TABLE `parking_space_machine_rel` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`rel_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of parking_space_machine_rel
@@ -9538,7 +11926,7 @@ CREATE TABLE `pass_qrcode` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态 1表示 失效 0 有效',
   PRIMARY KEY (`pq_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of pass_qrcode
@@ -9557,7 +11945,7 @@ CREATE TABLE `pass_qrcode_setting` (
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `sms_validate` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '验证，ON 短信验证码验证 OFF 不验证 ',
   `audit` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '审核 Y 需要审核 N 不需要审核',
-  `expired` int(11) NOT NULL DEFAULT '120' COMMENT '失效时间，单位为分钟',
+  `expired` int NOT NULL DEFAULT '120' COMMENT '失效时间，单位为分钟',
   `create_staff_id` varchar(30) NOT NULL COMMENT '员工ID',
   `create_staff_name` varchar(30) NOT NULL COMMENT '员工',
   `state` varchar(12) NOT NULL DEFAULT 'ON' COMMENT '状态 ON 启用，OFF 停用',
@@ -9565,9 +11953,24 @@ CREATE TABLE `pass_qrcode_setting` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态 1表示 失效 0 有效',
   `remark` varchar(512) DEFAULT NULL COMMENT '说明',
   PRIMARY KEY (`pqs_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-
+-- ----------------------------
+-- Records of pass_qrcode_setting
+-- ----------------------------
+INSERT INTO `pass_qrcode_setting` VALUES ('102023122066540002', '通行码', '102023021386560001', 'ON', 'ON', '121', '302023021495090004', '演示物业', 'ON', '2023-12-20 02:08:56', '0', '');
+INSERT INTO `pass_qrcode_setting` VALUES ('102023122072260007', '1', '102023021386560001', 'ON', 'ON', '1', '302023021495090004', '演示物业', 'ON', '2023-12-20 02:09:50', '1', '');
+INSERT INTO `pass_qrcode_setting` VALUES ('102024020329930012', '业主通行码', '2024012252790005', 'ON', 'ON', '120', '302024012273480017', '物联网同步小区', 'ON', '2024-02-03 16:58:28', '0', '');
+INSERT INTO `pass_qrcode_setting` VALUES ('102025120135943766', '222', '20251127410920449', 'ON', 'ON', '120', '302025112802812473', 'HC演示物业', 'ON', '2025-12-01 18:24:37', '0', '');
+INSERT INTO `pass_qrcode_setting` VALUES ('102025120884226217', '2024', '2025072783670006', 'OFF', 'OFF', '3333', '302025112802812473', 'HC演示物业', 'ON', '2025-12-08 17:40:58', '0', '');
+INSERT INTO `pass_qrcode_setting` VALUES ('102025121858103789', '出入码', '2025072783670006', 'ON', 'ON', '10', '302025112802812473', 'HC演示物业', 'ON', '2025-12-18 23:53:36', '0', '正确');
+INSERT INTO `pass_qrcode_setting` VALUES ('102025122066444447', '临时访客', '2025072783670006', 'ON', 'ON', '3333', '302025112802812473', 'HC演示物业', 'OFF', '2025-12-20 00:06:59', '0', '');
+INSERT INTO `pass_qrcode_setting` VALUES ('102026030968732986', '333', '20251127410920449', 'ON', 'ON', '20', '302025112802812473', 'HC演示物业', 'ON', '2026-03-09 14:01:10', '0', '');
+INSERT INTO `pass_qrcode_setting` VALUES ('102026040877939591', '通行码', '20260324548723980', 'ON', 'ON', '10', '302026032417280460', 'HC演示物业', 'ON', '2026-04-08 09:18:20', '0', '');
+INSERT INTO `pass_qrcode_setting` VALUES ('102026041299463934', '测试', '102026041001793653', 'ON', 'ON', '30', '302026041091643662', '世邦泰和', 'ON', '2026-04-12 07:26:06', '0', '');
+INSERT INTO `pass_qrcode_setting` VALUES ('102026061883023444', '测试·', '20260512631111312', 'ON', 'ON', '100', '302026052662970595', 'HC演示物业', 'ON', '2026-06-18 16:06:41', '0', '');
+INSERT INTO `pass_qrcode_setting` VALUES ('102026071004430887', '测试', '20260512817111252', 'ON', 'ON', '30', '302026052662970595', 'wuxw', 'ON', '2026-07-10 15:47:18', '0', '');
+INSERT INTO `pass_qrcode_setting` VALUES ('102026083126980187', '访客二维码', '20260512817111252', 'OFF', 'OFF', '9999999', '302026052662970595', 'wuxw', 'ON', '2026-08-31 15:22:44', '0', '');
 
 -- ----------------------------
 -- Table structure for payment_adapt
@@ -9584,7 +11987,7 @@ CREATE TABLE `payment_adapt` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态0正常1失效',
   `bean_refund` varchar(128) DEFAULT NULL COMMENT '退费实现类',
   PRIMARY KEY (`adapt_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of payment_adapt
@@ -9608,7 +12011,7 @@ CREATE TABLE `payment_key` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态0正常1失效',
   PRIMARY KEY (`key_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of payment_key
@@ -9647,13 +12050,14 @@ CREATE TABLE `payment_pool` (
   `remark` varchar(512) DEFAULT NULL COMMENT '使用说明',
   `pay_type` varchar(12) NOT NULL DEFAULT '1001' COMMENT '支付范围 1001 小区费用 2002 临时停车费 3003 选择费用项',
   PRIMARY KEY (`pp_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of payment_pool
 -- ----------------------------
 INSERT INTO `payment_pool` VALUES ('102023112413860021', '微信', 'WECHAT', '102023021386560001', '', '2023-11-24 01:06:15', '1', 'Y', '2', '1001');
 INSERT INTO `payment_pool` VALUES ('102023112440040042', '微信支付', 'WECHAT', '102023021386560001', '', '2023-11-24 01:12:05', '1', 'Y', '1', '1001');
+INSERT INTO `payment_pool` VALUES ('102026071233881873', '1', 'WECHAT', '20260512817111252', '', '2026-07-12 10:54:45', '1', 'Y', '11', '1001');
 
 -- ----------------------------
 -- Table structure for payment_pool_value
@@ -9668,7 +12072,7 @@ CREATE TABLE `payment_pool_value` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态0正常1失效',
   PRIMARY KEY (`value_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of payment_pool_value
@@ -9681,6 +12085,10 @@ INSERT INTO `payment_pool_value` VALUES ('112023112485910037', '1020231124138600
 INSERT INTO `payment_pool_value` VALUES ('112023112492070035', '102023112413860021', 'WECHAT_MCHID', '1', '102023021386560001', '2023-11-24 01:10:32', '0');
 INSERT INTO `payment_pool_value` VALUES ('112023120901230055', '102023112440040042', 'WECHAT_KEY', '2', '102023021386560001', '2023-12-09 23:47:00', '0');
 INSERT INTO `payment_pool_value` VALUES ('112023120918980053', '102023112440040042', 'WECHAT_MCHID', '2', '102023021386560001', '2023-12-09 23:47:00', '0');
+INSERT INTO `payment_pool_value` VALUES ('112026071218241877', '102026071233881873', 'WECHAT_KEY', '1', '20260512817111252', '2026-07-12 10:54:45', '1');
+INSERT INTO `payment_pool_value` VALUES ('112026071225181882', '102026071233881873', 'WECHAT_MCHID', '2', '20260512817111252', '2026-07-12 10:54:51', '0');
+INSERT INTO `payment_pool_value` VALUES ('112026071285961875', '102026071233881873', 'WECHAT_MCHID', '1', '20260512817111252', '2026-07-12 10:54:45', '1');
+INSERT INTO `payment_pool_value` VALUES ('112026071286511884', '102026071233881873', 'WECHAT_KEY', '1', '20260512817111252', '2026-07-12 10:54:51', '0');
 
 -- ----------------------------
 -- Table structure for pay_fee_batch
@@ -9696,7 +12104,7 @@ CREATE TABLE `pay_fee_batch` (
   `state` varchar(12) NOT NULL DEFAULT '2007001' COMMENT '状态 2007001待审核 2008001 审核通过 2009001 审核失败',
   `msg` varchar(512) NOT NULL COMMENT '审核说明',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of pay_fee_batch
@@ -9722,7 +12130,7 @@ CREATE TABLE `person_face` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态 1表示 失效 0 有效',
   PRIMARY KEY (`pf_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of person_face
@@ -9749,7 +12157,7 @@ CREATE TABLE `person_face_qrcode` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态 1表示 失效 0 有效',
   `remark` varchar(512) DEFAULT NULL COMMENT '说明',
   PRIMARY KEY (`pfq_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of person_face_qrcode
@@ -9768,6 +12176,9 @@ INSERT INTO `person_face_qrcode` VALUES ('102026011676943076', 'test', '20250727
 INSERT INTO `person_face_qrcode` VALUES ('102026030632650657', 'CES', '2025072783670006', 'OFF', 'OFF', 'ON', 'OFF', '', '302025112802812473', 'HC演示物业', 'ON', '2026-03-06 18:15:55', '0', '');
 INSERT INTO `person_face_qrcode` VALUES ('102026032589520965', '测试', '20260324548723980', 'ON', 'ON', 'ON', 'ON', '123', '302026032417280460', 'HC演示物业', 'ON', '2026-03-25 23:08:31', '0', '');
 INSERT INTO `person_face_qrcode` VALUES ('102026041237813928', '测试', '102026041001793653', 'ON', 'ON', 'ON', 'ON', '123', '302026041091643662', '世邦泰和', 'ON', '2026-04-12 07:15:16', '0', '');
+INSERT INTO `person_face_qrcode` VALUES ('102026061005392429', '12', '20260512631111312', 'OFF', 'OFF', 'OFF', 'OFF', '', '302026052662970595', 'HC演示物业', 'ON', '2026-06-10 13:39:14', '0', '');
+INSERT INTO `person_face_qrcode` VALUES ('102026071001260882', 'ss', '20260512817111252', 'ON', 'ON', 'ON', 'ON', '1111', '302026052662970595', 'wuxw', 'ON', '2026-07-10 15:45:32', '0', '');
+INSERT INTO `person_face_qrcode` VALUES ('102026082741735602', '123', '20260512817111252', 'ON', 'ON', 'ON', 'ON', '123', '302026052662970595', 'wuxw', 'ON', '2026-08-27 09:39:48', '0', '');
 
 -- ----------------------------
 -- Table structure for p_privilege
@@ -9783,7 +12194,7 @@ CREATE TABLE `p_privilege` (
   `resource` varchar(200) DEFAULT NULL COMMENT '资源路径',
   `m_id` varchar(30) NOT NULL COMMENT '菜单ID',
   PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of p_privilege
@@ -10046,6 +12457,11 @@ INSERT INTO `p_privilege` VALUES ('502025032893860017', '小程序', '', '2025-0
 INSERT INTO `p_privilege` VALUES ('502025052045800022', 'ss', '2', '2025-05-20 14:58:41', '0', '800900000000', 's', '702025052049200021');
 INSERT INTO `p_privilege` VALUES ('502025052047870024', '1', '2', '2025-05-20 15:26:49', '1', '800900000000', '3', '702021031606850071');
 INSERT INTO `p_privilege` VALUES ('502026010844150003', '内部临时车', '', '2026-01-08 16:05:05', '0', '800900000003', '/#/pages/car/tempInnerCar', '702026010862210002');
+INSERT INTO `p_privilege` VALUES ('502026070818780377', 'ssss', '55', '2026-07-08 14:33:03', '0', '800900000000', 'ddd', '702026070822000376');
+INSERT INTO `p_privilege` VALUES ('502026072706260002', '历史进出', '', '2026-07-27 09:02:56', '0', '800900000003', '/#/views/car/listCarInoutHis', '702026072731800001');
+INSERT INTO `p_privilege` VALUES ('502026072865190002', '逃费车辆', '', '2026-07-28 14:50:06', '0', '800900000003', '/#/pages/car/listCarInoutEvasion', '702026072836750001');
+INSERT INTO `p_privilege` VALUES ('502026081800000001', '商铺授权', '商铺授权', '2026-08-18 12:00:00', '0', '800900000003', '/#/pages/accessControl/accessControlShop', '702026081800000001');
+INSERT INTO `p_privilege` VALUES ('502026081895580002', '商铺管理', '', '2026-08-18 12:27:26', '0', '800900000003', '/#/pages/shop/listShopManage', '702026081884350001');
 
 -- ----------------------------
 -- Table structure for p_privilege_group
@@ -10061,7 +12477,7 @@ CREATE TABLE `p_privilege_group` (
   `domain` varchar(12) NOT NULL DEFAULT '-1' COMMENT '权限组域 商户详见store_type store_type_cd',
   `role_type` varchar(12) NOT NULL DEFAULT 'USER' COMMENT 'SYSTEM 系统角色 USER 用户角色',
   PRIMARY KEY (`pg_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of p_privilege_group
@@ -10073,6 +12489,9 @@ INSERT INTO `p_privilege_group` VALUES ('102026010260560897', '组长', '', '202
 INSERT INTO `p_privilege_group` VALUES ('102026010393691003', '员工', '', '2026-01-03 08:17:25', '0', '102025072745280023', '800900000003', 'USER');
 INSERT INTO `p_privilege_group` VALUES ('102026012683869317', '管理员', '', '2026-01-26 15:48:06', '0', '102025072745280023', '800900000003', 'USER');
 INSERT INTO `p_privilege_group` VALUES ('102026041226064062', 'cc', '', '2026-04-12 20:35:25', '0', '1020260324720123961', '800900000003', 'USER');
+INSERT INTO `p_privilege_group` VALUES ('102026071170300079', 'xx1', 'x', '2026-07-11 11:42:55', '0', '102025040775320034', '800900000003', 'USER');
+INSERT INTO `p_privilege_group` VALUES ('102026081110780125', '工夺', '', '2026-08-11 09:37:49', '0', '102025040775320034', '800900000003', 'USER');
+INSERT INTO `p_privilege_group` VALUES ('102026082660245543', '123', '', '2026-08-26 14:34:54', '0', '102026070753270629', '800900000003', 'USER');
 INSERT INTO `p_privilege_group` VALUES ('600201904002', '物业管理员权限组', '物业管理员权限组', '2019-04-01 00:34:58', '0', '9999', '800900000003', 'SYSTEM');
 INSERT INTO `p_privilege_group` VALUES ('600201906005', '运营团队管理员权限组', '运营团队管理员权限组', '2019-03-31 18:22:10', '0', '9999', '800900000001', 'SYSTEM');
 INSERT INTO `p_privilege_group` VALUES ('600201906007', '开发团队管理员权限组', '开发团队管理员权限组', '2019-03-31 18:22:10', '0', '9999', '800900000000', 'SYSTEM');
@@ -10089,7 +12508,7 @@ CREATE TABLE `p_privilege_rel` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   PRIMARY KEY (`rel_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of p_privilege_rel
@@ -10276,6 +12695,12 @@ INSERT INTO `p_privilege_rel` VALUES ('102025032851330018', '502025032893860017'
 INSERT INTO `p_privilege_rel` VALUES ('102025052068120023', '502025052045800022', '600201906007', '1001', '2025-05-20 14:58:41', '0');
 INSERT INTO `p_privilege_rel` VALUES ('102025052083240025', '502025052047870024', '600201906007', '1001', '2025-05-20 15:26:49', '1');
 INSERT INTO `p_privilege_rel` VALUES ('102026010828670004', '502026010844150003', '600201904002', '1001', '2026-01-08 16:05:05', '0');
+INSERT INTO `p_privilege_rel` VALUES ('102026061214110005', '502026061228780004', '600201904002', '1001', '2026-06-12 14:57:12', '0');
+INSERT INTO `p_privilege_rel` VALUES ('102026070830560378', '502026070818780377', '600201906007', '1001', '2026-07-08 14:33:03', '0');
+INSERT INTO `p_privilege_rel` VALUES ('102026072743270003', '502026072706260002', '600201904002', '1001', '2026-07-27 09:02:56', '0');
+INSERT INTO `p_privilege_rel` VALUES ('102026072805330003', '502026072865190002', '600201904002', '1001', '2026-07-28 14:50:06', '0');
+INSERT INTO `p_privilege_rel` VALUES ('102026081800000001', '502026081800000001', '600201904002', '1001', '2026-08-18 12:00:00', '0');
+INSERT INTO `p_privilege_rel` VALUES ('102026081858860003', '502026081895580002', '600201904002', '1001', '2026-08-18 12:27:26', '0');
 INSERT INTO `p_privilege_rel` VALUES ('10938', '502020100477560041', '600201906007', '1001', '2020-10-04 23:19:33', '0');
 INSERT INTO `p_privilege_rel` VALUES ('111', '500201907032', '600201906007', '1001', '2019-08-10 09:52:13', '0');
 INSERT INTO `p_privilege_rel` VALUES ('113', '500201908034', '600201906007', '1001', '2019-08-13 11:33:58', '0');
@@ -11008,6 +13433,84 @@ INSERT INTO `p_privilege_rel` VALUES ('842026042770320173', '502023092274910008'
 INSERT INTO `p_privilege_rel` VALUES ('842026042773590178', '502024121612860003', '102026041226064062', '2002', '2026-04-27 19:38:30', '0');
 INSERT INTO `p_privilege_rel` VALUES ('842026042786620182', '502024073105410023', '102026041226064062', '2002', '2026-04-27 19:38:35', '0');
 INSERT INTO `p_privilege_rel` VALUES ('842026042793700164', '502023081865750005', '102026041226064062', '2002', '2026-04-27 19:38:01', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026071105120096', '502024030483540100', '102026071170300079', '2002', '2026-07-11 11:54:11', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026071106710097', '502024030435620096', '102026071170300079', '2002', '2026-07-11 11:54:11', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026071110020101', '502024030493380106', '102026071170300079', '2002', '2026-07-11 11:54:11', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026071114720093', '502024030472060114', '102026071170300079', '2002', '2026-07-11 11:54:11', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026071117220104', '502024030471400116', '102026071170300079', '2002', '2026-07-11 11:54:11', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026071121460099', '502024030461540108', '102026071170300079', '2002', '2026-07-11 11:54:11', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026071124880098', '502024030434510098', '102026071170300079', '2002', '2026-07-11 11:54:11', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026071135230084', '502023021400300013', '102026071170300079', '2002', '2026-07-11 11:45:32', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026071152860095', '502024030445920104', '102026071170300079', '2002', '2026-07-11 11:54:11', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026071155060103', '502024030404460118', '102026071170300079', '2002', '2026-07-11 11:54:11', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026071158850083', '502023081553490002', '102026071170300079', '2002', '2026-07-11 11:45:17', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026071164210105', '502024030477610112', '102026071170300079', '2002', '2026-07-11 11:54:11', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026071170800102', '502024030413890102', '102026071170300079', '2002', '2026-07-11 11:54:11', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026071182940094', '502024030444500110', '102026071170300079', '2002', '2026-07-11 11:54:11', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026071186980100', '502023021633790007', '102026071170300079', '2002', '2026-07-11 11:54:11', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026072217524611', '502024030483540100', '102026071170300079', '2002', '2026-07-22 17:30:39', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026081101460121', '502024030499740122', '102026071170300079', '2002', '2026-08-11 09:37:40', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026081101760139', '502024030477610112', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081107460129', '502023111878100010', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081108990140', '502024030472060114', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081110580131', '502024030435620096', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081110630146', '502024030499740122', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081111720144', '502024030400040124', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081135360128', '502023021400300013', '102026081110780125', '2002', '2026-08-11 09:37:53', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081141240147', '502024030453950120', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081142430145', '502023021692680009', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081149110132', '502024030434510098', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081150440141', '502024030444500110', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081150630123', '502024030400040124', '102026071170300079', '2002', '2026-08-11 09:37:40', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026081151370133', '502024030461540108', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081158040130', '502024120695340003', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081163270143', '502024030483540100', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081164400134', '502023021633790007', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081165080142', '502024030445920104', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081170480122', '502024030453950120', '102026071170300079', '2002', '2026-08-11 09:37:40', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026081171760120', '502023021692680009', '102026071170300079', '2002', '2026-08-11 09:37:40', '1');
+INSERT INTO `p_privilege_rel` VALUES ('842026081177990127', '502023081553490002', '102026081110780125', '2002', '2026-08-11 09:37:53', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081179390137', '502024030404460118', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081183550136', '502024030413890102', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081184410138', '502024030471400116', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026081193770135', '502024030493380106', '102026081110780125', '2002', '2026-08-11 09:37:55', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026082224972525', '502026081895580002', '102026081110780125', '2002', '2026-08-22 19:39:38', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026082500065451', '502024030483540100', '102026071170300079', '2002', '2026-08-25 09:03:33', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026082503405449', '502024030472060114', '102026071170300079', '2002', '2026-08-25 09:03:33', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026082509125443', '502024030434510098', '102026071170300079', '2002', '2026-08-25 09:03:33', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026082527355445', '502024030461540108', '102026071170300079', '2002', '2026-08-25 09:03:33', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026082532275442', '502024030435620096', '102026071170300079', '2002', '2026-08-25 09:03:33', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026082532975447', '502024030471400116', '102026071170300079', '2002', '2026-08-25 09:03:33', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026082534495450', '502024030404460118', '102026071170300079', '2002', '2026-08-25 09:03:33', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026082536205446', '502024030413890102', '102026071170300079', '2002', '2026-08-25 09:03:33', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026082540675448', '502024030477610112', '102026071170300079', '2002', '2026-08-25 09:03:33', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026082556335441', '502023021633790007', '102026071170300079', '2002', '2026-08-25 09:03:33', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026082558595452', '502024030493380106', '102026071170300079', '2002', '2026-08-25 09:03:33', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026082593935453', '502024030445920104', '102026071170300079', '2002', '2026-08-25 09:03:33', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026082599695444', '502024030444500110', '102026071170300079', '2002', '2026-08-25 09:03:33', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090304140115', '502024030453950120', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090308190108', '502024030472060114', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090309070106', '502024030471400116', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090311470112', '502024030435620096', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090320970104', '502024030413890102', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090327980118', '502024030499740122', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090329480103', '502024030493380106', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090330230105', '502024030404460118', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090343120119', '502026081895580002', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090349330117', '502023021692680009', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090351630121', '502024120695340003', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090351680116', '502024030400040124', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090360880101', '502023021400300013', '102026082660245543', '2002', '2026-09-03 18:28:33', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090364220114', '502024030461540108', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090372820111', '502024030483540100', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090376550107', '502024030477610112', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090377350102', '502023021633790007', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090388680113', '502024030434510098', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090391360120', '502023111878100010', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090392310100', '502023081553490002', '102026082660245543', '2002', '2026-09-03 18:28:33', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090394820109', '502024030444500110', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090396420110', '502024030445920104', '102026082660245543', '2002', '2026-09-03 18:28:37', '0');
+INSERT INTO `p_privilege_rel` VALUES ('842026090397040099', '502024030435620096', '102026082660245543', '2002', '2026-09-03 18:28:29', '0');
 
 -- ----------------------------
 -- Table structure for p_privilege_user
@@ -11024,23 +13527,11 @@ CREATE TABLE `p_privilege_user` (
   PRIMARY KEY (`pu_id`),
   UNIQUE KEY `pu_id` (`pu_id`) USING BTREE,
   KEY `index_user_id` (`user_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of p_privilege_user
 -- ----------------------------
-INSERT INTO `p_privilege_user` VALUES ('102026032466440464', '600201904002', '1', '302026032417280460', '2026-03-24 13:57:26', '0', '1020260324720123961');
-INSERT INTO `p_privilege_user` VALUES ('102026032589690867', '600201904002', '1', '302026032589870859', '2026-03-25 11:53:31', '0', '102026032507190853');
-INSERT INTO `p_privilege_user` VALUES ('102026040878734055', '600201904002', '1', '302026040845554051', '2026-04-08 00:22:29', '0', '102026040559813670');
-INSERT INTO `p_privilege_user` VALUES ('102026040982623012', '600201904002', '1', '302026040902463008', '2026-04-09 21:29:53', '0', '102026040961216363');
-INSERT INTO `p_privilege_user` VALUES ('102026041086143670', '600201904002', '1', '302026041091643662', '2026-04-10 17:26:11', '0', '102026041037043656');
-INSERT INTO `p_privilege_user` VALUES ('102026041267204117', '102026041226064062', '1', '3020260401479210405', '2026-04-12 20:40:26', '0', '1020260324720123961');
-INSERT INTO `p_privilege_user` VALUES ('102026041277613986', '600201904002', '1', '302026041202393978', '2026-04-12 16:18:20', '0', '102026041216283972');
-INSERT INTO `p_privilege_user` VALUES ('102026041592324848', '600201904002', '1', '302026041576564840', '2026-04-15 10:59:12', '0', '102026041583084834');
-INSERT INTO `p_privilege_user` VALUES ('102026041723445041', '600201904002', '1', '302026041740515033', '2026-04-17 17:46:15', '0', '102026041714635027');
-INSERT INTO `p_privilege_user` VALUES ('102026041746644969', '600201904002', '1', '302026041788754961', '2026-04-17 09:27:53', '0', '102026041794914955');
-INSERT INTO `p_privilege_user` VALUES ('102026042065765140', '600201904002', '1', '302026042005775132', '2026-04-20 09:51:32', '0', '102026042022745126');
-INSERT INTO `p_privilege_user` VALUES ('102026042563750117', '600201904002', '1', '302026042564850109', '2026-04-25 19:39:55', '0', '102026042522360103');
 INSERT INTO `p_privilege_user` VALUES ('42', '600201906007', '1', '30520751775595118592', '2019-04-01 08:37:00', '0', '400000000000000002');
 INSERT INTO `p_privilege_user` VALUES ('43', '600201906005', '1', '30518939884421922816', '2019-04-01 08:37:00', '0', '400000000000000001');
 
@@ -11056,7 +13547,7 @@ CREATE TABLE `qrtz_blob_triggers` (
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
   KEY `SCHED_NAME` (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`) USING BTREE,
   CONSTRAINT `QRTZ_BLOB_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of qrtz_blob_triggers
@@ -11071,7 +13562,7 @@ CREATE TABLE `qrtz_calendars` (
   `CALENDAR_NAME` varchar(200) NOT NULL,
   `CALENDAR` blob NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`CALENDAR_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of qrtz_calendars
@@ -11089,7 +13580,7 @@ CREATE TABLE `qrtz_cron_triggers` (
   `TIME_ZONE_ID` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
   CONSTRAINT `QRTZ_CRON_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of qrtz_cron_triggers
@@ -11105,9 +13596,9 @@ CREATE TABLE `qrtz_fired_triggers` (
   `TRIGGER_NAME` varchar(200) NOT NULL,
   `TRIGGER_GROUP` varchar(200) NOT NULL,
   `INSTANCE_NAME` varchar(200) NOT NULL,
-  `FIRED_TIME` bigint(20) NOT NULL,
-  `SCHED_TIME` bigint(20) NOT NULL,
-  `PRIORITY` int(11) NOT NULL,
+  `FIRED_TIME` bigint NOT NULL,
+  `SCHED_TIME` bigint NOT NULL,
+  `PRIORITY` int NOT NULL,
   `STATE` varchar(16) NOT NULL,
   `JOB_NAME` varchar(200) DEFAULT NULL,
   `JOB_GROUP` varchar(200) DEFAULT NULL,
@@ -11120,7 +13611,7 @@ CREATE TABLE `qrtz_fired_triggers` (
   KEY `IDX_QRTZ_FT_JG` (`SCHED_NAME`,`JOB_GROUP`) USING BTREE,
   KEY `IDX_QRTZ_FT_T_G` (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`) USING BTREE,
   KEY `IDX_QRTZ_FT_TG` (`SCHED_NAME`,`TRIGGER_GROUP`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of qrtz_fired_triggers
@@ -11144,7 +13635,7 @@ CREATE TABLE `qrtz_job_details` (
   PRIMARY KEY (`SCHED_NAME`,`JOB_NAME`,`JOB_GROUP`),
   KEY `IDX_QRTZ_J_REQ_RECOVERY` (`SCHED_NAME`,`REQUESTS_RECOVERY`) USING BTREE,
   KEY `IDX_QRTZ_J_GRP` (`SCHED_NAME`,`JOB_GROUP`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of qrtz_job_details
@@ -11163,7 +13654,7 @@ CREATE TABLE `qrtz_locks` (
   `SCHED_NAME` varchar(120) NOT NULL,
   `LOCK_NAME` varchar(40) NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`LOCK_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of qrtz_locks
@@ -11178,7 +13669,7 @@ CREATE TABLE `qrtz_paused_trigger_grps` (
   `SCHED_NAME` varchar(120) NOT NULL,
   `TRIGGER_GROUP` varchar(200) NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of qrtz_paused_trigger_grps
@@ -11191,10 +13682,10 @@ DROP TABLE IF EXISTS `qrtz_scheduler_state`;
 CREATE TABLE `qrtz_scheduler_state` (
   `SCHED_NAME` varchar(120) NOT NULL,
   `INSTANCE_NAME` varchar(200) NOT NULL,
-  `LAST_CHECKIN_TIME` bigint(20) NOT NULL,
-  `CHECKIN_INTERVAL` bigint(20) NOT NULL,
+  `LAST_CHECKIN_TIME` bigint NOT NULL,
+  `CHECKIN_INTERVAL` bigint NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`INSTANCE_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of qrtz_scheduler_state
@@ -11208,12 +13699,12 @@ CREATE TABLE `qrtz_simple_triggers` (
   `SCHED_NAME` varchar(120) NOT NULL,
   `TRIGGER_NAME` varchar(200) NOT NULL,
   `TRIGGER_GROUP` varchar(200) NOT NULL,
-  `REPEAT_COUNT` bigint(20) NOT NULL,
-  `REPEAT_INTERVAL` bigint(20) NOT NULL,
-  `TIMES_TRIGGERED` bigint(20) NOT NULL,
+  `REPEAT_COUNT` bigint NOT NULL,
+  `REPEAT_INTERVAL` bigint NOT NULL,
+  `TIMES_TRIGGERED` bigint NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
   CONSTRAINT `QRTZ_SIMPLE_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of qrtz_simple_triggers
@@ -11230,17 +13721,17 @@ CREATE TABLE `qrtz_simprop_triggers` (
   `STR_PROP_1` varchar(512) DEFAULT NULL,
   `STR_PROP_2` varchar(512) DEFAULT NULL,
   `STR_PROP_3` varchar(512) DEFAULT NULL,
-  `INT_PROP_1` int(11) DEFAULT NULL,
-  `INT_PROP_2` int(11) DEFAULT NULL,
-  `LONG_PROP_1` bigint(20) DEFAULT NULL,
-  `LONG_PROP_2` bigint(20) DEFAULT NULL,
+  `INT_PROP_1` int DEFAULT NULL,
+  `INT_PROP_2` int DEFAULT NULL,
+  `LONG_PROP_1` bigint DEFAULT NULL,
+  `LONG_PROP_2` bigint DEFAULT NULL,
   `DEC_PROP_1` decimal(13,4) DEFAULT NULL,
   `DEC_PROP_2` decimal(13,4) DEFAULT NULL,
   `BOOL_PROP_1` varchar(1) DEFAULT NULL,
   `BOOL_PROP_2` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
   CONSTRAINT `QRTZ_SIMPROP_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of qrtz_simprop_triggers
@@ -11257,15 +13748,15 @@ CREATE TABLE `qrtz_triggers` (
   `JOB_NAME` varchar(200) NOT NULL,
   `JOB_GROUP` varchar(200) NOT NULL,
   `DESCRIPTION` varchar(250) DEFAULT NULL,
-  `NEXT_FIRE_TIME` bigint(20) DEFAULT NULL,
-  `PREV_FIRE_TIME` bigint(20) DEFAULT NULL,
-  `PRIORITY` int(11) DEFAULT NULL,
+  `NEXT_FIRE_TIME` bigint DEFAULT NULL,
+  `PREV_FIRE_TIME` bigint DEFAULT NULL,
+  `PRIORITY` int DEFAULT NULL,
   `TRIGGER_STATE` varchar(16) NOT NULL,
   `TRIGGER_TYPE` varchar(8) NOT NULL,
-  `START_TIME` bigint(20) NOT NULL,
-  `END_TIME` bigint(20) DEFAULT NULL,
+  `START_TIME` bigint NOT NULL,
+  `END_TIME` bigint DEFAULT NULL,
   `CALENDAR_NAME` varchar(200) DEFAULT NULL,
-  `MISFIRE_INSTR` smallint(6) DEFAULT NULL,
+  `MISFIRE_INSTR` smallint DEFAULT NULL,
   `JOB_DATA` blob,
   PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
   KEY `IDX_QRTZ_T_J` (`SCHED_NAME`,`JOB_NAME`,`JOB_GROUP`) USING BTREE,
@@ -11281,35 +13772,81 @@ CREATE TABLE `qrtz_triggers` (
   KEY `IDX_QRTZ_T_NFT_ST_MISFIRE` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`,`TRIGGER_STATE`) USING BTREE,
   KEY `IDX_QRTZ_T_NFT_ST_MISFIRE_GRP` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`,`TRIGGER_GROUP`,`TRIGGER_STATE`) USING BTREE,
   CONSTRAINT `QRTZ_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`) REFERENCES `qrtz_job_details` (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of qrtz_triggers
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for register_protocol
+-- ----------------------------
+DROP TABLE IF EXISTS `register_protocol`;
+CREATE TABLE `register_protocol` (
+  `protolcol_id` varchar(30) NOT NULL COMMENT '协议ID',
+  `user_protocol` longtext COMMENT '用户注册协议',
+  `merchant_protocol` longtext COMMENT '商家注册协议',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
+  PRIMARY KEY (`protolcol_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of register_protocol
+-- ----------------------------
+INSERT INTO `register_protocol` VALUES ('1', 'sss', 'sss', '2026-09-01 15:33:34', '0');
+
+-- ----------------------------
+-- Table structure for shop_location
+-- ----------------------------
+DROP TABLE IF EXISTS `shop_location`;
+CREATE TABLE `shop_location` (
+  `location_id` varchar(50) NOT NULL COMMENT '位置ID',
+  `location_name` varchar(100) NOT NULL COMMENT '位置名称',
+  `parent_id` varchar(50) NOT NULL DEFAULT '-1' COMMENT '父位置ID',
+  `level` int NOT NULL DEFAULT '1' COMMENT '层级',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `community_id` varchar(50) NOT NULL COMMENT '小区ID',
+  `seq` int NOT NULL DEFAULT '1' COMMENT '排序',
+  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '状态',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`location_id`),
+  KEY `idx_community` (`community_id`),
+  KEY `idx_parent` (`parent_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商铺位置表';
+
+-- ----------------------------
+-- Records of shop_location
+-- ----------------------------
+INSERT INTO `shop_location` VALUES ('742026081816400007', '1号楼', '-1', '1', '', '20260512817111252', '0', '1', '2026-08-18 12:32:10');
+INSERT INTO `shop_location` VALUES ('742026081839370014', '1号楼', '-1', '1', '', '20260512817111252', '1', '0', '2026-08-18 12:32:48');
+INSERT INTO `shop_location` VALUES ('742026081868960002', 'B', '742026081839370014', '2', '', '20260512817111252', '0', '1', '2026-08-18 13:30:19');
+INSERT INTO `shop_location` VALUES ('742026082009030106', '测试', '-1', '1', '', '2025040746580017', '1', '0', '2026-08-20 14:20:58');
+INSERT INTO `shop_location` VALUES ('742026082658695555', '123', '-1', '1', '', '2026070812860502', '1', '0', '2026-08-26 15:38:46');
+
+-- ----------------------------
 -- Table structure for small_wechat
 -- ----------------------------
 DROP TABLE IF EXISTS `small_wechat`;
 CREATE TABLE `small_wechat` (
-  `wechat_id` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '微信ID',
-  `b_id` varchar(30) COLLATE utf8_bin DEFAULT '-1' COMMENT '业务ID',
-  `store_Id` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '商户ID',
-  `name` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '小程序名称',
-  `wechat_type` varchar(4) COLLATE utf8_bin NOT NULL COMMENT '配置类型1000微信小程序1100微信公众号',
-  `appId` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '小程序appid',
-  `appSecret` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '应用密钥',
-  `pay_password` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '支付密码',
-  `obj_id` varchar(30) COLLATE utf8_bin NOT NULL COMMENT 'obj_type为当前小区时为小区id，为所有小区时allCommunity表示作用与所有小区',
-  `obj_type` varchar(4) COLLATE utf8_bin NOT NULL COMMENT '配置作用范围 1000当前小区，1100所有小区',
-  `mch_id` varchar(200) COLLATE utf8_bin NOT NULL COMMENT 'mch_id',
-  `remarks` varchar(200) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `wechat_id` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '微信ID',
+  `b_id` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '-1' COMMENT '业务ID',
+  `store_Id` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '商户ID',
+  `name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '小程序名称',
+  `wechat_type` varchar(4) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '配置类型1000微信小程序1100微信公众号',
+  `appId` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '小程序appid',
+  `appSecret` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '应用密钥',
+  `pay_password` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '支付密码',
+  `obj_id` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'obj_type为当前小区时为小区id，为所有小区时allCommunity表示作用与所有小区',
+  `obj_type` varchar(4) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '配置作用范围 1000当前小区，1100所有小区',
+  `mch_id` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'mch_id',
+  `remarks` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL COMMENT '备注信息',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(30) COLLATE utf8_bin NOT NULL DEFAULT '0' COMMENT '数据状态',
-  `cert_path` varchar(512) COLLATE utf8_bin DEFAULT NULL COMMENT '证书地址',
-  `mch_name` varchar(128) COLLATE utf8_bin NOT NULL DEFAULT '无' COMMENT '商户名称',
+  `status_cd` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `cert_path` varchar(512) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL COMMENT '证书地址',
+  `mch_name` varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL DEFAULT '无' COMMENT '商户名称',
   PRIMARY KEY (`wechat_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of small_wechat
@@ -11320,6 +13857,9 @@ INSERT INTO `small_wechat` VALUES ('712025032824650020', '-1', '1020241217561900
 INSERT INTO `small_wechat` VALUES ('712025032884370009', '-1', '102024121756190006', 'xx', '1100', 'xx', 'xx', '1', '2024122649870005', '1000', '1', 'xx', '2025-03-28 16:51:10', '0', '', '1');
 INSERT INTO `small_wechat` VALUES ('712025120612545636', '-1', '102025072745280023', '广州花园小程序', '1000', '09234192834018', '；lksjdf', '1', '20251127410920449', '1000', '1', '', '2025-12-06 09:13:46', '0', '', '1');
 INSERT INTO `small_wechat` VALUES ('712026013091824326', '-1', '102025072745280023', '1', '1000', '1', '1', '1', '2025072783670006', '1000', '1', '', '2026-01-30 15:48:57', '0', '', '1');
+INSERT INTO `small_wechat` VALUES ('712026071202661850', '-1', '102025040775320034', '2', '1100', '2', '2', '1', '20260512817111252', '1000', '1', '1', '2026-07-12 10:25:24', '1', null, '1');
+INSERT INTO `small_wechat` VALUES ('712026071280171866', '-1', '102025040775320034', '2', '1000', '2', '2', '1', '20260512817111252', '1000', '1', '1', '2026-07-12 10:53:47', '1', null, '1');
+INSERT INTO `small_wechat` VALUES ('712026072423340015', '-1', '102025040775320034', '11', '1100', 'xx', 'xx', '1', '20260512817111252', '1000', '1', '', '2026-07-24 15:55:59', '1', null, '1');
 
 -- ----------------------------
 -- Table structure for space_machine_factory
@@ -11333,7 +13873,7 @@ CREATE TABLE `space_machine_factory` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`factory_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of space_machine_factory
@@ -11346,7 +13886,7 @@ INSERT INTO `space_machine_factory` VALUES ('102024030544720007', '1', '2', '2',
 -- ----------------------------
 DROP TABLE IF EXISTS `store_type`;
 CREATE TABLE `store_type` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
   `store_type_cd` varchar(12) NOT NULL COMMENT '店铺编码',
   `name` varchar(50) NOT NULL COMMENT '店铺种类编码',
   `description` varchar(200) DEFAULT NULL COMMENT '描述',
@@ -11354,7 +13894,7 @@ CREATE TABLE `store_type` (
   `is_show` varchar(2) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `store_type_cd` (`store_type_cd`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of store_type
@@ -11368,7 +13908,7 @@ INSERT INTO `store_type` VALUES ('9', '800900000000', '开发团队', '开发团
 -- ----------------------------
 DROP TABLE IF EXISTS `system_info`;
 CREATE TABLE `system_info` (
-  `system_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `system_id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
   `system_title` varchar(64) NOT NULL COMMENT '标题名称',
   `sub_system_title` varchar(64) NOT NULL COMMENT '副标题',
   `company_name` varchar(128) DEFAULT NULL COMMENT '公司名称',
@@ -11383,7 +13923,7 @@ CREATE TABLE `system_info` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `system_simple_title` varchar(64) NOT NULL COMMENT '简写名称',
   PRIMARY KEY (`system_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of system_info
@@ -11406,20 +13946,11 @@ CREATE TABLE `s_community` (
   `lat` varchar(32) DEFAULT NULL COMMENT '精度',
   `lng` varchar(32) DEFAULT NULL COMMENT '维度',
   PRIMARY KEY (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of s_community
 -- ----------------------------
-INSERT INTO `s_community` VALUES ('102026032585800870', 'HBBCY', '湖北省宜昌市伍家岗区土门职教园', '420503', '13487216669', '', '2026-03-25 12:01:11', '0', '', '');
-INSERT INTO `s_community` VALUES ('102026041001793653', '中骏鱼进胎', '河南省郑州市新郑市新村大道', '410184', '13838383838', '', '2026-04-10 17:24:48', '0', '', '');
-INSERT INTO `s_community` VALUES ('102026041724455023', '天下康', '山西省阳泉市矿区小区地址', '140303', '1111', '1111', '2026-04-17 17:45:18', '0', '', '');
-INSERT INTO `s_community` VALUES ('102026041794544972', '演示的', '天津省天津市河东区反对法', '120102', '18909715555', '', '2026-04-17 09:29:28', '0', '', '');
-INSERT INTO `s_community` VALUES ('102026042019245120', '周庄嘉园', '北京省北京市石景山区周庄嘉园', '110107', '13391611111', '', '2026-04-20 09:49:41', '0', '', '');
-INSERT INTO `s_community` VALUES ('102026042023715244', '测试小区', '北京省北京市东城区测试小区', '110101', '13391622222', '', '2026-04-20 10:05:37', '0', '', '');
-INSERT INTO `s_community` VALUES ('20260324548723980', 'HC演示小区', '新福路19号', '140107', '18684716667', '20260324548723980', '2026-03-24 13:57:26', '0', null, null);
-INSERT INTO `s_community` VALUES ('2026040591113646', '翠北小区', '开封市龙亭区黄河大街中段翠园', '410202', '1888888888', '2026040591113646', '2026-04-08 00:22:29', '0', null, null);
-INSERT INTO `s_community` VALUES ('2026040928916346', '九月府', '订单订单', '110101', '12345555', '2026040928916346', '2026-04-09 21:29:53', '0', null, null);
 
 -- ----------------------------
 -- Table structure for s_community_attr
@@ -11436,7 +13967,7 @@ CREATE TABLE `s_community_attr` (
   UNIQUE KEY `attr_id` (`attr_id`) USING BTREE,
   KEY `idx_community_attr_b_id` (`b_id`) USING BTREE,
   KEY `idx_attr_community_id` (`community_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of s_community_attr
@@ -11458,20 +13989,11 @@ CREATE TABLE `s_community_member` (
   `end_time` datetime NOT NULL COMMENT '截租时间',
   PRIMARY KEY (`community_member_id`),
   KEY `idx_s_community_member_id` (`community_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of s_community_member
 -- ----------------------------
-INSERT INTO `s_community_member` VALUES ('102026032584690873', '102026032585800870', '102026032507190853', 'HBBCY', '800900000003', '2026-03-25 12:01:32', '0', '2026-03-25 12:01:32', '2038-01-01 00:00:00');
-INSERT INTO `s_community_member` VALUES ('102026041038213672', '102026041001793653', '102026041037043656', '世邦泰和', '800900000003', '2026-04-10 17:26:11', '0', '2026-04-10 17:26:11', '2038-01-01 00:00:00');
-INSERT INTO `s_community_member` VALUES ('102026041717385043', '102026041724455023', '102026041714635027', '问', '800900000003', '2026-04-17 17:46:15', '0', '2026-04-17 17:46:15', '2038-01-01 00:00:00');
-INSERT INTO `s_community_member` VALUES ('102026041778374975', '102026041794544972', '102026041794914955', 'NANJ', '800900000003', '2026-04-17 09:29:41', '0', '2026-04-17 09:29:40', '2038-01-01 00:00:00');
-INSERT INTO `s_community_member` VALUES ('102026042004095143', '102026042019245120', '102026042022745126', '测试物业', '800900000003', '2026-04-20 09:51:42', '0', '2026-04-20 09:51:42', '2038-01-01 00:00:00');
-INSERT INTO `s_community_member` VALUES ('102026042062475247', '102026042023715244', '102026042022745126', '测试物业', '800900000003', '2026-04-20 10:05:49', '0', '2026-04-20 10:05:49', '2038-01-01 00:00:00');
-INSERT INTO `s_community_member` VALUES ('112026032479790459', '20260324548723980', '1020260324720123961', 'HC演示物业', '800900000003', '2026-03-24 13:57:26', '0', '2026-04-10 16:38:00', '2038-01-01 00:00:00');
-INSERT INTO `s_community_member` VALUES ('112026040890404050', '2026040591113646', '102026040559813670', '鼎丰物业', '800900000003', '2026-04-08 00:22:29', '0', '2026-04-08 00:22:29', '2038-01-01 00:00:00');
-INSERT INTO `s_community_member` VALUES ('112026040940783007', '2026040928916346', '102026040961216363', '久和', '800900000003', '2026-04-09 21:29:53', '0', '2026-04-09 21:29:53', '2038-01-01 00:00:00');
 
 -- ----------------------------
 -- Table structure for s_shop
@@ -11496,7 +14018,7 @@ CREATE TABLE `s_shop` (
   `open_type` varchar(2) NOT NULL COMMENT '开店类型 \r\n1 商家  2 家政 3  全是',
   `area_code` varchar(12) DEFAULT NULL COMMENT '地域编码',
   PRIMARY KEY (`shop_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of s_shop
@@ -11507,6 +14029,11 @@ INSERT INTO `s_shop` VALUES ('502025012327120018', '', '102025012319250002', '�
 INSERT INTO `s_shop` VALUES ('502025120484834669', '', '102025120497694653', '1', '无', '1', '1', '无', '无', '无', '13074136071', '2025-12-04 10:47:48', '0', '002', '1012021070202890002', '1', '630103');
 INSERT INTO `s_shop` VALUES ('502026011256429647', '', '102026011245309631', '张三', '无', '1', '1', '无', '无', '无', '13800138000', '2026-01-12 16:57:48', '0', '002', '1012021070202890002', '1', '440106');
 INSERT INTO `s_shop` VALUES ('502026020250544910', '', '102026020225884894', '11', '无', '1', '1', '无', '无', '无', '11', '2026-02-02 17:34:56', '0', '002', '1012021070202890002', '1', '630103');
+INSERT INTO `s_shop` VALUES ('502026061239252844', '', '102026061245272828', '11', '无', '1', '1', '无', '无', '无', '17797173945', '2026-06-12 13:56:04', '0', '002', '1012021070202890002', '1', '140107');
+INSERT INTO `s_shop` VALUES ('502026070710930113', '', '102026070735830097', '停车', '无', '1', '1', '无', '无', '无', '13101008888', '2026-07-08 07:48:28', '0', '002', '1012021070202890002', '1', '440114');
+INSERT INTO `s_shop` VALUES ('502026071032390067', '', '102026071058680051', '22', '无', '1', '1', '无', '无', '无', '18909714526', '2026-07-11 01:35:45', '0', '002', '1012021070202890002', '1', '440118');
+INSERT INTO `s_shop` VALUES ('502026081430321867', '', '102026081479591851', '张三', '无', '1', '1', '无', '无', '无', '13333333333', '2026-08-14 10:43:47', '0', '002', '1012021070202890002', '1', '120101');
+INSERT INTO `s_shop` VALUES ('502026081528731979', '', '102026081537131963', '节能', '无', '1', '1', '无', '无', '无', '13800138005', '2026-08-15 19:38:09', '0', '002', '1012021070202890002', '1', '120101');
 
 -- ----------------------------
 -- Table structure for s_shop_community
@@ -11526,8 +14053,22 @@ CREATE TABLE `s_shop_community` (
   `address` varchar(200) NOT NULL COMMENT '小区地址',
   `city_code` varchar(12) NOT NULL COMMENT '根据定位获取城市编码',
   `code_name` varchar(12) NOT NULL COMMENT '城市编码名称'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+-- ----------------------------
+-- Records of s_shop_community
+-- ----------------------------
+INSERT INTO `s_shop_community` VALUES ('102023103043950055', '502023103031920053', '102023021386560001', '测试小区', '2023-10-30 04:16:14', '2050-01-01 00:00:00', '24002', '物业添加', '2023-10-30 04:16:15', '1', '无', '120101', '无');
+INSERT INTO `s_shop_community` VALUES ('102023103088100025', '502023103021650023', '102023021386560001', '测试小区', '2023-10-30 04:36:10', '2050-01-01 00:00:00', '24002', '物业添加', '2023-10-30 04:36:10', '0', '无', '120101', '无');
+INSERT INTO `s_shop_community` VALUES ('102025012311840020', '502025012327120018', '102024121715970003', 'HC演示小区', '2025-01-23 00:39:45', '2050-01-01 00:00:00', '24002', '物业添加', '2025-01-23 00:39:48', '0', '无', '120101', '无');
+INSERT INTO `s_shop_community` VALUES ('102025120418014671', '502025120484834669', '2025072783670006', '演示小区', '2025-12-04 10:47:48', '2050-01-01 00:00:00', '24002', '物业添加', '2025-12-04 10:47:48', '0', '无', '630103', '无');
+INSERT INTO `s_shop_community` VALUES ('102026011257059649', '502026011256429647', '20251127410920449', '广州花园小区', '2026-01-12 16:57:48', '2050-01-01 00:00:00', '24002', '物业添加', '2026-01-12 16:57:48', '0', '无', '440106', '无');
+INSERT INTO `s_shop_community` VALUES ('102026020209624912', '502026020250544910', '2025072783670006', '六安***小区', '2026-02-02 17:34:56', '2050-01-01 00:00:00', '24002', '物业添加', '2026-02-02 17:34:56', '0', '无', '630103', '无');
+INSERT INTO `s_shop_community` VALUES ('102026061280772846', '502026061239252844', '20260324548723980', 'HC演示小区', '2026-06-12 13:56:04', '2050-01-01 00:00:00', '24002', '物业添加', '2026-06-12 13:56:04', '0', '无', '140107', '无');
+INSERT INTO `s_shop_community` VALUES ('102026070716840115', '502026070710930113', '102026060205091238', '空港经济开发区', '2026-07-07 23:48:28', '2050-01-01 00:00:00', '24002', '物业添加', '2026-07-08 07:48:28', '0', '无', '440114', '无');
+INSERT INTO `s_shop_community` VALUES ('102026071046020069', '502026071032390067', '20260512817111252', '优才雅苑', '2026-07-10 17:35:45', '2050-01-01 00:00:00', '24002', '物业添加', '2026-07-11 01:35:45', '0', '无', '440118', '无');
+INSERT INTO `s_shop_community` VALUES ('102026081460161869', '502026081430321867', '2026070812860502', '测试积分小区', '2026-08-14 02:43:47', '2050-01-01 00:00:00', '24002', '物业添加', '2026-08-14 10:43:47', '0', '无', '120101', '无');
+INSERT INTO `s_shop_community` VALUES ('102026081581131981', '502026081528731979', '2026070812860502', '测试积分小区', '2026-08-15 11:38:09', '2050-01-01 00:00:00', '24002', '物业添加', '2026-08-15 19:38:09', '0', '无', '120101', '无');
 
 -- ----------------------------
 -- Table structure for s_store
@@ -11544,7 +14085,7 @@ CREATE TABLE `s_store` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商户表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='商户表';
 
 -- ----------------------------
 -- Records of s_store
@@ -11567,8 +14108,73 @@ CREATE TABLE `s_store_attr` (
   UNIQUE KEY `attr_id` (`attr_id`) USING BTREE,
   KEY `idx_store_attr_b_id` (`b_id`) USING BTREE,
   KEY `idx_store_attr_store_id` (`store_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+-- ----------------------------
+-- Records of s_store_attr
+-- ----------------------------
+INSERT INTO `s_store_attr` VALUES (null, '112023021420880002', '102023021412090001', '100201903001', '11', '2023-02-14 01:43:50', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112023021435710003', '102023021412090001', '100201903003', '2023-02-14', '2023-02-14 01:43:51', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112023021466140002', '102023021497100001', '100201903001', '无', '2023-02-14 00:53:31', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112023021488840003', '102023021497100001', '100201903003', '2023-02-15', '2023-02-14 00:53:32', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112024022648692358', '102024022602012356', '100201903001', '曹操', '2024-02-26 13:30:54', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112024022651772429', '102024022670762427', '100201903001', '吴承恩', '2024-02-26 13:53:09', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112024022692952431', '102024022670762427', '100201903003', '2000-01-01', '2024-02-26 13:53:09', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112024022696672360', '102024022602012356', '100201903003', '2000-01-01', '2024-02-26 13:30:54', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112024040200920007', '102024040224260003', '100201903003', '2024-04-02', '2024-04-02 14:31:40', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112024040248530005', '102024040224260003', '100201903001', '李大猫', '2024-04-02 14:31:39', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112024121744510008', '102024121756190006', '100201903001', '无', '2024-12-17 15:51:23', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112024121784490010', '102024121756190006', '100201903003', '2024-12-01', '2024-12-17 15:51:24', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112025121706681346', '102025121764721344', '100201903001', '156', '2025-12-17 11:23:21', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112025121765311348', '102025121764721344', '100201903003', '2025-12-01', '2025-12-17 11:23:21', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112025122249594257', '102025122272274255', '100201903001', '赵总', '2025-12-22 18:16:46', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112025122295834259', '102025122272274255', '100201903003', '2025-12-22', '2025-12-22 18:16:46', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026011308699853', '102025072745280023', '100201903001', '个人', '2026-01-13 12:28:44', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026011372259855', '102025072745280023', '100201903003', '2026-01-14', '2026-01-13 12:28:44', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026032515690855', '102026032507190853', '100201903001', 'XXX', '2026-03-25 11:53:31', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026032539520857', '102026032507190853', '100201903003', '2025-02-12', '2026-03-25 11:53:31', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026041026123658', '102026041037043656', '100201903001', 'xx', '2026-04-10 17:26:10', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026041070573660', '102026041037043656', '100201903003', '2016', '2026-04-10 17:26:10', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026041239833974', '102026041216283972', '100201903001', '13145677654', '2026-04-12 16:18:20', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026041288813976', '102026041216283972', '100201903003', '2026-04-12', '2026-04-12 16:18:20', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026041564844838', '102026041583084834', '100201903003', '2026-04-14', '2026-04-15 10:59:12', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026041597294836', '102026041583084834', '100201903001', '张三', '2026-04-15 10:59:12', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026041705665031', '102026041714635027', '100201903003', '312312', '2026-04-17 17:46:15', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026041715294959', '102026041794914955', '100201903003', '2026-02-04', '2026-04-17 09:27:52', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026041730665029', '102026041714635027', '100201903001', '12312', '2026-04-17 17:46:15', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026041769484957', '102026041794914955', '100201903001', '康有为', '2026-04-17 09:27:52', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026042035415128', '102026042022745126', '100201903001', '木易', '2026-04-20 09:51:31', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026042054035130', '102026042022745126', '100201903003', '2026-04-01', '2026-04-20 09:51:31', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026042539020105', '102026042522360103', '100201903001', '1', '2026-04-25 19:39:55', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026042561810107', '102026042522360103', '100201903003', '1', '2026-04-25 19:39:55', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026051916470241', '102026051925480239', '100201903001', '111', '2026-05-19 22:01:13', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026051980080243', '102026051925480239', '100201903003', '2026-05-19', '2026-05-19 22:01:13', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026052110860399', '102026052112510397', '100201903001', '17319377777', '2026-05-21 11:46:13', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026052120760401', '102026052112510397', '100201903003', '1899-12-14', '2026-05-21 11:46:13', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026052149150340', '102026052121610336', '100201903003', '2026-05-21', '2026-05-21 11:39:38', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026052194660338', '102026052121610336', '100201903001', '王杰', '2026-05-21 11:39:38', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026052785430739', '102026052717760735', '100201903003', '2021-02-19', '2026-05-27 11:03:03', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026052785910737', '102026052717760735', '100201903001', '贾佳密', '2026-05-27 11:03:03', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026060234751165', '102026060284201163', '100201903001', '张三', '2026-06-02 09:43:41', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026060249581223', '102026060219211221', '100201903001', '黄先锋', '2026-06-02 10:04:04', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026060281231167', '102026060284201163', '100201903003', '2026-06-01', '2026-06-02 09:43:41', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026060298661225', '102026060219211221', '100201903003', '2023-02-01', '2026-06-02 10:04:04', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026060314881360', '102026060327111358', '100201903001', '王', '2026-06-03 10:22:10', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026060318551362', '102026060327111358', '100201903003', '2026-06-04', '2026-06-03 10:22:10', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026070310437171', '102026070374867169', '100201903001', 'ces', '2026-07-03 11:18:34', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026070371227173', '102026070374867169', '100201903003', '2026-07-03', '2026-07-03 11:18:34', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026070919590105', '102026070989780103', '100201903001', 'vue2测试小区', '2026-07-09 09:37:35', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026070924300044', '102026070942810042', '100201903001', 'vue2测试小区', '2026-07-09 09:36:35', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026070969220107', '102026070989780103', '100201903003', '2026-07-01', '2026-07-09 09:37:35', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026070975190046', '102026070942810042', '100201903003', '2026-07-01', '2026-07-09 09:36:35', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026081216830100', '102026081297130096', '100201903003', '2026-08-02', '2026-08-12 11:43:27', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026081247470098', '102026081297130096', '100201903001', 'ff', '2026-08-12 11:43:27', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026082404995402', '102026082491715398', '100201903003', '2024-08-14', '2026-08-24 17:28:23', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026082444205400', '102026082491715398', '100201903001', '杨环', '2026-08-24 17:28:23', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026082869170020', '102026082849780018', '100201903001', 'yxt', '2026-08-28 11:53:41', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026082897520022', '102026082849780018', '100201903003', '2026-08-28', '2026-08-28 11:53:41', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026083142500221', '102026083189830219', '100201903001', 'z', '2026-08-31 15:33:26', '0');
+INSERT INTO `s_store_attr` VALUES (null, '112026083183970223', '102026083189830219', '100201903003', '2026-08-03', '2026-08-31 15:33:26', '0');
 
 -- ----------------------------
 -- Table structure for s_store_staff
@@ -11584,8 +14190,31 @@ CREATE TABLE `s_store_staff` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`store_staff_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+-- ----------------------------
+-- Records of s_store_staff
+-- ----------------------------
+INSERT INTO `s_store_staff` VALUES ('112024021569640024', '400000000000000001', '302024021564470324', '张三', '13789564585', 'N', '2024-02-15 15:50:53', '0');
+INSERT INTO `s_store_staff` VALUES ('112024021958690356', '400000000000000001', '302024021914113246', 'wym', '15618611116', 'N', '2024-02-19 14:20:30', '0');
+INSERT INTO `s_store_staff` VALUES ('112024022199420796', '400000000000000001', '302024022170156996', '111', '22122', 'N', '2024-02-21 10:19:52', '0');
+INSERT INTO `s_store_staff` VALUES ('112024022457411935', '400000000000000001', '302024022434513355', '小艺哥', '13639399343', 'N', '2024-02-24 08:48:28', '0');
+INSERT INTO `s_store_staff` VALUES ('112025112664091520', '400000000000000001', '3020251126366914205', '123', '13333333333', 'N', '2025-11-26 17:30:23', '0');
+INSERT INTO `s_store_staff` VALUES ('112025112751471916', '400000000000000001', '3020251127572118303', '啊里达', '18888888888', 'N', '2025-11-27 13:07:25', '0');
+INSERT INTO `s_store_staff` VALUES ('112025112820532396', '400000000000000001', '3020251128301421704', '艾力·买买提', '19800000000', 'N', '2025-11-28 13:20:53', '0');
+INSERT INTO `s_store_staff` VALUES ('112025112886082392', '400000000000000001', '3020251128306521623', '陈总', '13000000000', 'N', '2025-11-28 13:04:57', '0');
+INSERT INTO `s_store_staff` VALUES ('112025121068096975', '400000000000000001', '3020251210061414424', '杨等等', '15260555326', 'N', '2025-12-10 17:01:56', '0');
+INSERT INTO `s_store_staff` VALUES ('112025121718731308', '400000000000000001', '302025121743717677', '阿大', '18800001122', 'N', '2025-12-17 10:27:35', '0');
+INSERT INTO `s_store_staff` VALUES ('112026010539752477', '400000000000000001', '302026010584051044', 'long', '19799999999', 'N', '2026-01-05 12:15:15', '0');
+INSERT INTO `s_store_staff` VALUES ('112026010834046769', '400000000000000001', '302026010843460141', '陆振伟', '18258328605', 'N', '2026-01-08 13:43:10', '0');
+INSERT INTO `s_store_staff` VALUES ('112026011184379337', '400000000000000001', '302026011107011986', 'wwwww', '13360662913', 'N', '2026-01-11 20:39:23', '0');
+INSERT INTO `s_store_staff` VALUES ('112026012191667046', '400000000000000001', '302026012181626666', 'alis', '18111111111', 'N', '2026-01-21 17:33:58', '0');
+INSERT INTO `s_store_staff` VALUES ('112026020616760503', '400000000000000001', '3020260206447617777', '智慧安保', '13266668888', 'N', '2026-02-06 16:12:34', '0');
+INSERT INTO `s_store_staff` VALUES ('112026031122124010', '400000000000000001', '302026031128989726', 'ces111', '13058421365', 'N', '2026-03-11 11:05:12', '0');
+INSERT INTO `s_store_staff` VALUES ('112026031704836218', '400000000000000001', '3020260317001811998', '管理员', '13143306767', 'N', '2026-03-17 18:41:23', '0');
+INSERT INTO `s_store_staff` VALUES ('112026032312817861', '400000000000000001', '3020260323953926651', 'manyi', '13000000001', 'N', '2026-03-23 16:05:04', '0');
+INSERT INTO `s_store_staff` VALUES ('112026060837031703', '400000000000000001', '302026060832823954', 'cs', '18216598111', 'N', '2026-06-08 10:45:50', '0');
+INSERT INTO `s_store_staff` VALUES ('112026062338933551', '400000000000000001', '3020260623844828927', '陈小平', '15800576547', 'N', '2026-06-23 09:11:44', '0');
 INSERT INTO `s_store_staff` VALUES ('452019013038670004', '400000000000000001', '30518939884421922816', 'admin', '17797173944', 'Y', '2019-03-30 08:31:29', '0');
 INSERT INTO `s_store_staff` VALUES ('452019062708080001', '400000000000000002', '30520751775595118592', 'dev', '17797173944', 'Y', '2019-03-30 08:31:29', '0');
 
@@ -11603,7 +14232,7 @@ CREATE TABLE `task` (
   `status_cd` varchar(30) NOT NULL DEFAULT '0' COMMENT '状态',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`task_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of task
@@ -11612,6 +14241,7 @@ INSERT INTO `task` VALUES ('522024050669110015', '-1', '伊特智慧门禁查询
 INSERT INTO `task` VALUES ('522024050670050023', '-1', '12', '1', '1', '001', '1', '2024-05-06 17:36:03');
 INSERT INTO `task` VALUES ('522025032430450007', '-1', '门禁定时器（定时查询门禁心跳）', '2', '0 */1 * * * ?', '001', '0', '2025-03-24 13:34:41');
 INSERT INTO `task` VALUES ('522025052027680002', '-1', 'xx', '1', '0 0 0 0 0 ?', '001', '1', '2025-05-20 16:20:29');
+INSERT INTO `task` VALUES ('522026072758420187', '-1', '车辆进场转移历史', '3', '0 30 3 * * ?', '001', '0', '2026-07-27 08:44:00');
 
 -- ----------------------------
 -- Table structure for task_attr
@@ -11625,7 +14255,7 @@ CREATE TABLE `task_attr` (
   `value` varchar(50) NOT NULL COMMENT '属性值',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(12) NOT NULL COMMENT '数据有效状态 0 有效 1失效'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of task_attr
@@ -11643,13 +14273,14 @@ CREATE TABLE `task_template` (
   `status_cd` varchar(12) NOT NULL DEFAULT '0' COMMENT '状态 0 有效 1 失效',
   `class_bean` varchar(200) NOT NULL COMMENT '模板处理spring bean 类',
   PRIMARY KEY (`template_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of task_template
 -- ----------------------------
 INSERT INTO `task_template` VALUES ('1', '伊特智慧门禁查询心跳', '伊特智慧门禁', '2024-05-06 17:24:46', '0', 'yiteAccessControlHeartbeatTemplate');
 INSERT INTO `task_template` VALUES ('2', '门禁定时器', '门禁定时器', '2024-05-06 17:24:46', '0', 'accessControlTaskTemplate');
+INSERT INTO `task_template` VALUES ('3', '车辆进场转移历史', '车辆进场转移历史', '2026-07-27 08:42:54', '0', 'carInoutHistoryMigrateTask');
 
 -- ----------------------------
 -- Table structure for task_template_spec
@@ -11664,7 +14295,7 @@ CREATE TABLE `task_template_spec` (
   `is_show` varchar(12) NOT NULL DEFAULT 'T' COMMENT '页面是否展示，T就是展示 F 不展示',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(12) NOT NULL DEFAULT '0' COMMENT '状态 0 有效 1 失效'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of task_template_spec
@@ -11690,7 +14321,7 @@ CREATE TABLE `tel_call_log` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`cl_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of tel_call_log
@@ -11715,7 +14346,7 @@ CREATE TABLE `tel_machine` (
   `fail_prompt` varchar(512) DEFAULT NULL COMMENT '未接听提示语',
   PRIMARY KEY (`machine_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of tel_machine
@@ -11737,7 +14368,7 @@ CREATE TABLE `tel_machine_user` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`tmu_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of tel_machine_user
@@ -11761,7 +14392,7 @@ CREATE TABLE `tel_sms_log` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`sl_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of tel_sms_log
@@ -11782,7 +14413,7 @@ CREATE TABLE `tel_tts` (
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`tt_id`),
   KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of tel_tts
@@ -11809,13 +14440,11 @@ CREATE TABLE `temp_car_fee_config` (
   PRIMARY KEY (`config_id`),
   KEY `tcfc_community_id` (`community_id`),
   KEY `tcfc_pa_id` (`pa_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of temp_car_fee_config
 -- ----------------------------
-INSERT INTO `temp_car_fee_config` VALUES ('922026033080021205', '临停', '-1', '1020260325266021769', '1', '1', '6700012005', '20260324548723980', '2026-03-30 00:00:00', '2026-03-31 00:00:00', '2026-03-30 16:36:12', '0');
-INSERT INTO `temp_car_fee_config` VALUES ('922026033106981778', 'cc', '-1', '1020260325266021769', '1', '9902', '6700012001', '20260324548723980', '2026-03-30 00:00:00', '2030-12-31 00:00:00', '2026-03-31 22:41:57', '0');
 
 -- ----------------------------
 -- Table structure for temp_car_fee_config_attr
@@ -11830,8 +14459,207 @@ CREATE TABLE `temp_car_fee_config_attr` (
   `value` varchar(500) NOT NULL COMMENT '属性值',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+-- ----------------------------
+-- Records of temp_car_fee_config_attr
+-- ----------------------------
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023092292110003', '-1', '102023021386560001', '112023092295300004', '5600012001', '31', '0', '2023-09-22 22:24:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023092292110003', '-1', '102023021386560001', '112023092232270006', '5600012009', '12', '0', '2023-09-22 22:24:12');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023092292110003', '-1', '102023021386560001', '112023092285190008', '5600012002', '60', '0', '2023-09-22 22:24:12');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023092292110003', '-1', '102023021386560001', '112023092268790010', '5600012003', '5', '0', '2023-09-22 22:24:12');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023092292110003', '-1', '102023021386560001', '112023092253460012', '5600012004', '60', '0', '2023-09-22 22:24:12');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023092292110003', '-1', '102023021386560001', '112023092256150014', '5600012005', '2', '0', '2023-09-22 22:24:12');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023092292110003', '-1', '102023021386560001', '112023092294080016', '5600012006', '480', '0', '2023-09-22 22:24:12');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023092292110003', '-1', '102023021386560001', '112023092248840018', '5600012007', '60', '0', '2023-09-22 22:24:12');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023092292110003', '-1', '102023021386560001', '112023092206590020', '5600012008', '2', '0', '2023-09-22 22:24:12');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120901170003', '-1', '102023021386560001', '112023120984120004', '5600012001', '1', '1', '2023-12-09 14:26:35');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120901170003', '-1', '102023021386560001', '112023120953600006', '5600012009', '1', '1', '2023-12-09 14:26:35');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120901170003', '-1', '102023021386560001', '112023120973220008', '5600012002', '1', '1', '2023-12-09 14:26:35');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120901170003', '-1', '102023021386560001', '112023120995460010', '5600012003', '1', '1', '2023-12-09 14:26:35');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120901170003', '-1', '102023021386560001', '112023120955640012', '5600012004', '1', '1', '2023-12-09 14:26:35');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120901170003', '-1', '102023021386560001', '112023120933710014', '5600012005', '1', '1', '2023-12-09 14:26:35');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120901170003', '-1', '102023021386560001', '112023120939480016', '5600012006', '1', '0', '2023-12-09 14:26:35');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120901170003', '-1', '102023021386560001', '112023120901440018', '5600012007', '1', '0', '2023-12-09 14:26:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120901170003', '-1', '102023021386560001', '112023120983980020', '5600012008', '1', '0', '2023-12-09 14:26:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120955430005', '-1', '102023021386560001', '112023120970530006', '5600012001', '1', '1', '2023-12-09 14:41:41');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120955430005', '-1', '102023021386560001', '112023120938510008', '5600012009', '1', '1', '2023-12-09 14:41:41');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120955430005', '-1', '102023021386560001', '112023120940420010', '5600012002', '1', '1', '2023-12-09 14:41:42');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120955430005', '-1', '102023021386560001', '112023120925700012', '5600012003', '1', '1', '2023-12-09 14:41:42');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120955430005', '-1', '102023021386560001', '112023120940760014', '5600012004', '1', '1', '2023-12-09 14:41:42');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120955430005', '-1', '102023021386560001', '112023120950620016', '5600012005', '1', '0', '2023-12-09 14:41:42');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120955430005', '-1', '102023021386560001', '112023120920080018', '5600012006', '1', '0', '2023-12-09 14:41:42');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120955430005', '-1', '102023021386560001', '112023120976040020', '5600012007', '1', '0', '2023-12-09 14:41:42');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120955430005', '-1', '102023021386560001', '112023120913230022', '5600012008', '1', '0', '2023-12-09 14:41:42');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120919080014', '-1', '102023021386560001', '112023120967860015', '5600012001', '1', '1', '2023-12-09 15:50:29');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120919080014', '-1', '102023021386560001', '112023120939750017', '5600012009', '1', '1', '2023-12-09 15:50:29');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120919080014', '-1', '102023021386560001', '112023120937700019', '5600012002', '1', '1', '2023-12-09 15:50:29');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120919080014', '-1', '102023021386560001', '112023120965950021', '5600012003', '1', '1', '2023-12-09 15:50:29');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120919080014', '-1', '102023021386560001', '112023120967580023', '5600012004', '1', '1', '2023-12-09 15:50:29');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120919080014', '-1', '102023021386560001', '112023120977070025', '5600012005', '1', '1', '2023-12-09 15:50:29');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120919080014', '-1', '102023021386560001', '112023120941830027', '5600012006', '1', '1', '2023-12-09 15:50:29');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120919080014', '-1', '102023021386560001', '112023120958790029', '5600012007', '1', '1', '2023-12-09 15:50:29');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120919080014', '-1', '102023021386560001', '112023120914120031', '5600012008', '1', '1', '2023-12-09 15:50:30');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120923060014', '-1', '102023021386560001', '112023120943510015', '5600012001', '1', '1', '2023-12-09 15:57:16');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120923060014', '-1', '102023021386560001', '112023120938450017', '5600012009', '1', '1', '2023-12-09 15:57:16');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120923060014', '-1', '102023021386560001', '112023120969490019', '5600012002', '1', '1', '2023-12-09 15:57:17');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120923060014', '-1', '102023021386560001', '112023120998700021', '5600012003', '1', '1', '2023-12-09 15:57:17');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120923060014', '-1', '102023021386560001', '112023120920150023', '5600012004', '1', '1', '2023-12-09 15:57:17');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120923060014', '-1', '102023021386560001', '112023120900110025', '5600012005', '1', '1', '2023-12-09 15:57:17');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120923060014', '-1', '102023021386560001', '112023120907250027', '5600012006', '1', '1', '2023-12-09 15:57:17');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120923060014', '-1', '102023021386560001', '112023120930220029', '5600012007', '1', '1', '2023-12-09 15:57:17');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922023120923060014', '-1', '102023021386560001', '112023120986740031', '5600012008', '1', '1', '2023-12-09 15:57:17');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024020158500013', '-1', '2024012252790005', '112024020106430014', '5600012001', '30', '0', '2024-02-01 15:40:15');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024020158500013', '-1', '2024012252790005', '112024020193770016', '5600012009', '0.1', '0', '2024-02-01 15:40:15');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024020158500013', '-1', '2024012252790005', '112024020143750018', '5600012002', '60', '0', '2024-02-01 15:40:15');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024020158500013', '-1', '2024012252790005', '112024020133150020', '5600012003', '0.1', '0', '2024-02-01 15:40:15');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024020158500013', '-1', '2024012252790005', '112024020137460022', '5600012004', '120', '0', '2024-02-01 15:40:15');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024020158500013', '-1', '2024012252790005', '112024020169170024', '5600012005', '0.1', '0', '2024-02-01 15:40:16');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024020158500013', '-1', '2024012252790005', '112024020125050026', '5600012006', '480', '0', '2024-02-01 15:40:16');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024020158500013', '-1', '2024012252790005', '112024020145970028', '5600012007', '60', '0', '2024-02-01 15:40:16');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024020158500013', '-1', '2024012252790005', '112024020125280030', '5600012008', '0.1', '0', '2024-02-01 15:40:16');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032173820038', '5600012019', '07:00', '0', '2024-03-21 01:56:25');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032177320040', '5600012020', '20:00', '0', '2024-03-21 01:56:25');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032174030042', '5600012021', '1', '0', '2024-03-21 01:56:26');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032183810044', '5600012022', '1', '0', '2024-03-21 01:56:26');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032106670046', '5600012023', '1', '0', '2024-03-21 01:56:26');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032100270048', '5600012024', '1', '0', '2024-03-21 01:56:26');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032183460050', '5600012025', '1', '0', '2024-03-21 01:56:26');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032187780052', '5600012026', '2', '0', '2024-03-21 01:56:26');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032111560054', '5600012027', '20:00', '0', '2024-03-21 01:56:26');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032185950056', '5600012028', '07:00', '0', '2024-03-21 01:56:26');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032167310058', '5600012029', '1', '0', '2024-03-21 01:56:26');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032115820060', '5600012030', '1', '0', '2024-03-21 01:56:27');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032111570062', '5600012031', '1', '0', '2024-03-21 01:56:27');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032121980064', '5600012032', '1', '0', '2024-03-21 01:56:27');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032181040066', '5600012033', '1', '0', '2024-03-21 01:56:27');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922024032122290037', '-1', '2023052267100146', '112024032160320068', '5600012034', '1', '0', '2024-03-21 01:56:27');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120300084491', '-1', '20251127410920449', '112025120377414492', '5600012001', '0', '0', '2025-12-03 15:18:12');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120300084491', '-1', '20251127410920449', '112025120332934494', '5600012009', '100000', '0', '2025-12-03 15:18:13');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120300084491', '-1', '20251127410920449', '112025120377314496', '5600012002', '60', '0', '2025-12-03 15:18:13');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120300084491', '-1', '20251127410920449', '112025120382444498', '5600012003', '3', '0', '2025-12-03 15:18:13');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120300084491', '-1', '20251127410920449', '112025120327554500', '5600012004', '60', '0', '2025-12-03 15:18:13');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120300084491', '-1', '20251127410920449', '112025120321644502', '5600012005', '1', '0', '2025-12-03 15:18:13');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120300084491', '-1', '20251127410920449', '112025120351234504', '5600012006', '0', '0', '2025-12-03 15:18:13');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120300084491', '-1', '20251127410920449', '112025120337104506', '5600012007', '0', '0', '2025-12-03 15:18:13');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120300084491', '-1', '20251127410920449', '112025120350564508', '5600012008', '0', '0', '2025-12-03 15:18:13');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120894586029', '-1', '2024122649870005', '112025120801006030', '5600012001', '0', '0', '2025-12-08 12:54:38');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120894586029', '-1', '2024122649870005', '112025120870926032', '5600012009', '5000', '0', '2025-12-08 12:54:38');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120894586029', '-1', '2024122649870005', '112025120808846034', '5600012002', '60', '0', '2025-12-08 12:54:38');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120894586029', '-1', '2024122649870005', '112025120884926036', '5600012003', '3', '0', '2025-12-08 12:54:38');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120894586029', '-1', '2024122649870005', '112025120898466038', '5600012004', '60', '0', '2025-12-08 12:54:38');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120894586029', '-1', '2024122649870005', '112025120837476040', '5600012005', '3', '0', '2025-12-08 12:54:38');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120894586029', '-1', '2024122649870005', '112025120888556042', '5600012006', '0', '0', '2025-12-08 12:54:38');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120894586029', '-1', '2024122649870005', '112025120831766044', '5600012007', '0', '0', '2025-12-08 12:54:38');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025120894586029', '-1', '2024122649870005', '112025120861946046', '5600012008', '0', '0', '2025-12-08 12:54:38');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025121257090008', '-1', '2025072783670006', '112025121287370009', '5600012001', '10', '0', '2025-12-12 22:51:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025121257090008', '-1', '2025072783670006', '112025121241920011', '5600012009', '100', '0', '2025-12-12 22:51:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025121257090008', '-1', '2025072783670006', '112025121283160013', '5600012002', '120', '0', '2025-12-12 22:51:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025121257090008', '-1', '2025072783670006', '112025121288970015', '5600012003', '20', '0', '2025-12-12 22:51:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025121257090008', '-1', '2025072783670006', '112025121266700017', '5600012004', '20', '0', '2025-12-12 22:51:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025121257090008', '-1', '2025072783670006', '112025121231710019', '5600012005', '20', '0', '2025-12-12 22:51:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025121257090008', '-1', '2025072783670006', '112025121236620021', '5600012006', '20', '0', '2025-12-12 22:51:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025121257090008', '-1', '2025072783670006', '112025121254830023', '5600012007', '20', '0', '2025-12-12 22:51:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025121257090008', '-1', '2025072783670006', '112025121213060025', '5600012008', '20', '0', '2025-12-12 22:51:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025122258183344', '-1', '2025122258513939', '112025122251973345', '5600012001', '60', '0', '2025-12-22 12:23:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025122258183344', '-1', '2025122258513939', '112025122252823347', '5600012009', '10', '0', '2025-12-22 12:23:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025122258183344', '-1', '2025122258513939', '112025122254193349', '5600012002', '5', '0', '2025-12-22 12:23:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025122258183344', '-1', '2025122258513939', '112025122293883351', '5600012003', '10', '0', '2025-12-22 12:23:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025122258183344', '-1', '2025122258513939', '112025122256933353', '5600012004', '10', '0', '2025-12-22 12:23:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025122258183344', '-1', '2025122258513939', '112025122280683355', '5600012005', '10', '0', '2025-12-22 12:23:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025122258183344', '-1', '2025122258513939', '112025122277143357', '5600012006', '11', '0', '2025-12-22 12:23:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025122258183344', '-1', '2025122258513939', '112025122287093359', '5600012007', '11', '0', '2025-12-22 12:23:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922025122258183344', '-1', '2025122258513939', '112025122214213361', '5600012008', '11', '0', '2025-12-22 12:23:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026011928263949', '-1', '2025072783670006', '112026011960833950', '5600012001', '15', '0', '2026-01-19 10:06:22');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026011928263949', '-1', '2025072783670006', '112026011992023952', '5600012009', '20', '0', '2026-01-19 10:06:22');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026011928263949', '-1', '2025072783670006', '112026011932713954', '5600012002', '0', '0', '2026-01-19 10:06:22');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026011928263949', '-1', '2025072783670006', '112026011937913956', '5600012003', '5', '0', '2026-01-19 10:06:22');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026011928263949', '-1', '2025072783670006', '112026011906283958', '5600012004', '60', '0', '2026-01-19 10:06:22');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026011928263949', '-1', '2025072783670006', '112026011953593960', '5600012005', '4', '0', '2026-01-19 10:06:22');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026011928263949', '-1', '2025072783670006', '112026011941923962', '5600012006', '100', '0', '2026-01-19 10:06:23');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026011928263949', '-1', '2025072783670006', '112026011905033964', '5600012007', '3', '0', '2026-01-19 10:06:23');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026011928263949', '-1', '2025072783670006', '112026011972623966', '5600012008', '100', '0', '2026-01-19 10:06:23');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030268285017', '-1', '2025072783670006', '112026030254045018', '5600012001', '15', '0', '2026-03-02 22:21:27');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030268285017', '-1', '2025072783670006', '112026030239545020', '5600012009', '10', '0', '2026-03-02 22:21:27');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030268285017', '-1', '2025072783670006', '112026030262225022', '5600012002', '60', '0', '2026-03-02 22:21:27');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030268285017', '-1', '2025072783670006', '112026030251305024', '5600012003', '3', '0', '2026-03-02 22:21:27');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030268285017', '-1', '2025072783670006', '112026030201335026', '5600012004', '60', '0', '2026-03-02 22:21:27');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030268285017', '-1', '2025072783670006', '112026030244435028', '5600012005', '3', '0', '2026-03-02 22:21:27');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030268285017', '-1', '2025072783670006', '112026030201895030', '5600012006', '1440', '0', '2026-03-02 22:21:27');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030268285017', '-1', '2025072783670006', '112026030244635032', '5600012007', '60', '0', '2026-03-02 22:21:27');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030268285017', '-1', '2025072783670006', '112026030254015034', '5600012008', '3', '0', '2026-03-02 22:21:27');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030612520310', '-1', '2025072783670006', '112026030698250311', '5600012001', '30', '0', '2026-03-06 08:40:16');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030612520310', '-1', '2025072783670006', '112026030636690313', '5600012009', '30', '0', '2026-03-06 08:40:16');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030612520310', '-1', '2025072783670006', '112026030699460315', '5600012002', '30', '0', '2026-03-06 08:40:16');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030612520310', '-1', '2025072783670006', '112026030649500317', '5600012003', '0', '0', '2026-03-06 08:40:16');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030612520310', '-1', '2025072783670006', '112026030624320319', '5600012004', '30', '0', '2026-03-06 08:40:16');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030612520310', '-1', '2025072783670006', '112026030648390321', '5600012005', '5', '0', '2026-03-06 08:40:16');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030612520310', '-1', '2025072783670006', '112026030687910323', '5600012006', '30', '0', '2026-03-06 08:40:16');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030612520310', '-1', '2025072783670006', '112026030606940325', '5600012007', '30', '0', '2026-03-06 08:40:16');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026030612520310', '-1', '2025072783670006', '112026030639470327', '5600012008', '2', '0', '2026-03-06 08:40:16');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033080021205', '-1', '20260324548723980', '112026033019561206', '5600012010', '60', '0', '2026-03-30 16:36:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033080021205', '-1', '20260324548723980', '112026033016081208', '5600012018', '60', '0', '2026-03-30 16:36:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033080021205', '-1', '20260324548723980', '112026033024231210', '5600012011', '30', '0', '2026-03-30 16:36:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033080021205', '-1', '20260324548723980', '112026033035551212', '5600012012', '30', '0', '2026-03-30 16:36:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033080021205', '-1', '20260324548723980', '112026033012761214', '5600012013', '30', '0', '2026-03-30 16:36:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033080021205', '-1', '20260324548723980', '112026033005931216', '5600012014', '30', '0', '2026-03-30 16:36:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033080021205', '-1', '20260324548723980', '112026033030761218', '5600012015', '30', '0', '2026-03-30 16:36:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033080021205', '-1', '20260324548723980', '112026033045581220', '5600012016', '30', '0', '2026-03-30 16:36:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033080021205', '-1', '20260324548723980', '112026033078721222', '5600012017', '30', '0', '2026-03-30 16:36:11');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033106981778', '-1', '20260324548723980', '112026033162261779', '5600012001', '0', '0', '2026-03-31 22:41:57');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033106981778', '-1', '20260324548723980', '112026033145161781', '5600012009', '0', '0', '2026-03-31 22:41:57');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033106981778', '-1', '20260324548723980', '112026033155821783', '5600012002', '0', '0', '2026-03-31 22:41:57');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033106981778', '-1', '20260324548723980', '112026033186411785', '5600012003', '0', '0', '2026-03-31 22:41:57');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033106981778', '-1', '20260324548723980', '112026033197361787', '5600012004', '0', '0', '2026-03-31 22:41:57');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033106981778', '-1', '20260324548723980', '112026033146881789', '5600012005', '0', '0', '2026-03-31 22:41:57');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033106981778', '-1', '20260324548723980', '112026033126401791', '5600012006', '0', '0', '2026-03-31 22:41:57');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033106981778', '-1', '20260324548723980', '112026033113311793', '5600012007', '0', '0', '2026-03-31 22:41:57');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026033106981778', '-1', '20260324548723980', '112026033143201795', '5600012008', '0', '0', '2026-03-31 22:41:57');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071069530149', '-1', '20260512817111252', '112026071058200150', '5600012001', '30', '0', '2026-07-10 18:44:12');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071069530149', '-1', '20260512817111252', '112026071017120152', '5600012009', '15', '0', '2026-07-10 18:44:12');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071069530149', '-1', '20260512817111252', '112026071056500154', '5600012002', '60', '0', '2026-07-10 18:44:13');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071069530149', '-1', '20260512817111252', '112026071011650156', '5600012003', '5', '0', '2026-07-10 18:44:13');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071069530149', '-1', '20260512817111252', '112026071008270158', '5600012004', '120', '0', '2026-07-10 18:44:13');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071069530149', '-1', '20260512817111252', '112026071080230160', '5600012005', '8', '0', '2026-07-10 18:44:13');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071069530149', '-1', '20260512817111252', '112026071064050162', '5600012006', '480', '0', '2026-07-10 18:44:13');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071069530149', '-1', '20260512817111252', '112026071093120164', '5600012007', '60', '0', '2026-07-10 18:44:13');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071069530149', '-1', '20260512817111252', '112026071003170166', '5600012008', '1', '0', '2026-07-10 18:44:13');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071085620054', '-1', '20260512817111252', '112026071055930055', '5600012001', '30', '0', '2026-07-11 00:34:41');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071085620054', '-1', '20260512817111252', '112026071096070057', '5600012009', '15', '0', '2026-07-11 00:34:41');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071085620054', '-1', '20260512817111252', '112026071025480059', '5600012002', '1', '0', '2026-07-11 00:34:41');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071085620054', '-1', '20260512817111252', '112026071007820061', '5600012003', '1', '0', '2026-07-11 00:34:41');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071085620054', '-1', '20260512817111252', '112026071024610063', '5600012004', '1', '0', '2026-07-11 00:34:41');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071085620054', '-1', '20260512817111252', '112026071018310065', '5600012005', '1', '0', '2026-07-11 00:34:41');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071085620054', '-1', '20260512817111252', '112026071009190067', '5600012006', '1', '0', '2026-07-11 00:34:41');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071085620054', '-1', '20260512817111252', '112026071046010069', '5600012007', '1', '0', '2026-07-11 00:34:41');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026071085620054', '-1', '20260512817111252', '112026071047210071', '5600012008', '1', '0', '2026-07-11 00:34:41');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026072785950086', '-1', '20260512817111252', '112026072747640087', '5600012001', '30', '0', '2026-07-27 13:51:09');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026072785950086', '-1', '20260512817111252', '112026072768980089', '5600012009', '200', '0', '2026-07-27 13:51:09');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026072785950086', '-1', '20260512817111252', '112026072716860091', '5600012002', '30', '0', '2026-07-27 13:51:09');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026072785950086', '-1', '20260512817111252', '112026072729800093', '5600012003', '30', '0', '2026-07-27 13:51:09');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026072785950086', '-1', '20260512817111252', '112026072743090095', '5600012004', '30', '0', '2026-07-27 13:51:09');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026072785950086', '-1', '20260512817111252', '112026072798620097', '5600012005', '30', '0', '2026-07-27 13:51:09');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026072785950086', '-1', '20260512817111252', '112026072719950099', '5600012006', '3', '0', '2026-07-27 13:51:09');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026072785950086', '-1', '20260512817111252', '112026072732760101', '5600012007', '5', '0', '2026-07-27 13:51:09');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026072785950086', '-1', '20260512817111252', '112026072720860103', '5600012008', '30', '0', '2026-07-27 13:51:09');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026081780552106', '-1', '2025040746580017', '112026081788052107', '5600012001', '1', '0', '2026-08-17 19:09:58');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026081780552106', '-1', '2025040746580017', '112026081747042109', '5600012009', '150', '0', '2026-08-17 19:09:58');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026081780552106', '-1', '2025040746580017', '112026081769282111', '5600012002', '10', '0', '2026-08-17 19:09:58');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026081780552106', '-1', '2025040746580017', '112026081760952113', '5600012003', '2.2', '0', '2026-08-17 19:09:58');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026081780552106', '-1', '2025040746580017', '112026081711582115', '5600012004', '1', '0', '2026-08-17 19:09:58');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026081780552106', '-1', '2025040746580017', '112026081735272117', '5600012005', '0.5', '0', '2026-08-17 19:09:58');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026081780552106', '-1', '2025040746580017', '112026081719422119', '5600012006', '1', '0', '2026-08-17 19:09:58');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026081780552106', '-1', '2025040746580017', '112026081794732121', '5600012007', '0.1', '0', '2026-08-17 19:09:58');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026081780552106', '-1', '2025040746580017', '112026081722852123', '5600012008', '12', '0', '2026-08-17 19:09:58');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026090428141525', '-1', '2026070788800612', '112026090495951526', '5600012001', '3', '0', '2026-09-04 15:11:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026090428141525', '-1', '2026070788800612', '112026090490511528', '5600012009', '18', '0', '2026-09-04 15:11:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026090428141525', '-1', '2026070788800612', '112026090435051530', '5600012002', '30', '0', '2026-09-04 15:11:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026090428141525', '-1', '2026070788800612', '112026090489621532', '5600012003', '3', '0', '2026-09-04 15:11:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026090428141525', '-1', '2026070788800612', '112026090400561534', '5600012004', '30', '0', '2026-09-04 15:11:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026090428141525', '-1', '2026070788800612', '112026090438541536', '5600012005', '3', '0', '2026-09-04 15:11:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026090428141525', '-1', '2026070788800612', '112026090414551538', '5600012006', '60', '0', '2026-09-04 15:11:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026090428141525', '-1', '2026070788800612', '112026090492991540', '5600012007', '60', '0', '2026-09-04 15:11:36');
+INSERT INTO `temp_car_fee_config_attr` VALUES ('922026090428141525', '-1', '2026070788800612', '112026090467461542', '5600012008', '3', '0', '2026-09-04 15:11:36');
 
 -- ----------------------------
 -- Table structure for temp_car_fee_rule
@@ -11845,7 +14673,7 @@ CREATE TABLE `temp_car_fee_rule` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`rule_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of temp_car_fee_rule
@@ -11867,9 +14695,9 @@ CREATE TABLE `temp_car_fee_rule_spec` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   `remark` varchar(256) DEFAULT NULL COMMENT '描述',
-  `seq` int(11) NOT NULL COMMENT '页面排序',
+  `seq` int NOT NULL COMMENT '页面排序',
   PRIMARY KEY (`spec_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of temp_car_fee_rule_spec
@@ -11956,18 +14784,20 @@ CREATE TABLE `temp_inner_car` (
   `remark` varchar(512) DEFAULT NULL COMMENT '说明',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of temp_inner_car
 -- ----------------------------
+INSERT INTO `temp_inner_car` VALUES ('102026071010710075', '青A88488', '2026-06-30 16:00:00', '2026-08-31 16:00:00', '922026071085620054', '临时停车费', '20260512817111252', '102026071046660009', 'A', '', '2026-07-11 00:34:58', '1');
+INSERT INTO `temp_inner_car` VALUES ('102026072759000107', '京AB12345', '2026-06-02 00:00:00', '2027-07-16 00:00:00', '922026071085620054', '临时停车费', '20260512817111252', '102026071046660009', 'A', '', '2026-07-27 13:52:23', '0');
 
 -- ----------------------------
 -- Table structure for t_dict
 -- ----------------------------
 DROP TABLE IF EXISTS `t_dict`;
 CREATE TABLE `t_dict` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `status_cd` varchar(64) NOT NULL COMMENT '表字段状态 取值',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `description` varchar(200) DEFAULT NULL COMMENT '描述',
@@ -11977,7 +14807,7 @@ CREATE TABLE `t_dict` (
   PRIMARY KEY (`id`),
   KEY `td_table_name` (`table_name`) USING BTREE,
   KEY `i_td_status_cd` (`status_cd`)
-) ENGINE=InnoDB AUTO_INCREMENT=626461 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=626461 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of t_dict
@@ -12248,13 +15078,7 @@ INSERT INTO `t_dict` VALUES ('626457', '4', '黑牌车', '黑牌车', '2019-10-1
 INSERT INTO `t_dict` VALUES ('626458', '5', '绿牌车', '绿牌车', '2019-10-15 09:47:21', 'temp_car_fee_config', 'car_type');
 INSERT INTO `t_dict` VALUES ('626459', '6', '黄绿牌车', '黄绿牌车', '2019-10-15 09:47:21', 'temp_car_fee_config', 'car_type');
 INSERT INTO `t_dict` VALUES ('626460', '9902', '内部临时车', '内部临时车', '2019-10-15 09:47:21', 'temp_car_fee_config', 'car_type');
-INSERT INTO `t_dict` VALUES ('626461', '5000', '远程开门', '远程开门', '2019-10-15 09:47:21', 'access_control_inout', 'open_type_cd');
-INSERT INTO `t_dict` VALUES ('626462', '6000', '访客开门', '访客开门', '2019-10-15 09:47:21', 'access_control_inout', 'open_type_cd');
-INSERT INTO `t_dict` VALUES ('626463', '7000', '临时密码开门', '临时密码开门', '2019-10-15 09:47:21', 'access_control_inout', 'open_type_cd');
-INSERT INTO `t_dict` VALUES ('626469', 'ADD_CARD', '添加卡片', '添加卡片', '2020-01-26 13:56:18', 'access_control_log', 'log_cmd');
-INSERT INTO `t_dict` VALUES ('626470', 'DELETE_CARD', '删除卡片', '删除卡片', '2020-01-26 13:56:18', 'access_control_log', 'log_cmd');
-INSERT INTO `t_dict` VALUES ('626471', 'ADD_USER', '添加人员', '添加人员', '2020-01-26 13:56:18', 'access_control_log', 'log_cmd');
-INSERT INTO `t_dict` VALUES ('626472', 'DELETE_USER', '删除人员', '删除人员', '2020-01-26 13:56:18', 'access_control_log', 'log_cmd');
+
 -- ----------------------------
 -- Table structure for t_dict_spec
 -- ----------------------------
@@ -12267,7 +15091,7 @@ CREATE TABLE `t_dict_spec` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`spec_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of t_dict_spec
@@ -12286,8 +15110,34 @@ CREATE TABLE `unitem_log` (
   `log_text` longtext NOT NULL COMMENT '回滚内容',
   `status_cd` varchar(2) NOT NULL COMMENT '数据状态，详细参考c_status表',
   UNIQUE KEY `b_id` (`b_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+-- ----------------------------
+-- Records of unitem_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for unlicensed_car_plate
+-- ----------------------------
+DROP TABLE IF EXISTS `unlicensed_car_plate`;
+CREATE TABLE `unlicensed_car_plate` (
+  `plate_id` varchar(30) NOT NULL COMMENT '主键ID',
+  `open_id` varchar(200) NOT NULL COMMENT '微信/支付宝 openId',
+  `car_num` varchar(16) NOT NULL COMMENT '自动生成的车牌号',
+  `community_id` varchar(30) DEFAULT NULL COMMENT '小区ID',
+  `open_type` varchar(10) DEFAULT 'WECHAT' COMMENT '开放平台类型 WECHAT/ALIPAY',
+  `status_cd` varchar(2) DEFAULT '0' COMMENT '状态 0有效 1删除',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`plate_id`),
+  KEY `idx_open_id` (`open_id`(191)),
+  KEY `idx_car_num` (`car_num`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='无牌车虚拟车牌号映射表';
+
+-- ----------------------------
+-- Records of unlicensed_car_plate
+-- ----------------------------
+INSERT INTO `unlicensed_car_plate` VALUES ('112026072450990010', 'o3Ujf2IQsgjd8ea1iphszL0pgvIU', '无A00002', '20260512817111252', 'WECHAT', '0', '2026-07-24 16:28:36');
+INSERT INTO `unlicensed_car_plate` VALUES ('112026072454870001', 'o3Ujf2H2sO1l2l9Lue_cZabEu7Lo', '无A00001', '20260512817111252', 'WECHAT', '0', '2026-07-24 16:27:06');
 
 -- ----------------------------
 -- Table structure for user_download_file
@@ -12307,7 +15157,20 @@ CREATE TABLE `user_download_file` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `remark` varchar(1024) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`download_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of user_download_file
+-- ----------------------------
+INSERT INTO `user_download_file` VALUES ('102023120588830022', '3196665cffe44152b2bb2d89eba9a770.xlsx', '102023021386560001', '302023021495090004', '演示物业', 'exportOwnerCar', '3003', 'hc/temp/export/data/exportOwnerCar/2023-12-05/3196665cffe44152b2bb2d89eba9a770.xlsx', null, '2023-12-05 11:25:21', '0', '下载完成');
+INSERT INTO `user_download_file` VALUES ('102025121712961332', '974f1bbbc19c4f6e9f25b31885d1d544.xlsx', '2025072783670006', '302025112802812473', 'HC演示物业', 'exportOwnerCar', '3003', 'hc/temp/export/data/exportOwnerCar/2025-12-17/974f1bbbc19c4f6e9f25b31885d1d544.xlsx', null, '2025-12-17 11:01:50', '0', '下载完成');
+INSERT INTO `user_download_file` VALUES ('102026010565242691', 'a29d031ba79c40bdb346c80f5c05e3c3.xlsx', '20251127410920449', '302025112802812473', 'HC演示物业', 'exportOwnerCar', '3003', 'hc/temp/export/data/exportOwnerCar/2026-01-05/a29d031ba79c40bdb346c80f5c05e3c3.xlsx', null, '2026-01-05 14:41:05', '0', '下载完成');
+INSERT INTO `user_download_file` VALUES ('102026011659201429', 'c4119418d0574674b4d05c23858abc8b.xlsx', '2025072783670006', '302025112802812473', 'HC演示物业', 'exportOwnerCar', '3003', 'hc/temp/export/data/exportOwnerCar/2026-01-16/c4119418d0574674b4d05c23858abc8b.xlsx', null, '2026-01-16 13:23:11', '0', '下载完成');
+INSERT INTO `user_download_file` VALUES ('102026011676651428', '855de11ab23b4420b9dbb5d07fb44642.xlsx', '2025072783670006', '302025112802812473', 'HC演示物业', 'exportOwnerCar', '3003', 'hc/temp/export/data/exportOwnerCar/2026-01-16/855de11ab23b4420b9dbb5d07fb44642.xlsx', null, '2026-01-16 13:21:46', '0', '下载完成');
+INSERT INTO `user_download_file` VALUES ('102026031761156042', '8c95c5131b8e497e8e3f7a45c8b7f4fa.xlsx', '2025072783670006', '302025112802812473', 'HC演示物业', 'exportOwnerCar', '3003', 'hc/temp/export/data/exportOwnerCar/2026-03-17/8c95c5131b8e497e8e3f7a45c8b7f4fa.xlsx', null, '2026-03-17 15:48:15', '0', '下载完成');
+INSERT INTO `user_download_file` VALUES ('102026040354694056', '8b0f94f738b2410b90aa7c3ea5c9ad72.xlsx', '20260324548723980', '302026032417280460', 'HC演示物业', 'exportOwnerCar', '3003', 'hc/temp/export/data/exportOwnerCar/2026-04-03/8b0f94f738b2410b90aa7c3ea5c9ad72.xlsx', null, '2026-04-03 22:33:51', '0', '下载完成');
+INSERT INTO `user_download_file` VALUES ('102026071090560045', 'f4d1dbd9fbaa43b8987af84db950fe30.xlsx', '20260512817111252', '302026052662970595', 'wuxw', 'exportOwnerCar', '4004', null, null, '2026-07-10 16:16:57', '1', '下载失败java.lang.NumberFormatException: Cannot parse null string\n	at java.base/java.lang.Integer.parseInt(Integer.java:630)\n	at java.base/java.lang.Integer.parseInt(Integer.java:786)\n	at com.java110.core.client.FileUploadTemplate.saveFile(FileUploadTemplate.java:38)\n	at com.java110.job.export.ExportDataExecutor.doExportData(ExportDataExecutor.java:91)\n	at com.java110.job.export.ExportDataExecutor.run(ExportDataExecutor.java:49)\n	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.');
+INSERT INTO `user_download_file` VALUES ('102026082853380040', 'e358875af8fd4cfebab49095a4789a34.xlsx', '20260512817111252', '302026052662970595', 'wuxw', 'exportOwnerCar', '4004', null, null, '2026-08-28 16:10:40', '0', '下载失败java.lang.NumberFormatException: Cannot parse null string\n	at java.base/java.lang.Integer.parseInt(Integer.java:630)\n	at java.base/java.lang.Integer.parseInt(Integer.java:786)\n	at com.java110.core.client.FileUploadTemplate.saveFile(FileUploadTemplate.java:38)\n	at com.java110.job.export.ExportDataExecutor.doExportData(ExportDataExecutor.java:91)\n	at com.java110.job.export.ExportDataExecutor.run(ExportDataExecutor.java:49)\n	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.');
 
 -- ----------------------------
 -- Table structure for u_org
@@ -12326,23 +15189,11 @@ CREATE TABLE `u_org` (
   `belong_community_id` varchar(30) NOT NULL COMMENT '归属小区，9999 归属于入驻的所有小区，否则是为小区ID',
   `allow_operation` varchar(12) NOT NULL DEFAULT 'T' COMMENT '允许前台操作数据，T可以，F不可以',
   PRIMARY KEY (`org_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of u_org
 -- ----------------------------
-INSERT INTO `u_org` VALUES ('102026040231022496', null, '1020260324720123961', '分区', '2', '842026032477870462', '', '2026-04-02 12:06:38', '0', '', 'T');
-INSERT INTO `u_org` VALUES ('842026032477870462', null, '1020260324720123961', 'HC演示物业', '1', '-1', null, '2026-03-24 13:57:26', '0', '9999', 'F');
-INSERT INTO `u_org` VALUES ('842026032577540863', null, '102026032507190853', 'HBBCY', '1', '-1', null, '2026-03-25 11:53:31', '0', '9999', 'F');
-INSERT INTO `u_org` VALUES ('842026040811354053', null, '102026040559813670', '鼎丰物业', '1', '-1', null, '2026-04-08 00:22:29', '0', '9999', 'F');
-INSERT INTO `u_org` VALUES ('842026040946553010', null, '102026040961216363', '久和', '1', '-1', null, '2026-04-09 21:29:53', '0', '9999', 'F');
-INSERT INTO `u_org` VALUES ('842026041005323666', null, '102026041037043656', '世邦泰和', '1', '-1', null, '2026-04-10 17:26:11', '0', '9999', 'F');
-INSERT INTO `u_org` VALUES ('842026041230303982', null, '102026041216283972', '13145677654', '1', '-1', null, '2026-04-12 16:18:20', '0', '9999', 'F');
-INSERT INTO `u_org` VALUES ('842026041540444844', null, '102026041583084834', 'test668', '1', '-1', null, '2026-04-15 10:59:12', '0', '9999', 'F');
-INSERT INTO `u_org` VALUES ('842026041722064965', null, '102026041794914955', 'NANJ', '1', '-1', null, '2026-04-17 09:27:53', '0', '9999', 'F');
-INSERT INTO `u_org` VALUES ('842026041782595037', null, '102026041714635027', '问', '1', '-1', null, '2026-04-17 17:46:15', '0', '9999', 'F');
-INSERT INTO `u_org` VALUES ('842026042057885136', null, '102026042022745126', '测试物业', '1', '-1', null, '2026-04-20 09:51:32', '0', '9999', 'F');
-INSERT INTO `u_org` VALUES ('842026042529890113', null, '102026042522360103', '1', '1', '-1', null, '2026-04-25 19:39:55', '0', '9999', 'F');
 
 -- ----------------------------
 -- Table structure for u_org_community
@@ -12358,7 +15209,7 @@ CREATE TABLE `u_org_community` (
   `org_name` varchar(200) NOT NULL COMMENT '组织名称',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of u_org_community
@@ -12377,33 +15228,11 @@ CREATE TABLE `u_org_staff_rel` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，0在用，1失效',
   `store_id` varchar(30) NOT NULL COMMENT '商户ID'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of u_org_staff_rel
 -- ----------------------------
-INSERT INTO `u_org_staff_rel` VALUES ('102026032465380463', null, '842026032477870462', '302026032417280460', '600311000001', '2026-03-24 13:57:26', '0', '1020260324720123961');
-INSERT INTO `u_org_staff_rel` VALUES ('112026032580840850', null, '842026032477870462', '3020260325583321637', '600311000001', '2026-03-25 11:06:40', '0', '1020260324720123961');
-INSERT INTO `u_org_staff_rel` VALUES ('102026032580400865', null, '842026032577540863', '302026032589870859', '600311000001', '2026-03-25 11:53:31', '0', '102026032507190853');
-INSERT INTO `u_org_staff_rel` VALUES ('112026032758021107', null, '842026032477870462', '3020260327434417746', '600311000001', '2026-03-27 08:57:13', '0', '1020260324720123961');
-INSERT INTO `u_org_staff_rel` VALUES ('112026040126361900', null, '842026032477870462', '3020260401479210405', '600311000001', '2026-04-01 05:28:24', '0', '1020260324720123961');
-INSERT INTO `u_org_staff_rel` VALUES ('112026040280112481', null, '842026032477870462', '302026040285187853', '600311000001', '2026-04-02 11:14:22', '0', '1020260324720123961');
-INSERT INTO `u_org_staff_rel` VALUES ('842026040259172503', '-1', '102026040231022496', '302026040285187853', '600311000002', '2026-04-02 12:18:07', '0', '1020260324720123961');
-INSERT INTO `u_org_staff_rel` VALUES ('102026040806714054', null, '842026040811354053', '302026040845554051', '600311000001', '2026-04-08 00:22:29', '0', '102026040559813670');
-INSERT INTO `u_org_staff_rel` VALUES ('112026040844402027', null, '842026032477870462', '302026040873604166', '600311000001', '2026-04-08 15:41:30', '0', '1020260324720123961');
-INSERT INTO `u_org_staff_rel` VALUES ('112026040959532973', null, '842026032477870462', '302026040907445985', '600311000001', '2026-04-09 16:27:24', '0', '1020260324720123961');
-INSERT INTO `u_org_staff_rel` VALUES ('102026040981313011', null, '842026040946553010', '302026040902463008', '600311000001', '2026-04-09 21:29:53', '0', '102026040961216363');
-INSERT INTO `u_org_staff_rel` VALUES ('102026041094373668', null, '842026041005323666', '302026041091643662', '600311000001', '2026-04-10 17:26:11', '0', '102026041037043656');
-INSERT INTO `u_org_staff_rel` VALUES ('842026041135553751', null, '842026041005323666', '302026041168493747', '', '2026-04-11 09:49:46', '0', '102026041037043656');
-INSERT INTO `u_org_staff_rel` VALUES ('112026041155733846', null, '842026032477870462', '3020260411402010825', '600311000001', '2026-04-11 18:03:25', '0', '1020260324720123961');
-INSERT INTO `u_org_staff_rel` VALUES ('102026041203443984', null, '842026041230303982', '302026041202393978', '600311000001', '2026-04-12 16:18:20', '0', '102026041216283972');
-INSERT INTO `u_org_staff_rel` VALUES ('842026041200364121', '-1', '102026040231022496', '3020260401479210405', '600311000002', '2026-04-12 20:58:02', '0', '1020260324720123961');
-INSERT INTO `u_org_staff_rel` VALUES ('112026041378944338', null, '842026032477870462', '3020260413963716192', '600311000001', '2026-04-13 16:30:33', '0', '1020260324720123961');
-INSERT INTO `u_org_staff_rel` VALUES ('102026041573724846', null, '842026041540444844', '302026041576564840', '600311000001', '2026-04-15 10:59:12', '0', '102026041583084834');
-INSERT INTO `u_org_staff_rel` VALUES ('102026041783274967', null, '842026041722064965', '302026041788754961', '600311000001', '2026-04-17 09:27:53', '0', '102026041794914955');
-INSERT INTO `u_org_staff_rel` VALUES ('102026041792685039', null, '842026041782595037', '302026041740515033', '600311000001', '2026-04-17 17:46:15', '0', '102026041714635027');
-INSERT INTO `u_org_staff_rel` VALUES ('102026042053665138', null, '842026042057885136', '302026042005775132', '600311000001', '2026-04-20 09:51:32', '0', '102026042022745126');
-INSERT INTO `u_org_staff_rel` VALUES ('102026042554880115', null, '842026042529890113', '302026042564850109', '600311000001', '2026-04-25 19:39:55', '0', '102026042522360103');
 
 -- ----------------------------
 -- Table structure for u_role_community
@@ -12418,8 +15247,24 @@ CREATE TABLE `u_role_community` (
   `store_id` varchar(30) NOT NULL COMMENT '商户ID',
   `community_name` varchar(128) NOT NULL COMMENT '小区名称',
   PRIMARY KEY (`rc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+-- ----------------------------
+-- Records of u_role_community
+-- ----------------------------
+INSERT INTO `u_role_community` VALUES ('102023021425540002', '102023021406960001', '102023021386560001', '2023-02-14 18:33:04', '0', '102023021497100001', '测试小区');
+INSERT INTO `u_role_community` VALUES ('102023021441820001', '102023021406960001', '102023021386560001', '2023-02-14 18:31:57', '1', '102023021497100001', '测试小区');
+INSERT INTO `u_role_community` VALUES ('102026012809082941', '102026012683869317', '2025072783670006', '2026-01-28 14:23:03', '0', '102025072745280023', '六安***小区');
+INSERT INTO `u_role_community` VALUES ('102026020800240817', '102026010393691003', '20251127410920449', '2026-02-08 03:27:06', '0', '102025072745280023', '广州花园小区');
+INSERT INTO `u_role_community` VALUES ('102026020833310831', '102026010260560897', '2025072783670006', '2026-02-08 03:27:18', '0', '102025072745280023', '六安***小区');
+INSERT INTO `u_role_community` VALUES ('102026020863820819', '102026010393691003', '2025072783670006', '2026-02-08 03:27:06', '0', '102025072745280023', '六安***小区');
+INSERT INTO `u_role_community` VALUES ('102026020889820814', '102026012683869317', '20251127410920449', '2026-02-08 03:26:38', '0', '102025072745280023', '广州花园小区');
+INSERT INTO `u_role_community` VALUES ('102026020897060829', '102026010260560897', '20251127410920449', '2026-02-08 03:27:18', '0', '102025072745280023', '广州花园小区');
+INSERT INTO `u_role_community` VALUES ('102026041282414124', '102026041226064062', '20260324548723980', '2026-04-12 20:58:21', '0', '1020260324720123961', 'HC演示小区');
+INSERT INTO `u_role_community` VALUES ('102026071185610086', '102026071170300079', '2025040746580017', '2026-07-11 11:47:32', '0', '102025040775320034', 'HC演示小区1');
+INSERT INTO `u_role_community` VALUES ('102026081112480149', '102026081110780125', '20260512817111252', '2026-08-11 09:38:20', '0', '102025040775320034', '优才雅苑');
+INSERT INTO `u_role_community` VALUES ('102026090352090123', '102026082660245543', '2026070812860502', '2026-09-03 18:28:43', '0', '102026070753270629', '测试积分小区');
+INSERT INTO `u_role_community` VALUES ('102026090353110125', '102026082660245543', '2026070788800612', '2026-09-03 18:28:43', '0', '102026070753270629', 'HC演示小区');
 
 -- ----------------------------
 -- Table structure for u_user
@@ -12438,9 +15283,11 @@ CREATE TABLE `u_user` (
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `face_url` varchar(512) DEFAULT NULL COMMENT '人员人脸',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户';
 
-
+-- ----------------------------
+-- Records of u_user
+-- ----------------------------
 INSERT INTO `u_user` VALUES ('30518939884421922816', 'admin', 'sss@sf.com', 'ccc地方都是', '3ad352384261cbc2c7462210dbb3ce61', '0', '17797173944', '00', '2018-12-02 16:01:50', '0', null);
 INSERT INTO `u_user` VALUES ('30520751775595118592', 'dev', '129@qq.com', 'Qingdao', '3ad352384261cbc2c7462210dbb3ce61', '0', '17797173942', '00', '2018-12-07 16:01:38', '0', null);
 
@@ -12449,7 +15296,7 @@ INSERT INTO `u_user` VALUES ('30520751775595118592', 'dev', '129@qq.com', 'Qingd
 -- ----------------------------
 DROP TABLE IF EXISTS `u_user_attr`;
 CREATE TABLE `u_user_attr` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
   `attr_id` varchar(30) NOT NULL COMMENT '属性id',
   `user_id` varchar(30) NOT NULL COMMENT '用户ID',
   `spec_cd` varchar(12) NOT NULL COMMENT '规格id,参考spec表',
@@ -12460,13 +15307,14 @@ CREATE TABLE `u_user_attr` (
   PRIMARY KEY (`id`),
   KEY `i_attr_id` (`attr_id`),
   KEY `i_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of u_user_attr
 -- ----------------------------
 INSERT INTO `u_user_attr` VALUES ('1', '112025012337710001', '302025012355000012', '100202501001', '青A88889', null, '2025-01-23 01:56:24', '0');
 INSERT INTO `u_user_attr` VALUES ('2', '112025040121320002', '302025040152980001', '100201911001', 'oWKMg7RXbCNOG8isYi3b4BeDVe7Y', null, '2025-04-01 09:38:32', '0');
+INSERT INTO `u_user_attr` VALUES ('3', '112026090169850023', '302026032483220824', '100202501001', '青AGK916', null, '2026-09-01 15:50:25', '0');
 
 -- ----------------------------
 -- Table structure for visit
@@ -12494,7 +15342,87 @@ CREATE TABLE `visit` (
   `status_cd` varchar(2) NOT NULL COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   `car_num` varchar(12) DEFAULT NULL COMMENT '访客车辆',
   PRIMARY KEY (`visit_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of visit
+-- ----------------------------
+INSERT INTO `visit` VALUES ('102023121308640002', 'zhangsan', '0', '13345674567', '102023021386560001', '1-1-3004', '752023110693110003', '772023110609760004', '吴学文2', '102023121237570002', '123', '2023-12-13 10:00:00', '2023-12-14 10:00:00', '', 'd0fc07d3908c4c83ac97b1a1fb123c62', '1', '通过', '2023-12-13 15:06:56', '0', null);
+INSERT INTO `visit` VALUES ('102023121384100005', 'lisi', '1', '13456785678', '102023021386560001', '1-1-3003', '752023110696240003', '772023111006680012', '门禁测试人员', '102023121356890003', 'qwe', '2023-12-15 02:00:00', '2023-12-16 02:00:00', '', '1b300b54ec824888b4ff77719dd26668', '1', '', '2023-12-13 15:07:41', '0', null);
+INSERT INTO `visit` VALUES ('102023121924190003', '赵六', '1', '13845674567', '102023021386560001', '1-1-1001', '752023080997680002', '772023111038450017', '123', '102023121356890003', '测试', '2023-12-20 17:12:27', '2023-12-21 17:12:27', null, 'b532e43118b241a3a1f201a5bb1f474c', '0', null, '2023-12-19 17:13:16', '0', null);
+INSERT INTO `visit` VALUES ('102023121932180005', '张三', '0', '18756244581', '102023021386560001', '1-1-4004', '752023121245770012', null, null, '102023121356890003', '探亲', '2023-12-19 10:19:04', '2023-12-20 10:19:04', null, 'bb159f07f71d4436a9fd0b64db0e34e4', '0', null, '2023-12-19 10:15:01', '0', null);
+INSERT INTO `visit` VALUES ('102023121945460003', '钱七', '0', '13788888888', '102023021386560001', '1-1-3004', '752023110693110003', '772023110609760004', '吴学文2', '102023121356890003', '测试', '2023-12-19 17:23:52', '2023-12-20 17:23:52', null, '1b2a11bc83634c96a5e8cebc9d9a8686', '0', null, '2023-12-19 17:22:49', '0', null);
+INSERT INTO `visit` VALUES ('102023121964870002', 'wangwu', '0', '13567896789', '102023021386560001', '1-1-1001', '752023080997680002', '772023111038450017', '123', '102023121356890003', 'qqq', '2023-12-19 10:52:23', '2023-12-20 10:52:23', null, '6627ebb2fa024a2bbe22a23c7032f324', '0', null, '2023-12-19 10:09:29', '0', null);
+INSERT INTO `visit` VALUES ('102024051410480224', '张珊珊1', '0', '18909711443', '2023052267100146', '1-1-20', '752024022078176031', '772024022014786019', 'manman', '102024051487750201', '水电费水电费', '2024-05-14 16:52:37', '2024-05-24 16:52:37', null, '4192b4fc4bec40c8b83485ae79dd3dd2', '1', '同意', '2024-05-14 16:51:37', '0', null);
+INSERT INTO `visit` VALUES ('102024051436760207', '测试有车辆的', '0', '18909714545', '2023052267100146', '1-0-201', '752024021610450528', '772024021697820551', '嘀嘀嘀', '102024051487750201', '一个', '2024-05-31 01:05:00', '2024-06-10 01:05:00', '', 'd512dd37621d4b8fb42a0de57cc043f2', '0', '', '2024-05-14 15:02:25', '0', null);
+INSERT INTO `visit` VALUES ('102024051437180213', '张三', '0', '18909711443', '2023052267100146', '1-1-20', '752024022078176031', '772024022014786019', 'manman', '102024051487750201', '爱你一万年', '2024-05-14 16:45:42', '2024-05-24 16:45:42', null, 'c1b60859ff4a49bdb4d2d7c71676ede6', '0', null, '2024-05-14 16:43:50', '0', null);
+INSERT INTO `visit` VALUES ('102024051446320002', '青A88488', '0', '18909711443', '2023052267100146', '1-0-201', '752024021610450528', '772024021697820551', '嘀嘀嘀', '102024051487750201', '水电费', '2024-05-01 00:00:00', '2024-05-11 00:00:00', '', '852d8a2ffe5c4ddd950c580957054f17', '1', '审核通过', '2024-05-14 15:11:50', '0', '青A88489');
+INSERT INTO `visit` VALUES ('102024051448710221', '张珊珊', '0', '18909711443', '2023052267100146', '1-1-20', '752024022078176031', '772024022014786019', 'manman', '102024051487750201', '水电费水电费', '2024-05-14 16:50:36', '2024-05-24 16:50:36', null, '01f79afebd634998a632ed5b293e710f', '0', null, '2024-05-14 16:49:15', '0', null);
+INSERT INTO `visit` VALUES ('102024051489230210', '1', '0', '18909714525', '2023052267100146', '1-2-1-1-1', '752024022169007291', '772024022183707296', '成龙', '102024051487750201', '123123', '2024-05-01 01:05:00', '2024-05-11 01:05:00', '', '3f77cb3dff544dd4b81432650c58a59e', '0', '', '2024-05-14 15:04:38', '0', null);
+INSERT INTO `visit` VALUES ('102024051490520204', '张嬷嬷', '0', '18909714525', '2023052267100146', '1-0-201', '752024021610450528', '772024021697820551', '嘀嘀嘀', '102024051487750201', '拜访好友', '2024-05-14 00:00:00', '2024-05-24 00:00:00', '', '81a8db12765b48a1b0812ad9364518f1', '0', '', '2024-05-14 14:57:01', '0', null);
+INSERT INTO `visit` VALUES ('102024051499480012', '张妈吧', '0', '18909714528', '2023052267100146', '1-1-20', '752024022078176031', '772024022014786019', 'manman', '102024051487750201', '起NGA', '2024-05-14 16:55:07', '2024-05-24 16:55:07', null, 'a8e77880d6ac42058571790bd3d49665', '1', '不错', '2024-05-14 16:52:43', '0', '青A88478');
+INSERT INTO `visit` VALUES ('102024052071600002', '吴xx', '0', '18909711442', '2024012252790005', '22-3-2003', '752024012283880019', '772024012299410005', '张飞3', '102024020342440009', '探亲', '2024-05-20 00:06:36', '2024-05-30 12:06:36', null, 'e73d76514da440c993d20d2f819135f0', '1', '同意', '2024-05-20 12:03:48', '0', '青AD48528');
+INSERT INTO `visit` VALUES ('102024060558790004', '张三', '0', '18909711452', '2024041265850103', '1-1-1001', '752024041213130158', '772024041203090161', '王麻子', '102024060540580011', '爱你', '2024-06-05 19:56:42', '2024-06-15 19:56:42', null, '092465e95b7445a69c5554fb71a80d8a', '1', '不错', '2024-06-05 19:55:21', '0', '浙ABG7358');
+INSERT INTO `visit` VALUES ('102025120426705092', '22', '0', '13838384388', '2025072783670006', '1-0-002', '7520251127961917682', '7720251130596726600', 'CS ', '102025120467995089', '', '2025-12-04 16:54:42', '2026-07-14 16:54:42', '', '', '1', '', '2025-12-04 16:54:58', '0', '22');
+INSERT INTO `visit` VALUES ('102025120516045561', '111', '0', '13069584735', '2025072783670006', '1-0-002', '7520251127961917682', '7720251130596726600', 'CS ', '102025120467995089', '1111', '2025-12-12 20:20:00', '2026-07-22 20:20:00', '', '', '2', '', '2025-12-05 20:25:13', '0', '111');
+INSERT INTO `visit` VALUES ('102025120865545860', 'sd', '0', '15325043878', '20251127410920449', '1-1-1001', '7520251203929431675', '7720251203545831674', '吴学文', '102025120720265824', 'wwww', '2025-12-08 09:45:17', '2025-12-10 09:45:17', null, null, '1', '成功', '2025-12-08 09:46:40', '0', 's');
+INSERT INTO `visit` VALUES ('102025120907076353', '牛骨', '0', '15464040481', '20251127410920449', '1-1-1001', '7520251203929431675', '7720251203545831674', '吴学文', '102025120940426330', '追', '2025-12-09 13:25:46', '2026-03-30 13:25:46', null, '00963c06884b47d7beaf0ccfcbdca082', '1', '你', '2025-12-09 13:26:18', '0', '');
+INSERT INTO `visit` VALUES ('102025120930916356', '牛骨', '0', '15464040481', '20251127410920449', '1-1-1001', '7520251203929431675', '7720251203545831674', '吴学文', '102025120940426330', '追', '2025-12-09 13:25:46', '2026-03-30 13:25:46', null, '325501882b064323813f6e9555c94263', '1', null, '2025-12-09 13:27:33', '0', '');
+INSERT INTO `visit` VALUES ('102025120967976341', '哈萨克', '0', '15655204641', '20251127410920449', '1-1-1001', '7520251203929431675', '7720251203545831674', '吴学文', '102025120940426330', '摊平', '2025-12-09 13:15:41', '2026-03-30 13:15:41', null, '813cb91850c24a7f91aab3018c0d9e24', '1', '成功', '2025-12-09 13:16:14', '0', '');
+INSERT INTO `visit` VALUES ('102025120970126375', '11', '0', '15625678111', '20251127410920449', '1-1-1001', '7520251203929431675', '7720251203545831674', '吴学文', '102025120940426330', '有情', '2025-12-09 14:33:08', '2025-12-10 14:33:08', null, '56a5c8b6d7664196a2d308abc8247aec', '0', null, '2025-12-09 14:34:04', '0', '');
+INSERT INTO `visit` VALUES ('102025121048006821', '123', '0', '13812345678', '20251127410920449', '01-0-001', '7520251128754122176', '7720251128310822193', '123', '102025120940426330', '123', null, '1970-01-02 08:00:00', '', '4fdd926115904786b4c965731d731c5f', '1', '', '2025-12-10 13:32:31', '0', '123');
+INSERT INTO `visit` VALUES ('102025121169917437', '小龙', '0', '15683681181', '20251127410920449', '1-1-1001', '7520251203929431675', '7720251203545831674', '吴学文', '102025120940426330', '参观', '2025-12-11 07:26:35', '2025-12-12 07:26:35', null, 'c9bf9d34f89d4ab789f64c2d22d095a0', '0', null, '2025-12-11 07:27:39', '0', '渝A65897');
+INSERT INTO `visit` VALUES ('102025121819803393', '西西', '1', '13105623654', '2025072783670006', '1-0-999', '7520251203720332675', '7720251203694632677', '王', '102025120467995089', '拜访', '2025-12-18 21:40:04', '2026-07-28 21:40:04', '', '', '1', '', '2025-12-18 21:40:30', '0', '26651');
+INSERT INTO `visit` VALUES ('102025121860422347', '测试', '0', '13211111111', '2025072783670006', '400-1-1002', '7520251205527925719', '7720251203694632677', '王', '102025120467995089', '走亲访友', '2025-12-18 15:23:57', '2026-07-28 15:23:57', null, null, '1', null, '2025-12-18 15:24:45', '0', '');
+INSERT INTO `visit` VALUES ('102025121901994020', '啊啊啊', '0', '15011111111', '20251127410920449', '99-A-101', '752025121797979711', '772025121600414356', '大张', '102025120940426330', '来了', '2025-12-19 11:40:52', '2025-12-20 11:40:52', null, 'a107f59c5ab8479ab19fef8d49453b9d', '0', null, '2025-12-19 11:41:55', '0', '1364');
+INSERT INTO `visit` VALUES ('102025121967994350', '12都', '0', '13800138002', '2025072783670006', '23-1-1002', '7520251203605530224', '7720251203694632677', '王', '102025121928664342', '', '2025-12-17 09:30:00', '2025-12-18 09:30:00', '', '38893ba5bcfa40558657db0dc56e6b35', '1', '成功', '2025-12-19 23:32:42', '0', '');
+INSERT INTO `visit` VALUES ('102025121979784345', '张琴', '1', '13800138000', '2025072783670006', '1-0-002', '7520251127961917682', '7720251130596726600', 'CS ', '102025121928664342', '', null, null, '', '22891dcc330d4a0d940f821586336d55', '1', '成功', '2025-12-19 23:27:30', '0', '');
+INSERT INTO `visit` VALUES ('102025122025664438', '东方红对比', '0', '13443432543', '2025072783670006', '1-0-001', '752025112424190800', '7720251126603614836', '木易11', '102025120467995089', '', '2025-12-20 07:35:00', '2026-07-30 07:35:00', '', '', '1', '', '2025-12-20 00:01:37', '0', '');
+INSERT INTO `visit` VALUES ('102025122068264441', 'dvsdvsdv', '0', '17267893746', '2025072783670006', '23-1-1002', '7520251203605530224', '7720251203694632677', '王', '102025120467995089', '', '2025-12-18 02:10:00', '2026-07-28 02:10:00', '', '', '2', '拒绝你的申请，因为业主不在家', '2025-12-20 00:03:08', '0', '');
+INSERT INTO `visit` VALUES ('102025122088844444', 'vfev', '0', '13245644534', '2025072783670006', '1-0-999', '7520251203720332675', '7720251203694632677', '王', '102025120467995089', '', null, null, '', '', '1', '', '2025-12-20 00:04:33', '0', '');
+INSERT INTO `visit` VALUES ('102025122352175382', '1', '0', '13700000000', '20251127410920449', '19栋-1-1001', '752025121795258528', '772025121749407600', '测试', '102025120940426330', '1', '2025-12-23 21:20:40', '2025-12-24 21:20:40', null, '29166395a1a14f6fbab250648e8b19f6', '0', null, '2025-12-23 21:21:44', '0', '1');
+INSERT INTO `visit` VALUES ('102025122356145204', 'u', '0', '13333333333', '20251127410920449', '19栋-1-1001', '752025121795258528', '772025121749407600', '测试', '102025120940426330', '1', '2025-12-23 13:39:31', '2025-12-24 13:39:31', null, '6d79c76bc1574f9182187d971a803414', '0', null, '2025-12-23 13:40:06', '0', 'sss');
+INSERT INTO `visit` VALUES ('102025122427605505', '大帅', '0', '18888888888', '20251127410920449', '19栋-1-1001', '752025121795258528', '772025122335910234', '张明月', '102025120940426330', '没有理由', '2025-12-24 10:53:28', '2025-12-25 10:53:28', null, 'd2829eee2f7e4290a143ebe12a122c14', '0', null, '2025-12-24 11:17:16', '0', '京A00001');
+INSERT INTO `visit` VALUES ('102025122437175688', '胡敏濮', '0', '15325645234', '2025072783670006', '400-1-1002', '7520251205527925719', '7720251203694632677', '王', '102025121870813469', '业主', '2025-12-24 19:09:51', '2025-12-26 19:09:51', null, null, '1', '成功', '2025-12-24 19:10:39', '0', '赣G45682');
+INSERT INTO `visit` VALUES ('102025122459625500', '大帅', '0', '18888888888', '20251127410920449', '19栋-1-1001', '752025121795258528', '772025122335910234', '张明月', '102025120940426330', '没有理由', '2025-12-24 10:53:28', '2025-12-25 10:53:28', null, '1d70f770ae8842afb2480fbc0d53dc61', '0', null, '2025-12-24 10:56:39', '0', '京A00001');
+INSERT INTO `visit` VALUES ('102025122571785967', '黄飞鸿', '0', '17888888888', '20251127410920449', '99-A-101', '752025121797979711', '772025121600414356', '大张', '102025120720265824', '嘿嘿', '2025-12-25 17:11:37', '2025-12-27 17:11:37', null, null, '1', '成功', '2025-12-25 17:12:55', '0', '京A00001');
+INSERT INTO `visit` VALUES ('102025122721377951', '肖家', '0', '19979611309', '2025072783670006', '1-0-999', '7520251203720332675', '7720251203694632677', '王', '102025121928664342', '北方', '2025-12-25 10:50:00', '2025-12-26 10:50:00', '', '8717b3c70a24444687cae07dd5be8a5c', '1', '成功', '2025-12-27 00:40:48', '0', '粤B');
+INSERT INTO `visit` VALUES ('102025122734977955', '唐国峰', '0', '18785117263', '20251127410920449', '19栋-1-1001', '752025121795258528', '772025121749407600', '测试', '102025120720265824', '呵呵', '2025-12-27 01:39:46', '2025-12-29 01:39:46', null, null, '1', '成功', '2025-12-27 01:40:24', '0', '');
+INSERT INTO `visit` VALUES ('102025122798688206', '洒洒水', '0', '13245644534', '2025072783670006', '1-0-999', '7520251203720332675', '7720251203694632677', '王', '102025121870813469', '', null, null, '', '', '1', '成功', '2025-12-27 21:50:05', '0', '');
+INSERT INTO `visit` VALUES ('102025122922698910', 'aa', '0', '17888888888', '20251127410920449', '55-1-03', '7520251211341910441', '7720251211721510440', '李有才', '102025120940426330', '111', '2025-12-29 16:42:09', '2025-12-30 16:42:09', null, 'b92f196fb0fb4faa8b99de2f90bdd101', '0', null, '2025-12-29 17:06:56', '0', '啊啊啊');
+INSERT INTO `visit` VALUES ('102025122932278821', '大帅', '0', '17888888888', '20251127410920449', '55-1-03', '7520251211341910441', '7720251211721510440', '李有才', '102025120940426330', '123456', '2025-12-29 14:19:11', '2025-12-30 14:19:11', null, 'ef35446043204f2384c6ddc9c00f9521', '0', null, '2025-12-29 16:39:04', '0', '京A00001');
+INSERT INTO `visit` VALUES ('102025122943688453', '1', '0', '13700000000', '20251127410920449', '99-A-101', '752025121797979711', '772025121600414356', '大张', '102025120940426330', '11111', '2025-12-29 10:39:53', '2025-12-30 10:39:53', null, '41fdbbdf623f4fc094ef403f8050b4d8', '0', null, '2025-12-29 11:00:34', '0', '1');
+INSERT INTO `visit` VALUES ('102025122945768995', 'aa', '0', '17888888888', '20251127410920449', '19栋-1-1001', '752025121795258528', '772025121749407600', '测试', '102025120940426330', '111', '2025-12-29 16:42:09', '2025-12-30 16:42:09', null, '2986640caac045838881dacb99e876a1', '0', null, '2025-12-29 19:16:27', '0', '啊啊啊');
+INSERT INTO `visit` VALUES ('102025122961168990', 'aa', '0', '17888888888', '20251127410920449', '19栋-1-1001', '752025121795258528', '772025121749407600', '测试', '102025120940426330', '111', '2025-12-29 16:42:09', '2025-12-30 16:42:09', null, '9fe8580fa8404430a42f1c90cee50754', '0', null, '2025-12-29 18:34:35', '0', '啊啊啊');
+INSERT INTO `visit` VALUES ('102025122979338831', 'aa', '0', '17888888888', '20251127410920449', '55-1-03', '7520251211341910441', '7720251211721510440', '李有才', '102025120940426330', '111', '2025-12-29 16:42:09', '2025-12-30 16:42:09', null, 'bcb1f7db426e4898b53886478d2d8e3a', '0', null, '2025-12-29 16:42:43', '0', '啊啊啊');
+INSERT INTO `visit` VALUES ('102025122994898998', 'aa', '0', '17888888888', '20251127410920449', '19栋-1-1001', '752025121795258528', '772025121749407600', '测试', '102025120940426330', '111', '2025-12-29 16:42:09', '2025-12-30 16:42:09', null, '5a82ac203f324dbb89ac8c0d5c2184b7', '1', '同意', '2025-12-29 19:23:53', '0', '啊啊啊');
+INSERT INTO `visit` VALUES ('102025123016809312', '1', '0', '13000000000', '20251127410920449', '19栋-1-1001', '752025121795258528', '772025121749407600', '测试', '102025120940426330', '11', '2025-12-30 17:01:44', '2025-12-31 17:01:44', null, '58582523dc3f4f1094bfc2dbfe99180a', '1', null, '2025-12-30 17:02:51', '0', '1');
+INSERT INTO `visit` VALUES ('102025123177109877', '11', '0', '17888888888', '20251127410920449', '55-1-03', '7520251211341910441', '7720251211721510440', '李有才', '102025120940426330', '11', '2025-12-31 14:39:33', '2026-01-01 14:39:33', null, '67a4c8f8ff054f2f90dc615facda4ff7', '1', '666', '2025-12-31 14:40:13', '0', '京A123456');
+INSERT INTO `visit` VALUES ('102026010342061152', '666', '0', '18353461234', '20251127410920449', 'lhl-2单元-001', '7520251218494611997', '772025122938374801', '喜达哈', '102025120940426330', 'yyy', '2026-01-03 19:06:41', '2026-01-04 19:06:41', null, 'cb84afbdaec9435cb48d12f8a3df3ba4', '1', null, '2026-01-03 19:07:14', '0', '鲁nq210');
+INSERT INTO `visit` VALUES ('102026010660173972', 'aaa测试', '0', '18812345678', '20251127410920449', 'A1-1-101', '752026010614632932', '772026010656242945', '小朱', '102025120720265824', '哈哈哈哈', '2026-01-06 21:37:58', '2026-01-08 21:37:58', null, null, '1', '成功', '2026-01-06 21:38:36', '0', '经济建设就');
+INSERT INTO `visit` VALUES ('102026010815106781', 'll', '0', '18677990011', '20251127410920449', 'A1-1-101', '752026010614632932', '772026010656242945', '小朱', '102025120940426330', '111', '2026-01-08 14:06:23', '2026-01-09 14:06:23', null, 'ec9a9b64c623479694f926f0525116ff', '0', null, '2026-01-08 14:07:05', '0', '110011');
+INSERT INTO `visit` VALUES ('102026011150649027', 'test', '0', '13812312312', '2025072783670006', '8-1-0101', '7520260107602511608', '7720260107421611609', '张自强', '102025121928664342', 'test', '2026-01-11 00:57:35', '2026-01-12 00:57:35', null, 'b9873be803c944778bc2b1f951da8c21', '1', '成功', '2026-01-11 00:59:09', '0', '沪B55555');
+INSERT INTO `visit` VALUES ('102026011507101072', '撒旦', '0', '13730423121', '2025072783670006', '400-1-1002', '7520251205527925719', '7720251203694632677', '王', '102025121928664342', 'asdsad', '2026-01-15 17:50:00', '2026-01-16 17:50:00', '', 'a8fb8c6ae9f946f395c22e7161c76766', '1', '成功', '2026-01-15 15:17:43', '0', 'dasd');
+INSERT INTO `visit` VALUES ('102026020919911185', '额外', '0', '13278767656', '20251127410920449', '1-1-101', '752026010400571283', '772026010424891284', '张三三', '102025120720265824', '呜呜呜呜', '2026-02-09 14:35:06', '2026-02-11 14:35:06', '', '', '1', '成功', '2026-02-09 14:35:22', '0', '呜呜呜呜');
+INSERT INTO `visit` VALUES ('102026030430596312', '老师', '0', '13333333339', '2025072783670006', '1252-01-0101', '752026022372532663', null, null, '102025120467995089', '做客', '2026-03-04 18:14:55', '2026-10-12 18:14:55', null, null, '0', null, '2026-03-04 18:16:37', '0', '冀');
+INSERT INTO `visit` VALUES ('102026030643570663', '123', '0', '13117387066', '2025072783670006', '1252-01-0101', '752026022372532663', null, null, '102025120467995089', '测试', '2026-03-06 18:17:49', '2026-10-14 18:17:49', null, null, '1', null, '2026-03-06 18:18:50', '0', '');
+INSERT INTO `visit` VALUES ('102026030849121594', '陈', '0', '13000000000', '2025072783670006', '1252-01-0101', '752026022372532663', null, null, '102025121928664342', '无', '2029-03-08 04:18:06', '2029-03-09 04:18:06', null, '6d4f8dc24f43452482ed296fc172e420', '1', '成功', '2026-03-08 04:19:24', '0', '5050');
+INSERT INTO `visit` VALUES ('102026030869371599', '无', '0', '13333098760', '2025072783670006', '1-0-001', '752025112424190800', '772026010706506980', '1', '102025121928664342', '无', '2026-03-09 05:35:00', '2026-03-10 05:35:00', '', '58e0db61e68b41fcba85921c6ec970df', '1', '成功', '2026-03-08 04:36:44', '0', '5050');
+INSERT INTO `visit` VALUES ('102026031024553946', '小三', '0', '18909711446', '2025072783670006', '1252-01-0101', '752026022372532663', null, null, '102025121928664342', '逆袭', '2026-03-10 18:37:01', '2026-03-11 18:37:01', null, '99bd83c37b20439e8fa324405a891d11', '1', '成功', '2026-03-10 18:37:40', '0', '');
+INSERT INTO `visit` VALUES ('102026031166323974', '测试20260311', '0', '13031883699', '2025072783670006', '1252-01-0101', '752026022372532663', null, null, '102026020815820911', '洽谈', '2026-03-11 09:43:27', '2026-03-16 09:43:27', null, null, '0', null, '2026-03-11 09:45:30', '0', '');
+INSERT INTO `visit` VALUES ('102026031760325897', '你', '0', '17939193819', '2025072783670006', '1252-01-0101', '752026022372532663', null, null, '102025121870813469', '小区', '2026-03-17 13:50:27', '2026-03-19 13:50:27', null, null, '1', '成功', '2026-03-17 13:51:10', '0', '去看去了');
+INSERT INTO `visit` VALUES ('102026031772646220', 'chen', '0', '18080808080', '2025072783670006', '测试-1-101', '7520260202969630911', '7720260202955230886', 'cs', '102026020815820911', 'wu', '2026-03-17 18:57:58', '2026-03-22 18:57:58', null, null, '1', 'tongguo', '2026-03-17 18:58:36', '0', '5050');
+INSERT INTO `visit` VALUES ('102026031878446478', '1', '0', '19115504602', '2025072783670006', '1-0-002', '7520251127961917682', '7720251130596726600', 'CS ', '102025121928664342', '', null, null, '', 'c35b2771c761493492de0782300a6d79', '1', '成功', '2026-03-18 17:04:42', '0', '');
+INSERT INTO `visit` VALUES ('102026032171917357', '吴', '0', '15180569232', '2025072783670006', '测试-1-101', '7520260202969630911', '7720260202955230886', 'cs', '102026020815820911', 'xdjj', '2026-03-21 06:41:30', '2026-03-26 06:41:30', null, null, '2', null, '2026-03-21 06:42:49', '0', 'mkxkdj');
+INSERT INTO `visit` VALUES ('102026032524170959', '测试', '0', '18888888888', '20260324548723980', '1-0-2-32-31', '7520260325286622095', '7720260325550822094', '理发', '102026032558090956', '测试', '2026-03-25 23:04:57', '2026-03-27 23:04:57', null, null, '1', null, '2026-03-25 23:05:33', '0', '12345');
+INSERT INTO `visit` VALUES ('102026032531410835', 'ccc', '0', '19000000000', '20260324548723980', '1-1-1001', '7520260324351023892', '7720260324344823871', '演示业主', '102026032519880830', '', '2026-03-03 05:40:00', '2026-03-04 05:40:00', '', 'f6dea229a8dc48d5b07fefb8f67da557', '1', '', '2026-03-25 06:44:27', '0', '5050');
+INSERT INTO `visit` VALUES ('102026032591300962', '测试', '0', '18888888888', '20260324548723980', '1-0-2-32-31', '7520260325286622095', '7720260325550822094', '理发', '102026032558090956', '测试', '2026-03-25 23:04:57', '2026-03-27 23:04:57', null, null, '0', null, '2026-03-25 23:07:53', '0', '12345');
+INSERT INTO `visit` VALUES ('102026040241092555', '帅', '0', '13621896206', '20260324548723980', '6-2-606', '752026040208907672', '772026040219787608', '张三', '102026032558090956', '探亲访友', '2026-04-02 14:49:01', '2026-04-04 14:49:01', null, null, '1', '同意', '2026-04-02 14:49:53', '0', '沪C068Xg');
+INSERT INTO `visit` VALUES ('102026041296834142', 'Aaa', '0', '13456789123', '20260324548723980', '10-1-1001', '752026040150029366', '7720260401642010372', 'ccc', '102026040803979537', '装修', '2026-04-12 23:03:30', '2026-04-22 23:03:30', null, '74fea89e227f436f9ff50f5282811b81', '1', '同意', '2026-04-12 23:04:49', '0', '鄂EEL965');
+INSERT INTO `visit` VALUES ('102026071026690876', '张三与', '0', '18909714526', '20260512817111252', '1-1-203', '752026060476299722', '7720260528941711162', '测额', '102026071027290861', '订单', '2026-07-01 08:00:00', '2026-07-11 08:00:00', null, null, '1', '成功', '2026-07-10 15:45:08', '1', '');
+INSERT INTO `visit` VALUES ('102026081709152136', '两张图', '0', '15598128971', '2025040746580017', '3-001-002', '7520260521815811290', '7720260521555911347', '小云', '102026062309793630', '正常', '2026-08-18 03:11:54', '2026-08-19 03:11:54', null, null, '1', '成功', '2026-08-17 19:12:22', '0', '136684');
+INSERT INTO `visit` VALUES ('102026081913940051', '测试', '0', '13800138000', '2025040746580017', '3-001-002', '7520260521815811290', '7720260521555911347', '小云', '102026062309793630', '测试', '2026-08-20 09:20:53', '2026-08-21 09:20:53', null, null, '1', '成功', '2026-08-20 01:22:05', '0', '京A88888');
+INSERT INTO `visit` VALUES ('102026082030400087', '膜远', '0', '18888888888', '20260512817111252', '1-1-111', '752026072027624427', '772026072093704422', '孙**', '102026071027290861', '哦哦哦', '2026-08-20 18:34:10', '2026-08-30 18:34:10', null, null, '1', '成功', '2026-08-20 10:35:08', '0', '看看远');
 
 -- ----------------------------
 -- Table structure for visit_type
@@ -12505,13 +15433,13 @@ CREATE TABLE `visit_type` (
   `name` varchar(30) NOT NULL COMMENT '类型名称',
   `visit_way` varchar(12) NOT NULL COMMENT '通行方式，FACE 人脸 QRCODE 访客码',
   `audit_way` varchar(12) NOT NULL COMMENT '审核方式，1001 物业审核 2002 业主审核',
-  `visit_day` int(11) NOT NULL DEFAULT '1' COMMENT '拜访天数，默认1天',
+  `visit_day` int NOT NULL DEFAULT '1' COMMENT '拜访天数，默认1天',
   `remark` varchar(512) DEFAULT NULL COMMENT '备注',
   `community_id` varchar(30) NOT NULL COMMENT '小区ID',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考t_dict表，0, 在用 1失效',
   PRIMARY KEY (`type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of visit_type
@@ -12530,6 +15458,11 @@ INSERT INTO `visit_type` VALUES ('102026020815820911', '无', 'FACE', '1001', '5
 INSERT INTO `visit_type` VALUES ('102026032519880830', '亲属', 'QRCODE', '1001', '1', '', '20260324548723980', '2026-03-25 06:41:31', '0');
 INSERT INTO `visit_type` VALUES ('102026032558090956', '亲友', 'FACE', '1001', '2', '', '20260324548723980', '2026-03-25 23:04:40', '0');
 INSERT INTO `visit_type` VALUES ('102026040803979537', '装修工', 'QRCODE', '1001', '10', '', '20260324548723980', '2026-04-08 09:13:13', '0');
+INSERT INTO `visit_type` VALUES ('102026052195460451', '测试用', 'QRCODE', '2002', '1', '', '102026042023715244', '2026-05-21 14:28:27', '0');
+INSERT INTO `visit_type` VALUES ('102026062309793630', '访客', 'FACE', '2002', '1', '', '2025040746580017', '2026-06-23 22:03:10', '0');
+INSERT INTO `visit_type` VALUES ('102026071027290861', '业主访客', 'FACE', '2002', '10', '', '20260512817111252', '2026-07-10 15:33:46', '0');
+INSERT INTO `visit_type` VALUES ('102026083153880192', '访客', 'QRCODE', '2002', '1', '', '20260512817111252', '2026-08-31 15:25:38', '0');
+INSERT INTO `visit_type` VALUES ('102026090471800500', '111', 'QRCODE', '1001', '1', '1', '2026070788800612', '2026-09-04 09:45:56', '0');
 
 -- ----------------------------
 -- Table structure for work_license_factory
@@ -12543,12 +15476,12 @@ CREATE TABLE `work_license_factory` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`factory_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of work_license_factory
 -- ----------------------------
-INSERT INTO `work_license_factory` VALUES ('102024022955330002', '松饼厂家', 'hcWorkLicenseFactoryAdapt', 'xx1', '2024-02-29 02:18:50', '0');
+INSERT INTO `work_license_factory` VALUES ('102024022955330002', '松饼厂家', 'hcWorkLicenseFactoryAdapt', 'xx1', '2024-02-29 02:18:50', '1');
 
 -- ----------------------------
 -- Table structure for work_license_log
@@ -12567,7 +15500,84 @@ CREATE TABLE `work_license_log` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `log_cmd` varchar(12) DEFAULT NULL COMMENT '消息ID',
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- ----------------------------
+-- Records of work_license_log
+-- ----------------------------
+INSERT INTO `work_license_log` VALUES ('112024030121310002', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"爱我一万年\",\"ttsTextBin\":\"7e8300000b016059631666003008b0aeced2d2bbcdf2c4eae17e\"}', null, 'W', '2024-03-01 17:43:39', '8300');
+INSERT INTO `work_license_log` VALUES ('112024030121870001', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"111\",\"ttsTextBin\":\"7e8300000401605963166600ee083131317b7e\"}', null, 'W', '2024-03-01 23:49:52', '8300');
+INSERT INTO `work_license_log` VALUES ('112024030131460005', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"123456\",\"ttsTextBin\":\"7e83000007016059631666000008313233343536a07e\"}', null, 'W', '2024-03-01 17:49:17', '8300');
+INSERT INTO `work_license_log` VALUES ('112024032500430004', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"吴学文，你有一个维修工单需要处理\",\"ttsTextBin\":\"7e8300002108270677816000e308cee2d1a7cec4a3acc4e3d3d0d2bbb8f6ceacd0deb9a4b5a5d0e8d2aab4a6c0edb47e\"}', null, 'W', '2024-03-25 10:17:57', '8300');
+INSERT INTO `work_license_log` VALUES ('112024032506080180', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"吴梓豪马上睡觉\",\"ttsTextBin\":\"7e8300000f082706778160009d08cee2e8f7bac0c2edc9cfcbafbef5e97e\"}', null, 'W', '2024-03-25 22:48:18', '8300');
+INSERT INTO `work_license_log` VALUES ('112024032517990008', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"我爱你\",\"ttsTextBin\":\"7e8300000708270677816000cc08ced2b0aec4e3da7e\"}', null, 'W', '2024-03-25 13:45:56', '8300');
+INSERT INTO `work_license_log` VALUES ('112024032526160002', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"你好\",\"ttsTextBin\":\"7e8300000508270677816000ee08c4e3bac3817e\"}', null, 'W', '2024-03-25 10:10:35', '8300');
+INSERT INTO `work_license_log` VALUES ('112024032530290001', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"123\",\"ttsTextBin\":\"7e8300000408270677816000bd08313233bd7e\"}', null, 'W', '2024-03-25 15:52:13', '8300');
+INSERT INTO `work_license_log` VALUES ('112024032547520003', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"1号楼1单元1001室，业主张三，缴费1000元，已到账，请查收\",\"ttsTextBin\":\"7e83000037082706778160008b0831bac5c2a531b5a5d4aa31303031cad2a3acd2b5d6f7d5c5c8fda3acbdc9b7d131303030d4aaa3acd2d1b5bdd5cba3acc7ebb2e9cad5957e\"}', null, 'W', '2024-03-25 11:22:19', '8300');
+INSERT INTO `work_license_log` VALUES ('112024032550210001', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"吴师傅，您有一个维修工单需要处理\",\"ttsTextBin\":\"7e83000021082706778160002008cee2caa6b8b5a3acc4fad3d0d2bbb8f6ceacd0deb9a4b5a5d0e8d2aab4a6c0ed737e\"}', null, 'W', '2024-03-25 10:22:28', '8300');
+INSERT INTO `work_license_log` VALUES ('112024032560560002', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"1号楼1单元1001室，业主张三，缴费1000元，已到账，请查收\",\"ttsTextBin\":\"7e8300003708270677816000db0831bac5c2a531b5a5d4aa31303031cad2a3acd2b5d6f7d5c5c8fda3acbdc9b7d131303030d4aaa3acd2d1b5bdd5cba3acc7ebb2e9cad5c57e\"}', null, 'W', '2024-03-25 11:21:34', '8300');
+INSERT INTO `work_license_log` VALUES ('112024032569730005', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"234234sfsdf\",\"ttsTextBin\":\"7e8300000c08270677816000e0083233343233347366736466bc7e\"}', null, 'W', '2024-03-25 12:10:14', '8300');
+INSERT INTO `work_license_log` VALUES ('112024032570590004', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"123\",\"ttsTextBin\":\"7e83000004082706778160004708313233477e\"}', null, 'W', '2024-03-25 11:30:20', '8300');
+INSERT INTO `work_license_log` VALUES ('112024032584080001', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"1-1-1001物业费缴费成功\",\"ttsTextBin\":\"7e8300001708270677816000b408312d312d31303031ceefd2b5b7d1bdc9b7d1b3c9b9a6c07e\"}', null, 'W', '2024-03-25 11:20:44', '8300');
+INSERT INTO `work_license_log` VALUES ('112024032598680003', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"吴学文，您有一个维修单需要处理\",\"ttsTextBin\":\"7e8300001f08270677816000d208cee2d1a7cec4a3acc4fad3d0d2bbb8f6ceacd0deb5a5d0e8d2aab4a6c0edbf7e\"}', null, 'W', '2024-03-25 10:16:56', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041807381578', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"99999\",\"ttsTextBin\":\"7e830000060755501448040028083939393939c67e\"}', null, 'W', '2024-04-18 10:22:11', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041809991584', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"1A吃\",\"ttsTextBin\":\"7e830000050755501448040041083141b3d4827e\"}', null, 'W', '2024-04-18 10:25:57', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041813061579', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"我今天不吃饭\",\"ttsTextBin\":\"7e8300000d075550144804003b08ced2bdf1ccecb2bbb3d4b7b9f77e\"}', null, 'W', '2024-04-18 10:22:24', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041817921608', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"111\",\"ttsTextBin\":\"7e8300000407555014480400a108313131457e\"}', null, 'W', '2024-04-18 14:25:28', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041819071594', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"111\",\"ttsTextBin\":\"7e8300000407555014480400a8083131314c7e\"}', null, 'W', '2024-04-18 11:07:16', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041821051581', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"你看我打不打你就完了\",\"ttsTextBin\":\"7e8300001507555014480400e708c4e3bfb4ced2b4f2b2bbb4f2c4e3becdcdeac1cb637e\"}', null, 'W', '2024-04-18 10:23:50', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041834931577', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"打到\",\"ttsTextBin\":\"7e83000005075550144804005b08b4f2b5bdc17e\"}', null, 'W', '2024-04-18 10:22:05', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041841391607', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"中文\",\"ttsTextBin\":\"7e83000005075550144804008808d6d0cec4507e\"}', null, 'W', '2024-04-18 14:25:22', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041841651583', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"吃烦\",\"ttsTextBin\":\"7e8300000507555014480400dc08b3d4b7b36b7e\"}', null, 'W', '2024-04-18 10:25:43', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041845821589', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"物联网播放\",\"ttsTextBin\":\"7e8300000b082706778160006b08ceefc1aacdf8b2a5b7c54e7e\"}', null, 'W', '2024-04-18 10:53:42', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041851491592', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"1115555\",\"ttsTextBin\":\"7e8300000807555014480400ff0831313135353535177e\"}', null, 'W', '2024-04-18 10:54:33', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041855001582', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"ABCDEDFG\",\"ttsTextBin\":\"7e83000009075550144804005f084142434445444647837e\"}', null, 'W', '2024-04-18 10:25:24', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041857461593', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"吃饭\",\"ttsTextBin\":\"7e83000005075550144804000408b3d4b7b9b97e\"}', null, 'W', '2024-04-18 10:54:42', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041861451595', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"我是大帅哥\",\"ttsTextBin\":\"7e8300000b08270677816000d008ced2cac7b4f3cba7b8e78a7e\"}', null, 'W', '2024-04-18 11:23:28', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041869721590', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"今天吃什么\",\"ttsTextBin\":\"7e8300000b082706778160004408bdf1ccecb3d4cab2c3b47f7e\"}', null, 'W', '2024-04-18 10:53:58', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041879101580', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"888\",\"ttsTextBin\":\"7e8300000407555014480400b908383838547e\"}', null, 'W', '2024-04-18 10:23:20', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041887911591', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"A1吃饭\",\"ttsTextBin\":\"7e83000007075550144804002b084131b3d4b7b9e47e\"}', null, 'W', '2024-04-18 10:54:09', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041903341894', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"99999\",\"ttsTextBin\":\"7e830000060755501448040038083939393939d67e\"}', null, 'W', '2024-04-19 16:04:48', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041904600052', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"www好\",\"ttsTextBin\":\"7e83000007082706778160003608777777e5a5bd8f7e\"}', null, 'W', '2024-04-19 20:57:05', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041940960004', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"好帅好帅\",\"ttsTextBin\":\"7e8300000d075550144804000a08e5a5bde5b885e5a5bde5b885d67e\"}', null, 'W', '2024-04-19 18:21:03', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041957800003', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"gaga\",\"ttsTextBin\":\"7e8300000507555014480400150867616761c17e\"}', null, 'W', '2024-04-19 18:20:54', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041961450005', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"我今天不吃饭了\",\"ttsTextBin\":\"7e83000016075550144804007d08e68891e4bb8ae5a4a9e4b88de59083e9a5ade4ba86667e\"}', null, 'W', '2024-04-19 18:21:20', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041965190006', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"你今天吃饭了吗\",\"ttsTextBin\":\"7e8300001608270677816000ae08e4bda0e4bb8ae5a4a9e59083e9a5ade4ba86e59097657e\"}', null, 'W', '2024-04-19 18:21:28', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041975500055', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"今天下雨了\",\"ttsTextBin\":\"7e83000010082706778160002408e4bb8ae5a4a9e4b88be99ba8e4ba86e87e\"}', null, 'W', '2024-04-19 20:57:53', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041981100051', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"eee\",\"ttsTextBin\":\"7e83000004075550144804001c08656565ac7e\"}', null, 'W', '2024-04-19 20:56:59', '8300');
+INSERT INTO `work_license_log` VALUES ('112024041994121895', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"好\",\"ttsTextBin\":\"7e8300000307555014480400c808bac3637e\"}', null, 'W', '2024-04-19 16:04:57', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042204650002', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"1\",\"ttsTextBin\":\"7e83000002082706778160006b08316c7e\"}', null, 'W', '2024-04-22 17:59:04', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042205840001', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"你好www\",\"ttsTextBin\":\"7e8300000a08270677816000fe08e4bda0e5a5bd777777b37e\"}', null, 'W', '2024-04-22 17:42:12', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042211950011', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"111\",\"ttsTextBin\":\"7e8300000407555014480400da083131313e7e\"}', null, 'W', '2024-04-22 18:10:51', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042213720008', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"33\",\"ttsTextBin\":\"7e8300000307555014480400bc0833336e7e\"}', null, 'W', '2024-04-22 18:10:22', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042215600005', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"123123123\",\"ttsTextBin\":\"7e8300000a082706778160009a08313233313233313233947e\"}', null, 'W', '2024-04-22 17:59:42', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042218540009', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"中文\",\"ttsTextBin\":\"7e8300000707555014480400ff08e4b8ade696872f7e\"}', null, 'W', '2024-04-22 18:10:31', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042244900012', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"是\",\"ttsTextBin\":\"7e83000004075550144804009208e698af967e\"}', null, 'W', '2024-04-22 18:10:55', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042252320004', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"9\",\"ttsTextBin\":\"7e8300000207555014480400b508395f7e\"}', null, 'W', '2024-04-22 17:59:16', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042270120003', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"去\",\"ttsTextBin\":\"7e83000004075550144804005908e58ebb5c7e\"}', null, 'W', '2024-04-22 17:59:12', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042276550010', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"de\",\"ttsTextBin\":\"7e83000003075550144804003a086465e97e\"}', null, 'W', '2024-04-22 18:10:44', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042279330006', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"1111\",\"ttsTextBin\":\"7e8300000507555014480400b20831313131667e\"}', null, 'W', '2024-04-22 18:00:08', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042289060007', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"5438\",\"ttsTextBin\":\"7e8300000507555014480400340835343338ea7e\"}', null, 'W', '2024-04-22 18:00:31', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042316870002', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"今天不吃饭\",\"ttsTextBin\":\"7e83000010075550144804006b08e4bb8ae5a4a9e4b88de59083e9a5ad517e\"}', null, 'W', '2024-04-23 12:15:25', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042336250003', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"6\",\"ttsTextBin\":\"7e8300000207555014480400a50836407e\"}', null, 'W', '2024-04-23 12:20:34', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042372380004', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"吃饭\",\"ttsTextBin\":\"7e83000007075550144804002e08e59083e9a5adef7e\"}', null, 'W', '2024-04-23 12:20:40', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042389870005', '102024041846821575', '102023021497100001', 'tts', '302024011896400039', 'test9989', '{\"ttsText\":\"6\",\"ttsTextBin\":\"7e8300000207555014480400540836b17e\"}', null, 'W', '2024-04-23 12:20:48', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042443150001', '102024042499890004', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"今天\",\"ttsTextBin\":\"7e83000007075550144804000d08e4bb8ae5a4a9e67e\"}', null, 'W', '2024-04-24 15:29:17', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042443590003', '102024042499890004', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"流量\",\"ttsTextBin\":\"7e83000007075550144804004f08e6b581e9878faa7e\"}', null, 'W', '2024-04-24 16:37:26', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042448290002', '102024042499890004', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"呃呃呃\",\"ttsTextBin\":\"7e8300000a075550144804005408e59183e59183e59183787e\"}', null, 'W', '2024-04-24 15:53:54', '8300');
+INSERT INTO `work_license_log` VALUES ('112024042671780001', '102024042499890004', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"要不要吃个饭\",\"ttsTextBin\":\"7e8300001307555014480400a708e8a681e4b88de8a681e59083e4b8aae9a5ad557e\"}', null, 'W', '2024-04-26 10:35:33', '8300');
+INSERT INTO `work_license_log` VALUES ('112024050603580014', '102024050613870010', '102024040224260003', 'tts', '302024050696470003', '李二狗', '{\"ttsText\":\"中文测试，编码问题，都好！\",\"ttsTextBin\":\"7e8300001b079607508716007808d6d0cec4b2e2cad4a3acb1e0c2ebcecacce2a3acb6bcbac3a3a1de7e\"}', null, 'W', '2024-05-06 16:39:52', '8300');
+INSERT INTO `work_license_log` VALUES ('112024050632480012', '102024050613870010', '102024040224260003', 'tts', '302024050696470003', '李二狗', '{\"ttsText\":\"1\",\"ttsTextBin\":\"7e8300000207960750871600ba0831557e\"}', null, 'W', '2024-05-06 16:38:00', '8300');
+INSERT INTO `work_license_log` VALUES ('112024050668060013', '102024050613870010', '102024040224260003', 'tts', '302024050696470003', '李二狗', '{\"ttsText\":\"中文测试\",\"ttsTextBin\":\"7e8300000907960750871600ef08d6d0cec4b2e2cad4787e\"}', null, 'W', '2024-05-06 16:38:59', '8300');
+INSERT INTO `work_license_log` VALUES ('112024050802210022', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"为什么变了\",\"ttsTextBin\":\"7e8300000b082706778160001108ceaacab2c3b4b1e4c1cb1a7e\"}', null, 'W', '2024-05-08 16:44:30', '8300');
+INSERT INTO `work_license_log` VALUES ('112024050816290019', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"ee\",\"ttsTextBin\":\"7e8300000308270677816000b6086565817e\"}', null, 'W', '2024-05-08 16:44:05', '8300');
+INSERT INTO `work_license_log` VALUES ('112024050820950034', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"中文测试\",\"ttsTextBin\":\"08d6d0cec4b2e2cad4\"}', null, 'W', '2024-05-08 10:08:23', '8300');
+INSERT INTO `work_license_log` VALUES ('112024050837960004', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"怎么又变了呢\",\"ttsTextBin\":\"7e8300000d08270677816000a308d4f5c3b4d3d6b1e4c1cbc4d88a7e\"}', null, 'W', '2024-05-08 15:57:42', '8300');
+INSERT INTO `work_license_log` VALUES ('112024050862240037', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"中文测试\",\"ttsTextBin\":\"7e8300000908270677816000b908d6d0cec4b2e2cad4c67e\"}', null, 'W', '2024-05-08 10:08:52', '8300');
+INSERT INTO `work_license_log` VALUES ('112024050892320040', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"今天发大财\",\"ttsTextBin\":\"7e8300000b08270677816000b508bdf1ccecb7a2b4f3b2c6c07e\"}', null, 'W', '2024-05-08 14:36:16', '8300');
+INSERT INTO `work_license_log` VALUES ('112024051688380256', '102024022920950002', '102023021497100001', 'tts', '302023121633940008', 'ailiwen', '{\"ttsText\":\"你好\",\"ttsTextBin\":\"7e83000005082706778160004508c4e3bac32a7e\"}', null, 'W', '2024-05-16 18:36:47', '8300');
+INSERT INTO `work_license_log` VALUES ('112024052921480044', '102024050613870010', '102024040224260003', 'tts', '302024050696470003', '李二狗', '{\"ttsText\":\"设备可正常呢\",\"ttsTextBin\":\"7e8300000d04870785615500a708c9e8b1b8bfc9d5fdb3a3c4d86e7e\"}', null, 'W', '2024-05-29 16:23:27', '8300');
+INSERT INTO `work_license_log` VALUES ('112024052987020033', '102024050613870010', '102024040224260003', 'tts', '302024050696470003', '李二狗', '{\"ttsText\":\"我是帅哥\",\"ttsTextBin\":\"7e83000009048707856155004e08ced2cac7cba7b8e7db7e\"}', null, 'W', '2024-05-29 16:19:10', '8300');
 
 -- ----------------------------
 -- Table structure for work_license_machine
@@ -12579,7 +15589,7 @@ CREATE TABLE `work_license_machine` (
   `machine_code` varchar(64) NOT NULL COMMENT '工牌编号',
   `staff_id` varchar(30) NOT NULL COMMENT '员工ID',
   `staff_name` varchar(64) NOT NULL COMMENT '员工名称',
-  `pos_upload_sec` int(11) NOT NULL COMMENT '位置上报间隔，单位秒',
+  `pos_upload_sec` int NOT NULL COMMENT '位置上报间隔，单位秒',
   `lat` varchar(32) DEFAULT NULL COMMENT '精度',
   `lon` varchar(32) DEFAULT NULL COMMENT '维度',
   `address` varchar(256) DEFAULT NULL COMMENT '位置',
@@ -12591,7 +15601,7 @@ CREATE TABLE `work_license_machine` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`machine_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of work_license_machine
@@ -12621,7 +15631,7 @@ CREATE TABLE `work_license_pos` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`wlt_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of work_license_pos
@@ -12641,7 +15651,7 @@ CREATE TABLE `work_license_white_list` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of work_license_white_list
@@ -12657,301 +15667,3 @@ INSERT INTO `work_license_white_list` VALUES ('9992024050854000014', '1020240229
 INSERT INTO `work_license_white_list` VALUES ('9992024050862730021', '102024022920950002', '13866666666', '13345513582', '055166185530', '', '2024-05-08 16:44:19', '1');
 INSERT INTO `work_license_white_list` VALUES ('9992024050880350008', '102024022920950002', '055166185530', '13888888888', '13888888888', '', '2024-05-08 16:16:42', '1');
 INSERT INTO `work_license_white_list` VALUES ('9992024051649620257', '102024022920950002', '15597174305', '13327644153', '055166185530', '', '2024-05-16 18:37:19', '0');
-
-INSERT INTO `c_service` VALUES ('982026062700010001', 'login.generatorSliderCode', 'API', '滑块验证码接口', '1', 'CMD', 'http://iot-user', 'GET', '60', '3', '2026-06-27 11:35:35', '0');
-INSERT INTO `c_route` VALUES ('102026062700010001', '992023010100000001', '982026062700010001', 'Q', '1000', 'S', '2026-06-27 11:35:35', '0');
-
--- MQTT下发日志表
-CREATE TABLE `mqtt_send_log` (
-  `log_id` varchar(64) NOT NULL COMMENT '主键ID',
-  `business_id` varchar(64) DEFAULT NULL COMMENT '业务ID（taskId）',
-  `machine_code` varchar(64) DEFAULT NULL COMMENT '相机编码（设备序列号）',
-  `car_num` varchar(16) DEFAULT NULL COMMENT '车牌号',
-  `cmd_type` varchar(16) NOT NULL COMMENT '指令类型：OPEN_DOOR-开闸 CLOSE_DOOR-关闸 VOICE-语音 TEXT-文字显示 SNAPSHOT-抓拍',
-  `topic` varchar(256) DEFAULT NULL COMMENT 'MQTT topic',
-  `context` longtext COMMENT '下发内容（JSON）',
-  `remark` varchar(512) DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`log_id`),
-  KEY `idx_machine_create` (`machine_code`, `create_time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='MQTT下发日志表';
-
-INSERT INTO `c_service` VALUES ('982026072810010001', 'barrier.listMqttSendLog', 'API', 'MQTT下发日志查询', '1', 'CMD', 'http://iot-barrier', 'GET', '60', '3', '2026-07-28 17:50:00', '0');
-INSERT INTO `c_route` VALUES ('102026072810010001', '992023010100000001', '982026072810010001', 'Q', '1000', 'S', '2026-07-28 17:50:00', '0');
-
--- 商铺位置表
-CREATE TABLE `shop_location` (
-  `location_id` varchar(50) NOT NULL COMMENT '位置ID',
-  `location_name` varchar(100) NOT NULL COMMENT '位置名称',
-  `parent_id` varchar(50) NOT NULL DEFAULT '-1' COMMENT '父位置ID',
-  `level` int NOT NULL DEFAULT 1 COMMENT '层级',
-  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
-  `community_id` varchar(50) NOT NULL COMMENT '小区ID',
-  `seq` int NOT NULL DEFAULT 1 COMMENT '排序',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '状态',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`location_id`),
-  KEY `idx_community` (`community_id`),
-  KEY `idx_parent` (`parent_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商铺位置表';
-
--- 商铺表
-CREATE TABLE `building_shop` (
-  `shop_id` varchar(50) NOT NULL COMMENT '商铺ID',
-  `shop_num` varchar(50) NOT NULL COMMENT '商铺编号',
-  `location_id` varchar(50) DEFAULT NULL COMMENT '位置ID',
-  `location_name` varchar(100) DEFAULT NULL COMMENT '位置名称',
-  `built_up_area` varchar(20) DEFAULT NULL COMMENT '建筑面积',
-  `shop_area` varchar(20) DEFAULT NULL COMMENT '使用面积',
-  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
-  `state` varchar(4) NOT NULL DEFAULT '2008' COMMENT '状态 2006已出租 2007已出售 2008空置',
-  `community_id` varchar(50) NOT NULL COMMENT '小区ID',
-  `shop_rent` varchar(20) DEFAULT NULL COMMENT '租金',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '状态',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`shop_id`),
-  KEY `idx_community` (`community_id`),
-  KEY `idx_location` (`location_id`),
-  KEY `idx_shop_num` (`shop_num`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商铺表';
-
--- 商铺业主关联表（租赁/出售记录）
-CREATE TABLE `building_shop_owner` (
-  `shop_owner_id` varchar(50) NOT NULL COMMENT '关联ID',
-  `shop_id` varchar(50) NOT NULL COMMENT '商铺ID',
-  `owner_id` varchar(50) DEFAULT NULL COMMENT '业主ID',
-  `owner_name` varchar(100) DEFAULT NULL COMMENT '业主姓名',
-  `link` varchar(20) DEFAULT NULL COMMENT '联系电话',
-  `state` varchar(4) DEFAULT NULL COMMENT '状态 2006已出租 2007已出售',
-  `start_time` timestamp NULL DEFAULT NULL COMMENT '开始时间',
-  `end_time` timestamp NULL DEFAULT NULL COMMENT '结束时间',
-  `community_id` varchar(50) NOT NULL COMMENT '小区ID',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '状态',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`shop_owner_id`),
-  KEY `idx_shop` (`shop_id`),
-  KEY `idx_owner` (`owner_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商铺业主关联表';
-
--- 商铺功能服务注册（c_service）
-INSERT INTO `c_service` VALUES ('982026081300000001', 'shop.listShopLocations', 'API', '查询商铺位置', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2026-08-13 12:00:01', '0');
-INSERT INTO `c_service` VALUES ('982026081300000002', 'shop.saveShopLocation', 'API', '添加商铺位置', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:02', '0');
-INSERT INTO `c_service` VALUES ('982026081300000003', 'shop.updateShopLocation', 'API', '修改商铺位置', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:03', '0');
-INSERT INTO `c_service` VALUES ('982026081300000004', 'shop.deleteShopLocation', 'API', '删除商铺位置', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:04', '0');
-INSERT INTO `c_service` VALUES ('982026081300000005', 'shop.listBuildingShops', 'API', '查询商铺', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2026-08-13 12:00:05', '0');
-INSERT INTO `c_service` VALUES ('982026081300000006', 'shop.saveBuildingShop', 'API', '保存商铺', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:06', '0');
-INSERT INTO `c_service` VALUES ('982026081300000007', 'shop.updateBuildingShop', 'API', '修改商铺', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:07', '0');
-INSERT INTO `c_service` VALUES ('982026081300000008', 'shop.deleteBuildingShop', 'API', '删除商铺', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:08', '0');
-INSERT INTO `c_service` VALUES ('982026081300000009', 'shop.listBuildingShopOwners', 'API', '查询商铺业主', '1', 'CMD', 'http://iot-community', 'GET', '60', '3', '2026-08-13 12:00:09', '0');
-INSERT INTO `c_service` VALUES ('982026081300000010', 'shop.saveBuildingShopOwner', 'API', '交铺', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:10', '0');
-INSERT INTO `c_service` VALUES ('982026081300000011', 'shop.deleteBuildingShopOwner', 'API', '退铺', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 12:00:11', '0');
-INSERT INTO `c_service` VALUES ('982026081300000012', 'shop.updateBuildingShopOwner', 'API', '修改商铺租赁', '1', 'CMD', 'http://iot-community', 'POST', '60', '3', '2026-08-13 14:00:12', '0');
-
--- 商铺功能路由注册（c_route）
-INSERT INTO `c_route` VALUES ('102026081300000001', '992023010100000001', '982026081300000001', 'Q', '1000', 'S', '2026-08-13 12:00:01', '0');
-INSERT INTO `c_route` VALUES ('102026081300000002', '992023010100000001', '982026081300000002', 'D', '1000', 'S', '2026-08-13 12:00:02', '0');
-INSERT INTO `c_route` VALUES ('102026081300000003', '992023010100000001', '982026081300000003', 'D', '1000', 'S', '2026-08-13 12:00:03', '0');
-INSERT INTO `c_route` VALUES ('102026081300000004', '992023010100000001', '982026081300000004', 'D', '1000', 'S', '2026-08-13 12:00:04', '0');
-INSERT INTO `c_route` VALUES ('102026081300000005', '992023010100000001', '982026081300000005', 'Q', '1000', 'S', '2026-08-13 12:00:05', '0');
-INSERT INTO `c_route` VALUES ('102026081300000006', '992023010100000001', '982026081300000006', 'D', '1000', 'S', '2026-08-13 12:00:06', '0');
-INSERT INTO `c_route` VALUES ('102026081300000007', '992023010100000001', '982026081300000007', 'D', '1000', 'S', '2026-08-13 12:00:07', '0');
-INSERT INTO `c_route` VALUES ('102026081300000008', '992023010100000001', '982026081300000008', 'D', '1000', 'S', '2026-08-13 12:00:08', '0');
-INSERT INTO `c_route` VALUES ('102026081300000009', '992023010100000001', '982026081300000009', 'Q', '1000', 'S', '2026-08-13 12:00:09', '0');
-INSERT INTO `c_route` VALUES ('102026081300000010', '992023010100000001', '982026081300000010', 'D', '1000', 'S', '2026-08-13 12:00:10', '0');
-INSERT INTO `c_route` VALUES ('102026081300000011', '992023010100000001', '982026081300000011', 'D', '1000', 'S', '2026-08-13 12:00:11', '0');
-INSERT INTO `c_route` VALUES ('102026081300000012', '992023010100000001', '982026081300000012', 'D', '1000', 'S', '2026-08-13 14:00:12', '0');
-
--- 商铺管理菜单权限
-INSERT INTO `p_privilege` VALUES ('502026081300000001', '商铺管理', '商铺管理', '2026-08-13 12:00:00', '0', '800900000003', '/iot/api/shop.listBuildingShops', '702026081300000001');
-INSERT INTO `m_menu` VALUES ('702026081300000001', '商铺管理', '802023021604710005', '/#/pages/shop/listShopManage', '4', '502026081300000001', '', '2026-08-13 12:00:00', '0', 'Y');
-INSERT INTO `p_privilege_rel` VALUES ('102026081300000001', '502026081300000001', '600201904002', '1001', '2026-08-13 12:00:00', '0');
-
--- 商铺门禁授权表
-DROP TABLE IF EXISTS `access_control_shop`;
-CREATE TABLE `access_control_shop` (
-  `acs_id` varchar(30) NOT NULL COMMENT '编号',
-  `machine_id` varchar(30) NOT NULL COMMENT '设备ID',
-  `community_id` varchar(30) NOT NULL COMMENT '小区ID',
-  `location_id` varchar(30) NOT NULL COMMENT '位置ID',
-  `location_name` varchar(64) NOT NULL COMMENT '位置名称',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，0在用 1失效',
-  PRIMARY KEY (`acs_id`),
-  KEY `i_m_community_id` (`community_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- 商铺授权门禁服务注册（c_service）
-INSERT INTO `c_service` VALUES ('982026081800000001', 'accessControlShop.listAccessControlShop', 'API', '查询商铺授权', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2026-08-18 12:00:01', '0');
-INSERT INTO `c_service` VALUES ('982026081800000002', 'accessControlShop.saveAccessControlShop', 'API', '商铺门禁授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2026-08-18 12:00:02', '0');
-INSERT INTO `c_service` VALUES ('982026081800000003', 'accessControlShop.deleteAccessControlShop', 'API', '删除商铺授权', '1', 'CMD', 'http://iot-accessControl', 'POST', '60', '3', '2026-08-18 12:00:03', '0');
-INSERT INTO `c_service` VALUES ('982026081800000004', 'accessControlShop.listAdminAccessControlShop', 'API', '运营访问商铺授权', '1', 'CMD', 'http://iot-accessControl', 'GET', '60', '3', '2026-08-18 12:00:04', '0');
-
--- 商铺授权门禁路由注册（c_route）
-INSERT INTO `c_route` VALUES ('102026081800000001', '992023010100000001', '982026081800000001', 'Q', '1000', 'S', '2026-08-18 12:00:01', '0');
-INSERT INTO `c_route` VALUES ('102026081800000002', '992023010100000001', '982026081800000002', 'D', '1000', 'S', '2026-08-18 12:00:02', '0');
-INSERT INTO `c_route` VALUES ('102026081800000003', '992023010100000001', '982026081800000003', 'D', '1000', 'S', '2026-08-18 12:00:03', '0');
-INSERT INTO `c_route` VALUES ('102026081800000004', '992023010100000001', '982026081800000004', 'Q', '1000', 'S', '2026-08-18 12:00:04', '0');
-
--- 商铺授权门禁菜单权限（挂在门禁管理组下）
-INSERT INTO `p_privilege` VALUES ('502026081800000001', '商铺授权', '商铺授权', '2026-08-18 12:00:00', '0', '800900000003', '/#/pages/accessControl/accessControlShop', '702026081800000001');
-INSERT INTO `m_menu` VALUES ('702026081800000001', '商铺授权', '802023081520910004', '/#/pages/accessControl/accessControlShop', '11', '502026081800000001', '', '2026-08-18 12:00:00', '0', 'Y');
-INSERT INTO `p_privilege_rel` VALUES ('102026081800000001', '502026081800000001', '600201904002', '1001', '2026-08-18 12:00:00', '0');
--- 水电表对象类型（0房屋 1商铺）
-ALTER TABLE `meter_machine` ADD COLUMN `obj_type` varchar(2) NOT NULL DEFAULT '0' COMMENT '对象类型 0 房屋 1 商铺' AFTER `room_name`;
-
--- 2026-08-28 停车位租售功能：parking_space 表新增业主/车辆/租期字段
-ALTER TABLE `parking_space`
-  ADD COLUMN `owner_id` varchar(30) DEFAULT NULL COMMENT '业主ID' AFTER `pr_id`,
-  ADD COLUMN `owner_name` varchar(64) DEFAULT NULL COMMENT '业主名称' AFTER `owner_id`,
-  ADD COLUMN `car_id` varchar(30) DEFAULT NULL COMMENT '车辆ID' AFTER `owner_name`,
-  ADD COLUMN `car_num` varchar(12) DEFAULT NULL COMMENT '车牌号' AFTER `car_id`,
-  ADD COLUMN `start_time` datetime DEFAULT NULL COMMENT '出租开始时间' AFTER `car_num`,
-  ADD COLUMN `end_time` datetime DEFAULT NULL COMMENT '出租结束时间' AFTER `start_time`;
-
--- 停车位租售功能服务注册（c_service）
-INSERT INTO `c_service` VALUES ('982026082800000001', 'parkingArea.queryParkingAreaAndRegions', 'API', '查询停车场及区域', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2026-08-28 10:00:01', '0');
-INSERT INTO `c_service` VALUES ('982026082800000002', 'parkingSpace.sellParkingSpace', 'API', '出租/出售车位', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2026-08-28 10:00:02', '0');
-INSERT INTO `c_service` VALUES ('982026082800000003', 'parkingSpace.releaseParkingSpace', 'API', '释放车位', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2026-08-28 10:00:03', '0');
-INSERT INTO `c_service` VALUES ('982026082800000004', 'parkingSpace.updateParkingSpaceCar', 'API', '修改车位绑定车辆', '1', 'CMD', 'http://iot-car', 'POST', '60', '3', '2026-08-28 10:00:04', '0');
-INSERT INTO `c_service` VALUES ('982026082800000005', 'ownerCar.queryCarsWithoutParkingSpace', 'API', '查询无车位车辆', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2026-08-28 10:00:05', '0');
-
--- 停车位租售功能路由注册（c_route）
-INSERT INTO `c_route` VALUES ('102026082800000001', '992023010100000001', '982026082800000001', 'Q', '1000', 'S', '2026-08-28 10:00:01', '0');
-INSERT INTO `c_route` VALUES ('102026082800000002', '992023010100000001', '982026082800000002', 'D', '1000', 'S', '2026-08-28 10:00:02', '0');
-INSERT INTO `c_route` VALUES ('102026082800000003', '992023010100000001', '982026082800000003', 'D', '1000', 'S', '2026-08-28 10:00:03', '0');
-INSERT INTO `c_route` VALUES ('102026082800000004', '992023010100000001', '982026082800000004', 'D', '1000', 'S', '2026-08-28 10:00:04', '0');
-INSERT INTO `c_route` VALUES ('102026082800000005', '992023010100000001', '982026082800000005', 'Q', '1000', 'S', '2026-08-28 10:00:05', '0');
-
--- 2026-08-28 车辆与车位解耦：owner_car 删除车位ID字段及索引
-ALTER TABLE `owner_car` DROP INDEX `i_oc_ps_id`;
-ALTER TABLE `owner_car` DROP COLUMN `ps_id`;
-
--- 2026-08-28 月卡订单停车场化：car_month_order ps_id（车位ID）改为 pa_id（停车场ID）
--- 若父方案 ALTER DROP ps_id 尚未执行：
-ALTER TABLE `car_month_order` CHANGE COLUMN `ps_id` `pa_id` varchar(30) DEFAULT NULL COMMENT '停车场ID';
--- 若父方案 ALTER DROP ps_id 已执行（ps_id 列已删），则改为：
--- ALTER TABLE `car_month_order` ADD COLUMN `pa_id` varchar(30) DEFAULT NULL COMMENT '停车场ID' AFTER `car_id`;
--- 历史订单 ps_id 原为车位ID，无停车场语义，统一置空
-UPDATE `car_month_order` SET `pa_id` = NULL WHERE `pa_id` IS NOT NULL;
-
--- 2026-08-28 车辆与车位解耦：废弃车辆绑车位/释放车位接口（车辆不再绑车位，释放统一走 parkingSpace.releaseParkingSpace）
-DELETE FROM `c_route` WHERE `route_id` = '102023091931340004';
-DELETE FROM `c_service` WHERE `service_id` = '982023091983790003';
-DELETE FROM `c_route` WHERE `route_id` = '102024071842650013';
-DELETE FROM `c_service` WHERE `service_id` = '982024071899800012';
-DELETE FROM `p_privilege` WHERE `privilege_id` = '502024030416050066';
-DELETE FROM `p_privilege_rel` WHERE `privilege_id` = '502024030416050066';
-
--- 2026-08-28 车辆颜色字段下线：business_owner_car 删除 car_color
-ALTER TABLE `business_owner_car` DROP COLUMN `car_color`;
--- 注：owner_car 表文档结构中无 car_color；若生产环境存在该字段请执行：
--- ALTER TABLE `owner_car` DROP COLUMN `car_color`;
-
--- 2026-09-01 业主端账户明细专用接口（account.queryAppUserAccountDetail）服务注册（c_service/c_route）
-INSERT INTO `c_service` VALUES ('982026090100000001', 'account.queryAppUserAccountDetail', 'API', '手机端查询账户明细', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-01 10:00:00', '0');
-INSERT INTO `c_route` VALUES ('102026090100000001', '992023111817510002', '982026090100000001', 'Q', '1000', 'S', '2026-09-01 10:00:00', '0');
-
--- 2026-09-01 注册协议独立 register_protocol 表：协议内容不再扩展 system_info 表（保持原结构不变），改由独立表存储（全局单份，protolcol_id='1'）
--- 注：系统版本号由后端 AppInfo.java 常量提供（VERSION = "2.0"），不建表字段；
--- 若运行库此前已按旧方案误加 user_protocol/merchant_protocol/copyright_info 列，请按需执行：
--- ALTER TABLE `system_info` DROP COLUMN `user_protocol`, DROP COLUMN `merchant_protocol`, DROP COLUMN `copyright_info`;
--- 若运行库此前已误加 version 列，请按需执行：ALTER TABLE `system_info` DROP COLUMN `version`;
-CREATE TABLE `register_protocol` (
-  `protolcol_id` varchar(30) NOT NULL COMMENT '协议ID',
-  `user_protocol` longtext COMMENT '用户注册协议',
-  `merchant_protocol` longtext COMMENT '商家注册协议',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
-  PRIMARY KEY (`protolcol_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- 初始协议记录（管理端保存时按 protolcol_id='1' 更新）
-INSERT INTO `register_protocol` (`protolcol_id`, `user_protocol`, `merchant_protocol`, `status_cd`)
-VALUES ('1', '', '', '0');
-
--- 2026-09-01 系统隐私查询接口（system.listSystemPrivacy）服务注册（c_service/c_route）
-INSERT INTO `c_service` VALUES ('982026090100000002', 'system.listSystemPrivacy', 'API', '查询系统隐私信息', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2026-09-01 14:12:52', '0');
-INSERT INTO `c_route` VALUES ('102026090100000002', '992023111817510002', '982026090100000002', 'Q', '1000', 'S', '2026-09-01 14:12:52', '0');
-
--- 2026-09-01 注册协议查询/保存接口（system.listRegisterProtocol / system.updateRegisterProtocol）服务注册（c_service/c_route，管理端 appId 992023010100000001）
-INSERT INTO `c_service` VALUES ('982026090100000003', 'system.listRegisterProtocol', 'API', '查询注册协议', '1', 'CMD', 'http://iot-system', 'GET', '60', '3', '2026-09-01 15:07:07', '0');
-INSERT INTO `c_service` VALUES ('982026090100000004', 'system.updateRegisterProtocol', 'API', '修改注册协议', '1', 'CMD', 'http://iot-system', 'POST', '60', '3', '2026-09-01 15:07:07', '0');
-INSERT INTO `c_route` VALUES ('102026090100000003', '992023010100000001', '982026090100000003', 'Q', '1000', 'S', '2026-09-01 15:07:07', '0');
-INSERT INTO `c_route` VALUES ('102026090100000004', '992023010100000001', '982026090100000004', 'D', '1000', 'S', '2026-09-01 15:07:07', '0');
-
--- 2026-09-01 用户修改密码/忘记密码重置接口（user.updateUserPwd / user.resetUserPwd）服务注册（c_service/c_route，用户端 appId 992023111817510002）
-INSERT INTO `c_service` VALUES ('982026090100000005', 'user.updateUserPwd', 'API', '修改登录密码', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-09-01 16:04:17', '0');
-INSERT INTO `c_service` VALUES ('982026090100000006', 'user.resetUserPwd', 'API', '忘记密码重置', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-09-01 16:04:17', '0');
-INSERT INTO `c_route` VALUES ('102026090100000005', '992023111817510002', '982026090100000005', 'D', '1000', 'S', '2026-09-01 16:04:17', '0');
-INSERT INTO `c_route` VALUES ('102026090100000006', '992023111817510002', '982026090100000006', 'D', '1000', 'S', '2026-09-01 16:04:17', '0');
-
--- 2026-09-02 扫码充电「扫码即打开内容」改造（chargeMachine.getAppChargeMachineByCode）服务注册（c_service/c_route，用户端 appId 992023111817510002）
-INSERT INTO `c_service` VALUES ('982026090200000001', 'chargeMachine.getAppChargeMachineByCode', 'API', '按设备编码查询充电桩', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2026-09-02 23:26:45', '0');
-INSERT INTO `c_route` VALUES ('102026090200000001', '992023111817510002', '982026090200000001', 'Q', '1000', 'S', '2026-09-02 23:26:45', '0');
-
--- 2026-09-03 充电小程序电子发票：开票订单表（invoice_order，通用开票表，充电业务复用）
-CREATE TABLE `invoice_order` (
-  `invoice_order_id` varchar(30) NOT NULL COMMENT '开票订单ID',
-  `user_id`          varchar(30)          COMMENT '用户ID',
-  `phone`            varchar(16)  NOT NULL COMMENT '登录账号手机号',
-  `community_id`     varchar(30)          COMMENT '小区ID(communityId)',
-  `heading_id`       varchar(32)          COMMENT '商城抬头ID(同步后回写)',
-  `heading_type`     varchar(8)           COMMENT '抬头类型 个人/公司',
-  `buyer_name`       varchar(128)         COMMENT '购买方名称(抬头名称)',
-  `buyer_tax_no`     varchar(64)          COMMENT '税号',
-  `buyer_address`    varchar(256)         COMMENT '地址(选填)',
-  `buyer_bank`       varchar(128)         COMMENT '开户行(选填)',
-  `buyer_bank_no`    varchar(64)          COMMENT '银行账号(选填)',
-  `email`            varchar(128)         COMMENT '邮箱(接收发票)',
-  `invoice_type`     varchar(8)   DEFAULT '普票' COMMENT '普票/专票',
-  `biz_category`     varchar(64)  DEFAULT '充电费' COMMENT '业务类目',
-  `amount`           decimal(14,2) NOT NULL COMMENT '开票金额(元)',
-  `invoice_id`       varchar(32)          COMMENT '商城开票单号(INV..)',
-  `state`            varchar(8)   DEFAULT 'WAIT' COMMENT 'WAIT-待开票 DONE-已开票 FAIL-开票失败',
-  `invoice_no`       varchar(64)          COMMENT '发票号码',
-  `invoice_code`     varchar(64)          COMMENT '发票代码',
-  `pdf_url`          varchar(256)         COMMENT '发票PDF地址',
-  `fail_reason`      varchar(512)         COMMENT '失败原因',
-  `remark`           varchar(512)         COMMENT '幂等标记(业务前缀:orderId1,orderId2 如 CHARGE:...)',
-  `status_cd`        varchar(2)   DEFAULT '0' COMMENT '0-正常 1-删除',
-  `create_time`      datetime     DEFAULT CURRENT_TIMESTAMP,
-  `update_time`      datetime     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`invoice_order_id`),
-  KEY idx_user (user_id, phone, status_cd),
-  KEY idx_state (state, status_cd)
-) COMMENT='开票订单';
-
--- 2026-09-03 充电小程序电子发票：开票明细表（invoice_order_item）
-CREATE TABLE `invoice_order_item` (
-  `item_id`          varchar(30) NOT NULL COMMENT '明细ID',
-  `invoice_order_id` varchar(30) NOT NULL COMMENT '开票订单ID',
-  `order_id`         varchar(64) NOT NULL COMMENT '业务订单ID(充电订单 charge_machine_order.order_id)',
-  `community_id`     varchar(30)         COMMENT '小区ID(冗余)',
-  `biz_category`     varchar(64) DEFAULT '充电费' COMMENT '业务类目',
-  `invoice_category` varchar(64)         COMMENT '开票类目(商城回填)',
-  `tax_code`         varchar(32)         COMMENT '税收分类编码',
-  `tax_rate`         varchar(8)          COMMENT '税率',
-  `amount`           decimal(14,2) NOT NULL COMMENT '明细金额(元)',
-  `seq`              int         DEFAULT 1 COMMENT '明细序号',
-  `status_cd`        varchar(2)  DEFAULT '0' COMMENT '0-正常 1-删除',
-  `create_time`      datetime    DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`item_id`),
-  KEY idx_order (order_id, status_cd),
-  KEY idx_invoice (invoice_order_id)
-) COMMENT='开票明细';
-
--- 2026-09-03 充电小程序电子发票：服务注册（c_service/c_route，用户端 appId 992023111817510002）
-INSERT INTO `c_service` VALUES ('982026090300000001', 'invoice.listMyInvoiceOrders', 'API', '查询我的开票订单(未开票/已开票)', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-03 10:00:01', '0');
-INSERT INTO `c_service` VALUES ('982026090300000002', 'invoice.getMyInvoiceHeading', 'API', '按登录手机号查询商城发票抬头', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-03 10:00:02', '0');
-INSERT INTO `c_service` VALUES ('982026090300000003', 'invoice.saveInvoice', 'API', '提交开票申请', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2026-09-03 10:00:03', '0');
-INSERT INTO `c_route` VALUES ('102026090300000001', '992023111817510002', '982026090300000001', 'Q', '1000', 'S', '2026-09-03 10:00:01', '0');
-INSERT INTO `c_route` VALUES ('102026090300000002', '992023111817510002', '982026090300000002', 'Q', '1000', 'S', '2026-09-03 10:00:02', '0');
-INSERT INTO `c_route` VALUES ('102026090300000003', '992023111817510002', '982026090300000003', 'D', '1000', 'S', '2026-09-03 10:00:03', '0');
-
--- 2026-09-03 充电小程序电子发票：商城接入配置（c_mapping MALL 域，未配置 MALL_SWITCH=ON 时开票判定"商城开票未生效"）
-INSERT INTO `c_mapping` VALUES ('102026090300000004', 'MALL', '商城开关', 'MALL_SWITCH', 'OFF', 'ON 开启，OFF 关闭', '2026-09-03 10:00:04', '0');
-INSERT INTO `c_mapping` VALUES ('102026090300000005', 'MALL', '商城网关地址', 'MALL_URL', 'https://mall.homecommunity.cn', '', '2026-09-03 10:00:05', '0');
-INSERT INTO `c_mapping` VALUES ('102026090300000006', 'MALL', '调用方应用ID', 'APP_ID', '', '', '2026-09-03 10:00:06', '0');
-INSERT INTO `c_mapping` VALUES ('102026090300000007', 'MALL', '调用方应用秘钥', 'APP_SECRET', '', '', '2026-09-03 10:00:07', '0');
-INSERT INTO `c_mapping` VALUES ('102026090300000008', 'MALL', '商城管理员账号', 'MALL_USERNAME', '', '', '2026-09-03 10:00:08', '0');
-INSERT INTO `c_mapping` VALUES ('102026090300000009', 'MALL', '商城管理员密码', 'MALL_PASSWORD', '', '', '2026-09-03 10:00:09', '0');

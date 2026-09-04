@@ -44,6 +44,8 @@ public class ChargeMachineDto extends PageDto implements Serializable {
 
     private String portCount;
 
+    private String usingPortCount;
+
     private String factoryName;
 
     private String qrCode;
@@ -159,6 +161,14 @@ public class ChargeMachineDto extends PageDto implements Serializable {
 
     public void setPortCount(String portCount) {
         this.portCount = portCount;
+    }
+
+    public String getUsingPortCount() {
+        return usingPortCount;
+    }
+
+    public void setUsingPortCount(String usingPortCount) {
+        this.usingPortCount = usingPortCount;
     }
 
     public String getFactoryName() {

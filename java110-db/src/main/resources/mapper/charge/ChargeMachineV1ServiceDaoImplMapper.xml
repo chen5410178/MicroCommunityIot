@@ -25,7 +25,8 @@
         ruleId,t.community_id,t.community_id communityId,t.charge_type,t.charge_type chargeType,
         t.machine_name,t.machine_name machineName,cmf.factory_name factoryName,t.create_time createTime,
         cr.rule_name ruleName,td.name chargeTypeName,t.monitor_id monitorId,t.monitor_name monitorName,
-        count(1) portCount
+        count(cmp.port_id) portCount,
+        sum(case when cmp.state is not null and cmp.state != 'FREE' then 1 else 0 end) usingPortCount
         from charge_machine t
         left join charge_rule cr on t.rule_id = cr.rule_id and cr.status_cd = '0'
         left join charge_machine_factory cmf on t.impl_bean = cmf.factory_id and cmf.status_cd = '0'

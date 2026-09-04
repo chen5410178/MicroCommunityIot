@@ -176,7 +176,6 @@
 	} from '@/api/car/carApi.js'
 	import {
 		getChargeMachines,
-		getChargeMachinePort,
 		getUserChargeMonthOrder,
 		getChargeMachineOrder
 	} from '@/api/machine/machineApi.js'
@@ -573,7 +572,6 @@
 					const list = res.data.map(m => this._adaptMachine(m))
 					chargeStore.setMachineList(list, commId)
 					this.storeVersion++
-					this._loadPilePorts(list, commId, seq)
 				}).catch(() => {
 					if (seq !== this._pileSeq) return
 					chargeStore.setMachineList([], commId)
@@ -584,37 +582,7 @@
 				})
 			},
 			// 充电桩端口（插座/枪）统计：失败时显示 0 使用中 / portCount 空闲
-			_loadPilePorts(list, commId, seq) {
-				if (!list || !list.length) return
-				if (list.length > 10) return
-				list.forEach(m => {
-					getChargeMachinePort({
-						communityId: commId,
-						machineId: m.machineId,
-						page: 1,
-						row: 100
-					}).then(res => {
-						if (seq !== this._pileSeq || chargeStore.machineListCommId !== commId) return
-						if (!res || res.code != 0 || !res.data || !res.data.length) return
-						const busy = res.data.filter(p => p.state !== 'FREE').length
-						const ports = res.data.map(p => ({
-							n: p.portName || p.portCode || '',
-							busy: p.state !== 'FREE'
-						}))
-						m.used = busy
-						m.free = busy < (m.sockets || 1)
-						m.slots = ports
-						m.guns = ports
-						chargeStore.setMachineList(chargeStore.machineList.slice(), commId)
-						this.storeVersion++
-					}).catch(() => {
-						if (seq !== this._pileSeq || chargeStore.machineListCommId !== commId) return
-						m.used = 0
-						m.free = true
-						this.storeVersion++
-					})
-				})
-			},
+			// 已废弃：使用数量由 listChargeMachine 接口返回 usingPortCount 统计，不再逐桩查询端口
 			// 我的月卡（需登录，未登录展示默认"未开通"，取未过期的最新一条）
 			_loadCard() {
 				if (!hasLogin()) {
@@ -653,14 +621,15 @@
 			},
 			_adaptMachine(m) {
 				const portCount = parseInt(m.portCount || 0, 10) || 0
+				const used = parseInt(m.usingPortCount || 0, 10) || 0
 				return {
 					machineId: m.machineId || '',
 					name: m.machineName || '',
 					code: m.machineCode || '',
 					online: m.state !== 'OFFLINE',
 					sockets: portCount,
-					used: 0,
-					free: true,
+					used: used,
+					free: used < portCount,
 					loc: (m.communityName || '') + (m.machineCode ? ' · ' + m.machineCode : ''),
 					type: m.chargeType === '1002' ? 'car' : 'bike',
 					chargeType: m.chargeType || '',
