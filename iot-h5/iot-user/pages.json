@@ -370,6 +370,13 @@
 					}
 				},
 				{
+					"path": "pages/car/entrySuccess",
+					"style": {
+						"navigationBarTitleText": "进场成功",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
 					"path": "pages/car/carMonthOrder",
 					"style": {
 						"navigationBarTitleText": "车辆月卡订单",

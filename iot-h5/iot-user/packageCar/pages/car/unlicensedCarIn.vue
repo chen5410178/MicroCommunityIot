@@ -17,22 +17,8 @@
 
 			<view class="plat-btn-black"></view>
 			<view class="cu-bar btn-group" style="margin-top: 30px;">
-				<button @click="_saveCarNum" :disabled="!carNum"
+				<button @click="_saveCarNum" :disabled="!carNum || submitting"
 					class="cu-btn bg-green shadow-blur round lg">立即入场</button>
-			</view>
-		</view>
-
-		<view class="cu-modal" :class="showToastFlag==true?'show':''">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white justify-end">
-					<view class="content">温馨提示</view>
-				</view>
-				<view class="padding-xl">
-					车牌号提交成功!
-				</view>
-				<view class="cu-bar bg-white justify-end">
-					<view class="action margin-0 flex-sub  solid-left" @tap="_closeToastModal()">关闭</view>
-				</view>
 			</view>
 		</view>
 	</view>
@@ -53,6 +39,9 @@
 	import {
 		isWxOrAli
 	} from '@/lib/java110/utils/EnvUtil.js'
+	import {
+		formatTimeNow
+	} from '@/lib/java110/utils/DateUtil.js'
 	export default {
 		data() {
 			return {
@@ -62,7 +51,7 @@
 				appId: '',
 				machineId: '',
 				openId: '',
-				showToastFlag: false,
+				submitting: false,
 			}
 		},
 		mounted() {
@@ -93,7 +82,11 @@
 		},
 		methods: {
 			_saveCarNum: function() {
+				if (this.submitting) {
+					return;
+				}
 				let _that = this;
+				this.submitting = true;
 				customCarInOut({
 					communityId: _that.communityId,
 					carNum: _that.carNum,
@@ -101,6 +94,7 @@
 					type: '1101',
 					unlicense: 'T'
 				}).then(_data => {
+					_that.submitting = false;
 					if (_data.data.code != 0) {
 						uni.showToast({
 							icon: 'none',
@@ -108,11 +102,15 @@
 						})
 						return;
 					}
-					this.showToastFlag = true;
+					// 进场时间：提交成功时刻（方案A）
+					const inTime = formatTimeNow();
+					uni.redirectTo({
+						url: '/packageCar/pages/car/entrySuccess?carNum=' + encodeURIComponent(_that.carNum) +
+							'&inTime=' + encodeURIComponent(inTime)
+					})
+				}).catch(() => {
+					_that.submitting = false;
 				})
-			},
-			_closeToastModal: function() {
-				window.location.reload();
 			},
 			_refreshWechatOpenId: function() {
 				let _that = this;

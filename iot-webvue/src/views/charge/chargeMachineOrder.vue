@@ -80,7 +80,8 @@
             <el-table-column prop="portName" label="插槽" min-width="100" />
             <el-table-column label="充电小时" width="110" align="center">
               <template slot-scope="{ row }">
-                {{ row.chargeHours == 999 ? '按量充电' : row.chargeHours + '小时' }}
+                <div v-if="row.chargeHours === 999">按量充电</div>
+                <div v-else>{{ row.chargeHours || '-'}}</div>
               </template>
             </el-table-column>
             <el-table-column prop="energy" label="充电量" width="90" align="center" />
