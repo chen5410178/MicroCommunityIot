@@ -216,7 +216,7 @@
 					machineId:this.machineId,
 					communityId:this.communityId,
 					wxAli : this.wxAli,
-					evasionIds: this.evasionIds,
+					evasionIds: this.evasionIds.join(','),
 					evasionAmount: this.evasionAmount
 				};
 				let _that = this;

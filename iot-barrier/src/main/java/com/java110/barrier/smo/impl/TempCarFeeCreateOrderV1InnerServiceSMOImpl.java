@@ -1,6 +1,5 @@
 package com.java110.barrier.smo.impl;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.barrier.bmo.IGetTempCarFeeRules;
 import com.java110.bean.ResultVo;
@@ -69,9 +68,9 @@ public class TempCarFeeCreateOrderV1InnerServiceSMOImpl implements ITempCarFeeCr
 
         double receivedAmount = money.doubleValue();
 
-        JSONArray evasionIds = reqJson.getJSONArray("evasionIds");
+        String evasionIds = reqJson.getString("evasionIds");
         double evasionAmount = 0.0;
-        if (evasionIds != null && !evasionIds.isEmpty()) {
+        if (!StringUtil.isEmpty(evasionIds)) {
             evasionAmount = reqJson.getDoubleValue("evasionAmount");
             receivedAmount += evasionAmount;
         }
@@ -82,7 +81,9 @@ public class TempCarFeeCreateOrderV1InnerServiceSMOImpl implements ITempCarFeeCr
         }
         fee.put("receivedAmount", receivedAmount);
         fee.put("oId", GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_oId));
-        fee.put("evasionIds", evasionIds);
+        if (!StringUtil.isEmpty(evasionIds)) {
+            fee.put("evasionIds", evasionIds);
+        }
         fee.put("evasionAmount", evasionAmount);
         JSONObject outParm = new JSONObject();
         outParm.put("data", fee);
@@ -90,6 +91,9 @@ public class TempCarFeeCreateOrderV1InnerServiceSMOImpl implements ITempCarFeeCr
         outParm.put("msg", "成功");
         ResponseEntity<String> responseEntitys = new ResponseEntity<>(outParm.toJSONString(), HttpStatus.OK);
         fee.putAll(reqJson);
+        if (StringUtil.isEmpty(evasionIds)) {
+            fee.remove("evasionIds");
+        }
         CommonCache.setValue("queryTempCarFeeOrder" + fee.getString("oId"), fee.toJSONString(), 24 * 60 * 60);
         return responseEntitys;
     }
@@ -113,10 +117,12 @@ public class TempCarFeeCreateOrderV1InnerServiceSMOImpl implements ITempCarFeeCr
         paramObj.putAll(reqJson);
         TempCarPayOrderDto tempCarPayOrderDto = BeanConvertUtil.covertBean(paramObj, TempCarPayOrderDto.class);
         if (paramObj.containsKey("evasionIds")) {
-            JSONArray evasionIds = paramObj.getJSONArray("evasionIds");
-            if (evasionIds != null && !evasionIds.isEmpty()) {
-                tempCarPayOrderDto.setEvasionIds(evasionIds.toArray(new String[0]));
+            String evasionIds = paramObj.getString("evasionIds");
+            if (!StringUtil.isEmpty(evasionIds)) {
+                tempCarPayOrderDto.setEvasionIds(evasionIds.split(","));
                 tempCarPayOrderDto.setEvasionAmount(paramObj.getDoubleValue("evasionAmount"));
+            } else {
+                tempCarPayOrderDto.setEvasionIds(new String[0]);
             }
         }
         dealParkingCouponCar(paramObj, tempCarPayOrderDto);
