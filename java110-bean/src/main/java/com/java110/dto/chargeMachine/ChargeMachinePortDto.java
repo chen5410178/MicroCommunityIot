@@ -34,6 +34,7 @@ public class ChargeMachinePortDto extends PageDto implements Serializable {
     private String miniUrl; // 小程序端口二维码短码地址
     private String url;     // 公众号端口二维码短码地址
 
+    private String machineName; // 充电桩名称（非数据库字段）
 
     private Date createTime;
 
@@ -127,5 +128,13 @@ public class ChargeMachinePortDto extends PageDto implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getMachineName() {
+        return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
     }
 }

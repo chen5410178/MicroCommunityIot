@@ -77,6 +77,7 @@ import java.util.List;
                 @Java110ParamDoc(parentNodeName = "data", name = "portCode", type = "String", remark = "插槽编号"),
                 @Java110ParamDoc(parentNodeName = "data", name = "portName", type = "String", remark = "插槽名称"),
                 @Java110ParamDoc(parentNodeName = "data", name = "state", type = "String", remark = "插槽状态"),
+                @Java110ParamDoc(parentNodeName = "data", name = "machineName", type = "String", remark = "充电桩名称"),
         }
 )
 
@@ -160,6 +161,7 @@ public class ListChargeMachinePortCmd extends Cmd {
         ChargeMachineDto machine = chargeMachineDtos.get(0);
         String ownerUrl = UrlCache.getOwnerUrl();
         for (ChargeMachinePortDto port : chargeMachinePortDtos) {
+            port.setMachineName(machine.getMachineName());
             if (ChargeMachineDto.CHARGE_TYPE_BIKE.equals(machine.getChargeType())) {
                 port.setMiniUrl(ownerUrl + "/app/chargeBikeMiniPort/" + machine.getMachineCode() + "/" + port.getPortCode());
                 port.setUrl(ownerUrl + "/app/chargeBikeH5Port/" + machine.getMachineCode() + "/" + port.getPortCode());
