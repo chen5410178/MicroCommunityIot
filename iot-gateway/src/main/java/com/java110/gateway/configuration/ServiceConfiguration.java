@@ -47,6 +47,7 @@ public class ServiceConfiguration {
         exclusions.append("/iot/api/car.getOrGenerateUnlicensedCarNum,");//无牌车获取或生成车牌号
 
         exclusions.append("/iot/api/parkingArea.findCarInParkingArea,");// 停车场找车
+        exclusions.append("/iot/api/parkingArea.getAppParkingArea,");// 手机端查询停车场信息（扫码免登录）
 
 
         // todo 支付

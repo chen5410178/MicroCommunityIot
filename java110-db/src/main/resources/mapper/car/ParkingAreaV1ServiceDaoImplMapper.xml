@@ -8,9 +8,25 @@
     <!-- 保存停车场信息 add by wuxw 2018-07-03 -->
     <insert id="saveParkingAreaInfo" parameterType="Map">
         insert into parking_area(
-        type_cd,num,pa_id,remark,community_id,ext_pa_id
+        type_cd,num,pa_id,remark,community_id,ext_pa_id,default_prov,default_char
         ) values (
-        #{typeCd},#{num},#{paId},#{remark},#{communityId},#{extPaId}
+        #{typeCd},#{num},#{paId},#{remark},#{communityId},#{extPaId},
+        <choose>
+            <when test="defaultProv != null and defaultProv != ''">
+                #{defaultProv}
+            </when>
+            <otherwise>
+                '粤'
+            </otherwise>
+        </choose>,
+        <choose>
+            <when test="defaultChar != null and defaultChar != ''">
+                #{defaultChar}
+            </when>
+            <otherwise>
+                'A'
+            </otherwise>
+        </choose>
         )
     </insert>
 
@@ -18,7 +34,8 @@
     <!-- 查询停车场信息 add by wuxw 2018-07-03 -->
     <select id="getParkingAreaInfo" parameterType="Map" resultType="Map">
         select t.type_cd,t.type_cd typeCd,t.num,t.pa_id,t.pa_id paId,t.remark,t.status_cd,t.status_cd
-        statusCd,t.community_id,t.community_id communityId,t.ext_pa_id,t.ext_pa_id extPaId,t.create_time createTime
+        statusCd,t.community_id,t.community_id communityId,t.ext_pa_id,t.ext_pa_id extPaId,t.default_prov defaultProv,
+        t.default_char defaultChar,t.create_time createTime
         <if test="boxId != null and boxId != ''">
             ,pba.default_area defaultArea
         </if>
@@ -82,6 +99,12 @@
         </if>
         <if test="extPaId !=null and extPaId != ''">
             , t.ext_pa_id= #{extPaId}
+        </if>
+        <if test="defaultProv !=null and defaultProv != ''">
+            , t.default_prov= #{defaultProv}
+        </if>
+        <if test="defaultChar !=null and defaultChar != ''">
+            , t.default_char= #{defaultChar}
         </if>
         where 1=1
         <if test="paId !=null and paId != ''">

@@ -95,8 +95,8 @@
 			</view>
 		</view>
 
-		<select-car-num ref="popupCarNumber" type="bottom" @confirm="confirmGuaCarNumber" @getCarNum="getCarNum"
-			:gua="false"></select-car-num>
+	<select-car-num ref="popupCarNumber" type="bottom" @confirm="confirmGuaCarNumber" @getCarNum="getCarNum"
+		:gua="false" :def-prov="defProv" :def-char="defChar"></select-car-num>
 
 	</view>
 </template>
@@ -118,7 +118,8 @@
 	} from '@/lib/java110/utils/EnvUtil.js';
 
 	import {
-		queryWaitPayFeeTempCar
+		queryWaitPayFeeTempCar,
+		getAppParkingArea
 	} from '@/api/car/carApi.js';
 	export default {
 		data() {
@@ -145,7 +146,9 @@
 				carNumBtn:'',
 				carNums: [],
 				showFlag: 'car',
-				inputOnFocusIndex:''
+				inputOnFocusIndex:'',
+				defProv: '粤',   // 默认省份（兜底，与组件默认值一致）
+				defChar: 'A'    // 默认字母（兜底）
 			}
 		},
 		components: {
@@ -168,6 +171,7 @@
 			this.machineId = options.machineId;
 			this.communityId = options.communityId;
 			uni.setStorageSync("wAppId", this.appId)
+			this._loadParkingArea();
 			if (!isNotNull(this.openId)) {
 				//刷新 openId
 				if (isWxOrAli() == 'ALIPAY') {
@@ -180,6 +184,24 @@
 			this._loadExistsCarNum();
 		},
 		methods: {
+			// 查询停车场默认省份/字母（扫码免登录）
+			_loadParkingArea: function() {
+				if (!isNotNull(this.paId) || !isNotNull(this.communityId)) {
+					return;
+				}
+				let _that = this;
+				getAppParkingArea({
+					paId: this.paId,
+					communityId: this.communityId
+				}).then(_data => {
+					if (_data && isNotNull(_data.defaultProv)) {
+						_that.defProv = _data.defaultProv;
+						_that.defChar = _data.defaultChar || 'A';
+					}
+				}).catch(() => {
+					// 查询失败保持默认 粤/A
+				})
+			},
 			showCarNumberKeyboard() {
 				this.$refs.popupCarNumber.open()
 			},
@@ -301,12 +323,23 @@
 				queryWaitPayFeeTempCar({
 					openId: this.openId,
 					machineId: this.machineId,
+					communityId: this.communityId,
 					openType: _openType
 				}).then(_json => {
 					_that.carNums = _json.data;
-					if (_json.data && _json.data.length == 1) {
-						_that.carNum = _json.data[0].carNum;
-						_that._queryCarNum();
+					if (_json.data && _json.data.length > 0) {
+						//无牌车优先自动带入并查询
+						for (let i = 0; i < _json.data.length; i++) {
+							let _carNum = _json.data[i].carNum;
+							if (isNotNull(_carNum) && _carNum.charAt(0) == '无') {
+								_that._loadTempFee(_carNum);
+								return;
+							}
+						}
+						if (_json.data.length == 1) {
+							_that.carNum = _json.data[0].carNum;
+							_that._queryCarNum();
+						}
 					}
 				})
 			},

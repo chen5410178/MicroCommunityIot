@@ -180,6 +180,36 @@ export function getOrGenerateUnlicensedCarNum(_objData){
 }
 
 /**
+ * 手机端查询停车场信息（扫码免登录）
+ * @param {Object} _objData{
+	 * paId:'',
+	 * communityId:''
+ }
+ */
+export function getAppParkingArea(_objData){
+	return new Promise((resolve, reject) => {
+		requestNoAuth({
+			url: url.getAppParkingArea,
+			data: _objData,
+			method: "GET",
+			success: function(res) {
+				if (res.statusCode == 200) {
+					let _json = res.data;
+					if (_json.code == 0) {
+						resolve(_json.data);
+						return;
+					}
+				}
+				reject(res);
+			},
+			fail: function(e) {
+				reject(e);
+			}
+		});
+	})
+}
+
+/**
  * 停车场找车
  * @param {Object} _objData{
 	 * carNum:'',

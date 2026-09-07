@@ -80,6 +80,7 @@ export default {
 	queryCommunitys: baseUrl + "iot/api/community.listCommunitys",
 	saveAppUser: baseUrl + "iot/api/appUser.saveAppUser",
 	findCarInParkingArea: baseUrl + "iot/api/parkingArea.findCarInParkingArea",
+	getAppParkingArea: baseUrl + "iot/api/parkingArea.getAppParkingArea", // 手机端查询停车场信息（扫码免登录）
 	getWechatMiniOpenId: baseUrl + "iot/api/wechat.getWechatMiniOpenId",
 	refreshAppUserBindingOwnerOpenId: baseUrl+"iot/api/owner.refreshAppUserBindingOwnerOpenId",
 	ownerUserLoginByOpenId: baseUrl+"iot/api/user.ownerUserLoginByOpenId",

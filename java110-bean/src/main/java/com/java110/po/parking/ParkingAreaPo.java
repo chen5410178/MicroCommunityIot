@@ -34,6 +34,8 @@ private String remark;
 private String statusCd = "0";
 private String communityId;
 private String extPaId;
+private String defaultProv;
+private String defaultChar;
 public String getTypeCd() {
         return typeCd;
     }
@@ -75,6 +77,18 @@ public String getExtPaId() {
     }
 public void setExtPaId(String extPaId) {
         this.extPaId = extPaId;
+    }
+public String getDefaultProv() {
+        return defaultProv;
+    }
+public void setDefaultProv(String defaultProv) {
+        this.defaultProv = defaultProv;
+    }
+public String getDefaultChar() {
+        return defaultChar;
+    }
+public void setDefaultChar(String defaultChar) {
+        this.defaultChar = defaultChar;
     }
 
 

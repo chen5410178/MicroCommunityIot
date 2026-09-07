@@ -18,6 +18,16 @@
       <el-form-item label="三方ID" prop="extPaId">
         <el-input v-model="form.extPaId" placeholder="选填，请填写三方停车场ID" maxlength="64" />
       </el-form-item>
+      <el-form-item label="默认省份" prop="defaultProv">
+        <el-select v-model="form.defaultProv" placeholder="默认省份（车牌第1位）" style="width: 100%">
+          <el-option v-for="prov in provList" :key="prov" :label="prov" :value="prov" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="默认字母" prop="defaultChar">
+        <el-select v-model="form.defaultChar" placeholder="默认字母（车牌第2位）" style="width: 100%">
+          <el-option v-for="c in charList" :key="c" :label="c" :value="c" />
+        </el-select>
+      </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input v-model="form.remark" placeholder="选填，请填写备注" maxlength="300" />
       </el-form-item>
@@ -48,8 +58,12 @@ export default {
         num: '',
         typeCd: '',
         extPaId: '',
+        defaultProv: '粤',
+        defaultChar: 'A',
         remark: ''
       },
+      provList: ['京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼', '澳', '台'],
+      charList: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
       rules: {
         num: [
           { required: true, message: '停车场编号不能为空', trigger: 'blur' },
@@ -72,6 +86,8 @@ export default {
       this.dialogVisible = val
       if (val && this.editData) {
         this.form = { ...this.editData }
+        this.form.defaultProv = this.form.defaultProv || '粤'
+        this.form.defaultChar = this.form.defaultChar || 'A'
       }
     },
     dialogVisible(val) { this.$emit('update:visible', val) }

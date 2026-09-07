@@ -635,3 +635,16 @@ INSERT INTO `c_mapping` VALUES ('102026090300000007', 'MALL', '调用方应用�
 INSERT INTO `c_mapping` VALUES ('102026090300000008', 'MALL', '商城管理员账号', 'MALL_USERNAME', '', '', '2026-09-03 10:00:08', '0');
 INSERT INTO `c_mapping` VALUES ('102026090300000009', 'MALL', '商城管理员密码', 'MALL_PASSWORD', '', '', '2026-09-03 10:00:09', '0');
 ```
+
+### 2026-09-07 停车场默认车牌设置（默认省份 + 默认字母）
+
+```sql
+-- 1. parking_area 表增加默认省份/默认字母字段
+ALTER TABLE `parking_area`
+  ADD COLUMN `default_prov` varchar(4) DEFAULT '粤' COMMENT '默认省份（车牌第1位）',
+  ADD COLUMN `default_char` varchar(4) DEFAULT 'A' COMMENT '默认字母（车牌第2位）';
+
+-- 2. 服务注册（用户端 appId 992023111817510002，扫码免登录）
+INSERT INTO `c_service` VALUES ('982026090700000001', 'parkingArea.getAppParkingArea', 'API', '手机端查询停车场信息', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2026-09-07 12:00:00', '0');
+INSERT INTO `c_route` VALUES ('102026090700000001', '992023111817510002', '982026090700000001', 'Q', '1000', 'S', '2026-09-07 12:00:00', '0');
+```

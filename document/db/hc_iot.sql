@@ -6433,6 +6433,7 @@ INSERT INTO `c_route` VALUES ('102026090200000001', '992023111817510002', '98202
 INSERT INTO `c_route` VALUES ('102026090300000001', '992023111817510002', '982026090300000001', 'Q', '1000', 'S', '2026-09-03 10:00:01', '0');
 INSERT INTO `c_route` VALUES ('102026090300000002', '992023111817510002', '982026090300000002', 'Q', '1000', 'S', '2026-09-03 10:00:02', '0');
 INSERT INTO `c_route` VALUES ('102026090300000003', '992023111817510002', '982026090300000003', 'D', '1000', 'S', '2026-09-03 10:00:03', '0');
+INSERT INTO `c_route` VALUES ('102026090700000001', '992023111817510002', '982026090700000001', 'Q', '1000', 'S', '2026-09-07 12:00:00', '0');
 INSERT INTO `c_route` VALUES ('11', '992023010100000001', '11', 'Q', '100', 'S', '2023-02-11 16:26:03', '0');
 INSERT INTO `c_route` VALUES ('12', '992023010100000001', '12', 'Q', '100', 'S', '2023-02-11 16:26:04', '0');
 INSERT INTO `c_route` VALUES ('13', '992023010100000001', '13', 'Q', '100', 'S', '2023-02-11 16:26:05', '0');
@@ -7253,6 +7254,7 @@ INSERT INTO `c_service` VALUES ('982026090200000001', 'chargeMachine.getAppCharg
 INSERT INTO `c_service` VALUES ('982026090300000001', 'invoice.listMyInvoiceOrders', 'API', '查询我的开票订单(未开票/已开票)', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-03 10:00:01', '0');
 INSERT INTO `c_service` VALUES ('982026090300000002', 'invoice.getMyInvoiceHeading', 'API', '按登录手机号查询商城发票抬头', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-03 10:00:02', '0');
 INSERT INTO `c_service` VALUES ('982026090300000003', 'invoice.saveInvoice', 'API', '提交开票申请', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2026-09-03 10:00:03', '0');
+INSERT INTO `c_service` VALUES ('982026090700000001', 'parkingArea.getAppParkingArea', 'API', '手机端查询停车场信息', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2026-09-07 12:00:00', '0');
 
 -- ----------------------------
 -- Table structure for c_service_business
@@ -11564,6 +11566,8 @@ CREATE TABLE `parking_area` (
   `type_cd` varchar(12) NOT NULL COMMENT '停车场类型，1001 地上停车场 2001 地下停车场',
   `remark` varchar(300) DEFAULT NULL COMMENT '备注',
   `ext_pa_id` varchar(64) DEFAULT NULL COMMENT '三方停车场ID',
+  `default_prov` varchar(4) DEFAULT '粤' COMMENT '默认省份（车牌第1位）',
+  `default_char` varchar(4) DEFAULT 'A' COMMENT '默认字母（车牌第2位）',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status_cd` varchar(2) NOT NULL DEFAULT '0' COMMENT '数据状态，详细参考c_status表，S 保存，0, 在用 1失效',
   UNIQUE KEY `pa_id` (`pa_id`) USING BTREE

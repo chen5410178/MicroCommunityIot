@@ -23,6 +23,9 @@
         <if test="carNum !=null and carNum != ''">
             and t.car_num= #{carNum}
         </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
         <if test="statusCd !=null and statusCd != ''">
             and t.status_cd= #{statusCd}
         </if>

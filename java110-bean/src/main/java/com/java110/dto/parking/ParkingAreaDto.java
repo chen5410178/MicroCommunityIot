@@ -23,6 +23,9 @@ public class ParkingAreaDto extends PageDto implements Serializable {
     private String communityId;
     private String extPaId;
 
+    private String defaultProv;
+    private String defaultChar;
+
     private String defaultArea;
 
     private String tempCarIn;
@@ -88,6 +91,22 @@ public class ParkingAreaDto extends PageDto implements Serializable {
 
     public void setExtPaId(String extPaId) {
         this.extPaId = extPaId;
+    }
+
+    public String getDefaultProv() {
+        return defaultProv;
+    }
+
+    public void setDefaultProv(String defaultProv) {
+        this.defaultProv = defaultProv;
+    }
+
+    public String getDefaultChar() {
+        return defaultChar;
+    }
+
+    public void setDefaultChar(String defaultChar) {
+        this.defaultChar = defaultChar;
     }
 
 

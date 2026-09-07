@@ -38,6 +38,11 @@
             {{ row.extPaId || '-' }}
           </template>
         </el-table-column>
+        <el-table-column label="默认车牌" min-width="100" align="center">
+          <template slot-scope="{ row }">
+            {{ (row.defaultProv || '粤') + (row.defaultChar || 'A') }}
+          </template>
+        </el-table-column>
         <el-table-column label="备注" width="100" align="center">
           <template slot-scope="{ row }">
             <el-popover v-if="row.remark" placement="top" trigger="hover" :content="row.remark">
