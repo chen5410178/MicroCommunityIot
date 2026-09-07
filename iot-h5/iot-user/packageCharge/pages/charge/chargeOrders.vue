@@ -92,7 +92,7 @@
 					</view>
 					<view style="flex:1;min-width:0;">
 						<view class="co-item-name-row">
-							<text class="c-text-bold" style="font-size:24rpx;font-weight:700;color:#0f172a;">{{ r.pile }}</text>
+							<text class="c-text-bold" style="font-size:28rpx;font-weight:700;color:#0f172a;">{{ r.pile }}</text>
 							<text class="co-item-type" :class="r.type === 'car' ? 'car' : 'bike'">{{ r.type === 'car' ? '汽车' : '电瓶车' }}</text>
 						</view>
 						<text class="c-text-sub" style="margin-top:6rpx;display:block;">{{ r.date }} · {{ r.way }} · {{ r.mins }} 分钟{{ r.kwh ? ' · 用电 ' + r.kwh.toFixed(2) + ' 度' : '' }}</text>
@@ -510,6 +510,10 @@
 		padding: 26rpx;
 	}
 
+	.co-item .c-text-sub {
+		font-size: 24rpx;
+	}
+
 	.co-item-head {
 		display: flex;
 		align-items: center;
@@ -538,7 +542,7 @@
 	}
 
 	.co-item-type {
-		font-size: 16rpx;
+		font-size: 18rpx;
 		font-weight: 600;
 		border-radius: 999rpx;
 		padding: 2rpx 12rpx;
@@ -555,7 +559,7 @@
 	}
 
 	.co-item-fee {
-		font-size: 24rpx;
+		font-size: 28rpx;
 		font-weight: 700;
 	}
 

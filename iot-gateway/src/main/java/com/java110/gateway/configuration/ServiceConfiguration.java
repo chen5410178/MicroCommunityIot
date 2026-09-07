@@ -70,6 +70,8 @@ public class ServiceConfiguration {
         exclusions.append("/app/parkingOutH5/*/*,");// 出口公众号二维码转跳放开
         exclusions.append("/app/unlicensedCarMini/*/*,");// 无牌车小程序二维码转跳放开
         exclusions.append("/app/unlicensedCarH5/*/*,");// 无牌车公众号二维码转跳放开
+        exclusions.append("/app/buyCarMonthCardMini/*/*,");// 月卡购买小程序二维码转跳放开
+        exclusions.append("/app/buyCarMonthCardH5/*/*,");// 月卡购买公众号二维码转跳放开
         exclusions.append("/app/equipments/*,");// 叮叮充电桩通知放开
         exclusions.append("/app/charge/kehang/*,");// 科航充电桩通知放开
         exclusions.append("/app/smartMeter/notify/*,");// 水电表通知放开

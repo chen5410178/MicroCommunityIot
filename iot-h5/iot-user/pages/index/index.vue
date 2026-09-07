@@ -962,13 +962,13 @@
 	.home-bc-stat-label {
 		display: block;
 		color: rgba(255, 255, 255, .6);
-		font-size: 18rpx;
+		font-size: 21rpx;
 	}
 
 	.home-bc-stat-val {
 		display: block;
 		color: #fff;
-		font-size: 24rpx;
+		font-size: 28rpx;
 		font-weight: 700;
 		margin-top: 6rpx;
 	}
@@ -1019,7 +1019,7 @@
 	}
 
 	.home-quick-text {
-		font-size: 20rpx;
+		font-size: 24rpx;
 		font-weight: 600;
 		color: #334155;
 	}

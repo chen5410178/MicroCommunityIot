@@ -436,6 +436,14 @@
 		padding-bottom: 60rpx;
 	}
 
+	.od-page .c-title {
+		font-size: 30rpx;
+	}
+
+	.od-page .c-text-sub {
+		font-size: 24rpx;
+	}
+
 	.od-mx {
 		margin-left: 28rpx;
 		margin-right: 28rpx;
@@ -467,13 +475,13 @@
 
 	.od-title {
 		color: #fff;
-		font-size: 26rpx;
+		font-size: 30rpx;
 		font-weight: 700;
 	}
 
 	.od-slot-tag {
 		color: #fff;
-		font-size: 20rpx;
+		font-size: 22rpx;
 		background: rgba(255, 255, 255, .15);
 		border-radius: 999rpx;
 		padding: 4rpx 16rpx;
@@ -481,7 +489,7 @@
 
 	.od-mode {
 		color: #fff;
-		font-size: 20rpx;
+		font-size: 22rpx;
 		background: rgba(255, 255, 255, .15);
 		border-radius: 999rpx;
 		padding: 6rpx 20rpx;
@@ -504,13 +512,13 @@
 	.od-stat-label {
 		display: block;
 		color: rgba(255, 255, 255, .6);
-		font-size: 16rpx;
+		font-size: 18rpx;
 	}
 
 	.od-stat-val {
 		display: block;
 		color: #fff;
-		font-size: 26rpx;
+		font-size: 30rpx;
 		font-weight: 700;
 		margin-top: 6rpx;
 	}
@@ -521,7 +529,7 @@
 		background: rgba(255, 255, 255, .1);
 		padding: 16rpx 20rpx;
 		color: rgba(255, 255, 255, .85);
-		font-size: 20rpx;
+		font-size: 24rpx;
 		line-height: 1.6;
 	}
 
@@ -539,7 +547,7 @@
 	}
 
 	.od-info-val {
-		font-size: 22rpx;
+		font-size: 26rpx;
 		font-weight: 600;
 		color: #334155;
 		text-align: right;
@@ -549,7 +557,7 @@
 		display: block;
 		text-align: center;
 		color: #94a3b8;
-		font-size: 20rpx;
+		font-size: 24rpx;
 		margin-top: 16rpx;
 	}
 
@@ -582,7 +590,7 @@
 	}
 
 	.od-done-fee {
-		font-size: 28rpx;
+		font-size: 32rpx;
 		font-weight: 700;
 	}
 
@@ -625,7 +633,7 @@
 		background: rgba(239, 68, 68, .08);
 		padding: 20rpx 24rpx;
 		color: #ef4444;
-		font-size: 22rpx;
+		font-size: 24rpx;
 		line-height: 1.6;
 	}
 
@@ -646,7 +654,7 @@
 	}
 
 	.od-settle-fee {
-		font-size: 30rpx;
+		font-size: 32rpx;
 		font-weight: 700;
 		color: #059669;
 	}
@@ -658,7 +666,7 @@
 		background: rgba(16, 185, 129, .08);
 		padding: 24rpx;
 		color: #059669;
-		font-size: 22rpx;
+		font-size: 24rpx;
 		line-height: 1.6;
 	}
 </style>
