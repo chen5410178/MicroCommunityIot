@@ -189,6 +189,7 @@ public class SaveInvoiceCmd extends Cmd {
         headingParam.put("headingName", headingName);
         headingParam.put("taxNo", taxNo == null ? "" : taxNo);
         headingParam.put("phone", receivePhone);
+        headingParam.put("userPhone", phone);   // 用户电话 = 登录用户手机号（抬头归属，不可修改）
         headingParam.put("email", email == null ? "" : email);
         headingParam.put("isDefault", "1");
         ResultVo headingResult = sendMallImpl.post("/mall/api/common.openCommonApi", headingParam);
