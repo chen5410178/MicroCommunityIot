@@ -60,8 +60,8 @@ export default {
       companyName: '',
       sliderData: null,
       loginForm: {
-        username: '',
-        passwd: ''
+        username: '18909711443',
+        passwd: '18909711443'
       },
       loading: false
     }
