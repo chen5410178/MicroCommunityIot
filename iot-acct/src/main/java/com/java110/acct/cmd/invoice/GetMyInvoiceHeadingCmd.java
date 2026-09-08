@@ -54,7 +54,8 @@ public class GetMyInvoiceHeadingCmd extends Cmd {
 
         JSONObject paramIn = new JSONObject();
         paramIn.put("mallApiCode", "queryInvoiceHeadingBmoImpl");
-        paramIn.put("phone", phone);
+        // 用户电话 = 登录用户手机号（抬头归属维度，与商城 saveInvoiceHeadingBmoImpl 写入的 user_phone 对应）
+        paramIn.put("userPhone", phone);
 
         ResultVo resultVo = sendMallImpl.post("/mall/api/common.openCommonApi", paramIn);
         if (resultVo.getCode() != ResultVo.CODE_OK) {
