@@ -1,6 +1,7 @@
 package com.java110.barrier.engine;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.barrier.engine.inout.JudgeOwnerCarEngine;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.DateUtil;
@@ -10,9 +11,12 @@ import com.java110.dto.barrier.BarrierDto;
 import com.java110.dto.carInout.CarInoutDto;
 import com.java110.dto.carInoutEvasion.CarInoutEvasionConfigDto;
 import com.java110.dto.carInoutEvasion.CarInoutEvasionDto;
+import com.java110.dto.parking.CarDayDto;
+import com.java110.dto.parking.ParkingAreaDto;
 import com.java110.intf.barrier.ICarInoutEvasionConfigV1InnerServiceSMO;
 import com.java110.intf.barrier.ICarInoutEvasionV1InnerServiceSMO;
 import com.java110.intf.barrier.ICarInoutV1InnerServiceSMO;
+import com.java110.intf.car.IParkingAreaV1InnerServiceSMO;
 import com.java110.po.carInout.CarInoutPo;
 import com.java110.po.carInoutEvasion.CarInoutEvasionPo;
 import org.slf4j.Logger;
@@ -34,6 +38,12 @@ public class CarInoutEvasionEngine {
 
     @Autowired
     private ICarInoutV1InnerServiceSMO carInoutV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IParkingAreaV1InnerServiceSMO parkingAreaV1InnerServiceSMOImpl;
+
+    @Autowired
+    JudgeOwnerCarEngine judgeOwnerCarEngine;
 
     public void detectTailgatingEvasion(BarrierDto machineDto, String carNum) {
         String communityId = machineDto.getCommunityId();
@@ -65,7 +75,7 @@ public class CarInoutEvasionEngine {
         CarInoutDto inCheckDto = new CarInoutDto();
         inCheckDto.setCarNum(failedCar.getCarNum());
         inCheckDto.setCarInout(CarInoutDto.CAR_INOUT_IN);
-        inCheckDto.setStates(new String[]{CarInoutDto.STATE_IN,CarInoutDto.STATE_PAY,CarInoutDto.STATE_REPAY});
+        inCheckDto.setStates(new String[]{CarInoutDto.STATE_IN, CarInoutDto.STATE_PAY, CarInoutDto.STATE_REPAY});
         inCheckDto.setPaId(failedCar.getPaId());
         List<CarInoutDto> inRecords = carInoutV1InnerServiceSMOImpl.queryCarInouts(inCheckDto);
         if (ListUtil.isNull(inRecords)) {
@@ -110,6 +120,17 @@ public class CarInoutEvasionEngine {
             return null;
         }
 
+        ParkingAreaDto parkingAreaDto = new ParkingAreaDto();
+        parkingAreaDto.setPaId(paId);
+        parkingAreaDto.setCommunityId(communityId);
+        List<ParkingAreaDto> parkingAreaDtos = parkingAreaV1InnerServiceSMOImpl.queryParkingAreas(parkingAreaDto);
+        if (ListUtil.isNull(parkingAreaDtos)) {
+            return null;
+        }
+
+        String carType = getCarType(carNum, machineDto, parkingAreaDtos);
+
+
         CarInoutPo carInoutPo = new CarInoutPo();
         carInoutPo.setCiId(GenerateCodeFactory.getGeneratorId("11"));
         carInoutPo.setInoutId(GenerateCodeFactory.getGeneratorId("11"));
@@ -124,6 +145,18 @@ public class CarInoutEvasionEngine {
         carInoutPo.setMachineId(machineDto.getMachineId());
         carInoutPo.setMachineCode(machineDto.getMachineCode());
         carInoutPo.setColorType("1");
+        carInoutPo.setPaNum(parkingAreaDtos.get(0).getNum());
+
+        carInoutPo.setUnlicense("F"); // 无牌车 T 无牌车 F 有牌车
+// 如果有车辆类型信息
+        carInoutPo.setCarType(carType); // 根据业务定义
+        carInoutPo.setCarTypeName("临时车");
+
+        if (CarInoutDto.CAR_TYPE_MONTH.equals(carType)) {
+            carInoutPo.setCarTypeName("月租车");
+        }
+// 如果有照片信息
+        carInoutPo.setPhotoJpg(null);
         carInoutV1InnerServiceSMOImpl.saveCarInout(carInoutPo);
 
         CarInoutDto queryDto = new CarInoutDto();
@@ -133,6 +166,23 @@ public class CarInoutEvasionEngine {
         queryDto.setStates(new String[]{CarInoutDto.STATE_IN, CarInoutDto.STATE_PAY});
         queryDto.setCarInout(CarInoutDto.CAR_INOUT_IN);
         return carInoutV1InnerServiceSMOImpl.queryCarInouts(queryDto);
+    }
+
+    private String getCarType(String carNum, BarrierDto machineDto, List<ParkingAreaDto> parkingAreaDtos) {
+
+        CarDayDto carDayDto = null;
+        String carType = "1003";
+        try {
+            carDayDto = judgeOwnerCarEngine.judgeOwnerCarOut(machineDto, carNum, parkingAreaDtos);
+            if (carDayDto.getDay() > 0) {
+                return "1001";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return carType;
     }
 
     private String resolveEntryTime(String carNum, String communityId, String paId) {
