@@ -2,11 +2,7 @@
 	<view class="cp-page">
 		<view class="cp-body">
 			<text class="cp-title">修改登录密码</text>
-			<text class="cp-sub">修改后请使用新密码登录</text>
-			<view class="c-form-input cp-form-row">
-				<text class="cuIcon-lock cp-input-ic"></text>
-				<input class="cp-pwd-input" v-model="oldPwd" type="password" maxlength="20" placeholder="请输入原密码" placeholder-class="c-placeholder" />
-			</view>
+			<text class="cp-sub">设置新的登录密码</text>
 			<view class="c-form-input cp-form-row">
 				<text class="cuIcon-lock cp-input-ic"></text>
 				<input class="cp-pwd-input" v-model="newPwd" :type="showPwd ? 'text' : 'password'" maxlength="20" placeholder="设置新密码（6-20 位）" placeholder-class="c-placeholder" />
@@ -25,7 +21,7 @@
 
 <script>
 	import {
-		updateUserPwd
+		appUserModifyPasswd
 	} from '@/api/user/userApi.js'
 	import {
 		removeUserLoginInfo
@@ -34,7 +30,6 @@
 	export default {
 		data() {
 			return {
-				oldPwd: '',
 				newPwd: '',
 				newPwd2: '',
 				showPwd: false,
@@ -43,10 +38,6 @@
 		},
 		methods: {
 			submitPwd() {
-				if (!this.oldPwd) {
-					this._toast('请输入原密码')
-					return
-				}
 				if (this.newPwd.length < 6 || this.newPwd.length > 20) {
 					this._toast('新密码长度需 6-20 位')
 					return
@@ -55,8 +46,7 @@
 					this._toast('两次输入的新密码不一致')
 					return
 				}
-				updateUserPwd({
-					oldPwd: this.oldPwd,
+				appUserModifyPasswd({
 					newPwd: this.newPwd
 				}).then(() => {
 					this._toast('密码修改成功，请重新登录')

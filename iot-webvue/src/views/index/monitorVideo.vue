@@ -70,8 +70,30 @@ export default {
 </script>
 
 <style scoped>
-.monitor-video { background-color: #333; width: calc(100vw - 200px); height: calc(100vh - 60px); position: fixed; top: 60px; left: 170px; display: flex; color: #f0f0f0; z-index: 100; }
-.left-panel { width: 250px; height: 100%; flex-shrink: 0; }
-.center-panel { flex: 1; height: 100%; padding: 0 5px; overflow: hidden; }
-.right-panel { width: 300px; height: 100%; flex-shrink: 0; }
+.monitor-video {
+  background-color: #333;
+  height: calc(100vh - 60px);
+  display: flex;
+  color: #f0f0f0;
+  z-index: 100;
+}
+
+.left-panel {
+  width: 250px;
+  height: 100%;
+  flex-shrink: 0;
+}
+
+.center-panel {
+  flex: 1;
+  height: 100%;
+  padding: 0 5px;
+  overflow: hidden;
+}
+
+.right-panel {
+  width: 300px;
+  height: 100%;
+  flex-shrink: 0;
+}
 </style>

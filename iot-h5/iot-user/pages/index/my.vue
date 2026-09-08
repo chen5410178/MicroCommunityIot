@@ -290,7 +290,7 @@
 	}
 
 	.my-pwd-btn {
-		font-size: 20rpx;
+		font-size: 26rpx;
 		color: #059669;
 		font-weight: 600;
 		display: flex;
@@ -299,8 +299,8 @@
 	}
 
 	.my-pwd-btn-ic {
-		width: 22rpx;
-		height: 22rpx;
+		width: 26rpx;
+		height: 26rpx;
 	}
 
 	.my-grid {

@@ -59,6 +59,7 @@ export default {
 	userSendSms: baseUrl + "iot/api/user.userSendSms",
 	updateUserPwd: baseUrl + "iot/api/user.updateUserPwd", // 修改登录密码（需登录）
 	resetUserPwd: baseUrl + "iot/api/user.resetUserPwd", // 忘记密码重置（免登录）
+	appUserModifyPasswd: baseUrl + "iot/api/user.appUserModifyPasswd", // 用户端修改密码（登录态免验证码）
 	queryBindRoom: baseUrl + "iot/api/appUser.queryBindRoom",
 	getVisitQrCodeUrl: baseUrl + "iot/api/visit.getVisitQrCodeUrl",
 	listOwnerAccessControl: baseUrl + "iot/api/accessControl.listOwnerAccessControl",

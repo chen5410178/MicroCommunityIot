@@ -41,7 +41,7 @@ export function sendSmsCode(_tel, _that) {
 			msg = '请输入手机号';
 		}
 		if (msg != "") {
-			wx.showToast({
+			uni.showToast({
 				title: msg,
 				icon: 'none',
 				duration: 2000
@@ -55,7 +55,7 @@ export function sendSmsCode(_tel, _that) {
 			data: _objData,
 			success: function(res) {
 				//将业主信息和房屋信息一起返回
-				wx.showToast({
+				uni.showToast({
 					title: res.data,
 					icon: 'none',
 					duration: 3000
@@ -442,6 +442,32 @@ export function resetUserPwd(_objData){
 	return new Promise((resolve, reject) => {
 		requestNoAuth({
 			url: url.resetUserPwd,
+			method: "POST",
+			data: JSON.stringify(_objData),
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code != 0) {
+					reject(_json.msg);
+					return;
+				}
+				resolve();
+			},
+			fail: function(res) {
+				reject(res);
+			}
+		});
+	
+	})
+}
+
+/**
+ * 用户端修改密码（需登录，免原密码/免验证码，userId 由后端从登录态取）
+ * @param {Object} _objData { newPwd }
+ */
+export function appUserModifyPasswd(_objData){
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.appUserModifyPasswd,
 			method: "POST",
 			data: JSON.stringify(_objData),
 			success: function(res) {
