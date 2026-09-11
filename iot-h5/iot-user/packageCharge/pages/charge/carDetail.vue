@@ -117,6 +117,10 @@
 	import {
 		getUserId
 	} from '@/api/user/userApi.js'
+	import {
+		saveTargetUrl,
+		buildCurrentPageUrl
+	} from '@/lib/java110/utils/TargetUrlUtil.js'
 
 	export default {
 		data() {
@@ -196,6 +200,7 @@
 			renewCarRent() {
 				if (!hasLogin()) {
 					this._toast('请先登录')
+					saveTargetUrl(buildCurrentPageUrl())
 					uni.navigateTo({ url: '/pages/user/login' })
 					return
 				}

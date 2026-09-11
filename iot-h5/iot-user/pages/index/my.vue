@@ -105,6 +105,10 @@
 	import {
 		getAppUser
 	} from '@/api/user/appUser.js'
+	import {
+		saveTargetUrl,
+		buildCurrentPageUrl
+	} from '@/lib/java110/utils/TargetUrlUtil.js'
 
 	export default {
 		data() {
@@ -186,6 +190,7 @@
 				})
 			},
 			goLogin() {
+				saveTargetUrl(buildCurrentPageUrl())
 				uni.navigateTo({ url: '/pages/user/login' })
 			},
 			goWallet() {

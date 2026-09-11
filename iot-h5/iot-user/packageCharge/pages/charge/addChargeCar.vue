@@ -79,6 +79,10 @@
 		isPlateValid,
 		isNewEnergy
 	} from '@/packageCharge/api/mock/carPlateData.js'
+	import {
+		saveTargetUrl,
+		buildCurrentPageUrl
+	} from '@/lib/java110/utils/TargetUrlUtil.js'
 
 	export default {
 		components: {
@@ -104,6 +108,7 @@
 		},
 		onLoad() {
 			if (!hasLogin()) {
+				saveTargetUrl(buildCurrentPageUrl())
 				uni.navigateTo({ url: '/pages/user/login' })
 				return
 			}

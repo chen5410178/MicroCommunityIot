@@ -80,6 +80,10 @@
 		hasLogin
 	} from '@/api/user/sessionApi.js'
 	import walletRefund from '@/packageCharge/components/charge/wallet-refund.vue'
+	import {
+		saveTargetUrl,
+		buildCurrentPageUrl
+	} from '@/lib/java110/utils/TargetUrlUtil.js'
 
 	// 充值档位（固定 UI 配置）
 	const rechargeTiers = [{
@@ -198,6 +202,7 @@
 			doRecharge() {
 				if (!hasLogin()) {
 					this._toast('请先登录')
+					saveTargetUrl(buildCurrentPageUrl())
 					uni.navigateTo({ url: '/pages/user/login' })
 					return
 				}
@@ -215,6 +220,7 @@
 			refundBalance() {
 				if (!hasLogin()) {
 					this._toast('请先登录')
+					saveTargetUrl(buildCurrentPageUrl())
 					uni.navigateTo({ url: '/pages/user/login' })
 					return
 				}

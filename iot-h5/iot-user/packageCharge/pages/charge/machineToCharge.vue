@@ -122,6 +122,10 @@
 	} from '@/api/user/sessionApi.js';
 	import wechatLoginCharge from '@/packageCharge/components/user/wechat-login-charge.vue';
 	import chargeStore from '@/api/charge/chargeStore.js';
+	import {
+		saveTargetUrl,
+		buildCurrentPageUrl
+	} from '@/lib/java110/utils/TargetUrlUtil.js';
 	export default {
 		data() {
 			return {
@@ -186,28 +190,6 @@
 			this.machineId = options.machineId;
 			this.communityId = options.communityId;
 			this.portId = options.portId || '';
-			// 进入本页时记录当前路径及参数，供后续成功页返回使用（字段名为 targetUrl）
-			try {
-				let url = '/packageCharge/pages/charge/machineToCharge';
-				const queryArr = [];
-				if (this.machineId) {
-					queryArr.push('machineId=' + this.machineId);
-				}
-				if (this.communityId) {
-					queryArr.push('communityId=' + this.communityId);
-				}
-				if (this.curPort && this.curPort.portId) {
-					queryArr.push('portId=' + this.curPort.portId);
-				} else if (options.portId) {
-					queryArr.push('portId=' + options.portId);
-				}
-				if (queryArr.length > 0) {
-					url = url + '?' + queryArr.join('&');
-				}
-				uni.setStorageSync('targetUrl', url);
-			} catch (e) {
-				console.error('记录 targetUrl 失败：', e);
-			}
 			this._loadChargeMachines();
 			this._loadChargeMachinePorts();
 			let _that = this;
@@ -287,6 +269,7 @@
 				})
 			},
 			_toCharge: function() {
+				saveTargetUrl(buildCurrentPageUrl());
 				uni.navigateTo({
 					url: '/packageCharge/pages/charge/chargeConfirm?machineId=' + this.machineId +
 						"&communityId=" + this.communityId +
@@ -332,9 +315,7 @@
 				if (this.communityId) {
 					uni.setStorageSync("QRCODE_COMMUNITY_ID", this.communityId);
 				}
-				// #ifdef H5
-				uni.setStorageSync('targetUrl', location.hash.substr(1));
-				// #endif
+				saveTargetUrl(buildCurrentPageUrl());
 				uni.navigateTo({
 					url: '/pages/user/login'
 				})

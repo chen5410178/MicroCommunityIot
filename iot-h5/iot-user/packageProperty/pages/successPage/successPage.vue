@@ -29,6 +29,10 @@
 <script>
 	import successAds from '@/packageProperty/components/success/success-ads.vue';
 	import successGoods from '@/packageProperty/components/success/success-goods.vue';
+	import {
+		takeTargetUrl,
+		navigateToTargetUrl
+	} from '@/lib/java110/utils/TargetUrlUtil.js';
 	export default {
 		data() {
 			return {
@@ -48,23 +52,8 @@
 		},
 		methods: {
 			_indexPage:function(){
-				// 优先检查是否有需要返回的业务页面（使用与登录一致的 targetUrl 字段）
-				try{
-					const _targetUrl = uni.getStorageSync('targetUrl');
-					if (_targetUrl) {
-						uni.removeStorageSync('targetUrl');
-						uni.redirectTo({
-							url: _targetUrl
-						});
-						return;
-					}
-				}catch(e){
-					console.error('读取 targetUrl 失败：', e);
-				}
-				// 默认返回首页
-				uni.switchTab({
-					url: "/pages/index/index"
-				});
+				// 优先回跳去支付前记录的业务页面（读取后立即删除）
+				navigateToTargetUrl(takeTargetUrl(), '/pages/index/index');
 			}
 		}
 	}

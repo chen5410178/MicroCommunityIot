@@ -28,18 +28,22 @@ export function decodeUrl(_url){
 
 export function getPageUrl(){
 	    let pages = getCurrentPages()
-	    let len = pages.length
-	    let curParam = pages[len - 1].options //获取当前页面参数
+	    if (!pages || pages.length < 1) {
+		return '';
+	    }
+	    let curPage = pages[pages.length - 1]
+	    let curParam = curPage.options || {} //获取当前页面参数
 	    let param = []
 	    for (let key in curParam) { //获取key=value键值对格式数组
-		param.push(key + '=' + curParam[key])
-	    }
-	    let _url = '' //除去第一个参数拼接后面参数
-	    param.forEach((item, i) => {
-		if (i != 0) { //拼接&符号，由于第一组前拼接的是？所有第一组需要单独处理
-		_url += '&' + item
+		let _value = curParam[key]
+		if (_value === null || typeof _value == 'undefined') {
+			_value = ''
 		}
-	    })
-	    let url = '/' + pages[len - 1].route + '?' + param[0] + _url //最终格式**/pages/index/index/?id=11&name='boyyang'&sex='man'**
+		param.push(key + '=' + encodeURIComponent(_value))
+	    }
+	    let url = '/' + curPage.route //最终格式**/pages/index/index?id=11&name='boyyang'&sex='man'**
+	    if (param.length < 1) { //无参数时不再拼出 undefined
 		return url;
+	    }
+	    return url + '?' + param.join('&');
 }

@@ -105,6 +105,10 @@
 		saveUserLoginInfo,
 		removeUserLoginInfo
 	} from '@/lib/java110/utils/StorageUtil.js'
+	import {
+		takeTargetUrl,
+		navigateToTargetUrl
+	} from '@/lib/java110/utils/TargetUrlUtil.js'
 
 	export default {
 		components: {
@@ -237,9 +241,7 @@
 			_loginSuccess() {
 				this._toast('登录成功 · 欢迎回来')
 				setTimeout(() => {
-					uni.switchTab({
-						url: '/pages/index/index'
-					})
+					navigateToTargetUrl(takeTargetUrl(), '/pages/index/index')
 				}, 800)
 			},
 			goRegister() {

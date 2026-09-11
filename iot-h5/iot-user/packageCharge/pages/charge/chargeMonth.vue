@@ -163,6 +163,10 @@
 	import {
 		getWAppId
 	} from '@/lib/java110/utils/StorageUtil.js'
+	import {
+		saveTargetUrl,
+		buildCurrentPageUrl
+	} from '@/lib/java110/utils/TargetUrlUtil.js'
 
 	export default {
 		data() {
@@ -312,6 +316,7 @@
 			buyPlan(i) {
 				if (!hasLogin()) {
 					this._toast('请先登录')
+					saveTargetUrl(buildCurrentPageUrl())
 					uni.navigateTo({ url: '/pages/user/login' })
 					return
 				}

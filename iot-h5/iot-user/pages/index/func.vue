@@ -30,6 +30,7 @@ import {getRoomId,getRoomName} from '@/api/community/roomApi.js';
 	} from '../../api/user/appUser.js';
 	
 	import {getUserId,getUserTel} from '@/api/user/userApi.js'
+	import { saveTargetUrl, buildCurrentPageUrl } from '@/lib/java110/utils/TargetUrlUtil.js';
 	
 	export default {
 		data() {
@@ -74,6 +75,7 @@ import {getRoomId,getRoomName} from '@/api/community/roomApi.js';
 		methods: {
 			to:function(_item){
 				if(!hasLogin()){
+					saveTargetUrl(buildCurrentPageUrl());
 					uni.navigateTo({
 						url:'/pages/user/login'
 					});

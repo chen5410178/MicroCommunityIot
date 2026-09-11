@@ -44,6 +44,10 @@
 	import {
 		saveUserLoginInfo
 	} from '@/lib/java110/utils/StorageUtil.js'
+	import {
+		takeTargetUrl,
+		navigateToTargetUrl
+	} from '@/lib/java110/utils/TargetUrlUtil.js'
 
 	export default {
 		data() {
@@ -119,9 +123,7 @@
 						})
 						this._toast('注册成功 · 已自动登录')
 						setTimeout(() => {
-							uni.switchTab({
-								url: '/pages/index/index'
-							})
+							navigateToTargetUrl(takeTargetUrl(), '/pages/index/index')
 						}, 800)
 					}).catch(() => {
 						this._toast('注册成功 · 请登录')

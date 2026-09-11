@@ -17,6 +17,10 @@
 	import {
 		isWxOrAli
 	} from '../../lib/java110/utils/EnvUtil.js';
+	import {
+		takeTargetUrl,
+		navigateToTargetUrl
+	} from '../../lib/java110/utils/TargetUrlUtil.js';
 	export default {
 		data() {
 			return {
@@ -132,18 +136,8 @@
 				})
 			},
 			navPage:function(){
-				//todo 是否有跳转地址
-				let _targetUrl = uni.getStorageSync('targetUrl');
-				if(_targetUrl){
-					uni.removeStorageSync("targetUrl");
-					uni.navigateTo({
-						url:_targetUrl
-					});
-					return;
-				}
-				uni.switchTab({
-					url:'/pages/index/index'
-				})
+				//todo 是否有跳转地址（读取后立即删除，无值回首页）
+				navigateToTargetUrl(takeTargetUrl(),'/pages/index/index');
 			}
 		}
 	}

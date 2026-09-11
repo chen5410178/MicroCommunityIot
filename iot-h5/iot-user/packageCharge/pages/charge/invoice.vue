@@ -126,6 +126,10 @@
 	import {
 		hasLogin
 	} from '@/api/user/sessionApi.js'
+	import {
+		saveTargetUrl,
+		buildCurrentPageUrl
+	} from '@/lib/java110/utils/TargetUrlUtil.js'
 
 	export default {
 		data() {
@@ -173,6 +177,7 @@
 					this.invAmount = 0
 					this.communityTip = '请先登录'
 					this._toast('请先登录')
+					saveTargetUrl(buildCurrentPageUrl())
 					uni.navigateTo({ url: '/pages/user/login' })
 					return
 				}
@@ -223,6 +228,7 @@
 			openInvoice() {
 				if (!hasLogin()) {
 					this._toast('请先登录')
+					saveTargetUrl(buildCurrentPageUrl())
 					uni.navigateTo({ url: '/pages/user/login' })
 					return
 				}

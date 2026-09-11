@@ -60,6 +60,10 @@
 		autoLoginMini
 	} from '@/api/user/sessionApi.js';
 	import chargeStore from '@/api/charge/chargeStore.js';
+	import {
+		saveTargetUrl,
+		buildCurrentPageUrl
+	} from '@/lib/java110/utils/TargetUrlUtil.js';
 	export default {
 		data() {
 			return {
@@ -132,6 +136,7 @@
 				})
 			},
 			_toCharge: function() {
+				saveTargetUrl(buildCurrentPageUrl());
 				uni.navigateTo({
 					url: '/packageCharge/pages/charge/carChargePort?machineId=' + this.machineId +
 						"&communityId=" + this.communityId +
@@ -148,9 +153,7 @@
 				if (this.communityId) {
 					uni.setStorageSync("QRCODE_COMMUNITY_ID", this.communityId);
 				}
-				// #ifdef H5
-				uni.setStorageSync('targetUrl', location.hash.substr(1));
-				// #endif
+				saveTargetUrl(buildCurrentPageUrl());
 				uni.navigateTo({
 					url: '/pages/user/login'
 				})

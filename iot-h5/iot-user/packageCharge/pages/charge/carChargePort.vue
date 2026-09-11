@@ -86,6 +86,10 @@
 	import carChargePrice from '@/packageCharge/components/charge/carChargePrice.vue';
 	import chargeCarNumVue from '@/packageCharge/components/charge/chargeCarNum.vue';
 	import wechatLoginCharge from '@/packageCharge/components/user/wechat-login-charge.vue';
+	import {
+		saveTargetUrl,
+		buildCurrentPageUrl
+	} from '@/lib/java110/utils/TargetUrlUtil.js';
 	export default {
 		data() {
 			return {
@@ -213,6 +217,7 @@
 					});
 					return;
 				}
+				saveTargetUrl(buildCurrentPageUrl());
 				// todo 开启充电
 				this.$refs.startCarChargeRef.startCharge({
 					communityId: this.communityId,
@@ -253,9 +258,7 @@
 				if (this.communityId) {
 					uni.setStorageSync("QRCODE_COMMUNITY_ID", this.communityId);
 				}
-				// #ifdef H5
-				uni.setStorageSync('targetUrl', location.hash.substr(1));
-				// #endif
+				saveTargetUrl(buildCurrentPageUrl());
 				uni.navigateTo({
 					url: '/pages/user/login'
 				})
