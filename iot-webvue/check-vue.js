@@ -23,6 +23,7 @@ const files = [
   'src/views/car/hireParkingSpace.vue',
   'src/views/car/carMonthOrder.vue',
   'src/components/property/OwnerCars.vue',
+  'src/components/property/EditOwner.vue',
   'src/components/property/RoomDetailCar.vue',
   'src/views/owner/tabs/OwnerDetailCar.vue'
 ]

@@ -173,30 +173,54 @@ export default {
   watch: {
     visible(val) {
       this.dialogVisible = val
-      if (val && this.editData) {
-        this.loadAttrSpecs().then(() => {
-          this.form = { ...this.editData }
-          this.form.ownerPhoto = (this.editData.urls && this.editData.urls.length > 0) ? this.editData.urls[0] : ''
-          this.form.ownerPhotoUrl = this.editData.url || ''
-          if (this.editData.ownerAttrDtos && this.editData.ownerAttrDtos.length > 0) {
-            this.editData.ownerAttrDtos.forEach(attrItem => {
-              this.attrs.forEach(attr => {
-                if (attrItem.specCd === attr.specCd) {
-                  attr.attrId = attrItem.attrId
-                  attr.value = attrItem.value
-                }
-              })
-            })
-          }
-          if (this.form.idCard) {
-            this.calcAgeFromIdCard(this.form.idCard)
-          }
-        })
+      if (val) {
+        this.resetForm()
+        if (this.editData) {
+          this.loadAttrSpecs().then(() => {
+            this.fillForm(this.editData)
+            this.fillAttrs(this.editData)
+            if (this.form.idCard) {
+              this.calcAgeFromIdCard(this.form.idCard)
+            }
+          })
+        }
       }
     },
     dialogVisible(val) { this.$emit('update:visible', val) }
   },
   methods: {
+    resetForm() {
+      Object.keys(this.form).forEach(key => { this.form[key] = '' })
+      this.attrs = []
+    },
+    fillForm(row) {
+      const d = row || {}
+      this.form.ownerId = d.ownerId || ''
+      this.form.memberId = d.memberId || ''
+      this.form.name = d.name || ''
+      this.form.link = d.link || ''
+      this.form.idCard = d.idCard || ''
+      this.form.age = d.age || ''
+      this.form.sex = d.sex || ''
+      this.form.ownerTypeCd = d.ownerTypeCd || ''
+      this.form.address = d.address || ''
+      this.form.remark = d.remark || ''
+      this.form.cardNumber = d.cardNumber || ''
+      this.form.ownerPhoto = (d.urls && d.urls.length > 0) ? d.urls[0] : ''
+      this.form.ownerPhotoUrl = d.url || ''
+    },
+    fillAttrs(row) {
+      const attrItems = (row && row.ownerAttrDtos) || []
+      if (!attrItems.length) return
+      attrItems.forEach(attrItem => {
+        this.attrs.forEach(attr => {
+          if (attrItem.specCd === attr.specCd) {
+            attr.attrId = attrItem.attrId
+            attr.value = attrItem.value
+          }
+        })
+      })
+    },
     startCamera() {
       const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
       if (!getUserMedia) {
@@ -383,7 +407,7 @@ export default {
       this.dialogVisible = false
       this.closeCamera()
       this.$refs.formRef && this.$refs.formRef.resetFields()
-      this.attrs = []
+      this.resetForm()
     }
   }
 }

@@ -656,3 +656,21 @@ INSERT INTO `c_route` VALUES ('102026090700000001', '992023111817510002', '98202
 INSERT INTO `c_service` VALUES ('982026090800000001', 'user.appUserModifyPasswd', 'API', '用户端修改密码(登录态免验证码)', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-09-08 10:58:16', '0');
 INSERT INTO `c_route` VALUES ('102026090800000001', '992023111817510002', '982026090800000001', 'D', '1000', 'S', '2026-09-08 10:58:16', '0');
 ```
+
+### 2026-09-11 车辆服务页月卡购买链路调整（小区参数修正 + 跳扫码购卡页）
+
+无 SQL 变更、无后端改动（仅 iot-h5/iot-user 用户端）：
+
+- `api/community/communityApi.js`：新增 `ensureCommunityId()`，当前小区为 `-1`/空时调用 `community.queryCommunitys` 取第一个小区并写入当前小区；
+- `packageCharge/pages/charge/carService.vue`：点「搜索」直接调 `carMonth.queryMonthCardByCarNum`（不再本地匹配车辆），结果仅展示车辆信息，点「购买月卡」跳 `/packageFee/pages/fee/buyCarMonthCard`；移除 `car.listUserCar` 调用；「月租续费订单」改为「月卡订单」；
+- `packageCharge/pages/charge/carDetail.vue`：删除（选卡/缴费统一由 `buyCarMonthCard` 承担），同步移除 `pages.json` 中该页注册；
+- `packageCharge/pages/charge/rentOrderDetail.vue`：文案改月卡语义，支付方式改用 `primeRateName` 兜底「微信支付」；
+- `pages/index/index.vue`：查询小区列表为空时不再覆盖已有有效小区缓存。
+
+### 2026-09-11 修复修改人员弹窗照片不渲染（Vue2 响应式）
+
+无 SQL 变更、无后端改动（仅 iot-webvue PC 管理端）：
+
+- `src/components/property/EditOwner.vue`：`watch.visible` 去掉 `this.form = { ...this.editData }` 整体替换（会导致 `ownerPhotoUrl` 等键失去响应式），改为 `resetForm()` + `loadAttrSpecs().then(() => { fillForm(row); fillAttrs(row); })`；新增 `resetForm()`/`fillForm(row)`/`fillAttrs(row)` 三个方法，逐字段写入 `data()` 中已声明的 `form` 键；`handleClose()` 追加 `this.resetForm()` 兜底；上传/拍照赋值逻辑保持不变；
+- `public/img/noPhoto.jpg`：从 `iot-web/public/img/noPhoto.jpg` 复制补齐，修复无照片人员占位图 404 裂图；
+- `check-vue.js`：`files` 数组追加 `EditOwner.vue`（仅自测脚本）。
