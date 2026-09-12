@@ -60,7 +60,6 @@
             <img v-else src="/img/noPhoto.jpg" style="width: 60px; height: 60px; border-radius: 4px" />
           </template>
         </el-table-column>
-        <el-table-column prop="communityName" label="小区名称" min-width="120" />
         <el-table-column prop="inoutId" label="编号" min-width="100" />
         <el-table-column prop="machineName" label="设备名称" min-width="120" />
         <el-table-column prop="machineCode" label="设备编码" min-width="120" />
