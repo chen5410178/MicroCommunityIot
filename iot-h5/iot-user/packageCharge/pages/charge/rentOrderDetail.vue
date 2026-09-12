@@ -17,8 +17,8 @@
 			<view class="rd-info">
 				<view class="rd-info-row"><text class="c-text-sub">订单编号</text><text class="rd-info-val">{{ order.orderId || '—' }}</text></view>
 				<view class="rd-info-row"><text class="c-text-sub">车牌号码</text><text class="rd-info-val">{{ order.plate || '—' }}</text></view>
-				<view class="rd-info-row"><text class="c-text-sub">月租套餐</text><text class="rd-info-val">{{ order.plan || '—' }}{{ order.months ? '（' + order.months + ' 个月）' : '' }}</text></view>
-				<view class="rd-info-row"><text class="c-text-sub">支付方式</text><text class="rd-info-val">微信支付</text></view>
+				<view class="rd-info-row"><text class="c-text-sub">月卡</text><text class="rd-info-val">{{ order.plan || '—' }}{{ order.months ? '（' + order.months + ' 个月）' : '' }}</text></view>
+				<view class="rd-info-row"><text class="c-text-sub">支付方式</text><text class="rd-info-val">{{ order.payType || '—' }}</text></view>
 				<view class="rd-info-row"><text class="c-text-sub">支付时间</text><text class="rd-info-val">{{ order.time || '—' }}</text></view>
 				<view class="rd-info-row"><text class="c-text-sub">订单状态</text><text class="rd-info-val" style="color:#059669;">{{ order.st }}</text></view>
 				<view class="rd-info-row"><text class="c-text-sub">实付金额</text><text class="rd-info-val" style="font-weight:700;">¥{{ order.fee }}</text></view>
@@ -26,7 +26,7 @@
 		</view>
 
 		<view class="rd-tip rd-mx rd-mt">
-			<text style="font-size:20rpx;line-height:1.6;color:#3b82f6;">月租生效期间车辆进出小区按套餐计费，到期前可随时在车辆服务页续费。</text>
+			<text style="font-size:20rpx;line-height:1.6;color:#3b82f6;">月卡生效期间车辆进出小区按月卡计费，到期前可随时在车辆服务页购买月卡。</text>
 		</view>
 
 		<view class="c-toast" v-if="toastMsg" :style="{ opacity: 1 }">{{ toastMsg }}</view>
@@ -86,6 +86,7 @@
 					from: this._toDate(o.startTime),
 					to: this._toDate(o.endTime),
 					time: this._toDateTime(o.createTime),
+					payType: o.primeRateName || '微信支付',
 					st: o.stateName || (o.state === '1001' ? '正常' : (o.state === '2002' ? '已退费' : '—'))
 				}
 			},

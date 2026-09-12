@@ -455,11 +455,14 @@
 					const list = res.data.map(c => this._adaptComm(c))
 					chargeStore.communities = list
 					if (!list.length) {
-						// 查询无数据：缓存"无"小区（-1）
-						saveCurrentCommunity({
-							communityId: '-1',
-							communityName: '无'
-						})
+						// 查询无数据：仅当前无有效缓存时才缓存"无"小区（-1）
+						const _cached = uni.getStorageSync('currentCommunityInfo')
+						if (!_cached || !_cached.communityId || _cached.communityId === '-1') {
+							saveCurrentCommunity({
+								communityId: '-1',
+								communityName: '无'
+							})
+						}
 						chargeStore.setCommIdx(0)
 					} else {
 						// 缓存第一个小区为默认小区

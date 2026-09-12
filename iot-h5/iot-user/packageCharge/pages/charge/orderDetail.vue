@@ -50,16 +50,24 @@
 				</view>
 			</template>
 
-			<!-- 接口确认的在充订单（只读，不可停止） -->
-			<template v-else-if="runningApi">
+			<view class="c-card co-empty od-mx od-mt" v-else>
+				<image :src="imgUrl + '/h5/images/charge/ic-chart.png'" class="co-empty-ic" mode="aspectFit"></image>
+				<text class="c-text-sub" style="margin-top:16rpx;">未找到充电中的订单</text>
+			</view>
+		</template>
+
+		<!-- 接口订单：按订单状态渲染 -->
+		<template v-else-if="order">
+			<!-- 充电中订单（本人可停止） -->
+			<template v-if="isRunningView">
 				<view class="od-running-hero">
 					<view class="od-head">
 						<view class="od-title-row">
-							<view class="c-pulse-dot" style="width:16rpx;height:16rpx;border-radius:50%;background:#fff;"></view>
-							<text class="od-title">充电中 · {{ runningApi.pile }}</text>
-							<text class="od-slot-tag" v-if="runningApi.slot">{{ runningApi.type === 'car' ? '枪 ' : '插座 ' }}{{ runningApi.slot }}</text>
+							<view class="c-pulse-dot" v-if="!stopped" style="width:16rpx;height:16rpx;border-radius:50%;background:#fff;"></view>
+							<text class="od-title">{{ order.st }} · {{ order.pile }}</text>
+							<text class="od-slot-tag" v-if="order.slot">{{ order.type === 'car' ? '枪 ' : '插座 ' }}{{ order.slot }}</text>
 						</view>
-						<text class="od-mode">余额支付</text>
+						<text class="od-mode">{{ orderPayText }}</text>
 					</view>
 					<view class="od-stats">
 						<view class="od-stat">
@@ -85,63 +93,60 @@
 				<view class="c-card od-mx od-mt">
 					<text class="c-title">充电订单</text>
 					<view class="od-info">
-						<view class="od-info-row"><text class="c-text-sub">订单编号</text><text class="od-info-val">{{ runningApi.orderId }}</text></view>
-						<view class="od-info-row"><text class="c-text-sub">订单类型</text><text class="od-info-val">{{ runningApi.type === 'car' ? '电动车 · 7kW 交流慢充' : '电瓶车 · 220W' }}</text></view>
-						<view class="od-info-row"><text class="c-text-sub">支付方式</text><text class="od-info-val">余额</text></view>
-						<view class="od-info-row"><text class="c-text-sub">充电开始时间</text><text class="od-info-val">{{ runningApi.startTime || '—' }}</text></view>
-						<view class="od-info-row"><text class="c-text-sub">订单状态</text><text class="od-info-val">充电中</text></view>
-						<view class="od-info-row"><text class="c-text-sub">已充费用</text><text class="od-info-val" :style="{ color: '#059669', fontWeight: 700 }">¥{{ runningApi.fee.toFixed(2) }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">订单编号</text><text class="od-info-val">{{ order.orderId }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">订单类型</text><text class="od-info-val">{{ order.type === 'car' ? '电动车 · 7kW 交流慢充' : '电瓶车 · 220W' }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">支付方式</text><text class="od-info-val">{{ order.way }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">充电开始时间</text><text class="od-info-val">{{ order.startTime || '—' }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">订单状态</text><text class="od-info-val">{{ order.st }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">已充费用</text><text class="od-info-val" :style="{ color: '#059669', fontWeight: 700 }">¥{{ order.fee.toFixed(2) }}</text></view>
 					</view>
 				</view>
 
 				<view class="od-mx od-mt" style="padding-bottom:80rpx;">
-					<text class="od-readonly-tip">该订单为接口确认的充电中订单 · 如需停止请前往「充电中」页面操作</text>
+					<view v-if="showStopBtn" class="c-btn-danger" :style="stopping ? 'opacity:.6' : ''" @click="askStop">{{ stopping ? '停止中…' : '停止充电' }}</view>
+					<text v-else-if="stopped" class="od-stop-tip">已提交停止，等待结算完成</text>
+					<text v-else class="od-readonly-tip">该订单非本人订单 · 仅可查看订单信息</text>
 				</view>
 			</template>
 
-			<view class="c-card co-empty od-mx od-mt" v-else>
-				<image :src="imgUrl + '/h5/images/charge/ic-chart.png'" class="co-empty-ic" mode="aspectFit"></image>
-				<text class="c-text-sub" style="margin-top:16rpx;">未找到充电中的订单</text>
-			</view>
-		</template>
-
-		<!-- 历史订单 -->
-		<template v-else-if="order">
-			<view class="c-card od-mx od-mt">
-				<view class="od-done-head">
-					<view class="od-done-ic">
-						<image v-if="order.type === 'car'" :src="imgUrl + '/h5/images/charge/ic-car.png'" class="od-done-ic-img" mode="aspectFit"></image>
-						<image v-else :src="imgUrl + '/h5/images/charge/ic-bolt.png'" class="od-done-ic-img" mode="aspectFit"></image>
-					</view>
-					<view style="flex:1;min-width:0;">
-						<view class="od-done-name-row">
-							<text class="c-title">{{ order.pile }}</text>
-							<text class="c-badge c-badge-gray">{{ order.st }}</text>
+			<!-- 历史订单 -->
+			<template v-else>
+				<view class="c-card od-mx od-mt">
+					<view class="od-done-head">
+						<view class="od-done-ic">
+							<image v-if="order.type === 'car'" :src="imgUrl + '/h5/images/charge/ic-car.png'" class="od-done-ic-img" mode="aspectFit"></image>
+							<image v-else :src="imgUrl + '/h5/images/charge/ic-bolt.png'" class="od-done-ic-img" mode="aspectFit"></image>
 						</view>
-						<text class="c-text-sub" style="margin-top:6rpx;display:block;">{{ order.date }}</text>
+						<view style="flex:1;min-width:0;">
+							<view class="od-done-name-row">
+								<text class="c-title">{{ order.pile }}</text>
+								<text class="c-badge c-badge-gray">{{ order.st }}</text>
+							</view>
+							<text class="c-text-sub" style="margin-top:6rpx;display:block;">{{ order.date }}</text>
+						</view>
+						<text class="od-done-fee" :class="order.fee > 0 ? 'pay' : 'free'">{{ order.fee > 0 ? '-¥' + order.fee.toFixed(2) : '免费' }}</text>
 					</view>
-					<text class="od-done-fee" :class="order.fee > 0 ? 'pay' : 'free'">{{ order.fee > 0 ? '-¥' + order.fee.toFixed(2) : '免费' }}</text>
 				</view>
-			</view>
-			<view class="c-card od-mx od-mt">
-				<text class="c-title">订单信息</text>
-				<view class="od-info">
-					<view class="od-info-row"><text class="c-text-sub">订单编号</text><text class="od-info-val">{{ order.orderId }}</text></view>
-					<view class="od-info-row"><text class="c-text-sub">充电开始时间</text><text class="od-info-val">{{ order.date }}</text></view>
-					<view class="od-info-row"><text class="c-text-sub">充电结束时间</text><text class="od-info-val">{{ orderEndText }}</text></view>
-					<view class="od-info-row"><text class="c-text-sub">充电时长</text><text class="od-info-val">{{ order.mins }} 分钟</text></view>
-					<view class="od-info-row" v-if="order.kwh"><text class="c-text-sub">用电量</text><text class="od-info-val">{{ order.kwh.toFixed(2) }} 度</text></view>
-					<view class="od-info-row"><text class="c-text-sub">支付方式</text><text class="od-info-val">{{ order.way }}</text></view>
-					<view class="od-info-row"><text class="c-text-sub">订单状态</text><text class="od-info-val">{{ order.st }}</text></view>
-					<view class="od-info-row"><text class="c-text-sub">预扣款金额</text><text class="od-info-val">¥{{ (order.held || 0).toFixed(2) }}</text></view>
-					<view class="od-info-row"><text class="c-text-sub">充电结束退款金额</text><text class="od-info-val" :style="{ color: (order.held || 0) - order.fee > 0 ? '#059669' : '#475569' }">{{ (order.held || 0) - order.fee > 0 ? '¥' + ((order.held || 0) - order.fee).toFixed(2) : '¥0.00' }}</text></view>
-					<view class="od-info-row"><text class="c-text-sub">实付金额</text><text class="od-info-val" :style="{ color: order.fee > 0 ? '#0f172a' : '#059669', fontWeight: 700 }">{{ order.fee > 0 ? '¥' + order.fee.toFixed(2) : '¥0.00' }}</text></view>
+				<view class="c-card od-mx od-mt">
+					<text class="c-title">订单信息</text>
+					<view class="od-info">
+						<view class="od-info-row"><text class="c-text-sub">订单编号</text><text class="od-info-val">{{ order.orderId }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">充电开始时间</text><text class="od-info-val">{{ order.date }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">充电结束时间</text><text class="od-info-val">{{ orderEndText }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">充电时长</text><text class="od-info-val">{{ order.mins }} 分钟</text></view>
+						<view class="od-info-row" v-if="order.kwh"><text class="c-text-sub">用电量</text><text class="od-info-val">{{ order.kwh.toFixed(2) }} 度</text></view>
+						<view class="od-info-row"><text class="c-text-sub">支付方式</text><text class="od-info-val">{{ order.way }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">订单状态</text><text class="od-info-val">{{ order.st }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">预扣款金额</text><text class="od-info-val">¥{{ (order.held || 0).toFixed(2) }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">充电结束退款金额</text><text class="od-info-val" :style="{ color: (order.held || 0) - order.fee > 0 ? '#059669' : '#475569' }">{{ (order.held || 0) - order.fee > 0 ? '¥' + ((order.held || 0) - order.fee).toFixed(2) : '¥0.00' }}</text></view>
+						<view class="od-info-row"><text class="c-text-sub">实付金额</text><text class="od-info-val" :style="{ color: order.fee > 0 ? '#0f172a' : '#059669', fontWeight: 700 }">{{ order.fee > 0 ? '¥' + order.fee.toFixed(2) : '¥0.00' }}</text></view>
+					</view>
 				</view>
-			</view>
+			</template>
 		</template>
 
-		<!-- 历史订单加载失败/未找到 -->
-		<view class="c-card co-empty od-mx od-mt" v-else-if="mode !== 'running' && orderLoaded">
+		<!-- 订单加载失败/未找到 -->
+		<view class="c-card co-empty od-mx od-mt" v-else-if="orderLoaded">
 			<image :src="imgUrl + '/h5/images/charge/ic-chart.png'" class="co-empty-ic" mode="aspectFit"></image>
 			<text class="c-text-sub" style="margin-top:16rpx;">未找到该订单</text>
 		</view>
@@ -205,6 +210,16 @@
 		queryPhoneChargeOrder
 	} from '@/packageCharge/api/chargeApi.js'
 	import {
+		stopCharge,
+		stopCarCharge
+	} from '@/api/machine/machineApi.js'
+	import {
+		getCommunityId
+	} from '@/api/community/communityApi.js'
+	import {
+		getUserInfo
+	} from '@/lib/java110/utils/StorageUtil.js'
+	import {
 		hasLogin
 	} from '@/api/user/sessionApi.js'
 	import {
@@ -221,13 +236,14 @@
 				orderId: '',
 				order: null,
 				orderLoaded: false,
-				runningApi: null,
 				timeText: '00:00',
 				powerText: '0W',
 				kwhText: '—',
 				fee: 0,
 				note: '正在连接车辆 · 请稍候…',
 				stopShow: false,
+				stopping: false,
+				stopped: false,
 				settleShow: false,
 				settle: null,
 				tariffs: JSON.parse(JSON.stringify(defaultTariffs)),
@@ -267,20 +283,39 @@
 				const o = this.order
 				if (!o) return ''
 				return this._orderEnd(o.date, o.mins)
+			},
+			// 在充视图：接口返回 state=1001（停止提交后保持本视图展示「已停止」）
+			isRunningView() {
+				const o = this.order
+				return !!(o && (o.state === '1001' || this.stopped))
+			},
+			// 订单归属校验（本人订单才可停止）
+			isMine() {
+				return this._isMyOrder(this.order)
+			},
+			showStopBtn() {
+				const o = this.order
+				return !!(o && o.state === '1001' && this.isMine && !this.stopped)
+			},
+			canStop() {
+				return this.showStopBtn && !this.stopping
+			},
+			orderPayText() {
+				return this.order && this.order.way === '月卡' ? '月卡抵扣' : '余额支付'
 			}
 		},
 		onLoad(options) {
 			this.mode = options.mode || 'done'
 			this.orderId = options.orderId || ''
-			if (this.mode === 'running') {
-				if (chargeStore.runningOrder) {
-					this._refreshRunning()
-				} else if (this.orderId) {
-					this._loadRunningByApi()
-				}
-			} else {
-				this._loadOrder()
+			if (this.mode === 'running' && chargeStore.runningOrder) {
+				this._refreshRunning()
+				return
 			}
+			if (this.orderId) {
+				this._loadOrder()
+				return
+			}
+			this.orderLoaded = true
 		},
 		onShow() {
 			if (this.mode === 'running' && chargeStore.runningOrder) {
@@ -289,20 +324,20 @@
 			}
 		},
 		onHide() {
-			if (this.timer) clearInterval(this.timer)
+			this._stopTimer()
 		},
 		onUnload() {
-			if (this.timer) clearInterval(this.timer)
+			this._stopTimer()
 		},
 		methods: {
 			_startTimer() {
-				if (this.timer) clearInterval(this.timer)
+				this._stopTimer()
 				this.timer = setInterval(() => {
 					chargeStore.simulateTick()
 					this._refreshRunning()
 				}, 1000)
 			},
-			// 历史订单：按 orderId 查真实接口
+			// 历史订单/在充订单：按 orderId 查真实接口
 			_loadOrder() {
 				if (!hasLogin()) {
 					this.orderLoaded = true
@@ -320,41 +355,39 @@
 					const list = adaptOrderList(res.data)
 					this.order = list.length ? list[0] : null
 					this.orderLoaded = true
+					if (this.order && this.order.state === '1001') {
+						this._initRunningView()
+					}
 				}).catch(() => {
 					this.order = null
 					this.orderLoaded = true
 				})
 			},
-			// 在充订单：本地无 runningOrder 时按 orderId 查接口只读展示
-			_loadRunningByApi() {
-				if (!hasLogin()) return
-				queryPhoneChargeOrder({
-					orderId: this.orderId,
-					page: 1,
-					row: 10,
-					state: '1001'
-				}).then(res => {
-					const list = adaptOrderList(res.data)
-					if (!list.length) return
-					this.runningApi = list[0]
-					this.powerText = this.runningApi.type === 'car' ? '7.0kW' : '220W'
-					this.kwhText = this.runningApi.kwh > 0 ? this.runningApi.kwh.toFixed(2) + ' 度' : '—'
-					this.fee = this.runningApi.fee
-					this.note = this.runningApi.type === 'car' ? '按电量计费 · 金额耗尽自动断电' : '充满自停 / 定时断电'
-					this._refreshRunningApi()
-					if (this.timer) clearInterval(this.timer)
-					this.timer = setInterval(() => {
-						this._refreshRunningApi()
-					}, 1000)
-				}).catch(() => {})
+			// 在充订单视图：以接口订单字段为准，仅本地刷新已充时长
+			_initRunningView() {
+				const o = this.order
+				if (!o) return
+				this.powerText = o.type === 'car' ? '7.0kW' : '220W'
+				this.kwhText = o.kwh > 0 ? o.kwh.toFixed(2) + ' 度' : '—'
+				this.fee = o.fee
+				this.note = o.type === 'car' ? '按电量计费 · 金额耗尽自动断电' : '充满自停 / 定时断电'
+				this._refreshOrderTime()
+				this._stopTimer()
+				this.timer = setInterval(() => {
+					this._refreshOrderTime()
+				}, 1000)
 			},
-			// 接口在充时长实时刷新（仅刷新时长，无本地假数据）
-			_refreshRunningApi() {
-				const r = this.runningApi
-				if (!r || !r.startTime) return
-				const t = new Date(String(r.startTime).replace(/-/g, '/')).getTime()
+			// 在充时长实时刷新（仅刷新时长，无本地假数据）
+			_refreshOrderTime() {
+				const o = this.order
+				if (!o || !o.startTime) return
+				const t = new Date(String(o.startTime).replace(/-/g, '/')).getTime()
 				const sec = isNaN(t) ? 0 : Math.max(0, Math.floor((Date.now() - t) / 1000))
 				this.timeText = ('0' + Math.floor(sec / 60)).slice(-2) + ':' + ('0' + sec % 60).slice(-2)
+			},
+			_stopTimer() {
+				if (this.timer) clearInterval(this.timer)
+				this.timer = null
 			},
 			_refreshRunning() {
 				const r = chargeStore.runningOrder
@@ -395,15 +428,65 @@
 				}
 				return ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2) + ' ' + hh + ':' + mm
 			},
+			// 订单归属校验：personId 优先，personTel 兜底
+			_isMyOrder(o) {
+				if (!o) return false
+				const raw = getUserInfo()
+				if (!raw) return false
+				let me = raw
+				if (typeof raw === 'string') {
+					try {
+						me = JSON.parse(raw)
+					} catch (e) {
+						return false
+					}
+				}
+				if (!me) return false
+				if (o.personId && me.userId && o.personId === me.userId) return true
+				return !!(o.personTel && me.tel && o.personTel === me.tel)
+			},
 			askStop() {
 				this.stopShow = true
 			},
 			confirmStop() {
 				this.stopShow = false
-				const settle = chargeStore.settleCharge()
-				if (!settle) return
-				this.settle = settle
-				this.settleShow = true
+				// 首页本地模拟在充订单：保持原有本地结算流程
+				if (this.mode === 'running') {
+					const settle = chargeStore.settleCharge()
+					if (!settle) return
+					this.settle = settle
+					this.settleShow = true
+					return
+				}
+				this._stopApiCharge()
+			},
+			// 接口在充订单：调用停止接口后乐观置「已停止」（停止为异步，结算由设备上报）
+			_stopApiCharge() {
+				const o = this.order
+				if (!this.canStop || !o) return
+				this.stopping = true
+				const params = {
+					orderId: o.orderId,
+					communityId: o.communityId || getCommunityId(),
+					machineId: o.machineId,
+					portId: o.portId
+				}
+				const req = o.type === 'car' ? stopCarCharge : stopCharge
+				req(params).then(res => {
+					this.stopping = false
+					if (!res || res.code != 0) {
+						this._toast((res && res.msg) || '停止失败')
+						return
+					}
+					o.state = '4004'
+					o.st = '已停止'
+					this.stopped = true
+					this._stopTimer()
+					this._toast('已提交停止，结算完成后自动更新')
+				}).catch(() => {
+					this.stopping = false
+					this._toast('停止失败，请稍后重试')
+				})
 			},
 			cancelSettle() {
 				this.settleShow = false
@@ -415,7 +498,7 @@
 				this._stopAndBack()
 			},
 			_stopAndBack() {
-				if (this.timer) clearInterval(this.timer)
+				this._stopTimer()
 				uni.navigateTo({
 					url: '/packageCharge/pages/charge/chargeOrders'
 				})

@@ -1,7 +1,7 @@
 /**
- * 充电订单接口字段 → 页面字段适配（订单页 / 首页共用）
+ * 充电订单接口字段 → 页面字段适配（订单列表 / 订单详情 / 首页共用）
  * 接口：charge.queryPhoneChargeOrder（GET）
- * 在充订单大卡片复用同一适配结果（startTime/slot/portName 为在充展示补充字段）
+ * 订单详情在充视图复用同一适配结果（startTime/slot/portName/machineId/portId/communityId 为停止充电补充字段）
  */
 function pad(n) {
 	return ('0' + n).slice(-2)
@@ -34,7 +34,7 @@ export function adaptOrder(o) {
 		fee: parseFloat(o.amount || 0) || 0,
 		way: isMonthCard ? '月卡' : '余额',
 		acctDetailId: o.acctDetailId || '',
-		st: state === '2002' ? '已完成' : state === '1001' ? '充电中' : state === '3003' ? '充电失败' : (o.stateName || ''),
+		st: state === '2002' ? '已完成' : state === '1001' ? '充电中' : state === '4004' ? '已停止' : state === '3003' ? '充电失败' : (o.stateName || ''),
 		state: state,
 		type: o.chargeType === '1002' ? 'car' : 'bike',
 		kwh: parseFloat(o.energy || 0) || 0,
@@ -44,7 +44,14 @@ export function adaptOrder(o) {
 		endTime: o.endTime || '',
 		slot: o.portName || o.portCode || '',
 		portName: o.portName || '',
-		portCode: o.portCode || ''
+		portCode: o.portCode || '',
+		// 停止充电接口必填参数
+		machineId: o.machineId || '',
+		portId: o.portId || '',
+		communityId: o.communityId || '',
+		// 订单归属校验
+		personId: o.personId || '',
+		personTel: o.personTel || ''
 	}
 }
 

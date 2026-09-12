@@ -194,13 +194,6 @@
 					}
 				},
 				{
-					"path": "pages/charge/carDetail",
-					"style": {
-						"navigationBarTitleText": "车辆详情",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
 					"path": "pages/charge/rentOrderDetail",
 					"style": {
 						"navigationBarTitleText": "月租订单详情",

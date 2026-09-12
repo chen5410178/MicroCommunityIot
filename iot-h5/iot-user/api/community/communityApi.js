@@ -32,6 +32,28 @@ export function saveCurrentCommunity(_community) {
 	});
 }
 
+/**
+ * 获取当前有效小区ID：缓存有效直接用；为 -1/空 则查询小区列表取第一个并写入当前小区
+ * @returns {Promise<string>} 有效小区ID；查不到小区返回 ''
+ */
+export function ensureCommunityId() {
+	const cur = getCommunityId();
+	if (cur && cur !== '-1') return Promise.resolve(cur);
+	return queryCommunitys({
+		page: 1,
+		row: 50
+	}).then(res => {
+		const list = (res && res.code == 0 && res.data) || [];
+		if (!list.length) return '';
+		const first = list[0];
+		saveCurrentCommunity({
+			communityId: first.communityId,
+			communityName: first.name || first.communityName
+		});
+		return first.communityId;
+	}).catch(() => '');
+}
+
 
 export function queryFloors(_objData) {
 	return new Promise((resolve, reject) => {

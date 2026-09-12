@@ -1,7 +1,7 @@
 <template>
 	<view class="cs-page" :class="{ 'charge-theme-dark': themeDark }">
 		<view class="cs-head">
-			<text class="c-title">车辆服务 <text class="c-text-sub" style="font-weight:400;" v-if="!loading">共 {{ vehicles.length }} 辆</text><text class="c-text-sub" style="font-weight:400;" v-else>加载中...</text></text>
+			<text class="c-title">车辆服务 <text class="c-text-sub" style="font-weight:400;" v-if="!loading">共 {{ rentOrders.length }} 笔</text><text class="c-text-sub" style="font-weight:400;" v-else>加载中...</text></text>
 		</view>
 
 		<!-- 车牌搜索（两框输入） -->
@@ -39,9 +39,9 @@
 			</view>
 		</view>
 
-		<!-- 搜索结果 -->
-		<view class="cs-mx cs-mt" v-if="searchResult">
-			<view v-if="hitCar" class="c-card cs-hit">
+		<!-- 搜索结果：仅展示车辆信息 -->
+		<view class="cs-mx cs-mt" v-if="hitCar">
+			<view class="c-card cs-hit">
 				<view class="cs-hit-head">
 					<view class="cs-hit-ic">
 						<image :src="imgUrl + '/h5/images/charge/ic-car-full.png'" class="cs-hit-ic-img" mode="aspectFit"></image>
@@ -49,26 +49,22 @@
 					<view style="flex:1;min-width:0;">
 						<view class="cs-hit-plate-row">
 							<text class="cs-hit-plate">{{ hitCar.plate }}</text>
-							<text class="cs-hit-tag" :class="hitCar.expire ? 'on' : 'off'">{{ hitCar.expire ? '月租生效中 · 剩余 ' + hitCar.expireTip + ' 天' : '未开通月租' }}</text>
+							<text class="cs-hit-tag" :class="hitCar.expire ? 'on' : 'off'">{{ hitCar.expire ? '月卡生效中 · 剩余 ' + hitCar.expireTip + ' 天' : '未开通月卡' }}</text>
 						</view>
 						<text class="c-text-sub" style="margin-top:8rpx;display:block;">{{ hitCar.model }} · {{ hitCar.comm }}{{ hitCar.expire ? ' · 有效期至 ' + hitCar.expire : '' }}</text>
 					</view>
 				</view>
-				<view class="cs-hit-btn" @click="goDetailByPlate(searchKw)">进入月卡续费</view>
-			</view>
-			<view v-else class="cs-unbound">
-				<text class="cs-unbound-title">车牌「{{ searchKw }}」未绑定车辆</text>
-				<view class="cs-unbound-btn" @click="goDetailByPlate(searchKw)">月卡续费 · {{ _isNewEnergy(searchKw) ? '新能源' : '燃油' }}</view>
+				<view class="cs-hit-btn" @click="buyMonthCard">购买月卡</view>
 			</view>
 		</view>
 
 		<view class="cs-tip cs-mx cs-mt">
-			<text style="font-size:20rpx;line-height:1.6;color:#3b82f6;">输入车牌号即可查询月卡并直接续费</text>
+			<text style="font-size:20rpx;line-height:1.6;color:#3b82f6;">输入车牌号即可查询月卡并直接购买</text>
 		</view>
 
-		<!-- 月租续费订单 -->
+		<!-- 月卡订单 -->
 		<view class="cs-order-head">
-			<text class="c-title">月租续费订单</text>
+			<text class="c-title">月卡订单</text>
 			<text class="c-text-sub" v-if="!loading">共 {{ rentOrders.length }} 笔</text>
 			<text class="c-text-sub" v-else>加载中...</text>
 		</view>
@@ -81,14 +77,14 @@
 						<text style="color:#cbd5e1;font-size:22rpx;">›</text>
 					</view>
 				</view>
-				<text class="c-text-sub" style="margin-top:10rpx;display:block;">有效期 {{ o.from }} → {{ o.to }} · {{ o.time }} 支付</text>
+				<text class="c-text-sub" style="margin-top:10rpx;display:block;">有效期 {{ o.from }} → {{ o.to }}{{ o.months ? '（' + o.months + ' 个月）' : '' }}</text>
 				<view class="cs-order-foot">
 					<text class="cs-order-st">{{ o.st }}</text>
-					<text class="c-text-sub" style="font-size:18rpx;">{{ o.months }} 个月</text>
+					<text class="c-text-sub" style="font-size:18rpx;">购买时间 {{ o.time }}</text>
 				</view>
 			</view>
 			<view v-if="!rentOrders.length" class="c-card cs-order-empty">
-				<text class="c-text-sub">暂无续费订单，续费后这里将展示记录</text>
+				<text class="c-text-sub">暂无月卡订单，购买月卡后这里将展示记录</text>
 			</view>
 		</view>
 
@@ -108,12 +104,15 @@
 	import chargeStore from '@/api/charge/chargeStore.js'
 	import plateKeyboard from '@/packageCharge/components/charge/plate-keyboard.vue'
 	import {
-		listUserCar,
+		queryMonthCardByCarNum,
 		listUserCarMonthOrder
 	} from '@/packageCharge/api/chargeApi.js'
 	import {
-		getCommunityId
+		ensureCommunityId
 	} from '@/api/community/communityApi.js'
+	import {
+		getUserId
+	} from '@/api/user/userApi.js'
 	import {
 		hasLogin
 	} from '@/api/user/sessionApi.js'
@@ -143,12 +142,10 @@
 				provPanel: false,
 				suggestShow: false,
 				keyShow: false,
-				searchKw: '',
-				searchResult: false,
 				hitCar: null,
 				suggestList: [],
-				vehicles: [],
 				rentOrders: [],
+				communityId: '',
 				loading: false,
 				toastMsg: ''
 			}
@@ -208,10 +205,7 @@
 				this.searchProv = bare.charAt(0)
 				this.searchRest = bare.slice(1)
 				this.suggestShow = false
-				this.searchKw = bare
-				this.hitCar = this.vehicles.find(c => c.plate === bare) || null
-				this.searchResult = true
-				savePlateHistory(p)
+				this.searchCar()
 			},
 			delHistory(p) {
 				delPlateHistory(p)
@@ -232,20 +226,31 @@
 					this._toast('请先选择省份')
 					return
 				}
-				this.searchKw = kw
-				this.hitCar = this.vehicles.find(c => c.plate === kw) || null
-				this.searchResult = true
-				this.suggestList = getPlateHistory().slice(0, 6)
-				savePlateHistory(kw)
+				if (!isPlateValid(kw)) {
+					this._toast('车牌号码格式不正确')
+					return
+				}
+				this.hitCar = null
+				this._ensureCommunity().then(communityId => {
+					if (!communityId) return
+					return queryMonthCardByCarNum({
+						carNum: kw,
+						communityId: communityId
+					}).then(data => {
+						this.hitCar = this._adapterHitCar(kw, data)
+						savePlateHistory(kw)
+					}).catch(e => {
+						const msg = (typeof e === 'string' ? e : (e && e.message)) || '查询月卡失败'
+						this._toast(msg + '，请到物业前台申请车位绑定车辆')
+					})
+				})
 			},
-			goDetailByPlate(bare) {
-				const hit = this.hitCar
+			buyMonthCard() {
+				if (!this.hitCar) return
 				uni.navigateTo({
-					url: '/packageCharge/pages/charge/carDetail?carNum=' + encodeURIComponent(bare) +
-						'&carId=' + (hit ? hit.carId : '') +
-						'&model=' + encodeURIComponent(hit ? hit.model : '') +
-						'&comm=' + encodeURIComponent(hit ? hit.comm : '') +
-						'&bindDate=' + encodeURIComponent(hit ? hit.bindDate : '')
+					url: '/packageFee/pages/fee/buyCarMonthCard?carNum=' + this.hitCar.plate +
+						'&communityId=' + this.communityId +
+						'&createUserId=' + getUserId()
 				})
 			},
 			openRentOrder(i) {
@@ -259,47 +264,41 @@
 				this._toast('请到物业前台申请车位绑定车辆')
 			},
 			_loadData() {
-				const communityId = getCommunityId()
 				this.loading = true
-				this._pending = 2
-				listUserCar({
-					communityId
-				}).then(list => {
-					this.vehicles = (list || []).map(c => this._adapterCar(c))
-				}).catch(e => {
-					this._toast((typeof e === 'string' ? e : (e && e.message)) || '车辆列表加载失败')
-				}).then(() => {
-					this._doneLoad()
-				})
-				listUserCarMonthOrder({
-					communityId
-				}).then(list => {
-					this.rentOrders = (list || []).map(o => this._adapterOrder(o))
-				}).catch(e => {
-					this._toast((typeof e === 'string' ? e : (e && e.message)) || '订单加载失败')
-				}).then(() => {
-					this._doneLoad()
+				this._ensureCommunity().then(communityId => {
+					if (!communityId) {
+						this.loading = false
+						return
+					}
+					return listUserCarMonthOrder({
+						communityId: communityId
+					}).then(list => {
+						this.rentOrders = (list || []).map(o => this._adapterOrder(o))
+					}).catch(e => {
+						this._toast((typeof e === 'string' ? e : (e && e.message)) || '订单加载失败')
+					}).then(() => {
+						this.loading = false
+					})
 				})
 			},
-			_doneLoad() {
-				this._pending--
-				if (this._pending <= 0) {
-					this.loading = false
-				}
+			_ensureCommunity() {
+				return ensureCommunityId().then(communityId => {
+					if (!communityId) {
+						this._toast('暂无可用小区，请稍后再试')
+						return ''
+					}
+					this.communityId = communityId
+					return communityId
+				})
 			},
-			_isNewEnergy(kw) {
-				return isNewEnergy(kw)
-			},
-			_adapterCar(c) {
-				const bare = (c.carNum || '').replace(/·/g, '')
-				const isNew = isNewEnergy(bare)
-				const expire = this._expireDate(c.endTime)
+			_adapterHitCar(carNum, data) {
+				const expire = this._expireDate(data && data.endTime)
+				const isNew = isNewEnergy(carNum)
 				return {
-					carId: c.carId || '',
-					plate: bare,
-					model: c.carTypeName || (isNew ? '新能源小型汽车' : '燃油小型汽车'),
+					carId: (data && data.carId) || '',
+					plate: carNum,
+					model: (data && data.carTypeName) || (isNew ? '新能源小型汽车' : '燃油小型汽车'),
 					comm: this._commName(),
-					bindDate: this._toDate(c.createTime),
 					expire: expire,
 					expireTip: expire ? this._leftDays(expire) : 0
 				}
@@ -642,31 +641,6 @@
 		height: 80rpx;
 		line-height: 80rpx;
 		text-align: center;
-	}
-
-	.cs-unbound {
-		border: 2rpx dashed rgba(249, 115, 22, .3);
-		background: rgba(249, 115, 22, .05);
-		border-radius: 24rpx;
-		padding: 40rpx 24rpx;
-		text-align: center;
-	}
-
-	.cs-unbound-title {
-		font-size: 24rpx;
-		font-weight: 700;
-		color: #334155;
-	}
-
-	.cs-unbound-btn {
-		display: inline-block;
-		margin-top: 24rpx;
-		border-radius: 999rpx;
-		background: linear-gradient(135deg, #3b82f6, #6366f1);
-		color: #fff;
-		font-size: 22rpx;
-		font-weight: 700;
-		padding: 16rpx 36rpx;
 	}
 
 	.cs-tip {
