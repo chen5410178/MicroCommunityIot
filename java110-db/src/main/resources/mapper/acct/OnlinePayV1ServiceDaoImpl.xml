@@ -65,6 +65,9 @@
         <if test="busiId != null and busiId != ''">
             AND t.busi_id = #{busiId}
         </if>
+        <if test="remainingFeeMoreThanZero != null and remainingFeeMoreThanZero != ''">
+            AND t.remaining_fee &gt; 0
+        </if>
         <if test="state != null and state != ''">
             AND t.state = #{state}
         </if>
@@ -149,6 +152,9 @@
         </if>
         <if test="busiId != null and busiId != ''">
             AND t.busi_id = #{busiId}
+        </if>
+        <if test="remainingFeeMoreThanZero != null and remainingFeeMoreThanZero != ''">
+            AND t.remaining_fee &gt; 0
         </if>
         <if test="state != null and state != ''">
             AND t.state = #{state}

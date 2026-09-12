@@ -265,6 +265,31 @@ export function queryAppUserAccountDetail(_objData){
 }
 
 /**
+ * 业主账户余额退款（微信原路退回）
+ * @param {Object} _objData { communityId, acctId, amount?(可选，不传=按账户余额全额退款), remark? }
+ */
+export function refundOwnerAccount(_objData){
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.refundAppUserAccount,
+			method: "POST",
+			data: JSON.stringify(_objData),
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code != 0) {
+					reject(_json.msg);
+					return;
+				}
+				resolve(_json.data);
+			},
+			fail: function(res) {
+				reject(res);
+			}
+		});
+	})
+}
+
+/**
  * 刷新用户
  * @param {Object} _objData
  */

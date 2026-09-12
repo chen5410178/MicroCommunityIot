@@ -61,7 +61,8 @@
 		</view>
 
 		<!-- 微信退款弹窗 -->
-		<wallet-refund :show.sync="refundShow" :balance="balance" @success="onRefundSuccess" />
+		<wallet-refund :show.sync="refundShow" :balance="balance" :acct-id="acctId" :community-id="communityId"
+			@success="onRefundSuccess" />
 
 		<view class="c-toast" v-if="toastMsg" :style="{ opacity: 1 }">{{ toastMsg }}</view>
 	</view>
@@ -111,6 +112,8 @@
 				refundShow: false,
 				toastMsg: '',
 			balance: 0,
+			acctId: '',
+			communityId: '',
 			logs: [],
 			displayLogs: []
 			}
@@ -126,22 +129,25 @@
 		methods: {
 			_loadWallet() {
 				if (!hasLogin()) return
+				this.communityId = getCommunityId()
 				queryOwnerAccount({
 					page: 1,
 					row: 20,
-					communityId: getCommunityId(),
+					communityId: this.communityId,
 					acctType: '2003'
 				}).then(list => {
 					if (!list || !list.length) {
 						this.balance = 0
+						this.acctId = ''
 						return
 					}
 					this.balance = parseFloat(list[0].amount) || 0
+					this.acctId = list[0].acctId || ''
 				}).catch(() => {})
 				queryAppUserAccountDetail({
 					page: 1,
 					row: 100,
-					communityId: getCommunityId(),
+					communityId: this.communityId,
 					acctType: '2003'
 				}).then(detailList => {
 					this.logs = (detailList || []).map(this._mapLog)
@@ -228,9 +234,15 @@
 					this._toast('当前无可退余额')
 					return
 				}
+				if (!this.acctId) {
+					this._toast('账户信息获取失败，请稍后重试')
+					return
+				}
 				this.refundShow = true
 			},
-			onRefundSuccess(amt) {
+			onRefundSuccess(data) {
+				const refundFee = data && data.refundFee != null ? parseFloat(data.refundFee) : NaN
+				const amt = isNaN(refundFee) ? this.balance : refundFee
 				this._toast('退款成功 · 已原路退回 ¥' + amt.toFixed(2))
 				this._loadWallet()
 			},

@@ -49,6 +49,8 @@ public class OnlinePayDto extends PageDto implements Serializable {
     private String statusCd;
     private String paymentPoolId;
     private String appId;
+    // 只查询剩余可退金额大于0的记录，1 标识是
+    private String remainingFeeMoreThanZero;
 
     public String getPayId() {
         return payId;
@@ -160,5 +162,13 @@ public class OnlinePayDto extends PageDto implements Serializable {
 
     public void setAppId(String appId) {
         this.appId = appId;
+    }
+
+    public String getRemainingFeeMoreThanZero() {
+        return remainingFeeMoreThanZero;
+    }
+
+    public void setRemainingFeeMoreThanZero(String remainingFeeMoreThanZero) {
+        this.remainingFeeMoreThanZero = remainingFeeMoreThanZero;
     }
 }

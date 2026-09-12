@@ -657,3 +657,11 @@ INSERT INTO `c_service` VALUES ('982026090800000001', 'user.appUserModifyPasswd'
 INSERT INTO `c_route` VALUES ('102026090800000001', '992023111817510002', '982026090800000001', 'D', '1000', 'S', '2026-09-08 10:58:16', '0');
 ```
 
+
+### 2026-09-12 业主钱包余额微信原路退款（account.ownerRefundAccount）
+
+```sql
+-- 1. 服务注册（用户端 appId 992023111817510002，需登录态）
+INSERT INTO `c_service` VALUES ('982026091200000001', 'account.ownerRefundAccount', 'API', '业主账户余额退款', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2026-09-12 13:30:08', '0');
+INSERT INTO `c_route` VALUES ('102026091200000001', '992023111817510002', '982026091200000001', 'D', '1000', 'S', '2026-09-12 13:30:08', '0');
+```

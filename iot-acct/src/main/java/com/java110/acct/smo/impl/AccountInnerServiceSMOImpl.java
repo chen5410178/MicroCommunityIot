@@ -183,6 +183,29 @@ public class AccountInnerServiceSMOImpl implements IAccountInnerServiceSMO {
     @Override
     @Java110Transactional
     public int withholdAccount(@RequestBody AccountDetailPo accountDetailPo) {
+        return subtractAccount(accountDetailPo, AccountDetailDto.DETAIL_TYPE_OUT);
+    }
+
+    /**
+     * 余额退款扣款接口（明细类型 3003，便于前端识别为退款）
+     *
+     * @param accountDetailPo
+     * @return
+     */
+    @Override
+    @Java110Transactional
+    public int refundAccount(@RequestBody AccountDetailPo accountDetailPo) {
+        return subtractAccount(accountDetailPo, AccountDetailDto.DETAIL_TYPE_IN_CANCEL);
+    }
+
+    /**
+     * 账户扣减公共方法
+     *
+     * @param accountDetailPo 扣款信息
+     * @param detailType      明细类型
+     * @return
+     */
+    private int subtractAccount(AccountDetailPo accountDetailPo, String detailType) {
 
         if (StringUtil.isEmpty(accountDetailPo.getAcctId())) {
             throw new IllegalArgumentException("账户ID为空");
@@ -221,7 +244,7 @@ public class AccountInnerServiceSMOImpl implements IAccountInnerServiceSMO {
         } finally {
             DistributedLock.releaseDistributedLock(key, requestId);
         }
-        accountDetailPo.setDetailType(AccountDetailDto.DETAIL_TYPE_OUT);
+        accountDetailPo.setDetailType(detailType);
         if (StringUtil.isEmpty(accountDetailPo.getDetailId())) {
             accountDetailPo.setDetailId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_detailId));
         }

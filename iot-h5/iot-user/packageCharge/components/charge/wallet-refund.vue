@@ -15,22 +15,14 @@
 				</view>
 				<view class="wr-box">
 					<view class="wr-row">
-						<text class="c-text-sub">可退余额</text>
-						<text class="c-text-bold" style="font-size:24rpx;font-weight:600;color:#334155;">¥{{ balance.toFixed(2) }}</text>
-					</view>
-					<view class="wr-input-row">
 						<text class="c-text-sub">退款金额</text>
-						<view style="display:flex;align-items:center;gap:8rpx;">
-							<text style="font-size:24rpx;font-weight:700;color:#334155;">¥</text>
-							<input v-model="amount" type="digit" placeholder="0.00" style="width:200rpx;text-align:right;font-size:28rpx;font-weight:700;color:#0f172a;" />
-						</view>
+						<text class="c-text-bold" style="font-size:28rpx;font-weight:700;color:#0f172a;">¥{{ balance.toFixed(2) }}</text>
 					</view>
 					<view class="wr-foot">
-						<text class="wr-all" @click="amount = balance.toFixed(2)">全额退款</text>
+						<text class="c-text-sub" style="font-size:18rpx;">余额全额原路退回</text>
 						<text class="c-text-sub" style="font-size:18rpx;">到账时间：1-3 个工作日</text>
 					</view>
 				</view>
-				<text class="wr-tip">退款将调用微信退款接口，按原支付渠道退回微信零钱，提交后不可撤销。</text>
 				<view class="wr-btns">
 					<view class="c-btn-ghost" style="flex:1;" @click="close">取消</view>
 					<view class="c-btn-primary" style="flex:1;" @click="confirm">确认退款</view>
@@ -40,7 +32,7 @@
 				<view style="display:flex;flex-direction:column;align-items:center;padding:40rpx 0;">
 					<view class="wr-spinner"></view>
 					<text class="c-text-bold" style="font-size:26rpx;font-weight:700;color:#1e293b;margin-top:24rpx;">正在调用微信退款接口</text>
-					<text class="c-text-sub" style="margin-top:12rpx;">商户退款单号 <text style="font-weight:600;color:#475569;">{{ refundNo }}</text></text>
+					<text class="c-text-sub" style="margin-top:12rpx;">请勿关闭本页面</text>
 				</view>
 			</template>
 			<template v-else>
@@ -50,8 +42,8 @@
 					</view>
 					<text class="c-text-bold" style="font-size:28rpx;font-weight:700;color:#0f172a;margin-top:20rpx;">退款成功</text>
 					<text class="wr-done-amt">¥{{ doneAmt.toFixed(2) }}</text>
-					<text class="c-text-sub" style="margin-top:12rpx;">微信退款接口返回成功 · 原路退回微信零钱</text>
-					<text class="c-text-sub" style="margin-top:8rpx;">商户退款单号 <text style="font-weight:600;color:#64748b;">{{ refundNo }}</text></text>
+					<text class="c-text-sub" style="margin-top:12rpx;">已原路退回微信零钱 · 1-3 个工作日到账</text>
+					<text class="c-text-sub" style="margin-top:8rpx;" v-if="refundNo">退款单号 <text style="font-weight:600;color:#64748b;">{{ refundNo }}</text></text>
 					<view class="c-btn-primary" style="width:100%;margin-top:28rpx;" @click="finish">完成</view>
 				</view>
 			</template>
@@ -60,6 +52,13 @@
 </template>
 
 <script>
+	import {
+		refundOwnerAccount
+	} from '@/api/user/userApi.js'
+	import {
+		getCommunityId
+	} from '@/api/community/communityApi.js'
+
 	export default {
 		name: 'wallet-refund',
 		props: {
@@ -70,53 +69,71 @@
 			balance: {
 				type: Number,
 				default: 0
+			},
+			acctId: {
+				type: String,
+				default: ''
+			},
+			communityId: {
+				type: String,
+				default: ''
 			}
 		},
 		data() {
 			return {
 				step: 'form',
-				amount: '',
 				refundNo: '',
-				doneAmt: 0
+				doneAmt: 0,
+				submitting: false
 			}
 		},
 		watch: {
 			show(val) {
 				if (val) {
 					this.step = 'form'
-					this.amount = ''
+					this.refundNo = ''
+					this.doneAmt = 0
+					this.submitting = false
 				}
 			}
 		},
 		methods: {
 			close() {
+				if (this.submitting) return
 				this.$emit('update:show', false)
 			},
 			confirm() {
-				const amt = Math.round(parseFloat(this.amount || '0') * 100) / 100
-				if (!amt || amt <= 0) {
+				if (!this.acctId) {
 					uni.showToast({
-						title: '请输入退款金额',
+						title: '账户信息获取失败，请稍后重试',
 						icon: 'none'
 					})
 					return
 				}
-				if (amt > this.balance) {
-					uni.showToast({
-						title: '退款金额不能大于余额',
-						icon: 'none'
-					})
-					return
-				}
-				this.refundNo = 'RF' + String(Date.now()).slice(-12)
+
+				this.submitting = true
 				this.step = 'proc'
-				setTimeout(() => {
-					this.doneAmt = amt
+				refundOwnerAccount({
+					communityId: this.communityId || getCommunityId(),
+					acctId: this.acctId
+				}).then(data => {
+					this.refundNo = (data && data.refundId) || ''
+					const refundFee = data && data.refundFee != null ? parseFloat(data.refundFee) : NaN
+					this.doneAmt = isNaN(refundFee) ? this.balance : refundFee
 					this.step = 'done'
-					this.$emit('success', amt)
-				}, 800)
+					this.$emit('success', data)
+				}).catch(err => {
+					this.submitting = false
+					this.step = 'form'
+					uni.showToast({
+						title: typeof err === 'string' && err ? err : '退款失败，请稍后重试',
+						icon: 'none',
+						duration: 3000
+					})
+				})
 			},
 			finish() {
+				this.submitting = false
 				this.$emit('update:show', false)
 			}
 		}
@@ -158,36 +175,11 @@
 		justify-content: space-between;
 	}
 
-	.wr-input-row {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-top: 20rpx;
-		border: 1rpx solid #e2e8f0;
-		background: #fff;
-		border-radius: 20rpx;
-		padding: 20rpx 24rpx;
-	}
-
 	.wr-foot {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		margin-top: 16rpx;
-	}
-
-	.wr-all {
-		font-size: 20rpx;
-		color: #3b82f6;
-		font-weight: 600;
-	}
-
-	.wr-tip {
-		display: block;
-		margin-top: 20rpx;
-		font-size: 20rpx;
-		color: #94a3b8;
-		line-height: 1.6;
 	}
 
 	.wr-btns {

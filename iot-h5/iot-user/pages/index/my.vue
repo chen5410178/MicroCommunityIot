@@ -6,7 +6,7 @@
 				<view class="my-avatar" :style="{ background: avatarBg }">{{ userInitial }}</view>
 				<view style="flex:1;">
 					<text class="my-name">{{ user.name }}</text>
-					<text class="c-text-sub" style="margin-top:6rpx;display:block;">{{ user.mode }} · {{ user.home }}</text>
+					<text v-if="user.home" class="c-text-sub" style="margin-top:6rpx;display:block;">{{ user.home }}</text>
 				</view>
 				<text class="my-pwd-btn" @click.stop="goChangePwd">
 					<image :src="imgUrl + '/h5/images/common/ic-lock-green.png'" class="my-pwd-btn-ic" mode="aspectFit"></image>
@@ -91,7 +91,8 @@
 		hasLogin
 	} from '@/api/user/sessionApi.js'
 	import {
-		userLogout
+		userLogout,
+		queryOwnerAccount
 	} from '@/api/user/userApi.js'
 	import {
 		removeUserLoginInfo
@@ -115,13 +116,13 @@
 			return {
 				user: {
 					name: '李明',
-					mode: '账号密码登录',
-					home: '阳光花园 3 栋业主'
+					home: ''
 				},
 				logoutShow: false,
 				isLogin: false,
 				toastMsg: '',
 				appVersion: '',
+				balance: 0,
 				certifyState: 'N' // 业主认证状态 N 未认证 / D 认证审核中 / Y 已认证
 			}
 		},
@@ -134,9 +135,6 @@
 			},
 			avatarBg() {
 				return 'linear-gradient(135deg,#34d399,#059669)'
-			},
-			balance() {
-				return chargeStore.balance
 			},
 			vehicles() {
 				return chargeStore.vehicles
@@ -153,28 +151,52 @@
 			const demo = uni.getStorageSync('charge_demo_user')
 			if (userInfo && userInfo.name) {
 				this.user.name = userInfo.name
-				this.user.mode = '账号密码登录'
 			} else if (demo) {
 				this.user.name = demo.name
-				this.user.mode = demo.mode
 			}
 			// 关于页版本号取系统配置缓存（App.vue 启动时拉取）
 			const sysConfig = uni.getStorageSync('java110SystemConfig')
 			this.appVersion = (sysConfig && sysConfig.version) || ''
+			this._loadBalance()
 			this._loadService()
 			this._loadCertifyState()
 		},
 		methods: {
+			// 余额（需登录，未登录展示 0；失败静默展示 0）
+			_loadBalance() {
+				if (!this.isLogin) {
+					this.balance = 0
+					return
+				}
+				queryOwnerAccount({
+					communityId: getCommunityId()
+				}).then(list => {
+					const amt = list && list.length ? parseFloat(list[0].amount || 0) : 0
+					this.balance = isNaN(amt) ? 0 : amt
+					chargeStore.setBalance(this.balance)
+				}).catch(() => {
+					this.balance = 0
+				})
+			},
 			_loadCertifyState() {
 				if (!this.isLogin) {
 					this.certifyState = 'N'
+					this.user.home = ''
 					return
 				}
-				getAppUser().then(() => {
+				getAppUser().then(_data => {
 					this.certifyState = 'Y'
+					this._fillHomeFromBindRoom(_data)
 				}).catch(err => {
 					this.certifyState = (err && err.code == -101) ? 'D' : 'N'
+					this.user.home = ''
 				})
+			},
+			// 用户卡片房屋信息：绑定房屋第一条的「小区名 房号 的业主」（不展示业主姓名）
+			_fillHomeFromBindRoom(_data) {
+				const rec = _data || {}
+				const parts = [rec.communityName, rec.roomName].filter(v => !!v)
+				this.user.home = parts.length ? parts.join(' ') + ' 的业主' : ''
 			},
 			_loadService() {
 				getSystemPrivacy(getCommunityId()).then(_res => {

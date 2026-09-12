@@ -80,4 +80,19 @@ public interface IAccountInnerServiceSMO {
      */
     @RequestMapping(value = "/withholdAccount", method = RequestMethod.POST)
     int withholdAccount(@RequestBody AccountDetailPo accountDetailPo);
+
+    /**
+     * 余额退款扣款（明细类型 3003，与普通支出 2002 区分）
+     *
+     * @param accountDetailPo 必填信息
+     * {
+     *                       acctId:'123123',
+     *                       objId:'111',
+     *                       amount:111,
+     *                       remark:'余额退款'
+     * }
+     * @return
+     */
+    @RequestMapping(value = "/refundAccount", method = RequestMethod.POST)
+    int refundAccount(@RequestBody AccountDetailPo accountDetailPo);
 }
