@@ -16,7 +16,7 @@
 package com.java110.intf.acct;
 
 import com.java110.bean.ResultVo;
-import com.java110.dto.onlinePay.OnlinePayDto;
+import com.java110.dto.onlinePay.OnlinePayRefundDto;
 import com.java110.intf.FeignConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,10 +39,10 @@ public interface IReturnMoneyV1InnerServiceSMO {
     /**
      * 退费
      *
-     * @param onlinePayDto 数据对象分享
-     * @return 小区下的小区楼记录数
+     * @param onlinePayRefundDto 退款单（refundId 作为退款单号、refundFee 为本次退款金额、payId 为原支付记录）
+     * @return 退款结果
      */
     @RequestMapping(value = "/returnMoney", method = RequestMethod.POST)
-    ResultVo returnMoney(@RequestBody OnlinePayDto onlinePayDto);
+    ResultVo returnMoney(@RequestBody OnlinePayRefundDto onlinePayRefundDto);
 
 }

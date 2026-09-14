@@ -15,6 +15,7 @@ import com.java110.dto.chargeMachine.*;
 import com.java110.dto.chargeMonthOrder.ChargeMonthOrderDto;
 import com.java110.dto.chargeRulePrice.ChargeRulePriceDto;
 import com.java110.dto.onlinePay.OnlinePayDto;
+import com.java110.dto.onlinePay.OnlinePayRefundDto;
 import com.java110.dto.parkingCouponCharge.ParkingCouponChargeDto;
 import com.java110.dto.userAttr.UserAttrDto;
 import com.java110.intf.acct.IAccountInnerServiceSMO;
@@ -241,7 +242,7 @@ public class ChargeCoreImpl implements IChargeCore {
         chargeMachineOrderAcctV1InnerServiceSMOImpl.saveChargeMachineOrderAcct(chargeMachineOrderAcctPo);
     }
 
-    private void refundAmount(String acctId, double returnMoney,String communityId) {
+    private void refundAmount(String acctId, double returnMoney, String communityId) {
         // 1. 根据acctId查询Online_pay表中的记录（busiId = acctId）
         OnlinePayDto onlinePayDto = new OnlinePayDto();
         onlinePayDto.setBusiId(acctId);
@@ -253,10 +254,11 @@ public class ChargeCoreImpl implements IChargeCore {
         if (onlinePayDtos == null || onlinePayDtos.isEmpty()) {
             throw new CmdException("未找到对应的支付记录");
         }
+        OnlinePayDto payDto = onlinePayDtos.get(0);
         String refundId = GenerateCodeFactory.getGeneratorId("10");
         OnlinePayRefundPo refundPo = new OnlinePayRefundPo();
         refundPo.setRefundId(refundId);
-        refundPo.setPayId(onlinePayDtos.get(0).getPayId());
+        refundPo.setPayId(payDto.getPayId());
         refundPo.setRefundFee(new BigDecimal(returnMoney));
         refundPo.setBusiId(acctId);
         refundPo.setCommunityId(communityId);
@@ -266,16 +268,25 @@ public class ChargeCoreImpl implements IChargeCore {
 
         onlinePayRefundV1InnerServiceSMOImpl.saveOnlinePayRefund(refundPo);
 
+        // 退款单号与退款金额由本次请求显式传入，失败重试沿用同一单号与同一金额
+        OnlinePayRefundDto refundDto = new OnlinePayRefundDto();
+        refundDto.setRefundId(refundId);
+        refundDto.setPayId(payDto.getPayId());
+        refundDto.setRefundFee(new BigDecimal(returnMoney));
+        refundDto.setBusiId(acctId);
+        refundDto.setCommunityId(communityId);
+
         //退款
-       ResultVo resultVo = returnMoneyV1InnerServiceSMOImpl.returnMoney(onlinePayDtos.get(0));
-        if(resultVo.getCode() != ResultVo.CODE_OK){
-            refundPo = new OnlinePayRefundPo();
-            refundPo.setRefundId(refundId);
-            refundPo.setCommunityId(communityId);
-            refundPo.setState(OnlinePayDto.STATE_FT); // P-处理中
-            refundPo.setMessage(resultVo.getMsg());
-            onlinePayRefundV1InnerServiceSMOImpl.updateOnlinePayRefund(refundPo);
-            throw new CmdException(resultVo.getMsg());
+        ResultVo resultVo;
+        try {
+            resultVo = returnMoneyV1InnerServiceSMOImpl.returnMoney(refundDto);
+        } catch (Exception e) {
+           failRefund(refundId, communityId, e.getLocalizedMessage());
+           throw new CmdException(StringUtil.isEmpty(e.getLocalizedMessage()) ? "退款失败" : e.getLocalizedMessage());
+        }
+        if (resultVo == null || resultVo.getCode() != ResultVo.CODE_OK) {
+            failRefund(refundId, communityId, resultVo == null ? "退款失败" : resultVo.getMsg());
+            throw new CmdException(resultVo == null ? "退款失败" : resultVo.getMsg());
         }
         refundPo = new OnlinePayRefundPo();
         refundPo.setRefundId(refundId);
@@ -285,10 +296,31 @@ public class ChargeCoreImpl implements IChargeCore {
         onlinePayRefundV1InnerServiceSMOImpl.updateOnlinePayRefund(refundPo);
 
         // 更新online_pay表中的剩余金额
+        BigDecimal remainingFee = payDto.getRemainingFee() == null ? BigDecimal.ZERO : payDto.getRemainingFee();
+        BigDecimal newRemainingFee = remainingFee.subtract(new BigDecimal(returnMoney));
+        if (newRemainingFee.compareTo(BigDecimal.ZERO) < 0) {
+            newRemainingFee = BigDecimal.ZERO;
+        }
         OnlinePayPo onlinePayPo = new OnlinePayPo();
-        onlinePayPo.setPayId(onlinePayDtos.get(0).getPayId());
-        onlinePayPo.setRemainingFee(onlinePayDtos.get(0).getRemainingFee().subtract(new BigDecimal(returnMoney)).toString());
+        onlinePayPo.setPayId(payDto.getPayId());
+        onlinePayPo.setRemainingFee(newRemainingFee.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
         onlinePayV1InnerServiceSMOImpl.updateOnlinePay(onlinePayPo);
+    }
+
+    /**
+     * 标记退款单失败，避免异常时残留待退款（W）记录被后续退款复用退款单号
+     *
+     * @param refundId    退款单号
+     * @param communityId 小区ID
+     * @param message     失败原因
+     */
+    private void failRefund(String refundId, String communityId, String message) {
+        OnlinePayRefundPo failRefundPo = new OnlinePayRefundPo();
+        failRefundPo.setRefundId(refundId);
+        failRefundPo.setCommunityId(communityId);
+        failRefundPo.setState(OnlinePayDto.STATE_FT);
+        failRefundPo.setMessage(StringUtil.isEmpty(message) ? "退款失败" : message);
+        onlinePayRefundV1InnerServiceSMOImpl.updateOnlinePayRefund(failRefundPo);
     }
 
     /**

@@ -21,9 +21,12 @@ import com.java110.bean.ResultVo;
 import com.java110.core.factory.ApplicationContextFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.Assert;
+import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.onlinePay.OnlinePayDto;
+import com.java110.dto.onlinePay.OnlinePayRefundDto;
 import com.java110.dto.paymentPool.PaymentPoolDto;
+import com.java110.intf.acct.IOnlinePayV1InnerServiceSMO;
 import com.java110.intf.acct.IPaymentPoolV1InnerServiceSMO;
 import com.java110.intf.acct.IReturnMoneyV1InnerServiceSMO;
 import org.slf4j.Logger;
@@ -49,13 +52,21 @@ public class ReturnMoneyV1InnerServiceSMOImpl implements IReturnMoneyV1InnerServ
     private static final String DEFAULT_PAYMENT_NOTIFY_ADAPT = "wechatPaymentFactory";// 默认微信通用支付
 
     protected static final String DEFAULT_NATIVE_QRCODE_PAYMENT_ADAPT = "wechatNativeQrcodePaymentFactory";// 默认微信通用支付
+
     @Autowired
     private IPaymentPoolV1InnerServiceSMO paymentPoolV1InnerServiceSMOImpl;
 
+    @Autowired
+    private IOnlinePayV1InnerServiceSMO onlinePayV1InnerServiceSMOImpl;
+
 
     @Override
-    public ResultVo returnMoney(@RequestBody OnlinePayDto onlinePayDto) {
+    public ResultVo returnMoney(@RequestBody OnlinePayRefundDto onlinePayRefundDto) {
 
+        Assert.hasLength(onlinePayRefundDto.getRefundId(), "未包含退款单号");
+        Assert.hasLength(onlinePayRefundDto.getPayId(), "未包含支付记录ID");
+
+        OnlinePayDto onlinePayDto = queryOnlinePay(onlinePayRefundDto.getPayId());
 
         PaymentPoolDto paymentPoolDto = new PaymentPoolDto();
         paymentPoolDto.setPpId(onlinePayDto.getPaymentPoolId());
@@ -74,12 +85,31 @@ public class ReturnMoneyV1InnerServiceSMOImpl implements IReturnMoneyV1InnerServ
 
         ResultVo resultVo = null;
         try {
-            resultVo = refundMoneyAdapt.refund(onlinePayDto, paymentPoolDtos.get(0));
+            resultVo = refundMoneyAdapt.refund(onlinePayDto, onlinePayRefundDto, paymentPoolDtos.get(0));
+            logger.info("退款单{} 支付记录{} 退款金额{} 退款结果{}", onlinePayRefundDto.getRefundId(), onlinePayDto.getPayId(),
+                    onlinePayRefundDto.getRefundFee(), resultVo == null ? "" : resultVo.getMsg());
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error("退款单" + onlinePayRefundDto.getRefundId() + " 调用退款接口异常", e);
             resultVo = new ResultVo(ResultVo.CODE_ERROR, e.getLocalizedMessage());
         }
         return resultVo;
+    }
+
+    /**
+     * 查询原支付记录（退款金额取本次退款单，原订单金额取支付记录）
+     *
+     * @param payId 支付记录ID
+     * @return 支付记录
+     */
+    private OnlinePayDto queryOnlinePay(String payId) {
+        OnlinePayDto queryDto = new OnlinePayDto();
+        queryDto.setPayId(payId);
+        List<OnlinePayDto> onlinePayDtos = onlinePayV1InnerServiceSMOImpl.queryOnlinePays(queryDto);
+        if (ListUtil.isNull(onlinePayDtos)) {
+            throw new IllegalArgumentException("支付记录不存在");
+        }
+        return onlinePayDtos.get(0);
     }
 
 }

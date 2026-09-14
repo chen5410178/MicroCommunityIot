@@ -89,13 +89,10 @@
         </if>
     </select>
 
-    <!-- 修改在线支付订单信息 -->
+    <!-- 修改在线支付订单信息（商户订单号 order_id 生成后不可变更，只能按 payId 精确更新） -->
     <update id="updateOnlinePayInfo" parameterType="java.util.Map">
         UPDATE online_pay t
         <trim prefix="SET" suffixOverrides=",">
-            <if test="orderId != null and orderId != ''">
-                t.order_id = #{orderId},
-            </if>
             <if test="transactionId != null and transactionId != ''">
                 t.transaction_id = #{transactionId},
             </if>
@@ -133,6 +130,9 @@
         WHERE 1=1
         <if test="payId != null and payId != ''">
             AND t.pay_id = #{payId}
+        </if>
+        <if test="orderId != null and orderId != ''">
+            AND t.order_id = #{orderId}
         </if>
     </update>
 

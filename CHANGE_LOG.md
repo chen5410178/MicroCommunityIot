@@ -665,3 +665,41 @@ INSERT INTO `c_route` VALUES ('102026090800000001', '992023111817510002', '98202
 INSERT INTO `c_service` VALUES ('982026091200000001', 'account.ownerRefundAccount', 'API', '业主账户余额退款', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2026-09-12 13:30:08', '0');
 INSERT INTO `c_route` VALUES ('102026091200000001', '992023111817510002', '982026091200000001', 'D', '1000', 'S', '2026-09-12 13:30:08', '0');
 ```
+
+### 2026-09-14 修复多次预存后余额微信退款报错（REFUND_FEE_MISMATCH）
+
+> 无表结构变更、无服务注册变更（`account.ownerRefundAccount` 已于 2026-09-12 注册）。
+
+**一、根因修复：支付成功回调按主键精确更新（不再全表刷新 online_pay）**
+
+- 缺陷：`WechatPaymentFactoryAdapt#doUpdateOnlinePay`、`ChangKPaymentFactoryAdapt#doUpdateOnlinePay` 只设置 `orderId`，
+  而 `updateOnlinePayInfo` 的 WHERE 只支持 `pay_id` → 回调实际执行了无过滤条件的全表 UPDATE，把整张表的
+  `order_id`/`transaction_id`/`state` 刷成同一笔订单；多笔预存逐笔退款时每笔取到的 `out_trade_no` 相同，
+  第一笔退成功后第二笔变成"对同一微信订单再退一次" → 微信返回 REFUND_FEE_MISMATCH（订单金额或退款金额与之前请求不一致）。
+- 修复：回调改为"先按 `orderId` + `state=W` 查出唯一 `payId`（0 条记 warn 不更新；多条取最新一条并告警），再按 `payId` 精确更新"；
+  Mapper `updateOnlinePayInfo` 的 SET 移除 `order_id`（商户订单号生成后不可变更）、WHERE 增加 `order_id` 条件；
+  `OnlinePayV1InnerServiceSMOImpl#updateOnlinePay` 增加 `payId` 必填校验，从服务层杜绝无过滤条件更新。
+- 调用方审计：`updateOnlinePay` 共 4 处调用（微信回调、畅快回调、账户余额退款、充电退款）均已按 `payId` 更新。
+
+**二、退款链路加固（退款单号/金额显式化 + 逐笔闭环）**
+
+- `IRefundMoneyAdapt#refund` 增加退款单参数（复用 `OnlinePayRefundDto`）：`refundId` 作为 `out_refund_no`、`refundFee` 作为
+  `refund_fee`，`total_fee` 始终取原订单金额；删除适配器"按 `pay_id`+`state=W` 反查历史退款单"的逻辑（该逻辑会复用历史退款单号与历史金额，
+  且反查为空时直接 NPE）；`WechatRefundMoneyAdapt`、`ChangKRefundAdapt` 增加"退款金额 > 0 且不超过原订单金额"校验，
+  畅快退款金额由原"按 total_fee 全额退"改为本次退款金额。
+- `IReturnMoneyV1InnerServiceSMO#returnMoney` 改为接收 `OnlinePayRefundDto`（Feign 每个方法只支持一个 `@RequestBody`，
+  不能同时传支付记录与退款单），SMO 内按 `payId` 反查原支付记录后透传给退款适配器。
+- `AccountRefundV1InnerServiceSMOImpl#refundAccountAmount` 重构为"逐笔闭环（退一笔、扣一笔）"：账户级分布式锁（防重复提交）→
+  逐笔落 W 退款单 → 调用厂家退款 → 成功后**立即**"扣减账户余额 + 写 `detail_type=3003` 明细（同一调用内生效）→ 扣减该笔 `remaining_fee`
+  → 回写退款单 C"，再处理下一笔；任一笔失败即回写 FT（落厂家原始失败原因）并停止，已成功笔不回退，一笔都未退回时抛出失败原因。
+- `AppRefundOwnerAccountCmd` 去掉 `@Java110Transactional`（外部资金操作不可回退），不传 `amount` 时按"可退金额（Σ`remaining_fee`）"口径全退，
+  金额比较统一 `setScale(2)`；返回结构仍为 `refundId`/`refundFee`，前端无需改动。
+- 记账精度：`AccountInnerServiceSMOImpl` 预存/扣款改为 BigDecimal 运算，消除 `200.00000000000003` 之类浮点尾差。
+- `ChargeCoreImpl#refundAmount`（充电退款）适配 `returnMoney` 新签名，并修复退款异常时残留 W 退款记录的问题（异常时回写 FT）。
+
+**三、只读核查（不做数据变更）**
+
+历史已被污染的 `online_pay`（同一账号多行 `order_id` 相同、`transaction_id` 重复、`state` 被刷成 C、`remaining_fee` 异常）本期不修复：
+代码侧表现为"报错但不产生错误扣款/重复退款"，此类账户走人工退款或另行安排数据修复；上线前后各执行一次只读排查 SQL 记录污染范围
+（同一账号多行 `order_id`、`transaction_id` 重复、`remaining_fee > total_fee`、`online_pay_refund` 残留 W、`refund_id` 复用、`c_order` 回退痕迹）。
+

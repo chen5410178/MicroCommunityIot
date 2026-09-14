@@ -4,14 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.java110.acct.payment.IRefundMoneyAdapt;
 import com.java110.acct.payment.adapt.changk.ChangKSignature;
 import com.java110.bean.ResultVo;
-import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.onlinePay.OnlinePayDto;
 import com.java110.dto.onlinePay.OnlinePayRefundDto;
 import com.java110.dto.paymentPool.PaymentPoolDto;
 import com.java110.dto.paymentPoolValue.PaymentPoolValueDto;
-import com.java110.intf.acct.IOnlinePayRefundV1InnerServiceSMO;
 import com.java110.intf.acct.IPaymentPoolValueV1InnerServiceSMO;
 
 import org.slf4j.Logger;
@@ -23,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -37,14 +37,23 @@ public class ChangKRefundAdapt implements IRefundMoneyAdapt {
     private IPaymentPoolValueV1InnerServiceSMO paymentPoolValueV1InnerServiceSMOImpl;
 
     @Autowired
-    private IOnlinePayRefundV1InnerServiceSMO onlinePayRefundV1InnerServiceSMOImpl;
-
-    @Autowired
     private RestTemplate outRestTemplate;
 
     @Override
-    public ResultVo refund(OnlinePayDto onlinePayDto, PaymentPoolDto paymentPoolDto) throws Exception {
-        logger.info("【畅快聚合支付-退款】 订单编号=" + onlinePayDto.getOrderId() + ", 退款金额=" + onlinePayDto.getTotalFee().doubleValue());
+    public ResultVo refund(OnlinePayDto onlinePayDto, OnlinePayRefundDto onlinePayRefundDto, PaymentPoolDto paymentPoolDto) throws Exception {
+
+        if (onlinePayRefundDto == null || StringUtil.isEmpty(onlinePayRefundDto.getRefundId())) {
+            throw new IllegalArgumentException("退款单号不能为空");
+        }
+        if (onlinePayRefundDto.getRefundFee() == null || onlinePayRefundDto.getRefundFee().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("退款金额必须大于0");
+        }
+        if (onlinePayDto.getTotalFee() == null
+                || onlinePayRefundDto.getRefundFee().compareTo(onlinePayDto.getTotalFee()) > 0) {
+            throw new IllegalArgumentException("退款金额不能大于原订单金额");
+        }
+
+        logger.info("【畅快聚合支付-退款】 订单编号=" + onlinePayDto.getOrderId() + ", 退款金额=" + onlinePayRefundDto.getRefundFee().doubleValue());
 
         PaymentPoolValueDto paymentPoolValueDto = new PaymentPoolValueDto();
         paymentPoolValueDto.setPpId(paymentPoolDto.getPpId());
@@ -58,15 +67,8 @@ public class ChangKRefundAdapt implements IRefundMoneyAdapt {
         String terminalId = PaymentPoolValueDto.getValue(paymentPoolValueDtos, "CHANGK_TERMINAL_ID");
         String accessToken = PaymentPoolValueDto.getValue(paymentPoolValueDtos, "CHANGK_ACCESS_TOKEN");
 
-        // 生成或获取退款流水号
-        String tranNo = GenerateCodeFactory.getGeneratorId("11");
-        OnlinePayRefundDto onlinePayRefundDto = new OnlinePayRefundDto();
-        onlinePayRefundDto.setPayId(onlinePayDto.getPayId());
-        onlinePayRefundDto.setState(OnlinePayDto.STATE_WT);
-        List<OnlinePayRefundDto> onlinePayRefundDtos = onlinePayRefundV1InnerServiceSMOImpl.queryOnlinePayRefunds(onlinePayRefundDto);
-        if (!ListUtil.isNull(onlinePayRefundDtos)) {
-            tranNo = onlinePayRefundDtos.get(0).getRefundId();
-        }
+        // 退款流水号取本次退款单号，失败重试沿用同一单号与同一金额
+        String tranNo = onlinePayRefundDto.getRefundId();
 
         String channelOutTradeNo = onlinePayDto.getTransactionId(); // 畅快侧订单号
 
@@ -79,7 +81,7 @@ public class ChangKRefundAdapt implements IRefundMoneyAdapt {
         params.put("terminal_id", terminalId);
         params.put("terminal_trace", tranNo);
         params.put("terminal_time", terminalTime);          // 格式 yyyyMMddHHmmss
-        params.put("refund_fee", String.valueOf((int) (onlinePayDto.getTotalFee().doubleValue() * 100)));
+        params.put("refund_fee", String.valueOf((int) (onlinePayRefundDto.getRefundFee().doubleValue() * 100)));
         params.put("out_trade_no", channelOutTradeNo);
 //        params.put("refund_reason", "用户主动退款");
 

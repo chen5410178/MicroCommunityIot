@@ -15,6 +15,7 @@ import com.java110.core.utils.StringUtil;
 import com.java110.dto.app.AppDto;
 import com.java110.dto.payment.NotifyPaymentOrderDto;
 import com.java110.dto.payment.PaymentOrderDto;
+import com.java110.dto.onlinePay.OnlinePayDto;
 import com.java110.dto.paymentPoolValue.PaymentPoolValueDto;
 import com.java110.dto.smallWeChat.SmallWeChatDto;
 import com.java110.intf.acct.IOnlinePayV1InnerServiceSMO;
@@ -313,7 +314,7 @@ public class ChangKPaymentFactoryAdapt implements IPaymentFactoryAdapt {
 
         if (ChangKConfig.RESULT_CODE_SUCCESS.equals(returnCode)
                 && ChangKConfig.RESULT_CODE_SUCCESS.equals(resultCode)) {
-            doUpdateOnlinePay(paymentOrderDto.getOrderId(), "C", "支付成功");
+            doUpdateOnlinePay(paymentOrderDto.getOrderId(), paymentOrderDto.getTransactionId(), "C", "支付成功");
         }
 
         JSONObject resJson = new JSONObject();
@@ -324,12 +325,41 @@ public class ChangKPaymentFactoryAdapt implements IPaymentFactoryAdapt {
         return paymentOrderDto;
     }
 
-    private void doUpdateOnlinePay(String orderId, String state, String message) {
+    private void doUpdateOnlinePay(String orderId, String transactionId, String state, String message) {
+        // 先按商户订单号定位待支付记录，再按 payId 精确更新，避免无过滤条件更新整张 online_pay 表
+        List<OnlinePayDto> onlinePayDtos = queryWaitOnlinePays(orderId);
+        if (ListUtil.isNull(onlinePayDtos)) {
+            logger.warn("【畅快支付回调】未查询到待支付记录，orderId={}，可能为重复回调或记录已更新，不做更新", orderId);
+            return;
+        }
+        if (onlinePayDtos.size() > 1) {
+            logger.warn("【畅快支付回调】按订单号查询到多条待支付记录，orderId={}，条数={}，取最新一条更新，请人工核查数据",
+                    orderId, onlinePayDtos.size());
+        }
+
         OnlinePayPo onlinePayPo = new OnlinePayPo();
+        onlinePayPo.setPayId(onlinePayDtos.get(0).getPayId());
         onlinePayPo.setMessage(message.length() > 1000 ? message.substring(0, 1000) : message);
-        onlinePayPo.setOrderId(orderId);
         onlinePayPo.setState(state);
+        if (!StringUtil.isEmpty(transactionId)) {
+            onlinePayPo.setTransactionId(transactionId);
+        }
         onlinePayV1InnerServiceSMOImpl.updateOnlinePay(onlinePayPo);
+    }
+
+    /**
+     * 按商户订单号查询待支付（state=W）的在线支付记录，按创建时间倒序，最新的一条在首位
+     *
+     * @param orderId 商户订单号
+     * @return 待支付记录
+     */
+    private List<OnlinePayDto> queryWaitOnlinePays(String orderId) {
+        OnlinePayDto onlinePayDto = new OnlinePayDto();
+        onlinePayDto.setOrderId(orderId);
+        onlinePayDto.setState(OnlinePayDto.STATE_WT);
+        onlinePayDto.setPage(1);
+        onlinePayDto.setRow(10);
+        return onlinePayV1InnerServiceSMOImpl.queryOnlinePays(onlinePayDto);
     }
 
     private void doSaveOnlinePay(SmallWeChatDto smallWeChatDto, String openId,String busiId,  String orderId, String feeName,

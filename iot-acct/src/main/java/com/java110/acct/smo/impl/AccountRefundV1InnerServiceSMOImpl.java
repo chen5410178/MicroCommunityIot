@@ -3,11 +3,13 @@ package com.java110.acct.smo.impl;
 import com.java110.bean.ResultVo;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
+import com.java110.core.utils.DistributedLock;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.StringUtil;
 import com.java110.dto.account.AccountDto;
 import com.java110.dto.account.AccountRefundDto;
 import com.java110.dto.onlinePay.OnlinePayDto;
+import com.java110.dto.onlinePay.OnlinePayRefundDto;
 import com.java110.intf.acct.IAccountInnerServiceSMO;
 import com.java110.intf.acct.IAccountRefundV1InnerServiceSMO;
 import com.java110.intf.acct.IOnlinePayRefundV1InnerServiceSMO;
@@ -25,12 +27,18 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * 业主账户余额退款内部服务实现：按 online_pay 逐笔原路退回，并扣减余额、写退款明细
+ * 业主账户余额退款内部服务实现：按 online_pay 逐笔原路退回，并逐笔扣减余额、写退款明细
+ * <p>
+ * 逐笔闭环（退一笔、扣一笔）：每笔原路退回成功后立即扣减该笔剩余可退金额、扣减账户余额并写一条
+ * detail_type=3003 明细，处理完一笔再进入下一笔；任一笔失败即停止后续笔，已成功笔不回退。
  */
 @RestController
 public class AccountRefundV1InnerServiceSMOImpl implements IAccountRefundV1InnerServiceSMO {
 
     private static final Logger logger = LoggerFactory.getLogger(AccountRefundV1InnerServiceSMOImpl.class);
+
+    // 单次退款可能包含多笔退款请求，锁超时时间需覆盖整个退款过程
+    private static final int REFUND_LOCK_EXPIRE_TIME = 300000;
 
     @Autowired
     private IAccountInnerServiceSMO accountInnerServiceSMOImpl;
@@ -48,10 +56,45 @@ public class AccountRefundV1InnerServiceSMOImpl implements IAccountRefundV1Inner
     public AccountRefundDto refundAccountAmount(@RequestBody AccountRefundDto accountRefundDto) {
 
         String acctId = accountRefundDto.getAcctId();
-        String communityId = accountRefundDto.getCommunityId();
-        BigDecimal refundAmount = accountRefundDto.getAmount();
+        if (StringUtil.isEmpty(acctId)) {
+            throw new IllegalArgumentException("未包含账户ID");
+        }
+        if (accountRefundDto.getAmount() == null || accountRefundDto.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("退款金额必须大于0");
+        }
 
-        // 1. 查询可退支付记录（state=C 且 remaining_fee > 0），按创建时间倒序逐笔退款
+        AccountRefundDto resultDto = new AccountRefundDto();
+        // 同一账户退款串行化，避免重复提交造成重复退款
+        String requestId = DistributedLock.getLockUUID();
+        String key = this.getClass().getSimpleName() + "RefundAmount" + acctId;
+        String failMsg;
+        try {
+            DistributedLock.waitGetDistributedLock(key, requestId, REFUND_LOCK_EXPIRE_TIME);
+            failMsg = doRefundAccountAmount(accountRefundDto, resultDto);
+        } finally {
+            DistributedLock.releaseDistributedLock(key, requestId);
+        }
+
+        if (resultDto.getRefundFee() == null || resultDto.getRefundFee().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException(StringUtil.isEmpty(failMsg) ? "退款失败，请稍后重试" : failMsg);
+        }
+        return resultDto;
+    }
+
+    /**
+     * 逐笔退款：每笔退款成功后立即扣减该笔剩余可退金额、扣减账户余额并写退款明细
+     *
+     * @param accountRefundDto 退款请求
+     * @param resultDto        退款结果
+     * @return 失败原因（全部退款成功时为空）
+     */
+    private String doRefundAccountAmount(AccountRefundDto accountRefundDto, AccountRefundDto resultDto) {
+
+        String acctId = accountRefundDto.getAcctId();
+        String communityId = accountRefundDto.getCommunityId();
+        BigDecimal refundAmount = accountRefundDto.getAmount().setScale(2, BigDecimal.ROUND_HALF_UP);
+
+        // 1. 查询可退支付记录（state=C 且 remaining_fee > 0），校验可退金额
         List<OnlinePayDto> onlinePayDtos = queryRefundableOnlinePays(acctId);
         if (ListUtil.isNull(onlinePayDtos)) {
             throw new IllegalArgumentException("当前无可退余额");
@@ -65,9 +108,12 @@ public class AccountRefundV1InnerServiceSMOImpl implements IAccountRefundV1Inner
             throw new IllegalArgumentException("超出可退金额，最多可退" + refundableFee.setScale(2, BigDecimal.ROUND_HALF_UP) + "元");
         }
 
-        // 2. 按支付单逐笔原路退回（先落退款单 W → 调厂家退款 → 回写退款单/剩余可退金额）
-        AccountRefundDto resultDto = new AccountRefundDto();
+        AccountDto accountDto = queryAccount(acctId, communityId);
+
+        // 2. 逐笔原路退回，处理完一笔再进入下一笔
         BigDecimal leftFee = refundAmount;
+        BigDecimal refundFee = BigDecimal.ZERO;
+        String failMsg = "";
         for (OnlinePayDto onlinePayDto : onlinePayDtos) {
             if (leftFee.compareTo(BigDecimal.ZERO) <= 0) {
                 break;
@@ -77,58 +123,110 @@ public class AccountRefundV1InnerServiceSMOImpl implements IAccountRefundV1Inner
                 continue;
             }
             BigDecimal thisRefundFee = leftFee.compareTo(remainingFee) > 0 ? remainingFee : leftFee;
-            String refundId = refundOnlinePay(onlinePayDto, thisRefundFee, communityId, accountRefundDto.getRefundUserId());
+
+            String refundId = GenerateCodeFactory.getGeneratorId("10");
+            // ① 落退款单 W
+            saveRefund(onlinePayDto, refundId, thisRefundFee, communityId, accountRefundDto.getRefundUserId());
+
+            // ② 调用厂家退款（out_trade_no=该笔原订单号，out_refund_no=本次退款单号，refund_fee=本次退款金额）
+            ResultVo resultVo = refundMoney(onlinePayDto, refundId, thisRefundFee, communityId);
+
+            // ③ 失败：回写 FT 并记录失败原因，停止后续笔（前面已成功的笔不回退）
+            if (resultVo == null || resultVo.getCode() != ResultVo.CODE_OK) {
+                failMsg = resultVo == null ? "退款失败" : resultVo.getMsg();
+                updateRefundState(refundId, OnlinePayDto.STATE_FT, failMsg);
+                break;
+            }
+
+            // ④ 成功：扣减账户余额并写 3003 明细 → 扣减该笔剩余可退金额 → 回写退款单 C
+            commitRefundPay(onlinePayDto, accountDto, refundId, thisRefundFee, accountRefundDto.getRemark());
+            refundFee = refundFee.add(thisRefundFee);
             leftFee = leftFee.subtract(thisRefundFee);
-            resultDto.setRefundId(refundId);
+            if (StringUtil.isEmpty(resultDto.getRefundId())) {
+                resultDto.setRefundId(refundId);
+            }
         }
 
-        // 3. 扣减账户余额并写退款明细（detail_type=3003）
-        AccountDto accountDto = queryAccount(acctId, communityId);
+        resultDto.setAcctId(acctId);
+        resultDto.setCommunityId(communityId);
+        resultDto.setAmount(refundAmount);
+        resultDto.setRefundFee(refundFee);
+        return failMsg;
+    }
 
+    /**
+     * 调用厂家退款接口
+     *
+     * @param onlinePayDto 支付记录
+     * @param refundId     本次退款单号
+     * @param refundFee    本次退款金额
+     * @param communityId  小区ID
+     * @return 退款结果
+     */
+    private ResultVo refundMoney(OnlinePayDto onlinePayDto, String refundId, BigDecimal refundFee, String communityId) {
+        OnlinePayRefundDto refundDto = new OnlinePayRefundDto();
+        refundDto.setRefundId(refundId);
+        refundDto.setPayId(onlinePayDto.getPayId());
+        refundDto.setRefundFee(refundFee);
+        refundDto.setBusiId(onlinePayDto.getBusiId());
+        refundDto.setCommunityId(communityId);
+        refundDto.setState(OnlinePayDto.STATE_WT);
+        refundDto.setMessage("退款申请中");
+        try {
+            return returnMoneyV1InnerServiceSMOImpl.returnMoney(refundDto);
+        } catch (Exception e) {
+            logger.error("退款单" + refundId + " 调用退款接口异常", e);
+            return new ResultVo(ResultVo.CODE_ERROR,
+                    StringUtil.isEmpty(e.getLocalizedMessage()) ? "退款失败" : e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * 单笔退款成功后的账务处理（逐笔闭环）
+     *
+     * @param onlinePayDto 支付记录
+     * @param accountDto   账户信息
+     * @param refundId     退款单号（同时作为账户明细的订单号）
+     * @param refundFee    本次退款金额
+     * @param remark       备注
+     */
+    private void commitRefundPay(OnlinePayDto onlinePayDto, AccountDto accountDto, String refundId,
+                                 BigDecimal refundFee, String remark) {
+        // 1. 扣减账户余额并写 detail_type=3003 明细（同一次调用内同时生效）
         AccountDetailPo accountDetailPo = new AccountDetailPo();
         accountDetailPo.setAcctId(accountDto.getAcctId());
         accountDetailPo.setObjId(accountDto.getObjId());
         accountDetailPo.setObjType(accountDto.getObjType());
-        accountDetailPo.setAmount(refundAmount.toString());
-        accountDetailPo.setOrderId(resultDto.getRefundId());
-        accountDetailPo.setRemark(StringUtil.isEmpty(accountRefundDto.getRemark())
-                ? AccountRefundDto.REFUND_REMARK : accountRefundDto.getRemark());
+        accountDetailPo.setAmount(refundFee.toString());
+        accountDetailPo.setOrderId(refundId);
+        accountDetailPo.setRemark(StringUtil.isEmpty(remark) ? AccountRefundDto.REFUND_REMARK : remark);
         accountInnerServiceSMOImpl.refundAccount(accountDetailPo);
 
-        resultDto.setAcctId(acctId);
-        resultDto.setCommunityId(communityId);
-        resultDto.setRefundFee(refundAmount);
-        resultDto.setAmount(refundAmount);
-        return resultDto;
+        // 2. 扣减该笔剩余可退金额，作为同一笔重复退款的资金闸门
+        BigDecimal newRemainingFee = getRemainingFee(onlinePayDto).subtract(refundFee);
+        if (newRemainingFee.compareTo(BigDecimal.ZERO) < 0) {
+            newRemainingFee = BigDecimal.ZERO;
+        }
+        OnlinePayPo onlinePayPo = new OnlinePayPo();
+        onlinePayPo.setPayId(onlinePayDto.getPayId());
+        onlinePayPo.setRemainingFee(newRemainingFee.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+        onlinePayV1InnerServiceSMOImpl.updateOnlinePay(onlinePayPo);
+
+        // 3. 回写退款单成功
+        updateRefundState(refundId, OnlinePayDto.STATE_C, "退款完成");
     }
 
     /**
-     * 查询可退支付记录
-     *
-     * @param acctId 账户ID
-     * @return 可退支付记录（state=C 且 remaining_fee > 0）
-     */
-    public List<OnlinePayDto> queryRefundableOnlinePays(String acctId) {
-        OnlinePayDto onlinePayDto = new OnlinePayDto();
-        onlinePayDto.setBusiId(acctId);
-        onlinePayDto.setState(OnlinePayDto.STATE_C);
-        onlinePayDto.setRemainingFeeMoreThanZero("1");
-        onlinePayDto.setPage(1);
-        onlinePayDto.setRow(100);
-        return onlinePayV1InnerServiceSMOImpl.queryOnlinePays(onlinePayDto);
-    }
-
-    /**
-     * 单笔支付记录原路退回（先落退款单 W，再调用退款，最后回写退款单状态与剩余可退金额）
+     * 落地退款单（待退款）
      *
      * @param onlinePayDto 支付记录
-     * @param refundFee    本次退款金额
+     * @param refundId     退款单号
+     * @param refundFee    退款金额
      * @param communityId  小区ID
      * @param refundUserId 退款操作人
-     * @return 退款单ID
      */
-    private String refundOnlinePay(OnlinePayDto onlinePayDto, BigDecimal refundFee, String communityId, String refundUserId) {
-        String refundId = GenerateCodeFactory.getGeneratorId("10");
+    private void saveRefund(OnlinePayDto onlinePayDto, String refundId, BigDecimal refundFee, String communityId,
+                            String refundUserId) {
         OnlinePayRefundPo refundPo = new OnlinePayRefundPo();
         refundPo.setRefundId(refundId);
         refundPo.setPayId(onlinePayDto.getPayId());
@@ -139,39 +237,40 @@ public class AccountRefundV1InnerServiceSMOImpl implements IAccountRefundV1Inner
         refundPo.setState(OnlinePayDto.STATE_WT);
         refundPo.setMessage("退款申请中");
         onlinePayRefundV1InnerServiceSMOImpl.saveOnlinePayRefund(refundPo);
+    }
 
+    /**
+     * 回写退款单状态
+     *
+     * @param refundId 退款单号
+     * @param state    状态
+     * @param message  说明（厂家原始错误信息需落库，便于对账排查）
+     */
+    private void updateRefundState(String refundId, String state, String message) {
         OnlinePayRefundPo updateRefundPo = new OnlinePayRefundPo();
         updateRefundPo.setRefundId(refundId);
         updateRefundPo.setStatusCd("0");
-
-        ResultVo resultVo;
-        try {
-            resultVo = returnMoneyV1InnerServiceSMOImpl.returnMoney(onlinePayDto);
-        } catch (Exception e) {
-            logger.error("余额退款调用退款接口异常", e);
-            updateRefundPo.setState(OnlinePayDto.STATE_FT);
-            updateRefundPo.setMessage(e.getLocalizedMessage());
-            onlinePayRefundV1InnerServiceSMOImpl.updateOnlinePayRefund(updateRefundPo);
-            throw new IllegalArgumentException(StringUtil.isEmpty(e.getLocalizedMessage()) ? "退款失败" : e.getLocalizedMessage());
+        updateRefundPo.setState(state);
+        if (!StringUtil.isEmpty(message)) {
+            updateRefundPo.setMessage(message.length() > 1000 ? message.substring(0, 1000) : message);
         }
-
-        if (resultVo == null || resultVo.getCode() != ResultVo.CODE_OK) {
-            updateRefundPo.setState(OnlinePayDto.STATE_FT);
-            updateRefundPo.setMessage(resultVo == null ? "退款失败" : resultVo.getMsg());
-            onlinePayRefundV1InnerServiceSMOImpl.updateOnlinePayRefund(updateRefundPo);
-            throw new IllegalArgumentException(resultVo == null ? "退款失败" : resultVo.getMsg());
-        }
-
-        updateRefundPo.setState(OnlinePayDto.STATE_C);
-        updateRefundPo.setMessage(resultVo.getMsg());
         onlinePayRefundV1InnerServiceSMOImpl.updateOnlinePayRefund(updateRefundPo);
+    }
 
-        // 扣减剩余可退金额，避免二次退款
-        OnlinePayPo onlinePayPo = new OnlinePayPo();
-        onlinePayPo.setPayId(onlinePayDto.getPayId());
-        onlinePayPo.setRemainingFee(getRemainingFee(onlinePayDto).subtract(refundFee).toString());
-        onlinePayV1InnerServiceSMOImpl.updateOnlinePay(onlinePayPo);
-        return refundId;
+    /**
+     * 查询可退支付记录（state=C 且 remaining_fee > 0）
+     *
+     * @param acctId 账户ID
+     * @return 可退支付记录
+     */
+    private List<OnlinePayDto> queryRefundableOnlinePays(String acctId) {
+        OnlinePayDto onlinePayDto = new OnlinePayDto();
+        onlinePayDto.setBusiId(acctId);
+        onlinePayDto.setState(OnlinePayDto.STATE_C);
+        onlinePayDto.setRemainingFeeMoreThanZero("1");
+        onlinePayDto.setPage(1);
+        onlinePayDto.setRow(100);
+        return onlinePayV1InnerServiceSMOImpl.queryOnlinePays(onlinePayDto);
     }
 
     /**

@@ -5,16 +5,14 @@ import com.java110.bean.ResultVo;
 import com.java110.core.cache.MappingCache;
 import com.java110.core.client.FtpUploadTemplate;
 import com.java110.core.client.S3UploadTemplate;
-import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.factory.LoggerFactory;
 import com.java110.core.utils.ListUtil;
 import com.java110.core.utils.PayUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.onlinePay.OnlinePayDto;
 import com.java110.dto.onlinePay.OnlinePayRefundDto;
 import com.java110.dto.paymentPool.PaymentPoolDto;
 import com.java110.dto.paymentPoolValue.PaymentPoolValueDto;
-import com.java110.intf.acct.IOnlinePayRefundV1InnerServiceSMO;
-import com.java110.intf.acct.IOnlinePayV1InnerServiceSMO;
 import com.java110.intf.acct.IPaymentPoolValueV1InnerServiceSMO;
 import com.java110.intf.system.ISmallWechatV1InnerServiceSMO;
 import org.apache.http.HttpEntity;
@@ -33,6 +31,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.SSLContext;
 import java.io.ByteArrayInputStream;
+import java.math.BigDecimal;
 import java.security.KeyStore;
 import java.util.List;
 import java.util.Map;
@@ -59,11 +58,6 @@ public class WechatRefundMoneyAdapt implements IRefundMoneyAdapt {
     @Autowired
     private IPaymentPoolValueV1InnerServiceSMO paymentPoolValueV1InnerServiceSMOImpl;
 
-
-
-    @Autowired
-    private IOnlinePayV1InnerServiceSMO onlinePayV1InnerServiceSMOImpl;
-
     @Autowired
     private ISmallWechatV1InnerServiceSMO smallWechatV1InnerServiceSMOImpl;
 
@@ -80,12 +74,19 @@ public class WechatRefundMoneyAdapt implements IRefundMoneyAdapt {
     @Autowired
     private S3UploadTemplate s3UploadTemplate;
 
-    @Autowired
-    private IOnlinePayRefundV1InnerServiceSMO onlinePayRefundV1InnerServiceSMOImpl;
-
     @Override
-    public ResultVo refund(OnlinePayDto onlinePayDto, PaymentPoolDto paymentPoolDto) throws Exception {
+    public ResultVo refund(OnlinePayDto onlinePayDto, OnlinePayRefundDto onlinePayRefundDto, PaymentPoolDto paymentPoolDto) throws Exception {
 
+        if (onlinePayRefundDto == null || StringUtil.isEmpty(onlinePayRefundDto.getRefundId())) {
+            throw new IllegalArgumentException("退款单号不能为空");
+        }
+        if (onlinePayRefundDto.getRefundFee() == null || onlinePayRefundDto.getRefundFee().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("退款金额必须大于0");
+        }
+        if (onlinePayDto.getTotalFee() == null
+                || onlinePayRefundDto.getRefundFee().compareTo(onlinePayDto.getTotalFee()) > 0) {
+            throw new IllegalArgumentException("退款金额不能大于原订单金额");
+        }
 
         PaymentPoolValueDto paymentPoolValueDto = new PaymentPoolValueDto();
         paymentPoolValueDto.setPpId(paymentPoolDto.getPpId());
@@ -111,24 +112,14 @@ public class WechatRefundMoneyAdapt implements IRefundMoneyAdapt {
             parameters.put("sub_mch_id", mchId);//商户号
         }
 
-        // todo 查询退费明细
-        OnlinePayRefundDto onlinePayRefundDto = new OnlinePayRefundDto();
-        onlinePayRefundDto.setPayId(onlinePayDto.getPayId());
-        onlinePayRefundDto.setState(OnlinePayDto.STATE_WT);
-        List<OnlinePayRefundDto> onlinePayRefundDtos = onlinePayRefundV1InnerServiceSMOImpl.queryOnlinePayRefunds(onlinePayRefundDto);
-        String tranNo = GenerateCodeFactory.getGeneratorId("11");
-        if (!ListUtil.isNull(onlinePayRefundDtos)) {
-            tranNo = onlinePayRefundDtos.get(0).getRefundId();
-        }
-
-
         parameters.put("nonce_str", PayUtil.makeUUID(32));//随机数
         parameters.put("out_trade_no", onlinePayDto.getOrderId());//商户订单号
-        parameters.put("out_refund_no", tranNo);//我们自己设定的退款申请号，约束为UK
+        parameters.put("out_refund_no", onlinePayRefundDto.getRefundId());//我们自己设定的退款申请号，约束为UK
         parameters.put("total_fee", PayUtil.moneyToIntegerStr(onlinePayDto.getTotalFee().doubleValue()));//订单金额 单位为分！！！这里稍微注意一下
-        parameters.put("refund_fee", PayUtil.moneyToIntegerStr(onlinePayRefundDtos.get(0).getRefundFee().doubleValue()));//退款金额 单位为分！！！
+        parameters.put("refund_fee", PayUtil.moneyToIntegerStr(onlinePayRefundDto.getRefundFee().doubleValue()));//退款金额 单位为分！！！
         parameters.put("sign", PayUtil.createSign(parameters, key));
         String xmlData = PayUtil.mapToXml(parameters);
+        logger.info("微信退款请求：{}", xmlData);
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         ByteArrayInputStream inputStream = new ByteArrayInputStream(getPkcs12(certData));
         try {
@@ -164,6 +155,7 @@ public class WechatRefundMoneyAdapt implements IRefundMoneyAdapt {
             httpclient.close();
         }
         Map<String, String> resMap = PayUtil.xmlStrToMap(jsonStr);
+        logger.info("微信退款返回：{}", jsonStr);
         if ("SUCCESS".equals(resMap.get("return_code")) && "SUCCESS".equals(resMap.get("result_code"))) {
             return new ResultVo(ResultVo.CODE_OK, "退款完成");
         } else {

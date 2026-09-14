@@ -17,6 +17,7 @@ package com.java110.acct.smo.impl;
 
 import com.java110.bean.dto.PageDto;
 import com.java110.core.utils.BeanConvertUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.dto.onlinePay.OnlinePayDto;
 import com.java110.intf.acct.IOnlinePayV1InnerServiceSMO;
 import com.java110.po.onlinePay.OnlinePayPo;
@@ -50,6 +51,9 @@ public class OnlinePayV1InnerServiceSMOImpl  implements IOnlinePayV1InnerService
 
     @Override
     public int updateOnlinePay(@RequestBody OnlinePayPo onlinePayPo) {
+        if (StringUtil.isEmpty(onlinePayPo.getPayId())) {
+            throw new IllegalArgumentException("修改在线支付记录必须指定payId");
+        }
         Map info = BeanConvertUtil.beanCovertMap(onlinePayPo);
         return onlinePayV1ServiceDaoImpl.updateOnlinePayInfo(info);
     }

@@ -40,7 +40,7 @@ import java.util.TreeMap;
 @Service("wechatPaymentFactory")
 public class WechatPaymentFactoryAdapt implements IPaymentFactoryAdapt {
 
-    //private static final Logger logger = LoggerFactory.getLogger(WechatPaymentFactoryAdapt.class);
+    private static final Logger logger = LoggerFactory.getLogger(WechatPaymentFactoryAdapt.class);
 
 
     //微信支付
@@ -310,12 +310,38 @@ public class WechatPaymentFactoryAdapt implements IPaymentFactoryAdapt {
 
 
     private void doUpdateOnlinePay(String orderId, String transactionId, String state, String message) {
+        // 先按商户订单号定位待支付记录，再按 payId 精确更新，避免无过滤条件更新整张 online_pay 表
+        List<OnlinePayDto> onlinePayDtos = queryWaitOnlinePays(orderId);
+        if (ListUtil.isNull(onlinePayDtos)) {
+            logger.warn("支付回调未查询到待支付记录，orderId={}，可能为重复回调或记录已更新，不做更新", orderId);
+            return;
+        }
+        if (onlinePayDtos.size() > 1) {
+            logger.warn("支付回调按订单号查询到多条待支付记录，orderId={}，条数={}，取最新一条更新，请人工核查数据",
+                    orderId, onlinePayDtos.size());
+        }
+
         OnlinePayPo onlinePayPo = new OnlinePayPo();
-        onlinePayPo.setOrderId(orderId);
+        onlinePayPo.setPayId(onlinePayDtos.get(0).getPayId());
         onlinePayPo.setState(state);
         onlinePayPo.setTransactionId(transactionId);
         onlinePayPo.setMessage(message.length() > 1000 ? message.substring(0, 1000) : message);
         onlinePayV1InnerServiceSMOImpl.updateOnlinePay(onlinePayPo);
+    }
+
+    /**
+     * 按商户订单号查询待支付（state=W）的在线支付记录，按创建时间倒序，最新的一条在首位
+     *
+     * @param orderId 商户订单号
+     * @return 待支付记录
+     */
+    private List<OnlinePayDto> queryWaitOnlinePays(String orderId) {
+        OnlinePayDto onlinePayDto = new OnlinePayDto();
+        onlinePayDto.setOrderId(orderId);
+        onlinePayDto.setState(OnlinePayDto.STATE_WT);
+        onlinePayDto.setPage(1);
+        onlinePayDto.setRow(10);
+        return onlinePayV1InnerServiceSMOImpl.queryOnlinePays(onlinePayDto);
     }
 
     private void doSaveOnlinePay(String openId, String busiId, String orderId, String feeName,

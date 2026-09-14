@@ -144,13 +144,11 @@ public class AccountInnerServiceSMOImpl implements IAccountInnerServiceSMO {
                 throw new IllegalArgumentException("账户不存在");
             }
             //在账户增加
-            double amount = Double.parseDouble(accounts.get(0).getAmount());
-            BigDecimal amountBig = new BigDecimal(amount);
-            amount = amountBig.add(new BigDecimal(Double.parseDouble(accountDetailPo.getAmount()))).doubleValue();
+            BigDecimal amount = toDecimalAmount(accounts.get(0).getAmount()).add(toDecimalAmount(accountDetailPo.getAmount()));
             AccountPo accountPo = new AccountPo();
             accountPo.setObjId(accountDetailPo.getObjId());
             accountPo.setAcctId(accountDetailPo.getAcctId());
-            accountPo.setAmount(amount + "");
+            accountPo.setAmount(amount.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
             accountPo.setSwipeCardNo(accountDetailPo.getSwipeCardNo());
             flag = accountServiceDaoImpl.updateAccount(BeanConvertUtil.beanCovertMap(accountPo));
             if (flag < 1) {
@@ -225,17 +223,15 @@ public class AccountInnerServiceSMOImpl implements IAccountInnerServiceSMO {
             if (accounts == null || accounts.size() < 1) {
                 throw new IllegalArgumentException("账户不存在");
             }
-            //在账户增加
-            double amount = Double.parseDouble(accounts.get(0).getAmount());
-            BigDecimal amountBig = new BigDecimal(amount);
-            amount = amountBig.subtract(new BigDecimal(Double.parseDouble(accountDetailPo.getAmount()))).doubleValue();
-            if (amount < 0) {
+            //在账户减少
+            BigDecimal amount = toDecimalAmount(accounts.get(0).getAmount()).subtract(toDecimalAmount(accountDetailPo.getAmount()));
+            if (amount.compareTo(BigDecimal.ZERO) < 0) {
                 throw new IllegalArgumentException("余额不足");
             }
             AccountPo accountPo = new AccountPo();
             accountPo.setObjId(accountDetailPo.getObjId());
             accountPo.setAcctId(accountDetailPo.getAcctId());
-            accountPo.setAmount(amount + "");
+            accountPo.setAmount(amount.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
             flag = accountServiceDaoImpl.updateAccount(BeanConvertUtil.beanCovertMap(accountPo));
             if (flag < 1) {
                 throw new IllegalArgumentException("更新账户失败");
@@ -256,6 +252,23 @@ public class AccountInnerServiceSMOImpl implements IAccountInnerServiceSMO {
         }
         //保存交易明细
         return accountDetailServiceDaoImpl.saveAccountDetails(BeanConvertUtil.beanCovertMap(accountDetailPo));
+    }
+
+    /**
+     * 金额字符串转 BigDecimal，账户记账统一使用 BigDecimal，避免 double 运算产生浮点尾差
+     *
+     * @param amount 金额字符串
+     * @return 金额
+     */
+    private BigDecimal toDecimalAmount(String amount) {
+        if (StringUtil.isEmpty(amount)) {
+            return BigDecimal.ZERO;
+        }
+        try {
+            return new BigDecimal(amount.trim());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("金额格式错误：" + amount);
+        }
     }
 
     public IAccountServiceDao getAccountServiceDaoImpl() {

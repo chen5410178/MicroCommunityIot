@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.java110.bean.ResultVo;
 import com.java110.bean.dto.owner.OwnerDto;
 import com.java110.core.annotation.Java110Cmd;
-import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.cmd.Cmd;
 import com.java110.core.cmd.CmdEvent;
 import com.java110.core.context.ICmdDataFlowContext;
@@ -97,7 +96,8 @@ public class AppRefundOwnerAccountCmd extends Cmd {
         String amount = reqJson.getString("amount");
         BigDecimal refundAmount;
         if (StringUtil.isEmpty(amount)) {
-            refundAmount = balance;
+            // 不传金额时按可退金额（Σ该账户各笔剩余可退金额）口径全退
+            refundAmount = refundableFee;
         } else {
             try {
                 refundAmount = new BigDecimal(amount);
@@ -105,22 +105,22 @@ public class AppRefundOwnerAccountCmd extends Cmd {
                 throw new CmdException("退款金额格式错误");
             }
         }
+        refundAmount = refundAmount.setScale(2, BigDecimal.ROUND_HALF_UP);
 
         if (refundAmount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new CmdException("当前无可退余额");
         }
-        if (refundAmount.compareTo(balance) > 0) {
-            throw new CmdException("退款金额不能大于余额");
-        }
-        if (refundAmount.compareTo(refundableFee) > 0) {
+        if (refundAmount.compareTo(refundableFee.setScale(2, BigDecimal.ROUND_HALF_UP)) > 0) {
             throw new CmdException("部分金额非线上缴费，无法在线退费，请联系客服");
+        }
+        if (refundAmount.compareTo(balance.setScale(2, BigDecimal.ROUND_HALF_UP)) > 0) {
+            throw new CmdException("退款金额不能大于余额");
         }
 
         reqJson.put("amount", refundAmount.toPlainString());
     }
 
     @Override
-    @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
         String userId = CmdContextUtils.getUserId(context);
 
@@ -131,6 +131,7 @@ public class AppRefundOwnerAccountCmd extends Cmd {
         accountRefundDto.setRefundUserId(userId);
         accountRefundDto.setRemark(reqJson.getString("remark"));
 
+        // 逐笔退款：每成功一笔立即扣减该笔剩余可退金额、扣减账户余额并写明细，任一笔失败即停止后续笔
         AccountRefundDto refundDto = accountRefundV1InnerServiceSMOImpl.refundAccountAmount(accountRefundDto);
 
         JSONObject data = BeanConvertUtil.beanCovertJson(refundDto);
