@@ -42,14 +42,14 @@
 			<view class="my-menu-item" @click="goCarService">
 				<image :src="imgUrl + '/h5/images/charge/ic-car-full.png'" class="my-menu-ic" mode="aspectFit"></image>
 				<text class="my-menu-text">车辆服务</text>
-				<text class="c-text-sub" style="font-size:20rpx;">{{ vehicles.length ? vehicles[0].plate : '去添加' }}</text>
-				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
+				<text class="c-text-sub" style="font-size:24rpx;">{{ vehicles.length ? vehicles[0].plate : '去添加' }}</text>
+				<text style="color:#cbd5e1;font-size:28rpx;">›</text>
 			</view>
 			<view class="my-menu-item" @click="goInvoice">
 				<image :src="imgUrl + '/h5/images/charge/ic-invoice.png'" class="my-menu-ic" mode="aspectFit"></image>
 				<text class="my-menu-text">电子发票</text>
-				<text class="c-text-sub" style="font-size:20rpx;">开票记录</text>
-				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
+				<text class="c-text-sub" style="font-size:24rpx;">开票记录</text>
+				<text style="color:#cbd5e1;font-size:28rpx;">›</text>
 			</view>
 			<view class="my-menu-item" @click="goService">
 				<image :src="imgUrl + '/h5/images/common/ic-phone.png'" class="my-menu-ic" mode="aspectFit"></image>
@@ -60,8 +60,8 @@
 			<view class="my-menu-item" @click="goAbout">
 				<image :src="imgUrl + '/h5/images/common/ic-info.png'" class="my-menu-ic" mode="aspectFit"></image>
 				<text class="my-menu-text">关于充电服务</text>
-				<text class="c-text-sub" style="font-size:20rpx;" v-if="appVersion">{{ appVersion }}</text>
-				<text style="color:#cbd5e1;font-size:24rpx;">›</text>
+				<text class="c-text-sub" style="font-size:24rpx;" v-if="appVersion">{{ appVersion }}</text>
+				<text style="color:#cbd5e1;font-size:28rpx;">›</text>
 			</view>
 		</view>
 
@@ -365,8 +365,8 @@
 	}
 
 	.my-menu-ic {
-		width: 34rpx;
-		height: 34rpx;
+		width: 40rpx;
+		height: 40rpx;
 		flex-shrink: 0;
 	}
 
@@ -376,25 +376,28 @@
 
 	.my-menu-text {
 		flex: 1;
-		font-size: 24rpx;
+		min-width: 0;
+		font-size: 30rpx;
 		font-weight: 500;
 		color: #334155;
 	}
 
 	.my-menu-phone {
-		font-size: 22rpx;
+		font-size: 26rpx;
 		font-weight: 700;
 		color: #059669;
 		letter-spacing: 2rpx;
+		flex-shrink: 0;
 	}
 
 	.my-call-btn {
 		background: #10b981;
 		color: #fff;
-		font-size: 20rpx;
+		font-size: 24rpx;
 		font-weight: 700;
 		border-radius: 999rpx;
 		padding: 8rpx 24rpx;
+		flex-shrink: 0;
 	}
 
 	.my-logout-btn {

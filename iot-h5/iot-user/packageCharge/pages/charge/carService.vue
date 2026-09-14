@@ -59,7 +59,7 @@
 		</view>
 
 		<view class="cs-tip cs-mx cs-mt">
-			<text style="font-size:20rpx;line-height:1.6;color:#3b82f6;">输入车牌号即可查询月卡并直接购买</text>
+			<text style="font-size:26rpx;line-height:1.6;color:#3b82f6;">输入车牌号即可查询月卡并直接购买</text>
 		</view>
 
 		<!-- 月卡订单 -->
@@ -84,7 +84,7 @@
 				</view>
 			</view>
 			<view v-if="!rentOrders.length" class="c-card cs-order-empty">
-				<text class="c-text-sub">暂无月卡订单，购买月卡后这里将展示记录</text>
+				<text class="c-text-sub cs-empty-text">暂无月卡订单，购买月卡后这里将展示记录</text>
 			</view>
 		</view>
 
@@ -647,7 +647,7 @@
 		border-radius: 20rpx;
 		background: rgba(59, 130, 246, .08);
 		border: 1rpx solid rgba(59, 130, 246, .15);
-		padding: 20rpx 24rpx;
+		padding: 22rpx 26rpx;
 	}
 
 	.cs-order-head {
@@ -693,5 +693,10 @@
 	.cs-order-empty {
 		padding: 40rpx 0;
 		text-align: center;
+	}
+
+	.cs-order-empty .cs-empty-text {
+		font-size: 26rpx;
+		line-height: 1.6;
 	}
 </style>
