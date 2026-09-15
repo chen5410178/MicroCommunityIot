@@ -1,5 +1,6 @@
 <template>
   <div class="privilege-tree" v-loading="loading">
+    <div class="assign-tip">只能从您拥有的权限中分配</div>
     <el-tree
       ref="treeRef"
       :data="treeData"
@@ -138,3 +139,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.privilege-tree .assign-tip {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #909399;
+  background: #f4f4f5;
+  border-radius: 4px;
+}
+</style>
