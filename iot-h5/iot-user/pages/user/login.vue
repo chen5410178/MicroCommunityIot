@@ -77,7 +77,7 @@
 				<text class="lg-agree-close" @click="agreeShow = false">关闭</text>
 			</view>
 			<scroll-view scroll-y class="lg-agree-body">
-				<text class="lg-agree-text">{{ agreeText }}</text>
+				<rich-text class="lg-agree-rich" :nodes="agreeNodes"></rich-text>
 			</scroll-view>
 		</view>
 
@@ -109,6 +109,9 @@
 		takeTargetUrl,
 		navigateToTargetUrl
 	} from '@/lib/java110/utils/TargetUrlUtil.js'
+	import {
+		toRichNodes
+	} from '@/lib/java110/utils/HtmlUtil.js'
 
 	export default {
 		components: {
@@ -128,7 +131,7 @@
 				agreeChk2: false,
 				agreeShow: false,
 				agreeTitle: '',
-				agreeText: '',
+				agreeHtml: '',
 				userProtocol: '',
 				merchantProtocol: '',
 				toastMsg: ''
@@ -137,6 +140,13 @@
 		computed: {
 			themeDark() {
 				return chargeStore.themeDark
+			},
+			agreeNodes() {
+				return toRichNodes(this.agreeHtml || '暂无内容', {
+					fontSize: 30,
+					lineHeight: 1.9,
+					color: this.themeDark ? '#cbd5e1' : '#475569'
+				})
 			}
 		},
 		onLoad() {
@@ -262,7 +272,7 @@
 				} else if (type === '隐私保护指引') {
 					text = this.merchantProtocol
 				}
-				this.agreeText = text || agreeTexts[type] || '暂无内容'
+				this.agreeHtml = text || agreeTexts[type] || ''
 				this.agreeShow = true
 			},
 			_toast(msg) {
@@ -451,13 +461,13 @@
 
 	.lg-agree-body {
 		padding: 0 36rpx 60rpx;
-		max-height: 46vh;
+		max-height: 52vh;
 	}
 
-	.lg-agree-text {
-		font-size: 22rpx;
-		color: #64748b;
-		line-height: 1.8;
-		white-space: pre-wrap;
+	.lg-agree-rich {
+		font-size: 30rpx;
+		line-height: 1.9;
+		color: #475569;
+		word-break: break-all;
 	}
 </style>

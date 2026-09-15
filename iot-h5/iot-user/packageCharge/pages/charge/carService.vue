@@ -8,12 +8,12 @@
 		<view class="cs-mx">
 			<view class="cs-search-row">
 				<view class="cs-prov-box" @click="openProvPanel">
-					<input :value="searchProv" readonly placeholder="省" class="cs-prov-input" />
+					<text class="cs-prov-text" :class="{ 'is-ph': !searchProv }">{{ searchProv || '省' }}</text>
 				</view>
-				<view class="cs-rest-box">
+				<view class="cs-rest-box" @click="openSearchKey">
 					<image :src="imgUrl + '/h5/images/common/ic-search.png'" class="cs-search-ic" mode="aspectFit"></image>
-					<input :value="searchRest" readonly placeholder="输入字母数字" class="cs-rest-input" @click="openSearchKey" />
-					<text class="cs-suggest-toggle" @click="toggleSearchSuggest">▾</text>
+					<text class="cs-rest-text" :class="{ 'is-ph': !searchRest }">{{ searchRest || '输入字母数字' }}</text>
+					<text class="cs-suggest-toggle" @click.stop="toggleSearchSuggest">▾</text>
 				</view>
 			</view>
 			<view class="cs-search-btn" @click="searchCar">搜索</view>
@@ -162,17 +162,20 @@
 		},
 		methods: {
 			openProvPanel() {
+				uni.hideKeyboard()
 				this.suggestShow = false
 				this.keyShow = false
 				this.provPanel = !this.provPanel
 			},
 			pickProv(c) {
+				uni.hideKeyboard()
 				this.searchProv = c
 				this.provPanel = false
 				this.$refs.plateKey.open(c, this.searchRest)
 				this._keyChange()
 			},
 			openSearchKey() {
+				uni.hideKeyboard()
 				this.provPanel = false
 				this.suggestShow = false
 				this.$refs.plateKey.open(this.searchProv, this.searchRest)
@@ -415,6 +418,7 @@
 
 	.cs-prov-box {
 		width: 130rpx;
+		height: 88rpx;
 		flex-shrink: 0;
 		display: flex;
 		align-items: center;
@@ -424,14 +428,13 @@
 		border-radius: 20rpx;
 	}
 
-	.cs-prov-input {
+	.cs-prov-text {
 		width: 100%;
 		text-align: center;
 		font-size: 26rpx;
 		font-weight: 700;
 		color: #0f172a;
 		letter-spacing: 4rpx;
-		height: 88rpx;
 	}
 
 	.cs-rest-box {
@@ -452,12 +455,16 @@
 		flex-shrink: 0;
 	}
 
-	.cs-rest-input {
+	.cs-rest-text {
 		flex: 1;
 		font-size: 24rpx;
 		font-weight: 700;
 		color: #0f172a;
 		letter-spacing: 4rpx;
+	}
+
+	.is-ph {
+		color: #94a3b8;
 	}
 
 	.cs-suggest-toggle {
