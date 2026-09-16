@@ -152,6 +152,9 @@ public class SyncCardsBidBmoImpl implements ISyncCardsBidBmo {
         JSONObject addCard = null;
 
         for (AccessControlFaceDto tmpAccessControlFaceDto : accessControlFaceDtos) {
+            if (StringUtil.isEmpty(tmpAccessControlFaceDto.getCardNumber())) {
+                continue;
+            }
             addCard = new JSONObject();
             addCard.put("card", tmpAccessControlFaceDto.getCardNumber());
             addCard.put("roomnum", "9909-909");//添加楼栋单元号
