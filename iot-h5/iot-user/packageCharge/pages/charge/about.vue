@@ -1,8 +1,8 @@
 <template>
 	<view class="ab-page" :class="{ 'charge-theme-dark': themeDark }">
 		<view class="ab-logo-area">
-			<view class="ab-logo">
-				<image :src="imgUrl + '/h5/images/charge/ic-bolt-white.png'" class="ab-logo-img" mode="aspectFit"></image>
+			<view class="ab-logo" :class="{ 'ab-logo-plain': useLocalLogo }">
+				<image :src="logoPic" class="ab-logo-img" :class="{ 'ab-logo-img-local': useLocalLogo }" mode="aspectFit" @error="onLogoError"></image>
 			</view>
 			<text class="ab-name">{{ appName }}</text>
 			<text class="c-text-sub" style="margin-top:8rpx;" v-if="appVersion">版本 {{ appVersion }} · 智慧出行</text>
@@ -31,7 +31,7 @@
 				<text class="ab-agree-close" @click="agreeShow = false">关闭</text>
 			</view>
 			<scroll-view scroll-y class="ab-agree-body">
-				<text class="ab-agree-text">{{ agreeText }}</text>
+				<rich-text class="ab-agree-rich" :nodes="agreeNodes"></rich-text>
 			</scroll-view>
 		</view>
 	</view>
@@ -40,45 +40,78 @@
 <script>
 	import chargeStore from '@/api/charge/chargeStore.js'
 	import {
-		getSystemInfo
+		getSystemInfo,
+		getSystemPrivacy
 	} from '@/api/system/systemApi.js'
+	import {
+		getCommunityId
+	} from '@/api/community/communityApi.js'
+	import {
+		toRichNodes
+	} from '@/lib/java110/utils/HtmlUtil.js'
 
 	export default {
 		data() {
 			return {
 				agreeShow: false,
 				agreeTitle: '',
-				agreeText: '',
+				agreeHtml: '',
 				appName: '云充电',
 				appVersion: '',
 				copyright: '',
 				userProtocol: '',
-				merchantProtocol: ''
+				merchantProtocol: '',
+				localLogo: '/static/images/logo.png',
+				logoFallback: false
 			}
 		},
 		computed: {
 			themeDark() {
 				return chargeStore.themeDark
+			},
+			logoPic() {
+				return this.logoFallback ? this.imgUrl + '/h5/images/charge/ic-bolt-white.png' : this.localLogo
+			},
+			useLocalLogo() {
+				return !this.logoFallback
+			},
+			agreeNodes() {
+				return toRichNodes(this.agreeHtml || '暂无内容', {
+					fontSize: 30,
+					lineHeight: 1.9,
+					color: this.themeDark ? '#cbd5e1' : '#475569'
+				})
 			}
 		},
 		onLoad() {
 			this._loadSystemInfo()
+			this._loadPrivacy()
 		},
 		methods: {
 			_loadSystemInfo() {
 				getSystemInfo().then(_info => {
 					if (!_info) return
-					this.appName = _info.subSystemTitle || _info.systemTitle || this.appName
+					this.appName = _info.systemTitle || _info.subSystemTitle || _info.systemSimpleTitle || this.appName
 					this.appVersion = _info.version || ''
 					this.copyright = (_info.copyrightInfo ? _info.copyrightInfo + ' · ' : '') + (_info.companyName || '')
-					this.userProtocol = _info.userProtocol || ''
-					this.merchantProtocol = _info.merchantProtocol || ''
+					this.userProtocol = _info.userProtocol || this.userProtocol
+					this.merchantProtocol = _info.merchantProtocol || this.merchantProtocol
+				}).catch(() => {})
+			},
+			_loadPrivacy() {
+				getSystemPrivacy(getCommunityId()).then(_res => {
+					if (!_res || !_res.data) return
+					this.userProtocol = _res.data.userProtocol || this.userProtocol
+					this.merchantProtocol = _res.data.merchantProtocol || this.merchantProtocol
 				}).catch(() => {})
 			},
 			openAgree(type) {
 				this.agreeTitle = type
-				this.agreeText = (type === '用户服务协议' ? this.userProtocol : this.merchantProtocol) || '暂无内容'
+				this.agreeHtml = (type === '用户服务协议' ? this.userProtocol : this.merchantProtocol) || ''
 				this.agreeShow = true
+			},
+			onLogoError() {
+				this.logoFallback = true
 			}
 		}
 	}
@@ -119,6 +152,17 @@
 	.ab-logo-img {
 		width: 80rpx;
 		height: 80rpx;
+	}
+
+	.ab-logo-plain {
+		background: #ffffff;
+		border: 1rpx solid #e2e8f0;
+		box-shadow: 0 8rpx 24rpx rgba(15, 23, 42, .08);
+	}
+
+	.ab-logo-img-local {
+		width: 120rpx;
+		height: 120rpx;
 	}
 
 	.ab-name {
@@ -189,13 +233,13 @@
 
 	.ab-agree-body {
 		padding: 0 36rpx 60rpx;
-		max-height: 46vh;
+		max-height: 52vh;
 	}
 
-	.ab-agree-text {
-		font-size: 22rpx;
-		color: #64748b;
-		line-height: 1.8;
-		white-space: pre-wrap;
+	.ab-agree-rich {
+		font-size: 30rpx;
+		line-height: 1.9;
+		color: #475569;
+		word-break: break-all;
 	}
 </style>

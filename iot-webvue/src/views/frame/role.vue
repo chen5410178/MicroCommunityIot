@@ -137,15 +137,18 @@ export default {
 <style scoped>
 .page-container { display: flex; gap: 16px; height: calc(100vh - 100px); }
 .left-panel { width: 220px; min-width: 220px; }
-.right-panel { flex: 1; min-width: 0; overflow-y: auto; }
+.right-panel { flex: 1; min-width: 0; }
+.role-list-card { height: 100%; display: flex; flex-direction: column; }
+.role-list-card >>> .el-card__body { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
 .role-list-card .card-header { display: flex; justify-content: space-between; align-items: center; }
 .role-actions { display: flex; gap: 4px; margin-bottom: 12px; }
 .role-actions .el-button { flex: 1; padding: 7px 4px; font-size: 12px; }
-.role-list { list-style: none; padding: 0; margin: 0; }
+.role-list { list-style: none; padding: 0; margin: 0; flex: 1; overflow-y: auto; }
 .role-list li { padding: 10px 12px; cursor: pointer; border-radius: 4px; margin-bottom: 5px; text-align: center; font-size: 14px; transition: all 0.3s; }
 .role-list li:hover { background-color: #f5f7fa; }
 .role-list li.active { background-color: #409eff; color: white; font-weight: bold; }
 .detail-card { height: 100%; display: flex; flex-direction: column; }
+.detail-card >>> .el-card__body { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
 .role-header { padding-bottom: 12px; border-bottom: 1px solid #ebeef5; }
 .role-header h4 { margin: 0 0 8px 0; font-size: 16px; }
 .role-desc { margin: 0; font-size: 13px; color: #909399; }
@@ -154,4 +157,5 @@ export default {
 .tab-buttons span.active { color: #409eff; border-bottom-color: #409eff; }
 .tab-content { flex: 1; overflow-y: auto; padding-top: 12px; }
 .empty-card { display: flex; align-items: center; justify-content: center; height: 100%; }
+.empty-card >>> .el-card__body { flex: 1; display: flex; align-items: center; justify-content: center; }
 </style>

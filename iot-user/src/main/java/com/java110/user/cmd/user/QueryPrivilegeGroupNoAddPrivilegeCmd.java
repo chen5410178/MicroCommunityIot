@@ -13,6 +13,7 @@ import com.java110.dto.privilege.PrivilegeDto;
 import com.java110.dto.store.StoreDto;
 import com.java110.intf.user.IPrivilegeV1InnerServiceSMO;
 import com.java110.intf.user.IStoreV1InnerServiceSMO;
+import com.java110.user.bmo.IPrivilegeAssignBMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,9 @@ public class QueryPrivilegeGroupNoAddPrivilegeCmd extends Cmd {
 
     @Autowired
     private IPrivilegeV1InnerServiceSMO privilegeV1InnerServiceSMOImpl;
+
+    @Autowired
+    private IPrivilegeAssignBMO privilegeAssignBMOImpl;
 
 
 
@@ -99,6 +103,8 @@ public class QueryPrivilegeGroupNoAddPrivilegeCmd extends Cmd {
 //
 //        }
 
+
+        privilegeAssignBMOImpl.filterAssignable(tmpPrivilegeArrays, storeId, userId, storeTypeCd);
 
         context.setResponseEntity(new ResponseEntity<String>(tmpPrivilegeArrays.toJSONString(), HttpStatus.OK));
     }

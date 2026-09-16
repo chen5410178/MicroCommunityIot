@@ -71,6 +71,7 @@
 			 * @param {String} rest 其余字母数字
 			 */
 			open(prov, rest) {
+				uni.hideKeyboard()
 				this.prov = prov || ''
 				this.rest = rest || ''
 				this.$emit('update:show', true)

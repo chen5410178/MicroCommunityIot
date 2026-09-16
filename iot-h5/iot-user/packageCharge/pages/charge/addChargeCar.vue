@@ -19,11 +19,11 @@
 		<view class="ac-mx ac-mt">
 			<view class="ac-search-row">
 				<view class="ac-prov-box" @click="openProvPanel">
-					<input :value="searchProv" readonly placeholder="省" class="ac-prov-input" />
+					<text class="ac-prov-text" :class="{ 'is-ph': !searchProv }">{{ searchProv || '省' }}</text>
 				</view>
-				<view class="ac-rest-box">
-					<input :value="searchRest" readonly placeholder="输入字母数字" class="ac-rest-input" @click="openSearchKey" />
-					<text class="ac-rest-clear" v-if="searchProv || searchRest" @click="clearPlate">✕</text>
+				<view class="ac-rest-box" @click="openSearchKey">
+					<text class="ac-rest-text" :class="{ 'is-ph': !searchRest }">{{ searchRest || '输入字母数字' }}</text>
+					<text class="ac-rest-clear" v-if="searchProv || searchRest" @click.stop="clearPlate">✕</text>
 				</view>
 			</view>
 
@@ -138,15 +138,18 @@
 				})
 			},
 			openProvPanel() {
+				uni.hideKeyboard()
 				this.keyShow = false
 				this.provPanel = !this.provPanel
 			},
 			pickProv(c) {
+				uni.hideKeyboard()
 				this.searchProv = c
 				this.provPanel = false
 				this.$refs.plateKey.open(c, this.searchRest)
 			},
 			openSearchKey() {
+				uni.hideKeyboard()
 				this.provPanel = false
 				this.$refs.plateKey.open(this.searchProv, this.searchRest)
 			},
@@ -261,6 +264,7 @@
 
 	.ac-prov-box {
 		width: 130rpx;
+		height: 88rpx;
 		flex-shrink: 0;
 		display: flex;
 		align-items: center;
@@ -270,14 +274,13 @@
 		border-radius: 20rpx;
 	}
 
-	.ac-prov-input {
+	.ac-prov-text {
 		width: 100%;
 		text-align: center;
 		font-size: 26rpx;
 		font-weight: 700;
 		color: #0f172a;
 		letter-spacing: 4rpx;
-		height: 88rpx;
 	}
 
 	.ac-rest-box {
@@ -292,12 +295,16 @@
 		height: 88rpx;
 	}
 
-	.ac-rest-input {
+	.ac-rest-text {
 		flex: 1;
 		font-size: 24rpx;
 		font-weight: 700;
 		color: #0f172a;
 		letter-spacing: 4rpx;
+	}
+
+	.is-ph {
+		color: #94a3b8;
 	}
 
 	.ac-rest-clear {
@@ -425,9 +432,13 @@
 		border-color: #334155 !important;
 	}
 
-	.charge-theme-dark .ac-prov-input,
-	.charge-theme-dark .ac-rest-input {
+	.charge-theme-dark .ac-prov-text,
+	.charge-theme-dark .ac-rest-text {
 		color: #e2e8f0 !important;
+	}
+
+	.charge-theme-dark .is-ph {
+		color: #94a3b8 !important;
 	}
 
 	.charge-theme-dark .ac-prov-panel {

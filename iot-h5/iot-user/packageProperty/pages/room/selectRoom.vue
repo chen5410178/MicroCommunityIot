@@ -60,7 +60,7 @@
 				let _that = this;
 				queryFloors({
 					page: 1,
-					row: 50,
+					row: 300,
 					communityId: this.communityId,
 				}).then((_floors) => {
 					_that.floors = _floors;
@@ -70,7 +70,7 @@
 				let _that = this;
 				queryUnits({
 					page: 1,
-					row: 50,
+					row: 300,
 					communityId: this.communityId,
 					floorId: this.floorId
 				}).then((_units) => {
@@ -81,7 +81,7 @@
 				let _that = this;
 				queryRoomsByApp({
 					page: 1,
-					row: 200,
+					row: 1000,
 					communityId: this.communityId,
 					unitId: this.unitId
 				}).then((_rooms) => {
