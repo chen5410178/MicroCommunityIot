@@ -98,7 +98,7 @@ export default {
 	listChargeProcessInfo: baseUrl + "iot/api/chargeProcessInfo.listChargeProcessInfo", // 充电进度信息
 	listMyInvoiceOrders: baseUrl + "iot/api/invoice.listMyInvoiceOrders", // 查询我的开票订单(未开票/已开票)
 	getMyInvoiceHeading: baseUrl + "iot/api/invoice.getMyInvoiceHeading", // 按登录手机号查询商城发票抬头
-	saveInvoice: baseUrl + "iot/api/invoice.saveInvoice", // 提交开票申请
+	appOpenInvoice: baseUrl + "iot/api/invoice.appOpenInvoice", // 手机端提交开票申请
 
 
 

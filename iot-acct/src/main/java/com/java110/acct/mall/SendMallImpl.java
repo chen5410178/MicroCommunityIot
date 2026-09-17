@@ -65,10 +65,20 @@ public class SendMallImpl implements ISendMall {
 
     @Override
     public ResultVo post(String url, JSONObject paramIn) {
+        JSONObject paramOut = postForBody(url, paramIn);
         // 商城开关：未开启直接返回成功（data 为空，由调用方判定"商城开票未生效"）
+        if (paramOut == null) {
+            return new ResultVo(ResultVo.CODE_OK, ResultVo.MSG_OK, null);
+        }
+        return new ResultVo(paramOut.getIntValue("code"), paramOut.getString("msg"), paramOut.get("data"));
+    }
+
+    @Override
+    public JSONObject postForBody(String url, JSONObject paramIn) {
+        // 商城开关：未开启直接返回 null（由调用方判定"商城未开启/未部署"）
         if (!"ON".equals(MappingCache.getValue(MALL_DOMAIN, MALL_SWITCH_KEY))) {
             logger.warn("商城系统未部署( MALL_SWITCH != ON )，跳过调用 {}", url);
-            return new ResultVo(ResultVo.CODE_OK, ResultVo.MSG_OK, null);
+            return null;
         }
 
         url = getUrl(url);
@@ -79,20 +89,30 @@ public class SendMallImpl implements ISendMall {
             tokenRes = outRestTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
         } catch (HttpStatusCodeException e) {
             logger.error("调用商城异常", e);
-            return new ResultVo(ResultVo.CODE_ERROR, e.getResponseBodyAsString());
+            return signErrorBody(e.getResponseBodyAsString());
         } catch (Exception e) {
             logger.error("调用商城异常", e);
-            return new ResultVo(ResultVo.CODE_ERROR, e.getMessage());
+            return signErrorBody(e.getMessage());
         }
 
         String body = tokenRes.getBody();
         JSONObject paramOut = JSONObject.parseObject(body);
 
         if (paramOut == null) {
-            return new ResultVo(ResultVo.CODE_ERROR, "商城响应异常");
+            return signErrorBody("商城响应异常");
         }
 
-        return new ResultVo(paramOut.getIntValue("code"), paramOut.getString("msg"), paramOut.get("data"));
+        return paramOut;
+    }
+
+    /**
+     * 调用商城异常时统一封装错误报文（与 ResultVo 错误码保持一致）
+     */
+    private JSONObject signErrorBody(String msg) {
+        JSONObject errorBody = new JSONObject();
+        errorBody.put("code", ResultVo.CODE_ERROR);
+        errorBody.put("msg", msg);
+        return errorBody;
     }
 
     /**

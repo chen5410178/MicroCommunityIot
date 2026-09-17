@@ -54,6 +54,9 @@
         <if test="buyerName !=null and buyerName != ''">
             and t.buyer_name= #{buyerName}
         </if>
+        <if test="buyerNameLike !=null and buyerNameLike != ''">
+            and t.buyer_name like concat('%',#{buyerNameLike},'%')
+        </if>
         <if test="invoiceType !=null and invoiceType != ''">
             and t.invoice_type= #{invoiceType}
         </if>
@@ -172,6 +175,24 @@
         </if>
         <if test="communityId !=null and communityId != ''">
             and t.community_id= #{communityId}
+        </if>
+        <if test="headingType !=null and headingType != ''">
+            and t.heading_type= #{headingType}
+        </if>
+        <if test="buyerName !=null and buyerName != ''">
+            and t.buyer_name= #{buyerName}
+        </if>
+        <if test="buyerNameLike !=null and buyerNameLike != ''">
+            and t.buyer_name like concat('%',#{buyerNameLike},'%')
+        </if>
+        <if test="bizCategory !=null and bizCategory != ''">
+            and t.biz_category= #{bizCategory}
+        </if>
+        <if test="invoiceId !=null and invoiceId != ''">
+            and t.invoice_id= #{invoiceId}
+        </if>
+        <if test="invoiceNo !=null and invoiceNo != ''">
+            and t.invoice_no= #{invoiceNo}
         </if>
         <if test="state !=null and state != ''">
             and t.state= #{state}

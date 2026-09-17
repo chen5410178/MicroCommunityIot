@@ -6432,10 +6432,19 @@ INSERT INTO `c_route` VALUES ('102026090114980435', '992023111817510002', '98202
 INSERT INTO `c_route` VALUES ('102026090200000001', '992023111817510002', '982026090200000001', 'Q', '1000', 'S', '2026-09-02 23:26:45', '0');
 INSERT INTO `c_route` VALUES ('102026090300000001', '992023111817510002', '982026090300000001', 'Q', '1000', 'S', '2026-09-03 10:00:01', '0');
 INSERT INTO `c_route` VALUES ('102026090300000002', '992023111817510002', '982026090300000002', 'Q', '1000', 'S', '2026-09-03 10:00:02', '0');
-INSERT INTO `c_route` VALUES ('102026090300000003', '992023111817510002', '982026090300000003', 'D', '1000', 'S', '2026-09-03 10:00:03', '0');
 INSERT INTO `c_route` VALUES ('102026090700000001', '992023111817510002', '982026090700000001', 'Q', '1000', 'S', '2026-09-07 12:00:00', '0');
 INSERT INTO `c_route` VALUES ('102026090800000001', '992023111817510002', '982026090800000001', 'D', '1000', 'S', '2026-09-08 10:58:16', '0');
 INSERT INTO `c_route` VALUES ('102026091200000001', '992023111817510002', '982026091200000001', 'D', '1000', 'S', '2026-09-12 13:30:08', '0');
+INSERT INTO `c_route` VALUES ('102026091700000001', '992023111817510002', '982026091700000001', 'D', '1000', 'S', '2026-09-17 10:00:01', '0');
+INSERT INTO `c_route` VALUES ('102026091700000002', '992023010100000001', '982026091700000002', 'Q', '1000', 'S', '2026-09-17 10:00:02', '0');
+INSERT INTO `c_route` VALUES ('102026091700000003', '992023010100000001', '982026091700000003', 'Q', '1000', 'S', '2026-09-17 10:00:03', '0');
+INSERT INTO `c_route` VALUES ('102026091700000004', '992023010100000001', '982026091700000004', 'Q', '1000', 'S', '2026-09-17 10:00:04', '0');
+INSERT INTO `c_route` VALUES ('102026091700000005', '992023010100000001', '982026091700000005', 'D', '1000', 'S', '2026-09-17 10:00:05', '0');
+INSERT INTO `c_route` VALUES ('102026091700000006', '992023010100000001', '982026091700000006', 'D', '1000', 'S', '2026-09-17 10:00:06', '0');
+INSERT INTO `c_route` VALUES ('102026091700000007', '992023010100000001', '982026091700000007', 'D', '1000', 'S', '2026-09-17 10:00:07', '0');
+INSERT INTO `c_route` VALUES ('102026091700000008', '992023010100000001', '982026091700000008', 'Q', '1000', 'S', '2026-09-17 10:00:08', '0');
+INSERT INTO `c_route` VALUES ('102026091700000009', '992023010100000001', '982026091700000009', 'D', '1000', 'S', '2026-09-17 10:00:09', '0');
+
 INSERT INTO `c_route` VALUES ('11', '992023010100000001', '11', 'Q', '100', 'S', '2023-02-11 16:26:03', '0');
 INSERT INTO `c_route` VALUES ('12', '992023010100000001', '12', 'Q', '100', 'S', '2023-02-11 16:26:04', '0');
 INSERT INTO `c_route` VALUES ('13', '992023010100000001', '13', 'Q', '100', 'S', '2023-02-11 16:26:05', '0');
@@ -7255,10 +7264,19 @@ INSERT INTO `c_service` VALUES ('982026090176500434', 'system.listSystemPrivacy'
 INSERT INTO `c_service` VALUES ('982026090200000001', 'chargeMachine.getAppChargeMachineByCode', 'API', '按设备编码查询充电桩', '1', 'CMD', 'http://iot-charge', 'GET', '60', '3', '2026-09-02 23:26:45', '0');
 INSERT INTO `c_service` VALUES ('982026090300000001', 'invoice.listMyInvoiceOrders', 'API', '查询我的开票订单(未开票/已开票)', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-03 10:00:01', '0');
 INSERT INTO `c_service` VALUES ('982026090300000002', 'invoice.getMyInvoiceHeading', 'API', '按登录手机号查询商城发票抬头', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-03 10:00:02', '0');
-INSERT INTO `c_service` VALUES ('982026090300000003', 'invoice.saveInvoice', 'API', '提交开票申请', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2026-09-03 10:00:03', '0');
 INSERT INTO `c_service` VALUES ('982026090700000001', 'parkingArea.getAppParkingArea', 'API', '手机端查询停车场信息', '1', 'CMD', 'http://iot-car', 'GET', '60', '3', '2026-09-07 12:00:00', '0');
 INSERT INTO `c_service` VALUES ('982026090800000001', 'user.appUserModifyPasswd', 'API', '用户端修改密码(登录态免验证码)', '1', 'CMD', 'http://iot-user', 'POST', '60', '3', '2026-09-08 10:58:16', '0');
 INSERT INTO `c_service` VALUES ('982026091200000001', 'account.ownerRefundAccount', 'API', '业主账户余额退款', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2026-09-12 13:30:08', '0');
+INSERT INTO `c_service` VALUES ('982026091700000001', 'invoice.appOpenInvoice', 'API', '手机端提交开票申请(调商城开票)', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2026-09-17 10:00:01', '0');
+INSERT INTO `c_service` VALUES ('982026091700000002', 'invoice.listInvoiceOrders', 'API', '查询开票记录(管理端)', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-17 10:00:02', '0');
+INSERT INTO `c_service` VALUES ('982026091700000003', 'invoice.listUnInvoicedOrders', 'API', '按手机号查询未开票充电订单', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-17 10:00:03', '0');
+INSERT INTO `c_service` VALUES ('982026091700000004', 'invoice.queryInvoiceHeadings', 'API', '按手机号查询商城发票抬头', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-17 10:00:04', '0');
+INSERT INTO `c_service` VALUES ('982026091700000005', 'invoice.saveInvoiceOrder', 'API', '管理端提交开票申请(调商城开票)', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2026-09-17 10:00:05', '0');
+INSERT INTO `c_service` VALUES ('982026091700000006', 'invoice.reSubmitInvoice', 'API', '开票失败单重新提交', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2026-09-17 10:00:06', '0');
+INSERT INTO `c_service` VALUES ('982026091700000007', 'invoice.deleteInvoiceOrder', 'API', '删除未成功开票记录', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2026-09-17 10:00:07', '0');
+INSERT INTO `c_service` VALUES ('982026091700000008', 'invoice.listInvoiceReds', 'API', '查询发票红冲记录(读商城)', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-17 10:00:08', '0');
+INSERT INTO `c_service` VALUES ('982026091700000009', 'invoice.saveInvoiceRed', 'API', '发起发票红冲(商城执行)', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2026-09-17 10:00:09', '0');
+
 
 -- ----------------------------
 -- Table structure for c_service_business
@@ -9903,6 +9921,8 @@ INSERT INTO `m_menu` VALUES ('702026072731800001', '历史进出', '802023082372
 INSERT INTO `m_menu` VALUES ('702026072836750001', '逃费车辆', '802023082372950010', '/#/pages/car/listCarInoutEvasion', '14', '502026072865190002', '', '2026-07-28 14:50:06', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702026081800000001', '商铺授权', '802023081520910004', '/#/pages/accessControl/accessControlShop', '5', '502026081800000001', '', '2026-08-18 12:00:00', '0', 'Y');
 INSERT INTO `m_menu` VALUES ('702026081884350001', '商铺管理', '802023021604710005', '/#/pages/shop/listShopManage', '3', '502026081895580002', '', '2026-08-18 12:27:26', '0', 'Y');
+INSERT INTO `m_menu` VALUES ('702026091700000001', '发票管理', '802023021604710005', '/#/pages/property/invoiceManage', '6', '502026091700000001', '', '2026-09-17 10:00:00', '0', 'Y');
+
 
 -- ----------------------------
 -- Table structure for m_menu_catalog
@@ -12470,6 +12490,8 @@ INSERT INTO `p_privilege` VALUES ('502026072706260002', '历史进出', '', '202
 INSERT INTO `p_privilege` VALUES ('502026072865190002', '逃费车辆', '', '2026-07-28 14:50:06', '0', '800900000003', '/#/pages/car/listCarInoutEvasion', '702026072836750001');
 INSERT INTO `p_privilege` VALUES ('502026081800000001', '商铺授权', '商铺授权', '2026-08-18 12:00:00', '0', '800900000003', '/#/pages/accessControl/accessControlShop', '702026081800000001');
 INSERT INTO `p_privilege` VALUES ('502026081895580002', '商铺管理', '', '2026-08-18 12:27:26', '0', '800900000003', '/#/pages/shop/listShopManage', '702026081884350001');
+INSERT INTO `p_privilege` VALUES ('502026091700000001', '发票管理', '', '2026-09-17 10:00:00', '0', '800900000003', '/#/pages/property/invoiceManage', '702026091700000001');
+
 
 -- ----------------------------
 -- Table structure for p_privilege_group
@@ -12709,6 +12731,8 @@ INSERT INTO `p_privilege_rel` VALUES ('102026072743270003', '502026072706260002'
 INSERT INTO `p_privilege_rel` VALUES ('102026072805330003', '502026072865190002', '600201904002', '1001', '2026-07-28 14:50:06', '0');
 INSERT INTO `p_privilege_rel` VALUES ('102026081800000001', '502026081800000001', '600201904002', '1001', '2026-08-18 12:00:00', '0');
 INSERT INTO `p_privilege_rel` VALUES ('102026081858860003', '502026081895580002', '600201904002', '1001', '2026-08-18 12:27:26', '0');
+INSERT INTO `p_privilege_rel` VALUES ('102026091700000010', '502026091700000001', '600201904002', '1001', '2026-09-17 10:00:00', '0');
+
 INSERT INTO `p_privilege_rel` VALUES ('10938', '502020100477560041', '600201906007', '1001', '2020-10-04 23:19:33', '0');
 INSERT INTO `p_privilege_rel` VALUES ('111', '500201907032', '600201906007', '1001', '2019-08-10 09:52:13', '0');
 INSERT INTO `p_privilege_rel` VALUES ('113', '500201908034', '600201906007', '1001', '2019-08-13 11:33:58', '0');

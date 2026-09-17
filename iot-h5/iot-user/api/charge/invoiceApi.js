@@ -52,13 +52,13 @@ export function getMyInvoiceHeading() {
 }
 
 /**
- * 提交开票申请
+ * 手机端提交开票申请（归属手机号取登录用户，入参 phone 仅用于校验本人）
  * @param {Object} _objData { communityId, bizCategory, orderIds, headingType, headingName, taxNo, email, invoiceType, phone }
  */
-export function saveInvoice(_objData) {
+export function appOpenInvoice(_objData) {
 	return new Promise((resolve, reject) => {
 		request({
-			url: url.saveInvoice,
+			url: url.appOpenInvoice,
 			data: JSON.stringify(_objData),
 			method: "POST",
 			success: function(res) {

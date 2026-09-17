@@ -38,7 +38,7 @@
 		</view>
 		<view class="iv-list iv-mx">
 			<view class="c-card iv-order" v-for="(o, i) in billed" :key="o.invoiceOrderId">
-				<view class="iv-billed-ic" :class="{ fail: o.state === 'FAIL' }">{{ o.state === 'FAIL' ? '!' : '✓' }}</view>
+				<view class="iv-billed-ic" :class="{ fail: o.state === 'FAIL' || o.state === 'RED' }">{{ o.state === 'FAIL' ? '!' : (o.state === 'RED' ? '红' : '✓') }}</view>
 				<view style="flex:1;min-width:0;">
 					<text class="c-text-bold" style="font-size:24rpx;font-weight:600;color:#1e293b;">{{ o.buyerName || '—' }} <text class="c-text-sub" style="font-size:18rpx;">{{ o.headingType || '' }}</text></text>
 					<text class="c-text-sub" style="margin-top:4rpx;display:block;">{{ stateText(o.state) }}
@@ -97,7 +97,7 @@
 				</view>
 				<view class="c-form-input iv-form-row">
 					<text class="c-text-sub">接收手机号</text>
-					<input v-model="invPhone" type="number" maxlength="11" placeholder="用于接收开票结果短信" />
+					<input v-model="invPhone" type="number" maxlength="11" placeholder="仅可查询本人发票" />
 				</view>
 				<view class="c-form-input iv-form-row">
 					<text class="c-text-sub">邮箱</text>
@@ -121,7 +121,7 @@
 	import {
 		listMyInvoiceOrders,
 		getMyInvoiceHeading,
-		saveInvoice
+		appOpenInvoice
 	} from '@/api/charge/invoiceApi.js'
 	import {
 		hasLogin
@@ -148,6 +148,7 @@
 				invCompanyTax: '',
 				invPhone: '',
 				invMail: '',
+				loginTel: '',
 				toastMsg: ''
 			}
 		},
@@ -182,6 +183,7 @@
 					return
 				}
 				const community = uni.getStorageSync('currentCommunityInfo')
+				this.loginTel = (uni.getStorageSync('userInfo') || {}).tel || ''
 				if (!community || !community.communityId) {
 					this.unbilled = []
 					this.billed = []
@@ -262,7 +264,7 @@
 				this.invCompanyName = ''
 				this.invCompanyTax = ''
 				this.invMail = ''
-				this.invPhone = userInfo.tel || ''
+				this.invPhone = this.loginTel || userInfo.tel || ''
 				this.invType = 'personal'
 			},
 			submitInvoice() {
@@ -291,12 +293,17 @@
 					this._toast('请输入正确的接收手机号')
 					return
 				}
+				// 归属手机号以登录用户为准，不接受非本人号码
+				if (phone !== this.loginTel) {
+					this._toast('仅可查询本人发票')
+					return
+				}
 				const orderIds = this.unbilled.filter(o => this.invSel[o.orderId]).map(o => o.orderId)
 				if (!orderIds.length) {
 					this._toast('请先勾选需要开票的订单')
 					return
 				}
-				saveInvoice({
+				appOpenInvoice({
 					communityId: this.communityId,
 					bizCategory: '充电费',
 					orderIds: orderIds,
@@ -308,16 +315,18 @@
 					phone: phone
 				}).then(data => {
 					const state = data && data.state
-					if (state === 'FAIL') {
+					if (state === 'FAIL' || state === 'F') {
 						this._toast('开票失败：' + (data.failReason || '请稍后重试'))
 						this.invShow = false
 						this._loadData()
 						return
 					}
 					if (state === 'DONE') {
-						this._toast('开票成功 · 电子发票将推送至 ' + this.invMail || '接收手机号')
+						this._toast('开票成功' + (this.invMail ? ' · 电子发票已推送至邮箱' : ''))
+					} else if (state === 'AUDIT') {
+						this._toast('已提交待审核 · 开票结果稍后查看')
 					} else {
-						this._toast('开票申请已提交 · 开票结果稍后查看')
+						this._toast('已提交待开票 · 开票结果稍后查看')
 					}
 					this.invSel = {}
 					this.invShow = false
@@ -329,7 +338,9 @@
 			stateText(state) {
 				if (state === 'DONE') return '已开票'
 				if (state === 'WAIT') return '待开票'
+				if (state === 'AUDIT') return '待审核'
 				if (state === 'FAIL') return '开票失败'
+				if (state === 'RED') return '已红冲'
 				return state || '—'
 			},
 			formatTime(ts) {

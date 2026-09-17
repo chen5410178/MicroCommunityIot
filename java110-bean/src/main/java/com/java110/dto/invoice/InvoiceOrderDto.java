@@ -10,9 +10,11 @@ import java.util.Date;
  */
 public class InvoiceOrderDto extends PageDto implements Serializable {
 
+    public static final String STATE_AUDIT = "AUDIT";// 待审核（商城开启审核开关）
     public static final String STATE_WAIT = "WAIT";// 待开票
     public static final String STATE_DONE = "DONE";// 已开票
     public static final String STATE_FAIL = "FAIL";// 开票失败
+    public static final String STATE_RED = "RED";// 已红冲
 
     public static final String BIZ_CATEGORY_CHARGE = "充电费";// 业务类目-充电
 
@@ -23,6 +25,7 @@ public class InvoiceOrderDto extends PageDto implements Serializable {
     private String headingId;
     private String headingType;
     private String buyerName;
+    private String buyerNameLike;// 抬头名称模糊查询
     private String buyerTaxNo;
     private String buyerAddress;
     private String buyerBank;
@@ -99,6 +102,14 @@ public class InvoiceOrderDto extends PageDto implements Serializable {
 
     public void setBuyerName(String buyerName) {
         this.buyerName = buyerName;
+    }
+
+    public String getBuyerNameLike() {
+        return buyerNameLike;
+    }
+
+    public void setBuyerNameLike(String buyerNameLike) {
+        this.buyerNameLike = buyerNameLike;
     }
 
     public String getBuyerTaxNo() {

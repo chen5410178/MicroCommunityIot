@@ -76,6 +76,18 @@ const propertyRoutes = [
     name: 'DownloadTempFile',
     component: () => import('@/views/property/downloadTempFile.vue'),
     meta: { requiresAuth: true, title: '下载中心' }
+  },
+  {
+    path: 'pages/property/invoiceManage',
+    name: 'InvoiceManage',
+    component: () => import('@/views/property/invoiceManage.vue'),
+    meta: { requiresAuth: true, title: '发票管理' }
+  },
+  {
+    path: 'pages/property/invoiceApply',
+    name: 'InvoiceApply',
+    component: () => import('@/views/property/invoiceApply.vue'),
+    meta: { requiresAuth: true, title: '申请开票' }
   }
 ]
 
