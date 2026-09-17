@@ -708,16 +708,6 @@ INSERT INTO `c_route` VALUES ('102026091200000001', '992023111817510002', '98202
 
 ### 2026-09-17 房产-发票管理（物联网开票 + 发票红冲）
 
-> 无表结构变更（复用已存在的 `invoice_order` / `invoice_order_item`，发票 PDF、红冲单仍只存商城）。
-> 物联网侧只新增 serviceCode 注册与菜单权限数据。
-
-**一、商城接入（MALL 开关由 `c_mapping` 控制，见 2026-09-03 记录）**
-
-- 商城侧新增物联网专用开放接口 `iotInvoiceBmoImpl`（`source=IOT`，幂等键 `ext_apply_id`=物联网开票单号）、
-  `iotInvoiceRedBmoImpl`（`source=IOT`）；抬头列表 `listInvoiceHeadingsBmoImpl`、状态批量 `queryInvoiceStatusBatchBmoImpl`、
-  红冲查询 `queryInvoiceRedsBmoImpl`、抬头 upsert `InvoiceHeadingUpsertService` 全部复用，商城侧无表结构变更。
-
-**二、c_service / c_route（9 条：手机端 1 条 + PC 管理端 8 条）**
 
 ```sql
 -- 手机端提交开票（新增，替代 invoice.saveInvoice）
@@ -741,37 +731,10 @@ INSERT INTO `c_route` VALUES ('102026091700000007', '992023010100000001', '98202
 INSERT INTO `c_route` VALUES ('102026091700000008', '992023010100000001', '982026091700000008', 'Q', '1000', 'S', '2026-09-17 10:00:08', '0');
 INSERT INTO `c_route` VALUES ('102026091700000009', '992023010100000001', '982026091700000009', 'D', '1000', 'S', '2026-09-17 10:00:09', '0');
 
--- 旧手机端提交入口 invoice.saveInvoice 已确认无任何调用方（h5 已切 appOpenInvoice），本期一并下线：
--- 删除 Cmd 类 SaveInvoiceCmd.java + 前端 conf/url.js 中的 saveInvoice 常量 + 下方 2 条注册记录
-DELETE FROM `c_route` WHERE `route_id` = '102026090300000003';
-DELETE FROM `c_service` WHERE `service_id` = '982026090300000003';
-```
 
-**三、菜单与权限（挂"房产"菜单组 802023021604710005，路由 `/#/pages/property/invoiceManage`）**
-
-```sql
 -- m_menu + p_privilege + p_privilege_rel（600201904002 物业权限组）
 INSERT INTO `m_menu` VALUES ('702026091700000001', '发票管理', '802023021604710005', '/#/pages/property/invoiceManage', '6', '502026091700000001', '', '2026-09-17 10:00:00', '0', 'Y');
 INSERT INTO `p_privilege` VALUES ('502026091700000001', '发票管理', '', '2026-09-17 10:00:00', '0', '800900000003', '/#/pages/property/invoiceManage', '702026091700000001');
 INSERT INTO `p_privilege_rel` VALUES ('102026091700000010', '502026091700000001', '600201904002', '1001', '2026-09-17 10:00:00', '0');
 -- m_menu_group_community 无需新增：802023021604710005（房产）已与各小区关联，新增 m_menu 直接生效
 ```
-
-**四、接口清单**
-
-| serviceCode | 端 | 方式 | 说明 |
-|-------------|----|------|------|
-| `invoice.appOpenInvoice` | 手机端 | POST | 提交开票（归属手机号强制取登录用户，与 PC 共用开票编排） |
-| `invoice.listMyInvoiceOrders` | 手机端 | GET | 本人未开票/已开票订单（已有，本次未改签名） |
-| `invoice.getMyInvoiceHeading` | 手机端 | GET | 本人默认抬头（已有） |
-| ~~`invoice.saveInvoice`~~ | 手机端 | POST | **本期下线**（Cmd 与 c_service/c_route 记录已删除，前端切 `invoice.appOpenInvoice`） |
-| `invoice.listInvoiceOrders` | PC | GET | 开票记录分页（商城状态回填） |
-| `invoice.listUnInvoicedOrders` | PC | GET | 按手机号查未开票充电订单 |
-| `invoice.queryInvoiceHeadings` | PC | GET | 按任意手机号查商城抬头 |
-| `invoice.saveInvoiceOrder` | PC | POST | 提交开票（先调商城、商城建单才落库） |
-| `invoice.reSubmitInvoice` | PC | POST | 失败单重新提交（幂等键重开） |
-| `invoice.deleteInvoiceOrder` | PC | POST | 删除未成功开票记录（软删） |
-| `invoice.listInvoiceReds` | PC | GET | 红冲列表（直读商城） |
-| `invoice.saveInvoiceRed` | PC | POST | 发起红冲（商城执行，物联网零落库） |
-
-> 状态映射：AUDIT/WAIT→待开票、DONE→已开票、FAIL→失败（展示 `failReason` 可重提）、RED→已红冲。
