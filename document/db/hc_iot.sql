@@ -14274,6 +14274,7 @@ INSERT INTO `task` VALUES ('522024050670050023', '-1', '12', '1', '1', '001', '1
 INSERT INTO `task` VALUES ('522025032430450007', '-1', '门禁定时器（定时查询门禁心跳）', '2', '0 */1 * * * ?', '001', '0', '2025-03-24 13:34:41');
 INSERT INTO `task` VALUES ('522025052027680002', '-1', 'xx', '1', '0 0 0 0 0 ?', '001', '1', '2025-05-20 16:20:29');
 INSERT INTO `task` VALUES ('522026072758420187', '-1', '车辆进场转移历史', '3', '0 30 3 * * ?', '001', '0', '2026-07-27 08:44:00');
+INSERT INTO `task` VALUES ('522026091770160001', '-1', '充电订单超时自动停止', '4', '0 */1 * * * ?', '001', '0', NOW());
 
 -- ----------------------------
 -- Table structure for task_attr
@@ -14313,6 +14314,7 @@ CREATE TABLE `task_template` (
 INSERT INTO `task_template` VALUES ('1', '伊特智慧门禁查询心跳', '伊特智慧门禁', '2024-05-06 17:24:46', '0', 'yiteAccessControlHeartbeatTemplate');
 INSERT INTO `task_template` VALUES ('2', '门禁定时器', '门禁定时器', '2024-05-06 17:24:46', '0', 'accessControlTaskTemplate');
 INSERT INTO `task_template` VALUES ('3', '车辆进场转移历史', '车辆进场转移历史', '2026-07-27 08:42:54', '0', 'carInoutHistoryMigrateTask');
+INSERT INTO `task_template` VALUES ('4', '充电订单超时自动停止', '充电桩订单超时自动结算与停止', NOW(), '0', 'chargeOrderTimeoutTask');
 
 -- ----------------------------
 -- Table structure for task_template_spec

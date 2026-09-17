@@ -21,6 +21,16 @@ public class ChargeMachineOrderDto extends PageDto implements Serializable {
     public static final String STATE_FAIL = "3003";//1001 充电中  2002 充电完成 3003 充电失败
     public static final String STATE_FINISHING = "4004";//1001 充电中  2002 充电完成 3003 充电失败 4004 结束中
 
+    public static final int TIMEOUT_BUFFER_MINUTE = 10;//超时缓冲：充电时长结束后 10 分钟
+
+    public static final int CAR_TIMEOUT_HOUR = 24;//汽车超过 24 小时未结束视为异常
+
+    public static final int FULL_CHARGE_HOURS = 10;//充满自停 charge_hours = 999 按 10 小时计算
+
+    public static final String TIMEOUT_REASON_BIKE = "充电超时，系统自动结束";//两轮超时自动结束备注
+
+    public static final String TIMEOUT_REASON_CAR_STARTING = "开启超时未响应，系统自动结束";//汽车开启中未响应自动结束备注
+
     private String amount;
     private String orderId;
     private String remark;
@@ -46,6 +56,11 @@ public class ChargeMachineOrderDto extends PageDto implements Serializable {
     private String chargeType;
     private String portCode;
     private String portName;
+
+    private String portState;
+
+    private String implBean;
+    private String ruleId;
 
     private String durationPrice;
 
@@ -244,6 +259,31 @@ public class ChargeMachineOrderDto extends PageDto implements Serializable {
     public void setPortName(String portName) {
         this.portName = portName;
     }
+
+    public String getPortState() {
+        return portState;
+    }
+
+    public void setPortState(String portState) {
+        this.portState = portState;
+    }
+
+    public String getImplBean() {
+        return implBean;
+    }
+
+    public void setImplBean(String implBean) {
+        this.implBean = implBean;
+    }
+
+    public String getRuleId() {
+        return ruleId;
+    }
+
+    public void setRuleId(String ruleId) {
+        this.ruleId = ruleId;
+    }
+
 
     public String getDurationPrice() {
         return durationPrice;

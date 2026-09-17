@@ -70,6 +70,27 @@ public interface IChargeMachineOrderV1ServiceDao {
      */
     int queryChargeMachineOrdersCount(Map info);
 
+    /**
+     * 查询超时未结束的两轮充电订单（定时任务使用）
+     *
+     * @param info states 订单状态 / bufferTime 缓冲时间（当前时间 - 缓冲分钟）/ row 条数
+     * @return 超时订单信息
+     * @throws DAOException DAO异常
+     */
+    List<Map> queryTimeoutBikeOrders(Map info) throws DAOException;
+
+    /**
+     * 查询超时未结束的四轮充电订单（定时任务使用）
+     *
+     * @param info states 订单状态 / carTimeoutTime 超时时间（当前时间 - 超时小时）/ row 条数
+     * @return 超时订单信息
+     * @throws DAOException DAO异常
+     */
+    List<Map> queryTimeoutCarOrders(Map info) throws DAOException;
+
+
+
+
     List<Map> queryOrderCountStatistics(Map info);
 
     List<Map> queryOrderMoneyStatistics(Map info);

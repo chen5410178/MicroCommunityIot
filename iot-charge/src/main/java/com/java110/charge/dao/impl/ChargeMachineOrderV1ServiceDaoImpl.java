@@ -105,6 +105,25 @@ public class ChargeMachineOrderV1ServiceDaoImpl extends BaseServiceDao implement
     }
 
     @Override
+    public List<Map> queryTimeoutBikeOrders(Map info) throws DAOException {
+        logger.debug("查询 queryTimeoutBikeOrders 入参 info : {}", info);
+
+        List<Map> infos = sqlSessionTemplate.selectList("chargeMachineOrderV1ServiceDaoImpl.queryTimeoutBikeOrders", info);
+
+        return infos;
+    }
+
+    @Override
+    public List<Map> queryTimeoutCarOrders(Map info) throws DAOException {
+        logger.debug("查询 queryTimeoutCarOrders 入参 info : {}", info);
+
+        List<Map> infos = sqlSessionTemplate.selectList("chargeMachineOrderV1ServiceDaoImpl.queryTimeoutCarOrders", info);
+
+        return infos;
+    }
+
+
+    @Override
     public List<Map> queryOrderCountStatistics(Map info) {
         List<Map> infos = sqlSessionTemplate.selectList("chargeMachineOrderV1ServiceDaoImpl.queryOrderCountStatistics", info);
        return infos;

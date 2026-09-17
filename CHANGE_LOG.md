@@ -701,3 +701,15 @@ INSERT INTO `p_privilege` VALUES ('502026091700000001', '发票管理', '', '202
 INSERT INTO `p_privilege_rel` VALUES ('102026091700000010', '502026091700000001', '600201904002', '1001', '2026-09-17 10:00:00', '0');
 -- m_menu_group_community 无需新增：802023021604710005（房产）已与各小区关联，新增 m_menu 直接生效
 ```
+
+### 2026-09-17 充电桩订单超时自动结算与停止（定时任务）
+
+
+
+```sql
+-- 1. 定时任务模板（class_bean 为 iot-job 中 ChargeOrderTimeoutTask）
+INSERT INTO `task_template` VALUES ('4', '充电订单超时自动停止', '充电桩订单超时自动结算与停止', NOW(), '0', 'chargeOrderTimeoutTask');
+
+-- 2. 定时任务实例（每分钟执行一次；state 001 停止，需在「定时任务」页面点击启动）
+INSERT INTO `task` VALUES ('522026091770160001', '-1', '充电订单超时自动停止', '4', '0 */1 * * * ?', '001', '0', NOW());
+```

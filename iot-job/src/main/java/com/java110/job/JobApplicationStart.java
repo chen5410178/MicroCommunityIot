@@ -45,6 +45,7 @@ import java.util.concurrent.TimeUnit;
 @EnableFeignClients(basePackages = {
         "com.java110.intf.community",
         "com.java110.intf.barrier",
+        "com.java110.intf.charge",
 })
 @Java110CmdDiscovery(cmdPublishClass = ServiceCmdEventPublishing.class,
         basePackages = {"com.java110.job.cmd"})

@@ -112,6 +112,52 @@
     </select>
 
 
+    <!-- 查询超时的两轮充电订单（定时任务使用） add by wuxw 2026-09-17 -->
+    <select id="queryTimeoutBikeOrders" parameterType="Map" resultType="Map">
+        select t.order_id orderId,t.machine_id machineId,t.port_id portId,t.person_id personId,
+        t.person_tel personTel,t.community_id communityId,t.charge_hours chargeHours,t.energy,
+        t.amount orderAmount,t.start_time startTime,t.end_time endTime,t.state,t.acct_detail_id acctDetailId,
+        cm.machine_code machineCode,cm.impl_bean implBean,cm.rule_id ruleId,cm.charge_type chargeType,
+        cmp.port_code portCode,cmp.state portState
+        from charge_machine_order t
+        inner join charge_machine cm on t.machine_id = cm.machine_id and cm.status_cd = '0'
+        left join charge_machine_port cmp on t.port_id = cmp.port_id and cmp.status_cd = '0'
+        where t.status_cd = '0'
+        and cm.charge_type = '1001'
+        and t.state in
+        <foreach collection="states" item="stateItem" open="(" close=")" separator=",">
+            #{stateItem}
+        </foreach>
+        <!-- 开始时间 + 有效充电小时（充满自停 999 按 10 小时）小于等于 缓冲时间（当前时间 - 缓冲分钟，java 传入） -->
+        and date_add(t.start_time, interval (case when t.charge_hours is null or t.charge_hours &lt;= 0
+        or t.charge_hours &gt;= 24 then 10 else t.charge_hours end) hour) &lt;= #{bufferTime}
+        order by t.start_time asc
+        limit #{row}
+    </select>
+
+    <!-- 查询超时的四轮充电订单（定时任务使用） add by wuxw 2026-09-17 -->
+    <select id="queryTimeoutCarOrders" parameterType="Map" resultType="Map">
+        select t.order_id orderId,t.machine_id machineId,t.port_id portId,t.person_id personId,
+        t.person_tel personTel,t.community_id communityId,t.charge_hours chargeHours,t.energy,
+        t.amount orderAmount,t.start_time startTime,t.end_time endTime,t.state,t.acct_detail_id acctDetailId,
+        cm.machine_code machineCode,cm.impl_bean implBean,cm.rule_id ruleId,cm.charge_type chargeType,
+        cmp.port_code portCode,cmp.state portState
+        from charge_machine_order t
+        inner join charge_machine cm on t.machine_id = cm.machine_id and cm.status_cd = '0'
+        left join charge_machine_port cmp on t.port_id = cmp.port_id and cmp.status_cd = '0'
+        where t.status_cd = '0'
+        and cm.charge_type = '1002'
+        and t.state in
+        <foreach collection="states" item="stateItem" open="(" close=")" separator=",">
+            #{stateItem}
+        </foreach>
+        <!-- 开始时间早于 超时时间（当前时间 - 超时小时，java 传入） -->
+        and t.start_time &lt;= #{carTimeoutTime}
+        order by t.start_time asc
+        limit #{row}
+    </select>
+
+
     <!-- 修改充电桩订单信息 add by wuxw 2018-07-03 -->
     <update id="updateChargeMachineOrderInfo" parameterType="Map">
         update charge_machine_order t set t.status_cd = #{statusCd}

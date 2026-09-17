@@ -36,6 +36,8 @@ import com.java110.po.chargeMachineOrderCoupon.ChargeMachineOrderCouponPo;
 import com.java110.po.chargeMachinePort.ChargeMachinePortPo;
 import com.java110.po.onlinePay.OnlinePayPo;
 import com.java110.po.onlinePay.OnlinePayRefundPo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +52,8 @@ import java.util.List;
  */
 @Service
 public class ChargeCoreImpl implements IChargeCore {
+
+    private static Logger logger = LoggerFactory.getLogger(ChargeCoreImpl.class);
 
     @Autowired
     private IAccountInnerServiceSMO accountInnerServiceSMOImpl;
@@ -780,6 +784,12 @@ public class ChargeCoreImpl implements IChargeCore {
             return new ResultVo(ResultVo.CODE_OK, "成功");
         }
 
+        // todo 订单已结束，直接返回，避免设备后到的停止/结束报文重复结算、重复退款
+        String state = chargeMachineOrderDtos.get(0).getState();
+        if (ChargeMachineOrderDto.STATE_FINISH.equals(state) || ChargeMachineOrderDto.STATE_FAIL.equals(state)) {
+            logger.debug("订单已结束，跳过重复结算, orderId={}, state={}", chargeMachineOrderDtos.get(0).getOrderId(), state);
+            return new ResultVo(ResultVo.CODE_OK, "订单已结束");
+        }
 
         ChargeMachineOrderPo chargeMachineOrderPo = new ChargeMachineOrderPo();
         chargeMachineOrderPo.setOrderId(chargeMachineOrderDtos.get(0).getOrderId());
