@@ -165,6 +165,20 @@ public class SaveAccessControlFaceBMOImpl implements ISaveAccessControlFaceBMO {
     }
 
     private void doOrgStaff(AccessControlOrgPo accessControlOrgPo, OrgStaffRelDto tmpOrgStaffRelDto, String machineId, String startDate, String endDate) {
+
+        //todo 去重检查：该人员已存在于该门禁（status_cd='0'）则跳过
+        AccessControlFaceDto checkDto = new AccessControlFaceDto();
+        checkDto.setMachineId(machineId);
+        checkDto.setPersonId(tmpOrgStaffRelDto.getStaffId());
+        checkDto.setComeId(accessControlOrgPo.getOrgId());
+        checkDto.setComeType(AccessControlFaceDto.COME_TYPE_STAFF);
+        checkDto.setCommunityId(accessControlOrgPo.getCommunityId());
+        checkDto.setPage(-1);
+        List<AccessControlFaceDto> checkDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(checkDto);
+        if (!ListUtil.isNull(checkDtos)) {
+            return;
+        }
+
         UserDto userDto = new UserDto();
         userDto.setUserId(tmpOrgStaffRelDto.getStaffId());
         List<UserDto> staffDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);

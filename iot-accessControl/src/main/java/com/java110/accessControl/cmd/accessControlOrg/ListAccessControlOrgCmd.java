@@ -133,13 +133,21 @@ public class ListAccessControlOrgCmd extends Cmd {
             return;
         }
         List<String> orgIds = new ArrayList<>();
+        List<String> machineIds = new ArrayList<>();
         for (AccessControlOrgDto accessControlOrgDto : accessControlOrgDtos) {
-            orgIds.add(accessControlOrgDto.getOrgId());
+            if (!orgIds.contains(accessControlOrgDto.getOrgId())) {
+                orgIds.add(accessControlOrgDto.getOrgId());
+            }
+            if (!machineIds.contains(accessControlOrgDto.getMachineId())) {
+                machineIds.add(accessControlOrgDto.getMachineId());
+            }
+            accessControlOrgDto.setPersonCount("0");
         }
 
 
         AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
         accessControlFaceDto.setComeIds(orgIds.toArray(new String[orgIds.size()]));
+        accessControlFaceDto.setMachineIds(machineIds.toArray(new String[machineIds.size()]));
         accessControlFaceDto.setCommunityId(accessControlOrgDtos.get(0).getCommunityId());
         List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFacesByComeId(accessControlFaceDto);
 
@@ -149,7 +157,8 @@ public class ListAccessControlOrgCmd extends Cmd {
 
         for (AccessControlOrgDto accessControlOrgDto : accessControlOrgDtos) {
             for (AccessControlFaceDto tAccessControlFaceDto : accessControlFaceDtos) {
-                if (!tAccessControlFaceDto.getComeId().equals(accessControlOrgDto.getOrgId())) {
+                if (!tAccessControlFaceDto.getComeId().equals(accessControlOrgDto.getOrgId())
+                        || !tAccessControlFaceDto.getMachineId().equals(accessControlOrgDto.getMachineId())) {
                     continue;
                 }
 

@@ -31,7 +31,9 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.utils.Assert;
 import com.java110.core.utils.BeanConvertUtil;
 import com.java110.core.utils.ListUtil;
+import com.java110.core.utils.StringUtil;
 import com.java110.doc.annotation.*;
+import com.java110.dto.accessControlOrg.AccessControlOrgDto;
 import com.java110.intf.accessControl.IAccessControlOrgV1InnerServiceSMO;
 import com.java110.intf.user.IOrgStaffRelV1InnerServiceSMO;
 import com.java110.intf.user.IOrgV1InnerServiceSMO;
@@ -41,6 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -109,6 +112,23 @@ public class SaveAccessControlOrgCmd extends Cmd {
             throw new CmdException("未包含门禁");
         }
 
+        //todo 请求体内去重，防止前端重复提交或数组重复
+        JSONArray distinctMachineIds = new JSONArray();
+        for (int machineIndex = 0; machineIndex < machineIds.size(); machineIndex++) {
+            String machineId = machineIds.getString(machineIndex);
+            if (StringUtil.isEmpty(machineId) || distinctMachineIds.contains(machineId)) {
+                continue;
+            }
+            distinctMachineIds.add(machineId);
+        }
+
+        if (ListUtil.isNull(distinctMachineIds)) {
+            throw new CmdException("未包含门禁");
+        }
+
+        reqJson.put("machineIds", distinctMachineIds);
+
+
         String startDate = reqJson.getString("startDate");
         String endDate = reqJson.getString("endDate");
 
@@ -137,14 +157,54 @@ public class SaveAccessControlOrgCmd extends Cmd {
 
         JSONArray machineIds = reqJson.getJSONArray("machineIds");
 
+        //todo 过滤掉已授权的门禁，防止重复授权
+        List<String> waitMachineIds = getWaitMachineIds(reqJson, machineIds);
+
+        if (ListUtil.isNull(waitMachineIds)) {
+            throw new CmdException("所选门禁已授权该部门，请勿重复授权");
+        }
+
         //todo unit
 
         //todo 保存 楼栋授权
-        for (int machineIndex = 0; machineIndex < machineIds.size(); machineIndex++) {
-            doComputeAccessControl(orgDtos.get(0), machineIds.getString(machineIndex), reqJson);
+        for (int machineIndex = 0; machineIndex < waitMachineIds.size(); machineIndex++) {
+            doComputeAccessControl(orgDtos.get(0), waitMachineIds.get(machineIndex), reqJson);
         }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
+    }
+
+    /**
+     * 获取待授权的门禁，已授权的门禁直接跳过
+     *
+     * @param reqJson    请求报文
+     * @param machineIds 请求授权门禁
+     * @return 待授权门禁
+     */
+    private List<String> getWaitMachineIds(JSONObject reqJson, JSONArray machineIds) {
+
+        AccessControlOrgDto queryDto = new AccessControlOrgDto();
+        queryDto.setOrgId(reqJson.getString("orgId"));
+        queryDto.setCommunityId(reqJson.getString("communityId"));
+        List<AccessControlOrgDto> existsAccessControlOrgs = accessControlOrgV1InnerServiceSMOImpl.queryAccessControlOrgs(queryDto);
+
+        List<String> authorizedMachineIds = new ArrayList<>();
+        if (!ListUtil.isNull(existsAccessControlOrgs)) {
+            for (AccessControlOrgDto tmpAccessControlOrgDto : existsAccessControlOrgs) {
+                authorizedMachineIds.add(tmpAccessControlOrgDto.getMachineId());
+            }
+        }
+
+        List<String> waitMachineIds = new ArrayList<>();
+        for (int machineIndex = 0; machineIndex < machineIds.size(); machineIndex++) {
+            String machineId = machineIds.getString(machineIndex);
+            if (StringUtil.isEmpty(machineId) || authorizedMachineIds.contains(machineId)) {
+                continue;
+            }
+            waitMachineIds.add(machineId);
+        }
+
+        return waitMachineIds;
     }
 
     private void doComputeAccessControl(OrgDto orgDto, String machineId, JSONObject reqJson) {

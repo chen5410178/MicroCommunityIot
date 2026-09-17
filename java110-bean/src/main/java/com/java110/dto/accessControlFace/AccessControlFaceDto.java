@@ -30,6 +30,7 @@ public class AccessControlFaceDto extends PageDto implements Serializable {
 
     private String comeId;
     private String[] comeIds;
+    private String[] machineIds;
     private String comeType;
 
     private String comeTypeName;
@@ -224,6 +225,15 @@ public class AccessControlFaceDto extends PageDto implements Serializable {
     public void setComeIds(String[] comeIds) {
         this.comeIds = comeIds;
     }
+
+    public String[] getMachineIds() {
+        return machineIds;
+    }
+
+    public void setMachineIds(String[] machineIds) {
+        this.machineIds = machineIds;
+    }
+
 
     public String getPersonCount() {
         return personCount;

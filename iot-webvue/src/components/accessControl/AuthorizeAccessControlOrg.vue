@@ -10,7 +10,7 @@
       <el-form-item label="门禁设备" prop="machineIds">
         <el-checkbox-group v-model="form.machineIds">
           <div v-for="item in machineList" :key="item.machineId" class="checkbox-item">
-            <el-checkbox :label="item.machineId">{{ item.machineName }}</el-checkbox>
+            <el-checkbox :label="item.machineId" :disabled="item.disabled">{{ item.machineName }}{{ item.disabled ? '（已授权）' : '' }}</el-checkbox>
           </div>
         </el-checkbox-group>
       </el-form-item>
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { saveAccessControlOrg, listAccessControl } from '@/api/accessControl/accessControlApi'
+import { saveAccessControlOrg, listAccessControl, listAccessControlOrg } from '@/api/accessControl/accessControlApi'
 import { getCurrentCommunity } from '@/utils/auth'
 
 export default {
@@ -54,6 +54,7 @@ export default {
       dialogVisible: false,
       loading: false,
       machineList: [],
+      authorizedMachineIds: [],
       orgId: '',
       form: {
         machineIds: [],
@@ -70,18 +71,34 @@ export default {
     open(orgId) {
       this.orgId = orgId || ''
       this.form = { machineIds: [], startDate: '', endDate: '' }
+      this.authorizedMachineIds = []
       this.loadMachines()
       this.dialogVisible = true
     },
     async loadMachines() {
       try {
         const community = getCurrentCommunity() || {}
-        const res = await listAccessControl({
-          page: 1,
-          row: 200,
-          communityId: community.communityId
+        const [machineRes, orgRes] = await Promise.all([
+          listAccessControl({
+            page: 1,
+            row: 200,
+            communityId: community.communityId
+          }),
+          listAccessControlOrg({
+            page: 1,
+            row: 200,
+            orgId: this.orgId,
+            communityId: community.communityId
+          }).catch(() => null)
+        ])
+        const authorizedList = (orgRes && orgRes.data) || []
+        this.authorizedMachineIds = authorizedList.map(item => item.machineId)
+        this.machineList = (machineRes.data || []).map(item => {
+          return {
+            ...item,
+            disabled: this.authorizedMachineIds.indexOf(item.machineId) > -1
+          }
         })
-        this.machineList = res.data || []
       } catch (e) {
         console.error('加载门禁设备失败', e)
       }
@@ -95,12 +112,17 @@ export default {
         this.$message.warning('请选择门禁设备')
         return
       }
+      const waitMachineIds = this.form.machineIds.filter(machineId => this.authorizedMachineIds.indexOf(machineId) === -1)
+      if (waitMachineIds.length === 0) {
+        this.$message.warning('所选门禁已授权，请勿重复授权')
+        return
+      }
       this.loading = true
       try {
         const community = getCurrentCommunity() || {}
         await saveAccessControlOrg({
           orgId: this.orgId,
-          machineIds: this.form.machineIds,
+          machineIds: waitMachineIds,
           startDate: this.form.startDate,
           endDate: this.form.endDate,
           communityId: community.communityId

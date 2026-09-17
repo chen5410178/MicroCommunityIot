@@ -30,7 +30,9 @@
             <el-table-column prop="orgName" label="组织" min-width="120" />
             <el-table-column prop="machineName" label="门禁名称" min-width="120" />
             <el-table-column prop="machineCode" label="门禁编号" min-width="120" />
-            <el-table-column prop="personCount" label="人员数" width="80" align="center" />
+            <el-table-column label="人员数" width="80" align="center">
+              <template slot-scope="{ row }">{{ row.personCount || 0 }}</template>
+            </el-table-column>
             <el-table-column prop="createTime" label="授权时间" min-width="150" />
             <el-table-column label="操作" width="100" fixed="right" align="center">
               <template slot-scope="{ row }">

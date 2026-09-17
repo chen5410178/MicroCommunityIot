@@ -114,7 +114,10 @@ public class DeleteAccessControlOrgCmd extends Cmd {
 
         AccessControlFaceDto accessControlFaceDto = new AccessControlFaceDto();
         accessControlFaceDto.setComeId(accessControlOrgs.get(0).getOrgId());
+        accessControlFaceDto.setMachineId(accessControlOrgs.get(0).getMachineId());
+        accessControlFaceDto.setComeType(AccessControlFaceDto.COME_TYPE_STAFF);
         accessControlFaceDto.setCommunityId(accessControlOrgs.get(0).getCommunityId());
+        accessControlFaceDto.setPage(-1);
         List<AccessControlFaceDto> accessControlFaceDtos = accessControlFaceV1InnerServiceSMOImpl.queryAccessControlFaces(accessControlFaceDto);
 
         if (ListUtil.isNull(accessControlFaceDtos)) {
@@ -123,14 +126,17 @@ public class DeleteAccessControlOrgCmd extends Cmd {
             return;
         }
 
-        //todo 删除员工授权
-        AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
-        accessControlFacePo.setComeId(accessControlOrgs.get(0).getOrgId());
-        accessControlFacePo.setCommunityId(accessControlOrgs.get(0).getCommunityId());
-        accessControlFacePo.setPersonId(accessControlFaceDtos.get(0).getPersonId());
-        accessControlFacePo.setName(accessControlFaceDtos.get(0).getName());
-        accessControlFacePo.setMachineId(accessControlFaceDtos.get(0).getMachineId());
-        accessControlFaceV1InnerServiceSMOImpl.deleteAccessControlFace(accessControlFacePo);
+        //todo 逐条删除该组织在该门禁上的员工授权
+        for (AccessControlFaceDto tmpAccessControlFaceDto : accessControlFaceDtos) {
+            AccessControlFacePo accessControlFacePo = new AccessControlFacePo();
+            accessControlFacePo.setComeId(accessControlOrgs.get(0).getOrgId());
+            accessControlFacePo.setCommunityId(accessControlOrgs.get(0).getCommunityId());
+            accessControlFacePo.setMachineId(accessControlOrgs.get(0).getMachineId());
+            accessControlFacePo.setMfId(tmpAccessControlFaceDto.getMfId());
+            accessControlFacePo.setPersonId(tmpAccessControlFaceDto.getPersonId());
+            accessControlFacePo.setName(tmpAccessControlFaceDto.getName());
+            accessControlFaceV1InnerServiceSMOImpl.deleteAccessControlFace(accessControlFacePo);
+        }
 
         cmdDataFlowContext.setResponseEntity(ResultVo.success());
     }
