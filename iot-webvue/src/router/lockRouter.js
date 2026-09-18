@@ -34,6 +34,12 @@ const lockRoutes = [
     name: 'LockPersonManage',
     component: () => import('@/views/lock/lockPersonManage.vue'),
     meta: { requiresAuth: true, title: '门锁人员' }
+  },
+  {
+    path: 'pages/lock/addLockPerson',
+    name: 'AddLockPerson',
+    component: () => import('@/views/lock/addLockPerson.vue'),
+    meta: { requiresAuth: true, title: '添加授权' }
   }
 ]
 
