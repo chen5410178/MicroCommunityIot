@@ -24,12 +24,12 @@
 			<view class="ob-sheet-body">
 				<text class="ob-sheet-tip">{{ tip }}</text>
 				<view class="ob-sheet-list">
-					<view class="ob-sheet-item" :class="{ active: item.communityId === curId() }"
-						v-for="(item, i) in list" :key="item.communityId || i" @click="pick(item)">
+					<view class="ob-sheet-item" :class="{ active: item.communityId === curId }"
+						v-for="(item, i) in list" :key="item.communityId || i" @click="pick(i)">
 						<view style="min-width:0;">
 							<view class="ob-sheet-name-row">
 								<text class="ob-sheet-name">{{ item.communityName || '未知小区' }}</text>
-								<text class="ob-sheet-badge cur" v-if="item.communityId === curId()">当前</text>
+								<text class="ob-sheet-badge cur" v-if="item.communityId === curId">当前</text>
 								<text class="ob-sheet-badge warn" v-else>有余额</text>
 							</view>
 							<text class="ob-sheet-sub">账户余额</text>
@@ -38,7 +38,6 @@
 					</view>
 				</view>
 				<text class="ob-sheet-empty" v-if="!list.length">暂无其他小区余额</text>
-				<view class="ob-sheet-all" @click="goAll">查看全部小区 ›</view>
 			</view>
 		</view>
 	</view>
@@ -58,11 +57,6 @@
 	export default {
 		name: 'other-balance',
 		props: {
-			// 当前小区ID（首页传入，未就绪时用本地缓存兜底）
-			communityId: {
-				type: String,
-				default: ''
-			},
 			// 当前小区余额
 			balance: {
 				type: Number,
@@ -72,6 +66,8 @@
 		data() {
 			return {
 				sheetShow: false,
+				// 当前小区ID（查询时从本地缓存取，保证切换后立即生效）
+				curId: '',
 				// 有余额的小区（含当前小区），金额倒序
 				list: [],
 				// 其他小区余额合计（不含当前小区）
@@ -98,7 +94,8 @@
 			},
 			// list: account.queryAppUserAccounts 返回的账户数组
 			_fill(accounts) {
-				const cur = this.curId()
+				const cur = getCommunityId()
+				this.curId = cur
 				const list = []
 				let sum = 0
 				;(accounts || []).forEach(a => {
@@ -121,9 +118,6 @@
 					? '当前小区余额为 0.00，其他小区还有余额 ¥' + sum.toFixed(2) + '，可能选错了小区，点下方切换。'
 					: '你在多个小区有账户，余额分别独立。切换小区可查看对应余额与充电桩。'
 			},
-			curId() {
-				return this.communityId || getCommunityId()
-			},
 			open() {
 				this.sheetShow = true
 			},
@@ -131,18 +125,13 @@
 				this.sheetShow = false
 			},
 			// 选中小区：当前小区仅关闭弹层，其他小区交由首页完成切换并重新查询
-			pick(item) {
+			// 注意：小程序端 v-for 对象作事件参数会被编译坏，这里统一传下标
+			pick(i) {
+				const item = this.list[i]
 				if (!item || !item.communityId) return
 				this.close()
-				if (item.communityId === this.curId()) return
+				if (item.communityId === this.curId) return
 				this.$emit('switch', item)
-			},
-			// 弹层底部入口：查看全部小区（可切换到无余额小区）
-			goAll() {
-				this.close()
-				uni.navigateTo({
-					url: '/packageProperty/pages/property/changeCommunity'
-				})
 			}
 		}
 	}
@@ -346,18 +335,6 @@
 		padding: 40rpx 0;
 	}
 
-	.ob-sheet-all {
-		margin-top: 24rpx;
-		height: 84rpx;
-		line-height: 84rpx;
-		text-align: center;
-		border-radius: 24rpx;
-		border: 1rpx solid #e2e8f0;
-		color: #64748b;
-		font-size: 26rpx;
-		font-weight: 600;
-	}
-
 	/* 黑夜主题 */
 	.charge-theme-dark .ob-sheet-item {
 		background: #1e293b !important;
@@ -370,12 +347,6 @@
 	}
 
 	.charge-theme-dark .ob-sheet-name {
-		color: #e2e8f0 !important;
-	}
-
-	.charge-theme-dark .ob-sheet-all {
-		background: #1e293b !important;
-		border-color: #334155 !important;
 		color: #e2e8f0 !important;
 	}
 </style>

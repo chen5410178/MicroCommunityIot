@@ -38,8 +38,7 @@
 				<view class="home-recharge-btn" @click="goRecharge">去充值</view>
 			</view>
 			<!-- 其他小区余额（合计大于 0 才展示，未登录不展示） -->
-			<other-balance ref="otherBalance" :community-id="curCommId" :balance="balance"
-				@switch="_switchCommunityByBalance" />
+			<other-balance ref="otherBalance" :balance="balance" @switch="_switchCommunityByBalance" />
 			<view class="home-bc-stats">
 				<view class="home-bc-stat" @click="openMonthRecords">
 					<text class="home-bc-stat-label">本月充电</text>
