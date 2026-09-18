@@ -318,7 +318,7 @@ export default {
       try {
         const communityInfo = getCurrentCommunity() || {}
         const res = await queryUnits({ communityId: communityInfo.communityId, unitId: this.queryParams.unitId })
-        const units = Array.isArray(res) ? res : (res.data || [])
+        const units = res.data || []
         if (units.length) { this.currentUnit = { ...units[0] }; this.editUnitVisible = true }
       } catch (e) { this.$message.error('加载单元信息失败') }
     },
@@ -327,7 +327,7 @@ export default {
       try {
         const communityInfo = getCurrentCommunity() || {}
         const res = await queryUnits({ communityId: communityInfo.communityId, unitId: this.queryParams.unitId })
-        const units = Array.isArray(res) ? res : (res.data || [])
+        const units = res.data || []
         if (units.length) { this.currentUnit = { ...units[0] }; this.delUnitVisible = true }
       } catch (e) { this.$message.error('加载单元信息失败') }
     },

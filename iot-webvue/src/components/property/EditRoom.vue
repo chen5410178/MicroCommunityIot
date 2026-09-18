@@ -172,7 +172,7 @@ export default {
       try {
         const communityInfo = getCurrentCommunity() || {}
         const res = await queryUnits({ communityId: communityInfo.communityId, floorId, page: 1, row: 100 })
-        this.units = Array.isArray(res) ? res : (res.data || [])
+        this.units = res.data || []
       } catch (e) { this.units = [] }
     },
     handleClose() {

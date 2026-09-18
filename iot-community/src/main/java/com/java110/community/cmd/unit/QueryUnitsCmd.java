@@ -1,6 +1,7 @@
 package com.java110.community.cmd.unit;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java110.bean.ResultVo;
 import com.java110.bean.dto.unit.UnitDto;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.cmd.Cmd;
@@ -13,8 +14,6 @@ import com.java110.doc.annotation.*;
 import com.java110.intf.community.IFloorInnerServiceSMO;
 import com.java110.intf.community.IUnitInnerServiceSMO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -37,15 +36,20 @@ import java.util.List;
 
 @Java110ResponseDoc(
         params = {
-                @Java110ParamDoc(name = "unitId", type = "String", length = 30,  remark = "单元ID"),
-                @Java110ParamDoc(name = "unitNum",  type = "String", length = 250,  remark = "单元编号"),
-                @Java110ParamDoc(name = "seq",  type = "int", length = 11,  remark = "排序"),
+                @Java110ParamDoc(name = "code", type = "int", length = 11, defaultValue = "0", remark = "返回编号，0 成功 其他失败"),
+                @Java110ParamDoc(name = "msg", type = "String", length = 250, defaultValue = "成功", remark = "描述"),
+                @Java110ParamDoc(name = "records", type = "int", length = 11, defaultValue = "1", remark = "总页数"),
+                @Java110ParamDoc(name = "total", type = "int", length = 11, defaultValue = "1", remark = "总记录数"),
+                @Java110ParamDoc(name = "data", type = "Array", remark = "有效数据"),
+                @Java110ParamDoc(parentNodeName = "data", name = "unitId", type = "String", length = 30,  remark = "单元ID"),
+                @Java110ParamDoc(parentNodeName = "data", name = "unitNum",  type = "String", length = 250,  remark = "单元编号"),
+                @Java110ParamDoc(parentNodeName = "data", name = "seq",  type = "int", length = 11,  remark = "排序"),
         }
 )
 
 @Java110ExampleDoc(
         reqBody="http://{ip}:{port}/app/unit.queryUnits?page=1&row=10&communityId=123123&floorId=123",
-        resBody="{'unitId':'123123','unitNum':'123123','seq':1}"
+        resBody="{'code':0,'msg':'成功','records':1,'total':1,'data':[{'unitId':'123123','unitNum':'123123','seq':1}]}"
 )
 
 @Java110Cmd(serviceCode = "unit.queryUnits")
@@ -77,9 +81,11 @@ public class QueryUnitsCmd extends Cmd {
 
         List<UnitDto> unitDtoList = unitInnerServiceSMOImpl.queryUnits(unitDto);
 
-        List<UnitDto> apiUnitVos = BeanConvertUtil.covertBeanList(unitDtoList, UnitDto.class);
+        int total = unitInnerServiceSMOImpl.queryUnitsCount(unitDto);
+        int row = reqJson.containsKey("row") ? reqJson.getIntValue("row") : (total > 0 ? total : 1);
+        int records = (int) Math.ceil((double) total / (double) row);
 
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(JSONObject.toJSONString(apiUnitVos), HttpStatus.OK);
-        cmdDataFlowContext.setResponseEntity(responseEntity);
+        ResultVo resultVo = new ResultVo(records, total, unitDtoList);
+        cmdDataFlowContext.setResponseEntity(ResultVo.createResponseEntity(resultVo));
     }
 }

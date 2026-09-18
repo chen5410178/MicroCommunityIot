@@ -109,7 +109,7 @@ export default {
       const communityInfo = getCurrentCommunity() || {}
       try {
         const res = await queryUnits({ communityId: communityInfo.communityId, floorId: this.form.floorId, page: 1, row: 100 })
-        this.units = Array.isArray(res) ? res : (res.data || [])
+        this.units = res.data || []
       } catch (e) { /* 加载失败静默处理 */ }
     },
     async handleSubmit() {

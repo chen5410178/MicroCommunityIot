@@ -88,9 +88,12 @@ export function queryUnits(_objData) {
 			method: "GET",
 			//动态数据
 			success: function(res) {
-
-				resolve(res.data);
-
+				let _json = res.data;
+				if (_json.code == 0) {
+					resolve(_json.data);
+					return;
+				}
+				reject();
 			},
 			fail: function(e) {
 				uni.hideLoading();
