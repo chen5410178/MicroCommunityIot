@@ -86,7 +86,7 @@ export default {
           })))
         } else if (id.startsWith('u_')) {
           const res = await queryRoomsTree({ communityId: communityInfo.communityId, unitId: node.data.unitId, page: 1, row: 1000 })
-          const rooms = res.rooms || []
+          const rooms = res.data || []
           resolve(rooms.map(r => ({
             id: 'r_' + r.roomId,
             roomId: r.roomId,
