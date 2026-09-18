@@ -24,6 +24,12 @@ const lockRoutes = [
     meta: { requiresAuth: true, title: '门锁设备' }
   },
   {
+    path: 'pages/lock/lockMachineDetail',
+    name: 'LockMachineDetail',
+    component: () => import('@/views/lock/lockMachineDetail.vue'),
+    meta: { requiresAuth: true, title: '门锁详情' }
+  },
+  {
     path: 'pages/lock/lockInoutManage',
     name: 'LockInoutManage',
     component: () => import('@/views/lock/lockInoutManage.vue'),
