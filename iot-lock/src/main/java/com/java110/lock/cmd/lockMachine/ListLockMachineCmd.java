@@ -88,7 +88,7 @@ public class ListLockMachineCmd extends Cmd {
             lockMachineDtos = lockMachineV1InnerServiceSMOImpl.queryLockMachineList(lockMachineDto);
             freshParam(lockMachineDtos);
             //查询设备是否在线 刷新电量 todo: 改成定时任务获取电量再修改,查询不用刷新
-            queryMachineStateAndElectricQuantity(lockMachineDtos,reqJson);
+            queryMachineStateAndElectricQuantity(lockMachineDtos, reqJson);
         } else {
             lockMachineDtos = new ArrayList<>();
         }
@@ -114,16 +114,20 @@ public class ListLockMachineCmd extends Cmd {
         }
     }
 
-    private void queryMachineStateAndElectricQuantity(List<LockMachineDto> lockMachineDtos,JSONObject reqJson) {
+    private void queryMachineStateAndElectricQuantity(List<LockMachineDto> lockMachineDtos, JSONObject reqJson) {
         if (lockMachineDtos == null || lockMachineDtos.size() < 1 || lockMachineDtos.size() > 10) {
             return;
         }
 
         // todo 加个标识 不然 其他不需要状态的地方加载太慢
-        if(reqJson.containsKey("flag") &&  "1".equals(reqJson.getString("flag"))){
+        if (reqJson.containsKey("flag") && "1".equals(reqJson.getString("flag"))) {
             return;
         }
 
-        lockCoreImpl.queryMachineStateAndElectricQuantity(lockMachineDtos);
+        try {
+            lockCoreImpl.queryMachineStateAndElectricQuantity(lockMachineDtos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
