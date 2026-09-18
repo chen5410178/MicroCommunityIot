@@ -37,6 +37,9 @@
 				<text class="home-bc-balance">¥{{ balance.toFixed(2) }}</text>
 				<view class="home-recharge-btn" @click="goRecharge">去充值</view>
 			</view>
+			<!-- 其他小区余额（合计大于 0 才展示，未登录不展示） -->
+			<other-balance ref="otherBalance" :community-id="curCommId" :balance="balance"
+				@switch="_switchCommunityByBalance" />
 			<view class="home-bc-stats">
 				<view class="home-bc-stat" @click="openMonthRecords">
 					<text class="home-bc-stat-label">本月充电</text>
@@ -167,6 +170,7 @@
 <script>
 	import chargeStore from '@/api/charge/chargeStore.js'
 	import themeMenu from '@/components/charge/theme-menu.vue'
+	import otherBalance from '@/components/charge/other-balance.vue'
 	import {
 		queryOwnerAccount,
 		getUserChargeCar
@@ -193,7 +197,8 @@
 
 	export default {
 		components: {
-			themeMenu
+			themeMenu,
+			otherBalance
 		},
 		data() {
 			return {
@@ -284,6 +289,10 @@
 			}, 1000)
 			// 首页数据加载：余额/车辆/订单/小区/桩/月卡
 			this._loadHomeData()
+			// 其他小区余额（未登录不请求）
+			if (this.$refs.otherBalance) {
+				this.$refs.otherBalance.load()
+			}
 		},
 		onHide() {
 			if (this._timer) clearInterval(this._timer)
@@ -508,6 +517,63 @@
 					this.storeVersion++
 					this._toast('余额加载失败')
 				})
+			},
+			// 按余额项切换小区：缓存 + chargeStore 同步 + 刷新首页数据（弹层关闭由组件处理）
+			_switchCommunityByBalance(item) {
+				if (!item || !item.communityId) return
+				if (item.communityId === (this.curCommId || getCommunityId())) {
+					return
+				}
+				saveCurrentCommunity({
+					communityId: item.communityId,
+					communityName: item.communityName
+				})
+				this.curCommId = item.communityId
+				this._toast('已切换到「' + (item.communityName || '该小区') + '」')
+				const idx = (chargeStore.communities || []).findIndex(c => c && c.communityId === item.communityId)
+				if (idx >= 0) {
+					this._afterSwitchCommunity(idx)
+					return
+				}
+				// chargeStore 中没有该小区（如 H5 刷新后只剩缓存的一条）：重载小区列表再定位
+				queryCommunitys({
+					page: 1,
+					row: 50
+				}).then(res => {
+					if (!res || res.code != 0 || !res.data) throw new Error('加载失败')
+					const list = res.data.map(c => this._adaptComm(c))
+					chargeStore.communities = list
+					let nIdx = list.findIndex(c => c.communityId === item.communityId)
+					if (nIdx < 0) {
+						list.push({
+							communityId: item.communityId,
+							name: item.communityName || '',
+							address: '',
+							cityName: '',
+							dist: 0
+						})
+						nIdx = list.length - 1
+					}
+					this._afterSwitchCommunity(nIdx)
+				}).catch(() => {
+					chargeStore.communities = [{
+						communityId: item.communityId,
+						name: item.communityName || '',
+						address: '',
+						cityName: '',
+						dist: 0
+					}]
+					this._afterSwitchCommunity(0)
+				})
+			},
+			// 切换小区后统一刷新（余额/本月充电/月卡/充电桩/其他小区余额）
+			_afterSwitchCommunity(idx) {
+				chargeStore.setCommIdx(idx)
+				this.storeVersion++
+				this._loadHomeData()
+				if (this.$refs.otherBalance) {
+					this.$refs.otherBalance.load()
+				}
 			},
 			// 我的车辆（需登录，未登录展示默认空；充电车牌已设置时置顶展示）
 			_loadCars() {

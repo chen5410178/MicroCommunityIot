@@ -6444,6 +6444,7 @@ INSERT INTO `c_route` VALUES ('102026091700000006', '992023010100000001', '98202
 INSERT INTO `c_route` VALUES ('102026091700000007', '992023010100000001', '982026091700000007', 'D', '1000', 'S', '2026-09-17 10:00:07', '0');
 INSERT INTO `c_route` VALUES ('102026091700000008', '992023010100000001', '982026091700000008', 'Q', '1000', 'S', '2026-09-17 10:00:08', '0');
 INSERT INTO `c_route` VALUES ('102026091700000009', '992023010100000001', '982026091700000009', 'D', '1000', 'S', '2026-09-17 10:00:09', '0');
+INSERT INTO `c_route` VALUES ('102026091800000001', '992023111817510002', '982026091800000001', 'Q', '1000', 'S', '2026-09-18 16:10:00', '0');
 
 INSERT INTO `c_route` VALUES ('11', '992023010100000001', '11', 'Q', '100', 'S', '2023-02-11 16:26:03', '0');
 INSERT INTO `c_route` VALUES ('12', '992023010100000001', '12', 'Q', '100', 'S', '2023-02-11 16:26:04', '0');
@@ -7276,6 +7277,7 @@ INSERT INTO `c_service` VALUES ('982026091700000006', 'invoice.reSubmitInvoice',
 INSERT INTO `c_service` VALUES ('982026091700000007', 'invoice.deleteInvoiceOrder', 'API', '删除未成功开票记录', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2026-09-17 10:00:07', '0');
 INSERT INTO `c_service` VALUES ('982026091700000008', 'invoice.listInvoiceReds', 'API', '查询发票红冲记录(读商城)', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-17 10:00:08', '0');
 INSERT INTO `c_service` VALUES ('982026091700000009', 'invoice.saveInvoiceRed', 'API', '发起发票红冲(商城执行)', '1', 'CMD', 'http://iot-acct', 'POST', '60', '3', '2026-09-17 10:00:09', '0');
+INSERT INTO `c_service` VALUES ('982026091800000001', 'account.queryAppUserAccounts', 'API', '手机端查询用户多小区账户余额', '1', 'CMD', 'http://iot-acct', 'GET', '60', '3', '2026-09-18 16:10:00', '0');
 
 
 -- ----------------------------

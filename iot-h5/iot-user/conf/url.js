@@ -13,6 +13,7 @@ export default {
 	getChargeMachineByCode: baseUrl + "iot/api/chargeMachine.getAppChargeMachineByCode", // 按设备编码查询充电桩（扫码直达充电页，免登录）
 	getCommunityWechatAppId: baseUrl + "iot/api/wechat.getCommunityWechatAppId", // 用户注册
 	queryAppUserAccount: baseUrl + "iot/api/account.queryAppUserAccount", // 查询用户账户
+	queryAppUserAccounts: baseUrl + "iot/api/account.queryAppUserAccounts", // 按登录手机号查询有余额的多小区账户（需登录）
 	queryAppUserAccountDetail: baseUrl + "iot/api/account.queryAppUserAccountDetail", // 查询账户交易明细（业主端）
 	refundAppUserAccount: baseUrl + "iot/api/account.ownerRefundAccount", // 业主账户余额退款（微信原路退回）
 

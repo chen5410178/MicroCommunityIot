@@ -242,6 +242,32 @@ export function queryOwnerAccount(_objData){
 	})
 }
 
+/**
+ * 按登录手机号查询有余额的多小区账户（不传小区ID，需登录）
+ * @param {Object} _objData 可选 { acctType }
+ * @returns {Promise<Array>} [{ acctId, communityId, communityName, amount, acctType }]
+ */
+export function queryAppUserAccounts(_objData){
+	return new Promise((resolve, reject) => {
+		request({
+			url: url.queryAppUserAccounts,
+			method: "GET",
+			data: _objData,
+			success: function(res) {
+				let _json = res.data;
+				if (_json.code != 0) {
+					reject(_json.msg);
+					return;
+				}
+				resolve(_json.data);
+			},
+			fail: function(res) {
+				reject(res);
+			}
+		});
+	})
+}
+
 export function queryAppUserAccountDetail(_objData){
 	return new Promise((resolve, reject) => {
 		request({
